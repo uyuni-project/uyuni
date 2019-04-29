@@ -94,7 +94,7 @@ class Responder:
         self.config.setdefault('postgres_db', {})
         self.config['postgres_db'].setdefault('host', 'localhost')
         self.config['postgres_db'].setdefault('notify_channel', 'suseSaltEvent')
-        self.counters = [0 for i in range(config['events']['thread_pool_size'])]
+        self.counters = [0 for i in range(config['events']['thread_pool_size'] + 1)]
         self.tokens = config['commit_burst']
         self.event_bus = event_bus
         self._connect_to_database()
@@ -128,8 +128,10 @@ class Responder:
             fnmatch.fnmatch(tag, "suse/manager/image_deployed"),
             fnmatch.fnmatch(tag, "suse/systemid/generate")
         ]) and not self._is_salt_mine_event(tag, data) and not self._is_presence_ping(tag, data):
-            hash_sum = hashlib.md5(data.get("id").encode(self.connection.encoding)).hexdigest()[0:8]
-            queue = int(hash_sum, 16) % self.config['events']['thread_pool_size']
+            queue = 0
+            if 'id' in data:
+                hash_sum = hashlib.md5(data.get("id").encode(self.connection.encoding)).hexdigest()[0:8]
+                queue = int(hash_sum, 16) % self.config['events']['thread_pool_size'] + 1
             log.debug("%s: Adding event to queue %d -> %s", __name__, queue, tag)
             try:
                 self.cursor.execute(
@@ -194,7 +196,7 @@ class Responder:
                     ",".join([str(counter) for counter in self.counters]))
             )
             self.connection.commit()
-            self.counters = [0 for i in range(self.config['events']['thread_pool_size'])]
+            self.counters = [0 for i in range(0, self.config['events']['thread_pool_size'] + 1)]
             self.tokens -=1
 
 def start(**config):

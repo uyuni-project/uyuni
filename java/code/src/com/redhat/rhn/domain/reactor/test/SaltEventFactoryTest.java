@@ -46,32 +46,42 @@ public class SaltEventFactoryTest extends RhnBaseTestCase {
         }
 
         // verify there are no salt events
-        List<Long> saltEventsCount = SaltEventFactory.countSaltEvents(3);
-        assertEquals(Arrays.asList(0L, 0L, 0L), saltEventsCount);
+        List<Long> saltEventsCount = SaltEventFactory.countSaltEvents(4);
+        assertEquals(Arrays.asList(0L, 0L, 0L, 0L), saltEventsCount);
 
         // create and pop 1 salt event
-        SaltEvent saltEvent1 = new SaltEvent(1L, "minion_1", "data_minion_1", 0);
+        SaltEvent saltEvent1 = new SaltEvent(1L, "minion_1", "data_minion_1", 1);
         insertIntoSuseSaltEvent(saltEvent1);
 
-        saltEventsCount = SaltEventFactory.countSaltEvents(3);
-        assertEquals(Arrays.asList(1L, 0L, 0L), saltEventsCount);
+        saltEventsCount = SaltEventFactory.countSaltEvents(4);
+        assertEquals(Arrays.asList(0L, 1L, 0L, 0L), saltEventsCount);
 
         // create and pop another salt event
-        SaltEvent saltEvent2 = new SaltEvent(2L, "minion_2", "data_minion_2", 1);
+        SaltEvent saltEvent2 = new SaltEvent(2L, "minion_2", "data_minion_2", 2);
         insertIntoSuseSaltEvent(saltEvent2);
 
-        saltEventsCount = SaltEventFactory.countSaltEvents(3);
-        assertEquals(Arrays.asList(1L, 1L, 0L), saltEventsCount);
+        saltEventsCount = SaltEventFactory.countSaltEvents(4);
+        assertEquals(Arrays.asList(0L, 1L, 1L, 0L), saltEventsCount);
 
+        // create and pop another salt event, not associated to a minion
+        SaltEvent saltEvent3 = new SaltEvent(3L, null, "data_event_3", 0);
+        insertIntoSuseSaltEvent(saltEvent3);
+        saltEventsCount = SaltEventFactory.countSaltEvents(4);
+        assertEquals(Arrays.asList(1L, 1L, 1L, 0L), saltEventsCount);
 
         //leave the table empty
-        SaltEventFactory.popSaltEvents(2, 0);
-        saltEventsCount = SaltEventFactory.countSaltEvents(3);
-        assertEquals(Arrays.asList(0L, 1L, 0L), saltEventsCount);
-
         SaltEventFactory.popSaltEvents(2, 1);
-        saltEventsCount = SaltEventFactory.countSaltEvents(3);
-        assertEquals(Arrays.asList(0L, 0L, 0L), saltEventsCount);
+        saltEventsCount = SaltEventFactory.countSaltEvents(4);
+        assertEquals(Arrays.asList(1L, 0L, 1L, 0L), saltEventsCount);
+
+        SaltEventFactory.popSaltEvents(2, 2);
+        saltEventsCount = SaltEventFactory.countSaltEvents(4);
+        assertEquals(Arrays.asList(1L, 0L, 0L, 0L), saltEventsCount);
+
+        SaltEventFactory.popSaltEvents(2, 0);
+        saltEventsCount = SaltEventFactory.countSaltEvents(4);
+
+        assertEquals(Arrays.asList(0L, 0L, 0L, 0L), saltEventsCount);
     }
 
     public void testPopSaltEvents() throws NoSuchAlgorithmException {
@@ -81,32 +91,32 @@ public class SaltEventFactoryTest extends RhnBaseTestCase {
         }
 
         // verify there are no salt events
-        List<Long> saltEventsCount = SaltEventFactory.countSaltEvents(3);
-        assertEquals(Arrays.asList(0L, 0L, 0L), saltEventsCount);
+        List<Long> saltEventsCount = SaltEventFactory.countSaltEvents(4);
+        assertEquals(Arrays.asList(0L, 0L, 0L, 0L), saltEventsCount);
 
         // try to pop a salt event when there are none
         List<SaltEvent> popedSaltEvents = SaltEventFactory.popSaltEvents(1, 0).collect(Collectors.toList());
         assertEquals(0, popedSaltEvents.size());
 
         // create and pop 1 salt event
-        SaltEvent saltEvent1 = new SaltEvent(1L, "minion_1", "data_minion_1", 0);
+        SaltEvent saltEvent1 = new SaltEvent(1L, "minion_1", "data_minion_1", 1);
         insertIntoSuseSaltEvent(saltEvent1);
 
-        saltEventsCount = SaltEventFactory.countSaltEvents(3);
-        assertEquals(Arrays.asList(1L, 0L, 0L), saltEventsCount);
+        saltEventsCount = SaltEventFactory.countSaltEvents(4);
+        assertEquals(Arrays.asList(0L, 1L, 0L, 0L), saltEventsCount);
 
-        popedSaltEvents = SaltEventFactory.popSaltEvents(1, 0).collect(Collectors.toList());
+        popedSaltEvents = SaltEventFactory.popSaltEvents(1, 1).collect(Collectors.toList());
         assertEquals(popedSaltEvents.size(), 1);
         assertTrue(popedSaltEvents.stream().allMatch(se -> se.equals(saltEvent1)));
 
-        saltEventsCount = SaltEventFactory.countSaltEvents(3);
-        assertEquals(Arrays.asList(0L, 0L, 0L), saltEventsCount);
+        saltEventsCount = SaltEventFactory.countSaltEvents(4);
+        assertEquals(Arrays.asList(0L, 0L, 0L, 0L), saltEventsCount);
 
         // create and pop more than 1 salt event
         int count = 4;
 
         List<SaltEvent> saltEvents = IntStream.range(0, count)
-                .mapToObj(i -> new SaltEvent(i, "minion_" + i, "data_minion_" + i, i % 3))
+                .mapToObj(i -> new SaltEvent(i, "minion_" + i, "data_minion_" + i, i % 3 + 1))
                 .collect(Collectors.toList());
         saltEvents.forEach(se -> insertIntoSuseSaltEvent(se));
 
@@ -114,17 +124,17 @@ public class SaltEventFactoryTest extends RhnBaseTestCase {
         Map<Integer, List<SaltEvent>> hashedSaltEvents =  saltEvents.stream()
                 .collect(Collectors.groupingBy(se -> se.getQueue()));
 
-        saltEventsCount = SaltEventFactory.countSaltEvents(3);
-        assertEquals(Arrays.asList(2L, 1L, 1L), saltEventsCount);
+        saltEventsCount = SaltEventFactory.countSaltEvents(4);
+        assertEquals(Arrays.asList(0L, 2L, 1L, 1L), saltEventsCount);
 
-        IntStream.range(0, 3).forEach(queue -> {
+        IntStream.range(0, 4).forEach(queue -> {
             List<SaltEvent> popedEvents = SaltEventFactory.popSaltEvents(count, queue).collect(Collectors.toList());
-            assertEquals(popedEvents.size(), hashedSaltEvents.get(queue).size());
+            assertEquals(popedEvents.size(), hashedSaltEvents.getOrDefault(queue, new ArrayList<>()).size());
             assertTrue(popedEvents.stream().allMatch(pse -> hashedSaltEvents.get(queue).stream().anyMatch(se -> pse.equals(se))));
         });
 
-        saltEventsCount = SaltEventFactory.countSaltEvents(3);
-        assertEquals(Arrays.asList(0L, 0L, 0L), saltEventsCount);
+        saltEventsCount = SaltEventFactory.countSaltEvents(4);
+        assertEquals(Arrays.asList(0L, 0L, 0L, 0L), saltEventsCount);
     }
 
     public void testDeleteSaltEvents() {
@@ -134,22 +144,22 @@ public class SaltEventFactoryTest extends RhnBaseTestCase {
         }
 
         // verify there are no salt events
-        List<Long> saltEventsCount = SaltEventFactory.countSaltEvents(3);
-        assertEquals(Arrays.asList(0L, 0L, 0L), saltEventsCount);
+        List<Long> saltEventsCount = SaltEventFactory.countSaltEvents(4);
+        assertEquals(Arrays.asList(0L, 0L, 0L, 0L), saltEventsCount);
 
         // create and delete 1 salt event
-        SaltEvent saltEvent1 = new SaltEvent(1L, "minion_1", "data_minion_1", 0);
+        SaltEvent saltEvent1 = new SaltEvent(1L, "minion_1", "data_minion_1", 1);
         insertIntoSuseSaltEvent(saltEvent1);
 
-        saltEventsCount = SaltEventFactory.countSaltEvents(3);
-        assertEquals(Arrays.asList(1L, 0L, 0L), saltEventsCount);
+        saltEventsCount = SaltEventFactory.countSaltEvents(4);
+        assertEquals(Arrays.asList(0L, 1L, 0L, 0L), saltEventsCount);
 
         List<Long> deletedEventIds = SaltEventFactory.deleteSaltEvents(Arrays.asList(saltEvent1.getId()));
         assertEquals(deletedEventIds.size(), 1);
         assertTrue(deletedEventIds.stream().allMatch(did -> did.equals(saltEvent1.getId())));
 
-        saltEventsCount = SaltEventFactory.countSaltEvents(3);
-        assertEquals(Arrays.asList(0L, 0L, 0L), saltEventsCount);
+        saltEventsCount = SaltEventFactory.countSaltEvents(4);
+        assertEquals(Arrays.asList(0L, 0L, 0L, 0L), saltEventsCount);
 
         // create and delete more than 1 salt event
         int count = 2;
@@ -157,21 +167,27 @@ public class SaltEventFactoryTest extends RhnBaseTestCase {
 
         IntStream.range(0, count).forEach(
                 i -> {
-                    SaltEvent saltEvent = new SaltEvent(i, "minion_" + i, "data_minion_" + i, i % 3);
+                    SaltEvent saltEvent = new SaltEvent(i, "minion_" + i, "data_minion_" + i, i % 3 + 1);
                     insertIntoSuseSaltEvent(saltEvent);
                     saltEvents.add(saltEvent);
                 }
             );
-        saltEventsCount = SaltEventFactory.countSaltEvents(3);
-        assertEquals(Arrays.asList(1L, 1L, 0L), saltEventsCount);
+
+        // create and pop another salt event, not associated to a minion
+        SaltEvent saltEvent3 = new SaltEvent(count + 1, null, "data_event_3", 0);
+        insertIntoSuseSaltEvent(saltEvent3);
+
+        saltEventsCount = SaltEventFactory.countSaltEvents(4);
+        saltEvents.add(saltEvent3);
+        assertEquals(Arrays.asList(1L, 1L, 1L, 0L), saltEventsCount);
 
         List<Long> saltEventIds = saltEvents.stream().map(SaltEvent::getId).collect(Collectors.toList());
         deletedEventIds = SaltEventFactory.deleteSaltEvents(saltEventIds);
-        assertEquals(count, deletedEventIds.size());
+        assertEquals(saltEvents.size(), deletedEventIds.size());
         assertTrue(deletedEventIds.stream().allMatch(did -> saltEventIds.stream().anyMatch(id -> id.equals(did))));
 
-        saltEventsCount = SaltEventFactory.countSaltEvents(3);
-        assertEquals(Arrays.asList(0L, 0L, 0L), saltEventsCount);
+        saltEventsCount = SaltEventFactory.countSaltEvents(4);
+        assertEquals(Arrays.asList(0L, 0L, 0L, 0L), saltEventsCount);
     }
 
     private void insertIntoSuseSaltEvent(SaltEvent saltEvent) {

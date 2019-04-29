@@ -46,7 +46,8 @@ public class SaltEventFactory extends HibernateFactory {
     /**
      * Returns the approximate number of Salt events currently queued.
      * @param queuesCount the number of queues handling events
-     * @return the list of events count per queue
+     * @return the list of events count per queue starting with a queue corresponding to events
+     *  without any minion ID. This queue is referred to as queue 0.
      */
     @SuppressWarnings("unchecked")
     public static List<Long> countSaltEvents(int queuesCount) {
@@ -65,7 +66,7 @@ public class SaltEventFactory extends HibernateFactory {
     /**
      * Returns Salt events, if any, up to limit.
      * @param limit the maximum count of events to return
-     * @param queue the thread to pop events for
+     * @param queue the thread to pop events for, 0 for those associated with no particular queue.
      * @return events
      */
     @SuppressWarnings("unchecked")
