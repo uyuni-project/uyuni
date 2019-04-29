@@ -1,3 +1,4 @@
+- Fix product package conflicts with SLES for SAP systems (bsc#1130551)
 - Take into account only synced products when scheduling SP migration from the API (bsc#1131929)
 
 -------------------------------------------------------------------
