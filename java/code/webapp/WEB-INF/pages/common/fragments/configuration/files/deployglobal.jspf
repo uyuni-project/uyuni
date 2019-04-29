@@ -26,7 +26,7 @@
                 <rhn:listdisplay filterBy="system.common.systemName" set="${requestScope.set}">
                 <rhn:set value="${current.id}" disabled="${not current.selectable}"/>
                         <rhn:column header="globaldeploy.jsp.systemName-header">
-                  <a href="/rhn/systems/details/configuration/Overview.do?sid=${current.id}"><rhn:icon type="header-system" /> ${fn:escapeXml(current.name)} </a><c:if test="${not current.deployable}">*</c:if>
+                  <a class="js-spa" href="/rhn/systems/details/configuration/Overview.do?sid=${current.id}"><rhn:icon type="header-system" /> ${fn:escapeXml(current.name)} </a><c:if test="${not current.deployable}">*</c:if>
                 </rhn:column>
 
                         <rhn:column header="globaldeploy.jsp.overridden-header">
