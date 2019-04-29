@@ -101,14 +101,6 @@ public class RegistrationUtils {
         // get hardware and network async
         triggerHardwareRefresh(minion);
 
-        // Get the product packages from subscribed channels and install them.
-        List<Package> prodPkgs = PackageFactory.findMissingProductPackagesOnServer(minion.getId());
-        StateFactory.addPackagesToNewStateRevision(minion, creator.map(c -> c.getId()), prodPkgs);
-
-        LOG.info("Finished minion registration: " + minionId);
-
-        StatesAPI.generateServerPackageState(minion);
-
         // Asynchronously get the uptime of this minion
         MessageQueue.publish(new MinionStartEventDatabaseMessage(minionId));
 
@@ -124,6 +116,14 @@ public class RegistrationUtils {
         catch (RuntimeException e) {
             LOG.error("Error generating Salt files for minion '" + minionId + "':" + e.getMessage());
         }
+
+        // Get the product packages from subscribed channels and install them.
+        List<Package> prodPkgs = PackageFactory.findMissingProductPackagesOnServer(minion.getId());
+        StateFactory.addPackagesToNewStateRevision(minion, creator.map(User::getId), prodPkgs);
+
+        LOG.info("Finished minion registration: " + minionId);
+
+        StatesAPI.generateServerPackageState(minion);
 
         // Should we apply the highstate?
         boolean applyHighstate = activationKey.isPresent() && activationKey.get().getDeployConfigs();
