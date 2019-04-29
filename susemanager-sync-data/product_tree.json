@@ -20448,6 +20448,22 @@
         "product_type": "base"
     },
     {
+        "channel_label": "sles11-sp4-ltss-updates-x86_64-sap",
+        "parent_channel_label": "sle11-sp4-sap-pool-x86_64",
+        "product_id": 1329,
+        "repository_id": 3760,
+        "parent_product_id": null,
+        "root_product_id": 1329,
+        "update_tag": "slessp4",
+        "url": "https://updates.suse.com/repo/$RCE/SLES11-SP4-LTSS-Updates/sle-11-x86_64/",
+        "release_stage": "released",
+        "mandatory": true,
+        "signed": true,
+        "recommended": false,
+        "channel_name": "SLES11-SP4-LTSS-Updates for x86_64 SAP",
+        "product_type": "base"
+    },
+    {
         "channel_label": "sle11-smt-sp3-updates-x86_64-sap-sp4",
         "parent_channel_label": "sle11-sp4-sap-pool-x86_64",
         "product_id": 1198,
@@ -20749,6 +20765,22 @@
         "signed": true,
         "recommended": false,
         "channel_name": "SLE11-SP4-SAP-Pool for ppc64",
+        "product_type": "base"
+    },
+    {
+        "channel_label": "sles11-sp4-ltss-updates-ppc64-sap",
+        "parent_channel_label": "sle11-sp4-sap-pool-ppc64",
+        "product_id": 1331,
+        "repository_id": 3880,
+        "parent_product_id": null,
+        "root_product_id": 1331,
+        "update_tag": "slessp4",
+        "url": "https://updates.suse.com/repo/$RCE/SLES11-SP4-LTSS-Updates/sle-11-ppc64/",
+        "release_stage": "released",
+        "mandatory": true,
+        "signed": true,
+        "recommended": false,
+        "channel_name": "SLES11-SP4-LTSS-Updates for ppc64 SAP",
         "product_type": "base"
     },
     {
