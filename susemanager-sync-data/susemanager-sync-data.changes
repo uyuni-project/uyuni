@@ -1,3 +1,4 @@
+- add SLES11 SP4 LTSS channels for SLES for SAP (bsc#1133629)
 - add SLES11 SP4 LTSS channels for ppc64 (bsc#1132103)
 
 -------------------------------------------------------------------
