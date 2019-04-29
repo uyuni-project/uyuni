@@ -438,7 +438,7 @@ public class ContentManagementHandler extends BaseHandler {
      * @param sourceType the Source type (e.g. "software")
      * @param sourceLabel the Source label (e.g. software channel label)
      * @throws EntityNotExistsFaultException when used entities don't exist or are not accessible
-     * @return the number of Sources detached
+     * @return 1 on success
      *
      * @xmlrpc.doc Detach a Source from a Project
      * @xmlrpc.param #session_key()
@@ -451,7 +451,8 @@ public class ContentManagementHandler extends BaseHandler {
         ensureOrgAdmin(loggedInUser);
         Type type = Type.lookupByLabel(sourceType);
         try {
-            return ContentManager.detachSource(projectLabel, type, sourceLabel, loggedInUser);
+            ContentManager.detachSource(projectLabel, type, sourceLabel, loggedInUser);
+            return 1;
         }
         catch (EntityNotExistsException e) {
             throw new EntityNotExistsFaultException(e);

@@ -327,20 +327,17 @@ public class ContentManager {
      * @param sourceType the Source Type (e.g. SW_CHANNEL)
      * @param sourceLabel the Source label (e.g. SoftwareChannel label)
      * @param user the user
-     * @return number of Sources detached
      */
-    public static int detachSource(String projectLabel, Type sourceType, String sourceLabel, User user) {
+    public static void detachSource(String projectLabel, Type sourceType, String sourceLabel, User user) {
         ensureOrgAdmin(user);
-        Optional<? extends ProjectSource> src = lookupProjectSource(projectLabel, sourceType, sourceLabel, user);
-        return src.map(s -> {
-            if (s.getState() == ATTACHED) {
-                s.getContentProject().removeSource(s);
-            }
-            else {
-                s.setState(DETACHED);
-            }
-            return 1;
-        }).orElse(0);
+        ProjectSource src = lookupProjectSource(projectLabel, sourceType, sourceLabel, user)
+                .orElseThrow(() -> (new EntityNotExistsException(sourceLabel)));
+        if (src.getState() == ATTACHED) {
+            src.getContentProject().removeSource(src);
+        }
+        else {
+            src.setState(DETACHED);
+        }
     }
 
     /**
