@@ -355,7 +355,7 @@ public class ContentManagementHandler extends BaseHandler {
      * @xmlrpc.param #param_desc("string", "sourceLabel", "Project Source label")
      * @xmlrpc.returntype $ContentProjectSourceSerializer
      */
-    public ProjectSource lookupProjectSource(User loggedInUser, String projectLabel, String sourceType,
+    public ProjectSource lookupSource(User loggedInUser, String projectLabel, String sourceType,
             String sourceLabel) {
         Type type = Type.lookupByLabel(sourceType);
         try {

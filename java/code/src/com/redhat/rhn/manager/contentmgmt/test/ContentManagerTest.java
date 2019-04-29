@@ -559,7 +559,7 @@ public class ContentManagerTest extends BaseTestCaseWithUser {
 
         assertTrue(ContentManager.lookupProjectSource("cplabel", SW_CHANNEL, channel.getLabel(), user).isPresent());
         ContentManager.removeProject("cplabel", user);
-        // we can't use ContentManager.lookupProjectSource because the project does not exist
+        // we can't use ContentManager.lookupSource because the project does not exist
         assertTrue(HibernateFactory.getSession()
                 .createQuery("SELECT 1 FROM SoftwareProjectSource s where s.contentProject = :cp")
                 .setParameter("cp", cp)
