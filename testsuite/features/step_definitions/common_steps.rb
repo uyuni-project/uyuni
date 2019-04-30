@@ -305,6 +305,12 @@ Then(/^channel "([^"]*)" should be enabled on "([^"]*)"$/) do |channel, host|
   node.run("zypper lr -E | grep '#{channel}'")
 end
 
+Then(/^channel "([^"]*)" should not be enabled on "([^"]*)"$/) do |channel, host|
+  node = get_target(host)
+  _out, code = node.run("zypper lr -E | grep '#{channel}'", false)
+  raise "'#{channel}' was not expected but was found." if code.to_i.zero?
+end
+
 Then(/^"(\d+)" channels should be enabled on "([^"]*)"$/) do |count, host|
   node = get_target(host)
   _out, code = node.run("zypper lr -E | tail -n +5 | wc -l")
