@@ -111,3 +111,39 @@ class TestSCSnippets:
             assert call[0][0] == next(iter(stdout_data))
             stdout_data.pop(0)
         assert not stdout_data
+
+    @pytest.mark.skip(reason="Not implemented")
+    def test_snippet_create_no_args(self, shell):
+        """
+        Test create snippet with no arguments.
+        """
+
+    @pytest.mark.skip(reason="Not implemented")
+    def test_snippet_create_args(self, shell):
+        """
+        Test create snippet with arguments.
+        """
+
+    @pytest.mark.skip(reason="Not implemented")
+    def test_snippet_update_no_args(self, shell):
+        """
+        Test update snippet with no args
+        """
+
+    @pytest.mark.skip(reason="Not implemented")
+    def test_snippet_update_args(self, shell):
+        """
+        Test update snippet with args
+        """
+
+    @pytest.mark.skip(reason="Not implemented")
+    def test_snippet_delete_no_args(self, shell):
+        """
+        Test delete snippet with no args
+        """
+
+    @pytest.mark.skip(reason="Not implemented")
+    def test_snippet_delete_args(self, shell):
+        """
+        Test delete snippet with args
+        """
