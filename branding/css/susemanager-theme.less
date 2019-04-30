@@ -366,13 +366,9 @@ header, nav.navbar-pf {
 #nav {
   font-size: 1.1em;
   nav {
-    > * {
-      margin-top: 1em;
-    }
     //Search box
     .nav-tool-box {
       text-align: center;
-      padding: 0 0.5em;
       position: relative;
       input, button {
         margin: auto;
@@ -380,12 +376,13 @@ header, nav.navbar-pf {
       }
       input {
         background-color: @spacewalk-blue;
-        border-color: @spacewalk-gray-dark;
+        border-color: @spacewalk-blue-light;
         border-style: solid;
         border-radius: 0;
         border-width: 0 0 1px 0;
         color: @spacewalk-gray-light;
-        padding-right: 2.3em;
+        padding-right: 3em;
+        height: 3em;
       }
       input:focus {
         box-shadow: none;
@@ -393,7 +390,7 @@ header, nav.navbar-pf {
       .input-right-icon {
         color: @spacewalk-aside-menu-search-clear;
         position: absolute;
-        top: 0.2em;
+        top: .4em;
         right: 0;
         font-size: 1.2em;
         cursor: pointer;
@@ -456,7 +453,7 @@ header, nav.navbar-pf {
           font-size: inherit;
           position: absolute;
           right: 0.5em;
-          top: 0.4em;
+          top: 0.5em;
         }
         > a {
           display: inline-block;
