@@ -510,6 +510,13 @@ public class FormulaFactory {
             data.put("postgres_exporter", postgresExporter);
             FormulaFactory.saveServerFormulaData(data, minionId, FormulaFactory.PROMETHEUS_EXPORTERS);
         }
+        else {
+            MinionServerFactory.findByMinionId(minionId).ifPresent(s -> {
+                if (SystemManager.hasEntitlement(s.getId(), EntitlementManager.MONITORING)) {
+                    SystemManager.removeServerEntitlement(s.getId(), EntitlementManager.MONITORING);
+                }
+            });
+        }
 
         // Write server_formulas file
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(dataFile))) {
