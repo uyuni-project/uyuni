@@ -23,6 +23,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * Service providing utility functions to handle virtual machines.
@@ -45,7 +46,7 @@ public class VirtManager {
                 new LocalCall<>("virt.get_xml", Optional.empty(), Optional.of(args), new TypeToken<String>() { });
 
         Optional<String> result = saltService.callSync(call, minionId);
-        return result.map(xml -> GuestDefinition.parse(xml));
+        return result.filter(s -> !s.startsWith("ERROR")).map(xml -> GuestDefinition.parse(xml));
     }
 
     /**
@@ -75,7 +76,12 @@ public class VirtManager {
                         new TypeToken<Map<String, JsonElement>>() { });
 
         Optional<Map<String, JsonElement>> nets = saltService.callSync(call, minionId);
-        return nets.orElse(new HashMap<String, JsonElement>());
+        Map<String, JsonElement> result = nets.orElse(new HashMap<String, JsonElement>());
+
+        // Workaround: Filter out the entries that don't match since we may get a retcode=0 one.
+        return result.entrySet().stream()
+                    .filter(entry -> entry.getValue().isJsonObject())
+                    .collect(Collectors.toMap(entry -> entry.getKey(), entry -> entry.getValue()));
     }
 
     /**
@@ -91,7 +97,12 @@ public class VirtManager {
                         new TypeToken<Map<String, JsonElement>>() { });
 
         Optional<Map<String, JsonElement>> pools = saltService.callSync(call, minionId);
-        return pools.orElse(new HashMap<String, JsonElement>());
+        Map<String, JsonElement> result = pools.orElse(new HashMap<String, JsonElement>());
+
+        // Workaround: Filter out the entries that don't match since we may get a retcode=0 one.
+        return result.entrySet().stream()
+                    .filter(entry -> entry.getValue().isJsonObject())
+                    .collect(Collectors.toMap(entry -> entry.getKey(), entry -> entry.getValue()));
     }
 
     /**
