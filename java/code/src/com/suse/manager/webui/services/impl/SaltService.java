@@ -742,10 +742,10 @@ public class SaltService {
         }
 
         if (!regularMinionIds.isEmpty()) {
-            ScheduleMetadata metadata = ScheduleMetadata.getDefaultMetadata();
+            ScheduleMetadata metadata = ScheduleMetadata.getDefaultMetadata().withBatchMode();
             List<Map<String, Result<T>>> callResult =
                     adaptException(callIn.withMetadata(metadata).callSync(SALT_CLIENT,
-                            new MinionList(regularMinionIds), PW_AUTH, Optional.empty()));
+                            new MinionList(regularMinionIds), PW_AUTH, defaultBatch));
             results.putAll(
                     callResult.stream().flatMap(map -> map.entrySet().stream())
                             .collect(Collectors.toMap(Entry<String, Result<T>>::getKey,
