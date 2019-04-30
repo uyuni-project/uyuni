@@ -35,16 +35,7 @@ import com.redhat.rhn.manager.configuration.ConfigurationManager;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerXMLRPCHelper;
 import com.redhat.rhn.manager.system.SystemManager;
-
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
-import org.apache.log4j.Logger;
-import org.cobbler.CobblerConnection;
-import org.cobbler.SystemRecord;
-
+import com.suse.utils.Opt;
 import java.net.IDN;
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -60,6 +51,14 @@ import java.util.Set;
 import java.util.TreeSet;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+import org.apache.log4j.Logger;
+import org.cobbler.CobblerConnection;
+import org.cobbler.SystemRecord;
 
 /**
  * Server - Class representation of the table rhnServer.
@@ -2075,6 +2074,13 @@ public class Server extends BaseDomainHelper implements Identifiable {
      */
     public void setMachineId(String machineIdIn) {
         this.machineId = machineIdIn;
+    }
+
+    /**
+     * @return the minion id if the server is a salt minion client, else empty string
+     */
+    public String getMinionId() {
+        return Opt.fold(this.asMinionServer(), () -> "", m -> m.getMinionId());
     }
 
     /**

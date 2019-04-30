@@ -140,6 +140,7 @@ public class SystemOverviewAction extends RhnAction {
         request.setAttribute("installedProducts", s.getInstalledProductSet().orElse(null));
         request.setAttribute("prefs", findUserServerPreferences(user, s));
         request.setAttribute("system", s);
+        request.setAttribute("minionId", s.getMinionId());
         request.setAttribute("hasLocation",
                 !(s.getLocation() == null || s.getLocation().isEmpty()));
         request.setAttribute("activationKey", SystemManager.getActivationKeys(s));
