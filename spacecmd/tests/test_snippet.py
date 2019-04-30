@@ -28,7 +28,7 @@ class TestSCSnippets:
             out = snippet.do_snippet_list(shell, "")
 
         assert out is None
-        assert mprint.call_args_list[0][0] == ('snippet - 1\nsnippet - 2\nsnippet - 3',)
+        assert mprint.call_args_list[0][0] == ('snippet - 1\nsnippet - 2\nsnippet - 3',)  # Sorted
 
     @pytest.mark.skip(reason="Not implemented yet")
     def test_snippet_list_args(self, shell):
