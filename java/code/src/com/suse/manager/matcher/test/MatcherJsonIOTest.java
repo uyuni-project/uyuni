@@ -99,20 +99,18 @@ public class MatcherJsonIOTest extends JMockBaseTestCaseWithUser {
                 result.stream().filter(s -> s.getId().equals(g1.getId())).findFirst().get();
         assertNotNull(resultG1);
         assertEquals("guest1.example.com", resultG1.getName());
-        assertEquals(4, resultG1.getProductIds().size());
+        assertEquals(3, resultG1.getProductIds().size());
         assertTrue(resultG1.getProductIds().contains(1322L));
         assertTrue(resultG1.getProductIds().contains(MGMT_SINGLE_PROD_ID));
-        assertTrue(resultG1.getProductIds().contains(PROV_SINGLE_PROD_ID));
         assertTrue(resultG1.getProductIds().contains(1324L));
 
         SystemJson resultG2 =
                 result.stream().filter(s -> s.getId().equals(g2.getId())).findFirst().get();
         assertNotNull(resultG2);
         assertEquals("guest2.example.com", resultG2.getName());
-        assertEquals(4, resultG2.getProductIds().size());
+        assertEquals(3, resultG2.getProductIds().size());
         assertTrue(resultG2.getProductIds().contains(1322L));
         assertTrue(resultG2.getProductIds().contains(MGMT_SINGLE_PROD_ID));
-        assertTrue(resultG2.getProductIds().contains(PROV_SINGLE_PROD_ID));
         assertTrue(resultG2.getProductIds().contains(1324L));
 
         // ISS Master should add itself
@@ -176,11 +174,9 @@ public class MatcherJsonIOTest extends JMockBaseTestCaseWithUser {
         SystemJson guest = systems.stream().filter(s -> s.getId().equals(guestServer.getId())).findFirst().get();
 
         assertTrue(host.getProductIds().contains(MGMT_SINGLE_PROD_ID));
-        assertTrue(host.getProductIds().contains(PROV_SINGLE_PROD_ID));
         assertFalse(host.getProductIds().contains(MGMT_UNLIMITED_VIRT_PROD_ID));
         assertFalse(host.getProductIds().contains(PROV_UNLIMITED_VIRT_PROD_ID));
         assertTrue(guest.getProductIds().contains(MGMT_SINGLE_PROD_ID));
-        assertTrue(guest.getProductIds().contains(PROV_SINGLE_PROD_ID));
         assertFalse(guest.getProductIds().contains(MGMT_UNLIMITED_VIRT_PROD_ID));
         assertFalse(guest.getProductIds().contains(PROV_UNLIMITED_VIRT_PROD_ID));
     }
@@ -243,20 +239,13 @@ public class MatcherJsonIOTest extends JMockBaseTestCaseWithUser {
         withSetupContentSyncManager("/com/redhat/rhn/manager/content/test/sccdata_lifecycle_products", () -> {
             List<SubscriptionJson> subscriptions = new MatcherJsonIO().getJsonSubscriptions();
 
-            assertEquals(4, subscriptions.size());
+            assertEquals(2, subscriptions.size());
 
             subscriptions.stream()
                     .filter(s -> s.getId() == 11 || s.getId() == 12) // Management
                     .forEach(s -> {
                         assertTrue(s.getProductIds().contains(MGMT_SINGLE_PROD_ID));
                         assertFalse(s.getProductIds().contains(MGMT_UNLIMITED_VIRT_PROD_ID));
-                    });
-
-            subscriptions.stream()
-                    .filter(s -> s.getId() == 13 || s.getId() == 14) // Provisioning
-                    .forEach(s -> {
-                        assertTrue(s.getProductIds().contains(PROV_SINGLE_PROD_ID));
-                        assertFalse(s.getProductIds().contains(PROV_UNLIMITED_VIRT_PROD_ID));
                     });
         });
     }
