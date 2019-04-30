@@ -39,13 +39,13 @@ def help_snippet_list(self):
 
 def do_snippet_list(self, args, doreturn=False):
     snippets = self.client.kickstart.snippet.listCustom(self.session)
-    snippets = [s.get('name') for s in snippets]
+    snippets = sorted([s.get('name') for s in snippets])
 
     if doreturn:
         return snippets
     else:
         if snippets:
-            print('\n'.join(sorted(snippets)))
+            print('\n'.join(snippets))
 
 ####################
 
