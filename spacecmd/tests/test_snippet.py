@@ -40,19 +40,34 @@ class TestSCSnippets:
             {"name": "snippet - 2"},
         ]
 
-        mprint = MagicMock()
         shell.client.kickstart.snippet.listCustom = MagicMock(return_value=snippets)
+
+        mprint = MagicMock()
         with patch("spacecmd.snippet.print", mprint):
             out = snippet.do_snippet_list(shell, "", doreturn=True)
 
         assert out is not None
         assert out == ['snippet - 1', 'snippet - 2', 'snippet - 3']  # Sorted
 
-    @pytest.mark.skip(reason="Not implemented yet")
     def test_snippet_details_noarg(self, shell):
         """
         Test snippet details no args
         """
+        snippets = [
+            {"name": "snippet - 3"},
+            {"name": "snippet - 1"},
+            {"name": "snippet - 2"},
+        ]
+        shell.client.kickstart.snippet.listCustom = MagicMock(return_value=snippets)
+        shell.help_snippet_details = MagicMock()
+
+        mprint = MagicMock()
+        logger = MagicMock()
+        with patch("spacecmd.snippet.print", mprint) as mpr, patch("spacecmd.snippet.logging", logger) as lgr:
+            snippet.do_snippet_details(shell, "")
+        assert not mprint.called
+        assert not logger.warning.called
+        assert shell.help_snippet_details.called
 
     @pytest.mark.skip(reason="Not implemented yet")
     def test_snippet_details_args(self, shell):
