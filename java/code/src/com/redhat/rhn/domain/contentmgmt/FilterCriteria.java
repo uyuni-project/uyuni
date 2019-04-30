@@ -43,7 +43,8 @@ public class FilterCriteria {
      * The matcher type
      */
     public enum Matcher {
-        CONTAINS("contains");
+        CONTAINS("contains"),
+        EQUALS("equals");
 
         private String label;
 
