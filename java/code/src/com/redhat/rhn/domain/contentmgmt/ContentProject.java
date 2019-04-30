@@ -304,8 +304,8 @@ public class ContentProject extends BaseDomainHelper {
      */
     @Transient
     public List<PackageFilter> getPackageFilters() {
-        return (List<PackageFilter>) getProjectFilters().stream()
-                .flatMap(f -> Opt.stream(f.getFilter().asPackageFilter()))
+        return getProjectFilters().stream()
+                .flatMap(f -> Opt.stream(((ContentFilter<?>) f.getFilter()).asPackageFilter()))
                 .collect(Collectors.toList());
     }
 
