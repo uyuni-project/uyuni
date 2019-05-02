@@ -349,6 +349,7 @@ end
 Then(/^I delete all action chains$/) do
   begin
     rpc.list_chains.each do |label|
+      puts "Delete chain: #{label}"
       rpc.delete_chain(label)
     end
   rescue XMLRPC::FaultException => e
@@ -479,8 +480,15 @@ Then(/^I cancel all scheduled actions$/) do
   end
 
   actions.each do |action|
-    scdrpc.cancel_actions([action['id']])
-    puts "\t- Removed \"" + action['name'] + '" action'
+    puts "\t- Try to cancel \"#{action['name']}\" action"
+    begin
+      scdrpc.cancel_actions([action['id']])
+    rescue XMLRPC::FaultException
+      scdrpc.list_in_progress_systems(action['id']).each do |system|
+        scdrpc.fail_system_action(system['server_id'], action['id'])
+      end
+    end
+    puts "\t- Removed \"#{action['name']}\" action"
   end
 end
 
