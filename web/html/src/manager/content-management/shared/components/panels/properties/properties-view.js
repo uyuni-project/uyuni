@@ -41,19 +41,19 @@ const PropertiesView = (props: Props) => {
     <div>
       <React.Fragment>
         <dl className="row">
-          <dt className="col-xs-2">Label:</dt>
+          <dt className="col-xs-2">{t("Label:")}</dt>
           <dd className="col-xs-6">{propertiesToShow.label}</dd>
         </dl>
         <dl className="row">
-          <dt className="col-xs-2">Name</dt>
+          <dt className="col-xs-2">{t("Name")}</dt>
           <dd className="col-xs-10">{propertiesToShow.name}</dd>
         </dl>
         <dl className="row">
-          <dt className="col-xs-2">Description</dt>
+          <dt className="col-xs-2">{t("Description")}</dt>
           <dd className="col-xs-10">{propertiesToShow.description}</dd>
         </dl>
         <dl className="row">
-          <dt className="col-xs-2">Versions history:</dt>
+          <dt className="col-xs-2">{t("Versions history:")}</dt>
           <dd className="col-xs-10">
             <PropertiesHistoryEntries
               id="resume"
@@ -74,7 +74,7 @@ const PropertiesView = (props: Props) => {
                       id="longlist"
                       entries={propertiesToShow.historyEntries} />
                   }
-                  title="Versions history"
+                  title={t("Versions history")}
                 />
               </>
             }
