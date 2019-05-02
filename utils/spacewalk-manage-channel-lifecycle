@@ -265,28 +265,25 @@ def clone_channel(source_label, details):
                 sys.exit(1)
 
 
-def clear_channel(label):
-    logging.info('Clearing all errata from %s', label)
+def clear_channel(lbl):
+    logging.info('Clearing all errata from %s', lbl)
 
     if not options.dry_run:
         # attempt to clear the errata from the channel
         try:
-            all_errata = client.channel.software.listErrata(session, label)
+            all_errata = client.channel.software.listErrata(session, lbl)
             errata_names = [e.get('advisory_name') for e in all_errata]
-            client.channel.software.removeErrata(session,
-                                                 label,
-                                                 errata_names,
-                                                 False)
+            client.channel.software.removeErrata(session, lbl, errata_names, False)
         except xmlrpclib.Fault as e:
             if options.debug:
                 logging.exception(e)
-            logging.warning('Failed to clear errata from %s', label)
+            logging.warning('Failed to clear errata from %s', lbl)
 
     if not options.dry_run:
-        logging.info('Clearing all packages from %s', label)
-        all_packages = client.channel.software.listAllPackages(session, label)
+        logging.info('Clearing all packages from %s', lbl)
+        all_packages = client.channel.software.listAllPackages(session, lbl)
         package_ids = [p.get('id') for p in all_packages]
-        client.channel.software.removePackages(session, label, package_ids)
+        client.channel.software.removePackages(session, lbl, package_ids)
 
 
 def get_current_phase(source):
