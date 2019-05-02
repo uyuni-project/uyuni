@@ -553,7 +553,7 @@ else:
     new_parent_dest = ""
     if new_parent_source:
         (new_parent_source, new_parent_dest) = build_channel_labels(new_parent_source)
-    
+
     details = {'label': parent_dest,
                'name': parent_dest,
                'summary': parent_dest,
