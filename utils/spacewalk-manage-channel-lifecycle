@@ -31,7 +31,7 @@ import xmlrpc.client as xmlrpclib
 import configparser as ConfigParser
 
 
-class Config(object):
+class Config:
 
     """
     Configuration parser with defaults handling.
