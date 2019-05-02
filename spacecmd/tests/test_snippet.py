@@ -291,13 +291,22 @@ class TestSCSnippets:
         assert shell.help_snippet_update.called
         assert out is None
 
-    @pytest.mark.skip(reason="Not implemented")
     def test_snippet_update_args(self, shell):
         """
         Test update snippet with args
         """
+        shell.do_snippet_create = MagicMock()
+        shell.help_snippet_update = MagicMock()
 
-    @pytest.mark.skip(reason="Not implemented")
+        out = snippet.do_snippet_update(shell, "custom_name")
+
+        assert not shell.help_snippet_update.called
+        assert out is not None
+        assert shell.do_snippet_create.called
+        assert not shell.do_snippet_create.call_args_list[0][0][0]
+        assert "update_name" in shell.do_snippet_create.call_args_list[0][1]
+        assert shell.do_snippet_create.call_args_list[0][1]["update_name"] == "custom_name"
+
     def test_snippet_delete_no_args(self, shell):
         """
         Test delete snippet with no args
