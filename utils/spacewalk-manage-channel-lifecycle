@@ -290,9 +290,12 @@ def get_current_phase(source):
     """
     Get current phase from the source channel label.
     """
+    out = None
     for phase in phases:
         if source.startswith(phase):
-            return phase
+            out = phase
+            break
+    return out
 
 
 def build_channel_labels(source):
