@@ -104,11 +104,41 @@ class TestSCSnippets:
         ]
         assert_expect(mprint.call_args_list, *stdout_data)
 
-    @pytest.mark.skip(reason="Not implemented")
     def test_snippet_create_no_args(self, shell):
         """
-        Test create snippet with no arguments.
+        Test create snippet with no arguments and no name update.
         """
+        snippets = [
+            {"name": "snippet3", "contents": "three", "fragment": "3rd fragment", "file": "/tmp/3"},
+            {"name": "snippet1", "contents": "one", "fragment": "1st fragment", "file": "/tmp/1"},
+            {"name": "snippet2", "contents": "two", "fragment": "2nd fragment", "file": "/tmp/2"},
+        ]
+
+        prompt_user = MagicMock(side_effect=["custom-snippet", "/tmp/cs.snip"])
+        logger = MagicMock()
+        editor = MagicMock(return_value=("editor content", False))
+        read_file = MagicMock(return_value="file content")
+        mprint = MagicMock()
+
+        shell.client.kickstart.snippet.listCustom = MagicMock(return_value=snippets)
+        shell.client.kickstart.snippet.createOrUpdate = MagicMock()
+        shell.user_confirm = MagicMock(return_value=True)
+
+        with patch("spacecmd.snippet.logging", logger) as lgr, \
+             patch("spacecmd.snippet.prompt_user", prompt_user) as prmt, \
+             patch("spacecmd.snippet.editor", editor) as edtr, \
+             patch("spacecmd.snippet.read_file", read_file) as rfl, \
+             patch("spacecmd.snippet.print", mprint) as prn:
+            snippet.do_snippet_create(shell, "")
+
+        assert not logger.error.called
+        assert not shell.client.kickstart.snippet.listCustom.called
+        assert shell.user_confirm.called
+        assert shell.client.kickstart.snippet.createOrUpdate.called
+
+        assert_expect(prompt_user.call_args_list, "Name:", "File:")
+        assert_expect(mprint.call_args_list, "", "Snippet: custom-snippet", "Contents", "--------", "file content")
+
 
     @pytest.mark.skip(reason="Not implemented")
     def test_snippet_create_args(self, shell):
