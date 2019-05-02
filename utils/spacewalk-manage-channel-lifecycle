@@ -408,7 +408,7 @@ config = Config(USER_CONF_FILE)
 try:
     setup_config(config)
 except ConfigParser.ParsingError as ex:
-    logging.error("Unable to process configuration:\n" + str(ex))
+    logging.error("Unable to process configuration:\n%s", str(ex))
     sys.exit(1)
 
 if options.list_workflows:
@@ -428,8 +428,7 @@ if options.list_workflows:
 # sanity check
 if not (options.init or options.promote or options.archive or options.rollback
         or options.list_channels):
-    logging.error("You must provide an action " +
-                  "(--init/--promote/--archive/--rollback/--list-channels)")
+    logging.error("You must provide an action: %s", "(--init/--promote/--archive/--rollback/--list-channels)")
     sys.exit(1)
 elif not options.list_channels and not options.channel:
     logging.error('--channel is required')
@@ -502,7 +501,7 @@ if not session:
     except xmlrpclib.Fault as e:
         if options.debug:
             logging.exception(e)
-        logging.error('Failed to log into %s' % options.server)
+        logging.error('Failed to log into %s',  options.server)
         sys.exit(1)
 
     # save the session for subsuquent runs
