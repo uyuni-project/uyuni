@@ -39,15 +39,15 @@
     "@novnc/novnc": "^1.0.0",
     "@spice-project/spice-html5": "^0.2.1",
     "create-react-class": "^15.6.3",
-    "immer": "^2.1.4",
+    "immer": "^3.1.1",
     "lodash": "^4.17.11",
     "prop-types": "^15.7.2",
-    "react": "^16.8.2",
-    "react-dom": "^16.8.2",
-    "react-hot-loader": "^4.7.0",
-    "react-select": "^2.4.2",
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6",
+    "react-hot-loader": "^4.8.4",
+    "react-select": "^2.4.3",
     "toastr": "^2.1.4",
-    "use-immer": "^0.1.0"
+    "use-immer": "^0.3.0"
   },
   "scripts": {
     "clean": "rm -rf node_modules",
