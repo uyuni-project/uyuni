@@ -83,7 +83,7 @@ SESSION_CACHE = os.path.join(CONF_DIR, "session")
 ##############################################################################
 
 
-def setup_config(config):
+def setup_config(cfg):
     """
     Setup configuration.
     """
@@ -99,12 +99,12 @@ def setup_config(config):
             sys.exit(1)
 
     if not os.path.exists(USER_CONF_FILE):
-        logging.debug("Creating configuration file: %s" % USER_CONF_FILE)
-        config.set(Config.SECTION_GENERAL, Config.OPT_PHASES, "dev, test, prod")
-        config.set(Config.SECTION_GENERAL, Config.OPT_EXCLUDE_CHNL, "")
-        config.write()
+        logging.debug("Creating configuration file: %s", USER_CONF_FILE)
+        cfg.set(Config.SECTION_GENERAL, Config.OPT_PHASES, "dev, test, prod")
+        cfg.set(Config.SECTION_GENERAL, Config.OPT_EXCLUDE_CHNL, "")
+        cfg.write()
     else:
-        config.read()
+        cfg.read()
 
 
 def ask(msg, password=False):
