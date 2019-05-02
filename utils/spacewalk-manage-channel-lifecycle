@@ -435,15 +435,11 @@ elif not options.list_channels and not options.channel:
     sys.exit(1)
 
 # parse the list of phases
-phases = parse_enumerated(options.phases or config.get(options.workflow,
-                                                       Config.OPT_PHASES,
-                                                       "dev,test,prod"))
+phases = parse_enumerated(options.phases or config.get(options.workflow, Config.OPT_PHASES, "dev,test,prod"))
 
 # update exclude channel option
-options.exclude_channel = options.exclude_channel or \
-    parse_enumerated(config.get(options.workflow,
-                                Config.OPT_EXCLUDE_CHNL, ""))
-
+options.exclude_channel = options.exclude_channel or parse_enumerated(config.get(options.workflow,
+                                                                                 Config.OPT_EXCLUDE_CHNL, ""))
 if len(phases) < 2:
     logging.error('You must define at least 2 phases')
     sys.exit(1)
