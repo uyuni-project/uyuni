@@ -280,11 +280,16 @@ class TestSCSnippets:
         assert editor.called
         assert_expect(mprint.call_args_list, "", "Snippet: custom-snippet", "Contents", "--------", "editor content")
 
-    @pytest.mark.skip(reason="Not implemented")
     def test_snippet_update_no_args(self, shell):
         """
         Test update snippet with no args
         """
+        shell.do_snippet_create = MagicMock()
+        shell.help_snippet_update = MagicMock()
+
+        out = snippet.do_snippet_update(shell, "")
+        assert shell.help_snippet_update.called
+        assert out is None
 
     @pytest.mark.skip(reason="Not implemented")
     def test_snippet_update_args(self, shell):
