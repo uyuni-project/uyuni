@@ -91,11 +91,11 @@ def setup_config(cfg):
         os.unlink(CONF_DIR)
 
     if not os.path.exists(CONF_DIR):
-        logging.debug("Creating directory: %s" % CONF_DIR)
+        logging.debug("Creating directory: %s", CONF_DIR)
         try:
             os.mkdir(CONF_DIR, 0o700)
         except IOError:
-            logging.error("Unable to create %s" % CONF_DIR)
+            logging.error("Unable to create %s", CONF_DIR)
             sys.exit(1)
 
     if not os.path.exists(USER_CONF_FILE):
@@ -135,7 +135,7 @@ def parse_enumerated(data):
 # determine the name of the next phase
 def get_next_phase(current_name):
     if current_name not in phases:
-        logging.error('Invalid phase name: %s' % current_name)
+        logging.error('Invalid phase name: %s', current_name)
         sys.exit(1)
     else:
         current_num = phases.index(current_name)
@@ -144,7 +144,7 @@ def get_next_phase(current_name):
     if current_num + 1 < len(phases):
         return phases[current_num + 1]
     else:
-        logging.error("Maximum phase exceeded!  You can't move past '%s'." % phases[-1])
+        logging.error("Maximum phase exceeded!  You can't move past '%s'.", phases[-1])
         sys.exit(1)
 
 
@@ -186,7 +186,7 @@ def channel_exists(channel, quiet=False):
         if options.debug:
             logging.exception(e)
         if not quiet:
-            logging.error('Channel %s does not exist' % channel)
+            logging.error('Channel %s does not exist', channel)
         return False
 
 
@@ -199,25 +199,20 @@ def merge_channels(source_label, dest_label):
     if options.exclude_channel:
         for pattern in options.exclude_channel:
             if source_label == pattern:
-                logging.info('Skipping %s due to an exclude filter'
-                             % source_label)
+                logging.info('Skipping %s due to an exclude filter', source_label)
                 return
 
     # remove all the packages from the channel if requested
     if options.clear_channel or options.rollback:
         clear_channel(dest_label)
 
-    logging.info('Merging packages from %s into %s' %
-                 (source_label, dest_label))
+    logging.info('Merging packages from %s into %s', source_label, dest_label)
 
     if not options.dry_run:
         # merge the packages from one channel into another
         try:
-            packages = client.channel.software.mergePackages(session,
-                                                             source_label,
-                                                             dest_label)
-
-            logging.info('Added %i packages' % len(packages))
+            packages = client.channel.software.mergePackages(session, source_label, dest_label)
+            logging.info('Added %i packages', len(packages))
         except xmlrpclib.Fault as e:
             if options.debug:
                 logging.exception(e)
@@ -229,7 +224,7 @@ def merge_channels(source_label, dest_label):
                 sys.exit(1)
 
     if not options.no_errata:
-        logging.info('Merging errata into %s' % dest_label)
+        logging.info('Merging errata into %s', dest_label)
 
         if not options.dry_run:
             # merge the errata from one channel into another
@@ -238,7 +233,7 @@ def merge_channels(source_label, dest_label):
                                                              source_label,
                                                              dest_label)
 
-                logging.info('Added %i errata' % len(errata))
+                logging.info('Added %i errata', len(errata))
             except xmlrpclib.Fault as e:
                 if options.debug:
                     logging.exception(e)
@@ -256,12 +251,11 @@ def clone_channel(source_label, details):
     if options.exclude_channel:
         for pattern in options.exclude_channel:
             if source_label == pattern:
-                logging.info('Skipping %s due to an exclude filter'
-                             % source_label)
+                logging.info('Skipping %s due to an exclude filter', source_label)
                 return
 
     # channel doesn't exist, clone it from the original
-    logging.info('Cloning %s from %s' % (details['label'], source_label))
+    logging.info('Cloning %s from %s', details['label'], source_label)
 
     if not options.dry_run:
         try:
@@ -278,7 +272,7 @@ def clone_channel(source_label, details):
 
 
 def clear_channel(label):
-    logging.info('Clearing all errata from %s' % label)
+    logging.info('Clearing all errata from %s', label)
 
     if not options.dry_run:
         # attempt to clear the errata from the channel
@@ -292,10 +286,10 @@ def clear_channel(label):
         except xmlrpclib.Fault as e:
             if options.debug:
                 logging.exception(e)
-            logging.warning('Failed to clear errata from %s' % label)
+            logging.warning('Failed to clear errata from %s', label)
 
     if not options.dry_run:
-        logging.info('Clearing all packages from %s' % label)
+        logging.info('Clearing all packages from %s', label)
         all_packages = client.channel.software.listAllPackages(session, label)
         package_ids = [p.get('id') for p in all_packages]
         client.channel.software.removePackages(session, label, package_ids)
@@ -320,8 +314,7 @@ def build_channel_labels(source):
         destination = '{phase}{dlm}{src}'.format(phase=phases[0], dlm=options.delimiter, src=source)
 
         if channel_exists(destination, quiet=True):
-            logging.error('%s already exists.  Use --promote instead.'
-                          % destination)
+            logging.error('%s already exists.  Use --promote instead.', destination)
             sys.exit(1)
     elif options.promote:
         # get the phase label from the channel label
