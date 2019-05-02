@@ -10,7 +10,7 @@ DOCKER_VOLUMES        = -v "$(CURDIR)/..:/manager"
 
 __pylint ::
 	$(call update_pip_env)
-	pylint --rcfile=pylintrc $(shell find -name '*.py') > reports/pylint.log || true
+	pylint --rcfile=pylintrc $(shell grep python ./* | grep -rIzl '^#!/usr/bin') > reports/pylint.log || true
 
 docker_pylint ::
 	docker run --rm -e $(DOCKER_RUN_EXPORT) $(DOCKER_VOLUMES) $(DOCKER_REGISTRY)/$(DOCKER_CONTAINER_BASE)-pgsql /bin/sh -c "cd /manager/utils; make -f Makefile.python __pylint"
