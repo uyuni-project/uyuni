@@ -322,7 +322,7 @@ def build_channel_labels(source):
             destination = '{phase}{dlm}{src}'.format(phase=phases[0], dlm=options.delimiter, src=source)
     elif options.rollback:
         # strip off the archive prefix when rolling back
-        destination = re.sub('archive{dlm}\d{{8}}{dlm}'.format(dlm=options.delimiter), '', source)
+        destination = re.sub(r'archive{dlm}\d{{8}}{dlm}'.format(dlm=options.delimiter), '', source)
 
     return source, destination
 
