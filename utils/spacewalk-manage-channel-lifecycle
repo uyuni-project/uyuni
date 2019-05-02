@@ -449,10 +449,7 @@ if len(phases) < 2:
     sys.exit(1)
 
 # determine if you want to enable XMLRPC debugging
-if options.debug and options.debug > 1:
-    xmlrpc_debug = True
-else:
-    xmlrpc_debug = False
+xmlrpc_debug = options.debug and options.debug > 1
 
 # connect to the server
 client = xmlrpclib.Server('https://%s/rpc/api' % options.server,
