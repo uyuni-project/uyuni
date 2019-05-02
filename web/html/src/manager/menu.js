@@ -199,16 +199,11 @@ class Breadcrumb extends React.Component {
         <span>></span>
         {
           breadcrumbArray.map((a, i) => {
-            const htmlElement =
-            (
-              a.submenu ?
-              <Link url={a.submenu[0].primaryUrl}
-                  label={a.label} target={a.target} />
-              :
-              <span className="level">{a.label}</span>
-            );
             return (
-              <span key={a.label + '_' + i}>{htmlElement}{ i == breadcrumbArray.length -1 ? null : <span>></span>}</span>
+              <span key={a.label + '_' + i}>
+                <Link url={a.submenu ? a.submenu[0].primaryUrl : a.primaryUrl} label={a.label} target={a.target} />
+                { i == breadcrumbArray.length -1 ? null : '>'}
+              </span>
             );
           })
         }
