@@ -71,7 +71,7 @@ public class MinionCheckinTest extends JMockBaseTestCaseWithUser {
         SaltService saltServiceMock = mock(SaltService.class);
 
         context().checking(new Expectations() { {
-            never(saltServiceMock).ping(with(any(MinionList.class)));
+            never(saltServiceMock).checkIn(with(any(MinionList.class)));
         } });
 
         MinionCheckin minionCheckinJob = new MinionCheckin();
@@ -103,7 +103,7 @@ public class MinionCheckinTest extends JMockBaseTestCaseWithUser {
         SaltService saltServiceMock = mock(SaltService.class);
 
         context().checking(new Expectations() { {
-            oneOf(saltServiceMock).ping(with(any(MinionList.class)));
+            oneOf(saltServiceMock).checkIn(with(any(MinionList.class)));
         } });
 
         MinionCheckin minionCheckinJob = new MinionCheckin();

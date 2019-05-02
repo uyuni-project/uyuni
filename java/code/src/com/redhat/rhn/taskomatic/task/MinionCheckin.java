@@ -47,7 +47,7 @@ public class MinionCheckin extends RhnJavaJob {
         List<String> minionIds = this.findCheckinCandidatesIds();
         try {
             if (!minionIds.isEmpty()) {
-                this.saltService.ping(new MinionList(minionIds));
+                this.saltService.checkIn(new MinionList(minionIds));
             }
         }
         catch (SaltException e) {
