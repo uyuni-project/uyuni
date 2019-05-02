@@ -112,13 +112,7 @@ def ask(msg, password=False):
     Ask input from the console. Hide the echo, in case of password or sensitive information.
     """
     msg += ": "
-    if password:
-        return getpass.getpass(msg)
-    if six.PY2:
-        inputfn = raw_input
-    else:
-        inputfn = input
-    return inputfn(msg)
+    return getpass.getpass(msg) if password else input(msg)
 
 
 def parse_enumerated(data):
