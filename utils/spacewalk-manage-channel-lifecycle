@@ -19,26 +19,16 @@
 # Copyright 2012 Aron Parsons <aronparsons@gmail.com>
 #
 
-import os.path
+import os
 import getpass
 import logging
-import os
 import re
 import sys
 import time
-from salt.ext import six
-from optparse import Option, OptionParser
+from optparse import Option, OptionParser  # pylint: disable=W0402
 from socket import gethostname
-
-try:
-    import xmlrpclib
-except ImportError:
-    import xmlrpc.client as xmlrpclib  # pylint: disable=F0401
-
-try:
-    import ConfigParser
-except ImportError:
-    import configparser as ConfigParser
+import xmlrpc.client as xmlrpclib
+import configparser as ConfigParser
 
 
 class Config(object):
