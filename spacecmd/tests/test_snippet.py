@@ -336,3 +336,17 @@ class TestSCSnippets:
         assert out is None
         assert shell.client.kickstart.snippet.delete.call_args_list[0][0][0] == shell.session
         assert shell.client.kickstart.snippet.delete.call_args_list[0][0][1] == "some-snippet"
+
+    def test_snippet_delete_args_no_confirm(self, shell):
+        """
+        Test delete snippet with args (snippet name), unconfirmed.
+        """
+        shell.client.kickstart.snippet.delete = MagicMock()
+        shell.help_snippet_delete = MagicMock()
+        shell.user_confirm = MagicMock(return_value=False)
+
+        out = snippet.do_snippet_delete(shell, "some-snippet")
+
+        assert not shell.client.kickstart.snippet.delete.called
+        assert not shell.help_snippet_delete.called
+        assert out is None
