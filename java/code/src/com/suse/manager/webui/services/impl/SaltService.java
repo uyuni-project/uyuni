@@ -802,14 +802,14 @@ public class SaltService {
     }
 
     /**
-     * Pings a target set of minions.
+     * Performs an test.echo on a target set of minions for checkIn purpose.
      * @param targetIn the target
-     * @return the LocalAsyncResult of the test.ping call
+     * @return the LocalAsyncResult of the test.echo call
      * @throws SaltException if we get a failure from Salt
      */
-    public Optional<LocalAsyncResult<Boolean>> ping(MinionList targetIn) throws SaltException {
+    public Optional<LocalAsyncResult<String>> checkIn(MinionList targetIn) throws SaltException {
         try {
-            LocalCall<Boolean> call = Test.ping();
+            LocalCall<String> call = Test.echo("checkIn");
             return callAsync(call, targetIn);
         }
         catch (SaltException e) {
