@@ -311,6 +311,15 @@ class TestSCSnippets:
         """
         Test delete snippet with no args
         """
+        shell.client.kickstart.snippet.delete = MagicMock()
+        shell.help_snippet_delete = MagicMock()
+        shell.user_confirm = MagicMock(return_value=True)
+
+        out = snippet.do_snippet_delete(shell, "")
+
+        assert not shell.client.kickstart.snippet.delete.called
+        assert shell.help_snippet_delete.called
+        assert out is None
 
     @pytest.mark.skip(reason="Not implemented")
     def test_snippet_delete_args(self, shell):
