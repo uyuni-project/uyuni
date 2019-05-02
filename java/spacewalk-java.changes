@@ -1,3 +1,4 @@
+- Enable batching mode for salt synchronous calls
 - Do not implicitly set parent channel when cloning (bsc#1130492)
 - Do not report Provisioning installed product to subscription matcher (bsc#1128838)
 - Show minion id in System Details GUI and API
