@@ -184,14 +184,15 @@ function adjustDistanceForFixedHeader() {
 // Make columns 100% in height
 function columnHeight() {
   const aside = $('.spacewalk-main-column-layout aside');
+  const navToolBox = $('.spacewalk-main-column-layout aside .nav-tool-box');
   const headerHeight = $('header').outerHeight();
   const footerHeight = $('footer').outerHeight();
   const winHeight = $(window).height();
   // // Column height should equal the window height minus the header and footer height
   aside.css('height', winHeight - headerHeight);
   // aside.css('padding-bottom', footerHeight);
-  const nav = $('.spacewalk-main-column-layout aside #nav');
-  nav.css('height', aside.outerHeight() - footerHeight);
+  const nav = $('.spacewalk-main-column-layout aside #nav nav ul.level1');
+  nav.css('height', aside.outerHeight() - navToolBox.outerHeight() - footerHeight);
 };
 
 $(document).on('click', '.navbar-toggle', function() {

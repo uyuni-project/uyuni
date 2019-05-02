@@ -141,7 +141,7 @@ section {
     /* erasing the predefined paddings in the columns */
     padding: 0;
     position: fixed;
-    #nav {
+    #nav nav ul.level1 {
       overflow-y: auto!important;
     }
   }
@@ -365,43 +365,43 @@ header, nav.navbar-pf {
 //Nav menu in left column
 #nav {
   font-size: 1.1em;
-  nav {
-    //Search box
-    .nav-tool-box {
-      text-align: center;
-      position: relative;
-      input, button {
-        margin: auto;
-        vertical-align: top;
-      }
-      input {
-        background-color: @spacewalk-blue;
-        border-color: @spacewalk-blue-light;
-        border-style: solid;
-        border-radius: 0;
-        border-width: 0 0 1px 0;
-        color: @spacewalk-gray-light;
-        padding-right: 3em;
-        height: 3em;
-      }
-      input:focus {
-        box-shadow: none;
-      }
-      .input-right-icon {
-        color: @spacewalk-aside-menu-search-clear;
-        position: absolute;
-        top: .4em;
-        right: 0;
-        font-size: 1.2em;
-        cursor: pointer;
-        margin-right: 1em;
-        padding: 0;
-      }
-      .clear:hover {
-        color: @spacewalk-aside-menu-search-clear-hover;
-      }
+  //Search box
+  .nav-tool-box {
+    text-align: center;
+    position: relative;
+    input, button {
+      margin: auto;
+      vertical-align: top;
     }
-    //Menu
+    input {
+      background-color: @spacewalk-blue;
+      border-color: @spacewalk-blue-light;
+      border-style: solid;
+      border-radius: 0;
+      border-width: 0 0 1px 0;
+      color: @spacewalk-gray-light;
+      padding-right: 3em;
+      height: 3em;
+    }
+    input:focus {
+      box-shadow: none;
+    }
+    .input-right-icon {
+      color: @spacewalk-aside-menu-search-clear;
+      position: absolute;
+      top: .4em;
+      right: 0;
+      font-size: 1.2em;
+      cursor: pointer;
+      margin-right: 1em;
+      padding: 0;
+    }
+    .clear:hover {
+      color: @spacewalk-aside-menu-search-clear-hover;
+    }
+  }
+  //Menu
+  nav {
     ul {
       padding: 0;
       list-style: none;
@@ -445,7 +445,7 @@ header, nav.navbar-pf {
       }
       div.nodeLink:hover,
       div.leafLink:hover {
-        border-left: 3px solid @susemanager-green;
+        border-left-color: @susemanager-green;
       }
       // nodeLink only
       div.nodeLink {
@@ -468,7 +468,8 @@ header, nav.navbar-pf {
     }
     /* First Level */
     > ul {
-      margin-top: 10px;
+      padding-top: 10px;
+      padding-bottom: 10px;
       padding-right: 10px;
       > li {
         > div {
