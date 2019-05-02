@@ -244,6 +244,41 @@ class TestSCSnippets:
         assert mprint.called
         assert_expect(mprint.call_args_list, "", "Snippet: foobar", "Contents", "--------", "file content")
 
+    def test_snippet_create_editor(self, shell):
+        """
+        Test create snippet using the editor.
+        """
+        snippets = [
+            {"name": "snippet3", "contents": "three", "fragment": "3rd fragment", "file": "/tmp/3"},
+            {"name": "snippet1", "contents": "one", "fragment": "1st fragment", "file": "/tmp/1"},
+            {"name": "snippet2", "contents": "two", "fragment": "2nd fragment", "file": "/tmp/2"},
+        ]
+
+        prompt_user = MagicMock(side_effect=["custom-snippet", "/tmp/cs.snip"])
+        logger = MagicMock()
+        editor = MagicMock(return_value=("editor content", False))
+        read_file = MagicMock(return_value="file content")
+        mprint = MagicMock()
+
+        shell.client.kickstart.snippet.listCustom = MagicMock(return_value=snippets)
+        shell.client.kickstart.snippet.createOrUpdate = MagicMock()
+        shell.user_confirm = MagicMock(side_effect=[False, True])
+
+        with patch("spacecmd.snippet.logging", logger) as lgr, \
+             patch("spacecmd.snippet.prompt_user", prompt_user) as prmt, \
+             patch("spacecmd.snippet.editor", editor) as edtr, \
+             patch("spacecmd.snippet.read_file", read_file) as rfl, \
+             patch("spacecmd.snippet.print", mprint) as prn:
+            snippet.do_snippet_create(shell, "")
+
+        assert not logger.error.called
+        assert not shell.client.kickstart.snippet.listCustom.called
+        assert prompt_user.called
+        assert shell.client.kickstart.snippet.createOrUpdate.called
+        assert shell.user_confirm.called
+        assert mprint.called
+        assert editor.called
+        assert_expect(mprint.call_args_list, "", "Snippet: custom-snippet", "Contents", "--------", "editor content")
 
     @pytest.mark.skip(reason="Not implemented")
     def test_snippet_update_no_args(self, shell):
