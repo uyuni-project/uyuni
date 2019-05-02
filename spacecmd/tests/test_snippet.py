@@ -94,11 +94,7 @@ class TestSCSnippets:
             "snippet4 is not a valid snippet",
             "snippet5 is not a valid snippet",
         ]
-
-        for call in logger.warning.call_args_list:
-            assert call[0][0] == next(iter(calls))
-            calls.pop(0)
-        assert not calls
+        assert_expect(logger.warning.call_args_list, *calls)
 
         stdout_data = [
             'Name:   snippet3', 'Macro:  3rd fragment',
@@ -106,11 +102,7 @@ class TestSCSnippets:
             'Name:   snippet1', 'Macro:  1st fragment',
             'File:   /tmp/1', '', 'one',
         ]
-
-        for call in mprint.call_args_list:
-            assert call[0][0] == next(iter(stdout_data))
-            stdout_data.pop(0)
-        assert not stdout_data
+        assert_expect(mprint.call_args_list, *stdout_data)
 
     @pytest.mark.skip(reason="Not implemented")
     def test_snippet_create_no_args(self, shell):
