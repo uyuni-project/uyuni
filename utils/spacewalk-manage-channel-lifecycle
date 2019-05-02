@@ -66,7 +66,7 @@ class Config:
         self._cfg.set(section, option, value)
 
     def write(self):
-        with open(self.path, "wb") as handle:
+        with open(self.path, "w") as handle:
             self._cfg.write(handle)
 
     def read(self):
