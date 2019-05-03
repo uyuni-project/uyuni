@@ -405,14 +405,12 @@ header, nav.navbar-pf {
     ul {
       padding: 0;
       list-style: none;
-      font-size: 1em;
       display: block;
       li {
         padding: 0;
         list-style: none;
         font-size: 1em;
         display: block;
-        position: relative;
         div {
           a {
             padding: 4px 10px;
@@ -449,11 +447,16 @@ header, nav.navbar-pf {
       }
       // nodeLink only
       div.nodeLink {
+        position: relative;
+        > i {
+          font-size: 1.3em;
+          vertical-align: text-bottom;
+        }
         > i.submenuIcon {
-          font-size: inherit;
+          font-size: 1.1em;
           position: absolute;
           right: 0.5em;
-          top: 0.5em;
+          top: 0.3em;
         }
         > a {
           display: inline-block;
@@ -479,6 +482,9 @@ header, nav.navbar-pf {
         }
         > div.nodeLink {
           padding-left: 0.8em;
+          > i.submenuIcon {
+            top: 0.6em;
+          }
         }
         /* Second Level */
         > ul {
@@ -486,7 +492,7 @@ header, nav.navbar-pf {
           > li {
             > div {
               > a {
-                padding-left: 2.5em;
+                padding-left: 3em;
               }
             }
             /* Third Level */
@@ -494,7 +500,7 @@ header, nav.navbar-pf {
               > li {
                 > div {
                   > a {
-                    padding-left: 4em;
+                    padding-left: 5em;
                   }
                 }
               }
