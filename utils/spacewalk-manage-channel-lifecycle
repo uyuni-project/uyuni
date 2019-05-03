@@ -242,6 +242,13 @@ def merge_channels(source_label, dest_label):
 
 
 def clone_channel(source_label, details):
+    """
+    Clone channel.
+
+    :param source_label:
+    :param source_details:
+    :return: None
+    """
     if options.exclude_channel:
         for pattern in options.exclude_channel:
             if source_label == pattern:
@@ -266,6 +273,12 @@ def clone_channel(source_label, details):
 
 
 def clear_channel(lbl):
+    """
+    Clears all the errata in the channel.
+
+    :param lbl:
+    :return: None
+    """
     logging.info('Clearing all errata from %s', lbl)
 
     if not options.dry_run:
@@ -299,6 +312,12 @@ def get_current_phase(source):
 
 
 def build_channel_labels(source):
+    """
+    Build channel labels.
+
+    :param source:
+    :return: source, destination
+    """
     destination = None
     if options.archive:
         # prefix the existing channel with 'archive-YYYYMMDD-'
