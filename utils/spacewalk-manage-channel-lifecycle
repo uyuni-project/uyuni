@@ -174,14 +174,15 @@ def print_channel_tree():
 
 def channel_exists(channel, quiet=False):
     try:
-        client.channel.software.getDetails(session, channel)
-        return True
+        client.channel.software.getDetails(session, ch_label)
+        exists = True
     except xmlrpclib.Fault as e:
         if options.debug:
             logging.exception(e)
         if not quiet:
-            logging.error('Channel %s does not exist', channel)
-        return False
+            logging.error('Channel %s does not exist', ch_label)
+        exists = False
+    return exists
 
 
 def merge_channels(source_label, dest_label):
@@ -212,9 +213,7 @@ def merge_channels(source_label, dest_label):
                 logging.exception(e)
             logging.error('Failed to merge packages')
 
-            if options.tolerant:
-                return False
-            else:
+            if not options.tolerant:
                 sys.exit(1)
 
     if not options.no_errata:
@@ -233,9 +232,7 @@ def merge_channels(source_label, dest_label):
                     logging.exception(e)
                 logging.error('Failed to merge errata')
 
-                if options.tolerant:
-                    return False
-                else:
+                if not options.tolerant:
                     sys.exit(1)
 
     print()
