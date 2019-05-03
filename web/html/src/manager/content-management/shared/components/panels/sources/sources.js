@@ -11,6 +11,7 @@ import styles from "./sources.css";
 import useRoles from "core/auth/use-roles";
 import {isOrgAdmin} from "core/auth/auth.utils";
 import useLifecycleActionsApi from "../../../api/use-lifecycle-actions-api";
+import statesEnum from "../../../business/states.enum";
 
 type SourcesProps = {
   projectId: string,
@@ -19,9 +20,6 @@ type SourcesProps = {
 };
 
 const ModalSourceCreationContent = ({isLoading, softwareSources, onChange}) => {
-
-  // TODO: [LuNeves] transform this in an enum and reuse in sources.js as well
-  const selectedStates = ["ATTACHED","BUILT"];
 
   return (
     <form className="form-horizontal">
@@ -38,7 +36,7 @@ const ModalSourceCreationContent = ({isLoading, softwareSources, onChange}) => {
         isSourcesApiLoading={isLoading}
         initialSelectedIds={
           softwareSources
-            .filter(source => selectedStates.includes(source.state))
+            .filter(source => !statesEnum.isDeletion(source.state))
             .map(source => source.channelId)
         }
         onChange={(selectedChannels) => {
@@ -50,7 +48,7 @@ const ModalSourceCreationContent = ({isLoading, softwareSources, onChange}) => {
 }
 
 const renderSourceEntry = (source) => {
-  if (source.state === 'ATTACHED') {
+  if (source.state === statesEnum.enum.ATTACHED.key) {
     return (
       <div
         className={`text-success ${styles.attached}`}
@@ -60,7 +58,7 @@ const renderSourceEntry = (source) => {
       </div>
     );
   }
-  if (source.state === 'DETACHED') {
+  if (source.state === statesEnum.enum.DETACHED.key) {
     return (
       <div className={`text-danger ${styles.dettached}`}>
         <i className='fa fa-minus'/>

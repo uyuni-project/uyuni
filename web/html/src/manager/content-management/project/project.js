@@ -21,6 +21,7 @@ import {isOrgAdmin} from "core/auth/auth.utils";
 import useInterval from "core/hooks/use-interval";
 import useLifecycleActionsApi from "../shared/api/use-lifecycle-actions-api";
 import FiltersProject from "../shared/components/panels/filters-project/filters-project";
+import statesEnum from "../shared/business/states.enum";
 
 type Props = {
   project: ProjectType,
@@ -47,25 +48,19 @@ const Project = (props: Props) => {
     }
   }, []);
 
-  // TODO: [LuNeves] after beta2 transform this in an enum and reuse in sources.js as well
-  const editedStates = ["ATTACHED","DETACHED"];
-  const statesDesc = {
-    "ATTACHED": "added",
-    "DETACHED": "deleted",
-    "BUILT": "built",
-  };
-
   const projectId = project.properties.label;
   const currentHistoryEntry = _last(project.properties.historyEntries);
 
   let changesToBuild = project.softwareSources
-    .filter(source => editedStates.includes(source.state))
-    .map(source => `Source: ${source.type} ${source.name} ${statesDesc[source.state]}`);
+    .filter(source => statesEnum.isEdited(source.state))
+    .map(source => `Source: ${source.type} ${source.name} ${statesEnum.findByKey(source.state).description}`);
   changesToBuild = changesToBuild.concat(
     project
       .filters
-      .filter(filter => editedStates.includes(filter.state))
-      .map(filter => `Filter: ${filter.name}: deny ${filter.type} containing ${filter.criteria} in the name ${statesDesc[filter.state]}`)
+      .filter(filter => statesEnum.isEdited(filter.state))
+      .map(filter =>
+        `Filter: ${filter.name}: deny ${filter.type} containing ${filter.criteria} in the name ${statesEnum.findByKey(filter.state).description}`
+      )
   );
   const isProjectEdited = changesToBuild.length > 0;
   const isBuildDisabled = !hasEditingPermissions || _isEmpty(project.environments) || _isEmpty(project.softwareSources);
