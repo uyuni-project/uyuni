@@ -9,5 +9,10 @@
     "@babel/plugin-transform-flow-strip-types",
     "@babel/plugin-syntax-object-rest-spread",
     "react-hot-loader/babel"
-  ]
+  ],
+  "env": {
+    "test": {
+      "presets": ["@babel/preset-env"]
+    }
+  }
 }
