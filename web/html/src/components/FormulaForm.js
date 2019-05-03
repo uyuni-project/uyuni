@@ -25,7 +25,7 @@ class FormulaForm extends React.Component {
 
         ["saveFormula", "handleChange", "clearValues"].forEach(method => this[method] = this[method].bind(this));
 
-        const previewMessage = <p><strong>{t('This is a feature preview')}</strong>: On this page you can configure <a href="https://docs.saltstack.com/en/latest/topics/development/conventions/formulas.html" target="_blank" rel="noopener noreferrer">Salt formulas</a> to automatically install and configure software. We would be glad to receive your feedback via the <a href="https://forums.suse.com/forumdisplay.php?22-SUSE-Manager" target="_blank" rel="noopener noreferrer">forum</a>.</p>;
+        const previewMessage = <p>On this page you can configure <a href="https://docs.saltstack.com/en/latest/topics/development/conventions/formulas.html" target="_blank" rel="noopener noreferrer">Salt Formulas</a> to automatically install and configure software.</p>;
 
         this.state = {
             formulaName: "",

@@ -42,7 +42,7 @@ class FormulaCatalog extends React.Component {
 
     render() {
         var messages = <Messages items={[{severity: "info", text:
-            <p><strong>{t('This is a feature preview')}</strong>: The formula catalog page enables viewing of currently installed <a href="https://docs.saltstack.com/en/latest/topics/development/conventions/formulas.html" target="_blank">Salt formulas</a>. Apply these formulas to individual systems or server groups. Formulas allow automatic installation and configuration of software and may be installed via RPM packages. We would be glad to receive your feedback in the <a href="https://forums.suse.com/forumdisplay.php?22-SUSE-Manager" target="_blank">{t('forum')}</a>.</p>
+            <p>The formula catalog page enables viewing of currently installed <a href="https://docs.saltstack.com/en/latest/topics/development/conventions/formulas.html" target="_blank">Salt Formulas</a>. Apply these formulas to individual systems or server groups. Formulas allow automatic installation and configuration of software and may be installed via RPM packages.</p>
         }]}/>;
         if (this.state.messages.length > 0) {
             messages = <Messages items={this.state.messages.map(function(msg) {
