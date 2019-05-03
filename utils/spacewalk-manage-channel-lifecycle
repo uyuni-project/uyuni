@@ -146,26 +146,26 @@ def print_channel_tree():
     tree = {}
 
     # determine parent channels so we can make a pretty tree for the user
-    for channel in all_channels:
-        if channel.get('parent_label'):
-            if channel.get('parent_label') not in tree:
-                tree[channel.get('parent_label')] = []
+    for ch_data in all_channels:
+        if ch_data.get('parent_label'):
+            if ch_data.get('parent_label') not in tree:
+                tree[ch_data.get('parent_label')] = []
 
-            tree[channel.get('parent_label')].append(channel.get('label'))
+            tree[ch_data.get('parent_label')].append(ch_data.get('label'))
         else:
-            if channel.get('label') not in tree:
-                tree[channel.get('label')] = []
+            if ch_data.get('label') not in tree:
+                tree[ch_data.get('label')] = []
 
     # print the channels in a tree format
     print("Channel tree:")
-    idx = 1
+    index = 1
     step = len(str(len(list(tree.keys()))))
     for parent in sorted(tree.keys()):
-        if len(tree[parent]):
+        if tree[parent]:
             print()
-        print(" %s. %s" % (str(idx).rjust(step), parent))
-        idx += 1
-        if len(tree[parent]):
+        print(" %s. %s" % (str(index).rjust(step), parent))
+        index += 1
+        if tree[parent]:
             for child in sorted(tree[parent]):
                 print((' ' * step) + '     \\__ %s' % child)
             print()
