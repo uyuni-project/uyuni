@@ -523,7 +523,7 @@ if not session:
     except xmlrpclib.Fault as e:
         if options.debug:
             logging.exception(e)
-        logging.error('Failed to log into %s',  options.server)
+        logging.error('Failed to log into %s', options.server)
         sys.exit(1)
 
     # save the session for subsuquent runs
@@ -571,7 +571,7 @@ if parent_dest in all_channel_labels:
 else:
     # channel doesn't exist, clone it from the original
     # let's check if there's a parent for the original channel and if so, clone it in the right place
-    new_parent_source = client.channel.software.getDetails(session,parent_source)['parent_channel_label']
+    new_parent_source = client.channel.software.getDetails(session, parent_source)['parent_channel_label']
     new_parent_dest = ""
     if new_parent_source:
         (new_parent_source, new_parent_dest) = build_channel_labels(new_parent_source)
