@@ -13,7 +13,9 @@
     "proxy": "webpack-dev-server -d --mode development --hot --inline --config build/webpack.config.js",
     "build": "node build",
     "build:novalidate": "BUILD_VALIDATION=false node build",
-    "lint": "eslint . -f codeframe"
+    "lint": "eslint . -f codeframe",
+    "test": "BABEL_ENV=test jest",
+    "test:watch": "BABEL_ENV=test jest --watch"
   },
   "devDependencies": {
     "flow-bin": "^0.93.0",
