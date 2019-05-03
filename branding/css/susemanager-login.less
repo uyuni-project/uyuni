@@ -5,25 +5,23 @@
    font-style: normal;
 }
 
-/* SCC Login */
+/* SUSE Manager Login */
 body.login-page {
   background: @spacewalk-blue-light;
   font-size: 16px;
-  font-weight: normal;
-  font-family: arial;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   width: 100%;
   overflow: auto;
   margin-top: 0px;
+  color: @spacewalk-gray-light;
 }
 .login-page {
   .text-left;
   .wrap {
-    width: 960px;
+    width: 1024px;
     margin: 0 auto;
-    box-sizing:border-box;
-    -moz-box-sizing:border-box; /* Firefox */
+    box-sizing: border-box;
   }
   .navbar-header {
     margin-left: 10px;
@@ -44,9 +42,6 @@ body.login-page {
   .Raleway-font {
     font-family: 'Raleway', sans-serif;
     font-weight: 300
-  }
-  .gray-text {
-    color: @spacewalk-gray;
   }
   .btn-dark {
     color: @susemanager-green;
@@ -119,19 +114,16 @@ body.login-page {
     font-size: 14px
   }
   footer {
-    border-bottom: 8px solid @susemanager-green;
+    border-bottom: 16px solid @susemanager-green;
     border-top-width: 0px;
     background-color: @spacewalk-blue-light;
     position: fixed;
-    padding-bottom: 0;
+    padding-bottom: 1em;
     padding-left: 0;
-    .gray-text;
+    color: @spacewalk-gray;
     div.wrapper {
       background-size: auto 30px;
       min-height: 35px;
-    }
-    div {
-      text-align: center!important;
     }
     .wrap {
       > div {
