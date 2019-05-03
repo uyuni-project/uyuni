@@ -8,6 +8,7 @@ import useLifecycleActionsApi from "../../../api/use-lifecycle-actions-api";
 import CreatorPanel from "components/panels/CreatorPanel";
 import type {FilterType} from "../../../type/filter.type";
 import FiltersProjectSelection from "./filters-project-selection";
+import statesEnum from "../../../business/states.enum";
 
 type FiltersProps = {
   projectId: string,
@@ -29,7 +30,7 @@ const renderFilterEntry = (filter) => {
         />
       </div>;
 
-  if (filter.state === 'ATTACHED') {
+  if (filter.state === statesEnum.enum.ATTACHED.key) {
     return (
       <li
         key={`filter_list_item_${filter.id}`}
@@ -40,7 +41,7 @@ const renderFilterEntry = (filter) => {
       </li>
     );
   }
-  if (filter.state === 'DETACHED') {
+  if (filter.state === statesEnum.enum.DETACHED.key) {
     return (
       <li
         key={`filter_list_item_${filter.id}`}
@@ -95,16 +96,13 @@ const FiltersProject = (props:  FiltersProps) => {
           });
       }}
       renderCreationContent={({setItem}) => {
-        // TODO: [LuNeves] transform this in an enum and reuse in sources.js as well
-        const selectedStates = ["ATTACHED","BUILT"];
-
         return (
           <FiltersProjectSelection
             isUpdatingFilter={isLoading}
             projectId={props.projectId}
             initialSelectedFiltersIds={
               props.selectedFilters
-                .filter(filter => selectedStates.includes(filter.state))
+                .filter(filter => !statesEnum.isDeletion(filter.state))
                 .map(filter => filter.id)
             }
             onChange={setItem}
