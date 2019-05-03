@@ -118,8 +118,6 @@ CONF_DIR = os.path.expanduser("~/.spacewalk-manage-channel-lifecycle")
 USER_CONF_FILE = os.path.join(CONF_DIR, "settings.conf")
 SESSION_CACHE = os.path.join(CONF_DIR, "session")
 
-##############################################################################
-
 
 def setup_config(cfg):
     """
@@ -164,10 +162,9 @@ def parse_enumerated(data):
     return items
 
 
-# determine the name of the next phase
 def get_next_phase(current_name: str) -> str:
     """
-    Gets next phase of the workflow.
+    Gets the name of the next phase of the workflow.
 
     :param current_name:
     :return:
