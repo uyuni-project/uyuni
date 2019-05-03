@@ -173,6 +173,13 @@ def print_channel_tree():
 
 
 def channel_exists(channel, quiet=False):
+    """
+    Check if named channel exists.
+
+    :param ch_label: channel label
+    :param quiet: suppresses error log if True
+    :return: returns True if channel exists.
+    """
     try:
         client.channel.software.getDetails(session, ch_label)
         exists = True
@@ -186,6 +193,13 @@ def channel_exists(channel, quiet=False):
 
 
 def merge_channels(source_label, dest_label):
+    """
+    Merge channels data.
+
+    :param source_label:
+    :param dest_label:
+    :return: None
+    """
     if dest_label.startswith('rhel') and not options.tolerant:
         logging.error("Destination label starts with 'rhel'.  Aborting!")
         logging.error("Pass --tolerant to override this")
