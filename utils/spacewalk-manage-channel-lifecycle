@@ -18,6 +18,10 @@
 #
 # Copyright 2012 Aron Parsons <aronparsons@gmail.com>
 #
+# coding: utf-8
+"""
+Manage channels lifecycle.
+"""
 
 import os
 import getpass
@@ -25,6 +29,7 @@ import logging
 import re
 import sys
 import time
+import typing
 from optparse import Option, OptionParser  # pylint: disable=W0402
 from socket import gethostname
 import xmlrpc.client as xmlrpclib
@@ -45,7 +50,16 @@ class Config:
         self.default_section = Config.SECTION_GENERAL
         self._cfg = ConfigParser.RawConfigParser()
 
-    def get(self, section, option, default=None):
+    # pylint: disable=R1705
+    def get(self, section: str, option: str, default: typing.Any = None) -> typing.Any:
+        """
+        Get data from the configuration.
+
+        :param section:
+        :param option:
+        :param default:
+        :return:
+        """
         if not self._cfg.has_section(section):
             if not self._cfg.has_section(self.default_section):
                 return default
@@ -59,21 +73,45 @@ class Config:
                 return default
 
         return self._cfg.get(section, option)
+    # pylint: enable=R1705
 
-    def set(self, section, option, value):
+    def set(self, section: str, option: str, value: typing.Any) -> None:
+        """
+        Set section to the configuration structure.
+
+        :param section: name of the section
+        :param option: option name
+        :param value: value
+        :return: None
+        """
         if not self._cfg.has_section(section):
             self._cfg.add_section(section)
         self._cfg.set(section, option, value)
 
-    def write(self):
+    def write(self) -> None:
+        """
+        Write configuration to the INI file.
+
+        :return: None
+        """
         with open(self.path, "w") as handle:
             self._cfg.write(handle)
 
-    def read(self):
+    def read(self) -> None:
+        """
+        Read configuration from the INI file.
+
+        :return: None
+        """
         self._cfg.read(self.path)
 
-    def sections(self):
-        return [i for i in self._cfg.sections() if i != self.default_section]
+    def sections(self) -> typing.List[typing.AnyStr]:
+        """
+        Returns sections of the configuration INI.
+
+        :return: list of the sections
+        """
+        return [section for section in self._cfg.sections() if section != self.default_section]
 
 
 CONF_DIR = os.path.expanduser("~/.spacewalk-manage-channel-lifecycle")
@@ -127,7 +165,13 @@ def parse_enumerated(data):
 
 
 # determine the name of the next phase
-def get_next_phase(current_name):
+def get_next_phase(current_name: str) -> str:
+    """
+    Gets next phase of the workflow.
+
+    :param current_name:
+    :return:
+    """
     if current_name not in phases:
         logging.error('Invalid phase name: %s', current_name)
         sys.exit(1)
@@ -142,7 +186,12 @@ def get_next_phase(current_name):
         sys.exit(1)
 
 
-def print_channel_tree():
+def print_channel_tree() -> None:
+    """
+    Prints the tree of existing channels to STDOUT.
+
+    :return: None
+    """
     tree = {}
 
     # determine parent channels so we can make a pretty tree for the user
