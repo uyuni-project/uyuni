@@ -4,29 +4,40 @@ const React = require("react");
 const ReactDOM = require("react-dom");
 
 const Link = (props) =>
-  <a href={props.url} className={props.cssClass} target={props.target}
-    title={props.title} onClick={props.handleClick}>
+  <a href={props.url} className={props.cssClass} target={props.target} title={props.title}>
     {props.responsiveLabel}
     {props.label}
   </a>
   ;
 
-const Node = (props) =>
-  <div className={props.isLeaf ? " leafLink " : " nodeLink "} onClick={props.handleClick}>
-    {
-      props.icon ?
-      <i className={'fa ' + props.icon}></i>
-      : null
+class Node extends React.Component {
+  handleClick = (event) => {
+    // if the click is triggered on a link, do not toggle the menu, just offload the page and go to the requested link
+    if (!event.target.href) {
+      this.props.handleClick();
     }
-    <Link url={props.url} target={props.target} label={props.label} />
-    { props.isLeaf ?
-        null
-        :
-        (!props.isSearchActive ?
-          <i className={'submenuIcon ' + (props.isOpen ? "fa fa-angle-up" : "fa fa-angle-down")}></i>
-          : null)
-    }
-  </div>;
+  };
+
+  render() {
+    return (
+      <div className={this.props.isLeaf ? " leafLink " : " nodeLink "} onClick={(event) => this.handleClick(event)}>
+        {
+          this.props.icon ?
+          <i className={'fa ' + this.props.icon}></i>
+          : null
+        }
+        <Link url={this.props.url} target={this.props.target} label={this.props.label} onClick={(event) => this.handleClick(event)} />
+        { this.props.isLeaf ?
+            null
+            :
+            (!this.props.isSearchActive ?
+              <i className={'submenuIcon ' + (this.props.isOpen ? "fa fa-angle-up" : "fa fa-angle-down")}></i>
+              : null)
+        }
+      </div>
+    );
+  }
+}
 
 class Element extends React.Component {
   state = {
