@@ -256,11 +256,11 @@ def clone_channel(source_label, source_details) -> None:
                 return
 
     # channel doesn't exist, clone it from the original
-    logging.info('Cloning %s from %s', details['label'], source_label)
+    logging.info('Cloning %s from %s', source_details['label'], source_label)
 
     if not options.dry_run:
         try:
-            client.channel.software.clone(session, source_label, details, False)
+            client.channel.software.clone(session, source_label, source_details, False)
         except xmlrpclib.Fault as e:
             if options.debug:
                 logging.exception(e)
