@@ -397,6 +397,7 @@ def build_channel_labels(source):
 
     return source, destination
 
+
 def get_config_credentials(conf, opts):
     '''
     Look into configuration for credentials for the admin user.
@@ -407,244 +408,244 @@ def get_config_credentials(conf, opts):
         opts.username = username
         opts.password = password
 
-##############################################################################
 
-usage = '''usage: %prog [options]
+if __name__ == "__main__":
+    usage = '''usage: %prog [options]
 
-Create a 'dev' channel based on the latest packages:
-spacewalk-manage-channel-lifecycle -c sles11-sp3-pool-x86_64 --init
+    Create a 'dev' channel based on the latest packages:
+    spacewalk-manage-channel-lifecycle -c sles11-sp3-pool-x86_64 --init
 
-Promote the packages from 'dev' to 'test':
-spacewalk-manage-channel-lifecycle -c dev-sles11-sp3-pool-x86_64 --promote
+    Promote the packages from 'dev' to 'test':
+    spacewalk-manage-channel-lifecycle -c dev-sles11-sp3-pool-x86_64 --promote
 
-Promote the packages from 'test' to 'prod':
-spacewalk-manage-channel-lifecycle -c test-sles11-sp3-pool-x86_64 --promote
+    Promote the packages from 'test' to 'prod':
+    spacewalk-manage-channel-lifecycle -c test-sles11-sp3-pool-x86_64 --promote
 
-Archive a production channel:
-spacewalk-manage-channel-lifecycle -c prod-sles11-sp3-pool-x86_64 --archive
+    Archive a production channel:
+    spacewalk-manage-channel-lifecycle -c prod-sles11-sp3-pool-x86_64 --archive
 
-Rollback the production channel to an archived version:
-spacewalk-manage-channel-lifecycle \\
-    -c archive-20110520-prod-sles11-sp3-pool-x86_64 --rollback'''
+    Rollback the production channel to an archived version:
+    spacewalk-manage-channel-lifecycle \\
+        -c archive-20110520-prod-sles11-sp3-pool-x86_64 --rollback'''
 
-option_list = [
-    Option('-l', '--list-channels', help='list existing channels',
-           action='store_true'),
-    Option('', '--init', help='initialize a development channel',
-           action='store_true'),
-    Option('-w', '--workflow', help='use configured workflow', default=""),
-    Option('-D', '--delimiter', type='choice', choices=['-', '_', '.'],
-           help='delimiter used between workflow and channel name', default="-"),
-    Option('-f', '--list-workflows', help='list configured workflows', default=False,
-           action='store_true'),
-    Option('', '--promote', help='promote a channel to the next phase',
-           action='store_true'),
-    Option('', '--archive', help='archive a channel', action='store_true'),
-    Option('', '--rollback', help='rollback', action='store_true'),
-    Option('-c', '--channel', help='channel to init/promote/archive/rollback'),
-    Option('-C', '--clear-channel',
-           help='clear all packages/errata from the channel before merging',
-           action='store_true'),
-    Option('-x', '--exclude-channel', help='skip these channels',
-           action='append'),
-    Option('', '--no-errata', help="don't merge errata data with --promote",
-           action='store_true'),
-    Option('', '--no-children', help="don't operate on child channels",
-           action='store_true'),
-    Option('-P', '--phases', default='',
-           help='comma-separated list of phases [default: dev,test,prod]'),
-    Option('-u', '--username', help='Spacewalk username'),
-    Option('-p', '--password', help='Spacewalk password'),
-    Option('-s', '--server',
-           help='Spacewalk server [default: %default]', default=gethostname()),
-    Option('-n', '--dry-run', help="don't perform any operations",
-           action='store_true'),
-    Option('-t', '--tolerant', help='be tolerant of errors',
-           action='store_true'),
-    Option('-d', '--debug', help='enable debug logging', action='count')
-]
+    option_list = [
+        Option('-l', '--list-channels', help='list existing channels',
+               action='store_true'),
+        Option('', '--init', help='initialize a development channel',
+               action='store_true'),
+        Option('-w', '--workflow', help='use configured workflow', default=""),
+        Option('-D', '--delimiter', type='choice', choices=['-', '_', '.'],
+               help='delimiter used between workflow and channel name', default="-"),
+        Option('-f', '--list-workflows', help='list configured workflows', default=False,
+               action='store_true'),
+        Option('', '--promote', help='promote a channel to the next phase',
+               action='store_true'),
+        Option('', '--archive', help='archive a channel', action='store_true'),
+        Option('', '--rollback', help='rollback', action='store_true'),
+        Option('-c', '--channel', help='channel to init/promote/archive/rollback'),
+        Option('-C', '--clear-channel',
+               help='clear all packages/errata from the channel before merging',
+               action='store_true'),
+        Option('-x', '--exclude-channel', help='skip these channels',
+               action='append'),
+        Option('', '--no-errata', help="don't merge errata data with --promote",
+               action='store_true'),
+        Option('', '--no-children', help="don't operate on child channels",
+               action='store_true'),
+        Option('-P', '--phases', default='',
+               help='comma-separated list of phases [default: dev,test,prod]'),
+        Option('-u', '--username', help='Spacewalk username'),
+        Option('-p', '--password', help='Spacewalk password'),
+        Option('-s', '--server',
+               help='Spacewalk server [default: %default]', default=gethostname()),
+        Option('-n', '--dry-run', help="don't perform any operations",
+               action='store_true'),
+        Option('-t', '--tolerant', help='be tolerant of errors',
+               action='store_true'),
+        Option('-d', '--debug', help='enable debug logging', action='count')
+    ]
 
-parser = OptionParser(option_list=option_list, usage=usage)
-(options, args) = parser.parse_args()
+    parser = OptionParser(option_list=option_list, usage=usage)
+    (options, args) = parser.parse_args()
 
-if options.debug:
-    level = logging.DEBUG
-else:
-    level = logging.INFO
+    if options.debug:
+        level = logging.DEBUG
+    else:
+        level = logging.INFO
 
-logging.basicConfig(level=level, format='%(levelname)s: %(message)s')
+    logging.basicConfig(level=level, format='%(levelname)s: %(message)s')
 
-options.workflow = options.workflow or Config.SECTION_GENERAL
-config = Config(USER_CONF_FILE)
-try:
-    setup_config(config)
-except ConfigParser.ParsingError as ex:
-    logging.error("Unable to process configuration:\n%s", str(ex))
-    sys.exit(1)
-
-if options.list_workflows:
-    workflows = config.sections()
-    if not workflows:
-        print("There are no additinal configured workflows except default.")
-        sys.exit(0)
-
-    print("Configured additional workflows:")
-    idx = 1
-    for workflow in workflows:
-        print("  %s. %s" % (idx, workflow))
-        idx += 1
-    print()
-    sys.exit(0)
-
-# sanity check
-if not (options.init or options.promote or options.archive or options.rollback
-        or options.list_channels):
-    logging.error("You must provide an action: %s", "(--init/--promote/--archive/--rollback/--list-channels)")
-    sys.exit(1)
-elif not options.list_channels and not options.channel:
-    logging.error('--channel is required')
-    sys.exit(1)
-
-# parse the list of phases
-phases = parse_enumerated(options.phases or config.get(options.workflow, Config.OPT_PHASES, "dev,test,prod"))
-
-# update exclude channel option
-options.exclude_channel = options.exclude_channel or parse_enumerated(config.get(options.workflow,
-                                                                                 Config.OPT_EXCLUDE_CHNL, ""))
-if len(phases) < 2:
-    logging.error('You must define at least 2 phases')
-    sys.exit(1)
-
-# determine if you want to enable XMLRPC debugging
-xmlrpc_debug = options.debug and options.debug > 1
-
-# connect to the server
-client = xmlrpclib.Server('https://%s/rpc/api' % options.server,
-                          verbose=xmlrpc_debug)
-
-session = None
-
-# check for an existing session
-if os.path.exists(SESSION_CACHE):
+    options.workflow = options.workflow or Config.SECTION_GENERAL
+    config = Config(USER_CONF_FILE)
     try:
-        fh = open(SESSION_CACHE, 'r')
-        session = fh.readline()
-        fh.close()
-    except IOError as e:
-        if options.debug:
-            logging.exception(e)
-        logging.debug('Failed to read session cache')
-
-    # validate the session
-    try:
-        client.channel.listMyChannels(session)
-    except xmlrpclib.Fault as e:
-        if options.debug:
-            logging.exception(e)
-        logging.warning('Existing session is invalid')
-        session = None
-
-# Look for credentials in settings.conf
-get_config_credentials(config, options)
-
-if not session:
-    # prompt for the username
-    if not options.username:
-        while not options.username:
-            options.username = ask('Spacewalk Username')
-
-    # prompt for the password
-    if not options.password:
-        options.password = ask('Spacewalk Password', password=True)
-    if not options.password:
-        logging.warning("Empty password is not a good practice!")
-
-    # login to the server
-    try:
-        session = client.auth.login(options.username, options.password)
-    except xmlrpclib.Fault as e:
-        if options.debug:
-            logging.exception(e)
-        logging.error('Failed to log into %s', options.server)
+        setup_config(config)
+    except ConfigParser.ParsingError as ex:
+        logging.error("Unable to process configuration:\n%s", str(ex))
         sys.exit(1)
 
-    # save the session for subsuquent runs
+    if options.list_workflows:
+        workflows = config.sections()
+        if not workflows:
+            print("There are no additinal configured workflows except default.")
+            sys.exit(0)
+
+        print("Configured additional workflows:")
+        idx = 1
+        for workflow in workflows:
+            print("  %s. %s" % (idx, workflow))
+            idx += 1
+        print()
+        sys.exit(0)
+
+    # sanity check
+    if not (options.init or options.promote or options.archive or options.rollback
+            or options.list_channels):
+        logging.error("You must provide an action: %s", "(--init/--promote/--archive/--rollback/--list-channels)")
+        sys.exit(1)
+    elif not options.list_channels and not options.channel:
+        logging.error('--channel is required')
+        sys.exit(1)
+
+    # parse the list of phases
+    phases = parse_enumerated(options.phases or config.get(options.workflow, Config.OPT_PHASES, "dev,test,prod"))
+
+    # update exclude channel option
+    options.exclude_channel = options.exclude_channel or parse_enumerated(config.get(options.workflow,
+                                                                                     Config.OPT_EXCLUDE_CHNL, ""))
+    if len(phases) < 2:
+        logging.error('You must define at least 2 phases')
+        sys.exit(1)
+
+    # determine if you want to enable XMLRPC debugging
+    xmlrpc_debug = options.debug and options.debug > 1
+
+    # connect to the server
+    client = xmlrpclib.Server('https://%s/rpc/api' % options.server,
+                              verbose=xmlrpc_debug)
+
+    session = None
+
+    # check for an existing session
+    if os.path.exists(SESSION_CACHE):
+        try:
+            fh = open(SESSION_CACHE, 'r')
+            session = fh.readline()
+            fh.close()
+        except IOError as e:
+            if options.debug:
+                logging.exception(e)
+            logging.debug('Failed to read session cache')
+
+        # validate the session
+        try:
+            client.channel.listMyChannels(session)
+        except xmlrpclib.Fault as e:
+            if options.debug:
+                logging.exception(e)
+            logging.warning('Existing session is invalid')
+            session = None
+
+    # Look for credentials in settings.conf
+    get_config_credentials(config, options)
+
+    if not session:
+        # prompt for the username
+        if not options.username:
+            while not options.username:
+                options.username = ask('Spacewalk Username')
+
+        # prompt for the password
+        if not options.password:
+            options.password = ask('Spacewalk Password', password=True)
+        if not options.password:
+            logging.warning("Empty password is not a good practice!")
+
+        # login to the server
+        try:
+            session = client.auth.login(options.username, options.password)
+        except xmlrpclib.Fault as e:
+            if options.debug:
+                logging.exception(e)
+            logging.error('Failed to log into %s', options.server)
+            sys.exit(1)
+
+        # save the session for subsuquent runs
+        try:
+            fh = open(SESSION_CACHE, 'w')
+            fh.write(session)
+            fh.close()
+        except IOError as e:
+            if options.debug:
+                logging.exception(e)
+            logging.warning('Failed to write session cache')
+
+    # list all of the channels once
     try:
-        fh = open(SESSION_CACHE, 'w')
-        fh.write(session)
-        fh.close()
-    except IOError as e:
+        all_channels = client.channel.listSoftwareChannels(session)
+        all_channel_labels = [c.get('label') for c in all_channels]
+    except xmlrpclib.Fault as e:
         if options.debug:
             logging.exception(e)
-        logging.warning('Failed to write session cache')
+        logging.error('Could not retrieve the list of software channels')
+        sys.exit(1)
 
-# list all of the channels once
-try:
-    all_channels = client.channel.listSoftwareChannels(session)
-    all_channel_labels = [c.get('label') for c in all_channels]
-except xmlrpclib.Fault as e:
-    if options.debug:
-        logging.exception(e)
-    logging.error('Could not retrieve the list of software channels')
-    sys.exit(1)
+    # list the available custom channels and exit
+    if options.list_channels:
+        print_channel_tree()
+        sys.exit(0)
 
-# list the available custom channels and exit
-if options.list_channels:
-    print_channel_tree()
-    sys.exit(0)
+    # ensure the source channel exists
+    if not channel_exists(options.channel):
+        sys.exit(1)
 
-# ensure the source channel exists
-if not channel_exists(options.channel):
-    sys.exit(1)
+    # determine the channel labels for the parent channel
+    (parent_source, parent_dest) = build_channel_labels(options.channel)
 
-# determine the channel labels for the parent channel
-(parent_source, parent_dest) = build_channel_labels(options.channel)
+    # inform the user that no changes will take place
+    if options.dry_run:
+        logging.info('DRY RUN - No changes are being made to the channels')
+        time.sleep(2)
+        print()
 
-# inform the user that no changes will take place
-if options.dry_run:
-    logging.info('DRY RUN - No changes are being made to the channels')
-    time.sleep(2)
-    print()
+    # merge packages/errata if the destination channel label already exists,
+    # otherwise clone it from the source channel
+    if parent_dest in all_channel_labels:
+        merge_channels(parent_source, parent_dest)
+    else:
+        # channel doesn't exist, clone it from the original
+        # let's check if there's a parent for the original channel and if so, clone it in the right place
+        new_parent_source = client.channel.software.getDetails(session, parent_source)['parent_channel_label']
+        new_parent_dest = ""
+        if new_parent_source:
+            (new_parent_source, new_parent_dest) = build_channel_labels(new_parent_source)
 
-# merge packages/errata if the destination channel label already exists,
-# otherwise clone it from the source channel
-if parent_dest in all_channel_labels:
-    merge_channels(parent_source, parent_dest)
-else:
-    # channel doesn't exist, clone it from the original
-    # let's check if there's a parent for the original channel and if so, clone it in the right place
-    new_parent_source = client.channel.software.getDetails(session, parent_source)['parent_channel_label']
-    new_parent_dest = ""
-    if new_parent_source:
-        (new_parent_source, new_parent_dest) = build_channel_labels(new_parent_source)
+        details = {'label': parent_dest,
+                   'name': parent_dest,
+                   'summary': parent_dest,
+                   'parent_label': new_parent_dest}
 
-    details = {'label': parent_dest,
-               'name': parent_dest,
-               'summary': parent_dest,
-               'parent_label': new_parent_dest}
+        clone_channel(parent_source, details)
 
-    clone_channel(parent_source, details)
+    if not options.no_children:
+        children = []
 
-if not options.no_children:
-    children = []
+        # get the child channels for the source parent channel
+        for channel in all_channels:
+            if channel.get('parent_label') == parent_source:
+                children.append(channel.get('label'))
 
-    # get the child channels for the source parent channel
-    for channel in all_channels:
-        if channel.get('parent_label') == parent_source:
-            children.append(channel.get('label'))
+        for label in children:
+            # determine the child channels for the source parent channel
+            (child_source, child_dest) = build_channel_labels(label)
 
-    for label in children:
-        # determine the child channels for the source parent channel
-        (child_source, child_dest) = build_channel_labels(label)
+            # merge packages/errata if the destination channel label already exists,
+            # otherwise clone it from the source channel
+            if child_dest in all_channel_labels:
+                merge_channels(child_source, child_dest)
+            else:
+                details = {'label': child_dest,
+                           'name': child_dest,
+                           'summary': child_dest,
+                           'parent_label': parent_dest}
 
-        # merge packages/errata if the destination channel label already exists,
-        # otherwise clone it from the source channel
-        if child_dest in all_channel_labels:
-            merge_channels(child_source, child_dest)
-        else:
-            details = {'label': child_dest,
-                       'name': child_dest,
-                       'summary': child_dest,
-                       'parent_label': parent_dest}
-
-            clone_channel(child_source, details)
+                clone_channel(child_source, details)
