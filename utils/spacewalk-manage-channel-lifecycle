@@ -266,9 +266,7 @@ def clone_channel(source_label, source_details) -> None:
                 logging.exception(e)
             logging.error('Failed to clone channel')
 
-            if options.tolerant:
-                return False
-            else:
+            if not options.tolerant:
                 sys.exit(1)
 
 
