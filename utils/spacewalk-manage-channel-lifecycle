@@ -172,7 +172,7 @@ def print_channel_tree():
     print()
 
 
-def channel_exists(channel, quiet=False):
+def channel_exists(ch_label, quiet=False) -> bool:
     """
     Check if named channel exists.
 
@@ -192,7 +192,8 @@ def channel_exists(channel, quiet=False):
     return exists
 
 
-def merge_channels(source_label, dest_label):
+# pylint: disable=R0912
+def merge_channels(source_label, dest_label) -> None:
     """
     Merge channels data.
 
@@ -248,8 +249,8 @@ def merge_channels(source_label, dest_label):
 
                 if not options.tolerant:
                     sys.exit(1)
-
     print()
+# pylint: enable=R0912
 
 
 def clone_channel(source_label, source_details) -> None:
