@@ -34,6 +34,7 @@ import com.redhat.rhn.domain.formula.FormulaFactory;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.product.SUSEProduct;
+import com.redhat.rhn.domain.product.SUSEProductFactory;
 import com.redhat.rhn.domain.product.test.SUSEProductTestUtils;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.domain.server.ManagedServerGroup;
@@ -434,6 +435,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
         ChannelFamily channelFamily = createTestChannelFamily();
         SUSEProduct product = SUSEProductTestUtils.createTestSUSEProduct(channelFamily);
         Channel baseChannelX8664 = setupBaseAndRequiredChannels(channelFamily, product);
+        HibernateFactory.getSession().flush();
 
         executeTest(
                 (saltServiceMock, key) -> new Expectations() {{
@@ -591,7 +593,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
         Channel baseChannelX8664 = setupBaseAndRequiredChannels(channelFamily, product);
         ConfigChannel cfgChannel = ConfigTestUtils.createConfigChannel(user.getOrg(),
                 "Config channel 1", "config-channel-1");
-
+        HibernateFactory.getSession().flush();
         executeTest(
                 (saltServiceMock, key) -> new Expectations() {{
                     allowing(saltServiceMock).getMasterHostname(MINION_ID);
@@ -629,7 +631,9 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                     baseChannelX8664.getAccessibleChildrenFor(user)
                     .forEach(channel -> channels.add(channel));
                     assertEquals(baseChannelX8664, minion.getBaseChannel());
-                    assertEquals(channels, minion.getChannels());
+                    assertEquals(channels.size(), minion.getChannels().size());
+                    assertTrue(minion.getChannels().containsAll(channels));
+
                     assertTrue(minion.getFqdns().isEmpty());
 
                     // Config channel check
@@ -741,7 +745,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                 }, DEFAULT_CONTACT_METHOD);
     }
 
-    public void testRegisterRHELMinionWithRESActivationKey() throws Exception {
+    public void testRegisterRHELMinionWithRESActivationKeyOneBaseChannel() throws Exception {
         Channel resChannel = RhelUtilsTest.createResChannel(user, "7");
         HibernateFactory.getSession().flush();
         executeTest(
@@ -783,11 +787,70 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
 
                     assertNotNull(minion.getBaseChannel());
                     assertEquals("RES", minion.getBaseChannel().getProductName().getName());
+                    assertEquals(resChannel, minion.getBaseChannel());
+
+                    assertEquals(1, minion.getChannels().size());
+                }, DEFAULT_CONTACT_METHOD);
+    }
+
+    public void testRegisterRHELMinionWithRESActivationKeyTwoBaseChannels() throws Exception {
+        Channel resChannel_i386 = RhelUtilsTest.createResChannel(user, "7", "ia32", "res-i386");
+        Channel resChannel_x86_64 = RhelUtilsTest.createResChannel(user, "7", "x86_64", "res-x86_64");
+        MinionPendingRegistrationService.addMinion(user, MINION_ID, ContactMethodUtil.DEFAULT, Optional.empty());
+        HibernateFactory.getSession().flush();
+        executeTest(
+                (saltServiceMock, key) -> new Expectations() {{
+                    allowing(saltServiceMock).getMasterHostname(MINION_ID);
+                    will(returnValue(Optional.of(MINION_ID)));
+                    allowing(saltServiceMock).getMachineId(MINION_ID);
+                    will(returnValue(Optional.of(MACHINE_ID)));
+                    allowing(saltServiceMock).syncGrains(with(any(MinionList.class)));
+                    allowing(saltServiceMock).syncModules(with(any(MinionList.class)));
+
+                    allowing(saltServiceMock).getGrains(MINION_ID);
+                    will(returnValue(getGrains(MINION_ID, "rhel", key)));
+
+                    allowing(saltServiceMock).runRemoteCommand(with(any(MinionList.class)), with("rpm -q --whatprovides --queryformat \"%{NAME}\\n\" redhat-release"));
+                    will(returnValue(Collections.singletonMap(MINION_ID, new Result<>(Xor.right("redhat-release-server\n")))));
+
+                    allowing(saltServiceMock).runRemoteCommand(with(any(MinionList.class)), with("rpm -q --queryformat \"VERSION=%{VERSION}\\nPROVIDENAME=[%{PROVIDENAME},]\\nPROVIDEVERSION=[%{PROVIDEVERSION},]\\n\" redhat-release-server"));
+                    will(returnValue(Collections.singletonMap(MINION_ID, new Result<>(Xor.right("VERSION=7.2\n" +
+                            "PROVIDENAME=config(redhat-release-server),redhat-release,redhat-release-server,redhat-release-server(x86-64),system-release,system-release(releasever),\n" +
+                            "PROVIDEVERSION=7.2-9.el7,7.2-9.el7,7.2-9.el7,7.2-9.el7,7.2-9.el7,7Server,\n")))));
+
+                    allowing(saltServiceMock).applyState(MINION_ID, "packages.redhatproductinfo");
+                    will(returnValue(Optional.of(new JsonParser<>(State.apply(Collections.emptyList()).getReturnType()).parse(
+                            readFile("dummy_packages_redhatprodinfo_rhel.json")))));
+
+                }},
+                (DEFAULT_CONTACT_METHOD) -> {
+                    ActivationKey key = ActivationKeyTest.createTestActivationKey(user);
+                    key.setBaseChannel(resChannel_x86_64);
+                    key.setOrg(user.getOrg());
+                    ActivationKeyFactory.save(key);
+                    return key.getKey();
+                },
+                (optMinion, machineId, key) -> {
+                    assertTrue(optMinion.isPresent());
+                    MinionServer minion = optMinion.get();
+                    assertEquals("7Server", minion.getRelease());
+
+                    assertNotNull(minion.getBaseChannel());
+                    assertEquals("RES", minion.getBaseChannel().getProductName().getName());
+                    assertEquals(resChannel_x86_64, minion.getBaseChannel());
+
+                    assertEquals(1, minion.getChannels().size());
+
+                    SUSEProductFactory.getSession().flush();
+                    // select from view should succeed
+                    SUSEProductFactory.getSession().createNativeQuery("select * from rhnServerOverview").list();
+
                 }, DEFAULT_CONTACT_METHOD);
     }
 
     public void testRegisterRESMinionWithoutActivationKey() throws Exception {
-        RhelUtilsTest.createResChannel(user, "7");
+        Channel resChannel_x86_64 = RhelUtilsTest.createResChannel(user, "7", "x86_64", "res-x86_64");
+        Channel resChannel_i386 = RhelUtilsTest.createResChannel(user, "7", "ia32", "res-i386");
         executeTest(
                 (saltServiceMock, key) -> new Expectations() {{
                     allowing(saltServiceMock).getMasterHostname(MINION_ID);
@@ -821,6 +884,9 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                     // base channel check
                     assertNotNull(minion.getBaseChannel());
                     assertEquals("RES", minion.getBaseChannel().getProductName().getName());
+                    assertEquals(resChannel_x86_64, minion.getBaseChannel());
+
+                    assertEquals(1, minion.getChannels().size());
                 }, DEFAULT_CONTACT_METHOD);
     }
 
@@ -869,6 +935,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                     assertTrue(minion.getFqdns().isEmpty());
 
                     assertNull(minion.getBaseChannel());
+                    assertEquals(0, minion.getChannels().size());
                 }, DEFAULT_CONTACT_METHOD);
     }
 
@@ -1519,6 +1586,8 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
         SUSEProductTestUtils.createTestSUSEProductChannel(baseChannelX8664, product, true);
         Channel channel2 = ChannelFactoryTest.createTestChannel(user, "channel-x86_64");
         Channel channel3 = ChannelFactoryTest.createTestChannel(user, "channel-x86_64");
+        channel2.setChannelArch(channelArch);
+        channel3.setChannelArch(channelArch);
         channel2.setParentChannel(baseChannelX8664);
         channel3.setParentChannel(baseChannelX8664);
         SUSEProductTestUtils.createTestSUSEProductChannel(channel2, product, true);

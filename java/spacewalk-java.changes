@@ -1,3 +1,4 @@
+- Add unit tests for base channel assignments when registering RES minions
 - Enable batching mode for salt synchronous calls
 - Do not implicitly set parent channel when cloning (bsc#1130492)
 - Do not report Provisioning installed product to subscription matcher (bsc#1128838)
