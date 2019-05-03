@@ -241,7 +241,7 @@ def merge_channels(source_label, dest_label):
     print()
 
 
-def clone_channel(source_label, details):
+def clone_channel(source_label, source_details) -> None:
     """
     Clone channel.
 
@@ -272,7 +272,7 @@ def clone_channel(source_label, details):
                 sys.exit(1)
 
 
-def clear_channel(lbl):
+def clear_channel(lbl) -> None:
     """
     Clears all the errata in the channel.
 
