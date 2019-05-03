@@ -13,7 +13,7 @@
  * in this software or its documentation.
  */
 
-package com.suse.manager.webui.controllers;
+package com.suse.manager.webui.controllers.admin.handlers;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -24,7 +24,6 @@ import com.suse.manager.webui.services.impl.MonitoringService;
 import com.suse.manager.webui.utils.gson.ResultJson;
 import org.apache.http.HttpStatus;
 import org.apache.log4j.Logger;
-import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
 
@@ -33,11 +32,17 @@ import java.util.Map;
 import java.util.Optional;
 
 import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.withOrgAdmin;
+import static spark.Spark.get;
+import static spark.Spark.post;
 
 /**
  * Controller class providing backend code for the Admin -> Config pages.
  */
-public class AdminConfigController {
+public class MonitoringApiController {
+
+    // Logger
+    private static final Logger LOG = Logger.getLogger(MonitoringApiController.class);
 
     private static final Gson GSON = new GsonBuilder()
             .serializeNulls()
@@ -46,22 +51,15 @@ public class AdminConfigController {
     /**
      * Private constructor
      */
-    private AdminConfigController() { }
+    private MonitoringApiController() { }
 
-    // Logger
-    private static final Logger LOG = Logger.getLogger(AdminConfigController.class);
-
-    /**
-     * Show monitoring tab.
-     * @param request http request
-     * @param response http response
-     * @param user current user
-     * @return the view to show
-     */
-    public static ModelAndView showMonitoring(Request request, Response response, User user) {
-        Map<String, Object> data = new HashMap<>();
-        return new ModelAndView(data, "templates/admin/config/monitoring.jade");
+    /** Init routes for Config - Monitoring Api.*/
+    public static void initRoutes() {
+        get("/manager/api/admin/config/monitoring", withOrgAdmin(MonitoringApiController::status));
+        post("/manager/api/admin/config/monitoring",
+                withOrgAdmin(MonitoringApiController::changeMonitoringStatus));
     }
+
 
     /**
      * Get server monitoring status.
@@ -125,4 +123,5 @@ public class AdminConfigController {
                     ResultJson.error("request_error"));
         }
     }
+
 }
