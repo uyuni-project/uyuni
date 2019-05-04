@@ -167,7 +167,6 @@ section {
 }
 
 #breadcrumb {
-  margin-left: 40px;
   color: @spacewalk-gray;
   display: inline-block;
   span {
@@ -197,16 +196,13 @@ section {
 
 header, nav.navbar-pf {
   .navbar-toggle {
-    display: block;
-    position: absolute;
-    top: 10px;
-    left: 10px;
+    display: inline-block;
+    float: none;
     margin: 0;
-    border: 1px solid @spacewalk-gray-dark;
-    padding: 2px 8px;
-    border-radius: 2px;
+    padding: 0;
     i {
       margin: 0;
+      font-size: 1.5em;
     }
   }
   .navbar-toggle:hover {
