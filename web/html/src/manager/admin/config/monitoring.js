@@ -41,6 +41,13 @@ const msgMap = {
   "unknown_status": t("Monitoring status unknown.")
 };
 
+const exporterMap = {
+  "node": t("System"), 
+  "tomcat": t("Tomcat (Java JMX)"),
+  "taskomatic": t("Taskomatic (Java JMX)"),
+  "postgres": t("PostgreSQL database")
+}
+
 function nullify(exporters: {[string]: ?boolean}) : {[string]: ?boolean} {
   Object.keys(exporters).forEach(key => {
     exporters[key] = null;
@@ -154,14 +161,14 @@ class MonitoringAdmin extends React.Component<Props, State> {
   }
   
   render() {
-      const keys = Object.keys(this.state.exportersStatus);
+      const keys = Object.keys(this.state.exportersStatus).sort();
 
       const exporters = <ul style={{listStyle: 'none', paddingLeft: '0px'}}>{
         keys.map(key => 
           this.state.exportersStatus ? 
           (<li>
             <Icon type={this.iconType(this.state.exportersStatus[key])} className="fa-1-5x"/>
-            {capitalize(key)}
+            { key in exporterMap ? exporterMap[key] : capitalize(key)}
             </li>)
           : null
           )
@@ -169,7 +176,7 @@ class MonitoringAdmin extends React.Component<Props, State> {
       </ul>
 
       return (
-      <div>
+      <div className="responsive-wizard">
         <Messages items={this.state.messages}/>
         <div class="spacewalk-toolbar-h1">
           <div class="spacewalk-toolbar"></div>
@@ -200,27 +207,38 @@ class MonitoringAdmin extends React.Component<Props, State> {
         <Panel
           key="schedule"
           title={t('Monitoring')}
-          headingLevel="h4">
+          headingLevel="h4"
+          footer={
             <div className="row">
-              <div className="col-md-2 text-left">
-                <label>Monitoring</label>
-              </div>
-              <div className="col-md-10">
-                { exporters }
-              </div>
-            </div>
-            <hr/>
-            <div className="row">
-              <div className="col-md-offset-2 col-md-10">
-              {
-                this.state.loading ? 
+              <div className="col-md-offset-3 col-md-9">
+                { this.state.loading ? 
                   <Button id="loading-btn" disabled={true} 
                     className="btn-default" icon="fa-circle-o-notch fa-spin" text={this.state.loadingButtonText}/> :
                   <AsyncButton id="monitoring-btn" defaultType="btn-success"
                     text={ this.state.monitoringEnabled ? t("Disable monitoring services") : t("Enable monitoring services")}
                     action={this.onChange} initialValue={this.state.error ? "failure" : null }
                   />
-              }               
+                }
+              </div>
+            </div>
+          }>
+            <div className="row">
+              <div className="col-sm-9">
+                <div className="col-md-4 text-left">
+                  <label>Monitoring</label>
+                </div>
+                <div className="col-md-8">
+                  { exporters }
+                </div>
+              </div>
+              <div className="col-sm-3 hidden-xs" id="wizard-faq">
+              <h4>Server Monitoring</h4>
+              <p>
+              The server uses <a href="https://prometheus.io" target="_blank" rel="noopener noreferrer">Prometheus</a> exporters to expose metrics about your environment.
+              </p>
+              <p>
+              Refer to the <a href="/docs/index.html" target="_blank">documentation</a> to learn how to to consume these metrics.
+              </p>
               </div>
             </div>
         </Panel>  
