@@ -68,6 +68,10 @@ const FiltersProject = (props:  FiltersProps) => {
     resource: 'projects', nestedResource: "filters"
   });
 
+  const displayingFilters = [...props.selectedFilters];
+  displayingFilters.sort((a, b) => a.name.toLowerCase().localeCompare(b.name.toLowerCase()));
+
+
   return (
 
     <CreatorPanel
@@ -113,7 +117,7 @@ const FiltersProject = (props:  FiltersProps) => {
         <div className="min-height-panel">
           <ul className="list-group">
             {
-              props.selectedFilters.map(filter => renderFilterEntry(filter))
+              displayingFilters.map(filter => renderFilterEntry(filter))
             }
           </ul>
         </div>
