@@ -40,3 +40,7 @@ wercker.yml
 .documentup.json
 .yarn-metadata.json
 .travis.yml
+
+# backup files
+*.bak
+*.swp
