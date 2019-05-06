@@ -60,7 +60,7 @@ public class ContentProjectFactory extends HibernateFactory {
     /**
      * Save the ContentProject
      *
-     * @param contentProject - the ContentProject
+     * @param contentProject the ContentProject
      */
     public static void save(ContentProject contentProject) {
         INSTANCE.saveObject(contentProject);
@@ -69,7 +69,7 @@ public class ContentProjectFactory extends HibernateFactory {
     /**
      * Remove a Content Project
      *
-     * @param contentProject - the Content Project to remove
+     * @param contentProject the Content Project to remove
      * @return the number of object affected
      */
     public static int remove(ContentProject contentProject) {
@@ -79,8 +79,8 @@ public class ContentProjectFactory extends HibernateFactory {
     /**
      * Looks up a ContentProject by label and organization
      *
-     * @param label - the label
-     * @param org - the org
+     * @param label the label
+     * @param org the org
      * @return Optional with ContentProject with given label
      */
     public static Optional<ContentProject> lookupProjectByLabelAndOrg(String label, Org org) {
@@ -95,7 +95,7 @@ public class ContentProjectFactory extends HibernateFactory {
 
     /**
      * List all ContentProjects with given organization
-     * @param org - the organization
+     * @param org the organization
      * @return the ContentProjects in given organization
      */
     public static List<ContentProject> listProjects(Org org) {
@@ -321,7 +321,7 @@ public class ContentProjectFactory extends HibernateFactory {
     /**
      * Save the Content Project history entry
      *
-     * @param entry  - the Content Project history entry
+     * @param entry the Content Project history entry
      */
     private static void save(ContentProjectHistoryEntry entry) {
         INSTANCE.saveObject(entry);
@@ -330,8 +330,8 @@ public class ContentProjectFactory extends HibernateFactory {
     /**
      * Add a history entry to a Content Project
      *
-     * @param project - Content Project
-     * @param entry - the history entry
+     * @param project Content Project
+     * @param entry the history entry
      */
     public static void addHistoryEntryToProject(ContentProject project, ContentProjectHistoryEntry entry) {
         List<ContentProjectHistoryEntry> entries = project.getHistoryEntries();

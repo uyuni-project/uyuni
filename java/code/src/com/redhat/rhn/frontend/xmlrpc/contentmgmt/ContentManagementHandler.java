@@ -17,6 +17,7 @@ package com.redhat.rhn.frontend.xmlrpc.contentmgmt;
 
 import com.redhat.rhn.domain.contentmgmt.ContentEnvironment;
 import com.redhat.rhn.domain.contentmgmt.ContentFilter;
+import com.redhat.rhn.domain.contentmgmt.ContentManagementException;
 import com.redhat.rhn.domain.contentmgmt.ContentProject;
 import com.redhat.rhn.domain.contentmgmt.ContentProjectFilter;
 import com.redhat.rhn.domain.contentmgmt.FilterCriteria;
@@ -24,6 +25,7 @@ import com.redhat.rhn.domain.contentmgmt.ProjectSource;
 import com.redhat.rhn.domain.contentmgmt.ProjectSource.Type;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
+import com.redhat.rhn.frontend.xmlrpc.ContentManagementFaultException;
 import com.redhat.rhn.frontend.xmlrpc.EntityExistsFaultException;
 import com.redhat.rhn.frontend.xmlrpc.EntityNotExistsFaultException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidArgsException;
@@ -44,18 +46,18 @@ import static java.util.Optional.ofNullable;
  * Content Management XMLRPC handler
  *
  * @xmlrpc.namespace contentmgmt
- * @xmlrpc.doc Provides methods to access and modify Content Lifecycle Managemenet Projects,
- * Environments and more
+ * @xmlrpc.doc Provides methods to access and modify Content Lifecycle Management related entities
+ * (Projects, Environments, Filters, Sources).
  */
 public class ContentManagementHandler extends BaseHandler {
 
     /**
      * List Content Projects visible to user
      *
-     * @param loggedInUser - the logged in user
+     * @param loggedInUser the logged in user
      * @return the list of Content Projects visible to user
      *
-     * @xmlrpc.doc Look up Content Project with given label
+     * @xmlrpc.doc List Content Projects visible to user
      * @xmlrpc.param #session_key()
      * @xmlrpc.returntype
      * #array()
@@ -67,10 +69,11 @@ public class ContentManagementHandler extends BaseHandler {
     }
 
     /**
-     * Look up Content Project
+     * Look up Content Project with given label
      *
-     * @param loggedInUser - the logged in user
-     * @param label - the label
+     * @param loggedInUser the logged in user
+     * @param label the Content Project label
+     * @throws EntityNotExistsFaultException when the Content Project does not exist
      * @return the Content Project with given label
      *
      * @xmlrpc.doc Look up Content Project with given label
@@ -86,10 +89,10 @@ public class ContentManagementHandler extends BaseHandler {
     /**
      * Create Content Project
      *
-     * @param loggedInUser - the logged in user
-     * @param label - the label
-     * @param name - the name
-     * @param description - the description
+     * @param loggedInUser the logged in user
+     * @param label the Content Project label
+     * @param name the Content Project name
+     * @param description the description
      * @throws EntityExistsFaultException when Project already exists
      * @return the created Content Project
      *
@@ -113,9 +116,9 @@ public class ContentManagementHandler extends BaseHandler {
     /**
      * Update Content Project
      *
-     * @param loggedInUser - the logged in user
-     * @param label - the new label
-     * @param props - the map with the Content Project properties
+     * @param loggedInUser the logged in user
+     * @param label the new label
+     * @param props the map with the Content Project properties
      * @throws EntityNotExistsFaultException when Project does not exist
      * @return the updated Content Project
      *
@@ -145,15 +148,15 @@ public class ContentManagementHandler extends BaseHandler {
     /**
      * Remove Content Project
      *
-     * @param loggedInUser - the logged in user
-     * @param label - the label
+     * @param loggedInUser the logged in user
+     * @param label the label
      * @throws EntityNotExistsFaultException when Project does not exist
      * @return the number of removed objects
      *
      * @xmlrpc.doc Remove Content Project
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param_desc("string", "label", "Content Project label")
-     * @xmlrpc.returntype int - the number of removed objects
+     * @xmlrpc.returntype #return_int_success()
      */
     public int removeProject(User loggedInUser, String label) {
         ensureOrgAdmin(loggedInUser);
@@ -168,8 +171,8 @@ public class ContentManagementHandler extends BaseHandler {
     /**
      * List Environments in a Content Project with the respect to their ordering
      *
-     * @param loggedInUser - the logged in user
-     * @param projectLabel - the Content Project label
+     * @param loggedInUser the logged in user
+     * @param projectLabel the Content Project label
      * @throws EntityNotExistsFaultException when Project does not exist
      * @return the List of Content Environments with respect to their ordering
      *
@@ -193,9 +196,9 @@ public class ContentManagementHandler extends BaseHandler {
     /**
      * Look up Content Environment based on Content Project and Content Environment label
      *
-     * @param loggedInUser - the logged in user
-     * @param projectLabel - the Content Project label
-     * @param envLabel - the Content Environment label
+     * @param loggedInUser the logged in user
+     * @param projectLabel the Content Project label
+     * @param envLabel the Content Environment label
      * @throws EntityNotExistsException when Project does not exist
      * @return found Content Environment or null if no such environment exists
      *
@@ -206,19 +209,24 @@ public class ContentManagementHandler extends BaseHandler {
      * @xmlrpc.returntype $ContentEnvironmentSerializer
      */
     public ContentEnvironment lookupEnvironment(User loggedInUser, String projectLabel, String envLabel) {
-        return ContentManager.lookupEnvironment(envLabel, projectLabel, loggedInUser)
-                .orElseThrow(() -> new EntityNotExistsFaultException(envLabel));
+        try {
+            return ContentManager.lookupEnvironment(envLabel, projectLabel, loggedInUser)
+                    .orElseThrow(() -> new EntityNotExistsFaultException(envLabel));
+        }
+        catch (EntityNotExistsException e) {
+            throw new EntityNotExistsFaultException(e);
+        }
     }
 
     /**
      * Create a Content Environment and appends it behind given Content Environment
      *
-     * @param loggedInUser - the logged in user
-     * @param projectLabel - the Content Project label
-     * @param predecessorLabel - the Predecessor label
-     * @param label - the Content Environment Label
-     * @param name - the Content Environment name
-     * @param description - the Content Environment description
+     * @param loggedInUser the logged in user
+     * @param projectLabel the Content Project label
+     * @param predecessorLabel the Predecessor label
+     * @param label the Content Environment Label
+     * @param name the Content Environment name
+     * @param description the Content Environment description
      * @throws EntityNotExistsFaultException when Project or predecessor Environment does not exist
      * @throws EntityExistsFaultException when Environment with given parameters already exists
      * @return the created Content Environment
@@ -250,11 +258,11 @@ public class ContentManagementHandler extends BaseHandler {
     /**
      * Update Content Environment
      *
-     * @param loggedInUser - the logged in user
-     * @param projectLabel - the Content Project label
-     * @param envLabel - the Environment label
-     * @param props - the map with the Environment properties
-     * @throws EntityNotExistsFaultException when Project or predecessor Environment does not exist
+     * @param loggedInUser the logged in user
+     * @param projectLabel the Content Project label
+     * @param envLabel the Environment label
+     * @param props the map with the Environment properties
+     * @throws EntityNotExistsFaultException when the Environment does not exist
      * @return the updated Environment
      *
      * @xmlrpc.doc Update Content Environment with given label
@@ -286,9 +294,9 @@ public class ContentManagementHandler extends BaseHandler {
     /**
      * Remove a Content Environment
      *
-     * @param loggedInUser - the logged in user
-     * @param projectLabel - the Content Project label
-     * @param envLabel - the Content Environment label
+     * @param loggedInUser the logged in user
+     * @param projectLabel the Content Project label
+     * @param envLabel the Content Environment label
      * @throws EntityNotExistsFaultException when Project does not exist
      * @return the number of removed objects
      *
@@ -296,11 +304,16 @@ public class ContentManagementHandler extends BaseHandler {
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param_desc("string", "projectLabel", "Content Project label")
      * @xmlrpc.param #param_desc("string", "envLabel", "Content Environment label")
-     * @xmlrpc.returntype int - the number of removed objects
+     * @xmlrpc.returntype #return_int_success()
      */
     public int removeEnvironment(User loggedInUser, String projectLabel, String envLabel) {
         ensureOrgAdmin(loggedInUser);
-        return ContentManager.removeEnvironment(envLabel, projectLabel, loggedInUser);
+        try {
+            return ContentManager.removeEnvironment(envLabel, projectLabel, loggedInUser);
+        }
+        catch (EntityNotExistsException e) {
+            throw new EntityNotExistsFaultException(e);
+        }
     }
 
     /**
@@ -332,7 +345,7 @@ public class ContentManagementHandler extends BaseHandler {
      * @param projectLabel the Project label
      * @param sourceType the Source type (e.g. "software")
      * @param sourceLabel the Source label (e.g. software channel label)
-     * @throws EntityNotExistsFaultException if the Project is not found
+     * @throws EntityNotExistsFaultException if the Project or Project Source is not found
      * @return list of Project Sources
      *
      * @xmlrpc.doc Look up Content Project Source
@@ -342,7 +355,7 @@ public class ContentManagementHandler extends BaseHandler {
      * @xmlrpc.param #param_desc("string", "sourceLabel", "Project Source label")
      * @xmlrpc.returntype $ContentProjectSourceSerializer
      */
-    public ProjectSource lookupProjectSource(User loggedInUser, String projectLabel, String sourceType,
+    public ProjectSource lookupSource(User loggedInUser, String projectLabel, String sourceType,
             String sourceLabel) {
         Type type = Type.lookupByLabel(sourceType);
         try {
@@ -371,7 +384,7 @@ public class ContentManagementHandler extends BaseHandler {
      * @xmlrpc.param #param_desc("string", "projectLabel", "Content Project label")
      * @xmlrpc.param #param_desc("string", "sourceType", "Project Source type, e.g. 'software'")
      * @xmlrpc.param #param_desc("string", "sourceLabel", "Project Source label")
-     * @xmlrpc.param #param_desc("int", "sourcePosition", "Project Source label")
+     * @xmlrpc.param #param_desc("int", "sourcePosition", "Project Source position")
      * @xmlrpc.returntype $ContentProjectSourceSerializer
      */
     public ProjectSource attachSource(User loggedInUser, String projectLabel, String sourceType, String sourceLabel,
@@ -425,20 +438,21 @@ public class ContentManagementHandler extends BaseHandler {
      * @param sourceType the Source type (e.g. "software")
      * @param sourceLabel the Source label (e.g. software channel label)
      * @throws EntityNotExistsFaultException when used entities don't exist or are not accessible
-     * @return the number of Sources removed
+     * @return 1 on success
      *
      * @xmlrpc.doc Detach a Source from a Project
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param_desc("string", "projectLabel", "Content Project label")
      * @xmlrpc.param #param_desc("string", "sourceType", "Project Source type, e.g. 'software'")
      * @xmlrpc.param #param_desc("string", "sourceLabel", "Project Source label")
-     * @xmlrpc.returntype int - the number of detached sources
+     * @xmlrpc.returntype #return_int_success()
      */
     public int detachSource(User loggedInUser, String projectLabel, String sourceType, String sourceLabel) {
         ensureOrgAdmin(loggedInUser);
         Type type = Type.lookupByLabel(sourceType);
         try {
-            return ContentManager.detachSource(projectLabel, type, sourceLabel, loggedInUser);
+            ContentManager.detachSource(projectLabel, type, sourceLabel, loggedInUser);
+            return 1;
         }
         catch (EntityNotExistsException e) {
             throw new EntityNotExistsFaultException(e);
@@ -451,7 +465,7 @@ public class ContentManagementHandler extends BaseHandler {
      * @param loggedInUser the logged in user
      * @return the list of {@link ContentFilter}s
      *
-     * @xmlrpc.doc List all Content Filters
+     * @xmlrpc.doc List all Content Filters visible to given user
      * @xmlrpc.param #session_key()
      * @xmlrpc.returntype
      * #array()
@@ -467,6 +481,7 @@ public class ContentManagementHandler extends BaseHandler {
      *
      * @param loggedInUser the logged in user
      * @param id the filter id
+     * @throws EntityNotExistsFaultException if filter is not found
      * @return the matching {@link ContentFilter}
      *
      * @xmlrpc.doc Lookup a Content Filter by id
@@ -487,6 +502,7 @@ public class ContentManagementHandler extends BaseHandler {
      * @param rule the Filter rule
      * @param entityType the Filter entity type
      * @param criteria the filter criteria
+     * @throws InvalidArgsException when invalid criteria are passed
      * @return the created {@link ContentFilter}
      *
      * @xmlrpc.doc Create a Content Filter
@@ -523,6 +539,7 @@ public class ContentManagementHandler extends BaseHandler {
      * @param name the Filter name
      * @param rule the Filter rule
      * @param criteria the filter criteria
+     * @throws EntityNotExistsFaultException when Filter is not found
      * @return the updated {@link ContentFilter}
      *
      * @xmlrpc.doc Update a Content Filter
@@ -551,12 +568,17 @@ public class ContentManagementHandler extends BaseHandler {
         }
         Optional<FilterCriteria> criteriaObj = createCriteria(criteria);
 
-        return ContentManager.updateFilter(
-                filterId.longValue(),
-                ofNullable(name),
-                ruleObj,
-                criteriaObj,
-                loggedInUser);
+        try {
+            return ContentManager.updateFilter(
+                    filterId.longValue(),
+                    ofNullable(name),
+                    ruleObj,
+                    criteriaObj,
+                    loggedInUser);
+        }
+        catch (EntityNotExistsException e) {
+            throw new EntityNotExistsFaultException(e);
+        }
     }
 
     private Optional<FilterCriteria> createCriteria(Map<String, Object> criteria) {
@@ -578,6 +600,7 @@ public class ContentManagementHandler extends BaseHandler {
      *
      * @param loggedInUser the logged in user
      * @param filterId the filter id
+     * @throws EntityNotExistsFaultException when Filter does not exist
      * @return 1 on success
      *
      * @xmlrpc.doc Remove a Content Filter
@@ -601,6 +624,7 @@ public class ContentManagementHandler extends BaseHandler {
      *
      * @param loggedInUser the logged in user
      * @param projectLabel the Project label
+     * @throws EntityNotExistsFaultException when Project is not found
      * @return the list of filters
      *
      * @xmlrpc.doc List all Filters associated with a Project
@@ -612,7 +636,12 @@ public class ContentManagementHandler extends BaseHandler {
      * #array_end()
      */
     public List<ContentProjectFilter> listProjectFilters(User loggedInUser, String projectLabel) {
-        return lookupProject(loggedInUser, projectLabel).getProjectFilters();
+        try {
+            return lookupProject(loggedInUser, projectLabel).getProjectFilters();
+        }
+        catch (EntityNotExistsException e) {
+            throw new EntityNotExistsFaultException(e);
+        }
     }
 
     /**
@@ -621,6 +650,7 @@ public class ContentManagementHandler extends BaseHandler {
      * @param loggedInUser the logged in user
      * @param projectLabel the Project label
      * @param filterId the Filter id to attach
+     * @throws EntityNotExistsException if the Project/Filter does not exist
      * @return the attached Filter
      *
      * @xmlrpc.doc Attach a Filter to a Project
@@ -646,6 +676,7 @@ public class ContentManagementHandler extends BaseHandler {
      * @param loggedInUser the logged in user
      * @param projectLabel the Project label
      * @param filterId the Filter id to detach
+     * @throws EntityNotExistsException if the Project/Filter does not exist
      * @return 1 on success
      *
      * @xmlrpc.doc Detach a Filter from a Project
@@ -670,6 +701,8 @@ public class ContentManagementHandler extends BaseHandler {
      *
      * @param loggedInUser the user
      * @param projectLabel the Project label
+     * @throws EntityNotExistsFaultException when Project does not exist
+     * @throws ContentManagementFaultException on Content Management-related error
      * @return 1 if successful
      *
      * @xmlrpc.doc Build a Project
@@ -679,7 +712,15 @@ public class ContentManagementHandler extends BaseHandler {
      */
     public int buildProject(User loggedInUser, String projectLabel) {
         ensureOrgAdmin(loggedInUser);
-        ContentManager.buildProject(projectLabel, empty(), true, loggedInUser);
+        try {
+            ContentManager.buildProject(projectLabel, empty(), true, loggedInUser);
+        }
+        catch (EntityNotExistsException e) {
+            throw new EntityExistsFaultException(e);
+        }
+        catch (ContentManagementException e) {
+            throw new ContentManagementFaultException(e);
+        }
         return 1;
     }
 
@@ -689,6 +730,8 @@ public class ContentManagementHandler extends BaseHandler {
      * @param loggedInUser the user
      * @param message the log message to be assigned to the build
      * @param projectLabel the Project label
+     * @throws EntityNotExistsFaultException when Project does not exist
+     * @throws ContentManagementFaultException on Content Management-related error
      * @return 1 if successful
      *
      * @xmlrpc.doc Build a Project
@@ -699,7 +742,15 @@ public class ContentManagementHandler extends BaseHandler {
      */
     public int buildProject(User loggedInUser, String projectLabel, String message) {
         ensureOrgAdmin(loggedInUser);
-        ContentManager.buildProject(projectLabel, of(message), true, loggedInUser);
+        try {
+            ContentManager.buildProject(projectLabel, of(message), true, loggedInUser);
+        }
+        catch (EntityNotExistsException e) {
+            throw new EntityExistsFaultException(e);
+        }
+        catch (ContentManagementException e) {
+            throw new ContentManagementFaultException(e);
+        }
         return 1;
     }
 
@@ -709,6 +760,8 @@ public class ContentManagementHandler extends BaseHandler {
      * @param loggedInUser the user
      * @param projectLabel the Project label
      * @param envLabel the Environment label
+     * @throws EntityNotExistsFaultException when Project does not exist
+     * @throws ContentManagementFaultException on Content Management-related error
      * @return 1 if successful
      *
      * @xmlrpc.doc Promote an Environment in a Project
@@ -719,7 +772,15 @@ public class ContentManagementHandler extends BaseHandler {
      */
     public int promoteProject(User loggedInUser, String projectLabel, String envLabel) {
         ensureOrgAdmin(loggedInUser);
-        ContentManager.promoteProject(projectLabel, envLabel, true, loggedInUser);
+        try {
+            ContentManager.promoteProject(projectLabel, envLabel, true, loggedInUser);
+        }
+        catch (EntityNotExistsException e) {
+            throw new EntityExistsFaultException(e);
+        }
+        catch (ContentManagementException e) {
+            throw new ContentManagementFaultException(e);
+        }
         return 1;
     }
 }

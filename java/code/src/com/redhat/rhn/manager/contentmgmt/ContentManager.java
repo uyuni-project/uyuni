@@ -74,10 +74,10 @@ public class ContentManager {
     /**
      * Create a Content Project
      *
-     * @param label - the label
-     * @param name - the name
-     * @param description - the description
-     * @param user - the creator
+     * @param label the label
+     * @param name the name
+     * @param description the description
+     * @param user the creator
      * @throws EntityExistsException if a project with given label already exists
      * @throws PermissionException if given user does not have required role
      * @return the created Content Project
@@ -105,8 +105,8 @@ public class ContentManager {
     /**
      * Look up Content Project by label
      *
-     * @param label - the label
-     * @param user - the user
+     * @param label the label
+     * @param user the user
      * @return Optional with matching Content Project
      */
     public static Optional<ContentProject> lookupProject(String label, User user) {
@@ -116,11 +116,11 @@ public class ContentManager {
     /**
      * Update Content Project
      *
-     * @param label - the label for lookup
-     * @param newName - new name
-     * @param newDesc - new description
-     * @param user - the user
-     * @throws EntityNotExistsException - if Content Project with given label is not found
+     * @param label the label for lookup
+     * @param newName new name
+     * @param newDesc new description
+     * @param user the user
+     * @throws EntityNotExistsException if Content Project with given label is not found
      * @throws PermissionException if given user does not have required role
      * @return the updated Content Project
      */
@@ -139,10 +139,10 @@ public class ContentManager {
     /**
      * Remove Content Project
      *
-     * @param label - the label
-     * @param user - the user
+     * @param label the label
+     * @param user the user
      * @throws PermissionException if given user does not have required role
-     * @throws EntityNotExistsException - if Content Project with given label is not found
+     * @throws EntityNotExistsException if Content Project with given label is not found
      * @return the number of objects affected
      */
     public static int removeProject(String label, User user) {
@@ -155,16 +155,16 @@ public class ContentManager {
     /**
      * Create Content Environment
      *
-     * @param projectLabel - the Content Project label
-     * @param predecessorLabel - the predecessor Environment label
-     * @param label - the Environment label
-     * @param name - the Environment name
-     * @param description - the Environment description
+     * @param projectLabel the Content Project label
+     * @param predecessorLabel the predecessor Environment label
+     * @param label the Environment label
+     * @param name the Environment name
+     * @param description the Environment description
      * @param async run the time-expensive operations asynchronously?
-     * @param user - the user performing the action
-     * @throws EntityNotExistsException - if Content Project with given label or Content Environment in the Project
+     * @param user the user performing the action
+     * @throws EntityNotExistsException if Content Project with given label or Content Environment in the Project
      * is not found
-     * @throws EntityExistsException - if Environment with given parameters already exists
+     * @throws EntityExistsException if Environment with given parameters already exists
      * @throws PermissionException if given user does not have required role
      * @return the created Content Environment
      */
@@ -193,9 +193,9 @@ public class ContentManager {
     /**
      * List Environments in a Content Project with the respect to their ordering
      *
-     * @param projectLabel - the Content Project label
-     * @param user - the user
-     * @throws EntityNotExistsException - if Content Project with given label is not found
+     * @param projectLabel the Content Project label
+     * @param user the user
+     * @throws EntityNotExistsException if Content Project with given label is not found
      * @return the List of Content Environments with respect to their ordering
      */
     public static List<ContentEnvironment> listProjectEnvironments(String projectLabel, User user) {
@@ -207,10 +207,10 @@ public class ContentManager {
     /**
      * Look up Content Environment based on its label, Content Project label and User
      *
-     * @param envLabel - the Content Environment label
-     * @param projectLabel - the Content Project label
-     * @param user - the user
-     * @throws EntityNotExistsException - if Content Project with given label is not found
+     * @param envLabel the Content Environment label
+     * @param projectLabel the Content Project label
+     * @param user the user
+     * @throws EntityNotExistsException if Content Project with given label is not found
      * @return the optional of matching Content Environment
      */
     public static Optional<ContentEnvironment> lookupEnvironment(String envLabel, String projectLabel, User user) {
@@ -222,12 +222,12 @@ public class ContentManager {
     /**
      * Update Content Environment
      *
-     * @param envLabel - the Environment label
-     * @param projectLabel - the Content Project label
-     * @param newName - new name
-     * @param newDescription - new description
-     * @param user - the user
-     * @throws EntityNotExistsException - if Project or Environment is not found
+     * @param envLabel the Environment label
+     * @param projectLabel the Content Project label
+     * @param newName new name
+     * @param newDescription new description
+     * @param user the user
+     * @throws EntityNotExistsException if Project or Environment is not found
      * @throws PermissionException if given user does not have required role
      * @return the updated Environment
      */
@@ -246,11 +246,11 @@ public class ContentManager {
     /**
      * Remove a Content Environment
      *
-     * @param envLabel - the Content Environment label
-     * @param projectLabel - the Content Project label
-     * @param user - the user
+     * @param envLabel the Content Environment label
+     * @param projectLabel the Content Project label
+     * @param user the user
      * @throws PermissionException if given user does not have required role
-     * @throws EntityNotExistsException - if Project or Environment is not found
+     * @throws EntityNotExistsException if Project or Environment is not found
      * @throws PermissionException if given user does not have required role
      * @return number of deleted objects
      */
@@ -268,10 +268,10 @@ public class ContentManager {
      * Create and attach a Source to given Project.
      * If the Source is already attached to the Project, this is a no-op.
      *
-     * @param projectLabel - the Project label
-     * @param sourceType - the Source Type (e.g. SW_CHANNEL)
-     * @param sourceLabel - the Source label (e.g. SoftwareChannel label)
-     * @param position - the position of the Source (Optional)
+     * @param projectLabel the Project label
+     * @param sourceType the Source Type (e.g. SW_CHANNEL)
+     * @param sourceLabel the Source label (e.g. SoftwareChannel label)
+     * @param position the position of the Source (Optional)
      * @param user the user
      * @throws EntityNotExistsException when either the Project or the Source reference (e.g. Channel) is not found
      * @throws java.lang.IllegalArgumentException if the sourceType is unsupported
@@ -323,24 +323,21 @@ public class ContentManager {
     /**
      * Detach a Source from given Project
      *
-     * @param projectLabel - the Project label
-     * @param sourceType - the Source Type (e.g. SW_CHANNEL)
-     * @param sourceLabel - the Source label (e.g. SoftwareChannel label)
+     * @param projectLabel the Project label
+     * @param sourceType the Source Type (e.g. SW_CHANNEL)
+     * @param sourceLabel the Source label (e.g. SoftwareChannel label)
      * @param user the user
-     * @return number of Sources detached
      */
-    public static int detachSource(String projectLabel, Type sourceType, String sourceLabel, User user) {
+    public static void detachSource(String projectLabel, Type sourceType, String sourceLabel, User user) {
         ensureOrgAdmin(user);
-        Optional<? extends ProjectSource> src = lookupProjectSource(projectLabel, sourceType, sourceLabel, user);
-        return src.map(s -> {
-            if (s.getState() == ATTACHED) {
-                s.getContentProject().removeSource(s);
-            }
-            else {
-                s.setState(DETACHED);
-            }
-            return 1;
-        }).orElse(0);
+        ProjectSource src = lookupProjectSource(projectLabel, sourceType, sourceLabel, user)
+                .orElseThrow(() -> (new EntityNotExistsException(sourceLabel)));
+        if (src.getState() == ATTACHED) {
+            src.getContentProject().removeSource(src);
+        }
+        else {
+            src.setState(DETACHED);
+        }
     }
 
     /**
@@ -512,6 +509,8 @@ public class ContentManager {
      * @param async run the time-expensive operations asynchronously? (in the test code it is useful to run them
      * synchronously)
      * @param user the user
+     * @throws EntityNotExistsException if Project does not exist
+     * @throws ContentManagementException when there are no Environments in the Project
      */
     public static void buildProject(String projectLabel, Optional<String> message, boolean async, User user) {
         ensureOrgAdmin(user);
@@ -531,6 +530,7 @@ public class ContentManager {
      * @param firstEnv first Environment of the Project
      * @param async run the time-expensive operations asynchronously?
      * @param user the user
+     * @throws ContentManagementException when there is no leader channel in the Project
      */
     private static void buildSoftwareSources(ContentEnvironment firstEnv, boolean async, User user) {
         ContentProject project = firstEnv.getContentProject();
