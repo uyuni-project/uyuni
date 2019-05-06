@@ -127,3 +127,4 @@ $private_net = ENV['PRIVATENET'] if ENV['PRIVATENET']
 $mirror = ENV['MIRROR']
 $git_profiles = ENV['GITPROFILES']
 $product = product
+$http_proxy = ENV['SUMA_HTTP_PROXY'] if ENV['SUMA_HTTP_PROXY']
