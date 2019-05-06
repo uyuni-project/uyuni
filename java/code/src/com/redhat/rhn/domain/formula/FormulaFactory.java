@@ -207,6 +207,19 @@ public class FormulaFactory {
      */
     public static void saveServerFormulaData(Map<String, Object> formData, String minionId,
             String formulaName) throws IOException, UnsupportedOperationException {
+        // Add the monitoring entitlement if at least one of the exporters is enabled
+        if (PROMETHEUS_EXPORTERS.equals(formulaName)) {
+            MinionServerFactory.findByMinionId(minionId).ifPresent(s -> {
+                if (!hasMonitoringEnabled(formData)) {
+                    SystemManager.removeServerEntitlement(s.getId(), EntitlementManager.MONITORING);
+                }
+                else if (!SystemManager.hasEntitlement(s.getId(), EntitlementManager.MONITORING) &&
+                        SystemManager.canEntitleServer(s, EntitlementManager.MONITORING)) {
+                    SystemManager.entitleServer(s, EntitlementManager.MONITORING);
+                }
+            });
+        }
+
         File file = new File(getPillarDir() + minionId +
                 "_" + formulaName + "." + PILLAR_FILE_EXTENSION);
         try {
@@ -215,21 +228,6 @@ public class FormulaFactory {
         }
         catch (FileAlreadyExistsException e) {
         }
-
-        // Add the monitoring system type if one of the exporters is enabled
-        MinionServerFactory.findByMinionId(minionId).ifPresent(s -> {
-            if (PROMETHEUS_EXPORTERS.equals(formulaName) && hasMonitoringEnabled(formData)) {
-                if (!SystemManager.hasEntitlement(s.getId(), EntitlementManager.MONITORING)) {
-                    if (!SystemManager.canEntitleServer(s, EntitlementManager.MONITORING) ||
-                            SystemManager.entitleServer(s, EntitlementManager.MONITORING).hasErrors()) {
-                        throw new UnsupportedOperationException("Monitoring system type cannot be assigned");
-                    }
-                }
-            }
-            else if (PROMETHEUS_EXPORTERS.equals(formulaName)) {
-                SystemManager.removeServerEntitlement(s.getId(), EntitlementManager.MONITORING);
-            }
-        });
 
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
             writer.write(GSON.toJson(formData));
@@ -498,29 +496,24 @@ public class FormulaFactory {
             serverFormulas.put(minionId, orderedFormulas);
         }
 
-        // TODO: Save default data for each formula in a generic way (load from yaml, write to json)
-        if (orderedFormulas.contains(PROMETHEUS_EXPORTERS)) {
-            Map<String, Object> data = new HashMap<>();
-            Map<String, Object> nodeExporter = new HashMap<>();
-            nodeExporter.put("enabled", true);
-            Map<String, Object> postgresExporter = new HashMap<>();
-            postgresExporter.put("enabled", false);
-            postgresExporter.put("data_source_name", "postgresql://user:passwd@localhost:5432/database?sslmode=disable");
-            data.put("node_exporter", nodeExporter);
-            data.put("postgres_exporter", postgresExporter);
-            FormulaFactory.saveServerFormulaData(data, minionId, FormulaFactory.PROMETHEUS_EXPORTERS);
-        }
-        else {
-            MinionServerFactory.findByMinionId(minionId).ifPresent(s -> {
-                if (SystemManager.hasEntitlement(s.getId(), EntitlementManager.MONITORING)) {
-                    SystemManager.removeServerEntitlement(s.getId(), EntitlementManager.MONITORING);
-                }
-            });
-        }
-
-        // Write server_formulas file
+        // Write minion_formulas file
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(dataFile))) {
             writer.write(GSON.toJson(serverFormulas));
+        }
+
+        // Generate monitoring default data from the 'pillar.example' file, otherwise the API would not return any
+        // formula data as long as the default values are unchanged.
+        if (orderedFormulas.contains(PROMETHEUS_EXPORTERS) &&
+                getFormulaValuesByNameAndMinionId(PROMETHEUS_EXPORTERS, minionId).isEmpty()) {
+            FormulaFactory.saveServerFormulaData(
+                    getPillarExample(PROMETHEUS_EXPORTERS), minionId, PROMETHEUS_EXPORTERS);
+        }
+
+        // Handle entitlement removal in case of monitoring
+        if (deletedFormulas.contains(PROMETHEUS_EXPORTERS)) {
+            MinionServerFactory.findByMinionId(minionId).ifPresent(s -> {
+                SystemManager.removeServerEntitlement(s.getId(), EntitlementManager.MONITORING);
+            });
         }
     }
 
@@ -636,6 +629,34 @@ public class FormulaFactory {
      */
     public static Optional<Object> getMetadata(String name, String param) {
         return Optional.ofNullable(getMetadata(name).getOrDefault(param, null));
+    }
+
+    /**
+     * Read the 'pillar.example' file for a given formula and return the data.
+     *
+     * @param formulaName the given name of a formula
+     * @return data from pillar.example
+     * @throws IOException in case there is a problem reading the pillar.example file
+     */
+    @SuppressWarnings("unchecked")
+    public static Map<String, Object> getPillarExample(String formulaName) throws IOException {
+        File pillarExample = new File(METADATA_DIR_OFFICIAL + formulaName + "/pillar.example");
+        try (FileInputStream fis = new FileInputStream(pillarExample)) {
+            return (Map<String, Object>) YAML.load(fis);
+        }
+    }
+
+    /**
+     * Disable all monitoring exporters in a given map of data.
+     *
+     * @param formData data to be used with the monitoring formula
+     * @return data with exporters set to disabled
+     */
+    @SuppressWarnings("unchecked")
+    public static Map<String, Object> disableMonitoring(Map<String, Object> formData) {
+        ((Map<String, Object>) formData.get("node_exporter")).put("enabled", false);
+        ((Map<String, Object>) formData.get("postgres_exporter")).put("enabled", false);
+        return formData;
     }
 
     @SuppressWarnings("unchecked")

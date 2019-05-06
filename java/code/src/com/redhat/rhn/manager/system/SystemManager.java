@@ -86,6 +86,7 @@ import com.redhat.rhn.manager.channel.ChannelManager;
 import com.redhat.rhn.manager.channel.MultipleChannelsWithPackageException;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.errata.ErrataManager;
+import com.redhat.rhn.manager.formula.FormulaManager;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerSystemRemoveCommand;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.user.UserManager;
@@ -2037,12 +2038,12 @@ public class SystemManager extends BaseManager {
             }
             else if (EntitlementManager.MONITORING.equals(ent)) {
                 try {
-                    // Add the formula to other assigned ones
+                    // Assign the monitoring formula to the system
                     List<String> formulas = FormulaFactory.getFormulasByMinionId(minion.getMinionId());
                     if (!formulas.contains(FormulaFactory.PROMETHEUS_EXPORTERS)) {
                         formulas.add(FormulaFactory.PROMETHEUS_EXPORTERS);
+                        FormulaFactory.saveServerFormulas(minion.getMinionId(), formulas);
                     }
-                    FormulaFactory.saveServerFormulas(minion.getMinionId(), formulas);
                 }
                 catch (UnsupportedOperationException | IOException e) {
                     log.error("Error assigning formula: " + e.getMessage(), e);
@@ -2255,25 +2256,27 @@ public class SystemManager extends BaseManager {
                 "System_queries", "remove_server_entitlement");
         m.execute(in, new HashMap<String, Integer>());
 
-        Server server = ServerFactory.lookupById(sid);
-        server.asMinionServer().ifPresent(s -> {
-            try {
-                // Setup the formula data for a cleanup
-                Map<String, Object> data = new HashMap<>();
-                Map<String, Object> nodeExporter = new HashMap<>();
-                nodeExporter.put("enabled", false);
-                Map<String, Object> postgresExporter = new HashMap<>();
-                postgresExporter.put("enabled", false);
-                postgresExporter.put("data_source_name", "postgresql://user:passwd@localhost:5432/database?sslmode=disable");
-                data.put("node_exporter", nodeExporter);
-                data.put("postgres_exporter", postgresExporter);
-                FormulaFactory.saveServerFormulaData(data, s.getMinionId(), FormulaFactory.PROMETHEUS_EXPORTERS);
+        // Configure the monitoring formula for cleanup if still assigned (disable exporters)
+        if (EntitlementManager.MONITORING.equals(ent)) {
+            FormulaManager formulas = FormulaManager.getInstance();
+            if (formulas.hasSystemFormulaAssigned(FormulaFactory.PROMETHEUS_EXPORTERS, sid.intValue())) {
+                Server server = ServerFactory.lookupById(sid);
+                server.asMinionServer().ifPresent(s -> {
+                    try {
+                        // Get the current data and set all exporters to disabled
+                        String minionId = s.getMinionId();
+                        Map<String, Object> data = FormulaFactory
+                                .getFormulaValuesByNameAndMinionId(FormulaFactory.PROMETHEUS_EXPORTERS, minionId)
+                                .orElse(FormulaFactory.getPillarExample(FormulaFactory.PROMETHEUS_EXPORTERS));
+                        FormulaFactory.saveServerFormulaData(
+                                FormulaFactory.disableMonitoring(data), minionId, FormulaFactory.PROMETHEUS_EXPORTERS);
+                    }
+                    catch (UnsupportedOperationException | IOException e) {
+                        log.warn("Exception on saving formula data: " + e.getMessage());
+                    }
+                });
             }
-            catch (UnsupportedOperationException | IOException e) {
-                log.warn("Saving formula data: " + e.getMessage());
-            }
-            SystemManager.refreshPillarDataForMinion(s);
-        });
+        }
     }
 
 
