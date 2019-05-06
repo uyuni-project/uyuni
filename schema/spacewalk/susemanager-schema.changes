@@ -1,3 +1,5 @@
+- copy 3.1 schema migrations to 3.2 to be able to migrate from an older
+  schema version to 3.2
 - Add support for Salt batch execution mode
 
 -------------------------------------------------------------------
