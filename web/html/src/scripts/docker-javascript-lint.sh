@@ -10,3 +10,4 @@ yarn install
 yarn build
 yarn lint
 yarn test
+echo "Javascript linting ran successfully"

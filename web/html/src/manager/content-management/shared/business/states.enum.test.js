@@ -2,8 +2,8 @@ import statesEnum from "./states.enum";
 
 describe('Testing CLM sources states enum', () => {
   test('findByKey success case', () => {
-    expect(statesEnum.findByKey("ATTACHED").description).toBe("added");
-    expect(statesEnum.findByKey("BUILT").description).toBe("built");
+    expect(statesEnum.findByKey(statesEnum.enum.ATTACHED.key).description).toBe("added");
+    expect(statesEnum.findByKey(statesEnum.enum.BUILT.key).description).toBe("built");
   });
 
   test('findByKey default case', () => {
@@ -11,17 +11,17 @@ describe('Testing CLM sources states enum', () => {
   });
 
   test('isDeletion testing', () => {
-    expect(statesEnum.isDeletion("DETACHED")).toBeTruthy();
-    expect(statesEnum.isDeletion("ATTACHED")).toBeFalsy();
-    expect(statesEnum.isDeletion("EDITED")).toBeFalsy();
-    expect(statesEnum.isDeletion("BUILT")).toBeFalsy();
+    expect(statesEnum.isDeletion(statesEnum.enum.DETACHED.key)).toBeTruthy();
+    expect(statesEnum.isDeletion(statesEnum.enum.ATTACHED.key)).toBeFalsy();
+    expect(statesEnum.isDeletion(statesEnum.enum.EDITED.key)).toBeFalsy();
+    expect(statesEnum.isDeletion(statesEnum.enum.BUILT.key)).toBeFalsy();
   });
 
   test('isEdited testing', () => {
-    expect(statesEnum.isEdited("DETACHED")).toBeTruthy();
-    expect(statesEnum.isEdited("ATTACHED")).toBeTruthy();
-    expect(statesEnum.isEdited("EDITED")).toBeTruthy();
-    expect(statesEnum.isEdited("BUILT")).toBeFalsy();
+    expect(statesEnum.isEdited(statesEnum.enum.DETACHED.key)).toBeTruthy();
+    expect(statesEnum.isEdited(statesEnum.enum.ATTACHED.key)).toBeTruthy();
+    expect(statesEnum.isEdited(statesEnum.enum.EDITED.key)).toBeTruthy();
+    expect(statesEnum.isEdited(statesEnum.enum.BUILT.key)).toBeFalsy();
   });
 
 })
