@@ -1,7 +1,7 @@
 .DEFAULT_GOAL  :=  __unspecified
 
 define update_pip_env
-	rpm -e python3-pylint &>/dev/null
+	rpm -e python3-pylint &>/dev/null || true
 	pip3 install --upgrade pip
 	pip3 uninstall -y pylint
 	pip3 install pylint==2.3.1
