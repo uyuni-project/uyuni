@@ -185,7 +185,7 @@ sub read_config {
   open(CONFIG, '<', $config_file) or die "Could not open $config_file: $!";
 
   while (my $line = <CONFIG>) {
-    if ($line =~ /^#/ or $line =~ /\[comment\]/ or $line =~ "^\n") {
+    if ($line =~ /^#/ or $line =~ /\[comment\]/ or $line =~ /^\s*$/) {
       next;
     } else {
       chomp($line);
