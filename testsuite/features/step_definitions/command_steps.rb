@@ -629,8 +629,10 @@ end
 
 # WORKAROUND
 # bsc#1132908 - Branch network formula closes IPv6 default route, potentially making further networking fail
-When(/^I reopen the IPv6 default route on the proxy$/) do
-  $proxy.run('ip -6 r a default via fe80::1 dev eth0')
+When(/^I enable SLAAC on the proxy$/) do
+  cmd = 'echo "net.ipv6.conf.eth0.accept_ra = 2" > /etc/sysctl.d/98-slaac.conf && '
+  cmd += 'sysctl -p /etc/sysctl.d/98-slaac.conf'
+  $proxy.run(cmd)
 end
 
 When(/^I copy server\'s keys to the proxy$/) do
