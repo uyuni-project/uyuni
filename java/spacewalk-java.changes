@@ -1,3 +1,5 @@
+- UI to enable / disable server monitoring
+- Add monitoring entitlement
 - Log remote commands executed via Salt -> Remote Commands UI to
   file /var/log/rhn/rhn_salt_remote_commands.log
 - Saving cobbler autoinstall templates with a leading slash.

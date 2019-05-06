@@ -1,3 +1,5 @@
+- Add utility for internal use to enable/disable server monitoring: mgr-monitoring-ctl
+
 -------------------------------------------------------------------
 Mon Apr 22 12:07:00 CEST 2019 - jgonzalez@suse.com
 
