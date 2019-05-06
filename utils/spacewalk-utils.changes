@@ -1,5 +1,5 @@
 - Fixes numerous Python3 errors in spacewalk-manage-channel-lifecycle
-- Fixes bsc#1132361 (an attempt to write in binary mode a string type)
+- Fixes an attempt to write in binary mode a string type (bsc#1132361)
 - Adds some integration and unit tests
 
 -------------------------------------------------------------------
