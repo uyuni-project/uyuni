@@ -1,3 +1,4 @@
+- set max length for xccdf rule identifier to 255 to prevent internal server error (bsc#1125492)
 - copy 3.2 schema migrations to 4.0 to be able to migrate from an older
   schema version to 4.0
 - clean the susesccrepository table before modify it (bsc#1125456)
