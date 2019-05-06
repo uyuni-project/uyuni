@@ -2790,8 +2790,7 @@ public class ChannelManager extends BaseManager {
         alignPackages(src, tgt, filters);
 
         // align errata and the cache (rhnServerNeededCache)
-        ErrataManager.mergeErrataToChannel(user, src.getErratas(), tgt, src, false, false);
-        ErrataManager.truncateErrata(src, tgt, user);
+        alignErrata(src, tgt, user);
 
         // update the channel newest packages cache
         ChannelFactory.refreshNewestPackageCache(tgt, "java::alignPackages");
@@ -2819,6 +2818,11 @@ public class ChannelManager extends BaseManager {
         // add cache entries for new ones
         ErrataCacheManager.insertCacheForChannelPackages(tgtChannel.getId(), null,
                 extractPackageIds(filterPackages(onlyInSrc, filters)));
+    }
+
+    private static void alignErrata(Channel src, Channel tgt, User user) {
+        ErrataManager.mergeErrataToChannel(user, src.getErratas(), tgt, src, false, false);
+        ErrataManager.truncateErrata(src, tgt, user);
     }
 
     private static List<Long> extractPackageIds(Collection<Package> packages) {
