@@ -1,3 +1,5 @@
+- fix check for empty lines in rhn.conf for spacewalk-setup (bsc#1133560)
+
 -------------------------------------------------------------------
 Fri Jan 18 11:32:32 CET 2019 - jgonzalez@suse.com
 
