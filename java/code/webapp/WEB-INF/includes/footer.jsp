@@ -15,4 +15,3 @@
     <div><c:out value="${custom_footer}" escapeXml="false"/></div>
   </c:if>
 </div>
-<div class="bottom-line"></div>

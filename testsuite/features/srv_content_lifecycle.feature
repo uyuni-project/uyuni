@@ -1,11 +1,11 @@
 # Copyright (c) 2019 SUSE LLC
 # Licensed under the terms of the MIT license.
 
-Feature: Content lifecycle management
+Feature: Content lifecycle
 
   Scenario: Create a content lifecycle project
     Given I am authorized as "admin" with password "admin"
-    When I follow "Content Lifecycle Management"
+    When I follow "Content Lifecycle"
     And I follow "Projects"
     Then I should see a "Content Lifecycle Projects" text
     And I should see a "There are no entries to show." text
@@ -21,7 +21,7 @@ Feature: Content lifecycle management
 
   Scenario: Verify the content lifecycle project page
     Given I am authorized as "admin" with password "admin"
-    When I follow "Content Lifecycle Management"
+    When I follow "Content Lifecycle"
     And  I follow "Projects"
     Then I should see a "clp_name" text
     And I should see a "clp_desc" text
@@ -34,7 +34,7 @@ Feature: Content lifecycle management
 
   Scenario: Add a source to the project
     Given I am authorized as "admin" with password "admin"
-    When I follow "Content Lifecycle Management"
+    When I follow "Content Lifecycle"
     And I follow "Projects"
     And I follow "clp_name"
     And I follow "Edit Sources"
@@ -50,7 +50,7 @@ Feature: Content lifecycle management
 
   Scenario: Add environments to the project
     Given I am authorized as "admin" with password "admin"
-    When I follow "Content Lifecycle Management"
+    When I follow "Content Lifecycle"
     And I follow "Projects"
     And I follow "clp_name"
     Then I should see a "No environments created" text
@@ -79,7 +79,7 @@ Feature: Content lifecycle management
 
   Scenario: Build the sources in the project
     Given I am authorized as "admin" with password "admin"
-    When I follow "Content Lifecycle Management"
+    When I follow "Content Lifecycle"
     And I follow "Projects"
     And I follow "clp_name"
     Then I should see a "not built" text in the environment "qa_name"
@@ -94,7 +94,7 @@ Feature: Content lifecycle management
 
   Scenario: Promote promote the sources in the project
     Given I am authorized as "admin" with password "admin"
-    When I follow "Content Lifecycle Management"
+    When I follow "Content Lifecycle"
     And I follow "Projects"
     Then I should see a "clp_name" text
     And I should see a "clp_desc" text
@@ -113,7 +113,7 @@ Feature: Content lifecycle management
 
   Scenario: Add new sources and promote again
     Given I am authorized as "admin" with password "admin"
-    When I follow "Content Lifecycle Management"
+    When I follow "Content Lifecycle"
     And I follow "Projects"
     And I follow "clp_name"
     Then I should see a "Build (0)" text

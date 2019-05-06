@@ -4,39 +4,40 @@ const React = require("react");
 const ReactDOM = require("react-dom");
 
 const Link = (props) =>
-  <a href={props.url} className={props.cssClass} target={props.target}
-    title={props.title} onClick={props.handleClick}>
-    {props.preIcon ? <i className={'fa ' + props.preIcon}></i> : null}
-    {
-      props.icon ?
-      <i className={'fa ' + props.icon}></i>
-      : null
-    }
+  <a href={props.url} className={props.cssClass} target={props.target} title={props.title}>
     {props.responsiveLabel}
     {props.label}
   </a>
   ;
 
-const NodeLink = (props) =>
-  <div className={props.isLeaf ? " leafLink " : " nodeLink "} >
-    {
-      props.isLeaf ?
-      <Link url={props.url} target={props.target} label={props.label} />
-      : <Link url="#" target={props.target} cssClass="node-text" handleClick={props.handleClick}
-          label={props.label} icon={props.icon}
-          preIcon={ !props.isSearchActive ?
-            'submenuIcon ' + (props.isOpen ? "fa fa-angle-down" : "fa fa-angle-right")
-            : null
-          }/>
+class Node extends React.Component {
+  handleClick = (event) => {
+    // if the click is triggered on a link, do not toggle the menu, just offload the page and go to the requested link
+    if (!event.target.href) {
+      this.props.handleClick();
     }
-    {
-      !props.isLeaf ?
-      <Link url={props.url} title={props.completeUrlLabel}
-        label={<i className="fa fa-dot-circle-o"></i>}
-        cssClass="direct-link" target={props.target} />
-      : null
-    }
-  </div>;
+  };
+
+  render() {
+    return (
+      <div className={this.props.isLeaf ? " leafLink " : " nodeLink "} onClick={(event) => this.handleClick(event)}>
+        {
+          this.props.icon ?
+          <i className={'fa ' + this.props.icon}></i>
+          : null
+        }
+        <Link url={this.props.url} target={this.props.target} label={this.props.label} onClick={(event) => this.handleClick(event)} />
+        { this.props.isLeaf ?
+            null
+            :
+            (!this.props.isSearchActive ?
+              <i className={'submenuIcon ' + (this.props.isOpen ? "fa fa-angle-up" : "fa fa-angle-down")}></i>
+              : null)
+        }
+      </div>
+    );
+  }
+}
 
 class Element extends React.Component {
   state = {
@@ -95,7 +96,7 @@ class Element extends React.Component {
           (this.isLeaf(element) ? " leaf " : " node ")
           }
         >
-          <NodeLink isLeaf={this.isLeaf(element)} url={this.getUrl(element)}
+          <Node isLeaf={this.isLeaf(element)} url={this.getUrl(element)}
               label={element.label} target={element.target}
               completeUrlLabel={this.getCompleteUrlLabel(element)}
               handleClick={this.isLeaf(element) ? null : this.toggleView}
@@ -148,13 +149,19 @@ class Nav extends React.Component {
   };
 
   render() {
+    const isSearchActive = this.state.search != null && this.state.search.length > 0;
     return (
-      <nav className={this.state.search != null && this.state.search.length > 0 ? '' : 'collapsed'}>
+      <nav className={isSearchActive > 0 ? '' : 'collapsed'}>
         <div className="nav-tool-box">
           <input type="text" className="form-control" name="nav-search" id="nav-search" value={this.state.search}
             onChange={this.onSearch} placeholder="Search page" />
-          <span className="clear">
-            <i className="fa fa-times-circle-o no-margin" onClick={this.closeEmAll} title={t('Clear Menu')}></i>
+          <span className={"input-right-icon " +  (isSearchActive ? "clear" : "")}>
+            {
+              isSearchActive ?
+                <i className="fa fa-times-circle-o no-margin" onClick={this.closeEmAll} title={t('Clear Menu')}></i>
+                :
+                <i className="fa fa-search no-margin" title={t('Filter menu')}></i>
+            }
           </span>
         </div>
         <MenuLevel level={1} elements={JSONMenu} searchString={this.state.search} forceCollapse={this.state.forceCollapse} />
@@ -203,16 +210,11 @@ class Breadcrumb extends React.Component {
         <span>></span>
         {
           breadcrumbArray.map((a, i) => {
-            const htmlElement =
-            (
-              a.submenu ?
-              <Link url={a.submenu[0].primaryUrl}
-                  label={a.label} target={a.target} />
-              :
-              <span className="level">{a.label}</span>
-            );
             return (
-              <span key={a.label + '_' + i}>{htmlElement}{ i == breadcrumbArray.length -1 ? null : <span>></span>}</span>
+              <span key={a.label + '_' + i}>
+                <Link url={a.submenu ? a.submenu[0].primaryUrl : a.primaryUrl} label={a.label} target={a.target} />
+                { i == breadcrumbArray.length -1 ? null : '>'}
+              </span>
             );
           })
         }

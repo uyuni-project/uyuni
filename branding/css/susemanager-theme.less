@@ -21,7 +21,7 @@ header {
   width: 100%;
   border: none;
   border-radius: 0;
-  border-bottom: 3px solid darken(@susemanager-green, 10%);
+  border-bottom: 2px solid darken(@susemanager-green, 10%);
   margin-bottom: 0;
   padding: 12px 10px;
   background: @spacewalk-header;
@@ -37,9 +37,9 @@ header {
 }
 
 footer {
-  border-top: 2px solid darken(@susemanager-green, 10%);
+  border-top: 1px solid @spacewalk-blue-light;
   background: @spacewalk-footer;
-  padding: 6px 0 6px 12px;
+  padding: 3px 12px;
   color: @spacewalk-footer-text;
   font-weight: normal;
   font-size: 0.9em;
@@ -70,20 +70,14 @@ footer {
   }
 
   div.wrapper {
-    background: url('/img/susemanager/logo-footer-small.png') no-repeat right center;
+    background: url('/img/susemanager/logo-footer.png') no-repeat right center;
+    background-size: auto 20px;
     min-height: 28px;
     padding-right: 55px!important;
     > div {
       padding: 3px 0 2px 0;
     }
   }
-}
-
-.bottom-line {
-  height: 8px;
-  width: 100%;
-  background: @susemanager-green;
-  display: none;
 }
 
 /* titles */
@@ -147,8 +141,16 @@ section {
     /* erasing the predefined paddings in the columns */
     padding: 0;
     position: fixed;
-    #nav {
-      overflow-y: auto!important;
+    #nav nav ul.level1 {
+      overflow-y: auto !important;
+      &::-webkit-scrollbar {
+        width: 7px;
+      }
+      &::-webkit-scrollbar-thumb {
+        border-radius: 10px;
+        -webkit-box-shadow: inset 0 0 6px rgba(0,178,226,0.5);
+        background: rgba(0,178,226,0.5);
+      }
     }
   }
 
@@ -165,7 +167,6 @@ section {
 }
 
 #breadcrumb {
-  margin-left: 40px;
   color: @spacewalk-gray;
   display: inline-block;
   span {
@@ -195,16 +196,13 @@ section {
 
 header, nav.navbar-pf {
   .navbar-toggle {
-    display: block;
-    position: absolute;
-    top: 10px;
-    left: 10px;
+    display: inline-block;
+    float: none;
     margin: 0;
-    border: 1px solid @spacewalk-gray-dark;
-    padding: 2px 8px;
-    border-radius: 2px;
+    padding: 0;
     i {
       margin: 0;
+      font-size: 1.5em;
     }
   }
   .navbar-toggle:hover {
@@ -326,7 +324,7 @@ header, nav.navbar-pf {
     line-height: 1.2em;
     font-size: 1.6em;
     display: inline-block;
-    vertical-align: middle;
+    vertical-align: baseline;
     color: @spacewalk-gray-light;
     > i {
       display: none;
@@ -354,7 +352,7 @@ header, nav.navbar-pf {
   font-size: 1.5em;
   padding: 0;
   text-align: center;
-  background-color: rgba(0, 192, 129, 0.2);
+  background-color: rgba(77, 211, 167, 0.2);
   color: @spacewalk-gray-dark;
   border: 1px solid rgba(0, 192, 129, 0.2);
   i {
@@ -370,141 +368,57 @@ header, nav.navbar-pf {
 
 //Nav menu in left column
 #nav {
-  nav {
-    padding: 10px 0 0 0;
-    .nav-tool-box {
-      text-align: center;
-      padding: 0 10px;
-      position: relative;
-      input, button {
-        margin: auto;
-        vertical-align: top;
-      }
-      input {
-        background-color: @spacewalk-blue;
-        border-color: @spacewalk-blue-light;
-        color: @spacewalk-gray-light;
-      }
-      .clear {
-        color: @spacewalk-aside-menu-search-clear;
-        position: absolute;
-        top: 0;
-        right: 0;
-        font-size: 1.4em;
-        cursor: pointer;
-        margin-right: 20px;
-        margin-top: 4px;
-        padding: 0;
-        &:hover {
-          color: @spacewalk-aside-menu-search-clear-hover;
-        }
-      }
+  font-size: 1.1em;
+  //Search box
+  .nav-tool-box {
+    text-align: center;
+    position: relative;
+    input, button {
+      margin: auto;
+      vertical-align: top;
     }
-    a, .node-text {
-      display: inline-block;
-      padding: 8px 2px;
-      color: @spacewalk-aside-menu-hyperlink;
-      width: 100%;
-      vertical-align: middle;
-      cursor:pointer;
+    input {
+      background-color: @spacewalk-blue;
+      border-color: @spacewalk-blue-light;
+      border-style: solid;
+      border-radius: 0;
+      border-width: 0 0 1px 0;
+      color: @spacewalk-gray-light;
+      padding-right: 3em;
+      height: 3em;
     }
-    a:hover, a:focus,
-    .node-text:hover, .node-text:focus {
-      text-decoration: none;
-      color: @spacewalk-aside-menu-hyperlink-hover;
+    input:focus {
+      box-shadow: none;
     }
-    i.submenuIcon {
-      display: inline-block;
-      font-size: inherit;
-      height: 100%;
-      width: 19px;
-      margin: 0 8px 0 -27px;
-      text-align: center;
-      cursor: default;
-    }
-    ul, li {
+    .input-right-icon {
+      color: @spacewalk-aside-menu-search-clear;
+      position: absolute;
+      top: .4em;
+      right: 0;
+      font-size: 1.2em;
+      cursor: pointer;
+      margin-right: 1em;
       padding: 0;
-      margin: 0;
-      list-style: none;
-      font-size: 1em;
-      display: block;
     }
-    li {
-      position: relative;
+    .clear:hover {
+      color: @spacewalk-aside-menu-search-clear-hover;
     }
-    div.nodeLink, div.leafLink {
-      margin-left: 18px;
-      display: block;
-      border-right: 4px solid transparent;
-    }
-    div.leafLink > a {
-      width: 100%;
-    }
-    div.nodeLink {
-      .node-text {
-        display: inline-block;
-        width: 85%;
-      }
-      a.direct-link {
-        background: none;
-        width: 15%;
-        text-align: center;
-        border-left: 1px dashed #333;
-        color: @spacewalk-gray;
-        padding-left: 0px;
-        padding-right: 0px;
-        i {
-          font-size: 0.8em;
-          width: 15px;
-          display: inline-block;
-          text-align: center;
-          margin: 0 auto;
-        }
-      }
-      a.direct-link:hover {
-        background-color: lighten(@spacewalk-blue-light, 5%);
-        color: @spacewalk-aside-menu-hyperlink-hover;
-      }
-    }
-    /* First Level */
-    > ul {
-      margin-top: 10px;
-      > li:last-of-type {
-        border-bottom: 1px solid darken(@spacewalk-blue-light, 5%);
-      }
-      > li {
-        border-top: 1px solid darken(@spacewalk-blue-light, 5%);
-        > div {
-          > a {
-            padding: 8px 2px 8px 8px;
-            color: @spacewalk-aside-menu-hyperlink;
-            > span {
-              display: inline-block;
-              vertical-align: middle;
-            }
-          }
-        }
-      }
-    }
-    /* Every level */
-    li.active > div > * {
-      color: @spacewalk-aside-menu-active;
-    }
+  }
+  //Menu
+  nav {
     ul {
-      padding-left: 8px;
+      padding: 0;
+      list-style: none;
+      display: block;
       li {
-        a, .node-text {
-          border-right: 4px solid transparent;
-          span {
-            padding-right: 10px;
+        padding: 0;
+        list-style: none;
+        font-size: 1em;
+        display: block;
+        div {
+          a {
+            padding: 4px 10px;
           }
-        }
-      }
-      > li {
-        > .nodeLink:hover,
-        > .leafLink:hover {
-          border-right-color: @spacewalk-aside-menu-hyperlink-hover;
-          background-color: @spacewalk-blue-light;
         }
       }
       li.node.open {
@@ -512,36 +426,90 @@ header, nav.navbar-pf {
           display: block;
         }
       }
-      /* Second Level */
-      ul {
-        padding-bottom: 10px;
-        background-color: @spacewalk-blue;
-        padding-top: 1px;
-        li {
-          > div {
-            > a, .node-text {
-              padding-left: 10px;
-              background-image: url('/img/susemanager/sub-list.png');
-              background-repeat: no-repeat;
-              background-position: left center;
-              i {
-                font-size: 1em;
+      // active
+      li.active > .nodeLink {
+        color: @susemanager-green;
+      }
+      li.active > .leafLink {
+        background-color: @spacewalk-aside-menu-active;
+        border-radius: 0 2px 2px 0;
+      }
+      // nodeLink and leafLink
+      div.nodeLink,
+      div.leafLink {
+        color: @spacewalk-gray-light;
+        border-left: 3px solid transparent;
+        a {
+          display: block;
+          color: inherit;
+          width: auto;
+        }
+      }
+      div.nodeLink:hover,
+      div.leafLink:hover {
+        border-left-color: @susemanager-green;
+      }
+      // nodeLink only
+      div.nodeLink {
+        position: relative;
+        > i {
+          font-size: 1.3em;
+          vertical-align: text-bottom;
+        }
+        > i.submenuIcon {
+          font-size: 1.1em;
+          position: absolute;
+          right: 0.5em;
+          top: 0.3em;
+        }
+        > a {
+          display: inline-block;
+        }
+        > a:hover {
+          color: @spacewalk-gray-light;
+        }
+      }
+      div.nodeLink:hover {
+        color: @spacewalk-aside-menu-active;
+      }
+    }
+    /* First Level */
+    > ul {
+      padding-top: 10px;
+      padding-bottom: 10px;
+      padding-right: 10px;
+      > li {
+        > div {
+          > a {
+            padding: 8px 2px;
+          }
+        }
+        > div.nodeLink {
+          padding-left: 0.8em;
+          > i.submenuIcon {
+            top: 0.6em;
+          }
+        }
+        /* Second Level */
+        > ul {
+          padding-bottom: 10px;
+          > li {
+            > div {
+              > a {
+                padding-left: 3em;
+              }
+            }
+            /* Third Level */
+            > ul {
+              > li {
+                > div {
+                  > a {
+                    padding-left: 5em;
+                  }
+                }
               }
             }
           }
-        }
-        > li:last-of-type > div > a,
-        > li:last-of-type > div > .node-text  {
-          background-image: url('/img/susemanager/sub-list-last.png');
-        }
-        > li:last-of-type ul {
-          background-image: none;
-        }
-        /* Third Level */
-        ul {
-          margin-left: 18px;
-          background-image: url('/img/susemanager/sub-list-line.png');
-          background-repeat: repeat-y;
         }
       }
     }

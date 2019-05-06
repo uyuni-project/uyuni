@@ -2086,7 +2086,7 @@ tree will not be usable for autoinstalling.
 
       <!-- Content Management -->
       <trans-unit id="contentmanagement.nav.title">
-        <source>Content Lifecycle Management</source>
+        <source>Content Lifecycle</source>
       </trans-unit>
       <trans-unit id="contentmanagement.nav.projects">
         <source>Projects</source>
