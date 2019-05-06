@@ -1,3 +1,4 @@
+- fix typo in syncing product extensions (bsc#1118492)
 - Fix mgr-sign-metadata-ctl checking of exported keys.
 
 -------------------------------------------------------------------
