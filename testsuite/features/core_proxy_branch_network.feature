@@ -125,6 +125,9 @@ Feature: Setup SUSE Manager for Retail branch network
 @private_net
   Scenario: Let avahi work on the branch server
     When I open avahi port on the proxy
+    # WORKAROUND
+    # bsc#1132908 - Branch network formula closes IPv6 default route, potentially making further networking fail
+    And I enable SLAAC on the proxy
 
 @proxy
 @private_net
@@ -140,13 +143,6 @@ Feature: Setup SUSE Manager for Retail branch network
     And service "named" is active on "proxy"
     And service "firewalld" is enabled on "proxy"
     And service "firewalld" is active on "proxy"
-
-@proxy
-@private_net
-  Scenario: Workaround - reopen default IPv6 route
-    # WORKAROUND
-    # bsc#1132908 - Branch network formula closes IPv6 default route, potentially making further networking fail
-    When I reopen the IPv6 default route on the proxy
 
 @proxy
 @private_net
