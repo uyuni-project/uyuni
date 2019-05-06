@@ -18,7 +18,9 @@ package com.redhat.rhn.domain.contentmgmt;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.tuple.Pair;
 
+import java.util.HashSet;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.persistence.EnumType;
@@ -38,6 +40,14 @@ public class FilterCriteria {
     private Matcher matcher;
     private String field;
     private String value;
+
+    private static HashSet<Pair<Matcher, String>> validCombinations = new HashSet<>();
+
+    static {
+        validCombinations.add(Pair.of(Matcher.CONTAINS, "name"));
+        validCombinations.add(Pair.of(Matcher.EQUALS, "nevr"));
+        validCombinations.add(Pair.of(Matcher.EQUALS, "nevra"));
+    }
 
     /**
      * The matcher type
@@ -90,11 +100,32 @@ public class FilterCriteria {
      * @param matcherIn the matcher type
      * @param fieldIn the field to match
      * @param valueIn the match value
+     * @throws IllegalArgumentException when the matcher-field combination is not allowed
      */
     public FilterCriteria(Matcher matcherIn, String fieldIn, String valueIn) {
+        validate(matcherIn, fieldIn);
         this.matcher = matcherIn;
         this.field = fieldIn;
         this.value = valueIn;
+    }
+
+    /**
+     * Validate the matcher-field combination
+     *
+     * @param matcher the matcher
+     * @param field the field
+     * @throws IllegalArgumentException when validation does not pass
+     */
+    public static void validate(Matcher matcher, String field) throws IllegalArgumentException {
+        if (!validCombinations.contains(Pair.of(matcher, field))) {
+            throw new IllegalArgumentException(
+                    String.format("Invalid criteria combination (matcher: '%s', field: '%s')", matcher, field));
+        }
+    }
+
+    // todo remove
+    public static void main(String[] args) {
+        validate(Matcher.CONTAINS, "name2");
     }
 
     /**
