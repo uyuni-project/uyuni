@@ -1,3 +1,4 @@
+- Implement NEVR(A) filtering in Content Lifecycle Management
 - Adjust product tree tag according to the base OS
 - Add a link to the highstate page after formula was saved
 - Fix deleting server when minion_formulas.json is empty (bsc#1122230)
