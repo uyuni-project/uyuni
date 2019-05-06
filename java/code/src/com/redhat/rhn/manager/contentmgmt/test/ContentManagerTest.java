@@ -616,7 +616,7 @@ public class ContentManagerTest extends BaseTestCaseWithUser {
         FilterCriteria criteria = new FilterCriteria(Matcher.CONTAINS, "name", "aaa");
         ContentFilter filter = ContentManager.createFilter("my-filter", Rule.DENY, EntityType.PACKAGE, criteria, user);
 
-        FilterCriteria newCriteria = new FilterCriteria(Matcher.CONTAINS, "newname", "bbb");
+        FilterCriteria newCriteria = new FilterCriteria(Matcher.CONTAINS, "name", "bbb");
         ContentManager.updateFilter(filter.getId(), of("newname"), empty(), of(newCriteria), user);
         ContentFilter fromDb = ContentManager.lookupFilterById(filter.getId(), user).get();
         assertEquals("newname", fromDb.getName());
