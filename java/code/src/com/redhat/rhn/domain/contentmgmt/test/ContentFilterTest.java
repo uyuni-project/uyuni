@@ -57,4 +57,38 @@ public class ContentFilterTest extends JMockBaseTestCaseWithUser {
         ContentFilter filter = ContentManager.createFilter(packageName + "-filter", ALLOW, PACKAGE, criteria, user);
         assertTrue(filter.test(pack));
     }
+
+    public void testPackageNevrFilter() throws Exception {
+        Package pack = PackageTest.createTestPackage(user.getOrg());
+        String packageName = pack.getPackageName().getName();
+
+        FilterCriteria criteria = new FilterCriteria(FilterCriteria.Matcher.EQUALS, "nevr", pack.getNameEvr());
+        ContentFilter filter = ContentManager.createFilter(packageName + "-nevr-filter", DENY, PACKAGE, criteria, user);
+        assertFalse(filter.test(pack));
+
+        criteria = new FilterCriteria(FilterCriteria.Matcher.EQUALS, "nevr", pack.getNameEvra());
+        filter = ContentManager.createFilter(packageName + "nevr2-filter", DENY, PACKAGE, criteria, user);
+        assertTrue(filter.test(pack));
+
+        criteria = new FilterCriteria(FilterCriteria.Matcher.EQUALS, "nevr", packageName);
+        filter = ContentManager.createFilter(packageName + "nevr3-filter", DENY, PACKAGE, criteria, user);
+        assertTrue(filter.test(pack));
+    }
+
+    public void testPackageNevraFilter() throws Exception {
+        Package pack = PackageTest.createTestPackage(user.getOrg());
+        String packageName = pack.getPackageName().getName();
+
+        FilterCriteria criteria = new FilterCriteria(FilterCriteria.Matcher.EQUALS, "nevra", pack.getNameEvra());
+        ContentFilter filter = ContentManager.createFilter(packageName + "-nevra-filter", DENY, PACKAGE, criteria, user);
+        assertFalse(filter.test(pack));
+
+        criteria = new FilterCriteria(FilterCriteria.Matcher.EQUALS, "nevra", pack.getNameEvr());
+        filter = ContentManager.createFilter(packageName + "nevra2-filter", DENY, PACKAGE, criteria, user);
+        assertTrue(filter.test(pack));
+
+        criteria = new FilterCriteria(FilterCriteria.Matcher.EQUALS, "nevra", packageName);
+        filter = ContentManager.createFilter(packageName + "nevra3-filter", DENY, PACKAGE, criteria, user);
+        assertTrue(filter.test(pack));
+    }
 }
