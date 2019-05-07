@@ -59,13 +59,12 @@ public class PGEventStream extends AbstractEventStream implements PGNotification
     private static final Logger LOG = Logger.getLogger(PGEventStream.class);
     private static final int MAX_EVENTS_PER_COMMIT = ConfigDefaults.get().getSaltEventsPerCommit();
     private static final int THREAD_POOL_SIZE = ConfigDefaults.get().getSaltEventThreadPoolSize();
-    private static final int GLOBAL_THREAD_POOL_SIZE =  ConfigDefaults.get().getSaltGlobalEventThreadPoolSize();
 
     private PGConnection connection;
     private final List<ThreadPoolExecutor> executorServices = IntStream.range(0, THREAD_POOL_SIZE + 1).mapToObj(i ->
         new ThreadPoolExecutor(
-            i == 0 ? GLOBAL_THREAD_POOL_SIZE : 1,
-            i == 0 ? GLOBAL_THREAD_POOL_SIZE : 1,
+            1,
+            1,
             0L,
             TimeUnit.MILLISECONDS,
             new LinkedBlockingQueue<Runnable>(),
