@@ -123,11 +123,6 @@ public class FilterCriteria {
         }
     }
 
-    // todo remove
-    public static void main(String[] args) {
-        validate(Matcher.CONTAINS, "name2");
-    }
-
     /**
      * Gets the type.
      *
