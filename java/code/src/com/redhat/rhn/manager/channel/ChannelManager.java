@@ -2760,15 +2760,17 @@ public class ChannelManager extends BaseManager {
      *
      * @param src the source {@link Channel}
      * @param tgt the target {@link SoftwareEnvironmentTarget}
+     * @param filters the {@link ContentFilter}s
      * @param async run this operation asynchronously?
      * @param user the user
      */
-    public static void alignEnvironmentTarget(Channel src, SoftwareEnvironmentTarget tgt, boolean async, User user) {
+    public static void alignEnvironmentTarget(Channel src, SoftwareEnvironmentTarget tgt, List<ContentFilter> filters,
+            boolean async, User user) {
         // adjust the target status
         tgt.setStatus(EnvironmentTarget.Status.BUILDING);
         ContentProjectFactory.save(tgt);
 
-        AlignSoftwareTargetMsg msg = new AlignSoftwareTargetMsg(src, tgt, user);
+        AlignSoftwareTargetMsg msg = new AlignSoftwareTargetMsg(src, tgt, filters, user);
         if (async) {
             MessageQueue.publish(msg);
         }

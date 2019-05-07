@@ -51,6 +51,7 @@ public class AlignSoftwareTargetAction implements MessageAction {
                 .lookupSwEnvironmentTargetById(targetId)
                 .orElseThrow(() -> new EntityNotExistsException(targetId));
         Channel targetChannel = target.getChannel();
+        List<ContentFilter> filters = msg.getFilters();
 
         try {
             if (!UserManager.verifyChannelAdmin(msg.getUser(), targetChannel)) {
@@ -60,8 +61,6 @@ public class AlignSoftwareTargetAction implements MessageAction {
 
             LOG.info("Asynchronously aligning: " + msg);
             Instant start = Instant.now();
-            // todo explicit passing of the filters!
-            List<ContentFilter> filters = target.getContentEnvironment().getContentProject().getActiveFilters();
             ChannelManager.alignEnvironmentTargetSync(filters, sourceChannel, targetChannel, msg.getUser());
             target.setStatus(Status.GENERATING_REPODATA);
             LOG.info("Finished aligning " + msg + " in " + Duration.between(start, Instant.now()));
