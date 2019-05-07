@@ -374,17 +374,15 @@ Then(/^Table row for "([^"]*)" should contain "([^"]*)"$/) do |arg1, arg2|
 end
 
 When(/^I wait until table row for "([^"]*)" contains button "([^"]*)"$/) do |text, button|
-  within(:xpath, "//tr[td[contains(., '#{text}')]]") do
-    begin
-      Timeout.timeout(DEFAULT_TIMEOUT) do
-        loop do
-          break if find_button(button)
-          sleep 1
-        end
+  begin
+    Timeout.timeout(DEFAULT_TIMEOUT) do
+      loop do
+        break if all(:xpath, "//tr[td[contains(., '#{text}')]]/td/descendant::*[self::a or self::button][@title='#{button}']").any?
+        sleep 1
       end
-    rescue Timeout::Error
-      raise "Couldn't find #{button} in row with #{text} text"
     end
+  rescue Timeout::Error
+    raise "Couldn't find #{button} button in row with #{text} text"
   end
 end
 
