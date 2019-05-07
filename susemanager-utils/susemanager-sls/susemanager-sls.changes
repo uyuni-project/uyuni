@@ -28,6 +28,7 @@ Mon Mar 25 17:04:34 CET 2019 - jgonzalez@suse.com
 - Fix Salt error related to remove_traditional_stack when bootstrapping an Ubuntu
   minion (bsc#1128724)
 - Adapt disablelocalrepos.sls syntax for Salt 2016.10 (rhel6, sle11) (bsc#1127706)
+- Automatically trust SUSE GPG key for client tools channels on Ubuntu systems
 - util.systeminfo sls has been added to perform different actions at minion startup(bsc#1122381)
 
 -------------------------------------------------------------------
