@@ -65,7 +65,7 @@ check_repo () {
     fi
 
     untracked=$(git status -s | grep -e '^??\s')
-    if [[ ! -z untracked ]]; then
+    if [[ ! -z $untracked ]]; then
 	echo -e "There are still untracked files found in this repository:\n"
 	echo -e "$(echo "$untracked" | sed -e 's/[? ]*//')\n"
 	is_dirty="1"
