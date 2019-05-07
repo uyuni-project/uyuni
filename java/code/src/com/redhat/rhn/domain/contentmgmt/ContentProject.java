@@ -298,14 +298,15 @@ public class ContentProject extends BaseDomainHelper {
     }
 
     /**
-     * Get the {@link PackageFilter}s
+     * Get the active (non-detached) Project Filters
      *
-     * @return the Package filters
+     * @return the active Project Filters
      */
     @Transient
-    public List<PackageFilter> getPackageFilters() {
+    public List<ContentFilter> getActiveFilters() {
         return getProjectFilters().stream()
-                .flatMap(f -> Opt.stream(((ContentFilter<?>) f.getFilter()).asPackageFilter()))
+                .filter(f -> f.getState() != ContentProjectFilter.State.DETACHED)
+                .map(f -> f.getFilter())
                 .collect(Collectors.toList());
     }
 

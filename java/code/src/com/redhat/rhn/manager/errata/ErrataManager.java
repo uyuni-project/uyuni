@@ -312,15 +312,14 @@ public class ErrataManager extends BaseManager {
     }
 
     /**
-     * Removes cloned errata from target channel that are not in the source channel
-     * or that do not have original in the source channel.
+     * Removes cloned errata from target channel that are not in the source errata
+     * or that do not have original in the source errata.
      *
-     * @param srcChannel the source channel
+     * @param srcErrata the source errata
      * @param tgtChannel the target channel
      * @param user the user
      */
-    public static void truncateErrata(Channel srcChannel, Channel tgtChannel, User user) {
-        Set<Errata> srcErrata = new HashSet<>(ErrataFactory.listByChannel(user.getOrg(), srcChannel));
+    public static void truncateErrata(Set<Errata> srcErrata, Channel tgtChannel, User user) {
         Set<Errata> tgtErrata = new HashSet<>(ErrataFactory.listByChannel(user.getOrg(), tgtChannel));
 
         // let's remove errata that aren't in the source errata nor is their original

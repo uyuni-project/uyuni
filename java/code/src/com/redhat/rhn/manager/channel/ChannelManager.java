@@ -39,8 +39,10 @@ import com.redhat.rhn.domain.channel.DistChannelMap;
 import com.redhat.rhn.domain.channel.InvalidChannelRoleException;
 import com.redhat.rhn.domain.channel.ProductName;
 import com.redhat.rhn.domain.channel.ReleaseChannelMap;
+import com.redhat.rhn.domain.contentmgmt.ContentFilter;
 import com.redhat.rhn.domain.contentmgmt.ContentProjectFactory;
 import com.redhat.rhn.domain.contentmgmt.EnvironmentTarget;
+import com.redhat.rhn.domain.contentmgmt.ErrataFilter;
 import com.redhat.rhn.domain.contentmgmt.PackageFilter;
 import com.redhat.rhn.domain.contentmgmt.SoftwareEnvironmentTarget;
 import com.redhat.rhn.domain.errata.Errata;
@@ -2779,18 +2781,25 @@ public class ChannelManager extends BaseManager {
      * Synchronously align packages and errata of the {@link SoftwareEnvironmentTarget} to the source {@link Channel}
      * This method is potentially time-expensive and should be run asynchronously (@see alignEnvironmentTarget)
      *
-     * @param filters the {@link PackageFilter}s
+     * @param filters the filters
      * @param src the source {@link Channel}
      * @param tgt the target {@link SoftwareEnvironmentTarget}
      * @param user the user
      */
-    public static void alignEnvironmentTargetSync(Collection<PackageFilter> filters, Channel src, Channel tgt,
+    public static void alignEnvironmentTargetSync(Collection<ContentFilter> filters, Channel src, Channel tgt,
             User user) {
         // align packages and the cache (rhnServerNeededCache)
-        alignPackages(src, tgt, filters);
+        List<PackageFilter> packageFilters = filters.stream()
+                .flatMap(f -> Opt.stream((Optional<PackageFilter>) f.asPackageFilter()))
+                .collect(Collectors.toList());
+        List<ErrataFilter> errataFilters = filters.stream()
+                .flatMap(f -> Opt.stream((Optional<ErrataFilter>) f.asErrataFilter()))
+                .collect(Collectors.toList());
+
+        alignPackages(src, tgt, packageFilters);
 
         // align errata and the cache (rhnServerNeededCache)
-        alignErrata(src, tgt, user);
+        alignErrata(src, tgt, errataFilters, user);
 
         // update the channel newest packages cache
         ChannelFactory.refreshNewestPackageCache(tgt, "java::alignPackages");
@@ -2820,9 +2829,18 @@ public class ChannelManager extends BaseManager {
                 extractPackageIds(filterPackages(onlyInSrc, filters)));
     }
 
-    private static void alignErrata(Channel src, Channel tgt, User user) {
-        ErrataManager.mergeErrataToChannel(user, src.getErratas(), tgt, src, false, false);
-        ErrataManager.truncateErrata(src, tgt, user);
+    private static void alignErrata(Channel src, Channel tgt, Collection<ErrataFilter> errataFilters, User user) {
+        Predicate<Errata> compositePredicate = errataFilters.stream()
+                .map(f -> (Predicate) f)
+                .reduce((f1, f2) -> f1.and(f2))
+                .orElse(p -> true);
+
+        Set<Errata> filteredErrata = src.getErratas().stream()
+                .filter(compositePredicate)
+                .collect(Collectors.toSet());
+
+        ErrataManager.mergeErrataToChannel(user, filteredErrata, tgt, src, false, false);
+        ErrataManager.truncateErrata(filteredErrata, tgt, user);
     }
 
     private static List<Long> extractPackageIds(Collection<Package> packages) {
