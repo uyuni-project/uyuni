@@ -219,6 +219,7 @@ RES6 = [
     "python-six",
     "python-babel",
     "dbus",
+    "dbus-libs",
     "yum-plugin-security",
     "yum-rhn-plugin",
     "yum",
