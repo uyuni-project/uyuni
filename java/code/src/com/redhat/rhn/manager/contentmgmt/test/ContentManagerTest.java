@@ -62,6 +62,7 @@ import static com.redhat.rhn.domain.contentmgmt.ProjectSource.State.DETACHED;
 import static com.redhat.rhn.domain.contentmgmt.ProjectSource.Type.SW_CHANNEL;
 import static com.redhat.rhn.domain.role.RoleFactory.ORG_ADMIN;
 import static java.util.Arrays.asList;
+import static java.util.Arrays.spliterator;
 import static java.util.Collections.singletonList;
 import static java.util.Optional.empty;
 import static java.util.Optional.of;
@@ -1104,6 +1105,27 @@ public class ContentManagerTest extends BaseTestCaseWithUser {
         ContentManager.attachFilter("cplabel", filter.getId(), user);
         ContentManager.buildProject("cplabel", empty(), false, user);
         assertEquals(0, env.getTargets().get(0).asSoftwareTarget().get().getChannel().getPackageCount());
+    }
+
+    public void testBuildProjectWithErrataFilter() throws Exception {
+        ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());
+        ContentProjectFactory.save(cp);
+        ContentEnvironment env = ContentManager.createEnvironment(cp.getLabel(), empty(), "fst", "first env", "desc", false, user);
+        Channel channel = createPopulatedChannel();
+        Errata erratum = channel.getErratas().iterator().next();
+        ContentManager.attachSource("cplabel", SW_CHANNEL, channel.getLabel(), empty(), user);
+
+        // build without filters
+        ContentManager.buildProject("cplabel", empty(), false, user);
+        assertEquals(1, env.getTargets().get(0).asSoftwareTarget().get().getChannel().getErrataCount());
+        assertEquals(erratum, env.getTargets().get(0).asSoftwareTarget().get().getChannel().getErratas().iterator().next());
+
+        // build with filters
+        FilterCriteria criteria = new FilterCriteria(Matcher.EQUALS, "advisory_name", erratum.getAdvisoryName());
+        ContentFilter filter = ContentManager.createFilter("my-filter", ContentFilter.Rule.DENY, EntityType.ERRATUM, criteria, user);
+        ContentManager.attachFilter("cplabel", filter.getId(), user);
+        ContentManager.buildProject("cplabel", empty(), false, user);
+        assertEquals(0, env.getTargets().get(0).asSoftwareTarget().get().getChannel().getErrataCount());
     }
 
     private Channel createPopulatedChannel() throws Exception {

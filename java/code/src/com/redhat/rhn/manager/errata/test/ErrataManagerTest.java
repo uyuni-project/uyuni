@@ -1617,13 +1617,13 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
         ErrataFactory.publishToChannel(Arrays.asList(errata1), src, user, false);
         ErrataFactory.publishToChannel(Arrays.asList(errata1, errata2), tgt, user, false);
 
-        ErrataManager.truncateErrata(src, tgt, user);
+        ErrataManager.truncateErrata(src.getErratas(), tgt, user);
 
         assertEquals(src.getErratas(), tgt.getErratas());
     }
 
     /**
-     * Tests truncating errata - simple case (overlap of erratum and its clone in channels)
+     * Tests truncating errata - overlap of erratum and its clone in channels
      *
      * @throws Exception if anything goes wrong
      */
@@ -1643,7 +1643,7 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
         ErrataFactory.publishToChannel(Arrays.asList(errata1), src, user, false);
         ErrataFactory.publishToChannel(Arrays.asList(errata1Clone, errataInTgt), tgt, user, false);
 
-        ErrataManager.truncateErrata(src, tgt, user);
+        ErrataManager.truncateErrata(src.getErratas(), tgt, user);
 
         assertEquals(1, tgt.getErratas().size());
         // the clone will "survive" in the tgt channel as it has original in the src
