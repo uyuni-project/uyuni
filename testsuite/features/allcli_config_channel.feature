@@ -188,11 +188,8 @@ Feature: Management of configuration of all types of clients in a single channel
     When I wait until event "Show differences between profiled config files and deployed config files scheduled by admin" is completed
     Then I should see a "Differences exist" link
     When I follow "Differences exist"
-    ### WORKAROUND - please uncomment when issue is fixed
-    # bsc#1078764 - CFG-MGMT-SALT: inconsistent UI between traditional clients and Salt minions when comparing files
-    # Then I should see a "-COLOR=white" text
-    # And I should see a "+COLOR=red" text
-    Then I should see a "-COLOR=white+COLOR=red" text
+    Then I should see a "+COLOR=white" text
+    And I should see a "-COLOR=red" text
 
   Scenario: Check configuration channel and files via XML-RPC
     Given I am logged in via XML-RPC configchannel as user "admin" and password "admin"
