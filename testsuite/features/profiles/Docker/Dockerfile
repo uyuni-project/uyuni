@@ -14,8 +14,8 @@ ADD avahi/libavahi-core7-0.6.32-30.36.x86_64.rpm /root/libavahi-core7-0.6.32-30.
 ADD avahi/libdaemon0-0.14-14.57.x86_64.rpm /root/libdaemon0-0.14-14.57.x86_64.rpm
 ADD avahi/nss-mdns-0.10-64.1.x86_64.rpm /root/nss-mdns-0.10-64.1.x86_64.rpm
 
-ADD nsswitch.conf /etc/nsswitch.conf
-ADD avahi-daemon.conf /root/avahi-daemon.conf
+ADD avahi/nsswitch.conf /etc/nsswitch.conf
+ADD avahi/avahi-daemon.conf /root/avahi-daemon.conf
 
 ADD add_packages.sh /root/add_packages.sh
 RUN /root/add_packages.sh
