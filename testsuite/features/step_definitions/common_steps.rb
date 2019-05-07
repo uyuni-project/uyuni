@@ -474,6 +474,10 @@ Then(/^I see verification succeeded/) do
   find('i.text-success')
 end
 
+When(/^I enter the address of the HTTP proxy as "([^"]*)"/) do |hostname|
+  step %(I enter "#{$http_proxy}" as "#{hostname}")
+end
+
 # configuration management steps
 
 Then(/^I should see a table line with "([^"]*)", "([^"]*)", "([^"]*)"$/) do |arg1, arg2, arg3|
