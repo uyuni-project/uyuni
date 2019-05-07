@@ -57,14 +57,14 @@ EOF
 # Check if there are uncommitted changes
 #
 check_repo () {
-    filelist=$(git status -s | grep -e '^\sM\s')
+    filelist=$(git status -s | grep -e '^\sM\s' || true)
     is_dirty=""
     if [[ ! -z $filelist ]]; then
 	echo -e "There are following uncommitted changes found:\n\n$filelist\n"
 	is_dirty="1"
     fi
 
-    untracked=$(git status -s | grep -e '^??\s')
+    untracked=$(git status -s | grep -e '^??\s' || true)
     if [[ ! -z $untracked ]]; then
 	echo -e "There are still untracked files found in this repository:\n"
 	echo -e "$(echo "$untracked" | sed -e 's/[? ]*//')\n"
