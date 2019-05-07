@@ -17,14 +17,19 @@ package com.redhat.rhn.domain.contentmgmt.test;
 
 import com.redhat.rhn.domain.contentmgmt.ContentFilter;
 import com.redhat.rhn.domain.contentmgmt.FilterCriteria;
+import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.rhnpackage.test.PackageTest;
 import com.redhat.rhn.manager.contentmgmt.ContentManager;
+import com.redhat.rhn.testing.ErrataTestUtils;
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
+import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
+import java.util.Collections;
+
+import static com.redhat.rhn.domain.contentmgmt.ContentFilter.EntityType.ERRATUM;
 import static com.redhat.rhn.domain.contentmgmt.ContentFilter.EntityType.PACKAGE;
-import static com.redhat.rhn.domain.contentmgmt.ContentFilter.Rule.ALLOW;
 import static com.redhat.rhn.domain.contentmgmt.ContentFilter.Rule.DENY;
 import static com.redhat.rhn.domain.role.RoleFactory.ORG_ADMIN;
 
@@ -80,5 +85,23 @@ public class ContentFilterTest extends JMockBaseTestCaseWithUser {
         criteria = new FilterCriteria(FilterCriteria.Matcher.EQUALS, "nevra", packageName);
         filter = ContentManager.createFilter(packageName + "nevra3-filter", DENY, PACKAGE, criteria, user);
         assertTrue(filter.test(pack));
+    }
+
+    /**
+     * Test basic Errata filtering based on advisory name
+     *
+     * @throws Exception if anything goes wrong
+     */
+    public void testErrataAdvisoryFilter() throws Exception {
+        String cveName = TestUtils.randomString().substring(0, 13);
+        Errata erratum = ErrataTestUtils.createTestErrata(user, Collections.singleton(ErrataTestUtils.createTestCve(cveName)));
+
+        FilterCriteria criteria = new FilterCriteria(FilterCriteria.Matcher.EQUALS, "advisory_name", erratum.getAdvisoryName());
+        ContentFilter filter = ContentManager.createFilter(cveName + "-filter", DENY, ERRATUM, criteria, user);
+        assertFalse(filter.test(erratum));
+
+        criteria = new FilterCriteria(FilterCriteria.Matcher.EQUALS, "advisory_name", "idontexist");
+        filter = ContentManager.createFilter(cveName + "-filter", DENY, ERRATUM, criteria, user);
+        assertTrue(filter.test(erratum));
     }
 }

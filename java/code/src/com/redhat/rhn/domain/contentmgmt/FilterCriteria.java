@@ -47,6 +47,7 @@ public class FilterCriteria {
         validCombinations.add(Pair.of(Matcher.CONTAINS, "name"));
         validCombinations.add(Pair.of(Matcher.EQUALS, "nevr"));
         validCombinations.add(Pair.of(Matcher.EQUALS, "nevra"));
+        validCombinations.add(Pair.of(Matcher.EQUALS, "advisory_name"));
     }
 
     /**

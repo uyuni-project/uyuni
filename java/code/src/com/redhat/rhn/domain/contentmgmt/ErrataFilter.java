@@ -30,8 +30,26 @@ import javax.persistence.Transient;
 public class ErrataFilter extends ContentFilter<Errata> {
 
     @Override
-    public boolean testInternal(Errata errata) {
-        return false;
+    public boolean testInternal(Errata erratum) {
+        FilterCriteria.Matcher matcher = getCriteria().getMatcher();
+        String field = getCriteria().getField();
+        String value = getCriteria().getValue();
+
+        switch (matcher) {
+            case EQUALS:
+                return getField(erratum, field, String.class).equals(value);
+            default:
+                throw new UnsupportedOperationException("Matcher " + matcher + " not supported");
+        }
+    }
+
+    private static <T> T getField(Errata erratum, String field, Class<T> type) {
+        switch (field) {
+            case "advisory_name":
+                return type.cast(erratum.getAdvisoryName());
+            default:
+                throw new UnsupportedOperationException("Field " + field + " not supported");
+        }
     }
 
     @Override
