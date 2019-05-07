@@ -279,11 +279,6 @@ public class ConfigDefaults {
     public static final String SALT_EVENT_THREAD_POOL_SIZE = "java.salt_event_thread_pool_size";
 
     /**
-     * Number of threads dedicated to processing Salt events with no minion id.
-     */
-    public static final String SALT_GLOBAL_EVENT_THREAD_POOL_SIZE = "java.salt_global_event_thread_pool_size";
-
-    /**
      * Timeout in seconds of the presence ping performed in Salt Minions during salt batch calls
      */
     public static final String SALT_PRESENCE_PING_TIMEOUT = "java.salt_presence_ping_timeout";
@@ -959,14 +954,6 @@ public class ConfigDefaults {
      */
     public int getSaltEventThreadPoolSize() {
         return Config.get().getInt(SALT_EVENT_THREAD_POOL_SIZE, 8);
-    }
-
-    /**
-     * Returns the number of threads dedicated to processing Salt events that aren't associated with a minion.
-     * @return the number of threads
-     */
-    public int getSaltGlobalEventThreadPoolSize() {
-        return Config.get().getInt(SALT_GLOBAL_EVENT_THREAD_POOL_SIZE, 1);
     }
 
     /**
