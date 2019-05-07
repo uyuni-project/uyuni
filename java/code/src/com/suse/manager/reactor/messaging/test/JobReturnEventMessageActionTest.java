@@ -1608,7 +1608,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
 
     public void testSubscribeChannelsActionNullTokens() throws Exception {
         TaskomaticApi taskomaticMock = mock(TaskomaticApi.class);
-        ActionManager.setTaskomaticApi(taskomaticMock);
+        ActionChainManager.setTaskomaticApi(taskomaticMock);
         context().checking(new Expectations() { {
             allowing(taskomaticMock).scheduleSubscribeChannels(with(any(User.class)),
                     with(any(SubscribeChannelsAction.class)));
