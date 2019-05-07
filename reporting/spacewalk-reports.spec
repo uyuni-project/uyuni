@@ -47,6 +47,14 @@ Script based reporting to retrieve data from Spacewalk server in CSV format.
 %build
 /usr/bin/docbook2man *.sgml
 
+# Fixing shebang for Python 3
+%if 0%{?build_py3}
+for i in $(find . -type f);
+do
+    sed -i '1s=^#!/usr/bin/\(python\|env python\)[0-9.]*=#!/usr/bin/python3=' $i;
+done
+%endif
+
 %install
 install -d $RPM_BUILD_ROOT/%{_bindir}
 install -d $RPM_BUILD_ROOT/%{_prefix}/share/spacewalk
@@ -57,14 +65,6 @@ install reports.py $RPM_BUILD_ROOT/%{_prefix}/share/spacewalk
 install -m 644 reports/data/* $RPM_BUILD_ROOT/%{_prefix}/share/spacewalk/reports/data
 install *.8 $RPM_BUILD_ROOT/%{_mandir}/man8
 chmod -x $RPM_BUILD_ROOT/%{_mandir}/man8/spacewalk-report.8*
-
-# Fixing shebang for Python 3
-%if 0%{?build_py3}
-for i in $(find . -type f);
-do
-    sed -i '1s=^#!/usr/bin/\(python\|env python\)[0-9.]*=#!/usr/bin/python3=' $i;
-done
-%endif
 
 %files
 %defattr(-,root,root)
