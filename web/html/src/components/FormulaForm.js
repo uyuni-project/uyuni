@@ -23,7 +23,7 @@ class FormulaForm extends React.Component {
     constructor(props) {
         super(props);
 
-        ["saveFormula", "handleChange", "clearValues"].forEach(method => this[method] = this[method].bind(this));
+        ["saveFormula", "handleChange", "clearValues", "getMessageText"].forEach(method => this[method] = this[method].bind(this));
 
         const previewMessage = <p>On this page you can configure <a href="https://docs.saltstack.com/en/latest/topics/development/conventions/formulas.html" target="_blank" rel="noopener noreferrer">Salt Formulas</a> to automatically install and configure software.</p>;
 
@@ -98,7 +98,7 @@ class FormulaForm extends React.Component {
             this.props.saveUrl,
             JSON.stringify(formData),
             "application/json"
-        ).promise.then(function (data) { if (data instanceof Array) this.setState({ messages: data }); }.bind(this),
+        ).promise.then(function (data) { if (data instanceof Array) this.setState({ messages: data.map(msg => this.getMessageText(msg)) }); }.bind(this),
             function (error) {
                 try {
                     this.setState({
@@ -210,6 +210,10 @@ class FormulaForm extends React.Component {
         for (let key in layout)
             form.push(generateFormulaComponent(layout[key], values[key], this));
         return form;
+    }
+
+    getMessageText(msg) {
+      return this.props.messageTexts[msg] ? t(this.props.messageTexts[msg]) : msg;
     }
 
     render() {
