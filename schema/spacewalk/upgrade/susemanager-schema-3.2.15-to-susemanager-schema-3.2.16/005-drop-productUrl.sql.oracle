@@ -1,0 +1,3 @@
+
+call drop_column_if_exists('RHNCHANNELFAMILY', 'PRODUCT_URL');
+
