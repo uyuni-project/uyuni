@@ -1,3 +1,7 @@
+- Fixes import error for sync_post_tftpd_proxies and
+  MultipartPostHandler. Replacing usage of mimetools, which is
+  Python2 only. (bsc#1134450)
+
 -------------------------------------------------------------------
 Mon Apr 22 12:27:16 CEST 2019 - jgonzalez@suse.com
 
