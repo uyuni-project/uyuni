@@ -98,23 +98,23 @@ class MonitoringAdmin extends React.Component<Props, State> {
         if (data.data.exporters) {
           let newStatus : boolean = this.state.monitoringEnabled;
           if (this.state.monitoringEnabled && !toChange) { // enabled -> disabled
-            const allDisabled : boolean = Object.keys(data.data.exporters).every(key => data.data.exporters[key] === false);
-            const someEnabled : boolean = Object.keys(data.data.exporters).some(key => data.data.exporters[key] === true);
-            if (!allDisabled) {
+            const allSuccess : boolean = Object.keys(data.data.exporters).every(key => data.data.exporters[key] === true);
+            const someFailed : boolean = Object.keys(data.data.exporters).some(key => data.data.exporters[key] === false);
+            if (allSuccess) {
               newStatus = false;              
               msg = MessagesUtils.success(msgMap["disabling_succeeded"]);
-            } else if (someEnabled) {
+            } else if (someFailed) {
               msg = MessagesUtils.error(msgMap["disabling_failed_partially"]);
             } else {
               msg = MessagesUtils.error(msgMap["disabling_failed"]);
             }
           } else if (!this.state.monitoringEnabled && toChange) { // disabled -> enabled
-            const allEnabled : boolean = Object.keys(data.data.exporters).every(key => data.data.exporters[key] === true);
-            const someDisabled : boolean = Object.keys(data.data.exporters).some(key => data.data.exporters[key] === false);
-            if (!allEnabled) {
+            const allSuccess : boolean = Object.keys(data.data.exporters).every(key => data.data.exporters[key] === true);
+            const someFailed : boolean = Object.keys(data.data.exporters).some(key => data.data.exporters[key] === false);
+            if (allSuccess) {
               newStatus = true;
               msg = MessagesUtils.success(msgMap["enabling_succeeded"]);
-            } else if (someDisabled) {
+            } else if (someFailed) {
               msg = MessagesUtils.error(msgMap["enabling_failed_partially"]);
             } else {
               msg = MessagesUtils.error(msgMap["enabling_failed"]);
@@ -178,30 +178,30 @@ class MonitoringAdmin extends React.Component<Props, State> {
       return (
       <div className="responsive-wizard">
         <Messages items={this.state.messages}/>
-        <div class="spacewalk-toolbar-h1">
-          <div class="spacewalk-toolbar"></div>
+        <div className="spacewalk-toolbar-h1">
+          <div className="spacewalk-toolbar"></div>
           <h1>
-            <i class="fa fa-info-circle"></i>
+            <i className="fa fa-info-circle"></i>
             SUSE Manager Configuration - Monitoring
             <a href="/rhn/help/reference/en-US/ref.webui.admin.config.jsp#s3-sattools-config-gen" target="_blank">
-              <i class="fa fa-question-circle spacewalk-help-link"></i>
+              <i className="fa fa-question-circle spacewalk-help-link"></i>
             </a>
           </h1>
         </div>
-        <div class="page-summary">
+        <div className="page-summary">
           <p>
             {t("Setup your SUSE Manager server monitoring.")}
           </p>
         </div>
         <div className='spacewalk-content-nav'>
-          <ul class="nav nav-tabs">
+          <ul className="nav nav-tabs">
             <li><a href="/rhn/admin/config/GeneralConfig.do?">General</a></li>
             <li><a href="/rhn/admin/config/BootstrapConfig.do?">Bootstrap Script</a></li>
             <li><a href="/rhn/admin/config/Orgs.do?">Organizations</a></li>
             <li><a href="/rhn/admin/config/Restart.do?">Restart</a></li>
             <li><a href="/rhn/admin/config/Cobbler.do?">Cobbler</a></li>
             <li><a href="/rhn/admin/config/BootstrapSystems.do?">Bare-metal systems</a></li>
-            <li class="active"><a href="/rhn/manager/admin/config/monitoring?">Monitoring</a></li>
+            <li className="active"><a href="/rhn/manager/admin/config/monitoring?">Monitoring</a></li>
           </ul>
         </div>
         <Panel
