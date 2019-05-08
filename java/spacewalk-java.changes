@@ -1,3 +1,4 @@
+- Add support for Salt Formulas to be used with standalone Salt
 - Fix channel sync status logic in products page (bsc#1131721)
 - Report Monitoring products to subscription-matcher
 - Update help URLs in the UI
