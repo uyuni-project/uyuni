@@ -190,7 +190,7 @@ class Errata(rhnHandler):
         cap_info = None
         if client_caps and 'packages.update' in client_caps:
             cap_info = client_caps['packages.update']
-        if cap_info and cap_info['version'] > 1:
+        if cap_info and int(cap_info['version']) > 1:
             multiarch = 1
 
         statement = """
