@@ -10,9 +10,15 @@ When(/^I follow "(.*?)" link$/) do |host|
   step %(I follow "#{system_name}")
 end
 
-When(/^I should see a "(.*)" text in the content area$/) do |txt|
+Then(/^I should see a "(.*)" text in the content area$/) do |txt|
   within('#spacewalk-content') do
     raise unless page.has_content?(txt)
+  end
+end
+
+Then(/^I should not see a "(.*)" text in the content area$/) do |txt|
+  within('#spacewalk-content') do
+    raise unless page.has_no_content?(txt)
   end
 end
 
@@ -242,7 +248,6 @@ end
 
 When(/^I follow "([^"]*)" in the (.+)$/) do |arg1, arg2|
   tag = case arg2
-        when /left menu/ then 'aside'
         when /tab bar|tabs/ then 'header'
         when /content area/ then 'section'
         else raise "Unknown element with description '#{desc}'"
@@ -254,7 +259,6 @@ end
 
 When(/^I follow first "([^"]*)" in the (.+)$/) do |arg1, arg2|
   tag = case arg2
-        when /left menu/ then 'aside'
         when /tab bar|tabs/ then 'header'
         when /content area/ then 'section'
         else raise "Unknown element with description '#{desc}'"
@@ -283,11 +287,43 @@ When(/^I enter "(.*?)" in the editor$/) do |arg1|
   page.execute_script("ace.edit('contents-editor').insert('#{arg1}')")
 end
 
-When(/^I click System List, under Systems node$/) do
-  find(:xpath, "//div[@id='nav']/nav/ul/li[contains(@class, 'active')
-       and contains(@class, 'open')
-       and contains(@class,'node')]/ul/li/div/a[contains(.,'System List')]").click
+#
+# Menu links
+#
+
+# Menu path link
+When(/^I follow the left menu "([^"]*)"$/) do |menu_path|
+  # split menu levels separated by '>' character
+  menu_levels = menu_path.split('>').map(&:strip)
+
+  # define reusable patterns
+  prefix_path = "//aside/div[@id='nav']/nav"
+  link_path = "/ul/li/div/a[contains(.,'%s')]"
+  parent_wrapper_path = '/parent::div'
+  parent_level_path = '/parent::li'
+
+  # point the target to the nav menu
+  target_link_path = prefix_path
+
+  menu_levels.each_with_index do |menu_level, index|
+    # append the current target link and replace the placeholder with the current level value
+    target_link_path += (link_path % menu_level)
+    # if this is the last element of the path
+    break if index == (menu_levels.count - 1)
+    # open the submenu if needed
+    unless find(:xpath, target_link_path + parent_wrapper_path + parent_level_path)[:class].include?('open')
+      find(:xpath, target_link_path + parent_wrapper_path).click
+    end
+    # point the target to the current menu level
+    target_link_path += parent_wrapper_path + parent_level_path
+  end
+  # finally go to the target page
+  find(:xpath, target_link_path).click
 end
+
+#
+# End of Menu links
+#
 
 Given(/^I am not authorized$/) do
   visit Capybara.app_host
@@ -307,16 +343,14 @@ end
 Given(/^I am on the Admin page$/) do
   steps %(
     When I am authorized as "admin" with password "admin"
-    And I follow "Admin"
-    And I follow "Setup Wizard"
+    When I follow the left menu "Admin > Setup Wizard"
     )
 end
 
 When(/^I am on the Organizations page$/) do
   steps %(
     When I am authorized as "admin" with password "admin"
-    And I follow "Admin"
-    And I follow "Organizations"
+    When I follow the left menu "Admin > Organizations"
     )
 end
 
@@ -354,16 +388,14 @@ end
 Given(/^I am on the groups page$/) do
   steps %(
     Given I am on the Systems page
-    And I follow "System Groups" in the left menu
+    When I follow the left menu "Systems >System Groups"
     )
 end
 
 Given(/^I am on the active Users page$/) do
   steps %(
     Given I am authorized as "admin" with password "admin"
-    And I follow "Users"
-    And I follow "User List"
-    And I follow "Active"
+    When I follow the left menu "Users > User List > Active"
     )
 end
 

@@ -32,15 +32,13 @@ Feature: CVE Audit
 
   Scenario: Display CVE audit page
     Given I am authorized as "admin" with password "admin"
-    When I follow "Audit" in the left menu
-    And I follow "CVE Audit" in the left menu
+    When I follow the left menu "Audit > CVE Audit"
     Then I should see a "CVE Audit" link in the left menu
     And I should see a "CVE Audit" text
 
   Scenario: Search for a known CVE number
     Given I am authorized as "admin" with password "admin"
-    When I follow "Audit" in the left menu
-    And I follow "CVE Audit" in the left menu
+    When I follow the left menu "Audit > CVE Audit"
     And I select "1999" from "cveIdentifierYear"
     And I enter "9999" as "cveIdentifierId"
     And I click on "Audit Servers"
@@ -57,8 +55,7 @@ Feature: CVE Audit
 
   Scenario: Search for an unknown CVE number
     Given I am authorized as "admin" with password "admin"
-    When I follow "Audit" in the left menu
-    And I follow "CVE Audit" in the left menu
+    When I follow the left menu "Audit > CVE Audit"
     And I select "2012" from "cveIdentifierYear"
     And I enter "2806" as "cveIdentifierId"
     And I click on "Audit Servers"
@@ -66,8 +63,7 @@ Feature: CVE Audit
 
   Scenario: Select a system for the System Set Manager
     Given I am authorized as "admin" with password "admin"
-    When I follow "Audit" in the left menu
-    And I follow "CVE Audit" in the left menu
+    When I follow the left menu "Audit > CVE Audit"
     And I select "1999" from "cveIdentifierYear"
     And I enter "9999" as "cveIdentifierId"
     And I click on "Audit Servers"

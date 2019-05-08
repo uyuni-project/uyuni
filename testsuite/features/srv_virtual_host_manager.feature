@@ -34,7 +34,7 @@ Feature: Virtual host manager web UI
 
   Scenario: Run virtual-host-gatherer
    Given I am authorized as "admin" with password "admin"
-    When I follow "Systems" in the left menu
+    When I follow the left menu "Systems"
      And I follow "Virtual Host Managers"
      And I follow "file-vmware"
     Then I should see a "file:///var/tmp/vCenter.json" text
@@ -47,14 +47,13 @@ Feature: Virtual host manager web UI
     And I wait until I see "10.162.186.111" text, refreshing the page
     When I follow "10.162.186.111"
     Then I should see a "OS: VMware ESXi" text
-    When I click System List, under Systems node
-    And I follow "Virtual Systems" in the left menu
+    When I follow the left menu "Systems > System List > Virtual Systems"
     Then I should see a "vCenter" text
      And I should see a "NSX-l3gateway" text
 
   Scenario: Delete Virtual Host Manager
     Given I am on the Systems page
-    When I follow "Virtual Host Managers"
+    When I follow the left menu "Systems > Virtual Host Managers"
     And I follow "file-vmware"
     And I click on "Delete"
     And I wait for "1" second

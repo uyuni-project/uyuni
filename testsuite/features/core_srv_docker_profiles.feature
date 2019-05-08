@@ -23,7 +23,7 @@ Feature: Prepare server for using Docker
 
   Scenario: Create Docker activation key
     Given I am on the Systems page
-    And I follow "Activation Keys" in the left menu
+    When I follow the left menu "Systems > Activation Keys"
     And I follow "Create Key"
     When I enter "Docker testing" as "description"
     And I enter "DOCKER-TEST" as "key"
@@ -37,8 +37,7 @@ Feature: Prepare server for using Docker
 
   Scenario: Create an image store without credentials
     Given I am authorized as "admin" with password "admin"
-    And I follow "Images" in the left menu
-    And I follow "Stores" in the left menu
+    When I follow the left menu "Images > Stores"
     And I follow "Create"
     And I enter "galaxy-registry" as "label"
     And I enter "registry.mgr.suse.de" as "uri"
@@ -48,8 +47,7 @@ Feature: Prepare server for using Docker
 
   Scenario: Create a simple image profile without activation key
     Given I am authorized as "admin" with password "admin"
-    And I follow "Images" in the left menu
-    And I follow "Profiles" in the left menu
+    When I follow the left menu "Images > Profiles"
     And I follow "Create"
     And I enter "suse_simple" as "label"
     And I select "galaxy-registry" from "imageStore"
@@ -58,8 +56,7 @@ Feature: Prepare server for using Docker
 
   Scenario: Create a simple real image profile without activation key
     Given I am authorized as "admin" with password "admin"
-    And I follow "Images" in the left menu
-    And I follow "Profiles" in the left menu
+    When I follow the left menu "Images > Profiles"
     And I follow "Create"
     And I enter "suse_real_simple" as "label"
     And I select "galaxy-registry" from "imageStore"
@@ -68,8 +65,7 @@ Feature: Prepare server for using Docker
 
   Scenario: Create an image profile with activation key
     Given I am authorized as "admin" with password "admin"
-    And I follow "Images" in the left menu
-    And I follow "Profiles" in the left menu
+    When I follow the left menu "Images > Profiles"
     And I follow "Create"
     And I enter "suse_key" as "label"
     And I select "galaxy-registry" from "imageStore"
@@ -79,8 +75,7 @@ Feature: Prepare server for using Docker
 
   Scenario: Create a simple real image profile with activation key
     Given I am authorized as "admin" with password "admin"
-    And I follow "Images" in the left menu
-    And I follow "Profiles" in the left menu
+    When I follow the left menu "Images > Profiles"
     And I follow "Create"
     And I enter "suse_real_key" as "label"
     And I select "galaxy-registry" from "imageStore"

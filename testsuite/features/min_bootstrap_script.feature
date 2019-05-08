@@ -20,9 +20,7 @@ Feature: Register a Salt minion via Bootstrap-script
 
   Scenario: Create bootstrap script
     Given I am authorized as "admin" with password "admin"
-    And I follow "Admin"
-    And I follow "Manager Configuration" in the left menu
-    And I follow "Bootstrap Script" in the left menu
+    When I follow the left menu "Admin > Manager Configuration > Bootstrap Script"
     And I uncheck "Enable Client GPG checking"
     Then I should see a "$PRODUCT Configuration - Bootstrap" text
     And I should see "Bootstrap using Salt" as checked
@@ -39,8 +37,7 @@ Feature: Register a Salt minion via Bootstrap-script
     Given I am authorized as "admin" with password "admin"
     When I run "sh /root/bootstrap.sh" on "sle-minion"
     And I wait for "5" seconds
-    And I follow "Salt" in the left menu
-    And I follow "Keys" in the left menu
+    When I follow the left menu "Salt > Keys"
     And I wait until I see the name of "sle-minion", refreshing the page
     And I should see a "pending" text
     And I accept "sle-minion" key

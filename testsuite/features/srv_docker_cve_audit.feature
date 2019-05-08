@@ -8,8 +8,7 @@ Feature: CVE audit for content management
     Given I am authorized as "admin" with password "admin"
 
   Scenario: Schedule channel data refresh for content management
-    When I follow "Admin"
-    And I follow "Task Schedules"
+    When I follow the left menu "Admin > Task Schedules"
     And I follow "cve-server-channels-default"
     And I follow "cve-server-channels-bunch"
     And I click on "Single Run Schedule"
@@ -17,16 +16,14 @@ Feature: CVE audit for content management
     And I wait until the table contains "FINISHED" or "SKIPPED" followed by "FINISHED" in its first rows
 
   Scenario: Audit images, searching for a known CVE number
-    When I follow "Audit" in the left menu
-    And I follow "CVE Audit" in the left menu
+    When I follow the left menu "Audit > CVE Audit"
     And I select "1999" from "cveIdentifierYear"
     And I enter "9999" as "cveIdentifierId"
     And I click on "Audit Images"
     Then I should see a "No action required" text
 
   Scenario: Audit images, searching for an unknown CVE number
-    When I follow "Audit" in the left menu
-    And I follow "CVE Audit" in the left menu
+    When I follow the left menu "Audit > CVE Audit"
     And I select "2012" from "cveIdentifierYear"
     And I enter "2806" as "cveIdentifierId"
     And I click on "Audit Images"

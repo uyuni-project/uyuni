@@ -5,8 +5,7 @@ Feature: Advanced content management
 
   Scenario: Create an image store as Docker admin
     Given I am authorized as "docker" with password "docker"
-    And I follow "Images" in the left menu
-    And I follow "Stores" in the left menu
+    When I follow the left menu "Images > Stores"
     And I follow "Create"
     And I enter "docker_admin" as "label"
     And I enter "registry.mgr.suse.de" as "uri"
@@ -14,8 +13,7 @@ Feature: Advanced content management
 
   Scenario: Create a profile as Docker admin
     Given I am authorized as "docker" with password "docker"
-    And I follow "Images" in the left menu
-    And I follow "Profiles" in the left menu
+    When I follow the left menu "Images > Profiles"
     And I follow "Create"
     And I enter "suse_docker_admin" as "label"
     And I select "galaxy-registry" from "imageStore"
@@ -40,8 +38,7 @@ Feature: Advanced content management
 
   Scenario: Cleanup: remove Docker profile
     Given I am authorized as "docker" with password "docker"
-    When I follow "Images" in the left menu
-    And I follow "Profiles" in the left menu
+    When I follow the left menu "Images > Profiles"
     And I check the row with the "suse_docker_admin" text
     And I click on "Delete"
     And I click on the css "button.btn-danger"
@@ -49,8 +46,7 @@ Feature: Advanced content management
 
   Scenario: Cleanup: remove image store
     Given I am authorized as "docker" with password "docker"
-    When I follow "Images" in the left menu
-    And I follow "Stores" in the left menu
+    When I follow the left menu "Images > Stores"
     And I check the row with the "docker_admin" text
     And I click on "Delete"
     And I click on the css "button.btn-danger"

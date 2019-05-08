@@ -21,8 +21,7 @@ Feature: Patches page
 
   Scenario: Create new bugfix patch with bnc URL
     Given I am on the patches page
-    And I follow "Manage Patches" in the left menu
-    And I follow "Published" in the left menu
+    When I follow the left menu "Patches > Manage Patches > Published"
     And I follow "Create Patch"
     When I enter "Test Patch" as "synopsis"
     And I enter "Test Advisory" as "advisoryName"
@@ -42,8 +41,7 @@ Feature: Patches page
 
   Scenario: Create new enhancement patch with no bnc URL
     Given I am on the patches page
-    And I follow "Manage Patches" in the left menu
-    And I follow "Published" in the left menu
+    When I follow the left menu "Patches > Manage Patches > Published"
     And I follow "Create Patch"
     When I enter "Enhancement Patch" as "synopsis"
     And I enter "Enhancement Advisory" as "advisoryName"
@@ -62,8 +60,7 @@ Feature: Patches page
 
   Scenario: Delete enhancement patch
     Given I am on the patches page
-    And I follow "Manage Patches" in the left menu
-    And I follow "Unpublished" in the left menu
+    When I follow the left menu "Patches > Manage Patches > Unpublished"
     And I check "Enhancement Advisory" patch
     And I click on "Delete Patches"
     And I click on "Confirm"
@@ -71,8 +68,7 @@ Feature: Patches page
 
   Scenario: Publish patch called "Test advisory"
     Given I am on the patches page
-    And I follow "Manage Patches" in the left menu
-    And I follow "Unpublished" in the left menu
+    When I follow the left menu "Patches > Manage Patches > Unpublished"
     And I follow "Test Advisory"
     And I click on "Publish Patch"
     And I check test channel
@@ -81,7 +77,7 @@ Feature: Patches page
 
   Scenario: Verify patch presence in web UI
     Given I am on the patches page
-    And I follow "All" in the left menu
+    When I follow the left menu "Patches > Patch List > All"
     And I follow "Bugfix Patches" in the content area
     And I enter "Test Patch" in the css "input[placeholder='Filter by Synopsis: ']"
     And I click on the css "button.spacewalk-button-filter"
@@ -99,17 +95,14 @@ Feature: Patches page
 
   Scenario: Assert that patch is now in test base channel
     Given I am on the patches page
-    And I follow "Software" in the left menu
-    And I follow "Channel List" in the left menu
-    And I follow "Channel List > All" in the left menu
+    When I follow the left menu "Software > Channel List > All"
     And I follow "Test Base Channel"
     And I follow "Patches" in the content area
     Then I should see a "Test Patch" text
 
   Scenario: Delete patch
     Given I am on the patches page
-    And I follow "Manage Patches" in the left menu
-    And I follow "Published" in the left menu
+    When I follow the left menu "Patches > Manage Patches > Published"
     And I check "Test Advisory" patch
     And I click on "Delete Patches"
     And I click on "Confirm"

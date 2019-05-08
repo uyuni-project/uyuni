@@ -14,9 +14,7 @@ Feature: Bootstrap a Salt minion via the GUI with an activation key
 
   Scenario: Create a configuration channel for the activation key
     Given I am authorized as "admin" with password "admin"
-    When I follow "Home" in the left menu
-    And I follow "Configuration" in the left menu
-    And I follow "Channels" in the left menu
+    When I follow the left menu "Configuration > Channels"
     And I follow "Create Config Channel"
     And I enter "Key Channel" as "cofName"
     And I enter "keychannel" as "cofLabel"
@@ -26,9 +24,7 @@ Feature: Bootstrap a Salt minion via the GUI with an activation key
 
   Scenario: Add a configuration file to the key configuration channel
     Given I am authorized as "admin" with password "admin"
-    When I follow "Home" in the left menu
-    And I follow "Configuration" in the left menu
-    And I follow "Channels" in the left menu
+    When I follow the left menu "Configuration > Channels"
     And I follow "Key Channel"
     And I follow "Create Configuration File or Directory"
     And I enter "/etc/euler.conf" as "cffPath"
@@ -37,7 +33,7 @@ Feature: Bootstrap a Salt minion via the GUI with an activation key
 
   Scenario: Create a complete minion activation key
     Given I am on the Systems page
-    When I follow "Activation Keys" in the left menu
+    When I follow the left menu "Systems > Activation Keys"
     And I follow "Create Key"
     And I enter "Minion testing" as "description"
     And I enter "MINION-TEST" as "key"
@@ -117,16 +113,14 @@ Feature: Bootstrap a Salt minion via the GUI with an activation key
 
   Scenario: Cleanup: remove the key configuration channel
     Given I am authorized as "admin" with password "admin"
-    When I follow "Home" in the left menu
-    And I follow "Configuration" in the left menu
-    And I follow "Channels" in the left menu
+    When I follow the left menu "Configuration > Channels"
     And I follow "Key Channel"
     And I follow "Delete Channel"
     And I click on "Delete Config Channel"
 
   Scenario: Cleanup: delete the activation key
     Given I am on the Systems page
-    When I follow "Activation Keys" in the left menu
+    When I follow the left menu "Systems > Activation Keys"
     And I follow "Minion testing" in the content area
     And I follow "Delete Key"
     And I click on "Delete Activation Key"
