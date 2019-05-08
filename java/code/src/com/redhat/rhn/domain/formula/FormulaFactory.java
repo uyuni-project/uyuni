@@ -73,14 +73,18 @@ public class FormulaFactory {
     private static final Logger LOG = Logger.getLogger(FormulaFactory.class);
 
     private static String dataDir = "/srv/susemanager/formula_data/";
-    private static final String METADATA_DIR_OFFICIAL = "/usr/share/susemanager/formulas/metadata/";
+    private static final String METADATA_DIR_MANAGER = "/usr/share/susemanager/formulas/metadata/";
+    private static final String METADATA_DIR_STANDALONE_SALT = "/usr/share/salt-formulas/metadata/";
     private static final String METADATA_DIR_CUSTOM = "/srv/formula_metadata/";
     private static final String PILLAR_DIR = "pillar/";
     private static final String GROUP_PILLAR_DIR = "group_pillar/";
     private static final String GROUP_DATA_FILE  = "group_formulas.json";
     private static final String SERVER_DATA_FILE = "minion_formulas.json";
+    private static final String LAYOUT_FILE = "form.yml";
+    private static final String METADATA_FILE = "metadata.yml";
+    private static final String PILLAR_EXAMPLE_FILE = "pillar.example";
     private static final String PILLAR_FILE_EXTENSION = "json";
-    private static String metadataDirOfficial = METADATA_DIR_OFFICIAL;
+    private static String metadataDirOfficial = METADATA_DIR_MANAGER;
     private static final Gson GSON = new GsonBuilder()
             .registerTypeAdapter(Date.class, new ECMAScriptDateAdapter())
             .registerTypeAdapter(Double.class,  new JsonSerializer<Double>() {
@@ -150,16 +154,20 @@ public class FormulaFactory {
      * @return the names of all currently installed formulas.
      */
     public static List<String> listFormulaNames() {
-        File officialDir = new File(METADATA_DIR_OFFICIAL);
+        File standaloneDir = new File(METADATA_DIR_STANDALONE_SALT);
+        File managerDir = new File(METADATA_DIR_MANAGER);
         File customDir = new File(METADATA_DIR_CUSTOM);
         List<File> files = new LinkedList<>(
-                Arrays.asList(officialDir.listFiles()));
+                Arrays.asList(standaloneDir.listFiles()));
+        files.addAll(Arrays.asList(managerDir.listFiles()));
         files.addAll(Arrays.asList(customDir.listFiles()));
         List<String> formulasList = new LinkedList<>();
 
         for (File f : files) {
-            if (f.isDirectory() && new File(f, "form.yml").isFile()) {
-                formulasList.add(f.getName());
+            if (f.isDirectory() && new File(f, LAYOUT_FILE).isFile()) {
+                if (!formulasList.contains(f.getName())) {
+                    formulasList.add(f.getName());
+                }
             }
         }
         formulasList.sort(String.CASE_INSENSITIVE_ORDER);
@@ -362,18 +370,22 @@ public class FormulaFactory {
      * @param name the name of the formula
      * @return the layout
      */
+    @SuppressWarnings("unchecked")
     public static Optional<Map<String, Object>> getFormulaLayoutByName(String name) {
-        File layoutFileOfficial = new File(METADATA_DIR_OFFICIAL + name + "/form.yml");
-        File layoutFileCustom = new File(METADATA_DIR_CUSTOM + name + "/form.yml");
+        String layoutFilePath = name + File.separator + LAYOUT_FILE;
+        File layoutFileStandalone = new File(METADATA_DIR_STANDALONE_SALT + layoutFilePath);
+        File layoutFileManager = new File(METADATA_DIR_MANAGER + layoutFilePath);
+        File layoutFileCustom = new File(METADATA_DIR_CUSTOM + layoutFilePath);
 
         try {
-            if (layoutFileOfficial.exists()) {
-                return Optional.of((Map<String, Object>) YAML.load(
-                        new FileInputStream(layoutFileOfficial)));
+            if (layoutFileStandalone.exists()) {
+                return Optional.of((Map<String, Object>) YAML.load(new FileInputStream(layoutFileStandalone)));
+            }
+            else if (layoutFileManager.exists()) {
+                return Optional.of((Map<String, Object>) YAML.load(new FileInputStream(layoutFileManager)));
             }
             else if (layoutFileCustom.exists()) {
-                return Optional.of((Map<String, Object>) YAML.load(
-                        new FileInputStream(layoutFileCustom)));
+                return Optional.of((Map<String, Object>) YAML.load(new FileInputStream(layoutFileCustom)));
             }
             else {
                 return Optional.empty();
@@ -674,24 +686,27 @@ public class FormulaFactory {
      * @param name the name of the formula
      * @return the metadata
      */
+    @SuppressWarnings("unchecked")
     public static Map<String, Object> getMetadata(String name) {
-        File metadataFileOfficial =
-                new File(METADATA_DIR_OFFICIAL + name + "/metadata.yml");
-        File metadataFileCustom = new File(METADATA_DIR_CUSTOM + name + "/metadata.yml");
+        String metadataFilePath = name + File.separator + METADATA_FILE;
+        File metadataFileStandalone = new File(METADATA_DIR_STANDALONE_SALT + metadataFilePath);
+        File metadataFileManager = new File(METADATA_DIR_MANAGER + metadataFilePath);
+        File metadataFileCustom = new File(METADATA_DIR_CUSTOM + metadataFilePath);
         try {
-            if (metadataFileOfficial.isFile()) {
-                return (Map<String, Object>) YAML.load(
-                        new FileInputStream(metadataFileOfficial));
+            if (metadataFileStandalone.isFile()) {
+                return (Map<String, Object>) YAML.load(new FileInputStream(metadataFileStandalone));
+            }
+            else if (metadataFileManager.isFile()) {
+                return (Map<String, Object>) YAML.load(new FileInputStream(metadataFileManager));
             }
             else if (metadataFileCustom.isFile()) {
-                    return (Map<String, Object>) YAML.load(
-                            new FileInputStream(metadataFileCustom));
+                return (Map<String, Object>) YAML.load(new FileInputStream(metadataFileCustom));
             }
             else {
                 return Collections.emptyMap();
             }
         }
-        catch (IOException | YAMLException e) {
+        catch (IOException e) {
             return Collections.emptyMap();
         }
     }
@@ -702,22 +717,40 @@ public class FormulaFactory {
      * @param param the name of the metadata value
      * @return the metadata value
      */
-    public static Optional<Object> getMetadata(String name, String param) {
+    private static Optional<Object> getMetadata(String name, String param) {
         return Optional.ofNullable(getMetadata(name).getOrDefault(param, null));
     }
 
     /**
      * Read the 'pillar.example' file for a given formula and return the data.
      *
-     * @param formulaName the given name of a formula
+     * @param name the given name of a formula
      * @return data from pillar.example
      * @throws IOException in case there is a problem reading the pillar.example file
      */
     @SuppressWarnings("unchecked")
-    public static Map<String, Object> getPillarExample(String formulaName) throws IOException {
-        File pillarExample = new File(metadataDirOfficial + formulaName + "/pillar.example");
-        try (FileInputStream fis = new FileInputStream(pillarExample)) {
-            return (Map<String, Object>) YAML.load(fis);
+    public static Map<String, Object> getPillarExample(String name) {
+        String pillarExamplePath = name + File.separator + PILLAR_EXAMPLE_FILE;
+        File pillarExampleFileStandalone = new File(METADATA_DIR_STANDALONE_SALT + pillarExamplePath);
+        File pillarExampleFileManager = new File(METADATA_DIR_MANAGER + pillarExamplePath);
+        File pillarExampleFileCustom = new File(METADATA_DIR_CUSTOM + pillarExamplePath);
+
+        try {
+            if (pillarExampleFileStandalone.isFile()) {
+                return (Map<String, Object>) YAML.load(new FileInputStream(pillarExampleFileStandalone));
+            }
+            else if (pillarExampleFileManager.isFile()) {
+                return (Map<String, Object>) YAML.load(new FileInputStream(pillarExampleFileManager));
+            }
+            else if (pillarExampleFileCustom.isFile()) {
+                return (Map<String, Object>) YAML.load(new FileInputStream(pillarExampleFileCustom));
+            }
+            else {
+                return Collections.emptyMap();
+            }
+        }
+        catch (IOException e) {
+            return Collections.emptyMap();
         }
     }
 
