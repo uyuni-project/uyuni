@@ -29,11 +29,13 @@ import org.apache.log4j.Logger;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
+import java.util.function.BiFunction;
 
 /**
  * Service to manage server monitoring.
@@ -59,6 +61,29 @@ public class MonitoringService {
         public T getLocal() {
             return local;
         }
+    }
+
+    private static BiFunction<String, Optional<String>, Optional<InputStream>> execCtl =
+            (String cmd, Optional<String> pillar) -> {
+        try {
+            Process process = new ProcessBuilder().command("/usr/bin/sudo",
+                    MGR_MONITORING_CTL, cmd, pillar.orElse(""))
+                    .start();
+            boolean exited = process.waitFor(5, TimeUnit.MINUTES);
+            if (!exited) {
+                LOG.error("Timeout waiting for " + MGR_MONITORING_CTL + " to complete");
+                return Optional.empty();
+            }
+            return Optional.of(process.getInputStream());
+        }
+        catch (IOException | InterruptedException e) {
+            LOG.error("Error executing " + MGR_MONITORING_CTL, e);
+            return Optional.empty();
+        }
+    };
+
+    public static void setExecCtlFunction(BiFunction<String, Optional<String>, Optional<InputStream>> execCtl) {
+        MonitoringService.execCtl = execCtl;
     }
 
     /**
@@ -93,7 +118,7 @@ public class MonitoringService {
                 new Tuple2<>("node",
                         "service_|-node_exporter_service_|-prometheus-node_exporter_|-running"),
                 new Tuple2<>("postgres",
-                        "service_|-postgres_exporter_service_|-postgres-exporter_|-running"),
+                        "service_|-postgres_exporter_service_|-prometheus-postgres_exporter_|-running"),
                 new Tuple2<>("tomcat",
                         "service_|-jmx_exporter_tomcat_service_|-jmx-exporter@tomcat_|-running"),
                 new Tuple2<>("taskomatic",
@@ -121,39 +146,35 @@ public class MonitoringService {
     private static Optional<Map<String, Boolean>> invokeMonitoringCtl(String cmd, Optional<String> pillar,
                                                                       Tuple2<String, String>... exporterStates) {
         try {
-            Process process = new ProcessBuilder().command("/usr/bin/sudo",
-                    MGR_MONITORING_CTL, cmd, pillar.orElse(""))
-                    .start();
-            boolean exited = process.waitFor(5, TimeUnit.MINUTES);
-            if (!exited) {
-                LOG.error("Timeout waiting for " + MGR_MONITORING_CTL + " to complete");
-                return Optional.empty();
-            }
             Map<String, Boolean> exporters = new HashMap<>();
-            try (BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
-                String cmdOutput = IOUtils.toString(reader);
-                LOG.debug(MGR_MONITORING_CTL + " output:" + cmdOutput);
-                LocalResponse<Map<String, ModuleRun<JsonElement>>> jsonOut = GSON.fromJson(cmdOutput,
-                        new TypeToken<LocalResponse<Map<String, ModuleRun<JsonElement>>>>() { }.getType());
+            Optional<InputStream> ctlOutput = execCtl.apply(cmd, pillar);
+            if (ctlOutput.isPresent()) {
+                try (BufferedReader reader = new BufferedReader(new InputStreamReader(ctlOutput.get()))) {
+                    String cmdOutput = IOUtils.toString(reader);
+                    LOG.debug(MGR_MONITORING_CTL + " output: " + cmdOutput);
 
-                for (Tuple2<String, String> state: exporterStates) {
-                    exporters.put(state.getA(),
-                            isResultTrue(jsonOut.getLocal(), state.getB()));
+                    LocalResponse<Map<String, ModuleRun<JsonElement>>> jsonOut = GSON.fromJson(cmdOutput,
+                            new TypeToken<LocalResponse<Map<String, ModuleRun<JsonElement>>>>() {
+                            }.getType());
+
+                    for (Tuple2<String, String> state : exporterStates) {
+                        exporters.put(state.getA(),
+                                isResultTrue(jsonOut.getLocal(), state.getB()));
+                    }
+
+                    return Optional.of(exporters);
+                } catch (JsonParseException e) {
+                    LOG.error("Error parsing JSON: " + e.getMessage());
+                    return Optional.empty();
                 }
-
-                return Optional.of(exporters);
             }
-            catch (JsonParseException e) {
-                LOG.error("Error parsing JSON: " + e.getMessage());
+            else {
+                LOG.error("Got empty output from " + MGR_MONITORING_CTL);
                 return Optional.empty();
             }
         }
         catch (IOException e) {
             LOG.error("Error invoking " + MGR_MONITORING_CTL, e);
-            return Optional.empty();
-        }
-        catch (InterruptedException e) {
-            LOG.error("Waiting for " + MGR_MONITORING_CTL + " was interrupted", e);
             return Optional.empty();
         }
     }

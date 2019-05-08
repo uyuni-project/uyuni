@@ -1,0 +1,56 @@
+{
+    "local": {
+        "module_|-jmx_taskomatic_exporter_service_|-service.status_|-run": {
+            "name": "service.status",
+            "changes": {
+                "ret": true
+            },
+            "comment": "Module function service.status executed",
+            "result": true,
+            "__sls__": "srvmonitoring.status",
+            "__run_num__": 0,
+            "start_time": "18:31:37.482343",
+            "duration": 31.181,
+            "__id__": "jmx_taskomatic_exporter_service"
+        },
+        "module_|-jmx_tomcat_exporter_service_|-service.status_|-run": {
+            "name": "service.status",
+            "changes": {
+                "ret": true
+            },
+            "comment": "Module function service.status executed",
+            "result": true,
+            "__sls__": "srvmonitoring.status",
+            "__run_num__": 1,
+            "start_time": "18:31:37.513996",
+            "duration": 22.479,
+            "__id__": "jmx_tomcat_exporter_service"
+        },
+        "module_|-node_exporter_service_|-service.status_|-run": {
+            "name": "service.status",
+            "changes": {
+                "ret": true
+            },
+            "comment": "Module function service.status executed",
+            "result": true,
+            "__sls__": "srvmonitoring.status",
+            "__run_num__": 2,
+            "start_time": "18:31:37.536903",
+            "duration": 22.76,
+            "__id__": "node_exporter_service"
+        },
+        "module_|-postgres_exporter_service_|-service.status_|-run": {
+            "name": "service.status",
+            "changes": {
+                "ret": true
+            },
+            "comment": "Module function service.status executed",
+            "result": true,
+            "__sls__": "srvmonitoring.status",
+            "__run_num__": 3,
+            "start_time": "18:31:37.560048",
+            "duration": 23.169,
+            "__id__": "postgres_exporter_service"
+        }
+    }
+}

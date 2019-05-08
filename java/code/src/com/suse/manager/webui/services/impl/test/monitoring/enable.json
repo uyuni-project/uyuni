@@ -1,0 +1,152 @@
+{
+    "local": {
+        "cmd_|-node_exporter_|-/usr/bin/rpm --query --info golang-github-prometheus-node_exporter_|-run": {
+            "name": "/usr/bin/rpm --query --info golang-github-prometheus-node_exporter",
+            "changes": {
+                "pid": 14796,
+                "retcode": 0,
+                "stdout": "Name        : golang-github-prometheus-node_exporter\nVersion     : 0.17.0\nRelease     : 400.1.20.develHead\nArchitecture: x86_64\nInstall Date: Mon Apr 15 19:29:44 2019\nGroup       : System/Management\nSize        : 26918015\nLicense     : Apache-2.0\nSignature   : DSA/SHA1, Sun Apr 14 07:10:32 2019, Key ID 27fa41bd8a7c64f9\nSource RPM  : golang-github-prometheus-node_exporter-0.17.0-400.1.20.develHead.src.rpm\nBuild Date  : Sun Apr 14 07:10:10 2019\nBuild Host  : sheep17\nRelocations : (not relocatable)\nVendor      : obs://build.suse.de/Devel:Galaxy:Manager:Head\nURL         : https://prometheus.io/\nSummary     : Prometheus exporter for machine metrics\nDescription :\nPrometheus exporter for hardware and OS metrics exposed by *NIX kernels, written in Go with pluggable metric collectors.\nDistribution: Devel:Galaxy:Manager:Head / SLE_15_SP1",
+                "stderr": ""
+            },
+            "result": true,
+            "comment": "Command \"/usr/bin/rpm --query --info golang-github-prometheus-node_exporter\" run",
+            "__sls__": "srvmonitoring.enable",
+            "__run_num__": 0,
+            "start_time": "17:29:01.673815",
+            "duration": 19.162,
+            "__id__": "node_exporter"
+        },
+        "service_|-node_exporter_service_|-prometheus-node_exporter_|-running": {
+            "name": "prometheus-node_exporter",
+            "changes": {
+                "prometheus-node_exporter": true
+            },
+            "result": true,
+            "comment": "Service prometheus-node_exporter has been enabled, and is running",
+            "__sls__": "srvmonitoring.enable",
+            "__run_num__": 1,
+            "start_time": "17:29:08.531213",
+            "duration": 417.3,
+            "__id__": "node_exporter_service"
+        },
+        "cmd_|-postgres_exporter_|-/usr/bin/rpm --query --info golang-github-wrouesnel-postgres_exporter_|-run": {
+            "name": "/usr/bin/rpm --query --info golang-github-wrouesnel-postgres_exporter",
+            "changes": {
+                "pid": 14832,
+                "retcode": 0,
+                "stdout": "Name        : golang-github-wrouesnel-postgres_exporter\nVersion     : 0.4.7\nRelease     : 400.12.3.develHead\nArchitecture: x86_64\nInstall Date: Wed Apr 24 16:08:37 2019\nGroup       : System/Management\nSize        : 12364337\nLicense     : Apache-2.0\nSignature   : DSA/SHA1, Mon Apr 22 11:30:09 2019, Key ID 27fa41bd8a7c64f9\nSource RPM  : golang-github-wrouesnel-postgres_exporter-0.4.7-400.12.3.develHead.src.rpm\nBuild Date  : Mon Apr 22 11:29:56 2019\nBuild Host  : sheep14\nRelocations : (not relocatable)\nVendor      : obs://build.suse.de/Devel:Galaxy:Manager:Head\nURL         : https://prometheus.io/\nSummary     : Prometheus exporter for PostgreSQL\nDescription :\nPrometheus exporter for PostgreSQL server metrics. Supported PostgreSQL versions: 9.1 and up.\nDistribution: Devel:Galaxy:Manager:Head / SLE_15_SP1",
+                "stderr": ""
+            },
+            "result": true,
+            "comment": "Command \"/usr/bin/rpm --query --info golang-github-wrouesnel-postgres_exporter\" run",
+            "__sls__": "srvmonitoring.enable",
+            "__run_num__": 2,
+            "start_time": "17:29:08.949055",
+            "duration": 18.807,
+            "__id__": "postgres_exporter"
+        },
+        "file_|-postgres_exporter_configuration_|-/etc/postgres_exporter/postgres_exporter_queries.yaml_|-managed": {
+            "changes": {},
+            "pchanges": {},
+            "comment": "File /etc/postgres_exporter/postgres_exporter_queries.yaml is in the correct state",
+            "name": "/etc/postgres_exporter/postgres_exporter_queries.yaml",
+            "result": true,
+            "__sls__": "srvmonitoring.enable",
+            "__run_num__": 3,
+            "start_time": "17:29:08.972303",
+            "duration": 29.72,
+            "__id__": "postgres_exporter_configuration"
+        },
+        "file_|-postgres_exporter_service_|-/etc/sysconfig/prometheus-postgres_exporter_|-managed": {
+            "changes": {},
+            "pchanges": {},
+            "comment": "File /etc/sysconfig/prometheus-postgres_exporter is in the correct state",
+            "name": "/etc/sysconfig/prometheus-postgres_exporter",
+            "result": true,
+            "__sls__": "srvmonitoring.enable",
+            "__run_num__": 4,
+            "start_time": "17:29:09.002921",
+            "duration": 25.516,
+            "__id__": "postgres_exporter_service"
+        },
+        "service_|-postgres_exporter_service_|-prometheus-postgres_exporter_|-running": {
+            "name": "prometheus-postgres_exporter",
+            "changes": {
+                "prometheus-postgres_exporter": true
+            },
+            "result": true,
+            "comment": "Service prometheus-postgres_exporter has been enabled, and is running",
+            "__sls__": "srvmonitoring.enable",
+            "__run_num__": 5,
+            "start_time": "17:29:09.029085",
+            "duration": 370.441,
+            "__id__": "postgres_exporter_service"
+        },
+        "cmd_|-jmx_exporter_|-/usr/bin/rpm --query --info jmx_exporter jmx_exporter-tomcat_|-run": {
+            "name": "/usr/bin/rpm --query --info jmx_exporter jmx_exporter-tomcat",
+            "changes": {
+                "pid": 14865,
+                "retcode": 0,
+                "stdout": "Name        : jmx_exporter\nVersion     : 0.3.1\nRelease     : 1.6\nArchitecture: noarch\nInstall Date: Mon Apr 15 19:30:10 2019\nGroup       : Development/Libraries/Java\nSize        : 726095\nLicense     : Apache-2.0\nSignature   : RSA/SHA256, Mon Apr 15 17:55:38 2019, Key ID acaa9cf7e6e5a213\nSource RPM  : jmx_exporter-0.3.1-1.6.src.rpm\nBuild Date  : Mon Apr 15 17:55:33 2019\nBuild Host  : build73\nRelocations : (not relocatable)\nVendor      : obs://build.opensuse.org/systemsmanagement\nURL         : http://github.com/prometheus/jmx_exporter\nSummary     : Prometheus exporter for JMX metrics\nDescription :\nA Collector that can configurably scrape and expose mBeans of a JMX target. It meant to be run as a Java Agent, exposing an HTTP server and scraping the local JVM.\n\nThis can be also run as an independent HTTP server and scrape remote JMX targets.\nDistribution: systemsmanagement:sumaform:tools / SLE_15_SP1\nName        : jmx_exporter-tomcat\nVersion     : 0.3.1\nRelease     : 1.6\nArchitecture: noarch\nInstall Date: Mon Apr 15 19:30:10 2019\nGroup       : Development/Libraries/Java\nSize        : 311\nLicense     : Apache-2.0\nSignature   : RSA/SHA256, Mon Apr 15 17:55:38 2019, Key ID acaa9cf7e6e5a213\nSource RPM  : jmx_exporter-0.3.1-1.6.src.rpm\nBuild Date  : Mon Apr 15 17:55:33 2019\nBuild Host  : build73\nRelocations : (not relocatable)\nVendor      : obs://build.opensuse.org/systemsmanagement\nURL         : http://github.com/prometheus/jmx_exporter\nSummary     : Prometheus exporter for JMX metrics - tomcat config\nDescription :\nA Collector that can configurably scrape and expose mBeans of a JMX target.\nThis package provide tomcat example configuration\nDistribution: systemsmanagement:sumaform:tools / SLE_15_SP1",
+                "stderr": ""
+            },
+            "result": true,
+            "comment": "Command \"/usr/bin/rpm --query --info jmx_exporter jmx_exporter-tomcat\" run",
+            "__sls__": "srvmonitoring.enable",
+            "__run_num__": 6,
+            "start_time": "17:29:09.399993",
+            "duration": 19.196,
+            "__id__": "jmx_exporter"
+        },
+        "service_|-jmx_exporter_tomcat_service_|-jmx-exporter@tomcat_|-running": {
+            "name": "jmx-exporter@tomcat",
+            "changes": {
+                "jmx-exporter@tomcat": true
+            },
+            "result": true,
+            "comment": "Service jmx-exporter@tomcat has been enabled, and is running",
+            "__sls__": "srvmonitoring.enable",
+            "__run_num__": 7,
+            "start_time": "17:29:09.420372",
+            "duration": 456.254,
+            "__id__": "jmx_exporter_tomcat_service"
+        },
+        "file_|-jmx_exporter_taskomatic_systemd_config_|-/etc/jmx_exporter/taskomatic/environment_|-managed": {
+            "changes": {},
+            "pchanges": {},
+            "comment": "File /etc/jmx_exporter/taskomatic/environment is in the correct state",
+            "name": "/etc/jmx_exporter/taskomatic/environment",
+            "result": true,
+            "__sls__": "srvmonitoring.enable",
+            "__run_num__": 8,
+            "start_time": "17:29:09.877145",
+            "duration": 3.355,
+            "__id__": "jmx_exporter_taskomatic_systemd_config"
+        },
+        "file_|-jmx_exporter_taskomatic_yaml_config_|-/etc/jmx_exporter/taskomatic/jmx_exporter.yml_|-managed": {
+            "changes": {},
+            "pchanges": {},
+            "comment": "File /etc/jmx_exporter/taskomatic/jmx_exporter.yml is in the correct state",
+            "name": "/etc/jmx_exporter/taskomatic/jmx_exporter.yml",
+            "result": true,
+            "__sls__": "srvmonitoring.enable",
+            "__run_num__": 9,
+            "start_time": "17:29:09.883815",
+            "duration": 2.582,
+            "__id__": "jmx_exporter_taskomatic_yaml_config"
+        },
+        "service_|-jmx_exporter_taskomatic_service_|-jmx-exporter@taskomatic_|-running": {
+            "name": "jmx-exporter@taskomatic",
+            "changes": {
+                "jmx-exporter@taskomatic": true
+            },
+            "result": true,
+            "comment": "Service jmx-exporter@taskomatic has been enabled, and is running",
+            "__sls__": "srvmonitoring.enable",
+            "__run_num__": 10,
+            "start_time": "17:29:09.887689",
+            "duration": 551.621,
+            "__id__": "jmx_exporter_taskomatic_service"
+        }
+    }
+}
