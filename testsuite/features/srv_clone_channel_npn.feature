@@ -63,7 +63,7 @@ Feature: Clone a channel
 
   Scenario: Check that new patches exists
     Given I am on the patches page
-    When I follow "All" in the left menu
+    When I follow the left menu "Patches > Patches > All"
     And I select "500" from "1154021400_PAGE_SIZE_LABEL"
     Then I should see a "CL-hoag-dummy-7890" link
     And I should see a "CL-virgo-dummy-3456" link
@@ -72,7 +72,7 @@ Feature: Clone a channel
 
   Scenario: Check CL-hoag-dummy-7890 patches
     Given I am on the patches page
-    When I follow "All" in the left menu
+    When I follow the left menu "Patches > Patches > All"
     And I select "500" from "1154021400_PAGE_SIZE_LABEL"
     And I follow "CL-hoag-dummy-7890"
     Then I should see a "CL-hoag-dummy-7890 - Security Advisory" text
@@ -81,7 +81,7 @@ Feature: Clone a channel
 
   Scenario: Check CM-virgo-dummy-3456 patches
     Given I am on the patches page
-    When I follow "All" in the left menu
+    When I follow the left menu "Patches > Patches > All"
     And I select "500" from "1154021400_PAGE_SIZE_LABEL"
     And I follow "CL-virgo-dummy-3456"
     Then I should see a "CL-virgo-dummy-3456 - Bug Fix Advisory" text
@@ -108,14 +108,14 @@ Feature: Clone a channel
     And I click on "Delete Channel"
     Then I should see a "Clone of Test-Channel-x86_64" text
     And I should see a "has been deleted." text
-    Given I follow "Overview" in the left menu
+    Given I follow the left menu "Software > Manage Software Channels > Overview"
     When I follow "Clone 2 of Test-Channel-x86_64"
     And I follow "Delete software channel"
     And I check "unsubscribeSystems"
     And I click on "Delete Channel"
     Then I should see a "Clone 2 of Test-Channel-x86_64" text
     And I should see a "has been deleted." text
-    Given I follow "Overview" in the left menu
+    Given I follow the left menu "Software > Manage Software Channels > Overview"
     When I follow "Clone 3 of Test-Channel-x86_64"
     And I follow "Delete software channel"
     And I check "unsubscribeSystems"

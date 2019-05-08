@@ -5,9 +5,7 @@ Feature: Weak dependencies in the package page and in the metadata on the client
 
   Background:
     Given I am authorized as "admin" with password "admin"
-    When I follow "Software" in the left menu
-    And I follow "Channels" in the left menu
-    And I follow "Channels > All" in the left menu
+    When I follow the left menu "Software > Channel List > All"
 
   Scenario: Pre-requisite: remove packages before weak-dependancies test
    When I run "zypper -n in virgo-dummy" on "sle-client" without error control

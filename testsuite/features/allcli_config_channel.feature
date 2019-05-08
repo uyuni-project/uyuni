@@ -5,8 +5,7 @@ Feature: Management of configuration of all types of clients in a single channel
 
   Scenario: Create a configuration channel for mixed client types
     Given I am authorized as "admin" with password "admin"
-    When I follow "Configuration" in the left menu
-    And I follow "Configuration Channels" in the left menu
+    When I follow the left menu "Configuration > Configuration Channels"
     And I follow "Create Config Channel"
     And I enter "Mixed Channel" as "cofName"
     And I enter "mixedchannel" as "cofLabel"
@@ -16,8 +15,7 @@ Feature: Management of configuration of all types of clients in a single channel
 
   Scenario: Add a configuration file to the mixed configuration channel
     Given I am authorized as "admin" with password "admin"
-    When I follow "Configuration" in the left menu
-    And I follow "Configuration Channels" in the left menu
+    When I follow the left menu "Configuration > Configuration Channels"
     And I follow "Mixed Channel"
     And I follow "Create Configuration File or Directory"
     And I enter "/etc/s-mgr/config" as "cffPath"
@@ -82,9 +80,8 @@ Feature: Management of configuration of all types of clients in a single channel
 
   Scenario: Deploy the file to all systems
     Given I am authorized as "admin" with password "admin"
-    When I follow "Configuration" in the left menu
-    And I run "rhn-actions-control --enable-all" on "sle-client"
-    And I follow "Configuration Channels" in the left menu
+    When I run "rhn-actions-control --enable-all" on "sle-client"
+    And I follow the left menu "Configuration > Configuration Channels"
     And I follow "Mixed Channel"
     And I follow "Deploy all configuration files to all subscribed systems"
     Then I should see a "/etc/s-mgr/config" link
@@ -143,8 +140,7 @@ Feature: Management of configuration of all types of clients in a single channel
 @centos_minion
   Scenario: Unsubscribe CentOS minion and delete configuration files
     Given I am authorized as "admin" with password "admin"
-    When I follow "Configuration" in the left menu
-    And I follow "Configuration Channels" in the left menu
+    When I follow the left menu "Configuration > Configuration Channels"
     And I follow "Mixed Channel"
     And I follow "Systems" in the content area
     And I check the "ceos-minion" client
@@ -155,8 +151,7 @@ Feature: Management of configuration of all types of clients in a single channel
 @ubuntu_minion
   Scenario: Unsubscribe Ubuntu minion and delete configuration files
     Given I am authorized as "admin" with password "admin"
-    When I follow "Configuration" in the left menu
-    And I follow "Configuration Channels" in the left menu
+    When I follow the left menu "Configuration > Configuration Channels"
     And I follow "Mixed Channel"
     And I follow "Systems" in the content area
     And I check the "ubuntu-minion" client
@@ -167,8 +162,7 @@ Feature: Management of configuration of all types of clients in a single channel
 @ssh_minion
   Scenario: Unsubscribe SSH minion and delete configuration files
     Given I am authorized as "admin" with password "admin"
-    When I follow "Configuration" in the left menu
-    And I follow "Configuration Channels" in the left menu
+    When I follow the left menu "Configuration > Configuration Channels"
     And I follow "Mixed Channel"
     And I follow "Systems" in the content area
     And I check the "ssh-minion" client
@@ -237,8 +231,7 @@ Feature: Management of configuration of all types of clients in a single channel
 
   Scenario: Cleanup: remove remaining systems from configuration channel
     Given I am authorized as "admin" with password "admin"
-    When I follow "Configuration" in the left menu
-    And I follow "Configuration Channels" in the left menu
+    When I follow the left menu "Configuration > Configuration Channels"
     And I follow "Mixed Channel"
     And I follow "Systems" in the content area
     And I check the "sle-client" client
@@ -248,8 +241,7 @@ Feature: Management of configuration of all types of clients in a single channel
 
   Scenario: Cleanup: remove the mixed configuration channel
     Given I am authorized as "admin" with password "admin"
-    When I follow "Configuration" in the left menu
-    And I follow "Configuration Channels" in the left menu
+    When I follow the left menu "Configuration > Configuration Channels"
     And I follow "Mixed Channel"
     And I follow "Delete Channel"
     And I click on "Delete Config Channel"

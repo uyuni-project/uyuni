@@ -5,10 +5,10 @@ Feature: Custom system info key-value pairs
 
   Background:
     Given I am authorized
-    When I follow "Systems > Overview" in the left menu
+    When I follow the left menu "Systems > Overview"
 
   Scenario: Create a new key
-    When I follow "Custom System Info" in the left menu
+    When I follow the left menu "Systems > Custom System Info"
     And I follow "Create Key"
     And I should see a "Create Custom Info Key" text
     And I enter "key-label" as "label"
@@ -37,7 +37,7 @@ Feature: Custom system info key-value pairs
     And I should see a "key-value-edited" link
 
   Scenario: Edit the key description
-    When I follow "Custom System Info" in the left menu
+    When I follow the left menu "Systems > Custom System Info"
     And I follow "key-label"
     And I enter "key-desc-edited" as "description"
     And I click on "Update Key"
@@ -45,7 +45,7 @@ Feature: Custom system info key-value pairs
     And I should see a "key-desc-edited" text
 
   Scenario: Delete the value
-    When I follow "Custom System Info" in the left menu
+    When I follow the left menu "Systems > Custom System Info"
     And I follow "key-label"
     And I follow this "sle-client" link
     And I follow "Custom Info"
@@ -55,7 +55,7 @@ Feature: Custom system info key-value pairs
     Then I should see a "No custom information defined for this system." text
 
   Scenario: Delete the key
-    When I follow "Custom System Info" in the left menu
+    When I follow the left menu "Systems > Custom System Info"
     And I follow "key-label"
     And I follow "Delete Key"
     And I click on "Delete Key"

@@ -210,7 +210,7 @@ end
 Given(/^I am on the Systems page$/) do
   steps %(
     When I am authorized as "admin" with password "admin"
-    And I follow "Systems > Overview" in the left menu
+    When I follow the left menu "Systems > Overview"
   )
 end
 
@@ -377,6 +377,7 @@ end
 
 Then(/^I should see package "([^"]*)" in channel "([^"]*)"$/) do |pkg, channel|
   steps %(
+    When I follow the left menu "Software > Channel List > All"
     And I follow "#{channel}"
     And I follow "Packages"
     Then I should see package "#{pkg}"

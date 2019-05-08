@@ -5,8 +5,7 @@ Feature: Build image with authenticated registry
 
   Scenario: Create an authenticated image store as Docker admin
     Given I am authorized as "docker" with password "docker"
-    When I follow "Images" in the left menu
-    And I follow "Stores" in the left menu
+    When I follow the left menu "Images > Stores"
     And I follow "Create"
     And I enter "portus" as "label"
     And I enter "portus.mgr.suse.de:5000/cucutest" as "uri"
@@ -17,8 +16,7 @@ Feature: Build image with authenticated registry
 
   Scenario: Create a profile for the authenticated image store as Docker admin
     Given I am authorized as "docker" with password "docker"
-    When I follow "Images" in the left menu
-    And I follow "Profiles" in the left menu
+    When I follow the left menu "Images > Profiles"
     And I follow "Create"
     And I enter "portus_profile" as "label"
     And I select "portus" from "imageStore"
@@ -41,8 +39,7 @@ Feature: Build image with authenticated registry
 
   Scenario: Cleanup: remove Docker profile for the authenticated image store
     Given I am authorized as "docker" with password "docker"
-    When I follow "Images" in the left menu
-    And I follow "Profiles" in the left menu
+    When I follow the left menu "Images > Profiles"
     And I check the row with the "portus_profile" text
     And I click on "Delete"
     And I click on the css "button.btn-danger"
@@ -50,8 +47,7 @@ Feature: Build image with authenticated registry
 
   Scenario: Cleanup: remove authenticated image store
     Given I am authorized as "docker" with password "docker"
-    When I follow "Images" in the left menu
-    And I follow "Stores" in the left menu
+    When I follow the left menu "Images > Stores"
     And I check the row with the "portus" text
     And I click on "Delete"
     And I click on the css "button.btn-danger"

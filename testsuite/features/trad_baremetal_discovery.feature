@@ -14,9 +14,7 @@ Feature: Bare metal discovery
 
   Scenario: Enable bare metal discovery
     Given I am authorized as "admin" with password "admin"
-    And I follow "Admin"
-    And I follow "Manager Configuration" in the left menu
-    And I follow "General" in the left menu
+    When I follow the left menu "Admin > Manager Configuration > General"
     When I follow "Bare-metal systems" in the content area
     Then I should see a "Allows SUSE Manager to automatically add bare-metal systems capable of PXE booting to an organization." text
     And I should see a "Enable adding to this organization" button
@@ -36,8 +34,7 @@ Feature: Bare metal discovery
 
   Scenario: See the client in unprovisioned systems list
     Given I am on the Systems page
-    And I click Systems, under Systems node 
-    And I follow "Unprovisioned Systems" in the left menu
+    When I follow the left menu "Systems > Systems > Unprovisioned Systems"
     Then I should see a "Unprovisioned Systems" text
     And I should see a "Detected on" text
     And I should see a "Number of CPUs" text
@@ -53,7 +50,7 @@ Feature: Bare metal discovery
 
   Scenario: Check unprovisioned system details
     Given I am on the Systems page
-    And I click Systems, under Systems node 
+    When I follow the left menu "Systems > Systems"
     When I follow this "sle-client" link
     Then I should see a "Details" link in the content area
     And I should not see a "Software" link in the content area
@@ -111,9 +108,7 @@ Feature: Bare metal discovery
 
   Scenario: Cleanup: disable bare metal discovery
     Given I am authorized as "admin" with password "admin"
-    And I follow "Admin"
-    And I follow "Manager Configuration" in the left menu
-    And I follow "General" in the left menu
+    When I follow the left menu "Admin > Manager Configuration > General"
     When I follow "Bare-metal systems" in the content area
     Then I should see a "Allows SUSE Manager to automatically add bare-metal systems capable of PXE booting to an organization." text
     And I should see a "Disable adding to this organization" button

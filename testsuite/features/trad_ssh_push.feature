@@ -13,7 +13,7 @@ Feature: Register a traditional system to be managed via SSH push
 
   Scenario: Create an activation key for SSH push
     Given I am on the Systems page
-    When I follow "Activation Keys" in the left menu
+    When I follow the left menu "Systems > Activation Keys"
     And I follow "Create Key"
     And I enter "SSH push key" as "description"
     And I enter "ssh-push" as "key"
@@ -23,7 +23,7 @@ Feature: Register a traditional system to be managed via SSH push
 
   Scenario: Create an activation key for SSH push via tunnel
     Given I am on the Systems page
-    When I follow "Activation Keys" in the left menu
+    When I follow the left menu "Systems > Activation Keys"
     And I follow "Create Key"
     And I enter "SSH push via tunnel key" as "description"
     And I enter "ssh-push-tunnel" as "key"
@@ -54,7 +54,7 @@ Feature: Register a traditional system to be managed via SSH push
 
   Scenario: Cleanup: delete the activation key for SSH push
     Given I am on the Systems page
-    And I follow "Activation Keys" in the left menu
+    When I follow the left menu "Systems > Activation Keys"
     And I follow "SSH push key" in the content area
     And I follow "Delete Key"
     And I click on "Delete Activation Key"
@@ -62,7 +62,7 @@ Feature: Register a traditional system to be managed via SSH push
 
   Scenario: Cleanup: delete the activation key for SSH push via tunnel
     Given I am on the Systems page
-    And I follow "Activation Keys" in the left menu
+    When I follow the left menu "Systems > Activation Keys"
     And I follow "SSH push via tunnel key" in the content area
     And I follow "Delete Key"
     And I click on "Delete Activation Key"

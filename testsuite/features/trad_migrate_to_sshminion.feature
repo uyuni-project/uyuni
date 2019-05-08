@@ -20,8 +20,7 @@ Feature: Migrate a traditional client into a Salt SSH minion
 
   Scenario: Change contact method of activation key to ssh-push
     Given I am authorized as "admin" with password "admin"
-    And I follow "Systems" in the left menu
-    And I follow "Activation Keys"
+    When I follow the left menu "Systems > Activation Keys"
     And I follow "SUSE Test PKG Key x86_64" in the content area
     And I select "Push via SSH" from "contactMethodId"
     And I click on "Update Activation Key"
@@ -123,8 +122,7 @@ Feature: Migrate a traditional client into a Salt SSH minion
 
   Scenario: Cleanup: change contact method of activation key back to default
     Given I am authorized as "admin" with password "admin"
-    When I follow "Systems" in the left menu
-    And I follow "Activation Keys"
+    When I follow the left menu "Systems > Activation Keys"
     And I follow "SUSE Test PKG Key x86_64" in the content area
     And I select "Default" from "contactMethodId"
     And I click on "Update Activation Key"

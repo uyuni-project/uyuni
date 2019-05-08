@@ -8,7 +8,7 @@ Feature: Be able to create and manipulate activation keys
 
   Scenario: Create an activation key
     Given I am on the Systems page
-    When I follow "Activation Keys" in the left menu
+    When I follow the left menu "Systems > Activation Keys"
     And I follow "Create Key"
     And I enter "SUSE Test Key i586" as "description"
     And I enter "SUSE-DEV-i586" as "key"
@@ -23,7 +23,7 @@ Feature: Be able to create and manipulate activation keys
 
   Scenario: Change limit of the activation key
     Given I am on the Systems page
-    When I follow "Activation Keys" in the left menu
+    When I follow the left menu "Systems > Activation Keys"
     And I follow "SUSE Test Key i586"
     And I enter "20" as "usageLimit"
     And I click on "Update Activation Key"
@@ -32,7 +32,7 @@ Feature: Be able to create and manipulate activation keys
 
   Scenario: Change the base channel of the activation key
     Given I am on the Systems page
-    When I follow "Activation Keys" in the left menu
+    When I follow the left menu "Systems > Activation Keys"
     And I follow "SUSE Test Key i586"
     And I select "Test-Channel-i586" from "selectedBaseChannel"
     And I click on "Update Activation Key"
@@ -40,7 +40,7 @@ Feature: Be able to create and manipulate activation keys
 
   Scenario: Create an activation key with a channel
     Given I am on the Systems page
-    When I follow "Activation Keys" in the left menu
+    When I follow the left menu "Systems > Activation Keys"
     And I follow "Create Key"
     And I enter "SUSE Test Key x86_64" as "description"
     And I enter "SUSE-DEV-x86_64" as "key"
@@ -57,7 +57,7 @@ Feature: Be able to create and manipulate activation keys
 
   Scenario: Create an activation key with a channel and a package list for x86_64
     Given I am on the Systems page
-    When I follow "Activation Keys" in the left menu
+    When I follow the left menu "Systems > Activation Keys"
     And I follow "Create Key"
     And I enter "SUSE Test PKG Key x86_64" as "description"
     And I enter "SUSE-PKG-x86_64" as "key"
@@ -76,7 +76,7 @@ Feature: Be able to create and manipulate activation keys
 
   Scenario: Create an activation key with a channel and a package list for i586
     Given I am on the Systems page
-    When I follow "Activation Keys" in the left menu
+    When I follow the left menu "Systems > Activation Keys"
     And I follow "Create Key"
     And I enter "SUSE Test PKG Key i586" as "description"
     And I enter "SUSE-PKG-i586" as "key"
@@ -95,7 +95,7 @@ Feature: Be able to create and manipulate activation keys
 
   Scenario: Create an activation key for Ubuntu
     Given I am on the Systems page
-    When I follow "Activation Keys" in the left menu
+    When I follow the left menu "Systems > Activation Keys"
     And I follow "Create Key"
     And I enter "Ubuntu Test Key" as "description"
     And I enter "UBUNTU-TEST" as "key"
@@ -110,7 +110,7 @@ Feature: Be able to create and manipulate activation keys
 
   Scenario: Create an activation key with a channel for salt-ssh
     Given I am on the Systems page
-    When I follow "Activation Keys" in the left menu
+    When I follow the left menu "Systems > Activation Keys"
     And I follow "Create Key"
     And I enter "SUSE SSH Test Key x86_64" as "description"
     And I enter "SUSE-SSH-DEV-x86_64" as "key"

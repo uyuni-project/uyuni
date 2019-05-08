@@ -10,9 +10,15 @@ When(/^I follow "(.*?)" link$/) do |host|
   step %(I follow "#{system_name}")
 end
 
-When(/^I should see a "(.*)" text in the content area$/) do |txt|
+Then(/^I should see a "(.*)" text in the content area$/) do |txt|
   within('#spacewalk-content') do
     raise unless page.has_content?(txt)
+  end
+end
+
+Then(/^I should not see a "(.*)" text in the content area$/) do |txt|
+  within('#spacewalk-content') do
+    raise unless page.has_no_content?(txt)
   end
 end
 
@@ -177,7 +183,6 @@ end
 
 When(/^I follow "([^"]*)" in the (.+)$/) do |arg1, arg2|
   tag = case arg2
-        when /left menu/ then 'aside'
         when /tab bar|tabs/ then 'header'
         when /content area/ then 'section'
         else raise "Unknown element with description '#{desc}'"
@@ -189,7 +194,6 @@ end
 
 When(/^I follow first "([^"]*)" in the (.+)$/) do |arg1, arg2|
   tag = case arg2
-        when /left menu/ then 'aside'
         when /tab bar|tabs/ then 'header'
         when /content area/ then 'section'
         else raise "Unknown element with description '#{desc}'"
@@ -218,11 +222,53 @@ When(/^I enter "(.*?)" in the editor$/) do |arg1|
   page.execute_script("ace.edit('contents-editor').insert('#{arg1}')")
 end
 
-When(/^I click Systems, under Systems node$/) do
-  find(:xpath, "//div[@id=\"nav\"]/nav/ul/li[contains(@class, 'active')
-       and contains(@class, 'open')
-       and contains(@class,'node')]/ul/li/div/a/span[contains(.,'Systems')]").click
+#
+# Menu links
+#
+
+# Menu path link
+When(/^I follow the left menu "([^"]*)"$/) do |menu_path|
+  # split menu levels separated by '>' character
+  menu_levels = menu_path.split('>').map(&:strip)
+
+  # define reusable patterns
+  prefix_path = "//aside/div[@id='nav']/nav"
+  level_path = "/ul/li[div[a[span[text()='%s']]]]"
+  level_element_path = '/div'
+  link_path = "/a[span[text()='%s']]"
+  direct_link_path = "/a[contains(@class, 'direct-link')]"
+
+  # point the target to the nav menu
+  target_level_path = prefix_path
+
+  menu_levels.each_with_index do |menu_level, index|
+    # append the current target level and replace the placeholder with the current level value
+    target_level_path += (level_path % menu_level)
+    # if this is the last element of the path
+    if index == (menu_levels.count - 1)
+      link_path = (link_path % menu_level)
+      break
+    end
+    # open the submenu if needed
+    unless find(:xpath, target_level_path)[:class].include?('open')
+      find(:xpath, target_level_path + level_element_path).click
+    end
+  end
+
+  # check if the target is a nodeLink element or a leafLink element
+  current_element = find(:xpath, target_level_path + level_element_path)
+  if current_element[:class].include?('nodeLink')
+    # if it is a nodeLink element, click on the directLink element
+    find(:xpath, target_level_path + level_element_path + direct_link_path).click
+  else
+    # if it is a leafLink element, click on it
+    find(:xpath, target_level_path + level_element_path + link_path).click
+  end
 end
+
+#
+# End of Menu links
+#
 
 Given(/^I am not authorized$/) do
   visit Capybara.app_host
@@ -242,16 +288,14 @@ end
 Given(/^I am on the Admin page$/) do
   steps %(
     When I am authorized as "admin" with password "admin"
-    And I follow "Admin"
-    And I follow "Setup Wizard"
+    When I follow the left menu "Admin > Setup Wizard"
     )
 end
 
 When(/^I am on the Organizations page$/) do
   steps %(
     When I am authorized as "admin" with password "admin"
-    And I follow "Admin"
-    And I follow "Organizations"
+    When I follow the left menu "Admin > Organizations"
     )
 end
 
@@ -282,16 +326,14 @@ end
 Given(/^I am on the groups page$/) do
   steps %(
     Given I am on the Systems page
-    And I follow "System Groups" in the left menu
+    When I follow the left menu "Systems >System Groups"
     )
 end
 
 Given(/^I am on the active Users page$/) do
   steps %(
     Given I am authorized as "admin" with password "admin"
-    And I follow "Users"
-    And I follow "User List"
-    And I follow "Active"
+    When I follow the left menu "Users > User List > Active"
     )
 end
 
