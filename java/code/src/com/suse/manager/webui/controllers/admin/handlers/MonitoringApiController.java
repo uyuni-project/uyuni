@@ -60,7 +60,6 @@ public class MonitoringApiController {
                 withOrgAdmin(MonitoringApiController::changeMonitoringStatus));
     }
 
-
     /**
      * Get server monitoring status.
      * @param request http request

@@ -82,8 +82,8 @@ public class MonitoringService {
         }
     };
 
-    public static void setExecCtlFunction(BiFunction<String, Optional<String>, Optional<InputStream>> execCtl) {
-        MonitoringService.execCtl = execCtl;
+    public static void setExecCtlFunction(BiFunction<String, Optional<String>, Optional<InputStream>> execCtlIn) {
+        MonitoringService.execCtl = execCtlIn;
     }
 
     /**
@@ -105,7 +105,8 @@ public class MonitoringService {
 
     /**
      * Enable monitoring exporters.
-     * @return a {@link Map} with the result of enabling each exporter or an empty optional in case of error
+     * @return a {@link Map} with the status of each exporter (true - running, false - stopped)
+     * or an empty optional in case of error
      */
     public static Optional<Map<String, Boolean>> enableMonitoring() {
         String dbUser = Config.get().getString(ConfigDefaults.DB_USER);
@@ -114,6 +115,7 @@ public class MonitoringService {
         pillar.put("db_user", dbUser);
         pillar.put("db_pass", dbPass);
         String pillarJson = GSON.toJson(pillar);
+        // started successfully (true) -> service state (true - running)
         return invokeMonitoringCtl("enable", Optional.of(pillarJson),
                 new Tuple2<>("node",
                         "service_|-node_exporter_service_|-prometheus-node_exporter_|-running"),
@@ -128,7 +130,8 @@ public class MonitoringService {
 
     /**
      * Disable monitoring exporters.
-     * @return a {@link Map} with the result of disabling each exporter or an empty optional in case of error
+     * @return a {@link Map} with the status of each exporter (true - running, false - stopped)
+     * or an empty optional in case of error
      */
     public static Optional<Map<String, Boolean>> disableMonitoring() {
         return invokeMonitoringCtl("disable", Optional.empty(),
@@ -140,7 +143,11 @@ public class MonitoringService {
                         "service_|-jmx_exporter_tomcat_service_|-jmx-exporter@tomcat_|-dead"),
                 new Tuple2<>("taskomatic",
                         "service_|-jmx_exporter_taskomatic_service_|-jmx-exporter@taskomatic_|-dead")
-                );
+                ).map(map -> {
+                    // disabled successfully (true) -> service state (false - not running)
+                    map.forEach((k, v) -> map.put(k, !v));
+                    return map;
+                });
     }
 
     private static Optional<Map<String, Boolean>> invokeMonitoringCtl(String cmd, Optional<String> pillar,
@@ -178,7 +185,6 @@ public class MonitoringService {
             return Optional.empty();
         }
     }
-
 
     private static boolean isResultTrue(Map<String, ModuleRun<JsonElement>> result, String key) {
         return Optional.ofNullable(result.get(key))

@@ -16,6 +16,7 @@
 package com.suse.manager.webui.services.impl.test;
 
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
+import com.redhat.rhn.testing.RhnJmockBaseTestCase;
 import com.suse.manager.webui.services.impl.MonitoringService;
 
 import java.io.InputStream;
@@ -23,7 +24,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.function.BiFunction;
 
-public class MonitoringServiceTest extends JMockBaseTestCaseWithUser {
+public class MonitoringServiceTest extends RhnJmockBaseTestCase {
 
     public void testGetStatus() {
         BiFunction<String, Optional<String>, Optional<InputStream>> execCtl =
@@ -68,7 +69,7 @@ public class MonitoringServiceTest extends JMockBaseTestCaseWithUser {
 
         MonitoringService.setExecCtlFunction(execCtl);
 
-        Optional<Map<String, Boolean>> res = MonitoringService.enableMonitoring();
+        Optional<Map<String, Boolean>> res = MonitoringService.disableMonitoring();
         assertTrue(res.isPresent());
         assertFalse(res.get().get("node"));
         assertFalse(res.get().get("postgres"));
