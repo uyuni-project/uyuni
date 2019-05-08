@@ -302,7 +302,7 @@ public class Profile extends CobblerObject {
       * @param kickstartIn the Kickstart
       */
       public void  setKickstart(String kickstartIn) {
-          modify(KICKSTART, getRelativeAutoinstallPath(kickstartIn));
+          modify(KICKSTART, "/" + getRelativeAutoinstallPath(kickstartIn));
       }
 
       /**
