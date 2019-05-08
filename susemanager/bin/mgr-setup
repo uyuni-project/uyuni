@@ -397,6 +397,31 @@ upgrade_schema() {
     fi
 }
 
+convert_cobbler_files() {
+    OLD_COBBLER_DIR=/var/lib/cobbler/config
+    NEW_COBBLER_DIR=/var/lib/cobbler/collections
+
+    for OLDDIR in $OLD_COBBLER_DIR/*.d
+    do
+        if [ ! -z "$(ls $OLDDIR)" ]; then
+            NEWDIR=$NEW_COBBLER_DIR/`basename $OLDDIR | sed -e "s/\.d$//"`
+            if [ ! -d $NEWDIR ]; then
+                mkdir $NEWDIR
+            fi
+            echo "`date +"%H:%M:%S"`   Converting $OLDDIR --> $NEWDIR"
+            for FILE in $OLDDIR/*
+            do
+                sed -e "s/kickstart/autoinstall/" \
+                    -e "s/ks_meta/autoinstall_meta/" \
+                    -e "s/ksmeta/autoinstall_meta/" \
+                    -e "s/kopts/kernel_options/" \
+                    -e "s/kopts_post/kernel_options_post/" \
+                $FILE > $NEWDIR/`basename $FILE`
+            done
+        fi
+    done
+}
+
 copy_remote_files() {
     SUMAFILES="/etc/salt
                /root/ssl-build
@@ -409,7 +434,7 @@ copy_remote_files() {
                /srv/www/os-images
                /var/cache/rhn
                /var/cache/salt
-               /var/lib/cobbler
+               /var/lib/cobbler/config
                /var/lib/Kiwi
                /var/lib/rhn
                /var/lib/salt
@@ -449,6 +474,7 @@ copy_remote_files() {
     chown -R wwwrun.www /var/spacewalk
     ln -sf /srv/www/htdocs/pub/RHN-ORG-TRUSTED-SSL-CERT /etc/pki/trust/anchors
     update-ca-certificates
+    convert_cobbler_files
 }
 
 create_ssh_key() {
