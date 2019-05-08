@@ -616,7 +616,7 @@ public class ContentManagerTest extends BaseTestCaseWithUser {
         FilterCriteria criteria = new FilterCriteria(Matcher.CONTAINS, "name", "aaa");
         ContentFilter filter = ContentManager.createFilter("my-filter", Rule.DENY, EntityType.PACKAGE, criteria, user);
 
-        FilterCriteria newCriteria = new FilterCriteria(Matcher.CONTAINS, "newname", "bbb");
+        FilterCriteria newCriteria = new FilterCriteria(Matcher.CONTAINS, "name", "bbb");
         ContentManager.updateFilter(filter.getId(), of("newname"), empty(), of(newCriteria), user);
         ContentFilter fromDb = ContentManager.lookupFilterById(filter.getId(), user).get();
         assertEquals("newname", fromDb.getName());
@@ -1029,6 +1029,11 @@ public class ContentManagerTest extends BaseTestCaseWithUser {
         }
     }
 
+    /**
+     * Test that building a Project sets the correct state of assigned Filters
+     *
+     * @throws Exception if anything goes wrong
+     */
     public void testBuildProjectWithFilters() throws Exception {
         ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());
         ContentProjectFactory.save(cp);
@@ -1049,6 +1054,56 @@ public class ContentManagerTest extends BaseTestCaseWithUser {
         ContentManager.detachFilter("cplabel", filter.getId(), user);
         ContentManager.buildProject("cplabel", empty(), false, user);
         assertTrue(cp.getProjectFilters().isEmpty());
+    }
+
+    /**
+     * Test building a Project and filtering out Package using NEVR Filters
+     *
+     * @throws Exception if anything goes wrong
+     */
+    public void testBuildProjectWithNevrFilters() throws Exception {
+        ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());
+        ContentProjectFactory.save(cp);
+        ContentEnvironment env = ContentManager.createEnvironment(cp.getLabel(), empty(), "fst", "first env", "desc", false, user);
+        Channel channel = createPopulatedChannel();
+        ContentManager.attachSource("cplabel", SW_CHANNEL, channel.getLabel(), empty(), user);
+
+        // build without filters
+        ContentManager.buildProject("cplabel", empty(), false, user);
+        assertEquals(1, env.getTargets().get(0).asSoftwareTarget().get().getChannel().getPackageCount());
+
+        // build with filters
+        Package pack = channel.getPackages().iterator().next();
+        FilterCriteria criteria = new FilterCriteria(Matcher.EQUALS, "nevr", pack.getNameEvr());
+        ContentFilter filter = ContentManager.createFilter("my-filter", ContentFilter.Rule.DENY, ContentFilter.EntityType.PACKAGE, criteria, user);
+        ContentManager.attachFilter("cplabel", filter.getId(), user);
+        ContentManager.buildProject("cplabel", empty(), false, user);
+        assertEquals(0, env.getTargets().get(0).asSoftwareTarget().get().getChannel().getPackageCount());
+    }
+
+    /**
+     * Test building a Project and filtering out Package using NEVRA Filters
+     *
+     * @throws Exception if anything goes wrong
+     */
+    public void testBuildProjectWithNevraFilters() throws Exception {
+        ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());
+        ContentProjectFactory.save(cp);
+        ContentEnvironment env = ContentManager.createEnvironment(cp.getLabel(), empty(), "fst", "first env", "desc", false, user);
+        Channel channel = createPopulatedChannel();
+        ContentManager.attachSource("cplabel", SW_CHANNEL, channel.getLabel(), empty(), user);
+
+        // build without filters
+        ContentManager.buildProject("cplabel", empty(), false, user);
+        assertEquals(1, env.getTargets().get(0).asSoftwareTarget().get().getChannel().getPackageCount());
+
+        // build with filters
+        Package pack = channel.getPackages().iterator().next();
+        FilterCriteria criteria = new FilterCriteria(Matcher.EQUALS, "nevra", pack.getNameEvra());
+        ContentFilter filter = ContentManager.createFilter("my-filter", ContentFilter.Rule.DENY, ContentFilter.EntityType.PACKAGE, criteria, user);
+        ContentManager.attachFilter("cplabel", filter.getId(), user);
+        ContentManager.buildProject("cplabel", empty(), false, user);
+        assertEquals(0, env.getTargets().get(0).asSoftwareTarget().get().getChannel().getPackageCount());
     }
 
     private Channel createPopulatedChannel() throws Exception {

@@ -38,9 +38,10 @@ public class PackageFilter extends ContentFilter<Package> {
         switch (matcher) {
             case CONTAINS:
                 return getField(pack, field, String.class).contains(value);
+            case EQUALS:
+                return getField(pack, field, String.class).equals(value);
             default:
                 throw new UnsupportedOperationException("Matcher " + matcher + " not supported");
-
         }
     }
 
@@ -48,6 +49,10 @@ public class PackageFilter extends ContentFilter<Package> {
         switch (field) {
             case "name":
                 return type.cast(pack.getPackageName().getName());
+            case "nevr":
+                return type.cast(pack.getNameEvr());
+            case "nevra":
+                return type.cast(pack.getNameEvra());
             default:
                 throw new UnsupportedOperationException("Field " + field + " not supported");
         }
