@@ -15,6 +15,7 @@
 package com.redhat.rhn.frontend.action;
 
 import com.redhat.rhn.common.conf.ConfigDefaults;
+import com.redhat.rhn.common.conf.sson.SSONConfig;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnAction;
@@ -22,6 +23,8 @@ import com.redhat.rhn.frontend.struts.RhnHelper;
 import com.redhat.rhn.manager.acl.AclManager;
 import com.redhat.rhn.manager.user.UserManager;
 
+import com.onelogin.saml2.Auth;
+import com.onelogin.saml2.exception.SettingsException;
 import org.apache.log4j.Logger;
 import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionForm;
@@ -29,6 +32,7 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessages;
 
+import java.io.IOException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -37,45 +41,55 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class LoginSetupAction extends RhnAction {
 
-    private static Logger log = Logger.getLogger(LoginSetupAction.class);
+    private static final Logger LOG = Logger.getLogger(LoginSetupAction.class);
 
     /** {@inheritDoc} */
-    public ActionForward execute(ActionMapping mapping,
-        ActionForm form, HttpServletRequest request,
-        HttpServletResponse response) {
-
-        request.setAttribute("isUyuni", ConfigDefaults.get().isUyuni());
-        request.setAttribute("schemaUpgradeRequired",
-                LoginHelper.isSchemaUpgradeRequired().toString());
-        request.setAttribute("validationErrors", LoginHelper.validateDBVersion());
-
-        if (!UserManager.satelliteHasUsers()) {
-            return mapping.findForward("needuser");
-        }
-
-        if (AclManager.hasAcl("user_authenticated()", request, null)) {
-            return mapping.findForward("loggedin");
-        }
-
-        ActionErrors errors = new ActionErrors();
-        ActionMessages messages = new ActionMessages();
-        User remoteUser =
-                LoginHelper.checkExternalAuthentication(request, messages, errors);
-        // save stores msgs into the session (works for redirect)
-        saveMessages(request, messages);
-        addErrors(request, errors);
-        if (errors.isEmpty() && remoteUser != null) {
-            if (LoginHelper.successfulLogin(request, response, remoteUser)) {
-                return null;
+    public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request,
+                                 HttpServletResponse response) {
+        if (ConfigDefaults.get().isSingleSignOnEnabled() && SSONConfig.getSSONSettings().isPresent()) {
+            try {
+                Auth auth = new Auth(SSONConfig.getSSONSettings().get(), request, response);
+                auth.login("/rhn/YourRhn.do");
             }
-            return mapping.findForward("loggedin");
+            catch (SettingsException | IOException e) {
+               LOG.error(e.getMessage());
+            }
+            return null; // we forward the request to IdP via `auth.login`
         }
+        else {
+            request.setAttribute("isUyuni", ConfigDefaults.get().isUyuni());
+            request.setAttribute("schemaUpgradeRequired",
+                    LoginHelper.isSchemaUpgradeRequired().toString());
+            request.setAttribute("validationErrors", LoginHelper.validateDBVersion());
 
-        // store url_bounce set by pxt pages
-        RequestContext ctx = new RequestContext(request);
-        ctx.copyParamToAttributes("url_bounce");
-        ctx.copyParamToAttributes("request_method");
+            if (!UserManager.satelliteHasUsers()) {
+                return mapping.findForward("needuser");
+            }
 
-        return mapping.findForward(RhnHelper.DEFAULT_FORWARD);
+            if (AclManager.hasAcl("user_authenticated()", request, null)) {
+                return mapping.findForward("loggedin");
+            }
+
+            ActionErrors errors = new ActionErrors();
+            ActionMessages messages = new ActionMessages();
+            User remoteUser =
+                    LoginHelper.checkExternalAuthentication(request, messages, errors);
+            // save stores msgs into the session (works for redirect)
+            saveMessages(request, messages);
+            addErrors(request, errors);
+            if (errors.isEmpty() && remoteUser != null) {
+                if (LoginHelper.successfulLogin(request, response, remoteUser)) {
+                    return null;
+                }
+                return mapping.findForward("loggedin");
+            }
+
+            // store url_bounce set by pxt pages
+            RequestContext ctx = new RequestContext(request);
+            ctx.copyParamToAttributes("url_bounce");
+            ctx.copyParamToAttributes("request_method");
+
+            return mapping.findForward(RhnHelper.DEFAULT_FORWARD);
+        }
     }
 }
