@@ -62,6 +62,7 @@ public class PxtAuthenticationService extends BaseAuthenticationService {
         set.add("/img");
         set.add("/favicon.ico");
         set.add("/rhn/common/DownloadFile");
+        set.add("/rhn/manager/ssaml");
         // password-reset-link destination
         set.add("/rhn/ResetLink");
         set.add("/rhn/ResetPasswordSubmit");
