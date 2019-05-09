@@ -29,6 +29,16 @@ export type ProjectEnvironmentType = {
   version: number
 }
 
+export type ProjectFilterServerType = {
+  id: number,
+  name: string,
+  criteriaKey: string,
+  criteriaValue: string,
+  entityType: string,
+  deny: boolean,
+  state: string,
+}
+
 
 export type ProjectType = {
   properties: ProjectPropertiesType,
