@@ -46,6 +46,7 @@
 
     <!-- Allows bypass checkstyle for certain places -->
     <module name="SuppressionCommentFilter"/>
+    <module name="SuppressWarningsFilter" />
 
     <module name="TreeWalker">
 
@@ -217,6 +218,7 @@ MINUS_ASSIGN, MOD, MOD_ASSIGN, NOT_EQUAL, PLUS, PLUS_ASSIGN, QUESTION, RCURLY, S
         <module name="usage.UnusedPrivateField"/>
 -->
         <module name="MissingDeprecated"/>
+        <module name="SuppressWarningsHolder" />
     </module>
 
     <!-- Checks for Headers                              -->
