@@ -76,7 +76,7 @@ public class ProjectApiController {
      */
     public static String createContentProject(Request req, Response res, User user) {
         NewProjectRequest createProjectRequest = ProjectHandler.getProjectRequest(req);
-        HashMap<String, String> requestErrors = ProjectHandler.validateProjectRequest(createProjectRequest);
+        HashMap<String, String> requestErrors = ProjectHandler.validateProjectRequest(createProjectRequest, user);
         if (!requestErrors.isEmpty()) {
             return json(GSON, res, HttpStatus.SC_BAD_REQUEST, ResultJson.error(Arrays.asList(""), requestErrors));
         }
@@ -142,7 +142,8 @@ public class ProjectApiController {
         ProjectPropertiesRequest updateProjectPropertiesRequest = ProjectHandler.getProjectPropertiesRequest(req);
 
         HashMap<String, String> requestErrors = ProjectHandler.validateProjectPropertiesRequest(
-                updateProjectPropertiesRequest
+                updateProjectPropertiesRequest,
+                user
         );
         if (!requestErrors.isEmpty()) {
             return json(GSON, res, HttpStatus.SC_BAD_REQUEST, ResultJson.error(Arrays.asList(""), requestErrors));
