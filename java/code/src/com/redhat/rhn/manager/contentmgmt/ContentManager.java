@@ -114,6 +114,17 @@ public class ContentManager {
     }
 
     /**
+     * Look up Content Project by name
+     *
+     * @param name the label
+     * @param user the user
+     * @return Optional with matching Content Project
+     */
+    public static Optional<ContentProject> lookupProjectByNameAndOrg(String name, User user) {
+        return ContentProjectFactory.lookupProjectByNameAndOrg(name, user.getOrg());
+    }
+
+    /**
      * Update Content Project
      *
      * @param label the label for lookup

@@ -14,6 +14,10 @@
  */
 package com.suse.manager.webui.controllers.contentmanagement.handlers;
 
+import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.manager.EntityExistsException;
+import com.redhat.rhn.manager.contentmgmt.ContentManager;
+
 import com.suse.manager.webui.controllers.contentmanagement.request.ProjectPropertiesRequest;
 import com.suse.manager.webui.controllers.contentmanagement.request.NewProjectRequest;
 import com.suse.utils.Json;
@@ -70,7 +74,9 @@ public class ProjectHandler {
      * @param projPropsRequest the project properties request bean
      * @return validation errors
      */
-    public static HashMap<String, String> validateProjectPropertiesRequest(ProjectPropertiesRequest projPropsRequest) {
+    public static HashMap<String, String> validateProjectPropertiesRequest(
+            ProjectPropertiesRequest projPropsRequest, User user
+    ) {
         HashMap<String, String> requestErrors = new HashMap<>();
 
         if (StringUtils.isEmpty(projPropsRequest.getLabel())) {
@@ -97,6 +103,10 @@ public class ProjectHandler {
             requestErrors.put("name", "Name must not exceed 128 characters");
         }
 
+        ContentManager.lookupProjectByNameAndOrg(projPropsRequest.getName(), user).ifPresent(cp -> {
+            requestErrors.put("name", "Name already exists");
+        });
+
         return requestErrors;
     }
 
@@ -105,10 +115,10 @@ public class ProjectHandler {
      * @param projectRequest the project request bean
      * @return validation errors
      */
-    public static HashMap<String, String> validateProjectRequest(NewProjectRequest projectRequest) {
+    public static HashMap<String, String> validateProjectRequest(NewProjectRequest projectRequest, User user) {
         HashMap<String, String> requestErrors = new HashMap<>();
 
-        requestErrors.putAll(validateProjectPropertiesRequest(projectRequest.getProperties()));
+        requestErrors.putAll(validateProjectPropertiesRequest(projectRequest.getProperties(), user));
 
         return requestErrors;
     }
