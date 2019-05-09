@@ -1,3 +1,4 @@
+- Add Single Sign On (SSO) via SAMLv2 protocol
 - Hide disabled activation keys in form drop-downs (bsc#1101706)
 - Implement Errata filtering based on advisory name in Content Lifecycle Management
 - UI to enable / disable server monitoring
