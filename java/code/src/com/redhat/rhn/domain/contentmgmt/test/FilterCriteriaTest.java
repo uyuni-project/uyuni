@@ -18,6 +18,9 @@ package com.redhat.rhn.domain.contentmgmt.test;
 import com.redhat.rhn.domain.contentmgmt.FilterCriteria;
 import junit.framework.TestCase;
 
+import static com.redhat.rhn.domain.contentmgmt.ContentFilter.EntityType.PACKAGE;
+import static com.redhat.rhn.domain.contentmgmt.FilterCriteria.Matcher.CONTAINS;
+import static com.redhat.rhn.domain.contentmgmt.FilterCriteria.Matcher.EQUALS;
 import static com.redhat.rhn.domain.contentmgmt.FilterCriteria.validate;
 
 /**
@@ -26,14 +29,14 @@ import static com.redhat.rhn.domain.contentmgmt.FilterCriteria.validate;
 public class FilterCriteriaTest extends TestCase {
 
     public void testLegalValidation() {
-        validate(FilterCriteria.Matcher.CONTAINS, "name");
-        validate(FilterCriteria.Matcher.EQUALS, "nevr");
-        validate(FilterCriteria.Matcher.EQUALS, "nevra");
+        validate(PACKAGE, CONTAINS, "name");
+        validate(PACKAGE, EQUALS, "nevr");
+        validate(PACKAGE, EQUALS, "nevra");
     }
 
     public void testIllegalValidation() {
         try {
-            validate(FilterCriteria.Matcher.CONTAINS, "nonsense");
+            validate(PACKAGE, CONTAINS, "nonsense");
             fail("An exception should have been thrown");
         }
         catch (IllegalArgumentException e) {
@@ -41,7 +44,7 @@ public class FilterCriteriaTest extends TestCase {
         }
 
         try {
-            validate(FilterCriteria.Matcher.EQUALS, "foo");
+            validate(PACKAGE, EQUALS, "foo");
             fail("An exception should have been thrown");
         }
         catch (IllegalArgumentException e) {

@@ -18,13 +18,18 @@ package com.redhat.rhn.domain.contentmgmt;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.tuple.Pair;
+import org.apache.commons.lang3.tuple.Triple;
 
 import java.util.HashSet;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+
+import static com.redhat.rhn.domain.contentmgmt.ContentFilter.EntityType.ERRATUM;
+import static com.redhat.rhn.domain.contentmgmt.ContentFilter.EntityType.PACKAGE;
+import static com.redhat.rhn.domain.contentmgmt.FilterCriteria.Matcher.CONTAINS;
+import static com.redhat.rhn.domain.contentmgmt.FilterCriteria.Matcher.EQUALS;
 
 /**
  * The criteria used for matching objects (Package, Errata) in {@link ContentFilter}
@@ -41,13 +46,13 @@ public class FilterCriteria {
     private String field;
     private String value;
 
-    private static HashSet<Pair<Matcher, String>> validCombinations = new HashSet<>();
+    private static HashSet<Triple<ContentFilter.EntityType, Matcher, String>> validCombinations = new HashSet<>();
 
     static {
-        validCombinations.add(Pair.of(Matcher.CONTAINS, "name"));
-        validCombinations.add(Pair.of(Matcher.EQUALS, "nevr"));
-        validCombinations.add(Pair.of(Matcher.EQUALS, "nevra"));
-        validCombinations.add(Pair.of(Matcher.EQUALS, "advisory_name"));
+        validCombinations.add(Triple.of(PACKAGE, CONTAINS, "name"));
+        validCombinations.add(Triple.of(PACKAGE, EQUALS, "nevr"));
+        validCombinations.add(Triple.of(PACKAGE, EQUALS, "nevra"));
+        validCombinations.add(Triple.of(ERRATUM, EQUALS, "advisory_name"));
     }
 
     /**
@@ -101,10 +106,8 @@ public class FilterCriteria {
      * @param matcherIn the matcher type
      * @param fieldIn the field to match
      * @param valueIn the match value
-     * @throws IllegalArgumentException when the matcher-field combination is not allowed
      */
     public FilterCriteria(Matcher matcherIn, String fieldIn, String valueIn) {
-        validate(matcherIn, fieldIn);
         this.matcher = matcherIn;
         this.field = fieldIn;
         this.value = valueIn;
@@ -113,14 +116,17 @@ public class FilterCriteria {
     /**
      * Validate the matcher-field combination
      *
+     * @param entityType the entity type
      * @param matcher the matcher
      * @param field the field
      * @throws IllegalArgumentException when validation does not pass
      */
-    public static void validate(Matcher matcher, String field) throws IllegalArgumentException {
-        if (!validCombinations.contains(Pair.of(matcher, field))) {
+    public static void validate(ContentFilter.EntityType entityType, Matcher matcher, String field)
+            throws IllegalArgumentException {
+        if (!validCombinations.contains(Triple.of(entityType, matcher, field))) {
             throw new IllegalArgumentException(
-                    String.format("Invalid criteria combination (matcher: '%s', field: '%s')", matcher, field));
+                    String.format("Invalid criteria combination (entityType: '%s', matcher: '%s', field: '%s')",
+                            entityType, matcher, field));
         }
     }
 
