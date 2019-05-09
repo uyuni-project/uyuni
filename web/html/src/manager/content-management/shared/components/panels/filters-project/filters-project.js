@@ -6,29 +6,30 @@ import styles from "./filters-project.css"
 import {showErrorToastr, showSuccessToastr} from "components/toastr/toastr";
 import useLifecycleActionsApi from "../../../api/use-lifecycle-actions-api";
 import CreatorPanel from "components/panels/CreatorPanel";
-import type {FilterType} from "../../../type/filter.type";
+import type {ProjectFilterServerType} from "../../../type/project.type";
 import FiltersProjectSelection from "./filters-project-selection";
 import statesEnum from "../../../business/states.enum";
+import filtersEnum from "../../../business/filters.enum";
 
 type FiltersProps = {
   projectId: string,
-  selectedFilters: Array<FilterType>,
+  selectedFilters: Array<ProjectFilterServerType>,
   onChange: Function,
 };
 
 const renderFilterEntry = (filter) => {
-  const descr = `${filter.name}: deny ${filter.type} containing ${filter.criteria} in the name`;
+  const descr = filtersEnum.getFilterDescription(filter);
   const filterButton =
-      <div className={styles.icon_wrapper_vertical_center}>
-        <LinkButton
-          id={`edit-filter-${filter.id}`}
-          icon='fa-edit'
-          title={t(`Edit Filter ${filter.name}`)}
-          className='pull-right'
-          text={t("Edit")}
-          href={`/rhn/manager/contentmanagement/filters?openFilterId=${filter.id}`}
-        />
-      </div>;
+    <div className={styles.icon_wrapper_vertical_center}>
+      <LinkButton
+        id={`edit-filter-${filter.id}`}
+        icon='fa-edit'
+        title={t(`Edit Filter ${filter.name}`)}
+        className='pull-right'
+        text={t("Edit")}
+        href={`/rhn/manager/contentmanagement/filters?openFilterId=${filter.id}`}
+      />
+    </div>;
 
   if (filter.state === statesEnum.enum.ATTACHED.key) {
     return (
