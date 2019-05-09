@@ -391,6 +391,17 @@ public class ContentManager {
     }
 
     /**
+     * Look up filter by id and user
+     *
+     * @param name the name
+     * @param user the user
+     * @return the matching filter
+     */
+    public static Optional<ContentFilter> lookupFilterByNameAndOrg(String name, User user) {
+        return  ContentProjectFactory.lookupFilterByNameAndOrg(name, user.getOrg());
+    }
+
+    /**
      * Create a new {@link ContentFilter}
      *
      * @param name the filter name
@@ -403,6 +414,9 @@ public class ContentManager {
     public static ContentFilter createFilter(String name, ContentFilter.Rule rule, ContentFilter.EntityType entityType,
             FilterCriteria criteria, User user) {
         ensureOrgAdmin(user);
+        lookupFilterByNameAndOrg(name, user).ifPresent(cp -> {
+            throw new EntityExistsException(cp);
+        });
         return ContentProjectFactory.createFilter(name, rule, entityType, criteria, user);
     }
     // todo check behavior consistency with other crud methods

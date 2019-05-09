@@ -438,6 +438,23 @@ public class ContentProjectFactory extends HibernateFactory {
     }
 
     /**
+     * Looks up a ContentProject by label and organization
+     *
+     * @param name the name
+     * @param org the org
+     * @return Optional with ContentProject with given label
+     */
+    public static Optional<ContentFilter> lookupFilterByNameAndOrg(String name, Org org) {
+        CriteriaBuilder builder = getSession().getCriteriaBuilder();
+        CriteriaQuery<ContentFilter> criteria = builder.createQuery(ContentFilter.class);
+        Root<ContentFilter> root = criteria.from(ContentFilter.class);
+        criteria.where(builder.and(
+                builder.equal(root.get("name"), name),
+                builder.equal(root.get("org"), org)));
+        return getSession().createQuery(criteria).uniqueResultOptional();
+    }
+
+    /**
      * Create a new {@link ContentFilter}
      *
      * @param name the filter name
