@@ -2831,18 +2831,37 @@ public class ChannelManager extends BaseManager {
                 extractPackageIds(filterPackages(onlyInSrc, filters)));
     }
 
+    /**
+     * Align {@link Errata} of a target {@link Channel} to the source {@link Channel}
+     *
+     * Alignment has 4 steps:
+     * 1. Compute included and excluded errata based on given source channel and {@link ErrataFilter}s
+     * 2. Merge the included errata to target channel
+     * 3. Remove (truncate) those errata in target channel, which are not in included errata (or which do not have
+     * original in the included errata)
+     * 4. Remove the {@link Package}s from excluded errata from target channel
+     *
+     * @param src the source {@link Channel}
+     * @param tgt the target {@link Channel}
+     * @param errataFilters the {@link ErrataFilter}s
+     * @param user the {@link User}
+     */
     private static void alignErrata(Channel src, Channel tgt, Collection<ErrataFilter> errataFilters, User user) {
         Predicate<Errata> compositePredicate = errataFilters.stream()
                 .map(f -> (Predicate) f)
                 .reduce((f1, f2) -> f1.and(f2))
                 .orElse(p -> true);
 
-        Set<Errata> filteredErrata = src.getErratas().stream()
-                .filter(compositePredicate)
-                .collect(Collectors.toSet());
+        Map<Boolean, List<Errata>> partitionedErrata = src.getErratas().stream()
+                .collect(Collectors.partitioningBy(compositePredicate));
+        Set<Errata> includedErrata = new HashSet<>(partitionedErrata.get(true));
+        List<Errata> excludedErrata = partitionedErrata.get(false);
 
-        ErrataManager.mergeErrataToChannel(user, filteredErrata, tgt, src, false, false);
-        ErrataManager.truncateErrata(filteredErrata, tgt, user);
+        ErrataManager.mergeErrataToChannel(user, includedErrata, tgt, src, false, false);
+        ErrataManager.truncateErrata(includedErrata, tgt, user);
+
+        // we want to remove packages of excluded errata
+        excludedErrata.forEach(e -> ErrataManager.removeErratumAndPackagesFromChannel(e, tgt, user));
     }
 
     private static List<Long> extractPackageIds(Collection<Package> packages) {

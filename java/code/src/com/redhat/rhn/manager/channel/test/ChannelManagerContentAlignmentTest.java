@@ -30,6 +30,7 @@ import com.redhat.rhn.domain.rhnpackage.test.PackageTest;
 import com.redhat.rhn.domain.server.InstalledPackage;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.test.ServerFactoryTest;
+import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.dto.SystemOverview;
 import com.redhat.rhn.manager.channel.ChannelManager;
 import com.redhat.rhn.manager.contentmgmt.ContentManager;
@@ -280,6 +281,42 @@ public class ChannelManagerContentAlignmentTest extends BaseTestCaseWithUser {
         tgtChan = (Channel) HibernateFactory.reload(tgtChan);
         assertContains(tgtChan.getErratas(), e1);
         assertContains(tgtChan.getErratas(), e5);
+    }
+
+    /**
+     * Tests that packages of an {@link Errata} are removed when this Erratum is filtered out.
+     *
+     * @throws Exception if anything goes wrong
+     */
+    public void testPackagesRemovedOnErratumRemoval() throws Exception {
+        // we assume version 1.0.0
+        assertEquals("1.0.0", pkg.getPackageEvr().getVersion());
+
+        Package olderPkg = copyPackage(pkg, user, "0.9.9");
+        srcChannel.addPackage(olderPkg);
+
+        FilterCriteria criteria = new FilterCriteria(FilterCriteria.Matcher.EQUALS, "advisory_name", errata.getAdvisoryName());
+        ContentFilter filter = ContentManager.createFilter("test-filter-1234", DENY, ERRATUM, criteria, user);
+
+        ChannelManager.alignEnvironmentTargetSync(singleton(filter), srcChannel, tgtChannel, user);
+
+        tgtChannel = (Channel) HibernateFactory.reload(tgtChannel);
+
+        assertEquals(1, tgtChannel.getPackageCount());
+        assertEquals(0, tgtChannel.getErrataCount());
+        assertContains(tgtChannel.getPackages(), olderPkg);
+    }
+
+    private static Package copyPackage(Package fromPkg, User user, String version) throws Exception {
+        Package olderPkg = PackageTest.createTestPackage(user.getOrg());
+        PackageEvr packageEvr = fromPkg.getPackageEvr();
+        olderPkg.setPackageEvr(PackageEvrFactoryTest.createTestPackageEvr(
+                packageEvr.getEpoch(),
+                version,
+                packageEvr.getRelease()
+        ));
+        olderPkg.setPackageName(fromPkg.getPackageName());
+        return olderPkg;
     }
 
     private static InstalledPackage copyPackage(Package otherPkg, Optional<String> overrideVersion) {

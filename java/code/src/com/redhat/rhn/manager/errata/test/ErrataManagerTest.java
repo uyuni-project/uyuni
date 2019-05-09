@@ -45,9 +45,12 @@ import com.redhat.rhn.domain.errata.test.ErrataFactoryTest;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.rhnpackage.Package;
+import com.redhat.rhn.domain.rhnpackage.PackageEvr;
 import com.redhat.rhn.domain.rhnpackage.PackageName;
+import com.redhat.rhn.domain.rhnpackage.test.PackageEvrFactoryTest;
 import com.redhat.rhn.domain.rhnpackage.test.PackageTest;
 import com.redhat.rhn.domain.rhnset.RhnSet;
+import com.redhat.rhn.domain.server.InstalledPackage;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
 import com.redhat.rhn.domain.session.WebSession;
@@ -78,6 +81,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -1648,5 +1652,42 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
         assertEquals(1, tgt.getErratas().size());
         // the clone will "survive" in the tgt channel as it has original in the src
         assertEquals(errata1Clone, tgt.getErratas().iterator().next());
+    }
+
+    /**
+     * Tests that {@link Package}s are removed from {@link Channel} when {@link Errata} is removed from it.
+     *
+     * @throws Exception if anything goes wrong
+     */
+    public void testPackagesRemovedOnErratumRemoval() throws Exception {
+        user.addPermanentRole(ORG_ADMIN);
+        Errata errata = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
+        TestUtils.saveAndFlush(errata);
+        Package errataPackage = errata.getPackages().iterator().next();
+        // we assume version 1.0.0 for the test
+        assertEquals("1.0.0", errataPackage.getPackageEvr().getVersion());
+
+        Channel chan = ChannelFactoryTest.createTestChannel(user);
+        Package olderPack = copyPackage(errataPackage, user, chan, "0.9.9");
+
+        ErrataFactory.publishToChannel(Arrays.asList(errata), chan, user, false);
+
+        ErrataManager.truncateErrata(Collections.emptySet(), chan, user);
+
+        assertTrue(chan.getErratas().isEmpty());
+        assertTrue(chan.getPackages().contains(olderPack));
+        assertFalse(chan.getPackages().contains(errataPackage));
+    }
+
+    private static Package copyPackage(Package fromPkg, User user, Channel channel, String version) throws Exception {
+        Package olderPkg = createTestPackage(user, channel, fromPkg.getPackageArch().getLabel());
+        PackageEvr packageEvr = fromPkg.getPackageEvr();
+        olderPkg.setPackageEvr(PackageEvrFactoryTest.createTestPackageEvr(
+                packageEvr.getEpoch(),
+                version,
+                packageEvr.getRelease()
+        ));
+        olderPkg.setPackageName(fromPkg.getPackageName());
+        return olderPkg;
     }
 }
