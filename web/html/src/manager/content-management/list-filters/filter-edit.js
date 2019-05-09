@@ -6,12 +6,11 @@ import {Button} from "../../../components/buttons";
 import useLifecycleActionsApi from "../shared/api/use-lifecycle-actions-api";
 import {Loading} from "components/loading/loading";
 import {showErrorToastr, showSuccessToastr} from "components/toastr/toastr";
-
-import type {FilterType} from '../shared/type/filter.type.js';
 import FilterForm from "./filter-form";
 import {showDialog} from "components/dialog/util";
+import {mapFilterFormToRequest} from "./filter.utils";
 
-const FilterEditModalContent = ({open, isLoading, filter, onChange, editing}) => {
+const FilterEditModalContent = ({open, isLoading, filter, onChange, onClientValidate, editing}) => {
   if (!open) {
     return null;
   }
@@ -26,13 +25,15 @@ const FilterEditModalContent = ({open, isLoading, filter, onChange, editing}) =>
     <FilterForm
       filter={filter}
       editing={editing}
-      onChange={(updatedFilter) => onChange(updatedFilter)}/>
+      onChange={(updatedFilter) => onChange(updatedFilter)}
+      onClientValidate={onClientValidate}
+    />
   )
 }
 
 type FilterEditProps = {
   id: string,
-  filter: FilterType,
+  initialFilterForm: Object,
   icon: string,
   buttonText: string,
   onChange: Function,
@@ -43,15 +44,16 @@ type FilterEditProps = {
 const FilterEdit = (props: FilterEditProps) => {
 
   const [open, setOpen] = useState(false);
-  const [item, setItem] = useState(props.filter);
+  const [item, setFormData] = useState(props.initialFilterForm);
+  const [formValidInClient, setFormValidInClient] = useState(true);
 
   const modalNameId = `${props.id}-modal`;
 
   useEffect(() => {
-    if(props.filter.id === props.openFilterId || (props.openFilterId === -1 && !props.editing)) {
+    if(props.initialFilterForm.id === props.openFilterId || (props.openFilterId === -1 && !props.editing)) {
       showDialog(modalNameId);
       setOpen(true);
-      setItem(props.filter);
+      setFormData(props.initialFilterForm);
     }
   }, []);
 
@@ -71,7 +73,7 @@ const FilterEdit = (props: FilterEditProps) => {
         target={modalNameId}
         onClick={() => {
           setOpen(true);
-          setItem(props.filter);
+          setFormData(props.initialFilterForm);
         }}
       />
 
@@ -83,7 +85,8 @@ const FilterEdit = (props: FilterEditProps) => {
                 <FilterEditModalContent
                   filter={item}
                   open={open}
-                  onChange={setItem}
+                  onChange={setFormData}
+                  onClientValidate={setFormValidInClient}
                   isLoading={isLoading}
                   editing={props.editing}
                 />}
@@ -98,7 +101,7 @@ const FilterEdit = (props: FilterEditProps) => {
                         text={t('Delete')}
                         disabled={isLoading}
                         handler={() => {
-                          onAction(item, "delete", item.id)
+                          onAction(mapFilterFormToRequest(item), "delete", item.id)
                             .then((updatedListOfFilters) => {
                               closeDialog(modalNameId);
                               showSuccessToastr(t("Filter deleted successfully"));
@@ -128,26 +131,30 @@ const FilterEdit = (props: FilterEditProps) => {
                         text={t('Save')}
                         disabled={isLoading}
                         handler={() => {
-                          if(props.editing) {
-                            onAction(item, "update", item.id)
-                              .then((updatedListOfFilters) => {
-                                closeDialog(modalNameId);
-                                showSuccessToastr(t("Filter updated successfully"));
-                                props.onChange(updatedListOfFilters);
-                              })
-                              .catch((error) => {
-                                showErrorToastr(error);
-                              })
+                          if (!formValidInClient) {
+                            showErrorToastr(t("Check the required fields below"));
                           } else {
-                            onAction(item, "create")
-                              .then((updatedListOfFilters) => {
-                                closeDialog(modalNameId);
-                                showSuccessToastr(t("Filter created successfully"));
-                                props.onChange(updatedListOfFilters);
-                              })
-                              .catch((error) => {
-                                showErrorToastr(error);
-                              })
+                            if (props.editing) {
+                              onAction(mapFilterFormToRequest(item), "update", item.id)
+                                .then((updatedListOfFilters) => {
+                                  closeDialog(modalNameId);
+                                  showSuccessToastr(t("Filter updated successfully"));
+                                  props.onChange(updatedListOfFilters);
+                                })
+                                .catch((error) => {
+                                  showErrorToastr(error);
+                                })
+                            } else {
+                              onAction(mapFilterFormToRequest(item), "create")
+                                .then((updatedListOfFilters) => {
+                                  closeDialog(modalNameId);
+                                  showSuccessToastr(t("Filter created successfully"));
+                                  props.onChange(updatedListOfFilters);
+                                })
+                                .catch((error) => {
+                                  showErrorToastr(error);
+                                })
+                            }
                           }
                         }}
                       />
