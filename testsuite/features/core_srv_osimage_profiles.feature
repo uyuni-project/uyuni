@@ -23,7 +23,7 @@ Feature: Prepare server for using Kiwi
 
   Scenario: Create Kiwi activation key
     Given I am on the Systems page
-    When I follow "Activation Keys" in the left menu
+    When I follow the left menu "Systems > Activation Keys"
     And I follow "Create Key"
     And I enter "Kiwi testing" as "description"
     And I enter "KIWI-TEST" as "key"
@@ -34,8 +34,7 @@ Feature: Prepare server for using Kiwi
 
   Scenario: Create an OS image profile with activation key
     Given I am authorized as "admin" with password "admin"
-    When I follow "Images" in the left menu
-    And I follow "Profiles" in the left menu
+    When I follow the left menu "Images > Profiles"
     And I follow "Create"
     And I enter "suse_os_image" as "label"
     And I select "Kiwi" from "imageType"

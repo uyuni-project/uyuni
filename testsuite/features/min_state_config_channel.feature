@@ -7,9 +7,7 @@ Feature: State Configuration channels
 
   Scenario: Create the 1st state channel
     Given I am authorized as "admin" with password "admin"
-    When I follow "Home" in the left menu
-    And I follow "Configuration" in the left menu
-    And I follow "Channels" in the left menu
+    When I follow the left menu "Configuration > Channels"
     And I follow "Create State Channel"
     Then I should see a "New Config Channel" text
     When I enter "My State Channel" as "cofName"
@@ -24,9 +22,7 @@ Feature: State Configuration channels
 
   Scenario: Create the 2nd state channel with same name
     Given I am authorized as "admin" with password "admin"
-    When I follow "Home" in the left menu
-    And I follow "Configuration" in the left menu
-    And I follow "Channels" in the left menu
+    When I follow the left menu "Configuration > Channels"
     And I follow "Create State Channel"
     Then I should see a "New Config Channel" text
     When I enter "My State Channel" as "cofName"
@@ -42,8 +38,7 @@ Feature: State Configuration channels
   Scenario: Create the 3rd state channel with spacecmd
     Given I am authorized as "admin" with password "admin"
     When I create channel "statechannel3" from spacecmd of type "state"
-    And I follow "Configuration" in the left menu
-    And I follow "Channels" in the left menu
+    When I follow the left menu "Configuration > Channels"
     Then I should see a "statechannel3" text
     And  I update init.sls from spacecmd with content "touch /root/statechannel3:\n  cmd.run:\n    - creates: /root/statechannel3" for channel "statechannel3"
 
@@ -98,9 +93,7 @@ Feature: State Configuration channels
 
   Scenario: Cleanup: remove the 1st state channel and the deployed file
     Given I am authorized as "admin" with password "admin"
-    When I follow "Home" in the left menu
-    And I follow "Configuration" in the left menu
-    And I follow "Channels" in the left menu
+    When I follow the left menu "Configuration > Channels"
     And I follow first "My State Channel"
     And I follow "Delete Channel"
     Then I should see a "Are you sure you want to delete this config channel?" text
@@ -110,9 +103,7 @@ Feature: State Configuration channels
 
   Scenario: Cleanup: remove the 2nd state channel and the deployed file
     Given I am authorized as "admin" with password "admin"
-    When I follow "Home" in the left menu
-    And I follow "Configuration" in the left menu
-    And I follow "Channels" in the left menu
+    When I follow the left menu "Configuration > Channels"
     And I follow first "My State Channel"
     And I follow "Delete Channel"
     Then I should see a "Are you sure you want to delete this config channel?" text
@@ -122,9 +113,7 @@ Feature: State Configuration channels
 
   Scenario: Cleanup: remove the 3rd state channel and the deployed file
     Given I am authorized as "admin" with password "admin"
-    When I follow "Home" in the left menu
-    And I follow "Configuration" in the left menu
-    And I follow "Channels" in the left menu
+    When I follow the left menu "Configuration > Channels"
     And I follow first "statechannel3"
     And I follow "Delete Channel"
     Then I should see a "Are you sure you want to delete this config channel?" text

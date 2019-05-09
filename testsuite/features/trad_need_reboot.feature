@@ -6,14 +6,9 @@ Feature: Reboot required after patch
   As an authorized user
   I want to see systems that need a reboot
 
-  Scenario: Check requiring reboot in the web UI
+  Scenario: Check requiring reboot link in the web UI
     Given I am authorized
-    When I follow "Home" in the left menu
-    And I follow "Systems" in the left menu
-    And I follow "Overview" in the left menu
-    And I click System List, under Systems node
-    Then I should see a "All" link in the left menu
-    When I follow "All" in the left menu
+    When I follow the left menu "Systems > System List"
     Then I should see a "Requiring Reboot" link in the left menu
 
   Scenario: No reboot notice if no need to reboot
@@ -42,14 +37,10 @@ Feature: Reboot required after patch
     And I click on "Apply Patches"
     And I click on "Confirm"
     And I run "rhn_check -vvv" on "sle-client"
-    And I follow "Software" in the left menu
-    And I click System List, under Systems node
-    And I follow "All" in the left menu
+    When I follow the left menu "Systems > System List > All"
     And I follow this "sle-client" link
     Then I should see a "The system requires a reboot" text
-    And I follow "Software" in the left menu
-    And I click System List, under Systems node
-    And I follow "Requiring Reboot" in the left menu
+    When I follow the left menu "Systems > System List > Requiring Reboot"
     Then I should see "sle-client" as link
 
   Scenario: Cleanup: remove packages and restore non-update repo after needing reboot tests

@@ -20,7 +20,7 @@ Feature: Patches display
 
   Scenario: Check all patches exist
     Given I am on the patches page
-    When I follow "Relevant" in the left menu
+    When I follow the left menu "Patches > Patch List > Relevant"
     Then I should see an update in the list
     And I should see a "virgo-dummy-3456" link
 

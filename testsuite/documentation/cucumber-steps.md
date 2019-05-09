@@ -99,10 +99,10 @@ To check for the initial log in, prefer ```Then I am logged in```.
 
 #### Navigating through pages
 
-* Go to a given page through a link
+* Go to a given page through a the left menu tree with the complete menu path
 
 ```cucumber
-  When I follow "Salt"
+  When I follow the left menu "Systems > System List > System Currency"
 ```
 
 * Go to Admin => Setup Wizard

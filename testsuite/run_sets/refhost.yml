@@ -13,7 +13,6 @@
 - features/core_srv_channels_add.feature
 - features/core_srv_push_package.feature
 - features/core_srv_create_repository.feature
-- features/core_srv_systemspage.feature
 - features/core_srv_users.feature
 - features/core_srv_create_activationkey.feature
 - features/core_srv_docker_profiles.feature
@@ -36,6 +35,7 @@
 
 # IDEMPOTENT
 
+- features/srv_menu.feature
 - features/srv_clone_channel_npn.feature
 - features/srv_distro_cobbler.feature
 - features/trad_config_channel.feature

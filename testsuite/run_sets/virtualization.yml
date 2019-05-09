@@ -13,7 +13,6 @@
 - features/core_srv_channels_add.feature
 - features/core_srv_push_package.feature
 - features/core_srv_create_repository.feature
-- features/core_srv_systemspage.feature
 - features/core_srv_users.feature
 - features/core_srv_create_activationkey.feature
 - features/core_srv_osimage_profiles.feature
@@ -28,6 +27,7 @@
 ## Secondary features BEGIN ##
 
 # IDEMPOTENT
+- features/srv_menu.feature
 - features/minkvm_guests.feature
 - features/minxen_guests.feature
 ## Secondary features END ##

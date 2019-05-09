@@ -84,9 +84,7 @@ Feature: Action chain on traditional clients
 
   Scenario: Create a configuration channel for testing action chain on traditional client
     Given I am authorized as "admin" with password "admin"
-    When I follow "Home" in the left menu
-    And I follow "Configuration" in the left menu
-    And I follow "Channels" in the left menu
+    When I follow the left menu "Configuration > Channels"
     And I follow "Create Config Channel"
     And I enter "Action Chain Channel" as "cofName"
     And I enter "actionchainchannel" as "cofLabel"
@@ -96,9 +94,7 @@ Feature: Action chain on traditional clients
 
   Scenario: Add a configuration file to configuration channel for testing action chain on traditional client
     Given I am authorized as "admin" with password "admin"
-    When I follow "Home" in the left menu
-    And I follow "Configuration" in the left menu
-    And I follow "Channels" in the left menu
+    When I follow the left menu "Configuration > Channels"
     And I follow "Action Chain Channel"
     And I follow "Create Configuration File or Directory"
     And I enter "/etc/action-chain.cnf" as "cffPath"
@@ -119,9 +115,7 @@ Feature: Action chain on traditional clients
 
   Scenario: Add a configuration file deployment to the action chain on traditional client
     Given I am authorized as "admin" with password "admin"
-    When I follow "Home" in the left menu
-    And I follow "Configuration" in the left menu
-    And I follow "Channels" in the left menu
+    When I follow the left menu "Configuration > Channels"
     And I follow "Action Chain Channel"
     And I follow "Deploy Files" in the content area
     And I click on "Deploy All Files"
@@ -245,9 +239,7 @@ Feature: Action chain on traditional clients
 
   Scenario: Cleanup: remove traditional client from configuration channel
     Given I am authorized as "admin" with password "admin"
-    When I follow "Home" in the left menu
-    And I follow "Configuration" in the left menu
-    And I follow "Channels" in the left menu
+    When I follow the left menu "Configuration > Channels"
     And I follow "Action Chain Channel"
     And I follow "Systems" in the content area
     And I check the "sle-client" client
@@ -256,9 +248,7 @@ Feature: Action chain on traditional clients
 
   Scenario: Cleanup: remove configuration channel for traditional client
     Given I am authorized as "admin" with password "admin"
-    When I follow "Home" in the left menu
-    And I follow "Configuration" in the left menu
-    And I follow "Channels" in the left menu
+    When I follow the left menu "Configuration > Channels"
     And I follow "Action Chain Channel"
     And I follow "Delete Channel"
     And I click on "Delete Config Channel"

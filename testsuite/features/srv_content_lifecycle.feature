@@ -5,8 +5,7 @@ Feature: Content lifecycle
 
   Scenario: Create a content lifecycle project
     Given I am authorized as "admin" with password "admin"
-    When I follow "Content Lifecycle"
-    And I follow "Projects"
+    When I follow the left menu "Content Lifecycle > Projects"
     Then I should see a "Content Lifecycle Projects" text
     And I should see a "There are no entries to show." text
     When I follow "Create Project"
@@ -21,8 +20,7 @@ Feature: Content lifecycle
 
   Scenario: Verify the content lifecycle project page
     Given I am authorized as "admin" with password "admin"
-    When I follow "Content Lifecycle"
-    And  I follow "Projects"
+    When I follow the left menu "Content Lifecycle > Projects"
     Then I should see a "clp_name" text
     And I should see a "clp_desc" text
     When I follow "clp_name"
@@ -34,8 +32,7 @@ Feature: Content lifecycle
 
   Scenario: Add a source to the project
     Given I am authorized as "admin" with password "admin"
-    When I follow "Content Lifecycle"
-    And I follow "Projects"
+    When I follow the left menu "Content Lifecycle > Projects"
     And I follow "clp_name"
     And I follow "Edit Sources"
     And I select "SLES12-SP4-Pool for x86_64" from "selectedBaseChannel"
@@ -50,8 +47,7 @@ Feature: Content lifecycle
 
   Scenario: Add environments to the project
     Given I am authorized as "admin" with password "admin"
-    When I follow "Content Lifecycle"
-    And I follow "Projects"
+    When I follow the left menu "Content Lifecycle > Projects"
     And I follow "clp_name"
     Then I should see a "No environments created" text
     When I follow "Add Environment"
@@ -79,8 +75,7 @@ Feature: Content lifecycle
 
   Scenario: Build the sources in the project
     Given I am authorized as "admin" with password "admin"
-    When I follow "Content Lifecycle"
-    And I follow "Projects"
+    When I follow the left menu "Content Lifecycle > Projects"
     And I follow "clp_name"
     Then I should see a "not built" text in the environment "qa_name"
     When I click on "Build (4)"
@@ -94,8 +89,7 @@ Feature: Content lifecycle
 
   Scenario: Promote promote the sources in the project
     Given I am authorized as "admin" with password "admin"
-    When I follow "Content Lifecycle"
-    And I follow "Projects"
+    When I follow the left menu "Content Lifecycle > Projects"
     Then I should see a "clp_name" text
     And I should see a "clp_desc" text
     And I should see a "dev_name - qa_name - prod_name" text
@@ -113,8 +107,7 @@ Feature: Content lifecycle
 
   Scenario: Add new sources and promote again
     Given I am authorized as "admin" with password "admin"
-    When I follow "Content Lifecycle"
-    And I follow "Projects"
+    When I follow the left menu "Content Lifecycle > Projects"
     And I follow "clp_name"
     Then I should see a "Build (0)" text
     When I follow "Edit Sources"
