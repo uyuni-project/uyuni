@@ -5,19 +5,21 @@ import {Column, SearchField, Table} from 'components/table';
 import Functions from 'utils/functions';
 import {showSuccessToastr} from 'components/toastr/toastr';
 import withPageWrapper from 'components/general/with-page-wrapper';
-import type {FilterType} from '../shared/type/filter.type.js';
 import {hot} from 'react-hot-loader';
 import FilterEdit from "./filter-edit";
+import {mapResponseToFilterForm} from "./filter.utils";
+import type {FilterFormType, FilterServerType} from "../shared/type/filter.type";
 
 type Props = {
-  filters: Array<FilterType>,
+  filters: Array<FilterServerType>,
   openFilterId: number,
   flashMessage: string,
 };
 
 const ListFilters = (props: Props) => {
 
-  const [displayedFilters, setDisplayedFilters] = useState(props.filters);
+  const [displayedFilters, setDisplayedFilters]: [Array<FilterFormType>, Function] =
+    useState(mapResponseToFilterForm(props.filters));
 
   useEffect(()=> {
     if(props.flashMessage) {
@@ -37,17 +39,17 @@ const ListFilters = (props: Props) => {
     <div className="pull-right btn-group">
       <FilterEdit
         id="create-filter-button"
-        filter={{type: 'package', deny: true}}
+        initialFilterForm={{deny:true}}
         icon='fa-plus'
         buttonText='Create Filter'
         openFilterId={props.openFilterId}
-        onChange={setDisplayedFilters}
+        onChange={responseFilters => setDisplayedFilters(mapResponseToFilterForm(responseFilters))}
       />
     </div>
   );
 
   return (
-    <TopPanel title={t('Filter')} icon="fa-filter" button={panelButtons}>
+    <TopPanel title={t('Content Lifecycle Filters')} icon="fa-filter" button={panelButtons}>
       <Table
         data={displayedFilters}
         identifier={row => row.name}
@@ -79,10 +81,10 @@ const ListFilters = (props: Props) => {
           cell={ row =>
             <FilterEdit
               id={`edit-filter-button-${row.id}`}
-              filter={row}
+              initialFilterForm={row}
               icon='fa-edit'
               buttonText='Edit Filter'
-              onChange={setDisplayedFilters}
+              onChange={responseFilters => setDisplayedFilters(mapResponseToFilterForm(responseFilters))}
               openFilterId={props.openFilterId}
               editing
             />
