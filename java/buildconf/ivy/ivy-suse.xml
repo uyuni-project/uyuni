@@ -41,10 +41,13 @@
         <dependency org="suse" name="jade4j" rev="1.0.7" />
         <dependency org="suse" name="jaf" rev="1.1.1" />
         <dependency org="suse" name="jakarta-persistence-api" rev="2.2.2" />
+        <dependency org="suse" name="java-saml" rev="2.4.0" />
+        <dependency org="suse" name="java-saml-core" rev="2.4.0" />
         <dependency org="suse" name="javassist" rev="3.20.0" />
         <dependency org="suse" name="jboss-logging" rev="3.3.0" />
         <dependency org="suse" name="jcommon" rev="1.0.16" />
         <dependency org="suse" name="jdom" rev="1.1" />
+        <dependency org="suse" name="joda-time" rev="2.9.4" />
         <dependency org="suse" name="jose4j" rev="0.5.1" />
         <dependency org="suse" name="log4j" rev="1.2.17" />
         <dependency org="suse" name="jsch" rev="0.1.54" />
@@ -74,15 +77,19 @@
         <dependency org="suse" name="spark-core" rev="2.7.2" />
         <dependency org="suse" name="spark-template-jade" rev="2.3" />
         <dependency org="suse" name="statistics" rev="1.0.2" />
+        <dependency org="suse" name="stax-api" rev="1.0-2" />
+        <dependency org="suse" name="stax2-api" rev="3.1.4" />
         <dependency org="suse" name="stringtree-json" rev="2.0.9" />
         <dependency org="suse" name="struts" rev="1.2.9" />
         <dependency org="suse" name="taglibs-standard-impl" rev="1.2.5" />
         <dependency org="suse" name="taglibs-standard-jstlel" rev="1.2.5" />
         <dependency org="suse" name="taglibs-standard-spec" rev="1.2.5" />
+        <dependency org="suse" name="woodstox-core-asl" rev="4.4.1" />
         <dependency org="suse" name="xalan-j2" rev="2.7.2" />
         <dependency org="suse" name="xalan-j2-serializer" rev="2.7.2" />
         <dependency org="suse" name="xerces-j2" rev="2.11.0" />
         <dependency org="suse" name="xerces-j2-xml-apis" rev="2.11.0" />
+        <dependency org="suse" name="xmlsec" rev="2.0.7" />
 
         <!-- Tomcat jars -->
         <dependency org="suse" name="jasper" rev="9.0.14" />
