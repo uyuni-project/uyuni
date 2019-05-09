@@ -2,10 +2,11 @@
 import React, {useEffect, useState} from 'react';
 import {LinkButton} from "components/buttons";
 import useLifecycleActionsApi from "../../../api/use-lifecycle-actions-api";
-import type {FilterType} from "../../../type/filter.type";
+import type {ProjectFilterServerType} from "../../../type/project.type";
 import {Loading} from "components/loading/loading";
 import _xor from "lodash/xor";
 import type {Node} from 'react';
+import filtersEnum from "../../../business/filters.enum";
 
 type FiltersProps = {
   projectId: string,
@@ -19,7 +20,7 @@ const FiltersProjectSelection = (props:  FiltersProps): Node => {
   const {onAction: onActionAllFilters, isLoading: isLoadingAllFilters} = useLifecycleActionsApi({
     resource: 'filters'
   });
-  const [allFilters, setAllFilters]: [Array<FilterType>, Function] = useState([]);
+  const [allFilters, setAllFilters]: [Array<ProjectFilterServerType>, Function] = useState([]);
   const [onGoingSelectedFilters, setOnGoingSelectedFilters] = useState(props.initialSelectedFiltersIds);
 
   useEffect(() => {
@@ -59,7 +60,7 @@ const FiltersProjectSelection = (props:  FiltersProps): Node => {
             />
             <label
               htmlFor={"child_" + filter.id}>
-              {`${filter.name}: deny ${filter.type} containing ${filter.criteria} in the name`}
+              {filtersEnum.getFilterDescription(filter)}
             </label>
           </div>
       )
@@ -73,5 +74,6 @@ const FiltersProjectSelection = (props:  FiltersProps): Node => {
     </React.Fragment>
   );
 };
+
 
 export default FiltersProjectSelection;
