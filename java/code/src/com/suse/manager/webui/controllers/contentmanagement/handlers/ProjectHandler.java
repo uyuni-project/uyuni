@@ -71,6 +71,7 @@ public class ProjectHandler {
     /**
      * map validate project properties request bean
      * @param projPropsRequest the project properties request bean
+     * @param user the user
      * @return validation errors
      */
     public static HashMap<String, String> validateProjectPropertiesRequest(
@@ -112,6 +113,7 @@ public class ProjectHandler {
     /**
      * map validate project request bean
      * @param projectRequest the project request bean
+     * @param user the user
      * @return validation errors
      */
     public static HashMap<String, String> validateProjectRequest(NewProjectRequest projectRequest, User user) {
