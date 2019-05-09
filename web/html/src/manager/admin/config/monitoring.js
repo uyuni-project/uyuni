@@ -1,6 +1,6 @@
 // @flow
 import { hot } from 'react-hot-loader';
-import React from 'react';
+import React, {useState} from 'react';
 import {Panel} from 'components/panels/Panel';
 import {Button, AsyncButton} from 'components/buttons';
 import Network from 'utils/network';
@@ -13,22 +13,6 @@ import type JsonResult from "../../../utils/network";
 
 const {capitalize} = Utils;
 
-type Props = {
-
-}
-
-type ExportersStatus = {
-  exporters: {[string]: boolean}
-}
-
-type State = {
-  loading: boolean,
-  exportersStatus: {[string]: ?boolean},
-  monitoringEnabled: ?boolean,
-  messages: Array<Object>,
-  error: boolean
-}
-
 const msgMap = {
   "internal_error": t("An internal error has occured. See the server logs for details."),
   "enabling_failed": t("Enabling monitoring failed. See the server logs for details."),
@@ -38,7 +22,7 @@ const msgMap = {
   "enabling_succeeded": t("Monitoring enabled successfully."),
   "disabling_succeeded": t("Monitoring disabled successfully."),
   "no_change": t("Monitoring status hasn't changed."),
-  "unknown_status": t("Monitoring status unknown.")
+  "unknown_status": t("An error occured. Monitoring status unknown. Refresh the page.")
 };
 
 const exporterMap = {
@@ -48,142 +32,248 @@ const exporterMap = {
   "postgres": t("PostgreSQL database")
 }
 
-function nullify(exporters: {[string]: ?boolean}) : {[string]: ?boolean} {
-  Object.keys(exporters).forEach(key => {
-    exporters[key] = null;
-  })
-  return exporters;
+type ExportersStatusType = {
+  [string]: boolean
+};
+
+type ExportersResultType = {
+  exporters: ExportersStatusType
+};
+
+type MonitoringApiType = {
+  fetchStatus: () => Promise<ExportersStatusType>,
+  changeStatus: (boolean, boolean) => Promise<{newStatus: ?boolean, outcome: String, exporters: ExportersStatusType}>,
+};
+
+const MonitoringApi = (setLoading: (boolean) => void) : MonitoringApiType => {
+
+  const fetchStatus = (): Promise<ExportersStatusType> => {
+    setLoading(true);
+    return Network.get("/rhn/manager/api/admin/config/monitoring").promise
+    .then((data: JsonResult<ExportersResultType>) => {
+      return data.data.exporters;
+    })
+    .finally(() => {
+      setLoading(false);
+    });
+  }
+
+  const changeStatus = (isEnabled: boolean, toEnable: boolean): Promise<{newStatus: ?boolean, outcome: String, exporters: ExportersStatusType}> => {
+    setLoading(true);
+    return Network.post("/rhn/manager/api/admin/config/monitoring", JSON.stringify({"enable": toEnable}), "application/json").promise
+    .then((data : JsonResult<ExportersResultType>) => {
+        if (data.data.exporters) {
+          if (isEnabled && !toEnable) { // enabled -> disabled
+            const allDisabled : boolean = Object.keys(data.data.exporters).every(key => data.data.exporters[key] === false);
+            const someEnabled : boolean = Object.keys(data.data.exporters).some(key => data.data.exporters[key] === true);
+            if (allDisabled) {
+              return {newStatus: false, outcome: "success", exporters: data.data.exporters};
+            } else if (someEnabled) {
+              return {newStatus: false, outcome: "partial", exporters: data.data.exporters};
+            } else {
+              return {newStatus: false, outcome: "failed", exporters: data.data.exporters};
+            }
+          } else if (!isEnabled && toEnable) { // disabled -> enabled
+            const allEnabled : boolean = Object.keys(data.data.exporters).every(key => data.data.exporters[key] === true);
+            const someDisabled : boolean = Object.keys(data.data.exporters).some(key => data.data.exporters[key] === false);
+            if (allEnabled) {
+              return {newStatus: true, outcome: "success", exporters: data.data.exporters};
+            } else if (someDisabled) {
+              return {newStatus: true, outcome: "partial", exporters: data.data.exporters};
+            } else {
+              return {newStatus: true, outcome: "failed", exporters: data.data.exporters};
+            }
+          } else { // disabled -> disabled, enabled -> enabled
+              return {newStatus: null, outcome: "no_change", exporters: data.data.exporters};
+          }
+        } else {
+            return {newStatus: null, outcome: "unknown", exporters: []};
+        }
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  }
+
+  return {
+    fetchStatus,
+    changeStatus,
+  };
 }
 
-class MonitoringAdmin extends React.Component<Props, State> {
+type MonitoringContainerStatus = {
+  messages: Array<Object>,
+  loading: boolean,
+  exportersStatus: ?ExportersStatusType
+}
+
+class MonitoringContainer extends React.Component<{}, MonitoringContainerStatus> {
   
-  constructor(props: Props) {
+  constructor(props) {
     super(props);
     this.state = {
       messages: [],
       loading: false,
-      exportersStatus: {
-        node: null,
-        tomcat: null,
-        taskomatic: null,
-        postgres: null
-      },
-      monitoringEnabled: null,
-      error: false
-    };
+      exportersStatus: null
+    }
   }
 
   componentDidMount() {
     this.getMonitoringStatus();
   }
 
-  handleResponse = (data: JsonResult<ExportersStatus>) => {
-    const monitoringEnabled = Object.keys(data.data.exporters).every(key => data.data.exporters[key] === true);
-    this.setState({exportersStatus: data.data.exporters, monitoringEnabled: monitoringEnabled, loading: false, error: false});
+  setLoading = (loading: boolean) => {
+    this.setState({loading: loading});
   }
 
   getMonitoringStatus = () => {
-    this.setState({loading: true});
-    Network.get("/rhn/manager/api/admin/config/monitoring").promise.then(this.handleResponse)
+    const {fetchStatus} = MonitoringApi(this.setLoading);
+    fetchStatus()
+    .then((exporters) => {
+      this.setState({exportersStatus: exporters});
+    })
     .catch(this.handleResponseError);
-  }
-
-  onChange = () => {
-    if (this.state.exportersStatus) {
-      let toChange = !this.state.monitoringEnabled;
-      this.setState({messages: [], loading: true, });
-      Network.post("/rhn/manager/api/admin/config/monitoring", JSON.stringify({"enable": toChange}), "application/json").promise
-      .then((data : JsonResult<ExportersStatus>) => {
-        let msg;
-        if (data.data.exporters) {
-          if (this.state.monitoringEnabled && !toChange) { // enabled -> disabled
-            const allDisabled : boolean = Object.keys(data.data.exporters).every(key => data.data.exporters[key] === false);
-            const someEnabled : boolean = Object.keys(data.data.exporters).some(key => data.data.exporters[key] === true);
-            if (allDisabled) {
-              msg = MessagesUtils.success(msgMap["disabling_succeeded"]);
-            } else if (someEnabled) {
-              msg = MessagesUtils.error(msgMap["disabling_failed_partially"]);
-            } else {
-              msg = MessagesUtils.error(msgMap["disabling_failed"]);
-            }
-          } else if (!this.state.monitoringEnabled && toChange) { // disabled -> enabled
-            const allEnabled : boolean = Object.keys(data.data.exporters).every(key => data.data.exporters[key] === true);
-            const someDisabled : boolean = Object.keys(data.data.exporters).some(key => data.data.exporters[key] === false);
-            if (allEnabled) {
-              msg = MessagesUtils.success(msgMap["enabling_succeeded"]);
-            } else if (someDisabled) {
-              msg = MessagesUtils.error(msgMap["enabling_failed_partially"]);
-            } else {
-              msg = MessagesUtils.error(msgMap["enabling_failed"]);
-            }
-          } else { // disabled -> disabled, enabled -> enabled
-            msg = MessagesUtils.info(msgMap["no_change"]);
-          }
-          this.handleResponse(data);
-          this.setState({
-            messages: msg,
-          });
-        } else {
-          this.setState({
-            messages: MessagesUtils.error(msgMap["unknown_status"]),
-            exportersStatus: nullify(this.state.exportersStatus),
-            loading: false,
-            error: false
-          });          
-        }
-      })
-      .catch(this.handleResponseError);      
-    }
   }
 
   handleResponseError = (jqXHR: Object, arg: string = '') => {
     const msg = Network.responseErrorMessage(jqXHR,
       (status, msg) => msgMap[msg] ? t(msgMap[msg], arg) : null);
-    this.setState({messages: msg, loading: false, error: true});
+    this.setState({messages: msg});
   }
 
-  iconType = (value) => {
-    if (value === true) {
-      return "item-enabled";
-    } else if (value === false){
-      return "item-error";
-    } else {
-      return "item-disabled";
+  onChange = () => {
+    const {changeStatus} = MonitoringApi(this.setLoading);
+    if (!this.state.exportersStatus) {
+      return;
     }
+    const isEnabled = Object.keys(this.state.exportersStatus).every(key => this.state.exportersStatus[key] === true);
+    this.setState({messages: []});
+    changeStatus(isEnabled, !isEnabled)
+      .then((result) => {
+        let msg;
+        if (result.newStatus === true) { //enabled
+          switch (result.outcome) {
+            case "success":
+              msg = MessagesUtils.success(msgMap["enabling_succeeded"]);
+              break;
+            case "partial":
+              msg = MessagesUtils.error(msgMap["enabling_failed_partially"]);
+              break;
+            default:
+              msg = MessagesUtils.error(msgMap["enabling_failed"]);  
+          }
+
+        } else if (result.newStatus === false) { // disabled
+          switch (result.outcome) {
+            case "success":
+              msg = MessagesUtils.success(msgMap["disabling_succeeded"]);
+              break;
+            case "partial":
+              msg = MessagesUtils.error(msgMap["disabling_failed_partially"]);
+              break;
+            default:
+              msg = MessagesUtils.error(msgMap["disabling_failed"]);  
+          }
+        } else {
+          msg = MessagesUtils.error(msgMap["unknown_status"]);
+        }
+        this.setState({
+          messages: msg,
+          exportersStatus: result.exporters
+        });
+      })
+  }  
+
+  render() {
+    const isEnabled = this.state.exportersStatus ? 
+      Object.keys(this.state.exportersStatus).every(key => this.state.exportersStatus[key] === true) :
+      null;
+
+    return (<MonitoringAdmin 
+      loading={this.state.loading}
+      monitoringEnabled={isEnabled}
+      exportersStatus={this.state.exportersStatus}
+      messages={this.state.messages}
+      onChange={this.onChange}
+      />
+    );
   }
+}
+
+const ExporterIcon = (props : {status: ?boolean}) => {
+    let type;
+    if (props.status === true) {
+      type = "item-enabled";
+    } else if (props.status === false){
+      type = "item-error";
+    } else {
+      type = "item-disabled";
+    }
+    return <Icon type={type} className="fa-1-5x"/>;
+}
+
+const ExporterItem = (props: {name: string, status: boolean}) => {
+  return <li>
+    <ExporterIcon status={props.status}/>
+    { props.name in exporterMap ? exporterMap[props.name] : capitalize(props.name)}
+    </li>;
+}
+
+const ExportersList = (props : {exporters: {[string]: boolean}}) => {
+    const keys = Object.keys(props.exporters).sort();
+
+    return <ul style={{listStyle: 'none', paddingLeft: '0px'}}>
+      { keys.map(key => <ExporterItem name={key} 
+            status={props.exporters[key]}/>)}
+      </ul>;
+}
+
+const ListPlaceholderItem = (props) => {
+  return <li style={{margin: "5px 0px 5px 0px"}}>
+    <ExporterIcon status={null}/>
+    <div style={{display: 'inline-block', width: 200, height: '1em', backgroundColor: '#dddddd'}}></div>
+    </li>;
+}
+
+const ListPlaceholder = (props) => {
+  return <ul style={{listStyle: 'none', paddingLeft: '0px', color: "#dddddd", filter: "blur(2px)"}}>
+    {}
+    <ListPlaceholderItem/>
+    <ListPlaceholderItem/>
+    <ListPlaceholderItem/>
+    <ListPlaceholderItem/>   
+  </ul>
+}
+
+type MonitoringAdminProps = {
+  loading: boolean,
+  monitoringEnabled: ?boolean,
+  exportersStatus: ?{[string]: boolean},
+  messages: Array<Object>,
+  onChange: () => void
+}
+
+class MonitoringAdmin extends React.Component<MonitoringAdminProps> {
   
   render() {
-      const keys = Object.keys(this.state.exportersStatus).sort();
-
-      const exporters = <ul style={{listStyle: 'none', paddingLeft: '0px'}}>{
-        keys.map(key => 
-          this.state.exportersStatus ? 
-          (<li>
-            <Icon type={this.iconType(this.state.exportersStatus[key])} className="fa-1-5x"/>
-            { key in exporterMap ? exporterMap[key] : capitalize(key)}
-            </li>)
-          : null
-          )
-      }
-      </ul>
       let buttonLoadingText : string = "";
-      if (this.state.loading) {
-        if (this.state.monitoringEnabled === null) {
+      if (this.props.loading) {
+        if (this.props.monitoringEnabled === null) {
           buttonLoadingText = t("Checking monitoring services...");
-        } else if (this.state.monitoringEnabled === true) {
+        } else if (this.props.monitoringEnabled === true) {
           buttonLoadingText = t("Disabling monitoring services...");
-        } else if (this.state.monitoringEnabled === false) {
+        } else if (this.props.monitoringEnabled === false) {
           buttonLoadingText = t("Enabling monitoring services...");
         }
       }
       return (
       <div className="responsive-wizard">
-        <Messages items={this.state.messages}/>
+        <Messages items={this.props.messages}/>
         <div className="spacewalk-toolbar-h1">
           <div className="spacewalk-toolbar"></div>
           <h1>
             <i className="fa fa-info-circle"></i>
-            SUSE Manager Configuration - Monitoring
+            {t("SUSE Manager Configuration - Monitoring")}
             <a href="/rhn/help/reference/en-US/ref.webui.admin.config.jsp#s3-sattools-config-gen" target="_blank">
               <i className="fa fa-question-circle spacewalk-help-link"></i>
             </a>
@@ -212,12 +302,12 @@ class MonitoringAdmin extends React.Component<Props, State> {
           footer={
             <div className="row">
               <div className="col-md-offset-3 col-md-9">
-                { this.state.loading ? 
+                { this.props.loading ? 
                   <Button id="loading-btn" disabled={true} 
                     className="btn-default" icon="fa-circle-o-notch fa-spin" text={buttonLoadingText}/> :
                   <AsyncButton id="monitoring-btn" defaultType="btn-success"
-                    text={ this.state.monitoringEnabled ? t("Disable monitoring services") : t("Enable monitoring services")}
-                    action={this.onChange} initialValue={this.state.error ? "failure" : null }
+                    text={ this.props.monitoringEnabled ? t("Disable services") : t("Enable services")}
+                    action={this.props.onChange}
                   />
                 }
               </div>
@@ -229,7 +319,10 @@ class MonitoringAdmin extends React.Component<Props, State> {
                   <label>Monitoring</label>
                 </div>
                 <div className="col-md-8">
-                  { exporters }
+                  { this.props.exportersStatus ? 
+                    <ExportersList exporters={this.props.exportersStatus}/> :
+                    <ListPlaceholder/>
+                   }
                 </div>
               </div>
               <div className="col-sm-3 hidden-xs" id="wizard-faq">
@@ -245,7 +338,6 @@ class MonitoringAdmin extends React.Component<Props, State> {
         </Panel>  
       </div>);
   }
-
 }
 
-export default hot(module)(withPageWrapper<Props>(MonitoringAdmin));
+export default hot(module)(withPageWrapper(MonitoringContainer));
