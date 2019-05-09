@@ -183,9 +183,11 @@ public class ResponseMappers {
                     FilterResponse contentFilterResponse = new FilterResponse();
                     contentFilterResponse.setId(filter.getId());
                     contentFilterResponse.setName(filter.getName());
-                    contentFilterResponse.setType(filter.getEntityType().getLabel());
+                    contentFilterResponse.setEntityType(filter.getEntityType().getLabel());
+                    contentFilterResponse.setMatcher(filter.getCriteria().getMatcher().getLabel());
+                    contentFilterResponse.setCriteriaKey(filter.getCriteria().getField());
+                    contentFilterResponse.setCriteriaValue(filter.getCriteria().getValue());
                     contentFilterResponse.setDeny(filter.getRule() == ContentFilter.Rule.DENY);
-                    contentFilterResponse.setCriteria(filter.getCriteria().getValue());
                     contentFilterResponse.setProjects(
                             projects.stream()
                                     .map(p -> p.getLabel())
@@ -211,9 +213,11 @@ public class ResponseMappers {
                     ProjectFilterResponse contentProjectFilterResponse = new ProjectFilterResponse();
                     contentProjectFilterResponse.setId(filter.getId());
                     contentProjectFilterResponse.setName(filter.getName());
-                    contentProjectFilterResponse.setType(filter.getEntityType().getLabel());
+                    contentProjectFilterResponse.setEntityType(filter.getEntityType().getLabel());
+                    contentProjectFilterResponse.setMatcher(filter.getCriteria().getMatcher().getLabel());
+                    contentProjectFilterResponse.setCriteriaKey(filter.getCriteria().getField());
+                    contentProjectFilterResponse.setCriteriaValue(filter.getCriteria().getValue());
                     contentProjectFilterResponse.setDeny(filter.getRule() == ContentFilter.Rule.DENY);
-                    contentProjectFilterResponse.setCriteria(filter.getCriteria().getValue());
                     contentProjectFilterResponse.setState(projectFilter.getState().toString());
                     return contentProjectFilterResponse;
                 })

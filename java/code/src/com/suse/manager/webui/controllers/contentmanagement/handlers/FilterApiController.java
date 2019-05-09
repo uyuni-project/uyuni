@@ -26,6 +26,7 @@ import com.redhat.rhn.domain.contentmgmt.ContentManagementException;
 import com.redhat.rhn.domain.contentmgmt.ContentProject;
 import com.redhat.rhn.domain.contentmgmt.FilterCriteria;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.manager.EntityExistsException;
 import com.redhat.rhn.manager.contentmgmt.ContentManager;
 
 import com.suse.manager.webui.controllers.contentmanagement.request.FilterRequest;
@@ -151,16 +152,23 @@ public class FilterApiController {
         }
 
         FilterCriteria filterCriteria = new FilterCriteria(
-                FilterCriteria.Matcher.CONTAINS,
-                "name",
-                createFilterRequest.getCriteria());
-        ContentManager.createFilter(
-                createFilterRequest.getName(),
-                createFilterRequest.getDeny() ? ContentFilter.Rule.DENY : ContentFilter.Rule.ALLOW,
-                ContentFilter.EntityType.lookupByLabel(createFilterRequest.getType()),
-                filterCriteria,
-                user
-        );
+                FilterCriteria.Matcher.lookupByLabel(createFilterRequest.getMatcher()),
+                createFilterRequest.getCriteriaKey(),
+                createFilterRequest.getCriteriaValue());
+
+
+        try {
+            ContentManager.createFilter(
+                    createFilterRequest.getName(),
+                    createFilterRequest.getDeny() ? ContentFilter.Rule.DENY : ContentFilter.Rule.ALLOW,
+                    ContentFilter.EntityType.lookupByLabel(createFilterRequest.getEntityType()),
+                    filterCriteria,
+                    user
+            );
+        }
+        catch (EntityExistsException error) {
+            return json(GSON, res, HttpStatus.SC_BAD_REQUEST, ResultJson.error("Filter name already exists"));
+        }
 
         return ControllerApiUtils.listFiltersJsonResponse(res, user);
     }
@@ -181,9 +189,9 @@ public class FilterApiController {
         }
 
         FilterCriteria filterCriteria = new FilterCriteria(
-                FilterCriteria.Matcher.CONTAINS,
-                "name",
-                updateFilterRequest.getCriteria());
+                FilterCriteria.Matcher.lookupByLabel(updateFilterRequest.getMatcher()),
+                updateFilterRequest.getCriteriaKey(),
+                updateFilterRequest.getCriteriaValue());
         ContentManager.updateFilter(
                 Long.parseLong(req.params("filterId")),
                 Optional.ofNullable(updateFilterRequest.getName()),

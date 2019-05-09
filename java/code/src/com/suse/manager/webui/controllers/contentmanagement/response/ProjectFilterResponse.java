@@ -21,8 +21,10 @@ public class ProjectFilterResponse {
 
     private Long id;
     private String name;
-    private String type;
-    private String criteria;
+    private String entityType;
+    private String matcher;
+    private String criteriaKey;
+    private String criteriaValue;
     private Boolean deny;
     private String state;
 
@@ -30,12 +32,20 @@ public class ProjectFilterResponse {
         this.id = idIn;
     }
 
-    public void setType(String typeIn) {
-        this.type = typeIn;
+    public void setMatcher(String matcherIn) {
+        this.matcher = matcherIn;
     }
 
-    public void setCriteria(String criteriaIn) {
-        this.criteria = criteriaIn;
+    public void setEntityType(String entityTypeIn) {
+        this.entityType = entityTypeIn;
+    }
+
+    public void setCriteriaKey(String criteriaKeyIn) {
+        this.criteriaKey = criteriaKeyIn;
+    }
+
+    public void setCriteriaValue(String criteriaValueIn) {
+        this.criteriaValue = criteriaValueIn;
     }
 
     public void setDeny(Boolean denyIn) {

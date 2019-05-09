@@ -15,11 +15,10 @@
 package com.suse.manager.webui.controllers.contentmanagement.handlers;
 
 import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.manager.EntityExistsException;
 import com.redhat.rhn.manager.contentmgmt.ContentManager;
 
-import com.suse.manager.webui.controllers.contentmanagement.request.ProjectPropertiesRequest;
 import com.suse.manager.webui.controllers.contentmanagement.request.NewProjectRequest;
+import com.suse.manager.webui.controllers.contentmanagement.request.ProjectPropertiesRequest;
 import com.suse.utils.Json;
 
 import com.google.gson.Gson;
