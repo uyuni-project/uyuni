@@ -74,30 +74,62 @@ $$ language 'plpgsql';
             declare
                 segm1 VARCHAR;
                 segm2 VARCHAR;
+                onechar CHAR(1);
+                twochar CHAR(1);
             begin
-                --DBMS_OUTPUT.PUT_LINE('Params: ' || one || ',' || two);
+                --raise notice 'Params: %, %',  one, two;
                 -- Throw out all non-alphanum characters
-                -- 126 == ~
-                while one <> '' and not rpm.isalphanum(one) and ascii(one) <> 126
+                onechar := substr(one, 1, 1);
+                twochar := substr(two, 1, 1);
+                while one <> '' and not rpm.isalphanum(one) and onechar != '~' and onechar != '^'
                 loop
                     one := substr(one, 2);
                 end loop;
-                while two <> '' and not rpm.isalphanum(two) and ascii(two) <> 126
+                while two <> '' and not rpm.isalphanum(two) and twochar != '~' and twochar != '^'
                 loop
                     two := substr(two, 2);
                 end loop;
-                if ascii(one) = 126 or ascii(two) = 126
+                --raise notice 'new params: %, %', one, two;
+
+                onechar := substr(one, 1, 1);
+                twochar := substr(two, 1, 1);
+                --raise notice 'new chars 1: %, %', onechar, twochar;
+                /* handle the tilde separator, it sorts before everything else */
+                if (onechar = '~' or twochar = '~')
                 then
-                    if one = '' or ascii(one) <> 126 then return 1; end if;
-                    if two = '' or ascii(two) <> 126 then return -1; end if;
+                    if (onechar != '~') then return 1; end if;
+                    if (twochar != '~') then return -1; end if;
+                    --raise notice 'passed tilde chars: %, %', onechar, twochar;
                     one := substr(one, 2);
                     two := substr(two, 2);
                     continue;
                 end if;
-                if one = '' or two = ''
+
+                /*
+                 * Handle caret separator. Concept is the same as tilde,
+                 * except that if one of the strings ends (base version),
+                 * the other is considered as higher version.
+                 */
+                onechar := substr(one, 1, 1);
+                twochar := substr(two, 1, 1);
+                --raise notice 'new chars 2: %, %', onechar, twochar;
+                if (onechar = '^' or twochar = '^')
                 then
-                    exit;
+                    if (one = '') then return -1; end if;
+                    --raise notice 'passed caret chars 1: %, %', onechar, twochar;
+                    if (two = '') then return 1; end if;
+                    --raise notice 'passed caret chars 2: %, %', onechar, twochar;
+                    if (onechar != '^') then return 1; end if;
+                    --raise notice 'passed caret chars 3: %, %', onechar, twochar;
+                    if (twochar != '^') then return -1; end if;
+                    --raise notice 'passed caret chars 4: %, %', onechar, twochar;
+                    one := substr(one, 2);
+                    two := substr(two, 2);
+                    continue;
                 end if;
+
+                if (not (one <> '' and two <> '')) then exit segment_loop; end if;
+
                 str1 := one;
                 str2 := two;
                 if rpm.isdigit(str1) or rpm.isdigit(str2)
