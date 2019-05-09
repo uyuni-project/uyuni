@@ -45,9 +45,17 @@
       </a>
     </li>
     <li>
-      <a href="/rhn/Logout.do" title="<bean:message key="header.jsp.signout" />"
+    <c:choose>
+      <c:when test="${rhn:getConfig('java.sson')}">
+        <a href="/rhn/manager/ssaml/logout" title="<bean:message key="header.jsp.signout" />"
+           alt="<bean:message key="header.jsp.signout" />">
+      </c:when>
+      <c:otherwise>
+        <a href="/rhn/Logout.do" title="<bean:message key="header.jsp.signout" />"
           alt="<bean:message key="header.jsp.signout" />">
-        <rhn:icon type="header-signout" />
+      </c:otherwise>
+    </c:choose>
+      <rhn:icon type="header-signout" />
       </a>
     </li>
   </ul>
