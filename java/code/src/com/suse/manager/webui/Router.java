@@ -74,6 +74,7 @@ public class Router implements SparkApplication {
     /**
      * Invoked from the SparkFilter. Add routes here.
      */
+    @SuppressWarnings("checkstyle:methodlength")
     @Override
     public void init() {
         JadeTemplateEngine jade = setup();
