@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.frontend.action.test;
 
+import com.redhat.rhn.common.conf.Config;
+import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.frontend.action.LoginSetupAction;
 import com.redhat.rhn.frontend.struts.RhnHelper;
 import com.redhat.rhn.testing.RhnMockDynaActionForm;
@@ -22,7 +24,6 @@ import com.redhat.rhn.testing.RhnMockHttpServletResponse;
 import com.redhat.rhn.testing.RhnMockStrutsTestCase;
 
 import com.mockobjects.servlet.MockHttpSession;
-
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 
@@ -41,6 +42,7 @@ public class LoginSetupActionTest extends RhnMockStrutsTestCase {
     }
 
     public void testUrlBounce() {
+        Config.get().setBoolean(ConfigDefaults.SINGLE_SIGN_ON_ENABLED, "false");
         LoginSetupAction action = new LoginSetupAction();
 
         // setup stuff for Struts
@@ -64,5 +66,37 @@ public class LoginSetupActionTest extends RhnMockStrutsTestCase {
         assertEquals(bounce, "/rhn/UserDetails.do?sid=1");
         assertNotNull(rc);
         assertEquals(RhnHelper.DEFAULT_FORWARD, rc.getName());
+    }
+
+    public void testLoginWithSSON() {
+        Config.get().setBoolean(ConfigDefaults.SINGLE_SIGN_ON_ENABLED, "true");
+        LoginSetupAction action = new LoginSetupAction();
+        ActionMapping mapping = new ActionMapping();
+        mapping.addForwardConfig(
+                new ActionForward(RhnHelper.DEFAULT_FORWARD, "path", false));
+        RhnMockDynaActionForm form = new RhnMockDynaActionForm("loginForm");
+        RhnMockHttpServletRequest req = new RhnMockHttpServletRequest();
+        RhnMockHttpServletResponse resp = new RhnMockHttpServletResponse();
+        req.setSession(new MockHttpSession());
+        req.setupServerName("mymachine.rhndev.redhat.com");
+
+        ActionForward rc = action.execute(mapping, form, req, resp);
+        assertNull(rc); // we are redirected to IdP login page
+    }
+
+    public void testLoginWithoutSSON() {
+        Config.get().setBoolean(ConfigDefaults.SINGLE_SIGN_ON_ENABLED, "false");
+        LoginSetupAction action = new LoginSetupAction();
+        ActionMapping mapping = new ActionMapping();
+        mapping.addForwardConfig(
+                new ActionForward(RhnHelper.DEFAULT_FORWARD, "path", false));
+        RhnMockDynaActionForm form = new RhnMockDynaActionForm("loginForm");
+        RhnMockHttpServletRequest req = new RhnMockHttpServletRequest();
+        RhnMockHttpServletResponse resp = new RhnMockHttpServletResponse();
+        req.setSession(new MockHttpSession());
+        req.setupServerName("mymachine.rhndev.redhat.com");
+
+        ActionForward rc = action.execute(mapping, form, req, resp);
+        assertNotNull(rc);
     }
 }
