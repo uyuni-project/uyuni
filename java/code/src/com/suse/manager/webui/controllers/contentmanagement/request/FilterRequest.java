@@ -20,24 +20,33 @@ package com.suse.manager.webui.controllers.contentmanagement.request;
 public class FilterRequest {
 
     private String name;
-    private String type;
-    private String criteria;
+    private String entityType;
+    private String matcher;
+    private String criteriaKey;
+    private String criteriaValue;
     private Boolean deny;
-
-    public String getCriteria() {
-        return criteria;
-    }
 
     public String getName() {
         return name;
     }
 
+    public String getEntityType() {
+        return entityType;
+    }
+
+    public String getMatcher() {
+        return matcher;
+    }
+
+    public String getCriteriaKey() {
+        return criteriaKey;
+    }
+
+    public String getCriteriaValue() {
+        return criteriaValue;
+    }
+
     public Boolean getDeny() {
         return deny;
     }
-
-    public String getType() {
-        return type;
-    }
-
 }
