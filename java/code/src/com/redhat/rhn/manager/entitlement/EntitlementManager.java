@@ -19,6 +19,7 @@ import com.redhat.rhn.domain.entitlement.ContainerBuildHostEntitlement;
 import com.redhat.rhn.domain.entitlement.Entitlement;
 import com.redhat.rhn.domain.entitlement.ForeignEntitlement;
 import com.redhat.rhn.domain.entitlement.ManagementEntitlement;
+import com.redhat.rhn.domain.entitlement.MonitoringEntitlement;
 import com.redhat.rhn.domain.entitlement.OSImageBuildHostEntitlement;
 import com.redhat.rhn.domain.entitlement.SaltEntitlement;
 import com.redhat.rhn.domain.entitlement.VirtualizationEntitlement;
@@ -51,6 +52,7 @@ public class EntitlementManager extends BaseManager {
             new ContainerBuildHostEntitlement();
     public static final Entitlement OSIMAGE_BUILD_HOST =
             new OSImageBuildHostEntitlement();
+    public static final Entitlement MONITORING = new MonitoringEntitlement();
 
     public static final String UNENTITLED = "unentitled";
     public static final String ENTERPRISE_ENTITLED = "enterprise_entitled";
@@ -60,6 +62,7 @@ public class EntitlementManager extends BaseManager {
     public static final String FOREIGN_ENTITLED = "foreign_entitled";
     public static final String CONTAINER_BUILD_HOST_ENTITLED = "container_build_host";
     public static final String OSIMAGE_BUILD_HOST_ENTITLED = "osimage_build_host";
+    public static final String MONITORING_ENTITLED = "monitoring_entitled";
 
     private static final Set<Entitlement> ADDON_ENTITLEMENTS;
     private static final Set<Entitlement> BASE_ENTITLEMENTS;
@@ -68,6 +71,7 @@ public class EntitlementManager extends BaseManager {
         ADDON_ENTITLEMENTS.add(VIRTUALIZATION);
         ADDON_ENTITLEMENTS.add(CONTAINER_BUILD_HOST);
         ADDON_ENTITLEMENTS.add(OSIMAGE_BUILD_HOST);
+        ADDON_ENTITLEMENTS.add(MONITORING);
 
         BASE_ENTITLEMENTS = new LinkedHashSet<Entitlement>();
         BASE_ENTITLEMENTS.add(MANAGEMENT);
@@ -102,6 +106,9 @@ public class EntitlementManager extends BaseManager {
         }
         else if (OSIMAGE_BUILD_HOST_ENTITLED.equals(name)) {
             return OSIMAGE_BUILD_HOST;
+        }
+        else if (MONITORING_ENTITLED.equals(name)) {
+            return MONITORING;
         }
         return null;
     }

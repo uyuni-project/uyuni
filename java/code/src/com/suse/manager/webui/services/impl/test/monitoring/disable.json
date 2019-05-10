@@ -1,0 +1,56 @@
+{
+    "local": {
+        "service_|-node_exporter_service_|-prometheus-node_exporter_|-dead": {
+            "name": "prometheus-node_exporter",
+            "changes": {
+                "prometheus-node_exporter": true
+            },
+            "result": true,
+            "comment": "Service prometheus-node_exporter has been disabled, and is dead",
+            "__sls__": "srvmonitoring.disable",
+            "__run_num__": 0,
+            "start_time": "18:33:37.892962",
+            "duration": 753.048,
+            "__id__": "node_exporter_service"
+        },
+        "service_|-postgres_exporter_service_|-prometheus-postgres_exporter_|-dead": {
+            "name": "prometheus-postgres_exporter",
+            "changes": {
+                "prometheus-postgres_exporter": true
+            },
+            "result": true,
+            "comment": "Service prometheus-postgres_exporter has been disabled, and is dead",
+            "__sls__": "srvmonitoring.disable",
+            "__run_num__": 1,
+            "start_time": "18:33:38.646400",
+            "duration": 347.011,
+            "__id__": "postgres_exporter_service"
+        },
+        "service_|-jmx_exporter_tomcat_service_|-jmx-exporter@tomcat_|-dead": {
+            "name": "jmx-exporter@tomcat",
+            "changes": {
+                "jmx-exporter@tomcat": true
+            },
+            "result": true,
+            "comment": "Service jmx-exporter@tomcat has been disabled, and is dead",
+            "__sls__": "srvmonitoring.disable",
+            "__run_num__": 2,
+            "start_time": "18:33:38.993812",
+            "duration": 747.678,
+            "__id__": "jmx_exporter_tomcat_service"
+        },
+        "service_|-jmx_exporter_taskomatic_service_|-jmx-exporter@taskomatic_|-dead": {
+            "name": "jmx-exporter@taskomatic",
+            "changes": {
+                "jmx-exporter@taskomatic": true
+            },
+            "result": true,
+            "comment": "Service jmx-exporter@taskomatic has been disabled, and is dead",
+            "__sls__": "srvmonitoring.disable",
+            "__run_num__": 3,
+            "start_time": "18:33:39.741935",
+            "duration": 780.92,
+            "__id__": "jmx_exporter_taskomatic_service"
+        }
+    }
+}

@@ -29,6 +29,8 @@ import static spark.Spark.notFound;
 import static spark.Spark.post;
 
 import com.suse.manager.webui.controllers.ActivationKeysController;
+import com.suse.manager.webui.controllers.admin.AdminApiController;
+import com.suse.manager.webui.controllers.admin.AdminViewsController;
 import com.suse.manager.webui.controllers.CVEAuditController;
 import com.suse.manager.webui.controllers.DownloadController;
 import com.suse.manager.webui.controllers.FormulaCatalogController;
@@ -97,6 +99,10 @@ public class Router implements SparkApplication {
         // Content Management Routes
         ContentManagementViewsController.initRoutes(jade);
         ContentManagementApiController.initRoutes();
+
+        // Admin Router
+        AdminViewsController.initRoutes(jade);
+        AdminApiController.initRoutes();
 
         // Minions
         get("/manager/systems/keys",

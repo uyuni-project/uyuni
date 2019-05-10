@@ -73,4 +73,12 @@ insert into rhnServerGroupType ( id, label, name, permanent, is_base)
       'N', 'N'
    );
 
+-- monitoring_entitled type ----------------------------------------------------
+
+insert into rhnServerGroupType (id, label, name, permanent, is_base)
+   values (sequence_nextval('rhn_servergroup_type_seq'),
+      'monitoring_entitled', 'Monitoring',
+      'N', 'N'
+   );
+
 commit;

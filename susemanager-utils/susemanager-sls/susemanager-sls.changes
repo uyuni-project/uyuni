@@ -1,3 +1,4 @@
+- States to enable/disable server monitoring
 - Improve salt events processing performance (bsc#1125097)
 
 -------------------------------------------------------------------

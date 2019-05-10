@@ -2625,6 +2625,24 @@ You may grant provisioning entitlements _here_.
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="system.entitle.added.monitoring_entitled">
+        <source>Since you added the Monitoring system type we automatically assigned the Prometheus Exporters formula to the system. Please apply the &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;Highstate&lt;/a&gt; in order to install and enable the Prometheus metrics exporters.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="system.entitle.added.monitoring_entitled.nodoc">
+        <source>Since you added the Monitoring system type we automatically assigned the Prometheus Exporters formula to the system. Please apply the &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;Highstate&lt;/a&gt; in order to install and enable the Prometheus metrics exporters.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="system.entitle.formula_error">
+        <source>There was a problem assigning the Prometheus Exporters formula.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="system.entitle.invalid_addon_entitlement">
         <source>Invalid add-on system type [{0}] provided. No such system type exists.</source>
         <context-group name="ctx">
@@ -2720,6 +2738,9 @@ You may grant provisioning entitlements _here_.
       </trans-unit>
       <trans-unit id="osimage_build_host">
         <source>OS Image Build Host</source>
+      </trans-unit>
+      <trans-unit id="monitoring_entitled">
+        <source>Monitoring</source>
       </trans-unit>
       <trans-unit id="task.status.matcher">
         <source>Subscription Matcher Run</source>

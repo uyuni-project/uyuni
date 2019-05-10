@@ -86,6 +86,7 @@ import com.redhat.rhn.manager.channel.ChannelManager;
 import com.redhat.rhn.manager.channel.MultipleChannelsWithPackageException;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.errata.ErrataManager;
+import com.redhat.rhn.manager.formula.FormulaManager;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerSystemRemoveCommand;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.user.UserManager;
@@ -2014,7 +2015,7 @@ public class SystemManager extends BaseManager {
                 }
             }
         }
-        if (EntitlementManager.OSIMAGE_BUILD_HOST.equals(ent)) {
+        else if (EntitlementManager.OSIMAGE_BUILD_HOST.equals(ent)) {
             saltServiceInstance.generateSSHKey(SaltSSHService.SSH_KEY_PATH);
         }
 
@@ -2028,11 +2029,28 @@ public class SystemManager extends BaseManager {
         m.execute(in, new HashMap<String, Integer>());
         log.debug("entitle_server mode query executed.");
 
-        server.asMinionServer().ifPresent(SystemManager::refreshPillarDataForMinion);
-        if (wasVirtEntitled && !EntitlementManager.VIRTUALIZATION.equals(ent) ||
-                !wasVirtEntitled && EntitlementManager.VIRTUALIZATION.equals(ent)) {
-            server.asMinionServer().ifPresent(SystemManager::updateLibvirtEngine);
-        }
+        server.asMinionServer().ifPresent(minion -> {
+            SystemManager.refreshPillarDataForMinion(minion);
+
+            if (wasVirtEntitled && !EntitlementManager.VIRTUALIZATION.equals(ent) ||
+                    !wasVirtEntitled && EntitlementManager.VIRTUALIZATION.equals(ent)) {
+                SystemManager.updateLibvirtEngine(minion);
+            }
+            else if (EntitlementManager.MONITORING.equals(ent)) {
+                try {
+                    // Assign the monitoring formula to the system
+                    List<String> formulas = FormulaFactory.getFormulasByMinionId(minion.getMinionId());
+                    if (!formulas.contains(FormulaFactory.PROMETHEUS_EXPORTERS)) {
+                        formulas.add(FormulaFactory.PROMETHEUS_EXPORTERS);
+                        FormulaFactory.saveServerFormulas(minion.getMinionId(), formulas);
+                    }
+                }
+                catch (UnsupportedOperationException | IOException e) {
+                    log.error("Error assigning formula: " + e.getMessage(), e);
+                    result.addError(new ValidatorError("system.entitle.formula_error"));
+                }
+            }
+        });
 
         log.debug("done.  returning null");
         return result;
@@ -2238,8 +2256,28 @@ public class SystemManager extends BaseManager {
                 "System_queries", "remove_server_entitlement");
         m.execute(in, new HashMap<String, Integer>());
 
-        Server server = ServerFactory.lookupById(sid);
-        server.asMinionServer().ifPresent(SystemManager::refreshPillarDataForMinion);
+        ServerFactory.lookupById(sid).asMinionServer().ifPresent(s -> {
+            SystemManager.refreshPillarDataForMinion(s);
+
+            // Configure the monitoring formula for cleanup if still assigned (disable exporters)
+            if (EntitlementManager.MONITORING.equals(ent)) {
+                FormulaManager formulas = FormulaManager.getInstance();
+                if (formulas.hasSystemFormulaAssigned(FormulaFactory.PROMETHEUS_EXPORTERS, sid.intValue())) {
+                    try {
+                        // Get the current data and set all exporters to disabled
+                        String minionId = s.getMinionId();
+                        Map<String, Object> data = FormulaFactory
+                                .getFormulaValuesByNameAndMinionId(FormulaFactory.PROMETHEUS_EXPORTERS, minionId)
+                                .orElse(FormulaFactory.getPillarExample(FormulaFactory.PROMETHEUS_EXPORTERS));
+                        FormulaFactory.saveServerFormulaData(
+                                FormulaFactory.disableMonitoring(data), minionId, FormulaFactory.PROMETHEUS_EXPORTERS);
+                    }
+                    catch (UnsupportedOperationException | IOException e) {
+                        log.warn("Exception on saving formula data: " + e.getMessage());
+                    }
+                }
+            }
+        });
     }
 
 
