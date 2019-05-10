@@ -2,7 +2,7 @@
 """
 Test suite for spacecmd.filepreservation
 """
-from mock import MagicMock, patch, mock_open
+from unittest.mock import MagicMock, patch, mock_open
 import spacecmd.filepreservation
 from helpers import shell
 
