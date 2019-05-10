@@ -257,8 +257,8 @@ public class MinionController {
     public static ModelAndView bootstrap(Request request, Response response, User user) {
         Map<String, Object> data = new HashMap<>();
         ActivationKeyManager akm = ActivationKeyManager.getInstance();
-        List<String> visibleBootstrapKeys = akm.findAll(user)
-                .stream().map(ActivationKey::getKey)
+        List<String> visibleBootstrapKeys = akm.findAllActive(user).stream()
+                .map(ActivationKey::getKey)
                 .collect(Collectors.toList());
         List<Map<String, Object>> proxies = ServerFactory.lookupProxiesByOrg(user)
                 .stream()
