@@ -72,7 +72,7 @@ public class ContentManagementViewsController {
                 withRolesTemplate(ContentManagementViewsController::listProjectsView), jade);
 
         get("/manager/contentmanagement/filters",
-                withCsrfToken(withUser(ContentManagementViewsController::listFiltersView)), jade);
+                withCsrfToken(withRolesTemplate(ContentManagementViewsController::listFiltersView)), jade);
     }
 
     /**

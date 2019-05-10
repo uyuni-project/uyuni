@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import ListFilters from './list-filters';
 import "./list-filters.css";
+import {RolesProvider} from "core/auth/roles-context";
 
 window.pageRenderers = window.pageRenderers || {};
 window.pageRenderers.contentManagement = window.pageRenderers.contentManagement || {};
@@ -16,11 +17,13 @@ window.pageRenderers.contentManagement.listFilters.renderer = (id, {filters, ope
   }  catch(error) {}
 
   ReactDOM.render(
+    <RolesProvider>
       <ListFilters
         filters={filtersJson}
         openFilterId={openFilterId}
         flashMessage={flashMessage}
-      />,
-      document.getElementById(id),
-    );
+      />
+    </RolesProvider>,
+    document.getElementById(id),
+  );
 };

@@ -9,6 +9,8 @@ import {hot} from 'react-hot-loader';
 import FilterEdit from "./filter-edit";
 import {mapResponseToFilterForm} from "./filter.utils";
 import type {FilterFormType, FilterServerType} from "../shared/type/filter.type";
+import useRoles from "core/auth/use-roles";
+import {isOrgAdmin} from "core/auth/auth.utils";
 
 type Props = {
   filters: Array<FilterServerType>,
@@ -20,6 +22,9 @@ const ListFilters = (props: Props) => {
 
   const [displayedFilters, setDisplayedFilters]: [Array<FilterFormType>, Function] =
     useState(mapResponseToFilterForm(props.filters));
+
+  const roles = useRoles();
+  const hasEditingPermissions = isOrgAdmin(roles);
 
   useEffect(()=> {
     if(props.flashMessage) {
@@ -37,14 +42,17 @@ const ListFilters = (props: Props) => {
 
   const panelButtons = (
     <div className="pull-right btn-group">
-      <FilterEdit
-        id="create-filter-button"
-        initialFilterForm={{deny:true}}
-        icon='fa-plus'
-        buttonText='Create Filter'
-        openFilterId={props.openFilterId}
-        onChange={responseFilters => setDisplayedFilters(mapResponseToFilterForm(responseFilters))}
-      />
+      {
+        hasEditingPermissions &&
+        <FilterEdit
+          id="create-filter-button"
+          initialFilterForm={{deny:true}}
+          icon='fa-plus'
+          buttonText='Create Filter'
+          openFilterId={props.openFilterId}
+          onChange={responseFilters => setDisplayedFilters(mapResponseToFilterForm(responseFilters))}
+        />
+      }
     </div>
   );
 
@@ -79,6 +87,7 @@ const ListFilters = (props: Props) => {
           columnKey="action-buttons"
           header={t('')}
           cell={ row =>
+            hasEditingPermissions &&
             <FilterEdit
               id={`edit-filter-button-${row.id}`}
               initialFilterForm={row}
@@ -89,7 +98,6 @@ const ListFilters = (props: Props) => {
               editing
             />
           }
-
         />
       </Table>
     </TopPanel>
