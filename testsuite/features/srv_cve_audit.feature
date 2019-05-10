@@ -74,9 +74,7 @@ Feature: CVE Audit
 
   Scenario: List systems by patch status via XML-RPC before patch
     Given I am authorized as "admin" with password "admin"
-    When I follow "Admin"
-    And I follow "Task Schedules"
-    And I follow "Task Schedules"
+    When I follow the left menu "Admin > Task Schedules"
     And I follow "cve-server-channels-default"
     And I follow "cve-server-channels-bunch"
     And I click on "Single Run Schedule"

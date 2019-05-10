@@ -10,8 +10,7 @@ Feature: Use advanced features of Salt formulas
      Given I am authorized
      When I install "form.yml" to custom formula metadata directory "testform"
      And I install "metadata.yml" to custom formula metadata directory "testform"
-     And I follow "Salt"
-     And I follow "Formula Catalog"
+     When I follow the left menu "Salt > Formula Catalog"
      Then I should see a "testform" text
 
   Scenario: Assign formula to minion via group formula
@@ -226,7 +225,7 @@ Feature: Use advanced features of Salt formulas
      And I should see a "Testform" text
      When I uncheck the "testform" formula
      And I click on "Save"
-     Then I should see a "Formulas saved!" text
+     Then I should see a "Formula saved" text
 #    The refresh is necessary, bsc#1028285 does not cover this.
      When I refresh the pillar data
      Then the pillar data for "testing" should be empty on "sle-minion"

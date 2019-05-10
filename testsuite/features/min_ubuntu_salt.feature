@@ -93,9 +93,8 @@ Feature: Be able to bootstrap an Ubuntu minion and do some basic operations on i
 @ubuntu_minion
   Scenario: Run a remote command on the Ubuntu minion
     Given I am authorized
-    When I follow "Salt"
-    And I follow "Remote Commands"
-    Then I should see a "Remote Commands" text
+    When I follow the left menu "Salt > Remote Commands"
+    Then I should see a "Remote Commands" text in the content area
     When I enter command "cat /etc/os-release"
     And I enter target "*ubuntu*"
     And I click on preview
