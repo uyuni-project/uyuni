@@ -128,3 +128,27 @@ class TestScap:
         assert not shell.client.system.scap.getXccdfScanRuleResults.called
         assert not mprint.called
 
+    def test_scap_getxccdfscanruleresults_xids_no_rules(self, shell):
+        """
+        Test getxccdfscanruleresults with XIDs but no rules
+
+        :param shell:
+        :return:
+        """
+        shell.help_scap_getxccdfscanruleresults = MagicMock()
+        shell.SEPARATOR = "---"
+        shell.client.system.scap.getXccdfScanRuleResults = MagicMock()
+        mprint = MagicMock()
+        with patch("spacecmd.scap.print", mprint):
+            spacecmd.scap.do_scap_getxccdfscanruleresults(shell, "1 2 3")
+
+        assert not shell.help_scap_getxccdfscanruleresults.called
+        assert shell.client.system.scap.getXccdfScanRuleResults.called
+        assert mprint.called
+
+        expectations = [
+            'XID: 1', '', '---', 'XID: 2',
+            '', '---', 'XID: 3', '',
+        ]
+        assert_expect(mprint.call_args_list, *expectations)
+
