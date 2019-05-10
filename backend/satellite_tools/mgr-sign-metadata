@@ -38,14 +38,14 @@ else
 fi
 
 rm -f $SIGFILE
-echo "$GPGPASS" | gpg -sab --batch -u $KEYID --passphrase-fd 0 $DIGESTOPT -o $SIGFILE $FILETOSIGN
+echo "$GPGPASS" | gpg -sab --batch -u $KEYID --passphrase-fd 0 --pinentry-mode loopback $DIGESTOPT -o $SIGFILE $FILETOSIGN
 
 rm -f $KEYFILE
 gpg --batch --export -a -o $KEYFILE $KEYID
 
 if [ ! -z "$CLRSIGNEDFILE" ]; then
   rm -f $CLRSIGNEDFILE
-  echo "$GPGPASS" | gpg --batch -u $KEYID --passphrase-fd 0 $DIGESTOPT --clearsign -o $CLRSIGNEDFILE $FILETOSIGN
+  echo "$GPGPASS" | gpg --batch -u $KEYID --passphrase-fd 0 --pinentry-mode loopback $DIGESTOPT --clearsign -o $CLRSIGNEDFILE $FILETOSIGN
 fi
 
 exit 0
