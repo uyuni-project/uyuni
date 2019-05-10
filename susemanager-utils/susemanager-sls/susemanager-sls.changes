@@ -1,3 +1,5 @@
+- Enabling certificate deployment for Leap 15.1 clients which is
+  needed for bootstrapping
 - States to enable/disable server monitoring
 - Improve salt events processing performance (bsc#1125097)
 
