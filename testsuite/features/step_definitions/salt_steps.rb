@@ -580,15 +580,13 @@ end
 
 When(/^I go to the minion onboarding page$/) do
   steps %(
-    And I follow "Salt"
-    And I follow "Keys"
+    When I follow the left menu "Salt > Keys"
     )
 end
 
 When(/^I go to the bootstrapping page$/) do
   steps %(
-    And I follow "Systems"
-    And I follow "Bootstrapping"
+    When I follow the left menu "Systems > Bootstrapping"
     )
 end
 
