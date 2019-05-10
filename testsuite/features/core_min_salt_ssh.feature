@@ -56,8 +56,7 @@ Feature: Be able to bootstrap a Salt host managed via salt-ssh
 @ssh_minion
   Scenario: Schedule errata refresh to reflect channel assignment on SSH minion
     Given I am authorized as "admin" with password "admin"
-    When I follow "Admin"
-    And I follow "Task Schedules"
+    When I follow the left menu "Admin > Task Schedules"
     And I follow "errata-cache-default"
     And I follow "errata-cache-bunch"
     And I click on "Single Run Schedule"

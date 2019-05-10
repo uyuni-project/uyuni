@@ -22,8 +22,7 @@ Feature: Install a patch on the CentOS SSH minion via Salt through the UI
     And I follow "List / Remove" in the content area
     And I enter "virgo-dummy" in the css "input[placeholder='Filter by Package Name: ']"
     And I click on the css "button.spacewalk-button-filter" until page does contain "virgo-dummy" text
-    And I follow "Admin"
-    And I follow "Task Schedules"
+    When I follow the left menu "Admin > Task Schedules"
     And I follow "errata-cache-default"
     And I follow "errata-cache-bunch"
     And I click on "Single Run Schedule"

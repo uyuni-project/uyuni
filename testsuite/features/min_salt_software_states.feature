@@ -23,8 +23,7 @@ Feature: Salt package states
     And I follow "List / Remove" in the content area
     And I enter "andromeda-dummy" in the css "input[placeholder='Filter by Package Name: ']"
     And I click on the css "button.spacewalk-button-filter" until page does contain "andromeda-dummy-1.0" text
-    Then I follow "Admin"
-    And I follow "Task Schedules"
+    When I follow the left menu "Admin > Task Schedules"
     And I follow "errata-cache-default"
     And I follow "errata-cache-bunch"
     Then I click on "Single Run Schedule"

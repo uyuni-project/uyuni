@@ -15,8 +15,7 @@ Feature: Action chain on traditional clients
 
   Scenario: Pre-requisite: ensure the errata cache is computed before testing on traditional client
     Given I am authorized as "admin" with password "admin"
-    When I follow "Admin"
-    And I follow "Task Schedules"
+    When I follow the left menu "Admin > Task Schedules"
     And I follow "errata-cache-default"
     And I follow "errata-cache-bunch"
     And I click on "Single Run Schedule"
@@ -134,8 +133,7 @@ Feature: Action chain on traditional clients
 
   Scenario: Verify the action chain list on traditional client
     Given I am on the Systems overview page of this "sle-client"
-    When I follow "Schedule"
-    And I follow "Action Chains"
+    When I follow the left menu "Schedule > Action Chains"
     And I follow "new action chain"
     Then I should see a "1. Install or update virgo-dummy on 1 system" text
     And I should see a "2. Run a remote command on 1 system" text
@@ -147,14 +145,12 @@ Feature: Action chain on traditional clients
 
   Scenario: Check that a different user cannot see the action chain for traditional client
     Given I am authorized as "testing" with password "testing"
-    When I follow "Schedule"
-    And I follow "Action Chains"
+    When I follow the left menu "Schedule > Action Chains"
     Then I should not see a "new action chain" link
 
   Scenario: Delete the action chain for traditional client
      Given I am authorized as "admin" with password "admin"
-     Then I follow "Schedule"
-     And I follow "Action Chains"
+     When I follow the left menu "Schedule > Action Chains"
      And I follow "new action chain"
      And I follow "delete action chain" in the content area
      Then I click on "Delete"
@@ -173,8 +169,7 @@ Feature: Action chain on traditional clients
 
   Scenario: Execute the action chain from the web UI on traditional client
     Given I am on the Systems overview page of this "sle-client"
-    When I follow "Schedule"
-    And I follow "Action Chains"
+    When I follow the left menu "Schedule > Action Chains"
     And I follow "new action chain"
     And I should see a "1. Run a remote command on 1 system" text
     Then I click on "Save and Schedule"

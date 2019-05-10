@@ -32,8 +32,7 @@ Feature: Salt SSH action chain
 @ssh_minion
   Scenario: Pre-requisite: ensure the errata cache is computed before testing on SSH minion
     Given I am authorized as "admin" with password "admin"
-    When I follow "Admin"
-    And I follow "Task Schedules"
+    When I follow the left menu "Admin > Task Schedules"
     And I follow "errata-cache-default"
     And I follow "errata-cache-bunch"
     And I click on "Single Run Schedule"
@@ -159,8 +158,7 @@ Feature: Salt SSH action chain
 @ssh_minion
   Scenario: Verify the action chain list on SSH minion
     Given I am on the Systems overview page of this "ssh-minion"
-    When I follow "Schedule"
-    And I follow "Action Chains"
+    When I follow the left menu "Schedule > Action Chains"
     And I follow "new action chain"
     Then I should see a "1. Apply patch(es) andromeda-dummy-6789 on 1 system" text
     And I should see a "2. Remove milkyway-dummy from 1 system" text
@@ -173,15 +171,13 @@ Feature: Salt SSH action chain
 @ssh_minion
   Scenario: Check that a different user cannot see the action chain for SSH minion
     Given I am authorized as "testing" with password "testing"
-    When I follow "Schedule"
-    And I follow "Action Chains"
+    When I follow the left menu "Schedule > Action Chains"
     Then I should not see a "new action chain" link
 
 @ssh_minion
   Scenario: Execute the action chain from the web UI on SSH minion
     Given I am on the Systems overview page of this "ssh-minion"
-    When I follow "Schedule"
-    And I follow "Action Chains"
+    When I follow the left menu "Schedule > Action Chains"
     And I follow "new action chain"
     Then I click on "Save and Schedule"
     And I should see a "Action Chain new action chain has been scheduled for execution." text
@@ -207,8 +203,7 @@ Feature: Salt SSH action chain
 @ssh_minion
   Scenario: Delete the action chain for SSH minion
     Given I am authorized as "admin" with password "admin"
-    When I follow "Schedule"
-    And I follow "Action Chains"
+    When I follow the left menu "Schedule > Action Chains"
     And I follow "new action chain"
     And I follow "delete action chain" in the content area
     Then I click on "Delete"
@@ -229,8 +224,7 @@ Feature: Salt SSH action chain
     And I follow "List / Remove" in the content area
     And I enter "andromeda-dummy" in the css "input[placeholder='Filter by Package Name: ']"
     And I click on the css "button.spacewalk-button-filter" until page does contain "andromeda-dummy-1.0" text
-    And I follow "Admin"
-    And I follow "Task Schedules"
+    When I follow the left menu "Admin > Task Schedules"
     And I follow "errata-cache-default"
     And I follow "errata-cache-bunch"
     And I click on "Single Run Schedule"

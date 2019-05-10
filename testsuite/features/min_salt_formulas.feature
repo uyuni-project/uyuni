@@ -13,9 +13,8 @@ Feature: Use salt formulas
 
   Scenario: The new formula appears on the server
      Given I am authorized
-     And I follow "Salt"
-     And I follow "Formula Catalog"
-     Then I should see a "locale" text
+     When I follow the left menu "Salt > Formula Catalog"
+     Then I should see a "locale" text in the content area
 
   Scenario: Enable the formula on the minion
      Given I am on the Systems overview page of this "sle-minion"
