@@ -152,3 +152,47 @@ class TestScap:
         ]
         assert_expect(mprint.call_args_list, *expectations)
 
+    def test_scap_getxccdfscanruleresults_xids_with_rules(self, shell):
+        """
+        Test getxccdfscanruleresults with XIDs with rules
+
+        :param shell:
+        :return:
+        """
+        shell.help_scap_getxccdfscanruleresults = MagicMock()
+        shell.SEPARATOR = "---"
+        shell.client.system.scap.getXccdfScanRuleResults = MagicMock(side_effect=[
+            [
+                {"idref": "001A", "result": "result placeholder - 1", "idents": "idents placeholder - 1"},
+                {"idref": "001B", "result": "result placeholder - 2", "idents": "idents placeholder - 2"},
+            ],
+            [
+                {"idref": "002A", "result": "result placeholder - 1", "idents": "idents placeholder - 1"},
+                {"idref": "002B", "result": "result placeholder - 2", "idents": "idents placeholder - 2"},
+            ],
+            [
+                {"idref": "003A", "result": "result placeholder - 1", "idents": "idents placeholder - 1"},
+                {"idref": "003B", "result": "result placeholder - 2", "idents": "idents placeholder - 2"},
+            ]
+        ])
+        mprint = MagicMock()
+        with patch("spacecmd.scap.print", mprint):
+            spacecmd.scap.do_scap_getxccdfscanruleresults(shell, "1 2 3")
+
+        assert not shell.help_scap_getxccdfscanruleresults.called
+        assert shell.client.system.scap.getXccdfScanRuleResults.called
+        assert mprint.called
+
+        expectations = [
+            'XID: 1', '',
+            'IDref: 001A Result: result placeholder - 1 Idents: (idents placeholder - 1)',
+            'IDref: 001B Result: result placeholder - 2 Idents: (idents placeholder - 2)',
+            '---', 'XID: 2', '',
+            'IDref: 002A Result: result placeholder - 1 Idents: (idents placeholder - 1)',
+            'IDref: 002B Result: result placeholder - 2 Idents: (idents placeholder - 2)',
+            '---', 'XID: 3', '',
+            'IDref: 003A Result: result placeholder - 1 Idents: (idents placeholder - 1)',
+            'IDref: 003B Result: result placeholder - 2 Idents: (idents placeholder - 2)',
+        ]
+        assert_expect(mprint.call_args_list, *expectations)
+
