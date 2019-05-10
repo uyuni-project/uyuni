@@ -1,6 +1,7 @@
 # Copyright (c) 2018-2019 SUSE LLC.
 # Licensed under the terms of the MIT license.
 
+@sle_minion
 Feature: State Configuration channels
   In order to configure systems through Salt
   I want to be able to use channels from the state tab
