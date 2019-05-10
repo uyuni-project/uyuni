@@ -207,9 +207,75 @@ class TestScap:
         shell.SEPARATOR = "---"
         shell.client.system.scap.getXccdfScanDetails = MagicMock()
         mprint = MagicMock()
+
         with patch("spacecmd.scap.print", mprint):
             spacecmd.scap.do_scap_getxccdfscandetails(shell, "")
+
         assert shell.help_scap_getxccdfscandetails.called
         assert not shell.client.system.scap.getXccdfScanDetails.called
         assert not mprint.called
+
+    def test_scap_getxccdfscandetails_xids(self, shell):
+        """
+        Test getxccdfscandetails with XID args.
+
+        :param shell:
+        :return:
+        """
+        shell.help_scap_getxccdfscandetails = MagicMock()
+        shell.SEPARATOR = "---"
+        shell.client.system.scap.getXccdfScanDetails = MagicMock(side_effect=[
+            {
+                "xid": 1, "sid": "0001", "action_id": "a1", "path": "p1",
+                "oscap_parameters": "op1", "test_result": "tr1", "benchmark": "b1",
+                "benchmark_version": "bv1", "profile": "p1", "profile_title": "pt1",
+                "start_time": "st1", "end_time": "et1", "errors": "e1",
+            },
+            {
+                "xid": 2, "sid": "0002", "action_id": "a2", "path": "p2",
+                "oscap_parameters": "op2", "test_result": "tr2", "benchmark": "b2",
+                "benchmark_version": "bv2", "profile": "p2", "profile_title": "pt2",
+                "start_time": "st2", "end_time": "et2", "errors": "e2",
+            },
+        ])
+        mprint = MagicMock()
+
+        with patch("spacecmd.scap.print", mprint):
+            spacecmd.scap.do_scap_getxccdfscandetails(shell, "1 2")
+
+        assert not shell.help_scap_getxccdfscandetails.called
+        assert shell.client.system.scap.getXccdfScanDetails.called
+        assert mprint.called
+
+        expectations = [
+            (shell.session, 1),
+            (shell.session, 2)
+        ]
+        for call in shell.client.system.scap.getXccdfScanDetails.call_args_list:
+            arg, kw = call
+            assert kw == {}
+            assert arg == next(iter(expectations))
+            expectations.pop(0)
+
+        expectations = [
+            ('XID: 1',), ('',),
+            ('XID:', 1, 'SID:', '0001', 'Action_ID:', 'a1', 'Path:',
+             'p1', 'OSCAP_Parameters:', 'op1', 'Test_Result:', 'tr1',
+             'Benchmark:', 'b1', 'Benchmark_Version:', 'bv1',
+             'Profile:', 'p1', 'Profile_Title:', 'pt1', 'Start_Time:',
+             'st1', 'End_Time:', 'et1', 'Errors:', 'e1'),
+            ('---',),
+            ('XID: 2',), ('',),
+            ('XID:', 2, 'SID:', '0002', 'Action_ID:', 'a2', 'Path:',
+             'p2', 'OSCAP_Parameters:', 'op2', 'Test_Result:', 'tr2',
+             'Benchmark:', 'b2', 'Benchmark_Version:', 'bv2',
+             'Profile:', 'p2', 'Profile_Title:', 'pt2', 'Start_Time:',
+             'st2', 'End_Time:', 'et2', 'Errors:', 'e2'),
+        ]
+
+        for call in mprint.call_args_list:
+            arg, kw = call
+            assert kw == {}
+            assert arg == next(iter(expectations))
+            expectations.pop(0)
 
