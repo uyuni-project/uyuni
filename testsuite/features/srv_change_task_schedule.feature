@@ -5,8 +5,7 @@ Feature: Change the schedule of a task
 
   Scenario: Change the schedule of task mgr-sync-refresh-default to weekly
     Given I am authorized as "admin" with password "admin"
-    When I follow "Admin"
-    And I follow "Task Schedules"
+    When I follow the left menu "Admin > Task Schedules"
     And I follow "mgr-sync-refresh-default"
     And I check radio button "weekly"
     And I select "Friday" from "date_day_week"
@@ -19,8 +18,7 @@ Feature: Change the schedule of a task
 
   Scenario: Change the schedule of task mgr-sync-refresh-default to monthly
     Given I am authorized as "admin" with password "admin"
-    When I follow "Admin"
-    And I follow "Task Schedules"
+    When I follow the left menu "Admin > Task Schedules"
     And I follow "mgr-sync-refresh-default"
     And I check radio button "monthly"
     And I select "17" from "date_day_month"
@@ -32,8 +30,7 @@ Feature: Change the schedule of a task
 
   Scenario: Change the schedule of task mgr-sync-refresh-default back to daily
     Given I am authorized as "admin" with password "admin"
-    When I follow "Admin"
-    And I follow "Task Schedules"
+    When I follow the left menu "Admin > Task Schedules"
     And I follow "mgr-sync-refresh-default"
     And I check radio button "daily"
     And I click on "Update Schedule"

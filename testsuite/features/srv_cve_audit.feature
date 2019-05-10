@@ -12,8 +12,7 @@ Feature: CVE Audit
     And I run "zypper -n in --oldpackage milkyway-dummy-1.0" on "sle-client"
     And I run "zypper -n ref" on "sle-client"
     And I run "rhn_check -vvv" on "sle-client"
-    And I follow "Admin"
-    And I follow "Task Schedules"
+    And I follow the left menu "Admin > Task Schedules"
     And I follow "errata-cache-default"
     And I follow "errata-cache-bunch"
     And I click on "Single Run Schedule"
@@ -22,8 +21,7 @@ Feature: CVE Audit
 
   Scenario: Schedule channel data refresh
     Given I am authorized as "admin" with password "admin"
-    When I follow "Admin"
-    And I follow "Task Schedules"
+    And I follow the left menu "Admin > Task Schedules"
     And I follow "cve-server-channels-default"
     And I follow "cve-server-channels-bunch"
     And I click on "Single Run Schedule"

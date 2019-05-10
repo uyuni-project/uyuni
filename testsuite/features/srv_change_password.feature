@@ -8,8 +8,7 @@ Feature: Change the user's password
 
   Scenario: Change the password to a new password
     Given I am authorized as "admin" with password "admin"
-    When I follow "User Account"
-    And I follow "Your Account"
+    When I follow the left menu "User Account > Your Account"
     And I enter "GoodPass" as "desiredpassword"
     And I enter "GoodPass" as "desiredpasswordConfirm"
     And I click on "Update"
@@ -22,8 +21,7 @@ Feature: Change the user's password
 
   Scenario: Revert the new password to a valid standard password
     Given I am authorized as "admin" with password "GoodPass"
-    When I follow "User Account"
-    And I follow "Your Account"
+    When I follow the left menu "User Account > Your Account"
     And I enter "admin" as "desiredpassword"
     And I enter "admin" as "desiredpasswordConfirm"
     And I click on "Update"
@@ -36,8 +34,7 @@ Feature: Change the user's password
 
   Scenario: Try an invalid password
     Given I am authorized as "admin" with password "admin"
-    When I follow "User Account"
-    And I follow "Your Account"
+    When I follow the left menu "User Account > Your Account"
     And I enter "A" as "desiredpassword"
     And I enter "A" as "desiredpasswordConfirm"
     And I click on "Update"
