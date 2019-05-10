@@ -17,10 +17,11 @@ SimpleCov.start
 server = ENV['SERVER']
 # maximal wait before giving up
 # the tests return much before that delay in case of success
-DEFAULT_TIMEOUT = 250
 $stdout.sync = true
-Capybara.default_wait_time = 10
 STARTTIME = Time.new.to_i
+Capybara.default_max_wait_time = 10
+DEFAULT_TIMEOUT = 250
+CLICK_TIMEOUT = Capybara.default_max_wait_time * 2
 
 def enable_assertions
   # include assertion globally
