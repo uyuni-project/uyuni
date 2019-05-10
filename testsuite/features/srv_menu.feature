@@ -21,8 +21,7 @@ Feature: Web UI - Main landing page menu, texts and links
     Then I should see a " Software Channel Management" text in the content area
 
   Scenario: Completeness of the side navigation bar and the content frame
-    Then I should see a "System Overview" text
-    And I should see a "No systems." text
+    Then I should see a "System Overview" text in the content area
     And I should see a "Overview" link in the left menu
     And I should see a "Systems" link in the left menu
     And I should see a "System Groups" link in the left menu
@@ -58,68 +57,57 @@ Feature: Web UI - Main landing page menu, texts and links
   Scenario: Sidebar link destination for Systems => Physical Systems
     When I follow the left menu "Systems > Systems > Physical Systems"
     Then I should see a "Physical Systems" text
-    And I should see a "No systems." text
     And the current path is "/rhn/systems/PhysicalList.do"
 
   Scenario: Sidebar link destination for Systems => Virtual Systems
     When I follow the left menu "Systems > Systems > Virtual Systems"
     Then I should see a "Virtual Systems" text
-    And I should see a "No Virtual Systems." text
     And the current path is "/rhn/systems/VirtualList.do"
 
   Scenario: Sidebar link destination for Systems => Out of Date
     When I follow the left menu "Systems > Systems > Out of Date"
     Then I should see a "Out of Date Systems" text
-    And I should see a "No systems." text
     And the current path is "/rhn/systems/OutOfDate.do"
 
   Scenario: Sidebar link destination for Systems => Requiring Reboot
     When I follow the left menu "Systems > Systems > Requiring Reboot"
     Then I should see a "Systems Requiring Reboot" text
-    And I should see a "No systems." text
     And the current path is "/rhn/systems/RequiringReboot.do"
 
   Scenario: Sidebar link destination for Systems => Non Compliant
     When I follow the left menu "Systems > Systems > Non Compliant"
     Then I should see a "Non Compliant Systems" text
-    And I should see a "No systems." text
     And the current path is "/rhn/systems/ExtraPackagesSystems.do"
 
   Scenario: Sidebar link destination for Systems => Without System Type
     When I follow the left menu "Systems > Systems > Without System Type"
     Then I should see a "Systems without System Type" text
-    And I should see a "No systems." text
     And the current path is "/rhn/systems/Unentitled.do"
 
   Scenario: Sidebar link destination for Systems => Ungrouped
     When I follow the left menu "Systems > Systems > Ungrouped"
     Then I should see a "Ungrouped Systems" text
-    And I should see a "No systems." text
     And the current path is "/rhn/systems/Ungrouped.do"
 
   Scenario: Sidebar link destination for Systems => Inactive
     When I follow the left menu "Systems > Systems > Inactive"
     Then I should see a "Inactive Systems" text
-    And I should see a "No systems." text
     And the current path is "/rhn/systems/Inactive.do"
 
   Scenario: Sidebar link destination for Systems => Recently Registered
     When I follow the left menu "Systems > Systems > Recently Registered"
     Then I should see a "Recently Registered Systems" text
-    And I should see a "No systems." text
     And I should see a "View systems registered:" text
     And the current path is "/rhn/systems/Registered.do"
 
   Scenario: Sidebar link destination for Systems => Proxy
     When I follow the left menu "Systems > Systems > Proxy"
     Then I should see a "Proxy Servers" text
-    And I should see a "No systems." text
     And the current path is "/rhn/systems/ProxyList.do"
 
   Scenario: Sidebar link destination for Systems => Duplicate Systems
     When I follow the left menu "Systems > Systems > Duplicate Systems"
     Then I should see a "Duplicate Systems" text
-    And I should see a "No systems." text
     And the current path is "/rhn/systems/DuplicateIPList.do"
     And I should see a "Duplicate IP Address" link
     And I should see a "Duplicate Hostname" link
@@ -129,7 +117,6 @@ Feature: Web UI - Main landing page menu, texts and links
   Scenario: Sidebar link destination for Systems => System Currency
     When I follow the left menu "Systems > Systems > System Currency"
     Then I should see a "System Currency Report" text
-    And I should see a "No systems." text
     And the current path is "/rhn/systems/SystemCurrency.do"
 
   Scenario: Sidebar link destination for Systems => System Types
