@@ -110,3 +110,21 @@ class TestScap:
             'XID: 4 Profile: 002 Path: (/opt/etc/fourth) Completed: true',
         ]
         assert_expect(mprint.call_args_list, *expectations)
+
+    def test_scap_getxccdfscanruleresults_noargs(self, shell):
+        """
+        Test getxccdfscanruleresults without args
+
+        :param shell:
+        :return:
+        """
+        shell.help_scap_getxccdfscanruleresults = MagicMock()
+        shell.client.system.scap.getXccdfScanRuleResults = MagicMock()
+        mprint = MagicMock()
+        with patch("spacecmd.scap.print", mprint):
+            spacecmd.scap.do_scap_getxccdfscanruleresults(shell, "")
+
+        assert shell.help_scap_getxccdfscanruleresults.called
+        assert not shell.client.system.scap.getXccdfScanRuleResults.called
+        assert not mprint.called
+
