@@ -328,3 +328,29 @@ class TestScap:
         assert not shell.client.system.scap.scheduleXccdfScan.called
         assert not mprint.called
 
+    def test_scap_schedulexccdfscan_systems_arg(self, shell):
+        """
+        Test for do_scap_schedulexccdfscan with systems arg
+
+        :param shell:
+        :return:
+        """
+        shell.help_scap_schedulexccdfscan = MagicMock()
+        shell.ssm.keys = MagicMock(return_value=[])
+        shell.expand_systems = MagicMock()
+        shell.get_system_id = MagicMock()
+        shell.client.system.scap.scheduleXccdfScan = MagicMock()
+        mprint = MagicMock()
+
+        with patch("spacecmd.scap.print", mprint):
+            spacecmd.scap.do_scap_schedulexccdfscan(shell, "/opt/xccdf.xml xccdf-option some.example.com")
+
+        assert not shell.help_scap_schedulexccdfscan.called
+        assert not shell.ssm.keys.called
+        assert shell.expand_systems.called
+        assert not shell.get_system_id.called
+        assert not shell.client.system.scap.scheduleXccdfScan.called
+        assert not mprint.called
+
+        assert_expect(shell.expand_systems.call_args_list, ["some.example.com"])
+
