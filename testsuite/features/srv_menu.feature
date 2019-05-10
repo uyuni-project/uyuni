@@ -5,7 +5,6 @@ Feature: Web UI - Main landing page menu, texts and links
 
   Background:
     Given I am authorized
-    When I follow the left menu "Systems > Overview"
 
   Scenario: The menu direct link accesses the first submenu level only
     When I follow the left menu "Patches > Patches"
@@ -21,6 +20,7 @@ Feature: Web UI - Main landing page menu, texts and links
     Then I should see a " Software Channel Management" text in the content area
 
   Scenario: Completeness of the side navigation bar and the content frame
+    When I follow the left menu "Systems > Overview"
     Then I should see a "System Overview" text in the content area
     And I should see a "Overview" link in the left menu
     And I should see a "Systems" link in the left menu

@@ -5,7 +5,6 @@ Feature: Cobbler and distribution autoinstallation
 
   Background:
     Given I am authorized
-    When I follow the left menu "Systems > Overview"
 
   Scenario: Ask cobbler to create a distribution via XML-RPC
     Given cobblerd is running
