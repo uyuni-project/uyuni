@@ -225,8 +225,7 @@ public class ChannelManagerContentAlignmentTest extends BaseTestCaseWithUser {
      * Test filtering out errata after channel alignment
      */
     public void testErrataFilters() {
-        Errata erratum = srcChannel.getErratas().iterator().next();
-        FilterCriteria criteria = new FilterCriteria(FilterCriteria.Matcher.EQUALS, "advisory_name", erratum.getAdvisoryName());
+        FilterCriteria criteria = new FilterCriteria(FilterCriteria.Matcher.EQUALS, "advisory_name", errata.getAdvisoryName());
         ContentFilter filter = ContentManager.createFilter("test-filter-123", DENY, ERRATUM, criteria, user);
 
         ChannelManager.alignEnvironmentTargetSync(singleton(filter), srcChannel, tgtChannel, user);

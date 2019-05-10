@@ -1659,7 +1659,7 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
      *
      * @throws Exception if anything goes wrong
      */
-    public void testPackagesRemovedOnErratumRemoval() throws Exception {
+    public void testPackagesOnTruncateErrata() throws Exception {
         user.addPermanentRole(ORG_ADMIN);
         Errata errata = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
         TestUtils.saveAndFlush(errata);
