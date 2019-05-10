@@ -293,6 +293,16 @@ class TestScap:
         shell.client.system.scap.scheduleXccdfScan = MagicMock()
         mprint = MagicMock()
 
+        for insufficient_param in ["", "ssm", "/tmp foo"]:
+            with patch("spacecmd.scap.print", mprint):
+                spacecmd.scap.do_scap_schedulexccdfscan(shell, insufficient_param)
+
+            assert shell.help_scap_schedulexccdfscan.called
+            assert not shell.ssm.keys.called
+            assert not shell.expand_systems.called
+            assert not shell.get_system_id.called
+            assert not shell.client.system.scap.scheduleXccdfScan.called
+            assert not mprint.called
         with patch("spacecmd.scap.print", mprint):
             spacecmd.scap.do_scap_schedulexccdfscan(shell, "")
 
