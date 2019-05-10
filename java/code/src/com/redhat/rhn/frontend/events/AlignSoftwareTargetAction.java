@@ -79,7 +79,7 @@ public class AlignSoftwareTargetAction implements MessageAction {
     public Consumer<Exception> getExceptionHandler() {
         return (e) -> {
             if (e instanceof AlignSoftwareTargetException) {
-                LOG.error("Error aligning channel", e);
+                LOG.error("Error aligning target " + ((AlignSoftwareTargetException) e).getTarget(), e);
                 AlignSoftwareTargetException exc = ((AlignSoftwareTargetException) e);
                 exc.getTarget().setStatus(Status.FAILED);
                 ContentProjectFactory.save(exc.getTarget());

@@ -2836,10 +2836,10 @@ public class ChannelManager extends BaseManager {
      *
      * Alignment has 4 steps:
      * 1. Compute included and excluded errata based on given source channel and {@link ErrataFilter}s
-     * 2. Merge the included errata to target channel
-     * 3. Remove (truncate) those errata in target channel, which are not in included errata (or which do not have
+     * 2. Remove (truncate) those errata in target channel, which are not in included errata (or which do not have
      * original in the included errata)
-     * 4. Remove the {@link Package}s from excluded errata from target channel
+     * 3. Remove the {@link Package}s from excluded errata from target channel
+     * 4. Merge the included errata to target channel
      *
      * @param src the source {@link Channel}
      * @param tgt the target {@link Channel}
@@ -2857,11 +2857,12 @@ public class ChannelManager extends BaseManager {
         Set<Errata> includedErrata = new HashSet<>(partitionedErrata.get(true));
         List<Errata> excludedErrata = partitionedErrata.get(false);
 
-        ErrataManager.mergeErrataToChannel(user, includedErrata, tgt, src, false, false);
+        // Truncate extra errata in target channel
         ErrataManager.truncateErrata(includedErrata, tgt, user);
-
-        // we want to remove packages of excluded errata
+        // Remove packages from excluded errata
         excludedErrata.forEach(e -> ErrataManager.removeErratumAndPackagesFromChannel(e, tgt, user));
+        // Merge the included errata
+        ErrataManager.mergeErrataToChannel(user, includedErrata, tgt, src, false, false);
     }
 
     private static List<Long> extractPackageIds(Collection<Package> packages) {

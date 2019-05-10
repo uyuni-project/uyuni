@@ -1523,7 +1523,7 @@ public class ErrataManager extends BaseManager {
         ErrataCacheManager.deleteCacheEntriesForChannelErrata(chan.getId(), eList);
 
         // remove packages
-        ChannelManager.removePackages(chan, errata.getPackages().stream().map(p -> p.getId()).collect(toList()), user);
+        errata.getPackages().stream().forEach(p -> chan.getPackages().remove(p));
     }
 
     /**
