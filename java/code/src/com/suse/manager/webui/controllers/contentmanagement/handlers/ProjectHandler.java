@@ -103,9 +103,13 @@ public class ProjectHandler {
             requestErrors.put("name", "Name must not exceed 128 characters");
         }
 
+
         ContentManager.lookupProjectByNameAndOrg(projPropsRequest.getName(), user).ifPresent(cp -> {
-            requestErrors.put("name", "Name already exists");
+            if (!cp.getLabel().equals(projPropsRequest.getLabel())) {
+                requestErrors.put("name", "Name already exists");
+            }
         });
+
 
         return requestErrors;
     }
