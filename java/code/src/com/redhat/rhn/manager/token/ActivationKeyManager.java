@@ -326,6 +326,19 @@ public class ActivationKeyManager {
     }
 
     /**
+     * Finds all activation keys visible to user,
+     * excluding disabled ones.
+     * @param requester User requesting the list.
+     * @return All activation keys visible to user.
+     */
+    public List<ActivationKey> findAllActive(User requester) {
+        Session session = HibernateFactory.getSession();
+        return session.getNamedQuery("ActivationKey.findActiveByOrg")
+            .setParameter("org", requester.getOrg())
+            .list();
+    }
+
+    /**
      * Returns true if the the given user can
      * administer activation keys..
      * This should be the baseline for us to load activation keys.
