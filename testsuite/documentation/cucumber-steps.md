@@ -686,6 +686,11 @@ Then "test-vm" virtual machine on "virt-server" should have a virtio cdrom
 Then "test-vm" virtual machine on "virt-server" should have no cdrom
 ```
 
+* Remove disk images from a storage pool
+
+```cucumber
+When I delete all "test-vm.*" volumes from "default" pool on "kvm-server" without error control
+```
 
 <a name="c" />
 

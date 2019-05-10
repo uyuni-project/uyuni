@@ -212,5 +212,6 @@ Feature: Be able to manage XEN virtual machines via the GUI
     And I run "virsh undefine --remove-all-storage test-vm3" on "xen-server" without error control
     And I run "virsh net-destroy test-net0" on "xen-server" without error control
     And I run "virsh net-undefine test-net0" on "xen-server" without error control
+    And I delete all "test-vm.*" volumes from "default" pool on "kvm-server" without error control
     # Remove the virtpoller cache to avoid problems
     And I run "rm /var/cache/virt_state.cache" on "xen-server" without error control
