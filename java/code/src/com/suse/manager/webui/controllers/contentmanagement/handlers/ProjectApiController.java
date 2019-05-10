@@ -142,8 +142,7 @@ public class ProjectApiController {
         ProjectPropertiesRequest updateProjectPropertiesRequest = ProjectHandler.getProjectPropertiesRequest(req);
 
         HashMap<String, String> requestErrors = ProjectHandler.validateProjectPropertiesRequest(
-                updateProjectPropertiesRequest,
-                user
+                updateProjectPropertiesRequest, user
         );
         if (!requestErrors.isEmpty()) {
             return json(GSON, res, HttpStatus.SC_BAD_REQUEST, ResultJson.error(Arrays.asList(""), requestErrors));
