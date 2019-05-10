@@ -6,8 +6,8 @@ require 'twopence'
 # Initialize SSH targets from environment variables
 raise 'Server IP address or domain name variable empty' if ENV['SERVER'].nil?
 warn 'Proxy IP address or domain name variable empty' if ENV['PROXY'].nil?
-raise 'Client IP address or domain name variable empty' if ENV['CLIENT'].nil?
-raise 'Minion IP address or domain name variable empty' if ENV['MINION'].nil?
+warn 'Client IP address or domain name variable empty' if ENV['CLIENT'].nil?
+warn 'Minion IP address or domain name variable empty' if ENV['MINION'].nil?
 warn 'CentOS minion IP address or domain name variable empty' if ENV['CENTOSMINION'].nil?
 warn 'Ubuntu minion IP address or domain name variable empty' if ENV['UBUNTUMINION'].nil?
 warn 'SSH minion IP address or domain name variable empty' if ENV['SSHMINION'].nil?

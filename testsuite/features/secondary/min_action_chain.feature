@@ -1,6 +1,7 @@
 # Copyright (c) 2018-2019 SUSE LLC
 # Licensed under the terms of the MIT license.
 
+@sle_minion
 Feature: Action chains on Salt minions
 
   Scenario: Pre-requisite: downgrade repositories to lower version on Salt minion
