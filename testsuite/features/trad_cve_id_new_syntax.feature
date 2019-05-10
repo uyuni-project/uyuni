@@ -20,7 +20,7 @@ Feature: Support for new CVE-ID syntax
 
   Scenario: Search for CVE ID with the new format
     Given I am on the patches page
-    And I follow "Advanced Search"
+    When I follow the left menu "Patches > Advanced Search"
     When I enter "CVE-1999-12345" as "search_string" in the content area
     And I click on "Search"
     Then I should see a "Advanced Search" text

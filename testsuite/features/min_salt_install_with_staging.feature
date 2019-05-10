@@ -23,8 +23,7 @@ Feature: Install a package on the minion with staging enabled
 
   Scenario: Pre-requisite: ensure the errata cache is computed
     Given I am authorized as "admin" with password "admin"
-    When I follow "Admin"
-    And I follow "Task Schedules"
+    When I follow the left menu "Admin > Task Schedules"
     And I follow "errata-cache-default"
     And I follow "errata-cache-bunch"
     Then I click on "Single Run Schedule"
@@ -33,8 +32,7 @@ Feature: Install a package on the minion with staging enabled
 
   Scenario: Enable content staging
     Given I am authorized as "admin" with password "admin"
-    And I follow "Admin"
-    And I follow "Organizations"
+    When I follow the left menu "Admin > Organizations"
     And I follow first "SUSE Test"
     And I follow first "Configuration"
     And I check "staging_content_enabled"

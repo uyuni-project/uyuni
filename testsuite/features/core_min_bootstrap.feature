@@ -101,9 +101,8 @@ Feature: Be able to bootstrap a Salt minion via the GUI
 
   Scenario: Run a remote command on normal SLES minion
     Given I am authorized as "testing" with password "testing"
-    When I follow "Salt"
-    And I follow "Remote Commands"
-    Then I should see a "Remote Commands" text
+    When I follow the left menu "Salt > Remote Commands"
+    Then I should see a "Remote Commands" text in the content area
     When I enter command "file /tmp"
     And I click on preview
     Then I should see "sle-minion" hostname

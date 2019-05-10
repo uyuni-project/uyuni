@@ -11,7 +11,7 @@ Feature: Change the schedule of a task
     And I select "Friday" from "date_day_week"
     And I click on "Update Schedule"
     Then I should see a "Schedule mgr-sync-refresh-default has been updated." text
-    When I follow "Task Schedules"
+    When I follow the left menu "Admin > Task Schedules"
     And I follow "mgr-sync-refresh-default"
     Then I should see a "Friday" text
     And radio button "weekly" is checked
@@ -24,7 +24,7 @@ Feature: Change the schedule of a task
     And I select "17" from "date_day_month"
     And I click on "Update Schedule"
     Then I should see a "Schedule mgr-sync-refresh-default has been updated." text
-    When I follow "Task Schedules"
+    When I follow the left menu "Admin > Task Schedules"
     And I follow "mgr-sync-refresh-default"
     Then radio button "monthly" is checked
 
@@ -35,6 +35,6 @@ Feature: Change the schedule of a task
     And I check radio button "daily"
     And I click on "Update Schedule"
     Then I should see a "Schedule mgr-sync-refresh-default has been updated." text
-    When I follow "Task Schedules"
+    When I follow the left menu "Admin > Task Schedules"
     And I follow "mgr-sync-refresh-default"
     Then radio button "daily" is checked
