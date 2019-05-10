@@ -32,6 +32,8 @@ remove_traditional_stack:
       - rhn-check
       - rhn-setup
       - rhn-client-tools
+{%- elif grains['os_family'] == 'Debian' %}
+      - apt-transport-spacewalk
 {%- endif %}
       - osad
       - osa-common
@@ -44,6 +46,16 @@ remove_traditional_stack:
       - module: disable_repo*
 {%- endif %}
     - unless: rpm -q spacewalk-proxy-common
+
+# only removing apt-transport-spacewalk above
+# causes apt-get update to 'freeze' if this
+# file is still present and referencing a
+# method not present anymore.
+{%- if grains['os_family'] == 'Debian' %}
+remove_spacewalk_sources:
+  file.absent:
+    - name: /etc/apt/sources.list.d/spacewalk.list
+{%- endif %}
 
 # Remove suseRegisterInfo in a separate yum transaction to avoid being called by
 # the yum plugin.
