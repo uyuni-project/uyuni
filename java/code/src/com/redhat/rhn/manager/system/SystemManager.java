@@ -2256,12 +2256,13 @@ public class SystemManager extends BaseManager {
                 "System_queries", "remove_server_entitlement");
         m.execute(in, new HashMap<String, Integer>());
 
-        // Configure the monitoring formula for cleanup if still assigned (disable exporters)
-        if (EntitlementManager.MONITORING.equals(ent)) {
-            FormulaManager formulas = FormulaManager.getInstance();
-            if (formulas.hasSystemFormulaAssigned(FormulaFactory.PROMETHEUS_EXPORTERS, sid.intValue())) {
-                Server server = ServerFactory.lookupById(sid);
-                server.asMinionServer().ifPresent(s -> {
+        ServerFactory.lookupById(sid).asMinionServer().ifPresent(s -> {
+            SystemManager.refreshPillarDataForMinion(s);
+
+            // Configure the monitoring formula for cleanup if still assigned (disable exporters)
+            if (EntitlementManager.MONITORING.equals(ent)) {
+                FormulaManager formulas = FormulaManager.getInstance();
+                if (formulas.hasSystemFormulaAssigned(FormulaFactory.PROMETHEUS_EXPORTERS, sid.intValue())) {
                     try {
                         // Get the current data and set all exporters to disabled
                         String minionId = s.getMinionId();
@@ -2274,9 +2275,9 @@ public class SystemManager extends BaseManager {
                     catch (UnsupportedOperationException | IOException e) {
                         log.warn("Exception on saving formula data: " + e.getMessage());
                     }
-                });
+                }
             }
-        }
+        });
     }
 
 
