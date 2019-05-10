@@ -7,6 +7,7 @@
 # 3) install and remove a package
 # 4) cleanup: re-add build host entitlements
 
+@sle_minion
 Feature: Register a Salt minion via Bootstrap-script
 
   Scenario: Delete SLES minion system profile before script bootstrap test
