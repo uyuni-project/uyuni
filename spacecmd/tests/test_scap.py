@@ -196,3 +196,20 @@ class TestScap:
         ]
         assert_expect(mprint.call_args_list, *expectations)
 
+    def test_scap_getxccdfscandetails_no_args(self, shell):
+        """
+        Test getxccdfscandetails with no args.
+
+        :param shell:
+        :return:
+        """
+        shell.help_scap_getxccdfscandetails = MagicMock()
+        shell.SEPARATOR = "---"
+        shell.client.system.scap.getXccdfScanDetails = MagicMock()
+        mprint = MagicMock()
+        with patch("spacecmd.scap.print", mprint):
+            spacecmd.scap.do_scap_getxccdfscandetails(shell, "")
+        assert shell.help_scap_getxccdfscandetails.called
+        assert not shell.client.system.scap.getXccdfScanDetails.called
+        assert not mprint.called
+
