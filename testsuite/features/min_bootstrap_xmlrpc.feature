@@ -19,12 +19,12 @@ Feature: Register a Salt minion via XML-RPC API
 
   Scenario: Check new minion bootstrapped via XML-RPC in System Overview page
      Given I am authorized
-     And I go to the minion onboarding page
-     Then I should see a "accepted" text
-     And the Salt master can reach "sle-minion"
-     And I navigate to "rhn/systems/Overview.do" page
+     When I navigate to "rhn/systems/Overview.do" page
      And I wait until I see the name of "sle-minion", refreshing the page
      And I wait until onboarding is completed for "sle-minion"
+     Then the Salt master can reach "sle-minion"
+     When I go to the minion onboarding page
+     Then I should see a "accepted" text
 
   Scenario: Check contact method of this minion
     Given I am on the Systems overview page of this "sle-minion"
