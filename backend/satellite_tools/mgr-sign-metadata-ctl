@@ -147,7 +147,7 @@ if [[  $ACTION = "enable" ]]; then
         mkdir -p $GPG_SALT_EXPORT_DIR
         chown salt:salt $GPG_SALT_EXPORT_DIR
         chmod 775 $GPG_SALT_EXPORT_DIR
-        gpg --export $KEYID > $GPG_SALT_EXPORT_FILE
+        gpg --export $ENABLE_KEYID > $GPG_SALT_EXPORT_FILE
         chmod 644 $GPG_SALT_EXPORT_FILE
         echo "DONE. Exported key ${ENABLE_KEYID} to ${GPG_SALT_EXPORT_FILE}."
     fi
@@ -155,14 +155,14 @@ if [[  $ACTION = "enable" ]]; then
     # check if key was exported to the http pub dir
     EXPORT_WWW_PUB_KEY=true
     if [ -f $GPG_PUB_EXPORT_FILE ]; then
-        if gpg --with-fingerprint $GPG_PUB_EXPORT_FILE | grep --quiet $ENABLE_KEYID; then
+        if cat $GPG_PUB_EXPORT_FILE | gpg -q --with-colons --import-options show-only --import | grep --quiet $ENABLE_KEYID; then
             echo "OK. Key ${ENABLE_KEYID} was exported to ${GPG_PUB_EXPORT_FILE}."
             EXPORT_WWW_PUB_KEY=false
         fi
     fi
     if [ "$EXPORT_WWW_PUB_KEY" = true ]; then
         rm -f $GPG_PUB_EXPORT_FILE
-        gpg --batch --export --armor --output $GPG_PUB_EXPORT_FILE
+        gpg --batch --export --armor --output $GPG_PUB_EXPORT_FILE $ENABLE_KEYID
         chmod 644 $GPG_PUB_EXPORT_FILE
         echo "DONE. Exported key ${ENABLE_KEYID} to ${GPG_PUB_EXPORT_FILE}."
     fi
