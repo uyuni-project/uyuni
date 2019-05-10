@@ -78,7 +78,7 @@ Feature: Use advanced features of Salt formulas
      And I enter "pw2" as "testing#pw_or_null"
      And I enter "pw3" as "testing#pw_opt"
      And I click on "Save Formula"
-     Then I should see a "Formula saved!" text
+     Then I should see a "Formula saved" text
      And the pillar data for "testing:str" should be "text1" on "sle-minion"
      And the pillar data for "testing:str_def" should be "text2" on "sle-minion"
      And the pillar data for "testing:str_or_null" should be "text3" on "sle-minion"
@@ -98,7 +98,7 @@ Feature: Use advanced features of Salt formulas
      And I follow first "Testform" in the content area
      And I click on "Clear values" and confirm
      And I click on "Save Formula"
-     Then I should see a "Formula saved!" text
+     Then I should see a "Formula saved" text
      And the pillar data for "testing:str" should be "" on "sle-minion"
      And the pillar data for "testing:str_def" should be "defvalue" on "sle-minion"
      And the pillar data for "testing:str_or_null" should be "None" on "sle-minion"
@@ -134,7 +134,7 @@ Feature: Use advanced features of Salt formulas
      And I enter "2" as "testing#num_def"
      And I enter "pw1" as "testing#pw"
      And I click on "Save Formula"
-     Then I should see a "Formula saved!" text
+     Then I should see a "Formula saved" text
      And the pillar data for "testing:str" should be "text1" on "sle-minion"
      And the pillar data for "testing:str_def" should be "defvalue" on "sle-minion"
      And the pillar data for "testing:str_or_null" should be "None" on "sle-minion"
@@ -152,7 +152,7 @@ Feature: Use advanced features of Salt formulas
      When I follow "Formulas" in the content area
      And I follow first "Testform" in the content area
      And I click on "Save Formula"
-     Then I should see a "Formula saved!" text
+     Then I should see a "Formula saved" text
      Then the pillar data for "testing:str" should be "text1" on "sle-minion"
      And the pillar data for "testing:str_def" should be "defvalue" on "sle-minion"
      And the pillar data for "testing:str_or_null" should be "None" on "sle-minion"
@@ -181,7 +181,7 @@ Feature: Use advanced features of Salt formulas
      And I enter "min_pw2" as "testing#pw_or_null"
      And I enter "min_pw3" as "testing#pw_opt"
      And I click on "Save Formula"
-     Then I should see a "Formula saved!" text
+     Then I should see a "Formula saved" text
      And the pillar data for "testing:str" should be "min_text1" on "sle-minion"
      And the pillar data for "testing:str_def" should be "min_text2" on "sle-minion"
      And the pillar data for "testing:str_or_null" should be "min_text3" on "sle-minion"
@@ -201,7 +201,7 @@ Feature: Use advanced features of Salt formulas
      And I follow first "Testform" in the content area
      And I click on "Clear values" and confirm
      And I click on "Save Formula"
-     Then I should see a "Formula saved!" text
+     Then I should see a "Formula saved" text
      Then the pillar data for "testing:str" should be "text1" on "sle-minion"
      And the pillar data for "testing:str_def" should be "defvalue" on "sle-minion"
      And the pillar data for "testing:str_or_null" should be "None" on "sle-minion"

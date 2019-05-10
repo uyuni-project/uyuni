@@ -76,7 +76,7 @@ Feature: PXE boot a Retail terminal
     And I enter the hostname of "proxy" in third NS field
     # end
     And I click on "Save Formula"
-    Then I should see a "Formula saved!" text
+    Then I should see a "Formula saved" text
 
 @proxy
 @private_net
@@ -92,7 +92,7 @@ Feature: PXE boot a Retail terminal
     And I enter the local IP address of "pxeboot" in third reserved IP field
     And I enter the MAC address of "pxeboot-minion" in third reserved MAC field
     And I click on "Save Formula"
-    Then I should see a "Formula saved!" text
+    Then I should see a "Formula saved" text
 
 @proxy
 @private_net
@@ -104,7 +104,7 @@ Feature: PXE boot a Retail terminal
     And I enter the local IP address of "proxy" in internal network address field
     And I enter "/srv/saltboot" in TFTP base directory field
     And I click on "Save Formula"
-    Then I should see a "Formula saved!" text
+    Then I should see a "Formula saved" text
 
 @proxy
 @private_net
@@ -116,7 +116,7 @@ Feature: PXE boot a Retail terminal
     And I enter the local IP address of "proxy" in vsftpd internal network address field
     And I enter "/srv/saltboot" in FTP server directory field
     And I click on "Save Formula"
-    Then I should see a "Formula saved!" text
+    Then I should see a "Formula saved" text
 
 @proxy
 @private_net
@@ -127,7 +127,7 @@ Feature: PXE boot a Retail terminal
     And I follow first "Pxe" in the content area
     And I enter "example" in branch id field
     And I click on "Save Formula"
-    Then I should see a "Formula saved!" text
+    Then I should see a "Formula saved" text
 
 @proxy
 @private_net
@@ -217,7 +217,7 @@ Feature: PXE boot a Retail terminal
     And I enter "/" in second mount point field
     And I enter "POS_Image_JeOS6" in second OS image field
     And I click on "Save Formula"
-    Then I should see a "Formula saved!" text
+    Then I should see a "Formula saved" text
 
 @proxy
 @private_net
@@ -295,7 +295,7 @@ Feature: PXE boot a Retail terminal
     And I press "Remove Item" in second CNAME section
     And I press "Remove Item" in first CNAME section
     And I click on "Save Formula"
-    Then I should see a "Formula saved!" text
+    Then I should see a "Formula saved" text
 
 @proxy
 @private_net
