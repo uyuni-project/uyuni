@@ -1,3 +1,4 @@
+- Enable bootstrap repo creation for openSUSE Leap 15.1
 - Make swap files readable only by root (bsc#1131954, CVE-2019-3684)
 - convert cobbler files to new format during migration
 - add dbus-lib to RES6 bootstrap repo (bsc#1132343)

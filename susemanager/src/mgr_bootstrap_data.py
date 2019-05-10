@@ -754,6 +754,10 @@ DATA = {
         'BASECHANNEL' : 'opensuse_leap15_0-x86_64', 'PKGLIST' : PKGLIST15 + PKGLIST15_NO_Z,
         'DEST' : '/srv/www/htdocs/pub/repositories/opensuse/15/0/bootstrap/'
     },
+    'openSUSE-Leap-15.1-x86_64' : {
+        'BASECHANNEL' : 'opensuse_leap15_1-x86_64', 'PKGLIST' : PKGLIST15 + PKGLIST15_NO_Z,
+        'DEST' : '/srv/www/htdocs/pub/repositories/opensuse/15/1/bootstrap/'
+    },
     'centos-6-x86_64' : {
         'BASECHANNEL' : 'centos6-x86_64', 'PKGLIST' : RES6,
         'DEST' : '/srv/www/htdocs/pub/repositories/centos/6/bootstrap/'
