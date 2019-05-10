@@ -279,7 +279,7 @@ class TestScap:
             assert arg == next(iter(expectations))
             expectations.pop(0)
 
-    def test_scap_schedulexccdfscan(self, shell):
+    def test_scap_schedulexccdfscan_no_args(self, shell):
         """
         Test for do_scap_schedulexccdfscan with no args.
 
