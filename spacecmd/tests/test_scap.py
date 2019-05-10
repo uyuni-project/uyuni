@@ -348,3 +348,27 @@ class TestScap:
 
         assert_expect(shell.expand_systems.call_args_list, ["some.example.com"])
 
+    def test_scap_schedulexccdfscan_systems_arg_with_data(self, shell):
+        """
+        Test for do_scap_schedulexccdfscan with systems arg with data
+
+        :param shell:
+        :return:
+        """
+        shell.help_scap_schedulexccdfscan = MagicMock()
+        shell.ssm.keys = MagicMock()
+        shell.expand_systems = MagicMock(return_value=["some.example.com"])
+        shell.get_system_id = MagicMock(return_value="1000010000")
+        shell.client.system.scap.scheduleXccdfScan = MagicMock()
+
+        spacecmd.scap.do_scap_schedulexccdfscan(shell, "/opt/xccdf.xml xccdf-option some.example.com")
+
+        assert not shell.help_scap_schedulexccdfscan.called
+        assert not shell.ssm.keys.called
+        assert shell.expand_systems.called
+        assert shell.get_system_id.called
+        assert shell.client.system.scap.scheduleXccdfScan.called
+
+        for call in shell.client.system.scap.scheduleXccdfScan.call_args_list:
+            args, kw = call
+            assert args == (shell.session, '1000010000', '/opt/xccdf.xml', '--xccdf-option')
