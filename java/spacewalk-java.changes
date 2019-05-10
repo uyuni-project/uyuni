@@ -1,3 +1,4 @@
+- Fix SSM package upgrade list item selection (bsc#1133421)
 - Let softwarechannel_errata_sync fallback on vendor errata (bsc#1132914)
 - Hide disabled activation keys in form drop-downs (bsc#1101706)
 - Display warning if product catalog refresh is already in progress (bsc#1132234)

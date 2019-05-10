@@ -29,8 +29,9 @@ public class SsmUpgradablePackageListItem extends PackageListItem {
     private boolean errataRestart;
 
     /** {@inheritDoc} */
+    @Override
     public String getSelectionKey() {
-        return getIdCombo() + "~*~" + getEpoch() + "-" + getVersion() + "-" + getRelease();
+        return getIdCombo() + "~*~" + getEpoch() + "-" + getVersion() + "-" + getRelease() + "@" + getAdvisoryId();
     }
 
     /**
