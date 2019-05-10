@@ -1,3 +1,5 @@
+- Log remote commands executed via Salt -> Remote Commands UI to
+  file /var/log/rhn/rhn_salt_remote_commands.log
 - Saving cobbler autoinstall templates with a leading slash.
 - Implement NEVR(A) filtering in Content Lifecycle Management
 - Adjust product tree tag according to the base OS
