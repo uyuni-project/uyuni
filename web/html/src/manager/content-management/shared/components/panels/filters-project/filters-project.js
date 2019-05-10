@@ -10,6 +10,8 @@ import type {ProjectFilterServerType} from "../../../type/project.type";
 import FiltersProjectSelection from "./filters-project-selection";
 import statesEnum from "../../../business/states.enum";
 import filtersEnum from "../../../business/filters.enum";
+import useRoles from "core/auth/use-roles";
+import {isOrgAdmin} from "core/auth/auth.utils";
 
 type FiltersProps = {
   projectId: string,
@@ -68,10 +70,11 @@ const FiltersProject = (props:  FiltersProps) => {
   const {onAction, cancelAction, isLoading} = useLifecycleActionsApi({
     resource: 'projects', nestedResource: "filters"
   });
+  const roles = useRoles();
+  const hasEditingPermissions = isOrgAdmin(roles);
 
   const displayingFilters = [...props.selectedFilters];
   displayingFilters.sort((a, b) => a.name.toLowerCase().localeCompare(b.name.toLowerCase()));
-
 
   return (
 
@@ -82,6 +85,7 @@ const FiltersProject = (props:  FiltersProps) => {
       panelLevel="2"
       collapsible
       customIconClass="fa-small"
+      disableEditing={!hasEditingPermissions}
       onCancel={() => cancelAction()}
       onOpen={({setItem}) => setItem(props.selectedFilters.map(filter => filter.id))}
       onSave={({closeDialog, item}) => {
