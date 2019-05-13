@@ -4,11 +4,15 @@ require 'cucumber/rake/task'
 
 outputfile = 'output.html'
 html_results = "--format html -o #{outputfile}"
+
+outputfile_json = 'output.json'
+json_results = "--format json_pretty -o #{outputfile_json}"
+
 junit_results = '--format junit -o results_junit'
 Dir.glob(File.join(Dir.pwd, 'run_sets', '*.yml')).each do |entry|
   namespace :cucumber do
     Cucumber::Rake::Task.new(File.basename(entry, '.yml').to_sym) do |t|
-      cucumber_opts = %W[#{html_results} #{junit_results} -f rerun --out failed.txt --format pretty]
+      cucumber_opts = %W[#{html_results} #{json_results} #{junit_results} -f rerun --out failed.txt --format pretty]
       features = YAML.safe_load(File.read(entry))
       t.cucumber_opts = cucumber_opts + features
     end
