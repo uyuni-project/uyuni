@@ -13,19 +13,19 @@ export const filtersOptionsEnum : FiltersOptionEnumType = new Proxy({
       key: 'package',
       entityType: 'package',
       matcher: 'contains',
-      text: 'package (Contains Name)',
+      text: 'Package (contains Name)',
     },
     PACKAGE_NEVRA: {
       key: 'package_nevra',
       entityType: 'package',
       matcher: 'equals',
-      text: 'package (Matches NEVRA)',
+      text: 'Package (matches NEVRA)',
     },
     ERRATUM: {
       key: 'erratum',
       entityType: 'erratum',
       matcher: 'equals',
-      text: 'patch (Matches Advisory Name)',
+      text: 'Patch (matches Advisory Name)',
     }
   },
   objectDefaultValueHandler(defaultState)
