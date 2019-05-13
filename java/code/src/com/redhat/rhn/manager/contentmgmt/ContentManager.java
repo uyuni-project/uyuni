@@ -496,7 +496,7 @@ public class ContentManager {
             throw new IllegalStateException("Environment " + envLabel + " must have exactly one leader channel");
         }
 
-        alignEnvironment(nextEnv, baseChannels.get(0), childChannels.stream(), async, user);
+        alignEnvironment(nextEnv, baseChannels.get(0), childChannels.stream(), emptyList(), async, user);
 
         nextEnv.setVersion(env.getVersion());
     }
@@ -543,7 +543,7 @@ public class ContentManager {
                 .filter(src -> !src.getChannel().equals(leader) && src.getState() != DETACHED)
                 .map(s -> s.getChannel());
 
-        alignEnvironment(firstEnv, leader, otherChannels, async, user);
+        alignEnvironment(firstEnv, leader, otherChannels, project.getActiveFilters(), async, user);
 
         Map<ProjectSource.State, List<ProjectSource>> sourcesToHandle = project.getSources().stream()
                 .collect(groupingBy(src -> src.getState()));
@@ -581,11 +581,12 @@ public class ContentManager {
      * @param env the Environment
      * @param baseChannel the base Channel
      * @param childChannels the child Channels
+     * @param filters the {@link ContentFilter}s
      * @param async run the time-expensive operations asynchronously?
      * @param user the user
      */
     private static void alignEnvironment(ContentEnvironment env, Channel baseChannel, Stream<Channel> childChannels,
-            boolean async, User user) {
+            List<ContentFilter> filters, boolean async, User user) {
         // ensure targets for the sources exist
         List<Pair<Channel, SoftwareEnvironmentTarget>> newSrcTgtPairs =
                 cloneChannelsToEnv(env, baseChannel, childChannels, user);
@@ -602,7 +603,7 @@ public class ContentManager {
 
         // align the contents
         newSrcTgtPairs.forEach(srcTgt -> ChannelManager.
-                alignEnvironmentTarget(srcTgt.getLeft(), srcTgt.getRight(), async, user));
+                alignEnvironmentTarget(srcTgt.getLeft(), srcTgt.getRight(), filters, async, user));
     }
 
     /**

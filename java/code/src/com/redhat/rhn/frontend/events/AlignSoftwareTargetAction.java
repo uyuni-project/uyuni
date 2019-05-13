@@ -20,9 +20,9 @@ import com.redhat.rhn.common.messaging.MessageAction;
 import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
+import com.redhat.rhn.domain.contentmgmt.ContentFilter;
 import com.redhat.rhn.domain.contentmgmt.ContentProjectFactory;
 import com.redhat.rhn.domain.contentmgmt.EnvironmentTarget.Status;
-import com.redhat.rhn.domain.contentmgmt.PackageFilter;
 import com.redhat.rhn.domain.contentmgmt.SoftwareEnvironmentTarget;
 import com.redhat.rhn.manager.EntityNotExistsException;
 import com.redhat.rhn.manager.channel.ChannelManager;
@@ -45,12 +45,13 @@ public class AlignSoftwareTargetAction implements MessageAction {
     @Override
     public void execute(EventMessage msgIn) {
         AlignSoftwareTargetMsg msg = (AlignSoftwareTargetMsg) msgIn;
-        Channel source = ChannelFactory.lookupById(msg.getSource().getId());
+        Channel sourceChannel = ChannelFactory.lookupById(msg.getSource().getId());
         Long targetId = msg.getTarget().getId();
         SoftwareEnvironmentTarget target = ContentProjectFactory
                 .lookupSwEnvironmentTargetById(targetId)
                 .orElseThrow(() -> new EntityNotExistsException(targetId));
         Channel targetChannel = target.getChannel();
+        List<ContentFilter> filters = msg.getFilters();
 
         try {
             if (!UserManager.verifyChannelAdmin(msg.getUser(), targetChannel)) {
@@ -60,8 +61,7 @@ public class AlignSoftwareTargetAction implements MessageAction {
 
             LOG.info("Asynchronously aligning: " + msg);
             Instant start = Instant.now();
-            List<PackageFilter> packageFilters = target.getContentEnvironment().getContentProject().getPackageFilters();
-            ChannelManager.alignEnvironmentTargetSync(packageFilters, source, targetChannel, msg.getUser());
+            ChannelManager.alignEnvironmentTargetSync(filters, sourceChannel, targetChannel, msg.getUser());
             target.setStatus(Status.GENERATING_REPODATA);
             LOG.info("Finished aligning " + msg + " in " + Duration.between(start, Instant.now()));
         }
@@ -79,7 +79,7 @@ public class AlignSoftwareTargetAction implements MessageAction {
     public Consumer<Exception> getExceptionHandler() {
         return (e) -> {
             if (e instanceof AlignSoftwareTargetException) {
-                LOG.error("Error aligning channel", e);
+                LOG.error("Error aligning target " + ((AlignSoftwareTargetException) e).getTarget(), e);
                 AlignSoftwareTargetException exc = ((AlignSoftwareTargetException) e);
                 exc.getTarget().setStatus(Status.FAILED);
                 ContentProjectFactory.save(exc.getTarget());

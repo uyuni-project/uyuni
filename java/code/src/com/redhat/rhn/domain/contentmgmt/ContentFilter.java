@@ -263,8 +263,10 @@ public abstract class ContentFilter<T> extends BaseDomainHelper implements Predi
      * Sets the criteria.
      *
      * @param criteriaIn - the criteria
+     * @throws IllegalArgumentException when the matcher-field combination is not allowed
      */
     public void setCriteria(FilterCriteria criteriaIn) {
+        FilterCriteria.validate(getEntityType(), criteriaIn.getMatcher(), criteriaIn.getField());
         criteria = criteriaIn;
     }
 

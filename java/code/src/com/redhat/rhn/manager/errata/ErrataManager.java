@@ -312,22 +312,21 @@ public class ErrataManager extends BaseManager {
     }
 
     /**
-     * Removes cloned errata from target channel that are not in the source channel
-     * or that do not have original in the source channel.
+     * Removes cloned errata from target channel that are not in the source errata
+     * or that do not have original in the source errata.
      *
-     * @param srcChannel the source channel
+     * @param srcErrata the source errata
      * @param tgtChannel the target channel
      * @param user the user
      */
-    public static void truncateErrata(Channel srcChannel, Channel tgtChannel, User user) {
-        Set<Errata> srcErrata = new HashSet<>(ErrataFactory.listByChannel(user.getOrg(), srcChannel));
+    public static void truncateErrata(Set<Errata> srcErrata, Channel tgtChannel, User user) {
         Set<Errata> tgtErrata = new HashSet<>(ErrataFactory.listByChannel(user.getOrg(), tgtChannel));
 
         // let's remove errata that aren't in the source errata nor is their original
         tgtErrata.stream()
                 .filter(e -> !(srcErrata.contains(e) ||
                         asCloned(e).map(er -> srcErrata.contains(er.getOriginal())).orElse(false)))
-                .forEach(e -> removeErratumFromChannel(e, tgtChannel, user));
+                .forEach(e -> removeErratumAndPackagesFromChannel(e, tgtChannel, user));
     }
 
     private static Optional<ClonedErrata> asCloned(Errata e) {
@@ -1455,7 +1454,7 @@ public class ErrataManager extends BaseManager {
 
 
     /**
-     * remove an erratum for a channel and updates the errata cache accordingly
+     * remove an erratum from a channel and updates the errata cache accordingly
      * @param errata the errata to remove
      * @param chan the channel to remove the erratum from
      * @param user the user doing the removing
@@ -1501,6 +1500,30 @@ public class ErrataManager extends BaseManager {
                 ErrataCacheManager.insertCacheForChannelErrataAsync(tmpCidList, errata);
             }
         }
+    }
+
+    /**
+     * Remove an erratum and its packages from a channel and updates the errata cache accordingly.
+     * The errata is not removed from child channels if they exist!
+     *
+     * @param errata the errata to remove
+     * @param chan the channel to remove the erratum from
+     * @param user the user doing the removing
+     */
+    public static void removeErratumAndPackagesFromChannel(Errata errata, Channel chan, User user) {
+        if (!user.hasRole(RoleFactory.CHANNEL_ADMIN)) {
+            throw new PermissionException(RoleFactory.CHANNEL_ADMIN);
+        }
+
+        //Remove the errata from the channel
+        chan.getErratas().remove(errata);
+        List<Long> eList = new ArrayList<Long>();
+        eList.add(errata.getId());
+        //First delete the cache entries
+        ErrataCacheManager.deleteCacheEntriesForChannelErrata(chan.getId(), eList);
+
+        // remove packages
+        errata.getPackages().stream().forEach(p -> chan.getPackages().remove(p));
     }
 
     /**

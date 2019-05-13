@@ -19,6 +19,8 @@ import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
+import com.redhat.rhn.domain.contentmgmt.ContentFilter;
+import com.redhat.rhn.domain.contentmgmt.FilterCriteria;
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.errata.test.ErrataFactoryTest;
 import com.redhat.rhn.domain.rhnpackage.Package;
@@ -28,19 +30,25 @@ import com.redhat.rhn.domain.rhnpackage.test.PackageTest;
 import com.redhat.rhn.domain.server.InstalledPackage;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.test.ServerFactoryTest;
+import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.dto.SystemOverview;
 import com.redhat.rhn.manager.channel.ChannelManager;
+import com.redhat.rhn.manager.contentmgmt.ContentManager;
 import com.redhat.rhn.manager.errata.cache.ErrataCacheManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.ChannelTestUtils;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
+import static com.redhat.rhn.domain.contentmgmt.ContentFilter.EntityType.ERRATUM;
+import static com.redhat.rhn.domain.contentmgmt.ContentFilter.Rule.DENY;
 import static com.redhat.rhn.domain.role.RoleFactory.ORG_ADMIN;
 import static java.util.Collections.emptyList;
+import static java.util.Collections.singleton;
 import static java.util.Optional.of;
 import static java.util.stream.Collectors.toSet;
 
@@ -211,6 +219,103 @@ public class ChannelManagerContentAlignmentTest extends BaseTestCaseWithUser {
         assertEquals(srcChannel.getPackages(), tgtChannel.getPackages());
         assertContains(errata.getChannels(), srcChannel);
         assertContains(errata.getChannels(), tgtChannel);
+    }
+
+    /**
+     * Test filtering out errata after channel alignment
+     */
+    public void testErrataFilters() {
+        FilterCriteria criteria = new FilterCriteria(FilterCriteria.Matcher.EQUALS, "advisory_name", errata.getAdvisoryName());
+        ContentFilter filter = ContentManager.createFilter("test-filter-123", DENY, ERRATUM, criteria, user);
+
+        ChannelManager.alignEnvironmentTargetSync(singleton(filter), srcChannel, tgtChannel, user);
+
+        assertTrue(tgtChannel.getErratas().isEmpty());
+    }
+
+    /**
+     * Test complex scenario of aligning errata (e1 - e6) when filters are involved
+     *
+     * CHANNEL-ERRATUM MAPPING:
+     * Only in src channel: e1 (passes the filter), e2 (does not pass the filter)
+     * Only in tgt channel: e3, e4
+     * In both channels: e5 (passes the filter), e6 (does not pass the filter)
+     *
+     * After aligning, the target channel should only contain errata that are in source and that passed the filters.
+     *
+     * @throws Exception if anything goes wrong
+     */
+    public void testErrataFiltersComplex() throws Exception {
+        Channel srcChan = ChannelFactoryTest.createTestChannel(user, false);
+        Channel tgtChan = ChannelFactoryTest.createTestChannel(user, false);
+
+        Errata e1 = ErrataFactoryTest.createTestPublishedErrata(user.getOrg().getId());
+        Errata e2 = ErrataFactoryTest.createTestPublishedErrata(user.getOrg().getId());
+        Errata e3 = ErrataFactoryTest.createTestPublishedErrata(user.getOrg().getId());
+        Errata e4 = ErrataFactoryTest.createTestPublishedErrata(user.getOrg().getId());
+        Errata e5 = ErrataFactoryTest.createTestPublishedErrata(user.getOrg().getId());
+        Errata e6 = ErrataFactoryTest.createTestPublishedErrata(user.getOrg().getId());
+
+        // src
+        srcChan.addErrata(e1);
+        srcChan.addErrata(e2);
+        // tgt
+        tgtChan.addErrata(e3);
+        tgtChan.addErrata(e4);
+        // both
+        srcChan.addErrata(e5);
+        srcChan.addErrata(e6);
+        tgtChan.addErrata(e5);
+        tgtChan.addErrata(e6);
+
+        FilterCriteria criteria = new FilterCriteria(FilterCriteria.Matcher.EQUALS, "advisory_name", e2.getAdvisoryName());
+        ContentFilter filter = ContentManager.createFilter("test-filter-1234", DENY, ERRATUM, criteria, user);
+
+        FilterCriteria criteria2 = new FilterCriteria(FilterCriteria.Matcher.EQUALS, "advisory_name", e6.getAdvisoryName());
+        ContentFilter filter2 = ContentManager.createFilter("test-filter-1235", DENY, ERRATUM, criteria2, user);
+
+        ChannelManager.alignEnvironmentTargetSync(Arrays.asList(filter, filter2), srcChan, tgtChan, user);
+
+        assertEquals(2, tgtChan.getErrataCount());
+        tgtChan = (Channel) HibernateFactory.reload(tgtChan);
+        assertContains(tgtChan.getErratas(), e1);
+        assertContains(tgtChan.getErratas(), e5);
+    }
+
+    /**
+     * Tests that packages of an {@link Errata} are removed when this Erratum is filtered out.
+     *
+     * @throws Exception if anything goes wrong
+     */
+    public void testPackagesRemovedOnErratumRemoval() throws Exception {
+        // we assume version 1.0.0
+        assertEquals("1.0.0", pkg.getPackageEvr().getVersion());
+
+        Package olderPkg = copyPackage(pkg, user, "0.9.9");
+        srcChannel.addPackage(olderPkg);
+
+        FilterCriteria criteria = new FilterCriteria(FilterCriteria.Matcher.EQUALS, "advisory_name", errata.getAdvisoryName());
+        ContentFilter filter = ContentManager.createFilter("test-filter-1234", DENY, ERRATUM, criteria, user);
+
+        ChannelManager.alignEnvironmentTargetSync(singleton(filter), srcChannel, tgtChannel, user);
+
+        tgtChannel = (Channel) HibernateFactory.reload(tgtChannel);
+
+        assertEquals(1, tgtChannel.getPackageCount());
+        assertEquals(0, tgtChannel.getErrataCount());
+        assertContains(tgtChannel.getPackages(), olderPkg);
+    }
+
+    private static Package copyPackage(Package fromPkg, User user, String version) throws Exception {
+        Package olderPkg = PackageTest.createTestPackage(user.getOrg());
+        PackageEvr packageEvr = fromPkg.getPackageEvr();
+        olderPkg.setPackageEvr(PackageEvrFactoryTest.createTestPackageEvr(
+                packageEvr.getEpoch(),
+                version,
+                packageEvr.getRelease()
+        ));
+        olderPkg.setPackageName(fromPkg.getPackageName());
+        return olderPkg;
     }
 
     private static InstalledPackage copyPackage(Package otherPkg, Optional<String> overrideVersion) {

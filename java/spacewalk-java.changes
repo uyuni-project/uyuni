@@ -1,3 +1,4 @@
+- Implement Errata filtering based on advisory name in Content Lifecycle Management
 - UI to enable / disable server monitoring
 - Add monitoring entitlement
 - Log remote commands executed via Salt -> Remote Commands UI to

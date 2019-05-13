@@ -39,8 +39,10 @@ import com.redhat.rhn.domain.channel.DistChannelMap;
 import com.redhat.rhn.domain.channel.InvalidChannelRoleException;
 import com.redhat.rhn.domain.channel.ProductName;
 import com.redhat.rhn.domain.channel.ReleaseChannelMap;
+import com.redhat.rhn.domain.contentmgmt.ContentFilter;
 import com.redhat.rhn.domain.contentmgmt.ContentProjectFactory;
 import com.redhat.rhn.domain.contentmgmt.EnvironmentTarget;
+import com.redhat.rhn.domain.contentmgmt.ErrataFilter;
 import com.redhat.rhn.domain.contentmgmt.PackageFilter;
 import com.redhat.rhn.domain.contentmgmt.SoftwareEnvironmentTarget;
 import com.redhat.rhn.domain.errata.Errata;
@@ -2758,15 +2760,17 @@ public class ChannelManager extends BaseManager {
      *
      * @param src the source {@link Channel}
      * @param tgt the target {@link SoftwareEnvironmentTarget}
+     * @param filters the {@link ContentFilter}s
      * @param async run this operation asynchronously?
      * @param user the user
      */
-    public static void alignEnvironmentTarget(Channel src, SoftwareEnvironmentTarget tgt, boolean async, User user) {
+    public static void alignEnvironmentTarget(Channel src, SoftwareEnvironmentTarget tgt, List<ContentFilter> filters,
+            boolean async, User user) {
         // adjust the target status
         tgt.setStatus(EnvironmentTarget.Status.BUILDING);
         ContentProjectFactory.save(tgt);
 
-        AlignSoftwareTargetMsg msg = new AlignSoftwareTargetMsg(src, tgt, user);
+        AlignSoftwareTargetMsg msg = new AlignSoftwareTargetMsg(src, tgt, filters, user);
         if (async) {
             MessageQueue.publish(msg);
         }
@@ -2779,19 +2783,25 @@ public class ChannelManager extends BaseManager {
      * Synchronously align packages and errata of the {@link SoftwareEnvironmentTarget} to the source {@link Channel}
      * This method is potentially time-expensive and should be run asynchronously (@see alignEnvironmentTarget)
      *
-     * @param filters the {@link PackageFilter}s
+     * @param filters the filters
      * @param src the source {@link Channel}
      * @param tgt the target {@link SoftwareEnvironmentTarget}
      * @param user the user
      */
-    public static void alignEnvironmentTargetSync(Collection<PackageFilter> filters, Channel src, Channel tgt,
+    public static void alignEnvironmentTargetSync(Collection<ContentFilter> filters, Channel src, Channel tgt,
             User user) {
         // align packages and the cache (rhnServerNeededCache)
-        alignPackages(src, tgt, filters);
+        List<PackageFilter> packageFilters = filters.stream()
+                .flatMap(f -> Opt.stream((Optional<PackageFilter>) f.asPackageFilter()))
+                .collect(Collectors.toList());
+        List<ErrataFilter> errataFilters = filters.stream()
+                .flatMap(f -> Opt.stream((Optional<ErrataFilter>) f.asErrataFilter()))
+                .collect(Collectors.toList());
+
+        alignPackages(src, tgt, packageFilters);
 
         // align errata and the cache (rhnServerNeededCache)
-        ErrataManager.mergeErrataToChannel(user, src.getErratas(), tgt, src, false, false);
-        ErrataManager.truncateErrata(src, tgt, user);
+        alignErrata(src, tgt, errataFilters, user);
 
         // update the channel newest packages cache
         ChannelFactory.refreshNewestPackageCache(tgt, "java::alignPackages");
@@ -2819,6 +2829,40 @@ public class ChannelManager extends BaseManager {
         // add cache entries for new ones
         ErrataCacheManager.insertCacheForChannelPackages(tgtChannel.getId(), null,
                 extractPackageIds(filterPackages(onlyInSrc, filters)));
+    }
+
+    /**
+     * Align {@link Errata} of a target {@link Channel} to the source {@link Channel}
+     *
+     * Alignment has 4 steps:
+     * 1. Compute included and excluded errata based on given source channel and {@link ErrataFilter}s
+     * 2. Remove (truncate) those errata in target channel, which are not in included errata (or which do not have
+     * original in the included errata)
+     * 3. Remove the {@link Package}s from excluded errata from target channel
+     * 4. Merge the included errata to target channel
+     *
+     * @param src the source {@link Channel}
+     * @param tgt the target {@link Channel}
+     * @param errataFilters the {@link ErrataFilter}s
+     * @param user the {@link User}
+     */
+    private static void alignErrata(Channel src, Channel tgt, Collection<ErrataFilter> errataFilters, User user) {
+        Predicate<Errata> compositePredicate = errataFilters.stream()
+                .map(f -> (Predicate) f)
+                .reduce((f1, f2) -> f1.and(f2))
+                .orElse(p -> true);
+
+        Map<Boolean, List<Errata>> partitionedErrata = src.getErratas().stream()
+                .collect(Collectors.partitioningBy(compositePredicate));
+        Set<Errata> includedErrata = new HashSet<>(partitionedErrata.get(true));
+        List<Errata> excludedErrata = partitionedErrata.get(false);
+
+        // Truncate extra errata in target channel
+        ErrataManager.truncateErrata(includedErrata, tgt, user);
+        // Remove packages from excluded errata
+        excludedErrata.forEach(e -> ErrataManager.removeErratumAndPackagesFromChannel(e, tgt, user));
+        // Merge the included errata
+        ErrataManager.mergeErrataToChannel(user, includedErrata, tgt, src, false, false);
     }
 
     private static List<Long> extractPackageIds(Collection<Package> packages) {
