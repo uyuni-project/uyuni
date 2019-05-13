@@ -90,6 +90,10 @@ Requires:       sudo
 Requires:       tomcat-taglibs-standard
 Requires:       pgjdbc-ng
 Requires:       susemanager-docs_en
+Requires:       java-saml
+Requires:       joda-time
+Requires:       woodstox
+Requires:       xmlsec
 BuildRequires:  apache-commons-lang
 BuildRequires:  apache-commons-lang3
 BuildRequires:  classmate
@@ -107,6 +111,10 @@ BuildRequires:  netty
 BuildRequires:  objectweb-asm
 BuildRequires:  snakeyaml
 BuildRequires:  statistics
+BuildRequires:  java-saml
+BuildRequires:  joda-time
+BuildRequires:  woodstox
+BuildRequires:  xmlsec
 # SUSE additional build requirements
 BuildRequires:  log4j
 # Spark and Salt integration
