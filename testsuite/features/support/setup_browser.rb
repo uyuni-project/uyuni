@@ -103,6 +103,11 @@ Before('@susemanager') do |scenario|
   scenario.skip_invoke! unless $product == 'SUSE Manager'
 end
 
+# do test only if HTTP proxy for SUSE Manager is defined
+Before('@http_proxy') do |scenario|
+  scenario.skip_invoke! unless $http_proxy
+end
+
 # have more infos about the errors
 def debug_server_on_realtime_failure
   puts
