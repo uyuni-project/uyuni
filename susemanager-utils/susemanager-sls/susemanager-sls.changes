@@ -1,3 +1,4 @@
+- Add support for salt formulas for standalone salt
 - More thorougly disable the Salt mine in util.mgr_mine_config_clean_up (bsc#1135075)
 
 -------------------------------------------------------------------
