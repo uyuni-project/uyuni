@@ -14,6 +14,9 @@
  */
 package com.suse.manager.webui.controllers;
 
+import static spark.Spark.get;
+import static spark.Spark.post;
+
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.conf.sso.SSOConfig;
 import com.redhat.rhn.common.hibernate.LookupException;
@@ -65,6 +68,16 @@ public final class SSOController {
      */
     public static void setSsoConfig(Optional<Saml2Settings> ssoConfigIn) {
         SSOController.ssoConfig = ssoConfigIn;
+    }
+
+    /**
+     * Method used to init routes in Spark
+     */
+    public static void initRoutes() {
+        get("/manager/sso/metadata", SSOController::getMetadata);
+        post("/manager/sso/acs", SSOController::getACS);
+        get("/manager/sso/logout", SSOController::logout);
+        get("/manager/sso/sls", SSOController::sls);
     }
 
     /**

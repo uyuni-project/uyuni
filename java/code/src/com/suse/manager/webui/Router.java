@@ -305,10 +305,7 @@ public class Router implements SparkApplication {
                 withProductAdmin(ProductsController::synchronizeRepositories));
 
         // Single Sign-On (SSO) via SAML
-        get("/manager/sso/metadata", SSOController::getMetadata);
-        post("/manager/sso/acs", SSOController::getACS);
-        get("/manager/sso/logout", SSOController::logout);
-        get("/manager/sso/sls", SSOController::sls);
+        SSOController.initRoutes();
     }
 
     private void  initNotFoundRoutes(JadeTemplateEngine jade) {
