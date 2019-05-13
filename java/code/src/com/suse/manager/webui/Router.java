@@ -42,7 +42,7 @@ import com.suse.manager.webui.controllers.MinionController;
 import com.suse.manager.webui.controllers.MinionsAPI;
 import com.suse.manager.webui.controllers.NotificationMessageController;
 import com.suse.manager.webui.controllers.ProductsController;
-import com.suse.manager.webui.controllers.SAMLController;
+import com.suse.manager.webui.controllers.SSOController;
 import com.suse.manager.webui.controllers.SaltSSHController;
 import com.suse.manager.webui.controllers.SsmController;
 import com.suse.manager.webui.controllers.StatesAPI;
@@ -304,11 +304,11 @@ public class Router implements SparkApplication {
         post("/manager/admin/setup/sync/repositories",
                 withProductAdmin(ProductsController::synchronizeRepositories));
 
-        // Single Sign On (SAML)
-        get("/manager/ssaml/metadata", SAMLController::getMetadata);
-        post("/manager/ssaml/acs", SAMLController::getACS);
-        get("/manager/ssaml/logout", SAMLController::logout);
-        get("/manager/ssaml/sls", SAMLController::sls);
+        // Single Sign-On (SSO) via SAML
+        get("/manager/sso/metadata", SSOController::getMetadata);
+        post("/manager/sso/acs", SSOController::getACS);
+        get("/manager/sso/logout", SSOController::logout);
+        get("/manager/sso/sls", SSOController::sls);
     }
 
     private void  initNotFoundRoutes(JadeTemplateEngine jade) {

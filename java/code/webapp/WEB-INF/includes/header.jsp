@@ -46,8 +46,8 @@
     </li>
     <li>
     <c:choose>
-      <c:when test="${rhn:getConfig('java.sson')}">
-        <a href="/rhn/manager/ssaml/logout" title="<bean:message key="header.jsp.signout" />"
+      <c:when test="${rhn:getConfig('java.sso')}">
+        <a href="/rhn/manager/sso/logout" title="<bean:message key="header.jsp.signout" />"
            alt="<bean:message key="header.jsp.signout" />">
       </c:when>
       <c:otherwise>

@@ -68,7 +68,7 @@ public class LoginSetupActionTest extends RhnMockStrutsTestCase {
         assertEquals(RhnHelper.DEFAULT_FORWARD, rc.getName());
     }
 
-    public void testLoginWithSSON() {
+    public void testLoginWithSSO() {
         Config.get().setBoolean(ConfigDefaults.SINGLE_SIGN_ON_ENABLED, "true");
         LoginSetupAction action = new LoginSetupAction();
         ActionMapping mapping = new ActionMapping();
@@ -84,7 +84,7 @@ public class LoginSetupActionTest extends RhnMockStrutsTestCase {
         assertNull(rc); // we are redirected to IdP login page
     }
 
-    public void testLoginWithoutSSON() {
+    public void testLoginWithoutSSO() {
         Config.get().setBoolean(ConfigDefaults.SINGLE_SIGN_ON_ENABLED, "false");
         LoginSetupAction action = new LoginSetupAction();
         ActionMapping mapping = new ActionMapping();

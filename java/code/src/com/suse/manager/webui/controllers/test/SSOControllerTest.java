@@ -2,7 +2,7 @@ package com.suse.manager.webui.controllers.test;
 
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
-import com.suse.manager.webui.controllers.SAMLController;
+import com.suse.manager.webui.controllers.SSOController;
 
 import com.onelogin.saml2.settings.Saml2Settings;
 import com.onelogin.saml2.settings.SettingsBuilder;
@@ -16,7 +16,7 @@ import java.util.Map;
 import java.util.Optional;
 import spark.Request;
 
-public class SAMLControllerTest extends BaseControllerTestCase {
+public class SSOControllerTest extends BaseControllerTestCase {
     public void setUp() throws Exception {
         super.setUp();
         Map<String, Object> samlData = new HashMap<>();
@@ -41,25 +41,25 @@ public class SAMLControllerTest extends BaseControllerTestCase {
                 "FHQbixAeSxYR8QKSjSvQKdrCrbksUUOudq0eB+Wfir+HFIIW1tgh1g==\n" +
                 "-----END CERTIFICATE-----");
         Saml2Settings settings = builder.fromValues(samlData).build();
-        SAMLController.setSsonConfig(Optional.of(settings));
+        SSOController.setSsoConfig(Optional.of(settings));
     }
 
-    public void testACSWithoutSSON() {
+    public void testACSWithoutSSO() {
         Config.get().setBoolean(ConfigDefaults.SINGLE_SIGN_ON_ENABLED, "false");
-        assertNull(SAMLController.getACS(getRequestWithCsrf("/manager/ssaml/acs"), response));
+        assertNull(SSOController.getACS(getRequestWithCsrf("/manager/sso/acs"), response));
     }
 
-    public void testMetadataWithSSON() throws IOException {
+    public void testMetadataWithSSO() throws IOException {
         Config.get().setBoolean(ConfigDefaults.SINGLE_SIGN_ON_ENABLED, "true");
-        Request requestWithCsrf = getRequestWithCsrf("/manager/ssaml/metadata");
-        SAMLController.getMetadata(requestWithCsrf, response);
+        Request requestWithCsrf = getRequestWithCsrf("/manager/sso/metadata");
+        SSOController.getMetadata(requestWithCsrf, response);
         assertTrue(response.raw().getOutputStream().toString().contains("entityID=\"https://localhost/metadata.jsp\""));
     }
 
-    public void testMetadataWithoutSSON() throws IOException {
+    public void testMetadataWithoutSSO() throws IOException {
         Config.get().setBoolean(ConfigDefaults.SINGLE_SIGN_ON_ENABLED, "false");
-        Request requestWithCsrf = getRequestWithCsrf("/manager/ssaml/metadata");
-        SAMLController.getMetadata(requestWithCsrf, response);
+        Request requestWithCsrf = getRequestWithCsrf("/manager/sso/metadata");
+        SSOController.getMetadata(requestWithCsrf, response);
         assertTrue(response.raw().getOutputStream().toString().equals(StringUtils.EMPTY));
     }
 }

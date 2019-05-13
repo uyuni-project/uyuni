@@ -685,7 +685,7 @@ install -m 644 conf/default/rhn_taskomatic_daemon.conf $RPM_BUILD_ROOT%{_prefix}
 install -m 644 conf/default/taskomatic.conf $RPM_BUILD_ROOT%{_sysconfdir}/rhn/taskomatic.conf
 install -m 644 conf/default/rhn_org_quartz.conf $RPM_BUILD_ROOT%{_prefix}/share/rhn/config-defaults/rhn_org_quartz.conf
 install -m 644 conf/rhn_java.conf $RPM_BUILD_ROOT%{_prefix}/share/rhn/config-defaults
-install -m 644 conf/rhn_java_sson.conf $RPM_BUILD_ROOT%{_prefix}/share/rhn/config-defaults
+install -m 644 conf/rhn_java_sso.conf $RPM_BUILD_ROOT%{_prefix}/share/rhn/config-defaults
 
 # Adjust product tree tag
 %if 0%{?sle_version} && !0%{?is_opensuse}
@@ -1006,7 +1006,7 @@ fi
 %config(noreplace) %{_sysconfdir}/rhn/taskomatic.conf
 %{_prefix}/share/rhn/config-defaults/rhn_org_quartz.conf
 %{_prefix}/share/rhn/config-defaults/rhn_java.conf
-%{_prefix}/share/rhn/config-defaults/rhn_java_sson.conf
+%{_prefix}/share/rhn/config-defaults/rhn_java_sso.conf
 %config %{_sysconfdir}/logrotate.d/rhn_web_api
 %config %{_sysconfdir}/logrotate.d/gatherer
 %dir %{_datadir}/spacewalk
