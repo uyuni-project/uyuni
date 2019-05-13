@@ -312,9 +312,9 @@ public class ConfigDefaults {
     public static final String SALT_EVENTS_PER_COMMIT = "java.salt_events_per_commit";
 
     /**
-     * Single Sign On associated config option name in rhn.conf or rhn_java.conf
+     * Single Sign-On associated config option name in rhn.conf
      */
-    public static final String SINGLE_SIGN_ON_ENABLED = "java.sson";
+    public static final String SINGLE_SIGN_ON_ENABLED = "java.sso";
 
     private ConfigDefaults() {
     }
@@ -980,8 +980,8 @@ public class ConfigDefaults {
     }
 
     /**
-     * Returns if the Single Sign On option is enabled
-     * @return true if Single Sign On option is enabled
+     * Returns if the Single Sign-On option is enabled
+     * @return true if Single Sign-On option is enabled
      */
     public boolean isSingleSignOnEnabled() {
         return Config.get().getBoolean(SINGLE_SIGN_ON_ENABLED);

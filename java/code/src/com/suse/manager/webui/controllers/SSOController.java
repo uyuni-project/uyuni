@@ -15,7 +15,7 @@
 package com.suse.manager.webui.controllers;
 
 import com.redhat.rhn.common.conf.ConfigDefaults;
-import com.redhat.rhn.common.conf.sson.SSONConfig;
+import com.redhat.rhn.common.conf.sso.SSOConfig;
 import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.user.UserFactory;
@@ -44,27 +44,27 @@ import spark.Request;
 import spark.Response;
 
 /**
- * A controller class to deal with SAML protocol when using Single Sign On (SSON)
+ * A controller class to deal with SAML protocol when using Single Sign-On (SSO)
  */
-public final class SAMLController {
+public final class SSOController {
 
-    private static final Logger LOG = Logger.getLogger(SAMLController.class);
+    private static final Logger LOG = Logger.getLogger(SSOController.class);
 
-    private static Optional<Saml2Settings> ssonConfig;
+    private static Optional<Saml2Settings> ssoConfig;
 
     static {
-        ssonConfig = SSONConfig.getSSONSettings();
+        ssoConfig = SSOConfig.getSSOSettings();
     }
 
-    private SAMLController() {
+    private SSOController() {
     }
 
     /**
      * Used for test purposes only
-     * @param ssonConfigIn the SSON configuration provided by the test class
+     * @param ssoConfigIn the SSO configuration provided by the test class
      */
-    public static void setSsonConfig(Optional<Saml2Settings> ssonConfigIn) {
-        SAMLController.ssonConfig = ssonConfigIn;
+    public static void setSsoConfig(Optional<Saml2Settings> ssoConfigIn) {
+        SSOController.ssoConfig = ssoConfigIn;
     }
 
     /**
@@ -74,9 +74,9 @@ public final class SAMLController {
      * @return the response object
      */
     public static Object getACS(Request request, Response response) {
-        if (ssonConfig.isPresent() && ConfigDefaults.get().isSingleSignOnEnabled()) {
+        if (ssoConfig.isPresent() && ConfigDefaults.get().isSingleSignOnEnabled()) {
             try {
-                final Auth auth = new Auth(ssonConfig.get(), request.raw(), response.raw());
+                final Auth auth = new Auth(ssoConfig.get(), request.raw(), response.raw());
                 auth.processResponse();
 
                 final List<String> errors = auth.getErrors();
@@ -126,12 +126,12 @@ public final class SAMLController {
             }
             catch (LookupException e) {
                 LOG.error("Unable to find user: " + e.getMessage());
-                return "Internal error during SSON authentication phase." +
+                return "Internal error during SSO authentication phase." +
                         "Have you created the corresponding user in SUSE Manager? See product documnetation";
             }
             catch (SettingsException e) {
-                LOG.error("Unable to parse settings for SSON: " + e.getMessage());
-                return "Internal error during SSON authentication phase - please check the logs " + e.getMessage();
+                LOG.error("Unable to parse settings for SSO: " + e.getMessage());
+                return "Internal error during SSO authentication phase - please check the logs " + e.getMessage();
             }
             catch (Exception e) {
                 LOG.error(e);
@@ -147,9 +147,9 @@ public final class SAMLController {
      * @return the response object
      */
     public static Object getMetadata(Request request, Response response) {
-        if (ssonConfig.isPresent() && ConfigDefaults.get().isSingleSignOnEnabled()) {
+        if (ssoConfig.isPresent() && ConfigDefaults.get().isSingleSignOnEnabled()) {
             try {
-                final Auth auth = new Auth(ssonConfig.get(), request.raw(), response.raw());
+                final Auth auth = new Auth(ssoConfig.get(), request.raw(), response.raw());
                 final Saml2Settings settings = auth.getSettings();
                 settings.setSPValidationOnly(true);
                 final String metadata = settings.getSPMetadata();
@@ -166,7 +166,7 @@ public final class SAMLController {
                 }
             }
             catch (IOException | SettingsException | Error | CertificateEncodingException e) {
-                LOG.error("Unable to parse settings for SSON and/or certificate error: " + e.getMessage());
+                LOG.error("Unable to parse settings for SSO and/or certificate error: " + e.getMessage());
             }
             catch (Exception e) {
                 LOG.error(e.getMessage());
@@ -184,17 +184,17 @@ public final class SAMLController {
      * @return the response object
      */
     public static Object logout(Request request, Response response) {
-        if (ssonConfig.isPresent() && ConfigDefaults.get().isSingleSignOnEnabled()) {
+        if (ssoConfig.isPresent() && ConfigDefaults.get().isSingleSignOnEnabled()) {
             try {
                 AuthenticationServiceFactory.getInstance()
                         .getAuthenticationService()
                         .invalidate(request.raw(), response.raw());
-                final Auth auth = new Auth(ssonConfig.get(), request.raw(), response.raw());
+                final Auth auth = new Auth(ssoConfig.get(), request.raw(), response.raw());
                 auth.logout();
                 return response;
             }
             catch (SettingsException | ServletException | IOException | XMLEntityException e) {
-                LOG.error("Unable to parse settings for SSON and/or XML parsing: " + e.getMessage());
+                LOG.error("Unable to parse settings for SSO and/or XML parsing: " + e.getMessage());
             }
         }
 
@@ -208,17 +208,17 @@ public final class SAMLController {
      * @return the response object
      */
     public static Object sls(Request request, Response response) {
-        if (ssonConfig.isPresent() && ConfigDefaults.get().isSingleSignOnEnabled()) {
+        if (ssoConfig.isPresent() && ConfigDefaults.get().isSingleSignOnEnabled()) {
             try {
                 AuthenticationServiceFactory.getInstance()
                         .getAuthenticationService()
                         .invalidate(request.raw(), response.raw());
-                final Auth auth = new Auth(ssonConfig.get(), request.raw(), response.raw());
+                final Auth auth = new Auth(ssoConfig.get(), request.raw(), response.raw());
                 auth.processSLO();
                 return "You have been logged out";
             }
             catch (ServletException | SettingsException e) {
-                LOG.error("Unable to parse settings for SSON: " + e.getMessage());
+                LOG.error("Unable to parse settings for SSO: " + e.getMessage());
             }
             catch (Exception e) {
                 LOG.error(e.getMessage());

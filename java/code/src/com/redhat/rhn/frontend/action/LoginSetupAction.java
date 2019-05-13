@@ -15,7 +15,7 @@
 package com.redhat.rhn.frontend.action;
 
 import com.redhat.rhn.common.conf.ConfigDefaults;
-import com.redhat.rhn.common.conf.sson.SSONConfig;
+import com.redhat.rhn.common.conf.sso.SSOConfig;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnAction;
@@ -46,9 +46,9 @@ public class LoginSetupAction extends RhnAction {
     /** {@inheritDoc} */
     public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request,
                                  HttpServletResponse response) {
-        if (ConfigDefaults.get().isSingleSignOnEnabled() && SSONConfig.getSSONSettings().isPresent()) {
+        if (ConfigDefaults.get().isSingleSignOnEnabled() && SSOConfig.getSSOSettings().isPresent()) {
             try {
-                Auth auth = new Auth(SSONConfig.getSSONSettings().get(), request, response);
+                Auth auth = new Auth(SSOConfig.getSSOSettings().get(), request, response);
                 auth.login("/rhn/YourRhn.do");
             }
             catch (SettingsException | IOException e) {

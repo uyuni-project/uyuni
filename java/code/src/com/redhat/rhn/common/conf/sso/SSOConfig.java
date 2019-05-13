@@ -12,11 +12,11 @@
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
-package com.redhat.rhn.common.conf.sson;
+package com.redhat.rhn.common.conf.sso;
 
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
-import com.suse.manager.webui.controllers.SAMLController;
+import com.suse.manager.webui.controllers.SSOController;
 
 import com.onelogin.saml2.settings.Saml2Settings;
 import com.onelogin.saml2.settings.SettingsBuilder;
@@ -27,17 +27,17 @@ import java.util.Map;
 import java.util.Optional;
 
 /**
- * A class to handle the configuration for Single Sign On (SSON)
- * The associated file is /usr/share/rhn/config-defaults/rhn_java_sson.conf (options can be overridden by copying
+ * A class to handle the configuration for Single Sign-On (SSO)
+ * The associated file is /usr/share/rhn/config-defaults/rhn_java_sso.conf (options can be overridden by copying
  * the associated option in /etc/rhn/rhn.conf)
  */
-public final class SSONConfig {
+public final class SSOConfig {
 
-    private static final Logger LOG = Logger.getLogger(SAMLController.class);
+    private static final Logger LOG = Logger.getLogger(SSOController.class);
 
     private static Saml2Settings singletonConfig;
 
-    private SSONConfig() {
+    private SSOConfig() {
 
         final Map<String, Object> samlData = new HashMap<>();
         Config.get().getNamespaceProperties(ConfigDefaults.get().SINGLE_SIGN_ON_ENABLED).forEach((k, v) -> {
@@ -54,11 +54,11 @@ public final class SSONConfig {
 
     /**
      * A singleton to return the parsed configuration
-     * @return the configuration for SSON in Saml2Settings object format
+     * @return the configuration for SSO in Saml2Settings object format
      */
-    public static Optional<Saml2Settings> getSSONSettings() {
+    public static Optional<Saml2Settings> getSSOSettings() {
         if (ConfigDefaults.get().isSingleSignOnEnabled() && singletonConfig == null) {
-            new SSONConfig();
+            new SSOConfig();
         }
         return Optional.ofNullable(singletonConfig);
     }
