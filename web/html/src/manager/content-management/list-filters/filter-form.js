@@ -76,38 +76,38 @@ const FilterForm = (props: Props) => {
         {
           filtersEnum.enum.PACKAGE_NEVRA.key === props.filter.type &&
           <>
-              <Text
-                name="packageName"
-                label={t("Package Name")}
-                labelClass="col-md-3"
-                divClass="col-md-6"
-                required
-              />
-              <Text
-                name="epoch"
-                label={t("Epoch")}
-                labelClass="col-md-3"
-                divClass="col-md-6" />
-              <Text
-                name="version"
-                label={t("Version")}
-                labelClass="col-md-3"
-                divClass="col-md-6"
-                required
-              />
-              <Text
-                name="release"
-                label={t("Release")}
-                labelClass="col-md-3"
-                divClass="col-md-6"
-                required
-              />
-              <Text
-                name="architecture"
-                label={t("Architecture")}
-                labelClass="col-md-3"
-                divClass="col-md-6"
-              />
+            <Text
+              name="packageName"
+              label={t("Package Name")}
+              labelClass="col-md-3"
+              divClass="col-md-6"
+              required
+            />
+            <Text
+              name="epoch"
+              label={t("Epoch")}
+              labelClass="col-md-3"
+              divClass="col-md-6" />
+            <Text
+              name="version"
+              label={t("Version")}
+              labelClass="col-md-3"
+              divClass="col-md-6"
+              required
+            />
+            <Text
+              name="release"
+              label={t("Release")}
+              labelClass="col-md-3"
+              divClass="col-md-6"
+              required
+            />
+            <Text
+              name="architecture"
+              label={t("Architecture")}
+              labelClass="col-md-3"
+              divClass="col-md-6"
+            />
           </>
         }
 

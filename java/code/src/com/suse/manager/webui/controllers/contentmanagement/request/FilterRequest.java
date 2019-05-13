@@ -19,12 +19,17 @@ package com.suse.manager.webui.controllers.contentmanagement.request;
  */
 public class FilterRequest {
 
+    private String projectLabel;
     private String name;
     private String entityType;
     private String matcher;
     private String criteriaKey;
     private String criteriaValue;
     private Boolean deny;
+
+    public String getProjectLabel() {
+        return projectLabel;
+    }
 
     public String getName() {
         return name;

@@ -7,7 +7,7 @@ import {RolesProvider} from "core/auth/roles-context";
 window.pageRenderers = window.pageRenderers || {};
 window.pageRenderers.contentManagement = window.pageRenderers.contentManagement || {};
 window.pageRenderers.contentManagement.listFilters = window.pageRenderers.contentManagement.listFilters || {};
-window.pageRenderers.contentManagement.listFilters.renderer = (id, {filters, openFilterId, flashMessage}) => {
+window.pageRenderers.contentManagement.listFilters.renderer = (id, {filters, projectLabel, openFilterId, flashMessage}) => {
 
   console.log(openFilterId);
 
@@ -21,6 +21,7 @@ window.pageRenderers.contentManagement.listFilters.renderer = (id, {filters, ope
       <ListFilters
         filters={filtersJson}
         openFilterId={openFilterId}
+        projectLabel={projectLabel}
         flashMessage={flashMessage}
       />
     </RolesProvider>,

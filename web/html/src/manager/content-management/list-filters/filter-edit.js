@@ -9,6 +9,7 @@ import {showErrorToastr, showSuccessToastr} from "components/toastr/toastr";
 import FilterForm from "./filter-form";
 import {showDialog} from "components/dialog/util";
 import {mapFilterFormToRequest} from "./filter.utils";
+import _isEmpty from "lodash/isEmpty";
 
 const FilterEditModalContent = ({open, isLoading, filter, onChange, onClientValidate, editing}) => {
   if (!open) {
@@ -38,8 +39,13 @@ type FilterEditProps = {
   buttonText: string,
   onChange: Function,
   openFilterId: number,
+  projectLabel: string,
   editing?: boolean,
 };
+
+const redirectToProject = (projectLabel: string) => {
+  window.location.href = `/rhn/manager/contentmanagement/project/${projectLabel || ''}`
+}
 
 const FilterEdit = (props: FilterEditProps) => {
 
@@ -101,7 +107,7 @@ const FilterEdit = (props: FilterEditProps) => {
                         text={t('Delete')}
                         disabled={isLoading}
                         handler={() => {
-                          onAction(mapFilterFormToRequest(item), "delete", item.id)
+                          onAction(mapFilterFormToRequest(item, props.projectLabel), "delete", item.id)
                             .then((updatedListOfFilters) => {
                               closeDialog(modalNameId);
                               showSuccessToastr(t("Filter deleted successfully"));
@@ -135,21 +141,31 @@ const FilterEdit = (props: FilterEditProps) => {
                             showErrorToastr(t("Check the required fields below"));
                           } else {
                             if (props.editing) {
-                              onAction(mapFilterFormToRequest(item), "update", item.id)
+                              onAction(mapFilterFormToRequest(item, props.projectLabel), "update", item.id)
                                 .then((updatedListOfFilters) => {
-                                  closeDialog(modalNameId);
-                                  showSuccessToastr(t("Filter updated successfully"));
-                                  props.onChange(updatedListOfFilters);
+                                  if(!_isEmpty(props.projectLabel)){
+                                    closeDialog(modalNameId);
+                                    redirectToProject(props.projectLabel);
+                                  } else {
+                                    closeDialog(modalNameId);
+                                    showSuccessToastr(t("Filter updated successfully"));
+                                    props.onChange(updatedListOfFilters);
+                                  }
                                 })
                                 .catch((error) => {
                                   showErrorToastr(error);
                                 })
                             } else {
-                              onAction(mapFilterFormToRequest(item), "create")
+                              onAction(mapFilterFormToRequest(item, props.projectLabel), "create")
                                 .then((updatedListOfFilters) => {
-                                  closeDialog(modalNameId);
-                                  showSuccessToastr(t("Filter created successfully"));
-                                  props.onChange(updatedListOfFilters);
+                                  if(!_isEmpty(props.projectLabel)){
+                                    closeDialog(modalNameId);
+                                    redirectToProject(props.projectLabel);
+                                  } else {
+                                    closeDialog(modalNameId);
+                                    showSuccessToastr(t("Filter created successfully"));
+                                    props.onChange(updatedListOfFilters);
+                                  }
                                 })
                                 .catch((error) => {
                                   showErrorToastr(error);
