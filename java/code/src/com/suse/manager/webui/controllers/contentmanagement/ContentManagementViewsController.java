@@ -158,6 +158,9 @@ public class ContentManagementViewsController {
         if (req.queryParams("openFilterId") != null) {
             data.put("openFilterId", req.queryParams("openFilterId"));
         }
+        if (req.queryParams("projectLabel") != null) {
+            data.put("projectLabel", req.queryParams("projectLabel"));
+        }
 
 
         return new ModelAndView(data, "controllers/contentmanagement/templates/list-filters.jade");

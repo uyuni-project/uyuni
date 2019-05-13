@@ -3,8 +3,9 @@ import _isEmpty from "lodash/isEmpty";
 import filtersEnum from "../shared/business/filters.enum";
 import type {FilterFormType, FilterServerType} from "../shared/type/filter.type";
 
-export function mapFilterFormToRequest(filterForm: FilterFormType): FilterServerType {
+export function mapFilterFormToRequest(filterForm: FilterFormType, projectLabel: string): FilterServerType {
   const requestForm = {};
+  requestForm.projectLabel = projectLabel;
   requestForm.name = filterForm.name;
   requestForm.deny = filterForm.deny;
   requestForm.entityType = filtersEnum.findByKey(filterForm.type).entityType;

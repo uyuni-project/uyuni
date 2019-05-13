@@ -15,6 +15,7 @@ import {isOrgAdmin} from "core/auth/auth.utils";
 type Props = {
   filters: Array<FilterServerType>,
   openFilterId: number,
+  projectLabel: string,
   flashMessage: string,
 };
 
@@ -50,6 +51,7 @@ const ListFilters = (props: Props) => {
           icon='fa-plus'
           buttonText='Create Filter'
           openFilterId={props.openFilterId}
+          projectLabel={props.projectLabel}
           onChange={responseFilters => setDisplayedFilters(mapResponseToFilterForm(responseFilters))}
         />
       }
@@ -95,6 +97,7 @@ const ListFilters = (props: Props) => {
               buttonText='Edit Filter'
               onChange={responseFilters => setDisplayedFilters(mapResponseToFilterForm(responseFilters))}
               openFilterId={props.openFilterId}
+              projectLabel={props.projectLabel}
               editing
             />
           }

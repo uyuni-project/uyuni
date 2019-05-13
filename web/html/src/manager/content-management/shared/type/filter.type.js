@@ -2,7 +2,7 @@
 export type FilterServerType = {
   entityType: string,
   matcher: string,
-  id?: number,
+  id: number,
   name?: string,
   criteriaKey?: string,
   criteriaValue?: string,

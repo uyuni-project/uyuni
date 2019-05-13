@@ -69,7 +69,7 @@ const FiltersProjectSelection = (props:  FiltersProps): Node => {
         id={`create-new-filter-link`}
         icon='fa-plus'
         text={t("Create new Filter")}
-        href="/rhn/manager/contentmanagement/filters?openFilterId=-1"
+        href={`/rhn/manager/contentmanagement/filters?openFilterId=-1&projectLabel=${props.projectId}`}
     />
     </React.Fragment>
   );

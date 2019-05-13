@@ -22,6 +22,7 @@ import useInterval from "core/hooks/use-interval";
 import useLifecycleActionsApi from "../shared/api/use-lifecycle-actions-api";
 import FiltersProject from "../shared/components/panels/filters-project/filters-project";
 import statesEnum from "../shared/business/states.enum";
+import filtersEnum from "../shared/business/filters.enum";
 
 type Props = {
   project: ProjectType,
@@ -59,7 +60,7 @@ const Project = (props: Props) => {
       .filters
       .filter(filter => statesEnum.isEdited(filter.state))
       .map(filter =>
-        `Filter: ${filter.name}: deny ${filter.type} containing ${filter.criteria} in the name ${statesEnum.findByKey(filter.state).description}`
+        `${filtersEnum.getFilterDescription(filter)} ${statesEnum.findByKey(filter.state).description}`
       )
   );
   const isProjectEdited = changesToBuild.length > 0;

@@ -31,11 +31,13 @@ import com.redhat.rhn.manager.contentmgmt.ContentManager;
 
 import com.suse.manager.webui.controllers.contentmanagement.request.FilterRequest;
 import com.suse.manager.webui.controllers.contentmanagement.request.ProjectFiltersUpdateRequest;
+import com.suse.manager.webui.utils.FlashScopeHelper;
 import com.suse.manager.webui.utils.gson.ResultJson;
 import com.suse.utils.Json;
 
 import com.google.gson.Gson;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpStatus;
 
 import java.util.Arrays;
@@ -157,8 +159,9 @@ public class FilterApiController {
                 createFilterRequest.getCriteriaValue());
 
 
+        ContentFilter createdFilter;
         try {
-            ContentManager.createFilter(
+            createdFilter = ContentManager.createFilter(
                     createFilterRequest.getName(),
                     createFilterRequest.getDeny() ? ContentFilter.Rule.DENY : ContentFilter.Rule.ALLOW,
                     ContentFilter.EntityType.lookupByLabel(createFilterRequest.getEntityType()),
@@ -168,6 +171,15 @@ public class FilterApiController {
         }
         catch (EntityExistsException error) {
             return json(GSON, res, HttpStatus.SC_BAD_REQUEST, ResultJson.error("Filter name already exists"));
+        }
+
+        if (!StringUtils.isEmpty(createFilterRequest.getProjectLabel())) {
+            ContentManager.attachFilter(
+                    createFilterRequest.getProjectLabel(),
+                    createdFilter.getId(),
+                    user
+            );
+            FlashScopeHelper.flash(req, String.format("Filter %s created successfully.", createdFilter.getName()));
         }
 
         return ControllerApiUtils.listFiltersJsonResponse(res, user);
@@ -199,6 +211,12 @@ public class FilterApiController {
                 Optional.of(filterCriteria),
                 user
         );
+
+        if (!StringUtils.isEmpty(updateFilterRequest.getProjectLabel())) {
+            FlashScopeHelper.flash(
+                    req, String.format("Filter %s updated successfully.", updateFilterRequest.getName())
+            );
+        }
 
         return ControllerApiUtils.listFiltersJsonResponse(res, user);
     }

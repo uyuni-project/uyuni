@@ -19,7 +19,7 @@ type FiltersProps = {
   onChange: Function,
 };
 
-const renderFilterEntry = (filter) => {
+const renderFilterEntry = (filter, projectId) => {
   const descr = filtersEnum.getFilterDescription(filter);
   const filterButton =
     <div className={styles.icon_wrapper_vertical_center}>
@@ -29,7 +29,7 @@ const renderFilterEntry = (filter) => {
         title={t(`Edit Filter ${filter.name}`)}
         className='pull-right'
         text={t("Edit")}
-        href={`/rhn/manager/contentmanagement/filters?openFilterId=${filter.id}`}
+        href={`/rhn/manager/contentmanagement/filters?openFilterId=${filter.id}&projectLabel=${projectId}`}
       />
     </div>;
 
@@ -122,7 +122,7 @@ const FiltersProject = (props:  FiltersProps) => {
         <div className="min-height-panel">
           <ul className="list-group">
             {
-              displayingFilters.map(filter => renderFilterEntry(filter))
+              displayingFilters.map(filter => renderFilterEntry(filter, props.projectId))
             }
           </ul>
         </div>
