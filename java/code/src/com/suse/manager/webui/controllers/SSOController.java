@@ -191,7 +191,7 @@ public final class SSOController {
     }
 
     /**
-     * The logout method, called from inside the application
+     * The service provider-initiated single logout (SLO)
      * @param request the Spark Request instance used in the current request scope
      * @param response the Spark Response instance used in the current response scope
      * @return the response object
@@ -215,7 +215,7 @@ public final class SSOController {
     }
 
     /**
-     * The logout method, called from the IdP (external call)
+     * The Identity service provider initiated single logout service (SLS)
      * @param request the Spark Request instance used in the current request scope
      * @param response the Spark Response instance used in the current response scope
      * @return the response object
