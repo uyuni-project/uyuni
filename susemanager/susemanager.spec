@@ -230,6 +230,10 @@ if [ $POST_ARG -eq 2 ] ; then
     fi
 fi
 # else new install and the systems dir should be created by spacewalk-setup
+# Fix permissions for existing swapfiles (bsc#1131954, CVE-2019-3684)
+if [[ -f /SWAPFILE && $(stat -c "%a" "/SWAPFILE") != "600" ]]; then
+    chmod 600 /SWAPFILE
+fi
 
 %posttrans
 # make sure our database will use correct encoding
