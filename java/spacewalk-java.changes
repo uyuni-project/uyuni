@@ -1,3 +1,5 @@
+- use new names in code for client tool packages which were renamed (bsc#1134876)
+
 -------------------------------------------------------------------
 Wed May 15 17:00:13 CEST 2019 - jgonzalez@suse.com
 
