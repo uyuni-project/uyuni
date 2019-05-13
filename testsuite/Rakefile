@@ -13,6 +13,11 @@ namespace :cucumber do
       t.cucumber_opts = cucumber_opts + features
     end
   end
+  at_exit { post_nodejs_report }
+end
+
+def post_nodejs_report
+  `node index.js`
 end
 
 task :cucumber do
