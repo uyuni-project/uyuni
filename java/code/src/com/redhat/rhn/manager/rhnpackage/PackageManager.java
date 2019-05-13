@@ -77,9 +77,9 @@ import com.redhat.rhn.manager.system.IncompatibleArchException;
  */
 public class PackageManager extends BaseManager {
     private static final Logger LOG = Logger.getLogger(PackageManager.class);
-    public static final String RHNCFG = "rhncfg";
-    public static final String RHNCFG_CLIENT = "rhncfg-client";
-    public static final String RHNCFG_ACTIONS = "rhncfg-actions";
+    public static final String RHNCFG = "mgr-cfg";
+    public static final String RHNCFG_CLIENT = "mgr-cfg-client";
+    public static final String RHNCFG_ACTIONS = "mgr-cfg-actions";
 
     // Valid dependency types
     public static final String[]
