@@ -34,7 +34,7 @@ Feature: Content lifecycle
     Given I am authorized as "admin" with password "admin"
     When I follow the left menu "Content Lifecycle > Projects"
     And I follow "clp_name"
-    And I follow "Edit Sources"
+    And I follow "Attach/Detach Sources"
     And I select "SLES12-SP4-Pool for x86_64" from "selectedBaseChannel"
     And I click on "Save"
     Then I should see a "Sources edited successfully" text
@@ -110,7 +110,7 @@ Feature: Content lifecycle
     When I follow the left menu "Content Lifecycle > Projects"
     And I follow "clp_name"
     Then I should see a "Build (0)" text
-    When I follow "Edit Sources"
+    When I follow "Attach/Detach Sources"
     And I add the "Test Base Channel" channel to sources
     And I click on "Save"
     Then I should see a "Sources edited successfully" text

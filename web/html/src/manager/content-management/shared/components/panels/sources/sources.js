@@ -85,7 +85,7 @@ const Sources = (props: SourcesProps) => {
     <CreatorPanel
       id="sources"
       title="Sources"
-      creatingText="Edit Sources"
+      creatingText="Attach/Detach Sources"
       panelLevel="2"
       disableEditing={!hasEditingPermissions}
       collapsible
