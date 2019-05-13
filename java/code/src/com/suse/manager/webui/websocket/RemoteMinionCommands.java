@@ -16,6 +16,7 @@ package com.suse.manager.webui.websocket;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.google.gson.JsonObject;
+import com.redhat.rhn.common.util.StringUtil;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.session.WebSession;
@@ -285,24 +286,8 @@ public class RemoteMinionCommands {
                                     LOG.info("User '" + webSession.getUser().getLogin() +
                                             "' received command result from minion " + minionId +
                                             ". Output is logged at DEBUG level.");
-                                    eventHistoryExecutor.submit(() ->
-                                            TransactionHelper.handlingTransaction(() -> {
-                                                        Optional<MinionServer> minion =
-                                                                MinionServerFactory.findByMinionId(minionId);
-                                                        minion.ifPresent(min ->
-                                                                SystemManager.addHistoryEvent(min,
-                                                                    "Salt Remote Command",
-                                                                    "Command: <pre>" + msg.getCommand() +
-                                                                            "</pre> returned:<pre>" + result +
-                                                                            "</pre>")
-                                                        );
-                                                    },
-                                                    (Exception e) ->
-                                                            LOG.error(
-                                                                    "Error adding Salt remote command event to " +
-                                                                            "history of minion " + minionId, e)
-                                            )
-                                    );
+                                    addHistoryEvent(webSession.getUser().getLogin(), minionId,
+                                            msg.getCommand(), result);
                                     if (LOG.isDebugEnabled()) {
                                         LOG.debug("Minion " + minionId + " returned:\n" + result);
 
@@ -338,6 +323,44 @@ public class RemoteMinionCommands {
             HibernateFactory.closeSession();
         }
 
+    }
+
+    private void addHistoryEvent(String user, String minionId, String command, String result) {
+        eventHistoryExecutor.submit(() ->
+                TransactionHelper.handlingTransaction(() -> {
+                            Optional<MinionServer> minion =
+                                    MinionServerFactory.findByMinionId(minionId);
+
+                            StringBuilder details = new StringBuilder();
+                            details.append("Command: <pre>");
+                            details.append(command);
+                            details.append("</pre> returned:<pre>");
+                            int maxLength = 4000 - details.length() - 6;
+                            String output;
+                            if (result.length() > maxLength) {
+                                // command output too large, truncate it to fit in the db
+                                output = StringUtils
+                                        .substring(result, 0, maxLength - 3) +
+                                        "...";
+                            }
+                            else {
+                                output = result;
+                            }
+                            details.append(StringUtil.htmlifyText(output));
+
+                            details.append("</pre>");
+                            minion.ifPresent(min ->
+                                    SystemManager.addHistoryEvent(min,
+                                        "Salt Remote Command executed by " +
+                                                user, details.toString())
+                            );
+                        },
+                        (Exception e) ->
+                                LOG.error(
+                                        "Error adding Salt remote command event to " +
+                                                "history of minion " + minionId, e)
+                )
+        );
     }
 
     private boolean invalidWebSession(Session session, WebSession webSession) {
