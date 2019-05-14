@@ -25,6 +25,7 @@ import com.redhat.rhn.taskomatic.TaskomaticApiException;
 import com.redhat.rhn.taskomatic.task.gatherer.GathererJob;
 import com.suse.manager.gatherer.GathererRunner;
 import com.suse.manager.model.gatherer.GathererModule;
+import com.suse.manager.webui.utils.RouteWithUser;
 import com.suse.manager.webui.utils.gson.ResultJson;
 import org.apache.commons.collections.map.HashedMap;
 import org.apache.commons.fileupload.FileItem;
@@ -39,6 +40,8 @@ import org.yaml.snakeyaml.reader.ReaderException;
 import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
+import spark.Spark;
+import spark.template.jade.JadeTemplateEngine;
 
 import javax.persistence.NoResultException;
 import javax.servlet.ServletContext;
@@ -59,6 +62,10 @@ import static com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManager
 import static com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManagerFactory.CONFIG_PASS;
 import static com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManagerFactory.CONFIG_USER;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.withCsrfToken;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.withOrgAdmin;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.withUser;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.withUserPreferences;
 
 /**
  * Controller class providing backend code for the VHM pages.
@@ -74,6 +81,32 @@ public class VirtualHostManagerController {
     private static VirtualHostManagerFactory factory;
 
     private static Map<String, GathererModule> gathererModules;
+
+    /**
+     * Initialize request routes for the pages served by VirtualHostManagerController
+     *
+     * @param jade the jade engine
+     */
+    public static void initRoutes(JadeTemplateEngine jade) {
+
+        Spark.get("/manager/vhms", withUserPreferences(withCsrfToken(withOrgAdmin(VirtualHostManagerController::list))),
+                jade);
+        Spark.post("/manager/api/vhms/kubeconfig/validate",
+                withOrgAdmin((RouteWithUser) VirtualHostManagerController::validateKubeconfig));
+        Spark.post("/manager/api/vhms/create/kubernetes", withUser(VirtualHostManagerController::createKubernetes));
+        Spark.post("/manager/api/vhms/update/kubernetes", withUser(VirtualHostManagerController::updateKubernetes));
+        Spark.get("/manager/api/vhms/kubeconfig/:id/contexts",
+                withOrgAdmin(VirtualHostManagerController::getKubeconfigContexts));
+        Spark.post("/manager/api/vhms/:id/refresh", withOrgAdmin(VirtualHostManagerController::refresh));
+        Spark.get("/manager/api/vhms/:id/nodes", withOrgAdmin(VirtualHostManagerController::getNodes));
+        Spark.get("/manager/api/vhms/modules", withOrgAdmin(VirtualHostManagerController::getModules));
+        Spark.get("/manager/api/vhms/module/:name/params", withOrgAdmin(VirtualHostManagerController::getModuleParams));
+        Spark.get("/manager/api/vhms", withOrgAdmin(VirtualHostManagerController::get));
+        Spark.get("/manager/api/vhms/:id", withOrgAdmin(VirtualHostManagerController::getSingle));
+        Spark.post("/manager/api/vhms/create", withOrgAdmin(VirtualHostManagerController::create));
+        Spark.post("/manager/api/vhms/update/:id", withOrgAdmin(VirtualHostManagerController::update));
+        Spark.delete("/manager/api/vhms/delete/:id", withOrgAdmin(VirtualHostManagerController::delete));
+    }
 
     /**
      * Displays a list of VHMs.
