@@ -101,7 +101,7 @@ public class ContentFilterTest extends JMockBaseTestCaseWithUser {
         assertFalse(filter.test(erratum));
 
         criteria = new FilterCriteria(FilterCriteria.Matcher.EQUALS, "advisory_name", "idontexist");
-        filter = ContentManager.createFilter(cveName + "-filter", DENY, ERRATUM, criteria, user);
+        filter = ContentManager.createFilter(cveName + "-filter-2", DENY, ERRATUM, criteria, user);
         assertTrue(filter.test(erratum));
     }
 }
