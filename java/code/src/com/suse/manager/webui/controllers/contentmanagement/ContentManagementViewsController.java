@@ -16,7 +16,6 @@ package com.suse.manager.webui.controllers.contentmanagement;
 
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withCsrfToken;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withRolesTemplate;
-import static com.suse.manager.webui.utils.SparkApplicationHelper.withUser;
 import static spark.Spark.get;
 
 import com.redhat.rhn.domain.contentmgmt.ContentEnvironment;
