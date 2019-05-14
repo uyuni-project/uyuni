@@ -76,7 +76,7 @@ class ProductsPageWrapper extends React.Component {
   state = {
     issMaster: issMaster_flag_from_backend,
     refreshNeeded: refreshNeeded_flag_from_backend,
-    refreshRunning: refreshRunning_flag_from_backend,
+    refreshRunning: refreshRunning_flag_from_backend || scc_refresh_file_locked_status,
     serverData: {_DATA_ROOT_ID : []},
     errors: [],
     loading: true,
