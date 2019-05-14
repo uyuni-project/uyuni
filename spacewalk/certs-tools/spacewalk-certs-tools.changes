@@ -1,3 +1,5 @@
+- Add new packages names to instructions for adding remote configuration
+  support for traditional clients
 - Print error message instead of stacktrace for client_config_update.py
 
 -------------------------------------------------------------------

@@ -833,10 +833,13 @@ if [ $ALLOW_CONFIG_ACTIONS -eq 1 ] ; then
     echo "  NOTE: use an activation key to subscribe to the tools"
     if [ "$INSTALLER" == zypper ] ; then
         echo "        channel and zypper install/update rhncfg-actions"
+        echo "        or zypper install/update mgr-cfg-actions starting with 4.0"
     elif [ "$INSTALLER" == yum ] ; then
         echo "        channel and yum upgrade rhncfg-actions"
+        echo "        or yum upgrade mgr-cfg-actions starting with 4.0"
     else
         echo "        channel and up2date rhncfg-actions"
+        echo "        or up2date mgr-cfg-actions starting with 4.0"
     fi
     if [ -x "/usr/bin/rhn-actions-control" ] ; then
         rhn-actions-control --enable-all
@@ -845,11 +848,14 @@ if [ $ALLOW_CONFIG_ACTIONS -eq 1 ] ; then
         echo "Error setting permissions for configuration management."
         echo "    Please ensure that the activation key subscribes the"
         if [ "$INSTALLER" == zypper ] ; then
-            echo "    system to the tools channel and zypper install/update rhncfg-actions."
+            echo "    system to the tools channel and zypper install/update rhncfg-actions"
+            echo "    or zypper install/update mgr-cfg-actions starting with 4.0."
         elif [ "$INSTALLER" == yum ] ; then
-            echo "    system to the tools channel and yum updates rhncfg-actions."
+            echo "    system to the tools channel and yum updates rhncfg-actions"
+            echo "    or yum update mgr-cfg-actions starting with 4.0.
         else
-            echo "    system to the tools channel and up2dates rhncfg-actions."
+            echo "    system to the tools channel and up2date rhncfg-actions"
+            echo "    or up2date mgr-cfg-actions starting with 4.0."
         fi
         exit
     fi
