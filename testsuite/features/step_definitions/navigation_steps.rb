@@ -33,29 +33,11 @@ Then(/^the current path is "([^"]*)"$/) do |arg1|
 end
 
 When(/^I wait until I see "([^"]*)" text$/) do |text|
-  begin
-    Timeout.timeout(DEFAULT_TIMEOUT) do
-      loop do
-        break if page.has_content?(text)
-        sleep 3
-      end
-    end
-  rescue Timeout::Error
-    raise "Couldn't find the #{text} in webpage"
-  end
+  raise unless page.has_text?(text, wait: DEFAULT_TIMEOUT)
 end
 
 When(/^I wait until I do not see "([^"]*)" text$/) do |text|
-  begin
-    Timeout.timeout(DEFAULT_TIMEOUT) do
-      loop do
-        break unless page.has_content?(text)
-        sleep 3
-      end
-    end
-  rescue Timeout::Error
-    raise "The #{text} was always there in webpage"
-  end
+  raise unless page.has_no_text?(text, wait: DEFAULT_TIMEOUT)
 end
 
 When(/^I wait at most (\d+) seconds until I see "([^"]*)" text$/) do |seconds, text|
