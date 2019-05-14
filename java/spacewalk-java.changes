@@ -1,3 +1,4 @@
+- Display warning if product catalog refresh is already in progress (bsc#1132234)
 - Fix apidoc return order on mergePackages
 - Explicitly mention country code in the advanced search (bsc#1131892)
 
