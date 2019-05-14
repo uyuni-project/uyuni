@@ -74,6 +74,14 @@ public class MonitoringService {
                 LOG.error("Timeout waiting for " + MGR_MONITORING_CTL + " to complete");
                 return Optional.empty();
             }
+            if (process.exitValue() != 0) {
+                LOG.error(process.info().commandLine() + " returned non zero exit code: " + process.exitValue());
+                try (InputStream stderrIn = process.getErrorStream(); InputStream stdoutIn = process.getInputStream()) {
+                    LOG.error("stderr:\n " + IOUtils.toString(stderrIn));
+                    LOG.error("stdout:\n" + IOUtils.toString(stdoutIn));
+                }
+                return Optional.empty();
+            }
             return Optional.of(process.getInputStream());
         }
         catch (IOException | InterruptedException e) {
@@ -122,9 +130,9 @@ public class MonitoringService {
                 new Tuple2<>("postgres",
                         "service_|-postgres_exporter_service_|-prometheus-postgres_exporter_|-running"),
                 new Tuple2<>("tomcat",
-                        "service_|-jmx_exporter_tomcat_service_|-jmx-exporter@tomcat_|-running"),
+                        "service_|-jmx_exporter_tomcat_service_|-prometheus-jmx_exporter@tomcat_|-running"),
                 new Tuple2<>("taskomatic",
-                        "service_|-jmx_exporter_taskomatic_service_|-jmx-exporter@taskomatic_|-running")
+                        "service_|-jmx_exporter_taskomatic_service_|-prometheus-jmx_exporter@taskomatic_|-running")
         );
     }
 
@@ -140,9 +148,9 @@ public class MonitoringService {
                 new Tuple2<>("postgres",
                         "service_|-postgres_exporter_service_|-prometheus-postgres_exporter_|-dead"),
                 new Tuple2<>("tomcat",
-                        "service_|-jmx_exporter_tomcat_service_|-jmx-exporter@tomcat_|-dead"),
+                        "service_|-jmx_exporter_tomcat_service_|-prometheus-jmx_exporter@tomcat_|-dead"),
                 new Tuple2<>("taskomatic",
-                        "service_|-jmx_exporter_taskomatic_service_|-jmx-exporter@taskomatic_|-dead")
+                        "service_|-jmx_exporter_taskomatic_service_|-prometheus-jmx_exporter@taskomatic_|-dead")
                 ).map(map -> {
                     // disabled successfully (true) -> service state (false - not running)
                     map.forEach((k, v) -> map.put(k, !v));

@@ -1,7 +1,8 @@
 #!/bin/bash
 if [[ $1 == "status" || $1 == "enable" || $1 == "disable" ]]; then
 	[[ -z $2 ]] && PILLAR="" || PILLAR="pillar=$2"
-	/usr/bin/salt-call --out=json --log-level=error --retcode-passthrough --local --file-root=/usr/share/susemanager/salt state.apply srvmonitoring.$1 $PILLAR
+	/usr/bin/salt-call --out=json --log-level=error --local --file-root=/usr/share/susemanager/salt state.apply srvmonitoring.$1 $PILLAR
 else
 	echo "Invalid argument"
 fi
+exit 0

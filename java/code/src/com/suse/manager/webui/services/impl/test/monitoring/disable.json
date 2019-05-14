@@ -26,7 +26,7 @@
             "duration": 347.011,
             "__id__": "postgres_exporter_service"
         },
-        "service_|-jmx_exporter_tomcat_service_|-jmx-exporter@tomcat_|-dead": {
+        "service_|-jmx_exporter_tomcat_service_|-prometheus-jmx_exporter@tomcat_|-dead": {
             "name": "jmx-exporter@tomcat",
             "changes": {
                 "jmx-exporter@tomcat": true
@@ -39,7 +39,7 @@
             "duration": 747.678,
             "__id__": "jmx_exporter_tomcat_service"
         },
-        "service_|-jmx_exporter_taskomatic_service_|-jmx-exporter@taskomatic_|-dead": {
+        "service_|-jmx_exporter_taskomatic_service_|-prometheus-jmx_exporter@taskomatic_|-dead": {
             "name": "jmx-exporter@taskomatic",
             "changes": {
                 "jmx-exporter@taskomatic": true
