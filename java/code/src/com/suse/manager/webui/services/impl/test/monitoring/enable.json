@@ -98,7 +98,7 @@
             "duration": 19.196,
             "__id__": "jmx_exporter"
         },
-        "service_|-jmx_exporter_tomcat_service_|-jmx-exporter@tomcat_|-running": {
+        "service_|-jmx_exporter_tomcat_service_|-prometheus-jmx_exporter@tomcat_|-running": {
             "name": "jmx-exporter@tomcat",
             "changes": {
                 "jmx-exporter@tomcat": true
@@ -135,7 +135,7 @@
             "duration": 2.582,
             "__id__": "jmx_exporter_taskomatic_yaml_config"
         },
-        "service_|-jmx_exporter_taskomatic_service_|-jmx-exporter@taskomatic_|-running": {
+        "service_|-jmx_exporter_taskomatic_service_|-prometheus-jmx_exporter@taskomatic_|-running": {
             "name": "jmx-exporter@taskomatic",
             "changes": {
                 "jmx-exporter@taskomatic": true
