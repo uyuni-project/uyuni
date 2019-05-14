@@ -1,3 +1,4 @@
+- Update ServerArch on each ImageDeployedEvent (bsc#1134621)
 - Remove the 'Returning' clause from the query as oracle doesn't support it (bsc#1135166)
 - Display warning if product catalog refresh is already in progress (bsc#1132234)
 - Fix apidoc return order on mergePackages
