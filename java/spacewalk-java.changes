@@ -1,3 +1,5 @@
+- Display warning if product catalog refresh is already in progress (bsc#1132234)
+
 -------------------------------------------------------------------
 Wed May 15 17:18:50 CEST 2019 - jgonzalez@suse.com
 

@@ -61,6 +61,7 @@ public class ProductsController {
     private static final String ISS_MASTER = "issMaster";
     private static final String REFRESH_NEEDED = "refreshNeeded";
     private static final String REFRESH_RUNNING = "refreshRunning";
+    private static final String REFRESH_FILE_LOCKED = "refreshFileLocked";
 
     private static Logger log = Logger.getLogger(ProductsController.class);
 
@@ -82,6 +83,7 @@ public class ProductsController {
         data.put(ISS_MASTER, String.valueOf(IssFactory.getCurrentMaster() == null));
         data.put(REFRESH_NEEDED, String.valueOf(SCCCachingFactory.refreshNeeded()));
         data.put(REFRESH_RUNNING, String.valueOf(latestRun != null && latestRun.getEndTime() == null));
+        data.put(REFRESH_FILE_LOCKED, String.valueOf(SCCRefreshLock.isAlreadyLocked()));
 
         return new ModelAndView(data, "products/show.jade");
     }

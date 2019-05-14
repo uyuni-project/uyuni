@@ -37,6 +37,7 @@ public class SCCRefreshLock {
     private static File f;
     private static FileChannel channel;
     private static FileLock lock;
+    private static final String REFRESH_FILE_LOCKED_PATH = "/var/lib/spacewalk/scc/sccrefresh.lock";
     // Logger instance
     private static Logger log = Logger.getLogger(SCCRefreshLock.class);
 
@@ -51,7 +52,7 @@ public class SCCRefreshLock {
      */
     public static void tryGetLock() {
         try {
-            f = new File("/var/lib/spacewalk/scc/sccrefresh.lock");
+            f = new File(REFRESH_FILE_LOCKED_PATH);
             synchronized (f) {
                 // create the lock file
                 channel = new RandomAccessFile(f, "rw").getChannel();
@@ -79,6 +80,30 @@ public class SCCRefreshLock {
         catch (IOException e) {
             throw new RuntimeException("Could not start process.", e);
         }
+    }
+    /**
+     * Check if 'sccrefresh.lock' file is already locked or not. There is no convenient method to check that
+     * so just try to get lock again and if that throws {@link OverlappingFileLockException}, consider that
+     * file is already locked.
+     * @return true if file is locked, false otherwise
+     */
+    public static boolean isAlreadyLocked() {
+        boolean alreadyLocked = false;
+        File file = new File(REFRESH_FILE_LOCKED_PATH);
+        try (FileChannel channel = new RandomAccessFile(file, "rw").getChannel()) {
+            FileLock fileLock = channel.tryLock();
+            if (fileLock == null) {
+                alreadyLocked = true;
+            }
+        }
+        catch (OverlappingFileLockException e) {
+            alreadyLocked = true;
+            log.warn("OverlappingFileLockException, File is already locked by other process");
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+        return alreadyLocked;
     }
 
     /**
