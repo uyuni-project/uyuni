@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import MonitoringAdmin from './monitoring';
+import MonitoringAdmin from './monitoring-admin';
 
 window.pageRenderers = window.pageRenderers || {};
 window.pageRenderers.admin = window.pageRenderers.admin || {};
