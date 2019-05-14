@@ -73,7 +73,8 @@ import static java.util.Collections.emptySet;
 public class RegistrationUtils {
 
     private static final List<String> BLACKLIST = Collections.unmodifiableList(
-            Arrays.asList("rhncfg", "rhncfg-actions", "rhncfg-client", "rhn-virtualization-host", "osad")
+       Arrays.asList("rhncfg", "rhncfg-actions", "rhncfg-client", "rhn-virtualization-host", "osad",
+               "mgr-cfg", "mgr-cfg-actions", "mgr-cfg-client", "mgr-virtualization-host", "mgr-osad")
     );
 
     private static final String OS = "os";

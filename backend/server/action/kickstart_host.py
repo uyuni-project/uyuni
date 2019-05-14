@@ -42,8 +42,8 @@ def schedule_virt_host_pkg_install(server_id, action_id, dry_run=0):
     """
     log_debug(3)
 
-    virt_host_package_name = "rhn-virtualization-host"
-    messaging_package_name = "osad"
+    virt_host_package_name = "mgr-virtualization-host"
+    messaging_package_name = "mgr-osad"
 
     tools_channel = SubscribedChannel(server_id, "rhn-tools")
     found_tools_channel = tools_channel.is_subscribed_to_channel()
@@ -54,12 +54,12 @@ def schedule_virt_host_pkg_install(server_id, action_id, dry_run=0):
     rhn_v12n_package = ChannelPackage(server_id, virt_host_package_name)
 
     if not rhn_v12n_package.exists():
-        raise InvalidAction("Could not find the rhn-virtualization-host package.")
+        raise InvalidAction("Could not find the mgr-virtualization-host package.")
 
     messaging_package = ChannelPackage(server_id, messaging_package_name)
 
     if not messaging_package.exists():
-        raise InvalidAction("Could not find the osad package.")
+        raise InvalidAction("Could not find the mgr-osad package.")
 
     try:
         rhn_v12n_install_scheduler = PackageInstallScheduler(server_id, action_id, rhn_v12n_package)
@@ -79,5 +79,5 @@ def schedule_virt_host_pkg_install(server_id, action_id, dry_run=0):
         e = sys.exc_info()[1]
         raise_with_tb(InvalidAction(str(e)), sys.exc_info()[2])
 
-    log_debug(3, "Completed scheduling install of rhn-virtualization-host and osad!")
+    log_debug(3, "Completed scheduling install of mgr-virtualization-host and mgr-osad!")
     raise ShadowAction("Scheduled installation of Virtualization Host packages.")

@@ -1,3 +1,4 @@
+- use new names in code for client tool packages which were renamed (bsc#1134876)
 - Handle the different retcodes that are being returned when salt module is not available (bsc#1131704)
 - Do not implicitly set parent channel when cloning (bsc#1130492)
 - Prevent Actions that were actually completed to be displayed as "in progress" forever (bsc#1131780)

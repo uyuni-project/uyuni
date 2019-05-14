@@ -137,7 +137,7 @@ public class ChannelManager extends BaseManager {
      * Key used to identify the rhn-tools channel.  Used in searches to find the channel
      */
     public static final String TOOLS_CHANNEL_PACKAGE_NAME =
-        Config.get().getString("tools_channel.package_name", "rhncfg");
+        Config.get().getString("tools_channel.package_name", "mgr-cfg");
 
 
     /**
@@ -152,7 +152,7 @@ public class ChannelManager extends BaseManager {
      */
     public static final String RHN_VIRT_HOST_PACKAGE_NAME =
         Config.get().getString("tools_channel.virt_package_name",
-                "rhn-virtualization-host");
+                "mgr-virtualization-host");
 
     /**
      * OS name for the virt child channel.  rhnDistChannelMap.OS field.
