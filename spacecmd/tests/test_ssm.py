@@ -91,3 +91,38 @@ class TestSCSSM:
             args, kw = call
             assert not kw
             assert args == (shell.ssm_cache_file, shell.ssm)
+
+    def test_ssm_add_system_new(self, shell):
+        """
+        Test do_ssm_add a new system.
+
+        :param shell:
+        :return:
+        """
+
+        shell.help_ssm_add = MagicMock()
+        shell.expand_systems = MagicMock(return_value=["new.com"])
+        shell.ssm = {"example.com": {}}
+        shell.ssm_cache_file = "/tmp/ssm_cache_file"
+        shell.get_system_id = MagicMock(return_value={"name": "new.com"})
+
+        logger = MagicMock()
+        save_cache = MagicMock()
+        with patch("spacecmd.ssm.logging", logger) as lgr, \
+            patch("spacecmd.ssm.save_cache", save_cache) as svc:
+            ssm.do_ssm_add(shell, "new.com")
+
+        assert not logger.warning.called
+        assert not shell.help_ssm_add.called
+        assert logger.debug.called
+        assert save_cache.called
+
+        exp = ["Added new.com", "Systems Selected: 2"]
+        for call in logger.debug.call_args_list:
+            assert_expect([call], next(iter(exp)))
+            exp.pop(0)
+
+        for call in save_cache.call_args_list:
+            args, kw = call
+            assert not kw
+            assert args == (shell.ssm_cache_file, shell.ssm)
