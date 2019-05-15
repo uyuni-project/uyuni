@@ -906,7 +906,13 @@ fi
 %{jardir}/spark-template-jade.jar
 %{jardir}/simpleclient*.jar
 %{jardir}/pgjdbc-ng.jar
-
+%{jardir}/java-saml-core.jar
+%{jardir}/java-saml.jar
+%{jardir}/joda-time.jar
+%{jardir}/stax-api.jar
+%{jardir}/stax2-api.jar
+%{jardir}/woodstox-core-asl.jar
+%{jardir}/xmlsec.jar
 %{jardir}/byte-buddy.jar
 %{jardir}/jakarta-persistence-api.jar
 
