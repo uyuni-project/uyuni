@@ -29,7 +29,7 @@
 %define pythonX %{?default_py3: python3}%{!?default_py3: python2}
 
 Name:           spacewalk-oscap
-Version:        4.0.4
+Version:        4.0.5
 Release:        1%{?dist}
 Summary:        OpenSCAP plug-in for rhn-check
 License:        GPL-2.0-only
