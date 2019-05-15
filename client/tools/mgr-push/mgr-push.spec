@@ -19,7 +19,7 @@
 
 # Old name and version+1 before renaming to mgr-push
 %define oldname rhnpush
-%define oldversion 5.5.113
+%define oldversion 5.5.114
 %{!?pylint_check: %global pylint_check 0}
 
 %if 0%{?fedora} || 0%{?suse_version} > 1320 || 0%{?rhel} >= 8
