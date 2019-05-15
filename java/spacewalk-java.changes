@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Wed May 15 17:18:50 CEST 2019 - jgonzalez@suse.com
+
+- version 2.8.78.22-1
 - Remove the 'Returning' clause from the query as oracle doesn't support it (bsc#1135166)
 - use new names in code for client tool packages which were renamed (bsc#1134876)
 - Handle the different retcodes that are being returned when salt module is not available (bsc#1131704)
