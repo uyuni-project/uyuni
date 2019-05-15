@@ -174,3 +174,41 @@ class TestSCSSM:
         assert not save_cache.called
 
         assert_expect(logger.warning.call_args_list, "No systems found")
+
+    def test_ssm_intersect(self, shell):
+        """
+        Test do_ssm_intersect when no given systems found.
+
+        :param shell:
+        :return:
+        """
+        shell.help_ssm_intersect = MagicMock()
+        shell.expand_systems = MagicMock(return_value=["existing.com"])
+        shell.ssm = {
+            "brexit.co.uk": {"name": "finished"},
+            "existing.com": {"name": "keptalive"},
+        }
+        shell.ssm_cache_file = "/tmp/ssm_cache_file"
+
+        logger = MagicMock()
+        save_cache = MagicMock()
+        with patch("spacecmd.ssm.logging", logger) as lgr, \
+            patch("spacecmd.ssm.save_cache", save_cache) as svc:
+            ssm.do_ssm_intersect(shell, "existing.com")
+
+        assert not shell.help_ssm_intersect.called
+        assert not logger.warning.called
+        assert logger.debug.called
+        assert save_cache.called
+
+        exp = ["existing.com is in both groups: leaving in SSM", "Systems Selected: 1"]
+        for call in logger.debug.call_args_list:
+            assert_expect([call], next(iter(exp)))
+            exp.pop(0)
+
+        assert shell.ssm == {'existing.com': {'name': 'keptalive'}}
+
+        for call in save_cache.call_args_list:
+            args, kw = call
+            assert not kw
+            assert args == (shell.ssm_cache_file, shell.ssm)
