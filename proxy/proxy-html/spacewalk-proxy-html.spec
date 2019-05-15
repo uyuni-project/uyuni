@@ -27,7 +27,7 @@ Name:           spacewalk-proxy-html
 Summary:        The HTML component for Spacewalk Proxy
 License:        GPL-2.0-only
 Group:          Applications/Internet
-Version:        4.0.2
+Version:        4.0.3
 Release:        1%{?dist}
 Url:            https://github.com/uyuni-project/uyuni
 Source0:        https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
