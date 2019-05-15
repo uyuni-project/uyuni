@@ -1,3 +1,4 @@
+- Remove the 'Returning' clause from the query as oracle doesn't support it (bsc#1135166)
 - use new names in code for client tool packages which were renamed (bsc#1134876)
 - Handle the different retcodes that are being returned when salt module is not available (bsc#1131704)
 - Do not implicitly set parent channel when cloning (bsc#1130492)

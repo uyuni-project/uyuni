@@ -859,16 +859,15 @@ public class ActionFactory extends HibernateFactory {
      * @param status {@link ActionStatus} object that needs to be set
      */
     public static void updateServerActions(Action actionIn, List<Long> serverIds, ActionStatus status) {
-        List list = HibernateFactory.getSession()
+        if (log.isDebugEnabled()) {
+            log.debug("Action status " + status.getName() + " is going to b set for these servers: " + serverIds);
+        }
+        HibernateFactory.getSession()
                 .getNamedQuery("Action.updateServerActions")
                 .setParameter("action_id", actionIn.getId())
                 .setParameter("server_ids", serverIds)
                 .setParameter("status", status.getId())
-                .list();
-        if (log.isDebugEnabled()) {
-            log.debug("Updated number of serverActions " + list.size() + " for action " + actionIn.getId());
-            log.debug("Action status" + status.getName() + " set for these servers: " + list);
-        }
+                .executeUpdate();
     }
 
     /**

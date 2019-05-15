@@ -562,14 +562,12 @@ select sa.server_id
     </sql-query>
 
     <sql-query name="Action.updateServerActions">
-        <return-scalar column="server_id" type="long"/>
         <![CDATA[
             UPDATE rhnServerAction
                 SET status = :status
             WHERE action_id  = :action_id
                 AND server_id  IN (:server_ids)
                 AND status NOT IN(2,3)
-            RETURNING server_id;
         ]]>
     </sql-query>
 </hibernate-mapping>
