@@ -304,15 +304,16 @@ class TestSCSSM:
         shell.help_ssm_list = MagicMock()
         shell.ssm = {"remove.me": {}, "keepalive.io": {}}
 
-        logger = MagicMock()
-        mprint = MagicMock()
-        save_cache = MagicMock()
-        with patch("spacecmd.ssm.logging", logger) as lgr, \
-            patch("spacecmd.ssm.save_cache", save_cache) as svc, \
-            patch("spacecmd.ssm.print", mprint) as prn:
-            ssm.do_ssm_list(shell, "unknown")
+        for args in ["unknown", ""]:
+            logger = MagicMock()
+            mprint = MagicMock()
+            save_cache = MagicMock()
+            with patch("spacecmd.ssm.logging", logger) as lgr, \
+                patch("spacecmd.ssm.save_cache", save_cache) as svc, \
+                patch("spacecmd.ssm.print", mprint) as prn:
+                ssm.do_ssm_list(shell, args=args)
 
-        assert len(shell.ssm) == 2
-        assert mprint.called
-        assert not save_cache.called
-        assert_expect(mprint.call_args_list, "keepalive.io\nremove.me")
+            assert len(shell.ssm) == 2
+            assert mprint.called
+            assert not save_cache.called
+            assert_expect(mprint.call_args_list, "keepalive.io\nremove.me")
