@@ -21,7 +21,7 @@ Name:           spacewalk-proxy-docs
 Summary:        Spacewalk Proxy Server Documentation
 License:        OPL-1.0
 Group:          Applications/Internet
-Version:        4.0.2
+Version:        4.0.3
 Release:        1%{?dist}
 Url:            https://github.com/uyuni-project/uyuni
 Source0:        https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
