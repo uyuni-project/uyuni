@@ -126,3 +126,26 @@ class TestSCSSM:
             args, kw = call
             assert not kw
             assert args == (shell.ssm_cache_file, shell.ssm)
+
+    def test_ssm_intersect_noarg(self, shell):
+        """
+        Test do_ssm_intersect without arguments.
+
+        :param shell:
+        :return:
+        """
+        shell.help_ssm_intersect = MagicMock()
+        shell.expand_systems = MagicMock(return_value=["new.com"])
+        shell.ssm = {"example.com": {}}
+        shell.ssm_cache_file = "/tmp/ssm_cache_file"
+
+        logger = MagicMock()
+        save_cache = MagicMock()
+        with patch("spacecmd.ssm.logging", logger) as lgr, \
+            patch("spacecmd.ssm.save_cache", save_cache) as svc:
+            ssm.do_ssm_intersect(shell, "")
+
+        assert shell.help_ssm_intersect.called
+        assert not logger.warning.called
+        assert not logger.debug.called
+        assert not save_cache.called
