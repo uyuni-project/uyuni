@@ -19,7 +19,7 @@
 
 # Old name and version+1 before switching to mgr-osad
 %define oldname osad
-%define oldversion 5.11.102
+%define oldversion 5.11.103
 %global rhnroot /usr/share/rhn
 %global rhnconf /etc/sysconfig/rhn
 %global client_caps_dir /etc/sysconfig/rhn/clientCaps.d

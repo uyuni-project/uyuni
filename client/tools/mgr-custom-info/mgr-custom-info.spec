@@ -27,8 +27,8 @@ License:        GPL-2.0-only
 Group:          Applications/System
 Version:        4.0.5
 # 5.4.43.2 was the last version+1 before renaming to mgr-custom-info
-Provides:       rhn-custom-info = 5.4.43
-Obsoletes:      rhn-custom-info < 5.4.43
+Provides:       rhn-custom-info = 5.4.44
+Obsoletes:      rhn-custom-info < 5.4.44
 Release:        1%{?dist}
 Source0:        https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
 Url:            https://github.com/uyuni-project/uyuni
