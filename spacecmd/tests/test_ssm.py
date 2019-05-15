@@ -260,3 +260,37 @@ class TestSCSSM:
         assert not save_cache.called
 
         assert_expect(logger.warning.call_args_list, "No systems found")
+
+    def test_ssm_remove(self, shell):
+        """
+        Test do_ssm_remove without arguments.
+
+        :param shell:
+        :return:
+        """
+        shell.help_ssm_remove = MagicMock()
+        shell.expand_systems = MagicMock(return_value=["remove.me"])
+        shell.ssm = {"remove.me": {}, "keepalive.io": {}}
+        shell.ssm_cache_file = "/tmp/ssm_cache_file"
+
+        logger = MagicMock()
+        save_cache = MagicMock()
+        with patch("spacecmd.ssm.logging", logger) as lgr, \
+            patch("spacecmd.ssm.save_cache", save_cache) as svc:
+            ssm.do_ssm_remove(shell, "unknown")
+
+        assert not shell.help_ssm_remove.called
+        assert not logger.warning.called
+        assert logger.debug.called
+        assert save_cache.called
+        assert shell.ssm == {'keepalive.io': {}}
+
+        exp = ["Removed remove.me", "Systems Selected: 1"]
+        for call in logger.debug.call_args_list:
+            assert_expect([call], next(iter(exp)))
+            exp.pop(0)
+
+        for call in save_cache.call_args_list:
+            args, kw = call
+            assert not kw
+            assert args == (shell.ssm_cache_file, shell.ssm)
