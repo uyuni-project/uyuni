@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Wed May 15 15:30:31 CEST 2019 - jgonzalez@suse.com
+
+- version 1.0.9-1
 - SPEC cleanup
 - upgrade javascript libraries react, immer
 
