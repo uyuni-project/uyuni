@@ -58,3 +58,36 @@ class TestSCSSM:
         assert not shell.help_ssm_add.called
 
         assert_expect(logger.warning.call_args_list, "No systems found")
+
+    def test_ssm_add_system_already_in_list(self, shell):
+        """
+        Test do_ssm_add a system that already in the list.
+
+        :param shell:
+        :return:
+        """
+
+        shell.help_ssm_add = MagicMock()
+        shell.expand_systems = MagicMock(return_value=["example.com"])
+        shell.ssm = {"example.com": {}}
+        shell.ssm_cache_file = "/tmp/ssm_cache_file"
+        shell.get_system_id = MagicMock(return_value=None)
+
+        logger = MagicMock()
+        save_cache = MagicMock()
+        with patch("spacecmd.ssm.logging", logger) as lgr, \
+            patch("spacecmd.ssm.save_cache", save_cache) as svc:
+            ssm.do_ssm_add(shell, "example.com")
+
+        assert logger.warning.called
+        assert logger.debug.called
+        assert not shell.help_ssm_add.called
+        assert save_cache.called
+
+        assert_expect(logger.warning.call_args_list, "example.com is already in the list")
+        assert_expect(logger.debug.call_args_list, "Systems Selected: 1")
+
+        for call in save_cache.call_args_list:
+            args, kw = call
+            assert not kw
+            assert args == (shell.ssm_cache_file, shell.ssm)
