@@ -68,7 +68,7 @@
 %endif
 
 Name:           mgr-cfg
-Version:        4.0.6
+Version:        4.0.7
 Provides:       %{oldname} = %{oldversion}
 Obsoletes:      %{oldname} < %{oldversion}
 Release:        1%{?dist}
