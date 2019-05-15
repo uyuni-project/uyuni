@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Wed May 15 15:11:15 CEST 2019 - jgonzalez@suse.com
+
+- version 4.0.16-1
 - SPEC cleanup
 - Process salt events of a single minion on the same thread
 - Add Single Sign On (SSO) via SAMLv2 protocol
