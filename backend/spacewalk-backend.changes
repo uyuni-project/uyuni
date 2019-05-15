@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Wed May 15 15:07:45 CEST 2019 - jgonzalez@suse.com
+
+- version 4.0.16-1
 - SPEC cleanup
 - Fix password prompt within mgr-sign-metadata
 - Fix TypeError for 'errata.getErrataInfo' XMLRPC handler (bsc#1132346)
