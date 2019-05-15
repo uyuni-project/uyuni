@@ -1,3 +1,4 @@
+- SPEC cleanup
 - Enabling certificate deployment for Leap 15.1 clients which is
   needed for bootstrapping
 - States to enable/disable server monitoring

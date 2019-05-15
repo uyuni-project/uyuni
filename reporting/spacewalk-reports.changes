@@ -1,3 +1,4 @@
+- SPEC cleanup
 - Fix shebang for spacewalk-reports when built for Python3 (bsc#1132353)
 
 -------------------------------------------------------------------

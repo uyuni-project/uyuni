@@ -1,3 +1,4 @@
+- SPEC cleanup
 - Improve error message when trying to configure a proxy on an
   machine that is not registered as client
 
