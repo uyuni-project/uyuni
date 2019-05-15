@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Wed May 15 15:28:52 CEST 2019 - jgonzalez@suse.com
+
+- version 4.0.14-1
 - SPEC cleanup
 - Enable bootstrap repo creation for openSUSE Leap 15.1
 - Make swap files readable only by root (bsc#1131954, CVE-2019-3684)

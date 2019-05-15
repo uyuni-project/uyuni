@@ -22,7 +22,7 @@
 %define pythonX %{?build_py3:python3}%{!?build_py3:python2}
 
 Name:           susemanager
-Version:        4.0.13
+Version:        4.0.14
 Release:        1%{?dist}
 Summary:        SUSE Manager specific scripts
 License:        GPL-2.0-only
