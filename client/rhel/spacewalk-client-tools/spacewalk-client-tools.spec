@@ -1,7 +1,7 @@
 #
 # spec file for package spacewalk-client-tools
 #
-# Copyright (c) 2018 SUSE LINUX GmbH, Nuernberg, Germany.
+# Copyright (c) 2019 SUSE LINUX GmbH, Nuernberg, Germany.
 # Copyright (c) 2008-2018 Red Hat, Inc.
 #
 # All modifications and additions to the file contributed by third parties
@@ -13,7 +13,7 @@
 # license that conforms to the Open Source Definition (Version 1.9)
 # published by the Open Source Initiative.
 
-# Please submit bugfixes or comments via http://bugs.opensuse.org/
+# Please submit bugfixes or comments via https://bugs.opensuse.org/
 #
 
 
@@ -76,7 +76,7 @@ Group:          System Environment/Base
 %endif
 Source0:        spacewalk-client-tools-%{version}.tar.gz
 Source1:        %{name}-rpmlintrc
-URL:            https://github.com/uyuni-project/uyuni
+Url:            https://github.com/uyuni-project/uyuni
 Version:        4.0.7
 Release:        1%{?dist}
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
@@ -731,7 +731,7 @@ make -f Makefile.rhn-client-tools test
 %dir %{_sysconfdir}/sysconfig/rhn/allowed-actions
 %dir %{_sysconfdir}/sysconfig/rhn/allowed-actions/configfiles
 %dir %{_sysconfdir}/sysconfig/rhn/allowed-actions/script
-%verify(not md5 mtime size) %config(noreplace) %{_sysconfdir}/sysconfig/rhn/up2date
+%config(noreplace) %{_sysconfdir}/sysconfig/rhn/up2date
 %config(noreplace) %{_sysconfdir}/logrotate.d/up2date
 
 # dirs
@@ -740,7 +740,7 @@ make -f Makefile.rhn-client-tools test
 
 %{_sbindir}/rhn-profile-sync
 
-%ghost %attr(600,root,root) %verify(not md5 size mtime) %{_localstatedir}/spool/up2date/loginAuth.pkl
+%ghost %attr(600,root,root) %{_localstatedir}/spool/up2date/loginAuth.pkl
 
 #public keys and certificates
 %{_datadir}/rhn/RHNS-CA-CERT

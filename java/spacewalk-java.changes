@@ -1,3 +1,4 @@
+- SPEC cleanup
 - Process salt events of a single minion on the same thread
 - Add Single Sign On (SSO) via SAMLv2 protocol
 - Hide disabled activation keys in form drop-downs (bsc#1101706)

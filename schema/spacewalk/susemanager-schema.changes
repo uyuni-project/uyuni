@@ -1,3 +1,4 @@
+- SPEC cleanup
 - add a queue column to suseSaltEvent table to support processing of all salt events of a single minion on the same thread
 - Add monitoring entitlement
 - set max length for xccdf rule identifier to 255 to prevent internal server error (bsc#1125492)

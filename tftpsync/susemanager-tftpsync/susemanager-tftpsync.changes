@@ -1,3 +1,4 @@
+- SPEC cleanup
 - Fixes import error for sync_post_tftpd_proxies and
   MultipartPostHandler. Replacing usage of mimetools, which is
   Python2 only. (bsc#1134450)

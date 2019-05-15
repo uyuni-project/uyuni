@@ -1,3 +1,4 @@
+- SPEC cleanup
 - Add support for openSUSE Leap 15.1
 - Fixes numerous Python3 errors in spacewalk-manage-channel-lifecycle
 - Fixes an attempt to write in binary mode a string type (bsc#1132361)
