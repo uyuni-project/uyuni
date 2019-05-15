@@ -18,7 +18,7 @@
 
 
 Name:           spacewalk-python3-pylint
-Version:        4.0.2
+Version:        4.0.3
 Release:        1%{?dist}
 Summary:        Pylint configuration for python3 spacewalk python packages
 License:        GPL-2.0-only
