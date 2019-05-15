@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Wed May 15 15:08:39 CEST 2019 - jgonzalez@suse.com
+
+- version 4.0.8-1
 - SPEC cleanup
 - Add new packages names to instructions for adding remote configuration
   support for traditional clients
