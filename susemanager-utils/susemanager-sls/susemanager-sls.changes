@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Wed May 15 15:35:23 CEST 2019 - jgonzalez@suse.com
+
+- version 4.0.12-1
 - SPEC cleanup
 - Enabling certificate deployment for Leap 15.1 clients which is
   needed for bootstrapping
