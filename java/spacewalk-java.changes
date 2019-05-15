@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Wed May 15 17:00:13 CEST 2019 - jgonzalez@suse.com
+
+- version 4.0.17-1
 - List added JARs into specfile
 - Add stax and stax2 to the ant JARs
 
