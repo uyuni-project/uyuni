@@ -149,3 +149,28 @@ class TestSCSSM:
         assert not logger.warning.called
         assert not logger.debug.called
         assert not save_cache.called
+
+    def test_ssm_intersect_no_systems_found(self, shell):
+        """
+        Test do_ssm_intersect when no given systems found.
+
+        :param shell:
+        :return:
+        """
+        shell.help_ssm_intersect = MagicMock()
+        shell.expand_systems = MagicMock(return_value=[])
+        shell.ssm = {}
+        shell.ssm_cache_file = "/tmp/ssm_cache_file"
+
+        logger = MagicMock()
+        save_cache = MagicMock()
+        with patch("spacecmd.ssm.logging", logger) as lgr, \
+            patch("spacecmd.ssm.save_cache", save_cache) as svc:
+            ssm.do_ssm_intersect(shell, "unknown")
+
+        assert not shell.help_ssm_intersect.called
+        assert logger.warning.called
+        assert not logger.debug.called
+        assert not save_cache.called
+
+        assert_expect(logger.warning.call_args_list, "No systems found")
