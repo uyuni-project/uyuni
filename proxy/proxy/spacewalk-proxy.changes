@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Wed May 15 17:19:15 CEST 2019 - jgonzalez@suse.com
+
+- version 2.8.5.5-1
 - Fix HTTP headers handling to avoid duplicated entries (bsc#1125090)
 - do not reset rhn.conf on proxy during upgrade (bsc#1132197)
 
