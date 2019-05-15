@@ -52,11 +52,11 @@ BuildArch: noarch
 
 %if %{_vendor} != "debbuild"
 
-# 5.0.37.2 was last version+1 of spacewalksd before renaming to mgr-daemon
-Provides:       rhnsd = 5.0.37.2
-Obsoletes:      rhnsd < 5.0.37.2
-Provides:       spacewalksd = 5.0.37.2
-Obsoletes:      spacewalksd < 5.0.37.2
+# 5.0.37 was last version+1 of spacewalksd before renaming to mgr-daemon
+Provides:       rhnsd = 5.0.37
+Obsoletes:      rhnsd < 5.0.37
+Provides:       spacewalksd = 5.0.37
+Obsoletes:      spacewalksd < 5.0.37
 
 %if 0%{?suse_version}
 Requires(post): aaa_base

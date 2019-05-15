@@ -24,7 +24,7 @@
 %define rhnsd		 spacewalksd
 # Old name and version+1 before renaming to mgr-cfg
 %define oldname          rhncfg
-%define oldversion       5.10.122.3
+%define oldversion       5.10.122
 #
 %global rhnroot %{_datadir}/rhn
 %global rhnconf %{_sysconfdir}/sysconfig/rhn

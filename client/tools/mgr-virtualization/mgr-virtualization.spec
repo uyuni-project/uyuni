@@ -24,7 +24,7 @@
 %define rhnsd		 spacewalksd
 # Old name and version+1 before renaming to mgr-push
 %define oldname          rhn-virtualization
-%define oldversion       5.4.72.3
+%define oldversion       5.4.72
 #
 %define rhn_dir %{_datadir}/rhn
 %define rhn_conf_dir %{_sysconfdir}/sysconfig/rhn
