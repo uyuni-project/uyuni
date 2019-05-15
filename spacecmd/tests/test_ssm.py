@@ -21,7 +21,7 @@ class TestSCSSM:
         :return:
         """
         shell.help_ssm_add = MagicMock()
-        shell.expand_sytems = MagicMock(return_value=[])
+        shell.expand_systems = MagicMock(return_value=[])
         shell.ssm = {}
         shell.get_system_id = MagicMock(return_value=None)
 
