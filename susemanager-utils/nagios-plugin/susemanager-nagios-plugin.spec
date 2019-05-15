@@ -17,7 +17,7 @@
 
 
 Name:           susemanager-nagios-plugin
-Version:        4.0.4
+Version:        4.0.5
 Release:        1%{?dist}
 Summary:        Nagios plugins for SUSE Manager
 License:        GPL-2.0-only
