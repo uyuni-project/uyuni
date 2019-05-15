@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Wed May 15 17:20:29 CEST 2019 - jgonzalez@suse.com
+
+- version 3.2.18-1
 - Make swap files readable only by root (bsc#1131954, CVE-2019-3684)
 - Do not show false errors when configuring swapfile during setup
 - create bootstrap repo for new Red Hat channels (bsc#1133587)
