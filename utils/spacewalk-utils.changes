@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Wed May 15 15:20:26 CEST 2019 - jgonzalez@suse.com
+
+- version 4.0.10-1
 - SPEC cleanup
 - Add support for openSUSE Leap 15.1
 - Fixes numerous Python3 errors in spacewalk-manage-channel-lifecycle
