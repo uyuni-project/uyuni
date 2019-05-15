@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Wed May 15 15:07:09 CEST 2019 - jgonzalez@suse.com
+
+- version 4.0.7-1
 - SPEC cleanup
 - Process salt events of a single minion on the same thread
 - Add utility for internal use to enable/disable server monitoring: mgr-monitoring-ctl
