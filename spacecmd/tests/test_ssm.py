@@ -317,3 +317,32 @@ class TestSCSSM:
             assert mprint.called
             assert not save_cache.called
             assert_expect(mprint.call_args_list, "keepalive.io\nremove.me")
+
+    def test_ssm_clear(self):
+        """
+        Test do_ssm_list for listing of the systems in the SSM group.
+
+        :return:
+        """
+        shell.ssm_cache_file = "/tmp/ssm_cache_file"
+
+        for args in ["unknown", ""]:
+            shell.ssm = {"remove.me": {}, "keepalive.io": {}}
+            logger = MagicMock()
+            mprint = MagicMock()
+            save_cache = MagicMock()
+            with patch("spacecmd.ssm.logging", logger) as lgr, \
+                patch("spacecmd.ssm.save_cache", save_cache) as svc, \
+                patch("spacecmd.ssm.print", mprint) as prn:
+                ssm.do_ssm_clear(shell, args=args)
+
+            assert not shell.ssm
+            assert not mprint.called
+            assert not logger.warning.called
+            assert not logger.debug.called
+            assert save_cache.called
+
+            for call in save_cache.call_args_list:
+                args, kw = call
+                assert not kw
+                assert args == (shell.ssm_cache_file, shell.ssm)
