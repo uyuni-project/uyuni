@@ -9,11 +9,11 @@ Feature: Build container images
   Scenario: Build the images with and without activation key
     Given I am on the Systems overview page of this "sle-minion"
     When I schedule the build of image "suse_key" via XML-RPC calls
-    Then I wait until event "Image Build suse_key scheduled by admin" is completed
-    When I schedule the build of image "suse_simple" via XML-RPC calls
-    Then I wait until event "Image Build suse_simple scheduled by admin" is completed
-    When I schedule the build of image "suse_real_key" via XML-RPC calls
-    Then I wait until event "Image Build suse_real_key scheduled by admin" is completed
+    And I wait at most 500 seconds until event "Image Build suse_key scheduled by admin" is completed
+    And I schedule the build of image "suse_simple" via XML-RPC calls
+    And I wait at most 500 seconds until event "Image Build suse_simple scheduled by admin" is completed
+    And I schedule the build of image "suse_real_key" via XML-RPC calls
+    And I wait at most 500 seconds until event "Image Build suse_real_key scheduled by admin" is completed
 
   Scenario: Build same images with different versions
     Given I am authorized as "admin" with password "admin"
