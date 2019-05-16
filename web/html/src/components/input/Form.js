@@ -60,7 +60,7 @@ class Form extends React.Component<Props, State> {
     this.setState({
       model,
     },
-    () => this.validate(component));
+    () => this.validate(component, component.props));
 
     if (this.props.onChange) {
       this.props.onChange(this.state.model, this.state.isValid);
@@ -85,8 +85,7 @@ class Form extends React.Component<Props, State> {
     }
   }
 
-  validate(component: React.ElementRef<any>) {
-    const { props } = component;
+  validate(component: React.ElementRef<any>, props: Object) {
     const { name } = props;
     const results = [];
     let isValid = true;
@@ -133,7 +132,7 @@ class Form extends React.Component<Props, State> {
         model[component.props.name] = component.props.value;
         return { model };
       },
-      () => this.validate(component));
+      () => this.validate(component, component.props));
     }
   }
 
