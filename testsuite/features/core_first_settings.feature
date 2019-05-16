@@ -76,7 +76,7 @@ Feature: Very first settings
     And service "tomcat" is enabled on "server"
     And service "tomcat" is active on "server"
 
-@http_proxy
+@server_http_proxy
   Scenario: Setup HTTP proxy
     When I am authorized as "admin" with password "admin"
     When I follow the left menu "Admin > Setup Wizard"
