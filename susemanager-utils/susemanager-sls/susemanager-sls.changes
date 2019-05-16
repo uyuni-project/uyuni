@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Thu May 16 10:59:00 CEST 2019 - jgonzalez@suse.com
+
+- version 3.2.25-1
 - More thorougly disable the Salt mine in util.mgr_mine_config_clean_up (bsc#1135075)
 
 -------------------------------------------------------------------
