@@ -205,13 +205,16 @@ class TestSCCryptokey:
         shell.user_confirm = MagicMock(return_value=True)
         shell.do_cryptokey_list = MagicMock(return_value=["one", "two", "three"])
         logger = MagicMock()
+        mprint = MagicMock()
 
-        with patch("spacecmd.cryptokey.logging", logger) as lgr:
+        with patch("spacecmd.cryptokey.logging", logger) as lgr, \
+            patch("spacecmd.cryptokey.print", mprint) as prn:
             spacecmd.cryptokey.do_cryptokey_delete(shell, "foo*")
 
         assert not shell.client.kickstart.keys.delete.called
         assert not shell.help_cryptokey_delete.called
         assert not shell.user_confirm.called
+        assert not mprint.called
         assert logger.error.called
 
         assert_expect(logger.error.call_args_list, "No keys matched argument ['foo.*']")
