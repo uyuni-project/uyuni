@@ -70,3 +70,4 @@ class TestSCCryptokey:
         assert not editor.called
         assert logger.error.called
 
+        assert_expect(logger.error.call_args_list, "No contents of the file")
