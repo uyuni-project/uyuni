@@ -42,3 +42,31 @@ class TestSCCryptokey:
 
         assert_expect(logger.error.call_args_list, "Invalid key type")
 
+    def test_cryptokey_create_interactive_no_contents(self, shell):
+        """
+        Test do_cryptokey_create without arguments (interactive, no contents given).
+
+        :param shell:
+        :return:
+        """
+        shell.help_cryptokey_create = MagicMock()
+        shell.client.kickstart.keys.create = MagicMock()
+        shell.user_confirm = MagicMock(return_value=True)
+        read_file = MagicMock()
+        prompt_user = MagicMock(side_effect=["g", "interactive descr", ""])
+        editor = MagicMock()
+        logger = MagicMock()
+
+        with patch("spacecmd.cryptokey.prompt_user", prompt_user) as pmu, \
+            patch("spacecmd.cryptokey.read_file", read_file) as rfl, \
+            patch("spacecmd.cryptokey.editor", editor) as edt, \
+            patch("spacecmd.cryptokey.logging", logger) as lgr:
+            spacecmd.cryptokey.do_cryptokey_create(shell, "")
+
+        assert not shell.help_cryptokey_create.called
+        assert not shell.client.kickstart.keys.create.called
+        assert not read_file.called
+        assert prompt_user.called
+        assert not editor.called
+        assert logger.error.called
+
