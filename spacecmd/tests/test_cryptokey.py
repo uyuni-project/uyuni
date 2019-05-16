@@ -302,3 +302,26 @@ class TestSCCryptokey:
         assert shell.client.kickstart.keys.listAllKeys.called
         assert out == ['keydescr-1', 'keydescr-2']
 
+    def test_cryptokey_list_stdout(self, shell):
+        """
+        Test do_cryptokey_list to STDOUT.
+
+        :param shell:
+        :return:
+        """
+        shell.client.kickstart.keys.listAllKeys = MagicMock(
+            return_value=[
+                {"description": "keydescr-1"},
+                {"description": "keydescr-2"},
+            ]
+        )
+        mprint = MagicMock()
+        with patch("spacecmd.cryptokey.print", mprint) as prn:
+            out = spacecmd.cryptokey.do_cryptokey_list(shell, "", doreturn=False)
+
+        assert out is None
+        assert mprint.called
+        assert shell.client.kickstart.keys.listAllKeys.called
+
+        assert_expect(mprint.call_args_list, "keydescr-1\nkeydescr-2")
+
