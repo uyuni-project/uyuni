@@ -296,6 +296,9 @@ class TestSCCryptokey:
         mprint = MagicMock()
         with patch("spacecmd.cryptokey.print", mprint) as prn:
             out = spacecmd.cryptokey.do_cryptokey_list(shell, "", doreturn=True)
+
+        assert not mprint.called
         assert bool(out)
         assert shell.client.kickstart.keys.listAllKeys.called
         assert out == ['keydescr-1', 'keydescr-2']
+
