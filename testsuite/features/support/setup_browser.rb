@@ -93,8 +93,8 @@ Before('@no_mirror') do |scenario|
 end
 
 # do test only if HTTP proxy for SUSE Manager is defined
-Before('@http_proxy') do |scenario|
-  scenario.skip_invoke! unless $http_proxy
+Before('@server_http_proxy') do |scenario|
+  scenario.skip_invoke! unless $server_http_proxy
 end
 
 # have more infos about the errors

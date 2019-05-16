@@ -475,7 +475,7 @@ Then(/^I see verification succeeded/) do
 end
 
 When(/^I enter the address of the HTTP proxy as "([^"]*)"/) do |hostname|
-  step %(I enter "#{$http_proxy}" as "#{hostname}")
+  step %(I enter "#{$server_http_proxy}" as "#{hostname}")
 end
 
 # configuration management steps
