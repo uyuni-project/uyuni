@@ -159,7 +159,7 @@ def diff_dumps(initial_dump, migrated_dump):
     """ Perform a diff of two database dumps """
     file_initial = open(initial_dump)
     file_migrated = open(migrated_dump)
-    return difflib.context_diff(file_initial.readlines(), file_migrated.readlines())
+    return difflib.unified_diff(file_initial.readlines(), file_migrated.readlines())
 
 
 def argparser():
