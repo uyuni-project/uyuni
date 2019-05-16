@@ -43,7 +43,7 @@ Feature: Content lifecycle
     And I should see a "SLES12-SP4-Updates for x86_64" text
     And I should see a "SLE-Manager-Tools12-Pool for x86_64 SP4" text
     And I should see a "Build (4)" text
-    And I should see a "Version 1: (draft - not built) - Check the colors below for all the changes" text
+    And I should see a "Version 1: (draft - not built) - Check the changes below" text
 
   Scenario: Add environments to the project
     Given I am authorized as "admin" with password "admin"
@@ -116,7 +116,7 @@ Feature: Content lifecycle
     Then I should see a "Sources edited successfully" text
     And I should see a "Test Base Channel" text
     And I should see a "Build (1)" text
-    And I should see a "Version 2: (draft - not built) - Check the colors below for all the changes" text
+    And I should see a "Version 2: (draft - not built) - Check the changes below" text
     When I click on "Build (1)"
     Then I should see a "Version 2 history" text
     When I enter "test version message 2" as "message"
