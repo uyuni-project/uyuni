@@ -179,6 +179,7 @@ class TestSCCryptokey:
         shell.help_cryptokey_delete = MagicMock()
         shell.client.kickstart.keys.delete = MagicMock()
         shell.user_confirm = MagicMock(return_value=True)
+        shell.do_cryptokey_list = MagicMock()
         filter_results = MagicMock()
         logger = MagicMock()
 
