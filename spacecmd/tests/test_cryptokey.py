@@ -243,6 +243,39 @@ class TestSCCryptokey:
         assert mprint.called
 
         assert_expect(mprint.call_args_list, 'three\ntwo')
+
+    def test_cryptokey_delete_confirmed_deleted(self, shell):
+        """
+        Test do_cryptokey_delete with non-existing key.
+
+        :return:
+        """
+        shell.help_cryptokey_delete = MagicMock()
+        shell.client.kickstart.keys.delete = MagicMock()
+        shell.user_confirm = MagicMock(return_value=True)
+        shell.do_cryptokey_list = MagicMock(return_value=["one", "two", "three"])
+        logger = MagicMock()
+        mprint = MagicMock()
+
+        with patch("spacecmd.cryptokey.logging", logger) as lgr, \
+            patch("spacecmd.cryptokey.print", mprint) as prn:
+            spacecmd.cryptokey.do_cryptokey_delete(shell, "t*")
+
         assert not logger.error.called
+        assert not shell.help_cryptokey_delete.called
+        assert shell.client.kickstart.keys.delete.called
+        assert shell.user_confirm.called
+        assert mprint.called
 
         assert_expect(mprint.call_args_list, 'three\ntwo')
+        exp = [
+            (shell.session, "two",),
+            (shell.session, "three",),
+        ]
+
+        for call in shell.client.kickstart.keys.delete.call_args_list:
+            args, kw = call
+            assert not kw
+            assert args == next(iter(exp))
+            exp.pop(0)
+        assert not exp
