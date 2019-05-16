@@ -218,3 +218,28 @@ class TestSCCryptokey:
         assert logger.error.called
 
         assert_expect(logger.error.call_args_list, "No keys matched argument ['foo.*']")
+
+    def test_cryptokey_delete_not_confirmed(self, shell):
+        """
+        Test do_cryptokey_delete with non-existing key.
+
+        :return:
+        """
+        shell.help_cryptokey_delete = MagicMock()
+        shell.client.kickstart.keys.delete = MagicMock()
+        shell.user_confirm = MagicMock(return_value=False)
+        shell.do_cryptokey_list = MagicMock(return_value=["one", "two", "three"])
+        logger = MagicMock()
+        mprint = MagicMock()
+
+        with patch("spacecmd.cryptokey.logging", logger) as lgr, \
+            patch("spacecmd.cryptokey.print", mprint) as prn:
+            spacecmd.cryptokey.do_cryptokey_delete(shell, "t*")
+
+        assert not shell.client.kickstart.keys.delete.called
+        assert not shell.help_cryptokey_delete.called
+        assert shell.user_confirm.called
+        assert mprint.called
+        assert not logger.error.called
+
+        assert_expect(mprint.call_args_list, 'three\ntwo')
