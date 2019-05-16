@@ -325,3 +325,24 @@ class TestSCCryptokey:
 
         assert_expect(mprint.call_args_list, "keydescr-1\nkeydescr-2")
 
+    def test_cryptokey_details_noargs(self, shell):
+        """
+        Test do_cryptokey_details with no parameters.
+
+        :param shell:
+        :return:
+        """
+        shell.client.kickstart.keys.getDetails = MagicMock()
+        shell.do_cryptokey_list = MagicMock(return_value=[])
+        shell.help_cryptokey_details = MagicMock()
+        logger = MagicMock()
+        mprint = MagicMock()
+
+        with patch("spacecmd.cryptokey.print", mprint) as mpt, \
+            patch("spacecmd.cryptokey.logging", logger) as lgr:
+            spacecmd.cryptokey.do_cryptokey_details(shell, "")
+
+        assert not mprint.called
+        assert not shell.client.kickstart.keys.getDetails.called
+        assert not shell.do_cryptokey_list.called
+        assert shell.help_cryptokey_details.called
