@@ -35,9 +35,9 @@ class TestSCCryptokey:
 
         assert not shell.help_cryptokey_create.called
         assert not shell.client.kickstart.keys.create.called
+        assert not editor.called
         assert read_file.called
         assert prompt_user.called
-        assert not editor.called
         assert logger.error.called
 
         assert_expect(logger.error.call_args_list, "Invalid key type")
@@ -66,8 +66,8 @@ class TestSCCryptokey:
         assert not shell.help_cryptokey_create.called
         assert not shell.client.kickstart.keys.create.called
         assert not read_file.called
-        assert prompt_user.called
         assert not editor.called
+        assert prompt_user.called
         assert logger.error.called
 
         assert_expect(logger.error.call_args_list, "No contents of the file")
@@ -95,9 +95,9 @@ class TestSCCryptokey:
 
         assert not shell.help_cryptokey_create.called
         assert not shell.client.kickstart.keys.create.called
+        assert not editor.called
         assert read_file.called
         assert prompt_user.called
-        assert not editor.called
         assert logger.error.called
 
         assert_expect(logger.error.call_args_list, "Invalid key type")
@@ -238,8 +238,11 @@ class TestSCCryptokey:
 
         assert not shell.client.kickstart.keys.delete.called
         assert not shell.help_cryptokey_delete.called
+        assert not logger.error.called
         assert shell.user_confirm.called
         assert mprint.called
+
+        assert_expect(mprint.call_args_list, 'three\ntwo')
         assert not logger.error.called
 
         assert_expect(mprint.call_args_list, 'three\ntwo')
