@@ -152,7 +152,7 @@ Feature: Manage users
 
   Scenario: Display the CSV separator preference
     Given I am authorized as "testing" with password "testing"
-    When I follow the left menu "Home > Your Preferences"
+    When I follow the left menu "Home > My Preferences"
     Then I should see a "CSV Files" text
     And I should see a "Configure a separator character to be used in downloadable CSV files:" text
     And I should see a "Comma" text
@@ -160,7 +160,7 @@ Feature: Manage users
 
   Scenario: Configure the CSV separator char to semicolon
     Given I am authorized as "testing" with password "testing"
-    When I follow the left menu "Home > Your Preferences"
+    When I follow the left menu "Home > My Preferences"
     And I choose ";"
     And I click on "Save Preferences"
     Then I should see a "Preferences modified" text
@@ -168,7 +168,7 @@ Feature: Manage users
 
   Scenario: Cleanup: configure the CSV separator char to comma
     Given I am authorized as "testing" with password "testing"
-    When I follow the left menu "Home > Your Preferences"
+    When I follow the left menu "Home > My Preferences"
     And I choose ","
     And I click on "Save Preferences"
     Then I should see a "Preferences modified" text

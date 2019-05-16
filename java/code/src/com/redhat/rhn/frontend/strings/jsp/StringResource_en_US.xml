@@ -1530,7 +1530,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         </context-group>
       </trans-unit>
       <trans-unit id="details.jsp.account_details">
-        <source> Your Account </source>
+        <source> My Account </source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
@@ -9911,7 +9911,7 @@ the &lt;strong&gt;Red Hat Enterprise Linux System Administration Guide.&lt;/stro
         </context-group>
       </trans-unit>
       <trans-unit id="yourrhn.jsp.nolists">
-        <source>No lists are currently enabled on the "Overview" page. You can change this at &lt;strong&gt;&lt;a href="/rhn/account/UserPreferences.do"&gt;Overview &gt; Your Preferences &gt; "Overview" Start Page&lt;/a&gt;&lt;/strong&gt;.</source>
+        <source>No lists are currently enabled on the "Overview" page. You can change this at &lt;strong&gt;&lt;a href="/rhn/account/UserPreferences.do"&gt;Overview &gt; My Preferences &gt; "Overview" Start Page&lt;/a&gt;&lt;/strong&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/YourRhn</context>
         </context-group>
