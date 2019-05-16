@@ -135,3 +135,37 @@ class TestSCCryptokey:
             args, kw = call
             assert args == (shell.session, "description", "GPG", "contents")
             assert not kw
+
+    def test_cryptokey_create_SSL_key(self, shell):
+        """
+        Test do_cryptokey_create with parameters, calling SSL key type.
+
+        :param shell:
+        :return:
+        """
+        shell.help_cryptokey_create = MagicMock()
+        shell.client.kickstart.keys.create = MagicMock()
+        shell.user_confirm = MagicMock(return_value=True)
+        read_file = MagicMock(return_value="contents")
+        prompt_user = MagicMock(side_effect=[])
+        editor = MagicMock()
+        logger = MagicMock()
+
+        with patch("spacecmd.cryptokey.prompt_user", prompt_user) as pmu, \
+            patch("spacecmd.cryptokey.read_file", read_file) as rfl, \
+            patch("spacecmd.cryptokey.editor", editor) as edt, \
+            patch("spacecmd.cryptokey.logging", logger) as lgr:
+            spacecmd.cryptokey.do_cryptokey_create(shell, "-t s -d description -f /tmp/file.txt")
+
+        assert not editor.called
+        assert not shell.help_cryptokey_create.called
+        assert not prompt_user.called
+        assert not logger.error.called
+
+        assert shell.client.kickstart.keys.create.called
+        assert read_file.called
+
+        for call in shell.client.kickstart.keys.create.call_args_list:
+            args, kw = call
+            assert args == (shell.session, "description", "SSL", "contents")
+            assert not kw
