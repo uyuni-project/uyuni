@@ -12,9 +12,9 @@ class TestSCCryptokey:
     """
     Test cryptokey API.
     """
-    def test_cryptokey_create_noargs(self, shell):
+    def test_cryptokey_create_no_keytype(self, shell):
         """
-        Test do_cryptokey_create without arguments (fully interactive).
+        Test do_cryptokey_create without correct key type.
 
         :param shell:
         :return:
@@ -22,8 +22,8 @@ class TestSCCryptokey:
         shell.help_cryptokey_create = MagicMock()
         shell.client.kickstart.keys.create = MagicMock()
         shell.user_confirm = MagicMock(return_value=True)
-        read_file = MagicMock()
-        prompt_user = MagicMock(side_effect=["", "interactive descr", ""])
+        read_file = MagicMock(return_value="contents")
+        prompt_user = MagicMock(side_effect=["", "interactive descr", "/tmp/file.txt"])
         editor = MagicMock()
         logger = MagicMock()
 
@@ -35,7 +35,7 @@ class TestSCCryptokey:
 
         assert not shell.help_cryptokey_create.called
         assert not shell.client.kickstart.keys.create.called
-        assert not read_file.called
+        assert read_file.called
         assert prompt_user.called
         assert not editor.called
         assert logger.error.called
