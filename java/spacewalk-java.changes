@@ -1,3 +1,4 @@
+- Support system groups with the prometheus-exporters-formula and monitoring entitlements
 - Let softwarechannel_errata_sync fallback on vendor errata (bsc#1132914)
 - Don't convert localhost repositories URL in mirror case (bsc#1135957)
 - Add state EDITED to filters in the Content Lifecycle Environments
