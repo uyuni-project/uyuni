@@ -169,3 +169,25 @@ class TestSCCryptokey:
             args, kw = call
             assert args == (shell.session, "description", "SSL", "contents")
             assert not kw
+
+    def test_cryptokey_delete_noargs(self, shell):
+        """
+        Test do_cryptokey_delete without parameters, so help should be displayed.
+
+        :return:
+        """
+        shell.help_cryptokey_delete = MagicMock()
+        shell.client.kickstart.keys.delete = MagicMock()
+        shell.user_confirm = MagicMock(return_value=True)
+        filter_results = MagicMock()
+        logger = MagicMock()
+
+        with patch("spacecmd.cryptokey.logging", logger) as lgr, \
+            patch("spacecmd.cryptokey.filter_results", filter_results) as frl:
+            spacecmd.cryptokey.do_cryptokey_delete(shell, "")
+
+        assert not logger.error.called
+        assert not filter_results.called
+        assert not shell.client.kickstart.keys.delete.called
+        assert not shell.user_confirm.called
+        assert shell.help_cryptokey_delete.called
