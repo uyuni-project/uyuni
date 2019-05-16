@@ -50,6 +50,7 @@ def do_cryptokey_create(self, args):
     arg_parser.add_argument('-f', '--file')
 
     (args, options) = parse_command_arguments(args, arg_parser)
+    options.contents = None
 
     if is_interactive(options):
         options.type = prompt_user('GPG or SSL [G/S]:')
@@ -79,6 +80,10 @@ def do_cryptokey_create(self, args):
     # read the file the user specified
     if options.file:
         options.contents = read_file(options.file)
+
+    if not options.contents:
+        logging.error('No contents of the file')
+        return
 
     # translate the key type to what the server expects
     if re.match('G', options.type, re.I):
