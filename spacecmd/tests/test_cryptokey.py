@@ -102,7 +102,7 @@ class TestSCCryptokey:
 
         assert_expect(logger.error.call_args_list, "Invalid key type")
 
-    def test_cryptokey_create_args(self, shell):
+    def test_cryptokey_create_GPG_key(self, shell):
         """
         Test do_cryptokey_create with parameters, calling GPG key type.
 
@@ -113,7 +113,7 @@ class TestSCCryptokey:
         shell.client.kickstart.keys.create = MagicMock()
         shell.user_confirm = MagicMock(return_value=True)
         read_file = MagicMock(return_value="contents")
-        prompt_user = MagicMock(side_effect=["x", "interactive descr", "/tmp/file.txt"])
+        prompt_user = MagicMock(side_effect=[])
         editor = MagicMock()
         logger = MagicMock()
 
