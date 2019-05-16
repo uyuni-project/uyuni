@@ -312,15 +312,15 @@ are executed only if the PXE boot minion is available.
 
 ## HTTP Proxy setting
 
-If you need to specify HTTP Proxy on SUSE Manager "Setup Wizard" page, you can use 
-variable `http_proxy` from `controller` module in your `main.tf` file with following syntax:
+If you need to specify HTTP proxy on SUSE Manager "Setup Wizard" page, you can use 
+variable `server_http_proxy` from `controller` module in your `main.tf` file with following syntax:
 ```
-http_proxy = "hostname:port"
+server_http_proxy = "hostname:port"
 ```
 It is set to `galaxy-proxy.mgr.suse.de:3128` by default.
 
-Sumaform creates `$SUMA_HTTP_PROXY` variable with corresponding settings in `/root/.bashrc` file
+Sumaform creates `$SERVER_HTTP_PROXY` variable with corresponding settings in `/root/.bashrc` file
 on the controller. It is also possible to tag the scenarios with:
 ```
-@http_proxy
+@server_http_proxy
 ```
