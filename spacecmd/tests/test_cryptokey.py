@@ -14,7 +14,7 @@ class TestSCCryptokey:
     """
     def test_cryptokey_create_noargs(self, shell):
         """
-        Test do_cryptokey_create without arguments help is shown.
+        Test do_cryptokey_create without arguments (fully interactive).
 
         :param shell:
         :return:
