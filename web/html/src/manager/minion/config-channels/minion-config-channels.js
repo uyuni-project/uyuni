@@ -3,10 +3,10 @@
 
 const React = require("react");
 const ReactDOM = require("react-dom");
-const ConfigChannelsModule = require("../components/config-channels")
+const ConfigChannelsModule = require("components/config-channels")
 const ConfigChannels = ConfigChannelsModule.ConfigChannels;
-const MessagesUtils = require("../components/messages").Utils;
-const Network = require("../utils/network");
+const MessagesUtils = require("components/messages").Utils;
+const Network = require("utils/network");
 
 function matchUrl(target) {
     return "/rhn/manager/api/states/match?id=" + serverId + "&type=SERVER"

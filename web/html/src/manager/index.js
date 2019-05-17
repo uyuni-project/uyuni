@@ -10,11 +10,8 @@ const { readdirSync, statSync } = require('fs')
 const { join } = require('path')
 
 const oldPagesEntries = {
-  'group-config-channels': './manager/group-config-channels.js',
-  'minion-config-channels': './manager/minion-config-channels.js',
   'notifications/notification-messages': './manager/notifications/notification-messages.renderer.js',
   'notifications/notifications': './manager/notifications/notifications.js',
-  'org-config-channels': './manager/org-config-channels.js',
   'ssm-subscribe-channels': './manager/channels/ssm-subscribe-channels/ssm-subscribe-channels.js',
   'subscribe-channels': './manager/channels/subscribe-channels/subscribe-channels.renderer.js',
 }
@@ -31,7 +28,7 @@ const dirsWithRoutes = dirs.filter(dir => {
 })
 
 
-const newPagesEntries = dirsWithRoutes.reduce((newRoutes, nextDir) => {
+const pagesEntries = dirsWithRoutes.reduce((newRoutes, nextDir) => {
   const nextDirRoutes = require(`./${nextDir}`).entries;
   const nextDirRoutesFormated = nextDirRoutes.reduce((routesFormated, nextRoute) => {
     const formatedKey = `${nextDir}/${nextRoute.split('.').slice(0, -1).join('.')}`;
@@ -46,7 +43,7 @@ const newPagesEntries = dirsWithRoutes.reduce((newRoutes, nextDir) => {
   return {...newRoutes, ...nextDirRoutesFormated};
 }, {});
 
-const allPages = {...oldPagesEntries, ...newPagesEntries};
+const allPages = {...pagesEntries};
 
 Object.keys(allPages).forEach((key) => {
   allPages["javascript/manager/" + key] = allPages[key];
