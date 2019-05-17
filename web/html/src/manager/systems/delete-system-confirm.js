@@ -4,7 +4,7 @@
 const React = require("react");
 const ReactDOM = require("react-dom");
 
-const {Utils} = require("../utils/functions");
+const {Utils} = require("utils/functions");
 const {DeleteSystem} = require("./delete-system");
 
 ReactDOM.render(

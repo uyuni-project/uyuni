@@ -10,9 +10,6 @@ const { readdirSync, statSync } = require('fs')
 const { join } = require('path')
 
 const oldPagesEntries = {
-  'delete-system': './manager/delete-system.js',
-  'delete-system-confirm': './manager/delete-system-confirm.js',
-  'duplicate-systems-compare-delete': './manager/duplicate-systems-compare-delete.js',
   'group-config-channels': './manager/group-config-channels.js',
   'minion-config-channels': './manager/minion-config-channels.js',
   'notifications/notification-messages': './manager/notifications/notification-messages.renderer.js',

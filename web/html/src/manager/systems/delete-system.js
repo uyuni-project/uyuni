@@ -4,14 +4,14 @@
 const React = require("react");
 const ReactDOM = require("react-dom");
 
-const {AsyncButton, Button} = require("../components/buttons");
-const Network = require("../utils/network");
-const {Messages} = require("../components/messages");
-const MessagesUtils = require("../components/messages").Utils;
-const {Utils} = require("../utils/functions");
-const {Dialog} = require("../components/dialog/Dialog");
-const {showDialog} = require("../components/dialog/util");
-const {DeleteDialog} = require("../components/dialog/DeleteDialog");
+const {AsyncButton, Button} = require("components/buttons");
+const Network = require("utils/network");
+const {Messages} = require("components/messages");
+const MessagesUtils = require("components/messages").Utils;
+const {Utils} = require("utils/functions");
+const {Dialog} = require("components/dialog/Dialog");
+const {showDialog} = require("components/dialog/util");
+const {DeleteDialog} = require("components/dialog/DeleteDialog");
 
 const msgMap = {
   "minion_unreachable": t("Cleanup timed out. Please check if the machine is reachable."),
