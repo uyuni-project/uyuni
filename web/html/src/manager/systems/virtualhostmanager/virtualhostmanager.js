@@ -3,14 +3,14 @@
 
 const React = require("react");
 const ReactDOM = require("react-dom");
-const Network = require("../utils/network");
+const Network = require("utils/network");
 const { TopPanel } = require('components/panels/TopPanel');
-const {DropdownButton} = require("../components/buttons");
-const {Messages} = require("../components/messages");
+const {DropdownButton} = require("components/buttons");
+const {Messages} = require("components/messages");
 const {VirtualHostManagerList} = require("./virtualhostmanager-list");
 const {VirtualHostManagerDetails} = require("./virtualhostmanager-details");
 const {VirtualHostManagerEdit} = require("./virtualhostmanager-edit");
-const MessagesUtils = require("../components/messages").Utils;
+const MessagesUtils = require("components/messages").Utils;
 
 const hashUrlRegex = /^#\/([^\/]*)(?:\/(.+))?$/;
 

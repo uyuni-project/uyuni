@@ -3,17 +3,17 @@
 
 const React = require("react");
 const ReactDOM = require("react-dom");
-const {SubmitButton, Button} = require("../components/buttons");
+const {SubmitButton, Button} = require("components/buttons");
 const { Form } = require('components/input/Form');
 const { FormGroup } = require('components/input/FormGroup');
 const { Label } = require('components/input/Label');
 const { Password } = require('components/input/Password');
 const { Text } = require('components/input/Text');
 const { Select } = require('components/input/Select');
-const Network = require("../utils/network");
-const {Messages} = require("../components/messages");
-const MessagesUtils = require("../components/messages").Utils;
-const {Utils} = require("../utils/functions");
+const Network = require("utils/network");
+const {Messages} = require("components/messages");
+const MessagesUtils = require("components/messages").Utils;
+const {Utils} = require("utils/functions");
 
 class VirtualHostManagerEdit extends React.Component {
 
