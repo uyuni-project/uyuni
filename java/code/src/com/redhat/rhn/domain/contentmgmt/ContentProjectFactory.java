@@ -509,6 +509,9 @@ public class ContentProjectFactory extends HibernateFactory {
         name.ifPresent(n -> filter.setName(n));
         rule.ifPresent(r -> filter.setRule(r));
         criteria.ifPresent(c -> filter.setCriteria(c));
+        listFilterProjectsRelation(filter).stream()
+                .filter(projectFilter -> projectFilter.getState() == ContentProjectFilter.State.BUILT)
+                .forEach(projectFilter -> projectFilter.setState(ContentProjectFilter.State.EDITED));
         return filter;
     }
 
@@ -531,8 +534,22 @@ public class ContentProjectFactory extends HibernateFactory {
     public static List<ContentProject> listFilterProjects(ContentFilter filter) {
         return HibernateFactory.getSession()
                 .createQuery("SELECT cp FROM ContentProject cp " +
-                                "WHERE cp.id IN (SELECT cpf.project.id FROM ContentProjectFilter cpf " +
-                                                 "WHERE cpf.filter.id = :fid)")
+                        "WHERE cp.id IN (SELECT cpf.project.id FROM ContentProjectFilter cpf " +
+                        "WHERE cpf.filter.id = :fid)")
+                .setParameter("fid", filter.getId())
+                .list();
+    }
+
+    /**
+     * List {@link ContentProjectFilter}s using given {@link ContentFilter}
+     *
+     * @param filter the Filter
+     * @return list of Projects
+     */
+    public static List<ContentProjectFilter> listFilterProjectsRelation(ContentFilter filter) {
+        return HibernateFactory.getSession()
+                .createQuery("SELECT cpf FROM ContentProjectFilter cpf " +
+                        "WHERE cpf.filter.id = :fid")
                 .setParameter("fid", filter.getId())
                 .list();
     }

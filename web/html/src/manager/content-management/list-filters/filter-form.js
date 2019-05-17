@@ -26,6 +26,13 @@ const FilterForm = (props: Props) => {
       }}
     >
       <React.Fragment>
+        {
+          props.editing &&
+          <div className="alert alert-info" style={{marginTop: "0px"}}>
+            {t("Bear in mind that all the associated projects need to be rebuilt after a filter update")}
+          </div>
+
+        }
         <div className="row">
           <Text
             name="name"

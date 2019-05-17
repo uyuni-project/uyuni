@@ -584,6 +584,8 @@ public class ContentManager {
         // newly attached filters get built
         filtersToHandle.getOrDefault(ContentProjectFilter.State.ATTACHED, emptyList()).stream()
                 .forEach(f -> f.setState(ContentProjectFilter.State.BUILT));
+        filtersToHandle.getOrDefault(ContentProjectFilter.State.EDITED, emptyList()).stream()
+                .forEach(f -> f.setState(ContentProjectFilter.State.BUILT));
         // remove the detached filters
         filtersToHandle.getOrDefault(ContentProjectFilter.State.DETACHED, emptyList()).stream()
                 .forEach(f -> removeFilter(f));

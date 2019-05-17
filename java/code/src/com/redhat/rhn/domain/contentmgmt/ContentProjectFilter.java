@@ -47,7 +47,8 @@ public class ContentProjectFilter {
     public enum State {
         ATTACHED,
         DETACHED,
-        BUILT
+        BUILT,
+        EDITED
     }
 
     /**
