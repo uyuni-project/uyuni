@@ -3,9 +3,9 @@
 'use strict';
 
 import React from 'react';
-import {Loading} from '../../components/loading/loading';
-import {Toggler} from "../../components/toggler";
-import {ChannelAnchorLink} from "../../components/links";
+import {Loading} from 'components/loading/loading';
+import {Toggler} from "components/toggler";
+import {ChannelAnchorLink} from "components/links";
 
 import type {Node} from "react";
 import type {ChannelDto} from "./activation-key-channels-api";

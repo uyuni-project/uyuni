@@ -3,7 +3,7 @@
 import ChildChannels from './child-channels';
 import ActivationKeyChannelsApi from "./activation-key-channels-api";
 import React from 'react';
-import {Loading} from '../../components/loading/loading';
+import {Loading} from 'components/loading/loading';
 import MandatoryChannelsApi from "core/channels/api/mandatory-channels-api";
 import type {availableChannelsType, ChannelDto} from "./activation-key-channels-api";
 import type {Node} from 'react';

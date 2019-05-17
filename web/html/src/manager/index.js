@@ -11,7 +11,6 @@ const { join } = require('path')
 
 const oldPagesEntries = {
   'polyfill': './manager/polyfill.js',
-  'errors/not-found': './manager/errors/not-found.js',
   'visualization/hierarchy': './manager/visualization/hierarchy.js',
   'bootstrap-minions': './manager/bootstrap-minions.js',
   'delete-system': './manager/delete-system.js',
@@ -36,7 +35,6 @@ const oldPagesEntries = {
   'ssm-subscribe-channels': './manager/channels/ssm-subscribe-channels/ssm-subscribe-channels.js',
   'subscribe-channels': './manager/channels/subscribe-channels/subscribe-channels.renderer.js',
   'taskotop': './manager/taskotop.js',
-  'activation-key/activation-key-channels.renderer': './manager/activation-key/activation-key-channels.renderer.js',
 }
 
 const readDirs = p => readdirSync(p).filter(f => statSync(join(p, f)).isDirectory())
