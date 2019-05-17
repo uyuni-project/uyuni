@@ -47,12 +47,10 @@ Capybara.app_host = "https://#{server}"
 # embed a screenshot after each failed scenario
 After do |scenario|
   if scenario.failed?
-    img_name = "#{SecureRandom.urlsafe_base64}.png"
+    img_name = "#{scenario.name.tr(' ', '_')}.png"
     save_screenshot(img_name)
-    encoded_img = Base64.encode64(File.read(img_name))
-    FileUtils.rm_rf(img_name)
-    # embed the base64 image in the cucumber HTML report
-    embed("data:image/png;base64,#{encoded_img}", 'image/png')
+    # embed the image name in the cucumber HTML report
+    embed(img_name, 'image/png')
     debug_server_on_realtime_failure
   end
 end
