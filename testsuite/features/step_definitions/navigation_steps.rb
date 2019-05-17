@@ -797,7 +797,7 @@ When(/^I check "([^"]*)" in the list$/) do |arg1|
       $stderr.puts 'ERROR - try again'
       row = first(:xpath, "//div[@class=\"table-responsive\"]/table/tbody/tr[.//td[contains(.,'#{arg1}')]]")
     end
-    row.first(:xpath, './/input[@type="checkbox"]').set(true)
+    row.first(:xpath, './/input[@type="checkbox"]').set(true) unless row.nil?
   end
 end
 
@@ -811,7 +811,7 @@ When(/^I uncheck "([^"]*)" in the list$/) do |arg1|
       $stderr.puts 'ERROR - try again'
       row = first(:xpath, top_level_xpath_query)
     end
-    row.first(:xpath, './/input[@type="checkbox"]').set(false)
+    row.first(:xpath, './/input[@type="checkbox"]').set(false) unless row.nil?
   end
 end
 
