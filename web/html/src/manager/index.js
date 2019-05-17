@@ -32,7 +32,6 @@ const oldPagesEntries = {
   'remote-commands': './manager/remote-commands.js',
   'ssm-subscribe-channels': './manager/channels/ssm-subscribe-channels/ssm-subscribe-channels.js',
   'subscribe-channels': './manager/channels/subscribe-channels/subscribe-channels.renderer.js',
-  'taskotop': './manager/taskotop.js',
 }
 
 const readDirs = p => readdirSync(p).filter(f => statSync(join(p, f)).isDirectory())
