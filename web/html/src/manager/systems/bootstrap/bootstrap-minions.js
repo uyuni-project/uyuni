@@ -4,9 +4,9 @@
 const React = require("react");
 const ReactDOM = require("react-dom");
 const { TopPanel } = require('components/panels/TopPanel');
-const Messages = require("../components/messages").Messages;
-const Network = require("../utils/network");
-const {AsyncButton, LinkButton} = require("../components/buttons");
+const Messages = require("components/messages").Messages;
+const Network = require("utils/network");
+const {AsyncButton, LinkButton} = require("components/buttons");
 
 class BootstrapMinions extends React.Component {
 
