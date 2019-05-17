@@ -15,9 +15,15 @@
 
 package com.redhat.rhn.domain.contentmgmt;
 
+
+import static com.redhat.rhn.domain.contentmgmt.ProjectSource.State.DETACHED;
+import static com.suse.utils.Opt.consume;
+
 import com.redhat.rhn.domain.BaseDomainHelper;
 import com.redhat.rhn.domain.org.Org;
+
 import com.suse.utils.Opt;
+
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -26,6 +32,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -41,9 +48,6 @@ import javax.persistence.OrderBy;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Transient;
-
-import static com.redhat.rhn.domain.contentmgmt.ProjectSource.State.DETACHED;
-import static com.suse.utils.Opt.consume;
 
 /**
  * A Content Project
@@ -331,7 +335,14 @@ public class ContentProject extends BaseDomainHelper {
         if (idx != -1) {
             ContentProjectFilter toUpdate = filters.get(idx);
             if (toUpdate.getState() == ContentProjectFilter.State.DETACHED) {
-                toUpdate.setState(ContentProjectFilter.State.BUILT);
+                // When a filter is detached we either transit it to BUILT or EDITED depending on the previous state
+                // If the filter was edited after the last built time it transits to EDITED otherwise to BUILT
+                ContentProjectFilter.State newState = getFirstEnvironmentOpt()
+                        .flatMap(env -> env.computeBuiltTime())
+                        .filter(builtTime -> filter.getModified().after(builtTime))
+                        .map(builtTime -> ContentProjectFilter.State.EDITED)
+                        .orElse(ContentProjectFilter.State.BUILT);
+                toUpdate.setState(newState);
             }
         }
         else {
@@ -353,6 +364,9 @@ public class ContentProject extends BaseDomainHelper {
 
             switch (toUpdate.getState()) {
                 case BUILT:
+                    toUpdate.setState(ContentProjectFilter.State.DETACHED);
+                    break;
+                case EDITED:
                     toUpdate.setState(ContentProjectFilter.State.DETACHED);
                     break;
                 case ATTACHED:

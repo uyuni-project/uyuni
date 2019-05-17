@@ -44,6 +44,17 @@ const renderFilterEntry = (filter, projectId) => {
       </li>
     );
   }
+  if (filter.state === statesEnum.enum.EDITED.key) {
+    return (
+      <li
+        key={`filter_list_item_${filter.id}`}
+        className={`list-group-item text-warning ${styles.wrapper}`}>
+        <i className='fa fa-edit'/>
+        <b>{descr}</b>
+        {filterButton}
+      </li>
+    );
+  }
   if (filter.state === statesEnum.enum.DETACHED.key) {
     return (
       <li
