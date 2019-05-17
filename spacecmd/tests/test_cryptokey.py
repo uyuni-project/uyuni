@@ -346,3 +346,28 @@ class TestSCCryptokey:
         assert not shell.client.kickstart.keys.getDetails.called
         assert not shell.do_cryptokey_list.called
         assert shell.help_cryptokey_details.called
+
+    def test_cryptokey_details_not_found(self, shell):
+        """
+        Test do_cryptokey_details key not found.
+
+        :param shell:
+        :return:
+        """
+        shell.client.kickstart.keys.getDetails = MagicMock()
+        shell.do_cryptokey_list = MagicMock(return_value=[])
+        shell.help_cryptokey_details = MagicMock()
+        logger = MagicMock()
+        mprint = MagicMock()
+
+        with patch("spacecmd.cryptokey.print", mprint) as mpt, \
+            patch("spacecmd.cryptokey.logging", logger) as lgr:
+            spacecmd.cryptokey.do_cryptokey_details(shell, "somekey")
+
+        assert not mprint.called
+        assert not shell.client.kickstart.keys.getDetails.called
+        assert not shell.help_cryptokey_details.called
+        assert shell.do_cryptokey_list.called
+        assert logger.error.called
+
+        assert_expect(logger.error.call_args_list, "No keys matched argument ['somekey']")
