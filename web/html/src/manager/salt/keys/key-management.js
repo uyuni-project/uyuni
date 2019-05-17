@@ -3,13 +3,13 @@
 
 const React = require("react");
 const ReactDOM = require("react-dom");
-const Buttons = require("../components/buttons");
+const Buttons = require("components/buttons");
 const AsyncButton = Buttons.AsyncButton;
 const { TopPanel } = require('components/panels/TopPanel');
-const Network = require("../utils/network");
-const Functions = require("../utils/functions");
+const Network = require("utils/network");
+const Functions = require("utils/functions");
 const Utils = Functions.Utils;
-const {Table, Column, SearchField, Highlight} = require("../components/table");
+const {Table, Column, SearchField, Highlight} = require("components/table");
 
 function listKeys() {
   return Network.get("/rhn/manager/api/systems/keys").promise;
