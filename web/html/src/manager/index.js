@@ -14,8 +14,6 @@ const oldPagesEntries = {
   'delete-system-confirm': './manager/delete-system-confirm.js',
   'duplicate-systems-compare-delete': './manager/duplicate-systems-compare-delete.js',
   'group-config-channels': './manager/group-config-channels.js',
-  'group-formula': './manager/group-formula.js',
-  'group-formula-selection': './manager/group-formula-selection.js',
   'key-management': './manager/key-management.js',
   'minion-config-channels': './manager/minion-config-channels.js',
   'notifications/notification-messages': './manager/notifications/notification-messages.renderer.js',
