@@ -10,6 +10,18 @@ from spacewalk.common.suseLib import get_proxy
 from spacewalk.satellite_tools.syncLib import RhnSyncException
 from up2date_client.rpcServer import RetryServer, ServerList
 
+from spacewalk.common.rhnConfig import initCFG
+
+import logging
+log = logging.getLogger(__name__)
+
+
+class ULNTokenException(Exception):
+    """
+    This class represent an exception getting the ULN token
+    """
+    pass
+
 
 class ULNAuth:
     """
@@ -19,6 +31,7 @@ class ULNAuth:
     ULN_DEFAULT_HOST = "linux-update.oracle.com"
 
     def __init__(self):
+        initCFG("server.satellite")
         self._uln_token = None
         self._uln_url = None
 
