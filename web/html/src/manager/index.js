@@ -16,7 +16,6 @@ const oldPagesEntries = {
   'group-config-channels': './manager/group-config-channels.js',
   'group-formula': './manager/group-formula.js',
   'group-formula-selection': './manager/group-formula-selection.js',
-  'highstate': './manager/highstate.js',
   'key-management': './manager/key-management.js',
   'minion-config-channels': './manager/minion-config-channels.js',
   'minion-formula': './manager/minion-formula.js',
