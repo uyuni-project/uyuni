@@ -4,6 +4,7 @@ Test suite for cryptokey.
 """
 from mock import MagicMock, patch
 import pytest
+from xmlrpc import client as xmlrpclib
 import spacecmd.cryptokey
 from helpers import shell, assert_expect
 
@@ -411,3 +412,31 @@ class TestSCCryptokey:
             assert_expect([call], next(iter(exp)))
             exp.pop(0)
         assert not exp
+
+    def test_cryptokey_details_rpc_error(self, shell):
+        """
+        Test do_cryptokey_details captures xmlrpc failure.
+
+        :param shell:
+        :return:
+        """
+        shell.client.kickstart.keys.getDetails = MagicMock(
+            side_effect=xmlrpclib.Fault(faultCode=42, faultString="Kaboom")
+        )
+        shell.do_cryptokey_list = MagicMock(return_value=["somekey"])
+        shell.help_cryptokey_details = MagicMock()
+        logger = MagicMock()
+        mprint = MagicMock()
+
+        with patch("spacecmd.cryptokey.print", mprint) as mpt, \
+            patch("spacecmd.cryptokey.logging", logger) as lgr:
+            spacecmd.cryptokey.do_cryptokey_details(shell, "somekey")
+
+        assert not mprint.called
+        assert not shell.help_cryptokey_details.called
+        assert not logger.error.called
+        assert shell.client.kickstart.keys.getDetails.called
+        assert shell.do_cryptokey_list.called
+        assert logger.warning.called
+
+        assert_expect(logger.warning.call_args_list, "somekey is not a valid crypto key")
