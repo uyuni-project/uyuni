@@ -304,3 +304,32 @@ class TestSCDistribution:
         assert not shell.user_confirm.called
         assert shell.help_distribution_delete.called
 
+    def test_distribution_delete_args_no_match(self, shell):
+        """
+        Test do_distribution_delete with wrong arguments.
+
+        :param shell:
+        :return:
+        """
+        shell.do_distribution_list = MagicMock(return_value=["bar"])
+        shell.help_distribution_delete = MagicMock()
+        shell.client.kickstart.tree.delete = MagicMock()
+        shell.user_confirm = MagicMock()
+        logger = MagicMock()
+        mprint = MagicMock()
+
+        with patch("spacecmd.distribution.print", mprint) as prn, \
+                patch("spacecmd.distribution.logging", logger) as lgr:
+            spacecmd.distribution.do_distribution_delete(shell, "foo*")
+
+        assert logger.debug.called
+        assert logger.error.called
+        assert not mprint.called
+        assert not shell.client.kickstart.tree.delete.called
+        assert not shell.user_confirm.called
+        assert not shell.help_distribution_delete.called
+
+        assert_expect(logger.debug.call_args_list,
+                      "distribution_delete called with args ['foo.*'], dists=[]")
+        assert_expect(logger.error.call_args_list,
+                      "No distributions matched argument ['foo.*']")
