@@ -35,15 +35,16 @@ class SpacewalkULNPlugin(Plugin):
 
         :returns: None
         """
-        url = 'uln:///no-idea-yet'  # get it from uln.conf?
         try:
-            self._uln_auth.authenticate(url)
-            auth_headers = {
+            self._uln_auth.authenticate(headers['url'])
+            self.auth_headers = {
                 "X-ULN-Api-User-Key": self._uln_auth.token
             }
-            self.answer("RESOLVEDURL", auth_headers, self._uln_auth.url)
         except Exception as exc:
             self.answer("ERROR", {}, str(exc))
+        hostname, label = self._uln_auth.get_hostname(headers['url'])
+        url = self._uln_auth.url + "/XMLRPC/GET-REQ/" + label
+        self.answer("RESOLVEDURL", self.auth_headers, url)
 
 plugin = SpacewalkULNPlugin()
 plugin.main()
