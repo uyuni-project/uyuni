@@ -3,10 +3,10 @@
 
 const React = require("react");
 const ReactDOM = require("react-dom");
-const {Table, Column, SearchField} = require("../components/table");
+const {Table, Column, SearchField} = require("components/table");
 const { TopPanel } = require('components/panels/TopPanel');
-const Messages = require("../components/messages").Messages;
-const Network = require("../utils/network");
+const Messages = require("components/messages").Messages;
+const Network = require("utils/network");
 
 class FormulaCatalog extends React.Component {
     constructor(props) {
