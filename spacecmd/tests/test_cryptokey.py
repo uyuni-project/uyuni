@@ -371,3 +371,43 @@ class TestSCCryptokey:
         assert logger.error.called
 
         assert_expect(logger.error.call_args_list, "No keys matched argument ['somekey']")
+
+    def test_cryptokey_details_listing(self, shell):
+        """
+        Test do_cryptokey_details key listing
+
+        :param shell:
+        :return:
+        """
+        shell.client.kickstart.keys.getDetails = MagicMock(side_effect=[
+            {"description": "first descr", "type": "SSL", "content": "one data"},
+            {"description": "second descr", "type": "GPG", "content": "two data"},
+        ])
+        shell.do_cryptokey_list = MagicMock(return_value=["key-one", "key-two", "three"])
+        shell.SEPARATOR = "---"
+        shell.help_cryptokey_details = MagicMock()
+        logger = MagicMock()
+        mprint = MagicMock()
+
+        with patch("spacecmd.cryptokey.print", mprint) as mpt, \
+            patch("spacecmd.cryptokey.logging", logger) as lgr:
+            spacecmd.cryptokey.do_cryptokey_details(shell, "key*")
+
+        assert not shell.help_cryptokey_details.called
+        assert not logger.error.called
+        assert logger.debug.called
+        assert mprint.called
+        assert shell.client.kickstart.keys.getDetails.called
+        assert shell.do_cryptokey_list.called
+
+        exp = [
+            'Description: first descr',
+            'Type:        SSL', '', 'one data', '---',
+            'Description: second descr',
+            'Type:        GPG', '', 'two data',
+        ]
+
+        for call in mprint.call_args_list:
+            assert_expect([call], next(iter(exp)))
+            exp.pop(0)
+        assert not exp
