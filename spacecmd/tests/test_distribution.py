@@ -128,3 +128,36 @@ class TestSCDistribution:
         assert logger.error.called
 
         assert_expect(logger.error.call_args_list, "A path is required")
+
+    def test_distribution_create_args_dspt_update_mode(self, shell):
+        """
+        Test do_distribution_create with distribution name and path in update mode.
+
+        :param shell:
+        :return:
+        """
+        shell.client.kickstart.tree.listInstallTypes = MagicMock(return_value=[
+            {"label": "image"},
+        ])
+        shell.client.kickstart.tree.update = MagicMock()
+        shell.client.kickstart.tree.create = MagicMock()
+        shell.list_base_channels = MagicMock(return_value=["base-channel"])
+
+        mprint = MagicMock()
+        prompt = MagicMock()
+        logger = MagicMock()
+
+        with patch("spacecmd.distribution.print", mprint) as prn, \
+            patch("spacecmd.distribution.prompt_user", prompt) as prmt, \
+            patch("spacecmd.distribution.logging", logger) as lgr:
+            spacecmd.distribution.do_distribution_create(
+                shell, "-n myname -p /path/tree", update=True)
+
+        assert not mprint.called
+        assert not prompt.called
+        assert not shell.client.kickstart.tree.listInstallTypes.called
+        assert not shell.client.kickstart.tree.create.called
+        assert not shell.client.kickstart.tree.update.called
+        assert logger.error.called
+
+        assert_expect(logger.error.call_args_list, "A base channel is required")
