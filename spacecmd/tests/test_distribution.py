@@ -254,3 +254,26 @@ class TestSCDistribution:
         assert out is None
         assert mprint.called
         assert_expect(mprint.call_args_list, "some-channel\nsome-other-channel")
+
+    def test_distribution_list_noarg_ret(self, shell):
+        """
+        Test do_distribution_list without argumnets, return data mode.
+
+        :param shell:
+        :return:
+        """
+        shell.client.kickstart.listAutoinstallableChannels = MagicMock(return_value=[
+            {"label": "channel-name"},
+        ])
+        shell.client.kickstart.tree.list = MagicMock(return_value=[
+            {"label": "some-channel"},
+            {"label": "some-other-channel"},
+        ])
+        mprint = MagicMock()
+        with patch("spacecmd.distribution.print", mprint) as prn:
+            out = spacecmd.distribution.do_distribution_list(shell, "", doreturn=True)
+
+        assert out is not None
+        assert type(out) == list
+        assert not mprint.called
+        assert out == ['some-channel', 'some-other-channel']
