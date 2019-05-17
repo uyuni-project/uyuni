@@ -142,7 +142,6 @@ def do_distribution_list(self, args, doreturn=False):
     for c in channels:
         trees = self.client.kickstart.tree.list(self.session,
                                                 c.get('label'))
-
         for t in trees:
             label = t.get('label')
             if label not in avail_trees:
