@@ -232,3 +232,25 @@ class TestSCDistribution:
             args, kw = call
             assert args == (shell.session, "myname", "/path/tree", "base-channel", "image")
             assert not kw
+
+    def test_distribution_list_noarg_noret(self, shell):
+        """
+        Test do_distribution_list without argumnets, no return option.
+
+        :param shell:
+        :return:
+        """
+        shell.client.kickstart.listAutoinstallableChannels = MagicMock(return_value=[
+            {"label": "channel-name"},
+        ])
+        shell.client.kickstart.tree.list = MagicMock(return_value=[
+            {"label": "some-channel"},
+            {"label": "some-other-channel"},
+        ])
+        mprint = MagicMock()
+        with patch("spacecmd.distribution.print", mprint) as prn:
+            out = spacecmd.distribution.do_distribution_list(shell, "")
+
+        assert out is None
+        assert mprint.called
+        assert_expect(mprint.call_args_list, "some-channel\nsome-other-channel")
