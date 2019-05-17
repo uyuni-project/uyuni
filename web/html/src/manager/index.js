@@ -10,7 +10,6 @@ const { readdirSync, statSync } = require('fs')
 const { join } = require('path')
 
 const oldPagesEntries = {
-  'visualization/hierarchy': './manager/visualization/hierarchy.js',
   'bootstrap-minions': './manager/bootstrap-minions.js',
   'delete-system': './manager/delete-system.js',
   'delete-system-confirm': './manager/delete-system-confirm.js',
