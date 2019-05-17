@@ -285,6 +285,7 @@ class TestSCDistribution:
         :param shell:
         :return:
         """
+        shell.do_distribution_list = MagicMock()
         shell.help_distribution_delete = MagicMock()
         shell.client.kickstart.tree.delete = MagicMock()
         shell.user_confirm = MagicMock()
@@ -295,7 +296,10 @@ class TestSCDistribution:
                 patch("spacecmd.distribution.logging", logger) as lgr:
             spacecmd.distribution.do_distribution_delete(shell, "")
 
+        assert not logger.debug.called
+        assert not logger.error.called
         assert not mprint.called
+        assert not shell.do_distribution_list.called
         assert not shell.client.kickstart.tree.delete.called
         assert not shell.user_confirm.called
         assert shell.help_distribution_delete.called
