@@ -3,13 +3,13 @@
 
 const React = require("react");
 const ReactDOM = require("react-dom");
-const {LinkButton,AsyncButton} = require("../components/buttons");
+const {LinkButton,AsyncButton} = require("components/buttons");
 const { TopPanel } = require('components/panels/TopPanel');
-const Network = require("../utils/network");
-const Functions = require("../utils/functions");
+const Network = require("utils/network");
+const Functions = require("utils/functions");
 const Utils = Functions.Utils;
-const {Table, Column, SearchField, Highlight} = require("../components/table");
-const Messages = require("../components/messages").Messages;
+const {Table, Column, SearchField, Highlight} = require("components/table");
+const Messages = require("components/messages").Messages;
 
 const AFFECTED_PATCH_INAPPLICABLE = "AFFECTED_PATCH_INAPPLICABLE";
 const AFFECTED_PATCH_APPLICABLE = "AFFECTED_PATCH_APPLICABLE";
