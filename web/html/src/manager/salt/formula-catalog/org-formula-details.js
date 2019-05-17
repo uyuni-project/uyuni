@@ -5,7 +5,7 @@ var React = require("react");
 const ReactDOM = require("react-dom");
 
 const { TopPanel } = require('components/panels/TopPanel');
-const Network = require("../utils/network");
+const Network = require("utils/network");
 
 class FormulaDetail extends React.Component {
     constructor(props, context) {
