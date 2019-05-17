@@ -1,4 +1,5 @@
 //@flow
+// globals moment
 import React from 'react';
 import _isEmpty from "lodash/isEmpty"
 
@@ -6,6 +7,8 @@ import type {ProjectEnvironmentType} from '../../../type/project.type.js';
 import type {ProjectHistoryEntry} from "../../../type/project.type";
 import {getVersionMessageByNumber} from "../properties/properties.utils";
 import {objectDefaultValueHandler} from "core/utils/objects";
+
+declare var moment: any;
 
 type Props = {
   environment: ProjectEnvironmentType,
@@ -68,7 +71,7 @@ const EnvironmentView = React.memo((props: Props) => {
           <dl className="row">
             <dt className="col-xs-3">Built time:</dt>
             <dd className="col-xs-9">
-              {props.environment.builtTime}
+              {moment(props.environment.builtTime).format("YYYY-MM-DD HH:mm:ss")}
             </dd>
           </dl>
           : null

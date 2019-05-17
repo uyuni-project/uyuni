@@ -25,7 +25,6 @@ import com.redhat.rhn.manager.contentmgmt.ContentManager;
 
 import com.suse.manager.webui.controllers.contentmanagement.request.EnvironmentRequest;
 import com.suse.manager.webui.utils.gson.ResultJson;
-import com.suse.utils.Json;
 
 import com.google.gson.Gson;
 
@@ -43,7 +42,7 @@ import spark.Response;
  */
 public class EnvironmentApiController {
 
-    private static final Gson GSON = Json.GSON;
+    private static final Gson GSON = ControllerApiUtils.GSON;
 
     private EnvironmentApiController() {
     }

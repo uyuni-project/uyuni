@@ -31,7 +31,6 @@ import com.suse.manager.webui.controllers.contentmanagement.request.NewProjectRe
 import com.suse.manager.webui.controllers.contentmanagement.request.ProjectPropertiesRequest;
 import com.suse.manager.webui.utils.FlashScopeHelper;
 import com.suse.manager.webui.utils.gson.ResultJson;
-import com.suse.utils.Json;
 
 import com.google.gson.Gson;
 
@@ -49,7 +48,7 @@ import spark.Response;
  */
 public class ProjectApiController {
 
-    private static final Gson GSON = Json.GSON;
+    private static final Gson GSON = ControllerApiUtils.GSON;
 
     private ProjectApiController() {
     }
