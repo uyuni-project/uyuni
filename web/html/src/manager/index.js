@@ -19,7 +19,6 @@ const oldPagesEntries = {
   'notifications/notification-messages': './manager/notifications/notification-messages.renderer.js',
   'notifications/notifications': './manager/notifications/notifications.js',
   'org-config-channels': './manager/org-config-channels.js',
-  'package-states': './manager/package-states.js',
   'ssm-subscribe-channels': './manager/channels/ssm-subscribe-channels/ssm-subscribe-channels.js',
   'subscribe-channels': './manager/channels/subscribe-channels/subscribe-channels.renderer.js',
 }
