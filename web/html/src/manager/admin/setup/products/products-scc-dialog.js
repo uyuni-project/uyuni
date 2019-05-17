@@ -2,9 +2,9 @@
 'use strict';
 
 const React = require('react');
-const Network = require('../utils/network');
-const Messages = require('../components/messages').Messages;
-const Button = require('../components/buttons').Button;
+const Network = require('utils/network');
+const Messages = require('components/messages').Messages;
+const Button = require('components/buttons').Button;
 
 const _SCC_REFRESH_STEPS = [
   {

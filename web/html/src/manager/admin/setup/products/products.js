@@ -3,20 +3,20 @@
 
 const React = require('react');
 const ReactDOM = require('react-dom');
-const Network = require('../utils/network');
-const Messages = require('../components/messages').Messages;
-const MessagesUtils = require("../components/messages").Utils;
-const {DataHandler, DataItem, SearchField, Highlight} = require('../components/data-handler');
-const Functions = require('../utils/functions');
+const Network = require('utils/network');
+const Messages = require('components/messages').Messages;
+const MessagesUtils = require("components/messages").Utils;
+const {DataHandler, DataItem, SearchField, Highlight} = require('components/data-handler');
+const Functions = require('utils/functions');
 const Utils = Functions.Utils;
-const {ModalButton} = require("../components/dialog/ModalButton");
-const {ModalLink} = require("../components/dialog/ModalLink");
-const Button = require('../components/buttons').Button;
+const {ModalButton} = require("components/dialog/ModalButton");
+const {ModalLink} = require("components/dialog/ModalLink");
+const Button = require('components/buttons').Button;
 const SCCDialog = require('./products-scc-dialog').SCCDialog;
-const PopUp = require("../components/popup").PopUp;
-const ProgressBar = require("../components/progressbar").ProgressBar;
-const CustomDiv = require("../components/custom-objects").CustomDiv;
-const {Toggler} = require("../components/toggler");
+const PopUp = require("components/popup").PopUp;
+const ProgressBar = require("components/progressbar").ProgressBar;
+const CustomDiv = require("components/custom-objects").CustomDiv;
+const {Toggler} = require("components/toggler");
 
 const _DATA_ROOT_ID = 'baseProducts';
 

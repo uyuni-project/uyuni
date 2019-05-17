@@ -32,8 +32,6 @@ const oldPagesEntries = {
   'org-formula-catalog': './manager/org-formula-catalog.js',
   'org-formula-details': './manager/org-formula-details.js',
   'package-states': './manager/package-states.js',
-  'products': './manager/products.js',
-  'products-scc-dialog': './manager/products-scc-dialog.js',
   'remote-commands': './manager/remote-commands.js',
   'ssm-subscribe-channels': './manager/channels/ssm-subscribe-channels/ssm-subscribe-channels.js',
   'subscribe-channels': './manager/channels/subscribe-channels/subscribe-channels.renderer.js',
