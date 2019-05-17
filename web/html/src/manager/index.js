@@ -18,8 +18,6 @@ const oldPagesEntries = {
   'group-formula-selection': './manager/group-formula-selection.js',
   'key-management': './manager/key-management.js',
   'minion-config-channels': './manager/minion-config-channels.js',
-  'minion-formula': './manager/minion-formula.js',
-  'minion-formula-selection': './manager/minion-formula-selection.js',
   'notifications/notification-messages': './manager/notifications/notification-messages.renderer.js',
   'notifications/notifications': './manager/notifications/notifications.js',
   'org-config-channels': './manager/org-config-channels.js',
