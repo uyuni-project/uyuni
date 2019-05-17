@@ -3,14 +3,14 @@
 
 const React = require("react");
 const createReactClass = require('create-react-class');
-const StatePersistedMixin = require("../components/util").StatePersistedMixin;
+const StatePersistedMixin = require("components/util").StatePersistedMixin;
 const UtilComponent = require("./subscription-matching-util");
 const CsvLink = UtilComponent.CsvLink;
 const SystemLabel = UtilComponent.SystemLabel;
-const PopUp = require("../components/popup").PopUp;
-const ModalButton = require("../components/dialog/ModalButton").ModalButton;
-const {Table, Column, SearchField} = require("../components/table");
-const Functions = require("../utils/functions");
+const PopUp = require("components/popup").PopUp;
+const ModalButton = require("components/dialog/ModalButton").ModalButton;
+const {Table, Column, SearchField} = require("components/table");
+const Functions = require("utils/functions");
 const Utils = Functions.Utils;
 
 const UnmatchedProducts = createReactClass({

@@ -3,18 +3,18 @@
 
 const React = require("react");
 const createReactClass = require('create-react-class');
-const {Table, Column, SearchField, Highlight} = require("../components/table");
-const StatePersistedMixin = require("../components/util").StatePersistedMixin;
-const PopUp = require("../components/popup").PopUp;
-const ModalButton = require("../components/dialog/ModalButton").ModalButton;
+const {Table, Column, SearchField, Highlight} = require("components/table");
+const StatePersistedMixin = require("components/util").StatePersistedMixin;
+const PopUp = require("components/popup").PopUp;
+const ModalButton = require("components/dialog/ModalButton").ModalButton;
 const UtilComponent =  require("./subscription-matching-util");
 const StrongText = UtilComponent.StrongText;
 const SystemLabel = UtilComponent.SystemLabel;
 const ToolTip = UtilComponent.ToolTip;
 const humanReadablePolicy = UtilComponent.humanReadablePolicy;
 const WarningIcon =  require("./subscription-matching-util").WarningIcon;
-const Network = require("../utils/network");
-const Functions = require("../utils/functions");
+const Network = require("utils/network");
+const Functions = require("utils/functions");
 const Utils = Functions.Utils;
 
 const Pins = createReactClass({
