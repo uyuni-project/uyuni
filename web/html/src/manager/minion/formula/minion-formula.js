@@ -4,10 +4,10 @@
 var React = require("react");
 const ReactDOM = require("react-dom");
 
-var Network = require("../utils/network");
-var FormulaFormModule = require("../components/FormulaForm");
+var Network = require("utils/network");
+var FormulaFormModule = require("components/FormulaForm");
 var FormulaForm = FormulaFormModule.FormulaForm;
-const capitalize = require("../utils/functions").Utils.capitalize;
+const capitalize = require("utils/functions").Utils.capitalize;
 
 const msgMap = {
   "formula_saved" : <p>{t("Formula saved. Apply the ")}<a href={'/rhn/manager/systems/details/highstate?sid=' + serverId}>{t("Highstate")}</a>{t(" for the changes to take effect.")}</p>,

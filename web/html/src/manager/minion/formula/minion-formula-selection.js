@@ -4,9 +4,9 @@
 const React = require("react");
 const ReactDOM = require("react-dom");
 
-const Network = require("../utils/network");
-const FormulaSelection = require("../components/formula-selection").FormulaSelection;
-const capitalize = require("../utils/functions").Utils.capitalize;
+const Network = require("utils/network");
+const FormulaSelection = require("components/formula-selection").FormulaSelection;
+const capitalize = require("utils/functions").Utils.capitalize;
 
 const messageTexts = {
   "formulas_saved" : <p>{t("Formula saved. Apply the ")}<a href={'/rhn/manager/systems/details/highstate?sid=' + serverId}>{t("Highstate")}</a>{t(" for the changes to take effect.")}</p>,
