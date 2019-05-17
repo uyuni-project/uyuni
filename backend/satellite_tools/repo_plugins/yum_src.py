@@ -444,6 +444,8 @@ class ContentSource:
                 if zypper_cfg.has_option(section_name, 'proxy_password'):
                     self.proxy_pass = zypper_cfg.get(section_name, 'proxy_password')
 
+        self._authenticate(url)
+
         # Make sure baseurl ends with / and urljoin will work correctly
         self.urls = [url]
         if self.urls[0][-1] != '/':
@@ -1100,3 +1102,6 @@ type=rpm-md
         self.sslcacert = ca_cert
         self.sslclientcert = client_cert
         self.sslclientkey = client_key
+
+    def _authenticate(self, url):
+        pass
