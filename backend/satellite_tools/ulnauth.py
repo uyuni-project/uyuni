@@ -95,17 +95,25 @@ class ULNAuth:
         :raises RhnSyncException: if configuration does not contain required sections.
         :returns: ULN token
         """
+        err_msg = ''
         if self._uln_token is None:
-            usr, pwd = self.get_credentials()
-            px_url, px_usr, px_pwd = get_proxy(url)
-            hostname, label = self.get_hostname(url)
-            self._uln_url = "https://{}/XMLRPC/GET-REQ{}".format(hostname, label)
-            server_list = ServerList(["https://{}/rpc/api".format(hostname)])
-            retry_server = RetryServer(server_list.server(), refreshCallback=None, proxy=None,
-                                       username=px_usr, password=px_pwd, timeout=5)
-            retry_server.addServerList(server_list)
-            self._uln_token = retry_server.auth.login(usr, pwd)
+            try:
+                usr, pwd = self.get_credentials()
+                self._uln_url, label = self.get_hostname(url)
+                px_url, px_usr, px_pwd = get_proxy(self._uln_url)
+                server_list = ServerList([self._uln_url + "/rpc/api"])
+                retry_server = RetryServer(server_list.server(),
+                                           refreshCallback=None,
+                                           proxy=px_url,
+                                           username=px_usr,
+                                           password=px_pwd,
+                                           timeout=5)
+                retry_server.addServerList(server_list)
+                self._uln_token = retry_server.auth.login(usr, pwd)
+            except Exception as exc:
+                err_msg = exc
 
-        assert self.token is not None, "Authentication failure: token was not obtained"
+        if not self.token or err_msg:
+            raise ULNTokenException("Authentication failure: token was not obtained. {}".format(err_msg))
 
         return self.token
