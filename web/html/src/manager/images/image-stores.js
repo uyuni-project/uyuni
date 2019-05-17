@@ -3,15 +3,15 @@
 
 const React = require("react");
 const ReactDOM = require("react-dom");
-const {AsyncButton, LinkButton} = require("../components/buttons");
+const {AsyncButton, LinkButton} = require("components/buttons");
 const { TopPanel } = require('components/panels/TopPanel');
-const Network = require("../utils/network");
-const Functions = require("../utils/functions");
+const Network = require("utils/network");
+const Functions = require("utils/functions");
 const Utils = Functions.Utils;
-const {Table, Column, SearchField} = require("../components/table");
-const Messages = require("../components/messages").Messages;
-const DeleteDialog = require("../components/dialog/DeleteDialog").DeleteDialog;
-const ModalButton = require("../components/dialog/ModalButton").ModalButton;
+const {Table, Column, SearchField} = require("components/table");
+const Messages = require("components/messages").Messages;
+const DeleteDialog = require("components/dialog/DeleteDialog").DeleteDialog;
+const ModalButton = require("components/dialog/ModalButton").ModalButton;
 
 /* global isAdmin */
 

@@ -3,23 +3,23 @@
 
 const React = require("react");
 const ReactDOM = require("react-dom");
-const {AsyncButton, Button} = require("../components/buttons");
+const {AsyncButton, Button} = require("components/buttons");
 const { TopPanel } = require('components/panels/TopPanel');
-const Network = require("../utils/network");
-const Utils = require("../utils/functions").Utils;
-const {Table, Column, SearchField} = require("../components/table");
-const Messages = require("../components/messages").Messages;
-const MessagesUtils = require("../components/messages").Utils;
-const {ModalButton} = require("../components/dialog/ModalButton");
-const {ModalLink} = require("../components/dialog/ModalLink");
-const {DeleteDialog} = require("../components/dialog/DeleteDialog");
-const PopUp = require("../components/popup").PopUp;
-const TabContainer = require("../components/tab-container").TabContainer;
+const Network = require("utils/network");
+const Utils = require("utils/functions").Utils;
+const {Table, Column, SearchField} = require("components/table");
+const Messages = require("components/messages").Messages;
+const MessagesUtils = require("components/messages").Utils;
+const {ModalButton} = require("components/dialog/ModalButton");
+const {ModalLink} = require("components/dialog/ModalLink");
+const {DeleteDialog} = require("components/dialog/DeleteDialog");
+const PopUp = require("components/popup").PopUp;
+const TabContainer = require("components/tab-container").TabContainer;
 const ImageViewOverview = require("./image-view-overview").ImageViewOverview;
 const ImageViewPatches = require("./image-view-patches").ImageViewPatches;
 const ImageViewPackages = require("./image-view-packages").ImageViewPackages;
 const ImageViewRuntime = require("./image-view-runtime").ImageViewRuntime;
-const DateTime = require("../components/datetime").DateTime;
+const DateTime = require("components/datetime").DateTime;
 
 /* global isAdmin, isRuntimeInfoEnabled */
 

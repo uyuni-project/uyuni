@@ -2,15 +2,15 @@
 'use strict';
 
 const React = require("react");
-const {LinkButton, Button} = require("../components/buttons");
-const DateTime = require("../components/datetime").DateTime;
-const {ModalButton} = require("../components/dialog/ModalButton");
-const {ModalLink} = require("../components/dialog/ModalLink");
-const {DeleteDialog} = require("../components/dialog/DeleteDialog");
-const PopUp = require("../components/popup").PopUp;
+const {LinkButton, Button} = require("components/buttons");
+const DateTime = require("components/datetime").DateTime;
+const {ModalButton} = require("components/dialog/ModalButton");
+const {ModalLink} = require("components/dialog/ModalLink");
+const {DeleteDialog} = require("components/dialog/DeleteDialog");
+const PopUp = require("components/popup").PopUp;
 const { Form } = require('components/input/Form');
 const { DateTime: InputDateTime } = require('components/input/DateTime');
-const Functions = require("../utils/functions");
+const Functions = require("utils/functions");
 const { BootstrapPanel } = require('components/panels/BootstrapPanel');
 
 /* global isAdmin, localTime, timezone */
