@@ -11,14 +11,11 @@ import urllib.parse
 sys.path.append("/usr/share/rhn/")
 from spacewalk.satellite_tools.ulnauth import ULNAuth
 
-
 # for testing add the relative path to the load path
 if "spacewalk-uln-resolver" in sys.argv[0]:
     sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), '../python'))
 
 from zypp_plugin import Plugin
-
-CONF = "/etc/zypp/zypp.conf"
 
 
 class SpacewalkULNPlugin(Plugin):
