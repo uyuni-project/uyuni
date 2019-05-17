@@ -535,7 +535,7 @@ class ContentSource:
             self.error_msg("Could not write the calculated mirrorlist: {}".format(exc))
         return returnlist
 
-    def setup_repo(self, repo):
+    def setup_repo(self, repo, uln_repo=False):
         """
         Setup repository and fetch metadata
         """
@@ -555,11 +555,16 @@ gpgcheck={gpgcheck}
 repo_gpgcheck={gpgcheck}
 type=rpm-md
 '''
+        if uln_repo:
+           _url = 'plugin:spacewalk-uln-resolver?url={}'.format(self._url_orig)
+        else:
+           _url=zypp_repo_url if not mirrorlist else os.path.join(repo.root, 'mirrorlist.txt')
+
         with open(os.path.join(repo.root, "etc/zypp/repos.d", str(self.channel_label or self.reponame) + ".repo"), "w") as repo_conf_file:
             repo_conf_file.write(repo_cfg.format(
                 reponame=self.channel_label or self.reponame,
                 repo_url='baseurl' if not mirrorlist else 'mirrorlist',
-                url=zypp_repo_url if not mirrorlist else os.path.join(repo.root, 'mirrorlist.txt'),
+                url=_url,
                 gpgcheck="0" if self.insecure else "1"
             ))
         zypper_cmd = "zypper"
