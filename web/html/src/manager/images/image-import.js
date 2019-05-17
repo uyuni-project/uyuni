@@ -8,11 +8,11 @@ const { TopPanel } = require('components/panels/TopPanel');
 const { Text } = require('components/input/Text');
 const { Select } = require('components/input/Select');
 const { Form } = require('components/input/Form');
-const {SubmitButton, Button} = require("../components/buttons");
-const Network = require("../utils/network");
-const {Messages} = require("../components/messages");
-const MessagesUtils = require("../components/messages").Utils;
-const {Utils} = require("../utils/functions");
+const {SubmitButton, Button} = require("components/buttons");
+const Network = require("utils/network");
+const {Messages} = require("components/messages");
+const MessagesUtils = require("components/messages").Utils;
+const {Utils} = require("utils/functions");
 
 const msgMap = {
   "not_found":

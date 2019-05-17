@@ -4,17 +4,17 @@
 const React = require("react");
 const ReactDOM = require("react-dom");
 const { TopPanel } = require('components/panels/TopPanel');
-const Messages = require("../components/messages").Messages;
-const MessagesUtils = require("../components/messages").Utils;
-const Network = require("../utils/network");
-const {SubmitButton, LinkButton} = require("../components/buttons");
-const Functions = require("../utils/functions");
+const Messages = require("components/messages").Messages;
+const MessagesUtils = require("components/messages").Utils;
+const Network = require("utils/network");
+const {SubmitButton, LinkButton} = require("components/buttons");
+const Functions = require("utils/functions");
 const { Form } = require('components/input/Form');
 const { FormGroup } = require('components/input/FormGroup');
 const { Select } = require('components/input/Select');
 const { Text } = require('components/input/Text');
-const {ActionLink, ActionChainLink} = require("../components/links");
-const {ActionSchedule} = require("../components/action-schedule");
+const {ActionLink, ActionChainLink} = require("components/links");
+const {ActionSchedule} = require("components/action-schedule");
 
 /* global profileId, hostId, version, localTime, timezone, actionChains */
 const typeMap = {

@@ -2,9 +2,9 @@
 'use strict';
 
 const React = require("react");
-const {Table, Column, SearchField} = require("../components/table");
-const Utils = require("../utils/functions").Utils;
-const DateTime = require("../components/datetime").DateTime;
+const {Table, Column, SearchField} = require("components/table");
+const Utils = require("utils/functions").Utils;
+const DateTime = require("components/datetime").DateTime;
 
 class ImageViewPackages extends React.Component {
   constructor(props) {

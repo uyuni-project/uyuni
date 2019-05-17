@@ -4,15 +4,15 @@
 const React = require("react");
 const ReactDOM = require("react-dom");
 const { TopPanel } = require('components/panels/TopPanel');
-const Messages = require("../components/messages").Messages;
-const Network = require("../utils/network");
-const {SubmitButton, Button} = require("../components/buttons");
+const Messages = require("components/messages").Messages;
+const Network = require("utils/network");
+const {SubmitButton, Button} = require("components/buttons");
 const { Form } = require('components/input/Form');
 const { Check } = require('components/input/Check');
 const { Password } = require('components/input/Password');
 const { Select } = require('components/input/Select');
 const { Text } = require('components/input/Text');
-const Utils = require("../utils/functions").Utils;
+const Utils = require("utils/functions").Utils;
 
 /* global storeId */
 
