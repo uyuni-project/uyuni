@@ -2,7 +2,7 @@
 "use strict";
 
 const React = require("react");
-const Network = require("../utils/network");
+const Network = require("utils/network");
 
 class MatcherRunPanel extends React.Component {
   state = {

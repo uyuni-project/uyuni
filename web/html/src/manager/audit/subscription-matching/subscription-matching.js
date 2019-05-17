@@ -3,17 +3,17 @@
 
 const React = require("react");
 const ReactDOM = require("react-dom");
-const TabContainer = require("../components/tab-container").TabContainer;
+const TabContainer = require("components/tab-container").TabContainer;
 const Subscriptions =  require("./subscription-matching-subscriptions").Subscriptions;
 const Pins =  require("./subscription-matching-pins").Pins;
 const Messages =  require("./subscription-matching-messages").Messages;
 const UnmatchedProducts =  require("./subscription-matching-unmatched-products").UnmatchedProducts;
 const MatcherRunPanel =  require("./subscription-matching-matcher-run-panel").MatcherRunPanel;
 const WarningIcon =  require("./subscription-matching-util").WarningIcon;
-const MessageContainer = require("../components/messages").Messages;
+const MessageContainer = require("components/messages").Messages;
 const { TopPanel } = require('components/panels/TopPanel');
-const MessagesUtils = require("../components/messages").Utils;
-const Network = require("../utils/network");
+const MessagesUtils = require("components/messages").Utils;
+const Network = require("utils/network");
 
 class SubscriptionMatching extends React.Component {
   state = {

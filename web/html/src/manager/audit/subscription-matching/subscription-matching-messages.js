@@ -3,10 +3,10 @@
 
 const React = require("react");
 const createReactClass = require('create-react-class');
-const {Table, Column, SearchField, Highlight} = require("../components/table");
-const StatePersistedMixin = require("../components/util").StatePersistedMixin;
+const {Table, Column, SearchField, Highlight} = require("components/table");
+const StatePersistedMixin = require("components/util").StatePersistedMixin;
 const CsvLink = require("./subscription-matching-util").CsvLink;
-const Functions = require("../utils/functions");
+const Functions = require("utils/functions");
 const Utils = Functions.Utils;
 
 const Messages = createReactClass({
