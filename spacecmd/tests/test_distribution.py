@@ -277,3 +277,26 @@ class TestSCDistribution:
         assert type(out) == list
         assert not mprint.called
         assert out == ['some-channel', 'some-other-channel']
+
+    def test_distribution_delete_noargs(self, shell):
+        """
+        Test do_distribution_delete with no arguments.
+
+        :param shell:
+        :return:
+        """
+        shell.help_distribution_delete = MagicMock()
+        shell.client.kickstart.tree.delete = MagicMock()
+        shell.user_confirm = MagicMock()
+        logger = MagicMock()
+        mprint = MagicMock()
+
+        with patch("spacecmd.distribution.print", mprint) as prn, \
+                patch("spacecmd.distribution.logging", logger) as lgr:
+            spacecmd.distribution.do_distribution_delete(shell, "")
+
+        assert not mprint.called
+        assert not shell.client.kickstart.tree.delete.called
+        assert not shell.user_confirm.called
+        assert shell.help_distribution_delete.called
+
