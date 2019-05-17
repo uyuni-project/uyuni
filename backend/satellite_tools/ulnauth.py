@@ -56,10 +56,14 @@ class ULNAuth:
         :raises RhnSyncException: if URL is wrongly formatted.
         :returns: tuple (hostname, label)
         """
-        if not url.startswith("uln://"):
+        if url.startswith("uln:///"):
+            return "https://" + self.ULN_DEFAULT_HOST, url[7:]
+        elif url.startswith("uln://"):
+            parts = url[6:].split("/")
+            return "https://" + parts[0], "/".join(parts[1:])
+        else:
             raise RhnSyncException("URL must start with 'uln://'.")
-        p_url = urllib.parse.urlparse(url)
-        return p_url.netloc or self.ULN_DEFAULT_HOST, p_url.path
+
 
     def get_credentials(self) -> tuple:
         """
