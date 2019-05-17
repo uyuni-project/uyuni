@@ -10,7 +10,6 @@ const { readdirSync, statSync } = require('fs')
 const { join } = require('path')
 
 const oldPagesEntries = {
-  'polyfill': './manager/polyfill.js',
   'visualization/hierarchy': './manager/visualization/hierarchy.js',
   'bootstrap-minions': './manager/bootstrap-minions.js',
   'delete-system': './manager/delete-system.js',
@@ -21,7 +20,6 @@ const oldPagesEntries = {
   'group-formula-selection': './manager/group-formula-selection.js',
   'highstate': './manager/highstate.js',
   'key-management': './manager/key-management.js',
-  'menu': './manager/menu.js',
   'minion-config-channels': './manager/minion-config-channels.js',
   'minion-formula': './manager/minion-formula.js',
   'minion-formula-selection': './manager/minion-formula-selection.js',
