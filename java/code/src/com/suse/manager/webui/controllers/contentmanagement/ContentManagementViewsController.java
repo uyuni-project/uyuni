@@ -25,10 +25,10 @@ import com.redhat.rhn.domain.contentmgmt.ContentProjectFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.contentmgmt.ContentManager;
 
+import com.suse.manager.webui.controllers.contentmanagement.handlers.ControllerApiUtils;
 import com.suse.manager.webui.controllers.contentmanagement.mappers.ResponseMappers;
 import com.suse.manager.webui.controllers.contentmanagement.response.FilterResponse;
 import com.suse.manager.webui.utils.FlashScopeHelper;
-import com.suse.utils.Json;
 
 import com.google.gson.Gson;
 
@@ -51,7 +51,7 @@ import spark.template.jade.JadeTemplateEngine;
 public class ContentManagementViewsController {
 
     private static Logger log = Logger.getLogger(ContentManagementViewsController.class);
-    private static final Gson GSON = Json.GSON;
+    private static final Gson GSON = ControllerApiUtils.GSON;
 
     private ContentManagementViewsController() {
     }

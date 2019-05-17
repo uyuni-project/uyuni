@@ -24,9 +24,6 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.contentmgmt.ContentManager;
 
 import com.suse.manager.webui.controllers.contentmanagement.request.ProjectSourcesRequest;
-import com.suse.utils.Json;
-
-import com.google.gson.Gson;
 
 import java.util.Collections;
 import java.util.List;
@@ -40,8 +37,6 @@ import spark.Response;
  * Spark controller class for content management sources API endpoints.
  */
 public class ProjectSourcesApiController {
-
-    private static final Gson GSON = Json.GSON;
 
     private ProjectSourcesApiController() {
     }

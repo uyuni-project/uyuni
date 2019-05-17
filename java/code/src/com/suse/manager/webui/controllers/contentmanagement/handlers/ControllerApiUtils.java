@@ -23,12 +23,14 @@ import com.redhat.rhn.domain.contentmgmt.ContentProjectFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.contentmgmt.ContentManager;
 
+import com.suse.manager.webui.controllers.ECMAScriptDateAdapter;
 import com.suse.manager.webui.controllers.contentmanagement.mappers.ResponseMappers;
 import com.suse.manager.webui.utils.gson.ResultJson;
-import com.suse.utils.Json;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -39,7 +41,11 @@ import spark.Response;
  * Utility class to all the api Controllers
  */
 public class ControllerApiUtils {
-    private static final Gson GSON = Json.GSON;
+    public static final Gson GSON = new GsonBuilder()
+            .registerTypeAdapter(Date.class, new ECMAScriptDateAdapter())
+            .serializeNulls()
+            .create();
+
 
     private ControllerApiUtils() { }
 
