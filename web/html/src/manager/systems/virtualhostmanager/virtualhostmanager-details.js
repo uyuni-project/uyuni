@@ -2,15 +2,15 @@
 'use strict';
 
 const React = require("react");
-const {Button} = require("../components/buttons");
-const {ModalButton} = require("../components/dialog/ModalButton");
-const {DeleteDialog} = require("../components/dialog/DeleteDialog");
+const {Button} = require("components/buttons");
+const {ModalButton} = require("components/dialog/ModalButton");
+const {DeleteDialog} = require("components/dialog/DeleteDialog");
 const { BootstrapPanel } = require('components/panels/BootstrapPanel');
-const {Utils} = require("../utils/functions");
-const Network = require("../utils/network");
-const {Messages} = require("../components/messages");
-const MessagesUtils = require("../components/messages").Utils;
-const {Table, Column, SearchField} = require("../components/table");
+const {Utils} = require("utils/functions");
+const Network = require("utils/network");
+const {Messages} = require("components/messages");
+const MessagesUtils = require("components/messages").Utils;
+const {Table, Column, SearchField} = require("components/table");
 
 class VirtualHostManagerDetails extends React.Component {
 

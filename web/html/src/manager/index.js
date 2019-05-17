@@ -36,7 +36,6 @@ const oldPagesEntries = {
   'ssm-subscribe-channels': './manager/channels/ssm-subscribe-channels/ssm-subscribe-channels.js',
   'subscribe-channels': './manager/channels/subscribe-channels/subscribe-channels.renderer.js',
   'taskotop': './manager/taskotop.js',
-  'virtualhostmanager': './manager/virtualhostmanager.js',
   'activation-key/activation-key-channels.renderer': './manager/activation-key/activation-key-channels.renderer.js',
 }
 
