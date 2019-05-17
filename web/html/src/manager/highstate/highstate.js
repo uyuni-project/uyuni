@@ -3,16 +3,16 @@
 
 const React = require("react");
 const ReactDOM = require("react-dom");
-const Messages = require("../components/messages").Messages;
-const MessagesUtils = require("../components/messages").Utils;
-const {ActionSchedule} = require("../components/action-schedule");
-const AsyncButton = require("../components/buttons").AsyncButton;
-const {Toggler} = require("../components/toggler");
-const Network = require("../utils/network");
+const Messages = require("components/messages").Messages;
+const MessagesUtils = require("components/messages").Utils;
+const {ActionSchedule} = require("components/action-schedule");
+const AsyncButton = require("components/buttons").AsyncButton;
+const {Toggler} = require("components/toggler");
+const Network = require("utils/network");
 const { InnerPanel } = require('components/panels/InnerPanel');
-const Functions = require("../utils/functions");
+const Functions = require("utils/functions");
 const Formats = Functions.Formats;
-const {ActionLink, ActionChainLink} = require("../components/links");
+const {ActionLink, ActionChainLink} = require("components/links");
 
 const messagesCounterLimit = 3;
 
