@@ -23,7 +23,9 @@ const typeMap = {
 };
 
 const msgMap = {
-  "invalid_type": "Invalid image type."
+  "invalid_type": "Invalid image type.",
+  "activation_key_required": "Please give an activation key",
+  "": "There was an error."
 };
 
 class CreateImageProfile extends React.Component {
@@ -304,7 +306,7 @@ class CreateImageProfile extends React.Component {
     );
 
     return (
-      <Select name="activationKey" label={t("Activation Key")}
+      <Select name="activationKey" label={t("Activation Key")} invalidHint={t("Activation key is required for kiwi images.")}
         onChange={this.handleTokenChange} labelClass="col-md-3" divClass="col-md-6"
         hint={hint} required={isRequired}>
         <option key="0" value="">None</option>
