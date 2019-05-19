@@ -43,8 +43,10 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static com.redhat.rhn.domain.contentmgmt.ContentFilter.EntityType.ERRATUM;
+import static com.redhat.rhn.domain.contentmgmt.ContentFilter.EntityType.PACKAGE;
 import static com.redhat.rhn.domain.contentmgmt.ContentFilter.Rule.DENY;
 import static com.redhat.rhn.domain.role.RoleFactory.ORG_ADMIN;
 import static java.util.Collections.emptyList;
@@ -128,6 +130,50 @@ public class ChannelManagerContentAlignmentTest extends BaseTestCaseWithUser {
         ChannelManager.alignEnvironmentTargetSync(emptyList(), srcChannel, tgtChannel, user);
         assertEquals(pkg.getId(), ChannelManager.getLatestPackageEqual(tgtChannel.getId(), pkg.getPackageName().getName()));
         assertNull(ChannelManager.getLatestPackageEqual(tgtChannel.getId(), pack2.getPackageName().getName()));
+    }
+
+    /**
+     * Test that the cache of newest packages in the channel is refreshed when filters are used
+     *
+     * Package-channel settings:
+     * Source channel: package 1 (see setUp()), 2, 4, 5
+     * Target channel: package 2, 3, 5, 6
+     * Packages that pass filter: 4, 5
+     *
+     * Expected result: Target channel newest packages cache contains packages 4 and 5
+     *
+     * @throws Exception if anything goes wrong
+     */
+    public void testNewestPackagesCacheRefreshedWithFilter() throws Exception {
+        Package pack2 = PackageTest.createTestPackage(user.getOrg());
+        Package pack3 = PackageTest.createTestPackage(user.getOrg());
+        Package pack4 = PackageTest.createTestPackage(user.getOrg());
+        Package pack5 = PackageTest.createTestPackage(user.getOrg());
+        Package pack6 = PackageTest.createTestPackage(user.getOrg());
+
+        srcChannel.addPackage(pack2);
+        srcChannel.addPackage(pack4);
+        srcChannel.addPackage(pack5);
+
+        tgtChannel.getPackages().add(pack2);
+        tgtChannel.getPackages().add(pack3);
+        tgtChannel.getPackages().add(pack5);
+        tgtChannel.getPackages().add(pack6);
+
+        ChannelFactory.refreshNewestPackageCache(tgtChannel, "java::alignPackages");
+
+        FilterCriteria criteria = new FilterCriteria(FilterCriteria.Matcher.CONTAINS, "name", pkg.getPackageName().getName());
+        ContentFilter filter = ContentManager.createFilter("test-filter-1234", DENY, PACKAGE, criteria, user);
+        FilterCriteria criteria2 = new FilterCriteria(FilterCriteria.Matcher.CONTAINS, "name", pack2.getPackageName().getName());
+        ContentFilter filter2 = ContentManager.createFilter("test-filter-12345", DENY, PACKAGE, criteria2, user);
+
+        ChannelManager.alignEnvironmentTargetSync(Arrays.asList(filter, filter2), srcChannel, tgtChannel, user);
+        List<Long> ids = ChannelManager.latestPackagesInChannel(tgtChannel).stream()
+                .map(p -> (Long) p.get("id"))
+                .collect(Collectors.toList());
+        assertEquals(2, ids.size());
+        assertContains(ids, pack4.getId());
+        assertContains(ids, pack5.getId());
     }
 
     /**
