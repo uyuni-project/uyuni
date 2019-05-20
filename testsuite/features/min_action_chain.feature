@@ -247,6 +247,7 @@ Feature: Action chain on salt minions
     And I run "zypper -n rm virgo-dummy" on "sle-minion" without error control
     And I run "zypper -n in milkyway-dummy" on "sle-minion" without error control
     And I run "zypper -n in --oldpackage andromeda-dummy-1.0" on "sle-minion"
+    And I wait until all events in history are completed
     When I follow "Software" in the content area
     And I follow "List / Remove" in the content area
     And I enter "andromeda-dummy" in the css "input[placeholder='Filter by Package Name: ']"

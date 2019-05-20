@@ -936,3 +936,30 @@ And(/^I check for failed events on history event page$/) do
   count_failures = failings.length
   raise "\nFailures in event history found:\n\n#{failings}" if count_failures.nonzero?
 end
+
+When(/^I wait until all events in history are completed$/) do
+  steps %(
+    When I follow "Events" in the content area
+    And I follow "History" in the content area
+    Then I should see a "System History" text
+  )
+  begin
+    events_icons = "//div[@class='table-responsive']/table/tbody/tr/td[2]/i"
+    Timeout.timeout(DEFAULT_TIMEOUT) do
+      loop do
+        pickedup = false
+        events = all(:xpath, events_icons)
+        events.each do |ev|
+          if ev[:class].include?('fa-exchange')
+            pickedup = true
+            break
+          end
+        end
+        break unless pickedup
+        sleep 1
+      end
+    end
+  rescue Timeout::Error
+    raise "Timed out waiting for the system events to complete."
+  end
+end
