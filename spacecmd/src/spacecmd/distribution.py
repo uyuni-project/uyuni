@@ -287,4 +287,8 @@ def complete_distribution_update(self, text, line, beg, end):
 
 
 def do_distribution_update(self, args):
-    return self.do_distribution_create(args, update=True)
+    arguments, _ = parse_command_arguments(args, get_argument_parser())
+    if not arguments:
+        self.help_distribution_update()
+    else:
+        return self.do_distribution_create(args, update=True)
