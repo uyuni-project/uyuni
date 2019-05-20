@@ -519,3 +519,22 @@ class TestSCDistribution:
             assert not shell.client.kickstart.tree.rename.called
             assert shell.help_distribution_rename.called
 
+    def test_distribution_rename(self, shell):
+        """
+        Test do_distribution_rename.
+
+        :param shell:
+        :return:
+        """
+        shell.help_distribution_rename = MagicMock()
+        shell.client.kickstart.tree.rename = MagicMock()
+
+        spacecmd.distribution.do_distribution_rename(shell, "source destination")
+
+        assert not shell.help_distribution_rename.called
+        assert shell.client.kickstart.tree.rename.called
+
+        for call in shell.client.kickstart.tree.rename.call_args_list:
+            args, kw = call
+            assert args == (shell.session, "source", "destination")
+
