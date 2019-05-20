@@ -68,6 +68,7 @@ class TestSCShell:
             assert m_logger.error.call_args[0][0] == "Could not read history file"
 
     @patch("spacecmd.shell.atexit", MagicMock())
+    @patch("spacecmd.shell.print", MagicMock())
     @patch("spacecmd.shell.sys.exit", MagicMock(side_effect=Exception("Exit attempt")))
     @patch("spacecmd.shell.readline.set_completer_delims", MagicMock())
     @patch("spacecmd.shell.readline.get_completer_delims", MagicMock(return_value=readline.get_completer_delims()))
@@ -160,6 +161,7 @@ class TestSCShell:
         assert shell.precmd("x") == "x"
 
     @patch("spacecmd.shell.atexit", MagicMock())
+    @patch("spacecmd.shell.print", MagicMock())
     @patch("spacecmd.shell.readline.set_completer_delims", MagicMock())
     @patch("spacecmd.shell.readline.get_history_item", MagicMock(return_value="repeated item"))
     @patch("spacecmd.shell.readline.get_completer_delims", MagicMock(return_value=readline.get_completer_delims()))

@@ -19,7 +19,6 @@ class TestSCActivationKey:
         """
         Test tab completer activation keys on addpackages.
         """
-        print()
         text = "Communications satellite used by the military for star wars."
         completer = MagicMock()
         with patch("spacecmd.activationkey.tab_completer", completer):
@@ -64,7 +63,6 @@ class TestSCActivationKeyMethods:
         spacecmd.activationkey.do_activationkey_addpackages(shell, "call something here")
         assert not shell.help_activationkey_addpackages.called
         assert shell.client.activationkey.addPackages.called
-        print()
         session, fun, args = shell.client.activationkey.addPackages.call_args_list[0][0]
         assert session == shell.session
         assert fun == "call"
@@ -1216,7 +1214,6 @@ class TestSCActivationKeyMethods:
         with patch("spacecmd.activationkey.logging", logger):
             spacecmd.activationkey.do_activationkey_export(shell, "")
 
-        print()
         assert logger.debug.called
         assert logger.error.called
         assert logger.info.called
@@ -1247,7 +1244,6 @@ class TestSCActivationKeyMethods:
         with patch("spacecmd.activationkey.logging", logger):
             spacecmd.activationkey.do_activationkey_export(shell, "-f somefile.json")
 
-        print()
         assert logger.debug.called
         assert logger.error.called
         assert logger.info.called

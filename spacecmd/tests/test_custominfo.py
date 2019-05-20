@@ -91,6 +91,7 @@ class TestSCCusomInfo:
 
         assert errmsg in str(exc)
 
+    @patch("spacecmd.custominfo.print", MagicMock())
     def test_do_custominfo_deletekey_args(self, shell):
         """
         Test do_custominfo_deletekey calls deleteKey API function.
