@@ -13,6 +13,7 @@
     <decorator:head />
   </head>
   <body onload="<decorator:getProperty property="body.onload" />">
+    <div class="senna-loading-bar"></div>
     <header class="navbar-pf">
       <jsp:include page="/WEB-INF/includes/header.jsp" />
     </header>
@@ -24,33 +25,36 @@
           <jsp:include page="/WEB-INF/includes/footer.jsp" />
         </footer>
       </aside>
-      <section id="spacewalk-content">
-        <noscript>
-            <div class="alert alert-danger">
-                <bean:message key="common.jsp.noscript"/>
+      <div id="page-body">
+        <section id="spacewalk-content">
+          <noscript>
+              <div class="alert alert-danger">
+                  <bean:message key="common.jsp.noscript"/>
+              </div>
+          </noscript>
+          <!-- Alerts and messages -->
+          <logic:messagesPresent>
+            <div class="alert alert-warning">
+              <ul>
+              <html:messages id="message">
+                <li><c:out value="${message}"/></li>
+              </html:messages>
+              </ul>
             </div>
-        </noscript>
-        <!-- Alerts and messages -->
-        <logic:messagesPresent>
-          <div class="alert alert-warning">
-            <ul>
-            <html:messages id="message">
-              <li><c:out value="${message}"/></li>
-            </html:messages>
-            </ul>
-          </div>
-        </logic:messagesPresent>
-        <html:messages id="message" message="true">
-          <rhn:messages><c:out escapeXml="false" value="${message}" /></rhn:messages>
-        </html:messages>
-        <c:if test="${ not empty exception }">
-          <div class="alert alert-danger">
-            <c:out value="${exception}"/>
-          </div>
-        </c:if>
-        <decorator:body />
-      </section>
+          </logic:messagesPresent>
+          <html:messages id="message" message="true">
+            <rhn:messages><c:out escapeXml="false" value="${message}" /></rhn:messages>
+          </html:messages>
+          <c:if test="${ not empty exception }">
+            <div class="alert alert-danger">
+              <c:out value="${exception}"/>
+            </div>
+          </c:if>
+          <decorator:body />
+        </section>
+      </div>
       <script src='/javascript/manager/shared/menu/menu.bundle.js?cb=${rhn:getConfig('web.version')}'></script>
+      <script src='/javascript/manager/shared/spa-engine.bundle.js?cb=${rhn:getConfig('web.version')}'></script>
     </div>
     <button id="scroll-top"><i class='fa fa-angle-up'></i></button>
   </body>
