@@ -1,3 +1,5 @@
+- Add support for ULN repositories on new Zypper based reposync.
+
 -------------------------------------------------------------------
 Wed May 15 17:06:26 CEST 2019 - jgonzalez@suse.com
 
