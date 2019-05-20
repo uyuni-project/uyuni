@@ -446,6 +446,7 @@ class TestSCDistribution:
         assert not shell.client.kickstart.tree.getDetails.called
         assert not shell.client.channel.software.getDetails.called
         assert not shell.help_distribution_details.called
+        assert not mprint.called
         assert logger.debug.called
         assert logger.error.called
         assert shell.do_distribution_list.called
@@ -454,3 +455,51 @@ class TestSCDistribution:
                       "distribution_details called with args ['test.*'], dists=[]")
         assert_expect(logger.error.call_args_list,
                       "No distributions matched argument ['test.*']")
+
+    def test_distribution_details_list(self, shell):
+        """
+        Test do_distribution_details lister.
+
+        :param shell:
+        :return:
+        """
+        shell.help_distribution_details = MagicMock()
+        shell.client.kickstart.tree.getDetails = MagicMock(side_effect=[
+            {"channel_id": "ch-id-1", "label": "dist-1", "abs_path": "/tmp/d1"},
+            {"channel_id": "ch-id-2", "label": "dist-2", "abs_path": "/tmp/d2"},
+        ])
+        shell.client.channel.software.getDetails = MagicMock(side_effect=[
+            {"label": "channel-one"},
+            {"label": "channel-two"},
+        ])
+        shell.do_distribution_list = MagicMock(return_value=["dist-1", "dist-2"])
+        shell.SEPARATOR = "---"
+        logger = MagicMock()
+        mprint = MagicMock()
+
+        with patch("spacecmd.distribution.print", mprint) as prn, \
+                patch("spacecmd.distribution.logging", logger) as lgr:
+            spacecmd.distribution.do_distribution_details(shell, "dist*")
+
+        assert not shell.help_distribution_details.called
+        assert not logger.error.called
+        assert shell.client.kickstart.tree.getDetails.called
+        assert shell.client.channel.software.getDetails.called
+        assert logger.debug.called
+        assert shell.do_distribution_list.called
+        assert mprint.called
+
+        exp = [
+            'Name:    dist-1',
+            'Path:    /tmp/d1',
+            'Channel: channel-one',
+            '---',
+            'Name:    dist-2',
+            'Path:    /tmp/d2',
+            'Channel: channel-two'
+        ]
+        for call in mprint.call_args_list:
+            assert_expect([call], next(iter(exp)))
+            exp.pop(0)
+        assert not exp
+
