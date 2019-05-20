@@ -769,12 +769,12 @@ public class ContentManager {
     }
 
     /**
-     * Synchronously align packages and errata of the {@link SoftwareEnvironmentTarget} to the source {@link Channel}
+     * Synchronously align packages and errata of the {@link Channel} to the source {@link Channel}
      * This method is potentially time-expensive and should be run asynchronously (@see alignEnvironmentTarget)
      *
      * @param filters the filters
      * @param src the source {@link Channel}
-     * @param tgt the target {@link SoftwareEnvironmentTarget}
+     * @param tgt the target {@link Channel}
      * @param user the user
      */
     public static void alignEnvironmentTargetSync(Collection<ContentFilter> filters, Channel src, Channel tgt,
