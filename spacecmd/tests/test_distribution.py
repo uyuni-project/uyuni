@@ -553,3 +553,24 @@ class TestSCDistribution:
 
         assert not shell.do_distribution_create.called
         assert shell.help_distribution_update.called
+
+    def test_distribution_update(self, shell):
+        """
+        Test do_distribution_update.
+
+        :param shell:
+        :return:
+        """
+
+        shell.help_distribution_update = MagicMock()
+        shell.do_distribution_create = MagicMock()
+
+        spacecmd.distribution.do_distribution_update(shell, "my-distro")
+
+        assert not shell.help_distribution_update.called
+        assert shell.do_distribution_create.called
+
+        for call in shell.do_distribution_create.call_args_list:
+            args, kw = call
+            assert args == ("my-distro", )
+            assert kw == {"update": True}
