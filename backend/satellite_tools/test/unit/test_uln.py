@@ -53,17 +53,17 @@ class TestULNAuth:
         """
         Test ULN uri inserts a default hostname, if not specified.
         """
-        netloc, path  = uln_auth_instance.get_hostname("uln:///suse")
-        assert netloc == ulnauth.ULNAuth.ULN_DEFAULT_HOST
-        assert path == "/suse"
+        hostname, path  = self.uln_auth_instance.get_hostname("uln:///suse")
+        assert hostname == "https://{}".format(ulnauth.ULNAuth.ULN_DEFAULT_HOST)
+        assert path == "suse"
 
     def test_get_hostname_custom(self):
         """
         Test ULN uri inserts a custom hostname, if specified.
         """
-        netloc, path  = uln_auth_instance.get_hostname("uln://scc.suse.de/suse")
-        assert netloc == "scc.suse.de"
-        assert path == "/suse"
+        hostname, path  = self.uln_auth_instance.get_hostname("uln://scc.suse.de/suse")
+        assert hostname == "https://scc.suse.de"
+        assert path == "suse"
 
     @patch("os.path.exists", MagicMock(return_value=False))
     @patch("os.access", MagicMock(return_value=False))
@@ -162,7 +162,7 @@ class TestULNAuth:
             assert server_list.call_args_list[0][0] == (['https://linux-update.oracle.com/rpc/api'],)
             rs_call = retry_server.call_args_list[0][1]
             for p_name, p_val in {'refreshCallback': None, 'username': 'user',
-                          'proxy': None, 'password': 'password', 'timeout': 5}.items():
+                          'proxy': 'uln:///suse', 'password': 'password', 'timeout': 5}.items():
                 assert p_name in rs_call
                 assert rs_call[p_name] == p_val
 
