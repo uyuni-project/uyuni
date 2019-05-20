@@ -4,7 +4,7 @@ const React = require("react");
 const ReactDOM = require("react-dom");
 
 const Link = (props) =>
-  <a href={props.url} className={props.cssClass} target={props.target} title={props.title}>
+  <a href={props.url} className={props.cssClass  + " js-spa"} target={props.target} title={props.title}>
     {props.responsiveLabel}
     {props.label}
   </a>

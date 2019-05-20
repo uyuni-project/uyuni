@@ -83,7 +83,9 @@ const ListProjects = (props: Props) => {
             comparator={Functions.Utils.sortByText}
             header={t('Name')}
             cell={row =>
-              <a href={`/rhn/manager/contentmanagement/project/${row.label}`}>
+              <a
+                className="js-spa"
+                href={`/rhn/manager/contentmanagement/project/${row.label}`}>
                 {row.name}
               </a>
             }
