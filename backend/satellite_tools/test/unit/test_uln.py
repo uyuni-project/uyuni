@@ -137,7 +137,7 @@ class TestULNAuth:
                 self.uln_auth_instance.get_credentials()
             assert "Credentials were not found in the configuration" in str(exc)
 
-    @patch("ulnauth.get_proxy", MagicMock(return_value=("uln:///suse", "user", "password")))
+    @patch("ulnauth.get_proxy", MagicMock(return_value=("https://my_http_proxy", "user", "password")))
     def test_auth_uln(self):
         """
         Authenticate ULN, getting its token.
@@ -162,7 +162,7 @@ class TestULNAuth:
             assert server_list.call_args_list[0][0] == (['https://linux-update.oracle.com/rpc/api'],)
             rs_call = retry_server.call_args_list[0][1]
             for p_name, p_val in {'refreshCallback': None, 'username': 'user',
-                          'proxy': 'uln:///suse', 'password': 'password', 'timeout': 5}.items():
+                          'proxy': 'https://my_http_proxy', 'password': 'password', 'timeout': 5}.items():
                 assert p_name in rs_call
                 assert rs_call[p_name] == p_val
 
