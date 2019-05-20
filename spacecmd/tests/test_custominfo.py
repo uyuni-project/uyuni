@@ -96,7 +96,7 @@ class TestSCCusomInfo:
         """
         Test do_custominfo_deletekey calls deleteKey API function.
         """
-        keylist=["some_key", "some_other_key", "this_key_stays"]
+        keylist = ["some_key", "some_other_key", "this_key_stays"]
         shell.client.system.custominfo.deleteKey = MagicMock()
         shell.do_custominfo_listkeys = MagicMock(return_value=keylist)
         shell.help_custominfo_deletekey = MagicMock(side_effect=Exception("Kaboom"))
