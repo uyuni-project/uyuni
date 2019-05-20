@@ -558,7 +558,7 @@ type=rpm-md
         if uln_repo:
            _url = 'plugin:spacewalk-uln-resolver?url={}'.format(self._url_orig)
         else:
-           _url=zypp_repo_url if not mirrorlist else os.path.join(repo.root, 'mirrorlist.txt')
+           _url = zypp_repo_url if not mirrorlist else os.path.join(repo.root, 'mirrorlist.txt')
 
         with open(os.path.join(repo.root, "etc/zypp/repos.d", str(self.channel_label or self.reponame) + ".repo"), "w") as repo_conf_file:
             repo_conf_file.write(repo_cfg.format(
