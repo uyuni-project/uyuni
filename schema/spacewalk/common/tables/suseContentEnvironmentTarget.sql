@@ -24,7 +24,8 @@ CREATE TABLE suseContentEnvironmentTarget(
     status     VARCHAR2(32) NOT NULL DEFAULT 'NEW',
     channel_id NUMBER
                    CONSTRAINT suse_ct_env_tgt_chanid_fk
-                       REFERENCES rhnChannel(id)
+                       REFERENCES rhnChannel(id),
+    built_time TIMESTAMP WITH LOCAL TIME ZONE
 )
 ENABLE ROW MOVEMENT
 ;
