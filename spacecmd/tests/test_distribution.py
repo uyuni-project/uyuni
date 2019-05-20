@@ -364,3 +364,38 @@ class TestSCDistribution:
         assert_expect(shell.user_confirm.call_args_list,
                       "Delete distribution tree(s) [y/N]:")
         assert_expect(mprint.call_args_list, "bar")
+
+    def test_distribution_delete_args_match_confirm(self, shell):
+        """
+        Test do_distribution_delete with correct arguments, confirmed to delete.
+
+        :param shell:
+        :return:
+        """
+        shell.do_distribution_list = MagicMock(return_value=["bar"])
+        shell.help_distribution_delete = MagicMock()
+        shell.client.kickstart.tree.delete = MagicMock()
+        shell.user_confirm = MagicMock(return_value=True)
+        logger = MagicMock()
+        mprint = MagicMock()
+
+        with patch("spacecmd.distribution.print", mprint) as prn, \
+                patch("spacecmd.distribution.logging", logger) as lgr:
+            spacecmd.distribution.do_distribution_delete(shell, "b*")
+
+        assert not logger.error.called
+        assert not shell.help_distribution_delete.called
+        assert shell.client.kickstart.tree.delete.called
+        assert logger.debug.called
+        assert mprint.called
+        assert shell.user_confirm.called
+
+        assert_expect(logger.debug.call_args_list,
+                      "distribution_delete called with args ['b.*'], dists=['bar']")
+        assert_expect(shell.user_confirm.call_args_list,
+                      "Delete distribution tree(s) [y/N]:")
+        assert_expect(mprint.call_args_list, "bar")
+
+        for call in shell.client.kickstart.tree.delete.call_args_list:
+            args, kw = call
+            assert args == (shell.session, "bar",)
