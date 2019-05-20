@@ -510,11 +510,12 @@ class TestSCDistribution:
         :param shell:
         :return:
         """
-        shell.help_distribution_rename = MagicMock()
-        shell.client.kickstart.tree.rename = MagicMock()
+        for args in ["", "foo"]:
+            shell.help_distribution_rename = MagicMock()
+            shell.client.kickstart.tree.rename = MagicMock()
 
-        spacecmd.distribution.do_distribution_rename(shell, "")
+            spacecmd.distribution.do_distribution_rename(shell, "")
 
-        assert not shell.client.kickstart.tree.rename.called
-        assert shell.help_distribution_rename.called
+            assert not shell.client.kickstart.tree.rename.called
+            assert shell.help_distribution_rename.called
 
