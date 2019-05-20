@@ -27,17 +27,15 @@ from spacewalk.satellite_tools.repo_plugins.yum_src import ContentSource as yum_
 from spacewalk.satellite_tools.syncLib import RhnSyncException
 from spacewalk.satellite_tools.ulnauth import ULNAuth
 
-ULNSRC_CONF = '/etc/rhn/spacewalk-repo-sync/uln.conf'
-
 class ContentSource(yum_ContentSource):
 
-    def __init__(self, url, name, insecure=False, interactive=True, yumsrc_conf=ULNSRC_CONF,
+    def __init__(self, url, name, insecure=False, interactive=True, yumsrc_conf=ULNAuth.ULN_CONF_PATH,
                  org=1, channel_label="", no_mirrors=False,
                  ca_cert_file=None, client_cert_file=None, client_key_file=None):
         if url[:6] != "uln://":
             raise RhnSyncException("url format error, url must start with uln://")
         yum_ContentSource.__init__(self, url=url, name=name, insecure=insecure,
-                                   interactive=interactive, yumsrc_conf=ULNSRC_CONF, org=org,
+                                   interactive=interactive, yumsrc_conf=yumsrc_conf, org=org,
                                    channel_label=channel_label, no_mirrors=no_mirrors,
                                    ca_cert_file=ca_cert_file, client_cert_file=client_cert_file,
                                    client_key_file=client_key_file)
