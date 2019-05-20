@@ -538,3 +538,18 @@ class TestSCDistribution:
             args, kw = call
             assert args == (shell.session, "source", "destination")
 
+    def test_distribution_update_noargs(self, shell):
+        """
+        Test do_distribution_update without arguments.
+
+        :param shell:
+        :return:
+        """
+
+        shell.help_distribution_update = MagicMock()
+        shell.do_distribution_create = MagicMock()
+
+        spacecmd.distribution.do_distribution_update(shell, "")
+
+        assert not shell.do_distribution_create.called
+        assert shell.help_distribution_update.called
