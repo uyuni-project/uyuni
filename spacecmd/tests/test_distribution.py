@@ -399,3 +399,28 @@ class TestSCDistribution:
         for call in shell.client.kickstart.tree.delete.call_args_list:
             args, kw = call
             assert args == (shell.session, "bar",)
+
+    def test_distribution_details_noargs(self, shell):
+        """
+        Test do_distribution_details with no arguments.
+
+        :param shell:
+        :return:
+        """
+        shell.help_distribution_details = MagicMock()
+        shell.client.kickstart.tree.getDetails = MagicMock()
+        shell.client.channel.software.getDetails = MagicMock()
+        shell.do_distribution_list = MagicMock()
+        logger = MagicMock()
+        mprint = MagicMock()
+
+        with patch("spacecmd.distribution.print", mprint) as prn, \
+                patch("spacecmd.distribution.logging", logger) as lgr:
+            spacecmd.distribution.do_distribution_details(shell, "")
+
+        assert not logger.error.called
+        assert not logger.debug.called
+        assert not shell.client.kickstart.tree.getDetails.called
+        assert not shell.client.channel.software.getDetails.called
+        assert not shell.do_distribution_list.called
+        assert shell.help_distribution_details.called
