@@ -424,3 +424,33 @@ class TestSCDistribution:
         assert not shell.client.channel.software.getDetails.called
         assert not shell.do_distribution_list.called
         assert shell.help_distribution_details.called
+
+    def test_distribution_details_no_dists(self, shell):
+        """
+        Test do_distribution_details with no distributions found.
+
+        :param shell:
+        :return:
+        """
+        shell.help_distribution_details = MagicMock()
+        shell.client.kickstart.tree.getDetails = MagicMock()
+        shell.client.channel.software.getDetails = MagicMock()
+        shell.do_distribution_list = MagicMock(return_value=[])
+        logger = MagicMock()
+        mprint = MagicMock()
+
+        with patch("spacecmd.distribution.print", mprint) as prn, \
+                patch("spacecmd.distribution.logging", logger) as lgr:
+            spacecmd.distribution.do_distribution_details(shell, "test*")
+
+        assert not shell.client.kickstart.tree.getDetails.called
+        assert not shell.client.channel.software.getDetails.called
+        assert not shell.help_distribution_details.called
+        assert logger.debug.called
+        assert logger.error.called
+        assert shell.do_distribution_list.called
+
+        assert_expect(logger.debug.call_args_list,
+                      "distribution_details called with args ['test.*'], dists=[]")
+        assert_expect(logger.error.call_args_list,
+                      "No distributions matched argument ['test.*']")
