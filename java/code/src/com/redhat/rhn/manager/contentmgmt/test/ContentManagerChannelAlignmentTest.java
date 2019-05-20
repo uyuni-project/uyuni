@@ -13,7 +13,7 @@
  * in this software or its documentation.
  */
 
-package com.redhat.rhn.manager.channel.test;
+package com.redhat.rhn.manager.contentmgmt.test;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.channel.Channel;
@@ -57,7 +57,7 @@ import static java.util.stream.Collectors.toSet;
 /**
  * Test for the content-management related methods in {@link ChannelManager}
  */
-public class ChannelManagerContentAlignmentTest extends BaseTestCaseWithUser {
+public class ContentManagerChannelAlignmentTest extends BaseTestCaseWithUser {
 
     private Channel srcChannel;
     private Channel tgtChannel;
@@ -99,7 +99,7 @@ public class ChannelManagerContentAlignmentTest extends BaseTestCaseWithUser {
     public void testAlignEntities() throws Exception {
         // let's add a package to the target. it should be removed after aligning
         tgtChannel.getPackages().add(PackageTest.createTestPackage(user.getOrg()));
-        ChannelManager.alignEnvironmentTargetSync(emptyList(), srcChannel, tgtChannel, user);
+        ContentManager.alignEnvironmentTargetSync(emptyList(), srcChannel, tgtChannel, user);
 
         // check that newest packages cache has been updated
         assertEquals(
@@ -127,7 +127,7 @@ public class ChannelManagerContentAlignmentTest extends BaseTestCaseWithUser {
         assertEquals(pack2.getId(), ChannelManager.getLatestPackageEqual(tgtChannel.getId(), pack2.getPackageName().getName()));
         assertNull(ChannelManager.getLatestPackageEqual(tgtChannel.getId(), pkg.getPackageName().getName()));
 
-        ChannelManager.alignEnvironmentTargetSync(emptyList(), srcChannel, tgtChannel, user);
+        ContentManager.alignEnvironmentTargetSync(emptyList(), srcChannel, tgtChannel, user);
         assertEquals(pkg.getId(), ChannelManager.getLatestPackageEqual(tgtChannel.getId(), pkg.getPackageName().getName()));
         assertNull(ChannelManager.getLatestPackageEqual(tgtChannel.getId(), pack2.getPackageName().getName()));
     }
@@ -167,7 +167,7 @@ public class ChannelManagerContentAlignmentTest extends BaseTestCaseWithUser {
         FilterCriteria criteria2 = new FilterCriteria(FilterCriteria.Matcher.CONTAINS, "name", pack2.getPackageName().getName());
         ContentFilter filter2 = ContentManager.createFilter("test-filter-12345", DENY, PACKAGE, criteria2, user);
 
-        ChannelManager.alignEnvironmentTargetSync(Arrays.asList(filter, filter2), srcChannel, tgtChannel, user);
+        ContentManager.alignEnvironmentTargetSync(Arrays.asList(filter, filter2), srcChannel, tgtChannel, user);
         List<Long> ids = ChannelManager.latestPackagesInChannel(tgtChannel).stream()
                 .map(p -> (Long) p.get("id"))
                 .collect(Collectors.toList());
@@ -191,7 +191,7 @@ public class ChannelManagerContentAlignmentTest extends BaseTestCaseWithUser {
 
         SystemManager.subscribeServerToChannel(user, server, tgtChannel);
 
-        ChannelManager.alignEnvironmentTargetSync(emptyList(), srcChannel, tgtChannel, user);
+        ContentManager.alignEnvironmentTargetSync(emptyList(), srcChannel, tgtChannel, user);
         assertEquals(errata.getId(), SystemManager.relevantErrata(user, server.getId()).get(0).getId());
     }
 
@@ -213,7 +213,7 @@ public class ChannelManagerContentAlignmentTest extends BaseTestCaseWithUser {
         List<SystemOverview> systemsWithNeededPackage = SystemManager.listSystemsWithNeededPackage(user, pkg.getId());
         assertTrue(systemsWithNeededPackage.isEmpty());
 
-        ChannelManager.alignEnvironmentTargetSync(emptyList(), srcChannel, tgtChannel, user);
+        ContentManager.alignEnvironmentTargetSync(emptyList(), srcChannel, tgtChannel, user);
         systemsWithNeededPackage = SystemManager.listSystemsWithNeededPackage(user, pkg.getId());
         assertEquals(1, systemsWithNeededPackage.size());
         assertEquals(server.getId(), systemsWithNeededPackage.get(0).getId());
@@ -243,7 +243,7 @@ public class ChannelManagerContentAlignmentTest extends BaseTestCaseWithUser {
         assertEquals(1, systemsWithNeededPackage.size());
         assertEquals(server.getId(), systemsWithNeededPackage.get(0).getId());
 
-        ChannelManager.alignEnvironmentTargetSync(emptyList(), srcChannel, tgtChannel, user);
+        ContentManager.alignEnvironmentTargetSync(emptyList(), srcChannel, tgtChannel, user);
         systemsWithNeededPackage = SystemManager.listSystemsWithNeededPackage(user, otherPkg.getId());
         assertTrue(systemsWithNeededPackage.isEmpty());
     }
@@ -259,7 +259,7 @@ public class ChannelManagerContentAlignmentTest extends BaseTestCaseWithUser {
         Errata toRemove = ErrataFactoryTest.createTestPublishedErrata(user.getOrg().getId());;
         tgtChannel.addErrata(toRemove);
 
-        ChannelManager.alignEnvironmentTargetSync(emptyList(), srcChannel, tgtChannel, user);
+        ContentManager.alignEnvironmentTargetSync(emptyList(), srcChannel, tgtChannel, user);
 
         // check that packages and errata have been aligned
         assertEquals(srcChannel.getPackages(), tgtChannel.getPackages());
@@ -274,7 +274,7 @@ public class ChannelManagerContentAlignmentTest extends BaseTestCaseWithUser {
         FilterCriteria criteria = new FilterCriteria(FilterCriteria.Matcher.EQUALS, "advisory_name", errata.getAdvisoryName());
         ContentFilter filter = ContentManager.createFilter("test-filter-123", DENY, ERRATUM, criteria, user);
 
-        ChannelManager.alignEnvironmentTargetSync(singleton(filter), srcChannel, tgtChannel, user);
+        ContentManager.alignEnvironmentTargetSync(singleton(filter), srcChannel, tgtChannel, user);
 
         assertTrue(tgtChannel.getErratas().isEmpty());
     }
@@ -320,7 +320,7 @@ public class ChannelManagerContentAlignmentTest extends BaseTestCaseWithUser {
         FilterCriteria criteria2 = new FilterCriteria(FilterCriteria.Matcher.EQUALS, "advisory_name", e6.getAdvisoryName());
         ContentFilter filter2 = ContentManager.createFilter("test-filter-1235", DENY, ERRATUM, criteria2, user);
 
-        ChannelManager.alignEnvironmentTargetSync(Arrays.asList(filter, filter2), srcChan, tgtChan, user);
+        ContentManager.alignEnvironmentTargetSync(Arrays.asList(filter, filter2), srcChan, tgtChan, user);
 
         assertEquals(2, tgtChan.getErrataCount());
         tgtChan = (Channel) HibernateFactory.reload(tgtChan);
@@ -343,7 +343,7 @@ public class ChannelManagerContentAlignmentTest extends BaseTestCaseWithUser {
         FilterCriteria criteria = new FilterCriteria(FilterCriteria.Matcher.EQUALS, "advisory_name", errata.getAdvisoryName());
         ContentFilter filter = ContentManager.createFilter("test-filter-1234", DENY, ERRATUM, criteria, user);
 
-        ChannelManager.alignEnvironmentTargetSync(singleton(filter), srcChannel, tgtChannel, user);
+        ContentManager.alignEnvironmentTargetSync(singleton(filter), srcChannel, tgtChannel, user);
 
         tgtChannel = (Channel) HibernateFactory.reload(tgtChannel);
 

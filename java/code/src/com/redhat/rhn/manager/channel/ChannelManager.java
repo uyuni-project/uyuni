@@ -24,7 +24,6 @@ import com.redhat.rhn.common.db.datasource.WriteMode;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.localization.LocalizationService;
-import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.common.validator.ValidatorException;
 import com.redhat.rhn.domain.channel.Channel;
@@ -39,12 +38,6 @@ import com.redhat.rhn.domain.channel.DistChannelMap;
 import com.redhat.rhn.domain.channel.InvalidChannelRoleException;
 import com.redhat.rhn.domain.channel.ProductName;
 import com.redhat.rhn.domain.channel.ReleaseChannelMap;
-import com.redhat.rhn.domain.contentmgmt.ContentFilter;
-import com.redhat.rhn.domain.contentmgmt.ContentProjectFactory;
-import com.redhat.rhn.domain.contentmgmt.EnvironmentTarget;
-import com.redhat.rhn.domain.contentmgmt.ErrataFilter;
-import com.redhat.rhn.domain.contentmgmt.PackageFilter;
-import com.redhat.rhn.domain.contentmgmt.SoftwareEnvironmentTarget;
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.kickstart.KickstartData;
 import com.redhat.rhn.domain.org.Org;
@@ -52,7 +45,6 @@ import com.redhat.rhn.domain.product.SUSEProduct;
 import com.redhat.rhn.domain.product.SUSEProductChannel;
 import com.redhat.rhn.domain.product.SUSEProductExtension;
 import com.redhat.rhn.domain.product.SUSEProductFactory;
-import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.rhnpackage.PackageEvr;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.MinionServer;
@@ -70,15 +62,12 @@ import com.redhat.rhn.frontend.dto.PackageDto;
 import com.redhat.rhn.frontend.dto.PackageListItem;
 import com.redhat.rhn.frontend.dto.PackageOverview;
 import com.redhat.rhn.frontend.dto.SystemsPerChannelDto;
-import com.redhat.rhn.frontend.events.AlignSoftwareTargetAction;
-import com.redhat.rhn.frontend.events.AlignSoftwareTargetMsg;
 import com.redhat.rhn.frontend.listview.ListControl;
 import com.redhat.rhn.frontend.listview.PageControl;
 import com.redhat.rhn.frontend.xmlrpc.NoSuchChannelException;
 import com.redhat.rhn.frontend.xmlrpc.ProxyChannelNotFoundException;
 import com.redhat.rhn.manager.BaseManager;
 import com.redhat.rhn.manager.action.ActionManager;
-import com.redhat.rhn.manager.errata.ErrataManager;
 import com.redhat.rhn.manager.errata.cache.ErrataCacheManager;
 import com.redhat.rhn.manager.rhnpackage.PackageManager;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
@@ -99,7 +88,6 @@ import java.sql.Types;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -110,7 +98,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -2753,130 +2740,6 @@ public class ChannelManager extends BaseManager {
         params.put("from", fromCid);
         params.put("to", toCid);
         return m.executeUpdate(params);
-    }
-
-    /**
-     * Align packages and errata of the {@link SoftwareEnvironmentTarget} to the source {@link Channel}
-     *
-     * @param src the source {@link Channel}
-     * @param tgt the target {@link SoftwareEnvironmentTarget}
-     * @param filters the {@link ContentFilter}s
-     * @param async run this operation asynchronously?
-     * @param user the user
-     */
-    public static void alignEnvironmentTarget(Channel src, SoftwareEnvironmentTarget tgt, List<ContentFilter> filters,
-            boolean async, User user) {
-        // adjust the target status
-        tgt.setStatus(EnvironmentTarget.Status.BUILDING);
-        ContentProjectFactory.save(tgt);
-
-        AlignSoftwareTargetMsg msg = new AlignSoftwareTargetMsg(src, tgt, filters, user);
-        if (async) {
-            MessageQueue.publish(msg);
-        }
-        else {
-            new AlignSoftwareTargetAction().execute(msg);
-        }
-    }
-
-    /**
-     * Synchronously align packages and errata of the {@link SoftwareEnvironmentTarget} to the source {@link Channel}
-     * This method is potentially time-expensive and should be run asynchronously (@see alignEnvironmentTarget)
-     *
-     * @param filters the filters
-     * @param src the source {@link Channel}
-     * @param tgt the target {@link SoftwareEnvironmentTarget}
-     * @param user the user
-     */
-    public static void alignEnvironmentTargetSync(Collection<ContentFilter> filters, Channel src, Channel tgt,
-            User user) {
-        // align packages and the cache (rhnServerNeededCache)
-        List<PackageFilter> packageFilters = filters.stream()
-                .flatMap(f -> Opt.stream((Optional<PackageFilter>) f.asPackageFilter()))
-                .collect(Collectors.toList());
-        List<ErrataFilter> errataFilters = filters.stream()
-                .flatMap(f -> Opt.stream((Optional<ErrataFilter>) f.asErrataFilter()))
-                .collect(Collectors.toList());
-
-        alignPackages(src, tgt, packageFilters);
-
-        // align errata and the cache (rhnServerNeededCache)
-        alignErrata(src, tgt, errataFilters, user);
-
-        // update the channel newest packages cache
-        ChannelFactory.refreshNewestPackageCache(tgt, "java::alignPackages");
-
-        // now request repo regen
-        tgt.setLastModified(new Date());
-        HibernateFactory.getSession().saveOrUpdate(tgt);
-        ChannelManager.queueChannelChange(tgt.getLabel(), "java::alignChannel", "Channel aligned");
-    }
-
-    private static void alignPackages(Channel srcChannel, Channel tgtChannel, Collection<PackageFilter> filters) {
-        Set<Package> oldTgtPackages = new HashSet<>(tgtChannel.getPackages());
-        Set<Package> onlyInSrc = new HashSet<>(srcChannel.getPackages());
-        onlyInSrc.removeAll(tgtChannel.getPackages());
-
-        // align the packages
-        tgtChannel.getPackages().clear();
-        Set<Package> newPackages = filterPackages(srcChannel.getPackages(), filters);
-        tgtChannel.getPackages().addAll(newPackages);
-
-        // remove cache entries for only in tgt
-        oldTgtPackages.removeAll(newPackages);
-        ErrataCacheManager.deleteCacheEntriesForChannelPackages(tgtChannel.getId(), extractPackageIds(oldTgtPackages));
-
-        // add cache entries for new ones
-        ErrataCacheManager.insertCacheForChannelPackages(tgtChannel.getId(), null,
-                extractPackageIds(filterPackages(onlyInSrc, filters)));
-    }
-
-    /**
-     * Align {@link Errata} of a target {@link Channel} to the source {@link Channel}
-     *
-     * Alignment has 4 steps:
-     * 1. Compute included and excluded errata based on given source channel and {@link ErrataFilter}s
-     * 2. Remove (truncate) those errata in target channel, which are not in included errata (or which do not have
-     * original in the included errata)
-     * 3. Remove the {@link Package}s from excluded errata from target channel
-     * 4. Merge the included errata to target channel
-     *
-     * @param src the source {@link Channel}
-     * @param tgt the target {@link Channel}
-     * @param errataFilters the {@link ErrataFilter}s
-     * @param user the {@link User}
-     */
-    private static void alignErrata(Channel src, Channel tgt, Collection<ErrataFilter> errataFilters, User user) {
-        Predicate<Errata> compositePredicate = errataFilters.stream()
-                .map(f -> (Predicate) f)
-                .reduce((f1, f2) -> f1.and(f2))
-                .orElse(p -> true);
-
-        Map<Boolean, List<Errata>> partitionedErrata = src.getErratas().stream()
-                .collect(Collectors.partitioningBy(compositePredicate));
-        Set<Errata> includedErrata = new HashSet<>(partitionedErrata.get(true));
-        List<Errata> excludedErrata = partitionedErrata.get(false);
-
-        // Truncate extra errata in target channel
-        ErrataManager.truncateErrata(includedErrata, tgt, user);
-        // Remove packages from excluded errata
-        excludedErrata.forEach(e -> ErrataManager.removeErratumAndPackagesFromChannel(e, tgt, user));
-        // Merge the included errata
-        ErrataManager.mergeErrataToChannel(user, includedErrata, tgt, src, false, false);
-    }
-
-    private static List<Long> extractPackageIds(Collection<Package> packages) {
-        return packages.stream().map(p -> p.getId()).collect(Collectors.toList());
-    }
-
-    private static Set<Package> filterPackages(Set<Package> packages, Collection<PackageFilter> packageFilters) {
-        Predicate<Package> compositePredicate = packageFilters.stream()
-                .map(f -> (Predicate) f)
-                .reduce((f1, f2) -> f1.and(f2))
-                .orElse(p -> true);
-        return packages.stream()
-                .filter(compositePredicate)
-                .collect(Collectors.toSet());
     }
 
     /**
