@@ -2881,8 +2881,8 @@ and try again.
           <context context-type="sourcefile">/systems/Search</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="systemsearch_location_country">
-        <source>Country</source>
+      <trans-unit id="systemsearch_location_country_code">
+        <source>Country Code</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/Search</context>
         </context-group>
