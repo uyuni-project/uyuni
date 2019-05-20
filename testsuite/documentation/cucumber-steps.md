@@ -546,6 +546,7 @@ The check box can be identified by name, id or label text.
 ```cucumber
   When I wait until onboarding is completed for "ceos-minion"
   When I wait until event "Package Install/Upgrade scheduled by admin" is completed
+  When I wait until all events in history are completed
 ```
 
 
