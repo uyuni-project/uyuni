@@ -80,7 +80,7 @@ const ListFilters = (props: Props) => {
           columnKey="projects"
           header={t('Projects in use')}
           cell={row => row.projects.map(p =>
-            <a className="project-tag-link" href={`/rhn/manager/contentmanagement/project/${p}`}>
+            <a className="project-tag-link js-spa" href={`/rhn/manager/contentmanagement/project/${p}`}>
               {p}
             </a>
           )}
