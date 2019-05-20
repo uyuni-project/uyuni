@@ -22,3 +22,4 @@ RUN zypper in -y python3-pip python3-solv python3-salt
 
 RUN pip3 install --upgrade pylint==1.8 astroid==1.6.5
 
+RUN zypper in -y python3-pytest
