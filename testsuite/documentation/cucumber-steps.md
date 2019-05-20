@@ -737,3 +737,37 @@ When implementing a step, to convert a step host name into a target, use:
 ```ruby
   node = get_target(target)
 ```
+
+#### Using cookies to store login information
+
+It is possible to work with cookies in testsuite and use them to store login information. There are no special dependencies except `Marshal` module for Ruby.
+
+Following code is expected to be a part of function used as step definition for user authorization:
+
+```ruby
+  # Check if there is already stored cookie session. If that is true, use it to login.
+  cookie_path = '/tmp/web-session'
+  if File.file?(cookie_path)
+    # Load of serialized cookie data from file in binary mode
+    cookie_data = Marshal.load(File.open(cookie_path, 'rb'))
+    cookie_data.each do |cookie|
+      page.driver.browser.manage.add_cookie(cookie)
+    end
+    # Reload page for login to take an effect
+    page.evaluate_script 'window.location.reload()'
+    # End function call if user is logged in
+    next if page.all(:xpath, "//header//span[text()='#{user}']").any?
+  end
+  # This code is executed only in case session is not stored yet.
+  cookie = page.driver.browser.manage.all_cookies
+  # Serialization and save of cookies to file in binary mode
+  File.open(cookie_path, 'wb') { |cookie_file|
+    Marshal.dump(cookie, cookie_file)
+  }
+```
+
+NOTE: This solution was tested and worked properly, but there was no time gain in comparison with old solution using capybara steps.
+
+Useful links:
+
+- [Selenium docs](https://www.seleniumhq.org/docs/03_webdriver.jsp)
