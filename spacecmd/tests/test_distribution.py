@@ -503,3 +503,18 @@ class TestSCDistribution:
             exp.pop(0)
         assert not exp
 
+    def test_distribution_rename_noargs(self, shell):
+        """
+        Test do_distribution_rename without arguments.
+
+        :param shell:
+        :return:
+        """
+        shell.help_distribution_rename = MagicMock()
+        shell.client.kickstart.tree.rename = MagicMock()
+
+        spacecmd.distribution.do_distribution_rename(shell, "")
+
+        assert not shell.client.kickstart.tree.rename.called
+        assert shell.help_distribution_rename.called
+
