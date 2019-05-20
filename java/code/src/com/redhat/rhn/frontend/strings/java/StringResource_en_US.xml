@@ -1133,20 +1133,20 @@
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="Your Account">
-        <source>Your Account</source>
+      <trans-unit id="My Account">
+        <source>My Account</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="Your Preferences">
-        <source>Your Preferences</source>
+      <trans-unit id="My Preferences">
+        <source>My Preferences</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="Your Organization">
-        <source>Your Organization</source>
+      <trans-unit id="My Organization">
+        <source>My Organization</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
