@@ -17,7 +17,9 @@ package com.redhat.rhn.domain.contentmgmt;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
+import java.util.Date;
 import java.util.Optional;
+
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.Entity;
@@ -46,6 +48,7 @@ public abstract class EnvironmentTarget {
     private Long id;
     private ContentEnvironment contentEnvironment;
     private Status status;
+    private Date builtTime;
 
     /**
      * Status of the {@link EnvironmentTarget}
@@ -162,6 +165,24 @@ public abstract class EnvironmentTarget {
                 .append("id", id)
                 .append("contentEnvironment", contentEnvironment)
                 .append("status", status);
+    }
+
+
+    /**
+     * Gets the time of latest build
+     * @return Date of latest build
+     */
+    @Column(name = "built_time")
+    public Date getBuiltTime() {
+        return this.builtTime;
+    }
+
+    /**
+     * Sets the time of latest build
+     * @param builtTimeIn New value for build time
+     */
+    public void setBuiltTime(Date builtTimeIn) {
+        this.builtTime = builtTimeIn;
     }
 
     @Override
