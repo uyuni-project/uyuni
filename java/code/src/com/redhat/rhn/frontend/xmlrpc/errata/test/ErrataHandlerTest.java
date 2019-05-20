@@ -840,20 +840,41 @@ public class ErrataHandlerTest extends BaseHandlerTestCase {
                 errata.getAdvisoryRel().longValue());
     }
 
-    public void testPublish() throws Exception {
-
-        Errata unpublished = ErrataFactoryTest.createTestUnpublishedErrata(
-                admin.getOrg().getId());
+    /**
+     * Note:
+     * custom errata --> orgId != null
+     * vendor errata --> orgId == null
+     **/
+    public void testPublishCustomErrata() throws Exception {
+        // publish a custom errata
+        Errata unpublished = ErrataFactoryTest.createTestUnpublishedErrata(admin.getOrg().getId());
         Channel channel = ChannelFactoryTest.createBaseChannel(admin);
         channel.setOrg(admin.getOrg());
         ArrayList channels = new ArrayList();
         channels.add(channel.getLabel());
-        Errata published = handler.publish(admin, unpublished.getAdvisoryName(),
-                channels);
+        Errata published = handler.publish(admin, unpublished.getAdvisoryName(), channels);
 
         assertTrue(published.isPublished());
         assertEquals(unpublished.getAdvisory(), published.getAdvisory());
+    }
 
+    /**
+     * Note:
+     * custom errata --> orgId != null
+     * vendor errata --> orgId == null
+     **/
+    public void testPublishVendorErrata() throws Exception {
+        // publish a custom errata
+        Errata unpublished = ErrataFactoryTest.createTestUnpublishedErrata(admin.getOrg().getId());
+        unpublished.setOrg(null); // let the errata be a vendor one
+        Channel channel = ChannelFactoryTest.createBaseChannel(admin);
+        channel.setOrg(admin.getOrg());
+        ArrayList channels = new ArrayList();
+        channels.add(channel.getLabel());
+        Errata published = handler.publish(admin, unpublished.getAdvisoryName(), channels);
+
+        assertTrue(published.isPublished());
+        assertEquals(unpublished.getAdvisory(), published.getAdvisory());
     }
 
     public void testListByDate() throws Exception {
