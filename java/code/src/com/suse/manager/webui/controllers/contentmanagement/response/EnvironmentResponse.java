@@ -14,6 +14,8 @@
  */
 package com.suse.manager.webui.controllers.contentmanagement.response;
 
+import java.util.Date;
+
 /**
  * JSON response wrapper for an environment of a content project.
  */
@@ -25,6 +27,7 @@ public class EnvironmentResponse {
     private String description;
     private Long version;
     private String status;
+    private Date builtTime;
 
     public void setStatus(String statusIn) {
         this.status = statusIn;
@@ -48,5 +51,9 @@ public class EnvironmentResponse {
 
     public void setVersion(Long versionIn) {
         this.version = versionIn;
+    }
+
+    public void setBuiltTime(Date builtTimeIn) {
+        this.builtTime = builtTimeIn;
     }
 }

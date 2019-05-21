@@ -26,7 +26,8 @@ export type ProjectEnvironmentType = {
   name: string,
   description: string,
   status: string,
-  version: number
+  version: number,
+  builtTime: ?string
 }
 
 export type ProjectFilterServerType = {
