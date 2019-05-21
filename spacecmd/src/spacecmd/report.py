@@ -47,6 +47,8 @@ def do_report_inactivesystems(self, args):
     if len(args) == 1:
         try:
             days = int(args[0])
+            if days < 0:
+                days = 7
         except ValueError:
             # default to a week when passed a bad argument
             days = 7
