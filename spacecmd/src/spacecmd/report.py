@@ -211,7 +211,7 @@ def do_report_ipaddresses(self, args):
             print('%s  %s  %s' %
                   (system.ljust(system_max_size),
                    report[system]['hostname'].ljust(hostname_max_size),
-                   report[system]['ip'].ljust(15)))
+                   report[system]['ip'].ljust(15).strip()))
 
 ####################
 
