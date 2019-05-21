@@ -1,3 +1,4 @@
+- Hide disabled activation keys in form drop-downs (bsc#1101706)
 - Display warning if product catalog refresh is already in progress (bsc#1132234)
 
 -------------------------------------------------------------------
