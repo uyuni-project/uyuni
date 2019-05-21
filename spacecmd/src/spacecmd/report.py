@@ -119,14 +119,16 @@ def help_report_errata(self):
 
 
 def do_report_errata(self, args):
+    partial_errata = True
     arg_parser = get_argument_parser()
 
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    (_args, _options) = parse_command_arguments(args, arg_parser)
 
-    if not args:
+    if not _args:
         print('All errata requested - this may take a few minutes, please be patient!')
+        partial_errata = False
 
-    errata_list = self.expand_errata(args)
+    errata_list = self.expand_errata(_args)
 
     report = {}
     for erratum in errata_list:
