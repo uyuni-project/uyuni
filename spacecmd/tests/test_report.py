@@ -496,3 +496,43 @@ class TestSCReport:
             assert_expect([call], next(iter(exp)))
             exp.pop(0)
         assert not exp
+
+    def test_report_kernels_search_kernels(self, shell):
+        """
+        Test do_report_kernels from system by search
+
+        :param shell:
+        :return:
+        """
+        shell.ssm = MagicMock()
+        shell.expand_systems = MagicMock(return_value=["system-a", "system-b"])
+        shell.get_system_names = MagicMock(return_value=[])
+        shell.get_system_id = MagicMock(side_effect=[
+            1000010000, 1000010001,
+        ])
+        shell.client.system.getRunningKernel = MagicMock(side_effect=[
+            "4.4.0-109-generic",
+            "4.1.0-286-generic"
+        ])
+        mprint = MagicMock()
+
+        with patch("spacecmd.report.print", mprint) as prn:
+            spacecmd.report.do_report_kernels(shell, "search:system-*")
+
+        assert not shell.get_system_names.called
+        assert not shell.ssm.keys.called
+        assert shell.expand_systems.called
+        assert shell.get_system_id.called
+        assert shell.client.system.getRunningKernel.called
+        assert mprint.called
+
+        exp = [
+            'System    Kernel',
+            '------    ------',
+            'system-a  4.4.0-109-generic',
+            'system-b  4.1.0-286-generic'
+        ]
+        for call in mprint.call_args_list:
+            assert_expect([call], next(iter(exp)))
+            exp.pop(0)
+        assert not exp
