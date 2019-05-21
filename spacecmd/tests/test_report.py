@@ -158,3 +158,23 @@ class TestSCReport:
 
         assert mprint.called
         assert_expect(mprint.call_args_list, 'system-one\nsystem-three\nsystem-two')
+
+    def test_report_errata_noargs(self, shell):
+        """
+        Test do_report_errata with no arguments (request all errata).
+
+        :param shell:
+        :return:
+        """
+        shell.client.errata.listAffectedSystems = MagicMock()
+        shell.expand_errata = MagicMock()
+        mprint = MagicMock()
+        with patch("spacecmd.report.print", mprint) as prn:
+            spacecmd.report.do_report_errata(shell, "")
+
+        assert not shell.client.errata.listAffectedSystems.called
+        assert mprint.called
+
+        assert_expect(mprint.call_args_list,
+                      'All errata requested - this may take '
+                      'a few minutes, please be patient!')
