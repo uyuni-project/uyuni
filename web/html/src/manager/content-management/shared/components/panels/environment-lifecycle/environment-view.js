@@ -1,5 +1,6 @@
 //@flow
 import React from 'react';
+import _isEmpty from "lodash/isEmpty"
 
 import type {ProjectEnvironmentType} from '../../../type/project.type.js';
 import type {ProjectHistoryEntry} from "../../../type/project.type";
@@ -13,17 +14,18 @@ type Props = {
 
 type EnvironmentStatusEnumType = {
   [key:string]: {
+    key: string,
     text: string,
     isBuilding: boolean
   }
 }
 
 const environmentStatusEnum: EnvironmentStatusEnumType = new Proxy({
-    'new': {text: "New", isBuilding: false},
-    'building': {text: "Cloning channels", isBuilding: true},
-    'generating_repodata': {text: "Generating repositories data", isBuilding: true},
-    'built': {text: "Built", isBuilding: false},
-    'failed': {text: "Failed", isBuilding: false},
+    new: {key: "new", text: "New", isBuilding: false},
+    building: {key: "building", text: "Cloning channels", isBuilding: true},
+    generating_repodata: {key: "generating_repodata", text: "Generating repositories data", isBuilding: true},
+    built: {key: "built", text: "Built", isBuilding: false},
+    failed: {key: "failed", text: "Failed", isBuilding: false},
   },
   objectDefaultValueHandler({text: '', isBuilding: false})
 );
@@ -55,8 +57,18 @@ const EnvironmentView = React.memo((props: Props) => {
               &nbsp;
               {
                 environmentStatusEnum[props.environment.status].isBuilding &&
-                  <i className="fa fa-spinner fa-spin fa-1-5x" />
+                <i className="fa fa-spinner fa-spin fa-1-5x" />
               }
+            </dd>
+          </dl>
+          : null
+      }
+      {
+        props.environment.status === environmentStatusEnum.built.key && !_isEmpty(props.environment.builtTime) ?
+          <dl className="row">
+            <dt className="col-xs-3">Built time:</dt>
+            <dd className="col-xs-9">
+              {props.environment.builtTime}
             </dd>
           </dl>
           : null

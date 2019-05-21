@@ -15,17 +15,24 @@
 
 package com.redhat.rhn.domain.contentmgmt;
 
+import static java.util.Optional.empty;
+import static java.util.Optional.of;
+import static java.util.Optional.ofNullable;
+
 import com.redhat.rhn.domain.BaseDomainHelper;
 import com.redhat.rhn.domain.contentmgmt.EnvironmentTarget.Status;
+
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -40,10 +47,6 @@ import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Transient;
-
-import static java.util.Optional.empty;
-import static java.util.Optional.of;
-import static java.util.Optional.ofNullable;
 
 /**
  * A Content Environment
@@ -337,5 +340,22 @@ public class ContentEnvironment extends BaseDomainHelper {
         }
 
         return of(Status.BUILT);
+    }
+
+    /**
+     * Computes the built time of the {@link ContentEnvironment} based on the built times of its
+     * {@link EnvironmentTarget}
+     * Most recent built time of all the environment targets
+     *
+     * @return the built time
+     */
+    public Optional<Date> computeBuiltTime() {
+        return computeStatus()
+                .filter(envStatus -> envStatus == Status.BUILT)
+                .map(envStatus -> getTargets().stream()
+                        .map(t -> t.getBuiltTime())
+                        .filter(value -> value != null)
+                        .max(Date::compareTo))
+                .orElse(Optional.empty());
     }
 }

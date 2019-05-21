@@ -112,6 +112,7 @@ public class ResponseMappers {
                                     .map(status -> status.getLabel())
                                     .orElse(null)
                     );
+                    environmentResponse.setBuiltTime(envDB.computeBuiltTime().orElse(null));
                     return environmentResponse;
                 })
                 .collect(Collectors.toList());
