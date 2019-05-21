@@ -151,6 +151,8 @@ def do_report_errata(self, args):
         for erratum in sorted(report):
             print('%s        %s' %
                   (erratum.ljust(max_size), str(report[erratum]).rjust(3)))
+    elif partial_errata:
+        print("No errata found for '{}'".format(args))
 
 ####################
 
