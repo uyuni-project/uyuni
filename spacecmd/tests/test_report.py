@@ -112,7 +112,30 @@ class TestSCReport:
 
     def test_report_outofdatesystems(self, shell):
         """
+        Test do_report_outofdatesystems.
 
         :param shell:
         :return:
         """
+        shell.client.system.listOutOfDateSystems = MagicMock(return_value=[
+            {"name": "system-one", "outdated_pkg_count": 5},
+            {"name": "system-two", "outdated_pkg_count": 15},
+            {"name": "system-three", "outdated_pkg_count": 25},
+        ])
+        mprint = MagicMock()
+        with patch("spacecmd.report.print", mprint) as prn:
+            spacecmd.report.do_report_outofdatesystems(shell, "")
+
+        assert mprint.called
+
+        exp = [
+            'System        Packages',
+            '------------  --------',
+            'system-one           5',
+            'system-three        25',
+            'system-two          15'
+        ]
+        for call in mprint.call_args_list:
+            assert_expect([call], next(iter(exp)))
+            exp.pop(0)
+        assert not exp
