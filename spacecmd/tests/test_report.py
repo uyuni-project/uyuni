@@ -139,3 +139,22 @@ class TestSCReport:
             assert_expect([call], next(iter(exp)))
             exp.pop(0)
         assert not exp
+
+    def test_report_ungroupedsystems(self, shell):
+        """
+        Test do_report_ungroupedsystems.
+
+        :param shell:
+        :return:
+        """
+        shell.client.system.listUngroupedSystems = MagicMock(return_value=[
+            {"name": "system-one"},
+            {"name": "system-two"},
+            {"name": "system-three"},
+        ])
+        mprint = MagicMock()
+        with patch("spacecmd.report.print", mprint) as prn:
+            spacecmd.report.do_report_ungroupedsystems(shell, "")
+
+        assert mprint.called
+        assert_expect(mprint.call_args_list, 'system-one\nsystem-three\nsystem-two')
