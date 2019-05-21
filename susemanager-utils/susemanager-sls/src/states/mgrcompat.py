@@ -31,9 +31,15 @@ def module_run(**kwargs):
     minion version
 
     '''
+
+    # The new syntax will be used as the default
     use_new_syntax = True
-    if __grains__['saltversioninfo'][0] == 2019 and __grains__['saltversioninfo'][1] > 2:
-        # New syntax - future Neon release (not yet determined)
+
+    if __grains__['saltversioninfo'][0] > 2019:
+        # New syntax - any future Salt release
+        pass
+    elif __grains__['saltversioninfo'][0] == 2019 and __grains__['saltversioninfo'][1] > 2:
+        # New syntax - posible future Neon release (not yet determined)
         pass
     elif __grains__['saltversioninfo'][0] > 2016 and 'module.run' in __opts__.get('use_superseded', []):
         # New syntax - explicitely enabled via 'use_superseded' configuration on 2018.3 and 2019.2
