@@ -404,7 +404,7 @@ class TestSCReport:
         shell.expand_systems = MagicMock()
         shell.get_system_names = MagicMock(return_value=[])
         shell.get_system_id = MagicMock()
-        shell.client.system.getRunningKernel= MagicMock()
+        shell.client.system.getRunningKernel = MagicMock()
         mprint = MagicMock()
 
         with patch("spacecmd.report.print", mprint) as prn:
