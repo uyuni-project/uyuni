@@ -537,9 +537,9 @@ class TestSCReport:
             exp.pop(0)
         assert not exp
 
-    def test_report_duplicates_noarg_noapiver_10_11(self, shell):
+    def test_report_duplicates_noapiver_10_11(self, shell):
         """
-        Test do_report_duplicates no arguments, api version is not "10.11".
+        Test do_report_duplicates, api version is not "10.11".
 
         :param shell:
         :return:
