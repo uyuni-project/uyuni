@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue May 21 10:56:53 CEST 2019 - jgonzalez@suse.com
+
+- version 4.0.9-1
+- fix missing quotation in bootstrap script (bsc#1135659)
+
+-------------------------------------------------------------------
 Wed May 15 15:08:39 CEST 2019 - jgonzalez@suse.com
 
 - version 4.0.8-1

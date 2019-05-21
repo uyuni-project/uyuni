@@ -852,7 +852,7 @@ if [ $ALLOW_CONFIG_ACTIONS -eq 1 ] ; then
             echo "    or zypper install/update mgr-cfg-actions starting with 4.0."
         elif [ "$INSTALLER" == yum ] ; then
             echo "    system to the tools channel and yum updates rhncfg-actions"
-            echo "    or yum update mgr-cfg-actions starting with 4.0.
+            echo "    or yum update mgr-cfg-actions starting with 4.0."
         else
             echo "    system to the tools channel and up2date rhncfg-actions"
             echo "    or up2date mgr-cfg-actions starting with 4.0."
