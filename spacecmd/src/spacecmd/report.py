@@ -297,8 +297,7 @@ def do_report_duplicates(self, args):
     if self.check_api_version('10.11'):
         dupes_by_ip = self.client.system.listDuplicatesByIp(self.session)
         dupes_by_mac = self.client.system.listDuplicatesByMac(self.session)
-        dupes_by_hostname = \
-            self.client.system.listDuplicatesByHostname(self.session)
+        dupes_by_hostname = self.client.system.listDuplicatesByHostname(self.session)
 
         if dupes_by_ip:
             if add_separator:
