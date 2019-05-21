@@ -415,3 +415,45 @@ class TestSCReport:
         assert not shell.get_system_id.called
         assert not shell.client.system.getRunningKernel.called
         assert shell.get_system_names.called
+
+    def test_report_kernels_noargs_kernels(self, shell):
+        """
+        Test do_report_kernels with no arguments, kernels found.
+
+        :param shell:
+        :return:
+        """
+        shell.ssm = MagicMock()
+        shell.expand_systems = MagicMock()
+        shell.get_system_names = MagicMock(return_value=[
+            "system-a", "system-b",
+        ])
+        shell.get_system_id = MagicMock(side_effect=[
+            1000010000, 1000010001,
+        ])
+        shell.client.system.getRunningKernel = MagicMock(side_effect=[
+            "4.4.0-109-generic",
+            "4.1.0-286-generic"
+        ])
+        mprint = MagicMock()
+
+        with patch("spacecmd.report.print", mprint) as prn:
+            spacecmd.report.do_report_kernels(shell, "")
+
+        assert not shell.expand_systems.called
+        assert not shell.ssm.keys.called
+        assert shell.get_system_id.called
+        assert shell.client.system.getRunningKernel.called
+        assert shell.get_system_names.called
+        assert mprint.called
+
+        exp = [
+            'System    Kernel',
+            '------    ------',
+            'system-a  4.4.0-109-generic',
+            'system-b  4.1.0-286-generic'
+        ]
+        for call in mprint.call_args_list:
+            assert_expect([call], next(iter(exp)))
+            exp.pop(0)
+        assert not exp
