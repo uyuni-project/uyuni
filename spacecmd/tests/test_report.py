@@ -64,3 +64,26 @@ class TestSCReport:
             assert_expect([call], next(iter(exp)))
             exp.pop(0)
         assert not exp
+
+    def test_report_inactivesystems_wrong_args(self, shell):
+        """
+        Test do_report_inactivesystems with wrong days count, defaults to 7.
+
+        :param shell:
+        :return:
+        """
+
+        for m_arg in ["nonsense", "-1"]:
+            shell.client.system.listInactiveSystems = MagicMock(return_value=[])
+            mprint = MagicMock()
+
+            with patch("spacecmd.report.print", mprint) as prn:
+                spacecmd.report.do_report_inactivesystems(shell, m_arg)
+
+            assert not mprint.called
+            assert shell.client.system.listInactiveSystems.called
+
+            for call in shell.client.system.listInactiveSystems.call_args_list:
+                args, kw = call
+                assert args == (shell.session, 7)
+                assert not kw
