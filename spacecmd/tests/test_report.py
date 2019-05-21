@@ -197,3 +197,40 @@ class TestSCReport:
         assert not logger.debug.called
         assert mprint.called
         assert_expect(mprint.call_args_list, "No errata found for 'whatever'")
+
+    def test_report_errata(self, shell):
+        """
+        Test do_report_errata on data.
+
+        :param shell:
+        :return:
+        """
+        shell.client.errata.listAffectedSystems = MagicMock(side_effect=[
+            ["system-a"],
+            ["system-a", "system-b"],
+            ["system-a", "system-b", "system-c"],
+        ])
+        shell.expand_errata = MagicMock(return_value=[
+            "vim", "apache", "java"
+        ])
+        mprint = MagicMock()
+        logger = MagicMock()
+        with patch("spacecmd.report.print", mprint) as prn, \
+            patch("spacecmd.report.logging", logger) as lgr:
+            spacecmd.report.do_report_errata(shell, "ERRATA")
+
+        assert logger.debug.called
+        assert shell.client.errata.listAffectedSystems.called
+        assert mprint.called
+
+        exp = [
+            'Errata  # Systems',
+            '------  ---------',
+            'apache          2',
+            'java            3',
+            'vim             1'
+        ]
+        for call in mprint.call_args_list:
+            assert_expect([call], next(iter(exp)))
+            exp.pop(0)
+        assert not exp
