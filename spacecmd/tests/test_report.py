@@ -237,7 +237,7 @@ class TestSCReport:
 
     def test_report_ipaddresses_noargs(self, shell):
         """
-        Test do_report_ipaddresses without args
+        Test do_report_ipaddresses without args, no systems found.
 
         :param shell:
         :return:
@@ -258,3 +258,49 @@ class TestSCReport:
         assert not shell.client.system.getNetwork.called
         assert shell.get_system_names.called
 
+    def test_report_ipaddresses_noargs_systems(self, shell):
+        """
+        Test do_report_ipaddresses without args, some systems found.
+
+        :param shell:
+        :return:
+        """
+        shell.ssm = MagicMock()
+        shell.expand_systems = MagicMock()
+        shell.get_system_names = MagicMock(return_value=[
+            "system-a", "system-b",
+        ])
+        shell.get_system_id = MagicMock(side_effect=[
+            1000010000, 1000010001,
+        ])
+        shell.client.system.getNetwork = MagicMock(side_effect=[
+            {
+                "hostname": "moebel.de",
+                "ip": "2011:0ab8:45b1:0000:0000:9f3e:a370:7336"
+            },
+            {
+                "hostname": "schrott.de",
+                "ip": "123.234.10.4"
+            },
+        ])
+        mprint = MagicMock()
+
+        with patch("spacecmd.report.print", mprint) as prn:
+            spacecmd.report.do_report_ipaddresses(shell, "")
+
+        assert not shell.ssm.keys.called
+        assert not shell.expand_systems.called
+        assert shell.get_system_id.called
+        assert shell.client.system.getNetwork.called
+        assert shell.get_system_names.called
+
+        exp = [
+            'System    Hostname    IP',
+            '------    --------    --',
+            'system-a  moebel.de   2011:0ab8:45b1:0000:0000:9f3e:a370:7336',
+            'system-b  schrott.de  123.234.10.4',
+        ]
+        for call in mprint.call_args_list:
+            assert_expect([call], next(iter(exp)))
+            exp.pop(0)
+        assert not exp
