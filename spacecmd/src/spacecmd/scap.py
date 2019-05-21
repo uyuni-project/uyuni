@@ -158,10 +158,14 @@ def do_scap_getxccdfscandetails(self, args):
 def help_scap_schedulexccdfscan(self):
     print('scap_schedulexccdfscan: Schedule Scap XCCDF scan')
     print('usage: scap_schedulexccdfscan PATH_TO_XCCDF_FILE XCCDF_OPTIONS SYSTEMS')
+    print('       scap_schedulexccdfscan ssm PATH_TO_XCCDF_FILE XCCDF_OPTIONS')
     print('')
     print('Example:')
     print('> scap_schedulexccdfscan \'/usr/share/openscap/scap-security-xccdf.xml\'' +
           ' \'profile Web-Default\' system-scap.example.com')
+    print('\nTo use systems in the ssm, pass the "ssm" keyword in front. Example:')
+    print("> scap_schedulexccdfscan ssm '/usr/share/openscap/scap-security-xccdf.xml'" +
+          " 'profile Web-Default'")
 
 
 def do_scap_schedulexccdfscan(self, args):

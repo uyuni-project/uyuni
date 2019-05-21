@@ -63,3 +63,4 @@ java/out
 out/
 java/buildconf/checkstyle.cache.src
 reports/
+*.mypy*

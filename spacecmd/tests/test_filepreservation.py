@@ -2,7 +2,7 @@
 """
 Test suite for spacecmd.filepreservation
 """
-from mock import MagicMock, patch, mock_open
+from unittest.mock import MagicMock, patch, mock_open
 import spacecmd.filepreservation
 from helpers import shell
 
@@ -112,6 +112,7 @@ class TestSCFilePreservation:
         assert shell.help_filepreservation_details.called
         assert not shell.client.kickstart.filepreservation.details.called
 
+    @patch("spacecmd.filepreservation.print", MagicMock())
     def test_do_filepreservation_details_args(self, shell):
         """
         Test do_filepreservation_details key passed.

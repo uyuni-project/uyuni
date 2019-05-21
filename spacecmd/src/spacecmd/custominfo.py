@@ -138,11 +138,11 @@ def do_custominfo_details(self, args):
 
     # allow globbing of custominfo key names
     keys = filter_results(self.do_custominfo_listkeys('', True), args)
-    logging.debug("customkey_details called with args %s, keys=%s" %
-                  (args, keys))
+    logging.debug("customkey_details called with args: '{}', keys: '{}'.".format(
+        ", ".join(args), ", ".join(keys)))
 
     if not keys:
-        logging.error("No keys matched argument %s" % args)
+        logging.error("No keys matched argument '{}'.".format(", ".join(args)))
         return
 
     add_separator = False
@@ -150,18 +150,19 @@ def do_custominfo_details(self, args):
     all_keys = self.client.system.custominfo.listAllKeys(self.session)
 
     for key in keys:
-        for k in all_keys:
-            if k.get('label') == key:
-                details = k
+        details = {}
+        for key_details in all_keys:
+            if key_details.get('label') == key:
+                details = key_details
 
-        if add_separator:
-            print(self.SEPARATOR)
-        add_separator = True
-
-        print('Label:        %s' % details.get('label'))
-        print('Description:  %s' % details.get('description'))
-        print('Modified:     %s' % details.get('last_modified'))
-        print('System Count: %i' % details.get('system_count'))
+        if details:
+            if add_separator:
+                print(self.SEPARATOR)
+            add_separator = True
+            print('Label:        %s' % (details.get('label') or "N/A"))
+            print('Description:  %s' % (details.get('description') or "N/A"))
+            print('Modified:     %s' % (details.get('last_modified') or "N/A"))
+            print('System Count: %i' % (details.get('system_count') or 0))
 
 ####################
 

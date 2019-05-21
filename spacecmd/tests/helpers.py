@@ -60,3 +60,19 @@ def shell():
     base.do_activationkey_list = MagicMock(return_value="do_activation_list")
 
     return base
+
+def assert_expect(calls, *expectations):
+    """
+    Check expectations.
+    Function accepts a list of calls of some mock and the corresponding expectations.
+    Result is counted as passed, when calls are identical to the expectations and
+    no more, no less. Otherwise an assertion error is raised.
+
+    :param calls: Mock's call_args_list
+    :param expectations: expectations array.
+    """
+    expectations = list(expectations)
+    for call in calls:
+        assert call[0][0] == next(iter(expectations))
+        expectations.pop(0)
+    assert not expectations

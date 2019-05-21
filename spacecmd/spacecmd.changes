@@ -1,3 +1,5 @@
+- Add unit tests for custominfo, snippet, scap, ssm, cryptokey and distribution
+
 -------------------------------------------------------------------
 Wed May 15 15:05:51 CEST 2019 - jgonzalez@suse.com
 
