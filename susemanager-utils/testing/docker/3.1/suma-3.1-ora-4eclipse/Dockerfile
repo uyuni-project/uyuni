@@ -3,7 +3,7 @@
 # VERSION               3.1.0
 
 FROM suma-3.1-ora-4eclipse-pre
-MAINTAINER Michael Calmer "mc@suse.com"
+LABEL maintainer="mc@suse.com"
 
 ADD docker-oracle-db4eclipse.sh /root/docker-oracle-db4eclipse.sh
 

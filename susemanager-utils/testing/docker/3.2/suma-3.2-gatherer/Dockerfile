@@ -3,7 +3,7 @@
 # VERSION               1.1.0
 
 FROM registry.mgr.suse.de/sles12sp3:latest
-MAINTAINER Michael Calmer "mc@suse.com"
+LABEL maintainer="mc@suse.com"
 
 
 # Add the repositories

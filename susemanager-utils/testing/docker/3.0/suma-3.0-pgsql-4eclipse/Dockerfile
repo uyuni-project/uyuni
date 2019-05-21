@@ -3,7 +3,7 @@
 # VERSION               1.0.1
 
 FROM registry.mgr.suse.de/suma-3.0-pgsql:latest
-MAINTAINER Michael Calmer "mc@suse.com"
+LABEL maintainer="mc@suse.com"
 
 #RUN zypper --non-interactive in -n spacewalk-admin susemanager-schema smdba
 RUN zypper --non-interactive in -n spacewalk-admin smdba

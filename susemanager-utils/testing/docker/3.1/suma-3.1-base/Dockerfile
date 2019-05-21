@@ -3,7 +3,7 @@
 # VERSION               3.1.0
 
 FROM registry.mgr.suse.de/sles12sp2:latest
-MAINTAINER Michael Calmer "mc@suse.com"
+LABEL maintainer="mc@suse.com"
 
 # Add the repositories
 ADD add_repositories.sh /root/add_repositories.sh

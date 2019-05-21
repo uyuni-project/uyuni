@@ -3,7 +3,7 @@
 # VERSION               1.0.0
 
 FROM registry.mgr.suse.de/suma-2.1-base:1.0.0
-MAINTAINER Flavio Castelli "fcastelli@suse.com"
+LABEL maintainer="mc@suse.com"
 
 ADD add_packages.sh /root/add_packages.sh
 RUN /root/add_packages.sh

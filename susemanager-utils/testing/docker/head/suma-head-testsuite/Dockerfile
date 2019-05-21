@@ -3,7 +3,7 @@
 # VERSION               1.0.0
 
 FROM registry.mgr.suse.de/sles12sp2python
-MAINTAINER Michael Calmer "mc@suse.com"
+LABEL maintainer="mc@suse.com"
 
 ADD add_repositories.sh /root/add_repositories.sh
 RUN /root/add_repositories.sh

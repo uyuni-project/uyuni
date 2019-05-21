@@ -3,7 +3,7 @@
 # VERSION               1.0.2
 
 FROM registry.mgr.suse.de/sles12sp1:0.1.0
-MAINTAINER Flavio Castelli "fcastelli@suse.com"
+LABEL maintainer="mc@suse.com"
 
 
 # Add the repositories

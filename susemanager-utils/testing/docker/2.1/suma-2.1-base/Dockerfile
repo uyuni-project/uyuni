@@ -3,7 +3,7 @@
 # VERSION               1.0.0
 
 FROM registry.mgr.suse.de/sle11sp3
-MAINTAINER Flavio Castelli "fcastelli@suse.com"
+LABEL maintainer="mc@suse.com"
 
 
 # Add the repositories
