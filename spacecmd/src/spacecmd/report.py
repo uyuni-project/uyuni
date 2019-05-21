@@ -63,7 +63,7 @@ def do_report_inactivesystems(self, args):
         print(('----------  '+'-' * max_size) + '  ------------')
 
         for s in sorted(systems, key=itemgetter('name')):
-            print('%s  %s  %s' % (s.get('id'),s.get('name').ljust(max_size),
+            print('%s  %s  %s' % (s.get('id'), s.get('name').ljust(max_size),
                                   s.get('last_checkin')))
 
 ####################
