@@ -1,3 +1,4 @@
+- Fix channel sync status logic in products page (bsc#1131721)
 - Report Monitoring products to subscription-matcher
 - Update help URLs in the UI
 - Fix SSM package upgrade list item selection (bsc#1133421)
