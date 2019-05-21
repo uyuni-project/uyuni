@@ -392,3 +392,26 @@ class TestSCReport:
             assert_expect([call], next(iter(exp)))
             exp.pop(0)
         assert not exp
+
+    def test_report_kernels_noargs(self, shell):
+        """
+        Test do_report_kernels with no arguments.
+
+        :param shell:
+        :return:
+        """
+        shell.ssm = MagicMock()
+        shell.expand_systems = MagicMock()
+        shell.get_system_names = MagicMock(return_value=[])
+        shell.get_system_id = MagicMock()
+        shell.client.system.getRunningKernel= MagicMock()
+        mprint = MagicMock()
+
+        with patch("spacecmd.report.print", mprint) as prn:
+            spacecmd.report.do_report_kernels(shell, "")
+
+        assert not shell.expand_systems.called
+        assert not shell.ssm.keys.called
+        assert not shell.get_system_id.called
+        assert not shell.client.system.getRunningKernel.called
+        assert shell.get_system_names.called
