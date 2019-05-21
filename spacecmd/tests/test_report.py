@@ -234,3 +234,27 @@ class TestSCReport:
             assert_expect([call], next(iter(exp)))
             exp.pop(0)
         assert not exp
+
+    def test_report_ipaddresses_noargs(self, shell):
+        """
+        Test do_report_ipaddresses without args
+
+        :param shell:
+        :return:
+        """
+        shell.ssm = MagicMock()
+        shell.expand_systems = MagicMock()
+        shell.get_system_names = MagicMock(return_value=[])
+        shell.get_system_id = MagicMock()
+        shell.client.system.getNetwork = MagicMock()
+        mprint = MagicMock()
+
+        with patch("spacecmd.report.print", mprint) as prn:
+            spacecmd.report.do_report_ipaddresses(shell, "")
+
+        assert not shell.expand_systems.called
+        assert not shell.ssm.keys.called
+        assert not shell.get_system_id.called
+        assert not shell.client.system.getNetwork.called
+        assert shell.get_system_names.called
+
