@@ -536,3 +536,46 @@ class TestSCReport:
             assert_expect([call], next(iter(exp)))
             exp.pop(0)
         assert not exp
+
+    def test_report_duplicates_noarg_noapiver_10_11(self, shell):
+        """
+        Test do_report_duplicates no arguments, api version is not "10.11".
+
+        :param shell:
+        :return:
+        """
+        shell.check_api_version = MagicMock(return_value=False)
+        shell.get_system_names = MagicMock(return_value=[
+            "system-a", "system-b", "system-a", "system-a"
+        ])
+        shell.client.system.searchByName = MagicMock(side_effect=[
+            [
+                {
+                    "id": 1000010000,
+                    "last_checkin": "Di 21. Mai 16:18:46 CEST 2019",
+                },
+            ],
+        ])
+        shell.client.system.listDuplicatesByIp = MagicMock()
+        shell.client.system.listDuplicatesByMac = MagicMock()
+        shell.client.system.listDuplicatesByHostname = MagicMock()
+        shell.SEPARATOR = "---"
+        mprint = MagicMock()
+
+        with patch("spacecmd.report.print", mprint) as prn:
+            spacecmd.report.do_report_duplicates(shell, "")
+
+        assert shell.get_system_names.called
+        assert shell.client.system.searchByName.called
+        assert mprint.called
+
+        exp = [
+            'system-a:',
+            'System ID   Last Checkin',
+            '----------  -----------------',
+            '1000010000  Di 21. Mai 16:18:46 CEST 2019'
+        ]
+        for call in mprint.call_args_list:
+            assert_expect([call], next(iter(exp)))
+            exp.pop(0)
+        assert not exp
