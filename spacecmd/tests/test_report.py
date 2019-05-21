@@ -579,3 +579,106 @@ class TestSCReport:
             assert_expect([call], next(iter(exp)))
             exp.pop(0)
         assert not exp
+
+    def test_report_duplicates_api_10_11(self, shell):
+        """
+        Test do_report_duplicates api version is "10.11".
+
+        :param shell:
+        :return:
+        """
+        shell.check_api_version = MagicMock(return_value=True)
+        shell.get_system_names = MagicMock(return_value=[
+            "system-a", "system-b", "system-a", "system-a"
+        ])
+        shell.client.system.searchByName = MagicMock(side_effect=[
+            [
+                {
+                    "id": 1000010000,
+                    "last_checkin": "Di 21. Mai 16:18:46 CEST 2019",
+                },
+            ],
+        ])
+        shell.client.system.listDuplicatesByIp = MagicMock(return_value=[
+            {
+                "ip": "10.4.1.12",
+                "systems": [
+                    {
+                        "systemId": 1000010000,
+                        "last_checkin": "Di 21. Mai 16:18:46 CEST 2019",
+                    },
+                    {
+                        "systemId": 1000010001,
+                        "last_checkin": "Di 21. Mai 14:23:16 CEST 2019",
+                    },
+                ],
+            },
+        ])
+        shell.client.system.listDuplicatesByMac = MagicMock(return_value=[
+            {
+                "mac": "68:f7:28:d0:d0:5b",
+                "systems": [
+                    {
+                        "systemId": 1000010000,
+                        "last_checkin": "Di 21. Mai 16:18:46 CEST 2019",
+                    },
+                    {
+                        "systemId": 1000010001,
+                        "last_checkin": "Di 21. Mai 14:23:16 CEST 2019",
+                    },
+                ],
+            },
+        ])
+        shell.client.system.listDuplicatesByHostname = MagicMock(return_value=[
+            {
+                "hostname": "dead-beef.de",
+                "systems": [
+                    {
+                        "systemId": 1000010000,
+                        "last_checkin": "Di 21. Mai 16:18:46 CEST 2019",
+                    },
+                    {
+                        "systemId": 1000010001,
+                        "last_checkin": "Di 21. Mai 14:23:16 CEST 2019",
+                    },
+                ],
+            },
+        ])
+        shell.SEPARATOR = "---"
+        mprint = MagicMock()
+
+        with patch("spacecmd.report.print", mprint) as prn:
+            spacecmd.report.do_report_duplicates(shell, "")
+
+        assert shell.get_system_names.called
+        assert shell.client.system.searchByName.called
+        assert mprint.called
+
+        exp = [
+            'system-a:',
+            'System ID   Last Checkin',
+            '----------  -----------------',
+            '1000010000  Di 21. Mai 16:18:46 CEST 2019',
+            '---',
+            '10.4.1.12:',
+            'System ID   Last Checkin',
+            '----------  -----------------',
+            '1000010000  Di 21. Mai 16:18:46 CEST 2019',
+            '1000010001  Di 21. Mai 14:23:16 CEST 2019',
+            '---',
+            '68:F7:28:D0:D0:5B:',
+            'System ID   Last Checkin',
+            '----------  -----------------',
+            '1000010000  Di 21. Mai 16:18:46 CEST 2019',
+            '1000010001  Di 21. Mai 14:23:16 CEST 2019',
+            '---',
+            'dead-beef.de:',
+            'System ID   Last Checkin',
+            '----------  -----------------',
+            '1000010000  Di 21. Mai 16:18:46 CEST 2019',
+            '1000010001  Di 21. Mai 14:23:16 CEST 2019'
+        ]
+        for call in mprint.call_args_list:
+            assert_expect([call], next(iter(exp)))
+            exp.pop(0)
+        assert not exp
