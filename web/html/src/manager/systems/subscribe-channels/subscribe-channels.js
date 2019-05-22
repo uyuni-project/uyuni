@@ -5,19 +5,19 @@
 const React = require("react");
 
 const ReactDOM = require("react-dom");
-const {AsyncButton, Button} = require("../../../components/buttons");
-const {ActionSchedule} = require("../../../components/action-schedule");
-const Network = require("../../../utils/network");
-const Functions = require("../../../utils/functions");
-const Messages = require("../../../components/messages").Messages;
-const MessagesUtils = require("../../../components/messages").Utils;
-const {Toggler} = require("../../../components/toggler");
+const {AsyncButton, Button} = require("components/buttons");
+const {ActionSchedule} = require("components/action-schedule");
+const Network = require("utils/network");
+const Functions = require("utils/functions");
+const Messages = require("components/messages").Messages;
+const MessagesUtils = require("components/messages").Utils;
+const {Toggler} = require("components/toggler");
 const { BootstrapPanel } = require('components/panels/BootstrapPanel');
-const {ChannelAnchorLink, ActionLink, ActionChainLink} = require("../../../components/links");
+const {ChannelAnchorLink, ActionLink, ActionChainLink} = require("components/links");
 const ChannelUtils = require("core/channels/utils/channels-dependencies.utils");
 
-import type JsonResult from "../../../utils/network";
-import type {ActionChain} from "../../../components/action-schedule";
+import type JsonResult from "utils/network";
+import type {ActionChain} from "components/action-schedule";
 
 declare function getServerId(): number;
 declare var localTime: string;
