@@ -1,3 +1,4 @@
+- Don't convert localhost repositories URL in mirror case (bsc#1135957)
 - Check that a channel doesn't have clones before deleting it (bsc#1138454)
 - Improve websocket authentication to prevent errors in logs (bsc#1138454)
 - Normalize date formats for actions, notifications and clm (bsc#1142774)
