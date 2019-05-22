@@ -33,6 +33,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.List;
@@ -200,8 +201,12 @@ public class MgrSyncUtils {
             URL url = new URL(urlString);
             host = url.getHost();
             path = url.getPath();
+
+            if ("localhost".equals(host)) {
+                return url.toURI();
+            }
         }
-        catch (MalformedURLException e) {
+        catch (MalformedURLException | URISyntaxException e) {
             log.warn("Unable to parse URL: " + urlString);
         }
         String sccDataPath = Config.get().getString(ContentSyncManager.RESOURCE_PATH, null);
