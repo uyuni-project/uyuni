@@ -22,7 +22,7 @@
             return ${system.id};
         }
     </script>
-    <script src="/javascript/manager/subscribe-channels.bundle.js?cb=${rhn:getConfig('web.version')}" type="text/javascript"></script>
+    <script src="/javascript/manager/systems/subscribe-channels/subscribe-channels.renderer.bundle.js?cb=${rhn:getConfig('web.version')}" type="text/javascript"></script>
 
 </body>
 </html:html>
