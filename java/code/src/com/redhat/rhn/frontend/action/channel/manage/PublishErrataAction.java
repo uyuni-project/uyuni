@@ -22,6 +22,7 @@ import com.redhat.rhn.frontend.dto.ErrataOverview;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnHelper;
 import com.redhat.rhn.frontend.struts.RhnListAction;
+import com.redhat.rhn.frontend.taglibs.list.ListTagHelper;
 import com.redhat.rhn.manager.channel.ChannelManager;
 import com.redhat.rhn.manager.errata.ErrataManager;
 import com.redhat.rhn.manager.errata.cache.ErrataCacheManager;
@@ -108,6 +109,7 @@ public class PublishErrataAction extends RhnListAction {
             ErrataCacheManager.insertCacheForChannelErrataAsync(chanList, eid);
         }
         request.setAttribute("cid", cid);
+        request.setAttribute(ListTagHelper.PARENT_URL, request.getRequestURI() + "?" + request.getQueryString());
 
         ActionMessages msg = new ActionMessages();
         String[] params = { errata.size() + "", packageIds.size() + "",

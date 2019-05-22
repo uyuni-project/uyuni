@@ -73,7 +73,7 @@ public class ErrataCloneAction extends RhnListAction {
         request.setAttribute(CID, cid);
         request.setAttribute("user", user);
         request.setAttribute("channel_name", channel.getName());
-        request.setAttribute(ListTagHelper.PARENT_URL, request.getRequestURI());
+        request.setAttribute(ListTagHelper.PARENT_URL, request.getRequestURI() + "?" + request.getQueryString());
         request.setAttribute("emptyKey", EMPTY_KEY);
 
         List<SelectableChannel> channelList = null;

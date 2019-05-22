@@ -120,7 +120,7 @@ public class ChannelPackagesCompareAction extends ChannelPackagesBaseAction {
         request.setAttribute(CHANNEL_LIST, chanList);
         request.setAttribute(OTHER_CHANNEL, sname);
         request.setAttribute(SYNC_TYPE, syncType);
-        request.setAttribute(ListTagHelper.PARENT_URL, request.getRequestURI());
+        request.setAttribute(ListTagHelper.PARENT_URL, request.getRequestURI() + "?" + request.getQueryString());
         request.setAttribute(RequestContext.PAGE_LIST, result);
 
         return mapping.findForward(RhnHelper.DEFAULT_FORWARD);

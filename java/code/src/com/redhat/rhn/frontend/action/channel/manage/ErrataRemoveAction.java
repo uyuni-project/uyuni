@@ -21,6 +21,7 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnHelper;
 import com.redhat.rhn.frontend.struts.RhnListAction;
+import com.redhat.rhn.frontend.taglibs.list.ListTagHelper;
 import com.redhat.rhn.frontend.taglibs.list.helper.ListRhnSetHelper;
 import com.redhat.rhn.frontend.taglibs.list.helper.Listable;
 import com.redhat.rhn.frontend.xmlrpc.PermissionCheckFailureException;
@@ -87,13 +88,13 @@ public class ErrataRemoveAction extends RhnListAction implements Listable {
         helper.execute();
 
         request.setAttribute("cid", cid);
+        request.setAttribute(ListTagHelper.PARENT_URL, request.getRequestURI() + "?" + request.getQueryString());
 
         if (requestContext.wasDispatched(CONFIRM)) {
            ChannelManager.removeErrata(currentChan, decl.get(user).getElementValues(),
                    user);
            Map<String, Object> params = new HashMap<String, Object>();
            params.put(CID, cid);
-
            ActionMessages msg = new ActionMessages();
            Set args = new HashSet();
            args.add(decl.get(user).size());

@@ -1,3 +1,4 @@
+- Keep querystring on ListTag parent_url for actions that have the cid param (bsc#1134677)
 - Improve performance of 'Systems requiring reboot' page (fate#327780)
 - Fix parsing of deb package version string on download (bsc#1130040, bsc#1136093)
 - Enable product detection for plain rhel systems (bsc#1136301)

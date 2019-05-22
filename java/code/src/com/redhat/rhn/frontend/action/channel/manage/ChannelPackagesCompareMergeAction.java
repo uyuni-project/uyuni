@@ -114,8 +114,7 @@ public class ChannelPackagesCompareMergeAction extends ChannelPackagesCompareAct
 
         ListTagHelper.bindSetDeclTo(listName, RhnSetDecl.PACKAGES_TO_SYNC_CHANNEL, request);
         TagHelper.bindElaboratorTo(listName, result.getElaborator(), request);
-
-        request.setAttribute(ListTagHelper.PARENT_URL, request.getRequestURI());
+        request.setAttribute(ListTagHelper.PARENT_URL, request.getRequestURI() + "?" + request.getQueryString());
         request.setAttribute(RequestContext.PAGE_LIST, result);
 
         return mapping.findForward(RhnHelper.DEFAULT_FORWARD);

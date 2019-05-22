@@ -110,7 +110,8 @@ public class TargetSystemsConfirmAction extends RhnAction implements Listable {
                 ActionErrors errors = new ActionErrors();
                 getStrutsDelegate().addError("taskscheduler.down", errors);
                 getStrutsDelegate().saveMessages(request, errors);
-                request.setAttribute(ListTagHelper.PARENT_URL, request.getRequestURI());
+                request.setAttribute(ListTagHelper.PARENT_URL, request.getRequestURI() +
+                         "?" + request.getQueryString());
             }
 
             return getStrutsDelegate().forwardParams(mapping.findForward("success"),
