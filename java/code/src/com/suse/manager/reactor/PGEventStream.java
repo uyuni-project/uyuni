@@ -163,7 +163,7 @@ public class PGEventStream extends AbstractEventStream implements PGNotification
         LOG.trace("Got notification: " + counts);
         // compute the number of jobs we need to do - each job COMMITs individually
         // jobs = events / MAX_EVENTS_PER_COMMIT (rounded up)
-        IntStream.range(0, THREAD_POOL_SIZE).forEach(queue -> {
+        IntStream.range(0, THREAD_POOL_SIZE + 1).forEach(queue -> {
             long jobs = (counts.get(queue) + MAX_EVENTS_PER_COMMIT - 1) / MAX_EVENTS_PER_COMMIT;
 
             // queue one handlingTransaction(processEvents) call per job

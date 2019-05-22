@@ -7,6 +7,12 @@
 - Explicitly mention country code in the advanced search (bsc#1131892)
 
 -------------------------------------------------------------------
+Wed May 22 14:29:42 CEST 2019 - jgonzalez@suse.com
+
+- version 4.0.19-1
+- Fix handling of the last Salt event queue (bsc#1135896)
+
+-------------------------------------------------------------------
 Wed May 15 17:05:45 CEST 2019 - jgonzalez@suse.com
 
 - version 4.0.18-1
