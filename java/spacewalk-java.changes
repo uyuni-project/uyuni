@@ -1,3 +1,4 @@
+- Don't convert localhost repositories URL in mirror case (bsc#1135957)
 - Add state EDITED to filters in the Content Lifecycle Environments
 - Add built time date to the Content Lifecycle Environments
 - Update ServerArch on each ImageDeployedEvent (bsc#1134621)
