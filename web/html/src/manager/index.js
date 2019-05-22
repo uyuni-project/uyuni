@@ -9,10 +9,6 @@ Check the file content-management/index.js for an example
 const { readdirSync, statSync } = require('fs')
 const { join } = require('path')
 
-const oldPagesEntries = {
-  'ssm-subscribe-channels': './manager/channels/ssm-subscribe-channels/ssm-subscribe-channels.js',
-}
-
 const readDirs = p => readdirSync(p).filter(f => statSync(join(p, f)).isDirectory())
 const dirs = readDirs("./manager");
 

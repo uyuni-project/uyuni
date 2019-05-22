@@ -4,21 +4,21 @@
 
 const React = require("react");
 const ReactDOM = require("react-dom");
-const {AsyncButton, Button} = require("../../../components/buttons");
-const {ActionSchedule} = require("../../../components/action-schedule");
-const Network = require("../../../utils/network");
-const Functions = require("../../../utils/functions");
-const {Messages} = require("../../../components/messages");
-const {Table, Column} = require("../../../components/table");
+const {AsyncButton, Button} = require("components/buttons");
+const {ActionSchedule} = require("components/action-schedule");
+const Network = require("utils/network");
+const Functions = require("utils/functions");
+const {Messages} = require("components/messages");
+const {Table, Column} = require("components/table");
 const { BootstrapPanel } = require('components/panels/BootstrapPanel');
-const MessagesUtils = require("../../../components/messages").Utils;
-const {ChannelLink, ActionLink, ActionChainLink, SystemLink} = require("../../../components/links");
-const {PopUp} = require("../../../components/popup");
-const {Toggler} = require("../../../components/toggler");
+const MessagesUtils = require("components/messages").Utils;
+const {ChannelLink, ActionLink, ActionChainLink, SystemLink} = require("components/links");
+const {PopUp} = require("components/popup");
+const {Toggler} = require("components/toggler");
 const ChannelUtils = require("core/channels/utils/channels-dependencies.utils");
 
-import type JsonResult from "../../../utils/network";
-import type {ActionChain} from "../../../components/action-schedule";
+import type JsonResult from "utils/network";
+import type {ActionChain} from "components/action-schedule";
 
 declare function getServerId(): number;
 declare var localTime: string;
