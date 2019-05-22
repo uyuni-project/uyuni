@@ -10,8 +10,6 @@ const { readdirSync, statSync } = require('fs')
 const { join } = require('path')
 
 const oldPagesEntries = {
-  'notifications/notification-messages': './manager/notifications/notification-messages.renderer.js',
-  'notifications/notifications': './manager/notifications/notifications.js',
   'ssm-subscribe-channels': './manager/channels/ssm-subscribe-channels/ssm-subscribe-channels.js',
   'subscribe-channels': './manager/channels/subscribe-channels/subscribe-channels.renderer.js',
 }
