@@ -627,14 +627,6 @@ When(/^I open avahi port on the proxy$/) do
   $proxy.run('firewall-offline-cmd --zone=public --add-service=mdns')
 end
 
-# WORKAROUND
-# bsc#1132908 - Branch network formula closes IPv6 default route, potentially making further networking fail
-When(/^I enable SLAAC on the proxy$/) do
-  cmd = 'echo "net.ipv6.conf.eth0.accept_ra = 2" > /etc/sysctl.d/98-slaac.conf && '
-  cmd += 'sysctl -p /etc/sysctl.d/98-slaac.conf'
-  $proxy.run(cmd)
-end
-
 When(/^I copy server\'s keys to the proxy$/) do
   ['RHN-ORG-PRIVATE-SSL-KEY', 'RHN-ORG-TRUSTED-SSL-CERT', 'rhn-ca-openssl.cnf'].each do |file|
     return_code = file_extract($server, '/root/ssl-build/' + file, '/tmp/' + file)
