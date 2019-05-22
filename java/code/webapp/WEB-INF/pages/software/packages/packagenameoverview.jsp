@@ -8,7 +8,7 @@
 <html>
 <body>
 <rhn:toolbar base="h1" icon="header-package" imgAlt="packagesearch.jsp.imgAlt"
-               helpUrl="/rhn/help/reference/en-US/ref.webui.channels.search.jsp">
+               helpUrl="/docs/reference/software/software-package-search.html">
     <bean:message key="packagesbyname.jsp.toolbar"/>
   </rhn:toolbar>
 

@@ -21,7 +21,7 @@
     </head>
     <body>
         <rhn:toolbar base="h1" icon="header-search"
-                     helpUrl="/rhn/help/reference/en-US/ch-openscap.jsp#idm139635691123616">
+                     helpUrl="/docs/reference/audit/audit-openscap-overview.html">
             <bean:message key="scapsearch.jsp.toolbar"/>
         </rhn:toolbar>
         <p><bean:message key="scapsearch.jsp.summary"/></p>

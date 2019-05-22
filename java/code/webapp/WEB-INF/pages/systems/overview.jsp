@@ -12,7 +12,7 @@
  creationUrl="/rhn/manager/systems/bootstrap"
  creationType="systems"
  creationAcl="user_role(org_admin)"
- helpUrl="/rhn/help/reference/en-US/ref.webui.systems.systems.jsp#ref.webui.systems.overview">
+ helpUrl="/docs/reference/systems/systems-overview.html">
   <bean:message key="overview.jsp.header"/>
 </rhn:toolbar>
 

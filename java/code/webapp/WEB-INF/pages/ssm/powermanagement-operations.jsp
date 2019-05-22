@@ -10,7 +10,7 @@
 <body>
     <%@ include file="/WEB-INF/pages/common/fragments/ssm/header.jspf"%>
     <rhn:toolbar base="h2" icon="header-power"
-        helpUrl="/rhn/help/reference/en-US/ref.webui.systems.systems.jsp#s5-sdc-provisioning-powermgnt">
+        helpUrl="/docs/reference/systems/system-details/sd-provisioning.html">
         <bean:message key="ssm.provisioning.powermanagement.operations.header" />
     </rhn:toolbar>
     <div class="page-summary">

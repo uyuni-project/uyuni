@@ -14,7 +14,7 @@
 			creationUrl="/rhn/activationkeys/Create.do"
  			creationType="activationkeys"
  			creationAcl = "user_role(activation_key_admin)"
-                        helpUrl="/rhn/help/reference/en-US/ref.webui.systems.activ-keys.jsp"
+                        helpUrl="/docs/reference/systems/activation-keys.html"
 			>
   <bean:message key="activation-keys.jsp.header"/>
 </rhn:toolbar>

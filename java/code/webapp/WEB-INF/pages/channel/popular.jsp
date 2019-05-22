@@ -18,7 +18,7 @@
 
 <body onLoad="onLoadStuff(3); showFiltered();">
 <rhn:toolbar base="h1" icon="header-channel" 
-             helpUrl="/rhn/help/reference/en-US/ref.webui.channels.jsp#s3-sm-channel-list-popular"
+             helpUrl="/docs/reference/software/software-channel-list-menu.html"
              creationUrl="/rhn/channels/manage/Edit.do"
              creationType="channel"
              creationAcl="user_role(channel_admin)">

@@ -11,7 +11,7 @@
                creationUrl="CryptoKeyCreate.do"
                creationType="keys"
                imgAlt="info.alt.img"
-               helpUrl="/rhn/help/reference/en-US/ref.webui.systems.autoinst.jsp#ref.webui.systems.autoinst.keys">
+               helpUrl="/docs/reference/systems/autoinst-gpg-and-ssl-keys.html">
   <bean:message key="keys.jsp.toolbar"/>
 </rhn:toolbar>
 

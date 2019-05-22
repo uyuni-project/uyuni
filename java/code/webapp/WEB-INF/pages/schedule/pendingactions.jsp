@@ -8,7 +8,7 @@
 <body>
     <rhn:toolbar base="h1" icon="header-action"
             imgAlt="actions.jsp.imgAlt"
-            helpUrl="/rhn/help/reference/en-US/ref.webui.schedule.jsp#ref.webui.schedule.pending">
+            helpUrl="/docs/reference/schedule/pending-actions.html">
         <bean:message key="pendingactions.jsp.pending_actions"/>
     </rhn:toolbar>
 

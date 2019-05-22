@@ -12,7 +12,7 @@
 </head>
 <body>
     <rhn:toolbar base="h1" icon="system-bare-metal" imgAlt="system.common.systemAlt"
-        helpUrl="/rhn/help/reference/en-US/ref.webui.systems.systems.jsp#ref.webui.systems.systems.baremetal">
+        helpUrl="/docs/reference/systems/systems-list.html#ref.webui.systems.systems.baremetal">
         <bean:message key="bootstrapsystemlist.jsp.header" />
     </rhn:toolbar>
 

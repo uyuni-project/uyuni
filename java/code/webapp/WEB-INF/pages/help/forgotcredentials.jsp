@@ -11,7 +11,7 @@
 </head>
 <body>
   <rhn:toolbar base="h1" icon="header-search"
-               helpUrl="/rhn/help/reference/en-US/ref.webui.overview.jsp#s1-sm-forgot-creds">
+               helpUrl="/docs/reference/home/user-account-your-account.html">
     <bean:message key="help.credentials.jsp.logininfo"/>
   </rhn:toolbar>
 

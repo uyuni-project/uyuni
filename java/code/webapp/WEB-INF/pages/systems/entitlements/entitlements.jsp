@@ -10,7 +10,7 @@
 </head>
 <body>
 <rhn:toolbar base="h1" icon="header-system" imgAlt="overview.jsp.alt"
-             helpUrl="/rhn/help/reference/en-US/ref.webui.systems.systems.jsp#ref.webui.systems.systems.types">
+             helpUrl="/docs/reference/systems/systems-list.html">
   <bean:message key="systementitlements.jsp.header"/>
 </rhn:toolbar>
 

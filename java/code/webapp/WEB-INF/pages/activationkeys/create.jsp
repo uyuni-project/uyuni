@@ -6,7 +6,7 @@
     <body>
         <rhn:toolbar base="h1" icon="header-activation-key"
                      imgAlt="activation-keys.common.alt"
-                     helpUrl="/rhn/help/reference/en-US/ref.webui.systems.activ-keys.jsp"
+                     helpUrl="/docs/reference/systems/activation-keys.html"
                      >
             <bean:message key ="activation-key.jsp.create"/>
         </rhn:toolbar>

@@ -39,7 +39,7 @@
 <rhn:toolbar base="h1"
              icon="${systemIcon}" miscUrl="${actionLink}" miscIcon="${actionIcon}" miscText="${actionMessage}" miscAlt="${actionMessage}"
              miscAcl="system_feature(ftr_system_grouping)"
-             helpUrl="/rhn/help/reference/en-US/ref.webui.systems.systems.jsp#s3-sm-system-details"
+             helpUrl="/docs/reference/systems/system-details.html"
              deletionUrl="/rhn/systems/details/DeleteConfirm.do?sid=${system.id}"
              deletionType="system">
     <c:if test="${empty system}">

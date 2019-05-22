@@ -8,7 +8,7 @@
     </head>
     <body>
         <div class="responsive-wizard">
-            <rhn:toolbar base="h1" icon="header-preferences" helpUrl="/rhn/help/reference/en-US/ref.webui.admin.jsp#ref.webui.admin.wizard">
+            <rhn:toolbar base="h1" icon="header-preferences" helpUrl="/docs/reference/admin/setup-wizard.html">
                 Setup Wizard
             </rhn:toolbar>
             <rhn:dialogmenu mindepth="0" maxdepth="1" definition="/WEB-INF/nav/setup_wizard.xml"
