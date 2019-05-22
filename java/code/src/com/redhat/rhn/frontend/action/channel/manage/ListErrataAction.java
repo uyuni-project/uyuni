@@ -22,6 +22,7 @@ import com.redhat.rhn.frontend.dto.ErrataOverview;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnHelper;
 import com.redhat.rhn.frontend.struts.RhnListAction;
+import com.redhat.rhn.frontend.taglibs.list.ListTagHelper;
 import com.redhat.rhn.frontend.taglibs.list.helper.ListRhnSetHelper;
 import com.redhat.rhn.frontend.taglibs.list.helper.Listable;
 import com.redhat.rhn.frontend.xmlrpc.PermissionCheckFailureException;
@@ -97,6 +98,7 @@ public class ListErrataAction extends RhnListAction implements Listable<ErrataOv
 
 
         request.setAttribute("cid", cid);
+        request.setAttribute(ListTagHelper.PARENT_URL, request.getRequestURI() + "?" + request.getQueryString());
         return mapping.findForward(RhnHelper.DEFAULT_FORWARD);
     }
 
