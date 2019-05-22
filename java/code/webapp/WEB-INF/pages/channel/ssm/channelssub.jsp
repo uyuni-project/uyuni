@@ -19,6 +19,6 @@
         var userPrefPageSize = <%= new com.redhat.rhn.frontend.struts.RequestContext(request).getCurrentUser().getPageSize() %>;
         var actionChains = ${actionChainsJson};
   </script>
-  <script src="/javascript/manager/ssm-subscribe-channels.bundle.js?cb=${rhn:getConfig('web.version')}" type="text/javascript"></script>
+  <script src="/javascript/manager/systems/ssm/ssm-subscribe-channels.bundle.js?cb=${rhn:getConfig('web.version')}" type="text/javascript"></script>
 </body>
 </html>
