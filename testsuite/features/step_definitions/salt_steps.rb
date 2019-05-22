@@ -489,7 +489,8 @@ When(/^I press "Remove Item" in (.*) section$/) do |section|
 end
 
 When(/^I check (.*) box$/) do |box|
-  boxids = { 'include forwarders' => 'bind#config#include_forwarders' }
+  boxids = { 'enable SLAAC with routing' => 'branch_network#firewall#enable_SLAAC_with_routing',
+             'include forwarders'        => 'bind#config#include_forwarders' }
   check boxids[box]
 end
 

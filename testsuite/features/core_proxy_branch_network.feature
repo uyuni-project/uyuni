@@ -41,6 +41,8 @@ Feature: Setup SUSE Manager for Retail branch network
     And I follow first "Branch Network" in the content area
     And I enter "eth1" in NIC field
     And I enter the local IP address of "proxy" in IP field
+    # bsc#1132908 - Branch network formula closes IPv6 default route, potentially making further networking fail
+    And I check enable SLAAC with routing box
     And I click on "Save Formula"
     Then I should see a "Formula saved" text
 
@@ -125,9 +127,6 @@ Feature: Setup SUSE Manager for Retail branch network
 @private_net
   Scenario: Let avahi work on the branch server
     When I open avahi port on the proxy
-    # WORKAROUND
-    # bsc#1132908 - Branch network formula closes IPv6 default route, potentially making further networking fail
-    And I enable SLAAC on the proxy
 
 @proxy
 @private_net
