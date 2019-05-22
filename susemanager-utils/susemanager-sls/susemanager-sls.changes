@@ -1,3 +1,4 @@
+- Adapt tests for SUSE manager 4.0
 - More thorougly disable the Salt mine in util.mgr_mine_config_clean_up (bsc#1135075)
 
 -------------------------------------------------------------------

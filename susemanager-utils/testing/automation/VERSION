@@ -1,10 +1,9 @@
 REGISTRY=registry.mgr.suse.de
-VER=master
-BASE_CONTAINER=uyuni-$VER-base
-PGSQL_CONTAINER=uyuni-$VER-pgsql
-ORACLE_CONTAINER=suma-head-ora
-NODEJS_CONTAINER=uyuni-$VER-nodejs
-PUSH2OBS_CONTAINER=uyuni-push-to-obs
+VER=4.0
+BASE_CONTAINER=suma-$VER-base
+PGSQL_CONTAINER=suma-$VER-pgsql
+NODEJS_CONTAINER=suma-$VER-nodejs
+PUSH2OBS_CONTAINER=suma-push-to-obs
 # Base version for the idempotency test. All PostgreSQL since this version must be idempotent for the test to pass
 # This value is is used if the file for the PR is not found (we assume we are on a branch)
 IDEMPOTENCY_SCHEMA_BASE_VERSION='4.0.1'

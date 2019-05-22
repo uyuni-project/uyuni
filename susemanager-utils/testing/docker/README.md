@@ -13,29 +13,29 @@ This is the hierarchy of our containers:
              |
              |
   +----------+----------+
-  | uyuni-<branch>-base |
+  | suma-<branch>-base |
   +----------+----------+
              |
              +-------------------+
              |                   |
              |                   |
 +----------------------+ +-----------------------+
-| uyuni-<branch>-pgsql | | uyuni-<branch>-nodejs |
+| suma-<branch>-pgsql | | suma-<branch>-nodejs |
 +----------------------+ +-----------------------+
 ```
 
-We have one Uyuni specific base container per each branch (head).
-This container is based on "official" opensuse container for the release
-used by the tested branch. These containers are external to the Uyuni project,
+We have one SUSE Manager specific base container per each branch (head).
+This container is based on "official" SLE container for the release
+used by the tested branch. These containers are external to the SUSE Manager project,
 they are built with kiwi and we do not have to maintain them.
 
-All the Uyuni-related containers are built using
+All the SUSE Manager-related containers are built using
 [docker's build feature](http://docs.docker.io/en/latest/use/builder/).
 
 From the `suma-<branch>-base` container we create two more containers:
 
-  * `uyuni-<branch>-pgsql`
-  * `uyuni-<branch>-nodejs`
+  * `suma-<branch>-pgsql`
+  * `suma-<branch>-nodejs`
 
 This containers has all the packages required to test both the Java and the
 Python codebase against PostgreSQL.
@@ -45,7 +45,7 @@ Python codebase against PostgreSQL.
 Right now the base containers are build manually, just enter their directory and
 run:
 ```
-docker build -t uyuni-<branch>-<base|pgsql|nodejs> .
+docker build -t suma-<branch>-<base|pgsql|nodejs> .
 ```
 
 ## Tagging images
@@ -73,7 +73,7 @@ Note well: it's highly recommended to use specific versions of an image when
 writing a `Dockerfile`. Writing something like `FROM foo:1.0.0` makes you closer
 to have reproducible builds.
 
-### Tagging in the context of Uyuni
+### Tagging in the context of SUSE Manager
 
 At the end of the build process you are going to have a Docker image with
 the `latest` tag. It's recommended to create also a new proper version pointing
@@ -82,14 +82,14 @@ to this image.
 It is recommended to use [semantic versioning](http://semver.org/) when dealing
 with tag versions.
 
-For example, let's assume `uyuni-master-pgsql:1.0.0` already exists. Suppose you
+For example, let's assume `suma-4.0-pgsql:1.0.0` already exists. Suppose you
 updated the `Dockerfile` to add a missing package to this image.
 
-After the `docker build` process is done the `uyuni-master-pgsql` image is going
+After the `docker build` process is done the `suma-4.0-pgsql` image is going
 to be the new Docker image including your package. Now you have to make sure
 the image can be referenced by an explicit version:
 
-`docker tag uyuni-master-pgsql:latest uyuni-master-pgsql:1.0.1`
+`docker tag suma-4.0-pgsql:latest suma-4.0-pgsql:1.0.1`
 
 Note well: `latest` could have been omitted; it has been written just to make
 things more explicit.
@@ -103,12 +103,12 @@ which runs on `registry.mgr.suse.de`.
 
 First you need to tag the local images:
 ```
-docker tag uyuni-<branch>-<base|pgsql|nodejs> registry.mgr.suse.de/uyuni-<branch>-<base|pgsql|nodejs>
-docker tag uyuni-<branch>-<base|pgsql|nodejs>:<version> registry.mgr.suse.de/uyuni-<branch>-<base|pgsql|nodejs>:<version>
+docker tag suma-<branch>-<base|pgsql|nodejs> registry.mgr.suse.de/suma-<branch>-<base|pgsql|nodejs>
+docker tag suma-<branch>-<base|pgsql|nodejs>:<version> registry.mgr.suse.de/suma-<branch>-<base|pgsql|nodejs>:<version>
 ```
 
 Then you can push the local image:
 ```
-docker push registry.mgr.suse.de/uyuni-<branch>-<base|pgsql|nodejs>
-docker push registry.mgr.suse.de/uyuni-<branch>-<base|pgsql|nodejs>:<version>
+docker push registry.mgr.suse.de/suma-<branch>-<base|pgsql|nodejs>
+docker push registry.mgr.suse.de/suma-<branch>-<base|pgsql|nodejs>:<version>
 ```
