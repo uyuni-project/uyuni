@@ -21,7 +21,7 @@ function showFiltered() {
    base="h1"
    icon="header-channel"
    imgAlt="channels.overview.toolbar.imgAlt"
-   helpUrl="/rhn/help/reference/en-US/ref.webui.channels.jsp#s3-sm-channel-list-shared"
+   helpUrl="/docs/reference/software/software-channel-list-menu.html"
    creationUrl="/rhn/channels/manage/Edit.do"
    creationType="channel"
    creationAcl="user_role(channel_admin)">

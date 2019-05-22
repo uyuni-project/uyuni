@@ -5,7 +5,7 @@
 <html>
     <body>
         <rhn:require acl="user_role(satellite_admin)"/>
-        <rhn:toolbar base="h1" icon="header-list" helpUrl="/rhn/help/reference/en-US/ref.webui.admin.logs.jsp#ref.webui.admin.logs">
+        <rhn:toolbar base="h1" icon="header-list" helpUrl="/docs/reference/admin/show-tomcat-logs.html">
           Tomcat
         </rhn:toolbar>
         <form action="/rhn/admin/Catalina.do">

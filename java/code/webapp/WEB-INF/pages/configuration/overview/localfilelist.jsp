@@ -9,7 +9,7 @@
 <html>
 <body>
 <rhn:toolbar base="h1" icon="header-configuration"
- helpUrl="/rhn/help/reference/en-US/ref.webui.config.files.jsp#configuration-files-local">
+ helpUrl="/docs/reference/configuration/files-locally-managed.html">
   <bean:message key="localfilelist.jsp.toolbar"/>
 </rhn:toolbar>
 

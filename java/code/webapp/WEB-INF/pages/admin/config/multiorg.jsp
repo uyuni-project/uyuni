@@ -6,7 +6,7 @@
 <html:html >
 <body>
 <rhn:toolbar base="h1" icon="header-info" imgAlt="info.alt.img"
-             helpUrl="/rhn/help/reference/en-US/ref.webui.admin.config.jsp#s3-sattools-config-orgs">
+             helpUrl="/docs/reference/admin/manager-config-organizations.html">
   <bean:message key="general.jsp.org.toolbar"/>
 </rhn:toolbar>
 
@@ -49,7 +49,7 @@
         <td colspan="3">
           <p>
             <small>
-              <bean:message key="general.jsp.org.summary4"/><a href="/rhn/help/reference/en-US/ref.webui.admin.config.jsp#s3-sattools-config-orgs">
+              <bean:message key="general.jsp.org.summary4"/><a href="/docs/reference/admin/manager-config-organizations.html">
               <bean:message key="general.jsp.org.tbl.link4"/></a>.
             </small>
           </p>

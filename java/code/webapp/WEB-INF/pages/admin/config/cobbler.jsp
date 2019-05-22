@@ -7,7 +7,7 @@
 
 <body>
     <rhn:toolbar base="h1" icon="header-info" imgAlt="info.alt.img"
-                 helpUrl="/rhn/help/reference/en-US/ref.webui.admin.config.jsp#s3-sattools-config-cobbler">
+                 helpUrl="/docs/reference/admin/cobbler.html">
       <bean:message key="cobbler.jsp.toolbar"/>
     </rhn:toolbar>
     <p>

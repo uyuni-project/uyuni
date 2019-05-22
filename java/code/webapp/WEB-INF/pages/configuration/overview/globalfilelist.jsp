@@ -9,7 +9,7 @@
 <html>
 <body>
 <rhn:toolbar base="h1" icon="header-configuration"
- helpUrl="/rhn/help/reference/en-US/ref.webui.config.files.jsp#configuration-files-central">
+ helpUrl="/docs/reference/configuration/files-centrally-managed.html">
   <bean:message key="globalfilelist.jsp.toolbar"/>
 </rhn:toolbar>
 

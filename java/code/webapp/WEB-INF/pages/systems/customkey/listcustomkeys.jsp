@@ -11,7 +11,7 @@
     <rhn:toolbar base="h1" icon="header-activation-key"
                 creationUrl="/rhn/systems/customdata/CreateCustomKey.do"
                 creationType="customkey"
-                helpUrl="/rhn/help/reference/en-US/ref.webui.systems.cust-info.jsp#ref.webui.systems.cust-info">
+                helpUrl="/docs/reference/systems/system-details/sd-custom-info.html">
         <bean:message key="system.jsp.customkey.title"/>
     </rhn:toolbar>
 

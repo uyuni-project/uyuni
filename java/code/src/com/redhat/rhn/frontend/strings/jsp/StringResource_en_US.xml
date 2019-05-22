@@ -1659,7 +1659,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         </context-group>
       </trans-unit>
       <trans-unit id="usercreate.jsp.pam.reference">
-        <source>To set up @@PRODUCT_NAME@@ to authenticate against LDAP, Kerberos, or other network-based authentication systems, visit the &lt;a href="/rhn/help/reference/en-US/s1-maintenance-pam-auth.jsp"&gt;Installation guide&lt;/a&gt; for instructions on how to set up PAM.</source>
+        <source>To set up @@PRODUCT_NAME@@ to authenticate against LDAP, Kerberos, or other network-based authentication systems, visit the &lt;a href="/docs/administration/auth-methods.html"&gt;Installation guide&lt;/a&gt; for instructions on how to set up PAM.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/CreateUser.do</context>
         </context-group>
@@ -9258,7 +9258,7 @@ Please note that some manual configuration of these scripts may still be require
         <source>
 You can refer to these keys and/or certificates in your kickstart profiles in order to install those keys/certificates on systems during a kickstart.
 A system will need the correct keys to install signed packages, and correct certificate to be kickstarted by an @@PRODUCT_NAME@@ Proxy Server or @@PRODUCT_NAME@@ Server.
-For more information, see the &lt;a href="/rhn/help/dispatcher/getting_started_guide" target="_blank" &gt;Getting Started Guide&lt;/a&gt;</source>
+For more information, see the &lt;a href="/docs/installation/install-intro.html" target="_blank" &gt;Getting Started Guide&lt;/a&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/keys/CryptoKeysList.do</context>
         </context-group>
@@ -9393,7 +9393,7 @@ For more information, see the &lt;a href="/rhn/help/dispatcher/getting_started_g
         <source>
         File preservation lists are lists of files that will be restored to a system during a particular kickstart.
         You can reference a file preservation list in a kickstart profile.
-        For more information refer to the &lt;a href="/rhn/help/dispatcher/getting_started_guide" target="_blank" &gt;Getting Started Guide&lt;/a&gt;.
+        For more information refer to the &lt;a href="/docs/installation/install-intro.html" target="_blank" &gt;Getting Started Guide&lt;/a&gt;.
         The following file preservation lists have been created for use by your organization:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/provisioning/preservation/PreservationList.do</context>
@@ -9514,7 +9514,7 @@ For more information, see the &lt;a href="/rhn/help/dispatcher/getting_started_g
         </context-group>
       </trans-unit>
       <trans-unit id="preservation_edit.jsp.summary">
-        <source>Any files or directories listed here will be preserved following the kickstart. List files or directories one per line.&lt;br/&gt;Each list is limited to a total size of &lt;strong&gt;1 MB&lt;/strong&gt;.  For more information see the &lt;a href="/rhn/help/dispatcher/getting_started_guide" target="_blank" &gt;Getting Started Guide&lt;/a&gt;.</source>
+        <source>Any files or directories listed here will be preserved following the kickstart. List files or directories one per line.&lt;br/&gt;Each list is limited to a total size of &lt;strong&gt;1 MB&lt;/strong&gt;.  For more information see the &lt;a href="/docs/installation/install-intro.html" target="_blank" &gt;Getting Started Guide&lt;/a&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/provisioning/preservation/PreservationListEdit.do</context>
         </context-group>

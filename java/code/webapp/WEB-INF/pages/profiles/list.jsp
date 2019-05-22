@@ -10,7 +10,7 @@
 <rhn:toolbar base="h1"
     icon="header-package"
         imgAlt="profile.list.header.alt"
-        helpUrl="/rhn/help/reference/en-US/ref.webui.systems.profiles.jsp#ref.webui.systems.profiles">
+        helpUrl="/docs/reference/systems/stored-profiles.html">
         <bean:message key="profile.list.header" />
 </rhn:toolbar>
 <div class="page-summary">

@@ -6,7 +6,7 @@
 <html:html xhtml="true">
   <body>
     <rhn:toolbar base="h1" icon="system-bare-metal"
-                 helpUrl="/rhn/help/reference/en-US/ref.webui.admin.config.jsp#s3-sattools-config-bare-metal">
+                 helpUrl="/docs/reference/admin/bare-metal-systems.html">
       <bean:message key="bootstrapsystems.jsp.toolbar"/>
     </rhn:toolbar>
 

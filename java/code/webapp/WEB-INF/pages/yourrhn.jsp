@@ -32,7 +32,7 @@
 </head>
 <body>
 <rhn:toolbar base="h1" icon="header-taskomatic" imgAlt="yourrhn.jsp.toolbar.img.alt"
-             helpUrl="/rhn/help/reference/en-US/ref.webui.overview.jsp">
+             helpUrl="/docs/reference/home/home-overview.html">
   <bean:message key="yourrhn.jsp.toolbar"/>
 </rhn:toolbar>
 
