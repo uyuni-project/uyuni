@@ -97,8 +97,9 @@ When(/^I wait until onboarding is completed for "([^"]*)"$/) do |host|
     When I navigate to "rhn/systems/Overview.do" page
     And I wait until I see the name of "#{host}", refreshing the page
     And I follow this "#{host}" link
-    And I wait until event "Package List Refresh scheduled by (none)" is completed
-    Then I wait until event "Apply states" is completed
+    And I wait until event "Hardware List Refresh" is completed
+    And I wait until event "Apply states" is completed
+    And I wait until event "Package List Refresh" is completed
   )
 end
 
