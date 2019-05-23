@@ -61,8 +61,6 @@ mkdir -p %{buildroot}/usr/share/susemanager/formulas
 mkdir -p %{buildroot}/usr/share/susemanager/formulas/metadata
 mkdir -p %{buildroot}/usr/share/susemanager/reactor
 mkdir -p %{buildroot}/usr/share/susemanager/scap
-mkdir -p %{buildroot}/usr/share/salt-formulas/metadata
-mkdir -p %{buildroot}/usr/share/salt-formulas/states
 mkdir -p %{buildroot}/srv/formula_metadata
 cp -R salt/* %{buildroot}/usr/share/susemanager/salt
 cp -R modules/pillar/* %{buildroot}/usr/share/susemanager/modules/pillar
@@ -74,7 +72,6 @@ cp -R formulas/* %{buildroot}/usr/share/susemanager/formulas
 cp -R formula_metadata/* %{buildroot}/srv/formula_metadata
 cp -R reactor/* %{buildroot}/usr/share/susemanager/reactor
 cp -R scap/* %{buildroot}/usr/share/susemanager/scap
-
 
 # Manually install Python part to already prepared structure
 cp src/beacons/pkgset.py %{buildroot}/usr/share/susemanager/salt/_beacons
@@ -125,7 +122,6 @@ fi
 /usr/share/susemanager/formulas
 /usr/share/susemanager/reactor
 /usr/share/susemanager/scap
-/usr/share/salt-formulas
 /srv/formula_metadata
 %ghost /usr/share/susemanager/salt/certs/RHN-ORG-TRUSTED-SSL-CERT
 
