@@ -1,3 +1,4 @@
+- Improve performance of 'Systems requiring reboot' page (fate#327780)
 - Allow forcing off or resetting VMs
 - Keep querystring on ListTag parent_url for actions that have the cid param (bsc#1134677)
 - Add XML-RPC API calls to manage server monitoring
