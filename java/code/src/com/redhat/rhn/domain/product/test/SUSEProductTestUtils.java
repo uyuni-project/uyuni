@@ -387,6 +387,30 @@ public class SUSEProductTestUtils extends HibernateFactory {
         product.setProductId(1097);
         product.setReleaseStage(ReleaseStage.released);
         TestUtils.saveAndFlush(product);
+
+        product = new SUSEProduct();
+        product.setName("suse-manager-mon-single");
+        product.setVersion("1.2");
+        product.setFriendlyName("SUSE Manager Monitoring Single 1.2");
+        product.setProductId(1201);
+        product.setReleaseStage(ReleaseStage.released);
+        TestUtils.saveAndFlush(product);
+
+        product = new SUSEProduct();
+        product.setName("suse-manager-mon-unlimited-virtual");
+        product.setVersion("1.2");
+        product.setFriendlyName("SUSE Manager Monitoring Unlimited Virtual 1.2");
+        product.setProductId(1202);
+        product.setReleaseStage(ReleaseStage.released);
+        TestUtils.saveAndFlush(product);
+
+        product = new SUSEProduct();
+        product.setName("suse-manager-mon-unlimited-virtual-z");
+        product.setVersion("1.2");
+        product.setFriendlyName("SUSE Manager Monitoring Unlimited Virtual Z 1.2");
+        product.setProductId(1203);
+        product.setReleaseStage(ReleaseStage.released);
+        TestUtils.saveAndFlush(product);
     }
 
     /**
