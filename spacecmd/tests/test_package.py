@@ -213,3 +213,22 @@ class TestSCPackage:
             assert_expect([call], next(iter(exp)))
             exp.pop(0)
         assert not exp
+
+    def test_package_search_noargs(self, shell):
+        """
+        Test do_package_search without arguments.
+        """
+        shell.help_package_search = MagicMock()
+        shell.client.packages.search.advanced = MagicMock()
+
+        logger = MagicMock()
+        mprint = MagicMock()
+
+        with patch("spacecmd.package.print", mprint) as prn, \
+            patch("spacecmd.package.logging", logger) as lgr:
+            out = spacecmd.package.do_package_search(shell, "", doreturn=False)
+        
+        assert out is None
+        assert not shell.client.packages.search.advanced.called
+        assert shell.help_package_search.called
+        
