@@ -82,6 +82,12 @@ public class MatcherJsonIO {
     /** Cached mandatory product ID for a regular system. */
     private final Optional<Long> productIdForSystem;
 
+    /** Cached mandatory monitoring product ID for a regular system. */
+    private Optional<Long> monitoringProductId;
+
+    /** Cached mandatory monitoring product ID for an s390x system. */
+    private Optional<Long> monitoringProductIdS390x;
+
     /** Translation of unlimited virtual lifecycle products to single variant. **/
     private final Map<Long, Long> lifecycleProductsTranslation;
 
@@ -111,6 +117,8 @@ public class MatcherJsonIO {
         productIdForEntitlement("SUSE-Manager-Mgmt-Unlimited-Virtual").ifPresent(
                 from -> productIdForSystem.ifPresent(to -> lifecycleProductsTranslation.put(from, to)));
 
+        monitoringProductId = productIdForEntitlement("SUSE-Manager-Mon-Single");
+        monitoringProductIdS390x = productIdForEntitlement("SUSE-Manager-Mon-Unlimited-Virtual-Z");
         productFactory = new CachingSUSEProductFactory();
     }
 
@@ -312,24 +320,37 @@ public class MatcherJsonIO {
         // add SUSE Manager entitlements
         return concat(
                 products.stream().map(SUSEProduct::getProductId),
-                Opt.stream(entitlementIdForServer(server, entitlements))
+                entitlementIdsForServer(server, entitlements)
         );
     }
 
     /**
      * Returns SUSE Manager entitlement product ids for a server.
      */
-    private Optional<Long> entitlementIdForServer(Server server, Set<String> entitlements) {
+    private Stream<Long> entitlementIdsForServer(Server server, Set<String> entitlements) {
+        Optional<Long> lifecycleProduct = Optional.empty();
         if (entitlements.contains(EntitlementManager.SALT_ENTITLED) ||
                 entitlements.contains(EntitlementManager.ENTERPRISE_ENTITLED)) {
             if (server.getServerArch().equals(s390arch)) {
-                return productIdForS390xSystem;
+                lifecycleProduct = productIdForS390xSystem;
             }
             else {
-                return productIdForSystem;
+                lifecycleProduct = productIdForSystem;
             }
         }
-        return Optional.empty();
+        Optional<Long> monitoringProduct = Optional.empty();
+        if (entitlements.contains(EntitlementManager.MONITORING_ENTITLED)) {
+            if (server.getServerArch().equals(s390arch)) {
+                monitoringProduct = monitoringProductIdS390x;
+            }
+            else {
+                monitoringProduct = monitoringProductId;
+            }
+        }
+
+        return Stream.concat(
+                Opt.stream(lifecycleProduct),
+                Opt.stream(monitoringProduct));
     }
 
     /**
