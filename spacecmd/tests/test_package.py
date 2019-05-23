@@ -235,7 +235,7 @@ class TestSCPackage:
         
     def test_package_search(self, shell):
         """
-        Test do_package_search with arguments of wrong fields.
+        Test do_package_search with arguments of standard fields
         """
         shell.help_package_search = MagicMock()
         shell.get_package_names = MagicMock(return_value=[
