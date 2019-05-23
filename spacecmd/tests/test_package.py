@@ -229,6 +229,7 @@ class TestSCPackage:
             out = spacecmd.package.do_package_search(shell, "", doreturn=False)
         
         assert out is None
+        assert not logger.debug.called
         assert not shell.client.packages.search.advanced.called
         assert shell.help_package_search.called
         
