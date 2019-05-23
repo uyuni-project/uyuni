@@ -830,11 +830,27 @@ ORDER BY  UPPER(COALESCE(S.NAME, '(none)')), S.ID
 
 <mode name="having_errata_with_keyword_applied_since_last_reboot" class="com.redhat.rhn.frontend.dto.SystemOverview">
   <query params="org_id, user_id, keyword">
-SELECT id, name, selectable
-  FROM allServerKeywordSinceReboot
- WHERE user_id = :user_id
-   AND org_id  = :org_id
-   AND keyword = :keyword
+      SELECT DISTINCT S.id, S.NAME,
+           (SELECT 1
+            FROM rhnServerFeaturesView SFV
+            WHERE SFV.server_id = S.id
+              AND SFV.label = 'ftr_system_grouping') AS selectable
+      FROM rhnServer S 
+        JOIN rhnServerInfo SI ON SI.server_id = S.id
+        JOIN rhnUserServerPerms USP ON USP.server_id = S.id
+      WHERE USP.user_id = :user_id
+        AND S.org_id = :org_id
+        AND EXISTS (SELECT 1
+                    FROM rhnServerPackage SP
+                      JOIN rhnPackage P ON (P.evr_id = SP.evr_id AND P.name_id = SP.name_id)
+                      JOIN rhnErrataPackage EP ON EP.package_id = P.id
+                      JOIN rhnErrata E ON EP.errata_id = E.id
+                      JOIN rhnerratakeyword EK ON E.id = EK.errata_id
+                    WHERE SP.server_id = S.id
+                      AND EK.keyword = :keyword
+                      AND (to_date('1970-01-01', 'YYYY-MM-DD')
+                           + numtodsinterval(S.last_boot, 'second')) &lt; SP.installtime at time zone 'UTC'
+                    )
   </query>
   <elaborator name="system_overview" />
   <elaborator name="system_config_files_with_diffs" />
@@ -845,12 +861,28 @@ SELECT id, name, selectable
 
 <mode name="has_errata_with_keyword_applied_since_last_reboot">
     <query params="org_id, user_id, keyword, sid">
-        SELECT 1
-          FROM allServerKeywordSinceReboot
-         WHERE id      = :sid
-           AND user_id = :user_id
-           AND org_id  = :org_id
-           AND keyword = :keyword
+        SELECT DISTINCT S.id, S.NAME,
+           (SELECT 1
+            FROM rhnServerFeaturesView SFV
+            WHERE SFV.server_id = S.id
+              AND SFV.label = 'ftr_system_grouping') AS selectable
+        FROM rhnServer S 
+          JOIN rhnServerInfo SI ON SI.server_id = S.id
+          JOIN rhnUserServerPerms USP ON USP.server_id = S.id
+        WHERE USP.user_id = :user_id
+          AND S.org_id = :org_id
+          AND S.id = :sid
+          AND EXISTS (SELECT 1
+                      FROM rhnServerPackage SP
+                        JOIN rhnPackage P ON (P.evr_id = SP.evr_id AND P.name_id = SP.name_id)
+                        JOIN rhnErrataPackage EP ON EP.package_id = P.id
+                        JOIN rhnErrata E ON EP.errata_id = E.id
+                        JOIN rhnerratakeyword EK ON E.id = EK.errata_id
+                      WHERE SP.server_id = S.id
+                        AND EK.keyword = :keyword
+                        AND (to_date('1970-01-01', 'YYYY-MM-DD')
+                             + numtodsinterval(S.last_boot, 'second')) &lt; SP.installtime at time zone 'UTC'
+                      )
     </query>
 </mode>
 
