@@ -76,10 +76,10 @@ public class MatcherJsonIO {
     /** Cached instance of the s390x ServerArch object. */
     private final ServerArch s390arch;
 
-    /** Cached list of mandatory product IDs for an s390x system. */
+    /** Cached mandatory product ID for an s390x system. */
     private final Optional<Long> productIdForS390xSystem;
 
-    /** Cached list of mandatory product IDs for a regular system. */
+    /** Cached mandatory product ID for a regular system. */
     private final Optional<Long> productIdForSystem;
 
     /** Translation of unlimited virtual lifecycle products to single variant. **/
