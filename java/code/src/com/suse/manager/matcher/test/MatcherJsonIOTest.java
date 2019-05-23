@@ -24,7 +24,6 @@ import com.redhat.rhn.testing.ServerTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 
 import com.suse.manager.matcher.MatcherJsonIO;
-import com.suse.manager.virtualization.VirtManager;
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.matcher.json.MatchJson;
 import com.suse.matcher.json.ProductJson;
@@ -64,6 +63,20 @@ public class MatcherJsonIOTest extends JMockBaseTestCaseWithUser {
     private static final long MONITORING_UNLIMITED_VIRT_PROD_ID = 1202L;
 
     private static final String AMD64_ARCH = "amd64";
+
+    @Override
+    public void setUp() throws Exception {
+        super.setUp();
+        setImposteriser(ClassImposteriser.INSTANCE);
+
+        SaltService saltServiceMock = context().mock(SaltService.class);
+        context().checking(new Expectations() {{
+            allowing(saltServiceMock).callSync(
+                    with(any(LocalCall.class)),
+                    with(any(String.class)));
+        }});
+        SystemManager.mockSaltService(saltServiceMock);
+    }
 
     public void testSystemsToJson() throws Exception {
         SUSEProductTestUtils.clearAllProducts();
