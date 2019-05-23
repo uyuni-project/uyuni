@@ -73,6 +73,10 @@ public class MatcherJsonIO {
     /** Fake ID for the SUSE Manager server system. */
     public static final long SELF_SYSTEM_ID = 2000010000L;
 
+    /** Architecture strings **/
+    private static final String AMD64_ARCH_STR = "amd64";
+    private static final String S390_ARCH_STR = "s390";
+
     /** (De)serializer instance. */
     private Gson gson;
 
@@ -102,6 +106,12 @@ public class MatcherJsonIO {
      */
     private static Logger logger = Logger.getLogger(MatcherJsonIO.class);
 
+    /** SUSE Manager server products (by arch) installed on self **/
+    private Map<String, List<Long>> selfProductsByArch;
+
+    /** Monitoring products by arch **/
+    private Map<String, Long> monitoringProductByArch;
+
     /**
      * Constructor
      */
@@ -124,6 +134,16 @@ public class MatcherJsonIO {
         monitoringProductIdS390x = productIdForEntitlement("SUSE-Manager-Mon-Unlimited-Virtual-Z");
         productIdForEntitlement("SUSE-Manager-Mon-Unlimited-Virtual").ifPresent(
                 from -> monitoringProductId.ifPresent(to -> lifecycleProductsTranslation.put(from, to)));
+
+        selfProductsByArch = new HashMap<>();
+        // SUSE Manager Server 3.1 x86_64 & SUSE Linux Enterprise Server 12 SP2 x86_64
+        selfProductsByArch.put(AMD64_ARCH_STR, Arrays.asList(1518L, 1357L));
+        // SUSE Manager Server 3.1 s390 & SUSE Linux Enterprise Server 12 SP2 s390
+        selfProductsByArch.put(S390_ARCH_STR, Arrays.asList(1519L, 1356L)); // SUSE Manager Server 3.1 x86_64
+
+        monitoringProductByArch = new HashMap<>();
+        monitoringProductByArch.put(AMD64_ARCH_STR, 1201L); // SUSE Manager Monitoring Single
+        monitoringProductByArch.put(S390_ARCH_STR, 1203L); // SUSE Manager Monitoring Unlimited Virtual Z
 
         productFactory = new CachingSUSEProductFactory();
     }
@@ -293,23 +313,12 @@ public class MatcherJsonIO {
     private Set<Long> computeSelfProductIds(boolean includeSelf, boolean selfMonitoringEnabled, String arch) {
         Set<Long> result = new LinkedHashSet<>();
 
-        if (!arch.equals("s390") && !arch.equals("amd64")) {
+        if (!arch.equals(S390_ARCH_STR) && !arch.equals(AMD64_ARCH_STR)) {
             logger.warn(String.format("Couldn't determine products for SUMA server itself" +
                     " for architecture %s. Master SUSE Manager Server system products" +
                     " won't be reported to the subscription matcher.", arch));
             return result;
         }
-
-        // todo adjust
-        Map<String, List<Long>> selfProductsByArch = new HashMap<>();
-        // SUSE Manager Server 3.1 x86_64 & SUSE Linux Enterprise Server 12 SP2 x86_64
-        selfProductsByArch.put("amd64", Arrays.asList(1518L, 1357L));
-        // SUSE Manager Server 3.1 s390 & SUSE Linux Enterprise Server 12 SP2 s390
-        selfProductsByArch.put("s390", Arrays.asList(1519L, 1356L)); // SUSE Manager Server 3.1 x86_64
-
-        Map<String, Long> monitoringProductByArch = new HashMap<>();
-        monitoringProductByArch.put("amd64", 1201L); // SUSE Manager Monitoring Single
-        monitoringProductByArch.put("s390", 1203L); // SUSE Manager Monitoring Unlimited Virtual Z
 
         if (includeSelf) {
             result.addAll(selfProductsByArch.get(arch));
