@@ -233,3 +233,26 @@ class TestSCPackage:
         assert not shell.client.packages.search.advanced.called
         assert shell.help_package_search.called
         
+    def test_package_search(self, shell):
+        """
+        Test do_package_search with arguments of wrong fields.
+        """
+        shell.help_package_search = MagicMock()
+        shell.get_package_names = MagicMock(return_value=[
+            "emacs-x11", "emacs-melpa", "emacs-nox", "vim", "pico", "gedit", "sed"
+        ])
+        shell.client.packages.search.advanced = MagicMock()
+
+        logger = MagicMock()
+        mprint = MagicMock()
+
+        with patch("spacecmd.package.print", mprint) as prn, \
+            patch("spacecmd.package.logging", logger) as lgr:
+            out = spacecmd.package.do_package_search(shell, "emacs*", doreturn=False)
+        
+        assert not shell.help_package_search.called
+        assert not logger.debug.called
+        assert not shell.client.packages.search.advanced.called
+        assert out is None
+        assert mprint.called
+        assert_expect(mprint.call_args_list, 'emacs-melpa\nemacs-nox\nemacs-x11')
