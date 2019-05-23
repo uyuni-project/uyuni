@@ -312,13 +312,19 @@ public class MatcherJsonIOTest extends JMockBaseTestCaseWithUser {
         withSetupContentSyncManager("/com/redhat/rhn/manager/content/test/sccdata_lifecycle_products", () -> {
             List<SubscriptionJson> subscriptions = new MatcherJsonIO().getJsonSubscriptions();
 
-            assertEquals(2, subscriptions.size());
+            assertEquals(4, subscriptions.size());
 
             subscriptions.stream()
                     .filter(s -> s.getId() == 11 || s.getId() == 12) // Management
                     .forEach(s -> {
                         assertTrue(s.getProductIds().contains(MGMT_SINGLE_PROD_ID));
                         assertFalse(s.getProductIds().contains(MGMT_UNLIMITED_VIRT_PROD_ID));
+                    });
+            subscriptions.stream()
+                    .filter(s -> s.getId() == 13 || s.getId() == 14) // Monitoring
+                    .forEach(s -> {
+                        assertTrue(s.getProductIds().contains(MONITORING_SINGLE_PROD_ID));
+                        assertFalse(s.getProductIds().contains(MONITORING_UNLIMITED_VIRT_PROD_ID));
                     });
         });
     }

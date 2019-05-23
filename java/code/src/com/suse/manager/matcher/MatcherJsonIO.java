@@ -119,6 +119,9 @@ public class MatcherJsonIO {
 
         monitoringProductId = productIdForEntitlement("SUSE-Manager-Mon-Single");
         monitoringProductIdS390x = productIdForEntitlement("SUSE-Manager-Mon-Unlimited-Virtual-Z");
+        productIdForEntitlement("SUSE-Manager-Mon-Unlimited-Virtual").ifPresent(
+                from -> monitoringProductId.ifPresent(to -> lifecycleProductsTranslation.put(from, to)));
+
         productFactory = new CachingSUSEProductFactory();
     }
 
