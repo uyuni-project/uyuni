@@ -1,3 +1,4 @@
+- Drop no longer used 'allServerKeywordSinceReboot' view (fate#327780)
 - Allow forcing off or resetting VMs
 - fix schema migration for suseSCCRepositoryAuth (bsc#1136558)
 - Add built time column to suseContentEnvironmentTarget
