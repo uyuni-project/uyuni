@@ -93,7 +93,8 @@ def do_package_details(self, args):
             print('File:    %s' % details.get('file'))
             print('Path:    %s' % details.get('path'))
             print('Size:    %s' % details.get('size'))
-            print('%s:  %s' % (details.get('checksum_type').upper(), details.get('checksum')))
+            print('%s%s' % ((details.get('checksum_type').upper() + ":").ljust(9),
+                             details.get('checksum')))
             print('')
             print('Installed Systems: %i' % len(installed_systems))
             print('')
