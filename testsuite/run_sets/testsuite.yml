@@ -126,6 +126,7 @@
 - features/minxen_guests.feature
 - features/min_empty_system_profiles.feature
 - features/min_custom_pkg_download_endpoint.feature
+- features/srv_monitoring.feature
 
 ## Secondary features END ##
 
