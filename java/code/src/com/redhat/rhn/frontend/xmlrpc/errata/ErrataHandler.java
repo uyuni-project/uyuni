@@ -1388,7 +1388,7 @@ public class ErrataHandler extends BaseHandler {
     public Errata publish(User loggedInUser, String advisory, List<String> channelLabels)
             throws InvalidChannelRoleException {
         List<Channel> channels = verifyChannelList(channelLabels, loggedInUser);
-        Errata toPublish = lookupErrata(advisory, loggedInUser.getOrg());
+        Errata toPublish = lookupErratumByAdvisoryAndOrg(advisory, loggedInUser.getOrg());
         return publish(toPublish, channels, loggedInUser, false);
     }
 
