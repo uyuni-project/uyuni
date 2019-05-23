@@ -37,6 +37,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import com.redhat.rhn.domain.server.MinionServerFactory;
+import com.redhat.rhn.domain.server.Server;
 import com.suse.utils.Opt;
 import org.apache.log4j.Logger;
 import org.yaml.snakeyaml.Yaml;
@@ -79,6 +80,7 @@ public class FormulaFactory {
     private static final String GROUP_DATA_FILE  = "group_formulas.json";
     private static final String SERVER_DATA_FILE = "minion_formulas.json";
     private static final String PILLAR_FILE_EXTENSION = "json";
+    private static String metadataDirOfficial = METADATA_DIR_OFFICIAL;
     private static final Gson GSON = new GsonBuilder()
             .registerTypeAdapter(Date.class, new ECMAScriptDateAdapter())
             .registerTypeAdapter(Double.class,  new JsonSerializer<Double>() {
@@ -105,6 +107,10 @@ public class FormulaFactory {
      */
     public static void setDataDir(String dataDirPath) {
         FormulaFactory.dataDir = dataDirPath;
+    }
+
+    public static void setMetadataDirOfficial(String metadataDirPath) {
+        FormulaFactory.metadataDirOfficial = metadataDirPath;
     }
 
     /**
@@ -179,9 +185,10 @@ public class FormulaFactory {
      * @param formData the values to save
      * @param groupId the id of the group
      * @param formulaName the name of the formula
+     * @param org the user's org
      * @throws IOException if an IOException occurs while saving the data
      */
-    public static void saveGroupFormulaData(Map<String, Object> formData, Long groupId,
+    public static void saveGroupFormulaData(Map<String, Object> formData, Long groupId, Org org,
             String formulaName) throws IOException {
         File file = new File(getGroupPillarDir() +
                 groupId + "_" + formulaName + "." + PILLAR_FILE_EXTENSION);
@@ -195,6 +202,36 @@ public class FormulaFactory {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
             writer.write(GSON.toJson(formData));
         }
+
+        if (PROMETHEUS_EXPORTERS.equals(formulaName)) {
+            Set<MinionServer> minions = getGroupMinions(groupId, org);
+            minions.forEach(minion -> {
+                if (!hasMonitoringDataEnabled(formData)) {
+                    if (!serverHasMonitoringFormulaEnabled(minion)) {
+                        SystemManager.removeServerEntitlement(minion.getId(), EntitlementManager.MONITORING);
+                    }
+                }
+                else {
+                    grantMonitoringEntitlement(minion);
+                }
+            });
+        }
+    }
+
+    /**
+     * Entitle server if it doesn't already have the monitoring entitlement and if it's allowed.
+     * @param server the server to entitle
+     */
+    public static void grantMonitoringEntitlement(Server server) {
+        boolean hasEntitlement = SystemManager.hasEntitlement(server.getId(), EntitlementManager.MONITORING);
+        if (!hasEntitlement && SystemManager.canEntitleServer(server, EntitlementManager.MONITORING)) {
+            SystemManager.entitleServer(server, EntitlementManager.MONITORING);
+            return;
+        }
+        if (LOG.isDebugEnabled() && hasEntitlement) {
+            LOG.debug("Server " + server.getName() + " already has monitoring entitlement.");
+        }
+
     }
 
     /**
@@ -210,8 +247,16 @@ public class FormulaFactory {
         // Add the monitoring entitlement if at least one of the exporters is enabled
         if (PROMETHEUS_EXPORTERS.equals(formulaName)) {
             MinionServerFactory.findByMinionId(minionId).ifPresent(s -> {
-                if (!hasMonitoringEnabled(formData)) {
-                    SystemManager.removeServerEntitlement(s.getId(), EntitlementManager.MONITORING);
+                if (!hasMonitoringDataEnabled(formData)) {
+                    if (isMemberOfGroupHavingMonitoring(s)) {
+                        // nothing to do here, keep monitoring entitlement and disable formula
+                        LOG.debug(String.format("Minion %s is member of group having monitoring enabled." +
+                                " Not removing monitoring entitlement.", minionId));
+                    }
+                    else {
+                        SystemManager.removeServerEntitlement(s.getId(),
+                                EntitlementManager.MONITORING);
+                    }
                 }
                 else if (!SystemManager.hasEntitlement(s.getId(), EntitlementManager.MONITORING) &&
                         SystemManager.canEntitleServer(s, EntitlementManager.MONITORING)) {
@@ -434,17 +479,8 @@ public class FormulaFactory {
                         new LinkedList<>()));
         deletedFormulas.removeAll(selectedFormulas);
 
-        Set<MinionServer> minions = ServerGroupFactory
-                .lookupByIdAndOrg(groupId, org)
-                .getServers().stream()
-                .map(server -> server.asMinionServer())
-                .flatMap(Opt::stream)
-                .collect(Collectors.toSet());
-
-        for (MinionServer minion : minions) { // foreach loop: we need to throw IOException
-            for (String f : deletedFormulas) {
-                deleteServerFormulaData(minion.getMinionId(), f);
-            }
+        for (String f : deletedFormulas) {
+            deleteGroupFormulaData(groupId, f);
         }
 
         // Save selected Formulas
@@ -452,6 +488,42 @@ public class FormulaFactory {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(dataFile))) {
             writer.write(GSON.toJson(groupFormulas));
         }
+
+        // Generate monitoring default data from the 'pillar.example' file, otherwise the API would not return any
+        // formula data as long as the default values are unchanged.
+        if (selectedFormulas.contains(PROMETHEUS_EXPORTERS) &&
+                getGroupFormulaValuesByNameAndGroupId(PROMETHEUS_EXPORTERS, groupId).isEmpty()) {
+            FormulaFactory.saveGroupFormulaData(
+                    getPillarExample(PROMETHEUS_EXPORTERS), groupId, org, PROMETHEUS_EXPORTERS);
+        }
+
+        // Handle entitlement removal in case of monitoring
+        if (deletedFormulas.contains(PROMETHEUS_EXPORTERS)) {
+            Set<MinionServer> minions = getGroupMinions(groupId, org);
+            minions.forEach(minion -> {
+                // remove entitlement only if formula not enabled at server level
+                if (!serverHasMonitoringFormulaEnabled(minion)) {
+                    SystemManager.removeServerEntitlement(minion.getId(), EntitlementManager.MONITORING);
+                }
+            });
+        }
+    }
+
+    private static boolean serverHasMonitoringFormulaEnabled(MinionServer minion) {
+        List<String> formulas = FormulaFactory.getFormulasByMinionId(minion.getMinionId());
+        return formulas.contains(FormulaFactory.PROMETHEUS_EXPORTERS) &&
+                getFormulaValuesByNameAndMinionId(PROMETHEUS_EXPORTERS, minion.getMinionId())
+                        .map(data -> hasMonitoringDataEnabled(data))
+                        .orElse(false);
+    }
+
+    private static Set<MinionServer> getGroupMinions(Long groupId, Org org) {
+        return ServerGroupFactory
+                .lookupByIdAndOrg(groupId, org)
+                .getServers().stream()
+                .map(server -> server.asMinionServer())
+                .flatMap(Opt::stream)
+                .collect(Collectors.toSet());
     }
 
     /**
@@ -512,7 +584,10 @@ public class FormulaFactory {
         // Handle entitlement removal in case of monitoring
         if (deletedFormulas.contains(PROMETHEUS_EXPORTERS)) {
             MinionServerFactory.findByMinionId(minionId).ifPresent(s -> {
-                SystemManager.removeServerEntitlement(s.getId(), EntitlementManager.MONITORING);
+                if (!isMemberOfGroupHavingMonitoring(s)) {
+                    SystemManager.removeServerEntitlement(s.getId(), EntitlementManager.MONITORING);
+                }
+
             });
         }
     }
@@ -640,7 +715,7 @@ public class FormulaFactory {
      */
     @SuppressWarnings("unchecked")
     public static Map<String, Object> getPillarExample(String formulaName) throws IOException {
-        File pillarExample = new File(METADATA_DIR_OFFICIAL + formulaName + "/pillar.example");
+        File pillarExample = new File(metadataDirOfficial + formulaName + "/pillar.example");
         try (FileInputStream fis = new FileInputStream(pillarExample)) {
             return (Map<String, Object>) YAML.load(fis);
         }
@@ -659,8 +734,30 @@ public class FormulaFactory {
         return formData;
     }
 
+    /**
+     * Check whether a server is member of a group having monitoring formula enabled.
+     * @param server the server to check
+     * @return true if the server is member of a group having monitoring formula enabled.
+     */
+    public static boolean isMemberOfGroupHavingMonitoring(Server server) {
+        return server.getManagedGroups().stream()
+                .map(grp -> FormulaFactory.hasMonitoringDataEnabled(grp))
+                .anyMatch(Boolean::booleanValue);
+    }
+
+    /**
+     * Check whether group has monitoring formula enabled.
+     * @param group server group
+     * @return true if monitoring formula is enabled, false otherwise
+     */
+    public static boolean hasMonitoringDataEnabled(ServerGroup group) {
+        return getGroupFormulaValuesByNameAndGroupId(PROMETHEUS_EXPORTERS, group.getId())
+                .map(FormulaFactory::hasMonitoringDataEnabled)
+                .orElse(false);
+    }
+
     @SuppressWarnings("unchecked")
-    private static boolean hasMonitoringEnabled(Map<String, Object> formData) {
+    private static boolean hasMonitoringDataEnabled(Map<String, Object> formData) {
         Map<String, Object> nodeExporter = (Map<String, Object>) formData.get("node_exporter");
         Map<String, Object> postgresExporter = (Map<String, Object>) formData.get("postgres_exporter");
         return (boolean) nodeExporter.get("enabled") || (boolean) postgresExporter.get("enabled");

@@ -205,7 +205,7 @@ public class FormulaController {
                     if (!checkUserHasPermissionsOnServerGroup(user, group)) {
                         return deniedResponse(response);
                     }
-                    FormulaFactory.saveGroupFormulaData(formData, id, formulaName);
+                    FormulaFactory.saveGroupFormulaData(formData, id, user.getOrg(), formulaName);
                     List<String> minionIds = group.getServers().stream()
                             .flatMap(s -> Opt.stream(s.asMinionServer()))
                             .map(MinionServer::getMinionId).collect(Collectors.toList());

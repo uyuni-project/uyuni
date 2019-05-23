@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.manager.system.test;
 
+import static com.redhat.rhn.domain.formula.FormulaFactory.PROMETHEUS_EXPORTERS;
 import static com.redhat.rhn.manager.action.test.ActionManagerTest.assertNotEmpty;
 import static com.redhat.rhn.testing.RhnBaseTestCase.reload;
 import static java.util.Collections.emptySet;
@@ -107,15 +108,22 @@ import com.suse.manager.webui.controllers.utils.ContactMethodUtil;
 import com.suse.manager.webui.services.impl.SaltSSHService;
 import com.suse.manager.webui.services.impl.SaltService;
 
+import org.apache.commons.io.IOUtils;
 import org.cobbler.test.MockConnection;
 import org.hibernate.Session;
 import org.hibernate.type.IntegerType;
 import org.jmock.Expectations;
 import org.jmock.lib.legacy.ClassImposteriser;
 
+import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.nio.channels.FileChannel;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -139,6 +147,9 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
     public static final int HOST_SWAP_MB = 1024;
 
     private SaltService saltServiceMock;
+    protected Path tmpPillarRoot;
+    protected Path tmpSaltRoot;
+    protected Path metadataDirOfficial;
 
     @Override
     public void setUp() throws Exception {
@@ -150,6 +161,11 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         TaskomaticApi taskomaticMock = mock(TaskomaticApi.class);
         ActionManager.setTaskomaticApi(taskomaticMock);
         saltServiceMock = mock(SaltService.class);
+        tmpSaltRoot = Files.createTempDirectory("salt");
+        metadataDirOfficial = Files.createTempDirectory("meta");
+        createMetadataFiles();
+        FormulaFactory.setDataDir(tmpSaltRoot.toString());
+        FormulaFactory.setMetadataDirOfficial(metadataDirOfficial.toString() + File.separator);
         SystemManager.mockSaltService(saltServiceMock);
         context().checking(new Expectations() {
             {
@@ -157,6 +173,22 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
                     .scheduleActionExecution(with(any(Action.class)));
             }
         });
+    }
+
+    private void createMetadataFiles() {
+        try {
+            Path prometheusDir = metadataDirOfficial.resolve("prometheus-exporters");
+            Files.createDirectories(prometheusDir);
+            try (InputStream src = this.getClass().getResourceAsStream("prometheus/pillar.example");
+                 OutputStream dst = new FileOutputStream(prometheusDir.resolve("pillar.example").toFile())
+            ) {
+                IOUtils.copy(src, dst);
+            }
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+            fail(e.getMessage());
+        }
     }
 
     public void testSnapshotServer() throws Exception {
@@ -1652,5 +1684,34 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         hostName.ifPresent(n -> data.put("hostname", n));
         hwAddr.ifPresent(a -> data.put("hwAddress", a));
         return SystemManager.createSystemProfile(user, hostName.orElse("test system"), data);
+    }
+
+    public void testAddServerToServerGroupWithMonitoring() throws Exception {
+        User user = UserTestUtils.findNewUser(TestStatics.TESTUSER, TestStatics.TESTORG);
+        user.addPermanentRole(RoleFactory.ORG_ADMIN);
+        Server server = MinionServerFactoryTest.createTestMinionServer(user);
+        server.setServerArch(ServerFactory.lookupServerArchByLabel("x86_64-redhat-linux"));
+        ServerGroup group = ServerGroupTest
+                .createTestServerGroup(user.getOrg(), null);
+
+        FormulaFactory.saveGroupFormulas(group.getId(), Arrays.asList(PROMETHEUS_EXPORTERS), user.getOrg());
+        Map<String, Object> formulaData = new HashMap<>();
+        formulaData.put("node_exporter", Collections.singletonMap("enabled", true));
+        formulaData.put("postgres_exporter", Collections.singletonMap("enabled", false));
+
+        FormulaFactory.saveGroupFormulaData(formulaData, group.getId(), user.getOrg(), PROMETHEUS_EXPORTERS);
+        assertFalse(SystemManager.hasEntitlement(server.getId(), EntitlementManager.MONITORING));
+
+        SystemManager.addServerToServerGroup(server, group);
+        ServerFactory.save(server);
+
+        List<String> formulas = FormulaFactory.getFormulasByMinionId(server.getMinionId());
+        assertFalse(formulas.contains(PROMETHEUS_EXPORTERS));
+        Optional<Map<String, Object>> data =
+                FormulaFactory.getFormulaValuesByNameAndMinionId(PROMETHEUS_EXPORTERS, server.getMinionId());
+        assertFalse(data.isPresent());
+//        assertFalse((boolean)((Map<String, Object>)data.get().get("node_exporter")).get("enabled"));
+//        assertFalse((boolean)((Map<String, Object>)data.get().get("postgres_exporter")).get("enabled"));
+        // TODO fix assertTrue(SystemManager.hasEntitlement(server.getId(), EntitlementManager.MONITORING));
     }
 }
