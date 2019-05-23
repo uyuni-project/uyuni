@@ -136,10 +136,10 @@ public class MatcherJsonIO {
                 from -> monitoringProductId.ifPresent(to -> lifecycleProductsTranslation.put(from, to)));
 
         selfProductsByArch = new HashMap<>();
-        // SUSE Manager Server 3.1 x86_64 & SUSE Linux Enterprise Server 12 SP2 x86_64
-        selfProductsByArch.put(AMD64_ARCH_STR, Arrays.asList(1518L, 1357L));
-        // SUSE Manager Server 3.1 s390 & SUSE Linux Enterprise Server 12 SP2 s390
-        selfProductsByArch.put(S390_ARCH_STR, Arrays.asList(1519L, 1356L)); // SUSE Manager Server 3.1 x86_64
+        // SUSE Manager Server 4.0 x86_64 & SUSE Linux Enterprise Server 15 SP1 x86_64
+        selfProductsByArch.put(AMD64_ARCH_STR, Arrays.asList(1899L, 1763L));
+        // SUSE Manager Server 4.0 x86_64 & SUSE Linux Enterprise Server 15 SP1 s390
+        selfProductsByArch.put(S390_ARCH_STR, Arrays.asList(1898L, 1762L));
 
         monitoringProductByArch = new HashMap<>();
         monitoringProductByArch.put(AMD64_ARCH_STR, 1201L); // SUSE Manager Monitoring Single
