@@ -1,0 +1,3 @@
+-- oracle equivalent source sha1 509bc3c27ccb57f1241c43c9be794434a6e52f57
+
+DROP VIEW IF EXISTS allServerKeywordSinceReboot;

@@ -1,0 +1,6 @@
+BEGIN
+ EXECUTE IMMEDIATE 'DROP VIEW allServerKeywordSinceReboot';
+EXCEPTION
+   WHEN OTHERS
+     THEN NULL;
+END;
