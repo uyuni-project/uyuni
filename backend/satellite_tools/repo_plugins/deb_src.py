@@ -16,6 +16,7 @@
 import sys
 import os.path
 from shutil import rmtree
+from shutil import copyfile
 import time
 import re
 import fnmatch
@@ -27,11 +28,13 @@ from spacewalk.satellite_tools.repo_plugins import ContentPackage, CACHE_DIR
 from spacewalk.satellite_tools.syncLib import log2
 from spacewalk.common.rhnConfig import CFG, initCFG
 try:
-    #  python 2
+    #  python 2 
+    from urllib import unquote
     import urlparse
 except ImportError:
     #  python3
     import urllib.parse as urlparse # pylint: disable=F0401,E0611
+    from urllib.parse import unquote
 
 RETRIES = 10
 RETRY_DELAY = 1
@@ -83,6 +86,13 @@ class DebRepo(object):
         self.http_headers = {}
 
     def _download(self, url):
+        if url.startswith('file://'):
+            srcpath = unquote(url[len('file://'):])
+            if not os.path.exists(srcpath):
+                return ''
+            filename = self.basecachedir + '/' + os.path.basename(url)
+            copyfile(srcpath, filename)
+            return filename
         for _ in range(0, RETRIES):
             try:
                 data = requests.get(url, cert=(self.sslclientcert, self.sslclientkey),
