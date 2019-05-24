@@ -92,6 +92,11 @@ Before('@sle15_minion') do |scenario|
   scenario.skip_invoke! unless $sle15_minion
 end
 
+# do we have scc credentials
+Before('@scc_credentials') do |scenario|
+  scenario.skip_invoke! unless ENV['scc_credentials']
+end
+
 # do some tests only if there is a private network
 Before('@private_net') do |scenario|
   scenario.skip_invoke! unless $private_net

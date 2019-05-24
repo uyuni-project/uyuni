@@ -3,6 +3,7 @@
 
 Feature: Synchronize products in the products page of the Setup Wizard
 
+@scc_credentials
   Scenario: Let the products page appear
     Given I am on the Admin page
     # Order matters here, refresh first
@@ -13,6 +14,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
     And I should see a "Channels" text
     And I should not see a "WebYaST 1.3" text
 
+@scc_credentials
   Scenario: Use the products filter
     Given I am on the Admin page
     When I follow "SUSE Products" in the content area
@@ -20,6 +22,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
     And I enter "RHEL Expanded Support 7" in the css "input[name='product-description-filter']"
     Then I should see a "RHEL Expanded Support 7" text
 
+@scc_credentials
   Scenario: View the channels list in the products page
     Given I am on the Admin page
     When I follow "SUSE Products" in the content area
@@ -30,6 +33,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
     And I should see a "Mandatory Channels" text
     And I should see a "Optional Channels" text
 
+@scc_credentials
   Scenario: Add a product and one of its modules
     Given I am on the Admin page
     When I follow "SUSE Products" in the content area
@@ -47,6 +51,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
     And I wait until I see "SUSE Linux Enterprise Server 12 SP2 x86_64" product has been added
     Then the SLE12 products should be added
 
+@scc_credentials
   Scenario: Add a product with recommended enabled
     Given I am on the Admin page
     When I follow "SUSE Products" in the content area
