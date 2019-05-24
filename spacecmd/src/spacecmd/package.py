@@ -242,15 +242,17 @@ def do_package_removeorphans(self, args):
         self.client.channel.software.listPackagesWithoutChannel(self.session)
 
     if not packages:
+        print("No orphaned packages has been found")
         logging.warning('No orphaned packages')
+        return
+
+    if not self.user_confirm('Remove these packages [y/N]:'):
+        print("No packages were removed")
         return
 
     print('Packages')
     print('--------')
     print('\n'.join(sorted(build_package_names(packages))))
-
-    if not self.user_confirm('Remove these packages [y/N]:'):
-        return
 
     for package in packages:
         try:
