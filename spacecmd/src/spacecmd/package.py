@@ -191,14 +191,16 @@ def do_package_remove(self, args):
         print("No packages found to remove")
         return
 
+    if not self.user_confirm('Remove these packages [y/N]:'):
+        print("No packages has been removed")
+        return
+
     print('Packages')
     print('--------')
     print('\n'.join(sorted(to_remove)))
 
-    if not self.user_confirm('Remove these packages [y/N]:'):
-        return
-
     for package in to_remove:
+        print(">>>", package)
         for package_id in self.get_package_id(package):
             try:
                 self.client.packages.removePackage(self.session, package_id)
