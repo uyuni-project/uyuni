@@ -256,4 +256,34 @@ class TestSCPackage:
         assert out is None
         assert mprint.called
         assert_expect(mprint.call_args_list, 'emacs-melpa\nemacs-nox\nemacs-x11')
-    # TODO: Must fix do_package_search fields check for incorrect type and show help for it.
+
+    def test_package_search_advanced(self, shell):
+        """
+        Test do_package_search with arguments of advanced fields.
+        """
+        shell.help_package_search = MagicMock()
+        shell.get_package_names = MagicMock(return_value=[
+            "emacs-x11", "emacs-melpa", "emacs-nox", "vim", "pico", "gedit", "sed"
+        ])
+        shell.client.packages.search.advanced = MagicMock(return_value=[
+            {"name": "emacs-x11", "version": "24.5", "release": "1", "epoch": "", "arch": "x86_64", "arch_label": "x86_64"},
+            {"name": "emacs-melpa", "version": "16.7", "release": "2", "epoch": "", "arch": "noarch", "arch_label": "noarch"},
+            {"name": "emacs-nox", "version": "24.5.2", "release": "3", "epoch": "", "arch": "x86_64", "arch_label": "x86_64"},
+        ])
+
+        logger = MagicMock()
+        mprint = MagicMock()
+
+        with patch("spacecmd.package.print", mprint) as prn, \
+                patch("spacecmd.package.logging", logger) as lgr:
+            out = spacecmd.package.do_package_search(
+                shell, "name:emacs*", doreturn=False)
+
+        assert not shell.help_package_search.called
+        assert logger.debug.called
+        assert shell.client.packages.search.advanced.called
+        assert out is None
+        assert mprint.called
+        assert_expect(mprint.call_args_list,
+                      'emacs-melpa-16.7-2.noarch\nemacs-nox-24.5.2-3.x86_64\nemacs-x11-24.5-1.x86_64')
+
