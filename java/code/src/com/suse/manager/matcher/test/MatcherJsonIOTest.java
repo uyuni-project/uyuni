@@ -117,14 +117,12 @@ public class MatcherJsonIOTest extends JMockBaseTestCaseWithUser {
         List<SystemJson> result = new MatcherJsonIO().getJsonSystems(true, AMD64_ARCH, false);
         assertNotNull(result);
 
-        SystemJson resultH1 =
-                result.stream().filter(s -> s.getId().equals(h1.getId())).findFirst().get();
+        SystemJson resultH1 = findSystem(h1.getId(), result);
         assertNotNull(resultH1);
         assertEquals("host1.example.com", resultH1.getName());
         assertEquals(0, resultH1.getProductIds().size());
 
-        SystemJson resultG1 =
-                result.stream().filter(s -> s.getId().equals(g1.getId())).findFirst().get();
+        SystemJson resultG1 = findSystem(g1.getId(), result);
         assertNotNull(resultG1);
         assertEquals("guest1.example.com", resultG1.getName());
         assertEquals(3, resultG1.getProductIds().size());
@@ -132,8 +130,7 @@ public class MatcherJsonIOTest extends JMockBaseTestCaseWithUser {
         assertTrue(resultG1.getProductIds().contains(MGMT_SINGLE_PROD_ID));
         assertTrue(resultG1.getProductIds().contains(1324L));
 
-        SystemJson resultG2 =
-                result.stream().filter(s -> s.getId().equals(g2.getId())).findFirst().get();
+        SystemJson resultG2 = findSystem(g2.getId(), result);
         assertNotNull(resultG2);
         assertEquals("guest2.example.com", resultG2.getName());
         assertEquals(3, resultG2.getProductIds().size());
@@ -142,9 +139,7 @@ public class MatcherJsonIOTest extends JMockBaseTestCaseWithUser {
         assertTrue(resultG2.getProductIds().contains(1324L));
 
         // ISS Master should add itself
-        SystemJson sumaItself = result.stream().filter(
-                s -> s.getId().equals(MatcherJsonIO.SELF_SYSTEM_ID))
-                .findFirst().get();
+        SystemJson sumaItself = findSystem(MatcherJsonIO.SELF_SYSTEM_ID, result);
         assertNotNull(sumaItself);
         assertEquals(1L, sumaItself.getCpus().longValue());
         assertEquals("SUSE Manager Server system", sumaItself.getName());
@@ -162,17 +157,13 @@ public class MatcherJsonIOTest extends JMockBaseTestCaseWithUser {
     public void testSystemsToJsonMonitoringEnabled() {
         // x86_64
         List<SystemJson> result = new MatcherJsonIO().getJsonSystems(false, AMD64_ARCH, true);
-        SystemJson sumaItself = result.stream().filter(
-                s -> s.getId().equals(MatcherJsonIO.SELF_SYSTEM_ID))
-                .findFirst().get();
+        SystemJson sumaItself = findSystem(MatcherJsonIO.SELF_SYSTEM_ID, result);
         assertEquals(1, sumaItself.getProductIds().size());
         assertEquals(1201L, sumaItself.getProductIds().iterator().next().longValue());
 
         // s390
         result = new MatcherJsonIO().getJsonSystems(false, S390_ARCH, true);
-        sumaItself = result.stream().filter(
-                s -> s.getId().equals(MatcherJsonIO.SELF_SYSTEM_ID))
-                .findFirst().get();
+        sumaItself = findSystem(MatcherJsonIO.SELF_SYSTEM_ID, result);
         assertEquals(1, sumaItself.getProductIds().size());
         assertEquals(1203L, sumaItself.getProductIds().iterator().next().longValue());
     }
@@ -180,17 +171,13 @@ public class MatcherJsonIOTest extends JMockBaseTestCaseWithUser {
     public void testSystemsToJsonIssMasterWithMonitoring() {
         // x86_64
         List<SystemJson> result = new MatcherJsonIO().getJsonSystems(true, AMD64_ARCH, true);
-        SystemJson sumaItself = result.stream().filter(
-                s -> s.getId().equals(MatcherJsonIO.SELF_SYSTEM_ID))
-                .findFirst().get();
+        SystemJson sumaItself = findSystem(MatcherJsonIO.SELF_SYSTEM_ID, result);
         assertEquals(3, sumaItself.getProductIds().size());
         assertEquals(new HashSet<>(Arrays.asList(1899L, 1763L, 1201L)), sumaItself.getProductIds());
 
         // s390
         result = new MatcherJsonIO().getJsonSystems(true, S390_ARCH, true);
-        sumaItself = result.stream().filter(
-                s -> s.getId().equals(MatcherJsonIO.SELF_SYSTEM_ID))
-                .findFirst().get();
+        sumaItself = findSystem(MatcherJsonIO.SELF_SYSTEM_ID, result);
         assertEquals(3, sumaItself.getProductIds().size());
         assertEquals(new HashSet<>(Arrays.asList(1898L, 1762L, 1203L)), sumaItself.getProductIds());
     }
@@ -234,8 +221,8 @@ public class MatcherJsonIOTest extends JMockBaseTestCaseWithUser {
         List<SystemJson> systems = matcherInput.getJsonSystems(false, AMD64_ARCH, false);
         assertEquals(1, systems.stream().filter(s -> s.getId().equals(hostServer.getId())).count());
         assertEquals(1, systems.stream().filter(s -> s.getId().equals(guestServer.getId())).count());
-        SystemJson host = systems.stream().filter(s -> s.getId().equals(hostServer.getId())).findFirst().get();
-        SystemJson guest = systems.stream().filter(s -> s.getId().equals(guestServer.getId())).findFirst().get();
+        SystemJson host = findSystem(hostServer.getId(), systems);
+        SystemJson guest = findSystem(guestServer.getId(), systems);
 
         assertTrue(host.getProductIds().contains(MGMT_SINGLE_PROD_ID));
         assertFalse(host.getProductIds().contains(MGMT_UNLIMITED_VIRT_PROD_ID));
@@ -273,8 +260,8 @@ public class MatcherJsonIOTest extends JMockBaseTestCaseWithUser {
         List<SystemJson> systems = matcherInput.getJsonSystems(false, AMD64_ARCH, selfMonitoringEnabled);
         assertEquals(1, systems.stream().filter(s -> s.getId().equals(hostServer.getId())).count());
         assertEquals(1, systems.stream().filter(s -> s.getId().equals(guestServer.getId())).count());
-        SystemJson host = systems.stream().filter(s -> s.getId().equals(hostServer.getId())).findFirst().get();
-        SystemJson guest = systems.stream().filter(s -> s.getId().equals(guestServer.getId())).findFirst().get();
+        SystemJson host = findSystem(hostServer.getId(), systems);
+        SystemJson guest = findSystem(guestServer.getId(), systems);
 
         // let's check that monitoring products are NOT reported when the servers are not Monitoring-entitled
         assertFalse(host.getProductIds().contains(MONITORING_SINGLE_PROD_ID));
@@ -288,8 +275,8 @@ public class MatcherJsonIOTest extends JMockBaseTestCaseWithUser {
         HibernateFactory.getSession().clear();
 
         systems = matcherInput.getJsonSystems(false, AMD64_ARCH, selfMonitoringEnabled);
-        host = systems.stream().filter(s -> s.getId().equals(hostServer.getId())).findFirst().get();
-        guest = systems.stream().filter(s -> s.getId().equals(guestServer.getId())).findFirst().get();
+        host = findSystem(hostServer.getId(), systems);
+        guest = findSystem(guestServer.getId(), systems);
         assertTrue(host.getProductIds().contains(MONITORING_SINGLE_PROD_ID));
         assertFalse(host.getProductIds().contains(MONITORING_UNLIMITED_VIRT_PROD_ID));
         assertTrue(guest.getProductIds().contains(MONITORING_SINGLE_PROD_ID));
@@ -327,8 +314,7 @@ public class MatcherJsonIOTest extends JMockBaseTestCaseWithUser {
         testSystem.setInstalledProducts(installedProducts);
 
         MatcherJsonIO matcherInput = new MatcherJsonIO();
-        SystemJson system = matcherInput.getJsonSystems(false, AMD64_ARCH, false).stream()
-                .filter(s -> s.getId().equals(testSystem.getId())).findFirst().get();
+        SystemJson system = findSystem(testSystem.getId(), matcherInput.getJsonSystems(false, AMD64_ARCH, false));
 
         assertFalse(system.getProductIds().contains(instPrd.getSUSEProduct().getProductId()));
     }
@@ -542,5 +528,12 @@ public class MatcherJsonIOTest extends JMockBaseTestCaseWithUser {
         instProd.setArch(PackageFactory.lookupPackageArchByLabel(archLabel));
         instProd.setBaseproduct(base);
         return instProd;
+    }
+
+    // helper method for finding system in a list
+    private SystemJson findSystem(long systemId, List<SystemJson> result) {
+        return result.stream().filter(
+                s -> s.getId().equals(systemId))
+                .findFirst().get();
     }
 }
