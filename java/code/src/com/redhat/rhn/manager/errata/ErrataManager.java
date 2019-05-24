@@ -1521,6 +1521,9 @@ public class ErrataManager extends BaseManager {
         eList.add(errata.getId());
         //First delete the cache entries
         ErrataCacheManager.deleteCacheEntriesForChannelErrata(chan.getId(), eList);
+        ErrataCacheManager.deleteCacheEntriesForChannelPackages(
+                chan.getId(),
+                errata.getPackages().stream().map(p -> p.getId()).collect(toList()));
 
         // remove packages
         errata.getPackages().stream().forEach(p -> chan.getPackages().remove(p));
