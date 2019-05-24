@@ -973,3 +973,16 @@ And(/I should see a list item with text "([^"]*)" and bullet with "([^"]*)" icon
   item_xpath = "//ul/li[text()='#{text}']/i[contains(@class, 'text-#{class_name}')]"
   find(:xpath, item_xpath)
 end
+
+When(/^I enter the SCC credentials$/) do
+  user = ENV['scc_credentials'].split('|')[0]
+  password = ENV['scc_credentials'].split('|')[1]
+  unless page.has_content?(user)
+    steps %(
+      And I want to add a new credential
+      And I enter "#{user}" as "edit-user"
+      And I enter "#{password}" as "edit-password"
+      And I click on "Save"
+    )
+  end
+end

@@ -3,6 +3,12 @@
 
 Feature: Organization credentials in the Setup Wizard
 
+@scc_credentials
+  Scenario: Enter valid SCC credentials
+    Given I am on the Admin page
+    When I follow "Organization Credentials" in the content area
+    And I enter the SCC credentials
+
 @no_mirror
   Scenario: Create some organization credentials
     Given I am on the Admin page
