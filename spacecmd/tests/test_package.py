@@ -287,3 +287,24 @@ class TestSCPackage:
         assert_expect(mprint.call_args_list,
                       'emacs-melpa-16.7-2.noarch\nemacs-nox-24.5.2-3.x86_64\nemacs-x11-24.5-1.x86_64')
 
+    def test_package_search_advanced_wrong_fields(self, shell):
+        """
+        Test do_package_search with arguments of advanced fields.
+        """
+        shell.help_package_search = MagicMock()
+        shell.get_package_names = MagicMock(return_value=[])
+        shell.client.packages.search.advanced = MagicMock(return_value=[])
+
+        logger = MagicMock()
+        mprint = MagicMock()
+
+        with patch("spacecmd.package.print", mprint) as prn, \
+                patch("spacecmd.package.logging", logger) as lgr:
+            out = spacecmd.package.do_package_search(
+                shell, "millenium:emacs*", doreturn=False)
+
+        assert not logger.debug.called
+        assert not shell.client.packages.search.advanced.called
+        assert out is None
+        assert shell.help_package_search.called
+
