@@ -15,6 +15,16 @@
 
 package com.redhat.rhn.manager.contentmgmt.test;
 
+import static com.redhat.rhn.domain.contentmgmt.ContentFilter.EntityType.ERRATUM;
+import static com.redhat.rhn.domain.contentmgmt.ContentFilter.EntityType.PACKAGE;
+import static com.redhat.rhn.domain.contentmgmt.ContentFilter.Rule.DENY;
+import static com.redhat.rhn.domain.role.RoleFactory.ORG_ADMIN;
+import static java.util.Collections.emptyList;
+import static java.util.Collections.singleton;
+import static java.util.Optional.of;
+import static java.util.stream.Collectors.toSet;
+
+import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
@@ -44,15 +54,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-
-import static com.redhat.rhn.domain.contentmgmt.ContentFilter.EntityType.ERRATUM;
-import static com.redhat.rhn.domain.contentmgmt.ContentFilter.EntityType.PACKAGE;
-import static com.redhat.rhn.domain.contentmgmt.ContentFilter.Rule.DENY;
-import static com.redhat.rhn.domain.role.RoleFactory.ORG_ADMIN;
-import static java.util.Collections.emptyList;
-import static java.util.Collections.singleton;
-import static java.util.Optional.of;
-import static java.util.stream.Collectors.toSet;
 
 /**
  * Test for the content-management related methods in {@link ChannelManager}
