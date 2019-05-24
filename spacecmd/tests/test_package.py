@@ -331,3 +331,29 @@ class TestSCPackage:
             assert shell.client.packages.search.advanced.called
             assert out is not None
 
+    def test_package_remove_noarg(self, shell):
+        """
+        Test do_package_remove with no arguments passed.
+
+            :param self:
+            :param shell:
+        """
+        shell.help_package_remove = MagicMock()
+        shell.get_package_names = MagicMock()
+        shell.get_package_id = MagicMock()
+        shell.client.packages.removePackage = MagicMock()
+        shell.generate_package_cache = MagicMock()
+        shell.user_configm = MagicMock(return_value=True)
+        mprint = MagicMock()
+        logger = MagicMock()
+        with patch("spacecmd.package.print", mprint) as prn, \
+            patch("spacecmd.package.logging", logger) as lgr:
+            spacecmd.package.do_package_search(shell, "")
+
+        assert not shell.get_package_names.called
+        assert not shell.get_package_id.called
+        assert not shell.client.packages.removePackage.called
+        assert not shell.generate_package_cache.called
+        assert not shell.user_configm.called
+        assert shell.help_package_remove.called
+
