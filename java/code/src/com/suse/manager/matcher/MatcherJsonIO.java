@@ -107,7 +107,7 @@ public class MatcherJsonIO {
     private static Logger logger = Logger.getLogger(MatcherJsonIO.class);
 
     /** SUSE Manager server products (by arch) installed on self **/
-    private Map<String, List<Long>> selfProductsByArch;
+    private Map<String, Long> selfProductsByArch;
 
     /** Monitoring products by arch **/
     private Map<String, Long> monitoringProductByArch;
@@ -136,10 +136,8 @@ public class MatcherJsonIO {
                 from -> monitoringProductId.ifPresent(to -> lifecycleProductsTranslation.put(from, to)));
 
         selfProductsByArch = new HashMap<>();
-        // SUSE Manager Server 4.0 x86_64 & SUSE Linux Enterprise Server 15 SP1 x86_64
-        selfProductsByArch.put(AMD64_ARCH_STR, Arrays.asList(1899L, 1763L));
-        // SUSE Manager Server 4.0 x86_64 & SUSE Linux Enterprise Server 15 SP1 s390
-        selfProductsByArch.put(S390_ARCH_STR, Arrays.asList(1898L, 1762L));
+        selfProductsByArch.put(AMD64_ARCH_STR, 1899L); // SUSE Manager Server 4.0 x86_64
+        selfProductsByArch.put(S390_ARCH_STR, 1898L); // SUSE Manager Server 4.0 s390
 
         monitoringProductByArch = new HashMap<>();
         monitoringProductByArch.put(AMD64_ARCH_STR, 1201L); // SUSE Manager Monitoring Single
@@ -321,7 +319,7 @@ public class MatcherJsonIO {
         }
 
         if (includeSelf) {
-            result.addAll(selfProductsByArch.get(arch));
+            result.add(selfProductsByArch.get(arch));
         }
 
         if (selfMonitoringEnabled) {

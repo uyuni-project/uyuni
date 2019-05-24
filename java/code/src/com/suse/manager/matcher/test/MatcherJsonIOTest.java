@@ -145,7 +145,6 @@ public class MatcherJsonIOTest extends JMockBaseTestCaseWithUser {
         assertEquals("SUSE Manager Server system", sumaItself.getName());
         assertTrue(sumaItself.getPhysical());
         assertTrue(sumaItself.getProductIds().contains(1899L));
-        assertTrue(sumaItself.getProductIds().contains(1763L));
     }
 
     public void testSystemsToJsonIssSlave() {
@@ -172,14 +171,14 @@ public class MatcherJsonIOTest extends JMockBaseTestCaseWithUser {
         // x86_64
         List<SystemJson> result = new MatcherJsonIO().getJsonSystems(true, AMD64_ARCH, true);
         SystemJson sumaItself = findSystem(MatcherJsonIO.SELF_SYSTEM_ID, result);
-        assertEquals(3, sumaItself.getProductIds().size());
-        assertEquals(new HashSet<>(Arrays.asList(1899L, 1763L, 1201L)), sumaItself.getProductIds());
+        assertEquals(2, sumaItself.getProductIds().size());
+        assertEquals(new HashSet<>(Arrays.asList(1899L, 1201L)), sumaItself.getProductIds());
 
         // s390
         result = new MatcherJsonIO().getJsonSystems(true, S390_ARCH, true);
         sumaItself = findSystem(MatcherJsonIO.SELF_SYSTEM_ID, result);
-        assertEquals(3, sumaItself.getProductIds().size());
-        assertEquals(new HashSet<>(Arrays.asList(1898L, 1762L, 1203L)), sumaItself.getProductIds());
+        assertEquals(2, sumaItself.getProductIds().size());
+        assertEquals(new HashSet<>(Arrays.asList(1898L, 1203L)), sumaItself.getProductIds());
     }
 
     public void testProductsToJson() throws Exception {
