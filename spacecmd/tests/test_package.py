@@ -335,7 +335,6 @@ class TestSCPackage:
         """
         Test do_package_remove with no arguments passed.
 
-            :param self:
             :param shell:
         """
         shell.help_package_remove = MagicMock()
@@ -357,3 +356,31 @@ class TestSCPackage:
         assert not shell.user_configm.called
         assert shell.help_package_remove.called
 
+    def test_package_remove_no_pkg_found(self, shell):
+        """
+        Test do_package_remove with no valid packages (packages not found).
+
+            :param shell:
+        """
+        shell.help_package_remove = MagicMock()
+        shell.get_package_names = MagicMock(return_value=[])
+        shell.get_package_id = MagicMock()
+        shell.client.packages.removePackage = MagicMock()
+        shell.generate_package_cache = MagicMock()
+        shell.user_configm = MagicMock(return_value=True)
+        mprint = MagicMock()
+        logger = MagicMock()
+        with patch("spacecmd.package.print", mprint) as prn, \
+            patch("spacecmd.package.logging", logger) as lgr:
+            spacecmd.package.do_package_remove(shell, "i-do-not-exist")
+
+        assert not shell.get_package_id.called
+        assert not shell.client.packages.removePackage.called
+        assert not shell.generate_package_cache.called
+        assert not shell.user_configm.called
+        assert not shell.help_package_remove.called
+        assert shell.get_package_names.called
+        assert logger.debug.called
+        assert mprint.called
+
+        assert_expect(mprint.call_args_list, "No packages found to remove")
