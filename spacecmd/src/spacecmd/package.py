@@ -184,11 +184,11 @@ def do_package_remove(self, args):
         self.help_package_remove()
         return
 
-    packages = args
-
-    to_remove = filter_results(self.get_package_names(True), packages)
+    to_remove = filter_results(self.get_package_names(True), args)
 
     if not to_remove:
+        logging.debug("Failed to find packages for criteria %s", str(args))
+        print("No packages found to remove")
         return
 
     print('Packages')
