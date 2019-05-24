@@ -347,7 +347,7 @@ class TestSCPackage:
         logger = MagicMock()
         with patch("spacecmd.package.print", mprint) as prn, \
             patch("spacecmd.package.logging", logger) as lgr:
-            spacecmd.package.do_package_search(shell, "")
+            spacecmd.package.do_package_remove(shell, "")
 
         assert not shell.get_package_names.called
         assert not shell.get_package_id.called
