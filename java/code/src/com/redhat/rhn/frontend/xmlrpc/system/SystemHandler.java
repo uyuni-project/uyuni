@@ -6435,7 +6435,7 @@ public class SystemHandler extends BaseHandler {
      *      #array_end()
      */
     public Object[] listSuggestedReboot(User loggedInUser) {
-            return SystemManager.requiringRebootList(loggedInUser, null).toArray();
+            return SystemManager.requiringRebootList(loggedInUser).toArray();
     }
 
     /**
