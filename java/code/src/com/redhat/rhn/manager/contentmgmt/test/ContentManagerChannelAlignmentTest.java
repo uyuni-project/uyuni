@@ -187,8 +187,7 @@ public class ContentManagerChannelAlignmentTest extends BaseTestCaseWithUser {
         // server will have an older package installed -> after the alignment, the rhnServerNeededCache
         // must contain the entry corresponding to the the newer package
         InstalledPackage olderPack = copyPackage(pkg, of("0.9.9"));
-        olderPack.setServer(server);
-        server.getPackages().add(olderPack);
+        setInstalledPackage(server, olderPack);
 
         SystemManager.subscribeServerToChannel(user, server, tgtChannel);
 
@@ -208,8 +207,7 @@ public class ContentManagerChannelAlignmentTest extends BaseTestCaseWithUser {
         srcChannel.getErratas().clear();
 
         InstalledPackage olderPkg = copyPackage(pkg, of("0.9.9"));
-        olderPkg.setServer(server);
-        server.getPackages().add(olderPkg);
+        setInstalledPackage(server, olderPkg);
 
         List<SystemOverview> systemsWithNeededPackage = SystemManager.listSystemsWithNeededPackage(user, pkg.getId());
         assertTrue(systemsWithNeededPackage.isEmpty());
@@ -235,8 +233,7 @@ public class ContentManagerChannelAlignmentTest extends BaseTestCaseWithUser {
         SystemManager.subscribeServerToChannel(user, server, tgtChannel);
 
         InstalledPackage olderPkg = copyPackage(otherPkg, of("0.9.9"));
-        olderPkg.setServer(server);
-        server.getPackages().add(olderPkg);
+        setInstalledPackage(server, olderPkg);
 
         // we fake the cache entry here
         ErrataCacheManager.insertCacheForChannelPackages(tgtChannel.getId(), null, Collections.singletonList(otherPkg.getId()));
@@ -376,5 +373,10 @@ public class ContentManagerChannelAlignmentTest extends BaseTestCaseWithUser {
         olderPkg.setArch(otherPkg.getPackageArch());
         olderPkg.setName(otherPkg.getPackageName());
         return olderPkg;
+    }
+
+    private void setInstalledPackage(Server server, InstalledPackage olderPack) {
+        olderPack.setServer(server);
+        server.getPackages().add(olderPack);
     }
 }
