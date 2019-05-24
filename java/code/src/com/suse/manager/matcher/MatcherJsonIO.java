@@ -76,6 +76,7 @@ public class MatcherJsonIO {
     /** Architecture strings **/
     private static final String AMD64_ARCH_STR = "amd64";
     private static final String S390_ARCH_STR = "s390";
+    private static final String PPC64LE_ARCH_STR = "ppc64le";
 
     /** (De)serializer instance. */
     private Gson gson;
@@ -136,12 +137,14 @@ public class MatcherJsonIO {
                 from -> monitoringProductId.ifPresent(to -> lifecycleProductsTranslation.put(from, to)));
 
         selfProductsByArch = new HashMap<>();
-        selfProductsByArch.put(AMD64_ARCH_STR, 1899L); // SUSE Manager Server 4.0 x86_64
-        selfProductsByArch.put(S390_ARCH_STR, 1898L); // SUSE Manager Server 4.0 s390
+        selfProductsByArch.put(AMD64_ARCH_STR, 1899L);   // SUSE Manager Server 4.0 x86_64
+        selfProductsByArch.put(S390_ARCH_STR, 1898L);    // SUSE Manager Server 4.0 s390
+        selfProductsByArch.put(PPC64LE_ARCH_STR, 1897L); // SUSE Manager Server 4.0 ppc64le
 
         monitoringProductByArch = new HashMap<>();
-        monitoringProductByArch.put(AMD64_ARCH_STR, 1201L); // SUSE Manager Monitoring Single
-        monitoringProductByArch.put(S390_ARCH_STR, 1203L); // SUSE Manager Monitoring Unlimited Virtual Z
+        monitoringProductByArch.put(AMD64_ARCH_STR, 1201L);   // SUSE Manager Monitoring Single
+        monitoringProductByArch.put(S390_ARCH_STR, 1203L);    // SUSE Manager Monitoring Unlimited Virtual Z
+        monitoringProductByArch.put(PPC64LE_ARCH_STR, 1201L); // SUSE Manager Monitoring Single
 
         productFactory = new CachingSUSEProductFactory();
     }
@@ -311,7 +314,7 @@ public class MatcherJsonIO {
     private Set<Long> computeSelfProductIds(boolean includeSelf, boolean selfMonitoringEnabled, String arch) {
         Set<Long> result = new LinkedHashSet<>();
 
-        if (!arch.equals(S390_ARCH_STR) && !arch.equals(AMD64_ARCH_STR)) {
+        if (!Arrays.asList(AMD64_ARCH_STR, S390_ARCH_STR, PPC64LE_ARCH_STR).contains(arch)) {
             logger.warn(String.format("Couldn't determine products for SUMA server itself" +
                     " for architecture %s. Master SUSE Manager Server system products" +
                     " won't be reported to the subscription matcher.", arch));

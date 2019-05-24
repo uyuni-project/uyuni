@@ -64,6 +64,7 @@ public class MatcherJsonIOTest extends JMockBaseTestCaseWithUser {
 
     private static final String AMD64_ARCH = "amd64";
     private static final String S390_ARCH = "s390";
+    private static final String PPC64LE_ARCH = "ppc64le";
 
     @Override
     public void setUp() throws Exception {
@@ -165,6 +166,12 @@ public class MatcherJsonIOTest extends JMockBaseTestCaseWithUser {
         sumaItself = findSystem(MatcherJsonIO.SELF_SYSTEM_ID, result);
         assertEquals(1, sumaItself.getProductIds().size());
         assertEquals(1203L, sumaItself.getProductIds().iterator().next().longValue());
+
+        // ppc64le
+        result = new MatcherJsonIO().getJsonSystems(false, PPC64LE_ARCH, true);
+        sumaItself = findSystem(MatcherJsonIO.SELF_SYSTEM_ID, result);
+        assertEquals(1, sumaItself.getProductIds().size());
+        assertEquals(1201L, sumaItself.getProductIds().iterator().next().longValue());
     }
 
     public void testSystemsToJsonIssMasterWithMonitoring() {
@@ -179,6 +186,12 @@ public class MatcherJsonIOTest extends JMockBaseTestCaseWithUser {
         sumaItself = findSystem(MatcherJsonIO.SELF_SYSTEM_ID, result);
         assertEquals(2, sumaItself.getProductIds().size());
         assertEquals(new HashSet<>(Arrays.asList(1898L, 1203L)), sumaItself.getProductIds());
+
+        // ppc64le
+        result = new MatcherJsonIO().getJsonSystems(true, PPC64LE_ARCH, true);
+        sumaItself = findSystem(MatcherJsonIO.SELF_SYSTEM_ID, result);
+        assertEquals(2, sumaItself.getProductIds().size());
+        assertEquals(new HashSet<>(Arrays.asList(1897L, 1201L)), sumaItself.getProductIds());
     }
 
     public void testProductsToJson() throws Exception {
