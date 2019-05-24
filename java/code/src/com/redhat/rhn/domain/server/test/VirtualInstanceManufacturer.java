@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.domain.server.test;
 
+import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.VirtualInstance;
 import com.redhat.rhn.domain.server.VirtualInstanceFactory;
 import com.redhat.rhn.domain.server.VirtualInstanceState;
@@ -62,6 +63,16 @@ public class VirtualInstanceManufacturer {
         VirtualInstance guest = createVirtualInstance(
                 VirtualInstanceFactory.getInstance().getRunningState());
         guest.setGuestSystem(ServerFactoryTest.createTestServer(user));
+        return guest;
+    }
+
+    public VirtualInstance newRegisteredGuestWithoutHost(boolean salt) throws Exception {
+        VirtualInstance guest = createVirtualInstance(
+                VirtualInstanceFactory.getInstance().getRunningState());
+        Server server = salt
+                ? MinionServerFactoryTest.createTestMinionServer(user)
+                : ServerFactoryTest.createTestServer(user);
+        guest.setGuestSystem(server);
         return guest;
     }
 

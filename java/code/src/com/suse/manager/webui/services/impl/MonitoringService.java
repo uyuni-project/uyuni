@@ -95,6 +95,17 @@ public class MonitoringService {
     }
 
     /**
+     * Check if at least one exporter is running
+     *
+     * @return true if at least one exporter is running, false otherwise
+     */
+    public static boolean isMonitoringEnabled() {
+        return getStatus()
+                .map(status -> status.values().contains(true))
+                .orElse(false);
+    }
+
+    /**
      * Get the status of Prometheus exporters.
      * @return a {@link Map} with the status of each Prometheus exporter
      */

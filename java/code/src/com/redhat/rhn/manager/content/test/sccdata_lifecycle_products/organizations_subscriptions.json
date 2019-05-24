@@ -46,5 +46,53 @@
       "product_ids" : [
          1078
       ]
+   },
+   {
+      "systems" : [
+         {
+            "password" : "secret",
+            "id" : 1245678,
+            "login" : "1234567890945aaa14fa3ba67b1f83b"
+         }
+      ],
+      "id" : 3,
+      "regcode" : "55REGCODE182",
+      "status" : "ACTIVE",
+      "product_classes" : [
+      ],
+      "system_limit" : 1,
+      "type" : "full",
+      "systems_count" : 1,
+      "expires_at" : "2017-12-31T00:00:00.000Z",
+      "virtual_count" : null,
+      "name" : "Mock monitoring subscription - Single",
+      "starts_at" : "2012-01-01T00:00:00.000Z",
+      "product_ids" : [
+         1201
+      ]
+   },
+{
+      "systems" : [
+         {
+            "password" : "secret",
+            "id" : 1245678,
+            "login" : "1234567890945aaa14fa3ba67b1f83b"
+         }
+      ],
+      "id" : 4,
+      "regcode" : "55REGCODE183",
+      "status" : "ACTIVE",
+      "product_classes" : [
+      ],
+      "system_limit" : 1,
+      "type" : "full",
+      "systems_count" : 1,
+      "expires_at" : "2017-12-31T00:00:00.000Z",
+      "virtual_count" : null,
+      "name" : "Mock monitoring subscription - Unlimited Virtual",
+      "starts_at" : "2012-01-01T00:00:00.000Z",
+      "product_ids" : [
+         1202
+      ]
    }
 ]

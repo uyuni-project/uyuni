@@ -157,7 +157,7 @@ public class ServerTestUtils {
      *
      * @param user to own system
      * @param numberOfGuests number of guests to create
-     * @param salt true to create a salt-managed host
+     * @param salt true to create a salt-managed systems
      * @return Server with guest.
      * @throws Exception if error
      */
@@ -181,8 +181,7 @@ public class ServerTestUtils {
         SystemManager.entitleServer(s, EntitlementManager.VIRTUALIZATION);
 
         for (int i = 0; i < numberOfGuests; i++) {
-            VirtualInstance vi = new VirtualInstanceManufacturer(user).
-                newRegisteredGuestWithoutHost();
+            VirtualInstance vi = new VirtualInstanceManufacturer(user).newRegisteredGuestWithoutHost(salt);
             vi.setConfirmed((long) 0);
             s.addGuest(vi);
         }

@@ -2045,7 +2045,7 @@ public class SystemManager extends BaseManager {
                     !wasVirtEntitled && EntitlementManager.VIRTUALIZATION.equals(ent)) {
                 SystemManager.updateLibvirtEngine(minion);
             }
-            else if (EntitlementManager.MONITORING.equals(ent)) {
+            if (EntitlementManager.MONITORING.equals(ent)) {
                 try {
                     // Assign the monitoring formula to the system
                     // unless the system belongs to a group having monitoring already enabled

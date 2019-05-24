@@ -38,9 +38,6 @@ import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManagerFactory;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 
-import com.google.gson.FieldNamingPolicy;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.suse.matcher.json.InputJson;
 import com.suse.matcher.json.MatchJson;
 import com.suse.matcher.json.OutputJson;
@@ -49,8 +46,14 @@ import com.suse.matcher.json.SubscriptionJson;
 import com.suse.matcher.json.SystemJson;
 import com.suse.matcher.json.VirtualizationGroupJson;
 import com.suse.utils.Opt;
+
+import com.google.gson.FieldNamingPolicy;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 import org.apache.log4j.Logger;
 
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -70,17 +73,28 @@ public class MatcherJsonIO {
     /** Fake ID for the SUSE Manager server system. */
     public static final long SELF_SYSTEM_ID = 2000010000L;
 
+    /** Architecture strings **/
+    private static final String AMD64_ARCH_STR = "amd64";
+    private static final String S390_ARCH_STR = "s390";
+    private static final String PPC64LE_ARCH_STR = "ppc64le";
+
     /** (De)serializer instance. */
     private Gson gson;
 
     /** Cached instance of the s390x ServerArch object. */
     private final ServerArch s390arch;
 
-    /** Cached list of mandatory product IDs for an s390x system. */
+    /** Cached mandatory product ID for an s390x system. */
     private final Optional<Long> productIdForS390xSystem;
 
-    /** Cached list of mandatory product IDs for a regular system. */
+    /** Cached mandatory product ID for a regular system. */
     private final Optional<Long> productIdForSystem;
+
+    /** Cached mandatory monitoring product ID for a regular system. */
+    private Optional<Long> monitoringProductId;
+
+    /** Cached mandatory monitoring product ID for an s390x system. */
+    private Optional<Long> monitoringProductIdS390x;
 
     /** Translation of unlimited virtual lifecycle products to single variant. **/
     private final Map<Long, Long> lifecycleProductsTranslation;
@@ -92,6 +106,12 @@ public class MatcherJsonIO {
      * Logger for this class
      */
     private static Logger logger = Logger.getLogger(MatcherJsonIO.class);
+
+    /** SUSE Manager server products (by arch) installed on self **/
+    private Map<String, Long> selfProductsByArch;
+
+    /** Monitoring products by arch **/
+    private Map<String, Long> monitoringProductByArch;
 
     /**
      * Constructor
@@ -111,16 +131,32 @@ public class MatcherJsonIO {
         productIdForEntitlement("SUSE-Manager-Mgmt-Unlimited-Virtual").ifPresent(
                 from -> productIdForSystem.ifPresent(to -> lifecycleProductsTranslation.put(from, to)));
 
+        monitoringProductId = productIdForEntitlement("SUSE-Manager-Mon-Single");
+        monitoringProductIdS390x = productIdForEntitlement("SUSE-Manager-Mon-Unlimited-Virtual-Z");
+        productIdForEntitlement("SUSE-Manager-Mon-Unlimited-Virtual").ifPresent(
+                from -> monitoringProductId.ifPresent(to -> lifecycleProductsTranslation.put(from, to)));
+
+        selfProductsByArch = new HashMap<>();
+        selfProductsByArch.put(AMD64_ARCH_STR, 1899L);   // SUSE Manager Server 4.0 x86_64
+        selfProductsByArch.put(S390_ARCH_STR, 1898L);    // SUSE Manager Server 4.0 s390
+        selfProductsByArch.put(PPC64LE_ARCH_STR, 1897L); // SUSE Manager Server 4.0 ppc64le
+
+        monitoringProductByArch = new HashMap<>();
+        monitoringProductByArch.put(AMD64_ARCH_STR, 1201L);   // SUSE Manager Monitoring Single
+        monitoringProductByArch.put(S390_ARCH_STR, 1203L);    // SUSE Manager Monitoring Unlimited Virtual Z
+        monitoringProductByArch.put(PPC64LE_ARCH_STR, 1201L); // SUSE Manager Monitoring Single
+
         productFactory = new CachingSUSEProductFactory();
     }
 
     /**
      * @param includeSelf - true if we want to add SUMa products and host
      * @param arch - cpu architecture of this SUMa
+     * @param selfMonitoringEnabled whether the monitoring of SUMA server itself is enabled
      * @return an object representation of the JSON input for the matcher
      * about systems on this Server
      */
-    public List<SystemJson> getJsonSystems(boolean includeSelf, String arch) {
+    public List<SystemJson> getJsonSystems(boolean includeSelf, String arch, boolean selfMonitoringEnabled) {
         Stream<SystemJson> systems = ServerFactory.list(true, true).stream()
             .map(system -> {
                 Long cpus = system.getCpu() == null ? null : system.getCpu().getNrsocket();
@@ -139,7 +175,7 @@ public class MatcherJsonIO {
                 );
             });
 
-        return concat(systems, jsonSystemForSelf(includeSelf, arch)).collect(toList());
+        return concat(systems, jsonSystemForSelf(includeSelf, selfMonitoringEnabled, arch)).collect(toList());
     }
 
     private static Set<Long> getVirtualGuests(Server system) {
@@ -207,22 +243,23 @@ public class MatcherJsonIO {
     /**
      * Returns input data for subscription-matcher as a string.
      *
-     * @param includeSelf - true if we want to add the products of the SUMA instance
-     *                      running Matcher to the JSON output. Since SUMA Server is not
-     *                      typically a SUMA Client at the same time, its system (with
-     *                      products) wouldn't reported in the matcher input.
+     * @param includeSelf true if we want to add the products of the SUMA instance
+     *                    running Matcher to the JSON output. Since SUMA Server is not
+     *                    typically a SUMA Client at the same time, its system (with
+     *                    products) wouldn't reported in the matcher input.
      *
-     *                      Typically this flag is true if this SUMA instance is an ISS
-     *                      Master.
+     *                    Typically this flag is true if this SUMA instance is an ISS
+     *                    Master.
      *
-     * @param arch - cpu architecture of this SUMA instance. This is important for correct
-     *               product ID computation in case includeSelf == true.
+     * @param arch cpu architecture of this SUMA instance. This is important for correct
+     *             product ID computation in case includeSelf == true.
+     * @param selfMonitoringEnabled whether the monitoring of SUMA server itself is enabled
      * @return an object representation of the JSON input for the matcher
      */
-    public String generateMatcherInput(boolean includeSelf, String arch) {
+    public String generateMatcherInput(boolean includeSelf, String arch, boolean selfMonitoringEnabled) {
         return gson.toJson(new InputJson(
             new Date(),
-            getJsonSystems(includeSelf, arch),
+            getJsonSystems(includeSelf, arch, selfMonitoringEnabled),
             getJsonVirtualizationGroups(),
             getJsonProducts(),
             getJsonSubscriptions(),
@@ -274,20 +311,22 @@ public class MatcherJsonIO {
      * Computes the product ids of the the SUSE Manager Server product and the SUSE Linux
      * Enterprise product running on this machine.
      */
-    private Set<Long> computeSelfProductIds(String arch) {
+    private Set<Long> computeSelfProductIds(boolean includeSelf, boolean selfMonitoringEnabled, String arch) {
         Set<Long> result = new LinkedHashSet<>();
-        if (arch.contains("amd64")) {
-            result.add(1518L); // SUSE Manager Server 3.1 x86_64
-            result.add(1357L); // SUSE Linux Enterprise Server 12 SP2 x86_64
-        }
-        else if (arch.contains("s390")) {
-            result.add(1519L); // SUSE Manager Server 3.1 s390x
-            result.add(1356L); // SUSE Linux Enterprise Server 12 SP2 s390x
-        }
-        else {
+
+        if (!Arrays.asList(AMD64_ARCH_STR, S390_ARCH_STR, PPC64LE_ARCH_STR).contains(arch)) {
             logger.warn(String.format("Couldn't determine products for SUMA server itself" +
                     " for architecture %s. Master SUSE Manager Server system products" +
                     " won't be reported to the subscription matcher.", arch));
+            return result;
+        }
+
+        if (includeSelf) {
+            result.add(selfProductsByArch.get(arch));
+        }
+
+        if (selfMonitoringEnabled) {
+            result.add(monitoringProductByArch.get(arch));
         }
 
         return result;
@@ -312,24 +351,37 @@ public class MatcherJsonIO {
         // add SUSE Manager entitlements
         return concat(
                 products.stream().map(SUSEProduct::getProductId),
-                Opt.stream(entitlementIdForServer(server, entitlements))
+                entitlementIdsForServer(server, entitlements)
         );
     }
 
     /**
      * Returns SUSE Manager entitlement product ids for a server.
      */
-    private Optional<Long> entitlementIdForServer(Server server, Set<String> entitlements) {
+    private Stream<Long> entitlementIdsForServer(Server server, Set<String> entitlements) {
+        Optional<Long> lifecycleProduct = Optional.empty();
         if (entitlements.contains(EntitlementManager.SALT_ENTITLED) ||
                 entitlements.contains(EntitlementManager.ENTERPRISE_ENTITLED)) {
             if (server.getServerArch().equals(s390arch)) {
-                return productIdForS390xSystem;
+                lifecycleProduct = productIdForS390xSystem;
             }
             else {
-                return productIdForSystem;
+                lifecycleProduct = productIdForSystem;
             }
         }
-        return Optional.empty();
+        Optional<Long> monitoringProduct = Optional.empty();
+        if (entitlements.contains(EntitlementManager.MONITORING_ENTITLED)) {
+            if (server.getServerArch().equals(s390arch)) {
+                monitoringProduct = monitoringProductIdS390x;
+            }
+            else {
+                monitoringProduct = monitoringProductId;
+            }
+        }
+
+        return Stream.concat(
+                Opt.stream(lifecycleProduct),
+                Opt.stream(monitoringProduct));
     }
 
     /**
@@ -352,8 +404,8 @@ public class MatcherJsonIO {
     /**
      * Returns an optional SystemJson for the SUSE Manager server.
      */
-    private Stream<SystemJson> jsonSystemForSelf(boolean includeSelf, String arch) {
-        if (includeSelf) {
+    private Stream<SystemJson> jsonSystemForSelf(boolean includeSelf, boolean selfMonitoringEnabled, String arch) {
+        if (includeSelf || selfMonitoringEnabled) {
             return of(new SystemJson(
                 SELF_SYSTEM_ID,
                 "SUSE Manager Server system",
@@ -361,7 +413,7 @@ public class MatcherJsonIO {
                 true,
                 false,
                 new HashSet<>(),
-                computeSelfProductIds(arch)
+                computeSelfProductIds(includeSelf, selfMonitoringEnabled, arch)
             ));
         }
         else {

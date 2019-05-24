@@ -1,3 +1,4 @@
+- Report Monitoring products to subscription-matcher
 - Update help URLs in the UI
 - Fix SSM package upgrade list item selection (bsc#1133421)
 - Support system groups with the prometheus-exporters-formula and monitoring entitlements
