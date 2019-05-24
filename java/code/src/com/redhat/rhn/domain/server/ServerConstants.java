@@ -25,6 +25,7 @@ public class ServerConstants {
      */
     public static final String FEATURE_KICKSTART = "ftr_kickstart";
     public static final String SLES = "SLES";
+    public static final String LEAP = "Leap";
 
     private ServerConstants() {
 

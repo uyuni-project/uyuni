@@ -155,7 +155,7 @@ public class MinionServer extends Server implements SaltConfigurable {
 
     @Override
     public boolean doesOsSupportsMonitoring() {
-        return isSLES12() || isSLES15();
+        return isSLES12() || isSLES15() || isLeap15();
     }
 
     /**
@@ -184,6 +184,10 @@ public class MinionServer extends Server implements SaltConfigurable {
      */
     private boolean isSLES15() {
         return ServerConstants.SLES.equals(getOs()) && getRelease().startsWith("15");
+    }
+
+    private boolean isLeap15() {
+        return ServerConstants.LEAP.equalsIgnoreCase(getOs()) && getRelease().startsWith("15");
     }
 
     /**
