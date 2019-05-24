@@ -41,6 +41,7 @@ import com.redhat.rhn.domain.server.InstalledPackage;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.test.ServerFactoryTest;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.dto.ErrataCacheDto;
 import com.redhat.rhn.frontend.dto.SystemOverview;
 import com.redhat.rhn.manager.channel.ChannelManager;
 import com.redhat.rhn.manager.contentmgmt.ContentManager;
@@ -244,6 +245,123 @@ public class ContentManagerChannelAlignmentTest extends BaseTestCaseWithUser {
         ContentManager.alignEnvironmentTargetSync(emptyList(), srcChannel, tgtChannel, user);
         systemsWithNeededPackage = SystemManager.listSystemsWithNeededPackage(user, otherPkg.getId());
         assertTrue(systemsWithNeededPackage.isEmpty());
+    }
+
+    /**
+     * Tests that aligning channels with filters that remove a package is reflected in the rhnServerNeededCache
+     *
+     * Configuration:
+     * - source channel - 2 packages
+     * - system with 2 packages installed (lower versions than the ones in source channel), subscribed to target channel
+     * - Test 1: align target channel to the source with no filters
+     * - Test 2: align target channel to the source with a filter that filters out a package
+     *
+     * @throws if anything goes wrong
+     */
+    public void testServerNeededCacheWithFilters() throws Exception {
+        // setup
+        Package pack1 = PackageTest.createTestPackage(user.getOrg());
+        Package pack2 = PackageTest.createTestPackage(user.getOrg());
+
+        Channel srcChan = ChannelFactoryTest.createTestChannel(user, false);
+        srcChan.addPackage(pack1);
+        srcChan.addPackage(pack2);
+
+        Server server = ServerFactoryTest.createTestServer(user);
+        SystemManager.subscribeServerToChannel(user, server, tgtChannel);
+        InstalledPackage olderPkg = copyPackage(pack1, of("0.9.9"));
+        setInstalledPackage(server, olderPkg);
+        InstalledPackage olderPkg2 = copyPackage(pack2, of("0.9.9"));
+        setInstalledPackage(server, olderPkg2);
+
+        // 1. align without filters
+        ContentManager.alignEnvironmentTargetSync(emptyList(), srcChan, tgtChannel, user);
+        DataResult<ErrataCacheDto> needingUpdates = ErrataCacheManager.packagesNeedingUpdates(server.getId());
+        // both packages are in the cache for the server
+        assertEquals(2, needingUpdates.size());
+        assertTrue(needingUpdates.stream()
+                        .map(errataCache -> errataCache.getPackageId())
+                        .collect(Collectors.toList())
+                .containsAll(Arrays.asList(pack1.getId(), pack2.getId())));
+
+        // 2. align with a filter - 1 package should be filtered out and removed from the cache
+        FilterCriteria criteria = new FilterCriteria(FilterCriteria.Matcher.CONTAINS, "name", pack1.getPackageName().getName());
+        ContentFilter filter = ContentManager.createFilter("test-filter-1234", DENY, PACKAGE, criteria, user);
+        ContentManager.alignEnvironmentTargetSync(Arrays.asList(filter), srcChan, tgtChannel, user);
+
+        // only one package is in the cache for the server
+        needingUpdates = ErrataCacheManager.packagesNeedingUpdates(server.getId());
+        assertEquals(1, needingUpdates.size());
+        assertEquals(pack2.getId(), needingUpdates.get(0).getPackageId());
+    }
+
+    /**
+     * Tests that filtering errata from a channel when aliging channels
+     * removes the errata and its package from the rhnServerNeededCache.
+     *
+     * Configuration:
+     * - 2 channels: source (contains packages pack1 and pack2) and target
+     * - 2 errata
+     *   - errata1 contains pack1
+     *   - errata2 contains pack2
+     * - a system with 2 installed packages (lower versions of pack1 and pack2) subscribed to the target channel
+     *
+     * Aligning target channel to the source one _without_ filters leads to 4 cache entries.
+     * Aligning target channel to the source one with filtering out errata1 leads to 2 cache entries.
+     *
+     * @throws Exception if anything goes wrong
+     */
+    public void testServerNeededCacheErrataWithFilters() throws Exception {
+        // setup
+        Package pack1 = PackageTest.createTestPackage(user.getOrg());
+        Package pack2 = PackageTest.createTestPackage(user.getOrg());
+
+        Channel srcChan = ChannelFactoryTest.createTestChannel(user, false);
+        Channel tgtChan = ChannelFactoryTest.createTestChannel(user, false);
+        srcChan.addPackage(pack1);
+        srcChan.addPackage(pack2);
+
+        Errata errata1 = ErrataFactoryTest.createTestPublishedErrata(user.getOrg().getId());
+        errata1.addPackage(pack1);
+        Errata errata2 = ErrataFactoryTest.createTestPublishedErrata(user.getOrg().getId());
+        errata2.addPackage(pack2);
+
+        srcChan.addErrata(errata1);
+        srcChan.addErrata(errata2);
+
+        Server server = ServerFactoryTest.createTestServer(user);
+        InstalledPackage olderPkg = copyPackage(pack1, of("0.9.9"));
+        setInstalledPackage(server, olderPkg);
+        InstalledPackage olderPkg2 = copyPackage(pack2, of("0.9.9"));
+        setInstalledPackage(server, olderPkg2);
+
+        SystemManager.subscribeServerToChannel(user, server, tgtChan);
+
+        // 1. let's align the channels without filters
+        ContentManager.alignEnvironmentTargetSync(emptyList(), srcChan, tgtChan, user);
+        // let's check that errata cache contains all entries
+        DataResult<ErrataCacheDto> needingUpdates = ErrataCacheManager.packagesNeedingUpdates(server.getId());
+        assertEquals(4, needingUpdates.size());
+        assertTrue(needingUpdates.stream()
+                .anyMatch(errataCache -> errataCache.getPackageId().equals(pack1.getId()) && errataCache.getErrataId() == null));
+        assertTrue(needingUpdates.stream()
+                .anyMatch(errataCache -> errataCache.getPackageId().equals(pack1.getId()) && errata1.getId().equals(errataCache.getErrataId())));
+        assertTrue(needingUpdates.stream()
+                .anyMatch(errataCache -> errataCache.getPackageId().equals(pack2.getId()) && errataCache.getErrataId() == null));
+        assertTrue(needingUpdates.stream()
+                .anyMatch(errataCache -> errataCache.getPackageId().equals(pack2.getId()) && errata2.getId().equals(errataCache.getErrataId())));
+
+        FilterCriteria criteria = new FilterCriteria(FilterCriteria.Matcher.EQUALS, "advisory_name", errata1.getAdvisoryName());
+        ContentFilter filter = ContentManager.createFilter("test-filter-1234", DENY, ERRATUM, criteria, user);
+
+        // 2. let's align the channel again and check that the errata1 and its package is not in the cache anymore
+        ContentManager.alignEnvironmentTargetSync(Arrays.asList(filter), srcChan, tgtChan, user);
+        needingUpdates = ErrataCacheManager.packagesNeedingUpdates(server.getId());
+        assertEquals(2, needingUpdates.size());
+        assertTrue(needingUpdates.stream()
+                .anyMatch(errataCache -> errataCache.getPackageId().equals(pack2.getId()) && errataCache.getErrataId() == null));
+        assertTrue(needingUpdates.stream()
+                .anyMatch(errataCache -> errataCache.getPackageId().equals(pack2.getId()) && errata2.getId().equals(errataCache.getErrataId())));
     }
 
     /**
