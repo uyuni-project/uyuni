@@ -516,3 +516,37 @@ class TestSCPackage:
         assert shell.client.channel.software.listPackagesWithoutChannel.called
 
         assert_expect(mprint.call_args_list, "No packages were removed")
+
+    def test_package_removeorphans_confirm(self, shell):
+        """
+        Test do_package_removeorphans with confirmation.
+
+            :param shell:
+        """
+        shell.client.channel.software.listPackagesWithoutChannel = MagicMock(return_value=[
+            {"name": "vim", "version": "0.1", "release": "42", "epoch": "5", "arch": "AMD64", "arch_label": "amd64"},
+            {"name": "vim-data", "version": "0.2", "release": "43", "epoch": "", "arch": "AMD64", "arch_label": "amd64"},
+            {"name": "vim-plugins", "version": "1.17", "release": "16", "epoch": "", "arch": "AMD64", "arch_label": "amd64"},
+        ])
+        shell.client.packages.removePackage = MagicMock()
+        shell.user_confirm = MagicMock(return_value=True)
+        mprint = MagicMock()
+
+        with patch("spacecmd.package.print", mprint) as prn:
+            out = spacecmd.package.do_package_removeorphans(shell, "")
+
+        assert shell.client.packages.removePackage.called
+        assert mprint.called
+        assert out is None
+        assert shell.client.channel.software.listPackagesWithoutChannel.called
+
+        exp = [
+            'Packages',
+            '--------',
+            'vim-0.1-42:5.x86_64\nvim-data-0.2-43.x86_64\nvim-plugins-1.17-16.x86_64'
+        ]
+
+        for call in mprint.call_args_list:
+            assert_expect([call], next(iter(exp)))
+            exp.pop(0)
+        assert not exp
