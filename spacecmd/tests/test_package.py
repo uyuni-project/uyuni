@@ -308,3 +308,26 @@ class TestSCPackage:
         assert out is None
         assert shell.help_package_search.called
 
+    def test_package_search_advanced_check_fields(self, shell):
+        """
+        Test do_package_search check advanced fields.
+        """
+        for field in('name:', 'epoch:', 'version:', 'release:',
+                     'arch:', 'description:', 'summary:'):
+            shell.help_package_search = MagicMock()
+            shell.get_package_names = MagicMock(return_value=[])
+            shell.client.packages.search.advanced = MagicMock(return_value=[])
+
+            logger = MagicMock()
+            mprint = MagicMock()
+
+            with patch("spacecmd.package.print", mprint) as prn, \
+                    patch("spacecmd.package.logging", logger) as lgr:
+                out = spacecmd.package.do_package_search(
+                    shell, "{}emacs*".format(field), doreturn=True)
+
+            assert not shell.help_package_search.called
+            assert logger.debug.called
+            assert shell.client.packages.search.advanced.called
+            assert out is not None
+
