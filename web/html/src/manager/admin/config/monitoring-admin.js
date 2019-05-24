@@ -84,7 +84,7 @@ const HelpPanel = (props) => {
       The server uses <a href="https://prometheus.io" target="_blank" rel="noopener noreferrer">Prometheus</a> exporters to expose metrics about your environment.
       </p>
       <p>
-      Refer to the <a href="/docs/index.html" target="_blank">documentation</a> to learn how to to consume these metrics.
+      Refer to the <a href="/docs/administration/pages/prometheus.html" target="_blank">documentation</a> to learn how to to consume these metrics.
       </p>
   </div>);
 }
