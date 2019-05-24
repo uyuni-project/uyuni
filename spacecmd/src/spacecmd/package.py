@@ -200,7 +200,6 @@ def do_package_remove(self, args):
     print('\n'.join(sorted(to_remove)))
 
     for package in to_remove:
-        print(">>>", package)
         for package_id in self.get_package_id(package):
             try:
                 self.client.packages.removePackage(self.session, package_id)

@@ -384,3 +384,33 @@ class TestSCPackage:
         assert mprint.called
 
         assert_expect(mprint.call_args_list, "No packages found to remove")
+
+    def test_package_remove_specific_pkg_aborted(self, shell):
+        """
+        Test do_package_remove with unconfirmed valid packages.
+
+            :param shell:
+        """
+        shell.help_package_remove = MagicMock()
+        shell.get_package_names = MagicMock(return_value=["vim", "vim-plugins", "vim-data", "gvim", "gvim-ext",
+                                                          "pico", "pico-data", "emacs", "emacs-nox", "xemacs"])
+        shell.get_package_id = MagicMock()
+        shell.client.packages.removePackage = MagicMock()
+        shell.generate_package_cache = MagicMock()
+        shell.user_confirm = MagicMock(return_value=False)
+        mprint = MagicMock()
+        logger = MagicMock()
+        with patch("spacecmd.package.print", mprint) as prn, \
+            patch("spacecmd.package.logging", logger) as lgr:
+            spacecmd.package.do_package_remove(shell, "vim* gvim pico")
+
+        assert not shell.get_package_id.called
+        assert not shell.client.packages.removePackage.called
+        assert not shell.generate_package_cache.called
+        assert not shell.help_package_remove.called
+        assert not logger.debug.called
+        assert shell.user_confirm.called
+        assert shell.get_package_names.called
+        assert mprint.called
+
+        assert_expect(mprint.call_args_list, "No packages has been removed")
