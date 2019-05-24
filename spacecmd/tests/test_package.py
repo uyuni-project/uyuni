@@ -453,3 +453,21 @@ class TestSCPackage:
             assert_expect([call], next(iter(exp)))
             exp.pop(0)
         assert not exp
+
+    def test_package_listorphans_noarg(self, shell):
+        """
+        Test do_package_listorphans withut arguments.
+
+            :param shell:
+        """
+        shell.client.channel.software.listPackagesWithoutChannel = MagicMock(return_value=[
+            {"name": "vim", "version": "0.1", "release": "42", "epoch": "5", "arch": "AMD64", "arch_label": "amd64"},
+            {"name": "vim-data", "version": "0.2", "release": "43", "epoch": "", "arch": "AMD64", "arch_label": "amd64"},
+            {"name": "vim-plugins", "version": "1.17", "release": "16", "epoch": "", "arch": "AMD64", "arch_label": "amd64"},
+        ])
+        mprint = MagicMock()
+        with patch("spacecmd.package.print", mprint) as prn:
+            out = spacecmd.package.do_package_listorphans(shell, "", doreturn=False)
+        assert out is None
+        assert mprint.called
+        assert shell.client.channel.software.listPackagesWithoutChannel.called
