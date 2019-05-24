@@ -126,8 +126,17 @@ def do_package_search(self, args, doreturn=False):
         self.help_package_search()
         return
 
+    _args, _options = parse_command_arguments(args, get_argument_parser())
+
     fields = ('name:', 'epoch:', 'version:', 'release:',
               'arch:', 'description:', 'summary:')
+    # Check fields
+    for arg in _args:
+        if ":" in arg:
+            field = arg.split(":")[0] + ":"
+            if field not in fields:
+                self.help_package_search()
+                return
 
     packages = []
     advanced = False
