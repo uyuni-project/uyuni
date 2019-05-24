@@ -162,29 +162,37 @@ public class MatcherJsonIOTest extends JMockBaseTestCaseWithUser {
     public void testSystemsToJsonMonitoringEnabled() {
         // x86_64
         List<SystemJson> result = new MatcherJsonIO().getJsonSystems(false, AMD64_ARCH, true);
-        assertEquals(1, result.size());
-        assertEquals(1, result.get(0).getProductIds().size());
-        assertEquals(1201L, result.get(0).getProductIds().iterator().next().longValue());
+        SystemJson sumaItself = result.stream().filter(
+                s -> s.getId().equals(MatcherJsonIO.SELF_SYSTEM_ID))
+                .findFirst().get();
+        assertEquals(1, sumaItself.getProductIds().size());
+        assertEquals(1201L, sumaItself.getProductIds().iterator().next().longValue());
 
         // s390
         result = new MatcherJsonIO().getJsonSystems(false, S390_ARCH, true);
-        assertEquals(1, result.size());
-        assertEquals(1, result.get(0).getProductIds().size());
-        assertEquals(1203L, result.get(0).getProductIds().iterator().next().longValue());
+        sumaItself = result.stream().filter(
+                s -> s.getId().equals(MatcherJsonIO.SELF_SYSTEM_ID))
+                .findFirst().get();
+        assertEquals(1, sumaItself.getProductIds().size());
+        assertEquals(1203L, sumaItself.getProductIds().iterator().next().longValue());
     }
 
     public void testSystemsToJsonIssMasterWithMonitoring() {
         // x86_64
         List<SystemJson> result = new MatcherJsonIO().getJsonSystems(true, AMD64_ARCH, true);
-        assertEquals(1, result.size());
-        assertEquals(3, result.get(0).getProductIds().size());
-        assertEquals(new HashSet<>(Arrays.asList(1899L, 1763L, 1201L)), result.get(0).getProductIds());
+        SystemJson sumaItself = result.stream().filter(
+                s -> s.getId().equals(MatcherJsonIO.SELF_SYSTEM_ID))
+                .findFirst().get();
+        assertEquals(3, sumaItself.getProductIds().size());
+        assertEquals(new HashSet<>(Arrays.asList(1899L, 1763L, 1201L)), sumaItself.getProductIds());
 
         // s390
         result = new MatcherJsonIO().getJsonSystems(true, S390_ARCH, true);
-        assertEquals(1, result.size());
-        assertEquals(3, result.get(0).getProductIds().size());
-        assertEquals(new HashSet<>(Arrays.asList(1898L, 1762L, 1203L)), result.get(0).getProductIds());
+        sumaItself = result.stream().filter(
+                s -> s.getId().equals(MatcherJsonIO.SELF_SYSTEM_ID))
+                .findFirst().get();
+        assertEquals(3, sumaItself.getProductIds().size());
+        assertEquals(new HashSet<>(Arrays.asList(1898L, 1762L, 1203L)), sumaItself.getProductIds());
     }
 
     public void testProductsToJson() throws Exception {
