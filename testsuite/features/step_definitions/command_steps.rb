@@ -766,12 +766,12 @@ When(/^I create "([^"]*)" virtual machine on "([^"]*)"$/) do |vm_name, host|
   raise 'not found: qemu-img or /var/testsuite-data/disk-image-template.qcow2' unless file_exists?(node, '/usr/bin/qemu-img') and file_exists?(node, '/var/testsuite-data/disk-image-template.qcow2')
   node.run("qemu-img create -f qcow2 -b /var/testsuite-data/disk-image-template.qcow2 #{disk_path}")
 
-  # Change the VM hostname
-  node.run("virt-customize --hostname #{node.hostname}-#{vm_name}.suse -a #{disk_path}")
-
   # Actually define the VM, but don't start it
   raise 'not found: virt-install' unless file_exists?(node, '/usr/bin/virt-install')
-  node.run("virt-install --name #{vm_name} --memory 512 --vcpus 1 --disk path=#{disk_path} --network network=default --graphics vnc --import --hvm --noautoconsole --noreboot")
+  node.run("virt-install --name #{vm_name} --memory 512 --vcpus 1 --disk path=#{disk_path} "\
+           " --network network=default --graphics vnc "\
+           "--serial pty,log.file=/tmp/#{vm_name}.console.log,log.append=off "\
+           "--import --hvm --noautoconsole --noreboot")
 end
 
 When(/^I create ([^ ]*) virtual network on "([^"]*)"$/) do |net_name, host|
@@ -783,7 +783,6 @@ When(/^I create ([^ ]*) virtual network on "([^"]*)"$/) do |net_name, host|
   }
 
   net = networks[net_name]
-
   netdef = "<network>" \
            "  <name>#{net_name}</name>"\
            "  <forward mode='nat'/>"\
@@ -823,8 +822,8 @@ When(/^I wait until virtual machine "([^"]*)" on "([^"]*)" is started$/) do |vm,
   begin
     Timeout.timeout(DEFAULT_TIMEOUT) do
       loop do
-        output, _code = node.run("ssh -o StrictHostKeyChecking=no #{node.hostname}-#{vm}.local ls", fatal = false)
-        break if output.include? "Permission denied"
+        _output, code = node.run("grep -i 'started openssh' /tmp/#{vm}.console.log", fatal = false)
+        break if code.zero?
         sleep 1
       end
     end
