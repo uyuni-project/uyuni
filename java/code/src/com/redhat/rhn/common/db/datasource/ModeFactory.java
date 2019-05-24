@@ -133,6 +133,21 @@ public class ModeFactory implements ManifestFactoryBuilder {
     }
 
     /**
+     * Retrieve a specific mode from the map of modes already parsed
+     * @param name The name of the file to search, this is the name as it is
+     *             passed to parseURL.
+     * @param mode the mode to retrieve
+     * @param rdbmsSpecific Whether to retrieve the WriteMode for a specific rdbms.
+     * @return The requested mode
+     */
+    public static SelectMode getSelectMode(String name, String mode, boolean rdbmsSpecific) {
+        if (rdbmsSpecific) {
+            return getSelectMode(name, adaptModeNameToDBSystem(mode));
+        }
+        return getSelectMode(name, mode);
+    }
+
+    /**
      * Retrieve a specific mode from the map of modes already parsed.
      * @param name The name of the file to search, this is the name as it is passed
      *             to parseURL.

@@ -239,7 +239,7 @@ public class SystemManager extends BaseManager {
      * @return true if the system requires a reboot i.e: because kernel updates.
      */
     public static boolean requiresReboot(User user, Long sid) {
-        return !systemsRequiringRebootList(user, sid).isEmpty();
+        return !getSystemsRequiringReboot(user, sid).isEmpty();
     }
 
     /**
@@ -251,7 +251,7 @@ public class SystemManager extends BaseManager {
      * @return list of SystemOverviews.
      */
     public static DataResult<SystemOverview> requiringRebootList(User user) {
-        return systemsRequiringRebootList(user, null);
+        return getSystemsRequiringReboot(user, null);
     }
 
     /**
@@ -263,14 +263,13 @@ public class SystemManager extends BaseManager {
      * @param serverId the serverId.
      * @return list of SystemOverviews.
      */
-    private static DataResult<SystemOverview> systemsRequiringRebootList(User user, Long serverId) {
-        SelectMode m = ModeFactory.getMode("System_queries",
-                "having_errata_with_keyword_applied_since_last_reboot");
+    private static DataResult<SystemOverview> getSystemsRequiringReboot(User user, Long serverId) {
+        SelectMode m = ModeFactory.getSelectMode("System_queries",
+                "systems_requiring_reboot", true);
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("org_id", user.getOrg().getId());
         params.put("user_id", user.getId());
         params.put("sid", serverId);
-        params.put("keyword", "reboot_suggested");
         Map<String, Object> elabParams = new HashMap<String, Object>();
         return makeDataResult(params, elabParams, null, m, SystemOverview.class);
     }
