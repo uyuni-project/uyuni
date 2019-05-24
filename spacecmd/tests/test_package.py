@@ -227,12 +227,12 @@ class TestSCPackage:
         with patch("spacecmd.package.print", mprint) as prn, \
             patch("spacecmd.package.logging", logger) as lgr:
             out = spacecmd.package.do_package_search(shell, "", doreturn=False)
-        
+
         assert out is None
         assert not logger.debug.called
         assert not shell.client.packages.search.advanced.called
         assert shell.help_package_search.called
-        
+
     def test_package_search(self, shell):
         """
         Test do_package_search with arguments of standard fields
@@ -249,7 +249,7 @@ class TestSCPackage:
         with patch("spacecmd.package.print", mprint) as prn, \
             patch("spacecmd.package.logging", logger) as lgr:
             out = spacecmd.package.do_package_search(shell, "emacs*", doreturn=False)
-        
+
         assert not shell.help_package_search.called
         assert not logger.debug.called
         assert not shell.client.packages.search.advanced.called
