@@ -15,8 +15,6 @@
 
 path = . tables procs packages
 
-allServerKeywordSinceReboot      :: rhnServerFeaturesView 
-
 rhnActionOverview                :: rhnAction rhnActionType web_contact
 rhnAvailableChannels             :: rhnServer \
                                     rhnServerChannel \
