@@ -604,3 +604,92 @@ class TestSCPackage:
         assert shell.do_package_search.called
 
         assert_expect(logger.warning.call_args_list, "No packages found")
+
+    def test_package_listinstallsystems_few_packages(self, shell):
+        """
+        Test do_package_listinstallsystems with few packages.
+
+            :param self:
+            :param shell:
+        """
+        shell.help_package_listinstalledsystems = MagicMock()
+        shell.do_package_search = MagicMock(return_value=["emacs", "xemacs", "spacemacs"])
+        shell.get_package_id = MagicMock(side_effect=[
+            ["emacs-id-1", "emacs-id-2", "emacs-id-3"],
+            ["xemacs-id-1", "xemacs-id-2", "xemacs-id-3"],
+            ["spacemacs-id-1", "spacemacs-id-2", "spacemacs-id-3"]
+        ])
+        shell.client.system.listSystemsWithPackage = MagicMock(side_effect=[
+            [
+                {"name": "web.foo.com", "id": 1000010000},
+                {"name": "bar.foo.com", "id": 1000010001},
+                {"name": "fred.foo.com", "id": 1000010002},
+            ],
+            [
+                {"name": "web.foo.com", "id": 1000010000},
+                {"name": "bar.foo.com", "id": 1000010001},
+            ],
+            [
+                {"name": "web.foo.com", "id": 1000010000},
+            ],
+            [
+                {"name": "web.foo.com", "id": 1000010000},
+                {"name": "bar.foo.com", "id": 1000010001},
+                {"name": "fred.foo.com", "id": 1000010002},
+            ],
+            [
+                {"name": "web.foo.com", "id": 1000010000},
+                {"name": "bar.foo.com", "id": 1000010001},
+            ],
+            [
+                {"name": "web.foo.com", "id": 1000010000},
+            ],
+            [
+                {"name": "web.foo.com", "id": 1000010000},
+                {"name": "bar.foo.com", "id": 1000010001},
+                {"name": "fred.foo.com", "id": 1000010002},
+            ],
+            [
+                {"name": "web.foo.com", "id": 1000010000},
+                {"name": "bar.foo.com", "id": 1000010001},
+            ],
+            [
+                {"name": "web.foo.com", "id": 1000010000},
+            ],
+        ])
+        shell.SEPARATOR = "-" * 10
+
+        mprint = MagicMock()
+        logger = MagicMock()
+        with patch("spacecmd.package.print", mprint) as prn, \
+            patch("spacecmd.package.logging", logger) as lgr:
+            spacecmd.package.do_package_listinstalledsystems(shell, "darth-vader")
+
+        assert not shell.help_package_listinstalledsystems.called
+        assert not logger.warning.called
+        assert shell.get_package_id.called
+        assert shell.client.system.listSystemsWithPackage.called
+        assert mprint.called
+        assert shell.do_package_search.called
+
+        exp = [
+            'emacs',
+            '-----',
+            'bar.foo.com : 1000010001\nbar.foo.com : 1000010001\nfred.foo.com : 1000010002\n'
+            'web.foo.com : 1000010000\nweb.foo.com : 1000010000\nweb.foo.com : 1000010000',
+            '----------',
+            'xemacs',
+            '------',
+            'bar.foo.com : 1000010001\nbar.foo.com : 1000010001\nfred.foo.com : 1000010002\n'
+            'web.foo.com : 1000010000\nweb.foo.com : 1000010000\nweb.foo.com : 1000010000',
+            '----------',
+            'spacemacs',
+            '---------',
+            "bar.foo.com : 1000010001\nbar.foo.com : 1000010001\nfred.foo.com : 1000010002\n"
+            "web.foo.com : 1000010000\nweb.foo.com : 1000010000\nweb.foo.com : 1000010000"
+        ]
+
+        for call in mprint.call_args_list:
+            assert_expect([call], next(iter(exp)))
+            exp.pop(0)
+        assert not exp
