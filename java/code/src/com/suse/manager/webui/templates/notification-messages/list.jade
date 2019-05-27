@@ -5,7 +5,7 @@ include ../common.jade
 script(src='/javascript/momentjs/moment-with-langs.min.js?cb=#{webVersion}', type='text/javascript')
 
 script(type='text/javascript').
-    const csrfToken = "#{csrf_token}";
+    window.csrfToken = "#{csrf_token}";
 
 +userPreferences
 script(src='/javascript/manager/notifications/notification-messages.renderer.bundle.js?cb=#{webVersion}')

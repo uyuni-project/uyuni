@@ -7,11 +7,11 @@ mixin csrfToken
 
 mixin userPreferences
   script(type='text/javascript').
-      const userPrefPageSize = #{pageSize};
+      window.userPrefPageSize = #{pageSize};
 
 mixin userRoles
     script(type='text/javascript').
-        const global_userRoles = !{roles};
+        window.global_userRoles = !{roles};
 
 mixin userLocalization
     script(type='text/javascript').
