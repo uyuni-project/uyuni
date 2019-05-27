@@ -550,3 +550,27 @@ class TestSCPackage:
             assert_expect([call], next(iter(exp)))
             exp.pop(0)
         assert not exp
+
+    def test_package_listinstallsystems_noarg(self, shell):
+        """
+        Test do_package_listinstallsystems without arguments.
+
+            :param self:
+            :param shell:
+        """
+        shell.help_package_listinstalledsystems = MagicMock()
+        shell.do_package_search = MagicMock()
+        shell.get_package_id = MagicMock()
+        shell.client.system.listSystemsWithPackage = MagicMock()
+        shell.SEPARATOR = "-" * 10
+
+        mprint = MagicMock()
+        logger = MagicMock()
+        with patch("spacecmd.package.print", mprint) as prn, \
+            patch("spacecmd.package.logging", logger) as lgr:
+            spacecmd.package.do_package_listinstalledsystems(shell, "")
+
+        assert not shell.do_package_search.called
+        assert not shell.get_package_id.called
+        assert not shell.client.system.listSystemsWithPackage.called
+        assert shell.help_package_listinstalledsystems.called
