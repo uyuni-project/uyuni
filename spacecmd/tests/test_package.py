@@ -657,7 +657,6 @@ class TestSCPackage:
                 {"name": "web.foo.com", "id": 1000010000},
             ],
         ])
-        shell.SEPARATOR = "-" * 10
 
         mprint = MagicMock()
         logger = MagicMock()
