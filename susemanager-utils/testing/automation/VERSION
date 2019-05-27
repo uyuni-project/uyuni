@@ -6,4 +6,4 @@ NODEJS_CONTAINER=suma-$VER-nodejs
 PUSH2OBS_CONTAINER=uyuni-push-to-obs
 # Base version for the idempotency test. All PostgreSQL since this version must be idempotent for the test to pass
 # This value is is used if the file for the PR is not found (we assume we are on a branch)
-IDEMPOTENCY_SCHEMA_BASE_VERSION='4.0.1'
+IDEMPOTENCY_SCHEMA_BASE_VERSION='4.0.12'
