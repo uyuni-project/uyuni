@@ -3,7 +3,7 @@ REGISTRY = registry.mgr.suse.de
 SHELL := /bin/bash
 # --no-cache=true
 BUILDOPTS=
-PUSH_IT=true
+PUSH_IT=false
 
 all: suma-4.0-root suma-4.0-base suma-4.0-cobbler suma-4.0-gatherer suma-4.0-spacewalkkoan suma-4.0-pgsql suma-4.0-pgsql-4eclipse suma-4.0-nodejs
 
