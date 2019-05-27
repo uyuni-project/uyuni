@@ -692,3 +692,25 @@ class TestSCPackage:
             assert_expect([call], next(iter(exp)))
             exp.pop(0)
         assert not exp
+
+    def test_package_listerrata_noargs(self, shell):
+        """
+        Test do_package_listerrata without args.
+            :param shell:
+            :param args:
+        """
+        shell.do_package_search = MagicMock()
+        shell.client.packages.listProvidingErrata = MagicMock()
+        shell.get_package_id = MagicMock()
+        shell.help_package_listerrata = MagicMock()
+
+        mprint = MagicMock()
+        logger = MagicMock()
+        with patch("spacecmd.package.print", mprint) as prn, \
+            patch("spacecmd.package.logging", logger) as lgr:
+            spacecmd.package.do_package_listerrata(shell, "")
+
+        assert not shell.do_package_search.called
+        assert not shell.client.packages.listProvidingErrata.called
+        assert not shell.get_package_id.called
+        assert shell.help_package_listerrata.called
