@@ -196,9 +196,9 @@ mkdir -p $RPM_BUILD_ROOT%{_mandir}/man8
 /usr/bin/pod2man --section=1 $RPM_BUILD_ROOT/%{_bindir}/spacewalk-setup-ipa-authentication| gzip > $RPM_BUILD_ROOT%{_mandir}/man1/spacewalk-setup-ipa-authentication.1.gz
 
 # Standalone Salt formulas configuration
-install -Dd -m 0750 %{buildroot}%{_prefix}/share/salt-formulas
-install -Dd -m 0750 %{buildroot}%{_prefix}/share/salt-formulas/states
-install -Dd -m 0750 %{buildroot}%{_prefix}/share/salt-formulas/metadata
+install -Dd -m 0755 %{buildroot}%{_prefix}/share/salt-formulas
+install -Dd -m 0755 %{buildroot}%{_prefix}/share/salt-formulas/states
+install -Dd -m 0755 %{buildroot}%{_prefix}/share/salt-formulas/metadata
 
 %post
 if [ $1 = 2 -a -e /etc/tomcat6/tomcat6.conf ]; then
@@ -297,9 +297,9 @@ pylint --rcfile /etc/spacewalk-python3-pylint.rc \
 %{_bindir}/spacewalk-setup-db-ssl-certificates
 %{_bindir}/cobbler20-setup
 %{_mandir}/man[13]/*.[13]*
-%dir %attr(0750, root, root) %{_prefix}/share/salt-formulas/
-%dir %attr(0750, root, root) %{_prefix}/share/salt-formulas/states/
-%dir %attr(0750, root, root) %{_prefix}/share/salt-formulas/metadata/
+%dir %attr(0755, root, root) %{_prefix}/share/salt-formulas/
+%dir %attr(0755, root, root) %{_prefix}/share/salt-formulas/states/
+%dir %attr(0755, root, root) %{_prefix}/share/salt-formulas/metadata/
 %dir %{_datadir}/spacewalk
 %{_datadir}/spacewalk/*
 %attr(755, %{apache_user}, root) %{misc_path}/spacewalk
