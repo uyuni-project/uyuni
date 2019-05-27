@@ -58,6 +58,7 @@ def shell():
     base.client = MagicMock()
     base.client.activationkey = MagicMock()
     base.do_activationkey_list = MagicMock(return_value="do_activation_list")
+    base.SEPARATOR = "-" * 10
 
     return base
 
