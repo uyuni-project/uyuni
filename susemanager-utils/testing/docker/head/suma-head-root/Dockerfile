@@ -2,7 +2,7 @@
 #
 # VERSION                4.0.0
 
-FROM registry.suse.de/suse/sle-15-sp1/ga/images/suse/sle15:15.1
+FROM registry.mgr.suse.de/sles15sp1:latest
 MAINTAINER Michael Calmer "Michael.Calmer@suse.com"
 
 # Add the repositories
