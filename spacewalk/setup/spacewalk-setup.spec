@@ -199,7 +199,7 @@ mkdir -p $RPM_BUILD_ROOT%{_mandir}/man8
 install -Dd -m 0750 %{buildroot}%{_prefix}/share/salt-formulas
 install -Dd -m 0750 %{buildroot}%{_prefix}/share/salt-formulas/states
 install -Dd -m 0750 %{buildroot}%{_prefix}/share/salt-formulas/metadata
-%
+
 %post
 if [ $1 = 2 -a -e /etc/tomcat6/tomcat6.conf ]; then
     # in case of upgrade
