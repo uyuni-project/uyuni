@@ -573,4 +573,34 @@ class TestSCPackage:
         assert not shell.do_package_search.called
         assert not shell.get_package_id.called
         assert not shell.client.system.listSystemsWithPackage.called
+        assert not mprint.called
+        assert not logger.warning.called
         assert shell.help_package_listinstalledsystems.called
+
+    def test_package_listinstallsystems_package_not_found(self, shell):
+        """
+        Test do_package_listinstallsystems with not found package
+
+            :param self:
+            :param shell:
+        """
+        shell.help_package_listinstalledsystems = MagicMock()
+        shell.do_package_search = MagicMock(return_value=[])
+        shell.get_package_id = MagicMock()
+        shell.client.system.listSystemsWithPackage = MagicMock()
+        shell.SEPARATOR = "-" * 10
+
+        mprint = MagicMock()
+        logger = MagicMock()
+        with patch("spacecmd.package.print", mprint) as prn, \
+            patch("spacecmd.package.logging", logger) as lgr:
+            spacecmd.package.do_package_listinstalledsystems(shell, "darth-vader")
+
+        assert not shell.get_package_id.called
+        assert not shell.client.system.listSystemsWithPackage.called
+        assert not shell.help_package_listinstalledsystems.called
+        assert not mprint.called
+        assert logger.warning.called
+        assert shell.do_package_search.called
+
+        assert_expect(logger.warning.call_args_list, "No packages found")
