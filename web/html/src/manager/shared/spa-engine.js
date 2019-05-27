@@ -5,6 +5,7 @@ import "./spa-engine.css"
 var appInstance = new App();
 appInstance.setLinkSelector("a.js-spa");
 appInstance.setFormSelector("");
+appInstance.addSurfaces('ssm-box');
 appInstance.addSurfaces('page-body');
 appInstance.addRoutes([{
   path: /.*/,

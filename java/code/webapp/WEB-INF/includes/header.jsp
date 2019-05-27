@@ -95,7 +95,7 @@
         </div>
       </form>
     </li>
-    <li class="ssm-box">
+    <li id="ssm-box" class="ssm-box">
       <a href="/rhn/ssm/index.do" id="manage-ssm" title="<bean:message key="manage"/>">
         <div id="header_selcount"><rhn:setdisplay user="${requestScope.session.user}" /></div>
       </a>
