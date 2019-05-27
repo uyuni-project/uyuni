@@ -1,11 +1,11 @@
 source 'https://rubygems.org'
 
-# FIXME: these gems cannot be updated to major, because
-# they requires Ruby version >= 2.2. (we need first to upgrade ruby to 2.2.2)
+# UPDATEME: these gem versions are from Ruby 2.1 time
+#           it might be possible to upgrade them to later versions
+#           please proceed with caution though ;-)
 gem 'cucumber', '2.0.0'
 gem 'rack', '1.6.11'
 gem 'rack-test', '0.7.0'
-# This gems are latest stable
 gem 'capybara', '2.16.0'
 gem 'jwt', '2.1.0'
 gem 'mime-types', '3.1'
@@ -15,5 +15,7 @@ gem 'rake', '12.3.0'
 gem 'selenium-webdriver', '3.8.0'
 gem 'simplecov', '0.15.1'
 gem 'twopence'
+gem 'xmlrpc', '0.3.0'
+gem 'minitest', ' 5.11.3'
 gem 'websocket', '1.2.5'
 gem 'websocket-driver', '0.7.0'
