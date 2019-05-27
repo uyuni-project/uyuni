@@ -1,7 +1,7 @@
 #bootstrap-minions
 
 script(type="text/javascript").
-    var csrfToken = "#{csrf_token}";
-    var availableActivationKeys = !{availableActivationKeys};
-    var proxies = !{proxies}
+    window.csrfToken = "#{csrf_token}";
+    window.availableActivationKeys = !{availableActivationKeys};
+    window.proxies = !{proxies}
 script(src='/javascript/manager/systems/bootstrap/bootstrap-minions.bundle.js?cb=#{webVersion}')

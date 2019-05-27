@@ -15,8 +15,8 @@
 #config-channels
 
 script(type='text/javascript').
-    var csrfToken = "#{csrf_token}";
-    var groupId = "#{groupId}";
+    window.csrfToken = "#{csrf_token}";
+    window.groupId = "#{groupId}";
 
 script(src='/javascript/ace-editor/src-min-noconflict/ace.js?cb=#{webVersion}')
 script(src='/javascript/ace-editor/src-min-noconflict/ext-modelist.js?cb=#{webVersion}')

@@ -3,7 +3,7 @@ include ./minion-header.jade
 #formula
 
 script(type='text/javascript').
-    var csrfToken = "#{csrf_token}";
+    window.csrfToken = "#{csrf_token}";
 
 script(src='/javascript/manager/minion/formula/minion-formula.renderer.bundle.js?cb=#{webVersion}', type='text/javascript')
 script(type='text/javascript').
