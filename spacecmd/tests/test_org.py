@@ -215,3 +215,26 @@ class TestSCOrg:
             assert args == next(iter(expectations))
             expectations.pop(0)
         assert not expectations
+
+    def test_org_rename(self, shell):
+        """
+        Test do_org_rename org
+
+            :param self:
+            :param shell:
+        """
+        shell.help_org_delete = MagicMock()
+        shell.get_org_id = MagicMock(return_value=1)
+        shell.client.org.delete = MagicMock()
+
+        mprint = MagicMock()
+        logger = MagicMock()
+        with patch("spacecmd.org.print", mprint) as prn, \
+            patch("spacecmd.org.logging", logger) as lgr:
+            spacecmd.org.do_org_rename(shell, "ACME-Enterprises Big-Stuff")
+
+        assert not shell.help_org_delete.called
+        assert not logger.warning.called
+        assert not mprint.called
+        assert shell.get_org_id.called
+        assert shell.client.org.updateName.called
