@@ -156,8 +156,10 @@ def do_org_delete(self, args):
 
     name = args[0]
     org_id = self.get_org_id(name)
-
-    if self.user_confirm('Delete this organization [y/N]:'):
+    if not org_id:
+        logging.warning("No organisation found for the name %s", name)
+        print("Organisation '{}' was not found".format(name))
+    elif self.user_confirm('Delete this organization [y/N]:'):
         self.client.org.delete(self.session, org_id)
 
 ####################
