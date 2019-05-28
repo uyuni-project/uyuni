@@ -85,7 +85,7 @@ def do_org_create(self, args):
 
             if password1 == password2:
                 options.password = password1
-            elif password1 == '':
+            elif len(password1) < 5:
                 logging.warning('Password must be at least 5 characters')
             else:
                 logging.warning("Passwords don't match")
