@@ -63,3 +63,20 @@ class TestSCOrg:
         assert_list_args_expect(logger.warning.call_args_list,
                                 ["Password must be at least 5 characters",
                                  "Passwords don't match", ])
+
+    def test_org_delete_noargs(self, shell):
+        """
+        Test do_org_delete without arguments.
+
+            :param self:
+            :param shell:
+        """
+        shell.help_org_delete = MagicMock()
+        shell.get_org_id = MagicMock()
+        shell.client.org.delete = MagicMock()
+
+        spacecmd.org.do_org_delete(shell, "")
+
+        assert not shell.get_org_id.called
+        assert not shell.client.org.delete.called
+        assert shell.help_org_delete.called
