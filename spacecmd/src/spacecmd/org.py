@@ -183,10 +183,14 @@ def do_org_rename(self, args):
         self.help_org_rename()
         return
 
-    org_id = self.get_org_id(args[0])
-    new_name = args[1]
-
-    self.client.org.updateName(self.session, org_id, new_name)
+    name, new_name = args
+    org_id = self.get_org_id(name)
+    if not org_id:
+        logging.warning("No organisation found for the name %s", name)
+        print("Organisation '{}' was not found".format(name))
+    else:
+        new_name = args[1]
+        self.client.org.updateName(self.session, org_id, new_name)
 
 ####################
 
