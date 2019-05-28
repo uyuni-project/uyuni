@@ -164,3 +164,20 @@ class TestSCOrg:
         assert shell.get_org_id.called
         assert shell.user_confirm.called
         assert shell.client.org.delete.called
+
+    def test_org_rename_noargs(self, shell):
+        """
+        Test do_org_rename without arguments.
+
+            :param self:
+            :param shell:
+        """
+        shell.help_org_rename = MagicMock()
+        shell.get_org_id = MagicMock()
+        shell.client.org.updateName = MagicMock()
+
+        spacecmd.org.do_org_rename(shell, "")
+
+        assert not shell.get_org_id.called
+        assert not shell.client.org.updateName.called
+        assert shell.help_org_rename.called
