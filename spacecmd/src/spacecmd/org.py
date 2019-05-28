@@ -385,10 +385,12 @@ def do_org_listusers(self, args):
         return
 
     org_id = self.get_org_id(args[0])
-
-    users = self.client.org.listUsers(self.session, org_id)
-
-    print('\n'.join(sorted([u.get('login') for u in users])))
+    if not org_id:
+        logging.warning("No organisation found for the name %s", args[0])
+        print("Organisation '{}' was not found".format(args[0]))
+    else:
+        users = self.client.org.listUsers(self.session, org_id)
+        print('\n'.join(sorted([u.get('login') for u in users])))
 
 ####################
 
