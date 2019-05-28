@@ -449,8 +449,8 @@ public class ConfigChannelHandler extends BaseHandler {
      * @xmlrpc.param
      *  #struct("path info")
      *      #prop_desc("string","contents",
-     *              "Contents of the file (text or base64 encoded if binary).
-     *                   (only for non-directories)")
+     *              "Contents of the file (text or base64 encoded if binary or want to preserve
+     *                         control characters like LF, CR etc.)(only for non-directories)")
      *      #prop_desc("boolean","contents_enc64", "Identifies base64 encoded content
      *                   (default: disabled, only for non-directories)")
      *      #prop_desc("string", "owner", "Owner of the file/directory.")

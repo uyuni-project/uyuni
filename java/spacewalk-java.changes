@@ -1,3 +1,4 @@
+- Explicitly mention in API docs that to preserve LF/CR, user needs to encode the data(bsc#1135442)
 - Switch menu links and adjust title icons
 - Add XML-RPC API calls to manage server monitoring
 - Allow adding monitoring entitlement to openSUSE Leap 15.x
