@@ -379,12 +379,11 @@ def do_package_listdependencies(self, args):
         return
 
     add_separator = False
-
     for package in packages:
         if add_separator:
             print(self.SEPARATOR)
-        add_separator = True
 
+        add_separator = False
         for package_id in self.get_package_id(package):
             if not package_id:
                 logging.warning('%s is not a valid package' % package)
@@ -397,3 +396,4 @@ def do_package_listdependencies(self, args):
                 print('Dependency: %s Type: %s Modifier: %s' % \
                       (dep['dependency'], dep['dependency_type'], dep['dependency_modifier']))
             print(self.SEPARATOR)
+            add_separator = True
