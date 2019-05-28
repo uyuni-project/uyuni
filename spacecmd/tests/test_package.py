@@ -4,7 +4,7 @@ Test suite for spacecmd.package module.
 """
 
 from unittest.mock import MagicMock, patch
-from helpers import shell, assert_expect
+from helpers import shell, assert_expect, assert_list_args_expect
 import spacecmd.package
 
 
@@ -740,3 +740,61 @@ class TestSCPackage:
         assert logger.warning.called
         assert shell.do_package_search.called
         assert_expect(logger.warning.call_args_list, "No packages found")
+
+    def test_package_listerrata_packages(self, shell):
+        """
+        Test do_package_listerrata with a package names.
+
+            :param shell:
+            :param args:
+        """
+        shell.do_package_search = MagicMock(return_value=[
+            "emacs", "xemacs", "emacs-nox"
+        ])
+        shell.client.packages.listProvidingErrata = MagicMock(side_effect=[
+            [
+                {"advisory": "RHBA-2019:4231"},
+                {"advisory": "CVE-2019:123-4"},
+            ],
+            [
+                {"advisory": "RHBA-2019:4231"},
+                {"advisory": "RHBA-2019:4232"},
+                {"advisory": "RHBA-2019:4233"},
+            ],
+            [
+                {"advisory": "CVE-2018:152-5"}
+            ]
+        ])
+        shell.get_package_id = MagicMock(return_value=[
+            "bogus-package-id"
+        ])
+        shell.help_package_listerrata = MagicMock()
+
+        mprint = MagicMock()
+        logger = MagicMock()
+        with patch("spacecmd.package.print", mprint) as prn, \
+            patch("spacecmd.package.logging", logger) as lgr:
+            spacecmd.package.do_package_listerrata(shell, "emacs")
+
+        assert not logger.warning.called
+        assert not shell.help_package_listerrata.called
+        assert shell.client.packages.listProvidingErrata.called
+        assert shell.get_package_id.called
+        assert mprint.called
+        assert shell.do_package_search.called
+
+        expectations = [
+            'emacs',
+            '-----',
+            'CVE-2019:123-4\nRHBA-2019:4231',
+            '----------',
+            'xemacs',
+            '------',
+            'RHBA-2019:4231\nRHBA-2019:4232\nRHBA-2019:4233',
+            '----------',
+            'emacs-nox',
+            '---------',
+            'CVE-2018:152-5'
+        ]
+
+        assert_list_args_expect(mprint.call_args_list, expectations)
