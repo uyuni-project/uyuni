@@ -114,3 +114,28 @@ class TestSCOrg:
             assert args == next(iter(expectations))
             expectations.pop(0)
         assert not expectations
+
+    def test_org_delete_no_confirm(self, shell):
+        """
+        Test do_org_delete org not confirmed
+
+            :param self:
+            :param shell:
+        """
+        shell.help_org_delete = MagicMock()
+        shell.get_org_id = MagicMock(return_value=1)
+        shell.client.org.delete = MagicMock()
+        shell.user_confirm = MagicMock(return_value=False)
+
+        mprint = MagicMock()
+        logger = MagicMock()
+        with patch("spacecmd.org.print", mprint) as prn, \
+            patch("spacecmd.org.logging", logger) as lgr:
+            spacecmd.org.do_org_delete(shell, "ACME-Enterprises")
+
+        assert not shell.client.org.delete.called
+        assert not shell.help_org_delete.called
+        assert not logger.warning.called
+        assert not mprint.called
+        assert shell.get_org_id.called
+        assert shell.user_confirm.called
