@@ -80,3 +80,37 @@ class TestSCOrg:
         assert not shell.get_org_id.called
         assert not shell.client.org.delete.called
         assert shell.help_org_delete.called
+
+    def test_org_delete_no_org_found(self, shell):
+        """
+        Test do_org_delete org not found (None).
+
+            :param self:
+            :param shell:
+        """
+        shell.help_org_delete = MagicMock()
+        shell.get_org_id = MagicMock(return_value=None)
+        shell.client.org.delete = MagicMock()
+
+        mprint = MagicMock()
+        logger = MagicMock()
+        with patch("spacecmd.org.print", mprint) as prn, \
+            patch("spacecmd.org.logging", logger) as lgr:
+            spacecmd.org.do_org_delete(shell, "ACME-Enterprises")
+
+        assert not shell.client.org.delete.called
+        assert not shell.help_org_delete.called
+        assert shell.get_org_id.called
+        assert logger.warning.called
+        assert mprint.called
+
+        assert_expect(mprint.call_args_list,
+                      "Organisation 'ACME-Enterprises' was not found")
+        expectations = [
+            ('No organisation found for the name %s', 'ACME-Enterprises')
+        ]
+        for call in logger.warning.call_args_list:
+            args, kw = call
+            assert args == next(iter(expectations))
+            expectations.pop(0)
+        assert not expectations
