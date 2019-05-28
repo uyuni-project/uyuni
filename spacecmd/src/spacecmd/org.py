@@ -213,10 +213,18 @@ def do_org_addtrust(self, args):
         self.help_org_addtrust()
         return
 
-    your_org_id = self.get_org_id(args[0])
-    org_to_trust_id = self.get_org_id(args[1])
+    your_org, trust_org = args
+    your_org_id = self.get_org_id(your_org)
+    org_to_trust_id = self.get_org_id(trust_org)
 
-    self.client.org.trusts.addTrust(self.session, your_org_id, org_to_trust_id)
+    if not your_org_id:
+        logging.warning("No organisation found for the name %s", your_org)
+        print("Organisation '{}' was not found".format(your_org))
+    elif not org_to_trust_id:
+        logging.warning("No trust organisation found for the name %s", trust_org)
+        print("Organisation '{}' to trust for, was not found".format(trust_org))
+    else:
+        self.client.org.trusts.addTrust(self.session, your_org_id, org_to_trust_id)
 
 ####################
 
