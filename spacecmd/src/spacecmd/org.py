@@ -269,8 +269,6 @@ def do_org_removetrust(self, args):
         if self.user_confirm('Remove this trust [y/N]:'):
             self.client.org.trusts.removeTrust(self.session, your_org_id, trusted_org_id)
 
-####################
-
 
 def help_org_trustdetails(self):
     print('org_trustdetails: Show the details of an organizational trust')
@@ -314,7 +312,6 @@ def do_org_trustdetails(self, args):
     if provided:
         print('\n'.join(sorted([c.get('name') for c in provided])))
 
-####################
 
 
 def help_org_list(self):
