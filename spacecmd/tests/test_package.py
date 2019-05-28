@@ -798,3 +798,27 @@ class TestSCPackage:
         ]
 
         assert_list_args_expect(mprint.call_args_list, expectations)
+
+    def test_package_listdependencies_noargs(self, shell):
+        """
+        Test do_packge_listdependencies without arguments.
+            :param self:
+            :param shell:
+        """
+        shell.do_package_search = MagicMock()
+        shell.help_package_listdependencies = MagicMock()
+        shell.get_package_id = MagicMock()
+        shell.client.packages.list_dependencies = MagicMock()
+
+        mprint = MagicMock()
+        logger = MagicMock()
+        with patch("spacecmd.package.print", mprint) as prn, \
+            patch("spacecmd.package.logging", logger) as lgr:
+            spacecmd.package.do_package_listdependencies(shell, "")
+
+        assert not shell.do_package_search.called
+        assert not shell.get_package_id.called
+        assert not shell.client.packages.list_dependencies.called
+        assert not mprint.called
+        assert not logger.warning.called
+        assert shell.help_package_listdependencies.called
