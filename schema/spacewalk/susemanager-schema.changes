@@ -1,3 +1,4 @@
+- fix schema migration for suseSCCRepositoryAuth (bsc#1136558)
 - Add built time column to suseContentEnvironmentTarget
 
 -------------------------------------------------------------------
