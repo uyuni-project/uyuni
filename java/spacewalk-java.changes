@@ -1,3 +1,4 @@
+- Enable product detection for plain rhel systems (bsc#1136301)
 - For orphan contentsources, look also in susesccrepositoryauth to make sure they are not being referenced (bsc#1138275)
 - Fallback to logged-in-user org and then vendor errata when looking up erratum on cloning (bsc#1137308)
 - Add new validation to avoid creating content lifecycle projects starting with a number (bsc#1139493)
