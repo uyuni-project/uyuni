@@ -1,3 +1,4 @@
+- Fix: bug in spacecmd with _listrepos
 - Bugfix: 'dict' object has no attribute 'iteritems' (bsc#1135881)
 - Add unit tests for custominfo, snippet, scap, ssm, cryptokey and distribution
 

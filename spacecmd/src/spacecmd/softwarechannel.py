@@ -2776,8 +2776,8 @@ def do_softwarechannel_listrepos(self, args):
         details = self.client.channel.software.getDetails(self.session, args[0])
         repos = [r.get('label') for r in details.get('contentSources')]
 
-    if repos:
-        print('\n'.join(sorted(repos)))
+        if repos:
+            print('\n'.join(sorted(repos)))
     else:
         self.help_softwarechannel_listrepos()
 
