@@ -3,7 +3,7 @@ Author: Bo Maryniuk <bo@suse.de>
 '''
 
 from mock import MagicMock, patch
-import mockery
+from . import mockery
 mockery.setup_environment()
 
 from ..modules import udevdb
@@ -90,11 +90,11 @@ def test_exportdb():
     with patch.dict(udevdb.__salt__, {'cmd.run_all': MagicMock(side_effect=[{'retcode': 0, 'stdout': udev_data},
                                                                             {'retcode': 0, 'stdout': '0'}])}):
         data = udevdb.exportdb()
-        assert data == filter(None, data)
+        assert data == [_f for _f in data if _f]
 
         for d_idx, d_section in enumerate(data):
             assert out[d_idx]['P'] == d_section['P']
             assert out[d_idx].get('N') == d_section.get('N')
             assert out[d_idx].get('X-Mgr') == d_section.get('X-Mgr')
-            for key, value in d_section['E'].items():
+            for key, value in list(d_section['E'].items()):
                 assert out[d_idx]['E'][key] == value

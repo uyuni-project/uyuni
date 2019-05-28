@@ -50,7 +50,7 @@ def _parse_cpuinfo(feedback):
         try:
             log.debug("Trying /proc/cpuinfo to get CPU socket count")
             with open('/proc/cpuinfo') as handle:
-                for line in handle:
+                for line in handle.readlines():
                     if line.strip().startswith('physical id'):
                         comps = line.split(':')
                         if len(comps) < 2 or len(comps[1]) < 2:

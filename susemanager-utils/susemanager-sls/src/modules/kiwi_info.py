@@ -47,7 +47,7 @@ def parse_packages(path):
             if match:
                 # translate '(none)' values to ''
                 d = match.groupdict()
-                for k in d.keys():
+                for k in list(d.keys()):
                     if d[k] == '(none)':
                         d[k] = ''
 

@@ -239,7 +239,7 @@ def adjust_empty_values(layout, data):
             if subtype is EditGroupSubtype.DICTIONARY_OF_DICTIONARIES:
                 value = {}
                 if isinstance(data.get(element_name), dict):
-                    for key, entry in data.get(element_name).items():
+                    for key, entry in list(data.get(element_name).items()):
                         proc_entry = adjust_empty_values(prototype, entry)
                         value[key] = proc_entry
             elif subtype is EditGroupSubtype.LIST_OF_DICTIONARIES:
