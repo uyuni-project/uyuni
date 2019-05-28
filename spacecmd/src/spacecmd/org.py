@@ -290,28 +290,30 @@ def do_org_trustdetails(self, args):
 
     trusted_org = args[0]
     org_id = self.get_org_id(trusted_org)
+    if not org_id:
+        logging.warning("No trusted organisation found for the name %s", trusted_org)
+        print("Trusted organisation '{}' was not found".format(trusted_org))
+    else:
+        details = self.client.org.trusts.getDetails(self.session, org_id)
+        consumed = self.client.org.trusts.listChannelsConsumed(self.session, org_id)
+        provided = self.client.org.trusts.listChannelsProvided(self.session, org_id)
 
-    details = self.client.org.trusts.getDetails(self.session, org_id)
-    consumed = self.client.org.trusts.listChannelsConsumed(self.session, org_id)
-    provided = self.client.org.trusts.listChannelsProvided(self.session, org_id)
+        print('Trusted Organization:   %s' % trusted_org)
+        print('Trusted Since:          %s' % details.get('trusted_since'))
+        print('Systems Migrated From:  %i' % details.get('systems_migrated_from'))
+        print('Systems Migrated To:    %i' % details.get('systems_migrated_to'))
+        print('')
+        print('Channels Consumed')
+        print('-----------------')
+        if consumed:
+            print('\n'.join(sorted([c.get('name') for c in consumed])))
 
-    print('Trusted Organization:   %s' % trusted_org)
-    print('Trusted Since:          %s' % details.get('trusted_since'))
-    print('Systems Migrated From:  %i' % details.get('systems_migrated_from'))
-    print('Systems Migrated To:    %i' % details.get('systems_migrated_to'))
-    print('')
-    print('Channels Consumed')
-    print('-----------------')
-    if consumed:
-        print('\n'.join(sorted([c.get('name') for c in consumed])))
+        print('')
 
-    print('')
-
-    print('Channels Provided')
-    print('-----------------')
-    if provided:
-        print('\n'.join(sorted([c.get('name') for c in provided])))
-
+        print('Channels Provided')
+        print('-----------------')
+        if provided:
+            print('\n'.join(sorted([c.get('name') for c in provided])))
 
 
 def help_org_list(self):
