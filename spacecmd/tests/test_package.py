@@ -714,3 +714,29 @@ class TestSCPackage:
         assert not shell.client.packages.listProvidingErrata.called
         assert not shell.get_package_id.called
         assert shell.help_package_listerrata.called
+
+    def test_package_listerrata_not_found_packages(self, shell):
+        """
+        Test do_package_listerrata with invalid package names.
+
+            :param shell:
+            :param args:
+        """
+        shell.do_package_search = MagicMock(return_value=[])
+        shell.client.packages.listProvidingErrata = MagicMock()
+        shell.get_package_id = MagicMock()
+        shell.help_package_listerrata = MagicMock()
+
+        mprint = MagicMock()
+        logger = MagicMock()
+        with patch("spacecmd.package.print", mprint) as prn, \
+            patch("spacecmd.package.logging", logger) as lgr:
+            spacecmd.package.do_package_listerrata(shell, "iron-man")
+
+        assert not shell.help_package_listerrata.called
+        assert not shell.client.packages.listProvidingErrata.called
+        assert not shell.get_package_id.called
+        assert not mprint.called
+        assert logger.warning.called
+        assert shell.do_package_search.called
+        assert_expect(logger.warning.call_args_list, "No packages found")
