@@ -822,3 +822,29 @@ class TestSCPackage:
         assert not mprint.called
         assert not logger.warning.called
         assert shell.help_package_listdependencies.called
+
+    def test_package_listdependencies_no_packages_found(self, shell):
+        """
+        Test do_packge_listdependencies no packages found.
+            :param self:
+            :param shell:
+        """
+        shell.do_package_search = MagicMock(return_value=[])
+        shell.help_package_listdependencies = MagicMock()
+        shell.get_package_id = MagicMock()
+        shell.client.packages.list_dependencies = MagicMock()
+
+        mprint = MagicMock()
+        logger = MagicMock()
+        with patch("spacecmd.package.print", mprint) as prn, \
+            patch("spacecmd.package.logging", logger) as lgr:
+            spacecmd.package.do_package_listdependencies(shell, "thor")
+
+        assert not shell.get_package_id.called
+        assert not shell.client.packages.list_dependencies.called
+        assert not mprint.called
+        assert not shell.help_package_listdependencies.called
+        assert shell.do_package_search.called
+        assert logger.warning.called
+
+        assert_expect(logger.warning.call_args_list, "No packages found")
