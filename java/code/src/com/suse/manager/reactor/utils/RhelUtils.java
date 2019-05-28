@@ -202,6 +202,7 @@ public class RhelUtils {
 
             Optional<SUSEProduct> suseProduct = Optional.ofNullable(SUSEProductFactory
                     .findSUSEProduct("RES", majorVersion, release, arch, true));
+
             return Optional.of(new RhelProduct(suseProduct, name,
                     majorVersion, release, arch));
         }
@@ -283,7 +284,11 @@ public class RhelUtils {
         String majorVersion = releaseFile.map(ReleaseFile::getMajorVersion)
                 .orElse("unknown");
         String release = releaseFile.map(ReleaseFile::getRelease).orElse("unknown");
-        return new RhelProduct(Optional.empty(), name, majorVersion, release, arch);
+        Optional<SUSEProduct> suseProduct = defaultName.equals("RedHatEnterprise") ?
+                Optional.ofNullable(SUSEProductFactory
+                        .findSUSEProduct("rhel-base", majorVersion, release, arch, true)) :
+                Optional.empty();
+        return new RhelProduct(suseProduct, name, majorVersion, release, arch);
     }
 
 }
