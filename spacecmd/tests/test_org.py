@@ -139,3 +139,28 @@ class TestSCOrg:
         assert not mprint.called
         assert shell.get_org_id.called
         assert shell.user_confirm.called
+
+    def test_org_delete_confirm(self, shell):
+        """
+        Test do_org_delete org confirmed
+
+            :param self:
+            :param shell:
+        """
+        shell.help_org_delete = MagicMock()
+        shell.get_org_id = MagicMock(return_value=1)
+        shell.client.org.delete = MagicMock()
+        shell.user_confirm = MagicMock(return_value=True)
+
+        mprint = MagicMock()
+        logger = MagicMock()
+        with patch("spacecmd.org.print", mprint) as prn, \
+            patch("spacecmd.org.logging", logger) as lgr:
+            spacecmd.org.do_org_delete(shell, "ACME-Enterprises")
+
+        assert not shell.help_org_delete.called
+        assert not logger.warning.called
+        assert not mprint.called
+        assert shell.get_org_id.called
+        assert shell.user_confirm.called
+        assert shell.client.org.delete.called
