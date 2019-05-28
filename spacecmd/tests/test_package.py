@@ -848,3 +848,38 @@ class TestSCPackage:
         assert logger.warning.called
 
         assert_expect(logger.warning.call_args_list, "No packages found")
+
+    def test_package_listdependencies_invalid_package(self, shell):
+        """
+        Test do_packge_listdependencies with invalid packages
+            :param self:
+            :param shell:
+        """
+        shell.do_package_search = MagicMock(return_value=[
+            "vi", "vim", "gvim", "xvim"
+        ])
+        shell.help_package_listdependencies = MagicMock()
+        shell.get_package_id = MagicMock(return_value=[None])
+        shell.client.packages.list_dependencies = MagicMock()
+
+        mprint = MagicMock()
+        logger = MagicMock()
+        with patch("spacecmd.package.print", mprint) as prn, \
+            patch("spacecmd.package.logging", logger) as lgr:
+            spacecmd.package.do_package_listdependencies(shell, "thor")
+
+        assert not shell.client.packages.list_dependencies.called
+        assert not mprint.called
+        assert not shell.help_package_listdependencies.called
+        assert shell.do_package_search.called
+        assert logger.warning.called
+        assert shell.get_package_id.called
+
+        expectations = [
+            'vi is not a valid package',
+            'vim is not a valid package',
+            'gvim is not a valid package',
+            'xvim is not a valid package'
+        ]
+        assert_list_args_expect(logger.warning.call_args_list,
+                                expectations)
