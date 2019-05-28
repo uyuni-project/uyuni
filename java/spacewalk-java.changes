@@ -1,3 +1,4 @@
+- Explicitly mention in API docs that to preserve LF/CR, user needs to encode the data(bsc#1135442)
 - New Single Page Application engine for the UI. It can be enabled with the config 'web.spa.enable' set to true
 - Check that a channel doesn't have clones before deleting it (bsc#1138454)
 - Fix documentation of contentmanagement handler (bsc#1145753)
