@@ -247,27 +247,27 @@ def do_org_removetrust(self, args):
         self.help_org_removetrust()
         return
 
-    your_org_id = self.get_org_id(args[0])
-    trusted_org_id = self.get_org_id(args[1])
-
-    systems = self.client.org.trusts.listSystemsAffected(self.session,
-                                                         your_org_id,
-                                                         trusted_org_id)
-
-    print('Affected Systems')
-    print('----------------')
-
-    if systems:
-        print('\n'.join(sorted([s.get('systemName') for s in systems])))
+    your_org, trust_org = args
+    your_org_id = self.get_org_id(your_org)
+    trusted_org_id = self.get_org_id(trust_org)
+    if not your_org_id:
+        logging.warning("No organisation found for the name %s", your_org)
+        print("Organisation '{}' was not found".format(your_org))
+    elif not trusted_org_id:
+        logging.warning("No trust organisation found for the name %s", trust_org)
+        print("Organisation '{}' to trust for, was not found".format(trust_org))
     else:
-        print('None')
+        systems = self.client.org.trusts.listSystemsAffected(self.session, your_org_id, trusted_org_id)
+        print('Affected Systems')
+        print('----------------')
 
-    if not self.user_confirm('Remove this trust [y/N]:'):
-        return
+        if systems:
+            print('\n'.join(sorted([s.get('systemName') for s in systems])))
+        else:
+            print('None')
 
-    self.client.org.trusts.removeTrust(self.session,
-                                       your_org_id,
-                                       trusted_org_id)
+        if self.user_confirm('Remove this trust [y/N]:'):
+            self.client.org.trusts.removeTrust(self.session, your_org_id, trusted_org_id)
 
 ####################
 
