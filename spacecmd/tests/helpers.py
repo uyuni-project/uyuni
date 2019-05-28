@@ -77,3 +77,16 @@ def assert_expect(calls, *expectations):
         assert call[0][0] == next(iter(expectations))
         expectations.pop(0)
     assert not expectations
+
+def assert_list_args_expect(calls, expectations):
+    """
+    Check expectations over the array.
+
+    :param calls: Mock's call_args_list
+    :param expectations: multi-expectations array per argument
+    """
+    for call in calls:
+        args, kw = call
+        assert_expect([call], next(iter(expectations)))
+        expectations.pop(0)
+    assert not expectations
