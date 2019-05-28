@@ -247,6 +247,27 @@ public class Access extends BaseHandler {
     }
 
     /**
+     * Check if any system has a Foreign entitlement.
+     * @param ctx Context map to pass in.
+     * @param params Parameters to use to fetch from context.
+     * @return True if system has foreign entitlement, false otherwise.
+     */
+    public boolean aclSystemHasForeignEntitlement(Object ctx, String[] params) {
+        @SuppressWarnings("unchecked")
+        Map<String, Object> map = (Map<String, Object>) ctx;
+        Long sid = getAsLong(map.get("sid"));
+        boolean ret = false;
+        if (sid != null) {
+            User user = (User) map.get("user");
+            Server server = SystemManager.lookupByIdAndUser(sid, user);
+            if (server != null) {
+                ret = server.hasEntitlement(EntitlementManager.FOREIGN);
+            }
+        }
+        return ret;
+    }
+
+    /**
      * Check if a system is a {@link com.redhat.rhn.domain.server.MinionServer} which has a bootstrap entitlement
      * @param ctx Context map to pass in.
      * @param params Parameters to use to fetch from context.
