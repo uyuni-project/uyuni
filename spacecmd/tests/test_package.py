@@ -866,7 +866,7 @@ class TestSCPackage:
         logger = MagicMock()
         with patch("spacecmd.package.print", mprint) as prn, \
             patch("spacecmd.package.logging", logger) as lgr:
-            spacecmd.package.do_package_listdependencies(shell, "thor")
+            spacecmd.package.do_package_listdependencies(shell, "bad-editor")
 
         assert not shell.client.packages.list_dependencies.called
         assert not mprint.called
@@ -883,3 +883,98 @@ class TestSCPackage:
         ]
         assert_list_args_expect(logger.warning.call_args_list,
                                 expectations)
+
+    def test_package_listdependencies_packages(self, shell):
+        """
+        Test do_package_listdependencies with packages
+            :param self:
+            :param shell:
+        """
+        shell.do_package_search = MagicMock(return_value=[
+            "emacs", "xemacs", "vim", "emacs-x11"  # One should fail here, obviously
+        ])
+        shell.help_package_listdependencies = MagicMock()
+        shell.get_package_id = MagicMock(side_effect=[
+            ["1"], ["2"], [None], ["3"]
+        ])
+        shell.client.packages.list_dependencies = MagicMock(side_effect=[
+            [
+                {
+                    "dependency": "libxml2.so.2",
+                    "dependency_type": "requires",
+                    "dependency_modifier": "> 1.0"
+                },
+                {
+                    "dependency": "mimehandler(application/x-shellscript)",
+                    "dependency_type": "provides",
+                    "dependency_modifier": ""
+                },
+            ],
+            [
+                {
+                    "dependency": "libasound.so.2",
+                    "dependency_type": "requires",
+                    "dependency_modifier": ""
+                },
+                {
+                    "dependency": "emacs_program",
+                    "dependency_type": "provides",
+                    "dependency_modifier": "= 24.3-19.2"
+                },
+            ],
+            [
+                {
+                    "dependency": "libc.so.6",
+                    "dependency_type": "requires",
+                    "dependency_modifier": ""
+                },
+                {
+                    "dependency": "rpmlib (CompressedFileNames)",
+                    "dependency_type": "requires",
+                    "dependency_modifier": "<= 3.0.4-1"
+                },
+                {
+                    "dependency": "rpmlib (PayloadFilesHavePrefix)",
+                    "dependency_type": "requires",
+                    "dependency_modifier": "<= 4.0-1"
+                },
+                {
+                    "dependency": "rpmlib (PayloadIsLzma)",
+                    "dependency_type": "requires",
+                    "dependency_modifier": "<= 4.4.6-1"
+                },
+            ],
+        ])
+
+        mprint = MagicMock()
+        logger = MagicMock()
+        with patch("spacecmd.package.print", mprint) as prn, \
+            patch("spacecmd.package.logging", logger) as lgr:
+            spacecmd.package.do_package_listdependencies(shell, "emacs")
+
+        assert not shell.help_package_listdependencies.called
+        assert shell.client.packages.list_dependencies.called
+        assert mprint.called
+        assert shell.do_package_search.called
+        assert logger.warning.called
+        assert shell.get_package_id.called
+
+        expectations = [
+            "Package Name: emacs",
+            "Dependency: libxml2.so.2 Type: requires Modifier: > 1.0",
+            "Dependency: mimehandler(application/x-shellscript) Type: provides Modifier: ",
+            "----------",
+            "----------",
+            "Package Name: xemacs",
+            "Dependency: libasound.so.2 Type: requires Modifier: ",
+            "Dependency: emacs_program Type: provides Modifier: = 24.3-19.2",
+            "----------",
+            "----------",
+            "Package Name: emacs-x11",
+            "Dependency: libc.so.6 Type: requires Modifier: ",
+            "Dependency: rpmlib (CompressedFileNames) Type: requires Modifier: <= 3.0.4-1",
+            "Dependency: rpmlib (PayloadFilesHavePrefix) Type: requires Modifier: <= 4.0-1",
+            "Dependency: rpmlib (PayloadIsLzma) Type: requires Modifier: <= 4.4.6-1",
+            "----------"]
+        assert_list_args_expect(mprint.call_args_list, expectations=expectations)
+        assert_expect(logger.warning.call_args_list, "vim is not a valid package")
