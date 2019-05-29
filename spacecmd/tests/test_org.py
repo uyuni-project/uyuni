@@ -663,5 +663,8 @@ class TestSCOrg:
 
         assert not shell.client.org.listUsers.called
         assert not shell.get_org_id.called
+        assert not mprint.called
+        assert not logger.warning.called
         assert shell.help_org_listusers.called
+
 
