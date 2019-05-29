@@ -451,3 +451,53 @@ class TestSCOrg:
                            [(('No trusted organisation found for the name %s',
                               'notfound'), {})])
 
+    def test_org_trustdetails(self, shell):
+        """
+        Test do_or_trustdetails
+
+        :param shell:
+        :return:
+        """
+        shell.help_org_trustdetails = MagicMock()
+        shell.get_org_id = MagicMock(return_value=1)
+        shell.client.org.trusts.getDetails = MagicMock(return_value={
+            "trusted_since": "Mi 29. Mai 15:02:26 CEST 2019",
+            "systems_migrated_from": 3,
+            "systems_migrated_to": 8
+        })
+        shell.client.org.trusts.listChannelsConsumed = MagicMock(return_value=[
+            {"name": "base_channel"},
+            {"name": "special_channel"},
+        ])
+        shell.client.org.trusts.listChannelsProvided = MagicMock(return_value=[
+            {"name": "base_channel"},
+            {"name": "suse_channel"},
+            {"name": "rh_channel"},
+        ])
+
+        logger = MagicMock()
+        mprint = MagicMock()
+        with patch("spacecmd.org.print", mprint) as prn, \
+            patch("spacecmd.org.logging", logger) as lgr:
+            spacecmd.org.do_org_trustdetails(shell, "myorg")
+
+        assert not shell.help_org_trustdetails.called
+        assert not logger.warning.called
+        assert shell.client.org.trusts.getDetails.called
+        assert shell.client.org.trusts.listChannelsConsumed.called
+        assert shell.client.org.trusts.listChannelsProvided.called
+        assert shell.get_org_id.called
+        assert mprint.called
+
+        exp = [
+           'Trusted Organization:   myorg',
+           'Trusted Since:          Mi 29. Mai 15:02:26 CEST 2019',
+           'Systems Migrated From:  3', 'Systems Migrated To:    8', '',
+           'Channels Consumed', '-----------------',
+           'base_channel\nspecial_channel', '',
+           'Channels Provided', '-----------------',
+            'base_channel\nrh_channel\nsuse_channel'
+        ]
+
+        assert_list_args_expect(mprint.call_args_list, exp)
+
