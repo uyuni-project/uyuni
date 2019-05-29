@@ -692,3 +692,29 @@ class TestSCOrg:
         assert_args_expect(logger.warning.call_args_list,
                            [(('No organisation found for the name %s', 'foo'), {})])
 
+    def test_org_listusers(self, shell):
+        """
+        Test do_org_listusers output
+
+        :param shell:
+        :return:
+        """
+        shell.help_org_listusers = MagicMock()
+        shell.client.org.listUsers = MagicMock(return_value=[
+            {"login": "olafur"},
+            {"login": "gunnuhver"}
+        ])
+        shell.get_org_id = MagicMock(return_value=1)
+        logger = MagicMock()
+        mprint = MagicMock()
+        with patch("spacecmd.org.print", mprint) as prn, \
+            patch("spacecmd.org.logging", logger) as lgr:
+            spacecmd.org.do_org_listusers(shell, "suse")
+
+        assert not shell.help_org_listusers.called
+        assert not logger.warning.called
+        assert shell.client.org.listUsers.called
+        assert shell.get_org_id.called
+        assert mprint.called
+        assert_expect(mprint.call_args_list, 'gunnuhver\nolafur')
+
