@@ -217,10 +217,10 @@ def do_org_addtrust(self, args):
     your_org_id = self.get_org_id(your_org)
     org_to_trust_id = self.get_org_id(trust_org)
 
-    if not your_org_id:
+    if your_org_id is None:
         logging.warning("No organisation found for the name %s", your_org)
         print("Organisation '{}' was not found".format(your_org))
-    elif not org_to_trust_id:
+    elif org_to_trust_id is None:
         logging.warning("No trust organisation found for the name %s", trust_org)
         print("Organisation '{}' to trust for, was not found".format(trust_org))
     else:
