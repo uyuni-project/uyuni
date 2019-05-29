@@ -667,4 +667,28 @@ class TestSCOrg:
         assert not logger.warning.called
         assert shell.help_org_listusers.called
 
+    def test_org_listusers_no_org(self, shell):
+        """
+        Test do_org_listusers where org was not found.
+
+        :param shell:
+        :return:
+        """
+        shell.help_org_listusers = MagicMock()
+        shell.client.org.listUsers = MagicMock()
+        shell.get_org_id = MagicMock(return_value=None)
+        logger = MagicMock()
+        mprint = MagicMock()
+        with patch("spacecmd.org.print", mprint) as prn, \
+            patch("spacecmd.org.logging", logger) as lgr:
+            spacecmd.org.do_org_listusers(shell, "foo")
+
+        assert not shell.client.org.listUsers.called
+        assert not shell.help_org_listusers.called
+        assert shell.get_org_id.called
+        assert mprint.called
+        assert logger.warning.called
+        assert_expect(mprint.call_args_list, "Organisation 'foo' was not found")
+        assert_args_expect(logger.warning.call_args_list,
+                           [(('No organisation found for the name %s', 'foo'), {})])
 
