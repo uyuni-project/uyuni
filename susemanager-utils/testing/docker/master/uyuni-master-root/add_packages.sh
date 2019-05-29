@@ -10,7 +10,8 @@ zypper in -y  make \
               python3-devel \
               python3-mock \
 	      python3-nose \
-              python3-pylint
+              python3-pylint \
+              python3-pytest
 
 # python3-urlgabber is not part of neither SLE or openSUSE 15.X
 curl https://download.opensuse.org/repositories/systemsmanagement:/Uyuni:/Master/openSUSE_Leap_15.0/noarch/python3-urlgrabber.rpm -o /tmp/python3-urlgrabber.rpm && \
