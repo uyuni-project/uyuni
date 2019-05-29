@@ -1,3 +1,4 @@
+- Fix parsing of deb package version string on download (bsc#1130040, bsc#1136093)
 - Enable product detection for plain rhel systems (bsc#1136301)
 - Explicitly mention in API docs that to preserve LF/CR, user needs to encode the data(bsc#1135442)
 - Fix channel sync status logic in products page (bsc#1131721)
@@ -44,7 +45,7 @@ Tue Apr 09 10:33:27 CEST 2019 - jgonzalez@suse.com
 - Add support for custom username when bootstrapping with Salt-SSH
 - Read and update running kernel release value at each startup of minion (bsc#1122381)
 - Add error message on sync refresh when there are no scc credentials
-- Fix apidoc issues 
+- Fix apidoc issues
 - Fix deleting server when minion_formulas.json is empty (bsc#1122230)
 - minion-action-cleanup Taskomatic task: do not clean actions younger than one hour
 - Schedule full package refresh only once per action chain if needed (bsc#1126518)

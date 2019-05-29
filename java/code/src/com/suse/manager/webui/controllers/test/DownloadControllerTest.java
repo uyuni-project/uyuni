@@ -18,11 +18,22 @@ package com.suse.manager.webui.controllers.test;
 import com.mockobjects.servlet.MockHttpServletResponse;
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
+import com.redhat.rhn.common.db.datasource.ModeFactory;
+import com.redhat.rhn.common.db.datasource.WriteMode;
+import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.channel.AccessToken;
 import com.redhat.rhn.domain.channel.AccessTokenFactory;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.Comps;
+import com.redhat.rhn.domain.product.Tuple3;
 import com.redhat.rhn.domain.rhnpackage.Package;
+import com.redhat.rhn.domain.rhnpackage.PackageArch;
+import com.redhat.rhn.domain.rhnpackage.PackageEvr;
+import com.redhat.rhn.domain.rhnpackage.PackageFactory;
+import com.redhat.rhn.domain.rhnpackage.PackageName;
+import com.redhat.rhn.domain.rhnpackage.test.PackageEvrFactoryTest;
+import com.redhat.rhn.domain.rhnpackage.test.PackageNameTest;
+import com.redhat.rhn.domain.rhnpackage.test.PackageTest;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
@@ -59,14 +70,19 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
     private Channel channel;
     private String uriFile;
     private String debUriFile;
+    private String debUriFile2;
     private File packageFile;
     private File debPackageFile;
+    private File debPackageFile2;
     private MockHttpServletResponse mockResponse;
     private Response response;
     private Package pkg;
     private Package debPkg;
+    private Package debPkg2;
 
     private static String originalMountPoint;
+
+
 
     /**
      * One-time setup. Does not seem to run if single test method is run.
@@ -100,30 +116,29 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
         this.response = RequestResponseFactory.create(mockResponse);
 
         this.pkg = createTestPackage(user, channel, "noarch");
-        this.debPkg = createTestPackage(user, channel, "all-deb");
         final String nvra = String.format("%s-%s-%s.%s",
                 pkg.getPackageName().getName(), pkg.getPackageEvr().getVersion(),
                 pkg.getPackageEvr().getRelease(), pkg.getPackageArch().getLabel());
         this.uriFile = String.format("%s.rpm", nvra);
 
-        final String debNvra = String.format("%s_%s-%s.%s",
-                debPkg.getPackageName().getName(), debPkg.getPackageEvr().getVersion(),
-                debPkg.getPackageEvr().getRelease(), debPkg.getPackageArch().getLabel());
-        this.debUriFile = String.format("%s.deb", debNvra);
+        Tuple3<Package, File, String> dpkg = createDebPkg(channel, "1", "1.2.3-stable", "1debian1", "all-deb");
+        this.debPkg = dpkg.getA();
+        this.debPackageFile = dpkg.getB();
+        this.debUriFile = dpkg.getC();
+
+        Tuple3<Package, File, String> dpkg2 = createDebPkg(channel, null, "8-20180414",
+                "1ubuntu2", "all-deb");
+        this.debPkg2 = dpkg2.getA();
+        this.debPackageFile2 = dpkg2.getB();
+        this.debUriFile2 = dpkg2.getC();
 
         this.packageFile = File.createTempFile(nvra, ".rpm");
         // Write a fake file for the package
         Files.write(packageFile.getAbsoluteFile().toPath(),
                 TestUtils.randomString().getBytes());
 
-        this.debPackageFile = File.createTempFile(debNvra, ".deb");
-        Files.write(debPackageFile.getAbsoluteFile().toPath(),
-                TestUtils.randomString().getBytes());
-
         pkg.setPath(FilenameUtils.getName(packageFile.getAbsolutePath()));
-        debPkg.setPath(FilenameUtils.getName(debPackageFile.getAbsolutePath()));
         TestUtils.saveAndFlush(pkg);
-        TestUtils.saveAndFlush(debPkg);
 
         // Change mount point to the parent of the temp file
         Config.get().setString(ConfigDefaults.MOUNT_POINT, packageFile.getParent());
@@ -136,9 +151,12 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
      */
     public void tearDown() throws Exception {
         super.tearDown();
-        Config.get().setString(ConfigDefaults.MOUNT_POINT, originalMountPoint);
+        if (originalMountPoint != null) {
+            Config.get().setString(ConfigDefaults.MOUNT_POINT, originalMountPoint);
+        }
         Files.deleteIfExists(packageFile.toPath());
         Files.deleteIfExists(debPackageFile.toPath());
+        Files.deleteIfExists(debPackageFile2.toPath());
     }
 
     /**
@@ -167,6 +185,39 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
                 params,
                 headers,
                 channel.getLabel(), file);
+    }
+
+    private Tuple3<Package, File, String> createDebPkg(Channel debChannel, String epoch, String version, String release, String arch)
+            throws Exception {
+        Package dpkg = new Package();
+        PackageName pname = PackageNameTest.createTestPackageName();
+        PackageEvr pevr = PackageEvrFactoryTest.createTestPackageEvr(epoch, version, release);
+        PackageArch parch = PackageFactory.lookupPackageArchByLabel(arch);
+        PackageTest.populateTestPackage(dpkg, user.getOrg(), pname, pevr, parch);
+        TestUtils.saveAndFlush(dpkg);
+
+        List<Long> list = new ArrayList<Long>(1);
+        list.add(dpkg.getId());
+        Map<String, Long> params = new HashMap<String, Long>();
+        params.put("cid", debChannel.getId());
+        WriteMode m = ModeFactory.getWriteMode("Channel_queries", "add_channel_packages");
+        m.executeUpdate(params, list);
+        HibernateFactory.getSession().refresh(debChannel);
+
+        TestUtils.saveAndFlush(debChannel);
+
+        final String debNvra = String.format("%s_%s-%s.%s",
+                dpkg.getPackageName().getName(), dpkg.getPackageEvr().getVersion(),
+                dpkg.getPackageEvr().getRelease(), dpkg.getPackageArch().getLabel());
+        File dpkgFile = File.createTempFile(debNvra, ".deb");
+        Files.write(dpkgFile.getAbsoluteFile().toPath(),
+                TestUtils.randomString().getBytes());
+        dpkg.setPath(FilenameUtils.getName(dpkgFile.getAbsolutePath()));
+        TestUtils.saveAndFlush(dpkg);
+
+        String debUri = String.format("%s.deb", debNvra);
+
+        return new Tuple3<>(dpkg, dpkgFile, debUri);
     }
 
     /**
@@ -416,6 +467,14 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
         });
     }
 
+    public void testParseDebPackageVersion() throws Exception {
+        testCorrectChannel(() -> debPackageFile2, (tokenChannel) -> {
+            Map<String, String> headers = new HashMap<>();
+            headers.put("Authorization", "Basic " + Base64.getEncoder().encodeToString(tokenChannel.getBytes()));
+            return getMockRequestWithParamsAndHeaders(Collections.emptyMap(), headers, debUriFile2);
+        });
+    }
+
     private void testCorrectChannel(Function<String, Request> requestFactory) throws Exception {
         testCorrectChannel(() -> packageFile, requestFactory);
     }
@@ -547,5 +606,38 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
         } finally {
             FileUtils.deleteDirectory(compsDir);
         }
+    }
+
+    public void testParseDebPkgFilename1() {
+        DownloadController.PkgInfo pkg =
+                DownloadController.parsePackageFileName(
+                        "/rhn/manager/download/debchannel/getPackage/gcc-8-base_8-20180414-1ubuntu2.amd64-deb.deb");
+        assertEquals("gcc-8-base", pkg.getName());
+        assertNull(pkg.getEpoch());
+        assertEquals("8-20180414", pkg.getVersion());
+        assertEquals("1ubuntu2", pkg.getRelease());
+        assertEquals("amd64-deb", pkg.getArch());
+    }
+
+    public void testParseDebPkgFilename2() {
+        DownloadController.PkgInfo pkg =
+                DownloadController.parsePackageFileName(
+                        "/rhn/manager/download/debchannel/getPackage/python-tornado_4.2.1-1ubuntu3.amd64-deb.deb");
+        assertEquals("python-tornado", pkg.getName());
+        assertNull(pkg.getEpoch());
+        assertEquals("4.2.1", pkg.getVersion());
+        assertEquals("1ubuntu3", pkg.getRelease());
+        assertEquals("amd64-deb", pkg.getArch());
+    }
+
+    public void testParseDebPkgFilename3() {
+        DownloadController.PkgInfo pkg =
+                DownloadController.parsePackageFileName(
+                        "/rhn/manager/download/ubuntu-18.04-amd64-main/getPackage/ruby_1:2.5.1-X.amd64-deb.deb");
+        assertEquals("ruby", pkg.getName());
+        assertEquals("1", pkg.getEpoch());
+        assertEquals("2.5.1", pkg.getVersion());
+        assertEquals("X", pkg.getRelease());
+        assertEquals("amd64-deb", pkg.getArch());
     }
 }
