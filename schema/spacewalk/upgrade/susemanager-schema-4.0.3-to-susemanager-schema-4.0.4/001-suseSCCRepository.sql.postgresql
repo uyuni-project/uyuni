@@ -14,6 +14,16 @@
 -- in this software or its documentation.
 --
 
+DO $$
+BEGIN
+IF EXISTS (SELECT * FROM pg_tables WHERE tablename='susesccrepositoryauth')
+THEN
+  BEGIN
+    delete from susesccrepositoryauth;
+  END;
+  END IF;
+END $$;
+
 delete from susesccrepository;
 
 ALTER TABLE suseSCCRepository
