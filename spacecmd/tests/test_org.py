@@ -418,3 +418,36 @@ class TestSCOrg:
         assert not shell.client.org.trusts.listChannelsProvided.called
         assert shell.help_org_trustdetails.called
 
+    def test_org_trustdetails_no_org_found(self, shell):
+        """
+        Test for do_org_trustdetails no org found.
+
+        :param shell:
+        :return:
+        """
+        shell.help_org_trustdetails = MagicMock()
+        shell.get_org_id = MagicMock(return_value=None)
+        shell.client.org.trusts.getDetails = MagicMock()
+        shell.client.org.trusts.listChannelsConsumed = MagicMock()
+        shell.client.org.trusts.listChannelsProvided = MagicMock()
+
+        logger = MagicMock()
+        mprint = MagicMock()
+        with patch("spacecmd.org.print", mprint) as prn, \
+            patch("spacecmd.org.logging", logger) as lgr:
+            spacecmd.org.do_org_trustdetails(shell, "notfound")
+
+        assert not shell.client.org.trusts.getDetails.called
+        assert not shell.client.org.trusts.listChannelsConsumed.called
+        assert not shell.client.org.trusts.listChannelsProvided.called
+        assert not shell.help_org_trustdetails.called
+        assert shell.get_org_id.called
+        assert mprint.called
+        assert logger.warning.called
+
+        assert_expect(mprint.call_args_list,
+                      "Trusted organisation 'notfound' was not found")
+        assert_args_expect(logger.warning.call_args_list,
+                           [(('No trusted organisation found for the name %s',
+                              'notfound'), {})])
+
