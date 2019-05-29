@@ -541,3 +541,24 @@ class TestSCOrg:
         assert out == ["suse", "rh", "other"]
         assert not mprint.called
 
+    def test_org_listtrusts_noargs(self, shell):
+        """
+        Test do_org_listtrusts without arguments.
+
+        :param shell:
+        :return:
+        """
+        shell.help_org_listtrusts = MagicMock()
+        shell.get_org_id = MagicMock()
+        shell.client.org.trusts.listTrusts = MagicMock()
+
+        logger = MagicMock()
+        mprint = MagicMock()
+        with patch("spacecmd.org.print", mprint) as prn, \
+            patch("spacecmd.org.logging", logger) as lgr:
+            spacecmd.org.do_org_listtrusts(shell, "")
+
+        assert not shell.get_org_id.called
+        assert not shell.client.org.trusts.listTrusts.called
+        assert shell.help_org_listtrusts.called
+
