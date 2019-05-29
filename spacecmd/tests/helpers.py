@@ -62,6 +62,7 @@ def shell():
 
     return base
 
+
 def assert_expect(calls, *expectations):
     """
     Check expectations.
@@ -78,6 +79,7 @@ def assert_expect(calls, *expectations):
         expectations.pop(0)
     assert not expectations
 
+
 def assert_list_args_expect(calls, expectations):
     """
     Check expectations over the array.
@@ -86,7 +88,29 @@ def assert_list_args_expect(calls, expectations):
     :param expectations: multi-expectations array per argument
     """
     for call in calls:
-        args, kw = call
         assert_expect([call], next(iter(expectations)))
+        expectations.pop(0)
+    assert not expectations
+
+
+def assert_args_expect(calls, expectations):
+    """
+    Check call-per-arg.
+
+    Expectation args format:
+
+      [
+        (args, kw,)
+      ]
+
+    :param calls: Mock calls
+    :param expectations: Argument list. Check its format above.
+    :return:
+    """
+    for call in calls:
+        args, kw = call
+        _args, _kw = next(iter(expectations))
+        assert args == _args, "{} is not as expected {}".format(str(args), str(_args))
+        assert kw == _kw, "{} is not as expected {}".format(str(kw), str(_kw))
         expectations.pop(0)
     assert not expectations
