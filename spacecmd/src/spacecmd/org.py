@@ -432,6 +432,3 @@ def do_org_details(self, args):
     print('Activation Keys:        %i' % details.get('activation_keys'))
     print('Kickstart Profiles:     %i' % details.get('kickstart_profiles'))
     print('Configuration Channels: %i' % details.get('configuration_channels'))
-
-
-    (args, _options) = parse_command_arguments(args, arg_parser)
