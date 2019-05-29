@@ -27,6 +27,3 @@ ADD sample.ks /root/sample.ks
 ADD apache2 /root/apache2
 #apache vhost.d
 ADD cobbler_web.conf /root/cobbler_web.conf
-
-# Install pytest
-RUN pip3 install pytest

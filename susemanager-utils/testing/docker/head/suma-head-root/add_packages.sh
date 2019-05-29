@@ -11,6 +11,7 @@ zypper in -y  make \
               python3-mock \
 	      python3-nose \
               python3-pylint \
+	      python3-pytest \
               python3-urlgrabber
 
 zypper -n in vim less
