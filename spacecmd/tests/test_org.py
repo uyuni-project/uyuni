@@ -316,3 +316,26 @@ class TestSCOrg:
                                (('No trust organisation found for the name %s', 'someone',), {})
                            ])
 
+    def test_org_removetrust_noarg(self, shell):
+        """
+        Test for do_org_removetrust without arguments.
+
+        :param shell:
+        :return:
+        """
+        shell.help_org_removetrust = MagicMock()
+        shell.get_org_id = MagicMock(side_effect=[None, 0])
+        shell.client.org.trusts.listSystemsAffected = MagicMock()
+
+        logger = MagicMock()
+        mprint = MagicMock()
+        with patch("spacecmd.org.print", mprint) as prn, \
+            patch("spacecmd.org.logging", logger) as lgr:
+            spacecmd.org.do_org_removetrust(shell, "")
+
+        assert not shell.client.org.trusts.removeTrust.called
+        assert not shell.get_org_id.called
+        assert not logger.warning.called
+        assert not mprint.called
+        assert shell.help_org_removetrust.called
+
