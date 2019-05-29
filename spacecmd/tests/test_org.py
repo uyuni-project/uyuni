@@ -501,3 +501,23 @@ class TestSCOrg:
 
         assert_list_args_expect(mprint.call_args_list, exp)
 
+    def test_org_list_noret(self, shell):
+        """
+        Test do_org_list no data return.
+
+        :param shell:
+        :return:
+        """
+        shell.client.org.listOrgs = MagicMock(return_value=[
+            {"name": "suse"},
+            {"name": "rh"},
+            {"name": "other"},
+        ])
+        mprint = MagicMock()
+        with patch("spacecmd.org.print", mprint):
+            out = spacecmd.org.do_org_list(shell, "", doreturn=False)
+
+        assert out is None
+        assert mprint.called
+        assert_expect(mprint.call_args_list, 'other\nrh\nsuse')
+
