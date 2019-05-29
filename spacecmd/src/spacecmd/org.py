@@ -353,13 +353,14 @@ def do_org_listtrusts(self, args):
         return
 
     org_id = self.get_org_id(args[0])
-    if not org_id:
+    if org_id is None:
         logging.warning("No organisation found for the name %s", args[0])
         print("Organisation '{}' was not found".format(args[0]))
     else:
         trusts = self.client.org.trusts.listTrusts(self.session, org_id)
         if not trusts:
             print("No trust organisation has been found")
+            logging.warning("No trust organisation has been found")
         else:
             for trust in sorted(trusts, key=itemgetter('orgName')):
                 if trust.get('trustEnabled'):
