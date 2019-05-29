@@ -2772,14 +2772,16 @@ def do_softwarechannel_listrepos(self, args):
 
     (args, _options) = parse_command_arguments(args, arg_parser)
 
-    if args:
+    if not args:
+        self.help_softwarechannel_listrepos()
+    else:
         details = self.client.channel.software.getDetails(self.session, args[0])
         repos = [r.get('label') for r in details.get('contentSources')]
 
-    if repos:
-        print('\n'.join(sorted(repos)))
-    else:
-        self.help_softwarechannel_listrepos()
+        if repos:
+            print('\n'.join(sorted(repos)))
+        else:
+            self.help_softwarechannel_listrepos()
 
 ####################
 
