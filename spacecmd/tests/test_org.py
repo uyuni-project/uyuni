@@ -393,3 +393,28 @@ class TestSCOrg:
         assert_args_expect(logger.warning.call_args_list,
                            [(('No trust organisation found for the name %s', 'bad-guys'), {})])
 
+    def test_org_trustdetails_noarg(self, shell):
+        """
+        Test for do_org_trustdetails no arguments.
+
+        :param shell:
+        :return:
+        """
+        shell.help_org_trustdetails = MagicMock()
+        shell.get_org_id = MagicMock()
+        shell.client.org.trusts.getDetails = MagicMock()
+        shell.client.org.trusts.listChannelsConsumed = MagicMock()
+        shell.client.org.trusts.listChannelsProvided = MagicMock()
+
+        logger = MagicMock()
+        mprint = MagicMock()
+        with patch("spacecmd.org.print", mprint) as prn, \
+            patch("spacecmd.org.logging", logger) as lgr:
+            spacecmd.org.do_org_trustdetails(shell, "")
+
+        assert not shell.get_org_id.called
+        assert not shell.client.org.trusts.getDetails.called
+        assert not shell.client.org.trusts.listChannelsConsumed.called
+        assert not shell.client.org.trusts.listChannelsProvided.called
+        assert shell.help_org_trustdetails.called
+
