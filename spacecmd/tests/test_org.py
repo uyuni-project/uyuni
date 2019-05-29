@@ -4,7 +4,7 @@ Test suite for "org" plugin
 """
 
 from unittest.mock import MagicMock, patch
-from helpers import shell, assert_expect, assert_list_args_expect
+from helpers import shell, assert_expect, assert_list_args_expect, assert_args_expect
 import spacecmd.org
 
 
@@ -259,4 +259,32 @@ class TestSCOrg:
         assert not shell.get_org_id.called
         assert not shell.client.org.trusts.addTrust.called
         assert shell.help_org_addtrust.called
+
+    def test_org_addtrust_no_src_org(self, shell):
+        """
+        Test do_org_addtrust, source org not found
+
+        :param shell:
+        :return:
+        """
+        shell.help_org_addtrust = MagicMock()
+        shell.get_org_id = MagicMock(side_effect=[None, 0])
+        shell.client.org.trusts.addTrust = MagicMock()
+
+        logger = MagicMock()
+        mprint = MagicMock()
+        with patch("spacecmd.org.print", mprint) as prn, \
+            patch("spacecmd.org.logging", logger) as lgr:
+            spacecmd.org.do_org_addtrust(shell, "trust me")
+
+        assert not shell.client.org.trusts.addTrust.called
+        assert not shell.help_org_addtrust.called
+        assert shell.get_org_id.called
+        assert mprint.called
+        assert logger.warning.called
+        assert_expect(mprint.call_args_list, "Organisation 'trust' was not found")
+        assert_args_expect(logger.warning.call_args_list,
+                           [
+                               (('No organisation found for the name %s', 'trust',), {})
+                           ])
 
