@@ -645,3 +645,23 @@ class TestSCOrg:
 
         assert_list_args_expect(mprint.call_args_list, ["acme", "suse", "west"])
 
+    def test_org_listusers_noargs(self, shell):
+        """
+        Test do_org_listusers without arguments.
+
+        :param shell:
+        :return:
+        """
+        shell.help_org_listusers = MagicMock()
+        shell.client.org.listUsers = MagicMock()
+        shell.get_org_id = MagicMock()
+        logger = MagicMock()
+        mprint = MagicMock()
+        with patch("spacecmd.org.print", mprint) as prn, \
+            patch("spacecmd.org.logging", logger) as lgr:
+            spacecmd.org.do_org_listusers(shell, "")
+
+        assert not shell.client.org.listUsers.called
+        assert not shell.get_org_id.called
+        assert shell.help_org_listusers.called
+
