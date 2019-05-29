@@ -90,9 +90,16 @@ function makePrimaryCredentials(id) {
 
 // Verify credentials by downloading subscriptions
 function verifyCredentials(id, refresh) {
-  showSpinner("verify-" + id);
+  const elemId = "verify-" + id;
+  const responseHandler = (result) => {
+    $('#' + elemId).html(result);
+    $('#' + elemId).fadeIn();
+    columnHeight();
+  };
+
+  showSpinner(elemId);
   MirrorCredentialsRenderer.verifyCredentials(id, refresh,
-      makeRendererHandler("verify-" + id, false));
+      makeAjaxHandler(responseHandler));
 }
 
 // relevant for the mirror credentials page
