@@ -121,7 +121,7 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
                 pkg.getPackageEvr().getRelease(), pkg.getPackageArch().getLabel());
         this.uriFile = String.format("%s.rpm", nvra);
 
-        Tuple3<Package, File, String> dpkg = createDebPkg(channel, "1", "1", "0", "all-deb");
+        Tuple3<Package, File, String> dpkg = createDebPkg(channel, "1", "1.2.3-stable", "1debian1", "all-deb");
         this.debPkg = dpkg.getA();
         this.debPackageFile = dpkg.getB();
         this.debUriFile = dpkg.getC();
