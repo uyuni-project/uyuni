@@ -718,3 +718,24 @@ class TestSCOrg:
         assert mprint.called
         assert_expect(mprint.call_args_list, 'gunnuhver\nolafur')
 
+    def test_org_details_noarg(self, shell):
+        """
+        Test do_org_details without arguments.
+
+        :param shell:
+        :return:
+        """
+        shell.help_org_details = MagicMock()
+        shell.client.org.getDetails = MagicMock()
+
+        logger = MagicMock()
+        mprint = MagicMock()
+        with patch("spacecmd.org.print", mprint) as prn, \
+            patch("spacecmd.org.logging", logger) as lgr:
+            spacecmd.org.do_org_details(shell, "")
+
+        assert not logger.warning.called
+        assert not mprint.called
+        assert not shell.client.org.getDetails.called
+        assert shell.help_org_details.called
+
