@@ -290,7 +290,7 @@ def do_org_trustdetails(self, args):
 
     trusted_org = args[0]
     org_id = self.get_org_id(trusted_org)
-    if not org_id:
+    if org_id is None:
         logging.warning("No trusted organisation found for the name %s", trusted_org)
         print("Trusted organisation '{}' was not found".format(trusted_org))
     else:
