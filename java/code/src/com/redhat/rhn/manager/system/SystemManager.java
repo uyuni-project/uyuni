@@ -239,7 +239,7 @@ public class SystemManager extends BaseManager {
      * @return true if the system requires a reboot i.e: because kernel updates.
      */
     public static boolean requiresReboot(User user, Long sid) {
-        return !getSystemsRequiringReboot(user, sid).isEmpty();
+        return !getSystemsRequiringReboot(user, Optional.of(sid)).isEmpty();
     }
 
     /**
@@ -251,25 +251,25 @@ public class SystemManager extends BaseManager {
      * @return list of SystemOverviews.
      */
     public static DataResult<SystemOverview> requiringRebootList(User user) {
-        return getSystemsRequiringReboot(user, null);
+        return getSystemsRequiringReboot(user, Optional.empty());
     }
 
     /**
      * Returns a list of systems that match a serverId and require a reboot (i.e: because kernel updates,
      * visible to user, sorted by name).
-     * If the serverId parameter is NULL, this query will return all the systems that require a reboot.
+     * If the serverId parameter is empty, this query will return all the systems that require a reboot.
      *
      * @param user Currently logged in user.
      * @param serverId the serverId.
      * @return list of SystemOverviews.
      */
-    private static DataResult<SystemOverview> getSystemsRequiringReboot(User user, Long serverId) {
+    private static DataResult<SystemOverview> getSystemsRequiringReboot(User user, Optional<Long> serverId) {
         SelectMode m = ModeFactory.getSelectMode("System_queries",
                 "systems_requiring_reboot", true);
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("org_id", user.getOrg().getId());
         params.put("user_id", user.getId());
-        params.put("sid", serverId);
+        params.put("sid", serverId.orElse(null));
         Map<String, Object> elabParams = new HashMap<String, Object>();
         return makeDataResult(params, elabParams, null, m, SystemOverview.class);
     }
