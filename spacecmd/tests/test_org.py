@@ -339,3 +339,30 @@ class TestSCOrg:
         assert not mprint.called
         assert shell.help_org_removetrust.called
 
+    def test_org_removetrust_no_src(self, shell):
+        """
+        Test for do_org_removetrust source org not found.
+
+        :param shell:
+        :return:
+        """
+        shell.help_org_removetrust = MagicMock()
+        shell.get_org_id = MagicMock(side_effect=[None, 0])
+        shell.client.org.trusts.listSystemsAffected = MagicMock()
+
+        logger = MagicMock()
+        mprint = MagicMock()
+        with patch("spacecmd.org.print", mprint) as prn, \
+            patch("spacecmd.org.logging", logger) as lgr:
+            spacecmd.org.do_org_removetrust(shell, "trust bad-guys")
+
+        assert not shell.client.org.trusts.removeTrust.called
+        assert not shell.help_org_removetrust.called
+        assert shell.get_org_id.called
+        assert logger.warning.called
+        assert mprint.called
+
+        assert_expect(mprint.call_args_list, "Organisation 'trust' was not found")
+        assert_args_expect(logger.warning.call_args_list,
+                           [(('No organisation found for the name %s', 'trust'), {})])
+
