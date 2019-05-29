@@ -386,7 +386,7 @@ def do_org_listusers(self, args):
         return
 
     org_id = self.get_org_id(args[0])
-    if not org_id:
+    if org_id is None:
         logging.warning("No organisation found for the name %s", args[0])
         print("Organisation '{}' was not found".format(args[0]))
     else:
