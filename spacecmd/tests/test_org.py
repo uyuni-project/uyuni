@@ -739,3 +739,40 @@ class TestSCOrg:
         assert not shell.client.org.getDetails.called
         assert shell.help_org_details.called
 
+    def test_org_details(self, shell):
+        """
+        Test do_org_details output.
+
+        :param shell:
+        :return:
+        """
+        shell.help_org_details = MagicMock()
+        shell.client.org.getDetails = MagicMock(return_value={
+            "name": "Test Organisation", "active_users": 42,
+            "systems": 5, "trusts": 1, "system_groups": 6,
+            "activation_keys": 2, "kickstart_profiles": 7,
+            "configuration_channels": 1
+        })
+
+        logger = MagicMock()
+        mprint = MagicMock()
+        with patch("spacecmd.org.print", mprint) as prn, \
+            patch("spacecmd.org.logging", logger) as lgr:
+            spacecmd.org.do_org_details(shell, "testorg")
+
+        assert not logger.warning.called
+        assert not shell.help_org_details.called
+        assert mprint.called
+        assert shell.client.org.getDetails.called
+
+        exp = [
+            'Name:                   Test Organisation',
+            'Active Users:           42',
+            'Systems:                5',
+            'Trusts:                 1',
+            'System Groups:          6',
+            'Activation Keys:        2',
+            'Kickstart Profiles:     7',
+            'Configuration Channels: 1',
+        ]
+        assert_list_args_expect(mprint.call_args_list, exp)
