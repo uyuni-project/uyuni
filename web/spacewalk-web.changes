@@ -1,3 +1,4 @@
+- Allow virtualization tab for foreign systems (bsc#1116869)
 - Add checks for empty required entries on formula forms (bsc#1109639)
 - Fix big formula checkbox not supported in Firefox
 - Allow forcing off or resetting VMs

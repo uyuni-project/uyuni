@@ -1,3 +1,4 @@
+- Allow virtualization tab for foreign systems (bsc#1116869)
 - Keep querystring on ListTag parent_url for actions that have the cid param (bsc#1134677)
 - Allow forcing off or resetting VMs
 - Fix profiles package scheduling when epoch is null (bsc#1137144)
