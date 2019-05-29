@@ -615,3 +615,33 @@ class TestSCOrg:
         assert_expect(mprint.call_args_list, "No trust organisation has been found")
         assert_expect(logger.warning.call_args_list, "No trust organisation has been found")
 
+    def test_org_listtrusts(self, shell):
+        """
+        Test do_org_listtrusts output.
+
+        :param shell:
+        :return:
+        """
+        shell.help_org_listtrusts = MagicMock()
+        shell.get_org_id = MagicMock(return_value=1)
+        shell.client.org.trusts.listTrusts = MagicMock(return_value=[
+            {"orgName": "suse", "trustEnabled": True},
+            {"orgName": "west", "trustEnabled": True},
+            {"orgName": "acme", "trustEnabled": True},
+            {"orgName": "ubuntu", "trustEnabled": False},
+        ])
+
+        logger = MagicMock()
+        mprint = MagicMock()
+        with patch("spacecmd.org.print", mprint) as prn, \
+            patch("spacecmd.org.logging", logger) as lgr:
+            spacecmd.org.do_org_listtrusts(shell, "notfound")
+
+        assert not logger.warning.called
+        assert not shell.help_org_listtrusts.called
+        assert shell.client.org.trusts.listTrusts.called
+        assert shell.get_org_id.called
+        assert mprint.called
+
+        assert_list_args_expect(mprint.call_args_list, ["acme", "suse", "west"])
+
