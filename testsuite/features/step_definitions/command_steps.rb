@@ -822,7 +822,7 @@ When(/^I wait until virtual machine "([^"]*)" on "([^"]*)" is started$/) do |vm,
   begin
     Timeout.timeout(DEFAULT_TIMEOUT) do
       loop do
-        _output, code = node.run("grep -i 'started openssh' /tmp/#{vm}.console.log", fatal = false)
+        _output, code = node.run("grep -i 'linux\:' /tmp/#{vm}.console.log", fatal = false)
         break if code.zero?
         sleep 1
       end
