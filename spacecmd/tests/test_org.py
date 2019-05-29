@@ -238,3 +238,25 @@ class TestSCOrg:
         assert not mprint.called
         assert shell.get_org_id.called
         assert shell.client.org.updateName.called
+
+    def test_org_addtrust_noarg(self, shell):
+        """
+        Test do_org_addtrust without arguments
+
+        :param shell:
+        :return:
+        """
+        shell.help_org_addtrust = MagicMock()
+        shell.get_org_id = MagicMock()
+        shell.client.org.trusts.addTrust = MagicMock()
+
+        logger = MagicMock()
+        mprint = MagicMock()
+        with patch("spacecmd.org.print", mprint) as prn, \
+            patch("spacecmd.org.logging", logger) as lgr:
+            spacecmd.org.do_org_addtrust(shell, "")
+
+        assert not shell.get_org_id.called
+        assert not shell.client.org.trusts.addTrust.called
+        assert shell.help_org_addtrust.called
+
