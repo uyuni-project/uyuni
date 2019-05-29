@@ -562,3 +562,30 @@ class TestSCOrg:
         assert not shell.client.org.trusts.listTrusts.called
         assert shell.help_org_listtrusts.called
 
+    def test_org_listtrusts_no_org(self, shell):
+        """
+        Test do_org_listtrusts org not found.
+
+        :param shell:
+        :return:
+        """
+        shell.help_org_listtrusts = MagicMock()
+        shell.get_org_id = MagicMock(return_value=None)
+        shell.client.org.trusts.listTrusts = MagicMock()
+
+        logger = MagicMock()
+        mprint = MagicMock()
+        with patch("spacecmd.org.print", mprint) as prn, \
+            patch("spacecmd.org.logging", logger) as lgr:
+            spacecmd.org.do_org_listtrusts(shell, "notfound")
+
+        assert not shell.client.org.trusts.listTrusts.called
+        assert not shell.help_org_listtrusts.called
+        assert shell.get_org_id.called
+        assert mprint.called
+        assert logger.warning.called
+
+        assert_expect(mprint.call_args_list, "Organisation 'notfound' was not found")
+        assert_args_expect(logger.warning.call_args_list,
+                           [(('No organisation found for the name %s', 'notfound'), {})])
+
