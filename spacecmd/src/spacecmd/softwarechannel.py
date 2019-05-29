@@ -2781,7 +2781,7 @@ def do_softwarechannel_listrepos(self, args):
         if repos:
             print('\n'.join(sorted(repos)))
         else:
-            self.help_softwarechannel_listrepos()
+            print("No repos has been found for this channel.")
 
 ####################
 
