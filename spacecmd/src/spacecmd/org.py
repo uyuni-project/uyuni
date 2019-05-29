@@ -250,10 +250,10 @@ def do_org_removetrust(self, args):
     your_org, trust_org = args
     your_org_id = self.get_org_id(your_org)
     trusted_org_id = self.get_org_id(trust_org)
-    if not your_org_id:
+    if your_org_id is None:
         logging.warning("No organisation found for the name %s", your_org)
         print("Organisation '{}' was not found".format(your_org))
-    elif not trusted_org_id:
+    elif trusted_org_id is None:
         logging.warning("No trust organisation found for the name %s", trust_org)
         print("Organisation '{}' to trust for, was not found".format(trust_org))
     else:
