@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Thu May 30 10:56:26 CEST 2019 - jgonzalez@suse.com
+
+- version 4.0.20-1
 - Enable product detection for plain rhel systems (bsc#1136301)
 - Allow adding monitoring entitlement to openSUSE Leap 15.x
 - Add support for Salt Formulas to be used with standalone Salt
