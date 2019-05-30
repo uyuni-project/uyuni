@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Thu May 30 10:57:16 CEST 2019 - jgonzalez@suse.com
+
+- version 4.0.12-1
 - Display warning if product catalog refresh is already in progress (bsc#1132234)
 - Add state EDITED to filters in the Content Lifecycle
 - Add built time date to the Content Lifecycle Environments
