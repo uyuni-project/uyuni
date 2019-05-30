@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Thu May 30 10:54:16 CEST 2019 - jgonzalez@suse.com
+
+- version 4.0.12-1
 - Bugfix: 'dict' object has no attribute 'iteritems' (bsc#1135881)
 - Add unit tests for custominfo, snippet, scap, ssm, cryptokey and distribution
 
