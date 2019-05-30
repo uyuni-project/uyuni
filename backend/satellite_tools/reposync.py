@@ -712,6 +712,7 @@ class RepoSync(object):
         shutil.copyfileobj(src, dst)
         dst.close()
         src.close()
+        log(0, "*** NOTE: Importing comps file for the channel '%s'. Previous comps will be discarded." % (self.channel['label']))
         # update or insert
         hu = rhnSQL.prepare("""update rhnChannelComps
                                   set relative_filename = :relpath,
