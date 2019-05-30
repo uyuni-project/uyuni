@@ -64,19 +64,13 @@ When(/^I wait at most (\d+) seconds until event "([^"]*)" is completed$/) do |fi
 end
 
 When(/^I wait until I see the event "([^"]*)" completed during last minute, refreshing the page$/) do |event|
-  begin
-    Timeout.timeout(DEFAULT_TIMEOUT) do
-      loop do
-        now = Time.now
-        current_minute = now.strftime('%H:%M')
-        previous_minute = (now - 60).strftime('%H:%M')
-        break if page.has_xpath?("//a[contains(text(),'#{event}')]/../..//td[4][contains(text(),'#{current_minute}') or contains(text(),'#{previous_minute}')]/../td[3]/a[1]")
-        sleep 1
-        page.evaluate_script 'window.location.reload()'
-      end
-    end
-  rescue Timeout::Error
-    raise "Couldn't find the event #{event} in webpage"
+  repeat_until_timeout(message: "Couldn't find the event #{event}") do
+    now = Time.now
+    current_minute = now.strftime('%H:%M')
+    previous_minute = (now - 60).strftime('%H:%M')
+    break if page.has_xpath?("//a[contains(text(),'#{event}')]/../..//td[4][contains(text(),'#{current_minute}') or contains(text(),'#{previous_minute}')]/../td[3]/a[1]")
+    sleep 1
+    page.evaluate_script 'window.location.reload()'
   end
 end
 
@@ -842,16 +836,10 @@ And(/^the notification badge and the table should count the same amount of messa
 end
 
 And(/^I wait until radio button "([^"]*)" is checked, refreshing the page$/) do |arg1|
-  begin
-    Timeout.timeout(DEFAULT_TIMEOUT) do
-      loop do
-        break if has_checked_field?(arg1)
-        sleep 1
-        page.evaluate_script 'window.location.reload()'
-      end
-    end
-  rescue Timeout::Error
-    raise "Couldn't find checked radio button #{arg1} in webpage"
+  repeat_until_timeout(message: "Couldn't find checked radio button #{arg1}") do
+    break if has_checked_field?(arg1)
+    sleep 1
+    page.evaluate_script 'window.location.reload()'
   end
 end
 

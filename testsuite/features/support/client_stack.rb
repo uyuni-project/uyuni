@@ -37,42 +37,34 @@ end
 
 def check_shutdown(host, time_out)
   cmd = "ping -c1 #{host}"
-  Timeout.timeout(time_out) do
-    loop do
-      _out = `#{cmd}`
-      if $CHILD_STATUS.exitstatus.nonzero?
-        puts "machine: #{host} went down"
-        break
-      end
-      sleep 1
+  repeat_until_timeout(timeout: time_out, message: "machine didn't reboot") do
+    _out = `#{cmd}`
+    if $CHILD_STATUS.exitstatus.nonzero?
+      puts "machine: #{host} went down"
+      break
     end
+    sleep 1
   end
-rescue Timeout::Error
-  raise "Machine didn't reboot"
 end
 
 def check_restart(host, node, time_out)
   cmd = "ping -c1 #{host}"
-  Timeout.timeout(time_out) do
-    loop do
-      _out = `#{cmd}`
-      if $CHILD_STATUS.exitstatus.zero?
-        puts "machine: #{host} network is up"
-        break
-      end
-      sleep 1
+  repeat_until_timeout(timeout: time_out, message: "machine didn't come up") do
+    _out = `#{cmd}`
+    if $CHILD_STATUS.exitstatus.zero?
+      puts "machine: #{host} network is up"
+      break
     end
-    loop do
-      _out, code = node.run('ls', false, 10)
-      if code.zero?
-        puts "machine: #{host} ssh is up"
-        break
-      end
-      sleep 1
-    end
+    sleep 1
   end
-rescue Timeout::Error
-  raise "Machine didn't go up"
+  repeat_until_timeout(timeout: time_out, message: "machine didn't come up") do
+    _out, code = node.run('ls', false, 10)
+    if code.zero?
+      puts "machine: #{host} ssh is up"
+      break
+    end
+    sleep 1
+  end
 end
 
 # Extract the OS version by decoding the value in '/etc/os-release'

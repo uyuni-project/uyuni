@@ -7,25 +7,19 @@ require 'tempfile'
 
 Given(/^the Salt master can reach "(.*?)"$/) do |minion|
   system_name = get_system_name(minion)
-  begin
-    start = Time.now
-    # 300 is the default 1st keepalive interval for the minion
-    # where it realizes the connection is stuck
-    keepalive_timeout = 300
-    Timeout.timeout(keepalive_timeout) do
-      # only try 3 times
-      3.times do
-        out, _code = $server.run("salt #{system_name} test.ping")
-        if out.include?(system_name) && out.include?('True')
-          finished = Time.now
-          puts "Took #{finished.to_i - start.to_i} seconds to contact the minion"
-          break
-        end
-        sleep(1)
-      end
+  start = Time.now
+  # 300 is the default 1st keepalive interval for the minion
+  # where it realizes the connection is stuck
+  repeat_until_timeout(timeout: 300, retries: 3, message: "Master can not communicate with #{minion}",
+    report_result: true) do
+    out, _code = $server.run("salt #{system_name} test.ping")
+    if out.include?(system_name) && out.include?('True')
+      finished = Time.now
+      puts "Took #{finished.to_i - start.to_i} seconds to contact the minion"
+      break
     end
-  rescue Timeout::Error
-    raise "Master can not communicate with #{minion}: #{@output[:stdout]}"
+    sleep 1
+    out
   end
 end
 
@@ -61,34 +55,23 @@ end
 
 When(/^I wait at most (\d+) seconds until Salt master sees "([^"]*)" as "([^"]*)"$/) do |key_timeout, minion, key_type|
   cmd = "salt-key --list #{key_type}"
-  begin
-    Timeout.timeout(key_timeout.to_i) do
-      loop do
-        system_name = get_system_name(minion)
-        unless system_name.empty?
-          output, return_code = $server.run(cmd, false)
-          break if return_code.zero? && output.include?(system_name)
-        end
-        sleep 1
-      end
+  repeat_until_timeout(timeout: key_timeout.to_i,
+    message: "Minion \"#{minion}\" is not listed among #{key_type} keys on Salt master") do
+    system_name = get_system_name(minion)
+    unless system_name.empty?
+      output, return_code = $server.run(cmd, false)
+      break if return_code.zero? && output.include?(system_name)
     end
-  rescue Timeout::Error
-    raise "Minion \"#{minion}\" is not listed among #{key_type} keys on Salt master after #{key_timeout} seconds"
+    sleep 1
   end
 end
 
 When(/^I wait until no Salt job is running on "([^"]*)"$/) do |minion|
   target = get_target(minion)
-  begin
-    Timeout.timeout(DEFAULT_TIMEOUT) do
-      loop do
-        output, _code = target.run('salt-call -lquiet saltutil.running')
-        break if output == "local:\n"
-        sleep 3
-      end
-    end
-  rescue Timeout::Error
-    raise "A Salt job is still running on #{minion} after timeout"
+  repeat_until_timeout(message: "A Salt job is still running on #{minion}") do
+    output, _code = target.run('salt-call -lquiet saltutil.running')
+    break if output == "local:\n"
+    sleep 3
   end
 end
 
@@ -188,19 +171,13 @@ When(/^I click on preview$/) do
 end
 
 When(/^I click on run$/) do
-  begin
-    Timeout.timeout(DEFAULT_TIMEOUT) do
-      loop do
-        begin
-          find('button#run').click
-          break
-        rescue Capybara::ElementNotFound
-          sleep(5)
-        end
-      end
+  repeat_until_timeout(message: "Run button not found") do
+    begin
+      find('button#run').click
+      break
+    rescue Capybara::ElementNotFound
+      sleep(5)
     end
-  rescue Timeout::Error
-    raise 'Run button not found'
   end
 end
 
@@ -235,41 +212,19 @@ Then(/^I should see "([^"]*)" in the command output for "([^"]*)"$/) do |text, h
 end
 
 Then(/^I click on the css "(.*)" until page does not contain "([^"]*)" text$/) do |css, text|
-  not_found = false
-  begin
-    Timeout.timeout(DEFAULT_TIMEOUT) do
-      loop do
-        unless page.has_content?(text)
-          not_found = true
-          break
-        end
-        find(css).click
-        sleep 3
-      end
-    end
-  rescue Timeout::Error
-    raise "'#{text}' still found after several tries"
+  repeat_until_timeout(message: "'#{text}' still found") do
+    break unless page.has_content?(text)
+    find(css).click
+    sleep 3
   end
-  raise unless not_found
 end
 
 Then(/^I click on the css "(.*)" until page does contain "([^"]*)" text$/) do |css, text|
-  found = false
-  begin
-    Timeout.timeout(DEFAULT_TIMEOUT) do
-      loop do
-        if page.has_content?(text)
-          found = true
-          break
-        end
-        find(css).click
-        sleep 3
-      end
-    end
-  rescue Timeout::Error
-    raise "'#{text}' cannot be found after several tries"
+  repeat_until_timeout(message: "'#{text}' was not found") do
+    break if page.has_content?(text)
+    find(css).click
+    sleep 3
   end
-  raise unless found
 end
 
 When(/^I click on the css "(.*)"$/) do |css|
@@ -672,21 +627,15 @@ end
 
 Then(/^I wait for "([^"]*)" to be uninstalled on "([^"]*)"$/) do |package, host|
   node = get_target(host)
-  uninstalled = false
-  output = ''
-  begin
-    Timeout.timeout(DEFAULT_TIMEOUT) do
-      loop do
-        output, code = node.run("rpm -q #{package}", false)
-        if code.nonzero?
-          uninstalled = true
-          break
-        end
-        sleep 1
-      end
+  repeat_until_timeout(message: "Package removal failed", report_result: true) do
+    output, code = node.run("rpm -q #{package}", false)
+    if code.nonzero?
+      uninstalled = true
+      break
     end
+    sleep 1
+    "code #{code}, #{output}"
   end
-  raise "Package removal failed (Code #{$CHILD_STATUS}): #{$ERROR_INFO}: #{output}" unless uninstalled
 end
 
 Then(/^I wait for "([^"]*)" to be installed on this "([^"]*)"$/) do |package, host|

@@ -9,18 +9,13 @@ def wait_action_complete(actionid)
   host = $server.full_hostname
   @cli = XMLRPC::Client.new2('http://' + host + '/rpc/api')
   @sid = @cli.call('auth.login', 'admin', 'admin')
-  complete_timeout = 300
-  Timeout.timeout(complete_timeout) do
-    loop do
-      list = @cli.call('schedule.list_completed_actions', @sid)
-      list.each do |action|
-        return true if action['id'] == actionid
-        sleep(2)
-      end
+  repeat_until_timeout(timeout: 300, message: "Action was not found among completed actions") do
+    list = @cli.call('schedule.list_completed_actions', @sid)
+    list.each do |action|
+      break if action['id'] == actionid
+      sleep 2
     end
   end
-rescue Timeout::Error
-  raise 'Action did not complete. It was not found in completed actions'
 end
 
 When(/^I authenticate to XML-RPC$/) do
