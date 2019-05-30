@@ -64,19 +64,13 @@ When(/^I wait at most (\d+) seconds until event "([^"]*)" is completed$/) do |fi
 end
 
 When(/^I wait until I see the event "([^"]*)" completed during last minute, refreshing the page$/) do |event|
-  begin
-    Timeout.timeout(DEFAULT_TIMEOUT) do
-      loop do
-        now = Time.now
-        current_minute = now.strftime('%H:%M')
-        previous_minute = (now - 60).strftime('%H:%M')
-        break if page.has_xpath?("//a[contains(text(),'#{event}')]/../..//td[4][contains(text(),'#{current_minute}') or contains(text(),'#{previous_minute}')]/../td[3]/a[1]")
-        sleep 1
-        page.evaluate_script 'window.location.reload()'
-      end
-    end
-  rescue Timeout::Error
-    raise "Couldn't find the event #{event} in webpage"
+  repeat_until_timeout(message: "Couldn't find the event #{event}") do
+    now = Time.now
+    current_minute = now.strftime('%H:%M')
+    previous_minute = (now - 60).strftime('%H:%M')
+    break if page.has_xpath?("//a[contains(text(),'#{event}')]/../..//td[4][contains(text(),'#{current_minute}') or contains(text(),'#{previous_minute}')]/../td[3]/a[1]")
+    sleep 1
+    page.evaluate_script 'window.location.reload()'
   end
 end
 
@@ -857,16 +851,10 @@ And(/^the notification badge and the table should count the same amount of messa
 end
 
 And(/^I wait until radio button "([^"]*)" is checked, refreshing the page$/) do |arg1|
-  begin
-    Timeout.timeout(DEFAULT_TIMEOUT) do
-      loop do
-        break if has_checked_field?(arg1)
-        sleep 1
-        page.evaluate_script 'window.location.reload()'
-      end
-    end
-  rescue Timeout::Error
-    raise "Couldn't find checked radio button #{arg1} in webpage"
+  repeat_until_timeout(message: "Couldn't find checked radio button #{arg1}") do
+    break if has_checked_field?(arg1)
+    sleep 1
+    page.evaluate_script 'window.location.reload()'
   end
 end
 
@@ -943,23 +931,17 @@ When(/^I wait until all events in history are completed$/) do
     And I follow "History" in the content area
     Then I should see a "System History" text
   )
-  begin
-    events_icons = "//div[@class='table-responsive']/table/tbody/tr/td[2]/i"
-    Timeout.timeout(DEFAULT_TIMEOUT) do
-      loop do
-        pickedup = false
-        events = all(:xpath, events_icons)
-        events.each do |ev|
-          if ev[:class].include?('fa-exchange')
-            pickedup = true
-            break
-          end
-        end
-        break unless pickedup
-        sleep 1
+  events_icons = "//div[@class='table-responsive']/table/tbody/tr/td[2]/i"
+  repeat_until_timeout(message: 'Not all events in history were completed') do
+    pickedup = false
+    events = all(:xpath, events_icons)
+    events.each do |ev|
+      if ev[:class].include?('fa-exchange')
+        pickedup = true
+        break
       end
     end
-  rescue Timeout::Error
-    raise "Timed out waiting for the system events to complete."
+    break unless pickedup
+    sleep 1
   end
 end
