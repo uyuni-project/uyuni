@@ -46,7 +46,7 @@ Then(/^container "([^"]*)" built successfully$/) do |name|
   end
   raise 'unable to find the image id' if image_id.zero?
 
-  repeat_until_timeout(message: "image build did not complete") do
+  repeat_until_timeout(message: 'image build did not complete') do
     idetails = cont_op.get_image_details(image_id)
     break if idetails['buildStatus'] == 'completed' && idetails['inspectStatus'] == 'completed'
     raise 'image build failed.' if idetails['buildStatus'] == 'failed'
@@ -57,7 +57,7 @@ end
 
 Then(/^all "([^"]*)" container images are built correctly in the GUI$/) do |count|
   def ck_container_imgs(count)
-    repeat_until_timeout(timeout: 320, message: "at least one image was not built correctly") do
+    repeat_until_timeout(timeout: 320, message: 'at least one image was not built correctly') do
       step %(I navigate to images webpage)
       step %(I wait until I do not see "There are no entries to show." text)
       raise 'error detected while building images' if has_xpath?("//*[contains(@title, 'Failed')]")

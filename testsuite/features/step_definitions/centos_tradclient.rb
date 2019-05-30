@@ -9,7 +9,7 @@ def wait_action_complete(actionid)
   host = $server.full_hostname
   @cli = XMLRPC::Client.new2('http://' + host + '/rpc/api')
   @sid = @cli.call('auth.login', 'admin', 'admin')
-  repeat_until_timeout(timeout: 300, message: "Action was not found among completed actions") do
+  repeat_until_timeout(timeout: 300, message: 'Action was not found among completed actions') do
     list = @cli.call('schedule.list_completed_actions', @sid)
     list.each do |action|
       break if action['id'] == actionid

@@ -10,8 +10,7 @@ Given(/^the Salt master can reach "(.*?)"$/) do |minion|
   start = Time.now
   # 300 is the default 1st keepalive interval for the minion
   # where it realizes the connection is stuck
-  repeat_until_timeout(timeout: 300, retries: 3, message: "Master can not communicate with #{minion}",
-    report_result: true) do
+  repeat_until_timeout(timeout: 300, retries: 3, message: "Master can not communicate with #{minion}", report_result: true) do
     out, _code = $server.run("salt #{system_name} test.ping")
     if out.include?(system_name) && out.include?('True')
       finished = Time.now
@@ -55,8 +54,7 @@ end
 
 When(/^I wait at most (\d+) seconds until Salt master sees "([^"]*)" as "([^"]*)"$/) do |key_timeout, minion, key_type|
   cmd = "salt-key --list #{key_type}"
-  repeat_until_timeout(timeout: key_timeout.to_i,
-    message: "Minion \"#{minion}\" is not listed among #{key_type} keys on Salt master") do
+  repeat_until_timeout(timeout: key_timeout.to_i, message: "Minion '#{minion}' is not listed among #{key_type} keys on Salt master") do
     system_name = get_system_name(minion)
     unless system_name.empty?
       output, return_code = $server.run(cmd, false)

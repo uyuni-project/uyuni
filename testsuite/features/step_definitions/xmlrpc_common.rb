@@ -456,7 +456,7 @@ Then(/^there should be no more my action chain$/) do
 end
 
 When(/^I wait until there are no more action chains$/) do
-  repeat_until_timeout(message: "Action Chains still present") do
+  repeat_until_timeout(message: 'Action Chains still present') do
     break if rpc.list_chains.empty?
     sleep 2
   end
@@ -491,7 +491,7 @@ Then(/^there should be no more any scheduled actions$/) do
 end
 
 Then(/^I wait until there are no more scheduled actions$/) do
-  repeat_until_timeout(message: "Scheduled actions still present") do
+  repeat_until_timeout(message: 'Scheduled actions still present') do
     break if scdrpc.list_in_progress_actions.empty?
     sleep 2
   end

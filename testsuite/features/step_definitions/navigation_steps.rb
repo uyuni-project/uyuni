@@ -30,8 +30,8 @@ end
 
 When(/^I wait until I see "([^"]*)" text$/) do |text|
   repeat_until_timeout(message: "Couldn't find text '#{text}'") do
-      break if page.has_content?(text)
-      sleep 3
+    break if page.has_content?(text)
+    sleep 3
   end
 end
 
@@ -58,7 +58,7 @@ When(/^I wait until I see "([^"]*)" text, refreshing the page$/) do |text|
 end
 
 When(/^I wait at most (\d+) seconds until the event is completed, refreshing the page$/) do |timeout|
-  repeat_until_timeout(timeout: timeout.to_i, message: "Event not yet completed") do
+  repeat_until_timeout(timeout: timeout.to_i, message: 'Event not yet completed') do
     break if page.has_content?("This action's status is: Completed.")
     raise 'Event failed' if page.has_content?("This action's status is: Failed.")
     sleep 1
@@ -522,7 +522,7 @@ end
 When(/^I wait until the table contains "FINISHED" or "SKIPPED" followed by "FINISHED" in its first rows$/) do
   # this step is used for long operations like refreshing caches, repositories, etc.
   # therefore we use a non-standard timeout
-  repeat_until_timeout(timeout: 800, message: "Task does not look FINISHED yet") do
+  repeat_until_timeout(timeout: 800, message: 'Task does not look FINISHED yet') do
     visit current_url
     # get all texts in the table column under the "Status" header
     under_status = "//tr/td[count(//th[contains(*/text(), 'Status')]/preceding-sibling::*) + 1]"
