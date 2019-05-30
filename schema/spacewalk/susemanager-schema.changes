@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Thu May 30 11:03:55 CEST 2019 - jgonzalez@suse.com
+
+- version 4.0.13-1
 - fix schema migration for suseSCCRepositoryAuth (bsc#1136558)
 - Add built time column to suseContentEnvironmentTarget
 
