@@ -41,58 +41,34 @@ When(/^I wait until I do not see "([^"]*)" text$/) do |text|
 end
 
 When(/^I wait at most (\d+) seconds until I see "([^"]*)" text$/) do |seconds, text|
-  begin
-    Timeout.timeout(seconds.to_i) do
-      loop do
-        break if page.has_content?(text)
-        sleep 3
-      end
-    end
-  rescue Timeout::Error
-    raise "Couldn't find the #{text} in webpage"
+  repeat_until_timeout(timeout: seconds, message: "Couldn't find text '#{text}'") do
+    break if page.has_content?(text)
+    sleep 3
   end
 end
 
 When(/^I wait until I see "([^"]*)" text or "([^"]*)" text$/) do |text1, text2|
-  begin
-    Timeout.timeout(DEFAULT_TIMEOUT) do
-      loop do
-        break if page.has_content?(text1) || page.has_content?(text2)
-        sleep 3
-      end
-    end
-  rescue Timeout::Error
-    raise "Couldn't find the #{text1} and #{text2} in webpage"
+  repeat_until_timeout(message: "Couldn't find either '#{text1}' or '#{text2}'") do
+    break if page.has_content?(text1) || page.has_content?(text2)
+    sleep 3
   end
 end
 
 When(/^I wait until I see "([^"]*)" text, refreshing the page$/) do |text|
   text.gsub! '$PRODUCT', $product
-  begin
-    Timeout.timeout(DEFAULT_TIMEOUT) do
-      loop do
-        break if page.has_content?(text)
-        sleep 1
-        page.evaluate_script 'window.location.reload()'
-      end
-    end
-  rescue Timeout::Error
-    raise "Couldn't find the #{text} in webpage"
+  repeat_until_timeout(message: "Couldn't find text '#{text}'") do
+    break if page.has_content?(text)
+    sleep 1
+    page.evaluate_script 'window.location.reload()'
   end
 end
 
 When(/^I wait at most (\d+) seconds until the event is completed, refreshing the page$/) do |timeout|
-  begin
-    Timeout.timeout(timeout.to_i) do
-      loop do
-        break if page.has_content?("This action's status is: Completed.")
-        raise 'Event failed' if page.has_content?("This action's status is: Failed.")
-        sleep 1
-        page.evaluate_script 'window.location.reload()'
-      end
-    end
-  rescue Timeout::Error
-    raise "Event not completed in #{timeout} seconds"
+  repeat_until_timeout(timeout: timeout.to_i, message: 'Event not yet completed') do
+    break if page.has_content?("This action's status is: Completed.")
+    raise 'Event failed' if page.has_content?("This action's status is: Failed.")
+    sleep 1
+    page.evaluate_script 'window.location.reload()'
   end
 end
 
@@ -102,16 +78,10 @@ When(/^I wait until I see the name of "([^"]*)", refreshing the page$/) do |host
 end
 
 When(/^I wait until I do not see "([^"]*)" text, refreshing the page$/) do |text|
-  begin
-    Timeout.timeout(DEFAULT_TIMEOUT) do
-      loop do
-        break unless page.has_content?(text)
-        sleep 3
-        page.evaluate_script 'window.location.reload()'
-      end
-    end
-  rescue Timeout::Error
-    raise "The #{text} was always there in webpage"
+  repeat_until_timeout(message: "Text '#{text}' is still visible") do
+    break unless page.has_content?(text)
+    sleep 3
+    page.evaluate_script 'window.location.reload()'
   end
 end
 
@@ -121,15 +91,9 @@ When(/^I wait until I do not see the name of "([^"]*)", refreshing the page$/) d
 end
 
 Then(/^I wait until I see the (VNC|spice) graphical console$/) do |type|
-  begin
-    Timeout.timeout(DEFAULT_TIMEOUT) do
-      loop do
-        break unless page.has_xpath?('.//canvas')
-        sleep 3
-      end
-    end
-  rescue Timeout::Error
-    raise "The #{type} graphical console didn't load"
+  repeat_until_timeout(message: "The #{type} graphical console didn't load") do
+    break unless page.has_xpath?('.//canvas')
+    sleep 3
   end
 end
 
@@ -388,28 +352,16 @@ Then(/^Table row for "([^"]*)" should contain "([^"]*)"$/) do |arg1, arg2|
 end
 
 When(/^I wait until table row for "([^"]*)" contains button "([^"]*)"$/) do |text, button|
-  begin
-    Timeout.timeout(DEFAULT_TIMEOUT) do
-      loop do
-        break if all(:xpath, "//tr[td[contains(., '#{text}')]]/td/descendant::*[self::a or self::button][@title='#{button}']").any?
-        sleep 1
-      end
-    end
-  rescue Timeout::Error
-    raise "Couldn't find #{button} button in row with #{text} text"
+  repeat_until_timeout(message: "Couldn't find #{button} button in row with #{text} text") do
+    break if all(:xpath, "//tr[td[contains(., '#{text}')]]/td/descendant::*[self::a or self::button][@title='#{button}']").any?
+    sleep 1
   end
 end
 
 When(/^I wait until table row contains a "([^"]*)" text$/) do |text|
-  begin
-    Timeout.timeout(DEFAULT_TIMEOUT) do
-      loop do
-        break if has_xpath?("//div[@class=\"table-responsive\"]/table/tbody/tr[.//td[contains(.,'#{text}')]]")
-        sleep 1
-      end
-    end
-  rescue Timeout::Error
-    raise "Couldn't find #{text} in any row"
+  repeat_until_timeout(message: "Couldn't find #{text} in any row") do
+    break if has_xpath?("//div[@class=\"table-responsive\"]/table/tbody/tr[.//td[contains(.,'#{text}')]]")
+    sleep 1
   end
 end
 
@@ -628,32 +580,25 @@ end
 When(/^I wait until the table contains "FINISHED" or "SKIPPED" followed by "FINISHED" in its first rows$/) do
   # this step is used for long operations like refreshing caches, repositories, etc.
   # therefore we use a non-standard timeout
-  refresh_timeout = 800
-  begin
-    Timeout.timeout(refresh_timeout) do
-      loop do
-        visit current_url
-        # get all texts in the table column under the "Status" header
-        under_status = "//tr/td[count(//th[contains(*/text(), 'Status')]/preceding-sibling::*) + 1]"
-        statuses = page.all(:xpath, under_status).map(&:text)
+  repeat_until_timeout(timeout: 800, message: 'Task does not look FINISHED yet') do
+    visit current_url
+    # get all texts in the table column under the "Status" header
+    under_status = "//tr/td[count(//th[contains(*/text(), 'Status')]/preceding-sibling::*) + 1]"
+    statuses = page.all(:xpath, under_status).map(&:text)
 
-        # disregard any number of initial SKIPPED rows
-        # this is expected when Taskomatic triggers the same task concurrently
-        first_non_skipped = statuses.drop_while do |status|
-          status == 'SKIPPED'
-        end.first
+    # disregard any number of initial SKIPPED rows
+    # this is expected when Taskomatic triggers the same task concurrently
+    first_non_skipped = statuses.drop_while do |status|
+      status == 'SKIPPED'
+    end.first
 
-        # halt in case we are done, or if an error is detected
-        break if first_non_skipped == 'FINISHED'
-        raise('Taskomatic task was INTERRUPTED') if first_non_skipped == 'INTERRUPTED'
+    # halt in case we are done, or if an error is detected
+    break if first_non_skipped == 'FINISHED'
+    raise('Taskomatic task was INTERRUPTED') if first_non_skipped == 'INTERRUPTED'
 
-        # otherwise either no row is shown yet, or the task is still RUNNING
-        # continue waiting
-        sleep 1
-      end
-    end
-  rescue Timeout::Error
-    raise "Task does not look FINISHED after #{refresh_timeout} seconds"
+    # otherwise either no row is shown yet, or the task is still RUNNING
+    # continue waiting
+    sleep 1
   end
 end
 
@@ -828,15 +773,9 @@ When(/^I click on "([^"]*)" in "([^"]*)" modal$/) do |btn, title|
 
   # We wait until the element becomes visible, because
   # the fade out animation might still be in progress
-  begin
-    Timeout.timeout(DEFAULT_TIMEOUT) do
-      loop do
-        break if page.has_xpath?(path, visible: true)
-        sleep 1
-      end
-    end
-  rescue Timeout::Error
-    raise "Couldn't find the #{title} modal"
+  repeat_until_timeout(message: "Couldn't find the #{title} modal") do
+    break if page.has_xpath?(path, visible: true)
+    sleep 1
   end
 
   within(:xpath, path, visible: :all) do
