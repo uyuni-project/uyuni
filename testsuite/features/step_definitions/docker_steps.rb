@@ -34,7 +34,7 @@ When(/^I navigate to images build webpage$/) do
   visit("https://#{$server.full_hostname}/rhn/manager/cm/build")
 end
 
-Then(/^container "([^"]*)" built successfully$/) do |name|
+When(/^I wait at most (\d+) seconds until container "([^"]*)" is built successfully$/) do |timeout, name|
   cont_op.login('admin', 'admin')
   images_list = cont_op.list_images
   image_id = 0
@@ -46,7 +46,7 @@ Then(/^container "([^"]*)" built successfully$/) do |name|
   end
   raise 'unable to find the image id' if image_id.zero?
 
-  repeat_until_timeout(message: 'image build did not complete') do
+  repeat_until_timeout(timeout: timeout, message: 'image build did not complete') do
     idetails = cont_op.get_image_details(image_id)
     break if idetails['buildStatus'] == 'completed' && idetails['inspectStatus'] == 'completed'
     raise 'image build failed.' if idetails['buildStatus'] == 'failed'
@@ -55,9 +55,9 @@ Then(/^container "([^"]*)" built successfully$/) do |name|
   end
 end
 
-Then(/^all "([^"]*)" container images are built correctly in the GUI$/) do |count|
-  def ck_container_imgs(count)
-    repeat_until_timeout(timeout: 320, message: 'at least one image was not built correctly') do
+When(/^I wait at most (\d+) seconds until all "([^"]*)" container images are built correctly in the GUI$/) do |timeout, count|
+  def ck_container_imgs(timeout, count)
+    repeat_until_timeout(timeout: timeout, message: 'at least one image was not built correctly') do
       step %(I navigate to images webpage)
       step %(I wait until I do not see "There are no entries to show." text)
       raise 'error detected while building images' if has_xpath?("//*[contains(@title, 'Failed')]")
@@ -66,7 +66,7 @@ Then(/^all "([^"]*)" container images are built correctly in the GUI$/) do |coun
     end
   end
   # don't run this for sles11 (docker feature is not there)
-  ck_container_imgs(count) unless sle11family($minion)
+  ck_container_imgs(timeout, count) unless sle11family($minion)
 end
 
 When(/^I check the first image$/) do

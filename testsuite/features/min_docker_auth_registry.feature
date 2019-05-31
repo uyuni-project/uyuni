@@ -37,7 +37,7 @@ Feature: Build image with authenticated registry
 
   Scenario: Verify the status of images in the authenticated image store
     Given I am authorized as "admin" with password "admin"
-    Then container "portus_profile" built successfully
+    When I wait at most 500 seconds until container "portus_profile" is built successfully
 
   Scenario: Cleanup: remove Docker profile for the authenticated image store
     Given I am authorized as "docker" with password "docker"
