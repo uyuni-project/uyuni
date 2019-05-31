@@ -731,3 +731,29 @@ class TestSCRepo:
         assert logger.error.called
 
         assert_expect(logger.error.call_args_list, "A name is required")
+
+    def test_repo_create_non_interactive_url_required(self, shell):
+        """
+        Test do_repo_create non-interactive, URL is missing
+
+        :param shell:
+        :return:
+        """
+        shell.client.channel.software.createRepo = MagicMock()
+        mprint = MagicMock()
+        logger = MagicMock()
+        prompter = MagicMock(return_value="")
+
+        with patch("spacecmd.repo.print", mprint) as prn, \
+                patch("spacecmd.repo.prompt_user", prompter) as prn, \
+                patch("spacecmd.repo.logging", logger) as lgr:
+            out = spacecmd.repo.do_repo_create(shell,
+                                               "-n name --t type "
+                                               "--ca ca --cert cert --key key")
+
+        assert out is None
+        assert not mprint.called
+        assert not shell.client.channel.software.createRepo.called
+        assert logger.error.called
+
+        assert_expect(logger.error.call_args_list, "A URL is required")
