@@ -675,6 +675,10 @@ class TestSCRepo:
         assert not mprint.called
         assert shell.client.channel.software.createRepo.called
         assert not logger.error.called
+
+        assert_args_expect(shell.client.channel.software.createRepo.call_args_list,
+                           [((shell.session, 'name', 'type', 'http://something', 'ca', 'cert', 'key'), {})])
+
     def test_repo_create_non_interactive(self, shell):
         """
         Test do_repo_create interactive.
