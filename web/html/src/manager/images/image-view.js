@@ -329,7 +329,7 @@ class ImageView extends React.Component {
     return (
       <span>
         <TopPanel title={this.state.selected ? this.state.selected.name : t("Images")} helpUrl="/docs/reference/images/images-image-list.html"
-               icon={this.state.selected ? "fa-hdd-o" : "fa-list"} button={ panelButtons }>
+               icon={this.state.selected ? "fa-hdd-o" : "spacewalk-icon-manage-configuration-files"} button={ panelButtons }>
           { this.state.messages.length > 0 && <Messages items={this.state.messages}/> }
           { this.state.selected ?
             <ImageViewDetails data={selected} onTabChange={() => this.updateView(getHashId(), getHashTab())}
