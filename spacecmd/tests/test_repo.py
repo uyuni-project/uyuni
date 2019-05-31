@@ -502,3 +502,27 @@ class TestSCRepo:
         assert not shell.help_repo_clearfilters.called
         assert not logger.error.called
         assert shell.client.channel.software.clearRepoFilters.called
+
+    def test_repo_delete_noargs(self, shell):
+        """
+        Test do_repo_delete no arguments.
+
+        :param shell:
+        :return:
+        """
+        shell.help_repo_delete = MagicMock()
+        shell.client.channel.software.removeRepo = MagicMock()
+        shell.do_repo_list = MagicMock()
+        mprint = MagicMock()
+        logger = MagicMock()
+
+        with patch("spacecmd.repo.print", mprint) as prn, \
+                patch("spacecmd.repo.logging", logger) as lgr:
+            out = spacecmd.repo.do_repo_delete(shell, "")
+
+        assert out is None
+        assert not mprint.called
+        assert not logger.error.called
+        assert not shell.client.channel.software.removeRepo.called
+        assert shell.help_repo_delete.called
+
