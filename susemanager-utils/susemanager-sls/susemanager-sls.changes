@@ -1,3 +1,4 @@
+- Fix the indentation so that custom formulas can be read correctly (bsc#1136937)
 - Make sure dmidecode is installed during bootstrap to ensure that hardware
   refresh works for all operating systems (bsc#1137952)
 - Prevent stuck Actions when onboarding KVM host minions (bsc#1137888)
