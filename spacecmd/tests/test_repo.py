@@ -308,3 +308,27 @@ class TestSCRepo:
             assert not shell.client.channel.software.removeRepoFilter.called
             assert not logger.error.called
             assert shell.help_repo_removefilters.called
+
+    def test_repo_removefilters_wrong_syntax(self, shell):
+        """
+        Test do_repo_removefilters using wrong syntax.
+
+        :param shell:
+        :return:
+        """
+        shell.help_repo_removefilters = MagicMock()
+        shell.client.channel.software.removeRepoFilter = MagicMock()
+        mprint = MagicMock()
+        logger = MagicMock()
+
+        with patch("spacecmd.repo.print", mprint) as prn, \
+                patch("spacecmd.repo.logging", logger) as lgr:
+            out = spacecmd.repo.do_repo_removefilters(shell, "repo foo bar")
+
+        assert out is None
+        assert not mprint.called
+        assert not shell.client.channel.software.removeRepoFilter.called
+        assert not shell.help_repo_removefilters.called
+        assert logger.error.called
+
+        assert_expect(logger.error.call_args_list, 'Each filter must start with + or -')
