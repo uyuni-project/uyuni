@@ -50,6 +50,12 @@ module.exports = (env, argv) => {
             chunks: "all",
             name: "vendors/vendors",
             enforce: true
+          },
+          core: {
+            test: /[\\/]core.*/,
+            chunks: "all",
+            name: "javascript/manager/core",
+            enforce: true
           }
         }
       }
