@@ -236,7 +236,12 @@ def do_repo_setfilters(self, args):
 
 def help_repo_clearfilters(self):
     print('repo_clearfilters: Clears the filters for a user repo')
-    print('usage: repo_clearfilters repo')
+    print('''usage: repo_clearfilters repo <options>
+
+options:
+  -y, --yes   Confirm without prompt
+
+''')
 
 
 def complete_repo_clearfilters(self, text, line, beg, end):
@@ -245,6 +250,7 @@ def complete_repo_clearfilters(self, text, line, beg, end):
 
 def do_repo_clearfilters(self, args):
     arg_parser = get_argument_parser()
+    arg_parser.add_argument('-y', '--yes', default=False, action="store_true")
 
     (args, _options) = parse_command_arguments(args, arg_parser)
 
@@ -252,7 +258,7 @@ def do_repo_clearfilters(self, args):
         self.help_repo_clearfilters()
         return
 
-    if self.user_confirm('Remove these filters [y/N]:'):
+    if _options.yes or self.user_confirm('Remove these filters [y/N]:'):
         self.client.channel.software.clearRepoFilters(self.session, args[0])
 
 ####################
