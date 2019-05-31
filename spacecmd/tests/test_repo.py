@@ -434,3 +434,25 @@ class TestSCRepo:
                            [((shell.session, 'repo',
                               [{'filter': 'emacs', 'flag': '+'},
                                {'filter': 'vim', 'flag': '-'}]), {})])
+
+    def test_repo_clearfilters_noargs(self, shell):
+        """
+        Test do_repo_clearfilters with no arguments.
+
+        :param shell:
+        :return:
+        """
+        shell.help_repo_clearfilters = MagicMock()
+        shell.client.channel.software.clearRepoFilters = MagicMock()
+        mprint = MagicMock()
+        logger = MagicMock()
+
+        with patch("spacecmd.repo.print", mprint) as prn, \
+                patch("spacecmd.repo.logging", logger) as lgr:
+            out = spacecmd.repo.do_repo_clearfilters(shell, "")
+
+        assert out is None
+        assert not mprint.called
+        assert not logger.error.called
+        assert not shell.client.channel.software.clearRepoFilters.called
+        assert shell.help_repo_clearfilters.called
