@@ -218,3 +218,21 @@ class TestSCRepo:
         assert out is None
         assert not mprint.called
         assert shell.help_repo_addfilters.called
+
+    def test_repo_addfilters_argcheck_repo_only(self, shell):
+        """
+        Test do_repo_addfilters check arguments: repo only
+
+        :param shell:
+        :return:
+        """
+        shell.help_repo_addfilters = MagicMock()
+        shell.client.channel.software.addRepoFilter = MagicMock()
+        mprint = MagicMock()
+
+        with patch("spacecmd.repo.print", mprint):
+            out = spacecmd.repo.do_repo_addfilters(shell, "some-repo")
+
+        assert out is None
+        assert not mprint.called
+        assert shell.help_repo_addfilters.called
