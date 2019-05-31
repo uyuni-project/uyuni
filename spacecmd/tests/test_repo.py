@@ -51,4 +51,21 @@ class TestSCRepo:
         assert out is not None
         assert len(out) == 3
         assert out == ["v-repo-one", "z-repo-two", "a-repo-three"]
-    
+
+    def test_repo_details_noarg(self, shell):
+        """
+        Test do_repo_details with no arguments passed.
+
+        :param shell:
+        :return:
+        """
+        shell.client.channel.software.getRepoDetails = MagicMock()
+        shell.help_repo_details = MagicMock()
+        mprint = MagicMock()
+        with patch("spacecmd.repo.print", mprint):
+            out = spacecmd.repo.do_repo_details(shell, "")
+        assert out is None
+        assert not mprint.called
+        assert not shell.client.channel.software.getRepoDetails.called
+        assert shell.help_repo_details.called
+
