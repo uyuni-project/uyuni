@@ -526,3 +526,26 @@ class TestSCRepo:
         assert not shell.client.channel.software.removeRepo.called
         assert shell.help_repo_delete.called
 
+    def test_repo_rename_noargs(self, shell):
+        """
+        Test do_repo_rename no arguments.
+
+        :param shell:
+        :return:
+        """
+        shell.help_repo_rename = MagicMock()
+        shell.client.channel.software.getRepoDetails = MagicMock()
+        shell.do_repo_list = MagicMock()
+        mprint = MagicMock()
+        logger = MagicMock()
+
+        with patch("spacecmd.repo.print", mprint) as prn, \
+                patch("spacecmd.repo.logging", logger) as lgr:
+            out = spacecmd.repo.do_repo_rename(shell, "")
+
+        assert out is None
+        assert not mprint.called
+        assert not logger.error.called
+        assert not shell.client.channel.software.getRepoDetails.called
+        assert shell.help_repo_rename.called
+
