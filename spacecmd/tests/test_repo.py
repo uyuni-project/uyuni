@@ -748,7 +748,7 @@ class TestSCRepo:
                 patch("spacecmd.repo.prompt_user", prompter) as prn, \
                 patch("spacecmd.repo.logging", logger) as lgr:
             out = spacecmd.repo.do_repo_create(shell,
-                                               "-n name --t type "
+                                               "-n name -t type "
                                                "--ca ca --cert cert --key key")
 
         assert out is None
