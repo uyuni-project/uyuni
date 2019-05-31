@@ -359,3 +359,26 @@ class TestSCRepo:
         assert_args_expect(shell.client.channel.software.removeRepoFilter.call_args_list,
                            [((shell.session, 'repo', {'filter': 'emacs', 'flag': '+'}), {}),
                             ((shell.session, 'repo', {'filter': 'vim', 'flag': '-'}), {})])
+
+    def test_repo_setfilters_noargs(self, shell):
+        """
+        Test do_repo_setfilters no args.
+
+        :param shell:
+        :return:
+        """
+        for arg in ["", "repo"]:
+            shell.help_repo_setfilters = MagicMock()
+            shell.client.channel.software.setRepoFilters = MagicMock()
+            mprint = MagicMock()
+            logger = MagicMock()
+
+            with patch("spacecmd.repo.print", mprint) as prn, \
+                    patch("spacecmd.repo.logging", logger) as lgr:
+                out = spacecmd.repo.do_repo_setfilters(shell, arg)
+
+            assert out is None
+            assert not mprint.called
+            assert not logger.error.called
+            assert not shell.client.channel.software.setRepoFilters.called
+            assert shell.help_repo_setfilters.called
