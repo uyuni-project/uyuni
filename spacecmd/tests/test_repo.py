@@ -12,6 +12,7 @@ class TestSCRepo:
     """
     Test suite for "repo" module.
     """
+
     def test_repo_list_noret(self, shell):
         """
         Test do_repo_list with no data return.
