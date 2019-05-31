@@ -6,6 +6,7 @@ import SpaRenderer from "core/spa/spa-renderer";
 var appInstance = new App();
 appInstance.setLinkSelector("a.js-spa");
 appInstance.setFormSelector("");
+appInstance.addSurfaces('left-menu-data');
 appInstance.addSurfaces('ssm-box');
 appInstance.addSurfaces('page-body');
 appInstance.addRoutes([{
