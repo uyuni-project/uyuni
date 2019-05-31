@@ -116,11 +116,12 @@ def do_repo_listfilters(self, args):
         self.help_repo_listfilters()
         return
 
-    filters = \
-        self.client.channel.software.listRepoFilters(self.session, args[0])
-
-    for f in filters:
-        print("%s%s" % (f.get('flag'), f.get('filter')))
+    filters = self.client.channel.software.listRepoFilters(self.session, args[0])
+    if filters:
+        for flt in filters:
+            print("%s%s" % (flt.get('flag'), flt.get('filter')))
+    else:
+        print("No filters found")
 
 ####################
 
