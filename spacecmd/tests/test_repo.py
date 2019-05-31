@@ -675,3 +675,28 @@ class TestSCRepo:
         assert not mprint.called
         assert shell.client.channel.software.createRepo.called
         assert not logger.error.called
+    def test_repo_create_non_interactive(self, shell):
+        """
+        Test do_repo_create interactive.
+
+        :param shell:
+        :return:
+        """
+        shell.client.channel.software.createRepo = MagicMock()
+        mprint = MagicMock()
+        logger = MagicMock()
+        prompter = MagicMock(return_value="")
+
+        with patch("spacecmd.repo.print", mprint) as prn, \
+                patch("spacecmd.repo.prompt_user", prompter) as prn, \
+                patch("spacecmd.repo.logging", logger) as lgr:
+            out = spacecmd.repo.do_repo_create(shell,
+                                               "--n name --t type -u http://something "
+                                               "--ca ca --cert cert --key key")
+
+        assert out is None
+        assert not mprint.called
+        assert shell.client.channel.software.createRepo.called
+        assert not logger.error.called
+        assert_args_expect(shell.client.channel.software.createRepo.call_args_list,
+                           [((shell.session, 'name', 'type', 'http://something', 'ca', 'cert', 'key'), {})])
