@@ -19,7 +19,7 @@ Feature: Build container images
     Given I am authorized as "admin" with password "admin"
     When I schedule the build of image "suse_key" with version "Latest_key-activation1" via XML-RPC calls
     And I schedule the build of image "suse_simple" with version "Latest_simple" via XML-RPC calls
-    Then all "5" container images are built correctly in the GUI
+    And I wait at most 500 seconds until all "5" container images are built correctly in the GUI
 
   Scenario: Delete image via XML-RPC calls
     Given I am authorized as "admin" with password "admin"
@@ -32,7 +32,7 @@ Feature: Build container images
     Given I am authorized as "admin" with password "admin"
     When I schedule the build of image "suse_simple" with version "Latest_simple" via XML-RPC calls
     And I schedule the build of image "suse_key" with version "Latest_key-activation1" via XML-RPC calls
-    Then all "5" container images are built correctly in the GUI
+    And I wait at most 500 seconds until all "5" container images are built correctly in the GUI
 
   Scenario: Build an image via the GUI
     Given I am authorized as "admin" with password "admin"
