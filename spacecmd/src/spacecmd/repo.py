@@ -408,9 +408,7 @@ def do_repo_updateurl(self, args):
         self.help_repo_updateurl()
         return
 
-    name = args[0]
-    url = args[1]
-
+    name, url = args
     self.client.channel.software.updateRepoUrl(self.session, name, url)
 
 
