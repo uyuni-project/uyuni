@@ -332,3 +332,30 @@ class TestSCRepo:
         assert logger.error.called
 
         assert_expect(logger.error.call_args_list, 'Each filter must start with + or -')
+
+    def test_repo_removefilters_remove(self, shell):
+        """
+        Test do_repo_removefilters remove.
+
+        :param shell:
+        :return:
+        """
+        shell.help_repo_removefilters = MagicMock()
+        shell.client.channel.software.removeRepoFilter = MagicMock()
+        mprint = MagicMock()
+        logger = MagicMock()
+
+        with patch("spacecmd.repo.print", mprint) as prn, \
+                patch("spacecmd.repo.logging", logger) as lgr:
+            out = spacecmd.repo.do_repo_removefilters(shell, "repo +emacs -vim")
+
+        assert out is None
+        assert not mprint.called
+        assert not shell.help_repo_removefilters.called
+        assert not logger.error.called
+        assert shell.client.channel.software.removeRepoFilter.called
+        assert shell.client.channel.software.removeRepoFilter.call_count == 2
+
+        assert_args_expect(shell.client.channel.software.removeRepoFilter.call_args_list,
+                           [((shell.session, 'repo', {'filter': 'emacs', 'flag': '+'}), {}),
+                            ((shell.session, 'repo', {'filter': 'vim', 'flag': '-'}), {})])
