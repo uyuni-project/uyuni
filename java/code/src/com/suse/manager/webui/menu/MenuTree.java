@@ -188,12 +188,12 @@ public class MenuTree {
 
             // Patches
             nodes.add(new MenuItem("Patches").withIcon("spacewalk-icon-patches")
-                .addChild(new MenuItem("Patch List").withPrimaryUrl("/rhn/errata/RelevantErrata.do").withDir("/rhn/errata")
+                .addChild(new MenuItem("Patch List").withDir("/rhn/errata")
+                    .addChild(new MenuItem("All").withPrimaryUrl("/rhn/errata/AllErrata.do").withAltUrl("/rhn/errata/AllBugErrata.do")
+                        .withAltUrl("/rhn/errata/AllEnhancementErrata.do").withAltUrl("/rhn/errata/AllSecurityErrata.do"))
                     .addChild(new MenuItem("Relevant").withPrimaryUrl("/rhn/errata/RelevantErrata.do")
                         .withAltUrl("/rhn/errata/RelevantBugErrata.do").withAltUrl("/rhn/errata/RelevantEnhancementErrata.do")
-                        .withAltUrl("/rhn/errata/RelevantSecurityErrata.do"))
-                    .addChild(new MenuItem("All").withPrimaryUrl("/rhn/errata/AllErrata.do").withAltUrl("/rhn/errata/AllBugErrata.do")
-                        .withAltUrl("/rhn/errata/AllEnhancementErrata.do").withAltUrl("/rhn/errata/AllSecurityErrata.do")))
+                        .withAltUrl("/rhn/errata/RelevantSecurityErrata.do")))
                 .addChild(new MenuItem("Advanced Search").withPrimaryUrl("/rhn/errata/Search.do"))
                 .addChild(
                     new MenuItem("Manage Errata").withVisibility(checkAcl(user, "user_role(channel_admin)")).withDir("/rhn/errata/manage")

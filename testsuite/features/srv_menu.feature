@@ -8,7 +8,8 @@ Feature: Web UI - Main landing page menu, texts and links
 
   Scenario: The menu direct link accesses the first submenu level only
     When I follow the left menu "Patches > Patch List"
-    Then I should see a "Patches Relevant to Your Systems" text in the content area
+    Then I should see a "All Types" text in the content area
+    Then I should not see a "Patches Relevant to Your Systems" text in the content area
     When I follow the left menu "Configuration > Files"
     Then I should see a "Centrally-Managed Configuration Files" text in the content area
     And I should not see a "Locally Managed Configuration Files" text in the content area
