@@ -250,7 +250,7 @@ class BuildImage extends React.Component {
 
   render() {
     return (
-      <TopPanel title={t("Build Image")} icon="fa fa-cogs" helpUrl="/rhn/help/reference/en-US/ref.webui.images.build.jsp#ref.webui.images.build">
+      <TopPanel title={t("Build Image")} icon="fa spacewalk-icon-manage-configuration-files" helpUrl="/rhn/help/reference/en-US/ref.webui.images.build.jsp#ref.webui.images.build">
         <Messages items={this.state.messages}/>
         <Form model={this.state.model} className="image-build-form"
           onChange={this.onFormChange} onSubmit={this.onBuild}
