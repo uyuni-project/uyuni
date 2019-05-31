@@ -201,3 +201,20 @@ class TestSCRepo:
 
         assert_list_args_expect(mprint.call_args_list, ['+stuff', '-other'])
 
+    def test_repo_addfilters_noargs(self, shell):
+        """
+        Test do_repo_addfilters no arguments.
+
+        :param shell:
+        :return:
+        """
+        shell.help_repo_addfilters = MagicMock()
+        shell.client.channel.software.addRepoFilter = MagicMock()
+        mprint = MagicMock()
+
+        with patch("spacecmd.repo.print", mprint):
+            out = spacecmd.repo.do_repo_addfilters(shell, "")
+
+        assert out is None
+        assert not mprint.called
+        assert shell.help_repo_addfilters.called
