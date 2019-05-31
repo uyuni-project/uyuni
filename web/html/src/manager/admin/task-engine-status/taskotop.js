@@ -18,7 +18,11 @@ class TaskoTop extends React.Component {
 
   UNSAFE_componentWillMount() {
     this.refreshServerData();
-    setInterval(this.refreshServerData, this.props.refreshInterval);
+    this.timerId = setInterval(this.refreshServerData, this.props.refreshInterval);
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.timerId)
   }
 
   refreshServerData = () => {
