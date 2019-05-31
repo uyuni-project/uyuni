@@ -76,23 +76,24 @@ def do_repo_details(self, args):
 
     # allow globbing of repo names
     repos = filter_results(self.do_repo_list('', True), args)
+    if repos:
+        add_separator = False
+        for repo in repos:
+            details = self.client.channel.software.getRepoDetails(
+                self.session, repo)
 
-    add_separator = False
+            if add_separator:
+                print(self.SEPARATOR)
+            add_separator = True
 
-    for repo in repos:
-        details = self.client.channel.software.getRepoDetails(
-            self.session, repo)
-
-        if add_separator:
-            print(self.SEPARATOR)
-        add_separator = True
-
-        print('Repository Label:                  %s' % details.get('label'))
-        print('Repository URL:                    %s' % details.get('sourceUrl'))
-        print('Repository Type:                   %s' % details.get('type'))
-        print('Repository SSL Ca Certificate:     %s' % (details.get('sslCaDesc') or "None"))
-        print('Repository SSL Client Certificate: %s' % (details.get('sslCertDesc') or "None"))
-        print('Repository SSL Client Key:         %s' % (details.get('sslKeyDesc') or "None"))
+            print('Repository Label:                  %s' % details.get('label'))
+            print('Repository URL:                    %s' % details.get('sourceUrl'))
+            print('Repository Type:                   %s' % details.get('type'))
+            print('Repository SSL Ca Certificate:     %s' % (details.get('sslCaDesc') or "None"))
+            print('Repository SSL Client Certificate: %s' % (details.get('sslCertDesc') or "None"))
+            print('Repository SSL Client Key:         %s' % (details.get('sslKeyDesc') or "None"))
+    else:
+        print("No repositories found for '{}' query".format(' '.join(args)))
 
 ####################
 
