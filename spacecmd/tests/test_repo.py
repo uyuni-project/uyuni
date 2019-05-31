@@ -69,3 +69,26 @@ class TestSCRepo:
         assert not shell.client.channel.software.getRepoDetails.called
         assert shell.help_repo_details.called
 
+    def test_repo_details_no_repos_found(self, shell):
+        """
+        Test do_repo_details no repos found.
+
+        :param shell:
+        :return:
+        """
+        shell.client.channel.software.getRepoDetails = MagicMock()
+        shell.do_repo_list = MagicMock(return_value=[])
+        shell.help_repo_details = MagicMock()
+        mprint = MagicMock()
+        with patch("spacecmd.repo.print", mprint):
+            out = spacecmd.repo.do_repo_details(shell, "non-existing-repo")
+
+        assert not shell.client.channel.software.getRepoDetails.called
+        assert not shell.help_repo_details.called
+        assert out is None
+        assert mprint.called
+
+        assert_expect(mprint.call_args_list,
+                      "No repositories found for 'non-existing-repo' query")
+
+
