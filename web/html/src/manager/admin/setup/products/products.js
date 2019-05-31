@@ -224,7 +224,7 @@ class ProductsPageWrapper extends React.Component {
     const tabs = 
       <div className='spacewalk-content-nav'>
         <ul className='nav nav-tabs'>
-          { _SETUP_WIZARD_STEPS.map(step => <li key={step.id} className={step.active ? 'active' : ''}><a href={step.url}>{t(step.label)}</a></li>)}
+          { _SETUP_WIZARD_STEPS.map(step => <li key={step.id} className={step.active ? 'active' : ''}><a className='js-spa' href={step.url}>{t(step.label)}</a></li>)}
         </ul>
       </div>;
 

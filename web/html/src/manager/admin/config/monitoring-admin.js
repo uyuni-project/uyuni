@@ -149,13 +149,13 @@ const MonitoringAdmin = (props) => {
       </div>
       <div className='spacewalk-content-nav'>
         <ul className="nav nav-tabs">
-          <li><a href="/rhn/admin/config/GeneralConfig.do?">{t("General")}</a></li>
-          <li><a href="/rhn/admin/config/BootstrapConfig.do?">{t("Bootstrap Script")}</a></li>
-          <li><a href="/rhn/admin/config/Orgs.do?">{t("Organizations")}</a></li>
-          <li><a href="/rhn/admin/config/Restart.do?">{t("Restart")}</a></li>
-          <li><a href="/rhn/admin/config/Cobbler.do?">{t("Cobbler")}</a></li>
-          <li><a href="/rhn/admin/config/BootstrapSystems.do?">{t("Bare-metal systems")}</a></li>
-          <li className="active"><a href="/rhn/manager/admin/config/monitoring?">{t("Monitoring")}</a></li>
+          <li><a className="js-spa" href="/rhn/admin/config/GeneralConfig.do?">{t("General")}</a></li>
+          <li><a className="js-spa" href="/rhn/admin/config/BootstrapConfig.do?">{t("Bootstrap Script")}</a></li>
+          <li><a className="js-spa" href="/rhn/admin/config/Orgs.do?">{t("Organizations")}</a></li>
+          <li><a className="js-spa" href="/rhn/admin/config/Restart.do?">{t("Restart")}</a></li>
+          <li><a className="js-spa" href="/rhn/admin/config/Cobbler.do?">{t("Cobbler")}</a></li>
+          <li><a className="js-spa" href="/rhn/admin/config/BootstrapSystems.do?">{t("Bare-metal systems")}</a></li>
+          <li className="active js-spa"><a href="/rhn/manager/admin/config/monitoring?">{t("Monitoring")}</a></li>
         </ul>
       </div>
       <Panel
