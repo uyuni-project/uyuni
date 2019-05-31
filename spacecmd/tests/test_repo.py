@@ -549,3 +549,27 @@ class TestSCRepo:
         assert not shell.client.channel.software.getRepoDetails.called
         assert shell.help_repo_rename.called
 
+    def test_repo_updateurl_noargs(self, shell):
+        """
+        Test do_repo_updateurl no arguments.
+
+        :param shell:
+        :return:
+        """
+        for arg in ["", "repo", "http://foo", "http://bar"]:
+            shell.help_repo_updateurl = MagicMock()
+            shell.client.channel.software.updateRepUrl = MagicMock()
+            shell.do_repo_list = MagicMock()
+            mprint = MagicMock()
+            logger = MagicMock()
+
+            with patch("spacecmd.repo.print", mprint) as prn, \
+                    patch("spacecmd.repo.logging", logger) as lgr:
+                out = spacecmd.repo.do_repo_updateurl(shell, "")
+
+            assert out is None
+            assert not mprint.called
+            assert not logger.error.called
+            assert not shell.client.channel.software.updateRepUrl.called
+            assert shell.help_repo_updateurl.called
+
