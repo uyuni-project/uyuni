@@ -176,3 +176,28 @@ class TestSCRepo:
         assert mprint.called
 
         assert_expect(mprint.call_args_list, "No filters found")
+
+    def test_repo_listfilters_stdout(self, shell):
+        """
+        Test do_repo_listfilters stdout check
+
+        :param shell:
+        :return:
+        """
+        shell.help_repo_listfilters = MagicMock()
+        shell.client.channel.software.listRepoFilters = MagicMock(return_value=[
+            {"flag": "+", "filter": "stuff"},
+            {"flag": "-", "filter": "other"},
+        ])
+        mprint = MagicMock()
+
+        with patch("spacecmd.repo.print", mprint):
+            out = spacecmd.repo.do_repo_listfilters(shell, "some-filter")
+
+        assert out is None
+        assert not shell.help_repo_listfilters.called
+        assert shell.client.channel.software.listRepoFilters.called
+        assert mprint.called
+
+        assert_list_args_expect(mprint.call_args_list, ['+stuff', '-other'])
+
