@@ -479,3 +479,26 @@ class TestSCRepo:
         assert not shell.help_repo_clearfilters.called
         assert not logger.error.called
         assert shell.client.channel.software.clearRepoFilters.called
+
+    def test_repo_clearfilters_interactive(self, shell):
+        """
+        Test do_repo_clearfilters interactive.
+
+        :param shell:
+        :return:
+        """
+        shell.help_repo_clearfilters = MagicMock()
+        shell.client.channel.software.clearRepoFilters = MagicMock()
+        shell.user_confirm = MagicMock(return_value=True)
+        mprint = MagicMock()
+        logger = MagicMock()
+
+        with patch("spacecmd.repo.print", mprint) as prn, \
+                patch("spacecmd.repo.logging", logger) as lgr:
+            out = spacecmd.repo.do_repo_clearfilters(shell, "repo")
+
+        assert out is None
+        assert not mprint.called
+        assert not shell.help_repo_clearfilters.called
+        assert not logger.error.called
+        assert shell.client.channel.software.clearRepoFilters.called
