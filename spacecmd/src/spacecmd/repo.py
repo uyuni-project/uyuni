@@ -141,7 +141,7 @@ def do_repo_addfilters(self, args):
     # arguments can start with -, so don't parse arguments in the normal way
     args = shlex.split(args)
 
-    if not args:
+    if len(args) < 2:
         self.help_repo_addfilters()
         return
 
