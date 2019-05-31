@@ -262,3 +262,25 @@ class TestSCRepo:
         assert logger.error.called
 
         assert_expect(logger.error.call_args_list, 'Each filter must start with + or -')
+
+    def test_repo_addfilters_argcheck_add_filter(self, shell):
+        """
+        Test do_repo_addfilters add filter
+
+        :param shell:
+        :return:
+        """
+        shell.help_repo_addfilters = MagicMock()
+        shell.client.channel.software.addRepoFilter = MagicMock()
+        mprint = MagicMock()
+        logger = MagicMock()
+
+        with patch("spacecmd.repo.print", mprint) as prn, \
+                patch("spacecmd.repo.logging", logger) as lgr:
+            out = spacecmd.repo.do_repo_addfilters(shell, "some-repo +emacs")
+
+        assert out is None
+        assert not mprint.called
+        assert not shell.help_repo_addfilters.called
+        assert not logger.error.called
+        assert shell.client.channel.software.addRepoFilter.called
