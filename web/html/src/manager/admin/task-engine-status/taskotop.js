@@ -107,8 +107,8 @@ class TaskoTop extends React.Component {
     const headerTabs =
       <div className="spacewalk-content-nav">
         <ul className="nav nav-tabs">
-          <li><a href="/rhn/admin/TaskStatus.do">{t('Last Execution Times')}</a></li>
-          <li className="active"><a href="">{t('Runtime Status')}</a></li>
+          <li><a className="js-spa" href="/rhn/admin/TaskStatus.do">{t('Last Execution Times')}</a></li>
+          <li className="active js-spa"><a href="">{t('Runtime Status')}</a></li>
         </ul>
       </div>
     ;

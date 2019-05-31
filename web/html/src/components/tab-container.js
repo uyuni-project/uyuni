@@ -60,7 +60,7 @@ class TabContainer extends React.Component {
 
 const TabLabel = (props) =>
   <li className={props.active ? "active" : ""}>
-    <a href={props.hash} onClick={props.onClick}>{props.text}</a>
+    <a className="js-spa" href={props.hash} onClick={props.onClick}>{props.text}</a>
   </li>
 ;
 
