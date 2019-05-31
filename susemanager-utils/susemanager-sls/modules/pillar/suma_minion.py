@@ -168,7 +168,7 @@ def load_formula_pillar(minion_id, group_id, formula_name):
             layout_filename = os.path.join(CUSTOM_FORMULAS_METADATA_PATH, formula_name, "form.yml")
             if not os.path.isfile(layout_filename):
                 log.error('Error loading data for formula "{formula}": No form.yml found'.format(formula=formula_name))
-            return {}
+                return {}
 
     group_filename = os.path.join(FORMULAS_DATA_PATH, "group_pillar", "{id}_{name}.json".format(id=group_id, name=formula_name)) if group_id is not None else None
     system_filename = os.path.join(FORMULAS_DATA_PATH, "pillar", "{id}_{name}.json".format(id=minion_id, name=formula_name))
