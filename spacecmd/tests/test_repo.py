@@ -682,7 +682,7 @@ class TestSCRepo:
 
     def test_repo_create_non_interactive(self, shell):
         """
-        Test do_repo_create interactive.
+        Test do_repo_create non-interactive.
 
         :param shell:
         :return:
