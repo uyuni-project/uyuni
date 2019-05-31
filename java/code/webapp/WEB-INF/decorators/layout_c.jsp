@@ -54,7 +54,7 @@
         </section>
       </div>
       <script src='/javascript/manager/shared/menu/menu.bundle.js?cb=${rhn:getConfig('web.version')}'></script>
-      <script src='/javascript/manager/shared/spa-engine.bundle.js?cb=${rhn:getConfig('web.version')}'></script>
+      <script src='/javascript/manager/shared/spa/spa-engine.bundle.js?cb=${rhn:getConfig('web.version')}'></script>
     </div>
     <button id="scroll-top"><i class='fa fa-angle-up'></i></button>
   </body>
