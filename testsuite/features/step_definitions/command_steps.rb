@@ -534,7 +534,7 @@ When(/^I install package "([^"]*)" on this "([^"]*)"$/) do |package, host|
   elsif file_exists?(node, '/usr/bin/yum')
     cmd = "yum -y install #{package}"
   elsif file_exists?(node, '/usr/bin/apt-get')
-    cmd = "apt-get --assume-yes install #{package}"
+    cmd = "apt-get --assume-yes install #{package} --allow-downgrades"
   else
     raise 'Not found: zypper, yum or apt-get'
   end
