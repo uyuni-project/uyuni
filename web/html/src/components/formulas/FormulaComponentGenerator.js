@@ -84,7 +84,9 @@ function generateFormulaComponentForId(element, value, formulaForm, id, wrapper)
     else if (element.$type === "boolean")
         return wrapper(
                 element.$name,
-                <input type="checkbox" className="big-checkbox" onChange={formulaForm.handleChange} name={element.$name} id={id} title={element.$help} disabled={isDisabled} checked={value} />
+                <div className="checkbox">
+                    <input type="checkbox" onChange={formulaForm.handleChange} name={element.$name} id={id} title={element.$help} disabled={isDisabled} checked={value} />
+                </div>
         );
     else {
         console.error("Unknown $type: " + element.$type);
