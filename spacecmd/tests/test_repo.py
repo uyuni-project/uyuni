@@ -236,3 +236,25 @@ class TestSCRepo:
         assert out is None
         assert not mprint.called
         assert shell.help_repo_addfilters.called
+
+    def test_repo_addfilters_argcheck_wrong_filter(self, shell):
+        """
+        Test do_repo_addfilters check arguments: wrong filter syntax
+
+        :param shell:
+        :return:
+        """
+        shell.help_repo_addfilters = MagicMock()
+        shell.client.channel.software.addRepoFilter = MagicMock()
+        mprint = MagicMock()
+        logger = MagicMock()
+
+        with patch("spacecmd.repo.print", mprint) as prn, \
+                patch("spacecmd.repo.logging", logger) as lgr:
+            out = spacecmd.repo.do_repo_addfilters(shell, "some-repo foo bar")
+
+        assert out is None
+        assert not mprint.called
+        assert not shell.help_repo_addfilters.called
+
+        assert_expect(logger.error.call_args_list, 'Each filter must start with + or -')
