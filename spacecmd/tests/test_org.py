@@ -12,6 +12,7 @@ class TestSCOrg:
     """
     Test suite for package module.
     """
+
     def test_org_create_interactive_password_mistmatch(self, shell):
         """
         Test do_org_create interactive, password mistmatch.
