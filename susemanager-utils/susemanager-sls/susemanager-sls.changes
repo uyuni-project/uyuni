@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Fri May 31 13:20:55 CEST 2019 - jgonzalez@suse.com
+
+- version 4.0.14-1
 - Fix the indentation so that custom formulas can be read correctly (bsc#1136937)
 
 -------------------------------------------------------------------
