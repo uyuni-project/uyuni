@@ -17,6 +17,7 @@ const PopUp = require("components/popup").PopUp;
 const ProgressBar = require("components/progressbar").ProgressBar;
 const CustomDiv = require("components/custom-objects").CustomDiv;
 const {Toggler} = require("components/toggler");
+const SpaRenderer  = require("core/spa/spa-renderer").default;
 
 const _DATA_ROOT_ID = 'baseProducts';
 
@@ -896,7 +897,7 @@ class ChannelList extends React.Component {
   }
 }
 
-ReactDOM.render(
+SpaRenderer.renderNavigationReact(
   <ProductsPageWrapper />,
   document.getElementById('products')
 );

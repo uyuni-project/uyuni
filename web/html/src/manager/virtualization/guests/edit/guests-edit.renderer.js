@@ -12,7 +12,7 @@ window.pageRenderers.guests.edit.guestsEditRenderer = (id, {
   localTime,
   actionChains,
 }) => {
-  ReactDOM.render(
+  SpaRenderer.renderNavigationReact(
     <GuestsEdit
       host={host}
       guestUuid={guestUuid}

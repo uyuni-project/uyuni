@@ -1,3 +1,4 @@
+const SpaRenderer  = require("core/spa/spa-renderer").default;
 const React = require('react');
 const ReactDOM = require('react-dom');
 const { GuestsCreate } = require('./guests-create');
@@ -11,7 +12,7 @@ window.pageRenderers.guests.create.guestsCreateRenderer = (id, {
   localTime,
   actionChains,
 }) => {
-  ReactDOM.render(
+  SpaRenderer.renderNavigationReact(
     <GuestsCreate
       host={host}
       localTime={localTime}

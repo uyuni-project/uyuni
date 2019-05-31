@@ -7,6 +7,7 @@ const { TopPanel } = require('components/panels/TopPanel');
 const Messages = require("components/messages").Messages;
 const Network = require("utils/network");
 const {AsyncButton, LinkButton} = require("components/buttons");
+const SpaRenderer  = require("core/spa/spa-renderer").default;
 
 class BootstrapMinions extends React.Component {
 
@@ -281,7 +282,7 @@ class BootstrapMinions extends React.Component {
 
 }
 
-ReactDOM.render(
+SpaRenderer.renderNavigationReact(
     <BootstrapMinions availableActivationKeys={availableActivationKeys} proxies={proxies}/>,
     document.getElementById('bootstrap-minions')
 );

@@ -11,6 +11,7 @@ const {VirtualHostManagerList} = require("./virtualhostmanager-list");
 const {VirtualHostManagerDetails} = require("./virtualhostmanager-details");
 const {VirtualHostManagerEdit} = require("./virtualhostmanager-edit");
 const MessagesUtils = require("components/messages").Utils;
+const SpaRenderer  = require("core/spa/spa-renderer").default;
 
 const hashUrlRegex = /^#\/([^\/]*)(?:\/(.+))?$/;
 
@@ -189,4 +190,4 @@ class VirtualHostManager extends React.Component {
     }
 }
 
-ReactDOM.render(<VirtualHostManager/>, document.getElementById('virtual-host-managers'));
+SpaRenderer.renderNavigationReact(<VirtualHostManager/>, document.getElementById('virtual-host-managers'));

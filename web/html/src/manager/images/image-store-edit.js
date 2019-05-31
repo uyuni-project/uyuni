@@ -13,6 +13,7 @@ const { Password } = require('components/input/Password');
 const { Select } = require('components/input/Select');
 const { Text } = require('components/input/Text');
 const Utils = require("utils/functions").Utils;
+const SpaRenderer  = require("core/spa/spa-renderer").default;
 
 /* global storeId */
 
@@ -197,7 +198,7 @@ class CreateImageStore extends React.Component {
   }
 }
 
-ReactDOM.render(
+SpaRenderer.renderNavigationReact(
   <CreateImageStore />,
   document.getElementById('image-store-edit')
 )
