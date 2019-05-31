@@ -284,3 +284,27 @@ class TestSCRepo:
         assert not shell.help_repo_addfilters.called
         assert not logger.error.called
         assert shell.client.channel.software.addRepoFilter.called
+
+    def test_repo_removefilters_insufficient_args(self, shell):
+        """
+        Test do_repo_removefilters without sufficient arguments.
+
+        :param shell:
+        :return:
+        """
+
+        for arg in ["", "repo"]:
+            shell.help_repo_removefilters = MagicMock()
+            shell.client.channel.software.removeRepoFilter = MagicMock()
+            mprint = MagicMock()
+            logger = MagicMock()
+
+            with patch("spacecmd.repo.print", mprint) as prn, \
+                    patch("spacecmd.repo.logging", logger) as lgr:
+                out = spacecmd.repo.do_repo_removefilters(shell, arg)
+
+            assert out is None
+            assert not mprint.called
+            assert not shell.client.channel.software.removeRepoFilter.called
+            assert not logger.error.called
+            assert shell.help_repo_removefilters.called
