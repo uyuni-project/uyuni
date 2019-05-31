@@ -1,5 +1,7 @@
 /* eslint-disable */
 "use strict";
+import SpaRenderer from "../../../core/spa/spa-renderer";
+
 const React = require("react");
 const ReactDOM = require("react-dom");
 
@@ -47,9 +49,9 @@ class Element extends React.Component {
 
   UNSAFE_componentWillReceiveProps(nextProps) {
     this.setState({
-      open: nextProps.element.open && !nextProps.forceCollapse,
+      open: nextProps.element.active && !nextProps.forceCollapse,
       visiblityForcedByParent: nextProps.visiblityForcedByParent
-    });
+    })
   }
 
   isCurrentVisible = (element, search) => {
@@ -148,6 +150,10 @@ class Nav extends React.Component {
     this.setState({search: '', forceCollapse: true});
   };
 
+  onSPAEndNavigation = () => {
+    this.setState({search: '', forceCollapse: false});
+  }
+
   render() {
     const isSearchActive = this.state.search != null && this.state.search.length > 0;
     return (
@@ -170,7 +176,7 @@ class Nav extends React.Component {
   }
 }
 
-ReactDOM.render(
+SpaRenderer.renderGlobalReact(
   <Nav />,
   document.getElementById('nav')
 );
@@ -178,6 +184,10 @@ ReactDOM.render(
 
 class Breadcrumb extends React.Component {
   componentDidMount() {
+  }
+
+  onSPAEndNavigation() {
+    this.forceUpdate();
   }
 
   render() {
@@ -223,7 +233,7 @@ class Breadcrumb extends React.Component {
   }
 }
 
-ReactDOM.render(
+SpaRenderer.renderGlobalReact(
   <Breadcrumb />,
   document.getElementById('breadcrumb')
 );

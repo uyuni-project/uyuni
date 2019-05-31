@@ -2,7 +2,9 @@
 <%@ taglib uri="http://rhn.redhat.com/rhn" prefix="rhn" %>
 <%@ page import="com.suse.manager.webui.menu.MenuTree" %>
 
-<script type="text/javascript">
-  const JSONMenu = <%= MenuTree.getJsonMenu(pageContext) %>;
-  const _IS_UYUNI = <%= Config.get().getString("product_name").compareToIgnoreCase("Uyuni") == 0 %>;
-</script>
+<div id="left-menu-data">
+    <script type="text/javascript">
+        window.JSONMenu = <%= MenuTree.getJsonMenu(pageContext) %>;
+        window._IS_UYUNI = <%= Config.get().getString("product_name").compareToIgnoreCase("Uyuni") == 0 %>;
+    </script>
+</div>
