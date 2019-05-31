@@ -217,6 +217,7 @@ class TestSCRepo:
 
         assert out is None
         assert not mprint.called
+        assert not shell.client.channel.software.addRepoFilter.called
         assert shell.help_repo_addfilters.called
 
     def test_repo_addfilters_argcheck_repo_only(self, shell):
@@ -235,6 +236,7 @@ class TestSCRepo:
 
         assert out is None
         assert not mprint.called
+        assert not shell.client.channel.software.addRepoFilter.called
         assert shell.help_repo_addfilters.called
 
     def test_repo_addfilters_argcheck_wrong_filter(self, shell):
@@ -256,5 +258,7 @@ class TestSCRepo:
         assert out is None
         assert not mprint.called
         assert not shell.help_repo_addfilters.called
+        assert not shell.client.channel.software.addRepoFilter.called
+        assert logger.error.called
 
         assert_expect(logger.error.call_args_list, 'Each filter must start with + or -')
