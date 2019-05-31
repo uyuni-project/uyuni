@@ -6,6 +6,7 @@ const ReactDOM = require("react-dom");
 const {Button} = require("components/buttons");
 const { TopPanel } = require('components/panels/TopPanel')
 const Network = require("utils/network");
+const SpaRenderer  = require("core/spa/spa-renderer").default;
 
 function object2map(obj) {
   return Object.keys(obj).reduce((acc, id) => {
@@ -509,7 +510,7 @@ function errorMessageByStatus(status) {
   }
 }
 
-ReactDOM.render(
+SpaRenderer.renderNavigationReact(
   <RemoteCommand />,
   document.getElementById('remote-commands')
 );

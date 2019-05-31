@@ -2,8 +2,9 @@
 const React = require('react');
 const ReactDOM = require('react-dom');
 const { SubscribeChannels } = require('./subscribe-channels');
+const SpaRenderer  = require("core/spa/spa-renderer").default;
 
-ReactDOM.render(
+SpaRenderer.renderNavigationReact(
   <SubscribeChannels
     serverId={getServerId()}
   />,

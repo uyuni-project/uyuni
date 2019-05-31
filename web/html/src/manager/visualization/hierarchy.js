@@ -1,6 +1,7 @@
 /* eslint-disable */
 'use strict';
 
+const SpaRenderer  = require("core/spa/spa-renderer").default;
 const Network = require('../../utils/network');
 const React = require('react');
 const ReactDOM = require('react-dom');
@@ -241,7 +242,7 @@ class Hierarchy extends React.Component {
   }
 }
 
-ReactDOM.render(
+SpaRenderer.renderNavigationReact(
   <Hierarchy />,
   document.getElementById('hierarchy')
 );

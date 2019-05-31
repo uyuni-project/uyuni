@@ -8,6 +8,7 @@ const {Table, Column, SearchField, Highlight} = require("components/table");
 const Network = require("utils/network");
 const Functions = require("utils/functions");
 const Utils = Functions.Utils;
+const SpaRenderer  = require("core/spa/spa-renderer").default;
 
 class TaskoTop extends React.Component {
   state = {
@@ -208,7 +209,7 @@ const ErrorMessage = (props) => <MessageContainer items={
   } />
 ;
 
-ReactDOM.render(
+SpaRenderer.renderNavigationReact(
   <TaskoTop refreshInterval={5 * 1000} />,
   document.getElementById("taskotop")
 );

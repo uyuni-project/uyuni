@@ -13,6 +13,7 @@ const Network = require("utils/network");
 const {Messages} = require("components/messages");
 const MessagesUtils = require("components/messages").Utils;
 const {Utils} = require("utils/functions");
+const SpaRenderer  = require("core/spa/spa-renderer").default;
 
 const msgMap = {
   "not_found":
@@ -296,7 +297,7 @@ class ImageImport extends React.Component {
 
 }
 
-ReactDOM.render(
+SpaRenderer.renderNavigationReact(
   <ImageImport />,
   document.getElementById('image-import')
 )
