@@ -91,4 +91,49 @@ class TestSCRepo:
         assert_expect(mprint.call_args_list,
                       "No repositories found for 'non-existing-repo' query")
 
+    def test_repo_details_repo_data(self, shell):
+        """
+        Test do_repo_details for repo data.
+
+        :param shell:
+        :return:
+        """
+        shell.client.channel.software.getRepoDetails = MagicMock(side_effect=[
+            {
+                "label": "some-repository", "sourceUrl": "http://somehost/somerepo",
+                "type": "yum"
+            },
+            {
+                "label": "some-other-repository", "sourceUrl": "file:///tmp/someotherrepo",
+                "type": "zypper", "sslCaDesc": "Ca Descr", "sslCertDesc": "Cert descr",
+                "sslKeyDesc": "Key descr"
+            },
+        ])
+        shell.do_repo_list = MagicMock(return_value=["some-repo", "some-other-repo"])
+        shell.help_repo_details = MagicMock()
+        mprint = MagicMock()
+        with patch("spacecmd.repo.print", mprint):
+            out = spacecmd.repo.do_repo_details(shell, "some*")
+
+        assert not shell.help_repo_details.called
+        assert shell.client.channel.software.getRepoDetails.called
+        assert out is None
+        assert mprint.called
+
+        exp = [
+            'Repository Label:                  some-repository',
+            'Repository URL:                    http://somehost/somerepo',
+            'Repository Type:                   yum',
+            'Repository SSL Ca Certificate:     None',
+            'Repository SSL Client Certificate: None',
+            'Repository SSL Client Key:         None',
+            '----------',
+            'Repository Label:                  some-other-repository',
+            'Repository URL:                    file:///tmp/someotherrepo',
+            'Repository Type:                   zypper',
+            'Repository SSL Ca Certificate:     Ca Descr',
+            'Repository SSL Client Certificate: Cert descr',
+            'Repository SSL Client Key:         Key descr'
+        ]
+        assert_list_args_expect(mprint.call_args_list, exp)
 
