@@ -599,3 +599,30 @@ class TestSCRepo:
 
         assert_args_expect(shell.client.channel.software.updateRepoSsl.call_args_list,
                            [((shell.session, "name", "ca", "cert", "key"), {})])
+
+    def test_repo_updatessl_non_interactive(self, shell):
+        """
+        Test do_repo_updatessl non-interactive.
+
+        :param shell:
+        :return:
+        """
+        shell.help_repo_rename = MagicMock()
+        shell.client.channel.software.updateRepoSsl = MagicMock()
+        shell.do_repo_list = MagicMock()
+        mprint = MagicMock()
+        logger = MagicMock()
+        prompter = MagicMock(return_value="")
+
+        with patch("spacecmd.repo.print", mprint) as prn, \
+                patch("spacecmd.repo.prompt_user", prompter) as prn, \
+                patch("spacecmd.repo.logging", logger) as lgr:
+            out = spacecmd.repo.do_repo_updatessl(shell, "--name name --ca ca --cert cert --key key")
+
+        assert out is None
+        assert not mprint.called
+        assert not logger.error.called
+        assert shell.client.channel.software.updateRepoSsl.called
+
+        assert_args_expect(shell.client.channel.software.updateRepoSsl.call_args_list,
+                           [((shell.session, "name", "ca", "cert", "key"), {})])
