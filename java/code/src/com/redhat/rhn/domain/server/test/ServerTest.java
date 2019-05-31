@@ -148,6 +148,28 @@ public class ServerTest extends BaseTestCaseWithUser {
     /**
      * Test for {@link Server#doesOsSupportsOSImageBuilding()}.
      */
+    public void testOsSupportsMonitoring() throws Exception {
+        Server s = ServerFactoryTest.createTestServer(user, true,
+                ServerConstants.getServerGroupTypeSaltEntitled(),
+                ServerFactoryTest.TYPE_SERVER_MINION);
+        s.setOs("SLES");
+        s.setRelease("12.1");
+        assertTrue(s.doesOsSupportsMonitoring());
+    }
+    /**
+     * Test for {@link Server#doesOsSupportsOSImageBuilding()}.
+     */
+    public void testOsSupportsMonitoringLeap() throws Exception {
+        Server s = ServerFactoryTest.createTestServer(user, true,
+                ServerConstants.getServerGroupTypeSaltEntitled(),
+                ServerFactoryTest.TYPE_SERVER_MINION);
+        s.setOs("Leap");
+        s.setRelease("15.0");
+        assertTrue(s.doesOsSupportsMonitoring());
+    }
+    /**
+     * Test for {@link Server#doesOsSupportsOSImageBuilding()}.
+     */
     public void testOsDoesNotSupportsOSImageBuilding() throws Exception {
         Server s = ServerFactoryTest.createTestServer(user, true,
                 ServerConstants.getServerGroupTypeSaltEntitled(),
@@ -156,7 +178,17 @@ public class ServerTest extends BaseTestCaseWithUser {
         s.setRelease("11.4");
         assertFalse(s.doesOsSupportsContainerization());
     }
-
+    /**
+     * Test for {@link Server#doesOsSupportsOSImageBuilding()}.
+     */
+    public void testOsDoesNotSupportsMonitoring() throws Exception {
+        Server s = ServerFactoryTest.createTestServer(user, true,
+                ServerConstants.getServerGroupTypeSaltEntitled(),
+                ServerFactoryTest.TYPE_SERVER_MINION);
+        s.setOs("Ubuntu");
+        s.setRelease("18.04");
+        assertFalse(s.doesOsSupportsMonitoring());
+    }
     public void testGetIpAddress() throws Exception {
         Server s = ServerTestUtils.createTestSystem(user);
         assertNull(s.getIpAddress());
