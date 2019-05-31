@@ -34,7 +34,7 @@ When(/^I navigate to images build webpage$/) do
   visit("https://#{$server.full_hostname}/rhn/manager/cm/build")
 end
 
-Then(/^I wait at most (\d+) seconds until container "([^"]*)" is built successfully$/) do |timeout, name|
+When(/^I wait at most (\d+) seconds until container "([^"]*)" is built successfully$/) do |timeout, name|
   cont_op.login('admin', 'admin')
   images_list = cont_op.list_images
   image_id = 0
@@ -60,7 +60,7 @@ Then(/^I wait at most (\d+) seconds until container "([^"]*)" is built successfu
   end
 end
 
-Then(/^I wait at most (\d+) seconds until all "([^"]*)" container images are built correctly in the GUI$/) do |timeout, count|
+When(/^I wait at most (\d+) seconds until all "([^"]*)" container images are built correctly in the GUI$/) do |timeout, count|
   def ck_container_imgs(timeout, count)
     Timeout.timeout(timeout.to_i) do
       step %(I navigate to images webpage)
