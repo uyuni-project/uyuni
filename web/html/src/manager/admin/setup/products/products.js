@@ -213,7 +213,7 @@ class ProductsPageWrapper extends React.Component {
           &nbsp;
           {t('Setup Wizard')}
           &nbsp;
-          <a href='/rhn/help/reference/en-US/ref.webui.admin.jsp#ref.webui.admin.wizard'
+          <a href='/docs/reference/admin/setup-wizard.html'
               target='_blank'><i className='fa fa-question-circle spacewalk-help-link'></i>
           </a>
         </h1>

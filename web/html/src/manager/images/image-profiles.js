@@ -112,7 +112,7 @@ class ImageProfiles extends React.Component {
 
     return (
       <span>
-        <TopPanel title="Image Profiles" icon="spacewalk-icon-manage-configuration-files" helpUrl="/rhn/help/reference/en-US/ref.webui.images.profiles.jsp#ref.webui.images.profiles" button={ panelButtons }>
+        <TopPanel title="Image Profiles" icon="spacewalk-icon-manage-configuration-files" helpUrl="/docs/reference/images/images-profiles.html" button={ panelButtons }>
           {this.state.messages}
           <Table
             data={this.state.imageprofiles}

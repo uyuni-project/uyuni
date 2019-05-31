@@ -167,7 +167,7 @@ class BootstrapMinions extends React.Component {
         const productName = _IS_UYUNI ? "Uyuni" : "SUSE Manager"
 
         return (
-        <TopPanel title={t("Bootstrap Minions")} icon="fa fa-rocket" helpUrl="/rhn/help/reference/en-US/ref.webui.systems.bootstrapping.jsp#ref.webui.systems.bootstrapping">
+        <TopPanel title={t("Bootstrap Minions")} icon="fa fa-rocket" helpUrl="/docs/reference/systems/bootstrapping.html">
             <p>{t('You can add systems to be managed by providing SSH credentials only. {0} will prepare the system remotely and will perform the registration.', productName)}</p>
             {messages}
             <div className="form-horizontal">
