@@ -7,6 +7,7 @@ const ReactDOM = require("react-dom");
 const Network = require("utils/network");
 const FormulaSelection = require("components/formula-selection").FormulaSelection;
 const capitalize = require("utils/functions").Utils.capitalize;
+const SpaRenderer  = require("core/spa/spa-renderer").default;
 
 window.pageRenderers = window.pageRenderers || {};
 window.pageRenderers.minion = window.pageRenderers.minion || {};
@@ -62,7 +63,7 @@ window.pageRenderers.minion.formulaSelection.renderer = (renderId, {serverId, wa
     $(".spacewalk-content-nav").append(navBar);
   }
 
-  ReactDOM.render(
+  SpaRenderer.renderNavigationReact(
     <FormulaSelection
       dataUrl={"/rhn/manager/api/formulas/list/SERVER/" + serverId}
       saveRequest={saveRequest}

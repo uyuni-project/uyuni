@@ -15,6 +15,7 @@ const { Select } = require('components/input/Select');
 const { Text } = require('components/input/Text');
 const {ActionLink, ActionChainLink} = require("components/links");
 const {ActionSchedule} = require("components/action-schedule");
+const SpaRenderer  = require("core/spa/spa-renderer").default;
 
 /* global profileId, hostId, version, localTime, timezone, actionChains */
 const typeMap = {
@@ -301,7 +302,7 @@ class BuildImage extends React.Component {
   }
 }
 
-ReactDOM.render(
+SpaRenderer.renderNavigationReact(
   <BuildImage/>,
   document.getElementById("image-build")
 )

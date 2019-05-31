@@ -4,6 +4,7 @@
 const React = require("react");
 const ReactDOM = require("react-dom");
 const Network = require("utils/network");
+const SpaRenderer  = require("core/spa/spa-renderer").default;
 
 class Notifications extends React.Component {
   state = {
@@ -104,7 +105,7 @@ function errorMessageByStatus(status) {
   }
 }
 
-ReactDOM.render(
+SpaRenderer.renderNavigationReact(
   <Notifications />,
   document.getElementById('notifications')
 );

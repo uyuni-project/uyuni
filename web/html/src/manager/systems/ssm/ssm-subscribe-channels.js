@@ -16,6 +16,7 @@ const {ChannelLink, ActionLink, ActionChainLink, SystemLink} = require("componen
 const {PopUp} = require("components/popup");
 const {Toggler} = require("components/toggler");
 const ChannelUtils = require("core/channels/utils/channels-dependencies.utils");
+const SpaRenderer  = require("core/spa/spa-renderer").default;
 
 import type JsonResult from "utils/network";
 import type {ActionChain} from "components/action-schedule";
@@ -1021,7 +1022,7 @@ class SsmChannelPage extends React.Component<SsmChannelProps, SsmChannelState> {
 }
 
 
-ReactDOM.render(
+SpaRenderer.renderNavigationReact(
   <SsmChannelPage ref={(component) => window.ssmChannelPage = component}/>,
     document.getElementById("channels-div")
 );

@@ -20,6 +20,7 @@ const ImageViewPatches = require("./image-view-patches").ImageViewPatches;
 const ImageViewPackages = require("./image-view-packages").ImageViewPackages;
 const ImageViewRuntime = require("./image-view-runtime").ImageViewRuntime;
 const DateTime = require("components/datetime").DateTime;
+const SpaRenderer  = require("core/spa/spa-renderer").default;
 
 /* global isAdmin, isRuntimeInfoEnabled */
 
@@ -688,7 +689,7 @@ class ImageViewDetails extends React.Component {
   }
 }
 
-ReactDOM.render(
+SpaRenderer.renderNavigationReact(
   <ImageView runtimeInfoEnabled={isRuntimeInfoEnabled}/>,
   document.getElementById('image-view')
 )

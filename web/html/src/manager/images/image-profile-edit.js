@@ -14,6 +14,7 @@ const { Select } = require('components/input/Select');
 const { Text } = require('components/input/Text');
 const Validation = require("components/validation");
 const Utils = require("utils/functions").Utils;
+const SpaRenderer  = require("core/spa/spa-renderer").default;
 
 /* global profileId, customDataKeys, activationKeys */
 
@@ -405,7 +406,7 @@ class CreateImageProfile extends React.Component {
   }
 }
 
-ReactDOM.render(
+SpaRenderer.renderNavigationReact(
   <CreateImageProfile />,
   document.getElementById('image-profile-edit')
 )

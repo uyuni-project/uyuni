@@ -8,6 +8,7 @@ var Network = require("../../../utils/network");
 var FormulaFormModule = require("../../../components/FormulaForm");
 var FormulaForm = FormulaFormModule.FormulaForm;
 const capitalize = require("../../../utils/functions").Utils.capitalize;
+const SpaRenderer  = require("core/spa/spa-renderer").default;
 
 window.pageRenderers = window.pageRenderers || {};
 window.pageRenderers.group = window.pageRenderers.group || {};
@@ -30,7 +31,7 @@ window.pageRenderers.group.formula.renderer = (renderId, {groupId, formulaId}) =
       $(".spacewalk-content-nav").append(navBar);
   }
 
-  ReactDOM.render(
+  SpaRenderer.renderNavigationReact(
       <FormulaForm
             dataUrl={"/rhn/manager/api/formulas/form/GROUP/" + groupId + "/" + formulaId}
             saveUrl="/rhn/manager/api/formulas/save"

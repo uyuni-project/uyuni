@@ -8,6 +8,7 @@ const ConfigChannels = ConfigChannelsModule.ConfigChannels;
 const MessagesUtils = require("components/messages").Utils;
 const msg = ConfigChannelsModule.msg;
 const Network = require("utils/network");
+const SpaRenderer  = require("core/spa/spa-renderer").default;
 
 function matchUrl(target) {
     return "/rhn/manager/api/states/match?id=" + orgId + "&type=ORG"
@@ -44,7 +45,7 @@ function saveRequest(states) {
     );
 }
 
-ReactDOM.render(
+SpaRenderer.renderNavigationReact(
   <ConfigChannels matchUrl={matchUrl} saveRequest={saveRequest} applyRequest={applyRequest}/>,
   document.getElementById('config-channels')
 );
