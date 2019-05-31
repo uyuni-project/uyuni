@@ -137,7 +137,7 @@ const MonitoringAdmin = (props) => {
         <h1>
           <i className="fa fa-info-circle"></i>
           {t("SUSE Manager Configuration - Monitoring")}
-          <a href="/rhn/help/reference/en-US/ref.webui.admin.config.jsp#s3-sattools-config-gen" target="_blank">
+          <a href="/docs/reference/admin/general.html" target="_blank">
             <i className="fa fa-question-circle spacewalk-help-link"></i>
           </a>
         </h1>

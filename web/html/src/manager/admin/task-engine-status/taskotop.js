@@ -97,7 +97,7 @@ class TaskoTop extends React.Component {
         <h1>
           <i className="fa fa-tachometer"></i>
           {t('Task Engine Status')}
-          <a href="/rhn/help/reference/en-US/ref.webui.admin.status.jsp"
+          <a href="/docs/reference/admin/task-engine-status.html"
               target="_blank"><i className="fa fa-question-circle spacewalk-help-link"></i>
           </a>
         </h1>

@@ -70,7 +70,7 @@ class SubscriptionMatching extends React.Component {
               {t("Edit Virtual Host Managers")}
           </a>
         </div>
-        <TopPanel title={t("Subscription Matching")} icon="spacewalk-icon-subscription-counting" helpUrl="/rhn/help/reference/en-US/ref.webui.audit.subscription.jsp" />
+        <TopPanel title={t("Subscription Matching")} icon="spacewalk-icon-subscription-counting" helpUrl="/docs/reference/audit/audit-subscription-matching.html" />
         <ErrorMessage error={this.state.error} />
         <SubscriptionMatchingTabContainer data={data} onPinChanged={this.onPinChanged} />
         <MatcherRunPanel
