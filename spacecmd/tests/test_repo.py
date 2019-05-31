@@ -573,3 +573,29 @@ class TestSCRepo:
             assert not shell.client.channel.software.updateRepUrl.called
             assert shell.help_repo_updateurl.called
 
+    def test_repo_updatessl_interactive(self, shell):
+        """
+        Test do_repo_updatessl interactive.
+
+        :param shell:
+        :return:
+        """
+        shell.help_repo_rename = MagicMock()
+        shell.client.channel.software.updateRepoSsl = MagicMock()
+        shell.do_repo_list = MagicMock()
+        mprint = MagicMock()
+        logger = MagicMock()
+        prompter = MagicMock(side_effect=["name", "ca", "cert", "key"])
+
+        with patch("spacecmd.repo.print", mprint) as prn, \
+                patch("spacecmd.repo.prompt_user", prompter) as prn, \
+                patch("spacecmd.repo.logging", logger) as lgr:
+            out = spacecmd.repo.do_repo_updatessl(shell, "")
+
+        assert out is None
+        assert not mprint.called
+        assert not logger.error.called
+        assert shell.client.channel.software.updateRepoSsl.called
+
+        assert_args_expect(shell.client.channel.software.updateRepoSsl.call_args_list,
+                           [((shell.session, "name", "ca", "cert", "key"), {})])
