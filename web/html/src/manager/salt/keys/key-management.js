@@ -115,7 +115,7 @@ class KeyManagement extends React.Component {
       <span>
         <TopPanel title={t("Keys")} icon="fa-desktop"
                button={ panelButtons }
-               helpUrl="/rhn/help/reference/en-US/ref.webui.salt.jsp#ref.webui.salt.onboarding">
+               helpUrl="/docs/reference/salt/salt-keys.html">
           <Table
               data={this.state.keys}
               identifier={this.rowKey}

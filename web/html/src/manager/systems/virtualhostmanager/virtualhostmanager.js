@@ -169,7 +169,7 @@ class VirtualHostManager extends React.Component {
                 title={this.getPanelTitle()}
                 icon="spacewalk-icon-virtual-host-manager"
                 button={panelButtons}
-                helpUrl="/rhn/help/reference/en-US/ref.webui.systems.virt-host-managers.jsp#ref.webui.systems.virt-host-managers"
+                helpUrl="/docs/reference/systems/virtual-host-managers.html"
             >
                 { this.state.messages ?
                      <Messages items={this.state.messages}/> :
