@@ -55,6 +55,11 @@
       </div>
       <script src='/javascript/manager/shared/menu/menu.bundle.js?cb=${rhn:getConfig('web.version')}'></script>
       <script src='/javascript/manager/shared/spa/spa-engine.bundle.js?cb=${rhn:getConfig('web.version')}'></script>
+        <c:if test="${rhn:getConfig('web.spa.enable')}">
+          <script type="text/javascript">
+            window.pageRenderers.spa.init && window.pageRenderers.spa.init();
+          </script>
+        </c:if>
     </div>
     <button id="scroll-top"><i class='fa fa-angle-up'></i></button>
   </body>
