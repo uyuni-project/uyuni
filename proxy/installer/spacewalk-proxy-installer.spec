@@ -22,6 +22,8 @@
 %{!?pylint_check: %global pylint_check 1}
 %endif
 
+%define apacheconfdir %{_sysconfdir}/apache2
+
 %if 0%{?suse_version} > 1320 || 0%{?fedora}
 # SLE15 and Fedora builds on Python 3
 %global build_py3   1
@@ -108,6 +110,9 @@ if [ -f /etc/sysconfig/apache2 ]; then
     sysconf_addword /etc/sysconfig/apache2 APACHE_MODULES proxy_http
 fi
 sed -i -e"s/^range_offset_limit -1 KB/range_offset_limit none/" /etc/squid/squid.conf
+if [ -f %{apacheconfdir}/conf.d/cobbler-proxy.conf ]; then
+    sed -i -e "s;download//cobbler_api;download/cobbler_api;g" %{apacheconfdir}/conf.d/cobbler-proxy.conf
+fi
 %endif
 
 %install
