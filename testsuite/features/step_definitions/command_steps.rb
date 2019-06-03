@@ -770,7 +770,7 @@ end
 When(/^I wait until virtual machine "([^"]*)" on "([^"]*)" is started$/) do |vm, host|
   node = get_target(host)
   repeat_until_timeout(message: "#{vm} virtual machine on #{host} OS failed did not come up yet") do
-    _output, code = node.run("grep -i 'linux\:' /tmp/#{vm}.console.log", fatal = false)
+    _output, code = node.run("grep -i 'login\:' /tmp/#{vm}.console.log", fatal = false)
     break if code.zero?
     sleep 1
   end
