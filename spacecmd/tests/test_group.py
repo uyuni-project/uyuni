@@ -339,3 +339,28 @@ class TestSCGroup:
         assert not shell.client.systemgroup.delete.called
         assert not shell.help_group_delete.called
         assert shell.user_confirm.called
+
+    def test_group_delete(self, shell):
+        """
+        Test do_group_delete with confirmation
+
+        :param shell:
+        :return:
+        """
+        shell.client.systemgroup.delete = MagicMock()
+        shell.user_confirm = MagicMock(return_value=True)
+        shell.help_group_delete = MagicMock()
+
+        spacecmd.group.do_group_delete(shell, "groupone grouptwo groupthree")
+
+        assert not shell.help_group_delete.called
+        assert shell.client.systemgroup.delete.called
+        assert shell.user_confirm.called
+
+        groups = [[((shell.session, "groupone"), {})],
+                  [((shell.session, "grouptwo"), {})],
+                  [((shell.session, "groupthree"), {})],]
+        for call in shell.client.systemgroup.delete.call_args_list:
+            assert_args_expect([call], next(iter(groups)))
+            groups.pop(0)
+        assert not groups
