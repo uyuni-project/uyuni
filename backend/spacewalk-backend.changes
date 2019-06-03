@@ -1,3 +1,5 @@
+- Fix spacewalk-repo-sync for Ubuntu repositories in mirror case (bsc#1136029)
+
 -------------------------------------------------------------------
 Wed May 15 17:17:00 CEST 2019 - jgonzalez@suse.com
 
