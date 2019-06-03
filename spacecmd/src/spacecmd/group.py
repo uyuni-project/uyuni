@@ -42,6 +42,7 @@ from spacecmd.utils import *
 def help_group_addsystems(self):
     print('group_addsystems: Add systems to a group')
     print('usage: group_addsystems GROUP <SYSTEMS>')
+    print('       group_addsystems GROUP <ssm>')
     print('')
     print(self.HELP_SYSTEM_OPTS)
 
