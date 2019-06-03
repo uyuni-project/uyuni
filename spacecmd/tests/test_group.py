@@ -25,7 +25,7 @@ class TestSCGroup:
         shell.get_system_id = MagicMock()
         shell.expand_systems = MagicMock()
         shell.client.systemgroup.addOrRemoveSystems = MagicMock()
-        shell.ssm = MagicMock()
+        shell.ssm.keys = MagicMock()
         mprint = MagicMock()
         logger = MagicMock()
         with patch("spacecmd.group.print", mprint) as prn, \
@@ -35,6 +35,7 @@ class TestSCGroup:
         assert not shell.get_system_id.called
         assert not shell.ssm.keys.called
         assert not shell.client.systemgroup.addOrRemoveSystems.called
+        assert not shell.expand_systems.called
         assert not mprint.called
         assert not logger.error.called
         assert shell.help_group_addsystems.called
