@@ -34,6 +34,8 @@ DEFAULT_SERVER = "localhost"
 
 DEFAULT_CONFIG = '/etc/rhn/spacewalk-common-channels.ini'
 
+DEFAULT_REPO_TYPE = 'yum'
+
 CHANNEL_ARCH = {
     'i386':         'channel-ia32',
     'ia64':         'channel-ia64',
@@ -47,6 +49,16 @@ CHANNEL_ARCH = {
     'x86_64':       'channel-x86_64',
     'ppc':          'channel-ppc',
     'ppc64':        'channel-ppc64',
+    'amd64-deb':    'channel-amd64-deb',
+    'ia32-deb':     'channel-ia32-deb',
+    'ia64-deb':     'channel-ia64-deb',
+    'sparc-deb':    'channel-sparc-deb',
+    'alpha-deb':    'channel-alpha-deb',
+    's390-deb':     'channel-s390-deb',
+    'powerpc-deb':  'channel-powerpc-deb',
+    'arm-deb':      'channel-arm-deb',
+    'mips-deb':     'channel-mips-deb'
+
 }
 
 SPLIT_PATTERN = '[ ,]+'
@@ -83,8 +95,8 @@ def connect(user, password, server):
 def add_channels(channels, section, arch, client):
     base_channels = ['']
     optional = ['activationkey', 'base_channel_activationkey', 'gpgkey_url',
-                'gpgkey_id', 'gpgkey_fingerprint', 'yumrepo_url',
-                'yum_repo_label', 'dist_map_release']
+                'gpgkey_id', 'gpgkey_fingerprint', 'repo_url',
+                'yum_repo_label', 'dist_map_release', 'repo_type']
     mandatory = ['label', 'name', 'summary', 'checksum', 'arch', 'section']
 
     config.set(section, 'arch', arch)
@@ -264,9 +276,10 @@ Create everything as well as unlimited activation key for every channel:
                                  % base_info['name'])
             if options.verbose and options.verbose > 1:
                 sys.stdout.write(
-                    "* label=%s, summary=%s, arch=%s, checksum=%s\n" % (
+                    "* label=%s, summary=%s, arch=%s, repo_type=%s, checksum=%s\n" % (
                         base_info['label'], base_info['summary'],
-                        base_info['arch'], base_info['checksum']))
+                        base_info['arch'], base_info.get('repo_type', DEFAULT_REPO_TYPE),
+                        base_info['checksum']))
 
             if not options.dry_run:
                 try:
@@ -279,19 +292,18 @@ Create everything as well as unlimited activation key for every channel:
                                                        'id': base_info['gpgkey_id'],
                                                        'fingerprint': base_info['gpgkey_fingerprint']})
                     client.channel.software.createRepo(key,
-                                                       base_info['yum_repo_label'], 'yum',
-                                                       base_info['yumrepo_url'])
+                                                       base_info['yum_repo_label'], base_info.get('repo_type', DEFAULT_REPO_TYPE),
+                                                       base_info['repo_url'])
                     client.channel.software.associateRepo(key,
                                                           base_info['label'], base_info['yum_repo_label'])
                 except xmlrpclib.Fault as e:
-                    if e.faultCode != 1200:  # ignore if channel exists
-                        sys.stderr.write("ERROR: %s: %s\n" % (
+                    if e.faultCode == 1200:  # ignore if channel exists
+                        sys.stderr.write("WARNING: %s: %s\n" % (
                             base_info['label'], e.faultString))
-                    if e.faultCode == 1200:
+                    else:
                         sys.stderr.write("ERROR: %s: %s\n" % (
                             base_info['label'], e.faultString))
                         sys.exit(2)
-                    continue
 
             if options.key_limit is not None:
                 if options.verbose:
@@ -338,9 +350,9 @@ Create everything as well as unlimited activation key for every channel:
                                  % child_info['name'])
             if options.verbose and options.verbose > 1:
                 sys.stdout.write(
-                    "** label=%s, summary=%s, arch=%s, parent=%s, checksum=%s\n"
+                    "** label=%s, summary=%s, arch=%s, parent=%s, repo_type=%s, checksum=%s\n"
                     % (child_info['label'], child_info['summary'],
-                       child_info['arch'], base_channel_label,
+                       child_info['arch'], base_channel_label, child_info.get('repo_type', DEFAULT_REPO_TYPE),
                        child_info['checksum']))
 
             if not options.dry_run:
@@ -355,15 +367,15 @@ Create everything as well as unlimited activation key for every channel:
                                                        'id': child_info['gpgkey_id'],
                                                        'fingerprint': child_info['gpgkey_fingerprint']})
                     client.channel.software.createRepo(key,
-                                                       child_info['yum_repo_label'], 'yum',
-                                                       child_info['yumrepo_url'])
+                                                       child_info['yum_repo_label'], child_info.get('repo_type', DEFAULT_REPO_TYPE),
+                                                       child_info['repo_url'])
                     client.channel.software.associateRepo(key,
                                                           child_info['label'], child_info['yum_repo_label'])
                 except xmlrpclib.Fault as e:
-                    if e.faultCode != 1200:  # ignore if channel exists
-                        sys.stderr.write("ERROR: %s: %s\n" % (
+                    if e.faultCode == 1200:  # ignore if channel exists
+                        sys.stderr.write("WARNING: %s: %s\n" % (
                             child_info['label'], e.faultString))
-                    if e.faultCode == 1200:
+                    else:
                         sys.stderr.write("ERROR: %s: %s\n" % (
                             child_info['label'], e.faultString))
                         sys.exit(2)
