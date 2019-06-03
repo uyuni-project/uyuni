@@ -305,3 +305,20 @@ class TestSCGroup:
 
         assert_args_expect(shell.client.systemgroup.create.call_args_list,
                            [((shell.session, 'Jeff', msg), {})])
+
+    def test_group_delete_noarg(self, shell):
+        """
+        Test do_group_delete without no arguments
+
+        :param shell:
+        :return:
+        """
+        shell.client.systemgroup.delete = MagicMock()
+        shell.user_confirm = MagicMock(return_value=False)
+        shell.help_group_delete = MagicMock()
+
+        spacecmd.group.do_group_delete(shell, "")
+
+        assert not shell.client.systemgroup.delete.called
+        assert not shell.user_confirm.called
+        assert shell.help_group_delete.called
