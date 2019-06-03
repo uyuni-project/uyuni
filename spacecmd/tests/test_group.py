@@ -212,3 +212,36 @@ class TestSCGroup:
 
         assert_expect(mprint.call_args_list, "No systems found")
 
+    def test_group_removesystems_nossm_sys(self, shell):
+        """
+        Test do_group_removesystems with filters and found systems.
+
+        :param shell:
+        :return:
+        """
+
+        shell.help_group_removesystems = MagicMock()
+        shell.get_system_id = MagicMock(side_effect=["1000010000", "1000010001"])
+        shell.expand_systems = MagicMock(return_value=["one", "two"])
+        shell.client.systemgroup.addOrRemoveSystems = MagicMock()
+        shell.ssm.keys = MagicMock()
+        shell.user_confirm = MagicMock(return_value=True)
+        mprint = MagicMock()
+        logger = MagicMock()
+        with patch("spacecmd.group.print", mprint) as prn, \
+            patch("spacecmd.group.logging", logger) as lgr:
+            spacecmd.group.do_group_removesystems(shell, "somegroup somesystem")
+
+        assert not logger.error.called
+        assert not shell.help_group_removesystems.called
+        assert not shell.ssm.keys.called
+        assert shell.get_system_id.called
+        assert shell.user_confirm.called
+        assert mprint.called
+        assert shell.expand_systems.called
+        assert shell.client.systemgroup.addOrRemoveSystems.called
+
+        assert_args_expect(shell.client.systemgroup.addOrRemoveSystems.call_args_list,
+                           [((shell.session, 'somegroup', ['1000010000', '1000010001'], False), {})])
+        assert_list_args_expect(mprint.call_args_list,
+                                ["Systems", "-------", "one\ntwo"])
