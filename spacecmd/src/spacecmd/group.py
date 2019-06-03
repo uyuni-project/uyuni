@@ -131,17 +131,20 @@ def do_group_removesystems(self, args):
             continue
         system_ids.append(system_id)
 
-    print('Systems')
-    print('-------')
-    print('\n'.join(sorted(systems)))
+    if system_ids:
+        print('Systems')
+        print('-------')
+        print('\n'.join(sorted(systems)))
 
-    if not self.user_confirm('Remove these systems [y/N]:'):
-        return
+        if not self.user_confirm('Remove these systems [y/N]:'):
+            return
 
-    self.client.systemgroup.addOrRemoveSystems(self.session,
-                                               group_name,
-                                               system_ids,
-                                               False)
+        self.client.systemgroup.addOrRemoveSystems(self.session,
+                                                   group_name,
+                                                   system_ids,
+                                                   False)
+    else:
+        print("No systems found")
 
 ####################
 
