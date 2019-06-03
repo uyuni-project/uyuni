@@ -82,10 +82,9 @@ def do_group_addsystems(self, args):
             continue
         system_ids.append(system_id)
 
-    self.client.systemgroup.addOrRemoveSystems(self.session,
-                                               group_name,
-                                               system_ids,
-                                               True)
+    if system_ids:
+        self.client.systemgroup.addOrRemoveSystems(self.session, group_name,
+                                                   system_ids, True)
 
 ####################
 
