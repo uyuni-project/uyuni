@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Mon Jun 03 10:53:02 CEST 2019 - jgonzalez@suse.com
+
+- version 2.8.57.16-1
+- Fix spacewalk-repo-sync for Ubuntu repositories in mirror case (bsc#1136029)
+
+-------------------------------------------------------------------
 Wed May 15 17:17:00 CEST 2019 - jgonzalez@suse.com
 
 - version 2.8.57.15-1
