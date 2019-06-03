@@ -65,3 +65,29 @@ class TestSCGroup:
         assert not logger.error.called
         assert not shell.help_group_addsystems.called
         assert shell.ssm.keys.called
+
+    def test_group_addsystems_expand_no_systems(self, shell):
+        """
+        Test do_group_addsystems with API call to find systems, without success getting one.
+
+        :param shell:
+        :return:
+        """
+        shell.help_group_addsystems = MagicMock()
+        shell.get_system_id = MagicMock()
+        shell.expand_systems = MagicMock(return_value=[])
+        shell.client.systemgroup.addOrRemoveSystems = MagicMock()
+        shell.ssm.keys = MagicMock()
+        mprint = MagicMock()
+        logger = MagicMock()
+        with patch("spacecmd.group.print", mprint) as prn, \
+            patch("spacecmd.group.logging", logger) as lgr:
+            spacecmd.group.do_group_addsystems(shell, "groupname something*")
+
+        assert not shell.get_system_id.called
+        assert not shell.client.systemgroup.addOrRemoveSystems.called
+        assert not mprint.called
+        assert not logger.error.called
+        assert not shell.help_group_addsystems.called
+        assert not shell.ssm.keys.called
+        assert shell.expand_systems.called
