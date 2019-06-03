@@ -245,3 +245,23 @@ class TestSCGroup:
                            [((shell.session, 'somegroup', ['1000010000', '1000010001'], False), {})])
         assert_list_args_expect(mprint.call_args_list,
                                 ["Systems", "-------", "one\ntwo"])
+
+    def test_group_create_noarg(self, shell):
+        """
+        Test do_group_create without no arguments (fall-back to the interactive mode).
+
+        :param shell:
+        :return:
+        """
+        msg = "Great group for nothing"
+        shell.client.systemgroup.create = MagicMock()
+        prompter = MagicMock(side_effect=["Jeff", msg])
+
+        with patch("spacecmd.group.prompt_user", prompter):
+            spacecmd.group.do_group_create(shell, "")
+
+        assert prompter.called
+        assert shell.client.systemgroup.create.called
+
+        assert_args_expect(shell.client.systemgroup.create.call_args_list,
+                           [((shell.session, 'Jeff', msg), {})])
