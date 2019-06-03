@@ -205,6 +205,11 @@ class Hierarchy extends React.Component {
       );
   }
 
+  componentWillUnmount() {
+    d3.select("#visualization-filter-wrapper").exit().remove();
+    d3.select("#svg-wrapper").exit().remove();
+  }
+
   showFilters = () => {
     const filterBox = $('#visualization-filter-wrapper');
     if (filterBox.hasClass("open")) {
