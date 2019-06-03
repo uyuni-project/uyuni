@@ -22,7 +22,20 @@ window.pageRenderers.spa.init = function init() {
     }
   }]);
 
-  appInstance.on('endNavigate', function() {
+  appInstance.on('endNavigate', function(navigation) {
+    // workaround to redirect to the login page when there is no session:
+    // More info: https://github.com/liferay/senna.js/issues/302
+    const urlPath = appInstance.browserPathBeforeNavigate;
+    if(["Login.do", "/manager/login"].some(loginPath => urlPath && urlPath.includes(loginPath))) {
+      document.getElementsByClassName("spacewalk-main-column-layout")[0].innerHTML = `
+        <div class="container-fluid">
+            <div class="alert alert-danger">
+                No session. Redirecting to login page...
+            </div>
+        </div>
+      `;
+      window.location = urlPath;
+    }
     SpaRenderer.onSpaEndNavigation();
   });
 
