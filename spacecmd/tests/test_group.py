@@ -285,3 +285,23 @@ class TestSCGroup:
 
         assert_args_expect(shell.client.systemgroup.create.call_args_list,
                            [((shell.session, 'Jeff', msg), {})])
+
+    def test_group_create_descr_only(self, shell):
+        """
+        Test do_group_create with all arguments.
+
+        :param shell:
+        :return:
+        """
+        msg = "Great group for nothing"
+        shell.client.systemgroup.create = MagicMock()
+        prompter = MagicMock(return_value=msg)
+
+        with patch("spacecmd.group.prompt_user", prompter):
+            spacecmd.group.do_group_create(shell, "Jeff {}".format(msg))
+
+        assert not prompter.called
+        assert shell.client.systemgroup.create.called
+
+        assert_args_expect(shell.client.systemgroup.create.call_args_list,
+                           [((shell.session, 'Jeff', msg), {})])
