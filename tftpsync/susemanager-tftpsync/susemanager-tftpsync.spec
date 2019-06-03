@@ -33,6 +33,7 @@ Source0:        %{name}-%{version}.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 
 Requires(pre):  cobbler
+BuildRequires:  cobbler
 %if 0%{?build_py3}
 Requires:       python3
 Requires:       python3-six
