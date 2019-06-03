@@ -181,3 +181,34 @@ class TestSCGroup:
 
         assert_expect(mprint.call_args_list, "No systems found")
 
+    def test_group_removesystems_nossm_nosys(self, shell):
+        """
+        Test do_group_removesystems with filters and without found systems.
+
+        :param shell:
+        :return:
+        """
+
+        shell.help_group_removesystems = MagicMock()
+        shell.get_system_id = MagicMock(side_effect=["1000010000", "1000010001"])
+        shell.expand_systems = MagicMock(return_value=[])
+        shell.client.systemgroup.addOrRemoveSystems = MagicMock()
+        shell.ssm.keys = MagicMock()
+        shell.user_confirm = MagicMock()
+        mprint = MagicMock()
+        logger = MagicMock()
+        with patch("spacecmd.group.print", mprint) as prn, \
+            patch("spacecmd.group.logging", logger) as lgr:
+            spacecmd.group.do_group_removesystems(shell, "somegroup somesystem")
+
+        assert not shell.get_system_id.called
+        assert not shell.client.systemgroup.addOrRemoveSystems.called
+        assert not shell.user_confirm.called
+        assert not logger.error.called
+        assert not shell.help_group_removesystems.called
+        assert not shell.ssm.keys.called
+        assert mprint.called
+        assert shell.expand_systems.called
+
+        assert_expect(mprint.call_args_list, "No systems found")
+
