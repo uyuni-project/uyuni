@@ -206,9 +206,11 @@ def do_group_delete(self, args):
 
 def help_group_backup(self):
     print('group_backup: backup a system group')
-    print('''usage: group_backup NAME [OUTDIR])
+    print('''usage: group_backup <NAME> [OUTDIR])
+                    group_backup ALL
 
-OUTDIR defaults to $HOME/spacecmd-backup/group/YYYY-MM-DD/NAME
+"OUTDIR" defaults to $HOME/spacecmd-backup/group/YYYY-MM-DD/NAME
+"ALL" is a keyword and collects all groups
 ''')
 
 
