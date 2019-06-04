@@ -281,14 +281,18 @@ When(/I view system with id "([^"]*)"/) do |arg1|
   visit Capybara.app_host + '/rhn/systems/details/Overview.do?sid=' + arg1
 end
 
-# weak deaps steps
+# weak dependencies steps
 When(/^I refresh the metadata for "([^"]*)"$/) do |host|
   case host
   when 'sle-client'
     $client.run('rhn_check -vvv', true, 500, 'root')
     client_refresh_metadata
   when 'sle-minion'
-    $minion.run('zypper --non-interactive ref -s', true, 500, 'root')
+    repeat_until_timeout(message: 'Could not refresh metadata') do
+      _out, code = $minion.run('zypper --non-interactive refresh -s', true, 200, 'root')
+      break if code.zero?
+      sleep 3
+    end
   else
     raise 'Invalid target.'
   end
