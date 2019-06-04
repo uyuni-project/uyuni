@@ -829,9 +829,10 @@ Then(/^"([^"]*)" virtual machine on "([^"]*)" should have a "([^"]*)" ([^ ]*) di
   repeat_until_timeout(message: "#{vm} virtual machine on #{host} never got a #{path} #{bus} disk") do
     output, _code = node.run("virsh dumpxml #{vm}")
     tree = Nokogiri::XML(output)
-    disks = tree.xpath("//disk")
-    disk = disks[disks.find_index { |x| x.xpath('source/@file')[0].to_s.include? path }]
-    break if disk.xpath('target/@bus')[0].to_s == bus
+    disks = tree.xpath("//disk").select do |x|
+      (x.xpath('source/@file')[0].to_s.include? path) && (x.xpath('target/@bus')[0].to_s == bus)
+    end
+    break if !disks.empty?
     sleep 3
   end
 end
