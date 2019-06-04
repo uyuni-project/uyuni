@@ -277,18 +277,14 @@ def complete_group_restore(self, text, line, beg, end):
 
 
 def do_group_restore(self, args):
-    arg_parser = get_argument_parser()
+    args, options = parse_command_arguments(args, get_argument_parser())
 
-    (args, options) = parse_command_arguments(args, arg_parser)
-
-    inputdir = os.getcwd()
-    groups = []
     files = {}
     current = {}
 
     if args:
-        inputdir = args[0]
-        groups = args[1:]
+        inputdir = os.getcwd() if args[0] == "." else args[0]
+        groups = args[1:] or ["ALL"]
     else:
         self.help_group_restore()
         return
