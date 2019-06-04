@@ -230,11 +230,11 @@ def do_group_backup(self, args):
         return
 
     groups = args
-    if len(args) == 1 and args[0] == 'ALL':
+    if len(args) and args[0] == 'ALL':
         groups = self.do_group_list('', True)
 
     # use an output base from the user if it was passed
-    if len(args) == 2:
+    if len(args) > 1:
         outputpath_base = datetime.now().strftime(os.path.expanduser(args[1]))
     else:
         outputpath_base = os.path.expanduser('~/spacecmd-backup/group')
