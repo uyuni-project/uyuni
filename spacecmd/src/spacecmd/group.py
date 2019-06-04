@@ -300,6 +300,10 @@ def do_group_restore(self, args):
     inputdir = os.path.abspath(inputdir)
     logging.debug("Input Directory: %s" % (inputdir))
 
+    if not os.path.exists(inputdir):
+        logging.error("Path %s does not exists", inputdir)
+        return
+
     # make a list of file items in the input dir
     if os.path.isdir(inputdir):
         d_content = os.listdir(inputdir)
