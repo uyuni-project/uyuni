@@ -46,7 +46,7 @@ When(/^I wait at most (\d+) seconds until container "([^"]*)" is built successfu
   end
   raise 'unable to find the image id' if image_id.zero?
 
-  repeat_until_timeout(timeout: timeout, message: 'image build did not complete') do
+  repeat_until_timeout(timeout: timeout.to_i, message: 'image build did not complete') do
     idetails = cont_op.get_image_details(image_id)
     break if idetails['buildStatus'] == 'completed' && idetails['inspectStatus'] == 'completed'
     raise 'image build failed.' if idetails['buildStatus'] == 'failed'
