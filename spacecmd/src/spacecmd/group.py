@@ -337,7 +337,7 @@ def do_group_restore(self, args):
         details = details.rstrip('\n')
 
         if groupname in current and current[groupname] == details:
-            logging.debug("Already have %s" % groupname)
+            logging.error("Group %s already restored" % groupname)
             continue
 
         elif groupname in current:
