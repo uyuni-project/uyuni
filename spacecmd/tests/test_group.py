@@ -685,3 +685,53 @@ class TestSCGroup:
         assert_expect(logger.error.call_args_list,
                       'Restore dir /tmp/test/ALL has no restore items')
 
+    @patch("spacecmd.group.os.listdir", MagicMock(return_value=["group-a"]))
+    @patch("spacecmd.group.os.path.isdir", MagicMock(return_value=True))
+    @patch("spacecmd.group.os.path.isfile", MagicMock(return_value=True))
+    @patch("spacecmd.group.os.path.exists", MagicMock(return_value=True))
+    def test_group_restore_catch_missing_groups(self, shell):
+        """
+        test do_group_restore catch missing groups
+
+        :param shell:
+        :return:
+        """
+        def _abspath(path):
+            """
+            Fake os.path.abspath that expands to /tmp/test
+
+            :param path:
+            :return:
+            """
+            return os.path.join("/tmp/test", path.strip("/"))
+
+        shell.help_group_restore = MagicMock()
+        shell.do_group_list = MagicMock()
+        shell.client.systemgroup.getDetails = MagicMock()
+        shell.client.systemgroup.update = MagicMock()
+        shell.client.systemgroup.create = MagicMock()
+        logger = MagicMock()
+        mprint = MagicMock()
+        opener = MagicMock()
+        _open = MagicMock(return_value=opener)
+
+        with patch("spacecmd.group.print", mprint) as prn, \
+            patch("spacecmd.group.logging", logger) as lgr, \
+            patch("spacecmd.group.open", _open) as opn, \
+            patch("spacecmd.group.os.path.abspath", _abspath) as abp:
+            spacecmd.group.do_group_restore(shell, "/opt/backup group-a group-b")
+
+        assert not shell.do_group_list.called
+        assert not shell.client.systemgroup.getDetails.called
+        assert not shell.client.systemgroup.update.called
+        assert not shell.client.systemgroup.create.called
+        assert not logger.info.called
+        assert not mprint.called
+        assert not shell.help_group_restore.called
+        assert logger.debug.called
+        assert logger.error.called
+
+        assert_args_expect(logger.error.call_args_list,
+                           [(('Group group-b was not found in backup',), {}),
+                            (('Found %s missing groups, terminating', 1), {})])
+
