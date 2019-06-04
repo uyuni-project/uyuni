@@ -356,7 +356,7 @@ def do_group_restore(self, args):
                 self.client.systemgroup.update(self.session, groupname, details)
         else:
             logging.info("Creating new group %s" % groupname)
-            group = self.client.systemgroup.create(self.session, groupname, details)
+            self.client.systemgroup.create(self.session, groupname, details)
 
 ####################
 
