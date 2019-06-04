@@ -247,7 +247,7 @@ def do_group_backup(self, args):
         if not os.path.isdir(outputpath_base):
             os.makedirs(outputpath_base)
     except OSError:
-        logging.error('Could not create output directory')
+        logging.error('Could not create output directory: %s', outputpath_base)
         return
 
     for group in groups:
