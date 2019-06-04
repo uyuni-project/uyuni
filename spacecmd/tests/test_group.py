@@ -558,3 +558,37 @@ class TestSCGroup:
         assert_args_expect(logger.error.call_args_list,
                            [(('Could not create output directory: %s',
                               '/opt/spacecmd/dev/null/2019-01-15:00:00'), {})])
+
+    @patch("spacecmd.group.os.path.abspath", MagicMock(return_value="/opt/backup"))
+    @patch("spacecmd.group.os.listdir", MagicMock(return_value=[]))
+    @patch("spacecmd.group.os.path.isdir", MagicMock(return_value=False))
+    def test_group_restore_noargs(self, shell):
+        """
+        test do_group_restore with no arguments.
+
+        :param shell:
+        :return:
+        """
+        shell.help_group_restore = MagicMock()
+        shell.do_group_list = MagicMock()
+        shell.client.systemgroup.getDetails = MagicMock()
+        shell.client.systemgroup.update = MagicMock()
+        shell.client.systemgroup.create = MagicMock()
+        logger = MagicMock()
+        mprint = MagicMock()
+
+        with patch("spacecmd.group.print", mprint) as prn, \
+            patch("spacecmd.group.logging", logger) as lgr:
+            spacecmd.group.do_group_restore(shell, "")
+
+        assert not shell.do_group_list.called
+        assert not shell.client.systemgroup.getDetails.called
+        assert not shell.client.systemgroup.update.called
+        assert not shell.client.systemgroup.create.called
+        assert not logger.debug.called
+        assert not logger.error.called
+        assert not logger.info.called
+        assert not mprint.called
+
+        assert shell.help_group_restore.called
+
