@@ -3,6 +3,7 @@
 Test suite for group module of spacecmd
 """
 
+import os
 from unittest.mock import MagicMock, patch
 from helpers import shell, assert_expect, assert_list_args_expect, assert_args_expect
 import spacecmd.group
@@ -364,3 +365,36 @@ class TestSCGroup:
             assert_args_expect([call], next(iter(groups)))
             groups.pop(0)
         assert not groups
+
+    @patch("spacecmd.group.os.path.isdir", MagicMock(return_value=True))
+    @patch("spacecmd.group.os.makedirs", MagicMock())
+    def test_group_backup_noarg(self, shell):
+        """
+        Test do_group_backup without no arguments
+
+        :param shell:
+        :return:
+        """
+        def exp_user(path):
+            """
+            Fake expand user
+
+            :param path:
+            :return:
+            """
+            return os.path.join("/opt/spacecmd", path)
+
+        shell.help_group_backup = MagicMock()
+        shell.do_group_list = MagicMock()
+        shell.client.systemgroup.getDetails = MagicMock()
+        mprint = MagicMock()
+        logger = MagicMock()
+        with patch("spacecmd.group.print", mprint) as prn, \
+            patch("spacecmd.group.logging", logger) as lgr:
+            spacecmd.group.do_group_backup(shell, "")
+
+        assert not shell.do_group_list.called
+        assert not shell.client.systemgroup.getDetails.called
+        assert not mprint.called
+        assert not logger.called
+        assert shell.help_group_backup.called
