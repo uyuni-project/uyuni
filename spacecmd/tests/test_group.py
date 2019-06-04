@@ -596,14 +596,14 @@ class TestSCGroup:
     @patch("spacecmd.group.os.path.exists", MagicMock(return_value=False))
     def test_group_restore_catch_not_existing_path(self, shell):
         """
-        test do_group_restore with no arguments.
+        test do_group_restore catch path that does not exists
 
         :param shell:
         :return:
         """
         def _abspath(path):
             """
-            Fake os.path.abspath that expads to /tmp/test
+            Fake os.path.abspath that expands to /tmp/test
 
             :param path:
             :return:
