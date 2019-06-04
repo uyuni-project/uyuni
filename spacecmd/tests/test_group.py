@@ -841,4 +841,22 @@ class TestSCGroup:
         assert_expect(logger.info.call_args_list,
                       'Updating description for group: group-a')
 
+    def test_group_list_data(self, shell):
+        """
+        Test do_group_list with data return.
+
+        :param shell:
+        :return:
+        """
+        shell.client.systemgroup.listAllGroups = MagicMock(return_value=[
+            {"name": "group-a"}, {"name": "group-b"}
+        ])
+        mprint = MagicMock()
+        with patch("spacecmd.group.print", mprint):
+            out = spacecmd.group.do_group_list(shell, "", doreturn=True)
+
+        assert shell.client.systemgroup.listAllGroups.called
+        assert out is not None
+        assert len(out) == 2
+        assert out == ["group-a", "group-b"]
 
