@@ -735,3 +735,55 @@ class TestSCGroup:
                            [(('Group group-b was not found in backup',), {}),
                             (('Found %s missing groups, terminating', 1), {})])
 
+    @patch("spacecmd.group.os.listdir", MagicMock(return_value=["group-a"]))
+    @patch("spacecmd.group.os.path.isdir", MagicMock(return_value=True))
+    @patch("spacecmd.group.os.path.isfile", MagicMock(return_value=True))
+    @patch("spacecmd.group.os.path.exists", MagicMock(return_value=True))
+    def test_group_restore_catch_indempotent_recovery(self, shell):
+        """
+        Test do_group_restore indempotent recovery
+
+        :param shell:
+        :return:
+        """
+        def _abspath(path):
+            """
+            Fake os.path.abspath that expands to /tmp/test
+
+            :param path:
+            :return:
+            """
+            return os.path.join("/tmp/test", path.strip("/"))
+
+        shell.help_group_restore = MagicMock()
+        shell.do_group_list = MagicMock(return_value=["group-a", "group-b"])
+        shell.client.systemgroup.getDetails = MagicMock(side_effect=[
+            {"description": "Description of Group A"},
+            {"description": "Description of Group B"},
+        ])
+        shell.client.systemgroup.update = MagicMock()
+        shell.client.systemgroup.create = MagicMock()
+        logger = MagicMock()
+        mprint = MagicMock()
+        opener = MagicMock()
+        opener.read = MagicMock(return_value="Description of Group A")
+        _open = MagicMock(return_value=opener)
+
+        with patch("spacecmd.group.print", mprint) as prn, \
+            patch("spacecmd.group.logging", logger) as lgr, \
+            patch("spacecmd.group.open", _open) as opn, \
+            patch("spacecmd.group.os.path.abspath", _abspath) as abp:
+            spacecmd.group.do_group_restore(shell, "/opt/backup group-a")
+
+        assert not shell.client.systemgroup.update.called
+        assert not shell.client.systemgroup.create.called
+        assert not logger.info.called
+        assert not shell.help_group_restore.called
+        assert not mprint.called
+        assert logger.error.called
+        assert shell.do_group_list.called
+        assert shell.client.systemgroup.getDetails.called
+        assert logger.debug.called
+
+        assert_expect(logger.error.call_args_list,
+                      "Group group-a already restored")
