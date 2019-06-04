@@ -264,7 +264,15 @@ def do_group_backup(self, args):
 
 def help_group_restore(self):
     print('group_restore: restore a system group')
-    print('usage: group_restore INPUTDIR [NAME] ...')
+    print('''
+usage: group_restore INPUTDIR [NAME] ...
+       group_restore INPUTDIR ALL
+       group_restore INPUTDIR
+       group_restore .
+
+Specifying only INPUTDIR will default to ALL groups.
+Setting dot (.) instead of full INPUTDIR will imply current directory.
+    ''')
 
 
 def complete_group_restore(self, text, line, beg, end):
