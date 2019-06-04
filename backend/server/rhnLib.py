@@ -14,8 +14,10 @@
 #
 
 import os
+import hmac
 import hashlib
 import base64
+import struct
 import posixpath
 
 from spacewalk.common.rhnLib import parseRPMName, parseDEBName
@@ -28,11 +30,14 @@ from .rhnMapping import check_package_arch
 
 def computeSignature(*fields):
     # Init the hash
-    m = hashlib.new('sha256')
-    for i in fields:
-        # use str(i) since some of the fields may be non-string
-        m.update(str(i).encode())
-    return base64.encodestring(m.digest()).decode().rstrip()
+    m = hmac.new(key=str(fields[0]).encode(), digestmod=hashlib.sha256)
+    for i in fields[1:]:
+        i = str(i).encode()
+        m.update(struct.pack('<Q', len(i)) + i)
+    # We are still expecting the signature to be a string, so we have to
+    # decode the output of encodestring(). Otherwise bootstrapping just
+    # stales.
+    return base64.encodestring(m.digest()).rstrip().decode()
 
 
 # 'n_n-n-v.v.v-r_r.r:e.ARCH.rpm' ---> [n,v,r,e,a]
