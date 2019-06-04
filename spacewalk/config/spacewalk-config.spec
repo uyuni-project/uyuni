@@ -173,6 +173,8 @@ if [ -e /etc/sudoers.d/spacewalk.rpmsave ]; then
 fi
 rm -f /etc/sudoers.d/spacewalk.{rpmnew,rpmorig,rpmsave}
 
+sed -i 's|\^/download/(\.\*)\$ /rhn/common/DownloadFile\.do?url=\$1|^/download/(.*)$ /rhn/common/DownloadFile.do?url=/$1|' %{apacheconfdir}/conf.d/zz-spacewalk-www.conf
+
 %changelog
 * Fri Feb 09 2018 Michael Mraka <michael.mraka@redhat.com> 2.8.5-1
 - remove install/clean section initial cleanup
