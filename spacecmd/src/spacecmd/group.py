@@ -315,14 +315,15 @@ def do_group_restore(self, args):
         logging.error("Restore dir %s has no restore items" % inputdir)
         return
 
-    if (len(groups) == 1 and groups[0] == 'ALL') or not groups:
-        groups = files.keys()
-    elif groups:
+    missing_groups = 0
+    if groups and next(iter(groups)) != 'ALL':
         for group in groups:
-            if group in files:
-                groups.append(group)
-            else:
+            if group not in files:
                 logging.error("Group %s was not found in backup" % (group))
+                missing_groups += 1
+    if missing_groups:
+        logging.error("Found %s missing groups, terminating", missing_groups)
+        return
 
     for groupname in self.do_group_list('', True):
         details = self.client.systemgroup.getDetails(self.session, groupname)
