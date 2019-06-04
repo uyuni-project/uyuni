@@ -1,6 +1,7 @@
 <factory>
   <template name="actionchain" classname="com.redhat.rhn.frontend.xmlrpc.chain.ActionChainHandler" />
   <template name="activationkey" classname="com.redhat.rhn.frontend.xmlrpc.activationkey.ActivationKeyHandler"/>
+  <template name="admin.monitoring" classname="com.redhat.rhn.frontend.xmlrpc.admin.monitoring.AdminMonitoringHandler"/>
   <template name="api" classname="com.redhat.rhn.frontend.xmlrpc.api.ApiHandler" />
   <template name="audit" classname="com.redhat.rhn.frontend.xmlrpc.audit.CVEAuditHandler" />
   <template name="auth" classname="com.redhat.rhn.frontend.xmlrpc.auth.AuthHandler" />
