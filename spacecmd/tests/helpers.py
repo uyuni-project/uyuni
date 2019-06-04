@@ -75,7 +75,8 @@ def assert_expect(calls, *expectations):
     """
     expectations = list(expectations)
     for call in calls:
-        assert call[0][0] == next(iter(expectations))
+        expectation = next(iter(expectations))
+        assert call[0][0] == expectation, "Expected '{}', got '{}'".format(expectation, call[0][0])
         expectations.pop(0)
     assert not expectations
 
