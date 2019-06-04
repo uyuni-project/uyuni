@@ -233,8 +233,6 @@ def do_group_backup(self, args):
     if len(args) == 1 and args[0] == 'ALL':
         groups = self.do_group_list('', True)
 
-    outputpath_base = None
-
     # use an output base from the user if it was passed
     if len(args) == 2:
         outputpath_base = datetime.now().strftime(os.path.expanduser(args[1]))
