@@ -638,3 +638,50 @@ class TestSCGroup:
         assert_expect(logger.error.call_args_list,
                       'Restore dir /tmp/test/ALL does not exits or is not a directory')
 
+    @patch("spacecmd.group.os.listdir", MagicMock(return_value=[]))
+    @patch("spacecmd.group.os.path.isdir", MagicMock(return_value=True))
+    @patch("spacecmd.group.os.path.exists", MagicMock(return_value=True))
+    def test_group_restore_catch_empty_directory(self, shell):
+        """
+        test do_group_restore catch empty directory.
+
+        :param shell:
+        :return:
+        """
+        def _abspath(path):
+            """
+            Fake os.path.abspath that expands to /tmp/test
+
+            :param path:
+            :return:
+            """
+            return os.path.join("/tmp/test", path.strip("/"))
+
+        shell.help_group_restore = MagicMock()
+        shell.do_group_list = MagicMock()
+        shell.client.systemgroup.getDetails = MagicMock()
+        shell.client.systemgroup.update = MagicMock()
+        shell.client.systemgroup.create = MagicMock()
+        logger = MagicMock()
+        mprint = MagicMock()
+
+        with patch("spacecmd.group.print", mprint) as prn, \
+            patch("spacecmd.group.logging", logger) as lgr, \
+            patch("spacecmd.group.os.path.abspath", _abspath) as abp:
+            spacecmd.group.do_group_restore(shell, "ALL")
+
+        assert not shell.do_group_list.called
+        assert not shell.client.systemgroup.getDetails.called
+        assert not shell.client.systemgroup.update.called
+        assert not shell.client.systemgroup.create.called
+        assert not logger.info.called
+        assert not mprint.called
+        assert not shell.help_group_restore.called
+        assert logger.debug.called
+        assert logger.error.called
+
+        assert_expect(logger.debug.call_args_list,
+                      "Input Directory: /tmp/test/ALL")
+        assert_expect(logger.error.call_args_list,
+                      'Restore dir /tmp/test/ALL has no restore items')
+
