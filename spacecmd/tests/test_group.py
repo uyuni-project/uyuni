@@ -3,6 +3,7 @@
 Test suite for group module of spacecmd
 """
 
+import datetime
 import os
 from unittest.mock import MagicMock, patch
 from helpers import shell, assert_expect, assert_list_args_expect, assert_args_expect
@@ -375,15 +376,6 @@ class TestSCGroup:
         :param shell:
         :return:
         """
-        def exp_user(path):
-            """
-            Fake expand user
-
-            :param path:
-            :return:
-            """
-            return os.path.join("/opt/spacecmd", path)
-
         shell.help_group_backup = MagicMock()
         shell.do_group_list = MagicMock()
         shell.client.systemgroup.getDetails = MagicMock()
@@ -398,3 +390,65 @@ class TestSCGroup:
         assert not mprint.called
         assert not logger.called
         assert shell.help_group_backup.called
+
+    @patch("spacecmd.group.os.path.isdir", MagicMock(return_value=True))
+    @patch("spacecmd.group.os.makedirs", MagicMock())
+    def test_group_backup_all_group_list(self, shell):
+        """
+        Test do_group_backup with all groups lookup
+
+        :param shell:
+        :return:
+        """
+        def exp_user(path):
+            """
+            Fake expand user
+
+            :param path:
+            :return:
+            """
+            return os.path.join("/opt/spacecmd", path.replace("~", "").strip("/"))
+
+        shell.help_group_backup = MagicMock()
+        shell.do_group_list = MagicMock(return_value=["group-a", "group-b"])
+        shell.client.systemgroup.getDetails = MagicMock(
+            side_effect=[
+                {"description": "Group A description"},
+                {"description": "Group B description"},
+            ]
+        )
+        mprint = MagicMock()
+        logger = MagicMock()
+        opener = MagicMock()
+        _open = MagicMock(return_value=opener)
+
+        _datetime = MagicMock()
+        _datetime.now = MagicMock(return_value=datetime.datetime(2019, 1, 1))
+
+        with patch("spacecmd.group.print", mprint) as prn, \
+            patch("spacecmd.group.logging", logger) as lgr, \
+            patch("spacecmd.group.os.path.expanduser", exp_user) as exu, \
+            patch("spacecmd.group.open", _open) as opr, \
+            patch("spacecmd.group.datetime", _datetime) as dtm:
+            spacecmd.group.do_group_backup(shell, "ALL")
+
+        assert not logger.called
+        assert not shell.help_group_backup.called
+        assert shell.do_group_list.called
+        assert shell.client.systemgroup.getDetails.called
+        assert mprint.called
+        assert opener.write.called
+        assert opener.close.called
+
+        assert_list_args_expect(mprint.call_args_list,
+                                ['Backup Group: group-a',
+                                 'Output File: /opt/spacecmd/spacecmd-backup/group/2019-01-01/group-a',
+                                 'Backup Group: group-b',
+                                 'Output File: /opt/spacecmd/spacecmd-backup/group/2019-01-01/group-b'
+                                 ])
+
+        assert_list_args_expect(opener.write.call_args_list,
+                                ["Group A description", "Group B description"])
+        assert_args_expect(_open.call_args_list,
+                           [(('/opt/spacecmd/spacecmd-backup/group/2019-01-01/group-a', 'w'), {}),
+                            (('/opt/spacecmd/spacecmd-backup/group/2019-01-01/group-b', 'w'), {}),])
