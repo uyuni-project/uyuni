@@ -104,8 +104,8 @@ ln -sf  %{apacheconfdir}/conf/ssl.crt/server.crt $RPM_BUILD_ROOT/etc/pki/tls/cer
 %files
 %defattr(-,root,root,-)
 %attr(400,root,root) %config(noreplace) %{_sysconfdir}/rhn/spacewalk-repo-sync/uln.conf
-%config(noreplace) %{apacheconfdir}/conf.d/zz-spacewalk-www.conf
-%config(noreplace) %{apacheconfdir}/conf.d/os-images.conf
+%config %{apacheconfdir}/conf.d/zz-spacewalk-www.conf
+%config %{apacheconfdir}/conf.d/os-images.conf
 %config(noreplace) %{_sysconfdir}/webapp-keyring.gpg
 %attr(440,root,root) %config %{_sysconfdir}/sudoers.d/spacewalk
 %dir %{_var}/lib/cobbler/
