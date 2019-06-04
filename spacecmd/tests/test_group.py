@@ -505,3 +505,56 @@ class TestSCGroup:
         assert_args_expect(logger.error.call_args_list,
                            [(('Could not create output directory: %s',
                               '/opt/spacecmd/spacecmd-backup/group/2019-01-01'), {})])
+
+    @patch("spacecmd.group.os.path.isdir", MagicMock(return_value=False))
+    @patch("spacecmd.group.os.makedirs", MagicMock(side_effect=OSError))
+    def test_group_backup_all_group_list_custom_destination(self, shell):
+        """
+        Test do_group_backup with all groups lookup, custom destination, handling error.
+
+        :param shell:
+        :return:
+        """
+        def exp_user(path):
+            """
+            Fake expand user
+
+            :param path:
+            :return:
+            """
+            return os.path.join("/opt/spacecmd", path.replace("~", "").strip("/"))
+
+        shell.help_group_backup = MagicMock()
+        shell.do_group_list = MagicMock(return_value=["group-a", "group-b"])
+        shell.client.systemgroup.getDetails = MagicMock(
+            side_effect=[
+                {"description": "Group A description"},
+                {"description": "Group B description"},
+            ]
+        )
+        mprint = MagicMock()
+        logger = MagicMock()
+        opener = MagicMock()
+        _open = MagicMock(return_value=opener)
+
+        _datetime = MagicMock()
+        _datetime.now = MagicMock(return_value=datetime.datetime(2019, 1, 1, 15, 0, 0))
+
+        with patch("spacecmd.group.print", mprint) as prn, \
+            patch("spacecmd.group.logging", logger) as lgr, \
+            patch("spacecmd.group.os.path.expanduser", exp_user) as exu, \
+            patch("spacecmd.group.open", _open) as opr, \
+            patch("spacecmd.group.datetime", _datetime) as dtm:
+            spacecmd.group.do_group_backup(shell, "ALL /dev/null/%Y-%m-%T")
+
+        assert not shell.help_group_backup.called
+        assert not shell.client.systemgroup.getDetails.called
+        assert not mprint.called
+        assert not opener.write.called
+        assert not opener.close.called
+        assert logger.error.called
+        assert shell.do_group_list.called
+
+        assert_args_expect(logger.error.call_args_list,
+                           [(('Could not create output directory: %s',
+                              '/opt/spacecmd/dev/null/2019-01-15:00:00'), {})])
