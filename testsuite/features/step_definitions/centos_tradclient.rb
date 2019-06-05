@@ -5,11 +5,11 @@ require 'xmlrpc/client'
 require 'time'
 require 'date'
 
-def wait_action_complete(actionid)
+def wait_action_complete(actionid, timeout: DEFAULT_TIMEOUT)
   host = $server.full_hostname
   @cli = XMLRPC::Client.new2('http://' + host + '/rpc/api')
   @sid = @cli.call('auth.login', 'admin', 'admin')
-  repeat_until_timeout(timeout: 300, message: 'Action was not found among completed actions') do
+  repeat_until_timeout(timeout: timeout, message: 'Action was not found among completed actions') do
     list = @cli.call('schedule.list_completed_actions', @sid)
     break if list.any? { |a| a['id'] == actionid }
     sleep 2
@@ -30,7 +30,7 @@ When(/^I refresh the packages on "([^"]*)" through XML-RPC$/) do |host|
 
   id_refresh = @cli.call('system.schedule_package_refresh', @sid, node_id, date_schedule_now)
   node.run('rhn_check -vvv')
-  wait_action_complete(id_refresh)
+  wait_action_complete(id_refresh, timeout: 600)
 end
 
 When(/^I run a script on "([^"]*)" through XML-RPC$/) do |host|
