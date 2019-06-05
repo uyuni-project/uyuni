@@ -1,3 +1,5 @@
+- Bugfix: referenced variable before assignment.
+
 -------------------------------------------------------------------
 Thu May 30 10:54:16 CEST 2019 - jgonzalez@suse.com
 
