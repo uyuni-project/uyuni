@@ -415,11 +415,16 @@ convert_cobbler_files() {
                     -e "s/ks_meta/autoinstall_meta/" \
                     -e "s/ksmeta/autoinstall_meta/" \
                     -e "s/kopts/kernel_options/" \
+                    -e "s;/var/lib/rhn/kickstarts;;g" \
                     -e "s/kopts_post/kernel_options_post/" \
                 $FILE > $NEWDIR/`basename $FILE`
             done
         fi
     done
+
+    if [ ! -z "$(ls /var/lib/rhn/kickstarts/upload)" ]; then
+        cp -a /var/lib/rhn/kickstarts/upload/* /var/lib/cobbler/templates/upload
+    fi
 }
 
 copy_remote_files() {
