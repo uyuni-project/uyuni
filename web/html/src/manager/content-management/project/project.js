@@ -69,6 +69,7 @@ const Project = (props: Props) => {
   return (
     <TopPanel
       title={t('Content Lifecycle Project - {0}', project.properties.name)}
+      helpUrl="/docs/reference/clm/clm-projects.html"
       // icon="fa-plus"
       button= {
         hasEditingPermissions &&

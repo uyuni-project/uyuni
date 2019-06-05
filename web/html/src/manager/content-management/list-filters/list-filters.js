@@ -59,7 +59,7 @@ const ListFilters = (props: Props) => {
   );
 
   return (
-    <TopPanel title={t('Content Lifecycle Filters')} icon="fa-filter" button={panelButtons}>
+    <TopPanel title={t('Content Lifecycle Filters')} icon="fa-filter" button={panelButtons} helpUrl="/docs/reference/clm/clm-filters.html">
       <Table
         data={displayedFilters}
         identifier={row => row.name}
