@@ -109,7 +109,7 @@ Feature: Content lifecycle
     Given I am authorized as "admin" with password "admin"
     When I follow the left menu "Content Lifecycle > Projects"
     And I follow "clp_name"
-    Then I should see a "Build (0)" text
+    Then I should see a "Build" text
     When I follow "Attach/Detach Sources"
     And I add the "Test Base Channel" channel to sources
     And I click on "Save"
