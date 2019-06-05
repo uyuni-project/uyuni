@@ -1,3 +1,4 @@
+- Force python-numpy and python-PyJWT dependencies (bsc#1137357)
 - Add state EDITED to filters in the Content Lifecycle
 - Add built time date to the Content Lifecycle Environments
 
