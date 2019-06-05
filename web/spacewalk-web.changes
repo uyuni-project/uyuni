@@ -1,3 +1,4 @@
+- Adjust title icons
 - Fix VM creation dialog with non-default pools and networks (bsc#1138268)
 - Update help URLs in the UI (bsc#1136764)
 - Force python-numpy and python-PyJWT dependencies (bsc#1137357)
