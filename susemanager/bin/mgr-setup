@@ -425,6 +425,12 @@ convert_cobbler_files() {
     if [ ! -z "$(ls /var/lib/rhn/kickstarts/upload)" ]; then
         cp -a /var/lib/rhn/kickstarts/upload/* /var/lib/cobbler/templates/upload
     fi
+    if [ ! -z "$(ls /var/lib/rhn/kickstarts/wizard)" ]; then
+        cp -a /var/lib/rhn/kickstarts/wizard/* /var/lib/cobbler/templates/wizard
+    fi
+    if [ ! -z "$(ls /var/lib/rhn/kickstarts/snippets)" ]; then
+        cp -a /var/lib/rhn/kickstarts/snippets/* /var/lib/cobbler/snippets/spacewalk
+    fi
 }
 
 copy_remote_files() {
