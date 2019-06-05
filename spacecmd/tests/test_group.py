@@ -8,6 +8,7 @@ import os
 from unittest.mock import MagicMock, patch
 from helpers import shell, assert_expect, assert_list_args_expect, assert_args_expect
 import spacecmd.group
+from xmlrpc import client as xmlrpclib
 
 
 class TestSCGroup:
@@ -999,3 +1000,30 @@ class TestSCGroup:
         assert not shell.client.systemgroup.listSystems.called
         assert not mprint.called
         assert shell.help_group_details.called
+
+    def test_group_details_no_valid_group(self, shell):
+        """
+        Test do_group_details with no arguments.
+
+        :param shell:
+        :return:
+        """
+        shell.help_group_details = MagicMock()
+        shell.client.systemgroup.getDetails = MagicMock(
+            side_effect=xmlrpclib.Fault(faultCode=42, faultString="kaboom!"))
+        shell.client.systemgroup.listSystems = MagicMock()
+
+        mprint = MagicMock()
+        logger = MagicMock()
+        with patch("spacecmd.group.print", mprint) as prt, \
+            patch("spacecmd.group.logging", logger) as lgr:
+            spacecmd.group.do_group_details(shell, "cucumber-group")
+
+        assert not shell.client.systemgroup.listSystems.called
+        assert not mprint.called
+        assert not shell.help_group_details.called
+        assert logger.warning.called
+        assert shell.client.systemgroup.getDetails.called
+
+        assert_expect(logger.warning.call_args_list,
+                      'The group "cucumber-group" is invalid')
