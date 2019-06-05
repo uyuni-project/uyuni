@@ -1,25 +1,5 @@
 $(document).on("ready", function(){
 
-  /*
-   * System Set Manager: actions to hide the SSM toolbar
-   * when the Clear button is pressed or when
-   * no system is selected
-   */
-  $(document).on('click', '#clear-ssm-btn', function() {
-    hidesystemtool();
-  });
-  function hidesystemtool(){
-    $(".spacewalk-bar").animate({
-      "right": "-=50px",
-      "opacity": "0"},
-      300, function() {
-      /* after animation is complete we hide the element */
-      $(this).hide();
-    });
-  }
-  // See if there is a system already selected as soon as the page loads
-  updateSsmToolbarOpacity();
-
   // This is a function from spacewalk-checkall.js
   create_checkall_checkbox();
 
