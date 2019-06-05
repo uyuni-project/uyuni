@@ -437,15 +437,10 @@ def do_group_details(self, args, short=False):
 
     for group in args:
         try:
-            details = self.client.systemgroup.getDetails(self.session,
-                                                         group)
-
-            systems = self.client.systemgroup.listSystems(self.session,
-                                                          group)
-
-            systems = [s.get('profile_name') for s in systems]
+            details = self.client.systemgroup.getDetails(self.session, group)
+            systems = [stm.get('profile_name') for stm in self.client.systemgroup.listSystems(self.session, group)]
         except xmlrpclib.Fault:
-            logging.warning('%s is not a valid group' % group)
+            logging.warning('The group "%s" is invalid' % group)
             return
 
         if add_separator:
