@@ -976,3 +976,26 @@ class TestSCGroup:
         assert out is None
         assert not mprint.called
         assert shell.help_group_listsystems.called
+
+    def test_group_details_noargs(self, shell):
+        """
+        Test do_group_details with no arguments.
+
+        :param shell:
+        :return:
+        """
+        shell.help_group_details = MagicMock()
+        shell.client.systemgroup.getDetails = MagicMock()
+        shell.client.systemgroup.listSystems = MagicMock()
+
+        mprint = MagicMock()
+        logger = MagicMock()
+        with patch("spacecmd.group.print", mprint) as prt, \
+            patch("spacecmd.group.logging", logger) as lgr:
+            spacecmd.group.do_group_details(shell, "")
+
+        assert not logger.warning.called
+        assert not shell.client.systemgroup.getDetails.called
+        assert not shell.client.systemgroup.listSystems.called
+        assert not mprint.called
+        assert shell.help_group_details.called
