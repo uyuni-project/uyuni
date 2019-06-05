@@ -968,7 +968,7 @@ class TestSCGroup:
         logger = MagicMock()
 
         with patch("spacecmd.group.print", mprint) as prt, \
-            patch("spacecmd.group.logging", logger) as lgr:
+                patch("spacecmd.group.logging", logger) as lgr:
             out = spacecmd.group.do_group_listsystems(shell, "group-a group-b", doreturn=True)
 
         assert not logger.warning.called
