@@ -881,3 +881,23 @@ class TestSCGroup:
         assert_expect(mprint.call_args_list,
                       "group-a\ngroup-b")
 
+    def test_group_listsystems_noargs(self, shell):
+        """
+        Test do_group_listsystems with no arguments passed.
+
+        :param shell:
+        :return:
+        """
+        shell.help_group_listsystems = MagicMock()
+        shell.client.systemgroup.listSystems = MagicMock()
+        mprint = MagicMock()
+        logger = MagicMock()
+
+        with patch("spacecmd.group.print", mprint) as prt, \
+            patch("spacecmd.group.logging", logger) as lgr:
+            out = spacecmd.group.do_group_listsystems(shell, "", doreturn=True)
+
+        assert not shell.client.systemgroup.listSystems.called
+        assert out is None
+        assert shell.help_group_listsystems.called
+
