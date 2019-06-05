@@ -393,7 +393,7 @@ def do_group_listsystems(self, args, doreturn=False):
 
     (args, _options) = parse_command_arguments(args, arg_parser)
 
-    if not args:
+    if len(args) != 1:
         self.help_group_listsystems()
         return
 
