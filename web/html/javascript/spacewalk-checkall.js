@@ -203,11 +203,6 @@ function pageResponse(data) {
     }
 }
 
-// the function we call to read the number of systems selected and hide/show the toolbar
-function updateSsmToolbarOpacity() {
-  $(".spacewalk-bar").animate({"opacity": "100"}, 0, function() {});
-}
-
 function sortColumn(sortByWidget, sortByValue, sortDirWidget, sortDirValue) {
      var sortBy = document.getElementById(sortByWidget); 
      sortBy.value = sortByValue;
