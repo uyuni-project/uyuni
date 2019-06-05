@@ -898,6 +898,8 @@ class TestSCGroup:
             out = spacecmd.group.do_group_listsystems(shell, "", doreturn=True)
 
         assert not shell.client.systemgroup.listSystems.called
+        assert not mprint.called
+        assert not logger.warning.called
         assert out is None
         assert shell.help_group_listsystems.called
 
