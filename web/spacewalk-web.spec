@@ -94,8 +94,12 @@ Provides:       spacewalk(spacewalk-base) = %{version}-%{release}
 Requires:       susemanager-frontend-libs
 %if 0%{?suse_version} >= 1500
 Requires:       python3-websockify
+Requires:       python3-PyJWT
+Requires:       python3-numpy
 %else
 Requires:       python-websockify
+Requires:       python-PyJWT
+Requires:       python-numpy
 %endif
 %endif
 Requires:       httpd

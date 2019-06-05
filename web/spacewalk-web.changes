@@ -1,3 +1,4 @@
+- Force python-numpy and python-PyJWT dependencies (bsc#1137357)
 - Update help URLs in the UI (bsc#1136764)
 - Fix big formula checkbox not supported in Firefox
 - Adjust title icons
