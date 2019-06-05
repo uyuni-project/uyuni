@@ -954,3 +954,25 @@ class TestSCGroup:
         assert out is None
         assert mprint.called
         assert_expect(mprint.call_args_list, "system-a\nsystem-b\nsystem-c\nsystem-d")
+
+    def test_group_listsystems_too_much_parameters(self, shell):
+        """
+        Test do_group_listsystems with too much groups specified.
+
+        :param shell:
+        :return:
+        """
+        shell.help_group_listsystems = MagicMock()
+        shell.client.systemgroup.listSystems = MagicMock(return_value=[])
+        mprint = MagicMock()
+        logger = MagicMock()
+
+        with patch("spacecmd.group.print", mprint) as prt, \
+            patch("spacecmd.group.logging", logger) as lgr:
+            out = spacecmd.group.do_group_listsystems(shell, "group-a group-b", doreturn=True)
+
+        assert not logger.warning.called
+        assert not shell.client.systemgroup.listSystems.called
+        assert out is None
+        assert not mprint.called
+        assert shell.help_group_listsystems.called
