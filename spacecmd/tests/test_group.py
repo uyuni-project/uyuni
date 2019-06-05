@@ -1075,3 +1075,61 @@ class TestSCGroup:
                                  'Description:       Test group C',
                                  'Number of Systems: 25'])
 
+    def test_group_details_long_report(self, shell):
+        """
+        Test do_group_details long report.
+
+        :param shell:
+        :return:
+        """
+        shell.help_group_details = MagicMock()
+        shell.client.systemgroup.getDetails = MagicMock(side_effect=[
+            {"id": 1, "name": "Group A", "description": "Test group A", "system_count": 5},
+            {"id": 2, "name": "Group B", "description": "Test group B", "system_count": 10},
+            {"id": 3, "name": "Group C", "description": "Test group C", "system_count": 25}
+        ])
+        shell.client.systemgroup.listSystems = MagicMock(side_effect=[
+            [{"profile_name": "prf-a"}, {"profile_name": "prf-b"}],
+            [{"profile_name": "prf-c"}, {"profile_name": "prf-d"}],
+            [{"profile_name": "prf-e"}, {"profile_name": "prf-f"}],
+        ])
+
+        mprint = MagicMock()
+        logger = MagicMock()
+        with patch("spacecmd.group.print", mprint) as prt, \
+            patch("spacecmd.group.logging", logger) as lgr:
+            spacecmd.group.do_group_details(shell, "group-a group-b group-c")
+
+        assert not shell.help_group_details.called
+        assert not logger.warning.called
+        assert shell.client.systemgroup.getDetails.called
+        assert shell.client.systemgroup.listSystems.called
+        assert mprint.called
+
+        assert_list_args_expect(mprint.call_args_list,
+                                ['ID:                1',
+                                 'Name:              Group A',
+                                 'Description:       Test group A',
+                                 'Number of Systems: 5',
+                                 '',
+                                 'Members',
+                                 '-------',
+                                 'prf-a\nprf-b',
+                                 '----------',
+                                 'ID:                2',
+                                 'Name:              Group B',
+                                 'Description:       Test group B',
+                                 'Number of Systems: 10',
+                                 '',
+                                 'Members',
+                                 '-------',
+                                 'prf-c\nprf-d',
+                                 '----------',
+                                 'ID:                3',
+                                 'Name:              Group C',
+                                 'Description:       Test group C',
+                                 'Number of Systems: 25',
+                                 '',
+                                 'Members',
+                                 '-------',
+                                 'prf-e\nprf-f'])
