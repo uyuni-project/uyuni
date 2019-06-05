@@ -928,3 +928,29 @@ class TestSCGroup:
         assert shell.client.systemgroup.listSystems.called
         assert out is not None
         assert out == ["system-d", "system-c", "system-b", "system-a"]
+
+    def test_group_listsystems_nodata(self, shell):
+        """
+        Test do_group_listsystems without data return, but STDOUT.
+
+        :param shell:
+        :return:
+        """
+        shell.help_group_listsystems = MagicMock()
+        shell.client.systemgroup.listSystems = MagicMock(return_value=[
+            {"profile_name": "system-d"}, {"profile_name": "system-c"},
+            {"profile_name": "system-b"}, {"profile_name": "system-a"},
+        ])
+        mprint = MagicMock()
+        logger = MagicMock()
+
+        with patch("spacecmd.group.print", mprint) as prt, \
+            patch("spacecmd.group.logging", logger) as lgr:
+            out = spacecmd.group.do_group_listsystems(shell, "group-a", doreturn=False)
+
+        assert not shell.help_group_listsystems.called
+        assert not logger.warning.called
+        assert shell.client.systemgroup.listSystems.called
+        assert out is None
+        assert mprint.called
+        assert_expect(mprint.call_args_list, "system-a\nsystem-b\nsystem-c\nsystem-d")
