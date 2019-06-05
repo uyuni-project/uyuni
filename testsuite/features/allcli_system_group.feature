@@ -54,9 +54,7 @@ Feature: Manage a group of systems
 @centos_minion
   Scenario: Add the CentOS minion to the group in a different way
     Given I am authorized as "admin" with password "admin"
-    When I follow "Home" in the left menu
-    And I follow "Systems" in the left menu
-    And I follow "System Groups" in the left menu
+    When I follow the left menu "Systems > System Groups"
     Then I should see a "System Groups" text
     When I follow "new-systems-group"
     And I follow "Target Systems"
@@ -87,9 +85,7 @@ Feature: Manage a group of systems
 @centos_minion
   Scenario: Apply the highstate to the group
     Given I am authorized as "admin" with password "admin"
-    When I follow "Home" in the left menu
-    And I follow "Systems" in the left menu
-    And I follow "System Groups" in the left menu
+    When I follow the left menu "Systems > System Groups"
     Then I should see a "System Groups" text
     When I follow "new-systems-group"
     And I follow "States"

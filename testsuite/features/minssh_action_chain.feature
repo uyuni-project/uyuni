@@ -106,7 +106,7 @@ Feature: Salt SSH action chain
 @ssh_minion
   Scenario: Subscribe system to configuration channel for testing action chain on SSH minion
     Given I am authorized as "admin" with password "admin"
-    And I follow "Systems > Overview" in the left menu
+    And I follow the left menu "Systems > Overview"
     And I follow this "ssh-minion" link
     And I follow "Configuration" in the content area
     And I follow "Manage Configuration Channels" in the content area
