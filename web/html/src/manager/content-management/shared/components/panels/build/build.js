@@ -39,11 +39,6 @@ const Build = ({projectId, onBuild, currentHistoryEntry = {}, changesToBuild, di
     setBuildVersionForm({version: currentVersion ? currentVersion + 1 : 1, message: ""});
   }, [open]);
 
-  let textBuild = "Build";
-  if (changesToBuild.length > 0) {
-    textBuild = "Build (" + changesToBuild.length + ")";
-  }
-
   return (
     <div
       {...(disabled ? {title: "Add an environment to build"} : {})}
@@ -54,7 +49,7 @@ const Build = ({projectId, onBuild, currentHistoryEntry = {}, changesToBuild, di
         <ModalButton
           id={`build-contentmngt-modal-link`}
           className="btn-success"
-          text={textBuild}
+          text={changesToBuild.length > 0 ? `Build (${changesToBuild.length})` : `Build`}
           disabled={disabled}
           target={modalNameId}
           onClick={() => {
