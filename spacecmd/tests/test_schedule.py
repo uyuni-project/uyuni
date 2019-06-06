@@ -95,3 +95,27 @@ class TestSCSchedule:
         assert not logger.warning.called
         assert shell.help_schedule_details.called
 
+    def test_schedule_getoutput_noargs(self, shell):
+        """
+        Test do_schedule_getoutput without arguments.
+
+        :param shell:
+        :return:
+        """
+        shell.client.schedule.listCompletedSystems = MagicMock()
+        shell.client.system.getScriptResults = MagicMock()
+        shell.help_schedule_getoutput = MagicMock()
+
+        mprint = MagicMock()
+        logger = MagicMock()
+
+        with patch("spacecmd.schedule.print", mprint) as prt, \
+            patch("spacecmd.schedule.logging", logger) as lgr:
+            spacecmd.schedule.do_schedule_getoutput(shell, "")
+
+        assert not shell.client.system.getScriptResults.called
+        assert not shell.client.schedule.listCompletedSystems.called
+        assert not mprint.called
+        assert not logger.warning.called
+        assert shell.help_schedule_getoutput.called
+
