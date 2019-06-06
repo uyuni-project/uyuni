@@ -1,3 +1,4 @@
+#-*- coding: utf-8 -*-
 '''
 Test custom wrapper for "module.run" state module.
 
