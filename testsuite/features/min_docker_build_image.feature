@@ -60,5 +60,5 @@ Feature: Build container images
     And I delete the image "suse_real_key" with version "GUI_BUILT_IMAGE" via XML-RPC calls
     And I delete the image "suse_real_key" with version "GUI_DOCKERADMIN" via XML-RPC calls
 
-  Scenario: Cleanup: kill stale Salt jobs
+  Scenario: Cleanup: kill stale image build jobs
     When I kill remaining Salt jobs on "sle-minion"

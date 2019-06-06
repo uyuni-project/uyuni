@@ -727,8 +727,8 @@ end
 
 When(/^I kill remaining Salt jobs on "([^"]*)"$/) do |minion|
   system_name = get_system_name(minion)
-  out, _code = $server.run("salt #{system_name} saltutil.kill_all_jobs")
-  if out.include?(system_name) && out.include?('Signal 9 sent to job')
-    puts out
+  output = $server.run("salt #{system_name} saltutil.kill_all_jobs")
+  if output.include?(system_name) && output.include?('Signal 9 sent to job')
+    puts output
   end
 end
