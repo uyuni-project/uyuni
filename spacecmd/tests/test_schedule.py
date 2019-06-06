@@ -13,7 +13,7 @@ class TestSCSchedule:
     Test suite for "schedule" module.
     """
 
-    def test_schedule_cancel(self, shell):
+    def test_schedule_cancel_noargs(self, shell):
         """
         Test do_schedule_cancel without arguments.
 
@@ -39,7 +39,7 @@ class TestSCSchedule:
         assert not logger.warning.called
         assert shell.help_schedule_cancel.called
 
-    def test_schedule_reschedule(self, shell):
+    def test_schedule_reschedule_noargs(self, shell):
         """
         Test do_schedule_reschedule without arguments.
 
