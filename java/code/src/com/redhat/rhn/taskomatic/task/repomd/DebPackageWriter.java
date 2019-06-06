@@ -106,6 +106,12 @@ public class DebPackageWriter {
                 out.newLine();
             }
 
+            String multiarch = pkgDto.getMultiArch();
+            if (multiarch != null) {
+                out.write("Multi-Arch: " + multiarch);
+                out.newLine();
+            }
+
             // dependencies
             addPackageDepData(
                     out,
