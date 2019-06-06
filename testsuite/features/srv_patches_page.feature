@@ -95,7 +95,7 @@ Feature: Patches page
 
   Scenario: Assert that patch is now in test base channel
     Given I am on the patches page
-    When I follow the left menu "Software > Channel List > All"
+    When I follow the left menu "Software > Channels > All"
     And I follow "Test Base Channel"
     And I follow "Patches" in the content area
     Then I should see a "Test Patch" text

@@ -125,7 +125,7 @@ Feature: Add a repository to a channel
 
   Scenario: Reposync handles wrong encoding on RPM attributes
     Given I am authorized as "admin" with password "admin"
-    When I follow the left menu "Software > Channel List"
+    When I follow the left menu "Software > Channels > All"
     And I follow "Test-Channel-x86_64"
     And I follow "Packages" in the content area
     Then I should see a "blackhole-dummy" text
@@ -133,7 +133,7 @@ Feature: Add a repository to a channel
 @ubuntu_minion
   Scenario: Reposync handles wrong encoding on DEB attributes
     Given I am authorized as "admin" with password "admin"
-    When I follow the left menu "Software > Channel List"
+    When I follow the left menu "Software > Channels > All"
     And I follow "Test-Channel-Deb-AMD64"
     And I follow "Packages" in the content area
     Then I should see a "blackhole-dummy" text
