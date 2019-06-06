@@ -729,3 +729,11 @@ When(/^I delete a salt "([^"]*)" file with name "([^"]*)" on the server$/) do |t
   return_code = file_delete($server, path)
   raise 'File Deletion failed' unless return_code.zero?
 end
+
+When(/^I kill remaining Salt jobs on "([^"]*)"$/) do |minion|
+  system_name = get_system_name(minion)
+  output = $server.run("salt #{system_name} saltutil.kill_all_jobs")
+  if output.include?(system_name) && output.include?('Signal 9 sent to job')
+    puts output
+  end
+end
