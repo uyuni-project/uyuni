@@ -1,3 +1,4 @@
+// globals onDocumentReadyInitOldJS
 import App, {HtmlScreen} from "senna";
 import "senna/build/senna.css"
 import "./spa-engine.css"
@@ -37,6 +38,7 @@ window.pageRenderers.spa.init = function init() {
       window.location = urlPath;
     }
     SpaRenderer.onSpaEndNavigation();
+    onDocumentReadyInitOldJS();
   });
 
   return appInstance;
