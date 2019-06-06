@@ -69,6 +69,42 @@ class TestSCSchedule:
         assert_expect(logger.info.call_args_list,
                       "All pending actions left untouched")
 
+    def test_schedule_cancel_invalid_action_id(self, shell):
+        """
+        Test do_schedule_cancel with invalid action ids.
+
+        :param shell:
+        :return:
+        """
+
+        shell.help_schedule_cancel = MagicMock()
+        shell.client.schedule.listInProgressActions = MagicMock()
+        shell.client.schedule.cancelActions = MagicMock()
+        shell.user_confirm = MagicMock(return_value=False)
+        mprint = MagicMock()
+        logger = MagicMock()
+
+        with patch("spacecmd.schedule.print", mprint) as prt, \
+            patch("spacecmd.schedule.logging", logger) as lgr:
+            spacecmd.schedule.do_schedule_cancel(shell, "1 two 3, and 4")
+
+        assert not shell.help_schedule_cancel.called
+        assert not shell.user_confirm.called
+        assert not shell.client.schedule.listInProgressActions.called
+        assert shell.client.schedule.cancelActions.called
+        assert mprint.called
+        assert logger.warning.called
+        assert logger.info.called
+
+        assert_list_args_expect(logger.warning.call_args_list,
+                                ['"two" is not a valid ID', '"3," is not a valid ID', '"and" is not a valid ID'])
+        assert_args_expect(logger.info.call_args_list,
+                           [(('Canceled action: %i', 1), {}),
+                            (('Canceled action: %i', 4), {}),
+                            (('Failed action: %s', 'two'), {}),
+                            (('Failed action: %s', '3,'), {}),
+                            (('Failed action: %s', 'and'), {})])
+
     def test_schedule_reschedule_noargs(self, shell):
         """
         Test do_schedule_reschedule without arguments.
