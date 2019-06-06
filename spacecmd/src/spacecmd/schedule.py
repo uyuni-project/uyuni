@@ -159,17 +159,21 @@ def do_schedule_cancel(self, args):
 
     # convert strings to integers
     actions = []
+    failed_actions = []
     for a in strings:
         try:
             actions.append(int(a))
         except ValueError:
-            logging.warning('%s is not a valid ID' % str(a))
-            continue
+            logging.warning('"%s" is not a valid ID' % str(a))
+            failed_actions.append(a)
 
-    self.client.schedule.cancelActions(self.session, actions)
-
-    for a in actions:
-        logging.info('Canceled action %i' % a)
+    if actions:
+        self.client.schedule.cancelActions(self.session, actions)
+        for a in actions:
+            logging.info('Canceled action: %i', a)
+    if failed_actions:
+        for action in failed_actions:
+            logging.info("Failed action: %s", action)
 
     print('Canceled %i action(s)' % len(actions))
 
