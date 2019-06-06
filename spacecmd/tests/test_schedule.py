@@ -131,6 +131,32 @@ class TestSCSchedule:
         assert not logger.warning.called
         assert shell.help_schedule_reschedule.called
 
+    def test_schedule_reschedule_globbing(self, shell):
+        """
+        Test do_schedule_reschedule with globbing.
+
+        :param shell:
+        :return:
+        """
+
+        shell.help_schedule_reschedule = MagicMock()
+        shell.client.schedule.listFailedActions = MagicMock()
+        shell.client.schedule.rescheduleActions = MagicMock()
+        shell.user_confirm = MagicMock(return_value=False)
+        mprint = MagicMock()
+        logger = MagicMock()
+
+        with patch("spacecmd.schedule.print", mprint) as prt, \
+            patch("spacecmd.schedule.logging", logger) as lgr:
+            spacecmd.schedule.do_schedule_reschedule(shell, "*")
+
+        assert not shell.client.schedule.rescheduleActions.called
+        assert not mprint.called
+        assert not logger.warning.called
+        assert not shell.help_schedule_reschedule.called
+        assert shell.client.schedule.listFailedActions.called
+        assert shell.user_confirm.called
+
     def test_schedule_details_noargs(self, shell):
         """
         Test do_schedule_details without arguments.
