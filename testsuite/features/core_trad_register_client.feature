@@ -13,7 +13,6 @@ Feature: Register a traditional client
   Scenario: Check registration values
     Given I update the profile of this client
     When I am on the Systems overview page of this "sle-client"
-    And I click on the css "a#clear-ssm"
     And I wait until I see "Software Updates Available" text, refreshing the page
     Then I should see a "System Status" text
     And I should see a "Software Updates Available" text
