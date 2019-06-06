@@ -6,8 +6,6 @@ Author: Pablo Suárez Herńandez <psuarezhernandez@suse.com>
 '''
 
 from mock import MagicMock, patch
-from . import mockery
-mockery.setup_environment()
 
 from ..states import mgrcompat
 
