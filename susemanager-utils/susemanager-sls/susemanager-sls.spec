@@ -88,6 +88,7 @@ cp src/modules/mgractionchains.py %{buildroot}/usr/share/susemanager/salt/_modul
 cp src/modules/kiwi_info.py %{buildroot}/usr/share/susemanager/salt/_modules
 cp src/modules/kiwi_source.py %{buildroot}/usr/share/susemanager/salt/_modules
 cp src/states/product.py %{buildroot}/usr/share/susemanager/salt/_states
+cp src/states/mgrcompat.py %{buildroot}/usr/share/susemanager/salt/_states
 
 %check
 cd test
