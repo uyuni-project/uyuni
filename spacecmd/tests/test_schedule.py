@@ -64,3 +64,34 @@ class TestSCSchedule:
         assert not mprint.called
         assert not logger.warning.called
         assert shell.help_schedule_reschedule.called
+
+    def test_schedule_details_noargs(self, shell):
+        """
+        Test do_schedule_details without arguments.
+
+        :param shell:
+        :return:
+        """
+        shell.client.schedule.listCompletedSystems = MagicMock()
+        shell.client.schedule.listFailedSystems = MagicMock()
+        shell.client.schedule.listInProgressSystems = MagicMock()
+        shell.client.schedule.listAllActions = MagicMock()
+
+        shell.help_schedule_details = MagicMock()
+
+        mprint = MagicMock()
+        logger = MagicMock()
+
+        with patch("spacecmd.schedule.print", mprint) as prt, \
+            patch("spacecmd.schedule.logging", logger) as lgr:
+            spacecmd.schedule.do_schedule_details(shell, "")
+
+        assert not shell.client.schedule.listCompletedSystems.called
+        assert not shell.client.schedule.listFailedSystems.called
+        assert not shell.client.schedule.listInProgressSystems.called
+        assert not shell.client.schedule.listAllActions.called
+
+        assert not mprint.called
+        assert not logger.warning.called
+        assert shell.help_schedule_details.called
+
