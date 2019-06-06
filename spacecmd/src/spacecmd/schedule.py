@@ -149,6 +149,7 @@ def do_schedule_cancel(self, args):
     # cancel all actions
     if '.*' in args:
         if not self.user_confirm('Cancel all pending actions [y/N]:'):
+            logging.info("All pending actions left untouched")
             return
 
         actions = self.client.schedule.listInProgressActions(self.session)
