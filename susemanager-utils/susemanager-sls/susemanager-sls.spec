@@ -91,6 +91,7 @@ cp src/modules/mgrclusters.py %{buildroot}/usr/share/susemanager/salt/_modules
 cp src/modules/mgr_caasp_manager.py %{buildroot}/usr/share/susemanager/salt/_modules
 cp src/modules/ssh_agent.py %{buildroot}/usr/share/susemanager/salt/_modules
 cp src/states/product.py %{buildroot}/usr/share/susemanager/salt/_states
+cp src/states/mgrcompat.py %{buildroot}/usr/share/susemanager/salt/_states
 
 %check
 cd test
