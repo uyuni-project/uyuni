@@ -1,7 +1,10 @@
 //@flow
+// globals onDocumentReadyInitOldJS
 import type {Element as ReactElement} from 'react';
 import ReactDOM from 'react-dom';
 import React from 'react';
+
+declare var onDocumentReadyInitOldJS: Function;
 
 window.pageRenderers = window.pageRenderers || {};
 window.pageRenderers.spa = window.pageRenderers.spa || {};
@@ -24,7 +27,7 @@ function renderNavigationReact(element: ReactElement<any>, container: Element) {
       container,
       clean: () => ReactDOM.unmountComponentAtNode(container)
     });
-  ReactDOM.render(element, container);
+  ReactDOM.render(element, container, () => onDocumentReadyInitOldJS());
 }
 
 function onSpaEndNavigation() {
