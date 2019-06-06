@@ -1,5 +1,4 @@
-$(document).on("ready", function(){
-
+function onDocumentReadyGeneral(){
   // This is a function from spacewalk-checkall.js
   create_checkall_checkbox();
 
@@ -14,7 +13,9 @@ $(document).on("ready", function(){
   addTextareaLengthNotification();
 
   scrollTopBehavior();
-});
+}
+
+$(document).on("ready", onDocumentReadyGeneral);
 
 
 function adaptFluidColLayout() {
@@ -239,7 +240,7 @@ function showFatalError(message, exception) {
 // as much space as possible while still being responsive
 // So three col-md-auto would get col-md-4 each.
 // Five col-md-auto would get two with col-md-3 and three with col-md-2
-$(document).on("ready", function() {
+function onDocumentReadyAutoBootstrapGrid() {
   $.each(['xs', 'sm', 'md', 'lg'], function(idx, gridSize) {
     //for each div with class row
     $('.col-' + gridSize + '-auto:first').parent().each(function() {
@@ -259,8 +260,9 @@ $(document).on("ready", function() {
       }
     });
   });
-});
+}
 
+$(document).on("ready", onDocumentReadyAutoBootstrapGrid);
 
 // Put the focus on a given form element
 function formFocus(form, name) {
@@ -308,9 +310,7 @@ function humanizeDates() {
   });
 }
 
-$(document).on("ready", function() {
-  humanizeDates();
-});
+$(document).on("ready", humanizeDates);
 
 /**
  * Setups ACE editor in a textarea element
@@ -425,6 +425,13 @@ function t(key) {
   return result;
 }
 
+function adjustSpacewalkContent() {
+  alignContentDimensions();
+  // trigger the 'spacewalk-section-toolbar' (sst) handler on content change
+  // since it can happen that the sst has just been added right now
+  handleSst();
+}
+
 /*
 * Create an Observer object that monitors if something in the HTML has changes,
 * if that happens it fires the window resize computation event
@@ -433,19 +440,20 @@ function t(key) {
 // create an observer instance
 var spacewalkContentObserver = new MutationObserver(function(mutations) {
     if (mutations.length > 0) {
-        alignContentDimensions();
-        // trigger the 'spacewalk-section-toolbar' (sst) handler on content change
-        // since it can happen that the sst has just been added right now
-        handleSst();
+      adjustSpacewalkContent();
     }
 });
 
-$(document).ready(function() {
+function registerSpacewalkContentObservers() {
   var target = document.getElementById('spacewalk-content');
   // configuration of the observer:
   var config = { childList: true, characterData: true, subtree: true };
   // pass in the target node, as well as the observer options
   spacewalkContentObserver.observe(target, config);
+}
+
+$(document).ready(function() {
+  registerSpacewalkContentObservers();
 });
 
 $(document).on('click', '.toggle-box', function() {
@@ -547,3 +555,12 @@ function initIEWarningUse() {
 $(document).on("ready", function() {
   initIEWarningUse();
 })
+
+// Function used to initialize old JS behaviour. (After react load/spa transition)
+// Please, don't add anything else to this file. The idea is to get rid of this file while migrating everything to react.
+function onDocumentReadyInitOldJS() {
+  sstScrollBehaviorSetupIsDone = false;
+  onDocumentReadyGeneral();
+  onDocumentReadyAutoBootstrapGrid();
+  humanizeDates();
+}
