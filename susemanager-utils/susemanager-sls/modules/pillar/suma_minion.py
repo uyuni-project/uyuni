@@ -21,6 +21,7 @@ import json
 import sys
 import re
 import salt.utils.dictupdate
+import salt.utils.stringutils
 
 # SUSE Manager static pillar paths:
 MANAGER_STATIC_PILLAR_DATA_PATH = '/usr/share/susemanager/pillar_data'
@@ -133,7 +134,7 @@ def formula_pillars(minion_id, group_ids):
     data = load_formulas_from_file("group_formulas.json")
     for group in group_ids:
         for formula in data.get(str(group), []):
-            formula_utf8 = formula.encode('utf-8')
+            formula_utf8 = salt.utils.stringutils.to_str(formula)
             if formula_utf8 in out_formulas:
                 continue # already processed
             out_formulas.append(formula_utf8)
@@ -144,7 +145,7 @@ def formula_pillars(minion_id, group_ids):
     # Loading minion formulas
     data = load_formulas_from_file("minion_formulas.json")
     for formula in data.get(str(minion_id), []):
-        formula_utf8 = formula.encode('utf-8')
+        formula_utf8 = salt.utils.stringutils.to_str(formula)
         if formula_utf8 in out_formulas:
             continue # already processed
         out_formulas.append(formula_utf8)

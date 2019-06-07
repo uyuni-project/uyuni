@@ -1,3 +1,4 @@
+- Fix formula name encoding on Python 3 (bsc#1137533)
 - Migrate Python code to be Python 2/3 compatible (bsc#1135959)
 
 -------------------------------------------------------------------
@@ -22,7 +23,7 @@ Tue Apr 09 10:46:33 CEST 2019 - jgonzalez@suse.com
 - Fix Salt error related to remove_traditional_stack when bootstrapping an Ubuntu
   minion (bsc#1128724)
 - Automatically trust SUSE GPG key for client tools channels on Ubuntu systems
-- util.systeminfo sls has been added to perform different actions at minion startup(bsc#1122381) 
+- util.systeminfo sls has been added to perform different actions at minion startup(bsc#1122381)
 
 -------------------------------------------------------------------
 Fri Mar 08 13:20:38 CET 2019 - jgonzalez@suse.com
