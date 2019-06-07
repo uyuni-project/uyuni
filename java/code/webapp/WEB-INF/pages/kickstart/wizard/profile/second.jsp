@@ -6,48 +6,46 @@
 
 <head>
 <meta http-equiv="Pragma" content="no-cache"/>
-<script language="javascript">
-
-function setState() {
-   var radio = document.getElementById("wizard-defaultdownloadon");
-   if (radio.checked == true) {
-      disableCtl('wizard-userdefdload');
-   }
-}
-
-function disableCtl(ctlId) {
-   var ctl = document.getElementById(ctlId);
-   ctl.disabled = true;
-}
-
-function enableCtl(ctlId) {
-   var ctl = document.getElementById(ctlId);
-   ctl.disabled = false;
-}
-
-function swapValues(fromCtlId, toCtlId) {
-   var fromCtl = document.getElementById(fromCtlId);
-   var toCtl = document.getElementById(toCtlId);
-   toCtl.value = fromCtl.value;
-}
-
-function moveNext() {
-   var form = $("form[name='kickstartCreateWizardForm']");
-   swapValues("wizard-nextstep", "wizard-curstep");
-   form.submit();
-}
-
-function movePrevious() {
-   var form = $("form[name='kickstartCreateWizardForm']");
-   swapValues("wizard-prevstep", "wizard-curstep");
-   form.submit();
-}
-
-
-</script>
 </head>
 
-<body onload="setState();">
+<body>
+  <script language="javascript">
+    function setState() {
+      var radio = document.getElementById("wizard-defaultdownloadon");
+      if (radio.checked == true) {
+        disableCtl('wizard-userdefdload');
+      }
+    }
+
+    function disableCtl(ctlId) {
+      var ctl = document.getElementById(ctlId);
+      ctl.disabled = true;
+    }
+
+    function enableCtl(ctlId) {
+      var ctl = document.getElementById(ctlId);
+      ctl.disabled = false;
+    }
+
+    function swapValues(fromCtlId, toCtlId) {
+      var fromCtl = document.getElementById(fromCtlId);
+      var toCtl = document.getElementById(toCtlId);
+      toCtl.value = fromCtl.value;
+    }
+
+    function moveNext() {
+      var form = $("form[name='kickstartCreateWizardForm']");
+      swapValues("wizard-nextstep", "wizard-curstep");
+      form.submit();
+    }
+
+    function movePrevious() {
+      var form = $("form[name='kickstartCreateWizardForm']");
+      swapValues("wizard-prevstep", "wizard-curstep");
+      form.submit();
+    }
+  </script>
+
   <html:form method="post" action="/kickstart/CreateProfileWizard.do">
     <rhn:csrf />
     <rhn:submitted />
@@ -99,6 +97,10 @@ function movePrevious() {
     </div>
 
   </html:form>
+  <script>
+    setState();
+  </script>
+
 </body>
 </html:html>
 
