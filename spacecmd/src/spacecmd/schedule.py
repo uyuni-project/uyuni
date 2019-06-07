@@ -221,18 +221,16 @@ def do_schedule_reschedule(self, args):
                 if action_id in failed_actions:
                     to_reschedule.append(action_id)
                 else:
-                    logging.warning('%i is not a failed action' % action_id)
+                    logging.warning('"%i" is not a failed action' % action_id)
             except ValueError:
-                logging.warning('%s is not a valid ID' % str(a))
+                logging.warning('"%s" is not a valid ID' % str(a))
                 continue
 
     if not to_reschedule:
         logging.warning('No failed actions to reschedule')
-        return
-
-    self.client.schedule.rescheduleActions(self.session, to_reschedule, True)
-
-    print('Rescheduled %i action(s)' % len(to_reschedule))
+    else:
+        self.client.schedule.rescheduleActions(self.session, to_reschedule, True)
+        print('Rescheduled %i action(s)' % len(to_reschedule))
 
 ####################
 
