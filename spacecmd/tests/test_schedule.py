@@ -527,3 +527,48 @@ class TestSCSchedule:
         assert_args_expect(logger.error.call_args_list,
                            [(("No systems found",), {})])
 
+    def test_schedule_getoutput_scripts(self, shell):
+        """
+        Test do_schedule_getoutput with scripts
+
+        :param shell:
+        :return:
+        """
+        shell.get_system_name = MagicMock(side_effect=["web.foo.com", "db.foo.com"])
+        shell.client.schedule.listCompletedSystems = MagicMock(return_value=[])
+        shell.client.schedule.listFailedSystems = MagicMock(return_value=[])
+        shell.client.system.getScriptResults = MagicMock(return_value=[
+            {"serverId": 1000010000, "startDate": "2019-01-01", "stopDate": "2019-01-02", "returnCode": 42,
+             "output": "Normal output"},
+            {"startDate": "2019-02-01", "stopDate": "2019-02-02", "returnCode": 1,
+             "output_enc64": True, "output": b"Tm93IHlvdSBzZWUgbWUh\n"},
+            {"serverId": 1000010001, "startDate": "2019-01-11", "stopDate": "2019-01-22", "returnCode": 13,
+             "output": None}
+        ])
+        shell.help_schedule_getoutput = MagicMock()
+
+        mprint = MagicMock()
+        logger = MagicMock()
+
+        with patch("spacecmd.schedule.print", mprint) as prt, \
+                patch("spacecmd.schedule.logging", logger) as lgr:
+            spacecmd.schedule.do_schedule_getoutput(shell, "42")
+
+        assert not logger.warning.called
+        assert not shell.help_schedule_getoutput.called
+        assert not shell.client.schedule.listCompletedSystems.called
+        assert not shell.client.schedule.listFailedSystems.called
+        assert not logger.debug.called
+        assert not logger.error.called
+        assert mprint.called
+        assert shell.client.system.getScriptResults.called
+
+        assert_list_args_expect(mprint.call_args_list, ['System:      web.foo.com', 'Start Time:  2019-01-01',
+                                                        'Stop Time:   2019-01-02', 'Return Code: 42', '', 'Output',
+                                                        '------', 'Normal output', '----------', 'System:      UNKNOWN',
+                                                        'Start Time:  2019-02-01', 'Stop Time:   2019-02-02',
+                                                        'Return Code: 1', '',
+                                                        'Output', '------', 'Now you see me!', '----------',
+                                                        'System:      db.foo.com',
+                                                        'Start Time:  2019-01-11', 'Stop Time:   2019-01-22',
+                                                        'Return Code: 13', '', 'Output', '------', 'N/A'])
