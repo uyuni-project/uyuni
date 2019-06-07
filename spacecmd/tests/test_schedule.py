@@ -6,6 +6,7 @@ Test suite for spacecmd.schedule module.
 from unittest.mock import MagicMock, patch
 from helpers import shell, assert_expect, assert_list_args_expect, assert_args_expect
 import spacecmd.schedule
+from xmlrpc import client as xmlrpclib
 
 
 class TestSCSchedule:
@@ -433,3 +434,60 @@ class TestSCSchedule:
 
         assert_expect(logger.error.call_args_list,
                       '"fortytwo" is not a valid action ID')
+
+    def test_schedule_getoutput_no_script_results(self, shell):
+        """
+        Test do_schedule_getoutput with no script results (failed or None)
+
+        :param shell:
+        :return:
+        """
+        shell.client.schedule.listCompletedSystems = MagicMock(
+            return_value=[
+                {"server_name": "web.foo.com", "timestamp": "2019-01-01",
+                 "message": "Message from the web.foo.com"},
+                {"server_name": "web1.foo.com", "timestamp": "2019-01-01",
+                 "message": "Message from the web1.foo.com as well"},
+                {"server_name": "web2.foo.com", "timestamp": "2019-01-01",
+                 "message": "And some more message from web2.foo.com here"}
+            ]
+        )
+        shell.client.schedule.listFailedSystems = MagicMock(
+            return_value=[
+                {"server_name": "faulty.foo.com", "timestamp": "2019-01-01",
+                 "message": "Nothing good is happening on faulty.foo.com"},
+            ])
+        shell.client.system.getScriptResults = MagicMock(
+            side_effect=xmlrpclib.Fault(faultCode=42, faultString="Happy NPE!"))
+        shell.help_schedule_getoutput = MagicMock()
+
+        mprint = MagicMock()
+        logger = MagicMock()
+
+        with patch("spacecmd.schedule.print", mprint) as prt, \
+                patch("spacecmd.schedule.logging", logger) as lgr:
+            spacecmd.schedule.do_schedule_getoutput(shell, "42")
+
+        assert not logger.warning.called
+        assert not shell.help_schedule_getoutput.called
+        assert shell.client.system.getScriptResults.called
+        assert shell.client.schedule.listCompletedSystems.called
+        assert shell.client.schedule.listFailedSystems.called
+        assert mprint.called
+        assert logger.debug.called
+
+        assert_args_expect(logger.debug.call_args_list,
+                           [(('Exception occurrect while get script results: %s',
+                              "<Fault 42: 'Happy NPE!'>"), {})])
+        assert_list_args_expect(mprint.call_args_list,
+                                ['System:    web.foo.com',
+                                 'Completed: 2019-01-01', '', 'Output', '------',
+                                 'Message from the web.foo.com', '----------', 'System:    web1.foo.com',
+                                 'Completed: 2019-01-01', '', 'Output', '------',
+                                 'Message from the web1.foo.com as well', '----------',
+                                 'System:    web2.foo.com',
+                                 'Completed: 2019-01-01', '', 'Output', '------',
+                                 'And some more message from web2.foo.com here',
+                                 '----------', 'System:    faulty.foo.com',
+                                 'Completed: 2019-01-01', '', 'Output', '------',
+                                 'Nothing good is happening on faulty.foo.com'])
