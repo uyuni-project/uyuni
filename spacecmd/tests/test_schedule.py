@@ -289,6 +289,42 @@ class TestSCSchedule:
         assert_expect(logger.warning.call_args_list,
                       'The ID "something" is invalid')
 
+    def test_schedule_details_missing_action_id(self, shell):
+        """
+        Test do_schedule_details with the missing action ID.
+
+        :param shell:
+        :return:
+        """
+        shell.client.schedule.listCompletedSystems = MagicMock(return_value=[])
+        shell.client.schedule.listFailedSystems = MagicMock(return_value=[])
+        shell.client.schedule.listInProgressSystems = MagicMock(return_value=[])
+        shell.client.schedule.listAllActions = MagicMock(return_value=[
+            {"id": 1}, {"id": 2}, {"id": 3}
+        ])
+
+        shell.help_schedule_details = MagicMock()
+
+        mprint = MagicMock()
+        logger = MagicMock()
+
+        with patch("spacecmd.schedule.print", mprint) as prt, \
+                patch("spacecmd.schedule.logging", logger) as lgr:
+            spacecmd.schedule.do_schedule_details(shell, "42")
+
+        assert not mprint.called
+        assert not logger.warning.called
+        assert not shell.help_schedule_details.called
+
+        assert shell.client.schedule.listCompletedSystems.called
+        assert shell.client.schedule.listFailedSystems.called
+        assert shell.client.schedule.listInProgressSystems.called
+        assert shell.client.schedule.listAllActions.called
+        assert logger.error.called
+
+        assert_expect(logger.error.call_args_list,
+                      'No action found with the ID "42"')
+
     def test_schedule_getoutput_noargs(self, shell):
         """
         Test do_schedule_getoutput without arguments.
