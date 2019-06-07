@@ -325,6 +325,62 @@ class TestSCSchedule:
         assert_expect(logger.error.call_args_list,
                       'No action found with the ID "42"')
 
+    def test_schedule_details_report(self, shell):
+        """
+        Test do_schedule_details report layout
+
+        :param shell:
+        :return:
+        """
+        shell.client.schedule.listCompletedSystems = MagicMock(return_value=[
+            {"server_name": "one"},
+            {"server_name": "two"},
+            {"server_name": "three"},
+        ])
+        shell.client.schedule.listFailedSystems = MagicMock(return_value=[
+            {"server_name": "failed-machine"},
+        ])
+        shell.client.schedule.listInProgressSystems = MagicMock(return_value=[
+            {"server_name": "four"},
+            {"server_name": "five"},
+        ])
+        shell.client.schedule.listAllActions = MagicMock(return_value=[
+            {"id": 1, "name": "Reboot Coffee Machine",
+             "scheduler": "qa-guy", "earliest": "2019-01-01"},
+            {"id": 2, "name": "Upgrade Coffee Machine",
+             "scheduler": "qa-guy", "earliest": "2019-01-01"},
+            {"id": 3, "name": "Reinstall Coffee Machine Firmware",
+             "scheduler": "qa-guy", "earliest": "2019-01-01"},
+        ])
+
+        shell.help_schedule_details = MagicMock()
+
+        mprint = MagicMock()
+        logger = MagicMock()
+
+        with patch("spacecmd.schedule.print", mprint) as prt, \
+                patch("spacecmd.schedule.logging", logger) as lgr:
+            spacecmd.schedule.do_schedule_details(shell, "3")
+
+        assert not logger.warning.called
+        assert not shell.help_schedule_details.called
+        assert not logger.error.called
+
+        assert shell.client.schedule.listCompletedSystems.called
+        assert shell.client.schedule.listFailedSystems.called
+        assert shell.client.schedule.listInProgressSystems.called
+        assert shell.client.schedule.listAllActions.called
+        assert mprint.called
+
+        assert_list_args_expect(mprint.call_args_list,
+                                ['ID:        3', 'Action:    Reinstall Coffee Machine Firmware',
+                                 'User:      qa-guy', 'Date:      2019-01-01', '',
+                                 'Completed:   3', 'Failed:      1', 'Pending:     2', '',
+                                 'Completed Systems',
+                                 '-----------------', 'one', 'two', 'three', '',
+                                 'Failed Systems', '--------------', 'failed-machine', '',
+                                 'Pending Systems', '---------------', 'four', 'five'])
+
     def test_schedule_getoutput_noargs(self, shell):
         """
         Test do_schedule_getoutput without arguments.
