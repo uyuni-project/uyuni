@@ -345,9 +345,9 @@ def do_schedule_getoutput(self, args):
             print('Output')
             print('------')
             if r.get('output_enc64'):
-                print(base64.b64decode(r.get('output')))
+                print(base64.b64decode(r.get('output') or b'Ti9B\n').decode("utf-8"))
             else:
-                print(r.get('output').encode('UTF8'))
+                print((r.get('output') or "N/A").encode('UTF8').decode("utf-8"))
 
     else:
         completed = self.client.schedule.listCompletedSystems(self.session, action_id)
