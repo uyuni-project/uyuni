@@ -37,6 +37,12 @@ window.pageRenderers.spa.init = function init() {
       `;
       window.location = urlPath;
     }
+
+    // If an error happens we make a full refresh to make sure the original request is shown instead of a SPA replacement
+    if (navigation.error && navigation.error.invalidStatus) {
+      window.location = navigation.path;
+    }
+
     SpaRenderer.onSpaEndNavigation();
     onDocumentReadyInitOldJS();
   });
