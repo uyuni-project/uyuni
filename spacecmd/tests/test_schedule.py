@@ -256,6 +256,39 @@ class TestSCSchedule:
         assert not logger.warning.called
         assert shell.help_schedule_details.called
 
+    def test_schedule_details_invalid_action_id(self, shell):
+        """
+        Test do_schedule_details with invalid action ID.
+
+        :param shell:
+        :return:
+        """
+        shell.client.schedule.listCompletedSystems = MagicMock()
+        shell.client.schedule.listFailedSystems = MagicMock()
+        shell.client.schedule.listInProgressSystems = MagicMock()
+        shell.client.schedule.listAllActions = MagicMock()
+
+        shell.help_schedule_details = MagicMock()
+
+        mprint = MagicMock()
+        logger = MagicMock()
+
+        with patch("spacecmd.schedule.print", mprint) as prt, \
+            patch("spacecmd.schedule.logging", logger) as lgr:
+            spacecmd.schedule.do_schedule_details(shell, "something")
+
+        assert not shell.client.schedule.listCompletedSystems.called
+        assert not shell.client.schedule.listFailedSystems.called
+        assert not shell.client.schedule.listInProgressSystems.called
+        assert not shell.client.schedule.listAllActions.called
+
+        assert not mprint.called
+        assert logger.warning.called
+        assert not shell.help_schedule_details.called
+
+        assert_expect(logger.warning.call_args_list,
+                      'The ID "something" is invalid')
+
     def test_schedule_getoutput_noargs(self, shell):
         """
         Test do_schedule_getoutput without arguments.
