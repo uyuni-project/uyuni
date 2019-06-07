@@ -2,7 +2,6 @@
 "use strict";
 
 const React = require("react");
-const ReactDOM = require("react-dom");
 const MessageContainer = require("components/messages").Messages;
 const {Table, Column, SearchField, Highlight} = require("components/table");
 const Network = require("utils/network");
