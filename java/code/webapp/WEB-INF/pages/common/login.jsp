@@ -5,9 +5,9 @@
 <html>
 <head>
     <meta name="decorator" content="layout_c" />
-    <script src="/javascript/susemanager-login.js?cb=${rhn:getConfig('web.version')}"></script>
 </head>
 <body>
+    <script src="/javascript/susemanager-login.js?cb=${rhn:getConfig('web.version')}"></script>
   <c:if test="${schemaUpgradeRequired == 'true'}">
     <div class="alert alert-danger">
       <bean:message key="login.jsp.schemaupgraderequired" />

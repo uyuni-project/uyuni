@@ -5,43 +5,43 @@
 
 <html:html >
 <head>
-<script language="javascript" type="text/javascript">
-//<!--
-function reloadForm(ctl) {
-  var submittedFlag = document.getElementById("editFormSubmitted");
-  submittedFlag.value = "false";
-  var changedField = document.getElementById("fieldChanged");
-  changedField.value = ctl.id;
-  var form = document.getElementsByName("kickstartSoftwareForm")[0];
-  form.submit();
-}
-
-function toggleKSTree(what) {
-   var form = document.getElementsByName("kickstartSoftwareForm")[0];
-   if(what.checked) {
-       form.tree.disabled=1;
-   } else {
-       form.tree.disabled=0;
-   }
-}
-
-function clickNewestRHTree() {
-   var form = document.getElementsByName("kickstartSoftwareForm")[0];
-   if(form.useNewestRHTree.checked) {
-       form.useNewestTree.checked = false;
-   }
-}
-
-function clickNewestTree() {
-   var form = document.getElementsByName("kickstartSoftwareForm")[0];
-   if(form.useNewestTree.checked) {
-       form.useNewestRHTree.checked = false;
-   }
-}
-//-->
-</script>
 </head>
 <body>
+<script language="javascript" type="text/javascript">
+    //<!--
+    function reloadForm(ctl) {
+        var submittedFlag = document.getElementById("editFormSubmitted");
+        submittedFlag.value = "false";
+        var changedField = document.getElementById("fieldChanged");
+        changedField.value = ctl.id;
+        var form = document.getElementsByName("kickstartSoftwareForm")[0];
+        form.submit();
+    }
+
+    function toggleKSTree(what) {
+        var form = document.getElementsByName("kickstartSoftwareForm")[0];
+        if(what.checked) {
+            form.tree.disabled=1;
+        } else {
+            form.tree.disabled=0;
+        }
+    }
+
+    function clickNewestRHTree() {
+        var form = document.getElementsByName("kickstartSoftwareForm")[0];
+        if(form.useNewestRHTree.checked) {
+            form.useNewestTree.checked = false;
+        }
+    }
+
+    function clickNewestTree() {
+        var form = document.getElementsByName("kickstartSoftwareForm")[0];
+        if(form.useNewestTree.checked) {
+            form.useNewestRHTree.checked = false;
+        }
+    }
+    //-->
+</script>
 <%@ include file="/WEB-INF/pages/common/fragments/kickstart/kickstart-toolbar.jspf" %>
 
 <rhn:dialogmenu mindepth="0" maxdepth="1"
