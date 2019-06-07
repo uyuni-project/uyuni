@@ -60,7 +60,7 @@ def module_run(**kwargs):
         new_kwargs = {
             'name': list(kwargs.keys())[0],
         }
-        for item in kwargs[new_kwargs['name']]:
+        for item in kwargs[new_kwargs['name']] or []:
             new_kwargs.update(item)
 
     return list(__salt__['state.single']('module.run', **new_kwargs).values())[0]
