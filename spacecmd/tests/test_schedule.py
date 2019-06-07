@@ -491,3 +491,39 @@ class TestSCSchedule:
                                  '----------', 'System:    faulty.foo.com',
                                  'Completed: 2019-01-01', '', 'Output', '------',
                                  'Nothing good is happening on faulty.foo.com'])
+
+    def test_schedule_getoutput_no_any_results(self, shell):
+        """
+        Test do_schedule_getoutput with no any results available
+
+        :param shell:
+        :return:
+        """
+        shell.client.schedule.listCompletedSystems = MagicMock(return_value=[])
+        shell.client.schedule.listFailedSystems = MagicMock(return_value=[])
+        shell.client.system.getScriptResults = MagicMock(
+            side_effect=xmlrpclib.Fault(faultCode=42, faultString="Happy NPE!"))
+        shell.help_schedule_getoutput = MagicMock()
+
+        mprint = MagicMock()
+        logger = MagicMock()
+
+        with patch("spacecmd.schedule.print", mprint) as prt, \
+                patch("spacecmd.schedule.logging", logger) as lgr:
+            spacecmd.schedule.do_schedule_getoutput(shell, "42")
+
+        assert not logger.warning.called
+        assert not shell.help_schedule_getoutput.called
+        assert not mprint.called
+        assert shell.client.system.getScriptResults.called
+        assert shell.client.schedule.listCompletedSystems.called
+        assert shell.client.schedule.listFailedSystems.called
+        assert logger.debug.called
+        assert logger.error.called
+
+        assert_args_expect(logger.debug.call_args_list,
+                           [(('Exception occurrect while get script results: %s',
+                              "<Fault 42: 'Happy NPE!'>"), {})])
+        assert_args_expect(logger.error.call_args_list,
+                           [(("No systems found",), {})])
+
