@@ -1,6 +1,6 @@
 // @flow
 import { hot } from 'react-hot-loader';
-import React, {useState, useEffect} from 'react';
+import React, {useEffect} from 'react';
 import {Panel} from 'components/panels/Panel';
 import {Button, AsyncButton} from 'components/buttons';
 import Network from 'utils/network';
