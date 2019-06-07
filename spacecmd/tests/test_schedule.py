@@ -405,3 +405,31 @@ class TestSCSchedule:
         assert not logger.warning.called
         assert shell.help_schedule_getoutput.called
 
+    def test_schedule_getoutput_invalid_action_id(self, shell):
+        """
+        Test do_schedule_getoutput with an invalid action ID.
+
+        :param shell:
+        :return:
+        """
+        shell.client.schedule.listCompletedSystems = MagicMock()
+        shell.client.system.getScriptResults = MagicMock()
+        shell.help_schedule_getoutput = MagicMock()
+
+        mprint = MagicMock()
+        logger = MagicMock()
+
+        with patch("spacecmd.schedule.print", mprint) as prt, \
+                patch("spacecmd.schedule.logging", logger) as lgr:
+            spacecmd.schedule.do_schedule_getoutput(shell, "fortytwo")
+
+        assert not shell.client.system.getScriptResults.called
+        assert not shell.client.schedule.listCompletedSystems.called
+        assert not mprint.called
+        assert not logger.warning.called
+        assert not shell.help_schedule_getoutput.called
+
+        assert logger.error.called
+
+        assert_expect(logger.error.call_args_list,
+                      '"fortytwo" is not a valid action ID')
