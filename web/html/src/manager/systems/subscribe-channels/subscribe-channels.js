@@ -324,6 +324,7 @@ class SystemChannels extends React.Component<SystemChannelsProps, SystemChannels
                 messages: msg,
                 scheduled: true
               });
+              window.location = `/rhn/systems/details/SystemChannels.do?sid=${this.props.serverId}`;
             } else {
               this.setState({
                 messages: MessagesUtils.error(data.messages)
