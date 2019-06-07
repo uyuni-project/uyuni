@@ -1,3 +1,4 @@
+- Redirect user back to system after software channel change (bsc#1137244)
 - Allow virtualization tab for foreign systems (bsc#1116869)
 - Allow forcing off or resetting VMs
 - Fix VM creation dialog with non-default pools and networks (bsc#1138268)
