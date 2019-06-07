@@ -320,10 +320,9 @@ def do_schedule_getoutput(self, args):
 
     script_results = None
     try:
-        script_results = \
-            self.client.system.getScriptResults(self.session, action_id)
-    except xmlrpclib.Fault:
-        pass
+        script_results = self.client.system.getScriptResults(self.session, action_id)
+    except xmlrpclib.Fault as exc:
+        logging.debug("Exception occurrect while get script results: %s", str(exc))
 
     # scripts have a different data structure than other actions
     if script_results:
