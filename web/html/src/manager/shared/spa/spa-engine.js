@@ -1,4 +1,4 @@
-// globals onDocumentReadyInitOldJS
+/* global onDocumentReadyInitOldJS */
 import App, {HtmlScreen} from "senna";
 import "senna/build/senna.css"
 import "./spa-engine.css"

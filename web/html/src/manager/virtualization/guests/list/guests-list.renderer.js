@@ -1,6 +1,5 @@
 const SpaRenderer  = require("core/spa/spa-renderer").default;
 const React = require('react');
-const ReactDOM = require('react-dom');
 const { GuestsList } = require('./guests-list');
 
 window.pageRenderers = window.pageRenderers || {};
