@@ -105,7 +105,7 @@ function errorMessageByStatus(status) {
   }
 }
 
-SpaRenderer.renderNavigationReact(
+SpaRenderer.renderGlobalReact(
   <Notifications />,
   document.getElementById('notifications')
 );
