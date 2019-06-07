@@ -9,16 +9,15 @@
 
   <head>
     <meta http-equiv="Pragma" content="no-cache"/>
-
-    <script language="javascript">
-function setStep(stepName) {
-        var field = document.getElementById("wizard-step");
-        field.value = stepName;
-}
-    </script>
   </head>
 
   <body>
+  <script language="javascript">
+      function setStep(stepName) {
+          var field = document.getElementById("wizard-step");
+          field.value = stepName;
+      }
+  </script>
 <%@ include file="/WEB-INF/pages/common/fragments/systems/system-header.jspf" %>
 
    <br/>
