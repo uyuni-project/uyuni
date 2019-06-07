@@ -178,12 +178,12 @@ class TestSCSchedule:
             patch("spacecmd.schedule.logging", logger) as lgr:
             spacecmd.schedule.do_schedule_reschedule(shell, "one 2 3, 5 and 4")
 
+        assert not shell.help_schedule_reschedule.called
+        assert not shell.user_confirm.called
         assert shell.client.schedule.rescheduleActions.called
         assert mprint.called
         assert logger.warning.called
-        assert not shell.help_schedule_reschedule.called
         assert shell.client.schedule.listFailedActions.called
-        assert not shell.user_confirm.called
 
         assert_expect(mprint.call_args_list, "Rescheduled 2 action(s)")
         assert_list_args_expect(logger.warning.call_args_list,
