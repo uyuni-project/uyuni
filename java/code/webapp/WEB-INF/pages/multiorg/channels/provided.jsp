@@ -6,18 +6,15 @@
 
 <html>
 
-<head>
+<body>
 <script src="/javascript/channel_tree.js?cb=${rhn:getConfig('web.version')}" type="text/javascript"></script>
 <script type="text/javascript">
-var filtered = ${requestScope.isFiltered};
-function showFiltered() {
-  if (filtered)
-    ShowAll();
-}
+  var filtered = ${requestScope.isFiltered};
+  function showFiltered() {
+    if (filtered)
+      ShowAll();
+  }
 </script>
-</head>
-
-<body onLoad="onLoadStuff(3); showFiltered();">
 <rhn:toolbar base="h1" icon="header-organisation">
   ${fn:escapeXml(trustorg)}
 </rhn:toolbar>
@@ -36,6 +33,11 @@ function showFiltered() {
   <%@ include file="/WEB-INF/pages/common/fragments/channel/channel_tree.jspf" %>
   <rhn:hidden name="oid" value="${param.oid}"/>
 </form>
+
+<script>
+  onLoadStuff(3);
+  showFiltered();
+</script>
 
 </body>
 </html>

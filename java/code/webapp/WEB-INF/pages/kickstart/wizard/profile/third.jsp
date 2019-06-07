@@ -7,31 +7,29 @@
 
 <head>
 <meta http-equiv="Pragma" content="no-cache">
-<script language="javascript">
-
-function swapValues(fromCtlId, toCtlId) {
-   var fromCtl = document.getElementById(fromCtlId);
-   var toCtl = document.getElementById(toCtlId);
-   toCtl.value = fromCtl.value;
-}
-
-function moveNext() {
-   var form = $("form[name='kickstartCreateWizardForm']");
-   swapValues("wizard-nextstep", "wizard-curstep");
-   form.submit();
-}
-
-function movePrevious() {
-   var form = $("form[name='kickstartCreateWizardForm']");
-   swapValues("wizard-prevstep", "wizard-curstep");
-   form.submit();
-}
-
-
-</script>
 </head>
 
-<body onload="setState();">
+<body>
+  <script language="javascript">
+
+    function swapValues(fromCtlId, toCtlId) {
+      var fromCtl = document.getElementById(fromCtlId);
+      var toCtl = document.getElementById(toCtlId);
+      toCtl.value = fromCtl.value;
+    }
+
+    function moveNext() {
+      var form = $("form[name='kickstartCreateWizardForm']");
+      swapValues("wizard-nextstep", "wizard-curstep");
+      form.submit();
+    }
+
+    function movePrevious() {
+      var form = $("form[name='kickstartCreateWizardForm']");
+      swapValues("wizard-prevstep", "wizard-curstep");
+      form.submit();
+    }
+  </script>
 
   <html:form method="POST" styleClass="form-horizontal" action="/kickstart/CreateProfileWizard.do">
     <rhn:csrf />

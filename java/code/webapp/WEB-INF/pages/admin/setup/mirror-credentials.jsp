@@ -5,12 +5,10 @@
 <%@ taglib uri="http://rhn.redhat.com/tags/list" prefix="rl" %>
 
 <html>
-    <head>
+    <body>
         <script type="text/javascript" src="/rhn/dwr/interface/MirrorCredentialsRenderer.js?cb=${rhn:getConfig('web.version')}"></script>
         <script type="text/javascript" src="/javascript/susemanager-setup-wizard.js?cb=${rhn:getConfig('web.version')}"></script>
         <script type="text/javascript" src="/javascript/susemanager-setup-wizard-mirror-credentials.js?cb=${rhn:getConfig('web.version')}"></script>
-    </head>
-    <body>
         <!-- MODAL: Edit credentials -->
         <div class="modal fade" id="modal-edit-credentials">
             <div class="modal-dialog">
