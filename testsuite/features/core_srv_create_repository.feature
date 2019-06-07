@@ -37,7 +37,6 @@ Feature: Add a repository to a channel
 
   Scenario: Synchronize the repository in the x86_64 channel
     Given I am authorized as "testing" with password "testing"
-    When I enable source package syncing
     When I follow the left menu "Software > Manage Software Channels > Overview"
     And I follow "Test-Channel-x86_64"
     And I follow "Repositories" in the content area
@@ -66,7 +65,6 @@ Feature: Add a repository to a channel
 
   Scenario: Synchronize the repository in the i586 channel
     Given I am authorized as "testing" with password "testing"
-    When I disable source package syncing
     When I follow the left menu "Software > Manage Software Channels > Overview"
     And I follow "Test-Channel-i586"
     And I follow "Repositories" in the content area
