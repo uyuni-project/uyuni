@@ -260,22 +260,7 @@ def do_schedule_details(self, args):
     completed = self.client.schedule.listCompletedSystems(self.session, action_id)
     failed = self.client.schedule.listFailedSystems(self.session, action_id)
     pending = self.client.schedule.listInProgressSystems(self.session, action_id)
-
-    # put all the system arrays together for the summary
-    # XXX: Why is this even needed??
-    all_systems = []
-    all_systems.extend(completed)
-    all_systems.extend(failed)
-    all_systems.extend(pending)
-
-    # schedule.getAction() API call would make this easier
-    all_actions = self.client.schedule.listAllActions(self.session)
-    action = None
-    for a in all_actions:
-        if a.get('id') == action_id:
-            action = a
-            del all_actions
-            break
+    action = {acn.get("id"): acn for acn in self.client.schedule.listAllActions(self.session)}.get(action_id)
 
     if action is not None:
         print('ID:        %i' % action.get('id'))
