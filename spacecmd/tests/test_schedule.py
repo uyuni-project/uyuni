@@ -29,7 +29,7 @@ class TestSCSchedule:
         logger = MagicMock()
 
         with patch("spacecmd.schedule.print", mprint) as prt, \
-            patch("spacecmd.schedule.logging", logger) as lgr:
+                patch("spacecmd.schedule.logging", logger) as lgr:
             spacecmd.schedule.do_schedule_cancel(shell, "")
 
         assert not shell.client.schedule.listInProgressActions.called
@@ -55,7 +55,7 @@ class TestSCSchedule:
         logger = MagicMock()
 
         with patch("spacecmd.schedule.print", mprint) as prt, \
-            patch("spacecmd.schedule.logging", logger) as lgr:
+                patch("spacecmd.schedule.logging", logger) as lgr:
             spacecmd.schedule.do_schedule_cancel(shell, "*")
 
         assert not shell.client.schedule.listInProgressActions.called
@@ -85,7 +85,7 @@ class TestSCSchedule:
         logger = MagicMock()
 
         with patch("spacecmd.schedule.print", mprint) as prt, \
-            patch("spacecmd.schedule.logging", logger) as lgr:
+                patch("spacecmd.schedule.logging", logger) as lgr:
             spacecmd.schedule.do_schedule_cancel(shell, "1 two 3, and 4")
 
         assert not shell.help_schedule_cancel.called
@@ -121,7 +121,7 @@ class TestSCSchedule:
         logger = MagicMock()
 
         with patch("spacecmd.schedule.print", mprint) as prt, \
-            patch("spacecmd.schedule.logging", logger) as lgr:
+                patch("spacecmd.schedule.logging", logger) as lgr:
             spacecmd.schedule.do_schedule_reschedule(shell, "")
 
         assert not shell.client.schedule.listInProgressActions.called
@@ -147,7 +147,7 @@ class TestSCSchedule:
         logger = MagicMock()
 
         with patch("spacecmd.schedule.print", mprint) as prt, \
-            patch("spacecmd.schedule.logging", logger) as lgr:
+                patch("spacecmd.schedule.logging", logger) as lgr:
             spacecmd.schedule.do_schedule_reschedule(shell, "*")
 
         assert not shell.client.schedule.rescheduleActions.called
@@ -175,7 +175,7 @@ class TestSCSchedule:
         logger = MagicMock()
 
         with patch("spacecmd.schedule.print", mprint) as prt, \
-            patch("spacecmd.schedule.logging", logger) as lgr:
+                patch("spacecmd.schedule.logging", logger) as lgr:
             spacecmd.schedule.do_schedule_reschedule(shell, "one 2 3, 5 and 4")
 
         assert not shell.help_schedule_reschedule.called
@@ -210,7 +210,7 @@ class TestSCSchedule:
         logger = MagicMock()
 
         with patch("spacecmd.schedule.print", mprint) as prt, \
-            patch("spacecmd.schedule.logging", logger) as lgr:
+                patch("spacecmd.schedule.logging", logger) as lgr:
             spacecmd.schedule.do_schedule_reschedule(shell, "one 5 and 6")
 
         assert not shell.client.schedule.rescheduleActions.called
@@ -244,7 +244,7 @@ class TestSCSchedule:
         logger = MagicMock()
 
         with patch("spacecmd.schedule.print", mprint) as prt, \
-            patch("spacecmd.schedule.logging", logger) as lgr:
+                patch("spacecmd.schedule.logging", logger) as lgr:
             spacecmd.schedule.do_schedule_details(shell, "")
 
         assert not shell.client.schedule.listCompletedSystems.called
@@ -274,7 +274,7 @@ class TestSCSchedule:
         logger = MagicMock()
 
         with patch("spacecmd.schedule.print", mprint) as prt, \
-            patch("spacecmd.schedule.logging", logger) as lgr:
+                patch("spacecmd.schedule.logging", logger) as lgr:
             spacecmd.schedule.do_schedule_details(shell, "something")
 
         assert not shell.client.schedule.listCompletedSystems.called
@@ -304,7 +304,7 @@ class TestSCSchedule:
         logger = MagicMock()
 
         with patch("spacecmd.schedule.print", mprint) as prt, \
-            patch("spacecmd.schedule.logging", logger) as lgr:
+                patch("spacecmd.schedule.logging", logger) as lgr:
             spacecmd.schedule.do_schedule_getoutput(shell, "")
 
         assert not shell.client.system.getScriptResults.called
