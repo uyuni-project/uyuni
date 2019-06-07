@@ -1,3 +1,4 @@
+- prevent CherryPy timeouts (bsc#1118175)
 - fix check for empty lines in rhn.conf for spacewalk-setup (bsc#1133560)
 
 -------------------------------------------------------------------
