@@ -1,3 +1,9 @@
+- mark zz-spacewalk-www.conf and os-images.conf as plain %config
+  instead of %config(noreplace):
+  Those files were never meant to be edited by the user. The package
+  will preserve your edits as .rpmsave files.
+  If you need edits, you will have to merge them after every upgrade
+  from the rpmsave files from now on.
 - Fix URL rewrites for proxy cobbler api endpoint (bsc#1133800)
 
 -------------------------------------------------------------------
