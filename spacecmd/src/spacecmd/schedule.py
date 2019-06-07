@@ -325,7 +325,7 @@ def do_schedule_getoutput(self, args):
         logging.debug("Exception occurrect while get script results: %s", str(exc))
 
     # scripts have a different data structure than other actions
-    if script_results:
+    if script_results is not None:
         add_separator = False
         for r in script_results:
             if add_separator:
