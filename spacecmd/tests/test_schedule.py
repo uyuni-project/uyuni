@@ -192,6 +192,40 @@ class TestSCSchedule:
                                  '"5" is not a failed action',
                                  '"and" is not a valid ID'])
 
+    def test_schedule_reschedule_missing_actions(self, shell):
+        """
+        Test do_schedule_reschedule with missing actions.
+
+        :param shell:
+        :return:
+        """
+
+        shell.help_schedule_reschedule = MagicMock()
+        shell.client.schedule.listFailedActions = MagicMock(return_value=[
+            {"id": 1}, {"id": 2}, {"id": 3}, {"id": 4}
+        ])
+        shell.client.schedule.rescheduleActions = MagicMock()
+        shell.user_confirm = MagicMock(return_value=False)
+        mprint = MagicMock()
+        logger = MagicMock()
+
+        with patch("spacecmd.schedule.print", mprint) as prt, \
+            patch("spacecmd.schedule.logging", logger) as lgr:
+            spacecmd.schedule.do_schedule_reschedule(shell, "one 5 and 6")
+
+        assert not shell.client.schedule.rescheduleActions.called
+        assert not mprint.called
+        assert not shell.help_schedule_reschedule.called
+        assert not shell.user_confirm.called
+        assert logger.warning.called
+        assert shell.client.schedule.listFailedActions.called
+        assert_list_args_expect(logger.warning.call_args_list,
+                                ['"one" is not a valid ID',
+                                 '"5" is not a failed action',
+                                 '"and" is not a valid ID',
+                                 '"6" is not a failed action',
+                                 'No failed actions to reschedule'])
+
     def test_schedule_details_noargs(self, shell):
         """
         Test do_schedule_details without arguments.
