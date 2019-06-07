@@ -1,3 +1,5 @@
+- Fix formula name encoding on Python 3 (bsc#1137533)
+
 -------------------------------------------------------------------
 Fri May 31 13:20:55 CEST 2019 - jgonzalez@suse.com
 
