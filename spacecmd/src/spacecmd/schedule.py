@@ -350,25 +350,25 @@ def do_schedule_getoutput(self, args):
                 print(r.get('output').encode('UTF8'))
 
     else:
-        completed = self.client.schedule.listCompletedSystems(self.session,
-                                                              action_id)
-
-        failed = self.client.schedule.listFailedSystems(self.session,
-                                                        action_id)
+        completed = self.client.schedule.listCompletedSystems(self.session, action_id)
+        failed = self.client.schedule.listFailedSystems(self.session, action_id)
 
         add_separator = False
 
-        for action in completed + failed:
-            if add_separator:
-                print(self.SEPARATOR)
-            add_separator = True
+        if completed or failed:
+            for action in completed + failed:
+                if add_separator:
+                    print(self.SEPARATOR)
+                add_separator = True
 
-            print('System:    %s' % action.get('server_name'))
-            print('Completed: %s' % action.get('timestamp'))
-            print('')
-            print('Output')
-            print('------')
-            print(action.get('message'))
+                print('System:    %s' % action.get('server_name'))
+                print('Completed: %s' % action.get('timestamp'))
+                print('')
+                print('Output')
+                print('------')
+                print(action.get('message'))
+        else:
+            logging.error("No systems found")
 
 ####################
 
