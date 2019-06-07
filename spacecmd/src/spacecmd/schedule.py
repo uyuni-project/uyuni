@@ -315,7 +315,7 @@ def do_schedule_getoutput(self, args):
     try:
         action_id = int(args[0])
     except ValueError:
-        logging.error('%s is not a valid action ID' % str(args[0]))
+        logging.error('"%s" is not a valid action ID' % str(args[0]))
         return
 
     script_results = None
