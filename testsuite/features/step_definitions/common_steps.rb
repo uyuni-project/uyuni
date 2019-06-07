@@ -288,11 +288,7 @@ When(/^I refresh the metadata for "([^"]*)"$/) do |host|
     $client.run('rhn_check -vvv', true, 500, 'root')
     client_refresh_metadata
   when 'sle-minion'
-    repeat_until_timeout(message: 'Could not refresh metadata') do
-      _out, code = $minion.run('zypper --non-interactive refresh -s', true, 200, 'root')
-      break if code.zero?
-      sleep 3
-    end
+    $minion.run_until_ok('zypper --non-interactive refresh -s')
   else
     raise 'Invalid target.'
   end
