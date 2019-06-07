@@ -6,10 +6,10 @@
 <html:html>
 
 <head>
-  <link rel="stylesheet" type="text/css" href="/css/susemanager-sp-migration.css?cb=${rhn:getConfig('web.version')}" />
 </head>
 
 <body>
+  <link rel="stylesheet" type="text/css" href="/css/susemanager-sp-migration.css?cb=${rhn:getConfig('web.version')}" />
   <%@ include file="/WEB-INF/pages/common/fragments/systems/system-header.jspf"%>
 
   <rhn:toolbar base="h2" icon="header-channel">

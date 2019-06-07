@@ -5,17 +5,21 @@
 
 
 <html>
-<head><style type="text/css">
-.filename {
+<head>
+</head>
+<body>
+
+<style type="text/css">
+  .filename {
     color: #ffffff;
     font-weight: bold;
     text-align: center;
     padding: 4px;
     background-color: #b4b19a;
     -moz-border-radius: 15px;
-}
+  }
 
-.config-toolbar {
+  .config-toolbar {
     color: #666; padding: 4px;
     background-color: #f1ebdc;
     margin-bottom: 8px;
@@ -23,11 +27,9 @@
     padding-right: 12px;
     text-align: right;
     -moz-border-radius: 15px;
-}
+  }
 
 </style>
-</head>
-<body>
 
 <%@ include file="/WEB-INF/pages/common/fragments/configuration/files/header.jspf" %>
 <h2>

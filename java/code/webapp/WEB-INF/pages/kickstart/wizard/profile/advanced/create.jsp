@@ -5,21 +5,21 @@
 <html:html>
     <head>
         <meta http-equiv="Pragma" content="no-cache" />
-        <script language="javascript" type="text/javascript">
-function clickNewestRHTree(obj) {
-   if (obj.checked == true) {
-       document.getElementById("updateAll").checked = false;
-   }
-}
-
-function clickNewestTree(obj) {
-   if (obj.checked == true) {
-       document.getElementById("updateRedHat").checked = false;
-   }
-}
-        </script>
     </head>
     <body>
+        <script language="javascript" type="text/javascript">
+            function clickNewestRHTree(obj) {
+                if (obj.checked == true) {
+                    document.getElementById("updateAll").checked = false;
+                }
+            }
+
+            function clickNewestTree(obj) {
+                if (obj.checked == true) {
+                    document.getElementById("updateRedHat").checked = false;
+                }
+            }
+        </script>
         <rhn:toolbar base="h1" icon="header-kickstart"
                      imgAlt="system.common.kickstartAlt">
             <bean:message key ="kickstart.advanced.jsp.create"/>
