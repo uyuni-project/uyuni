@@ -1,3 +1,5 @@
+- prevent CherryPy timeouts (bsc#1118175)
+
 -------------------------------------------------------------------
 Thu May 30 10:56:50 CEST 2019 - jgonzalez@suse.com
 
