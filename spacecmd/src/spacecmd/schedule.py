@@ -248,11 +248,13 @@ def do_schedule_details(self, args):
     if not args:
         self.help_schedule_details()
         return
+    else:
+        action_id = args[0]
 
     try:
-        action_id = int(args[0])
+        action_id = int(action_id)
     except ValueError:
-        logging.warning('%s is not a valid ID' % str(action_id))
+        logging.warning('The ID "%s" is invalid' % action_id)
         return
 
     completed = self.client.schedule.listCompletedSystems(self.session,
