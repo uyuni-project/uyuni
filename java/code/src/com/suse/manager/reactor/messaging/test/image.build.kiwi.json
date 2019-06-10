@@ -21,7 +21,7 @@
         ],
         "jid": "20180516174949796992",
         "return": {
-            "module_|-mgr_buildimage_info_|-kiwi_info.image_details_|-run": {
+            "mgrcompat_|-mgr_buildimage_info_|-kiwi_info.image_details_|-module_run": {
                 "comment": "Module function kiwi_info.image_details executed",
                 "name": "kiwi_info.image_details",
                 "start_time": "17:54:21.076430",
@@ -116,7 +116,7 @@
                 },
                 "__id__": "mgr_buildimage_kiwi_bundle"
             },
-            "module_|-mgr_buildimage_prepare_source_|-kiwi_source.prepare_source_|-run": {
+            "mgrcompat_|-mgr_buildimage_prepare_source_|-kiwi_source.prepare_source_|-module_run": {
                 "comment": "Module function kiwi_source.prepare_source executed",
                 "name": "kiwi_source.prepare_source",
                 "start_time": "17:49:50.252660",

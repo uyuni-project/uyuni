@@ -21,7 +21,7 @@
       "suma-action-id": 60
     },
     "return": {
-      "module_|-mgr_container_remove_|-dockerng.rm_|-run": {
+      "mgrcompat_|-mgr_container_remove_|-dockerng.rm_|-module_run": {
         "__id__": "mgr_container_remove",
         "__run_num__": 2,
         "changes": {},
@@ -32,7 +32,7 @@
         "skip_watch": true,
         "start_time": "10:05:50.219126"
       },
-      "module_|-mgr_image_inspect_|-dockerng.inspect_|-run": {
+      "mgrcompat_|-mgr_image_inspect_|-dockerng.inspect_|-module_run": {
         "__id__": "mgr_image_inspect",
         "__run_num__": 1,
         "changes": {
@@ -141,12 +141,12 @@
         "result": true,
         "start_time": "10:05:50.198088"
       },
-      "module_|-mgr_image_profileupdate_|-dockerng.sls_build_|-run": {
+      "mgrcompat_|-mgr_image_profileupdate_|-dockerng.sls_build_|-module_run": {
         "__id__": "mgr_image_profileupdate",
         "__run_num__": 0,
         "changes": {
           "ret": {
-            "module_|-grains_update_|-grains.items_|-run": {
+            "mgrcompat_|-grains_update_|-grains.items_|-module_run": {
               "__id__": "grains_update",
               "__run_num__": 4,
               "changes": {
@@ -345,7 +345,7 @@
               "result": true,
               "start_time": "10:05:35.738259"
             },
-            "module_|-kernel_live_version_|-sumautil.get_kernel_live_version_|-run": {
+            "mgrcompat_|-kernel_live_version_|-sumautil.get_kernel_live_version_|-module_run": {
               "__id__": "kernel_live_version",
               "__run_num__": 5,
               "changes": {},
@@ -355,7 +355,7 @@
               "result": false,
               "start_time": "10:05:35.742557"
             },
-            "module_|-packages_|-pkg.info_installed_|-run": {
+            "mgrcompat_|-packages_|-pkg.info_installed_|-module_run": {
               "__id__": "packages",
               "__run_num__": 2,
               "changes": {
@@ -1358,7 +1358,7 @@
               "result": true,
               "start_time": "10:05:33.810530"
             },
-            "module_|-products_|-pkg.list_products_|-run": {
+            "mgrcompat_|-products_|-pkg.list_products_|-module_run": {
               "__id__": "products",
               "__run_num__": 3,
               "changes": {
@@ -1389,7 +1389,7 @@
               "result": true,
               "start_time": "10:05:35.310329"
             },
-            "module_|-sync_grains_|-saltutil.sync_grains_|-run": {
+            "mgrcompat_|-sync_grains_|-saltutil.sync_grains_|-module_run": {
               "__id__": "sync_grains",
               "__run_num__": 0,
               "changes": {
@@ -1401,7 +1401,7 @@
               "result": true,
               "start_time": "10:05:30.669589"
             },
-            "module_|-sync_modules_|-saltutil.sync_modules_|-run": {
+            "mgrcompat_|-sync_modules_|-saltutil.sync_modules_|-module_run": {
               "__id__": "sync_modules",
               "__run_num__": 1,
               "changes": {
@@ -1421,7 +1421,7 @@
         "result": true,
         "start_time": "10:05:20.310634"
       },
-      "module_|-mgr_image_remove_|-dockerng.rmi_|-run": {
+      "mgrcompat_|-mgr_image_remove_|-dockerng.rmi_|-module_run": {
         "__id__": "mgr_image_remove",
         "__run_num__": 3,
         "changes": {

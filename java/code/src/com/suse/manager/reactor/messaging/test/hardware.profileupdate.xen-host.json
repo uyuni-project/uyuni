@@ -21,7 +21,7 @@
         "out": "highstate",
         "retcode": 0,
         "return": {
-            "module_|-cpuinfo_|-status.cpuinfo_|-run": {
+            "mgrcompat_|-cpuinfo_|-status.cpuinfo_|-module_run": {
                 "__id__": "cpuinfo",
                 "__run_num__": 4,
                 "changes": {
@@ -134,7 +134,7 @@
                 "result": true,
                 "start_time": "14:18:47.180165"
             },
-            "module_|-grains_|-grains.items_|-run": {
+            "mgrcompat_|-grains_|-grains.items_|-module_run": {
                 "__id__": "grains",
                 "__run_num__": 3,
                 "changes": {
@@ -422,7 +422,7 @@
                 "result": true,
                 "start_time": "14:18:47.178703"
             },
-            "module_|-network-interfaces_|-network.interfaces_|-run": {
+            "mgrcompat_|-network-interfaces_|-network.interfaces_|-module_run": {
                 "__id__": "network-interfaces",
                 "__run_num__": 6,
                 "changes": {
@@ -512,7 +512,7 @@
                 "result": true,
                 "start_time": "14:18:47.529367"
             },
-            "module_|-network-ips_|-sumautil.primary_ips_|-run": {
+            "mgrcompat_|-network-ips_|-sumautil.primary_ips_|-module_run": {
                 "__id__": "network-ips",
                 "__run_num__": 7,
                 "changes": {
@@ -531,7 +531,7 @@
                 "result": true,
                 "start_time": "14:18:47.666810"
             },
-            "module_|-network-modules_|-sumautil.get_net_modules_|-run": {
+            "mgrcompat_|-network-modules_|-sumautil.get_net_modules_|-module_run": {
                 "__id__": "network-modules",
                 "__run_num__": 8,
                 "changes": {
@@ -550,7 +550,7 @@
                 "result": true,
                 "start_time": "14:18:47.740180"
             },
-            "module_|-smbios-records-baseboard_|-smbios.records_|-run": {
+            "mgrcompat_|-smbios-records-baseboard_|-smbios.records_|-module_run": {
                 "__id__": "smbios-records-baseboard",
                 "__run_num__": 11,
                 "changes": {
@@ -583,7 +583,7 @@
                 "result": true,
                 "start_time": "14:18:47.871871"
             },
-            "module_|-smbios-records-bios_|-smbios.records_|-run": {
+            "mgrcompat_|-smbios-records-bios_|-smbios.records_|-module_run": {
                 "__id__": "smbios-records-bios",
                 "__run_num__": 9,
                 "changes": {
@@ -630,7 +630,7 @@
                 "result": true,
                 "start_time": "14:18:47.741496"
             },
-            "module_|-smbios-records-chassis_|-smbios.records_|-run": {
+            "mgrcompat_|-smbios-records-chassis_|-smbios.records_|-module_run": {
                 "__id__": "smbios-records-chassis",
                 "__run_num__": 12,
                 "changes": {
@@ -664,7 +664,7 @@
                 "result": true,
                 "start_time": "14:18:47.932851"
             },
-            "module_|-smbios-records-system_|-smbios.records_|-run": {
+            "mgrcompat_|-smbios-records-system_|-smbios.records_|-module_run": {
                 "__id__": "smbios-records-system",
                 "__run_num__": 10,
                 "changes": {
@@ -691,7 +691,7 @@
                 "result": true,
                 "start_time": "14:18:47.809380"
             },
-            "module_|-sync_beacons_|-saltutil.sync_beacons_|-run": {
+            "mgrcompat_|-sync_beacons_|-saltutil.sync_beacons_|-module_run": {
                 "__id__": "sync_beacons",
                 "__run_num__": 2,
                 "changes": {
@@ -703,7 +703,7 @@
                 "result": true,
                 "start_time": "14:18:47.143974"
             },
-            "module_|-sync_grains_|-saltutil.sync_grains_|-run": {
+            "mgrcompat_|-sync_grains_|-saltutil.sync_grains_|-module_run": {
                 "__id__": "sync_grains",
                 "__run_num__": 1,
                 "changes": {
@@ -715,7 +715,7 @@
                 "result": true,
                 "start_time": "14:18:47.115778"
             },
-            "module_|-sync_modules_|-saltutil.sync_modules_|-run": {
+            "mgrcompat_|-sync_modules_|-saltutil.sync_modules_|-module_run": {
                 "__id__": "sync_modules",
                 "__run_num__": 0,
                 "changes": {
@@ -727,7 +727,7 @@
                 "result": true,
                 "start_time": "14:18:46.660561"
             },
-            "module_|-udevdb_|-udevdb.exportdb_|-run": {
+            "mgrcompat_|-udevdb_|-udevdb.exportdb_|-module_run": {
                 "__id__": "udevdb",
                 "__run_num__": 5,
                 "changes": {

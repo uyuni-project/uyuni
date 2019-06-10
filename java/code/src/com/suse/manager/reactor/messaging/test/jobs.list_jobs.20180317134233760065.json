@@ -4,7 +4,7 @@
     "Result": {
         "$minion_2": {
             "return": {
-                "module_|-mgr_actionchain_239_action_$action_2_1_chunk_1_|-state.apply_|-run": {
+                "mgrcompat_|-mgr_actionchain_239_action_$action_2_1_chunk_1_|-state.apply_|-module_run": {
                     "comment": "Module function state.apply executed", 
                     "name": "state.apply", 
                     "start_time": "13:42:35.113165", 
@@ -138,7 +138,7 @@
                     }, 
                     "__id__": "mgr_actionchain_239_action_$action_2_1"
                 }, 
-                "module_|-mgr_actionchain_239_action_$action_2_2_chunk_1_|-state.apply_|-run": {
+                "mgrcompat_|-mgr_actionchain_239_action_$action_2_2_chunk_1_|-state.apply_|-module_run": {
                     "comment": "Module function state.apply executed", 
                     "name": "state.apply", 
                     "start_time": "13:42:33.975027", 
@@ -170,7 +170,7 @@
         }, 
         "$minion_1": {
             "return": {
-                "module_|-mgr_actionchain_239_action_$action_1_2_chunk_1_|-state.apply_|-run": {
+                "mgrcompat_|-mgr_actionchain_239_action_$action_1_2_chunk_1_|-state.apply_|-module_run": {
                     "comment": "Module function state.apply executed", 
                     "name": "state.apply", 
                     "start_time": "13:42:35.007526", 
@@ -198,7 +198,7 @@
                     }, 
                     "__id__": "mgr_actionchain_239_action_$action_1_2"
                 }, 
-                "module_|-mgr_actionchain_239_action_$action_1_1_chunk_1_|-state.apply_|-run": {
+                "mgrcompat_|-mgr_actionchain_239_action_$action_1_1_chunk_1_|-state.apply_|-module_run": {
                     "comment": "Module function state.apply executed", 
                     "name": "state.apply", 
                     "start_time": "13:42:35.270498", 

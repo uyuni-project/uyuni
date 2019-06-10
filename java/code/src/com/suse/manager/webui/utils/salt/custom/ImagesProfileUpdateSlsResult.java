@@ -27,22 +27,22 @@ import java.util.Optional;
 public class ImagesProfileUpdateSlsResult {
 
     // used for old salt 2016.11 dockerng module
-    @SerializedName("module_|-mgr_image_profileupdate_|-dockerng.sls_build_|-run")
+    @SerializedName("mgrcompat_|-mgr_image_profileupdate_|-dockerng.sls_build_|-module_run")
     private Optional<StateApplyResult<Ret<PkgProfileUpdateSlsResult>>> dockerngSlsBuild = Optional.empty();
 
     // used for old salt 2016.11 dockerng module
-    @SerializedName("module_|-mgr_image_inspect_|-dockerng.inspect_|-run")
+    @SerializedName("mgrcompat_|-mgr_image_inspect_|-dockerng.inspect_|-module_run")
     private Optional<StateApplyResult<Ret<ImageInspectSlsResult>>> dockerngInspect = Optional.empty();
 
     // used for new salt 2018.3 docker module
-    @SerializedName("module_|-mgr_image_profileupdate_|-docker.sls_build_|-run")
+    @SerializedName("mgrcompat_|-mgr_image_profileupdate_|-docker.sls_build_|-module_run")
     private Optional<StateApplyResult<Ret<PkgProfileUpdateSlsResult>>> dockerSlsBuild = Optional.empty();
 
     // used for new salt 2018.3 docker module
-    @SerializedName("module_|-mgr_image_inspect_|-docker.inspect_image_|-run")
+    @SerializedName("mgrcompat_|-mgr_image_inspect_|-docker.inspect_image_|-module_run")
     private Optional<StateApplyResult<Ret<ImageInspectSlsResult>>> dockerInspect = Optional.empty();
 
-    @SerializedName("module_|-mgr_inspect_kiwi_image_|-kiwi_info.inspect_image_|-run")
+    @SerializedName("mgrcompat_|-mgr_inspect_kiwi_image_|-kiwi_info.inspect_image_|-module_run")
     private Optional<StateApplyResult<Ret<OSImageInspectSlsResult>>> kiwiInspect = Optional.empty();
 
     /**
