@@ -567,7 +567,7 @@ end
 
 And(/^I create the "([^"]*)" bootstrap repository for "([^"]*)" on the server$/) do |arch, host|
   node = get_target(host)
-  os_version = get_os_version(node)
+  os_version = get_os_version(node, false)
   cmd = 'false'
   if (os_version.include? '12') || (os_version.include? '15')
     cmd = "mgr-create-bootstrap-repo -c SLE-#{os_version}-#{arch}"
