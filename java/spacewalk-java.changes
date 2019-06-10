@@ -1,3 +1,5 @@
+- Synchronize Salt modules and states during registration
+
 -------------------------------------------------------------------
 Wed Jul 01 16:12:13 CEST 2020 - jgonzalez@suse.com
 
