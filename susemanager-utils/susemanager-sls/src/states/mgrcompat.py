@@ -63,4 +63,8 @@ def module_run(**kwargs):
         for item in kwargs[new_kwargs['name']] or []:
             new_kwargs.update(item)
 
-    return list(__salt__['state.single']('module.run', **new_kwargs).values())[0]
+    mod_ret = __salt__['state.single']('module.run', **new_kwargs)
+    if isinstance(mod_ret, dict):
+        return list(mod_ret.values())[0]
+    else:
+        return mod_ret
