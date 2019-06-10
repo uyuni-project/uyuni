@@ -423,16 +423,16 @@ public class SaltActionChainGeneratorServiceTest extends BaseTestCaseWithUser {
     public void testParseActionChainStateId() throws Exception {
         SaltActionChainGeneratorService service = new SaltActionChainGeneratorService();
         Optional<SaltActionChainGeneratorService.ActionChainStateId> result = service.parseActionChainStateId(
-                "module_|-mgr_actionchain_144_action_854_chunk_1_|-state.apply_|-run");
+                "mgrcompat_|-mgr_actionchain_144_action_854_chunk_1_|-state.apply_|-module_run");
         assertTrue(result.isPresent());
         assertEquals(result.get().getActionChainId(), 144);
         assertEquals(result.get().getActionId(), 854);
         assertEquals(result.get().getChunk(), 1);
 
-        result = service.parseActionChainStateId("module_|-mgr_actioncin_144_action_854_chunk_1_|-state.apply_|-run");
+        result = service.parseActionChainStateId("mgrcompat_|-mgr_actioncin_144_action_854_chunk_1_|-state.apply_|-module_run");
         assertFalse(result.isPresent());
 
-        result = service.parseActionChainStateId("module_|-mgr_actionchain_144_action_chunk_1_|-state.apply_|-run");
+        result = service.parseActionChainStateId("mgrcompat_|-mgr_actionchain_144_action_chunk_1_|-state.apply_|-module_run");
         assertFalse(result.isPresent());
     }
 

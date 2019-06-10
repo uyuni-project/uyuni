@@ -199,17 +199,17 @@ public class MonitoringService {
     public static Optional<MonitoringStatus> getStatus() {
         Optional<Map<String, Boolean>> res = invokeMonitoringCtl("status", Optional.empty(),
                 new Tuple2<>("node",
-                        "module_|-node_exporter_service_|-service.status_|-run"),
+                        "mgrcompat_|-node_exporter_service_|-service.status_|-module_run"),
                 new Tuple2<>("postgres",
-                        "module_|-postgres_exporter_service_|-service.status_|-run"),
+                        "mgrcompat_|-postgres_exporter_service_|-service.status_|-module_run"),
                 new Tuple2<>("tomcat",
-                        "module_|-jmx_tomcat_exporter_service_|-service.status_|-run"),
+                        "mgrcompat_|-jmx_tomcat_exporter_service_|-service.status_|-module_run"),
                 new Tuple2<>("taskomatic",
-                        "module_|-jmx_taskomatic_exporter_service_|-service.status_|-run"),
+                        "mgrcompat_|-jmx_taskomatic_exporter_service_|-service.status_|-module_run")
                 new Tuple2<>("tomcat:config",
-                        "module_|-jmx_tomcat_java_config_|-file.search_|-run"),
+                        "mgrcompat_|-jmx_tomcat_java_config_|-file.search_|-module_run"),
                 new Tuple2<>("taskomatic:config",
-                        "module_|-jmx_taskomatic_java_config_|-file.search_|-run"),
+                        "mgrcompat_|-jmx_taskomatic_java_config_|-file.search_|-module_run"),
                 new Tuple2<>("self_monitoring",
                         "cmd_|-mgr_is_prometheus_self_monitoring_enabled_|-grep*")
                 );

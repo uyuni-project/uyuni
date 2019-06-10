@@ -582,12 +582,12 @@ public class SaltServerActionService {
             // mgractionchains.start is executed via state.apply, get the actual output of the module
             // fist look for start result
             StateApplyResult<JsonElement> stateApplyResult =
-                    chunkResult.get("module_|-startssh_|-mgractionchains.start_|-run");
+                    chunkResult.get("mgrcompat_|-startssh_|-mgractionchains.start_|-module_run");
 
             if (stateApplyResult == null) {
                 // if no start result, look for resume
                 stateApplyResult =
-                        chunkResult.get("module_|-resumessh_|-mgractionchains.resume_|-run");
+                        chunkResult.get("mgrcompat_|-resumessh_|-mgractionchains.resume_|-module_run");
             }
 
             if (stateApplyResult == null) {
