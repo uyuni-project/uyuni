@@ -43,9 +43,9 @@ module LavandaBasic
     [out, code]
   end
 
-  def run_until_ok(cmd, timeout = DEFAULT_TIMEOUT)
+  def run_until_ok(cmd)
     result = nil
-    repeat_until_timeout(timeout: timeout, report_result: true) do
+    repeat_until_timeout(report_result: true) do
       result, code = run(cmd, false)
       break if code.zero?
       sleep 2
