@@ -403,6 +403,8 @@ public class RegisterMinionEventMessageAction implements MessageAction {
                 return;
             }
 
+            MinionList minionTarget = new MinionList(minionId);
+            SALT_SERVICE.syncAll(minionTarget);
             RegistrationUtils.finishRegistration(minion, activationKey, creator, !isSaltSSH);
             migrateMinionFormula(minionId, originalMinionId);
         }
