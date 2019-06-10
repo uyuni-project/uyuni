@@ -68,9 +68,10 @@ def check_restart(host, node, time_out)
 end
 
 # Extract the OS version by decoding the value in '/etc/os-release'
-# e.g.: VERSION_ID="12-SP1"
-def get_os_version(node)
-  os_version_raw, _code = node.run('grep "VERSION_ID=" /etc/os-release')
+# Use VERSION id = false, VERSION_ID otherwise
+def get_os_version(node, id = true)
+  field = id ? 'VERSION_ID' : 'VERSION'
+  os_version_raw, _code = node.run('grep "' + field + '=" /etc/os-release')
   os_version = os_version_raw.strip.split('=')[1]
   return nil if os_version.nil?
   os_version.delete! '"'
