@@ -1,5 +1,5 @@
 {
-    "module_|-sync_beacons_|-saltutil.sync_beacons_|-run": {
+    "mgrcompat_|-sync_beacons_|-saltutil.sync_beacons_|-module_run": {
       "comment": "Module function saltutil.sync_beacons executed",
       "name": "saltutil.sync_beacons",
       "start_time": "15:10:28.808934",
@@ -12,7 +12,7 @@
       },
       "__id__": "sync_beacons"
     },
-    "module_|-status_uptime_|-status.uptime_|-run": {
+    "mgrcompat_|-status_uptime_|-status.uptime_|-module_run": {
       "comment": "Module function status.uptime executed",
       "name": "status.uptime",
       "start_time": "15:10:28.902879",
@@ -33,7 +33,7 @@
       },
       "__id__": "status_uptime"
     },
-    "module_|-sync_grains_|-saltutil.sync_grains_|-run": {
+    "mgrcompat_|-sync_grains_|-saltutil.sync_grains_|-module_run": {
       "comment": "Module function saltutil.sync_grains executed",
       "name": "saltutil.sync_grains",
       "start_time": "15:10:27.968460",
@@ -46,7 +46,7 @@
       },
       "__id__": "sync_grains"
     },
-    "module_|-sync_modules_|-saltutil.sync_modules_|-run": {
+    "mgrcompat_|-sync_modules_|-saltutil.sync_modules_|-module_run": {
       "comment": "Module function saltutil.sync_modules executed",
       "name": "saltutil.sync_modules",
       "start_time": "15:10:27.664062",
@@ -59,7 +59,7 @@
       },
       "__id__": "sync_modules"
     },
-    "module_|-grains_update_|-grains.item_|-run": {
+    "mgrcompat_|-grains_update_|-grains.item_|-module_run": {
       "comment": "Module function grains.item executed",
       "name": "grains.item",
       "start_time": "15:10:28.919644",

@@ -10,7 +10,7 @@
     ],
     "jid": "20160407084101455804",
     "return": {
-        "module_|-packages_|-pkg.info_installed_|-run": {
+        "mgrcompat_|-packages_|-pkg.info_installed_|-module_run": {
             "comment": "Module function pkg.info_installed executed",
             "name": "pkg.info_installed",
             "start_time": "17:34:36.995780",
@@ -83,7 +83,7 @@
             },
             "__id__": "ubunturelease"
         },
-        "module_|-sync_grains_|-saltutil.sync_grains_|-run": {
+        "mgrcompat_|-sync_grains_|-saltutil.sync_grains_|-module_run": {
             "comment": "Module function saltutil.sync_grains executed",
             "name": "saltutil.sync_grains",
             "start_time": "17:34:36.302401",
@@ -96,7 +96,7 @@
             },
             "__id__": "sync_grains"
         },
-        "module_|-grains_update_|-grains.items_|-run": {
+        "mgrcompat_|-grains_update_|-grains.items_|-module_run": {
             "comment": "Module function grains.items executed",
             "name": "grains.items",
             "start_time": "17:34:37.645590",
@@ -346,7 +346,7 @@
             },
             "__id__": "grains_update"
         },
-        "module_|-kernel_live_version_|-sumautil.get_kernel_live_version_|-run": {
+        "mgrcompat_|-kernel_live_version_|-sumautil.get_kernel_live_version_|-module_run": {
             "comment": "Module function sumautil.get_kernel_live_version executed",
             "name": "sumautil.get_kernel_live_version",
             "start_time": "17:34:37.653415",
@@ -359,7 +359,7 @@
             },
             "__id__": "kernel_live_version"
         },
-        "module_|-sync_modules_|-saltutil.sync_modules_|-run": {
+        "mgrcompat_|-sync_modules_|-saltutil.sync_modules_|-module_run": {
             "comment": "Module function saltutil.sync_modules executed",
             "name": "saltutil.sync_modules",
             "start_time": "17:34:36.949199",

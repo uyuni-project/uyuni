@@ -27,7 +27,7 @@
         "out": "highstate",
         "retcode": 0,
         "return": {
-            "module_|-mgr_buildimage_|-dockerng.build_|-run": {
+            "mgrcompat_|-mgr_buildimage_|-dockerng.build_|-module_run": {
                 "__id__": "mgr_buildimage",
                 "__run_num__": 0,
                 "changes": {
@@ -42,7 +42,7 @@
                 "result": true,
                 "start_time": "13:49:00.962366"
             },
-            "module_|-mgr_pushimage_|-dockerng.push_|-run": {
+            "mgrcompat_|-mgr_pushimage_|-dockerng.push_|-module_run": {
                 "__id__": "mgr_pushimage",
                 "__run_num__": 1,
                 "changes": {

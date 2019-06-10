@@ -1,6 +1,6 @@
 {
     "local": {
-        "module_|-jmx_taskomatic_exporter_service_|-service.status_|-run": {
+        "mgrcompat_|-jmx_taskomatic_exporter_service_|-service.status_|-module_run": {
             "name": "service.status",
             "changes": {
                 "ret": true
@@ -13,7 +13,7 @@
             "duration": 31.181,
             "__id__": "jmx_taskomatic_exporter_service"
         },
-        "module_|-jmx_tomcat_exporter_service_|-service.status_|-run": {
+        "mgrcompat_|-jmx_tomcat_exporter_service_|-service.status_|-module_run": {
             "name": "service.status",
             "changes": {
                 "ret": true
@@ -26,7 +26,7 @@
             "duration": 22.479,
             "__id__": "jmx_tomcat_exporter_service"
         },
-        "module_|-node_exporter_service_|-service.status_|-run": {
+        "mgrcompat_|-node_exporter_service_|-service.status_|-module_run": {
             "name": "service.status",
             "changes": {
                 "ret": true
@@ -39,7 +39,7 @@
             "duration": 22.76,
             "__id__": "node_exporter_service"
         },
-        "module_|-postgres_exporter_service_|-service.status_|-run": {
+        "mgrcompat_|-postgres_exporter_service_|-service.status_|-module_run": {
             "name": "service.status",
             "changes": {
                 "ret": true
