@@ -11,7 +11,7 @@ def wait_action_complete(actionid, timeout: DEFAULT_TIMEOUT)
   @sid = @cli.call('auth.login', 'admin', 'admin')
   repeat_until_timeout(timeout: timeout, message: 'Action was not found among completed actions') do
     list = @cli.call('schedule.list_completed_actions', @sid)
-    break if list.any?{ |a| a['id'] == actionid }
+    break if list.any? { |a| a['id'] == actionid }
     sleep 2
   end
 end
