@@ -132,3 +132,11 @@ Feature: Content lifecycle
     And I click on "Promote environment" in "Promote version 2 into prod_name" modal
     Then I should see a "Version 2 successfully promoted into prod_name" text
     And I should see a "Version 2: test version message 2" text in the environment "prod_name"
+
+  Scenario: Clean up the Content Lifecycle Management feature
+    Given I am authorized as "admin" with password "admin"
+    When I follow the left menu "Content Lifecycle > Projects"
+    And I follow "clp_name"
+    When I click on "Delete"
+    Then I click on "Delete" in element "delete-project-modal"
+    And I should see a "Project clp_label deleted successfully" text
