@@ -110,6 +110,14 @@ When(/^I execute mgr\-sync refresh$/) do
   $command_output = sshcmd('mgr-sync refresh', ignore_err: true)[:stderr]
 end
 
+When(/^I make sure no spacewalk\-repo\-sync is in execution$/) do
+  repeat_until_timeout(message: 'Could not kill all spacewalk-repo-sync instances') do
+    command_output = sshcmd('killall spacewalk-repo-sync', ignore_err: true)
+    break unless command_output[:stderr].empty?
+    sleep 2
+  end
+end
+
 When(/^I execute mgr\-bootstrap "([^"]*)"$/) do |arg1|
   arch = 'x86_64'
   $command_output = sshcmd("mgr-bootstrap --activation-keys=1-SUSE-PKG-#{arch} #{arg1}")[:stdout]
