@@ -159,6 +159,14 @@ When(/^I click on "([^"]*)"$/) do |arg1|
   end
 end
 #
+# Click on a button which appears inside of <div> with
+# the given "id"
+When(/^I click on "([^"]*)" in element "([^"]*)"$/) do |arg1, arg2|
+  within(:xpath, "//div[@id=\"#{arg2}\"]") do
+    click_button arg1, match: :first
+  end
+end
+#
 # Click on a button and confirm in alert box
 When(/^I click on "([^"]*)" and confirm$/) do |arg1|
   accept_alert do
