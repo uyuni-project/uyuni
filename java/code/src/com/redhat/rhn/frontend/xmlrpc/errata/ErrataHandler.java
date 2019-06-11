@@ -56,7 +56,6 @@ import com.redhat.rhn.manager.errata.ErrataManager;
 import com.redhat.rhn.manager.errata.cache.ErrataCacheManager;
 import com.redhat.rhn.manager.rhnpackage.PackageManager;
 import com.redhat.rhn.manager.user.UserManager;
-import com.suse.utils.Opt;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -67,9 +66,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
-import java.util.function.Function;
 import org.apache.commons.lang3.StringUtils;
 
+import static java.util.Optional.empty;
 import static java.util.Optional.ofNullable;
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toMap;
@@ -226,7 +225,7 @@ public class ErrataHandler extends BaseHandler {
      // Get the logged in user. We don't care what roles this user has, we
         // just want to make sure the caller is logged in.
 
-        Errata errata = lookupErratumByAdvisoryAndOrg(advisoryName, loggedInUser.getOrg());
+        Errata errata = lookupAccessibleErratum(advisoryName, empty(), loggedInUser.getOrg());
 
         Map<String, Object> errataMap = new HashMap<String, Object>();
 
@@ -912,34 +911,6 @@ public class ErrataHandler extends BaseHandler {
     }
 
     /**
-     * Retrieves the errata that belongs to a given organization, given an advisory name.
-     * If there is not any, returns the vendor errata with the same name.
-     * Throw a Fault exception if the errata is not found
-     * @param advisoryName The advisory name for the erratum you're looking for
-     * @param org the organization
-     * @return Returns the errata or a Fault Exception
-     * @throws FaultException Occurs when the erratum is not found
-     */
-    private Errata lookupErratumByAdvisoryAndOrg(String advisoryName, Org org) throws FaultException {
-        List<Errata> erratas = lookupVendorAndUserErrataByAdvisoryAndOrg(advisoryName, org);
-
-        return Opt.fold(
-                ofNullable(erratas),
-                null, // no errata found
-                r -> Opt.fold(
-                        r.stream().filter(e ->
-                                Opt.fold(ofNullable(e.getOrg()),
-                                        () -> false, // filter out vendor's erratas
-                                        o -> o.getId() == org.getId() // filter in only user's erratas
-                                )
-                        ).findFirst(),
-                        () -> erratas.stream().findFirst().get(),  // no user's errata, get the vendor's one
-                        Function.identity()
-                )
-        );
-    }
-
-    /**
      * Retrieves the list of errata that belongs to a vendor or a given organization, given an advisory name.
      * Throw a Fault exception if the errata is not found
      * @param advisoryName The advisory name for the erratum you're looking for
@@ -1387,7 +1358,6 @@ public class ErrataHandler extends BaseHandler {
      * @param loggedInUser The current user
      * @param advisory The advisory Name of the errata to publish
      * @param channelLabels List of channels to publish the errata to
-     * @throws InvalidChannelRoleException if the user perms are incorrect
      * @return the published errata
      *
      * @xmlrpc.doc Publish an existing (unpublished) errata to a set of channels.
@@ -1398,10 +1368,9 @@ public class ErrataHandler extends BaseHandler {
      * @xmlrpc.returntype
      *          $ErrataSerializer
      */
-    public Errata publish(User loggedInUser, String advisory, List<String> channelLabels)
-            throws InvalidChannelRoleException {
+    public Errata publish(User loggedInUser, String advisory, List<String> channelLabels) {
         List<Channel> channels = verifyChannelList(channelLabels, loggedInUser);
-        Errata toPublish = lookupErratumByAdvisoryAndOrg(advisory, loggedInUser.getOrg());
+        Errata toPublish = lookupAccessibleErratum(advisory, empty(), loggedInUser.getOrg());
         return publish(toPublish, channels, loggedInUser, false);
     }
 
