@@ -12,11 +12,12 @@
 
 Feature: Install a package on the minion with staging enabled
 
-  Scenario: Pre-requisite: install virgo-dummy-1.0 package
+  Scenario: Pre-requisite: install virgo-dummy-1.0 package, make sure orion-dummy is not present
     When I enable repository "Devel_Galaxy_BuildRepo" on this "sle-minion"
+    And I run "zypper --non-interactive remove -y orion-dummy" on "sle-minion" without error control
     And I install package "virgo-dummy-1.0" on this "sle-minion"
 
-  Scenario: Pre-requisite: refresh package list and check newly installed packages on SLE minion client
+  Scenario: Pre-requisite: refresh package list
     When I refresh packages list via spacecmd on "sle-minion"
     And I wait until refresh package list on "sle-minion" is finished
     Then spacecmd should show packages "virgo-dummy-1.0" installed on "sle-minion"
