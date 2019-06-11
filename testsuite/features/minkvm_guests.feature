@@ -17,6 +17,7 @@ Feature: Be able to manage KVM virtual machines via the GUI
     And I click on "Bootstrap"
     And I wait until I see "Successfully bootstrapped host! " text
     And I wait until onboarding is completed for "kvm-server"
+    And I restart salt-minion on "kvm-server"
     # Shorten the virtpoller interval to avoid loosing time
     And I reduce virtpoller run interval on "kvm-server"
 
