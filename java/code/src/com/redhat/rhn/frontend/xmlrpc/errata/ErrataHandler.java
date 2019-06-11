@@ -1091,12 +1091,23 @@ public class ErrataHandler extends BaseHandler {
      * @throws FaultException if no matching errata is found
      */
     private Errata lookupAccessibleErratum(String advisory, Optional<Org> org, Org loggedInUserOrg) {
-        return org
-                .flatMap(o -> ofNullable(ErrataManager.lookupByAdvisoryAndOrg(advisory, o)))
-                .or(() -> ofNullable(ErrataManager.lookupByAdvisoryAndOrg(advisory, loggedInUserOrg)))
-                .or(() -> ofNullable(ErrataManager.lookupByAdvisoryAndOrg(advisory, null))) // vendor errata
-                .orElseThrow(() -> new FaultException(-208, "no_such_patch",
-                        "The patch " + advisory + " cannot be found."));
+        Optional<Errata> errata = org.flatMap(o -> ofNullable(ErrataManager.lookupByAdvisoryAndOrg(advisory, o)));
+
+        if (errata.isPresent()) {
+            return errata.get();
+        }
+
+        Errata loggedInUserErrata = ErrataManager.lookupByAdvisoryAndOrg(advisory, loggedInUserOrg);
+        if (loggedInUserErrata != null) {
+            return loggedInUserErrata;
+        }
+
+        Errata vendorErrata = ErrataManager.lookupByAdvisoryAndOrg(advisory, null);
+        if (vendorErrata != null) {
+            return vendorErrata;
+        }
+
+        throw new FaultException(-208, "no_such_patch", "The patch " + advisory + " cannot be found.");
     }
 
     /**
