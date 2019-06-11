@@ -658,6 +658,14 @@ public class ErrataHandlerTest extends BaseHandlerTestCase {
     }
 
     public void testCloneErrata() throws Exception {
+        cloneErrataTest(false);
+    }
+
+    public void testCloneVendorErrata() throws Exception {
+        cloneErrataTest(true);
+    }
+
+    private void cloneErrataTest(boolean vendor) throws Exception {
         Channel channel = ChannelFactoryTest.createTestChannel(admin);
         channel.setOrg(admin.getOrg());
 
@@ -671,8 +679,11 @@ public class ErrataHandlerTest extends BaseHandlerTestCase {
 
         channel.addPackage(chanPack);
 
-        Errata toClone = ErrataFactoryTest.createTestPublishedErrata(
-                admin.getOrg().getId());
+        Long orgId = admin.getOrg().getId();;
+        if (vendor) {
+            orgId = null;
+        }
+        Errata toClone = ErrataFactoryTest.createTestPublishedErrata(orgId);
         toClone.addPackage(errataPack);
 
         ArrayList errata = new ArrayList();
