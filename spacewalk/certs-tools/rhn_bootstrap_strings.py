@@ -639,7 +639,7 @@ if [ "$INSTALLER" == apt ]; then
         done
     fi
     # try update main packages for registration from any repo which is available
-    apt-get install --only-upgrade salt-common salt-minion ||:
+    apt-get --yes install --only-upgrade salt-common salt-minion ||:
 
     # remove bootstrap repo
     rm -f $CLIENT_REPO_FILE
