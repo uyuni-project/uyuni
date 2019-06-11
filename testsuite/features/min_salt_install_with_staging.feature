@@ -52,7 +52,6 @@ Feature: Install a package on the minion with staging enabled
     Then I should see a "1 package install has been scheduled for" text
     And I wait until the package "orion-dummy-1.1-1.1" has been cached on this "sle-minion"
     And I wait for "orion-dummy-1.1-1.1" to be installed on this "sle-minion"
-    Then I remove package "orion-dummy-1.1-1.1" from this "sle-minion"
 
   Scenario: Install patch in the future and check for staging
     Given I am on the Systems overview page of this "sle-minion"
@@ -77,6 +76,9 @@ Feature: Install a package on the minion with staging enabled
     Given I am on the Systems overview page of this "sle-minion"
     When I follow "Software" in the content area
     And I follow "List / Remove"
+    And I enter "orion-dummy" in the css "input[placeholder='Filter by Package Name: ']"
+    And I click on the css "button.spacewalk-button-filter"
+    And I check "orion-dummy" in the list
     And I enter "virgo-dummy" in the css "input[placeholder='Filter by Package Name: ']"
     And I click on the css "button.spacewalk-button-filter"
     And I check "virgo-dummy" in the list
