@@ -21,3 +21,9 @@ When(/^I add the "([^"]*)" channel to sources$/) do |channel|
     find(:xpath, './/input[@type="checkbox"]').set(true)
   end
 end
+
+Then(/^I wait until I see "([^"]*)" text in the environment "([^"]*)"$/) do |text, env|
+  within(:xpath, "//h3[text()='#{env}']/../..") do
+    raise unless page.has_text?(text, wait: DEFAULT_TIMEOUT)
+  end
+end
