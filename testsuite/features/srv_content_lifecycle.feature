@@ -15,7 +15,7 @@ Feature: Content lifecycle
     And I enter "clp_name" as "name"
     And I enter "clp_desc" as "description"
     And I click on "Create"
-    Then I should see a "Project clp_label created successfully" text
+    Then I wait until I see "Project clp_label created successfully" text
     And I should see a "Content Lifecycle Project - clp_name" text
 
   Scenario: Verify the content lifecycle project page
@@ -37,7 +37,7 @@ Feature: Content lifecycle
     And I follow "Attach/Detach Sources"
     And I select "SLES12-SP4-Pool for x86_64" from "selectedBaseChannel"
     And I click on "Save"
-    Then I should see a "Sources edited successfully" text
+    Then I wait until I see "Sources edited successfully" text
     And I should see a "SLES12-SP4-Pool for x86_64" text
     And I should see a "SLE-Manager-Tools12-Updates for x86_64 SP4" text
     And I should see a "SLES12-SP4-Updates for x86_64" text
@@ -54,14 +54,14 @@ Feature: Content lifecycle
     And I enter "dev_name" as "name"
     And I enter "dev_desc" as "description"
     And I click on "Save"
-    Then I should see a "Environment created successfully" text
+    Then I wait until I see "Environment created successfully" text
     And I should see a "dev_name" text
     And I should see a "dev_desc" text
     When I follow "Add Environment"
     And I enter "prod_name" as "name"
     And I enter "prod_desc" as "description"
     And I click on "Save"
-    Then I should see a "Environment created successfully" text
+    Then I wait until I see "Environment created successfully" text
     And I should see a "prod_name" text
     And I should see a "prod_desc" text
     When I follow "Add Environment"
@@ -69,7 +69,7 @@ Feature: Content lifecycle
     And I enter "qa_desc" as "description"
     And I select "prod_name" from "predecessorLabel"
     And I click on "Save"
-    Then I should see a "Environment created successfully" text
+    Then I wait until I see "Environment created successfully" text
     And I should see a "qa_name" text
     And I should see a "qa_desc" text
 
@@ -79,9 +79,7 @@ Feature: Content lifecycle
     And I follow "clp_name"
     Then I should see a "not built" text in the environment "qa_name"
     When I click on "Build (4)"
-    Then I should see a "Version 1: test version message 1" text in the environment "dev_name"
     And I should see a "Version 1 history" text
-    #And I should see a "Sources edited successfully" text
     When I enter "test version message 1" as "message"
     And I click the environment build button
     Then I should see a "Version 1 successfully built into dev_name" text
@@ -98,11 +96,11 @@ Feature: Content lifecycle
     And I should see a "not built" text in the environment "qa_name"
     When I click promote for Development to QA
     And I click on "Promote environment" in "Promote version 1 into qa_name" modal
-    Then I should see a "Version 1 successfully promoted into qa_name" text
+    Then I wait until I see "Version 1 successfully promoted into qa_name" text
     And I should see a "Version 1: test version message 1" text in the environment "qa_name"
     When I click promote for QA to Production
     And I click on "Promote environment" in "Promote version 1 into prod_name" modal
-    Then I should see a "Version 1 successfully promoted into prod_name" text
+    Then I wait until I see "Version 1 successfully promoted into prod_name" text
     And I should see a "Version 1: test version message 1" text in the environment "prod_name"
 
   Scenario: Add new sources and promote again
@@ -113,24 +111,24 @@ Feature: Content lifecycle
     When I follow "Attach/Detach Sources"
     And I add the "Test Base Channel" channel to sources
     And I click on "Save"
-    Then I should see a "Sources edited successfully" text
+    Then I wait until I see "Sources edited successfully" text
     And I should see a "Test Base Channel" text
     And I should see a "Build (1)" text
     And I should see a "Version 2: (draft - not built) - Check the changes below" text
     When I click on "Build (1)"
-    Then I should see a "Version 2 history" text
+    Then I wait until I see "Version 2 history" text
     When I enter "test version message 2" as "message"
     And I enter "test version message 2" as "message"
     And I click the environment build button
-    Then I should see a "Version 2 successfully built into dev_name" text
+    Then I wait until I see "Version 2 successfully built into dev_name" text
     And I should see a "Version 2: test version message 2" text
     When I click promote for Development to QA
     And I click on "Promote environment" in "Promote version 2 into qa_name" modal
-    Then I should see a "Version 2 successfully promoted into qa_name" text
+    Then I wait until I see "Version 2 successfully promoted into qa_name" text
     And I should see a "Version 2: test version message 2" text in the environment "qa_name"
     When I click promote for QA to Production
     And I click on "Promote environment" in "Promote version 2 into prod_name" modal
-    Then I should see a "Version 2 successfully promoted into prod_name" text
+    Then I wait until I see "Version 2 successfully promoted into prod_name" text
     And I should see a "Version 2: test version message 2" text in the environment "prod_name"
 
   Scenario: Clean up the Content Lifecycle Management feature
@@ -139,4 +137,4 @@ Feature: Content lifecycle
     And I follow "clp_name"
     When I click on "Delete"
     Then I click on "Delete" in element "delete-project-modal"
-    And I should see a "Project clp_label deleted successfully" text
+    And I wait until I see "Project clp_label deleted successfully" text
