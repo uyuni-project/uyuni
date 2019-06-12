@@ -391,15 +391,15 @@ class ImageViewList extends React.Component {
     let icon;
 
     if(!row.patches || row.installedPackages === 0) {
-      icon = <i className="fa fa-question-circle fa-1-5x" title="No information"/>
+      icon = <i className="fa fa-question-circle fa-1-5x" title={t("No information")}/>
     } else if (row.patches.critical > 0) {
-      icon = <i className="fa fa-exclamation-circle fa-1-5x text-danger" title={"Critical updates available"}/>
+      icon = <i className="fa fa-exclamation-circle fa-1-5x text-danger" title={t("Critical updates available")}/>
     } else if (row.patches.noncritical > 0) {
-      icon = <i className="fa fa-exclamation-triangle fa-1-5x text-warning" title={"Non-critical updates available"}/>
+      icon = <i className="fa fa-exclamation-triangle fa-1-5x text-warning" title={t("Non-critical updates available")}/>
     } else if (row.packages > 0) {
-      icon = <i className="fa fa-exclamation-triangle fa-1-5x text-warning" title={"Package updates available"}/>
+      icon = <i className="fa fa-exclamation-triangle fa-1-5x text-warning" title={t("Package updates available")}/>
     } else {
-      icon = <i className="fa fa-check-circle fa-1-5x text-success" title="Image is up to date"/>
+      icon = <i className="fa fa-check-circle fa-1-5x text-success" title={t("Image is up to date")}/>
     }
 
     return icon;
@@ -408,17 +408,17 @@ class ImageViewList extends React.Component {
   renderStatusIcon(row) {
     let icon;
     if(row.external) {
-      icon = <i className="fa fa-minus-circle fa-1-5x text-muted" title="Built externally"/>
+      icon = <i className="fa fa-minus-circle fa-1-5x text-muted" title={t("Built externally")}/>
     } else if(row.statusId === 0) {
-      icon = <i className="fa fa-clock-o fa-1-5x" title="Queued"/>
+      icon = <i className="fa fa-clock-o fa-1-5x" title={t("Queued")}/>
     } else if(row.statusId === 1) {
-      icon = <i className="fa fa-exchange fa-1-5x text-info" title="Building"/>
+      icon = <i className="fa fa-exchange fa-1-5x text-info" title={t("Building")}/>
     } else if(row.statusId === 2) {
-      icon = <i className="fa fa-check-circle fa-1-5x text-success" title="Built"/>
+      icon = <i className="fa fa-check-circle fa-1-5x text-success" title={t("Built")}/>
     } else if(row.statusId === 3) {
-      icon = <i className="fa fa-times-circle-o fa-1-5x text-danger" title="Failed"/>
+      icon = <i className="fa fa-times-circle-o fa-1-5x text-danger" title={t("Failed")}/>
     } else {
-      icon = <i className="fa fa-question-circle fa-1-5x" title="Unknown"/>
+      icon = <i className="fa fa-question-circle fa-1-5x" title={t("Unknown")}/>
     }
 
     return icon;

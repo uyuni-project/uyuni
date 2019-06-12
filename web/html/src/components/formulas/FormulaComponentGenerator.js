@@ -37,7 +37,7 @@ function generateFormulaComponentForId(element, value, formulaForm, id, wrapper)
                 <div className="input-group small-color-picker">
                     <input type="color" name={element.$name} id={id} className="form-control" onChange={formulaForm.handleChange} title={element.$help} disabled={isDisabled} value={value} />
                     <span className="input-group-btn">
-                        <button className="btn btn-default" title="Reset" onClick={function (event) { event.preventDefault(); console.warn("Reseting color picker is not implemented!"); /* TODO: reset Value */ }}>
+                        <button className="btn btn-default" title={t("Reset")} onClick={function (event) { event.preventDefault(); console.warn("Reseting color picker is not implemented!"); /* TODO: reset Value */ }}>
                             <i className="fa fa-undo no-margin" />
                         </button>
                     </span>

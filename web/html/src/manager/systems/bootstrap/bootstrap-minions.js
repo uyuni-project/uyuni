@@ -206,7 +206,7 @@ class BootstrapMinions extends React.Component {
                     <label className="col-md-3 control-label">Activation Key:</label>
                     <div className="col-md-6">
                        <select value={this.state.activationKey} onChange={this.activationKeyChanged} className="form-control" name="activationKeys">
-                         <option key="none" value="">None</option>
+                         <option key="none" value="">{t("None")}</option>
                          {
                              this.props.availableActivationKeys.map(k =>
                                 <option key={k} value={k}>{ k }</option>
@@ -219,7 +219,7 @@ class BootstrapMinions extends React.Component {
                     <label className="col-md-3 control-label">{t("Proxy")}:</label>
                     <div className="col-md-6">
                        <select value={this.state.proxy} onChange={this.proxyChanged} className="form-control" name="proxies">
-                         <option key="none" value="">None</option>
+                         <option key="none" value="">{t("None")}</option>
                          {
                              this.props.proxies.map(p =>
                                 <option key={p.id} value={p.id}>{ p.name }

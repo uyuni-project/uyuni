@@ -309,7 +309,7 @@ class CreateImageProfile extends React.Component {
       <Select name="activationKey" label={t("Activation Key")} invalidHint={t("Activation key is required for kiwi images.")}
         onChange={this.handleTokenChange} labelClass="col-md-3" divClass="col-md-6"
         hint={hint} required={isRequired}>
-        <option key="0" value="">None</option>
+        <option key="0" value="">{t("None")}</option>
         {
           activationKeys.sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase())).map(k =>
             <option key={k} value={k}>{k}</option>

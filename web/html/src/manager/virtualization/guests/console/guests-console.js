@@ -165,7 +165,7 @@ class GuestsConsole extends React.Component<Props, State> {
           <ul className="nav navbar-nav navbar-utility">
             <li>
               <Button
-                title="Toggle full size"
+                title={t("Toggle full size")}
                 icon={this.state.expanded ? 'fa-compress' : 'fa-expand'}
                 handler={this.toggleScale}
                 disabled={!this.state.connected || !canResize}

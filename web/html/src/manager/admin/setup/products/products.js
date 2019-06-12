@@ -835,12 +835,12 @@ const ChannelsPopUp = (props) => {
     props.item != null ?
       (
         <div>
-          <ChannelList title='Mandatory Channels'
+          <ChannelList title={t("Mandatory Channels")}
               items={props.item.channels.filter(c => !c.optional)
                 .sort((a, b) => a.label.toLowerCase().localeCompare(b.label.toLowerCase()))
               }
               className={'product-channel-list'} />
-          <ChannelList title='Optional Channels'
+          <ChannelList title={t("Optional Channels")}
               items={props.item.channels.filter(c => c.optional)
                 .sort((a, b) => a.label.toLowerCase().localeCompare(b.label.toLowerCase()))
               }
