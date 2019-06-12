@@ -591,14 +591,19 @@ When(/^I wait until the table contains "FINISHED" or "SKIPPED" followed by "FINI
   repeat_until_timeout(timeout: 800, message: 'Task does not look FINISHED yet') do
     visit current_url
     # get all texts in the table column under the "Status" header
-    under_status = "//tr/td[count(//th[contains(*/text(), 'Status')]/preceding-sibling::*) + 1]"
-    statuses = page.all(:xpath, under_status).map(&:text)
+    status_tds = "//tr/td[count(//th[contains(*/text(), 'Status')]/preceding-sibling::*) + 1]"
+    statuses = page.all(:xpath, status_tds).map(&:text)
 
-    # disregard any number of initial SKIPPED rows
-    # this is expected when Taskomatic triggers the same task concurrently
-    first_non_skipped = statuses.drop_while do |status|
-      status == 'SKIPPED'
-    end.first
+    # get all texts in the table column under the "Start time" header
+    start_time_tds = "//tr/td[count(//th[contains(*/text(), 'Start Time')]/preceding-sibling::*) + 1]"
+    start_times = page.all(:xpath, start_time_tds).map(&:text)
+
+    # disregard any number of initial unimportant rows, that is:
+    #  - INTERRUPTED rows with no start time (expected when Taskomatic had been restarted)
+    #  - SKIPPED rows (expected when Taskomatic triggers the same task concurrently)
+    first_non_skipped = statuses.zip(start_times).drop_while do |status, start_time|
+      (status == 'INTERRUPTED' && start_time.empty?) || status == 'SKIPPED'
+    end.first.first
 
     # halt in case we are done, or if an error is detected
     break if first_non_skipped == 'FINISHED'
