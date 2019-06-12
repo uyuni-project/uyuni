@@ -50,3 +50,23 @@ class TestSCErrata:
         assert sorted(out) == ["one", "two"]
         assert shell.generate_errata_cache.called
 
+    def test_errata_listaffectedsystems_noargs(self, shell):
+        """
+        Test do_errata_listaffectedsystems without an arguments.
+
+        :param shell:
+        :return:
+        """
+
+        shell.help_errata_listaffectedsystems = MagicMock()
+        shell.expand_errata = MagicMock()
+        shell.client.errata.listAffectedSystems = MagicMock()
+        mprint = MagicMock()
+
+        with patch("spacecmd.errata.print", mprint) as prt:
+            spacecmd.errata.do_errata_listaffectedsystems(shell, "")
+
+        assert not shell.client.errata.listAffectedSystems. called
+        assert not shell.expand_errata.called
+        assert not mprint.called
+        assert shell.help_errata_listaffectedsystems.called
