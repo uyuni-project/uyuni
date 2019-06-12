@@ -63,12 +63,3 @@ Feature: Be able to list available channels and enable them
     When I remove the mgr-sync cache file
     And I execute mgr-sync refresh
     Then I should get "Timeout. No user input for 60 seconds. Exiting..."
-
-  Scenario: Cleanup: abort all reposync activity
-    Given I am authorized as "admin" with password "admin"
-    When I follow the left menu "Admin > Task Schedules"
-    And I follow "mgr-sync-refresh-default"
-    And I choose "disabled"
-    And I click on "Update Schedule"
-    And I click on "Delete Schedule"
-    Then I make sure no spacewalk-repo-sync is in execution

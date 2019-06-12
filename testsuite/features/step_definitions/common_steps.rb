@@ -395,8 +395,8 @@ When(/^I view the primary subscription list$/) do
   raise unless find('i.fa-th-list', match: :first).click
 end
 
-When(/^I view the primary subscription list for asdf$/) do
-  within(:xpath, "//h3[contains(text(), 'asdf')]/../..") do
+When(/^I view the primary subscription list for SCC user$/) do
+  within(:xpath, "//h3[contains(text(), 'SCC user')]/../..") do
     raise unless find('i.fa-th-list', match: :first).click
   end
 end

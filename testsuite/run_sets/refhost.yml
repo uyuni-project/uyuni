@@ -24,7 +24,10 @@
 - features/core_ubuntu_salt_ssh.feature
 # these features sync real channels (last core features)
 - features/core_srv_sync_channels.feature
-- features/core_srv_setup_wizard.feature
+- features/core_srv_products_page.feature
+- features/core_srv_mgr_sync_products.feature
+  # we let the synchronization run
+  # - features/core_srv_abort_all_sync.feature
 
 ## Core features END ###
 
@@ -33,13 +36,8 @@
 
 # IDEMPOTENT
 
-- features/srv_menu.feature
-- features/srv_clone_channel_npn.feature
-- features/srv_distro_cobbler.feature
-- features/trad_config_channel.feature
-- features/allcli_config_channel.feature
-- features/min_config_state_channel.feature
-- features/srv_sync_products.feature
+# (no secondary features on reference hosts)
+
 ## Secondary features END ##
 
 
