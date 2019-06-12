@@ -66,7 +66,7 @@ class TestSCErrata:
         with patch("spacecmd.errata.print", mprint) as prt:
             spacecmd.errata.do_errata_listaffectedsystems(shell, "")
 
-        assert not shell.client.errata.listAffectedSystems. called
+        assert not shell.client.errata.listAffectedSystems.called
         assert not shell.expand_errata.called
         assert not mprint.called
         assert shell.help_errata_listaffectedsystems.called
