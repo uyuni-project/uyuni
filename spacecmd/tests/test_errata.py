@@ -70,3 +70,31 @@ class TestSCErrata:
         assert not shell.expand_errata.called
         assert not mprint.called
         assert shell.help_errata_listaffectedsystems.called
+
+    def test_errata_listaffectedsystems_by_errata_name(self, shell):
+        """
+        Test do_errata_listaffectedsystems with errata name.
+
+        :param shell:
+        :return:
+        """
+
+        shell.help_errata_listaffectedsystems = MagicMock()
+        shell.expand_errata = MagicMock(return_value=["webstack", "databases"])
+        shell.client.errata.listAffectedSystems = MagicMock(side_effect=[
+            [{"name": "web1.suse.com"}, {"name": "web2.suse.com"}, {"name": "web3.suse.com"}],
+            [{"name": "db1.suse.com"}, {"name": "db2.suse.com"}, {"name": "db3.suse.com"}],
+        ])
+        mprint = MagicMock()
+
+        with patch("spacecmd.errata.print", mprint) as prt:
+            spacecmd.errata.do_errata_listaffectedsystems(shell, "foo")
+
+        assert not shell.help_errata_listaffectedsystems.called
+        assert shell.client.errata.listAffectedSystems.called
+        assert shell.expand_errata.called
+        assert mprint.called
+
+        assert_list_args_expect(mprint.call_args_list,
+                                ['webstack:', 'web1.suse.com\nweb2.suse.com\nweb3.suse.com',
+                                 '----------', 'databases:', 'db1.suse.com\ndb2.suse.com\ndb3.suse.com'])
