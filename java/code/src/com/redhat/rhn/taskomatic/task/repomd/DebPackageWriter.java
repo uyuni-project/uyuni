@@ -106,9 +106,10 @@ public class DebPackageWriter {
                 out.newLine();
             }
 
-            String multiarch = pkgDto.getMultiArch();
-            if (multiarch != null) {
-                out.write("Multi-Arch: " + multiarch);
+            String multiArch = pkgDto.getMultiArch();
+            if (multiArch != null && !multiArch.equalsIgnoreCase("")) {
+                out.write("Multi-Arch: ");
+                out.write(multiArch);
                 out.newLine();
             }
 

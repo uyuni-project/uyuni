@@ -590,7 +590,7 @@ public class PackageDto extends BaseDto {
      * @param multiArchIn The Multi-Arch header for Debian
      */
     public void setMultiArch(String multiArchIn) {
-        multiArch = multiArchIn;
+        this.multiArch = multiArchIn;
     }
 
     /**

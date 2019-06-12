@@ -33,7 +33,7 @@ class debBinaryPackage(headerSource.rpmBinaryPackage):
 
         self.tagMap = headerSource.rpmBinaryPackage.tagMap.copy()
         self.tagMap.update({
-            'multi_arch': 'Multi-Arch'
+            'multi_arch': 'Multi-Arch',
         })
 
         # Remove already-mapped tags
