@@ -1,3 +1,4 @@
+- Prevent FileNotFoundError: repomd.xml.key traceback (bsc#1137940)
 - Add journalctl output to spacewalk-debug tarballs
 - Prevent unnecessary triggering of channel-repodata tasks when GPG
   signing is disabled (bsc#1137715)

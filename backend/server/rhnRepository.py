@@ -258,10 +258,11 @@ class Repository(rhnRepository.Repository):
         except IOError:
             e = sys.exc_info()[1]
             # For file not found, queue up a regen, and return 404
-            if e.errno == 2 and file_name not in ["comps.xml", "modules.yaml", "repomd.xml.asc", "repomd.xml.key"]:
-                taskomatic.add_to_repodata_queue(self.channelName,
-                                                 "repodata request", file_name, bypass_filters=True)
-                rhnSQL.commit()
+            if e.errno == 2 and file_name not in ["comps.xml", "modules.yaml"]:
+                if file_name not in ["repomd.xml.key", "repomd.xml.asc"]:
+                    taskomatic.add_to_repodata_queue(self.channelName, "repodata request",
+                                                     file_name, bypass_filters=True)
+                    rhnSQL.commit()
                 # This returns 404 to the client
                 raise_with_tb(rhnFault(6), sys.exc_info()[2])
             raise
