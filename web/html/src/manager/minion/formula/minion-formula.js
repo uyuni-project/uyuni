@@ -18,7 +18,7 @@ function addFormulaNavBar(formulaList, activeId) {
     $("#formula-nav-bar").remove();
 
     var navBar = "<ul class='nav nav-tabs nav-tabs-pf' id='formula-nav-bar'>\n"
-    navBar += "<li><a href='/rhn/manager/systems/details/formulas?sid=" + serverId + "'>Formulas</a></li>\n";
+    navBar += "<li><a href='/rhn/manager/systems/details/formulas?sid=" + serverId + "'>" + t("Formulas") + "</a></li>\n";
     for (var i in formulaList)
         navBar += "<li" + (i == activeId ? " class='active'>" : ">") + "<a href='/rhn/manager/systems/details/formula/" + i + "?sid=" + serverId + "'>" + capitalize(formulaList[i]) + "</a></li>\n";
     navBar += "</ul>"

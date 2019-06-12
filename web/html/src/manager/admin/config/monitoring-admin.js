@@ -79,12 +79,12 @@ const ListPlaceholder = (props) => {
 const HelpPanel = (props) => {
   return (
     <div className="col-sm-3 hidden-xs" id="wizard-faq">
-      <h4>Server Monitoring</h4>
+      <h4>{t("Server Monitoring")}</h4>
       <p>
-      The server uses <a href="https://prometheus.io" target="_blank" rel="noopener noreferrer">Prometheus</a> exporters to expose metrics about your environment.
+        {t("The server uses ")}<a href="https://prometheus.io" target="_blank" rel="noopener noreferrer">{t("Prometheus")}</a>{t(" exporters to expose metrics about your environment.")}
       </p>
       <p>
-      Refer to the <a href="/docs/administration/pages/prometheus.html" target="_blank">documentation</a> to learn how to to consume these metrics.
+        {t("Refer to the ")}<a href="/docs/administration/pages/prometheus.html" target="_blank">{t("documentation")}</a>{t(" to learn how to to consume these metrics.")}
       </p>
   </div>);
 }
@@ -149,13 +149,13 @@ const MonitoringAdmin = (props) => {
       </div>
       <div className='spacewalk-content-nav'>
         <ul className="nav nav-tabs">
-          <li><a href="/rhn/admin/config/GeneralConfig.do?">General</a></li>
-          <li><a href="/rhn/admin/config/BootstrapConfig.do?">Bootstrap Script</a></li>
-          <li><a href="/rhn/admin/config/Orgs.do?">Organizations</a></li>
-          <li><a href="/rhn/admin/config/Restart.do?">Restart</a></li>
-          <li><a href="/rhn/admin/config/Cobbler.do?">Cobbler</a></li>
-          <li><a href="/rhn/admin/config/BootstrapSystems.do?">Bare-metal systems</a></li>
-          <li className="active"><a href="/rhn/manager/admin/config/monitoring?">Monitoring</a></li>
+          <li><a href="/rhn/admin/config/GeneralConfig.do?">{t("General")}</a></li>
+          <li><a href="/rhn/admin/config/BootstrapConfig.do?">{t("Bootstrap Script")}</a></li>
+          <li><a href="/rhn/admin/config/Orgs.do?">{t("Organizations")}</a></li>
+          <li><a href="/rhn/admin/config/Restart.do?">{t("Restart")}</a></li>
+          <li><a href="/rhn/admin/config/Cobbler.do?">{t("Cobbler")}</a></li>
+          <li><a href="/rhn/admin/config/BootstrapSystems.do?">{t("Bare-metal systems")}</a></li>
+          <li className="active"><a href="/rhn/manager/admin/config/monitoring?">{t("Monitoring")}</a></li>
         </ul>
       </div>
       <Panel
@@ -180,7 +180,7 @@ const MonitoringAdmin = (props) => {
           <div className="row">
             <div className="col-sm-9">
               <div className="col-md-4 text-left">
-                <label>Monitoring</label>
+                <label>{t("Monitoring")}</label>
               </div>
               <div className="col-md-8">
                 { exportersStatus ? 

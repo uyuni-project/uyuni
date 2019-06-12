@@ -50,7 +50,7 @@ function initUI(tree) {
     .attr('id', 'filtering-tab-selector')
     .attr('class', 'filter-tab-selector active')
     .append('a')
-    .text('Filtering')
+    .text(t('Filtering'))
     .on('click', d => {
       showFilterTab('filtering-tab');
     });
@@ -59,7 +59,7 @@ function initUI(tree) {
     .attr('id', 'partitioning-tab-selector')
     .attr('class', 'filter-tab-selector')
     .append('a')
-    .text('Partitioning')
+    .text(t('Partitioning'))
     .on('click', d => {
       showFilterTab('partitioning-tab');
     });
@@ -80,7 +80,7 @@ function initUI(tree) {
   patchCountsFilter
     .append('div')
     .attr('class', 'filter-title no-bold')
-    .text('Show systems with:');
+    .text(t('Show systems with:'));
 
   // state of the patch status checkboxes:
   // [bug fix adv. checked, prod. enhancements checked, security adv. checked]
@@ -105,25 +105,25 @@ function initUI(tree) {
       tree.refresh();
     }
   }
-  UI.addCheckbox(patchCountsFilter, 'security advisories', 'fa-shield', 'security-patches', patchCountFilterCallback(2));
-  UI.addCheckbox(patchCountsFilter, 'bug fix advisories', 'fa-bug', 'bug-patches', patchCountFilterCallback(0));
-  UI.addCheckbox(patchCountsFilter, 'product enhancement advisories', 'spacewalk-icon-enhancement', 'minor-patches', patchCountFilterCallback(1));
+  UI.addCheckbox(patchCountsFilter, t('security advisories'), 'fa-shield', 'security-patches', patchCountFilterCallback(2));
+  UI.addCheckbox(patchCountsFilter, t('bug fix advisories'), 'fa-bug', 'bug-patches', patchCountFilterCallback(0));
+  UI.addCheckbox(patchCountsFilter, t('product enhancement advisories'), 'spacewalk-icon-enhancement', 'minor-patches', patchCountFilterCallback(1));
 
   d3.select('#filtering-tab').append('div').attr('id', 'filter-systems-box');
   // System name filter
-  UI.addFilter(d3.select('#filter-systems-box'), 'Filter by system name', 'e.g., client.nue.sles', (input) => {
+  UI.addFilter(d3.select('#filter-systems-box'), t('Filter by system name'), t('e.g., client.nue.sles'), (input) => {
     tree.filters().put('name', d => d.data.name.toLowerCase().includes(input.toLowerCase()));
     tree.refresh();
   });
 
   // Base channel filter
-  UI.addFilter(d3.select('#filter-systems-box'), 'Filter by system base channel', 'e.g., SLE12', (input) => {
+  UI.addFilter(d3.select('#filter-systems-box'), t('Filter by system base channel'), t('e.g., SLE12'), (input) => {
     tree.filters().put('base_channel', d => (d.data.base_channel || '').toLowerCase().includes(input.toLowerCase()));
     tree.refresh();
   });
 
   // Installed products filter
-  UI.addFilter(d3.select('#filter-systems-box'), 'Filter by system installed products', 'e.g., SLES', (input) => {
+  UI.addFilter(d3.select('#filter-systems-box'), t('Filter by system installed products'), t('e.g., SLES'), (input) => {
     if (input == undefined || input == '') {
       tree.filters().remove('installedProducts');
     } else {
@@ -161,7 +161,7 @@ function initUI(tree) {
   hasPatchesPartitioning
     .append('div')
     .attr('class', 'filter-title')
-    .text('Partition systems based on whether there are patches for them:');
+    .text(t('Partition systems based on whether there are patches for them:'));
 
   function applyPatchesPartitioning() {
     tree.partitioning().get()['user-partitioning'] = d => {

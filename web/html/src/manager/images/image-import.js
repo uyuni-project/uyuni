@@ -233,7 +233,7 @@ class ImageImport extends React.Component {
     return (
       <Select name="activationKey" label={t("Activation Key")} hint={hint}
         labelClass="col-md-3" divClass="col-md-6" onChange={this.handleActivationKeyChange}>
-        <option key="0" value="">None</option>
+        <option key="0" value="">{t("None")}</option>
         {
           this.state.activationkeys ? this.state.activationkeys.map(k =>
             <option key={k} value={k}>{k}</option>

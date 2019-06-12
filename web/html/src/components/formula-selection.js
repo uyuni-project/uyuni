@@ -239,7 +239,7 @@ class FormulaSelection extends React.Component {
                 </div>
                 <div className="panel panel-default">
                     <div className="panel-heading">
-                        <h4>Formulas</h4>
+                        <h4>{t("Formulas")}</h4>
                     </div>
                     <div className="panel-body">
                         <form id="chooseFormulaForm" className="form-horizontal" onSubmit={function (e) {e.preventDefault();}}>

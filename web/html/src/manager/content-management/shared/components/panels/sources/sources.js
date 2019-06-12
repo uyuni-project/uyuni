@@ -29,7 +29,7 @@ const ModalSourceCreationContent = ({isLoading, softwareSources, onChange}) => {
           label={t("Type")}
           labelClass="col-md-3"
           divClass="col-md-8">
-          <option key="0" value="software">Channel</option>
+          <option key="0" value="software">{t("Channel")}</option>
         </Select>
       </div>
       <ChannelsSelection
@@ -84,7 +84,7 @@ const Sources = (props: SourcesProps) => {
   return (
     <CreatorPanel
       id="sources"
-      title="Sources"
+      title={t("Sources")}
       creatingText="Attach/Detach Sources"
       panelLevel="2"
       disableEditing={!hasEditingPermissions}

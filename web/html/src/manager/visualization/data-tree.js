@@ -164,7 +164,7 @@ function updateDetailBox(d) {
       .append('tr');
     row
       .append('td')
-      .text('Add/remove system from SSM');
+      .text(t('Add/remove system from SSM'));
     const ssmCell = row
       .append('td');
     ssmCell
@@ -198,20 +198,20 @@ function updateDetailBox(d) {
         cell
           .append('div')
           .classed('security-patches', true)
-          .html('<i class="fa fa-shield"></i>' + patchCountsArray[2] + '  security advisories');
+          .html('<i class="fa fa-shield"></i>' + patchCountsArray[2] + t('  security advisories'));
       }
       if (patchCountsArray[0] > 0) {
         cell
           .append('div')
           .classed('bug-patches', true)
-          .html('<i class="fa fa-bug"></i>' + patchCountsArray[0] + '  bug fix advisories');
+          .html('<i class="fa fa-bug"></i>' + patchCountsArray[0] + t('  bug fix advisories'));
       }
 
       if (patchCountsArray[1] > 0) {
         cell
           .append('div')
           .classed('minor-patches', true)
-          .html('<i class="fa spacewalk-icon-enhancement"></i>' + patchCountsArray[1] + '  product enhancement advisories');
+          .html('<i class="fa spacewalk-icon-enhancement"></i>' + patchCountsArray[1] + t('  product enhancement advisories'));
       }
     }
   }
@@ -251,7 +251,7 @@ function updateDetailBox(d) {
         const uniqueIds = new Set(idsArray);
         addSystemToSSM(Array.from(uniqueIds));
       })
-      .text('Add children to SSM');
+      .text(t('Add children to SSM'));
   }
 }
 

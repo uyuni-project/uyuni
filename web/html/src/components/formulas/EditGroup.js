@@ -222,7 +222,7 @@ class EditDictionaryGroup extends React.Component {
                 <div className="col-lg-6" >
                     {innerHTML}
                 </div>
-                <i className="fa fa-question-circle" title="This field is used as a 'key' identifier in the resulting pillar data."></i>
+                <i className="fa fa-question-circle" title={t("This field is used as a 'key' identifier in the resulting pillar data.")}></i>
             </div>
         );
     }

@@ -191,15 +191,15 @@ class Breadcrumb extends React.Component {
     const product_name_link =
       _IS_UYUNI ?
         <Link key='home' cssClass="navbar-brand" url='/'
-            responsiveLabel={<i className='fa fa-home' title="Uyuni homepage"></i>}
-            label={<span>Uyuni</span>}
+            responsiveLabel={<i className='fa fa-home' title={t("Uyuni homepage")}></i>}
+            label={<span>{t("Uyuni")}</span>}
             target=''
             title={t("Uyuni homepage")}
           />
         :
         <Link key='home' cssClass="navbar-brand" url='/'
-          responsiveLabel={<i className='fa fa-home' title="SUSE Manager homepage"></i>}
-          label={<span>SUSE<i className="fa fa-registered"></i>Manager</span>}
+          responsiveLabel={<i className='fa fa-home' title={t("SUSE Manager homepage")}></i>}
+          label={<span>{t("SUSE")}<i className="fa fa-registered"></i>{t("Manager")}</span>}
           target=''
           title={t("SUSE Manager homepage")}
         />

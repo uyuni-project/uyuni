@@ -45,10 +45,10 @@ class PasswordInput extends React.Component {
                             title={this.props.element.$help} disabled={this.props.disabled} value={this.props.value}
                         />
                         <span className="input-group-btn">
-                            <button className="btn btn-default" title="Generate new password" onClick={this.handleGeneratePassword}>
+                            <button className="btn btn-default" title={t("Generate new password")} onClick={this.handleGeneratePassword}>
                                 <i className="fa fa-key no-margin" />
                             </button>
-                            <button className="btn btn-default" title="Show/hide password" onClick={this.handleToggleShowPassword}>
+                            <button className="btn btn-default" title={t("Show/hide password")} onClick={this.handleToggleShowPassword}>
                                 <i className={"fa no-margin " + (this.state.showPassword ? "fa-eye-slash" : "fa-eye")} />
                             </button>
                         </span>

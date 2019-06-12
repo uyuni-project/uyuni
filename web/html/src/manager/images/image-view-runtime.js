@@ -92,9 +92,9 @@ class ClusterInfo extends React.Component {
           <table className="table">
             <tbody>
               <tr>
-                <th>Pod</th>
-                <th>Namespace</th>
-                <th>Status</th>
+                <th>{t("Pod")}</th>
+                <th>{t("Namespace")}</th>
+                <th>{t("Status")}</th>
               </tr>
               {data.pods.map(p => <PodInfo key={p.name} data={p}/>)}
             </tbody>

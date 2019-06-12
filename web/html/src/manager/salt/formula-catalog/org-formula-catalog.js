@@ -50,7 +50,7 @@ class FormulaCatalog extends React.Component {
             })}/>;
         }
         return (
-            <TopPanel title="Formula Catalog" icon="spacewalk-icon-salt-add" helpUrl="/docs/reference/salt/salt-formula-catalog.html">
+            <TopPanel title={t("Formula Catalog")} icon="spacewalk-icon-salt-add" helpUrl="/docs/reference/salt/salt-formula-catalog.html">
             {messages}
             <div>
               <Table

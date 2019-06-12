@@ -39,7 +39,7 @@ function addCheckinTimePartitioningSelect(anchorId, applyCallback, clearCallback
   checkinTimePartitioning
     .append('div')
     .attr('class', 'filter-title')
-    .text('Partition systems by given check-in time:');
+    .text(t('Partition systems by given check-in time:'));
 
   const inputGroup = checkinTimePartitioning
     .append('div')
@@ -139,7 +139,7 @@ function groupSelector(groups, element) {
       .append('a')
       .attr('href', '#')
       .attr('class', 'toggle-grouping-level')
-      .text('Add a grouping level')
+      .text(t('Add a grouping level'))
       .on('click', d => {
         data.push([]);
         update();
@@ -238,7 +238,7 @@ function addGroupSelector(targetSelection, groups, callback) {
   groupingDiv
     .append('div')
     .attr('class', 'filter-title')
-    .text('Split into groups');
+    .text(t('Split into groups'));
 
   let mySel = groupSelector(groups, groupingDiv);
   mySel.onChange(callback);
