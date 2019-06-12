@@ -1,4 +1,4 @@
-- Additinal architectures for monitoring entitlement
+- Additional architectures for monitoring entitlement
 - fix schema migration for suseSCCRepositoryAuth (bsc#1136558)
 - Add built time column to suseContentEnvironmentTarget
 
