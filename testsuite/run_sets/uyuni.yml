@@ -22,7 +22,8 @@
   #         core_proxy_register_as_minion_with_script.feature
   #         core_proxy_register_as_minion_with_gui.feature
 - features/core_proxy_register_as_minion_with_gui.feature
-- features/core_proxy_branch_network.feature
+# Disabled until the pxe-formula and branch-formula are compatible with openSUSE Leap 15.1
+#- features/core_proxy_branch_network.feature
 # initialize clients
 - features/core_trad_register_client.feature
 - features/core_min_bootstrap.feature
