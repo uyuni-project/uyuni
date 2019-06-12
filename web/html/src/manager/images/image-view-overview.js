@@ -372,13 +372,13 @@ class ImageViewOverview extends React.Component {
           <div className="col-md-6">
             <BootstrapPanel title={t("Build Status")}>
               <div>
-                <h3>Build</h3>
+                <h3>{t("Build")}</h3>
                 <BuildStatus data={data}/>
               </div>
 
               { this.hasBuilt() &&
                         <div>
-                          <h3>Inspect</h3>
+                          <h3>{t("Inspect")}</h3>
                           <InspectStatus data={data}/>
                         </div>
               }

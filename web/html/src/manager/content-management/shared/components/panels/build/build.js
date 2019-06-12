@@ -59,7 +59,7 @@ const Build = ({projectId, onBuild, currentHistoryEntry = {}, changesToBuild, di
       </div>
 
       <Dialog id={modalNameId}
-              title="Build Project"
+              title={t("Build Project")}
               closableModal={false}
               className="modal-lg"
               onClosePopUp={() =>
@@ -67,7 +67,7 @@ const Build = ({projectId, onBuild, currentHistoryEntry = {}, changesToBuild, di
               }
               content={
                 isLoading
-                  ? <Loading text='Building project..'/>
+                  ? <Loading text={t("Building project..")}/>
                   :
                   <Form
                     model={buildVersionForm}

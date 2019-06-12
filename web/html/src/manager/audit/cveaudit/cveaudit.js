@@ -158,13 +158,13 @@ class CVEAudit extends React.Component {
   render() {
     return (
       <span>
-        <TopPanel title="CVE Audit" icon="fa-search" helpUrl="/docs/reference/audit/audit-cve-audit.html">
+        <TopPanel title={t("CVE Audit")} icon="fa-search" helpUrl="/docs/reference/audit/audit-cve-audit.html">
           <Messages items={this.state.messages.map(msg => {
               return {severity: "warning", text: msg};
           })}/>
           <div className="input-group">
                <span className="input-group-addon">
-                    CVE
+                 {t("CVE")}
                </span>
                <select id="cveIdentifierYear" value={this.state.cveYear} onChange={this.onCVEYearChange} className="form-control">
                {
