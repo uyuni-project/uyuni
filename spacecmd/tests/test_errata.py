@@ -166,3 +166,21 @@ class TestSCErrata:
         assert_list_args_expect(mprint.call_args_list,
                                 ['one:', 'CVE-1\nCVE-2\nCVE-3', '----------',
                                  'two:', 'CVE-11\nCVE-22\nCVE-33'])
+
+    def test_errata_findbycve_noargs(self, shell):
+        """
+        Test do_errata_findbycve without arguments.
+
+        :param shell:
+        :return:
+        """
+        shell.help_errata_findbycve = MagicMock()
+        shell.client.errata.findByCve = MagicMock()
+        mprint = MagicMock()
+
+        with patch("spacecmd.errata.print", mprint) as prt:
+            spacecmd.errata.do_errata_findbycve(shell, "")
+
+        assert not shell.client.errata.findByCve.called
+        assert not mprint.called
+        assert shell.help_errata_findbycve.called
