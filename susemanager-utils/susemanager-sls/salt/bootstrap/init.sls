@@ -136,11 +136,16 @@ mgr_update_basic_pkgs:
   pkg.latest:
     - pkgs:
       - openssl
+{%- if grains['os_family'] == 'Suse' and grains['osrelease'] in ['11.3', '11.4'] %}
+      - pmtools
+{%- else %}
+      - dmidecode
+{%- endif %}
 {%- if grains['os_family'] == 'Suse' %}
       - zypper
 {%- elif grains['os_family'] == 'RedHat' %}
       - yum
-{% endif %}
+{%- endif %}
 
 # Manage minion key files in case they are provided in the pillar
 {% if pillar['minion_pub'] is defined and pillar['minion_pem'] is defined %}
