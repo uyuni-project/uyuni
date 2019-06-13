@@ -239,3 +239,39 @@ class TestSCErrata:
         assert not shell.expand_errata.called
         assert not mprint.called
         assert shell.help_errata_details.called
+
+    def test_errata_details_erratum_failure(self, shell):
+        """
+        Test do_errata_details erratum failure.
+
+        :param shell:
+        :return:
+        """
+        shell.help_errata_details = MagicMock()
+        shell.client.errata.getDetails = MagicMock(side_effect=xmlrpclib.Fault(faultCode=42, faultString="Kaboom!"))
+        shell.client.errata.listPackages = MagicMock()
+        shell.client.errata.listAffectedSystems = MagicMock()
+        shell.client.errata.listCves = MagicMock()
+        shell.client.errata.applicableToChannels = MagicMock()
+        shell.expand_errata = MagicMock(return_value=["cve-one", "cve-two"])
+        mprint = MagicMock()
+        logger = MagicMock()
+
+        with patch("spacecmd.errata.print", mprint) as prt, \
+                patch("spacecmd.errata.logging", logger) as lgr:
+            spacecmd.errata.do_errata_details(shell, "cve*")
+
+        assert shell.client.errata.getDetails.called
+        assert not shell.client.errata.listPackages.called
+        assert not shell.client.errata.listAffectedSystems.called
+        assert not shell.client.errata.listCves.called
+        assert not shell.client.errata.applicableToChannels.called
+        assert not mprint.called
+        assert logger.warning.called
+        assert not shell.help_errata_details.called
+
+        assert_args_expect(logger.warning.call_args_list,
+                           [
+                               (("cve-one is not a valid erratum",), {}),
+                               (("cve-two is not a valid erratum",), {}),
+                           ])
