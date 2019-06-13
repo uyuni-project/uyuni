@@ -575,3 +575,35 @@ class TestSCErrata:
         assert not mprint.called
         assert not logger.warning.called
         assert shell.help_errata_search.called
+
+    def test_errata_apply_noargs(self, shell):
+        """
+        Test do_errata_apply without arguments.
+
+        :param shell:
+        :return:
+        """
+        shell.help_errata_apply = MagicMock()
+        shell.user_confirm = MagicMock()
+        shell.check_api_version = MagicMock()
+        shell.get_system_id = MagicMock()
+        shell.client.errata.listAffectedSystems = MagicMock()
+        shell.client.system.getUnscheduledErrata = MagicMock()
+        shell.client.system.scheduleApplyErrata = MagicMock()
+        shell.all_errata = {}
+        mprint = MagicMock()
+        logger = MagicMock()
+
+        with patch("spacecmd.errata.print", mprint) as prt, \
+                patch("spacecmd.errata.logging", logger) as lgr:
+            spacecmd.errata.do_errata_apply(shell, "")
+
+        assert not shell.user_confirm.called
+        assert not shell.check_api_version.called
+        assert not shell.get_system_id.called
+        assert not shell.client.errata.listAffectedSystems.called
+        assert not shell.client.system.getUnscheduledErrata.called
+        assert not shell.client.system.scheduleApplyErrata.called
+        assert not mprint.called
+        assert not logger.warning.called
+        assert shell.help_errata_apply.called
