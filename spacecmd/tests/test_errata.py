@@ -139,3 +139,30 @@ class TestSCErrata:
         assert shell.expand_errata.called
         assert mprint.called
         assert_expect(mprint.call_args_list, "No errata has been found")
+
+    def test_errata_listcves_expanded(self, shell):
+        """
+        Test do_errata_listcves data print check.
+
+        :param shell:
+        :return:
+        """
+        shell.help_errata_listcves = MagicMock()
+        shell.client.errata.listCves = MagicMock(side_effect=[
+            ["CVE-1", "CVE-2", "CVE-3"],
+            ["CVE-11", "CVE-22", "CVE-33"],
+        ])
+        shell.expand_errata = MagicMock(return_value=["one", "two"])
+        mprint = MagicMock()
+
+        with patch("spacecmd.errata.print", mprint) as prt:
+            spacecmd.errata.do_errata_listcves(shell, "CVE*")
+
+        assert not shell.help_errata_listcves.called
+        assert shell.client.errata.listCves.called
+        assert shell.expand_errata.called
+        assert mprint.called
+
+        assert_list_args_expect(mprint.call_args_list,
+                                ['one:', 'CVE-1\nCVE-2\nCVE-3', '----------',
+                                 'two:', 'CVE-11\nCVE-22\nCVE-33'])
