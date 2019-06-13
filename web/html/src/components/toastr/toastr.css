@@ -56,6 +56,7 @@
     background-color: #fcf8e3 !important;
     border-color: #faebcc !important;
     background-image: none !important;
+    opacity: 1 !important;
 }
 
 :global(.toast-warning .toast-message:after) {
@@ -75,6 +76,7 @@
     background-color: #d9edf7 !important;
     border-color: #bce8f1 !important;
     background-image: none !important;
+    opacity: 1 !important;
 }
 
 :global(.toast-info .toast-message:after) {
