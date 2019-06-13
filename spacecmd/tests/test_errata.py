@@ -549,3 +549,29 @@ class TestSCErrata:
         assert not mprint.called
         assert not logger.warning.called
         assert shell.help_errata_delete.called
+
+    def test_errata_search_noargs(self, shell):
+        """
+        Test do_errata_search without arguments.
+
+        :param shell:
+        :return:
+        """
+        shell.help_errata_search = MagicMock()
+        shell.expand_errata = MagicMock()
+        shell.generate_errata_cache = MagicMock()
+        shell.client.errata.findByCve = MagicMock()
+        shell.all_errata = {}
+        mprint = MagicMock()
+        logger = MagicMock()
+
+        with patch("spacecmd.errata.print", mprint) as prt, \
+                patch("spacecmd.errata.logging", logger) as lgr:
+            spacecmd.errata.do_errata_search(shell, "")
+
+        assert not shell.expand_errata.called
+        assert not shell.generate_errata_cache.called
+        assert not shell.client.errata.findByCve.called
+        assert not mprint.called
+        assert not logger.warning.called
+        assert shell.help_errata_search.called
