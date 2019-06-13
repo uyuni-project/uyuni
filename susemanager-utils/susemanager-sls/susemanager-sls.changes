@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Thu Jun 13 10:43:11 CEST 2019 - jgonzalez@suse.com
+
+- version 4.0.16-1
 - Prevent stuck Actions when onboarding KVM host minions (bsc#1137888)
 
 -------------------------------------------------------------------
