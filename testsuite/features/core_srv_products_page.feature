@@ -44,7 +44,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
     When I select the addon "Legacy Module 12 x86_64"
     Then I should see the "Legacy Module 12 x86_64" selected
     When I click the Add Product button
-    And I wait until I see "Selected channels/products were scheduled successfully for syncing." text
+    And I wait until I see "SUSE Linux Enterprise Server 12 SP2 x86_64" product has been added
     Then the SLE12 products should be added
 
   Scenario: Add a product with recommended enabled
@@ -60,5 +60,5 @@ Feature: Synchronize products in the products page of the Setup Wizard
     Then I should see the "SUSE Linux Enterprise Server 15 x86_64" selected
     Then I should see the "Basesystem Module 15 x86_64" selected
     And I click the Add Product button
-    And I wait until I see "Selected channels/products were scheduled successfully for syncing." text
+    And I wait until I see "SUSE Linux Enterprise Server 15 x86_64" product has been added
     Then the SLE15 products should be added
