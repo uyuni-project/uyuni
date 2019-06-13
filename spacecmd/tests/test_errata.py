@@ -98,3 +98,23 @@ class TestSCErrata:
         assert_list_args_expect(mprint.call_args_list,
                                 ['webstack:', 'web1.suse.com\nweb2.suse.com\nweb3.suse.com',
                                  '----------', 'databases:', 'db1.suse.com\ndb2.suse.com\ndb3.suse.com'])
+
+    def test_errata_listcves_noargs(self, shell):
+        """
+        Test do_errata_listcves without arguments.
+
+        :param shell:
+        :return:
+        """
+        shell.help_errata_listcves = MagicMock()
+        shell.client.errata.listCves = MagicMock()
+        shell.expand_errata = MagicMock()
+        mprint = MagicMock()
+
+        with patch("spacecmd.errata.print", mprint) as prt:
+            spacecmd.errata.do_errata_listcves(shell, "")
+
+        assert not shell.client.errata.listCves.called
+        assert not shell.expand_errata.called
+        assert not mprint.called
+        assert shell.help_errata_listcves.called
