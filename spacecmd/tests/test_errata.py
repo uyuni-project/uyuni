@@ -524,3 +524,28 @@ class TestSCErrata:
         assert not logger.info.called
         assert not logger.warning.called
         assert shell.help_errata_delete.called
+
+    def test_errata_publish_noargs(self, shell):
+        """
+        Test do_errata_publish without arguments.
+
+        :param shell:
+        :return:
+        """
+        shell.help_errata_publish = MagicMock()
+        shell.expand_errata = MagicMock()
+        shell.user_confirm = MagicMock()
+        shell.client.errata.publish = MagicMock()
+        mprint = MagicMock()
+        logger = MagicMock()
+
+        with patch("spacecmd.errata.print", mprint) as prt, \
+                patch("spacecmd.errata.logging", logger) as lgr:
+            spacecmd.errata.do_errata_delete(shell, "")
+
+        assert not shell.expand_errata.called
+        assert not shell.user_confirm.called
+        assert not shell.client.errata.publish.called
+        assert not mprint.called
+        assert not logger.warning.called
+        assert shell.help_errata_delete.called
