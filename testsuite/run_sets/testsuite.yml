@@ -31,7 +31,9 @@
 - features/core_ubuntu_salt_ssh.feature
 # these features sync real channels (last core features)
 - features/core_srv_sync_channels.feature
-- features/core_srv_setup_wizard.feature
+- features/core_srv_products_page.feature
+- features/core_srv_mgr_sync_products.feature
+- features/core_srv_abort_all_sync.feature
 
 ## Core features END ###
 
@@ -57,6 +59,7 @@
 - features/trad_migrate_to_sshminion.feature
 - features/trad_need_reboot.feature
 - features/trad_ssh_push.feature
+- features/srv_organization_credentials.feature
 - features/srv_change_password.feature
 - features/srv_check_sync_source_packages.feature
 - features/min_salt_software_states.feature
@@ -118,12 +121,12 @@
 - features/allcli_software_channels.feature
 - features/allcli_software_channels_dependencies.feature
 - features/srv_change_task_schedule.feature
-- features/srv_sync_products.feature
 - features/srv_notifications.feature
 - features/minkvm_guests.feature
 - features/minxen_guests.feature
 - features/min_empty_system_profiles.feature
 - features/min_custom_pkg_download_endpoint.feature
+
 ## Secondary features END ##
 
 
