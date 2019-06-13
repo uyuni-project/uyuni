@@ -1,3 +1,4 @@
+- Force VM off before deleting it (bsc#1138127)
 - Allow forcing off or resetting VMs
 - Fix the indentation so that custom formulas can be read correctly (bsc#1136937)
 - Make sure dmidecode is installed during bootstrap to ensure that hardware
