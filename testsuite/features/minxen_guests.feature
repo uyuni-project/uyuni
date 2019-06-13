@@ -195,6 +195,13 @@ Feature: Be able to manage XEN virtual machines via the GUI
     And "test-vm3" virtual machine on "xen-server" should have a "test-vm3_system.qcow2" xen disk
 
 @virthost_xen
+  Scenario: delete a running Xen virtual machine
+    Given I am on the "Virtualization" page of this "xen-server"
+    When I click on "Delete" in row "test-vm3"
+    And I click on "Delete" in "Delete Guest" modal
+    Then I should not see a "test-vm3" virtual machine on "xen-server"
+
+@virthost_xen
   Scenario: Cleanup: Unregister the Xen virtualization host
     Given I am on the Systems overview page of this "xen-server"
     When I follow "Delete System"

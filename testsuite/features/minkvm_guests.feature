@@ -180,6 +180,13 @@ Feature: Be able to manage KVM virtual machines via the GUI
     And I close the window
 
 @virthost_kvm
+  Scenario: delete a running KVM virtual machine
+    Given I am on the "Virtualization" page of this "kvm-server"
+    When I click on "Delete" in row "test-vm2"
+    And I click on "Delete" in "Delete Guest" modal
+    Then I should not see a "test-vm2" virtual machine on "kvm-server"
+
+@virthost_kvm
   Scenario: Cleanup: Unregister the KVM virtualization host
     Given I am on the Systems overview page of this "kvm-server"
     When I follow "Delete System"
