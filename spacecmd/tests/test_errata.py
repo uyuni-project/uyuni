@@ -609,3 +609,41 @@ class TestSCErrata:
         assert not mprint.called
         assert not logger.warning.called
         assert shell.help_errata_apply.called
+
+    def test_errata_apply_non_interactive_no_errata(self, shell):
+        """
+        Test do_errata_apply non-interactive, no patches to apply.
+
+        :param shell:
+        :return:
+        """
+        shell.help_errata_apply = MagicMock()
+        shell.user_confirm = MagicMock()
+        shell.check_api_version = MagicMock()
+        shell.get_system_id = MagicMock()
+        shell.expand_errata = MagicMock(return_value=[])
+        shell.client.errata.listAffectedSystems = MagicMock()
+        shell.client.system.getUnscheduledErrata = MagicMock()
+        shell.client.system.scheduleApplyErrata = MagicMock()
+        shell.all_errata = {}
+        shell.options = MagicMock()
+        shell.options.yes = True
+        mprint = MagicMock()
+        logger = MagicMock()
+
+        with patch("spacecmd.errata.print", mprint) as prt, \
+                patch("spacecmd.errata.logging", logger) as lgr:
+            spacecmd.errata.do_errata_apply(shell, "foo -s 201901011030")
+
+        assert not shell.help_errata_apply.called
+        assert not shell.user_confirm.called
+        assert not shell.check_api_version.called
+        assert not shell.get_system_id.called
+        assert not shell.client.errata.listAffectedSystems.called
+        assert not shell.client.system.getUnscheduledErrata.called
+        assert not shell.client.system.scheduleApplyErrata.called
+        assert not mprint.called
+        assert logger.warning.called
+
+        assert_expect(logger.warning.call_args_list,
+                      "No patches to apply")
