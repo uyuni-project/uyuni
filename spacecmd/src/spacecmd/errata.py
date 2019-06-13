@@ -98,7 +98,7 @@ def do_errata_apply(self, args, only_systems=None):
     # get the start time option
     # skip the prompt if we are running with --yes
     # use "now" if no start time was given
-    if is_interactive(options) and self.options.yes != True:
+    if is_interactive(options) and self.options.yes is True:
         options.start_time = prompt_user('Start Time [now]:')
         options.start_time = parse_time_input(options.start_time)
     else:
