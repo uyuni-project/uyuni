@@ -211,3 +211,31 @@ class TestSCErrata:
                                 ['123:', 'CVE-123-a', 'CVE-123-b', '----------',
                                  '234:', 'CVE-234-a', 'CVE-234-b', 'CVE-234-c',
                                  '----------', '345:', 'CVE-345-a'])
+
+    def test_errata_details_noargs(self, shell):
+        """
+        Test do_errata_details without arguments.
+
+        :param shell:
+        :return:
+        """
+        shell.help_errata_details = MagicMock()
+        shell.client.errata.getDetails = MagicMock()
+        shell.client.errata.listPackages = MagicMock()
+        shell.client.errata.listAffectedSystems = MagicMock()
+        shell.client.errata.listCves = MagicMock()
+        shell.client.errata.applicableToChannels = MagicMock()
+        shell.expand_errata = MagicMock()
+        mprint = MagicMock()
+
+        with patch("spacecmd.errata.print", mprint) as prt:
+            spacecmd.errata.do_errata_details(shell, "")
+
+        assert not shell.client.errata.getDetails.called
+        assert not shell.client.errata.listPackages.called
+        assert not shell.client.errata.listAffectedSystems.called
+        assert not shell.client.errata.listCves.called
+        assert not shell.client.errata.applicableToChannels.called
+        assert not shell.expand_errata.called
+        assert not mprint.called
+        assert shell.help_errata_details.called
