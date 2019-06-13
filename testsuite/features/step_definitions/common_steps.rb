@@ -439,6 +439,15 @@ Then(/^I should see the "(.*?)" selected$/) do |product|
   raise unless has_checked_field?('checkbox-for-' + product_identifier)
 end
 
+And(/^I wait until I see "(.*?)" product has been added$/) do |product|
+  repeat_until_timeout(message: "Couldn't find the installed product #{product} in the list") do
+    xpath = "//span[contains(text(), '#{product}')]/ancestor::div[contains(@class, 'product-details-wrapper')]"
+    product_wrapper = find(:xpath, xpath)
+    break if product_wrapper[:class].include?('product-installed')
+    sleep 1
+  end
+end
+
 When(/^I click the Add Product button$/) do
   raise unless find('button#addProducts').click
 end
