@@ -118,3 +118,24 @@ class TestSCErrata:
         assert not shell.expand_errata.called
         assert not mprint.called
         assert shell.help_errata_listcves.called
+
+    def test_errata_listcves_not_found(self, shell):
+        """
+        Test do_errata_listcves not found.
+
+        :param shell:
+        :return:
+        """
+        shell.help_errata_listcves = MagicMock()
+        shell.client.errata.listCves = MagicMock(return_value=[])
+        shell.expand_errata = MagicMock(return_value=[])
+        mprint = MagicMock()
+
+        with patch("spacecmd.errata.print", mprint) as prt:
+            spacecmd.errata.do_errata_listcves(shell, "invalid")
+
+        assert not shell.help_errata_listcves.called
+        assert not shell.client.errata.listCves.called
+        assert shell.expand_errata.called
+        assert mprint.called
+        assert_expect(mprint.call_args_list, "No errata has been found")
