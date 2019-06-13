@@ -494,3 +494,33 @@ class TestSCErrata:
                                  '----------', 'N/A', '', 'Affected Channels', '-----------------', '', '',
                                  'Affected Systems', '----------------', '0', '', 'Affected Packages',
                                  '-----------------', 'pico-2-12:None.x86\nvim-28-45:None.x86'])
+
+    def test_errata_delete_noargs(self, shell):
+        """
+        Test do_errata_delete without arguments.
+
+        :param shell:
+        :return:
+        """
+        shell.help_errata_delete = MagicMock()
+        shell.expand_errata = MagicMock()
+        shell.user_confirm = MagicMock()
+        shell.client.errata.applicableToChannels = MagicMock()
+        shell.client.errata.delete = MagicMock()
+        shell.generate_errata_cache = MagicMock()
+        mprint = MagicMock()
+        logger = MagicMock()
+
+        with patch("spacecmd.errata.print", mprint) as prt, \
+                patch("spacecmd.errata.logging", logger) as lgr:
+            spacecmd.errata.do_errata_delete(shell, "")
+
+        assert not shell.expand_errata.called
+        assert not shell.user_confirm.called
+        assert not shell.client.errata.applicableToChannels.called
+        assert not shell.client.errata.delete.called
+        assert not shell.generate_errata_cache.called
+        assert not mprint.called
+        assert not logger.info.called
+        assert not logger.warning.called
+        assert shell.help_errata_delete.called
