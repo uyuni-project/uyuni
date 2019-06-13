@@ -43,6 +43,7 @@ PKGLIST11 = [
     "libzypp",
     "newt",
     "openssl",
+    "pmtools",
     "python",
     "python-dmidecode",
     "python-ethtool",
@@ -92,6 +93,7 @@ ENHANCE11 = [
 
 PKGLIST12 = [
     "dbus-1-python",
+    "dmidecode",
     "hwdata",
     "libcurl4",
     "libgudev-1_0-0",
@@ -237,6 +239,7 @@ RES6 = [
     "suseRegisterInfo",
     "python2-suseRegisterInfo",
     "python2-hwdata",
+    "dmidecode",
 ]
 
 RES7 = [
@@ -282,6 +285,7 @@ RES7 = [
     "suseRegisterInfo",
     "python2-suseRegisterInfo",
     "python2-hwdata",
+    "dmidecode",
 ]
 
 PKGLIST15 = [
@@ -347,6 +351,7 @@ PKGLIST15 = [
     "salt",
     "python3-salt",
     "salt-minion",
+    "dmidecode",
 ]
 
 PKGLIST15_NO_Z = [
@@ -381,6 +386,7 @@ PKGLISTUBUNTU1604 = [
     "python-pycurl",
     "salt-common",
     "salt-minion",
+    "dmidecode",
 ]
 
 PKGLISTUBUNTU1804 = [
@@ -431,6 +437,7 @@ PKGLISTUBUNTU1804 = [
     "python2.7-minimal",
     "salt-common",
     "salt-minion",
+    "dmidecode",
 ]
 
 DATA = {
