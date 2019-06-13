@@ -587,6 +587,7 @@ class TestSCErrata:
         shell.user_confirm = MagicMock()
         shell.check_api_version = MagicMock()
         shell.get_system_id = MagicMock()
+        shell.expand_errata = MagicMock()
         shell.client.errata.listAffectedSystems = MagicMock()
         shell.client.system.getUnscheduledErrata = MagicMock()
         shell.client.system.scheduleApplyErrata = MagicMock()
@@ -601,6 +602,7 @@ class TestSCErrata:
         assert not shell.user_confirm.called
         assert not shell.check_api_version.called
         assert not shell.get_system_id.called
+        assert not shell.expand_errata.called
         assert not shell.client.errata.listAffectedSystems.called
         assert not shell.client.system.getUnscheduledErrata.called
         assert not shell.client.system.scheduleApplyErrata.called
