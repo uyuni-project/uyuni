@@ -441,3 +441,56 @@ class TestSCErrata:
                                                                                'special_editors_channel',
                                  '', 'Affected Systems', '----------------', '2', '', 'Affected Packages',
                                  '-----------------', 'pico-2-12:None.x86\nvim-28-45:None.x86'])
+
+    def test_errata_details_erratum_none_data(self, shell):
+        """
+        Test do_errata_details erratum none data.
+
+        :param shell:
+        :return:
+        """
+        shell.help_errata_details = MagicMock()
+        shell.client.errata.getDetails = MagicMock(side_effect=[{}, {}])
+        shell.client.errata.listPackages = MagicMock(side_effect=[
+            [
+                {"name": "vim", "version": "42", "release": "123", "arch": "x86"},
+                {"name": "pico", "version": "1", "release": "234", "arch": "x86"},
+            ],
+            [
+                {"name": "vim", "version": "28", "release": "45", "arch": "x86"},
+                {"name": "pico", "version": "2", "release": "12", "arch": "x86"},
+            ],
+        ])
+        shell.client.errata.listAffectedSystems = MagicMock(side_effect=[[], []])
+        shell.client.errata.listCves = MagicMock(side_effect=[[], []])
+        shell.client.errata.applicableToChannels = MagicMock(side_effect=[[{}, {}], [{}, {}]])
+        shell.expand_errata = MagicMock(return_value=["cve-one", "cve-two"])
+        mprint = MagicMock()
+        logger = MagicMock()
+
+        with patch("spacecmd.errata.print", mprint) as prt, \
+                patch("spacecmd.errata.logging", logger) as lgr:
+            spacecmd.errata.do_errata_details(shell, "cve*")
+
+        assert not logger.warning.called
+        assert not shell.help_errata_details.called
+        assert shell.client.errata.getDetails.called
+        assert shell.client.errata.listPackages.called
+        assert shell.client.errata.listAffectedSystems.called
+        assert shell.client.errata.listCves.called
+        assert shell.client.errata.applicableToChannels.called
+        assert mprint.called
+
+        assert_list_args_expect(mprint.call_args_list,
+                                ['Name:       cve-one', 'Product:    N/A', 'Type:       N/A', 'Issue Date: N/A', '',
+                                 'Topic', '-----', 'N/A', '', 'Description', '-----------', 'N/A', '', 'CVEs', '----',
+                                 '', '', 'Solution', '--------', 'N/A', '', 'References', '----------', 'N/A', '',
+                                 'Affected Channels',
+                                 '-----------------', '', '', 'Affected Systems', '----------------', '0', '',
+                                 'Affected Packages', '-----------------', 'pico-1-234:None.x86\nvim-42-123:None.x86',
+                                 '----------', 'Name:       cve-two', 'Product:    N/A', 'Type:       N/A',
+                                 'Issue Date: N/A', '', 'Topic', '-----', 'N/A', '', 'Description', '-----------',
+                                 'N/A', '', 'CVEs', '----', '', '', 'Solution', '--------', 'N/A', '', 'References',
+                                 '----------', 'N/A', '', 'Affected Channels', '-----------------', '', '',
+                                 'Affected Systems', '----------------', '0', '', 'Affected Packages',
+                                 '-----------------', 'pico-2-12:None.x86\nvim-28-45:None.x86'])
