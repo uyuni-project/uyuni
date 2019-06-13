@@ -184,3 +184,30 @@ class TestSCErrata:
         assert not shell.client.errata.findByCve.called
         assert not mprint.called
         assert shell.help_errata_findbycve.called
+
+    def test_errata_findbycve_cvelist(self, shell):
+        """
+        Test do_errata_findbycve with CVE list.
+
+        :param shell:
+        :return:
+        """
+        shell.help_errata_findbycve = MagicMock()
+        shell.client.errata.findByCve = MagicMock(side_effect=[
+            [{"advisory_name": "CVE-123-a"}, {"advisory_name": "CVE-123-b"}],
+            [{"advisory_name": "CVE-234-a"}, {"advisory_name": "CVE-234-b"}, {"advisory_name": "CVE-234-c"}],
+            [{"advisory_name": "CVE-345-a"}],
+        ])
+        mprint = MagicMock()
+
+        with patch("spacecmd.errata.print", mprint) as prt:
+            spacecmd.errata.do_errata_findbycve(shell, "123 234 345")
+
+        assert not shell.help_errata_findbycve.called
+        assert shell.client.errata.findByCve.called
+        assert mprint.called
+
+        assert_list_args_expect(mprint.call_args_list,
+                                ['123:', 'CVE-123-a', 'CVE-123-b', '----------',
+                                 '234:', 'CVE-234-a', 'CVE-234-b', 'CVE-234-c',
+                                 '----------', '345:', 'CVE-345-a'])
