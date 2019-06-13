@@ -286,18 +286,21 @@ def do_errata_listcves(self, args):
 
     add_separator = False
 
-    for erratum in errata_list:
-        cves = self.client.errata.listCves(self.session, erratum)
+    if errata_list:
+        for erratum in errata_list:
+            cves = self.client.errata.listCves(self.session, erratum)
 
-        if cves:
-            if len(errata_list) > 1:
-                if add_separator:
-                    print(self.SEPARATOR)
-                add_separator = True
+            if cves:
+                if len(errata_list) > 1:
+                    if add_separator:
+                        print(self.SEPARATOR)
+                    add_separator = True
 
-                print('%s:' % erratum)
+                    print('%s:' % erratum)
 
-            print('\n'.join(sorted(cves)))
+                print('\n'.join(sorted(cves)))
+    else:
+        print("No errata has been found")
 
 ####################
 
