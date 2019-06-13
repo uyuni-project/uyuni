@@ -88,7 +88,7 @@ def do_errata_apply(self, args, only_systems=None):
     arg_parser = get_argument_parser()
     arg_parser.add_argument('-s', '--start-time')
 
-    (args, options) = parse_command_arguments(args, arg_parser)
+    args, options = parse_command_arguments(args, arg_parser)
     only_systems = only_systems or []
 
     if not args:
@@ -98,7 +98,7 @@ def do_errata_apply(self, args, only_systems=None):
     # get the start time option
     # skip the prompt if we are running with --yes
     # use "now" if no start time was given
-    if is_interactive(options) and self.options.yes is True:
+    if is_interactive(options) and not self.options.yes:
         options.start_time = prompt_user('Start Time [now]:')
         options.start_time = parse_time_input(options.start_time)
     else:
