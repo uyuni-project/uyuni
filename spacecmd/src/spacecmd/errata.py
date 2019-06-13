@@ -315,18 +315,12 @@ def complete_errata_findbycve(self, text, line, beg, end):
 
 
 def do_errata_findbycve(self, args):
-    arg_parser = get_argument_parser()
-
-    (args, _options) = parse_command_arguments(args, arg_parser)
-
-    if not args:
+    cve_list, _options = parse_command_arguments(args, get_argument_parser())
+    if not cve_list:
         self.help_errata_findbycve()
         return
 
-    # More than one CVE may be specified
-    cve_list = args
     logging.debug("Got CVE list %s" % cve_list)
-
     add_separator = False
 
     # Then iterate over the requested CVEs and dump the errata which match
