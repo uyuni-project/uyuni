@@ -458,7 +458,7 @@ def do_errata_delete(self, args):
         channels = self.client.errata.applicableToChannels(self.session, erratum)
         print('%s    %s' % (erratum.ljust(20), str(len(channels)).rjust(3)))
 
-    if not self.user_confirm('Delete these patches [y/N]:'):
+    if not self.options.yes and not self.user_confirm('Delete these patches [y/N]:'):
         return
 
     for erratum in errata:
