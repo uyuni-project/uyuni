@@ -1,4 +1,4 @@
-- Make dmidecode part of the bootstrap repositiories
+- Make dmidecode part of the bootstrap repositiories (bsc#1137952)
 - respect new location for autoinstall templates during migration
 
 -------------------------------------------------------------------

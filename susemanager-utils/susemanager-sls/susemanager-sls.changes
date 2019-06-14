@@ -1,5 +1,5 @@
 - Make sure dmidecode is installed during bootstrap to ensure that hardware
-  refresh works for all operating systems
+  refresh works for all operating systems (bsc#1137952)
 - Prevent stuck Actions when onboarding KVM host minions (bsc#1137888)
 - Fix formula name encoding on Python 3 (bsc#1137533)
 - More thorougly disable the Salt mine in util.mgr_mine_config_clean_up (bsc#1135075)
