@@ -111,7 +111,7 @@ end
 
 When(/^I make sure no spacewalk\-repo\-sync is executing$/) do
   kill_failure_streak = 0
-  repeat_until_timeout(message: 'Could not kill all spacewalk-repo-sync instances') do
+  while kill_failure_streak <= 120
     command_output = sshcmd('killall spacewalk-repo-sync', ignore_err: true)
     kill_failed = !command_output[:stderr].empty?
 
@@ -121,8 +121,6 @@ When(/^I make sure no spacewalk\-repo\-sync is executing$/) do
     else
       kill_failure_streak = 0
     end
-
-    break if kill_failure_streak == 10
   end
 end
 
