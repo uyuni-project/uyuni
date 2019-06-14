@@ -101,14 +101,15 @@ class DebRepo(object):
             try:
                 proxies=""
                 if self.proxy:
+                    (scheme, netloc, path, query, fragid) = urlparse.urlsplit(self.proxy)
                     proxies = {
-                        'http' : 'http://'+self.proxy,
-                        'https' : 'http://'+self.proxy
+                        'http' : 'http://'+netloc,
+                        'https' : 'http://'+netloc
                     }
                     if self.proxy_username and self.proxy_password:
                         proxies = {
-                            'http' : 'http://'+self.proxy_username+":"+self.proxy_password+"@"+self.proxy,
-                            'https' : 'http://'+self.proxy_username+":"+self.proxy_password+"@"+self.proxy,
+                            'http' : 'http://'+self.proxy_username+":"+self.proxy_password+"@"+netloc,
+                            'https' : 'http://'+self.proxy_username+":"+self.proxy_password+"@"+netloc,
                         }
                 data = requests.get(url, proxies=proxies, cert=(self.sslclientcert, self.sslclientkey),
                                     verify=self.sslcacert)
