@@ -24,7 +24,7 @@ __virtualname__ = 'mgrcompat'
 
 def __virtual__():
     '''
-    This module is always enabled while 'state.single' is available.
+    This module is always enabled while 'module.run' is available.
     '''
     module.__salt__ = __salt__
     module.__opts__ = __opts__
@@ -32,7 +32,7 @@ def __virtual__():
     module.__grains__ = __grains__
     module.__context__ = __context__
     module.__utils__ = __utils__
-    return __virtualname__ if 'state.single' in __salt__ else (False, 'state.single is not available')
+    return __virtualname__ if 'module.run' in __salt__ else (False, 'module.run is not available')
 
 def _tailor_kwargs_to_new_syntax(name, **kwargs):
     # Remove "m_" from the kwargs parameters key
