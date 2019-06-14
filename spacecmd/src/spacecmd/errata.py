@@ -144,7 +144,7 @@ def do_errata_apply(self, args, only_systems=None):
     # get a unique list of all systems we need to touch
     for systemlist in to_apply_by_name.values():
         systems += systemlist
-    systems = list(set(systems))
+    systems = sorted(list(set(systems)))
 
     if not systems:
         logging.warning('No patches to apply')
