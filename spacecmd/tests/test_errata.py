@@ -526,6 +526,39 @@ class TestSCErrata:
         assert not logger.warning.called
         assert shell.help_errata_delete.called
 
+    def test_errata_delete_no_errata(self, shell):
+        """
+        Test do_errata_delete without errata.
+
+        :param shell:
+        :return:
+        """
+        shell.help_errata_delete = MagicMock()
+        shell.expand_errata = MagicMock(return_value=[])
+        shell.user_confirm = MagicMock()
+        shell.client.errata.applicableToChannels = MagicMock()
+        shell.client.errata.delete = MagicMock()
+        shell.generate_errata_cache = MagicMock()
+        mprint = MagicMock()
+        logger = MagicMock()
+
+        with patch("spacecmd.errata.print", mprint) as prt, \
+                patch("spacecmd.errata.logging", logger) as lgr:
+            spacecmd.errata.do_errata_delete(shell, "CVE-X")
+
+        assert not shell.user_confirm.called
+        assert not shell.client.errata.applicableToChannels.called
+        assert not shell.client.errata.delete.called
+        assert not shell.generate_errata_cache.called
+        assert not mprint.called
+        assert not logger.info.called
+        assert not shell.help_errata_delete.called
+        assert logger.warning.called
+        assert shell.expand_errata.called
+
+        assert_expect(logger.warning.call_args_list,
+                      "No patches to delete")
+
     def test_errata_publish_noargs(self, shell):
         """
         Test do_errata_publish without arguments.
