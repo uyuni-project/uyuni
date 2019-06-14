@@ -58,9 +58,12 @@ def module_run(**kwargs):
     if __grains__['saltversioninfo'][0] > 2019:
         # New syntax - any future Salt release
         pass
-    elif __grains__['saltversioninfo'][0] == 2019 and __grains__['saltversioninfo'][1] > 2:
+    elif __grains__['saltversioninfo'][0] == 2019 and __grains__['saltversioninfo'][1] > 2 and __opts__.get('use_superseded', []):
         # New syntax - posible future Neon release (not yet determined)
         pass
+    elif __grains__['saltversioninfo'][0] == 2019 and __grains__['saltversioninfo'][1] > 2 and not 'module.run' in __opts__.get('use_superseded', []):
+        # New syntax - posible future Neon release (not yet determined)
+        use_new_syntax = False
     elif __grains__['saltversioninfo'][0] > 2016 and 'module.run' in __opts__.get('use_superseded', []):
         # New syntax - explicitely enabled via 'use_superseded' configuration on 2018.3 and 2019.2
         pass
