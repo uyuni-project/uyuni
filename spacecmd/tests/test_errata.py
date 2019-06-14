@@ -559,6 +559,49 @@ class TestSCErrata:
         assert_expect(logger.warning.call_args_list,
                       "No patches to delete")
 
+    def test_errata_delete_no_errata_non_interactive(self, shell):
+        """
+        Test do_errata_delete without errata (non-interactive mode).
+
+        :param shell:
+        :return:
+        """
+        shell.help_errata_delete = MagicMock()
+        shell.expand_errata = MagicMock(return_value=["CVE-1", "CVE-2"])
+        shell.user_confirm = MagicMock()
+        shell.client.errata.applicableToChannels = MagicMock(side_effect=[
+            ["base_channel", "special_channel"],
+            ["vim_users_channel"],
+        ])
+        shell.client.errata.delete = MagicMock()
+        shell.generate_errata_cache = MagicMock()
+        shell.options.yes = True
+        mprint = MagicMock()
+        logger = MagicMock()
+
+        with patch("spacecmd.errata.print", mprint) as prt, \
+                patch("spacecmd.errata.logging", logger) as lgr:
+            spacecmd.errata.do_errata_delete(shell, "CVE-X")
+
+        assert not shell.help_errata_delete.called
+        assert not logger.warning.called
+        assert not shell.user_confirm.called
+        assert shell.client.errata.applicableToChannels.called
+        assert shell.client.errata.delete.called
+        assert shell.generate_errata_cache.called
+        assert mprint.called
+        assert logger.info.called
+        assert shell.expand_errata.called
+
+        assert_list_args_expect(mprint.call_args_list,
+                                ['Erratum            Channels',
+                                 '-------            --------',
+                                 'CVE-1                     2',
+                                 'CVE-2                     1'])
+        assert_list_args_expect(logger.info.call_args_list, ['Deleted 2 patches'])
+        assert_args_expect(shell.client.errata.delete.call_args_list,
+                           [((shell.session, "CVE-1",), {}), ((shell.session, "CVE-2",), {})])
+
     def test_errata_publish_noargs(self, shell):
         """
         Test do_errata_publish without arguments.
