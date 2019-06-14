@@ -24,6 +24,8 @@ import java.util.Map;
  */
 public abstract class BaseVirtualizationAction extends Action {
 
+    public static final String FORCE_STRING = "force";
+
     private String uuid;
 
     /**
