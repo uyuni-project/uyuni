@@ -1,3 +1,6 @@
+- Do not duplicate "http://" protocol when using proxies with "deb"
+  repositories (bsc#1138313)
+
 -------------------------------------------------------------------
 Thu Jun 20 10:09:38 CEST 2019 - jgonzalez@suse.com
 
