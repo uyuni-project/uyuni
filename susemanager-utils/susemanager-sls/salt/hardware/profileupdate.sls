@@ -10,48 +10,48 @@ mgr_install_dmidecode:
 {%- endif %}
 
 grains:
-  module.run:
+  mgrcompat.module_run:
     - name: grains.items
 cpuinfo:
-  module.run:
+  mgrcompat.module_run:
     - name: status.cpuinfo
 udev:
-  module.run:
+  mgrcompat.module_run:
     - name: udev.exportdb
 network-interfaces:
-  module.run:
+  mgrcompat.module_run:
     - name: network.interfaces
 network-ips:
-  module.run:
+  mgrcompat.module_run:
     - name: sumautil.primary_ips
 network-modules:
-  module.run:
+  mgrcompat.module_run:
     - name: sumautil.get_net_modules
 
 {% if grains['cpuarch'] in ['i386', 'i486', 'i586', 'i686', 'x86_64'] %}
 smbios-records-bios:
-  module.run:
+  mgrcompat.module_run:
     - name: smbios.records
     - rec_type: 0
     - clean: False
 smbios-records-system:
-  module.run:
+  mgrcompat.module_run:
     - name: smbios.records
     - rec_type: 1
     - clean: False
 smbios-records-baseboard:
-  module.run:
+  mgrcompat.module_run:
     - name: smbios.records
     - rec_type: 2
     - clean: False
 smbios-records-chassis:
-  module.run:
+  mgrcompat.module_run:
     - name: smbios.records
     - rec_type: 3
     - clean: False
 {% elif grains['cpuarch'] in ['s390', 's390x'] %}
 mainframe-sysinfo:
-  module.run:
+  mgrcompat.module_run:
     - name: mainframesysinfo.read_values
 {% endif %}
 {% if 'network.fqdns' in salt %}

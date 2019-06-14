@@ -1,4 +1,4 @@
 mgr_virt_suspend:
-  module.run:
+  mgrcompat.module_run:
     - name: virt.pause
     - vm_: {{ pillar['domain_name'] }}

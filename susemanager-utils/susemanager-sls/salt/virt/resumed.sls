@@ -1,4 +1,4 @@
 mgr_virt_resume:
-  module.run:
+  mgrcompat.module_run:
     - name: virt.resume
     - vm_: {{ pillar['domain_name'] }}
