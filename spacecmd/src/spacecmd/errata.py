@@ -157,7 +157,7 @@ def do_errata_apply(self, args, only_systems=None):
     print('')
     print('Start Time: %s' % options.start_time)
 
-    if not self.user_confirm('Apply these patches [y/N]:'):
+    if (is_interactive(options) and not self.user_confirm('Apply these patches [y/N]:')) or not self.options.yes:
         return
 
     # if the API supports it, try to schedule multiple systems for one erratum
