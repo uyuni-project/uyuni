@@ -1,3 +1,7 @@
+- The rhnsd service was replaced by rhnsd timer, so
+  registration script and systemd presets are now adapted
+  to this (bsc#1138130)
+
 -------------------------------------------------------------------
 Wed May 15 15:09:40 CEST 2019 - jgonzalez@suse.com
 

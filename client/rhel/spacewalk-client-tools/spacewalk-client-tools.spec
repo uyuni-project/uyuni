@@ -561,7 +561,7 @@ ln -s spacewalk-channel $RPM_BUILD_ROOT%{_sbindir}/rhn-channel
 mkdir -p $RPM_BUILD_ROOT/var/lib/up2date
 mkdir -pm700 $RPM_BUILD_ROOT%{_localstatedir}/spool/up2date
 touch $RPM_BUILD_ROOT%{_localstatedir}/spool/up2date/loginAuth.pkl
-%if 0%{?fedora} || 0%{?mageia} || 0%{?debian} >= 8 || 0%{?ubuntu} >= 1504
+%if 0%{?fedora} || 0%{?mageia} || 0%{?debian} >= 8 || 0%{?ubuntu} >= 1504 || 0%{?sle_version} >= 120000 || 0%{?rhel} >= 7
 mkdir -p $RPM_BUILD_ROOT/%{_presetdir}
 install 50-spacewalk-client.preset $RPM_BUILD_ROOT/%{_presetdir}
 %endif
@@ -745,7 +745,7 @@ make -f Makefile.rhn-client-tools test
 #public keys and certificates
 %{_datadir}/rhn/RHNS-CA-CERT
 
-%if 0%{?fedora} || 0%{?mageia} || 0%{?debian} >= 8 || 0%{?ubuntu} >= 1504
+%if 0%{?fedora} || 0%{?mageia} || 0%{?debian} >= 8 || 0%{?ubuntu} >= 1504 || 0%{?sle_version} >= 120000 || 0%{?rhel} >= 7
 %{_presetdir}/50-spacewalk-client.preset
 %endif
 

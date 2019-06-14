@@ -70,8 +70,8 @@ def startRhnsd():
         if os.access("/usr/lib/systemd/system/rhnsd.service", os.R_OK):
             # systemd
             if os.access("/usr/bin/systemctl", os.R_OK|os.X_OK):
-                os.system("/usr/bin/systemctl enable rhnsd > /dev/null");
-                os.system("/usr/bin/systemctl start rhnsd > /dev/null");
+                os.system("/usr/bin/systemctl enable rhnsd.timer > /dev/null");
+                os.system("/usr/bin/systemctl start rhnsd.timer > /dev/null");
             else:
                 print(_("Warning: unable to enable rhnsd with systemd"))
         else:

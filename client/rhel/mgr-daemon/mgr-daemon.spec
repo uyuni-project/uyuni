@@ -176,6 +176,7 @@ rm -rf $RPM_BUILD_ROOT/%{_datadir}/locale
 %if 0%{?suse_version} >= 1210
 %service_add_post rhnsd.timer
 %service_add_post spacewalk-update-status.service
+%{_bindir}/systemctl start rhnsd.timer || :
 %else
 %{fillup_and_insserv rhnsd}
 %endif
