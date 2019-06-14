@@ -7,6 +7,7 @@ from unittest.mock import MagicMock, patch
 from helpers import shell, assert_expect, assert_list_args_expect, assert_args_expect
 import spacecmd.errata
 from xmlrpc import client as xmlrpclib
+import zlib
 
 
 class TestSCErrata:
@@ -691,3 +692,73 @@ class TestSCErrata:
                                  'cve-three does not affect any systems'])
         assert_expect(logger.warning.call_args_list,
                       "No patches to apply")
+
+    def test_errata_apply_non_interactive_api_10_11(self, shell):
+        """
+        Test do_errata_apply non-interactive, API 10.11 version.
+
+        :param shell:
+        :return:
+        """
+        shell.help_errata_apply = MagicMock()
+        shell.user_confirm = MagicMock(return_value=True)
+        shell.check_api_version = MagicMock(return_value=True)
+        shell.get_system_id = lambda data: zlib.adler32(data.encode("utf-8")) & 0xffffffff
+        shell.get_erratum_name = lambda data: "CVE-{}-name".format(data)
+        shell.expand_errata = MagicMock(return_value=["CVE-1", "CVE-2"])
+        shell.client.errata.listAffectedSystems = MagicMock(side_effect=[
+            [{"name": "web1.foo.com"}, {"name": "web2.foo.com"}],
+            [{"name": "db1.foo.com"}, {"name": "db2.foo.com"}],
+        ])
+        shell.client.system.getUnscheduledErrata = MagicMock(side_effect=[
+            [
+                {"id": "1", "advisory_name": "CVE-1"},
+                {"id": "2", "advisory_name": "CVE-2"},
+            ],
+            [
+                {"id": "1", "advisory_name": "CVE-1"},
+                {"id": "2", "advisory_name": "CVE-2"},
+                {"id": "3", "advisory_name": "CVE-3"},
+            ],
+            [
+                {"id": "1", "advisory_name": "CVE-1"},
+            ],
+            [
+                {"id": "4", "advisory_name": "CVE-4"},
+            ],
+        ])
+        shell.client.system.scheduleApplyErrata = MagicMock()
+        shell.all_errata = {}
+        shell.options = MagicMock()
+        shell.options.yes = True
+        mprint = MagicMock()
+        logger = MagicMock()
+
+        with patch("spacecmd.errata.print", mprint) as prt, \
+                patch("spacecmd.errata.logging", logger) as lgr:
+            spacecmd.errata.do_errata_apply(shell, "cve* -s 201901011030")
+
+        assert not shell.help_errata_apply.called
+        assert shell.client.system.scheduleApplyErrata.called
+        assert not logger.warning.called
+        assert not logger.debug.called
+        assert shell.user_confirm.called
+        assert shell.check_api_version.called
+        assert shell.client.system.getUnscheduledErrata.called
+        assert mprint.called
+        assert shell.client.errata.listAffectedSystems.called
+        assert shell.expand_errata.called
+
+        assert_list_args_expect(mprint.call_args_list,
+                                ['Errata             Systems', '--------------     -------',
+                                 'CVE-1                    2\nCVE-2                    2', '',
+                                 'Start Time: 20190101T10:30:00'])
+
+        assert_list_args_expect(logger.info.call_args_list,
+                                ['Scheduled 3 system(s) for CVE-1-name',
+                                 'Scheduled 2 system(s) for CVE-2-name'])
+
+        dt = spacecmd.errata.parse_time_input("201901011030")
+        assert_args_expect(shell.client.system.scheduleApplyErrata.call_args_list,
+                           [((shell.session, [370082775, 370672600, 464454735], ['1'], dt), {}),
+                            ((shell.session, [370082775, 370672600], ['2'], dt), {})])
