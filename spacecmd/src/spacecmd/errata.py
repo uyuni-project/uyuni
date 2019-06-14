@@ -536,6 +536,7 @@ def do_errata_search(self, args, doreturn=False):
         self.help_errata_search()
         return
 
+    out = []
     add_separator = False
 
     for query in args:
@@ -562,12 +563,13 @@ def do_errata_search(self, args, doreturn=False):
 
         if add_separator:
             print(self.SEPARATOR)
-        add_separator = True
-
-        if errata:
-            if doreturn:
-                return [erratum['advisory_name'] for erratum in errata]
-            else:
-                map(print_errata_summary, sorted(errata, reverse=True))
         else:
-            return []
+            add_separator = True
+
+        if doreturn:
+            out += [erratum['advisory_name'] for erratum in errata]
+        else:
+            for erratum in reversed(sorted(errata)):
+                print_errata_summary(erratum=erratum)
+
+    return out if doreturn else None
