@@ -505,7 +505,7 @@ def do_errata_publish(self, args):
 
     print('\n'.join(sorted(errata)))
 
-    if not self.user_confirm('Publish these patches [y/N]:'):
+    if not self.options.yes and not self.user_confirm('Publish these patches [y/N]:'):
         return
 
     for erratum in errata:
