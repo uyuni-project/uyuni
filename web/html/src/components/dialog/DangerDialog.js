@@ -43,6 +43,7 @@ function DangerDialog(props) {
           content={props.content}
           title={props.title}
           buttons={buttons}
+          onClosePopUp={props.onClosePopUp}
           />
     );
 }
