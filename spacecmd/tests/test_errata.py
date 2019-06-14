@@ -762,3 +762,75 @@ class TestSCErrata:
         assert_args_expect(shell.client.system.scheduleApplyErrata.call_args_list,
                            [((shell.session, [370082775, 370672600, 464454735], ['1'], dt), {}),
                             ((shell.session, [370082775, 370672600], ['2'], dt), {})])
+
+    def test_errata_apply_non_interactive_api_non1011_version(self, shell):
+        """
+        Test do_errata_apply non-interactive, API non-10.11 version.
+
+        :param shell:
+        :return:
+        """
+        shell.help_errata_apply = MagicMock()
+        shell.user_confirm = MagicMock(return_value=True)
+        shell.check_api_version = MagicMock(return_value=False)
+        shell.get_system_id = lambda data: zlib.adler32(data.encode("utf-8")) & 0xffffffff
+        shell.get_erratum_name = lambda data: "CVE-{}-name".format(data)
+        shell.expand_errata = MagicMock(return_value=["CVE-1", "CVE-2"])
+        shell.client.errata.listAffectedSystems = MagicMock(side_effect=[
+            [{"name": "web1.foo.com"}, {"name": "web2.foo.com"}],
+            [{"name": "db1.foo.com"}, {"name": "db2.foo.com"}],
+        ])
+        shell.client.system.getUnscheduledErrata = MagicMock(side_effect=[
+            [
+                {"id": "1", "advisory_name": "CVE-1"},
+                {"id": "2", "advisory_name": "CVE-2"},
+            ],
+            [
+                {"id": "1", "advisory_name": "CVE-1"},
+                {"id": "2", "advisory_name": "CVE-2"},
+                {"id": "3", "advisory_name": "CVE-3"},
+            ],
+            [
+                {"id": "1", "advisory_name": "CVE-1"},
+            ],
+            [
+                {"id": "4", "advisory_name": "CVE-4"},
+            ],
+        ])
+        shell.client.system.scheduleApplyErrata = MagicMock()
+        shell.all_errata = {}
+        shell.options = MagicMock()
+        shell.options.yes = True
+        mprint = MagicMock()
+        logger = MagicMock()
+
+        with patch("spacecmd.errata.print", mprint) as prt, \
+                patch("spacecmd.errata.logging", logger) as lgr:
+            spacecmd.errata.do_errata_apply(shell, "cve* -s 201901011030")
+
+        assert not shell.help_errata_apply.called
+        assert logger.warning.called
+        assert not logger.debug.called
+        assert not shell.user_confirm.called
+        assert shell.client.system.scheduleApplyErrata.called
+        assert shell.check_api_version.called
+        assert shell.client.system.getUnscheduledErrata.called
+        assert mprint.called
+        assert shell.client.errata.listAffectedSystems.called
+        assert shell.expand_errata.called
+
+        assert_list_args_expect(mprint.call_args_list,
+                                ['Errata             Systems', '--------------     -------',
+                                 'CVE-1                    2\nCVE-2                    2','',
+                                 'Start Time: 20190101T10:30:00'])
+        assert_list_args_expect(logger.warning.call_args_list,
+                                ['No patches to schedule for web2.foo.com'])
+        assert_list_args_expect(logger.info.call_args_list,
+                                ['Scheduled 2 patches for db1.foo.com',
+                                 'Scheduled 2 patches for db2.foo.com',
+                                 'Scheduled 1 patches for web1.foo.com'])
+        dt = spacecmd.errata.parse_time_input("201901011030")
+        assert_args_expect(shell.client.system.scheduleApplyErrata.call_args_list,
+                           [((shell.session, 370082775, ['1', '2'], dt), {}),
+                            ((shell.session, 370672600, ['1', '2'], dt), {}),
+                            ((shell.session, 464454735, ['1'], dt), {})])
