@@ -551,6 +551,33 @@ class TestSCErrata:
         assert not logger.warning.called
         assert shell.help_errata_publish.called
 
+    def test_errata_publish_no_errata(self, shell):
+        """
+        Test do_errata_publish no errata found.
+
+        :param shell:
+        :return:
+        """
+        shell.help_errata_publish = MagicMock()
+        shell.expand_errata = MagicMock(return_value=[])
+        shell.user_confirm = MagicMock()
+        shell.client.errata.publish = MagicMock()
+        mprint = MagicMock()
+        logger = MagicMock()
+
+        with patch("spacecmd.errata.print", mprint) as prt, \
+                patch("spacecmd.errata.logging", logger) as lgr:
+            spacecmd.errata.do_errata_publish(shell, "CVE-1 base_channel")
+
+        assert not shell.user_confirm.called
+        assert not shell.client.errata.publish.called
+        assert not mprint.called
+        assert not shell.help_errata_publish.called
+        assert shell.expand_errata.called
+        assert logger.warning.called
+        assert_list_args_expect(logger.warning.call_args_list,
+                                ["No patches to publish"])
+
     def test_errata_search_noargs(self, shell):
         """
         Test do_errata_search without arguments.
