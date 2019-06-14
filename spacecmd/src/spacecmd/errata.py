@@ -177,10 +177,7 @@ def do_errata_apply(self, args, only_systems=None):
                 erratum_id = erratum.get('id')
 
                 if erratum.get('advisory_name') in errata_list:
-                    if erratum_id not in to_apply:
-                        to_apply[erratum_id] = []
-
-                    to_apply[erratum_id].append(system_id)
+                    to_apply.setdefault(erratum_id, []).append(system_id)
 
         # apply the errata
         for erratum in to_apply:
