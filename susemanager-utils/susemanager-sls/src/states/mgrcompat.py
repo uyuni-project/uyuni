@@ -11,17 +11,26 @@ regardless the actual Salt version installed on the minion.
 '''
 from __future__ import absolute_import
 
+from salt.utils.odict import OrderedDict
 import logging
 
 log = logging.getLogger(__name__)
 
 __virtualname__ = 'mgrcompat'
 
+from salt.states import module
+
 
 def __virtual__():
     '''
     This module is always enabled while 'state.single' is available.
     '''
+    module.__salt__ = __salt__
+    module.__opts__ = __opts__
+    module.__pillar__ = __pillar__
+    module.__grains__ = __grains__
+    module.__context__ = __context__
+    module.__utils__ = __utils__
     return __virtualname__ if 'state.single' in __salt__ else (False, 'state.single is not available')
 
 def module_run(**kwargs):
@@ -52,19 +61,14 @@ def module_run(**kwargs):
         use_new_syntax = False
 
     if use_new_syntax:
-        log.debug("Using the new module.run syntax")
+        old_name = kwargs.pop('name')
+        new_kwargs = {old_name: [OrderedDict(kwargs)]}
+    else:
         new_kwargs = kwargs
-    else:
-        log.debug("Using the old deprecated module.run syntax. Tailoring module.run arguments.")
-        kwargs.pop('name')
-        new_kwargs = {
-            'name': list(kwargs.keys())[0],
-        }
-        for item in kwargs[new_kwargs['name']] or []:
-            new_kwargs.update(item)
 
-    mod_ret = __salt__['state.single']('module.run', **new_kwargs)
-    if isinstance(mod_ret, dict):
-        return list(mod_ret.values())[0]
-    else:
-        return mod_ret
+    ret = module.run(**new_kwargs)
+    if use_new_syntax:
+        changes = ret['changes'].pop(old_name)
+        ret['changes']['ret'] = changes
+        ret['name'] = old_name
+    return ret
