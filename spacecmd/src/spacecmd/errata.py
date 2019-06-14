@@ -116,8 +116,7 @@ def do_errata_apply(self, args, only_systems=None):
     for erratum in errata_list:
         try:
             # get the systems affected by each errata
-            affected_systems = \
-                self.client.errata.listAffectedSystems(self.session, erratum)
+            affected_systems = self.client.errata.listAffectedSystems(self.session, erratum)
 
             # build a list of systems that we will schedule errata for,
             # indexed by errata name
