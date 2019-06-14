@@ -577,6 +577,54 @@ class TestSCErrata:
         assert not logger.warning.called
         assert shell.help_errata_search.called
 
+    def test_errata_search_by_cve_no_data(self, shell):
+        """
+        Test do_errata_search without arguments.
+
+        :param shell:
+        :return:
+        """
+        shell.help_errata_search = MagicMock()
+        shell.expand_errata = MagicMock()
+        shell.generate_errata_cache = MagicMock()
+        shell.client.errata.findByCve = MagicMock(return_value=[
+            {"date": None, "issue_date": "2019 01 01", "advisory_name": "CVE-123",
+             "advisory_synopsis": "<SYNOPSIS>"}
+        ])
+        shell.all_errata = {}
+        mprint = MagicMock()
+        logger = MagicMock()
+
+        mp_out = []
+
+        def prn_err_summary(erratum):
+            """
+            Collect erratum summary printout.
+
+            :param erratum:
+            :return:
+            """
+            mp_out.append(erratum)
+
+        with patch("spacecmd.errata.print", mprint) as prt, \
+                patch("spacecmd.errata.print_errata_summary", prn_err_summary) as pes, \
+                patch("spacecmd.errata.logging", logger) as lgr:
+            out = spacecmd.errata.do_errata_search(shell, "CVE-123-23456")
+
+        assert not shell.expand_errata.called
+        assert not shell.generate_errata_cache.called
+        assert not mprint.called
+        assert not logger.warning.called
+        assert not shell.help_errata_search.called
+        assert out is None
+        assert shell.client.errata.findByCve.called
+        assert type(mp_out) == list
+        assert len(mp_out) == 1
+        for key, value in {'date': None, 'issue_date': '2019 01 01',
+                           'advisory_name': 'CVE-123', 'advisory_synopsis': '<SYNOPSIS>'}.items():
+            assert key in mp_out[0]
+            assert mp_out[0][key] == value
+
     def test_errata_apply_noargs(self, shell):
         """
         Test do_errata_apply without arguments.
