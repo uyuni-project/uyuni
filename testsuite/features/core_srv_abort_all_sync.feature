@@ -12,4 +12,4 @@ Feature: Abort all reposync activity
     And I click on "Delete Schedule"
 
   Scenario: Kill running reposyncs
-    When I make sure no spacewalk-repo-sync is in execution
+    When I make sure no spacewalk-repo-sync is executing
