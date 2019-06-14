@@ -24,7 +24,7 @@ function getFileSourceFields(model: Object, index: number, pools: Array<Object>,
         divClass="col-md-6"
         disabled={!onlyHandledDisks}
         required
-        defaultValue={pools.find(pool => pool.name === 'default') ? 'default' : pools[0]}
+        defaultValue={pools.find(pool => pool.name === 'default') ? 'default' : pools[0].name}
       >
         {
           pools.map(k => <option key={k.name} value={k.name}>{k.name}</option>)
