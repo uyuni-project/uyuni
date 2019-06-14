@@ -23,7 +23,7 @@ mgr_buildimage_prepare_source:
   file.directory:
     - name: {{ root_dir }}
     - clean: True
-  module.run:
+  mgrcompat.module_run:
     - name: kiwi_source.prepare_source
     - source: {{ source }}
     - root: {{ root_dir }}
@@ -104,7 +104,7 @@ mgr_buildimage_kiwi_prepare:
   cmd.run:
     - name: "{{ kiwi }} --nocolor --force-new-root --prepare {{ source_dir }} --root {{ chroot_dir }} {{ kiwi_params() }}"
     - require:
-      - module: mgr_buildimage_prepare_source
+      - mgrcompat: mgr_buildimage_prepare_source
       - file: mgr_buildimage_prepare_activation_key_in_source
 
 mgr_buildimage_kiwi_create:
@@ -149,7 +149,7 @@ mgr_buildimage_kiwi_bundle:
 
 {%- if pillar.get('use_salt_transport') %}
 mgr_buildimage_kiwi_collect_image:
-  module.run:
+  mgrcompat.module_run:
     - name: cp.push_dir
     - path: {{ bundle_dir }}
     - require:
@@ -157,7 +157,7 @@ mgr_buildimage_kiwi_collect_image:
 {%- endif %}
 
 mgr_buildimage_info:
-  module.run:
+  mgrcompat.module_run:
     - name: kiwi_info.image_details
     - dest: {{ dest_dir }}
     - bundle_dest: {{ bundle_dir }}

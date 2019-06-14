@@ -11,7 +11,7 @@
 {% for entry in data %}
 {% if (repos_disabled.match_str in entry['file'])|string == repos_disabled.matching|string and entry.get('enabled', True) %} 
 disable_repo_{{ repos_disabled.count }}:
-  module.run:
+  mgrcompat.module_run:
     - name: pkg.mod_repo
     - repo: {{ "'" ~ entry.line ~ "'" }}
     - kwargs:
@@ -22,7 +22,7 @@ disable_repo_{{ repos_disabled.count }}:
 {% else %}
 {% if (repos_disabled.match_str in alias)|string == repos_disabled.matching|string and data.get('enabled', True) %}
 disable_repo_{{ alias }}:
-  module.run:
+  mgrcompat.module_run:
     - name: pkg.mod_repo
     - repo: {{ alias }}
     - kwargs:

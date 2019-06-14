@@ -1,4 +1,4 @@
 mgr_scap:
-  module.run:
+  mgrcompat.module_run:
     - name: openscap.xccdf
     - params: {{ pillar.get('mgr_scap_params') }}
