@@ -28,6 +28,7 @@ import com.redhat.rhn.domain.action.ActionChain;
 import com.redhat.rhn.domain.action.ActionChainFactory;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.ActionType;
+import com.redhat.rhn.domain.action.virtualization.BaseVirtualizationAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationCreateAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationCreateActionDiskDetails;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationCreateActionInterfaceDetails;
@@ -328,7 +329,11 @@ public class VirtualGuestsController {
                                                               ((VirtualGuestSetterActionJson)data).getValue());
                         }
                         else {
-                            result = triggerGuestAction(host, guest, type, user, new HashMap<>());
+                            Map<String, String> context = new HashMap<>();
+                            if (data.getForce() != null) {
+                                context.put(BaseVirtualizationAction.FORCE_STRING, Boolean.toString(data.getForce()));
+                            }
+                            result = triggerGuestAction(host, guest, type, user, context);
                         }
                     }
                     String status = result != null ? result : "Failed";

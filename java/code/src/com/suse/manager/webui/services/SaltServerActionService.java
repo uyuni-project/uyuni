@@ -53,6 +53,7 @@ import com.redhat.rhn.domain.action.scap.ScapAction;
 import com.redhat.rhn.domain.action.scap.ScapActionDetails;
 import com.redhat.rhn.domain.action.script.ScriptAction;
 import com.redhat.rhn.domain.action.server.ServerAction;
+import com.redhat.rhn.domain.action.virtualization.BaseVirtualizationAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationCreateAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationCreateActionDiskDetails;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationCreateActionInterfaceDetails;
@@ -294,31 +295,31 @@ public class SaltServerActionService {
         else if (ActionFactory.TYPE_VIRTUALIZATION_SHUTDOWN.equals(actionType)) {
             VirtualizationShutdownAction virtAction =
                     (VirtualizationShutdownAction)actionIn;
-            return virtStateChangeAction(minions, virtAction.getUuid(), "stopped");
+            return virtStateChangeAction(minions, virtAction.getUuid(), "stopped", virtAction);
         }
         else if (ActionFactory.TYPE_VIRTUALIZATION_START.equals(actionType)) {
             VirtualizationStartAction virtAction = (VirtualizationStartAction)actionIn;
-            return virtStateChangeAction(minions, virtAction.getUuid(), "running");
+            return virtStateChangeAction(minions, virtAction.getUuid(), "running", virtAction);
         }
         else if (ActionFactory.TYPE_VIRTUALIZATION_SUSPEND.equals(actionType)) {
             VirtualizationSuspendAction virtAction =
                     (VirtualizationSuspendAction)actionIn;
-            return virtStateChangeAction(minions, virtAction.getUuid(), "suspended");
+            return virtStateChangeAction(minions, virtAction.getUuid(), "suspended", virtAction);
         }
         else if (ActionFactory.TYPE_VIRTUALIZATION_RESUME.equals(actionType)) {
             VirtualizationResumeAction virtAction =
                     (VirtualizationResumeAction)actionIn;
-            return virtStateChangeAction(minions, virtAction.getUuid(), "resumed");
+            return virtStateChangeAction(minions, virtAction.getUuid(), "resumed", virtAction);
         }
         else if (ActionFactory.TYPE_VIRTUALIZATION_REBOOT.equals(actionType)) {
             VirtualizationRebootAction virtAction =
                     (VirtualizationRebootAction)actionIn;
-            return virtStateChangeAction(minions, virtAction.getUuid(), "rebooted");
+            return virtStateChangeAction(minions, virtAction.getUuid(), "rebooted", virtAction);
         }
         else if (ActionFactory.TYPE_VIRTUALIZATION_DELETE.equals(actionType)) {
             VirtualizationDeleteAction virtAction =
                     (VirtualizationDeleteAction)actionIn;
-            return virtStateChangeAction(minions, virtAction.getUuid(), "deleted");
+            return virtStateChangeAction(minions, virtAction.getUuid(), "deleted", virtAction);
         }
         else if (ActionFactory.TYPE_VIRTUALIZATION_SET_VCPUS.equals(actionType)) {
             VirtualizationSetVcpusAction virtAction =
@@ -1438,7 +1439,7 @@ public class SaltServerActionService {
     }
 
     private Map<LocalCall<?>, List<MinionSummary>> virtStateChangeAction(
-            List<MinionSummary> minionSummaries, String uuid, String state) {
+            List<MinionSummary> minionSummaries, String uuid, String state, BaseVirtualizationAction action) {
         Map<LocalCall<?>, List<MinionSummary>> ret = minionSummaries.stream().collect(
                 Collectors.toMap(minion -> {
 
@@ -1453,8 +1454,18 @@ public class SaltServerActionService {
                                     Collections.singletonList("virt." + state),
                                     Optional.of(pillar));
                         }
+                        else if (state.equals("rebooted") && ((VirtualizationRebootAction)action).isForce()) {
+                            return State.apply(
+                                    Collections.singletonList("virt.reset"),
+                                    Optional.of(pillar));
+                        }
                         else {
-                            pillar.put("domain_state", state);
+                            if (state.equals("stopped") && ((VirtualizationShutdownAction)action).isForce()) {
+                                pillar.put("domain_state", "powered_off");
+                            }
+                            else {
+                                pillar.put("domain_state", state);
+                            }
 
                             return State.apply(
                                     Collections.singletonList("virt.statechange"),

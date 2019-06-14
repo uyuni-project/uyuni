@@ -85,6 +85,34 @@ public class VirtualizationActionsTest extends BaseTestCaseWithUser {
         }
     }
 
+    public void testDomainForceoff() throws Exception {
+        Action a = ActionFactoryTest.createAction(user, ActionFactory.TYPE_VIRTUALIZATION_SHUTDOWN);
+        VirtualizationShutdownAction va = (VirtualizationShutdownAction)a;
+        va.setForce(true);
+        flushAndEvict(va);
+
+        Action a1 = ActionFactory.lookupById(a.getId());
+        assertNotNull(a1);
+
+        assertTrue(a1 instanceof VirtualizationShutdownAction);
+        VirtualizationShutdownAction rebootAction = (VirtualizationShutdownAction)a1;
+        assertTrue(rebootAction.isForce());
+    }
+
+    public void testDomainReset() throws Exception {
+        Action a = ActionFactoryTest.createAction(user, ActionFactory.TYPE_VIRTUALIZATION_REBOOT);
+        VirtualizationRebootAction va = (VirtualizationRebootAction)a;
+        va.setForce(true);
+        flushAndEvict(va);
+
+        Action a1 = ActionFactory.lookupById(a.getId());
+        assertNotNull(a1);
+
+        assertTrue(a1 instanceof VirtualizationRebootAction);
+        VirtualizationRebootAction rebootAction = (VirtualizationRebootAction)a1;
+        assertTrue(rebootAction.isForce());
+    }
+
     public void testSetMemory() throws Exception {
         Action a = ActionFactoryTest.createAction(user, ActionFactory.TYPE_VIRTUALIZATION_SET_MEMORY);
         flushAndEvict(a);
