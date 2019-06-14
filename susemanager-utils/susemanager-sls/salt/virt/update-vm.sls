@@ -1,5 +1,5 @@
 domain_update:
-    module.run:
+    mgrcompat.module_run:
         - name: virt.update
         - m_name: {{ pillar['name'] }}
         - cpu: {{ pillar['vcpus'] }}

@@ -4,10 +4,10 @@ include:
   - util.syncgrains
   - util.syncbeacons
 status_uptime:
-  module.run:
+  mgrcompat.module_run:
     - name: status.uptime
 grains_update:
-  module.run:
+  mgrcompat.module_run:
     - name: grains.item
     - args:
       - kernelrelease
