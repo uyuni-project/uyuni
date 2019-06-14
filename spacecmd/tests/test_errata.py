@@ -542,14 +542,14 @@ class TestSCErrata:
 
         with patch("spacecmd.errata.print", mprint) as prt, \
                 patch("spacecmd.errata.logging", logger) as lgr:
-            spacecmd.errata.do_errata_delete(shell, "")
+            spacecmd.errata.do_errata_publish(shell, "")
 
         assert not shell.expand_errata.called
         assert not shell.user_confirm.called
         assert not shell.client.errata.publish.called
         assert not mprint.called
         assert not logger.warning.called
-        assert shell.help_errata_delete.called
+        assert shell.help_errata_publish.called
 
     def test_errata_search_noargs(self, shell):
         """
