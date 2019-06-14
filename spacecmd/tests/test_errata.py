@@ -739,10 +739,10 @@ class TestSCErrata:
             spacecmd.errata.do_errata_apply(shell, "cve* -s 201901011030")
 
         assert not shell.help_errata_apply.called
-        assert shell.client.system.scheduleApplyErrata.called
         assert not logger.warning.called
         assert not logger.debug.called
-        assert shell.user_confirm.called
+        assert not shell.user_confirm.called
+        assert shell.client.system.scheduleApplyErrata.called
         assert shell.check_api_version.called
         assert shell.client.system.getUnscheduledErrata.called
         assert mprint.called
