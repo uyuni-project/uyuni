@@ -11,14 +11,15 @@ regardless the actual Salt version installed on the minion.
 '''
 from __future__ import absolute_import
 
+# Import salt libs
 from salt.utils.odict import OrderedDict
+from salt.states import module
+
 import logging
 
 log = logging.getLogger(__name__)
 
 __virtualname__ = 'mgrcompat'
-
-from salt.states import module
 
 
 def __virtual__():
@@ -32,6 +33,16 @@ def __virtual__():
     module.__context__ = __context__
     module.__utils__ = __utils__
     return __virtualname__ if 'state.single' in __salt__ else (False, 'state.single is not available')
+
+def _tailor_kwargs_to_new_syntax(name, **kwargs):
+    # Remove "m_" from the kwargs parameters key
+    nkwargs = {}
+    for k, v in kwargs.items():
+        if k.startswith("m_"):
+            nkwargs[k[2:]] = v
+        else:
+            nkwargs[k] = v
+    return {name: [OrderedDict(nkwargs)]}
 
 def module_run(**kwargs):
     '''
@@ -62,13 +73,14 @@ def module_run(**kwargs):
 
     if use_new_syntax:
         old_name = kwargs.pop('name')
-        new_kwargs = {old_name: [OrderedDict(kwargs)]}
+        new_kwargs = _tailor_kwargs_to_new_syntax(old_name, **kwargs)
     else:
         new_kwargs = kwargs
 
     ret = module.run(**new_kwargs)
     if use_new_syntax:
-        changes = ret['changes'].pop(old_name)
-        ret['changes']['ret'] = changes
+        if ret['changes']:
+            changes = ret['changes'].pop(old_name)
+            ret['changes']['ret'] = changes
         ret['name'] = old_name
     return ret
