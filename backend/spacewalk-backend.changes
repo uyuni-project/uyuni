@@ -1,3 +1,5 @@
+- Do not duplicate "http://" protocol when using proxies with "deb"
+  repositories (bsc#1138313)
 - Fix reposync when dealing with RedHat CDN (bsc#1138358)
 - Prevent FileNotFoundError: repomd.xml.key traceback (bsc#1137940)
 - Add journalctl output to spacewalk-debug tarballs
