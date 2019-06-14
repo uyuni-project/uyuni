@@ -625,6 +625,40 @@ class TestSCErrata:
             assert key in mp_out[0]
             assert mp_out[0][key] == value
 
+    def test_errata_search_by_cve_with_data(self, shell):
+        """
+        Test do_errata_search with data return
+
+        :param shell:
+        :return:
+        """
+        shell.help_errata_search = MagicMock()
+        shell.expand_errata = MagicMock()
+        shell.generate_errata_cache = MagicMock()
+        shell.client.errata.findByCve = MagicMock(return_value=[
+            {"date": None, "issue_date": "2019 01 01", "advisory_name": "CVE-123",
+             "advisory_synopsis": "<SYNOPSIS>"}
+        ])
+        shell.all_errata = {}
+        mprint = MagicMock()
+        logger = MagicMock()
+        prn_err_summary = MagicMock()
+
+        with patch("spacecmd.errata.print", mprint) as prt, \
+                patch("spacecmd.errata.print_errata_summary", prn_err_summary) as pes, \
+                patch("spacecmd.errata.logging", logger) as lgr:
+            out = spacecmd.errata.do_errata_search(shell, "CVE-123-23456", doreturn=True)
+
+        assert not shell.expand_errata.called
+        assert not shell.generate_errata_cache.called
+        assert not mprint.called
+        assert not logger.warning.called
+        assert not shell.help_errata_search.called
+        assert not prn_err_summary.called
+        assert out is not None
+        assert shell.client.errata.findByCve.called
+        assert out == ['CVE-123']
+
     def test_errata_apply_noargs(self, shell):
         """
         Test do_errata_apply without arguments.
