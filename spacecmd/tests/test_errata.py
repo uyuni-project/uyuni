@@ -578,6 +578,37 @@ class TestSCErrata:
         assert_list_args_expect(logger.warning.call_args_list,
                                 ["No patches to publish"])
 
+    def test_errata_publish_no_interactive(self, shell):
+        """
+        Test do_errata_publish publish to channel without interactive mode
+
+        :param shell:
+        :return:
+        """
+        shell.help_errata_publish = MagicMock()
+        shell.expand_errata = MagicMock(return_value=["one", "two", "three"])
+        shell.user_confirm = MagicMock()
+        shell.client.errata.publish = MagicMock()
+        shell.options.yes = True
+        mprint = MagicMock()
+        logger = MagicMock()
+
+        with patch("spacecmd.errata.print", mprint) as prt, \
+                patch("spacecmd.errata.logging", logger) as lgr:
+            spacecmd.errata.do_errata_publish(shell, "CVE-1 base_channel")
+
+        assert not logger.warning.called
+        assert not shell.help_errata_publish.called
+        assert not shell.user_confirm.called
+        assert shell.client.errata.publish.called
+        assert mprint.called
+        assert shell.expand_errata.called
+        assert_expect(mprint.call_args_list, 'one\nthree\ntwo')
+        assert_args_expect(shell.client.errata.publish.call_args_list,
+                           [((shell.session, 'one', ['base_channel']), {}),
+                            ((shell.session, 'two', ['base_channel']), {}),
+                            ((shell.session, 'three', ['base_channel']), {})])
+
     def test_errata_search_noargs(self, shell):
         """
         Test do_errata_search without arguments.
