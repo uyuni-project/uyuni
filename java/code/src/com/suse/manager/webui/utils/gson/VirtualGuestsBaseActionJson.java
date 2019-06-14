@@ -23,6 +23,7 @@ import java.util.List;
 public class VirtualGuestsBaseActionJson {
 
     private List<String> uuids;
+    private Boolean force;
 
     /**
      * @return the list of UUIDs of virtual guests to act on
@@ -36,5 +37,19 @@ public class VirtualGuestsBaseActionJson {
      */
     public void setUuids(List<String> uuidsIn) {
         this.uuids = uuidsIn;
+    }
+
+    /**
+     * @return Returns whether to force the action.
+     */
+    public Boolean getForce() {
+        return force;
+    }
+
+    /**
+     * @param forceIn whether to force the action.
+     */
+    public void setForce(Boolean forceIn) {
+        force = forceIn;
     }
 }

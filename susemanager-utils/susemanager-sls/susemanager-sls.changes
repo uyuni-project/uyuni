@@ -1,3 +1,4 @@
+- Allow forcing off or resetting VMs
 - Make sure dmidecode is installed during bootstrap to ensure that hardware
   refresh works for all operating systems (bsc#1137952)
 
