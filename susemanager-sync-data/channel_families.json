@@ -48,6 +48,10 @@
         "name": "openSUSE"
     }, 
     {
+        "label": "OPENSUSE",
+        "name": "openSUSE Products"
+    },
+    {
         "label": "SLES12-GA-LTSS-X86", 
         "name": "SUSE Linux Enterprise Server 12 LTSS (x86)"
     }, 
