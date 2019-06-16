@@ -1,3 +1,6 @@
+- add OPENSUSE to allowed channel_families to make
+  openSUSE Leap product visible in the product list (bsc#1138364)
+
 -------------------------------------------------------------------
 Thu May 30 10:58:31 CEST 2019 - jgonzalez@suse.com
 
