@@ -203,3 +203,17 @@ class TestSCUser:
         assert_args_expect(shell.client.user.create.call_args_list,
                            [((shell.session, 'lksw', '', 'Luke',
                               'Skywalker', 'l.skywalker@suse.com', 1), {})])
+
+    def test_user_delete_noargs(self, shell):
+        """
+        Test do_user_delete, no arguments
+        :param shell:
+        :return:
+        """
+        shell.client.user.delete = MagicMock()
+        shell.help_user_delete = MagicMock()
+
+        spacecmd.user.do_user_delete(shell, "")
+
+        assert not shell.client.user.delete.called
+        assert shell.help_user_delete.called
