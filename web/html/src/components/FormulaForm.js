@@ -78,6 +78,24 @@ class FormulaForm extends React.Component {
         });
     }
 
+    getEmptyValues$key() {
+      let requiredErrors = [];
+
+      function checkDeepInt(values) {
+        if (values instanceof Object) {
+          if ("$key" in values && !values['$key']) {
+            requiredErrors.push(values['$key_name']);
+          }
+
+          Object.values(values).forEach((value) => checkDeepInt(value));
+        }
+      }
+
+      checkDeepInt(this.state.formulaValues)
+
+      return requiredErrors;
+    }
+
     saveFormula(event) {
         event.preventDefault();
         this.setState({ formulaChanged: false });
@@ -94,11 +112,18 @@ class FormulaForm extends React.Component {
             content: this.getValuesClean(preprocessCleanValues(this.state.formulaValues, this.state.formulaLayout))
         };
 
+      const emptyRequiredFields = [...new Set(this.getEmptyValues$key())];
+
+      if(emptyRequiredFields.length > 0) {
+        this.setState({
+          errors: [ t("Please input required fields: {0}", emptyRequiredFields.join(', ')) ]
+        });
+      } else {
         Network.post(
             this.props.saveUrl,
             JSON.stringify(formData),
             "application/json"
-        ).promise.then(function (data) { if (data instanceof Array) this.setState({ messages: data }); }.bind(this),
+        ).promise.then(function (data) { if (data instanceof Array) this.setState({ messages: data, errors: [] }); }.bind(this),
             function (error) {
                 try {
                     this.setState({
@@ -110,7 +135,8 @@ class FormulaForm extends React.Component {
                     });
                 }
             }.bind(this));
-        window.scrollTo(0, 0);
+      }
+      window.scrollTo(0, 0);
     }
 
     getValuesClean(values = this.state.formulaValues, layout = this.state.formulaLayout) {
@@ -216,7 +242,7 @@ class FormulaForm extends React.Component {
         let messageItems = this.state.messages.map((msg) => {
             return { severity: "info", text: msg };
         });
-        messageItems.concat(this.state.errors.map((msg) => {
+      messageItems = messageItems.concat(this.state.errors.map((msg) => {
             return { severity: "error", text: msg };
         }));
         const messages = <Messages items={messageItems} />;
@@ -562,6 +588,9 @@ function generateValues(layout, group_data, system_data) {
             }
 
             result[key] = value
+            if(key === '$key') {
+              result['$key_name'] = element.$name;
+            }
         }
         return result;
     }
