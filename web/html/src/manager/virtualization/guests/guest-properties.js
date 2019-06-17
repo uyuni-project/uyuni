@@ -84,7 +84,7 @@ class GuestProperties extends React.Component<Props> {
                         const { initialModel } = this.props;
 
                         if (initialModel != null && networks != null && pools != null
-                            && osTypes.length > 0 && domainsCaps.length > 0 && allMessages.length === 0) {
+                            && osTypes.length > 0 && domainsCaps.length > 0) {
                           return (
                             <GuestPropertiesForm
                               submitText={this.props.submitText}
