@@ -693,6 +693,15 @@ Then "test-vm" virtual machine on "virt-server" should have no cdrom
 When I delete all "test-vm.*" volumes from "default" pool on "kvm-server" without error control
 ```
 
+* Add or remove virtual network or storage pools
+
+```cucumber
+When I create test-net1 virtual network on "kvm-server"
+When I create test-pool1 virtual storage pool on "kvm-server"
+When I delete test-net1 virtual network on "kvm-server"
+When I delete test-pool1 virtual storage pool on "kvm-server"
+```
+
 <a name="c" />
 
 ### Writing new steps
