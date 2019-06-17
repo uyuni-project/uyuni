@@ -1,3 +1,4 @@
+- Check for result of image rsync transfer to catch failures early (bsc#1104949)
 - Make sure dmidecode is installed during bootstrap to ensure that hardware
   refresh works for all operating systems (bsc#1137952)
 - Fix formula name encoding on Python 3 (bsc#1137533)
