@@ -283,3 +283,17 @@ class TestSCUser:
 
         assert not shell.client.user.disable.called
         assert shell.help_user_disable.called
+
+    def test_user_disable(self, shell):
+        """
+        Test do_user_disable, username
+        :param shell:
+        :return:
+        """
+        shell.client.user.disable = MagicMock()
+        shell.help_user_disable = MagicMock()
+
+        spacecmd.user.do_user_disable(shell, "pointyhaired")
+
+        assert not shell.help_user_disable.called
+        assert shell.client.user.disable.called
