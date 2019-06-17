@@ -146,7 +146,7 @@ def do_user_delete(self, args):
 
     name = args[0]
 
-    if self.user_confirm('Delete this user [y/N]:'):
+    if self.options.yes or self.user_confirm('Delete this user [y/N]:'):
         self.client.user.delete(self.session, name)
 
 ####################
