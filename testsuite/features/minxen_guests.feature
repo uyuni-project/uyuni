@@ -33,8 +33,11 @@ Feature: Be able to manage XEN virtual machines via the GUI
 @virthost_xen
   Scenario: Prepare a Xen test virtual machine and list it
     Given I am on the "Virtualization" page of this "xen-server"
-    When I create default virtual network on "xen-server"
+    When I delete default virtual network on "xen-server"
     And I create test-net0 virtual network on "xen-server"
+    And I create test-net1 virtual network on "xen-server"
+    And I delete default virtual storage pool on "xen-server"
+    And I create test-pool0 virtual storage pool on "xen-server"
     And I create "test-vm" virtual machine on "xen-server"
     And I wait until I see "test-vm" text
 
@@ -83,16 +86,17 @@ Feature: Be able to manage XEN virtual machines via the GUI
     Then I should see "512" in field "memory"
     And I should see "1" in field "vcpu"
     And option "VNC" is selected as "graphicsType"
+    And option "test-net0" is selected as "network0_source"
     When I enter "1024" as "memory"
     And I enter "2" as "vcpu"
     And I select "Spice" from "graphicsType"
-    And I select "test-net0" from "network0_source"
+    And I select "test-net1" from "network0_source"
     And I enter "02:34:56:78:9a:bc" as "network0_mac"
     And I click on "Update"
     Then I should see a "Hosted Virtual Systems" text
     And "test-vm" virtual machine on "xen-server" should have 1024MB memory and 2 vcpus
     And "test-vm" virtual machine on "xen-server" should have spice graphics device
-    And "test-vm" virtual machine on "xen-server" should have 1 NIC using "test-net0" network
+    And "test-vm" virtual machine on "xen-server" should have 1 NIC using "test-net1" network
     And "test-vm" virtual machine on "xen-server" should have a NIC with 02:34:56:78:9a:bc MAC address
     And "test-vm" virtual machine on "xen-server" should have a "test-vm_disk.qcow2" ide disk
 
@@ -102,10 +106,10 @@ Feature: Be able to manage XEN virtual machines via the GUI
     When I click on "Edit" in row "test-vm"
     And I wait until I do not see "Loading..." text
     And I click on "add_nic"
-    And I select "test-net0" from "network1_source"
+    And I select "test-net1" from "network1_source"
     And I click on "Update"
     Then I should see a "Hosted Virtual Systems" text
-    And "test-vm" virtual machine on "xen-server" should have 2 NIC using "test-net0" network
+    And "test-vm" virtual machine on "xen-server" should have 2 NIC using "test-net1" network
 
 @virthost_xen
   Scenario: Delete a network interface from a Xen virtual machine
@@ -115,7 +119,7 @@ Feature: Be able to manage XEN virtual machines via the GUI
     And I click on "remove_nic1"
     And I click on "Update"
     Then I should see a "Hosted Virtual Systems" text
-    And "test-vm" virtual machine on "xen-server" should have 1 NIC using "test-net0" network
+    And "test-vm" virtual machine on "xen-server" should have 1 NIC using "test-net1" network
 
 @virthost_xen
   Scenario: Add a disk and a cdrom to a Xen virtual machine
@@ -156,13 +160,14 @@ Feature: Be able to manage XEN virtual machines via the GUI
     And I wait until I see "General" text
     And I enter "test-vm2" as "name"
     And I enter "/var/testsuite-data/disk-image-template-xenpv.qcow2" as "disk0_source_template"
+    And I select "test-net0" from "network0_source"
     And I select "Spice" from "graphicsType"
     And I click on "Create"
     Then I should see a "Hosted Virtual Systems" text
     When I wait until I see "test-vm2" text
     And I wait until table row for "test-vm2" contains button "Stop"
     And "test-vm2" virtual machine on "xen-server" should have 1024MB memory and 1 vcpus
-    And "test-vm2" virtual machine on "xen-server" should have 1 NIC using "default" network
+    And "test-vm2" virtual machine on "xen-server" should have 1 NIC using "test-net0" network
     And "test-vm2" virtual machine on "xen-server" should have a "test-vm2_system.qcow2" xen disk
 
 @virthost_xen
@@ -180,12 +185,13 @@ Feature: Be able to manage XEN virtual machines via the GUI
     And I enter "test-vm3" as "name"
     And I select "Fully Virtualized" from "osType"
     And I enter "/var/testsuite-data/disk-image-template.qcow2" as "disk0_source_template"
+    And I select "test-net0" from "network0_source"
     And I click on "Create"
     Then I should see a "Hosted Virtual Systems" text
     When I wait until I see "test-vm3" text
     And I wait until table row for "test-vm3" contains button "Stop"
     And "test-vm3" virtual machine on "xen-server" should have 1024MB memory and 1 vcpus
-    And "test-vm3" virtual machine on "xen-server" should have 1 NIC using "default" network
+    And "test-vm3" virtual machine on "xen-server" should have 1 NIC using "test-net0" network
     And "test-vm3" virtual machine on "xen-server" should have a "test-vm3_system.qcow2" xen disk
 
 @virthost_xen
@@ -210,8 +216,9 @@ Feature: Be able to manage XEN virtual machines via the GUI
     And I run "virsh undefine --remove-all-storage test-vm2" on "xen-server" without error control
     And I run "virsh destroy test-vm3" on "xen-server" without error control
     And I run "virsh undefine --remove-all-storage test-vm3" on "xen-server" without error control
-    And I run "virsh net-destroy test-net0" on "xen-server" without error control
-    And I run "virsh net-undefine test-net0" on "xen-server" without error control
-    And I delete all "test-vm.*" volumes from "default" pool on "kvm-server" without error control
+    And I delete test-net0 virtual network on "xen-server" without error control
+    And I delete test-net1 virtual network on "xen-server" without error control
+    And I delete test-pool0 virtual storage pool on "xen-server" without error control
+    And I delete all "test-vm.*" volumes from "default" pool on "xen-server" without error control
     # Remove the virtpoller cache to avoid problems
     And I run "rm /var/cache/virt_state.cache" on "xen-server" without error control

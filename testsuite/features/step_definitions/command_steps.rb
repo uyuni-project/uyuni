@@ -742,7 +742,7 @@ When(/^I create "([^"]*)" virtual machine on "([^"]*)"$/) do |vm_name, host|
   # Actually define the VM, but don't start it
   raise 'not found: virt-install' unless file_exists?(node, '/usr/bin/virt-install')
   node.run("virt-install --name #{vm_name} --memory 512 --vcpus 1 --disk path=#{disk_path} "\
-           " --network network=default --graphics vnc "\
+           " --network network=test-net0 --graphics vnc "\
            "--serial pty,log.file=/tmp/#{vm_name}.console.log,log.append=off "\
            "--import --hvm --noautoconsole --noreboot")
 end
@@ -751,8 +751,8 @@ When(/^I create ([^ ]*) virtual network on "([^"]*)"$/) do |net_name, host|
   node = get_target(host)
 
   networks = {
-    "default" => { "bridge" => "virbr0", "subnet" => 122 },
-    "test-net0" => { "bridge" => "virbr1", "subnet" => 124 }
+    "test-net0" => { "bridge" => "virbr0", "subnet" => 124 },
+    "test-net1" => { "bridge" => "virbr1", "subnet" => 126 }
   }
 
   net = networks[net_name]
