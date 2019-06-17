@@ -23,7 +23,7 @@ class FormulaForm extends React.Component {
     constructor(props) {
         super(props);
 
-        ["saveFormula", "handleChange", "clearValues", "getMessageText"].forEach(method => this[method] = this[method].bind(this));
+        ["saveFormula", "handleChange", "clearValues"].forEach(method => this[method] = this[method].bind(this));
 
         const previewMessage = <p>On this page you can configure <a href="https://docs.saltstack.com/en/latest/topics/development/conventions/formulas.html" target="_blank" rel="noopener noreferrer">Salt Formulas</a> to automatically install and configure software.</p>;
 
@@ -78,6 +78,24 @@ class FormulaForm extends React.Component {
         });
     }
 
+    getEmptyValues$key() {
+      let requiredErrors = [];
+
+      function checkDeepInt(values) {
+        if (values instanceof Object) {
+          if ("$key" in values && !values['$key']) {
+            requiredErrors.push(values['$key_name']);
+          }
+
+          Object.values(values).forEach((value) => checkDeepInt(value));
+        }
+      }
+
+      checkDeepInt(this.state.formulaValues)
+
+      return requiredErrors;
+    }
+
     saveFormula(event) {
         event.preventDefault();
         this.setState({ formulaChanged: false });
@@ -86,7 +104,6 @@ class FormulaForm extends React.Component {
         if (formType === 'SYSTEM') {
             formType = 'SERVER';
         }
-
         let formData = {
             type: formType,
             id: this.props.systemId,
@@ -94,11 +111,19 @@ class FormulaForm extends React.Component {
             content: this.getValuesClean(preprocessCleanValues(this.state.formulaValues, this.state.formulaLayout))
         };
 
-        Network.post(
+        const emptyRequiredFields = [...new Set(this.getEmptyValues$key())];
+
+        if(emptyRequiredFields.length > 0) {
+            this.setState({
+                    messages: [],
+                    errors: [ t("Please input required fields: {0}", emptyRequiredFields.join(', ')) ]
+            });
+        } else {
+          Network.post(
             this.props.saveUrl,
             JSON.stringify(formData),
             "application/json"
-        ).promise.then(function (data) { if (data instanceof Array) this.setState({ messages: data.map(msg => this.getMessageText(msg)) }); }.bind(this),
+          ).promise.then(function (data) { if (data instanceof Array) this.setState({ messages: data, errors: [] }); }.bind(this),
             function (error) {
                 try {
                     this.setState({
@@ -110,6 +135,7 @@ class FormulaForm extends React.Component {
                     });
                 }
             }.bind(this));
+        }
         window.scrollTo(0, 0);
     }
 
@@ -212,15 +238,11 @@ class FormulaForm extends React.Component {
         return form;
     }
 
-    getMessageText(msg) {
-      return this.props.messageTexts[msg] ? t(this.props.messageTexts[msg]) : msg;
-    }
-
     render() {
         let messageItems = this.state.messages.map((msg) => {
             return { severity: "info", text: msg };
         });
-        messageItems.concat(this.state.errors.map((msg) => {
+        messageItems = messageItems.concat(this.state.errors.map((msg) => {
             return { severity: "error", text: msg };
         }));
         const messages = <Messages items={messageItems} />;
@@ -566,6 +588,9 @@ function generateValues(layout, group_data, system_data) {
             }
 
             result[key] = value
+            if(key === '$key') {
+              result['$key_name'] = element.$name;
+            }
         }
         return result;
     }
