@@ -269,3 +269,17 @@ class TestSCUser:
 
         assert not shell.client.user.disable.called
         assert shell.help_user_disable.called
+
+    def test_user_disable_too_much_arguments(self, shell):
+        """
+        Test do_user_disable, too much arguments
+        :param shell:
+        :return:
+        """
+        shell.client.user.disable = MagicMock()
+        shell.help_user_disable = MagicMock()
+
+        spacecmd.user.do_user_disable(shell, "pointyhaired someone-else")
+
+        assert not shell.client.user.disable.called
+        assert shell.help_user_disable.called
