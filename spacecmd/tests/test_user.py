@@ -297,3 +297,17 @@ class TestSCUser:
 
         assert not shell.help_user_disable.called
         assert shell.client.user.disable.called
+
+    def test_user_enable_noargs(self, shell):
+        """
+        Test do_user_enable, no arguments
+        :param shell:
+        :return:
+        """
+        shell.client.user.enable = MagicMock()
+        shell.help_user_enable = MagicMock()
+
+        spacecmd.user.do_user_enable(shell, "")
+
+        assert not shell.client.user.enable.called
+        assert shell.help_user_enable.called
