@@ -212,8 +212,28 @@ class TestSCUser:
         """
         shell.client.user.delete = MagicMock()
         shell.help_user_delete = MagicMock()
+        shell.user_confirm = MagicMock()
 
         spacecmd.user.do_user_delete(shell, "")
 
         assert not shell.client.user.delete.called
+        assert not shell.user_confirm.called
         assert shell.help_user_delete.called
+
+    def test_user_delete_non_interactive(self, shell):
+        """
+        Test do_user_delete, non-interactive mode.
+
+        :param shell:
+        :return:
+        """
+        shell.client.user.delete = MagicMock()
+        shell.help_user_delete = MagicMock()
+        shell.options.yes = True
+        shell.user_confirm = MagicMock(return_value=False)
+
+        spacecmd.user.do_user_delete(shell, "pointyhaired")
+
+        assert not shell.help_user_delete.called
+        assert not shell.user_confirm.called
+        assert shell.client.user.delete.called
