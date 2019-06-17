@@ -21,7 +21,7 @@ class TestSCUser:
         :return:
         """
         shell.client.user.create = MagicMock()
-        shell.user_confirm = MagicMock(return_value=True)
+        shell.user_confirm = MagicMock(return_value=1)
         logger = MagicMock()
         getps = MagicMock(return_value="1234567890")
         prompter = MagicMock(side_effect=["lksw", "Luke", "Skywalker",
@@ -35,8 +35,29 @@ class TestSCUser:
         assert not logger.warning.called
         assert_args_expect(shell.client.user.create.call_args_list,
                            [((shell.session, 'lksw', '1234567890', 'Luke',
-                              'Skywalker', 'l.skywalker@suse.com', True), {})])
+                              'Skywalker', 'l.skywalker@suse.com', 1), {})])
+
+    def test_user_create_args(self, shell):
+        """
+        Test do_user_create parameters/arguments mode.
+
+        :param shell:
+        :return:
+        """
+        shell.client.user.create = MagicMock()
+        shell.user_confirm = MagicMock(return_value=True)
+        logger = MagicMock()
+        getps = MagicMock(return_value="1234567890")
+        prompter = MagicMock(side_effect=Exception("Should not happen"))
+        with patch("spacecmd.user.logging", logger) as lgr, \
+                patch("spacecmd.user.prompt_user", prompter) as pmt, \
+                patch("spacecmd.user.getpass", getps) as gpw:
+            spacecmd.user.do_user_create(shell, "-u lksw -f Luke -l Skywalker "
+                                                "-e l.skywalker@suse.com -p 1234567890")
+
         assert shell.client.user.create.called
+        assert not logger.error.called
+        assert not logger.warning.called
         assert_args_expect(shell.client.user.create.call_args_list,
                            [((shell.session, 'lksw', '1234567890', 'Luke',
-                              'Skywalker', 'l.skywalker@suse.com', True), {})])
+                              'Skywalker', 'l.skywalker@suse.com', 0), {})])
