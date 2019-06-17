@@ -339,3 +339,19 @@ class TestSCUser:
 
         assert not shell.help_user_enable.called
         assert shell.client.user.enable.called
+
+    def test_user_list_no_data_no_users(self, shell):
+        """
+        Test do_user_list, no data return, no users.
+
+        :param shell:
+        :return:
+        """
+        shell.client.user.listUsers = MagicMock(return_value=[])
+        mprint = MagicMock()
+
+        with patch("spacecmd.user.print", mprint) as prt:
+            out = spacecmd.user.do_user_list(shell, "")
+
+        assert not mprint.called
+        assert out is None
