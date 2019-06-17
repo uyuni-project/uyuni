@@ -255,3 +255,17 @@ class TestSCUser:
         assert not shell.help_user_delete.called
         assert shell.user_confirm.called
         assert shell.client.user.delete.called
+
+    def test_user_disable_noargs(self, shell):
+        """
+        Test do_user_disable, no arguments
+        :param shell:
+        :return:
+        """
+        shell.client.user.disable = MagicMock()
+        shell.help_user_disable = MagicMock()
+
+        spacecmd.user.do_user_disable(shell, "")
+
+        assert not shell.client.user.disable.called
+        assert shell.help_user_disable.called
