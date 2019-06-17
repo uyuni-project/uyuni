@@ -391,3 +391,22 @@ class TestSCUser:
         assert mprint.called
         assert out is None
         assert_expect(mprint.call_args_list, "pointyhaired\nsomeone-else")
+
+    def test_user_list_get_data_with_users(self, shell):
+        """
+        Test do_user_list, data return, users found.
+
+        :param shell:
+        :return:
+        """
+        shell.client.user.listUsers = MagicMock(return_value=[
+            {"login": "pointyhaired"},
+            {"login": "someone-else"},
+        ])
+        mprint = MagicMock()
+
+        with patch("spacecmd.user.print", mprint) as prt:
+            out = spacecmd.user.do_user_list(shell, "", doreturn=True)
+
+        assert not mprint.called
+        assert out == ["pointyhaired", "someone-else"]
