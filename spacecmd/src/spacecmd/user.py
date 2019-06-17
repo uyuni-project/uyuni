@@ -209,13 +209,13 @@ def help_user_list(self):
 
 def do_user_list(self, args, doreturn=False):
     users = self.client.user.listUsers(self.session)
-    users = [u.get('login') for u in users]
+    users = sorted([u.get('login') for u in users])
 
     if doreturn:
         return users
     else:
         if users:
-            print('\n'.join(sorted(users)))
+            print('\n'.join(users))
 
 ####################
 
