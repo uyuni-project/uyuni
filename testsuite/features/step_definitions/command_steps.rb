@@ -773,6 +773,56 @@ When(/^I create ([^ ]*) virtual network on "([^"]*)"$/) do |net_name, host|
   node.run("virsh net-start #{net_name}", false)
 end
 
+When(/^I delete ([^ ]*) virtual network on "([^"]*)"((?: without error control)?)$/) do |net_name, host, error_control|
+  node = get_target(host)
+  _output, code = node.run("virsh net-dumpxml #{net_name}", false)
+  if code.zero?
+    steps %(
+      When I run "virsh net-destroy #{net_name}" on "#{host}"#{error_control}
+      And I run "virsh net-undefine #{net_name}" on "#{host}"#{error_control}
+    )
+  end
+end
+
+When(/^I create ([^ ]*) virtual storage pool on "([^"]*)"$/) do |pool_name, host|
+  node = get_target(host)
+
+  pool_def = %(<pool type='dir'>
+      <name>#{pool_name}</name>
+      <capacity unit='bytes'>0</capacity>
+      <allocation unit='bytes'>0</allocation>
+      <available unit='bytes'>0</available>
+      <source>
+      </source>
+      <target>
+        <path>/var/lib/libvirt/images/#{pool_name}</path>
+      </target>
+    </pool>
+  )
+
+  # Some pools like the default one may already be defined.
+  _output, code = node.run("virsh pool-dumpxml #{pool_name}", false)
+  node.run("echo -e \"#{pool_def}\" >/tmp/#{pool_name}.xml && virsh pool-define /tmp/#{pool_name}.xml") unless code.zero?
+  node.run("mkdir -p /var/lib/libvirt/images/#{pool_name}")
+
+  # Ensure the pool is started
+  node.run("virsh pool-start #{pool_name}", false)
+end
+
+When(/^I delete ([^ ]*) virtual storage pool on "([^"]*)"((?: without error control)?)$/) do |pool_name, host, error_control|
+  node = get_target(host)
+  _output, code = node.run("virsh pool-dumpxml #{pool_name}", false)
+  if code.zero?
+    steps %(
+      When I run "virsh pool-destroy #{pool_name}" on "#{host}"#{error_control}
+      And I run "virsh pool-undefine #{pool_name}" on "#{host}"#{error_control}
+    )
+  end
+
+  # only delete the folders we created
+  step %(I run "rm -rf /var/lib/libvirt/images/#{pool_name}" on "#{host}"#{error_control}) if pool_name.start_with? "test-"
+end
+
 Then(/^I should see "([^"]*)" virtual machine (shut off|running|paused) on "([^"]*)"$/) do |vm, state, host|
   node = get_target(host)
   repeat_until_timeout(message: "#{vm} virtual machine on #{host} never reached state #{state}") do
