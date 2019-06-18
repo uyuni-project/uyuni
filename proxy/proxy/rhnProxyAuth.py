@@ -460,7 +460,18 @@ class AuthLocalBackend:
         return rhnCache.delete(rkey)
 
     def _compute_key(self, key):
-        return os.path.join(self._cache_prefix, str(key))
+        # convert key to filesytem encoding
+        key = key.encode(sys.getfilesystemencoding(), 'surrogateescape')
+        # ... and strip forward slashes out.
+        key = "".join([chr(outer_char) for outer_char in \
+                    [ord(inner_char) for inner_char in key if ord(inner_char) != ord("/")]])
+
+        key = os.path.join(self._cache_prefix, str(key))
+        if not os.path.normpath(key).startswith(self._cache_prefix):
+            raise ValueError("Path traversal detected for X-RHN-Server-ID. " +
+                            "User is trying to set a path as server-id.")
+        else:
+            return key
 
     def __len__(self):
         pass
