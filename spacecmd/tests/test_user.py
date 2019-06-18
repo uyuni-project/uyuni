@@ -431,3 +431,24 @@ class TestSCUser:
 
         assert_expect(logger.error.call_args_list,
                       "No roles has been found")
+
+    def test_user_listavailableroles_no_data_with_roles(self, shell):
+        """
+        test do_user_listavailableroles, no data return, roles found.
+
+        :param shell:
+        :return:
+        """
+        shell.client.user.listAssignableRoles = MagicMock(return_value=["bofh", "coffee"])
+        mprint = MagicMock()
+        logger = MagicMock()
+
+        with patch("spacecmd.user.print", mprint) as prt, \
+                patch("spacecmd.user.logging", logger) as lgr:
+            out = spacecmd.user.do_user_listavailableroles(shell, "")
+        assert out is None
+        assert not logger.error.called
+        assert mprint.called
+
+        assert_expect(mprint.call_args_list,
+                      "bofh\ncoffee")
