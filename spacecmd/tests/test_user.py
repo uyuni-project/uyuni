@@ -133,7 +133,7 @@ class TestSCUser:
 
     def test_user_create_no_email(self, shell):
         """
-        Test do_user_create, missing email address
+        Test do_user_create, missing email removeress
 
         :param shell:
         :return:
