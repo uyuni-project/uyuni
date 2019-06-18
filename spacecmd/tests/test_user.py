@@ -756,3 +756,22 @@ class TestSCUser:
 
         assert not shell.client.user.setDetails.called
         assert shell.help_user_setemail.called
+
+    def test_user_setemail(self, shell):
+        """
+        Test do_user_setemail with data.
+
+        :param shell:
+        :return:
+        """
+
+        shell.client.user.setDetails = MagicMock()
+        shell.help_user_setemail = MagicMock()
+
+        spacecmd.user.do_user_setemail(shell, "bofh b@op.com")
+
+        assert not shell.help_user_setemail.called
+        assert shell.client.user.setDetails.called
+
+        assert_args_expect(shell.client.user.setDetails.call_args_list,
+                           [((shell.session, "bofh", {"email": "b@op.com"}), {})])
