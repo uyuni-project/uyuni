@@ -640,3 +640,17 @@ class TestSCUser:
         assert shell.client.user.removeAssignedSystemGroups.called
         assert_args_expect(shell.client.user.removeAssignedSystemGroups.call_args_list,
                            [((shell.session, "bofh", ["coffee", "teamaker"], True), {})])
+
+    def test_user_removedefaultgroup_noargs(self, shell):
+        """
+        Test do_user_removedefaultgroup, no arguments
+        :param shell:
+        :return:
+        """
+        shell.client.user.removeDefaultSystemGroups = MagicMock()
+        shell.help_user_removedefaultgroup = MagicMock()
+
+        spacecmd.user.do_user_removedefaultgroup(shell, "")
+
+        assert not shell.client.user.removeDefaultSystemGroups.called
+        assert shell.help_user_removedefaultgroup.called
