@@ -504,3 +504,19 @@ class TestSCUser:
 
         assert not shell.client.user.addRole.called
         assert shell.help_user_addrole.called
+
+    def test_user_addrole(self, shell):
+        """
+        Test do_user_addrole, with correct arguments of user and role
+        :param shell:
+        :return:
+        """
+        shell.client.user.addRole = MagicMock()
+        shell.help_user_addrole = MagicMock()
+
+        spacecmd.user.do_user_addrole(shell, "bofh coffee")
+
+        assert not shell.help_user_addrole.called
+        assert shell.client.user.addRole.called
+        assert_args_expect(shell.client.user.addRole.call_args_list,
+                           [((shell.session, "bofh", "coffee"), {})])
