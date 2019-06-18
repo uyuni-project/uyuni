@@ -134,8 +134,6 @@
 
 # IMMUTABLE ORDER
 
-# this feature is not idempotent and might slow down other features, so it is better near the end
-- features/srv_sync_products.feature
 # this feature is destructive for other features, so it is better at the end
 - features/srv_smdba.feature
 # this feature is needed for gathering log/debug infos
