@@ -550,3 +550,17 @@ class TestSCUser:
         assert shell.client.user.removeRole.called
         assert_args_expect(shell.client.user.removeRole.call_args_list,
                            [((shell.session, "bofh", "coffee"), {})])
+
+    def test_user_addgroup_noargs(self, shell):
+        """
+        Test do_user_addgroup, no arguments
+        :param shell:
+        :return:
+        """
+        shell.client.user.addAssignedSystemGroups = MagicMock()
+        shell.help_user_addgroup = MagicMock()
+
+        spacecmd.user.do_user_addgroup(shell, "")
+
+        assert not shell.client.user.addAssignedSystemGroups.called
+        assert shell.help_user_addgroup.called
