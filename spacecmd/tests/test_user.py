@@ -775,3 +775,19 @@ class TestSCUser:
 
         assert_args_expect(shell.client.user.setDetails.call_args_list,
                            [((shell.session, "bofh", {"email": "b@op.com"}), {})])
+
+    def test_user_setprefix_noargs(self, shell):
+        """
+        Test do_user_setprefix without arguments.
+
+        :param shell:
+        :return:
+        """
+
+        shell.client.user.setDetails = MagicMock()
+        shell.help_user_setprefix = MagicMock()
+
+        spacecmd.user.do_user_setprefix(shell, "")
+
+        assert not shell.client.user.setDetails.called
+        assert shell.help_user_setprefix.called
