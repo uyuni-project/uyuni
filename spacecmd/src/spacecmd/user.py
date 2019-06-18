@@ -644,11 +644,9 @@ def complete_user_setprefix(self, text, line, beg, end):
 
 
 def do_user_setprefix(self, args):
-    arg_parser = get_argument_parser()
+    args, _ = parse_command_arguments(args, get_argument_parser())
 
-    (args, _options) = parse_command_arguments(args, arg_parser)
-
-    if len(args) > 2:
+    if not 0 < len(args) < 3:
         self.help_user_setprefix()
         return
 
