@@ -1,4 +1,7 @@
-- Fix for CVE-2019-10136 (bsc#1136480)
+- Fix for CVE-2019-10136. An attacker with a valid, but expired,
+  authenticated set of headers could move some digits around,
+  artificially extending the session validity without modifying
+  the checksum. (bsc#1136480)
 
 -------------------------------------------------------------------
 Thu Jun 13 10:42:44 CEST 2019 - jgonzalez@suse.com
