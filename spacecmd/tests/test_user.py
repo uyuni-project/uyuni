@@ -410,3 +410,24 @@ class TestSCUser:
 
         assert not mprint.called
         assert out == ["pointyhaired", "someone-else"]
+
+    def test_user_listavailableroles_no_data_no_roles(self, shell):
+        """
+        test do_user_listavailableroles, no data return, no roles found.
+
+        :param shell:
+        :return:
+        """
+        shell.client.user.listAssignableRoles = MagicMock(return_value=[])
+        mprint = MagicMock()
+        logger = MagicMock()
+
+        with patch("spacecmd.user.print", mprint) as prt, \
+                patch("spacecmd.user.logging", logger) as lgr:
+            out = spacecmd.user.do_user_listavailableroles(shell, "")
+        assert out is None
+        assert not mprint.called
+        assert logger.error.called
+
+        assert_expect(logger.error.call_args_list,
+                      "No roles has been found")
