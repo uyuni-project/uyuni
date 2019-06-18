@@ -1,3 +1,10 @@
+- Fix for CVE-2019-10137. A path traversal flaw was found in the
+  way the proxy processes cached client tokens. A remote,
+  unauthenticated, attacker could use this flaw to test the
+  existence of arbitrary files, or if they have access to the
+  proxy's filesystem, execute arbitrary code in the context of the
+  proxy. (bsc#1136480)
+
 -------------------------------------------------------------------
 Wed May 15 17:19:15 CEST 2019 - jgonzalez@suse.com
 
