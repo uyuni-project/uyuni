@@ -686,3 +686,22 @@ class TestSCUser:
 
         assert not shell.client.user.setDetails.called
         assert shell.help_user_setfirstname.called
+
+    def test_user_setfirstname(self, shell):
+        """
+        Test do_user_setfirstname with data.
+
+        :param shell:
+        :return:
+        """
+
+        shell.client.user.setDetails = MagicMock()
+        shell.help_user_setfirstname = MagicMock()
+
+        spacecmd.user.do_user_setfirstname(shell, "bofh Operator")
+
+        assert not shell.help_user_setfirstname.called
+        assert shell.client.user.setDetails.called
+
+        assert_args_expect(shell.client.user.setDetails.call_args_list,
+                           [((shell.session, "bofh", {"first_name": "Operator"}), {})])
