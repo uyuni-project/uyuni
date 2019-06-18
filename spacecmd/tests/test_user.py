@@ -845,3 +845,22 @@ class TestSCUser:
 
         assert not shell.client.user.setDetails.called
         assert shell.help_user_setpassword.called
+
+    def test_user_setpassword(self, shell):
+        """
+        Test do_user_setpassword with data.
+
+        :param shell:
+        :return:
+        """
+
+        shell.client.user.setDetails = MagicMock()
+        shell.help_user_setpassword = MagicMock()
+
+        spacecmd.user.do_user_setpassword(shell, "someuser toto")
+
+        assert not shell.help_user_setpassword.called
+        assert shell.client.user.setDetails.called
+
+        assert_args_expect(shell.client.user.setDetails.call_args_list,
+                           [((shell.session, "someuser", {"password": "toto"}), {})])
