@@ -1,3 +1,5 @@
+- Fix missing python 3 ugettext (bsc#1138494)
+
 -------------------------------------------------------------------
 Wed May 15 20:08:58 CEST 2019 - jgonzalez@suse.com
 
