@@ -233,6 +233,8 @@ def do_user_listavailableroles(self, args, doreturn=False):
     else:
         if roles:
             print('\n'.join(sorted(roles)))
+        else:
+            logging.error("No roles has been found")
 
 ####################
 
