@@ -490,3 +490,17 @@ class TestSCUser:
         assert not logger.error.called
         assert not mprint.called
         assert out == ["bofh", "coffee"]
+
+    def test_user_addrole_noargs(self, shell):
+        """
+        Test do_user_addrole, no arguments
+        :param shell:
+        :return:
+        """
+        shell.client.user.addRole = MagicMock()
+        shell.help_user_addrole = MagicMock()
+
+        spacecmd.user.do_user_addrole(shell, "")
+
+        assert not shell.client.user.addRole.called
+        assert shell.help_user_addrole.called
