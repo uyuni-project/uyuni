@@ -670,3 +670,19 @@ class TestSCUser:
         assert shell.client.user.removeDefaultSystemGroups.called
         assert_args_expect(shell.client.user.removeDefaultSystemGroups.call_args_list,
                            [((shell.session, "bofh", ["coffee", "teamaker"]), {})])
+
+    def test_user_setfirstname_noargs(self, shell):
+        """
+        Test do_user_setfirstname without arguments.
+
+        :param shell:
+        :return:
+        """
+
+        shell.client.user.setDetails = MagicMock()
+        shell.help_user_setfirstname = MagicMock()
+
+        spacecmd.user.do_user_setfirstname(shell, "")
+
+        assert not shell.client.user.setDetails.called
+        assert shell.help_user_setfirstname.called
