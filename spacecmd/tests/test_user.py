@@ -520,3 +520,17 @@ class TestSCUser:
         assert shell.client.user.addRole.called
         assert_args_expect(shell.client.user.addRole.call_args_list,
                            [((shell.session, "bofh", "coffee"), {})])
+
+    def test_user_removerole_noargs(self, shell):
+        """
+        Test do_user_removerole, no arguments
+        :param shell:
+        :return:
+        """
+        shell.client.user.removeRole = MagicMock()
+        shell.help_user_removerole = MagicMock()
+
+        spacecmd.user.do_user_removerole(shell, "")
+
+        assert not shell.client.user.removeRole.called
+        assert shell.help_user_removerole.called
