@@ -594,3 +594,19 @@ class TestSCUser:
 
         assert not shell.client.user.addDefaultSystemGroups.called
         assert shell.help_user_adddefaultgroup.called
+
+    def test_user_adddefaultgroup(self, shell):
+        """
+        Test do_user_adddefaultgroup, with correct arguments of user and groups
+        :param shell:
+        :return:
+        """
+        shell.client.user.addDefaultSystemGroups = MagicMock()
+        shell.help_user_adddefaultgroup = MagicMock()
+
+        spacecmd.user.do_user_adddefaultgroup(shell, "bofh coffee teamaker")
+
+        assert not shell.help_user_adddefaultgroup.called
+        assert shell.client.user.addDefaultSystemGroups.called
+        assert_args_expect(shell.client.user.addDefaultSystemGroups.call_args_list,
+                           [((shell.session, "bofh", ["coffee", "teamaker"]), {})])
