@@ -1,3 +1,5 @@
+- Add checks for empty required entries on formula forms (bsc#1109639)
+
 -------------------------------------------------------------------
 Wed May 15 17:27:39 CEST 2019 - jgonzalez@suse.com
 
