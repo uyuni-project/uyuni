@@ -791,3 +791,22 @@ class TestSCUser:
 
         assert not shell.client.user.setDetails.called
         assert shell.help_user_setprefix.called
+
+    def test_user_setprefix_empty(self, shell):
+        """
+        Test do_user_setprefix with empty prefix.
+
+        :param shell:
+        :return:
+        """
+
+        shell.client.user.setDetails = MagicMock()
+        shell.help_user_setprefix = MagicMock()
+
+        spacecmd.user.do_user_setprefix(shell, "bofh")
+
+        assert not shell.help_user_setprefix.called
+        assert shell.client.user.setDetails.called
+
+        assert_args_expect(shell.client.user.setDetails.call_args_list,
+                           [((shell.session, "bofh", {"prefix": " "}), {})])
