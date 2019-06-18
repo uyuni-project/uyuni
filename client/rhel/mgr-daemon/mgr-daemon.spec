@@ -31,7 +31,7 @@
 %define rhnsd		 spacewalksd
 #
 Name:           mgr-daemon
-Version:        4.0.5
+Version:        4.0.6
 Release:        1%{?dist}
 Summary:        Spacewalk query daemon
 License:        GPL-2.0-only
