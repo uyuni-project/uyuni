@@ -604,7 +604,15 @@ type=rpm-md
         if self.proxy_pass:
             query_params['proxypass'] = self.proxy_pass
         if self.sslcacert:
-            query_params['ssl_capath'] = self.sslcacert
+            # Since Zypper only accepts CAPATH, we need to split the certificates bundle
+            # and run "c_rehash" on our custom CAPATH
+            _ssl_capath = os.path.dirname(self.sslcacert)
+            msg = "Preparing custom SSL CAPATH at {}".format(_ssl_capath)
+            rhnLog.log_clean(0, msg)
+            sys.stdout.write(str(msg) + "\n")
+            os.system("awk 'BEGIN {{c=0;}} /BEGIN CERT/{{c++}} {{ print > \"{0}/cert.\" c \".pem\"}}' < {1}".format(_ssl_capath, self.sslcacert))
+            os.system("c_rehash {}".format(_ssl_capath))
+            query_params['ssl_capath'] = _ssl_capath
         if self.sslclientcert:
             query_params['ssl_clientcert'] = self.sslclientcert
         if self.sslclientkey:
