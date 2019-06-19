@@ -118,7 +118,7 @@ def load_cache(cachefile):
             inputfile = open(cachefile, 'rb')
             data = pickle.load(inputfile)
             inputfile.close()
-        except EOFError:
+        except (EOFError, pickle.UnpicklingError) as exc:
             # If cache generation is interrupted (e.g by ctrl-c) you can end up
             # with an EOFError exception due to the partial picked file
             # So we catch this error and remove the corrupt partial file
@@ -127,6 +127,7 @@ def load_cache(cachefile):
             logging.warning("Loading cache file %s failed", cachefile)
             logging.warning("Cache generation was probably interrupted," +
                             "removing corrupt %s", cachefile)
+            logging.debug(str(exc))
             os.remove(cachefile)
         except IOError:
             logging.error("Couldn't load cache from %s", cachefile)
