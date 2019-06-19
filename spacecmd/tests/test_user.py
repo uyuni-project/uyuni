@@ -864,3 +864,30 @@ class TestSCUser:
 
         assert_args_expect(shell.client.user.setDetails.call_args_list,
                            [((shell.session, "someuser", {"password": "toto"}), {})])
+
+    def test_user_details_noargs(self, shell):
+        """
+        Test do_user_details without arguments.
+
+        :param shell:
+        :return:
+        """
+        shell.help_user_details = MagicMock()
+        shell.client.user.getDetails = MagicMock()
+        shell.client.user.listRoles = MagicMock()
+        shell.client.user.listAssignedSystemGroups = MagicMock()
+        shell.client.user.listDefaultSystemGroups = MagicMock()
+        shell.client.org.getDetails = MagicMock()
+        mprint = MagicMock()
+        logger = MagicMock()
+
+        with patch("spacecmd.user.print", mprint) as prt, \
+                patch("spacecmd.user.logging", logger) as lgr:
+            spacecmd.user.do_user_details(shell, "")
+
+        assert not shell.user.getDetails.called
+        assert not shell.user.listRoles.called
+        assert not shell.user.listAssignedSystemGroups.called
+        assert not shell.user.listDefaultSystemGroups.called
+        assert not shell.org.getDetails.called
+        assert shell.help_user_details.called
