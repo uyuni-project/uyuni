@@ -580,7 +580,7 @@ When(/^I wait until the package "(.*?)" has been cached on this "(.*?)"$/) do |p
   end
 end
 
-And(/^I create the "([^"]*)" bootstrap repository for "([^"]*)" on the server$/) do |arch, host|
+When(/^I create the "([^"]*)" bootstrap repository for "([^"]*)" on the server$/) do |arch, host|
   node = get_target(host)
   os_version, _os_family = get_os_version(node)
   cmd = 'false'
