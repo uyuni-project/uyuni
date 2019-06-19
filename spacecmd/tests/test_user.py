@@ -933,3 +933,57 @@ class TestSCUser:
                                  "'hairypointed': User caused disks spinning backwards",
                                  "Error '42' while getting data about user "
                                  "'othermissing': User caused disks spinning backwards"])
+
+    def test_user_details_get_data(self, shell):
+        """
+        Test do_user_details with found users to check the data
+
+        :param shell:
+        :return:
+        """
+        shell.help_user_details = MagicMock()
+        shell.client.user.getDetails = MagicMock(side_effect=[
+            {"first_name": "John", "last_name": "Smith", "email": "j.smith@company.com",
+             "last_login_date": "1999.01.02", "created_date": "1999.01.01", "enabled": False},
+            {"first_name": "Bofh", "last_name": "Operator", "email": "bofh@company.com",
+             "last_login_date": "2019.01.01", "created_date": "1980.01.01", "enabled": True},
+        ])
+        shell.client.user.listRoles = MagicMock(side_effect=[
+            ["printer", "spectator"], ["coffee", "bofh"],
+        ])
+        shell.client.user.listAssignedSystemGroups = MagicMock(side_effect=[
+            [{"name": "beer"}, {"name": "schinken"}, {"name": "swimming pool"}],
+            [{"name": "butterfly catchers"}, {"name": "chessplayers"}],
+        ])
+        shell.client.user.listDefaultSystemGroups = MagicMock(side_effect=[
+            [{"name": "something"}], []
+        ])
+        shell.client.org.getDetails = MagicMock(return_value={"name": "company.com"})
+        mprint = MagicMock()
+        logger = MagicMock()
+
+        with patch("spacecmd.user.print", mprint) as prt, \
+                patch("spacecmd.user.logging", logger) as lgr:
+            spacecmd.user.do_user_details(shell, "hairypointed bofh")
+
+        assert not shell.help_user_details.called
+        assert not logger.warning.called
+        assert not logger.debug.called
+        assert shell.client.user.listRoles.called
+        assert shell.client.user.listAssignedSystemGroups.called
+        assert shell.client.user.listDefaultSystemGroups.called
+        assert shell.client.org.getDetails.called
+        assert shell.client.user.getDetails.called
+        assert mprint.called
+
+        assert_list_args_expect(mprint.call_args_list,
+                                ['Username:      hairypointed', 'First Name:    John', 'Last Name:     Smith',
+                                 'Email Address: j.smith@company.com', 'Organisation:  company.com',
+                                 'Last Login:    1999.01.02', 'Created:       1999.01.01', 'Enabled:       False',
+                                 '', 'Roles', '-----', 'printer\nspectator', '', 'Assigned Groups', '---------------',
+                                 'beer\nschinken\nswimming pool', '', 'Default Groups', '--------------', 'something',
+                                 '----------', 'Username:      bofh', 'First Name:    Bofh', 'Last Name:     Operator',
+                                 'Email Address: bofh@company.com', 'Organisation:  company.com',
+                                 'Last Login:    2019.01.01', 'Created:       1980.01.01', 'Enabled:       True',
+                                 '', 'Roles', '-----', 'bofh\ncoffee', '', 'Assigned Groups', '---------------',
+                                 'butterfly catchers\nchessplayers'])
