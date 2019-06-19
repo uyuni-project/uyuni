@@ -6,6 +6,53 @@ from unittest.mock import MagicMock, patch
 from helpers import shell, assert_expect, assert_list_args_expect, assert_args_expect
 import spacecmd.utils
 from xmlrpc import client as xmlrpclib
+import os
+import tempfile
+import shutil
+import datetime
+import pickle
+
+
+class TestSCUtilsCacheIntegration:
+    """
+    Fusion integration test for saving and loading cache file.
+    This creates and saves cache, loads it and expires it into
+    a temporary directory.
+    """
+    def setup_method(self):
+        """
+        Setup test
+
+        :return:
+        """
+        self.temp = tempfile.mkdtemp()
+
+    def teardown_method(self):
+        """
+        Teardown method
+
+        :return:
+        """
+        shutil.rmtree(self.temp)
+
+    def test_save_cache(self):
+        """
+        Save cache
+
+        :return:
+        """
+        data = {"key": "value"}
+        cachefile = os.path.join(self.temp, "spacecmd.cache")
+        expiration = datetime.datetime(2019, 1, 1, 10, 30, 45)
+        spacecmd.utils.save_cache(cachefile=cachefile, data=data, expire=expiration)
+        assert os.path.exists(cachefile)
+        out = pickle.load(open(cachefile, "rb"))
+
+        assert "expire" in out
+        assert "expire" not in data
+        assert out["expire"] == expiration
+        assert data["key"] == out["key"]
+
 
 
 class TestSCUtils:
