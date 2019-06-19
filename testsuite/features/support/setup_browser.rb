@@ -8,7 +8,7 @@ require 'base64'
 require 'capybara'
 require 'capybara/cucumber'
 require 'simplecov'
-require 'minitest/unit'
+require 'minitest/autorun'
 require 'securerandom'
 require 'selenium-webdriver'
 
