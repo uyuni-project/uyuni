@@ -19,7 +19,7 @@ def _lscpu(feedback):
 
     :return:
     '''
-    lscpu = salt.utils.which_bin(['lscpu'])
+    lscpu = salt.utils.path.which_bin(['lscpu'])
     if lscpu is not None:
         try:
             log.debug("Trying lscpu to get CPU socket count")
@@ -71,7 +71,7 @@ def _dmidecode(feedback):
 
     :return:
     '''
-    dmidecode = salt.utils.which_bin(['dmidecode'])
+    dmidecode = salt.utils.path.which_bin(['dmidecode'])
     if dmidecode is not None:
         try:
             log.debug("Trying dmidecode to get CPU socket count")

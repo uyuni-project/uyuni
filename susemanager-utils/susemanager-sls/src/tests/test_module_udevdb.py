@@ -15,10 +15,10 @@ def test_virtual():
 
     :return:
     '''
-    with patch('salt.utils.which_bin', MagicMock(return_value=None)):
+    with patch('salt.utils.path.which_bin', MagicMock(return_value=None)):
         assert udevdb.__virtual__() is False
 
-    with patch('salt.utils.which_bin', MagicMock(return_value="/bogus/path")):
+    with patch('salt.utils.path.which_bin', MagicMock(return_value="/bogus/path")):
         assert udevdb.__virtual__() is True
 
 

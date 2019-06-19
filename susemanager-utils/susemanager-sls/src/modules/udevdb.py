@@ -21,7 +21,7 @@ def __virtual__():
     '''
     Only work when udevadm is installed.
     '''
-    return salt.utils.which_bin(['udevadm']) is not None
+    return salt.utils.path.which_bin(['udevadm']) is not None
 
 
 def exportdb():
