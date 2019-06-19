@@ -74,6 +74,23 @@ class TestSCUtilsCacheIntegration:
         assert expiration == self.expiration
         assert self.data["key"] == out["key"]
 
+    def test_load_corrupted_cache(self):
+        """
+        Load corrupted cache.
+
+        :return:
+        """
+        with open(self.cachefile, "wb") as che:
+            che.write(b"\x00\x00\x00\x00")
+        assert os.path.exists(self.cachefile)
+
+        out, expiration = spacecmd.utils.load_cache(self.cachefile)
+
+        assert out == {}
+        assert expiration != self.expiration
+        assert not os.path.exists(self.cachefile)
+
+
 
 
 
