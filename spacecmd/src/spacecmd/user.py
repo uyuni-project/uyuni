@@ -337,8 +337,10 @@ def do_user_details(self, args):
             default_groups = \
                 self.client.user.listDefaultSystemGroups(self.session,
                                                          user)
-        except xmlrpclib.Fault:
+        except xmlrpclib.Fault as exc:
             logging.warning('%s is not a valid user' % user)
+            logging.debug("Error '{}' while getting data about user '{}': {}".format(
+                exc.faultCode, user, exc.faultString))
             continue
 
         org_details = self.client.org.getDetails(self.session,
