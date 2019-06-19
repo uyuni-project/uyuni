@@ -87,7 +87,7 @@ class TestSCUtilsCacheIntegration:
         out, expiration = spacecmd.utils.load_cache(self.cachefile)
 
         assert out == {}
-        assert expiration != self.expiration
+        assert expiration != self.expiration is not None
         assert not os.path.exists(self.cachefile)
 
 
