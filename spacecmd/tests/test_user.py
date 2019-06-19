@@ -893,3 +893,43 @@ class TestSCUser:
         assert not mprint.called
         assert not logger.warning.called
         assert shell.help_user_details.called
+
+    def test_user_details_invalid_users(self, shell):
+        """
+        Test do_user_details with invalid/not-found users.
+
+        :param shell:
+        :return:
+        """
+        shell.help_user_details = MagicMock()
+        shell.client.user.getDetails = MagicMock(side_effect=xmlrpclib.Fault(
+            faultCode=42, faultString="User caused disks spinning backwards"))
+        shell.client.user.listRoles = MagicMock()
+        shell.client.user.listAssignedSystemGroups = MagicMock()
+        shell.client.user.listDefaultSystemGroups = MagicMock()
+        shell.client.org.getDetails = MagicMock()
+        mprint = MagicMock()
+        logger = MagicMock()
+
+        with patch("spacecmd.user.print", mprint) as prt, \
+                patch("spacecmd.user.logging", logger) as lgr:
+            spacecmd.user.do_user_details(shell, "hairypointed othermissing")
+
+        assert not shell.client.user.listRoles.called
+        assert not shell.client.user.listAssignedSystemGroups.called
+        assert not shell.client.user.listDefaultSystemGroups.called
+        assert not shell.client.org.getDetails.called
+        assert not shell.help_user_details.called
+        assert not mprint.called
+        assert logger.warning.called
+        assert logger.debug.called
+        assert shell.client.user.getDetails.called
+
+        assert_list_args_expect(logger.warning.call_args_list,
+                                ["hairypointed is not a valid user",
+                                 "othermissing is not a valid user"])
+        assert_list_args_expect(logger.debug.call_args_list,
+                                ["Error '42' while getting data about user "
+                                 "'hairypointed': User caused disks spinning backwards",
+                                 "Error '42' while getting data about user "
+                                 "'othermissing': User caused disks spinning backwards"])
