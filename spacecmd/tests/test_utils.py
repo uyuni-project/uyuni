@@ -11,6 +11,8 @@ import tempfile
 import shutil
 import datetime
 import pickle
+import hashlib
+import time
 
 
 class TestSCUtilsCacheIntegration:
@@ -25,7 +27,10 @@ class TestSCUtilsCacheIntegration:
 
         :return:
         """
+        self.data = {"key": hashlib.sha256(str(time.time()).encode("utf-8")).hexdigest()}
         self.temp = tempfile.mkdtemp()
+        self.expiration = datetime.datetime(2019, 1, 1, 10, 30, 45)
+        self.cachefile = os.path.join(self.temp, "spacecmd.cache")
 
     def teardown_method(self):
         """
@@ -34,24 +39,25 @@ class TestSCUtilsCacheIntegration:
         :return:
         """
         shutil.rmtree(self.temp)
+        self.data.clear()
+        self.expiration = None
+        self.cachefile = None
 
     def test_save_cache(self):
         """
-        Save cache
+        Save cache.
 
         :return:
         """
-        data = {"key": "value"}
-        cachefile = os.path.join(self.temp, "spacecmd.cache")
-        expiration = datetime.datetime(2019, 1, 1, 10, 30, 45)
-        spacecmd.utils.save_cache(cachefile=cachefile, data=data, expire=expiration)
-        assert os.path.exists(cachefile)
-        out = pickle.load(open(cachefile, "rb"))
+        spacecmd.utils.save_cache(cachefile=self.cachefile, data=self.data, expire=self.expiration)
+        assert os.path.exists(self.cachefile)
+        out = pickle.load(open(self.cachefile, "rb"))
 
         assert "expire" in out
-        assert "expire" not in data
-        assert out["expire"] == expiration
-        assert data["key"] == out["key"]
+        assert "expire" not in self.data
+        assert out["expire"] == self.expiration
+        assert self.data["key"] == out["key"]
+
     def test_load_cache(self):
         """
         Load cache.
@@ -67,6 +73,9 @@ class TestSCUtilsCacheIntegration:
         assert "expire" not in out
         assert expiration == self.expiration
         assert self.data["key"] == out["key"]
+
+
+
 
 
 
