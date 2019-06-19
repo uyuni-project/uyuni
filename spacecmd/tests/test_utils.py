@@ -91,11 +91,6 @@ class TestSCUtilsCacheIntegration:
         assert not os.path.exists(self.cachefile)
 
 
-
-
-
-
-
 class TestSCUtils:
     """
     Test suite for utils functions.
