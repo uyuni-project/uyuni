@@ -37,10 +37,10 @@ import types
 import urlgrabber
 
 try:
-    from urllib import urlencode
+    from urllib import urlencode, unquote
     from urlparse import urlsplit, urlparse, urlunparse
 except:
-    from urllib.parse import urlsplit, urlencode, urlparse, urlunparse
+    from urllib.parse import urlsplit, urlencode, urlparse, urlunparse, unquote
 
 import xml.etree.ElementTree as etree
 
@@ -609,7 +609,7 @@ type=rpm-md
             query_params['ssl_clientcert'] = self.sslclientcert
         if self.sslclientkey:
             query_params['ssl_clientkey'] = self.sslclientkey
-        new_query = urlencode(query_params, doseq=True)
+        new_query = unquote(urlencode(query_params, doseq=True))
         if self.authtoken:
             ret_url = "{0}&{1}".format(url, new_query)
         else:
