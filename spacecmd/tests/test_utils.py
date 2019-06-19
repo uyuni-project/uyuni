@@ -28,3 +28,20 @@ class TestSCUtils:
 
         assert opts.leftovers == []
         assert opts.arg == "idea"
+
+    def test_is_interactive(self):
+        """
+        Test is_interactive check
+        :return:
+        """
+
+        arg_parser = spacecmd.utils.get_argument_parser()
+        args, opts = spacecmd.utils.parse_command_arguments("arg", argument_parser=arg_parser, glob=True)
+        assert not spacecmd.utils.is_interactive(opts)
+
+        arg_parser.add_argument("-a", "--arg")
+        args, opts = spacecmd.utils.parse_command_arguments("--arg idea", argument_parser=arg_parser, glob=True)
+        assert not spacecmd.utils.is_interactive(opts)
+
+        args, opts = spacecmd.utils.parse_command_arguments("", argument_parser=arg_parser, glob=True)
+        assert spacecmd.utils.is_interactive(opts)
