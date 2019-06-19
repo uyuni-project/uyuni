@@ -1,5 +1,6 @@
 - Allow forcing off or resetting VMs
 - Add XML-RPC API calls to manage server monitoring
+- Fix profiles package scheduling when epoch is null (bsc#1137144)
 
 -------------------------------------------------------------------
 Thu Jun 06 16:00:06 CEST 2019 - jgonzalez@suse.com
