@@ -52,6 +52,21 @@ class TestSCUtilsCacheIntegration:
         assert "expire" not in data
         assert out["expire"] == expiration
         assert data["key"] == out["key"]
+    def test_load_cache(self):
+        """
+        Load cache.
+
+        :return:
+        """
+        spacecmd.utils.save_cache(cachefile=self.cachefile, data=self.data, expire=self.expiration)
+
+        assert os.path.exists(self.cachefile)
+
+        out, expiration = spacecmd.utils.load_cache(self.cachefile)
+
+        assert "expire" not in out
+        assert expiration == self.expiration
+        assert self.data["key"] == out["key"]
 
 
 
