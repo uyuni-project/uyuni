@@ -343,9 +343,7 @@ def do_user_details(self, args):
                 exc.faultCode, user, exc.faultString))
             continue
 
-        org_details = self.client.org.getDetails(self.session,
-                                                 details.get('org_id'))
-        organization = org_details.get('name')
+        org_name = self.client.org.getDetails(self.session, details.get('org_id')).get("name")
 
         if add_separator:
             print(self.SEPARATOR)
@@ -355,7 +353,7 @@ def do_user_details(self, args):
         print('First Name:    %s' % details.get('first_name'))
         print('Last Name:     %s' % details.get('last_name'))
         print('Email Address: %s' % details.get('email'))
-        print('Organization:  %s' % organization)
+        print('Organisation:  %s' % org_name)
         print('Last Login:    %s' % details.get('last_login_date'))
         print('Created:       %s' % details.get('created_date'))
         print('Enabled:       %s' % details.get('enabled'))
