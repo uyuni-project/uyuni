@@ -341,8 +341,8 @@ def write_ssl_set_cache(ca_cert, client_cert, client_key):
             cert_file = os.path.join(ssldir, "%s.pem" % name)
             if not os.path.exists(cert_file):
                 create_dir_tree(ssldir)
-                f = open(cert_file, "w")
-                f.write(str(pem))
+                f = open(cert_file, "wb")
+                f.write(pem)
                 f.close()
             filenames[cert] = cert_file
 
