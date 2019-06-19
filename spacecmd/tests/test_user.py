@@ -885,9 +885,11 @@ class TestSCUser:
                 patch("spacecmd.user.logging", logger) as lgr:
             spacecmd.user.do_user_details(shell, "")
 
-        assert not shell.user.getDetails.called
-        assert not shell.user.listRoles.called
-        assert not shell.user.listAssignedSystemGroups.called
-        assert not shell.user.listDefaultSystemGroups.called
-        assert not shell.org.getDetails.called
+        assert not shell.client.user.getDetails.called
+        assert not shell.client.user.listRoles.called
+        assert not shell.client.user.listAssignedSystemGroups.called
+        assert not shell.client.user.listDefaultSystemGroups.called
+        assert not shell.client.org.getDetails.called
+        assert not mprint.called
+        assert not logger.warning.called
         assert shell.help_user_details.called
