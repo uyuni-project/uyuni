@@ -1,3 +1,5 @@
+- Ensure bytes type when using hashlib to avoid traceback
+  on XMLRPC call to "registration.register_osad" (bsc#1138822)
 - Fix for CVE-2019-10136. An attacker with a valid, but expired,
   authenticated set of headers could move some digits around,
   artificially extending the session validity without modifying
