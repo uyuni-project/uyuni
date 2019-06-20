@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Thu Jun 20 10:09:38 CEST 2019 - jgonzalez@suse.com
+
+- version 4.0.21-1
 - Fix reposync when dealing with RedHat CDN (bsc#1138358)
 - Fix for CVE-2019-10136. An attacker with a valid, but expired,
   authenticated set of headers could move some digits around,
