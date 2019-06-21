@@ -595,11 +595,11 @@ select sa.server_id
     <sql-query name="Action.lookupPendingMinionActions">
         <![CDATA[select {ra.*}
                      from rhnAction {ra},
-                     (select NULL as uuid from dual) ra_1_,
+                     (select NULL as uuid, NULL as force from dual) ra_1_,
                      (select NULL as uuid from dual) ra_2_,
                      (select NULL as uuid from dual) ra_3_,
                      (select NULL as uuid from dual) ra_4_,
-                     (select NULL as uuid from dual) ra_5_,
+                     (select NULL as uuid, NULL as force from dual) ra_5_,
                      (select NULL as uuid from dual) ra_6_,
                      (select NULL as uuid, NULL as memory from dual) ra_7_,
                      (select NULL as uuid, NULL as vcpu from dual) ra_8_,
