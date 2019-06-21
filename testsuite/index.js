@@ -11,7 +11,7 @@ var options = {
   reportSuiteAsScenarios: true,
   launchReport: false,
   columnLayout: 1,
-  screenshotsDirectory: './cucumber_report/',
+  screenshotsDirectory: './cucumber_report/screenshots/',
   storeScreenshots: true,
   noInlineScreenshots: true,
   name: 'SUSE Manager Testsuite',
