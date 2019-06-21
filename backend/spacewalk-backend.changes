@@ -1,3 +1,6 @@
+- Ensure bytes type when using hashlib to avoid traceback
+  on XMLRPC call to "registration.register_osad" (bsc#1138822)
+
 -------------------------------------------------------------------
 Thu Jun 20 10:28:20 CEST 2019 - jgonzalez@suse.com
 
