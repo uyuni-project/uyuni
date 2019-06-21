@@ -48,9 +48,9 @@ Capybara.app_host = "https://#{server}"
 After do |scenario|
   if scenario.failed?
     img_name = "#{scenario.name.tr(' ', '_')}.png"
-    save_screenshot(img_name)
+    save_screenshot('screenshots/' + img_name)
     # embed the image name in the cucumber HTML report
-    embed(img_name, 'image/png')
+    embed('screenshots/' + img_name, 'image/png')
     debug_server_on_realtime_failure
   end
 end
