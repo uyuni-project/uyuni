@@ -1,5 +1,6 @@
 - Keep querystring on ListTag parent_url for actions that have the cid param (bsc#1134677)
 - Allow forcing off or resetting VMs
+- Fix profiles package scheduling when epoch is null (bsc#1137144)
 - Explicitly mention in API docs that to preserve LF/CR, user needs to encode the data(bsc#1135442)
 - Switch menu links and adjust title icons
 - Add XML-RPC API calls to manage server monitoring
