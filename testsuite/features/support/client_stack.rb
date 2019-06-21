@@ -67,17 +67,21 @@ def check_restart(host, node, time_out)
   end
 end
 
-# Extract the OS version by decoding the value in '/etc/os-release'
-# Use VERSION id = false, VERSION_ID otherwise
-def get_os_version(node, id = true)
-  field = id ? 'VERSION_ID' : 'VERSION'
-  os_version_raw, _code = node.run('grep "' + field + '=" /etc/os-release')
+# Extract the OS version and OS family
+# We get these data decoding the values in '/etc/os-release'
+def get_os_version(node)
+  os_family_raw, _code = $proxy.run('grep "^ID=" /etc/os-release')
+  os_family = os_family_raw.strip.split('=')[1]
+  return nil, nil if os_family.nil?
+  os_family.delete! '"'
+
+  os_version_raw, _code = node.run('grep "^VERSION_ID=" /etc/os-release')
   os_version = os_version_raw.strip.split('=')[1]
-  return nil if os_version.nil?
+  return nil, nil if os_version.nil?
   os_version.delete! '"'
-  # OS release for SLES 11 is not consistent with SLES 12
-  # so we need to replace the dot with '-SP'
-  _out, code = node.run('pidof systemd', false)
-  os_version.gsub!(/\./, '-SP') unless code.zero?
-  os_version
+
+  # on SLES, we need to replace the dot with '-SP'
+  os_version.gsub!(/\./, '-SP') if os_family =~ /^sles/
+
+  [os_version, os_family]
 end
