@@ -80,6 +80,34 @@ public class RpmVersionComparatorTest extends TestCase {
 
     }
 
+    /* from official rpm tests */
+    public void testTildeSorting() {
+        assertCompareSymm(0, "1.0~rc1", "1.0~rc1");
+        assertCompareSymm(-1, "1.0~rc1", "1.0");
+        assertCompareSymm(1, "1.0", "1.0~rc1");
+        assertCompareSymm(-1, "1.0~rc1", "1.0~rc2");
+        assertCompareSymm(1, "1.0~rc2", "1.0~rc1");
+        assertCompareSymm(0, "1.0~rc1~git123", "1.0~rc1~git123");
+        assertCompareSymm(-1, "1.0~rc1~git123", "1.0~rc1");
+        assertCompareSymm(1, "1.0~rc1", "1.0~rc1~git123");
+    }
+
+    /* from official rpm tests */
+    public void testCaretSorting() {
+        assertCompareSymm(1, "1.0^", "1.0");
+        assertCompareSymm(1, "1.0^git1", "1.0");
+        assertCompareSymm(-1, "1.0^git1", "1.0^git2");
+        assertCompareSymm(-1, "1.0^git1", "1.01");
+        assertCompareSymm(-1, "1.0^20160101", "1.0.1");
+        assertCompareSymm(1, "1.0^20160102", "1.0^20160101^git1");
+    }
+
+    /* from official rpm tests */
+    public void testTildeAndCaretSorting() {
+        assertCompareSymm(1, "1.0~rc1^git1", "1.0~rc1");
+        assertCompareSymm(1, "1.0^git1", "1.0^git1~pre");
+    }
+
     private void assertCompareAsym(int exp, String v1, String v2) {
         assertCompare(exp, v1, v2);
         assertCompare(exp, v2, v1);
