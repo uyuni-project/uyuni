@@ -830,11 +830,12 @@ class RepoSync(object):
             e['channels'].extend(existing_errata['channels'])
             e['packages'] = existing_errata['packages']
 
-        e['packages'] = self._updates_process_packages(
-            notice['pkglist'][0]['packages'], e['advisory_name'], e['packages'])
+        npkgs = [pkg for c in notice['pkglist'] for pkg in c['packages']]
+
+        e['packages'] = self._updates_process_packages(npkgs, e['advisory_name'], e['packages'])
         # One or more package references could not be found in the Database.
         # To not provide incomplete patches we skip this update
-        if not e['packages'] and not notice['pkglist'][0]['packages']:
+        if not e['packages'] and not npkgs:
             log(2, "Advisory %s has empty package list." % e['advisory_name'])
         elif not e['packages']:
             log(2, "Advisory %s skipped because of empty package list (filtered)."
