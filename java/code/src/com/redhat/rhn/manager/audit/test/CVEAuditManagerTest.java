@@ -790,6 +790,70 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
     }
 
     /**
+     * Runs audit against a CVE which is covered by multiple erratas, and only a part of these erratas are available and
+     * applied in a cloned channel (see bsc#1137229).
+     * @throws Exception if anything goes wrong
+     */
+    public void testMultipleErratasSnapshotClones() throws Exception {
+        // Create a CVE number
+        String cveName = TestUtils.randomString().substring(0, 13);
+        Cve cve = createTestCve(cveName);
+        Set<Cve> cves = new HashSet<>();
+        cves.add(cve);
+
+        // Create an errata
+        User user = createTestUser();
+        Errata e1 = createTestErrata(user, cves);
+
+        // Create a channel with the errata
+        Channel channel = createTestChannel(user);
+        channel.addErrata(e1);
+
+        // Create a package with the initial version
+        Package pkg = createTestPackage(user, channel, "noarch");
+
+        // Create a newer version for the first patch
+        Package pkg1 = createLaterTestPackage(user, e1, channel, pkg);
+
+        // Clone the channel with the errata
+        Errata e1clone = createTestErrata(user, cves);
+        Set<Package> packagesToClone = new HashSet<>();
+        packagesToClone.add(pkg);
+        packagesToClone.add(pkg1);
+        Channel cloned = createTestClonedChannel(user, e1clone, channel, packagesToClone);
+
+        // Create a later errata and add to the original channel
+        Errata e2 = createTestErrata(user, cves);
+        channel.addErrata(e2);
+
+        // Create a later version for the second patch
+        Package pkg2 = createLaterTestPackage(user, e2, channel, pkg1);
+
+        // Create a server assigned to the cloned channel and install the first patch only
+        Server server = createTestServer(user, Collections.singleton(cloned));
+        createTestInstalledPackage(pkg1, server);
+
+        CVEAuditManager.populateCVEChannels();
+
+        // No filtering
+        EnumSet<PatchStatus> filter = EnumSet.allOf(PatchStatus.class);
+        List<CVEAuditServer> results = CVEAuditManager.listSystemsByPatchStatus(user, cveName, filter);
+        assertSystemPatchStatus(server, PatchStatus.AFFECTED_PATCH_INAPPLICABLE, results);
+
+        // Assert correct number of results
+        assertEquals(1, results.size());
+        CVEAuditServer serverResult = results.get(0);
+
+        // Assert correct channel being reported
+        assertEquals(1, serverResult.getChannels().size());
+        assertEquals((long)channel.getId(), serverResult.getChannels().iterator().next().getId());
+
+        // Assert correct missing errata being reported
+        assertEquals(1, serverResult.getErratas().size());
+        assertEquals((long)e2.getId(), serverResult.getErratas().iterator().next().getId());
+    }
+
+    /**
      * Runs audit against a CVE which is covered by multiple erratas, and some of these erratas are missing in the
      * assigned channels (see bsc#1111963).
      * @throws Exception if anything goes wrong
