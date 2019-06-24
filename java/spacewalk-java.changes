@@ -1,3 +1,4 @@
+- For orphan contentsources, look also in susesccrepositoryauth to make sure they are not being referenced (bsc#1138275)
 - Fallback to logged-in-user org and then vendor errata when looking up erratum on cloning (bsc#1137308)
 - Add new validation to avoid creating content lifecycle projects starting with a number (bsc#1139493)
 - Improve performance of 'Systems requiring reboot' page (fate#327780)
