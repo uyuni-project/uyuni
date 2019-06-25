@@ -579,23 +579,25 @@ end
 When(/^I enable repositories before installing Docker$/) do
   # Distribution Pool and Update
   os_version, os_family = get_os_version($minion)
-  if /opensuse/ =~ os_family
-    puts $proxy.run("zypper mr --enable openSUSE-Leap-#{os_version}-Pool")
-    puts $proxy.run("zypper mr --enable openSUSE-Leap-#{os_version}-Update")
+  if os_family =~ /^opensuse/
+    repos = "openSUSE-Leap-#{os_version}-Pool openSUSE-Leap-#{os_version}-Update"
+    puts $proxy.run("zypper mr --enable #{repos}")
+  elsif os_version =~ /^15/
+    repos, _code = $minion.run('zypper lr | grep SLE-Module-Basesystem | cut -d"|" -f2')
+    puts $minion.run("zypper mr --enable #{repos.gsub(/\s/, ' ')}")
   else
     arch, _code = $minion.run('uname -m')
-    puts $minion.run("zypper mr --enable SLE-#{os_version}-#{arch.strip}-Pool")
-    puts $minion.run("zypper mr --enable SLE-#{os_version}-#{arch.strip}-Update")
+    repos = "SLE-#{os_version}-#{arch.strip}-Pool SLE-#{os_version}-#{arch.strip}-Update"
+    puts $minion.run("zypper mr --enable #{repos}")
   end
 
   # Tools
-  out, _code = $minion.run('zypper lr | grep SLE-Manager-Tools | cut -d"|" -f2')
-  puts $minion.run("zypper mr --enable #{out.gsub(/\s/, ' ')}")
+  repos, _code = $minion.run('zypper lr | grep SLE-Manager-Tools | cut -d"|" -f2')
+  puts $minion.run("zypper mr --enable #{repos.gsub(/\s/, ' ')}")
 
   # Container repositories
   # They don't exist for SLES11 systems, only for SLES12 and upper systems
-  _out, code = $minion.run('pidof systemd', false)
-  if code.zero?
+  unless os_version =~ /^11/
     repos, _code = $minion.run('zypper lr | grep SLE-Manager-Tools | cut -d"|" -f2')
     $minion.run("zypper mr --enable #{repos.gsub(/\s/, ' ')}")
     repos, _code = $minion.run('zypper lr | grep SLE-Module-Containers | cut -d"|" -f2')
@@ -608,23 +610,25 @@ end
 When(/^I disable repositories after installing Docker$/) do
   # Distribution Pool and Update
   os_version, os_family = get_os_version($minion)
-  if /opensuse/ =~ os_family
-    puts $proxy.run("zypper mr --disable openSUSE-Leap-#{os_version}-Pool")
-    puts $proxy.run("zypper mr --disable openSUSE-Leap-#{os_version}-Update")
+  if os_family =~ /^opensuse/
+    repos = "openSUSE-Leap-#{os_version}-Pool openSUSE-Leap-#{os_version}-Update"
+    puts $proxy.run("zypper mr --disable #{repos}")
+  elsif os_version =~ /^15/
+    repos, _code = $minion.run('zypper lr | grep SLE-Module-Basesystem | cut -d"|" -f2')
+    puts $minion.run("zypper mr --disable #{repos.gsub(/\s/, ' ')}")
   else
     arch, _code = $minion.run('uname -m')
-    puts $minion.run("zypper mr --disable SLE-#{os_version}-#{arch.strip}-Update")
-    puts $minion.run("zypper mr --disable SLE-#{os_version}-#{arch.strip}-Pool")
+    repos = "SLE-#{os_version}-#{arch.strip}-Pool SLE-#{os_version}-#{arch.strip}-Update"
+    puts $minion.run("zypper mr --disable #{repos}")
   end
 
   # Tools
-  out, _code = $minion.run('zypper lr | grep SLE-Manager-Tools | cut -d"|" -f2')
-  puts $minion.run("zypper mr --disable #{out.gsub(/\s/, ' ')}")
+  repos, _code = $minion.run('zypper lr | grep SLE-Manager-Tools | cut -d"|" -f2')
+  puts $minion.run("zypper mr --disable #{repos.gsub(/\s/, ' ')}")
 
   # Container repositories
   # They don't exist for SLES11 systems, only for SLES12 and upper systems
-  _out, code = $minion.run('pidof systemd', false)
-  if code.zero?
+  unless os_version =~ /^11/
     repos, _code = $minion.run('zypper lr | grep SLE-Manager-Tools | cut -d"|" -f2')
     $minion.run("zypper mr --disable #{repos.gsub(/\s/, ' ')}")
     repos, _code = $minion.run('zypper lr | grep SLE-Module-Containers | cut -d"|" -f2')
@@ -637,17 +641,33 @@ end
 When(/^I enable repositories before installing branch server$/) do
   # Distribution Pool and Update
   os_version, os_family = get_os_version($proxy)
-  arch, _code = $proxy.run('uname -m')
-  puts $proxy.run("zypper mr --enable SLE-#{os_version}-#{arch.strip}-Pool")
-  puts $proxy.run("zypper mr --enable SLE-#{os_version}-#{arch.strip}-Update")
+  if os_family =~ /^opensuse/
+    repos = "openSUSE-Leap-#{os_version}-Pool openSUSE-Leap-#{os_version}-Update"
+    puts $proxy.run("zypper mr --enable #{repos}")
+  elsif os_version =~ /^15/
+    repos, _code = $minion.run('zypper lr | grep SLE-Module-Basesystem | cut -d"|" -f2')
+    puts $minion.run("zypper mr --enable #{repos.gsub(/\s/, ' ')}")
+  else
+    arch, _code = $minion.run('uname -m')
+    repos = "SLE-#{os_version}-#{arch.strip}-Pool SLE-#{os_version}-#{arch.strip}-Update"
+    puts $minion.run("zypper mr --enable #{repos}")
+  end
 end
 
 When(/^I disable repositories after installing branch server$/) do
   # Distribution Pool and Update
   os_version, os_family = get_os_version($proxy)
-  arch, _code = $proxy.run('uname -m')
-  puts $proxy.run("zypper mr --disable SLE-#{os_version}-#{arch.strip}-Pool")
-  puts $proxy.run("zypper mr --disable SLE-#{os_version}-#{arch.strip}-Update")
+  if os_family =~ /^opensuse/
+    repos = "openSUSE-Leap-#{os_version}-Pool openSUSE-Leap-#{os_version}-Update"
+    puts $proxy.run("zypper mr --disable #{repos}")
+  elsif os_version =~ /^15/
+    repos, _code = $minion.run('zypper lr | grep SLE-Module-Basesystem | cut -d"|" -f2')
+    puts $minion.run("zypper mr --disable #{repos.gsub(/\s/, ' ')}")
+  else
+    arch, _code = $minion.run('uname -m')
+    repos = "SLE-#{os_version}-#{arch.strip}-Pool SLE-#{os_version}-#{arch.strip}-Update"
+    puts $minion.run("zypper mr --disable #{repos}")
+  end
 end
 
 # Register client
