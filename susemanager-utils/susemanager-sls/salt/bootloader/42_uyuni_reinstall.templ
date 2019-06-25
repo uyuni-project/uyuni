@@ -1,0 +1,12 @@
+#!/bin/sh
+
+echo "menuentry \"{{ pillar.get('uyuni-reinstall-name') }}\" {"
+if [ -d /sys/firmware/efi ] && [ "x${GRUB_USE_LINUXEFI}" = "xtrue" ]; then
+    echo "    linuxefi /boot/uyuni-reinstall-kernel {{ pillar.get('uyuni-reinstall-kopts') }}"
+    echo "    initrdefi /boot/uyuni-reinstall-initrd"
+else
+    echo "    linux /boot/uyuni-reinstall-kernel {{ pillar.get('uyuni-reinstall-kopts') }}"
+    echo "    initrd /boot/uyuni-reinstall-initrd"
+fi
+echo "}"
+
