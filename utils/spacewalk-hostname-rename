@@ -518,6 +518,11 @@ SET kernel_options = REPLACE(kernel_options, '$OLD_HOSTNAME', '$HOSTNAME'),
 COMMIT;
 $DBSHELL_QUIT
 EOS
+for FILE in /var/lib/cobbler/collections/profiles/*
+do
+    backup_file $FILE
+    sed -i "s/$OLD_HOSTNAME/$HOSTNAME/g" $FILE
+done
 print_status 0  # just simulate end
 
 echo -n "Changing jabberd settings ... " | tee -a $LOG
