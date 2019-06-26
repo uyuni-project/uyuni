@@ -27,14 +27,23 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerCommand;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerXMLRPCHelper;
 
+import com.suse.manager.webui.services.SaltConstants;
+
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.log4j.Logger;
 import org.cobbler.CobblerConnection;
 import org.cobbler.Distro;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -43,6 +52,7 @@ import java.util.List;
  */
 public class KickstartableTree extends BaseDomainHelper {
 
+    private static Logger log = Logger.getLogger(KickstartableTree.class);
     private static final String INVALID_INITRD = "kickstart.tree.invalidinitrd";
     private static final String INVALID_KERNEL = "kickstart.tree.invalidkernel";
     private String basePath;
@@ -549,4 +559,55 @@ public class KickstartableTree extends BaseDomainHelper {
         }
     }
 
+    /**
+     * Create or Update the Salt Filesystem with kernel and initrd
+     */
+    public void createOrUpdateSaltFS() {
+        String root = SaltConstants.SUMA_STATE_FILES_ROOT_PATH;
+        Path fullDir = Paths.get(root, "bootloader", org.getId().toString(), this.label);
+        try {
+            Files.createDirectories(fullDir);
+        }
+        catch (IOException e) {
+            log.error("Unable to create directory " + fullDir, e);
+            return;
+        }
+        try {
+            List<Path> targets = new LinkedList<>();
+            if (isPathsValid()) {
+                targets.add(Paths.get(getInitrdPath()));
+                targets.add(Paths.get(getKernelPath()));
+            }
+            if (doesParaVirt()) {
+                targets.add(Paths.get(getKernelXenPath()));
+            }
+            if (pathExists(getInitrdXenPath())) {
+                targets.add(Paths.get(getInitrdXenPath()));
+            }
+
+            for (Path target : targets) {
+                Path source = fullDir.resolve(target.getFileName());
+                if (!pathExists(source.toString())) {
+                    Files.createSymbolicLink(source, target);
+                }
+            }
+        }
+        catch (IOException e) {
+            log.error("Unable to create link", e);
+        }
+    }
+
+    /**
+     * Remove the Salt Filesystem
+     */
+    public void removeSaltFS() {
+        String root = SaltConstants.SUMA_STATE_FILES_ROOT_PATH;
+        Path fullDir = Paths.get(root, "bootloader", org.getId().toString(), this.label);
+        try {
+            FileUtils.deleteDirectory(fullDir.toFile());
+        }
+        catch (Exception e) {
+            log.error("Unable to delete directory " + fullDir, e);
+        }
+    }
 }
