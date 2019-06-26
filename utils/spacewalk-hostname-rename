@@ -520,6 +520,9 @@ do
     backup_file ${ETC_JABBERD_DIR}/${jabber_config_file}
 done
 
+# clean jabberd database
+rm -f /var/lib/jabberd/db/*
+
 if [ -e $SPW_SETUP_JABBERD ]
 then
     $SPW_SETUP_JABBERD --macros "hostname:$HOSTNAME"
@@ -530,8 +533,6 @@ else
         --conf=$SAT_LOCAL_RULES_CONF \
        >> /dev/null 2>&1
 fi
-# clean jabberd database
-rm -f /var/lib/jabberd/db/*
 print_status $?
 
 echo -n "Starting spacewalk services ... " | tee -a $LOG
