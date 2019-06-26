@@ -152,18 +152,53 @@ public class RegisterMinionEventMessageAction implements MessageAction {
                 return false;
             },
             machineId -> {
+                boolean isReactivation = false;
+                ActivationKey ak = null;
+                ValueMap grains = new ValueMap(SALT_SERVICE.getGrains(minionId).orElseGet(HashMap::new));
+                Optional<String> managmentKeyLabel = getManagementKeyLabelFromGrains(grains);
+                if (managmentKeyLabel.isPresent()) {
+                    ak = ActivationKeyFactory.lookupByKey(managmentKeyLabel.get());
+                    if (ak.getKickstartSession() != null) {
+                        ak.getKickstartSession().markComplete("Installation completed.");
+                    }
+                    if (ak.getServer() == null) {
+                        LOG.error("Management Key is not a reactivation key: " + managmentKeyLabel.get());
+                    }
+                    else {
+                        isReactivation = true;
+                    }
+                }
+
                 Optional<User> creator = MinionPendingRegistrationService.getCreator(minionId);
-                if (checkIfMinionAlreadyRegistered(minionId, machineId, creator, isSaltSSH)) {
+                if (!isReactivation &&
+                        checkIfMinionAlreadyRegistered(minionId, machineId, creator, isSaltSSH, grains)) {
                     return true;
                 }
                 // Check if this minion id already exists
-                if (duplicateMinionNamePresent(minionId)) {
+                if (!isReactivation && duplicateMinionNamePresent(minionId)) {
                     return false;
                 }
-                finalizeMinionRegistration(minionId, machineId, creator, saltSSHProxyId, actKeyOverride, isSaltSSH);
+                if (isReactivation) {
+                    reactivateSystem(minionId, machineId, creator, grains, Optional.ofNullable(ak));
+                }
+                finalizeMinionRegistration(minionId, machineId, creator, saltSSHProxyId,
+                        actKeyOverride.isPresent() ? actKeyOverride : Optional.empty(),
+                        isSaltSSH, grains);
                 return true;
             }
         );
+    }
+
+    private void reactivateSystem(String minionId, String machineId, Optional<User> creator,
+            ValueMap grains, Optional<ActivationKey> reactivationKey) {
+        // The machine id may have changed, but we know from the reactivation key
+        // which system should become this one
+        reactivationKey
+            .flatMap(rak -> rak.getServer().asMinionServer())
+            .ifPresent(minion -> {
+                minion.setMachineId(machineId);
+                minion.setMinionId(minionId);
+            });
     }
 
     /**
@@ -172,12 +207,13 @@ public class RegisterMinionEventMessageAction implements MessageAction {
      * @param machineId the machine id that we are trying to register
      * @param creator the optional User that created the minion
      * @param isSaltSSH true if a salt-ssh system is bootstrapped
+     * @param grains grains of the minion
      * @return true if minion already registered, false otherwise
      */
     public boolean checkIfMinionAlreadyRegistered(String minionId,
                                                   String machineId,
                                                   Optional<User> creator,
-                                                  boolean isSaltSSH) {
+                                                  boolean isSaltSSH, ValueMap grains) {
         Optional<MinionServer> optMinion = MinionServerFactory.findByMachineId(machineId);
         if (optMinion.isPresent()) {
             MinionServer registeredMinion = optMinion.get();
@@ -201,7 +237,6 @@ public class RegisterMinionEventMessageAction implements MessageAction {
             // HACK: try to guess if the minion is a retail minion based on its groups.
             // This way we don't need to call grains for each register minion event.
             if (isRetailMinion(registeredMinion)) {
-                ValueMap grains = new ValueMap(SALT_SERVICE.getGrains(minionId).orElseGet(HashMap::new));
                 if (grains.getOptionalAsBoolean("saltboot_initrd").orElse(false)) {
                     // if we have the "saltboot_initrd" grain we want to re-deploy an image via saltboot,
                     LOG.info("Applying saltboot for minion " + minionId);
@@ -221,17 +256,16 @@ public class RegisterMinionEventMessageAction implements MessageAction {
      * @param saltSSHProxyId optional proxy id for saltssh in case it is used
      * @param activationKeyOverride optional label of activation key to be applied to the system
      * @param isSaltSSH true if a salt-ssh system is bootstrapped
+     * @param grains grains from the minion
      */
     public void finalizeMinionRegistration(String minionId,
                                            String machineId,
                                            Optional<User> creator,
                                            Optional<Long> saltSSHProxyId,
                                            Optional<String> activationKeyOverride,
-                                           boolean isSaltSSH) {
-        Map<String, Object> grainsMap = SALT_SERVICE.getGrains(minionId).orElseGet(HashMap::new);
-        ValueMap grains = new ValueMap(grainsMap);
+                                           boolean isSaltSSH, ValueMap grains) {
 
-        MinionServer minion = migrateOrCreateSystem(minionId, isSaltSSH, activationKeyOverride, machineId, grainsMap);
+        MinionServer minion = migrateOrCreateSystem(minionId, isSaltSSH, activationKeyOverride, machineId, grains);
         Optional<String> originalMinionId = Optional.ofNullable(minion.getMinionId());
 
         minion.setMachineId(machineId);
@@ -375,9 +409,9 @@ public class RegisterMinionEventMessageAction implements MessageAction {
      * @param grains the grains
      * @return HW addresses
      */
-    private Set<String> extractHwAddresses(Map<String, Object> grains) {
+    private Set<String> extractHwAddresses(ValueMap grains) {
         Map<String, String> hwInterfaces = (Map<String, String>) grains
-                .getOrDefault("hwaddr_interfaces", Collections.emptyMap());
+                .get("hwaddr_interfaces").orElse(Collections.emptyMap());
         return hwInterfaces.values().stream()
                 .filter(hwAddress -> !hwAddress.equalsIgnoreCase("00:00:00:00:00:00"))
                 .collect(Collectors.toSet());
@@ -396,6 +430,18 @@ public class RegisterMinionEventMessageAction implements MessageAction {
                 .getMap("susemanager")
                 .flatMap(suma -> suma.getOptionalAsString("activation_key"));
         return activationKeyOverride.isPresent() ? activationKeyOverride : activationKeyFromGrains;
+    }
+
+    /**
+     * Extract management key label from grains
+     *
+     * @param grains
+     * @return
+     */
+    private Optional<String> getManagementKeyLabelFromGrains(ValueMap grains) {
+        //apply management key properties that can be set before saving the server
+        return grains.getMap("susemanager")
+                .flatMap(suma -> suma.getOptionalAsString("management_key"));
     }
 
 
@@ -477,18 +523,19 @@ public class RegisterMinionEventMessageAction implements MessageAction {
             boolean isSaltSSH,
             Optional<String> activationKeyOverride,
             String machineId,
-            Map<String, Object> grains) {
-        Optional<String> fqdn = ofNullable((String) grains.get(FQDN));
+            ValueMap grains) {
+        Optional<String> fqdn = grains.getOptionalAsString(FQDN);
         Set<String> hwAddrs = extractHwAddresses(grains);
 
         return ServerFactory.findByMachineId(machineId)
             .flatMap(server -> {
-                // change the type of the hibernate entity from Server to MinionServer
-                SystemManager.addMinionInfoToServer(server.getId(), minionId);
-                // need to clear the session to avoid NonUniqueObjectException
-                ServerFactory.getSession().clear();
-                return MinionServerFactory
-                        .lookupById(server.getId());
+                if (!server.asMinionServer().isPresent()) {
+                    // change the type of the hibernate entity from Server to MinionServer
+                    SystemManager.addMinionInfoToServer(server.getId(), minionId);
+                    // need to clear the session to avoid NonUniqueObjectException
+                    ServerFactory.getSession().clear();
+                }
+                return MinionServerFactory.lookupById(server.getId());
             })
             .map(minion -> {
                 // hardware will be refreshed anyway
