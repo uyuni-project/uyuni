@@ -418,8 +418,11 @@ do
     [ -n "${ssl_var}" ] && CML_NEW_SSL_CERT_REQUEST=1
 done
 
+OLD_HOSTNAME=$(grep ^redhat_management_server /etc/cobbler/settings | awk '{print $2}')
+
 echo "=============================================" | tee -a $LOG
 echo "hostname: $HOSTNAME" | tee -a $LOG
+echo "old hostname: $OLD_HOSTNAME"  | tee -a $LOG
 echo "ip: $IP" | tee -a $LOG
 echo "=============================================" | tee -a $LOG
 
@@ -506,6 +509,16 @@ print_status 0  # just simulate end
 echo -n "Changing cobbler settings ... " | tee -a $LOG
 /usr/bin/spacewalk-setup-cobbler >> $LOG 2>&1
 print_status $?
+
+echo -n "Changing kernel_options ... " | tee -a $LOG
+spacewalk-sql --select-mode - >>$LOG <<EOS
+UPDATE rhnKickstartableTree
+SET kernel_options = REPLACE(kernel_options, '$OLD_HOSTNAME', '$HOSTNAME'),
+    kernel_options_post = REPLACE(kernel_options_post, '$OLD_HOSTNAME', '$HOSTNAME');
+COMMIT;
+$DBSHELL_QUIT
+EOS
+print_status 0  # just simulate end
 
 echo -n "Changing jabberd settings ... " | tee -a $LOG
 # delete old dispatcher(s)
