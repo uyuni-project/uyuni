@@ -286,5 +286,17 @@
     {
         "label": "SLES12-SP2-LTSS-X86", 
         "name": "SUSE Linux Enterprise Server LTSS 12 SP2 x86_64"
+    },
+    {
+        "label": "SLES12-SP3-LTSS-X86",
+        "name": "SUSE Linux Enterprise Server LTSS 12 SP3 x86_64"
+    },
+    {
+        "label": "SLES12-SP3-LTSS-PPC",
+        "name": "SUSE Linux Enterprise Server LTSS 12 SP3 PPC"
+    },
+    {
+        "label": "SLES12-SP3-LTSS-Z",
+        "name": "SUSE Linux Enterprise Server LTSS 12 SP3 Z-Series"
     }
 ]
