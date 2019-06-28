@@ -139,10 +139,8 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                 will(returnValue(Optional.of(MINION_ID)));
                 allowing(saltServiceMock).getMachineId(MINION_ID);
                 will(returnValue(Optional.of(MACHINE_ID)));
-                if (key != null) {
-                    allowing(saltServiceMock).getGrains(MINION_ID);
-                    will(returnValue(getGrains(MINION_ID, null, key)));
-                }
+                allowing(saltServiceMock).getGrains(MINION_ID);
+                will(returnValue(getGrains(MINION_ID, null, key)));
                 allowing(saltServiceMock).syncGrains(with(any(MinionList.class)));
                 allowing(saltServiceMock).syncModules(with(any(MinionList.class)));
             } };
@@ -1273,30 +1271,6 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
         } finally {
             MinionPendingRegistrationService.removeMinion(MINION_ID);
         }
-    }
-
-    /**
-     * Tests that grains aren't queried for an existing non-retail minion.
-     *
-     * @throws Exception if anything goes wrong
-     */
-    public void testNoGrainsQueryForNonRetailMinion() throws Exception {
-        MinionServer server = MinionServerFactoryTest.createTestMinionServer(user);
-        server.setMinionId(MINION_ID);
-        server.setMachineId(MACHINE_ID);
-        executeTest((saltServiceMock, key) ->
-                        new Expectations(){ {
-                            allowing(saltServiceMock).getMasterHostname(MINION_ID);
-                            will(returnValue(Optional.of(MINION_ID)));
-                            allowing(saltServiceMock).getMachineId(MINION_ID);
-                            will(returnValue(Optional.of(MACHINE_ID)));
-                            never(saltServiceMock).getGrains(MINION_ID); // we test that grains aren't queried here!
-                            allowing(saltServiceMock).syncModules(with(any(MinionList.class)));
-                        } },
-                null,
-                (minion, machineId, key) -> { },
-                null,
-                DEFAULT_CONTACT_METHOD);
     }
 
     /**
