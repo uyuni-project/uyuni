@@ -70,7 +70,7 @@ end
 # Extract the OS version and OS family
 # We get these data decoding the values in '/etc/os-release'
 def get_os_version(node)
-  os_family_raw, _code = $proxy.run('grep "^ID=" /etc/os-release')
+  os_family_raw, _code = node.run('grep "^ID=" /etc/os-release')
   os_family = os_family_raw.strip.split('=')[1]
   return nil, nil if os_family.nil?
   os_family.delete! '"'
