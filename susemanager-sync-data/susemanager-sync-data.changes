@@ -1,3 +1,4 @@
+- add channel family definitions for SLES12 SP3 LTSS (bsc#1139693)
 - Enable product detection for plain rhel systems (bsc#1136301)
 
 -------------------------------------------------------------------
