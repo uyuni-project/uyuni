@@ -160,3 +160,22 @@ class TestSCUtils:
                                              "somecmd", "cmdsome", "piglet"],
                                             ["space*", "pig"], search=False)
         assert out == ['space']
+
+    @patch("spacecmd.utils.mkstemp", MagicMock(return_value=(1, "test",)))
+    @patch("spacecmd.utils.os.fdopen", MagicMock(side_effect=IOError("Electromagnetic energy loss")))
+    def test_editor_ioerror_handle(self):
+        """
+        Test to handle IOError by an external editor when the temporary file cannot be written.
+
+        :return:
+        """
+        spawner = MagicMock()
+        logger = MagicMock()
+        with patch("spacecmd.utils.os.spawnlp", spawner) as spw, \
+            patch("spacecmd.utils.logging", logger) as lgr:
+            spacecmd.utils.editor("clock speed adjustments")
+
+        assert logger.warning.called
+        assert logger.error.called
+        assert not spawner.called
+
