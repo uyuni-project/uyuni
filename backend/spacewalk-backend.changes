@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Mon Jul 01 09:00:41 CEST 2019 - jgonzalez@suse.com
+
+- version 2.8.57.17-1
 - Fix for CVE-2019-10136. An attacker with a valid, but expired,
   authenticated set of headers could move some digits around,
   artificially extending the session validity without modifying
