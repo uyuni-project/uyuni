@@ -102,7 +102,7 @@
                                                It has a link around it if the logged in user is an org admin --%>
                                           <c:set var="userbeanarg" scope="request">
                                             <rhn:require acl="user_role(org_admin)">
-                                              <a href="/rhn/users/UserDetails.do?uid=${summary.mostRecentMod.configFile.latestConfigRevision.changedBy.id}">
+                                              <a class="js-spa" href="/rhn/users/UserDetails.do?uid=${summary.mostRecentMod.configFile.latestConfigRevision.changedBy.id}">
                                             </rhn:require>
                                             <rhn:icon type="header-user" title="user.common.userAlt" />
                                             <c:out value="${summary.mostRecentMod.configFile.latestConfigRevision.changedBy.login}" />
