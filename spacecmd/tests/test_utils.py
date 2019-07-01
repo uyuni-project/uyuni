@@ -144,3 +144,19 @@ class TestSCUtils:
 
         args, opts = spacecmd.utils.parse_command_arguments("", argument_parser=arg_parser, glob=True)
         assert spacecmd.utils.is_interactive(opts)
+
+    def test_filter_results(self):
+        """
+        Test results filtering.
+
+        :return:
+        """
+        out = spacecmd.utils.filter_results(["space", "spacecmd", "cmdspace", "somespacecmd",
+                                             "somecmd", "cmdsome", "piglet"],
+                                            ["space*", "pig"], search=True)
+        assert out == ['space', 'spacecmd', 'cmdspace', 'somespacecmd', 'piglet']
+
+        out = spacecmd.utils.filter_results(["space", "spacecmd", "cmdspace", "somespacecmd",
+                                             "somecmd", "cmdsome", "piglet"],
+                                            ["space*", "pig"], search=False)
+        assert out == ['space']
