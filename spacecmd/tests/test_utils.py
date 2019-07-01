@@ -3,6 +3,7 @@
 Test spacecmd.utils
 """
 from unittest.mock import MagicMock, patch
+import pytest
 from helpers import shell, assert_expect, assert_list_args_expect, assert_args_expect
 import spacecmd.utils
 from xmlrpc import client as xmlrpclib
@@ -57,6 +58,21 @@ class TestSCUtilsCacheIntegration:
         assert "expire" not in self.data
         assert out["expire"] == self.expiration
         assert self.data["key"] == out["key"]
+
+    @patch("spacecmd.utils.open", MagicMock(side_effect=IOError("Wrong polarity on neutron flow")))
+    def test_save_cache_io_error(self):
+        """
+        Handle saving cache when IOError happens.
+
+        :return:
+        """
+        logger = MagicMock()
+        with patch("spacecmd.utils.logging", logger) as lgr:
+            spacecmd.utils.save_cache(cachefile=self.cachefile,
+                                      data=self.data, expire=self.expiration)
+        assert logger.error.called
+        assert_args_expect(logger.error.call_args_list,
+                           [(("Couldn't write to %s", self.cachefile,), {})])
 
     def test_load_cache(self):
         """
