@@ -195,8 +195,10 @@ def editor(template='', delete=False):
             handle = os.fdopen(descriptor, 'w')
             handle.write(template)
             handle.close()
-        except IOError:
+        except IOError as exc:
             logging.warning('Could not open the temporary file')
+            logging.error(str(exc))
+            return
 
     # use the user's specified editor
     if 'EDITOR' in os.environ:
