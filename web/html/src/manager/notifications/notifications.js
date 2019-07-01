@@ -76,7 +76,7 @@ class Notifications extends React.Component {
 
   render() {
     return (
-        <a href="/rhn/manager/notification-messages">
+        <a className="js-spa" href="/rhn/manager/notification-messages">
           <i className={this.state.websocket == null ? 'fa fa-bell-slash' : 'fa fa-bell' }></i>
           {
             this.state.websocket != null && this.state.unreadMessagesLength > 0 ?
