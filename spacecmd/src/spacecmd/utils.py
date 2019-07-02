@@ -237,10 +237,10 @@ def editor(template='', delete=False):
                 except OSError:
                     logging.error('Could not remove %s', file_name)
 
-            return (contents, file_name)
+            return contents, file_name
         except IOError:
             logging.error('Could not read %s', file_name)
-            return ([], '')
+            return [], ''
 
 
 def prompt_user(prompt, noblank=False, multiline=False):
