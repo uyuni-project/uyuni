@@ -317,3 +317,14 @@ class TestSCUtils:
 
         assert bool(out)
         assert str(out) == "20190501T10:45:31"
+
+    def test_build_package_names(self):
+        """
+        Test package name build.
+
+        :return:
+        """
+        out = spacecmd.utils.build_package_names({"name": "emacs", "version": "42",
+                                                  "release": "13", "epoch": "1",
+                                                  "arch": "x86_64", "arch_label": "amd"})
+        assert out == "emacs-42-13:1.x86_64"
