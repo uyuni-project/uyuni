@@ -179,3 +179,28 @@ class TestSCUtils:
         assert logger.error.called
         assert not spawner.called
 
+    @patch("spacecmd.utils.mkstemp", MagicMock(return_value=(1, "test",)))
+    @patch("spacecmd.utils.os.fdopen", MagicMock(return_value=MagicMock()))
+    @patch("spacecmd.utils.os.environ", {})
+    def test_editor_editor_failed(self):
+        """
+        Test to handle editor launch failures.
+
+        :return:
+        """
+        spawner = MagicMock(return_value=42)
+        logger = MagicMock()
+        with patch("spacecmd.utils.os.spawnlp", spawner) as spw, \
+            patch("spacecmd.utils.logging", logger) as lgr:
+            spacecmd.utils.editor("clock speed adjustments")
+
+        assert not logger.warning.called
+        assert logger.error.called
+        assert spawner.called
+
+        assert_args_expect(logger.error.call_args_list,
+                           [(('Editor "%s" exited with code %i', "vim", 42), {}),
+                            (('Editor "%s" exited with code %i', "vi", 42), {}),
+                            (('Editor "%s" exited with code %i', "emacs", 42), {}),
+                            (('Editor "%s" exited with code %i', "nano", 42), {}),
+                            (('No editors found',), {})])
