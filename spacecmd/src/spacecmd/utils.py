@@ -215,9 +215,9 @@ def editor(template='', delete=False):
                 success = True
                 break
             else:
-                logging.error('Editor exited with code %i', exit_code)
-        except OSError:
-            pass
+                logging.error('Editor "%s" exited with code %i', editor_cmd, exit_code)
+        except OSError as exc:
+            logging.error("General failure running editor: %s", str(exc))
 
     if not success:
         logging.error('No editors found')
