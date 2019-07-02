@@ -206,6 +206,7 @@ def editor(template='', delete=False):
             __EDITORS.insert(0, os.environ['EDITOR'])
 
     success = False
+    exit_code = -1
     for editor_cmd in __EDITORS:
         try:
             exit_code = os.spawnlp(os.P_WAIT, editor_cmd,
