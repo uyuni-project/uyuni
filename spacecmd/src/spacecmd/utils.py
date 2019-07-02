@@ -394,15 +394,16 @@ def build_package_names(packages):
         package = '%s-%s-%s' % (
             p.get('name'), p.get('version'), p.get('release'))
 
-        if p.get('epoch') != ' ' and p.get('epoch') != '':
-            package += ':%s' % p.get('epoch')
+        epoch = p.get("epoch", "").strip()
+        if epoch:
+            package += ':%s' % epoch
 
         if p.get('arch'):
             # system.listPackages uses AMD64 instead of x86_64
-            arch = re.sub('AMD64', 'x86_64', p.get('arch'))
+            arch = re.sub('amd64', 'x86_64', p.get('arch', "").lower())
 
             package += '.%s' % arch
-        elif p.get('arch_label'):
+        elif p.get('arch_label', "").strip():
             package += '.%s' % p.get('arch_label')
 
         package_names.append(package)
