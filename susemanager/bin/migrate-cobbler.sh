@@ -13,11 +13,11 @@ do
         echo "`date +"%H:%M:%S"`   Converting $OLDDIR --> $NEWDIR"
         for FILE in $OLDDIR/*
         do
-            sed -e "s/kickstart/autoinstall/" \
+            sed -e "s;/var/lib/rhn/kickstarts;;g" \
+                -e "s/kickstart/autoinstall/" \
                 -e "s/ks_meta/autoinstall_meta/" \
                 -e "s/ksmeta/autoinstall_meta/" \
                 -e "s/kopts/kernel_options/" \
-                -e "s;/var/lib/rhn/kickstarts;;g" \
                 -e "s/kopts_post/kernel_options_post/" \
             $FILE > $NEWDIR/`basename $FILE`
         done
