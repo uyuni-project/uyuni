@@ -285,7 +285,7 @@ def parse_time_input(userinput=''):
     if userinput == '' or re.match('now', userinput, re.I):
         timestamp = datetime.now()
 
-    # handle YYYMMDDHHMM times
+    # handle YYYYMMDDHHMM times
     if not timestamp:
         match = re.match(r'^(\d{4})(\d{2})(\d{2})(\d{2})?(\d{2})?(\d{2})?$', userinput)
 
