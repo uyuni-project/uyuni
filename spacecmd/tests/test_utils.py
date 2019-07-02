@@ -328,3 +328,14 @@ class TestSCUtils:
                                                   "release": "13", "epoch": "1",
                                                   "arch": "x86_64", "arch_label": "amd"})
         assert out == "emacs-42-13:1.x86_64"
+
+    def test_build_package_names_no_epoch(self):
+        """
+        Test package name build, no epoch.
+
+        :return:
+        """
+        out = spacecmd.utils.build_package_names({"name": "emacs", "version": "42",
+                                                  "release": "13",
+                                                  "arch": "x86_64", "arch_label": "amd"})
+        assert out == "emacs-42-13.x86_64"
