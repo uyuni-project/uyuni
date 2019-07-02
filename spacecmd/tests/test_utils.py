@@ -350,3 +350,14 @@ class TestSCUtils:
                                                   "release": "13", "epoch": "",
                                                   "arch": "x86_64", "arch_label": "amd"})
         assert out == "emacs-42-13.x86_64"
+
+    def test_build_package_names_amd64_uc(self):
+        """
+        Test package name when amd64 arch uppercase.
+
+        :return:
+        """
+        out = spacecmd.utils.build_package_names({"name": "emacs", "version": "42",
+                                                  "release": "13", "epoch": "2",
+                                                  "arch": "AMD64", "arch_label": "amd"})
+        assert out == "emacs-42-13:2.x86_64"
