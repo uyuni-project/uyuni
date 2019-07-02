@@ -227,3 +227,12 @@ class TestSCUtils:
         assert not logger.error.called
         assert remover.called
         assert out == ('contents data', '')
+
+    @patch("spacecmd.utils.input", MagicMock(return_value="single line data"))
+    @patch("spacecmd.utils.sys.stdin.read", MagicMock(return_value="data\nand\nother\ndata"))
+    def test_prompt_user_single_line_blank(self):
+        """
+        Test prompt user, single line, blank.
+        :return:
+        """
+        assert spacecmd.utils.prompt_user("") == "single line data"
