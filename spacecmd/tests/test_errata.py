@@ -414,7 +414,7 @@ class TestSCErrata:
                                  'information(00000)\nURL:http://www.iss.net/security_center/static/00000.php', '',
                                  'Affected Channels', '-----------------', 'base_channel\neditors_channel', '',
                                  'Affected Systems', '----------------', '3', '', 'Affected Packages',
-                                 '-----------------', 'pico-1-234:None.x86\nvim-42-123:None.x86', '----------',
+                                 '-----------------', 'pico-1-234.x86\nvim-42-123.x86', '----------',
                                  'Name:       cve-two', 'Product:    PRODUCT-2', 'Type:       TYPE-2',
                                  'Issue Date: DATE-2', '', 'Topic', '-----', 'The quick brown fox jumped over '
                                                                              'the lazy dog',
@@ -441,7 +441,7 @@ class TestSCErrata:
                                  '', 'Affected Channels', '-----------------', 'another_base_channel\n'
                                                                                'special_editors_channel',
                                  '', 'Affected Systems', '----------------', '2', '', 'Affected Packages',
-                                 '-----------------', 'pico-2-12:None.x86\nvim-28-45:None.x86'])
+                                 '-----------------', 'pico-2-12.x86\nvim-28-45.x86'])
 
     def test_errata_details_erratum_none_data(self, shell):
         """
@@ -488,13 +488,13 @@ class TestSCErrata:
                                  '', '', 'Solution', '--------', 'N/A', '', 'References', '----------', 'N/A', '',
                                  'Affected Channels',
                                  '-----------------', '', '', 'Affected Systems', '----------------', '0', '',
-                                 'Affected Packages', '-----------------', 'pico-1-234:None.x86\nvim-42-123:None.x86',
+                                 'Affected Packages', '-----------------', 'pico-1-234.x86\nvim-42-123.x86',
                                  '----------', 'Name:       cve-two', 'Product:    N/A', 'Type:       N/A',
                                  'Issue Date: N/A', '', 'Topic', '-----', 'N/A', '', 'Description', '-----------',
                                  'N/A', '', 'CVEs', '----', '', '', 'Solution', '--------', 'N/A', '', 'References',
                                  '----------', 'N/A', '', 'Affected Channels', '-----------------', '', '',
                                  'Affected Systems', '----------------', '0', '', 'Affected Packages',
-                                 '-----------------', 'pico-2-12:None.x86\nvim-28-45:None.x86'])
+                                 '-----------------', 'pico-2-12.x86\nvim-28-45.x86'])
 
     def test_errata_delete_noargs(self, shell):
         """
