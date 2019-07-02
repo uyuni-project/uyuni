@@ -1,18 +1,18 @@
 require 'rubygems'
 require 'yaml'
 require 'cucumber/rake/task'
+require 'rake/task'
+require 'parallel'
 
-outputfile = 'output.html'
-html_results = "--format html -o #{outputfile}"
+junit_results = '-f junit -o results_junit'
 
-outputfile_json = 'output.json'
-json_results = "--format json_pretty -o #{outputfile_json}"
-
-junit_results = '--format junit -o results_junit'
 namespace :cucumber do
   Dir.glob(File.join(Dir.pwd, 'run_sets', '*.yml')).each do |entry|
     Cucumber::Rake::Task.new(File.basename(entry, '.yml').to_sym) do |t|
-      cucumber_opts = %W[#{html_results} #{json_results} #{junit_results} -f rerun --out failed.txt --format pretty]
+      filename = File.basename(entry, '.yml').to_sym
+      json_results = "-f json -o output_#{filename}.json"
+      html_results = "-f html -o output_#{filename}.html"
+      cucumber_opts = %W[#{html_results} #{json_results} #{junit_results} -f rerun --out failed.txt -f pretty -r features]
       features = YAML.safe_load(File.read(entry))
       t.cucumber_opts = cucumber_opts + features
     end
@@ -21,7 +21,8 @@ namespace :cucumber do
 end
 
 def post_nodejs_report
-  `node index.js`
+  sh 'rm -rf ./cucumber_report && mkdir cucumber_report'
+  sh 'node index.js'
 end
 
 task :cucumber do
@@ -29,3 +30,20 @@ task :cucumber do
 end
 
 task default: [:cucumber]
+
+namespace :parallel do
+  desc "Run Cucumber init_clients features in parallel"
+  task :init_clients do
+    features = YAML.safe_load(File.read(File.join(Dir.pwd, 'run_sets', 'init_clients.yml'))).join(' ')
+    cucumber_opts = "-f html -o output_init_clients-$TEST_ENV_NUMBER.html -f json -o output_init_clients-$TEST_ENV_NUMBER.json #{junit_results} -f rerun --out failed.txt -f pretty -r features "
+    sh "bundle exec parallel_cucumber -n 5 -o '#{cucumber_opts}' #{features}"
+  end
+
+  desc "Run Cucumber secondary features in parallel"
+  task :secondary_parallelizable do
+    features = YAML.safe_load(File.read(File.join(Dir.pwd, 'run_sets', 'secondary_parallelizable.yml'))).join(' ')
+    cucumber_opts = "-f html -o output_secondary-$TEST_ENV_NUMBER.html -f json -o output_secondary-$TEST_ENV_NUMBER.json #{junit_results} -f pretty -r features "
+    sh "bundle exec parallel_cucumber -n 4 -o '#{cucumber_opts}' #{features}"
+  end
+  at_exit { post_nodejs_report }
+end

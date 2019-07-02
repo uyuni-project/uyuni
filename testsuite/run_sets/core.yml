@@ -1,0 +1,35 @@
+# This file describes the order of features in a normal testsuite run.
+#
+# If you create new features, please see conventions about naming of the
+# feature files in testsuite/docs/Guidelines.md in "Rules for features" chapter,
+# as well as guidelines about idempotency in "Idempotency" chapter.
+
+## Core features BEGIN ###
+
+# IMMUTABLE ORDER
+
+- features/core/core_first_settings.feature
+
+# initialize SUSE Manager server
+- features/core/core_srv_channels_add.feature
+- features/core/core_srv_push_package.feature
+- features/core/core_srv_create_repository.feature
+- features/core/core_srv_users.feature
+- features/core/core_srv_create_activationkey.feature
+- features/core/core_srv_osimage_profiles.feature
+- features/core/core_srv_docker_profiles.feature
+
+# initialize SUSE Manager proxy
+  # one of: core_proxy_register_as_trad_with_script.feature
+  #         core_proxy_register_as_minion_with_script.feature
+  #         core_proxy_register_as_minion_with_gui.feature
+- features/core/core_proxy_register_as_minion_with_gui.feature
+- features/core/core_proxy_branch_network.feature
+
+# these features sync real channels (last core features)
+- features/core/core_srv_sync_channels.feature
+- features/core/core_srv_products_page.feature
+- features/core/core_srv_mgr_sync_products.feature
+- features/core/core_srv_abort_all_sync.feature
+
+## Core features END ###
