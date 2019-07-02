@@ -254,3 +254,18 @@ class TestSCUtils:
         :return:
         """
         assert spacecmd.utils.prompt_user("", multiline=True) == "data\nand\nother\ndata"
+
+    def test_time_input_default(self):
+        """
+        Test time input, default.
+
+        :return:
+        """
+
+        dt = MagicMock()
+        dt.now = MagicMock(return_value=datetime.datetime(2019, 5, 1, 10, 45))
+        with patch("spacecmd.utils.datetime", dt) as dtm:
+            out = spacecmd.utils.parse_time_input()
+
+        assert bool(out)
+        assert str(out) == "20190501T10:45:00"
