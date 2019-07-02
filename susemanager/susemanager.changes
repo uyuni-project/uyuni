@@ -1,3 +1,4 @@
+- put cobbler migration to separate script for inplace migration
 - Make dmidecode part of the bootstrap repositiories (bsc#1137952)
 - respect new location for autoinstall templates during migration
 
