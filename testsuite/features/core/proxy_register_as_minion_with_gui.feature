@@ -21,7 +21,7 @@ Feature: Setup SUSE Manager proxy
     And I enter "root" as "user"
     And I enter "linux" as "password"
     And I click on "Bootstrap"
-    And I wait until I see "Successfully bootstrapped host! " text
+    And I wait until I see "Successfully bootstrapped host!" text
     And I wait until onboarding is completed for "proxy"
 
 @proxy

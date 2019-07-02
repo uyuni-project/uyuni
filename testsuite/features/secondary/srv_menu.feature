@@ -15,9 +15,9 @@ Feature: Web UI - Main landing page menu, texts and links
 
   Scenario: Idempotency of complete menu path and direct link
     When I follow the left menu "Software > Manage Software Channels"
-    Then I should see a " Software Channel Management" text in the content area
+    Then I should see a "Software Channel Management" text in the content area
     When I follow the left menu "Software > Manage Software Channels > Overview"
-    Then I should see a " Software Channel Management" text in the content area
+    Then I should see a "Software Channel Management" text in the content area
 
   Scenario: Completeness of the side navigation bar and the content frame
     When I follow the left menu "Systems > Overview"

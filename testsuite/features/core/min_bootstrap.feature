@@ -54,7 +54,7 @@ Feature: Be able to bootstrap a Salt minion via the GUI
      And I enter "linux" as "password"
      And I select the hostname of the proxy from "proxies"
      And I click on "Bootstrap"
-     And I wait until I see "Successfully bootstrapped host! " text
+     And I wait until I see "Successfully bootstrapped host!" text
 
   Scenario: Check the new bootstrapped minion in System Overview page
      Given I am authorized

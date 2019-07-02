@@ -88,7 +88,7 @@ Feature: Management of configuration of all types of clients in a single channel
     And I should see "sle-client" as link
     And I should see "sle-minion" as link
     When I click on "Deploy Files to Selected Systems"
-    Then I should see a " revision-deploys are being scheduled," text
+    Then I should see a "revision-deploys are being scheduled," text
     And I should see a "0 revision-deploys overridden." text
 
   Scenario: Check that file has been created on traditional client
