@@ -269,3 +269,15 @@ class TestSCUtils:
 
         assert bool(out)
         assert str(out) == "20190501T10:45:00"
+
+    def test_time_input_yyyymmddhhmm(self):
+        """
+        Test time input, YYYYMMDDHHMM.
+
+        :return:
+        """
+
+        out = spacecmd.utils.parse_time_input("201905011045")
+
+        assert bool(out)
+        assert str(out) == "20190501T10:45:00"
