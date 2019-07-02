@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Mon Jul 01 08:57:03 CEST 2019 - jgonzalez@suse.com
+
+- version 4.0.12-1
+- add channel family definitions for SLES12 SP3 LTSS (bsc#1139693)
+
+-------------------------------------------------------------------
 Thu Jun 20 10:10:36 CEST 2019 - jgonzalez@suse.com
 
 - version 4.0.11-1
