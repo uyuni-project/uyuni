@@ -60,7 +60,7 @@ import rpm
 
 from spacecmd.argumentparser import SpacecmdArgumentParser
 
-__EDITORS = ['vim', 'vi', 'nano', 'emacs']
+__EDITORS = ['vim', 'vi', "emacs", 'nano']
 
 
 class CustomJsonEncoder(json.JSONEncoder):
