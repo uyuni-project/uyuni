@@ -2,7 +2,7 @@
 """
 Test spacecmd.utils
 """
-from unittest.mock import MagicMock, patch
+from unittest.mock import MagicMock, patch, mock_open
 import pytest
 from helpers import shell, assert_expect, assert_list_args_expect, assert_args_expect
 import spacecmd.utils
@@ -204,3 +204,26 @@ class TestSCUtils:
                             (('Editor "%s" exited with code %i', "emacs", 42), {}),
                             (('Editor "%s" exited with code %i', "nano", 42), {}),
                             (('No editors found',), {})])
+
+    @patch("spacecmd.utils.mkstemp", MagicMock(return_value=(1, "test",)))
+    @patch("spacecmd.utils.os.fdopen", MagicMock(return_value=MagicMock()))
+    @patch("spacecmd.utils.os.environ", {})
+    @patch("spacecmd.utils.os.path.isfile", MagicMock(return_value=True))
+    def test_editor_file_removal(self):
+        """
+        Test handle template files by the editor.
+
+        :return:
+        """
+        spawner = MagicMock(return_value=0)
+        logger = MagicMock()
+        remover = MagicMock()
+        with patch("spacecmd.utils.os.spawnlp", spawner) as spw, \
+            patch("spacecmd.utils.logging", logger) as lgr, \
+            patch("spacecmd.utils.os.remove", remover) as rmr, \
+            patch("spacecmd.utils.open", new_callable=mock_open, read_data="contents data"):
+            out = spacecmd.utils.editor("clock speed adjustments", delete=True)
+
+        assert not logger.error.called
+        assert remover.called
+        assert out == ('contents data', '')
