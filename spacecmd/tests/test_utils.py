@@ -387,3 +387,18 @@ class TestSCUtils:
 
         assert_expect(mprint.call_args_list,
                       'CVE-12345-678   Sometimes synopsis has a long text here. Sometimes  2019.01.15')
+
+    def test_print_errata_summary_no_date_no_issue_date_key(self):
+        """
+        Print errata summary. No "date" key, no "issue_date" key.
+
+        :return:
+        """
+        erratum = {"advisory_name": "CVE-12345-678",
+                   "advisory_synopsis": "Sometimes synopsis has a long text here. " * 5}
+        mprint = MagicMock()
+        with patch("spacecmd.utils.print", mprint) as prt:
+            spacecmd.utils.print_errata_summary(erratum=erratum)
+
+        assert_expect(mprint.call_args_list,
+                      'CVE-12345-678   Sometimes synopsis has a long text here. Sometimes       N/A')
