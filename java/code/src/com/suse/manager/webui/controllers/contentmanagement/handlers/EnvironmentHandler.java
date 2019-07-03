@@ -65,8 +65,8 @@ public class EnvironmentHandler {
         if (!ValidationUtils.isLabelValid(envRequest.getLabel())) {
             requestErrors.put(
                     "label",
-                    "Label must contain only lowercase letters, hyphens ('-'), periods ('.'), " +
-                            "underscores ('_'), and numerals."
+                    "Label must begin with a letter and must contain only lowercase letters, hyphens ('-')," +
+                            " periods ('.'), underscores ('_'), and numerals."
             );
         }
 
