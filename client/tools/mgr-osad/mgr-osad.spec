@@ -52,7 +52,7 @@ License:        GPL-2.0-only
 Group:          System Environment/Daemons
 Version:        4.0.8
 Provides:       %{oldname} = %{oldversion}
-Obsoletes:      %{oldname} = %{oldversion}
+Obsoletes:      %{oldname} < %{oldversion}
 Release:        1%{?dist}
 Url:            https://github.com/uyuni-project/uyuni
 Source0:        https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
