@@ -415,3 +415,34 @@ class TestSCUtils:
             spacecmd.utils.print_errata_list(errata=errata)
 
         assert not mprint.called
+
+    def test_print_errata_list_by_advisory_type(self):
+        """
+        Test print errata list by advisory type.
+
+        :return:
+        """
+        errata = [{"advisory_type": "security",
+                   "advisory_name": "CVE-123-4567", "advisory_synopsis": "text here " * 10,
+                   "date": "2019.01.15"},
+                  {"advisory_type": "bug fix",
+                   "advisory_name": "CVE-123-4567", "advisory_synopsis": "text here " * 10,
+                   "date": "2019.01.15"},
+                  {"advisory_type": "product enhancement",
+                   "advisory_name": "CVE-123-4567", "advisory_synopsis": "text here " * 10,
+                   "date": "2019.01.15"}]
+        mprint = MagicMock()
+        with patch("spacecmd.utils.print", mprint) as prt:
+            spacecmd.utils.print_errata_list(errata=errata)
+
+        assert mprint.called
+        assert_list_args_expect(mprint.call_args_list,
+                                ['Security Errata',
+                                 '---------------',
+                                 'CVE-123-4567    text here text here text here text here '
+                                 'text here   2019.01.15', '', 'Bug Fix Errata', '--------------',
+                                 'CVE-123-4567    text here text here text here text here '
+                                 'text here   2019.01.15', '', 'Enhancement Errata', '------------------',
+                                 'CVE-123-4567    text here text here text here text here '
+                                 'text here   2019.01.15']
+                                )
