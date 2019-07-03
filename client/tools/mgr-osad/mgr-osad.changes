@@ -1,3 +1,5 @@
+- Fix obsolete for old osad packages, to allow installing mgr-osad
+  even by using osad at yum/zyppper install (bsc#1139453)
 - Ensure bytes type when using hashlib to avoid traceback (bsc#1138822)
 
 -------------------------------------------------------------------
