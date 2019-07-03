@@ -1065,6 +1065,17 @@ SELECT DISTINCT VI.id,
             AND type.label = 'virtualization_host'
     ) AS virt_entitlement,
     COALESCE(
+      (SELECT 1
+          FROM rhnServerGroupMembers SGM,
+              rhnServerGroup GRP,
+              rhnServerGroupType TYPE
+          WHERE sgm.server_id = VI.host_system_id
+              AND grp.id = sgm.server_group_id
+              AND grp.group_type = type.id
+              AND VI.virtual_system_id IS NULL
+              AND type.label = 'foreign_entitled'
+      ), 0) AS host_foreign_entitled,
+    COALESCE(
         (SELECT 1
             FROM rhnUserServerPerms USP
             WHERE USP.user_id = :user_id

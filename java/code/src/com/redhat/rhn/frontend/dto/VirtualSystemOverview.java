@@ -41,6 +41,7 @@ public class VirtualSystemOverview extends SystemOverview
     private Long vcpus;
     private Long memory;
     private String virtEntitlement;
+    private boolean hostForeignEntitled;
     private boolean accessible;
     private boolean subscribable;
 
@@ -345,6 +346,24 @@ public class VirtualSystemOverview extends SystemOverview
      */
     public void setVirtEntitlement(String virtEntitlementIn) {
         this.virtEntitlement = virtEntitlementIn;
+    }
+
+    /**
+     * Is corresponding host foreign entitled?
+     *
+     * @return hostForeignEntitled
+     */
+    public boolean getHostForeignEntitled() {
+        return hostForeignEntitled;
+    }
+
+    /**
+     * Sets the host foreign entitled flag.
+     *
+     * @param hostForeignEntitledId the hostForeignEntitled
+     */
+    public void setHostForeignEntitled(boolean hostForeignEntitledId) {
+        this.hostForeignEntitled = hostForeignEntitledId;
     }
 
     /**

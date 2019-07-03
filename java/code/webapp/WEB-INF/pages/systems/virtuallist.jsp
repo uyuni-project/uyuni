@@ -37,7 +37,7 @@
                styleclass="first-column"
                headerkey="virtuallist.jsp.name">
       <c:choose>
-        <c:when test="${current.isVirtualHost && current.hostSystemId != 0}">
+        <c:when test="${current.isVirtualHost && !current.hostForeignEntitled && current.hostSystemId != 0}">
           <img src="/img/channel_parent_node.gif"/>
           <bean:message key="virtuallist.jsp.host"/>:
           <c:choose>

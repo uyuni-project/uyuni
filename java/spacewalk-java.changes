@@ -1,3 +1,4 @@
+- Hide the 'View All' guests link for foreign systems (bsc#1116869)
 - Fallback to logged-in-user org and then vendor errata when looking up erratum on cloning (bsc#1137308)
 - Fix profiles package scheduling when epoch is null (bsc#1137144)
 - Keep querystring on ListTag parent_url for actions that have the cid param (bsc#1134677)
