@@ -18,6 +18,8 @@ import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFamily;
 import com.redhat.rhn.domain.channel.ChannelFamilyFactory;
 import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.domain.server.ServerFactory;
+import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
 import com.redhat.rhn.frontend.xmlrpc.InvalidProxyVersionException;
 import com.redhat.rhn.frontend.xmlrpc.MethodInvalidParamException;
@@ -26,6 +28,7 @@ import com.redhat.rhn.frontend.xmlrpc.ProxyAlreadyRegisteredException;
 import com.redhat.rhn.frontend.xmlrpc.ProxyMissingEntitlementException;
 import com.redhat.rhn.frontend.xmlrpc.ProxyNotActivatedException;
 import com.redhat.rhn.frontend.xmlrpc.ProxySystemIsSatelliteException;
+import com.redhat.rhn.frontend.xmlrpc.system.XmlRpcSystemHelper;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.system.SystemManager;
 
@@ -176,5 +179,27 @@ public class ProxyHandler extends BaseHandler {
             }
         }
         return returnList;
+    }
+
+    /**
+     * List the proxies within the user's organization.
+     * @param loggedInUser The current user
+     * @return  list of Maps containing "id", "name", and "last_checkin"
+     *
+     * @xmlrpc.doc List the proxies within the user's organization.
+     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.returntype
+     * #array()
+     *   $SystemOverviewSerializer
+     * #array_end()
+     */
+    public Object[] listProxies(User loggedInUser) {
+        List<Server> proxies = ServerFactory.lookupProxiesByOrg(loggedInUser);
+        List toReturn = new ArrayList();
+        XmlRpcSystemHelper helper = XmlRpcSystemHelper.getInstance();
+        for (Server server : proxies) {
+            toReturn.add(helper.format(server));
+        }
+        return toReturn.toArray();
     }
 }

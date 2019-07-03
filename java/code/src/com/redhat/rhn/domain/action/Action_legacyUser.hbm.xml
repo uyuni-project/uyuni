@@ -250,6 +250,7 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
           <join table="rhnActionVirtShutdown">
             <key column="action_id"/>
             <property name="uuid"/>
+            <property name="force" type="yes_no"/>
           </join>
         </subclass>
 
@@ -282,6 +283,7 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
           <join table="rhnActionVirtReboot">
             <key column="action_id"/>
             <property name="uuid"/>
+            <property name="force" type="yes_no"/>
           </join>
         </subclass>
 
@@ -482,11 +484,11 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
         <![CDATA[
 select {ra.*}
     from rhnAction {ra},
-    (select NULL as uuid from dual) ra_1_,
+    (select NULL as uuid, NULL as force from dual) ra_1_,
     (select NULL as uuid from dual) ra_2_,
     (select NULL as uuid from dual) ra_3_,
     (select NULL as uuid from dual) ra_4_,
-    (select NULL as uuid from dual) ra_5_,
+    (select NULL as uuid, NULL as force from dual) ra_5_,
     (select NULL as uuid from dual) ra_6_,
     (select NULL as uuid, NULL as memory from dual) ra_7_,
     (select NULL as uuid, NULL as vcpu from dual) ra_8_,
@@ -570,7 +572,7 @@ select {ra.*}
                 AND action_id = :id
     ]]>
     </query>
-    
+
     <query name="Action.findMinionSummaries">
     <![CDATA[
         SELECT sa.server.id, s.minionId, s.digitalServerId, s.machineId, c.label
@@ -593,11 +595,11 @@ select sa.server_id
     <sql-query name="Action.lookupPendingMinionActions">
         <![CDATA[select {ra.*}
                      from rhnAction {ra},
-                     (select NULL as uuid from dual) ra_1_,
+                     (select NULL as uuid, NULL as force from dual) ra_1_,
                      (select NULL as uuid from dual) ra_2_,
                      (select NULL as uuid from dual) ra_3_,
                      (select NULL as uuid from dual) ra_4_,
-                     (select NULL as uuid from dual) ra_5_,
+                     (select NULL as uuid, NULL as force from dual) ra_5_,
                      (select NULL as uuid from dual) ra_6_,
                      (select NULL as uuid, NULL as memory from dual) ra_7_,
                      (select NULL as uuid, NULL as vcpu from dual) ra_8_,
@@ -621,4 +623,13 @@ select sa.server_id
         <return alias="ra" class="com.redhat.rhn.domain.action.Action"/>
     </sql-query>
 
+    <sql-query name="Action.updateServerActions">
+        <![CDATA[
+            UPDATE rhnServerAction
+                SET status = :status
+            WHERE action_id  = :action_id
+                AND server_id  IN (:server_ids)
+                AND status NOT IN(2,3)
+        ]]>
+    </sql-query>
 </hibernate-mapping>

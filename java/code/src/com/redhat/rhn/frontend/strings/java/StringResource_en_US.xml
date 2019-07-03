@@ -735,8 +735,14 @@
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="Proxy Release Notes">
-        <source>Proxy Release Notes</source>
+      <trans-unit id="product_proxy">
+        <source>@@PRODUCT_NAME@@ Proxy</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Navigation Menu</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="product_server">
+        <source>@@PRODUCT_NAME@@ Server</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
@@ -1127,20 +1133,20 @@
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="Your Account">
-        <source>Your Account</source>
+      <trans-unit id="My Account">
+        <source>My Account</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="Your Preferences">
-        <source>Your Preferences</source>
+      <trans-unit id="My Preferences">
+        <source>My Preferences</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="Your Organization">
-        <source>Your Organization</source>
+      <trans-unit id="My Organization">
+        <source>My Organization</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
@@ -2875,8 +2881,8 @@ and try again.
           <context context-type="sourcefile">/systems/Search</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="systemsearch_location_country">
-        <source>Country</source>
+      <trans-unit id="systemsearch_location_country_code">
+        <source>Country Code</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/Search</context>
         </context-group>

@@ -178,7 +178,7 @@ public class SatScrubberTest extends TestCase {
             Long id = (Long) row.get("id");
             log.debug("Deleting org: " + id);
             try {
-                OrgFactory.deleteOrg(new Long(id.longValue()), UserFactory
+                OrgFactory.deleteOrg(id.longValue(), UserFactory
                         .findResponsibleUser(1L, RoleFactory.SAT_ADMIN));
             }
             catch (Exception e) {

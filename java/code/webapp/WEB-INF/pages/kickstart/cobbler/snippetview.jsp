@@ -4,8 +4,8 @@
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 
 <head>
-  <script language="javascript" type="text/javascript" src="/javascript/ace-editor/src-min-noconflict/ace.js"></script>
-  <script language="javascript" type="text/javascript" src="/javascript/ace-editor/src-min-noconflict/ext-modelist.js"></script>
+  <script language="javascript" type="text/javascript" src="/javascript/ace-editor/src-min-noconflict/ace.js?cb=${rhn:getConfig('web.version')}"></script>
+  <script language="javascript" type="text/javascript" src="/javascript/ace-editor/src-min-noconflict/ext-modelist.js?cb=${rhn:getConfig('web.version')}"></script>
 </head>
 
 <html:html >

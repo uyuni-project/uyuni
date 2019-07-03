@@ -18,6 +18,7 @@ function BootstrapPanel(props: Props) {
       icon={props.icon}
       header={props.header}
       footer={props.footer}
+      buttons={props.buttons}
     >
       {props.children}
     </Panel>

@@ -59,8 +59,8 @@ public class SystemScapHandler extends BaseHandler {
     public List<XccdfTestResultDto> listXccdfScans(User loggedInUser, Integer serverId) {
         /* Make sure the system is available to user and throw a nice exception.
          * If it was not done, an empty list would be returned. */
-        SystemManager.ensureAvailableToUser(loggedInUser, new Long(serverId));
-        return ScapManager.latestTestResultByServerId(loggedInUser, new Long(serverId));
+        SystemManager.ensureAvailableToUser(loggedInUser, Long.valueOf(serverId));
+        return ScapManager.latestTestResultByServerId(loggedInUser, Long.valueOf(serverId));
     }
 
     /**
@@ -75,8 +75,8 @@ public class SystemScapHandler extends BaseHandler {
      * @xmlrpc.returntype $XccdfTestResultSerializer
      */
     public XccdfTestResult getXccdfScanDetails(User loggedInUser, Integer xid) {
-        ScapManager.ensureAvailableToUser(loggedInUser, new Long(xid));
-        return ScapFactory.lookupTestResultById(new Long(xid));
+        ScapManager.ensureAvailableToUser(loggedInUser, Long.valueOf(xid));
+        return ScapFactory.lookupTestResultById(Long.valueOf(xid));
     }
 
     /**
@@ -95,8 +95,8 @@ public class SystemScapHandler extends BaseHandler {
      */
     public List<XccdfRuleResultDto> getXccdfScanRuleResults(User loggedInUser,
             Integer xid) {
-        ScapManager.ensureAvailableToUser(loggedInUser, new Long(xid));
-        return ScapManager.ruleResultsPerScan(new Long(xid));
+        ScapManager.ensureAvailableToUser(loggedInUser, Long.valueOf(xid));
+        return ScapManager.ruleResultsPerScan(Long.valueOf(xid));
     }
 
     /**
@@ -112,8 +112,8 @@ public class SystemScapHandler extends BaseHandler {
      * @xmlrpc.returntype boolean - indicates success of the operation.
      */
     public Boolean deleteXccdfScan(User loggedInUser, Integer xid) {
-        ScapManager.ensureAvailableToUser(loggedInUser, new Long(xid));
-        return ScapManager.deleteScan(new Long(xid));
+        ScapManager.ensureAvailableToUser(loggedInUser, Long.valueOf(xid));
+        return ScapManager.deleteScan(Long.valueOf(xid));
     }
 
     /**
@@ -163,7 +163,7 @@ public class SystemScapHandler extends BaseHandler {
 
         HashSet<Long> longServerIds = new HashSet<Long>();
         for (Iterator it = serverIds.iterator(); it.hasNext();) {
-            longServerIds.add(new Long((Integer) it.next()));
+            longServerIds.add(Long.valueOf((Integer) it.next()));
         }
 
         try {

@@ -36,7 +36,7 @@ public class MenuTreeTest extends TestCase {
                 .addChild(new MenuItem("Overview")
                     .withPrimaryUrl("/rhn/YourRhn.do"))
                 .addChild(new MenuItem("User Account")
-                    .addChild(new MenuItem("Your Account")
+                    .addChild(new MenuItem("My Account")
                         .withPrimaryUrl("/rhn/account/UserDetails.do"))));
 
         // the TESTED method
@@ -44,7 +44,7 @@ public class MenuTreeTest extends TestCase {
 
         // check if the active node has the expected label and it is active flagged
         assertTrue(activeNode.getActive());
-        assertTrue(activeNode.getLabel().equalsIgnoreCase("Your Account"));
+        assertTrue(activeNode.getLabel().equalsIgnoreCase("My Account"));
         assertFalse(activeNode.getLabel().equalsIgnoreCase("Home"));
     }
 

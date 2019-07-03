@@ -1,3 +1,30 @@
+- Bugfix: referenced variable before assignment.
+- Add unit test for report, package, org, repo and group
+- Bugfix: 'dict' object has no attribute 'iteritems' (bsc#1135881)
+- Add unit tests for custominfo, snippet, scap, ssm, cryptokey and distribution
+
+-------------------------------------------------------------------
+Wed May 15 15:05:51 CEST 2019 - jgonzalez@suse.com
+
+- version 4.0.11-1
+- SPEC cleanup
+
+-------------------------------------------------------------------
+Mon Apr 22 12:05:58 CEST 2019 - jgonzalez@suse.com
+
+- version 4.0.10-1
+- add unit tests for spacecmd.api, spacecmd.activationkey and spacecmd.filepreservation
+- add unit tests for spacecmd.shell
+- Save SSM list on system delete and update cache (bsc#1130077, bsc#1125744)
+- add makefile and pylint configuration
+
+-------------------------------------------------------------------
+Mon Mar 25 16:40:32 CET 2019 - jgonzalez@suse.com
+
+- version 4.0.9-1
+- Add Pylint setup
+- Replace iteritems with items for python2/3 compat (bsc#1129243)
+
 -------------------------------------------------------------------
 Mon Mar 04 09:53:28 CET 2019 - jgonzalez@suse.com
 

@@ -4,29 +4,25 @@
 Feature: Install a patch on the CentOS SSH minion via Salt through the UI
 
 @centos_minion
-  Scenario: Pre-requisite: install virgo-dummy-1.0 packages
+  Scenario: Pre-requisite: install virgo-dummy-1.0 and remove andromeda-dummy packages
     When I enable repository "Devel_Galaxy_BuildRepo" on this "ceos-ssh-minion"
     And I remove package "andromeda-dummy" from this "ceos-ssh-minion"
     And I install package "virgo-dummy-1.0" on this "ceos-ssh-minion"
 
 @centos_minion
-  Scenario: Pre-requisite: refresh package list on Centos SSH minion 
-    Given I am on the Systems overview page of this "ceos-ssh-minion"
-    When I follow "Software" in the content area
-    And I click on "Update Package List"
-    And I follow "Events" in the content area
-    And I wait until I do not see "Package List Refresh scheduled by admin" text, refreshing the page
-    Then I wait until event "Package List Refresh scheduled by admin" is completed
+  Scenario: Pre-requisite: refresh package list and check newly installed packages on Centos SSH minion
+    When I refresh packages list via spacecmd on "ceos-ssh-minion"
+    And I wait until refresh package list on "ceos-ssh-minion" is finished
+    Then spacecmd should show packages "virgo-dummy-1.0" installed on "ceos-ssh-minion"
 
 @centos_minion
-  Scenario: Schedule errata refresh to reflect channel assignment on Centos SSH minion 
+  Scenario: Schedule errata refresh to reflect channel assignment on Centos SSH minion
     Given I am on the Systems overview page of this "ceos-ssh-minion"
     When I follow "Software" in the content area
     And I follow "List / Remove" in the content area
     And I enter "virgo-dummy" in the css "input[placeholder='Filter by Package Name: ']"
     And I click on the css "button.spacewalk-button-filter" until page does contain "virgo-dummy" text
-    And I follow "Admin"
-    And I follow "Task Schedules"
+    When I follow the left menu "Admin > Task Schedules"
     And I follow "errata-cache-default"
     And I follow "errata-cache-bunch"
     And I click on "Single Run Schedule"
@@ -34,7 +30,7 @@ Feature: Install a patch on the CentOS SSH minion via Salt through the UI
     And I wait until the table contains "FINISHED" or "SKIPPED" followed by "FINISHED" in its first rows
 
 @centos_minion
-  Scenario: Install a patch on the Centos SSH minion 
+  Scenario: Install a patch on the Centos SSH minion
     Given I am on the Systems overview page of this "ceos-ssh-minion"
     And I follow "Software" in the content area
     And I follow "Patches" in the content area
@@ -46,7 +42,7 @@ Feature: Install a patch on the CentOS SSH minion via Salt through the UI
     And I wait for "virgo-dummy-2.0-1.1" to be installed on this "ceos-ssh-minion"
 
 @centos_minion
-  Scenario: Install a package on the Centos SSH minion 
+  Scenario: Install a package on the Centos SSH minion
     Given I am on the Systems overview page of this "ceos-ssh-minion"
     And I follow "Software" in the content area
     And I follow "Install"

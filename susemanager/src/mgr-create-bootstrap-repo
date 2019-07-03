@@ -1,14 +1,16 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 from __future__ import print_function
 import sys
 import os
 import shutil
 import logging
+import subprocess
 from spacewalk.server import rhnSQL
 from spacewalk.common import usix
 from spacewalk.common.rhnConfig import CFG, initCFG
 from optparse import OptionParser
 import textwrap
+from string import Template
 
 try:
    input = raw_input
@@ -232,7 +234,7 @@ def create_repo(label, flush, additional=[]):
         else:
             os.makedirs(destdir)
 
-    if label.startswith('RES'):
+    if label.startswith('RES') or label.startswith('RHEL'):
         print("Creating bootstrap repo for latest Service Pack of {0}".format(label))
     else:
         print("Creating bootstrap repo for {0}".format(label))
@@ -243,41 +245,83 @@ def create_repo(label, flush, additional=[]):
     else:
         h = rhnSQL.prepare(rhnSQL.Statement(_sql_find_pkgs_custom ))
     packagelist = mgr_bootstrap_data.DATA[label]['PKGLIST']
+    repotype = mgr_bootstrap_data.DATA[label].get('TYPE', 'yum')
     packagelist.extend(additional)
     logging.debug("The bootstrap repo should contain the following packages: {0}".format(packagelist))
 
-    for pkgname in packagelist:
-        h.execute(parentchannel=options.parentchannel, pkgname=pkgname)
-        pkgs = h.fetchall_dict() or []
-        logging.debug("Package {0} found {1} resulting packages:".format(
-            pkgname, len(pkgs)))
-        if len(pkgs) == 0:
-            messages.append("ERROR: package '%s' not found" % pkgname)
-            errors += 1
-            if not suggestions['no-packages']:
-                suggestions['no-packages'] = ('mgr-create-bootstrap-repo uses the locally synchronized ' +
-                                              'versions of files from the Tools repository, ' +
-                                              'and uses the locally synchronized pool channel for dependency resolution. ' +
-                                              'Both should be fully synced before running the mgr-create-bootstrap-repo script.')
-            continue
-        for p in pkgs:
-            logging.debug(p)
-            rpmdir = os.path.join(destdir, p['arch'])
-            if not os.path.exists(rpmdir):
-                os.makedirs(rpmdir)
-            print("copy '%s'" % p['nvrea'])
-            logging.debug("copy {0} / {1} to {2}".format(basepath, p['path'], rpmdir))
-            if not dryrun:
-                shutil.copy2(os.path.join(basepath, p['path']), rpmdir)
+    debs_dir = os.path.join(destdir, 'debs')
+    for pkgaltstr in packagelist:
+        alt = pkgaltstr.split("|")
+        altpretty =  ', '.join("'%s'" %(e) for e in alt)
+        altcount = 0
+        for pkgname in alt:
+            altcount += 1
+            h.execute(parentchannel=options.parentchannel, pkgname=pkgname)
+            pkgs = h.fetchall_dict() or []
+            logging.debug("Package {0} found {1} resulting packages:".format(
+                pkgname, len(pkgs)))
+            if len(pkgs) == 0:
+                if altcount >= len(alt):
+                    if len(alt) > 1:
+                        messages.append("ERROR: none of %s found" % altpretty)
+                    else:
+                        messages.append("ERROR: package '%s' not found" % pkgname)
+                    errors += 1
+                    if not suggestions['no-packages']:
+                        suggestions['no-packages'] = ('mgr-create-bootstrap-repo uses the locally synchronized ' +
+                                                      'versions of files from the Tools repository, ' +
+                                                      'and uses the locally synchronized pool channel for dependency resolution. ' +
+                                                      'Both should be fully synced before running the mgr-create-bootstrap-repo script.')
+                continue
+            for p in pkgs:
+                logging.debug(p)
+                rpmdir = os.path.join(destdir, p['arch']) if repotype != 'deb' else debs_dir
+                if not os.path.exists(rpmdir):
+                    os.makedirs(rpmdir)
+                print("copy '%s'" % p['nvrea'])
+                logging.debug("copy {0} / {1} to {2}".format(basepath, p['path'], rpmdir))
+                if not dryrun:
+                    shutil.copy2(os.path.join(basepath, p['path']), rpmdir)
+            break
 
     if dryrun:
-        print("createrepo -s sha %s" % destdir)
+        if repotype == 'deb':
+            debs = " ".join([os.path.join(debs_dir, f) for f in os.listdir(debs_dir)])
+            print("/usr/bin/reprepro -b {0} includedeb {1} {2}".format(destdir, "bootstrap", debs))
+        else:
+            print("createrepo -s sha %s" % destdir)
     else:
-        os.system("createrepo -s sha %s" % destdir)
+        if repotype == 'deb':
+            reprepro_conf_tmpl = Template("Origin: $origin\n" \
+            "Label: $label\n" \
+            "Codename: $codename\n" \
+            "Architectures: $arches\n" \
+            "Components: $comps\n" \
+            "Description: $desc\n")
+            codename="bootstrap"
+            reprepro_conf = reprepro_conf_tmpl.substitute(origin="mgr",
+                    label="mgr", codename=codename, arches="amd64 i386", comps="main", desc="Bootstrap repo")
+            reprepro_conf_dir = os.path.join(destdir, "conf")
+            if not os.path.exists(reprepro_conf_dir):
+                os.makedirs(reprepro_conf_dir)
+            with open(os.path.join(reprepro_conf_dir, "distributions"), "w") as conf_file:
+                conf_file.write(reprepro_conf)
+            logging.debug("Created reprepro config file in {0}".format(os.path.join(destdir, "distributions")))
+            debs = [os.path.join(debs_dir, f) for f in os.listdir(debs_dir)]
+            try:
+                subprocess.run(["/usr/bin/reprepro", "-b", destdir, "includedeb", codename] + debs, check=True)
+                logging.debug("Removing directory {0}".format(debs_dir))
+                shutil.rmtree(debs_dir, ignore_errors=True)
+            except subprocess.CalledProcessError as err:
+                print("Error creating bootstrap repo.")
+                logging.debug(err)
+                sys.exit(1)
+        else:    
+            os.system("createrepo -s sha %s" % destdir)
     if errors:
         for m in messages:
             print(m)
-        if label.startswith('RES') and not options.usecustomchannels:
+        if (label.startswith('RES') or label.startswith('RHEL') or label.lower().startswith('ubuntu'))  and not options.usecustomchannels:
             print("If the installation media was imported into a custom channel, try to run again with --with-custom-channels option")
         suggestions = list([_f for _f in list(suggestions.values()) if _f])
         if suggestions:

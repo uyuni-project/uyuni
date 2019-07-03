@@ -118,7 +118,7 @@ public class ErrataCacheWorker implements QueueWorker {
         params.put("org_id", task.getOrg().getId());
         params.put("name", task.getName());
         params.put("task_data", task.getData());
-        params.put("priority", new Integer(task.getPriority()));
+        params.put("priority", task.getPriority());
         mode.executeUpdate(params);
     }
 }

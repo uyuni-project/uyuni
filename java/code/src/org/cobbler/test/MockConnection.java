@@ -58,7 +58,7 @@ public class MockConnection extends CobblerConnection {
     static {
         remapKeys.put("kopts", "kernel_options");
         remapKeys.put("kopts_post", "kernel_options_post");
-        remapKeys.put("ksmeta", "ks_meta");
+        remapKeys.put("autoinstall_meta", "autoinstall_meta");
     }
 
     /**
@@ -107,8 +107,8 @@ public class MockConnection extends CobblerConnection {
         return random();
     }
 
-    if (name.startsWith("modify_") && "ksmeta".equals(args[1])) {
-        args[1] = "ks_meta";
+    if (name.startsWith("modify_") && "autoinstall_meta".equals(args[1])) {
+        args[1] = "autoinstall_meta";
     }
 
     //profiles:
@@ -210,9 +210,9 @@ public class MockConnection extends CobblerConnection {
         if (firstArgumentValid && secondArgumentValid && thirdArgumentValid) {
             powerCommands.add(name + " " + args[1] + " " +
                     systemMap.get(args[0]).get("uid"));
-            return args[1].equals("status") ? true : 0;
+            return true;
         }
-        return 1;
+        return false;
     }
     // images
     else if ("find_image".equals(name)) {
@@ -287,14 +287,14 @@ public class MockConnection extends CobblerConnection {
         profileMap.put(key, profile);
 
         profile.put("virt_bridge", "xenb0");
-        profile.put("virt_cpus", Integer.valueOf(1));
+        profile.put("virt_cpus", 1);
         profile.put("virt_type", KickstartVirtualizationType.XEN_FULLYVIRT);
         profile.put("virt_path", "/tmp/foo");
-        profile.put("virt_file_size", Integer.valueOf(8));
-        profile.put("virt_ram", Integer.valueOf(512));
+        profile.put("virt_file_size", 8);
+        profile.put("virt_ram", 512);
         profile.put("kernel_options", new HashMap());
         profile.put("kernel_options_post", new HashMap());
-        profile.put("ks_meta", new HashMap());
+        profile.put("autoinstall_meta", new HashMap());
         profile.put("redhat_management_key", "");
         return key;
     }
@@ -311,7 +311,7 @@ public class MockConnection extends CobblerConnection {
         profile.put("interfaces", interfaces);
         systems.add(profile);
         systemMap.put(key, profile);
-        profile.put("ks_meta", new HashMap());
+        profile.put("autoinstall_meta", new HashMap());
         profile.put("redhat_management_key", "");
         return key;
     }
@@ -329,14 +329,14 @@ public class MockConnection extends CobblerConnection {
         distroMap.put(key, distro);
 
         distro.put("virt_bridge", "xenb0");
-        distro.put("virt_cpus", Integer.valueOf(1));
+        distro.put("virt_cpus", 1);
         distro.put("virt_type", KickstartVirtualizationType.XEN_FULLYVIRT);
         distro.put("virt_path", "/tmp/foo");
-        distro.put("virt_file_size", Integer.valueOf(8));
-        distro.put("virt_ram", Integer.valueOf(512));
+        distro.put("virt_file_size", 8);
+        distro.put("virt_ram", 512);
         distro.put("kernel_options", new HashMap());
         distro.put("kernel_options_post", new HashMap());
-        distro.put("ks_meta", new HashMap());
+        distro.put("autoinstall_meta", new HashMap());
         distro.put("redhat_management_key", "");
         return key;
     }
@@ -399,7 +399,7 @@ public class MockConnection extends CobblerConnection {
     }
 
     public Double getVersion() {
-        return new Double(2.2);
+        return 2.2;
     }
 
     /**

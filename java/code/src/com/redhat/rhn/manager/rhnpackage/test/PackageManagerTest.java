@@ -56,7 +56,7 @@ import com.redhat.rhn.testing.TestUtils;
 
 import org.apache.xml.serialize.OutputFormat;
 import org.apache.xml.serialize.XMLSerializer;
-import org.hibernate.Query;
+import org.hibernate.query.Query;
 import org.hibernate.Session;
 
 import java.io.ByteArrayOutputStream;

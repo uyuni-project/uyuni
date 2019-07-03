@@ -179,7 +179,7 @@ public class SchemaParser {
             // Handle ranges
             child = simpleType.getChild("minInclusive", schemaNamespace);
             if (child != null) {
-                Long value = new Long(child.getAttributeValue("value"));
+                Long value = Long.valueOf(child.getAttributeValue("value"));
                 lc.setMinInclusive(value);
             }
             else if (schemaType.equals("int")) {
@@ -187,7 +187,7 @@ public class SchemaParser {
             }
             child = simpleType.getChild("maxInclusive", schemaNamespace);
             if (child != null) {
-                Long value = new Long(child.getAttributeValue("value"));
+                Long value = Long.valueOf(child.getAttributeValue("value"));
                 lc.setMaxInclusive(value);
             }
             else if (schemaType.equals("int")) {
@@ -203,20 +203,20 @@ public class SchemaParser {
             // Handle ranges
             child = simpleType.getChild("minInclusive", schemaNamespace);
             if (child != null) {
-                Double value = new Double(child.getAttributeValue("value"));
+                Double value = Double.valueOf(child.getAttributeValue("value"));
                 dc.setMinInclusive(value);
             }
             else if (schemaType.equals("float")) {
-                Double value = new Double(Float.MIN_VALUE);
+                Double value = (double) Float.MIN_VALUE;
                 dc.setMinInclusive(value);
             }
             child = simpleType.getChild("maxInclusive", schemaNamespace);
             if (child != null) {
-                Double value = new Double(child.getAttributeValue("value"));
+                Double value = Double.valueOf(child.getAttributeValue("value"));
                 dc.setMaxInclusive(value);
             }
             else if (schemaType.equals("float")) {
-                Double value = new Double(Float.MAX_VALUE);
+                Double value = (double) Float.MAX_VALUE;
                 dc.setMaxInclusive(value);
             }
             constraint = dc;
@@ -244,12 +244,12 @@ public class SchemaParser {
 
             child = simpleType.getChild("maxLength", schemaNamespace);
             if (child != null) {
-                Double value = new Double(child.getAttributeValue("value"));
+                Double value = Double.valueOf(child.getAttributeValue("value"));
                 lc.setMaxLength(value);
             }
             child = simpleType.getChild("minLength", schemaNamespace);
             if (child != null) {
-                Double value = new Double(child.getAttributeValue("value"));
+                Double value = Double.valueOf(child.getAttributeValue("value"));
                 lc.setMinLength(value);
             }
 

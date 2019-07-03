@@ -40,6 +40,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -130,7 +131,7 @@ public class KickstartHelper {
             String hashed = options.get(SESSION);
             String[] ids = SessionSwap.extractData(hashed);
             retval.put(SESSION_ID, ids[0]);
-            Long kssid = new Long(ids[0]);
+            Long kssid = Long.valueOf(ids[0]);
             log.debug("sessionid: " + kssid);
             KickstartSessionUpdateCommand cmd = new KickstartSessionUpdateCommand(kssid);
             ksdata = cmd.getKsdata();
@@ -161,7 +162,7 @@ public class KickstartHelper {
             }
 
 
-            Org org = OrgFactory.lookupById(new Long((String) retval.get(ORG_ID)));
+            Org org = OrgFactory.lookupById(Long.valueOf((String) retval.get(ORG_ID)));
             if (mode.equals(LABEL)) {
                 String label = (String) retval.get(LABEL);
                 ksdata = KickstartFactory.
@@ -427,7 +428,8 @@ public class KickstartHelper {
 
         // does a child channel contain needed packages?
         Channel channel = ksdata.getChannel();
-        Set<Channel> channelsToCheck = ksdata.getChildChannels();
+        // copy child channel set otherwise you'd modify it as an unwanted side effect
+        Set<Channel> channelsToCheck = new HashSet<Channel>(ksdata.getChildChannels());
         channelsToCheck.add(channel);
 
         for (String pkgName : KickstartFormatter.FRESH_PKG_NAMES_RHEL8) {

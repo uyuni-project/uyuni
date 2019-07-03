@@ -93,7 +93,7 @@ public class TaskFactory extends HibernateFactory {
         return (Task) session.getNamedQuery("Task.lookup")
                                  .setString("name", name)
                                    .setLong("data", data.longValue())
-                                 .setEntity("org", org)
+                                 .setParameter("org", org)
                                  .uniqueResult();
     }
 
@@ -105,7 +105,7 @@ public class TaskFactory extends HibernateFactory {
     public static List getTaskListByChannel(Org org) {
         Session session = HibernateFactory.getSession();
         return session.getNamedQuery("Task.lookupByOrgAndName")
-                      .setEntity("org", org)
+                      .setParameter("org", org)
                       .setString("name", ErrataCacheWorker.BY_CHANNEL)
                       .list();
     }

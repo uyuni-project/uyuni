@@ -34,7 +34,7 @@ When(/^I navigate to images build webpage$/) do
   visit("https://#{$server.full_hostname}/rhn/manager/cm/build")
 end
 
-Then(/^container "([^"]*)" built successfully$/) do |name|
+When(/^I wait at most (\d+) seconds until container "([^"]*)" is built successfully$/) do |timeout, name|
   cont_op.login('admin', 'admin')
   images_list = cont_op.list_images
   image_id = 0
@@ -45,36 +45,28 @@ Then(/^container "([^"]*)" built successfully$/) do |name|
     end
   end
   raise 'unable to find the image id' if image_id.zero?
-  begin
-    Timeout.timeout(DEFAULT_TIMEOUT) do
-      loop do
-        idetails = cont_op.get_image_details(image_id)
-        break if idetails['buildStatus'] == 'completed' && idetails['inspectStatus'] == 'completed'
-        raise 'image build failed.' if idetails['buildStatus'] == 'failed'
-        raise 'image inspect failed.' if idetails['inspectStatus'] == 'failed'
-        sleep 5
-      end
-    end
-  rescue Timeout::Error
-    raise 'image build failed. Timeout'
+
+  repeat_until_timeout(timeout: timeout.to_i, message: 'image build did not complete') do
+    idetails = cont_op.get_image_details(image_id)
+    break if idetails['buildStatus'] == 'completed' && idetails['inspectStatus'] == 'completed'
+    raise 'image build failed.' if idetails['buildStatus'] == 'failed'
+    raise 'image inspect failed.' if idetails['inspectStatus'] == 'failed'
+    sleep 5
   end
 end
 
-Then(/^all "([^"]*)" container images are built correctly in the GUI$/) do |count|
-  def ck_container_imgs(count)
-    build_timeout = 320
-    Timeout.timeout(build_timeout) do
+When(/^I wait at most (\d+) seconds until all "([^"]*)" container images are built correctly in the GUI$/) do |timeout, count|
+  def ck_container_imgs(timeout, count)
+    repeat_until_timeout(timeout: timeout.to_i, message: 'at least one image was not built correctly') do
       step %(I navigate to images webpage)
       step %(I wait until I do not see "There are no entries to show." text)
       raise 'error detected while building images' if all(:xpath, "//*[contains(@title, 'Failed')]").any?
       break if has_xpath?("//*[contains(@title, 'Built')]", count: count)
       sleep 5
     end
-  rescue Timeout::Error
-    raise 'at least one image was not built correctly'
   end
   # don't run this for sles11 (docker feature is not there)
-  ck_container_imgs(count) unless sle11family($minion)
+  ck_container_imgs(timeout, count) unless sle11family($minion)
 end
 
 When(/^I check the first image$/) do

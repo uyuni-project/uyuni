@@ -1,3 +1,38 @@
+- Adds support for Ubuntu and Debian channels to spacewalk-common-channels.
+
+-------------------------------------------------------------------
+Wed May 15 15:20:26 CEST 2019 - jgonzalez@suse.com
+
+- version 4.0.10-1
+- SPEC cleanup
+- Add support for openSUSE Leap 15.1
+- Fixes numerous Python3 errors in spacewalk-manage-channel-lifecycle
+- Fixes an attempt to write in binary mode a string type (bsc#1132361)
+- Adds some integration and unit tests
+
+-------------------------------------------------------------------
+Mon Apr 22 12:17:00 CEST 2019 - jgonzalez@suse.com
+
+- version 4.0.9-1
+- Fix spacewalk-common-channels interpolation error (bsc#1131988)
+- add makefile and pylint configuration
+
+-------------------------------------------------------------------
+Fri Mar 29 10:33:32 CET 2019 - jgonzalez@suse.com
+
+- version 4.0.8-1
+- Add support on depsolver to use a custom input file and produce YAML output.
+- Fix depsolver to use libsolv instead of yum library.
+- Fix spacewalk-clone-by-date to not depend on yum.
+- Fix issues in spacewalk scripts after migration to Python 3.
+
+-------------------------------------------------------------------
+Mon Mar 25 16:48:23 CET 2019 - jgonzalez@suse.com
+
+- version 4.0.7-1
+- Sync with Spacewalk
+- fix taskotop crash caused by integer argument expected
+
 -------------------------------------------------------------------
 Wed Feb 27 13:04:42 CET 2019 - jgonzalez@suse.com
 

@@ -41,6 +41,7 @@ import com.redhat.rhn.manager.entitlement.EntitlementManager;
  *         #prop_desc("int", "id", "System id")
  *         #prop("string", "profile_name")
  *         #prop("string", "machine_id")
+ *         #prop("string", "minion_id")
  *         #prop_desc("string", "base_entitlement", "System's base entitlement label")
  *
  *         #prop_array("string", "addon_entitlements","System's addon entitlements labels,
@@ -97,6 +98,7 @@ public class ServerSerializer extends RhnXmlRpcCustomSerializer {
         helper.add("profile_name", server.getName());
         helper.add("machine_id", server.getMachineId());
         helper.add("hostname", server.getHostname());
+        helper.add("minion_id", server.getMinionId());
 
         // Find this server's base entitlement:
         String baseEntitlement = EntitlementManager.UNENTITLED;

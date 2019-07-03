@@ -219,11 +219,11 @@ class Hierarchy extends React.Component {
   render() {
     var hurl = null;
     if (title === "Virtualization Hierarchy") {
-      hurl = "/rhn/help/reference/en-US/ref.webui.systems.visualization.jsp#ref.webui.systems.visualization";
+      hurl = "/docs/reference/systems/virtualization-hierarchy.html";
     } else if(title === "Proxy Hierarchy") {
-      hurl = "/rhn/help/reference/en-US/ref.webui.systems.visualization.jsp#ref.webui.systems.proxy.visualzation";
+      hurl = "/docs/reference/systems/proxy-hierarchy.html";
     } else if(title === "Systems Grouping" ) {
-      hurl = "/rhn/help/reference/en-US/ref.webui.systems.visualization.jsp#ref.webui.systems.grouping.visualzation";
+      hurl = "/docs/reference/systems/systems-grouping.html";
     }
 
     return (

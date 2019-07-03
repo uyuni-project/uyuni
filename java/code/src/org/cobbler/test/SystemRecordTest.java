@@ -44,7 +44,6 @@ public class SystemRecordTest extends BaseTestCaseWithUser {
      * Sets up a connection and system.
      * @throws Exception in case anything goes wrong
      */
-    @SuppressWarnings("rawtypes")
     public void setUp() throws Exception {
         super.setUp();
         connection = CobblerXMLRPCHelper.getConnection(user.getLogin());

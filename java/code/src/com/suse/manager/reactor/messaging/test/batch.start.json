@@ -1,0 +1,12 @@
+{
+  "tag": "salt/batch/20190130132632115965/start",
+  "data": {
+    "_stamp": "2019-01-30T12:26:32.178962", 
+    "available_minions": [$AVAILABLE_MINIONS$],
+    "down_minions": [$DOWN_MINIONS$],
+    "metadata": {
+        "suma-action-id": $SUMA_ACTION_ID$,
+        "batch-mode": true
+    }
+  }
+}

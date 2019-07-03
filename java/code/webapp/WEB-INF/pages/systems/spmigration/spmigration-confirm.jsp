@@ -6,7 +6,7 @@
 <html:html>
 
 <head>
-  <link rel="stylesheet" type="text/css" href="/css/susemanager-sp-migration.css" />
+  <link rel="stylesheet" type="text/css" href="/css/susemanager-sp-migration.css?cb=${rhn:getConfig('web.version')}" />
 </head>
 
 <body>

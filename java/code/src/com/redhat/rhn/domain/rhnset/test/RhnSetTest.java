@@ -41,7 +41,7 @@ public class RhnSetTest extends RhnBaseTestCase {
     }
 
     public void testUserId() {
-        Long id = new Long(10);
+        Long id = 10L;
         set.setUserId(id);
         assertEquals(id, set.getUserId());
     }
@@ -52,7 +52,7 @@ public class RhnSetTest extends RhnBaseTestCase {
     }
 
     public void testElement() {
-        Long num = new Long(10);
+        Long num = 10L;
         set.addElement(num, null);
         set.addElement(num, num);
         set.addElement(num, num, null);
@@ -104,13 +104,13 @@ public class RhnSetTest extends RhnBaseTestCase {
     }
 
     public void testGetElementValues() {
-        set.addElement(new Long(100));
-        set.addElement(new Long(101));
+        set.addElement(100L);
+        set.addElement(101L);
 
         Set values = set.getElementValues();
         assertEquals(2, values.size());
-        assertTrue(values.contains(new Long(100)));
-        assertTrue(values.contains(new Long(101)));
+        assertTrue(values.contains(100L));
+        assertTrue(values.contains(101L));
     }
 
     public void testAddElements() {
@@ -126,9 +126,9 @@ public class RhnSetTest extends RhnBaseTestCase {
         set.addElements(testElems2);
         elements = set.getElements();
         assertEquals(8, elements.size());
-        assertTrue(set.contains(new Long("150")));
-        assertTrue(set.contains(new Long("100"), new Long("50")));
-        assertFalse(set.contains(new Long("10"), new Long("91")));
+        assertTrue(set.contains(150L));
+        assertTrue(set.contains(100L, 50L));
+        assertFalse(set.contains(10L, 91L));
         assertAddRemove(8, 0);
     }
 
@@ -139,9 +139,9 @@ public class RhnSetTest extends RhnBaseTestCase {
 
         set.removeElements(removeElems);
 
-        assertTrue(set.contains(new Long("150")));
-        assertFalse(set.contains(new Long("350")));
-        assertFalse(set.contains(new Long("300")));
+        assertTrue(set.contains(150L));
+        assertFalse(set.contains(350L));
+        assertFalse(set.contains(300L));
         assertAddRemove(3, 0);
     }
 
@@ -149,11 +149,11 @@ public class RhnSetTest extends RhnBaseTestCase {
         set.addElements(TEST_ELEMS);
         set.sync();
         assertAddRemove(0, 0);
-        set.removeElement(new Long(100));
+        set.removeElement(100L);
         assertAddRemove(0, 1);
-        set.addElement(new Long(100));
+        set.addElement(100L);
         assertAddRemove(0, 0);
-        set.addElement(new Long(42));
+        set.addElement(42L);
         assertAddRemove(1, 0);
         set.sync();
         assertAddRemove(0, 0);
@@ -173,8 +173,8 @@ public class RhnSetTest extends RhnBaseTestCase {
             set.addElements(testElems2);
             elements = set.getElements();
             assertEquals(3, elements.size());
-            assertTrue(set.contains(new Long("100"), new Long("50")));
-            assertFalse(set.contains(new Long("10"), new Long("91")));
+            assertTrue(set.contains(100L, 50L));
+            assertFalse(set.contains(10L, 91L));
             assertAddRemove(3, 0);
         }
         catch (NullPointerException npe) {

@@ -92,7 +92,7 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
 
         Package pkg = PackageTest.createTestPackage(user.getOrg());
         List packageIds = new LinkedList();
-        packageIds.add(new Integer(pkg.getId().intValue()));
+        packageIds.add(pkg.getId().intValue());
 
         user.getOrg().getOrgConfig().setStagingContentEnabled(true);
         Config.get().setString(SALT_CONTENT_STAGING_WINDOW, "48");
@@ -140,7 +140,7 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
 
         Package pkg = PackageTest.createTestPackage(user.getOrg());
         List packageIds = new LinkedList();
-        packageIds.add(new Integer(pkg.getId().intValue()));
+        packageIds.add(pkg.getId().intValue());
 
         user.getOrg().getOrgConfig().setStagingContentEnabled(true);
         Config.get().setString(SALT_CONTENT_STAGING_WINDOW, "48");
@@ -190,7 +190,7 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
 
         Package pkg = PackageTest.createTestPackage(user.getOrg());
         List packageIds = new LinkedList();
-        packageIds.add(new Integer(pkg.getId().intValue()));
+        packageIds.add(pkg.getId().intValue());
 
         user.getOrg().getOrgConfig().setStagingContentEnabled(true);
         Config.get().setString(SALT_CONTENT_STAGING_WINDOW, "1");
@@ -239,7 +239,7 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
 
         Package pkg = PackageTest.createTestPackage(user.getOrg());
         List packageIds = new LinkedList();
-        packageIds.add(new Integer(pkg.getId().intValue()));
+        packageIds.add(pkg.getId().intValue());
 
         user.getOrg().getOrgConfig().setStagingContentEnabled(true);
         Config.get().setString(SALT_CONTENT_STAGING_WINDOW, "90");
@@ -288,7 +288,7 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
 
         Package pkg = PackageTest.createTestPackage(user.getOrg());
         List packageIds = new LinkedList();
-        packageIds.add(new Integer(pkg.getId().intValue()));
+        packageIds.add(pkg.getId().intValue());
 
         user.getOrg().getOrgConfig().setStagingContentEnabled(false);
         Config.get().setString(SALT_CONTENT_STAGING_WINDOW, "48");
@@ -337,10 +337,10 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
 
         Package pkg1 = PackageTest.createTestPackage(user.getOrg());
         List packageIds = new LinkedList();
-        packageIds.add(new Integer(pkg1.getId().intValue()));
+        packageIds.add(pkg1.getId().intValue());
 
         Package pkg2 = PackageTest.createTestPackage(user.getOrg());
-        packageIds.add(new Integer(pkg2.getId().intValue()));
+        packageIds.add(pkg2.getId().intValue());
 
         user.getOrg().getOrgConfig().setStagingContentEnabled(true);
         Config.get().setString(SALT_CONTENT_STAGING_WINDOW, "0.5");

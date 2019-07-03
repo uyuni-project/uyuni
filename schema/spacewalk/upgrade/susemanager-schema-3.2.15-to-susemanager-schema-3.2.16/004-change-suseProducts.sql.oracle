@@ -1,0 +1,8 @@
+
+call add_column_if_not_exists('alter table suseProducts add release_stage VARCHAR2(10) DEFAULT (''released'') NOT NULL');
+call add_column_if_not_exists('alter table suseProducts add description VARCHAR2(4000)');
+
+call drop_if_exists('INDEX', 'suseprod_pdid_idx');
+call drop_constraint_if_exists('suseProducts', 'suseprod_pdid_uq');
+call drop_if_exists('INDEX', 'suseprod_pdid_uq');
+CREATE UNIQUE INDEX suseprod_pdid_uq ON suseProducts (product_id);

@@ -1,4 +1,4 @@
-# COPYRIGHT 2015-2018 SUSE LLC
+# COPYRIGHT 2015-2019 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 require 'json'
@@ -23,7 +23,8 @@ end
 When(/^I call system\.bootstrap\(\) on host "([^"]*)" and salt\-ssh "([^"]*)"$/) do |host, salt_ssh_enabled|
   system_name = get_system_name(host)
   salt_ssh = (salt_ssh_enabled == 'enabled')
-  result = systest.bootstrap_system(system_name, '', salt_ssh)
+  akey = salt_ssh ? '1-SUSE-SSH-DEV-x86_64' : '1-SUSE-DEV-x86_64'
+  result = systest.bootstrap_system(system_name, akey, salt_ssh)
   assert(result == 1, 'Bootstrap return code not equal to 1.')
 end
 
@@ -348,6 +349,7 @@ end
 Then(/^I delete all action chains$/) do
   begin
     rpc.list_chains.each do |label|
+      puts "Delete chain: #{label}"
       rpc.delete_chain(label)
     end
   rescue XMLRPC::FaultException => e
@@ -454,15 +456,9 @@ Then(/^there should be no more my action chain$/) do
 end
 
 When(/^I wait until there are no more action chains$/) do
-  begin
-    Timeout.timeout(DEFAULT_TIMEOUT) do
-      loop do
-        break if rpc.list_chains.empty?
-        sleep(2)
-      end
-    end
-  rescue Timeout::Error
-    raise unless rpc.list_chains.empty?
+  repeat_until_timeout(message: 'Action Chains still present') do
+    break if rpc.list_chains.empty?
+    sleep 2
   end
 end
 
@@ -478,8 +474,15 @@ Then(/^I cancel all scheduled actions$/) do
   end
 
   actions.each do |action|
-    scdrpc.cancel_actions([action['id']])
-    puts "\t- Removed \"" + action['name'] + '" action'
+    puts "\t- Try to cancel \"#{action['name']}\" action"
+    begin
+      scdrpc.cancel_actions([action['id']])
+    rescue XMLRPC::FaultException
+      scdrpc.list_in_progress_systems(action['id']).each do |system|
+        scdrpc.fail_system_action(system['server_id'], action['id'])
+      end
+    end
+    puts "\t- Removed \"#{action['name']}\" action"
   end
 end
 
@@ -488,15 +491,9 @@ Then(/^there should be no more any scheduled actions$/) do
 end
 
 Then(/^I wait until there are no more scheduled actions$/) do
-  begin
-    Timeout.timeout(DEFAULT_TIMEOUT) do
-      loop do
-        break if scdrpc.list_in_progress_actions.empty?
-        sleep(2)
-      end
-    end
-  rescue Timeout::Error
-    raise unless scdrpc.list_in_progress_actions.empty?
+  repeat_until_timeout(message: 'Scheduled actions still present') do
+    break if scdrpc.list_in_progress_actions.empty?
+    sleep 2
   end
 end
 
@@ -531,7 +528,7 @@ Then(/^I should get status "([^\"]+)" for this client$/) do |status|
   step "I should get status \"#{status}\" for system \"#{client_system_id_to_i}\""
 end
 
-Then(/^I should get the test-channel$/) do
+Then(/^I should get the test channel$/) do
   arch = `uname -m`
   arch.chomp!
   channel = if arch != 'x86_64'

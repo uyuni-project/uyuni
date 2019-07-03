@@ -57,7 +57,6 @@ import spark.HaltException;
 /**
  * Tests for VirtualGuestsController
  */
-@SuppressWarnings("serial")
 public class VirtualGuestsControllerTest extends BaseControllerTestCase {
 
     private TaskomaticApi taskomaticMock;
@@ -289,6 +288,7 @@ public class VirtualGuestsControllerTest extends BaseControllerTestCase {
         assertEquals("sles12sp2", def.getName());
         assertEquals(1024*1024, def.getMaxMemory());
         assertEquals("spice", def.getGraphics().getType());
+        assertEquals(5903, def.getGraphics().getPort());
 
         assertEquals(1, def.getInterfaces().size());
         assertEquals("network", def.getInterfaces().get(0).getType());

@@ -29,7 +29,6 @@ import sys
 
 from optparse import OptionParser, OptionGroup
 from os.path import expanduser
-from string import split
 from subprocess import call
 
 home = expanduser("~")
@@ -141,7 +140,7 @@ def setupEntities(options):
     if doAll:
         return entities
 
-    for e in split(options.entities, ','):
+    for e in options.entities.split(','):
         if e in list(entities.keys()):
             entities[e] = True
         else:

@@ -1,3 +1,6 @@
+# Copyright (c) 2017-2019 SUSE
+# Licensed under the terms of the MIT license.
+
 require 'date'
 
 # Based on https://github.com/akarzim/capybara-bootstrap-datepicker
@@ -90,7 +93,7 @@ end
 When(/^I pick (\d+) minutes from now as schedule time$/) do |arg1|
   action_time = get_future_time(arg1)
   page.execute_script("$('#date_timepicker_widget_input')
-    .timepicker('setTime', '#{action_time}');")
+    .timepicker('setTime', '#{action_time}').trigger('changeTime');")
 end
 
 When(/^I schedule action to (\d+) minutes from now$/) do |minutes|

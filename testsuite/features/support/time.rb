@@ -1,4 +1,5 @@
-# Copyright 2015 SUSE LLC
+# Copyright 2017-2019 SUSE LLC
+# Licensed under the terms of the MIT license.
 
 Before do |_scenario|
   current_time = Time.new

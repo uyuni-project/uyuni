@@ -1,1 +1,1 @@
-include ChangeLog COPYING README TODO rhnlib.spec Makefile.rhnlib
+include ChangeLog COPYING README TODO rhnlib.spec Makefile.rhnlib_build

@@ -151,7 +151,7 @@ public class IssFactory extends HibernateFactory {
     public static void unmapLocalOrg(Org inOrg) {
         HibernateFactory.getSession().
             getNamedQuery("IssMasterOrg.unmapLocalOrg").
-            setEntity("inOrg", inOrg).
+            setParameter("inOrg", inOrg).
             executeUpdate();
     }
 

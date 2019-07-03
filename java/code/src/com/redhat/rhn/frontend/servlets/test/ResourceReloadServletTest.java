@@ -59,7 +59,7 @@ public class ResourceReloadServletTest extends MockObjectTestCase {
         MockServletOutputStream ms = (MockServletOutputStream) output;
         assertEquals("Reloaded resource files: [true]", ms.getContents());
         Config.get().setBoolean("java.development_environment",
-                new Boolean(orig).toString());
+                Boolean.valueOf(orig).toString());
     }
 
     public void tearDown() {

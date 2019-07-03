@@ -1,3 +1,35 @@
+- add channel family definitions for SLES12 SP3 LTSS (bsc#1139693)
+- add OPENSUSE to allowed channel_families to make
+  openSUSE Leap product visible in the product list (bsc#1138364)
+
+-------------------------------------------------------------------
+Wed May 15 15:36:15 CEST 2019 - jgonzalez@suse.com
+
+- version 4.0.9-1
+- SPEC cleanup
+- add SLES11 SP4 LTSS channels for SLES for SAP (bsc#1133629)
+
+-------------------------------------------------------------------
+Mon Apr 22 12:26:26 CEST 2019 - jgonzalez@suse.com
+
+- version 4.0.8-1
+- add SLES11 SP4 LTSS channels for ppc64 (bsc#1132103)
+- allow access to susemanager tools channels without res subscription (bsc#1127542)
+
+-------------------------------------------------------------------
+Mon Mar 25 17:05:09 CET 2019 - jgonzalez@suse.com
+
+- version 4.0.7-1
+- add Ubuntu product definitions
+
+-------------------------------------------------------------------
+Fri Mar 08 16:29:50 CET 2019 - jgonzalez@suse.com
+
+- version 4.0.6-1
+- add minimal channel data to setup SUSE Manager Proxy 4.0
+- adapt to SCC changes
+- add CaaSP 4 Toolchain
+
 -------------------------------------------------------------------
 Wed Feb 27 13:17:57 CET 2019 - jgonzalez@suse.com
 

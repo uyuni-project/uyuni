@@ -50,18 +50,18 @@ public class InactiveSystemsRenderer extends BaseFragmentRenderer {
                 SystemOverview so = i.next();
                 StringBuilder buffer = new StringBuilder();
                 Long lastCheckin = so.getLastCheckinDaysAgo();
-                if (lastCheckin.compareTo(new Long(1)) < 0) {
+                if (lastCheckin.compareTo(1L) < 0) {
                     buffer.append(lastCheckin * 24);
                     buffer.append(' ');
 
                     buffer.append(ls.getMessage("filter-form.jspf.hours"));
                 }
-                else if (lastCheckin.compareTo(new Long(7)) < 0) {
+                else if (lastCheckin.compareTo(7L) < 0) {
                     buffer.append(so.getLastCheckinDaysAgo().longValue());
                     buffer.append(' ');
                     buffer.append(ls.getMessage("filter-form.jspf.days"));
                 }
-                else if (lastCheckin.compareTo(new Long(7)) >= 0) {
+                else if (lastCheckin.compareTo(7L) >= 0) {
                     buffer.append(lastCheckin.longValue() / 7);
                     buffer.append(' ');
                     buffer.append(ls.getMessage("filter-form.jspf.weeks"));

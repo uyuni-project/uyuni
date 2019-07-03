@@ -65,6 +65,7 @@ module.exports = (env, argv) => {
         },
         {
           test: /\.css$/,
+          exclude: /node_modules/,
           use: [
             {loader: 'style-loader'},
             {
@@ -74,6 +75,11 @@ module.exports = (env, argv) => {
               }
             }
           ]
+        },
+        {
+          test: /\.css$/,
+          include: /node_modules/,
+          use: [{loader: 'style-loader'}, {loader: 'css-loader'}]
         }
       ]
     },
@@ -82,6 +88,7 @@ module.exports = (env, argv) => {
         components: path.resolve(__dirname, '../components/'),
         core: path.resolve(__dirname, '../core/'),
         utils: path.resolve(__dirname, '../utils/'),
+        "jquery": path.resolve(__dirname, './inject.global.jquery.js'),
       }
     },
     plugins: pluginsInUse,
@@ -97,13 +104,6 @@ module.exports = (env, argv) => {
         target: (argv && argv.server) || "https://suma-refhead-srv.mgr.suse.de",
         ws: true,
         secure: false,
-        // logLevel: "debug",
-        bypass: function(req, res, proxyOptions) {
-          //We need this little trick to serve the local vendors.bundles.js, otherwise it would have been proxied as it isn't indexed by this webpack configuration
-          if (req.url.indexOf('/vendors/vendors.bundle.js') !== -1) {
-            return '/vendors/vendors.bundle.js';
-          }
-        }
       }]
     },
   }]

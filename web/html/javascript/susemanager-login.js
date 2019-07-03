@@ -3,7 +3,7 @@ $(document).on("ready", function() {
   const footer = $('footer');
   footer.remove();
   $('body').append(footer);
-
+  $("#scroll-top").remove();
   $("aside").remove();
   $('.navbar-toggle').remove();
   formFocus('loginForm', 'username');

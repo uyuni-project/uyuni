@@ -62,6 +62,15 @@ public class InstalledProduct extends BaseDomainHelper {
     }
 
     /**
+     * Instantiates a new installed product from a {@link SUSEProduct}.
+     *
+     * @param product SUSE product
+     */
+    public InstalledProduct(SUSEProduct product) {
+        this(product.getName(), product.getVersion(), product.getArch(), product.getRelease(), product.isBase());
+    }
+
+    /**
      * @return the id
      */
     public Long getId() {

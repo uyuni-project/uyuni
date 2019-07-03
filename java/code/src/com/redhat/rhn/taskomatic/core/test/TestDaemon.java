@@ -14,19 +14,19 @@
  */
 package com.redhat.rhn.taskomatic.core.test;
 
-import com.redhat.rhn.taskomatic.core.BaseDaemon;
+import com.redhat.rhn.taskomatic.core.TaskomaticDaemon;
 
 import org.apache.commons.cli.CommandLine;
 
-public class TestDaemon extends BaseDaemon {
+public class TestDaemon extends TaskomaticDaemon {
 
     protected int onShutdown(boolean breakFromUser) {
-        return BaseDaemon.SUCCESS;
+        return TaskomaticDaemon.SUCCESS;
     }
 
     protected int onStartup(CommandLine commandLine) {
         new Thread(new DaemonLogic()).start();
-        return BaseDaemon.SUCCESS;
+        return TaskomaticDaemon.SUCCESS;
     }
 
     public static void main(String[] argv) {

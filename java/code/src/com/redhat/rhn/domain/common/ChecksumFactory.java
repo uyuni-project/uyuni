@@ -75,7 +75,7 @@ public class ChecksumFactory extends HibernateFactory {
         inParams.put("checksum_in", hash);
         inParams.put("checksum_type_in", hashType);
         //Outparam
-        outParams.put("checksumId", new Integer(Types.NUMERIC));
+        outParams.put("checksumId", Types.NUMERIC);
         Map result = m.execute(inParams, outParams);
         Long checksumId = (Long) result.get("checksumId");
         if (checksumId == null) {

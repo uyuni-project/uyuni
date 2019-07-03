@@ -1,4 +1,4 @@
-# Copyright (c) 2016 SUSE LLC
+# Copyright (c) 2016-2019 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 Feature: Register a traditional system to be managed via SSH push
@@ -6,12 +6,14 @@ Feature: Register a traditional system to be managed via SSH push
   Scenario: Delete the traditional client for ssh-reverse bootrap
     Given I am on the Systems overview page of this "sle-client"
     When I follow "Delete System"
-    And I should see a "Confirm System Profile Deletion" text
-    And I click on "Delete Profile"
+    Then I should see a "Confirm System Profile Deletion" text
+    When I click on "Delete Profile"
+    And I wait until I see "has been deleted" text
+    Then "sle-client" should not be registered
 
   Scenario: Create an activation key for SSH push
     Given I am on the Systems page
-    When I follow "Activation Keys" in the left menu
+    When I follow the left menu "Systems > Activation Keys"
     And I follow "Create Key"
     And I enter "SSH push key" as "description"
     And I enter "ssh-push" as "key"
@@ -21,7 +23,7 @@ Feature: Register a traditional system to be managed via SSH push
 
   Scenario: Create an activation key for SSH push via tunnel
     Given I am on the Systems page
-    When I follow "Activation Keys" in the left menu
+    When I follow the left menu "Systems > Activation Keys"
     And I follow "Create Key"
     And I enter "SSH push via tunnel key" as "description"
     And I enter "ssh-push-tunnel" as "key"
@@ -45,12 +47,14 @@ Feature: Register a traditional system to be managed via SSH push
   Scenario: Cleanup: delete the traditional SSH push client
     Given I am on the Systems overview page of this "sle-client"
     When I follow "Delete System"
-    And I should see a "Confirm System Profile Deletion" text
-    And I click on "Delete Profile"
+    Then I should see a "Confirm System Profile Deletion" text
+    When I click on "Delete Profile"
+    And I wait until I see "has been deleted" text
+    Then "sle-client" should not be registered
 
   Scenario: Cleanup: delete the activation key for SSH push
     Given I am on the Systems page
-    And I follow "Activation Keys" in the left menu
+    When I follow the left menu "Systems > Activation Keys"
     And I follow "SSH push key" in the content area
     And I follow "Delete Key"
     And I click on "Delete Activation Key"
@@ -58,7 +62,7 @@ Feature: Register a traditional system to be managed via SSH push
 
   Scenario: Cleanup: delete the activation key for SSH push via tunnel
     Given I am on the Systems page
-    And I follow "Activation Keys" in the left menu
+    When I follow the left menu "Systems > Activation Keys"
     And I follow "SSH push via tunnel key" in the content area
     And I follow "Delete Key"
     And I click on "Delete Activation Key"

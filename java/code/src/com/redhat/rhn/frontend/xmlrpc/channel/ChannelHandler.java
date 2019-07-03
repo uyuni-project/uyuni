@@ -171,7 +171,7 @@ public class ChannelHandler extends BaseHandler {
      */
     public Object[] listPopularChannels(User loggedInUser, Integer popularityCount) {
         DataResult<ChannelTreeNode> dr = ChannelManager.popularChannelTree(loggedInUser,
-                new Long(popularityCount), null);
+                Long.valueOf(popularityCount), null);
         dr.elaborate();
         return dr.toArray();
     }

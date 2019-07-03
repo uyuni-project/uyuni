@@ -160,7 +160,7 @@ public class RepoDetailsAction extends RhnAction {
         }
         if (isCreateMode(request)) {
             // default for has signed metadata should be true
-            form.set(METADATA_SIGNED, new Boolean(true));
+            form.set(METADATA_SIGNED, Boolean.valueOf(true));
         }
         setup(request, form, isCreateMode(request));
 
@@ -247,7 +247,7 @@ public class RepoDetailsAction extends RhnAction {
                 currentFlag = flag;
             }
         }
-        form.set(METADATA_SIGNED, new Boolean(repo.getMetadataSigned()));
+        form.set(METADATA_SIGNED, Boolean.valueOf(repo.getMetadataSigned()));
 
         // finally add the last one
         filterGroups.add(filterGroup);

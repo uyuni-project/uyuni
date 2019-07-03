@@ -20,6 +20,7 @@ import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.channel.SubscribeChannelsAction;
+import com.redhat.rhn.domain.action.rhnpackage.PackageAction;
 import com.redhat.rhn.domain.action.salt.ApplyStatesAction;
 import com.redhat.rhn.domain.action.salt.build.ImageBuildAction;
 import com.redhat.rhn.domain.action.salt.inspect.ImageInspectAction;
@@ -601,8 +602,8 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         testHardwareProfileUpdate("hardware.profileupdate.x86.json", (server) -> {
             assertNotNull(server);
             assertNotNull(server.getCpu());
-            assertEquals(new Long(1), server.getCpu().getNrsocket());
-            assertEquals(new Long(1), server.getCpu().getNrCPU());
+            assertEquals(Long.valueOf(1), server.getCpu().getNrsocket());
+            assertEquals(Long.valueOf(1), server.getCpu().getNrCPU());
             assertEquals("Intel Xeon E312xx (Sandy Bridge)", server.getCpu().getModel());
             assertEquals("3492.164", server.getCpu().getMHz());
             assertEquals("GenuineIntel", server.getCpu().getVendor());
@@ -913,7 +914,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
             assertNotNull(server.getCpu());
 
             assertNull(server.getCpu().getNrsocket());
-            assertEquals(new Long(0), server.getCpu().getNrCPU());
+            assertEquals(Long.valueOf(0), server.getCpu().getNrCPU());
             assertEquals("s390x", server.getCpu().getModel());
             assertEquals("0", server.getCpu().getMHz());
             assertEquals("IBM/S390", server.getCpu().getVendor());
@@ -929,15 +930,15 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
             assertNotNull(server.getVirtualInstance().getHostSystem());
             assertEquals("z/OS", server.getVirtualInstance().getHostSystem().getOs());
             assertEquals("IBM Mainframe 2827 0000000000069A27", server.getVirtualInstance().getHostSystem().getName());
-            assertEquals(new Long(45), server.getVirtualInstance().getHostSystem().getCpu().getNrCPU());
-            assertEquals(new Long(45), server.getVirtualInstance().getHostSystem().getCpu().getNrsocket());
+            assertEquals(Long.valueOf(45), server.getVirtualInstance().getHostSystem().getCpu().getNrCPU());
+            assertEquals(Long.valueOf(45), server.getVirtualInstance().getHostSystem().getCpu().getNrsocket());
 
             assertEquals(VirtualInstanceFactory.getInstance().getFullyVirtType(),
                     server.getVirtualInstance().getType());
             assertNotNull(server.getVirtualInstance().getUuid());
             assertEquals(VirtualInstanceFactory.getInstance().getUnknownState(),
                     server.getVirtualInstance().getState());
-            assertEquals(new Long(1),
+            assertEquals(Long.valueOf(1),
                     server.getVirtualInstance().getConfirmed());
             assertNull(server.getDmi());
 
@@ -1444,6 +1445,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
                 Map<String, Map<String, Map<String, Object>>> bootImages = (Map<String, Map<String, Map<String, Object>>>) map.get("boot_images");
                 assertEquals("tftp://tftp/boot/POS_Image_JeOS6-6.0.0/initrd-netboot-suse-SLES12.x86_64-2.1.1.gz", bootImages.get("POS_Image_JeOS6-6.0.0").get("initrd").get("url"));
                 Map<String, Map<String, Map<String, Object>>> images = (Map<String, Map<String, Map<String, Object>>>) map.get("images");
+                assertEquals("ftp://ftp/image/POS_Image_JeOS6.x86_64-6.0.0-build24/POS_Image_JeOS6.x86_64-6.0.0", images.get("POS_Image_JeOS6").get("6.0.0").get("url"));
                 assertEquals(1490026496, images.get("POS_Image_JeOS6").get("6.0.0").get("size"));
                 assertEquals("a64dbc025c748bde968b888db6b7b9e3", images.get("POS_Image_JeOS6").get("6.0.0").get("hash"));
             } catch (FileNotFoundException e) {
@@ -1606,7 +1608,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
 
     public void testSubscribeChannelsActionNullTokens() throws Exception {
         TaskomaticApi taskomaticMock = mock(TaskomaticApi.class);
-        ActionManager.setTaskomaticApi(taskomaticMock);
+        ActionChainManager.setTaskomaticApi(taskomaticMock);
         context().checking(new Expectations() { {
             allowing(taskomaticMock).scheduleSubscribeChannels(with(any(User.class)),
                     with(any(SubscribeChannelsAction.class)));
@@ -1726,7 +1728,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
                 earliestAction);
 
         ScriptActionDetails sad = ActionFactory.createScriptActionDetails(
-                "root", "root", new Long(10), "#!/bin/csh\necho hello");
+                "root", "root", 10L, "#!/bin/csh\necho hello");
         ScriptRunAction runScript = ActionManager.scheduleScriptRun(
                 user, Arrays.asList(minion.getId()), "Run script test", sad, earliestAction);
 
@@ -1775,4 +1777,94 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
                 new String(scriptResult.getOutput()));
     }
 
+    public void testActionChainPackageRefreshNeeded() throws Exception {
+        TaskomaticApi taskomaticMock = mock(TaskomaticApi.class);
+        ActionManager.setTaskomaticApi(taskomaticMock);
+        context().checking(new Expectations() {
+            {
+                allowing(taskomaticMock).scheduleActionExecution(with(any(PackageAction.class)));
+            }
+        });
+
+        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
+        SystemManager.giveCapability(minion.getId(), SystemManager.CAP_SCRIPT_RUN, 1L);
+
+        ApplyStatesAction applyHighstate = ActionManager.scheduleApplyStates(user, Arrays.asList(minion.getId()),
+                new ArrayList<>(), new Date());
+
+        ServerAction saHighstate = ActionFactoryTest.createServerAction(minion, applyHighstate);
+        applyHighstate.addServerAction(saHighstate);
+        HibernateFactory.getSession().flush();
+        HibernateFactory.getSession().clear();
+        Map<String, String> placeholders = new HashMap<>();
+        placeholders.put("${minion-id}", minion.getMinionId());
+        placeholders.put("${action1-id}", applyHighstate.getId() + "");
+        
+        Optional<JobReturnEvent> event = JobReturnEvent.parse(getJobReturnEvent("action.chain.refresh.needed.json", applyHighstate.getId(),
+                        placeholders));
+        JobReturnEventMessage message = new JobReturnEventMessage(event.get());
+
+        // Process the event message
+        JobReturnEventMessageAction messageAction = new JobReturnEventMessageAction();
+        messageAction.execute(message);
+        List<Action> serversActions = ActionFactory.listActionsForServer(user, minion);
+        //Verify that there are 2 actions scheduled, one apply state that we scheduled above and
+        //2nd was because full package refresh was needed.
+        assertEquals("2 actions have been scheduled for server 1", 2, serversActions.size());
+    }
+
+    public void testActionChainPackageRefreshNotNeeded() throws Exception {
+        TaskomaticApi taskomaticMock = mock(TaskomaticApi.class);
+        ActionManager.setTaskomaticApi(taskomaticMock);
+        context().checking(new Expectations() {
+            {
+                allowing(taskomaticMock).scheduleActionExecution(with(any(PackageAction.class)));
+            }
+        });
+
+        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
+        SystemManager.giveCapability(minion.getId(), SystemManager.CAP_SCRIPT_RUN, 1L);
+
+        ApplyStatesAction applyHighstate = ActionManager.scheduleApplyStates(user, Arrays.asList(minion.getId()),
+                new ArrayList<>(), new Date());
+
+        ServerAction saHighstate = ActionFactoryTest.createServerAction(minion, applyHighstate);
+        applyHighstate.addServerAction(saHighstate);
+        HibernateFactory.getSession().flush();
+        HibernateFactory.getSession().clear();
+        Map<String, String> placeholders = new HashMap<>();
+        placeholders.put("${minion-id}", minion.getMinionId());
+        placeholders.put("${action1-id}", applyHighstate.getId() + "");
+
+        Optional<JobReturnEvent> event = JobReturnEvent.parse(getJobReturnEvent("action.chain.refresh.not.needed.json", applyHighstate.getId(),
+                placeholders));
+        JobReturnEventMessage message = new JobReturnEventMessage(event.get());
+
+        // Process the event message
+        JobReturnEventMessageAction messageAction = new JobReturnEventMessageAction();
+        messageAction.execute(message);
+        List<Action> serversActions = ActionFactory.listActionsForServer(user, minion);
+        //Verify that there is only one action scheduled, the apply state one that we scheduled above
+        assertEquals("2 actions have been scheduled for server 1", 1, serversActions.size());
+    }
+
+    public void testMinionStartupResponse() throws Exception {
+        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
+        String runningKernel = minion.getRunningKernel();
+        Long lastBoot = minion.getLastBoot();
+        String name = minion.getName();
+        Map<String, String> placeholders = new HashMap<>();
+        placeholders.put("${minion-id}", minion.getMinionId());
+        Optional<JobReturnEvent> event = JobReturnEvent.parse(
+                getJobReturnEvent("minion.startup.applied.state.response.json", 0,
+                        placeholders));
+        JobReturnEventMessage message = new JobReturnEventMessage(event.get());
+
+        // Process the event message
+        JobReturnEventMessageAction messageAction = new JobReturnEventMessageAction();
+        messageAction.execute(message);
+        assertEquals(name, minion.getName());
+        assertNotSame(runningKernel, minion.getRunningKernel());
+        assertNotSame(lastBoot, minion.getLastBoot());
+    }
 }

@@ -45,15 +45,23 @@
       </a>
     </li>
     <li>
-      <a href="/rhn/Logout.do" title="<bean:message key="header.jsp.signout" />"
+    <c:choose>
+      <c:when test="${rhn:getConfig('java.sso')}">
+        <a href="/rhn/manager/sso/logout" title="<bean:message key="header.jsp.signout" />"
+           alt="<bean:message key="header.jsp.signout" />">
+      </c:when>
+      <c:otherwise>
+        <a href="/rhn/Logout.do" title="<bean:message key="header.jsp.signout" />"
           alt="<bean:message key="header.jsp.signout" />">
-        <rhn:icon type="header-signout" />
+      </c:otherwise>
+    </c:choose>
+      <rhn:icon type="header-signout" />
       </a>
     </li>
   </ul>
   <ul class="nav navbar-nav navbar-primary">
     <li id="notifications">
-      <script src='/javascript/manager/notifications/notifications.bundle.js'></script>
+      <script src='/javascript/manager/notifications/notifications.bundle.js?cb=${rhn:getConfig('web.version')}'></script>
     </li>
     <c:if test="${requestScope.legends != null}">
       <li class="legend">

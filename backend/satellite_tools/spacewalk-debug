@@ -117,6 +117,9 @@ mkdir -p $DIR/database/trc
 mkdir -p $DIR/cobbler-lib
 mkdir -p $DIR/tasko
 mkdir -p $DIR/salt-states
+if [ -f /usr/bin/journalctl ]; then
+  mkdir -p $DIR/systemd
+fi
 
 echo "    * copying configuration information"
 if [ -d /etc/httpd ]; then
@@ -169,6 +172,10 @@ if [ -d $MATCHER_DATA_DIR ]; then
 fi
 
 echo "    * copying logs"
+if [ -f /usr/bin/journalctl ]; then
+  /usr/bin/journalctl -m > $DIR/systemd/journalctl.log
+fi
+
 if [ -d /var/log/httpd ]; then
     cp -fapRd /var/log/httpd $DIR/httpd-logs
 elif [ -d /var/log/apache2 ]; then

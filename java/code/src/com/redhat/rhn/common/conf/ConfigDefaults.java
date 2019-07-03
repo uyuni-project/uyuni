@@ -205,6 +205,7 @@ public class ConfigDefaults {
      * SUSE Manager defaults
      */
     public static final String SCC_URL = "server.susemanager.scc_url";
+    public static final String PRODUCT_TREE_TAG = "java.product_tree.tag";
 
     public static final String MESSAGE_QUEUE_THREAD_POOL_SIZE = "java.message_queue_thread_pool_size";
 
@@ -221,12 +222,6 @@ public class ConfigDefaults {
      * Controls if refreshed tokens get automatically deployed or not.
      */
     public static final String TOKEN_REFRESH_AUTO_DEPLOY = "server.susemanager.token_refresh_auto_deploy";
-
-    /**
-     * Salt Minions presence ping timeouts in seconds
-     */
-    public static final String SALT_PRESENCE_PING_TIMEOUT = "java.salt_presence_ping_timeout";
-    public static final String SALT_PRESENCE_PING_GATHER_JOB_TIMEOUT = "java.salt_presence_ping_gather_job_timeout";
 
     public static final String SALT_SSH_CONNECT_TIMEOUT = "java.salt_ssh_connect_timeout";
 
@@ -284,11 +279,42 @@ public class ConfigDefaults {
     public static final String SALT_EVENT_THREAD_POOL_SIZE = "java.salt_event_thread_pool_size";
 
     /**
+     * Timeout in seconds of the presence ping performed in Salt Minions during salt batch calls
+     */
+    public static final String SALT_PRESENCE_PING_TIMEOUT = "java.salt_presence_ping_timeout";
+
+    /**
+     * Timeout in seconds for gathering the presence ping jobs performed in Salt Minions during salt batch calls
+     */
+    public static final String SALT_PRESENCE_PING_GATHER_JOB_TIMEOUT = "java.salt_presence_ping_gather_job_timeout";
+
+    /**
+     * Upper limit to the number of minions that execute a single Action concurrently. Lowering this value
+     * prevents thundering-herd effects from Action execution but can decrease overall performance as the
+     * overall level of parallelization is reduced. This is translated to the `--batch-size` Salt option.
+     */
+    public static final String SALT_BATCH_SIZE = "java.salt_batch_size";
+
+    /**
+     * Delay, in seconds, before a new batch is scheduled. After the first batch is scheduled with a size up to
+     * java.salt_batch_size, subsequent batches will contain a smaller number of minions: the exact count will be
+     * equal to the number of minions completing before java.salt_batch_delay expires.
+     * Higher values will typically result in bigger batches with a lower CPU and I/O load on the Salt Master, while
+     * smaller values will typically result in smaller batches with higher CPU and I/O load on the Salt Master.
+     */
+    public static final String SALT_BATCH_DELAY = "java.salt_batch_delay";
+
+    /**
      * Maximum number of events processed before COMMITTing to the database. Raising this to any value above 1 will
      * decrease reliability, as failures will result in the loss of more events, but can improve performance in
      * high-scale scenarios.
      */
     public static final String SALT_EVENTS_PER_COMMIT = "java.salt_events_per_commit";
+
+    /**
+     * Single Sign-On associated config option name in rhn.conf
+     */
+    public static final String SINGLE_SIGN_ON_ENABLED = "java.sso";
 
     private ConfigDefaults() {
     }
@@ -422,7 +448,7 @@ public class ConfigDefaults {
      * @return the dir which has the kickstarts
      */
     public String getKickstartConfigDir() {
-        return Config.get().getString(KICKSTART_COBBLER_DIR, "/var/lib/rhn/kickstarts/");
+        return Config.get().getString(KICKSTART_COBBLER_DIR, "/var/lib/cobbler/templates/");
     }
 
     /**
@@ -848,19 +874,11 @@ public class ConfigDefaults {
     }
 
     /**
-     * Returns salt presence ping job timeout
-     * @return salt presence ping job timeout
+     * Returns salt batch presence ping job timeout
+     * @return salt batch presence ping job timeout
      */
     public int getSaltPresencePingTimeout() {
         return Config.get().getInt(SALT_PRESENCE_PING_TIMEOUT, 4);
-    }
-
-    /**
-     * Returns true if Prometheus monitoring is enabled
-     * @return true if Prometheus monitoring is enabled
-     */
-    public boolean isPrometheusMonitoringEnabled() {
-        return Config.get().getBoolean(PROMETHEUS_MONITORING_ENABLED);
     }
 
     /**
@@ -871,6 +889,27 @@ public class ConfigDefaults {
         return Config.get().getInt(SALT_PRESENCE_PING_GATHER_JOB_TIMEOUT, 1);
     }
 
+    /**
+     * @return default batch size for salt jobs execution in batch mode
+     */
+    public int getSaltBatchSize() {
+        return Config.get().getInt(SALT_BATCH_SIZE, 200);
+    }
+
+    /**
+     * @return default batch delay for salt jobs execution in batch mode
+     */
+    public double getSaltBatchDelay() {
+        return Config.get().getFloat(SALT_BATCH_DELAY, 1);
+    }
+
+    /**
+     * Returns true if Prometheus monitoring is enabled
+     * @return true if Prometheus monitoring is enabled
+     */
+    public boolean isPrometheusMonitoringEnabled() {
+        return Config.get().getBoolean(PROMETHEUS_MONITORING_ENABLED);
+    }
 
     /**
      * Returns the duration, in hours, of the time window for Salt minions to
@@ -939,4 +978,13 @@ public class ConfigDefaults {
     public List<String> getNotificationsTypeDisabled() {
         return Config.get().getList(NOTIFICATIONS_TYPE_DISABLED);
     }
+
+    /**
+     * Returns if the Single Sign-On option is enabled
+     * @return true if Single Sign-On option is enabled
+     */
+    public boolean isSingleSignOnEnabled() {
+        return Config.get().getBoolean(SINGLE_SIGN_ON_ENABLED);
+    }
+
 }

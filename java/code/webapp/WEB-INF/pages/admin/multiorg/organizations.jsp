@@ -9,7 +9,7 @@
 <rhn:toolbar base="h1" icon="header-organisation"
      creationUrl="/rhn/admin/multiorg/OrgCreate.do"
      creationType="org"
-     helpUrl="/rhn/help/reference/en-US/ref.webui.admin.org.jsp#ref.webui.admin.org">
+     helpUrl="/docs/reference/admin/admin-menu.html">
   <bean:message key="organizations.jsp.toolbar"/>
 </rhn:toolbar>
 <c:set var="pageList" value="${requestScope.pageList}" />

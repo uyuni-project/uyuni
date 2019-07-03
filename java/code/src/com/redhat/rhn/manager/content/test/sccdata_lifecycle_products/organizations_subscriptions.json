@@ -65,13 +65,13 @@
       "systems_count" : 1,
       "expires_at" : "2017-12-31T00:00:00.000Z",
       "virtual_count" : null,
-      "name" : "Mock lifecycle subscription - Provisioning - Single",
+      "name" : "Mock monitoring subscription - Single",
       "starts_at" : "2012-01-01T00:00:00.000Z",
       "product_ids" : [
-         1097
+         1201
       ]
    },
-   {
+{
       "systems" : [
          {
             "password" : "secret",
@@ -89,10 +89,10 @@
       "systems_count" : 1,
       "expires_at" : "2017-12-31T00:00:00.000Z",
       "virtual_count" : null,
-      "name" : "Mock lifecycle subscription - Provisioning - Unlimited Virtualization",
+      "name" : "Mock monitoring subscription - Unlimited Virtual",
       "starts_at" : "2012-01-01T00:00:00.000Z",
       "product_ids" : [
-         1204
+         1202
       ]
    }
 ]

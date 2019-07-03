@@ -56,7 +56,7 @@ import com.suse.utils.Opt;
 import org.apache.commons.collections.IteratorUtils;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
-import org.hibernate.Query;
+import org.hibernate.query.Query;
 import org.hibernate.Session;
 
 import java.util.ArrayList;
@@ -134,7 +134,7 @@ public class ErrataFactory extends HibernateFactory {
         Long eid = null;
         List retval = new LinkedList();
         try {
-            eid = new Long(Long.parseLong(identifier));
+            eid = Long.parseLong(identifier);
         }
         catch (NumberFormatException e) {
             eid = null;
@@ -994,6 +994,20 @@ public class ErrataFactory extends HibernateFactory {
         singleton.removeObject(deleteme);
     }
 
+    /**
+     * Lists errata assigned to a particular channel.
+     *
+     * @param org the Org in question
+     * @param channel the channel you want to get the errata for
+     * @return A list of Errata objects
+     */
+    public static List<PublishedErrata> listByChannel(Org org, Channel channel) {
+        return HibernateFactory.getSession().
+                getNamedQuery("PublishedErrata.listByChannel")
+                .setParameter("org", org)
+                .setParameter("channel", channel)
+                .list();
+    }
 
     /**
      * Lists errata assigned to a particular channel,

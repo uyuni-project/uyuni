@@ -1,4 +1,4 @@
-# Copyright (c) 2016-2018 SUSE LLC
+# Copyright (c) 2016-2019 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 Feature: Be able to bootstrap a Salt minion via the GUI
@@ -101,9 +101,8 @@ Feature: Be able to bootstrap a Salt minion via the GUI
 
   Scenario: Run a remote command on normal SLES minion
     Given I am authorized as "testing" with password "testing"
-    When I follow "Salt"
-    And I follow "Remote Commands"
-    Then I should see a "Remote Commands" text
+    When I follow the left menu "Salt > Remote Commands"
+    Then I should see a "Remote Commands" text in the content area
     When I enter command "file /tmp"
     And I click on preview
     Then I should see "sle-minion" hostname
@@ -165,3 +164,7 @@ Feature: Be able to bootstrap a Salt minion via the GUI
     Given I am on the Systems overview page of this "sle-minion"
     Then I should see a "[Container Build Host]" text
     Then I should see a "[OS Image Build Host]" text
+
+  Scenario: Check events history for failures on SLES minion
+    Given I am on the Systems overview page of this "sle-minion"
+    Then I check for failed events on history event page

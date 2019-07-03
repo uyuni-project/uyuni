@@ -1,7 +1,7 @@
 #
 # spec file for package mgr-push
 #
-# Copyright (c) 2018 SUSE LINUX GmbH, Nuernberg, Germany.
+# Copyright (c) 2019 SUSE LINUX GmbH, Nuernberg, Germany.
 # Copyright (c) 2008-2018 Red Hat, Inc.
 #
 # All modifications and additions to the file contributed by third parties
@@ -13,13 +13,13 @@
 # license that conforms to the Open Source Definition (Version 1.9)
 # published by the Open Source Initiative.
 
-# Please submit bugfixes or comments via http://bugs.opensuse.org/
+# Please submit bugfixes or comments via https://bugs.opensuse.org/
 #
 
 
 # Old name and version+1 before renaming to mgr-push
 %define oldname rhnpush
-%define oldversion 5.5.113.3
+%define oldversion 5.5.114
 %{!?pylint_check: %global pylint_check 0}
 
 %if 0%{?fedora} || 0%{?suse_version} > 1320 || 0%{?rhel} >= 8
@@ -35,8 +35,8 @@ Name:           mgr-push
 Summary:        Package uploader for the Spacewalk
 License:        GPL-2.0-only
 Group:          Applications/System
-URL:            https://github.com/uyuni-project/uyuni
-Version:        4.0.3
+Url:            https://github.com/uyuni-project/uyuni
+Version:        4.0.6
 Provides:       %{oldname} = %{oldversion}
 Obsoletes:      %{oldname} < %{oldversion}
 Release:        1%{?dist}

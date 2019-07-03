@@ -57,8 +57,8 @@ public class PackageActionRemovalFailureTest extends RhnBaseTestCase {
         failure.setPackageName(name);
         failure.setEvr(evr);
         failure.setCapability(cap);
-        failure.setFlags(new Long(1));
-        failure.setSense(new Long(1));
+        failure.setFlags(1L);
+        failure.setSense(1L);
 
         TestUtils.saveAndFlush(failure);
 
@@ -77,7 +77,7 @@ public class PackageActionRemovalFailureTest extends RhnBaseTestCase {
         Session session = HibernateFactory.getSession();
         String queryname = "PackageActionRemovalFailure.findByKey";
         return (PackageActionRemovalFailure) session.getNamedQuery(queryname)
-                .setEntity("server", s).setEntity("action", a).setEntity(
+                .setParameter("server", s).setParameter("action", a).setParameter(
                         "packageName", n).uniqueResult();
     }
 }

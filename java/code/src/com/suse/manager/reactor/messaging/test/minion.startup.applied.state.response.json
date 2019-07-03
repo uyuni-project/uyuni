@@ -1,0 +1,101 @@
+{
+  "tag":  "salt/job/20190218111637161612/ret/${minion-id}",
+  "data": {
+    "_stamp": "2019-02-18T10:16:39.078736",
+    "cmd": "_return",
+    "fun": "state.apply",
+    "fun_args": [
+      {
+        "mods": [
+          "util.systeminfo"
+        ],
+        "queue": true
+      }
+    ],
+    "id": "abid-minssh-sles12sp3.tf.local",
+    "jid": "20190218111637161612",
+    "metadata": {
+      "suma-minion-startup": true
+    },
+    "out": "highstate",
+    "retcode": 0,
+    "return": {
+      "module_|-grains_update_|-grains.item_|-run": {
+        "comment": "Module function grains.item executed",
+        "name": "grains.item",
+        "start_time": "15:10:28.919644",
+        "result": true,
+        "duration": 2.556,
+        "__run_num__": 4,
+        "__sls__": "util.systeminfo",
+        "changes": {
+          "ret": {
+            "kernelrelease": "4.4.73-5-default"
+          }
+        },
+        "__id__": "grains_update"
+      },
+      "module_|-status_uptime_|-status.uptime_|-run": {
+        "__id__": "status_uptime",
+        "__run_num__": 3,
+        "__sls__": "util.systeminfo",
+        "changes": {
+          "ret": {
+            "days": 0,
+            "seconds": 27,
+            "since_iso": "2019-02-18T10:16:12.367610",
+            "since_t": 1550484972,
+            "time": "0:0",
+            "users": 1
+          }
+        },
+        "comment": "Module function status.uptime executed",
+        "duration": 34.087,
+        "name": "status.uptime",
+        "result": true,
+        "start_time": "11:16:39.361079"
+      },
+      "module_|-sync_beacons_|-saltutil.sync_beacons_|-run": {
+        "__id__": "sync_beacons",
+        "__run_num__": 2,
+        "__sls__": "util.syncbeacons",
+        "changes": {
+          "ret": []
+        },
+        "comment": "Module function saltutil.sync_beacons executed",
+        "duration": 66.358,
+        "name": "saltutil.sync_beacons",
+        "result": true,
+        "start_time": "11:16:39.294494"
+      },
+      "module_|-sync_grains_|-saltutil.sync_grains_|-run": {
+        "__id__": "sync_grains",
+        "__run_num__": 1,
+        "__sls__": "util.syncgrains",
+        "changes": {
+          "ret": []
+        },
+        "comment": "Module function saltutil.sync_grains executed",
+        "duration": 986.284,
+        "name": "saltutil.sync_grains",
+        "result": true,
+        "start_time": "11:16:38.302558"
+      },
+      "module_|-sync_modules_|-saltutil.sync_modules_|-run": {
+        "__id__": "sync_modules",
+        "__run_num__": 0,
+        "__sls__": "util.syncmodules",
+        "changes": {
+          "ret": []
+        },
+        "comment": "Module function saltutil.sync_modules executed",
+        "duration": 246.972,
+        "name": "saltutil.sync_modules",
+        "result": true,
+        "start_time": "11:16:38.055300"
+      }
+    },
+    "success": true
+  }
+}
+

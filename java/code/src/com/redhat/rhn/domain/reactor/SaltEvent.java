@@ -25,17 +25,20 @@ public class SaltEvent {
     private long id;
     private String minionId;
     private String data;
+    private int queue;
 
     /**
      * Standard constructor
      * @param idIn the id
      * @param minionIdIn the minionId id
      * @param dataIn the data
+     * @param queueIn the number of the queue handling the event
      */
-    public SaltEvent(long idIn, String minionIdIn, String dataIn) {
+    public SaltEvent(long idIn, String minionIdIn, String dataIn, int queueIn) {
         this.id = idIn;
         this.minionId = minionIdIn;
         this.data = dataIn;
+        this.queue = queueIn;
     }
 
     /**
@@ -84,6 +87,21 @@ public class SaltEvent {
      */
     public void setData(String dataIn) {
         data = dataIn;
+    }
+
+    /**
+     * @return Returns the queue.
+     */
+    public int getQueue() {
+        return queue;
+    }
+
+
+    /**
+     * @param queueIn The queue to set.
+     */
+    public void setQueue(int queueIn) {
+        queue = queueIn;
     }
 
     /**

@@ -1,7 +1,7 @@
 #
 # spec file for package susemanager
 #
-# Copyright (c) 2018 SUSE LINUX GmbH, Nuernberg, Germany.
+# Copyright (c) 2019 SUSE LINUX GmbH, Nuernberg, Germany.
 #
 # All modifications and additions to the file contributed by third parties
 # remain the property of their copyright owners, unless otherwise agreed
@@ -12,7 +12,7 @@
 # license that conforms to the Open Source Definition (Version 1.9)
 # published by the Open Source Initiative.
 
-# Please submit bugfixes or comments via http://bugs.opensuse.org/
+# Please submit bugfixes or comments via https://bugs.opensuse.org/
 #
 
 %if 0%{?suse_version} > 1320
@@ -22,12 +22,12 @@
 %define pythonX %{?build_py3:python3}%{!?build_py3:python2}
 
 Name:           susemanager
-Version:        4.0.9
+Version:        4.0.14
 Release:        1%{?dist}
 Summary:        SUSE Manager specific scripts
 License:        GPL-2.0-only
 Group:          Applications/System
-URL:            https://github.com/uyuni-project/uyuni
+Url:            https://github.com/uyuni-project/uyuni
 Source0:        %{name}-%{version}.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 #BuildArch:      noarch - not noarch because of ifarch usage!!!!
@@ -80,6 +80,7 @@ Requires:       postfix
 Requires:       yast2-users
 # mgr-setup want to call mksubvolume
 Requires:       snapper
+Requires:       reprepro
 %define python_sitelib %(%{pythonX} -c "from distutils.sysconfig import get_python_lib; print(get_python_lib())")
 %global pythonsmroot %{python_sitelib}/spacewalk
 
@@ -150,6 +151,9 @@ install -d -m 755 %{buildroot}/srv/www/os-images/
 # empty repo for rhel base channels
 mkdir -p %{buildroot}/srv/www/htdocs/pub/repositories/
 cp -r pub/empty %{buildroot}/srv/www/htdocs/pub/repositories/
+
+# empty repo for Ubuntu base fake channel
+cp -r pub/empty-deb %{buildroot}/srv/www/htdocs/pub/repositories/
 
 # YaST configuration
 mkdir -p %{buildroot}%{_datadir}/YaST2/clients
@@ -226,6 +230,10 @@ if [ $POST_ARG -eq 2 ] ; then
     fi
 fi
 # else new install and the systems dir should be created by spacewalk-setup
+# Fix permissions for existing swapfiles (bsc#1131954, CVE-2019-3684)
+if [[ -f /SWAPFILE && $(stat -c "%a" "/SWAPFILE") != "600" ]]; then
+    chmod 600 /SWAPFILE
+fi
 
 %posttrans
 # make sure our database will use correct encoding
@@ -278,6 +286,7 @@ fi
 %dir /srv/www/htdocs/pub/repositories
 %dir /srv/www/htdocs/pub/repositories/empty
 %dir /srv/www/htdocs/pub/repositories/empty/repodata
+%dir /srv/www/htdocs/pub/repositories/empty-deb
 %attr(0755,root,www) %dir %{_prefix}/share/rhn/config-defaults
 %config(noreplace) %{_sysconfdir}/logrotate.d/susemanager-tools
 %{_prefix}/share/rhn/config-defaults/rhn_*.conf
@@ -297,5 +306,6 @@ fi
 %{_datadir}/susemanager/mgr_bootstrap_data.py*
 %{_mandir}/man8/mgr-sync.8*
 /srv/www/htdocs/pub/repositories/empty/repodata/*.xml*
-
+/srv/www/htdocs/pub/repositories/empty-deb/Packages
+/srv/www/htdocs/pub/repositories/empty-deb/Release
 %changelog

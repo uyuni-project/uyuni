@@ -1,7 +1,7 @@
 #
 # spec file for package spacewalk-admin
 #
-# Copyright (c) 2018 SUSE LINUX GmbH, Nuernberg, Germany.
+# Copyright (c) 2019 SUSE LINUX GmbH, Nuernberg, Germany.
 # Copyright (c) 2008-2018 Red Hat, Inc.
 #
 # All modifications and additions to the file contributed by third parties
@@ -13,7 +13,7 @@
 # license that conforms to the Open Source Definition (Version 1.9)
 # published by the Open Source Initiative.
 
-# Please submit bugfixes or comments via http://bugs.opensuse.org/
+# Please submit bugfixes or comments via https://bugs.opensuse.org/
 #
 
 %if 0%{?fedora} || 0%{?suse_version} > 1320 || 0%{?rhel} >= 8
@@ -27,8 +27,8 @@ Summary:        Various utility scripts and data files for Spacewalk installatio
 License:        GPL-2.0-only
 Group:          Applications/Internet
 Name:           spacewalk-admin
-URL:            https://github.com/uyuni-project/uyuni
-Version:        4.0.4
+Url:            https://github.com/uyuni-project/uyuni
+Version:        4.0.7
 Release:        1%{?dist}
 Source0:        https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
@@ -97,6 +97,7 @@ sed -i 's|#!/usr/bin/python|#!/usr/bin/python3|' $RPM_BUILD_ROOT/usr/bin/mgr-eve
 %{_bindir}/rhn-install-ssl-cert.pl
 %{_bindir}/mgr-events-config.py
 %{_sbindir}/rhn-sat-restart-silent
+%{_sbindir}/mgr-monitoring-ctl
 %{rhnroot}/RHN-GPG-KEY
 %{_mandir}/man8/rhn-satellite.8*
 %{_mandir}/man8/rhn-config-schema.pl.8*
@@ -114,6 +115,7 @@ sed -i 's|#!/usr/bin/python|#!/usr/bin/python3|' $RPM_BUILD_ROOT/usr/bin/mgr-eve
 %{_unitdir}/spacewalk-wait-for-jabberd.service
 %{_unitdir}/spacewalk-wait-for-taskomatic.service
 %{_unitdir}/mgr-events-config.service
+%{_unitdir}/mgr-websockify.service
 %endif
 %if 0%{?suse_version}
 %attr(0750,root,www) %dir %{_sysconfdir}/rhn

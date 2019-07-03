@@ -18,9 +18,7 @@ import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.SelectMode;
 import com.redhat.rhn.domain.BaseDomainHelper;
-import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
-import com.redhat.rhn.domain.action.rhnpackage.PackageAction;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.config.ConfigChannel;
@@ -389,9 +387,7 @@ public class ServerSnapshot extends BaseDomainHelper {
         // schedule package delta, if needed
         if (packageDiffs(this.server.getId()) > 0) {
             DataResult pkgs = preparePackagesForSync();
-            PackageAction action =
-                    ActionManager.schedulePackageRunTransaction(
-                                            user, this.server, pkgs, new Date());
+            ActionManager.schedulePackageRunTransaction(user, this.server, pkgs, new Date());
             return true;
         }
         return false;
@@ -431,7 +427,7 @@ public class ServerSnapshot extends BaseDomainHelper {
             }
             List<Long> serverIds = new ArrayList<Long>();
             serverIds.add(this.server.getId());
-            Action action = ActionManager.createConfigAction(user, revLongs, serverIds,
+            ActionManager.createConfigAction(user, revLongs, serverIds,
                                   ActionFactory.TYPE_CONFIGFILES_DEPLOY, new Date());
         }
         return deployed;

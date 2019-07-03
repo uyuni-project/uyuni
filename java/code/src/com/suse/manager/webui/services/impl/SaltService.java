@@ -22,6 +22,7 @@ import com.redhat.rhn.manager.audit.scap.file.ScapFileManager;
 
 import com.suse.manager.reactor.PGEventStream;
 import com.suse.manager.reactor.SaltReactor;
+import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
 import com.suse.manager.utils.MinionServerUtils;
 import com.suse.manager.webui.controllers.utils.ContactMethodUtil;
 import com.suse.manager.webui.services.SaltActionChainGeneratorService;
@@ -30,6 +31,7 @@ import com.suse.manager.webui.services.impl.runner.MgrKiwiImageRunner;
 import com.suse.manager.webui.services.impl.runner.MgrUtilRunner;
 import com.suse.manager.webui.utils.gson.BootstrapParameters;
 import com.suse.manager.webui.utils.salt.State;
+import com.suse.manager.webui.utils.salt.custom.ScheduleMetadata;
 import com.suse.salt.netapi.AuthModule;
 import com.suse.salt.netapi.calls.LocalAsyncResult;
 import com.suse.salt.netapi.calls.LocalCall;
@@ -49,6 +51,7 @@ import com.suse.salt.netapi.calls.wheel.Key;
 import com.suse.salt.netapi.client.SaltClient;
 import com.suse.salt.netapi.client.impl.HttpAsyncClientImpl;
 import com.suse.salt.netapi.datatypes.AuthMethod;
+import com.suse.salt.netapi.datatypes.Batch;
 import com.suse.salt.netapi.datatypes.PasswordAuth;
 import com.suse.salt.netapi.datatypes.Token;
 import com.suse.salt.netapi.datatypes.target.Glob;
@@ -62,7 +65,6 @@ import com.suse.salt.netapi.results.Result;
 import com.suse.salt.netapi.results.SSHResult;
 import com.suse.utils.Opt;
 
-import com.google.gson.reflect.TypeToken;
 import org.apache.http.client.config.CookieSpecs;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.impl.nio.client.CloseableHttpAsyncClient;
@@ -90,6 +92,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.Set;
@@ -110,6 +113,8 @@ import java.util.stream.Stream;
  */
 public class SaltService {
 
+    private final Batch defaultBatch;
+
     /**
      * Singleton instance of this class
      */
@@ -127,12 +132,6 @@ public class SaltService {
     private final String SALT_USER = "admin";
     private final String SALT_PASSWORD = "";
     private final AuthModule AUTH_MODULE = AuthModule.AUTO;
-
-    // Salt presence properties
-    private final Integer SALT_PRESENCE_TIMEOUT =
-            ConfigDefaults.get().getSaltPresencePingTimeout();
-    private final Integer SALT_PRESENCE_GATHER_JOB_TIMEOUT =
-            ConfigDefaults.get().getSaltPresencePingGatherJobTimeout();
 
     // Shared salt client instance
     private final SaltClient SALT_CLIENT;
@@ -182,6 +181,11 @@ public class SaltService {
 
         SALT_CLIENT = new SaltClient(SALT_MASTER_URI, new HttpAsyncClientImpl(asyncHttpClient));
         saltSSHService = new SaltSSHService(SALT_CLIENT, SaltActionChainGeneratorService.INSTANCE);
+        defaultBatch = Batch.custom().withBatchAsAmount(ConfigDefaults.get().getSaltBatchSize())
+                        .withDelay(ConfigDefaults.get().getSaltBatchDelay())
+                        .withPresencePingTimeout(ConfigDefaults.get().getSaltPresencePingTimeout())
+                        .withPresencePingGatherJobTimeout(ConfigDefaults.get().getSaltPresencePingGatherJobTimeout())
+                        .build();
     }
 
     /**
@@ -512,10 +516,11 @@ public class SaltService {
         }
     }
 
-    private <R> Map<String, CompletionStage<Result<R>>> completableAsyncCall(
-            LocalCall<R> call, Target<?> target, EventStream events,
+    private <R> Optional<Map<String, CompletionStage<Result<R>>>> completableAsyncCall(
+            LocalCall<R> callIn, Target<?> target, EventStream events,
             CompletableFuture<GenericError> cancel) throws SaltException {
-        return adaptException(call.callAsync(SALT_CLIENT, target, PW_AUTH, events, cancel));
+        LocalCall<R> call = callIn.withMetadata(ScheduleMetadata.getDefaultMetadata().withBatchMode());
+        return adaptException(call.callAsync(SALT_CLIENT, target, PW_AUTH, events, cancel, defaultBatch));
     }
 
     /**
@@ -549,7 +554,7 @@ public class SaltService {
             try {
                 results.putAll(
                         completableAsyncCall(call, target,
-                        reactor.getEventStream(), cancel));
+                        reactor.getEventStream(), cancel).orElseGet(Collections::emptyMap));
             }
             catch (SaltException e) {
                 throw new RuntimeException(e);
@@ -633,7 +638,7 @@ public class SaltService {
             String target, CompletableFuture<GenericError> cancel) {
         try {
             return completableAsyncCall(Match.glob(target), new Glob(target),
-                    reactor.getEventStream(), cancel);
+                    reactor.getEventStream(), cancel).orElseGet(Collections::emptyMap);
         }
         catch (SaltException e) {
             throw new RuntimeException(e);
@@ -718,12 +723,12 @@ public class SaltService {
      * Note that salt-ssh systems are also called by this method.
      *
      * @param <T> the return type of the call
-     * @param call the call to execute
+     * @param callIn the call to execute
      * @param target minions targeted by the call
      * @return the result of the call
      * @throws SaltException in case of an error executing the job with Salt
      */
-    public <T> Map<String, Result<T>> callSync(LocalCall<T> call, MinionList target)
+    public <T> Map<String, Result<T>> callSync(LocalCall<T> callIn, MinionList target)
             throws SaltException {
         HashSet<String> uniqueMinionIds = new HashSet<>(target.getTarget());
         Map<Boolean, List<String>> minionPartitions =
@@ -732,56 +737,23 @@ public class SaltService {
         List<String> sshMinionIds = minionPartitions.get(true);
         List<String> regularMinionIds = minionPartitions.get(false);
 
-        // Filter out minion ids of minions that do not appear active.
-        // Only checking minion presence when LocalCall has no timeouts attribute
-        if (!call.getPayload().keySet().containsAll(
-                Arrays.asList("timeout", "gather_job_timeout"))) {
-            // To avoid blocking if any targeted minion is down, we first check which
-            // minions are actually up and running, and then exclude unreachable minions
-            // from the current synchronous call.
-            Set<String> regularActiveMinions = regularMinionIds.isEmpty() ?
-                    Collections.emptySet() :
-                    presencePing(new MinionList(regularMinionIds)).keySet();
-
-            Set<String> sshActiveMinions = sshMinionIds.isEmpty() ?
-                    Collections.emptySet() :
-                    presencePingSSH(new MinionList(sshMinionIds)).entrySet()
-                        .stream()
-                        .filter(
-                            s -> s.getValue().toXor().fold(error -> false, result -> true))
-                        .map(Map.Entry::getKey)
-                        .collect(Collectors.toSet());
-
-            Set<String> unreachableMinions = uniqueMinionIds.stream()
-                .filter(id -> !regularActiveMinions.contains(id))
-                .filter(id -> !sshActiveMinions.contains(id))
-                .sorted()
-                .collect(Collectors.toSet());
-
-            if (!unreachableMinions.isEmpty()) {
-                LOG.warn("Some of the targeted minions cannot be reached: " +
-                        unreachableMinions.toString() +
-                        ". Excluding them from the synchronous call.");
-                sshMinionIds.retainAll(sshActiveMinions);
-                regularMinionIds.retainAll(regularActiveMinions);
-            }
-        }
-
         Map<String, Result<T>> results = new HashMap<>();
 
         if (!sshMinionIds.isEmpty()) {
             results.putAll(saltSSHService.callSyncSSH(
-                    call,
+                    callIn,
                     new MinionList(sshMinionIds)));
         }
 
         if (!regularMinionIds.isEmpty()) {
+            ScheduleMetadata metadata = ScheduleMetadata.getDefaultMetadata().withBatchMode();
+            List<Map<String, Result<T>>> callResult =
+                    adaptException(callIn.withMetadata(metadata).callSync(SALT_CLIENT,
+                            new MinionList(regularMinionIds), PW_AUTH, defaultBatch));
             results.putAll(
-                adaptException(
-                    call.callSync(SALT_CLIENT,
-                            new MinionList(regularMinionIds),
-                            PW_AUTH)
-                )
+                    callResult.stream().flatMap(map -> map.entrySet().stream())
+                            .collect(Collectors.toMap(Entry<String, Result<T>>::getKey,
+                                    Entry<String, Result<T>>::getValue))
             );
         }
 
@@ -802,7 +774,8 @@ public class SaltService {
     }
 
     /**
-     * Execute a LocalCall asynchronously on the default Salt client.
+     * Execute a LocalCall asynchronously on the default Salt client,
+     * without passing any metadata on the call.
      *
      * @param <T> the return type of the call
      * @param call the call to execute
@@ -810,22 +783,42 @@ public class SaltService {
      * @return the LocalAsyncResult of the call
      * @throws SaltException in case of an error executing the job with Salt
      */
-    public <T> LocalAsyncResult<T> callAsync(LocalCall<T> call, Target<?> target)
+    public <T> Optional<LocalAsyncResult<T>> callAsync(LocalCall<T> call, Target<?> target)
             throws SaltException {
-        return adaptException(call.callAsync(SALT_CLIENT, target, PW_AUTH));
+        return callAsync(call, target, Optional.empty());
     }
 
     /**
-     * Pings a target set of minions.
+     * Execute a LocalCall asynchronously on the default Salt client.
+     *
+     * @param <T> the return type of the call
+     * @param callIn the call to execute
+     * @param target minions targeted by the call
+     * @param metadataIn the metadata to be passed in the call
+     * @return the LocalAsyncResult of the call
+     * @throws SaltException in case of an error executing the job with Salt
+     */
+    public <T> Optional<LocalAsyncResult<T>> callAsync(LocalCall<T> callIn, Target<?> target,
+            Optional<ScheduleMetadata> metadataIn) throws SaltException {
+        ScheduleMetadata metadata =
+                Opt.fold(metadataIn, () -> ScheduleMetadata.getDefaultMetadata(), Function.identity()).withBatchMode();
+        return adaptException(callIn.withMetadata(metadata).callAsync(SALT_CLIENT, target, PW_AUTH, defaultBatch));
+    }
+
+    /**
+     * Performs an test.echo on a target set of minions for checkIn purpose.
      * @param targetIn the target
-     * @return a Map from minion ids which responded to the ping to Boolean.TRUE
+     * @return the LocalAsyncResult of the test.echo call
      * @throws SaltException if we get a failure from Salt
      */
-    public Map<String, Result<Boolean>> ping(MinionList targetIn) throws SaltException {
-        return callSync(
-            Test.ping(),
-            targetIn
-        );
+    public Optional<LocalAsyncResult<String>> checkIn(MinionList targetIn) throws SaltException {
+        try {
+            LocalCall<String> call = Test.echo("checkIn");
+            return callAsync(call, targetIn);
+        }
+        catch (SaltException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**
@@ -852,43 +845,6 @@ public class SaltService {
     }
 
     /**
-     * Pings a target set of minions using a short timeout to check presence
-     * @param targetIn the target
-     * @return a Map from minion ids which responded to the ping to Boolean.TRUE
-     * @throws SaltException if we get a failure from Salt
-     */
-    public Map<String, Result<Boolean>> presencePing(MinionList targetIn)
-            throws SaltException {
-        return adaptException(new LocalCall<>("test.ping",
-                Optional.empty(), Optional.empty(), new TypeToken<Boolean>() { },
-                Optional.of(SALT_PRESENCE_TIMEOUT),
-                Optional.of(SALT_PRESENCE_GATHER_JOB_TIMEOUT))
-                .callSync(SALT_CLIENT, targetIn, PW_AUTH))
-                .entrySet().stream().filter(kv -> {
-            return kv.getValue().result().orElse(true);
-        }).collect(Collectors.toMap(k -> k.getKey(), v -> v.getValue()));
-    }
-
-    /**
-     * Pings a target set of SSH minions using a short timeout to check presence
-     * @param targetInSSH the SSH target
-     * @return a Map from minion ids which responded to the ping to Boolean.TRUE
-     * @throws SaltException if we get a failure from Salt
-     */
-    public Map<String, Result<Boolean>> presencePingSSH(MinionList targetInSSH)
-            throws SaltException {
-        return saltSSHService.callSyncSSH(
-            new LocalCall<>("test.ping",
-                Optional.empty(), Optional.empty(), new TypeToken<Boolean>() { },
-                Optional.of(SALT_PRESENCE_TIMEOUT),
-                Optional.of(SALT_PRESENCE_GATHER_JOB_TIMEOUT)), targetInSSH)
-                .entrySet().stream().filter(kv -> {
-                    return kv.getValue().result().orElse(true);
-                })
-                .collect(Collectors.toMap(k -> k.getKey(), v -> v.getValue()));
-    }
-
-    /**
      * Retrieves the uptime of the minion (in seconds).
      *
      * @param minion the minion
@@ -911,6 +867,20 @@ public class SaltService {
             LOG.error(e);
         }
         return uptime;
+    }
+
+    /**
+     * Apply util.systeminfo state on the specified minion list
+     * @param minionTarget minion list
+     */
+    public void updateSystemInfo(MinionList minionTarget) {
+        try {
+            callAsync(State.apply(Arrays.asList(ApplyStatesEventMessage.SYSTEM_INFO), Optional.empty()), minionTarget,
+                    Optional.of(ScheduleMetadata.getDefaultMetadata().withMinionStartup()));
+        }
+        catch (SaltException ex) {
+            LOG.debug("Error while executing util.systeminfo state: " + ex.getMessage());
+        }
     }
 
     /**

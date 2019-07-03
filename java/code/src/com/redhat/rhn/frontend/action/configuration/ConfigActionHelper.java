@@ -323,7 +323,7 @@ public abstract class ConfigActionHelper {
         String key = "config.channels_" + suffix;
         String message;
         if (suffix == PLURAL) {
-            message = service.getMessage(key, new Object[] {new Long(count)});
+            message = service.getMessage(key, new Object[] {count});
         }
         else {
             message = service.getMessage(key);

@@ -32,7 +32,7 @@ public class PackageArchTest extends RhnBaseTestCase {
      */
     public void testPackageArch() throws Exception {
 
-        Long testid = new Long(100);
+        Long testid = 100L;
         String query = "PackageArch.findById";
         PackageArch p1 = (PackageArch) TestUtils.lookupFromCacheById(testid, query);
         PackageArch p2 = (PackageArch) TestUtils.lookupFromCacheById(p1.getId(), query);

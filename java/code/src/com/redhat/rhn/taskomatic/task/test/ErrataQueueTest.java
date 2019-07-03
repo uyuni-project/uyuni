@@ -43,7 +43,7 @@ public class ErrataQueueTest extends BaseTestCaseWithUser {
         TaskoFactory.save(template.getBunch());
         TaskoFactory.save(template.getTask());
         TaskoFactory.save(template);
-        TaskoRun run = new TaskoRun(null, template, new Long(1));
+        TaskoRun run = new TaskoRun(null, template, 1L);
         eq.execute(null, run);
         // Just a simple test to make sure we get here without
         // exceptions.  Better than nothin'

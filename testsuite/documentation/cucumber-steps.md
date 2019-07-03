@@ -94,14 +94,15 @@ To check for the initial log in, prefer ```Then I am logged in```.
   Then I should not be authorized
 ```
 
+
 <a name="b2" />
 
 #### Navigating through pages
 
-* Go to a given page through a link
+* Go to a given page through a the left menu tree with the complete menu path
 
 ```cucumber
-  When I follow "Salt"
+  When I follow the left menu "Systems > System List > System Currency"
 ```
 
 * Go to Admin => Setup Wizard
@@ -206,6 +207,13 @@ To check for the initial log in, prefer ```Then I am logged in```.
   When I reload the page
 ```
 
+* Close current page
+
+```cucumber
+  When I close the window
+```
+
+
 <a name="b3" />
 
 #### Texts
@@ -264,6 +272,7 @@ For a test with a regular expression, there is ```I should see a text like "..."
   When I follow first "Schedule System Reboot"
   When I click on "Use in SSM" for "newgroup"
 ```
+
 
 <a name="b5" />
 
@@ -396,10 +405,14 @@ The check box can be identified by name, id or label text.
 ```cucumber
   When I install package "virgo-dummy-1.0-1.1" on this "sle-minion"
   When I remove package "orion-dummy" from this "sle-minion"
+  When I refresh packages list via spacecmd on "sle-minion"
   When I wait for "virgo-dummy-1.0" to be installed on this "sle-minion"
   When I wait for "milkyway-dummy" to be uninstalled on "sle-minion"
+  When I wait until refresh package list on "sle-minion" is finished
+  When I wait until package "virgo-dummy" is installed on "sle-minion" via spacecmd
   Then "man" should be installed on "sle-client"
   Then "milkyway-dummy" should not be installed on "sle-minion"
+  Then spacecmd should show packages "virgo-dummy-1.0 milkyway-dummy" installed on "sle-minion"
 ```
 
 * Services
@@ -533,6 +546,7 @@ The check box can be identified by name, id or label text.
 ```cucumber
   When I wait until onboarding is completed for "ceos-minion"
   When I wait until event "Package Install/Upgrade scheduled by admin" is completed
+  When I wait until all events in history are completed
 ```
 
 
@@ -604,6 +618,7 @@ The check box can be identified by name, id or label text.
   When I apply highstate on "sle-minion"
 ```
 
+
 <a name="b12" />
 
 #### XML-RPC
@@ -629,6 +644,7 @@ For example:
 ```cucumber
   When I call actionchain.add_package_install()
 ```
+
 
 <a name="b13" />
 
@@ -669,6 +685,21 @@ Then "test-vm" virtual machine on "virt-server" should have a NIC with 02:34:56:
 Then "test-vm" virtual machine on "virt-server" should have a "disk.qcow2" scsi disk
 Then "test-vm" virtual machine on "virt-server" should have a virtio cdrom
 Then "test-vm" virtual machine on "virt-server" should have no cdrom
+```
+
+* Remove disk images from a storage pool
+
+```cucumber
+When I delete all "test-vm.*" volumes from "default" pool on "kvm-server" without error control
+```
+
+* Add or remove virtual network or storage pools
+
+```cucumber
+When I create test-net1 virtual network on "kvm-server"
+When I create test-pool1 virtual storage pool on "kvm-server"
+When I delete test-net1 virtual network on "kvm-server"
+When I delete test-pool1 virtual storage pool on "kvm-server"
 ```
 
 <a name="c" />
@@ -715,3 +746,37 @@ When implementing a step, to convert a step host name into a target, use:
 ```ruby
   node = get_target(target)
 ```
+
+#### Using cookies to store login information
+
+It is possible to work with cookies in testsuite and use them to store login information. There are no special dependencies except `Marshal` module for Ruby.
+
+Following code is expected to be a part of function used as step definition for user authorization:
+
+```ruby
+  # Check if there is already stored cookie session. If that is true, use it to login.
+  cookie_path = '/tmp/web-session'
+  if File.file?(cookie_path)
+    # Load of serialized cookie data from file in binary mode
+    cookie_data = Marshal.load(File.open(cookie_path, 'rb'))
+    cookie_data.each do |cookie|
+      page.driver.browser.manage.add_cookie(cookie)
+    end
+    # Reload page for login to take an effect
+    page.evaluate_script 'window.location.reload()'
+    # End function call if user is logged in
+    next if page.all(:xpath, "//header//span[text()='#{user}']").any?
+  end
+  # This code is executed only in case session is not stored yet.
+  cookie = page.driver.browser.manage.all_cookies
+  # Serialization and save of cookies to file in binary mode
+  File.open(cookie_path, 'wb') { |cookie_file|
+    Marshal.dump(cookie, cookie_file)
+  }
+```
+
+NOTE: This solution was tested and worked properly, but there was no time gain in comparison with old solution using capybara steps.
+
+Useful links:
+
+- [Selenium docs](https://www.seleniumhq.org/docs/03_webdriver.jsp)

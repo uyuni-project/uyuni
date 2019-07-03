@@ -1,7 +1,8 @@
 #
+
 # spec file for package rhnlib
 #
-# Copyright (c) 2018 SUSE LINUX GmbH, Nuernberg, Germany.
+# Copyright (c) 2019 SUSE LINUX GmbH, Nuernberg, Germany.
 # Copyright (c) 2008-2018 Red Hat, Inc.
 #
 # All modifications and additions to the file contributed by third parties
@@ -13,7 +14,7 @@
 # license that conforms to the Open Source Definition (Version 1.9)
 # published by the Open Source Initiative.
 
-# Please submit bugfixes or comments via http://bugs.opensuse.org/
+# Please submit bugfixes or comments via https://bugs.opensuse.org/
 #
 
 %if 0%{?fedora} || 0%{?suse_version} > 1320 || 0%{?rhel} >= 8
@@ -39,9 +40,8 @@
 
 Summary:        Python libraries for the Spacewalk project
 License:        GPL-2.0-only
-Group:          Development/Libraries
 Name:           rhnlib
-Version:        4.0.5
+Version:        4.0.8
 Release:        1%{?dist}
 %if %{_vendor} == "debbuild"
 Group:      python
@@ -49,7 +49,7 @@ Packager:   Uyuni Project <uyuni-devel@opensuse.org>
 %else
 Group:      Development/Libraries
 %endif
-URL:            https://github.com/uyuni-project/uyuni
+Url:            https://github.com/uyuni-project/uyuni
 Source0: %{name}-%{version}.tar.gz
 
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
@@ -63,6 +63,7 @@ rhnlib is a collection of python modules used by the Spacewalk (http://spacewalk
 
 %package -n python2-rhnlib
 Summary:        Python libraries for the Spacewalk project
+Group:          Development/Libraries
 
 %if %{_vendor} != "debbuild"
 %if 0%{?fedora} >= 28 || 0%{?rhel} >= 8
@@ -75,12 +76,12 @@ BuildRequires:  python-devel
 Requires:       python-pyOpenSSL
 %else
 Requires:       python-openssl
-%endif # 0%{?suse_version} > 1200
+%endif # 0{?suse_version} > 1200
 %else
 Requires:       pyOpenSSL
-%endif # 0%{?suse_version}
-%endif # 0%{?fedora} >= 28 || 0%{?rhel} >= 8
-%endif # %{_vendor} != "debbuild"
+%endif # 0{?suse_version}
+%endif # 0{?fedora} >= 28 || 0{?rhel} >= 8
+%endif # {_vendor} != "debbuild"
 
 %if %{_vendor} == "debbuild"
 BuildRequires: python-dev

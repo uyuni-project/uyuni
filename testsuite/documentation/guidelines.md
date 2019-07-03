@@ -6,7 +6,7 @@
 * `testsuite/features/step_definition`: definition of real code executed, in Ruby
 * `testsuite/features/support`: general support functions
 * `testsuite/features/upload_files`: various data files uploaded into test machines by the testsuite
-* `testsuite/features/upload_files`: Docker and Kiwi profiles picked up from this git repository directly by SUSE Manager
+* `testsuite/features/profiles`: Docker and Kiwi profiles picked up from this git repository directly by SUSE Manager
 
 
 ### Grouping steps

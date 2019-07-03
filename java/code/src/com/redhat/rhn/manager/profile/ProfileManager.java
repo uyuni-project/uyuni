@@ -144,7 +144,7 @@ public class ProfileManager extends BaseManager {
 
         m = ModeFactory.getWriteMode("profile_queries",
                 "insert_package_profile");
-        params = new HashMap();
+        params = new HashMap<>();
         params.put("sid", server.getId());
         params.put("prid", profile.getId());
         m.executeUpdate(params);
@@ -156,11 +156,12 @@ public class ProfileManager extends BaseManager {
      * @param org Org owner
      * @return  a list of Profiles which are compatible with the given server.
      */
-    public static List compatibleWithServer(Server server, Org org) {
+    public static List<Profile> compatibleWithServer(Server server, Org org) {
         return ProfileFactory.compatibleWithServer(server, org);
     }
 
-    private static DataResult canonicalProfilePackages(Long prid, Long orgid,
+    @SuppressWarnings("unchecked")
+    private static DataResult<PackageListItem> canonicalProfilePackages(Long prid, Long orgid,
             PageControl pc) {
 
         SelectMode m = ModeFactory.getMode("Package_queries",
@@ -169,10 +170,11 @@ public class ProfileManager extends BaseManager {
         params.put("prid", prid);
         params.put("org_id", orgid);
         Map<String, Object> elabParams = new HashMap<String, Object>();
-        return makeDataResult(params, elabParams, pc, m);
+        return (DataResult<PackageListItem>)makeDataResult(params, elabParams, pc, m);
     }
 
-    private static DataResult canonicalSystemsPackages(Long sid, Long orgid,
+    @SuppressWarnings("unchecked")
+    private static DataResult<PackageListItem> canonicalSystemsPackages(Long sid, Long orgid,
             PageControl pc) {
 
         SelectMode m = ModeFactory.getMode("Package_queries",
@@ -181,7 +183,7 @@ public class ProfileManager extends BaseManager {
         params.put("sid", sid);
         params.put("org_id", orgid);
         Map<String, Object> elabParams = new HashMap<String, Object>();
-        return makeDataResult(params, elabParams, pc, m);
+        return (DataResult<PackageListItem>)makeDataResult(params, elabParams, pc, m);
     }
 
     /**
@@ -196,11 +198,11 @@ public class ProfileManager extends BaseManager {
      * @param param comparison parameter
      * @return List of differences
      */
-    public static List comparePackageLists(DataResult profiles,
-            DataResult systems, String param) {
-        List result = new LinkedList();
-        Map profilesNameIdMap = buildPackagesMap(profiles);
-        Map systemsNameIdMap = buildPackagesMap(systems);
+    public static List<PackageMetadata> comparePackageLists(DataResult<PackageListItem> profiles,
+            DataResult<PackageListItem> systems, String param) {
+        List<PackageMetadata> result = new LinkedList<>();
+        Map<String, List<PackageListItem>> profilesNameIdMap = buildPackagesMap(profiles);
+        Map<String, List<PackageListItem>> systemsNameIdMap = buildPackagesMap(systems);
 
         if (log.isDebugEnabled()) {
             log.debug("profilesIdComboMap: " + profilesNameIdMap);
@@ -214,11 +216,11 @@ public class ProfileManager extends BaseManager {
         // identified as either having a matching package in both lists (sys & prof)
         // or they have been identified as being valid difference.  This purpose
         // of having this set is to avoid processing the same package multiple times.
-        Set skipPkg = new HashSet();
-        for (Iterator itr = systemsNameIdMap.keySet().iterator(); itr.hasNext();) {
+        Set<String> skipPkg = new HashSet<>();
+        for (Iterator<String> itr = systemsNameIdMap.keySet().iterator(); itr.hasNext();) {
             Object key = itr.next();
-            List syslist = (List) systemsNameIdMap.get(key);
-            List plist = (List) profilesNameIdMap.get(key);
+            List<PackageListItem> syslist = systemsNameIdMap.get(key);
+            List<PackageListItem> plist = profilesNameIdMap.get(key);
             if (plist == null) {
                 // No packages in profile with same name.  We know its only in the System
                 for (int i = 0; i < syslist.size(); i++) {
@@ -238,7 +240,7 @@ public class ProfileManager extends BaseManager {
                 log.debug("syslist.size: " + syslist.size() +
                         " plist.size: " + plist.size());
                 if (syslist.size() > 1 || plist.size() > 1) {
-                    Map compareMap = new HashMap();
+                    Map<String, PackageMetadata> compareMap = new HashMap<>();
                     for (int i = 0; i < syslist.size(); i++) {
                         PackageListItem syspkgitem = (PackageListItem) syslist.get(i);
                         for (int j = 0; j < plist.size(); j++) {
@@ -318,9 +320,9 @@ public class ProfileManager extends BaseManager {
                         }
                     }
                     // Copy into the result map
-                    Iterator i = compareMap.values().iterator();
+                    Iterator<PackageMetadata> i = compareMap.values().iterator();
                     while (i.hasNext()) {
-                        PackageMetadata pm = (PackageMetadata) i.next();
+                        PackageMetadata pm = i.next();
                         log.debug("*** adding a PM(2): " + pm.hashCode());
                         result.add(pm);
                     }
@@ -360,10 +362,10 @@ public class ProfileManager extends BaseManager {
         }
 
         // Reverse of above so we can check for pkgs that are *only* in the profile
-        for (Iterator itr = profilesNameIdMap.keySet().iterator(); itr.hasNext();) {
-            Object key = itr.next();
-            List syslist = (List) systemsNameIdMap.get(key);
-            List plist = (List) profilesNameIdMap.get(key);
+        for (Iterator<String> itr = profilesNameIdMap.keySet().iterator(); itr.hasNext();) {
+            String key = itr.next();
+            List<PackageListItem> syslist = systemsNameIdMap.get(key);
+            List<PackageListItem> plist = profilesNameIdMap.get(key);
 
             if (syslist == null) {
                 // No packages in system with same name.  We know its only in the Profile
@@ -401,19 +403,19 @@ public class ProfileManager extends BaseManager {
      * E.g. for kernel, the nameid might be 23 and there may be multiple
      * versions of that package in the list 2.1, 2.2, 2.3...etc
      */
-    private static Map buildPackagesMap(DataResult packageListItems) {
-        Map packages = new HashMap();
+    private static Map<String, List<PackageListItem>> buildPackagesMap(DataResult<PackageListItem> packageListItems) {
+        Map<String, List<PackageListItem>> packages = new HashMap<>();
 
-        for (Iterator itr = packageListItems.iterator(); itr.hasNext();) {
-            PackageListItem item = (PackageListItem) itr.next();
+        for (Iterator<PackageListItem> itr = packageListItems.iterator(); itr.hasNext();) {
+            PackageListItem item = itr.next();
             // We actually put *each* package in a sub-list in the map.
             // This is so we can have a List containing each package
             // by name.  Used for when we have multiple revs of the same
             // package, kernel-2.1, kernel-2.2, kernel-2.3 etc..
             String mapId = item.getMapHash();
-            List list = (List) packages.get(mapId);
+            List<PackageListItem> list = packages.get(mapId);
             if (list == null) {
-                list = new LinkedList();
+                list = new LinkedList<>();
             }
             list.add(item);
             packages.put(mapId, list);
@@ -488,7 +490,7 @@ public class ProfileManager extends BaseManager {
      * @return a DataResult with a diff of the server's packages and those
      * in the profile.
      */
-    public static DataResult compareServerToServer(Long sid,
+    public static DataResult<PackageMetadata> compareServerToServer(Long sid,
             Long sid1, Long orgid, PageControl pc) {
 
         Server source = ServerFactory.lookupById(sid1);
@@ -499,10 +501,10 @@ public class ProfileManager extends BaseManager {
 
         // passing in null PageControls since we want ALL of the records
         // so we can reconcile them here.
-        DataResult othersystems = canonicalSystemsPackages(sid1, orgid, null);
-        DataResult systems = canonicalSystemsPackages(sid, orgid, null);
+        DataResult<PackageListItem> othersystems = canonicalSystemsPackages(sid1, orgid, null);
+        DataResult<PackageListItem> systems = canonicalSystemsPackages(sid, orgid, null);
 
-        List result = comparePackageLists(othersystems, systems, source.getName());
+        List<PackageMetadata> result = comparePackageLists(othersystems, systems, source.getName());
 
         // this has to return a DataResult full of PackageMetadata
         Collections.sort(result);
@@ -531,14 +533,14 @@ public class ProfileManager extends BaseManager {
      * @return a DataResult with a diff of the server's packages and those
      * in the profile.
      */
-    public static DataResult compareServerToProfile(Long sid,
+    public static DataResult<PackageMetadata> compareServerToProfile(Long sid,
             Long prid, Long orgid, PageControl pc) {
 
         // passing in null PageControls since we want ALL of the records
         // so we can reconcile them here.
-        DataResult profiles = canonicalProfilePackages(prid, orgid, null);
-        DataResult systems = canonicalSystemsPackages(sid, orgid, null);
-        List result = comparePackageLists(profiles, systems, null);
+        DataResult<PackageListItem> profiles = canonicalProfilePackages(prid, orgid, null);
+        DataResult<PackageListItem> systems = canonicalSystemsPackages(sid, orgid, null);
+        List<PackageMetadata> result = comparePackageLists(profiles, systems, null);
 
         // this has to return a DataResult full of PackageMetadata
         Collections.sort(result);
@@ -554,25 +556,25 @@ public class ProfileManager extends BaseManager {
      * @param pkgIdCombos Set of packages selected.
      * @return DataResult of PackageMetadata's suitable for listview display.
      */
-    public static DataResult prepareSyncToProfile(Long sid, Long prid,
-            Long orgid, PageControl pc, Set pkgIdCombos) {
-        Map profilesMap = new HashMap();
-        List packagesToSync = new ArrayList();
+    public static DataResult<PackageMetadata> prepareSyncToProfile(Long sid, Long prid,
+            Long orgid, PageControl pc, Set<String> pkgIdCombos) {
+        Map<String, PackageMetadata> profilesMap = new HashMap<>();
+        List<PackageMetadata> packagesToSync = new ArrayList<>();
         // seems like a waste, but that's how it works
-        DataResult profiles = compareServerToProfile(sid, prid, orgid, null);
+        DataResult<PackageMetadata> profiles = compareServerToProfile(sid, prid, orgid, null);
 
         // in order to search the list by combo id (name_id|evr_id|arch_id),
         // it's easiest to create a map instead of looping through n times where n
         // is the size of the RhnSet.
-        for (Iterator itr = profiles.iterator(); itr.hasNext();) {
-            PackageMetadata pm = (PackageMetadata) itr.next();
+        for (Iterator<PackageMetadata> itr = profiles.iterator(); itr.hasNext();) {
+            PackageMetadata pm = itr.next();
             profilesMap.put(pm.getIdCombo(), pm);
         }
 
         // find all of the items in profiles which are in RhnSet
-        for (Iterator itr = pkgIdCombos.iterator(); itr.hasNext();) {
-            String pkgIdCombo = (String) itr.next();
-            PackageMetadata pm = (PackageMetadata) profilesMap.get(pkgIdCombo);
+        for (Iterator<String> itr = pkgIdCombos.iterator(); itr.hasNext();) {
+            String pkgIdCombo = itr.next();
+            PackageMetadata pm = profilesMap.get(pkgIdCombo);
             pm.updateActionStatus();
             packagesToSync.add(pm);
         }
@@ -590,13 +592,13 @@ public class ProfileManager extends BaseManager {
      * @param pkgIdCombos Set of packages selected.
      * @return DataResult of PackageMetadata's suitable for listview display.
      */
-    public static DataResult prepareSyncToServer(Long sid, Long sid1,
-            Long orgid, PageControl pc, Set pkgIdCombos) {
+    public static DataResult<PackageMetadata> prepareSyncToServer(Long sid, Long sid1,
+            Long orgid, PageControl pc, Set<String> pkgIdCombos) {
 
-        Map profilesMap = new HashMap();
-        List packagesToSync = new ArrayList();
+        Map<String, PackageMetadata> profilesMap = new HashMap<>();
+        List<PackageMetadata> packagesToSync = new ArrayList<>();
         // seems like a waste, but that's how it works
-        DataResult profiles = compareServerToServer(sid, sid1, orgid, null);
+        DataResult<PackageMetadata> profiles = compareServerToServer(sid, sid1, orgid, null);
         if (log.isDebugEnabled()) {
             log.debug("  profiles .. " + profiles);
         }
@@ -604,9 +606,9 @@ public class ProfileManager extends BaseManager {
         // in order to search the list by combo id (name_id|evr_id|arch_id),
         // it's easiest to create a map instead of looping through n times where n
         // is the size of the RhnSet.
-        for (Iterator itr = profiles.iterator(); itr.hasNext();) {
+        for (Iterator<PackageMetadata> itr = profiles.iterator(); itr.hasNext();) {
 
-            PackageMetadata pm = (PackageMetadata) itr.next();
+            PackageMetadata pm = itr.next();
             if (log.isDebugEnabled()) {
                 log.debug("  pm, putting: " + pm.getIdCombo());
             }
@@ -615,8 +617,8 @@ public class ProfileManager extends BaseManager {
         }
 
         // find all of the items in profiles which are in RhnSet
-        for (Iterator itr = pkgIdCombos.iterator(); itr.hasNext();) {
-            String pkgIdCombo = (String) itr.next();
+        for (Iterator<String> itr = pkgIdCombos.iterator(); itr.hasNext();) {
+            String pkgIdCombo = itr.next();
             if (log.isDebugEnabled()) {
                 log.debug("  rse, fetching: " + pkgIdCombo);
             }
@@ -645,7 +647,7 @@ public class ProfileManager extends BaseManager {
      * (typically: Taskomatic is down)
      */
     public static PackageAction syncToSystem(User user, Long sid, Long sid1,
-            Set pkgIdCombos, String missingoption, Date earliest)
+            Set<String> pkgIdCombos, String missingoption, Date earliest)
         throws TaskomaticApiException {
 
         if (log.isDebugEnabled()) {
@@ -658,7 +660,7 @@ public class ProfileManager extends BaseManager {
                     EntitlementManager.MANAGEMENT.getHumanReadableLabel());
         }
 
-        DataResult dr = prepareSyncToServer(sid, sid1, user.getOrg().getId(),
+        DataResult<PackageMetadata> dr = prepareSyncToServer(sid, sid1, user.getOrg().getId(),
                 null, pkgIdCombos);
 
         if (log.isDebugEnabled()) {
@@ -668,8 +670,8 @@ public class ProfileManager extends BaseManager {
         // dr should be the list of packages and actions that need to be taken.
         // Now get the channels of the victim (victim being the server).
         Server server = ServerFactory.lookupById(sid);
-        Set channels = server.getChannels();
-        List missingPackages = findMissingPackages(dr, channels);
+        Set<Channel> channels = server.getChannels();
+        List<PackageMetadata> missingPackages = findMissingPackages(dr, channels);
         PackageAction action = null;
 
         log.debug("is missingpackages empty: " + missingPackages.isEmpty());
@@ -695,8 +697,8 @@ public class ProfileManager extends BaseManager {
                         dr.size() + "]");
             }
 
-            for (Iterator itr = missingPackages.iterator(); itr.hasNext();) {
-                PackageMetadata pm = (PackageMetadata) itr.next();
+            for (Iterator<PackageMetadata> itr = missingPackages.iterator(); itr.hasNext();) {
+                PackageMetadata pm = itr.next();
                 int compare = pm.getComparisonAsInt();
                 if (compare == PackageMetadata.KEY_OTHER_ONLY ||
                         compare == PackageMetadata.KEY_OTHER_NEWER) {
@@ -726,14 +728,14 @@ public class ProfileManager extends BaseManager {
             // add the channel to the "needed channels list" and
             // remove package from missingpackages list.
             Channel baseChannel = ChannelFactory.getBaseChannel(server.getId());
-            List validChannels = ChannelManager.userAccessibleChildChannels(
+            List<Channel> validChannels = ChannelManager.userAccessibleChildChannels(
                     user.getOrg().getId(), baseChannel.getId());
-            List neededChannels = new ArrayList();
+            List<Channel> neededChannels = new ArrayList<>();
 
-            for (Iterator itr = validChannels.iterator(); itr.hasNext();) {
-                Channel validChannel = (Channel) itr.next();
-                for (Iterator innerItr = missingPackages.iterator(); innerItr.hasNext();) {
-                    PackageMetadata pm = (PackageMetadata) innerItr.next();
+            for (Iterator<Channel> itr = validChannels.iterator(); itr.hasNext();) {
+                Channel validChannel = itr.next();
+                for (Iterator<PackageMetadata> innerItr = missingPackages.iterator(); innerItr.hasNext();) {
+                    PackageMetadata pm = innerItr.next();
                     if (PackageManager.isPackageInChannel(
                             validChannel.getId(), pm.getNameId(),
                             pm.getEvrId())) {
@@ -757,8 +759,8 @@ public class ProfileManager extends BaseManager {
             // once subscribed, throw away any of the remaining missing
             // packages.
 
-            for (Iterator itr = neededChannels.iterator(); itr.hasNext();) {
-                Channel needed = (Channel) itr.next();
+            for (Iterator<Channel> itr = neededChannels.iterator(); itr.hasNext();) {
+                Channel needed = itr.next();
                 if (log.isDebugEnabled()) {
                     log.debug("Subscribing to [" + needed.getName() + "]");
                 }
@@ -767,8 +769,8 @@ public class ProfileManager extends BaseManager {
 
             // if we still have some missing packages, just remove them.
             if (!missingPackages.isEmpty()) {
-                for (Iterator itr = missingPackages.iterator(); itr.hasNext();) {
-                    PackageMetadata pm = (PackageMetadata) itr.next();
+                for (Iterator<PackageMetadata> itr = missingPackages.iterator(); itr.hasNext();) {
+                    PackageMetadata pm = itr.next();
                     int compare = pm.getComparisonAsInt();
                     if (compare == PackageMetadata.KEY_OTHER_ONLY ||
                             compare == PackageMetadata.KEY_OTHER_NEWER) {
@@ -799,9 +801,9 @@ public class ProfileManager extends BaseManager {
     }
 
     private static void updatePackageListWithChannels(Channel baseChannel,
-            User user, List pkgs) {
+            User user, List<PackageMetadata> pkgs) {
 
-        List validChannels = ChannelManager.userAccessibleChildChannels(
+        List<Channel> validChannels = ChannelManager.userAccessibleChildChannels(
                 user.getOrg().getId(), baseChannel.getId());
 
         if (log.isDebugEnabled()) {
@@ -809,11 +811,11 @@ public class ProfileManager extends BaseManager {
                     validChannels.size() + "]");
         }
 
-        for (Iterator itr = validChannels.iterator(); itr.hasNext();) {
-            Channel validChannel = (Channel) itr.next();
+        for (Iterator<Channel> itr = validChannels.iterator(); itr.hasNext();) {
+            Channel validChannel = itr.next();
 
-            for (Iterator innerItr = pkgs.iterator(); innerItr.hasNext();) {
-                PackageMetadata pm = (PackageMetadata) innerItr.next();
+            for (Iterator<PackageMetadata> innerItr = pkgs.iterator(); innerItr.hasNext();) {
+                PackageMetadata pm = innerItr.next();
 
                 if (PackageManager.isPackageInChannel(
                         validChannel.getId(), pm.getNameId(),
@@ -845,17 +847,17 @@ public class ProfileManager extends BaseManager {
      * (typically: Taskomatic is down)
      */
     public static PackageAction syncToProfile(User user, Long sid, Long prid,
-            Set pkgIdCombos, String missingoption, Date earliest)
+            Set<String> pkgIdCombos, String missingoption, Date earliest)
         throws TaskomaticApiException {
 
-        DataResult dr = prepareSyncToProfile(sid, prid, user.getOrg().getId(),
+        DataResult<PackageMetadata> dr = prepareSyncToProfile(sid, prid, user.getOrg().getId(),
                 null, pkgIdCombos);
 
         // dr should be the list of packages and actions that need to be taken.
         // Now get the channels of the victim (victim being the server).
         Server server = ServerFactory.lookupById(sid);
-        Set channels = server.getChannels();
-        List missingPackages = findMissingPackages(dr, channels);
+        Set<Channel> channels = server.getChannels();
+        List<PackageMetadata> missingPackages = findMissingPackages(dr, channels);
         PackageAction action = null;
 
         // this code makes me want spaghetti!
@@ -877,8 +879,8 @@ public class ProfileManager extends BaseManager {
                         dr.size() + "]");
             }
 
-            for (Iterator itr = missingPackages.iterator(); itr.hasNext();) {
-                PackageMetadata pm = (PackageMetadata) itr.next();
+            for (Iterator<PackageMetadata> itr = missingPackages.iterator(); itr.hasNext();) {
+                PackageMetadata pm = itr.next();
                 int compare = pm.getComparisonAsInt();
                 if (compare == PackageMetadata.KEY_OTHER_ONLY ||
                         compare == PackageMetadata.KEY_OTHER_NEWER) {
@@ -905,14 +907,14 @@ public class ProfileManager extends BaseManager {
             // add the channel to the "needed channels list" and
             // remove package from missingpackages list.
             Channel baseChannel = ChannelFactory.getBaseChannel(server.getId());
-            List validChannels = ChannelManager.userAccessibleChildChannels(
+            List<Channel> validChannels = ChannelManager.userAccessibleChildChannels(
                     user.getOrg().getId(), baseChannel.getId());
-            List neededChannels = new ArrayList();
+            List<Channel> neededChannels = new ArrayList<>();
 
-            for (Iterator itr = validChannels.iterator(); itr.hasNext();) {
-                Channel validChannel = (Channel) itr.next();
-                for (Iterator innerItr = missingPackages.iterator(); innerItr.hasNext();) {
-                    PackageMetadata pm = (PackageMetadata) innerItr.next();
+            for (Iterator<Channel> itr = validChannels.iterator(); itr.hasNext();) {
+                Channel validChannel = itr.next();
+                for (Iterator<PackageMetadata> innerItr = missingPackages.iterator(); innerItr.hasNext();) {
+                    PackageMetadata pm = innerItr.next();
                     if (PackageManager.isPackageInChannel(
                             validChannel.getId(), pm.getNameId(),
                             pm.getEvrId())) {
@@ -936,15 +938,15 @@ public class ProfileManager extends BaseManager {
             // once subscribed, throw away any of the remaining missing
             // packages.
 
-            for (Iterator itr = neededChannels.iterator(); itr.hasNext();) {
-                Channel needed = (Channel) itr.next();
+            for (Iterator<Channel> itr = neededChannels.iterator(); itr.hasNext();) {
+                Channel needed = itr.next();
                 SystemManager.subscribeServerToChannel(user, server, needed);
             }
 
             // if we still have some missing packages, just remove them.
             if (!missingPackages.isEmpty()) {
-                for (Iterator itr = missingPackages.iterator(); itr.hasNext();) {
-                    PackageMetadata pm = (PackageMetadata) itr.next();
+                for (Iterator<PackageMetadata> itr = missingPackages.iterator(); itr.hasNext();) {
+                    PackageMetadata pm = itr.next();
                     int compare = pm.getComparisonAsInt();
                     if (compare == PackageMetadata.KEY_OTHER_ONLY ||
                             compare == PackageMetadata.KEY_OTHER_NEWER) {
@@ -984,15 +986,15 @@ public class ProfileManager extends BaseManager {
      * @param pc page control
      * @return a list of missing packages.
      */
-    public static DataResult getMissingProfilePackages(User user, Long sid,
-            Long prid, Set pkgIdCombos, PageControl pc) {
+    public static DataResult<PackageMetadata> getMissingProfilePackages(User user, Long sid,
+            Long prid, Set<String> pkgIdCombos, PageControl pc) {
 
-        DataResult dr = prepareSyncToProfile(sid, prid, user.getOrg().getId(),
+        DataResult<PackageMetadata> dr = prepareSyncToProfile(sid, prid, user.getOrg().getId(),
                 null, pkgIdCombos);
         Server server = ServerFactory.lookupById(sid);
-        Set channels = server.getChannels();
-        List missingpkgs = findMissingPackages(dr, channels);
-        DataResult missing = new DataResult(missingpkgs);
+        Set<Channel> channels = server.getChannels();
+        List<PackageMetadata> missingpkgs = findMissingPackages(dr, channels);
+        DataResult<PackageMetadata> missing = new DataResult<>(missingpkgs);
         missing = prepareList(missing, pc);
 
         Channel baseChannel = ChannelFactory.getBaseChannel(sid);
@@ -1011,15 +1013,15 @@ public class ProfileManager extends BaseManager {
      * @param pc page control
      * @return a list of missing packages.
      */
-    public static DataResult getMissingSystemPackages(User user, Long sid,
-            Long sid1, Set pkgIdCombos, PageControl pc) {
+    public static DataResult<PackageMetadata> getMissingSystemPackages(User user, Long sid,
+            Long sid1, Set<String> pkgIdCombos, PageControl pc) {
 
-        DataResult dr = prepareSyncToServer(sid, sid1, user.getOrg().getId(),
+        DataResult<PackageMetadata> dr = prepareSyncToServer(sid, sid1, user.getOrg().getId(),
                 null, pkgIdCombos);
         Server server = ServerFactory.lookupById(sid);
-        Set channels = server.getChannels();
-        List missingpkgs = findMissingPackages(dr, channels);
-        DataResult missing = new DataResult(missingpkgs);
+        Set<Channel> channels = server.getChannels();
+        List<PackageMetadata> missingpkgs = findMissingPackages(dr, channels);
+        DataResult<PackageMetadata> missing = new DataResult<PackageMetadata>(missingpkgs);
 
         // should have the subset we plan to work with.
         // NOW, we need to find the channels for each
@@ -1047,34 +1049,34 @@ public class ProfileManager extends BaseManager {
      * @param profileIn to iterate over the set of packages for.
      * @return List of Channel objects.
      */
-    public static List getChildChannelsNeededForProfile(User user, Channel baseChannel,
+    public static List<Channel> getChildChannelsNeededForProfile(User user, Channel baseChannel,
             Profile profileIn) {
-        List retval = new LinkedList();
+        List<Channel> retval = new LinkedList<>();
 
-        List profilePackages = canonicalProfilePackages(profileIn.getId(),
+        List<PackageListItem> profilePackages = canonicalProfilePackages(profileIn.getId(),
                 user.getOrg().getId(), null);
 
         log.debug("getChildChannelsNeededForProfile profile has: " +
                 profilePackages.size() + " packages in it.");
 
-        Set evrNameIds = new HashSet();
+        Set<String> evrNameIds = new HashSet<>();
         // Create the Set of evr_id's
-        Iterator pi = profilePackages.iterator();
+        Iterator<PackageListItem> pi = profilePackages.iterator();
         while (pi.hasNext()) {
-            PackageListItem pli = (PackageListItem) pi.next();
+            PackageListItem pli = pi.next();
             evrNameIds.add(pli.getNevr());
             log.debug("Added nevr: " + pli.getNevr());
         }
 
-        Iterator i = ChannelManager.userAccessibleChildChannels(
+        Iterator<Channel> i = ChannelManager.userAccessibleChildChannels(
                 user.getOrg().getId(), baseChannel.getId()).iterator();
         while (i.hasNext()) {
-            Channel child = (Channel) i.next();
+            Channel child = i.next();
             log.debug("working with child channel: " + child.getLabel());
-            List packages = getPackagesInChannelByIdCombo(child.getId());
+            List<PackageListItem> packages = getPackagesInChannelByIdCombo(child.getId());
             for (int x = 0; x < packages.size(); x++) {
 
-                PackageListItem row = (PackageListItem) packages.get(x);
+                PackageListItem row = packages.get(x);
                 log.debug("Checking:  " + row.getNevr());
                 if (evrNameIds.contains(row.getNevr())) {
                     retval.add(child);
@@ -1088,23 +1090,24 @@ public class ProfileManager extends BaseManager {
     }
 
 
-    private static DataResult getPackagesInChannelByIdCombo(Long cid) {
+    @SuppressWarnings("unchecked")
+    private static DataResult<PackageListItem> getPackagesInChannelByIdCombo(Long cid) {
         SelectMode m = ModeFactory.getMode("Package_queries",
                 "packages_in_channel_by_id_combo");
         Map<String, Object> params = new HashMap<String, Object>();
         Map<String, Object> elabParams = new HashMap<String, Object>();
         params.put("cid", cid);
-        return makeDataResult(params, elabParams, null, m);
+        return (DataResult<PackageListItem>)makeDataResult(params, elabParams, null, m);
     }
 
-    private static List findMissingPackages(DataResult pkgs, Set channels) {
+    private static List<PackageMetadata> findMissingPackages(DataResult<PackageMetadata> pkgs, Set<Channel> channels) {
 
-        List missingPkgs = new ArrayList();
+        List<PackageMetadata> missingPkgs = new ArrayList<>();
 
-        DataResult pkgsInChannels = new DataResult(new ArrayList());
-        for (Iterator itr = channels.iterator(); itr.hasNext();) {
-            Channel c = (Channel) itr.next();
-            DataResult dr = getPackagesInChannelByIdCombo(c.getId());
+        DataResult<PackageListItem> pkgsInChannels = new DataResult<>(new ArrayList<PackageListItem>());
+        for (Iterator<Channel> itr = channels.iterator(); itr.hasNext();) {
+            Channel c = itr.next();
+            DataResult<PackageListItem> dr = getPackagesInChannelByIdCombo(c.getId());
             pkgsInChannels.addAll(dr);
         }
 
@@ -1112,14 +1115,13 @@ public class ProfileManager extends BaseManager {
 
         // using pkgsInChannels, build a map of name ids (i.e. key) to list
         // of packages (i.e. value) associated w/the id
-        Map pkgsInChannelsByNameId = buildPackagesMap(pkgsInChannels);
+        Map<String, List<PackageListItem>> pkgsInChannelsByNameId = buildPackagesMap(pkgsInChannels);
 
         // for each of the pkgs to be synced
-        for (Iterator itr = pkgs.iterator(); itr.hasNext();) {
-            PackageMetadata pm = (PackageMetadata) itr.next();
+        for (Iterator<PackageMetadata> itr = pkgs.iterator(); itr.hasNext();) {
+            PackageMetadata pm = itr.next();
             // retrieve the packages with the same name that exist w/in channels
-            List<PackageListItem> pkgsInChannel = (List<PackageListItem>)
-                    pkgsInChannelsByNameId.get(pm.getMapHash());
+            List<PackageListItem> pkgsInChannel = pkgsInChannelsByNameId.get(pm.getMapHash());
 
             if (pm.getComparisonAsInt() == PackageMetadata.KEY_THIS_ONLY) {
                 // makes no sense to check whether missing
@@ -1148,8 +1150,8 @@ public class ProfileManager extends BaseManager {
         return missingPkgs;
     }
 
-    private static DataResult prepareList(List result, PageControl pc) {
-        DataResult dr = new DataResult(result);
+    private static DataResult<PackageMetadata> prepareList(List<PackageMetadata> result, PageControl pc) {
+        DataResult<PackageMetadata> dr = new DataResult<PackageMetadata>(result);
         dr.setTotalSize(result.size());
 
         if (pc != null) {
@@ -1272,6 +1274,7 @@ public class ProfileManager extends BaseManager {
      * @param orgId The id of the org the profiles are associated with.
      * @return DataResult of ProfileOverviewDto
      */
+    @SuppressWarnings("unchecked")
     public static DataResult<ProfileOverviewDto> listProfileOverviews(Long orgId) {
 
         SelectMode m = ModeFactory.getMode("profile_queries", "profile_overview");
@@ -1288,6 +1291,7 @@ public class ProfileManager extends BaseManager {
      * @param profileId The id of the profile the packages are associated with.
      * @return DataResult of ProfilePackageOverviewDto
      */
+    @SuppressWarnings("unchecked")
     public static DataResult<ProfilePackageOverviewDto> listProfilePackages(
             Long profileId) {
 
@@ -1328,6 +1332,7 @@ public class ProfileManager extends BaseManager {
      * @param pc PageControl to filter the list.
      * @return DataResult containing ProfileDto objects
      */
+    @SuppressWarnings("unchecked")
     public static DataResult<ProfileDto> compatibleWithChannel(
             Channel channelIn,
             Org orgIn, PageControl pc) {
@@ -1337,7 +1342,7 @@ public class ProfileManager extends BaseManager {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("org_id", orgIn.getId());
         params.put("cid", channelIn.getId());
-        return  makeDataResult(params, new HashMap(), pc, m);
+        return  makeDataResult(params, new HashMap<String, Object>(), pc, m);
     }
 
 }

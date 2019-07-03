@@ -56,7 +56,6 @@ public class CobblerProfileDeleteCommand extends CobblerProfileCommand {
         if (!profile.remove()) {
             return new ValidatorError("cobbler.profile.remove_failed");
         }
-        invokeCobblerUpdate();
         return new CobblerSyncCommand(user).store();
 
     }

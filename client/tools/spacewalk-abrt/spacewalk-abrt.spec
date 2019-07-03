@@ -1,7 +1,7 @@
 #
 # spec file for package spacewalk-abrt
 #
-# Copyright (c) 2018 SUSE LINUX GmbH, Nuernberg, Germany.
+# Copyright (c) 2019 SUSE LINUX GmbH, Nuernberg, Germany.
 # Copyright (c) 2008-2018 Red Hat, Inc.
 #
 # All modifications and additions to the file contributed by third parties
@@ -13,7 +13,7 @@
 # license that conforms to the Open Source Definition (Version 1.9)
 # published by the Open Source Initiative.
 
-# Please submit bugfixes or comments via http://bugs.opensuse.org/
+# Please submit bugfixes or comments via https://bugs.opensuse.org/
 #
 
 
@@ -29,13 +29,13 @@
 %define pythonX %{?default_py3: python3}%{!?default_py3: python2}
 
 Name:           spacewalk-abrt
-Version:        4.0.3
+Version:        4.0.5
 Release:        1%{?dist}
 Summary:        ABRT plug-in for rhn-check
 License:        GPL-2.0-only
 Group:          Applications/System
 
-URL:            https://github.com/uyuni-project/uyuni
+Url:            https://github.com/uyuni-project/uyuni
 Source0:        https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
 Source1:        %{name}-rpmlintrc
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build

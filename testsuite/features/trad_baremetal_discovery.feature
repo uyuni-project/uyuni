@@ -1,4 +1,4 @@
-# Copyright (c) 2015 SUSE LLC
+# Copyright (c) 2015-2019 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 Feature: Bare metal discovery
@@ -6,16 +6,15 @@ Feature: Bare metal discovery
   Scenario: Delete the normal traditional client for bare metal feature
     Given I am on the Systems overview page of this "sle-client"
     When I follow "Delete System"
-    And I should see a "Confirm System Profile Deletion" text
-    And I click on "Delete Profile"
+    Then I should see a "Confirm System Profile Deletion" text
+    When I click on "Delete Profile"
     Then I should see a "System profile" text
-    And I should see a "has been deleted" text
+    When I wait until I see "has been deleted" text
+    Then "sle-client" should not be registered
 
   Scenario: Enable bare metal discovery
     Given I am authorized as "admin" with password "admin"
-    And I follow "Admin"
-    And I follow "Manager Configuration" in the left menu
-    And I follow "General" in the left menu
+    When I follow the left menu "Admin > Manager Configuration > General"
     When I follow "Bare-metal systems" in the content area
     Then I should see a "Allows $PRODUCT to automatically add bare-metal systems capable of PXE booting to an organization." text
     And I should see a "Enable adding to this organization" button
@@ -35,8 +34,7 @@ Feature: Bare metal discovery
 
   Scenario: See the client in unprovisioned systems list
     Given I am on the Systems page
-    And I click System List, under Systems node 
-    And I follow "Unprovisioned Systems" in the left menu
+    When I follow the left menu "Systems > System List > Unprovisioned Systems"
     Then I should see a "Unprovisioned Systems" text
     And I should see a "Detected on" text
     And I should see a "Number of CPUs" text
@@ -52,7 +50,7 @@ Feature: Bare metal discovery
 
   Scenario: Check unprovisioned system details
     Given I am on the Systems page
-    And I click System List, under Systems node 
+    When I follow the left menu "Systems > System List"
     When I follow this "sle-client" link
     Then I should see a "Details" link in the content area
     And I should not see a "Software" link in the content area
@@ -103,14 +101,14 @@ Feature: Bare metal discovery
   Scenario: Cleanup: delete the bare metal system profile
     Given I am on the Systems overview page of this "sle-client"
     When I follow "Delete System"
-    And I should see a "Confirm System Profile Deletion" text
-    And I click on "Delete Profile"
+    Then I should see a "Confirm System Profile Deletion" text
+    When I click on "Delete Profile"
+    And I wait until I see "has been deleted" text
+    Then "sle-client" should not be registered
 
   Scenario: Cleanup: disable bare metal discovery
     Given I am authorized as "admin" with password "admin"
-    And I follow "Admin"
-    And I follow "Manager Configuration" in the left menu
-    And I follow "General" in the left menu
+    When I follow the left menu "Admin > Manager Configuration > General"
     When I follow "Bare-metal systems" in the content area
     Then I should see a "Allows $PRODUCT to automatically add bare-metal systems capable of PXE booting to an organization." text
     And I should see a "Disable adding to this organization" button

@@ -53,7 +53,7 @@ public class MethodUtilTest extends RhnBaseTestCase {
         String teststr = (String)MethodUtil.
                                  invokeStaticMethod(MethodUtilTest.class,
                                                     "staticMethod",
-                                                    new Object[] {new Integer(8)});
+                                                    new Object[] {8});
         assertEquals(TEST_STRING + 8, teststr);
     }
 
@@ -61,7 +61,7 @@ public class MethodUtilTest extends RhnBaseTestCase {
         try {
             MethodUtil.invokeStaticMethod(MethodUtilTest.class,
                                           "nonStaticMethod",
-                                          new Object[] {new Integer(1)});
+                                          new Object[] {1});
             fail("Should have received an Exception");
         }
         catch (MethodNotStaticException e) {
@@ -71,20 +71,20 @@ public class MethodUtilTest extends RhnBaseTestCase {
 
     public void testCallMethod() throws Exception {
         String teststr = (String)MethodUtil.callMethod(this, "nonStaticMethod",
-                                                new Object[] {new Integer(1)});
+                                                new Object[] {1});
         assertEquals(TEST_STRING + 1, teststr);
     }
 
     public void testCallMethod2Params() throws Exception {
         String teststr = (String)MethodUtil.callMethod(this, "nonStaticMethod",
-                                 new Object[] {new Integer(1), new Integer(2)});
+                                 new Object[] {1, 2});
         assertEquals(TEST_STRING + 1 + " " + 2, teststr);
     }
 
     public void testCallMethodDoesntExist() throws Exception {
         try {
             MethodUtil.callMethod(this, "nonStaticMethod",
-                  new Object[] {new Integer(1), new Integer(2), new Integer(3)});
+                  new Object[] {1, 2, 3});
             fail("Method shouldn't exist to be called");
         }
         catch (MethodNotFoundException e) {

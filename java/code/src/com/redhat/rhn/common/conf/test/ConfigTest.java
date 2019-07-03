@@ -245,9 +245,9 @@ public class ConfigTest extends RhnBaseTestCase {
     }
 
     public void testGetInteger() throws Exception {
-        assertEquals(new Integer(-10), c.getInteger("prefix.int_minus10"));
-        assertEquals(new Integer(0), c.getInteger("prefix.int_zero"));
-        assertEquals(new Integer(100), c.getInteger("prefix.int_100"));
+        assertEquals(Integer.valueOf(-10), c.getInteger("prefix.int_minus10"));
+        assertEquals(Integer.valueOf(0), c.getInteger("prefix.int_zero"));
+        assertEquals(Integer.valueOf(100), c.getInteger("prefix.int_100"));
         assertNull(c.getInteger(null));
         assertEquals(c.getInt("prefix.int_100"),
                 c.getInteger("prefix.int_100").intValue());
@@ -292,7 +292,7 @@ public class ConfigTest extends RhnBaseTestCase {
         c.setBoolean("prefix.boolean_true", Boolean.FALSE.toString());
         assertFalse(c.getBoolean("prefix.boolean_true"));
         assertEquals("0", c.getString("prefix.boolean_true"));
-        c.setBoolean("prefix.boolean_true", new Boolean(oldValue).toString());
+        c.setBoolean("prefix.boolean_true", Boolean.valueOf(oldValue).toString());
     }
 
     public void testSetString() throws Exception {

@@ -49,7 +49,7 @@ public class RhnSetManagerTest extends RhnBaseTestCase {
      * Looks for an RhnSet for a non-existent user.
      */
     public void testGetByLabelInvalidUser() {
-        RhnSet set = RhnSetManager.findByLabel(new Long(10), "foo", cleanup);
+        RhnSet set = RhnSetManager.findByLabel(10L, "foo", cleanup);
         assertNull(set);
     }
 
@@ -62,7 +62,7 @@ public class RhnSetManagerTest extends RhnBaseTestCase {
         String label = "test_rhn_set_label";
 
         RhnSet set = RhnSetManager.createSet(userId, label, cleanup);
-        set.addElement(new Long(1234), new Long(0));
+        set.addElement(1234L, 0L);
         assertNotNull(set);
         RhnSetManager.store(set);
         assertEquals(1, cleanup.callbacks);
@@ -83,9 +83,9 @@ public class RhnSetManagerTest extends RhnBaseTestCase {
         RhnSet set = RhnSetManager.createSet(userId,
                         "test_rhn_set_label_delete", cleanup);
         // need to add an element to make this work.
-        set.addElement(new Long(1121), new Long(11));
-        set.addElement(new Long(1111), new Long(12));
-        set.addElement(new Long(1111), null);
+        set.addElement(1121L, 11L);
+        set.addElement(1111L, 12L);
+        set.addElement(1111L, null);
         assertNotNull(set);
         assertEquals(3, set.getElements().size());
 
@@ -117,8 +117,8 @@ public class RhnSetManagerTest extends RhnBaseTestCase {
     public void testCreateRemoveRhnSet() {
         RhnSet set = RhnSetManager.createSet(userId,
                         "test_rhn_set_label_remove", cleanup);
-        set.addElement(new Long(42), new Long(10));
-        set.addElement(new Long(423), new Long(324));
+        set.addElement(42L, 10L);
+        set.addElement(423L, 324L);
         assertNotNull(set);
         assertEquals(2, set.getElements().size());
 
@@ -150,41 +150,41 @@ public class RhnSetManagerTest extends RhnBaseTestCase {
 
         //Stores Set with null second element
         RhnSet set = RhnSetManager.createSet(userId, label, cleanup);
-        set.addElement(new Long(31));
-        set.addElement(new Long(464));
+        set.addElement(Long.valueOf(31));
+        set.addElement(Long.valueOf(464));
         RhnSetManager.store(set);
         assertEquals(1, cleanup.callbacks);
 
         //Deletes the previous and stores a new set
         //with one of the same elements
         RhnSet set2 = RhnSetManager.createSet(userId, label, cleanup);
-        set2.addElement(new Long(57));
-        set2.addElement(new Long(464)); //same as above
+        set2.addElement(Long.valueOf(57));
+        set2.addElement(Long.valueOf(464)); //same as above
         RhnSetManager.store(set2);
         assertEquals(2, cleanup.callbacks);
 
         //Deletes the previous and stores a new set
         //with non-null second element
         RhnSet set3 = RhnSetManager.createSet(userId, label, cleanup);
-        set3.addElement(new Long(31), new Long(11));
-        set3.addElement(new Long(464), new Long(236));
+        set3.addElement(31L, 11L);
+        set3.addElement(464L, 236L);
         RhnSetManager.store(set3);
         assertEquals(3, cleanup.callbacks);
 
         //Deletes the previous and stores a new set
         //with one of the same elements
         RhnSet set4 = RhnSetManager.createSet(userId, label, cleanup);
-        set4.addElement(new Long(46), new Long(87));
-        set4.addElement(new Long(31), new Long(11)); //same as above
+        set4.addElement(46L, 87L);
+        set4.addElement(31L, 11L); //same as above
         RhnSetManager.store(set4);
         assertEquals(4, cleanup.callbacks);
 
         //Attempts to store a set with two rows having the
         //same first element or same second element
         RhnSet set5 = RhnSetManager.createSet(userId, label, cleanup);
-        set5.addElement(new Long(75), new Long(87));
-        set5.addElement(new Long(75), new Long(11));
-        set5.addElement(new Long(36), new Long(11));
+        set5.addElement(75L, 87L);
+        set5.addElement(75L, 11L);
+        set5.addElement(36L, 11L);
         RhnSetManager.store(set5);
         assertEquals(5, cleanup.callbacks);
 
@@ -198,16 +198,16 @@ public class RhnSetManagerTest extends RhnBaseTestCase {
 
         // Tests storing something in element 3
         RhnSet set = RhnSetManager.createSet(userId, label, cleanup);
-        set.addElement(new Long(11), new Long(22), new Long(33));
+        set.addElement(11L, 22L, 33L);
         RhnSetManager.store(set);
 
         set = RhnSetManager.findByLabel(userId, label, cleanup);
         assertEquals(1, set.size());
 
         RhnSetElement element = set.getElements().iterator().next();
-        assertEquals(new Long(11), element.getElement());
-        assertEquals(new Long(22), element.getElementTwo());
-        assertEquals(new Long(33), element.getElementThree());
+        assertEquals(Long.valueOf(11), element.getElement());
+        assertEquals(Long.valueOf(22), element.getElementTwo());
+        assertEquals(Long.valueOf(33), element.getElementThree());
     }
 
     public static final class TestSetCleanup extends SetCleanup {

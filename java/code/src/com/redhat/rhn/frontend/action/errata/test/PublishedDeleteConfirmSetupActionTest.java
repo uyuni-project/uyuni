@@ -80,7 +80,7 @@ public class PublishedDeleteConfirmSetupActionTest extends RhnMockStrutsTestCase
         /* Verify that we only got published results back */
         while (i.hasNext()) {
             OwnedErrata e = (OwnedErrata) i.next();
-            assertTrue(e.getPublished().equals(new Integer(1)));
+            assertEquals(1, (int) e.getPublished());
         }
     }
 }

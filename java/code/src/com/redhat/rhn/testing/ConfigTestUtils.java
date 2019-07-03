@@ -63,7 +63,7 @@ public class ConfigTestUtils extends Assert {
         cc.setCreated(new Date());
         cc.setModified(new Date());
         ConfigurationFactory.saveNewConfigChannel(cc);
-        assertTrue(cc.getId().longValue() > 0L);
+        assertTrue(cc.getId() > 0L);
         return cc;
     }
 
@@ -231,12 +231,12 @@ public class ConfigTestUtils extends Assert {
     public static ConfigRevision createConfigRevision(ConfigFile file,
                                                         ConfigFileType type) {
         ConfigInfo info = createConfigInfo();
-        Long revision = new Long(1);
+        Long revision = 1L;
         ConfigContent content = createConfigContent();
         if (!ConfigFileType.dir().equals(type)) {
             content.setContents(null);
             content.setBinary(false);
-            content.setFileSize(new Long(0));
+            content.setFileSize(0L);
         }
         return createConfigRevision(file, content, info, revision, type);
     }
@@ -261,7 +261,7 @@ public class ConfigTestUtils extends Assert {
         ConfigFile file = createConfigFile(org);
         ConfigContent content = createConfigContent();
         ConfigInfo info = createConfigInfo();
-        Long revision = new Long(1);
+        Long revision = 1L;
         return createConfigRevision(file, content, info, revision);
     }
 
@@ -293,7 +293,7 @@ public class ConfigTestUtils extends Assert {
      * @return The newly created ConfigContent.
      */
     public static ConfigContent createConfigContent() {
-        Long size = new Long(0);
+        Long size = 0L;
         return createConfigContent(size, false);
     }
 
@@ -327,7 +327,7 @@ public class ConfigTestUtils extends Assert {
      */
     public static ConfigInfo createConfigInfo() {
         String user = "rhnjava";
-        Long fileMode = new Long(655);
+        Long fileMode = 655L;
         return createConfigInfo(user, user, fileMode);
     }
 

@@ -74,7 +74,6 @@ public class VirtualPoolsControllerTest extends BaseControllerTestCase {
         host.asMinionServer().get().setMinionId("testminion.local");
     }
 
-    @SuppressWarnings("serial")
     public void testData() throws Exception {
         context().checking(new Expectations() {{
             oneOf(saltServiceMock).callSync(

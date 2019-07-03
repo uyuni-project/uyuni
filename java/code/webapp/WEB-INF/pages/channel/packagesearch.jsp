@@ -6,11 +6,11 @@
 
 <html>
     <head>
-        <script type="text/javascript" src="/javascript/highlander.js"></script>
+        <script type="text/javascript" src="/javascript/highlander.js?cb=${rhn:getConfig('web.version')}"></script>
     </head>
     <body>
         <rhn:toolbar base="h1" icon="header-search"
-                     helpUrl="/rhn/help/reference/en-US/ref.webui.channels.search.jsp#ref.webui.channels.search">
+                     helpUrl="/docs/reference/software/software-package-search.html">
             <bean:message key="packagesearch.jsp.toolbar"/>
         </rhn:toolbar>
         <p><bean:message key="packagesearch.jsp.pagesummary"/></p>

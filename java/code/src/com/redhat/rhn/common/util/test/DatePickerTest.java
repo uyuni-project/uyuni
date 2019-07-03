@@ -86,7 +86,7 @@ public class DatePickerTest extends TestCase {
         DatePicker p = makePicker(Locale.ENGLISH);
         Date d = parseDate("1996-08-03T15:33");
         p.setDate(d);
-        p.setMonth(new Integer(13));
+        p.setMonth(13);
         assertNull(p.getDate());
     }
 
@@ -94,7 +94,7 @@ public class DatePickerTest extends TestCase {
         DatePicker p = makePicker(Locale.ENGLISH);
         Date d = parseDate("1996-08-03T15:33");
         p.setDate(d);
-        p.setMonth(new Integer(13));
+        p.setMonth(13);
         assertNull(p.getYear());
     }
 
@@ -113,6 +113,6 @@ public class DatePickerTest extends TestCase {
     }
 
     private void assertEquals(int exp, Integer act) {
-        assertEquals(new Integer(exp), act);
+        assertEquals(Integer.valueOf(exp), act);
     }
 }

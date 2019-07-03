@@ -17,23 +17,6 @@
  */
 package com.redhat.rhn.frontend.xmlrpc.errata;
 
-import static java.util.stream.Collectors.toList;
-import static java.util.stream.Collectors.toSet;
-import static java.util.stream.Collectors.toMap;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
-
 import com.redhat.rhn.FaultException;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
@@ -73,6 +56,24 @@ import com.redhat.rhn.manager.errata.ErrataManager;
 import com.redhat.rhn.manager.errata.cache.ErrataCacheManager;
 import com.redhat.rhn.manager.rhnpackage.PackageManager;
 import com.redhat.rhn.manager.user.UserManager;
+import com.suse.utils.Opt;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
+import java.util.function.Function;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.log4j.Logger;
+
+import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.toMap;
+import static java.util.stream.Collectors.toSet;
 
 
 /**
@@ -412,7 +413,7 @@ public class ErrataHandler extends BaseHandler {
             errata.setAdvisoryName((String)details.get("advisory_name"));
         }
         if (details.containsKey("advisory_release")) {
-            Long rel = new Long((Integer)details.get("advisory_release"));
+            Long rel = Long.valueOf((Integer)details.get("advisory_release"));
             if (rel.longValue() > ErrataManager.MAX_ADVISORY_RELEASE) {
                 throw new InvalidAdvisoryReleaseException(rel.longValue());
             }
@@ -486,7 +487,7 @@ public class ErrataHandler extends BaseHandler {
                     }
 
                     Bug bug = ErrataFactory.createPublishedBug(
-                            new Long((Integer) bugMap.get("id")),
+                            Long.valueOf((Integer) bugMap.get("id")),
                             (String) bugMap.get("summary"), url);
 
                     errata.addBug(bug);
@@ -817,7 +818,7 @@ public class ErrataHandler extends BaseHandler {
         int packagesAdded = 0;
         for (Integer packageId : packageIds) {
 
-            Package pkg = PackageManager.lookupByIdAndUser(new Long(packageId),
+            Package pkg = PackageManager.lookupByIdAndUser(Long.valueOf(packageId),
                     loggedInUser);
 
             if ((pkg != null) && (!errata.getPackages().contains(pkg))) {
@@ -867,7 +868,7 @@ public class ErrataHandler extends BaseHandler {
         int packagesRemoved = 0;
         for (Integer packageId : packageIds) {
 
-            Package pkg = PackageManager.lookupByIdAndUser(new Long(packageId),
+            Package pkg = PackageManager.lookupByIdAndUser(Long.valueOf(packageId),
                     loggedInUser);
 
             if ((pkg != null) && (errata.getPackages().contains(pkg))) {
@@ -922,8 +923,20 @@ public class ErrataHandler extends BaseHandler {
     private Errata lookupErratumByAdvisoryAndOrg(String advisoryName, Org org) throws FaultException {
         List<Errata> erratas = lookupVendorAndUserErrataByAdvisoryAndOrg(advisoryName, org);
 
-       return erratas.stream().filter(e -> e.getOrg().getId() == org.getId())
-                .findFirst().orElse(erratas.stream().findFirst().orElse(null));
+        return Opt.fold(
+                Optional.ofNullable(erratas),
+                null, // no errata found
+                r -> Opt.fold(
+                        r.stream().filter(e ->
+                                Opt.fold(Optional.ofNullable(e.getOrg()),
+                                        () -> false, // filter out vendor's erratas
+                                        o -> o.getId() == org.getId() // filter in only user's erratas
+                                )
+                        ).findFirst(),
+                        () -> erratas.stream().findFirst().get(),  // no user's errata, get the vendor's one
+                        Function.identity()
+                )
+        );
     }
 
     /**
@@ -1270,7 +1283,7 @@ public class ErrataHandler extends BaseHandler {
         newErrata.setSynopsis(synopsis);
         newErrata.setAdvisory(advisoryName + "-" + advisoryRelease.toString());
         newErrata.setAdvisoryName(advisoryName);
-        newErrata.setAdvisoryRel(new Long(advisoryRelease.longValue()));
+        newErrata.setAdvisoryRel(advisoryRelease.longValue());
 
         if (advisoryType.equals("Security Advisory") ||
                 advisoryType.equals("Product Enhancement Advisory") ||
@@ -1304,7 +1317,7 @@ public class ErrataHandler extends BaseHandler {
             }
 
             Bug bug = ErrataFactory.createPublishedBug(
-                    new Long(((Integer)bugMap.get("id")).longValue()),
+                    ((Integer)bugMap.get("id")).longValue(),
                     (String)bugMap.get("summary"), url);
             newErrata.addBug(bug);
         }
@@ -1316,7 +1329,7 @@ public class ErrataHandler extends BaseHandler {
         newErrata.setPackages(new HashSet());
         for (Iterator<Integer> itr = packageIds.iterator(); itr.hasNext();) {
             Integer pid = itr.next();
-            Package pack = PackageFactory.lookupByIdAndOrg(new Long(pid.longValue()),
+            Package pack = PackageFactory.lookupByIdAndOrg(pid.longValue(),
                     loggedInUser.getOrg());
             if (pack != null) {
                 newErrata.addPackage(pack);
@@ -1375,7 +1388,7 @@ public class ErrataHandler extends BaseHandler {
     public Errata publish(User loggedInUser, String advisory, List<String> channelLabels)
             throws InvalidChannelRoleException {
         List<Channel> channels = verifyChannelList(channelLabels, loggedInUser);
-        Errata toPublish = lookupErrata(advisory, loggedInUser.getOrg());
+        Errata toPublish = lookupErratumByAdvisoryAndOrg(advisory, loggedInUser.getOrg());
         return publish(toPublish, channels, loggedInUser, false);
     }
 

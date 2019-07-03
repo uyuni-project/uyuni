@@ -33,6 +33,7 @@ import com.redhat.rhn.domain.channel.ChannelFamily;
 import com.redhat.rhn.domain.channel.ChannelFamilyFactory;
 import com.redhat.rhn.domain.channel.ChannelVersion;
 import com.redhat.rhn.domain.channel.ClonedChannel;
+import com.redhat.rhn.domain.channel.ContentSourceType;
 import com.redhat.rhn.domain.channel.DistChannelMap;
 import com.redhat.rhn.domain.channel.InvalidChannelRoleException;
 import com.redhat.rhn.domain.channel.ProductName;
@@ -76,7 +77,6 @@ import com.redhat.rhn.manager.user.UserManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 import com.redhat.rhn.taskomatic.task.TaskConstants;
-
 import com.suse.manager.webui.services.SaltStateGeneratorService;
 import com.suse.utils.Opt;
 import org.apache.commons.lang3.StringUtils;
@@ -138,7 +138,7 @@ public class ChannelManager extends BaseManager {
      * Key used to identify the rhn-tools channel.  Used in searches to find the channel
      */
     public static final String TOOLS_CHANNEL_PACKAGE_NAME =
-        Config.get().getString("tools_channel.package_name", "rhncfg");
+        Config.get().getString("tools_channel.package_name", "mgr-cfg");
 
 
     /**
@@ -153,7 +153,7 @@ public class ChannelManager extends BaseManager {
      */
     public static final String RHN_VIRT_HOST_PACKAGE_NAME =
         Config.get().getString("tools_channel.virt_package_name",
-                "rhn-virtualization-host");
+                "mgr-virtualization-host");
 
     /**
      * OS name for the virt child channel.  rhnDistChannelMap.OS field.
@@ -188,10 +188,8 @@ public class ChannelManager extends BaseManager {
      */
     public static void refreshWithNewestPackages(Long channelId, String label) {
         Channel chan = ChannelFactory.lookupById(channelId);
-         ChannelFactory.refreshNewestPackageCache(channelId, label);
-         if (chan != null) {
-             ChannelManager.queueChannelChange(chan.getLabel(), label, label);
-         }
+        ChannelFactory.refreshNewestPackageCache(channelId, label);
+        ofNullable(chan).ifPresent(c -> ChannelManager.queueChannelChange(chan.getLabel(), label, label));
     }
 
     /**
@@ -1505,7 +1503,7 @@ public class ChannelManager extends BaseManager {
         Map<String, Object> inParams = new HashMap<String, Object>();
         inParams.put("server_id", s.getId());
         Map<String, Integer> outParams = new HashMap<String, Integer>();
-        outParams.put("result", new Integer(Types.NUMERIC));
+        outParams.put("result", Types.NUMERIC);
         Map<String, Object> result = sbm.execute(inParams, outParams);
 
         Optional<Channel> guessedChannel = Opt.fold(ofNullable((Long) result.get("result")),
@@ -2510,7 +2508,7 @@ public class ChannelManager extends BaseManager {
                 "/pub");
         File theFile = new File(mountPoint + File.separator + pathPrefix +
                 File.separator + channel.getLabel() + File.separator +
-                "repomd.xml");
+                (channel.isTypeDeb() ? "Release" : "repomd.xml"));
         if (!theFile.exists()) {
             // No repo file, dont bother computing build date
             return null;
@@ -2817,4 +2815,22 @@ public class ChannelManager extends BaseManager {
                 }));
     }
 
+    /**
+     * Return a compatible Content Source Type for a given Channel Arch
+     * @param cArch the channel architecture
+     * @return content source type
+     */
+    public static ContentSourceType findCompatibleContentSourceType(ChannelArch cArch) {
+        ContentSourceType cType = null;
+        switch (cArch.getArchType().getLabel()) {
+        case "deb":
+            cType = ChannelFactory.lookupContentSourceType("deb");
+            break;
+
+        default:
+            cType = ChannelFactory.lookupContentSourceType("yum");
+            break;
+        }
+        return cType;
+    }
 }

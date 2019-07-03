@@ -224,7 +224,7 @@ public class CrashHandler extends BaseHandler {
      */
     public List listSystemCrashFiles(User loggedInUser, Integer crashId) {
         Crash crash = CrashManager.lookupCrashByUserAndId(loggedInUser,
-                      new Long(crashId.longValue()));
+                crashId.longValue());
 
         List returnList = new ArrayList();
 
@@ -255,7 +255,7 @@ public class CrashHandler extends BaseHandler {
      * @xmlrpc.returntype #return_int_success()
      */
     public Integer deleteCrash(User loggedInUser, Integer crashId) {
-        CrashManager.deleteCrash(loggedInUser, new Long(crashId.longValue()));
+        CrashManager.deleteCrash(loggedInUser, crashId.longValue());
         return 1;
     }
 
@@ -272,7 +272,7 @@ public class CrashHandler extends BaseHandler {
      */
     public String getCrashFileUrl(User loggedInUser, Integer crashFileId) {
         CrashFile crashFile = CrashManager.lookupCrashFileByUserAndId(loggedInUser,
-                              new Long(crashFileId.longValue()));
+                crashFileId.longValue());
 
        return RhnXmlRpcServer.getProtocol() + "://" +
             RhnXmlRpcServer.getServerName() +
@@ -293,7 +293,7 @@ public class CrashHandler extends BaseHandler {
      */
     public byte[] getCrashFile(User loggedInUser, Integer crashFileId) throws IOException {
         CrashFile crashFile = CrashManager.lookupCrashFileByUserAndId(loggedInUser,
-                              new Long(crashFileId.longValue()));
+                crashFileId.longValue());
         String path = Config.get().getString(ConfigDefaults.MOUNT_POINT) + "/" +
                       crashFile.getCrash().getStoragePath() + "/" +
                       crashFile.getFilename();

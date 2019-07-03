@@ -37,14 +37,15 @@ SCRIPTS = rhn-config-satellite.pl \
                rhn-generate-pem.pl \
                mgr-events-config.py
 
-SBIN_SCRIPTS = rhn-sat-restart-silent spacewalk-service spacewalk-startup-helper
+SBIN_SCRIPTS = rhn-sat-restart-silent spacewalk-service spacewalk-startup-helper mgr-monitoring-ctl
 
 CONF_FILES = service-list
 
 GPGKEY_FILES = RHN-GPG-KEY
 
 SYSTEMD_FILES = spacewalk.target spacewalk-wait-for-tomcat.service spacewalk-wait-for-salt.service \
-		spacewalk-wait-for-jabberd.service spacewalk-wait-for-taskomatic.service mgr-events-config.service
+		spacewalk-wait-for-jabberd.service spacewalk-wait-for-taskomatic.service mgr-events-config.service \
+		mgr-websockify.service
 
 BIN_INSTALL    = install -m 755
 CONF_INSTALL   = install -m 644

@@ -37,7 +37,6 @@ import com.redhat.rhn.testing.UserTestUtils;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 
@@ -104,7 +103,7 @@ public class ServerTest extends BaseTestCaseWithUser {
 
     public void testNetworkInterfaces() throws Exception {
         Server s = ServerTestUtils.createTestSystem(user);
-        NetworkInterface device = NetworkInterfaceTest.createTestNetworkInterface(s);
+        NetworkInterfaceTest.createTestNetworkInterface(s);
         s = TestUtils.saveAndReload(s);
         Server s2 = ServerTestUtils.createTestSystem(user);
         s2 = TestUtils.saveAndReload(s2);
@@ -149,6 +148,28 @@ public class ServerTest extends BaseTestCaseWithUser {
     /**
      * Test for {@link Server#doesOsSupportsOSImageBuilding()}.
      */
+    public void testOsSupportsMonitoring() throws Exception {
+        Server s = ServerFactoryTest.createTestServer(user, true,
+                ServerConstants.getServerGroupTypeSaltEntitled(),
+                ServerFactoryTest.TYPE_SERVER_MINION);
+        s.setOs("SLES");
+        s.setRelease("12.1");
+        assertTrue(s.doesOsSupportsMonitoring());
+    }
+    /**
+     * Test for {@link Server#doesOsSupportsOSImageBuilding()}.
+     */
+    public void testOsSupportsMonitoringLeap() throws Exception {
+        Server s = ServerFactoryTest.createTestServer(user, true,
+                ServerConstants.getServerGroupTypeSaltEntitled(),
+                ServerFactoryTest.TYPE_SERVER_MINION);
+        s.setOs("Leap");
+        s.setRelease("15.0");
+        assertTrue(s.doesOsSupportsMonitoring());
+    }
+    /**
+     * Test for {@link Server#doesOsSupportsOSImageBuilding()}.
+     */
     public void testOsDoesNotSupportsOSImageBuilding() throws Exception {
         Server s = ServerFactoryTest.createTestServer(user, true,
                 ServerConstants.getServerGroupTypeSaltEntitled(),
@@ -157,7 +178,17 @@ public class ServerTest extends BaseTestCaseWithUser {
         s.setRelease("11.4");
         assertFalse(s.doesOsSupportsContainerization());
     }
-
+    /**
+     * Test for {@link Server#doesOsSupportsOSImageBuilding()}.
+     */
+    public void testOsDoesNotSupportsMonitoring() throws Exception {
+        Server s = ServerFactoryTest.createTestServer(user, true,
+                ServerConstants.getServerGroupTypeSaltEntitled(),
+                ServerFactoryTest.TYPE_SERVER_MINION);
+        s.setOs("Ubuntu");
+        s.setRelease("18.04");
+        assertFalse(s.doesOsSupportsMonitoring());
+    }
     public void testGetIpAddress() throws Exception {
         Server s = ServerTestUtils.createTestSystem(user);
         assertNull(s.getIpAddress());
@@ -166,19 +197,19 @@ public class ServerTest extends BaseTestCaseWithUser {
         String hwAddr = "AA:AA:BB:BB:CC:CC";
         String ipAddr = "172.31.1.102";
 
-        NetworkInterface aaa = NetworkInterfaceTest.createTestNetworkInterface(s, "aaa",
+        NetworkInterfaceTest.createTestNetworkInterface(s, "aaa",
                 ipAddr, hwAddr);
 
-        NetworkInterface bbb = NetworkInterfaceTest.createTestNetworkInterface(s, "bbb",
+        NetworkInterfaceTest.createTestNetworkInterface(s, "bbb",
                 ipAddr, hwAddr);
 
-        NetworkInterface zzz = NetworkInterfaceTest.createTestNetworkInterface(s, "zzz",
+        NetworkInterfaceTest.createTestNetworkInterface(s, "zzz",
                 ipAddr, hwAddr);
 
-        NetworkInterface eth0 = NetworkInterfaceTest.createTestNetworkInterface(s, "eth0",
+        NetworkInterfaceTest.createTestNetworkInterface(s, "eth0",
                 ipAddr, hwAddr);
 
-        NetworkInterface eth1 = NetworkInterfaceTest.createTestNetworkInterface(s, "eth1",
+        NetworkInterfaceTest.createTestNetworkInterface(s, "eth1",
                 ipAddr, hwAddr);
 
         s = TestUtils.saveAndReload(s);

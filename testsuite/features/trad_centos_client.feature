@@ -16,8 +16,8 @@ Feature: Be able to register a CentOS 7 traditional client and do some basic ope
     And I follow "Delete System"
     Then I should see a "Confirm System Profile Deletion" text
     When I click on "Delete Profile"
-    Then I should see a "has been deleted" text
-    And "ceos-ssh-minion" should not be registered
+    And I wait until I see "has been deleted" text
+    Then "ceos-ssh-minion" should not be registered
 
 @centos_minion
   Scenario: Prepare a CentOS 7 traditional client
@@ -97,9 +97,10 @@ Feature: Be able to register a CentOS 7 traditional client and do some basic ope
   Scenario: Cleanup: delete the CentOS 7 traditional client
     Given I am on the Systems overview page of this "ceos-client"
     When I follow "Delete System"
-    And I should see a "Confirm System Profile Deletion" text
-    And I click on "Delete Profile"
+    Then I should see a "Confirm System Profile Deletion" text
+    When I click on "Delete Profile"
     And I wait until I see "has been deleted." text
+    Then "ceos-client" should not be registered
 
 @centos_minion
   Scenario: Cleanup: bootstrap a SSH-managed CentOS minion

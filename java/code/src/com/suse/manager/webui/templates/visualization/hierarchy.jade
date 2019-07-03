@@ -1,6 +1,6 @@
 include ../common.jade
 
-script(src='/javascript/d3.js', type='text/javascript')
+script(src='/javascript/d3.js?cb=#{webVersion}', type='text/javascript')
 
 #hierarchy
 
@@ -10,4 +10,4 @@ script(type='text/javascript').
     const title = "#{title}";
     const view = "#{view}";
 
-script(src='/javascript/manager/visualization/hierarchy.bundle.js', type='text/javascript')
+script(src='/javascript/manager/visualization/hierarchy.bundle.js?cb=#{webVersion}', type='text/javascript')

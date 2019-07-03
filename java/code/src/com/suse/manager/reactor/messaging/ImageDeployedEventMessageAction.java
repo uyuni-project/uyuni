@@ -17,6 +17,7 @@ package com.suse.manager.reactor.messaging;
 
 import com.redhat.rhn.common.messaging.EventMessage;
 import com.redhat.rhn.common.messaging.MessageAction;
+import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.token.ActivationKey;
@@ -75,6 +76,11 @@ public class ImageDeployedEventMessageAction implements MessageAction {
             LOG.info("System image of minion id '" + m.getId() + "' has changed. Re-applying activation key," +
                     " subscribing to channels and executing post-registration tasks.");
             ValueMap grains = imageDeployedEvent.getGrains();
+
+            grains.getOptionalAsString("osarch").ifPresent(osarch -> {
+                m.setServerArch(ServerFactory.lookupServerArchByLabel(osarch + "-redhat-linux"));
+            });
+
             Optional<String> activationKeyLabel = grains
                     .getMap("susemanager")
                     .flatMap(suma -> suma.getOptionalAsString("activation_key"));

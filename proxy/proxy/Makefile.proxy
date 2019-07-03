@@ -1,6 +1,8 @@
 # Makefile for building Spacewalk Proxy snapshots
 #
 
+.DEFAULT_GOAL  :=  all
+
 TOP	= .
 
 SUBDIR  = proxy

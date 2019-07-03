@@ -39,7 +39,7 @@ import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.content.ContentSyncException;
 import com.redhat.rhn.manager.content.ContentSyncManager;
-import com.redhat.rhn.manager.content.StaticInfoEntry;
+import com.redhat.rhn.manager.content.ProductTreeEntry;
 import com.redhat.rhn.testing.ChannelTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 
@@ -57,7 +57,6 @@ import org.hibernate.Session;
 
 import java.io.File;
 import java.io.InputStreamReader;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
@@ -291,7 +290,7 @@ public class SUSEProductTestUtils extends HibernateFactory {
         InputStreamReader inputStreamReader3 = new InputStreamReader(ContentSyncManager.class.getResourceAsStream(testDataPath + "channel_families.json"));
         List<ChannelFamilyJson> channelFamilies = gson.fromJson(inputStreamReader3, new TypeToken<List<ChannelFamilyJson>>() {}.getType());
         InputStreamReader inputStreamReader4 = new InputStreamReader(ContentSyncManager.class.getResourceAsStream(testDataPath + "product_tree.json"));
-        List<StaticInfoEntry> staticTree = JsonParser.GSON.fromJson(inputStreamReader4, new TypeToken<List<StaticInfoEntry>>() {}.getType());
+        List<ProductTreeEntry> staticTree = JsonParser.GSON.fromJson(inputStreamReader4, new TypeToken<List<ProductTreeEntry>>() {}.getType());
         InputStreamReader inputStreamReader5 = new InputStreamReader(ContentSyncManager.class.getResourceAsStream(testDataPath + "repositories.json"));
         List<SCCRepositoryJson> repositories = gson.fromJson(inputStreamReader5, new TypeToken<List<SCCRepositoryJson>>() {}.getType());
 
@@ -386,6 +385,30 @@ public class SUSEProductTestUtils extends HibernateFactory {
         product.setVersion("1.2");
         product.setFriendlyName("SUSE Manager Prov Single 1.2");
         product.setProductId(1097);
+        product.setReleaseStage(ReleaseStage.released);
+        TestUtils.saveAndFlush(product);
+
+        product = new SUSEProduct();
+        product.setName("suse-manager-mon-single");
+        product.setVersion("1.2");
+        product.setFriendlyName("SUSE Manager Monitoring Single 1.2");
+        product.setProductId(1201);
+        product.setReleaseStage(ReleaseStage.released);
+        TestUtils.saveAndFlush(product);
+
+        product = new SUSEProduct();
+        product.setName("suse-manager-mon-unlimited-virtual");
+        product.setVersion("1.2");
+        product.setFriendlyName("SUSE Manager Monitoring Unlimited Virtual 1.2");
+        product.setProductId(1202);
+        product.setReleaseStage(ReleaseStage.released);
+        TestUtils.saveAndFlush(product);
+
+        product = new SUSEProduct();
+        product.setName("suse-manager-mon-unlimited-virtual-z");
+        product.setVersion("1.2");
+        product.setFriendlyName("SUSE Manager Monitoring Unlimited Virtual Z 1.2");
+        product.setProductId(1203);
         product.setReleaseStage(ReleaseStage.released);
         TestUtils.saveAndFlush(product);
     }

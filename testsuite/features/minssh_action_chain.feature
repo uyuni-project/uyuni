@@ -1,4 +1,4 @@
-# Copyright (c) 2018 SUSE LLC
+# Copyright (c) 2018-2019 SUSE LLC
 # Licensed under the terms of the MIT license.
 #
 # This feature is not tested if there is no SSH minion running
@@ -16,12 +16,10 @@ Feature: Salt SSH action chain
     And I run "zypper -n ref" on "ssh-minion"
 
 @ssh_minion
-  Scenario: Pre-requisite: refresh package list
-    Given I am on the Systems overview page of this "ssh-minion"
-    When I follow "Software" in the content area
-    And I click on "Update Package List"
-    And I follow "Events" in the content area
-    And I wait until I do not see "Package List Refresh scheduled by admin" text, refreshing the page
+  Scenario: Pre-requisite: refresh package list and check newly installed packages on SSH minion
+    When I refresh packages list via spacecmd on "ssh-minion"
+    And I wait until refresh package list on "ssh-minion" is finished
+    Then spacecmd should show packages "milkyway-dummy andromeda-dummy-1.0" installed on "ssh-minion"
 
 @ssh_minion
   Scenario: Pre-requisite: wait until downgrade is finished
@@ -34,8 +32,7 @@ Feature: Salt SSH action chain
 @ssh_minion
   Scenario: Pre-requisite: ensure the errata cache is computed before testing on SSH minion
     Given I am authorized as "admin" with password "admin"
-    When I follow "Admin"
-    And I follow "Task Schedules"
+    When I follow the left menu "Admin > Task Schedules"
     And I follow "errata-cache-default"
     And I follow "errata-cache-bunch"
     And I click on "Single Run Schedule"
@@ -86,9 +83,7 @@ Feature: Salt SSH action chain
 @ssh_minion
   Scenario: Create a configuration channel for testing action chain on SSH minion
     Given I am authorized as "admin" with password "admin"
-    When I follow "Home" in the left menu
-    And I follow "Configuration" in the left menu
-    And I follow "Channels" in the left menu
+    When I follow the left menu "Configuration > Channels"
     And I follow "Create Config Channel"
     And I enter "Action Chain Channel" as "cofName"
     And I enter "actionchainchannel" as "cofLabel"
@@ -99,9 +94,7 @@ Feature: Salt SSH action chain
 @ssh_minion
   Scenario: Add a configuration file to configuration channel for testing action chain on SSH minion
     Given I am authorized as "admin" with password "admin"
-    When I follow "Home" in the left menu
-    And I follow "Configuration" in the left menu
-    And I follow "Channels" in the left menu
+    When I follow the left menu "Configuration > Channels"
     And I follow "Action Chain Channel"
     And I follow "Create Configuration File or Directory"
     And I enter "/etc/action-chain.cnf" as "cffPath"
@@ -112,12 +105,8 @@ Feature: Salt SSH action chain
 
 @ssh_minion
   Scenario: Subscribe system to configuration channel for testing action chain on SSH minion
-    Given I am authorized as "admin" with password "admin"
-    When I follow "Home" in the left menu
-    And I follow "Systems" in the left menu
-    And I follow "Overview" in the left menu
-    And I follow this "ssh-minion" link
-    And I follow "Configuration" in the content area
+    Given I am on the Systems overview page of this "ssh-minion"
+    When I follow "Configuration" in the content area
     And I follow "Manage Configuration Channels" in the content area
     And I follow first "Subscribe to Channels" in the content area
     And I check "Action Chain Channel" in the list
@@ -128,9 +117,7 @@ Feature: Salt SSH action chain
 @ssh_minion
   Scenario: Add a configuration file deployment to the action chain on SSH minion
     Given I am authorized as "admin" with password "admin"
-    When I follow "Home" in the left menu
-    And I follow "Configuration" in the left menu
-    And I follow "Channels" in the left menu
+    When I follow the left menu "Configuration > Channels"
     And I follow "Action Chain Channel"
     And I follow "Deploy Files" in the content area
     And I click on "Deploy All Files"
@@ -171,8 +158,7 @@ Feature: Salt SSH action chain
 @ssh_minion
   Scenario: Verify the action chain list on SSH minion
     Given I am on the Systems overview page of this "ssh-minion"
-    When I follow "Schedule"
-    And I follow "Action Chains"
+    When I follow the left menu "Schedule > Action Chains"
     And I follow "new action chain"
     Then I should see a "1. Apply patch(es) andromeda-dummy-6789 on 1 system" text
     And I should see a "2. Remove milkyway-dummy from 1 system" text
@@ -185,15 +171,13 @@ Feature: Salt SSH action chain
 @ssh_minion
   Scenario: Check that a different user cannot see the action chain for SSH minion
     Given I am authorized as "testing" with password "testing"
-    When I follow "Schedule"
-    And I follow "Action Chains"
+    When I follow the left menu "Schedule > Action Chains"
     Then I should not see a "new action chain" link
 
 @ssh_minion
   Scenario: Execute the action chain from the web UI on SSH minion
     Given I am on the Systems overview page of this "ssh-minion"
-    When I follow "Schedule"
-    And I follow "Action Chains"
+    When I follow the left menu "Schedule > Action Chains"
     And I follow "new action chain"
     Then I click on "Save and Schedule"
     And I should see a "Action Chain new action chain has been scheduled for execution." text
@@ -219,8 +203,7 @@ Feature: Salt SSH action chain
 @ssh_minion
   Scenario: Delete the action chain for SSH minion
     Given I am authorized as "admin" with password "admin"
-    When I follow "Schedule"
-    And I follow "Action Chains"
+    When I follow the left menu "Schedule > Action Chains"
     And I follow "new action chain"
     And I follow "delete action chain" in the content area
     Then I click on "Delete"
@@ -241,8 +224,7 @@ Feature: Salt SSH action chain
     And I follow "List / Remove" in the content area
     And I enter "andromeda-dummy" in the css "input[placeholder='Filter by Package Name: ']"
     And I click on the css "button.spacewalk-button-filter" until page does contain "andromeda-dummy-1.0" text
-    And I follow "Admin"
-    And I follow "Task Schedules"
+    When I follow the left menu "Admin > Task Schedules"
     And I follow "errata-cache-default"
     And I follow "errata-cache-bunch"
     And I click on "Single Run Schedule"
@@ -283,9 +265,7 @@ Feature: Salt SSH action chain
 @ssh_minion
   Scenario: Cleanup: remove Salt client from configuration channel
     Given I am authorized as "admin" with password "admin"
-    And I follow "Home" in the left menu
-    When I follow "Configuration" in the left menu
-    And I follow "Channels" in the left menu
+    When I follow the left menu "Configuration > Channels"
     And I follow "Action Chain Channel"
     And I follow "Systems" in the content area
     And I check the "ssh-minion" client
@@ -295,9 +275,7 @@ Feature: Salt SSH action chain
 @ssh_minion
   Scenario: Cleanup: remove configuration channel for SSH minion
     Given I am authorized as "admin" with password "admin"
-    When I follow "Home" in the left menu
-    And I follow "Configuration" in the left menu
-    And I follow "Channels" in the left menu
+    When I follow the left menu "Configuration > Channels"
     And I follow "Action Chain Channel"
     And I follow "Delete Channel"
     And I click on "Delete Config Channel"

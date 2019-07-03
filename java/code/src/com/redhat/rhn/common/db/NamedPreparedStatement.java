@@ -87,7 +87,7 @@ public final class NamedPreparedStatement {
             if (lst == null) {
                 lst = new ArrayList<Integer>();
             }
-            lst.add(new Integer(variableNumber));
+            lst.add(variableNumber);
             parameterMap.put(name, lst);
 
             idx = findColon(idx + 1 , sql);
@@ -187,7 +187,7 @@ public final class NamedPreparedStatement {
                 Integer pos = positions.next();
                 try {
                     Object value = map.get(name);
-                    ps.setObject(pos.intValue(), value);
+                    ps.setObject(pos, value);
                 }
                 catch (SQLException e) {
                     throw SqlExceptionTranslator.sqlException(e);
@@ -211,7 +211,7 @@ public final class NamedPreparedStatement {
                     // Integers, and the caller is responsible for inserting
                     // the Integer object.
                     Integer type = map.get(name);
-                    cs.registerOutParameter(pos.intValue(), type.intValue());
+                    cs.registerOutParameter(pos, type);
                 }
                 catch (SQLException e) {
                     throw SqlExceptionTranslator.sqlException(e);

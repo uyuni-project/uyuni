@@ -118,7 +118,7 @@ public class AddPackagesAction extends RhnAction implements Listable {
         }
         else {
             // Packages from a specific channel should be displayed
-            Long cid = new Long(viewChannel);
+            Long cid = Long.valueOf(viewChannel);
             result =
                 PackageManager.packagesAvailableToErrataInChannel(errata, cid, user);
         }

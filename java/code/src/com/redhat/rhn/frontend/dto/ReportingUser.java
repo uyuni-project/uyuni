@@ -58,7 +58,7 @@ public class ReportingUser {
      * @return id as a Long
      */
     public Long idAsLong() {
-        return new Long(id.longValue());
+        return id;
     }
 
 

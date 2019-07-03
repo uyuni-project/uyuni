@@ -42,6 +42,7 @@ import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.frontend.dto.ServerPath;
 import com.redhat.rhn.manager.system.SystemManager;
+import com.redhat.rhn.taskomatic.task.checkin.SystemSummary;
 import com.redhat.rhn.taskomatic.task.threaded.QueueWorker;
 import com.redhat.rhn.taskomatic.task.threaded.TaskQueue;
 
@@ -70,7 +71,7 @@ public class SSHPushWorker implements QueueWorker {
 
     private String sudoUser;
     private Logger log;
-    private SSHPushSystem system;
+    private SystemSummary system;
     private int remotePort;
     private String localhost;
     private TaskQueue parentQueue;
@@ -85,7 +86,7 @@ public class SSHPushWorker implements QueueWorker {
      * @param port High port to use for remote port forwarding
      * @param s the system to work with
      */
-    public SSHPushWorker(Logger logger, int port, SSHPushSystem s) {
+    public SSHPushWorker(Logger logger, int port, SystemSummary s) {
         remotePort = port;
         system = s;
 
@@ -149,7 +150,7 @@ public class SSHPushWorker implements QueueWorker {
                        }
                        else {
                            // Load the proxy server object to determine the IP address
-                           Server proxyServer = (Server) HibernateFactory.getSession()
+                           Server proxyServer = HibernateFactory.getSession()
                                    .load(Server.class, path.getId());
                            proxyHost = proxyServer.getIpAddress();
                        }
@@ -172,7 +173,7 @@ public class SSHPushWorker implements QueueWorker {
             parentQueue.workerStarting();
 
             // Get the client's hostname or address
-            Server server = (Server) HibernateFactory.getSession().load(
+            Server server = HibernateFactory.getSession().load(
                     Server.class, system.getId());
             if (Config.get().getBoolean(CONFIG_KEY_USE_HOSTNAME)) {
                 client = server.getHostname();

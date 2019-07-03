@@ -78,7 +78,6 @@ public class CobblerDistroCreateCommand extends CobblerDistroCommand {
         CobblerDistroHelper.getInstance().createDistroFromTree(
                 CobblerXMLRPCHelper.getConnection(user),
                 tree);
-        invokeCobblerUpdate();
 
         if (tree.doesParaVirt()) {
             CobblerDistroHelper.getInstance().createXenDistroFromTree(

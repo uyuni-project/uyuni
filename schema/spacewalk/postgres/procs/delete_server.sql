@@ -1,4 +1,4 @@
--- oracle equivalent source sha1 fd94e729c11d95eceeb13e45d412e1721823c1b7
+-- oracle equivalent source sha1 c6a0dcf82b269815f553274070eccbc70d519e85
 --
 -- Copyright (c) 2008--2012 Red Hat, Inc.
 --
@@ -132,6 +132,15 @@ begin
                new_host_system_id = case when new_host_system_id = server_id_in then null else new_host_system_id end
          where old_host_system_id = server_id_in
             or new_host_system_id = server_id_in;
+
+        -- archive related actions, only if they have no other servers assigned
+        update rhnAction set archived = 1 where id in (
+            select action_id from rhnServerAction sa
+            where not exists (
+                select server_id from rhnServerAction
+                where action_id = sa.action_id and server_id != server_id_in
+            )
+        );
 
         -- We're deleting everything with a foreign key to rhnServer
         -- here, now.  I'm hoping this will help aleviate our deadlock

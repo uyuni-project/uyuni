@@ -105,6 +105,9 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import static com.redhat.rhn.manager.channel.CloneChannelCommand.CloneBehavior.CURRENT_STATE;
+import static com.redhat.rhn.manager.channel.CloneChannelCommand.CloneBehavior.ORIGINAL_STATE;
+
 /**
  * ChannelSoftwareHandler
  * @version $Rev$
@@ -842,7 +845,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
      * @xmlrpc.param #param_desc("string", "summary" "summary of the channel")
      * @xmlrpc.param #param_desc("string", "archLabel",
      *              "the label of the architecture the channel corresponds to,
-     *              see channel.software.listArches API for complete listing")
+     *              run channel.software.listArches API for complete listing")
      * @xmlrpc.param #param_desc("string", "parentLabel", "label of the parent of this
      *              channel, an empty string if it does not have one")
      * @xmlrpc.param #param_desc("string", "checksumType", "checksum type for this channel,
@@ -919,7 +922,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
      * @xmlrpc.param #param_desc("string", "summary" "summary of the channel")
      * @xmlrpc.param #param_desc("string", "archLabel",
      *              "the label of the architecture the channel corresponds to,
-     *              see channel.software.listArches API for complete listing")
+     *              run channel.software.listArches API for complete listing")
      * @xmlrpc.param #param_desc("string", "parentLabel", "label of the parent of this
      *              channel, an empty string if it does not have one")
      * @xmlrpc.param #param_desc("string", "checksumType", "checksum type for this channel,
@@ -975,7 +978,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
      * @xmlrpc.param #param_desc("string", "summary" "summary of the channel")
      * @xmlrpc.param #param_desc("string", "archLabel",
      *              "the label of the architecture the channel corresponds to,
-     *              see channel.software.listArches API for complete listing")
+     *              run channel.software.listArches API for complete listing")
      * @xmlrpc.param #param_desc("string", "parentLabel", "label of the parent of this
      *              channel, an empty string if it does not have one")
      * @xmlrpc.param #param_desc("string", "checksumType", "checksum type for this channel,
@@ -1024,7 +1027,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
      * @xmlrpc.param #param_desc("string", "summary" "summary of the channel")
      * @xmlrpc.param #param_desc("string", "archLabel",
      *              "the label of the architecture the channel corresponds to,
-     *              see channel.software.listArches API for complete listing")
+     *              run channel.software.listArches API for complete listing")
      * @xmlrpc.param #param_desc("string", "parentLabel", "label of the parent of this
      *              channel, an empty string if it does not have one")
      * @xmlrpc.returntype int - 1 if the creation operation succeeded, 0 otherwise
@@ -1974,7 +1977,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
     private Channel lookupChannelById(User user, Long id)
         throws NoSuchChannelException {
 
-        Channel channel = ChannelManager.lookupByIdAndUser(new Long(id), user);
+        Channel channel = ChannelManager.lookupByIdAndUser(id, user);
         if (channel == null) {
             throw new NoSuchChannelException(id);
         }
@@ -2025,7 +2028,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
      */
     @Deprecated
     public int subscribeSystem(User loggedInUser, Integer sid, List<String> labels) {
-        Server server = SystemManager.lookupByIdAndUser(new Long(sid.longValue()),
+        Server server = SystemManager.lookupByIdAndUser(sid.longValue(),
                 loggedInUser);
 
 
@@ -2047,14 +2050,14 @@ public class ChannelSoftwareHandler extends BaseHandler {
                 throw new MultipleBaseChannelException(base.getLabel(), label);
             }
             else {
-                childChannelIds.add(new Integer(channel.getId().intValue()));
+                childChannelIds.add(channel.getId().intValue());
             }
         }
         SystemHandler sysHandler = new SystemHandler();
         if (base != null) {
 
             sysHandler.setBaseChannel(loggedInUser, sid,
-                    new Integer(base.getId().intValue()));
+                    base.getId().intValue());
         }
         sysHandler.setChildChannels(loggedInUser, sid, childChannelIds);
 
@@ -2129,7 +2132,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
 
         Channel originalChan = lookupChannelByLabel(loggedInUser.getOrg(), originalLabel);
 
-        CloneChannelCommand ccc = new CloneChannelCommand(originalState, originalChan);
+        CloneChannelCommand ccc = new CloneChannelCommand(originalState ? ORIGINAL_STATE : CURRENT_STATE, originalChan);
 
         ccc.setUser(loggedInUser);
         setChangedValues(ccc, channelDetails);
@@ -2181,7 +2184,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
             throw new PermissionCheckFailureException();
         }
 
-        Set<Errata> mergedErrata = mergeErrataToChannel(loggedInUser, new HashSet(mergeFrom
+        Set<Errata> mergedErrata = ErrataManager.mergeErrataToChannel(loggedInUser, new HashSet(mergeFrom
                 .getErratas()), mergeTo, mergeFrom);
 
         return mergedErrata.toArray();
@@ -2224,7 +2227,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
         List<Errata> fromErrata = ErrataFactory.lookupByChannelBetweenDates(
                 loggedInUser.getOrg(), mergeFrom, startDate, endDate);
 
-        Set<Errata> mergedErrata = mergeErrataToChannel(loggedInUser,
+        Set<Errata> mergedErrata = ErrataManager.mergeErrataToChannel(loggedInUser,
                 new HashSet<Errata>(fromErrata), mergeTo, mergeFrom);
 
         return mergedErrata.toArray();
@@ -2279,43 +2282,8 @@ public class ChannelSoftwareHandler extends BaseHandler {
             }
         }
 
-        Set<Errata> mergedErrata =
-            mergeErrataToChannel(loggedInUser, errataToMerge, mergeTo, mergeFrom);
-
+        Set<Errata> mergedErrata = ErrataManager.mergeErrataToChannel(loggedInUser, errataToMerge, mergeTo, mergeFrom);
         return mergedErrata.toArray();
-    }
-
-    private Set<Errata> mergeErrataToChannel(User user, Set<Errata> errataToMergeIn,
-            Channel toChannel, Channel fromChannel) {
-
-        Set<Errata> errataToMerge = new HashSet<>(errataToMergeIn);
-
-        // find errata that we do not need to merge
-        List<Errata> same = ErrataManager.listSamePublishedInChannels(
-                user, fromChannel, toChannel);
-        List<Errata> brothers = ErrataManager.listPublishedBrothersInChannels(
-                user, fromChannel, toChannel);
-        List<Errata> clones = ErrataManager.listPublishedClonesInChannels(
-                user, fromChannel, toChannel);
-        // and remove them
-        errataToMerge.removeAll(same);
-        errataToMerge.removeAll(brothers);
-        errataToMerge.removeAll(clones);
-
-        ErrataManager.publishErrataToChannelAsync(toChannel,
-                getErrataIds(errataToMerge), user);
-
-        // no need to regenerate errata cache, because we didn't touch any packages
-
-        return errataToMerge;
-    }
-
-    private Set<Long> getErrataIds(Set<Errata> errata) {
-        Set<Long> ids = new HashSet<Long>();
-        for (Errata erratum : errata) {
-            ids.add(erratum.getId());
-        }
-        return ids;
     }
 
     /**

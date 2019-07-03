@@ -15,6 +15,7 @@
 
 package com.redhat.rhn.common.messaging;
 
+import com.redhat.rhn.frontend.events.AlignSoftwareTargetAction;
 import com.redhat.rhn.frontend.events.CloneErrataAction;
 import com.redhat.rhn.frontend.events.CloneErrataEvent;
 import com.redhat.rhn.frontend.events.NewCloneErrataAction;
@@ -52,6 +53,7 @@ import com.redhat.rhn.frontend.events.TraceBackEvent;
 import com.redhat.rhn.frontend.events.UpdateErrataCacheAction;
 import com.redhat.rhn.frontend.events.UpdateErrataCacheEvent;
 
+import com.redhat.rhn.frontend.events.AlignSoftwareTargetMsg;
 import com.suse.manager.reactor.messaging.ChannelsChangedEventMessage;
 import com.suse.manager.reactor.messaging.ChannelsChangedEventMessageAction;
 import org.apache.log4j.Logger;
@@ -314,6 +316,10 @@ public class MessageQueue {
                                     NewCloneErrataEvent.class);
         MessageQueue.registerAction(new SsmErrataAction(),
                                     SsmErrataEvent.class);
+
+        // Copy SW source contents to an Environment target
+        MessageQueue.registerAction(new AlignSoftwareTargetAction(),
+                                    AlignSoftwareTargetMsg.class);
 
         // Asynchronously schedule immediate repo sync
         MessageQueue.registerAction(new ScheduleRepoSyncAction(),

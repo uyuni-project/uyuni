@@ -46,7 +46,7 @@ public class CreateSetupAction extends RhnAction {
         if (StringUtils.isBlank(form.getString("advisoryRelease"))) {
             //set advisory release field to 1
             form.set("advisoryRelease", LocalizationService.getInstance()
-                                                       .formatNumber(new Long(1)));
+                                                       .formatNumber(1L));
         }
 
         //set advisoryTypes list for select drop down

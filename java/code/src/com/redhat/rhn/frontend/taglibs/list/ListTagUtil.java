@@ -65,10 +65,10 @@ public class ListTagUtil {
     public static Long incrementPersistentCounter(PageContext ctx, String name) {
         Long counter = (Long) ctx.getRequest().getAttribute(name);
         if (counter == null) {
-            counter = new Long(1);
+            counter = 1L;
         }
         else {
-            counter = new Long(counter.longValue() + 1);
+            counter = counter + 1;
         }
         ctx.getRequest().setAttribute(name, counter);
         return counter;

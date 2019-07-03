@@ -228,28 +228,25 @@ public class ProductSyncManager {
      * @param channelByLabel lookup map for channels by its label
      * @return channel sync status as string
      */
-    public SyncStatus getChannelSyncStatus(String channelLabel, Map<String,
-            com.redhat.rhn.domain.channel.Channel> channelByLabel) {
-        // Fall back to FAILED if no progress or success is detected
-        SyncStatus channelSyncStatus = new SyncStatus(SyncStatus.SyncStage.FAILED);
-
+    public SyncStatus getChannelSyncStatus(String channelLabel,
+            Map<String, com.redhat.rhn.domain.channel.Channel> channelByLabel) {
         // Check for success: is there metadata for this channel?
-
         com.redhat.rhn.domain.channel.Channel c = channelByLabel.get(channelLabel);
 
         if (c == null) {
             return new SyncStatus(SyncStatus.SyncStage.NOT_MIRRORED);
         }
         else if (ChannelManager.getRepoLastBuild(c) != null) {
-            channelSyncStatus = new SyncStatus(SyncStatus.SyncStage.FINISHED);
-            channelSyncStatus.setLastSyncDate(c.getLastSynced());
-            return channelSyncStatus;
+            SyncStatus status = new SyncStatus(SyncStatus.SyncStage.FINISHED);
+            status.setLastSyncDate(c.getLastSynced());
+            return status;
         }
 
         // No success (metadata), check for jobs in taskomatic
         List<TaskoRun> runs = TaskoFactory.listRunsByBunch("repo-sync-bunch");
         boolean repoSyncRunFound = false;
         Date lastRunEndTime = null;
+        Optional<SyncStatus> lastFailedStatus = Optional.empty();
         Long channelId = c.getId();
 
         // Runs are sorted by start time, recent ones first
@@ -281,18 +278,20 @@ public class ProductSyncManager {
                 if (runStatus.equals(TaskoRun.STATUS_FAILED) ||
                         runStatus.equals(TaskoRun.STATUS_INTERRUPTED)) {
                     // Reposync has failed or has been interrupted
-                    channelSyncStatus = new SyncStatus(SyncStatus.SyncStage.FAILED);
-                    channelSyncStatus.setMessageKey(prefix + "message.reposync.failed");
-                    channelSyncStatus.setDetails(debugInfo);
+                    SyncStatus status = new SyncStatus(SyncStatus.SyncStage.FAILED);
+                    status.setMessageKey(prefix + "message.reposync.failed");
+                    status.setDetails(debugInfo);
+
                     // Don't return from here, there might be a new schedule already
+                    lastFailedStatus = Optional.of(status);
                 }
                 else if (runStatus.equals(TaskoRun.STATUS_READY_TO_RUN) ||
                         runStatus.equals(TaskoRun.STATUS_RUNNING)) {
                     // Reposync is in progress
-                    channelSyncStatus = new SyncStatus(SyncStatus.SyncStage.IN_PROGRESS);
-                    channelSyncStatus.setMessageKey(prefix + "message.reposync.progress");
-                    channelSyncStatus.setDetails(debugInfo);
-                    return channelSyncStatus;
+                    SyncStatus status = new SyncStatus(SyncStatus.SyncStage.IN_PROGRESS);
+                    status.setMessageKey(prefix + "message.reposync.progress");
+                    status.setDetails(debugInfo);
+                    return status;
                 }
 
                 // We look at the latest run only
@@ -301,27 +300,23 @@ public class ProductSyncManager {
         }
 
         // Check if there is a schedule that is newer than the last (FAILED) run
-        if (!repoSyncRunFound || channelSyncStatus.isFailed()) {
-            List<TaskoSchedule> schedules =
-                    TaskoFactory.listRepoSyncSchedulesNewerThan(lastRunEndTime);
+        if (!repoSyncRunFound || lastFailedStatus.isPresent()) {
+            List<TaskoSchedule> schedules = TaskoFactory.listRepoSyncSchedulesNewerThan(lastRunEndTime);
             for (TaskoSchedule s : schedules) {
-                List<Long> scheduleChannelIds =
-                        RepoSyncTask.getChannelIds(s.getDataMap());
+                List<Long> scheduleChannelIds = RepoSyncTask.getChannelIds(s.getDataMap());
                 if (scheduleChannelIds.contains(channelId)) {
                     // There is a schedule for this channel
-                    channelSyncStatus = new SyncStatus(SyncStatus.SyncStage.IN_PROGRESS);
-                    return channelSyncStatus;
+                    return new SyncStatus(SyncStatus.SyncStage.IN_PROGRESS);
                 }
             }
 
             // No schedule found, return FAILED
-            return channelSyncStatus;
+            return lastFailedStatus.orElse(new SyncStatus(SyncStatus.SyncStage.FAILED));
         }
 
         // Check if channel metadata generation is in progress
         if (ChannelManager.isChannelLabelInProgress(channelLabel)) {
-            channelSyncStatus = new SyncStatus(SyncStatus.SyncStage.IN_PROGRESS);
-            return channelSyncStatus;
+            return new SyncStatus(SyncStatus.SyncStage.IN_PROGRESS);
         }
 
         // Check for queued items (merge this with the above method?)
@@ -330,12 +325,11 @@ public class ProductSyncManager {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("channel_label", channelLabel);
         if (selector.execute(params).size() > 0) {
-            channelSyncStatus = new SyncStatus(SyncStatus.SyncStage.IN_PROGRESS);
-            return channelSyncStatus;
+            return new SyncStatus(SyncStatus.SyncStage.IN_PROGRESS);
         }
 
         // Otherwise return FAILED
-        return channelSyncStatus;
+        return new SyncStatus(SyncStatus.SyncStage.FAILED);
     }
 
     /**

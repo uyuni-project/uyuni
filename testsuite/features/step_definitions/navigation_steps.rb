@@ -1,4 +1,4 @@
-# Copyright (c) 2010-2018 Novell, Inc.
+# Copyright (c) 2010-2019 Novell, Inc.
 # Licensed under the terms of the MIT license.
 
 #
@@ -10,9 +10,15 @@ When(/^I follow "(.*?)" link$/) do |host|
   step %(I follow "#{system_name}")
 end
 
-When(/^I should see a "(.*)" text in the content area$/) do |txt|
+Then(/^I should see a "(.*)" text in the content area$/) do |txt|
   within('#spacewalk-content') do
     raise unless page.has_content?(txt)
+  end
+end
+
+Then(/^I should not see a "(.*)" text in the content area$/) do |txt|
+  within('#spacewalk-content') do
+    raise unless page.has_no_content?(txt)
   end
 end
 
@@ -27,84 +33,42 @@ Then(/^the current path is "([^"]*)"$/) do |arg1|
 end
 
 When(/^I wait until I see "([^"]*)" text$/) do |text|
-  begin
-    Timeout.timeout(DEFAULT_TIMEOUT) do
-      loop do
-        break if page.has_content?(text)
-        sleep 3
-      end
-    end
-  rescue Timeout::Error
-    raise "Couldn't find the #{text} in webpage"
-  end
+  raise unless page.has_text?(text, wait: DEFAULT_TIMEOUT)
 end
 
 When(/^I wait until I do not see "([^"]*)" text$/) do |text|
-  begin
-    Timeout.timeout(DEFAULT_TIMEOUT) do
-      loop do
-        break unless page.has_content?(text)
-        sleep 3
-      end
-    end
-  rescue Timeout::Error
-    raise "The #{text} was always there in webpage"
-  end
+  raise unless page.has_no_text?(text, wait: DEFAULT_TIMEOUT)
 end
 
 When(/^I wait at most (\d+) seconds until I see "([^"]*)" text$/) do |seconds, text|
-  begin
-    Timeout.timeout(seconds.to_i) do
-      loop do
-        break if page.has_content?(text)
-        sleep 3
-      end
-    end
-  rescue Timeout::Error
-    raise "Couldn't find the #{text} in webpage"
+  repeat_until_timeout(timeout: seconds, message: "Couldn't find text '#{text}'") do
+    break if page.has_content?(text)
+    sleep 3
   end
 end
 
 When(/^I wait until I see "([^"]*)" text or "([^"]*)" text$/) do |text1, text2|
-  begin
-    Timeout.timeout(DEFAULT_TIMEOUT) do
-      loop do
-        break if page.has_content?(text1) || page.has_content?(text2)
-        sleep 3
-      end
-    end
-  rescue Timeout::Error
-    raise "Couldn't find the #{text1} and #{text2} in webpage"
+  repeat_until_timeout(message: "Couldn't find either '#{text1}' or '#{text2}'") do
+    break if page.has_content?(text1) || page.has_content?(text2)
+    sleep 3
   end
 end
 
 When(/^I wait until I see "([^"]*)" text, refreshing the page$/) do |text|
   text.gsub! '$PRODUCT', $product
-  begin
-    Timeout.timeout(DEFAULT_TIMEOUT) do
-      loop do
-        break if page.has_content?(text)
-        sleep 1
-        page.evaluate_script 'window.location.reload()'
-      end
-    end
-  rescue Timeout::Error
-    raise "Couldn't find the #{text} in webpage"
+  repeat_until_timeout(message: "Couldn't find text '#{text}'") do
+    break if page.has_content?(text)
+    sleep 1
+    page.evaluate_script 'window.location.reload()'
   end
 end
 
 When(/^I wait at most (\d+) seconds until the event is completed, refreshing the page$/) do |timeout|
-  begin
-    Timeout.timeout(timeout.to_i) do
-      loop do
-        break if page.has_content?("This action's status is: Completed.")
-        raise 'Event failed' if page.has_content?("This action's status is: Failed.")
-        sleep 1
-        page.evaluate_script 'window.location.reload()'
-      end
-    end
-  rescue Timeout::Error
-    raise "Event not completed in #{timeout} seconds"
+  repeat_until_timeout(timeout: timeout.to_i, message: 'Event not yet completed') do
+    break if page.has_content?("This action's status is: Completed.")
+    raise 'Event failed' if page.has_content?("This action's status is: Failed.")
+    sleep 1
+    page.evaluate_script 'window.location.reload()'
   end
 end
 
@@ -114,22 +78,27 @@ When(/^I wait until I see the name of "([^"]*)", refreshing the page$/) do |host
 end
 
 When(/^I wait until I do not see "([^"]*)" text, refreshing the page$/) do |text|
-  begin
-    Timeout.timeout(DEFAULT_TIMEOUT) do
-      loop do
-        break unless page.has_content?(text)
-        sleep 3
-        page.evaluate_script 'window.location.reload()'
-      end
-    end
-  rescue Timeout::Error
-    raise "The #{text} was always there in webpage"
+  repeat_until_timeout(message: "Text '#{text}' is still visible") do
+    break unless page.has_content?(text)
+    sleep 3
+    page.evaluate_script 'window.location.reload()'
   end
 end
 
 When(/^I wait until I do not see the name of "([^"]*)", refreshing the page$/) do |host|
   system_name = get_system_name(host)
   step %(I wait until I do not see "#{system_name}" text, refreshing the page)
+end
+
+Then(/^I wait until I see the (VNC|spice) graphical console$/) do |type|
+  repeat_until_timeout(message: "The #{type} graphical console didn't load") do
+    break unless page.has_xpath?('.//canvas')
+    sleep 3
+  end
+end
+
+When(/^I close the window$/) do
+  page.evaluate_script 'window.close();'
 end
 
 #
@@ -190,6 +159,14 @@ When(/^I click on "([^"]*)"$/) do |arg1|
   end
 end
 #
+# Click on a button which appears inside of <div> with
+# the given "id"
+When(/^I click on "([^"]*)" in element "([^"]*)"$/) do |arg1, arg2|
+  within(:xpath, "//div[@id=\"#{arg2}\"]") do
+    click_button arg1, match: :first
+  end
+end
+#
 # Click on a button and confirm in alert box
 When(/^I click on "([^"]*)" and confirm$/) do |arg1|
   accept_alert do
@@ -201,18 +178,13 @@ end
 # Click on a link
 #
 When(/^I follow "([^"]*)"$/) do |text|
-  begin
-    click_link(text)
-  rescue
-    sleep 3
-    click_link(text)
-  end
+  click_link(text, wait: CLICK_TIMEOUT)
 end
 #
 # Click on the first link
 #
 When(/^I follow first "([^"]*)"$/) do |text|
-  click_link(text, match: :first)
+  click_link(text, wait: CLICK_TIMEOUT, match: :first)
 end
 
 #
@@ -230,7 +202,6 @@ end
 
 When(/^I follow "([^"]*)" in the (.+)$/) do |arg1, arg2|
   tag = case arg2
-        when /left menu/ then 'aside'
         when /tab bar|tabs/ then 'header'
         when /content area/ then 'section'
         else raise "Unknown element with description '#{desc}'"
@@ -242,7 +213,6 @@ end
 
 When(/^I follow first "([^"]*)" in the (.+)$/) do |arg1, arg2|
   tag = case arg2
-        when /left menu/ then 'aside'
         when /tab bar|tabs/ then 'header'
         when /content area/ then 'section'
         else raise "Unknown element with description '#{desc}'"
@@ -271,11 +241,43 @@ When(/^I enter "(.*?)" in the editor$/) do |arg1|
   page.execute_script("ace.edit('contents-editor').insert('#{arg1}')")
 end
 
-When(/^I click System List, under Systems node$/) do
-  find(:xpath, "//div[@id='nav']/nav/ul/li[contains(@class, 'active')
-       and contains(@class, 'open')
-       and contains(@class,'node')]/ul/li/div/a[contains(.,'System List')]").click
+#
+# Menu links
+#
+
+# Menu path link
+When(/^I follow the left menu "([^"]*)"$/) do |menu_path|
+  # split menu levels separated by '>' character
+  menu_levels = menu_path.split('>').map(&:strip)
+
+  # define reusable patterns
+  prefix_path = "//aside/div[@id='nav']/nav"
+  link_path = "/ul/li/div/a[contains(.,'%s')]"
+  parent_wrapper_path = '/parent::div'
+  parent_level_path = '/parent::li'
+
+  # point the target to the nav menu
+  target_link_path = prefix_path
+
+  menu_levels.each_with_index do |menu_level, index|
+    # append the current target link and replace the placeholder with the current level value
+    target_link_path += (link_path % menu_level)
+    # if this is the last element of the path
+    break if index == (menu_levels.count - 1)
+    # open the submenu if needed
+    unless find(:xpath, target_link_path + parent_wrapper_path + parent_level_path)[:class].include?('open')
+      find(:xpath, target_link_path + parent_wrapper_path).click
+    end
+    # point the target to the current menu level
+    target_link_path += parent_wrapper_path + parent_level_path
+  end
+  # finally go to the target page
+  find(:xpath, target_link_path).click
 end
+
+#
+# End of Menu links
+#
 
 Given(/^I am not authorized$/) do
   visit Capybara.app_host
@@ -295,16 +297,14 @@ end
 Given(/^I am on the Admin page$/) do
   steps %(
     When I am authorized as "admin" with password "admin"
-    And I follow "Admin"
-    And I follow "Setup Wizard"
+    When I follow the left menu "Admin > Setup Wizard"
     )
 end
 
 When(/^I am on the Organizations page$/) do
   steps %(
     When I am authorized as "admin" with password "admin"
-    And I follow "Admin"
-    And I follow "Organizations"
+    When I follow the left menu "Admin > Organizations"
     )
 end
 
@@ -342,16 +342,14 @@ end
 Given(/^I am on the groups page$/) do
   steps %(
     Given I am on the Systems page
-    And I follow "System Groups" in the left menu
+    When I follow the left menu "Systems >System Groups"
     )
 end
 
 Given(/^I am on the active Users page$/) do
   steps %(
     Given I am authorized as "admin" with password "admin"
-    And I follow "Users"
-    And I follow "User List"
-    And I follow "Active"
+    When I follow the left menu "Users > User List > Active"
     )
 end
 
@@ -362,30 +360,16 @@ Then(/^Table row for "([^"]*)" should contain "([^"]*)"$/) do |arg1, arg2|
 end
 
 When(/^I wait until table row for "([^"]*)" contains button "([^"]*)"$/) do |text, button|
-  within(:xpath, "//tr[td[contains(., '#{text}')]]") do
-    begin
-      Timeout.timeout(DEFAULT_TIMEOUT) do
-        loop do
-          break if find_button(button)
-          sleep 1
-        end
-      end
-    rescue Timeout::Error
-      raise "Couldn't find #{button} in row with #{text} text"
-    end
+  repeat_until_timeout(message: "Couldn't find #{button} button in row with #{text} text") do
+    break if all(:xpath, "//tr[td[contains(., '#{text}')]]/td/descendant::*[self::a or self::button][@title='#{button}']").any?
+    sleep 1
   end
 end
 
 When(/^I wait until table row contains a "([^"]*)" text$/) do |text|
-  begin
-    Timeout.timeout(DEFAULT_TIMEOUT) do
-      loop do
-        break if all(:xpath, "//div[@class=\"table-responsive\"]/table/tbody/tr[.//td[contains(.,'#{text}')]]").any?
-        sleep 1
-      end
-    end
-  rescue Timeout::Error
-    raise "Couldn't find #{text} in any row"
+  repeat_until_timeout(message: "Couldn't find #{text} in any row") do
+    break if all(:xpath, "//div[@class=\"table-responsive\"]/table/tbody/tr[.//td[contains(.,'#{text}')]]").any?
+    sleep 1
   end
 end
 
@@ -604,32 +588,30 @@ end
 When(/^I wait until the table contains "FINISHED" or "SKIPPED" followed by "FINISHED" in its first rows$/) do
   # this step is used for long operations like refreshing caches, repositories, etc.
   # therefore we use a non-standard timeout
-  refresh_timeout = 800
-  begin
-    Timeout.timeout(refresh_timeout) do
-      loop do
-        visit current_url
-        # get all texts in the table column under the "Status" header
-        under_status = "//tr/td[count(//th[contains(*/text(), 'Status')]/preceding-sibling::*) + 1]"
-        statuses = page.all(:xpath, under_status).map(&:text)
+  repeat_until_timeout(timeout: 800, message: 'Task does not look FINISHED yet') do
+    visit current_url
+    # get all texts in the table column under the "Status" header
+    status_tds = "//tr/td[count(//th[contains(*/text(), 'Status')]/preceding-sibling::*) + 1]"
+    statuses = page.all(:xpath, status_tds).map(&:text)
 
-        # disregard any number of initial SKIPPED rows
-        # this is expected when Taskomatic triggers the same task concurrently
-        first_non_skipped = statuses.drop_while do |status|
-          status == 'SKIPPED'
-        end.first
+    # get all texts in the table column under the "Start time" header
+    start_time_tds = "//tr/td[count(//th[contains(*/text(), 'Start Time')]/preceding-sibling::*) + 1]"
+    start_times = page.all(:xpath, start_time_tds).map(&:text)
 
-        # halt in case we are done, or if an error is detected
-        break if first_non_skipped == 'FINISHED'
-        raise('Taskomatic task was INTERRUPTED') if first_non_skipped == 'INTERRUPTED'
+    # disregard any number of initial unimportant rows, that is:
+    #  - INTERRUPTED rows with no start time (expected when Taskomatic had been restarted)
+    #  - SKIPPED rows (expected when Taskomatic triggers the same task concurrently)
+    first_non_skipped = statuses.zip(start_times).drop_while do |status, start_time|
+      (status == 'INTERRUPTED' && start_time.empty?) || status == 'SKIPPED'
+    end.first.first
 
-        # otherwise either no row is shown yet, or the task is still RUNNING
-        # continue waiting
-        sleep 1
-      end
-    end
-  rescue Timeout::Error
-    raise "Task does not look FINISHED after #{refresh_timeout} seconds"
+    # halt in case we are done, or if an error is detected
+    break if first_non_skipped == 'FINISHED'
+    raise('Taskomatic task was INTERRUPTED') if first_non_skipped == 'INTERRUPTED'
+
+    # otherwise either no row is shown yet, or the task is still RUNNING
+    # continue waiting
+    sleep 1
   end
 end
 
@@ -773,7 +755,7 @@ When(/^I check "([^"]*)" in the list$/) do |arg1|
       $stderr.puts 'ERROR - try again'
       row = first(:xpath, "//div[@class=\"table-responsive\"]/table/tbody/tr[.//td[contains(.,'#{arg1}')]]")
     end
-    row.first(:xpath, './/input[@type="checkbox"]').set(true)
+    row.first(:xpath, './/input[@type="checkbox"]').set(true) unless row.nil?
   end
 end
 
@@ -787,7 +769,7 @@ When(/^I uncheck "([^"]*)" in the list$/) do |arg1|
       $stderr.puts 'ERROR - try again'
       row = first(:xpath, top_level_xpath_query)
     end
-    row.first(:xpath, './/input[@type="checkbox"]').set(false)
+    row.first(:xpath, './/input[@type="checkbox"]').set(false) unless row.nil?
   end
 end
 
@@ -804,15 +786,9 @@ When(/^I click on "([^"]*)" in "([^"]*)" modal$/) do |btn, title|
 
   # We wait until the element becomes visible, because
   # the fade out animation might still be in progress
-  begin
-    Timeout.timeout(DEFAULT_TIMEOUT) do
-      loop do
-        break if all(:xpath, path, visible: true).any?
-        sleep 1
-      end
-    end
-  rescue Timeout::Error
-    raise "Couldn't find the #{title} modal"
+  repeat_until_timeout(message: "Couldn't find the #{title} modal") do
+    break if all(:xpath, path, visible: true).any?
+    sleep 1
   end
 
   within(:xpath, path, visible: :all) do

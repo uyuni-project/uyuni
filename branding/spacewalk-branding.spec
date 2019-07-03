@@ -1,7 +1,7 @@
 #
 # spec file for package spacewalk-branding
 #
-# Copyright (c) 2018 SUSE LINUX GmbH, Nuernberg, Germany.
+# Copyright (c) 2019 SUSE LINUX GmbH, Nuernberg, Germany.
 # Copyright (c) 2008-2018 Red Hat, Inc.
 #
 # All modifications and additions to the file contributed by third parties
@@ -13,7 +13,7 @@
 # license that conforms to the Open Source Definition (Version 1.9)
 # published by the Open Source Initiative.
 
-# Please submit bugfixes or comments via http://bugs.opensuse.org/
+# Please submit bugfixes or comments via https://bugs.opensuse.org/
 #
 
 
@@ -36,13 +36,13 @@
 %endif
 
 Name:           spacewalk-branding
-Version:        4.0.6
+Version:        4.0.10
 Release:        1%{?dist}
 Summary:        Spacewalk branding data
 License:        GPL-2.0-only
 Group:          Applications/Internet
 
-URL:            https://github.com/uyuni-project/uyuni
+Url:            https://github.com/uyuni-project/uyuni
 Source0:        https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 #BuildArch:  noarch
@@ -109,6 +109,7 @@ jar -cf java-branding.jar -C java/code/src com
 ln -s /srv/www/htdocs/css/bootstrap css/bootstrap
 ln -s /srv/www/htdocs/css/patternfly1 css/patternfly1
 lessc css/spacewalk.less > css/spacewalk.css
+lessc css/susemanager-fullscreen.less > css/susemanager-fullscreen.css
 rm -f css/bootstrap
 rm -f css/patternfly1
 
@@ -120,7 +121,6 @@ install -d -m 755 %{buildroot}%{_datadir}/spacewalk/web
 install -d -m 755 %{buildroot}%{_datadir}/rhn/lib/
 install -d -m 755 %{buildroot}%{tomcat_path}/webapps/rhn/WEB-INF/lib/
 install -d -m 755 %{buildroot}/%{_sysconfdir}/rhn
-install -d -m 755 %{buildroot}/%{_prefix}/share/rhn/config-defaults
 cp -pR css/* %{buildroot}/%{wwwdocroot}/css
 cp -pR fonts %{buildroot}/%{wwwdocroot}/
 cp -pR img %{buildroot}/%{wwwdocroot}/
@@ -129,20 +129,6 @@ cp -pR img %{buildroot}/%{wwwdocroot}/
 cp -p img/favicon.ico %{buildroot}/%{wwwdocroot}/
 cp -pR java-branding.jar %{buildroot}%{_datadir}/rhn/lib/
 ln -s %{_datadir}/rhn/lib/java-branding.jar %{buildroot}%{tomcat_path}/webapps/rhn/WEB-INF/lib/java-branding.jar
-
-%if  0%{?suse_version}
-cat > %{buildroot}/%{_prefix}/share/rhn/config-defaults/rhn_docs.conf <<-ENDOFCONFIG
-docs.getting_started_guide=/rhn/help/getting-started/index.jsp
-docs.reference_guide=/rhn/help/reference/index.jsp
-docs.best_practices_guide=/rhn/help/best-practices/index.jsp
-docs.advanced_topics_guide=/rhn/help/advanced-topics/index.jsp
-docs.release_notes=/rhn/help/release-notes/manager/en-US/index.jsp
-docs.proxy_release_notes=http://www.novell.com/linux/releasenotes/%{_arch}/SUSE-MANAGER/3.0/
-ENDOFCONFIG
-%else
-cp -p conf/rhn_docs.conf %{buildroot}/%{_prefix}/share/rhn/config-defaults/rhn_docs.conf
-ln -s %{_datadir}/patternfly1/resources/fonts/* %{buildroot}%{wwwdocroot}/fonts/
-%endif
 
 %files
 %dir %{wwwdocroot}/css
@@ -155,7 +141,6 @@ ln -s %{_datadir}/patternfly1/resources/fonts/* %{buildroot}%{wwwdocroot}/fonts/
 %{_datadir}/spacewalk/
 %{_datadir}/rhn/lib/java-branding.jar
 %{tomcat_path}/webapps/rhn/WEB-INF/lib/java-branding.jar
-%{_prefix}/share/rhn/config-defaults/rhn_docs.conf
 %doc LICENSE
 %if 0%{?suse_version}
 %attr(775,tomcat,tomcat) %dir %{tomcat_path}/webapps/rhn
@@ -163,7 +148,6 @@ ln -s %{_datadir}/patternfly1/resources/fonts/* %{buildroot}%{wwwdocroot}/fonts/
 %attr(775,tomcat,tomcat) %dir %{tomcat_path}/webapps/rhn/WEB-INF/lib/
 %dir %{_prefix}/share/rhn
 %dir %{_prefix}/share/rhn/lib
-%attr(755,root,www) %dir %{_prefix}/share/rhn/config-defaults
 %endif
 
 %files devel

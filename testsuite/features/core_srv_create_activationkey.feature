@@ -1,14 +1,14 @@
 # Copyright (c) 2010-2019 SUSE LLC
 # Licensed under the terms of the MIT license.
 
-Feature: Be able to manipulate activation keys
+Feature: Be able to create and manipulate activation keys
   In order to register systems to the spacewalk server
   As the testing user
   I want to use activation keys
 
   Scenario: Create an activation key
     Given I am on the Systems page
-    When I follow "Activation Keys" in the left menu
+    When I follow the left menu "Systems > Activation Keys"
     And I follow "Create Key"
     And I enter "SUSE Test Key i586" as "description"
     And I enter "SUSE-DEV-i586" as "key"
@@ -23,7 +23,7 @@ Feature: Be able to manipulate activation keys
 
   Scenario: Change limit of the activation key
     Given I am on the Systems page
-    When I follow "Activation Keys" in the left menu
+    When I follow the left menu "Systems > Activation Keys"
     And I follow "SUSE Test Key i586"
     And I enter "20" as "usageLimit"
     And I click on "Update Activation Key"
@@ -32,7 +32,7 @@ Feature: Be able to manipulate activation keys
 
   Scenario: Change the base channel of the activation key
     Given I am on the Systems page
-    When I follow "Activation Keys" in the left menu
+    When I follow the left menu "Systems > Activation Keys"
     And I follow "SUSE Test Key i586"
     And I select "Test-Channel-i586" from "selectedBaseChannel"
     And I click on "Update Activation Key"
@@ -40,7 +40,7 @@ Feature: Be able to manipulate activation keys
 
   Scenario: Create an activation key with a channel
     Given I am on the Systems page
-    When I follow "Activation Keys" in the left menu
+    When I follow the left menu "Systems > Activation Keys"
     And I follow "Create Key"
     And I enter "SUSE Test Key x86_64" as "description"
     And I enter "SUSE-DEV-x86_64" as "key"
@@ -57,7 +57,7 @@ Feature: Be able to manipulate activation keys
 
   Scenario: Create an activation key with a channel and a package list for x86_64
     Given I am on the Systems page
-    When I follow "Activation Keys" in the left menu
+    When I follow the left menu "Systems > Activation Keys"
     And I follow "Create Key"
     And I enter "SUSE Test PKG Key x86_64" as "description"
     And I enter "SUSE-PKG-x86_64" as "key"
@@ -65,7 +65,7 @@ Feature: Be able to manipulate activation keys
     And I select "Test-Channel-x86_64" from "selectedBaseChannel"
     And I click on "Create Activation Key"
     And I follow "Packages"
-    And I enter "man" as "packages"
+    And I enter "sed" as "packages"
     And I click on "Update Activation Key"
     Then I should see a "Activation key SUSE Test PKG Key x86_64 has been modified." text
     And I should see a "Details" link
@@ -76,7 +76,7 @@ Feature: Be able to manipulate activation keys
 
   Scenario: Create an activation key with a channel and a package list for i586
     Given I am on the Systems page
-    When I follow "Activation Keys" in the left menu
+    When I follow the left menu "Systems > Activation Keys"
     And I follow "Create Key"
     And I enter "SUSE Test PKG Key i586" as "description"
     And I enter "SUSE-PKG-i586" as "key"
@@ -84,7 +84,7 @@ Feature: Be able to manipulate activation keys
     And I select "Test-Channel-i586" from "selectedBaseChannel"
     And I click on "Create Activation Key"
     And I follow "Packages"
-    And I enter "man" as "packages"
+    And I enter "sed" as "packages"
     And I click on "Update Activation Key"
     Then I should see a "Activation key SUSE Test PKG Key i586 has been modified." text
     And I should see a "Details" link
@@ -95,7 +95,7 @@ Feature: Be able to manipulate activation keys
 
   Scenario: Create an activation key for Ubuntu
     Given I am on the Systems page
-    When I follow "Activation Keys" in the left menu
+    When I follow the left menu "Systems > Activation Keys"
     And I follow "Create Key"
     And I enter "Ubuntu Test Key" as "description"
     And I enter "UBUNTU-TEST" as "key"
@@ -107,3 +107,15 @@ Feature: Be able to manipulate activation keys
     And I should see a "Configuration" link in the content area
     And I should see a "Groups" link
     And I should see a "Activated Systems" link
+
+  Scenario: Create an activation key with a channel for salt-ssh
+    Given I am on the Systems page
+    When I follow the left menu "Systems > Activation Keys"
+    And I follow "Create Key"
+    And I enter "SUSE SSH Test Key x86_64" as "description"
+    And I enter "SUSE-SSH-DEV-x86_64" as "key"
+    And I enter "20" as "usageLimit"
+    And I select "Test-Channel-x86_64" from "selectedBaseChannel"
+    And I select "Push via SSH" from "contact-method"
+    And I click on "Create Activation Key"
+    Then I should see a "Activation key SUSE SSH Test Key x86_64 has been created" text

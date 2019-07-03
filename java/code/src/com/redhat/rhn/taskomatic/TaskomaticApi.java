@@ -96,7 +96,7 @@ public class TaskomaticApi {
      */
     public boolean isRunning() {
         try {
-            invoke("tasko.one", new Integer(0));
+            invoke("tasko.one", 0);
             return true;
         }
         catch (Exception e) {

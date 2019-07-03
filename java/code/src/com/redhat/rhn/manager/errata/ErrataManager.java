@@ -17,13 +17,6 @@
  */
 package com.redhat.rhn.manager.errata;
 
-import static java.util.stream.Collectors.toList;
-import static java.util.stream.Collectors.toMap;
-import static java.util.stream.Collectors.toSet;
-import static java.util.stream.Collectors.toCollection;
-import static java.util.stream.Stream.concat;
-import static java.util.Arrays.asList;
-
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.db.datasource.DataResult;
@@ -42,6 +35,7 @@ import com.redhat.rhn.domain.action.errata.ErrataAction;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.errata.Bug;
+import com.redhat.rhn.domain.errata.ClonedErrata;
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.errata.ErrataFactory;
 import com.redhat.rhn.domain.errata.ErrataFile;
@@ -62,6 +56,7 @@ import com.redhat.rhn.frontend.dto.OwnedErrata;
 import com.redhat.rhn.frontend.dto.PackageDto;
 import com.redhat.rhn.frontend.dto.PackageOverview;
 import com.redhat.rhn.frontend.dto.SystemOverview;
+import com.redhat.rhn.frontend.events.CloneErrataAction;
 import com.redhat.rhn.frontend.events.CloneErrataEvent;
 import com.redhat.rhn.frontend.events.NewCloneErrataEvent;
 import com.redhat.rhn.frontend.listview.PageControl;
@@ -78,11 +73,11 @@ import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 import com.redhat.rhn.taskomatic.task.TaskConstants;
-
 import com.suse.manager.utils.MinionServerUtils;
-
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
+import redstone.xmlrpc.XmlRpcClient;
+import redstone.xmlrpc.XmlRpcFault;
 
 import java.io.File;
 import java.sql.Timestamp;
@@ -97,13 +92,18 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import redstone.xmlrpc.XmlRpcClient;
-import redstone.xmlrpc.XmlRpcFault;
+import static java.util.Arrays.asList;
+import static java.util.stream.Collectors.toCollection;
+import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.toMap;
+import static java.util.stream.Collectors.toSet;
+import static java.util.stream.Stream.concat;
 
 /**
  * ErrataManager is the singleton class used to provide business operations
@@ -250,6 +250,90 @@ public class ErrataManager extends BaseManager {
         errata = (Errata) HibernateFactory.reload(errata);
         log.debug("addChannelsToErrata - errata reloaded from DB");
         return errata;
+    }
+
+    /**
+     * Merge given {@link Errata} from source {@link Channel} to target {@link Channel}.
+     *
+     * @param user User performing the operation
+     * @param errataToMergeIn set of {@link Errata} to merge
+     * @param toChannel the target {@link Channel}
+     * @param fromChannel the source {@link Channel}
+     * @return the set of merged {@link Errata}
+     */
+    public static Set<Errata> mergeErrataToChannel(User user, Set<Errata> errataToMergeIn,
+            Channel toChannel, Channel fromChannel) {
+        return mergeErrataToChannel(user, errataToMergeIn, toChannel, fromChannel, true, true);
+    }
+
+    /**
+     * Merge given {@link Errata} from source {@link Channel} to target {@link Channel}.
+     *
+     * @param user User performing the operation
+     * @param errataToMergeIn set of {@link Errata} to merge
+     * @param toChannel the target {@link Channel}
+     * @param fromChannel the source {@link Channel}
+     * @param async run the merge asynchronously?
+     * @param repoRegen request regenerating repodata after merge?
+     * @return the set of merged {@link Errata}
+     */
+    public static Set<Errata> mergeErrataToChannel(User user, Set<Errata> errataToMergeIn,
+            Channel toChannel, Channel fromChannel, boolean async, boolean repoRegen) {
+        Set<Errata> errataToMerge = new HashSet<>(errataToMergeIn);
+
+        // find errata that we do not need to merge
+        List<Errata> same = listSamePublishedInChannels(user, fromChannel, toChannel);
+        List<Errata> brothers = listPublishedBrothersInChannels(user, fromChannel, toChannel);
+        List<Errata> clones = listPublishedClonesInChannels(user, fromChannel, toChannel);
+        // and remove them
+        errataToMerge.removeAll(same);
+        errataToMerge.removeAll(brothers);
+        errataToMerge.removeAll(clones);
+
+        log.debug("Publishing");
+        CloneErrataEvent eve = new CloneErrataEvent(toChannel, getErrataIds(errataToMerge), repoRegen, user);
+        if (async) {
+            MessageQueue.publish(eve);
+        }
+        else {
+            new CloneErrataAction().execute(eve);
+        }
+
+        // no need to regenerate errata cache, because we didn't touch any packages
+        return errataToMerge;
+    }
+
+    private static Set<Long> getErrataIds(Set<Errata> errata) {
+        Set<Long> ids = new HashSet<Long>();
+        for (Errata erratum : errata) {
+            ids.add(erratum.getId());
+        }
+        return ids;
+    }
+
+    /**
+     * Removes cloned errata from target channel that are not in the source errata
+     * or that do not have original in the source errata.
+     *
+     * @param srcErrata the source errata
+     * @param tgtChannel the target channel
+     * @param user the user
+     */
+    public static void truncateErrata(Set<Errata> srcErrata, Channel tgtChannel, User user) {
+        Set<Errata> tgtErrata = new HashSet<>(ErrataFactory.listByChannel(user.getOrg(), tgtChannel));
+
+        // let's remove errata that aren't in the source errata nor is their original
+        tgtErrata.stream()
+                .filter(e -> !(srcErrata.contains(e) ||
+                        asCloned(e).map(er -> srcErrata.contains(er.getOriginal())).orElse(false)))
+                .forEach(e -> removeErratumAndPackagesFromChannel(e, tgtChannel, user));
+    }
+
+    private static Optional<ClonedErrata> asCloned(Errata e) {
+        if (e instanceof ClonedErrata) {
+            return Optional.of((ClonedErrata) e);
+        }
+        return Optional.empty();
     }
 
     /**
@@ -1370,13 +1454,12 @@ public class ErrataManager extends BaseManager {
 
 
     /**
-     * remove an erratum for a channel and updates the errata cache accordingly
+     * remove an erratum from a channel and updates the errata cache accordingly
      * @param errata the errata to remove
      * @param chan the channel to remove the erratum from
      * @param user the user doing the removing
      */
     public static void removeErratumFromChannel(Errata errata, Channel chan, User user) {
-
         if (!user.hasRole(RoleFactory.CHANNEL_ADMIN)) {
             throw new PermissionException(RoleFactory.CHANNEL_ADMIN);
         }
@@ -1385,10 +1468,8 @@ public class ErrataManager extends BaseManager {
         //       in case they aren't already there.
         // So we are inserting   (systemID, packageId) entries, because we're
         //      going to delete the (systemId, packageId, errataId) entries
-        List<Long> pids = ErrataFactory.listErrataChannelPackages(
-                chan.getId(), errata.getId());
+        List<Long> pids = ErrataFactory.listErrataChannelPackages(chan.getId(), errata.getId());
         ErrataCacheManager.insertCacheForChannelPackages(chan.getId(), null, pids);
-
 
         //Remove the errata from the channel
         chan.getErratas().remove(errata);
@@ -1419,22 +1500,33 @@ public class ErrataManager extends BaseManager {
                 ErrataCacheManager.insertCacheForChannelErrataAsync(tmpCidList, errata);
             }
         }
-
     }
 
-
     /**
-     * Publish errata to a channel asynchronously (cloning as necessary),
-     *   does not do any package push
-     * @param chan the channel
-     * @param errataIds list of errata ids
-     * @param user the user doing the push
+     * Remove an erratum and its packages from a channel and updates the errata cache accordingly.
+     * The errata is not removed from child channels if they exist!
+     *
+     * @param errata the errata to remove
+     * @param chan the channel to remove the erratum from
+     * @param user the user doing the removing
      */
-    public static void publishErrataToChannelAsync(Channel chan,
-            Collection<Long> errataIds, User user) {
-        Logger.getLogger(ErrataManager.class).debug("Publishing");
-        CloneErrataEvent eve = new CloneErrataEvent(chan, errataIds, user);
-        MessageQueue.publish(eve);
+    public static void removeErratumAndPackagesFromChannel(Errata errata, Channel chan, User user) {
+        if (!user.hasRole(RoleFactory.CHANNEL_ADMIN)) {
+            throw new PermissionException(RoleFactory.CHANNEL_ADMIN);
+        }
+
+        //Remove the errata from the channel
+        chan.getErratas().remove(errata);
+        List<Long> eList = new ArrayList<Long>();
+        eList.add(errata.getId());
+        //First delete the cache entries
+        ErrataCacheManager.deleteCacheEntriesForChannelErrata(chan.getId(), eList);
+        ErrataCacheManager.deleteCacheEntriesForChannelPackages(
+                chan.getId(),
+                errata.getPackages().stream().map(p -> p.getId()).collect(toList()));
+
+        // remove packages
+        errata.getPackages().stream().forEach(p -> chan.getPackages().remove(p));
     }
 
     /**

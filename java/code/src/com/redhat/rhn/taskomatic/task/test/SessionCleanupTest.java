@@ -55,7 +55,7 @@ public class SessionCleanupTest extends RhnBaseTestCase {
         and deleted. */
 
         c.setString("session_database_lifetime",
-                     new Long(System.currentTimeMillis() / 1000).toString());
+                     Long.valueOf(System.currentTimeMillis() / 1000).toString());
 
         c.setString("session_delete_batch_size", "1");
         c.setString("session_delete_commit_interval", "1");

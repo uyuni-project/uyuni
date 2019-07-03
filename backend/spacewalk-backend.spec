@@ -1,7 +1,7 @@
 #
 # spec file for package spacewalk-backend
 #
-# Copyright (c) 2018 SUSE LINUX GmbH, Nuernberg, Germany.
+# Copyright (c) 2019 SUSE LINUX GmbH, Nuernberg, Germany.
 # Copyright (c) 2008-2018 Red Hat, Inc.
 #
 # All modifications and additions to the file contributed by third parties
@@ -13,7 +13,7 @@
 # license that conforms to the Open Source Definition (Version 1.9)
 # published by the Open Source Initiative.
 
-# Please submit bugfixes or comments via http://bugs.opensuse.org/
+# Please submit bugfixes or comments via https://bugs.opensuse.org/
 #
 
 
@@ -75,9 +75,9 @@ Name:           spacewalk-backend
 Summary:        Common programs needed to be installed on the Spacewalk servers/proxies
 License:        GPL-2.0-only
 Group:          Applications/Internet
-Version:        4.0.9
+Version:        4.0.17
 Release:        1%{?dist}
-URL:            https://github.com/uyuni-project/uyuni
+Url:            https://github.com/uyuni-project/uyuni
 Source0:        https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 %if !0%{?suse_version} || 0%{?suse_version} >= 1120
@@ -104,9 +104,9 @@ Requires:       python-pyliblzma
 %else
 %if 0%{?rhel}
 Requires:       pyliblzma
-%endif # %if 0%{?rhel}
-%endif # 0%{?suse_version}
-%endif # 0%{?build_py3}
+%endif # if 0{?rhel}
+%endif # 0{?suse_version}
+%endif # 0{?build_py3}
 # for Debian support
 Requires:       %{python_prefix}-debian
 %if 0%{?pylint_check}
@@ -465,9 +465,9 @@ Requires:       python-pyliblzma
 %else
 %if 0%{?fedora} || 0%{?rhel} > 6
 Requires:       pyliblzma
-%endif # 0%{?fedora} || 0%{?rhel} > 6
-%endif # 0%{?suse_version}
-%endif # 0%{?build_py3}
+%endif # 0{?fedora} || 0{?rhel} > 6
+%endif # 0{?suse_version}
+%endif # 0{?build_py3}
 Requires:       spacewalk-admin >= 0.1.1-0
 Requires:       spacewalk-certs-tools
 %if 0%{?suse_version}

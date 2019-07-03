@@ -71,7 +71,7 @@ public class DocResult extends Result {
     public void setUrl(String urlIn) {
         if (urlIn.startsWith("file:")) {
             // Translate file:// to a usable URL
-            String prefix = "/rhn/help";
+            String prefix = "/docs/";
             int index = urlIn.indexOf(prefix);
             if (index > 0) {
                 urlIn = urlIn.substring(index);

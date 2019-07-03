@@ -52,13 +52,13 @@ public class Overview extends RhnAction {
 
         Map summary = manager.getOverviewSummary(user);
         request.setAttribute("summary", summary);
-        request.setAttribute("is_admin", Boolean.valueOf(AclManager
+        request.setAttribute("is_admin", AclManager
                 .hasAcl("user_role(org_admin)",
-                    request, null)));
+                        request, null));
         request.setAttribute("recentFiles", manager.getRecentlyModifiedConfigFiles(user,
-                new Integer(5))); //display five recent files.
+                5)); //display five recent files.
         request.setAttribute("recentActions", manager.getRecentConfigDeployActions(user,
-                new Integer(5))); //display five recent actions.
+                5)); //display five recent actions.
 
         return getStrutsDelegate().forwardParams(mapping.findForward(
                 RhnHelper.DEFAULT_FORWARD), request.getParameterMap());

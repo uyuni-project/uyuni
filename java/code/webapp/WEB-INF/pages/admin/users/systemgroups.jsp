@@ -10,7 +10,7 @@
     <rhn:toolbar base="h1" icon="header-organisation"
                  miscAcl="user_role(org_admin)"
                  imgAlt="users.jsp.imgAlt"
-                 helpUrl="/rhn/help/reference/en-US/ref.webui.users.sgc.jsp#ref.webui.users.sgc.cfg">
+                 helpUrl="/docs/reference/users/system-group-configuration.html">
         <bean:message key="systemgroup.config.title" />
     </rhn:toolbar>
 

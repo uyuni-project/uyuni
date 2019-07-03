@@ -1,7 +1,7 @@
 #
 # spec file for package spacewalk-setup
 #
-# Copyright (c) 2018 SUSE LINUX GmbH, Nuernberg, Germany.
+# Copyright (c) 2019 SUSE LINUX GmbH, Nuernberg, Germany.
 # Copyright (c) 2008-2018 Red Hat, Inc.
 #
 # All modifications and additions to the file contributed by third parties
@@ -13,7 +13,7 @@
 # license that conforms to the Open Source Definition (Version 1.9)
 # published by the Open Source Initiative.
 
-# Please submit bugfixes or comments via http://bugs.opensuse.org/
+# Please submit bugfixes or comments via https://bugs.opensuse.org/
 #
 
 
@@ -36,13 +36,13 @@
 %{!?fedora: %global sbinpath /sbin}%{?fedora: %global sbinpath %{_sbindir}}
 
 Name:           spacewalk-setup
-Version:        4.0.6
+Version:        4.0.8
 Release:        1%{?dist}
 Summary:        Initial setup tools for Spacewalk
 License:        GPL-2.0-only
 Group:          Applications/System
 
-URL:            https://github.com/uyuni-project/uyuni
+Url:            https://github.com/uyuni-project/uyuni
 Source0:        %{name}-%{version}.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 
@@ -119,6 +119,9 @@ Requires:       spacewalk-base-minimal-config
 Requires:       spacewalk-java-lib >= 2.4.5
 Requires:       spacewalk-setup-jabberd
 
+Provides:       salt-formulas-configuration
+Conflicts:      otherproviders(salt-formulas-configuration)
+
 %description
 A collection of post-installation scripts for managing Spacewalk's initial
 setup tasks, re-installation, and upgrades.
@@ -191,6 +194,11 @@ mkdir -p $RPM_BUILD_ROOT%{_mandir}/man8
 /usr/bin/pod2man --section=1 $RPM_BUILD_ROOT/%{_bindir}/spacewalk-setup-httpd | gzip > $RPM_BUILD_ROOT%{_mandir}/man1/spacewalk-setup-httpd.1.gz
 /usr/bin/pod2man --section=1 $RPM_BUILD_ROOT/%{_bindir}/spacewalk-setup-sudoers| gzip > $RPM_BUILD_ROOT%{_mandir}/man1/spacewalk-setup-sudoers.1.gz
 /usr/bin/pod2man --section=1 $RPM_BUILD_ROOT/%{_bindir}/spacewalk-setup-ipa-authentication| gzip > $RPM_BUILD_ROOT%{_mandir}/man1/spacewalk-setup-ipa-authentication.1.gz
+
+# Standalone Salt formulas configuration
+install -Dd -m 0755 %{buildroot}%{_prefix}/share/salt-formulas
+install -Dd -m 0755 %{buildroot}%{_prefix}/share/salt-formulas/states
+install -Dd -m 0755 %{buildroot}%{_prefix}/share/salt-formulas/metadata
 
 %post
 if [ $1 = 2 -a -e /etc/tomcat6/tomcat6.conf ]; then
@@ -289,6 +297,9 @@ pylint --rcfile /etc/spacewalk-python3-pylint.rc \
 %{_bindir}/spacewalk-setup-db-ssl-certificates
 %{_bindir}/cobbler20-setup
 %{_mandir}/man[13]/*.[13]*
+%dir %attr(0755, root, root) %{_prefix}/share/salt-formulas/
+%dir %attr(0755, root, root) %{_prefix}/share/salt-formulas/states/
+%dir %attr(0755, root, root) %{_prefix}/share/salt-formulas/metadata/
 %dir %{_datadir}/spacewalk
 %{_datadir}/spacewalk/*
 %attr(755, %{apache_user}, root) %{misc_path}/spacewalk

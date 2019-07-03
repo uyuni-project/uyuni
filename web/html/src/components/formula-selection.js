@@ -206,10 +206,9 @@ class FormulaSelection extends React.Component {
 
     render() {
         var messages = <Messages items={[{severity: "info", text:
-            <p><strong>{t('This is a feature preview')}</strong>: On this page you can
-            select <a href="https://docs.saltstack.com/en/latest/topics/development/conventions/formulas.html">Salt formulas</a> for
+            <p>On this page you can select <a href="https://docs.saltstack.com/en/latest/topics/development/conventions/formulas.html">Salt Formulas</a> for
             this group/system, which can then be configured on group and system level. This allows you to automatically install and configure software. 
-            We would be glad to receive your feedback via the <a href="https://forums.suse.com/forumdisplay.php?22-SUSE-Manager" target="_blank">{t('forum')}</a>.</p>
+            </p>
         }]}/>;
         if (this.state.messages.length > 0) {
             messages = <Messages items={this.state.messages.map(function(msg) {

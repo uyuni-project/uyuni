@@ -22,4 +22,4 @@ cobblerd
 # execute the tests
 
 cd /usr/share/cobbler/tests
-nosetests --with-xunit --xunit-file /reports/cobbler.xml -s .
+pytest --junitxml=/reports/cobbler.xml

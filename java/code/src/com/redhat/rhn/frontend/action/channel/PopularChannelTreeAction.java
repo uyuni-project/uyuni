@@ -56,7 +56,7 @@ public class PopularChannelTreeAction extends BaseChannelTreeAction {
         if (countStr == null) {
             count = DEFAULT_COUNT;
             /**
-            Long sysPercent = new Long(UserManager.visibleSystemsAsDto(user).size()/10);
+            Long sysPercent = Long.valueOf(UserManager.visibleSystemsAsDto(user).size()/10);
 
             for (Long l : preSetCounts) {
                 if (l.longValue() < sysPercent.longValue()) {

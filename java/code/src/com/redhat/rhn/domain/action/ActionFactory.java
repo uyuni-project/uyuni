@@ -70,7 +70,7 @@ import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
-import org.hibernate.Query;
+import org.hibernate.query.Query;
 import org.hibernate.Session;
 
 import java.io.UnsupportedEncodingException;
@@ -254,7 +254,7 @@ public class ActionFactory extends HibernateFactory {
         sa.setStatus(STATUS_QUEUED);
         sa.setServer(server);
         sa.setParentAction(parent);
-        sa.setRemainingTries(new Long(5)); //arbitrary number from perl
+        sa.setRemainingTries(5L); //arbitrary number from perl
         parent.addServerAction(sa);
     }
 
@@ -467,8 +467,8 @@ public class ActionFactory extends HibernateFactory {
         retval.setEarliestAction(earliest);
         //in perl(modules/rhn/RHN/DB/Scheduler.pm) version is given a 2.
         //So that's what I did.
-        retval.setVersion(new Long(2));
-        retval.setArchived(new Long(0)); //not archived
+        retval.setVersion(2L);
+        retval.setArchived(0L); //not archived
         return retval;
     }
 
@@ -858,6 +858,24 @@ public class ActionFactory extends HibernateFactory {
             .setParameter("queued", ActionFactory.STATUS_QUEUED)
             .executeUpdate();
         }
+    }
+
+    /**
+     * Update the status of several rhnServerAction rows identified by server and action IDs.
+     * @param actionIn associated action of rhnServerAction records
+     * @param serverIds server Ids for which action is scheduled
+     * @param status {@link ActionStatus} object that needs to be set
+     */
+    public static void updateServerActions(Action actionIn, List<Long> serverIds, ActionStatus status) {
+        if (log.isDebugEnabled()) {
+            log.debug("Action status " + status.getName() + " is going to b set for these servers: " + serverIds);
+        }
+        HibernateFactory.getSession()
+                .getNamedQuery("Action.updateServerActions")
+                .setParameter("action_id", actionIn.getId())
+                .setParameter("server_ids", serverIds)
+                .setParameter("status", status.getId())
+                .executeUpdate();
     }
 
     /**

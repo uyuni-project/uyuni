@@ -46,6 +46,7 @@
 
     <!-- Allows bypass checkstyle for certain places -->
     <module name="SuppressionCommentFilter"/>
+    <module name="SuppressWarningsFilter" />
 
     <module name="TreeWalker">
 
@@ -80,6 +81,7 @@
             <property name="allowMissingParamTags" value="${javadoc.lazy}" />
             <property name="allowMissingThrowsTags" value="${javadoc.lazy}" />
             <property name="allowMissingReturnTag" value="${javadoc.lazy}" />
+            <property name="allowMissingPropertyJavadoc" value="true" />
         </module>
         <module name="JavadocType">
           <property name="scope" value="${javadoc.type.scope}" />
@@ -216,6 +218,7 @@ MINUS_ASSIGN, MOD, MOD_ASSIGN, NOT_EQUAL, PLUS, PLUS_ASSIGN, QUESTION, RCURLY, S
         <module name="usage.UnusedPrivateField"/>
 -->
         <module name="MissingDeprecated"/>
+        <module name="SuppressWarningsHolder" />
     </module>
 
     <!-- Checks for Headers                              -->

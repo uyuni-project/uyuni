@@ -217,9 +217,9 @@ public class ValidatorTest extends TestCase {
     public void testLongField() throws Exception {
 
         TestObject to = new TestObject();
-        to.setLongField(new Long(10));
+        to.setLongField(10L);
         assertNull(validator.validate("longField", to));
-        to.setLongField(new Long(100));
+        to.setLongField(100L);
         assertNotNull(validator.validate("longField", to));
         to.setThirdLongField(Long.MAX_VALUE);
         assertNull(validator.validate("thirdLongFiled", to));

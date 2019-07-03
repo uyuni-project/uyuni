@@ -839,5 +839,264 @@
                 "installer_updates" : false
             }
         ]
+    },
+    {
+        "id" : -1,
+        "name" : "Ubuntu 18.04",
+        "identifier" : "Ubuntu-Client",
+        "former_identifier" : "",
+        "version" : "18.04",
+        "release_type" : null,
+        "arch" : "amd64",
+        "friendly_name" : "Ubuntu 18.04",
+        "product_class" : "SLE-M-T-ALPHA",
+        "cpe" : null,
+        "free" : false,
+        "description" : null,
+        "release_stage" : "alpha",
+        "eula_url" : "",
+        "product_type" : "base",
+        "offline_predecessor_ids" : [
+        ],
+        "online_predecessor_ids" : [
+        ],
+        "shortname" : null,
+        "recommended" : false,
+        "extensions" : [
+        ],
+        "repositories" : [
+            {
+                "id" : -77,
+                "url" : "http://localhost/pub/repositories/empty-deb/",
+                "name" : "ubuntu-18.04-pool",
+                "distro_target" : "amd64",
+                "description" : "Ubuntu 18.04 LTS",
+                "enabled" : true,
+                "autorefresh" : false,
+                "installer_updates" : false
+            }
+        ]
+    },
+    {
+        "id" : -2,
+        "name" : "Ubuntu 16.04",
+        "identifier" : "Ubuntu-Client",
+        "former_identifier" : "",
+        "version" : "16.04",
+        "release_type" : null,
+        "arch" : "amd64",
+        "friendly_name" : "Ubuntu 16.04",
+        "product_class" : "SLE-M-T-ALPHA",
+        "cpe" : null,
+        "free" : false,
+        "description" : null,
+        "release_stage" : "alpha",
+        "eula_url" : "",
+        "product_type" : "base",
+        "offline_predecessor_ids" : [
+        ],
+        "online_predecessor_ids" : [
+        ],
+        "shortname" : null,
+        "recommended" : false,
+        "extensions" : [
+        ],
+        "repositories" : [
+            {
+                "id" : -76,
+                "url" : "http://localhost/pub/repositories/empty-deb/",
+                "name" : "ubuntu-16.04-pool",
+                "distro_target" : "amd64",
+                "description" : "Ubuntu 16.04 LTS",
+                "enabled" : true,
+                "autorefresh" : false,
+                "installer_updates" : false
+            }
+        ]
+    },
+    {
+        "id" : -3,
+        "name" : "RHEL5 Base",
+        "identifier" : "rhel5-base",
+        "former_identifier" : "",
+        "version" : "5",
+        "release_type" : null,
+        "arch" : "x86_64",
+        "friendly_name" : "RHEL5 Base x86_64",
+        "product_class" : "SLE-M-T",
+        "cpe" : null,
+        "free" : false,
+        "description" : null,
+        "release_stage" : "alpha",
+        "eula_url" : "",
+        "product_type" : "base",
+        "offline_predecessor_ids" : [
+        ],
+        "online_predecessor_ids" : [
+        ],
+        "shortname" : null,
+        "recommended" : false,
+        "extensions" : [
+        ],
+        "repositories" : [
+            {
+                "id" : -78,
+                "url" : "http://localhost/pub/repositories/empty/",
+                "name" : "RHEL5-Pool",
+                "distro_target" : "x86_64",
+                "description" : "RHEL5-Pool",
+                "enabled" : true,
+                "autorefresh" : false,
+                "installer_updates" : false
+            }
+        ]
+    },
+    {
+        "id" : -4,
+        "name" : "RHEL5 Base",
+        "identifier" : "rhel5-base",
+        "former_identifier" : "",
+        "version" : "5",
+        "release_type" : null,
+        "arch" : "i386",
+        "friendly_name" : "RHEL5 Base i386",
+        "product_class" : "SLE-M-T",
+        "cpe" : null,
+        "free" : false,
+        "description" : null,
+        "release_stage" : "alpha",
+        "eula_url" : "",
+        "product_type" : "base",
+        "offline_predecessor_ids" : [
+        ],
+        "online_predecessor_ids" : [
+        ],
+        "shortname" : null,
+        "recommended" : false,
+        "extensions" : [
+        ],
+        "repositories" : [
+            {
+                "id" : -79,
+                "url" : "http://localhost/pub/repositories/empty/",
+                "name" : "RHEL5-Pool",
+                "distro_target" : "i386",
+                "description" : "RHEL5-Pool",
+                "enabled" : true,
+                "autorefresh" : false,
+                "installer_updates" : false
+            }
+        ]
+    },
+    {
+        "id" : -5,
+        "name" : "RHEL6 Base",
+        "identifier" : "rhel6-base",
+        "former_identifier" : "",
+        "version" : "6",
+        "release_type" : null,
+        "arch" : "x86_64",
+        "friendly_name" : "RHEL6 Base x86_64",
+        "product_class" : "SLE-M-T",
+        "cpe" : null,
+        "free" : false,
+        "description" : null,
+        "release_stage" : "alpha",
+        "eula_url" : "",
+        "product_type" : "base",
+        "offline_predecessor_ids" : [
+        ],
+        "online_predecessor_ids" : [
+        ],
+        "shortname" : null,
+        "recommended" : false,
+        "extensions" : [
+        ],
+        "repositories" : [
+            {
+                "id" : -80,
+                "url" : "http://localhost/pub/repositories/empty/",
+                "name" : "RHEL6-Pool",
+                "distro_target" : "x86_64",
+                "description" : "RHEL6-Pool",
+                "enabled" : true,
+                "autorefresh" : false,
+                "installer_updates" : false
+            }
+        ]
+    },
+    {
+        "id" : -6,
+        "name" : "RHEL6 Base",
+        "identifier" : "rhel6-base",
+        "former_identifier" : "",
+        "version" : "6",
+        "release_type" : null,
+        "arch" : "i386",
+        "friendly_name" : "RHEL6 Base i386",
+        "product_class" : "SLE-M-T",
+        "cpe" : null,
+        "free" : false,
+        "description" : null,
+        "release_stage" : "alpha",
+        "eula_url" : "",
+        "product_type" : "base",
+        "offline_predecessor_ids" : [
+        ],
+        "online_predecessor_ids" : [
+        ],
+        "shortname" : null,
+        "recommended" : false,
+        "extensions" : [
+        ],
+        "repositories" : [
+            {
+                "id" : -81,
+                "url" : "http://localhost/pub/repositories/empty/",
+                "name" : "RHEL6-Pool",
+                "distro_target" : "i386",
+                "description" : "RHEL6-Pool",
+                "enabled" : true,
+                "autorefresh" : false,
+                "installer_updates" : false
+            }
+        ]
+    },
+    {
+        "id" : -7,
+        "name" : "RHEL7 Base",
+        "identifier" : "rhel7-base",
+        "former_identifier" : "",
+        "version" : "7",
+        "release_type" : null,
+        "arch" : "x86_64",
+        "friendly_name" : "RHEL7 Base x86_64",
+        "product_class" : "SLE-M-T",
+        "cpe" : null,
+        "free" : false,
+        "description" : null,
+        "release_stage" : "alpha",
+        "eula_url" : "",
+        "product_type" : "base",
+        "offline_predecessor_ids" : [
+        ],
+        "online_predecessor_ids" : [
+        ],
+        "shortname" : null,
+        "recommended" : false,
+        "extensions" : [
+        ],
+        "repositories" : [
+            {
+                "id" : -81,
+                "url" : "http://localhost/pub/repositories/empty/",
+                "name" : "RHEL7-Pool",
+                "distro_target" : "x86_64",
+                "description" : "RHEL7-Pool",
+                "enabled" : true,
+                "autorefresh" : false,
+                "installer_updates" : false
+            }
+        ]
     }
 ]

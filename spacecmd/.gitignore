@@ -1,4 +1,9 @@
 *~
 *.pyc
 *.swp
-__init__.py
+.vscode
+.pytype
+.pytest_cache*
+.spacecmd-venv*
+*.egg-info
+

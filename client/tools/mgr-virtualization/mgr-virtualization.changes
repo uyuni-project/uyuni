@@ -1,3 +1,30 @@
+- Fix missing python 3 ugettext (bsc#1138494)
+
+-------------------------------------------------------------------
+Wed May 15 20:08:58 CEST 2019 - jgonzalez@suse.com
+
+- version 4.0.6-1
+- Obsolete newer versions of rhn-virtualization
+
+-------------------------------------------------------------------
+Wed May 15 15:00:56 CEST 2019 - jgonzalez@suse.com
+
+- version 4.0.5-1
+- SPEC cleanup
+- Fix wrong bugzilla entry at changelog
+
+-------------------------------------------------------------------
+Mon Apr 22 12:04:03 CEST 2019 - jgonzalez@suse.com
+
+- version 4.0.4-1
+- add makefile and pylint configuration
+
+-------------------------------------------------------------------
+Mon Mar 25 16:37:47 CET 2019 - jgonzalez@suse.com
+
+- version 4.0.3-1
+- convert poller to systemd timer (bsc#1115414)
+
 -------------------------------------------------------------------
 Fri Oct 26 09:59:54 CEST 2018 - jgonzalez@suse.com
 
@@ -9,7 +36,7 @@ Fri Oct 26 09:59:54 CEST 2018 - jgonzalez@suse.com
 Fri Aug 10 16:03:24 CEST 2018 - jgonzalez@suse.com
 
 - version 4.0.1-1
-- Bump version to 4.0.0 (bsc#11040346)
+- Bump version to 4.0.0 (bsc#1104034)
 - Rename package to mgr-virtualization to allow version 4.0.0 (bsc#1104034)
 - Fix copyright for the package specfile (bsc#1103696)
 

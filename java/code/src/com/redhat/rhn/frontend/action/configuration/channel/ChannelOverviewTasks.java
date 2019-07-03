@@ -172,7 +172,7 @@ public class ChannelOverviewTasks extends RhnAction {
         Set crids = new HashSet();
         for (Iterator itr = revs.iterator(); itr.hasNext();) {
             ConfigFileDto cfd = (ConfigFileDto)itr.next();
-            crids.add(new Long(cfd.getLatestConfigRevisionId().longValue()));
+            crids.add(cfd.getLatestConfigRevisionId());
         }
 
         Map<Long, Collection<Long>> serverConfigMap =
@@ -206,7 +206,7 @@ public class ChannelOverviewTasks extends RhnAction {
     private void makeMessage(int successes, HttpServletRequest request) {
         if (successes > 0) {
             String number = LocalizationService.getInstance()
-                    .formatNumber(new Integer(successes));
+                    .formatNumber(successes);
 
             //create the success message
             ActionMessages msg = new ActionMessages();

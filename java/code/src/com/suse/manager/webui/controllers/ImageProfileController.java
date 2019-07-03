@@ -410,17 +410,14 @@ public class ImageProfileController {
      * @return a JSON string of the list of activation keys
      */
     private static String getActivationKeys(User user) {
-        ActivationKeyManager akm = ActivationKeyManager.getInstance();
-        return GSON.toJson(akm.findAll(user).stream()
-                .filter(ak -> ak.getBaseChannel() != null)
-                .map(ActivationKey::getKey)
-                .collect(Collectors.toList()));
+        return GSON.toJson(getActivationKeyNames(user));
     }
 
     private static List<String> getActivationKeyNames(User user) {
         return ActivationKeyManager.getInstance()
-                .findAll(user)
-                .stream().map(ActivationKey::getKey)
+                .findAllActive(user).stream()
+                .filter(ak -> ak.getBaseChannel() != null)
+                .map(ActivationKey::getKey)
                 .collect(Collectors.toList());
     }
 
@@ -523,9 +520,7 @@ public class ImageProfileController {
 
         // Remove deleted values
         oldVals.stream()
-                .filter(oldVal -> !newValues.stream()
-                        .filter(newVal -> oldVal.getId().equals(newVal.getId())).findAny()
-                        .isPresent())
+                .filter(oldVal -> newValues.stream().noneMatch(newVal -> oldVal.getId().equals(newVal.getId())))
                 .forEach(ImageProfileFactory::delete);
     }
 }

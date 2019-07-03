@@ -44,7 +44,7 @@ def _prepareDestDir(dest):
   Check target directory does not exists
   '''
   if os.path.isdir(dest):
-    raise salt.exceptions.SaltException('Working directory "{}" exists before sources are prepared'.format(dest))
+    raise salt.exceptions.SaltException('Working directory "{0}" exists before sources are prepared'.format(dest))
 
 def _prepareLocal(source, dest):
   '''
@@ -85,6 +85,8 @@ def _prepareGit(source, dest, root):
   url = None
 
   # parse git uri - i.e. git@github.com/repo/#rev:sub
+  # compatible with docker as per https://docs.docker.com/engine/reference/commandline/build/#git-repositories
+
   try:
     url, fragment = source.split('#', 1)
     try:
@@ -94,14 +96,21 @@ def _prepareGit(source, dest, root):
   except:
     url = source
 
-  log.debug('GIT URL: {}, Revision: {}, subdir: {}'.format(url, rev, subdir))
+  # omitted rev means default 'master' branch revision
+  if rev == '':
+    rev = 'master'
+
+  log.debug('GIT URL: {0}, Revision: {1}, subdir: {2}'.format(url, rev, subdir))
   __salt__['git.init'](tmpdir)
   __salt__['git.remote_set'](tmpdir, url)
   __salt__['git.fetch'](tmpdir)
   __salt__['git.checkout'](tmpdir, rev=rev)
 
-  if subdir and _isLocal(os.path.join(tmpdir, subdir)):
-    __salt__['file.symlink'](os.path.join(tmpdir, subdir), dest)
+  if subdir:
+    if _isLocal(os.path.join(tmpdir, subdir)):
+      __salt__['file.symlink'](os.path.join(tmpdir, subdir), dest)
+    else:
+      raise salt.exceptions.SaltException('Directory is not present in checked out source: {}'.format(subdir))
   else:
     __salt__['file.symlink'](tmpdir, dest)
   return dest
@@ -117,7 +126,7 @@ def prepare_source(source, root):
     [http[s]://|git://][user@]hostname/repository[#revision[:subdirectory]]
   '''
   dest = os.path.join(root, 'source')
-  log.debug('Preparing build source for {} to {}'.format(source, dest))
+  log.debug('Preparing build source for {0} to {1}'.format(source, dest))
   if _isLocal(source):
     return _prepareLocal(source, dest)
   elif _isTarball(source):
@@ -125,4 +134,4 @@ def prepare_source(source, root):
   elif _isGit(source):
     return _prepareGit(source, dest, root)
   else:
-    raise salt.exceptions.SaltException('Unknown source format "{}"'.format(source))
+    raise salt.exceptions.SaltException('Unknown source format "{0}"'.format(source))

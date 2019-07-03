@@ -71,7 +71,7 @@ public class DeleteFileAction extends RhnAction {
             int storage = ConfigurationManager.getInstance().
                 getFileStorage(usr, cf);
             ConfigActionHelper.processParamMap(req, params);
-            params.put("storage", new Integer(storage));
+            params.put("storage", storage);
             ConfigActionHelper.setupRequestAttributes(ctx, cf,
                         cf.getLatestConfigRevision());
             req.setAttribute("storage", StringUtil.displayFileSize(storage));

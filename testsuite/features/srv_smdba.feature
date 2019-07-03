@@ -88,7 +88,7 @@ Feature: SMBDA database helper tool
     And when I issue command "smdba db-status"
     Given a postgresql database is running
     And database "susemanager" has no table "dummy"
-    Then I disable backup in the directory "/smdba-backup-test" 
+    When I disable backup in the directory "/smdba-backup-test"
     And I remove backup directory "/smdba-backup-test"
 
   Scenario: Start spacewalk services

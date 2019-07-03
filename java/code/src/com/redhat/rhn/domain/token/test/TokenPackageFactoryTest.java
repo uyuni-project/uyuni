@@ -84,7 +84,7 @@ public class TokenPackageFactoryTest extends BaseTestCaseWithUser {
         // a second package manually.
         TokenPackage pkg2 = new TokenPackage();
 
-        Long testid = new Long(101);
+        Long testid = 101L;
         String query = "PackageArch.findById";
         PackageArch parch = (PackageArch) TestUtils.lookupFromCacheById(testid, query);
 

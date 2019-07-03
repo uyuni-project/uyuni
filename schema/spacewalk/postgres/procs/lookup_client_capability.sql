@@ -26,18 +26,12 @@ begin
      where name = name_in;
 
     if not found then
-        cap_name_id := nextval('rhn_client_capname_id_seq');
-
-        insert into rhnClientCapabilityName(id, name)
-            values (cap_name_id, name_in)
-            on conflict do nothing;
-
-        select id
-            into strict cap_name_id
-            from rhnclientcapabilityname
-            where name = name_in;
+        -- HACK: insert is isolated in own function in order to be able to declare this function immutable
+        -- Postgres optimizes immutable functions calls but those are compatible with the contract of lookup_\*
+        -- see https://www.postgresql.org/docs/9.6/xfunc-volatility.html
+        return insert_client_capability(name_in);
     end if;
 
     return cap_name_id;
 end;
-$$ language plpgsql;
+$$ language plpgsql immutable;

@@ -57,25 +57,20 @@ When(/^I wait at most (\d+) seconds until event "([^"]*)" is completed$/) do |fi
     And I wait until I do not see "#{event}" text, refreshing the page
     And I follow "History"
     And I wait until I see "System History" text
+    And I wait until I see "#{event}" text, refreshing the page
     And I follow first "#{event}"
     And I wait at most #{final_timeout} seconds until the event is completed, refreshing the page
   )
 end
 
 When(/^I wait until I see the event "([^"]*)" completed during last minute, refreshing the page$/) do |event|
-  begin
-    Timeout.timeout(DEFAULT_TIMEOUT) do
-      loop do
-        now = Time.now
-        current_minute = now.strftime('%H:%M')
-        previous_minute = (now - 60).strftime('%H:%M')
-        break if all(:xpath, "//a[contains(text(),'#{event}')]/../..//td[4][contains(text(),'#{current_minute}') or contains(text(),'#{previous_minute}')]/../td[3]/a[1]").any?
-        sleep 1
-        page.evaluate_script 'window.location.reload()'
-      end
-    end
-  rescue Timeout::Error
-    raise "Couldn't find the event #{event} in webpage"
+  repeat_until_timeout(message: "Couldn't find the event #{event}") do
+    now = Time.now
+    current_minute = now.strftime('%H:%M')
+    previous_minute = (now - 60).strftime('%H:%M')
+    break if all(:xpath, "//a[contains(text(),'#{event}')]/../..//td[4][contains(text(),'#{current_minute}') or contains(text(),'#{previous_minute}')]/../td[3]/a[1]").any?
+    sleep 1
+    page.evaluate_script 'window.location.reload()'
   end
 end
 
@@ -88,10 +83,24 @@ When(/^I follow the event "([^"]*)" completed during last minute$/) do |event|
 end
 
 # spacewalk errors steps
-Then(/^I control that up2date logs on client under test contains no Traceback error$/) do
+Then(/^the up2date logs on client should contain no Traceback error$/) do
   cmd = 'if grep "Traceback" /var/log/up2date ; then exit 1; else exit 0; fi'
   _out, code = $client.run(cmd)
   raise 'error found, check the client up2date logs' if code.nonzero?
+end
+
+# salt failures log check
+Then(/^the salt event log on server should contain no failures$/) do
+  # upload salt event parser log
+  file = 'salt_event_parser.py'
+  source = File.dirname(__FILE__) + '/../upload_files/' + file
+  dest = "/tmp/" + file
+  return_code = file_inject($server, source, dest)
+  raise 'File injection failed' unless return_code.zero?
+  # print failures from salt event log
+  output = $server.run("python3 /tmp/#{file}")
+  count_failures = output.to_s.scan(/false/).length
+  raise "\nFound #{count_failures} failures in salt event log:\n#{output.join.to_s}\n" if count_failures.nonzero?
 end
 
 # action chains
@@ -200,10 +209,8 @@ end
 # systemspage and clobber
 Given(/^I am on the Systems page$/) do
   steps %(
-  When I am authorized as "admin" with password "admin"
-  And I follow "Home" in the left menu
-  And I follow "Systems" in the left menu
-  And I follow "Overview" in the left menu
+    When I am authorized as "admin" with password "admin"
+    When I follow the left menu "Systems > Overview"
   )
 end
 
@@ -274,14 +281,14 @@ When(/I view system with id "([^"]*)"/) do |arg1|
   visit Capybara.app_host + '/rhn/systems/details/Overview.do?sid=' + arg1
 end
 
-# weak deaps steps
+# weak dependencies steps
 When(/^I refresh the metadata for "([^"]*)"$/) do |host|
   case host
   when 'sle-client'
     $client.run('rhn_check -vvv', true, 500, 'root')
     client_refresh_metadata
   when 'sle-minion'
-    $minion.run('zypper --non-interactive ref -s', true, 500, 'root')
+    $minion.run_until_ok('zypper --non-interactive refresh -s')
   else
     raise 'Invalid target.'
   end
@@ -290,6 +297,12 @@ end
 Then(/^channel "([^"]*)" should be enabled on "([^"]*)"$/) do |channel, host|
   node = get_target(host)
   node.run("zypper lr -E | grep '#{channel}'")
+end
+
+Then(/^channel "([^"]*)" should not be enabled on "([^"]*)"$/) do |channel, host|
+  node = get_target(host)
+  _out, code = node.run("zypper lr -E | grep '#{channel}'", false)
+  raise "'#{channel}' was not expected but was found." if code.to_i.zero?
 end
 
 Then(/^"(\d+)" channels should be enabled on "([^"]*)"$/) do |count, host|
@@ -360,7 +373,7 @@ end
 
 Then(/^I should see package "([^"]*)" in channel "([^"]*)"$/) do |pkg, channel|
   steps %(
-    And I follow "Channel List > All" in the left menu
+    When I follow the left menu "Software > Channel List > All"
     And I follow "#{channel}"
     And I follow "Packages"
     Then I should see package "#{pkg}"
@@ -382,8 +395,8 @@ When(/^I view the primary subscription list$/) do
   raise unless find('i.fa-th-list', match: :first).click
 end
 
-When(/^I view the primary subscription list for asdf$/) do
-  within(:xpath, "//h3[contains(text(), 'asdf')]/../..") do
+When(/^I view the primary subscription list for SCC user$/) do
+  within(:xpath, "//h3[contains(text(), 'SCC user')]/../..") do
     raise unless find('i.fa-th-list', match: :first).click
   end
 end
@@ -462,6 +475,10 @@ Then(/^I see verification succeeded/) do
   find('i.text-success')
 end
 
+When(/^I enter the address of the HTTP proxy as "([^"]*)"/) do |hostname|
+  step %(I enter "#{$server_http_proxy}" as "#{hostname}")
+end
+
 # configuration management steps
 
 Then(/^I should see a table line with "([^"]*)", "([^"]*)", "([^"]*)"$/) do |arg1, arg2, arg3|
@@ -518,6 +535,12 @@ When(/^I store "([^"]*)" into file "([^"]*)" on "([^"]*)"$/) do |content, filena
   node.run("echo \"#{content}\" > #{filename}", true, 600, 'root')
 end
 
+When(/^I set the activation key "([^"]*)" in the bootstrap script on the server$/) do |key|
+  $server.run("sed -i '/^ACTIVATION_KEYS=/c\\ACTIVATION_KEYS=#{key}' /srv/www/htdocs/pub/bootstrap/bootstrap.sh")
+  output, code = $server.run('cat /srv/www/htdocs/pub/bootstrap/bootstrap.sh')
+  assert(output.include?(key))
+end
+
 Then(/^file "([^"]*)" should contain "([^"]*)" on "([^"]*)"$/) do |filename, content, host|
   node = get_target(host)
   node.run("test -f #{filename}")
@@ -546,19 +569,26 @@ end
 
 When(/^I enable repositories before installing Docker$/) do
   # Distribution Pool and Update
-  os_version = get_os_version($minion)
-  arch, _code = $minion.run('uname -m')
-  puts $minion.run("zypper mr --enable SLE-#{os_version}-#{arch.strip}-Pool")
-  puts $minion.run("zypper mr --enable SLE-#{os_version}-#{arch.strip}-Update")
+  os_version, os_family = get_os_version($minion)
+  if os_family =~ /^opensuse/
+    repos = "openSUSE-Leap-#{os_version}-Pool openSUSE-Leap-#{os_version}-Update"
+    puts $minion.run("zypper mr --enable #{repos}")
+  elsif os_version =~ /^15/
+    repos, _code = $minion.run('zypper lr | grep SLE-Module-Basesystem | cut -d"|" -f2')
+    puts $minion.run("zypper mr --enable #{repos.gsub(/\s/, ' ')}")
+  else
+    arch, _code = $minion.run('uname -m')
+    repos = "SLE-#{os_version}-#{arch.strip}-Pool SLE-#{os_version}-#{arch.strip}-Update"
+    puts $minion.run("zypper mr --enable #{repos}")
+  end
 
   # Tools
-  out, _code = $minion.run('zypper lr | grep SLE-Manager-Tools | cut -d"|" -f2')
-  puts $minion.run("zypper mr --enable #{out.gsub(/\s/, ' ')}")
+  repos, _code = $minion.run('zypper lr | grep SLE-Manager-Tools | cut -d"|" -f2')
+  puts $minion.run("zypper mr --enable #{repos.gsub(/\s/, ' ')}")
 
   # Container repositories
   # They don't exist for SLES11 systems, only for SLES12 and upper systems
-  _out, code = $minion.run('pidof systemd', false)
-  if code.zero?
+  unless os_version =~ /^11/
     repos, _code = $minion.run('zypper lr | grep SLE-Manager-Tools | cut -d"|" -f2')
     $minion.run("zypper mr --enable #{repos.gsub(/\s/, ' ')}")
     repos, _code = $minion.run('zypper lr | grep SLE-Module-Containers | cut -d"|" -f2')
@@ -570,19 +600,26 @@ end
 
 When(/^I disable repositories after installing Docker$/) do
   # Distribution Pool and Update
-  os_version = get_os_version($minion)
-  arch, _code = $minion.run('uname -m')
-  puts $minion.run("zypper mr --disable SLE-#{os_version}-#{arch.strip}-Update")
-  puts $minion.run("zypper mr --disable SLE-#{os_version}-#{arch.strip}-Pool")
+  os_version, os_family = get_os_version($minion)
+  if os_family =~ /^opensuse/
+    repos = "openSUSE-Leap-#{os_version}-Pool openSUSE-Leap-#{os_version}-Update"
+    puts $minion.run("zypper mr --disable #{repos}")
+  elsif os_version =~ /^15/
+    repos, _code = $minion.run('zypper lr | grep SLE-Module-Basesystem | cut -d"|" -f2')
+    puts $minion.run("zypper mr --disable #{repos.gsub(/\s/, ' ')}")
+  else
+    arch, _code = $minion.run('uname -m')
+    repos = "SLE-#{os_version}-#{arch.strip}-Pool SLE-#{os_version}-#{arch.strip}-Update"
+    puts $minion.run("zypper mr --disable #{repos}")
+  end
 
   # Tools
-  out, _code = $minion.run('zypper lr | grep SLE-Manager-Tools | cut -d"|" -f2')
-  puts $minion.run("zypper mr --disable #{out.gsub(/\s/, ' ')}")
+  repos, _code = $minion.run('zypper lr | grep SLE-Manager-Tools | cut -d"|" -f2')
+  puts $minion.run("zypper mr --disable #{repos.gsub(/\s/, ' ')}")
 
   # Container repositories
   # They don't exist for SLES11 systems, only for SLES12 and upper systems
-  _out, code = $minion.run('pidof systemd', false)
-  if code.zero?
+  unless os_version =~ /^11/
     repos, _code = $minion.run('zypper lr | grep SLE-Manager-Tools | cut -d"|" -f2')
     $minion.run("zypper mr --disable #{repos.gsub(/\s/, ' ')}")
     repos, _code = $minion.run('zypper lr | grep SLE-Module-Containers | cut -d"|" -f2')
@@ -594,31 +631,33 @@ end
 
 When(/^I enable repositories before installing branch server$/) do
   # Distribution Pool and Update
-  os_version = get_os_version($proxy)
-  os_family, _code = $proxy.run('grep "ID" /etc/os-release')
-  if /opensuse/ =~ os_family
-    puts $proxy.run("zypper mr --enable openSUSE-Leap-#{os_version}-Pool")
-    puts $proxy.run("zypper mr --enable openSUSE-Leap-#{os_version}-Update")
+  os_version, os_family = get_os_version($proxy)
+  if os_family =~ /^opensuse/
+    repos = "openSUSE-Leap-#{os_version}-Pool openSUSE-Leap-#{os_version}-Update"
+    puts $proxy.run("zypper mr --enable #{repos}")
+  elsif os_version =~ /^15/
+    repos, _code = $proxy.run('zypper lr | grep SLE-Module-Basesystem | cut -d"|" -f2')
+    puts $proxy.run("zypper mr --enable #{repos.gsub(/\s/, ' ')}")
   else
     arch, _code = $proxy.run('uname -m')
-    # take all repos that matche the following pattern "SLE.*#{os_version}-#{arch.strip}.*"
-    repos, _code = $proxy.run("zypper lr | grep SLE.*#{os_version}-#{arch.strip}.* | cut -d'|' -f2")
-    puts $proxy.run("zypper mr --enable #{repos.gsub(/\s/, ' ')}")
+    repos = "SLE-#{os_version}-#{arch.strip}-Pool SLE-#{os_version}-#{arch.strip}-Update"
+    puts $proxy.run("zypper mr --enable #{repos}")
   end
 end
 
 When(/^I disable repositories after installing branch server$/) do
   # Distribution Pool and Update
-  os_version = get_os_version($proxy)
-  os_family, _code = $proxy.run('grep "ID" /etc/os-release')
-  if /opensuse/ =~ os_family
-    puts $proxy.run("zypper mr --disable openSUSE-Leap-#{os_version}-Pool")
-    puts $proxy.run("zypper mr --disable openSUSE-Leap-#{os_version}-Update")
+  os_version, os_family = get_os_version($proxy)
+  if os_family =~ /^opensuse/
+    repos = "openSUSE-Leap-#{os_version}-Pool openSUSE-Leap-#{os_version}-Update"
+    puts $proxy.run("zypper mr --disable #{repos}")
+  elsif os_version =~ /^15/
+    repos, _code = $proxy.run('zypper lr | grep SLE-Module-Basesystem | cut -d"|" -f2')
+    puts $proxy.run("zypper mr --disable #{repos.gsub(/\s/, ' ')}")
   else
     arch, _code = $proxy.run('uname -m')
-    # take all repos that matche the following pattern "SLE.*#{os_version}-#{arch.strip}.*"
-    repos, _code = $proxy.run("zypper lr | grep SLE.*#{os_version}-#{arch.strip}.* | cut -d'|' -f2")
-    puts $proxy.run("zypper mr --disable #{repos.gsub(/\s/, ' ')}")
+    repos = "SLE-#{os_version}-#{arch.strip}-Pool SLE-#{os_version}-#{arch.strip}-Update"
+    puts $proxy.run("zypper mr --disable #{repos}")
   end
 end
 
@@ -828,16 +867,10 @@ And(/^the notification badge and the table should count the same amount of messa
 end
 
 And(/^I wait until radio button "([^"]*)" is checked, refreshing the page$/) do |arg1|
-  begin
-    Timeout.timeout(DEFAULT_TIMEOUT) do
-      loop do
-        break if has_checked_field?(arg1)
-        sleep 1
-        page.evaluate_script 'window.location.reload()'
-      end
-    end
-  rescue Timeout::Error
-    raise "Couldn't find checked radio button #{arg1} in webpage"
+  repeat_until_timeout(message: "Couldn't find checked radio button #{arg1}") do
+    break if has_checked_field?(arg1)
+    sleep 1
+    page.evaluate_script 'window.location.reload()'
   end
 end
 
@@ -881,10 +914,55 @@ And(/^I remove package "([^"]*)" from highstate$/) do |package|
   rows.all('tr').each do |tr|
     next unless tr.text.include?(package)
     puts tr.text
-    tr.find('#sles-release-pkg-state').select('Removed')
+    tr.find("##{package}-pkg-state").select('Removed')
+    next if page.has_css?('#save[disabled]')
     steps %(
       Then I click on "Save"
       And I click on "Apply"
     )
   end
+end
+
+And(/^I check for failed events on history event page$/) do
+  steps %(
+    When I follow "Events" in the content area
+    And I follow "History" in the content area
+    Then I should see a "System History" text
+  )
+  failings = ""
+  event_table_xpath = "//div[@class='table-responsive']/table/tbody"
+  rows = find(:xpath, event_table_xpath)
+  rows.all('tr').each do |tr|
+    if tr.has_css?('.fa.fa-times-circle-o.fa-1-5x.text-danger')
+      failings << "#{tr.text}\n"
+    end
+  end
+  count_failures = failings.length
+  raise "\nFailures in event history found:\n\n#{failings}" if count_failures.nonzero?
+end
+
+When(/^I wait until all events in history are completed$/) do
+  steps %(
+    When I follow "Events" in the content area
+    And I follow "History" in the content area
+    Then I should see a "System History" text
+  )
+  events_icons = "//div[@class='table-responsive']/table/tbody/tr/td[2]/i"
+  repeat_until_timeout(message: 'Not all events in history were completed') do
+    pickedup = false
+    events = all(:xpath, events_icons)
+    events.each do |ev|
+      if ev[:class].include?('fa-exchange')
+        pickedup = true
+        break
+      end
+    end
+    break unless pickedup
+    sleep 1
+  end
+end
+
+And(/I should see a list item with text "([^"]*)" and bullet with "([^"]*)" icon/) do |text, class_name|
+  item_xpath = "//ul/li[text()='#{text}']/i[contains(@class, 'text-#{class_name}')]"
+  find(:xpath, item_xpath)
 end

@@ -15,6 +15,8 @@
 package com.suse.manager.webui.controllers;
 
 import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.withUser;
+import static spark.Spark.get;
 
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
@@ -31,6 +33,7 @@ import java.util.stream.Collectors;
 
 import spark.Request;
 import spark.Response;
+import spark.template.jade.JadeTemplateEngine;
 
 /**
  * Controller class providing backend for Virtual networks UI
@@ -38,6 +41,16 @@ import spark.Response;
 public class VirtualNetsController {
 
     private VirtualNetsController() { }
+
+    /**
+     * Initialize request routes for the pages served by VirtualNetsController
+     *
+     * @param jade jade engine
+     */
+    public static void initRoutes(JadeTemplateEngine jade) {
+        get("/manager/api/systems/details/virtualization/nets/:sid/data",
+                withUser(VirtualNetsController::data));
+    }
 
     /**
      * Returns JSON data describing the virtual networks

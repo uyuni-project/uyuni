@@ -45,27 +45,21 @@ module LavandaBasic
 
   def run_until_ok(cmd)
     result = nil
-    Timeout.timeout(DEFAULT_TIMEOUT) do
-      loop do
-        result, code = run(cmd, false)
-        break if code.zero?
-        sleep 2
-      end
+    repeat_until_timeout(report_result: true) do
+      result, code = run(cmd, false)
+      break if code.zero?
+      sleep 2
+      result
     end
-  rescue Timeout::Error
-    raise "timeout finished! something went wrong! \n #{result}"
   end
 
   def run_until_fail(cmd)
     result = nil
-    Timeout.timeout(DEFAULT_TIMEOUT) do
-      loop do
-        result, code = run(cmd, false)
-        break if code.nonzero?
-        sleep 2
-      end
+    repeat_until_timeout(report_result: true) do
+      result, code = run(cmd, false)
+      break if code.nonzero?
+      sleep 2
+      result
     end
-  rescue Timeout::Error
-    raise "timeout finished! something went wrong! \n #{result}"
   end
 end

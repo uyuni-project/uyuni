@@ -64,10 +64,10 @@ public class ProfileFactoryTest  extends RhnBaseTestCase {
         // gotta make sure the Channel gets saved.
         session.flush();
 
-        List list = ProfileFactory.compatibleWithServer(server, user.getOrg());
+        List<Profile> list = ProfileFactory.compatibleWithServer(server, user.getOrg());
         assertNotNull("List is null", list);
         assertFalse("List is empty", list.isEmpty());
-        for (Iterator itr = list.iterator(); itr.hasNext();) {
+        for (Iterator<Profile> itr = list.iterator(); itr.hasNext();) {
             Object o = itr.next();
             assertEquals("List contains something other than Profiles",
                     Profile.class, o.getClass());

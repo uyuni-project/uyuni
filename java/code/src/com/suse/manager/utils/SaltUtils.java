@@ -61,6 +61,7 @@ import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.domain.server.InstalledPackage;
 import com.redhat.rhn.domain.server.InstalledProduct;
 import com.redhat.rhn.domain.server.MinionServer;
+import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.manager.action.ActionManager;
@@ -103,6 +104,7 @@ import com.suse.manager.webui.utils.salt.custom.Openscap;
 import com.suse.manager.webui.utils.salt.custom.PkgProfileUpdateSlsResult;
 import com.suse.manager.webui.utils.salt.custom.RetOpt;
 import com.suse.manager.webui.websocket.VirtNotifications;
+import com.suse.manager.webui.utils.salt.custom.SystemInfo;
 import com.suse.salt.netapi.calls.modules.Pkg;
 import com.suse.salt.netapi.calls.modules.Pkg.Info;
 import com.suse.salt.netapi.calls.modules.Zypper.ProductInfo;
@@ -110,7 +112,7 @@ import com.suse.salt.netapi.datatypes.target.MinionList;
 import com.suse.salt.netapi.errors.JsonParsingError;
 import com.suse.salt.netapi.errors.SaltError;
 import com.suse.salt.netapi.results.Change;
-import com.suse.salt.netapi.results.CmdExecCodeAll;
+import com.suse.salt.netapi.results.CmdResult;
 import com.suse.salt.netapi.results.ModuleRun;
 import com.suse.salt.netapi.results.Ret;
 import com.suse.salt.netapi.results.StateApplyResult;
@@ -509,11 +511,11 @@ public class SaltUtils {
             serverAction.setResultMsg(message);
         }
         else if (action.getActionType().equals(ActionFactory.TYPE_SCRIPT_RUN)) {
-            Map<String, StateApplyResult<CmdExecCodeAll>> stateApplyResult = Json.GSON.fromJson(jsonResult,
-                    new TypeToken<Map<String, StateApplyResult<CmdExecCodeAll>>>() { }.getType());
-            CmdExecCodeAll result = stateApplyResult.entrySet().stream()
+            Map<String, StateApplyResult<CmdResult>> stateApplyResult = Json.GSON.fromJson(jsonResult,
+                    new TypeToken<Map<String, StateApplyResult<CmdResult>>>() { }.getType());
+            CmdResult result = stateApplyResult.entrySet().stream()
                     .findFirst().map(e -> e.getValue().getChanges())
-                    .orElseGet(() -> new CmdExecCodeAll());
+                    .orElseGet(() -> new CmdResult());
             ScriptRunAction scriptAction = (ScriptRunAction) action;
             ScriptResult scriptResult = Optional.ofNullable(
                     scriptAction.getScriptActionDetails().getResults())
@@ -1067,17 +1069,17 @@ public class SaltUtils {
                         Optional.ofNullable(ret.getRhelReleaseFile())
                                 .map(StateApplyResult::getChanges)
                                 .filter(res -> res.getStdout() != null)
-                                .map(CmdExecCodeAll::getStdout);
+                                .map(CmdResult::getStdout);
                 Optional<String> centosReleaseFile =
                         Optional.ofNullable(ret.getCentosReleaseFile())
                                 .map(StateApplyResult::getChanges)
                                 .filter(res -> res.getStdout() != null)
-                                .map(CmdExecCodeAll::getStdout);
+                                .map(CmdResult::getStdout);
                 Optional<String> resReleasePkg =
                         Optional.ofNullable(ret.getWhatProvidesResReleasePkg())
                                 .map(StateApplyResult::getChanges)
                                 .filter(res -> res.getStdout() != null)
-                                .map(CmdExecCodeAll::getStdout);
+                                .map(CmdResult::getStdout);
                 if (rhelReleaseFile.isPresent() || centosReleaseFile.isPresent() ||
                         resReleasePkg.isPresent()) {
                     Set<InstalledProduct> products = getInstalledProductsForRhel(
@@ -1141,23 +1143,35 @@ public class SaltUtils {
                 Optional.ofNullable(result.getRhelReleaseFile())
                 .map(StateApplyResult::getChanges)
                 .filter(ret -> ret.getStdout() != null)
-                .map(CmdExecCodeAll::getStdout);
+                .map(CmdResult::getStdout);
         Optional<String> centosReleaseFile =
                 Optional.ofNullable(result.getCentosReleaseFile())
                 .map(StateApplyResult::getChanges)
                 .filter(ret -> ret.getStdout() != null)
-                .map(CmdExecCodeAll::getStdout);
+                .map(CmdResult::getStdout);
         Optional<String> resReleasePkg =
                 Optional.ofNullable(result.getWhatProvidesResReleasePkg())
                 .map(StateApplyResult::getChanges)
                 .filter(ret -> ret.getStdout() != null)
-                .map(CmdExecCodeAll::getStdout);
+                .map(CmdResult::getStdout);
         if (rhelReleaseFile.isPresent() || centosReleaseFile.isPresent() ||
                 resReleasePkg.isPresent()) {
             Set<InstalledProduct> products = getInstalledProductsForRhel(
                     server, resReleasePkg,
                     rhelReleaseFile, centosReleaseFile);
             server.setInstalledProducts(products);
+        }
+        else if ("ubuntu".equalsIgnoreCase((String) result.getGrains().get("os"))) {
+            String osArch = result.getGrains().get("osarch") + "-deb";
+            String osVersion = (String) result.getGrains().get("osrelease");
+            // Check if we have a product for the specific arch and version
+            SUSEProduct ubuntuProduct = SUSEProductFactory.findSUSEProduct("ubuntu-client", osVersion, null, osArch,
+                    false);
+            if (ubuntuProduct != null) {
+                InstalledProduct installedProduct = SUSEProductFactory.findInstalledProduct(ubuntuProduct)
+                        .orElse(new InstalledProduct(ubuntuProduct));
+                server.setInstalledProducts(Collections.singleton(installedProduct));
+            }
         }
 
         // Update live patching version
@@ -1524,6 +1538,33 @@ public class SaltUtils {
              return Collections.singleton(installedProduct);
          }).orElse(Collections.emptySet());
      }
+
+    /**
+     * Update the system info through grains and data returned by status.uptime
+     * @param jsonResult response from salt master against util.systeminfo state
+     * @param minionId ID of the minion for which information should be updated
+     */
+    public void updateSystemInfo(JsonElement jsonResult, String minionId) {
+        Optional<MinionServer> minionServer = MinionServerFactory.findByMinionId(minionId);
+        minionServer.ifPresent(minion -> {
+            SystemInfo systemInfo = Json.GSON.fromJson(jsonResult, SystemInfo.class);
+            updateSystemInfo(systemInfo, minion);
+        });
+    }
+
+    /**
+     * Update the system info of the minion
+     * @param systemInfo response from salt master against util.systeminfo state
+     * @param minion  minion for which information should be updated
+     */
+    public void updateSystemInfo(SystemInfo systemInfo, MinionServer minion) {
+        systemInfo.getKerneRelese().ifPresent(kerneRelese -> {
+            minion.setRunningKernel(kerneRelese);
+            ServerFactory.save(minion);
+        });
+        //Update the uptime
+        systemInfo.getUptimeSeconds().ifPresent(us-> handleUptimeUpdate(minion, us.longValue()));
+    }
 
     /**
      * Handle the minion uptime update, that means:

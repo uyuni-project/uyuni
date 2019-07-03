@@ -1,4 +1,4 @@
-# Copyright (c) 2018 SUSE LLC
+# Copyright (c) 2018-2019 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 Feature: Action chain on traditional clients
@@ -15,8 +15,7 @@ Feature: Action chain on traditional clients
 
   Scenario: Pre-requisite: ensure the errata cache is computed before testing on traditional client
     Given I am authorized as "admin" with password "admin"
-    When I follow "Admin"
-    And I follow "Task Schedules"
+    When I follow the left menu "Admin > Task Schedules"
     And I follow "errata-cache-default"
     And I follow "errata-cache-bunch"
     And I click on "Single Run Schedule"
@@ -84,9 +83,7 @@ Feature: Action chain on traditional clients
 
   Scenario: Create a configuration channel for testing action chain on traditional client
     Given I am authorized as "admin" with password "admin"
-    When I follow "Home" in the left menu
-    And I follow "Configuration" in the left menu
-    And I follow "Channels" in the left menu
+    When I follow the left menu "Configuration > Channels"
     And I follow "Create Config Channel"
     And I enter "Action Chain Channel" as "cofName"
     And I enter "actionchainchannel" as "cofLabel"
@@ -96,9 +93,7 @@ Feature: Action chain on traditional clients
 
   Scenario: Add a configuration file to configuration channel for testing action chain on traditional client
     Given I am authorized as "admin" with password "admin"
-    When I follow "Home" in the left menu
-    And I follow "Configuration" in the left menu
-    And I follow "Channels" in the left menu
+    When I follow the left menu "Configuration > Channels"
     And I follow "Action Chain Channel"
     And I follow "Create Configuration File or Directory"
     And I enter "/etc/action-chain.cnf" as "cffPath"
@@ -108,11 +103,7 @@ Feature: Action chain on traditional clients
     And I should see a "Update Configuration File" button
 
   Scenario: Subscribe system to configuration channel for testing action chain on traditional client
-    Given I am authorized as "admin" with password "admin"
-    When I follow "Home" in the left menu
-    And I follow "Systems" in the left menu
-    And I follow "Overview" in the left menu
-    And I follow this "sle-client" link
+    Given I am on the Systems overview page of this "sle-client"
     And I follow "Configuration" in the content area
     And I follow "Manage Configuration Channels" in the content area
     And I follow first "Subscribe to Channels" in the content area
@@ -123,9 +114,7 @@ Feature: Action chain on traditional clients
 
   Scenario: Add a configuration file deployment to the action chain on traditional client
     Given I am authorized as "admin" with password "admin"
-    When I follow "Home" in the left menu
-    And I follow "Configuration" in the left menu
-    And I follow "Channels" in the left menu
+    When I follow the left menu "Configuration > Channels"
     And I follow "Action Chain Channel"
     And I follow "Deploy Files" in the content area
     And I click on "Deploy All Files"
@@ -144,8 +133,7 @@ Feature: Action chain on traditional clients
 
   Scenario: Verify the action chain list on traditional client
     Given I am on the Systems overview page of this "sle-client"
-    When I follow "Schedule"
-    And I follow "Action Chains"
+    When I follow the left menu "Schedule > Action Chains"
     And I follow "new action chain"
     Then I should see a "1. Install or update virgo-dummy on 1 system" text
     And I should see a "2. Run a remote command on 1 system" text
@@ -157,14 +145,12 @@ Feature: Action chain on traditional clients
 
   Scenario: Check that a different user cannot see the action chain for traditional client
     Given I am authorized as "testing" with password "testing"
-    When I follow "Schedule"
-    And I follow "Action Chains"
+    When I follow the left menu "Schedule > Action Chains"
     Then I should not see a "new action chain" link
 
   Scenario: Delete the action chain for traditional client
      Given I am authorized as "admin" with password "admin"
-     Then I follow "Schedule"
-     And I follow "Action Chains"
+     When I follow the left menu "Schedule > Action Chains"
      And I follow "new action chain"
      And I follow "delete action chain" in the content area
      Then I click on "Delete"
@@ -183,8 +169,7 @@ Feature: Action chain on traditional clients
 
   Scenario: Execute the action chain from the web UI on traditional client
     Given I am on the Systems overview page of this "sle-client"
-    When I follow "Schedule"
-    And I follow "Action Chains"
+    When I follow the left menu "Schedule > Action Chains"
     And I follow "new action chain"
     And I should see a "1. Run a remote command on 1 system" text
     Then I click on "Save and Schedule"
@@ -249,9 +234,7 @@ Feature: Action chain on traditional clients
 
   Scenario: Cleanup: remove traditional client from configuration channel
     Given I am authorized as "admin" with password "admin"
-    And I follow "Home" in the left menu
-    When I follow "Configuration" in the left menu
-    And I follow "Channels" in the left menu
+    When I follow the left menu "Configuration > Channels"
     And I follow "Action Chain Channel"
     And I follow "Systems" in the content area
     And I check the "sle-client" client
@@ -260,9 +243,7 @@ Feature: Action chain on traditional clients
 
   Scenario: Cleanup: remove configuration channel for traditional client
     Given I am authorized as "admin" with password "admin"
-    And I follow "Home" in the left menu
-    And I follow "Configuration" in the left menu
-    And I follow "Channels" in the left menu
+    When I follow the left menu "Configuration > Channels"
     And I follow "Action Chain Channel"
     And I follow "Delete Channel"
     And I click on "Delete Config Channel"
@@ -274,4 +255,4 @@ Feature: Action chain on traditional clients
     And I run "zypper -n mr -d Devel_Galaxy_BuildRepo" on "sle-client" without error control
 
   Scenario: Cleanup: remove temporary files for testing action chains on traditional client
-    When I run "rm -f /tmp/action_chain.log" on "sle-minion" without error control
+    When I run "rm -f /tmp/action_chain.log" on "sle-client" without error control

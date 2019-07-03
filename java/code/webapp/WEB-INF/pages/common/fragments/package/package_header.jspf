@@ -1,5 +1,5 @@
 <rhn:toolbar base="h1" icon="header-package" imgAlt="package.jsp.alt">
-    <c:out value="${package_name}" escapeXml="true"/><a href="/rhn/help/reference/en-US/ref.webui.channels.jsp" target="_blank" class="help-title"><rhn:icon type="header-help" title="toolbar.jsp.helpicon.alt" /></a>
+    <c:out value="${package_name}" escapeXml="true"/><a href="/docs/reference/software/manage-channels.html" target="_blank" class="help-title"><rhn:icon type="header-help" title="toolbar.jsp.helpicon.alt" /></a>
 </rhn:toolbar>
 
 <rhn:dialogmenu mindepth="0" maxdepth="1"

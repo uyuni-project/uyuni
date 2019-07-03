@@ -1,6 +1,6 @@
 <rhn:toolbar base="h1" icon="header-schedule"
              iconAlt="action.common.scheduleAlt"
-             helpUrl="/rhn/help/reference/en-US/ref.webui.schedule.jsp">
+             helpUrl="/docs/reference/schedule/schedule-menu.html">
   ${requestScope.actionname}
 </rhn:toolbar>
 

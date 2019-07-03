@@ -72,7 +72,7 @@ public class TokenPackageTest extends BaseTestCaseWithUser {
 
         PackageName pname = PackageNameTest.createTestPackageName();
 
-        Long testid = new Long(100);
+        Long testid = 100L;
         String query = "PackageArch.findById";
         PackageArch parch = (PackageArch) TestUtils.lookupFromCacheById(testid, query);
 

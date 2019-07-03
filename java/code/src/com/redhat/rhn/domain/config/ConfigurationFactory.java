@@ -30,7 +30,7 @@ import com.redhat.rhn.domain.user.User;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.hibernate.ObjectNotFoundException;
-import org.hibernate.Query;
+import org.hibernate.query.Query;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 
@@ -82,7 +82,7 @@ public class ConfigurationFactory extends HibernateFactory {
     public static ConfigRevision newConfigRevision() {
         ConfigRevision cr = new ConfigRevision();
         Date now = new Date();
-        cr.setRevision(new Long(1));
+        cr.setRevision(1L);
         cr.setCreated(now);
         cr.setModified(now);
         return cr;
@@ -145,7 +145,7 @@ public class ConfigurationFactory extends HibernateFactory {
         inParams.put("label_in", channel.getLabel());
         inParams.put("description_in", channel.getDescription());
         //Outparam
-        outParams.put("channelId", new Integer(Types.NUMERIC));
+        outParams.put("channelId", Types.NUMERIC);
 
         Map result = m.execute(inParams, outParams);
 
@@ -188,7 +188,7 @@ public class ConfigurationFactory extends HibernateFactory {
         inParams.put("config_channel_id_in", file.getConfigChannel().getId());
         inParams.put("name_in", file.getConfigFileName().getPath());
         // Outparam
-        outParams.put("configFileId", new Integer(Types.NUMERIC));
+        outParams.put("configFileId", Types.NUMERIC);
 
         Map result = m.execute(inParams, outParams);
         return (Long)result.get("configFileId");
@@ -240,11 +240,10 @@ public class ConfigurationFactory extends HibernateFactory {
             inParams.put("config_content_id_in", null);
         }
         inParams.put("config_info_id_in", revision.getConfigInfo().getId());
-        inParams.put("config_file_type_id", new Long(
-                            revision.getConfigFileType().getId()));
+        inParams.put("config_file_type_id", revision.getConfigFileType().getId());
 
         // Outparam
-        outParams.put("configRevisionId", new Integer(Types.NUMERIC));
+        outParams.put("configRevisionId", Types.NUMERIC);
 
         Map result = m.execute(inParams, outParams);
 
@@ -427,10 +426,10 @@ public class ConfigurationFactory extends HibernateFactory {
         Session session = HibernateFactory.getSession();
         Query query =
             session.getNamedQuery("ConfigFile.findByChannelAndName")
-                    .setLong("channel_id", channel.longValue())
-                    .setLong("name_id", name.longValue())
+                    .setLong("channel_id", channel)
+                    .setLong("name_id", name)
                     .setLong("state_id", ConfigFileState.normal().
-                                                    getId().longValue());
+                            getId());
         try {
             return (ConfigFile) query.uniqueResult();
         }
@@ -459,8 +458,8 @@ public class ConfigurationFactory extends HibernateFactory {
     public static ConfigRevision lookupConfigRevisionByRevId(ConfigFile cf, Long revId) {
         Session session = HibernateFactory.getSession();
         Query q = session.getNamedQuery("ConfigRevision.findByRevisionAndConfigFile");
-        q.setLong("rev", revId.longValue());
-        q.setEntity("cf", cf);
+        q.setLong("rev", revId);
+        q.setParameter("cf", cf);
         return (ConfigRevision) q.uniqueResult();
     }
 
@@ -472,7 +471,7 @@ public class ConfigurationFactory extends HibernateFactory {
     public static List lookupConfigRevisions(ConfigFile cf) {
         Session session = HibernateFactory.getSession();
         Query q = session.getNamedQuery("ConfigRevision.findByConfigFile");
-        q.setEntity("cf", cf);
+        q.setParameter("cf", cf);
         return q.list();
     }
 
@@ -613,7 +612,7 @@ public class ConfigurationFactory extends HibernateFactory {
             inParams.put("symlink_target_file_in", null);
         }
 
-        outParams.put("info_id", new Integer(Types.NUMERIC));
+        outParams.put("info_id", Types.NUMERIC);
 
         Map out = m.execute(inParams, outParams);
 
@@ -658,7 +657,7 @@ public class ConfigurationFactory extends HibernateFactory {
         Map outParams = new HashMap();
 
         inParams.put("name_in", path);
-        outParams.put("name_id", new Integer(Types.NUMERIC));
+        outParams.put("name_id", Types.NUMERIC);
 
         Map out = m.execute(inParams, outParams);
 
@@ -947,7 +946,7 @@ public class ConfigurationFactory extends HibernateFactory {
      */
     public static Long getNextRevisionForFile(ConfigFile file) {
         Map results = getMaxRevisionForFile(file);
-        return new Long(((Long) results.get("revision")).longValue() + 1);
+        return ((Long) results.get("revision")) + 1;
     }
 
     /**
@@ -973,7 +972,7 @@ public class ConfigurationFactory extends HibernateFactory {
         ConfigFile file = lookupConfigFileByChannelAndName(channel.getId(), name.getId());
         Long rev = null;
         if (file == null) { //if a candidate does not exist, create one.
-            rev = new Long(1);
+            rev = 1L;
             file = ConfigurationFactory.newConfigFile();
             file.setConfigChannel(channel);
             file.setConfigFileName(name);

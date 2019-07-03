@@ -57,7 +57,7 @@ public class CrashManager extends BaseManager {
 
         Server server = null;
         try {
-            server = SystemManager.lookupByIdAndUser(new Long(serverId.longValue()), user);
+            server = SystemManager.lookupByIdAndUser(serverId, user);
         }
         catch (LookupException e) {
             throw new NoSuchSystemException();
@@ -78,7 +78,7 @@ public class CrashManager extends BaseManager {
 
         Server server = null;
         try {
-            server = SystemManager.lookupByIdAndUser(new Long(serverId.longValue()), user);
+            server = SystemManager.lookupByIdAndUser(serverId, user);
         }
         catch (LookupException e) {
             throw new NoSuchSystemException();

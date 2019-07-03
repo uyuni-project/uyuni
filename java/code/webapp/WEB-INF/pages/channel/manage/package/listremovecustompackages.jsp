@@ -8,7 +8,7 @@
 <head></head>
 <body>
     <rhn:toolbar base="h1" icon="header-package" iconAlt="overview.jsp.alt"
-                 helpUrl="/rhn/help/reference/en-US/ref.webui.channels.manage.jsp#s3-chnl-mgmt-mng-pkgs">
+                 helpUrl="/docs/reference/software/manage-packages.html">
         <bean:message key="channel.jsp.manage.package.title"/>
     </rhn:toolbar>
 

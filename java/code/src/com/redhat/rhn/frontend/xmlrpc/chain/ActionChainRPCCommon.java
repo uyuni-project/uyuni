@@ -72,7 +72,7 @@ public class ActionChainRPCCommon {
             Map<String, Long> pkgMap = new HashMap<String, Long>();
 
             Package pkg = PackageManager.lookupByIdAndUser(
-                    new Long(pkgId.longValue()), user);
+                    pkgId.longValue(), user);
             if (pkg == null) {
                 throw new InvalidPackageException(pkgId.toString());
             }

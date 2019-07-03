@@ -72,7 +72,7 @@ public class KickstartPackageProfileSetupAction extends RhnAction implements Lis
             String selected = ListTagHelper.getRadioSelection(helper.getListName(),
                                         request);
             if (StringUtils.isNumeric(selected)) {
-                Profile prof = ProfileManager.lookupByIdAndOrg(new Long(selected),
+                Profile prof = ProfileManager.lookupByIdAndOrg(Long.valueOf(selected),
                                 context.getCurrentUser().getOrg());
                 ks.getKickstartDefaults().setProfile(prof);
 

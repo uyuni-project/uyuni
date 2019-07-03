@@ -19,6 +19,9 @@ import com.redhat.rhn.domain.iss.IssFactory;
 import com.redhat.rhn.domain.matcher.MatcherRunData;
 import com.redhat.rhn.domain.matcher.MatcherRunDataFactory;
 import com.redhat.rhn.domain.server.PinnedSubscriptionFactory;
+
+import com.suse.manager.webui.services.impl.MonitoringService;
+
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 
@@ -67,9 +70,10 @@ public class MatcherRunner {
             Process p = r.exec(args.toArray(new String[0]));
             PrintWriter stdin = new PrintWriter(p.getOutputStream());
             boolean isISSMaster = IssFactory.getCurrentMaster() == null;
+            boolean isSelfMonitoringEnabled = MonitoringService.isMonitoringEnabled();
             String arch = System.getProperty("os.arch");
             PinnedSubscriptionFactory.getInstance().cleanStalePins();
-            String s = new MatcherJsonIO().generateMatcherInput(isISSMaster, arch);
+            String s = new MatcherJsonIO().generateMatcherInput(isISSMaster, arch, isSelfMonitoringEnabled);
             stdin.println(s);
             stdin.flush();
             stdin.close();

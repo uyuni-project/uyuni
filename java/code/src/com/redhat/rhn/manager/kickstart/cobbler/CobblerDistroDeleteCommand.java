@@ -79,7 +79,6 @@ public class CobblerDistroDeleteCommand extends CobblerDistroCommand {
             }
         }
 
-        invokeCobblerUpdate();
         return new CobblerSyncCommand(user).store();
 
     }

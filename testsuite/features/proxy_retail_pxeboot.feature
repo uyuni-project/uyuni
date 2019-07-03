@@ -1,4 +1,4 @@
-# Copyright (c) 2018 SUSE LLC
+# Copyright (c) 2018-2019 SUSE LLC
 # Licensed under the terms of the MIT license.
 #
 # This feature depends on a JeOS image present on the proxy
@@ -21,9 +21,10 @@ Feature: PXE boot a Retail terminal
 @pxeboot_minion
   Scenario: Install or update PXE formulas on the server
     When I manually install the "tftpd" formula on the server
+    And I manually install the "vsftpd" formula on the server
     And I manually install the "saltboot" formula on the server
     And I manually install the "pxe" formula on the server
-    And I wait for "16" seconds
+    And I synchronize all Salt dynamic modules on "proxy"
 
 @proxy
 @private_net
@@ -32,6 +33,7 @@ Feature: PXE boot a Retail terminal
     Given I am on the Systems overview page of this "proxy"
     When I follow "Formulas" in the content area
     And I check the "tftpd" formula
+    And I check the "vsftpd" formula
     And I check the "pxe" formula
     And I click on "Save"
     Then the "tftpd" formula should be checked
@@ -74,7 +76,7 @@ Feature: PXE boot a Retail terminal
     And I enter the hostname of "proxy" in third NS field
     # end
     And I click on "Save Formula"
-    Then I should see a "Formula saved!" text
+    Then I should see a "Formula saved" text
 
 @proxy
 @private_net
@@ -90,7 +92,7 @@ Feature: PXE boot a Retail terminal
     And I enter the local IP address of "pxeboot" in third reserved IP field
     And I enter the MAC address of "pxeboot-minion" in third reserved MAC field
     And I click on "Save Formula"
-    Then I should see a "Formula saved!" text
+    Then I should see a "Formula saved" text
 
 @proxy
 @private_net
@@ -102,7 +104,19 @@ Feature: PXE boot a Retail terminal
     And I enter the local IP address of "proxy" in internal network address field
     And I enter "/srv/saltboot" in TFTP base directory field
     And I click on "Save Formula"
-    Then I should see a "Formula saved!" text
+    Then I should see a "Formula saved" text
+
+@proxy
+@private_net
+@pxeboot_minion
+  Scenario: Parametrize vsFTPd on the branch server
+    Given I am on the Systems overview page of this "proxy"
+    When I follow "Formulas" in the content area
+    And I follow first "Vsftpd" in the content area
+    And I enter the local IP address of "proxy" in vsftpd internal network address field
+    And I enter "/srv/saltboot" in FTP server directory field
+    And I click on "Save Formula"
+    Then I should see a "Formula saved" text
 
 @proxy
 @private_net
@@ -113,7 +127,7 @@ Feature: PXE boot a Retail terminal
     And I follow first "Pxe" in the content area
     And I enter "example" in branch id field
     And I click on "Save Formula"
-    Then I should see a "Formula saved!" text
+    Then I should see a "Formula saved" text
 
 @proxy
 @private_net
@@ -203,7 +217,7 @@ Feature: PXE boot a Retail terminal
     And I enter "/" in second mount point field
     And I enter "POS_Image_JeOS6" in second OS image field
     And I click on "Save Formula"
-    Then I should see a "Formula saved!" text
+    Then I should see a "Formula saved" text
 
 @proxy
 @private_net
@@ -252,9 +266,10 @@ Feature: PXE boot a Retail terminal
   Scenario: Cleanup: delete the new Retail terminal
     Given I am on the Systems overview page of this "pxeboot-minion"
     When I follow "Delete System"
-    And I should see a "Confirm System Profile Deletion" text
-    And I click on "Delete Profile"
-    Then I should see a "has been deleted" text
+    Then I should see a "Confirm System Profile Deletion" text
+    When I click on "Delete Profile"
+    And I wait until I see "has been deleted" text
+    Then "pxeboot-minion" should not be registered
     # TODO: for full idempotency, also stop salt-minion service
 
 @proxy
@@ -280,7 +295,7 @@ Feature: PXE boot a Retail terminal
     And I press "Remove Item" in second CNAME section
     And I press "Remove Item" in first CNAME section
     And I click on "Save Formula"
-    Then I should see a "Formula saved!" text
+    Then I should see a "Formula saved" text
 
 @proxy
 @private_net

@@ -10,7 +10,7 @@
 </head>
 <body>
 <rhn:toolbar base="h1" icon="header-system" imgAlt="system.common.systemAlt"
- helpUrl="/rhn/help/reference/en-US/ref.webui.systems.systems.jsp#ref.webui.systems.systems.proxy">
+ helpUrl="/docs/reference/systems/system-details/sd-proxy.html">
   <bean:message key="proxylist.jsp.header"/>
 </rhn:toolbar>
 

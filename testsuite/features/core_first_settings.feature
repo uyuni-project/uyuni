@@ -23,9 +23,7 @@ Feature: Very first settings
 
   Scenario: Create testing username
     Given I am authorized as "admin" with password "admin"
-    When I follow "Users" in the left menu
-    And I follow "User List" in the left menu
-    And I follow "Active" in the left menu
+    When I follow the left menu "Users > User List > Active"
     And I follow "Create User"
     And I enter "testing" as "login"
     And I enter "testing" as "desiredpassword"
@@ -40,9 +38,7 @@ Feature: Very first settings
 
   Scenario: Grant testing user administrative priviledges
     Given I am authorized as "admin" with password "admin"
-    When I follow "Users" in the left menu
-    And I follow "User List" in the left menu
-    And I follow "Active" in the left menu
+    When I follow the left menu "Users > User List > Active"
     And I follow "testing"
     And I check "role_org_admin"
     And I check "role_system_group_admin"
@@ -80,18 +76,18 @@ Feature: Very first settings
     And service "tomcat" is enabled on "server"
     And service "tomcat" is active on "server"
 
-#  Scenario: Setup HTTP proxy
-#    When I am authorized as "admin" with password "admin"
-#    And I follow "Admin" in the left menu
-#    And I follow "Setup Wizard" in the left menu
-#    Then I should see a "HTTP Proxy Hostname" text
-#    And I should see a "HTTP Proxy Username" text
-#    And I should see a "HTTP Proxy Password" text
-#    When I enter "galaxy-proxy.mgr.suse.de:3128" as "HTTP Proxy Hostname"
-#    And I enter "suma" as "HTTP Proxy Username"
-#    And I enter "P4$$word" as "HTTP Proxy Password"
-#    And I click on "Save and Verify"
-#    Then I see verification succeeded
+@server_http_proxy
+  Scenario: Setup HTTP proxy
+    When I am authorized as "admin" with password "admin"
+    When I follow the left menu "Admin > Setup Wizard"
+    Then I should see a "HTTP Proxy Hostname" text
+    And I should see a "HTTP Proxy Username" text
+    And I should see a "HTTP Proxy Password" text
+    When I enter the address of the HTTP proxy as "HTTP Proxy Hostname"
+    And I enter "suma" as "HTTP Proxy Username"
+    And I enter "P4$$word" as "HTTP Proxy Password"
+    And I click on "Save and Verify"
+    Then I see verification succeeded
 
   Scenario: Detect latest Salt changes on the server
     When I query latest Salt changes on "server"

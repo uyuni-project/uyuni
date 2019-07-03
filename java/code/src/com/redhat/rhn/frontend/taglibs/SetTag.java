@@ -219,7 +219,7 @@ public class SetTag extends ColumnTag {
                 radioElement = elementIn;
             }
             else {
-                element = new Long(elementIn);
+                element = Long.valueOf(elementIn);
             }
         }
     }

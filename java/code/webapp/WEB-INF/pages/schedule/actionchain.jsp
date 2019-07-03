@@ -6,14 +6,14 @@
 
 <html>
 <head>
-    <script type="text/javascript" src="/rhn/dwr/interface/ActionChainEntriesRenderer.js"></script>
-    <script type="text/javascript" src="/rhn/dwr/interface/ActionChainSaveAction.js"></script>
-    <script type="text/javascript" src="/javascript/jquery-ui.js"></script>
-    <script type="text/javascript" src="/javascript/actionchain.js"></script>
+    <script type="text/javascript" src="/rhn/dwr/interface/ActionChainEntriesRenderer.js?cb=${rhn:getConfig('web.version')}"></script>
+    <script type="text/javascript" src="/rhn/dwr/interface/ActionChainSaveAction.js?cb=${rhn:getConfig('web.version')}"></script>
+    <script type="text/javascript" src="/javascript/jquery-ui.js?cb=${rhn:getConfig('web.version')}"></script>
+    <script type="text/javascript" src="/javascript/actionchain.js?cb=${rhn:getConfig('web.version')}"></script>
 </head>
 <body>
     <rhn:toolbar base="h1" icon="header-chain"
-        helpUrl="/rhn/help/reference/en-US/ref.webui.schedule.chains.jsp">
+        helpUrl="/docs/reference/schedule/action-chains.html">
         <bean:message key="actionchain.jsp.title"/>
         <a id="label-link" href="#">
             <span id="label-link-text"><c:out value="${actionChain.label}"/></span>

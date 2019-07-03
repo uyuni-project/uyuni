@@ -22,6 +22,7 @@ import org.jdom.Element;
 public class GuestGraphicsDef {
 
     private String type;
+    private int port;
 
     /**
      * @return Returns the type ("spice", "vnc"...)
@@ -38,6 +39,20 @@ public class GuestGraphicsDef {
     }
 
     /**
+     * @return The port on which the graphics device is listening
+     */
+    public int getPort() {
+        return port;
+    }
+
+    /**
+     * @param portIn the port on which the graphics device is listening or -1 for automatic port.
+     */
+    public void setPort(int portIn) {
+        port = portIn;
+    }
+
+    /**
      * Parse the libvirt <code>graphics</code> element
      *
      * @param element XML element
@@ -47,6 +62,7 @@ public class GuestGraphicsDef {
     public static GuestGraphicsDef parse(Element element) {
         GuestGraphicsDef def = new GuestGraphicsDef();
         def.setType(element.getAttributeValue("type"));
+        def.setPort(Integer.parseInt(element.getAttributeValue("port", "-1")));
 
         return def;
     }

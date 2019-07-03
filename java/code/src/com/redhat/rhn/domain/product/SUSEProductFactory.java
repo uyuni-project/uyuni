@@ -24,6 +24,7 @@ import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.domain.scc.SCCRepository;
 import com.redhat.rhn.domain.server.InstalledProduct;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
@@ -628,7 +629,7 @@ public class SUSEProductFactory extends HibernateFactory {
      * @param release release
      * @param arch arch
      * @param isBaseProduct is base product flag
-     * @return installedProduct or null if it is not found
+     * @return {@link Optional} of installed product or {@link Optional#empty()} if not found
      */
     @SuppressWarnings("unchecked")
     public static Optional<InstalledProduct> findInstalledProduct(String name,
@@ -637,13 +638,28 @@ public class SUSEProductFactory extends HibernateFactory {
         Criteria c = getSession().createCriteria(InstalledProduct.class);
         c.add(Restrictions.eq("name", name));
         c.add(Restrictions.eq("version", version));
-        c.add(Restrictions.eq("release", release));
+        if (StringUtils.isEmpty(release)) {
+            c.add(Restrictions.isNull("release"));
+        }
+        else {
+            c.add(Restrictions.eq("release", release));
+        }
         c.add(Restrictions.eq("arch", arch));
         c.add(Restrictions.eq("baseproduct", isBaseProduct));
         c.addOrder(Order.asc("name")).addOrder(Order.asc("version"))
                 .addOrder(Order.asc("release")).addOrder(Order.asc("arch"));
 
         return c.list().stream().findFirst();
+    }
+
+    /**
+     * Find an {@link InstalledProduct} given by a {@link SUSEProduct} data
+     * @param product SUSE product
+     * @return {@link Optional} of installed product or {@link Optional#empty()} if not found
+     */
+    public static Optional<InstalledProduct> findInstalledProduct(SUSEProduct product) {
+        return findInstalledProduct(product.getName(), product.getVersion(), product.getRelease(), product.getArch(),
+                product.isBase());
     }
 
     /**

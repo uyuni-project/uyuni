@@ -11,7 +11,7 @@
 <body>
 
 <rhn:toolbar base="h1" icon="header-configuration" imgAlt="config.jsp.imgAlt"
- helpUrl="/rhn/help/reference/en-US/ref.webui.config.overview.jsp" >
+ helpUrl="/docs/reference/configuration/config-overview.html" >
   <bean:message key="configoverview.jsp.toolbar"/>
 </rhn:toolbar>
 

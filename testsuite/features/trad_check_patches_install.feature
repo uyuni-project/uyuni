@@ -1,4 +1,4 @@
-# Copyright (c) 2015-2018 SUSE LLC
+# Copyright (c) 2015-2019 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 Feature: Patches display
@@ -10,8 +10,7 @@ Feature: Patches display
     And I run "zypper -n in --oldpackage andromeda-dummy-1.0" on "sle-client"
     And I run "zypper -n in --oldpackage virgo-dummy-1.0" on "sle-client"
     And I run "rhn_check -vvv" on "sle-client"
-    When I follow "Admin"
-    And I follow "Task Schedules"
+    When I follow the left menu "Admin > Task Schedules"
     And I follow "errata-cache-default"
     And I follow "errata-cache-bunch"
     And I click on "Single Run Schedule"
@@ -20,7 +19,7 @@ Feature: Patches display
 
   Scenario: Check all patches exist
     Given I am on the patches page
-    When I follow "Relevant" in the left menu
+    When I follow the left menu "Patches > Patch List > Relevant"
     Then I should see an update in the list
     And I should see a "virgo-dummy-3456" link
 
@@ -39,7 +38,7 @@ Feature: Patches display
     And I follow "Packages"
     Then I should see a "Test-Channel-x86_64" link
     And I should see a "Test-Channel-i586" link
-    And I should see a "sha256:3bb3a56e6654f14300ab815c3f6e2af848874c829541b4e1b342262bb2f72d30" text
+    And I should see a "sha256:9150047f536ea98655f3a4bb23ddfcedb4dbdff32cb5130c2e18e5caf0e6fd66" text
     And I should see a "andromeda-dummy-2.0-1.1-noarch" link
 
   Scenario: Check relevant patches for this client

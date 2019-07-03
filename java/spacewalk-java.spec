@@ -1,7 +1,7 @@
 #
 # spec file for package spacewalk-java
 #
-# Copyright (c) 2018 SUSE LINUX GmbH, Nuernberg, Germany.
+# Copyright (c) 2019 SUSE LINUX GmbH, Nuernberg, Germany.
 # Copyright (c) 2008-2018 Red Hat, Inc.
 #
 # All modifications and additions to the file contributed by third parties
@@ -13,16 +13,16 @@
 # license that conforms to the Open Source Definition (Version 1.9)
 # published by the Open Source Initiative.
 
-# Please submit bugfixes or comments via http://bugs.opensuse.org/
+# Please submit bugfixes or comments via https://bugs.opensuse.org/
 #
 
 
-%define cobprofdir      %{_localstatedir}/lib/rhn/kickstarts
-%define cobprofdirup    %{_localstatedir}/lib/rhn/kickstarts/upload
-%define cobprofdirwiz   %{_localstatedir}/lib/rhn/kickstarts/wizard
-%define cobdirsnippets  %{_localstatedir}/lib/rhn/kickstarts/snippets
-%define realcobsnippetsdir  %{_localstatedir}/lib/cobbler/snippets
-%define cobblerdir          %{_localstatedir}/lib/cobbler
+%define cobblerdir      %{_localstatedir}/lib/cobbler
+%define cobprofdir      %{cobblerdir}/templates
+%define cobprofdirup    %{cobprofdir}/upload
+%define cobprofdirwiz   %{cobprofdir}/wizard
+%define cobdirsnippets  %{cobblerdir}/snippets
+%define realcobsnippetsdir  %{cobdirsnippets}/spacewalk
 %define run_checkstyle  1
 
 %if 0%{?fedora} || 0%{?rhel} >= 7
@@ -44,9 +44,9 @@ Name:           spacewalk-java
 Summary:        Java web application files for Spacewalk
 License:        GPL-2.0-only
 Group:          Applications/Internet
-Version:        4.0.10
+Version:        4.0.19
 Release:        1%{?dist}
-URL:            https://github.com/uyuni-project/uyuni
+Url:            https://github.com/uyuni-project/uyuni
 Source0:        https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
 Source1:        %{name}-rpmlintrc
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
@@ -60,7 +60,7 @@ Requires:       classpathx-mail
 Requires:       apache-commons-beanutils
 Requires:       apache-commons-collections
 Requires:       apache-commons-lang3
-Requires:       cobbler >= 2.0.0
+Requires:       cobbler >= 3.0.0
 Requires:       concurrent
 Requires:       google-gson >= 2.2.4
 Requires:       httpcomponents-client
@@ -90,6 +90,10 @@ Requires:       sudo
 Requires:       tomcat-taglibs-standard
 Requires:       pgjdbc-ng
 Requires:       susemanager-docs_en
+Requires:       java-saml
+Requires:       joda-time
+Requires:       woodstox
+Requires:       xmlsec
 BuildRequires:  apache-commons-lang
 BuildRequires:  apache-commons-lang3
 BuildRequires:  classmate
@@ -107,6 +111,10 @@ BuildRequires:  netty
 BuildRequires:  objectweb-asm
 BuildRequires:  snakeyaml
 BuildRequires:  statistics
+BuildRequires:  java-saml
+BuildRequires:  joda-time
+BuildRequires:  woodstox
+BuildRequires:  xmlsec
 # SUSE additional build requirements
 BuildRequires:  log4j
 # Spark and Salt integration
@@ -131,7 +139,7 @@ BuildRequires:  java-devel >= 11
 BuildRequires:  jpam
 BuildRequires:  oscache
 
-%endif # 0%{?suse_version}
+%endif # 0{?suse_version}
 Requires:       jakarta-commons-el
 Requires:       jakarta-commons-fileupload
 Requires:       jcommon
@@ -152,7 +160,7 @@ Requires:       xerces-j2
 %if 0%{?fedora}
 Requires:       classpathx-jaf
 
-%endif # 0%{?fedora}
+%endif # 0{?fedora}
 # EL5 = Struts 1.2 and Tomcat 5, EL6+/recent Fedoras = 1.3 and Tomcat 6
 %if 0%{?fedora} || 0%{?rhel} >= 7
 Requires:       servlet >= 3.0
@@ -181,8 +189,8 @@ BuildRequires:  struts >= 1.3.0
 BuildRequires:  struts-taglib >= 1.3.0
 BuildRequires:  tomcat6
 BuildRequires:  tomcat6-lib
-%endif # 0%{?suse_version}
-%endif # 0%{?fedora} || 0%{?rhel} >= 7
+%endif # 0{?suse_version}
+%endif # 0{?fedora} || 0{?rhel} >= 7
 %if 0%{?fedora} || 0%{?rhel} >=7
 Requires:       apache-commons-cli
 Requires:       apache-commons-codec
@@ -254,8 +262,8 @@ BuildRequires:  jakarta-commons-io
 BuildRequires:  jakarta-commons-logging
 BuildRequires:  jakarta-commons-validator
 BuildRequires:  jpackage-utils
-%endif #0%{?suse_version}
-%endif #0%{?fedora} || 0%{?rhel} >=7
+%endif # 0{?suse_version}
+%endif # 0{?fedora} || 0{?rhel} >=7
 
 # for RHEL6 we need to filter out several package versions
 %if  0%{?rhel} && 0%{?rhel} >= 6
@@ -275,7 +283,7 @@ BuildRequires:  tomcat-taglibs-standard
 BuildRequires:  /usr/bin/perl
 BuildRequires:  /usr/bin/xmllint
 BuildRequires:  jakarta-taglibs-standard
-%endif # 0%{?suse_version}
+%endif # 0{?suse_version}
 BuildRequires:  ant
 BuildRequires:  ant-apache-regexp
 BuildRequires:  ant-junit
@@ -300,7 +308,6 @@ BuildRequires:  simple-core
 BuildRequires:  simple-xml
 BuildRequires:  sitemesh
 BuildRequires:  stringtree-json
-BuildRequires:  tanukiwrapper
 %if 0%{?run_checkstyle}
 BuildRequires:  checkstyle
 %endif
@@ -415,7 +422,7 @@ Requires:       cglib
 Requires:       bcel
 Requires:       c3p0 >= 0.9.1
 %if 0%{?suse_version}
-Requires:       cobbler >= 2.0.0
+Requires:       cobbler >= 3.0.0
 Requires:       java >= 11
 Requires:       jsch
 Requires:       /sbin/unix2_chkpwd
@@ -436,7 +443,6 @@ Requires:       simple-core
 Requires:       spacewalk-java-config
 Requires:       spacewalk-java-jdbc
 Requires:       spacewalk-java-lib
-Requires:       tanukiwrapper
 Requires:       xalan-j2 >= 2.6.0
 Requires:       xerces-j2
 %if 0%{?suse_version}
@@ -474,8 +480,8 @@ Requires:       jakarta-commons-cli
 Requires:       jakarta-commons-codec
 Requires:       jakarta-commons-lang
 Requires:       jakarta-commons-logging
-%endif # 0%{?suse_version}
-%endif # 0%{?fedora} || 0%{?rhel} >= 7
+%endif # 0{?suse_version}
+%endif # 0{?fedora} || 0{?rhel} >= 7
 Conflicts:      quartz < 2.0
 Obsoletes:      taskomatic < 5.3.0
 Obsoletes:      taskomatic-sat < 5.3.0
@@ -611,7 +617,7 @@ install -d -m 755 $RPM_BUILD_ROOT%{appdir}/rhn/META-INF/
 install -m 644 conf/rhn-tomcat8.xml $RPM_BUILD_ROOT%{appdir}/rhn/META-INF/context.xml
 %else
 install -m 644 conf/rhn-tomcat5.xml $RPM_BUILD_ROOT%{appdir}/rhn/META-INF/context.xml
-%endif # 0%{?fedora} >= 23
+%endif # 0{?fedora} >= 23
 
 %else
 %if 0%{?suse_version}
@@ -623,13 +629,13 @@ install -m 755 conf/rhn-tomcat8.xml $RPM_BUILD_ROOT%{appdir}/rhn/META-INF/contex
 ant -Dprefix=$RPM_BUILD_ROOT -Dtomcat="tomcat9" install-tomcat9-suse
 install -d -m 755 $RPM_BUILD_ROOT%{appdir}/rhn/META-INF/
 install -m 755 conf/rhn-tomcat9.xml $RPM_BUILD_ROOT%{appdir}/rhn/META-INF/context.xml
-%endif # 0%{?suse_version} < 1500
+%endif # 0{?suse_version} < 1500
 %else
 ant -Dprefix=$RPM_BUILD_ROOT install-tomcat6
 install -d -m 755 $RPM_BUILD_ROOT%{appdir}/rhn/META-INF/
 install -m 644 conf/rhn-tomcat5.xml $RPM_BUILD_ROOT%{appdir}/rhn/META-INF/context.xml
-%endif # 0%{?suse_version}
-%endif # 0%{?fedora} || 0%{?rhel} >= 7
+%endif # 0{?suse_version}
+%endif # 0{?fedora} || 0{?rhel} >= 7
 
 # check spelling errors in all resources for English if aspell installed
 [ -x "$(which aspell)" ] && scripts/spelling/check_java.sh .. en_US
@@ -684,8 +690,17 @@ cp conf/default/rhn_hibernate.conf.SUSE conf/default/rhn_hibernate.conf
 
 install -m 644 conf/default/rhn_hibernate.conf $RPM_BUILD_ROOT%{_prefix}/share/rhn/config-defaults/rhn_hibernate.conf
 install -m 644 conf/default/rhn_taskomatic_daemon.conf $RPM_BUILD_ROOT%{_prefix}/share/rhn/config-defaults/rhn_taskomatic_daemon.conf
+install -m 644 conf/default/taskomatic.conf $RPM_BUILD_ROOT%{_sysconfdir}/rhn/taskomatic.conf
 install -m 644 conf/default/rhn_org_quartz.conf $RPM_BUILD_ROOT%{_prefix}/share/rhn/config-defaults/rhn_org_quartz.conf
 install -m 644 conf/rhn_java.conf $RPM_BUILD_ROOT%{_prefix}/share/rhn/config-defaults
+install -m 644 conf/rhn_java_sso.conf $RPM_BUILD_ROOT%{_prefix}/share/rhn/config-defaults
+
+# Adjust product tree tag
+%if 0%{?sle_version} && !0%{?is_opensuse}
+sed -i -e 's/^java.product_tree.tag =.*$/java.product_tree.tag = SUMA4.0/' $RPM_BUILD_ROOT%{_prefix}/share/rhn/config-defaults/rhn_java.conf
+%else
+sed -i -e 's/^java.product_tree.tag =.*$/java.product_tree.tag = Uyuni/' $RPM_BUILD_ROOT%{_prefix}/share/rhn/config-defaults/rhn_java.conf
+%endif
 install -m 644 conf/logrotate/rhn_web_api $RPM_BUILD_ROOT%{_sysconfdir}/logrotate.d/rhn_web_api
 install -m 644 conf/logrotate/gatherer $RPM_BUILD_ROOT%{_sysconfdir}/logrotate.d/gatherer
 %if 0%{?fedora} || 0%{?rhel} >= 7 || 0%{?suse_version} >= 1310
@@ -708,20 +723,18 @@ cp -a build/classes/com/redhat/rhn/common/conf/test/conf $RPM_BUILD_ROOT%{_datad
 install -m 644 conf/log4j.properties.taskomatic $RPM_BUILD_ROOT%{_datadir}/rhn/classes/log4j.properties
 install -m 644 code/src/ehcache.xml $RPM_BUILD_ROOT%{_datadir}/rhn/classes/ehcache.xml
 
-install -m 644 conf/cobbler/snippets/default_motd  $RPM_BUILD_ROOT%{cobdirsnippets}/default_motd
-install -m 644 conf/cobbler/snippets/keep_system_id  $RPM_BUILD_ROOT%{cobdirsnippets}/keep_system_id
-install -m 644 conf/cobbler/snippets/post_reactivation_key  $RPM_BUILD_ROOT%{cobdirsnippets}/post_reactivation_key
-install -m 644 conf/cobbler/snippets/post_delete_system  $RPM_BUILD_ROOT%{cobdirsnippets}/post_delete_system
-install -m 644 conf/cobbler/snippets/redhat_register  $RPM_BUILD_ROOT%{cobdirsnippets}/redhat_register
-install -m 644 conf/cobbler/snippets/sles_register    $RPM_BUILD_ROOT%{cobdirsnippets}/sles_register
-install -m 644 conf/cobbler/snippets/sles_register_script $RPM_BUILD_ROOT%{cobdirsnippets}/sles_register_script
-install -m 644 conf/cobbler/snippets/sles_no_signature_checks $RPM_BUILD_ROOT%{cobdirsnippets}/sles_no_signature_checks
-install -m 644 conf/cobbler/snippets/wait_for_networkmanager_script $RPM_BUILD_ROOT%{cobdirsnippets}/wait_for_networkmanager_script
-
-ln -s -f /usr/sbin/tanukiwrapper $RPM_BUILD_ROOT%{_bindir}/taskomaticd
-ln -s -f %{_javadir}/dwr.jar $RPM_BUILD_ROOT%{jardir}/dwr.jar
 install -d -m 755 $RPM_BUILD_ROOT%{realcobsnippetsdir}
-ln -s -f  %{cobdirsnippets} $RPM_BUILD_ROOT%{realcobsnippetsdir}/spacewalk
+install -m 644 conf/cobbler/snippets/default_motd  $RPM_BUILD_ROOT%{realcobsnippetsdir}/default_motd
+install -m 644 conf/cobbler/snippets/keep_system_id  $RPM_BUILD_ROOT%{realcobsnippetsdir}/keep_system_id
+install -m 644 conf/cobbler/snippets/post_reactivation_key  $RPM_BUILD_ROOT%{realcobsnippetsdir}/post_reactivation_key
+install -m 644 conf/cobbler/snippets/post_delete_system  $RPM_BUILD_ROOT%{realcobsnippetsdir}/post_delete_system
+install -m 644 conf/cobbler/snippets/redhat_register  $RPM_BUILD_ROOT%{realcobsnippetsdir}/redhat_register
+install -m 644 conf/cobbler/snippets/sles_register    $RPM_BUILD_ROOT%{realcobsnippetsdir}/sles_register
+install -m 644 conf/cobbler/snippets/sles_register_script $RPM_BUILD_ROOT%{realcobsnippetsdir}/sles_register_script
+install -m 644 conf/cobbler/snippets/sles_no_signature_checks $RPM_BUILD_ROOT%{realcobsnippetsdir}/sles_no_signature_checks
+install -m 644 conf/cobbler/snippets/wait_for_networkmanager_script $RPM_BUILD_ROOT%{realcobsnippetsdir}/wait_for_networkmanager_script
+
+ln -s -f %{_javadir}/dwr.jar $RPM_BUILD_ROOT%{jardir}/dwr.jar
 %if 0%{?suse_version}
 install -d -m 755 $RPM_BUILD_ROOT%{_datadir}/spacewalk/audit
 install -m 644 conf/audit/auditlog-config.yaml $RPM_BUILD_ROOT%{_datadir}/spacewalk/audit/auditlog-config.yaml
@@ -814,7 +827,6 @@ fi
 %files
 %if 0%{?suse_version}
 %defattr(-,root,root)
-%dir %{_localstatedir}/lib/rhn
 %dir %{_localstatedir}/lib/spacewalk
 %endif
 %defattr(644,tomcat,tomcat,775)
@@ -894,7 +906,13 @@ fi
 %{jardir}/spark-template-jade.jar
 %{jardir}/simpleclient*.jar
 %{jardir}/pgjdbc-ng.jar
-
+%{jardir}/java-saml-core.jar
+%{jardir}/java-saml.jar
+%{jardir}/joda-time.jar
+%{jardir}/stax-api.jar
+%{jardir}/stax2-api.jar
+%{jardir}/woodstox-core-asl.jar
+%{jardir}/xmlsec.jar
 %{jardir}/byte-buddy.jar
 %{jardir}/jakarta-persistence-api.jar
 
@@ -928,8 +946,6 @@ fi
 %{jardir}/simple-xml.jar
 %{jardir}/sitemesh.jar
 %{jardir}/stringtree-json.jar
-%{jardir}/tanukiwrapper.jar
-# %{jardir}/velocity-*.jar
 %{jardir}/xalan-j2.jar
 %{jardir}/xalan-j2-serializer.jar
 %{jardir}/xerces-j2.jar
@@ -953,27 +969,26 @@ fi
 %dir %{cobprofdirup}
 %dir %{cobprofdirwiz}
 %dir %{cobdirsnippets}
-%config %{cobdirsnippets}/default_motd
-%config %{cobdirsnippets}/keep_system_id
-%config %{cobdirsnippets}/post_reactivation_key
-%config %{cobdirsnippets}/post_delete_system
-%config %{cobdirsnippets}/redhat_register
-%config %{cobdirsnippets}/sles_register
-%config %{cobdirsnippets}/sles_register_script
-%config %{cobdirsnippets}/sles_no_signature_checks
-%config %{cobdirsnippets}/wait_for_networkmanager_script
+%dir %{realcobsnippetsdir}
+%config %{realcobsnippetsdir}/default_motd
+%config %{realcobsnippetsdir}/keep_system_id
+%config %{realcobsnippetsdir}/post_reactivation_key
+%config %{realcobsnippetsdir}/post_delete_system
+%config %{realcobsnippetsdir}/redhat_register
+%config %{realcobsnippetsdir}/sles_register
+%config %{realcobsnippetsdir}/sles_register_script
+%config %{realcobsnippetsdir}/sles_no_signature_checks
+%config %{realcobsnippetsdir}/wait_for_networkmanager_script
 %if 0%{?fedora} || 0%{?rhel} >= 7
 %config(noreplace) %{appdir}/rhn/META-INF/context.xml
 %else
 %if  0%{?suse_version}
 %config(noreplace) %{appdir}/rhn/META-INF/context.xml
 %attr(755,root,root) %dir %{cobblerdir}
-%attr(755,root,root) %dir %{realcobsnippetsdir}
 %else
 %config(noreplace) %{appdir}/rhn/META-INF/context.xml
 %endif
 %endif
-%{realcobsnippetsdir}/spacewalk
 
 %if 0%{?suse_version}
 %attr(755, tomcat, root) %dir %{_localstatedir}/lib/spacewalk/scc
@@ -993,17 +1008,19 @@ fi
 %else
 %attr(755, root, root) %{_initrddir}/taskomatic
 %endif
-%{_bindir}/taskomaticd
 %{_datarootdir}/spacewalk/taskomatic
 %{_sbindir}/rctaskomatic
 
 %files config
 %defattr(644,root,root,755)
 %attr(755,root,www) %dir %{_prefix}/share/rhn/config-defaults
+%attr(0750,root,www) %dir /etc/rhn
 %{_prefix}/share/rhn/config-defaults/rhn_hibernate.conf
 %{_prefix}/share/rhn/config-defaults/rhn_taskomatic_daemon.conf
+%config(noreplace) %{_sysconfdir}/rhn/taskomatic.conf
 %{_prefix}/share/rhn/config-defaults/rhn_org_quartz.conf
 %{_prefix}/share/rhn/config-defaults/rhn_java.conf
+%{_prefix}/share/rhn/config-defaults/rhn_java_sso.conf
 %config %{_sysconfdir}/logrotate.d/rhn_web_api
 %config %{_sysconfdir}/logrotate.d/gatherer
 %dir %{_datadir}/spacewalk

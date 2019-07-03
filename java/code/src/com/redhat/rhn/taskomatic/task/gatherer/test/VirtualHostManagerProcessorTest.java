@@ -73,7 +73,7 @@ public class VirtualHostManagerProcessorTest extends BaseTestCaseWithUser {
         VirtualInstance virtualInstance = VirtualInstanceFactory.getInstance()
                 .lookupHostVirtInstanceByHostId(host.getId());
         assertNotNull(virtualInstance);
-        assertEquals(new Long(1L), virtualInstance.getConfirmed());
+        assertEquals(Long.valueOf(1L), virtualInstance.getConfirmed());
         assertNull(virtualInstance.getUuid());
         assertNull(virtualInstance.getGuestSystem());
         assertEquals(VirtualInstanceFactory.getInstance().getUnknownState().getLabel(),
@@ -120,7 +120,7 @@ public class VirtualHostManagerProcessorTest extends BaseTestCaseWithUser {
         VirtualInstance virtualInstance = VirtualInstanceFactory.getInstance()
                 .lookupHostVirtInstanceByHostId(existingHost.getId());
         assertNotNull(virtualInstance);
-        assertEquals(new Long(1L), virtualInstance.getConfirmed());
+        assertEquals(Long.valueOf(1L), virtualInstance.getConfirmed());
         assertNull(virtualInstance.getUuid());
         assertNull(virtualInstance.getGuestSystem());
         assertEquals(VirtualInstanceFactory.getInstance().getUnknownState().getLabel(),
@@ -154,7 +154,7 @@ public class VirtualHostManagerProcessorTest extends BaseTestCaseWithUser {
                 .lookupHostVirtInstanceByHostId(existingHost.getId());
         assertEquals(virtualInstance, virtualInstanceAfter);
         assertEquals(virtualInstance.getId(), virtualInstanceAfter.getId());
-        assertEquals(new Long(1L), virtualInstanceAfter.getConfirmed());
+        assertEquals(Long.valueOf(1L), virtualInstanceAfter.getConfirmed());
         assertNull(virtualInstanceAfter.getGuestSystem());
     }
 
@@ -318,7 +318,6 @@ public class VirtualHostManagerProcessorTest extends BaseTestCaseWithUser {
      * VirtualHostManagers are both processed, but no duplicate VirtualInstances should
      * be created for the guest in the database.).
      */
-    @SuppressWarnings("unchecked")
     public void testTwoVHMsSameVM() {
         Map<String, HostJson> data = createHostData("esxi_host_id",
                 pairsToMap("myVM", "42309db29d991a2f681f74f4c851f4bd"));
@@ -552,9 +551,9 @@ public class VirtualHostManagerProcessorTest extends BaseTestCaseWithUser {
         assertEquals(data.keySet().stream().findFirst().get(), nodeInfo.getName());
         assertEquals("Windows", nodeInfo.getOs());
         assertEquals("Vista", nodeInfo.getOsVersion());
-        assertEquals(new Integer(128), nodeInfo.getRam());
-        assertEquals(new Integer(1), nodeInfo.getCpuCores());
-        assertEquals(new Integer(1), nodeInfo.getCpuSockets());
+        assertEquals(Integer.valueOf(128), nodeInfo.getRam());
+        assertEquals(Integer.valueOf(1), nodeInfo.getCpuCores());
+        assertEquals(Integer.valueOf(1), nodeInfo.getCpuSockets());
         assertEquals("x86_64-redhat-linux", nodeInfo.getNodeArch().getLabel());
     }
 

@@ -141,6 +141,14 @@ public class DownloadFile extends DownloadAction {
             }
         }
         else if (url.startsWith("/cblr/svc/op/ks/")) {
+            url = url.replaceFirst("ks", "autoinstall");
+            Map<String, Object> params = new HashMap<String, Object>();
+            params.put(TYPE,  DownloadManager.DOWNLOAD_TYPE_COBBLER);
+            params.put(URL_STRING, url);
+            request.setAttribute(PARAMS, params);
+            return super.execute(mapping, formIn, request, response);
+        }
+        else if (url.startsWith("/cblr/svc/op/autoinstall/")) {
             Map<String, Object> params = new HashMap<String, Object>();
             params.put(TYPE,  DownloadManager.DOWNLOAD_TYPE_COBBLER);
             params.put(URL_STRING, url);
@@ -258,7 +266,7 @@ public class DownloadFile extends DownloadAction {
         if (map.containsKey("session")) {
             String sessionId = SessionSwap.extractData(map.get("session"))[0];
             ksession = KickstartFactory.
-            lookupKickstartSessionById(new Long(sessionId));
+            lookupKickstartSessionById(Long.valueOf(sessionId));
 
         }
 
@@ -330,9 +338,9 @@ public class DownloadFile extends DownloadAction {
         Long userId = null;
         Long fileId = null;
         try {
-            expire = new Long(getNextValue(it));
-            userId = new Long(getNextValue(it));
-            fileId = new Long(getNextValue(it));
+            expire = Long.valueOf(getNextValue(it));
+            userId = Long.valueOf(getNextValue(it));
+            fileId = Long.valueOf(getNextValue(it));
         }
         catch (NumberFormatException e) {
             log.error("Error parsing file download url: " + url);
@@ -671,7 +679,7 @@ public class DownloadFile extends DownloadAction {
         if (ksession != null) {
             ksession.setState(newState);
             if (ksession.getPackageFetchCount() == null) {
-                ksession.setPackageFetchCount(new Long(0));
+                ksession.setPackageFetchCount(0L);
             }
             if (ksession.getState().getLabel().equals(
                     KickstartSessionState.IN_PROGRESS)) {
@@ -780,7 +788,7 @@ public class DownloadFile extends DownloadAction {
             end = totalSize;
         }
         else {
-            end = Long.valueOf(rangeMatcher.group(2)).longValue();
+            end = Long.valueOf(rangeMatcher.group(2));
         }
         if (log.isDebugEnabled()) {
             log.debug("manualServeByteRange Start    : " + start);

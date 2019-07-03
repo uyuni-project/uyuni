@@ -16,11 +16,14 @@ package com.suse.manager.webui.websocket;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.google.gson.JsonObject;
+import com.redhat.rhn.common.util.StringUtil;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.session.WebSession;
 import com.redhat.rhn.domain.session.WebSessionFactory;
+import com.redhat.rhn.frontend.events.TransactionHelper;
 import com.redhat.rhn.frontend.servlets.LocalizedEnvironmentFilter;
+import com.redhat.rhn.manager.system.SystemManager;
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.websocket.json.AsyncJobStartEventDto;
 import com.suse.manager.webui.websocket.json.ExecuteMinionActionDto;
@@ -55,6 +58,8 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionStage;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.TimeoutException;
 import java.util.stream.Collectors;
 
@@ -72,6 +77,7 @@ public class RemoteMinionCommands {
 
     private CompletableFuture failAfter;
     private List<String> previewedMinions;
+    private static ExecutorService eventHistoryExecutor = Executors.newCachedThreadPool();
 
     /**
      * Callback executed when the websocket is opened.
@@ -137,17 +143,13 @@ public class RemoteMinionCommands {
                         SaltService.INSTANCE.matchAsyncSSH(target, failAfter);
 
                 Map<String, CompletionStage<Result<Boolean>>> res = new HashMap<>();
-                try {
-                    res = SaltService.INSTANCE
-                            .matchAsync(target, failAfter);
-                }
-                catch (NullPointerException e) {
-                    if (!resSSH.isPresent()) {
-                        // just return, no need to wait for salt-ssh results
-                        sendMessage(session, new ActionErrorEventDto(null,
-                                "ERR_TARGET_NO_MATCH", e.getMessage()));
-                        return;
-                    }
+
+                res = SaltService.INSTANCE.matchAsync(target, failAfter);
+                if (res.isEmpty() && !resSSH.isPresent()) {
+                    // just return, no need to wait for salt-ssh results
+                    sendMessage(session, new ActionErrorEventDto(null,
+                            "ERR_TARGET_NO_MATCH", ""));
+                    return;
                 }
 
                 previewedMinions = Collections
@@ -256,6 +258,10 @@ public class RemoteMinionCommands {
                     res = SaltService.INSTANCE
                             .runRemoteCommandAsync(new MinionList(previewedMinions),
                                     msg.getCommand(), failAfter);
+                    LOG.info("User '" + webSession.getUser().getLogin() + "' has sent the command '" +
+                            msg.getCommand() + "' to minions [" +
+                            String.join(", ", previewedMinions) + "]");
+
                 }
                 catch (NullPointerException e) {
                     sendMessage(session, new ActionErrorEventDto(null,
@@ -269,13 +275,26 @@ public class RemoteMinionCommands {
 
                 res.forEach((minionId, future) -> future.whenComplete((cmdResult, err) -> {
                     if (cmdResult != null) {
-                        sendMessage(session,
-                                cmdResult.fold(
-                                        error -> new ActionErrorEventDto(minionId,
-                                                "ERR_CMD_SALT_ERROR",
-                                                parseSaltError(error)),
-                                        result -> new MinionCommandResultEventDto(minionId,
-                                                result)));
+                        AbstractSaltEventDto event = cmdResult.fold(
+                                error -> {
+                                    String errMsg = parseSaltError(error);
+                                    LOG.info("Received Salt error for minion " + minionId + ": " + errMsg);
+                                    return new ActionErrorEventDto(minionId,
+                                        "ERR_CMD_SALT_ERROR", errMsg);
+                                },
+                                result -> {
+                                    LOG.info("User '" + webSession.getUser().getLogin() +
+                                            "' received command result from minion " + minionId +
+                                            ". Output is logged at DEBUG level.");
+                                    addHistoryEvent(webSession.getUser().getLogin(), minionId,
+                                            msg.getCommand(), result);
+                                    if (LOG.isDebugEnabled()) {
+                                        LOG.debug("Minion " + minionId + " returned:\n" + result);
+
+                                    }
+                                    return new MinionCommandResultEventDto(minionId, result);
+                                });
+                        sendMessage(session, event);
                     }
                     if (err != null) {
                         if (err instanceof TimeoutException) {
@@ -304,6 +323,44 @@ public class RemoteMinionCommands {
             HibernateFactory.closeSession();
         }
 
+    }
+
+    private void addHistoryEvent(String user, String minionId, String command, String result) {
+        eventHistoryExecutor.submit(() ->
+                TransactionHelper.handlingTransaction(() -> {
+                            Optional<MinionServer> minion =
+                                    MinionServerFactory.findByMinionId(minionId);
+
+                            StringBuilder details = new StringBuilder();
+                            details.append("Command: <pre>");
+                            details.append(command);
+                            details.append("</pre> returned:<pre>");
+                            int maxLength = 4000 - details.length() - 6;
+                            String output;
+                            if (result.length() > maxLength) {
+                                // command output too large, truncate it to fit in the db
+                                output = StringUtils
+                                        .substring(result, 0, maxLength - 3) +
+                                        "...";
+                            }
+                            else {
+                                output = result;
+                            }
+                            details.append(StringUtil.htmlifyText(output));
+
+                            details.append("</pre>");
+                            minion.ifPresent(min ->
+                                    SystemManager.addHistoryEvent(min,
+                                        "Salt Remote Command executed by " +
+                                                user, details.toString())
+                            );
+                        },
+                        (Exception e) ->
+                                LOG.error(
+                                        "Error adding Salt remote command event to " +
+                                                "history of minion " + minionId, e)
+                )
+        );
     }
 
     private boolean invalidWebSession(Session session, WebSession webSession) {

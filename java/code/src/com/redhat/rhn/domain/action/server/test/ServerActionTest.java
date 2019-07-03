@@ -37,19 +37,19 @@ public class ServerActionTest extends RhnBaseTestCase {
         ServerAction sa1 = new ServerAction();
         sa1.fail(-1L, "Fail_message", new Date());
         assertEquals(sa1.getResultMsg(), "Fail_message");
-        assertEquals(sa1.getResultCode(), new Long(-1));
+        assertEquals(sa1.getResultCode(), Long.valueOf(-1));
         assertEquals(sa1.getStatus(), ActionFactory.STATUS_FAILED);
 
         ServerAction sa2 = new ServerAction();
         sa2.fail(-1L, "Fail_message");
         assertEquals(sa2.getResultMsg(), "Fail_message");
-        assertEquals(sa2.getResultCode(), new Long(-1));
+        assertEquals(sa2.getResultCode(), Long.valueOf(-1));
         assertEquals(sa2.getStatus(), ActionFactory.STATUS_FAILED);
 
         ServerAction sa3 = new ServerAction();
         sa3.fail("Fail_message");
         assertEquals(sa3.getResultMsg(), "Fail_message");
-        assertEquals(sa3.getResultCode(), new Long(-1));
+        assertEquals(sa3.getResultCode(), Long.valueOf(-1));
         assertEquals(sa3.getStatus(), ActionFactory.STATUS_FAILED);
     }
 
@@ -76,7 +76,7 @@ public class ServerActionTest extends RhnBaseTestCase {
         assertTrue(sa.equals(sa2));
 
         Action parent = new Action();
-        parent.setId(new Long(243));
+        parent.setId(243L);
         sa.setParentAction(parent);
         assertFalse(sa.equals(sa2));
 
@@ -129,7 +129,7 @@ public class ServerActionTest extends RhnBaseTestCase {
         throws Exception {
         ServerAction sa = new ServerAction();
         sa.setStatus(ActionFactory.STATUS_QUEUED);
-        sa.setRemainingTries(new Long(10));
+        sa.setRemainingTries(10L);
         sa.setServer(newS);
         sa.setParentAction(newA);
         newA.addServerAction(sa);

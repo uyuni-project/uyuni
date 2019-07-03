@@ -57,7 +57,7 @@ public class RhnSetDeclTest extends RhnBaseTestCase {
 
     private void testBadAndGoodIds(RhnSetDecl declIn, Long goodId) throws Exception {
         RhnSet set = declIn.get(user);
-        Long badId = new Long(-1);
+        Long badId = (long) -1;
         set.addElement(goodId);
         set.addElement(badId);
         assertTrue(set.contains(goodId));

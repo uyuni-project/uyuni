@@ -296,7 +296,7 @@ def schedule_virt_pkg_install(server_id, kickstart_session_id):
         action_id = rhnAction.schedule_server_action(
             server_id,
             action_type='kickstart_host.schedule_virt_host_pkg_install',
-            action_name="Schedule install of rhn-virtualization-host package.",
+            action_name="Schedule install of mgr-virtualization-host package.",
             delta_time=0, scheduler=scheduler, org_id=org_id,
         )
     elif ks_type == 'para_guest':
@@ -304,7 +304,7 @@ def schedule_virt_pkg_install(server_id, kickstart_session_id):
         action_id = rhnAction.schedule_server_action(
             server_id,
             action_type='kickstart_guest.schedule_virt_guest_pkg_install',
-            action_name="Schedule install of rhn-virtualization-guest package.",
+            action_name="Schedule install of mgr-virtualization-guest package.",
             delta_time=0, scheduler=scheduler, org_id=org_id,
         )
     else:

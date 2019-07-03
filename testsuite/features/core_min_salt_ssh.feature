@@ -1,4 +1,4 @@
-# Copyright (c) 2016-2018 SUSE LLC
+# Copyright (c) 2016-2019 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 Feature: Be able to bootstrap a Salt host managed via salt-ssh
@@ -17,7 +17,11 @@ Feature: Be able to bootstrap a Salt host managed via salt-ssh
     And I navigate to "rhn/systems/Overview.do" page
     And I wait until I see the name of "ssh-minion", refreshing the page
     And I wait until onboarding is completed for "ssh-minion"
-    Then I remove package "sle-manager-tools-release" from highstate
+
+@ssh_minion
+  Scenario: Remove sle-manager-tools-release from state after bootstrap
+    Given I am on the Systems overview page of this "ssh-minion"
+    When I remove package "sle-manager-tools-release" from highstate
 
 @proxy
 @ssh_minion
@@ -52,8 +56,7 @@ Feature: Be able to bootstrap a Salt host managed via salt-ssh
 @ssh_minion
   Scenario: Schedule errata refresh to reflect channel assignment on SSH minion
     Given I am authorized as "admin" with password "admin"
-    When I follow "Admin"
-    And I follow "Task Schedules"
+    When I follow the left menu "Admin > Task Schedules"
     And I follow "errata-cache-default"
     And I follow "errata-cache-bunch"
     And I click on "Single Run Schedule"
@@ -71,3 +74,8 @@ Feature: Be able to bootstrap a Salt host managed via salt-ssh
     Then I should see a "1 package install has been scheduled" text
     When I wait until event "Package Install/Upgrade scheduled by admin" is completed
     Then "hoag-dummy-1.1-2.1" should be installed on "ssh-minion"
+
+@ssh_minion
+  Scenario: Check events history for failures on SSH minion
+    Given I am on the Systems overview page of this "ssh-minion"
+    Then I check for failed events on history event page

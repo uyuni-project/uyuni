@@ -178,7 +178,7 @@ public class MinionActionUtils {
             ActionFactory.pendingMinionServerActions().stream().flatMap(a -> {
                     if (a.getEarliestAction().toInstant()
                             .atZone(ZoneId.systemDefault())
-                            .isBefore(now.minus(5, ChronoUnit.MINUTES))) {
+                            .isBefore(now.minus(1, ChronoUnit.HOURS))) {
                         return a.getServerActions()
                                 .stream()
                                 .filter(sa -> sa.getServer().asMinionServer().isPresent() &&
@@ -249,6 +249,11 @@ public class MinionActionUtils {
      * @param salt a SaltService instance
      */
     public static void cleanupMinionActionChains(SaltService salt) {
+        // if we are running on Postgres, there is no need to check Salt's job cache as job return events are already
+        // stored persistently via the database (see PGEventStream)
+        if (POSTGRES) {
+            return;
+        }
         Map<String, Object> metadata = new HashMap<>();
         metadata.put(ScheduleMetadata.SUMA_ACTION_CHAIN, true);
 

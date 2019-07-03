@@ -30,7 +30,7 @@ import java.util.Set;
 public class RhnSetFactoryTest extends RhnBaseTestCase {
 
     public void testConstructor() {
-        Long id = new Long(10);
+        Long id = 10L;
         RhnSet set = RhnSetFactory.createRhnSet(id, null, SetCleanup.NOOP);
         assertNotNull(set);
         assertEquals(id, set.getUserId());
@@ -42,7 +42,7 @@ public class RhnSetFactoryTest extends RhnBaseTestCase {
     }
 
     public void testBeanProperties() {
-        Long num = new Long(10);
+        Long num = 10L;
         RhnSet set = RhnSetFactory.createRhnSet(num, null, SetCleanup.NOOP);
         assertNotNull(set);
         assertEquals(num, set.getUserId());

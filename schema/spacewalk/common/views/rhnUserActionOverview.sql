@@ -37,13 +37,10 @@ select	ao.org_id                                       as org_id,
 	astat.name                                      as action_status,
 	count(sa.action_id)				as tally,
 	ao.archived                                     as archived
-from	rhnActionStatus            astat,
-    	rhnUserServerPerms         usp,
-	rhnServerAction            sa,
-	rhnActionOverview	   ao
-where	ao.action_id = sa.action_id
-  and   sa.server_id = usp.server_id
-  and   sa.status = astat.id
+from    rhnActionOverview ao
+        left join rhnServerAction sa on ao.action_id = sa.action_id
+        left join rhnActionStatus astat on sa.status = astat.id
+        left join rhnUserServerPerms usp on sa.server_id = usp.server_id
 group by ao.org_id,
 	 usp.user_id,
 	 ao.action_id,

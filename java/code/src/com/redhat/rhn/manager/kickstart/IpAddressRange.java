@@ -34,7 +34,7 @@ public class IpAddressRange {
     public IpAddressRange() {
         this.min = new IpAddress();
         this.max = new IpAddress();
-        this.ksid = new Long(0);
+        this.ksid = 0L;
     }
 
     /**
@@ -68,7 +68,7 @@ public class IpAddressRange {
      * @param ksidIn long id of ks data
      */
     public IpAddressRange(long minIn, long maxIn, long ksidIn) {
-        this(minIn, maxIn, new Long(ksidIn));
+        this(minIn, maxIn, Long.valueOf(ksidIn));
     }
 
     /**
@@ -79,7 +79,7 @@ public class IpAddressRange {
     public IpAddressRange(Long minIn, Long maxIn) {
         this.min = new IpAddress(minIn.longValue());
         this.max = new IpAddress(maxIn.longValue());
-        this.ksid = new Long(0);
+        this.ksid = 0L;
     }
 
     /**

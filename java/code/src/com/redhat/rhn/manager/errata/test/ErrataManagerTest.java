@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.manager.errata.test;
 
+import static com.redhat.rhn.domain.role.RoleFactory.ORG_ADMIN;
 import static com.redhat.rhn.testing.ErrataTestUtils.createLaterTestPackage;
 import static com.redhat.rhn.testing.ErrataTestUtils.createTestInstalledPackage;
 import static com.redhat.rhn.testing.ErrataTestUtils.createTestPackage;
@@ -44,9 +45,12 @@ import com.redhat.rhn.domain.errata.test.ErrataFactoryTest;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.rhnpackage.Package;
+import com.redhat.rhn.domain.rhnpackage.PackageEvr;
 import com.redhat.rhn.domain.rhnpackage.PackageName;
+import com.redhat.rhn.domain.rhnpackage.test.PackageEvrFactoryTest;
 import com.redhat.rhn.domain.rhnpackage.test.PackageTest;
 import com.redhat.rhn.domain.rhnset.RhnSet;
+import com.redhat.rhn.domain.server.InstalledPackage;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
 import com.redhat.rhn.domain.session.WebSession;
@@ -63,10 +67,10 @@ import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.rhnset.RhnSetManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.testing.ChannelTestUtils;
+import com.redhat.rhn.testing.ErrataTestUtils;
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
-
 import org.apache.commons.lang3.time.StopWatch;
 import org.hibernate.criterion.Restrictions;
 import org.jmock.Expectations;
@@ -76,6 +80,8 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -133,10 +139,10 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
         Errata e = ErrataManager.createNewErrata();
         assertTrue(e instanceof UnpublishedErrata);
 
-        Bug b = createNewUnpublishedBug(new Long(87), "test bug");
+        Bug b = createNewUnpublishedBug(87L, "test bug");
         assertTrue(b instanceof UnpublishedBug);
 
-        Bug b2 = ErrataManagerTest.createNewPublishedBug(new Long(42), "test bug");
+        Bug b2 = ErrataManagerTest.createNewPublishedBug(42L, "test bug");
         assertTrue(b2 instanceof PublishedBug);
     }
 
@@ -158,13 +164,13 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
         // errata search is done by the search-server. The search
         // in ErrataManager is to load ErrataOverview objects from
         // the results of the search-server searches.
-        Bug b1 = ErrataManagerTest.createNewPublishedBug(new Long(42), "test bug");
+        Bug b1 = ErrataManagerTest.createNewPublishedBug(42L, "test bug");
         assertTrue(b1 instanceof PublishedBug);
         Errata e = ErrataManager.createNewErrata();
         assertTrue(e instanceof UnpublishedErrata);
         e.setAdvisory("ZEUS-2007");
         e.setAdvisoryName("ZEUS-2007");
-        e.setAdvisoryRel(new Long(1));
+        e.setAdvisoryRel(1L);
         e.setAdvisoryType("Security Advisory");
         e.setProduct("Red Hat Enterprise Linux");
         e.setSynopsis("Just a test errata");
@@ -213,7 +219,7 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
         assertTrue(e instanceof UnpublishedErrata);
         e.setAdvisory("ZEUS-2007");
         e.setAdvisoryName("ZEUS-2007");
-        e.setAdvisoryRel(new Long(1));
+        e.setAdvisoryRel(1L);
         e.setAdvisoryType("Security Advisory");
         e.setProduct("Red Hat Enterprise Linux");
         e.setSynopsis("Just a test errata");
@@ -319,7 +325,7 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
 
         // Check for non-existant errata
         try {
-            check = ErrataManager.lookupErrata(new Long(-1234), user);
+            check = ErrataManager.lookupErrata((long) -1234, user);
             fail();
         }
         catch (LookupException e) {
@@ -342,7 +348,7 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
         assertTrue(systems.isEmpty());
         assertFalse(systems.size() > 0);
 
-        DataResult systems2 = ErrataManager.systemsAffected(user, new Long(-2), pc);
+        DataResult systems2 = ErrataManager.systemsAffected(user, (long) -2, pc);
         assertTrue(systems2.isEmpty());
     }
 
@@ -1595,5 +1601,93 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
         TestUtils.saveAndFlush(errata3);
 
         assertTrue(ErrataManager.updateStackUpdateNeeded(user, server));
+    }
+
+    /**
+     * Tests truncating errata - simple case (overlap of errata in channels)
+     *
+     * @throws Exception if anything goes wrong
+     */
+    public void testTruncateErrataSimple() throws Exception {
+        user.addPermanentRole(ORG_ADMIN);
+        Errata errata1 = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
+        TestUtils.saveAndFlush(errata1);
+        Errata errata2 = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
+        TestUtils.saveAndFlush(errata2);
+
+        Channel src = ChannelFactoryTest.createTestChannel(user);
+        Channel tgt = ChannelFactoryTest.createTestChannel(user);
+
+        ErrataFactory.publishToChannel(Arrays.asList(errata1), src, user, false);
+        ErrataFactory.publishToChannel(Arrays.asList(errata1, errata2), tgt, user, false);
+
+        ErrataManager.truncateErrata(src.getErratas(), tgt, user);
+
+        assertEquals(src.getErratas(), tgt.getErratas());
+    }
+
+    /**
+     * Tests truncating errata - overlap of erratum and its clone in channels
+     *
+     * @throws Exception if anything goes wrong
+     */
+    public void testTruncateErrataCloned() throws Exception {
+        user.addPermanentRole(ORG_ADMIN);
+        Errata errata1 = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
+        TestUtils.saveAndFlush(errata1);
+        Package pack = PackageTest.createTestPackage(user.getOrg());
+        Errata errata1Clone = ErrataTestUtils.createTestClonedErrata(user, errata1, new HashSet<>(), pack);
+        TestUtils.saveAndFlush(errata1Clone);
+        Errata errataInTgt = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
+        TestUtils.saveAndFlush(errataInTgt);
+
+        Channel src = ChannelFactoryTest.createTestChannel(user);
+        Channel tgt = ChannelFactoryTest.createTestChannel(user);
+
+        ErrataFactory.publishToChannel(Arrays.asList(errata1), src, user, false);
+        ErrataFactory.publishToChannel(Arrays.asList(errata1Clone, errataInTgt), tgt, user, false);
+
+        ErrataManager.truncateErrata(src.getErratas(), tgt, user);
+
+        assertEquals(1, tgt.getErratas().size());
+        // the clone will "survive" in the tgt channel as it has original in the src
+        assertEquals(errata1Clone, tgt.getErratas().iterator().next());
+    }
+
+    /**
+     * Tests that {@link Package}s are removed from {@link Channel} when {@link Errata} is removed from it.
+     *
+     * @throws Exception if anything goes wrong
+     */
+    public void testPackagesOnTruncateErrata() throws Exception {
+        user.addPermanentRole(ORG_ADMIN);
+        Errata errata = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
+        TestUtils.saveAndFlush(errata);
+        Package errataPackage = errata.getPackages().iterator().next();
+        // we assume version 1.0.0 for the test
+        assertEquals("1.0.0", errataPackage.getPackageEvr().getVersion());
+
+        Channel chan = ChannelFactoryTest.createTestChannel(user);
+        Package olderPack = copyPackage(errataPackage, user, chan, "0.9.9");
+
+        ErrataFactory.publishToChannel(Arrays.asList(errata), chan, user, false);
+
+        ErrataManager.truncateErrata(Collections.emptySet(), chan, user);
+
+        assertTrue(chan.getErratas().isEmpty());
+        assertTrue(chan.getPackages().contains(olderPack));
+        assertFalse(chan.getPackages().contains(errataPackage));
+    }
+
+    private static Package copyPackage(Package fromPkg, User user, Channel channel, String version) throws Exception {
+        Package olderPkg = createTestPackage(user, channel, fromPkg.getPackageArch().getLabel());
+        PackageEvr packageEvr = fromPkg.getPackageEvr();
+        olderPkg.setPackageEvr(PackageEvrFactoryTest.createTestPackageEvr(
+                packageEvr.getEpoch(),
+                version,
+                packageEvr.getRelease()
+        ));
+        olderPkg.setPackageName(fromPkg.getPackageName());
+        return olderPkg;
     }
 }

@@ -1,0 +1,14 @@
+.wrapper {
+  position: relative
+}
+
+.icon_wrapper_vertical_center {
+  position: absolute;
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.dettached {
+  text-decoration: line-through;
+}

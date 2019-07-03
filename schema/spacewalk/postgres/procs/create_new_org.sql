@@ -211,6 +211,13 @@ begin
                 from rhnServerGroupType sgt
                 where sgt.label = 'osimage_build_host';
 
+        insert into rhnServerGroup
+                ( id, name, description, group_type, org_id )
+                select nextval('rhn_server_group_id_seq'), sgt.name, sgt.name,
+                        sgt.id, new_org_id
+                from rhnServerGroupType sgt
+                where sgt.label = 'monitoring_entitled';
+
         insert into suseImageStore (id, label, uri, store_type_id, org_id)
         values (
             nextval('suse_imgstore_id_seq'),

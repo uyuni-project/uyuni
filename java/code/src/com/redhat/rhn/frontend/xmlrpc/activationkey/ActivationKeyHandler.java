@@ -54,7 +54,8 @@ import com.redhat.rhn.manager.token.ActivationKeyManager;
 
 import com.suse.manager.utils.MachinePasswordUtils;
 import com.suse.manager.webui.services.SaltStateGeneratorService;
-import com.suse.manager.webui.utils.TokenBuilder;
+import com.suse.manager.webui.utils.DownloadTokenBuilder;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.hibernate.NonUniqueObjectException;
@@ -262,7 +263,7 @@ public class ActivationKeyHandler extends BaseHandler {
             throw new AuthenticationException("wrong machine password.");
         }
 
-        TokenBuilder tokenBuilder = new TokenBuilder(minion.getOrg().getId());
+        DownloadTokenBuilder tokenBuilder = new DownloadTokenBuilder(minion.getOrg().getId());
         tokenBuilder.useServerSecret();
         tokenBuilder.setExpirationTimeMinutesInTheFuture(
                 Config.get().getInt(
@@ -452,8 +453,7 @@ public class ActivationKeyHandler extends BaseHandler {
         }
 
         if (details.containsKey("usage_limit")) {
-            Long usageLimit = new Long(((Integer) details.get("usage_limit"))
-                    .longValue());
+            Long usageLimit = Long.valueOf(((Integer) details.get("usage_limit")));
             aKey.setUsageLimit(usageLimit);
         }
 
@@ -682,7 +682,7 @@ public class ActivationKeyHandler extends BaseHandler {
             ManagedServerGroup group = null;
             try {
                 group = ServerGroupManager.getInstance().lookup(
-                        new Long(serverGroupId.longValue()), loggedInUser);
+                        serverGroupId.longValue(), loggedInUser);
             }
             catch (LookupException e) {
                 throw new InvalidServerGroupException(e);
@@ -719,7 +719,7 @@ public class ActivationKeyHandler extends BaseHandler {
             ServerGroup group = null;
             try {
                 group = ServerGroupManager.getInstance().lookup(
-                        new Long(serverGroupId.longValue()), loggedInUser);
+                        serverGroupId.longValue(), loggedInUser);
             }
             catch (LookupException e) {
                 throw new InvalidServerGroupException(e);

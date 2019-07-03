@@ -300,7 +300,7 @@ public class ImportCustomStatesTest extends BaseTestCaseWithUser {
     }
 
     private void createTask(String taskName) {
-        TaskFactory.createTask(user.getOrg(), taskName, new Long(0));
+        TaskFactory.createTask(user.getOrg(), taskName, 0L);
         List l = TaskFactory.getTaskListByNameLike(taskName);
         assertTrue(l.get(0) instanceof Task);
     }

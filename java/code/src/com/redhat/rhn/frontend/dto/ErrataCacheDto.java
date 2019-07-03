@@ -32,9 +32,9 @@ public class ErrataCacheDto {
      * Default constructor
      */
     public ErrataCacheDto() {
-        serverId = new Long(0);
-        errataId = new Long(0);
-        packageId = new Long(0);
+        serverId = 0L;
+        errataId = 0L;
+        packageId = 0L;
     }
     /**
      * @return Returns the errataId.

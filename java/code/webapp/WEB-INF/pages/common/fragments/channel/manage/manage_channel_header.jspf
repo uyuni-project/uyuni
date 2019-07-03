@@ -2,7 +2,7 @@
 
 <rhn:toolbar base="h1" icon="header-channel"
              imgAlt="overview.jsp.alt"
-             helpUrl="/rhn/help/reference/en-US/ref.webui.channels.manage.jsp"
+             helpUrl="/docs/reference/software/manage-channels.html"
              deletionUrl="/rhn/channels/manage/Delete.do?cid=${cid}"
              deletionType="channel">
   <bean:message key="channel.edit.jsp.toolbar" arg0="${fn:escapeXml(channel_name)}"/>

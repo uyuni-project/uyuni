@@ -16,7 +16,6 @@ package com.redhat.rhn.frontend.xmlrpc.kickstart;
 
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.security.PermissionException;
-import com.redhat.rhn.common.validator.ValidatorError;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.kickstart.KickstartData;
@@ -524,7 +523,7 @@ public class KickstartHandler extends BaseHandler {
         KickstartData ksdata = lookupKsData(ksLabel, loggedInUser.getOrg());
         KickstartDeleteCommand com = new KickstartDeleteCommand(ksdata.getId(),
                 loggedInUser);
-        ValidatorError error = com.store();
+        com.store();
 
         return 1;
     }

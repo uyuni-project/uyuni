@@ -22,6 +22,7 @@ import static java.util.Collections.emptyMap;
 import static java.util.Collections.singletonList;
 import static java.util.Collections.singletonMap;
 import static java.util.Optional.ofNullable;
+import static java.util.stream.Collectors.toList;
 
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
@@ -52,6 +53,7 @@ import com.redhat.rhn.domain.action.scap.ScapAction;
 import com.redhat.rhn.domain.action.scap.ScapActionDetails;
 import com.redhat.rhn.domain.action.script.ScriptAction;
 import com.redhat.rhn.domain.action.server.ServerAction;
+import com.redhat.rhn.domain.action.virtualization.BaseVirtualizationAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationCreateAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationCreateActionDiskDetails;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationCreateActionInterfaceDetails;
@@ -96,11 +98,11 @@ import com.suse.manager.reactor.messaging.JobReturnEventMessageAction;
 import com.suse.manager.utils.SaltUtils;
 import com.suse.manager.webui.services.impl.SaltSSHService;
 import com.suse.manager.webui.services.impl.SaltService;
+import com.suse.manager.webui.utils.DownloadTokenBuilder;
 import com.suse.manager.webui.utils.ElementCallJson;
 import com.suse.manager.webui.utils.SaltModuleRun;
 import com.suse.manager.webui.utils.SaltState;
 import com.suse.manager.webui.utils.SaltSystemReboot;
-import com.suse.manager.webui.utils.TokenBuilder;
 import com.suse.manager.webui.utils.salt.MgrActionChains;
 import com.suse.manager.webui.utils.salt.State;
 import com.suse.manager.webui.utils.salt.custom.ScheduleMetadata;
@@ -293,31 +295,31 @@ public class SaltServerActionService {
         else if (ActionFactory.TYPE_VIRTUALIZATION_SHUTDOWN.equals(actionType)) {
             VirtualizationShutdownAction virtAction =
                     (VirtualizationShutdownAction)actionIn;
-            return virtStateChangeAction(minions, virtAction.getUuid(), "stopped");
+            return virtStateChangeAction(minions, virtAction.getUuid(), "stopped", virtAction);
         }
         else if (ActionFactory.TYPE_VIRTUALIZATION_START.equals(actionType)) {
             VirtualizationStartAction virtAction = (VirtualizationStartAction)actionIn;
-            return virtStateChangeAction(minions, virtAction.getUuid(), "running");
+            return virtStateChangeAction(minions, virtAction.getUuid(), "running", virtAction);
         }
         else if (ActionFactory.TYPE_VIRTUALIZATION_SUSPEND.equals(actionType)) {
             VirtualizationSuspendAction virtAction =
                     (VirtualizationSuspendAction)actionIn;
-            return virtStateChangeAction(minions, virtAction.getUuid(), "suspended");
+            return virtStateChangeAction(minions, virtAction.getUuid(), "suspended", virtAction);
         }
         else if (ActionFactory.TYPE_VIRTUALIZATION_RESUME.equals(actionType)) {
             VirtualizationResumeAction virtAction =
                     (VirtualizationResumeAction)actionIn;
-            return virtStateChangeAction(minions, virtAction.getUuid(), "resumed");
+            return virtStateChangeAction(minions, virtAction.getUuid(), "resumed", virtAction);
         }
         else if (ActionFactory.TYPE_VIRTUALIZATION_REBOOT.equals(actionType)) {
             VirtualizationRebootAction virtAction =
                     (VirtualizationRebootAction)actionIn;
-            return virtStateChangeAction(minions, virtAction.getUuid(), "rebooted");
+            return virtStateChangeAction(minions, virtAction.getUuid(), "rebooted", virtAction);
         }
         else if (ActionFactory.TYPE_VIRTUALIZATION_DELETE.equals(actionType)) {
             VirtualizationDeleteAction virtAction =
                     (VirtualizationDeleteAction)actionIn;
-            return virtStateChangeAction(minions, virtAction.getUuid(), "deleted");
+            return virtStateChangeAction(minions, virtAction.getUuid(), "deleted", virtAction);
         }
         else if (ActionFactory.TYPE_VIRTUALIZATION_SET_VCPUS.equals(actionType)) {
             VirtualizationSetVcpusAction virtAction =
@@ -410,29 +412,18 @@ public class SaltServerActionService {
 
             results = execute(actionIn, call, targetMinions, forcePackageListRefresh, isStagingJob);
 
-            results.get(true).forEach(minionServer -> {
-                serverActionFor(actionIn, minionServer).ifPresent(serverAction -> {
-                    if (LOG.isDebugEnabled()) {
-                        LOG.debug("Asynchronous call on minion: " +
-                                minionServer.getMinionId());
-                    }
-                    if (!isStagingJob) {
-                        serverAction.setStatus(ActionFactory.STATUS_PICKED_UP);
-                        ActionFactory.save(serverAction);
-                    }
-                });
-            });
-
-            results.get(false).forEach(minionServer -> {
-                serverActionFor(actionIn, minionServer).ifPresent(serverAction -> {
-                    LOG.warn("Failed to schedule action for minion: " +
-                            minionServer.getMinionId());
-                    if (!isStagingJob) {
-                        serverAction.fail("Failed to schedule action.");
-                        ActionFactory.save(serverAction);
-                    }
-                });
-            });
+            if (!isStagingJob) {
+                List<Long> succeededServerIds = results.get(true).stream()
+                        .map(MinionSummary::getServerId).collect(toList());
+                if (!succeededServerIds.isEmpty()) {
+                    ActionFactory.updateServerActions(actionIn, succeededServerIds, ActionFactory.STATUS_PICKED_UP);
+                }
+                List<Long> failedServerIds  = results.get(false).stream()
+                        .map(MinionSummary::getServerId).collect(toList());
+                if (!failedServerIds.isEmpty()) {
+                    ActionFactory.updateServerActions(actionIn, failedServerIds, ActionFactory.STATUS_FAILED);
+                }
+            }
         }
     }
 
@@ -1279,7 +1270,7 @@ public class SaltServerActionService {
                 Collectors.toMap(minion -> {
 
                     //TODO: refactor ActivationKeyHandler.listChannels to share this logic
-                    TokenBuilder tokenBuilder = new TokenBuilder(minion.getOrg().getId());
+                    DownloadTokenBuilder tokenBuilder = new DownloadTokenBuilder(minion.getOrg().getId());
                     tokenBuilder.useServerSecret();
                     tokenBuilder.setExpirationTimeMinutesInTheFuture(
                             Config.get().getInt(
@@ -1448,7 +1439,7 @@ public class SaltServerActionService {
     }
 
     private Map<LocalCall<?>, List<MinionSummary>> virtStateChangeAction(
-            List<MinionSummary> minionSummaries, String uuid, String state) {
+            List<MinionSummary> minionSummaries, String uuid, String state, BaseVirtualizationAction action) {
         Map<LocalCall<?>, List<MinionSummary>> ret = minionSummaries.stream().collect(
                 Collectors.toMap(minion -> {
 
@@ -1463,8 +1454,18 @@ public class SaltServerActionService {
                                     Collections.singletonList("virt." + state),
                                     Optional.of(pillar));
                         }
+                        else if (state.equals("rebooted") && ((VirtualizationRebootAction)action).isForce()) {
+                            return State.apply(
+                                    Collections.singletonList("virt.reset"),
+                                    Optional.of(pillar));
+                        }
                         else {
-                            pillar.put("domain_state", state);
+                            if (state.equals("stopped") && ((VirtualizationShutdownAction)action).isForce()) {
+                                pillar.put("domain_state", "powered_off");
+                            }
+                            else {
+                                pillar.put("domain_state", state);
+                            }
 
                             return State.apply(
                                     Collections.singletonList("virt.statechange"),
@@ -1638,16 +1639,6 @@ public class SaltServerActionService {
     private Map<Boolean, List<MinionSummary>> execute(Action actionIn, LocalCall<?> call,
             List<MinionSummary> minionSummaries, boolean forcePackageListRefresh,
             boolean isStagingJob) {
-        // Prepare the metadata
-        Map<String, Object> metadata = new HashMap<>();
-
-        if (!isStagingJob) {
-            metadata.put(ScheduleMetadata.SUMA_ACTION_ID, actionIn.getId());
-        }
-        if (forcePackageListRefresh) {
-            metadata.put(ScheduleMetadata.SUMA_FORCE_PGK_LIST_REFRESH, true);
-        }
-
         List<String> minionIds = minionSummaries.stream().map(MinionSummary::getMinionId).collect(Collectors.toList());
 
         if (LOG.isDebugEnabled()) {
@@ -1658,9 +1649,11 @@ public class SaltServerActionService {
         try {
             Map<Boolean, List<MinionSummary>> result = new HashMap<>();
 
+            ScheduleMetadata metadata = ScheduleMetadata.getMetadataForRegularMinionActions(
+                    isStagingJob, forcePackageListRefresh, actionIn.getId());
             List<String> results = SaltService.INSTANCE
-                    .callAsync(call.withMetadata(metadata), new MinionList(minionIds))
-                    .getMinions();
+                    .callAsync(call, new MinionList(minionIds), Optional.of(metadata))
+                    .get().getMinions();
 
             result = minionSummaries.stream().collect(Collectors
                     .partitioningBy(minionId -> results.contains(minionId.getMinionId())));
@@ -1683,10 +1676,6 @@ public class SaltServerActionService {
      */
     private Map<Boolean, ? extends Collection<MinionSummary>> callAsyncActionChainStart(LocalCall<?> call,
             Set<MinionSummary> minionSummaries) {
-        // Prepare the metadata
-        Map<String, Object> metadata = new HashMap<>();
-        metadata.put("suma-action-chain", true);
-
         List<String> minionIds = minionSummaries.stream().map(MinionSummary::getMinionId)
                 .collect(Collectors.toList());
 
@@ -1697,8 +1686,8 @@ public class SaltServerActionService {
 
         try {
             List<String> results = SaltService.INSTANCE
-                    .callAsync(call.withMetadata(metadata), new MinionList(minionIds))
-                    .getMinions();
+                    .callAsync(call, new MinionList(minionIds),
+                            Optional.of(ScheduleMetadata.getDefaultMetadata().withActionChain())).get().getMinions();
 
             Map<Boolean, ? extends Collection<MinionSummary>> result = minionSummaries.stream().collect(Collectors
                     .partitioningBy(minion -> results.contains(minion.getMinionId())));

@@ -374,7 +374,7 @@ public class ErrataCacheManager extends HibernateFactory {
 
     /**
      * Clear out and re-generate the entries in rhnServerNeededErrataCache
-     * tables by channel. Usefull if the set of errata or packages gets changed
+     * tables by channel. Useful if the set of errata or packages gets changed
      * with a Channel
      *
      * @param cid - channel to update caches for.

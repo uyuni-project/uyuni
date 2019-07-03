@@ -13,7 +13,6 @@
 - features/core_srv_channels_add.feature
 - features/core_srv_push_package.feature
 - features/core_srv_create_repository.feature
-- features/core_srv_systemspage.feature
 - features/core_srv_users.feature
 - features/core_srv_create_activationkey.feature
 - features/core_srv_osimage_profiles.feature
@@ -32,7 +31,9 @@
 - features/core_ubuntu_salt_ssh.feature
 # these features sync real channels (last core features)
 - features/core_srv_sync_channels.feature
-- features/core_srv_setup_wizard.feature
+- features/core_srv_products_page.feature
+- features/core_srv_mgr_sync_products.feature
+- features/core_srv_abort_all_sync.feature
 
 ## Core features END ###
 
@@ -41,6 +42,7 @@
 
 # IDEMPOTENT
 
+- features/srv_menu.feature
 - features/allcli_reboot.feature
 - features/trad_config_channel.feature
 - features/trad_lock_packages.feature
@@ -51,11 +53,13 @@
 - features/min_ubuntu_salt_install_package.feature
 - features/min_bootstrap_xmlrpc.feature
 - features/minssh_bootstrap_xmlrpc.feature
+- features/min_bootstrap_script.feature
 - features/min_activationkey.feature
 - features/trad_migrate_to_minion.feature
 - features/trad_migrate_to_sshminion.feature
 - features/trad_need_reboot.feature
 - features/trad_ssh_push.feature
+- features/srv_organization_credentials.feature
 - features/srv_change_password.feature
 - features/srv_check_sync_source_packages.feature
 - features/min_salt_software_states.feature
@@ -70,14 +74,12 @@
 - features/min_salt_install_with_staging.feature
 - features/srv_xmlrpc_activationkey.feature
 - features/allcli_overview_systems_details.feature
-# temporary disable as long as cobbler is broken
-#- features/srv_distro_cobbler.feature
+- features/srv_distro_cobbler.feature
 - features/srv_mainpage.feature
 - features/srv_xmlrpc_user.feature
 - features/srv_salt_download_endpoint.feature
 - features/srv_virtual_host_manager.feature
-# temporary disable as long as cobbler is broken
-#- features/trad_baremetal_discovery.feature
+- features/trad_baremetal_discovery.feature
 - features/trad_action_chain.feature
 - features/min_action_chain.feature
 - features/minssh_action_chain.feature
@@ -86,7 +88,8 @@
 - features/min_docker_auth_registry.feature
 - features/srv_docker_advanced_content_management.feature
 - features/srv_docker_cve_audit.feature
-# - features/min_osimage_build_image.feature
+# OS image build tests are required for proxy_retail_pxeboot feature
+- features/min_osimage_build_image.feature
 - features/min_salt_install_package.feature
 - features/srv_power_management.feature
 - features/srv_datepicker.feature
@@ -114,15 +117,17 @@
 - features/min_salt_pkgset_beacon.feature
 - features/srv_patches_page.feature
 - features/srv_spacewalk_channel.feature
+- features/srv_content_lifecycle.feature
 - features/allcli_software_channels.feature
 - features/allcli_software_channels_dependencies.feature
 - features/srv_change_task_schedule.feature
-- features/srv_sync_products.feature
 - features/srv_notifications.feature
 - features/minkvm_guests.feature
 - features/minxen_guests.feature
 - features/min_empty_system_profiles.feature
 - features/min_custom_pkg_download_endpoint.feature
+- features/srv_monitoring.feature
+
 ## Secondary features END ##
 
 

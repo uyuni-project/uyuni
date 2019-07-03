@@ -71,6 +71,9 @@ import java.util.Set;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import static com.redhat.rhn.manager.channel.CloneChannelCommand.CloneBehavior.CURRENT_STATE;
+import static com.redhat.rhn.manager.channel.CloneChannelCommand.CloneBehavior.ORIGINAL_STATE;
+
 
 /**
  * EditChannelAction
@@ -514,7 +517,7 @@ public class EditChannelAction extends RhnAction implements Listable<OrgTrust> {
             originalState = false;
         }
 
-        CloneChannelCommand command = new CloneChannelCommand(originalState, original);
+        CloneChannelCommand command = new CloneChannelCommand(originalState ? ORIGINAL_STATE : CURRENT_STATE, original);
         return createChannelHelper(command, form, errors, ctx);
     }
 

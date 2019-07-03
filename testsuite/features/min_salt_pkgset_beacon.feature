@@ -1,4 +1,4 @@
-# Copyright (c) 2016-2018 SUSE LLC
+# Copyright (c) 2016-2019 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 Feature: System package list is updated if packages are manually installed or removed
@@ -9,14 +9,18 @@ Feature: System package list is updated if packages are manually installed or re
     And I run "zypper -n ref" on "sle-minion"
     And I run "zypper -n in --oldpackage milkyway-dummy-1.0" on "sle-minion" without error control
 
+  Scenario: Pre-requisite: refresh package list and check installed packages on SLE minion client
+    When I refresh packages list via spacecmd on "sle-minion"
+    And I wait until refresh package list on "sle-minion" is finished
+    Then spacecmd should show packages "milkyway-dummy-1.0" installed on "sle-minion"
+
   Scenario: Pre-requisite: ensure the errata cache is computed
     Given I am on the Systems overview page of this "sle-minion"
     When I follow "Software" in the content area
     And I follow "List / Remove" in the content area
     And I enter "milkyway-dummy" in the css "input[placeholder='Filter by Package Name: ']"
     And I click on the css "button.spacewalk-button-filter" until page does contain "milkyway-dummy-1.0" text
-    Then I follow "Admin"
-    And I follow "Task Schedules"
+    When I follow the left menu "Admin > Task Schedules"
     And I follow "errata-cache-default"
     And I follow "errata-cache-bunch"
     Then I click on "Single Run Schedule"

@@ -42,7 +42,7 @@ public class DiffFilesAction extends BaseListAction {
 
         DataResult dr = ConfigurationManager.getInstance()
                 .listFileNamesInSetForSystem(user, server, pc);
-        rctxIn.getRequest().setAttribute("datasize", new Integer(dr.getTotalSize()));
+        rctxIn.getRequest().setAttribute("datasize", dr.getTotalSize());
         return dr;
     }
 
@@ -55,7 +55,7 @@ public class DiffFilesAction extends BaseListAction {
         Server server = rctxIn.lookupAndBindServer();
 
         RhnSet set = RhnSetDecl.CONFIG_FILE_NAMES.get(user);
-        request.setAttribute("setsize", new Integer(set.size()));
+        request.setAttribute("setsize", set.size());
         SdcHelper.ssmCheck(request, server.getId(), user);
     }
 

@@ -177,14 +177,14 @@ public class ClonableErrataDto extends BaseDto {
      * @param setAlreadyClonedIn The setAlreadyCloned to set.
      */
     public void setAlreadyCloned(Integer setAlreadyClonedIn) {
-        setAlreadyCloned(new Long(setAlreadyClonedIn));
+        setAlreadyCloned(Long.valueOf(setAlreadyClonedIn));
     }
 
     /**
      * @param setAlreadyClonedIn The setAlreadyCloned to set.
      */
     public void setAlreadyCloned(Long setAlreadyClonedIn) {
-        if (setAlreadyClonedIn.equals(new Long(1))) {
+        if (setAlreadyClonedIn.equals(1L)) {
             this.alreadyCloned = Boolean.TRUE;
         }
         else {

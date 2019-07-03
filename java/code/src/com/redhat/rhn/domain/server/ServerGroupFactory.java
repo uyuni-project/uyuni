@@ -222,7 +222,7 @@ public class ServerGroupFactory extends HibernateFactory {
                 "ServerGroup.lookupServerIds", params);
         List<Long> serverIds = new ArrayList<Long>();
         for (Number n : ids) {
-            serverIds.add(new Long(n.longValue()));
+            serverIds.add(n.longValue());
         }
         return ServerFactory.lookupByIds(serverIds);
     }
@@ -242,9 +242,9 @@ public class ServerGroupFactory extends HibernateFactory {
                 "ServerGroup.lookupCurrentMembersValue", params);
         Number members = (Number) obj;
         if (members == null) {
-           return new Long(0);
+           return 0L;
         }
-        return new Long(members.longValue());
+        return members.longValue();
     }
 
     /**

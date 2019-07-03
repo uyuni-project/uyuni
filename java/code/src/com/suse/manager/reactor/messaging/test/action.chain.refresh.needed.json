@@ -1,0 +1,136 @@
+{
+  "tag": "salt/job/20180301231955542441/ret/${minion-id}",
+  "data": {
+    "_stamp": "2019-02-20T17:22:55.258584",
+    "cmd": "_return",
+    "fun": "mgractionchains.start",
+    "fun_args": [
+      "1"
+    ],
+    "id": "abid-minssh-sles12sp3.tf.local",
+    "jid": "20190220182200608942",
+    "metadata": {
+      "suma-action-chain": true
+    },
+    "retcode": 0,
+    "return": {
+      "module_|-mgr_actionchain_1_action_205_chunk_1_|-state.apply_|-run": {
+        "__id__": "mgr_actionchain_1_action_205_chunk_1",
+        "__run_num__": 0,
+        "__sls__": "actionchains.actionchain_1_4f5f892387596ee901cb9db95c505c09_1",
+        "changes": {
+          "ret": {
+            "file_|-mgrchannels_repo_|-/etc/zypp/repos.d/susemanager:channels.repo_|-managed": {
+              "__id__": "mgrchannels_repo",
+              "__run_num__": 0,
+              "__sls__": "channels",
+              "changes": {},
+              "comment": "File /etc/zypp/repos.d/susemanager:channels.repo is in the correct state",
+              "duration": 115.737,
+              "name": "/etc/zypp/repos.d/susemanager:channels.repo",
+              "pchanges": {},
+              "result": true,
+              "start_time": "18:22:02.202723"
+            },
+            "pkg_|-pkg_installed_|-pkg_installed_|-installed": {
+              "__id__": "pkg_installed",
+              "__run_num__": 1,
+              "__sls__": "packages.pkginstall",
+              "changes": {
+                "accountsservice-release": {
+                  "new": [
+                    {
+                      "arch": "x86_64",
+                      "install_date_time_t": 1550683352,
+                      "release": "16.3.1",
+                      "version": "0.6.42"
+                    }
+                  ],
+                  "old": ""
+                },
+                "accountsservice-lang": {
+                  "new": [
+                    {
+                      "arch": "noarch",
+                      "install_date_time_t": 1550683352,
+                      "release": "16.3.1",
+                      "version": "0.6.42"
+                    }
+                  ],
+                  "old": ""
+                }
+              },
+              "comment": "1 targeted package was installed/updated.",
+              "duration": 28861.8,
+              "name": "pkg_installed",
+              "result": true,
+              "start_time": "18:22:04.755917"
+            }
+          }
+        },
+        "comment": "Module function state.apply executed",
+        "duration": 31854.066,
+        "name": "state.apply",
+        "result": true,
+        "start_time": "18:22:01.765462"
+      },
+      "module_|-mgr_actionchain_1_action_206_chunk_1_|-state.apply_|-run": {
+        "__id__": "mgr_actionchain_1_action_206_chunk_1",
+        "__run_num__": 1,
+        "__sls__": "actionchains.actionchain_1_4f5f892387596ee901cb9db95c505c09_1",
+        "changes": {
+          "ret": {
+            "file_|-mgrchannels_repo_|-/etc/zypp/repos.d/susemanager:channels.repo_|-managed": {
+              "__id__": "mgrchannels_repo",
+              "__run_num__": 0,
+              "__sls__": "channels",
+              "changes": {},
+              "comment": "File /etc/zypp/repos.d/susemanager:channels.repo is in the correct state",
+              "duration": 166.284,
+              "name": "/etc/zypp/repos.d/susemanager:channels.repo",
+              "pchanges": {},
+              "result": true,
+              "start_time": "18:22:34.266516"
+            },
+            "pkg_|-pkg_installed_|-pkg_installed_|-installed": {
+              "__id__": "pkg_installed",
+              "__run_num__": 1,
+              "__sls__": "packages.pkginstall",
+              "changes": {
+                "curl-release": {
+                  "new": [
+                    {
+                      "arch": "x86_64",
+                      "install_date_time_t": 1550683374,
+                      "release": "37.34.1",
+                      "version": "7.37.0"
+                    }
+                  ],
+                  "old": [
+                    {
+                      "arch": "x86_64",
+                      "install_date_time_t": 1548770488,
+                      "release": "37.31.1",
+                      "version": "7.37.0"
+                    }
+                  ]
+                }
+              },
+              "comment": "The following packages were installed/updated: curl=7.37.0-37.34.1",
+              "duration": 19318.382,
+              "name": "pkg_installed",
+              "result": true,
+              "start_time": "18:22:36.495396"
+            }
+          }
+        },
+        "comment": "Module function state.apply executed",
+        "duration": 22195.376,
+        "name": "state.apply",
+        "result": true,
+        "start_time": "18:22:33.620465"
+      }
+    },
+    "success": true
+  }
+}

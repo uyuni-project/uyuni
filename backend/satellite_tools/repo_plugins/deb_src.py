@@ -16,22 +16,26 @@
 import sys
 import os.path
 from shutil import rmtree
+from shutil import copyfile
 import time
 import re
 import fnmatch
 import requests
 from functools import cmp_to_key
 from spacewalk.common import fileutils
+from spacewalk.common.suseLib import get_proxy
 from spacewalk.satellite_tools.download import get_proxies
 from spacewalk.satellite_tools.repo_plugins import ContentPackage, CACHE_DIR
 from spacewalk.satellite_tools.syncLib import log2
 from spacewalk.common.rhnConfig import CFG, initCFG
 try:
-    #  python 2
+    #  python 2 
+    from urllib import unquote
     import urlparse
 except ImportError:
     #  python3
     import urllib.parse as urlparse # pylint: disable=F0401,E0611
+    from urllib.parse import unquote
 
 RETRIES = 10
 RETRY_DELAY = 1
@@ -56,8 +60,9 @@ class DebPackage(object):
         return setattr(self, key, value)
 
     def is_populated(self):
-        return all([attribute is not None for attribute in (self.name, self.epoch, self.version, self.release,
-                                                            self.arch, self.relativepath, self.checksum_type,
+        return all([attribute is not None for attribute in (self.name, self.epoch,
+                                                            self.version, self.release, self.arch,
+                                                            self.relativepath, self.checksum_type,
                                                             self.checksum)])
 
 
@@ -85,20 +90,29 @@ class DebRepo(object):
         self.http_headers = {}
 
     def _download(self, url):
+        if url.startswith('file://'):
+            srcpath = unquote(url[len('file://'):])
+            if not os.path.exists(srcpath):
+                return ''
+            filename = self.basecachedir + '/' + os.path.basename(url)
+            copyfile(srcpath, filename)
+            return filename
         for _ in range(0, RETRIES):
             try:
                 proxies=""
                 if self.proxy:
+                    (scheme, netloc, path, query, fragid) = urlparse.urlsplit(self.proxy)
                     proxies = {
-                        'http' : 'http://'+self.proxy,
-                        'https' : 'http://'+self.proxy
+                        'http' : 'http://'+netloc,
+                        'https' : 'http://'+netloc
                     }
                     if self.proxy_username and self.proxy_password:
                         proxies = {
-                            'http' : 'http://'+self.proxy_username+":"+self.proxy_password+"@"+self.proxy,
-                            'https' : 'http://'+self.proxy_username+":"+self.proxy_password+"@"+self.proxy,
+                            'http' : 'http://'+self.proxy_username+":"+self.proxy_password+"@"+netloc,
+                            'https' : 'http://'+self.proxy_username+":"+self.proxy_password+"@"+netloc,
                         }
-                data = requests.get(url, proxies=proxies, cert=(self.sslclientcert, self.sslclientkey), verify=self.sslcacert)
+                data = requests.get(url, proxies=proxies, cert=(self.sslclientcert, self.sslclientkey),
+                                    verify=self.sslcacert)
                 if not data.ok:
                     return ''
                 filename = self.basecachedir + '/' + os.path.basename(url)
@@ -122,9 +136,15 @@ class DebRepo(object):
         to_return = []
 
         for extension in FORMAT_PRIORITY:
-            url = self.url + '/Packages' + extension
+            (scheme, netloc, path, query, fragid) = urlparse.urlsplit(self.url)
+            url = urlparse.urlunsplit((scheme, netloc,
+                                       path + '/Packages' + extension, query, fragid))
             filename = self._download(url)
             if filename:
+                if query:
+                    newfilename = filename.split('?')[0]
+                    os.rename(filename, newfilename)
+                    filename = newfilename
                 decompressed = fileutils.decompress_open(filename)
                 break
 
@@ -181,14 +201,14 @@ class DebRepo(object):
 
             if package.is_populated():
                 to_return.append(package)
-
         return to_return
 
 
 class ContentSource(object):
 
-    def __init__(self, url, name, insecure=False, interactive=True, yumsrc_conf=None, org="1", channel_label="", 
-                 no_mirrors=False, ca_cert_file=None, client_cert_file=None, client_key_file=None): 
+    def __init__(self, url, name, insecure=False, interactive=True, yumsrc_conf=None,
+                 org="1", channel_label="", no_mirrors=False, ca_cert_file=None,
+                 client_cert_file=None, client_key_file=None):
         # pylint: disable=W0613
         self.url = url
         self.name = name
@@ -199,9 +219,8 @@ class ContentSource(object):
 
         # read the proxy configuration in /etc/rhn/rhn.conf
         initCFG('server.satellite')
-        self.proxy_addr = CFG.http_proxy
-        self.proxy_user = CFG.http_proxy_username
-        self.proxy_pass = CFG.http_proxy_password
+
+        self.proxy_addr, self.proxy_user, self.proxy_pass = get_proxy(self.url)
         self.authtoken = None
 
         self.repo = DebRepo(url, os.path.join(CACHE_DIR, self.org, name),
@@ -294,18 +313,18 @@ class ContentSource(object):
             if sense == '+':
                 # include
                 for excluded_pkg in excluded:
-                    if (reobj.match(excluded_pkg['name'])):
-                        allmatched_include.insert(0,excluded_pkg)
-                        selected.insert(0,excluded_pkg)
+                    if reobj.match(excluded_pkg['name']):
+                        allmatched_include.insert(0, excluded_pkg)
+                        selected.insert(0, excluded_pkg)
                 for pkg in allmatched_include:
                     if pkg in excluded:
                         excluded.remove(pkg)
             elif sense == '-':
                 # exclude
                 for selected_pkg in selected:
-                    if (reobj.match(selected_pkg['name'])):
-                        allmatched_exclude.insert(0,selected_pkg)
-                        excluded.insert(0,selected_pkg)
+                    if reobj.match(selected_pkg['name']):
+                        allmatched_exclude.insert(0, selected_pkg)
+                        excluded.insert(0, selected_pkg)
 
                 for pkg in allmatched_exclude:
                     if pkg in selected:
@@ -337,8 +356,8 @@ class ContentSource(object):
         return None
 
     # Get download parameters for threaded downloader
-    def set_download_parameters(self, params, relative_path, target_file, checksum_type=None, checksum_value=None,
-                                bytes_range=None):
+    def set_download_parameters(self, params, relative_path, target_file, checksum_type=None,
+                                checksum_value=None, bytes_range=None):
         # Create directories if needed
         target_dir = os.path.dirname(target_file)
         if not os.path.exists(target_dir):
@@ -360,7 +379,8 @@ class ContentSource(object):
         params['proxy_password'] = self.proxy_pass
         params['http_headers'] = self.repo.http_headers
         # Older urlgrabber compatibility
-        params['proxies'] = get_proxies(self.repo.proxy, self.repo.proxy_username, self.repo.proxy_password)
+        params['proxies'] = get_proxies(self.repo.proxy, self.repo.proxy_username,
+                                        self.repo.proxy_password)
 
     @staticmethod
     def get_file(path, local_base=None):

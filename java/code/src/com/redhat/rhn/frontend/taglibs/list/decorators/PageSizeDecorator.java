@@ -185,7 +185,7 @@ public class PageSizeDecorator extends BaseListDecorator {
      * Returns the list of available page sizes.
      * This is used mainly in the PageSize selection
      * drop down when rendering lists...
-     * This is also used in the Your Preferences page to check
+     * This is also used in the My Preferences page to check
      * the list of page sizes..
      * @return the list of page sizes..
      */

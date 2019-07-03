@@ -40,7 +40,7 @@ public class SystemAclHandlerTest extends BaseTestCaseWithUser {
     public void setUp() throws Exception {
         super.setUp();
         srvr = ServerFactoryTest.createTestServer(user);
-        Long version = new Long(1);
+        Long version = 1L;
         SystemManagerTest.giveCapability(srvr.getId(),
                 SystemManager.CAP_CONFIGFILES_BASE64_ENC, version);
     }

@@ -1,13 +1,10 @@
-# Copyright (c) 2010-2018 Novell, Inc.
+# Copyright (c) 2010-2019 Novell, Inc.
 # Licensed under the terms of the MIT license.
 
 Feature: Cobbler and distribution autoinstallation
 
   Background:
     Given I am authorized
-    And I follow "Home" in the left menu
-    And I follow "Systems" in the left menu
-    And I follow "Overview" in the left menu
 
   Scenario: Ask cobbler to create a distribution via XML-RPC
     Given cobblerd is running
@@ -19,14 +16,12 @@ Feature: Cobbler and distribution autoinstallation
     Then create profile "testprofile" as user "testing" with password "testing"
 
   Scenario: Check cobbler created distro and profile
-    When I follow "Autoinstallation" in the left menu
-    And I follow "Profiles" in the left menu
+    When I follow the left menu "Systems > Autoinstallation > Profiles"
     Then I should see a "testprofile" text
     And I should see a "testdistro" text
 
   Scenario: Create a distribution via the UI
-    When I follow "Autoinstallation" in the left menu
-    And I follow "Distributions" in the left menu
+    When I follow the left menu "Systems > Autoinstallation > Distributions"
     And I follow "Create Distribution"
     When I enter "fedora_kickstart_distro" as "label"
     And I enter "/install/Fedora_12_i386/" as "basepath"
@@ -36,8 +31,7 @@ Feature: Cobbler and distribution autoinstallation
     And I should see a "fedora_kickstart_distro" link
 
   Scenario: Create a profile via the UI
-    When I follow "Autoinstallation" in the left menu
-    And I follow "Profiles" in the left menu
+    When I follow the left menu "Systems > Autoinstallation > Profiles"
     And I follow "Create Kickstart Profile"
     When I enter "fedora_kickstart_profile" as "kickstartLabel"
     And I click on "Next"
@@ -50,12 +44,11 @@ Feature: Cobbler and distribution autoinstallation
 
   Scenario: Autoinstallation profiles page
     When I am on the Create Autoinstallation Profile page
-    And I follow "Profiles" in the left menu
+    When I follow the left menu "Systems > Autoinstallation > Profiles"
     Then I should see a "Distributions" text
 
   Scenario: Upload a profile via the UI
-    When I follow "Autoinstallation" in the left menu
-    And I follow "Profiles" in the left menu
+    When I follow the left menu "Systems > Autoinstallation > Profiles"
     And I follow "Upload Kickstart/Autoyast File"
     When I enter "fedora_kickstart_profile_upload" as "kickstartLabel"
     And I attach the file "/example.ks" to "fileUpload"
@@ -64,8 +57,7 @@ Feature: Cobbler and distribution autoinstallation
     And I should see a "Autoinstallation Details" text
 
   Scenario: Add an unprovisioned range to the created profile
-    When I follow "Autoinstallation" in the left menu
-    And I follow "Profiles" in the left menu
+    When I follow the left menu "Systems > Autoinstallation > Profiles"
     And I follow "fedora_kickstart_profile"
     And I follow "Unprovisioned Autoinstallation"
     And I enter "10" as "octet1a"
@@ -80,8 +72,7 @@ Feature: Cobbler and distribution autoinstallation
     Then I should see a "Successfully added IP Range" text
 
   Scenario: Add a variable to the uploaded profile
-    When I follow "Autoinstallation" in the left menu
-    And I follow "Profiles" in the left menu
+    When I follow the left menu "Systems > Autoinstallation > Profiles"
     And I follow "fedora_kickstart_profile_upload"
     And I follow "Variables"
     And I enter "my_var=A_Test_String" as "variables"
@@ -90,8 +81,7 @@ Feature: Cobbler and distribution autoinstallation
     Then I should see a "A_Test_String" text
 
   Scenario: Add a kernel option to the created profile
-    When I follow "Autoinstallation" in the left menu
-    And I follow "Profiles" in the left menu
+    When I follow the left menu "Systems > Autoinstallation > Profiles"
     And I follow "fedora_kickstart_profile"
     And I enter "kernel_option=a_value" as "kernel_options"
     And I click on "Update"
@@ -99,8 +89,7 @@ Feature: Cobbler and distribution autoinstallation
     And I wait until file "/srv/tftpboot/pxelinux.cfg/default" contains "kernel_option=a_value" on server
 
   Scenario: Add a kernel option to the uploaded profile
-    When I follow "Autoinstallation" in the left menu
-    And I follow "Profiles" in the left menu
+    When I follow the left menu "Systems > Autoinstallation > Profiles"
     And I follow "fedora_kickstart_profile_upload"
     And I enter "kernel_option2=a_value2" as "kernel_options"
     And I click on "Update"
@@ -108,16 +97,14 @@ Feature: Cobbler and distribution autoinstallation
     And I wait until file "/srv/tftpboot/pxelinux.cfg/default" contains "kernel_option2=a_value2" on server
 
   Scenario: Check default snippets
-    When I follow "Autoinstallation" in the left menu
-    And I follow "Autoinstallation Snippets" in the left menu
+    When I follow the left menu "Systems > Autoinstallation > Autoinstallation Snippets"
     And I follow "Default Snippets"
     And I click on "Next Page"
     And I follow "spacewalk/sles_no_signature_checks"
     Then I should see "<signature-handling>" in the textarea
 
   Scenario: Create a snippet
-    When I follow "Autoinstallation" in the left menu
-    And I follow "Autoinstallation Snippets" in the left menu
+    When I follow the left menu "Systems > Autoinstallation > Autoinstallation Snippets"
     And I follow "Create Snippet"
     And I enter "created_test_snippet" as "name"
     And I enter "<test_element>a text string</test_element>" in the editor
@@ -125,8 +112,7 @@ Feature: Cobbler and distribution autoinstallation
     Then I should see a "created_test_snippet created successfully." text
 
   Scenario: Delete a snippet
-    When I follow "Autoinstallation" in the left menu
-    And I follow "Autoinstallation Snippets" in the left menu
+    When I follow the left menu "Systems > Autoinstallation > Autoinstallation Snippets"
     And I follow "created_test_snippet"
     And I follow "delete snippet"
     And I click on "Delete Snippet"
@@ -151,7 +137,7 @@ Feature: Cobbler and distribution autoinstallation
     Then I wait until file "/srv/tftpboot/pxelinux.cfg/01-00-22-22-77-ee-cc" contains "ks=.*testserver:1" on server
     And the cobbler report contains "testserver.example.com" for system "testserver"
     And the cobbler report contains "1.1.1.1" for system "testserver"
-    And the cobbler report contains "00:22:22:77:EE:CC" for system "testserver"
+    And the cobbler report contains "00:22:22:77:ee:cc" for system "testserver"
 
   Scenario: Cleanup: delete test distro and profiles
     Then I remove kickstart profiles and distros

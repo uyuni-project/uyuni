@@ -83,7 +83,7 @@ public class SystemSearchHelper {
     public static final String INSTALLED_PACKAGES = "systemsearch_installed_packages";
     public static final String NEEDED_PACKAGES = "systemsearch_needed_packages";
     public static final String RUNNING_KERNEL = "systemsearch_running_kernel";
-    public static final String LOC_COUNTRY = "systemsearch_location_country";
+    public static final String LOC_COUNTRY_CODE = "systemsearch_location_country_code";
     public static final String LOC_STATE = "systemsearch_location_state";
     public static final String LOC_CITY = "systemsearch_location_city";
     public static final String LOC_ADDRESS = "systemsearch_location_address";
@@ -142,7 +142,7 @@ public class SystemSearchHelper {
                     { SystemSearchHelper.INSTALLED_PACKAGES,
                                     SystemSearchHelper.NEEDED_PACKAGES },
                     /* location */
-                    { SystemSearchHelper.LOC_COUNTRY, SystemSearchHelper.LOC_STATE,
+                    { SystemSearchHelper.LOC_COUNTRY_CODE, SystemSearchHelper.LOC_STATE,
                                     SystemSearchHelper.LOC_CITY,
                                     SystemSearchHelper.LOC_ADDRESS,
                                     SystemSearchHelper.LOC_BUILDING,
@@ -415,7 +415,7 @@ public class SystemSearchHelper {
             query = "runningKernel:(" + terms + ")";
             index = SERVER_INDEX;
         }
-        else if (LOC_COUNTRY.equals(mode)) {
+        else if (LOC_COUNTRY_CODE.equals(mode)) {
             query = "country:(" + terms + ")";
             index = SERVER_INDEX;
         }

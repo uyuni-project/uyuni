@@ -39,7 +39,7 @@ public class ChannelPerms {
      * @param value 1 if the channel is globally subscribable.
      */
     public void setGloballySubscribable(Integer value) {
-        if (value == null || (!value.equals(new Integer(1)))) {
+        if (value == null || (!value.equals(1))) {
             this.globallySubscribable = false;
             return;
         }
@@ -59,7 +59,7 @@ public class ChannelPerms {
      * @param value 1 if the user has permissions to this channel
      */
     public void setHasPerm(Integer value) {
-        if (value == null || (!value.equals(new Integer(1)))) {
+        if (value == null || (!value.equals(1))) {
             this.hasPerm = false;
             return;
         }

@@ -3,9 +3,6 @@
 #
 # In order to use different end-point to download rpms other than the manager instance itself, one can do so with 
 # setting pillar data values as mentioned in upload_files/rpm_enpoint.sls. These scenarios test this feature
-#
-#
-
 
 Feature: Repos file generation based on custom pillar data
 
@@ -26,7 +23,7 @@ Feature: Repos file generation based on custom pillar data
   
   Scenario: Check the default RPM download point values
     Given I am on the Systems overview page of this "sle-minion"
-    Then the susmanager repo file should exist on the "sle-minion"
+    Then the susemanager repo file should exist on the "sle-minion"
     And I should see "https", "proxy" and "443" in the repo file on the "sle-minion"
  
   Scenario: Set the custom RPM download point
@@ -53,7 +50,7 @@ Feature: Repos file generation based on custom pillar data
   
   Scenario: Check the channel.repo file to see the custom RPM download point
     Given I am on the Systems overview page of this "sle-minion"
-    Then the susmanager repo file should exist on the "sle-minion"
+    Then the susemanager repo file should exist on the "sle-minion"
     And I should see "ftp", "scc.com" and "445" in the repo file on the "sle-minion"  
   
   Scenario: Remove the custom RPM download point
@@ -79,6 +76,6 @@ Feature: Repos file generation based on custom pillar data
   
   Scenario: ReCheck the default RPM download point values
     Given I am on the Systems overview page of this "sle-minion"
-    Then the susmanager repo file should exist on the "sle-minion"
+    Then the susemanager repo file should exist on the "sle-minion"
     And I should see "https", "proxy" and "443" in the repo file on the "sle-minion"  
     

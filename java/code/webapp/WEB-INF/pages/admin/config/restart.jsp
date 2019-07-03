@@ -7,12 +7,12 @@
 
 <head>
         <c:if test="${requestScope.restart == 'true'}">
-            <script src="/javascript/restart.js" type="text/javascript"> </script>
+            <script src="/javascript/restart.js?cb=${rhn:getConfig('web.version')}" type="text/javascript"> </script>
         </c:if>
 </head>
 <body  <c:if test="${requestScope.restart == 'true'}">onload="checkConnection(${requestScope.restartDelay})"</c:if> >
     <rhn:toolbar base="h1" icon="header-info" imgAlt="info.alt.img"
-                 helpUrl="/rhn/help/reference/en-US/ref.webui.admin.config.jsp#s3-sattools-config-restart">
+                 helpUrl="/docs/reference/admin/restart.html">
       <bean:message key="restart.jsp.toolbar"/>
     </rhn:toolbar>
     <p>

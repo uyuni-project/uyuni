@@ -194,7 +194,6 @@ public class KickstartDetailsEditAction extends BaseKickstartEditAction {
             DynaActionForm form,
             BaseKickstartCommand cmdIn) {
 
-        ValidatorError error = null;
         KickstartEditCommand cmd = (KickstartEditCommand) cmdIn;
         RequestContext ctx = new RequestContext(request);
         KickstartBuilder builder = new KickstartBuilder(ctx.getCurrentUser());

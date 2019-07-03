@@ -124,17 +124,6 @@
                                 "changes": {}, 
                                 "__id__": "pkg_installed"
                             }, 
-                            "file_|-mgr_mine_config_|-/etc/salt/minion.d/susemanager-mine.conf_|-managed": {
-                                "comment": "File /etc/salt/minion.d/susemanager-mine.conf is in the correct state", 
-                                "pchanges": {}, 
-                                "name": "/etc/salt/minion.d/susemanager-mine.conf", 
-                                "start_time": "13:42:37.270160", 
-                                "result": true, 
-                                "duration": 3.923, 
-                                "__run_num__": 10, 
-                                "changes": {}, 
-                                "__id__": "mgr_mine_config"
-                            }, 
                             "pkg_|-pkg_latest_|-pkg_latest_|-latest": {
                                 "comment": "No packages to install provided", 
                                 "name": "pkg_latest", 
@@ -328,17 +317,6 @@
                                 "__run_num__": 3, 
                                 "changes": {}, 
                                 "__id__": "pkg_installed"
-                            }, 
-                            "file_|-mgr_mine_config_|-/etc/salt/minion.d/susemanager-mine.conf_|-managed": {
-                                "comment": "File /etc/salt/minion.d/susemanager-mine.conf is in the correct state", 
-                                "pchanges": {}, 
-                                "name": "/etc/salt/minion.d/susemanager-mine.conf", 
-                                "start_time": "13:42:37.350175", 
-                                "result": true, 
-                                "duration": 4.82, 
-                                "__run_num__": 10, 
-                                "changes": {}, 
-                                "__id__": "mgr_mine_config"
                             }, 
                             "pkg_|-pkg_latest_|-pkg_latest_|-latest": {
                                 "comment": "No packages to install provided", 

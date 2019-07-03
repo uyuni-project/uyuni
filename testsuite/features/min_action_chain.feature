@@ -1,4 +1,4 @@
-# Copyright (c) 2018 SUSE LLC
+# Copyright (c) 2018-2019 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 Feature: Action chain on salt minions
@@ -13,6 +13,11 @@ Feature: Action chain on salt minions
     And I run "zypper -n ref" on "sle-minion"
     And I run "echo '/dev/vda1 / ext4 defaults 0 0' > /etc/fstab" on "sle-minion"
 
+  Scenario: Pre-requisite: refresh package list and check installed packages after downgrade on SLE minion
+    When I refresh packages list via spacecmd on "sle-minion"
+    And I wait until refresh package list on "sle-minion" is finished
+    Then spacecmd should show packages "milkyway-dummy andromeda-dummy-1.0" installed on "sle-minion"
+
   Scenario: Pre-requisite: wait until downgrade is finished
     Given I am on the Systems overview page of this "sle-minion"
     When I follow "Software" in the content area
@@ -22,8 +27,7 @@ Feature: Action chain on salt minions
 
   Scenario: Pre-requisite: ensure the errata cache is computed before testing on Salt minion
     Given I am authorized as "admin" with password "admin"
-    When I follow "Admin"
-    And I follow "Task Schedules"
+    When I follow the left menu "Admin > Task Schedules"
     And I follow "errata-cache-default"
     And I follow "errata-cache-bunch"
     And I click on "Single Run Schedule"
@@ -69,9 +73,7 @@ Feature: Action chain on salt minions
 
   Scenario: Create a configuration channel for testing action chain on Salt minion
     Given I am authorized as "admin" with password "admin"
-    When I follow "Home" in the left menu
-    And I follow "Configuration" in the left menu
-    And I follow "Channels" in the left menu
+    When I follow the left menu "Configuration > Channels"
     And I follow "Create Config Channel"
     And I enter "Action Chain Channel" as "cofName"
     And I enter "actionchainchannel" as "cofLabel"
@@ -81,9 +83,7 @@ Feature: Action chain on salt minions
 
   Scenario: Add a configuration file to configuration channel for testing action chain on Salt minion
     Given I am authorized as "admin" with password "admin"
-    When I follow "Home" in the left menu
-    And I follow "Configuration" in the left menu
-    And I follow "Channels" in the left menu
+    When I follow the left menu "Configuration > Channels"
     And I follow "Action Chain Channel"
     And I follow "Create Configuration File or Directory"
     And I enter "/etc/action-chain.cnf" as "cffPath"
@@ -93,11 +93,7 @@ Feature: Action chain on salt minions
     And I should see a "Update Configuration File" button
 
   Scenario: Subscribe system to configuration channel for testing action chain on Salt minion
-    Given I am authorized as "admin" with password "admin"
-    When I follow "Home" in the left menu
-    And I follow "Systems" in the left menu
-    And I follow "Overview" in the left menu
-    And I follow this "sle-minion" link
+    Given I am on the Systems overview page of this "sle-minion"
     And I follow "Configuration" in the content area
     And I follow "Manage Configuration Channels" in the content area
     And I follow first "Subscribe to Channels" in the content area
@@ -108,9 +104,7 @@ Feature: Action chain on salt minions
 
   Scenario: Add a configuration file deployment to the action chain on Salt minion
     Given I am authorized as "admin" with password "admin"
-    When I follow "Home" in the left menu
-    And I follow "Configuration" in the left menu
-    And I follow "Channels" in the left menu
+    When I follow the left menu "Configuration > Channels"
     And I follow "Action Chain Channel"
     And I follow "Deploy Files" in the content area
     And I click on "Deploy All Files"
@@ -253,12 +247,12 @@ Feature: Action chain on salt minions
     And I run "zypper -n rm virgo-dummy" on "sle-minion" without error control
     And I run "zypper -n in milkyway-dummy" on "sle-minion" without error control
     And I run "zypper -n in --oldpackage andromeda-dummy-1.0" on "sle-minion"
+    And I wait until all events in history are completed
     When I follow "Software" in the content area
     And I follow "List / Remove" in the content area
     And I enter "andromeda-dummy" in the css "input[placeholder='Filter by Package Name: ']"
     And I click on the css "button.spacewalk-button-filter" until page does contain "andromeda-dummy-1.0" text
-    And I follow "Admin"
-    And I follow "Task Schedules"
+    When I follow the left menu "Admin > Task Schedules"
     And I follow "errata-cache-default"
     And I follow "errata-cache-bunch"
     And I click on "Single Run Schedule"
@@ -296,9 +290,7 @@ Feature: Action chain on salt minions
 
   Scenario: Cleanup: remove Salt client from configuration channel
     Given I am authorized as "admin" with password "admin"
-    And I follow "Home" in the left menu
-    When I follow "Configuration" in the left menu
-    And I follow "Channels" in the left menu
+    When I follow the left menu "Configuration > Channels"
     And I follow "Action Chain Channel"
     And I follow "Systems" in the content area
     And I check the "sle-minion" client
@@ -307,9 +299,7 @@ Feature: Action chain on salt minions
 
   Scenario: Cleanup: remove configuration channel for Salt minion
     Given I am authorized as "admin" with password "admin"
-    When I follow "Home" in the left menu
-    And I follow "Configuration" in the left menu
-    And I follow "Channels" in the left menu
+    When I follow the left menu "Configuration > Channels"
     And I follow "Action Chain Channel"
     And I follow "Delete Channel"
     And I click on "Delete Config Channel"

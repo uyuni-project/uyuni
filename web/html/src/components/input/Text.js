@@ -1,16 +1,14 @@
 // @flow
-
 const React = require('react');
-
 const { InputBase } = require('./InputBase');
 
 type Props = {
-  type?: string,
+  type: string,
   placeholder?: string,
   inputClass?: string,
 } & InputBase.Props;
 
-function Text(props: Props) {
+const Text = (props: Props) => {
   const {
     type,
     placeholder,
@@ -21,9 +19,9 @@ function Text(props: Props) {
     <InputBase {...propsToPass}>
       {
         ({
-          setValue,
-          onBlur,
-        }) => {
+           setValue,
+           onBlur,
+         }) => {
           const onChange = (event: Object) => {
             setValue(event.target.name, event.target.value);
           };
@@ -42,8 +40,7 @@ function Text(props: Props) {
         }
       }
     </InputBase>
-  );
-}
+  )};
 
 Text.defaultProps = Object.assign({
   type: 'text',

@@ -44,13 +44,13 @@ When(/^I apply highstate on "([^"]*)"$/) do |host|
     cmd = 'salt'
     extra_cmd = ''
   elsif ['ssh-minion', 'ceos-minion', 'ceos-ssh-minion', 'ubuntu-minion', 'ubuntu-ssh-minion'].include?(host)
-    cmd = 'salt-ssh'
+    cmd = 'runuser -u salt -- salt-ssh --priv=/srv/susemanager/salt/salt_ssh/mgr_ssh_id'
     extra_cmd = '-i --roster-file=/tmp/roster_tests -w -W'
     $server.run("printf '#{system_name}:\n  host: #{system_name}\n  user: root\n  passwd: linux\n' > /tmp/roster_tests")
   else
     raise 'Invalid target'
   end
-  $server.run_until_ok("#{cmd} #{system_name} state.highstate #{extra_cmd}")
+  $server.run_until_ok("cd /tmp; #{cmd} #{system_name} state.highstate #{extra_cmd}")
 end
 
 Then(/^I wait until "([^"]*)" service is active on "([^"]*)"$/) do |service, host|
@@ -110,6 +110,21 @@ When(/^I execute mgr\-sync refresh$/) do
   $command_output = sshcmd('mgr-sync refresh', ignore_err: true)[:stderr]
 end
 
+When(/^I make sure no spacewalk\-repo\-sync is executing$/) do
+  kill_failure_streak = 0
+  while kill_failure_streak <= 120
+    command_output = sshcmd('killall spacewalk-repo-sync', ignore_err: true)
+    kill_failed = !command_output[:stderr].empty?
+
+    if kill_failed
+      kill_failure_streak += 1
+      sleep 1
+    else
+      kill_failure_streak = 0
+    end
+  end
+end
+
 When(/^I execute mgr\-bootstrap "([^"]*)"$/) do |arg1|
   arch = 'x86_64'
   $command_output = sshcmd("mgr-bootstrap --activation-keys=1-SUSE-PKG-#{arch} #{arg1}")[:stdout]
@@ -122,18 +137,11 @@ end
 
 When(/^I wait until file "([^"]*)" contains "([^"]*)" on server$/) do |file, content|
   sleep(3)
-  output = {}
-  begin
-    Timeout.timeout(DEFAULT_TIMEOUT) do
-      loop do
-        output = sshcmd("grep #{content} #{file}", ignore_err: true)
-        break if output[:stdout] =~ /#{content}/
-        sleep(2)
-      end
-    end
-  rescue Timeout::Error
-    $stderr.write("-----\n#{output[:stderr]}\n-----\n")
-    raise "#{content} not found in file #{file}"
+  repeat_until_timeout(message: "#{content} not found in file #{file}", report_result: true) do
+    output = sshcmd("grep #{content} #{file}", ignore_err: true)
+    break if output[:stdout] =~ /#{content}/
+    sleep 2
+    "\n-----\n#{output[:stderr]}\n-----\n"
   end
 end
 
@@ -163,7 +171,7 @@ Then(/^I execute spacewalk-debug on the server$/) do
   end
 end
 
-When(/^the susmanager repo file should exist on the "([^"]*)"$/) do |host|
+Then(/^the susemanager repo file should exist on the "([^"]*)"$/) do |host|
   step %(file "/etc/zypp/repos.d/susemanager\:channels.repo" should exist on "#{host}")
 end
 
@@ -316,17 +324,10 @@ end
 Then(/^I wait until mgr-sync refresh is finished$/) do
   # mgr-sync refresh is a slow operation, we don't use the default timeout
   cmd = "spacecmd -u admin -p admin api sync.content.listProducts"
-  refresh_timeout = 900
-  begin
-    Timeout.timeout(refresh_timeout) do
-      loop do
-        result, code = $server.run(cmd, false)
-        break if result.include? "SLES"
-        sleep 5
-      end
-    end
-  rescue Timeout::Error
-    raise "'mgr-sync refresh' did not finish in #{refresh_timeout} seconds"
+  repeat_until_timeout(timeout: 900, message: "'mgr-sync refresh' did not finish") do
+    result, code = $server.run(cmd, false)
+    break if result.include? "SLES"
+    sleep 5
   end
 end
 
@@ -382,28 +383,16 @@ end
 
 When(/^I wait at most (\d+) seconds until file "([^"]*)" exists on "([^"]*)"$/) do |seconds, file, host|
   node = get_target(host)
-  begin
-    Timeout.timeout(seconds.to_i) do
-      loop do
-        break if file_exists?(node, file)
-        sleep(1)
-      end
-    end
-  rescue Timeout::Error
-    raise unless file_exists?(node, file)
+  repeat_until_timeout(timeout: seconds.to_i) do
+    break if file_exists?(node, file)
+    sleep(1)
   end
 end
 
 When(/^I wait until file "(.*)" exists on server$/) do |file|
-  begin
-    Timeout.timeout(DEFAULT_TIMEOUT) do
-      loop do
-        break if file_exists?($server, file)
-        sleep(1)
-      end
-    end
-  rescue Timeout::Error
-    raise unless file_exists?($server, file)
+  repeat_until_timeout do
+    break if file_exists?($server, file)
+    sleep(1)
   end
 end
 
@@ -445,19 +434,13 @@ When(/^I wait for the openSCAP audit to finish$/) do
   @cli = XMLRPC::Client.new2('http://' + host + '/rpc/api')
   @sid = @cli.call('auth.login', 'admin', 'admin')
   begin
-    Timeout.timeout(DEFAULT_TIMEOUT) do
-      loop do
-        scans = @cli.call('system.scap.list_xccdf_scans', @sid, @sle_id)
-        # in the openscap test, we schedule 2 scans
-        if scans.length > 1
-          @cli.call('auth.logout', @sid)
-          break
-        end
-      end
+    repeat_until_timeout(message: "process did not complete") do
+      scans = @cli.call('system.scap.list_xccdf_scans', @sid, @sle_id)
+      # in the openscap test, we schedule 2 scans
+      break if scans.length > 1
     end
-  rescue Timeout::Error
+  ensure
     @cli.call('auth.logout', @sid)
-    raise 'process did not stop after several tries'
   end
 end
 
@@ -481,20 +464,14 @@ And(/I create dockerized minions$/) do
     puts "minion #{os} created and running"
   end
   # accept all the key on master, wait dinimically for last key
-  begin
-    Timeout.timeout(DEFAULT_TIMEOUT) do
-      loop do
-        out, _code = $server.run('salt-key -l unaccepted')
-        # if we see the last os, we can break
-        if out.include? distros.last
-          $server.run('salt-key -A -y')
-          break
-        end
-        sleep 5
-      end
+  repeat_until_timeout(message: "something wrong with creation of minion docker") do
+    out, _code = $server.run('salt-key -l unaccepted')
+    # if we see the last os, we can break
+    if out.include? distros.last
+      $server.run('salt-key -A -y')
+      break
     end
-  rescue Timeout::Error
-    raise 'something wrong with creation of minion docker'
+    sleep 5
   end
 end
 
@@ -572,7 +549,7 @@ When(/^I install package "([^"]*)" on this "([^"]*)"$/) do |package, host|
   elsif file_exists?(node, '/usr/bin/yum')
     cmd = "yum -y install #{package}"
   elsif file_exists?(node, '/usr/bin/apt-get')
-    cmd = "apt-get --assume-yes install #{package}"
+    cmd = "apt-get --assume-yes install #{package} --allow-downgrades"
   else
     raise 'Not found: zypper, yum or apt-get'
   end
@@ -595,23 +572,17 @@ end
 
 When(/^I wait until the package "(.*?)" has been cached on this "(.*?)"$/) do |pkg_name, host|
   node = get_target(host)
-  cmd = "ls /var/cache/zypp/packages/susemanager:test-channel-x86_64/getPackage/#{pkg_name}.rpm"
-  begin
-    Timeout.timeout(DEFAULT_TIMEOUT) do
-      loop do
-        result, return_code = node.run(cmd, false)
-        break if return_code.zero?
-        sleep 2
-      end
-    end
-  rescue Timeout::Error
-    raise "Package #{pkg_name} was not cached after #{DEFAULT_TIMEOUT} seconds"
+  cmd = "ls /var/cache/zypp/packages/susemanager:test-channel-x86_64/getPackage/#{pkg_name}*.rpm"
+  repeat_until_timeout(message: "Package #{pkg_name} was not cached") do
+    result, return_code = node.run(cmd, false)
+    break if return_code.zero?
+    sleep 2
   end
 end
 
-And(/^I create the "([^"]*)" bootstrap repository for "([^"]*)" on the server$/) do |arch, host|
+When(/^I create the "([^"]*)" bootstrap repository for "([^"]*)" on the server$/) do |arch, host|
   node = get_target(host)
-  os_version = get_os_version(node)
+  os_version, _os_family = get_os_version(node)
   cmd = 'false'
   if (os_version.include? '12') || (os_version.include? '15')
     cmd = "mgr-create-bootstrap-repo -c SLE-#{os_version}-#{arch}"
@@ -624,10 +595,7 @@ And(/^I create the "([^"]*)" bootstrap repository for "([^"]*)" on the server$/)
 end
 
 When(/^I open avahi port on the proxy$/) do
-  sed = 's/FW_DEV_EXT=""/FW_DEV_EXT="eth0"/'
-  $proxy.run("sed -i '#{sed}' /etc/sysconfig/SuSEfirewall2")
-  sed = 's/FW_CONFIGURATIONS_EXT=""/FW_CONFIGURATIONS_EXT="avahi"/'
-  $proxy.run("sed -i '#{sed}' /etc/sysconfig/SuSEfirewall2")
+  $proxy.run('firewall-offline-cmd --zone=public --add-service=mdns')
 end
 
 When(/^I copy server\'s keys to the proxy$/) do
@@ -646,23 +614,28 @@ When(/^I set up the private network on the terminals$/) do
   # /etc/sysconfig/network/ifcfg-eth1
   nodes = [$client, $minion]
   conf = "STARTMODE='auto'\\nBOOTPROTO='dhcp'"
+  file = "/etc/sysconfig/network/ifcfg-eth1"
   nodes.each do |node|
     next if node.nil?
-    node.run("echo -e \"#{conf}\" > /etc/sysconfig/network/ifcfg-eth1 && ifup eth1")
+    node.run("echo -e \"#{conf}\" > #{file} && ifup eth1")
   end
-  # /etc/sysconfig/network-scripts/ifcfg-eth1
+  # /etc/sysconfig/network-scripts/ifcfg-eth1 and /etc/sysconfig/network
   nodes = [$ceos_minion]
   conf = "DEVICE='eth1'\\nSTARTMODE='auto'\\nBOOTPROTO='dhcp'\\nDNS1='#{proxy}'"
+  file = "/etc/sysconfig/network-scripts/ifcfg-eth1"
+  conf2 = "GATEWAYDEV=eth0"
+  file2 = "/etc/sysconfig/network"
   nodes.each do |node|
     next if node.nil?
-    node.run("echo -e \"#{conf}\" > /etc/sysconfig/network-scripts/ifcfg-eth1 && systemctl restart network")
+    node.run("echo -e \"#{conf}\" > #{file} && echo -e \"#{conf2}\" > #{file2} && systemctl restart network")
   end
   # /etc/resolv.conf
   nodes = [$client, $minion, $ceos_minion]
   script = "-e '/^#/d' -e 's/^search /search example.org /' -e '$anameserver #{proxy}' -e '/^nameserver /d'"
+  file = "/etc/resolv.conf"
   nodes.each do |node|
     next if node.nil?
-    node.run("sed -i #{script} /etc/resolv.conf")
+    node.run("sed -i #{script} #{file}")
   end
 end
 
@@ -764,24 +737,23 @@ When(/^I create "([^"]*)" virtual machine on "([^"]*)"$/) do |vm_name, host|
   raise 'not found: qemu-img or /var/testsuite-data/disk-image-template.qcow2' unless file_exists?(node, '/usr/bin/qemu-img') and file_exists?(node, '/var/testsuite-data/disk-image-template.qcow2')
   node.run("qemu-img create -f qcow2 -b /var/testsuite-data/disk-image-template.qcow2 #{disk_path}")
 
-  # Change the VM hostname
-  node.run("mount_path=$(mktemp -d); guestmount -m /dev/sda1 -a #{disk_path} ${mount_path}; echo '#{node.hostname}-#{vm_name}.suse' >${mount_path}/etc/hostname; umount ${mount_path}; rmdir ${mount_path}")
-
   # Actually define the VM, but don't start it
   raise 'not found: virt-install' unless file_exists?(node, '/usr/bin/virt-install')
-  node.run("virt-install --name #{vm_name} --memory 512 --vcpus 1 --disk path=#{disk_path} --network network=default --graphics vnc --import --hvm --noautoconsole --noreboot")
+  node.run("virt-install --name #{vm_name} --memory 512 --vcpus 1 --disk path=#{disk_path} "\
+           " --network network=test-net0 --graphics vnc "\
+           "--serial pty,log.file=/tmp/#{vm_name}.console.log,log.append=off "\
+           "--import --hvm --noautoconsole --noreboot")
 end
 
 When(/^I create ([^ ]*) virtual network on "([^"]*)"$/) do |net_name, host|
   node = get_target(host)
 
   networks = {
-    "default" => { "bridge" => "virbr0", "subnet" => 122 },
-    "test-net0" => { "bridge" => "virbr1", "subnet" => 124 }
+    "test-net0" => { "bridge" => "virbr0", "subnet" => 124 },
+    "test-net1" => { "bridge" => "virbr1", "subnet" => 126 }
   }
 
   net = networks[net_name]
-
   netdef = "<network>" \
            "  <name>#{net_name}</name>"\
            "  <forward mode='nat'/>"\
@@ -801,149 +773,152 @@ When(/^I create ([^ ]*) virtual network on "([^"]*)"$/) do |net_name, host|
   node.run("virsh net-start #{net_name}", false)
 end
 
+When(/^I delete ([^ ]*) virtual network on "([^"]*)"((?: without error control)?)$/) do |net_name, host, error_control|
+  node = get_target(host)
+  _output, code = node.run("virsh net-dumpxml #{net_name}", false)
+  if code.zero?
+    steps %(
+      When I run "virsh net-destroy #{net_name}" on "#{host}"#{error_control}
+      And I run "virsh net-undefine #{net_name}" on "#{host}"#{error_control}
+    )
+  end
+end
+
+When(/^I create ([^ ]*) virtual storage pool on "([^"]*)"$/) do |pool_name, host|
+  node = get_target(host)
+
+  pool_def = %(<pool type='dir'>
+      <name>#{pool_name}</name>
+      <capacity unit='bytes'>0</capacity>
+      <allocation unit='bytes'>0</allocation>
+      <available unit='bytes'>0</available>
+      <source>
+      </source>
+      <target>
+        <path>/var/lib/libvirt/images/#{pool_name}</path>
+      </target>
+    </pool>
+  )
+
+  # Some pools like the default one may already be defined.
+  _output, code = node.run("virsh pool-dumpxml #{pool_name}", false)
+  node.run("echo -e \"#{pool_def}\" >/tmp/#{pool_name}.xml && virsh pool-define /tmp/#{pool_name}.xml") unless code.zero?
+  node.run("mkdir -p /var/lib/libvirt/images/#{pool_name}")
+
+  # Ensure the pool is started
+  node.run("virsh pool-start #{pool_name}", false)
+end
+
+When(/^I delete ([^ ]*) virtual storage pool on "([^"]*)"((?: without error control)?)$/) do |pool_name, host, error_control|
+  node = get_target(host)
+  _output, code = node.run("virsh pool-dumpxml #{pool_name}", false)
+  if code.zero?
+    steps %(
+      When I run "virsh pool-destroy #{pool_name}" on "#{host}"#{error_control}
+      And I run "virsh pool-undefine #{pool_name}" on "#{host}"#{error_control}
+    )
+  end
+
+  # only delete the folders we created
+  step %(I run "rm -rf /var/lib/libvirt/images/#{pool_name}" on "#{host}"#{error_control}) if pool_name.start_with? "test-"
+end
+
 Then(/^I should see "([^"]*)" virtual machine (shut off|running|paused) on "([^"]*)"$/) do |vm, state, host|
   node = get_target(host)
-  begin
-    Timeout.timeout(DEFAULT_TIMEOUT) do
-      loop do
-        output, _code = node.run("virsh domstate #{vm}")
-        break if output.strip == state
-        sleep 3
-      end
-    end
-  rescue Timeout::Error
-    raise "#{vm} virtual machine on #{host} never reached state #{state}"
+  repeat_until_timeout(message: "#{vm} virtual machine on #{host} never reached state #{state}") do
+    output, _code = node.run("virsh domstate #{vm}")
+    break if output.strip == state
+    sleep 3
   end
 end
 
 When(/^I wait until virtual machine "([^"]*)" on "([^"]*)" is started$/) do |vm, host|
   node = get_target(host)
-  begin
-    Timeout.timeout(DEFAULT_TIMEOUT) do
-      loop do
-        output, _code = node.run("ssh -o StrictHostKeyChecking=no #{node.hostname}-#{vm}.local ls", fatal = false)
-        break if output.include? "Permission denied"
-        sleep 1
-      end
-    end
-  rescue Timeout::Error
-    raise "#{vm} virtual machine on #{host} OS failed to go up timely"
+  repeat_until_timeout(message: "#{vm} virtual machine on #{host} OS failed did not come up yet") do
+    _output, code = node.run("grep -i 'login\:' /tmp/#{vm}.console.log", fatal = false)
+    break if code.zero?
+    sleep 1
   end
 end
 
 Then(/^I should not see a "([^"]*)" virtual machine on "([^"]*)"$/) do |vm, host|
   node = get_target(host)
-  begin
-    Timeout.timeout(DEFAULT_TIMEOUT) do
-      loop do
-        _output, code = node.run("virsh dominfo #{vm}", fatal = false)
-        break if code == 1
-        sleep 3
-      end
-    end
-  rescue Timeout::Error
-    raise "#{vm} virtual machine on #{host} still exists"
+  repeat_until_timeout(message: "#{vm} virtual machine on #{host} still exists") do
+    _output, code = node.run("virsh dominfo #{vm}", fatal = false)
+    break if code == 1
+    sleep 3
   end
 end
 
 Then(/"([^"]*)" virtual machine on "([^"]*)" should have ([0-9]*)MB memory and ([0-9]*) vcpus$/) do |vm, host, mem, vcpu|
   node = get_target(host)
-  begin
-    Timeout.timeout(DEFAULT_TIMEOUT) do
-      loop do
-        output, _code = node.run("virsh dumpxml #{vm}")
-        has_memory = output.include? "<memory unit='KiB'>#{Integer(mem) * 1024}</memory>"
-        has_vcpus = output.include? ">#{vcpu}</vcpu>"
-        break if has_memory and has_vcpus
-        sleep 3
-      end
-    end
-  rescue Timeout::Error
-    raise "#{vm} virtual machine on #{host} never got #{mem}MB memory and #{vcpu} vcpus"
+  repeat_until_timeout(message: "#{vm} virtual machine on #{host} never got #{mem}MB memory and #{vcpu} vcpus") do
+    output, _code = node.run("virsh dumpxml #{vm}")
+    has_memory = output.include? "<memory unit='KiB'>#{Integer(mem) * 1024}</memory>"
+    has_vcpus = output.include? ">#{vcpu}</vcpu>"
+    break if has_memory and has_vcpus
+    sleep 3
   end
 end
 
 Then(/"([^"]*)" virtual machine on "([^"]*)" should have ([a-z]*) graphics device$/) do |vm, host, type|
   node = get_target(host)
-  begin
-    Timeout.timeout(DEFAULT_TIMEOUT) do
-      loop do
-        output, _code = node.run("virsh dumpxml #{vm}")
-        check_nographics = type == "no" and not output.include? '<graphics'
-        break if output.include? "<graphics type='#{type}'" or check_nographics
-        sleep 3
-      end
-    end
-  rescue Timeout::Error
-    raise "#{vm} virtual machine on #{host} never got #{type} graphics device"
+  repeat_until_timeout(message: "#{vm} virtual machine on #{host} never got #{type} graphics device") do
+    output, _code = node.run("virsh dumpxml #{vm}")
+    check_nographics = type == "no" and not output.include? '<graphics'
+    break if output.include? "<graphics type='#{type}'" or check_nographics
+    sleep 3
   end
 end
 
 Then(/^"([^"]*)" virtual machine on "([^"]*)" should have ([0-9]*) NIC using "([^"]*)" network$/) do |vm, host, count, net|
   node = get_target(host)
-  begin
-    Timeout.timeout(DEFAULT_TIMEOUT) do
-      loop do
-        output, _code = node.run("virsh dumpxml #{vm}")
-        break if Nokogiri::XML(output).xpath("//interface/source[@network='#{net}']").size == count.to_i
-        sleep 3
-      end
-    end
-  rescue Timeout::Error
-    raise "#{vm} virtual machine on #{host} never got #{count} network interface using #{net}"
+  repeat_until_timeout(message: "#{vm} virtual machine on #{host} never got #{count} network interface using #{net}") do
+    output, _code = node.run("virsh dumpxml #{vm}")
+    break if Nokogiri::XML(output).xpath("//interface/source[@network='#{net}']").size == count.to_i
+    sleep 3
   end
 end
 
 Then(/^"([^"]*)" virtual machine on "([^"]*)" should have a NIC with ([0-9a-zA-Z:]*) MAC address$/) do |vm, host, mac|
   node = get_target(host)
-  begin
-    Timeout.timeout(DEFAULT_TIMEOUT) do
-      loop do
-        output, _code = node.run("virsh dumpxml #{vm}")
-        break if output.include? "<mac address='#{mac}'/>"
-        sleep 3
-      end
-    end
-  rescue Timeout::Error
-    raise "#{vm} virtual machine on #{host} never got a network interface with #{mac} MAC address"
+  repeat_until_timeout(message: "#{vm} virtual machine on #{host} never got a network interface with #{mac} MAC address") do
+    output, _code = node.run("virsh dumpxml #{vm}")
+    break if output.include? "<mac address='#{mac}'/>"
+    sleep 3
   end
 end
 
 Then(/^"([^"]*)" virtual machine on "([^"]*)" should have a "([^"]*)" ([^ ]*) disk$/) do |vm, host, path, bus|
   node = get_target(host)
-  begin
-    Timeout.timeout(DEFAULT_TIMEOUT) do
-      loop do
-        output, _code = node.run("virsh dumpxml #{vm}")
-        tree = Nokogiri::XML(output)
-        disks = tree.xpath("//disk")
-        disk = disks[disks.find_index { |x| x.xpath('source/@file')[0].to_s.include? path }]
-        break if disk.xpath('target/@bus')[0].to_s == bus
-        sleep 3
-      end
+  repeat_until_timeout(message: "#{vm} virtual machine on #{host} never got a #{path} #{bus} disk") do
+    output, _code = node.run("virsh dumpxml #{vm}")
+    tree = Nokogiri::XML(output)
+    disks = tree.xpath("//disk").select do |x|
+      (x.xpath('source/@file')[0].to_s.include? path) && (x.xpath('target/@bus')[0].to_s == bus)
     end
-  rescue Timeout::Error
-    raise "#{vm} virtual machine on #{host} never got a #{path} #{bus} disk"
+    break if !disks.empty?
+    sleep 3
   end
 end
 
 Then(/^"([^"]*)" virtual machine on "([^"]*)" should have (no|a) ([^ ]*) ?cdrom$/) do |vm, host, presence, bus|
   node = get_target(host)
-  begin
-    Timeout.timeout(DEFAULT_TIMEOUT) do
-      loop do
-        output, _code = node.run("virsh dumpxml #{vm}")
-        tree = Nokogiri::XML(output)
-        disks = tree.xpath("//disk")
-        disk_index = disks.find_index { |x| x.attribute('device').to_s == 'cdrom' }
-        break if (disk_index.nil? && presence == 'no') ||
-                 (!disk_index.nil? && disks[disk_index].xpath('target/@bus')[0].to_s == bus && presence == 'a')
-        sleep 3
-      end
-    end
-  rescue Timeout::Error
-    raise "#{vm} virtual machine on #{host} #{presence == 'a' ? 'never got' : 'still has'} a #{bus} cdrom"
+  repeat_until_timeout(message: "#{vm} virtual machine on #{host} #{presence == 'a' ? 'never got' : 'still has'} a #{bus} cdrom") do
+    output, _code = node.run("virsh dumpxml #{vm}")
+    tree = Nokogiri::XML(output)
+    disks = tree.xpath("//disk")
+    disk_index = disks.find_index { |x| x.attribute('device').to_s == 'cdrom' }
+    break if (disk_index.nil? && presence == 'no') ||
+             (!disk_index.nil? && disks[disk_index].xpath('target/@bus')[0].to_s == bus && presence == 'a')
+    sleep 3
   end
+end
+
+When(/^I delete all "([^"]*)" volumes from "([^"]*)" pool on "([^"]*)" without error control$/) do |volumes, pool, host|
+  node = get_target(host)
+  output, _code = node.run("virsh vol-list #{pool} | sed -n -e 's/^[[:space:]]*\([^[:space:]]\+\).*$/\1/;/#{volumes}/p'", false)
+  output.each_line { |volume| node.run("virsh vol-delete #{volume} #{pool}", false) }
 end
 
 When(/^I reduce virtpoller run interval on "([^"]*)"$/) do |host|
@@ -953,4 +928,60 @@ When(/^I reduce virtpoller run interval on "([^"]*)"$/) do |host|
   return_code = file_inject(node, source, dest)
   raise 'File injection failed' unless return_code.zero?
   node.run("systemctl restart salt-minion")
+end
+
+When(/^I refresh packages list via spacecmd on "([^"]*)"$/) do |client|
+  node = get_system_name(client)
+  $server.run("spacecmd -u admin -p admin clear_caches")
+  command = "spacecmd -u admin -p admin system_schedulepackagerefresh #{node}"
+  $server.run(command)
+end
+
+Then(/^I wait until refresh package list on "(.*?)" is finished$/) do |client|
+  round_minute = 60 # spacecmd uses timestamps with precision to minutes only
+  long_wait_delay = 600
+  current_time = Time.now.strftime('%Y%m%d%H%M')
+  timeout_time = (Time.now + long_wait_delay + round_minute).strftime('%Y%m%d%H%M')
+  node = get_system_name(client)
+  $server.run("spacecmd -u admin -p admin clear_caches")
+  cmd = "spacecmd -u admin -p admin schedule_listcompleted #{current_time} #{timeout_time} #{node} | grep 'Package List Refresh scheduled by admin' | head -1"
+  repeat_until_timeout(timeout: long_wait_delay, message: "'refresh package list' did not finish") do
+    result, code = $server.run(cmd, false)
+    break if result.include? '1    0    0'
+    raise 'refresh package list failed' if result.include? '0    1    0'
+    sleep 1
+  end
+end
+
+When(/^spacecmd should show packages "([^"]*)" installed on "([^"]*)"$/) do |packages, client|
+  node = get_system_name(client)
+  $server.run("spacecmd -u admin -p admin clear_caches")
+  command = "spacecmd -u admin -p admin system_listinstalledpackages #{node}"
+  result, code = $server.run(command, false)
+  packages.split(' ').each do |package|
+    pkg = package.strip
+    raise "package #{pkg} is not installed" unless result.include? pkg
+  end
+end
+
+When(/^I wait until package "([^"]*)" is installed on "([^"]*)" via spacecmd$/) do |pkg, client|
+  node = get_system_name(client)
+  $server.run("spacecmd -u admin -p admin clear_caches")
+  command = "spacecmd -u admin -p admin system_listinstalledpackages #{node}"
+  repeat_until_timeout(timeout: 600, message: "package #{pkg} is not installed yet") do
+    result, code = $server.run(command, false)
+    break if result.include? pkg
+    sleep 1
+  end
+end
+
+When(/^I wait until package "([^"]*)" is removed from "([^"]*)" via spacecmd$/) do |pkg, client|
+  node = get_system_name(client)
+  $server.run("spacecmd -u admin -p admin clear_caches")
+  command = "spacecmd -u admin -p admin system_listinstalledpackages #{node}"
+  repeat_until_timeout(timeout: 600, message: "package #{pkg} is still present") do
+    result, code = $server.run(command, false)
+    sleep 1
+    break unless result.include? pkg
+  end
 end

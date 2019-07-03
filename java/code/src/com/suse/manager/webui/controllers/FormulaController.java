@@ -110,7 +110,7 @@ public class FormulaController {
      * @return the JSON data
      */
     public static String formulaData(Request request, Response response, User user) {
-        Long id = new Long(request.params("id"));
+        Long id = Long.valueOf(request.params("id"));
         StateTargetType type = StateTargetType.valueOf(request.params("targetType"));
         int formulaId = Integer.parseInt(request.params("formula_id"));
 
@@ -205,14 +205,14 @@ public class FormulaController {
                     if (!checkUserHasPermissionsOnServerGroup(user, group)) {
                         return deniedResponse(response);
                     }
-                    FormulaFactory.saveGroupFormulaData(formData, id, formulaName);
+                    FormulaFactory.saveGroupFormulaData(formData, id, user.getOrg(), formulaName);
                     List<String> minionIds = group.getServers().stream()
                             .flatMap(s -> Opt.stream(s.asMinionServer()))
                             .map(MinionServer::getMinionId).collect(Collectors.toList());
                     SaltService.INSTANCE.refreshPillar(new MinionList(minionIds));
                     break;
                 default:
-                    return errorResponse(response, Arrays.asList("Invalid target type!"));
+                    return errorResponse(response, Arrays.asList("error_invalid_target")); //Invalid target type!
             }
         }
         catch (IOException | UnsupportedOperationException e) {
@@ -220,7 +220,7 @@ public class FormulaController {
                     Arrays.asList("Error while saving formula data: " +
                             e.getMessage()));
         }
-        return GSON.toJson(Arrays.asList("Formula saved!"));
+        return GSON.toJson(Arrays.asList("formula_saved")); // Formula saved!
     }
 
     /**
@@ -312,14 +312,14 @@ public class FormulaController {
                     FormulaFactory.saveGroupFormulas(id, selectedFormulas, user.getOrg());
                     break;
                 default:
-                    return errorResponse(response, Arrays.asList("Invalid target type!"));
+                    return errorResponse(response, Arrays.asList("error_invalid_target"));
             }
         }
         catch (IOException | UnsupportedOperationException e) {
             return errorResponse(response,
                     Arrays.asList("Error while saving formula data: " + e.getMessage()));
         }
-        return GSON.toJson(Arrays.asList("Formulas saved!"));
+        return GSON.toJson(Arrays.asList("formulas_saved"));
     }
 
     /**
@@ -331,7 +331,7 @@ public class FormulaController {
      */
     public static ModelAndView minionFormula(Request request, Response response) {
         Map<String, Object> data = new HashMap<>();
-        data.put("server", ServerFactory.lookupById(new Long(request.queryParams("sid"))));
+        data.put("server", ServerFactory.lookupById(Long.valueOf(request.queryParams("sid"))));
         data.put("formula_id", request.params("formula_id"));
         return new ModelAndView(data, "templates/minion/formula.jade");
     }
@@ -347,7 +347,7 @@ public class FormulaController {
    public static ModelAndView minionFormulas(Request request, Response response,
            User user) {
        Map<String, Object> data = new HashMap<>();
-       data.put("server", ServerFactory.lookupById(new Long(request.queryParams("sid"))));
+       data.put("server", ServerFactory.lookupById(Long.valueOf(request.queryParams("sid"))));
        return new ModelAndView(data, "templates/minion/formulas.jade");
    }
 

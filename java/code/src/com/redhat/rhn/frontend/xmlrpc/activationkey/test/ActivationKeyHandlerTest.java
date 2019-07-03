@@ -14,48 +14,65 @@
  */
 package com.redhat.rhn.frontend.xmlrpc.activationkey.test;
 
-import java.io.StringWriter;
-import java.io.Writer;
-import java.util.*;
-import java.util.stream.Collectors;
-
-import com.redhat.rhn.common.conf.Config;
-import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
-import com.redhat.rhn.domain.server.*;
-import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
-import com.redhat.rhn.frontend.xmlrpc.NoSuchSystemException;
-import com.redhat.rhn.frontend.xmlrpc.activationkey.AuthenticationException;
-import com.redhat.rhn.frontend.xmlrpc.activationkey.ChannelInfo;
-import com.redhat.rhn.frontend.xmlrpc.activationkey.NoSuchActivationKeyException;
-import com.redhat.rhn.testing.*;
-import com.suse.manager.utils.MachinePasswordUtils;
-import org.apache.commons.codec.digest.DigestUtils;
-import redstone.xmlrpc.XmlRpcSerializer;
-
 import com.redhat.rhn.FaultException;
+import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.validator.ValidatorException;
 import com.redhat.rhn.domain.channel.Channel;
+import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
 import com.redhat.rhn.domain.config.ConfigChannel;
 import com.redhat.rhn.domain.config.ConfigChannelType;
 import com.redhat.rhn.domain.rhnpackage.PackageName;
 import com.redhat.rhn.domain.rhnpackage.test.PackageNameTest;
 import com.redhat.rhn.domain.role.RoleFactory;
+import com.redhat.rhn.domain.server.ManagedServerGroup;
+import com.redhat.rhn.domain.server.MinionServer;
+import com.redhat.rhn.domain.server.ServerConstants;
+import com.redhat.rhn.domain.server.ServerFactory;
+import com.redhat.rhn.domain.server.ServerGroup;
+import com.redhat.rhn.domain.server.ServerGroupType;
+import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
 import com.redhat.rhn.domain.token.ActivationKey;
 import com.redhat.rhn.domain.token.TokenPackage;
 import com.redhat.rhn.domain.token.test.ActivationKeyTest;
 import com.redhat.rhn.frontend.xmlrpc.InvalidChannelException;
+import com.redhat.rhn.frontend.xmlrpc.NoSuchSystemException;
 import com.redhat.rhn.frontend.xmlrpc.activationkey.ActivationKeyHandler;
+import com.redhat.rhn.frontend.xmlrpc.activationkey.AuthenticationException;
+import com.redhat.rhn.frontend.xmlrpc.activationkey.ChannelInfo;
+import com.redhat.rhn.frontend.xmlrpc.activationkey.NoSuchActivationKeyException;
 import com.redhat.rhn.frontend.xmlrpc.serializer.ActivationKeySerializer;
 import com.redhat.rhn.frontend.xmlrpc.test.BaseHandlerTestCase;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.token.ActivationKeyManager;
+import com.redhat.rhn.testing.ChannelTestUtils;
+import com.redhat.rhn.testing.ConfigTestUtils;
+import com.redhat.rhn.testing.ServerGroupTestUtils;
+import com.redhat.rhn.testing.TestUtils;
+import com.redhat.rhn.testing.UserTestUtils;
+
+import com.suse.manager.utils.MachinePasswordUtils;
+
+import org.apache.commons.codec.digest.DigestUtils;
+
+import java.io.StringWriter;
+import java.io.Writer;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
+import redstone.xmlrpc.XmlRpcSerializer;
 
 public class ActivationKeyHandlerTest extends BaseHandlerTestCase {
 
     private ActivationKeyHandler keyHandler = new ActivationKeyHandler();
     private static final String KEY = "myexplicitkey";
     private static final String KEY_DESCRIPTION = "Test Key";
-    private static final Integer KEY_USAGE_LIMIT = new Integer(0);
+    private static final Integer KEY_USAGE_LIMIT = 0;
     private static final List<String> KEY_ENTITLEMENTS;
     static {
         KEY_ENTITLEMENTS = new LinkedList<String>();
@@ -105,7 +122,7 @@ public class ActivationKeyHandlerTest extends BaseHandlerTestCase {
 
     public void testCreateWithZeroUsageLimit() throws Exception {
         String key = keyHandler.create(admin, "", KEY_DESCRIPTION, null,
-                                new Integer(0), KEY_ENTITLEMENTS, Boolean.TRUE);
+                0, KEY_ENTITLEMENTS, Boolean.TRUE);
         assertTrue(key.length() > 0);
         ActivationKey activationKey = ActivationKeyManager.getInstance().
                lookupByKey(key, admin);
@@ -114,7 +131,7 @@ public class ActivationKeyHandlerTest extends BaseHandlerTestCase {
 
     public void testCreateWithExplicitKey() throws Exception {
         String resultingKey = keyHandler.create(admin, KEY, "testing",
-                baseChannelLabel, new Integer(0), KEY_ENTITLEMENTS, Boolean.FALSE);
+                baseChannelLabel, 0, KEY_ENTITLEMENTS, Boolean.FALSE);
         assertFalse(KEY.equals(resultingKey));
         ActivationKey activationKey = ActivationKeyManager.getInstance().
                                                 lookupByKey(resultingKey, admin);
@@ -124,10 +141,10 @@ public class ActivationKeyHandlerTest extends BaseHandlerTestCase {
 
     public void testCreateWithSameKey() throws Exception {
         keyHandler.create(admin, KEY, "testing",
-                baseChannelLabel, new Integer(0), KEY_ENTITLEMENTS, Boolean.FALSE);
+                baseChannelLabel, 0, KEY_ENTITLEMENTS, Boolean.FALSE);
         try {
             keyHandler.create(admin, KEY, "testing",
-                baseChannelLabel, new Integer(0), KEY_ENTITLEMENTS, Boolean.FALSE);
+                baseChannelLabel, 0, KEY_ENTITLEMENTS, Boolean.FALSE);
             fail();
         }
         catch (FaultException e) {
@@ -138,7 +155,7 @@ public class ActivationKeyHandlerTest extends BaseHandlerTestCase {
     public void testCreateWithInvaidChannelId() throws Exception {
         try {
             keyHandler.create(admin, "", "testing", "NOT A CHANNEL",
-                new Integer(0), KEY_ENTITLEMENTS, Boolean.FALSE);
+                    0, KEY_ENTITLEMENTS, Boolean.FALSE);
             fail();
         }
         catch (InvalidChannelException e) {
@@ -151,7 +168,7 @@ public class ActivationKeyHandlerTest extends BaseHandlerTestCase {
         String childChannelLabel = childChannel.getLabel();
         try {
             keyHandler.create(admin, "", "testing", childChannelLabel,
-                new Integer(0), KEY_ENTITLEMENTS, Boolean.FALSE);
+                    0, KEY_ENTITLEMENTS, Boolean.FALSE);
             fail();
         }
         catch (InvalidChannelException e) {
@@ -164,7 +181,7 @@ public class ActivationKeyHandlerTest extends BaseHandlerTestCase {
         badEntitlements.add("enterprise_entitled");
         try {
             keyHandler.create(admin, "", "testing", baseChannelLabel,
-                    new Integer(0), badEntitlements, Boolean.FALSE);
+                    0, badEntitlements, Boolean.FALSE);
             fail();
         }
         catch (FaultException fe) {
@@ -177,7 +194,7 @@ public class ActivationKeyHandlerTest extends BaseHandlerTestCase {
         badEntitlements.add("provisioning_foobar");
         try {
             keyHandler.create(admin, "", "testing", baseChannelLabel,
-                    new Integer(0), badEntitlements, Boolean.FALSE);
+                    0, badEntitlements, Boolean.FALSE);
             fail();
         }
         catch (FaultException fe) {
@@ -207,7 +224,7 @@ public class ActivationKeyHandlerTest extends BaseHandlerTestCase {
         String baseChannelId2 = baseChannel2.getLabel();
         details.put("description", description2);
         details.put("base_channel_label", baseChannelId2);
-        details.put("usage_limit", new Integer(15));
+        details.put("usage_limit", 15);
         details.put("universal_default", Boolean.FALSE);
         keyHandler.setDetails(admin, key, details);
 
@@ -216,7 +233,7 @@ public class ActivationKeyHandlerTest extends BaseHandlerTestCase {
 
         assertEquals(1, activationKey.getChannels().size());
         assertEquals(baseChannel2, activationKey.getChannels().iterator().next());
-        assertEquals(new Long(15), activationKey.getUsageLimit());
+        assertEquals(Long.valueOf(15), activationKey.getUsageLimit());
         assertFalse(activationKey.isUniversalDefault());
     }
 
@@ -226,7 +243,7 @@ public class ActivationKeyHandlerTest extends BaseHandlerTestCase {
                 KEY_USAGE_LIMIT, KEY_ENTITLEMENTS, Boolean.TRUE);
 
         Map details = new HashMap();
-        details.put("usage_limit", new Integer(15)); // should be ignored
+        details.put("usage_limit", 15); // should be ignored
         details.put("unlimited_usage_limit", Boolean.TRUE);
         keyHandler.setDetails(admin, key, details);
 
@@ -287,7 +304,7 @@ public class ActivationKeyHandlerTest extends BaseHandlerTestCase {
 
         ServerGroup group = ServerGroupTestUtils.createManaged(admin);
         keyHandler.addServerGroups(admin, newKey,
-                buildList(new Integer(group.getId().intValue())));
+                buildList(group.getId().intValue()));
 
         PackageName newName = PackageNameTest.createTestPackageName();
         keyHandler.addPackageNames(admin, newKey, buildList(newName.getName()));
@@ -492,7 +509,7 @@ public class ActivationKeyHandlerTest extends BaseHandlerTestCase {
 
         ServerGroup group = ServerGroupTestUtils.createManaged(admin);
         keyHandler.addServerGroups(admin, newKey,
-                buildList(new Integer(group.getId().intValue())));
+                buildList(group.getId().intValue()));
         assertEquals(1, activationKey.getServerGroups().size());
     }
 
@@ -508,11 +525,11 @@ public class ActivationKeyHandlerTest extends BaseHandlerTestCase {
 
         ServerGroup group = ServerGroupTestUtils.createManaged(admin);
         keyHandler.addServerGroups(admin, newKey,
-                buildList(new Integer(group.getId().intValue())));
+                buildList(group.getId().intValue()));
         assertEquals(1, activationKey.getServerGroups().size());
 
         keyHandler.addServerGroups(admin, newKey,
-                buildList(new Integer(group.getId().intValue())));
+                buildList(group.getId().intValue()));
         assertEquals(1, activationKey.getServerGroups().size());
     }
 
@@ -525,11 +542,11 @@ public class ActivationKeyHandlerTest extends BaseHandlerTestCase {
 
         ServerGroup group = ServerGroupTestUtils.createManaged(admin);
         keyHandler.addServerGroups(admin, newKey,
-                buildList(new Integer(group.getId().intValue())));
+                buildList(group.getId().intValue()));
         assertEquals(1, activationKey.getServerGroups().size());
 
         keyHandler.removeServerGroups(admin, newKey,
-                buildList(new Integer(group.getId().intValue())));
+                buildList(group.getId().intValue()));
         assertEquals(0, activationKey.getServerGroups().size());
     }
 
@@ -545,7 +562,7 @@ public class ActivationKeyHandlerTest extends BaseHandlerTestCase {
         assertEquals(0, activationKey.getServerGroups().size());
         ManagedServerGroup sg = ServerGroupTestUtils.createManaged(admin);
         keyHandler.removeServerGroups(admin, newKey, buildList(
-                new Integer(sg.getId().intValue())));
+                sg.getId().intValue()));
         assertEquals(0, activationKey.getServerGroups().size());
     }
 
@@ -607,7 +624,6 @@ public class ActivationKeyHandlerTest extends BaseHandlerTestCase {
         assertEquals(1, result);
         assertEquals(3, activationKey.getPackages().size());
 
-        String name = null, arch = null;
         boolean foundPkg1 = false, foundPkg2 = false, foundPkg3 = false;
 
         for (TokenPackage pkg : activationKey.getPackages()) {

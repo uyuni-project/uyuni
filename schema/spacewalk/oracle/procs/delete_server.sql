@@ -131,6 +131,15 @@ begin
          where old_host_system_id = server_id_in
             or new_host_system_id = server_id_in;
 
+        -- archive related actions, only if they have no other servers assigned
+        update rhnAction set archived = 1 where id in (
+            select action_id from rhnServerAction sa
+            where not exists (
+                select server_id from rhnServerAction
+                where action_id = sa.action_id and server_id != server_id_in
+            )
+        );
+
 	-- We're deleting everything with a foreign key to rhnServer
 	-- here, now.  I'm hoping this will help aleviate our deadlock
 	-- problem.

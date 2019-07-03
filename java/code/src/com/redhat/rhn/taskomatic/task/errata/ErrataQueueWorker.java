@@ -57,14 +57,14 @@ class ErrataQueueWorker implements QueueWorker {
             markInProgress();
             if (logger.isDebugEnabled()) {
                 logger.debug("Processing errata queue for " +
-                        errataId.longValue());
+                        errataId);
             }
 
             WriteMode marker = ModeFactory.getWriteMode(TaskConstants.MODE_NAME,
                 TaskConstants.TASK_QUERY_ERRATA_QUEUE_ENQUEUE_SAT_ERRATA);
             Map<String, Object> params = new HashMap<String, Object>();
             params.put("errata_id", errataId);
-            params.put("minutes", new Long(0));
+            params.put("minutes", 0L);
             params.put("channel_id", channelId);
             int rowsUpdated = marker.executeUpdate(params);
             if (logger.isDebugEnabled()) {

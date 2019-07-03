@@ -1,7 +1,7 @@
 #
 # spec file for package spacewalk-search
 #
-# Copyright (c) 2018 SUSE LINUX GmbH, Nuernberg, Germany.
+# Copyright (c) 2019 SUSE LINUX GmbH, Nuernberg, Germany.
 # Copyright (c) 2008-2018 Red Hat, Inc.
 #
 # All modifications and additions to the file contributed by third parties
@@ -13,7 +13,7 @@
 # license that conforms to the Open Source Definition (Version 1.9)
 # published by the Open Source Initiative.
 
-# Please submit bugfixes or comments via http://bugs.opensuse.org/
+# Please submit bugfixes or comments via https://bugs.opensuse.org/
 #
 
 
@@ -23,14 +23,14 @@ Name:           spacewalk-search
 Summary:        Spacewalk Full Text Search Server
 License:        GPL-2.0-only AND Apache-2.0
 Group:          Applications/Internet
-Version:        4.0.4
+Version:        4.0.7
 Release:        1%{?dist}
 # This src.rpm is cannonical upstream
 # You can obtain it using this set of commands
 # git clone https://github.com/spacewalkproject/spacewalk.git
 # cd search-server
 # make test-srpm
-URL:            https://github.com/uyuni-project/uyuni
+Url:            https://github.com/uyuni-project/uyuni
 Source0:        %{name}-%{version}.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildArch:      noarch
@@ -64,7 +64,6 @@ Requires:       quartz >= 2.0
 Requires:       redstone-xmlrpc
 #Requires: picocontainer
 Requires:       simple-core
-Requires:       tanukiwrapper
 Obsoletes:      rhn-search < 5.3.0
 BuildRequires:  ant
 #BuildRequires: apache-ibatis-sqlmap
@@ -81,7 +80,6 @@ BuildRequires:  redstone-xmlrpc
 #BuildRequires: picocontainer
 BuildRequires:  simple-core
 BuildRequires:  slf4j
-BuildRequires:  tanukiwrapper
 %if 0%{?fedora} || 0%{?rhel} >=7 || 0%{?suse_version} >= 1315
 Requires:       apache-commons-cli
 Requires:       apache-commons-codec
@@ -166,7 +164,6 @@ install -p -m 644 src/config/rhn-search.service $RPM_BUILD_ROOT%{_unitdir}
 %else
 install -p -m 755 src/config/rhn-search.init $RPM_BUILD_ROOT%{_initrddir}/rhn-search
 %endif
-ln -s -f /usr/sbin/tanukiwrapper $RPM_BUILD_ROOT%{_bindir}/rhnsearchd
 install -p -m 644 src/config/search/rhn_search.conf $RPM_BUILD_ROOT%{_prefix}/share/rhn/config-defaults/rhn_search.conf
 install -p -m 644 src/config/search/rhn_search_daemon.conf $RPM_BUILD_ROOT%{_prefix}/share/rhn/config-defaults/rhn_search_daemon.conf
 ln -s -f %{_prefix}/share/rhn/search/lib/spacewalk-search-%{version}.jar $RPM_BUILD_ROOT%{_prefix}/share/rhn/search/lib/spacewalk-search.jar
@@ -258,7 +255,6 @@ fi
 %else
 %attr(755, root, root) %{_initrddir}/rhn-search
 %endif
-%{_bindir}/rhnsearchd
 %{_prefix}/share/rhn/config-defaults/rhn_search.conf
 %{_prefix}/share/rhn/config-defaults/rhn_search_daemon.conf
 %{_sysconfdir}/logrotate.d/rhn-search

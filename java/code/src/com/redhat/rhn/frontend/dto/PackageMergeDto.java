@@ -61,7 +61,7 @@ public class PackageMergeDto extends IdComboDto {
      * @param a The action to set.
      */
     public void setAction(Integer a) {
-        this.idTwo = new Long(a);
+        this.idTwo = Long.valueOf(a);
     }
 
     /**

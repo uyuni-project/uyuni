@@ -10,7 +10,7 @@
       value="c3p0 cglib commons-cli commons-codec commons-httpclient commons-lang3
              commons-logging ${log4j} objectweb-asm/asm oro
              quartz redstone-xmlrpc redstone-xmlrpc-client simple-core
-             slf4j/api slf4j/simple tanukiwrapper junit nutch-core hadoop picocontainer
+             slf4j/api slf4j/simple junit nutch-core hadoop picocontainer
              lucene lucene-analyzers lucene-misc mybatis" />
 
 </project>

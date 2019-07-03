@@ -341,8 +341,8 @@ def write_ssl_set_cache(ca_cert, client_cert, client_key):
             cert_file = os.path.join(ssldir, "%s.pem" % name)
             if not os.path.exists(cert_file):
                 create_dir_tree(ssldir)
-                f = open(cert_file, "w")
-                f.write(str(pem))
+                f = open(cert_file, "wb")
+                f.write(pem)
                 f.close()
             filenames[cert] = cert_file
 
@@ -714,9 +714,13 @@ class RepoSync(object):
         absdir = os.path.join(CFG.MOUNT_POINT, relativedir)
         if not os.path.exists(absdir):
             os.makedirs(absdir)
+        compressed_suffixes = ['.gz', '.bz', '.xz']
+        if comps_type == 'comps' and not re.match('comps.xml(' + "|".join(compressed_suffixes) + ')*', basename):
+            log(0, "  Renaming non-standard filename %s to %s." % (basename, 'comps' + basename[basename.find('.'):]))
+            basename = 'comps' + basename[basename.find('.'):]
         relativepath = os.path.join(relativedir, basename)
         abspath = os.path.join(absdir, basename)
-        for suffix in ['.gz', '.bz', '.xz']:
+        for suffix in compressed_suffixes:
             if basename.endswith(suffix):
                 abspath = abspath.rstrip(suffix)
                 relativepath = relativepath.rstrip(suffix)
@@ -1126,13 +1130,20 @@ class RepoSync(object):
             log(0, '')
             log(0, "  Linking packages to the channel.")
             # Packages to append to channel
-            import_batch = [self.associate_package(pack) for (pack, to_download, to_link) in to_process if to_link]
-            backend = SQLBackend()
-            caller = "server.app.yumreposync"
-            importer = ChannelPackageSubscription(import_batch,
-                                                  backend, caller=caller, repogen=False)
-            importer.run()
-            backend.commit()
+            import_batches = list(self.chunks(
+                [self.associate_package(pack) for (pack, to_download, to_link) in to_process if to_link],
+                1000))
+            count = 0
+            for import_batch in import_batches:
+                backend = SQLBackend()
+                caller = "server.app.yumreposync"
+                importer = ChannelPackageSubscription(import_batch,
+                                                      backend, caller=caller, repogen=False)
+                importer.run()
+                backend.commit()
+                del importer.batch
+                count += len(import_batch)
+                log(0, "    {} packages linked".format(count))
             self.regen = True
         self._normalize_orphan_vendor_packages()
         return failed_packages
@@ -2333,3 +2344,7 @@ class RepoSync(object):
         for cid in channels:
             update_needed_cache(cid)
         rhnSQL.commit()
+
+    @staticmethod
+    def chunks(seq, n):
+        return (seq[i:i+n] for i in range(0, len(seq), n))

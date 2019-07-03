@@ -27,7 +27,7 @@ public class UserData {
     }
 
     public void setUserId(Integer ci) {
-        setUserId(new Long(ci));
+        setUserId(Long.valueOf(ci));
     }
 
     public void setTableCount(Long ci) {

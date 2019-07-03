@@ -3,11 +3,10 @@ module.exports = {
   root: true,
   extends: [
     "react-app",
-    "plugin:you-dont-need-lodash-underscore/compatible",
   ],
 
   plugins: [
-    "flowtype-errors", "you-dont-need-lodash-underscore", "react-hooks"
+    "flowtype-errors", "react-hooks"
   ],
 
   env: {

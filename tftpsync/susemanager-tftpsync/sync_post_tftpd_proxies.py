@@ -17,14 +17,13 @@
 #    License along with this library; if not, write to the Free Software
 #    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-import sys
+
 import os
-import traceback
 import cobbler.utils as utils
 import time
-import MultipartPostHandler
+import cobbler.MultipartPostHandler as MultipartPostHandler
 import simplejson
-import clogger
+import cobbler.clogger as clogger
 import threading
 
 try:

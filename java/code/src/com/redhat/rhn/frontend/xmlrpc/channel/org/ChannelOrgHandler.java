@@ -189,7 +189,7 @@ public class ChannelOrgHandler extends BaseHandler {
         boolean orgInTrust = false;
 
         for (OrgChannelDto orgDto : orgs) {
-            if (orgDto.getId().equals(new Long(orgId))) {
+            if (orgDto.getId().equals(Long.valueOf(orgId))) {
                 orgInTrust = true;
                 break;
             }

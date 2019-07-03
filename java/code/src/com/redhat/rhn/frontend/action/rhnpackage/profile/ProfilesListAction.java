@@ -15,6 +15,7 @@
 package com.redhat.rhn.frontend.action.rhnpackage.profile;
 
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.dto.ProfileOverviewDto;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnHelper;
 import com.redhat.rhn.frontend.struts.RhnListAction;
@@ -37,7 +38,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @version $Revision$
  */
-public class ProfilesListAction extends RhnListAction implements Listable {
+public class ProfilesListAction extends RhnListAction implements Listable<ProfileOverviewDto> {
 
     /** {@inheritDoc} */
     public ActionForward execute(ActionMapping actionMapping,
@@ -53,7 +54,7 @@ public class ProfilesListAction extends RhnListAction implements Listable {
     }
 
     /** {@inheritDoc} */
-    public List getResult(RequestContext context) {
+    public List<ProfileOverviewDto> getResult(RequestContext context) {
         User user = context.getCurrentUser();
         return ProfileManager.listProfileOverviews(user.getOrg().getId());
     }

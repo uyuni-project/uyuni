@@ -42,8 +42,8 @@ public class RhnSetElementTest extends RhnBaseTestCase {
     }
 
     public void testTwoArgCtor() {
-        Long id = new Long(10);
-        Long elem = new Long(400);
+        Long id = 10L;
+        Long elem = 400L;
         String label = "label foo";
         RhnSetElement rse = new RhnSetElement(id, label, elem, elem);
         assertNotNull(rse);
@@ -54,8 +54,8 @@ public class RhnSetElementTest extends RhnBaseTestCase {
     }
 
     public void testThreeArgCtor() {
-        Long id = new Long(10);
-        Long elem = new Long(400);
+        Long id = 10L;
+        Long elem = 400L;
         String label = "label foo";
         RhnSetElement rse = new RhnSetElement(id, label, elem, elem, elem);
         assertNotNull(rse);
@@ -67,8 +67,8 @@ public class RhnSetElementTest extends RhnBaseTestCase {
     }
 
     public void testBeanProperties() {
-        Long id = new Long(10);
-        Long elem = new Long(400);
+        Long id = 10L;
+        Long elem = 400L;
         String label = "label foo";
         RhnSetElement rse = new RhnSetElement();
         assertNotNull(rse);
@@ -98,10 +98,10 @@ public class RhnSetElementTest extends RhnBaseTestCase {
     }
 
     public void testEquals() {
-        Long uid = new Long(42);
-        Long elem = new Long(3131);
-        Long elemTwo = new Long(3132);
-        Long elemThree = new Long(3133);
+        Long uid = 42L;
+        Long elem = 3131L;
+        Long elemTwo = 3132L;
+        Long elemThree = 3133L;
         String label = "testEquals label";
 
         RhnSetElement r1 = new RhnSetElement();
@@ -143,17 +143,17 @@ public class RhnSetElementTest extends RhnBaseTestCase {
     }
 
     public void testStringConstructor() {
-        Long uid = new Long(42);
+        Long uid = 42L;
         String label = "testEquals label";
-        Long elem = new Long(3131);
-        Long elemTwo = new Long(3132);
+        Long elem = 3131L;
+        Long elemTwo = 3132L;
         RhnSetElement r1 = new RhnSetElement(uid, label,
                                                     elem + "|" + elemTwo);
         RhnSetElement r2 = new RhnSetElement(uid, label,
                                                     elem, elemTwo);
         assertEquals(r1, r2);
 
-        Long elemThree = new Long(3133);
+        Long elemThree = 3133L;
         r1 = new RhnSetElement(uid, label, elem + "|" + elemTwo + "|" + elemThree);
         r2 = new RhnSetElement(uid, label, elem, elemTwo, elemThree);
 

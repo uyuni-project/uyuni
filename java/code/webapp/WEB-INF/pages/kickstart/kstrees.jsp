@@ -12,7 +12,7 @@
     miscUrl="TreeCreate.do"
     icon="header-kickstart"
     iconAlt="kickstarts.alt.img"
-    helpUrl="/rhn/help/reference/en-US/ref.webui.systems.autoinst.jsp#ref.webui.systems.autoinst.distribution">
+    helpUrl="/docs/reference/systems/autoinst-distributions.html">
 <bean:message key="kickstart.kickstartable_distributions.jsp" />
 </rhn:toolbar>
 

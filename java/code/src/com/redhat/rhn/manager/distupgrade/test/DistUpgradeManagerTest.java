@@ -17,7 +17,6 @@ package com.redhat.rhn.manager.distupgrade.test;
 import static com.redhat.rhn.testing.ErrataTestUtils.createTestChannelFamily;
 import static com.redhat.rhn.testing.ErrataTestUtils.createTestChannelProduct;
 
-import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.dup.DistUpgradeAction;

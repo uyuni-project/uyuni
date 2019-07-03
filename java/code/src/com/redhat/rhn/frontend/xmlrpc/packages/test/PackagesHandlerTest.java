@@ -38,12 +38,12 @@ public class PackagesHandlerTest extends BaseHandlerTestCase {
         Package pkg = PackageTest.createTestPackage(admin.getOrg());
         assertNotNull(pkg.getOrg().getId());
 
-        Map details = handler.getDetails(admin, new Integer(pkg.getId().intValue()));
+        Map details = handler.getDetails(admin, pkg.getId().intValue());
         assertNotNull(details);
         assertTrue(details.containsKey("name"));
 
         try {
-            handler.getDetails(admin, new Integer(-213344));
+            handler.getDetails(admin, -213344);
             fail("handler.getDetails didn't throw FaultException for non-existant package");
         }
         catch (FaultException e) {
@@ -57,7 +57,7 @@ public class PackagesHandlerTest extends BaseHandlerTestCase {
         Package pkg = PackageTest.createTestPackage(user.getOrg());
 
         Object[] files = handler.listFiles(admin,
-                new Integer(pkg.getId().intValue()));
+                pkg.getId().intValue());
 
         // PackageTest.populateTestPackage populates a test package with 2 associated files
         assertEquals(2, files.length);
@@ -72,7 +72,7 @@ public class PackagesHandlerTest extends BaseHandlerTestCase {
         Package pkg = PackageTest.createTestPackage(user.getOrg());
 
         Object[] result = handler.listProvidingErrata(admin,
-                                                      new Integer(pkg.getId().intValue()));
+                pkg.getId().intValue());
         assertEquals(0, result.length);
     }
 
@@ -81,7 +81,7 @@ public class PackagesHandlerTest extends BaseHandlerTestCase {
         Package pkg = PackageTest.createTestPackage(user.getOrg());
 
         Object[] result = handler.listProvidingChannels(admin,
-                                                       new Integer(pkg.getId().intValue()));
+                pkg.getId().intValue());
         //test package shouldn't be "provided" by any channel yet
         assertEquals(0, result.length);
     }
@@ -93,7 +93,7 @@ public class PackagesHandlerTest extends BaseHandlerTestCase {
       Package pkg = PackageTest.createTestPackage(user.getOrg());
 
       Object[] result = handler.listDependencies(admin,
-                                                     new Integer(pkg.getId().intValue()));
+              pkg.getId().intValue());
       //test package shouldn't have any deps yet
       assertEquals(0, result.length);
     }
@@ -101,7 +101,7 @@ public class PackagesHandlerTest extends BaseHandlerTestCase {
     public void testRemovePackage() throws Exception {
         User user = UserTestUtils.createUser("testUser", admin.getOrg().getId());
         Package pkg = PackageTest.createTestPackage(user.getOrg());
-        handler.removePackage(admin, new Integer(pkg.getId().intValue()));
+        handler.removePackage(admin, pkg.getId().intValue());
     }
 
     public void testRemovePackageSource() throws Exception {
@@ -109,7 +109,7 @@ public class PackagesHandlerTest extends BaseHandlerTestCase {
         SourceRpm srpm = SourceRpmTest.createTestSourceRpm();
         PackageSource pkg = PackageTest.createTestPackageSource(srpm, user.getOrg());
         HibernateFactory.getSession().save(pkg);
-        handler.removeSourcePackage(admin, new Integer(pkg.getId().intValue()));
+        handler.removeSourcePackage(admin, pkg.getId().intValue());
     }
 
 

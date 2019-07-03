@@ -49,7 +49,7 @@ public class ServerGroupHandlerTest extends BaseHandlerTestCase {
     private static final String DESCRIPTION =  TestUtils.randomString();
 
     public void testCreate() {
-        ServerGroup group = handler.create(admin, NAME, DESCRIPTION);
+        handler.create(admin, NAME, DESCRIPTION);
         assertNotNull(manager.lookup(NAME, admin));
 
         try {
@@ -195,7 +195,7 @@ public class ServerGroupHandlerTest extends BaseHandlerTestCase {
     }
 
     public void testDelete() {
-        ServerGroup group = handler.create(admin, NAME, DESCRIPTION);
+        handler.create(admin, NAME, DESCRIPTION);
         handler.delete(admin, NAME);
         try {
             manager.lookup(NAME, admin);
@@ -223,21 +223,20 @@ public class ServerGroupHandlerTest extends BaseHandlerTestCase {
         Server server3 = ServerFactoryTest.createTestServer(regular, true);
 
         handler.addOrRemoveSystems(regular, group.getName(),
-                Arrays.asList(new Integer []{
-                            new Integer(server3.getId().intValue())}), new Boolean(true));
+                Arrays.asList(server3.getId().intValue()), Boolean.TRUE);
 
         List systems = new ArrayList();
         systems.add(server1.getId());
         systems.add(server2.getId());
         systems.add(server3.getId());
-        handler.addOrRemoveSystems(regular, group.getName(), systems, new Boolean(true));
+        handler.addOrRemoveSystems(regular, group.getName(), systems, Boolean.TRUE);
 
 
         List actual = handler.listSystems(unpriv, group.getName());
         assertTrue(actual.contains(server1));
 
         handler.addOrRemoveSystems(regular, group.getName(), systems,
-                new Boolean(false));
+                Boolean.FALSE);
 
         actual = handler.listSystems(regular, group.getName());
         assertFalse(actual.contains(server1));
@@ -250,7 +249,7 @@ public class ServerGroupHandlerTest extends BaseHandlerTestCase {
         systems.add(server1.getId());
         try {
             handler.addOrRemoveSystems(admin, group.getName(), systems,
-                    new Boolean(false));
+                    Boolean.FALSE);
             fail();
         }
         catch (ServerNotInGroupException e) {
@@ -270,7 +269,7 @@ public class ServerGroupHandlerTest extends BaseHandlerTestCase {
     public void testGetDetailsById() throws Exception {
         ManagedServerGroup group = ServerGroupTestUtils.createManaged(admin);
         ServerGroup sg = handler.getDetails(admin,
-                new Integer(group.getId().intValue()));
+                group.getId().intValue());
         assertEquals(sg, group);
     }
 
@@ -285,7 +284,7 @@ public class ServerGroupHandlerTest extends BaseHandlerTestCase {
         boolean exceptCaught = false;
         int badValue = -80;
         try {
-            ServerGroup sg = handler.getDetails(admin, new Integer(badValue));
+            ServerGroup sg = handler.getDetails(admin, badValue);
         }
         catch (FaultException e) {
             exceptCaught = true;

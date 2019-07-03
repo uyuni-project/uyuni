@@ -39,7 +39,6 @@ import org.jmock.Expectations;
 import java.util.List;
 import java.util.Map;
 
-@SuppressWarnings("serial")
 public class VirtualNetsControllerTest extends BaseControllerTestCase {
 
     private TaskomaticApi taskomaticMock;

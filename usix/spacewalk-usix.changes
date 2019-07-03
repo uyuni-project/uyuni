@@ -1,4 +1,28 @@
 -------------------------------------------------------------------
+Wed May 15 15:19:56 CEST 2019 - jgonzalez@suse.com
+
+- version 4.0.9-1
+- SPEC cleanup
+
+-------------------------------------------------------------------
+Mon Apr 22 12:16:33 CEST 2019 - jgonzalez@suse.com
+
+- version 4.0.8-1
+- add unit tests
+
+-------------------------------------------------------------------
+Fri Mar 29 10:32:42 CET 2019 - jgonzalez@suse.com
+
+- version 4.0.7-1
+- Fix pylint issues.
+
+-------------------------------------------------------------------
+Mon Mar 25 16:45:32 CET 2019 - jgonzalez@suse.com
+
+- version 4.0.6-1
+- Add PyLint runner and configuration.
+
+-------------------------------------------------------------------
 Sat Mar 02 00:12:10 CET 2019 - jgonzalez@suse.com
 
 - version 4.0.5-1

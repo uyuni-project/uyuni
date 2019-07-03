@@ -27,7 +27,9 @@ public class EssentialChannelDto extends BaseDto {
     private Long ownerId;
     private String name;
     private String label;
+    private String archLabel;
     private boolean isCustom;
+    private boolean isCloned;
     private String release;
 
     /**
@@ -45,6 +47,8 @@ public class EssentialChannelDto extends BaseDto {
         setId(c.getId());
         setName(c.getName());
         setLabel(c.getLabel());
+        setIsCloned(c.isCloned());
+        setArchLabel(c.getChannelArch().getLabel());
         setIsCustom(c.getOrg() != null);
     }
 
@@ -78,6 +82,24 @@ public class EssentialChannelDto extends BaseDto {
      */
     public boolean isCustom() {
         return isCustom;
+    }
+
+
+
+    public String getArchLabel() {
+        return archLabel;
+    }
+
+    public void setArchLabel(String archLabelIn) {
+        this.archLabel = archLabelIn;
+    }
+
+    public boolean isCloned() {
+        return isCloned;
+    }
+
+    public void setIsCloned(boolean clonedIn) {
+        this.isCloned = clonedIn;
     }
 
     /**

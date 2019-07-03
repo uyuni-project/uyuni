@@ -398,7 +398,7 @@ SELECT  S.id,
                  FROM  rhnServerPackage SP, rhnPackageName PN
                 WHERE  S.id = SP.server_id
                   AND  SP.name_id = PN.id
-                  AND  PN.name = 'rhncfg') is not null then 'Y'
+                  AND  (PN.name = 'rhncfg' OR PN.name = 'mgr-cfg')) is not null then 'Y'
                  when (SELECT  DISTINCT 1
                           FROM  rhnServerAction SA, rhnActionPackage AP,
                                 rhnPackageName PN, rhnActionStatus PAS
@@ -407,12 +407,12 @@ SELECT  S.id,
                            AND  PAS.name IN ('Queued', 'Picked Up')
                            AND  SA.action_id = AP.action_id
                            AND  AP.name_id = PN.id
-                           AND  PN.name = 'rhncfg') is not null then 'P' else 'N' end AS rhncfg,
+                           AND  (PN.name = 'rhncfg' OR PN.name = 'mgr-cfg')) is not null then 'P' else 'N' end AS rhncfg,
         case when (SELECT  DISTINCT 1
                  FROM  rhnServerPackage SP, rhnPackageName PN
                 WHERE  S.id = SP.server_id
                   AND  SP.name_id = PN.id
-                  AND  PN.name = 'rhncfg-actions') is not null then 'Y'
+                  AND  (PN.name = 'rhncfg-actions' OR PN.name = 'mgr-cfg-actions')) is not null then 'Y'
                  when (SELECT  DISTINCT 1
                           FROM  rhnServerAction SA, rhnActionPackage AP,
                                 rhnPackageName PN, rhnActionStatus PAS
@@ -421,12 +421,12 @@ SELECT  S.id,
                            AND  PAS.name IN ('Queued', 'Picked Up')
                            AND  SA.action_id = AP.action_id
                            AND  AP.name_id = PN.id
-                           AND  PN.name = 'rhncfg-actions') is not null then 'P' else 'N' end AS rhncfg_actions,
+                           AND  (PN.name = 'rhncfg-actions' Or PN.name = 'mgr-cfg-actions')) is not null then 'P' else 'N' end AS rhncfg_actions,
         case when (SELECT  DISTINCT 1
                  FROM  rhnServerPackage SP, rhnPackageName PN
                 WHERE  S.id = SP.server_id
                   AND  SP.name_id = PN.id
-                  AND  PN.name = 'rhncfg-client') is not null then 'Y'
+                  AND  (PN.name = 'rhncfg-client' OR PN.name = 'mgr-cfg-client')) is not null then 'Y'
                  when (SELECT  DISTINCT 1
                           FROM  rhnServerAction SA, rhnActionPackage AP,
                                 rhnPackageName PN, rhnActionStatus PAS
@@ -435,7 +435,7 @@ SELECT  S.id,
                            AND  PAS.name IN ('Queued', 'Picked Up')
                            AND  SA.action_id = AP.action_id
                            AND  AP.name_id = PN.id
-                           AND  PN.name = 'rhncfg-client') is not null then 'P' else 'N' end AS rhncfg_client,
+                           AND  (PN.name = 'rhncfg-client' OR PN.name = 'rhncfg-client')) is not null then 'P' else 'N' end AS rhncfg_client,
         case when (SELECT  DISTINCT 1
                  FROM  rhnServerChannel SC, rhnChannel C
                 WHERE  S.id = SC.server_id

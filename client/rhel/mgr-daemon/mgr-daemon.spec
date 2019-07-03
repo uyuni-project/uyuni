@@ -1,7 +1,7 @@
 #
 # spec file for package mgr-daemon
 #
-# Copyright (c) 2018 SUSE LINUX GmbH, Nuernberg, Germany.
+# Copyright (c) 2019 SUSE LINUX GmbH, Nuernberg, Germany.
 # Copyright (c) 2008-2018 Red Hat, Inc.
 #
 # All modifications and additions to the file contributed by third parties
@@ -13,7 +13,7 @@
 # license that conforms to the Open Source Definition (Version 1.9)
 # published by the Open Source Initiative.
 
-# Please submit bugfixes or comments via http://bugs.opensuse.org/
+# Please submit bugfixes or comments via https://bugs.opensuse.org/
 #
 
 # Macros that aren't defined in debbuild
@@ -31,7 +31,7 @@
 %define rhnsd		 spacewalksd
 #
 Name:           mgr-daemon
-Version:        4.0.3
+Version:        4.0.5
 Release:        1%{?dist}
 Summary:        Spacewalk query daemon
 License:        GPL-2.0-only
@@ -43,7 +43,7 @@ Group:          System Environment/Base
 %endif
 Source0:        spacewalksd-%{version}.tar.gz
 Source1:        %{name}-rpmlintrc
-URL:            https://github.com/uyuni-project/uyuni
+Url:            https://github.com/uyuni-project/uyuni
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 
 %if 0%{?fedora} || 0%{?suse_version} >= 1210 || 0%{?mageia} || 0%{?ubuntu} >= 1504 || 0%{?debian} >= 8 || 0%{?rhel} >= 7
@@ -53,10 +53,10 @@ BuildArch: noarch
 %if %{_vendor} != "debbuild"
 
 # 5.0.37.2 was last version+1 of spacewalksd before renaming to mgr-daemon
-Provides:       rhnsd = 5.0.37.2
-Obsoletes:      rhnsd < 5.0.37.2
-Provides:       spacewalksd = 5.0.37.2
-Obsoletes:      spacewalksd < 5.0.37.2
+Provides:       rhnsd = 5.0.38
+Obsoletes:      rhnsd < 5.0.38
+Provides:       spacewalksd = 5.0.38
+Obsoletes:      spacewalksd < 5.0.38
 
 %if 0%{?suse_version}
 Requires(post): aaa_base
@@ -176,6 +176,7 @@ rm -rf $RPM_BUILD_ROOT/%{_datadir}/locale
 %if 0%{?suse_version} >= 1210
 %service_add_post rhnsd.timer
 %service_add_post spacewalk-update-status.service
+%{_bindir}/systemctl start rhnsd.timer || :
 %else
 %{fillup_and_insserv rhnsd}
 %endif

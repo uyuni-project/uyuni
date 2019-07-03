@@ -37,54 +37,51 @@ end
 
 def check_shutdown(host, time_out)
   cmd = "ping -c1 #{host}"
-  Timeout.timeout(time_out) do
-    loop do
-      _out = `#{cmd}`
-      if $CHILD_STATUS.exitstatus.nonzero?
-        puts "machine: #{host} went down"
-        break
-      end
-      sleep 1
+  repeat_until_timeout(timeout: time_out, message: "machine didn't reboot") do
+    _out = `#{cmd}`
+    if $CHILD_STATUS.exitstatus.nonzero?
+      puts "machine: #{host} went down"
+      break
     end
+    sleep 1
   end
-rescue Timeout::Error
-  raise "Machine didn't reboot"
 end
 
 def check_restart(host, node, time_out)
   cmd = "ping -c1 #{host}"
-  Timeout.timeout(time_out) do
-    loop do
-      _out = `#{cmd}`
-      if $CHILD_STATUS.exitstatus.zero?
-        puts "machine: #{host} network is up"
-        break
-      end
-      sleep 1
+  repeat_until_timeout(timeout: time_out, message: "machine didn't come up") do
+    _out = `#{cmd}`
+    if $CHILD_STATUS.exitstatus.zero?
+      puts "machine: #{host} network is up"
+      break
     end
-    loop do
-      _out, code = node.run('ls', false, 10)
-      if code.zero?
-        puts "machine: #{host} ssh is up"
-        break
-      end
-      sleep 1
-    end
+    sleep 1
   end
-rescue Timeout::Error
-  raise "Machine didn't go up"
+  repeat_until_timeout(timeout: time_out, message: "machine didn't come up") do
+    _out, code = node.run('ls', false, 10)
+    if code.zero?
+      puts "machine: #{host} ssh is up"
+      break
+    end
+    sleep 1
+  end
 end
 
-# Extract the OS version by decoding the value in '/etc/os-release'
-# e.g.: VERSION="12-SP1"
+# Extract the OS version and OS family
+# We get these data decoding the values in '/etc/os-release'
 def get_os_version(node)
-  os_version_raw, _code = node.run('grep "VERSION=" /etc/os-release')
+  os_family_raw, _code = node.run('grep "^ID=" /etc/os-release')
+  os_family = os_family_raw.strip.split('=')[1]
+  return nil, nil if os_family.nil?
+  os_family.delete! '"'
+
+  os_version_raw, _code = node.run('grep "^VERSION_ID=" /etc/os-release')
   os_version = os_version_raw.strip.split('=')[1]
-  return nil if os_version.nil?
+  return nil, nil if os_version.nil?
   os_version.delete! '"'
-  # OS release for SLES 11 is not consistent with SLES 12
-  # so we need to replace the dot with '-SP'
-  _out, code = node.run('pidof systemd', false)
-  os_version.gsub!(/\./, '-SP') unless code.zero?
-  os_version
+
+  # on SLES, we need to replace the dot with '-SP'
+  os_version.gsub!(/\./, '-SP') if os_family =~ /^sles/
+
+  [os_version, os_family]
 end

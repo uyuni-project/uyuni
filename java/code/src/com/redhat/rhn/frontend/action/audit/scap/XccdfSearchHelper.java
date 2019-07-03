@@ -71,7 +71,7 @@ public class XccdfSearchHelper extends RhnAction {
         List<Long> identIds = new ArrayList<Long>();
         for (int x = searchResult.size() - 1; x >= 0; x--) {
             Map item = (Map) searchResult.get(x);
-            Long id = new Long((String)item.get("id"));
+            Long id = Long.valueOf((String)item.get("id"));
             identIds.add(id);
         }
 

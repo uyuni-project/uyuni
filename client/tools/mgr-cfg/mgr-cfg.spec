@@ -1,7 +1,7 @@
 #
 # spec file for package mgr-cfg
 #
-# Copyright (c) 2018 SUSE LINUX GmbH, Nuernberg, Germany.
+# Copyright (c) 2019 SUSE LINUX GmbH, Nuernberg, Germany.
 # Copyright (c) 2008-2018 Red Hat, Inc.
 #
 # All modifications and additions to the file contributed by third parties
@@ -13,7 +13,7 @@
 # license that conforms to the Open Source Definition (Version 1.9)
 # published by the Open Source Initiative.
 
-# Please submit bugfixes or comments via http://bugs.opensuse.org/
+# Please submit bugfixes or comments via https://bugs.opensuse.org/
 #
 
 
@@ -24,7 +24,7 @@
 %define rhnsd		 spacewalksd
 # Old name and version+1 before renaming to mgr-cfg
 %define oldname          rhncfg
-%define oldversion       5.10.122.3
+%define oldversion       5.10.123
 #
 %global rhnroot %{_datadir}/rhn
 %global rhnconf %{_sysconfdir}/sysconfig/rhn
@@ -68,7 +68,7 @@
 %endif
 
 Name:           mgr-cfg
-Version:        4.0.4
+Version:        4.0.8
 Provides:       %{oldname} = %{oldversion}
 Obsoletes:      %{oldname} < %{oldversion}
 Release:        1%{?dist}
@@ -80,7 +80,7 @@ Packager:   Uyuni Project <uyuni-devel@opensuse.org>
 %else
 Group:          Applications/System
 %endif
-URL:            https://github.com/uyuni-project/uyuni
+Url:            https://github.com/uyuni-project/uyuni
 Source0:        https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
 Source1:        %{name}-rpmlintrc
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
@@ -345,10 +345,11 @@ for i in \
     ln -s $(basename "$i")%{default_suffix} "$RPM_BUILD_ROOT$i"
 done
 
-%if 0%{?suse_version}
 ln -s rhncfg-manager $RPM_BUILD_ROOT/%{_bindir}/mgrcfg-manager
 ln -s rhncfg-client $RPM_BUILD_ROOT/%{_bindir}/mgrcfg-client
 ln -s rhn-actions-control $RPM_BUILD_ROOT/%{_bindir}/mgr-actions-control
+
+%if 0%{?suse_version}
 %if 0%{?build_py2}
 %py_compile -O %{buildroot}/%{python_sitelib}
 %endif
@@ -443,9 +444,7 @@ py3clean -p python3-%{name}-actions
 %files client
 %defattr(-,root,root,-)
 %{_bindir}/rhncfg-client
-%if 0%{?suse_version}
 %{_bindir}/mgrcfg-client
-%endif
 %attr(644,root,root) %config(noreplace) %{rhnconf}/rhncfg-client.conf
 %{_mandir}/man8/rhncfg-client.8*
 
@@ -465,9 +464,7 @@ py3clean -p python3-%{name}-actions
 
 %files management
 %defattr(-,root,root,-)
-%if 0%{?suse_version}
 %{_bindir}/mgrcfg-manager
-%endif
 %{_bindir}/rhncfg-manager
 %attr(644,root,root) %config(noreplace) %{rhnconf}/rhncfg-manager.conf
 %{_mandir}/man8/rhncfg-manager.8*
@@ -488,9 +485,7 @@ py3clean -p python3-%{name}-actions
 
 %files actions
 %defattr(-,root,root,-)
-%if 0%{?suse_version}
 %{_bindir}/mgr-actions-control
-%endif
 %{_bindir}/rhn-actions-control
 %config(noreplace) %{client_caps_dir}/*
 %{_mandir}/man8/rhn-actions-control.8*

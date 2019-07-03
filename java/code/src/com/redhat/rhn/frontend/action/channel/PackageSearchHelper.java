@@ -104,7 +104,7 @@ public class PackageSearchHelper {
         for (Object itemObject : results) {
             Map item = (Map) itemObject;
             names.add((String) item.get("name"));
-            Long pid = new Long((String)item.get("id"));
+            Long pid = Long.valueOf((String)item.get("id"));
             pids.add(pid);
         }
 
@@ -148,7 +148,7 @@ public class PackageSearchHelper {
         // to the return list in the order they appear in the search results.
         for (Object resultObject : results) {
             Map result = (Map) resultObject;
-            Long pid = new Long((String)result.get("id"));
+            Long pid = Long.valueOf((String)result.get("id"));
             if (pidToPackageMap.get(pid) != null) {
                 ordered.add(pidToPackageMap.get(pid));
             }

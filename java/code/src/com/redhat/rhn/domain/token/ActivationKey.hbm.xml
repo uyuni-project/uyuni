@@ -61,6 +61,14 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
                      and ak.bootstrap = 'N']]>
     </query>
 
+    <query name="ActivationKey.findActiveByOrg">
+        <![CDATA[from com.redhat.rhn.domain.token.ActivationKey as ak
+                   where ak.token.org = :org
+                     and ak.kickstartSession = null
+                     and ak.token.server = null
+                     and ak.bootstrap = 'N'
+                     and ak.token.disabled = 0]]>
+    </query>
 
      <query name="ActivationKey.listAssociatedKickstarts">
         <![CDATA[from com.redhat.rhn.domain.kickstart.KickstartData as k where :token member of k.defaultRegTokens]]>

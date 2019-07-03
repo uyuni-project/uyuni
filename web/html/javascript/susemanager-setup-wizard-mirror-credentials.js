@@ -88,11 +88,36 @@ function makePrimaryCredentials(id) {
       makeRendererHandler("listset-container", false));
 }
 
+function setDeleteAllowed(id, allowed) {
+  const linkElem = $('#delete-' + id + ' a:first-child');
+  const iconElem = linkElem.children('i:first-child');
+
+  let linkStyle = {'pointer-events': 'all'};
+  let iconStyle = {'cursor': 'pointer', 'color': ''};
+
+  if (!allowed) {
+    linkStyle = {'pointer-events': 'none'};
+    iconStyle = {'cursor': 'not-allowed', 'color': 'gray'};
+  }
+
+  linkElem.css(linkStyle);
+  iconElem.css(iconStyle);
+}
+
 // Verify credentials by downloading subscriptions
 function verifyCredentials(id, refresh) {
-  showSpinner("verify-" + id);
+  const elemId = "verify-" + id;
+  const responseHandler = (result) => {
+    $('#' + elemId).html(result);
+    $('#' + elemId).fadeIn();
+    columnHeight();
+    setDeleteAllowed(id, true);
+  };
+
+  showSpinner(elemId);
+  setDeleteAllowed(id, false);
   MirrorCredentialsRenderer.verifyCredentials(id, refresh,
-      makeRendererHandler("verify-" + id, false));
+      makeAjaxHandler(responseHandler));
 }
 
 // relevant for the mirror credentials page

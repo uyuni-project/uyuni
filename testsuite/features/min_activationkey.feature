@@ -1,4 +1,4 @@
-# Copyright (c) 2018 SUSE LLC
+# Copyright (c) 2018-2019 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 Feature: Bootstrap a Salt minion via the GUI with an activation key
@@ -6,16 +6,15 @@ Feature: Bootstrap a Salt minion via the GUI with an activation key
   Scenario: Delete SLES minion system profile
     Given I am on the Systems overview page of this "sle-minion"
     When I follow "Delete System"
-    And I should see a "Confirm System Profile Deletion" text
-    And I click on "Delete Profile"
-    Then I wait until I see "has been deleted" text
+    Then I should see a "Confirm System Profile Deletion" text
+    When I click on "Delete Profile"
+    And I wait until I see "has been deleted" text
     And I cleanup minion "sle-minion"
+    Then "sle-minion" should not be registered
 
   Scenario: Create a configuration channel for the activation key
     Given I am authorized as "admin" with password "admin"
-    When I follow "Home" in the left menu
-    And I follow "Configuration" in the left menu
-    And I follow "Channels" in the left menu
+    When I follow the left menu "Configuration > Channels"
     And I follow "Create Config Channel"
     And I enter "Key Channel" as "cofName"
     And I enter "keychannel" as "cofLabel"
@@ -25,9 +24,7 @@ Feature: Bootstrap a Salt minion via the GUI with an activation key
 
   Scenario: Add a configuration file to the key configuration channel
     Given I am authorized as "admin" with password "admin"
-    When I follow "Home" in the left menu
-    And I follow "Configuration" in the left menu
-    And I follow "Channels" in the left menu
+    When I follow the left menu "Configuration > Channels"
     And I follow "Key Channel"
     And I follow "Create Configuration File or Directory"
     And I enter "/etc/euler.conf" as "cffPath"
@@ -36,7 +33,7 @@ Feature: Bootstrap a Salt minion via the GUI with an activation key
 
   Scenario: Create a complete minion activation key
     Given I am on the Systems page
-    When I follow "Activation Keys" in the left menu
+    When I follow the left menu "Systems > Activation Keys"
     And I follow "Create Key"
     And I enter "Minion testing" as "description"
     And I enter "MINION-TEST" as "key"
@@ -84,12 +81,12 @@ Feature: Bootstrap a Salt minion via the GUI with an activation key
     Then I run spacecmd listevents for "sle-minion"
 
   Scenario: Verify that minion bootstrapped with activation key
-     Given I am on the Systems overview page of this "sle-minion"
-     Then I should see a "Activation Key: 	1-MINION-TEST" text
+    Given I am on the Systems overview page of this "sle-minion"
+    Then I should see a "Activation Key: 	1-MINION-TEST" text
 
   Scenario: Verify that minion bootstrapped with base channel
-     Given I am on the Systems page
-     Then I should see a "Test-Channel-x86_64" text
+    Given I am on the Systems page
+    Then I should see a "Test-Channel-x86_64" text
 
   # bsc#1080807 - Assigning configuration channel in activation key doesn't work
   Scenario: Verify that minion bootstrapped with configuration channel
@@ -116,16 +113,14 @@ Feature: Bootstrap a Salt minion via the GUI with an activation key
 
   Scenario: Cleanup: remove the key configuration channel
     Given I am authorized as "admin" with password "admin"
-    When I follow "Home" in the left menu
-    And I follow "Configuration" in the left menu
-    And I follow "Channels" in the left menu
+    When I follow the left menu "Configuration > Channels"
     And I follow "Key Channel"
     And I follow "Delete Channel"
     And I click on "Delete Config Channel"
 
   Scenario: Cleanup: delete the activation key
     Given I am on the Systems page
-    And I follow "Activation Keys" in the left menu
+    When I follow the left menu "Systems > Activation Keys"
     And I follow "Minion testing" in the content area
     And I follow "Delete Key"
     And I click on "Delete Activation Key"
@@ -162,3 +157,7 @@ Feature: Bootstrap a Salt minion via the GUI with an activation key
     Given I am on the Systems overview page of this "sle-minion"
     Then I should see a "[Container Build Host]" text
     Then I should see a "[OS Image Build Host]" text
+
+  Scenario: Check events history for failures on SLES minion with activation key
+    Given I am on the Systems overview page of this "sle-minion"
+    Then I check for failed events on history event page

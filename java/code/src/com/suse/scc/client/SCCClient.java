@@ -14,6 +14,7 @@
  */
 package com.suse.scc.client;
 
+import com.redhat.rhn.manager.content.ProductTreeEntry;
 import com.suse.scc.model.SCCRepositoryJson;
 import com.suse.scc.model.SCCOrderJson;
 import com.suse.scc.model.SCCProductJson;
@@ -66,4 +67,11 @@ public interface SCCClient {
      */
     List<SCCOrderJson> listOrders() throws SCCClientException;
 
+
+    /**
+     * Gets and returns the list of product tree entries from scc
+     * @return list of product tree entries.
+     * @throws SCCClientException if anything goes wrong SCC side
+     */
+    List<ProductTreeEntry> productTree() throws SCCClientException;
 }

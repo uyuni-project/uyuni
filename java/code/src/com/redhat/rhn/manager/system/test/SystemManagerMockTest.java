@@ -15,7 +15,6 @@
 package com.redhat.rhn.manager.system.test;
 
 import com.redhat.rhn.common.conf.Config;
-import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.channel.AccessToken;
 import com.redhat.rhn.domain.channel.AccessTokenFactory;
 import com.redhat.rhn.domain.channel.Channel;

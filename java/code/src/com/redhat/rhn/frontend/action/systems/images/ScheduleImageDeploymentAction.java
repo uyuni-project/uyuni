@@ -53,7 +53,7 @@ public class ScheduleImageDeploymentAction extends RhnAction {
         User user = ctx.getCurrentUser();
 
         // Put the server object to the request (for system header)
-        Long sid = new Long(request.getParameter(RequestContext.SID));
+        Long sid = Long.valueOf(request.getParameter(RequestContext.SID));
         Server server = SystemManager.lookupByIdAndUser(sid, user);
         request.setAttribute("system", server);
 

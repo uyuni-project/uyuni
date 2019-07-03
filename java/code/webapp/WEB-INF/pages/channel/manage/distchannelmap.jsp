@@ -14,7 +14,7 @@
                creationUrl="DistChannelMapEdit.do"
                creationType="distchannelmap"
                iconAlt="info.alt.img"
-               helpUrl="/rhn/help/reference/en-US/ref.webui.channels.mapping.jsp#ref.webui.channels.mapping">
+               helpUrl="/docs/reference/software/software-distribution-channel-mapping.html">
   <bean:message key="Distribution Channel Mapping"/>
 </rhn:toolbar>
 

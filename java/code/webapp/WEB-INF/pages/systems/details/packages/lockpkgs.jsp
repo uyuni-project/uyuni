@@ -9,7 +9,7 @@
     <%@ include file="/WEB-INF/pages/common/fragments/systems/system-header.jspf"%>
 
     <rhn:toolbar base="h2" icon="header-package-add"
-        helpUrl="/rhn/help/reference/en-US/ref.webui.systems.systems.jsp#s1-package-lock">
+        helpUrl="/docs/reference/systems/system-details/sd-packages.html">
         <bean:message key="pkg.lock.header" />
     </rhn:toolbar>
 

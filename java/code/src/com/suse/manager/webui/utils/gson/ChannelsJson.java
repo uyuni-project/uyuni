@@ -39,42 +39,57 @@ public class ChannelsJson {
     public static class ChannelJson {
 
         private Long id;
+        private String label;
+        private String archLabel;
+
         private String name;
         private boolean custom;
         private boolean subscribable;
         private boolean recommended;
+        private boolean isCloned;
         private Long compatibleChannelPreviousSelection;
 
         /**
          * Instantiates a new Channel json.
          *
          * @param idIn   the id
+         * @param labelIn the label
          * @param nameIn the name
          * @param customIn custom channel flag
          * @param subscribableIn subscribable flag
          * @param recommendedIn the channel is recommended by its parent channel
          * @param compatibleChannelPreviousSelectionIn the compatible channel id of the previous selection
+         * @param isClonedIn if the channel is clonned
+         * @param archLabelIn the architecture label
          */
-        public ChannelJson(Long idIn, String nameIn, boolean customIn, boolean subscribableIn, boolean recommendedIn,
+        public ChannelJson(Long idIn, String labelIn, String nameIn, boolean customIn, boolean subscribableIn,
+                           boolean isClonedIn, String archLabelIn, boolean recommendedIn,
                            Long compatibleChannelPreviousSelectionIn) {
             this.id = idIn;
+            this.label = labelIn;
             this.name = nameIn;
             this.custom = customIn;
             this.subscribable = subscribableIn;
             this.recommended = recommendedIn;
             this.compatibleChannelPreviousSelection = compatibleChannelPreviousSelectionIn;
+            this.isCloned = isClonedIn;
+            this.archLabel = archLabelIn;
         }
 
         /**
          * Instantiates a new Channel json.
          *
          * @param idIn   the id
+         * @param labelIn the label
          * @param nameIn the name
          * @param customIn custom channel flag
          * @param subscribableIn subscribable flag
+         * @param isClonedIn if the channel is clonned
+         * @param archLabelIn the architecture label
          */
-        public ChannelJson(Long idIn, String nameIn, boolean customIn, boolean subscribableIn) {
-            this(idIn, nameIn, customIn, subscribableIn, false, null);
+        public ChannelJson(Long idIn, String labelIn, String nameIn, boolean customIn, boolean subscribableIn,
+                           boolean isClonedIn, String archLabelIn) {
+            this(idIn, labelIn, nameIn, customIn, subscribableIn, isClonedIn, archLabelIn, false, null);
         }
 
         /**
@@ -85,11 +100,19 @@ public class ChannelsJson {
         }
 
         /**
+         * @return the label
+         */
+        public String getLabel() {
+            return label;
+        }
+
+        /**
          * @return the name
          */
         public String getName() {
             return name;
         }
+
 
         /**
          * @return custom to get
@@ -118,6 +141,11 @@ public class ChannelsJson {
         public Long getCompatibleChannelPreviousSelection() {
             return compatibleChannelPreviousSelection;
         }
+
+        public String getArchLabel() {
+            return archLabel;
+        }
+
     }
 
     /**
@@ -145,7 +173,9 @@ public class ChannelsJson {
      * @param baseIn the base channel
      */
     public void setBase(Channel baseIn) {
-        this.base = new ChannelJson(baseIn.getId(), baseIn.getName(), baseIn.isCustom(), true);
+        this.base = new ChannelJson(
+                baseIn.getId(), baseIn.getLabel(), baseIn.getName(), baseIn.isCustom(), true, baseIn.isCloned(),
+                baseIn.getChannelArch().getLabel());
     }
 
     /**
@@ -159,7 +189,9 @@ public class ChannelsJson {
      * @param childrenIn the child channels
      */
     public void setChildren(Stream<Channel> childrenIn) {
-        this.children = childrenIn.map((c) -> new ChannelJson(c.getId(), c.getName(), c.isCustom(), true))
+        this.children = childrenIn.map(
+                (c) -> new ChannelJson(c.getId(), c.getLabel(), c.getName(), c.isCustom(), true,
+                        c.isCloned(), c.getChannelArch().getLabel()))
                 .collect(Collectors.toList());
     }
 
@@ -167,16 +199,21 @@ public class ChannelsJson {
      * @param childrenIn the child channels
      * @param recommendedFlags the map of channels with recommended flag value
      */
-    public void setChildrenWithRecommended(Stream<Channel> childrenIn, Map<Long, Boolean> recommendedFlags) {
-        this.children = childrenIn.map((c) ->
-                new ChannelJson(
-                        c.getId(),
-                        c.getName(),
-                        c.isCustom(),
-                        true,
-                        recommendedFlags.get(c.getId()),
-                        null
-                )).collect(Collectors.toList());
+    public void setChildrenWithRecommendedAndArch(Stream<Channel> childrenIn, Map<Long, Boolean> recommendedFlags) {
+        this.children = childrenIn.map((c) -> {
+            ChannelJson channelWithArch = new ChannelJson(
+                    c.getId(),
+                    c.getLabel(),
+                    c.getName(),
+                    c.isCustom(),
+                    true,
+                    c.isCloned(),
+                    c.getChannelArch().getLabel(),
+                    recommendedFlags.get(c.getId()),
+                    null
+            );
+            return channelWithArch;
+        }).collect(Collectors.toList());
     }
 
     /**

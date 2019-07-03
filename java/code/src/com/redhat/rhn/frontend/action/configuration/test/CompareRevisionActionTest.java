@@ -36,7 +36,7 @@ public class CompareRevisionActionTest extends RhnMockStrutsTestCase {
         Long crid = revision.getId();
 
         //Create another revision for this file to appear in the list
-        ConfigTestUtils.createConfigRevision(revision.getConfigFile(), new Long(2));
+        ConfigTestUtils.createConfigRevision(revision.getConfigFile(), 2L);
 
         setRequestPathInfo("/configuration/file/CompareRevision");
         addRequestParameter("cfid", cfid.toString());

@@ -1,0 +1,6 @@
+node_exporter:
+  enabled: False
+
+postgres_exporter:
+  enabled: False
+  data_source_name: postgresql://user:passwd@localhost:5432/database?sslmode=disable

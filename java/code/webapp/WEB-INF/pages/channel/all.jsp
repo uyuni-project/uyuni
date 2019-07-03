@@ -6,7 +6,7 @@
 <html>
 
 <head>
-<script src="/javascript/channel_tree.js" type="text/javascript"></script>
+<script src="/javascript/channel_tree.js?cb=${rhn:getConfig('web.version')}" type="text/javascript"></script>
 <script type="text/javascript">
 var filtered = ${requestScope.isFiltered};
 function showFiltered() {
@@ -21,7 +21,7 @@ function showFiltered() {
              creationUrl="/rhn/channels/manage/Edit.do"
              creationType="channel"
              creationAcl="user_role(channel_admin)"
-             helpUrl="/rhn/help/reference/en-US/ref.webui.channels.jsp">
+             helpUrl="/docs/reference/software/channel-details.html">
   <bean:message key="channels.all.jsp.toolbar"/>
 </rhn:toolbar>
 

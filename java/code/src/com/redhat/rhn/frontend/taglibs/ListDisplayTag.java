@@ -540,14 +540,14 @@ public class ListDisplayTag extends ListDisplayTagBase {
 
         Object [] args = new Object[4];
         if (getPageList().size() == 0) {
-            args[0] = new Integer(0);
+            args[0] = 0;
             args[1] = args[0];
             args[2] = args[0];
         }
         else {
-            args[0] = new Integer(getPageList().getStart());
-            args[1] = new Integer(finalResult);
-            args[2] = new Integer(getPageList().getTotalSize());
+            args[0] = getPageList().getStart();
+            args[1] = finalResult;
+            args[2] = getPageList().getTotalSize();
         }
         out.append(LocalizationService.getInstance()
                     .getMessage("message.range", args));
@@ -952,7 +952,7 @@ public class ListDisplayTag extends ListDisplayTagBase {
                 if (reflinkkey != null) {
                     Object[] args = new Object[2];
 
-                    args[0] = new Integer(getPageList().getTotalSize());
+                    args[0] = getPageList().getTotalSize();
                     args[1] = reflinkkeyarg0;
 
                     String message = LocalizationService.getInstance()
@@ -992,9 +992,9 @@ public class ListDisplayTag extends ListDisplayTagBase {
                 }
 
                 Object [] args = new Object[4];
-                args[0] = new Integer(getPageList().getStart());
-                args[1] = new Integer(finalResult);
-                args[2] = new Integer(getPageList().getTotalSize());
+                args[0] = getPageList().getStart();
+                args[1] = finalResult;
+                args[2] = getPageList().getTotalSize();
                 args[3] = LocalizationService.getInstance().getMessage(description);
 
                 out.print("<span class=\"text-right\">\n");

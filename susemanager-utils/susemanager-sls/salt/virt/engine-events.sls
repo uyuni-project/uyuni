@@ -11,10 +11,3 @@
   file.absent
 
 {% endif %}
-
-salt-minion:
-  service.running:
-    - enable: True
-    - watch:
-      - file: /etc/salt/minion.d/libvirt-events.conf
-

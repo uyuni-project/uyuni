@@ -76,7 +76,7 @@ public class AuthHandler extends BaseHandler {
                       throws LoginException {
         //If we didn't get a duration value, use the one from the configs
         long duration = SessionManager.lifetimeValue();
-        return login(username, password, new Integer((int)duration));
+        return login(username, password, (int) duration);
     }
 
     /**

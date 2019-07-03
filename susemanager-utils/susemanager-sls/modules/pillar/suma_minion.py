@@ -21,13 +21,15 @@ import json
 import sys
 import re
 import salt.utils.dictupdate
+import salt.utils.stringutils
 
 # SUSE Manager static pillar paths:
 MANAGER_STATIC_PILLAR_DATA_PATH = '/usr/share/susemanager/pillar_data'
 MANAGER_PILLAR_DATA_PATH = '/srv/susemanager/pillar_data'
 
 # SUSE Manager formulas paths:
-MANAGER_FORMULAS_METADATA_PATH = '/usr/share/susemanager/formulas/metadata'
+MANAGER_FORMULAS_METADATA_MANAGER_PATH = '/usr/share/susemanager/formulas/metadata'
+MANAGER_FORMULAS_METADATA_STANDALONE_PATH = '/usr/share/salt-formulas/metadata'
 CUSTOM_FORMULAS_METADATA_PATH = '/srv/formula_metadata'
 FORMULAS_DATA_PATH = '/srv/susemanager/formula_data'
 
@@ -133,7 +135,7 @@ def formula_pillars(minion_id, group_ids):
     data = load_formulas_from_file("group_formulas.json")
     for group in group_ids:
         for formula in data.get(str(group), []):
-            formula_utf8 = formula.encode('utf-8')
+            formula_utf8 = salt.utils.stringutils.to_str(formula)
             if formula_utf8 in out_formulas:
                 continue # already processed
             out_formulas.append(formula_utf8)
@@ -144,7 +146,7 @@ def formula_pillars(minion_id, group_ids):
     # Loading minion formulas
     data = load_formulas_from_file("minion_formulas.json")
     for formula in data.get(str(minion_id), []):
-        formula_utf8 = formula.encode('utf-8')
+        formula_utf8 = salt.utils.stringutils.to_str(formula)
         if formula_utf8 in out_formulas:
             continue # already processed
         out_formulas.append(formula_utf8)
@@ -160,12 +162,14 @@ def load_formula_pillar(minion_id, group_id, formula_name):
     '''
     Load the data from a specific formula for a minion in a specific group, merge and return it.
     '''
-    layout_filename = os.path.join(MANAGER_FORMULAS_METADATA_PATH, formula_name, "form.yml")
+    layout_filename = os.path.join( MANAGER_FORMULAS_METADATA_STANDALONE_PATH, formula_name, "form.yml")
     if not os.path.isfile(layout_filename):
-        layout_filename = os.path.join(CUSTOM_FORMULAS_METADATA_PATH, formula_name, "form.yml")
+        layout_filename = os.path.join(MANAGER_FORMULAS_METADATA_MANAGER_PATH, formula_name, "form.yml")
         if not os.path.isfile(layout_filename):
-            log.error('Error loading data for formula "{formula}": No form.yml found'.format(formula=formula_name))
-            return {}
+            layout_filename = os.path.join(CUSTOM_FORMULAS_METADATA_PATH, formula_name, "form.yml")
+            if not os.path.isfile(layout_filename):
+                log.error('Error loading data for formula "{formula}": No form.yml found'.format(formula=formula_name))
+                return {}
 
     group_filename = os.path.join(FORMULAS_DATA_PATH, "group_pillar", "{id}_{name}.json".format(id=group_id, name=formula_name)) if group_id is not None else None
     system_filename = os.path.join(FORMULAS_DATA_PATH, "pillar", "{id}_{name}.json".format(id=minion_id, name=formula_name))

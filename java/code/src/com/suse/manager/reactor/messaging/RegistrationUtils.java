@@ -15,6 +15,12 @@
 
 package com.suse.manager.reactor.messaging;
 
+import static java.util.Collections.emptyList;
+import static java.util.Collections.emptySet;
+import static java.util.Optional.ofNullable;
+import static java.util.stream.Collectors.partitioningBy;
+import static java.util.stream.Collectors.toSet;
+
 import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.common.validator.ValidatorResult;
 import com.redhat.rhn.domain.channel.Channel;
@@ -38,6 +44,7 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
+
 import com.suse.manager.reactor.utils.RhelUtils;
 import com.suse.manager.reactor.utils.ValueMap;
 import com.suse.manager.webui.controllers.StatesAPI;
@@ -46,7 +53,7 @@ import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.utils.salt.custom.PkgProfileUpdateSlsResult;
 import com.suse.salt.netapi.calls.modules.State;
 import com.suse.salt.netapi.calls.modules.Zypper;
-import com.suse.salt.netapi.results.CmdExecCodeAll;
+import com.suse.salt.netapi.results.CmdResult;
 import com.suse.utils.Opt;
 import org.apache.log4j.Logger;
 
@@ -60,22 +67,18 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Stream;
 
-import static java.util.Collections.emptyList;
-import static java.util.Collections.emptySet;
-import static java.util.Optional.ofNullable;
-import static java.util.stream.Collectors.partitioningBy;
-import static java.util.stream.Collectors.toSet;
-
 /**
  * Common registration logic that can be used from multiple places
  */
 public class RegistrationUtils {
 
     private static final List<String> BLACKLIST = Collections.unmodifiableList(
-       Arrays.asList("rhncfg", "rhncfg-actions", "rhncfg-client", "rhn-virtualization-host", "osad")
+       Arrays.asList("rhncfg", "rhncfg-actions", "rhncfg-client", "rhn-virtualization-host", "osad",
+               "mgr-cfg", "mgr-cfg-actions", "mgr-cfg-client", "mgr-virtualization-host", "mgr-osad")
     );
 
     private static final String OS = "os";
+    private static final String OS_ARCH = "osarch";
 
     private static final Logger LOG = Logger.getLogger(RegistrationUtils.class);
 
@@ -99,14 +102,6 @@ public class RegistrationUtils {
         // get hardware and network async
         triggerHardwareRefresh(minion);
 
-        // Get the product packages from subscribed channels and install them.
-        List<Package> prodPkgs = PackageFactory.findMissingProductPackagesOnServer(minion.getId());
-        StateFactory.addPackagesToNewStateRevision(minion, creator.map(c -> c.getId()), prodPkgs);
-
-        LOG.info("Finished minion registration: " + minionId);
-
-        StatesAPI.generateServerPackageState(minion);
-
         // Asynchronously get the uptime of this minion
         MessageQueue.publish(new MinionStartEventDatabaseMessage(minionId));
 
@@ -122,6 +117,14 @@ public class RegistrationUtils {
         catch (RuntimeException e) {
             LOG.error("Error generating Salt files for minion '" + minionId + "':" + e.getMessage());
         }
+
+        // Get the product packages from subscribed channels and install them.
+        List<Package> prodPkgs = PackageFactory.findMissingProductPackagesOnServer(minion.getId());
+        StateFactory.addPackagesToNewStateRevision(minion, creator.map(User::getId), prodPkgs);
+
+        LOG.info("Finished minion registration: " + minionId);
+
+        StatesAPI.generateServerPackageState(minion);
 
         // Should we apply the highstate?
         boolean applyHighstate = activationKey.isPresent() && activationKey.get().getDeployConfigs();
@@ -229,7 +232,7 @@ public class RegistrationUtils {
             return;
         }
 
-        Set<Channel> channelsToAssign = Opt.fold(
+        Set<Channel> unfilteredChannels = Opt.fold(
                 activationKey,
                 // No ActivationKey
                 () -> {
@@ -270,7 +273,21 @@ public class RegistrationUtils {
                 )
         );
 
-        server.setChannels(channelsToAssign);
+        // this is needed for "special" cases like RES6 that has multiple architectures in one product, or in case an
+        // activation key specifies a base channel for an incorrect arch
+        Set<Channel> compatibleChannels = unfilteredChannels.stream()
+                .filter(c -> c.getChannelArch().getCompatibleServerArches().contains(server.getServerArch()))
+                .collect(toSet());
+
+        Channel assignedBaseChannel = server.getBaseChannel();
+        if (assignedBaseChannel != null && compatibleChannels.stream()
+                .filter(channel -> channel.isBaseChannel())
+                .anyMatch(baseChannel -> !baseChannel.equals(assignedBaseChannel))) {
+            // if base channel is going to be changed, we reset all current assignments
+            server.getChannels().clear();
+        }
+
+        server.setChannels(compatibleChannels);
     }
 
     private static Set<Channel> findChannelsForProducts(Set<SUSEProduct> suseProducts, String minionId) {
@@ -321,13 +338,13 @@ public class RegistrationUtils {
                     .applyState(server.getMinionId(), "packages.redhatproductinfo");
             Optional<String> centosReleaseContent = applyResultMap.map(
                     map -> map.get(PkgProfileUpdateSlsResult.PKG_PROFILE_CENTOS_RELEASE))
-                    .map(r -> r.getChanges(CmdExecCodeAll.class)).map(c -> c.getStdout());
+                    .map(r -> r.getChanges(CmdResult.class)).map(c -> c.getStdout());
             Optional<String> rhelReleaseContent = applyResultMap.map(
                     map -> map.get(PkgProfileUpdateSlsResult.PKG_PROFILE_REDHAT_RELEASE))
-                    .map(r -> r.getChanges(CmdExecCodeAll.class)).map(c -> c.getStdout());
+                    .map(r -> r.getChanges(CmdResult.class)).map(c -> c.getStdout());
             Optional<String> whatProvidesRes = applyResultMap.map(map -> map
                     .get(PkgProfileUpdateSlsResult.PKG_PROFILE_WHATPROVIDES_SLES_RELEASE))
-                    .map(r -> r.getChanges(CmdExecCodeAll.class)).map(c -> c.getStdout());
+                    .map(r -> r.getChanges(CmdResult.class)).map(c -> c.getStdout());
 
             Optional<RhelUtils.RhelProduct> rhelProduct = RhelUtils.detectRhelProduct(
                     server, whatProvidesRes, rhelReleaseContent, centosReleaseContent);
@@ -342,6 +359,13 @@ public class RegistrationUtils {
                     return Stream.empty();
                 }
             }).collect(toSet());
+        }
+        else if ("ubuntu".equalsIgnoreCase(grains.getValueAsString(OS))) {
+            SUSEProduct product = SUSEProductFactory.findSUSEProduct("ubuntu-client",
+                    grains.getValueAsString("osrelease"), null, grains.getValueAsString(OS_ARCH) + "-deb", false);
+            if (product != null) {
+                return Collections.singleton(product);
+            }
         }
         return emptySet();
     }

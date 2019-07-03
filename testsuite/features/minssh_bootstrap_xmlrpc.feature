@@ -1,4 +1,4 @@
-# Copyright (c) 2017-2018 SUSE LLC.
+# Copyright (c) 2017-2019 SUSE LLC.
 # Licensed under the terms of the MIT license.
 
 Feature: Register a salt-ssh system via XML-RPC
@@ -7,10 +7,11 @@ Feature: Register a salt-ssh system via XML-RPC
   Scenario: Setup XML-RPC bootstrap: delete SSH minion system profile
     Given I am on the Systems overview page of this "ssh-minion"
     When I follow "Delete System"
-    And I should see a "Confirm System Profile Deletion" text
-    And I click on "Delete Profile"
+    Then I should see a "Confirm System Profile Deletion" text
+    When I click on "Delete Profile"
     And I wait until I see "has been deleted" text
     And I cleanup minion "ssh-minion"
+    Then "ssh-minion" should not be registered
 
 @ssh_minion
   Scenario: Bootstrap a SLES SSH minion via XML-RPC
@@ -24,7 +25,11 @@ Feature: Register a salt-ssh system via XML-RPC
      And I navigate to "rhn/systems/Overview.do" page
      And I wait until I see the name of "ssh-minion", refreshing the page
      And I wait until onboarding is completed for "ssh-minion"
-     Then I remove package "sle-manager-tools-release" from highstate
+
+@ssh_minion
+  Scenario: Remove sle-manager-tools-release from state after bootstrap via XML-RPC
+    Given I am on the Systems overview page of this "ssh-minion"
+    When I remove package "sle-manager-tools-release" from highstate
 
 @ssh_minion
   Scenario: Check contact method of this Salt SSH system
@@ -43,6 +48,11 @@ Feature: Register a salt-ssh system via XML-RPC
   Scenario: Check spacecmd system ID of SSH minion bootstrapped via XML-RPC
     Given I am on the Systems overview page of this "ssh-minion"
     Then I run spacecmd listevents for "ssh-minion"
+
+@ssh_minion
+  Scenario: Check events history for failures on SSH minion after XML-RPC bootstrap
+    Given I am on the Systems overview page of this "ssh-minion"
+    Then I check for failed events on history event page
 
 @ssh_minion
   Scenario: Cleanup: subscribe SSH minion to base channel

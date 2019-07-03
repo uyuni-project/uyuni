@@ -114,7 +114,7 @@ public class ForceRecreationListType implements UserCollectionType {
         if (l < 0) {
             return null;
         }
-        return new Integer(l);
+        return l;
     }
 
     /**

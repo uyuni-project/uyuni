@@ -101,14 +101,14 @@ public class TreeFilter implements ResultsFilter {
             filtered = new LinkedList();
             Iterator it = dr.iterator();
             NodeInfo current = NodeInfo.instance((DepthAware)it.next(),
-                                                                new Integer(0));
+                    0);
             while (it.hasNext()) {
                 if (matcher.include(current.node, filterData, filterColumn)) {
                     addMatchedPath(current, dr);
                 }
 
                 NodeInfo successor = NodeInfo.instance((DepthAware) it.next(),
-                                            new Integer(current.position.intValue() + 1));
+                        current.position + 1);
                 if (successor.node.depth() == current.node.depth()) {
                     successor.parent = current.parent;
                 }
@@ -151,13 +151,13 @@ public class TreeFilter implements ResultsFilter {
         LinkedList path = new LinkedList();
         if (!positions.contains(current.position)) {
             positions.add(current.position);
-            path.addFirst(result.get(current.position.intValue()));
+            path.addFirst(result.get(current.position));
         }
         while (current.parent != null) {
             current = current.parent;
             if (!positions.contains(current.position)) {
                 positions.add(current.position);
-                path.addFirst(result.get(current.position.intValue()));
+                path.addFirst(result.get(current.position));
             }
         }
         filtered.addAll(path);

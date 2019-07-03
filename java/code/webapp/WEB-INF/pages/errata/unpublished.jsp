@@ -9,7 +9,7 @@
 </head>
 <body>
 <rhn:toolbar base="h1" icon="header-errata" iconAlt="errata.common.errataAlt"
- helpUrl="/rhn/help/reference/en-US/ref.webui.patches.manage.jsp#s3-sm-errata-unpublished"
+ helpUrl="/docs/reference/patches/manage-patches-unpublished.html"
  creationUrl="/rhn/errata/manage/Create.do"
  creationType="erratum">
   <bean:message key="erratalist.jsp.erratamgmt"/>

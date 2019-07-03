@@ -91,7 +91,7 @@ public class DistChannelHandler extends BaseHandler {
         if (!loggedInUser.hasRole(RoleFactory.SAT_ADMIN)) {
             throw new PermissionException(RoleFactory.SAT_ADMIN);
         }
-        Org org = OrgFactory.lookupById(new Long(orgId));
+        Org org = OrgFactory.lookupById(Long.valueOf(orgId));
         if (org == null) {
             throw new NoSuchOrgException(orgId.toString());
         }

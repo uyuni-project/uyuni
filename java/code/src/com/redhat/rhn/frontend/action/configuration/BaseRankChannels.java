@@ -113,7 +113,7 @@ public abstract class BaseRankChannels extends RhnLookupDispatchAction {
         if (StringUtils.isNotBlank(rankedValues)) {
             String[] values = rankedValues.split(",");
             for (String value : values) {
-                channels.add(new Long(value));
+                channels.add(Long.valueOf(value));
             }
         }
         return channels;

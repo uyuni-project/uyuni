@@ -1,3 +1,41 @@
+- mark zz-spacewalk-www.conf and os-images.conf as plain %config
+  instead of %config(noreplace):
+  Those files were never meant to be edited by the user. The package
+  will preserve your edits as .rpmsave files.
+  If you need edits, you will have to merge them after every upgrade
+  from the rpmsave files from now on.
+- Fix URL rewrites for proxy cobbler api endpoint (bsc#1133800)
+
+-------------------------------------------------------------------
+Wed May 15 15:10:31 CEST 2019 - jgonzalez@suse.com
+
+- version 4.0.9-1
+- SPEC cleanup
+
+-------------------------------------------------------------------
+Thu Apr 25 09:45:33 CEST 2019 - jgonzalez@suse.com
+
+- version 4.0.8-1
+- Fix config declaration for rhn.conf (bsc#1132197)
+
+-------------------------------------------------------------------
+Mon Apr 22 12:11:22 CEST 2019 - jgonzalez@suse.com
+
+- version 4.0.7-1
+- Enable SLES11 OS Image Build Host
+
+-------------------------------------------------------------------
+Wed Apr 03 17:10:37 CEST 2019 - jgonzalez@suse.com
+
+- version 4.0.6-1
+- remove apache access_compat module from config if it exists
+
+-------------------------------------------------------------------
+Mon Mar 25 16:42:45 CET 2019 - jgonzalez@suse.com
+
+- version 4.0.5-1
+- remove apache access_compat module and adapt config files
+
 -------------------------------------------------------------------
 Sat Mar 02 00:10:15 CET 2019 - jgonzalez@suse.com
 

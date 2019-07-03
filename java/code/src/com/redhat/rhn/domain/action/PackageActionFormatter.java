@@ -42,7 +42,6 @@ public class PackageActionFormatter extends ActionFormatter {
      * {@inheritDoc}
      */
     @Override
-    @SuppressWarnings("unchecked")
     public String getRelatedObjectDescription() {
         Set<PackageActionDetails> packages = ((PackageAction) this.getAction())
             .getDetails();

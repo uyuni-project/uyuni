@@ -1,4 +1,4 @@
-# Copyright (c) 2016-2018 SUSE-LINUX
+# Copyright (c) 2016-2019 SUSE-LINUX
 # Licensed under the terms of the MIT license.
 
 require 'twopence'
@@ -87,7 +87,7 @@ def get_system_name(host)
     # The PXE boot minion is not directly accessible on the network,
     # therefore it is not represented by a twopence node
     output, _code = $server.run('salt-key')
-    system_name = output.split.find { |word| word =~ /example.Intel-Genuine-None-/ }
+    system_name = output.split.find { |word| word =~ /example.pxeboot-/ }
     system_name = '' if system_name.nil?
   else
     node = get_target(host)
@@ -127,3 +127,4 @@ $private_net = ENV['PRIVATENET'] if ENV['PRIVATENET']
 $mirror = ENV['MIRROR']
 $git_profiles = ENV['GITPROFILES']
 $product = product
+$server_http_proxy = ENV['SERVER_HTTP_PROXY'] if ENV['SERVER_HTTP_PROXY']

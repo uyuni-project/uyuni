@@ -7,7 +7,7 @@
 <html:html >
     <body>
 <rhn:toolbar base="h1" icon="header-errata"
-             helpUrl="/rhn/help/reference/en-US/ref.webui.patches.clone.jsp#ref.webui.patches.clone">
+             helpUrl="/docs/reference/patches/clone-patches.html">
         <bean:message key="cloneerrata.jsp.erratamanagement"/>
     </rhn:toolbar>
 

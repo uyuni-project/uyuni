@@ -33,7 +33,7 @@ import java.util.Set;
 public class ChannelArchTest extends RhnBaseTestCase {
 
     public void testChannelArch() throws Exception {
-        Long testid = new Long(500);
+        Long testid = 500L;
         String query = "ChannelArch.findById";
         ChannelArch ca = (ChannelArch) TestUtils.lookupFromCacheById(testid, query);
         ChannelArch ca2 = (ChannelArch) TestUtils.lookupFromCacheById(ca.getId(), query);

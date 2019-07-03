@@ -1,7 +1,7 @@
 #
 # spec file for package spacewalk-web
 #
-# Copyright (c) 2018 SUSE LINUX GmbH, Nuernberg, Germany.
+# Copyright (c) 2019 SUSE LINUX GmbH, Nuernberg, Germany.
 # Copyright (c) 2008-2018 Red Hat, Inc.
 #
 # All modifications and additions to the file contributed by third parties
@@ -13,7 +13,7 @@
 # license that conforms to the Open Source Definition (Version 1.9)
 # published by the Open Source Initiative.
 
-# Please submit bugfixes or comments via http://bugs.opensuse.org/
+# Please submit bugfixes or comments via https://bugs.opensuse.org/
 #
 
 
@@ -32,9 +32,9 @@ Name:           spacewalk-web
 Summary:        Spacewalk Web site - Perl modules
 License:        GPL-2.0-only
 Group:          Applications/Internet
-Version:        4.0.7
+Version:        4.0.11
 Release:        1%{?dist}
-URL:            https://github.com/uyuni-project/uyuni
+Url:            https://github.com/uyuni-project/uyuni
 Source0:        https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildArch:      noarch
@@ -54,7 +54,7 @@ but it does generate a number of sub-packages.
 
 %package -n susemanager-web-libs
 Summary:        Vendor bundles for spacewalk-web
-License:		BSD-3-Clause and MIT
+License:		BSD-3-Clause and LGPL-3.0-or-later and MIT and MPL-2.0
 Group:          Applications/Internet
 
 BuildArch:      noarch
@@ -92,6 +92,15 @@ Group:          Applications/Internet
 Provides:       spacewalk(spacewalk-base) = %{version}-%{release}
 %if 0%{?suse_version}
 Requires:       susemanager-frontend-libs
+%if 0%{?suse_version} >= 1500
+Requires:       python3-websockify
+Requires:       python3-PyJWT
+Requires:       python3-numpy
+%else
+Requires:       python-websockify
+Requires:       python-PyJWT
+Requires:       python-numpy
+%endif
 %endif
 Requires:       httpd
 Requires:       sudo

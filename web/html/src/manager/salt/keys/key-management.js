@@ -1,0 +1,185 @@
+/* eslint-disable */
+'use strict';
+
+const React = require("react");
+const ReactDOM = require("react-dom");
+const Buttons = require("components/buttons");
+const AsyncButton = Buttons.AsyncButton;
+const { TopPanel } = require('components/panels/TopPanel');
+const Network = require("utils/network");
+const Functions = require("utils/functions");
+const Utils = Functions.Utils;
+const {Table, Column, SearchField, Highlight} = require("components/table");
+
+function listKeys() {
+  return Network.get("/rhn/manager/api/systems/keys").promise;
+}
+
+function acceptKey(key) {
+  return Network.post("/rhn/manager/api/systems/keys/" + key + "/accept").promise;
+}
+
+function deleteKey(key) {
+  return Network.post("/rhn/manager/api/systems/keys/" + key + "/delete").promise;
+}
+
+function rejectKey(key) {
+  return Network.post("/rhn/manager/api/systems/keys/" + key + "/reject").promise;
+}
+
+function actionsFor(id, state, update, enabled) {
+  const acc = () => <AsyncButton disabled={!enabled} key="accept" title={t("Accept")} icon="fa-check" action={() => acceptKey(id).then(update)} />;
+  const rej = () => <AsyncButton disabled={!enabled} key="reject" title={t("Reject")} icon="fa-times" action={() => rejectKey(id).then(update)} />;
+  const del = () => <AsyncButton disabled={!enabled} key="delete" title={t("Delete")} icon="fa-trash" action={() => deleteKey(id).then(update)} />;
+  const mapping = {
+    "accepted": [del],
+    "pending": [acc, rej],
+    "rejected": [del],
+    "denied": [del]
+  };
+  return (
+    <div className="pull-right btn-group">
+      { mapping[state].map(fn => fn()) }
+    </div>
+  );
+}
+
+const stateMapping = {
+  "accepted": {
+    uiName: t("accepted"),
+    label: "success"
+  },
+  "pending": {
+    uiName: t("pending"),
+    label: "info"
+  },
+  "rejected": {
+    uiName: t("rejected"),
+    label: "warning"
+  },
+  "denied": {
+    uiName: t("denied"),
+    label: "danger"
+  }
+}
+
+const stateUiName = (state) => stateMapping[state].uiName;
+
+function labelFor(state) {
+  const mapping = stateMapping[state];
+  return <span className={"label label-" + mapping.label}>{ mapping.uiName }</span>
+}
+
+class KeyManagement extends React.Component {
+
+  constructor(props) {
+    super();
+    ["searchData", "rowKey", "reloadKeys"].forEach(method => this[method] = this[method].bind(this));
+    this.state = {
+      keys: [],
+      isOrgAdmin: false
+    };
+    this.reloadKeys();
+  }
+
+  reloadKeys() {
+    return listKeys().then(data => {
+      this.setState({
+        keys: data["minions"],
+        isOrgAdmin: data["isOrgAdmin"]
+      });
+    });
+  }
+
+  rowKey(rowData) {
+    return rowData.id;
+  }
+
+  searchData(datum, criteria) {
+    if (criteria) {
+      return datum.id.toLocaleLowerCase().includes(criteria.toLocaleLowerCase()) ||
+        datum.fingerprint.toLocaleLowerCase().includes(criteria.toLocaleLowerCase());
+    }
+    return true;
+  }
+
+  isFiltered(criteria) {
+    return criteria && criteria.length > 0;
+  }
+
+  render() {
+    const panelButtons = <div className="pull-right btn-group">
+      <AsyncButton id="reload" icon="fa-refresh" text="Refresh" action={this.reloadKeys} />
+    </div>;
+    return (
+      <span>
+        <TopPanel title={t("Keys")} icon="fa-desktop"
+               button={ panelButtons }
+               helpUrl="/docs/reference/salt/salt-keys.html">
+          <Table
+              data={this.state.keys}
+              identifier={this.rowKey}
+              initialSortColumnKey="id"
+              initialItemsPerPage={userPrefPageSize}
+              searchField={
+                  <SearchField filter={this.searchData} criteria={""} />
+              }>
+            <Column
+              columnKey="id"
+              width="30%"
+              comparator={Utils.sortByText}
+              header={t('Name')}
+              cell={ (row, criteria) => {
+                if(typeof row.sid !== 'undefined') {
+                  return (
+                    <a href={ "/rhn/manager/systems/" + row.id }>
+                      <Highlight enabled={this.isFiltered(criteria)}
+                        text={row.id} highlight={criteria} />
+                    </a>
+                  );
+                } else {
+                  return (
+                    <Highlight enabled={this.isFiltered(criteria)}
+                      text={row.id} highlight={criteria} />
+                  );
+                }
+              }
+            }
+            />
+            <Column
+              columnKey="fingerprint"
+              width="45%"
+              comparator={Utils.sortByText}
+              header={t('Fingerprint')}
+              cell={ (row, criteria) =>
+                  <Highlight enabled={this.isFiltered(criteria)}
+                    text={row.fingerprint} highlight={criteria} />
+              }
+            />
+            <Column
+              columnKey="state"
+              width="10%"
+              columnClass="text-center"
+              headerClass="text-center"
+              comparator={Utils.sortByText}
+              header={t('State')}
+              cell={ (row) => labelFor(row.state) }
+            />
+            <Column
+              width="15%"
+              columnClass="text-right"
+              headerClass="text-right"
+              header={t('Actions')}
+              cell={ (row) => actionsFor(row.id, row.state, this.reloadKeys, this.state.isOrgAdmin)}
+            />
+          </Table>
+        </TopPanel>
+      </span>
+    );
+  }
+}
+
+ReactDOM.render(
+  <KeyManagement />,
+  document.getElementById('key-management')
+);

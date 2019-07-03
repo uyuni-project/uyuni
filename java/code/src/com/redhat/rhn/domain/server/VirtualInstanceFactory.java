@@ -213,11 +213,11 @@ public class VirtualInstanceFactory extends HibernateFactory {
             String hostName = (String) row[5];
 
             GuestAndNonVirtHostView view = new GuestAndNonVirtHostView(
-                                                new Long(guestId.longValue()),
-                                                new Long(guestOrgId.longValue()),
+                                                guestId.longValue(),
+                                                guestOrgId.longValue(),
                                                 guestName,
-                                                new Long(hostId.longValue()),
-                                                new Long(hostOrgId.longValue()),
+                                                hostId.longValue(),
+                                                hostOrgId.longValue(),
                                                 hostName);
             ret.add(view);
         }

@@ -1,7 +1,7 @@
 #
 # spec file for package spacewalk-utils
 #
-# Copyright (c) 2018 SUSE LINUX GmbH, Nuernberg, Germany.
+# Copyright (c) 2019 SUSE LINUX GmbH, Nuernberg, Germany.
 # Copyright (c) 2008-2018 Red Hat, Inc.
 #
 # All modifications and additions to the file contributed by third parties
@@ -13,7 +13,7 @@
 # license that conforms to the Open Source Definition (Version 1.9)
 # published by the Open Source Initiative.
 
-# Please submit bugfixes or comments via http://bugs.opensuse.org/
+# Please submit bugfixes or comments via https://bugs.opensuse.org/
 #
 
 %if 0%{?suse_version} > 1320
@@ -35,13 +35,13 @@
 %endif
 
 Name:           spacewalk-utils
-Version:        4.0.6
+Version:        4.0.10
 Release:        1%{?dist}
 Summary:        Utilities that may be run against a Spacewalk server.
 License:        GPL-2.0-only AND GPL-3.0-or-later
 Group:          Applications/Internet
 
-URL:            https://github.com/uyuni-project/uyuni
+Url:            https://github.com/uyuni-project/uyuni
 Source0:        https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildArch:      noarch
@@ -118,13 +118,9 @@ Generic utilities that may be run against a Spacewalk server.
 %prep
 %setup -q
 
-%if  0%{?rhel} && 0%{?rhel} < 6
-%define pod2man POD2MAN=pod2man
-%endif
 %if  0%{?suse_version} && 0%{?suse_version} < 1200
 %define pod2man POD2MAN=pod2man
 %endif
-
 %build
 make all %{?pod2man}
 

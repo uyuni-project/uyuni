@@ -1,0 +1,11 @@
+/*Grouped Pannels*/
+
+:global(.project-tag-link) {
+    display: inline-block;
+    padding: 2px 4px;
+    border: 1px solid #ccc;
+    margin: 0 3px;
+    border-radius: 1px;
+    background-color: #eee;
+    color: inherit;
+}

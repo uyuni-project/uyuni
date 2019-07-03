@@ -135,7 +135,7 @@ public class MinionServer extends Server implements SaltConfigurable {
      */
     @Override
     public boolean doesOsSupportsOSImageBuilding() {
-        return !isSLES10() && !isSLES11() && !isSLES15();
+        return !isSLES10() && !isSLES15();
     }
 
     /**
@@ -153,11 +153,23 @@ public class MinionServer extends Server implements SaltConfigurable {
         return !isSLES10() && !isSLES11();
     }
 
+    @Override
+    public boolean doesOsSupportsMonitoring() {
+        return isSLES12() || isSLES15() || isLeap15();
+    }
+
     /**
      * @return true if the installer type is of SLES 10
      */
     private boolean isSLES10() {
         return ServerConstants.SLES.equals(getOs()) && getRelease().startsWith("10");
+    }
+
+    /**
+     * @return true if the installer type is of SLES 11
+     */
+    private boolean isSLES12() {
+        return ServerConstants.SLES.equals(getOs()) && getRelease().startsWith("12");
     }
 
     /**
@@ -172,6 +184,10 @@ public class MinionServer extends Server implements SaltConfigurable {
      */
     private boolean isSLES15() {
         return ServerConstants.SLES.equals(getOs()) && getRelease().startsWith("15");
+    }
+
+    private boolean isLeap15() {
+        return ServerConstants.LEAP.equalsIgnoreCase(getOs()) && getRelease().startsWith("15");
     }
 
     /**

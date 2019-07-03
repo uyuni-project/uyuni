@@ -89,7 +89,7 @@ public class ProxyHandlerTest extends RhnBaseTestCase {
     }
 
     public void aTestWithExistingProxy() throws Exception {
-        Server server = ServerFactory.lookupById(new Long(1005012107));
+        Server server = ServerFactory.lookupById(1005012107L);
         ClientCertificate cert = SystemManager.createClientCertificate(server);
         cert.validate(server.getSecret());
         ProxyHandler ph = new ProxyHandler();

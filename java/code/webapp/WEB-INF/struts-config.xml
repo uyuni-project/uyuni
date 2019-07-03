@@ -902,6 +902,7 @@
       <form-property name="virtualization_host" type="java.lang.Boolean"/>
       <form-property name="container_build_host" type="java.lang.Boolean"/>
       <form-property name="osimage_build_host" type="java.lang.Boolean"/>
+      <form-property name="monitoring_entitled" type="java.lang.Boolean"/>
       <form-property name="receive_notifications" type="java.lang.Boolean"/>
       <form-property name="include_in_daily_summary" type="java.lang.Boolean"/>
       <form-property name="auto_update" type="java.lang.Boolean"/>

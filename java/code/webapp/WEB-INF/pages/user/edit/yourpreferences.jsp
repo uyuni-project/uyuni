@@ -8,8 +8,8 @@
 </head>
 <body>
 <rhn:toolbar base="h1" icon="header-preferences"
- helpUrl="/rhn/help/reference/en-US/ref.webui.overview.prefs.jsp">
-<bean:message key="Your Preferences"/>
+ helpUrl="/docs/reference/home/home-your-preferences.html">
+<bean:message key="My Preferences"/>
 </rhn:toolbar>
 <html:form action="/account/PrefSubmit">
 <rhn:csrf />

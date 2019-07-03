@@ -126,7 +126,7 @@ public class LastDeployDto extends BaseDto {
      * @return config-channel
      */
     public ConfigChannel getChannel() {
-        return ConfigurationFactory.lookupConfigChannelById(new Long(whenceId.longValue()));
+        return ConfigurationFactory.lookupConfigChannelById(whenceId);
     }
 
     /**
@@ -134,6 +134,6 @@ public class LastDeployDto extends BaseDto {
      * @return config-revision
      */
     public ConfigRevision getConfigRevision() {
-        return ConfigurationFactory.lookupConfigRevisionById(new Long(revId.longValue()));
+        return ConfigurationFactory.lookupConfigRevisionById(revId);
     }
 }

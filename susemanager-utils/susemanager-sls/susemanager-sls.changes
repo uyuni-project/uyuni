@@ -1,3 +1,55 @@
+- Force VM off before deleting it (bsc#1138127)
+- Allow forcing off or resetting VMs
+- Fix the indentation so that custom formulas can be read correctly (bsc#1136937)
+- Make sure dmidecode is installed during bootstrap to ensure that hardware
+  refresh works for all operating systems (bsc#1137952)
+- Prevent stuck Actions when onboarding KVM host minions (bsc#1137888)
+- Fix formula name encoding on Python 3 (bsc#1137533)
+- More thorougly disable the Salt mine in util.mgr_mine_config_clean_up (bsc#1135075)
+
+-------------------------------------------------------------------
+Wed May 15 15:35:23 CEST 2019 - jgonzalez@suse.com
+
+- version 4.0.12-1
+- SPEC cleanup
+- Enabling certificate deployment for Leap 15.1 clients which is
+  needed for bootstrapping
+- States to enable/disable server monitoring
+- Improve salt events processing performance (bsc#1125097)
+
+-------------------------------------------------------------------
+Mon Apr 22 12:23:43 CEST 2019 - jgonzalez@suse.com
+
+- version 4.0.11-1
+- Enable SLES11 OS Image Build Host
+- Add support for Salt batch execution mode
+- Do not configure Salt Mine in newly registered minions (bsc#1122837)
+- use default 'master' branch in OSImage profile URL (bsc#1108218)
+- Add Python linting makefile and PyLint configuration file
+
+-------------------------------------------------------------------
+Thu Apr 04 14:43:04 CEST 2019 - jgonzalez@suse.com
+
+- version 4.0.10-1
+- Update get_kernel_live_version module to support older Salt versions (bsc#1131490)
+
+-------------------------------------------------------------------
+Fri Mar 29 10:37:42 CET 2019 - jgonzalez@suse.com
+
+- version 4.0.9-1
+- Update get_kernel_live_version module to support SLES 15 live patches
+- Support register minion using bootstrap repos for 18.04 and 16.04.
+
+-------------------------------------------------------------------
+Mon Mar 25 17:04:34 CET 2019 - jgonzalez@suse.com
+
+- version 4.0.8-1
+- Fix Salt error related to remove_traditional_stack when bootstrapping an Ubuntu
+  minion (bsc#1128724)
+- Adapt disablelocalrepos.sls syntax for Salt 2016.10 (rhel6, sle11) (bsc#1127706)
+- Automatically trust SUSE GPG key for client tools channels on Ubuntu systems
+- util.systeminfo sls has been added to perform different actions at minion startup(bsc#1122381)
+
 -------------------------------------------------------------------
 Sat Mar 02 00:16:05 CET 2019 - jgonzalez@suse.com
 

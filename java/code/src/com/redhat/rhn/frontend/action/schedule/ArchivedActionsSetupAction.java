@@ -79,13 +79,13 @@ public class ArchivedActionsSetupAction extends BaseScheduledListAction {
            msgs.add(ActionMessages.GLOBAL_MESSAGE,
                     new ActionMessage("message.actionDeleted",
                             LocalizationService.getInstance()
-                                               .formatNumber(new Integer(set.size()))));
+                                               .formatNumber(set.size())));
        }
        else {
            msgs.add(ActionMessages.GLOBAL_MESSAGE,
                     new ActionMessage("message.actionsDeleted",
                             LocalizationService.getInstance()
-                                               .formatNumber(new Integer(set.size()))));
+                                               .formatNumber(set.size())));
        }
        strutsDelegate.saveMessages(request, msgs);
 

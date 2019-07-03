@@ -58,7 +58,7 @@ public class VirtualSystemOverview extends SystemOverview
             if ((current.getUuid() != null) && (current.getHostSystemId() == null)) {
                 VirtualSystemOverview fakeSystem = new VirtualSystemOverview();
                 fakeSystem.setServerName(FAKENODE_LABEL);
-                fakeSystem.setHostSystemId(new Long(0));
+                fakeSystem.setHostSystemId(0L);
                 result.add(i, fakeSystem);
                 i++;
             }
@@ -239,7 +239,7 @@ public class VirtualSystemOverview extends SystemOverview
      */
     public Long getCountTotalInstances() {
         if (countTotalInstances == null) {
-            return new Long(0);
+            return 0L;
         }
         return countTotalInstances;
     }
@@ -256,7 +256,7 @@ public class VirtualSystemOverview extends SystemOverview
      */
     public Long getCountActiveInstances() {
         if (countActiveInstances == null) {
-            return new Long(0);
+            return 0L;
         }
         return countActiveInstances;
     }
@@ -370,7 +370,7 @@ public class VirtualSystemOverview extends SystemOverview
      */
     public boolean isFakeNode() {
         return (FAKENODE_LABEL.equals(this.getServerName()) &&
-                ((new Long(0)).equals(this.getHostSystemId())));
+                (Long.valueOf(0L).equals(this.getHostSystemId())));
     }
 
     /**

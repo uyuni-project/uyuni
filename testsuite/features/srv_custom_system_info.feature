@@ -1,16 +1,13 @@
-# Copyright (c) 2017 SUSE LLC
+# Copyright (c) 2017-2019 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 Feature: Custom system info key-value pairs
 
   Background:
     Given I am authorized
-    And I follow "Home" in the left menu
-    And I follow "Systems"
-    And I follow "Overview" in the left menu
 
   Scenario: Create a new key
-    When I follow "Custom System Info" in the left menu
+    When I follow the left menu "Systems > Custom System Info"
     And I follow "Create Key"
     And I should see a "Create Custom Info Key" text
     And I enter "key-label" as "label"
@@ -19,6 +16,7 @@ Feature: Custom system info key-value pairs
     Then I should see a "Successfully added 1 custom key." text
 
   Scenario: Add a value to a system
+    When I follow the left menu "Systems > Overview"
     When I follow this "sle-client" link
     And I follow "Custom Info"
     And I follow "Create Value"
@@ -29,6 +27,7 @@ Feature: Custom system info key-value pairs
     And I should see a "key-value" link
 
   Scenario: Edit the value
+    When I follow the left menu "Systems > Overview"
     When I follow this "sle-client" link
     And I follow "Custom Info"
     And I follow "key-value"
@@ -39,7 +38,7 @@ Feature: Custom system info key-value pairs
     And I should see a "key-value-edited" link
 
   Scenario: Edit the key description
-    When I follow "Custom System Info" in the left menu
+    When I follow the left menu "Systems > Custom System Info"
     And I follow "key-label"
     And I enter "key-desc-edited" as "description"
     And I click on "Update Key"
@@ -47,7 +46,7 @@ Feature: Custom system info key-value pairs
     And I should see a "key-desc-edited" text
 
   Scenario: Delete the value
-    When I follow "Custom System Info" in the left menu
+    When I follow the left menu "Systems > Custom System Info"
     And I follow "key-label"
     And I follow this "sle-client" link
     And I follow "Custom Info"
@@ -57,7 +56,7 @@ Feature: Custom system info key-value pairs
     Then I should see a "No custom information defined for this system." text
 
   Scenario: Delete the key
-    When I follow "Custom System Info" in the left menu
+    When I follow the left menu "Systems > Custom System Info"
     And I follow "key-label"
     And I follow "Delete Key"
     And I click on "Delete Key"

@@ -8,7 +8,7 @@
 <body>
     <rhn:toolbar base="h1" icon="header-action"
             imgAlt="actions.jsp.imgAlt"
-            helpUrl="/rhn/help/reference/en-US/s2-sm-action-arch.jsp">
+            helpUrl="/docs/reference/schedule/archived-actions.html">
         <bean:message key="archivedactions.jsp.archived_actions"/>
     </rhn:toolbar>
 

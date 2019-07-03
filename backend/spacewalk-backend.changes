@@ -1,3 +1,87 @@
+- Do not duplicate "http://" protocol when using proxies with "deb"
+  repositories (bsc#1138313)
+- Fix reposync when dealing with RedHat CDN (bsc#1138358)
+- Prevent FileNotFoundError: repomd.xml.key traceback (bsc#1137940)
+- Add journalctl output to spacewalk-debug tarballs
+- Prevent unnecessary triggering of channel-repodata tasks when GPG
+  signing is disabled (bsc#1137715)
+- Fix spacewalk-repo-sync for Ubuntu repositories in mirror case (bsc#1136029)
+- Add support for ULN repositories on new Zypper based reposync.
+
+-------------------------------------------------------------------
+Wed May 15 17:06:26 CEST 2019 - jgonzalez@suse.com
+
+- version 4.0.17-1
+- use new names in code for client tool packages which were renamed (bsc#1134876)
+
+-------------------------------------------------------------------
+Wed May 15 15:07:45 CEST 2019 - jgonzalez@suse.com
+
+- version 4.0.16-1
+- SPEC cleanup
+- Fix password prompt within mgr-sign-metadata
+- Fix TypeError for 'errata.getErrataInfo' XMLRPC handler (bsc#1132346)
+- fix typo in syncing product extensions (bsc#1118492)
+- Fix mgr-sign-metadata-ctl checking of exported keys.
+
+-------------------------------------------------------------------
+Thu Apr 25 18:00:41 CEST 2019 - jgonzalez@suse.com
+
+- version 4.0.15-1
+- Use suseLib.get_proxy to get the HTTP proxy configuration 
+  properly on DEB repos (bsc#1133424)
+
+-------------------------------------------------------------------
+Mon Apr 22 12:07:39 CEST 2019 - jgonzalez@suse.com
+
+- version 4.0.14-1
+- Add support for mirrorlist and metalink on Zypper reposync.
+- Solve situations where synced packages have epoch 0 but reposync
+  does not find them them on the database.
+- Fix path to the RPM database used by Zypper at reposync.
+- add makefile for python linter and unit/integration tests
+
+-------------------------------------------------------------------
+Mon Apr 08 10:26:33 CEST 2019 - jgonzalez@suse.com
+
+- version 4.0.13-1
+- fix linking of packages in reposync (bsc#1131677)
+
+-------------------------------------------------------------------
+Fri Mar 29 10:29:46 CET 2019 - jgonzalez@suse.com
+
+- version 4.0.12-1
+- Include arch to distinct latest packages on reposync.
+- Migrate missing spacewalk-cfg-get script to Python3
+- Improve dependency solving algorithm for spacewalk-repo-sync.
+
+-------------------------------------------------------------------
+Mon Mar 25 16:41:48 CET 2019 - jgonzalez@suse.com
+
+- version 4.0.11-1
+- remove apache access_compat module and adapt config files
+- Add support for getting latest versions from RPM packages
+  when running "spacewalk-repo-sync" after migration to Zypper.
+- Include packages dependencies on "spacewalk-repo-sync" when using filters
+  for RPM packages.
+- Allow package filtering (name matching) on spacewalk-repo-sync after
+  migrating away from yum.
+- Fix crash when importing new channel families on 'mgr-inter-sync' (bsc#1129300)
+- Make Zypper to use the spacewalk GPG keyring in reposync (bsc#1128529)
+- Fix: handle non-standard filenames for comps.xml (bsc#1120242)
+- Make reposync use and append token correctly to the URL
+- Avoid DB constraint violations caused by extended UTF8 characters on the RPM headers
+- Prevent mgr-inter-sync crash because 'SuseProductRepository' not found (bsc#1129300)
+- Fix invalid mode error when doing spacewalk-repo-sync on Ubuntu
+  official repos.
+
+-------------------------------------------------------------------
+Tue Mar 12 11:20:08 CET 2019 - jgonzalez@suse.com
+
+- version 4.0.10-1
+- Make sure the package download url does not have '//' (bsc#1127488)
+- Fix bootstrapping SLE15 traditional client (bsc#1128564)
+
 -------------------------------------------------------------------
 Mon Mar 04 09:54:01 CET 2019 - jgonzalez@suse.com
 

@@ -50,7 +50,7 @@ public class IpAddress {
         if (soctets.length == 4) {
             try {
                 for (int i = 0; i < 4; i++) {
-                    setOctet(i, new Long(soctets[i]));
+                    setOctet(i, Long.valueOf(soctets[i]));
                 }
             }
             catch (NumberFormatException num) {
@@ -147,7 +147,7 @@ public class IpAddress {
      * @return Long object of this ip number
      */
     public Long getLongNumber() {
-        return new Long(getNumber());
+        return getNumber();
     }
 
     /**

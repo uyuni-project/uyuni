@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.domain.server.test;
 
+import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.VirtualInstance;
 import com.redhat.rhn.domain.server.VirtualInstanceFactory;
 import com.redhat.rhn.domain.server.VirtualInstanceState;
@@ -50,9 +51,9 @@ public class VirtualInstanceManufacturer {
         guest.setUuid(UUID.randomUUID().toString().replaceAll("-", ""));
         guest.setName(unique);
         guest.setType(VirtualInstanceFactory.getInstance().getParaVirtType());
-        guest.setTotalMemory(new Long(1024 * DEFAULT_GUEST_RAM_MB));
+        guest.setTotalMemory(1024L * DEFAULT_GUEST_RAM_MB);
         guest.setState(state);
-        guest.setNumberOfCPUs(new Integer(1));
+        guest.setNumberOfCPUs(1);
         guest.setConfirmed(0L);
 
         return guest;
@@ -62,6 +63,16 @@ public class VirtualInstanceManufacturer {
         VirtualInstance guest = createVirtualInstance(
                 VirtualInstanceFactory.getInstance().getRunningState());
         guest.setGuestSystem(ServerFactoryTest.createTestServer(user));
+        return guest;
+    }
+
+    public VirtualInstance newRegisteredGuestWithoutHost(boolean salt) throws Exception {
+        VirtualInstance guest = createVirtualInstance(
+                VirtualInstanceFactory.getInstance().getRunningState());
+        Server server = salt
+                ? MinionServerFactoryTest.createTestMinionServer(user)
+                : ServerFactoryTest.createTestServer(user);
+        guest.setGuestSystem(server);
         return guest;
     }
 

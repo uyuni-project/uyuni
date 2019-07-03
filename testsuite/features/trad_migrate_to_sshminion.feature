@@ -20,8 +20,7 @@ Feature: Migrate a traditional client into a Salt SSH minion
 
   Scenario: Change contact method of activation key to ssh-push
     Given I am authorized as "admin" with password "admin"
-    And I follow "Systems" in the left menu
-    And I follow "Activation Keys"
+    When I follow the left menu "Systems > Activation Keys"
     And I follow "SUSE Test PKG Key x86_64" in the content area
     And I select "Push via SSH" from "contactMethodId"
     And I click on "Update Activation Key"
@@ -108,20 +107,22 @@ Feature: Migrate a traditional client into a Salt SSH minion
     When I remove package "perseus-dummy-1.1-1.1" from this "sle-migrated-minion"
     And I remove package "orion-dummy-1.1-1.1" from this "sle-migrated-minion"
 
-  Scenario: Cleanup: migrate ssh-minion back to traditional client
+  Scenario: Cleanup: unregister migrated SSH minion
     Given I am on the Systems overview page of this "sle-migrated-minion"
     When I follow "Delete System"
     Then I should see a "Confirm System Profile Deletion" text
     When I click on "Delete Profile"
-    Then I should see a "has been deleted" text
-    When I enable SUSE Manager tools repository on "sle-migrated-minion"
-    And I install package "spacewalk-client-setup spacewalk-oscap rhncfg-actions" on this "sle-migrated-minion"
+    And I wait until I see "has been deleted" text
+    Then "sle-migrated-minion" should not be registered
+
+  Scenario: Cleanup: register SSH minion again as traditional client
+    When I enable SUSE Manager tools repository on "sle-client"
+    And I install package "spacewalk-client-setup spacewalk-oscap rhncfg-actions" on this "sle-client"
     And I register using "1-SUSE-DEV-x86_64" key
 
   Scenario: Cleanup: change contact method of activation key back to default
     Given I am authorized as "admin" with password "admin"
-    And I follow "Systems" in the left menu
-    And I follow "Activation Keys"
+    When I follow the left menu "Systems > Activation Keys"
     And I follow "SUSE Test PKG Key x86_64" in the content area
     And I select "Default" from "contactMethodId"
     And I click on "Update Activation Key"

@@ -41,7 +41,7 @@ public class ConfigRevisionActionTest extends RhnBaseTestCase {
     public void testBeanMethods() {
         ConfigRevisionAction cra = new ConfigRevisionAction();
         Date now = new Date();
-        Long three = new Long(3);
+        Long three = 3L;
         ConfigAction parent = new ConfigAction();
         Server server = ServerFactory.createServer();
         ConfigRevision revision = ConfigurationFactory.newConfigRevision();

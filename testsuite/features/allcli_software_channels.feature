@@ -1,4 +1,4 @@
-# Copyright (c) 2018 SUSE LLC
+# Copyright (c) 2018-2019 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 Feature: Chanel subscription via SSM
@@ -194,6 +194,7 @@ Feature: Chanel subscription via SSM
     Then I should see a "Changing the channels has been scheduled." text
     When I follow "scheduled" in the content area
     And I wait until I see "1 system successfully completed this action." text, refreshing the page
+    Then channel "Test-Channel-x86_64 Child Channel" should not be enabled on "sle-minion"
 
   Scenario: Cleanup: subscribe the SLES client back to previous channels
     Given I am on the Systems overview page of this "sle-client"
@@ -210,10 +211,11 @@ Feature: Chanel subscription via SSM
     Then I should see a "Changing the channels has been scheduled." text
     When I follow "scheduled" in the content area
     And I wait until I see "1 system successfully completed this action." text, refreshing the page
+    Then channel "Test-Channel-x86_64 Child Channel" should not be enabled on "sle-client"
 
   Scenario: Cleanup: remove remaining systems from SSM
     Given I am authorized as "admin" with password "admin"
-    And I am on the System Overview page
+    When I am on the System Overview page
     And I uncheck the "sle-minion" client
     And I uncheck the "sle-client" client
-    And I should see "0" systems selected for SSM
+    Then I should see "0" systems selected for SSM

@@ -86,6 +86,7 @@ import com.redhat.rhn.manager.channel.ChannelManager;
 import com.redhat.rhn.manager.channel.MultipleChannelsWithPackageException;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.errata.ErrataManager;
+import com.redhat.rhn.manager.formula.FormulaManager;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerSystemRemoveCommand;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.user.UserManager;
@@ -122,6 +123,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import static com.redhat.rhn.domain.formula.FormulaFactory.PROMETHEUS_EXPORTERS;
 import static java.util.Collections.emptyList;
 import static java.util.Collections.emptySet;
 import static java.util.Collections.singleton;
@@ -241,15 +243,7 @@ public class SystemManager extends BaseManager {
      * @return true if the system requires a reboot i.e: because kernel updates.
      */
     public static boolean requiresReboot(User user, Long sid) {
-        SelectMode m = ModeFactory.getMode("System_queries",
-                "has_errata_with_keyword_applied_since_last_reboot");
-        Map<String, Object> params = new HashMap<String, Object>();
-        params.put("user_id", user.getId());
-        params.put("org_id", user.getOrg().getId());
-        params.put("sid", sid);
-        params.put("keyword", "reboot_suggested");
-        DataResult dr = m.execute(params);
-        return !dr.isEmpty();
+        return !getSystemsRequiringReboot(user, Optional.of(sid)).isEmpty();
     }
 
     /**
@@ -258,20 +252,30 @@ public class SystemManager extends BaseManager {
      *
      * @param user
      *            Currently logged in user.
-     * @param pc
-     *            PageControl
      * @return list of SystemOverviews.
      */
-    public static DataResult<SystemOverview> requiringRebootList(User user,
-            PageControl pc) {
-        SelectMode m = ModeFactory.getMode("System_queries",
-                "having_errata_with_keyword_applied_since_last_reboot");
+    public static DataResult<SystemOverview> requiringRebootList(User user) {
+        return getSystemsRequiringReboot(user, Optional.empty());
+    }
+
+    /**
+     * Returns a list of systems that match a serverId and require a reboot (i.e: because kernel updates,
+     * visible to user, sorted by name).
+     * If the serverId parameter is empty, this query will return all the systems that require a reboot.
+     *
+     * @param user Currently logged in user.
+     * @param serverId the serverId.
+     * @return list of SystemOverviews.
+     */
+    private static DataResult<SystemOverview> getSystemsRequiringReboot(User user, Optional<Long> serverId) {
+        SelectMode m = ModeFactory.getSelectMode("System_queries",
+                "systems_requiring_reboot", true);
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("org_id", user.getOrg().getId());
         params.put("user_id", user.getId());
-        params.put("keyword", "reboot_suggested");
+        params.put("sid", serverId.orElse(null));
         Map<String, Object> elabParams = new HashMap<String, Object>();
-        return makeDataResult(params, elabParams, pc, m, SystemOverview.class);
+        return makeDataResult(params, elabParams, null, m, SystemOverview.class);
     }
 
     /**
@@ -674,6 +678,9 @@ public class SystemManager extends BaseManager {
     public static void addServerToServerGroup(Server server, ServerGroup serverGroup) {
         ServerFactory.addServerToGroup(server, serverGroup);
         snapshotServer(server, "Group membership alteration");
+        if (FormulaFactory.hasMonitoringDataEnabled(serverGroup)) {
+            FormulaFactory.grantMonitoringEntitlement(server);
+        }
     }
 
     /**
@@ -684,6 +691,11 @@ public class SystemManager extends BaseManager {
     public static void removeServerFromServerGroup(Server server, ServerGroup serverGroup) {
         ServerFactory.removeServerFromGroup(server.getId(), serverGroup.getId());
         snapshotServer(server, "Group membership alteration");
+        if (FormulaFactory.hasMonitoringDataEnabled(serverGroup)) {
+            if (SystemManager.hasEntitlement(server.getId(), EntitlementManager.MONITORING)) {
+                SystemManager.removeServerEntitlement(server.getId(), EntitlementManager.MONITORING);
+            }
+        }
     }
 
     /**
@@ -800,8 +812,8 @@ public class SystemManager extends BaseManager {
      */
     public static DataResult<SystemOverview> systemListShortInactive(User user,
             PageControl pc) {
-        return systemListShortInactive(user, new Integer(Config.get().getInt(ConfigDefaults
-                .SYSTEM_CHECKIN_THRESHOLD)), pc);
+        return systemListShortInactive(user, Config.get().getInt(ConfigDefaults
+                .SYSTEM_CHECKIN_THRESHOLD), pc);
     }
 
     /**
@@ -838,8 +850,8 @@ public class SystemManager extends BaseManager {
                 "System_queries", "xmlrpc_visible_to_user_active", SystemOverview.class);
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("user_id", user.getId());
-        params.put("checkin_threshold", new Integer(Config.get().getInt(ConfigDefaults
-                .SYSTEM_CHECKIN_THRESHOLD)));
+        params.put("checkin_threshold", Config.get().getInt(ConfigDefaults
+                .SYSTEM_CHECKIN_THRESHOLD));
         Map<String, Object> elabParams = new HashMap<String, Object>();
 
         return makeDataResult(params, elabParams, pc, m, SystemOverview.class);
@@ -952,8 +964,8 @@ public class SystemManager extends BaseManager {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("org_id", user.getOrg().getId());
         params.put("user_id", user.getId());
-        params.put("checkin_threshold", new Integer(Config.get().getInt(ConfigDefaults
-                .SYSTEM_CHECKIN_THRESHOLD)));
+        params.put("checkin_threshold", Config.get().getInt(ConfigDefaults
+                .SYSTEM_CHECKIN_THRESHOLD));
         Map<String, Object> elabParams = new HashMap<String, Object>();
         return makeDataResult(params, elabParams, pc, m, SystemOverview.class);
     }
@@ -998,7 +1010,7 @@ public class SystemManager extends BaseManager {
         else {
             m = ModeFactory.getMode("System_queries",
                     "recently_registered");
-            params.put("threshold", new Integer(threshold));
+            params.put("threshold", threshold);
         }
 
         params.put("org_id", user.getOrg().getId());
@@ -1021,8 +1033,8 @@ public class SystemManager extends BaseManager {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("org_id", user.getOrg().getId());
         params.put("user_id", user.getId());
-        params.put("checkin_threshold", new Integer(Config.get().getInt(ConfigDefaults
-                .SYSTEM_CHECKIN_THRESHOLD)));
+        params.put("checkin_threshold", Config.get().getInt(ConfigDefaults
+                .SYSTEM_CHECKIN_THRESHOLD));
         Map<String, Object> elabParams = new HashMap<String, Object>();
         return makeDataResult(params, elabParams, pc, m, SystemOverview.class);
     }
@@ -2014,7 +2026,7 @@ public class SystemManager extends BaseManager {
                 }
             }
         }
-        if (EntitlementManager.OSIMAGE_BUILD_HOST.equals(ent)) {
+        else if (EntitlementManager.OSIMAGE_BUILD_HOST.equals(ent)) {
             saltServiceInstance.generateSSHKey(SaltSSHService.SSH_KEY_PATH);
         }
 
@@ -2028,11 +2040,31 @@ public class SystemManager extends BaseManager {
         m.execute(in, new HashMap<String, Integer>());
         log.debug("entitle_server mode query executed.");
 
-        server.asMinionServer().ifPresent(SystemManager::refreshPillarDataForMinion);
-        if (wasVirtEntitled && !EntitlementManager.VIRTUALIZATION.equals(ent) ||
-                !wasVirtEntitled && EntitlementManager.VIRTUALIZATION.equals(ent)) {
-            server.asMinionServer().ifPresent(SystemManager::updateLibvirtEngine);
-        }
+        server.asMinionServer().ifPresent(minion -> {
+            SystemManager.refreshPillarDataForMinion(minion);
+
+            if (wasVirtEntitled && !EntitlementManager.VIRTUALIZATION.equals(ent) ||
+                    !wasVirtEntitled && EntitlementManager.VIRTUALIZATION.equals(ent)) {
+                SystemManager.updateLibvirtEngine(minion);
+            }
+            if (EntitlementManager.MONITORING.equals(ent)) {
+                try {
+                    // Assign the monitoring formula to the system
+                    // unless the system belongs to a group having monitoring already enabled
+                    if (!FormulaFactory.isMemberOfGroupHavingMonitoring(server)) {
+                        List<String> formulas = FormulaFactory.getFormulasByMinionId(minion.getMinionId());
+                        if (!formulas.contains(FormulaFactory.PROMETHEUS_EXPORTERS)) {
+                            formulas.add(FormulaFactory.PROMETHEUS_EXPORTERS);
+                            FormulaFactory.saveServerFormulas(minion.getMinionId(), formulas);
+                        }
+                    }
+                }
+                catch (UnsupportedOperationException | IOException e) {
+                    log.error("Error assigning formula: " + e.getMessage(), e);
+                    result.addError(new ValidatorError("system.entitle.formula_error"));
+                }
+            }
+        });
 
         log.debug("done.  returning null");
         return result;
@@ -2238,8 +2270,28 @@ public class SystemManager extends BaseManager {
                 "System_queries", "remove_server_entitlement");
         m.execute(in, new HashMap<String, Integer>());
 
-        Server server = ServerFactory.lookupById(sid);
-        server.asMinionServer().ifPresent(SystemManager::refreshPillarDataForMinion);
+        ServerFactory.lookupById(sid).asMinionServer().ifPresent(s -> {
+            SystemManager.refreshPillarDataForMinion(s);
+
+            // Configure the monitoring formula for cleanup if still assigned (disable exporters)
+            if (EntitlementManager.MONITORING.equals(ent)) {
+                FormulaManager formulas = FormulaManager.getInstance();
+                if (formulas.hasSystemFormulaAssigned(PROMETHEUS_EXPORTERS, sid.intValue())) {
+                    try {
+                        // Get the current data and set all exporters to disabled
+                        String minionId = s.getMinionId();
+                        Map<String, Object> data = FormulaFactory
+                                .getFormulaValuesByNameAndMinionId(PROMETHEUS_EXPORTERS, minionId)
+                                .orElse(FormulaFactory.getPillarExample(PROMETHEUS_EXPORTERS));
+                        FormulaFactory.saveServerFormulaData(
+                                FormulaFactory.disableMonitoring(data), minionId, PROMETHEUS_EXPORTERS);
+                    }
+                    catch (UnsupportedOperationException | IOException e) {
+                        log.warn("Exception on saving formula data: " + e.getMessage());
+                    }
+                }
+            }
+        });
     }
 
 
@@ -2271,7 +2323,7 @@ public class SystemManager extends BaseManager {
         in.put("entitlement", ent.getLabel());
 
         Map<String, Integer> out = new HashMap<String, Integer>();
-        out.put("retval", new Integer(Types.NUMERIC));
+        out.put("retval", Types.NUMERIC);
 
         CallableMode m = ModeFactory.getCallableMode("System_queries",
                 "can_entitle_server");
@@ -2541,7 +2593,7 @@ public class SystemManager extends BaseManager {
                 currentGuestCpus.intValue()) {
                     result.addWarning(new ValidatorWarning(
                             "systems.details.virt.vcpu.increase.warning",
-                            new Object [] {new Integer(proposedVcpuSetting),
+                            new Object [] {proposedVcpuSetting,
                                 guest.getName()}));
                 }
             }
@@ -3505,7 +3557,7 @@ public class SystemManager extends BaseManager {
         params.put("value", value);
 
         Map<String, Integer> out = new HashMap<String, Integer>();
-        out.put("retval", new Integer(Types.NUMERIC));
+        out.put("retval", Types.NUMERIC);
 
         Map<String, Object> result = mode.execute(params, out);
         Long retval = (Long) result.get("retval");

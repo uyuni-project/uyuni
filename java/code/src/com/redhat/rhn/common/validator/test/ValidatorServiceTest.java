@@ -38,8 +38,8 @@ public class ValidatorServiceTest extends RhnBaseTestCase {
         TestObject to = new TestObject();
         to.setStringField("somevalue");
         to.setDateField(new Date());
-        to.setLongField(new Long(10));
-        to.setThirdLongField(new Long(65168651651435L));
+        to.setLongField(10L);
+        to.setThirdLongField(65168651651435L);
         to.setSecondStringField("someothervalue");
         to.setNumberString("1");
         to.setAsciiString("asciivalue");
@@ -60,8 +60,8 @@ public class ValidatorServiceTest extends RhnBaseTestCase {
         TestObject to = new TestObject();
         to.setStringField("somevalue");
         to.setDateField(new Date());
-        to.setLongField(new Long(10));
-        to.setThirdLongField(new Long(65168651651435L));
+        to.setLongField(10L);
+        to.setThirdLongField(65168651651435L);
         to.setSecondStringField("someothervalue");
         to.setNumberString("1");
         to.setAsciiString("asciivalue");
@@ -77,7 +77,7 @@ public class ValidatorServiceTest extends RhnBaseTestCase {
     public void testInvalidObject() throws Exception {
         TestObject to = new TestObject();
         to.setStringField("somevaluelkjajsjlfdlkjaslkjdf0980934098234");
-        to.setLongField(new Long(10));
+        to.setLongField(10L);
         to.setSecondStringField("someothervalue");
 
         assertNotNull(

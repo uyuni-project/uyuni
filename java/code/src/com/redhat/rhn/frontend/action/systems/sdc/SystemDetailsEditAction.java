@@ -409,7 +409,7 @@ public class SystemDetailsEditAction extends RhnAction {
         while (i.hasNext()) {
             String name = (String) i.next();
             String code = (String) cmap.get(name);
-            countries.add(new LabelValueBean(name, code));
+            countries.add(new LabelValueBean(String.format("%s (%s)", name, code), code));
         }
         return countries;
     }

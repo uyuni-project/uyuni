@@ -34,20 +34,20 @@ public class BaseHandlerTest extends RhnBaseTestCase {
         String[] s = { "10", "20" };
         Long rc = th.getAsLong(s);
         assertNotNull(rc);
-        assertEquals(new Long(10), rc);
+        assertEquals(Long.valueOf(10), rc);
     }
 
     public void testSingleStringArray() {
         String[] s = { "20" };
         Long rc = th.getAsLong(s);
         assertNotNull(rc);
-        assertEquals(new Long(20), rc);
+        assertEquals(Long.valueOf(20), rc);
     }
 
     public void testString() {
         Long rc = th.getAsLong("20");
         assertNotNull(rc);
-        assertEquals(new Long(20), rc);
+        assertEquals(Long.valueOf(20), rc);
     }
 
     public void testNull() {
@@ -75,7 +75,7 @@ public class BaseHandlerTest extends RhnBaseTestCase {
     }
 
     public void testLongParam() {
-        Long param = new Long(10);
+        Long param = 10L;
         Long rc = th.getAsLong(param);
         assertEquals(param, rc);
     }

@@ -73,8 +73,8 @@ public class UserPrefSetupAction extends BaseUserSetupAction {
         form.set("emailNotif", BooleanUtils.toBooleanObject(user
                 .getEmailNotify()));
         request.setAttribute("showTaskoNotify",
-                Boolean.valueOf(user.hasRole(RoleFactory.ORG_ADMIN) ||
-                        user.hasRole(RoleFactory.SAT_ADMIN)));
+                user.hasRole(RoleFactory.ORG_ADMIN) ||
+                        user.hasRole(RoleFactory.SAT_ADMIN));
 
         requestContext.getRequest().setAttribute("targetuser", user);
         requestContext.getRequest().setAttribute("supportedLocales", buildImageMap());
@@ -82,16 +82,16 @@ public class UserPrefSetupAction extends BaseUserSetupAction {
         requestContext.getRequest().setAttribute("timezones", getTimeZones());
         if (user.getTimeZone() != null) {
             form.set("timezone",
-                    new Integer(user.getTimeZone().getTimeZoneId()));
+                    user.getTimeZone().getTimeZoneId());
         }
         else {
-            form.set("timezone", new Integer(UserManager.getDefaultTimeZone()
-                    .getTimeZoneId()));
+            form.set("timezone", UserManager.getDefaultTimeZone()
+                    .getTimeZoneId());
         }
         form.set("uid", user.getId());
         form.set("taskoNotify", user.getTaskoNotify());
 
-        form.set("pagesize", new Integer(user.getPageSize()));
+        form.set("pagesize", user.getPageSize());
         form.set("csvSeparator", user.getCsvSeparator());
 
         setupTasks(form, user);

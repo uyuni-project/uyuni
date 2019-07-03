@@ -7,11 +7,11 @@
 
 <html>
 <head>
-<script type="text/javascript" src="/javascript/highlander.js"></script>
+<script type="text/javascript" src="/javascript/highlander.js?cb=${rhn:getConfig('web.version')}"></script>
 </head>
 <body>
 <rhn:toolbar base="h1" icon="header-search" imgAlt="docsearch.jsp.imgAlt"
-               helpUrl="/rhn/help/reference/en-US/s2-sm-your-rhn-help-docsearch.jsp">
+               helpUrl="/docs/reference/help/help-menu.html">
     <bean:message key="docsearch.jsp.toolbar"/>
   </rhn:toolbar>
 

@@ -21,7 +21,6 @@ import static com.suse.manager.webui.utils.SparkApplicationHelper.withOrgAdmin;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withProductAdmin;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withUser;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withUserPreferences;
-import static spark.Spark.delete;
 import static spark.Spark.exception;
 import static spark.Spark.get;
 import static spark.Spark.head;
@@ -29,6 +28,8 @@ import static spark.Spark.notFound;
 import static spark.Spark.post;
 
 import com.suse.manager.webui.controllers.ActivationKeysController;
+import com.suse.manager.webui.controllers.admin.AdminApiController;
+import com.suse.manager.webui.controllers.admin.AdminViewsController;
 import com.suse.manager.webui.controllers.CVEAuditController;
 import com.suse.manager.webui.controllers.DownloadController;
 import com.suse.manager.webui.controllers.FormulaCatalogController;
@@ -41,6 +42,7 @@ import com.suse.manager.webui.controllers.MinionController;
 import com.suse.manager.webui.controllers.MinionsAPI;
 import com.suse.manager.webui.controllers.NotificationMessageController;
 import com.suse.manager.webui.controllers.ProductsController;
+import com.suse.manager.webui.controllers.SSOController;
 import com.suse.manager.webui.controllers.SaltSSHController;
 import com.suse.manager.webui.controllers.SsmController;
 import com.suse.manager.webui.controllers.StatesAPI;
@@ -52,6 +54,8 @@ import com.suse.manager.webui.controllers.VirtualHostManagerController;
 import com.suse.manager.webui.controllers.VirtualNetsController;
 import com.suse.manager.webui.controllers.VirtualPoolsController;
 import com.suse.manager.webui.controllers.VisualizationController;
+import com.suse.manager.webui.controllers.contentmanagement.ContentManagementApiController;
+import com.suse.manager.webui.controllers.contentmanagement.ContentManagementViewsController;
 import com.suse.manager.webui.errors.NotFoundException;
 
 import org.apache.http.HttpStatus;
@@ -71,6 +75,7 @@ public class Router implements SparkApplication {
     /**
      * Invoked from the SparkFilter. Add routes here.
      */
+    @SuppressWarnings("checkstyle:methodlength")
     @Override
     public void init() {
         JadeTemplateEngine jade = setup();
@@ -89,8 +94,19 @@ public class Router implements SparkApplication {
 
         initContentManagementRoutes(jade);
 
+        // Virtual Host Managers
+        VirtualHostManagerController.initRoutes(jade);
+
         // Virtualization Routes
         initVirtualizationRoutes(jade);
+
+        // Content Management Routes
+        ContentManagementViewsController.initRoutes(jade);
+        ContentManagementApiController.initRoutes();
+
+        // Admin Router
+        AdminViewsController.initRoutes(jade);
+        AdminApiController.initRoutes();
 
         // Minions
         get("/manager/systems/keys",
@@ -171,37 +187,6 @@ public class Router implements SparkApplication {
         get("/manager/api/states/packages/match", StatesAPI::matchPackages);
         get("/manager/api/states/highstate", StatesAPI::showHighstate);
         get("/manager/api/states/:channelId/content", withUser(StatesAPI::stateContent));
-
-        // Virtual Host Managers
-        get("/manager/vhms",
-                withUserPreferences(withCsrfToken(withOrgAdmin(VirtualHostManagerController::list))),
-                jade);
-        post("/manager/api/vhms/kubeconfig/validate",
-                withOrgAdmin(VirtualHostManagerController::validateKubeconfig));
-        post("/manager/api/vhms/create/kubernetes",
-                withUser(VirtualHostManagerController::createKubernetes));
-        post("/manager/api/vhms/update/kubernetes",
-                withUser(VirtualHostManagerController::updateKubernetes));
-        get("/manager/api/vhms/kubeconfig/:id/contexts",
-                withOrgAdmin(VirtualHostManagerController::getKubeconfigContexts));
-        post("/manager/api/vhms/:id/refresh",
-                withOrgAdmin(VirtualHostManagerController::refresh));
-        get("/manager/api/vhms/:id/nodes",
-                withOrgAdmin(VirtualHostManagerController::getNodes));
-        get("/manager/api/vhms/modules",
-                withOrgAdmin(VirtualHostManagerController::getModules));
-        get("/manager/api/vhms/module/:name/params",
-                withOrgAdmin(VirtualHostManagerController::getModuleParams));
-        get("/manager/api/vhms",
-                withOrgAdmin(VirtualHostManagerController::get));
-        get("/manager/api/vhms/:id",
-                withOrgAdmin(VirtualHostManagerController::getSingle));
-        post("/manager/api/vhms/create",
-                withOrgAdmin(VirtualHostManagerController::create));
-        post("/manager/api/vhms/update/:id",
-                withOrgAdmin(VirtualHostManagerController::update));
-        delete("/manager/api/vhms/delete/:id",
-                withOrgAdmin(VirtualHostManagerController::delete));
 
         // Subscription Matching
         get("/manager/subscription-matching",
@@ -318,6 +303,9 @@ public class Router implements SparkApplication {
                 withProductAdmin(ProductsController::synchronizeSubscriptions));
         post("/manager/admin/setup/sync/repositories",
                 withProductAdmin(ProductsController::synchronizeRepositories));
+
+        // Single Sign-On (SSO) via SAML
+        SSOController.initRoutes();
     }
 
     private void  initNotFoundRoutes(JadeTemplateEngine jade) {
@@ -336,24 +324,9 @@ public class Router implements SparkApplication {
     }
 
     private void initVirtualizationRoutes(JadeTemplateEngine jade) {
-        get("/manager/systems/details/virtualization/guests/:sid",
-                withUserPreferences(withCsrfToken(withUser(VirtualGuestsController::show))), jade);
-        get("/manager/systems/details/virtualization/guests/:sid/edit/:guestuuid",
-                withUserPreferences(withCsrfToken(withUser(VirtualGuestsController::edit))), jade);
-        get("/manager/systems/details/virtualization/guests/:sid/new",
-                withUserPreferences(withCsrfToken(withUser(VirtualGuestsController::create))), jade);
-        get("/manager/api/systems/details/virtualization/guests/:sid/data",
-                withUser(VirtualGuestsController::data));
-        post("/manager/api/systems/details/virtualization/guests/:sid/:action",
-                withUser(VirtualGuestsController::action));
-        get("/manager/api/systems/details/virtualization/guests/:sid/guest/:uuid",
-                withUser(VirtualGuestsController::getGuest));
-        get("/manager/api/systems/details/virtualization/guests/:sid/domains_capabilities",
-                withUser(VirtualGuestsController::getDomainsCapabilities));
-        get("/manager/api/systems/details/virtualization/nets/:sid/data",
-                withUser(VirtualNetsController::data));
-        get("/manager/api/systems/details/virtualization/pools/:sid/data",
-                withUser(VirtualPoolsController::data));
+        VirtualGuestsController.initRoutes(jade);
+        VirtualNetsController.initRoutes(jade);
+        VirtualPoolsController.initRoutes(jade);
     }
 
     private void initContentManagementRoutes(JadeTemplateEngine jade) {
@@ -432,4 +405,5 @@ public class Router implements SparkApplication {
         get("/manager/api/cm/activationkeys",
                 withUser(ImageProfileController::getActivationKeys));
     }
+
 }

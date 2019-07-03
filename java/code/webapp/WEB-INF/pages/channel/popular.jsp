@@ -6,7 +6,7 @@
 <html>
 
 <head>
-    <script src="/javascript/channel_tree.js" type="text/javascript"></script>
+    <script src="/javascript/channel_tree.js?cb=${rhn:getConfig('web.version')}" type="text/javascript"></script>
     <script type="text/javascript">
         var filtered = ${requestScope.isFiltered};
         function showFiltered() {
@@ -18,7 +18,7 @@
 
 <body onLoad="onLoadStuff(3); showFiltered();">
 <rhn:toolbar base="h1" icon="header-channel" 
-             helpUrl="/rhn/help/reference/en-US/ref.webui.channels.jsp#s3-sm-channel-list-popular"
+             helpUrl="/docs/reference/software/software-channel-list-menu.html"
              creationUrl="/rhn/channels/manage/Edit.do"
              creationType="channel"
              creationAcl="user_role(channel_admin)">

@@ -14,7 +14,7 @@
                uploadUrl="/rhn/kickstart/AdvancedModeCreate.do"
                uploadType="kickstart"
                uploadAcl="user_role(config_admin)"
-               helpUrl="/rhn/help/reference/en-US/ref.webui.systems.autoinst.jsp#ref.webui.systems.autoinst">
+               helpUrl="/docs/reference/systems/autoinst-menu.html">
    <bean:message key="kickstart.jsp.overview"/>
 </rhn:toolbar>
 

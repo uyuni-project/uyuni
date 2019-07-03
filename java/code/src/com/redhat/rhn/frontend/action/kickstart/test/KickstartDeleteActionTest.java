@@ -46,7 +46,7 @@ public class KickstartDeleteActionTest extends BaseKickstartEditTestCase {
         String[] keys = {"kickstart.delete.success"};
         verifyActionMessages(keys);
 
-        assertNull(lookupById(new Long(request.getParameter(KICKSTART_ID))));
+        assertNull(lookupById(Long.valueOf(request.getParameter(KICKSTART_ID))));
     }
 
     /**

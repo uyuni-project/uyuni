@@ -1,5 +1,4 @@
 # Makefile for spacewalk-client-cert
-
 ACTIONS		= clientcert
 PYFILES		= $(addsuffix .py, $(ACTIONS))
 CAPABILITY	= client-cert

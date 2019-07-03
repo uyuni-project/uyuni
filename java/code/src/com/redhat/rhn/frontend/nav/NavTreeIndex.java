@@ -96,7 +96,7 @@ public class NavTreeIndex {
     }
 
     private void indexNode(NavNode parent, int depth) {
-        depthMap.put(parent, new Integer(depth));
+        depthMap.put(parent, depth);
         if (log.isDebugEnabled()) {
             log.debug("adding primaryurl to map [" + parent.getPrimaryURL() + "]");
         }

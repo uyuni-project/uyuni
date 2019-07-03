@@ -39,7 +39,7 @@
 </head>
 <body>
 <rhn:toolbar base="h1" icon="header-system" imgAlt="system.common.systemAlt"
- helpUrl="/rhn/help/reference/en-US/ref.webui.systems.systems.jsp#ref.webui.systems.systems.ood">
+ helpUrl="/docs/reference/systems/systems-list.html#ref.webui.systems.systems.ood">
   <bean:message key="duplicates.jsp.header"/>
 </rhn:toolbar>
 
@@ -227,6 +227,6 @@ function getServerIdsToDelete() {
 <c:otherwise><p><bean:message key = "nosystems.message"/></p></c:otherwise>
 </c:choose>
 </rl:listset>
-<script src="/javascript/manager/duplicate-systems-compare-delete.bundle.js" type="text/javascript"></script>
+<script src="/javascript/manager/systems/duplicate-systems-compare-delete.bundle.js?cb=${rhn:getConfig('web.version')}" type="text/javascript"></script>
 </body>
 </html>

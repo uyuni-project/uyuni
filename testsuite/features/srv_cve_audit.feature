@@ -12,8 +12,7 @@ Feature: CVE Audit
     And I run "zypper -n in --oldpackage milkyway-dummy-1.0" on "sle-client"
     And I run "zypper -n ref" on "sle-client"
     And I run "rhn_check -vvv" on "sle-client"
-    And I follow "Admin"
-    And I follow "Task Schedules"
+    And I follow the left menu "Admin > Task Schedules"
     And I follow "errata-cache-default"
     And I follow "errata-cache-bunch"
     And I click on "Single Run Schedule"
@@ -22,8 +21,7 @@ Feature: CVE Audit
 
   Scenario: Schedule channel data refresh
     Given I am authorized as "admin" with password "admin"
-    When I follow "Admin"
-    And I follow "Task Schedules"
+    And I follow the left menu "Admin > Task Schedules"
     And I follow "cve-server-channels-default"
     And I follow "cve-server-channels-bunch"
     And I click on "Single Run Schedule"
@@ -32,15 +30,13 @@ Feature: CVE Audit
 
   Scenario: Display CVE audit page
     Given I am authorized as "admin" with password "admin"
-    When I follow "Audit" in the left menu
-    And I follow "CVE Audit" in the left menu
+    When I follow the left menu "Audit > CVE Audit"
     Then I should see a "CVE Audit" link in the left menu
     And I should see a "CVE Audit" text
 
   Scenario: Search for a known CVE number
     Given I am authorized as "admin" with password "admin"
-    When I follow "Audit" in the left menu
-    And I follow "CVE Audit" in the left menu
+    When I follow the left menu "Audit > CVE Audit"
     And I select "1999" from "cveIdentifierYear"
     And I enter "9999" as "cveIdentifierId"
     And I click on "Audit Servers"
@@ -57,8 +53,7 @@ Feature: CVE Audit
 
   Scenario: Search for an unknown CVE number
     Given I am authorized as "admin" with password "admin"
-    When I follow "Audit" in the left menu
-    And I follow "CVE Audit" in the left menu
+    When I follow the left menu "Audit > CVE Audit"
     And I select "2012" from "cveIdentifierYear"
     And I enter "2806" as "cveIdentifierId"
     And I click on "Audit Servers"
@@ -66,8 +61,7 @@ Feature: CVE Audit
 
   Scenario: Select a system for the System Set Manager
     Given I am authorized as "admin" with password "admin"
-    When I follow "Audit" in the left menu
-    And I follow "CVE Audit" in the left menu
+    When I follow the left menu "Audit > CVE Audit"
     And I select "1999" from "cveIdentifierYear"
     And I enter "9999" as "cveIdentifierId"
     And I click on "Audit Servers"
@@ -80,9 +74,7 @@ Feature: CVE Audit
 
   Scenario: List systems by patch status via XML-RPC before patch
     Given I am authorized as "admin" with password "admin"
-    When I follow "Admin"
-    And I follow "Task Schedules"
-    And I follow "Task Schedules"
+    When I follow the left menu "Admin > Task Schedules"
     And I follow "cve-server-channels-default"
     And I follow "cve-server-channels-bunch"
     And I click on "Single Run Schedule"
@@ -93,7 +85,7 @@ Feature: CVE Audit
     Then I should get status "NOT_AFFECTED" for this client
     When I call audit.list_systems_by_patch_status with CVE identifier "CVE-1999-9999"
     Then I should get status "AFFECTED_PATCH_APPLICABLE" for this client
-    And I should get the test-channel
+    And I should get the test channel
     And I should get the "milkyway-dummy-2345" patch
     Then I logout from XML-RPC cve audit namespace
 

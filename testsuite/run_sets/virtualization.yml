@@ -13,14 +13,15 @@
 - features/core_srv_channels_add.feature
 - features/core_srv_push_package.feature
 - features/core_srv_create_repository.feature
-- features/core_srv_systemspage.feature
 - features/core_srv_users.feature
 - features/core_srv_create_activationkey.feature
 - features/core_srv_osimage_profiles.feature
 - features/core_srv_docker_profiles.feature
 # these features sync real channels (last core features)
 - features/core_srv_sync_channels.feature
-- features/core_srv_setup_wizard.feature
+- features/core_srv_products_page.feature
+- features/core_srv_mgr_sync_products.feature
+- features/core_srv_abort_all_sync.feature
 
 ## Core features END ###
 
@@ -28,8 +29,11 @@
 ## Secondary features BEGIN ##
 
 # IDEMPOTENT
+
+- features/srv_menu.feature
 - features/minkvm_guests.feature
 - features/minxen_guests.feature
+
 ## Secondary features END ##
 
 

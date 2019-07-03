@@ -1,3 +1,34 @@
+- Fix big formula checkbox not supported in Firefox
+- Update help URLs in the UI
+
+-------------------------------------------------------------------
+Wed May 15 15:08:15 CEST 2019 - jgonzalez@suse.com
+
+- version 4.0.10-1
+- SPEC cleanup
+- New menu look&feel
+- Fix dropdown background in dark themed Firefox
+
+-------------------------------------------------------------------
+Mon Apr 22 12:08:09 CEST 2019 - jgonzalez@suse.com
+
+- version 4.0.9-1
+- Add Content Lifecycle Management icon
+- Remove the obsolate rhn_docs.conf file
+- Introduce a description label for the new 'minion-checkin' Taskomatic job (bsc#1122837)
+
+-------------------------------------------------------------------
+Fri Mar 29 10:30:30 CET 2019 - jgonzalez@suse.com
+
+- version 4.0.8-1
+- Add styling for the feature Content Lifecycle Management
+
+-------------------------------------------------------------------
+Mon Mar 25 16:42:19 CET 2019 - jgonzalez@suse.com
+
+- version 4.0.7-1
+- Add VNC display for virtual machines on salt minions
+
 -------------------------------------------------------------------
 Wed Feb 27 13:00:05 CET 2019 - jgonzalez@suse.com
 

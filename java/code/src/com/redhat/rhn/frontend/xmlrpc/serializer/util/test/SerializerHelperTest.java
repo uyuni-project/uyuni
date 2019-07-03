@@ -31,7 +31,7 @@ public class SerializerHelperTest extends TestCase {
 
     public void testSerialize() throws Exception {
         SerializerHelper sl = new SerializerHelper(new XmlRpcSerializer());
-        sl.add("foo", new Long(12));
+        sl.add("foo", 12L);
         sl.add("bar", "barValue");
         String expected = "<struct><member><name>foo</name><value><i4>12</i4>" +
                   "</value></member>\n<member><name>bar</name><value><string>" +

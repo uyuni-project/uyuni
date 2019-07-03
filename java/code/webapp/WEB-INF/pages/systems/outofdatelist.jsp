@@ -10,7 +10,7 @@
 </head>
 <body>
 <rhn:toolbar base="h1" icon="header-system" imgAlt="system.common.systemAlt"
- helpUrl="/rhn/help/reference/en-US/ref.webui.systems.systems.jsp#ref.webui.systems.systems.ood">
+ helpUrl="/docs/reference/systems/systems-list.html#ref.webui.systems.systems.ood">
   <bean:message key="outofdatelist.jsp.header"/>
 </rhn:toolbar>
 

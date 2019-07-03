@@ -45,7 +45,7 @@ public class Sequence {
      * @return The next value in the sequence as a Long
      */
     public Long nextLong() {
-        return new Long(initialValue++);
+        return initialValue++;
     }
 
 }

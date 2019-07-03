@@ -15,18 +15,27 @@
 package com.suse.manager.webui.controllers;
 
 import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.withCsrfToken;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.withUser;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.withUserPreferences;
+import static spark.Spark.get;
+import static spark.Spark.post;
 
+import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.domain.action.ActionChain;
 import com.redhat.rhn.domain.action.ActionChainFactory;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.ActionType;
+import com.redhat.rhn.domain.action.virtualization.BaseVirtualizationAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationCreateAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationCreateActionDiskDetails;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationCreateActionInterfaceDetails;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.domain.server.VirtualInstance;
+import com.redhat.rhn.domain.server.VirtualInstanceFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.dto.VirtualSystemOverview;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
@@ -48,6 +57,7 @@ import com.suse.manager.virtualization.HostCapabilitiesJson;
 import com.suse.manager.virtualization.VirtManager;
 import com.suse.manager.webui.errors.NotFoundException;
 import com.suse.manager.webui.utils.MinionActionUtils;
+import com.suse.manager.webui.utils.WebSockifyTokenBuilder;
 import com.suse.manager.webui.utils.gson.VirtualGuestSetterActionJson;
 import com.suse.manager.webui.utils.gson.VirtualGuestsBaseActionJson;
 import com.suse.manager.webui.utils.gson.VirtualGuestsUpdateActionJson;
@@ -55,9 +65,11 @@ import com.suse.manager.webui.utils.gson.VirtualGuestsUpdateActionJson;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpStatus;
 import org.apache.log4j.Logger;
+import org.jose4j.lang.JoseException;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -69,6 +81,7 @@ import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
 import spark.Spark;
+import spark.template.jade.JadeTemplateEngine;
 
 /**
  * Controller class providing backend for Virtual Guests list page
@@ -85,6 +98,30 @@ public class VirtualGuestsController {
             .create();
 
     private VirtualGuestsController() { }
+
+    /**
+     * Initialize request routes for the pages served by VirtualGuestsController
+     *
+     * @param jade jade engine
+     */
+    public static void initRoutes(JadeTemplateEngine jade) {
+        get("/manager/systems/details/virtualization/guests/:sid",
+                withUserPreferences(withCsrfToken(withUser(VirtualGuestsController::show))), jade);
+        get("/manager/systems/details/virtualization/guests/:sid/edit/:guestuuid",
+                withUserPreferences(withCsrfToken(withUser(VirtualGuestsController::edit))), jade);
+        get("/manager/systems/details/virtualization/guests/:sid/new",
+                withUserPreferences(withCsrfToken(withUser(VirtualGuestsController::create))), jade);
+        get("/manager/systems/details/virtualization/guests/:sid/console/:guestuuid",
+                withUserPreferences(withCsrfToken(withUser(VirtualGuestsController::console))), jade);
+        get("/manager/api/systems/details/virtualization/guests/:sid/data",
+                withUser(VirtualGuestsController::data));
+        post("/manager/api/systems/details/virtualization/guests/:sid/:action",
+                withUser(VirtualGuestsController::action));
+        get("/manager/api/systems/details/virtualization/guests/:sid/guest/:uuid",
+                withUser(VirtualGuestsController::getGuest));
+        get("/manager/api/systems/details/virtualization/guests/:sid/domains_capabilities",
+                withUser(VirtualGuestsController::getDomainsCapabilities));
+    }
 
     /**
      * Displays the virtual guests page.
@@ -119,6 +156,7 @@ public class VirtualGuestsController {
 
         /* For the rest of the template */
         data.put("salt_entitled", server.hasEntitlement(EntitlementManager.SALT));
+        data.put("foreign_entitled", server.hasEntitlement(EntitlementManager.FOREIGN));
         data.put("is_admin", user.hasRole(RoleFactory.ORG_ADMIN));
 
         return new ModelAndView(data, "templates/virtualization/guests/show.jade");
@@ -292,7 +330,11 @@ public class VirtualGuestsController {
                                                               ((VirtualGuestSetterActionJson)data).getValue());
                         }
                         else {
-                            result = triggerGuestAction(host, guest, type, user, new HashMap<>());
+                            Map<String, String> context = new HashMap<>();
+                            if (data.getForce() != null) {
+                                context.put(BaseVirtualizationAction.FORCE_STRING, Boolean.toString(data.getForce()));
+                            }
+                            result = triggerGuestAction(host, guest, type, user, context);
                         }
                     }
                     String status = result != null ? result : "Failed";
@@ -381,6 +423,64 @@ public class VirtualGuestsController {
         data.put("isSalt", host.hasEntitlement(EntitlementManager.SALT));
 
         return new ModelAndView(data, "templates/virtualization/guests/create.jade");
+    }
+
+    /**
+     * Display the console page of a virtual guest
+     *
+     * @param request the request
+     * @param response the response
+     * @param user the user
+     * @return the ModelAndView object to render the page
+     */
+    public static ModelAndView console(Request request, Response response, User user) {
+        Map<String, Object> data = new HashMap<>();
+
+        Long hostId;
+        try {
+            hostId = Long.parseLong(request.params("sid"));
+        }
+        catch (NumberFormatException e) {
+            throw new NotFoundException();
+        }
+
+        // Use uuids since the IDs may change
+        String guestUuid = request.params("guestuuid");
+
+        VirtualInstance guest = VirtualInstanceFactory.getInstance()
+                .lookupVirtualInstanceByHostIdAndUuid(hostId, guestUuid);
+        Server host = guest.getHostSystem();
+
+        String minionId = host.asMinionServer().orElseThrow(() -> Spark.halt(HttpStatus.SC_BAD_REQUEST)).getMinionId();
+        GuestDefinition def = VirtManager.getGuestDefinition(minionId, guest.getName()).
+                orElseThrow(() -> Spark.halt(HttpStatus.SC_BAD_REQUEST));
+        String hostname = host.getName();
+        Integer port = def.getGraphics().getPort();
+
+        /* For system-common.jade */
+        data.put("server", host);
+        data.put("inSSM", RhnSetDecl.SYSTEMS.get(user).contains(hostId));
+
+        /* For the rest of the template */
+        data.put("guestUuid", guestUuid);
+        data.put("guestName", guest.getName());
+        data.put("graphicsType", def.getGraphics().getType());
+
+        String url = null;
+        if (Arrays.asList("spice", "vnc").contains(def.getGraphics().getType())) {
+            try {
+                WebSockifyTokenBuilder tokenBuilder = new WebSockifyTokenBuilder(hostname, port);
+                tokenBuilder.useServerSecret();
+                url = "wss://" + ConfigDefaults.get().getHostname() + ":8050/?token=" + tokenBuilder.getToken();
+            }
+            catch (JoseException e) {
+                LOG.error(e);
+                Spark.halt(HttpStatus.SC_SERVICE_UNAVAILABLE);
+            }
+        }
+        data.put("socketUrl", url);
+
+        return new ModelAndView(data, "templates/virtualization/guests/console.jade");
     }
 
     private static String triggerGuestUpdateAction(Server host,
@@ -497,6 +597,10 @@ public class VirtualGuestsController {
                                              ActionType actionType,
                                              User user,
                                              Map<String, String> context) {
+        if (host.hasEntitlement(EntitlementManager.FOREIGN)) {
+            LOG.warn("Foreign systems don't support virtual guest actions");
+            return null;
+        }
         // Traditionally registered systems aren't able to really delete the VM: fail
         // the delete action for them
         if (host.hasEntitlement(EntitlementManager.MANAGEMENT) &&

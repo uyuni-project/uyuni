@@ -220,7 +220,7 @@ public class EditAction extends LookupDispatchAction {
         //Fill out errata
         e.setSynopsis(form.getString("synopsis"));
         e.setAdvisoryName(form.getString("advisoryName"));
-        e.setAdvisoryRel(new Long(form.getString("advisoryRelease")));
+        e.setAdvisoryRel(Long.valueOf(form.getString("advisoryRelease")));
         e.setAdvisoryType(form.getString("advisoryType"));
         e.setProduct(form.getString("product"));
         e.setErrataFrom(form.getString("errataFrom"));
@@ -266,7 +266,7 @@ public class EditAction extends LookupDispatchAction {
         Iterator i = bugs.iterator();
         while (i.hasNext()) {
             String[] bug = (String[])i.next();
-            Long bugid = new Long(bug[0]);
+            Long bugid = Long.valueOf(bug[0]);
             String summary = bug[1];
             String url = bug[2];
             //should this be a published or unpublished bug?

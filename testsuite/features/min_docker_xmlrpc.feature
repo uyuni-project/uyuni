@@ -21,8 +21,7 @@ Feature: XML-RPC image namespace for containers
 
   Scenario: Cleanup: remove custom system info
     Given I am authorized as "admin" with password "admin"
-    When I follow "Systems"
-    And I follow "Custom System Info"
+    When I follow the left menu "Systems > Custom System Info"
     And I follow "arancio"
     And I follow "Delete Key"
     And I click on "Delete Key"

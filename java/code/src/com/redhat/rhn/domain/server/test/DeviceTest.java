@@ -79,10 +79,10 @@ public class DeviceTest extends RhnBaseTestCase {
         hd.setBus(Device.BUS_PCI);
         hd.setDescription(DESCRIPTION);
         hd.setDeviceClass(Device.CLASS_AUDIO);
-        hd.setDetached(new Long(1));
+        hd.setDetached(1L);
         hd.setDevice(DEVICE);
         hd.setDriver(DRIVER);
-        hd.setPcitype(new Long(10));
+        hd.setPcitype(10L);
         hd.setProp1(PROP_ONE);
         hd.setProp2(PROP_TWO);
         hd.setProp3(PROP_THREE);

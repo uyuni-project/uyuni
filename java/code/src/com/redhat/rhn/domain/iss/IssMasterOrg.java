@@ -24,7 +24,7 @@ import com.redhat.rhn.frontend.dto.BaseDto;
  */
 public class IssMasterOrg extends BaseDto {
 
-    public static final Long NO_MAP_ID = new Long(-1L);
+    public static final Long NO_MAP_ID = -1L;
 
     private Long id;
     private Long masterOrgId;

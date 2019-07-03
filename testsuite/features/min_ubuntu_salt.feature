@@ -11,7 +11,7 @@
 Feature: Be able to bootstrap an Ubuntu minion and do some basic operations on it
 
 #TODO: External repos are disabled, so we need to figure out how to enable the repo
-#      for salt service before uncomment it
+#      for salt service before we uncomment it
 #@ubuntu_minion
 #  Scenario: Install Salt service from Ubuntu minion
 #    When I install Salt packages from "ubuntu-minion"
@@ -23,8 +23,8 @@ Feature: Be able to bootstrap an Ubuntu minion and do some basic operations on i
     And I follow "Delete System"
     Then I should see a "Confirm System Profile Deletion" text
     When I click on "Delete Profile"
-    Then I should see a "has been deleted" text
-    And "ubuntu-ssh-minion" should not be registered
+    And I wait until I see "has been deleted" text
+    Then "ubuntu-ssh-minion" should not be registered
 
 @ubuntu_minion
   Scenario: Bootstrap an Ubuntu minion
@@ -62,7 +62,7 @@ Feature: Be able to bootstrap an Ubuntu minion and do some basic operations on i
 #    Then I should see "ubuntu-minion" hostname
 
 @ubuntu_minion
-  Scenario: Re-subscribe the SSH-managed Ubuntu minion to a base channel
+  Scenario: Subscribe the Ubuntu minion to a base channel
     Given I am on the Systems overview page of this "ubuntu-minion"
     When I follow "Software" in the content area
     And I follow "Software Channels" in the content area
@@ -93,9 +93,8 @@ Feature: Be able to bootstrap an Ubuntu minion and do some basic operations on i
 @ubuntu_minion
   Scenario: Run a remote command on the Ubuntu minion
     Given I am authorized
-    When I follow "Salt"
-    And I follow "Remote Commands"
-    Then I should see a "Remote Commands" text
+    When I follow the left menu "Salt > Remote Commands"
+    Then I should see a "Remote Commands" text in the content area
     When I enter command "cat /etc/os-release"
     And I enter target "*ubuntu*"
     And I click on preview
@@ -118,13 +117,18 @@ Feature: Be able to bootstrap an Ubuntu minion and do some basic operations on i
     And I should see a "results.xml" link
 
 @ubuntu_minion
+  Scenario: Check events history for failures on Ubuntu minion
+    Given I am on the Systems overview page of this "ubuntu-minion"
+    Then I check for failed events on history event page
+
+@ubuntu_minion
   Scenario: Cleanup: delete the Ubuntu minion
     When I am on the Systems overview page of this "ubuntu-minion"
     And I follow "Delete System"
     Then I should see a "Confirm System Profile Deletion" text
     When I click on "Delete Profile"
-    Then I should see a "has been deleted" text
-    And "ubuntu-minion" should not be registered
+    And I wait until I see "has been deleted" text
+    Then "ubuntu-minion" should not be registered
 
 @ubuntu_minion
   Scenario: Cleanup: bootstrap a SSH-managed Ubuntu minion

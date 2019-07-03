@@ -228,7 +228,7 @@ public class FileListConfirmSubmitAction extends RhnListDispatchAction {
 
         if (actionChain == null) {
             Object[] params = new Object[2];
-            params[0] = new Long(successes);
+            params[0] = (long) successes;
             params[1] = "/rhn/schedule/ActionDetails.do?aid=" + action.getId();
             msgs.add(ActionMessages.GLOBAL_MESSAGE,
                     new ActionMessage(transKey, params));

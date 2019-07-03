@@ -27,7 +27,6 @@ import datetime
 import re
 
 from salt.ext import six
-from yum.Errors import RepoError
 
 try:
     import xmlrpclib
@@ -51,7 +50,7 @@ except ImportError:
     from common.rhnConfig import CFG, initCFG
     from satellite_tools.progress_bar import ProgressBar
 
-from depsolver import DepSolver
+from .depsolver import DepSolver
 
 
 LOG_LOCATION = '/var/log/rhn/errata-clone.log'
@@ -496,17 +495,16 @@ class ChannelTreeCloner:
         temp_repo_links = []
         repo = None
         for repo in repos:
-            yum_repodata_path = "%s/repodata" % (repo['relative_path'])
-            create_repodata_link(repo['relative_path'], yum_repodata_path)
-            temp_repo_links.append(yum_repodata_path)
+            repodata_path = "%s/repodata" % (repo['relative_path'])
+            create_repodata_link(repo['relative_path'], repodata_path)
+            temp_repo_links.append(repodata_path)
         try:
             try:
                 self.solver = DepSolver(repos)
                 self.__dep_solve(nvrea_list)
                 self.report_depsolve_results()
-                self.solver.cleanup()
-            except RepoError as e:
-                raise UserRepoError(repo["id"], e.value)
+            except Exception as e:
+                raise UserRepoError(repo["id"], e)
         finally:
             # clean up temporary symlinks
             for link in temp_repo_links:
@@ -734,10 +732,10 @@ class ChannelCloner:
 
     @staticmethod
     def pkg_exists(needed_list, pkg_list):
-        """Given a list of packages in [N, V, E, R, A] format, do any of them
+        """Given a list of packages in [N, EVR, A] format, do any of them
             exist in the pkg_hash with key of N-V-R.A  format"""
         for i in needed_list:
-            key = "%s-%s-%s.%s" % (i[0], i[1], i[3], i[4])
+            key = "%s-%s-.%s" % (i[0], i[1], i[2])
             if key in pkg_list:
                 return pkg_list[key]
         return False
@@ -751,7 +749,7 @@ class ChannelCloner:
         print(msg)
         log_clean(0, "")
         log_clean(0, msg)
-        for e in sorted(self.errata_to_clone):
+        for e in sorted(self.errata_to_clone, key=lambda x: x['advisory_name']):
             log_clean(0, "%s - %s" % (e['advisory_name'], e['synopsis']))
 
         pb = ProgressBar(prompt="", endTag=' - complete',
@@ -1030,10 +1028,10 @@ class UserError(Exception):
 
 class UserRepoError(UserError):
 
-    def __init__(self, label, yum_error=None):
+    def __init__(self, label, error=None):
         msg = ("Unable to read repository information.\n"
                + "Please verify repodata has been generated in "
                + "/var/cache/rhn/repodata/%s." % label)
-        if yum_error:
-            msg += "\nError from yum: %s" % yum_error
+        if error:
+            msg += "\nError: %s" % error
         UserError.__init__(self, msg)

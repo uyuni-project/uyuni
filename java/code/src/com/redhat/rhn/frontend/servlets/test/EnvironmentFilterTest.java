@@ -41,7 +41,7 @@ public class EnvironmentFilterTest extends BaseFilterTst {
         filter.init(null);
 
         Config c = Config.get();
-        Boolean origValue = new Boolean(ConfigDefaults.get().isSSLAvailable());
+        Boolean origValue = ConfigDefaults.get().isSSLAvailable();
         c.setBoolean(ConfigDefaults.SSL_AVAILABLE, Boolean.TRUE.toString());
         try {
             filter.doFilter(request, response, chain);

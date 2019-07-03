@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2016 SUSE LLC
+# Copyright (c) 2019 SUSE LLC
 #
 # All modifications and additions to the file contributed by third parties
 # remain the property of their copyright owners, unless otherwise agreed
@@ -10,11 +10,11 @@
 # license that conforms to the Open Source Definition (Version 1.9)
 # published by the Open Source Initiative.
 
-# Please submit bugfixes or comments via http://bugs.opensuse.org/
+# Please submit bugfixes or comments via https://bugs.opensuse.org/
 #
 
 Name:           susemanager-nodejs-sdk-devel
-Version:        1.0.6
+Version:        1.0.9
 Release:        1%{?dist}
 
 License:        Apache-2.0 and BSD-2-Clause and BSD-3-Clause and MIT and CC-BY-3.0 and ISC and SUSE-Public-Domain and WTFPL
@@ -38,7 +38,7 @@ This package contains Node.js software needed by SUSE Manager at build time.
 tar xfv %{S:1}
 
 %build
-find . -type f | xargs sed -i -e 's/#!\/usr\/bin\/env node/#!\/usr\/bin\/node/g'
+find . -type f -exec sed -i -e 's/#!\/usr\/bin\/env node/#!\/usr\/bin\/node/g' {} \;
 
 %install
 mkdir -p %{buildroot}%{nodejs_sitelib}

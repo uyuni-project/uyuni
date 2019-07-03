@@ -170,7 +170,7 @@ public class ActivationKeysController {
         Map<Long, Boolean> recommendedFlags = ChannelManager.computeChannelRecommendedFlags(base, children.stream());
         ChannelsJson jsonChannel = new ChannelsJson();
         jsonChannel.setBase(base);
-        jsonChannel.setChildrenWithRecommended(children.stream(), recommendedFlags);
+        jsonChannel.setChildrenWithRecommendedAndArch(children.stream(), recommendedFlags);
         return jsonChannel;
     }
 }

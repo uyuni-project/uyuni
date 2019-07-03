@@ -37,7 +37,7 @@ public class KickstartScriptTest extends BaseTestCaseWithUser {
     public void testRevision() throws Exception {
         KickstartData ksdata = KickstartDataTest.createKickstartWithOptions(user.getOrg());
         KickstartScript script = KickstartScriptTest.createPost(ksdata);
-        script.setRevision(new Long(1));
+        script.setRevision(1L);
         System.out.println("\n\n\n\n\nSSSSSSSSSSSS\n\n\n\n");
         ksdata = (KickstartData) TestUtils.saveAndReload(ksdata);
         System.out.println("\n\n\n\n\nZZZZZZZZZZZZ\n\n\n\n");
@@ -123,7 +123,7 @@ public class KickstartScriptTest extends BaseTestCaseWithUser {
         ks.setInterpreter("/usr/bin/perl");
         ks.setChroot("Y");
         ks.setData(DATA);
-        ks.setPosition(new Long(1));
+        ks.setPosition(1L);
         ks.setScriptType(KickstartScript.TYPE_PRE);
         ks.setKsdata(k);
         ks.setRaw(true);
@@ -134,7 +134,7 @@ public class KickstartScriptTest extends BaseTestCaseWithUser {
         KickstartScript ks = new KickstartScript();
         ks.setInterpreter("/usr/bin/python");
         ks.setChroot("Y");
-        ks.setPosition(new Long(2));
+        ks.setPosition(2L);
         ks.setData(DATA);
         ks.setScriptType(KickstartScript.TYPE_POST);
         ks.setKsdata(k);
@@ -147,7 +147,7 @@ public class KickstartScriptTest extends BaseTestCaseWithUser {
         ks.setInterpreter("/usr/bin/python");
         ks.setData(DATA);
         ks.setChroot("N");
-        ks.setPosition(new Long(3));
+        ks.setPosition(3L);
         ks.setScriptType(KickstartScript.TYPE_POST);
         ks.setKsdata(k);
         ks.setRaw(true);
@@ -158,7 +158,7 @@ public class KickstartScriptTest extends BaseTestCaseWithUser {
         KickstartScript ks = new KickstartScript();
         ks.setChroot("Y");
         ks.setData(DATA);
-        ks.setPosition(new Long(4));
+        ks.setPosition(4L);
         ks.setScriptType(KickstartScript.TYPE_PRE);
         ks.setKsdata(k);
         ks.setRaw(true);
@@ -169,7 +169,7 @@ public class KickstartScriptTest extends BaseTestCaseWithUser {
         KickstartScript ks = new KickstartScript();
         ks.setChroot("Y");
         ks.setData(DATA);
-        ks.setPosition(new Long(5));
+        ks.setPosition(5L);
         ks.setScriptType(KickstartScript.TYPE_POST);
         ks.setKsdata(k);
         ks.setRaw(true);

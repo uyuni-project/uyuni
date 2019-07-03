@@ -1,7 +1,7 @@
 #
 # spec file for package spacewalk-proxy
 #
-# Copyright (c) 2018 SUSE LINUX GmbH, Nuernberg, Germany.
+# Copyright (c) 2019 SUSE LINUX GmbH, Nuernberg, Germany.
 # Copyright (c) 2008-2018 Red Hat, Inc.
 #
 # All modifications and additions to the file contributed by third parties
@@ -13,7 +13,7 @@
 # license that conforms to the Open Source Definition (Version 1.9)
 # published by the Open Source Initiative.
 
-# Please submit bugfixes or comments via http://bugs.opensuse.org/
+# Please submit bugfixes or comments via https://bugs.opensuse.org/
 #
 
 
@@ -31,9 +31,9 @@ Name:           spacewalk-proxy
 Summary:        Spacewalk Proxy Server
 License:        GPL-2.0-only
 Group:          Applications/Internet
-Version:        4.0.6
+Version:        4.0.11
 Release:        1%{?dist}
-URL:            https://github.com/uyuni-project/uyuni
+Url:            https://github.com/uyuni-project/uyuni
 Source0:        https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildRequires:  %{pythonX}
@@ -326,11 +326,11 @@ exit 0
 %post common
 %if 0%{?suse_version}
 sysconf_addword /etc/sysconfig/apache2 APACHE_MODULES wsgi
-sysconf_addword /etc/sysconfig/apache2 APACHE_MODULES access_compat
 sysconf_addword /etc/sysconfig/apache2 APACHE_MODULES proxy
 sysconf_addword /etc/sysconfig/apache2 APACHE_MODULES rewrite
 sysconf_addword /etc/sysconfig/apache2 APACHE_MODULES version
 sysconf_addword /etc/sysconfig/apache2 APACHE_SERVER_FLAGS SSL
+sysconf_addword -r /etc/sysconfig/apache2 APACHE_MODULES access_compat
 
 # In case of an update, remove superfluous stuff
 # from cobbler-proxy.conf (bnc#796581)
@@ -476,7 +476,7 @@ fi
 %attr(770,root,%{apache_group}) %dir %{_var}/log/rhn
 # config files
 %attr(755,root,%{apache_group}) %dir %{rhnconf}
-%attr(645,root,%{apache_group}) %config %{rhnconf}/rhn.conf
+%attr(640,root,%{apache_group}) %config(noreplace) %{rhnconf}/rhn.conf
 %attr(644,root,%{apache_group}) %{_prefix}/share/rhn/config-defaults/rhn_proxy.conf
 %attr(644,root,%{apache_group}) %config %{httpdconf}/spacewalk-proxy.conf
 # this file is created by either cli or webui installer

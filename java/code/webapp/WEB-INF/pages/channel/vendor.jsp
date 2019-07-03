@@ -6,7 +6,7 @@
 <html>
 
 <head>
-<script src="/javascript/channel_tree.js" type="text/javascript"></script>
+<script src="/javascript/channel_tree.js?cb=${rhn:getConfig('web.version')}" type="text/javascript"></script>
 <script type="text/javascript">
 var filtered = ${requestScope.isFiltered};
 function showFiltered() {
@@ -18,7 +18,7 @@ function showFiltered() {
 
 <body onLoad="onLoadStuff(3); showFiltered();">
 <rhn:toolbar base="h1" icon="header-channel" imgAlt="channels.overview.toolbar.imgAlt"
-             helpUrl="/rhn/help/reference/en-US/ref.webui.channels.jsp#s3-sm-channel-list-redhat">
+             helpUrl="/docs/reference/software/software-channel-list-menu.html">
   <bean:message key="channel.nav.vendor"/>
 </rhn:toolbar>
 

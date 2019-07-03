@@ -22,19 +22,14 @@ begin
       into md_keyword_id
       from suseMdKeyword
      where label = label_in;
+
     if not found then
-        md_keyword_id := nextval('suse_mdkeyword_id_seq');
-
-        insert into suseMdKeyword (id, label)
-            values (md_keyword_id, label_in)
-            on conflict do nothing;
-
-        select id
-            into strict md_keyword_id
-            from suseMdKeyword
-            where label = label_in;
+        -- HACK: insert is isolated in own function in order to be able to declare this function immutable
+        -- Postgres optimizes immutable functions calls but those are compatible with the contract of lookup_\*
+        -- see https://www.postgresql.org/docs/9.6/xfunc-volatility.html
+        return insert_md_keyword(label_in);
     end if;
 
     return md_keyword_id;
 end;
-$$ language plpgsql;
+$$ language plpgsql immutable;

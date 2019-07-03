@@ -5,7 +5,7 @@ Feature: Support for new CVE-ID syntax
 
   Scenario: Check perseus-dummy-7891 patches
     Given I am on the patches page
-    When I follow "All" in the left menu
+    When I follow the left menu "Patches > Patch List > All"
     And I follow "perseus-dummy-7891"
     Then I should see a "perseus-dummy-7891 - Security Advisory" text
     And I should see a "CVE-1999-12345" link
@@ -20,7 +20,7 @@ Feature: Support for new CVE-ID syntax
 
   Scenario: Search for CVE ID with the new format
     Given I am on the patches page
-    And I follow "Advanced Search"
+    When I follow the left menu "Patches > Advanced Search"
     When I enter "CVE-1999-12345" as "search_string" in the content area
     And I click on "Search"
     Then I should see a "Advanced Search" text

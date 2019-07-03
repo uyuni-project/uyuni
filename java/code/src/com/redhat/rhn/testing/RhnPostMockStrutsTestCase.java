@@ -14,6 +14,10 @@
  */
 package com.redhat.rhn.testing;
 
+import org.apache.struts.Globals;
+import org.apache.struts.upload.CommonsMultipartRequestHandler;
+import org.apache.struts.upload.FormFile;
+
 import java.io.ByteArrayInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -21,10 +25,6 @@ import java.io.InputStream;
 import java.util.Hashtable;
 
 import javax.servlet.http.HttpServletRequest;
-
-import org.apache.struts.Globals;
-import org.apache.struts.upload.CommonsMultipartRequestHandler;
-import org.apache.struts.upload.FormFile;
 
 import servletunit.HttpServletRequestSimulator;
 
@@ -140,7 +140,6 @@ public class RhnPostMockStrutsTestCase extends RhnMockStrutsTestCase {
          *
          * @return the all elements
          */
-        @SuppressWarnings("unchecked")
         @Override
         public Hashtable<String, Object> getAllElements() {
             Hashtable<String, Object> result =

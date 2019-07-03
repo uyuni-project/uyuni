@@ -58,7 +58,7 @@ public class ErrataAclHandlerTest extends RhnBaseTestCase {
         //make sure we get exceptions when we should
         //ctx = new HashMap();
         //bad errata id
-        ctx.put("eid", new Long(-234));
+        ctx.put("eid", -234L);
         try {
             handler.aclErrataIsPublished(ctx, null);
             fail();

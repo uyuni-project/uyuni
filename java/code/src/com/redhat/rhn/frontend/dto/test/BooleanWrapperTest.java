@@ -31,19 +31,19 @@ public class BooleanWrapperTest extends RhnBaseTestCase {
     }
 
     public void testIntegerSet() {
-        bw.setBool(new Integer(1));
+        bw.setBool(1);
         assertTrue(bw.booleanValue());
         assertNotNull(bw.getBool());
 
-        bw.setBool(new Integer(0));
+        bw.setBool(0);
         assertFalse(bw.booleanValue());
         assertNotNull(bw.getBool());
 
-        bw.setBool(new Integer(-1));
+        bw.setBool(-1);
         assertTrue(bw.booleanValue());
         assertNotNull(bw.getBool());
 
-        bw.setBool(new Integer(10));
+        bw.setBool(10);
         assertTrue(bw.booleanValue());
         assertNotNull(bw.getBool());
 

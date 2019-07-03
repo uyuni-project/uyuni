@@ -20,7 +20,7 @@ PKGLIST10 = [
     "spacewalk-check",
     "spacewalk-client-setup",
     "spacewalk-client-tools",
-    "mgr-daemon",
+    "mgr-daemon|spacewalksd",
     "suseRegister",
     "suseRegisterInfo",
     "yast2-ncurses",
@@ -43,6 +43,7 @@ PKGLIST11 = [
     "libzypp",
     "newt",
     "openssl",
+    "pmtools",
     "python",
     "python-dmidecode",
     "python-ethtool",
@@ -60,7 +61,7 @@ PKGLIST11 = [
     "spacewalk-client-tools",
     "python2-spacewalk-client-tools",
     "spacewalk-usix",
-    "mgr-daemon",
+    "mgr-daemon|spacewalksd",
     "suseRegisterInfo",
     "python2-suseRegisterInfo",
     "zypp-plugin-python",
@@ -92,6 +93,7 @@ ENHANCE11 = [
 
 PKGLIST12 = [
     "dbus-1-python",
+    "dmidecode",
     "hwdata",
     "libcurl4",
     "libgudev-1_0-0",
@@ -117,7 +119,6 @@ PKGLIST12 = [
     "python-pyasn1",
     "python-pycparser",
     "python-pyOpenSSL",
-    "python-setuptools",
     "python-six",
     "python-xml",
     "python-pyudev",
@@ -132,7 +133,7 @@ PKGLIST12 = [
     "spacewalk-client-tools",
     "python2-spacewalk-client-tools",
     "spacewalk-usix",
-    "mgr-daemon",
+    "mgr-daemon|spacewalksd",
     "suseRegisterInfo",
     "python2-suseRegisterInfo",
     "zypp-plugin-python",
@@ -220,6 +221,7 @@ RES6 = [
     "python-six",
     "python-babel",
     "dbus",
+    "dbus-libs",
     "yum-plugin-security",
     "yum-rhn-plugin",
     "yum",
@@ -233,10 +235,11 @@ RES6 = [
     "spacewalk-client-tools",
     "python2-spacewalk-client-tools",
     "spacewalk-usix",
-    "mgr-daemon",
+    "mgr-daemon|spacewalksd",
     "suseRegisterInfo",
     "python2-suseRegisterInfo",
     "python2-hwdata",
+    "dmidecode",
 ]
 
 RES7 = [
@@ -278,10 +281,11 @@ RES7 = [
     "spacewalk-client-tools",
     "python2-spacewalk-client-tools",
     "spacewalk-usix",
-    "mgr-daemon",
+    "mgr-daemon|spacewalksd",
     "suseRegisterInfo",
     "python2-suseRegisterInfo",
     "python2-hwdata",
+    "dmidecode",
 ]
 
 PKGLIST15 = [
@@ -317,7 +321,7 @@ PKGLIST15 = [
     "python3-spacewalk-client-setup",
     "python3-spacewalk-client-tools",
     "python3-spacewalk-usix",
-    "mgr-daemon",
+    "mgr-daemon|spacewalksd",
     "suseRegisterInfo",
     "python3-suseRegisterInfo",
     "zypp-plugin-spacewalk",
@@ -347,10 +351,93 @@ PKGLIST15 = [
     "salt",
     "python3-salt",
     "salt-minion",
+    "dmidecode",
 ]
 
 PKGLIST15_NO_Z = [
     "libunwind",
+]
+
+PKGLISTUBUNTU1604 = [
+    "libsodium18",
+    "dctrl-tools",
+    "libzmq5",
+    "python-chardet",
+    "python-croniter",
+    "python-crypto",
+    "python-dateutil",
+    "python-enum34",
+    "python-ipaddress",
+    "python-jinja2",
+    "python-markupsafe",
+    "python-minimal",
+    "python-msgpack",
+    "python-openssl",
+    "python-pkg-resources",
+    "python-psutil",
+    "python-requests",
+    "python-six",
+    "python-systemd",
+    "python-tornado",
+    "python-tz",
+    "python-urllib3",
+    "python-yaml",
+    "python-zmq",
+    "python-pycurl",
+    "salt-common",
+    "salt-minion",
+    "dmidecode",
+]
+
+PKGLISTUBUNTU1804 = [
+    "dctrl-tools",
+    "javascript-common",
+    "libjs-jquery",
+    "libjs-sphinxdoc",
+    "libjs-underscore",
+    "libnorm1",
+    "libpgm-5.2-0",
+    "libpython-stdlib",
+    "libpython2.7-minimal",
+    "libpython2.7-stdlib",
+    "libsodium23",
+    "libzmq5",
+    "python",
+    "python-apt",
+    "python-asn1crypto",
+    "python-backports-abc",
+    "python-certifi",
+    "python-cffi-backend",
+    "python-chardet",
+    "python-concurrent.futures",
+    "python-croniter",
+    "python-crypto",
+    "python-cryptography",
+    "python-dateutil",
+    "python-enum34",
+    "python-idna",
+    "python-ipaddress",
+    "python-jinja2",
+    "python-markupsafe",
+    "python-minimal",
+    "python-msgpack",
+    "python-openssl",
+    "python-pkg-resources",
+    "python-psutil",
+    "python-requests",
+    "python-singledispatch",
+    "python-six",
+    "python-systemd",
+    "python-tornado",
+    "python-tz",
+    "python-urllib3",
+    "python-yaml",
+    "python-zmq",
+    "python2.7",
+    "python2.7-minimal",
+    "salt-common",
+    "salt-minion",
+    "dmidecode",
 ]
 
 DATA = {
@@ -674,6 +761,10 @@ DATA = {
         'BASECHANNEL' : 'opensuse_leap15_0-x86_64', 'PKGLIST' : PKGLIST15 + PKGLIST15_NO_Z,
         'DEST' : '/srv/www/htdocs/pub/repositories/opensuse/15/0/bootstrap/'
     },
+    'openSUSE-Leap-15.1-x86_64' : {
+        'BASECHANNEL' : 'opensuse_leap15_1-x86_64', 'PKGLIST' : PKGLIST15 + PKGLIST15_NO_Z,
+        'DEST' : '/srv/www/htdocs/pub/repositories/opensuse/15/1/bootstrap/'
+    },
     'centos-6-x86_64' : {
         'BASECHANNEL' : 'centos6-x86_64', 'PKGLIST' : RES6,
         'DEST' : '/srv/www/htdocs/pub/repositories/centos/6/bootstrap/'
@@ -682,4 +773,26 @@ DATA = {
         'BASECHANNEL' : 'centos7-x86_64', 'PKGLIST' : RES7,
         'DEST' : '/srv/www/htdocs/pub/repositories/centos/7/bootstrap/'
     },
+    'RHEL6-x86_64' : {
+        'PDID' : [-5, 1682], 'PKGLIST' : RES6,
+        'DEST' : '/srv/www/htdocs/pub/repositories/res/6/bootstrap/'
+    },
+    'RHEL6-i386' : {
+        'PDID' : [-6, 1681], 'PKGLIST' : RES6,
+        'DEST' : '/srv/www/htdocs/pub/repositories/res/6/bootstrap/'
+    },
+    'RHEL7-x86_64' : {
+        'PDID' : [-7, 1683], 'PKGLIST' : RES7,
+        'DEST' : '/srv/www/htdocs/pub/repositories/res/7/bootstrap/'
+    },
+    'ubuntu-16.04-amd64' : {
+        'PDID' : [-2, 1917], 'PKGLIST' : PKGLISTUBUNTU1604,
+        'DEST' : '/srv/www/htdocs/pub/repositories/ubuntu/16/4/bootstrap/',
+        'TYPE' : 'deb'
+    },
+    'ubuntu-18.04-amd64' : {
+        'PDID' : [-1, 1918], 'PKGLIST' : PKGLISTUBUNTU1804,
+        'DEST' : '/srv/www/htdocs/pub/repositories/ubuntu/18/4/bootstrap/',
+        'TYPE' : 'deb'
+    }
 }

@@ -40,11 +40,11 @@ public class ManagedServerGroupSerializerTest extends MockObjectTestCase {
 
     public void testSerialize() throws Exception {
         ManagedServerGroupSerializer sgs = new ManagedServerGroupSerializer();
-        final Long id = new Long(10);
+        final Long id = 10L;
         final String name = "name";
         final String description = "Description";
-        final Long currentMembers = new Long(20);
-        final Long orgId = new Long(122);
+        final Long currentMembers = 20L;
+        final Long orgId = 122L;
         Writer output = new StringWriter();
         final Org mockOrg = mock(Org.class);
         final ManagedServerGroup mock = mock(ManagedServerGroup.class);

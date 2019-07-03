@@ -28,18 +28,12 @@ begin
      where identifier = identifier_in and title = title_in;
 
     if not found then
-        profile_id := nextval('rhn_xccdf_profile_id_seq');
-
-        insert into rhnXccdfProfile (id, identifier, title)
-            values (profile_id, identifier_in, title_in)
-            on conflict do nothing;
-
-        select id
-            into profile_id
-            from rhnXccdfProfile
-            where identifier = identifier_in and title = title_in;
+        -- HACK: insert is isolated in own function in order to be able to declare this function immutable
+        -- Postgres optimizes immutable functions calls but those are compatible with the contract of lookup_\*
+        -- see https://www.postgresql.org/docs/9.6/xfunc-volatility.html
+        return insert_xccdf_profile(identifier_in, title_in);
     end if;
 
     return profile_id;
 end;
-$$ language plpgsql;
+$$ language plpgsql immutable;

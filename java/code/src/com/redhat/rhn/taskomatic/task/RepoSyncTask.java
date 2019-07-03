@@ -18,7 +18,6 @@ import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
-
 import com.redhat.rhn.domain.channel.ContentSource;
 import com.redhat.rhn.domain.notification.NotificationMessage;
 import com.redhat.rhn.domain.notification.UserNotificationFactory;
@@ -47,7 +46,6 @@ public class RepoSyncTask extends RhnJavaJob {
      * {@inheritDoc}
      */
     @Override
-    @SuppressWarnings("unchecked")
     public void execute(JobExecutionContext context) {
         List<Long> channelIds = getChannelIds(context.getJobDetail().getJobDataMap());
 

@@ -57,12 +57,12 @@ public class TaskEnvironmentListener implements TriggerListener {
                 HibernateFactory.initialize();
                 if (!HibernateFactory.isInitialized()) {
                     logger.error("HibernateFactory failed to initialize");
-                    this.vetoedJobs.put(new Integer(ctx.hashCode()), Boolean.TRUE);
+                    this.vetoedJobs.put(ctx.hashCode(), Boolean.TRUE);
                 }
             }
             catch (Throwable t) {
                 logger.error(t.getLocalizedMessage(), t);
-                this.vetoedJobs.put(new Integer(ctx.hashCode()), Boolean.TRUE);
+                this.vetoedJobs.put(ctx.hashCode(), Boolean.TRUE);
             }
         }
     }
@@ -73,7 +73,7 @@ public class TaskEnvironmentListener implements TriggerListener {
     @Override
     public boolean vetoJobExecution(Trigger trigger, JobExecutionContext ctx) {
         // Closest we get to a unique id
-        Integer contextHashCode = new Integer(ctx.hashCode());
+        Integer contextHashCode = ctx.hashCode();
         return this.vetoedJobs.remove(contextHashCode) != null;
     }
 

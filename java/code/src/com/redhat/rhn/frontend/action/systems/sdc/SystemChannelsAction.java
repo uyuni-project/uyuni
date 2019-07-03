@@ -141,7 +141,7 @@ public class SystemChannelsAction extends RhnLookupDispatchAction {
         request.setAttribute(BASE_CHANNELS, rhnChannels);
         request.setAttribute(CUSTOM_BASE_CHANNELS, customChannels);
         // Used to compare to the EssentialChannelDto id's:
-        Long currentBaseChanId = new Long(-1);
+        Long currentBaseChanId = -1L;
         if (s.getBaseChannel() != null) {
             currentBaseChanId = s.getBaseChannel().getId();
         }
@@ -195,9 +195,9 @@ public class SystemChannelsAction extends RhnLookupDispatchAction {
         Channel newChannel = null;
         List<Channel> preservedChildChannels = new LinkedList<Channel>();
 
-        if (newBaseChannelId != null && newBaseChannelId.longValue() != -1) {
+        if (newBaseChannelId != null && newBaseChannelId != -1) {
             newChannel = ChannelManager.lookupByIdAndUser(
-                new Long(newBaseChannelId.longValue()), user);
+                newBaseChannelId, user);
 
             Map<Channel, Channel> preservations = ChannelManager.findCompatibleChildren(
                     s.getBaseChannel(), newChannel, user);

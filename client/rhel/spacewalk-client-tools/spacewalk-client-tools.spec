@@ -1,7 +1,7 @@
 #
 # spec file for package spacewalk-client-tools
 #
-# Copyright (c) 2018 SUSE LINUX GmbH, Nuernberg, Germany.
+# Copyright (c) 2019 SUSE LINUX GmbH, Nuernberg, Germany.
 # Copyright (c) 2008-2018 Red Hat, Inc.
 #
 # All modifications and additions to the file contributed by third parties
@@ -13,7 +13,7 @@
 # license that conforms to the Open Source Definition (Version 1.9)
 # published by the Open Source Initiative.
 
-# Please submit bugfixes or comments via http://bugs.opensuse.org/
+# Please submit bugfixes or comments via https://bugs.opensuse.org/
 #
 
 
@@ -76,8 +76,8 @@ Group:          System Environment/Base
 %endif
 Source0:        spacewalk-client-tools-%{version}.tar.gz
 Source1:        %{name}-rpmlintrc
-URL:            https://github.com/uyuni-project/uyuni
-Version:        4.0.5
+Url:            https://github.com/uyuni-project/uyuni
+Version:        4.0.8
 Release:        1%{?dist}
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 %if 0%{?fedora} || 0%{?rhel} || 0%{?suse_version} >= 1210 || 0%{?mageia} >= 6
@@ -104,9 +104,9 @@ Requires:       zypper
 Requires:       dnf
 %else
 Requires:       yum
-%endif # 0%{?fedora}
-%endif # 0%{?suse_version}
-%endif # %{_vendor} != "debbuild"
+%endif # 0{?fedora}
+%endif # 0{?suse_version}
+%endif # {_vendor} != "debbuild"
 
 %if %{_vendor} == "debbuild"
 Requires: apt
@@ -189,9 +189,9 @@ Requires:       python-gudev
 Requires:       python-hwdata
 %else
 Requires:       hal >= 0.5.8.1-52
-%endif # 0%{?rhel} > 5
-%endif # 0%{?suse_version} >= 1140
-%endif # 0%{?fedora}
+%endif # 0{?rhel} > 5
+%endif # 0{?suse_version} >= 1140
+%endif # 0{?fedora}
 
 %if 0%{?rhel} == 5
 Requires:       newt
@@ -206,7 +206,7 @@ Requires:       dbus-1-python
 Requires:       python-newt
 %else
 Requires:       dbus-python
-%endif # 0%{?suse_version}
+%endif # 0{?suse_version}
 Requires:       logrotate
 Requires:       suseRegisterInfo
 
@@ -215,7 +215,7 @@ Requires:       suseRegisterInfo
 BuildRequires:  python-coverage
 BuildRequires:  rpm-python
 %endif
-%endif #%if %{_vendor} != "debbuild"
+%endif # if {_vendor} != "debbuild"
 
 %if %{_vendor} == "debbuild"
 Requires: python-rpm
@@ -561,7 +561,7 @@ ln -s spacewalk-channel $RPM_BUILD_ROOT%{_sbindir}/rhn-channel
 mkdir -p $RPM_BUILD_ROOT/var/lib/up2date
 mkdir -pm700 $RPM_BUILD_ROOT%{_localstatedir}/spool/up2date
 touch $RPM_BUILD_ROOT%{_localstatedir}/spool/up2date/loginAuth.pkl
-%if 0%{?fedora} || 0%{?mageia} || 0%{?debian} >= 8 || 0%{?ubuntu} >= 1504
+%if 0%{?fedora} || 0%{?mageia} || 0%{?debian} >= 8 || 0%{?ubuntu} >= 1504 || 0%{?sle_version} >= 120000 || 0%{?rhel} >= 7
 mkdir -p $RPM_BUILD_ROOT/%{_presetdir}
 install 50-spacewalk-client.preset $RPM_BUILD_ROOT/%{_presetdir}
 %endif
@@ -731,7 +731,7 @@ make -f Makefile.rhn-client-tools test
 %dir %{_sysconfdir}/sysconfig/rhn/allowed-actions
 %dir %{_sysconfdir}/sysconfig/rhn/allowed-actions/configfiles
 %dir %{_sysconfdir}/sysconfig/rhn/allowed-actions/script
-%verify(not md5 mtime size) %config(noreplace) %{_sysconfdir}/sysconfig/rhn/up2date
+%config(noreplace) %{_sysconfdir}/sysconfig/rhn/up2date
 %config(noreplace) %{_sysconfdir}/logrotate.d/up2date
 
 # dirs
@@ -740,12 +740,12 @@ make -f Makefile.rhn-client-tools test
 
 %{_sbindir}/rhn-profile-sync
 
-%ghost %attr(600,root,root) %verify(not md5 size mtime) %{_localstatedir}/spool/up2date/loginAuth.pkl
+%ghost %attr(600,root,root) %{_localstatedir}/spool/up2date/loginAuth.pkl
 
 #public keys and certificates
 %{_datadir}/rhn/RHNS-CA-CERT
 
-%if 0%{?fedora} || 0%{?mageia} || 0%{?debian} >= 8 || 0%{?ubuntu} >= 1504
+%if 0%{?fedora} || 0%{?mageia} || 0%{?debian} >= 8 || 0%{?ubuntu} >= 1504 || 0%{?sle_version} >= 120000 || 0%{?rhel} >= 7
 %{_presetdir}/50-spacewalk-client.preset
 %endif
 
@@ -1001,9 +1001,9 @@ make -f Makefile.rhn-client-tools test
 %{python_sitelib}/up2date_client/firstboot/rhn_create_profile_gui.*
 %{python_sitelib}/up2date_client/firstboot/rhn_review_gui.*
 %{python_sitelib}/up2date_client/firstboot/rhn_finish_gui.*
-%endif # 0%{?rhel} == 6
-%endif # 0%{?rhel} == 5
-%endif # 0%{?build_py2}
+%endif # 0{?rhel} == 6
+%endif # 0{?rhel} == 5
+%endif # 0{?build_py2}
 
 %if 0%{?build_py3}
 %files -n python3-spacewalk-client-setup-gnome
@@ -1020,9 +1020,9 @@ make -f Makefile.rhn-client-tools test
 %{python3_sitelib}/up2date_client/__pycache__/gtk_compat.*
 %{python3_sitelib}/up2date_client/__pycache__/gui.*
 %{python3_sitelib}/up2date_client/__pycache__/progress.*
-%endif # %{_vendor} != "debbuild"
-%endif # 0%{?build_py3}
-%endif # ! 0%{?without_rhn_register}
+%endif # {_vendor} != "debbuild"
+%endif # 0{?build_py3}
+%endif # ! 0{?without_rhn_register}
 
 %if %{_vendor} == "debbuild"
 

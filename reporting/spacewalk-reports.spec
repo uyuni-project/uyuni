@@ -1,7 +1,7 @@
 #
 # spec file for package spacewalk-reports
 #
-# Copyright (c) 2018 SUSE LINUX GmbH, Nuernberg, Germany.
+# Copyright (c) 2019 SUSE LINUX GmbH, Nuernberg, Germany.
 # Copyright (c) 2008-2018 Red Hat, Inc.
 #
 # All modifications and additions to the file contributed by third parties
@@ -13,7 +13,7 @@
 # license that conforms to the Open Source Definition (Version 1.9)
 # published by the Open Source Initiative.
 
-# Please submit bugfixes or comments via http://bugs.opensuse.org/
+# Please submit bugfixes or comments via https://bugs.opensuse.org/
 #
 
 
@@ -27,9 +27,9 @@ Name:           spacewalk-reports
 Summary:        Script based reporting
 License:        GPL-2.0-only
 Group:          Applications/Internet
-Version:        4.0.3
+Version:        4.0.5
 Release:        1%{?dist}
-URL:            https://github.com/uyuni-project/uyuni
+Url:            https://github.com/uyuni-project/uyuni
 Source0:        https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildArch:      noarch
@@ -47,6 +47,14 @@ Script based reporting to retrieve data from Spacewalk server in CSV format.
 %build
 /usr/bin/docbook2man *.sgml
 
+# Fixing shebang for Python 3
+%if 0%{?build_py3}
+for i in $(find . -type f);
+do
+    sed -i '1s=^#!/usr/bin/\(python\|env python\)[0-9.]*=#!/usr/bin/python3=' $i;
+done
+%endif
+
 %install
 install -d $RPM_BUILD_ROOT/%{_bindir}
 install -d $RPM_BUILD_ROOT/%{_prefix}/share/spacewalk
@@ -57,14 +65,6 @@ install reports.py $RPM_BUILD_ROOT/%{_prefix}/share/spacewalk
 install -m 644 reports/data/* $RPM_BUILD_ROOT/%{_prefix}/share/spacewalk/reports/data
 install *.8 $RPM_BUILD_ROOT/%{_mandir}/man8
 chmod -x $RPM_BUILD_ROOT/%{_mandir}/man8/spacewalk-report.8*
-
-# Fixing shebang for Python 3
-%if 0%{?build_py3}
-for i in $(find . -type f);
-do
-    sed -i '1s=^#!/usr/bin/\(python\|env python\)[0-9.]*=#!/usr/bin/python3=' $i;
-done
-%endif
 
 %files
 %defattr(-,root,root)

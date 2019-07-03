@@ -1,29 +1,24 @@
 # Copyright 2015-2019 SUSE LLC
+# Licensed under the terms of the MIT license.
+
 require 'timeout'
 require 'open-uri'
 require 'tempfile'
 
 Given(/^the Salt master can reach "(.*?)"$/) do |minion|
   system_name = get_system_name(minion)
-  begin
-    start = Time.now
-    # 300 is the default 1st keepalive interval for the minion
-    # where it realizes the connection is stuck
-    keepalive_timeout = 300
-    Timeout.timeout(keepalive_timeout) do
-      # only try 3 times
-      3.times do
-        out, _code = $server.run("salt #{system_name} test.ping")
-        if out.include?(system_name) && out.include?('True')
-          finished = Time.now
-          puts "Took #{finished.to_i - start.to_i} seconds to contact the minion"
-          break
-        end
-        sleep(1)
-      end
+  start = Time.now
+  # 300 is the default 1st keepalive interval for the minion
+  # where it realizes the connection is stuck
+  repeat_until_timeout(timeout: 300, retries: 3, message: "Master can not communicate with #{minion}", report_result: true) do
+    out, _code = $server.run("salt #{system_name} test.ping")
+    if out.include?(system_name) && out.include?('True')
+      finished = Time.now
+      puts "Took #{finished.to_i - start.to_i} seconds to contact the minion"
+      break
     end
-  rescue Timeout::Error
-    raise "Master can not communicate with #{minion}: #{@output[:stdout]}"
+    sleep 1
+    out
   end
 end
 
@@ -59,34 +54,22 @@ end
 
 When(/^I wait at most (\d+) seconds until Salt master sees "([^"]*)" as "([^"]*)"$/) do |key_timeout, minion, key_type|
   cmd = "salt-key --list #{key_type}"
-  begin
-    Timeout.timeout(key_timeout.to_i) do
-      loop do
-        system_name = get_system_name(minion)
-        unless system_name.empty?
-          output, return_code = $server.run(cmd, false)
-          break if return_code.zero? && output.include?(system_name)
-        end
-        sleep 1
-      end
+  repeat_until_timeout(timeout: key_timeout.to_i, message: "Minion '#{minion}' is not listed among #{key_type} keys on Salt master") do
+    system_name = get_system_name(minion)
+    unless system_name.empty?
+      output, return_code = $server.run(cmd, false)
+      break if return_code.zero? && output.include?(system_name)
     end
-  rescue Timeout::Error
-    raise "Minion \"#{minion}\" is not listed among #{key_type} keys on Salt master after #{key_timeout} seconds"
+    sleep 1
   end
 end
 
 When(/^I wait until no Salt job is running on "([^"]*)"$/) do |minion|
   target = get_target(minion)
-  begin
-    Timeout.timeout(DEFAULT_TIMEOUT) do
-      loop do
-        output, _code = target.run('salt-call -lquiet saltutil.running')
-        break if output == "local:\n"
-        sleep 3
-      end
-    end
-  rescue Timeout::Error
-    raise "A Salt job is still running on #{minion} after timeout"
+  repeat_until_timeout(message: "A Salt job is still running on #{minion}") do
+    output, _code = target.run('salt-call -lquiet saltutil.running')
+    break if output == "local:\n"
+    sleep 3
   end
 end
 
@@ -95,8 +78,9 @@ When(/^I wait until onboarding is completed for "([^"]*)"$/) do |host|
     When I navigate to "rhn/systems/Overview.do" page
     And I wait until I see the name of "#{host}", refreshing the page
     And I follow this "#{host}" link
-    And I wait until event "Package List Refresh scheduled by (none)" is completed
-    Then I wait until event "Apply states" is completed
+    And I wait until event "Hardware List Refresh" is completed
+    And I wait until event "Apply states" is completed
+    And I wait until event "Package List Refresh" is completed
   )
 end
 
@@ -185,19 +169,13 @@ When(/^I click on preview$/) do
 end
 
 When(/^I click on run$/) do
-  begin
-    Timeout.timeout(DEFAULT_TIMEOUT) do
-      loop do
-        begin
-          find('button#run').click
-          break
-        rescue Capybara::ElementNotFound
-          sleep(5)
-        end
-      end
+  repeat_until_timeout(message: "Run button not found") do
+    begin
+      find('button#run').click
+      break
+    rescue Capybara::ElementNotFound
+      sleep(5)
     end
-  rescue Timeout::Error
-    raise 'Run button not found'
   end
 end
 
@@ -232,41 +210,19 @@ Then(/^I should see "([^"]*)" in the command output for "([^"]*)"$/) do |text, h
 end
 
 Then(/^I click on the css "(.*)" until page does not contain "([^"]*)" text$/) do |css, text|
-  not_found = false
-  begin
-    Timeout.timeout(DEFAULT_TIMEOUT) do
-      loop do
-        unless page.has_content?(text)
-          not_found = true
-          break
-        end
-        find(css).click
-        sleep 3
-      end
-    end
-  rescue Timeout::Error
-    raise "'#{text}' still found after several tries"
+  repeat_until_timeout(message: "'#{text}' still found") do
+    break unless page.has_content?(text)
+    find(css).click
+    sleep 3
   end
-  raise unless not_found
 end
 
 Then(/^I click on the css "(.*)" until page does contain "([^"]*)" text$/) do |css, text|
-  found = false
-  begin
-    Timeout.timeout(DEFAULT_TIMEOUT) do
-      loop do
-        if page.has_content?(text)
-          found = true
-          break
-        end
-        find(css).click
-        sleep 3
-      end
-    end
-  rescue Timeout::Error
-    raise "'#{text}' cannot be found after several tries"
+  repeat_until_timeout(message: "'#{text}' was not found") do
+    break if page.has_content?(text)
+    find(css).click
+    sleep 3
   end
-  raise unless found
 end
 
 When(/^I click on the css "(.*)"$/) do |css|
@@ -284,6 +240,11 @@ end
 
 When(/^I manually uninstall the "([^"]*)" formula from the server$/) do |package|
   $server.run("zypper --non-interactive remove #{package}-formula")
+end
+
+When(/^I synchronize all Salt dynamic modules on "([^"]*)"$/) do |host|
+  system_name = get_system_name(host)
+  $server.run("salt #{system_name} saltutil.sync_all")
 end
 
 When(/^I ([^ ]*) the "([^"]*)" formula$/) do |action, formula|
@@ -321,6 +282,7 @@ When(/^I select "([^"]*)" in (.*) field$/) do |value, box|
   select(value, from: boxids[box])
 end
 
+# rubocop:disable Metrics/BlockLength
 When(/^I enter the local IP address of "([^"]*)" in (.*) field$/) do |host, field|
   fieldids = { 'IP'                       => 'branch_network#ip',
                'domain name server'       => 'dhcpd#domain_name_servers#0',
@@ -337,7 +299,8 @@ When(/^I enter the local IP address of "([^"]*)" in (.*) field$/) do |host, fiel
                'second A address'         => 'bind#available_zones#0#records#A#1#1',
                'third A address'          => 'bind#available_zones#0#records#A#2#1',
                'fourth A address'         => 'bind#available_zones#0#records#A#3#1',
-               'internal network address' => 'tftpd#listen_ip' }
+               'internal network address' => 'tftpd#listen_ip',
+               'vsftpd internal network address' => 'vsftpd_config#listen_address' }
   addresses = { 'network'     => '0',
                 'client'      => '2',
                 'minion'      => '3',
@@ -350,7 +313,6 @@ When(/^I enter the local IP address of "([^"]*)" in (.*) field$/) do |host, fiel
   fill_in fieldids[field], with: net_prefix + addresses[host]
 end
 
-# rubocop:disable Metrics/BlockLength
 When(/^I enter "([^"]*)" in (.*) field$/) do |value, field|
   fieldids = { 'NIC'                             => 'branch_network#nic',
                'domain name'                     => 'dhcpd#domain_name',
@@ -398,7 +360,8 @@ When(/^I enter "([^"]*)" in (.*) field$/) do |value, field|
                'second partition id'             => 'partitioning#0#partitions#1#$key',
                'second partition size'           => 'partitioning#0#partitions#1#size_MiB',
                'second mount point'              => 'partitioning#0#partitions#1#mountpoint',
-               'second OS image'                 => 'partitioning#0#partitions#1#image' }
+               'second OS image'                 => 'partitioning#0#partitions#1#image',
+               'FTP server directory'            => 'vsftpd_config#anon_root' }
   fill_in fieldids[field], with: value
 end
 # rubocop:enable Metrics/BlockLength
@@ -480,7 +443,8 @@ When(/^I press "Remove Item" in (.*) section$/) do |section|
 end
 
 When(/^I check (.*) box$/) do |box|
-  boxids = { 'include forwarders' => 'bind#config#include_forwarders' }
+  boxids = { 'enable SLAAC with routing' => 'branch_network#firewall#enable_SLAAC_with_routing',
+             'include forwarders'        => 'bind#config#include_forwarders' }
   check boxids[box]
 end
 
@@ -595,15 +559,13 @@ end
 
 When(/^I go to the minion onboarding page$/) do
   steps %(
-    And I follow "Salt"
-    And I follow "Keys"
+    When I follow the left menu "Salt > Keys"
     )
 end
 
 When(/^I go to the bootstrapping page$/) do
   steps %(
-    And I follow "Systems"
-    And I follow "Bootstrapping"
+    When I follow the left menu "Systems > Bootstrapping"
     )
 end
 
@@ -640,21 +602,15 @@ end
 
 Then(/^I wait for "([^"]*)" to be uninstalled on "([^"]*)"$/) do |package, host|
   node = get_target(host)
-  uninstalled = false
-  output = ''
-  begin
-    Timeout.timeout(DEFAULT_TIMEOUT) do
-      loop do
-        output, code = node.run("rpm -q #{package}", false)
-        if code.nonzero?
-          uninstalled = true
-          break
-        end
-        sleep 1
-      end
+  repeat_until_timeout(message: "Package removal failed", report_result: true) do
+    output, code = node.run("rpm -q #{package}", false)
+    if code.nonzero?
+      uninstalled = true
+      break
     end
+    sleep 1
+    "code #{code}, #{output}"
   end
-  raise "Package removal failed (Code #{$CHILD_STATUS}): #{$ERROR_INFO}: #{output}" unless uninstalled
 end
 
 Then(/^I wait for "([^"]*)" to be installed on this "([^"]*)"$/) do |package, host|
@@ -767,4 +723,12 @@ When(/^I install "([^"]*)" to custom formula metadata directory "([^"]*)"$/) do 
   return_code = file_inject($server, source, dest)
   raise 'File injection failed' unless return_code.zero?
   $server.run("chmod 644 " + dest)
+end
+
+When(/^I kill remaining Salt jobs on "([^"]*)"$/) do |minion|
+  system_name = get_system_name(minion)
+  output = $server.run("salt #{system_name} saltutil.kill_all_jobs")
+  if output.include?(system_name) && output.include?('Signal 9 sent to job')
+    puts output
+  end
 end

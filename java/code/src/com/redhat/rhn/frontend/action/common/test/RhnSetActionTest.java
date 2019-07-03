@@ -119,7 +119,7 @@ public class RhnSetActionTest extends RhnBaseTestCase {
                                                HttpServletRequest request) {
                 List retval = new LinkedList();
                 for (int i = 0; i < 10; i++) {
-                    retval.add(new TestIdObject(new Long(i)));
+                    retval.add(new TestIdObject((long) i));
                 }
                 return new DataResult(retval);
             }

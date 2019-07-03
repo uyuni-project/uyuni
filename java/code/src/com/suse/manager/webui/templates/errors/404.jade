@@ -2,7 +2,7 @@ include ../common.jade
 
 #notfoundpage
 
-script(src='/javascript/manager/errors/not-found.bundle.js', type='text/javascript')
+script(src='/javascript/manager/errors/not-found.bundle.js?cb=#{webVersion}', type='text/javascript')
 
 script(type='text/javascript').
     pageRenderers.errors.NotFoundRenderer(

@@ -9,7 +9,7 @@
     imgAlt="system.common.kickstartAlt"
     creationUrl="PreservationListCreate.do"
     creationType="filelist"
-    helpUrl="/rhn/help/reference/en-US/ref.webui.systems.autoinst.jsp#ref.webui.systems.autoinst.preserve">
+    helpUrl="/docs/reference/systems/autoinst-file-preservation.html">
   <bean:message key="preservation_list.jsp.toolbar"/>
 </rhn:toolbar>
 

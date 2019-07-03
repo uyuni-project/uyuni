@@ -156,7 +156,7 @@ public class ActivationKeyManagerTest extends BaseTestCaseWithUser {
         //test permissions
         try {
             String keyName = "I_RULE_THE_WORLD";
-            Long usageLimit = new Long(1200);
+            Long usageLimit = 1200L;
             Channel baseChannel = ChannelTestUtils.createBaseChannel(user);
             String note = "Test";
             key = manager.createNewActivationKey(user,
@@ -192,7 +192,7 @@ public class ActivationKeyManagerTest extends BaseTestCaseWithUser {
         assertEquals(note, temp.getNote());
 
         String keyName = "I_RULE_THE_WORLD";
-        Long usageLimit = new Long(1200);
+        Long usageLimit = 1200L;
         Channel baseChannel = ChannelTestUtils.createBaseChannel(user);
 
         final ActivationKey key2 = manager.createNewReActivationKey(user, server,

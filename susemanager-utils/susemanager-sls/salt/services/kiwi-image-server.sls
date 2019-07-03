@@ -1,6 +1,6 @@
 # Image Server installation state - part of SUSE Manager for Retail
 #
-# Copyright © 2017, 2018 SUSE LLC
+# Copyright (c) 2017 - 2019 SUSE LLC
 
 {% if pillar['addon_group_types'] is defined and 'osimage_build_host' in pillar['addon_group_types'] %}
 {% set kiwi_dir = '/var/lib/Kiwi' %}
@@ -39,8 +39,13 @@ mgr_kiwi_dir_repo_created:
 
 mgr_osimage_cert_deployed:
   file.managed:
+{%- if grains.get('osfullname') == 'SLES' and grains.get('osmajorrelease') == '11' %}
+    - name: {{ kiwi_dir }}/repo/rhn-org-trusted-ssl-cert-osimage-sle11-1.0-1.noarch.rpm
+    - source: salt://images/rhn-org-trusted-ssl-cert-osimage-sle11-1.0-1.noarch.rpm
+{%- else %}
     - name: {{ kiwi_dir }}/repo/rhn-org-trusted-ssl-cert-osimage-1.0-1.noarch.rpm
     - source: salt://images/rhn-org-trusted-ssl-cert-osimage-1.0-1.noarch.rpm
+{%- endif %}
 
 mgr_kiwi_clear_cache:
   file.directory:

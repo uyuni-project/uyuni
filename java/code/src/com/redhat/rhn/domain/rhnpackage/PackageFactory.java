@@ -192,7 +192,7 @@ public class PackageFactory extends HibernateFactory {
     public static List listPackagesByPackageName(PackageName pn) {
         Session session = HibernateFactory.getSession();
 
-        return session.getNamedQuery("Package.findByPackageName").setEntity("packageName",
+        return session.getNamedQuery("Package.findByPackageName").setParameter("packageName",
                 pn).list();
 
     }
@@ -261,7 +261,7 @@ public class PackageFactory extends HibernateFactory {
      */
     public static List lookupOrphanPackages(Org org) {
         return HibernateFactory.getSession().getNamedQuery("Package.listOrphans")
-                .setEntity("org", org).list();
+                .setParameter("org", org).list();
     }
 
     /**
@@ -278,8 +278,8 @@ public class PackageFactory extends HibernateFactory {
             String release, String epoch, PackageArch arch) {
 
         List<Package> packages = HibernateFactory.getSession().getNamedQuery(
-                "Package.lookupByNevra").setEntity("org", org).setString("name", name)
-                .setString("version", version).setString("release", release).setEntity(
+                "Package.lookupByNevra").setParameter("org", org).setString("name", name)
+                .setString("version", version).setString("release", release).setParameter(
                         "arch", arch).list();
 
         if (epoch == null || packages.size() < 2) {

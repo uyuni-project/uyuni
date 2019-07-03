@@ -90,7 +90,7 @@ public class PxtSessionDelegateImplTest extends MockObjectTestCase {
         }
     }
 
-    private static final Long PXT_SESSION_ID = new Long(2658447890L);
+    private static final Long PXT_SESSION_ID = 2658447890L;
 
     private HttpServletRequest mockRequest;
     private HttpServletResponse mockResponse;

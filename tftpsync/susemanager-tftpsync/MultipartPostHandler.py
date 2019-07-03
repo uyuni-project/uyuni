@@ -45,8 +45,11 @@ except ImportError:
     from urllib import urlencode
     from urllib2 import build_opener, HTTPHandler, BaseHandler
 
-import mimetools, mimetypes
+import re
+import random
+import mimetypes
 import os, six, stat
+import sys
 
 class Callable:
     def __init__(self, anycallable):
@@ -65,11 +68,11 @@ class MultipartPostHandler(BaseHandler):
             v_files = []
             v_vars = []
             try:
-                 for(key, value) in list(data.items()):
-                     if type(value) == file:
-                         v_files.append((key, value))
-                     else:
-                         v_vars.append((key, value))
+                for(key, value) in list(data.items()):
+                    if type(value) == file:
+                        v_files.append((key, value))
+                    else:
+                        v_vars.append((key, value))
             except TypeError:
                 systype, value, traceback = sys.exc_info()
                 six.reraise(TypeError, "not a valid non-string sequence or mapping object", traceback)
@@ -88,9 +91,9 @@ class MultipartPostHandler(BaseHandler):
             request.add_data(data)
         return request
 
-    def multipart_encode(vars, files, boundary = None, buffer = None):
+    def multipart_encode(vars, files, boundary=None, buffer=None):
         if boundary is None:
-            boundary = mimetools.choose_boundary()
+            boundary = _make_boundary()
         if buffer is None:
             buffer = ''
         for(key, value) in vars:
@@ -112,6 +115,39 @@ class MultipartPostHandler(BaseHandler):
     multipart_encode = Callable(multipart_encode)
 
     https_request = http_request
+
+
+# This is a copy of email.generator._make_boundary
+#
+# The functionality to generate a boundary was previously provided my
+# mimetools, but mimetools is deprecated in Python3 and there is no
+# public replacement. So we copied this private method
+def _make_boundary(text=None):
+    # Craft a random boundary.  If text is given, ensure that the chosen
+    # boundary doesn't appear in the text.
+    _width = len(repr(sys.maxsize-1))
+    _fmt = '%%0%dd' % _width
+    token = random.randrange(sys.maxsize)
+    boundary = ('=' * 15) + (_fmt % token) + '=='
+    if text is None:
+        return boundary
+    b = boundary
+    counter = 0
+    while True:
+        cre = _compile_re('^--' + re.escape(b) + '(--)?$', re.MULTILINE)
+        if not cre.search(text):
+            break
+        b = boundary + '.' + str(counter)
+        counter += 1
+    return b
+
+
+# This is a copy of email.generator._compile_re
+#
+# See _make_boundary for further explainations.
+def _compile_re(s, flags):
+    return re.compile(s, flags)
+
 
 def main():
     import tempfile, sys

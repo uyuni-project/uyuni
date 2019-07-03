@@ -235,6 +235,7 @@ as $$
                        when 'virtualization_host' then 'Virtualization'
                        when 'container_build_host' then 'Container'
                        when 'osimage_build_host' then 'OS Image'
+                       when 'monitoring_entitled' then 'Monitoring'
                       end  );
 
             perform rhn_server.insert_into_servergroup (server_id_in, sgid);

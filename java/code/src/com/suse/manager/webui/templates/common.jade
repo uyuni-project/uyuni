@@ -8,3 +8,7 @@ mixin csrfToken
 mixin userPreferences
   script(type='text/javascript').
       const userPrefPageSize = #{pageSize};
+
+mixin userRoles
+    script(type='text/javascript').
+        const global_userRoles = !{roles};

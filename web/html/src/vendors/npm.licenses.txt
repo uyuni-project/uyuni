@@ -32,7 +32,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 
 --------------------------------------------------------------------------------
-@babel/runtime v7.3.1 - Sebastian McKenzie <sebmck@gmail.com>
+@babel/runtime v7.4.4 - Sebastian McKenzie <sebmck@gmail.com>
 https://github.com/babel/babel/tree/master/packages/babel-runtime
 --------------------------------------------------------------------------------
 
@@ -173,6 +173,87 @@ SOFTWARE.
 
 
 --------------------------------------------------------------------------------
+@novnc/novnc v1.0.0 - Joel Martin <github@martintribe.org> (https://github.com/kanaka)
+git+https://github.com/novnc/noVNC.git
+--------------------------------------------------------------------------------
+
+noVNC is Copyright (C) 2011 Joel Martin <github@martintribe.org>
+
+The noVNC core library files are licensed under the MPL 2.0 (Mozilla
+Public License 2.0). The noVNC core library is composed of the
+Javascript code necessary for full noVNC operation. This includes (but
+is not limited to):
+
+core/**/*.js
+app/*.js
+test/playback.js
+
+The HTML, CSS, font and images files that included with the noVNC
+source distibution (or repository) are not considered part of the
+noVNC core library and are licensed under more permissive licenses.
+The intent is to allow easy integration of noVNC into existing web
+sites and web applications.
+
+The HTML, CSS, font and image files are licensed as follows:
+
+*.html : 2-Clause BSD license
+
+app/styles/*.css : 2-Clause BSD license
+
+app/styles/Orbitron* : SIL Open Font License 1.1
+(Copyright 2009 Matt McInerney)
+
+app/images/ : Creative Commons Attribution-ShareAlike
+http://creativecommons.org/licenses/by-sa/3.0/
+
+Some portions of noVNC are copyright to their individual authors.
+Please refer to the individual source files and/or to the noVNC commit
+history: https://github.com/novnc/noVNC/commits/master
+
+The are several files and projects that have been incorporated into
+the noVNC core library. Here is a list of those files and the original
+licenses (all MPL 2.0 compatible):
+
+core/base64.js : MPL 2.0
+
+core/des.js : Various BSD style licenses
+
+vendor/pako/ : MIT
+
+vendor/browser-es-module-loader/src/ : MIT
+
+vendor/browser-es-module-loader/dist/ : Various BSD style licenses
+
+vendor/promise.js : MIT
+
+Any other files not mentioned above are typically marked with
+a copyright/license header at the top of the file. The default noVNC
+license is MPL-2.0.
+
+The following license texts are included:
+
+docs/LICENSE.MPL-2.0
+docs/LICENSE.OFL-1.1
+docs/LICENSE.BSD-3-Clause (New BSD)
+docs/LICENSE.BSD-2-Clause (Simplified BSD / FreeBSD)
+vendor/pako/LICENSE (MIT)
+
+Or alternatively the license texts may be found here:
+
+http://www.mozilla.org/MPL/2.0/
+http://scripts.sil.org/OFL
+http://en.wikipedia.org/wiki/BSD_licenses
+https://opensource.org/licenses/MIT
+
+
+--------------------------------------------------------------------------------
+@spice-project/spice-html5 v0.2.1 - SPICE Project <spice-devel@lists.freedesktop.org> (https://www.spice-space.org)
+https://gitlab.freedesktop.org/spice/spice-html5.git
+--------------------------------------------------------------------------------
+
+LGPL-3.0-or-later
+
+--------------------------------------------------------------------------------
 core-js v2.6.5
 https://github.com/zloirock/core-js.git
 --------------------------------------------------------------------------------
@@ -252,6 +333,33 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+
+
+--------------------------------------------------------------------------------
+css-loader v2.1.0 - Tobias Koppers @sokra
+webpack-contrib/css-loader
+--------------------------------------------------------------------------------
+
+Copyright JS Foundation and other contributors
+
+Permission is hereby granted, free of charge, to any person obtaining
+a copy of this software and associated documentation files (the
+'Software'), to deal in the Software without restriction, including
+without limitation the rights to use, copy, modify, merge, publish,
+distribute, sublicense, and/or sell copies of the Software, and to
+permit persons to whom the Software is furnished to do so, subject to
+the following conditions:
+
+The above copyright notice and this permission notice shall be
+included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 
 --------------------------------------------------------------------------------
@@ -337,6 +445,34 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 
 --------------------------------------------------------------------------------
+immer v3.1.1 - Michel Weststrate
+https://github.com/immerjs/immer.git
+--------------------------------------------------------------------------------
+
+MIT License
+
+Copyright (c) 2017 Michel Weststrate
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+
+--------------------------------------------------------------------------------
 lodash v4.17.11 - John-David Dalton <john.david.dalton@gmail.com> (http://allyoucanleet.com/)
 lodash/lodash
 --------------------------------------------------------------------------------
@@ -391,13 +527,13 @@ terms above.
 
 
 --------------------------------------------------------------------------------
-memoize-one v5.0.0 - Alex Reardon <alexreardon@gmail.com>
+memoize-one v5.0.4 - Alex Reardon <alexreardon@gmail.com>
 https://github.com/alexreardon/memoize-one.git
 --------------------------------------------------------------------------------
 
 MIT License
 
-Copyright (c) 2017 Alexander Reardon
+Copyright (c) 2019 Alexander Reardon
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -552,7 +688,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 
 --------------------------------------------------------------------------------
-react v16.8.2
+react v16.8.6
 https://github.com/facebook/react.git
 --------------------------------------------------------------------------------
 
@@ -580,7 +716,7 @@ SOFTWARE.
 
 
 --------------------------------------------------------------------------------
-react-dom v16.8.2
+react-dom v16.8.6
 https://github.com/facebook/react.git
 --------------------------------------------------------------------------------
 
@@ -608,7 +744,7 @@ SOFTWARE.
 
 
 --------------------------------------------------------------------------------
-react-hot-loader v4.7.0 - Dan Abramov
+react-hot-loader v4.8.4 - Dan Abramov
 https://github.com/gaearon/react-hot-loader/
 --------------------------------------------------------------------------------
 
@@ -691,7 +827,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
 --------------------------------------------------------------------------------
-react-select v2.4.1 - Jed Watson
+react-select v2.4.3 - Jed Watson
 https://github.com/JedWatson/react-select.git
 --------------------------------------------------------------------------------
 
@@ -719,7 +855,7 @@ SOFTWARE.
 
 
 --------------------------------------------------------------------------------
-react-transition-group v2.5.3
+react-transition-group v2.9.0
 https://github.com/reactjs/react-transition-group.git
 --------------------------------------------------------------------------------
 
@@ -764,7 +900,7 @@ https://github.com/facebook/regenerator/tree/master/packages/regenerator-runtime
 MIT
 
 --------------------------------------------------------------------------------
-scheduler v0.13.2
+scheduler v0.13.6
 https://github.com/facebook/react.git
 --------------------------------------------------------------------------------
 
@@ -792,11 +928,73 @@ SOFTWARE.
 
 
 --------------------------------------------------------------------------------
+style-loader v0.23.1 - Tobias Koppers @sokra
+https://github.com/webpack-contrib/style-loader.git
+--------------------------------------------------------------------------------
+
+Copyright JS Foundation and other contributors
+
+Permission is hereby granted, free of charge, to any person obtaining
+a copy of this software and associated documentation files (the
+'Software'), to deal in the Software without restriction, including
+without limitation the rights to use, copy, modify, merge, publish,
+distribute, sublicense, and/or sell copies of the Software, and to
+permit persons to whom the Software is furnished to do so, subject to
+the following conditions:
+
+The above copyright notice and this permission notice shall be
+included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+
+--------------------------------------------------------------------------------
 stylis-rule-sheet v0.0.10 - Sultan Tarimo
 https://github.com/thysultan/stylis.js
 --------------------------------------------------------------------------------
 
 MIT
+
+--------------------------------------------------------------------------------
+toastr v2.1.4
+git://github.com/CodeSeven/toastr.git
+--------------------------------------------------------------------------------
+
+MIT
+
+--------------------------------------------------------------------------------
+use-immer v0.3.0 - Michel Weststrate
+git+https://github.com/mweststrate/use-immer.git
+--------------------------------------------------------------------------------
+
+MIT License
+
+Copyright (c) 2018 Michel Weststrate
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
 
 --------------------------------------------------------------------------------
 webpack v4.29.5 - Tobias Koppers @sokra

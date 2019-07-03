@@ -1,4 +1,4 @@
-# Copyright (c) 2018 SUSE LLC
+# Copyright (c) 2018-2019 SUSE LLC
 # Licensed under the terms of the MIT license.
 #
 # The scenarios in this feature are skipped if there is no proxy
@@ -15,14 +15,17 @@ Feature: Setup SUSE Manager for Retail branch network
     When I manually install the "branch-network" formula on the server
     And I manually install the "dhcpd" formula on the server
     And I manually install the "bind" formula on the server
-    And I wait for "16" seconds
+    And I synchronize all Salt dynamic modules on "proxy"
 
 @proxy
 @private_net
   Scenario: Enable the branch network formulas on the branch server
     Given I am on the Systems overview page of this "proxy"
     When I follow "Formulas" in the content area
-    And I check the "branch-network" formula
+    Then I should see a "Choose formulas" text
+    And I should see a "Suse Manager For Retail" text
+    And I should see a "General System Configuration" text
+    When I check the "branch-network" formula
     And I check the "dhcpd" formula
     And I check the "bind" formula
     And I click on "Save"
@@ -38,8 +41,10 @@ Feature: Setup SUSE Manager for Retail branch network
     And I follow first "Branch Network" in the content area
     And I enter "eth1" in NIC field
     And I enter the local IP address of "proxy" in IP field
+    # bsc#1132908 - Branch network formula closes IPv6 default route, potentially making further networking fail
+    And I check enable SLAAC with routing box
     And I click on "Save Formula"
-    Then I should see a "Formula saved!" text
+    Then I should see a "Formula saved" text
 
 @proxy
 @private_net
@@ -65,7 +70,7 @@ Feature: Setup SUSE Manager for Retail branch network
     And I enter the local IP address of "minion" in second reserved IP field
     And I enter the MAC address of "sle-minion" in second reserved MAC field
     And I click on "Save Formula"
-    Then I should see a "Formula saved!" text
+    Then I should see a "Formula saved" text
 
 @proxy
 @private_net
@@ -110,14 +115,18 @@ Feature: Setup SUSE Manager for Retail branch network
     And I enter "example.org" in second for zones field
     # end
     And I click on "Save Formula"
-    Then I should see a "Formula saved!" text
+    Then I should see a "Formula saved" text
 
 @proxy
 @private_net
-  Scenario: Enable avahi on the branch server
+  Scenario: Enable repositories for installing branch services
     When I enable repositories before installing branch server
-    And I install package "SuSEfirewall2 expect" on this "proxy"
-    And I open avahi port on the proxy
+    And I install package "expect" on this "proxy"
+
+@proxy
+@private_net
+  Scenario: Let avahi work on the branch server
+    When I open avahi port on the proxy
 
 @proxy
 @private_net
@@ -131,6 +140,8 @@ Feature: Setup SUSE Manager for Retail branch network
     And service "dhcpd" is active on "proxy"
     And service "named" is enabled on "proxy"
     And service "named" is active on "proxy"
+    And service "firewalld" is enabled on "proxy"
+    And service "firewalld" is active on "proxy"
 
 @proxy
 @private_net

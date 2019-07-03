@@ -333,6 +333,6 @@ public class KickstartHandlerTest extends BaseHandlerTestCase {
         KickstartData ksdata =
             KickstartDataTest.createKickstartWithChannel(admin.getOrg());
         Integer i = handler.deleteProfile(admin, ksdata.getLabel());
-        assertEquals(new Integer(1), i);
+        assertEquals(Integer.valueOf(1), i);
     }
 }

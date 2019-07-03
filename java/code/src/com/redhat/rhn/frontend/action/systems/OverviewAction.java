@@ -127,7 +127,7 @@ public class OverviewAction extends RhnListAction {
         }
         else {
             // "true" == Boolean.TRUE, null or anything-else == Boolean.FALSE
-            choseGroups = new Boolean(showGroups);
+            choseGroups = Boolean.valueOf(showGroups);
             if (choseGroups) {
                 user.setShowSystemGroupList("Y");
             }

@@ -24,25 +24,28 @@ from __future__ import absolute_import, unicode_literals
 from shutil import rmtree, copytree
 
 import configparser
+import fnmatch
 import glob
 import gzip
 import os
+import re
 import solv
+import subprocess
 import sys
+import tempfile
 import types
 import urlgrabber
 
 try:
-    from urllib import urlencode
-    from urlparse import urlsplit
+    from urllib import urlencode, unquote
+    from urlparse import urlsplit, urlparse, urlunparse
 except:
-    from urllib.parse import urlsplit, urlencode
+    from urllib.parse import urlsplit, urlencode, urlparse, urlunparse, unquote
 
 import xml.etree.ElementTree as etree
 
-#import salt.client
-#import salt.config
-
+from functools import cmp_to_key
+from salt.utils.versions import LooseVersion
 from spacewalk.common import checksum, rhnLog, fileutils
 from spacewalk.satellite_tools.repo_plugins import ContentPackage, CACHE_DIR
 from spacewalk.satellite_tools.download import get_proxies
@@ -53,35 +56,30 @@ from spacewalk.common.suseLib import get_proxy
 # namespace prefix to parse patches.xml file
 PATCHES_XML = '{http://novell.com/package/metadata/suse/patches}'
 REPO_XML = '{http://linux.duke.edu/metadata/repo}'
+METALINK_XML = '{http://www.metalinker.org/}'
 
 CACHE_DIR = '/var/cache/rhn/reposync'
-RPM_DATABASE = '/var/lib/rpm'
+SPACEWALK_LIB = '/var/lib/spacewalk'
+SPACEWALK_GPG_KEYRING = os.path.join(SPACEWALK_LIB, 'gpgdir/pubring.gpg')
 ZYPP_CACHE_PATH = 'var/cache/zypp'
 ZYPP_RAW_CACHE_PATH = os.path.join(ZYPP_CACHE_PATH, 'raw')
 ZYPP_SOLV_CACHE_PATH = os.path.join(ZYPP_CACHE_PATH, 'solv')
+REPOSYNC_ZYPPER_ROOT = os.path.join(SPACEWALK_LIB, "reposync/root")
+REPOSYNC_ZYPPER_RPMDB_PATH = os.path.join(REPOSYNC_ZYPPER_ROOT, 'var/lib/rpm')
 REPOSYNC_ZYPPER_CONF = '/etc/rhn/spacewalk-repo-sync/zypper.conf'
+
+RPM_PUBKEY_VERSION_RELEASE_RE = re.compile(r'^gpg-pubkey-([0-9a-fA-F]+)-([0-9a-fA-F]+)')
 
 
 class ZyppoSync:
     """
-    Wrapper for underlying package manager for the reposync via Salt.
-
-    Example usage:
-
-    >>> zyppo = ZyppoSync()
-    >>> for idx, repo_meta in enumerate(zyppo.list_repos().values()):
-    >>>    print(idx + 1, repo_meta["name"])
-    >>>    print("  ", repo_meta["baseurl"])
+    This class prepares a environment for running Zypper inside a dedicated reposync root
 
     """
-    def __init__(self, cfg_path="/etc/salt/minion", root=None):
-#        self._conf = salt.config.minion_config(cfg_path)
-#        self._conf["file_client"] = "local"
-#        self._conf["server_id_use_crc"] = "Adler32"
+    def __init__(self, root=None):
         self._root = root
         if self._root is not None:
             self._init_root(self._root)
-#        self._caller = salt.client.Caller(mopts=self._conf)
 
     def _init_root(self, root):
         """
@@ -90,40 +88,59 @@ class ZyppoSync:
         :return: None
         """
         try:
-            for pth in [root, os.path.join(CACHE_DIR, "root"), os.path.join(root, "etc/zypp/repos.d")]:
+            for pth in [root, os.path.join(root, "etc/zypp/repos.d"), REPOSYNC_ZYPPER_ROOT]:
                 if not os.path.exists(pth):
-                    if pth == os.path.join(CACHE_DIR, "root"):
-                        # If the Zypper root is being created for the first time
-                        # we copy the system RPM database to get the already imported
-                        # repository GPG keys (SUSE keys)
-                        copytree(RPM_DATABASE, os.path.join(pth, "var/lib/rpm/"))
-                    else:
-                        os.makedirs(pth)
-
+                    os.makedirs(pth)
         except Exception as exc:
-            # TODO: a proper logging somehow?
-            sys.stderr("Unable to initialise Zypper root for {}: {}".format(root, exc))
+            msg = "Unable to initialise Zypper root for {}: {}".format(root, exc)
+            rhnLog.log_clean(0, msg)
+            sys.stderr.write(str(msg) + "\n")
             raise
-#        self._conf["zypper_root"] = root
+        try:
+            # Synchronize new GPG keys that come from the Spacewalk GPG keyring
+            self.__synchronize_gpg_keys()
+        except Exception as exc:
+            msg = "Unable to synchronize Spacewalk GPG keyring: {}".format(exc)
+            rhnLog.log_clean(0, msg)
+            sys.stderr.write(str(msg) + "\n")
 
-    def _get_call(self, key):
+    def __synchronize_gpg_keys(self):
         """
-        Prepare a call to the pkg module.
-        """
-        def make_call(*args, **kwargs):
-            """
-            Makes a call to the underlying package.
-            """
-            kwargs["root"] = self._conf.get("zypper_root")
-            return self._caller.cmd("pkg.{}".format(key), *args, **kwargs)
-        return make_call
+        This method does update the Zypper RPM database with new keys coming from the Spacewalk GPG keyring
 
-    def __getattr__(self, attr):
         """
-        Prepare a callable on the requested
-        attribute name.
-        """
-        return self._get_call(attr)
+        spacewalk_gpg_keys = {}
+        zypper_gpg_keys = {}
+        with tempfile.NamedTemporaryFile() as f:
+            # Collect GPG keys from the Spacewalk GPG keyring
+            os.system("gpg -q --batch --no-options --no-default-keyring --no-permission-warning --keyring {} --export -a > {}".format(SPACEWALK_GPG_KEYRING, f.name))
+            process = subprocess.Popen(['gpg', '--verbose', '--with-colons', f.name], stdout=subprocess.PIPE, stderr=subprocess.DEVNULL)
+            for line in process.stdout.readlines():
+               line_l = line.decode().split(":")
+               if line_l[0] == "sig" and "selfsig" in line_l[10]:
+                   spacewalk_gpg_keys.setdefault(line_l[4][8:].lower(), []).append(format(int(line_l[5]), 'x'))
+
+            # Collect GPG keys from reposync Zypper RPM database
+            process = subprocess.Popen(['rpm', '-q', 'gpg-pubkey', '--dbpath', REPOSYNC_ZYPPER_RPMDB_PATH], stdout=subprocess.PIPE)
+            for line in process.stdout.readlines():
+                match = RPM_PUBKEY_VERSION_RELEASE_RE.match(line.decode())
+                if match:
+                    zypper_gpg_keys[match.groups()[0]] = match.groups()[1]
+
+            # Compare GPG keys and remove keys from reposync that are going to be imported with a newer release.
+            for key in zypper_gpg_keys:
+                # If the GPG key id already exists, is that new key actually newer? We need to check the release
+                release_i = int(zypper_gpg_keys[key], 16)
+                if key in spacewalk_gpg_keys and any(int(i, 16) > release_i for i in spacewalk_gpg_keys[key]):
+                    # This GPG key has a newer release on the Spacewalk GPG keyring that on the reposync Zypper RPM database.
+                    # We delete this key from the RPM database to allow importing the newer version.
+                    os.system("rpm --dbpath {} -e gpg-pubkey-{}-{}".format(REPOSYNC_ZYPPER_RPMDB_PATH, key, zypper_gpg_keys[key]))
+
+            # Finally, once we deleted the existing old key releases from the Zypper RPM database
+            # we proceed to import all keys from the Spacewalk GPG keyring. This will allow new GPG
+            # keys release are upgraded in the Zypper keyring since rpmkeys does not handle the upgrade
+            # properly
+            os.system("rpmkeys --dbpath {} --import {}".format(REPOSYNC_ZYPPER_RPMDB_PATH, f.name))
 
 
 class ZypperRepo:
@@ -142,6 +159,8 @@ class ZypperRepo:
        if not os.path.isdir(self.pkgdir):
            fileutils.makedirs(self.pkgdir, user='wwwrun', group='www')
        self.is_configured = False
+       self.includepkgs = []
+       self.exclude = []
 
 
 class RawSolvablePackage:
@@ -425,6 +444,8 @@ class ContentSource:
                 if zypper_cfg.has_option(section_name, 'proxy_password'):
                     self.proxy_pass = zypper_cfg.get(section_name, 'proxy_password')
 
+        self._authenticate(url)
+
         # Make sure baseurl ends with / and urljoin will work correctly
         self.urls = [url]
         if self.urls[0][-1] != '/':
@@ -444,26 +465,106 @@ class ContentSource:
         self.gpgkey_autotrust = None
         self.groupsfile = None
 
-    def setup_repo(self, repo):
+    def _get_mirror_list(self, repo, url):
+        mirrorlist_path = os.path.join(repo.root, 'mirrorlist.txt')
+        returnlist = []
+        content = []
+        try:
+            urlgrabber.urlgrab(url, mirrorlist_path)
+        except Exception as exc:
+            # no mirror list found continue without
+            return returnlist
+
+        def _replace_and_check_url(url_list):
+            goodurls = []
+            skipped = None
+            for url in url_list:
+                # obvious bogons get ignored b/c, we could get more interesting checks but <shrug>
+                if url in ['', None]:
+                    continue
+                try:
+                    # This started throwing ValueErrors, BZ 666826
+                    (s,b,p,q,f,o) = urlparse(url)
+                    if p[-1] != '/':
+                        p = p + '/'
+                except (ValueError, IndexError, KeyError) as e:
+                    s = 'blah'
+
+                if s not in ['http', 'ftp', 'file', 'https']:
+                    skipped = url
+                    continue
+                else:
+                    goodurls.append(urlunparse((s,b,p,q,f,o)))
+            return goodurls
+
+        try:
+           with open(mirrorlist_path, 'r') as mirrorlist_file:
+               content = mirrorlist_file.readlines()
+        except Exception as exc:
+            self.error_msg("Could not read mirrorlist: {}".format(exc))
+
+        try:
+            # Try to read a metalink XML
+            for files in etree.parse(mirrorlist_path).getroot():
+                file_elem = files.find(METALINK_XML+'file')
+                if file_elem.get('name') == 'repomd.xml':
+                    _urls = file_elem.find(METALINK_XML+'resources').findall(METALINK_XML+'url')
+                    for _url in _urls:
+                        # The mirror urls in the metalink file are for repomd.xml so it
+                        # gives a list of mirrors for that one file, but we want the list
+                        # of mirror baseurls. Joy of reusing other people's stds. :)
+                        if not _url.text.endswith("/repodata/repomd.xml"):
+                            continue
+                        returnlist.append(_url.text[:-len("/repodata/repomd.xml")])
+        except Exception as exc:
+            # If no metalink XML, we try to read a mirrorlist
+            for line in content:
+                if re.match('^\s*\#.*', line) or re.match('^\s*$', line):
+                    continue
+                mirror = re.sub('\n$', '', line) # no more trailing \n's
+                (mirror, count) = re.subn('\$ARCH', '$BASEARCH', mirror)
+                returnlist.append(mirror)
+
+        returnlist = _replace_and_check_url(returnlist)
+
+        try:
+           # Write the final mirrorlist that is going to be pass to Zypper
+           with open(mirrorlist_path, 'w') as mirrorlist_file:
+               mirrorlist_file.write(os.linesep.join(returnlist))
+        except Exception as exc:
+            self.error_msg("Could not write the calculated mirrorlist: {}".format(exc))
+        return returnlist
+
+    def setup_repo(self, repo, uln_repo=False):
         """
         Setup repository and fetch metadata
         """
-        self.salt = ZyppoSync(root=repo.root)
+        self.zypposync = ZyppoSync(root=repo.root)
         zypp_repo_url = self._prep_zypp_repo_url(self.url)
+
+        mirrorlist = self._get_mirror_list(repo, zypp_repo_url)
+        repo.baseurl = repo.baseurl + mirrorlist
+        repo.urls = repo.baseurl
 
         # Manually call Zypper
         repo_cfg = '''[{reponame}]
 enabled=1
 autorefresh=0
-baseurl={baseurl}
+{repo_url}={url}
 gpgcheck={gpgcheck}
 repo_gpgcheck={gpgcheck}
 type=rpm-md
 '''
+        if uln_repo:
+           _url = 'plugin:spacewalk-uln-resolver?url={}'.format(self._url_orig)
+        else:
+           _url = zypp_repo_url if not mirrorlist else os.path.join(repo.root, 'mirrorlist.txt')
+
         with open(os.path.join(repo.root, "etc/zypp/repos.d", str(self.channel_label or self.reponame) + ".repo"), "w") as repo_conf_file:
             repo_conf_file.write(repo_cfg.format(
                 reponame=self.channel_label or self.reponame,
-                baseurl=zypp_repo_url,
+                repo_url='baseurl' if not mirrorlist else 'mirrorlist',
+                url=_url,
                 gpgcheck="0" if self.insecure else "1"
             ))
         zypper_cmd = "zypper"
@@ -471,9 +572,9 @@ type=rpm-md
             zypper_cmd = "{} -n".format(zypper_cmd)
         ret_error = os.system("{} --root {} --reposd-dir {} --cache-dir {} --raw-cache-dir {} --solv-cache-dir {} ref".format(
             zypper_cmd,
-            os.path.join(CACHE_DIR, "root"),
+            REPOSYNC_ZYPPER_ROOT,
             os.path.join(repo.root, "etc/zypp/repos.d/"),
-            os.path.join(repo.root, "var/cache/zypp/"),
+            'var/lib/rpm',
             os.path.join(repo.root, "var/cache/zypp/raw/"),
             os.path.join(repo.root, "var/cache/zypp/solv/")
         ))
@@ -503,12 +604,20 @@ type=rpm-md
         if self.proxy_pass:
             query_params['proxypass'] = self.proxy_pass
         if self.sslcacert:
-            query_params['ssl_capath'] = self.sslcacert
+            # Since Zypper only accepts CAPATH, we need to split the certificates bundle
+            # and run "c_rehash" on our custom CAPATH
+            _ssl_capath = os.path.dirname(self.sslcacert)
+            msg = "Preparing custom SSL CAPATH at {}".format(_ssl_capath)
+            rhnLog.log_clean(0, msg)
+            sys.stdout.write(str(msg) + "\n")
+            os.system("awk 'BEGIN {{c=0;}} /BEGIN CERT/{{c++}} {{ print > \"{0}/cert.\" c \".pem\"}}' < {1}".format(_ssl_capath, self.sslcacert))
+            os.system("c_rehash {}".format(_ssl_capath))
+            query_params['ssl_capath'] = _ssl_capath
         if self.sslclientcert:
             query_params['ssl_clientcert'] = self.sslclientcert
         if self.sslclientkey:
             query_params['ssl_clientkey'] = self.sslclientkey
-        new_query = urlencode(query_params, doseq=True)
+        new_query = unquote(urlencode(query_params, doseq=True))
         if self.authtoken:
             ret_url = "{0}&{1}".format(url, new_query)
         else:
@@ -564,12 +673,137 @@ type=rpm-md
                     return checksum_elem.get('type')
         return "sha1"
 
+    def _get_solvable_packages(self):
+        """
+        Return the full list of solvable packages available at the configured repo.
+        This information is read from the solv file created by Zypper.
+
+        :returns: list
+        """
+        if not self.repo.is_configured:
+            self.setup_repo(self.repo)
+        self.solv_pool = solv.Pool()
+        self.solv_repo = self.solv_pool.add_repo(str(self.channel_label or self.reponame))
+        solv_path = os.path.join(self.repo.root, ZYPP_SOLV_CACHE_PATH, self.channel_label or self.reponame, 'solv')
+        if not os.path.isfile(solv_path) or not self.solv_repo.add_solv(solv.xfopen(str(solv_path)), 0):
+            raise SolvFileNotFound(solv_path)
+        self.solv_pool.addfileprovides()
+        self.solv_pool.createwhatprovides()
+        # Solvables with ":" in name are not packages
+        return [pack for pack in self.solv_repo.solvables if ':' not in pack.name]
+
+    def _get_solvable_dependencies(self, solvables):
+        """
+        Return a list containing all passed solvables and all its calculated dependencies.
+
+        For each solvable we explore the "SOLVABLE_REQUIRES" to add any new solvable where "SOLVABLE_PROVIDES"
+        is matching the requirement. All the new solvables that are added will be again processed in order to get
+        a new level of dependencies.
+
+        The exploration of dependencies is done when all the solvables are been processed and no new solvables are added
+
+        :returns: list
+        """
+        if not self.repo.is_configured:
+            self.setup_repo(self.repo)
+        known_solvables = set()
+
+        new_deps = True
+        next_solvables = solvables
+
+        # Collect solvables dependencies in depth
+        while new_deps:
+            new_deps = False
+            for sol in next_solvables:
+                # Do not explore dependencies from solvables that are already proceesed
+                if sol not in known_solvables:
+                    # This solvable has not been proceesed yet. We need to calculate its dependencies
+                    known_solvables.add(sol)
+                    new_deps = True
+                    # Adding solvables that provide the dependencies
+                    for _req in sol.lookup_deparray(keyname=solv.SOLVABLE_REQUIRES):
+                        next_solvables.extend(self.solv_pool.whatprovides(_req))
+        return list(known_solvables)
+
+    def _apply_filters(self, pkglist, filters):
+        """
+        Return a list of packages where defined filters were applied.
+
+        :returns: list
+        """
+        if not filters:
+            # if there's no include/exclude filter on command line or in database
+            for p in self.repo.includepkgs:
+                filters.append(('+', [p]))
+            for p in self.repo.exclude:
+                filters.append(('-', [p]))
+
+        if filters:
+            pkglist = self._filter_packages(pkglist, filters)
+            pkglist = self._get_solvable_dependencies(pkglist)
+
+            # Do not pull in dependencies if there're explicitly excluded
+            pkglist = self._filter_packages(pkglist, filters, True)
+            self.num_excluded = self.num_packages - len(pkglist)
+
+        return pkglist
+
     @staticmethod
     def _fix_encoding(text):
         if text is None:
             return None
         else:
             return str(text)
+
+    @staticmethod
+    def _filter_packages(packages, filters, exclude_only=False):
+        """ implement include / exclude logic
+            filters are: [ ('+', includelist1), ('-', excludelist1),
+                           ('+', includelist2), ... ]
+        """
+        if filters is None:
+            return
+
+        selected = []
+        excluded = []
+        allmatched_include = []
+        allmatched_exclude = []
+        if exclude_only or filters[0][0] == '-':
+            # first filter is exclude, start with full package list
+            # and then exclude from it
+            selected = packages
+        else:
+            excluded = packages
+
+        for filter_item in filters:
+            sense, pkg_list = filter_item
+            regex = fnmatch.translate(pkg_list[0])
+            reobj = re.compile(regex)
+            if sense == '+':
+                if exclude_only:
+                    continue
+                # include
+                for excluded_pkg in excluded:
+                    if reobj.match(excluded_pkg.name):
+                        allmatched_include.insert(0, excluded_pkg)
+                        selected.insert(0, excluded_pkg)
+                for pkg in allmatched_include:
+                    if pkg in excluded:
+                        excluded.remove(pkg)
+            elif sense == '-':
+                # exclude
+                for selected_pkg in selected:
+                    if reobj.match(selected_pkg.name):
+                        allmatched_exclude.insert(0, selected_pkg)
+                        excluded.insert(0, selected_pkg)
+
+                for pkg in allmatched_exclude:
+                    if pkg in selected:
+                        selected.remove(pkg)
+                excluded = (excluded + allmatched_exclude)
+            else:
+                raise IOError("Filters are malformed")
+        return selected
 
     def get_susedata(self):
         """
@@ -696,21 +930,13 @@ type=rpm-md
         return modules
 
     def raw_list_packages(self, filters=None):
-        if not self.repo.is_configured:
-            self.setup_repo(self.repo)
-        pool = solv.Pool()
-        repo = pool.add_repo(str(self.channel_label or self.reponame))
-        solv_path = os.path.join(self.repo.root, ZYPP_SOLV_CACHE_PATH, self.channel_label or self.reponame, 'solv')
-        if not os.path.isfile(solv_path) or not repo.add_solv(solv.xfopen(str(solv_path)), 0):
-            raise SolvFileNotFound(solv_path)
-        rawpkglist = []
-        for solvable in repo.solvables_iter():
-            # Solvables with ":" in name are not packages
-            if ':' in solvable.name:
-                continue
-            rawpkglist.append(RawSolvablePackage(solvable))
-        self.num_packages = len(rawpkglist)
-        return rawpkglist
+        """
+        Return a raw list of available packages.
+
+        :returns: list
+        """
+        rawpkglist = [RawSolvablePackage(solvable) for solvable in self._get_solvable_packages()]
+        return self._apply_filters(rawpkglist, filters)
 
     def list_packages(self, filters, latest):
         """
@@ -718,26 +944,22 @@ type=rpm-md
 
         :returns: list
         """
-        if not self.repo.is_configured:
-            self.setup_repo(self.repo)
-        pool = solv.Pool()
-        repo = pool.add_repo(str(self.channel_label or self.reponame))
-        solv_path = os.path.join(self.repo.root, ZYPP_SOLV_CACHE_PATH, self.channel_label or self.reponame, 'solv')
-        if not os.path.isfile(solv_path) or not repo.add_solv(solv.xfopen(str(solv_path)), 0):
-            raise SolvFileNotFound(solv_path)
+        pkglist = self._get_solvable_packages()
+        pkglist.sort(key = cmp_to_key(self._sort_packages))
+        self.num_packages = len(pkglist)
+        pkglist = self._apply_filters(pkglist, filters)
 
-        #TODO: Implement latest
-        #if latest:
-        #     pkglist = pkglist.returnNewestByNameArch()
-
-        #TODO: Implement sort
-        #pkglist.sort(self._sort_packages)
+        if latest:
+            latest_pkgs = {}
+            new_pkgs = []
+            for pkg in pkglist:
+               ident = '{}.{}'.format(pkg.name, pkg.arch)
+               if ident not in latest_pkgs.keys() or LooseVersion(str(pkg.evr)) > LooseVersion(str(latest_pkgs[ident].evr)):
+                  latest_pkgs[ident] = pkg
+            pkglist = list(latest_pkgs.values())
 
         to_return = []
-        for pack in repo.solvables:
-            # Solvables with ":" in name are not packages
-            if ':' in pack.name:
-                continue
+        for pack in pkglist:
             new_pack = ContentPackage()
             epoch, version, release = RawSolvablePackage._parse_solvable_evr(pack.evr)
             new_pack.setNVREA(pack.name, version, release, epoch, pack.arch)
@@ -746,10 +968,7 @@ type=rpm-md
             new_pack.checksum_type = checksum.typestr()
             new_pack.checksum = checksum.hex()
             to_return.append(new_pack)
-
-        self.num_packages = len(to_return)
         return to_return
-
 
     @staticmethod
     def _sort_packages(pkg1, pkg2):
@@ -760,54 +979,6 @@ type=rpm-md
             return 0
         else:
             return -1
-
-    @staticmethod
-    def _filter_packages(packages, filters):
-        """ implement include / exclude logic
-            filters are: [ ('+', includelist1), ('-', excludelist1),
-                           ('+', includelist2), ... ]
-        """
-        if filters is None:
-            return
-
-        selected = []
-        excluded = []
-        allmatched_include = []
-        allmatched_exclude = []
-        if filters[0][0] == '-':
-            # first filter is exclude, start with full package list
-            # and then exclude from it
-            selected = packages
-        else:
-            excluded = packages
-
-        for filter_item in filters:
-            sense, pkg_list = filter_item
-            regex = fnmatch.translate(pkg_list[0])
-            reobj = re.compile(regex)
-            if sense == '+':
-                # include
-                for excluded_pkg in excluded:
-                    if (reobj.match(excluded_pkg['name'])):
-                        allmatched_include.insert(0,excluded_pkg)
-                        selected.insert(0,excluded_pkg)
-                for pkg in allmatched_include:
-                    if pkg in excluded:
-                        excluded.remove(pkg)
-            elif sense == '-':
-                # exclude
-                for selected_pkg in selected:
-                    if (reobj.match(selected_pkg['name'])):
-                        allmatched_exclude.insert(0,selected_pkg)
-                        excluded.insert(0,selected_pkg)
-
-                for pkg in allmatched_exclude:
-                    if pkg in selected:
-                        selected.remove(pkg)
-                excluded = (excluded + allmatched_exclude)
-            else:
-                raise IOError("Filters are malformed")
-        return selected
 
     def clear_cache(self, directory=None, keep_repomd=False):
         """
@@ -944,3 +1115,6 @@ type=rpm-md
         self.sslcacert = ca_cert
         self.sslclientcert = client_cert
         self.sslclientkey = client_key
+
+    def _authenticate(self, url):
+        pass

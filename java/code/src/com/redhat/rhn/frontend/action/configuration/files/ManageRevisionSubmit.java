@@ -171,7 +171,7 @@ public class ManageRevisionSubmit extends RhnSetAction {
         ConfigRevision rev = ConfigurationManager.getInstance()
                 .createNewRevision(user,
                                    new BufferedInputStream(file.getInputStream()),
-                                   cfid, new Long(file.getFileSize()));
+                                   cfid, (long) file.getFileSize());
 
         //create the success message
         createUploadSuccessMessage(rev, request, cfid);

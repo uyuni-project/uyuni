@@ -126,7 +126,7 @@ public abstract class BaseTreeAction extends BaseEditAction {
 
         String previousChannelIdSelection = rctx.getParam(CHANNEL_ID, false);
         if (previousChannelIdSelection != null) {
-            return ChannelFactory.lookupById(new Long(previousChannelIdSelection));
+            return ChannelFactory.lookupById(Long.valueOf(previousChannelIdSelection));
         }
 
         KickstartableTree tree = (KickstartableTree)rctx.getRequest().getAttribute(
@@ -139,7 +139,7 @@ public abstract class BaseTreeAction extends BaseEditAction {
         List channelLabels = (List)rctx.getRequest().getAttribute(CHANNELS);
         if (channelLabels != null) {
             String channelId = ((LabelValueBean)channelLabels.get(0)).getValue();
-            return ChannelFactory.lookupById(new Long(channelId));
+            return ChannelFactory.lookupById(Long.valueOf(channelId));
         }
 
         return null;

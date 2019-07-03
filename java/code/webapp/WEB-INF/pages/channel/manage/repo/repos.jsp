@@ -10,7 +10,7 @@
                creationUrl="RepoCreate.do"
                creationType="repos"
                imgAlt="info.alt.img"
-               helpUrl="/rhn/help/reference/en-US/ref.webui.channels.manage.jsp#s4-chnlmgmt-cdetails-repos">
+               helpUrl="/docs/reference/software/manage-repositories.html">
   <bean:message key="repos.jsp.header"/>
 </rhn:toolbar>
 <div class="page-summary">

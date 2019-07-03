@@ -36,7 +36,6 @@ import com.redhat.rhn.manager.system.UpdateBaseChannelCommand;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
-import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.MatchMode;
@@ -52,7 +51,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -92,8 +90,8 @@ public class ServerFactory extends HibernateFactory {
 
         Session session = HibernateFactory.getSession();
         return (CustomDataValue) session.getNamedQuery(
-                "CustomDataValue.findByServerAndKey").setEntity("server",
-                        server).setEntity("key", key)
+                "CustomDataValue.findByServerAndKey").setParameter("server",
+                        server).setParameter("key", key)
                         // Retrieve from cache if there
                         .setCacheable(true).uniqueResult();
     }
@@ -301,7 +299,7 @@ public class ServerFactory extends HibernateFactory {
         inParams.put("server_id", sid);
         inParams.put("server_group_id", sgid);
         // Outparam
-        outParams.put("retval", new Integer(Types.NUMERIC));
+        outParams.put("retval", Types.NUMERIC);
 
         m.execute(inParams, outParams);
     }
@@ -320,7 +318,7 @@ public class ServerFactory extends HibernateFactory {
         inParams.put("server_id", sid);
         inParams.put("server_group_id", sgid);
         // Outparam
-        // outParams.put("retval", new Integer(Types.NUMERIC));
+        // outParams.put("retval", Integer.valueOf(Types.NUMERIC));
 
         m.execute(inParams, outParams);
     }
@@ -337,7 +335,7 @@ public class ServerFactory extends HibernateFactory {
         String idstr = clientcert.getValueByName(ClientCertificate.SYSTEM_ID);
         String[] parts = StringUtils.split(idstr, '-');
         if (parts != null && parts.length > 0) {
-            Long sid = new Long(parts[1]);
+            Long sid = Long.valueOf(parts[1]);
             Server s = ServerFactory.lookupById(sid);
             if (s != null) {
                 clientcert.validate(s.getSecret());
@@ -409,38 +407,15 @@ public class ServerFactory extends HibernateFactory {
     /**
      * Looks up server objects from the given list of server IDs.
      *
-     * If more than 1000 servers are present in the list we'll split it into
-     * chunks as this can cause problems on Oracle.
-     *
      * @param serverIds List of server IDs.
      * @param user who wants to lookup the Server
      * @return list of server objects
      */
     public static List<Server> lookupByIdsAndUser(List<Long> serverIds, User user) {
-        Session session = HibernateFactory.getSession();
-        Query query = session.getNamedQuery("Server.findByIdsAndOrgId")
-                .setParameter("orgId", user.getOrg().getId());
-        if (serverIds.size() < 1000) {
-            query.setParameterList("serverIds", serverIds);
-            return query.list();
-        }
+        Map<String, Object> parameters = new HashMap<String, Object>();
+        parameters.put("orgId", user.getOrg().getId());
 
-        List<Server> results = new LinkedList<Server>();
-        List<Long> blockOfIds = new LinkedList<Long>();
-        for (Long sid : serverIds) {
-            blockOfIds.add(sid);
-            if (blockOfIds.size() == 999) {
-                query.setParameterList("serverIds", blockOfIds);
-                results.addAll(query.list());
-                blockOfIds = new LinkedList<Long>();
-            }
-        }
-        // Deal with the remainder:
-        if (blockOfIds.size() > 0) {
-            query.setParameterList("serverIds", blockOfIds);
-            results.addAll(query.list());
-        }
-        return results;
+        return findByIds(serverIds, "Server.findByIdsAndOrgId", "serverIds", parameters);
     }
 
     /**
@@ -486,36 +461,8 @@ public class ServerFactory extends HibernateFactory {
      * @param queryName the name of the query to be executed
      * @return the Servers found
      */
-    @SuppressWarnings("unchecked")
     public static <T extends Server> List<T> lookupByServerIds(List<Long> ids, String queryName) {
-        Session session = HibernateFactory.getSession();
-        Query query = session.getNamedQuery(queryName);
-        List<T> results = new LinkedList<T>();
-
-        if (ids.size() == 0) {
-            return results;
-        }
-
-        if (ids.size() < 1000) {
-            query.setParameterList("serverIds", ids);
-            return query.list();
-        }
-
-        List<Long> blockOfIds = new LinkedList<Long>();
-        for (Long sid : ids) {
-            blockOfIds.add(sid);
-            if (blockOfIds.size() == 999) {
-                query.setParameterList("serverIds", blockOfIds);
-                results.addAll(query.list());
-                blockOfIds = new LinkedList<Long>();
-            }
-        }
-        // Deal with the remainder:
-        if (blockOfIds.size() > 0) {
-            query.setParameterList("serverIds", blockOfIds);
-            results.addAll(query.list());
-        }
-        return results;
+        return findByIds(ids, queryName, "serverIds");
     }
 
     /**
@@ -750,7 +697,7 @@ public class ServerFactory extends HibernateFactory {
      */
     public static Server unsubscribeFromAllChannels(User user, Server server) {
         UpdateBaseChannelCommand command = new UpdateBaseChannelCommand(user,
-                server, new Long(-1));
+                server, -1L);
         ValidatorError error = command.store();
         if (error != null) {
             throw new ChannelSubscriptionException(error.getKey());
@@ -870,7 +817,7 @@ public class ServerFactory extends HibernateFactory {
      */
     public static ServerSnapshot lookupSnapshotById(Integer id) {
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("snapId", new Long(id));
+        params.put("snapId", Long.valueOf(id));
         return (ServerSnapshot) singleton.lookupObjectByNamedQuery(
                 "ServerSnapshot.findById", params);
     }
@@ -1279,6 +1226,17 @@ public class ServerFactory extends HibernateFactory {
         return singleton.listObjectsByNamedQuery(
                 "Server.findServerInSSMByChannel", params);
 
+    }
+
+    /**
+     * Finds the server ids given a list of minion ids.
+     *
+     * @param minionIds the list of minion ids
+     * @return a map containing the minion id as key and the server id as value
+     */
+    public static Map<String, Long> findServerIdsByMinionIds(List<String> minionIds) {
+        List<Object[]> results = findByIds(minionIds, "Server.findServerIdsByMinionIds", "minionIds");
+        return results.stream().collect(Collectors.toMap(row -> row[0].toString(), row -> (Long)row[1]));
     }
 
 }

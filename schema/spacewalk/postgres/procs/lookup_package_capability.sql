@@ -13,7 +13,8 @@
 -- granted to use or replicate Red Hat trademarks that are incorporated
 -- in this software or its documentation. 
 
-create or replace function lookup_package_capability(name_in in varchar, version_in in varchar default null)
+create or replace function
+lookup_package_capability(name_in in varchar, version_in in varchar default null)
 returns numeric
 as
 $$
@@ -35,28 +36,15 @@ begin
     end if;
 
     if not found then
-        name_id = nextval('rhn_pkg_capability_id_seq');
-
-        insert into rhnPackageCapability(id, name, version)
-            values (name_id, name_in, version_in)
-            on conflict do nothing;
-
-        if version_in is null then
-            select id
-                into strict name_id
-                from rhnpackagecapability
-                where name = name_in and version is null;
-        else
-            select id
-                into strict name_id
-                from rhnpackagecapability
-                where name = name_in and version = version_in;
-        end if;
+        -- HACK: insert is isolated in own function in order to be able to declare this function immutable
+        -- Postgres optimizes immutable functions calls but those are compatible with the contract of lookup_\*
+        -- see https://www.postgresql.org/docs/9.6/xfunc-volatility.html
+        return insert_package_capability(name_in, version_in);
     end if;
 
     return name_id;
 end;
-$$ language plpgsql;
+$$ language plpgsql immutable;
 
 -- Note: intentionally not thread-safe! You must aquire a write lock on the
 -- rhnPackageCapability tabel if you are going to use this proc!
@@ -82,12 +70,11 @@ begin
     end if;
 
     if not found then
-        name_id = nextval('rhn_pkg_capability_id_seq');
+        name_id := nextval('rhn_pkg_capability_id_seq');
         insert into rhnPackageCapability(id, name, version) values (
                name_id, name_in, version_in);
     end if;
 
     return name_id;
 end;
-$$
-language plpgsql;
+$$ language plpgsql;

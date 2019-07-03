@@ -82,7 +82,7 @@ public class ActionFormatter {
         keybuff.append(key);
         Object[] args = new Object[2];
         args[0] = action.getId().toString();
-        args[1] = new Long(count);
+        args[1] = count;
         if (count > 1) {
             keybuff.append(".plural");
         }

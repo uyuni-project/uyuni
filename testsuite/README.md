@@ -66,8 +66,10 @@ There are also hints about [Pitfalls in writing the testsuite](documentation/pit
 Some of the scenarios that are tested on this testsuite make use of some external testing repositories which contain dummy packages. These packages are used to test package and patch installation and upgrade.
 
 The repositories are:
-- https://build.suse.de/project/show/Devel:Galaxy:BuildRepo - For packages which must be installed on the client systems already.
-- https://build.suse.de/project/show/Devel:Galaxy:TestsuiteRepo - Provides packages for "Test-Channel-x86_64" channel.
+- https://build.suse.de/project/show/Devel:Galaxy:BuildRepo - for packages which must be installed on the client systems already;
+- https://build.suse.de/project/show/Devel:Galaxy:TestsuiteRepo - provides packages for "Test-Channel-x86_64" channel;
+- https://build.opensuse.org/project/show/systemsmanagement:Uyuni:Ubuntu-Test - already installed Ubuntu packages;
+- https://build.opensuse.org/project/show/systemsmanagement:Uyuni:Ubuntu-Test-Updates - provides packages for "Test-Channel-Deb-AMD64" channel.
 
 ## Type of provided packages
 - Normal dummy packages: `andromeda-dummy`, `hoag-dummy`, `orion-dummy`, `milkyway-dummy`, etc.

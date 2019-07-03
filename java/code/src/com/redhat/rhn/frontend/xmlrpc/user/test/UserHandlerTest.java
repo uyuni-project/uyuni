@@ -212,8 +212,8 @@ public class UserHandlerTest extends BaseHandlerTestCase {
     }
 
     public void testUsePamAuthentication() throws Exception {
-        Integer one = new Integer(1);
-        Integer zero = new Integer(0);
+        Integer one = 1;
+        Integer zero = 0;
 
         regular.setUsePamAuthentication(false); //start off false
         handler.usePamAuthentication(admin, regular.getLogin(), one);
@@ -385,8 +385,8 @@ public class UserHandlerTest extends BaseHandlerTestCase {
         String email = "java-xmlrpc-tests@redhat.com";
         String firstName = "Chuck";
         String lastName = "Norris";
-        Integer usePamAuth = new Integer(1);
-        Integer noPamAuth = new Integer(0);
+        Integer usePamAuth = 1;
+        Integer noPamAuth = 0;
 
         // test the method without a password
         //handler.create(admin, login, firstName, lastName, email, usePamAuth);

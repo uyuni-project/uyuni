@@ -1,4 +1,4 @@
-# Copyright (c) 2017-2018 SUSE LLC
+# Copyright (c) 2017-2019 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 Feature: Use salt formulas
@@ -9,10 +9,12 @@ Feature: Use salt formulas
   Scenario: Install a formula package on the server
      Given I am authorized
      When I manually install the "locale" formula on the server
-     And I reload the page
-     And I follow "Salt"
-     And I follow "Formula Catalog"
-     Then I should see a "locale" text
+     And I synchronize all Salt dynamic modules on "sle-minion"
+
+  Scenario: The new formula appears on the server
+     Given I am authorized
+     When I follow the left menu "Salt > Formula Catalog"
+     Then I should see a "locale" text in the content area
 
   Scenario: Enable the formula on the minion
      Given I am on the Systems overview page of this "sle-minion"
@@ -32,7 +34,7 @@ Feature: Use salt formulas
      And I select "French" in language field
      And I select "French (Canada)" in keyboard layout field
      And I click on "Save Formula"
-     Then I should see a "Formula saved!" text
+     Then I should see a "Formula saved" text
 
   Scenario: Check the pillar data after saving the formula
      When I refresh the pillar data
@@ -47,7 +49,7 @@ Feature: Use salt formulas
      And the pillar data for "timezone" should be empty on "ssh-minion"
      And the pillar data for "keyboard_and_language" should be empty on "ssh-minion"
 
-  Scenario: Test the parametrized formula via the highstate
+  Scenario: Use the parametrized formula in test mode
      Given I am on the Systems overview page of this "sle-minion"
      And I follow "States" in the content area
      Then I should see the toggler "disabled"
@@ -72,7 +74,7 @@ Feature: Use salt formulas
      And I follow first "Locale" in the content area
      And I click on "Clear values" and confirm
      And I click on "Save Formula"
-     Then I should see a "Formula saved!" text
+     Then I should see a "Formula saved" text
 
   Scenario: Check the pillar data after resetting the formula
      When I refresh the pillar data

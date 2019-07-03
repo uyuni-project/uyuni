@@ -37,6 +37,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import com.redhat.rhn.domain.server.MinionServerFactory;
+import com.redhat.rhn.domain.server.Server;
 import com.suse.utils.Opt;
 import org.apache.log4j.Logger;
 import org.yaml.snakeyaml.Yaml;
@@ -49,11 +50,15 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
+
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ServerGroup;
 import com.redhat.rhn.domain.server.ServerGroupFactory;
+import com.redhat.rhn.manager.entitlement.EntitlementManager;
+import com.redhat.rhn.manager.system.SystemManager;
+
 import com.suse.manager.webui.controllers.ECMAScriptDateAdapter;
 
 /**
@@ -61,17 +66,25 @@ import com.suse.manager.webui.controllers.ECMAScriptDateAdapter;
  */
 public class FormulaFactory {
 
+    /** This formula is coupled with the monitoring system type */
+    public static final String PROMETHEUS_EXPORTERS = "prometheus-exporters";
+
     // Logger for this class
     private static final Logger LOG = Logger.getLogger(FormulaFactory.class);
 
     private static String dataDir = "/srv/susemanager/formula_data/";
-    private static final String METADATA_DIR_OFFICIAL = "/usr/share/susemanager/formulas/metadata/";
+    private static final String METADATA_DIR_MANAGER = "/usr/share/susemanager/formulas/metadata/";
+    private static final String METADATA_DIR_STANDALONE_SALT = "/usr/share/salt-formulas/metadata/";
     private static final String METADATA_DIR_CUSTOM = "/srv/formula_metadata/";
     private static final String PILLAR_DIR = "pillar/";
     private static final String GROUP_PILLAR_DIR = "group_pillar/";
     private static final String GROUP_DATA_FILE  = "group_formulas.json";
     private static final String SERVER_DATA_FILE = "minion_formulas.json";
+    private static final String LAYOUT_FILE = "form.yml";
+    private static final String METADATA_FILE = "metadata.yml";
+    private static final String PILLAR_EXAMPLE_FILE = "pillar.example";
     private static final String PILLAR_FILE_EXTENSION = "json";
+    private static String metadataDirOfficial = METADATA_DIR_MANAGER;
     private static final Gson GSON = new GsonBuilder()
             .registerTypeAdapter(Date.class, new ECMAScriptDateAdapter())
             .registerTypeAdapter(Double.class,  new JsonSerializer<Double>() {
@@ -98,6 +111,10 @@ public class FormulaFactory {
      */
     public static void setDataDir(String dataDirPath) {
         FormulaFactory.dataDir = dataDirPath;
+    }
+
+    public static void setMetadataDirOfficial(String metadataDirPath) {
+        FormulaFactory.metadataDirOfficial = metadataDirPath;
     }
 
     /**
@@ -137,16 +154,20 @@ public class FormulaFactory {
      * @return the names of all currently installed formulas.
      */
     public static List<String> listFormulaNames() {
-        File officialDir = new File(METADATA_DIR_OFFICIAL);
+        File standaloneDir = new File(METADATA_DIR_STANDALONE_SALT);
+        File managerDir = new File(METADATA_DIR_MANAGER);
         File customDir = new File(METADATA_DIR_CUSTOM);
         List<File> files = new LinkedList<>(
-                Arrays.asList(officialDir.listFiles()));
+                Arrays.asList(standaloneDir.listFiles()));
+        files.addAll(Arrays.asList(managerDir.listFiles()));
         files.addAll(Arrays.asList(customDir.listFiles()));
         List<String> formulasList = new LinkedList<>();
 
         for (File f : files) {
-            if (f.isDirectory() && new File(f, "form.yml").isFile()) {
-                formulasList.add(f.getName());
+            if (f.isDirectory() && new File(f, LAYOUT_FILE).isFile()) {
+                if (!formulasList.contains(f.getName())) {
+                    formulasList.add(f.getName());
+                }
             }
         }
         formulasList.sort(String.CASE_INSENSITIVE_ORDER);
@@ -172,9 +193,10 @@ public class FormulaFactory {
      * @param formData the values to save
      * @param groupId the id of the group
      * @param formulaName the name of the formula
+     * @param org the user's org
      * @throws IOException if an IOException occurs while saving the data
      */
-    public static void saveGroupFormulaData(Map<String, Object> formData, Long groupId,
+    public static void saveGroupFormulaData(Map<String, Object> formData, Long groupId, Org org,
             String formulaName) throws IOException {
         File file = new File(getGroupPillarDir() +
                 groupId + "_" + formulaName + "." + PILLAR_FILE_EXTENSION);
@@ -185,9 +207,39 @@ public class FormulaFactory {
         catch (FileAlreadyExistsException e) {
         }
 
-        BufferedWriter writer = new BufferedWriter(new FileWriter(file));
-        writer.write(GSON.toJson(formData));
-        writer.close();
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
+            writer.write(GSON.toJson(formData));
+        }
+
+        if (PROMETHEUS_EXPORTERS.equals(formulaName)) {
+            Set<MinionServer> minions = getGroupMinions(groupId, org);
+            minions.forEach(minion -> {
+                if (!hasMonitoringDataEnabled(formData)) {
+                    if (!serverHasMonitoringFormulaEnabled(minion)) {
+                        SystemManager.removeServerEntitlement(minion.getId(), EntitlementManager.MONITORING);
+                    }
+                }
+                else {
+                    grantMonitoringEntitlement(minion);
+                }
+            });
+        }
+    }
+
+    /**
+     * Entitle server if it doesn't already have the monitoring entitlement and if it's allowed.
+     * @param server the server to entitle
+     */
+    public static void grantMonitoringEntitlement(Server server) {
+        boolean hasEntitlement = SystemManager.hasEntitlement(server.getId(), EntitlementManager.MONITORING);
+        if (!hasEntitlement && SystemManager.canEntitleServer(server, EntitlementManager.MONITORING)) {
+            SystemManager.entitleServer(server, EntitlementManager.MONITORING);
+            return;
+        }
+        if (LOG.isDebugEnabled() && hasEntitlement) {
+            LOG.debug("Server " + server.getName() + " already has monitoring entitlement.");
+        }
+
     }
 
     /**
@@ -200,6 +252,27 @@ public class FormulaFactory {
      */
     public static void saveServerFormulaData(Map<String, Object> formData, String minionId,
             String formulaName) throws IOException, UnsupportedOperationException {
+        // Add the monitoring entitlement if at least one of the exporters is enabled
+        if (PROMETHEUS_EXPORTERS.equals(formulaName)) {
+            MinionServerFactory.findByMinionId(minionId).ifPresent(s -> {
+                if (!hasMonitoringDataEnabled(formData)) {
+                    if (isMemberOfGroupHavingMonitoring(s)) {
+                        // nothing to do here, keep monitoring entitlement and disable formula
+                        LOG.debug(String.format("Minion %s is member of group having monitoring enabled." +
+                                " Not removing monitoring entitlement.", minionId));
+                    }
+                    else {
+                        SystemManager.removeServerEntitlement(s.getId(),
+                                EntitlementManager.MONITORING);
+                    }
+                }
+                else if (!SystemManager.hasEntitlement(s.getId(), EntitlementManager.MONITORING) &&
+                        SystemManager.canEntitleServer(s, EntitlementManager.MONITORING)) {
+                    SystemManager.entitleServer(s, EntitlementManager.MONITORING);
+                }
+            });
+        }
+
         File file = new File(getPillarDir() + minionId +
                 "_" + formulaName + "." + PILLAR_FILE_EXTENSION);
         try {
@@ -209,9 +282,9 @@ public class FormulaFactory {
         catch (FileAlreadyExistsException e) {
         }
 
-        BufferedWriter writer = new BufferedWriter(new FileWriter(file));
-        writer.write(GSON.toJson(formData));
-        writer.close();
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
+            writer.write(GSON.toJson(formData));
+        }
     }
 
     /**
@@ -297,18 +370,22 @@ public class FormulaFactory {
      * @param name the name of the formula
      * @return the layout
      */
+    @SuppressWarnings("unchecked")
     public static Optional<Map<String, Object>> getFormulaLayoutByName(String name) {
-        File layoutFileOfficial = new File(METADATA_DIR_OFFICIAL + name + "/form.yml");
-        File layoutFileCustom = new File(METADATA_DIR_CUSTOM + name + "/form.yml");
+        String layoutFilePath = name + File.separator + LAYOUT_FILE;
+        File layoutFileStandalone = new File(METADATA_DIR_STANDALONE_SALT + layoutFilePath);
+        File layoutFileManager = new File(METADATA_DIR_MANAGER + layoutFilePath);
+        File layoutFileCustom = new File(METADATA_DIR_CUSTOM + layoutFilePath);
 
         try {
-            if (layoutFileOfficial.exists()) {
-                return Optional.of((Map<String, Object>) YAML.load(
-                        new FileInputStream(layoutFileOfficial)));
+            if (layoutFileStandalone.exists()) {
+                return Optional.of((Map<String, Object>) YAML.load(new FileInputStream(layoutFileStandalone)));
+            }
+            else if (layoutFileManager.exists()) {
+                return Optional.of((Map<String, Object>) YAML.load(new FileInputStream(layoutFileManager)));
             }
             else if (layoutFileCustom.exists()) {
-                return Optional.of((Map<String, Object>) YAML.load(
-                        new FileInputStream(layoutFileCustom)));
+                return Optional.of((Map<String, Object>) YAML.load(new FileInputStream(layoutFileCustom)));
             }
             else {
                 return Optional.empty();
@@ -414,24 +491,51 @@ public class FormulaFactory {
                         new LinkedList<>()));
         deletedFormulas.removeAll(selectedFormulas);
 
-        Set<MinionServer> minions = ServerGroupFactory
+        for (String f : deletedFormulas) {
+            deleteGroupFormulaData(groupId, f);
+        }
+
+        // Save selected Formulas
+        groupFormulas.put(groupId.toString(), orderFormulas(selectedFormulas));
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(dataFile))) {
+            writer.write(GSON.toJson(groupFormulas));
+        }
+
+        // Generate monitoring default data from the 'pillar.example' file, otherwise the API would not return any
+        // formula data as long as the default values are unchanged.
+        if (selectedFormulas.contains(PROMETHEUS_EXPORTERS) &&
+                getGroupFormulaValuesByNameAndGroupId(PROMETHEUS_EXPORTERS, groupId).isEmpty()) {
+            FormulaFactory.saveGroupFormulaData(
+                    getPillarExample(PROMETHEUS_EXPORTERS), groupId, org, PROMETHEUS_EXPORTERS);
+        }
+
+        // Handle entitlement removal in case of monitoring
+        if (deletedFormulas.contains(PROMETHEUS_EXPORTERS)) {
+            Set<MinionServer> minions = getGroupMinions(groupId, org);
+            minions.forEach(minion -> {
+                // remove entitlement only if formula not enabled at server level
+                if (!serverHasMonitoringFormulaEnabled(minion)) {
+                    SystemManager.removeServerEntitlement(minion.getId(), EntitlementManager.MONITORING);
+                }
+            });
+        }
+    }
+
+    private static boolean serverHasMonitoringFormulaEnabled(MinionServer minion) {
+        List<String> formulas = FormulaFactory.getFormulasByMinionId(minion.getMinionId());
+        return formulas.contains(FormulaFactory.PROMETHEUS_EXPORTERS) &&
+                getFormulaValuesByNameAndMinionId(PROMETHEUS_EXPORTERS, minion.getMinionId())
+                        .map(data -> hasMonitoringDataEnabled(data))
+                        .orElse(false);
+    }
+
+    private static Set<MinionServer> getGroupMinions(Long groupId, Org org) {
+        return ServerGroupFactory
                 .lookupByIdAndOrg(groupId, org)
                 .getServers().stream()
                 .map(server -> server.asMinionServer())
                 .flatMap(Opt::stream)
                 .collect(Collectors.toSet());
-
-        for (MinionServer minion : minions) { // foreach loop: we need to throw IOException
-            for (String f : deletedFormulas) {
-                deleteServerFormulaData(minion.getMinionId(), f);
-            }
-        }
-
-        // Save selected Formulas
-        groupFormulas.put(groupId.toString(), orderFormulas(selectedFormulas));
-        BufferedWriter writer = new BufferedWriter(new FileWriter(dataFile));
-        writer.write(GSON.toJson(groupFormulas));
-        writer.close();
     }
 
     /**
@@ -454,7 +558,9 @@ public class FormulaFactory {
             serverFormulas = new HashMap<>();
         }
         else {
-            serverFormulas = GSON.fromJson(new BufferedReader(new FileReader(dataFile)), Map.class);
+            serverFormulas = Optional
+                    .ofNullable(GSON.fromJson(new BufferedReader(new FileReader(dataFile)), Map.class))
+                    .orElse(new HashMap());
         }
 
         // Remove formula data for unselected formulas
@@ -474,10 +580,28 @@ public class FormulaFactory {
             serverFormulas.put(minionId, orderedFormulas);
         }
 
-        // Write server_formulas file
-        BufferedWriter writer = new BufferedWriter(new FileWriter(dataFile));
-        writer.write(GSON.toJson(serverFormulas));
-        writer.close();
+        // Write minion_formulas file
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(dataFile))) {
+            writer.write(GSON.toJson(serverFormulas));
+        }
+
+        // Generate monitoring default data from the 'pillar.example' file, otherwise the API would not return any
+        // formula data as long as the default values are unchanged.
+        if (orderedFormulas.contains(PROMETHEUS_EXPORTERS) &&
+                getFormulaValuesByNameAndMinionId(PROMETHEUS_EXPORTERS, minionId).isEmpty()) {
+            FormulaFactory.saveServerFormulaData(
+                    getPillarExample(PROMETHEUS_EXPORTERS), minionId, PROMETHEUS_EXPORTERS);
+        }
+
+        // Handle entitlement removal in case of monitoring
+        if (deletedFormulas.contains(PROMETHEUS_EXPORTERS)) {
+            MinionServerFactory.findByMinionId(minionId).ifPresent(s -> {
+                if (!isMemberOfGroupHavingMonitoring(s)) {
+                    SystemManager.removeServerEntitlement(s.getId(), EntitlementManager.MONITORING);
+                }
+
+            });
+        }
     }
 
     /**
@@ -562,24 +686,27 @@ public class FormulaFactory {
      * @param name the name of the formula
      * @return the metadata
      */
+    @SuppressWarnings("unchecked")
     public static Map<String, Object> getMetadata(String name) {
-        File metadataFileOfficial =
-                new File(METADATA_DIR_OFFICIAL + name + "/metadata.yml");
-        File metadataFileCustom = new File(METADATA_DIR_CUSTOM + name + "/metadata.yml");
+        String metadataFilePath = name + File.separator + METADATA_FILE;
+        File metadataFileStandalone = new File(METADATA_DIR_STANDALONE_SALT + metadataFilePath);
+        File metadataFileManager = new File(METADATA_DIR_MANAGER + metadataFilePath);
+        File metadataFileCustom = new File(METADATA_DIR_CUSTOM + metadataFilePath);
         try {
-            if (metadataFileOfficial.isFile()) {
-                return (Map<String, Object>) YAML.load(
-                        new FileInputStream(metadataFileOfficial));
+            if (metadataFileStandalone.isFile()) {
+                return (Map<String, Object>) YAML.load(new FileInputStream(metadataFileStandalone));
+            }
+            else if (metadataFileManager.isFile()) {
+                return (Map<String, Object>) YAML.load(new FileInputStream(metadataFileManager));
             }
             else if (metadataFileCustom.isFile()) {
-                    return (Map<String, Object>) YAML.load(
-                            new FileInputStream(metadataFileCustom));
+                return (Map<String, Object>) YAML.load(new FileInputStream(metadataFileCustom));
             }
             else {
                 return Collections.emptyMap();
             }
         }
-        catch (IOException | YAMLException e) {
+        catch (IOException e) {
             return Collections.emptyMap();
         }
     }
@@ -590,8 +717,82 @@ public class FormulaFactory {
      * @param param the name of the metadata value
      * @return the metadata value
      */
-    public static Optional<Object> getMetadata(String name, String param) {
+    private static Optional<Object> getMetadata(String name, String param) {
         return Optional.ofNullable(getMetadata(name).getOrDefault(param, null));
     }
 
+    /**
+     * Read the 'pillar.example' file for a given formula and return the data.
+     *
+     * @param name the given name of a formula
+     * @return data from pillar.example
+     * @throws IOException in case there is a problem reading the pillar.example file
+     */
+    @SuppressWarnings("unchecked")
+    public static Map<String, Object> getPillarExample(String name) {
+        String pillarExamplePath = name + File.separator + PILLAR_EXAMPLE_FILE;
+        File pillarExampleFileStandalone = new File(METADATA_DIR_STANDALONE_SALT + pillarExamplePath);
+        File pillarExampleFileManager = new File(METADATA_DIR_MANAGER + pillarExamplePath);
+        File pillarExampleFileCustom = new File(METADATA_DIR_CUSTOM + pillarExamplePath);
+
+        try {
+            if (pillarExampleFileStandalone.isFile()) {
+                return (Map<String, Object>) YAML.load(new FileInputStream(pillarExampleFileStandalone));
+            }
+            else if (pillarExampleFileManager.isFile()) {
+                return (Map<String, Object>) YAML.load(new FileInputStream(pillarExampleFileManager));
+            }
+            else if (pillarExampleFileCustom.isFile()) {
+                return (Map<String, Object>) YAML.load(new FileInputStream(pillarExampleFileCustom));
+            }
+            else {
+                return Collections.emptyMap();
+            }
+        }
+        catch (IOException e) {
+            return Collections.emptyMap();
+        }
+    }
+
+    /**
+     * Disable all monitoring exporters in a given map of data.
+     *
+     * @param formData data to be used with the monitoring formula
+     * @return data with exporters set to disabled
+     */
+    @SuppressWarnings("unchecked")
+    public static Map<String, Object> disableMonitoring(Map<String, Object> formData) {
+        ((Map<String, Object>) formData.get("node_exporter")).put("enabled", false);
+        ((Map<String, Object>) formData.get("postgres_exporter")).put("enabled", false);
+        return formData;
+    }
+
+    /**
+     * Check whether a server is member of a group having monitoring formula enabled.
+     * @param server the server to check
+     * @return true if the server is member of a group having monitoring formula enabled.
+     */
+    public static boolean isMemberOfGroupHavingMonitoring(Server server) {
+        return server.getManagedGroups().stream()
+                .map(grp -> FormulaFactory.hasMonitoringDataEnabled(grp))
+                .anyMatch(Boolean::booleanValue);
+    }
+
+    /**
+     * Check whether group has monitoring formula enabled.
+     * @param group server group
+     * @return true if monitoring formula is enabled, false otherwise
+     */
+    public static boolean hasMonitoringDataEnabled(ServerGroup group) {
+        return getGroupFormulaValuesByNameAndGroupId(PROMETHEUS_EXPORTERS, group.getId())
+                .map(FormulaFactory::hasMonitoringDataEnabled)
+                .orElse(false);
+    }
+
+    @SuppressWarnings("unchecked")
+    private static boolean hasMonitoringDataEnabled(Map<String, Object> formData) {
+        Map<String, Object> nodeExporter = (Map<String, Object>) formData.get("node_exporter");
+        Map<String, Object> postgresExporter = (Map<String, Object>) formData.get("postgres_exporter");
+        return (boolean) nodeExporter.get("enabled") || (boolean) postgresExporter.get("enabled");
+    }
 }

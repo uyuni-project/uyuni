@@ -6,7 +6,7 @@
 <html:html>
     <body>
         <rhn:toolbar base="h1" icon="header-info" imgAlt="info.alt.img"
-                     helpUrl="/rhn/help/reference/en-US/ref.webui.admin.config.jsp#s3-sattools-config-gen">
+                     helpUrl="/docs/reference/admin/general.html">
             <bean:message key="general.jsp.toolbar"/>
         </rhn:toolbar>
         <p><bean:message key="general.jsp.summary"/></p>

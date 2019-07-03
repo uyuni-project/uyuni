@@ -88,6 +88,17 @@ public class ChannelFactoryTest extends RhnBaseTestCase {
         return c;
     }
 
+    public static Channel createBaseChannel(User user, String channelArchLabel) throws Exception {
+        Channel c = ChannelFactoryTest.createTestChannel(user, channelArchLabel);
+        c.setOrg(user.getOrg());
+
+        ProductName pn = lookupOrCreateProductName(ChannelManager.RHEL_PRODUCT_NAME);
+        c.setProductName(pn);
+
+        ChannelFactory.save(c);
+        return c;
+    }
+
     public static Channel createBaseChannel(User user,
                                 ChannelFamily fam) throws Exception {
         Channel c = createTestChannel(null, fam);
@@ -106,9 +117,8 @@ public class ChannelFactoryTest extends RhnBaseTestCase {
         return c;
     }
 
-    public static Channel createTestChannel(User user, String channelLabel) throws Exception {
-        String query = "ChannelArch.findByLabel";
-        ChannelArch arch = (ChannelArch) TestUtils.lookupFromCacheByLabel(channelLabel, query);
+    public static Channel createTestChannel(User user, String channelArch) throws Exception {
+        ChannelArch arch = (ChannelArch) TestUtils.lookupFromCacheByLabel(channelArch, "ChannelArch.findByLabel");
         Channel c = createTestChannel(user.getOrg(), arch, user.getOrg().getPrivateChannelFamily());
         // assume we want the user to have access to this channel once created
         UserManager.addChannelPerm(user, c.getId(), "subscribe");
@@ -461,4 +471,19 @@ public class ChannelFactoryTest extends RhnBaseTestCase {
         assertEquals("sha1", ct2.getLabel());
     }
 
+    /**
+     * Test user channel accessibility
+     *
+     * @throws Exception if anything goes wrong
+     */
+    public void testAccessibility() throws Exception {
+        User user1 = UserTestUtils.findNewUser("testuser1", "testorg1");
+        User user2 = UserTestUtils.createUser("testuser2", user1.getOrg().getId());
+        User user3 = UserTestUtils.findNewUser("testuser3", "testorg3");
+        Channel c = ChannelFactoryTest.createTestChannel(user1);
+
+        assertTrue(ChannelFactory.isAccessibleByUser(c.getLabel(), user1.getId()));
+        assertTrue(ChannelFactory.isAccessibleByUser(c.getLabel(), user2.getId()));
+        assertFalse(ChannelFactory.isAccessibleByUser(c.getLabel(), user3.getId()));
+    }
 }

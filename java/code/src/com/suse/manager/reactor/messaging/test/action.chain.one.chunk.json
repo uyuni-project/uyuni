@@ -152,17 +152,6 @@
               "changes": {},
               "__id__": "pkg_installed"
             },
-            "file_|-mgr_mine_config_|-/etc/salt/minion.d/susemanager-mine.conf_|-managed": {
-              "comment": "File /etc/salt/minion.d/susemanager-mine.conf is in the correct state",
-              "pchanges": {},
-              "name": "/etc/salt/minion.d/susemanager-mine.conf",
-              "start_time": "23:19:57.094071",
-              "result": true,
-              "duration": 1.841,
-              "__run_num__": 10,
-              "changes": {},
-              "__id__": "mgr_mine_config"
-            },
             "pkg_|-pkg_latest_|-pkg_latest_|-latest": {
               "comment": "No packages to install provided",
               "name": "pkg_latest",

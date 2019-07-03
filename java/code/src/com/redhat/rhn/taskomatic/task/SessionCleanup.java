@@ -69,12 +69,12 @@ public class SessionCleanup extends RhnJavaJob {
         }
 
         //input parameters of the proc
-        inParams.put("bound", new Long(bound));
-        inParams.put("commit_interval", new Integer(commitInterval));
-        inParams.put("batch_size", new Integer(batchSize));
+        inParams.put("bound", bound);
+        inParams.put("commit_interval", commitInterval);
+        inParams.put("batch_size", batchSize);
 
         //output parameter of the proc
-        outParams.put("sessions_deleted", new Integer(Types.NUMERIC));
+        outParams.put("sessions_deleted", Types.NUMERIC);
 
         CallableMode m = ModeFactory.getCallableMode(TaskConstants.MODE_NAME,
                 TaskConstants.TASK_QUERY_SESSION_CLEANUP);

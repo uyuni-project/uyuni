@@ -257,7 +257,7 @@ public class ProfileHandlerTest extends BaseHandlerTestCase {
         script.setData(new String("blah").getBytes());
         script.setInterpreter("/bin/bash");
         script.setScriptType("post");
-        script.setPosition(new Long(0));
+        script.setPosition(0L);
         script = (KickstartScript) TestUtils.saveAndReload(script);
 
         assertEquals(1, handler.removeScript(admin, ks.getLabel(),

@@ -100,7 +100,7 @@ public class FormulaManager {
 
         ManagedServerGroup group = ServerGroupFactory.lookupByIdAndOrg(groupId, user.getOrg());
         checkUserHasPermissionsOnServerGroup(user, group);
-        FormulaFactory.saveGroupFormulaData(content, groupId, formulaName);
+        FormulaFactory.saveGroupFormulaData(content, groupId, user.getOrg(), formulaName);
         List<String> minionIds = group.getServers().stream()
                 .flatMap(s -> Opt.stream(s.asMinionServer()))
                 .map(MinionServer::getMinionId).collect(Collectors.toList());

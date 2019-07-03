@@ -21,7 +21,7 @@
         <para>Deprecated - $call.deprecatedReason</para>
       #end
       #if ($call.sinceAvailable)
-        <para>Available since: $call.sinceVersion</para>
+        <para>Available since API version: $call.sinceVersion</para>
       #end
       </listitem>
     </varlistentry>

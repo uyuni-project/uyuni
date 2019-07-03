@@ -25,8 +25,8 @@
     </head>
 
 <body>
-<rhn:toolbar base="h1" icon="header-search"
-               helpUrl="/rhn/help/reference/en-US/ref.webui.patches.search.jsp">
+<rhn:toolbar base="h1" icon="header-errata"
+               helpUrl="/docs/reference/patches/patches-advanced-search.html">
     <bean:message key="erratasearch.jsp.toolbar"/>
   </rhn:toolbar>
 

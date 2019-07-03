@@ -32,7 +32,7 @@ class AsyncButton extends _ButtonBase {
     super(props);
     ["trigger"].forEach(method => this[method] = this[method].bind(this));
     this.state = {
-        value: "initial"
+        value: props.initialValue ? props.initialValue : "initial"
     };
   }
 
@@ -114,7 +114,11 @@ AsyncButton.propTypes = {
    * Any additional css classes for the button.
    * @see defaultType
    */
-  className: PropTypes.string
+  className: PropTypes.string,
+  /**
+   * Initial state of the button ('failure', 'warning' or 'initial')
+   */
+  initialValue: PropTypes.string
 };
 
 /**
@@ -165,7 +169,7 @@ class LinkButton extends _ButtonBase {
 
   render() {
     return (
-      <a id={this.props.id} title={this.props.title} className={'btn ' + this.props.className} href={this.props.href}>
+      <a id={this.props.id} title={this.props.title} className={'btn ' + this.props.className} href={this.props.href} target={this.props.target}>
         {this.renderIcon()}{this.props.text}
       </a>
     )
@@ -189,7 +193,9 @@ LinkButton.props = {
   /** If true, disable the button. */
   disabled: PropTypes.bool,
   /** className of the button. 'btn' class is always prepended. */
-  className: PropTypes.string
+  className: PropTypes.string,
+  /** target of the link. */
+  target: PropTypes.string,
 };
 
 /**

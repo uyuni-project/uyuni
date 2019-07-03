@@ -59,7 +59,7 @@ public class DeleteBugActionTest extends RhnBaseTestCase {
         //Create a test errata with a bug
         User user = requestContext.getCurrentUser();
         Errata e = ErrataFactoryTest.createTestPublishedErrata(user.getOrg().getId());
-        Long bugId = new Long(42);
+        Long bugId = 42L;
         String bugSummary = "This bug is tagged for destruction";
         Bug bug = ErrataManagerTest.createNewPublishedBug(bugId, bugSummary);
         e.addBug(bug);

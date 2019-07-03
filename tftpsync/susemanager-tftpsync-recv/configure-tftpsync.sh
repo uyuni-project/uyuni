@@ -163,7 +163,8 @@ else
 fi
 
 
-sed -i "s/^[[:space:]]*allow from[[:space:]].*$/    allow from $SUMA_IP/" /etc/apache2/conf.d/susemanager-tftpsync-recv.conf
+sed -i "s/^[[:space:]]*Allow from[[:space:]].*$/        Allow from $SUMA_IP/" /etc/apache2/conf.d/susemanager-tftpsync-recv.conf
+sed -i "s/^[[:space:]#]*Require ip[[:space:]].*$/        Require ip $SUMA_IP/" /etc/apache2/conf.d/susemanager-tftpsync-recv.conf
 
 
 #######################################
@@ -177,12 +178,5 @@ fi
 chown wwwrun:tftp "$TFTPBOOT"
 chmod 750 "$TFTPBOOT"
 systemctl enable tftp.socket
-
-## open firewall for tftp ##
-############################
-
-echo "open tftp service in SUSE firewall..."
-sysconf_addword /etc/sysconfig/SuSEfirewall2 FW_CONFIGURATIONS_EXT tftp
-rcSuSEfirewall2 try-restart
 
 rcapache2 restart

@@ -91,6 +91,7 @@ function IconTag(props) {
     "item-ssm-del": "fa fa-minus-circle",
     "item-upload": "fa fa-upload",
     "item-order": "fa fa-sort",
+    "item-error": "fa fa-times text-danger",
     "nav-bullet": "fa fa-caret-right",
     "nav-page-first": "fa fa-angle-double-left",
     "nav-page-last": "fa fa-angle-double-right",
@@ -126,7 +127,7 @@ function IconTag(props) {
     "system-warn": "fa fa-exclamation-triangle fa-1-5x text-warning",
   };
 
-  return (<i className={icons[props.type]} title={props.title}></i>);
+  return (<i className={icons[props.type] + " " + props.className} title={props.title}></i>);
 }
 
 module.exports = {

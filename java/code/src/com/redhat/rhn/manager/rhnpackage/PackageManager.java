@@ -77,9 +77,9 @@ import com.redhat.rhn.manager.system.IncompatibleArchException;
  */
 public class PackageManager extends BaseManager {
     private static final Logger LOG = Logger.getLogger(PackageManager.class);
-    public static final String RHNCFG = "rhncfg";
-    public static final String RHNCFG_CLIENT = "rhncfg-client";
-    public static final String RHNCFG_ACTIONS = "rhncfg-actions";
+    public static final String RHNCFG = "mgr-cfg";
+    public static final String RHNCFG_CLIENT = "mgr-cfg-client";
+    public static final String RHNCFG_ACTIONS = "mgr-cfg-actions";
 
     // Valid dependency types
     public static final String[]
@@ -571,7 +571,7 @@ public class PackageManager extends BaseManager {
         DataResult dr = m.execute(params);
         if (dr.size() > 0) {
             Long id = (Long) ((Map) dr.get(0)).get("id");
-            return new Long(id.longValue());
+            return id;
         }
         return null;
     }
@@ -858,10 +858,10 @@ public class PackageManager extends BaseManager {
         Integer e1 = null;
         Integer e2 = null;
         if (epoch1 != null && StringUtils.isNumeric(epoch1)) {
-            e1 = new Integer(epoch1);
+            e1 = Integer.valueOf(epoch1);
         }
         if (epoch2 != null && StringUtils.isNumeric(epoch2)) {
-            e2 = new Integer(epoch2);
+            e2 = Integer.valueOf(epoch2);
         }
         //handle null cases
         if (e1 != null && e2 == null) {

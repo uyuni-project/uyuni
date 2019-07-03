@@ -100,7 +100,7 @@ public class SCCClientTest extends TestCase {
         List<SCCRepositoryJson> repos = p.getRepositories();
         assertEquals(1, repos.size());
         SCCRepositoryJson r = repos.get(0);
-        assertEquals(new Long(1357), r.getSCCId());
+        assertEquals(Long.valueOf(1357), r.getSCCId());
 
         // API v4 support (paging)
         SCCProductJson p2 = products.get(1);
@@ -126,7 +126,7 @@ public class SCCClientTest extends TestCase {
         // Assertions
         assertEquals(2, repos.size());
         SCCRepositoryJson r = repos.get(0);
-        assertEquals(new Long(1358), r.getSCCId());
+        assertEquals(Long.valueOf(1358), r.getSCCId());
         assertEquals("SLE10-SDK-SP4-Online", r.getName());
         assertEquals("sles-10-i586", r.getDistroTarget());
         assertEquals("SLE10-SDK-SP4-Online for sles-10-i586", r.getDescription());
@@ -162,8 +162,8 @@ public class SCCClientTest extends TestCase {
         assertEquals("EXPIRED", s.getStatus());
         assertEquals(null, s.getStartsAt());
         assertEquals(Date.from(Instant.parse("2014-03-14T13:10:21.164Z")), s.getExpiresAt());
-        assertEquals(new Integer(6), s.getSystemLimit());
-        assertEquals(new Integer(1), s.getSystemsCount());
+        assertEquals(Integer.valueOf(6), s.getSystemLimit());
+        assertEquals(Integer.valueOf(1), s.getSystemsCount());
         assertEquals(null, s.getVirtualCount());
         assertFalse(s.getProductIds().contains(11L));
         assertTrue(s.getProductIds().contains(12L));
@@ -217,7 +217,7 @@ public class SCCClientTest extends TestCase {
             // Assertions
             assertEquals(1, repos.size());
             SCCRepositoryJson r = repos.get(0);
-            assertEquals(new Long(1358), r.getSCCId());
+            assertEquals(Long.valueOf(1358), r.getSCCId());
             assertEquals("SLE10-SDK-SP4-Online", r.getName());
             assertEquals("sles-10-i586", r.getDistroTarget());
             assertEquals("SLE10-SDK-SP4-Online for sles-10-i586", r.getDescription());

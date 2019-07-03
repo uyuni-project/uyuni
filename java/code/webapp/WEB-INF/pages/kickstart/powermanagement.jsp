@@ -13,7 +13,7 @@
     <%@ include file="/WEB-INF/pages/common/fragments/systems/system-header.jspf"%>
 
     <rhn:toolbar base="h2" icon="header-power"
-        helpUrl="/rhn/help/reference/en-US/ref.webui.systems.systems.jsp#s5-sdc-provisioning-powermgnt">
+        helpUrl="/docs/reference/systems/system-details/sd-provisioning.html">
         <bean:message key="kickstart.powermanagement.jsp.heading" />
     </rhn:toolbar>
 

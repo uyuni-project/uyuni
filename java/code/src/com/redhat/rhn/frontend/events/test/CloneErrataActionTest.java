@@ -35,6 +35,8 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
 
+import static com.redhat.rhn.manager.channel.CloneChannelCommand.CloneBehavior.ORIGINAL_STATE;
+
 /**
  * Tests {@link CloneErrataAction}.
  */
@@ -65,7 +67,7 @@ public class CloneErrataActionTest extends BaseTestCaseWithUser {
         original.addErrata(errata);
 
         // clone it
-        CloneChannelCommand helper = new CloneChannelCommand(true, original);
+        CloneChannelCommand helper = new CloneChannelCommand(ORIGINAL_STATE, original);
         helper.setName("Test Clone of " + original.getName());
         helper.setArchLabel(original.getChannelArch().getLabel());
         helper.setLabel("test-clone-of-" + original.getLabel());

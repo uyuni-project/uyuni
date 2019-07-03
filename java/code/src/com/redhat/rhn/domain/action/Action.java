@@ -318,7 +318,7 @@ public class Action extends BaseDomainHelper implements Serializable {
      * @return Count of failed actions.
      */
     public Long getFailedCount() {
-        return new Long(getActionStatusCount(ActionFactory.STATUS_FAILED));
+        return getActionStatusCount(ActionFactory.STATUS_FAILED);
     }
 
     /**
@@ -326,7 +326,7 @@ public class Action extends BaseDomainHelper implements Serializable {
      * @return Count of successful actions.
      */
     public Long getSuccessfulCount() {
-        return new Long(getActionStatusCount(ActionFactory.STATUS_COMPLETED));
+        return getActionStatusCount(ActionFactory.STATUS_COMPLETED);
     }
 
     // Get the number of ServerAction objects that match

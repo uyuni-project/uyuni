@@ -290,7 +290,7 @@ public class DataSourceParserTest extends RhnBaseTestCase {
     public void testExternalQuery() throws Exception {
         SelectMode m = ModeFactory.getMode("System_queries", "visible_to_uid");
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("formvar_uid", new Long(12345));
+        params.put("formvar_uid", 12345L);
         DataResult dr = m.execute(params);
         assertEquals(m, dr.getMode());
     }

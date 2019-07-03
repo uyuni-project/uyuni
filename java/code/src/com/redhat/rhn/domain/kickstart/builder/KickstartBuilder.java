@@ -247,7 +247,7 @@ public class KickstartBuilder {
         }
 
         Set<KickstartPackage> ksPackagesSet = new TreeSet<KickstartPackage>();
-        Long pos = new Long(0);
+        Long pos = 0L;
         for (Iterator<String> it = lines.iterator(); it.hasNext();) {
             String currentLine = it.next();
             if (currentLine.startsWith("#") || currentLine.startsWith("%packages") ||

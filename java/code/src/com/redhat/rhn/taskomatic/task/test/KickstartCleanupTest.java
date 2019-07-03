@@ -111,7 +111,7 @@ public class KickstartCleanupTest extends RhnBaseTestCase {
         ksession.setState(state);
         ksession.setCreated(new Date());
         ksession.setModified(new Date());
-        ksession.setPackageFetchCount(new Long(0));
+        ksession.setPackageFetchCount(0L);
         ksession.setDeployConfigs(Boolean.FALSE);
         ksession.setOldServer(s);
         ksession.setNewServer(s);

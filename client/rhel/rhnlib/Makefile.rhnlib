@@ -25,7 +25,7 @@ all:	build
 
 setup.py: setup.py.in $(VERFILE)
 	@sed -e 's/@VERSION@/$(VERSION)/' -e 's/@NAME@/$(NAME)/' $< > $@
-	
+
 setup.cfg: setup.cfg.in $(VERFILE)
 	@sed 's/@RELEASE@/$(RELEASE)/' $< > $@
 

@@ -195,25 +195,24 @@ public class ProvisionVirtualizationWizardAction extends ScheduleKickstartWizard
         //If the virt options are overridden use them, otherwise use
         // The profile's values
         if (!StringUtils.isEmpty(form.getString(MEMORY_ALLOCATION))) {
-            cmd.setMemoryAllocation(new Long(form.getString(MEMORY_ALLOCATION)));
+            cmd.setMemoryAllocation(Long.valueOf(form.getString(MEMORY_ALLOCATION)));
         }
         else {
-            cmd.setMemoryAllocation(new Long(this.getCobblerProfile(ctx).getVirtRam()));
+            cmd.setMemoryAllocation((long) this.getCobblerProfile(ctx).getVirtRam());
         }
 
         if (!StringUtils.isEmpty(form.getString(VIRTUAL_CPUS))) {
-            cmd.setVirtualCpus(new Long(form.getString(VIRTUAL_CPUS)));
+            cmd.setVirtualCpus(Long.valueOf(form.getString(VIRTUAL_CPUS)));
         }
         else {
-            cmd.setVirtualCpus(new Long(this.getCobblerProfile(ctx).getVirtCpus()));
+            cmd.setVirtualCpus((long) this.getCobblerProfile(ctx).getVirtCpus());
         }
 
         if (!StringUtils.isEmpty(form.getString(LOCAL_STORAGE_GB))) {
-            cmd.setLocalStorageSize(new Long(form.getString(LOCAL_STORAGE_GB)));
+            cmd.setLocalStorageSize(Long.valueOf(form.getString(LOCAL_STORAGE_GB)));
         }
         else {
-            cmd.setLocalStorageSize(new Long(
-                    this.getCobblerProfile(ctx).getVirtFileSize()));
+            cmd.setLocalStorageSize((long) this.getCobblerProfile(ctx).getVirtFileSize());
         }
 
         if (!StringUtils.isEmpty(form.getString(VIRTUAL_BRIDGE))) {

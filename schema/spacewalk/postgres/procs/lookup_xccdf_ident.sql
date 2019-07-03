@@ -26,35 +26,23 @@ begin
       into ident_sys_id
       from rhnXccdfIdentSystem
      where system = system_in;
+
     if not found then
-        ident_sys_id := nextval('rhn_xccdf_identsytem_id_seq');
-
-        insert into rhnXccdfIdentSystem (id, system)
-            values (ident_sys_id, system_in)
-            on conflict do nothing;
-
-        select id
-            into strict ident_sys_id
-            from rhnXccdfIdentSystem
-            where system = system_in;
+        -- HACK: insert is isolated in own function in order to be able to declare this function immutable
+        -- Postgres optimizes immutable functions calls but those are compatible with the contract of lookup_\*
+        -- see https://www.postgresql.org/docs/9.6/xfunc-volatility.html
+        ident_sys_id := insert_xccdf_ident_system(system_in);
     end if;
 
     select id
       into xccdf_ident_id
       from rhnXccdfIdent
      where identsystem_id = ident_sys_id and identifier = identifier_in;
+
     if not found then
-        xccdf_ident_id := nextval('rhn_xccdf_ident_id_seq');
-
-        insert into rhnXccdfIdent (id, identsystem_id, identifier)
-            values (xccdf_ident_id, ident_sys_id, identifier_in)
-            on conflict do nothing;
-
-        select id
-            into strict xccdf_ident_id
-            from rhnXccdfIdent
-            where identsystem_id = ident_sys_id and identifier = identifier_in;
+        return insert_xccdf_ident(ident_sys_id, identifier_in);
     end if;
+
     return xccdf_ident_id;
 end;
-$$ language plpgsql;
+$$ language plpgsql immutable;

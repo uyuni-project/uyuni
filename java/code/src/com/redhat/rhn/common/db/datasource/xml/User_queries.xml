@@ -270,7 +270,7 @@ SELECT system_group_id
       AND NOT EXISTS (SELECT 1
                       FROM rhnUserServerGroupPerms usgp
                       WHERE usgp.user_id = :user_id
-                        AND usgp.server_group_id IN (%s));
+                        AND usgp.server_group_id IN (%s))
   </query>
 </write-mode>
 
@@ -283,7 +283,7 @@ SELECT system_group_id
                       FROM rhnServerGroup sg, web_contact u
                       WHERE u.id = :user_id
                         AND sg.id IN (%s)
-                        AND sg.org_id != u.org_id);
+                        AND sg.org_id != u.org_id)
   </query>
 </write-mode>
 

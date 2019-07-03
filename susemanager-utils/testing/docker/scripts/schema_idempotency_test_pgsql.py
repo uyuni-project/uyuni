@@ -5,6 +5,7 @@ import distutils.version as DV
 import glob
 import json
 import os
+import os.path
 import re
 import shutil
 import subprocess
@@ -86,8 +87,10 @@ def create_fake_migration_path(schema_path, new_version, pr_file=None, version=N
     print("Creating: " + fake_path)
     os.mkdir(fake_path)
     for migration_file in files:
-        print("Copying %s to %s.." %(migration_file, fake_path))
-        shutil.copy(migration_file, fake_path)
+        m = re.search('susemanager-schema-\d+\.\d+[\d|.]*-to-susemanager-schema-(\d+\.\d+[\d|.]*)', migration_file)
+        dest_file = os.path.join(fake_path, "%s-%s" %(m.group(1), os.path.basename(migration_file)))
+        print("Copying %s to %s..." %(migration_file, dest_file))
+        shutil.copy(migration_file, dest_file)
 
 
 def run_command(command):
@@ -156,7 +159,7 @@ def diff_dumps(initial_dump, migrated_dump):
     """ Perform a diff of two database dumps """
     file_initial = open(initial_dump)
     file_migrated = open(migrated_dump)
-    return difflib.context_diff(file_initial.readlines(), file_migrated.readlines())
+    return difflib.unified_diff(file_initial.readlines(), file_migrated.readlines())
 
 
 def argparser():

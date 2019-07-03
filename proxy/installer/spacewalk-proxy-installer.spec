@@ -1,7 +1,7 @@
 #
 # spec file for package spacewalk-proxy-installer
 #
-# Copyright (c) 2018 SUSE LINUX GmbH, Nuernberg, Germany.
+# Copyright (c) 2019 SUSE LINUX GmbH, Nuernberg, Germany.
 # Copyright (c) 2008-2018 Red Hat, Inc.
 #
 # All modifications and additions to the file contributed by third parties
@@ -13,7 +13,7 @@
 # license that conforms to the Open Source Definition (Version 1.9)
 # published by the Open Source Initiative.
 
-# Please submit bugfixes or comments via http://bugs.opensuse.org/
+# Please submit bugfixes or comments via https://bugs.opensuse.org/
 #
 
 
@@ -21,6 +21,8 @@
 %if 0%{?fedora} || 0%{?rhel} >= 7
 %{!?pylint_check: %global pylint_check 1}
 %endif
+
+%define apacheconfdir %{_sysconfdir}/apache2
 
 %if 0%{?suse_version} > 1320 || 0%{?fedora}
 # SLE15 and Fedora builds on Python 3
@@ -32,9 +34,9 @@ Name:           spacewalk-proxy-installer
 Summary:        Spacewalk Proxy Server Installer
 License:        GPL-2.0-only
 Group:          Applications/Internet
-Version:        4.0.6
+Version:        4.0.10
 Release:        1%{?dist}
-URL:            https://github.com/uyuni-project/uyuni
+Url:            https://github.com/uyuni-project/uyuni
 Source0:        https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildArch:      noarch
@@ -108,6 +110,9 @@ if [ -f /etc/sysconfig/apache2 ]; then
     sysconf_addword /etc/sysconfig/apache2 APACHE_MODULES proxy_http
 fi
 sed -i -e"s/^range_offset_limit -1 KB/range_offset_limit none/" /etc/squid/squid.conf
+if [ -f %{apacheconfdir}/conf.d/cobbler-proxy.conf ]; then
+    sed -i -e "s;download//cobbler_api;download/cobbler_api;g" %{apacheconfdir}/conf.d/cobbler-proxy.conf
+fi
 %endif
 
 %install

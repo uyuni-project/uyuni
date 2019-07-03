@@ -1,4 +1,17 @@
 -------------------------------------------------------------------
+Wed May 15 15:30:55 CEST 2019 - jgonzalez@suse.com
+
+- version 4.0.4-1
+- SPEC cleanup
+
+-------------------------------------------------------------------
+Mon Apr 22 12:21:00 CEST 2019 - jgonzalez@suse.com
+
+- version 4.0.3-1
+- remove outdated firstboot and firewall configuration
+- update EULA for SUSE Manager 4.0
+
+-------------------------------------------------------------------
 Fri Oct 26 10:51:08 CEST 2018 - jgonzalez@suse.com
 
 - version 4.0.2-1

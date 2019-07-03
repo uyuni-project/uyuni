@@ -1,3 +1,20 @@
+- Fix build for openSUSE Leap 15.1
+
+-------------------------------------------------------------------
+Wed May 15 15:36:43 CEST 2019 - jgonzalez@suse.com
+
+- version 4.0.5-1
+- SPEC cleanup
+- Fixes import error for sync_post_tftpd_proxies and
+  MultipartPostHandler. Replacing usage of mimetools, which is
+  Python2 only. (bsc#1134450)
+
+-------------------------------------------------------------------
+Mon Apr 22 12:27:16 CEST 2019 - jgonzalez@suse.com
+
+- version 4.0.4-1
+- Add makefile and pylintrc for PyLint
+
 -------------------------------------------------------------------
 Mon Dec 17 14:47:04 CET 2018 - jgonzalez@suse.com
 

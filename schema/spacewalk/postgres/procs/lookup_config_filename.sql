@@ -26,18 +26,12 @@ begin
      where path = name_in;
 
     if not found then
-        name_id := nextval('rhn_cfname_id_seq');
-
-        insert into rhnConfigFileName (id, path)
-            values (name_id, name_in)
-            on conflict do nothing;
-
-        select id
-            into strict name_id
-            from rhnconfigfilename
-            where path = name_in;
+        -- HACK: insert is isolated in own function in order to be able to declare this function immutable
+        -- Postgres optimizes immutable functions calls but those are compatible with the contract of lookup_\*
+        -- see https://www.postgresql.org/docs/9.6/xfunc-volatility.html
+        return insert_config_filename(name_in);
     end if;
 
     return name_id;
 end;
-$$ language plpgsql;
+$$ language plpgsql immutable;

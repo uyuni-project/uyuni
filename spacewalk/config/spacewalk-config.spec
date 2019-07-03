@@ -1,7 +1,7 @@
 #
 # spec file for package spacewalk-config
 #
-# Copyright (c) 2018 SUSE LINUX GmbH, Nuernberg, Germany.
+# Copyright (c) 2019 SUSE LINUX GmbH, Nuernberg, Germany.
 # Copyright (c) 2008-2018 Red Hat, Inc.
 #
 # All modifications and additions to the file contributed by third parties
@@ -13,7 +13,7 @@
 # license that conforms to the Open Source Definition (Version 1.9)
 # published by the Open Source Initiative.
 
-# Please submit bugfixes or comments via http://bugs.opensuse.org/
+# Please submit bugfixes or comments via https://bugs.opensuse.org/
 #
 
 
@@ -33,9 +33,9 @@ Name:           spacewalk-config
 Summary:        Spacewalk Configuration
 License:        GPL-2.0-only
 Group:          Applications/System
-Version:        4.0.4
+Version:        4.0.9
 Release:        1%{?dist}
-URL:            https://github.com/uyuni-project/uyuni
+Url:            https://github.com/uyuni-project/uyuni
 Source0:        https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildArch:      noarch
@@ -104,8 +104,8 @@ ln -sf  %{apacheconfdir}/conf/ssl.crt/server.crt $RPM_BUILD_ROOT/etc/pki/tls/cer
 %files
 %defattr(-,root,root,-)
 %attr(400,root,root) %config(noreplace) %{_sysconfdir}/rhn/spacewalk-repo-sync/uln.conf
-%config(noreplace) %{apacheconfdir}/conf.d/zz-spacewalk-www.conf
-%config(noreplace) %{apacheconfdir}/conf.d/os-images.conf
+%config %{apacheconfdir}/conf.d/zz-spacewalk-www.conf
+%config %{apacheconfdir}/conf.d/os-images.conf
 %config(noreplace) %{_sysconfdir}/webapp-keyring.gpg
 %attr(440,root,root) %config %{_sysconfdir}/sudoers.d/spacewalk
 %dir %{_var}/lib/cobbler/
@@ -115,7 +115,7 @@ ln -sf  %{apacheconfdir}/conf/ssl.crt/server.crt $RPM_BUILD_ROOT/etc/pki/tls/cer
 %config(noreplace) %{_var}/lib/cobbler/kickstarts/spacewalk-sample.ks
 %config(noreplace) %{_var}/lib/cobbler/snippets/spacewalk_file_preservation
 %attr(0750,root,%{apache_group}) %dir %{_sysconfdir}/rhn
-%attr(0640,root,%{apache_group}) %config(missingok,noreplace) %verify(not md5 size mtime) %{_sysconfdir}/rhn/rhn.conf
+%attr(0640,root,%{apache_group}) %config(noreplace) %{_sysconfdir}/rhn/rhn.conf
 %attr(644,root,%{apache_group}) %{rhnconfigdefaults}/rhn_audit.conf
 %attr(0750,root,%{apache_group}) %dir %{_sysconfdir}/rhn/candlepin-certs
 %config %attr(644, root, root) %{_sysconfdir}/rhn/candlepin-certs/candlepin-redhat-ca.crt
@@ -161,7 +161,6 @@ chmod o-rwx /etc/rhn/rhn.conf* /etc/sysconfig/rhn/backup-* /var/lib/rhn/rhn-sate
 %post
 %if 0%{?suse_version}
 sysconf_addword /etc/sysconfig/apache2 APACHE_MODULES version
-sysconf_addword /etc/sysconfig/apache2 APACHE_MODULES access_compat
 sysconf_addword /etc/sysconfig/apache2 APACHE_MODULES proxy
 sysconf_addword /etc/sysconfig/apache2 APACHE_MODULES proxy_ajp
 sysconf_addword /etc/sysconfig/apache2 APACHE_MODULES proxy_wstunnel
@@ -170,6 +169,7 @@ sysconf_addword /etc/sysconfig/apache2 APACHE_MODULES headers
 sysconf_addword /etc/sysconfig/apache2 APACHE_MODULES xsendfile
 sysconf_addword /etc/sysconfig/apache2 APACHE_SERVER_FLAGS SSL
 sysconf_addword /etc/sysconfig/apache2 APACHE_SERVER_FLAGS ISSUSE
+sysconf_addword -r /etc/sysconfig/apache2 APACHE_MODULES access_compat
 %endif
 if [ -e %{apacheconfdir}/ssl.key/spacewalk.key ]; then
   ln -s spacewalk.key %{apacheconfdir}/ssl.key/server.key

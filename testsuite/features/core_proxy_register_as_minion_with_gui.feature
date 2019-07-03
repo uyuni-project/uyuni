@@ -1,4 +1,4 @@
-# Copyright (c) 2017-2018 SUSE LLC
+# Copyright (c) 2017-2019 SUSE LLC
 # Licensed under the terms of the MIT license.
 #
 # The scenarios in this feature are skipped if there is no proxy
@@ -42,3 +42,8 @@ Feature: Setup SUSE Manager proxy
     Then I should see "proxy" hostname
     # TODO: uncomment when SCC product becomes available
     # And I wait until I see "$PRODUCT Proxy" text, refreshing the page
+
+@proxy
+  Scenario: Check events history for failures on the proxy
+    Given I am on the Systems overview page of this "proxy"
+    Then I check for failed events on history event page

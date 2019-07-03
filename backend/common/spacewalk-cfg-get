@@ -15,9 +15,9 @@ elif len(sys.argv) == 2:
     comp = ''
     key = sys.argv[1]
 else:
-    print "Usage: spacewalk-cfg-get list COMPONENT"
-    print "       spacewalk-cfg-get get COMPONENT KEY"
-    print "       spacewalk-cfg-get KEY"
+    print("Usage: spacewalk-cfg-get list COMPONENT")
+    print("       spacewalk-cfg-get get COMPONENT KEY")
+    print("       spacewalk-cfg-get KEY")
     sys.exit(1)
 
 cfg = RHNOptions(comp)
@@ -29,6 +29,6 @@ else:
     val = cfg.get(key)
     if isinstance(val, list):
         for i in val:
-            print i
+            print(i)
     elif val != None:
-        print val
+        print(val)

@@ -58,7 +58,7 @@ public class ConfigureSatelliteCommandTest extends BaseTestCaseWithUser {
         assertNotNull(cmd.getUser());
         boolean origValue = Config.get().getBoolean(TEST_CONFIG_BOOLEAN);
         String testString = "somevalue" + TestUtils.randomString();
-        cmd.updateBoolean(TEST_CONFIG_BOOLEAN, new Boolean(!origValue));
+        cmd.updateBoolean(TEST_CONFIG_BOOLEAN, !origValue);
         cmd.updateString(TEST_CONFIG_STRING, testString);
         cmd.updateString(TEST_CONFIG_NULL, "");
         assertEquals(3, cmd.getKeysToBeUpdated().size());
@@ -80,7 +80,7 @@ public class ConfigureSatelliteCommandTest extends BaseTestCaseWithUser {
         assertNull(cmd.storeConfiguration());
         assertTrue(cmd.getKeysToBeUpdated().size() == 0);
         // Test setting back to the original value
-        cmd.updateBoolean(TEST_CONFIG_BOOLEAN, new Boolean(origValue));
+        cmd.updateBoolean(TEST_CONFIG_BOOLEAN, origValue);
         assertEquals(1, cmd.getKeysToBeUpdated().size());
         assertNull(cmd.storeConfiguration());
         // Test NULL booleans

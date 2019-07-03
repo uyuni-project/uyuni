@@ -1,8 +1,9 @@
 VERSION = 4.0.0
 REGISTRY = registry.mgr.suse.de
 SHELL := /bin/bash
-# --no-cache=true
 BUILDOPTS=
+#--no-cache=true
+PUSH_IT=false
 
 all: uyuni-master-root uyuni-master-base uyuni-master-cobbler uyuni-master-gatherer uyuni-master-spacewalkkoan uyuni-master-pgsql uyuni-master-pgsql-4eclipse uyuni-master-nodejs uyuni-push-to-obs
 
@@ -15,8 +16,8 @@ uyuni-master-root::
 	docker tag $@ $@:$(VERSION); \
 	docker tag $@ $(REGISTRY)/$@:latest; \
 	docker tag $@:$(VERSION) $(REGISTRY)/$@:$(VERSION); \
-	docker push $(REGISTRY)/$@:latest ; \
-	docker push $(REGISTRY)/$@:$(VERSION); \
+	$(PUSH_IT) && docker push $(REGISTRY)/$@:latest ; \
+	$(PUSH_IT) && docker push $(REGISTRY)/$@:$(VERSION); \
 	popd
 
 uyuni-master-base::
@@ -28,8 +29,8 @@ uyuni-master-base::
 	docker tag $@ $@:$(VERSION); \
 	docker tag $@ $(REGISTRY)/$@:latest; \
 	docker tag $@:$(VERSION) $(REGISTRY)/$@:$(VERSION); \
-	docker push $(REGISTRY)/$@:latest ; \
-	docker push $(REGISTRY)/$@:$(VERSION); \
+	$(PUSH_IT) && docker push $(REGISTRY)/$@:latest ; \
+	$(PUSH_IT) && docker push $(REGISTRY)/$@:$(VERSION); \
 	popd
 
 uyuni-master-cobbler::
@@ -41,8 +42,8 @@ uyuni-master-cobbler::
 	docker tag $@ $@:$(VERSION); \
 	docker tag $@ $(REGISTRY)/$@:latest; \
 	docker tag $@:$(VERSION) $(REGISTRY)/$@:$(VERSION); \
-	docker push $(REGISTRY)/$@:latest ; \
-	docker push $(REGISTRY)/$@:$(VERSION); \
+	$(PUSH_IT) && docker push $(REGISTRY)/$@:latest ; \
+	$(PUSH_IT) && docker push $(REGISTRY)/$@:$(VERSION); \
 	popd
 
 uyuni-master-gatherer::
@@ -54,8 +55,8 @@ uyuni-master-gatherer::
 	docker tag $@ $@:$(VERSION); \
 	docker tag $@ $(REGISTRY)/$@:latest; \
 	docker tag $@:$(VERSION) $(REGISTRY)/$@:$(VERSION); \
-	docker push $(REGISTRY)/$@:latest ; \
-	docker push $(REGISTRY)/$@:$(VERSION); \
+	$(PUSH_IT) && docker push $(REGISTRY)/$@:latest ; \
+	$(PUSH_IT) && docker push $(REGISTRY)/$@:$(VERSION); \
 	popd
 
 uyuni-master-spacewalkkoan::
@@ -67,8 +68,8 @@ uyuni-master-spacewalkkoan::
 	docker tag $@ $@:$(VERSION); \
 	docker tag $@ $(REGISTRY)/$@:latest; \
 	docker tag $@:$(VERSION) $(REGISTRY)/$@:$(VERSION); \
-	docker push $(REGISTRY)/$@:latest ; \
-	docker push $(REGISTRY)/$@:$(VERSION); \
+	$(PUSH_IT) && docker push $(REGISTRY)/$@:latest ; \
+	$(PUSH_IT) && docker push $(REGISTRY)/$@:$(VERSION); \
 	popd
 
 uyuni-master-pgsql::
@@ -80,8 +81,8 @@ uyuni-master-pgsql::
 	docker tag $@ $@:$(VERSION); \
 	docker tag $@ $(REGISTRY)/$@:latest; \
 	docker tag $@:$(VERSION) $(REGISTRY)/$@:$(VERSION); \
-	docker push $(REGISTRY)/$@:latest ; \
-	docker push $(REGISTRY)/$@:$(VERSION); \
+	$(PUSH_IT) && docker push $(REGISTRY)/$@:latest ; \
+	$(PUSH_IT) && docker push $(REGISTRY)/$@:$(VERSION); \
 	popd
 
 uyuni-master-pgsql-4eclipse::
@@ -93,8 +94,8 @@ uyuni-master-pgsql-4eclipse::
 	docker tag $@ $@:$(VERSION); \
 	docker tag $@ $(REGISTRY)/$@:latest; \
 	docker tag $@:$(VERSION) $(REGISTRY)/$@:$(VERSION); \
-	docker push $(REGISTRY)/$@:latest ; \
-	docker push $(REGISTRY)/$@:$(VERSION); \
+	$(PUSH_IT) && docker push $(REGISTRY)/$@:latest ; \
+	$(PUSH_IT) && docker push $(REGISTRY)/$@:$(VERSION); \
 	popd
 
 uyuni-master-nodejs::
@@ -106,8 +107,8 @@ uyuni-master-nodejs::
 	docker tag $@ $@:$(VERSION); \
 	docker tag $@ $(REGISTRY)/$@:latest; \
 	docker tag $@:$(VERSION) $(REGISTRY)/$@:$(VERSION); \
-	docker push $(REGISTRY)/$@:latest ; \
-	docker push $(REGISTRY)/$@:$(VERSION); \
+	$(PUSH_IT) && docker push $(REGISTRY)/$@:latest ; \
+	$(PUSH_IT) && docker push $(REGISTRY)/$@:$(VERSION); \
 	popd
 
 uyuni-push-to-obs::
@@ -119,6 +120,6 @@ uyuni-push-to-obs::
 	docker tag $@ $@:$(VERSION); \
 	docker tag $@ $(REGISTRY)/$@:latest; \
 	docker tag $@:$(VERSION) $(REGISTRY)/$@:$(VERSION); \
-	docker push $(REGISTRY)/$@:latest ; \
-	docker push $(REGISTRY)/$@:$(VERSION); \
+	$(PUSH_IT) && docker push $(REGISTRY)/$@:latest ; \
+	$(PUSH_IT) && docker push $(REGISTRY)/$@:$(VERSION); \
 	popd

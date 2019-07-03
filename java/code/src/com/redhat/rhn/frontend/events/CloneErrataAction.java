@@ -45,8 +45,6 @@ public class CloneErrataAction implements MessageAction {
      * {@inheritDoc}
      */
     public void execute(EventMessage msgIn) {
-
-
         CloneErrataEvent msg = (CloneErrataEvent) msgIn;
         Channel currChan = msg.getChan();
         if (currChan == null) {
@@ -61,7 +59,6 @@ public class CloneErrataAction implements MessageAction {
         ChannelFactory.lock(currChan);
 
         for (Long eid : list) {
-
             Errata errata = ErrataFactory.lookupById(eid);
             // we merge custom errata directly (non Redhat and cloned)
             if (errata.getOrg() != null) {
@@ -73,8 +70,7 @@ public class CloneErrataAction implements MessageAction {
                 Set<Channel> channelSet = new HashSet<Channel>();
                 channelSet.add(currChan);
 
-                List<Errata> clones = ErrataManager.lookupPublishedByOriginal(
-                                                                msg.getUser(), errata);
+                List<Errata> clones = ErrataManager.lookupPublishedByOriginal(msg.getUser(), errata);
                 if (clones.size() == 0) {
                     log.debug("Cloning errata");
                     Errata published = PublishErrataHelper.cloneErrataFast(errata,
@@ -87,12 +83,10 @@ public class CloneErrataAction implements MessageAction {
                     log.debug("Re-publishing clone");
                     ErrataManager.publish(clones.get(0), cids, msg.getUser());
                 }
-
-
             }
         }
         // Trigger channel repodata re-generation
-        if (list.size() > 0) {
+        if (list.size() > 0 && msg.isRequestRepodataRegen()) {
             currChan.setLastModified(new Date());
             ChannelFactory.save(currChan);
             ChannelManager.queueChannelChange(currChan.getLabel(),

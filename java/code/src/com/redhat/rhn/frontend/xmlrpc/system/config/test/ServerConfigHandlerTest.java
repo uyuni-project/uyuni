@@ -19,7 +19,6 @@ import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.validator.ValidatorException;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
-import com.redhat.rhn.domain.action.channel.SubscribeChannelsAction;
 import com.redhat.rhn.domain.action.config.ConfigAction;
 import com.redhat.rhn.domain.action.config.ConfigRevisionAction;
 import com.redhat.rhn.domain.action.salt.ApplyStatesAction;
@@ -35,11 +34,9 @@ import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
 import com.redhat.rhn.domain.server.test.ServerFactoryTest;
-import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.dto.ConfigFileNameDto;
 import com.redhat.rhn.frontend.dto.ScheduledAction;
 import com.redhat.rhn.frontend.xmlrpc.serializer.ConfigRevisionSerializer;
-import com.redhat.rhn.frontend.xmlrpc.system.SystemHandler;
 import com.redhat.rhn.frontend.xmlrpc.system.config.ServerConfigHandler;
 import com.redhat.rhn.frontend.xmlrpc.test.BaseHandlerTestCase;
 import com.redhat.rhn.manager.action.ActionManager;
@@ -308,7 +305,7 @@ public class ServerConfigHandlerTest extends BaseHandlerTestCase {
         paths.add("/no/such/file.txt");
 
         // Should not throw a NullPointerException (anymore):
-        handler.lookupFileInfo(admin, new Integer(srv1.getId().intValue()),
+        handler.lookupFileInfo(admin, srv1.getId().intValue(),
                 paths, true);
     }
 
