@@ -402,3 +402,16 @@ class TestSCUtils:
 
         assert_expect(mprint.call_args_list,
                       'CVE-12345-678   Sometimes synopsis has a long text here. Sometimes       N/A')
+
+    def test_print_errata_list_no_errata(self):
+        """
+        Test print errata list without errata data.
+
+        :return:
+        """
+        errata = []
+        mprint = MagicMock()
+        with patch("spacecmd.utils.print", mprint) as prt:
+            spacecmd.utils.print_errata_list(errata=errata)
+
+        assert not mprint.called
