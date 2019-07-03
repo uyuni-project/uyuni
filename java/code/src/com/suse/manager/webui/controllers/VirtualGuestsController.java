@@ -156,6 +156,7 @@ public class VirtualGuestsController {
 
         /* For the rest of the template */
         data.put("salt_entitled", server.hasEntitlement(EntitlementManager.SALT));
+        data.put("foreign_entitled", server.hasEntitlement(EntitlementManager.FOREIGN));
         data.put("is_admin", user.hasRole(RoleFactory.ORG_ADMIN));
 
         return new ModelAndView(data, "templates/virtualization/guests/show.jade");
@@ -596,6 +597,10 @@ public class VirtualGuestsController {
                                              ActionType actionType,
                                              User user,
                                              Map<String, String> context) {
+        if (host.hasEntitlement(EntitlementManager.FOREIGN)) {
+            LOG.warn("Foreign systems don't support virtual guest actions");
+            return null;
+        }
         // Traditionally registered systems aren't able to really delete the VM: fail
         // the delete action for them
         if (host.hasEntitlement(EntitlementManager.MANAGEMENT) &&

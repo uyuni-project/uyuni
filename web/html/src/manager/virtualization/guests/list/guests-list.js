@@ -25,6 +25,7 @@ type Props = {
   serverId: string,
   refreshInterval: number,
   saltEntitled: boolean,
+  foreignEntitled: boolean,
   isAdmin: boolean,
 };
 
@@ -226,6 +227,7 @@ class GuestsList extends React.Component<Props, State> {
                 type: 'delete', name: t('Delete'), icon: 'fa-trash', bulkonly: false,
               },
             ];
+            const isActionVisible = (action, props) => !props.foreignEntitled && (action.type !== 'delete' || props.saltEntitled);
             const panelButtons = (
               <div className="pull-right btn-group">
                 {this.props.saltEntitled
@@ -239,7 +241,7 @@ class GuestsList extends React.Component<Props, State> {
                   />)
                 }
                 {modalsData
-                  .filter(action => action.type !== 'delete' || this.props.saltEntitled)
+                  .filter(action => isActionVisible(action, this.props))
                   .map(action => this.createSelectedModalButton(action))}
               </div>);
 
@@ -362,8 +364,9 @@ class GuestsList extends React.Component<Props, State> {
                             }
                             return '-';
                           }}
-                        />)}
-                        <Column
+                            />)}
+                        {!this.props.foreignEntitled &&
+                         (<Column
                           header={t('Actions')}
                           columnClass="text-right"
                           headerClass="text-right"
@@ -404,11 +407,12 @@ class GuestsList extends React.Component<Props, State> {
                               </div>
                             );
                           }}
-                        />
+                          />)
+                        }
                       </Table>
 
                       {modalsData
-                        .filter(action => action.type !== 'delete' || this.props.saltEntitled)
+                        .filter(action => isActionVisible(action, this.props))
                         .map(action => this.createConfirmModal(action, onAction).map(modal => modal))}
                     </div>
                   )
