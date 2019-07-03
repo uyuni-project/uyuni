@@ -1,3 +1,6 @@
+- Fix obsolete for old osad packages, to allow installing mgr-osad
+  even by using osad at yum/zyppper install (bsc#1139453)
+
 -------------------------------------------------------------------
 Wed May 15 20:07:58 CEST 2019 - jgonzalez@suse.com
 
