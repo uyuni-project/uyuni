@@ -421,7 +421,7 @@ def print_errata_summary(erratum):
     if erratum.get('date') is None:
         erratum['date'] = erratum.get('issue_date')
     if erratum['date'] is None:
-        erratum['date'] = "no_date"
+        erratum['date'] = "N/A"
     date_parts = erratum['date'].split()
 
     if len(date_parts) > 1:
