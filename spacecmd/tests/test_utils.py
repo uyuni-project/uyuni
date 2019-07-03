@@ -494,3 +494,14 @@ class TestSCUtils:
         assert spacecmd.utils.parse_str("ABC1234567") == "ABC1234567"
         assert spacecmd.utils.parse_str('{"foo": "bar"}') == {"foo": "bar"}
         assert spacecmd.utils.parse_str('{"number": 123}') == {"number": 123}
+
+    def test_parse_list_str(self):
+        """
+        Test parsing list string utility function
+        :return:
+        """
+
+        assert spacecmd.utils.parse_list_str("") == []
+        assert spacecmd.utils.parse_list_str("a,b") == ["a", "b"]
+        assert spacecmd.utils.parse_list_str("a,b,") == ["a", "b"]
+        assert spacecmd.utils.parse_list_str("a:b:", ":") == ["a", "b"]
