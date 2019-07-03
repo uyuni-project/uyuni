@@ -372,3 +372,18 @@ class TestSCUtils:
                                                   "release": "13", "epoch": "2",
                                                   "arch": "amd64", "arch_label": "amd"})
         assert out == "emacs-42-13:2.x86_64"
+
+    def test_print_errata_summary_no_date_key(self):
+        """
+        Print errata summary. No "date" key.
+
+        :return:
+        """
+        erratum = {"issue_date": "2019.01.15", "advisory_name": "CVE-12345-678",
+                   "advisory_synopsis": "Sometimes synopsis has a long text here. " * 5}
+        mprint = MagicMock()
+        with patch("spacecmd.utils.print", mprint) as prt:
+            spacecmd.utils.print_errata_summary(erratum=erratum)
+
+        assert_expect(mprint.call_args_list,
+                      'CVE-12345-678   Sometimes synopsis has a long text here. Sometimes  2019.01.15')
