@@ -446,3 +446,16 @@ class TestSCUtils:
                                  'CVE-123-4567    text here text here text here text here '
                                  'text here   2019.01.15']
                                 )
+
+    def test_max_length(self):
+        """
+        Test find the longest string in a list.
+
+        :return:
+        """
+        items = [
+            "The POP server is out of Coke",
+            "User to computer ratio is too low",
+            "This is an undocumented feature"
+        ]
+        assert spacecmd.utils.max_length(items=items) == 33
