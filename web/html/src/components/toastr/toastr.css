@@ -36,6 +36,7 @@
     background-color: #f2dede !important;
     border-color: #ebccd1 !important;
     background-image: none !important;
+    opacity: 1 !important;
 }
 
 :global(.toast-error .toast-message:after) {
