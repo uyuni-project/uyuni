@@ -1,3 +1,4 @@
+- Allow virtualization tab for foreign systems (bsc#1116869)
 - Allow forcing off or resetting VMs
 - Fix VM creation dialog with non-default pools and networks (bsc#1138268)
 - Add checks for empty required entries on formula forms (bsc#1109639)
