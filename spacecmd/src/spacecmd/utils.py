@@ -573,11 +573,14 @@ def max_length(items, minimum=0):
 
 # read in a file
 def read_file(filename):
-    handle = open(filename, 'r')
-    contents = handle.read()
-    handle.close()
+    """
+    Read file.
 
-    return contents
+    :param filename:
+    :return:
+    """
+    with open(filename, "r") as fhd:
+        return fhd.read()
 
 
 def parse_str(s, type_to=None):
