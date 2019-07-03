@@ -1,4 +1,5 @@
 - Fallback to logged-in-user org and then vendor errata when looking up erratum on cloning (bsc#1137308)
+- Add new validation to avoid creating content lifecycle projects starting with a number (bsc#1139493)
 - Improve performance of 'Systems requiring reboot' page (fate#327780)
 - Allow virtualization tab for foreign systems (bsc#1116869)
 - Keep querystring on ListTag parent_url for actions that have the cid param (bsc#1134677)
