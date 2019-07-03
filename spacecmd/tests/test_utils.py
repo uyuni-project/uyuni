@@ -468,3 +468,17 @@ class TestSCUtils:
         :return:
         """
         assert spacecmd.utils.list_locales() == []
+
+    @patch("spacecmd.utils.os.path.isdir", MagicMock(return_value=True))
+    @patch("spacecmd.utils.os.listdir", MagicMock(side_effect=[["Europe"], ["Berlin", "London"]]))
+    def test_list_locales_no_data(self):
+        """
+        Test locale list when no data (no directory found).
+
+        :return:
+        """
+        logger = MagicMock()
+        with patch("spacecmd.utils.logging", logger) as lgr:
+            out = spacecmd.utils.list_locales()
+
+        assert out == ['Europe/Berlin', 'Europe/London']
