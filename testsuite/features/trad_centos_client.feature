@@ -112,7 +112,7 @@ Feature: Be able to register a CentOS 7 traditional client and do some basic ope
     And I enter "linux" as "password"
     And I select the hostname of the proxy from "proxies"
     And I click on "Bootstrap"
-    Then I wait until I see "Successfully bootstrapped host! " text
+    And I wait until I see "Successfully bootstrapped host!" text
     And I navigate to "rhn/systems/Overview.do" page
     And I wait until I see the name of "ceos-ssh-minion", refreshing the page
     And I wait until onboarding is completed for "ceos-ssh-minion"

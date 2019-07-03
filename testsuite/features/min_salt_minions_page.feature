@@ -79,7 +79,7 @@ Feature: Management of minion keys
     And I enter "linux" as "password"
     And I select the hostname of the proxy from "proxies"
     And I click on "Bootstrap"
-    And I wait until I see "Successfully bootstrapped host! " text
+    And I wait until I see "Successfully bootstrapped host!" text
     And I wait until onboarding is completed for "sle-minion"
 
   Scenario: Cleanup: restore channels on the minion
