@@ -505,3 +505,21 @@ class TestSCUtils:
         assert spacecmd.utils.parse_list_str("a,b") == ["a", "b"]
         assert spacecmd.utils.parse_list_str("a,b,") == ["a", "b"]
         assert spacecmd.utils.parse_list_str("a:b:", ":") == ["a", "b"]
+
+    def test_parse_api_args(self):
+        """
+        Test simple json-like expression parser.
+
+        :return:
+        """
+        assert spacecmd.utils.parse_api_args('{"channelLabel": "foo-i386-5"}')[0]["channelLabel"] == "foo-i386-5"
+
+        i, s, d = spacecmd.utils.parse_api_args('1234567,abcXYZ012,{"channelLabel": "foo-i386-5"}')
+        assert i == 1234567
+        assert s == "abcXYZ012"
+        assert d["channelLabel"] == "foo-i386-5"
+
+        i, s, d = spacecmd.utils.parse_api_args('[1234567,"abcXYZ012",{"channelLabel": "foo-i386-5"}]')
+        assert i == 1234567
+        assert s == "abcXYZ012"
+        assert d["channelLabel"] == "foo-i386-5"
