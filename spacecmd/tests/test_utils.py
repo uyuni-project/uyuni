@@ -459,3 +459,12 @@ class TestSCUtils:
             "This is an undocumented feature"
         ]
         assert spacecmd.utils.max_length(items=items) == 33
+
+    @patch("spacecmd.utils.os.path.isdir", MagicMock(return_value=False))
+    def test_list_locales_no_data(self):
+        """
+        Test locale list when no data (no directory found).
+
+        :return:
+        """
+        assert spacecmd.utils.list_locales() == []
