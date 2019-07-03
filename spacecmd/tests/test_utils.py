@@ -482,3 +482,15 @@ class TestSCUtils:
             out = spacecmd.utils.list_locales()
 
         assert out == ['Europe/Berlin', 'Europe/London']
+
+    def test_parse_str(self):
+        """
+        Test parsing string utility function.
+
+        :return:
+        """
+        assert spacecmd.utils.parse_str("1234567", int) == 1234567
+        assert spacecmd.utils.parse_str("1234567") == 1234567
+        assert spacecmd.utils.parse_str("ABC1234567") == "ABC1234567"
+        assert spacecmd.utils.parse_str('{"foo": "bar"}') == {"foo": "bar"}
+        assert spacecmd.utils.parse_str('{"number": 123}') == {"number": 123}
