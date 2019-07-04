@@ -218,10 +218,13 @@ class PackageImport(ChannelPackageSubscription):
         self.suseProdfile_data = {}
         self.suseEula_data = {}
 
-    def _rpm_knows(self, tag):
+    def _skip_tag(self, package, tag):
+        # Allow all tags in case of DEB packages
+        if package['arch'] and package['arch'].endswith('deb'):
+            return False
         # See if the installed version of RPM understands a given tag
         # Assumed attr-format in RPM is 'RPMTAG_<UPPERCASETAG>'
-        return hasattr(rpm, 'RPMTAG_'+tag.upper())
+        return not hasattr(rpm, 'RPMTAG_'+tag.upper())
 
     def _processPackage(self, package):
         ChannelPackageSubscription._processPackage(self, package)
@@ -238,7 +241,7 @@ class PackageImport(ChannelPackageSubscription):
         package['copyright'] = self._fix_encoding(package['license'])
 
         for tag in ('recommends', 'suggests', 'supplements', 'enhances', 'breaks', 'predepends'):
-            if not self._rpm_knows(tag) or tag not in package or type(package[tag]) != type([]):
+            if self._skip_tag(package, tag) or tag not in package or type(package[tag]) != type([]):
                 # older spacewalk server do not export weak deps.
                 # and older RPM doesn't know about them either
                 # lets create an empty list
