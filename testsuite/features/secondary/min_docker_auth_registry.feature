@@ -32,9 +32,7 @@ Feature: Build image with authenticated registry
     And I select sle-minion hostname in Build Host
     And I click on "submit-btn"
     Then I wait until I see "portus_profile" text
-
-  Scenario: Verify the status of images in the authenticated image store
-    Given I am authorized as "admin" with password "admin"
+    # Verify the status of images in the authenticated image store
     When I wait at most 500 seconds until container "portus_profile" is built successfully
 
   Scenario: Cleanup: remove Docker profile for the authenticated image store
