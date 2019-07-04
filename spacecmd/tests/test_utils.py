@@ -541,3 +541,22 @@ class TestSCUtils:
         assert out
         assert not logger.error.called
         assert not mprint.called
+
+    def test_json_dump_to_file_ioerror(self):
+        """
+        Test JSON dump to file, handling IOError.
+
+        :return:
+        """
+        filename = "/tmp/something"
+        logger = MagicMock()
+        with patch("spacecmd.utils.open", MagicMock(side_effect=IOError("write-only file system"))) as opn, \
+            patch("spacecmd.utils.logging", logger) as lgr:
+            out = spacecmd.utils.json_dump_to_file(None, filename=filename)
+
+        assert not out
+        assert logger.error.called
+
+        assert_args_expect(logger.error.call_args_list,
+                           [(('Could not open file %s for writing: %s',
+                              '/tmp/something', 'write-only file system'), {})])
