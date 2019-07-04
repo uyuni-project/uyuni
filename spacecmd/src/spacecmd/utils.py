@@ -694,16 +694,18 @@ def json_dump_to_file(obj, filename):
 
 
 def json_read_from_file(filename):
+    data = None
     try:
-        data = open(filename).read()
-        try:
-            jsondata = json.loads(data)
-            return jsondata
-        except ValueError as exc:
-            logging.error("Could not read in data from %s: %s", filename, str(exc))
+        with open(filename) as fhd:
+            data = json.loads(fhd.read())
     except IOError as exc:
         logging.error("Could not open file %s for reading:", filename, str(exc))
-        return None
+    except ValueError as exc:
+        logging.error("Could not parse JSON data from %s: %s", filename, str(exc))
+    except Exception as exc:
+        logging.error("Error processing file %s: %s", filename, str(exc))
+
+    return data
 
 
 def get_string_diff_dicts(string1, string2, sep="-"):
