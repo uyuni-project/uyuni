@@ -36,7 +36,7 @@ Feature: Be able to bootstrap an Ubuntu minion and do some basic operations on i
     And I enter "root" as "user"
     And I enter "linux" as "password"
     And I select "1-UBUNTU-TEST" from "activationKeys"
-#    And I select the hostname of the proxy from "proxies"
+    And I select the hostname of the proxy from "proxies"
     And I click on "Bootstrap"
     And I wait until I see "Successfully bootstrapped host!" text
     And I navigate to "rhn/systems/Overview.do" page
@@ -44,22 +44,21 @@ Feature: Be able to bootstrap an Ubuntu minion and do some basic operations on i
     And I wait until onboarding is completed for "ubuntu-minion"
     And I query latest Salt changes on ubuntu system "ubuntu-minion"
 
-#TODO: Enable again the proxy, and test with it before deliver the feature
-#@proxy
-#@ubuntu_minion
-#  Scenario: Check connection from the Ubuntu minion to proxy
-#    Given I am on the Systems overview page of this "ubuntu-minion"
-#    When I follow "Details" in the content area
-#    And I follow "Connection" in the content area
-#    Then I should see "proxy" hostname
+@proxy
+@ubuntu_minion
+  Scenario: Check connection from the Ubuntu minion to proxy
+    Given I am on the Systems overview page of this "ubuntu-minion"
+    When I follow "Details" in the content area
+    And I follow "Connection" in the content area
+    Then I should see "proxy" hostname
 
-#@proxy
-#@ubuntu_minion
-#  Scenario: Check registration on proxy of the Ubuntu minion
-#    Given I am on the Systems overview page of this "proxy"
-#    When I follow "Details" in the content area
-#    And I follow "Proxy" in the content area
-#    Then I should see "ubuntu-minion" hostname
+@proxy
+@ubuntu_minion
+  Scenario: Check registration on proxy of the Ubuntu minion
+    Given I am on the Systems overview page of this "proxy"
+    When I follow "Details" in the content area
+    And I follow "Proxy" in the content area
+    Then I should see "ubuntu-minion" hostname
 
 @ubuntu_minion
   Scenario: Subscribe the Ubuntu minion to a base channel
