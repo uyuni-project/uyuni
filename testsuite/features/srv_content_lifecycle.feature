@@ -77,6 +77,7 @@ Feature: Content lifecycle
     And I click the environment build button
     Then I wait until I see "Version 1 successfully built into dev_name" text
     And I should see a "Version 1: test version message 1" text
+    And I wait until I see "Built" text
 
   Scenario: Promote promote the sources in the project
     Given I am authorized as "admin" with password "admin"
@@ -123,5 +124,4 @@ Feature: Content lifecycle
     And I follow "clp_name"
     When I click on "Delete"
     Then I click on "Delete" in element "delete-project-modal"
-    Then I wait until I see "Content Lifecycle Projects" text
     And I should see a "There are no entries to show." text
