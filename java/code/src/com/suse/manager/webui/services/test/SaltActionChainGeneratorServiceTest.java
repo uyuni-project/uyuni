@@ -15,7 +15,11 @@
 
 package com.suse.manager.webui.services.test;
 
-import com.google.common.collect.ImmutableMap;
+import static com.suse.manager.webui.services.SaltActionChainGeneratorService.ACTIONCHAIN_SLS_FOLDER;
+import static com.suse.manager.webui.services.SaltActionChainGeneratorService.ACTION_STATE_ID_PREFIX;
+import static java.util.Collections.emptyMap;
+import static java.util.Collections.singletonMap;
+
 import com.redhat.rhn.domain.action.ActionChain;
 import com.redhat.rhn.domain.action.ActionChainFactory;
 import com.redhat.rhn.domain.server.MinionServer;
@@ -24,10 +28,12 @@ import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.TestUtils;
+
 import com.suse.manager.webui.services.SaltActionChainGeneratorService;
 import com.suse.manager.webui.utils.SaltModuleRun;
 import com.suse.manager.webui.utils.SaltState;
 import com.suse.manager.webui.utils.SaltSystemReboot;
+
 import org.apache.commons.io.FileUtils;
 
 import java.io.File;
@@ -35,13 +41,10 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
-
-import static com.suse.manager.webui.services.SaltActionChainGeneratorService.ACTIONCHAIN_SLS_FOLDER;
-import static com.suse.manager.webui.services.SaltActionChainGeneratorService.ACTION_STATE_ID_PREFIX;
-import static java.util.Collections.emptyMap;
-import static java.util.Collections.singletonMap;
+import java.util.TreeMap;
 
 public class SaltActionChainGeneratorServiceTest extends BaseTestCaseWithUser {
 
@@ -62,10 +65,11 @@ public class SaltActionChainGeneratorServiceTest extends BaseTestCaseWithUser {
                 1,
                 singletonMap("mods", "remotecommands"),
                 singletonMap("pillar",
-                        ImmutableMap.<String, String>builder()
-                                .put("mgr_remote_cmd_script", "salt://scripts/script_1.sh")
-                                .put("mgr_remote_cmd_runas", "foobar")
-                                .build()
+                        // Use a TreeMap to keep the keys order or they may break the assert
+                        new TreeMap<String, String>() {{
+                                put("mgr_remote_cmd_script", "salt://scripts/script_1.sh");
+                                put("mgr_remote_cmd_runas", "foobar");
+                        }}
                 )
         ));
         states.add(new SaltModuleRun(
@@ -95,8 +99,8 @@ public class SaltActionChainGeneratorServiceTest extends BaseTestCaseWithUser {
                         "    -   mods: remotecommands\n" +
                         "    -   kwargs:\n" +
                         "            pillar:\n" +
-                        "                mgr_remote_cmd_script: salt://scripts/script_1.sh\n" +
                         "                mgr_remote_cmd_runas: foobar\n" +
+                        "                mgr_remote_cmd_script: salt://scripts/script_1.sh\n" +
                         "mgr_actionchain_131_action_2_chunk_1:\n" +
                         "    module.run:\n" +
                         "    -   name: state.apply\n" +
@@ -128,10 +132,11 @@ public class SaltActionChainGeneratorServiceTest extends BaseTestCaseWithUser {
                 1,
                 singletonMap("mods", "remotecommands"),
                 singletonMap("pillar",
-                        ImmutableMap.<String, String>builder()
-                                .put("mgr_remote_cmd_script", "salt://scripts/script_1.sh")
-                                .put("mgr_remote_cmd_runas", "foobar")
-                                .build()
+                        // Use a TreeMap to keep the keys order or they may break the assert
+                        new TreeMap<String, String>() {{
+                                put("mgr_remote_cmd_script", "salt://scripts/script_1.sh");
+                                put("mgr_remote_cmd_runas", "foobar");
+                        }}
                 )
         ));
         states.add(new SaltSystemReboot(
@@ -166,8 +171,8 @@ public class SaltActionChainGeneratorServiceTest extends BaseTestCaseWithUser {
                         "    -   mods: remotecommands\n" +
                         "    -   kwargs:\n" +
                         "            pillar:\n" +
-                        "                mgr_remote_cmd_script: salt://scripts/script_1.sh\n" +
                         "                mgr_remote_cmd_runas: foobar\n" +
+                        "                mgr_remote_cmd_script: salt://scripts/script_1.sh\n" +
                         "mgr_actionchain_131_action_2_chunk_1:\n" +
                         "    module.run:\n" +
                         "    -   name: system.reboot\n" +
@@ -292,10 +297,10 @@ public class SaltActionChainGeneratorServiceTest extends BaseTestCaseWithUser {
                 1,
                 singletonMap("mods", "remotecommands"),
                 singletonMap("pillar",
-                        ImmutableMap.<String, String>builder()
-                                .put("mgr_remote_cmd_script", "salt://scripts/script_1.sh")
-                                .put("mgr_remote_cmd_runas", "foobar")
-                                .build()
+                        new HashMap<String, String>() {{
+                                put("mgr_remote_cmd_script", "salt://scripts/script_1.sh");
+                                put("mgr_remote_cmd_runas", "foobar");
+                        }}
                 )
         ));
         states.add(new SaltSystemReboot(
@@ -309,13 +314,13 @@ public class SaltActionChainGeneratorServiceTest extends BaseTestCaseWithUser {
                 0,
                 emptyMap(),
                 singletonMap("pillar",
-                        ImmutableMap.<String, String>builder()
-                                .put("actionchain_id:", "35")
-                                .put("chunk", "2")
-                                .put("next_action_id", "397")
-                                .put("ssh_extra_filerefs", "salt://scripts/script_1.sh,salt://scripts/script_3.sh,salt://channels," +
-                                        service.getActionChainSLSFileName(actionChain.getId(), minionSummary1, 2))
-                                .build()
+                        new HashMap<String, String>() {{
+                                put("actionchain_id:", "35");
+                                put("chunk", "2");
+                                put("next_action_id", "397");
+                                put("ssh_extra_filerefs", "salt://scripts/script_1.sh,salt://scripts/script_3.sh,salt://channels," +
+                                        service.getActionChainSLSFileName(actionChain.getId(), minionSummary1, 2));
+                        }}
                 )
         ));
         states.add(new SaltModuleRun(
@@ -324,10 +329,10 @@ public class SaltActionChainGeneratorServiceTest extends BaseTestCaseWithUser {
                 3,
                 singletonMap("mods", "remotecommands"),
                 singletonMap("pillar",
-                        ImmutableMap.<String, String>builder()
-                                .put("mgr_remote_cmd_script", "salt://scripts/script_3.sh")
-                                .put("mgr_remote_cmd_runas", "foobar")
-                                .build()
+                        new HashMap<String, String>() {{
+                                put("mgr_remote_cmd_script", "salt://scripts/script_3.sh");
+                                put("mgr_remote_cmd_runas", "foobar");
+                        }}
                 )
         ));
 
@@ -455,10 +460,10 @@ public class SaltActionChainGeneratorServiceTest extends BaseTestCaseWithUser {
                 1,
                 singletonMap("mods", "remotecommands"),
                 singletonMap("pillar",
-                        ImmutableMap.<String, String>builder()
-                                .put("mgr_remote_cmd_script", "salt://scripts/script_1.sh")
-                                .put("mgr_remote_cmd_runas", "foobar")
-                                .build()
+                        new HashMap<String, String>() {{
+                                put("mgr_remote_cmd_script", "salt://scripts/script_1.sh");
+                                put("mgr_remote_cmd_runas", "foobar");
+                        }}
                 )
         ));
         states.add(new SaltModuleRun(ACTION_STATE_ID_PREFIX + actionChain.getId() + "_action_" + 2,
@@ -474,12 +479,12 @@ public class SaltActionChainGeneratorServiceTest extends BaseTestCaseWithUser {
                 0,
                 emptyMap(),
                 singletonMap("pillar",
-                        ImmutableMap.<String, String>builder()
-                                .put("actionchain_id:", "35")
-                                .put("chunk", "2")
-                                .put("next_action_id", "397")
-                                .put("ssh_extra_filerefs", "salt://scripts/script_2.sh,salt://channels," + sls2Name)
-                                .build()
+                        new HashMap<String, String>() {{
+                                put("actionchain_id:", "35");
+                                put("chunk", "2");
+                                put("next_action_id", "397");
+                                put("ssh_extra_filerefs", "salt://scripts/script_2.sh,salt://channels," + sls2Name);
+                        }}
                 )
         ));
 
