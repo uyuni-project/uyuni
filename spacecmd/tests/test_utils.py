@@ -577,3 +577,21 @@ class TestSCUtils:
         assert out is not None
         assert "foo" in out and "int" in out
         assert out["foo"] == "bar" and out["int"] == 123
+
+    def test_json_read_from_file_ioerror(self):
+        """
+        Test JSON read from file IOError handling.
+
+        :return:
+        """
+        filename = "/tmp/something"
+        logger = MagicMock()
+        with patch("spacecmd.utils.open", MagicMock(side_effect=IOError("Hard drive is sleeping"))) as opn, \
+            patch("spacecmd.utils.logging", logger) as lgr:
+            out = spacecmd.utils.json_read_from_file(filename=filename)
+
+        assert logger.error.called
+        assert out is None
+
+        assert_args_expect(logger.error.call_args_list,
+                           [(('Could not open file %s for reading:', '/tmp/something', 'Hard drive is sleeping'), {})])
