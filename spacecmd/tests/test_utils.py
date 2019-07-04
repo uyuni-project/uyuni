@@ -615,3 +615,22 @@ class TestSCUtils:
         assert_args_expect(logger.error.call_args_list,
                            [(('Could not parse JSON data from %s: %s',
                               '/tmp/something', 'Curly brackets replaced by dashes'), {})])
+
+    def test_json_read_from_file_general_exception(self):
+        """
+        Test JSON read from file General Exception handling.
+
+        :return:
+        """
+        filename = "/tmp/something"
+        logger = MagicMock()
+        with patch("spacecmd.utils.open", MagicMock(side_effect=Exception("Admin went for lunch"))) as opn, \
+            patch("spacecmd.utils.logging", logger) as lgr:
+            out = spacecmd.utils.json_read_from_file(filename=filename)
+
+        assert logger.error.called
+        assert out is None
+
+        assert_args_expect(logger.error.call_args_list,
+                           [(('Error processing file %s: %s',
+                              '/tmp/something', 'Admin went for lunch'), {})])
