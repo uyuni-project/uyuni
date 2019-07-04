@@ -456,14 +456,12 @@ Then(/^the SLE12 products should be added$/) do
   output = sshcmd('echo -e "admin\nadmin\n" | mgr-sync list channels', ignore_err: true)
   sle_module = '[I] SLE-Module-Legacy12-Updates for x86_64 Legacy Module 12 x86_64 [sle-module-legacy12-updates-x86_64-sp2]'
   raise unless output[:stdout].include? '[I] SLES12-SP2-Pool for x86_64 SUSE Linux Enterprise Server 12 SP2 x86_64 [sles12-sp2-pool-x86_64]'
-  raise unless output[:stdout].include? '[I] SLE-Manager-Tools12-Pool for x86_64 SUSE Linux Enterprise Server 12 SP2 x86_64 [sle-manager-tools12-pool-x86_64-sp2]'
   raise unless output[:stdout].include? sle_module
 end
 
 Then(/^the SLE15 products should be added$/) do
   output = sshcmd('echo -e "admin\nadmin\n" | mgr-sync list channels', ignore_err: true)
   raise unless output[:stdout].include? '[I] SLE-Product-SLES15-Pool for x86_64 SUSE Linux Enterprise Server 15 x86_64 [sle-product-sles15-pool-x86_64]'
-  raise unless output[:stdout].include? '[I] SLE-Manager-Tools15-Pool for x86_64 SUSE Manager Tools 15 x86_64 [sle-manager-tools15-pool-x86_64]'
   raise unless output[:stdout].include? '[I] SLE-Module-Basesystem15-Updates for x86_64 Basesystem Module 15 x86_64 [sle-module-basesystem15-updates-x86_64]'
   raise unless output[:stdout].include? '[I] SLE-Module-Server-Applications15-Pool for x86_64 Server Applications Module 15 x86_64 [sle-module-server-applications15-pool-x86_64]'
 end
