@@ -536,7 +536,8 @@ class TestSCUtils:
         with patch("spacecmd.utils.open", new_callable=mock_open, read_data="contents data") as opn, \
             patch("spacecmd.utils.logging", logger) as lgr, \
             patch("spacecmd.utils.print", mprint) as prt:
-            spacecmd.utils.json_dump_to_file(None, filename=filename)
+            out = spacecmd.utils.json_dump_to_file(None, filename=filename)
 
+        assert out
         assert not logger.error.called
         assert not mprint.called
