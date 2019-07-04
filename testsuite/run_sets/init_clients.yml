@@ -6,10 +6,10 @@
 
 ## Core - Initialize clients BEGIN ##
 
-- features/core/core_trad_register_client.feature
-- features/core/core_min_bootstrap.feature
-- features/core/core_min_salt_ssh.feature
-- features/core/core_centos_salt_ssh.feature
-- features/core/core_ubuntu_salt_ssh.feature
+- features/core/trad_register_client.feature
+- features/core/min_bootstrap.feature
+- features/core/min_salt_ssh.feature
+- features/core/centos_salt_ssh.feature
+- features/core/ubuntu_salt_ssh.feature
 
 ## Post run Core - Initialize clients END ##

@@ -8,22 +8,22 @@
 
 # IMMUTABLE ORDER
 
-- features/core_first_settings.feature
+- features/core/first_settings.feature
 # initialize SUSE Manager server
-- features/core_srv_channels_add.feature
-- features/core_srv_push_package.feature
-- features/core_srv_create_repository.feature
-- features/core_srv_systemspage.feature
-- features/core_srv_users.feature
-- features/core_srv_create_activationkey.feature
-- features/core_srv_docker_profiles.feature
+- features/core/srv_channels_add.feature
+- features/core/srv_push_package.feature
+- features/core/srv_create_repository.feature
+- features/core/core_srv_systemspage.feature
+- features/core/srv_users.feature
+- features/core/srv_create_activationkey.feature
+- features/core/srv_docker_profiles.feature
 # initialize clients
-- features/core_trad_register_client.feature
-- features/core_min_bootstrap.feature
-- features/core_ubuntu_salt_ssh.feature
+- features/core/trad_register_client.feature
+- features/core/min_bootstrap.feature
+- features/core/ubuntu_salt_ssh.feature
 # these features sync real channels (last core features)
-- features/core_srv_sync_channels.feature
-- features/core_srv_setup_wizard.feature
+- features/core/srv_sync_channels.feature
+- features/core/core_srv_setup_wizard.feature
 
 ## Core features END ###
 
@@ -31,32 +31,32 @@
 ## Secondary features BEGIN ##
 
 # IDEMPOTENT
-- features/min_docker_xmlrpc.feature
-- features/min_docker_build_image.feature
-- features/trad_metadata_check.feature
-- features/srv_nagios.feature
-- features/srv_cve_audit.feature
-- features/srv_distro_cobbler.feature
-- features/srv_mainpage.feature
-- features/srv_xmlrpc_user.feature
-- features/srv_salt_download_endpoint.feature
-- features/srv_virtual_host_manager.feature
-- features/trad_config_channel.feature
-- features/allcli_config_channel.feature
-- features/min_config_state_channel.feature
-- features/srv_sync_products.feature
-- features/min_docker_auth_registry.feature
-- features/srv_docker_advanced_content_management.feature
-- features/srv_docker_cve_audit.feature
-- features/min_osimage_build_image.feature
-- features/min_salt_install_package.feature
-- features/srv_power_management.feature
-- features/srv_datepicker.feature
-- features/trad_openscap_audit.feature
-- features/min_salt_openscap_audit.feature
-- features/srv_custom_system_info.feature
-- features/srv_security.feature
-- features/min_custom_pkg_download_endpoint.feature
+- features/secondary/min_docker_xmlrpc.feature
+- features/secondary/min_docker_build_image.feature
+- features/secondary/trad_metadata_check.feature
+- features/secondary/srv_nagios.feature
+- features/secondary/srv_cve_audit.feature
+- features/secondary/srv_distro_cobbler.feature
+- features/secondary/srv_mainpage.feature
+- features/secondary/srv_xmlrpc_user.feature
+- features/secondary/srv_salt_download_endpoint.feature
+- features/secondary/srv_virtual_host_manager.feature
+- features/secondary/trad_config_channel.feature
+- features/secondary/allcli_config_channel.feature
+- features/secondary/min_config_state_channel.feature
+- features/secondary/srv_sync_products.feature
+- features/secondary/min_docker_auth_registry.feature
+- features/secondary/srv_docker_advanced_content_management.feature
+- features/secondary/srv_docker_cve_audit.feature
+- features/secondary/min_osimage_build_image.feature
+- features/secondary/min_salt_install_package.feature
+- features/secondary/srv_power_management.feature
+- features/secondary/srv_datepicker.feature
+- features/secondary/trad_openscap_audit.feature
+- features/secondary/min_salt_openscap_audit.feature
+- features/secondary/srv_custom_system_info.feature
+- features/secondary/srv_security.feature
+- features/secondary/min_custom_pkg_download_endpoint.feature
 ## Secondary features END ##
 
 
@@ -65,6 +65,6 @@
 # IMMUTABLE ORDER
 
 # this feature is needed for gathering log/debug infos
-- features/srv_susemanager_debug.feature
+- features/finishing/srv_susemanager_debug.feature
 
 ## Post run features END ##

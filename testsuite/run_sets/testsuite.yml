@@ -8,32 +8,32 @@
 
 # IMMUTABLE ORDER
 
-- features/core/core_first_settings.feature
+- features/core/first_settings.feature
 # initialize SUSE Manager server
-- features/core/core_srv_channels_add.feature
-- features/core/core_srv_push_package.feature
-- features/core/core_srv_create_repository.feature
-- features/core/core_srv_users.feature
-- features/core/core_srv_create_activationkey.feature
-- features/core/core_srv_osimage_profiles.feature
-- features/core/core_srv_docker_profiles.feature
+- features/core/srv_channels_add.feature
+- features/core/srv_push_package.feature
+- features/core/srv_create_repository.feature
+- features/core/srv_users.feature
+- features/core/srv_create_activationkey.feature
+- features/core/srv_osimage_profiles.feature
+- features/core/srv_docker_profiles.feature
 # initialize SUSE Manager proxy
-  # one of: core_proxy_register_as_trad_with_script.feature
-  #         core_proxy_register_as_minion_with_script.feature
-  #         core_proxy_register_as_minion_with_gui.feature
-- features/core/core_proxy_register_as_minion_with_gui.feature
-- features/core/core_proxy_branch_network.feature
+  # one of: proxy_register_as_trad_with_script.feature
+  #         proxy_register_as_minion_with_script.feature
+  #         proxy_register_as_minion_with_gui.feature
+- features/core/proxy_register_as_minion_with_gui.feature
+- features/core/proxy_branch_network.feature
 # initialize clients
-- features/core/core_trad_register_client.feature
-- features/core/core_min_bootstrap.feature
-- features/core/core_min_salt_ssh.feature
-- features/core/core_centos_salt_ssh.feature
-- features/core/core_ubuntu_salt_ssh.feature
+- features/core/trad_register_client.feature
+- features/core/min_bootstrap.feature
+- features/core/min_salt_ssh.feature
+- features/core/centos_salt_ssh.feature
+- features/core/ubuntu_salt_ssh.feature
 # these features sync real channels (last core features)
-- features/core/core_srv_sync_channels.feature
-- features/core/core_srv_products_page.feature
-- features/core/core_srv_mgr_sync_products.feature
-- features/core/core_srv_abort_all_sync.feature
+- features/core/srv_sync_channels.feature
+- features/core/srv_products_page.feature
+- features/core/srv_mgr_sync_products.feature
+- features/core/srv_abort_all_sync.feature
 
 ## Core features END ###
 
