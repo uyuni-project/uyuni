@@ -679,21 +679,18 @@ def json_dump(obj, fp, indent=4, **kwargs):
 def json_dump_to_file(obj, filename):
     json_data = json.dumps(obj, indent=4, sort_keys=True)
 
+    out = False
     if json_data is None:
         logging.error("Could not generate json data object!")
-        return False
+    else:
+        try:
+            with open(filename, 'w') as fdh:
+                fdh.write(json_data)
+            out = True
+        except IOError as exc:
+            logging.error("Could not open file %s for writing: %s", filename, str(exc))
 
-    try:
-        fd = open(filename, 'w')
-        fd.write(json_data)
-        fd.close()
-    except IOError as E:
-        logging.error("Could not open file %s for writing, permissions?",
-                      filename)
-        print(E.strerror)
-        return False
-
-    return True
+    return out
 
 
 def json_read_from_file(filename):
