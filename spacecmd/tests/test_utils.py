@@ -523,3 +523,20 @@ class TestSCUtils:
         assert i == 1234567
         assert s == "abcXYZ012"
         assert d["channelLabel"] == "foo-i386-5"
+
+    def test_json_dump_to_file(self):
+        """
+        Test JSON dump to file.
+
+        :return:
+        """
+        filename = "/tmp/something"
+        logger = MagicMock()
+        mprint = MagicMock()
+        with patch("spacecmd.utils.open", new_callable=mock_open, read_data="contents data") as opn, \
+            patch("spacecmd.utils.logging", logger) as lgr, \
+            patch("spacecmd.utils.print", mprint) as prt:
+            spacecmd.utils.json_dump_to_file(None, filename=filename)
+
+        assert not logger.error.called
+        assert not mprint.called
