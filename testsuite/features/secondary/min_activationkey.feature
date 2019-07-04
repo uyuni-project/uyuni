@@ -61,9 +61,6 @@ Feature: Bootstrap a Salt minion via the GUI with an activation key
     And I select the hostname of the proxy from "proxies"
     And I click on "Bootstrap"
     Then I wait until I see "Successfully bootstrapped host! " text
-
-  Scenario: Wait for minion to finish bootstrap
-    Given I am authorized
     When I navigate to "rhn/systems/Overview.do" page
     And I wait until I see the name of "sle-minion", refreshing the page
     And I wait until onboarding is completed for "sle-minion"

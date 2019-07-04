@@ -165,8 +165,6 @@ Feature: Action chain on salt minions
     And I follow "new action chain"
     And I click on "Save and Schedule"
     Then I should see a "Action Chain new action chain has been scheduled for execution." text
-
-  Scenario: Verify that the action chain was executed successfully
     When I wait for "virgo-dummy" to be installed on this "sle-minion"
     And I wait at most 300 seconds until file "/tmp/action_chain_one_system_done" exists on "sle-minion"
 

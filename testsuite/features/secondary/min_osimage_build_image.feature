@@ -17,8 +17,7 @@ Feature: Build OS images
     And I select "suse_os_image" from "profileId"
     And I select sle-minion hostname in Build Host
     And I click on "submit-btn"
-
-  Scenario: Check the OS image built as Kiwi image administrator
+    # Check the OS image built as Kiwi image administrator
     Given I am on the Systems overview page of this "sle-minion"
     When I wait at most 3300 seconds until event "Image Build suse_os_image scheduled by kiwikiwi" is completed
     And I wait at most 300 seconds until event "Image Inspect 1//suse_os_image:latest scheduled by kiwikiwi" is completed
