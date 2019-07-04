@@ -613,5 +613,5 @@ class TestSCUtils:
         assert out is None
 
         assert_args_expect(logger.error.call_args_list,
-                           [(('Could not read in data from %s: %s',
+                           [(('Could not parse JSON data from %s: %s',
                               '/tmp/something', 'Curly brackets replaced by dashes'), {})])
