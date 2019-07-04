@@ -32,17 +32,17 @@ end
 task default: [:cucumber]
 
 namespace :parallel do
-  desc "Run Cucumber init_clients features in parallel"
+  desc 'Run Cucumber init_clients features in parallel'
   task :init_clients do
     features = YAML.safe_load(File.read(File.join(Dir.pwd, 'run_sets', 'init_clients.yml'))).join(' ')
-    cucumber_opts = "-f html -o output_init_clients-$TEST_ENV_NUMBER.html -f json -o output_init_clients-$TEST_ENV_NUMBER.json #{junit_results} -f rerun --out failed.txt -f pretty -r features "
+    cucumber_opts = "-f html -o output_init_clients-$TEST_ENV_NUMBER.html -f json -o output_init_clients-$TEST_ENV_NUMBER.json #{junit_results} -f rerun --out failed.txt -f CustomFormatter::PrettyFormatter -r features "
     sh "bundle exec parallel_cucumber -n 5 -o '#{cucumber_opts}' #{features}"
   end
 
-  desc "Run Cucumber secondary features in parallel"
+  desc 'Run Cucumber secondary features in parallel'
   task :secondary_parallelizable do
     features = YAML.safe_load(File.read(File.join(Dir.pwd, 'run_sets', 'secondary_parallelizable.yml'))).join(' ')
-    cucumber_opts = "-f html -o output_secondary-$TEST_ENV_NUMBER.html -f json -o output_secondary-$TEST_ENV_NUMBER.json #{junit_results} -f pretty -r features "
+    cucumber_opts = "-f html -o output_secondary-$TEST_ENV_NUMBER.html -f json -o output_secondary-$TEST_ENV_NUMBER.json #{junit_results} -f CustomFormatter::PrettyFormatter -r features "
     sh "bundle exec parallel_cucumber -n 4 -o '#{cucumber_opts}' #{features}"
   end
   at_exit { post_nodejs_report }

@@ -5,11 +5,6 @@
 # one by one as the offenses are removed from the code base.
 # Note that changes in the inspected code, or installation of new
 # versions of RuboCop, may require this file to be generated again.
-
-# Offense count: 1
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle, IndentationWidth.
-# SupportedStyles: with_first_parameter, with_fixed_indentation
 Layout/AlignParameters:
   Exclude:
     - 'features/step_definitions/xmlrpc_common.rb'
@@ -121,6 +116,12 @@ Metrics/BlockLength:
 # Configuration parameters: CountComments.
 Metrics/MethodLength:
   Max: 21
+
+# Offense count: 5
+# Avoid parameter lists longer than 5 parameters.
+Metrics/ParameterLists:
+  Exclude:
+  - 'features/support/custom_formatter.rb'
 
 # Offense count: 8
 Naming/AccessorMethodName:
