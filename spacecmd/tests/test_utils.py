@@ -595,3 +595,23 @@ class TestSCUtils:
 
         assert_args_expect(logger.error.call_args_list,
                            [(('Could not open file %s for reading:', '/tmp/something', 'Hard drive is sleeping'), {})])
+
+    @patch("spacecmd.utils.json.loads", MagicMock(side_effect=ValueError("Curly brackets replaced by dashes")))
+    def test_json_read_from_file_valueerror(self):
+        """
+        Test JSON read from file ValueError handling.
+
+        :return:
+        """
+        filename = "/tmp/something"
+        logger = MagicMock()
+        with patch("spacecmd.utils.open", new_callable=mock_open, read_data='{"foo": "bar", "int": 123}') as opn, \
+            patch("spacecmd.utils.logging", logger) as lgr:
+            out = spacecmd.utils.json_read_from_file(filename=filename)
+
+        assert logger.error.called
+        assert out is None
+
+        assert_args_expect(logger.error.call_args_list,
+                           [(('Could not read in data from %s: %s',
+                              '/tmp/something', 'Curly brackets replaced by dashes'), {})])
