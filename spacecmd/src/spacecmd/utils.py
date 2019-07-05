@@ -714,7 +714,7 @@ def get_string_diff_dicts(string1, string2, sep="-"):
 
     If these strings are closly related, it returns two dictonaries of regular expressions.
 
-    The first dictionary can be used to transfrom type 1 strings into type 2 strings.
+    The first dictionary can be used to transform type 1 strings into type 2 strings.
     The second dictionary vice versa.
 
     These replacements blocks must be separated by "-".
