@@ -707,3 +707,16 @@ class TestSCUtils:
             fhb.write(b"\x00\x00\x00\x00")
         assert spacecmd.utils.file_is_binary(None, cachefile)
         shutil.rmtree(temp)
+
+    def test_file_is_not_binary(self):
+        """
+        Test determination whether the file is in binary format.
+
+        :return:
+        """
+        temp = tempfile.mkdtemp()
+        cachefile = os.path.join(temp, "somefile.bin")
+        with open(cachefile, "wb") as fhb:
+            fhb.write(b"some text")
+        assert not spacecmd.utils.file_is_binary(None, cachefile)
+        shutil.rmtree(temp)
