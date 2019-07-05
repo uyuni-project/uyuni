@@ -634,3 +634,17 @@ class TestSCUtils:
         assert_args_expect(logger.error.call_args_list,
                            [(('Error processing file %s: %s',
                               '/tmp/something', 'Admin went for lunch'), {})])
+
+    def test_get_string_diff_dicts(self):
+        """
+        Test string diffs that generates transformation regexps from source
+        to destination and vice versa.
+
+        :return:
+        """
+        rpl_a, rpl_b = spacecmd.utils.get_string_diff_dicts("rhel6-x86_64-dev-application1",
+                                                            "rhel6-x86_64-qas-application1")
+        assert r"(^|-)dev(-|$)" in rpl_a
+        assert rpl_a[r"(^|-)dev(-|$)"] == r"\1DIFF(dev|qas)\2"
+        assert r"(^|-)qas(-|$)" in rpl_b
+        assert rpl_b["(^|-)qas(-|$)"] == r"\1DIFF(dev|qas)\2"
