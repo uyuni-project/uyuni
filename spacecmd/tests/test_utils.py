@@ -675,3 +675,22 @@ class TestSCUtils:
         assert spacecmd.utils.get_normalized_text(text) == ['1-sle15-x86_64-dev', '2-sle15-x86_64-prd',
                                                             '3-sle15-x86_64-dev', '4-sle15-x86_64-prd',
                                                             '5-sle15-x86_64-prd']
+
+    def test_get_normalised_text(self):
+        """
+        Test text normalisation.
+
+        :return:
+        """
+        text = """
+1-sle15-x86_64-dev
+2-sle15-x86_64-prd
+3-sle15-x86_64-dev
+4-sle15-x86_64-prd
+5-sle15-x86_64-prd
+""".strip().split("\n")
+        assert spacecmd.utils.get_normalized_text(text, replacedict={"dev": "prd"}) == ['1-sle15-x86_64-prd',
+                                                                                        '2-sle15-x86_64-prd',
+                                                                                        '3-sle15-x86_64-prd',
+                                                                                        '4-sle15-x86_64-prd',
+                                                                                        '5-sle15-x86_64-prd']
