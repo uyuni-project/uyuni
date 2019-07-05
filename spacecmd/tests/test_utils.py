@@ -731,3 +731,14 @@ class TestSCUtils:
             with pytest.raises(IOError) as exc:
                 spacecmd.utils.string_to_bool(value)
             assert "Parameter" in str(exc)
+
+    def test_string_to_bool_correct_type(self):
+        """
+        Test string conversion to boolean handling correct string type
+
+        :return:
+        """
+        assert not spacecmd.utils.string_to_bool("false")
+        assert not spacecmd.utils.string_to_bool("no")
+        assert spacecmd.utils.string_to_bool("yes")
+        assert spacecmd.utils.string_to_bool("true")
