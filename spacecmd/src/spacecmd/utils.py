@@ -780,6 +780,12 @@ def get_normalized_text(text, replacedict=None, excludes=None):
     # from the name differences of there components.
     # This will not work always, but it help in a lot of cases.
 
+    if not text:
+        return []
+
+    if not replacedict:
+        return text
+
     normalized_text = []
     if text:
         for st in text:
