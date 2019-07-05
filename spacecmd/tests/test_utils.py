@@ -720,3 +720,14 @@ class TestSCUtils:
             fhb.write(b"some text")
         assert not spacecmd.utils.file_is_binary(None, cachefile)
         shutil.rmtree(temp)
+
+    def test_string_to_bool_false_type(self):
+        """
+        Test string conversion to boolean handling false type
+
+        :return:
+        """
+        for value in [b"", 1, {}, [], ()]:
+            with pytest.raises(IOError) as exc:
+                spacecmd.utils.string_to_bool(value)
+            assert "Parameter" in str(exc)
