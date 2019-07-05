@@ -42,7 +42,7 @@ const CreateProject = () => {
                       }
                     )
                     .catch((error) => {
-                      showErrorToastr(error);
+                      showErrorToastr(error, {autoHide: false});
                     })
                 }
               />
