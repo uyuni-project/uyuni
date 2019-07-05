@@ -811,6 +811,9 @@ def file_is_binary(self, path):
     try:
         process = Popen(["file", "-b", "--mime-type", path], stdout=PIPE)
         output = process.communicate()[0]
+        if not isinstance(output, str):  # Py3 catch without six involved
+            output = output.decode("utf-8")
+
         exit_code = process.wait()
         if exit_code != 0:
             return True
