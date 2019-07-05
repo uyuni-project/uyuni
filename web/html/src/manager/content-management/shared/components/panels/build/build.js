@@ -131,7 +131,7 @@ const Build = ({projectId, onBuild, currentHistoryEntry = {}, changesToBuild, di
                               onBuild(projectWithUpdatedSources)
                             })
                             .catch((error) => {
-                              showErrorToastr(error);
+                              showErrorToastr(error, {autoHide: false});
                               closeDialog();
                             });
                         }}

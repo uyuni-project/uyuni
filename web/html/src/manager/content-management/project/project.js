@@ -92,7 +92,7 @@ const Project = (props: Props) => {
                           window.location.href = `/rhn/manager/contentmanagement/projects`
                         })
                         .catch((error) => {
-                          showErrorToastr(error);
+                          showErrorToastr(error, {autoHide: false});
                         })
                     }
       />
