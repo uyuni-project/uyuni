@@ -109,7 +109,7 @@ const Promote = (props: Props) => {
                       props.onChange(projectWithUpdatedSources)
                     })
                     .catch((error) => {
-                      showErrorToastr(error);
+                      showErrorToastr(error, {autoHide: false});
                       closeDialog();
                     });
                 }}
