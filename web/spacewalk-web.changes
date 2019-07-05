@@ -1,4 +1,4 @@
-- Redirect user back to system after software channel change (bsc#1137244)
+- Redirect to first step of channel assignment after change channel submit (bsc#1137244)
 - add error messages, hints for image profile edit page (bsc#1127319) 
 - Allow virtualization tab for foreign systems (bsc#1116869)
 - Add checks for empty required entries on formula forms (bsc#1109639)
