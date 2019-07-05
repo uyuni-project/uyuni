@@ -658,3 +658,20 @@ class TestSCUtils:
         line = "Cellular megabot interference"
         repldict = {"mega": "tele", "bot": "phone"}
         assert spacecmd.utils.replace(line, replacedict=repldict) == "Cellular telephone interference"
+
+    def test_get_normalised_text_no_modifier(self):
+        """
+        Test text normalisation without modifier.
+
+        :return:
+        """
+        text = """
+1-sle15-x86_64-dev
+2-sle15-x86_64-prd
+3-sle15-x86_64-dev
+4-sle15-x86_64-prd
+5-sle15-x86_64-prd
+""".strip().split("\n")
+        assert spacecmd.utils.get_normalized_text(text) == ['1-sle15-x86_64-dev', '2-sle15-x86_64-prd',
+                                                            '3-sle15-x86_64-dev', '4-sle15-x86_64-prd',
+                                                            '5-sle15-x86_64-prd']
