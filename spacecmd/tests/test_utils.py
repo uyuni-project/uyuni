@@ -648,3 +648,13 @@ class TestSCUtils:
         assert rpl_a[r"(^|-)dev(-|$)"] == r"\1DIFF(dev|qas)\2"
         assert r"(^|-)qas(-|$)" in rpl_b
         assert rpl_b["(^|-)qas(-|$)"] == r"\1DIFF(dev|qas)\2"
+
+    def test_replace(self):
+        """
+        Replace data in dictionary's values.
+
+        :return:
+        """
+        line = "Cellular megabot interference"
+        repldict = {"mega": "tele", "bot": "phone"}
+        assert spacecmd.utils.replace(line, replacedict=repldict) == "Cellular telephone interference"
