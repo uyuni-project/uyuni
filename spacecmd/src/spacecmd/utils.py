@@ -826,6 +826,15 @@ def file_is_binary(self, path):
 
 
 def string_to_bool(input_string):
-    if not isinstance(input_string, bool):
-        return input_string.lower().rstrip(' ') == 'true'
-    return input_string
+    """
+    Convert string of "true" or "false", "yes" or "no" to boolean.
+
+    :param input_string:
+    :return:
+    """
+    if not isinstance(input_string, str):
+        raise IOError("Parameter {} not a string type, but {}.".format(
+            repr(input_string), type(input_string)
+        ))
+
+    return input_string.lower().strip() in ['true', 'yes']
