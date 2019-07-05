@@ -114,7 +114,7 @@ const FilterEdit = (props: FilterEditProps) => {
                               props.onChange(updatedListOfFilters);
                             })
                             .catch((error) => {
-                              showErrorToastr(error);
+                              showErrorToastr(error, {autoHide: false});
                             })
                         }}
                       />
@@ -138,7 +138,7 @@ const FilterEdit = (props: FilterEditProps) => {
                         disabled={isLoading}
                         handler={() => {
                           if (!formValidInClient) {
-                            showErrorToastr(t("Check the required fields below"));
+                            showErrorToastr(t("Check the required fields below"), {autoHide : false});
                           } else {
                             if (props.editing) {
                               onAction(mapFilterFormToRequest(item, props.projectLabel), "update", item.id)
@@ -153,7 +153,7 @@ const FilterEdit = (props: FilterEditProps) => {
                                   }
                                 })
                                 .catch((error) => {
-                                  showErrorToastr(error);
+                                  showErrorToastr(error, {autoHide: false});
                                 })
                             } else {
                               onAction(mapFilterFormToRequest(item, props.projectLabel), "create")
@@ -168,7 +168,7 @@ const FilterEdit = (props: FilterEditProps) => {
                                   }
                                 })
                                 .catch((error) => {
-                                  showErrorToastr(error);
+                                  showErrorToastr(error, {autoHide: false});
                                 })
                             }
                           }
