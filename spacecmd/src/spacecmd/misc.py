@@ -354,13 +354,9 @@ def do_login(self, args):
         # login to the server
         try:
             self.session = self.client.auth.login(username, password)
-
-            # don't keep the password around
-            password = None
         except xmlrpclib.Fault:
             logging.error('Invalid credentials')
             return False
-
         try:
             # make sure ~/.spacecmd/<server> exists
             conf_dir = os.path.join(self.conf_dir, server)
