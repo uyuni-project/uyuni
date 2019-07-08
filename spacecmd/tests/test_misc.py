@@ -63,3 +63,19 @@ class TestSCMisc:
         assert mprint.called
         assert shell.client.satellite.listProxies.called
 
+    def test_get_session(self, shell):
+        """
+        Test getting current user session.
+
+        :param shell:
+        :return:
+        """
+        mprint = MagicMock()
+        logger = MagicMock()
+        with patch("spacecmd.misc.print", mprint) as prt, \
+            patch("spacecmd.misc.logging", logger) as lgr:
+            spacecmd.misc.do_get_session(shell, "")
+
+        assert not logger.error.called
+        assert mprint.called
+        assert_expect(mprint.call_args_list, shell.session)
