@@ -115,7 +115,7 @@ def help_clear(self):
 
 
 def do_clear(self, args):
-    os.system('clear')
+    print("\x1b[H\x1b[J")
 
 ####################
 
