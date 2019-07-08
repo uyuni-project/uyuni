@@ -256,7 +256,7 @@ def do_login(self, args):
         username = ''
 
     # set the protocol
-    if 'nossl' in self.config and self.config['nossl']:
+    if self.config.get("nossl"):
         proto = 'http'
     else:
         proto = 'https'
