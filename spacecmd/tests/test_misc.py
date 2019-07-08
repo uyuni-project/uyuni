@@ -853,3 +853,22 @@ class TestSCMisc:
                            [(('No access to %s (%s): %s', 'locked_channel',
                               42, "Sales staff sold a product we don't offer"), {})])
 
+    def test_clear_package_cache(self, shell):
+        """
+        Test clear package cache.
+
+        :param shell:
+        :return:
+        """
+        tst = datetime.datetime(2019, 1, 1, 0, 0)
+        shell.package_cache_expire = tst
+
+        spacecmd.misc.clear_package_cache(shell)
+
+        assert shell.all_packages_short == {}
+        assert shell.all_packages == {}
+        assert shell.all_packages_by_id == {}
+        assert shell.package_cache_expire is not None
+        assert shell.package_cache_expire != tst
+        assert shell.save_package_caches.called
+
