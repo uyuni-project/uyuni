@@ -7,7 +7,7 @@ echo "This script will migrate Uyuni server to the latest version which"
 echo "also implies replacing the underlying operating system."
 echo
 echo "During migration the services need to be shut down and after"
-echo "successful migration the server needs to be rebooted."
+echo "successful migration the server needs to be rebooted manually."
 echo
 echo "Since there is no chance to fix any issues during migration,"
 echo "make sure you have a backup before continuing. If you are"
