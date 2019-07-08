@@ -79,3 +79,22 @@ class TestSCMisc:
         assert not logger.error.called
         assert mprint.called
         assert_expect(mprint.call_args_list, shell.session)
+
+    def test_get_session_missing(self, shell):
+        """
+        Test handling missing current user session.
+
+        :param shell:
+        :return:
+        """
+        mprint = MagicMock()
+        logger = MagicMock()
+        with patch("spacecmd.misc.print", mprint) as prt, \
+            patch("spacecmd.misc.logging", logger) as lgr:
+            shell.session = None
+            spacecmd.misc.do_get_session(shell, "")
+
+        assert not mprint.called
+        assert logger.error.called
+        assert_expect(logger.error.call_args_list, "No session found")
+
