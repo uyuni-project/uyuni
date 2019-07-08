@@ -372,8 +372,8 @@ def do_login(self, args):
             sessionfile = open(session_file, 'w')
             sessionfile.write(line)
             sessionfile.close()
-        except IOError:
-            logging.error('Could not write session file')
+        except IOError as exc:
+            logging.error('Could not write session file: %s', str(exc))
 
     # load the system/package/errata caches
     self.load_caches(server, username)
