@@ -49,3 +49,17 @@ class TestSCMisc:
             spacecmd.misc.do_get_serverversion(shell, "")
         assert mprint.called
         assert shell.client.api.systemVersion.called
+
+    def test_list_proxies(self, shell):
+        """
+        Test proxy listing.
+
+        :param shell:
+        :return:
+        """
+        mprint = MagicMock()
+        with patch("spacecmd.misc.print", mprint) as prt:
+            spacecmd.misc.do_list_proxies(shell, "")
+        assert mprint.called
+        assert shell.client.satellite.listProxies.called
+
