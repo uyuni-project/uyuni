@@ -508,8 +508,8 @@ def generate_errata_cache(self, force=False):
     for c in channels:
         try:
             errata = self.client.channel.software.listErrata(self.session, c)
-        except xmlrpclib.Fault:
-            logging.debug('No access to %s', c)
+        except xmlrpclib.Fault as exc:
+            logging.debug('No access to %s (%s): %s', c, exc.faultCode, exc.faultString)
             continue
 
         for erratum in errata:
@@ -521,9 +521,7 @@ def generate_errata_cache(self, force=False):
                      'date': erratum.get('date'),
                      'advisory_synopsis': erratum.get('advisory_synopsis')}
 
-    self.errata_cache_expire = \
-        datetime.now() + timedelta(self.ERRATA_CACHE_TTL)
-
+    self.errata_cache_expire = datetime.now() + timedelta(self.ERRATA_CACHE_TTL)
     self.save_errata_cache()
 
     if not self.options.quiet:
