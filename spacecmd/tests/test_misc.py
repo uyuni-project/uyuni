@@ -795,3 +795,18 @@ class TestSCMisc:
         shell.all_errata = {"cve-zzz": {"id": 3}}
         assert spacecmd.misc.get_erratum_name(shell, 3) == "cve-zzz"
 
+    def test_generate_errata_cache_no_expired(self, shell):
+        """
+        Test generate errata cache (no expired, i.e. should not be generated).
+
+        :return:
+        """
+        shell.options.quiet = False
+        shell.errata_cache_expire = datetime.datetime(2099, 1, 1)
+
+        assert spacecmd.misc.generate_errata_cache(shell) is None
+        assert not shell.client.channel.listSoftwareChannels.called
+        assert not shell.client.channel.software.listErrata.called
+        assert not shell.replace_line_buffer.called
+        assert not shell.save_errata_cache.called
+
