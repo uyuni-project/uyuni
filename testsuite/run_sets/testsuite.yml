@@ -33,7 +33,7 @@
 - features/core/srv_sync_channels.feature
 - features/core/srv_products_page.feature
 - features/core/srv_mgr_sync_products.feature
-- features/core/srv_abort_all_sync.feature
+#- features/core/srv_abort_all_sync.feature
 
 ## Core features END ###
 
