@@ -725,3 +725,21 @@ class TestSCMisc:
         assert not logger.warning.called
         assert mprint.called
         assert_args_expect(mprint.call_args_list, [((shell.server, ), {})])
+
+    def test_whoamitalkingto_no_session(self, shell):
+        """
+        Test to display no server is connected yet.
+
+        :param shell:
+        :return:
+        """
+        shell.server = None
+        mprint = MagicMock()
+        logger = MagicMock()
+        with patch("spacecmd.misc.print", mprint) as prt, \
+            patch("spacecmd.misc.logging", logger) as lgr:
+            spacecmd.misc.do_whoamitalkingto(shell, "")
+
+        assert not mprint.called
+        assert logger.warning.called
+        assert_args_expect(logger.warning.call_args_list, [(("Yourself", ), {})])
