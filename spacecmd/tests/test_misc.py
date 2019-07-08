@@ -759,7 +759,7 @@ class TestSCMisc:
 
         spacecmd.misc.clear_errata_cache(shell)
 
-        assert shell.all_errata == []
+        assert shell.all_errata == {}
         assert shell.errata_cache_expire > tst
         assert shell.save_errata_cache.called
 
@@ -774,4 +774,14 @@ class TestSCMisc:
                             {"advisory_name": "cve-aaa"},
                             {"advisory_name": "cve-zzz"}]
         assert spacecmd.misc.get_errata_names(shell) == ['cve-123', 'cve-aaa', 'cve-zzz']
+
+    def test_get_erratum_id(self, shell):
+        """
+        Test to get erratum ID.
+
+        :param shell:
+        :return:
+        """
+        shell.all_errata = {"cve-zzz": {"id": 3}}
+        assert spacecmd.misc.get_erratum_id(shell, "cve-zzz") == 3
 
