@@ -785,3 +785,13 @@ class TestSCMisc:
         shell.all_errata = {"cve-zzz": {"id": 3}}
         assert spacecmd.misc.get_erratum_id(shell, "cve-zzz") == 3
 
+    def test_get_erratum_name(self, shell):
+        """
+        Test to get erratum name.
+
+        :param shell:
+        :return:
+        """
+        shell.all_errata = {"cve-zzz": {"id": 3}}
+        assert spacecmd.misc.get_erratum_name(shell, 3) == "cve-zzz"
+
