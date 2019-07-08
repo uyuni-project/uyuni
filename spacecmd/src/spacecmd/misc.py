@@ -507,8 +507,7 @@ def generate_errata_cache(self, force=False):
 
     for c in channels:
         try:
-            errata = \
-                self.client.channel.software.listErrata(self.session, c)
+            errata = self.client.channel.software.listErrata(self.session, c)
         except xmlrpclib.Fault:
             logging.debug('No access to %s', c)
             continue
