@@ -207,12 +207,8 @@ def help_toggle_confirmations(self):
 
 
 def do_toggle_confirmations(self, args):
-    if self.options.yes:
-        self.options.yes = False
-        print('Confirmation messages are enabled')
-    else:
-        self.options.yes = True
-        logging.warning('Confirmation messages are DISABLED!')
+    self.options.yes = not self.options.yes
+    print('Confirmation messages are', "disabled" if self.options.yes else "enabled")
 
 ####################
 
