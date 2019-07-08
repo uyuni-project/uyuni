@@ -762,3 +762,16 @@ class TestSCMisc:
         assert shell.all_errata == []
         assert shell.errata_cache_expire > tst
         assert shell.save_errata_cache.called
+
+    def test_get_sorted_errata_names(self, shell):
+        """
+        Test getting errata names.
+
+        :param shell:
+        :return:
+        """
+        shell.all_errata = [{"advisory_name": "cve-123"},
+                            {"advisory_name": "cve-aaa"},
+                            {"advisory_name": "cve-zzz"}]
+        assert spacecmd.misc.get_errata_names(shell) == ['cve-123', 'cve-aaa', 'cve-zzz']
+
