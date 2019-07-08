@@ -233,7 +233,7 @@ def do_login(self, args):
         server = args[1]
     else:
         # use the server we were already using
-        server = self.config['server']
+        server = self.config.get("server")
 
     # bail out if not server was given
     if not server:
