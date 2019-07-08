@@ -305,7 +305,7 @@ def do_login(self, args):
             sessionfile = open(session_file, 'r')
 
             # read the session (format = username:session)
-            for line in sessionfile:
+            for line in sessionfile.readlines():
                 parts = line.split(':')
 
                 # if a username was passed, make sure it matches
