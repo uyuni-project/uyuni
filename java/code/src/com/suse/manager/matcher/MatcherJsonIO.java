@@ -277,12 +277,16 @@ public class MatcherJsonIO {
     private Set<Long> computeSelfProductIds(String arch) {
         Set<Long> result = new LinkedHashSet<>();
         if (arch.contains("amd64")) {
-            result.add(1518L); // SUSE Manager Server 3.1 x86_64
-            result.add(1357L); // SUSE Linux Enterprise Server 12 SP2 x86_64
+            result.add(1724L); // SUSE Manager Server 3.2 x86_64
+            result.add(1625L); // SUSE Linux Enterprise Server 12 SP4 x86_64
         }
         else if (arch.contains("s390")) {
-            result.add(1519L); // SUSE Manager Server 3.1 s390x
-            result.add(1356L); // SUSE Linux Enterprise Server 12 SP2 s390x
+            result.add(1723L); // SUSE Manager Server 3.2 s390x
+            result.add(1627L); // SUSE Linux Enterprise Server 12 SP4 s390x
+        }
+        else if (arch.contains("ppc64le")) {
+            result.add(1722L); // SUSE Manager Server 3.2 ppc64le
+            result.add(1626L); // SUSE Linux Enterprise Server 12 SP4 ppc64le
         }
         else {
             logger.warn(String.format("Couldn't determine products for SUMA server itself" +
