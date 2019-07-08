@@ -296,3 +296,60 @@ class TestSCMisc:
 
         assert_args_expect(logger.error.call_args_list,
                            [(('API (%s) is too old (>= %s required)', 1.5, 10.8), {})])
+
+    @patch("spacecmd.misc.os.path.isfile", MagicMock(return_value=True))
+    def test_login_reuse_cached_session(self, shell):
+        """
+        Test handling cached available session.
+
+        :param shell:
+        :return:
+        """
+        mprint = MagicMock()
+        logger = MagicMock()
+        prompter = MagicMock()
+        gpass = MagicMock()
+        mkd = MagicMock()
+
+        client = MagicMock()
+        rpc_server = MagicMock(return_value=client)
+
+        shell.session = None
+        shell.options.debug = 2
+        shell.options.password = None
+        shell.options.username = None
+        shell.config = {"server": "no.mans.land"}
+        shell.conf_dir = "/tmp"
+        shell.MINIMUM_API_VERSION = 10.8
+        client.api.getVersion = MagicMock(return_value=11.5)
+
+        with patch("spacecmd.misc.print", mprint) as prt, \
+            patch("spacecmd.misc.prompt_user", prompter) as pmt, \
+            patch("spacecmd.misc.getpass", gpass) as gtp, \
+            patch("spacecmd.misc.os.mkdir", mkd) as mkdr, \
+            patch("spacecmd.misc.xmlrpclib.Server", rpc_server) as rpcs, \
+            patch("spacecmd.misc.open", new_callable=mock_open,
+                  read_data="bofh:5adf5cc50929f71a899b81c2c2eb0979") as fmk, \
+            patch("spacecmd.misc.logging", logger) as lgr:
+            out = spacecmd.misc.do_login(shell, "")
+
+        assert not client.auth.login.called
+        assert not gpass.called
+        assert not prompter.called
+        assert not mprint.called
+        assert not mkd.called
+        assert not logger.warning.called
+        assert not logger.error.called
+        assert logger.info.called
+        assert client.user.listAssignableRoles.called
+        assert shell.load_caches.called
+        assert shell.load_config_section.called
+        assert logger.debug.called
+        assert shell.client is not None
+        assert shell.session == "5adf5cc50929f71a899b81c2c2eb0979"
+        assert shell.current_user == "bofh"
+        assert shell.server == "no.mans.land"
+        assert out
+
+        assert_args_expect(logger.info.call_args_list,
+                           [(('Connected to %s as %s', 'https://no.mans.land/rpc/api', 'bofh'), {})])
