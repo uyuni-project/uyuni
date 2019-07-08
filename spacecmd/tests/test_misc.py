@@ -689,3 +689,21 @@ class TestSCMisc:
                            [(('Connected to %s as %s', 'https://no.mans.land/rpc/api', 'bofh'), {})])
         assert_args_expect(logger.error.call_args_list,
                            [(('Could not write session file: %s', 'Intel inside'), {})])
+
+    def test_logout(self, shell):
+        """
+        Test logout.
+
+        :param shell:
+        :return:
+        """
+
+        assert bool(shell.session)
+
+        spacecmd.misc.do_logout(shell, "")
+
+        assert not bool(shell.session)
+        assert not shell.current_user
+        assert not shell.server
+        assert shell.do_clear_caches.called
+        assert_args_expect(shell.do_clear_caches.call_args_list, [(("", ), {})])
