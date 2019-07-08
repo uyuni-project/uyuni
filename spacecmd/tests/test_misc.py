@@ -743,3 +743,22 @@ class TestSCMisc:
         assert not mprint.called
         assert logger.warning.called
         assert_args_expect(logger.warning.call_args_list, [(("Yourself", ), {})])
+
+    def test_clear_errata_cache(self, shell):
+        """
+        Test errata cache cleared.
+
+        :param shell:
+        :return:
+        """
+        tst = datetime.datetime(2019, 1, 1, 0, 0)
+        shell.all_errata = [{"advisory_name": "cve-123"}]
+        shell.errata_cache_expire = tst
+
+        assert bool(len(shell.all_errata))
+
+        spacecmd.misc.clear_errata_cache(shell)
+
+        assert shell.all_errata == []
+        assert shell.errata_cache_expire > tst
+        assert shell.save_errata_cache.called
