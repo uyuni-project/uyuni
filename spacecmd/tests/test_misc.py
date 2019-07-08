@@ -116,3 +116,41 @@ class TestSCMisc:
         assert_args_expect(mprint.call_args_list,
                            [(("Confirmation messages are", "enabled"), {}),
                             (("Confirmation messages are", "disabled"), {})])
+
+    def test_login_already_logged_in(self, shell):
+        """
+        Test login (already logged in).
+
+        :param shell:
+        :return:
+        """
+        mprint = MagicMock()
+        logger = MagicMock()
+        prompter = MagicMock()
+        gpass = MagicMock()
+        mkd = MagicMock()
+        shell.config = {}
+        shell.conf_dir = "/tmp"
+        with patch("spacecmd.misc.print", mprint) as prt, \
+            patch("spacecmd.misc.prompt_user", prompter) as pmt, \
+            patch("spacecmd.misc.getpass", gpass) as gtp, \
+            patch("spacecmd.misc.os.mkdir", mkd) as mkdr, \
+            patch("spacecmd.misc.logging", logger) as lgr:
+            out = spacecmd.misc.do_login(shell, "")
+
+        assert not shell.load_config_section.called
+        assert not logger.debug.called
+        assert not logger.error.called
+        assert not logger.info.called
+        assert not shell.client.user.listAssignableRoles.called
+        assert not shell.client.auth.login.called
+        assert not gpass.called
+        assert not prompter.called
+        assert not mprint.called
+        assert not mkd.called
+        assert not shell.load_caches.called
+        assert out
+        assert logger.warning.called
+
+        assert_expect(logger.warning.call_args_list,
+                      "You are already logged in")
