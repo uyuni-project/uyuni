@@ -98,3 +98,21 @@ class TestSCMisc:
         assert logger.error.called
         assert_expect(logger.error.call_args_list, "No session found")
 
+    # No test for listing history, as it is just lister from the readline.
+
+    def test_do_toggle_confirmations(self, shell):
+        """
+        Test confirmation messages toggle
+
+        :param shell:
+        :return:
+        """
+        mprint = MagicMock()
+        shell.options.yes = True
+        with patch("spacecmd.misc.print", mprint) as prt:
+            spacecmd.misc.do_toggle_confirmations(shell, "")
+            spacecmd.misc.do_toggle_confirmations(shell, "")
+
+        assert_args_expect(mprint.call_args_list,
+                           [(("Confirmation messages are", "enabled"), {}),
+                            (("Confirmation messages are", "disabled"), {})])
