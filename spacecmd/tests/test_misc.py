@@ -195,3 +195,51 @@ class TestSCMisc:
 
         assert_expect(logger.warning.call_args_list,
                       "No server specified")
+
+    def test_login_connection_error(self, shell):
+        """
+        Test handling connection error at login.
+
+        :param shell:
+        :return:
+        """
+        mprint = MagicMock()
+        logger = MagicMock()
+        prompter = MagicMock()
+        gpass = MagicMock()
+        mkd = MagicMock()
+
+        client = MagicMock()
+        rpc_server = MagicMock(return_value=client)
+
+        shell.session = None
+        shell.options.debug = 2
+        shell.config = {"server": "no.mans.land"}
+        shell.conf_dir = "/tmp"
+        client.api.getVersion = MagicMock(side_effect=Exception("Insert coin"))
+
+        with patch("spacecmd.misc.print", mprint) as prt, \
+            patch("spacecmd.misc.prompt_user", prompter) as pmt, \
+            patch("spacecmd.misc.getpass", gpass) as gtp, \
+            patch("spacecmd.misc.os.mkdir", mkd) as mkdr, \
+            patch("spacecmd.misc.xmlrpclib.Server", rpc_server) as rpcs, \
+            patch("spacecmd.misc.logging", logger) as lgr:
+            out = spacecmd.misc.do_login(shell, "")
+
+        assert not logger.info.called
+        assert not client.user.listAssignableRoles.called
+        assert not client.auth.login.called
+        assert not gpass.called
+        assert not prompter.called
+        assert not mprint.called
+        assert not mkd.called
+        assert not shell.load_caches.called
+        assert not out
+        assert not logger.warning.called
+        assert shell.load_config_section.called
+        assert logger.debug.called
+        assert logger.error.called
+        assert shell.client is None
+
+        assert_args_expect(logger.error.call_args_list,
+                           [(('Failed to connect to %s', 'https://no.mans.land/rpc/api'), {})])
