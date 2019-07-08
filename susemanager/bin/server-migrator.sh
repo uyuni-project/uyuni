@@ -1,5 +1,24 @@
 #!/bin/bash
 
+echo
+echo
+echo "==================================================================="
+echo "This script will migrate the Uyuni server from 4.0.1 to 4.0.2 which"
+echo "also implies replacing the underlying operating system."
+echo
+echo "During migration the services need to be shut down and after"
+echo "successful migration the server needs to be rebooted."
+echo
+echo "Since there is no chance to fix any issues during migration,"
+echo "make sure you have a backup before continuing. If you are"
+echo "running Uyuni server on a virtual machine, it is advisable"
+echo "to create a snapshot before performing the migration!"
+echo "==================================================================="
+echo
+echo
+read -n 1 -s -r -p "Press any key to start the migration or CTRL+C to cancel...";
+echo
+
 spacewalk-service stop
 cp -a /var/lib/cobbler /var/lib/cobbler.old
 cp -a /var/lib/rhn/kickstarts /var/lib/rhn/kickstarts.old
@@ -10,7 +29,7 @@ zypper ar -n "Main Repository" http://download.opensuse.org/distribution/leap/15
 zypper ar -n "Main Update Repository" http://download.opensuse.org/update/leap/15.1/oss repo-update
 zypper ar -n "Non-OSS Repository" http://download.opensuse.org/distribution/leap/15.1/repo/non-oss repo-non-oss
 zypper ar -n "Update Repository (Non-Oss)" http://download.opensuse.org/update/leap/15.1/non-oss/ repo-update-non-oss
-zypper ar -n "Uyuni Server 4.0.2" https://download.opensuse.org/repositories/systemsmanagement:/Uyuni:/Master/images-openSUSE_Leap_15.1/repo/Uyuni-Server-4.0-POOL-x86_64-Media1/ uyuni-server-4.0.2
+zypper ar -n "Uyuni Server latest" https://download.opensuse.org/repositories/systemsmanagement:/Uyuni:/Master/images-openSUSE_Leap_15.1/repo/Uyuni-Server-4.0-POOL-x86_64-Media1/ uyuni-server-latest
 zypper ref
 rpm -e --nodeps atftp
 rpm -e --nodeps python-Cheetah
@@ -32,3 +51,8 @@ if [ -d /var/lib/rhn/kickstarts.old/wizard ]; then
 fi
 rm -rf /var/lib/cobbler.old /var/lib/rhn/kickstarts.old
 /usr/lib/susemanager/bin/migrate-cobbler.sh
+
+echo
+echo "==================================================================="
+echo "Reboot the machine for the new version now!
+echo "==================================================================="
