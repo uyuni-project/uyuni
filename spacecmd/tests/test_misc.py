@@ -353,3 +353,7 @@ class TestSCMisc:
 
         assert_args_expect(logger.info.call_args_list,
                            [(('Connected to %s as %s', 'https://no.mans.land/rpc/api', 'bofh'), {})])
+        assert_args_expect(logger.debug.call_args_list,
+                           [(('Connecting to %s', 'https://no.mans.land/rpc/api'), {}),
+                            (('Server API Version = %s', 11.5), {}),
+                            (('Using cached credentials from %s', '/tmp/no.mans.land/session'), {})])
