@@ -3,7 +3,7 @@
 echo
 echo
 echo "==================================================================="
-echo "This script will migrate the Uyuni server from 4.0.1 to 4.0.2 which"
+echo "This script will migrate Uyuni server to the latest version which"
 echo "also implies replacing the underlying operating system."
 echo
 echo "During migration the services need to be shut down and after"
