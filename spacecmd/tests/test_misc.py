@@ -36,3 +36,16 @@ class TestSCMisc:
         assert shell.clear_system_cache.called
         assert shell.clear_package_cache.called
         assert shell.clear_errata_cache.called
+
+    def test_get_api_version(self, shell):
+        """
+        Get API version.
+
+        :param shell:
+        :return:
+        """
+        mprint = MagicMock()
+        with patch("spacecmd.misc.print", mprint) as prt:
+            spacecmd.misc.do_get_serverversion(shell, "")
+        assert mprint.called
+        assert shell.client.api.systemVersion.called
