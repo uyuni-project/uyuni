@@ -354,8 +354,9 @@ def do_login(self, args):
         # login to the server
         try:
             self.session = self.client.auth.login(username, password)
-        except xmlrpclib.Fault:
+        except xmlrpclib.Fault as exc:
             logging.error('Invalid credentials')
+            logging.debug("Login error: %s (%s)", exc.faultString, exc.faultCode)
             return False
         try:
             # make sure ~/.spacecmd/<server> exists
