@@ -707,3 +707,21 @@ class TestSCMisc:
         assert not shell.server
         assert shell.do_clear_caches.called
         assert_args_expect(shell.do_clear_caches.call_args_list, [(("", ), {})])
+
+    def test_whoamitalkingto(self, shell):
+        """
+        Test to display what server is connected.
+
+        :param shell:
+        :return:
+        """
+        shell.server = "no.mans.land"
+        mprint = MagicMock()
+        logger = MagicMock()
+        with patch("spacecmd.misc.print", mprint) as prt, \
+            patch("spacecmd.misc.logging", logger) as lgr:
+            spacecmd.misc.do_whoamitalkingto(shell, "")
+
+        assert not logger.warning.called
+        assert mprint.called
+        assert_args_expect(mprint.call_args_list, [((shell.server, ), {})])
