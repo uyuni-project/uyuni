@@ -428,6 +428,73 @@ class TestSCMisc:
     @patch("spacecmd.misc.os.path.isfile", MagicMock(return_value=False))
     def test_login_no_cached_session_cfg_pwd(self, shell):
         """
+        Test create new session, password from the command line interface.
+
+        :param shell:
+        :return:
+        """
+        mprint = MagicMock()
+        logger = MagicMock()
+        prompter = MagicMock(return_value="bofh")
+        gpass = MagicMock(return_value="foobar")
+        mkd = MagicMock()
+        file_writer = MagicMock()
+
+        client = MagicMock()
+        rpc_server = MagicMock(return_value=client)
+
+        shell.session = None
+        shell.options.debug = 2
+        shell.options.password = None
+        shell.options.username = None
+        shell.config = {"server": "no.mans.land"}
+        shell.conf_dir = "/tmp"
+        shell.MINIMUM_API_VERSION = 10.8
+        client.api.getVersion = MagicMock(return_value=11.5)
+        client.auth.login = MagicMock(return_value="5adf5cc50929f71a899b81c2c2eb0979")
+
+        with patch("spacecmd.misc.print", mprint) as prt, \
+            patch("spacecmd.misc.prompt_user", prompter) as pmt, \
+            patch("spacecmd.misc.getpass", gpass) as gtp, \
+            patch("spacecmd.misc.os.mkdir", mkd) as mkdr, \
+            patch("spacecmd.misc.xmlrpclib.Server", rpc_server) as rpcs, \
+            patch("spacecmd.misc.open", file_writer) as fmk, \
+            patch("spacecmd.misc.logging", logger) as lgr:
+            out = spacecmd.misc.do_login(shell, "")
+
+        assert not mprint.called
+        assert not logger.warning.called
+        assert not logger.error.called
+        assert not client.user.listAssignableRoles.called
+        assert gpass.called
+        assert client.auth.login.called
+        assert prompter.called
+        assert logger.info.called
+        assert shell.load_caches.called
+        assert shell.load_config_section.called
+        assert logger.debug.called
+        assert shell.client is not None
+        assert shell.session == "5adf5cc50929f71a899b81c2c2eb0979"
+        assert shell.current_user == "bofh"
+        assert shell.server == "no.mans.land"
+        assert out
+        assert mkd.called
+
+        assert_args_expect(client.auth.login.call_args_list,
+                           [(('bofh', "foobar"), {})])
+        assert_args_expect(mkd.call_args_list,
+                           [(('/tmp/no.mans.land', 448), {})])
+        assert_args_expect(shell.load_caches.call_args_list,
+                           [(('no.mans.land', 'bofh'), {})])
+        assert_args_expect(logger.debug.call_args_list,
+                           [(('Connecting to %s', 'https://no.mans.land/rpc/api'), {}),
+                            (('Server API Version = %s', 11.5), {})])
+        assert_args_expect(logger.info.call_args_list,
+                           [(('Connected to %s as %s', 'https://no.mans.land/rpc/api', 'bofh'), {})])
+
+    @patch("spacecmd.misc.os.path.isfile", MagicMock(return_value=False))
+    def test_login_no_cached_session_cli_pwd(self, shell):
+        """
         Test create new session, password from the configuration.
 
         :param shell:
