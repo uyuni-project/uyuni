@@ -810,3 +810,46 @@ class TestSCMisc:
         assert not shell.replace_line_buffer.called
         assert not shell.save_errata_cache.called
 
+    def test_generate_errata_cache_force(self, shell):
+        """
+        Test generate errata cache, forced
+
+        :return:
+        """
+        shell.ERRATA_CACHE_TTL = 86400
+        shell.all_errata = {}
+        shell.options.quiet = False
+        shell.errata_cache_expire = datetime.datetime(2099, 1, 1)
+        shell.client.channel.listSoftwareChannels = MagicMock(return_value=[
+            {"label": "locked_channel"}, {"label": "base_channel"}
+        ])
+        shell.client.channel.software.listErrata = MagicMock(side_effect=[
+            xmlrpclib.Fault(faultCode=42, faultString="Sales staff sold a product we don't offer"),
+            [{
+                "id": 123,
+                "advisory_name": "cve-123",
+                "advisory_type": "mockery", "date": "2019.1.1",
+                "advisory_synopsis": "some text here",
+            }]
+        ])
+
+        logger = MagicMock()
+        with patch("spacecmd.misc.logging", logger) as lgr:
+            spacecmd.misc.generate_errata_cache(shell, force=True)
+
+        assert logger.debug.called
+        assert spacecmd.misc.generate_errata_cache(shell) is None
+        assert shell.client.channel.listSoftwareChannels.called
+        assert shell.client.channel.software.listErrata.called
+        assert shell.replace_line_buffer.called
+        assert shell.save_errata_cache.called
+        assert "cve-123" in shell.all_errata
+        assert shell.all_errata["cve-123"]["id"] == 123
+        assert shell.all_errata["cve-123"]["advisory_type"] == "mockery"
+        assert shell.all_errata["cve-123"]["advisory_synopsis"] == "some text here"
+        assert shell.all_errata["cve-123"]["advisory_name"] == "cve-123"
+        assert shell.all_errata["cve-123"]["date"] == "2019.1.1"
+        assert_args_expect(logger.debug.call_args_list,
+                           [(('No access to %s (%s): %s', 'locked_channel',
+                              42, "Sales staff sold a product we don't offer"), {})])
+
