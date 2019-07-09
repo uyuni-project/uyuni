@@ -556,8 +556,7 @@ def generate_package_cache(self, force=False):
 
     for c in channels:
         try:
-            packages = \
-                self.client.channel.software.listAllPackages(self.session, c)
+            packages = self.client.channel.software.listAllPackages(self.session, c)
         except xmlrpclib.Fault:
             logging.debug('No access to %s', c)
             continue
@@ -568,7 +567,7 @@ def generate_package_cache(self, force=False):
 
             longname = build_package_names(p)
 
-            if not longname in self.all_packages:
+            if longname not in self.all_packages:
                 self.all_packages[longname] = [p.get('id')]
             else:
                 self.all_packages[longname].append(p.get('id'))
