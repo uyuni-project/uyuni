@@ -933,6 +933,35 @@ class TestSCMisc:
         assert shell.save_package_caches.called
         assert shell.package_cache_expire != tst
         assert shell.package_cache_expire is not None
+
+    def test_generate_package_cache_verbose(self, shell):
+        """
+        Test generate package cache verbose mode.
+
+        :param shell:
+        :return:
+        """
+        tst = datetime.datetime(2000, 1, 1, 0, 0)
+        pkgbuild = MagicMock()
+        logger = MagicMock()
+
+        shell.options.quiet = False
+        shell.all_packages = {}
+        shell.all_packages_short = {}
+        shell.all_packages_by_id = {}
+        shell.package_cache_expire = tst
+        shell.PACKAGE_CACHE_TTL = 8000
+        shell.client.channel.listSoftwareChannels = MagicMock(return_value=[])
+
+        with patch("spacecmd.misc.build_package_names", pkgbuild) as pkgb, \
+                patch("spacecmd.misc.logging", logger) as lgr:
+            spacecmd.misc.generate_package_cache(shell, force=False)
+
+        assert not logger.debug.called
+        assert not shell.client.channel.software.listAllPackages.called
+        assert not pkgbuild.called
+        assert shell.client.channel.listSoftwareChannels.called
+        assert shell.replace_line_buffer.called
         assert shell.save_package_caches.called
         assert shell.package_cache_expire != tst
         assert shell.package_cache_expire is not None
