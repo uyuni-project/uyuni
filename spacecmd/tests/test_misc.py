@@ -902,3 +902,38 @@ class TestSCMisc:
         assert not shell.save_package_caches.called
         assert shell.package_cache_expire == tst
 
+    def test_generate_package_cache_cache_not_expired_forced(self, shell):
+        """
+        Test generate package cache not expired, but forced to.
+
+        :param shell:
+        :return:
+        """
+        tst = datetime.datetime(2099, 1, 1, 0, 0)
+        pkgbuild = MagicMock()
+        logger = MagicMock()
+
+        shell.options.quiet = True
+        shell.all_packages = {}
+        shell.all_packages_short = {}
+        shell.all_packages_by_id = {}
+        shell.package_cache_expire = tst
+        shell.PACKAGE_CACHE_TTL = 8000
+        shell.client.channel.listSoftwareChannels = MagicMock(return_value=[])
+
+        with patch("spacecmd.misc.build_package_names", pkgbuild) as pkgb, \
+                patch("spacecmd.misc.logging", logger) as lgr:
+            spacecmd.misc.generate_package_cache(shell, force=True)
+
+        assert not shell.client.channel.software.listAllPackages.called
+        assert not pkgbuild.called
+        assert not shell.replace_line_buffer.called
+        assert not logger.debug.called
+        assert shell.client.channel.listSoftwareChannels.called
+        assert shell.save_package_caches.called
+        assert shell.package_cache_expire != tst
+        assert shell.package_cache_expire is not None
+        assert shell.save_package_caches.called
+        assert shell.package_cache_expire != tst
+        assert shell.package_cache_expire is not None
+
