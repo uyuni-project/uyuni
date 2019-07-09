@@ -1,4 +1,5 @@
 - Align selection column in software channel managers (bsc#1122559)
+- Hide channels managed by Content Lifecycle projects from available sources (bsc#1137965)
 - add caret sorting for rpm versioning
 - API Documentation: mention the shebang in the system.scheduleScriptRun doc strings (bsc#1138655)
 - For orphan contentsources, look also in susesccrepositoryauth to make sure they are not being referenced(bsc#1138275)

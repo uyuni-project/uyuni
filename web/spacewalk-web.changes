@@ -1,4 +1,5 @@
 - Redirect to first step of channel assignment after change channel submit (bsc#1137244)
+- Hide channels managed by Content Lifecycle projects from available sources (bsc#1137965)
 - Add unsupported browser warning when using Internet Explorer
 - Allow virtualization tab for foreign systems (bsc#1116869)
 - Allow forcing off or resetting VMs
