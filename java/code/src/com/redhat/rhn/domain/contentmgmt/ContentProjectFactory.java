@@ -299,6 +299,17 @@ public class ContentProjectFactory extends HibernateFactory {
     }
 
     /**
+     * List all SoftwareEnvironmentTarget
+     * @return list with all SoftwareEnvironmentTarget
+     */
+    public static List<SoftwareEnvironmentTarget> listSoftwareEnvironmentTarget() {
+        CriteriaBuilder builder = getSession().getCriteriaBuilder();
+        CriteriaQuery<SoftwareEnvironmentTarget> query = builder.createQuery(SoftwareEnvironmentTarget.class);
+        query.from(SoftwareEnvironmentTarget.class);
+        return getSession().createQuery(query).list();
+    }
+
+    /**
      * Looks up SoftwareEnvironmentTarget with given id
      *
      * @param label the {@link Channel} label
