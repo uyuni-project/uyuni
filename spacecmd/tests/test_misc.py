@@ -872,3 +872,33 @@ class TestSCMisc:
         assert shell.package_cache_expire != tst
         assert shell.save_package_caches.called
 
+    def test_generate_package_cache_cache_not_expired(self, shell):
+        """
+        Test generate package cache is not yet expired.
+
+        :param shell:
+        :return:
+        """
+        tst = datetime.datetime(2099, 1, 1, 0, 0)
+        pkgbuild = MagicMock()
+        logger = MagicMock()
+
+        shell.options.quiet = True
+        shell.all_packages = {}
+        shell.all_packages_short = {}
+        shell.all_packages_by_id = {}
+        shell.package_cache_expire = tst
+        shell.PACKAGE_CACHE_TTL = 8000
+
+        with patch("spacecmd.misc.build_package_names", pkgbuild) as pkgb, \
+                patch("spacecmd.misc.logging", logger) as lgr:
+            spacecmd.misc.generate_package_cache(shell, force=False)
+
+        assert not shell.client.channel.listSoftwareChannels.called
+        assert not shell.client.channel.software.listAllPackages.called
+        assert not pkgbuild.called
+        assert not shell.replace_line_buffer.called
+        assert not logger.debug.called
+        assert not shell.save_package_caches.called
+        assert shell.package_cache_expire == tst
+
