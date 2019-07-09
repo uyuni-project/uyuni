@@ -18,7 +18,7 @@
     "clean-webpack-plugin": "^1.0.1",
     "copy-webpack-plugin": "^4.6.0",
     "css-loader": "^2.1.0",
-    "eslint": "^5.14.1",
+    "eslint": "5.16.0",
     "eslint-config-react-app": "^3.0.7",
     "eslint-import-resolver-alias": "^1.1.2",
     "eslint-loader": "^2.1.2",
@@ -47,7 +47,7 @@
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "react-hot-loader": "^4.8.4",
-    "react-select": "^2.4.3",
+    "react-select": "2.4.3",
     "toastr": "^2.1.4",
     "use-immer": "^0.3.0"
   },
