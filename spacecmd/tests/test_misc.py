@@ -1017,3 +1017,59 @@ class TestSCMisc:
             assert shell.all_packages_by_id[pkgid] == pkgname
             assert pkgname.split("-")[0] in shell.all_packages_short
 
+    def test_generate_package_cache_duplicate_ids(self, shell):
+        """
+        Test generate package cache, handling duplicate IDs.
+
+        :param shell:
+        :return:
+        """
+        tst = datetime.datetime(2000, 1, 1, 0, 0)
+        logger = MagicMock()
+
+        shell.options.quiet = False
+        shell.all_packages = {}
+        shell.all_packages_short = {}
+        shell.all_packages_by_id = {}
+        shell.package_cache_expire = tst
+        shell.PACKAGE_CACHE_TTL = 8000
+        shell.client.channel.software.listAllPackages = MagicMock(
+            side_effect=[
+                [
+                    {"name": "emacs", "version": 42, "release": 3, "id": 42},
+                    {"name": "gedit", "version": 1, "release": 2, "id": 69},
+                    {"name": "vim", "version": 1, "release": 2, "id": 69},
+                ],
+                xmlrpclib.Fault(faultString="Interrupt configuration interference error",
+                                faultCode=13)
+            ]
+        )
+        shell.client.channel.listSoftwareChannels = MagicMock(
+            return_value=[
+                {"label": "basic_channel"},
+                {"label": "locked_channel"},
+            ]
+        )
+
+        with patch("spacecmd.misc.logging", logger) as lgr:
+            spacecmd.misc.generate_package_cache(shell, force=False)
+
+        assert logger.debug.called
+        assert shell.client.channel.software.listAllPackages.called
+        assert shell.client.channel.listSoftwareChannels.called
+        assert shell.replace_line_buffer.called
+        assert shell.save_package_caches.called
+        assert shell.package_cache_expire != tst
+        assert shell.package_cache_expire is not None
+
+        assert_args_expect(logger.debug.call_args_list,
+                           [(('No access to %s', 'locked_channel',), {}),
+                            (('Non-unique package id "69" is detected. '
+                              'Taking "vim-1-2" instead of "gedit-1-2"',), {})])
+
+        for pkgname, pkgid in [("emacs-42-3", 42), ("vim-1-2", 69)]:
+            assert pkgname in shell.all_packages
+            assert shell.all_packages[pkgname] == [pkgid]
+            assert pkgid in shell.all_packages_by_id
+            assert shell.all_packages_by_id[pkgid] == pkgname
+            assert pkgname.split("-")[0] in shell.all_packages_short
