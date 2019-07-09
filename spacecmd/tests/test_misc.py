@@ -1104,3 +1104,18 @@ class TestSCMisc:
                                (('/tmp/plc.f', {'emacs-41-1': [42]}, tst), {}),
                                (('/tmp/bic.f', {42: 'emacs-41-1'}, tst), {}),
                            ])
+
+    def test_user_confirm_bool_positive(self, shell):
+        """
+        Test interactive user confirmation UI. Boolean, positive.
+
+        :return:
+        """
+        shell.options.yes = False
+        for answer in ["yop", "yeah", "yes", "y", "Yes", "Yo"]:
+            pmt = MagicMock(return_value=answer)
+            with patch("spacecmd.misc.prompt_user", pmt) as prompter:
+                out = spacecmd.misc.user_confirm(shell)
+
+            assert isinstance(out, bool)
+            assert out
