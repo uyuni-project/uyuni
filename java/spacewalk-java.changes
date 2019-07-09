@@ -1,4 +1,5 @@
 - Cloning Errata from a specific channel should not take packages
+- Hide channels managed by Content Lifecycle projects from available sources (bsc#1137965)
   from other channels (bsc#1142764)
 - add caret sorting for rpm versioning
 - improve performance for retrieving the user permissions on channels (bsc#1140644)

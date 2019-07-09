@@ -1,3 +1,4 @@
+- Hide channels managed by Content Lifecycle projects from available sources (bsc#1137965)
 - Add unsupported browser warning when using Internet Explorer
 
 -------------------------------------------------------------------
@@ -6,7 +7,7 @@ Wed Jul 31 17:38:44 CEST 2019 - jgonzalez@suse.com
 - version 4.0.12-1
 - Add new validation to avoid creating content lifecycle projects starting with a number (bsc#1139493)
 - Redirect to first step of channel assignment after change channel submit (bsc#1137244)
-- add error messages, hints for image profile edit page (bsc#1127319) 
+- add error messages, hints for image profile edit page (bsc#1127319)
 - Allow virtualization tab for foreign systems (bsc#1116869)
 - Add checks for empty required entries on formula forms (bsc#1109639)
 - Fix big formula checkbox not supported in Firefox
