@@ -3853,7 +3853,8 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.param #param_desc("string", "groupname", "Group to run script as.")
      * @xmlrpc.param #param_desc("int", "timeout", "Seconds to allow the script to run
      *before timing out.")
-     * @xmlrpc.param #param_desc("string", "script", "Contents of the script to run.")
+     * @xmlrpc.param #param_desc("string", "script", "Contents of the script to run.
+     * Must start with a shebang (e.g. #!/bin/bash)")
      * @xmlrpc.param #param_desc("dateTime.iso8601", "earliestOccurrence",
      * "Earliest the script can run.")
      * @xmlrpc.returntype int - ID of the script run action created. Can be used to fetch
@@ -3917,7 +3918,8 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.param #param_desc("string", "groupname", "Group to run script as.")
      * @xmlrpc.param #param_desc("int", "timeout", "Seconds to allow the script to run
      *before timing out.")
-     * @xmlrpc.param #param_desc("string", "script", "Contents of the script to run.")
+     * @xmlrpc.param #param_desc("string", "script", "Contents of the script to run.
+     * Must start with a shebang (e.g. #!/bin/bash)")
      * @xmlrpc.param #param_desc("dateTime.iso8601", "earliestOccurrence",
      * "Earliest the script can run.")
      * @xmlrpc.returntype int - ID of the script run action created. Can be used to fetch
@@ -3950,7 +3952,8 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.param #param_desc("string", "groupname", "Group to run script as.")
      * @xmlrpc.param #param_desc("int", "timeout", "Seconds to allow the script to run
      *before timing out.")
-     * @xmlrpc.param #param_desc("string", "script", "Contents of the script to run.")
+     * @xmlrpc.param #param_desc("string", "script", "Contents of the script to run.
+     * Must start with a shebang (e.g. #!/bin/bash)")
      * @xmlrpc.param #param_desc("dateTime.iso8601", "earliestOccurrence",
      * "Earliest the script can run.")
      * @xmlrpc.returntype int - ID of the script run action created. Can be used to fetch
@@ -3989,7 +3992,8 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.param #param_desc("string", "groupname", "Group to run script as.")
      * @xmlrpc.param #param_desc("int", "timeout", "Seconds to allow the script to run
      *before timing out.")
-     * @xmlrpc.param #param_desc("string", "script", "Contents of the script to run.")
+     * @xmlrpc.param #param_desc("string", "script", "Contents of the script to run.
+     * Must start with a shebang (e.g. #!/bin/bash)")
      * @xmlrpc.param #param_desc("dateTime.iso8601", "earliestOccurrence",
      * "Earliest the script can run.")
      * @xmlrpc.returntype int - ID of the script run action created. Can be used to fetch
