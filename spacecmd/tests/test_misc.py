@@ -1119,3 +1119,18 @@ class TestSCMisc:
 
             assert isinstance(out, bool)
             assert out
+
+    def test_user_confirm_bool_negative(self, shell):
+        """
+        Test interactive user confirmation UI. Boolean, negative.
+
+        :return:
+        """
+        shell.options.yes = False
+        for answer in ["whatever", "nope", "no", "n", "Nada", "go away"]:
+            pmt = MagicMock(return_value=answer)
+            with patch("spacecmd.misc.prompt_user", pmt) as prompter:
+                out = spacecmd.misc.user_confirm(shell)
+
+            assert isinstance(out, bool)
+            assert not out
