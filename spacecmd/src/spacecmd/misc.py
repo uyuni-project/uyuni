@@ -586,9 +586,7 @@ def generate_package_cache(self, force=False):
 
             self.all_packages_by_id[i] = k
 
-    self.package_cache_expire = \
-        datetime.now() + timedelta(seconds=self.PACKAGE_CACHE_TTL)
-
+    self.package_cache_expire = datetime.now() + timedelta(seconds=self.PACKAGE_CACHE_TTL)
     self.save_package_caches()
 
     if not self.options.quiet:
