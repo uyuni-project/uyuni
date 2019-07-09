@@ -5,7 +5,7 @@ const npmLicensesArray = [
 
 const npmDependencies = [
     { name: "@babel/polyfill", license: "MIT",  version: "7.2.5" }, 
-  { name: "@babel/runtime", license: "MIT",  version: "7.4.4" }, 
+  { name: "@babel/runtime", license: "MIT",  version: "7.5.2" }, 
   { name: "@emotion/hash", license: "MIT",  version: "0.6.6" }, 
   { name: "@emotion/memoize", license: "MIT",  version: "0.6.6" }, 
   { name: "@emotion/stylis", license: "MIT",  version: "0.7.1" }, 
@@ -21,7 +21,7 @@ const npmDependencies = [
   { name: "fbjs", license: "MIT",  version: "0.8.17" }, 
   { name: "immer", license: "MIT",  version: "3.1.1" }, 
   { name: "lodash", license: "MIT",  version: "4.17.11" }, 
-  { name: "memoize-one", license: "MIT",  version: "5.0.4" }, 
+  { name: "memoize-one", license: "MIT",  version: "5.0.5" }, 
   { name: "object-assign", license: "MIT",  version: "4.1.1" }, 
   { name: "performance-now", license: "MIT",  version: "2.1.0" }, 
   { name: "process", license: "MIT",  version: "0.11.10" }, 
