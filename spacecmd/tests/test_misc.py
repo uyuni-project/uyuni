@@ -1134,3 +1134,18 @@ class TestSCMisc:
 
             assert isinstance(out, bool)
             assert not out
+
+    def test_user_confirm_int_positive(self, shell):
+        """
+        Test interactive user confirmation UI. Integer, positive.
+
+        :return:
+        """
+        shell.options.yes = False
+        for answer in ["yop", "yeah", "yes", "y", "Yes", "Yo"]:
+            pmt = MagicMock(return_value=answer)
+            with patch("spacecmd.misc.prompt_user", pmt) as prompter:
+                out = spacecmd.misc.user_confirm(shell, integer=True)
+
+            assert isinstance(out, int)
+            assert out == 1
