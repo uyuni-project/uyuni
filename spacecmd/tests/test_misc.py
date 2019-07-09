@@ -1073,3 +1073,34 @@ class TestSCMisc:
             assert pkgid in shell.all_packages_by_id
             assert shell.all_packages_by_id[pkgid] == pkgname
             assert pkgname.split("-")[0] in shell.all_packages_short
+
+    def test_save_package_caches(self, shell):
+        """
+        Test saving package caches.
+
+        :param shell:
+        :return:
+        """
+        savecache = MagicMock()
+
+        shell.all_packages = {"emacs-41-1": [42]}
+        shell.all_packages_short = {"emacs": ""}
+        shell.all_packages_by_id = {42: "emacs-41-1"}
+
+        shell.packages_short_cache_file = "/tmp/psc.f"
+        shell.packages_long_cache_file = "/tmp/plc.f"
+        shell.packages_by_id_cache_file = "/tmp/bic.f"
+
+        tst = datetime.datetime(2019, 1, 1, 0, 0)
+        shell.package_cache_expire = tst
+
+        with patch("spacecmd.misc.save_cache", savecache) as savc:
+            spacecmd.misc.save_package_caches(shell)
+
+        assert shell.package_cache_expire == tst
+        assert_args_expect(savecache.call_args_list,
+                           [
+                               (('/tmp/psc.f', {'emacs': ''}, tst), {}),
+                               (('/tmp/plc.f', {'emacs-41-1': [42]}, tst), {}),
+                               (('/tmp/bic.f', {42: 'emacs-41-1'}, tst), {}),
+                           ])
