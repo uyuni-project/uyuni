@@ -1228,3 +1228,25 @@ class TestSCMisc:
         assert spacecmd.misc.get_package_name(shell, 42) == "emacs-42"
         assert spacecmd.misc.get_package_name(shell, 43) is None
         assert shell.generate_package_cache.called
+
+    def test_generate_system_cache_not_expired(self, shell):
+        """
+        Test generating system cache before expiration point.
+
+        :param shell:
+        :return:
+        """
+        tst = datetime.datetime(2099, 1, 1, 0, 0)
+        shell.system_cache_expire = tst
+        shell.options.quiet = False
+        shell.all_systems = {}
+        shell.SYSTEM_CACHE_TTL = 8000
+        sleeper = MagicMock()
+
+        with patch("spacecmd.misc.sleep", sleeper) as slp:
+            spacecmd.misc.generate_system_cache(shell)
+
+        assert not shell.client.system.listSystems.called
+        assert not shell.replace_line_buffer.called
+        assert not sleeper.called
+        assert shell.system_cache_expire == tst
