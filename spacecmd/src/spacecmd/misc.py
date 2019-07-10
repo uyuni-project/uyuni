@@ -932,6 +932,13 @@ def user_confirm(self, prompt='Is this ok [y/N]:', nospacer=False,
 
 # check if the available API is recent enough
 def check_api_version(self, want):
+    """
+    A quick API version checker, supporting only "<number>.<number>" format.
+
+    :param self:
+    :param want:
+    :return:
+    """
     want_parts = [int(i) for i in want.split('.')]
     have_parts = [int(i) for i in self.api_version.split('.')]
 
