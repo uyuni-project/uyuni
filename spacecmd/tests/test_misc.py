@@ -1216,3 +1216,15 @@ class TestSCMisc:
                             (('douchebox = 100100, 100300',), {})])
 
         assert logger.warning.called
+
+    def test_get_package_name(self, shell):
+        """
+        Get package name.
+
+        :param shell:
+        :return:
+        """
+        shell.all_packages_by_id = {42: "emacs-42"}
+        assert spacecmd.misc.get_package_name(shell, 42) == "emacs-42"
+        assert spacecmd.misc.get_package_name(shell, 43) is None
+        assert shell.generate_package_cache.called
