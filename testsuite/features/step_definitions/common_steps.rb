@@ -643,7 +643,7 @@ When(/^I enable repositories before installing branch server$/) do
     repos = "openSUSE-Leap-#{os_version}-Pool openSUSE-Leap-#{os_version}-Update"
     puts $proxy.run("zypper mr --enable #{repos}")
   elsif os_version =~ /^15/
-    repos, _code = $proxy.run('zypper lr | grep SLE-Module-Basesystem | cut -d"|" -f2')
+    repos, _code = $proxy.run('zypper lr | grep -E "SLE-Module-Basesystem|SLE-Module-Server-Applications" | cut -d"|" -f2')
     puts $proxy.run("zypper mr --enable #{repos.gsub(/\s/, ' ')}")
   else
     arch, _code = $proxy.run('uname -m')
@@ -659,7 +659,7 @@ When(/^I disable repositories after installing branch server$/) do
     repos = "openSUSE-Leap-#{os_version}-Pool openSUSE-Leap-#{os_version}-Update"
     puts $proxy.run("zypper mr --disable #{repos}")
   elsif os_version =~ /^15/
-    repos, _code = $proxy.run('zypper lr | grep SLE-Module-Basesystem | cut -d"|" -f2')
+    repos, _code = $proxy.run('zypper lr | grep -E "SLE-Module-Basesystem|SLE-Module-Server-Applications" | cut -d"|" -f2')
     puts $proxy.run("zypper mr --disable #{repos.gsub(/\s/, ' ')}")
   else
     arch, _code = $proxy.run('uname -m')
