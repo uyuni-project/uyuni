@@ -3,7 +3,7 @@
   unauthenticated, attacker could use this flaw to test the
   existence of arbitrary files, or if they have access to the
   proxy's filesystem, execute arbitrary code in the context of the
-  proxy. (bsc#1136480)
+  proxy. (bsc#1136476)
 
 -------------------------------------------------------------------
 Wed May 15 15:12:44 CEST 2019 - jgonzalez@suse.com
