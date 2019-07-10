@@ -1179,3 +1179,17 @@ class TestSCMisc:
 
         for bigger in ["11", "10.6"]:
             assert not spacecmd.misc.check_api_version(shell, bigger)
+
+    def test_get_system_id_no_duplicates(self, shell):
+        """
+        Test getting system ID without duplicates (normal run).
+
+        :param shell:
+        :return:
+        """
+        shell.all_systems = {100100: "douchebox", 100200: "sloppy"}
+
+        assert spacecmd.misc.get_system_id(shell, "douchebox") == 100100
+        assert spacecmd.misc.get_system_id(shell, "sloppy") == 100200
+        assert spacecmd.misc.get_system_id(shell, "100100") == 100100
+        assert spacecmd.misc.get_system_id(shell, "100200") == 100200
