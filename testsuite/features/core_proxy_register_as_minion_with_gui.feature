@@ -40,8 +40,7 @@ Feature: Setup SUSE Manager proxy
   Scenario: Check proxy system details
     When I am on the Systems overview page of this "proxy"
     Then I should see "proxy" hostname
-    # TODO: uncomment when SCC product becomes available
-    # And I wait until I see "$PRODUCT Proxy" text, refreshing the page
+    And I wait until I see "SUSE Manager Proxy" text, refreshing the page
 
 @proxy
   Scenario: Check events history for failures on the proxy
