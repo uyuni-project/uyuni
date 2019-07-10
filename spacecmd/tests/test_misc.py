@@ -1164,3 +1164,18 @@ class TestSCMisc:
 
             assert isinstance(out, int)
             assert out == 0
+
+    def test_check_api_version(self, shell):
+        """
+        Test API version checker.
+
+        :param shell:
+        :return:
+        """
+        shell.api_version = "10.5"
+
+        for smaller in ["10", "9", "10.1", "10.5"]:
+            assert spacecmd.misc.check_api_version(shell, smaller)
+
+        for bigger in ["11", "10.6"]:
+            assert not spacecmd.misc.check_api_version(shell, bigger)
