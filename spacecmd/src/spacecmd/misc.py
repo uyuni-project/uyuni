@@ -633,12 +633,15 @@ def get_package_id(self, name):
 
 
 def get_package_name(self, package_id):
-    self.generate_package_cache()
+    """
+    Get package name by ID.
 
-    try:
-        return self.all_packages_by_id[package_id]
-    except KeyError:
-        return
+    :param self:
+    :param package_id:
+    :return:
+    """
+    self.generate_package_cache()
+    return self.all_packages_by_id.get(package_id)
 
 
 def clear_system_cache(self):
