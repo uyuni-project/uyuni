@@ -1,3 +1,5 @@
+- Make a explicit requirement to systemd for spacewalk-client-tools
+  when rhnsd timer is installed
 - The rhnsd service was replaced by rhnsd timer, so
   registration script and systemd presets are now adapted
   to this (bsc#1138130)
