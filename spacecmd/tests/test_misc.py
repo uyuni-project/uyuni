@@ -1250,3 +1250,33 @@ class TestSCMisc:
         assert not shell.replace_line_buffer.called
         assert not sleeper.called
         assert shell.system_cache_expire == tst
+
+    def test_generate_system_cache_not_expired_forced(self, shell):
+        """
+        Test generating system cache before expiration point, forced.
+
+        :param shell:
+        :return:
+        """
+        tst = datetime.datetime(2099, 1, 1, 0, 0)
+        shell.system_cache_expire = tst
+        shell.options.quiet = False
+        shell.all_systems = {}
+        shell.SYSTEM_CACHE_TTL = 8000
+        shell.client.system.listSystems = MagicMock(return_value=[
+            {"id": 100100, "name": "douchebox"},
+            {"id": 100101, "name": "useless"},
+            {"id": 100102, "name": "slowlaris"},
+        ])
+        sleeper = MagicMock()
+
+        with patch("spacecmd.misc.sleep", sleeper) as slp:
+            spacecmd.misc.generate_system_cache(shell, force=True)
+
+        assert not sleeper.called
+        assert shell.client.system.listSystems.called
+        assert shell.replace_line_buffer.called
+        assert shell.system_cache_expire is not None
+        assert shell.system_cache_expire != tst
+        assert shell.replace_line_buffer.call_count == 2
+        assert shell.save_system_cache.called
