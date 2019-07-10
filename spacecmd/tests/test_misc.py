@@ -1193,3 +1193,26 @@ class TestSCMisc:
         assert spacecmd.misc.get_system_id(shell, "sloppy") == 100200
         assert spacecmd.misc.get_system_id(shell, "100100") == 100100
         assert spacecmd.misc.get_system_id(shell, "100200") == 100200
+
+    def test_get_system_id_handle_duplicates(self, shell):
+        """
+        Test getting system ID with duplicates.
+
+        :param shell:
+        :return:
+        """
+        shell.all_systems = {100100: "douchebox", 100200: "sloppy",
+                             100300: "douchebox"}
+
+        logger = MagicMock()
+        with patch("spacecmd.misc.logging", logger) as lgr:
+            assert spacecmd.misc.get_system_id(shell, "douchebox") == 0
+
+        assert_args_expect(logger.warning.call_args_list,
+                           [(('Duplicate system profile names found!',), {}),
+                            (('Please reference systems by ID or resolve the',), {}),
+                            (("underlying issue with 'system_delete' or 'system_rename'",), {}),
+                            (('',), {}),
+                            (('douchebox = 100100, 100300',), {})])
+
+        assert logger.warning.called
