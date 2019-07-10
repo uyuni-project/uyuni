@@ -148,6 +148,12 @@ BuildRequires:  yum
 %endif
 %endif
 
+# For the systemd presets
+%if 0%{?fedora} || 0%{?mageia} || 0%{?debian} >= 8 || 0%{?ubuntu} >= 1504 || 0%{?sle_version} >= 120000 || 0%{?rhel} >= 7
+BuildRequires: systemd
+Requires:      systemd
+%endif
+
 %description
 Spacewalk Client Tools provides programs and libraries to allow your
 system to receive software updates from Spacewalk.
