@@ -3,17 +3,10 @@
 Test spacecmd.misc
 """
 from unittest.mock import MagicMock, patch, mock_open
-import pytest
 from helpers import shell, assert_expect, assert_list_args_expect, assert_args_expect
 import spacecmd.misc
 from xmlrpc import client as xmlrpclib
-import os
-import tempfile
-import shutil
 import datetime
-import pickle
-import hashlib
-import time
 
 
 class TestSCMisc:
