@@ -38,6 +38,7 @@ except ImportError:
     import xmlrpclib
 from spacecmd.utils import *
 
+
 def help_configchannel_list(self):
     print('configchannel_list: List all configuration channels')
     print('usage: configchannel_list')
@@ -45,13 +46,13 @@ def help_configchannel_list(self):
 
 def do_configchannel_list(self, args, doreturn=False):
     channels = self.client.configchannel.listGlobals(self.session)
-    channels = [c.get('label') for c in channels]
+    channels = sorted([c.get('label') for c in channels])
 
     if doreturn:
         return channels
     else:
         if channels:
-            print('\n'.join(sorted(channels)))
+            print('\n'.join(channels))
 
 ####################
 
