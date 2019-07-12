@@ -4,12 +4,12 @@
 Feature: Register a traditional system to be managed via SSH push
 
   Scenario: Delete the traditional client for ssh-reverse bootrap
-    Given I am on the Systems overview page of this "sle-client"
+    Given I am on the Systems overview page of this "sle_client"
     When I follow "Delete System"
     Then I should see a "Confirm System Profile Deletion" text
     When I click on "Delete Profile"
     And I wait until I see "has been deleted" text
-    Then "sle-client" should not be registered
+    Then "sle_client" should not be registered
 
   Scenario: Create an activation key for SSH push
     Given I am on the Systems page
@@ -38,19 +38,19 @@ Feature: Register a traditional system to be managed via SSH push
 
   Scenario: Register this client for SSH push via tunnel
     When I register this client for SSH push via tunnel
-    Then I should see "sle-client" in spacewalk
+    Then I should see "sle_client" in spacewalk
 
   Scenario: Check this client's contact method
-    Given I am on the Systems overview page of this "sle-client"
+    Given I am on the Systems overview page of this "sle_client"
     Then I should see a "Push via SSH tunnel" text
 
   Scenario: Cleanup: delete the traditional SSH push client
-    Given I am on the Systems overview page of this "sle-client"
+    Given I am on the Systems overview page of this "sle_client"
     When I follow "Delete System"
     Then I should see a "Confirm System Profile Deletion" text
     When I click on "Delete Profile"
     And I wait until I see "has been deleted" text
-    Then "sle-client" should not be registered
+    Then "sle_client" should not be registered
 
   Scenario: Cleanup: delete the activation key for SSH push
     Given I am on the Systems page
@@ -70,10 +70,10 @@ Feature: Register a traditional system to be managed via SSH push
 
   Scenario: Cleanup: hosts file of traditional client via SSH tunnel
     Given I am on the Systems page
-    And I run "sed -i '/127.0.1.1/d' /etc/hosts" on "sle-client"
+    And I run "sed -i '/127.0.1.1/d' /etc/hosts" on "sle_client"
     And I run "rm /srv/www/htdocs/pub/bootstrap/bootstrap-ssh-push-tunnel.sh" on "server"
-    And I remove server hostname from hosts file on "sle-client"
+    And I remove server hostname from hosts file on "sle_client"
  
   Scenario: Cleanup: register a traditional client after SSH push tests
     When I register using "1-SUSE-DEV-x86_64" key
-    Then I should see "sle-client" in spacewalk
+    Then I should see "sle_client" in spacewalk

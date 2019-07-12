@@ -75,7 +75,7 @@ Feature: Configuration management of traditional clients
     And I should see a "Update Configuration File" button
 
   Scenario: Subscribe a system to new configuration channel
-    When I am on the Systems overview page of this "sle-client"
+    When I am on the Systems overview page of this "sle_client"
     And I follow "Configuration" in the content area
     And I follow "Manage Configuration Channels" in the content area
     And I follow first "Subscribe to Channels" in the content area
@@ -90,7 +90,7 @@ Feature: Configuration management of traditional clients
     Then I should see a table line with "/etc/mgr-test-file.cnf", "New Test Channel", "1 system"
 
   Scenario: Check centrally managed files of SLES client
-    When I am on the Systems overview page of this "sle-client"
+    When I am on the Systems overview page of this "sle_client"
     And I follow "Configuration" in the content area
     And I follow "View/Modify Files" in the content area
     And I follow "Centrally-Managed Files" in the content area
@@ -98,31 +98,31 @@ Feature: Configuration management of traditional clients
 
   Scenario: Deploy centrally managed files
     Given I am authorized as "admin" with password "admin"
-    When I run "rhn-actions-control --enable-all" on "sle-client"
+    When I run "rhn-actions-control --enable-all" on "sle_client"
     And I follow the left menu "Configuration > Channels"
     And I follow "New Test Channel"
     And I follow "Deploy all configuration files to all subscribed systems"
     Then I should see a "/etc/mgr-test-file.cnf" link
-    And I should see "sle-client" as link
+    And I should see "sle_client" as link
     When I click on "Deploy Files to Selected Systems"
     Then I should see a "1 revision-deploy is being scheduled." text
     And I should see a "0 revision-deploys overridden." text
 
   Scenario: Check file deployment
-    When I run "rhn_check -vvv" on "sle-client"
-    Then file "/etc/mgr-test-file.cnf" should exist on "sle-client"
-    And file "/etc/mgr-test-file.cnf" should contain "MGR_PROXY=yes" on "sle-client"
+    When I run "rhn_check -vvv" on "sle_client"
+    Then file "/etc/mgr-test-file.cnf" should exist on "sle_client"
+    And file "/etc/mgr-test-file.cnf" should contain "MGR_PROXY=yes" on "sle_client"
 
   Scenario: Change file on traditional client and compare
-    When I am on the Systems overview page of this "sle-client"
-    And I store "MGR_PROXY=no" into file "/etc/mgr-test-file.cnf" on "sle-client"
+    When I am on the Systems overview page of this "sle_client"
+    And I store "MGR_PROXY=no" into file "/etc/mgr-test-file.cnf" on "sle_client"
     And I follow "Configuration" in the content area
     And I follow "Compare Files" in the content area
     And I check "/etc/mgr-test-file.cnf" in the list
     And I click on "Compare Files"
     And I click on "Schedule Compare"
     Then I should see a "1 files scheduled for comparison." text
-    When I run "rhn_check -vvv" on "sle-client"
+    When I run "rhn_check -vvv" on "sle_client"
     And I wait until event "Show differences between profiled config files and deployed config files scheduled by admin" is completed
     Then I should see a "Differences exist" link
     When I follow "Differences exist"
@@ -131,7 +131,7 @@ Feature: Configuration management of traditional clients
     And I should see a "+MGR_PROXY=no" text
 
   Scenario: Import the changed test configuration file
-    When I am on the Systems overview page of this "sle-client"
+    When I am on the Systems overview page of this "sle_client"
     And I follow "Configuration" in the content area
     And I follow "Add Files" in the content area
     And I follow "Import Files" in the content area
@@ -139,14 +139,14 @@ Feature: Configuration management of traditional clients
     And I click on "Import Configuration Files"
     And I click on "Confirm"
     Then I should see a "1 files scheduled for upload." text
-    When I run "rhn_check -vvv" on "sle-client"
+    When I run "rhn_check -vvv" on "sle_client"
     And I follow "Configuration" in the content area
     And I follow "View/Modify Files" in the content area
     And I follow "Local Sandbox" in the content area
     Then I should see a table line with "/etc/mgr-test-file.cnf", "Revision 1"
 
   Scenario: Import the changed cron configuration file
-    When I am on the Systems overview page of this "sle-client"
+    When I am on the Systems overview page of this "sle_client"
     And I follow "Configuration" in the content area
     And I follow "Add Files" in the content area
     And I follow "Import Files" in the content area
@@ -154,14 +154,14 @@ Feature: Configuration management of traditional clients
     And I click on "Import Configuration Files"
     And I click on "Confirm"
     Then I should see a "1 files scheduled for upload." text
-    When I run "rhn_check -vvv" on "sle-client"
+    When I run "rhn_check -vvv" on "sle_client"
     And I follow "Configuration" in the content area
     And I follow "View/Modify Files" in the content area
     And I follow "Local Sandbox" in the content area
     Then I should see a table line with "/etc/sysconfig/cron", "Revision 1"
 
   Scenario: Copy sandbox file to centrally managed
-    When I am on the Systems overview page of this "sle-client"
+    When I am on the Systems overview page of this "sle_client"
     And I follow "Configuration" in the content area
     And I follow "View/Modify Files" in the content area
     And I follow "Local Sandbox" in the content area
@@ -193,9 +193,9 @@ Feature: Configuration management of traditional clients
   Scenario: Change one local file and compare multiple files
     # bsc#910243 - configfile.compare: Filelist in Eventhistory is not sorted alphabetically
     # bsc#910247 - configfile.compare task shows different result in Web-UI than 'rhncfg-client verify -o'
-    When I am on the Systems overview page of this "sle-client"
+    When I am on the Systems overview page of this "sle_client"
     And I follow "Configuration" in the content area
-    And I store "MGR_PROXY=yes" into file "/etc/mgr-test-file.cnf" on "sle-client"
+    And I store "MGR_PROXY=yes" into file "/etc/mgr-test-file.cnf" on "sle_client"
     And I follow "Compare Files" in the content area
     And I check "/etc/mgr-test-file.cnf" in the list
     And I check "/etc/sysconfig/cron" in the list
@@ -203,7 +203,7 @@ Feature: Configuration management of traditional clients
     And I click on "Compare Files"
     And I click on "Schedule Compare"
     Then I should see a "3 files scheduled for comparison." text
-    When I run "rhn_check -vvv" on "sle-client"
+    When I run "rhn_check -vvv" on "sle_client"
     And I wait until event "Show differences between profiled config files and deployed config files scheduled by admin" is completed
     Then I should see a "Differences exist" link
     And I should see a "/etc/mgr-test-file.cnf (rev. 2) Differences exist" text
@@ -265,7 +265,7 @@ Feature: Configuration management of traditional clients
     When I follow the left menu "Configuration > Channels"
     And I follow "New Test Channel"
     And I follow "Systems" in the content area
-    And I check the "sle-client" client
+    And I check the "sle_client" client
     And I click on "Unsubscribe systems"
     Then I should see a "Successfully unsubscribed 1 system(s)." text
 
@@ -284,7 +284,7 @@ Feature: Configuration management of traditional clients
     And I click on "Delete Config Channel"
 
   Scenario: Cleanup: delete configuration file on client
-    When I remove "/etc/mgr-test-file.cnf" from "sle-client"
+    When I remove "/etc/mgr-test-file.cnf" from "sle_client"
 
   Scenario: Cleanup: remove remaining systems from SSM after tests of configuration channel on traditional client
     When I am authorized as "admin" with password "admin"

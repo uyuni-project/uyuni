@@ -80,15 +80,13 @@ end
 
 When(/^I apply highstate on "([^"]*)"$/) do |host|
   system_name = get_system_name(host)
-  if host == 'sle-minion'
-    cmd = 'salt'
-    extra_cmd = ''
-  elsif ['ssh-minion', 'ceos-minion', 'ceos-ssh-minion', 'ubuntu-minion', 'ubuntu-ssh-minion'].include?(host)
+  if host.include? 'ssh_minion'
     cmd = 'runuser -u salt -- salt-ssh --priv=/srv/susemanager/salt/salt_ssh/mgr_ssh_id'
     extra_cmd = '-i --roster-file=/tmp/roster_tests -w -W'
     $server.run("printf '#{system_name}:\n  host: #{system_name}\n  user: root\n  passwd: linux\n' > /tmp/roster_tests")
-  else
-    raise 'Invalid target'
+  elsif host.include? 'minion'
+    cmd = 'salt'
+    extra_cmd = ''
   end
   $server.run_until_ok("cd /tmp; #{cmd} #{system_name} state.highstate #{extra_cmd}")
 end
@@ -520,6 +518,10 @@ When(/^I enable IPv6 forwarding on all interfaces of the SLE minion$/) do
 end
 
 And(/^I register "([^*]*)" as traditional client$/) do |client|
+  step %(I register "#{client}" as traditional client with activation key "1-SUSE-DEV-x86_64")
+end
+
+And(/^I register "([^*]*)" as traditional client with activation key "([^*]*)"$/) do |client, key|
   node = get_target(client)
   command = 'wget --no-check-certificate ' \
             '-O /usr/share/rhn/RHN-ORG-TRUSTED-SSL-CERT ' \
@@ -528,7 +530,7 @@ And(/^I register "([^*]*)" as traditional client$/) do |client|
   command = 'rhnreg_ks --username=admin --password=admin --force ' \
             "--serverUrl=#{registration_url} " \
             '--sslCACert=/usr/share/rhn/RHN-ORG-TRUSTED-SSL-CERT ' \
-            '--activationkey=1-SUSE-DEV-x86_64'
+            "--activationkey=#{key}"
   node.run(command)
 end
 
@@ -1127,9 +1129,9 @@ When(/^I copy the retail configuration file "([^"]*)" on server$/) do |file|
   sed_values << "s/<PXEBOOT>/#{ADDRESSES['pxeboot']}/; "
   sed_values << "s/<PXEBOOT_MAC>/#{$pxeboot_mac}/; "
   sed_values << "s/<MINION>/#{ADDRESSES['minion']}/; "
-  sed_values << "s/<MINION_MAC>/#{get_mac_address('sle-minion')}/; "
+  sed_values << "s/<MINION_MAC>/#{get_mac_address('sle_minion')}/; "
   sed_values << "s/<CLIENT>/#{ADDRESSES['client']}/; "
-  sed_values << "s/<CLIENT_MAC>/#{get_mac_address('sle-client')}/; "
+  sed_values << "s/<CLIENT_MAC>/#{get_mac_address('sle_client')}/; "
   # Retail DNS fix for client and minion
   $server.run("sed -i '#{sed_values}' #{dest}")
 end

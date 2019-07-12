@@ -1,0 +1,115 @@
+# Copyright (c) 2019 SUSE LLC.
+# Licensed under the terms of the MIT license.
+
+@<client>
+Feature: Smoke tests for <client>
+  In order to test <client>
+  As an authorized user
+  I want to :
+  - Install a package via Web UI
+  - Install a patch via Web UI
+  - Remove a package via Web UI
+  - Execute a remote command via Web UI
+  - Apply a configuration file via Web UI
+  - Schedule Software package refresh
+  - Schedule Hardware refresh
+  - Reboot the client via Web UI
+
+  Scenario: Client <client> grains are displayed correctly on the details page
+    Given I am on the Systems overview page of this "<client>"
+    Then I can see all system information for "<client>"
+
+  <tag_client_exclude_ubuntu>
+  Scenario: Install a patch on the <client>
+    Given I am on the Systems overview page of this "<client>"
+    And I follow "Software" in the content area
+    And I follow "Patches" in the content area
+    When I check a "<client>" patch in the list
+    And I click on "Apply Patches"
+    And I click on "Confirm"
+    Then I should see a "1 patch update has been scheduled for" text
+    And I follow "scheduled"
+    And I follow first "Patch Update:"
+    And I wait at most 300 seconds until the event is completed, refreshing the page
+
+  Scenario: Install a package on the <client>
+    Given I am on the Systems overview page of this "<client>"
+    And I follow "Software" in the content area
+    And I follow "Install"
+    And I check a "<client>" package in the list
+    And I click on "Install Selected Packages"
+    And I click on "Confirm"
+    Then I should see a "1 package install has been scheduled for" text
+    And I wait until event "Package Install/Upgrade scheduled by admin" is completed
+
+  Scenario: Remove package from <client>
+    Given I am on the Systems overview page of this "<client>"
+    And I follow "Software" in the content area
+    And I follow "List / Remove"
+    And I enter the "<client>" package in the css "input[placeholder='Filter by Package Name: ']"
+    And I click on the css "button.spacewalk-button-filter"
+    And I check the "<client>" package in the list
+    And I click on "Remove Packages"
+    And I click on "Confirm"
+    Then I should see a "1 package removal have been scheduled" text
+    And I wait until event "Package Removal scheduled by admin" is completed
+
+  Scenario: Run a remote command on <client>
+    Given I am authorized as "testing" with password "testing"
+    When I follow the left menu "Salt > Remote Commands"
+    Then I should see a "Remote Commands" text in the content area
+    When I enter command "file /tmp"
+    And I click on preview
+    Then I should see "<client>" hostname
+    And I wait until I do not see "pending" text
+    When I click on run
+    And I wait until I do not see "pending" text
+    And I expand the results for "<client>"
+    Then I should see "/tmp: sticky, directory" in the command output for "<client>"
+
+  Scenario: Check that Software package refresh works on a <client>
+    And I am on the Systems overview page of this "<client>"
+    And I follow "Software" in the content area
+    And I click on "Update Package List"
+    And I wait until event "Package List Refresh scheduled by admin" is completed
+
+  Scenario: Check that Hardware Refresh button works on a <client>
+    Given I am on the Systems overview page of this "<client>"
+    And I follow "Hardware"
+    And I click on "Schedule Hardware Refresh"
+    Then I should see a "You have successfully scheduled a hardware profile refresh" text
+    And I wait until event "Hardware List Refresh scheduled by admin" is completed
+
+  Scenario: Subscribe a <client> to the configuration channel
+    When I am on the Systems overview page of this "<client>"
+    And I follow "Configuration" in the content area
+    And I follow "Manage Configuration Channels" in the content area
+    And I follow first "Subscribe to Channels" in the content area
+    And I check "Mixed Channel" in the list
+    And I click on "Continue"
+    And I click on "Update Channel Rankings"
+    Then I should see a "Channel Subscriptions successfully changed for" text
+
+  Scenario: Deploy the file to all subscribed systems
+    Given I am authorized as "admin" with password "admin"
+    And I follow the left menu "Configuration > Channels"
+    And I follow "Mixed Channel"
+    And I follow "Deploy all configuration files to all subscribed systems"
+    Then I should see a "/etc/s-mgr/config" link
+    When I click on "Deploy Files to Selected Systems"
+    Then I should see a " revision-deploys are being scheduled," text
+    And I should see a "0 revision-deploys overridden." text
+
+  Scenario: Check that file has been created
+    When I run "rhn_check -vvv" on "<client>"
+    Then file "/etc/s-mgr/config" should contain "COLOR=white" on "<client>"
+
+  Scenario: Reboot the <client> and wait until reboot is completed
+    Given I am on the Systems overview page of this "<client>"
+    When I follow first "Schedule System Reboot"
+    Then I should see a "System Reboot Confirmation" text
+    And I should see a "Reboot system" button
+    When I click on "Reboot system"
+    Then I should see a "Reboot scheduled for system" text
+    When I wait at most 600 seconds until event "System reboot scheduled by admin" is completed
+    Then I should see a "Reboot completed." text

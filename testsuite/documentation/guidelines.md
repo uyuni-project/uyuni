@@ -55,7 +55,7 @@ Avoid reinventing function names and variables. Cucumber is all about human-read
 
 ### Rules for features
 
- * Features are grouped by the stage in which it is executed, using the folders `core`, `reposync`, `secondary` and `finishing`
+ * Features are grouped by the stage in which it is executed, using the folders `core`, `reposync`, `secondary`, `init_clients` and `finishing`
  * Use the right prefix for the filename of the file that will contain your feature, following this format: `<type>_<topic>`
  * `<type>` is currently one of:
    * "srv": feature testing server side
@@ -69,6 +69,9 @@ Avoid reinventing function names and variables. Cucumber is all about human-read
    * "trad": feature testing tradional client
    * "allcli: feature testing all clients
  * `<topic>` must contain "salt" or "docker" for features related to salt or docker, and is then specific to the feature.
+ * Inside `init_clients` features we'll see the features in charge of the bootstrap process for each client. They will follow the format:
+     * QA Test suite (features/init_clients): `<distribution>`_`<client|minion|ssh_minion>`. Example: "sle_ssh_minion.feature"
+     * QAM Test suite (features/qam/init_clients): `<distribution><version>`_`<client|minion|ssh_minion>`. Example: "sle11sp4_ssh_minion.feature"
  * File name examples: "srv_reboot_server.feature", "srv_salt_ping.feature", "srv_salt_service.feature", "min_salt_bootstrap.feature", ot "min_ping.feature"
 
  * Inside those files, feature names start with upper case

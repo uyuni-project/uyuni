@@ -36,20 +36,20 @@ end
 
 When(/^I stop salt-minion on "(.*?)"$/) do |minion|
   node = get_target(minion)
-  node.run('rcsalt-minion stop', false) if minion == 'sle-minion'
-  node.run('systemctl stop salt-minion', false) if ['ceos-minion', 'ceos-ssh-minion', 'ubuntu-minion', 'ubuntu-ssh-minion'].include?(minion)
+  node.run('rcsalt-minion stop', false) if minion == 'sle_minion'
+  node.run('systemctl stop salt-minion', false) if %w[ceos_minion ceos_ssh_minion ubuntu_minion ubuntu_ssh_minion].include?(minion)
 end
 
 When(/^I start salt-minion on "(.*?)"$/) do |minion|
   node = get_target(minion)
-  node.run('rcsalt-minion restart', false) if minion == 'sle-minion'
-  node.run('systemctl restart salt-minion', false) if ['ceos-minion', 'ceos-ssh-minion', 'ubuntu-minion', 'ubuntu-ssh-minion'].include?(minion)
+  node.run('rcsalt-minion restart', false) if minion == 'sle_minion'
+  node.run('systemctl restart salt-minion', false) if %w[ceos_minion ceos_ssh_minion ubuntu_minion ubuntu_ssh_minion].include?(minion)
 end
 
 When(/^I restart salt-minion on "(.*?)"$/) do |minion|
   node = get_target(minion)
-  node.run('rcsalt-minion restart', false) if minion == 'sle-minion'
-  node.run('systemctl restart salt-minion', false) if ['ceos-minion', 'ceos-ssh-minion', 'ubuntu-minion', 'ubuntu-ssh-minion'].include?(minion)
+  node.run('rcsalt-minion restart', false) if minion == 'sle_minion'
+  node.run('systemctl restart salt-minion', false) if %w[ceos_minion ceos_ssh_minion ubuntu_minion ubuntu_ssh_minion].include?(minion)
 end
 
 When(/^I wait at most (\d+) seconds until Salt master sees "([^"]*)" as "([^"]*)"$/) do |key_timeout, minion, key_type|
@@ -529,10 +529,10 @@ end
 
 Then(/^the pillar data for "([^"]*)" should (be|contain|not contain) "([^"]*)" on "([^"]*)"$/) do |key, verb, value, minion|
   system_name = get_system_name(minion)
-  if minion == 'sle-minion'
+  if minion == 'sle_minion'
     cmd = 'salt'
     extra_cmd = ''
-  elsif %w[ssh-minion ceos-minion ceos-ssh-minion ubuntu-minion ubuntu-ssh-minion].include?(minion)
+  elsif %w[ssh_minion ceos_minion ceos_ssh_minion ubuntu_minion ubuntu_ssh_minion].include?(minion)
     cmd = 'salt-ssh'
     extra_cmd = '-i --roster-file=/tmp/roster_tests -w -W 2>/dev/null'
     $server.run("printf '#{system_name}:\n  host: #{system_name}\n  user: root\n  passwd: linux\n' > /tmp/roster_tests")
@@ -685,22 +685,22 @@ end
 # salt-ssh steps
 When(/^I uninstall Salt packages from "(.*?)"$/) do |host|
   target = get_target(host)
-  if ['sle-minion', 'ssh-minion', 'sle-client', 'sle-migrated-minion'].include?(host)
+  if %w[sle_minion ssh_minion sle_client sle_migrated_minion].include?(host)
     target.run("test -e /usr/bin/zypper && zypper --non-interactive remove -y salt salt-minion", false)
-  elsif ['ceos-minion', 'ceos-ssh-minion'].include?(host)
+  elsif %w[ceos_minion ceos_ssh_minion].include?(host)
     target.run("test -e /usr/bin/yum && yum -y remove salt salt-minion", false)
-  elsif ['ubuntu-minion', 'ubuntu-ssh-minion'].include?(host)
+  elsif %w[ubuntu_minion ubuntu_ssh_minion].include?(host)
     target.run("test -e /usr/bin/apt && apt -y remove salt-common salt-minion", false)
   end
 end
 
 When(/^I install Salt packages from "(.*?)"$/) do |host|
   target = get_target(host)
-  if ['sle-minion', 'ssh-minion', 'sle-client', 'sle-migrated-minion'].include?(host)
+  if %w[sle_minion ssh_minion sle_client sle_migrated_minion].include?(host)
     target.run("test -e /usr/bin/zypper && zypper --non-interactive install -y salt salt-minion", false)
-  elsif ['ceos-minion'].include?(host)
+  elsif ['ceos_minion'].include?(host)
     target.run("test -e /usr/bin/yum && yum -y install salt salt-minion", false)
-  elsif ['ubuntu-minion', 'ubuntu-ssh-minion'].include?(host)
+  elsif %w[ubuntu_minion ubuntu_ssh_minion].include?(host)
     target.run("test -e /usr/bin/apt && apt -y install salt-common salt-minion", false)
   end
 end
@@ -713,17 +713,17 @@ Then(/^I run spacecmd listevents for "([^"]*)"$/) do |host|
 end
 
 When(/^I enter "([^"]*)" password$/) do |host|
-  raise "#{host} minion password is unknown" unless ['kvm-server', 'xen-server'].include?(host)
-  step %(I enter "#{ENV['VIRTHOST_KVM_PASSWORD']}" as "password") if host == "kvm-server"
-  step %(I enter "#{ENV['VIRTHOST_XEN_PASSWORD']}" as "password") if host == "xen-server"
+  raise "#{host} minion password is unknown" unless %w[kvm_server xen_server].include?(host)
+  step %(I enter "#{ENV['VIRTHOST_KVM_PASSWORD']}" as "password") if host == "kvm_server"
+  step %(I enter "#{ENV['VIRTHOST_XEN_PASSWORD']}" as "password") if host == "xen_server"
 end
 
 And(/^I cleanup minion "([^"]*)"$/) do |minion|
   node = get_target(minion)
-  if minion == 'sle-minion'
+  if minion == 'sle_minion'
     node.run('rcsalt-minion stop')
     node.run('rm -Rf /var/cache/salt/minion')
-  elsif ['ceos-minion', 'ceos-ssh-minion', 'ubuntu-minion', 'ubuntu-ssh-minion'].include?(minion)
+  elsif %w[ceos_minion ceos_ssh_minion ubuntu_minion ubuntu_ssh_minion].include?(minion)
     node.run('systemctl stop salt-minion')
     node.run('rm -Rf /var/cache/salt/minion')
   end
