@@ -95,3 +95,32 @@ class TestSCConfigChannel:
         assert not mprint.called
         assert not shell.client.configchannel.listSubscribedSystems.called
         assert shell.help_configchannel_listsystems.called
+
+    def test_configchannel_listsystems_api_sorted_output(self, shell):
+        """
+        Test configchannel listsystems function. Output must be sorted.
+
+        :param shell:
+        :return:
+        """
+        shell.client.configchannel.listSubscribedSystems = MagicMock(
+            return_value=[
+                {"name": "sisteme"}, {"name": "system"}, {"name": "exbox"},
+                {"name": "zitrix"}, {"name": "paystation-4"}, {"name": "azure"},
+                {"name": "quakearena"}, {"name": "awsbox"}, {"name": "beigebox"},
+            ]
+        )
+        shell.check_api_version = MagicMock(return_value=True)
+        mprint = MagicMock()
+        logger = MagicMock()
+        with patch("spacecmd.configchannel.print", mprint) as prt, \
+                patch("spacecmd.configchannel.logging", logger) as lgr:
+            spacecmd.configchannel.do_configchannel_listsystems(shell, "some_channel")
+
+        assert not shell.help_configchannel_listsystems.called
+        assert mprint.called
+        assert shell.client.configchannel.listSubscribedSystems.called
+        assert_expect(mprint.call_args_list,
+                      'awsbox\nazure\nbeigebox\nexbox\npaystation-4'
+                      '\nquakearena\nsisteme\nsystem\nzitrix')
+
