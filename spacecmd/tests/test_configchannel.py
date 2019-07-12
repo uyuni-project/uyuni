@@ -35,7 +35,8 @@ class TestSCConfigChannel:
         assert shell.client.configchannel.listGlobals.called
 
         assert_expect(mprint.call_args_list,
-                      'and_some_channel\nanother_channel\nbase_channel\nboese_channel\nother_channel\nze_channel')
+                      'and_some_channel\nanother_channel\nbase_channel'
+                      '\nboese_channel\nother_channel\nze_channel')
 
     def test_configchannel_list_data(self, shell):
         """

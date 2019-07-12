@@ -73,7 +73,6 @@ def do_configchannel_listsystems(self, args):
         return
 
     arg_parser = get_argument_parser()
-
     (args, _options) = parse_command_arguments(args, arg_parser)
 
     if not args:
@@ -81,10 +80,7 @@ def do_configchannel_listsystems(self, args):
         return
 
     channel = args[0]
-
-    systems = self.client.configchannel.listSubscribedSystems(self.session,
-                                                              channel)
-
+    systems = self.client.configchannel.listSubscribedSystems(self.session, channel)
     systems = sorted([s.get('name') for s in systems])
 
     if systems:
