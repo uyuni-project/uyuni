@@ -59,3 +59,21 @@ class TestSCConfigChannel:
         assert shell.client.configchannel.listGlobals.called
         assert ret == ['and_some_channel', 'another_channel', 'base_channel',
                        'boese_channel', 'other_channel', 'ze_channel']
+
+    def test_configchannel_listsystems_api_version_handling(self, shell):
+        """
+        Test configchannel listsystems function. Check version limitation.
+
+        :param shell:
+        :return:
+        """
+        shell.check_api_version = MagicMock(return_value=False)
+        mprint = MagicMock()
+        logger = MagicMock()
+        with patch("spacecmd.configchannel.print", mprint) as prt, \
+                patch("spacecmd.configchannel.logging", logger) as lgr:
+            spacecmd.configchannel.do_configchannel_listsystems(shell, "")
+
+        assert not mprint.called
+        assert not shell.client.configchannel.listSubscribedSystems.called
+        assert not shell.help_configchannel_listsystems.called
