@@ -165,3 +165,28 @@ class TestSCConfigChannel:
         assert_expect(mprint.call_args_list,
                       "/etc/ssh.conf\n/etc/whatever.conf\n/tmp/aaa_base.rpm"
                       "\n/tmp/somefile.txt\n/tmp/someother.txt\n/tmp/zypper.rpm")
+
+    def test_configchannel_listfiles_sorted_data_out(self, shell):
+        """
+        Test configchannel_listfiles function. Data is sorted as a type.
+
+        :param shell:
+        :return:
+        """
+        mprint = MagicMock()
+        logger = MagicMock()
+        shell.client.configchannel.listFiles = MagicMock(return_value=[
+            {"path": "/tmp/somefile.txt"}, {"path": "/tmp/zypper.rpm"},
+            {"path": "/tmp/aaa_base.rpm"}, {"path": "/tmp/someother.txt"},
+            {"path": "/etc/whatever.conf"}, {"path": "/etc/ssh.conf"},
+        ])
+        with patch("spacecmd.configchannel.print", mprint) as prt, \
+                patch("spacecmd.configchannel.logging", logger) as lgr:
+            data = spacecmd.configchannel.do_configchannel_listfiles(shell, "some_channel", doreturn=True)
+
+        assert not mprint.called
+        assert not shell.help_configchannel_listfiles.called
+        assert shell.client.configchannel.listFiles.called
+
+        assert data == ['/etc/ssh.conf', '/etc/whatever.conf', '/tmp/aaa_base.rpm',
+                        '/tmp/somefile.txt', '/tmp/someother.txt', '/tmp/zypper.rpm']
