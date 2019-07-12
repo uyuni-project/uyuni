@@ -77,3 +77,21 @@ class TestSCConfigChannel:
         assert not mprint.called
         assert not shell.client.configchannel.listSubscribedSystems.called
         assert not shell.help_configchannel_listsystems.called
+
+    def test_configchannel_listsystems_api_noarg(self, shell):
+        """
+        Test configchannel listsystems function. No arguments passed.
+
+        :param shell:
+        :return:
+        """
+        shell.check_api_version = MagicMock(return_value=True)
+        mprint = MagicMock()
+        logger = MagicMock()
+        with patch("spacecmd.configchannel.print", mprint) as prt, \
+                patch("spacecmd.configchannel.logging", logger) as lgr:
+            spacecmd.configchannel.do_configchannel_listsystems(shell, "")
+
+        assert not mprint.called
+        assert not shell.client.configchannel.listSubscribedSystems.called
+        assert shell.help_configchannel_listsystems.called
