@@ -13,6 +13,13 @@ When(/^I wait for "(\d+)" seconds?$/) do |arg1|
   sleep(arg1.to_i)
 end
 
+When(/^I mount as "([^"]+)" the ISO from "([^"]+)" in the server$/) do |mountpoint, url|
+  iso_path = "/tmp/#{mountpoint}.iso"
+  $server.run("wget --no-check-certificate -O #{iso_path} #{url}", true, 500, 'root')
+  $server.run("mkdir /srv/www/htdocs/#{mountpoint}")
+  $server.run("mount -o loop #{iso_path} /srv/www/htdocs/#{mountpoint}", true, 500, 'root')
+end
+
 When(/^I download the SSL certificate$/) do
   cert_path = '/usr/share/rhn/RHN-ORG-TRUSTED-SSL-CERT'
   wget = 'wget --no-check-certificate -O'
@@ -269,16 +276,15 @@ When(/I view system with id "([^"]*)"/) do |arg1|
   visit Capybara.app_host + '/rhn/systems/details/Overview.do?sid=' + arg1
 end
 
-# weak dependencies steps
 When(/^I refresh the metadata for "([^"]*)"$/) do |host|
-  case host
-  when 'sle_client'
-    $client.run('rhn_check -vvv', true, 500, 'root')
+  node = get_target(host)
+  if host.include?('client') or host.include?('ceos') or host.include?('ubuntu')
+    node.run('rhn_check -vvv', true, 500, 'root')
     client_refresh_metadata
-  when 'sle_minion'
-    $minion.run_until_ok('zypper --non-interactive refresh -s')
+  elsif host.include?('minion') or host.include?('server') or host.include?('proxy')
+    node.run_until_ok('zypper --non-interactive refresh -s')
   else
-    raise 'Invalid target.'
+    raise "The host #{host} has not yet a implementation for that step"
   end
 end
 
@@ -485,7 +491,9 @@ And(/^I wait until I see "(.*?)" product has been added$/) do |product|
     xpath = "//span[contains(text(), '#{product}')]/ancestor::div[contains(@class, 'product-details-wrapper')]"
     begin
       product_wrapper = find(:xpath, xpath)
-      break if product_wrapper[:class].include?('product-installed')
+      unless product_wrapper[:class].nil?
+        break if product_wrapper[:class].include?('product-installed')
+      end
     rescue Capybara::ElementNotFound => e
       puts e
     end
@@ -715,12 +723,33 @@ end
 
 # Register client
 Given(/^I update the profile of this client$/) do
-  $client.run('rhn-profile-sync', true, 500, 'root')
+  step %(I update the profile of "sle_client")
+end
+
+Given(/^I update the profile of "([^"]*)"$/) do |client|
+  node = get_target(client)
+  node.run('rhn-profile-sync', true, 500, 'root')
 end
 
 When(/^I register using "([^"]*)" key$/) do |key|
-  command = "rhnreg_ks --force --serverUrl=#{registration_url} --activationkey=#{key}"
-  $client.run(command, true, 500, 'root')
+  step %(I register "sle_client" as traditional client with activation key "#{key}")
+end
+
+When(/^I register "([^"]*)" as traditional client$/) do |client|
+  step %(I register "#{client}" as traditional client with activation key "1-SUSE-DEV-x86_64")
+end
+
+And(/^I register "([^*]*)" as traditional client with activation key "([^*]*)"$/) do |client, key|
+  node = get_target(client)
+  if client.include? 'sle'
+    node.run('zypper --non-interactive install wget', true, 500, 'root')
+  else # As Ubuntu has no support, must be CentOS/SLES_ES
+    node.run('yum install wget', true, 600, 'root')
+  end
+  command1 = "wget --no-check-certificate -O /usr/share/rhn/RHN-ORG-TRUSTED-SSL-CERT http://#{$server.ip}/pub/RHN-ORG-TRUSTED-SSL-CERT"
+  node.run(command1, true, 500, 'root')
+  command2 = "rhnreg_ks --force --serverUrl=#{registration_url} --sslCACert=/usr/share/rhn/RHN-ORG-TRUSTED-SSL-CERT --activationkey=#{key}"
+  node.run(command2, true, 500, 'root')
 end
 
 Then(/^I should see "([^"]*)" in spacewalk$/) do |host|
@@ -1004,6 +1033,7 @@ Then(/^I should see a list item with text "([^"]*)" and bullet with style "([^"]
 end
 
 When(/^I enter the MU repository for (salt|traditional) "([^"]*)" as URL$/) do |client_type, client|
+  client.sub! 'ssh_minion', 'minion' # Both minion and ssh_minion uses the same repositories
   fill_in 'url', with: $mu_repositories[client][client_type]
 end
 

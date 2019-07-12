@@ -19,7 +19,6 @@ namespace :cucumber do
       t.cucumber_opts = cucumber_opts + features unless features.nil?
     end
   end
-  at_exit { post_nodejs_report }
 end
 
 namespace :parallel do
@@ -31,15 +30,10 @@ namespace :parallel do
       features = YAML.safe_load(File.read(File.join(Dir.pwd, 'run_sets', "#{run_set}.yml"))).join(' ')
       cucumber_opts = "-f html -o output_#{timestamp}-#{run_set}-$TEST_ENV_NUMBER.html -f json -o output_#{timestamp}-#{run_set}-$TEST_ENV_NUMBER.json #{junit_results} -f rerun --out failed.txt -f CustomFormatter::PrettyFormatter -r features "
       sh "bundle exec parallel_cucumber -n 5 -o '#{cucumber_opts}' #{features}"
+      # TODO: Only when we have an improvement in our Hypervisor resources we can increase the threads to be executed in parallel.
+      # The execution time is directly related to the resources we have in the hypervisor, currently we don't have SSD Disk and only 64GB RAM
     end
   end
-  at_exit { post_nodejs_report }
-end
-
-def post_nodejs_report
-  sh 'rm -rf ./cucumber_report && mkdir cucumber_report', verbose: false
-  sh 'timeout 60 bash -c -- "while find output*.json -type f -size 0 | grep json; do sleep 1;done"', verbose: false
-  sh 'node index.js &> cucumber_reporter.log', verbose: false
 end
 
 task :cucumber_testsuite do
@@ -54,43 +48,42 @@ namespace :utils do
     # TODO: We want to use English language in our Cucumber .feature files, so we need a map here to don't use `ceos7_minion` but `CENTOS 7 Minion`
     output_filepath = "#{args[:output_path]}/#{args[:client_name]}_#{File.basename(args[:template_path], '.*')}.feature"
     sh "sed 's/<client>/#{args[:client_name]}/g' #{args[:template_path]} > #{output_filepath}", verbose: false
-    unless args[:client_name].include? 'ubuntu'
-      sh "sed -i 's/<tag_client_exclude_ubuntu>/@#{args[:client_name]}/g' #{args[:template_path]} > #{output_filepath}", verbose: false
-    end
     sh "sed -i 's/<type>/#{get_client_type(args[:client_name])}/g' #{output_filepath}", verbose: false
     sh "echo '- #{output_filepath}' >> #{args[:yaml_path]}", verbose: false
   end
 
   desc 'Generate smoke tests for all the clients'
   task :generate_smoke_tests do
-    features = Rake::FileList['features/qam/init_clients/*.feature']
-    features.each do |feature|
+    clients = Rake::FileList['features/qam/init_clients/*.feature']
+    clients.reject! { |client| client.include? 'proxy'}
+    clients.each do |client|
       Rake::Task['utils:generate_feature'].invoke('features/qam/smoke_tests/smoke_tests.template',
-                                           File.basename(feature,'.feature'),
+                                           File.basename(client,'.feature'),
                                            'features/qam/smoke_tests',
                                            'run_sets/qam_smoke_tests.yml')
       Rake::Task['utils:generate_feature'].reenable
     end
   end
 
-  desc 'Generate feature to add MU Custom Channels and repositories for all the clients'
-  task :generate_add_mu_repository_features do
-    features = Rake::FileList['features/qam/init_clients/*.feature']
-    features.each do |feature|
-      Rake::Task['utils:generate_feature'].invoke('features/qam/add_mu_repositories/add_mu_repository.template',
-                                           File.basename(feature,'.feature'),
-                                           'features/qam/add_mu_repositories',
-                                           'run_sets/qam_add_mu_repositories.yml')
+  desc 'Generate feature to add Custom Channels and repositories for all the clients'
+  task :generate_add_custom_repository_features do
+    clients = Rake::FileList['features/qam/init_clients/*.feature']
+    clients.reject! { |client| client.include? 'ssh'}
+    clients.each do |client|
+      Rake::Task['utils:generate_feature'].invoke('features/qam/add_custom_repositories/add_mu_repository.template',
+                                           File.basename(client,'.feature'),
+                                           'features/qam/add_custom_repositories',
+                                           'run_sets/qam_add_custom_repositories.yml')
       Rake::Task['utils:generate_feature'].reenable
     end
   end
 
   desc 'Generate feature to add Activation Keys for all the clients'
   task :generate_add_activation_keys_features do
-    features = Rake::FileList['features/qam/init_clients/*.feature']
-    features.each do |feature|
+    clients = Rake::FileList['features/qam/init_clients/*.feature']
+    clients.each do |client|
       Rake::Task['utils:generate_feature'].invoke('features/qam/add_activation_keys/add_activation_key.template',
-                                                  File.basename(feature,'.feature'),
+                                                  File.basename(client,'.feature'),
                                                   'features/qam/add_activation_keys',
                                                   'run_sets/qam_add_activation_keys.yml')
       Rake::Task['utils:generate_feature'].reenable
@@ -101,10 +94,17 @@ namespace :utils do
   task :generate_features do
     Rake::Task['utils:generate_smoke_tests'].invoke
     Rake::Task['utils:generate_smoke_tests'].reenable
-    Rake::Task['utils:generate_add_mu_repository_features'].invoke
-    Rake::Task['utils:generate_add_mu_repository_features'].reenable
+    Rake::Task['utils:generate_add_custom_repository_features'].invoke
+    Rake::Task['utils:generate_add_custom_repository_features'].reenable
     Rake::Task['utils:generate_add_activation_keys_features'].invoke
     Rake::Task['utils:generate_add_activation_keys_features'].reenable
+  end
+
+  desc 'Generate test report'
+  task :generate_test_report do
+    sh 'rm -rf ./cucumber_report && mkdir cucumber_report', verbose: false
+    sh 'timeout 180 bash -c -- "while find output*.json -type f -size 0 | grep json; do sleep 10;done"', verbose: false
+    sh 'node index.js &> cucumber_reporter.log', verbose: false
   end
 
   def get_client_type(name)

@@ -1,8 +1,8 @@
-  # Copyright (c) 2010-2019 SUSE LLC
-  # Licensed under the terms of the MIT license.
+# Copyright (c) 2010-2020 SUSE LLC
+# Licensed under the terms of the MIT license.
 
 @<client>
-Feature: Create an action key for <client>
+Feature: Create an activation key for <client>
   In order to register systems to the spacewalk server
   As the testing user
   I want to use activation keys
@@ -11,10 +11,13 @@ Feature: Create an action key for <client>
     Given I am on the Systems page
     When I follow the left menu "Systems > Activation Keys"
     And I follow "Create Key"
-    And I enter "<client> Activation Key" as "description"
+    And I enter "<client>_key" as "description"
     And I enter "<client>_key" as "key"
     And I select the base channel for the "<client>" from "selectedBaseChannel"
-    And I check the child channel "custom_channel_<client>"
+    And I include the recommended child channels
+    And I include the mandatory child channels
+    And I check the custom channel for "<client>"
     And I select the contact method for the "<client>" from "contact-method"
     And I click on "Create Activation Key"
+    And I scroll to the top of the page
     Then I should see a "Activation key <client>_key has been created" text

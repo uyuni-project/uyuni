@@ -22,16 +22,7 @@ $xen_server = Twopence.init("ssh:#{ENV['VIRTHOST_XEN_URL']}") if ENV['VIRTHOST_X
 
 nodes = [$server, $proxy, $kvm_server, $xen_server]
 
-mu_repos_path = File.dirname(__FILE__) + '/../upload_files/' + 'mu_repositories.json'
-if !File.exist?(mu_repos_path)
-  # Define twopence objects for QAM environment
-  $minion = Twopence.init("ssh:#{ENV['MINION']}") if ENV['MINION']
-  $ssh_minion = Twopence.init("ssh:#{ENV['SSHMINION']}") if ENV['SSHMINION']
-  $client = Twopence.init("ssh:#{ENV['CLIENT']}") if ENV['CLIENT']
-  $ceos_minion = Twopence.init("ssh:#{ENV['CENTOSMINION']}") if ENV['CENTOSMINION']
-  $ubuntu_minion = Twopence.init("ssh:#{ENV['UBUNTUMINION']}") if ENV['UBUNTUMINION']
-  nodes += [$client, $minion, $ceos_minion, $ubuntu_minion, $ssh_minion]
-else
+if $qam_test
   # Define twopence objects for QAM environment
   $sle11sp4_minion = Twopence.init("ssh:#{ENV['SLE11SP4_MINION']}") if ENV['SLE11SP4_MINION']
   $sle11sp4_ssh_minion = Twopence.init("ssh:#{ENV['SLE11SP4_SSHMINION']}") if ENV['SLE11SP4_SSHMINION']
@@ -52,9 +43,9 @@ else
   $ceos7_ssh_minion = Twopence.init("ssh:#{ENV['CENTOS7_SSHMINION']}") if ENV['CENTOS7_SSHMINION']
   $ceos7_client = Twopence.init("ssh:#{ENV['CENTOS7_CLIENT']}") if ENV['CENTOS7_CLIENT']
   $ubuntu1604_minion = Twopence.init("ssh:#{ENV['UBUNTU1604_MINION']}") if ENV['UBUNTU1604_MINION']
-  $ubuntu1604_ssh_minion = Twopence.init("ssh:#{ENV['UBUNTU1604_SSH_MINION']}") if ENV['UBUNTU1604_SSH_MINION']
+  $ubuntu1604_ssh_minion = Twopence.init("ssh:#{ENV['UBUNTU1604_SSHMINION']}") if ENV['UBUNTU1604_SSHMINION']
   $ubuntu1804_minion = Twopence.init("ssh:#{ENV['UBUNTU1804_MINION']}") if ENV['UBUNTU1804_MINION']
-  $ubuntu1804_ssh_minion = Twopence.init("ssh:#{ENV['UBUNTU1804_SSH_MINION']}") if ENV['UBUNTU1804_SSH_MINION']
+  $ubuntu1804_ssh_minion = Twopence.init("ssh:#{ENV['UBUNTU1804_SSHMINION']}") if ENV['UBUNTU1804_SSHMINION']
   # As we share core features for QAM and QA environments, we share also those vm twopence objects
   $minion = $sle12sp4_minion
   $ssh_minion = $sle12sp4_ssh_minion
@@ -70,6 +61,14 @@ else
             $ubuntu1604_ssh_minion, $ubuntu1604_minion,
             $ubuntu1804_ssh_minion, $ubuntu1804_minion,
             $client, $minion, $ceos_minion, $ubuntu_minion, $ssh_minion]
+else
+  # Define twopence objects for QA environment
+  $minion = Twopence.init("ssh:#{ENV['MINION']}") if ENV['MINION']
+  $ssh_minion = Twopence.init("ssh:#{ENV['SSHMINION']}") if ENV['SSHMINION']
+  $client = Twopence.init("ssh:#{ENV['CLIENT']}") if ENV['CLIENT']
+  $ceos_minion = Twopence.init("ssh:#{ENV['CENTOSMINION']}") if ENV['CENTOSMINION']
+  $ubuntu_minion = Twopence.init("ssh:#{ENV['UBUNTUMINION']}") if ENV['UBUNTUMINION']
+  nodes += [$client, $minion, $ceos_minion, $ubuntu_minion, $ssh_minion]
 end
 
 # Lavanda library module extension
@@ -92,7 +91,7 @@ nodes.each do |node|
   raise "No fully qualified domain name for node. Response code: #{code}" if code.nonzero? || fqdn.empty?
   node.init_full_hostname(fqdn)
 
-  puts "Determined hostname #{hostname.strip} and FQDN #{fqdn.strip}"
+  puts "Determined hostname #{hostname.strip} and FQDN #{fqdn.strip}" unless $qam_test
 end
 
 # Initialize IP address or domain name
