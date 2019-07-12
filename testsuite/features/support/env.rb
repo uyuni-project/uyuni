@@ -15,7 +15,9 @@ require 'multi_test'
 
 ## codecoverage gem
 SimpleCov.start
+
 server = ENV['SERVER']
+
 # maximal wait before giving up
 # the tests return much before that delay in case of success
 $stdout.sync = true
@@ -23,6 +25,16 @@ STARTTIME = Time.new.to_i
 Capybara.default_max_wait_time = 10
 DEFAULT_TIMEOUT = 300
 CLICK_TIMEOUT = Capybara.default_max_wait_time * 2
+
+# QAM test-suite will provide a json including all client repositories with format :
+# {"client_type" : { "salt" : "salt_repo" , "traditional" : "traditional_repo" }}
+mu_repos_path = File.dirname(__FILE__) + '/../upload_files/' + 'mu_repositories.json'
+if File.exist?(mu_repos_path)
+  mu_repos_file = File.read(mu_repos_path)
+  $mu_repositories = JSON.parse(mu_repos_file)
+  Capybara.default_max_wait_time = 30
+  DEFAULT_TIMEOUT = 400
+end
 
 def enable_assertions
   # include assertion globally
@@ -35,7 +47,7 @@ MultiTest.disable_autorun
 # register chromedriver headless mode
 Capybara.register_driver(:headless_chrome) do |app|
   capabilities = Selenium::WebDriver::Remote::Capabilities.chrome(
-    chromeOptions: { args: %w[headless no-sandbox disable-dev-shm-usage disable-gpu window-size=1920,1080, js-flags=--max_old_space_size=2048] }
+    chromeOptions: { args: %w[headless no-sandbox disable-dev-shm-usage disable-gpu window-size=2048,2048, js-flags=--max_old_space_size=2048] }
   )
 
   Capybara::Selenium::Driver.new(
@@ -54,11 +66,22 @@ puts "Capybara APP Host: #{Capybara.app_host}:#{Capybara.server_port}"
 # embed a screenshot after each failed scenario
 After do |scenario|
   if scenario.failed?
-    img_name = "#{scenario.name.tr(' ./', '_')}.png"
-    save_screenshot('screenshots/' + img_name)
-    # embed the image name in the cucumber HTML report
-    embed('screenshots/' + img_name, 'image/png')
-    debug_server_on_realtime_failure
+    begin
+      img_path = "screenshots/#{scenario.name.tr(' ./', '_')}.png"
+      if page.driver.browser.respond_to?(:save_screenshot)
+        Dir.mkdir("screenshots") unless File.directory?("screenshots")
+        page.driver.browser.save_screenshot(img_path)
+      else
+        save_screenshot(img_path)
+      end
+      # embed the image name in the cucumber HTML report
+      embed current_url, 'text/plain'
+      embed img_path, 'image/png'
+    rescue StandardError => e
+      puts "Error taking a screenshot: #{e.message}"
+    ensure
+      debug_server_on_realtime_failure
+    end
   end
 end
 

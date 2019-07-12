@@ -8,10 +8,10 @@ Feature: CVE Audit
 
   Scenario: Pre-requisite: downgrade milkyway-dummy to lower version
     Given I am authorized as "admin" with password "admin"
-    When I enable repository "test_repo_rpm_pool" on this "sle-client"
-    And I run "zypper -n in --oldpackage milkyway-dummy-1.0" on "sle-client"
-    And I run "zypper -n ref" on "sle-client"
-    And I run "rhn_check -vvv" on "sle-client"
+    When I enable repository "test_repo_rpm_pool" on this "sle_client"
+    And I run "zypper -n in --oldpackage milkyway-dummy-1.0" on "sle_client"
+    And I run "zypper -n ref" on "sle_client"
+    And I run "rhn_check -vvv" on "sle_client"
     And I follow the left menu "Admin > Task Schedules"
     And I follow "errata-cache-default"
     And I follow "errata-cache-bunch"
@@ -40,7 +40,7 @@ Feature: CVE Audit
     And I select "1999" from "cveIdentifierYear"
     And I enter "9999" as "cveIdentifierId"
     And I click on "Audit Servers"
-    Then I should see "sle-client" as link
+    Then I should see "sle_client" as link
     And I should see a "Affected, at least one patch available in an assigned channel" text
     And I should see a "Install a new patch on this system" link
     And I should see a "milkyway-dummy-2345" text
@@ -48,7 +48,7 @@ Feature: CVE Audit
     And I should see a "Status" link
     And I should see a "Name" link
     And I should see a "extra CVE data update" link
-    Then I follow "Install a new patch on this system" on "sle-client" row
+    Then I follow "Install a new patch on this system" on "sle_client" row
     And I should see a "Relevant Patches" text
 
   Scenario: Search for an unknown CVE number
@@ -67,10 +67,10 @@ Feature: CVE Audit
     And I enter "9999" as "cveIdentifierId"
     And I click on "Audit Servers"
     And I should see a "Affected, at least one patch available in an assigned channel" text
-    When I check the row with the "sle-client" hostname
+    When I check the row with the "sle_client" hostname
     Then I should see a "system selected" text
     And I am on the System Manager System Overview page
-    Then I should see "sle-client" as link
+    Then I should see "sle_client" as link
     And I follow "Clear"
 
   Scenario: List systems by patch status via XML-RPC before patch
@@ -91,14 +91,14 @@ Feature: CVE Audit
     Then I logout from XML-RPC cve audit namespace
 
   Scenario: Apply patches
-    Given I am on the Systems overview page of this "sle-client"
+    Given I am on the Systems overview page of this "sle_client"
     And I follow "Software" in the content area
     And I follow "Patches" in the content area
     And I check "milkyway-dummy-2345" in the list
     And I click on "Apply Patches"
     And I click on "Confirm"
     And I wait for "5" seconds
-    And I run "rhn_check -vvv" on "sle-client"
+    And I run "rhn_check -vvv" on "sle_client"
     Then I should see a "patch update has been scheduled" text
 
   Scenario: List systems by patch status via XML-RPC after patch
@@ -108,9 +108,9 @@ Feature: CVE Audit
     Then I logout from XML-RPC cve audit namespace
 
   Scenario: Cleanup: remove installed packages
-    When I disable repository "test_repo_rpm_pool" on this "sle-client" without error control
-    And I run "zypper -n rm milkyway-dummy" on "sle-client" without error control
-    And I run "rhn_check -vvv" on "sle-client" without error control
+    When I disable repository "test_repo_rpm_pool" on this "sle_client" without error control
+    And I run "zypper -n rm milkyway-dummy" on "sle_client" without error control
+    And I run "rhn_check -vvv" on "sle_client" without error control
 
   Scenario: Cleanup: remove remaining systems from SSM after CVE audit tests
     When I am authorized as "admin" with password "admin"

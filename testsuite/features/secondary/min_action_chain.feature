@@ -5,20 +5,20 @@ Feature: Action chains on Salt minions
 
   Scenario: Pre-requisite: downgrade repositories to lower version on Salt minion
     Given I am authorized as "admin" with password "admin"
-    When I enable repository "test_repo_rpm_pool" on this "sle-minion"
-    And I run "zypper -n rm andromeda-dummy" on "sle-minion" without error control
-    And I run "zypper -n rm virgo-dummy" on "sle-minion" without error control
-    And I run "zypper -n in milkyway-dummy" on "sle-minion" without error control
-    And I run "zypper -n in --oldpackage andromeda-dummy-1.0" on "sle-minion"
-    And I run "zypper -n ref" on "sle-minion"
+    When I enable repository "test_repo_rpm_pool" on this "sle_minion"
+    And I run "zypper -n rm andromeda-dummy" on "sle_minion" without error control
+    And I run "zypper -n rm virgo-dummy" on "sle_minion" without error control
+    And I run "zypper -n in milkyway-dummy" on "sle_minion" without error control
+    And I run "zypper -n in --oldpackage andromeda-dummy-1.0" on "sle_minion"
+    And I run "zypper -n ref" on "sle_minion"
 
   Scenario: Pre-requisite: refresh package list and check installed packages after downgrade on SLE minion
-    When I refresh packages list via spacecmd on "sle-minion"
-    And I wait until refresh package list on "sle-minion" is finished
-    Then spacecmd should show packages "milkyway-dummy andromeda-dummy-1.0" installed on "sle-minion"
+    When I refresh packages list via spacecmd on "sle_minion"
+    And I wait until refresh package list on "sle_minion" is finished
+    Then spacecmd should show packages "milkyway-dummy andromeda-dummy-1.0" installed on "sle_minion"
 
   Scenario: Pre-requisite: wait until downgrade is finished on SLE minion
-    Given I am on the Systems overview page of this "sle-minion"
+    Given I am on the Systems overview page of this "sle_minion"
     When I follow "Software" in the content area
     And I follow "List / Remove" in the content area
     And I enter "andromeda-dummy" as the filtered package name
@@ -39,7 +39,7 @@ Feature: Action chains on Salt minions
     And I cancel all scheduled actions
 
   Scenario: Add a patch installation to the action chain on Salt minion
-    Given I am on the Systems overview page of this "sle-minion"
+    Given I am on the Systems overview page of this "sle_minion"
     When I follow "Software" in the content area
     And I follow "Patches" in the content area
     And I check "andromeda-dummy-6789" in the list
@@ -49,7 +49,7 @@ Feature: Action chains on Salt minions
     Then I should see a "Action has been successfully added to the Action Chain" text
 
   Scenario: Add a package removal to the action chain on Salt minion
-    Given I am on the Systems overview page of this "sle-minion"
+    Given I am on the Systems overview page of this "sle_minion"
     When I follow "Software" in the content area
     And I follow "List / Remove" in the content area
     And I enter "milkyway-dummy" as the filtered package name
@@ -61,7 +61,7 @@ Feature: Action chains on Salt minions
     Then I should see a "Action has been successfully added to the Action Chain" text
 
   Scenario: Add a package installation to an action chain on Salt minion
-    Given I am on the Systems overview page of this "sle-minion"
+    Given I am on the Systems overview page of this "sle_minion"
     When I follow "Software" in the content area
     And I follow "Install New Packages" in the content area
     And I check "virgo-dummy" in the list
@@ -92,7 +92,7 @@ Feature: Action chains on Salt minions
     And I should see a "Update Configuration File" button
 
   Scenario: Subscribe system to configuration channel for testing action chain on Salt minion
-    Given I am on the Systems overview page of this "sle-minion"
+    Given I am on the Systems overview page of this "sle_minion"
     When I follow "Configuration" in the content area
     And I follow "Manage Configuration Channels" in the content area
     And I follow first "Subscribe to Channels" in the content area
@@ -107,27 +107,27 @@ Feature: Action chains on Salt minions
     And I follow "Action Chain Channel"
     And I follow "Deploy Files" in the content area
     And I click on "Deploy All Files"
-    And I check the "sle-minion" client
+    And I check the "sle_minion" client
     And I click on "Confirm & Deploy to Selected Systems"
     And I check radio button "schedule-by-action-chain"
     And I click on "Deploy Files to Selected Systems"
     Then I should see a "Action has been successfully added to the Action Chain" text
 
   Scenario: Add apply highstate to action chain on Salt minion
-    Given I am on the Systems overview page of this "sle-minion"
+    Given I am on the Systems overview page of this "sle_minion"
     When I follow "States" in the content area
     And I check radio button "schedule-by-action-chain"
     And I click on "Apply Highstate"
 
   Scenario: Add a reboot action to the action chain on Salt minion
-    Given I am on the Systems overview page of this "sle-minion"
+    Given I am on the Systems overview page of this "sle_minion"
     When I follow first "Schedule System Reboot"
     And I check radio button "schedule-by-action-chain"
     And I click on "Reboot system"
     Then I should see a "Action has been successfully added to the Action Chain" text
 
   Scenario: Add a remote command to the action chain on Salt minion
-    Given I am on the Systems overview page of this "sle-minion"
+    Given I am on the Systems overview page of this "sle_minion"
     When I follow "Remote Command"
     And I enter as remote command this script in
       """
@@ -139,7 +139,7 @@ Feature: Action chains on Salt minions
     Then I should see a "Action has been successfully added to the Action Chain" text
 
   Scenario: Verify the action chain list on Salt minion
-    Given I am on the Systems overview page of this "sle-minion"
+    Given I am on the Systems overview page of this "sle_minion"
     When I follow "Schedule"
     And I follow "Action Chains"
     And I follow "new action chain"
@@ -158,17 +158,17 @@ Feature: Action chains on Salt minions
     Then I should not see a "new action chain" link
 
   Scenario: Execute the action chain from the web UI on Salt minion
-    Given I am on the Systems overview page of this "sle-minion"
+    Given I am on the Systems overview page of this "sle_minion"
     When I follow "Schedule"
     And I follow "Action Chains"
     And I follow "new action chain"
     And I click on "Save and Schedule"
     Then I should see a "Action Chain new action chain has been scheduled for execution." text
-    When I wait for "virgo-dummy" to be installed on this "sle-minion"
-    And I wait at most 300 seconds until file "/tmp/action_chain_one_system_done" exists on "sle-minion"
+    When I wait for "virgo-dummy" to be installed on this "sle_minion"
+    And I wait at most 300 seconds until file "/tmp/action_chain_one_system_done" exists on "sle_minion"
 
   Scenario: Add a remote command to the new action chain on Salt minion
-    Given I am on the Systems overview page of this "sle-minion"
+    Given I am on the Systems overview page of this "sle_minion"
     When I follow "Remote Command"
     And I enter as remote command this script in
       """
@@ -189,11 +189,11 @@ Feature: Action chains on Salt minions
 
   Scenario: Add an action chain using system set manager for traditional client and Salt minion
     Given I am authorized as "admin" with password "admin"
-    When I run "zypper -n rm andromeda-dummy" on "sle-client" without error control
-    And I run "zypper -n rm andromeda-dummy" on "sle-minion" without error control
+    When I run "zypper -n rm andromeda-dummy" on "sle_client" without error control
+    And I run "zypper -n rm andromeda-dummy" on "sle_minion" without error control
     When I am on the System Overview page
-    And I check the "sle-minion" client
-    And I check the "sle-client" client
+    And I check the "sle_minion" client
+    And I check the "sle_client" client
     And I am on System Set Manager Overview
     And I follow "Install" in the content area
     And I follow "Test-Channel-x86_64" in the content area
@@ -201,8 +201,8 @@ Feature: Action chains on Salt minions
     And I click on the filter button
     And I check "andromeda-dummy" in the list
     And I click on "Install Selected Packages"
-    Then I should see "sle-minion" hostname
-    And I should see "sle-client" hostname
+    Then I should see "sle_minion" hostname
+    And I should see "sle_client" hostname
     When I check radio button "schedule-by-action-chain"
     And I click on "Confirm"
     Then I should see a "Package installations are being scheduled" text
@@ -215,12 +215,12 @@ Feature: Action chains on Salt minions
       """
     And I check radio button "schedule-by-action-chain"
     And I click on "Schedule"
-    Then I should see "sle-minion" hostname
-    And I should see "sle-client" hostname
+    Then I should see "sle_minion" hostname
+    And I should see "sle_client" hostname
 
   Scenario: Verify action chain for two systems
-    Given I am on the Systems overview page of this "sle-minion"
-    When I run "rhn-actions-control --enable-all" on "sle-client"
+    Given I am on the Systems overview page of this "sle_minion"
+    When I run "rhn-actions-control --enable-all" on "sle_client"
     And I follow "Schedule"
     And I follow "Action Chains"
     And I follow "new action chain"
@@ -231,26 +231,26 @@ Feature: Action chains on Salt minions
 
   Scenario: Verify that the action chain from the system set manager was executed successfully
     Given I am authorized as "admin" with password "admin"
-    When I run "rhn_check -vvv" on "sle-client"
-    And I wait until file "/tmp/action_chain_done" exists on "sle-client"
-    And I wait until file "/tmp/action_chain_done" exists on "sle-minion"
-    Then "andromeda-dummy" should be installed on "sle-client"
-    And "andromeda-dummy" should be installed on "sle-minion"
+    When I run "rhn_check -vvv" on "sle_client"
+    And I wait until file "/tmp/action_chain_done" exists on "sle_client"
+    And I wait until file "/tmp/action_chain_done" exists on "sle_minion"
+    Then "andromeda-dummy" should be installed on "sle_client"
+    And "andromeda-dummy" should be installed on "sle_minion"
 
   Scenario: Downgrade again repositories to lower version on Salt minion
-    When I run "rm /tmp/action_chain_done" on "sle-minion" without error control
-    And I run "zypper -n rm andromeda-dummy" on "sle-minion" without error control
-    And I run "zypper -n rm virgo-dummy" on "sle-minion" without error control
-    And I run "zypper -n in milkyway-dummy" on "sle-minion" without error control
-    And I run "zypper -n in --oldpackage andromeda-dummy-1.0" on "sle-minion"
+    When I run "rm /tmp/action_chain_done" on "sle_minion" without error control
+    And I run "zypper -n rm andromeda-dummy" on "sle_minion" without error control
+    And I run "zypper -n rm virgo-dummy" on "sle_minion" without error control
+    And I run "zypper -n in milkyway-dummy" on "sle_minion" without error control
+    And I run "zypper -n in --oldpackage andromeda-dummy-1.0" on "sle_minion"
 
   Scenario: Refresh package list and check installed packages after second downgrade on SLE minion
-    When I refresh packages list via spacecmd on "sle-minion"
-    And I wait until refresh package list on "sle-minion" is finished
-    Then spacecmd should show packages "milkyway-dummy andromeda-dummy-1.0" installed on "sle-minion"
+    When I refresh packages list via spacecmd on "sle_minion"
+    And I wait until refresh package list on "sle_minion" is finished
+    Then spacecmd should show packages "milkyway-dummy andromeda-dummy-1.0" installed on "sle_minion"
 
   Scenario: Ensure again the errata cache is computed before testing on Salt minion
-    Given I am on the Systems overview page of this "sle-minion"
+    Given I am on the Systems overview page of this "sle_minion"
     When I follow the left menu "Admin > Task Schedules"
     And I follow "errata-cache-default"
     And I follow "errata-cache-bunch"
@@ -260,7 +260,7 @@ Feature: Action chains on Salt minions
 
   Scenario: Add operations to the action chain via XML-RPC for Salt minions
     Given I am logged in via XML-RPC actionchain as user "admin" and password "admin"
-    And I want to operate on this "sle-minion"
+    And I want to operate on this "sle_minion"
     When I call XML-RPC createChain with chainLabel "throwaway_chain"
     And I call actionchain.add_package_install()
     And I call actionchain.add_package_removal()
@@ -274,7 +274,7 @@ Feature: Action chains on Salt minions
 
   Scenario: Run an action chain via XML-RPC on Salt minion
     Given I am logged in via XML-RPC actionchain as user "admin" and password "admin"
-    And I want to operate on this "sle-minion"
+    And I want to operate on this "sle_minion"
     When I call XML-RPC createChain with chainLabel "multiple_scripts"
     And I call actionchain.add_script_run() with the script "echo -n 1 >> /tmp/action_chain.log"
     And I call actionchain.add_script_run() with the script "echo -n 2 >> /tmp/action_chain.log"
@@ -283,8 +283,8 @@ Feature: Action chains on Salt minions
     Then I should be able to see all these actions in the action chain
     When I schedule the action chain
     And I wait until there are no more action chains
-    And I wait until file "/tmp/action_chain_done" exists on "sle-minion"
-    Then file "/tmp/action_chain.log" should contain "123" on "sle-minion"
+    And I wait until file "/tmp/action_chain_done" exists on "sle_minion"
+    Then file "/tmp/action_chain.log" should contain "123" on "sle_minion"
     And I wait until there are no more scheduled actions
 
   Scenario: Cleanup: remove Salt minion from configuration channel
@@ -292,7 +292,7 @@ Feature: Action chains on Salt minions
     When I follow the left menu "Configuration > Configuration Channels"
     And I follow "Action Chain Channel"
     And I follow "Systems" in the content area
-    And I check the "sle-minion" client
+    And I check the "sle_minion" client
     And I click on "Unsubscribe systems"
     Then I should see a "Successfully unsubscribed 1 system(s)." text
 
@@ -304,16 +304,16 @@ Feature: Action chains on Salt minions
     And I click on "Delete Config Channel"
 
   Scenario: Cleanup: remove packages and repository used in action chain for Salt minion
-    When I run "zypper -n rm andromeda-dummy" on "sle-minion" without error control
-    And I run "zypper -n rm virgo-dummy" on "sle-minion" without error control
-    And I run "zypper -n rm milkyway-dummy" on "sle-minion" without error control
-    And I disable repository "test_repo_rpm_pool" on this "sle-minion" without error control
+    When I run "zypper -n rm andromeda-dummy" on "sle_minion" without error control
+    And I run "zypper -n rm virgo-dummy" on "sle_minion" without error control
+    And I run "zypper -n rm milkyway-dummy" on "sle_minion" without error control
+    And I disable repository "test_repo_rpm_pool" on this "sle_minion" without error control
 
   Scenario: Cleanup: remove temporary files for testing action chains on Salt minion
-    When I run "rm -f /tmp/action_chain.log" on "sle-minion" without error control
-    And I run "rm -f /tmp/action_chain_done" on "sle-minion" without error control
-    And I run "rm -f /etc/action-chain.cnf" on "sle-minion" without error control
-    And I run "rm -f /tmp/action_chain_one_system_done" on "sle-minion" without error control
+    When I run "rm -f /tmp/action_chain.log" on "sle_minion" without error control
+    And I run "rm -f /tmp/action_chain_done" on "sle_minion" without error control
+    And I run "rm -f /etc/action-chain.cnf" on "sle_minion" without error control
+    And I run "rm -f /tmp/action_chain_one_system_done" on "sle_minion" without error control
 
   Scenario: Cleanup: remove remaining systems from SSM after action chain tests on normal minion
     When I am authorized as "admin" with password "admin"

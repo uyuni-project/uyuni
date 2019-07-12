@@ -7,13 +7,13 @@ Feature: Pick dates
   I want to be able to easily pick dates
 
   Scenario: Date picker is by default set to today
-    Given I am on the Systems overview page of this "sle-client"
+    Given I am on the Systems overview page of this "sle_client"
     And I follow "Remote Command" in the content area
     And I open the date picker
     Then the date picker title should be the current month and year
 
   Scenario: Picking a time should set the hidden fields
-    Given I am on the Systems overview page of this "sle-client"
+    Given I am on the Systems overview page of this "sle_client"
     And I follow "Remote Command" in the content area
     And I enter "ls" as "Script"
     And I pick "2016-08-27" as date

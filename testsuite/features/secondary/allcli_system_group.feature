@@ -29,7 +29,7 @@ Feature: Manage a group of systems
     Given I am on the groups page
     When I follow "new-systems-group"
     And I follow "Target Systems"
-    And I check the "sle-minion" client
+    And I check the "sle_minion" client
     And I click on "Add Systems"
     Then I should see a "1 systems were added to new-systems-group server group." text
 
@@ -37,17 +37,17 @@ Feature: Manage a group of systems
     Given I am on the groups page
     When I follow "new-systems-group"
     And I follow "Target Systems"
-    And I check the "sle-client" client
+    And I check the "sle_client" client
     And I click on "Add Systems"
     Then I should see a "1 systems were added to new-systems-group server group." text
 
   Scenario: Check that the SLE client is part of the new group
-    Given I am on the Systems overview page of this "sle-client"
+    Given I am on the Systems overview page of this "sle_client"
     When I follow "Groups" in the content area
     Then I should see a "new-systems-group" text
 
   Scenario: Check that the SLE minion is part of the new group
-    Given I am on the Systems overview page of this "sle-minion"
+    Given I am on the Systems overview page of this "sle_minion"
     When I follow "Groups" in the content area
     Then I should see a "new-systems-group" text
 
@@ -59,7 +59,7 @@ Feature: Manage a group of systems
     When I follow "new-systems-group"
     And I follow "Target Systems"
     Then I should see a "The following are systems that may be added to this group." text
-    When I check the "ceos-minion" client
+    When I check the "ceos_minion" client
     And I click on "Add Systems"
     Then I should see a "1 systems were added to new-systems-group server group" text
 
@@ -67,12 +67,12 @@ Feature: Manage a group of systems
     Given I am on the groups page
     When I click on "Use in SSM" in row "new-systems-group"
     Then I should see a "Selected Systems List" text
-    And I should see "sle-client" as link
-    And I should see "sle-minion" as link
+    And I should see "sle_client" as link
+    And I should see "sle_minion" as link
 
   Scenario: Install some formula on the server
     When I manually install the "locale" formula on the server
-    And I synchronize all Salt dynamic modules on "sle-minion"
+    And I synchronize all Salt dynamic modules on "sle_minion"
 
   Scenario: New formula page is rendered for the system group
     Given I am on the groups page
@@ -97,14 +97,14 @@ Feature: Manage a group of systems
     And I wait until I see "2 systems successfully completed this action." text, refreshing the page
 
   Scenario: Remove SLE client from new group
-    Given I am on the Systems overview page of this "sle-client"
+    Given I am on the Systems overview page of this "sle_client"
     When I follow "Groups"
     And I check "new-systems-group" in the list
     And I click on "Leave Selected Groups"
     Then I should see a "1 system groups removed." text
 
   Scenario: Remove SLE minion from new group
-    Given I am on the Systems overview page of this "sle-minion"
+    Given I am on the Systems overview page of this "sle_minion"
     When I follow "Groups"
     And I check "new-systems-group" in the list
     And I click on "Leave Selected Groups"
