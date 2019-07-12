@@ -66,10 +66,7 @@ When(/^I wait at most (\d+) seconds until all "([^"]*)" container images are bui
 end
 
 When(/^I check the first image$/) do
-  within(:xpath, '//section') do
-    row = find(:xpath, "//div[@class='table-responsive']/table/tbody/tr[.//td]", match: :first)
-    row.find(:xpath, ".//input[@type='checkbox']", match: :first).set(true)
-  end
+  step %(I check the first row in the list)
 end
 
 When(/^I schedule the build of image "([^"]*)" via XML-RPC calls$/) do |image|

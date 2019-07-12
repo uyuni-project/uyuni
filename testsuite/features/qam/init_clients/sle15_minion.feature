@@ -1,4 +1,4 @@
-# Copyright (c) 2019 SUSE LLC
+# Copyright (c) 2020 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 @sle15_minion
@@ -16,19 +16,17 @@ Feature: Be able to bootstrap a sle15 Salt minion via the GUI
     And I enter "22" as "port"
     And I enter "root" as "user"
     And I enter "linux" as "password"
-    And I select "sle15_minion_key" from "activationKeys"
+    And I select "1-sle15_minion_key" from "activationKeys"
     And I select the hostname of "proxy" from "proxies"
     And I click on "Bootstrap"
     And I wait until I see "Successfully bootstrapped host!" text
+    And I wait until onboarding is completed for "sle15_minion"
 
   Scenario: Check the new bootstrapped sle15 minion in System Overview page
     Given I am authorized
     And I go to the minion onboarding page
     Then I should see a "accepted" text
     And the Salt master can reach "sle15_minion"
-    When I navigate to "rhn/systems/Overview.do" page
-    And I wait until I see the name of "sle15_minion", refreshing the page
-    And I wait until onboarding is completed for "sle15_minion"
 
 @proxy
   Scenario: Check connection from sle15 minion to proxy

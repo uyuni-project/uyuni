@@ -1,4 +1,4 @@
-# Copyright (c) 2019 SUSE LLC
+# Copyright (c) 2020 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 @sle11sp4_ssh_minion
@@ -12,12 +12,10 @@ Feature: Be able to bootstrap a sle11sp4 Salt host managed via salt-ssh
     And I check "manageWithSSH"
     And I enter the hostname of "sle11sp4_ssh_minion" as "hostname"
     And I enter "linux" as "password"
-    And I select "sle11sp4_ssh_minion_key" from "activationKeys"
+    And I select "1-sle11sp4_ssh_minion_key" from "activationKeys"
     And I select the hostname of "proxy" from "proxies"
     And I click on "Bootstrap"
     Then I wait until I see "Successfully bootstrapped host!" text
-    And I navigate to "rhn/systems/Overview.do" page
-    And I wait until I see the name of "sle11sp4_ssh_minion", refreshing the page
     And I wait until onboarding is completed for "sle11sp4_ssh_minion"
 
 # WORKAROUD for bsc#1124634
@@ -25,7 +23,7 @@ Feature: Be able to bootstrap a sle11sp4 Salt host managed via salt-ssh
 # stays installed after removal of channel containing it. So it is not possible to update it.
 # Package needs to be removed from highstate to avoid failure when updating it.
 @ssh_minion
-  Scenario: Remove sle-manager-tools-release from state after bootstrap sle11sp4
+  Scenario: Remove sle-manager-tools-release from state after sle11sp4 bootstrap
     Given I am on the Systems overview page of this "sle11sp4_ssh_minion"
     When I remove package "sle-manager-tools-release" from highstate
 

@@ -80,11 +80,11 @@ end
 
 When(/^I apply highstate on "([^"]*)"$/) do |host|
   system_name = get_system_name(host)
-  if %w[ssh_minion ceos_ssh_minion ubuntu_ssh_minion].include?(host)
+  if host.include? 'ssh_minion'
     cmd = 'runuser -u salt -- salt-ssh --priv=/srv/susemanager/salt/salt_ssh/mgr_ssh_id'
     extra_cmd = '-i --roster-file=/tmp/roster_tests -w -W'
     $server.run("printf '#{system_name}:\n  host: #{system_name}\n  user: root\n  passwd: linux\n' > /tmp/roster_tests")
-  else
+  elsif host.include? 'minion'
     cmd = 'salt'
     extra_cmd = ''
   end
@@ -530,23 +530,6 @@ end
 
 When(/^I enable IPv6 forwarding on all interfaces of the SLE minion$/) do
   $minion.run('sysctl net.ipv6.conf.all.forwarding=1')
-end
-
-And(/^I register "([^*]*)" as traditional client$/) do |client|
-  step %(I register "#{client}" as traditional client with activation key "1-SUSE-DEV-x86_64")
-end
-
-And(/^I register "([^*]*)" as traditional client with activation key "([^*]*)"$/) do |client, key|
-  node = get_target(client)
-  command = 'wget --no-check-certificate ' \
-            '-O /usr/share/rhn/RHN-ORG-TRUSTED-SSL-CERT ' \
-            "http://#{$server.ip}/pub/RHN-ORG-TRUSTED-SSL-CERT"
-  node.run(command)
-  command = 'rhnreg_ks --username=admin --password=admin --force ' \
-            "--serverUrl=#{registration_url} " \
-            '--sslCACert=/usr/share/rhn/RHN-ORG-TRUSTED-SSL-CERT ' \
-            "--activationkey=#{key}"
-  node.run(command)
 end
 
 When(/^I wait for the openSCAP audit to finish$/) do

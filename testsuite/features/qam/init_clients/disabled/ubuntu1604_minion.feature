@@ -1,4 +1,4 @@
-# Copyright (c) 2019 SUSE LLC
+# Copyright (c) 2020 SUSE LLC
 # Licensed under the terms of the MIT license.
 #
 #  1) bootstrap a new Ubuntu minion via salt-ssh
@@ -13,12 +13,10 @@ Feature: Bootstrap a Ubuntu 16.04 minion and do some basic operations on it
     Then I should see a "Bootstrap Minions" text
     And I enter the hostname of "ubuntu1604_minion" as "hostname"
     And I enter "linux" as "password"
-    And I select "ubuntu1604_minion_key" from "activationKeys"
+    And I select "1-ubuntu1604_minion_key" from "activationKeys"
     And I select the hostname of "proxy" from "proxies"
     And I click on "Bootstrap"
     Then I wait until I see "Successfully bootstrapped host!" text
-    And I navigate to "rhn/systems/Overview.do" page
-    And I wait until I see the name of "ubuntu1604_minion", refreshing the page
     And I wait until onboarding is completed for "ubuntu1604_minion"
 
 @proxy
