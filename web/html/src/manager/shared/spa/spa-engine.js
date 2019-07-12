@@ -11,9 +11,7 @@ window.pageRenderers.spa.init = function init() {
   const appInstance = new App();
   appInstance.setLinkSelector("a.js-spa");
   appInstance.setFormSelector("");
-  appInstance.addSurfaces('left-menu-data');
-  appInstance.addSurfaces('ssm-box');
-  appInstance.addSurfaces('page-body');
+  appInstance.addSurfaces(["left-menu-data", "ssm-box", "page-body"])
   appInstance.addRoutes([{
     path: /.*/,
     handler: function (route, a, b) {
