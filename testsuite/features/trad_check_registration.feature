@@ -1,4 +1,4 @@
-# Copyright (c) 2015-2018 SUSE LLC
+# Copyright (c) 2015-2019 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 Feature: Client display after registration
@@ -110,7 +110,7 @@ Feature: Client display after registration
     And I should see a "Events" link in the content area
     And I should see a "Pending" link in the content area
     And I should see a "History" link in the content area
-    And I should see a " Pending Events" text
+    And I should see a "Pending Events" text
 
   Scenario: Show Details => Properties page
     Given I am on the Systems overview page of this "sle-client"
