@@ -8,19 +8,16 @@ Feature: Register a sle11sp4 traditional client
   I want to call rhnreg_ks
 
   Scenario: Register a sle11sp4 traditional client
-    When I register "sle11sp4_client" as traditional client with activation key "sle11sp4_client_key"
+    When I register "sle11sp4_client" as traditional client with activation key "1-sle11sp4_client_key"
     And I run "mgr-actions-control --enable-all" on "sle11sp4_client"
     Then I should see "sle11sp4_client" in spacewalk
+    And I wait until onboarding is completed for "sle11sp4_client"
 
   Scenario: Check registration values of sle11sp4 traditional
-    Given I update the profile of this client
+    Given I update the profile of "sle11sp4_client"
     When I am on the Systems overview page of this "sle11sp4_client"
-    And I wait until I see "Software Updates Available" text, refreshing the page
+    And I wait until I see "Software Updates Available" text or "System is up to date" text
     Then I should see a "System Status" text
-    And I should see a "Software Updates Available" text
-    And I should see a "Critical:" link
-    And I should see a "Non-Critical:" link
-    And I should see a "Packages:" link
     And I should see a "Edit These Properties" link
     And I should see a "[Management]" text
     And I should see a "Add to SSM" link

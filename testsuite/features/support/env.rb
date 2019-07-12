@@ -23,8 +23,7 @@ server = ENV['SERVER']
 $stdout.sync = true
 STARTTIME = Time.new.to_i
 Capybara.default_max_wait_time = 10
-DEFAULT_TIMEOUT = 300
-CLICK_TIMEOUT = Capybara.default_max_wait_time * 2
+DEFAULT_TIMEOUT = 250
 
 # QAM test-suite will provide a json including all client repositories with format :
 # {"client_type" : { "salt" : "salt_repo" , "traditional" : "traditional_repo" }}
@@ -33,7 +32,8 @@ if File.exist?(mu_repos_path)
   mu_repos_file = File.read(mu_repos_path)
   $mu_repositories = JSON.parse(mu_repos_file)
   Capybara.default_max_wait_time = 30
-  DEFAULT_TIMEOUT = 400
+  DEFAULT_TIMEOUT = 1200
+  $qam_test = true
 end
 
 def enable_assertions
@@ -114,6 +114,35 @@ Before('@sle15_minion') do
   skip_this_scenario unless $sle15_minion
 end
 
+Before('@sle15_client') do
+  skip_this_scenario unless $sle15_client
+end
+
+Before('@sle15sp1_ssh_minion') do
+  skip_this_scenario unless $sle15sp1_ssh_minion
+end
+
+Before('@sle15sp1_minion') do
+  skip_this_scenario unless $sle15sp1_minion
+end
+
+Before('@sle15sp1_client') do
+  skip_this_scenario unless $sle15sp1_client
+end
+
+Before('@skip_for_ubuntu') do |scenario|
+  skip_this_scenario if scenario.feature.location.file.include? 'ubuntu'
+end
+
+Before('@skip_for_minion') do |scenario|
+  skip_this_scenario if scenario.feature.location.file.include? 'minion'
+end
+
+# do some tests only if we have SCC credentials
+Before('@scc_credentials') do
+  skip_this_scenario unless $scc_credentials
+end
+
 # do some tests only if there is a private network
 Before('@private_net') do
   skip_this_scenario unless $private_net
@@ -131,10 +160,16 @@ end
 
 # have more infos about the errors
 def debug_server_on_realtime_failure
-  puts '_' * 51 + ' /var/log/rhn/rhn_web_ui.log ' + '_' * 51
-  out, _code = $server.run('tail -n35 /var/log/rhn/rhn_web_ui.log')
+  puts '=> /var/log/rhn/rhn_web_ui.log'
+  out, _code = $server.run("tail -n20 /var/log/rhn/rhn_web_ui.log | awk -v limit=\"$(date --date='5 minutes ago' '+%Y-%m-%d %H:%M:%S')\" ' $0 > limit'")
   out.each_line do |line|
     puts line.to_s
   end
-  puts '_' * 131
+  puts
+  puts '=> /var/log/rhn/rhn_web_api.log'
+  out, _code = $server.run("tail -n20 /var/log/rhn/rhn_web_api.log | awk -v limit=\"$(date --date='5 minutes ago' '+%Y-%m-%d %H:%M:%S')\" ' $0 > limit'")
+  out.each_line do |line|
+    puts line.to_s
+  end
+  puts
 end
