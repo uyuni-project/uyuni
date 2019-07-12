@@ -1,4 +1,4 @@
-# Copyright (c) 2018 SUSE LLC
+# Copyright (c) 2018-2019 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 Feature: Be able to manage KVM virtual machines via the GUI
@@ -15,10 +15,10 @@ Feature: Be able to manage KVM virtual machines via the GUI
     And I select "1-SUSE-PKG-x86_64" from "activationKeys"
     And I select the hostname of the proxy from "proxies"
     And I click on "Bootstrap"
-    And I wait until I see "Successfully bootstrapped host! " text
+    And I wait until I see "Successfully bootstrapped host!" text
     And I wait until onboarding is completed for "kvm-server"
     And I restart salt-minion on "kvm-server"
-    # Shorten the virtpoller interval to avoid loosing time
+    # Shorten the virtpoller interval to avoid losing time
     And I reduce virtpoller run interval on "kvm-server"
 
 @virthost_kvm

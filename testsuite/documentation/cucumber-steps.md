@@ -233,9 +233,9 @@ For a test with a regular expression, there is ```I should see a text like "..."
 * Same, but wait until text appears
 
 ```cucumber
-  Then I wait until I see "Successfully bootstrapped host! " text
-  Then I wait until I do not see "Loading..." text
-  Then I wait at most 360 seconds until I see "Product Description" text
+  When I wait until I see "Successfully bootstrapped host!" text
+  When I wait until I do not see "Loading..." text
+  When I wait at most 360 seconds until I see "Product Description" text
 ```
 
 * Same, but re-issue HTTP requests to refresh the page

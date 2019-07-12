@@ -16,7 +16,7 @@ Feature: Migrate a traditional client into a Salt minion
     And I select "1-SUSE-PKG-x86_64" from "activationKeys"
     And I select the hostname of the proxy from "proxies"
     And I click on "Bootstrap"
-    Then I wait until I see "Successfully bootstrapped host! " text
+    And I wait until I see "Successfully bootstrapped host!" text
 
   Scenario: Check that the migrated system is now a minion
     Given I am on the Systems overview page of this "sle-migrated-minion"
