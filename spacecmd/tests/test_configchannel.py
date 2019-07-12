@@ -124,3 +124,19 @@ class TestSCConfigChannel:
                       'awsbox\nazure\nbeigebox\nexbox\npaystation-4'
                       '\nquakearena\nsisteme\nsystem\nzitrix')
 
+    def test_configchannel_listfiles_noarg(self, shell):
+        """
+        Test configchannel_listfiles function. No args.
+
+        :param shell:
+        :return:
+        """
+        mprint = MagicMock()
+        logger = MagicMock()
+        with patch("spacecmd.configchannel.print", mprint) as prt, \
+                patch("spacecmd.configchannel.logging", logger) as lgr:
+            spacecmd.configchannel.do_configchannel_listfiles(shell, "")
+
+        assert not shell.client.configchannel.listFiles.called
+        assert not mprint.called
+        assert shell.help_configchannel_listfiles.called
