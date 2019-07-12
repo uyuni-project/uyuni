@@ -108,15 +108,13 @@ def do_configchannel_listfiles(self, args, doreturn=False):
         return []
 
     for channel in args:
-        files = self.client.configchannel.listFiles(self.session,
-                                                    channel)
-        files = [f.get('path') for f in files]
+        files = sorted([f.get('path') for f in self.client.configchannel.listFiles(self.session, channel)])
 
         if doreturn:
             return files
         else:
             if files:
-                print('\n'.join(sorted(files)))
+                print('\n'.join(files))
 
 ####################
 
