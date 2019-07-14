@@ -1,3 +1,5 @@
+- add caret sorting for rpm versioning
+- allow repo and manifest sources with the same url
 - Drop no longer used 'allServerKeywordSinceReboot' view (fate#327780)
 - Allow forcing off or resetting VMs
 
