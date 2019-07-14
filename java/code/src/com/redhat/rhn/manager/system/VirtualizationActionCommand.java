@@ -109,17 +109,7 @@ public class VirtualizationActionCommand {
         virtAction.extractParameters(getContext());
 
         LOG.debug("saving virtAction.");
-        ActionFactory.save(virtAction);
-
-        if (getActionChain() == null || !getActionChain().isPresent()) {
-            ActionManager.scheduleForExecution(virtAction, Collections.singleton(getTargetSystem().getId()));
-            taskomaticApi.scheduleActionExecution(virtAction);
-        }
-        else {
-            Integer sortOrder = ActionChainFactory.getNextSortOrderValue(actionChain.get());
-            ActionChainFactory.queueActionChainEntry(virtAction, actionChain.get(),
-                    getTargetSystem().getId(), sortOrder);
-        }
+        schedule(virtAction, getTargetSystem(), getActionChain());
 
         action = virtAction;
         return null;
@@ -267,6 +257,35 @@ public class VirtualizationActionCommand {
      */
     public void setUuid(String argUuid) {
         this.uuid = argUuid;
+    }
+
+    /**
+     * Helper function to schedule actions.
+     *
+     * @param action the action to schedule
+     * @param targetSystem the system to run the action on
+     * @param actionChain an optional action chain to append the action to
+     *
+     * @throws TaskomaticApiException if an error happened while scheduling
+     */
+    public static void schedule(Action action, Server targetSystem, Optional<ActionChain> actionChain)
+            throws TaskomaticApiException {
+        if (targetSystem == null) {
+            throw new UninitializedCommandException("No targetSystem for virtualization action");
+        }
+
+        LOG.debug("schedule() called.");
+        ActionFactory.save(action);
+
+        if (actionChain == null || !actionChain.isPresent()) {
+            ActionManager.scheduleForExecution(action, Collections.singleton(targetSystem.getId()));
+            taskomaticApi.scheduleActionExecution(action);
+        }
+        else {
+            Integer sortOrder = ActionChainFactory.getNextSortOrderValue(actionChain.get());
+            ActionChainFactory.queueActionChainEntry(action, actionChain.get(),
+                    targetSystem.getId(), sortOrder);
+        }
     }
 
     /**
