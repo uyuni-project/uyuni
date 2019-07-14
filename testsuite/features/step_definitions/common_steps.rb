@@ -461,6 +461,18 @@ When(/^I select "([^\"]*)" as a product$/) do |product|
   raise "xpath: #{xpath} not found" unless find(:xpath, xpath).set(true)
 end
 
+When(/I wait until the tree item "([^"]+)" has no sub-list/) do |item|
+  repeat_until_timeout(message: "could still find a sub list for tree item #{item}") do
+    xpath = "//span[contains(text(), '#{item}')]/ancestor::div[contains(@class, 'product-details-wrapper')]/div/i[contains(@class, 'fa-angle-')]"
+    begin
+      find(:xpath, xpath)
+      sleep 1
+    rescue Capybara::ElementNotFound
+      break
+    end
+  end
+end
+
 And(/^I open the sub-list of the product "(.*?)"$/) do |product|
   xpath = "//span[contains(text(), '#{product}')]/ancestor::div[contains(@class, 'product-details-wrapper')]/div/i[contains(@class, 'fa-angle-right')]"
   # within(:xpath, xpath) do
