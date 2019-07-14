@@ -1,3 +1,5 @@
+- Add search server JDBC idle time config options to rhn_search.conf
+
 -------------------------------------------------------------------
 Wed Jul 31 17:47:09 CEST 2019 - jgonzalez@suse.com
 
