@@ -246,6 +246,11 @@ For a test with a regular expression, there is ```I should see a text like "..."
 
 (last one should probably be renamed - it looks in the contents area of the page)
 
+* Wait until a tree item has no sub list
+
+```cucumber
+  When I wait until the tree item "test-pool0" has no sub-list
+```
 
 <a name="b4" />
 
@@ -277,6 +282,7 @@ For a test with a regular expression, there is ```I should see a text like "..."
 
 ```cucumber
   When I click on "Schedule"
+  When I click on "Refresh" in tree item "test-pool0"
 ```
 
 The button can be identified by id, value, title, text content, or alt of image.
