@@ -22,7 +22,7 @@ Feature: Register a Salt minion via Bootstrap-script
     Given I am authorized as "admin" with password "admin"
     When I follow the left menu "Admin > Manager Configuration > Bootstrap Script"
     And I uncheck "Enable Client GPG checking"
-    Then I should see a "$PRODUCT Configuration - Bootstrap" text
+    Then I should see a "SUSE Manager Configuration - Bootstrap" text
     And I should see "Bootstrap using Salt" as checked
     When I click on "Update"
     Then I should see a "Bootstrap script successfully generated" text

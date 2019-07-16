@@ -12,7 +12,7 @@ Feature: Main landing page options and preferences
     Given I am not authorized
     When I go to the home page
     And I follow "About"
-    Then I should see a "About $PRODUCT" text
+    Then I should see a "About SUSE Manager" text
 
   Scenario: Access the Copyright Notice
     Given I am not authorized

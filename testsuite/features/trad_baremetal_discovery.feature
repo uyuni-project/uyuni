@@ -16,7 +16,7 @@ Feature: Bare metal discovery
     Given I am authorized as "admin" with password "admin"
     When I follow the left menu "Admin > Manager Configuration > General"
     When I follow "Bare-metal systems" in the content area
-    Then I should see a "Allows $PRODUCT to automatically add bare-metal systems capable of PXE booting to an organization." text
+    Then I should see a "Allows SUSE Manager to automatically add bare-metal systems capable of PXE booting to an organization." text
     And I should see a "Enable adding to this organization" button
     When I click on "Enable adding to this organization"
     Then I should see a "Automatic bare-metal system discovery has been successfully enabled" text
@@ -110,7 +110,7 @@ Feature: Bare metal discovery
     Given I am authorized as "admin" with password "admin"
     When I follow the left menu "Admin > Manager Configuration > General"
     When I follow "Bare-metal systems" in the content area
-    Then I should see a "Allows $PRODUCT to automatically add bare-metal systems capable of PXE booting to an organization." text
+    Then I should see a "Allows SUSE Manager to automatically add bare-metal systems capable of PXE booting to an organization." text
     And I should see a "Disable adding to this organization" button
     When I click on "Disable adding to this organization"
     Then I should see a "Automatic bare-metal system discovery has been successfully disabled" text
