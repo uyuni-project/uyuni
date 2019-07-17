@@ -212,6 +212,7 @@ class TestSCConfigChannel:
         assert not shell.client.configchannel.listFiles.called
         assert not shell.client.configchannel.listSubscribedSystems.called
         assert not shell.client.configchannel.deployAllSystems.called
+        assert shell.help_configchannel_forcedeploy.called
 
     def test_configchannel_forcedeploy_too_much_args(self, shell):
         """
@@ -235,6 +236,7 @@ class TestSCConfigChannel:
         assert not shell.client.configchannel.listFiles.called
         assert not shell.client.configchannel.listSubscribedSystems.called
         assert not shell.client.configchannel.deployAllSystems.called
+        assert shell.help_configchannel_forcedeploy.called
 
     def test_configchannel_forcedeploy_no_files(self, shell):
         """
@@ -253,6 +255,7 @@ class TestSCConfigChannel:
                 patch("spacecmd.configchannel.logging", logger) as lgr:
             spacecmd.configchannel.do_configchannel_forcedeploy(shell, "base_channel")
 
+        assert not shell.help_configchannel_forcedeploy.called
         assert not logger.error.called
         assert not logger.info.called
         assert not logger.warning.called
@@ -260,3 +263,5 @@ class TestSCConfigChannel:
         assert not shell.client.configchannel.deployAllSystems.called
         assert shell.client.configchannel.listFiles.called
         assert mprint.called
+        assert_expect(mprint.call_args_list,
+                      "No files within selected configchannel.")
