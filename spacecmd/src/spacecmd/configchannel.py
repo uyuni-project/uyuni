@@ -203,6 +203,7 @@ def do_configchannel_filedetails(self, args):
             revision = int(args[2])
         except (ValueError, IndexError):
             logging.error("Invalid revision: %s", args[2])
+            return
 
     # the server return a null exception if an invalid file is passed
     valid_files = self.do_configchannel_listfiles(channel, True)
