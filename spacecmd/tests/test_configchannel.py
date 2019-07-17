@@ -190,3 +190,25 @@ class TestSCConfigChannel:
 
         assert data == ['/etc/ssh.conf', '/etc/whatever.conf', '/tmp/aaa_base.rpm',
                         '/tmp/somefile.txt', '/tmp/someother.txt', '/tmp/zypper.rpm']
+
+    def test_configchannel_forcedeploy_noargs(self, shell):
+        """
+        Test configchannel_forcedeploy function. No arguments.
+
+        :param shell:
+        :return:
+        """
+        mprint = MagicMock()
+        logger = MagicMock()
+        shell.user_confirm = MagicMock()
+        with patch("spacecmd.configchannel.print", mprint) as prt, \
+                patch("spacecmd.configchannel.logging", logger) as lgr:
+            spacecmd.configchannel.do_configchannel_forcedeploy(shell, "")
+
+        assert not mprint.called
+        assert not logger.error.called
+        assert not logger.info.called
+        assert not logger.warning.called
+        assert not shell.client.configchannel.listFiles.called
+        assert not shell.client.configchannel.listSubscribedSystems.called
+        assert not shell.client.configchannel.deployAllSystems.called
