@@ -265,3 +265,33 @@ class TestSCConfigChannel:
         assert mprint.called
         assert_expect(mprint.call_args_list,
                       "No files within selected configchannel.")
+
+    def test_configchannel_forcedeploy_no_systems(self, shell):
+        """
+        Test configchannel_forcedeploy function. No subscribed systems.
+
+        :param shell:
+        :return:
+        """
+        shell.client.configchannel.listFiles = MagicMock(return_value=[
+            {"path": "/tmp/file1.txt"},
+            {"path": "/tmp/file2.txt"},
+        ])
+        shell.client.configchannel.listSubscribedSystems(return_value=[])
+        mprint = MagicMock()
+        logger = MagicMock()
+        shell.user_confirm = MagicMock()
+        with patch("spacecmd.configchannel.print", mprint) as prt, \
+                patch("spacecmd.configchannel.logging", logger) as lgr:
+            spacecmd.configchannel.do_configchannel_forcedeploy(shell, "base_channel")
+
+        assert not shell.help_configchannel_forcedeploy.called
+        assert not logger.error.called
+        assert not logger.info.called
+        assert not logger.warning.called
+        assert not shell.client.configchannel.deployAllSystems.called
+        assert shell.client.configchannel.listSubscribedSystems.called
+        assert shell.client.configchannel.listFiles.called
+        assert mprint.called
+        assert_expect(mprint.call_args_list,
+                      "Channel has no subscribed Systems")
