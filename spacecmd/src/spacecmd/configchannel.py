@@ -135,7 +135,7 @@ def do_configchannel_forcedeploy(self, args):
 
     (args, _options) = parse_command_arguments(args, arg_parser)
 
-    if not args:
+    if not args or len(args) > 1:
         self.help_configchannel_forcedeploy()
         return
 
