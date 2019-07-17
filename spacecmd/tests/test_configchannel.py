@@ -402,3 +402,29 @@ class TestSCConfigChannel:
 
         assert_args_expect(logger.error.call_args_list,
                            [(('Invalid revision: %s', 'kaboom'), {})])
+
+    def test_configchannel_filedetails_invalid_files(self, shell):
+        """
+        Test configchannel_filedetails function with invalid files.
+
+        :param shell:
+        :return:
+        """
+        mprint = MagicMock()
+        logger = MagicMock()
+        shell.user_confirm = MagicMock()
+        shell.do_configchannel_listfiles = MagicMock(return_value=[
+            "/tmp/valid.file", "/tmp/another-valid.file",
+        ])
+        with patch("spacecmd.configchannel.print", mprint) as prt, \
+                patch("spacecmd.configchannel.logging", logger) as lgr:
+            spacecmd.configchannel.do_configchannel_filedetails(
+                shell, "base_channel /tmp/file.txt")
+
+        assert not shell.client.configchannel.lookupFileInfo.called
+        assert not mprint.called
+        assert not logger.info.called
+        assert not shell.help_configchannel_filedetails.called
+        assert not logger.error.called
+        assert shell.do_configchannel_listfiles.called
+        assert logger.warning.called
