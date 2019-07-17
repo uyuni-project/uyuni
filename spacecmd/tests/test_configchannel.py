@@ -397,7 +397,7 @@ class TestSCConfigChannel:
         assert not mprint.called
         assert not logger.warning.called
         assert not logger.info.called
-        assert shell.help_configchannel_filedetails.called
+        assert not shell.help_configchannel_filedetails.called
         assert logger.error.called
 
         assert_args_expect(logger.error.call_args_list,
