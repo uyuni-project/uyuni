@@ -212,3 +212,26 @@ class TestSCConfigChannel:
         assert not shell.client.configchannel.listFiles.called
         assert not shell.client.configchannel.listSubscribedSystems.called
         assert not shell.client.configchannel.deployAllSystems.called
+
+    def test_configchannel_forcedeploy_too_much_args(self, shell):
+        """
+        Test configchannel_forcedeploy function. Too much arguments.
+
+        :param shell:
+        :return:
+        """
+        mprint = MagicMock()
+        logger = MagicMock()
+        shell.user_confirm = MagicMock()
+        with patch("spacecmd.configchannel.print", mprint) as prt, \
+                patch("spacecmd.configchannel.logging", logger) as lgr:
+            spacecmd.configchannel.do_configchannel_forcedeploy(
+                shell, "base_channel illegally_entered_channel")
+
+        assert not mprint.called
+        assert not logger.error.called
+        assert not logger.info.called
+        assert not logger.warning.called
+        assert not shell.client.configchannel.listFiles.called
+        assert not shell.client.configchannel.listSubscribedSystems.called
+        assert not shell.client.configchannel.deployAllSystems.called
