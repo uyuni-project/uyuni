@@ -190,7 +190,7 @@ def do_configchannel_filedetails(self, args):
 
     (args, _options) = parse_command_arguments(args, arg_parser)
 
-    if len(args) < 2:
+    if not 4 > len(args) > 1:
         self.help_configchannel_filedetails()
         return
 
@@ -198,10 +198,11 @@ def do_configchannel_filedetails(self, args):
     filename = args[1]
     revision = None
 
-    try:
-        revision = int(args[2])
-    except (ValueError, IndexError):
-        pass
+    if len(args) == 3:
+        try:
+            revision = int(args[2])
+        except (ValueError, IndexError):
+            logging.error("Invalid revision: %s", args[2])
 
     # the server return a null exception if an invalid file is passed
     valid_files = self.do_configchannel_listfiles(channel, True)
