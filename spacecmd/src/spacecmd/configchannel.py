@@ -194,11 +194,10 @@ def do_configchannel_filedetails(self, args):
         self.help_configchannel_filedetails()
         return
 
-    channel = args[0]
-    filename = args[1]
-    revision = None
+    args.append(None)
+    channel, filename, revision = args[:3]
 
-    if len(args) == 3:
+    if revision:
         try:
             revision = int(args[2])
         except (ValueError, IndexError):
