@@ -206,7 +206,7 @@ def do_configchannel_filedetails(self, args):
 
     # the server return a null exception if an invalid file is passed
     valid_files = self.do_configchannel_listfiles(channel, True)
-    if not filename in valid_files:
+    if filename not in valid_files:
         logging.warning('%s is not in this configuration channel' % filename)
         return
 
