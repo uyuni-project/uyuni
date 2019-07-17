@@ -142,7 +142,7 @@ def do_configchannel_forcedeploy(self, args):
     channel = args[0]
 
     files = self.client.configchannel.listFiles(self.session, channel)
-    files = [f.get('path') for f in files]
+    files = [f['path'] for f in files if f.get("path")]
 
     if not files:
         print('No files within selected configchannel.')
