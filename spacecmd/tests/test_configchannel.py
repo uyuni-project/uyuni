@@ -295,3 +295,39 @@ class TestSCConfigChannel:
         assert mprint.called
         assert_expect(mprint.call_args_list,
                       "Channel has no subscribed Systems")
+
+    def test_configchannel_forcedeploy_deploy_output(self, shell):
+        """
+        Test configchannel_forcedeploy function. Output test.
+
+        :param shell:
+        :return:
+        """
+        shell.client.configchannel.listFiles = MagicMock(return_value=[
+            {"path": "/tmp/file1.txt"},
+            {"path": "/tmp/file2.txt"},
+        ])
+        shell.client.configchannel.listSubscribedSystems = MagicMock(return_value=[
+            {"name": "butterfly.acme.org"},
+            {"name": "beigebox.acme.org"},
+        ])
+        mprint = MagicMock()
+        logger = MagicMock()
+        shell.user_confirm = MagicMock()
+        with patch("spacecmd.configchannel.print", mprint) as prt, \
+                patch("spacecmd.configchannel.logging", logger) as lgr:
+            spacecmd.configchannel.do_configchannel_forcedeploy(shell, "base_channel")
+
+        assert not shell.help_configchannel_forcedeploy.called
+        assert not logger.error.called
+        assert not logger.info.called
+        assert not logger.warning.called
+        assert shell.client.configchannel.deployAllSystems.called
+        assert shell.client.configchannel.listSubscribedSystems.called
+        assert shell.client.configchannel.listFiles.called
+        assert mprint.called
+        assert_expect(mprint.call_args_list,
+                      'Force deployment of the following configfiles:',
+                      '==============================================',
+                      '/tmp/file1.txt\n/tmp/file2.txt', '\nOn these systems:',
+                      '=================', 'beigebox.acme.org\nbutterfly.acme.org')
