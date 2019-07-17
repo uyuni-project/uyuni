@@ -235,3 +235,28 @@ class TestSCConfigChannel:
         assert not shell.client.configchannel.listFiles.called
         assert not shell.client.configchannel.listSubscribedSystems.called
         assert not shell.client.configchannel.deployAllSystems.called
+
+    def test_configchannel_forcedeploy_no_files(self, shell):
+        """
+        Test configchannel_forcedeploy function. No files found (or incomplete data).
+
+        :param shell:
+        :return:
+        """
+        shell.client.configchannel.listFiles = MagicMock(return_value=[
+            {"pfad": "/der/hund"},
+        ])
+        mprint = MagicMock()
+        logger = MagicMock()
+        shell.user_confirm = MagicMock()
+        with patch("spacecmd.configchannel.print", mprint) as prt, \
+                patch("spacecmd.configchannel.logging", logger) as lgr:
+            spacecmd.configchannel.do_configchannel_forcedeploy(shell, "base_channel")
+
+        assert not logger.error.called
+        assert not logger.info.called
+        assert not logger.warning.called
+        assert not shell.client.configchannel.listSubscribedSystems.called
+        assert not shell.client.configchannel.deployAllSystems.called
+        assert shell.client.configchannel.listFiles.called
+        assert mprint.called
