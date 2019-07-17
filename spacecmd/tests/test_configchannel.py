@@ -376,3 +376,29 @@ class TestSCConfigChannel:
             assert not logger.error.called
             assert not logger.info.called
             assert shell.help_configchannel_filedetails.called
+
+    def test_configchannel_filedetails_wrong_revision(self, shell):
+        """
+        Test configchannel_filedetails function with wrong amount of arguments.
+
+        :param shell:
+        :return:
+        """
+        mprint = MagicMock()
+        logger = MagicMock()
+        shell.user_confirm = MagicMock()
+        with patch("spacecmd.configchannel.print", mprint) as prt, \
+                patch("spacecmd.configchannel.logging", logger) as lgr:
+            spacecmd.configchannel.do_configchannel_filedetails(
+                shell, "base_channel /tmp/file.txt kaboom")
+
+        assert not shell.client.configchannel.lookupFileInfo.called
+        assert not shell.do_configchannel_listfiles.called
+        assert not mprint.called
+        assert not logger.warning.called
+        assert not logger.info.called
+        assert shell.help_configchannel_filedetails.called
+        assert logger.error.called
+
+        assert_args_expect(logger.error.call_args_list,
+                           [(('Invalid revision: %s', 'kaboom'), {})])
