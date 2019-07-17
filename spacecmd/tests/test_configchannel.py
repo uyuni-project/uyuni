@@ -331,3 +331,25 @@ class TestSCConfigChannel:
                       '==============================================',
                       '/tmp/file1.txt\n/tmp/file2.txt', '\nOn these systems:',
                       '=================', 'beigebox.acme.org\nbutterfly.acme.org')
+
+    def test_configchannel_filedetails_no_args(self, shell):
+        """
+        Test configchannel_filedetails function with no arguments.
+
+        :param shell:
+        :return:
+        """
+        mprint = MagicMock()
+        logger = MagicMock()
+        shell.user_confirm = MagicMock()
+        with patch("spacecmd.configchannel.print", mprint) as prt, \
+                patch("spacecmd.configchannel.logging", logger) as lgr:
+            spacecmd.configchannel.do_configchannel_filedetails(shell, "")
+
+        assert not shell.client.configchannel.lookupFileInfo.called
+        assert not shell.do_configchannel_listfiles.called
+        assert not mprint.called
+        assert not logger.warning.called
+        assert not logger.error.called
+        assert not logger.info.called
+        assert shell.help_configchannel_filedetails.called
