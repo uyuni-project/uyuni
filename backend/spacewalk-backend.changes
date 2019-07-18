@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Thu Jul 18 09:56:25 CEST 2019 - jgonzalez@suse.com
+
+- version 2.8.57.18-1
 - Don't skip Deb package tags on package import (bsc#1130040)
 - Prevent FileNotFoundError: repomd.xml.key traceback (bsc#1137940)
 - Add journalctl output to spacewalk-debug tarballs
