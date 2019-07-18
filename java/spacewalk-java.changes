@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Thu Jul 18 10:03:18 CEST 2019 - jgonzalez@suse.com
+
+- version 2.8.78.23-1
 - API Documentation: mention the shebang in the system.scheduleScriptRun doc strings (bsc#1138655)
 - For orphan contentsources, look also in susesccrepositoryauth to make sure they are not being referenced(bsc#1138275)
 - Hide the 'View All' guests link for foreign systems (bsc#1116869)
