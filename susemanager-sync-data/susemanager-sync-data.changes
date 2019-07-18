@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Thu Jul 18 10:09:30 CEST 2019 - jgonzalez@suse.com
+
+- version 3.2.16-1
 - add channel family definitions for SLES12 SP3 LTSS (bsc#1139693)
 - Enable product detection for plain rhel systems (bsc#1136301)
 
