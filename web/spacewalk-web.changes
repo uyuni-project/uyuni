@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Thu Jul 18 10:04:40 CEST 2019 - jgonzalez@suse.com
+
+- version 2.8.7.18-1
 - Add checks for empty required entries on formula forms (bsc#1109639)
 
 -------------------------------------------------------------------
