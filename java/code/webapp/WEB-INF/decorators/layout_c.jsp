@@ -57,7 +57,7 @@
       <script src='/javascript/manager/shared/spa/spa-engine.bundle.js?cb=${rhn:getConfig('web.version')}'></script>
         <c:if test="${rhn:getConfig('web.spa.enable')}">
           <script type="text/javascript">
-            window.pageRenderers.spa.init && window.pageRenderers.spa.init();
+            window.pageRenderers  && window.pageRenderers.spa.init && window.pageRenderers.spa.init();
           </script>
         </c:if>
     </div>
