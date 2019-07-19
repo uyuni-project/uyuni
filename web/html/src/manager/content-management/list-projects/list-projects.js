@@ -57,7 +57,7 @@ const ListProjects = (props: Props) => {
           <LinkButton
             id="createcontentproject"
             icon="fa-plus"
-            className="btn-link"
+            className="btn-link js-spa"
             title={t('Create a new content lifecycle project')}
             text={t('Create Project')}
             href="/rhn/manager/contentmanagement/project"
