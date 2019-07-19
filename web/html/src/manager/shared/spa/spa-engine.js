@@ -1,4 +1,4 @@
-/* global onDocumentReadyInitOldJS */
+/* global onDocumentReadyInitOldJS, Loggerhead */
 import App, {HtmlScreen} from "senna";
 import "senna/build/senna.css"
 import "./spa-engine.css"
@@ -41,6 +41,7 @@ window.pageRenderers.spa.init = function init() {
       window.location = navigation.path;
     }
 
+    Loggerhead.info('[' + new Date().toUTCString() + '] - Loading `' + window.location + '`');
     SpaRenderer.onSpaEndNavigation();
     onDocumentReadyInitOldJS();
   });
