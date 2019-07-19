@@ -20,6 +20,7 @@ window.pageRenderers.spa.init = function init() {
       return screen;
     }
   }]);
+  window.pageRenderers.spa.appInstance = appInstance;
 
   appInstance.on('endNavigate', function(navigation) {
     // workaround to redirect to the login page when there is no session:
@@ -47,4 +48,12 @@ window.pageRenderers.spa.init = function init() {
   });
 
   return appInstance;
+}
+
+window.pageRenderers.spa.navigate = function navigate(url) {
+  if(window.pageRenderers.spa.appInstance) {
+    window.pageRenderers.spa.appInstance.navigate(url);
+  } else {
+    window.location = url;
+  }
 }
