@@ -45,7 +45,7 @@ type FilterEditProps = {
 };
 
 const redirectToProject = (projectLabel: string) => {
-  window.location.href = `/rhn/manager/contentmanagement/project/${projectLabel || ''}`
+  window.pageRenderers.spa.navigate(`/rhn/manager/contentmanagement/project/${projectLabel || ''}`);
 }
 
 const FilterEdit = (props: FilterEditProps) => {
