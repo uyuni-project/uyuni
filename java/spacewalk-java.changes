@@ -1,3 +1,4 @@
+- add caret sorting for rpm versioning
 - API Documentation: mention the shebang in the system.scheduleScriptRun doc strings (bsc#1138655)
 - For orphan contentsources, look also in susesccrepositoryauth to make sure they are not being referenced(bsc#1138275)
 - Fallback to logged-in-user org and then vendor errata when looking up erratum on cloning (bsc#1137308)

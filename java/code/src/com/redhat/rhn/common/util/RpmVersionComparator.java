@@ -57,11 +57,34 @@ public class RpmVersionComparator implements Comparator<String> {
             b1 = skipNonAlnum(str1, b1);
             b2 = skipNonAlnum(str2, b2);
 
+            /* handle the tilde separator, it sorts before everything else */
             if (xchar(str1, b1) == '~' || xchar(str2, b2) == '~') {
                 if (xchar(str1, b1) == '\0' || xchar(str1, b1) != '~') {
                     return 1;
                 }
                 if (xchar(str2, b2) == '\0' || xchar(str2, b2) != '~') {
+                    return -1;
+                }
+                b1++;
+                b2++;
+                continue;
+            }
+            /*
+             * Handle caret separator. Concept is the same as tilde,
+             * except that if one of the strings ends (base version),
+             * the other is considered as higher version.
+             */
+            if (xchar(str1, b1) == '^' || xchar(str2, b2) == '^') {
+                if (xchar(str1, b1) == '\0') {
+                    return -1;
+                }
+                if (xchar(str2, b2) == '\0') {
+                    return 1;
+                }
+                if (xchar(str1, b1) != '^') {
+                    return 1;
+                }
+                if (xchar(str2, b2) != '^') {
                     return -1;
                 }
                 b1++;
@@ -159,7 +182,7 @@ public class RpmVersionComparator implements Comparator<String> {
     }
 
     private int skipNonAlnum(String s, int i) {
-        while (i < s.length() && xchar(s, i) != '~' && !xisalnum(xchar(s, i))) {
+        while (i < s.length() && xchar(s, i) != '~' && xchar(s, i) != '^' && !xisalnum(xchar(s, i))) {
             i++;
         }
         return i;

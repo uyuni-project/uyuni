@@ -719,6 +719,13 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
                 pkg.getPackageArch().getId());
         RhnSetManager.store(set);
 
+        TaskomaticApi taskomaticMock = mock(TaskomaticApi.class);
+        ActionManager.setTaskomaticApi(taskomaticMock);
+
+        context().checking(new Expectations() { {
+            allowing(taskomaticMock).scheduleActionExecution(with(any(Action.class)));
+        } });
+
         PackageAction pa = ActionManager.schedulePackageVerify(user, srvr, set, new Date());
         assertNotNull(pa);
         assertNotNull(pa.getId());

@@ -1,3 +1,6 @@
+- do not overwrite comps and module data with older versions
+- fix issue with "dists" keyword in url hostname
+- import packages from all collections of a patch not just first one
 - Ensure bytes type when using hashlib to avoid traceback
   on XMLRPC call to "registration.register_osad" (bsc#1138822)
 
