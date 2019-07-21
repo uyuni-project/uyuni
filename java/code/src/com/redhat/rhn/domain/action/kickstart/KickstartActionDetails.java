@@ -23,6 +23,7 @@ public class KickstartActionDetails extends BaseKickstartActionDetails {
 
 
     private String staticDevice;
+    private boolean upgrade = false;
 
 
     /**
@@ -39,4 +40,17 @@ public class KickstartActionDetails extends BaseKickstartActionDetails {
         this.staticDevice = s;
     }
 
+    /**
+     * @return Returns the upgrade.
+     */
+    public boolean getUpgrade() {
+        return upgrade;
+    }
+
+    /**
+     * @param upgradeIn The upgrade to set.
+     */
+    public void setUpgrade(boolean upgradeIn) {
+        this.upgrade = upgradeIn;
+    }
 }
