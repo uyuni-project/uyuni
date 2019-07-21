@@ -41,6 +41,7 @@ import com.redhat.rhn.domain.action.config.ConfigRevisionAction;
 import com.redhat.rhn.domain.action.dup.DistUpgradeAction;
 import com.redhat.rhn.domain.action.dup.DistUpgradeChannelTask;
 import com.redhat.rhn.domain.action.errata.ErrataAction;
+import com.redhat.rhn.domain.action.kickstart.KickstartActionDetails;
 import com.redhat.rhn.domain.action.kickstart.KickstartInitiateAction;
 import com.redhat.rhn.domain.action.rhnpackage.PackageRemoveAction;
 import com.redhat.rhn.domain.action.rhnpackage.PackageUpdateAction;
@@ -1610,10 +1611,10 @@ public class SaltServerActionService {
             KickstartInitiateAction autoInitAction) {
 
         Map<LocalCall<?>, List<MinionSummary>> ret = new HashMap<>();
-        String cobblerSystem = autoInitAction.getKickstartActionDetails().getCobblerSystemName();
-        String host = autoInitAction.getKickstartActionDetails().getKickstartHost();
-        CobblerConnection con;
-        con = CobblerXMLRPCHelper.getAutomatedConnection();
+        KickstartActionDetails ksActionDetails = autoInitAction.getKickstartActionDetails();
+        String cobblerSystem = ksActionDetails.getCobblerSystemName();
+        String host = ksActionDetails.getKickstartHost();
+        CobblerConnection con = CobblerXMLRPCHelper.getAutomatedConnection();
         SystemRecord system = SystemRecord.lookupByName(con, cobblerSystem);
         Profile profile = system.getProfile();
         Distro dist = profile.getDistro();
@@ -1626,12 +1627,16 @@ public class SaltServerActionService {
         KickstartableTree tree = KickstartFactory.lookupKickstartTreeByLabel(nameParts.get(0),
                 OrgFactory.lookupById(Long.valueOf(nameParts.get(1))));
         tree.createOrUpdateSaltFS();
+        String kOpts = buildKernelOptions(system, profile, dist, host);
         Map<String, Object> pillar = new HashMap<>();
         pillar.put("uyuni-reinstall-kernel", saltFSKernel);
         pillar.put("uyuni-reinstall-initrd", saltFSInitrd);
-        pillar.put("uyuni-reinstall-kopts", buildKernelOptions(system, profile, dist, host));
+        pillar.put("uyuni-reinstall-kopts", kOpts);
         pillar.put("uyuni-reinstall-name", "reinstall-system");
 
+        if (kOpts.contains("autoupgrade=1") || kOpts.contains("uyuni_keep_saltkey=1")) {
+            ksActionDetails.setUpgrade(true);
+        }
         ret.put(State.apply(Arrays.asList(KICKSTART_INITIATE), Optional.of(pillar)), minions);
 
         return ret;
