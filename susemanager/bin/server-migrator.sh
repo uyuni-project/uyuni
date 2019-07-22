@@ -54,5 +54,5 @@ rm -rf /var/lib/cobbler.old /var/lib/rhn/kickstarts.old
 
 echo
 echo "==================================================================="
-echo "Reboot the machine for the new version now!
+echo "Reboot the machine for the new version now!"
 echo "==================================================================="
