@@ -49,7 +49,7 @@ const Build = ({projectId, onBuild, currentHistoryEntry = {}, changesToBuild, di
         <ModalButton
           id={`build-contentmngt-modal-link`}
           className="btn-success"
-          text={`Build (${changesToBuild.length})`}
+          text={changesToBuild.length > 0 ? `Build (${changesToBuild.length})` : `Build`}
           disabled={disabled}
           target={modalNameId}
           onClick={() => {
