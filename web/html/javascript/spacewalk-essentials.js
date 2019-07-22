@@ -530,3 +530,25 @@ function addTextareaLengthNotification() {
       .html($(this).attr('maxlength') - $(this).val().length);
   });
 }
+
+function initIEWarningUse() {
+  const isIE = window.document.documentMode;
+  const bodyContentNode = document.getElementById("spacewalk-content");
+  if(isIE && bodyContentNode) {
+    let ieWarningNode = document.createElement("div");
+    ieWarningNode.className = 'alert alert-warning';
+    ieWarningNode.innerHTML = t(
+        "The browser Internet Explorer is not supported. " +
+        "Consider using one of the following browsers: Firefox, Chrome, or Edge"
+    );
+
+    bodyContentNode.insertBefore(
+        ieWarningNode,
+        bodyContentNode.firstChild
+    )
+  }
+}
+
+$(document).on("ready", function() {
+  initIEWarningUse();
+})
