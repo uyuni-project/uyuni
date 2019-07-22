@@ -1,3 +1,4 @@
+- set Copyright year to 2019 (bsc#1141598)
 - Remove duplicate information message when changing system properties (bsc#1111371)
 - Add missing strings for task status page
 
