@@ -1,3 +1,4 @@
+- add spacewalk-watch-channel-sync.sh to spacewalk-utils
 - hostname-rename: change hostname in cobbler db and autoinst data
 - Adds support for Ubuntu and Debian channels to spacewalk-common-channels.
 
