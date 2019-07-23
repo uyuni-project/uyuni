@@ -13,17 +13,19 @@
 - features/core/srv_channels_add.feature
 - features/core/srv_push_package.feature
 - features/core/srv_create_repository.feature
-- features/core/core_srv_systemspage.feature
 - features/core/srv_users.feature
 - features/core/srv_create_activationkey.feature
+- features/core/srv_osimage_profiles.feature
 - features/core/srv_docker_profiles.feature
 # initialize clients
 - features/core/trad_register_client.feature
 - features/core/min_bootstrap.feature
+- features/core/min_salt_ssh.feature
+- features/core/centos_salt_ssh.feature
 - features/core/ubuntu_salt_ssh.feature
 # these features sync real channels (last core features)
-- features/core/srv_sync_channels.feature
-- features/core/core_srv_setup_wizard.feature
+- features/reposync/srv_sync_channels.feature
+- features/reposync/core_srv_setup_wizard.feature
 
 ## Core features END ###
 
