@@ -1,3 +1,5 @@
+- fix systemd timer configuration on SLE12 (bsc#1142038)
+
 -------------------------------------------------------------------
 Tue Jun 18 10:26:37 CEST 2019 - jgonzalez@suse.com
 
