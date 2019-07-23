@@ -491,3 +491,42 @@ class TestSCConfigChannel:
         assert result == ['Path:     /tmp.file.txt', 'Type:     N/A', 'Revision: N/A', 'Created:  N/A',
                           'Modified: N/A', '', 'Owner:           N/A', 'Group:           N/A',
                           'Mode:            N/A', 'SELinux Context: N/A']
+
+    def test_configchannel_filedetails_with_correct_revision_data(self, shell):
+        """
+        Test configchannel_filedetails function with correct revision, data available.
+
+        :param shell:
+        :return:
+        """
+        mprint = MagicMock()
+        logger = MagicMock()
+        shell.user_confirm = MagicMock()
+        shell.client.configchannel.lookupFileInfo = MagicMock(return_value={
+            "path": "/tmp.file.txt", "type": "file", "revision": "3",
+            "creation": "2019.01.01", "modified": "2019.01.02",
+            "owner": "Fred", "group": "lusers", "permissions_mode": "0700",
+            "selinux_ctx": "system_u", "sha256": "1234567", "binary": False,
+            "contents": "Improper keyboard linear orientation"
+        })
+        shell.do_configchannel_listfiles = MagicMock(return_value=[
+            "/tmp/valid.file", "/tmp/another-valid.file", "/tmp/file.txt"
+        ])
+        with patch("spacecmd.configchannel.print", mprint) as prt, \
+                patch("spacecmd.configchannel.logging", logger) as lgr:
+            result = spacecmd.configchannel.do_configchannel_filedetails(
+                shell, "base_channel /tmp/file.txt 3")
+
+        assert not logger.info.called
+        assert not shell.help_configchannel_filedetails.called
+        assert not logger.warning.called
+        assert not logger.error.called
+        assert not mprint.called
+        assert shell.client.configchannel.lookupFileInfo.called
+        assert shell.do_configchannel_listfiles.called
+
+        assert result is not None
+        assert result == ['Path:     /tmp.file.txt', 'Type:     file', 'Revision: 3', 'Created:  2019.01.01',
+                          'Modified: 2019.01.02', '', 'Owner:           Fred', 'Group:           lusers',
+                          'Mode:            0700', 'SELinux Context: system_u', 'SHA256:          1234567',
+                          'Binary:          False', '', 'Contents', '--------', 'Improper keyboard linear orientation']
