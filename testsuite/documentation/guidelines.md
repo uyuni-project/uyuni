@@ -54,7 +54,7 @@ Avoid reinventing function names and variables. Cucumber is all about human-read
 
 ### Rules for features
 
- * Features are grouped by the stage in which it is executed, using the folders `core`, `secondary` and `finishing`
+ * Features are grouped by the stage in which it is executed, using the folders `core`, `reposync`, `secondary` and `finishing`
  * Use the right prefix for the filename of the file that will contain your feature, following this format: `<type>_<topic>`
  * `<type>` is currently one of:
    * "srv": feature testing server side
