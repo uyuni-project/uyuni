@@ -457,3 +457,37 @@ class TestSCConfigChannel:
 
         assert_args_expect(logger.error.call_args_list,
                            [(("Invalid revision: %s", "0.3"), {})])
+
+    def test_configchannel_filedetails_with_correct_revision_na(self, shell):
+        """
+        Test configchannel_filedetails function with correct revision, data N/A.
+
+        :param shell:
+        :return:
+        """
+        mprint = MagicMock()
+        logger = MagicMock()
+        shell.user_confirm = MagicMock()
+        shell.client.configchannel.lookupFileInfo = MagicMock(return_value={
+            "path": "/tmp.file.txt"
+        })
+        shell.do_configchannel_listfiles = MagicMock(return_value=[
+            "/tmp/valid.file", "/tmp/another-valid.file", "/tmp/file.txt"
+        ])
+        with patch("spacecmd.configchannel.print", mprint) as prt, \
+                patch("spacecmd.configchannel.logging", logger) as lgr:
+            result = spacecmd.configchannel.do_configchannel_filedetails(
+                shell, "base_channel /tmp/file.txt 3")
+
+        assert not logger.info.called
+        assert not shell.help_configchannel_filedetails.called
+        assert not logger.warning.called
+        assert not logger.error.called
+        assert not mprint.called
+        assert shell.client.configchannel.lookupFileInfo.called
+        assert shell.do_configchannel_listfiles.called
+
+        assert result is not None
+        assert result == ['Path:     /tmp.file.txt', 'Type:     N/A', 'Revision: N/A', 'Created:  N/A',
+                          'Modified: N/A', '', 'Owner:           N/A', 'Group:           N/A',
+                          'Mode:            N/A', 'SELinux Context: N/A']
