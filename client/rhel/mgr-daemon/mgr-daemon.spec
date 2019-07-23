@@ -112,6 +112,11 @@ your machine, and runs any actions.
 %build
 make -f Makefile.rhnsd %{?_smp_mflags} CFLAGS="-pie -fPIE -Wl,-z,relro,-z,now %{optflags}" %{?is_deb:PLATFORM=deb}
 
+%if 0%{?suse_version} && 0%{?suse_version} <= 1315
+# systemd < v229 does not have RandomizedDelaySec keyword
+sed -i 's/RandomizedDelaySec/RandomSec/' rhnsd.timer
+%endif
+
 %install
 make -f Makefile.rhnsd install VERSION=%{version}-%{release} PREFIX=$RPM_BUILD_ROOT MANPATH=%{_mandir} INIT_DIR=$RPM_BUILD_ROOT/%{_initrddir} %{?is_deb:PLATFORM=deb} CONFIG_DIR=$RPM_BUILD_ROOT/%{_sysconfdir}/sysconfig/rhn
 
