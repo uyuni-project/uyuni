@@ -226,7 +226,7 @@ def do_configchannel_filedetails(self, args):
     result = []
     result.append('Path:     %s' % details.get('path'))
     result.append('Type:     %s' % details.get('type'))
-    result.append('Revision: %i' % details.get('revision'))
+    result.append('Revision: %s' % details.get('revision'))
     result.append('Created:  %s' % details.get('creation'))
     result.append('Modified: %s' % details.get('modified'))
 
