@@ -31,6 +31,7 @@ java/*.txt
 java/*.out
 java/test-results
 java/**/*.iml
+javabuild/checkstyle.cache.src
 thrift/gen-*
 search-server/spacewalk-search/.classpath
 search-server/spacewalk-search/.project
@@ -55,6 +56,7 @@ web/html/bootstrap/
 web/rpm-build
 web/rhn-web-*.tar.gz
 sqlnet.log
+testsuite/.rakeTasks
 backend/reports
 backend/satellite_tools/spacewalk-repo-syncc
 node_modules
@@ -70,3 +72,6 @@ out/
 java/buildconf/checkstyle.cache.src
 reports/
 *.mypy*
+
+# Python
+venv/

@@ -20,7 +20,7 @@ class TextField extends React.Component {
         const defaultClassName = this.props.className ? this.props.className : 'form-control';
 
         return (<input id={this.props.id} className={defaultClassName}
-                    value={this.props.defaultValue}
+                    value={this.props.value}
                     placeholder={this.props.placeholder}
                     type="text"
                     onChange={(e) => this.props.onChange(e)}

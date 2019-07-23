@@ -1,399 +1,358 @@
-/* eslint-disable */
-'use strict';
-
-const React = require("react");
-const ReactDOM = require("react-dom");
-const Buttons = require("components/buttons");
-const { InnerPanel } = require('components/panels/InnerPanel');
-const Network = require("utils/network");
-const Fields = require("components/fields");
-const Messages = require("components/messages").Messages;
-const MessagesUtils = require("components/messages").Utils;
-const SpaRenderer  = require("core/spa/spa-renderer").default;
+// @flow
+import React, {useEffect, useState, useRef} from "react";
+import {useImmer} from 'use-immer';
+import Buttons from "components/buttons";
+import {InnerPanel} from 'components/panels/InnerPanel';
+import {Select} from 'components/input/Select';
+import Fields from "components/fields";
+import {Messages} from "components/messages";
+import withPageWrapper from "components/general/with-page-wrapper";
+import {hot} from 'react-hot-loader';
+import {showErrorToastr} from "../../../components/toastr/toastr";
+import usePackageStatesApi from "./use-package-states.api";
+import type {
+  ChangesMapObject,
+  PackagesObject,
+  Package,
+  OptionalValue
+} from "./package.type";
+import * as packageHelpers from "./package-utils";
 
 const AsyncButton = Buttons.AsyncButton;
 const TextField = Fields.TextField;
 
-const UNMANAGED = {};
-const INSTALLED = {value: 0};
-const REMOVED = {value: 1};
-const PURGED = {value: 2};
+const action = {
+  SAVE: "Save",
+  APPLY: "Apply",
+  GETSERVERPACKAGES: "GetServerPackages",
+  SEARCH: "Search"
+};
 
-const LATEST = {value: 0};
-const ANY = {value: 1};
+const PackageStates = ({serverId}) => {
+  const [filter, setFilter] = useState<string>("");
+  const [view, setView] = useState<string>("system");
+  const [tableRows, setTableRows] = useState<Array<PackagesObject>>([]);
+  const [changed, setChanged] = useImmer<ChangesMapObject>({});
+  const searchRef = useRef<AsyncButton>();
 
-function selectValue2PackageState(value) {
-    switch(value){
-        case -1: return UNMANAGED;
-        case 0: return INSTALLED;
-        case 1: return REMOVED;
-        case 2: return PURGED;
-    }
-}
+  const {
+    messages, fetchPackageStatesApi, packageStates, searchResults
+  } = usePackageStatesApi();
 
-function packageState2selectValue(ps) {
-    return ps.value !== undefined ? ps.value : -1;
-}
+  useEffect(() => {
+    fetchPackageStatesApi(action.GETSERVERPACKAGES, serverId)
+      .catch((error => {
+        showErrorToastr(error, {autoHide: false});
+      }));
+  }, []);
 
-function versionConstraints2selectValue(vc) {
-    return vc.value;
-}
+  useEffect(() => {
+    generateTableData();
+  }, [changed, packageStates, searchResults, view]);
 
-function normalizePackageState(ps) {
-    return selectValue2PackageState(packageState2selectValue(ps));
-}
-
-function normalizePackageVersionConstraint(vc) {
-    return selectValue2VersionConstraints(versionConstraints2selectValue(vc))
-}
-
-function selectValue2VersionConstraints(value) {
-    switch(value){
-        case 0: return LATEST;
-        case 1: return ANY;
-    }
-}
-
-function packageStateKey(packageState) {
-    return packageState.name + packageState.version +
-           packageState.release + packageState.epoch +
-           packageState.arch;
-}
-
-class PackageStates extends React.Component {
-
-  constructor() {
-    super();
-    ["init", "tableBody", "handleStateChange", "onSearchChange", "search", "save", "setView", "addChanged",
-    "triggerSearch", "applyPackageState"]
-    .forEach(method => this[method] = this[method].bind(this));
-    this.state = {
-        filter: "",
-        view: "system",
-        packageStates: [],
-        search: {
-            filter: null,
-            results: []
-        },
-        changed: new Map()
-    };
-    this.init();
-  }
-
-  init() {
-    Network.get("/rhn/manager/api/states/packages?sid=" + serverId).promise.then(data => {
-      console.log(data);
-      this.setState({
-        packageStates: data.map(state => {
-          state.packageStateId = normalizePackageState(state.packageStateId);
-          state.versionConstraintId = normalizePackageVersionConstraint(state.versionConstraintId);
-          return state;
-        })
+  function addChanged(original: Package, newPackageStateId: OptionalValue, newVersionConstraintId: OptionalValue): void {
+    const key = packageHelpers.packageStateKey(original);
+    const currentState = changed[key];
+    if (currentState !== undefined
+      && newPackageStateId === currentState.original.packageStateId
+      && newVersionConstraintId === currentState.original.versionConstraintId) {
+      setChanged((draft: ChangesMapObject) => {
+        delete draft[key];
       });
-    });
-  }
-
-  triggerSearch() {
-    this.searchButton.trigger()
-  }
-
-  search() {
-    if (this.state.filter === this.state.search.filter) {
-        this.setState({
-            view: "search"
-        });
-        return Promise.resolve();
     } else {
-       return Network.get("/rhn/manager/api/states/packages/match?sid=" + serverId + "&target=" + this.state.filter).promise.then(data => {
-          console.log(data);
-          this.setState({
-            view: "search",
-            search:  {
-                filter: this.state.filter,
-                results: data.map(state => {
-                  state.packageStateId = normalizePackageState(state.packageStateId);
-                  return state;
-                })
-            }
-          });
+      setChanged(draft => {
+        draft[key] = {
+          original: original,
+          value: {
+            arch: original.arch,
+            epoch: original.epoch,
+            version: original.version,
+            release: original.release,
+            name: original.name,
+            packageStateId: newPackageStateId,
+            versionConstraintId: newVersionConstraintId
+          }
+        };
+      });
+    }
+  }
+
+  const applyPackageState = () => {
+    fetchPackageStatesApi(action.APPLY, serverId)
+      .then(data => {
+        console.log("apply action queued:" + data);
+      }).catch(error => {
+      showErrorToastr(error, {autoHide: false});
+    });
+  };
+
+  const save = (): Promise<any> => {
+    const toSave = [];
+    for (const state in changed) {
+      if (changed.hasOwnProperty(state) && typeof changed[state].value === 'object') {
+        toSave.push(changed[state].value)
+      } else {
+        console.log("Cannot save empty object.")
+      }
+    }
+    return fetchPackageStatesApi(action.SAVE, serverId, "", toSave, changed)
+      .then(() => {
+        setView("system");
+        setChanged(() => {
+          return {};
         });
-    }
-  }
-
-  save() {
-    const states = [];
-    for(var state of this.state.changed.values()) {
-        states.push(state.value)
-    }
-    const request = Network.post(
-        "/rhn/manager/api/states/packages/save",
-        JSON.stringify({
-            sid: serverId,
-            packageStates: states
-        }),
-        "application/json"
-    ).promise.then(data => {
-      console.log("success: " + data);
-      const newPackageStates = data.map(state => {
-          state.packageStateId = normalizePackageState(state.packageStateId);
-          return state;
+      }).catch(error => {
+        showErrorToastr(error, {autoHide: false});
       });
+  };
 
-      const newSearchResults = this.state.search.results.map( state => {
-        const changed = this.state.changed.get(packageStateKey(state))
-        if(changed !== undefined) {
-            return changed.value;
-        } else{
-            return state;
-        }
+  const handleUndo = (packageState) => {
+    return (): void => {
+      setChanged((draft: ChangesMapObject) => {
+        const key = packageHelpers.packageStateKey(packageState);
+        delete draft[key];
       });
-
-      this.setState({
-        changed: new Map(),
-        view: "system",
-        search: {
-            filter: this.state.search.filter,
-            results: newSearchResults
-        },
-        packageStates: newPackageStates,
-        messages: MessagesUtils.info(t('Package states have been saved.'))
-      });
-    }, jqXHR => {
-      console.log("fail: " + jqXHR);
-      throw "failed to save";
-    });
-    return request;
-  }
-
-  applyPackageState() {
-    if (this.state.changed.size > 0) {
-        const response = confirm(t("There are unsaved changes. Do you want to proceed ?"))
-        if (response == false) {
-            return null;
-        }
     }
+  };
 
-    const request = Network.post(
-        "/rhn/manager/api/states/apply",
-        JSON.stringify({
-            id: serverId,
-            type: "SERVER",
-            states: ["packages"]
-        }),
-        "application/json"
-    );
-    return request.promise.then(data => {
-          console.log("apply action queued:" + data);
-          this.setState({
-              messages: MessagesUtils.info(<span>{t("Applying the packages states has been ")}
-                  <a href={"/rhn/systems/details/history/Event.do?sid=" + serverId + "&aid=" + data}>{t("scheduled")}</a>
-              </span>)
+  // Use this one only for Select's:
+  // https://github.com/Semantic-Org/Semantic-UI-React/issues/638#issuecomment-252035750
+  const handleStateChangeEvent = (original) => {
+    return (event, data): void => {
+      const newPackageStateId: OptionalValue = packageHelpers.selectValue2PackageState(parseInt(data));
+      const newPackageConstraintId: OptionalValue =
+        (newPackageStateId === packageHelpers.INSTALLED ? packageHelpers.LATEST : original.versionConstraintId);
+      addChanged(
+        original,
+        newPackageStateId,
+        newPackageConstraintId
+      );
+    }
+  };
+
+  // Use this one only for Select's:
+  // https://github.com/Semantic-Org/Semantic-UI-React/issues/638#issuecomment-252035750
+  const handleConstraintChangeEvent = (original) => {
+    return (event, data): void => {
+      const newPackageConstraintId: OptionalValue = packageHelpers.selectValue2VersionConstraints(parseInt(data));
+      const key = packageHelpers.packageStateKey(original);
+      const currentState: PackagesObject = changed[key];
+      const currentPackageStateId: OptionalValue =
+        (currentState !== undefined && typeof currentState.value === 'object') ? currentState.value.packageStateId : original.packageStateId;
+      addChanged(
+        original,
+        currentPackageStateId,
+        newPackageConstraintId
+      );
+    }
+  };
+
+  const onSearchChange = (event): void => {
+    setFilter(event.target.value);
+  };
+
+  const triggerSearch = (): void => {
+    searchRef.current.trigger()
+  };
+
+  const search = (): Promise<any> => {
+    return fetchPackageStatesApi(action.SEARCH, serverId, filter)
+      .then(() => {
+        setView("search");
+      })
+      .catch(error => {
+        showErrorToastr(error, {autoHide: false});
+      });
+  };
+
+  const changeTabUrl = (currentTab) => {
+    setView(currentTab);
+  };
+
+  const generateTableData = (): void => {
+    let rows: Array<PackagesObject> = [];
+    if (view === "system") {
+      for (const state of packageStates) {
+        const key = packageHelpers.packageStateKey(state);
+        const changedPackage = changed[key];
+        if (changedPackage !== undefined) {
+          rows.push(changedPackage);
+        } else {
+          rows.push({
+            original: state,
           });
-    });
-  }
-
-  setView(view) {
-    return event => {
-      this.setState({
-          view: view
-      });
+        }
+      }
+    } else if (view === "search") {
+      for (const state of searchResults) {
+        const key = packageHelpers.packageStateKey(state);
+        const changedPackage = changed[key];
+        if (changedPackage === undefined) {
+          rows.push({
+            original: state,
+          });
+        } else {
+          rows.push(changedPackage);
+        }
+      }
+    } else if (view === "changes") {
+      for (const state in changed) {
+        if (changed.hasOwnProperty(state)) {
+          rows.push(changed[state])
+        } else {
+          console.log("Cannot display emtpy object.")
+        }
+      }
     }
-  }
+    setTableRows(rows);
+  };
 
-  tableBody() {
+  const isApplyButtonDisabled = Object.keys(changed).length > 0;
+  const buttons = [
+    <AsyncButton id="save" action={save} text={t("Save")} disabled={!isApplyButtonDisabled}
+                 key={"save"}/>,
+    <span {...(isApplyButtonDisabled) ? {title: t("Please always save your changes before applying!")}: {}}>
+      <AsyncButton id="apply" action={applyPackageState} text={t("Apply changes")}
+                 disabled={isApplyButtonDisabled} key={"apply"}
+      />
+    </span>
+  ];
+
+  const headerTabs = () => {
+    const length = Object.keys(changed).length;
+    let changesText = t('Changes');
+    if (length === 1) {
+      changesText = t('1 Change');
+    } else if (length > 1) {
+      changesText = length + ' ' + t('Changes');
+    }
+
+    return (
+      <div className="spacewalk-content-nav">
+        <ul className="nav nav-tabs">
+          <li className={view === 'search' || view === '' ? 'active' : ''}>
+            <a href='#search' onClick={() => changeTabUrl('search')}>{t('Search')}</a>
+          </li>
+          <li className={view === 'changes' ? 'active' : ''}>
+            <a href='#changes' onClick={() => changeTabUrl('changes')}>{changesText}</a>
+          </li>
+          <li className={view === 'system' ? 'active' : ''}>
+            <a href='#system' onClick={() => changeTabUrl('system')}>{t('System')}</a>
+          </li>
+        </ul>
+      </div>)
+  };
+
+  const renderSearchBar = () => {
+    return (
+      <div className={"row"}>
+        <div className={"col-md-5"}>
+          <div style={{paddingBottom: 0.7 + 'em'}}>
+            <div className="input-group">
+              <TextField id="package-search" value={filter} placeholder={t("Search package")}
+                         onChange={onSearchChange} onPressEnter={triggerSearch} className="form-control"/>
+              <span className="input-group-btn">
+          <AsyncButton id="search" text={t("Search")} action={search} ref={searchRef} key={"searchButton"}/>
+        </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    )
+  };
+
+  const tableBody = () => {
     const elements = [];
-    var rows = [];
-    if(this.state.view === "system") {
-        rows = this.state.packageStates.map(state => {
-            const changed = this.state.changed.get(packageStateKey(state))
-            if(changed !== undefined) {
-                return changed;
-            } else {
-                return {
-                    original: state,
-                };
-            }
-        });
-    } else if(this.state.view === "search") {
-        rows = this.state.search.results.map(state => {
-            const changed = this.state.changed.get(packageStateKey(state))
-            if(changed !== undefined) {
-                return changed;
-            } else {
-                return {
-                    original: state,
-                };
-            }
-        });
-    } else if(this.state.view === "changes") {
-        for(var state of this.state.changed.values()) {
-            rows.push(state)
-        }
-    }
-    for(var row of rows) {
-      const changed = row.value;
-      const currentState = changed === undefined? row.original : changed;
-
-      var versionConstraintSelect = null;
-      if(currentState.packageStateId === INSTALLED) {
-        versionConstraintSelect =
-            <select id={currentState.name + "-version-constraint"} className="form-control" value={versionConstraints2selectValue(currentState.versionConstraintId)} onChange={this.handleConstraintChange(row.original)}>
-              <option value="0">{t("Latest")}</option>
-              <option value="1">{t("Any")}</option>
-            </select>;
-      }
-      var undoButton = null;
-      if(changed !== undefined) {
-        undoButton = <button id={currentState.name + "-undo"} className="btn btn-default" onClick={this.handleUndo(row.original)}>{t("Undo")}</button>
-      }
+    for (const row of tableRows) {
+      const currentState = row.value !== undefined ? row.value : row.original;
 
       elements.push(
-        <tr id={currentState.name + "-row"} className={changed !== undefined ? "warning" : ""}>
-          <td>{t(currentState.name)}</td>
+        <tr key={currentState.name} id={currentState.name + "-row"}
+            className={row.value !== undefined ? "warning" : ""}>
+          <td key={currentState.name}>{t(currentState.name)}</td>
           <td>
-            <div className="form-group">
-              <select id={currentState.name + "-pkg-state"} className="form-control" value={packageState2selectValue(currentState.packageStateId)} onChange={this.handleStateChange(row.original)}>
-                <option value="-1">{t("Unmanaged")}</option>
-                <option value="0">{t("Installed")}</option>
-                <option value="1">{t("Removed")}</option>
-              </select>
-              { versionConstraintSelect }
-              { undoButton }
-            </div>
+            {renderState(row, currentState)}
           </td>
         </tr>
       );
-     }
+    }
     return (
       <tbody className="table-content">
-        {elements.length > 0 ? elements :
-            <tr>
-                <td colSpan="2">
-                    <div>{t("No package states.")}</div>
-                </td>
-            </tr>
-        }
+      {elements.length > 0 ? elements :
+        <tr>
+          <td colSpan="2">
+            <div>{t("No package states.")}</div>
+          </td>
+        </tr>
+      }
       </tbody>
     );
-  }
+  };
 
-  onSearchChange(event) {
-    this.setState({
-        filter: event.target.value
-    });
-  }
+  const renderState = (row, currentState) => {
+    let versionConstraintSelect = null;
+    let undoButton = null;
 
-  handleUndo(packageState) {
-      return event => {
-         this.state.changed.delete(packageStateKey(packageState));
-         this.setState({
-            changed: this.state.changed
-         });
-      }
-  }
+    if (currentState.packageStateId === packageHelpers.INSTALLED) {
+      versionConstraintSelect =
+        <Select id={currentState.name + "-version-constraint"}
+                className="form-control"
+                value={packageHelpers.versionConstraints2selectValue(currentState.versionConstraintId)}
+                onChange={handleConstraintChangeEvent(row.original)}>
+          <option value="0">{t("Latest")}</option>
+          <option value="1">{t("Any")}</option>
+        </Select>;
+    }
 
-  addChanged(original, newPackageStateId, newVersionConstraintId) {
-      const key = packageStateKey(original);
-      const currentState = this.state.changed.get(key);
-      if (currentState != undefined &&
-          newPackageStateId ==  currentState.original.packageStateId &&
-          newVersionConstraintId ==  currentState.original.versionConstraintId) {
-            this.state.changed.delete(key);
-      } else {
-            this.state.changed.set(key, {
-                original: original,
-                value: {
-                    arch: original.arch,
-                    epoch: original.epoch,
-                    version: original.version,
-                    release: original.release,
-                    name: original.name,
-                    packageStateId: newPackageStateId,
-                    versionConstraintId: newVersionConstraintId
-                }
-            });
-      }
-      this.setState({
-         changed: this.state.changed
-      });
-  }
-
-  handleStateChange(original) {
-      return event => {
-         const newPackageStateId = selectValue2PackageState(parseInt(event.target.value));
-         this.addChanged(
-            original,
-            newPackageStateId,
-            newPackageStateId == INSTALLED ? LATEST :  original.versionConstraintId
-         );
-      }
-  }
-
-  handleConstraintChange(original) {
-      return event => {
-         const newPackageConstraintId = selectValue2VersionConstraints(parseInt(event.target.value));
-         const key = packageStateKey(original);
-         const currentState = this.state.changed.get(key);
-         const currentPackageStateId = currentState != undefined ? currentState.value.packageStateId : original.packageStateId;
-         this.addChanged(
-            original,
-            currentPackageStateId,
-            newPackageConstraintId
-         );
-      }
-  }
-
-
-  render() {
-
-    const messages = this.state.messages ?
-          <Messages items={this.state.messages}/>
-          : null;
-    const buttons = [
-              <AsyncButton id="save" action={this.save} text={t("Save")} disabled={this.state.changed.size == 0}/>,
-              <AsyncButton id="apply" action={this.applyPackageState} text={t("Apply")} />
-    ];
+    const key = packageHelpers.packageStateKey(currentState);
+    if (changed[key] !== undefined) {
+      undoButton = <button id={currentState.name + "-undo"} className="btn btn-default"
+                           onClick={handleUndo(row.original)}>{t("Undo")}</button>
+    }
 
     return (
-      <div>
-        {messages}
-        <InnerPanel title={t("Package States")} icon="spacewalk-icon-package-add" buttons={buttons} >
+      <div className="row">
+        <div className={"col-md-3"}>
+          <Select key={currentState.name}
+                  id={currentState.name + "-pkg-state"}
+                  className="form-control"
+                  value={packageHelpers.packageState2selectValue(currentState.packageStateId)}
+                  onChange={handleStateChangeEvent(row.original)}>
+            <option value="-1">{t("Unmanaged")}</option>
+            <option value="0">{t("Installed")}</option>
+            <option value="1">{t("Removed")}</option>
+          </Select>
+        </div>
+        <div className={"col-md-3"}>
+          {versionConstraintSelect}
+        </div>
+        <div className={"col-md-3"}>
+          {undoButton}
+        </div>
+      </div>
+    )
+  };
+
+  return (
+    <div>
+      {messages ? <Messages items={messages}/> : null}
+      <InnerPanel title={t("Package States")} icon="spacewalk-icon-package-add" buttons={buttons}>
+        {headerTabs()}
+        {view === "search" ? renderSearchBar() : null}
         <div className="row">
-          <div className="panel panel-default">
-            <div className="panel-body">
-                <div className="row">
-                    <span className="col-md-8 pull-right">
-                        <span className="input-group">
-                            <TextField id="package-search" value={this.state.filter} placeholder={t("Search package")} onChange={this.onSearchChange} onPressEnter={this.triggerSearch}/>
-                            <span className="input-group-btn">
-                                <AsyncButton id="search" text={t("Search")} action={this.search} ref={(c) => this.searchButton = c}/>
-                                <button id="system" className={this.state.view == "system" ? "btn btn-success" : "btn btn-default"} onClick={this.setView("system")}>{t("System")}</button>
-                                <button id="changes" className={this.state.view == "changes" ? "btn btn-success" : "btn btn-default"} disabled={this.state.changed.size == 0} onClick={this.setView("changes")}>
-                                    {this.state.changed.size > 0 ? this.state.changed.size : t("No")} {t("Changes")}
-                                </button>
-                            </span>
-                        </span>
-                    </span>
-                </div>
-                <table className="table table-striped">
-                  <thead>
-                    <tr>
-                      <th>{t("Package Name")}</th>
-                      <th>{t("State")}</th>
-                    </tr>
-                  </thead>
-                  {this.tableBody()}
-                </table>
-              </div>
-          </div>
+          <table className="table table-striped">
+            <thead>
+            <tr>
+              <th>{t("Package Name")}</th>
+              <th>{t("State")}</th>
+            </tr>
+            </thead>
+            {tableBody()}
+          </table>
         </div>
       </InnerPanel>
-      </div>
-    );
-  }
-}
+    </div>
+  );
+};
 
-export const renderer = id => SpaRenderer.renderNavigationReact(
-  <PackageStates />,
-  document.getElementById(id)
-);
+export default hot(module)(withPageWrapper(PackageStates));
