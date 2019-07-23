@@ -251,7 +251,7 @@ public class SaltUtils {
             ErrataManager.insertErrataCacheTask(server);
             outcome = applyChangesFromStateModule(delta, server);
         }
-        else if (function.equals("state.apply")) {
+        else if (function != null && function.equals("state.apply")) {
             Map<String, JsonElement> apply = Json.GSON.fromJson(
                 callResult, new TypeToken<Map<String, JsonElement>>() { }.getType());
             ErrataManager.insertErrataCacheTask(server);
