@@ -28,16 +28,16 @@ var Loggerhead = {};
 
     var xhr = new XMLHttpRequest();
     xhr.open('POST', config.url);
-    Object.keys(_context.setHeaders(headers)).map(k =>
+    Object.keys(_context.setHeaders(headers)).map(function(k) {
       xhr.setRequestHeader(k, headers[k])
-    );
+    });
     xhr.onload = function() {
       if (xhr.status !== 200) {
         // try to parse the xhr response, but catch if it fails unless an infinite loop of failure-and-logging would start
         try {
           console.error(JSON.parse(xhr));
         }
-        catch {
+        catch (e) {
           console.error("The POST request to the url: '" + config.url + "' was not successfully completed and the response cannot be parsed.");
         }
       }
@@ -89,7 +89,7 @@ var Loggerhead = {};
   }
 
   function merge(fromObj, toObj) {
-    Object.keys(fromObj).map(k => {
+    Object.keys(fromObj).map(function(k) {
       if (toObj[k] != null && fromObj[k] instanceof Object) {
         merge(fromObj[k], toObj[k]);
       }
