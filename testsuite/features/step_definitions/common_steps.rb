@@ -100,7 +100,7 @@ Then(/^the salt event log on server should contain no failures$/) do
   # print failures from salt event log
   output = $server.run("python3 /tmp/#{file}")
   count_failures = output.to_s.scan(/false/).length
-  raise "\nFound #{count_failures} failures in salt event log:\n#{output.join.to_s}\n" if count_failures.nonzero?
+  raise "\nFound #{count_failures} failures in salt event log:\n#{output.join.to_s.dump}\n" if count_failures.nonzero?
 end
 
 # action chains
