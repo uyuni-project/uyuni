@@ -838,3 +838,24 @@ def string_to_bool(input_string):
         ))
 
     return input_string.lower().strip() in ['true', 'yes']
+
+
+class DictToDefault:
+    """
+    Dict wrapper.
+    Returns specified string instead of
+    default None on .get() method.
+    """
+    def __init__(self, target, default=None):
+        self.__target = target
+        self.__default = default
+
+    def get(self, value, default=None):
+        """
+        Get a value from the target dict.
+
+        :param value:
+        :param default:
+        :return:
+        """
+        return self.__target.get(value, default or self.__default)

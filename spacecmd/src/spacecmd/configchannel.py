@@ -223,6 +223,7 @@ def do_configchannel_filedetails(self, args):
         # grab the first item since we only do one file
         details = results[0]
 
+    details = DictToDefault(details, default="N/A")
     result = []
     result.append('Path:     %s' % details.get('path'))
     result.append('Type:     %s' % details.get('type'))
