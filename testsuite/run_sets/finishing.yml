@@ -1,0 +1,17 @@
+# This file describes the order of features in a normal testsuite run.
+#
+# If you create new features, please see conventions about naming of the
+# feature files in testsuite/docs/Guidelines.md in "Rules for features" chapter,
+# as well as guidelines about idempotency in "Idempotency" chapter.
+
+
+## Post run features BEGIN ##
+
+# IMMUTABLE ORDER
+
+# this feature is destructive for other features, so it is better at the end
+- features/finishing/srv_smdba.feature
+# this feature is needed for gathering log/debug infos
+- features/finishing/srv_susemanager_debug.feature
+
+## Post run features END ##

@@ -1,0 +1,15 @@
+# This file describes the order of features in a normal testsuite run.
+#
+# If you create new features, please see conventions about naming of the
+# feature files in testsuite/docs/Guidelines.md in "Rules for features" chapter,
+# as well as guidelines about idempotency in "Idempotency" chapter.
+
+## Core - Initialize clients BEGIN ##
+
+- features/core/trad_register_client.feature
+- features/core/min_bootstrap.feature
+- features/core/min_salt_ssh.feature
+- features/core/centos_salt_ssh.feature
+- features/core/ubuntu_salt_ssh.feature
+
+## Post run Core - Initialize clients END ##

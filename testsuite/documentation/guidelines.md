@@ -55,19 +55,20 @@ Avoid reinventing function names and variables. Cucumber is all about human-read
 
 ### Rules for features
 
- * Use the right prefix for the filename of the file that will contain your feature.
- * Naming of core feature files: core_<type>_<topic>.
- * Naming of secondary feature files: <type>_<topic>.
- * <type> is currently one of:
+ * Features are grouped by the stage in which it is executed, using the folders `core`, `reposync`, `secondary` and `finishing`
+ * Use the right prefix for the filename of the file that will contain your feature, following this format: `<type>_<topic>`
+ * `<type>` is currently one of:
    * "srv": feature testing server side
+   * "proxy": feature testing proxy side
    * "min": feature testing SLES minions (not SSH)
    * "minssh": feature testing SSH SLES minions
    * "minkvm": feature testing KVM host SLES minions
    * "minxen": feature testing Xen host SLES minions
+   * "ubuntu": feature testing Ubuntu
    * "centos": feature testing CentOS (should become "rhes" in the future when we start using Extended Support images)
    * "trad": feature testing tradional client
    * "allcli: feature testing all clients
- * <topic> must contain "salt" or "docker" for features related to salt or docker, and is then specific to the feature.
+ * `<topic>` must contain "salt" or "docker" for features related to salt or docker, and is then specific to the feature.
  * File name examples: "srv_reboot_server.feature", "srv_salt_ping.feature", "srv_salt_service.feature", "min_salt_bootstrap.feature", ot "min_ping.feature"
 
  * Inside those files, feature names start with upper case

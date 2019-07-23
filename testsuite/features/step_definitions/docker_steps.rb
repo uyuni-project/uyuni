@@ -60,7 +60,7 @@ When(/^I wait at most (\d+) seconds until all "([^"]*)" container images are bui
     repeat_until_timeout(timeout: timeout.to_i, message: 'at least one image was not built correctly') do
       step %(I navigate to images webpage)
       step %(I wait until I do not see "There are no entries to show." text)
-      raise 'error detected while building images' if has_xpath?("//*[contains(@title, 'Failed')]")
+      raise 'error detected while building images' if all(:xpath, "//*[contains(@title, 'Failed')]").any?
       break if has_xpath?("//*[contains(@title, 'Built')]", count: count)
       sleep 5
     end
