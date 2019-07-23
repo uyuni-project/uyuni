@@ -1,3 +1,5 @@
+- improve performance for retrieving the user permissions on channels (bsc#1140644)
+
 -------------------------------------------------------------------
 Thu Jul 18 10:08:21 CEST 2019 - jgonzalez@suse.com
 
