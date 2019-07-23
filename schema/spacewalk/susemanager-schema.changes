@@ -1,3 +1,4 @@
+- improve performance for retrieving the user permissions on channels (bsc#1140644)
 - add caret sorting for rpm versioning
 - allow repo and manifest sources with the same url
 - Drop no longer used 'allServerKeywordSinceReboot' view (fate#327780)
