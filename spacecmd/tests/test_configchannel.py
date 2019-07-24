@@ -629,3 +629,23 @@ class TestSCConfigChannel:
                            [(('Could not create "%s" file: %s',
                               '/dev/null/bofh/.metainfo',
                               'Bugs in the RAID'), {})])
+
+    def test_configchannel_details_noargs(self, shell):
+        """
+        Test configchannel_details without directory.
+
+        :param shell:
+        :return:
+        """
+        mprint = MagicMock()
+        logger = MagicMock()
+
+        with patch("spacecmd.configchannel.print", mprint) as prt, \
+                patch("spacecmd.configchannel.logging", logger) as lgr:
+            out = spacecmd.configchannel.do_configchannel_details(shell, "")
+
+        assert out is None
+        assert not mprint.called
+        assert not shell.client.configchannel.getDetails.called
+        assert not shell.client.configchannel.listFiles.called
+        assert shell.help_configchannel_details.called
