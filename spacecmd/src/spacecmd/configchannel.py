@@ -297,8 +297,8 @@ def do_configchannel_backup(self, args):
     try:
         if not os.path.isdir(outputpath_base):
             os.makedirs(outputpath_base)
-    except OSError:
-        logging.error('Could not create output directory')
+    except OSError as exc:
+        logging.error('Could not create output directory: %s', str(exc))
         return
 
     # the server return a null exception if an invalid file is passed
