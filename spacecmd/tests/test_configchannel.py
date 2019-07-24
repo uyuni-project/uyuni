@@ -649,3 +649,37 @@ class TestSCConfigChannel:
         assert not shell.client.configchannel.getDetails.called
         assert not shell.client.configchannel.listFiles.called
         assert shell.help_configchannel_details.called
+
+    def test_configchannel_details_channel(self, shell):
+        """
+        Test configchannel_details.
+
+        :param shell:
+        :return:
+        """
+        mprint = MagicMock()
+        logger = MagicMock()
+        shell.client.configchannel.getDetails = MagicMock(return_value={
+            "label": "base_channel", "name": "Base Channel",
+            "description": "Base channel with some stuff",
+            "configChannelType": {"label": "Stuff"}
+        })
+        shell.client.configchannel.listFiles = MagicMock(return_value=[
+            {"path": "/dev/null/vim.rpm"},
+            {"path": "/dev/null/pico.rpm"},
+            {"path": "/dev/null/java.rpm"},
+        ])
+
+        with patch("spacecmd.configchannel.print", mprint) as prt, \
+                patch("spacecmd.configchannel.logging", logger) as lgr:
+            out = spacecmd.configchannel.do_configchannel_details(shell, "base_channel")
+
+        assert not mprint.called
+        assert not shell.help_configchannel_details.called
+        assert out is not None
+        assert shell.client.configchannel.getDetails.called
+        assert shell.client.configchannel.listFiles.called
+
+        assert out == ['Label:       base_channel', 'Name:        Base Channel',
+                       'Description: Base channel with some stuff', 'Type:        Stuff', '',
+                       'Files', '-----', '/dev/null/vim.rpm', '/dev/null/pico.rpm', '/dev/null/java.rpm']
