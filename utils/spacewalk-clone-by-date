@@ -200,6 +200,28 @@ def vararg_callback(option, opt_str, value, parser):
         curr_value.append(value)
 
 
+def get_localhost_fqdn():
+    """
+    Get FQDN of the current machine.
+
+    :return:
+    """
+    fqdn = None
+    try:
+        for family, socktype, proto, canonname, sockaddr in socket.getaddrinfo(
+                socket.gethostname(), 0, 0, 0, 0, socket.AI_CANONNAME):
+            if canonname:
+                fqdn = canonname
+                break
+    except socket.gaierror as exc:
+        pass  # Silence here
+    except Exception as exc:
+        print("Unhandled exception occurred while getting FQDN:", exc)
+
+    return fqdn or socket.getfqdn()  # Fall-back to the /etc/hosts's FQDN
+
+
+
 def parse_args():
     parser = HackedOptionParser()
     parser.add_option("-a", "--parents", dest="parents", action='callback',
@@ -261,7 +283,7 @@ def parse_args():
                       + "are available for removal).")
     parser.add_option("-s", "--server", dest="server",
                       help="Server URL to use for api connections (defaults to %default)",
-                      default="https://" + socket.getfqdn() + "/rpc/api")
+                      default="https://" + get_localhost_fqdn() + "/rpc/api")
     parser.add_option("-u", "--username", dest="username", help="Username")
     parser.add_option("-v", "--validate", dest='validate', action='store_true',
                       help="Run repoclosure on the set of specified repositories.")
