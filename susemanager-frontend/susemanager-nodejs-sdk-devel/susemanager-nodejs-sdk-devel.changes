@@ -1,3 +1,4 @@
+- upgrade lodash - https://nodesecurity.io/advisories/1065
 - upgrade eslint and react-select minors
 
 -------------------------------------------------------------------
