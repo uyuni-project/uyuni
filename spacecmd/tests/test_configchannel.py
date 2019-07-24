@@ -3,6 +3,7 @@
 Configchannel module unit tests.
 """
 
+import os
 from unittest.mock import MagicMock, patch, mock_open
 from helpers import shell, assert_expect, assert_list_args_expect, assert_args_expect
 import spacecmd.configchannel
@@ -593,3 +594,38 @@ class TestSCConfigChannel:
         assert_args_expect(logger.error.call_args_list,
                            [(('Could not create output directory: %s',
                               'Fractal learning curve'), {})])
+
+    def test_configchannel_backup_outputdir_metainfo_failure(self, shell):
+        """
+        Test configchannel_backup function with output directory, failed to create metainfo.
+
+        :param shell:
+        :return:
+        """
+        mprint = MagicMock()
+        logger = MagicMock()
+        _datetime = MagicMock()
+        _os = MagicMock()
+        _os.path.expanduser = MagicMock(return_value="/dev/null/bofh")
+        _os.path.isdir = MagicMock(return_value=False)
+        _os.path.join = os.path.join
+        _os.makedirs = MagicMock()
+        with patch("spacecmd.configchannel.open", MagicMock(side_effect=IOError("Bugs in the RAID"))) as mopen, \
+                patch("spacecmd.configchannel.os", _os) as mck_os, \
+                patch("spacecmd.configchannel.print", mprint) as mck_prt, \
+                patch("spacecmd.configchannel.logging", logger) as mck_lgr:
+            spacecmd.configchannel.do_configchannel_backup(shell, "base_channel /tmp/somewhere")
+
+        assert not shell.help_configchannel_backup.called
+        assert not mprint.called
+        assert not _datetime.called
+        assert mopen.called
+        assert shell.client.configchannel.lookupFileInfo.called
+        assert shell.do_configchannel_listfiles.called
+        assert _os.path.expanduser.called
+        assert logger.error.called
+
+        assert_args_expect(logger.error.call_args_list,
+                           [(('Could not create "%s" file: %s',
+                              '/dev/null/bofh/.metainfo',
+                              'Bugs in the RAID'), {})])
