@@ -46,8 +46,6 @@ rhnServerGroupMembership         :: rhnServerGroupType rhnServerGroupMembers \
 rhnServerOutdatedPackages        :: rhnServerNeededCache rhnErrata \
                                     rhnPackageName rhnPackageEVR rhnPackage
 rhnStorageDevice                 :: rhnDevice
-rhnUserChannel                   :: suseChannelUserRoleView rhnChannelFamilyMembers \
-                                    rhnUserChannelFamilyPerms web_contact
 rhnUserChannelTreeView           :: rhnChannel rhnChannelFamilyMembers \
                                     rhnUserChannelFamilyPerms
 rhnUserManagedServerGroups       :: rhnServerGroup rhnServerGroupType \
