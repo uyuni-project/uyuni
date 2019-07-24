@@ -558,3 +558,38 @@ class TestSCConfigChannel:
         assert not _os.path.join.called
         assert not _datetime.called
         assert shell.help_configchannel_backup.called
+
+    def test_configchannel_backup_outputdir(self, shell):
+        """
+        Test configchannel_backup function with output directory.
+
+        :param shell:
+        :return:
+        """
+        mprint = MagicMock()
+        logger = MagicMock()
+        _datetime = MagicMock()
+        _os = MagicMock()
+        _os.path.expanduser = MagicMock(return_value="/dev/null/bofh")
+        _os.path.isdir = MagicMock(return_value=False)
+        _os.makedirs = MagicMock(side_effect=OSError("Fractal learning curve"))
+        with patch("spacecmd.configchannel.open", create=True) as mopen, \
+                patch("spacecmd.configchannel.os", _os) as mck_os, \
+                patch("spacecmd.configchannel.dir", mprint) as mck_prt, \
+                patch("spacecmd.configchannel.logging", logger) as mck_lgr:
+            mopen.return_value = MagicMock(spec=open)
+            spacecmd.configchannel.do_configchannel_backup(shell, "base_channel /tmp/somewhere")
+
+        assert not shell.help_configchannel_backup.called
+        assert not mprint.called
+        assert not mopen.called
+        assert not shell.client.configchannel.lookupFileInfo.called
+        assert not shell.do_configchannel_listfiles.called
+        assert not _os.path.join.called
+        assert not _datetime.called
+        assert _os.path.expanduser.called
+        assert logger.error.called
+
+        assert_args_expect(logger.error.call_args_list,
+                           [(('Could not create output directory: %s',
+                              'Fractal learning curve'), {})])
