@@ -559,9 +559,9 @@ class TestSCConfigChannel:
         assert not _datetime.called
         assert shell.help_configchannel_backup.called
 
-    def test_configchannel_backup_outputdir(self, shell):
+    def test_configchannel_backup_outputdir_failure(self, shell):
         """
-        Test configchannel_backup function with output directory.
+        Test configchannel_backup function with output directory failed to be created.
 
         :param shell:
         :return:
