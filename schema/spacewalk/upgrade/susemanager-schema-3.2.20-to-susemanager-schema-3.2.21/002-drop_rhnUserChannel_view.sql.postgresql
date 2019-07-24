@@ -1,0 +1,3 @@
+-- oracle equivalent source sha1 338ea1ef5d0e9f2df1795154bf232fc4c618ea80
+
+DROP VIEW IF EXISTS rhnUserChannel;
