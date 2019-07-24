@@ -530,3 +530,31 @@ class TestSCConfigChannel:
                           'Modified: 2019.01.02', '', 'Owner:           Fred', 'Group:           lusers',
                           'Mode:            0700', 'SELinux Context: system_u', 'SHA256:          1234567',
                           'Binary:          False', '', 'Contents', '--------', 'Improper keyboard linear orientation']
+
+    def test_configchannel_backup_noargs(self, shell):
+        """
+        Test configchannel_backup function without args.
+
+        :param shell:
+        :return:
+        """
+        mprint = MagicMock()
+        logger = MagicMock()
+        _datetime = MagicMock()
+        _os = MagicMock()
+        with patch("spacecmd.configchannel.open", create=True) as mopen, \
+                patch("spacecmd.configchannel.os", _os) as mck_os, \
+                patch("spacecmd.configchannel.print", mprint) as mck_prt, \
+                patch("spacecmd.configchannel.logging", mprint) as mck_lgr:
+            mopen.return_value = MagicMock(spec=open)
+            spacecmd.configchannel.do_configchannel_backup(shell, "")
+
+        assert not mprint.called
+        assert not logger.error.called
+        assert not mopen.called
+        assert not shell.client.configchannel.lookupFileInfo.called
+        assert not shell.do_configchannel_listfiles.called
+        assert not _os.path.expanduser.called
+        assert not _os.path.join.called
+        assert not _datetime.called
+        assert shell.help_configchannel_backup.called
