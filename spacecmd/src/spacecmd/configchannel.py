@@ -307,10 +307,11 @@ def do_configchannel_backup(self, args):
                                                        channel,
                                                        valid_files)
 
+    fh_path = os.path.join(outputpath_base, ".metainfo")
     try:
-        fh = open(outputpath_base + "/.metainfo", 'w')
-    except IOError:
-        logging.error('Could not create metainfo file')
+        fh = open(fh_path, 'w')
+    except IOError as exc:
+        logging.error('Could not create "%s" file: %s', fh_path, str(exc))
         return
 
     for details in results:
