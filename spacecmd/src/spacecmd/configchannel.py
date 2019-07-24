@@ -382,13 +382,13 @@ def do_configchannel_details(self, args):
                                                     channel)
 
         if add_separator:
-            print(self.SEPARATOR)
+            result.append(self.SEPARATOR)
         add_separator = True
 
         result.append('Label:       %s' % details.get('label'))
         result.append('Name:        %s' % details.get('name'))
         result.append('Description: %s' % details.get('description'))
-        result.append('Type:        %s' % details.get('configChannelType').get('label'))
+        result.append('Type:        %s' % details.get('configChannelType', {}).get('label'))
 
         result.append('')
         result.append('Files')
