@@ -114,7 +114,7 @@ make -f Makefile.rhnsd %{?_smp_mflags} CFLAGS="-pie -fPIE -Wl,-z,relro,-z,now %{
 
 %if 0%{?suse_version} && 0%{?suse_version} <= 1315
 # systemd < v229 does not have RandomizedDelaySec keyword
-sed -i 's/RandomizedDelaySec/RandomSec/' rhnsd.timer
+sed -i 's/RandomizedDelaySec=.*//' rhnsd.timer
 %endif
 
 %install
