@@ -27,7 +27,7 @@ const renderFilterEntry = (filter, projectId) => {
         id={`edit-filter-${filter.id}`}
         icon='fa-edit'
         title={t(`Edit Filter ${filter.name}`)}
-        className='pull-right'
+        className='pull-right js-spa'
         text={t("Edit")}
         href={`/rhn/manager/contentmanagement/filters?openFilterId=${filter.id}&projectLabel=${projectId}`}
       />
