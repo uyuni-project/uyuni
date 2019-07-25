@@ -744,3 +744,23 @@ class TestSCConfigChannel:
         assert logger.error.called
         assert_args_expect(logger.error.call_args_list,
                            [(('Only [normal/state] values are acceptable for type', ), {})])
+
+    def test_configchannel_delete_noargs(self, shell):
+        """
+        Delete channel, no args.
+
+        :param shell:
+        :return:
+        """
+
+        logger = MagicMock()
+        mprint = MagicMock()
+        with patch("spacecmd.configchannel.logging", logger) as lgr, \
+                patch("spacecmd.configchannel.print", mprint) as prt:
+            spacecmd.configchannel.do_configchannel_delete(shell, "")
+
+        assert not logger.error.called
+        assert not shell.client.configchannel.deleteChannels.called
+        assert not logger.debug.called
+        assert not mprint.called
+        assert shell.help_configchannel_delete.called
