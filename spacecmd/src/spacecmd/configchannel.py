@@ -476,11 +476,10 @@ def do_configchannel_delete(self, args):
 
     # allow globbing of configchannel names
     channels = filter_results(self.do_configchannel_list('', True), args)
-    logging.debug("configchannel_delete called with args %s, channels=%s" %
-                  (args, channels))
+    logging.debug("configchannel_delete called with args %s, channels=%s" % (args, channels))
 
     if not channels:
-        logging.error("No channels matched argument %s" % args)
+        logging.error("No channels matched argument(s): %s" % ", ".join(args))
         return
 
     # Print the channels prior to the confirmation
