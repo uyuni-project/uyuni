@@ -170,6 +170,8 @@ BuildRequires: tomcat6
 BuildRequires: tomcat6-lib
 %endif # 0%{?suse_version}
 %endif # 0%{?fedora} || 0%{?rhel} >= 7
+Requires(pre):  salt
+Requires(pre):  susemanager
 %if 0%{?fedora} || 0%{?rhel} >=7
 Requires:      apache-commons-cli
 Requires:      apache-commons-codec
