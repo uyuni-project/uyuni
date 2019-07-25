@@ -763,4 +763,33 @@ class TestSCConfigChannel:
         assert not shell.client.configchannel.deleteChannels.called
         assert not logger.debug.called
         assert not mprint.called
+        assert not shell.do_configchannel_list.called
         assert shell.help_configchannel_delete.called
+
+    def test_configchannel_delete_wrong_channel(self, shell):
+        """
+        Delete channel, missing channel
+
+        :param shell:
+        :return:
+        """
+
+        logger = MagicMock()
+        mprint = MagicMock()
+        shell.do_configchannel_list = MagicMock(return_value=[
+            "base_channel"
+        ])
+        with patch("spacecmd.configchannel.logging", logger) as lgr, \
+                patch("spacecmd.configchannel.print", mprint) as prt:
+            spacecmd.configchannel.do_configchannel_delete(shell, "funny_channel")
+
+        assert not mprint.called
+        assert not shell.client.configchannel.deleteChannels.called
+        assert not shell.help_configchannel_delete.called
+        assert logger.error.called
+        assert logger.debug.called
+
+        assert_args_expect(logger.debug.call_args_list,
+                           [(("configchannel_delete called with args ['funny_channel'], channels=[]", ), {})])
+        assert_args_expect(logger.error.call_args_list,
+                           [(('No channels matched argument(s): funny_channel', ), {})])
