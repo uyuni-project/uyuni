@@ -22,6 +22,13 @@ window.pageRenderers.spa.init = function init() {
   }]);
   window.pageRenderers.spa.appInstance = appInstance;
 
+  appInstance.on('beforeNavigate', function(navigation) {
+    // Integration with bootstrap 3. We need to make sure all the existing modals get fully removed
+    $('.modal').remove();
+    $('.modal-backdrop').remove();
+    $('body').removeClass( "modal-open" );
+  })
+
   appInstance.on('endNavigate', function(navigation) {
     // workaround to redirect to the login page when there is no session:
     // More info: https://github.com/liferay/senna.js/issues/302

@@ -1,11 +1,11 @@
 // @flow
+import type {Node} from 'react';
 import React, {useEffect, useState} from 'react';
 import {LinkButton} from "components/buttons";
 import useLifecycleActionsApi from "../../../api/use-lifecycle-actions-api";
 import type {ProjectFilterServerType} from "../../../type/project.type";
 import {Loading} from "components/loading/loading";
 import _xor from "lodash/xor";
-import type {Node} from 'react';
 import filtersEnum from "../../../business/filters.enum";
 
 type FiltersProps = {
@@ -68,6 +68,7 @@ const FiltersProjectSelection = (props:  FiltersProps): Node => {
     <LinkButton
         id={`create-new-filter-link`}
         icon='fa-plus'
+        className="btn-link js-spa"
         text={t("Create new Filter")}
         href={`/rhn/manager/contentmanagement/filters?openFilterId=-1&projectLabel=${props.projectId}`}
     />
