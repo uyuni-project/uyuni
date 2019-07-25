@@ -1,3 +1,4 @@
+- Remove duplicate information message when changing system properties (bsc#1111371)
 - Add missing strings for task status page
 
 -------------------------------------------------------------------
