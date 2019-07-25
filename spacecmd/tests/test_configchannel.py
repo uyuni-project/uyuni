@@ -703,3 +703,23 @@ class TestSCConfigChannel:
         assert_args_expect(shell.client.configchannel.create.call_args_list,
                            [((shell.session, 'config_channel', 'John Smith',
                               'Not ISO 9000 compliant', 'normal'), {})])
+
+    def test_configchannel_create_noargs_type_state(self, shell):
+        """
+        Test configchannel_create, interactive, testing "state" type.
+
+        :param shell:
+        :return:
+        """
+        puser = MagicMock(side_effect=[
+            "John Smith", "config_channel", "Not ISO 9000 compliant", "state",
+        ])
+        with patch("spacecmd.configchannel.prompt_user", puser) as pmt:
+            spacecmd.configchannel.do_configchannel_create(shell, "")
+
+        assert puser.called
+        assert shell.client.configchannel.create.called
+
+        assert_args_expect(shell.client.configchannel.create.call_args_list,
+                           [((shell.session, 'config_channel', 'John Smith',
+                              'Not ISO 9000 compliant', 'state'), {})])
