@@ -683,3 +683,23 @@ class TestSCConfigChannel:
         assert out == ['Label:       base_channel', 'Name:        Base Channel',
                        'Description: Base channel with some stuff', 'Type:        Stuff', '',
                        'Files', '-----', '/dev/null/vim.rpm', '/dev/null/pico.rpm', '/dev/null/java.rpm']
+
+    def test_configchannel_create_noargs(self, shell):
+        """
+        Test configchannel_create, without arguments (turns into interactive).
+
+        :param shell:
+        :return:
+        """
+        puser = MagicMock(side_effect=[
+            "John Smith", "config_channel", "Not ISO 9000 compliant", "normal",
+        ])
+        with patch("spacecmd.configchannel.prompt_user", puser) as pmt:
+            spacecmd.configchannel.do_configchannel_create(shell, "")
+
+        assert puser.called
+        assert shell.client.configchannel.create.called
+
+        assert_args_expect(shell.client.configchannel.create.call_args_list,
+                           [((shell.session, 'config_channel', 'John Smith',
+                              'Not ISO 9000 compliant', 'normal'), {})])
