@@ -1,3 +1,5 @@
+- Use the same client tools for openSUSE Leap 15.0 for all openSUSE Leap
+  15.X releases.
 - hostname-rename: change hostname in cobbler db and autoinst data
 - Adds support for Ubuntu and Debian channels to spacewalk-common-channels.
 
