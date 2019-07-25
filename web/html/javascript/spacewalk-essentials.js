@@ -539,7 +539,7 @@ function initIEWarningUse() {
     ieWarningNode.className = 'alert alert-warning';
     ieWarningNode.innerHTML = t(
         "The browser Internet Explorer is not supported. " +
-        "Consider using one of the following browsers: Firefox, Chrome, or Edge"
+        "Try using Firefox, Chrome or Edge"
     );
 
     bodyContentNode.insertBefore(
