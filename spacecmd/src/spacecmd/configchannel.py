@@ -424,14 +424,14 @@ def do_configchannel_create(self, args):
         options.name = prompt_user('Name:', noblank=True)
         options.label = prompt_user('Label:')
         options.description = prompt_user('Description:')
-        options.type = prompt_user('Type[normal, state]:')
+        options.type = prompt_user('Type [normal, state]:')
 
         if options.label == '':
             options.label = options.name
         if options.description == '':
             options.description = options.name
         if options.type not in ('normal', 'state'):
-            logging.error('Only [normal/state] values are acceptable for --type')
+            logging.error('Only [normal/state] values are acceptable for type')
             return
     else:
         if not options.name:
@@ -444,7 +444,7 @@ def do_configchannel_create(self, args):
         if not options.type:
             options.type = 'normal'
         if options.type not in ('normal', 'state'):
-            logging.error('Only [normal/state] values are acceptable for --type')
+            logging.error('Only [normal/state] values are acceptable for --type parameter')
             return
 
     self.client.configchannel.create(self.session,
