@@ -959,3 +959,19 @@ class TestSCConfigChannel:
         assert shell.client.configchannel.deleteFiles.called
         assert_args_expect(shell.client.configchannel.deleteFiles.call_args_list,
                            [((shell.session, 'somechannel', ['/tmp/deleteme']), {})])
+
+    def test_configchannel_removefiles_interactive(self, shell):
+        """
+        Test do_configchannel_removefiles interactive (options.yes = False)
+
+        :param shell:
+        :return:
+        """
+        shell.options.yes = False
+        shell.user_confirm = MagicMock(return_value=True)
+        spacecmd.configchannel.do_configchannel_removefiles(shell, "somechannel /tmp/deleteme")
+
+        assert not shell.help_configchannel_removefiles.called
+        assert shell.client.configchannel.deleteFiles.called
+        assert_args_expect(shell.client.configchannel.deleteFiles.call_args_list,
+                           [((shell.session, 'somechannel', ['/tmp/deleteme']), {})])
