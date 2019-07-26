@@ -963,7 +963,7 @@ def do_configchannel_removefiles(self, args):
     channel = args.pop(0)
     files = args
 
-    if self.user_confirm('Remove these files [y/N]:'):
+    if self.options.yes or self.user_confirm('Remove these files [y/N]:'):
         self.client.configchannel.deleteFiles(self.session, channel, files)
 
 ####################
