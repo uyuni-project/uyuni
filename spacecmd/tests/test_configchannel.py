@@ -893,3 +893,44 @@ class TestSCConfigChannel:
         assert_args_expect(shell.client.configchannel.createOrUpdatePath.call_args_list,
                            [((shell.session, "cfg_channel", "/tmp/cfgch", False,
                               {"contents": None}), {})])
+
+    def test_configchannel_addfile_interactive_update_symlink(self, shell):
+        """
+        Test configchannel_addfile, interactive. Update path.
+
+        :param shell:
+        :return:
+        """
+        logger = MagicMock()
+        mprint = MagicMock()
+        shell.check_api_version = MagicMock(return_value=False)
+        shell.configfile_getinfo = MagicMock(return_value={
+            "selinux_ctx": None, "revision": "3",
+            "contents": None
+        })
+        prompter = MagicMock(side_effect=[
+            "cfg_channel", "/tmp/cfgch"
+        ])
+        shell.do_configchannel_list = MagicMock(return_value=[
+            "cfg_channel", "another_cfg_channel", "perfect_cfg_channel"
+        ])
+        with patch("spacecmd.configchannel.logging", logger) as lgr, \
+                patch("spacecmd.configchannel.prompt_user", prompter) as pmt, \
+                patch("spacecmd.configchannel.print", mprint) as prt:
+            spacecmd.configchannel.do_configchannel_addfile(shell, "-s -c cfg_channel")
+
+        assert not logger.warning.called
+        assert not logger.debug.called
+        assert not logger.error.called
+        assert not shell.help_configchannel_addfile.called
+        assert not shell.client.configchannel.createOrUpdatePath.called
+        assert not shell.client.configchannel.lookupFileInfo.called
+        assert not mprint.called
+        assert not shell.do_configchannel_list.called
+        assert shell.client.configchannel.createOrUpdateSymlink.called
+        assert shell.configfile_getinfo.called
+
+        assert_args_expect(shell.client.configchannel.createOrUpdateSymlink.call_args_list,
+                           [((shell.session, 'cfg_channel', None,
+                              {'selinux_ctx': None, 'revision': '3', 'contents': None}), {})])
+
