@@ -821,3 +821,32 @@ class TestSCConfigChannel:
                            [(("configchannel_delete called with args ['base.*'], channels=['base_channel']", ), {})])
         assert_args_expect(shell.client.configchannel.deleteChannels.call_args_list,
                            [((shell.session, ['base_channel']), {})])
+
+    def test_configchannel_addfile_interactive_wrong_channels_abrt(self, shell):
+        """
+        Test configchannel_addfile, interactive. Abort keep asking user about
+        channels that cannot be obtained.
+
+        :param shell:
+        :return:
+        """
+        logger = MagicMock()
+        mprint = MagicMock()
+        prompter = MagicMock()
+        with patch("spacecmd.configchannel.logging", logger) as lgr, \
+                patch("spacecmd.configchannel.prompt_user", prompter) as pmt, \
+                patch("spacecmd.configchannel.print", mprint) as prt:
+            spacecmd.configchannel.do_configchannel_addfile(shell, "")
+
+        assert not shell.client.configchannel.createOrUpdate.called
+        assert not shell.client.configchannel.createOrUpdateSymlink.called
+        assert not shell.configfile_getinfo.called
+        assert not shell.client.configchannel.lookupFileInfo.called
+        assert mprint.called
+        assert logger.warning.called
+        assert shell.do_configchannel_list.called
+
+        assert_list_args_expect(mprint.call_args_list,
+                                ['Configuration Channels', '----------------------', '', '', '', '',
+                                 'Configuration Channels', '----------------------', '', '', '', '',
+                                 'Configuration Channels', '----------------------', '', '', '', ''])
