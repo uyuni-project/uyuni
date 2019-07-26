@@ -802,7 +802,8 @@ def do_configchannel_addfile(self, args, update_path=''):
         else:
             # compatibility for Satellite 5.3
             if not self.check_api_version('10.11'):
-                del file_info['selinux_ctx']
+                if "selinux_ctx" in file_info:
+                    del file_info['selinux_ctx']
 
                 if 'revision' in file_info:
                     del file_info['revision']
