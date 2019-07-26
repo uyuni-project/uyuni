@@ -945,3 +945,17 @@ class TestSCConfigChannel:
 
         assert not shell.client.configchannel.deleteFiles.called
         assert shell.help_configchannel_removefiles.called
+
+    def test_configchannel_removefiles_no_interactive(self, shell):
+        """
+        Test do_configchannel_removefiles non interactive (options.yes = True)
+
+        :param shell:
+        :return:
+        """
+        spacecmd.configchannel.do_configchannel_removefiles(shell, "somechannel /tmp/deleteme")
+
+        assert not shell.help_configchannel_removefiles.called
+        assert shell.client.configchannel.deleteFiles.called
+        assert_args_expect(shell.client.configchannel.deleteFiles.call_args_list,
+                           [((shell.session, 'somechannel', ['/tmp/deleteme']), {})])
