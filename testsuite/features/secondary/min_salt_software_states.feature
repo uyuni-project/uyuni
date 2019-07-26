@@ -117,9 +117,8 @@ Feature: Salt package states
     Then I follow "States" in the content area
     And I run "pkill salt-minion" on "sle-minion"
     And I follow "Highstate" in the content area
-    And I wait for "6" seconds
+    And I wait until I see "No reply from minion" text
     And I run "rcsalt-minion restart" on "sle-minion"
-    And I should see a "No reply from minion" text in element "highstate"
 
   Scenario: Cleanup: remove old packages from SLES minion
     Given I am authorized as "admin" with password "admin"
