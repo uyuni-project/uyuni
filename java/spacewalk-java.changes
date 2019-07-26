@@ -1,3 +1,4 @@
+- Add susemanager as prerequired for spacewalk-java
 - Cloning Errata from a specific channel should not take packages
 - Hide channels managed by Content Lifecycle projects from available sources (bsc#1137965)
   from other channels (bsc#1142764)
