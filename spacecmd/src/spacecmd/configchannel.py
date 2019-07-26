@@ -742,16 +742,17 @@ def do_configchannel_addfile(self, args, update_path=''):
             options.channel = args[0]
         else:
             failures = 0
+            config_channels = sorted(self.do_configchannel_list('', True))
             while failures < 3:
                 print('Configuration Channels')
                 print('----------------------')
-                print('\n'.join(sorted(self.do_configchannel_list('', True))))
+                print('\n'.join(config_channels))
                 print('')
 
                 options.channel = prompt_user('Select:', noblank=True)
 
                 # ensure the user enters a valid configuration channel
-                if options.channel in self.do_configchannel_list('', True):
+                if options.channel in config_channels:
                     failures = 0
                     break
                 else:
