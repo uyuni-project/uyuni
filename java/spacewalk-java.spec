@@ -1,6 +1,3 @@
-%define cobprofdir      %{_localstatedir}/lib/rhn/kickstarts
-%define cobprofdirup    %{_localstatedir}/lib/rhn/kickstarts/upload
-%define cobprofdirwiz   %{_localstatedir}/lib/rhn/kickstarts/wizard
 %define cobdirsnippets  %{_localstatedir}/lib/rhn/kickstarts/snippets
 %define realcobsnippetsdir  %{_localstatedir}/lib/cobbler/snippets
 %define cobblerdir          %{_localstatedir}/lib/cobbler
