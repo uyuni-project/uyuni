@@ -18,9 +18,6 @@
 
 
 %define cobblerdir      %{_localstatedir}/lib/cobbler
-%define cobprofdir      %{cobblerdir}/templates
-%define cobprofdirup    %{cobprofdir}/upload
-%define cobprofdirwiz   %{cobprofdir}/wizard
 %define cobdirsnippets  %{cobblerdir}/snippets
 %define realcobsnippetsdir  %{cobdirsnippets}/spacewalk
 %define run_checkstyle  1
