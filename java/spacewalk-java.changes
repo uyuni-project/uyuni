@@ -1,3 +1,4 @@
+- Read the subscriptions from the output instead of input (bsc#1140332)
 - rename rhncfg-actions to mgr-cfg-actions in UI advice (bsc#1137248)
 - Fix container image import (bsc#1154246)
 - Add missing permission checks on formula api (bsc#1123274)
