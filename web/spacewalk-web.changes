@@ -1,3 +1,4 @@
+- Report merge_subscriptions message in a readable way (bsc#1140332)
 - Fix ordering by date (bsc#1158818)
 
 -------------------------------------------------------------------
