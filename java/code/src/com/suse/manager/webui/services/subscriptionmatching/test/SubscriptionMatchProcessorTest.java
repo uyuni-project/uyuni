@@ -64,7 +64,7 @@ public class SubscriptionMatchProcessorTest extends BaseTestCaseWithUser {
         input = new InputJson(new Date(), new LinkedList<>(), new LinkedList<>(),
                 new LinkedList<>(), new LinkedList<>(), new LinkedList<>());
         output = new OutputJson(new Date(), new LinkedList<>(), new LinkedList<>(),
-                new HashMap<>());
+                new HashMap<>(), new LinkedList<>());
     }
 
     public void testMatcherDataNotAvailable() {
