@@ -36,7 +36,7 @@ Requires(preun): initscripts
 Requires(pre): %{apachepkg}
 Requires: openssl
 BuildRequires:  cobbler
-Requires(pre):  cobbler
+Requires:       cobbler
 
 %global prepdir %{_var}/lib/rhn/rhn-satellite-prep
 

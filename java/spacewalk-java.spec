@@ -168,7 +168,7 @@ BuildRequires: tomcat6-lib
 %endif # 0%{?suse_version}
 %endif # 0%{?fedora} || 0%{?rhel} >= 7
 Requires(pre):  salt
-Requires(pre):  cobbler
+Requires:       cobbler
 BuildRequires:  cobbler
 %if 0%{?fedora} || 0%{?rhel} >=7
 Requires:      apache-commons-cli
