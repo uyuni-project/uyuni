@@ -8,6 +8,7 @@
 -- along with this software; if not, see
 -- http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 --
+DROP VIEW IF EXISTS suseChannelUserRoleView;
 
 CREATE OR REPLACE VIEW
 suseChannelUserRoleView
@@ -16,6 +17,7 @@ AS
     combination.channel_id,
     combination.user_id,
     combination.role,
+    combination.user_org_id AS org_id,
     CASE
       -- if channel is in an org trusted by the user's org, and if the channel itself is shared between the two, then user can subscribe it
       WHEN combination.role = 'subscribe' AND sharedChannels.is_shared_channel IS NOT NULL
