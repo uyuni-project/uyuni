@@ -741,7 +741,8 @@ def do_configchannel_addfile(self, args, update_path=''):
         if args:
             options.channel = args[0]
         else:
-            while True:
+            failures = 0
+            while failures < 3:
                 print('Configuration Channels')
                 print('----------------------')
                 print('\n'.join(sorted(self.do_configchannel_list('', True))))
@@ -751,12 +752,17 @@ def do_configchannel_addfile(self, args, update_path=''):
 
                 # ensure the user enters a valid configuration channel
                 if options.channel in self.do_configchannel_list('', True):
+                    failures = 0
                     break
                 else:
                     print('')
                     logging.warning('%s is not a valid channel' %
                                     options.channel)
                     print('')
+                    failures += 1
+            if failures > 0:
+                logging.error("Unable to obtain a valid channel. Aborting.")
+                return
 
         if update_path:
             options.path = update_path
