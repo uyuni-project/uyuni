@@ -37,9 +37,25 @@ Feature: Content lifecycle
     And I select "SLES12-SP4-Pool for x86_64" from "selectedBaseChannel"
     And I click on "Save"
     Then I wait until I see "SLES12-SP4-Pool for x86_64" text
+    And I should see a "Version 1: (draft - not built) - Check the changes below" text
+
+  @uyuni
+  Scenario: Verify added sources for Uyuni
+    Given I am authorized as "admin" with password "admin"
+    When I follow the left menu "Content Lifecycle > Projects"
+    And I follow "clp_name"
     And I should see a "SLES12-SP4-Updates for x86_64" text
     And I should see a "Build (2)" text
-    And I should see a "Version 1: (draft - not built) - Check the changes below" text
+
+  @susemanager
+  Scenario: Verify added sources for Suse Manager
+    Given I am authorized as "admin" with password "admin"
+    When I follow the left menu "Content Lifecycle > Projects"
+    And I follow "clp_name"
+    And I should see a "SLE-Manager-Tools12-Updates for x86_64 SP4" text
+    And I should see a "SLES12-SP4-Updates for x86_64" text
+    And I should see a "SLE-Manager-Tools12-Pool for x86_64 SP4" text
+    And I should see a "Build (4)" text
 
   Scenario: Add environments to the project
     Given I am authorized as "admin" with password "admin"
@@ -71,7 +87,7 @@ Feature: Content lifecycle
     When I follow the left menu "Content Lifecycle > Projects"
     And I follow "clp_name"
     Then I should see a "not built" text in the environment "qa_name"
-    When I click on "Build (2)"
+    When I click on "Build"
     And I should see a "Version 1 history" text
     When I enter "test version message 1" as "message"
     And I click the environment build button
