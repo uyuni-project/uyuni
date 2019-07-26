@@ -934,3 +934,14 @@ class TestSCConfigChannel:
                            [((shell.session, 'cfg_channel', None,
                               {'selinux_ctx': None, 'revision': '3', 'contents': None}), {})])
 
+    def test_configchannel_removefiles_noargs(self, shell):
+        """
+        Test do_configchannel_removefiles no args.
+
+        :param shell:
+        :return:
+        """
+        spacecmd.configchannel.do_configchannel_removefiles(shell, "")
+
+        assert not shell.client.configchannel.deleteFiles.called
+        assert shell.help_configchannel_removefiles.called
