@@ -1,4 +1,4 @@
-- Require cobbler package
+- Prerequire cobbler package
 - Prerequire salt package to avoid not existing user issues
 - Remove duplicate information message when changing system properties (bsc#1111371)
 - Align selection column in software channel managers (bsc#1122559)
