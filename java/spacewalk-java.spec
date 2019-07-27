@@ -192,8 +192,6 @@ BuildRequires:  tomcat6-lib
 %endif # 0{?suse_version}
 %endif # 0{?fedora} || 0{?rhel} >= 7
 Requires(pre):  salt
-Requires(pre):  cobbler
-BuildRequires:  cobbler
 %if 0%{?fedora} || 0%{?rhel} >=7
 Requires:       apache-commons-cli
 Requires:       apache-commons-codec
@@ -659,6 +657,10 @@ install -d -m 755 $RPM_BUILD_ROOT%{_prefix}/share/rhn/config-defaults
 install -d -m 755 $RPM_BUILD_ROOT%{_prefix}/share/rhn/search
 install -d -m 755 $RPM_BUILD_ROOT%{_prefix}/share/rhn/search/lib
 install -d -m 755 $RPM_BUILD_ROOT%{_prefix}/share/spacewalk/taskomatic
+install -d -m 755 $RPM_BUILD_ROOT%{cobprofdir}
+install -d -m 755 $RPM_BUILD_ROOT%{cobprofdirup}
+install -d -m 755 $RPM_BUILD_ROOT%{cobprofdirwiz}
+install -d -m 755 $RPM_BUILD_ROOT%{cobdirsnippets}
 %if 0%{?suse_version}
 install -d -m 755 $RPM_BUILD_ROOT/%{_localstatedir}/lib/spacewalk/scc
 install -d -m 755 $RPM_BUILD_ROOT/%{_localstatedir}/lib/spacewalk/subscription-matcher
@@ -964,6 +966,10 @@ fi
 %{jardir}/taglibs-standard.jar
 %endif
 
+%dir %{cobprofdir}
+%dir %{cobprofdirup}
+%dir %{cobprofdirwiz}
+%dir %{cobdirsnippets}
 %dir %{realcobsnippetsdir}
 %config %{realcobsnippetsdir}/default_motd
 %config %{realcobsnippetsdir}/keep_system_id
