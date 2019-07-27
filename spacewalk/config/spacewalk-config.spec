@@ -54,8 +54,6 @@ Requires(preun): initscripts
 # We need package httpd to be able to assign group apache in files section
 Requires(pre): %{apachepkg}
 Requires:       openssl
-BuildRequires:  cobbler
-Requires(pre):  cobbler
 
 %global prepdir %{_var}/lib/rhn/rhn-satellite-prep
 
@@ -110,7 +108,9 @@ ln -sf  %{apacheconfdir}/conf/ssl.crt/server.crt $RPM_BUILD_ROOT/etc/pki/tls/cer
 %config %{apacheconfdir}/conf.d/os-images.conf
 %config(noreplace) %{_sysconfdir}/webapp-keyring.gpg
 %attr(440,root,root) %config %{_sysconfdir}/sudoers.d/spacewalk
+%dir %{_var}/lib/cobbler/
 %dir %{_var}/lib/cobbler/kickstarts/
+%dir %{_var}/lib/cobbler/snippets/
 %attr(0755,root,%{apache_group}) %dir %{rhnconfigdefaults}
 %config(noreplace) %{_var}/lib/cobbler/kickstarts/spacewalk-sample.ks
 %config(noreplace) %{_var}/lib/cobbler/snippets/spacewalk_file_preservation
