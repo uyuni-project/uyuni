@@ -9,7 +9,7 @@ window.pageRenderers.spa = window.pageRenderers.spa || {};
 
 window.pageRenderers.spa.init = function init() {
   const appInstance = new App();
-  appInstance.setLinkSelector("a.js-spa");
+  // appInstance.setLinkSelector("a.js-spa");
   appInstance.setFormSelector("form.js-spa");
   appInstance.addSurfaces(["left-menu-data", "ssm-box", "page-body"])
   appInstance.addRoutes([{
