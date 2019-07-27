@@ -6885,10 +6885,10 @@ send@0.16.2:
     range-parser "~1.2.0"
     statuses "~1.4.0"
 
-senna@^2.7.7:
-  version "2.7.7"
-  resolved "https://registry.yarnpkg.com/senna/-/senna-2.7.7.tgz#6bb6caba81335cb36e3f605fb4bc64369dca6505"
-  integrity sha512-GAcoJCIiVNBsRa/Znp+eGCDN44LGd7AXQCnYtMyAqYx60lBGSvrN2WKdBqaCJL4eEtL0zt/XmDNbQbfCTP8kqg==
+senna@^2.7.8:
+  version "2.7.8"
+  resolved "https://registry.yarnpkg.com/senna/-/senna-2.7.8.tgz#5b3610898d2d94218e635cbbc6bdbe59ff4022d6"
+  integrity sha512-/8bTT0phnukMy/AhgkR9yZZThIpktcIbprpIKmCbMmpRiti/pPtAux9oP0yK9wvyu+KITESF7TibvR6CKnPi6g==
   dependencies:
     bootstrap "^3.3.6"
     metal "^2.16.5"

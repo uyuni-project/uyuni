@@ -111,7 +111,7 @@
           <c:set var="rurl" value="${pageContext.request.requestURI}" />
         </c:otherwise>
       </c:choose>
-      <a id="clear-ssm" href="/rhn/systems/Overview.do?empty_set=true&amp;return_url=${rhn:urlEncode(rurl)}"
+      <a class="js-spa" id="clear-ssm" href="/rhn/systems/Overview.do?empty_set=true&amp;return_url=${rhn:urlEncode(rurl)}"
           title="<bean:message key="clear"/>">
         <i class="fa fa-eraser"></i>
       </a>
