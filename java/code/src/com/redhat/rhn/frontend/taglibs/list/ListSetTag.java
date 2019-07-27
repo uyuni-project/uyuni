@@ -118,7 +118,9 @@ public class ListSetTag extends BodyTagSupport {
 
     private void startForm() throws JspException {
         String targetUrl = (String) pageContext.getRequest().getAttribute("parentUrl");
-        ListTagUtil.write(pageContext, "<form method=\"POST\" id=\"listset_");
+        ListTagUtil.write(pageContext,
+            "<form class=\"js-spa\" method=\"POST\" id=\"listset_"
+        );
         ListTagUtil.write(pageContext, uniqueName);
         ListTagUtil.write(pageContext, "\" name=\"name_");
         ListTagUtil.write(pageContext, uniqueName);
