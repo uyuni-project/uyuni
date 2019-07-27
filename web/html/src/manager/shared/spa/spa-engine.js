@@ -10,13 +10,25 @@ window.pageRenderers.spa = window.pageRenderers.spa || {};
 window.pageRenderers.spa.init = function init() {
   const appInstance = new App();
   appInstance.setLinkSelector("a.js-spa");
-  appInstance.setFormSelector("");
+  appInstance.setFormSelector("form.js-spa");
   appInstance.addSurfaces(["left-menu-data", "ssm-box", "page-body"])
   appInstance.addRoutes([{
     path: /.*/,
     handler: function (route, a, b) {
       const screen = new HtmlScreen();
       screen.setCacheable(false);
+      //TODO: remove after https://github.com/liferay/senna.js/pull/311/files
+      screen.setHttpHeaders({
+        ...screen.getHttpHeaders(),
+        ...{"Content-type": "application/x-www-form-urlencoded"}
+      });
+      screen.getFormData = function(form, submitedButton) {
+        let body = $(form).serialize();
+        if (submitedButton && submitedButton.name) {
+          body += '&' + encodeURI(submitedButton.name) + '=' + encodeURI(submitedButton.value)
+        }
+        return body;
+      }
       return screen;
     }
   }]);

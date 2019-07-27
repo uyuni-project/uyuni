@@ -46,7 +46,7 @@ const npmDependencies = [
   { name: "react-transition-group", license: "BSD-3-Clause",  version: "2.9.0" }, 
   { name: "regenerator-runtime", license: "MIT",  version: "0.12.1" }, 
   { name: "scheduler", license: "MIT",  version: "0.13.6" }, 
-  { name: "senna", license: "BSD-3-Clause",  version: "2.7.7" }, 
+  { name: "senna", license: "BSD-3-Clause",  version: "2.7.8" }, 
   { name: "setimmediate", license: "MIT",  version: "1.0.5" }, 
   { name: "style-loader", license: "MIT",  version: "0.23.1" }, 
   { name: "stylis-rule-sheet", license: "MIT",  version: "0.0.10" }, 
