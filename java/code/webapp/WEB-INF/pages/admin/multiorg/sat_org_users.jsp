@@ -44,7 +44,7 @@
                    sortattr="login">
             <c:choose>
               <c:when test="${(userOrgId == current.orgId) and (canModify == 1)}">
-                    <c:out value="<a href=\"/rhn/users/UserDetails.do?uid=${current.id}\">${current.login}</a>" escapeXml="false" />
+                    <c:out value="<a href=\"/rhn/users/UserDetails.do?uid=${current.id}\" class=\"js-spa\">${current.login}</a>" escapeXml="false" />
                   </c:when>
               <c:otherwise>
                 <c:out value="${current.login}" />
