@@ -1,4 +1,3 @@
-- Prerequire Cobbler package
 - mark zz-spacewalk-www.conf and os-images.conf as plain %config
   instead of %config(noreplace):
   Those files were never meant to be edited by the user. The package
