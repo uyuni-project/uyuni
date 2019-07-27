@@ -1,4 +1,4 @@
-- Prerequire cobbler package (bsc#1140967)
+- Prerequire cobbler package
 - Prerequire salt package to avoid not existing user issues
 - Support partly patched CVEs in CVE audit (bsc#1137229)
 - Remove duplicate information message when changing system properties (bsc#1111371)
