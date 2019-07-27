@@ -22,7 +22,7 @@
 %define cobprofdirup    %{cobprofdir}/upload
 %define cobprofdirwiz   %{cobprofdir}/wizard
 %define cobdirsnippets  %{cobblerdir}/snippets
-%define realcobsnippetsdir  %{cobdirsnippets}/spacewalk
+%define spacewalksnippetsdir  %{cobdirsnippets}/spacewalk
 %define run_checkstyle  1
 
 %if 0%{?fedora} || 0%{?rhel} >= 7
@@ -724,16 +724,16 @@ cp -a build/classes/com/redhat/rhn/common/conf/test/conf $RPM_BUILD_ROOT%{_datad
 install -m 644 conf/log4j.properties.taskomatic $RPM_BUILD_ROOT%{_datadir}/rhn/classes/log4j.properties
 install -m 644 code/src/ehcache.xml $RPM_BUILD_ROOT%{_datadir}/rhn/classes/ehcache.xml
 
-install -d -m 755 $RPM_BUILD_ROOT%{realcobsnippetsdir}
-install -m 644 conf/cobbler/snippets/default_motd  $RPM_BUILD_ROOT%{realcobsnippetsdir}/default_motd
-install -m 644 conf/cobbler/snippets/keep_system_id  $RPM_BUILD_ROOT%{realcobsnippetsdir}/keep_system_id
-install -m 644 conf/cobbler/snippets/post_reactivation_key  $RPM_BUILD_ROOT%{realcobsnippetsdir}/post_reactivation_key
-install -m 644 conf/cobbler/snippets/post_delete_system  $RPM_BUILD_ROOT%{realcobsnippetsdir}/post_delete_system
-install -m 644 conf/cobbler/snippets/redhat_register  $RPM_BUILD_ROOT%{realcobsnippetsdir}/redhat_register
-install -m 644 conf/cobbler/snippets/sles_register    $RPM_BUILD_ROOT%{realcobsnippetsdir}/sles_register
-install -m 644 conf/cobbler/snippets/sles_register_script $RPM_BUILD_ROOT%{realcobsnippetsdir}/sles_register_script
-install -m 644 conf/cobbler/snippets/sles_no_signature_checks $RPM_BUILD_ROOT%{realcobsnippetsdir}/sles_no_signature_checks
-install -m 644 conf/cobbler/snippets/wait_for_networkmanager_script $RPM_BUILD_ROOT%{realcobsnippetsdir}/wait_for_networkmanager_script
+install -d -m 755 $RPM_BUILD_ROOT%{spacewalksnippetsdir}
+install -m 644 conf/cobbler/snippets/default_motd  $RPM_BUILD_ROOT%{spacewalksnippetsdir}/default_motd
+install -m 644 conf/cobbler/snippets/keep_system_id  $RPM_BUILD_ROOT%{spacewalksnippetsdir}/keep_system_id
+install -m 644 conf/cobbler/snippets/post_reactivation_key  $RPM_BUILD_ROOT%{spacewalksnippetsdir}/post_reactivation_key
+install -m 644 conf/cobbler/snippets/post_delete_system  $RPM_BUILD_ROOT%{spacewalksnippetsdir}/post_delete_system
+install -m 644 conf/cobbler/snippets/redhat_register  $RPM_BUILD_ROOT%{spacewalksnippetsdir}/redhat_register
+install -m 644 conf/cobbler/snippets/sles_register    $RPM_BUILD_ROOT%{spacewalksnippetsdir}/sles_register
+install -m 644 conf/cobbler/snippets/sles_register_script $RPM_BUILD_ROOT%{spacewalksnippetsdir}/sles_register_script
+install -m 644 conf/cobbler/snippets/sles_no_signature_checks $RPM_BUILD_ROOT%{spacewalksnippetsdir}/sles_no_signature_checks
+install -m 644 conf/cobbler/snippets/wait_for_networkmanager_script $RPM_BUILD_ROOT%{spacewalksnippetsdir}/wait_for_networkmanager_script
 
 ln -s -f %{_javadir}/dwr.jar $RPM_BUILD_ROOT%{jardir}/dwr.jar
 %if 0%{?suse_version}
@@ -972,16 +972,16 @@ fi
 # owned by uyuni
 %dir %{cobprofdirup}
 %dir %{cobprofdirwiz}
-%dir %{realcobsnippetsdir}
-%config %{realcobsnippetsdir}/default_motd
-%config %{realcobsnippetsdir}/keep_system_id
-%config %{realcobsnippetsdir}/post_reactivation_key
-%config %{realcobsnippetsdir}/post_delete_system
-%config %{realcobsnippetsdir}/redhat_register
-%config %{realcobsnippetsdir}/sles_register
-%config %{realcobsnippetsdir}/sles_register_script
-%config %{realcobsnippetsdir}/sles_no_signature_checks
-%config %{realcobsnippetsdir}/wait_for_networkmanager_script
+%dir %{spacewalksnippetsdir}
+%config %{spacewalksnippetsdir}/default_motd
+%config %{spacewalksnippetsdir}/keep_system_id
+%config %{spacewalksnippetsdir}/post_reactivation_key
+%config %{spacewalksnippetsdir}/post_delete_system
+%config %{spacewalksnippetsdir}/redhat_register
+%config %{spacewalksnippetsdir}/sles_register
+%config %{spacewalksnippetsdir}/sles_register_script
+%config %{spacewalksnippetsdir}/sles_no_signature_checks
+%config %{spacewalksnippetsdir}/wait_for_networkmanager_script
 %if 0%{?fedora} || 0%{?rhel} >= 7
 %config(noreplace) %{appdir}/rhn/META-INF/context.xml
 %else
