@@ -966,10 +966,12 @@ fi
 %{jardir}/taglibs-standard.jar
 %endif
 
-%dir %{cobprofdir}
+# owned by cobbler needs cobbler permissions
+%attr(755,root,root) %dir %{cobprofdir}
+%attr(755,root,root) %dir %{cobdirsnippets}
+# owned by uyuni
 %dir %{cobprofdirup}
 %dir %{cobprofdirwiz}
-%dir %{cobdirsnippets}
 %dir %{realcobsnippetsdir}
 %config %{realcobsnippetsdir}/default_motd
 %config %{realcobsnippetsdir}/keep_system_id
