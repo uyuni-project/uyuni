@@ -1088,3 +1088,29 @@ class TestSCConfigChannel:
 
         assert_expect(logger.error.call_args_list,
                       "No valid system selected")
+
+    def test_configchannel_verifyfile(self, shell):
+        """
+        Test do_configchannel_verifyfile, direct systems request. Systems found.
+
+        :param shell:
+        :return:
+        """
+        logger = MagicMock()
+        shell.expand_systems = MagicMock(return_value={"acme": {}, "beigebox": {}})
+        shell.get_system_id = MagicMock(side_effect=[100100, 100200])
+        shell.client.configchannel.scheduleFileComparisons = MagicMock(return_value=42)
+        with patch("spacecmd.configchannel.logging", logger) as lgr:
+            spacecmd.configchannel.do_configchannel_verifyfile(
+                shell, "base_channel /tmp/somefile acme box")
+
+        assert not logger.error.called
+        assert not shell.help_configchannel_verifyfile.called
+        assert not shell.ssm.keys.called
+        assert shell.client.configchannel.scheduleFileComparisons.called
+        assert logger.info.called
+        assert shell.expand_systems.called
+        assert shell.get_system_id.called
+
+        assert_args_expect(logger.info.call_args_list,
+                           [(("Action ID: 42",), {})])
