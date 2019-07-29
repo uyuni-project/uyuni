@@ -994,3 +994,21 @@ class TestSCConfigChannel:
         assert not shell.ssm.keys.called
         assert shell.help_configchannel_verifyfile.called
 
+    def test_configchannel_verifyfile_valid_args(self, shell):
+        """
+        Test do_configchannel_verifyfile, args validation.
+
+        :param shell:
+        :return:
+        """
+        for arg in ["base_channel", "base_channel /tmp/somefile"]:
+            logger = MagicMock()
+            with patch("spacecmd.configchannel.logging", logger) as lgr:
+                spacecmd.configchannel.do_configchannel_verifyfile(shell, arg)
+
+            assert not shell.client.configchannel.scheduleFileComparisons.called
+            assert not logger.error.called
+            assert not logger.info.called
+            assert not shell.expand_systems.called
+            assert not shell.ssm.keys.called
+            assert shell.help_configchannel_verifyfile.called
