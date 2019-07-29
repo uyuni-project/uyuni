@@ -1196,15 +1196,14 @@ def do_configchannel_import(self, args):
         return
 
     for filename in args:
-        logging.debug("Passed filename do_configchannel_import %s" % filename)
+        logging.debug("Passed filename do_configchannel_import %s", filename)
         ccdetails_list = json_read_from_file(filename)
         if not ccdetails_list:
-            logging.error("Error, could not read json data from %s" % filename)
+            logging.error("Error, could not read json data from %s", filename)
             return
         for ccdetails in ccdetails_list:
-            if self.import_configchannel_fromdetails(ccdetails) != True:
-                logging.error("Error importing configchannel %s" %
-                              ccdetails['name'])
+            if not self.import_configchannel_fromdetails(ccdetails):
+                logging.error("Error importing configchannel %s", ccdetails['name'])
 
 # create a new cc based on the dict from export_configchannel_getdetails
 
