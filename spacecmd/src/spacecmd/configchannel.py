@@ -1130,7 +1130,7 @@ def do_configchannel_export(self, args):
     arg_parser = get_argument_parser()
     arg_parser.add_argument('-f', '--file')
 
-    (args, options) = parse_command_arguments(args, arg_parser)
+    args, options = parse_command_arguments(args, arg_parser)
 
     filename = ""
     if options.file != None:
