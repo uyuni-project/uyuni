@@ -1208,3 +1208,29 @@ class TestSCConfigChannel:
                               'Bits self replicate too fast'), {}),
                             (('Error, could not read json data from /tmp/somefile.txt',), {})])
 
+    @patch("spacecmd.utils.open", MagicMock(
+        side_effect=ValueError("All curly braces were replaced with parenthesis")))
+    def test_configchannel_import_one_file_parse_error(self, shell):
+        """
+        Test do_configchannel_import with one file that cannot be parsed
+
+        :param shell:
+        :return:
+        """
+        logger = MagicMock()
+        with patch("spacecmd.configchannel.logging", logger) as lgr, \
+                patch("spacecmd.utils.logging", logger) as ulgr:
+            spacecmd.configchannel.do_configchannel_import(shell, "/tmp/somefile.txt")
+
+        assert not shell.import_configchannel_fromdetails.called
+        assert logger.debug.called
+        assert logger.error.called
+
+        assert_expect(logger.debug.call_args_list,
+                      'Passed filename do_configchannel_import /tmp/somefile.txt')
+        assert_args_expect(logger.error.call_args_list,
+                           [(('Could not parse JSON data from %s: %s',
+                              '/tmp/somefile.txt',
+                              'All curly braces were replaced with parenthesis'), {}),
+                            (('Error, could not read json data from /tmp/somefile.txt',), {})])
+
