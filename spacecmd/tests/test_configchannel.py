@@ -1162,3 +1162,22 @@ class TestSCConfigChannel:
         assert_args_expect(logger.error.call_args_list,
                            [(("Error saving exported config channels to file: %s",
                               "cc_all.json"), {})])
+
+    def test_configchannel_import_noargs(self, shell):
+        """
+        Test do_configchannel_import no arguments.
+
+        :param shell:
+        :return:
+        """
+        logger = MagicMock()
+        json_reader = MagicMock()
+        with patch("spacecmd.configchannel.json_read_from_file", json_reader) as jrdr, \
+                patch("spacecmd.configchannel.logging", logger) as lgr:
+            spacecmd.configchannel.do_configchannel_import(shell, "")
+
+        assert not logger.debug.called
+        assert not shell.import_configchannel_fromdetails.called
+        assert logger.error.called
+        assert shell.help_configchannel_import.called
+
