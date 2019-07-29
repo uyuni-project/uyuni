@@ -89,7 +89,7 @@ Feature: Content lifecycle
     And I click the environment build button
     Then I wait until I see "Version 1 successfully built into dev_name" text
     And I should see a "Version 1: test version message 1" text
-    And I wait until I see "Built" text
+    And I wait at most 600 seconds until I see "Built" text
 
 @scc_credentials
   Scenario: Promote promote the sources in the project
