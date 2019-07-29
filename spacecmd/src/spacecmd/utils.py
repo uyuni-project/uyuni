@@ -699,7 +699,7 @@ def json_read_from_file(filename):
         with open(filename) as fhd:
             data = json.loads(fhd.read())
     except IOError as exc:
-        logging.error("Could not open file %s for reading:", filename, str(exc))
+        logging.error("Could not open file %s for reading: %s", filename, str(exc))
     except ValueError as exc:
         logging.error("Could not parse JSON data from %s: %s", filename, str(exc))
     except Exception as exc:
