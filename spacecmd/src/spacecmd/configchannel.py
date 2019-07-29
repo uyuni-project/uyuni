@@ -1007,7 +1007,7 @@ def do_configchannel_verifyfile(self, args):
     else:
         systems = self.expand_systems(args[2:])
 
-    system_ids = [self.get_system_id(s) for s in systems]
+    system_ids = list(filter(None, (self.get_system_id(s) for s in systems)))
 
     if not system_ids:
         logging.error('No valid system selected')
