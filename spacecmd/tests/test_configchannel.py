@@ -1180,6 +1180,8 @@ class TestSCConfigChannel:
         assert not shell.import_configchannel_fromdetails.called
         assert logger.error.called
         assert shell.help_configchannel_import.called
+        assert_expect(logger.error.call_args_list,
+                      "Error, no filename passed")
 
     @patch("spacecmd.utils.open", MagicMock(side_effect=IOError("Bits self replicate too fast")))
     def test_configchannel_import_one_file_noexists(self, shell):
