@@ -1178,8 +1178,7 @@ def do_configchannel_export(self, args):
                                  "confirm overwrite file? (y/n)"):
             return
     if json_dump_to_file(ccdetails_list, filename) != True:
-        logging.error("Error saving exported config channels to file" %
-                      filename)
+        logging.error("Error saving exported config channels to file: %s", filename)
         return
 
 ####################
