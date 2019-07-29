@@ -1234,3 +1234,29 @@ class TestSCConfigChannel:
                               'All curly braces were replaced with parenthesis'), {}),
                             (('Error, could not read json data from /tmp/somefile.txt',), {})])
 
+    @patch("spacecmd.utils.open", MagicMock(
+        side_effect=Exception("Feature was not beta-tested")))
+    def test_configchannel_import_one_file_general_error(self, shell):
+        """
+        Test do_configchannel_import with one file, general exception occurs
+
+        :param shell:
+        :return:
+        """
+        logger = MagicMock()
+        with patch("spacecmd.configchannel.logging", logger) as lgr, \
+                patch("spacecmd.utils.logging", logger) as ulgr:
+            spacecmd.configchannel.do_configchannel_import(shell, "/tmp/somefile.txt")
+
+        assert not shell.import_configchannel_fromdetails.called
+        assert logger.debug.called
+        assert logger.error.called
+
+        assert_expect(logger.debug.call_args_list,
+                      'Passed filename do_configchannel_import /tmp/somefile.txt')
+        assert_args_expect(logger.error.call_args_list,
+                           [(('Error processing file %s: %s',
+                              '/tmp/somefile.txt',
+                              'Feature was not beta-tested'), {}),
+                            (('Error, could not read json data from /tmp/somefile.txt',), {})])
+
