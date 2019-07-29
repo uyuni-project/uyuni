@@ -1266,4 +1266,27 @@ class TestSCConfigChannel:
                             (('Error, could not read json data from %s',
                               '/tmp/somefile.txt',), {})])
 
+    def test_configchannel_sync_noargs(self, shell):
+        """
+        Test configchannel_sync with no args.
 
+        :param shell:
+        :return:
+        """
+        for arg in ["", "foo bar blah", "some more params here"]:
+            mprint = MagicMock()
+            logger = MagicMock()
+
+            with patch("spacecmd.configchannel.logging", logger) as lgr, \
+                    patch("spacecmd.configchannel.print", mprint) as prt:
+                spacecmd.configchannel.do_configchannel_sync(shell, arg)
+            assert not mprint.called
+            assert not logger.called
+            assert not shell.check_configchannel.called
+            assert not shell.do_configchannel_getcorresponding.called
+            assert not shell.do_configchannel_listfiles.called
+            assert not shell.client.configchannel.lookupFileInfo.called
+            assert not shell.client.configchannel.createOrUpdatePath.called
+            assert not shell.client.configchannel.createOrUpdateSymlink.called
+            assert not shell.do_configchannel_removefiles.called
+            assert shell.help_configchannel_sync.called
