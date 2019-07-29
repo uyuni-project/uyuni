@@ -1200,13 +1200,15 @@ class TestSCConfigChannel:
         assert logger.debug.called
         assert logger.error.called
 
-        assert_expect(logger.debug.call_args_list,
-                      'Passed filename do_configchannel_import /tmp/somefile.txt')
+        assert_args_expect(logger.debug.call_args_list,
+                           [(('Passed filename do_configchannel_import %s',
+                              '/tmp/somefile.txt'), {})])
         assert_args_expect(logger.error.call_args_list,
                            [(('Could not open file %s for reading: %s',
                               '/tmp/somefile.txt',
                               'Bits self replicate too fast'), {}),
-                            (('Error, could not read json data from /tmp/somefile.txt',), {})])
+                            (('Error, could not read json data from %s',
+                              '/tmp/somefile.txt',), {})])
 
     @patch("spacecmd.utils.open", MagicMock(
         side_effect=ValueError("All curly braces were replaced with parenthesis")))
@@ -1226,13 +1228,15 @@ class TestSCConfigChannel:
         assert logger.debug.called
         assert logger.error.called
 
-        assert_expect(logger.debug.call_args_list,
-                      'Passed filename do_configchannel_import /tmp/somefile.txt')
+        assert_args_expect(logger.debug.call_args_list,
+                           [(('Passed filename do_configchannel_import %s',
+                              '/tmp/somefile.txt'), {})])
         assert_args_expect(logger.error.call_args_list,
                            [(('Could not parse JSON data from %s: %s',
                               '/tmp/somefile.txt',
                               'All curly braces were replaced with parenthesis'), {}),
-                            (('Error, could not read json data from /tmp/somefile.txt',), {})])
+                            (('Error, could not read json data from %s',
+                              '/tmp/somefile.txt',), {})])
 
     @patch("spacecmd.utils.open", MagicMock(
         side_effect=Exception("Feature was not beta-tested")))
@@ -1252,11 +1256,14 @@ class TestSCConfigChannel:
         assert logger.debug.called
         assert logger.error.called
 
-        assert_expect(logger.debug.call_args_list,
-                      'Passed filename do_configchannel_import /tmp/somefile.txt')
+        assert_args_expect(logger.debug.call_args_list,
+                           [(('Passed filename do_configchannel_import %s',
+                              "/tmp/somefile.txt"), {})])
         assert_args_expect(logger.error.call_args_list,
                            [(('Error processing file %s: %s',
                               '/tmp/somefile.txt',
                               'Feature was not beta-tested'), {}),
-                            (('Error, could not read json data from /tmp/somefile.txt',), {})])
+                            (('Error, could not read json data from %s',
+                              '/tmp/somefile.txt',), {})])
+
 
