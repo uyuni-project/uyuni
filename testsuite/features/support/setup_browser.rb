@@ -88,7 +88,7 @@ end
 
 # do we have scc credentials
 Before('@scc_credentials') do |scenario|
-  scenario.skip_invoke! unless ENV['scc_credentials']
+  scenario.skip_invoke! unless $scc_credentials
 end
 
 # do some tests only if there is a private network
