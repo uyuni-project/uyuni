@@ -128,3 +128,4 @@ $mirror = ENV['MIRROR']
 $git_profiles = ENV['GITPROFILES']
 $product = product
 $server_http_proxy = ENV['SERVER_HTTP_PROXY'] if ENV['SERVER_HTTP_PROXY']
+$scc_credentials = ENV['scc_credentials'] if ENV['scc_credentials']
