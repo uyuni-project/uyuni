@@ -1184,7 +1184,7 @@ class TestSCConfigChannel:
                       "Error, no filename passed")
 
     @patch("spacecmd.utils.open", MagicMock(side_effect=IOError("Bits self replicate too fast")))
-    def test_configchannel_import_one_file_noexists(self, shell):
+    def test_configchannel_import_one_file_noexists_ioerror(self, shell):
         """
         Test do_configchannel_import with one file that does not exists.
 
@@ -1192,7 +1192,8 @@ class TestSCConfigChannel:
         :return:
         """
         logger = MagicMock()
-        with patch("spacecmd.configchannel.logging", logger) as lgr:
+        with patch("spacecmd.configchannel.logging", logger) as lgr, \
+                patch("spacecmd.utils.logging", logger) as ulgr:
             spacecmd.configchannel.do_configchannel_import(shell, "/tmp/somefile.txt")
 
         assert not shell.import_configchannel_fromdetails.called
@@ -1201,6 +1202,9 @@ class TestSCConfigChannel:
 
         assert_expect(logger.debug.call_args_list,
                       'Passed filename do_configchannel_import /tmp/somefile.txt')
-        assert_expect(logger.error.call_args_list,
-                      'Error, could not read json data from /tmp/somefile.txt')
+        assert_args_expect(logger.error.call_args_list,
+                           [(('Could not open file %s for reading: %s',
+                              '/tmp/somefile.txt',
+                              'Bits self replicate too fast'), {}),
+                            (('Error, could not read json data from /tmp/somefile.txt',), {})])
 
