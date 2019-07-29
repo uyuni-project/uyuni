@@ -9,6 +9,8 @@
 -- http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 --
 
+DROP VIEW IF EXISTS suseChannelUserRoleView;
+
 CREATE OR REPLACE VIEW
 suseChannelUserRoleView
 AS
