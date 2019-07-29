@@ -1012,3 +1012,27 @@ class TestSCConfigChannel:
             assert not shell.expand_systems.called
             assert not shell.ssm.keys.called
             assert shell.help_configchannel_verifyfile.called
+
+    def test_configchannel_verifyfile_ssm_no_valid_system(self, shell):
+        """
+        Test do_configchannel_verifyfile, SSM used. No valid systems found.
+
+        :param shell:
+        :return:
+        """
+        logger = MagicMock()
+        shell.ssm.keys = MagicMock(return_value={})
+        with patch("spacecmd.configchannel.logging", logger) as lgr:
+            spacecmd.configchannel.do_configchannel_verifyfile(
+                shell, "base_channel /tmp/somefile ssm")
+
+        assert not shell.client.configchannel.scheduleFileComparisons.called
+        assert not logger.info.called
+        assert not shell.expand_systems.called
+        assert not shell.get_system_id.called
+        assert not shell.help_configchannel_verifyfile.called
+        assert logger.error.called
+        assert shell.ssm.keys.called
+
+        assert_expect(logger.error.call_args_list,
+                      "No valid system selected")
