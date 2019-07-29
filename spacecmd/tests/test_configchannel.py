@@ -1114,3 +1114,24 @@ class TestSCConfigChannel:
 
         assert_args_expect(logger.info.call_args_list,
                            [(("Action ID: 42",), {})])
+
+    def test_configchannel_export_noargs_new_file(self, shell):
+        """
+        Test do_configchannel_export no arguments.
+
+        :param shell:
+        :return:
+        """
+        logger = MagicMock()
+        shell.user_confirm = MagicMock(return_value=False)
+        json_dumper = MagicMock(return_value=True)
+        shell.do_configchannel_list = MagicMock(
+            return_value=["cfg_1_channel", "cfg_2_channel"])
+
+        with patch("spacecmd.configchannel.json_dump_to_file", json_dumper) as jdmp, \
+                patch("spacecmd.configchannel.logging", logger) as lgr:
+            spacecmd.configchannel.do_configchannel_export(shell, "")
+
+        assert logger.debug.called
+        assert logger.info.called
+        assert json_dumper.called
