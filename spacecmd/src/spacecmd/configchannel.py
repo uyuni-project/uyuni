@@ -1171,10 +1171,9 @@ def do_configchannel_export(self, args):
     # Check if filepath exists, if it is an existing file
     # we prompt the user for confirmation
     if os.path.isfile(filename):
-        if not self.user_confirm("File %s exists, " % filename +
-                                 "confirm overwrite file? (y/n)"):
+        if not self.user_confirm("File '{}' exists, confirm overwrite file? (y/n)".format(filename)):
             return
-    if json_dump_to_file(ccdetails_list, filename) != True:
+    if not json_dump_to_file(ccdetails_list, filename):
         logging.error("Error saving exported config channels to file: %s", filename)
         return
 
