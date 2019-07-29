@@ -975,3 +975,22 @@ class TestSCConfigChannel:
         assert shell.client.configchannel.deleteFiles.called
         assert_args_expect(shell.client.configchannel.deleteFiles.call_args_list,
                            [((shell.session, 'somechannel', ['/tmp/deleteme']), {})])
+
+    def test_configchannel_verifyfile_noargs(self, shell):
+        """
+        Test do_configchannel_verifyfile no args.
+
+        :param shell:
+        :return:
+        """
+        logger = MagicMock()
+        with patch("spacecmd.configchannel.logging", logger) as lgr:
+            spacecmd.configchannel.do_configchannel_verifyfile(shell, "")
+
+        assert not shell.client.configchannel.scheduleFileComparisons.called
+        assert not logger.error.called
+        assert not logger.info.called
+        assert not shell.expand_systems.called
+        assert not shell.ssm.keys.called
+        assert shell.help_configchannel_verifyfile.called
+
