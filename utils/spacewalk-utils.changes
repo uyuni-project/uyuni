@@ -1,3 +1,4 @@
+- Fixes SSL hostname matching (bsc#1141663)
 - hostname-rename: change hostname in cobbler db and autoinst data
 - Adds support for Ubuntu and Debian channels to spacewalk-common-channels.
 
