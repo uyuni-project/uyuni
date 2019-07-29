@@ -1133,9 +1133,8 @@ def do_configchannel_export(self, args):
     args, options = parse_command_arguments(args, arg_parser)
 
     filename = ""
-    if options.file != None:
-        logging.debug("Passed filename do_configchannel_export %s" %
-                      options.file)
+    if options.file is not None:
+        logging.debug("Passed filename '%s' to do_configchannel_export command.", options.file)
         filename = options.file
 
     # Get the list of ccs to export and sort out the filename if required
@@ -1143,15 +1142,14 @@ def do_configchannel_export(self, args):
     if not args:
         if not filename:
             filename = "cc_all.json"
-        logging.info("Exporting ALL config channels to %s" % filename)
+        logging.info("Exporting ALL config channels to %s", filename)
         ccs = self.do_configchannel_list('', True)
     else:
         # allow globbing of configchannel names
         ccs = filter_results(self.do_configchannel_list('', True), args)
-        logging.debug("configchannel_export called with args %s, ccs=%s" %
-                      (args, ccs))
+        logging.debug("configchannel_export called with args %s, ccs=%s", args, ccs)
         if not ccs:
-            logging.error("Error, no valid config channel passed, " +
+            logging.error("Error, no valid config channel passed, "
                           "check name is  correct with spacecmd configchannel_list")
             return
         if not filename:
@@ -1166,11 +1164,10 @@ def do_configchannel_export(self, args):
     # Dump as a list of dict
     ccdetails_list = []
     for c in ccs:
-        logging.info("Exporting cc %s to %s" % (c, filename))
+        logging.info("Exporting cc %s to %s", c, filename)
         ccdetails_list.append(self.export_configchannel_getdetails(c))
 
-    logging.debug("About to dump %d ccs to %s" %
-                  (len(ccdetails_list), filename))
+    logging.debug("About to dump %d ccs to %s", len(ccdetails_list), filename)
     # Check if filepath exists, if it is an existing file
     # we prompt the user for confirmation
     if os.path.isfile(filename):
