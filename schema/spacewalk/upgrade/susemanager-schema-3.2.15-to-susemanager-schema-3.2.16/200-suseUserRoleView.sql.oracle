@@ -8,6 +8,13 @@
 -- along with this software; if not, see
 -- http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 --
+BEGIN
+ EXECUTE IMMEDIATE 'DROP VIEW suseChannelUserRoleView';
+EXCEPTION
+   WHEN OTHERS
+     THEN NULL;
+END;
+/
 
 CREATE OR REPLACE VIEW
 suseChannelUserRoleView
