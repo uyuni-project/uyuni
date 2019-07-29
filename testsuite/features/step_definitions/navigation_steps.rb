@@ -139,28 +139,25 @@ end
 #
 # Click on a button
 #
-When(/^I click on "([^"]*)"$/) do |arg1|
-  begin
-    click_button arg1, match: :first
-  rescue
-    sleep 4
-    click_button arg1, match: :first
-  end
+When(/^I click on "([^"]*)"$/) do |text|
+  click_button(text, wait: CLICK_TIMEOUT, match: :first)
 end
+
 #
 # Click on a button and confirm in alert box
-When(/^I click on "([^"]*)" and confirm$/) do |arg1|
+When(/^I click on "([^"]*)" and confirm$/) do |text|
   accept_alert do
-    step %(I click on "#{arg1}")
-    sleep 1
+    step %(I click on "#{text}")
   end
 end
+
 #
 # Click on a link
 #
 When(/^I follow "([^"]*)"$/) do |text|
   click_link(text, wait: CLICK_TIMEOUT)
 end
+
 #
 # Click on the first link
 #
