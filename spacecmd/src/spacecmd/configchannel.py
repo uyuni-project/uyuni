@@ -1458,7 +1458,7 @@ def do_configchannel_diff(self, args):
 
     (args, _options) = parse_command_arguments(args, arg_parser)
 
-    if len(args) != 1 and len(args) != 2:
+    if not 1 <= len(args) < 3:
         self.help_configchannel_diff()
         return
 
