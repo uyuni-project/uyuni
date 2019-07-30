@@ -1,3 +1,4 @@
+- improve performance for retrieving the user permissions on channels (bsc#1140644)
 - Prerequire salt package to avoid not existing user issues
 - Support partly patched CVEs in CVE audit (bsc#1137229)
 
