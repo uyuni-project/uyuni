@@ -594,7 +594,7 @@ class TestSCUtils:
         assert out is None
 
         assert_args_expect(logger.error.call_args_list,
-                           [(('Could not open file %s for reading:', '/tmp/something', 'Hard drive is sleeping'), {})])
+                           [(('Could not open file %s for reading: %s', '/tmp/something', 'Hard drive is sleeping'), {})])
 
     @patch("spacecmd.utils.json.loads", MagicMock(side_effect=ValueError("Curly brackets replaced by dashes")))
     def test_json_read_from_file_valueerror(self):
