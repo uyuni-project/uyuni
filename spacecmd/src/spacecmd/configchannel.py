@@ -32,6 +32,7 @@
 
 from datetime import datetime
 import base64
+import codecs
 try:
     from xmlrpc import client as xmlrpclib
 except ImportError:
@@ -1571,7 +1572,7 @@ def do_configchannel_sync(self, args, doreturn=False):
     for source_data in source_data_list:
         if source_data.get('type') == 'file' or source_data.get('type') == 'directory':
             if source_data.get('contents') and not source_data.get('binary'):
-                contents = source_data.get('contents').encode('base64')
+                contents = codecs.encode(source_data.get('contents'), "base64")
             else:
                 contents = source_data.get('contents')
             target_data = {
