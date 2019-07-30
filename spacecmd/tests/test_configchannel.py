@@ -1281,7 +1281,10 @@ class TestSCConfigChannel:
                     patch("spacecmd.configchannel.print", mprint) as prt:
                 spacecmd.configchannel.do_configchannel_sync(shell, arg)
             assert not mprint.called
-            assert not logger.called
+            assert not logger.info.called
+            assert not logger.debug.called
+            assert not logger.warning.called
+            assert not logger.error.called
             assert not shell.check_configchannel.called
             assert not shell.do_configchannel_getcorresponding.called
             assert not shell.do_configchannel_listfiles.called
@@ -1306,7 +1309,10 @@ class TestSCConfigChannel:
                 patch("spacecmd.configchannel.print", mprint) as prt:
             spacecmd.configchannel.do_configchannel_sync(shell, "lightning_channel")
         assert not mprint.called
-        assert not logger.called
+        assert not logger.info.called
+        assert not logger.debug.called
+        assert not logger.warning.called
+        assert not logger.error.called
         assert not shell.do_configchannel_getcorresponding.called
         assert not shell.do_configchannel_listfiles.called
         assert not shell.client.configchannel.lookupFileInfo.called
