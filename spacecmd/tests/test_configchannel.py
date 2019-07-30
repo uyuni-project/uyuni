@@ -1331,6 +1331,7 @@ class TestSCConfigChannel:
         """
         mprint = MagicMock()
         logger = MagicMock()
+        shell.options.yes = False
         shell.user_confirm = MagicMock(return_value=False)
         shell.check_configchannel = MagicMock(return_value=True)
         shell.do_configchannel_getcorresponding = MagicMock(return_value="corresponding_channel")
@@ -1364,3 +1365,67 @@ class TestSCConfigChannel:
                                  'files only in the source channel will be added to the target channel',
                                  'files only in the target channel will be deleted']
                                 )
+
+    def test_configchannel_sync_check_configchannel_full_sync_files_only(self, shell):
+        """
+        Test configchannel_sync check configchannel, with full sync, non interactive,
+        files only.
+
+        :param shell:
+        :return:
+        """
+        mprint = MagicMock()
+        logger = MagicMock()
+        shell.options.yes = True
+        shell.user_confirm = MagicMock(return_value=False)
+        shell.check_configchannel = MagicMock(return_value=True)
+        shell.do_configchannel_getcorresponding = MagicMock(return_value="corresponding_channel")
+        shell.do_configchannel_listfiles = MagicMock(side_effect=[
+            ["/etc/some.conf", "/etc/some_other.conf"],
+            ["/etc/third.conf", "/etc/some.conf"]
+        ])
+        shell.client.configchannel.lookupFileInfo = MagicMock(return_value=[
+            {
+                "type": "file", "contents": "Firmware update in the coffee machine", "binary": True,
+                "owner": "gr00t", "group": "guardians", "permissions_mode": 0o0644,
+                "selinux_ctx": "", "macro-start-delimeter": "{",
+                "macro-end-delimeter": "}", "path": "/etc/some.conf"
+            },
+            {
+                "type": "file", "binary": False,
+                "contents": b"Y\xeb\xde\xa6'$y\xd0\x8e\x04\xe2\xda\xb2\xd8^\x95\xa9\xe0\xb9\xa8\x1e\xa1\xf7!\xa2'\x1e",
+                "owner": "gr00t", "group": "guardians", "permissions_mode": 0o0644,
+                "selinux_ctx": "", "macro-start-delimeter": "{",
+                "macro-end-delimeter": "}", "path": "/etc/some.conf"
+            },
+        ])
+
+        with patch("spacecmd.configchannel.logging", logger) as lgr, \
+                patch("spacecmd.configchannel.print", mprint) as prt:
+            spacecmd.configchannel.do_configchannel_sync(shell, "cfg_channel")
+
+        assert logger.debug.called
+        assert not logger.warning.called
+        assert not logger.error.called
+        assert shell.client.configchannel.createOrUpdatePath.called
+        assert not shell.client.configchannel.createOrUpdateSymlink.called
+        assert not shell.help_configchannel_sync.called
+        assert mprint.called
+        assert logger.info.called
+        assert shell.client.configchannel.lookupFileInfo.called
+        assert shell.do_configchannel_removefiles.called
+        assert shell.do_configchannel_getcorresponding.called
+        assert shell.do_configchannel_listfiles.called
+        assert shell.check_configchannel.called
+
+        assert_args_expect(shell.client.configchannel.lookupFileInfo.call_args_list,
+                           [((shell.session, 'cfg_channel', ['/etc/some.conf',
+                                                             '/etc/some_other.conf']), {})])
+        assert_args_expect(shell.client.configchannel.createOrUpdatePath.call_args_list,
+                           [((shell.session, 'corresponding_channel', '/etc/some.conf', False,
+                              {'contents': 'Firmware update in the coffee machine', 'contents_enc64': True,
+                               'owner': 'gr00t', 'group': 'guardians', 'permissions': 420}), {}),
+                            ((shell.session, 'corresponding_channel', '/etc/some.conf', False,
+                              {'contents': b'WevepickedCOBOLasthelanguageofchoice\n', 'contents_enc64': True,
+                               'owner': 'gr00t', 'group': 'guardians', 'permissions': 420}), {})])
+
