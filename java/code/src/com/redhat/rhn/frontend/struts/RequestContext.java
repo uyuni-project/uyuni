@@ -186,7 +186,7 @@ public class RequestContext {
          * because findUserSession is never going to correctly find an XMLRPC
          * user's sessions.
          */
-        if (request.getRequestURI().startsWith("/rhn/rpc/api")) {
+        if (request == null || request.getRequestURI().startsWith("/rhn/rpc/api")) {
             return null;
         }
 
