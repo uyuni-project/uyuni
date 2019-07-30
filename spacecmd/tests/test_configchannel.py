@@ -1429,3 +1429,59 @@ class TestSCConfigChannel:
                               {'contents': b'WevepickedCOBOLasthelanguageofchoice\n', 'contents_enc64': True,
                                'owner': 'gr00t', 'group': 'guardians', 'permissions': 420}), {})])
 
+    def test_configchannel_sync_check_configchannel_full_sync_symlinks_only(self, shell):
+        """
+        Test configchannel_sync check configchannel, with full sync, non interactive,
+        symlinks only.
+
+        :param shell:
+        :return:
+        """
+        mprint = MagicMock()
+        logger = MagicMock()
+        shell.options.yes = True
+        shell.user_confirm = MagicMock(return_value=False)
+        shell.check_configchannel = MagicMock(return_value=True)
+        shell.do_configchannel_getcorresponding = MagicMock(return_value="corresponding_channel")
+        shell.do_configchannel_listfiles = MagicMock(side_effect=[
+            ["/etc/some.conf", "/etc/some_other.conf"],
+            ["/etc/third.conf", "/etc/some.conf"]
+        ])
+        shell.client.configchannel.lookupFileInfo = MagicMock(return_value=[
+            {
+                "type": "symlink", "target_path": "/etc/some_other.conf",
+                "selinux_ctx": "bananapie", "path": "/etc/some.conf"
+            },
+            {
+                "type": "symlink", "target_path": "/etc/something.conf",
+                "selinux_ctx": "coffeemachine",  "path": "/etc/some.conf"
+            },
+        ])
+
+        with patch("spacecmd.configchannel.logging", logger) as lgr, \
+                patch("spacecmd.configchannel.print", mprint) as prt:
+            spacecmd.configchannel.do_configchannel_sync(shell, "cfg_channel")
+
+        assert logger.debug.called
+        assert not logger.warning.called
+        assert not logger.error.called
+        assert not shell.client.configchannel.createOrUpdatePath.called
+        assert shell.client.configchannel.createOrUpdateSymlink.called
+        assert not shell.help_configchannel_sync.called
+        assert mprint.called
+        assert logger.info.called
+        assert shell.client.configchannel.lookupFileInfo.called
+        assert shell.do_configchannel_removefiles.called
+        assert shell.do_configchannel_getcorresponding.called
+        assert shell.do_configchannel_listfiles.called
+        assert shell.check_configchannel.called
+
+        assert_args_expect(shell.client.configchannel.lookupFileInfo.call_args_list,
+                           [((shell.session, 'cfg_channel', ['/etc/some.conf',
+                                                             '/etc/some_other.conf']), {})])
+        assert_args_expect(shell.client.configchannel.createOrUpdateSymlink.call_args_list,
+                           [((shell.session, 'corresponding_channel', '/etc/some.conf',
+                              {'target_path': '/etc/some_other.conf', 'selinux_ctx': 'bananapie'}), {}),
+                            ((shell.session, 'corresponding_channel', '/etc/some.conf',
+                              {'target_path': '/etc/something.conf', 'selinux_ctx': 'coffeemachine'}), {})])
+
