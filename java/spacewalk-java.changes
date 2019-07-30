@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Tue Jul 30 14:57:55 CEST 2019 - jgonzalez@suse.com
+
+- version 4.0.22-1
 - improve performance for retrieving the user permissions on channels (bsc#1140644)
 - fix permissions of cobbler owned directories
 - Prerequire salt package to avoid not existing user issues
