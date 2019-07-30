@@ -1290,3 +1290,28 @@ class TestSCConfigChannel:
             assert not shell.client.configchannel.createOrUpdateSymlink.called
             assert not shell.do_configchannel_removefiles.called
             assert shell.help_configchannel_sync.called
+
+    def test_configchannel_sync_check_configchannel_failure(self, shell):
+        """
+        Test configchannel_sync check configchannel failure.
+
+        :param shell:
+        :return:
+        """
+        mprint = MagicMock()
+        logger = MagicMock()
+        shell.check_configchannel = MagicMock(return_value=False)
+
+        with patch("spacecmd.configchannel.logging", logger) as lgr, \
+                patch("spacecmd.configchannel.print", mprint) as prt:
+            spacecmd.configchannel.do_configchannel_sync(shell, "lightning_channel")
+        assert not mprint.called
+        assert not logger.called
+        assert not shell.do_configchannel_getcorresponding.called
+        assert not shell.do_configchannel_listfiles.called
+        assert not shell.client.configchannel.lookupFileInfo.called
+        assert not shell.client.configchannel.createOrUpdatePath.called
+        assert not shell.client.configchannel.createOrUpdateSymlink.called
+        assert not shell.do_configchannel_removefiles.called
+        assert not shell.help_configchannel_sync.called
+        assert shell.check_configchannel.called
