@@ -1585,9 +1585,13 @@ def do_configchannel_sync(self, args, doreturn=False):
                 'macro-start-delimiter':    source_data.get('macro-start-delimiter'),
                 'macro-end-delimiter':      source_data.get('macro-end-delimiter'),
             }
+            _target_data = {}
             for k, v in target_data.items():
-                if not v:
-                    del target_data[k]
+                if v:
+                    _target_data[k] = v
+            target_data = _target_data
+            del _target_data
+
             if source_data.get('type') == 'directory':
                 del target_data['contents_enc64']
             logging.debug(source_data.get('path') + ": " + str(target_data))
