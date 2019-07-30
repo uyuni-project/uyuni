@@ -1,3 +1,4 @@
+- Improve menu scrollbar style for firefox
 - Add UI message when salt-formulas system folders are unreachable (bsc#1142309)
 
 -------------------------------------------------------------------
