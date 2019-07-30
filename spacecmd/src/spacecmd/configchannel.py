@@ -1560,8 +1560,9 @@ def do_configchannel_sync(self, args, doreturn=False):
         logging.info("nothing to do")
         return
 
-    if not self.user_confirm('perform synchronisation [y/N]:'):
-        return
+    if not self.options.yes:
+        if not self.user_confirm('perform synchronisation [y/N]:'):
+            return
 
     source_data_list = self.client.configchannel.lookupFileInfo(
         self.session, source_channel,
