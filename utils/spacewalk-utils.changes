@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Tue Jul 30 14:49:01 CEST 2019 - jgonzalez@suse.com
+
+- version 4.0.11-1
 - Fixes SSL hostname matching (bsc#1141663)
 - hostname-rename: change hostname in cobbler db and autoinst data
 - Adds support for Ubuntu and Debian channels to spacewalk-common-channels.
