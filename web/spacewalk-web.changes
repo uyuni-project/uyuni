@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Tue Jul 30 14:58:58 CEST 2019 - jgonzalez@suse.com
+
+- version 4.0.15-1
 - Redirect to first step of channel assignment after change channel submit (bsc#1137244)
 - Hide channels managed by Content Lifecycle projects from available sources (bsc#1137965)
 - Add unsupported browser warning when using Internet Explorer
