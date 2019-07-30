@@ -1321,3 +1321,46 @@ class TestSCConfigChannel:
         assert not shell.do_configchannel_removefiles.called
         assert not shell.help_configchannel_sync.called
         assert shell.check_configchannel.called
+
+    def test_configchannel_sync_check_configchannel_nosync(self, shell):
+        """
+        Test configchannel_sync check configchannel, no sync.
+
+        :param shell:
+        :return:
+        """
+        mprint = MagicMock()
+        logger = MagicMock()
+        shell.user_confirm = MagicMock(return_value=False)
+        shell.check_configchannel = MagicMock(return_value=True)
+        shell.do_configchannel_getcorresponding = MagicMock(return_value="corresponding_channel")
+        shell.do_configchannel_listfiles = MagicMock(side_effect=[
+            ["/etc/some.conf", "/etc/some_other.conf"],
+            ["/etc/third.conf", "/etc/some.conf"]
+        ])
+
+        with patch("spacecmd.configchannel.logging", logger) as lgr, \
+                patch("spacecmd.configchannel.print", mprint) as prt:
+            spacecmd.configchannel.do_configchannel_sync(shell, "cfg_channel")
+        assert not logger.debug.called
+        assert not logger.warning.called
+        assert not logger.error.called
+        assert not shell.client.configchannel.lookupFileInfo.called
+        assert not shell.client.configchannel.createOrUpdatePath.called
+        assert not shell.client.configchannel.createOrUpdateSymlink.called
+        assert not shell.do_configchannel_removefiles.called
+        assert not shell.help_configchannel_sync.called
+        assert mprint.called
+        assert logger.info.called
+        assert shell.do_configchannel_getcorresponding.called
+        assert shell.do_configchannel_listfiles.called
+        assert shell.check_configchannel.called
+
+        assert_list_args_expect(mprint.call_args_list,
+                                ['files common in both channels:', '/etc/some.conf', '',
+                                 'files only in source cfg_channel', '/etc/some_other.conf', '',
+                                 'files only in target corresponding_channel', '/etc/third.conf', '',
+                                 'files that are in both channels will be overwritten in the target channel',
+                                 'files only in the source channel will be added to the target channel',
+                                 'files only in the target channel will be deleted']
+                                )
