@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Tue Jul 30 14:52:32 CEST 2019 - jgonzalez@suse.com
+
+- version 4.0.13-1
 - set Copyright year to 2019 (bsc#1141598)
 - Remove duplicate information message when changing system properties (bsc#1111371)
 - Add missing strings for task status page
