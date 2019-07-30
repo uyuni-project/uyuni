@@ -21,7 +21,9 @@ namespace :cucumber do
 end
 
 def post_nodejs_report
-  `node index.js`
+  sh 'rm -rf ./cucumber_report && mkdir cucumber_report', verbose: false
+  sh 'timeout 60 bash -c -- "while find output*.json -type f -size 0 | grep json; do sleep 1;done"', verbose: false
+  sh 'node index.js'
 end
 
 task :cucumber do
