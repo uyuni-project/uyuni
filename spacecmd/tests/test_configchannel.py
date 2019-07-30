@@ -1485,3 +1485,19 @@ class TestSCConfigChannel:
                             ((shell.session, 'corresponding_channel', '/etc/some.conf',
                               {'target_path': '/etc/something.conf', 'selinux_ctx': 'coffeemachine'}), {})])
 
+    def test_configchannel_diff_args(self, shell):
+        """
+        Test do_configchannel_diff on arguments call.
+
+        :param shell:
+        :return:
+        """
+        for arg in ["", "one two three"]:
+            differ = MagicMock()
+            with patch("spacecmd.configchannel.get_string_diff_dicts", differ) as dfr:
+                spacecmd.configchannel.do_configchannel_diff(shell, arg)
+            assert not differ.called
+            assert not shell.check_configchannel.called
+            assert not shell.do_configchannel_getcorresponding.called
+            assert not shell.dump_configchannel.called
+            assert shell.help_configchannel_diff.called
