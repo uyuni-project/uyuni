@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Tue Jul 30 15:01:21 CEST 2019 - jgonzalez@suse.com
+
+- version 4.0.14-1
 - improve performance for retrieving the user permissions on channels (bsc#1140644)
 - add caret sorting for rpm versioning
 - allow repo and manifest sources with the same url
