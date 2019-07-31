@@ -1501,3 +1501,26 @@ class TestSCConfigChannel:
             assert not shell.do_configchannel_getcorresponding.called
             assert not shell.dump_configchannel.called
             assert shell.help_configchannel_diff.called
+
+    def test_configchannel_clone_interactive_no_channels(self, shell):
+        """
+        Test do_configchannel_clone on interactive, no channels.
+
+        :param shell:
+        :return:
+        """
+        shell.do_configchannel_list = MagicMock(return_value=[])
+        prompter = MagicMock(side_effect=["basic_config_channel", "bcc_channel"])
+        logger = MagicMock()
+        with patch("spacecmd.configchannel.prompt_user", prompter) as pmt,\
+                patch("spacecmd.configchannel.logging", logger) as lgr:
+            spacecmd.configchannel.do_configchannel_clone(shell, "")
+
+        assert not shell.help_configchannel_clone.called
+        assert not prompter.called
+        assert not logger.debug.called
+        assert shell.do_configchannel_list.called
+        assert logger.error.called
+
+        assert_expect(logger.error.call_args_list, "No config channels found")
+
