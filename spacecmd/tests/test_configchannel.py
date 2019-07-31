@@ -13,6 +13,7 @@ class TestSCConfigChannel:
     """
     Test configuration channel.
     """
+
     def test_configchannel_list_noret(self, shell):
         """
         Test configuration channel list, no data return.
