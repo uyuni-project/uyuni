@@ -1320,9 +1320,12 @@ def do_configchannel_clone(self, args):
     arg_parser.add_argument('-x', '--regex')
 
     (args, options) = parse_command_arguments(args, arg_parser)
-    allccs = self.do_configchannel_list('', True)
+    allccs = list(filter(None, self.do_configchannel_list('', True)))
 
     if is_interactive(options):
+        if not allccs:
+            logging.error("No config channels found")
+            return
         print('')
         print('Config Channels')
         print('------------------')
