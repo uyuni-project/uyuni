@@ -19,7 +19,17 @@ Feature: PXE boot a Retail terminal
 @proxy
 @private_net
 @pxeboot_minion
-  Scenario: Enable the formulas needed for PXE booting on the branch server
+  Scenario: Install or update PXE formulas on the server
+    When I manually install the "tftpd" formula on the server
+    And I manually install the "vsftpd" formula on the server
+    And I manually install the "saltboot" formula on the server
+    And I manually install the "pxe" formula on the server
+    And I synchronize all Salt dynamic modules on "proxy"
+
+@proxy
+@private_net
+@pxeboot_minion
+  Scenario: Enable the PXE formulas on the branch server
     Given I am on the Systems overview page of this "proxy"
     When I follow "Formulas" in the content area
     And I check the "tftpd" formula
@@ -40,6 +50,9 @@ Feature: PXE boot a Retail terminal
     And I press "Add Item" in configured zones section
     And I enter "tf.local" in third configured zone name field
     # direct zone example.org:
+    And I press "Add Item" in first A section
+    And I enter "pxeboot" in fourth A name field
+    And I enter the local IP address of "pxeboot" in fourth A address field
     And I press "Add Item" in first CNAME section
     And I enter "ftp" in first CNAME alias field
     And I enter "proxy" in first CNAME name field
@@ -208,7 +221,7 @@ Feature: PXE boot a Retail terminal
   Scenario: PXE boot the PXE boot minion
     Given I am authorized as "admin" with password "admin"
     When I reboot the PXE boot minion
-    And I wait at most 90 seconds until Salt master sees "pxeboot-minion" as "unaccepted"
+    And I wait at most 180 seconds until Salt master sees "pxeboot-minion" as "unaccepted"
     And I accept "pxeboot-minion" key in the Salt master
     And I navigate to "rhn/systems/Overview.do" page
     And I wait until I see the name of "pxeboot-minion", refreshing the page
@@ -223,7 +236,7 @@ Feature: PXE boot a Retail terminal
 @proxy
 @private_net
 @pxeboot_minion
-  Scenario: Check connection from PXE booted minion to proxy
+  Scenario: Check connection from terminal to branch server
     Given I am on the Systems overview page of this "pxeboot-minion"
     When I follow "Details" in the content area
     And I follow "Connection" in the content area
@@ -232,7 +245,7 @@ Feature: PXE boot a Retail terminal
 @proxy
 @private_net
 @pxeboot_minion
-  Scenario: Install a package on the PXE booted minion
+  Scenario: Install a package on the new Retail terminal
     Given I am on the Systems overview page of this "pxeboot-minion"
     When I install the GPG key of the server on the PXE boot minion
     And I follow "Software" in the content area
@@ -249,15 +262,11 @@ Feature: PXE boot a Retail terminal
   Scenario: Cleanup: delete the new Retail terminal
     Given I am on the Systems overview page of this "pxeboot-minion"
     When I follow "Delete System"
-    And I should see a "Confirm System Profile Deletion" text
-    And I click on "Delete Profile"
-    Then I should see a "has been deleted" text
-
-@proxy
-@private_net
-@pxeboot_minion
-  Scenario: Cleanup: make sure salt-minion is stopped after PXE boot
-    When I stop salt-minion on the PXE boot minion
+    Then I should see a "Confirm System Profile Deletion" text
+    When I click on "Delete Profile"
+    And I wait until I see "has been deleted" text
+    Then "pxeboot-minion" should not be registered
+    And I stop salt-minion on the PXE boot minion
 
 @proxy
 @private_net
@@ -309,8 +318,9 @@ Feature: PXE boot a Retail terminal
 @proxy
 @private_net
 @pxeboot_minion
-  Scenario: Cleanup: apply the highstate after the PXE boot tests
+  Scenario: Apply the highstate to clear PXE formulas
     Given I am on the Systems overview page of this "proxy"
     When I follow "States" in the content area
+    And I enable repositories before installing branch server
     And I click on "Apply Highstate"
     And I wait until event "Apply highstate scheduled by admin" is completed

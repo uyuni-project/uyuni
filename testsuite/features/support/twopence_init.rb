@@ -83,9 +83,9 @@ def get_system_name(host)
     # therefore it is not represented by a twopence node
     output, _code = $server.run('salt-key')
     system_name = output.split.find do |word|
-      word =~ /example.Intel-Genuine-None-/ || word =~ /pxeboot.example.org/
+      word =~ /example.Intel-Genuine-None-/ || word =~ /example.pxeboot-/ || word =~ /example.Intel/
     end
-    system_name = '' if system_name.nil?
+    system_name = 'pxeboot.example.org' if system_name.nil?
   else
     node = get_target(host)
     system_name = node.full_hostname

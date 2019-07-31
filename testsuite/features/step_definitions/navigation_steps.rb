@@ -166,6 +166,18 @@ When(/^I follow first "([^"]*)"$/) do |text|
 end
 
 #
+# Click on the terminal
+#
+When(/^I follow "([^"]*)" terminal$/) do |host|
+  domain = get_branch_prefix_from_yaml(@retail_config)
+  if !host.include? 'pxeboot'
+    step %(I follow "#{domain}.#{host}")
+  else
+    step %(I follow "#{host}.#{domain}")
+  end
+end
+
+#
 # Click on a link which appears inside of <div> with
 # the given "id"
 When(/^I follow "([^"]*)" in element "([^"]*)"$/) do |arg1, arg2|
@@ -182,7 +194,7 @@ When(/^I follow "([^"]*)" in the (.+)$/) do |arg1, arg2|
   tag = case arg2
         when /tab bar|tabs/ then 'header'
         when /content area/ then 'section'
-        else raise "Unknown element with description '#{desc}'"
+        else raise "Unknown element with description '#{arg2}'"
         end
   within(:xpath, "//#{tag}") do
     step %(I follow "#{arg1}")
@@ -193,7 +205,7 @@ When(/^I follow first "([^"]*)" in the (.+)$/) do |arg1, arg2|
   tag = case arg2
         when /tab bar|tabs/ then 'header'
         when /content area/ then 'section'
-        else raise "Unknown element with description '#{desc}'"
+        else raise "Unknown element with description '#{arg2}'"
         end
   within(:xpath, "//#{tag}") do
     step "I follow first \"#{arg1}\""

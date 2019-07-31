@@ -1,4 +1,4 @@
-# Copyright (c) 2013 Novell, Inc.
+# Copyright (c) 2013 Novell, Inc., 2019 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 ADDRESSES = { 'network'     => '0',

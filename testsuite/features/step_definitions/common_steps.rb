@@ -41,20 +41,18 @@ Then(/^I can see all system information for "([^"]*)"$/) do |host|
 end
 
 Then(/^I should see the terminals imported from the configuration file/) do
-  filepath = File.dirname(__FILE__) + '/../upload_files/' + @retail_config
-  terminals = get_terminals_from_yaml(filepath)
+  terminals = get_terminals_from_yaml(@retail_config)
   terminals.each { |terminal| step %(I should see a "#{terminal}" text) }
 end
 
 Then(/^I should not see any terminals imported from the configuration file/) do
-  filepath = File.dirname(__FILE__) + '/../upload_files/' + @retail_config
-  terminals = get_terminals_from_yaml(filepath)
+  terminals = get_terminals_from_yaml(@retail_config)
   terminals.each { |terminal| step %(I should not see a "#{terminal}" text) }
 end
 
 When(/^I enter the hostname of "([^"]*)" terminal as "([^"]*)"$/) do |host, hostname|
-  filepath = File.dirname(__FILE__) + '/../upload_files/' + @retail_config
-  domain = get_branch_prefix_from_yaml(filepath)
+  domain = get_branch_prefix_from_yaml(@retail_config)
+  puts "The hostname of #{host} terminal is #{host}.#{domain}"
   step %(I enter "#{host}.#{domain}" as "#{hostname}")
 end
 
@@ -570,6 +568,27 @@ When(/^I set the activation key "([^"]*)" in the bootstrap script on the server$
   $server.run("sed -i '/^ACTIVATION_KEYS=/c\\ACTIVATION_KEYS=#{key}' /srv/www/htdocs/pub/bootstrap/bootstrap.sh")
   output, code = $server.run('cat /srv/www/htdocs/pub/bootstrap/bootstrap.sh')
   assert(output.include?(key))
+end
+
+When(/^I create bootstrap script and set the activation key "([^"]*)" in the bootstrap script on the proxy$/) do |key|
+  $proxy.run('mgr-bootstrap')
+  $proxy.run("sed -i '/^ACTIVATION_KEYS=/c\\ACTIVATION_KEYS=#{key}' /srv/www/htdocs/pub/bootstrap/bootstrap.sh")
+  output, code = $proxy.run('cat /srv/www/htdocs/pub/bootstrap/bootstrap.sh')
+  assert(output.include?(key))
+end
+
+When(/^I bootstrap pxeboot minion via bootstrap script on the proxy$/) do
+  file = 'bootstrap-pxeboot.exp'
+  source = File.dirname(__FILE__) + '/../upload_files/' + file
+  dest = "/tmp/" + file
+  return_code = file_inject($proxy, source, dest)
+  raise 'File injection failed' unless return_code.zero?
+  ipv4 = net_prefix + ADDRESSES['pxeboot']
+  $proxy.run("expect -f /tmp/#{file} #{ipv4}")
+end
+
+When(/^I accept key of pxeboot minion in the Salt master$/) do
+  $server.run("salt-key -y --accept=pxeboot.example.org")
 end
 
 Then(/^file "([^"]*)" should contain "([^"]*)" on "([^"]*)"$/) do |filename, content, host|

@@ -219,14 +219,33 @@ When(/^I restart the network on the PXE boot minion$/) do
 end
 
 When(/^I reboot the PXE boot minion$/) do
-  STDOUT.puts "Rebooting PXE minion..."
+  # we might have no or any IPv4 address on that machine
+  # convert MAC address to IPv6 link-local address
+  mac = $pxeboot_mac.tr(':', '')
+  hex = ((mac[0..5] + 'fffe' + mac[6..11]).to_i(16) ^ 0x0200000000000000).to_s(16)
+  ipv6 = 'fe80::' + hex[0..3] + ':' + hex[4..7] + ':' + hex[8..11] + ':' + hex[12..15] + "%eth1"
+  STDOUT.puts "Rebooting #{ipv6}..."
   file = 'reboot-pxeboot.exp'
   source = File.dirname(__FILE__) + '/../upload_files/' + file
   dest = "/tmp/" + file
   return_code = file_inject($proxy, source, dest)
   raise 'File injection failed' unless return_code.zero?
-  ipv4 = net_prefix + ADDRESSES['pxeboot']
-  $proxy.run("expect -f /tmp/#{file} #{ipv4}")
+  $proxy.run("expect -f /tmp/#{file} #{ipv6}")
+end
+
+When(/^I stop and disable avahi on the PXE boot minion$/) do
+  # we might have no or any IPv4 address on that machine
+  # convert MAC address to IPv6 link-local address
+  mac = $pxeboot_mac.tr(':', '')
+  hex = ((mac[0..5] + 'fffe' + mac[6..11]).to_i(16) ^ 0x0200000000000000).to_s(16)
+  ipv6 = 'fe80::' + hex[0..3] + ':' + hex[4..7] + ':' + hex[8..11] + ':' + hex[12..15] + "%eth1"
+  STDOUT.puts "Stoppping and disabling avahi on #{ipv6}..."
+  file = 'stop-avahi-pxeboot.exp'
+  source = File.dirname(__FILE__) + '/../upload_files/' + file
+  dest = "/tmp/" + file
+  return_code = file_inject($proxy, source, dest)
+  raise 'File injection failed' unless return_code.zero?
+  $proxy.run("expect -f /tmp/#{file} #{ipv6}")
 end
 
 When(/^I stop salt-minion on the PXE boot minion$/) do
@@ -653,6 +672,7 @@ When(/^I copy server\'s keys to the proxy$/) do
   end
 end
 
+# rubocop:disable Metrics/BlockLength
 When(/^I set up the private network on the terminals$/) do
   proxy = net_prefix + ADDRESSES['proxy']
   # /etc/sysconfig/network/ifcfg-eth1
@@ -686,6 +706,7 @@ When(/^I set up the private network on the terminals$/) do
     node.run("sed -i #{script} #{file}")
   end
 end
+# rubocop:enable Metrics/BlockLength
 
 Then(/^terminal "([^"]*)" should have got a retail network IP address$/) do |host|
   node = get_target(host)
@@ -896,11 +917,11 @@ When(/^I wait until package "([^"]*)" is removed from "([^"]*)" via spacecmd$/) 
 end
 
 When(/^I copy the retail configuration file "([^"]*)" on server$/) do |file|
-  @retail_config = file # Reuse the value during scenario (it will be automatically cleaned after it)
-  source = File.dirname(__FILE__) + '/../upload_files/' + @retail_config
-  dest = "/tmp/" + @retail_config
-  return_code = file_inject($server, source, dest)
-  raise "File #{@retail_config} couldn't be copied to server" unless return_code.zero?
+  # Reuse the value during scenario (it will be automatically cleaned after it)
+  @retail_config = File.dirname(__FILE__) + '/../upload_files/' + file
+  dest = "/tmp/" + file
+  return_code = file_inject($server, @retail_config, dest)
+  raise "File #{file} couldn't be copied to server" unless return_code.zero?
   sed_values = "s/<PROXY_HOSTNAME>/#{$proxy.full_hostname}/; "
   sed_values << "s/<NET_PREFIX>/#{net_prefix}/; "
   sed_values << "s/<PROXY>/#{ADDRESSES['proxy']}/; "
@@ -912,26 +933,36 @@ When(/^I copy the retail configuration file "([^"]*)" on server$/) do |file|
 end
 
 Given(/^the retail configuration file name is "([^"]*)"$/) do |file|
-  @retail_config = file # Reuse the value during scenario (it will be automatically cleaned after it)
+  @retail_config = File.dirname(__FILE__) + '/../upload_files/' + file
 end
 
 When(/^I import the retail configuration using retail_yaml command/) do
-  filepath = "/tmp/" + @retail_config
+  filepath = "/tmp/" + File.basename(@retail_config)
   $server.run("retail_yaml --api-user admin --api-pass admin --from-yaml #{filepath}")
 end
 
-When(/^I delete all the terminals imported from file "([^"]*)"$/) do |file|
-  @retail_config = file
-  filepath = File.dirname(__FILE__) + '/../upload_files/' + @retail_config
-  terminals = get_terminals_from_yaml(filepath)
-  # prefix = get_branch_prefix_from_yaml(filepath)
+When(/^I delete all the terminals imported$/) do
+  terminals = get_terminals_from_yaml(@retail_config)
   terminals.each do |terminal|
     steps %(
-      When I follow "#{terminal}"
+      When I follow "#{terminal}" terminal
       And I follow "Delete System"
       And I should see a "Confirm System Profile Deletion" text
       And I click on "Delete Profile"
       Then I should see a "has been deleted" text
     )
   end
+end
+
+When(/^I remove all the DHCP hosts created by retail_yaml$/) do
+  terminals = get_terminals_from_yaml(@retail_config)
+  terminals.each do |terminal|
+    raise unless find(:xpath, "//*[@value='#{terminal}']/../../../..//*[@title='Remove item']").click
+  end
+end
+
+When(/^I remove the bind zones created by retail_yaml$/) do
+  domain = get_branch_prefix_from_yaml(@retail_config)
+  raise unless find(:xpath, "//*[text()='Configured Zones']/../..//*[@value='#{domain}']/../../../..//*[@title='Remove item']").click
+  raise unless find(:xpath, "//*[text()='Available Zones']/../..//*[@value='#{domain}' and @name='Name']/../../../..//i[@title='Remove item']").click
 end
