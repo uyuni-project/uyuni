@@ -2055,11 +2055,15 @@ def do_kickstart_clone(self, args):
     (args, options) = parse_command_arguments(args, arg_parser)
 
     if is_interactive(options):
-        profiles = self.do_kickstart_list('', True)
+        profiles = sorted(filter(None, self.do_kickstart_list('', True)))
+        if not profiles:
+            logging.error("No kickstart profiles available")
+            return
+
         print('')
         print('Kickstart Profiles')
         print('------------------')
-        print('\n'.join(sorted(profiles)))
+        print('\n'.join(profiles))
         print('')
 
         options.name = prompt_user('Original Profile:', noblank=True)
