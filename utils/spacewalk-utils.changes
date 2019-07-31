@@ -1,3 +1,4 @@
+- common-channels: Fix repo type assignment for type YUM
 - Adds support for Ubuntu and Debian channels to spacewalk-common-channels.
 
 -------------------------------------------------------------------
