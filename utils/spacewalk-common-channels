@@ -271,6 +271,7 @@ Create everything as well as unlimited activation key for every channel:
 
         if create_channel:
             base_info = channels[base_channel_label]
+            repo_type = base_info.get('repo_type', DEFAULT_REPO_TYPE) or DEFAULT_REPO_TYPE
             if options.verbose:
                 sys.stdout.write("Base channel '%s' - creating...\n"
                                  % base_info['name'])
@@ -278,7 +279,7 @@ Create everything as well as unlimited activation key for every channel:
                 sys.stdout.write(
                     "* label=%s, summary=%s, arch=%s, repo_type=%s, checksum=%s\n" % (
                         base_info['label'], base_info['summary'],
-                        base_info['arch'], base_info.get('repo_type', DEFAULT_REPO_TYPE),
+                        base_info['arch'], repo_type,
                         base_info['checksum']))
 
             if not options.dry_run:
@@ -292,7 +293,7 @@ Create everything as well as unlimited activation key for every channel:
                                                        'id': base_info['gpgkey_id'],
                                                        'fingerprint': base_info['gpgkey_fingerprint']})
                     client.channel.software.createRepo(key,
-                                                       base_info['yum_repo_label'], base_info.get('repo_type', DEFAULT_REPO_TYPE),
+                                                       base_info['yum_repo_label'], repo_type,
                                                        base_info['repo_url'])
                     client.channel.software.associateRepo(key,
                                                           base_info['label'], base_info['yum_repo_label'])
@@ -345,6 +346,7 @@ Create everything as well as unlimited activation key for every channel:
 
         for child_channel_label in sorted(child_channels[base_channel_label]):
             child_info = channels[child_channel_label]
+            repo_type = child_info.get('repo_type', DEFAULT_REPO_TYPE) or DEFAULT_REPO_TYPE
             if options.verbose:
                 sys.stdout.write("* Child channel '%s' - creating...\n"
                                  % child_info['name'])
@@ -352,7 +354,7 @@ Create everything as well as unlimited activation key for every channel:
                 sys.stdout.write(
                     "** label=%s, summary=%s, arch=%s, parent=%s, repo_type=%s, checksum=%s\n"
                     % (child_info['label'], child_info['summary'],
-                       child_info['arch'], base_channel_label, child_info.get('repo_type', DEFAULT_REPO_TYPE),
+                       child_info['arch'], base_channel_label, repo_type,
                        child_info['checksum']))
 
             if not options.dry_run:
@@ -367,7 +369,7 @@ Create everything as well as unlimited activation key for every channel:
                                                        'id': child_info['gpgkey_id'],
                                                        'fingerprint': child_info['gpgkey_fingerprint']})
                     client.channel.software.createRepo(key,
-                                                       child_info['yum_repo_label'], child_info.get('repo_type', DEFAULT_REPO_TYPE),
+                                                       child_info['yum_repo_label'], repo_type,
                                                        child_info['repo_url'])
                     client.channel.software.associateRepo(key,
                                                           child_info['label'], child_info['yum_repo_label'])
