@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Wed Jul 31 17:26:37 CEST 2019 - jgonzalez@suse.com
+
+- version 4.0.6-1
 - fix systemd timer configuration on SLE12 (bsc#1142038)
 - rhnsd service was replaced by rhnsd timer (bsc#1138130)
 
