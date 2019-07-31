@@ -278,7 +278,7 @@ class Runner:
             except exception:
                 e = sys.exc_info()[1]
                 msg = _("ERROR: Encountered IntegrityError: \n"
-                        + str(e)
+                        + str(e).decode("utf8")
                         + "\nconsider removing satellite-sync cache at /var/cache/rhn/satsync/*"
                         + " and re-run satellite-sync with same options.\n"
                         + "If this error persits after removing cache, please contact Red Hat support.")
