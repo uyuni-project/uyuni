@@ -1344,16 +1344,16 @@ def do_configchannel_clone(self, args):
             logging.error("Error - must specify either -c or -x options!")
             self.help_configchannel_clone()
         else:
-            logging.debug("%s : %s" % (options.clonelabel, options.regex))
+            logging.debug("%s : %s", options.clonelabel, options.regex)
 
     if not args:
         logging.error("Error no channel label passed!")
         self.help_configchannel_clone()
         return
-    logging.debug("Got args=%s %d" % (args, len(args)))
+    logging.debug("Got args=%s %d", args, len(args))
     # allow globbing of configchannel names
     ccs = filter_results(self.do_configchannel_list('', True), args)
-    logging.debug("Filtered ccs %s" % ccs)
+    logging.debug("Filtered ccs %s", ccs)
 
     if not ccs:
         logging.error("No suitable channels to clone has been found.")
@@ -1369,37 +1369,31 @@ def do_configchannel_clone(self, args):
             # Expect option to be formatted like a sed-replacement, s/foo/bar
             findstr = options.regex.split("/")[1]
             replacestr = options.regex.split("/")[2]
-            logging.debug("--regex selected with %s, replacing %s with %s" %
-                          (options.regex, findstr, replacestr))
-
+            logging.debug("--regex selected with %s, replacing %s with %s", options.regex, findstr, replacestr)
             newname = re.sub(findstr, replacestr, ccdetails['name'])
             ccdetails['name'] = newname
             newlabel = re.sub(findstr, replacestr, ccdetails['label'])
             ccdetails['label'] = newlabel
             newdesc = re.sub(findstr, replacestr, ccdetails['description'])
             ccdetails['description'] = newdesc
-            logging.debug("regex mode : %s %s %s" % (ccdetails['name'],
-                                                     ccdetails['label'], ccdetails['description']))
+            logging.debug("regex mode : %s %s %s", ccdetails['name'], ccdetails['label'], ccdetails['description'])
         elif options.clonelabel:
             if len(ccs) > 1:
                 newlabel = options.clonelabel + ccdetails['label']
                 ccdetails['label'] = newlabel
                 newname = options.clonelabel + ccdetails['name']
                 ccdetails['name'] = newname
-                logging.debug("clonelabel mode with >1 channel : %s" %
-                              ccdetails['label'])
+                logging.debug("clonelabel mode with >1 channel : %s", ccdetails['label'])
             else:
                 newlabel = options.clonelabel
                 ccdetails['label'] = newlabel
                 newname = options.clonelabel
                 ccdetails['name'] = newname
-                logging.debug("clonelabel mode with 1 channel : %s" %
-                              ccdetails['label'])
+                logging.debug("clonelabel mode with 1 channel : %s", ccdetails['label'])
 
         # Finally : import the cc from the modified ccdetails
-        if self.import_configchannel_fromdetails(ccdetails) != True:
-            logging.error("Failed to clone %s to %s" %
-                          (cc, ccdetails['label']))
+        if not self.import_configchannel_fromdetails(ccdetails):
+            logging.error("Failed to clone %s to %s", cc, ccdetails['label'])
 
 ####################
 # configchannel helper
