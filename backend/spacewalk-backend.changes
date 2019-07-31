@@ -1,3 +1,5 @@
+- Avoid traceback on mgr-inter-sync when there are problems
+  with cache of packages (bsc#1143016)
 - do not overwrite comps and module data with older versions
 - fix issue with "dists" keyword in url hostname
 - import packages from all collections of a patch not just first one
