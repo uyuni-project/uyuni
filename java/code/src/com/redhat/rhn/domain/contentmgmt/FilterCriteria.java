@@ -30,6 +30,8 @@ import static com.redhat.rhn.domain.contentmgmt.ContentFilter.EntityType.ERRATUM
 import static com.redhat.rhn.domain.contentmgmt.ContentFilter.EntityType.PACKAGE;
 import static com.redhat.rhn.domain.contentmgmt.FilterCriteria.Matcher.CONTAINS;
 import static com.redhat.rhn.domain.contentmgmt.FilterCriteria.Matcher.EQUALS;
+import static com.redhat.rhn.domain.contentmgmt.FilterCriteria.Matcher.GREATER;
+import static com.redhat.rhn.domain.contentmgmt.FilterCriteria.Matcher.GREATEREQ;
 
 /**
  * The criteria used for matching objects (Package, Errata) in {@link ContentFilter}
@@ -53,6 +55,8 @@ public class FilterCriteria {
         validCombinations.add(Triple.of(PACKAGE, EQUALS, "nevr"));
         validCombinations.add(Triple.of(PACKAGE, EQUALS, "nevra"));
         validCombinations.add(Triple.of(ERRATUM, EQUALS, "advisory_name"));
+        validCombinations.add(Triple.of(ERRATUM, GREATER, "issue_date"));
+        validCombinations.add(Triple.of(ERRATUM, GREATEREQ, "issue_date"));
     }
 
     /**
@@ -60,7 +64,9 @@ public class FilterCriteria {
      */
     public enum Matcher {
         CONTAINS("contains"),
-        EQUALS("equals");
+        EQUALS("equals"),
+        GREATER("greater"),
+        GREATEREQ("greater-equal");
 
         private String label;
 
