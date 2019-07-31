@@ -4,11 +4,9 @@ Configchannel module unit tests.
 """
 
 import os
-from unittest.mock import MagicMock, patch, mock_open
+from unittest.mock import MagicMock, patch
 from helpers import shell, assert_expect, assert_list_args_expect, assert_args_expect
 import spacecmd.configchannel
-from xmlrpc import client as xmlrpclib
-import datetime
 
 
 class TestSCConfigChannel:
