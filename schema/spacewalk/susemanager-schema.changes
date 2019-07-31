@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Wed Jul 31 17:40:45 CEST 2019 - jgonzalez@suse.com
+
+- version 4.0.13-1
 - Drop no longer used 'allServerKeywordSinceReboot' view (fate#327780)
 - Allow forcing off or resetting VMs
 - fix schema migration for suseSCCRepositoryAuth (bsc#1136558)
