@@ -29,7 +29,7 @@ zypper ar -n "Main Repository" http://download.opensuse.org/distribution/leap/15
 zypper ar -n "Main Update Repository" http://download.opensuse.org/update/leap/15.1/oss repo-update
 zypper ar -n "Non-OSS Repository" http://download.opensuse.org/distribution/leap/15.1/repo/non-oss repo-non-oss
 zypper ar -n "Update Repository (Non-Oss)" http://download.opensuse.org/update/leap/15.1/non-oss/ repo-update-non-oss
-zypper ar -n "Uyuni Server latest" https://download.opensuse.org/repositories/systemsmanagement:/Uyuni:/Master/images-openSUSE_Leap_15.1/repo/Uyuni-Server-4.0-POOL-x86_64-Media1/ uyuni-server-latest
+zypper ar -n "Uyuni Server Stable" https://download.opensuse.org/repositories/systemsmanagement:/Uyuni:/Stable/images/repo/Uyuni-Server-4.0-POOL-x86_64-Media1/ uyuni-server-stable
 zypper ref
 rpm -e --nodeps atftp
 rpm -e --nodeps python-Cheetah
