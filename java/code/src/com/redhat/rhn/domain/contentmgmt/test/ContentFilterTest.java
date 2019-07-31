@@ -26,7 +26,11 @@ import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Collections;
+import java.util.Date;
 
 import static com.redhat.rhn.domain.contentmgmt.ContentFilter.EntityType.ERRATUM;
 import static com.redhat.rhn.domain.contentmgmt.ContentFilter.EntityType.PACKAGE;
@@ -103,5 +107,54 @@ public class ContentFilterTest extends JMockBaseTestCaseWithUser {
         criteria = new FilterCriteria(FilterCriteria.Matcher.EQUALS, "advisory_name", "idontexist");
         filter = ContentManager.createFilter(cveName + "-filter-2", DENY, ERRATUM, criteria, user);
         assertTrue(filter.test(erratum));
+    }
+
+    /**
+     * Test basic Errata filtering based on issue_date
+     *
+     * @throws Exception if anything goes wrong
+     */
+    public void testErrataByDateFilter() throws Exception {
+        String cveName1 = TestUtils.randomString().substring(0, 13);
+        Errata erratum1 = ErrataTestUtils.createTestErrata(user, Collections.singleton(ErrataTestUtils.createTestCve(cveName1)));
+        erratum1.setIssueDate(new Date(1556604000000L));
+        String cveName2 = TestUtils.randomString().substring(0, 13);
+        Errata erratum2 = ErrataTestUtils.createTestErrata(user, Collections.singleton(ErrataTestUtils.createTestCve(cveName2)));
+        erratum2.setIssueDate(new Date(1556694000000L));
+        String cveName3 = TestUtils.randomString().substring(0, 13);
+        Errata erratum3 = ErrataTestUtils.createTestErrata(user, Collections.singleton(ErrataTestUtils.createTestCve(cveName3)));
+        erratum3.setIssueDate(new Date(1556668800000L)); // "2019-05-01 00:00:00 +0000"
+
+        FilterCriteria criteria = new FilterCriteria(FilterCriteria.Matcher.GREATER, "issue_date", "2019-05-01T00:00:00+00:00");
+        ContentFilter filter = ContentManager.createFilter("bydate-filter", DENY, ERRATUM, criteria, user);
+        assertTrue(filter.test(erratum1));
+        assertFalse(filter.test(erratum2));
+        assertTrue(filter.test(erratum3));
+    }
+
+    /**
+     * Test basic Errata filtering based on issue_date
+     *
+     * @throws Exception if anything goes wrong
+     */
+    public void testErrataByDate2Filter() throws Exception {
+        String cveName1 = TestUtils.randomString().substring(0, 13);
+        Errata erratum1 = ErrataTestUtils.createTestErrata(user, Collections.singleton(ErrataTestUtils.createTestCve(cveName1)));
+        erratum1.setIssueDate(new Date(1556604000000L));
+        String cveName2 = TestUtils.randomString().substring(0, 13);
+        Errata erratum2 = ErrataTestUtils.createTestErrata(user, Collections.singleton(ErrataTestUtils.createTestCve(cveName2)));
+        erratum2.setIssueDate(new Date(1556694000000L));
+        String cveName3 = TestUtils.randomString().substring(0, 13);
+        Errata erratum3 = ErrataTestUtils.createTestErrata(user, Collections.singleton(ErrataTestUtils.createTestCve(cveName3)));
+        erratum3.setIssueDate(new Date(1556668800000L)); // "2019-05-01 00:00:00 +0000"
+
+        FilterCriteria criteria = new FilterCriteria(FilterCriteria.Matcher.GREATEREQ, "issue_date", "2019-05-01T00:00:00+00:00");
+        ContentFilter filter = ContentManager.createFilter("bydate-filter", DENY, ERRATUM, criteria, user);
+        assertTrue(filter.test(erratum1));
+        assertFalse(filter.test(erratum2));
+
+        ZonedDateTime criteriaDate = ZonedDateTime.parse("2019-05-01T00:00:00+00:00", DateTimeFormatter.ISO_OFFSET_DATE_TIME);
+        assertFalse(erratum3.getIssueDate().toInstant().atZone(ZoneId.systemDefault()).toString()
+                + " should be equal " +  criteriaDate.toString(), filter.test(erratum3));
     }
 }
