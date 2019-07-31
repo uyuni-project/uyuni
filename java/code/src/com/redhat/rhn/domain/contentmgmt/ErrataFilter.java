@@ -17,6 +17,9 @@ package com.redhat.rhn.domain.contentmgmt;
 
 import com.redhat.rhn.domain.errata.Errata;
 
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
@@ -38,6 +41,13 @@ public class ErrataFilter extends ContentFilter<Errata> {
         switch (matcher) {
             case EQUALS:
                 return getField(erratum, field, String.class).equals(value);
+            case GREATER:
+                ZonedDateTime valDate = ZonedDateTime.parse(value, DateTimeFormatter.ISO_OFFSET_DATE_TIME);
+                return getField(erratum, field, ZonedDateTime.class).isAfter(valDate);
+            case GREATEREQ:
+                ZonedDateTime valDate2 = ZonedDateTime.parse(value, DateTimeFormatter.ISO_OFFSET_DATE_TIME);
+                ZonedDateTime erratumDate = getField(erratum, field, ZonedDateTime.class);
+                return erratumDate.isEqual(valDate2) || erratumDate.isAfter(valDate2);
             default:
                 throw new UnsupportedOperationException("Matcher " + matcher + " not supported");
         }
@@ -47,6 +57,8 @@ public class ErrataFilter extends ContentFilter<Errata> {
         switch (field) {
             case "advisory_name":
                 return type.cast(erratum.getAdvisoryName());
+            case "issue_date":
+                return type.cast(erratum.getIssueDate().toInstant().atZone(ZoneId.systemDefault()));
             default:
                 throw new UnsupportedOperationException("Field " + field + " not supported");
         }
