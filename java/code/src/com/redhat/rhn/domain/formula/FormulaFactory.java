@@ -139,9 +139,8 @@ public class FormulaFactory {
     public static List<String> listFormulaNames() {
         File officialDir = new File(METADATA_DIR_OFFICIAL);
         File customDir = new File(METADATA_DIR_CUSTOM);
-        List<File> files = new LinkedList<>(
-                Arrays.asList(officialDir.listFiles()));
-        files.addAll(Arrays.asList(customDir.listFiles()));
+        List<File> files = new LinkedList<>(getFormulasFiles(officialDir));
+        files.addAll(getFormulasFiles(customDir));
         List<String> formulasList = new LinkedList<>();
 
         for (File f : files) {
@@ -151,6 +150,16 @@ public class FormulaFactory {
         }
         formulasList.sort(String.CASE_INSENSITIVE_ORDER);
         return FormulaFactory.orderFormulas(formulasList);
+    }
+
+    private static List<File> getFormulasFiles(File formulasFolder) {
+        return Optional.ofNullable(formulasFolder.listFiles())
+                .map(filesList -> Arrays.asList(filesList))
+                .orElseGet(() -> {
+                    LOG.error("Unable to read formulas from folder '" + formulasFolder.getAbsolutePath() + "'" +
+                            ". Check if it exists and have the correct permissions (755).");
+                    return Collections.EMPTY_LIST;
+                });
     }
 
     /**
