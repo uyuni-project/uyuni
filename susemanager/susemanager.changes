@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Wed Jul 31 17:45:28 CEST 2019 - jgonzalez@suse.com
+
+- version 4.0.15-1
 - add support for in-place migration (Uyuni only for now)
 - Make dmidecode part of the bootstrap repositiories (bsc#1137952)
 - respect new location for autoinstall templates during migration
