@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Wed Jul 31 17:42:34 CEST 2019 - jgonzalez@suse.com
+
+- version 4.0.10-1
 - Enable product detection for plain rhel systems (bsc#1136301)
 - add channel family definitions for SLES12 SP3 LTSS (bsc#1139693)
 - add OPENSUSE to allowed channel_families to make
