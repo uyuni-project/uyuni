@@ -1351,6 +1351,10 @@ def do_configchannel_clone(self, args):
     # allow globbing of configchannel names
     ccs = filter_results(self.do_configchannel_list('', True), args)
     logging.debug("Filtered ccs %s" % ccs)
+
+    if not ccs:
+        logging.error("No suitable channels to clone has been found.")
+
     for cc in ccs:
         logging.debug("Cloning %s" % cc)
         ccdetails = self.export_configchannel_getdetails(cc)
