@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Wed Jul 31 17:28:01 CEST 2019 - jgonzalez@suse.com
+
+- version 4.0.9-1
 - Ensure bytes type when using hashlib to avoid traceback (bsc#1138822)
 - Fix obsolete for old osad packages, to allow installing mgr-osad
   even by using osad at yum/zyppper install (bsc#1139453)
