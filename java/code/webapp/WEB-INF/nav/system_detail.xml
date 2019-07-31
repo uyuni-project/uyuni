@@ -218,7 +218,7 @@
      </rhn-tab>
   </rhn-tab>
 
-  <rhn-tab name="Formulas" acl="system_has_salt_entitlement() or system_is_bootstrap_minion_server(); salt_formulas_installed()">
+  <rhn-tab name="Formulas" acl="system_has_salt_entitlement() or system_is_bootstrap_minion_server()">
     <rhn-tab-url>/rhn/manager/systems/details/formulas</rhn-tab-url>
   </rhn-tab>
 
