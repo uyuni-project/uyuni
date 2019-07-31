@@ -1524,3 +1524,33 @@ class TestSCConfigChannel:
 
         assert_expect(logger.error.call_args_list, "No config channels found")
 
+    def test_configchannel_clone_interactive_no_channels_matches(self, shell):
+        """
+        Test do_configchannel_clone on interactive, no channels matches.
+
+        :param shell:
+        :return:
+        """
+        shell.do_configchannel_list = MagicMock(return_value=["some_channel"])
+        prompter = MagicMock(side_effect=["basic_config_channel", "bcc_channel"])
+        mprint = MagicMock()
+        logger = MagicMock()
+        with patch("spacecmd.configchannel.prompt_user", prompter) as pmt,\
+                patch("spacecmd.configchannel.print", mprint) as prt,\
+                patch("spacecmd.configchannel.logging", logger) as lgr:
+            spacecmd.configchannel.do_configchannel_clone(shell, "")
+
+        assert not shell.export_configchannel_getdetails.called
+        assert not shell.import_configchannel_fromdetails.called
+        assert not shell.help_configchannel_clone.called
+        assert logger.debug.called
+        assert prompter.called
+        assert shell.do_configchannel_list.called
+        assert logger.error.called
+        assert mprint.called
+
+        assert_expect(logger.error.call_args_list,
+                      "No suitable channels to clone has been found.")
+        assert_list_args_expect(mprint.call_args_list,
+                                ['', 'Config Channels', '------------------', 'some_channel', ''])
+
