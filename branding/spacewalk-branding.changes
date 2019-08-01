@@ -1,3 +1,4 @@
+- Add UI message when salt-formulas system folders are unreachable (bsc#1142309)
 - Add missing strings for task status page
 
 -------------------------------------------------------------------
