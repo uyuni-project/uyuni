@@ -1,3 +1,5 @@
+- Add UI message when salt-formulas system folders are unreachable (bsc#1142309)
+
 -------------------------------------------------------------------
 Tue Jul 30 14:52:32 CEST 2019 - jgonzalez@suse.com
 

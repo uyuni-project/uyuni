@@ -1,3 +1,4 @@
+- UI render without error if salt-formulas system folders are unreachable (bsc#1142309)
 - Cloning Errata from a specific channel should not take packages
   from other channels (bsc#1142764)
 - Add susemanager as prerequired for spacewalk-java
