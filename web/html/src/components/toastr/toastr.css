@@ -4,7 +4,7 @@
 }
 
 :global(.toast) {
-    padding: 15px !important;
+    padding: 15px 30px !important;
     text-align: center !important;
     width: 32% !important;
     font-size: 15px;
