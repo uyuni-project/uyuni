@@ -92,3 +92,25 @@ class TestSCKickStart:
         assert_expect(logger.error.call_args_list,
                       "Kickstart profile you've entered was not found")
 
+    def test_kickstart_clone_arg_no_name_entered(self, shell):
+        """
+        Test do_kickstart_clone with args. No kickstart profile name entered.
+
+        :param shell:
+        :return:
+        """
+        mprint = MagicMock()
+        logger = MagicMock()
+        prompter = MagicMock()
+        shell.do_kickstart_list = MagicMock(return_value=[
+            "default_kickstart_profile", "some_other_profile"])
+        with patch("spacecmd.kickstart.print", mprint) as prt, \
+                patch("spacecmd.kickstart.logging", logger) as lgr, \
+                patch("spacecmd.kickstart.prompt_user", prompter) as pmt:
+            spacecmd.kickstart.do_kickstart_clone(shell, "-c POSIX")
+
+        assert not prompter.called
+        assert not shell.client.kickstart.cloneProfile.called
+        assert not mprint.called
+        assert logger.error.called
+        assert_expect(logger.error.call_args_list, "The Kickstart name is required")
