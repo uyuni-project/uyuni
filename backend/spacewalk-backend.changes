@@ -1,3 +1,7 @@
+- Avoid traceback on mgr-inter-sync when exception message
+  contains UTF8 characters or there are problems with the
+  package cache (bsc#1143016)
+
 -------------------------------------------------------------------
 Thu Jul 18 09:56:25 CEST 2019 - jgonzalez@suse.com
 
