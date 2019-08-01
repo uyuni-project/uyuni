@@ -15,6 +15,7 @@
 package com.redhat.rhn.manager.formula.test;
 
 import com.redhat.rhn.common.hibernate.LookupException;
+import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.domain.formula.FormulaFactory;
 import com.redhat.rhn.domain.server.ManagedServerGroup;
 import com.redhat.rhn.domain.server.MinionServer;
@@ -157,7 +158,7 @@ public class FormulaManagerTest extends JMockBaseTestCaseWithUser {
         try {
             manager.saveServerFormulaData(testUser,minion.getId(), formulaName, contents);
             fail( "Exception expected but didn't throw" );
-        } catch (LookupException ex) {
+        } catch (PermissionException ex) {
             //expected exception
         }
     }
