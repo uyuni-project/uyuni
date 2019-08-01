@@ -1,3 +1,6 @@
+- Avoid traceback on mgr-inter-sync when there are problems
+  with cache of packages (bsc#1143016)
+
 -------------------------------------------------------------------
 Tue Jul 30 14:52:05 CEST 2019 - jgonzalez@suse.com
 
