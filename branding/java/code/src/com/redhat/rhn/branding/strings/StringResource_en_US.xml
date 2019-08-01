@@ -2781,6 +2781,9 @@ You may grant provisioning entitlements _here_.
       <trans-unit id="Formula Catalog">
           <source>Formula Catalog</source>
       </trans-unit>
+      <trans-unit id="formula.folders.unreachable">
+        <source>System folder(s) from salt-formula are unreachable. Check if folders(s) exists and have the correct permissions (755): {0}</source>
+      </trans-unit>
       <trans-unit id="system.audit.schedulexccdf.jsp.nosoonerthan">
         <source>Earliest</source>
       </trans-unit>

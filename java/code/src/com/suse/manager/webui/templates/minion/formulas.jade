@@ -5,5 +5,11 @@ include ./minion-header.jade
 script(type='text/javascript').
     var csrfToken = "#{csrf_token}";
     var serverId = "#{server.id}";
+if warning
+    script(type='text/javascript').
+        var serverMessage = [{severity: "warning", text:"#{warning}"}];
+else
+    script(type='text/javascript').
+        var serverMessage = null
 
 script(src='/javascript/manager/minion/formula/minion-formula-selection.bundle.js?cb=#{webVersion}', type='text/javascript')

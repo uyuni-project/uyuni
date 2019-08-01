@@ -53,6 +53,7 @@ public class FormulaCatalogController {
     public static ModelAndView list(Request request, Response response, User user) {
         Map<String, Object> data = new HashMap<>();
         data.put("info", FlashScopeHelper.flash(request));
+        data.put("warning", FormulaFactory.getWarningMessageAccessFormulaFolders());
         return new ModelAndView(data, "templates/formula_catalog/list.jade");
     }
 
