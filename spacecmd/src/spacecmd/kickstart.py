@@ -2053,9 +2053,9 @@ def do_kickstart_clone(self, args):
     arg_parser.add_argument('-c', '--clonename')
 
     args, options = parse_command_arguments(args, arg_parser)
+    profiles = sorted(filter(None, self.do_kickstart_list('', True)))
 
     if is_interactive(options):
-        profiles = sorted(filter(None, self.do_kickstart_list('', True)))
         if not profiles:
             logging.error("No kickstart profiles available")
             return
@@ -2069,9 +2069,6 @@ def do_kickstart_clone(self, args):
         options.name = prompt_user('Original Profile:', noblank=True)
         options.clonename = prompt_user('Cloned Profile:', noblank=True)
         args.append(options.name)
-        if not filter_results(profiles, args):
-            logging.error("Kickstart profile you've entered was not found")
-            return
     else:
 
         if not options.name:
@@ -2081,6 +2078,10 @@ def do_kickstart_clone(self, args):
         if not options.clonename:
             logging.error('The Kickstart clone name is required')
             return
+
+    if not filter_results(profiles, args):
+        logging.error("Kickstart profile you've entered was not found")
+        return
 
     self.client.kickstart.cloneProfile(self.session,
                                        options.name,
