@@ -74,6 +74,8 @@ def do_kickstart_list(self, args, doreturn=False):
     else:
         if kickstarts:
             print(os.linesep.join(kickstarts))
+        else:
+            logging.error("No kickstart profiles available")
 
 ####################
 
