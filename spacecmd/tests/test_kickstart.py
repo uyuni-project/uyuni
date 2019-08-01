@@ -202,3 +202,44 @@ class TestSCKickStart:
         assert_args_expect(logger.error.call_args_list,
                            [(("No scripts has been found for profile '%s'",
                               "some_profile"), {})])
+
+    def test_kickstart_listscripts_scripts_found(self, shell):
+        """
+        Test do_kickstart_listscripts list scripts for the specified profile.
+
+        :param shell:
+        :return:
+        """
+        mprint = MagicMock()
+        logger = MagicMock()
+        shell.client.kickstart.profile.listScripts = MagicMock(
+            return_value=[
+                {"id": 1, "script_type": "shell",
+                 "chroot": "/dev/null", "interpreter": "/bin/bash",
+                 "contents": """#!/bin/bash
+echo 'Hello there!'
+                 """},
+                {"id": 2, "script_type": "shell",
+                 "chroot": "/dev/null", "interpreter": "/bin/bash",
+                 "contents": """#!/bin/bash
+echo 'some more hello'
+                 """
+                 },
+            ])
+        with patch("spacecmd.kickstart.print", mprint) as prt, \
+                patch("spacecmd.kickstart.logging", logger) as lgr:
+            spacecmd.kickstart.do_kickstart_listscripts(shell, "some_profile")
+
+        assert not shell.help_kickstart_listscripts.called
+        assert not logger.error.called
+        assert mprint.called
+        assert shell.client.kickstart.profile.listScripts.called
+
+        assert_list_args_expect(mprint.call_args_list,
+                                ['ID:          1', 'Type:        shell',
+                                 'Chroot:      /dev/null', 'Interpreter: /bin/bash', '',
+                                 'Contents', '--------', "#!/bin/bash\necho 'Hello there!'\n                 ",
+                                 '----------', 'ID:          2', 'Type:        shell',
+                                 'Chroot:      /dev/null', 'Interpreter: /bin/bash', '',
+                                 'Contents', '--------', "#!/bin/bash\necho 'some more hello'\n                 "]
+                                )
