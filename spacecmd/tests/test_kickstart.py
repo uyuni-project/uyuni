@@ -261,7 +261,28 @@ echo 'some more hello'
                 patch("spacecmd.kickstart.logging", logger) as lgr:
             out = spacecmd.kickstart.do_kickstart_list(shell, "", doreturn=False)
 
+        assert not logger.error.called
         assert out is None
         assert mprint.called
         assert_expect(mprint.call_args_list,
                       'default_kickstart\nsome_profile_kickstart\nwhatever_kickstart')
+
+    def test_kickstart_list_nodata_noprofiles(self, shell):
+        """
+        Test do_kickstart_list. Return no data, print to STDOUT. No profiles has been found.
+
+        :param shell:
+        :return:
+        """
+        mprint = MagicMock()
+        logger = MagicMock()
+        shell.client.kickstart.listKickstarts = MagicMock(return_value=[])
+        with patch("spacecmd.kickstart.print", mprint) as prt, \
+                patch("spacecmd.kickstart.logging", logger) as lgr:
+            out = spacecmd.kickstart.do_kickstart_list(shell, "", doreturn=False)
+
+        assert not mprint.called
+        assert logger.error.called
+        assert out is None
+        assert_expect(logger.error.call_args_list,
+                      "No kickstart profiles available")
