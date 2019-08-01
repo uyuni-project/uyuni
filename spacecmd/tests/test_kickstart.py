@@ -137,3 +137,31 @@ class TestSCKickStart:
         assert not mprint.called
         assert logger.error.called
         assert_expect(logger.error.call_args_list, "The Kickstart clone name is required")
+
+    def test_kickstart_clone_args(self, shell):
+        """
+        Test do_kickstart_clone with args.
+
+        :param shell:
+        :return:
+        """
+        mprint = MagicMock()
+        logger = MagicMock()
+        prompter = MagicMock()
+        shell.do_kickstart_list = MagicMock(return_value=[
+            "default_kickstart_profile", "some_other_profile"])
+        name, clone = "default_kickstart_profile", "new_default_profile"
+        with patch("spacecmd.kickstart.print", mprint) as prt, \
+                patch("spacecmd.kickstart.logging", logger) as lgr, \
+                patch("spacecmd.kickstart.prompt_user", prompter) as pmt:
+            spacecmd.kickstart.do_kickstart_clone(
+                shell, "-n {} -c {}".format(name, clone))
+
+        assert not prompter.called
+        assert not mprint.called
+        assert not logger.error.called
+        assert shell.client.kickstart.cloneProfile.called
+
+        assert_args_expect(shell.client.kickstart.cloneProfile.call_args_list,
+                           [((shell.session, name, clone), {})])
+
