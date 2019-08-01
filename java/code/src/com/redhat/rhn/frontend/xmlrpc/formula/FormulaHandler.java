@@ -18,14 +18,22 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
+import com.redhat.rhn.common.localization.LocalizationService;
+import com.redhat.rhn.common.security.PermissionException;
+
+import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.MinionServerFactory;
+import com.redhat.rhn.domain.server.ServerGroupFactory;
+import com.redhat.rhn.domain.server.ManagedServerGroup;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
 import com.redhat.rhn.frontend.xmlrpc.IOFaultException;
+import com.redhat.rhn.frontend.xmlrpc.ValidationException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidParameterException;
 import com.redhat.rhn.domain.formula.FormulaFactory;
-import com.redhat.rhn.frontend.xmlrpc.ValidationException;
 import com.redhat.rhn.manager.formula.FormulaManager;
+import com.redhat.rhn.manager.formula.FormulaUtil;
 import com.redhat.rhn.manager.formula.InvalidFormulaException;
 
 /**
@@ -62,8 +70,10 @@ public class FormulaHandler extends BaseHandler {
      * @xmlrpc.returntype #array_single("string", "(formulas)")
      */
     public List<String> getFormulasByGroupId(User loggedInUser, Integer systemGroupId) {
+        ManagedServerGroup group = ServerGroupFactory.lookupByIdAndOrg(new Long(systemGroupId), loggedInUser.getOrg());
+        FormulaUtil.ensureUserHasPermissionsOnServerGroup(loggedInUser, group);
         return FormulaFactory.getFormulasByGroupId(systemGroupId.longValue());
-    }
+   }
 
     /**
      * List the formulas applied directly to a server.
@@ -78,6 +88,8 @@ public class FormulaHandler extends BaseHandler {
      * @xmlrpc.returntype #array_single("string", "(formulas)")
      */
     public List<String> getFormulasByServerId(User loggedInUser, Integer systemId) {
+        Server server = ServerFactory.lookupById(new Long(systemId));
+        FormulaUtil.ensureUserHasPermissionsOnServer(loggedInUser, server);
         return FormulaFactory.getFormulasByMinionId(MinionServerFactory.getMinionId(systemId.longValue()));
     }
 
@@ -94,6 +106,8 @@ public class FormulaHandler extends BaseHandler {
      * @xmlrpc.returntype #array_single("string", "(formulas)")
      */
     public List<String> getCombinedFormulasByServerId(User loggedInUser, Integer systemId) {
+        Server server = ServerFactory.lookupById(new Long(systemId));
+        FormulaUtil.ensureUserHasPermissionsOnServer(loggedInUser, server);
         return FormulaFactory.getCombinedFormulasByServerId(systemId.longValue());
     }
 
@@ -143,7 +157,12 @@ public class FormulaHandler extends BaseHandler {
     public int setFormulasOfServer(User loggedInUser, Integer systemId,
             List<String> formulas) throws IOFaultException, InvalidParameterException {
         try {
+            Server server = ServerFactory.lookupById(new Long(systemId));
+            FormulaUtil.ensureUserHasPermissionsOnServer(loggedInUser, server);
             FormulaFactory.saveServerFormulas(MinionServerFactory.getMinionId(systemId.longValue()), formulas);
+        }
+        catch (PermissionException e) {
+            throw new PermissionException(LocalizationService.getInstance().getMessage("formula.accessdenied"));
         }
         catch (IOException e) {
             throw new IOFaultException(e);
