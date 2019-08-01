@@ -180,3 +180,25 @@ class TestSCKickStart:
 
         assert not shell.client.kickstart.profile.listScripts.called
         assert shell.help_kickstart_listscripts.called
+
+    def test_kickstart_listscripts_no_scripts(self, shell):
+        """
+        Test do_kickstart_listscripts list scripts for the specified profile. No scripts attached.
+
+        :param shell:
+        :return:
+        """
+        mprint = MagicMock()
+        logger = MagicMock()
+        shell.client.kickstart.profile.listScripts = MagicMock(return_value=[])
+        with patch("spacecmd.kickstart.print", mprint) as prt, \
+                patch("spacecmd.kickstart.logging", logger) as lgr:
+            spacecmd.kickstart.do_kickstart_listscripts(shell, "some_profile")
+
+        assert not shell.help_kickstart_listscripts.called
+        assert not mprint.called
+        assert shell.client.kickstart.profile.listScripts.called
+        assert logger.error.called
+        assert_args_expect(logger.error.call_args_list,
+                           [(("No scripts has been found for profile '%s'",
+                              "some_profile"), {})])
