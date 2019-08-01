@@ -30,6 +30,7 @@
 # invalid function name
 # pylint: disable=C0103
 
+import os
 from getpass import getpass
 from operator import itemgetter
 try:
@@ -66,14 +67,13 @@ def help_kickstart_list(self):
 
 
 def do_kickstart_list(self, args, doreturn=False):
-    kickstarts = self.client.kickstart.listKickstarts(self.session)
-    kickstarts = [k.get('name') for k in kickstarts]
+    kickstarts = sorted([kst.get('name') for kst in self.client.kickstart.listKickstarts(self.session)])
 
     if doreturn:
         return kickstarts
     else:
         if kickstarts:
-            print('\n'.join(sorted(kickstarts)))
+            print(os.linesep.join(kickstarts))
 
 ####################
 
