@@ -1,12 +1,15 @@
 //@flow
 import React from 'react';
 import {Text} from "components/input/Text";
+import {DateTime} from "components/input/DateTime";
 import {Select} from "components/input/Select";
 import {Form} from "components/input/Form";
 import {Check} from "components/input/Check";
 import type {FilterFormType} from "../shared/type/filter.type";
 import filtersEnum from "../shared/business/filters.enum";
 import type {FilterOptionType} from "../shared/business/filters.enum";
+import useUserLocalization from "core/user-localization/use-user-localization";
+import Functions from "utils/functions";
 
 type Props = {
   filter: FilterFormType,
@@ -16,6 +19,8 @@ type Props = {
 }
 
 const FilterForm = (props: Props) => {
+
+  const {timezone, localTime} = useUserLocalization();
 
   return (
     <Form
@@ -128,6 +133,22 @@ const FilterForm = (props: Props) => {
               divClass="col-md-6"
               required
             />
+          </div>
+        }
+
+        {
+          filtersEnum.enum.ERRATUM_BYDATE.key === props.filter.type &&
+          <div className="row">
+            <DateTime
+              name="issueDate"
+              label={t("Issued After")}
+              labelClass="col-md-3"
+              divClass="col-md-6"
+              required
+              timezone={timezone}
+              defaultValue={Functions.Utils.dateWithTimezone(localTime)}
+            />
+
           </div>
         }
 

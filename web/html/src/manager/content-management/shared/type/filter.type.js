@@ -24,4 +24,5 @@ export type FilterFormType = {
   architecture?: string,
   advisoryName?: string,
   criteria?: string,
+  issueDate?: Date
 }
