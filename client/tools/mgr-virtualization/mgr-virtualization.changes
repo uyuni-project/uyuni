@@ -1,3 +1,5 @@
+- fix package dependencies to prevent file conflict (bsc#1143856)
+
 -------------------------------------------------------------------
 Tue Jul 30 14:41:02 CEST 2019 - jgonzalez@suse.com
 
