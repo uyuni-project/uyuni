@@ -36,6 +36,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import com.redhat.rhn.common.validator.ValidatorError;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.suse.utils.Opt;

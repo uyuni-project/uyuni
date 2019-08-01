@@ -18,5 +18,11 @@
 script(type='text/javascript').
     var csrfToken = "#{csrf_token}";
     var groupId = "#{groupId}";
+if warning
+    script(type='text/javascript').
+        var serverMessage = [{severity: "warning", text:"#{warning}"}];
+else
+    script(type='text/javascript').
+        var serverMessage = null
 
 script(src='/javascript/manager/groups/formula/group-formula-selection.bundle.js?cb=#{webVersion}', type='text/javascript')

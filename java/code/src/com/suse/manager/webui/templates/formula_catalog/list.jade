@@ -10,7 +10,14 @@ else
      function flashMessage() {
          return [];
      }
-     
+
+if warning
+  script(type="text/javascript").
+     var serverMsg=[{severity: "warning", text:"#{warning}"}];
+else
+  script(type="text/javascript").
+     var serverMsg=[];
+
 #formula-catalog
 
 +userPreferences

@@ -41,17 +41,20 @@ class FormulaCatalog extends React.Component {
     };
 
     render() {
-        var messages = <Messages items={[{severity: "info", text:
-            <p>The formula catalog page enables viewing of currently installed <a href="https://docs.saltstack.com/en/latest/topics/development/conventions/formulas.html" target="_blank">Salt Formulas</a>. Apply these formulas to individual systems or server groups. Formulas allow automatic installation and configuration of software and may be installed via RPM packages.</p>
-        }]}/>;
+
+        var items=[{severity: "info", text:
+          <p>The formula catalog page enables viewing of currently installed <a href="https://docs.saltstack.com/en/latest/topics/development/conventions/formulas.html" target="_blank">Salt Formulas</a>. Apply these formulas to individual systems or server groups. Formulas allow automatic installation and configuration of software and may be installed via RPM packages.</p>
+        }];
+
         if (this.state.messages.length > 0) {
-            messages = <Messages items={this.state.messages.map(function(msg) {
-                return {severity: "info", text: msg};
-            })}/>;
+          items = items.concat(this.state.messages.map(function(msg) {
+              return {severity: "info", text: msg};
+          }));
         }
+        items = items.concat(this.props.serverMessages)
         return (
             <TopPanel title={t("Formula Catalog")} icon="spacewalk-icon-salt-add" helpUrl="/docs/reference/salt/salt-formula-catalog.html">
-            {messages}
+            <Messages items={items}/>
             <div>
               <Table
                 data={this.state.serverData}
@@ -77,6 +80,6 @@ class FormulaCatalog extends React.Component {
 }
 
 ReactDOM.render(
-  <FormulaCatalog flashMessages={flashMessage()}/>,
+  <FormulaCatalog serverMessages={serverMsg}/>,
   document.getElementById('formula-catalog')
 );
