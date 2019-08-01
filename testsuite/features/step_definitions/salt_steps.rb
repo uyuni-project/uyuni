@@ -181,12 +181,12 @@ end
 
 Then(/^I should see "([^"]*)" hostname$/) do |host|
   system_name = get_system_name(host)
-  raise unless page.has_content?(system_name)
+  raise "Hostname #{system_name} is not present" unless page.has_content?(system_name)
 end
 
 Then(/^I should not see "([^"]*)" hostname$/) do |host|
   system_name = get_system_name(host)
-  raise if page.has_content?(system_name)
+  raise "Hostname #{system_name} is present" if page.has_content?(system_name)
 end
 
 When(/^I expand the results for "([^"]*)"$/) do |host|
@@ -205,7 +205,7 @@ end
 Then(/^I should see "([^"]*)" in the command output for "([^"]*)"$/) do |text, host|
   system_name = get_system_name(host)
   within("pre[id='#{system_name}-results']") do
-    raise unless page.has_content?(text)
+    raise "Text '#{text}' not found in the results of #{system_name}" unless page.has_content?(text)
   end
 end
 
@@ -226,7 +226,7 @@ Then(/^I click on the css "(.*)" until page does contain "([^"]*)" text$/) do |c
 end
 
 When(/^I click on the css "(.*)"$/) do |css|
-  find(css).click
+  find_and_wait_click(css).click
 end
 
 When(/^I enter "(.*)" in the css "(.*)"$/) do |input, css|
@@ -252,11 +252,11 @@ When(/^I ([^ ]*) the "([^"]*)" formula$/) do |action, formula|
   xpath_query = "//a[@id = '#{formula}']/i[@class = 'fa fa-lg fa-square-o']" if action == 'check'
   xpath_query = "//a[@id = '#{formula}']/i[@class = 'fa fa-lg fa-check-square-o']" if action == 'uncheck'
   if all(:xpath, xpath_query).any?
-    raise unless find(:xpath, xpath_query).click
+    raise "xpath: #{xpath_query} not found" unless find(:xpath, xpath_query).click
   else
     xpath_query = "//a[@id = '#{formula}']/i[@class = 'fa fa-lg fa-check-square-o']" if action == 'check'
     xpath_query = "//a[@id = '#{formula}']/i[@class = 'fa fa-lg fa-square-o']" if action == 'uncheck'
-    assert all(:xpath, xpath_query).any?, 'Checkbox could not be found'
+    raise "xpath: #{xpath_query} not found" unless all(:xpath, xpath_query).any?
   end
 end
 
@@ -480,7 +480,7 @@ Then(/^the pillar data for "([^"]*)" should (be|contain|not contain) "([^"]*)" o
   if minion == 'sle-minion'
     cmd = 'salt'
     extra_cmd = ''
-  elsif ['ssh-minion', 'ceos-minion', 'ceos-ssh-minion', 'ubuntu-minion', 'ubuntu-ssh-minion'].include?(minion)
+  elsif %w[ssh-minion ceos-minion ceos-ssh-minion ubuntu-minion ubuntu-ssh-minion].include?(minion)
     cmd = 'salt-ssh'
     extra_cmd = '-i --roster-file=/tmp/roster_tests -w -W 2>/dev/null'
     $server.run("printf '#{system_name}:\n  host: #{system_name}\n  user: root\n  passwd: linux\n' > /tmp/roster_tests")
@@ -535,26 +535,26 @@ end
 When(/^I reject "([^"]*)" from the Pending section$/) do |host|
   system_name = get_system_name(host)
   xpath_query = "//tr[td[contains(.,'#{system_name}')]]//button[@title = 'Reject']"
-  raise unless find(:xpath, xpath_query).click
+  raise "xpath: #{xpath_query} not found" unless find(:xpath, xpath_query).click
 end
 
 When(/^I delete "([^"]*)" from the Rejected section$/) do |host|
   system_name = get_system_name(host)
   xpath_query = "//tr[td[contains(.,'#{system_name}')]]//button[@title = 'Delete']"
-  raise unless find(:xpath, xpath_query).click
+  raise "xpath: #{xpath_query} not found" unless find(:xpath, xpath_query).click
 end
 
 When(/^I see "([^"]*)" fingerprint$/) do |host|
   node = get_target(host)
   output, _code = node.run('salt-call --local key.finger')
   fing = output.split("\n")[1].strip!
-  raise unless page.has_content?(fing)
+  raise "Text: #{fing} not found" unless page.has_content?(fing)
 end
 
 When(/^I accept "([^"]*)" key$/) do |host|
   system_name = get_system_name(host)
   xpath_query = "//tr[td[contains(.,'#{system_name}')]]//button[@title = 'Accept']"
-  raise unless find(:xpath, xpath_query).click
+  raise "xpath: #{xpath_query} not found" unless find(:xpath, xpath_query).click
 end
 
 When(/^I go to the minion onboarding page$/) do
