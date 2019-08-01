@@ -309,3 +309,22 @@ echo 'some more hello'
         assert out is not None
         assert len(out) == 3
         assert out == ["default_kickstart", "some_profile_kickstart", "whatever_kickstart"]
+
+    def test_kickstart_list_data_no_profiles(self, shell):
+        """
+        Test do_kickstart_list. Return data, no printing to STDOUT. No profiles found.
+
+        :param shell:
+        :return:
+        """
+        mprint = MagicMock()
+        logger = MagicMock()
+        shell.client.kickstart.listKickstarts = MagicMock(return_value=[])
+        with patch("spacecmd.kickstart.print", mprint) as prt, \
+                patch("spacecmd.kickstart.logging", logger) as lgr:
+            out = spacecmd.kickstart.do_kickstart_list(shell, "", doreturn=True)
+
+        assert not mprint.called
+        assert not logger.error.called
+        assert out is not None
+        assert out == []
