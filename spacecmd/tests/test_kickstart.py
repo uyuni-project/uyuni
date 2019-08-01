@@ -35,3 +35,34 @@ class TestSCKickStart:
         assert_expect(logger.error.call_args_list,
                       "No kickstart profiles available")
 
+    def test_kickstart_clone_interactive_wrong_profile_entered(self, shell):
+        """
+        Test do_kickstart_clone interactive. Wrong profile has been entered.
+
+        :param shell:
+        :return:
+        """
+        mprint = MagicMock()
+        logger = MagicMock()
+        prompter = MagicMock(side_effect=[
+            "posix_compliance_problem", "POSIX"])
+        shell.do_kickstart_list = MagicMock(return_value=[
+            "default_kickstart_profile", "some_other_profile"])
+        with patch("spacecmd.kickstart.print", mprint) as prt, \
+                patch("spacecmd.kickstart.logging", logger) as lgr, \
+                patch("spacecmd.kickstart.prompt_user", prompter) as pmt:
+            spacecmd.kickstart.do_kickstart_clone(shell, "")
+
+        assert not shell.client.kickstart.cloneProfile.called
+        assert mprint.called
+        assert prompter.called
+        assert logger.error.called
+
+        assert_expect(logger.error.call_args_list,
+                      "Kickstart profile you've entered was not found")
+        assert_list_args_expect(mprint.call_args_list,
+                                ['', 'Kickstart Profiles', '------------------',
+                                 'default_kickstart_profile\nsome_other_profile', ''])
+        assert_args_expect(prompter.call_args_list,
+                           [(('Original Profile:',), {"noblank": True}),
+                            (('Cloned Profile:',), {"noblank": True})])
