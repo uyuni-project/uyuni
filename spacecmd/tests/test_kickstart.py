@@ -243,3 +243,25 @@ echo 'some more hello'
                                  'Chroot:      /dev/null', 'Interpreter: /bin/bash', '',
                                  'Contents', '--------', "#!/bin/bash\necho 'some more hello'\n                 "]
                                 )
+
+    def test_kickstart_list_nodata(self, shell):
+        """
+        Test do_kickstart_list. Return no data, print to STDOUT.
+
+        :param shell:
+        :return:
+        """
+        mprint = MagicMock()
+        logger = MagicMock()
+        shell.client.kickstart.listKickstarts = MagicMock(return_value=[
+            {"name": "default_kickstart"}, {"name": "whatever_kickstart"},
+            {"name": "some_profile_kickstart"}
+        ])
+        with patch("spacecmd.kickstart.print", mprint) as prt, \
+                patch("spacecmd.kickstart.logging", logger) as lgr:
+            out = spacecmd.kickstart.do_kickstart_list(shell, "", doreturn=False)
+
+        assert out is None
+        assert mprint.called
+        assert_expect(mprint.call_args_list,
+                      'default_kickstart\nsome_profile_kickstart\nwhatever_kickstart')
