@@ -1,4 +1,5 @@
-- add missing strings for tasks 
+- Add UI message when salt-formulas system folders are unreachable (bsc#1142309)
+- add missing strings for tasks
 
 -------------------------------------------------------------------
 Wed Jul 31 17:31:26 CEST 2019 - jgonzalez@suse.com
