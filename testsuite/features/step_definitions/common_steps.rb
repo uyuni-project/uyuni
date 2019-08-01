@@ -442,8 +442,12 @@ end
 And(/^I wait until I see "(.*?)" product has been added$/) do |product|
   repeat_until_timeout(message: "Couldn't find the installed product #{product} in the list") do
     xpath = "//span[contains(text(), '#{product}')]/ancestor::div[contains(@class, 'product-details-wrapper')]"
-    product_wrapper = find(:xpath, xpath)
-    break if product_wrapper[:class].include?('product-installed')
+    begin
+      product_wrapper = find(:xpath, xpath)
+      break if product_wrapper[:class].include?('product-installed')
+    rescue Capybara::ElementNotFound => e
+      puts e
+    end
     sleep 1
   end
 end
