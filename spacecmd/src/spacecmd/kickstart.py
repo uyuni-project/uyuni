@@ -2052,7 +2052,7 @@ def do_kickstart_clone(self, args):
     arg_parser.add_argument('-n', '--name')
     arg_parser.add_argument('-c', '--clonename')
 
-    (args, options) = parse_command_arguments(args, arg_parser)
+    args, options = parse_command_arguments(args, arg_parser)
 
     if is_interactive(options):
         profiles = sorted(filter(None, self.do_kickstart_list('', True)))
