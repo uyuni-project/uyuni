@@ -1835,32 +1835,31 @@ def complete_kickstart_listscripts(self, text, line, beg, end):
 def do_kickstart_listscripts(self, args):
     arg_parser = get_argument_parser()
 
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    args, _options = parse_command_arguments(args, arg_parser)
 
     if not args:
         self.help_kickstart_listscripts()
         return
 
     profile = args[0]
+    scripts = self.client.kickstart.profile.listScripts(self.session, profile)
+    if not scripts:
+        logging.error("No scripts has been found for profile '%s'", profile)
+    else:
+        add_separator = False
+        for script in scripts:
+            if add_separator:
+                print(self.SEPARATOR)
+            add_separator = True
 
-    scripts = \
-        self.client.kickstart.profile.listScripts(self.session, profile)
-
-    add_separator = False
-
-    for script in scripts:
-        if add_separator:
-            print(self.SEPARATOR)
-        add_separator = True
-
-        print('ID:          %i' % script.get('id'))
-        print('Type:        %s' % script.get('script_type'))
-        print('Chroot:      %s' % script.get('chroot'))
-        print('Interpreter: %s' % script.get('interpreter'))
-        print('')
-        print('Contents')
-        print('--------')
-        print(script.get('contents'))
+            print('ID:          %i' % script.get('id'))
+            print('Type:        %s' % script.get('script_type'))
+            print('Chroot:      %s' % script.get('chroot'))
+            print('Interpreter: %s' % script.get('interpreter'))
+            print('')
+            print('Contents')
+            print('--------')
+            print(script.get('contents'))
 
 ####################
 
