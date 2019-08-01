@@ -2067,8 +2067,11 @@ def do_kickstart_clone(self, args):
         print('')
 
         options.name = prompt_user('Original Profile:', noblank=True)
-
         options.clonename = prompt_user('Cloned Profile:', noblank=True)
+        args.append(options.name)
+        if not filter_results(profiles, args):
+            logging.error("Kickstart profile you've entered was not found")
+            return
     else:
 
         if not options.name:
