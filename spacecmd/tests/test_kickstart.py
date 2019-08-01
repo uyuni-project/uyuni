@@ -16,9 +16,10 @@ class TestSCKickStart:
     """
     Test kickstart.
     """
-    def test_kickstart_clone_interactive(self, shell):
+    def test_kickstart_clone_interactive_no_profiles(self, shell):
         """
-        Test do_kickstart_clone interactive.
+        Test do_kickstart_clone interactive. No profiles found.
+
         :param shell:
         :return:
         """
