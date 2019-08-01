@@ -75,8 +75,8 @@ Group:          System Environment/Base
 %{?python_provide:%python_provide python2-%{name}-common}
 Provides:       python-%{name}-common = %{oldversion}
 Obsoletes:      python-%{name}-common < %{oldversion}
-Provides:       python-%{oldname}-common = %{oldversion}
-Obsoletes:      python-%{oldname}-common < %{oldversion}
+Provides:       python2-%{oldname}-common = %{oldversion}
+Obsoletes:      python2-%{oldname}-common < %{oldversion}
 Provides:       %{name}-common = %{oldversion}
 Obsoletes:      %{name}-common < %{oldversion}
 Provides:       %{oldname}-common = %{oldversion}
