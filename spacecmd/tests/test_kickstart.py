@@ -165,3 +165,18 @@ class TestSCKickStart:
         assert_args_expect(shell.client.kickstart.cloneProfile.call_args_list,
                            [((shell.session, name, clone), {})])
 
+    def test_kickstart_listscripts_noarg(self, shell):
+        """
+        Test do_kickstart_listscripts without arguments.
+
+        :param shell:
+        :return:
+        """
+        mprint = MagicMock()
+        logger = MagicMock()
+        with patch("spacecmd.kickstart.print", mprint) as prt, \
+                patch("spacecmd.kickstart.logging", logger) as lgr:
+            spacecmd.kickstart.do_kickstart_listscripts(shell, "")
+
+        assert not shell.client.kickstart.profile.listScripts.called
+        assert shell.help_kickstart_listscripts.called
