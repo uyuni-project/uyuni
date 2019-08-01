@@ -140,9 +140,9 @@ public class OutputJson {
     /**
      * Sets the subscriptions.
      *
-     * @param subscriptions the subscriptions
+     * @param subscriptionsIn the subscriptions
      */
-    public void setSubscriptions(List<SubscriptionJson> subscriptions) {
-        this.subscriptions = subscriptions;
+    public void setSubscriptions(List<SubscriptionJson> subscriptionsIn) {
+        this.subscriptions = subscriptionsIn;
     }
 }
