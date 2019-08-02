@@ -392,11 +392,11 @@ When(/^I sign out$/) do
 end
 
 Then(/^I should not be authorized$/) do
-  raise unless page.has_no_xpath?("//a[@href='/rhn/Logout.do']")
+  raise if all(:xpath, "//a[@href='/rhn/Logout.do']").any?
 end
 
 Then(/^I should be logged in$/) do
-  raise unless page.has_xpath?("//a[@href='/rhn/Logout.do']")
+  raise unless all(:xpath, "//a[@href='/rhn/Logout.do']").any?
 end
 
 Then(/^I am logged in$/) do
@@ -410,7 +410,7 @@ Given(/^I am on the patches page$/) do
 end
 
 Then(/^I should see an update in the list$/) do
-  raise unless has_xpath?('//div[@class="table-responsive"]/table/tbody/tr/td/a')
+  raise unless all(:xpath, '//div[@class="table-responsive"]/table/tbody/tr/td/a').any?
 end
 
 When(/^I check test channel$/) do
@@ -528,7 +528,7 @@ end
 
 Then(/^I should see a "(.*?)" link in the text$/) do |linktext, text|
   within(:xpath, "//p/strong[contains(normalize-space(string(.)), '#{text}')]") do
-    assert has_xpath?("//a[text() = '#{linktext}']")
+    assert all(:xpath, "//a[text() = '#{linktext}']").any?
   end
 end
 
@@ -577,7 +577,7 @@ Then(/^I should see a "([^"]*)" link in the table (.*) column$/) do |link, colum
   end
   raise("Unknown column '#{column}'") unless idx
   # find(:xpath, "//table//thead//tr/td[#{idx + 1}]/a[text()='#{link}']")
-  raise unless page.has_xpath?("//table//tr/td[#{idx + 1}]//a[text()='#{link}']")
+  raise unless all(:xpath, "//table//tr/td[#{idx + 1}]//a[text()='#{link}']").any?
 end
 
 When(/^I wait until the table contains "FINISHED" or "SKIPPED" followed by "FINISHED" in its first rows$/) do
@@ -738,7 +738,7 @@ Then(/^I should see a "([^"]*)" editor in "([^"]*)" form$/) do |arg1, arg2|
 end
 
 Then(/^I should see a Sign Out link$/) do
-  raise unless has_xpath?("//a[@href='/rhn/Logout.do']")
+  raise unless all(:xpath, "//a[@href='/rhn/Logout.do']").any?
 end
 
 When(/^I check "([^"]*)" in the list$/) do |arg1|
@@ -782,7 +782,7 @@ When(/^I click on "([^"]*)" in "([^"]*)" modal$/) do |btn, title|
   # We wait until the element becomes visible, because
   # the fade out animation might still be in progress
   repeat_until_timeout(message: "Couldn't find the #{title} modal") do
-    break if page.has_xpath?(path, visible: true)
+    break if all?(:xpath, path, visible: true).any?
     sleep 1
   end
 
