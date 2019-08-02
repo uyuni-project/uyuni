@@ -471,9 +471,9 @@ echo 'some more hello'
         assert data is None
         assert shell.help_kickstart_listcryptokeys.called
 
-    def test_kickstart_listcryptokeys_no_cryptokeys(self, shell):
+    def test_kickstart_listcryptokeys_cryptokeys_to_stdout(self, shell):
         """
-        Test do_kickstart_listcryptokeys no cryptokeys.
+        Test do_kickstart_listcryptokeys cryptokeys to stdout.
 
         :param shell:
         :return:
@@ -497,9 +497,9 @@ echo 'some more hello'
         assert_expect(mprint.call_args_list,
                       'a_key\nb_key\nc_key\nx_key\nz_key')
 
-    def test_kickstart_listcryptokeys_no_cryptokeys(self, shell):
+    def test_kickstart_listcryptokeys_cryptokeys_as_data(self, shell):
         """
-        Test do_kickstart_listcryptokeys no cryptokeys.
+        Test do_kickstart_listcryptokeys cryptokeys as data.
 
         :param shell:
         :return:
