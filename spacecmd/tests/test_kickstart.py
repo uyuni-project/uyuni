@@ -399,3 +399,30 @@ echo 'some more hello'
         assert_args_expect(logger.error.call_args_list,
                            [(('The following kickstart labels are invalid:',
                               'fourth_profile, zero_profile'), {})])
+
+    def test_kickstart_delete_profile_all_yes(self, shell):
+        """
+        Test do_kickstart_delete profile, yes=true. This should not cause interactive prompt.
+
+        :param shell:
+        :return:
+        """
+        shell.options.yes = True
+        shell.do_kickstart_list = MagicMock(return_value=[
+            "first_profile", "second_profile", "third_profile"
+        ])
+        logger = MagicMock()
+        with patch("spacecmd.kickstart.logging", logger) as lgr:
+            spacecmd.kickstart.do_kickstart_delete(
+                shell, "first_profile second_profile")
+
+        assert not shell.help_kickstart_delete.called
+        assert not logger.error.called
+        assert not shell.user_confirm.called
+        assert shell.client.kickstart.deleteProfile.called
+        assert shell.do_kickstart_list.called
+        assert logger.debug.called
+
+        assert_args_expect(shell.client.kickstart.deleteProfile.call_args_list,
+                           [((shell.session, "first_profile"), {}),
+                            ((shell.session, "second_profile"), {})])
