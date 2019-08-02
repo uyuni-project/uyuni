@@ -556,3 +556,17 @@ echo 'some more hello'
         spacecmd.kickstart.do_kickstart_addcryptokeys(shell, "")
         assert not shell.client.kickstart.profile.system.addKeys.called
         assert shell.help_kickstart_addcryptokeys.called
+
+    def test_kickstart_addcryptokeys(self, shell):
+        """
+        Test do_kickstart_addcryptokeys
+
+        :param shell:
+        :return:
+        """
+        spacecmd.kickstart.do_kickstart_addcryptokeys(shell, "my_profile key1 key2")
+        assert not shell.help_kickstart_addcryptokeys.called
+        assert shell.client.kickstart.profile.system.addKeys.called
+
+        assert_args_expect(shell.client.kickstart.profile.system.addKeys.call_args_list,
+                           [((shell.session, "my_profile", ["key1", "key2"]), {})])
