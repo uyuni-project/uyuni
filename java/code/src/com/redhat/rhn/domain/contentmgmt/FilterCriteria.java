@@ -66,7 +66,7 @@ public class FilterCriteria {
         CONTAINS("contains"),
         EQUALS("equals"),
         GREATER("greater"),
-        GREATEREQ("greater-equal");
+        GREATEREQ("greatereq");
 
         private String label;
 
