@@ -545,3 +545,14 @@ echo 'some more hello'
 
         assert_expect(logger.error.call_args_list,
                       "No crypto keys has been found")
+
+    def test_kickstart_addcryptokeys_noarg(self, shell):
+        """
+        Test do_kickstart_addcryptokeys no arguments
+
+        :param shell:
+        :return:
+        """
+        spacecmd.kickstart.do_kickstart_addcryptokeys(shell, "")
+        assert not shell.client.kickstart.profile.system.addKeys.called
+        assert shell.help_kickstart_addcryptokeys.called
