@@ -613,6 +613,8 @@ def do_kickstart_listcryptokeys(self, args, doreturn=False):
     else:
         if keys:
             print('\n'.join(keys))
+        else:
+            logging.error("No crypto keys has been found")
 
 ####################
 
