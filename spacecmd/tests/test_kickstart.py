@@ -426,3 +426,31 @@ echo 'some more hello'
         assert_args_expect(shell.client.kickstart.deleteProfile.call_args_list,
                            [((shell.session, "first_profile"), {}),
                             ((shell.session, "second_profile"), {})])
+
+    def test_kickstart_delete_profile_interactive(self, shell):
+        """
+        Test do_kickstart_delete profile, yes=false. Should start interactive confirmation prompt.
+
+        :param shell:
+        :return:
+        """
+        shell.options.yes = False
+        shell.user_confirm = MagicMock(return_value=True)
+        shell.do_kickstart_list = MagicMock(return_value=[
+            "first_profile", "second_profile", "third_profile"
+        ])
+        logger = MagicMock()
+        with patch("spacecmd.kickstart.logging", logger) as lgr:
+            spacecmd.kickstart.do_kickstart_delete(
+                shell, "first_profile second_profile")
+
+        assert not shell.help_kickstart_delete.called
+        assert not logger.error.called
+        assert shell.user_confirm.called
+        assert shell.client.kickstart.deleteProfile.called
+        assert shell.do_kickstart_list.called
+        assert logger.debug.called
+
+        assert_args_expect(shell.client.kickstart.deleteProfile.call_args_list,
+                           [((shell.session, "first_profile"), {}),
+                            ((shell.session, "second_profile"), {})])
