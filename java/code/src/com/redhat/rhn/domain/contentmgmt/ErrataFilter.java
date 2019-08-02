@@ -38,18 +38,27 @@ public class ErrataFilter extends ContentFilter<Errata> {
         String field = getCriteria().getField();
         String value = getCriteria().getValue();
 
-        switch (matcher) {
-            case EQUALS:
-                return getField(erratum, field, String.class).equals(value);
-            case GREATER:
+        switch (field) {
+            case "issue_date":
                 ZonedDateTime valDate = ZonedDateTime.parse(value, DateTimeFormatter.ISO_OFFSET_DATE_TIME);
-                return getField(erratum, field, ZonedDateTime.class).isAfter(valDate);
-            case GREATEREQ:
-                ZonedDateTime valDate2 = ZonedDateTime.parse(value, DateTimeFormatter.ISO_OFFSET_DATE_TIME);
-                ZonedDateTime erratumDate = getField(erratum, field, ZonedDateTime.class);
-                return erratumDate.isEqual(valDate2) || erratumDate.isAfter(valDate2);
+                ZonedDateTime issueDate = getField(erratum, field, ZonedDateTime.class);
+                switch (matcher) {
+                    case GREATEREQ:
+                        return !issueDate.isBefore(valDate);
+                    case GREATER:
+                        return issueDate.isAfter(valDate);
+                    default:
+                        throw new UnsupportedOperationException("Matcher " + matcher + " not supported");
+                }
+            case "advisory_name":
+                switch (matcher) {
+                    case EQUALS:
+                        return getField(erratum, field, String.class).equals(value);
+                    default:
+                        throw new UnsupportedOperationException("Matcher " + matcher + " not supported");
+                }
             default:
-                throw new UnsupportedOperationException("Matcher " + matcher + " not supported");
+                throw new UnsupportedOperationException("Field " + field + " not supported");
         }
     }
 
