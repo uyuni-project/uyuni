@@ -1,3 +1,4 @@
+- add caret sorting for rpm versioning
 - improve performance for retrieving the user permissions on channels (bsc#1140644)
 
 -------------------------------------------------------------------
