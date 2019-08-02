@@ -634,20 +634,12 @@ def complete_kickstart_addcryptokeys(self, text, line, beg, end):
 
 
 def do_kickstart_addcryptokeys(self, args):
-    arg_parser = get_argument_parser()
-
-    (args, _options) = parse_command_arguments(args, arg_parser)
-
-    if len(args) < 2:
+    args, _options = parse_command_arguments(args, get_argument_parser())
+    if len(args) > 1:
+        profile, keys = args[0], args[1:]
+        self.client.kickstart.profile.system.addKeys(self.session, profile, keys)
+    else:
         self.help_kickstart_addcryptokeys()
-        return
-
-    profile = args[0]
-    keys = args[1:]
-
-    self.client.kickstart.profile.system.addKeys(self.session,
-                                                 profile,
-                                                 keys)
 
 ####################
 
