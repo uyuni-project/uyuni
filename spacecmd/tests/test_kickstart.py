@@ -521,3 +521,27 @@ echo 'some more hello'
         assert data is not None
         assert data == ['a_key', 'b_key', 'c_key', 'x_key', 'z_key']
         assert shell.client.kickstart.profile.system.listKeys.called
+
+    def test_kickstart_listcryptokeys_no_cryptokeys(self, shell):
+        """
+        Test do_kickstart_listcryptokeys no cryptokeys.
+
+        :param shell:
+        :return:
+        """
+        shell.client.kickstart.profile.system.listKeys = MagicMock(return_value=[])
+        mprint = MagicMock()
+        logger = MagicMock()
+        with patch("spacecmd.kickstart.print", mprint) as prt, \
+                patch("spacecmd.kickstart.logging", logger) as lgr:
+            data = spacecmd.kickstart.do_kickstart_listcryptokeys(
+                shell, "some_profile", doreturn=False)
+
+        assert not shell.help_kickstart_listcryptokeys.called
+        assert not mprint.called
+        assert logger.error.called
+        assert data is None
+        assert shell.client.kickstart.profile.system.listKeys.called
+
+        assert_expect(logger.error.call_args_list,
+                      "No crypto keys has been found")
