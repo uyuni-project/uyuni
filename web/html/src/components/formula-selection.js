@@ -210,9 +210,9 @@ class FormulaSelection extends React.Component {
             this group/system, which can then be configured on group and system level. This allows you to automatically install and configure software. 
             </p>
         }];
-      if(serverMessage){
-        items = items.concat(serverMessage)
-      }
+        if(this.props.warningMessage){
+          items.push({severity: "warning", text: this.props.warningMessage});
+        }
         if (this.state.messages.length > 0) {
           items = items.concat(this.state.messages.map(function(msg) {
                 return {severity: "info", text: msg};

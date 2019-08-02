@@ -1,24 +1,15 @@
 include ../common.jade
 
-if info
-  script(type="text/javascript").
-     function flashMessage() {
-         return [{severity: "info", text:"#{info}"}];
-     }
-else
-  script(type="text/javascript").
-     function flashMessage() {
-         return [];
-     }
-
-if warning
-  script(type="text/javascript").
-     var serverMsg=[{severity: "warning", text:"#{warning}"}];
-else
-  script(type="text/javascript").
-     var serverMsg=[];
-
 #formula-catalog
 
 +userPreferences
-script(src='/javascript/manager/salt/formula-catalog/org-formula-catalog.bundle.js?cb=#{webVersion}')
+script(src='/javascript/manager/salt/formula-catalog/org-formula-catalog.renderer.bundle.js?cb=#{webVersion}')
+
+script(type='text/javascript').
+    pageRenderers.salt.formulaCatalog.renderer(
+        'formula-catalog',
+        {
+          flashMessage: "#{info}",
+          warningMessage: "#{warning}"
+        }
+    );

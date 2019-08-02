@@ -17,7 +17,13 @@
 
 script(type='text/javascript').
     var csrfToken = "#{csrf_token}";
-    var groupId = "#{groupId}";
-    var formulaId = #{formula_id};
 
-script(src='/javascript/manager/groups/formula/group-formula.bundle.js?cb=#{webVersion}', type='text/javascript')
+script(src='/javascript/manager/groups/formula/group-formula.renderer.bundle.js?cb=#{webVersion}', type='text/javascript')
+script(type='text/javascript').
+    pageRenderers.group.formula.renderer(
+        'formula',
+        {
+          groupId: "#{groupId}",
+          formulaId: #{formula_id}
+        }
+    );
