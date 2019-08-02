@@ -372,3 +372,30 @@ echo 'some more hello'
                       'Got labels to delete of []')
         assert_args_expect(shell.do_kickstart_list.call_args_list,
                            [(('', True), {})])
+
+    def test_kickstart_delete_some_invalid_profile(self, shell):
+        """
+        Test do_kickstart_delete invalid profile (not found).
+
+        :param shell:
+        :return:
+        """
+        shell.do_kickstart_list = MagicMock(return_value=[
+            "first_profile", "second_profile", "third_profile"
+        ])
+        logger = MagicMock()
+        with patch("spacecmd.kickstart.logging", logger) as lgr:
+            spacecmd.kickstart.do_kickstart_delete(
+                shell, "fourth_profile zero_profile first_profile second_profile")
+
+        assert not shell.client.kickstart.deleteProfile.called
+        assert not shell.help_kickstart_delete.called
+        assert logger.error.called
+        assert shell.do_kickstart_list.called
+        assert logger.debug.called
+
+        assert_expect(logger.debug.call_args_list,
+                      "Got labels to delete of ['first_profile', 'second_profile']")
+        assert_args_expect(logger.error.call_args_list,
+                           [(('The following kickstart labels are invalid:',
+                              'fourth_profile, zero_profile'), {})])
