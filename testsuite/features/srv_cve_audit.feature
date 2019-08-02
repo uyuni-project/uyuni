@@ -89,10 +89,6 @@ Feature: CVE Audit
     And I should get the "milkyway-dummy-2345" patch
     Then I logout from XML-RPC cve audit namespace
 
-  Scenario: Check Nagios pending patches
-    Given I perform a nagios check patches for "sle-client"
-    Then I should see CRITICAL: 1 critical patch pending
-
   Scenario: Apply patches
     Given I am on the Systems overview page of this "sle-client"
     And I follow "Software" in the content area

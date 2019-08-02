@@ -70,7 +70,6 @@
 - features/srv_clone_channel_npn.feature
 - features/trad_cve_id_new_syntax.feature
 - features/trad_weak_deps.feature
-- features/srv_nagios.feature
 - features/srv_cve_audit.feature
 - features/min_salt_install_with_staging.feature
 - features/srv_xmlrpc_activationkey.feature

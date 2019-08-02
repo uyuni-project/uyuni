@@ -46,10 +46,6 @@ Feature: openSCAP audit of traditional client
     And I should see a "pass" text or "notapplicable" text
     And I should see a "rule-" link
 
-  Scenario: Check Nagios status of last action
-    When I perform a nagios check last event for "sle-client"
-    Then I should see Completed: OpenSCAP xccdf scanning scheduled by admin
-
   Scenario: Cleanup: remove audit scans retention period from traditional client
     Given I am on the Organizations page
     When I follow "SUSE Test" in the content area
