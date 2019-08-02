@@ -838,14 +838,9 @@ public class ContentManager {
      * @param user the {@link User}
      */
     private static void alignErrata(Channel src, Channel tgt, Collection<ErrataFilter> errataFilters, User user) {
-        Predicate<Errata> compositePredicate = errataFilters.stream()
-                .map(f -> (Predicate) f)
-                .reduce(x -> false, (f1, f2) -> f1.or(f2));
-
-        Map<Boolean, List<Errata>> partitionedErrata = src.getErratas().stream()
-                .collect(partitioningBy(compositePredicate));
-        Set<Errata> includedErrata = new HashSet<>(partitionedErrata.get(false));
-        List<Errata> excludedErrata = partitionedErrata.get(true);
+        Map<Boolean, List<Errata>> partitionedErrata = filterErrata(src, errataFilters);
+        Set<Errata> includedErrata = new HashSet<>(partitionedErrata.get(true));
+        List<Errata> excludedErrata = partitionedErrata.get(false);
 
         // Truncate extra errata in target channel
         ErrataManager.truncateErrata(includedErrata, tgt, user);
@@ -853,6 +848,26 @@ public class ContentManager {
         excludedErrata.forEach(e -> ErrataManager.removeErratumAndPackagesFromChannel(e, tgt, user));
         // Merge the included errata
         ErrataManager.mergeErrataToChannel(user, includedErrata, tgt, src, false, false);
+    }
+
+    private static Map<Boolean, List<Errata>> filterErrata(Channel src, Collection<ErrataFilter> errataFilters) {
+        Set<ErrataFilter> errataFilterSet = new HashSet<>(errataFilters);
+        Predicate<Errata> denyPredicate = errataFilterSet.stream()
+                .filter(f -> f.getRule() == ContentFilter.Rule.DENY)
+                .map(f -> (Predicate) f)
+                .reduce(x -> false, (f1, f2) -> f1.or(f2));
+
+        Predicate<Errata> allowPredicate = errataFilterSet.stream()
+                .filter(f -> f.getRule() == ContentFilter.Rule.ALLOW)
+                .map(f -> (Predicate) f)
+                .reduce(x -> false, (f1, f2) -> f1.or(f2));
+
+        Set<Errata> includedErrata = Stream.concat(
+                src.getErratas().stream().filter(denyPredicate.negate()),
+                src.getErratas().stream().filter(allowPredicate)
+        ).collect(toSet());
+
+        return src.getErratas().stream().collect(partitioningBy(e -> includedErrata.contains(e)));
     }
 
     private static List<Long> extractPackageIds(Collection<Package> packages) {
