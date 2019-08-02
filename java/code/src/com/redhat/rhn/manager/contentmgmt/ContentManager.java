@@ -860,12 +860,20 @@ public class ContentManager {
     }
 
     private static Set<Package> filterPackages(Set<Package> packages, Collection<PackageFilter> packageFilters) {
-        Predicate<Package> compositePredicate = packageFilters.stream()
+        Predicate<Package> denyPredicate = packageFilters.stream()
+                .filter(f -> f.getRule() == ContentFilter.Rule.DENY)
                 .map(f -> (Predicate) f)
                 .reduce(x -> false, (f1, f2) -> f1.or(f2));
-        return packages.stream()
-                .filter(compositePredicate.negate())
-                .collect(toSet());
+
+        Predicate<Package> allowPredicate = packageFilters.stream()
+                .filter(f -> f.getRule() == ContentFilter.Rule.ALLOW)
+                .map(f -> (Predicate) f)
+                .reduce(x -> false, (f1, f2) -> f1.or(f2));
+
+        return Stream.concat(
+                packages.stream().filter(denyPredicate.negate()),
+                packages.stream().filter(allowPredicate)
+        ).collect(toSet());
     }
 
     /**
