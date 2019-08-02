@@ -470,3 +470,29 @@ echo 'some more hello'
         assert not mprint.called
         assert data is None
         assert shell.help_kickstart_listcryptokeys.called
+
+    def test_kickstart_listcryptokeys_no_cryptokeys(self, shell):
+        """
+        Test do_kickstart_listcryptokeys no cryptokeys.
+
+        :param shell:
+        :return:
+        """
+        shell.client.kickstart.profile.system.listKeys = MagicMock(return_value=[
+            {"description": "c_key"},
+            {"description": "b_key"},
+            {"description": "a_key"},
+            {"description": "z_key"},
+            {"description": "x_key"},
+        ])
+        mprint = MagicMock()
+        with patch("spacecmd.kickstart.print", mprint) as prt:
+            data = spacecmd.kickstart.do_kickstart_listcryptokeys(shell, "some_profile")
+
+        assert not shell.help_kickstart_listcryptokeys.called
+        assert mprint.called
+        assert data is None
+        assert shell.client.kickstart.profile.system.listKeys.called
+
+        assert_expect(mprint.call_args_list,
+                      'a_key\nb_key\nc_key\nx_key\nz_key')
