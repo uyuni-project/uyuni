@@ -598,23 +598,21 @@ def complete_kickstart_listcryptokeys(self, text, line, beg, end):
 def do_kickstart_listcryptokeys(self, args, doreturn=False):
     arg_parser = get_argument_parser()
 
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    args, _options = parse_command_arguments(args, arg_parser)
 
     if not args:
         self.help_kickstart_listcryptokeys()
         return
 
     profile = args[0]
-
-    keys = self.client.kickstart.profile.system.listKeys(self.session,
-                                                         profile)
-    keys = [k.get('description') for k in keys]
+    keys = self.client.kickstart.profile.system.listKeys(self.session, profile)
+    keys = sorted([k.get('description') for k in keys])
 
     if doreturn:
         return keys
     else:
         if keys:
-            print('\n'.join(sorted(keys)))
+            print('\n'.join(keys))
 
 ####################
 
