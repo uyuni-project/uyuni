@@ -328,3 +328,20 @@ echo 'some more hello'
         assert not logger.error.called
         assert out is not None
         assert out == []
+
+    def test_kickstart_delete_noargs(self, shell):
+        """
+        Test do_kickstart_delete without arguments.
+
+        :param shell:
+        :return:
+        """
+        logger = MagicMock()
+        with patch("spacecmd.kickstart.logging", logger) as lgr:
+            spacecmd.kickstart.do_kickstart_delete(shell, "")
+
+        assert not logger.error.called
+        assert not logger.debug.called
+        assert not shell.do_kickstart_list.called
+        assert not shell.client.kickstart.deleteProfile.called
+        assert shell.help_kickstart_delete.called
