@@ -840,13 +840,12 @@ public class ContentManager {
     private static void alignErrata(Channel src, Channel tgt, Collection<ErrataFilter> errataFilters, User user) {
         Predicate<Errata> compositePredicate = errataFilters.stream()
                 .map(f -> (Predicate) f)
-                .reduce((f1, f2) -> f1.and(f2))
-                .orElse(p -> true);
+                .reduce(x -> false, (f1, f2) -> f1.or(f2));
 
         Map<Boolean, List<Errata>> partitionedErrata = src.getErratas().stream()
                 .collect(partitioningBy(compositePredicate));
-        Set<Errata> includedErrata = new HashSet<>(partitionedErrata.get(true));
-        List<Errata> excludedErrata = partitionedErrata.get(false);
+        Set<Errata> includedErrata = new HashSet<>(partitionedErrata.get(false));
+        List<Errata> excludedErrata = partitionedErrata.get(true);
 
         // Truncate extra errata in target channel
         ErrataManager.truncateErrata(includedErrata, tgt, user);
@@ -863,10 +862,9 @@ public class ContentManager {
     private static Set<Package> filterPackages(Set<Package> packages, Collection<PackageFilter> packageFilters) {
         Predicate<Package> compositePredicate = packageFilters.stream()
                 .map(f -> (Predicate) f)
-                .reduce((f1, f2) -> f1.and(f2))
-                .orElse(p -> true);
+                .reduce(x -> false, (f1, f2) -> f1.or(f2));
         return packages.stream()
-                .filter(compositePredicate)
+                .filter(compositePredicate.negate())
                 .collect(toSet());
     }
 

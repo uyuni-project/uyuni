@@ -48,13 +48,13 @@ public class ContentFilterTest extends JMockBaseTestCaseWithUser {
         UserTestUtils.addUserRole(user, ORG_ADMIN);
     }
 
-    public void testPackageDenyFilter() throws Exception {
+    public void testPackageFilter() throws Exception {
         Package pack = PackageTest.createTestPackage(user.getOrg());
         String packageName = pack.getPackageName().getName();
 
         FilterCriteria criteria = new FilterCriteria(FilterCriteria.Matcher.CONTAINS, "name", packageName);
         ContentFilter filter = ContentManager.createFilter(packageName + "-filter", DENY, PACKAGE, criteria, user);
-        assertFalse(filter.test(pack));
+        assertTrue(filter.test(pack));
     }
 
     public void testPackageNevrFilter() throws Exception {
@@ -63,15 +63,15 @@ public class ContentFilterTest extends JMockBaseTestCaseWithUser {
 
         FilterCriteria criteria = new FilterCriteria(FilterCriteria.Matcher.EQUALS, "nevr", pack.getNameEvr());
         ContentFilter filter = ContentManager.createFilter(packageName + "-nevr-filter", DENY, PACKAGE, criteria, user);
-        assertFalse(filter.test(pack));
+        assertTrue(filter.test(pack));
 
         criteria = new FilterCriteria(FilterCriteria.Matcher.EQUALS, "nevr", pack.getNameEvra());
         filter = ContentManager.createFilter(packageName + "nevr2-filter", DENY, PACKAGE, criteria, user);
-        assertTrue(filter.test(pack));
+        assertFalse(filter.test(pack));
 
         criteria = new FilterCriteria(FilterCriteria.Matcher.EQUALS, "nevr", packageName);
         filter = ContentManager.createFilter(packageName + "nevr3-filter", DENY, PACKAGE, criteria, user);
-        assertTrue(filter.test(pack));
+        assertFalse(filter.test(pack));
     }
 
     public void testPackageNevraFilter() throws Exception {
@@ -80,15 +80,15 @@ public class ContentFilterTest extends JMockBaseTestCaseWithUser {
 
         FilterCriteria criteria = new FilterCriteria(FilterCriteria.Matcher.EQUALS, "nevra", pack.getNameEvra());
         ContentFilter filter = ContentManager.createFilter(packageName + "-nevra-filter", DENY, PACKAGE, criteria, user);
-        assertFalse(filter.test(pack));
+        assertTrue(filter.test(pack));
 
         criteria = new FilterCriteria(FilterCriteria.Matcher.EQUALS, "nevra", pack.getNameEvr());
         filter = ContentManager.createFilter(packageName + "nevra2-filter", DENY, PACKAGE, criteria, user);
-        assertTrue(filter.test(pack));
+        assertFalse(filter.test(pack));
 
         criteria = new FilterCriteria(FilterCriteria.Matcher.EQUALS, "nevra", packageName);
         filter = ContentManager.createFilter(packageName + "nevra3-filter", DENY, PACKAGE, criteria, user);
-        assertTrue(filter.test(pack));
+        assertFalse(filter.test(pack));
     }
 
     /**
@@ -102,11 +102,11 @@ public class ContentFilterTest extends JMockBaseTestCaseWithUser {
 
         FilterCriteria criteria = new FilterCriteria(FilterCriteria.Matcher.EQUALS, "advisory_name", erratum.getAdvisoryName());
         ContentFilter filter = ContentManager.createFilter(cveName + "-filter", DENY, ERRATUM, criteria, user);
-        assertFalse(filter.test(erratum));
+        assertTrue(filter.test(erratum));
 
         criteria = new FilterCriteria(FilterCriteria.Matcher.EQUALS, "advisory_name", "idontexist");
         filter = ContentManager.createFilter(cveName + "-filter-2", DENY, ERRATUM, criteria, user);
-        assertTrue(filter.test(erratum));
+        assertFalse(filter.test(erratum));
     }
 
     /**

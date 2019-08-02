@@ -18,6 +18,7 @@ package com.redhat.rhn.domain.contentmgmt;
 import com.redhat.rhn.domain.rhnpackage.Package;
 
 import java.util.Optional;
+
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.Transient;
@@ -30,7 +31,7 @@ import javax.persistence.Transient;
 public class PackageFilter extends ContentFilter<Package> {
 
     @Override
-    public boolean testInternal(Package pack) {
+    public boolean test(Package pack) {
         FilterCriteria.Matcher matcher = getCriteria().getMatcher();
         String field = getCriteria().getField();
         String value = getCriteria().getValue();
