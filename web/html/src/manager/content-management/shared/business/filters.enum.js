@@ -30,7 +30,7 @@ export const filtersOptionsEnum : FiltersOptionEnumType = new Proxy({
     ERRATUM_BYDATE: {
       key: 'erratum_bydate',
       entityType: 'erratum',
-      matcher: 'greater',
+      matcher: 'greatereq',
       text: 'Patch (issued after)',
     }
   },
@@ -49,7 +49,7 @@ function getFilterDescription (filter: Object): string {
   const matcherDescription = {
     equals: " matching ",
     contains: " containing ",
-    greater: " greater "
+    greatereq: " greater or equal "
   }
 
   return `${filter.name}: deny ${filter.entityType} ${matcherDescription[filter.matcher] || ""} ${filter.criteriaValue} (${filter.criteriaKey})`;
