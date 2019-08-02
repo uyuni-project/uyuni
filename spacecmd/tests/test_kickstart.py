@@ -454,3 +454,19 @@ echo 'some more hello'
         assert_args_expect(shell.client.kickstart.deleteProfile.call_args_list,
                            [((shell.session, "first_profile"), {}),
                             ((shell.session, "second_profile"), {})])
+
+    def test_kickstart_listcryptokeys_noargs(self, shell):
+        """
+        Test do_kickstart_listcryptokeys no args.
+
+        :param shell:
+        :return:
+        """
+        mprint = MagicMock()
+        with patch("spacecmd.kickstart.print", mprint) as prt:
+            data = spacecmd.kickstart.do_kickstart_listcryptokeys(shell, "")
+
+        assert not shell.kickstart.profile.system.listKeys.called
+        assert not mprint.called
+        assert data is None
+        assert shell.help_kickstart_listcryptokeys.called
