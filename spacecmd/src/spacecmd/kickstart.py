@@ -179,7 +179,7 @@ def complete_kickstart_delete(self, text, line, beg, end):
 def do_kickstart_delete(self, args):
     arg_parser = get_argument_parser()
 
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    args, _options = parse_command_arguments(args, arg_parser)
 
     if len(args) < 1:
         self.help_kickstart_delete()
