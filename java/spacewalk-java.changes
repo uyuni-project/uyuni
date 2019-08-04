@@ -1,4 +1,7 @@
+- Cloning Errata from a specific channel should not take packages
+  from other channels (bsc#1142764)
 - Add susemanager as prerequired for spacewalk-java
+
 
 -------------------------------------------------------------------
 Tue Jul 30 14:57:55 CEST 2019 - jgonzalez@suse.com
