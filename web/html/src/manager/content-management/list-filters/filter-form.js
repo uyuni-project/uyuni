@@ -155,7 +155,6 @@ const FilterForm = (props: Props) => {
         <Check
           name="deny"
           label={t("deny")}
-          disabled
           divClass="col-md-8 col-md-offset-3"/>
 
 
