@@ -850,6 +850,19 @@ public class ContentManager {
         ErrataManager.mergeErrataToChannel(user, includedErrata, tgt, src, false, false);
     }
 
+    /**
+     * Filters given entities based on given filters.
+     *
+     * Entities are processed one-by-one by filters as follows:
+     * - when any DENY filter is satisfied for an entity -> this entity gets filtered out
+     * - when an ALLOW is satisfied for an entity -> this entity gets NOT filtered out (even if it had been filtered out
+     *   by a DENY filter = ALLOW filters have higher priority)
+     *
+     * @param entities entities, e.g. packages
+     * @param filters filters, e.g. package filters
+     * @param <T> the type of the entity (e.g. Package)
+     * @return Pair with a set of nonfiltered entities and a set filtered entities
+     */
     private static <T> Pair<Set<T>, Set<T>> filterEntities(Set<T> entities,
             Collection<? extends ContentFilter<T>> filters) {
         Map<ContentFilter.Rule, List<ContentFilter<T>>> filtersByRule = filters.stream()
