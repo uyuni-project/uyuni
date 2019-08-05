@@ -21,6 +21,7 @@ import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.action.virtualization.BaseVirtualizationAction;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.domain.user.UserFactory;
 import com.redhat.rhn.manager.system.SystemManager;
 
 import com.google.gson.Gson;
@@ -127,41 +128,47 @@ public class VirtNotifications {
         // Each session sends messages to tell us what action ID they need to monitor
         Set<Long> serverIds = wsSessions.get(session);
         if (serverIds != null) {
-            Long newId = null;
-            try {
-                newId = Long.parseLong(messageBody);
-                serverIds.add(newId);
+            Optional<User> userOpt = Optional.ofNullable(session.getUserProperties().get("webUserID"))
+                    .map(webUserID -> UserFactory.lookupById((Long) webUserID));
+            if (userOpt.isPresent()) {
+                Long newId = null;
+                try {
+                    newId = Long.parseLong(messageBody);
+                    serverIds.add(newId);
 
-                // Send out a list of the latest pending actions to display
-                User user = (User)session.getUserProperties().get("currentUser");
-                Server server = SystemManager.lookupByIdAndUser(newId, user);
-                List<ServerAction> serverActions = ActionFactory.listServerActionsForServer(server,
-                        Arrays.asList(ActionFactory.STATUS_QUEUED, ActionFactory.STATUS_PICKEDUP));
-                Map<String, List<ServerAction>> groupedActions = serverActions.stream()
-                    .filter(sa -> sa.getParentAction() instanceof BaseVirtualizationAction)
-                    .collect(Collectors.toMap(sa -> ((BaseVirtualizationAction)sa.getParentAction()).getUuid(),
-                                              sa -> Arrays.asList(sa),
-                                              (sa1, sa2) -> {
-                                                  List<ServerAction> merged = new ArrayList<ServerAction>(sa1);
-                                                  merged.addAll(sa2);
-                                                  return merged;
-                                              }));
+                    // Send out a list of the latest pending actions to display
+                    Server server = SystemManager.lookupByIdAndUser(newId, userOpt.get());
+                    List<ServerAction> serverActions = ActionFactory.listServerActionsForServer(server,
+                            Arrays.asList(ActionFactory.STATUS_QUEUED, ActionFactory.STATUS_PICKEDUP));
+                    Map<String, List<ServerAction>> groupedActions = serverActions.stream()
+                            .filter(sa -> sa.getParentAction() instanceof BaseVirtualizationAction)
+                            .collect(Collectors.toMap(sa -> ((BaseVirtualizationAction) sa.getParentAction()).getUuid(),
+                                    sa -> Arrays.asList(sa),
+                                    (sa1, sa2) -> {
+                                        List<ServerAction> merged = new ArrayList<ServerAction>(sa1);
+                                        merged.addAll(sa2);
+                                        return merged;
+                                    }));
 
-                Map<String, Map<String, Object>> latestActions = groupedActions.keySet().stream()
-                        .collect(Collectors.toMap(uuid -> uuid,
-                                uuid -> groupedActions.get(uuid).stream()
-                                    .sorted(Comparator.comparing(ServerAction::getCreated).reversed())
-                                    .findFirst().map(sa -> {
-                                        Map<String, Object> data = new HashMap<>();
-                                        data.put("id", sa.getParentAction().getId());
-                                        data.put("status", sa.getStatus().getName());
-                                        return data;
-                                    }).get()));
+                    Map<String, Map<String, Object>> latestActions = groupedActions.keySet().stream()
+                            .collect(Collectors.toMap(uuid -> uuid,
+                                    uuid -> groupedActions.get(uuid).stream()
+                                            .sorted(Comparator.comparing(ServerAction::getCreated).reversed())
+                                            .findFirst().map(sa -> {
+                                                Map<String, Object> data = new HashMap<>();
+                                                data.put("id", sa.getParentAction().getId());
+                                                data.put("status", sa.getStatus().getName());
+                                                return data;
+                                            }).get()));
 
-                 sendMessage(session, GSON.toJson(latestActions));
+                    sendMessage(session, GSON.toJson(latestActions));
+                }
+                catch (NumberFormatException e) {
+                    LOG.error(String.format("Received invalid server Id: [message:%s]", messageBody));
+                }
             }
-            catch (NumberFormatException e) {
-                LOG.error(String.format("Received invalid server Id: [message:%s]", messageBody));
+            else {
+                LOG.debug("no authenticated user.");
             }
         }
         else {
