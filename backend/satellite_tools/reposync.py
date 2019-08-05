@@ -743,6 +743,7 @@ class RepoSync(object):
         src.close()
         if old_checksum and old_checksum != getFileChecksum('sha256', abspath):
             self.regen = True
+        log(0, "*** NOTE: Importing comps file for the channel '%s'. Previous comps will be discarded." % (self.channel['label']))        
 
         repoDataKey = 'group' if comps_type == 'comps' else comps_type
         file_timestamp = plug.repo.repoXML.repoData[repoDataKey].timestamp
