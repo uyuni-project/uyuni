@@ -838,9 +838,9 @@ public class ContentManager {
      * @param user the {@link User}
      */
     private static void alignErrata(Channel src, Channel tgt, Collection<ErrataFilter> errataFilters, User user) {
-        Map<Boolean, List<Errata>> partitionedErrata = filterErrata(src, errataFilters);
-        Set<Errata> includedErrata = new HashSet<>(partitionedErrata.get(true));
-        List<Errata> excludedErrata = partitionedErrata.get(false);
+        Pair<Set<Errata>, Set<Errata>> partitionedErrata = filterErrata(src, errataFilters);
+        Set<Errata> includedErrata = partitionedErrata.getLeft();
+        Set<Errata> excludedErrata = partitionedErrata.getRight();
 
         // Truncate extra errata in target channel
         ErrataManager.truncateErrata(includedErrata, tgt, user);
@@ -850,7 +850,7 @@ public class ContentManager {
         ErrataManager.mergeErrataToChannel(user, includedErrata, tgt, src, false, false);
     }
 
-    private static Map<Boolean, List<Errata>> filterErrata(Channel src, Collection<ErrataFilter> errataFilters) {
+    private static Pair<Set<Errata>, Set<Errata>> filterErrata(Channel src, Collection<ErrataFilter> errataFilters) {
         Set<ErrataFilter> errataFilterSet = new HashSet<>(errataFilters);
         Predicate<Errata> denyPredicate = errataFilterSet.stream()
                 .filter(f -> f.getRule() == ContentFilter.Rule.DENY)
@@ -867,7 +867,9 @@ public class ContentManager {
                 src.getErratas().stream().filter(allowPredicate)
         ).collect(toSet());
 
-        return src.getErratas().stream().collect(partitioningBy(e -> includedErrata.contains(e)));
+        Map<Boolean, Set<Errata>> collect = src.getErratas().stream()
+                .collect(partitioningBy(e -> includedErrata.contains(e), toSet()));
+        return Pair.of(collect.get(true), collect.get(false));
     }
 
     private static List<Long> extractPackageIds(Collection<Package> packages) {
