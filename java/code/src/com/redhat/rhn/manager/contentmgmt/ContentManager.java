@@ -810,7 +810,7 @@ public class ContentManager {
 
         // align the packages
         tgtChannel.getPackages().clear();
-        Set<Package> newPackages = filterPackages(srcChannel.getPackages(), filters);
+        Set<Package> newPackages = filterEntities(srcChannel.getPackages(), filters).getLeft();
         tgtChannel.getPackages().addAll(newPackages);
 
         // remove cache entries for only in tgt
@@ -819,7 +819,7 @@ public class ContentManager {
 
         // add cache entries for new ones
         ErrataCacheManager.insertCacheForChannelPackages(tgtChannel.getId(), null,
-                extractPackageIds(filterPackages(onlyInSrc, filters)));
+                extractPackageIds(filterEntities(onlyInSrc, filters).getLeft()));
     }
 
     /**
@@ -875,23 +875,6 @@ public class ContentManager {
 
     private static List<Long> extractPackageIds(Collection<Package> packages) {
         return packages.stream().map(p -> p.getId()).collect(toList());
-    }
-
-    private static Set<Package> filterPackages(Set<Package> packages, Collection<PackageFilter> packageFilters) {
-        Predicate<Package> denyPredicate = packageFilters.stream()
-                .filter(f -> f.getRule() == ContentFilter.Rule.DENY)
-                .map(f -> (Predicate) f)
-                .reduce(x -> false, (f1, f2) -> f1.or(f2));
-
-        Predicate<Package> allowPredicate = packageFilters.stream()
-                .filter(f -> f.getRule() == ContentFilter.Rule.ALLOW)
-                .map(f -> (Predicate) f)
-                .reduce(x -> false, (f1, f2) -> f1.or(f2));
-
-        return Stream.concat(
-                packages.stream().filter(denyPredicate.negate()),
-                packages.stream().filter(allowPredicate)
-        ).collect(toSet());
     }
 
     /**
