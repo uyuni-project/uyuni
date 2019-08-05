@@ -877,8 +877,8 @@ public class ContentManager {
                 .reduce(x -> false, (f1, f2) -> f1.or(f2));
 
         Predicate<T> compositePredicate = denyPredicate.negate().or(allowPredicate);
-        Map<Boolean, Set<T>> collect = entities.stream().collect(partitioningBy(compositePredicate, toSet()));
-        return Pair.of(collect.get(true), collect.get(false));
+        Map<Boolean, Set<T>> filteredEntities = entities.stream().collect(partitioningBy(compositePredicate, toSet()));
+        return Pair.of(filteredEntities.get(true), filteredEntities.get(false));
     }
 
     private static List<Long> extractPackageIds(Collection<Package> packages) {
