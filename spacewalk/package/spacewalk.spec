@@ -24,7 +24,7 @@
 %global postgresql /usr/bin/psql
 %endif
 %if !0%{?is_opensuse}
-%define with_oracle     1
+%define with_oracle     0
 %endif
 
 Name:           spacewalk
@@ -42,7 +42,7 @@ Spacewalk is a systems management application that will
 inventory, provision, update and control your Linux machines.
 
 %package common
-Summary:        Spacewalk Systems Management Application with Oracle database backend
+Summary:        Spacewalk Systems Management Application with postgresql database backend
 Group:          Applications/Internet
 Obsoletes:      spacewalk < 0.7.0
 
