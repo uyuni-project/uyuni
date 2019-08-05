@@ -17,6 +17,7 @@ package com.redhat.rhn.manager.contentmgmt.test;
 
 import static com.redhat.rhn.domain.contentmgmt.ContentFilter.EntityType.ERRATUM;
 import static com.redhat.rhn.domain.contentmgmt.ContentFilter.EntityType.PACKAGE;
+import static com.redhat.rhn.domain.contentmgmt.ContentFilter.Rule.ALLOW;
 import static com.redhat.rhn.domain.contentmgmt.ContentFilter.Rule.DENY;
 import static com.redhat.rhn.domain.role.RoleFactory.ORG_ADMIN;
 import static java.util.Collections.emptyList;
@@ -52,6 +53,7 @@ import com.redhat.rhn.testing.ChannelTestUtils;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -442,6 +444,93 @@ public class ContentManagerChannelAlignmentTest extends BaseTestCaseWithUser {
         tgtChan = (Channel) HibernateFactory.reload(tgtChan);
         assertContains(tgtChan.getErratas(), e1);
         assertContains(tgtChan.getErratas(), e5);
+    }
+
+    // nothing exciting, allow filter should have no effect
+    public void testSimpleAllowFilter() {
+        FilterCriteria criteria = new FilterCriteria(FilterCriteria.Matcher.EQUALS, "nevra", pkg.getNameEvra());
+        ContentFilter filter = ContentManager.createFilter("filter123", ALLOW, PACKAGE, criteria, user);
+
+        ContentManager.alignEnvironmentTargetSync(List.of(filter), srcChannel, tgtChannel, user);
+
+        assertEquals(srcChannel.getPackages(), tgtChannel.getPackages());
+    }
+
+    /**
+     * Test combination of ALLOW and DENY filter on a package
+     */
+    public void testAllowDenyFilters() {
+        FilterCriteria criteria = new FilterCriteria(FilterCriteria.Matcher.EQUALS, "nevra", pkg.getNameEvra());
+        ContentFilter denyFilter = ContentManager.createFilter("denyfilter123", DENY, PACKAGE, criteria, user);
+
+        // using only DENY filter filters the package out
+        ContentManager.alignEnvironmentTargetSync(List.of(denyFilter), srcChannel, tgtChannel, user);
+        assertFalse(tgtChannel.getPackages().contains(pkg));
+
+        // but in combination of DENY & ALLOW filter, the ALLOW filter makes the package unfiltered
+        ContentFilter allowFilter = ContentManager.createFilter("allowfilter123", ALLOW, PACKAGE, criteria, user);
+        ContentManager.alignEnvironmentTargetSync(List.of(allowFilter, denyFilter), srcChannel, tgtChannel, user);
+        assertTrue(tgtChannel.getPackages().contains(pkg));
+    }
+
+    /**
+     * Test combination of ALLOW and DENY filter on an erratum
+     */
+    public void testAllowDenyFiltersErrata() {
+        FilterCriteria criteria = new FilterCriteria(FilterCriteria.Matcher.EQUALS, "advisory_name", errata.getAdvisoryName());
+        ContentFilter denyFilter = ContentManager.createFilter("denyfilter123", DENY, ERRATUM, criteria, user);
+
+        // using only DENY filter filters the erratum out
+        ContentManager.alignEnvironmentTargetSync(List.of(denyFilter), srcChannel, tgtChannel, user);
+        tgtChannel = (Channel) HibernateFactory.reload(tgtChannel);
+        assertFalse(tgtChannel.getErratas().contains(errata));
+
+        // but in combination of DENY & ALLOW filter, the ALLOW filter makes the erratum unfiltered
+        ContentFilter allowFilter = ContentManager.createFilter("allowfilter123", ALLOW, ERRATUM, criteria, user);
+        ContentManager.alignEnvironmentTargetSync(List.of(allowFilter, denyFilter), srcChannel, tgtChannel, user);
+        tgtChannel = (Channel) HibernateFactory.reload(tgtChannel);
+        assertTrue(tgtChannel.getErratas().contains(errata));
+    }
+
+    /**
+     * Test combination of ALLOW and DENY filter on an erratum
+     *
+     * We use a DENY filter to filter out bunch of errata and then we re-include an erratum using an
+     * ALLOW filter
+     *
+     * @throws Exception if anything goes wrong
+     */
+    public void testAllowDenyFiltersErrata2() throws Exception {
+        Channel srcChan = ChannelFactoryTest.createTestChannel(user, false);
+
+        Errata e1 = ErrataFactoryTest.createTestPublishedErrata(user.getOrg().getId());
+        e1.setIssueDate(new Date(1000));
+        Errata e2 = ErrataFactoryTest.createTestPublishedErrata(user.getOrg().getId());
+        e2.setIssueDate(new Date(2000));
+        String advisoryName = "my-advisory-name";
+        Errata e3 = ErrataFactoryTest.createTestPublishedErrata(user.getOrg().getId());
+        e3.setIssueDate(new Date(3000));
+        e3.setAdvisoryName(advisoryName);
+        Errata e4 = ErrataFactoryTest.createTestPublishedErrata(user.getOrg().getId());
+        e4.setIssueDate(new Date(4000));
+
+        srcChan.addErrata(e1);
+        srcChan.addErrata(e2);
+        srcChan.addErrata(e3);
+
+        FilterCriteria criteria = new FilterCriteria(FilterCriteria.Matcher.GREATEREQ, "issue_date",
+                "1970-01-01T01:00:02+01:00");
+        ContentFilter denyFilter = ContentManager.createFilter("denyfilter123", DENY, ERRATUM, criteria, user);
+        FilterCriteria criteria2 = new FilterCriteria(FilterCriteria.Matcher.EQUALS, "advisory_name", advisoryName);
+        ContentFilter allowFilter = ContentManager.createFilter("allowfilter123", ALLOW, ERRATUM, criteria2, user);
+
+        ContentManager.alignEnvironmentTargetSync(List.of(allowFilter, denyFilter), srcChan, tgtChannel, user);
+
+        tgtChannel = (Channel) HibernateFactory.reload(tgtChannel);
+        assertTrue(tgtChannel.getErratas().contains(e1));
+        assertFalse(tgtChannel.getErratas().contains(e2));
+        assertTrue(tgtChannel.getErratas().contains(e3));
+        assertFalse(tgtChannel.getErratas().contains(e4));
     }
 
     /**
