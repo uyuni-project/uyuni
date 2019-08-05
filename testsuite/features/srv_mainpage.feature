@@ -20,7 +20,7 @@ Feature: Main landing page options and preferences
     And I follow "Copyright Notice"
     Then I should see a "Copyright (c) 2011 - 2019 SUSE LLC." text
 
-  @susemanager
+@susemanager
   Scenario: Access the EULA
     Given I am not authorized
     When I go to the home page

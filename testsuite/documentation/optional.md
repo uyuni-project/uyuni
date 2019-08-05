@@ -148,6 +148,14 @@ Inside the testsuite, the scenarios that are tagged with
 are executed only if the server has SUSE Manager installed and will
 not run if Uyuni is detected.
 
+Inside the testsuite, the scenarios that are tagged with
+
+```
+@uyuni
+```
+are executed only if the server has Uyuni installed and will
+not run if SUSE Manager is detected.
+
 ### Testing with a mirror
 
 Using a mirror with the testsuite is not mandatory.
