@@ -206,13 +206,23 @@ public class UserNotificationFactory extends HibernateFactory {
      * @return the unread messages size count
      */
     public static long unreadUserNotificationsSize(User userIn) {
+        return unreadUserNotificationsSize(userIn.getId());
+    }
+
+    /**
+     * Get the count of unread messages
+     *
+     * @param userIdIn the user id
+     * @return the unread messages size count
+     */
+    public static long unreadUserNotificationsSize(long userIdIn) {
         CriteriaBuilder builder = getSession().getCriteriaBuilder();
         CriteriaQuery<Long> criteria = builder.createQuery(Long.class);
         Root<UserNotification> root = criteria.from(UserNotification.class);
         CriteriaQuery<Long> count = criteria.select(builder.count(root));
 
         criteria.where(
-                builder.equal(root.get("userId"), userIn.getId()),
+                builder.equal(root.get("userId"), userIdIn),
                 builder.isFalse(root.get("read")));
 
         return getSession().createQuery(count).getSingleResult();
