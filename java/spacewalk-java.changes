@@ -1,3 +1,4 @@
+- Improve websocket authentication to prevent errors in logs (bsc#1138454)
 - Normalize date formats for actions, notifications and clm (bsc#1142774)
 - Cloning Errata from a specific channel should not take packages
   from other channels (bsc#1142764)

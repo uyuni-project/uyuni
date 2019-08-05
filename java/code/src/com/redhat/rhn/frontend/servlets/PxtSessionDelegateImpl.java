@@ -204,7 +204,7 @@ public class PxtSessionDelegateImpl implements PxtSessionDelegate {
         pxtSession.setExpires(TimeUtils.currentTimeSeconds() +
                 SessionManager.lifetimeValue());
         savePxtSession(pxtSession);
-
+        request.getSession().setAttribute("webUserID", pxtSession.getWebUserId());
         response.addCookie(pxtCookie);
     }
 
@@ -229,6 +229,7 @@ public class PxtSessionDelegateImpl implements PxtSessionDelegate {
 
         // Invalidate csrf_token
         request.getSession().setAttribute("csrf_token", null);
+        request.getSession().setAttribute("webUserID", null);
 
         refreshPxtSession(request, response, 0);
     }
