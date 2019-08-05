@@ -32,10 +32,16 @@ import com.suse.manager.webui.controllers.contentmanagement.response.ProjectProp
 import com.suse.manager.webui.controllers.contentmanagement.response.ProjectResponse;
 import com.suse.manager.webui.controllers.contentmanagement.response.ProjectResumeResponse;
 import com.suse.manager.webui.controllers.contentmanagement.response.ProjectSoftwareSourceResponse;
+import com.suse.manager.webui.utils.ViewHelper;
 
+import java.time.Instant;
+import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+
 
 /**
  * Utility class to map db entities into view response beans
@@ -187,7 +193,19 @@ public class ResponseMappers {
                     contentFilterResponse.setEntityType(filter.getEntityType().getLabel());
                     contentFilterResponse.setMatcher(filter.getCriteria().getMatcher().getLabel());
                     contentFilterResponse.setCriteriaKey(filter.getCriteria().getField());
-                    contentFilterResponse.setCriteriaValue(filter.getCriteria().getValue());
+                    // If we have a date as a criteria value we need to format it with the current user timezone
+                    if (filter.getCriteria().getField().equals("issue_date")) {
+                        DateTimeFormatter timeFormatter = DateTimeFormatter.ISO_DATE_TIME;
+                        OffsetDateTime offsetDateTime = OffsetDateTime.parse(
+                                filter.getCriteria().getValue(), timeFormatter
+                        );
+                        var criteriaValueDate = Date.from(Instant.from(offsetDateTime));
+
+                        contentFilterResponse.setCriteriaValue(ViewHelper.getInstance().renderDate(criteriaValueDate));
+                    }
+                    else {
+                        contentFilterResponse.setCriteriaValue(filter.getCriteria().getValue());
+                    }
                     contentFilterResponse.setDeny(filter.getRule() == ContentFilter.Rule.DENY);
                     contentFilterResponse.setProjects(
                             projects.stream()
