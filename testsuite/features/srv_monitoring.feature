@@ -1,8 +1,7 @@
 # Copyright (c) 2019 SUSE LLC
 # Licensed under the terms of the MIT license.
-#
 
-Feature: Monitor SUSE Manager server
+Feature: Enable and disable monitoring of the server
 
   # This assumes that monitoring is enabled via sumaform
   Scenario: Disable monitoring from the UI
