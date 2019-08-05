@@ -1,3 +1,4 @@
+-- oracle equivalent source sha1 445702c0958eb00a67d966f0d5403174c4e8f450
 --
 -- Copyright (c) 2018 SUSE LLC
 --
@@ -8,6 +9,8 @@
 -- along with this software; if not, see
 -- http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 --
+
+DROP VIEW IF EXISTS suseChannelUserRoleView;
 
 CREATE OR REPLACE VIEW
 suseChannelUserRoleView

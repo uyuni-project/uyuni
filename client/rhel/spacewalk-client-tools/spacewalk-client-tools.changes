@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Wed Jul 31 17:32:48 CEST 2019 - jgonzalez@suse.com
+
+- version 4.0.9-1
 - Make a explicit requirement to systemd for spacewalk-client-tools
   when rhnsd timer is installed
 - The rhnsd service was replaced by rhnsd timer, so

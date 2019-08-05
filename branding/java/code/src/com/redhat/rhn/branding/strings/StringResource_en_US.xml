@@ -1814,7 +1814,7 @@ available for this kickstart profile to function properly.
         <source>System &lt;strong&gt;{0}&lt;/strong&gt; has a pending autoinstallation scheduled.</source>
       </trans-unit>
       <trans-unit id="sdc.details.edit.propertieschangedupdate">
-        <source>System properties changed for &lt;strong&gt;{0}&lt;/strong&gt;. &lt;br/&gt; &lt;strong&gt;{0}&lt;/strong&gt; will be &lt;strong&gt;fully updated&lt;/strong&gt; in accordance with Auto Patch Update preference.</source>
+        <source>&lt;strong&gt;{0}&lt;/strong&gt; will be &lt;strong&gt;fully updated&lt;/strong&gt; in accordance with Auto Patch Update preference.</source>
       </trans-unit>
       <trans-unit id="api.errata.invaliderrata">
         <source>Invalid patch: {0}</source>
@@ -2228,7 +2228,7 @@ tree will not be usable for autoinstalling.
 
       <!--  SCC refresh -->
       <trans-unit id="copyright.jsp.title">
-        <source>Copyright (c) 2011 - 2018 SUSE LLC.</source>
+        <source>Copyright (c) 2011 - 2019 SUSE LLC.</source>
       </trans-unit>
       <trans-unit id="copyright.jsp.urlagreement">
         <source>&lt;a href=&quot;/rhn/help/Eula.do&quot;&gt;SUSE MANAGER LICENSE AGREEMENT&lt;/a&gt;</source>

@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Wed Jul 31 17:42:04 CEST 2019 - jgonzalez@suse.com
+
+- version 4.0.13-1
 - Check for result of image rsync transfer to catch failures early (bsc#1104949)
 - Force VM off before deleting it (bsc#1138127)
 - Allow forcing off or resetting VMs

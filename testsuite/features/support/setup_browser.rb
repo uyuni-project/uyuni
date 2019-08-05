@@ -101,6 +101,11 @@ Before('@susemanager') do |scenario|
   scenario.skip_invoke! unless $product == 'SUSE Manager'
 end
 
+# do some tests only if the server is using Uyuni
+Before('@uyuni') do |scenario|
+  scenario.skip_invoke! unless $product == 'Uyuni'
+end
+
 # do test only if HTTP proxy for SUSE Manager is defined
 Before('@server_http_proxy') do |scenario|
   scenario.skip_invoke! unless $server_http_proxy

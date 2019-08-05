@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Wed Jul 31 17:32:10 CEST 2019 - jgonzalez@suse.com
+
+- version 4.0.10-1
 - Run bootstrap.sh completely unattended on Ubuntu (bsc#1137881)
 - Add new packages names to instructions for adding remote commands
   support for traditional clients (bsc#1137255)

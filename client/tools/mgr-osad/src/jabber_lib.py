@@ -1381,7 +1381,7 @@ def generate_random_string(length=20):
     result = []
     cur_length = 0
     while 1:
-        s.update(devrandom.read(random_bytes))
+        s.update(bstr(devrandom.read(random_bytes)))
         buf = s.hexdigest()
         result.append(buf)
         cur_length = cur_length + len(buf)

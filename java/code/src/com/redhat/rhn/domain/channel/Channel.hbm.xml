@@ -299,46 +299,50 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
     <sql-query name="Channel.findRedHatBaseChannelsByUserId">
         <![CDATA[SELECT {c.*}
                 FROM rhnChannel {c}
-                    INNER JOIN rhnUserChannel uc ON uc.channel_id = c.id
+                    INNER JOIN suseChannelUserRoleView SCURV ON SCURV.channel_id = c.id
                     LEFT OUTER JOIN rhnChannelCloned c_1_ ON c.id = c_1_.id
                 WHERE c.org_id is null
                     AND c.parent_channel is null
-                    AND uc.user_id = :userId]]>
+                    AND SCURV.user_id = :userId
+                    AND SCURV.deny_reason IS NULL]]>
         <return alias="c" class="com.redhat.rhn.domain.channel.Channel" />
     </sql-query>
 
     <sql-query name="Channel.findCustomBaseChannels">
         <![CDATA[SELECT {c.*}
-                FROM rhnUserChannel uc,
+                FROM suseChannelUserRoleView SCURV,
                     rhnChannel {c} left outer join rhnChannelCloned c_1_
                     ON c.id = c_1_.id
-                WHERE c.id = uc.channel_id
-                    AND uc.user_id = :user_id
+                WHERE c.id = SCURV.channel_id
+                    AND SCURV.user_id = :user_id
+                    AND SCURV.deny_reason IS NULL
                     AND c.org_id is not null
-                    AND uc.role = 'subscribe'
+                    AND SCURV.role = 'subscribe'
                                 AND c.parent_channel is null
                     order by C.name]]>
         <return alias="c" class="com.redhat.rhn.domain.channel.Channel" />
     </sql-query>
     <sql-query name="Channel.findSubscribableBaseChannels">
         <![CDATA[SELECT {c.*}
-                 FROM rhnUserChannel uc JOIN rhnChannel {c} ON c.id = uc.channel_id
+                 FROM suseChannelUserRoleView SCURV JOIN rhnChannel {c} ON c.id = SCURV.channel_id
                      LEFT OUTER JOIN rhnChannelCloned c_1_ ON c.id = c_1_.id
-                 WHERE uc.user_id = :user_id
-                     AND uc.role = 'subscribe'
+                 WHERE SCURV.user_id = :user_id
+                     AND SCURV.deny_reason IS NULL
+                     AND SCURV.role = 'subscribe'
                      AND c.parent_channel is null
                      ORDER BY c.name]]>
         <return alias="c" class="com.redhat.rhn.domain.channel.Channel" />
     </sql-query>
     <sql-query name="Channel.findAllBaseChannels">
         <![CDATA[SELECT {c.*}
-                 FROM rhnUserChannel uc,
+                 FROM suseChannelUserRoleView SCURV,
                       rhnChannel {c} left outer join rhnChannelCloned c_1_
                       ON c.id = c_1_.id
-                 WHERE c.id = uc.channel_id
-                   AND uc.org_id = :org_id
-                   AND uc.user_id = :user_id
-                   AND uc.role = 'subscribe'
+                 WHERE c.id = SCURV.channel_id
+                   AND SCURV.org_id = :org_id
+                   AND SCURV.deny_reason IS NULL
+                   AND SCURV.user_id = :user_id
+                   AND SCURV.role = 'subscribe'
                    AND c.parent_channel is null
                   ORDER BY c.name]]>
         <return alias="c" class="com.redhat.rhn.domain.channel.Channel" />
