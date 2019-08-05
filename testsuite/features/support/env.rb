@@ -66,44 +66,49 @@ end
 enable_assertions
 
 # do some tests only if the corresponding node exists
-Before('@proxy') do |scenario|
-  scenario.skip_invoke! unless $proxy
+Before('@proxy') do
+  skip_this_scenario unless $proxy
 end
-Before('@centos_minion') do |scenario|
-  scenario.skip_invoke! unless $ceos_minion
+
+Before('@centos_minion') do
+  skip_this_scenario unless $ceos_minion
 end
-Before('@ubuntu_minion') do |scenario|
-  scenario.skip_invoke! unless $ubuntu_minion
+
+Before('@ubuntu_minion') do
+  skip_this_scenario unless $ubuntu_minion
 end
-Before('@pxeboot_minion') do |scenario|
-  scenario.skip_invoke! unless $pxeboot_mac
+
+Before('@pxeboot_minion') do
+  skip_this_scenario unless $pxeboot_mac
 end
-Before('@ssh_minion') do |scenario|
-  scenario.skip_invoke! unless $ssh_minion
+
+Before('@ssh_minion') do
+  skip_this_scenario unless $ssh_minion
 end
 
 # do some tests only if node is of a given type
-Before('@sle15_minion') do |scenario|
-  scenario.skip_invoke! unless $sle15_minion
+Before('@sle15_minion') do
+  skip_this_scenario unless $sle15_minion
 end
 
 # do some tests only if there is a private network
-Before('@private_net') do |scenario|
-  scenario.skip_invoke! unless $private_net
+Before('@private_net') do
+  skip_this_scenario unless $private_net
 end
 
 # do some tests only if we don't use a mirror
-Before('@no_mirror') do |scenario|
-  scenario.skip_invoke! if $mirror
+Before('@no_mirror') do
+  skip_this_scenario if $mirror
 end
 
 # do test only if HTTP proxy for SUSE Manager is defined
-Before('@server_http_proxy') do |scenario|
-  scenario.skip_invoke! unless $server_http_proxy
+Before('@server_http_proxy') do
+  skip_this_scenario unless $server_http_proxy
 end
 
 # have more infos about the errors
 def debug_server_on_realtime_failure
+  puts ''
   puts '#' * 51 + ' /var/log/rhn/rhn_web_ui.log ' + '#' * 51
   out, _code = $server.run('tail -n35 /var/log/rhn/rhn_web_ui.log')
   puts out
