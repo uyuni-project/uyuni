@@ -852,14 +852,14 @@ public class ContentManager {
 
     private static <T> Pair<Set<T>, Set<T>> filterEntities(Set<T> entities,
             Collection<? extends ContentFilter<T>> filters) {
-        Set<ContentFilter<T>> filterSet = new HashSet<>(filters);
-        Predicate<T> denyPredicate = filterSet.stream()
-                .filter(f -> f.getRule() == ContentFilter.Rule.DENY)
+        Map<ContentFilter.Rule, List<ContentFilter<T>>> filtersByRule = filters.stream()
+                .collect(groupingBy(ContentFilter::getRule));
+
+        Predicate<T> denyPredicate = filtersByRule.getOrDefault(ContentFilter.Rule.DENY, emptyList()).stream()
                 .map(f -> (Predicate) f)
                 .reduce(x -> false, (f1, f2) -> f1.or(f2));
 
-        Predicate<T> allowPredicate = filterSet.stream()
-                .filter(f -> f.getRule() == ContentFilter.Rule.ALLOW)
+        Predicate<T> allowPredicate = filtersByRule.getOrDefault(ContentFilter.Rule.ALLOW, emptyList()).stream()
                 .map(f -> (Predicate) f)
                 .reduce(x -> false, (f1, f2) -> f1.or(f2));
 
