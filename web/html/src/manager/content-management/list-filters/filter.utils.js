@@ -5,7 +5,7 @@ import filtersEnum from "../shared/business/filters.enum";
 import type {FilterFormType, FilterServerType} from "../shared/type/filter.type";
 import Functions from "utils/functions";
 
-export function mapFilterFormToRequest(filterForm: FilterFormType, projectLabel: string): FilterServerType {
+export function mapFilterFormToRequest(filterForm: FilterFormType, projectLabel: string, localTime: string): FilterServerType {
   const requestForm = {};
   requestForm.projectLabel = projectLabel;
   requestForm.name = filterForm.name;
@@ -28,7 +28,9 @@ export function mapFilterFormToRequest(filterForm: FilterFormType, projectLabel:
     requestForm.criteriaValue = filterForm.advisoryName;
   } else if (filterForm.type === filtersEnum.enum.ERRATUM_BYDATE.key) {
     requestForm.criteriaKey = "issue_date";
-    requestForm.criteriaValue = filterForm.issueDate ? moment(filterForm.issueDate).format("YYYY-MM-DDTHH:mm:ssZ"):  "";
+    requestForm.criteriaValue = filterForm.issueDate
+      ? moment(Functions.Utils.dateWithoutTimezone(filterForm.issueDate, localTime)).format("YYYY-MM-DDTHH:mm:ss.SSSZ")
+      :  "";
   } else {
     requestForm.criteriaKey = "name";
     requestForm.criteriaValue = filterForm.criteria;
