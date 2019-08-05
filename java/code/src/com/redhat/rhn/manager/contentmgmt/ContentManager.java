@@ -838,7 +838,7 @@ public class ContentManager {
      * @param user the {@link User}
      */
     private static void alignErrata(Channel src, Channel tgt, Collection<ErrataFilter> errataFilters, User user) {
-        Pair<Set<Errata>, Set<Errata>> partitionedErrata = filterErrata(src, errataFilters);
+        Pair<Set<Errata>, Set<Errata>> partitionedErrata = filterEntities(src.getErratas(), errataFilters);
         Set<Errata> includedErrata = partitionedErrata.getLeft();
         Set<Errata> excludedErrata = partitionedErrata.getRight();
 
@@ -850,25 +850,26 @@ public class ContentManager {
         ErrataManager.mergeErrataToChannel(user, includedErrata, tgt, src, false, false);
     }
 
-    private static Pair<Set<Errata>, Set<Errata>> filterErrata(Channel src, Collection<ErrataFilter> errataFilters) {
-        Set<ErrataFilter> errataFilterSet = new HashSet<>(errataFilters);
-        Predicate<Errata> denyPredicate = errataFilterSet.stream()
+    private static <T> Pair<Set<T>, Set<T>> filterEntities(Set<T> entities,
+            Collection<? extends ContentFilter<T>> filters) {
+        Set<ContentFilter<T>> filterSet = new HashSet<>(filters);
+        Predicate<T> denyPredicate = filterSet.stream()
                 .filter(f -> f.getRule() == ContentFilter.Rule.DENY)
                 .map(f -> (Predicate) f)
                 .reduce(x -> false, (f1, f2) -> f1.or(f2));
 
-        Predicate<Errata> allowPredicate = errataFilterSet.stream()
+        Predicate<T> allowPredicate = filterSet.stream()
                 .filter(f -> f.getRule() == ContentFilter.Rule.ALLOW)
                 .map(f -> (Predicate) f)
                 .reduce(x -> false, (f1, f2) -> f1.or(f2));
 
-        Set<Errata> includedErrata = Stream.concat(
-                src.getErratas().stream().filter(denyPredicate.negate()),
-                src.getErratas().stream().filter(allowPredicate)
+        Set<T> includedEntities = Stream.concat(
+                entities.stream().filter(denyPredicate.negate()),
+                entities.stream().filter(allowPredicate)
         ).collect(toSet());
 
-        Map<Boolean, Set<Errata>> collect = src.getErratas().stream()
-                .collect(partitioningBy(e -> includedErrata.contains(e), toSet()));
+        Map<Boolean, Set<T>> collect = entities.stream()
+                .collect(partitioningBy(e -> includedEntities.contains(e), toSet()));
         return Pair.of(collect.get(true), collect.get(false));
     }
 
