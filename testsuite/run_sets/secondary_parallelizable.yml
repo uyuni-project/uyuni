@@ -31,6 +31,7 @@
 - features/secondary/srv_spacewalk_channel.feature
 - features/secondary/srv_change_task_schedule.feature
 - features/secondary/srv_notifications.feature
+- features/secondary/srv_monitoring.feature
 
 - features/secondary/allcli_overview_systems_details.feature
 - features/secondary/allcli_system_group.feature

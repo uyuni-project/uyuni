@@ -121,6 +121,7 @@
 - features/secondary/srv_notifications.feature
 - features/secondary/min_empty_system_profiles.feature
 - features/secondary/min_custom_pkg_download_endpoint.feature
+- features/secondary/srv_monitoring.feature
 
 ## Secondary features END ##
 
