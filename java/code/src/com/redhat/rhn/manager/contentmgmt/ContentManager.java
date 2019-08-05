@@ -876,13 +876,8 @@ public class ContentManager {
                 .map(f -> (Predicate) f)
                 .reduce(x -> false, (f1, f2) -> f1.or(f2));
 
-        Set<T> includedEntities = Stream.concat(
-                entities.stream().filter(denyPredicate.negate()),
-                entities.stream().filter(allowPredicate)
-        ).collect(toSet());
-
-        Map<Boolean, Set<T>> collect = entities.stream()
-                .collect(partitioningBy(e -> includedEntities.contains(e), toSet()));
+        Predicate<T> compositePredicate = denyPredicate.negate().or(allowPredicate);
+        Map<Boolean, Set<T>> collect = entities.stream().collect(partitioningBy(compositePredicate, toSet()));
         return Pair.of(collect.get(true), collect.get(false));
     }
 
