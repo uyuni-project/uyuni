@@ -40,10 +40,3 @@ Feature: Register a traditional client
     When I follow "Details" in the content area
     And I follow "Proxy" in the content area
     Then I should see "sle-client" hostname
-
-  Scenario: Check tab links "Software" => "Patches"
-    Given I am on the Systems overview page of this "sle-client"
-    When I follow "Software" in the content area
-    And I follow "Patches" in the content area
-    Then I should see a "Relevant Patches" text
-    And I should see a "Show" button
