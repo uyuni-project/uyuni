@@ -114,16 +114,6 @@ Before('@server_http_proxy') do |scenario|
   scenario.skip_invoke! unless $server_http_proxy
 end
 
-# do some tests only if the server is using SUSE Manager
-Before('@susemanager') do |scenario|
-  scenario.skip_invoke! unless $product == 'SUSE Manager'
-end
-
-# do some tests only if the server is using Uyuni
-Before('@uyuni') do |scenario|
-  scenario.skip_invoke! unless $product == 'Uyuni'
-end
-
 # have more infos about the errors
 def debug_server_on_realtime_failure
   puts '#' * 51 + ' /var/log/rhn/rhn_web_ui.log ' + '#' * 51

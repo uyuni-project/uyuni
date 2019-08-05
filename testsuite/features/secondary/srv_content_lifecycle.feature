@@ -39,16 +39,7 @@ Feature: Content lifecycle
     Then I wait until I see "SLES12-SP4-Pool for x86_64" text
     And I should see a "Version 1: (draft - not built) - Check the changes below" text
 
-  @uyuni
-  Scenario: Verify added sources for Uyuni
-    Given I am authorized as "admin" with password "admin"
-    When I follow the left menu "Content Lifecycle > Projects"
-    And I follow "clp_name"
-    And I should see a "SLES12-SP4-Updates for x86_64" text
-    And I should see a "Build (2)" text
-
-  @susemanager
-  Scenario: Verify added sources for Suse Manager
+  Scenario: Verify added sources
     Given I am authorized as "admin" with password "admin"
     When I follow the left menu "Content Lifecycle > Projects"
     And I follow "clp_name"

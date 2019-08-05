@@ -13,8 +13,6 @@ Apart from Cucumber, the testsuite relies on a number of [software components](d
 
 You can run the SUSE Manager testsuite [with sumaform](https://github.com/moio/sumaform/blob/master/README_ADVANCED.md#cucumber-testsuite).
 
-If you want to run the testsuite for [Uyuni](https://www.uyuni-project.org), nothing special needs to be done. The testuite will autodetect it.
-
 ## Core features, idempotency and tests order
 
 The tests (features) included in the `[testsuite.yml](https://github.com/SUSE/spacewalk-testsuite-base/blob/master/run_sets/testsuite.yml)` file will be executed sequentially from the top to the bottom.

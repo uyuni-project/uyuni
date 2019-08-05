@@ -33,14 +33,6 @@ def count_table_items
   items_label.split('of ')[1]
 end
 
-def product
-  _product_raw, code = $server.run('rpm -q patterns-uyuni_server', false)
-  return 'Uyuni' if code.zero?
-  _product_raw, code = $server.run('rpm -q patterns-suma_server', false)
-  return 'SUSE Manager' if code.zero?
-  raise 'Could not determine product'
-end
-
 # This function creates salt pillar file in the default pillar_roots location
 def inject_salt_pillar_file(source, file)
   dest = '/srv/pillar/' + file
