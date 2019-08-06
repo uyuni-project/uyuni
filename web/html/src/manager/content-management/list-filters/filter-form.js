@@ -152,11 +152,26 @@ const FilterForm = (props: Props) => {
           </div>
         }
 
-        <Check
-          name="deny"
-          label={t("deny")}
-          divClass="col-md-8 col-md-offset-3"/>
+        <Select
+            name="rule"
+            required
+            defaultValue="deny"
+            label={t("Rule")}
+            labelClass="col-md-3"
+            divClass="col-md-6">
 
+            <option
+              selected
+              key="deny"
+              value="deny">
+              {t("Deny")}
+            </option>
+            <option
+              key="allow"
+              value="allow">
+              {t("Allow")}
+            </option>
+        </Select>
 
       </React.Fragment>
     </Form>

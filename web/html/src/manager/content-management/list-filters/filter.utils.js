@@ -9,7 +9,7 @@ export function mapFilterFormToRequest(filterForm: FilterFormType, projectLabel:
   const requestForm = {};
   requestForm.projectLabel = projectLabel;
   requestForm.name = filterForm.name;
-  requestForm.deny = filterForm.deny;
+  requestForm.rule = filterForm.rule;
   requestForm.entityType = filtersEnum.findByKey(filterForm.type).entityType;
   requestForm.matcher = filtersEnum.findByKey(filterForm.type).matcher;
   if (filterForm.type === filtersEnum.enum.PACKAGE_NEVRA.key) {
@@ -43,7 +43,7 @@ export function mapResponseToFilterForm(filtersResponse: Array<FilterServerType>
     let filterForm = {};
     filterForm.id = filterResponse.id;
     filterForm.name = filterResponse.name;
-    filterForm.deny = filterResponse.deny;
+    filterForm.rule = filterResponse.rule;
     filterForm.matcher = filterResponse.matcher;
     filterForm.projects = filterResponse.projects;
 

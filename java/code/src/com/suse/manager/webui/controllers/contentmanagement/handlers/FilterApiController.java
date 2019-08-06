@@ -162,7 +162,7 @@ public class FilterApiController {
         try {
             createdFilter = ContentManager.createFilter(
                     createFilterRequest.getName(),
-                    createFilterRequest.getDeny() ? ContentFilter.Rule.DENY : ContentFilter.Rule.ALLOW,
+                    ContentFilter.Rule.lookupByLabel(createFilterRequest.getRule()),
                     ContentFilter.EntityType.lookupByLabel(createFilterRequest.getEntityType()),
                     filterCriteria,
                     user
@@ -206,7 +206,7 @@ public class FilterApiController {
         ContentManager.updateFilter(
                 Long.parseLong(req.params("filterId")),
                 Optional.ofNullable(updateFilterRequest.getName()),
-                Optional.of(updateFilterRequest.getDeny() ? ContentFilter.Rule.DENY : ContentFilter.Rule.ALLOW),
+                Optional.ofNullable(updateFilterRequest.getRule()).map(ContentFilter.Rule::lookupByLabel),
                 Optional.of(filterCriteria),
                 user
         );
