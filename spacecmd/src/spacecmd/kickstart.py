@@ -733,21 +733,14 @@ def complete_kickstart_addactivationkeys(self, text, line, beg, end):
 
 
 def do_kickstart_addactivationkeys(self, args):
-    arg_parser = get_argument_parser()
+    args, _options = parse_command_arguments(args, get_argument_parser())
 
-    (args, _options) = parse_command_arguments(args, arg_parser)
-
-    if len(args) < 2:
+    if len(args) > 1:
+        profile = args[0]
+        for key in args[1:]:
+            self.client.kickstart.profile.keys.addActivationKey(self.session, profile, key)
+    else:
         self.help_kickstart_addactivationkeys()
-        return
-
-    profile = args[0]
-    keys = args[1:]
-
-    for key in keys:
-        self.client.kickstart.profile.keys.addActivationKey(self.session,
-                                                            profile,
-                                                            key)
 
 ####################
 
