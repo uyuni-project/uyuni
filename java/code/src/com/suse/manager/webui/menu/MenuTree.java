@@ -173,7 +173,7 @@ public class MenuTree {
                 .addChild(new MenuItem("Keys").withPrimaryUrl("/rhn/manager/systems/keys"))
                 .addChild(new MenuItem("Remote Commands").withPrimaryUrl("/rhn/manager/systems/cmd"))
                 .addChild(new MenuItem("Formula Catalog").withPrimaryUrl("/rhn/manager/formula-catalog")
-                    .withVisibility(adminRoles.get("org") && checkAcl(user, "salt_formulas_installed()"))));
+                    .withVisibility(adminRoles.get("org"))));
 
             // Images
             nodes.add(new MenuItem("Images").withIcon("spacewalk-icon-manage-configuration-files")

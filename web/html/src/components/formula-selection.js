@@ -205,29 +205,31 @@ class FormulaSelection extends React.Component {
     }
 
     render() {
-        var messages = <Messages items={[{severity: "info", text:
+      var items = [{severity: "info", text:
             <p>On this page you can select <a href="https://docs.saltstack.com/en/latest/topics/development/conventions/formulas.html">Salt Formulas</a> for
             this group/system, which can then be configured on group and system level. This allows you to automatically install and configure software. 
             </p>
-        }]}/>;
+        }];
+        if(this.props.warningMessage){
+          items.push({severity: "warning", text: this.props.warningMessage});
+        }
         if (this.state.messages.length > 0) {
-            messages = <Messages items={this.state.messages.map(function(msg) {
+          items = items.concat(this.state.messages.map(function(msg) {
                 return {severity: "info", text: msg};
-            })}/>;
+            }));
         }
 
-        var errors = null;
         if (this.state.errors && this.state.errors.length > 0) {
-            errors = <Messages items={this.state.errors.map(function(e) {
+          items = items.concat(this.state.errors.map(function(e) {
                 return {severity: "error", text: e};
-            })}/>;
+            }));
         }
 
         this.props.addFormulaNavBar(this.state.activeFormulas);
 
         return (
             <div>
-                {errors}{messages}
+                <Messages items={items}/>
                 <div className="spacewalk-section-toolbar">
                     <div className="action-button-wrapper">
                         <span className="btn-group pull-right">

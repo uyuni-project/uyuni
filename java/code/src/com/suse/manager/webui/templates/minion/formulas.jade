@@ -4,6 +4,13 @@ include ./minion-header.jade
 
 script(type='text/javascript').
     var csrfToken = "#{csrf_token}";
-    var serverId = "#{server.id}";
 
-script(src='/javascript/manager/minion/formula/minion-formula-selection.bundle.js?cb=#{webVersion}', type='text/javascript')
+script(src='/javascript/manager/minion/formula/minion-formula-selection.renderer.bundle.js?cb=#{webVersion}', type='text/javascript')
+script(type='text/javascript').
+    pageRenderers.minion.formulaSelection.renderer(
+        'formulas',
+        {
+          serverId: "#{server.id}",
+          warningMessage: "#{warning}"
+        }
+    );
