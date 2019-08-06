@@ -286,7 +286,7 @@ end
 
 Given(/^I access the host the first time$/) do
   visit Capybara.app_host
-  raise unless page.has_content?('Create ' + product + ' Administrator')
+  raise unless page.has_content?('Create SUSE Manager Administrator')
 end
 
 # Admin Page steps
@@ -401,7 +401,7 @@ end
 
 Then(/^I am logged in$/) do
   raise unless page.find(:xpath, "//a[@href='/rhn/Logout.do']").visible?
-  raise unless page.has_content?('You have just created your first ' + product + ' user. To finalize your installation please use the Setup Wizard')
+  raise unless page.has_content?('You have just created your first SUSE Manager user. To finalize your installation please use the Setup Wizard')
 end
 
 Given(/^I am on the patches page$/) do
