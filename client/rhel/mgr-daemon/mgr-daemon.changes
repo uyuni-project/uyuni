@@ -1,3 +1,6 @@
+- enable spacewalk-update-service on package installation
+  (bsc#1143789)
+
 -------------------------------------------------------------------
 Wed Jul 31 17:26:37 CEST 2019 - jgonzalez@suse.com
 
