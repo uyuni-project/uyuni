@@ -206,7 +206,7 @@ public class ResponseMappers {
                     else {
                         contentFilterResponse.setCriteriaValue(filter.getCriteria().getValue());
                     }
-                    contentFilterResponse.setDeny(filter.getRule() == ContentFilter.Rule.DENY);
+                    contentFilterResponse.setRule(filter.getRule().getLabel());
                     contentFilterResponse.setProjects(
                             projects.stream()
                                     .map(p -> p.getLabel())
