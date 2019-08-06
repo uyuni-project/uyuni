@@ -707,3 +707,16 @@ echo 'some more hello'
         spacecmd.kickstart.do_kickstart_addactivationkeys(shell, "someprofile somekey")
         assert not shell.help_kickstart_addactivationkeys.called
         assert shell.client.kickstart.profile.keys.addActivationKey.called
+
+    def test_kickstart_removeactivationkeys_noargs_nointeractive(self, shell):
+        """
+        Test do_kickstart_removeactivationkeys no args, no interactive.
+
+        :param shell:
+        :return:
+        """
+        shell.user_confirm = MagicMock(return_value=True)
+        spacecmd.kickstart.do_kickstart_removeactivationkeys(shell, "")
+        assert not shell.client.kickstart.profile.keys.removeActivationKey.called
+        assert not shell.user_confirm.called
+        assert shell.help_kickstart_removeactivationkeys.called
