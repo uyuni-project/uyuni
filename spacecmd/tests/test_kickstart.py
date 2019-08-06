@@ -616,7 +616,23 @@ echo 'some more hello'
             out = spacecmd.kickstart.do_kickstart_listactivationkeys(shell, "")
 
         assert out is None
+        assert not mprint.called
         assert not shell.client.kickstart.profile.keys.getActivationKeys.called
         assert shell.help_kickstart_listactivationkeys.called
 
+    def test_kickstart_listactivationkeys_nokey_data(self, shell):
+        """
+        Test do_kickstart_listactivationkeys with no key data in them.
 
+        :param shell:
+        :return:
+        """
+        mprint = MagicMock()
+        shell.client.kickstart.profile.keys.getActivationKeys = MagicMock(return_value=[
+            {}, {}, {}, {}
+        ])
+        with patch("spacecmd.kickstart.print", mprint) as prt:
+            out = spacecmd.kickstart.do_kickstart_listactivationkeys(shell, "")
+
+        assert out is None
+        assert not mprint.called
