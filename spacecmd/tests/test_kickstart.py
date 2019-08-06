@@ -581,3 +581,15 @@ echo 'some more hello'
         spacecmd.kickstart.do_kickstart_removecryptokeys(shell, "")
         assert not shell.client.kickstart.profile.system.removeKeys.called
         assert shell.help_kickstart_removecryptokeys.called
+
+    def test_kickstart_removecryptokeys(self, shell):
+        """
+        Test do_kickstart_removecryptokeys standard call.
+
+        :param shell:
+        :return:
+        """
+        spacecmd.kickstart.do_kickstart_removecryptokeys(shell, "profile keyname")
+        assert not shell.help_kickstart_removecryptokeys.called
+        assert shell.client.kickstart.profile.system.removeKeys.called
+
