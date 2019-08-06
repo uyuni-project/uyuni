@@ -674,3 +674,14 @@ echo 'some more hello'
         assert out is not None
         assert len(out) == 4
         assert out == ['andthree', 'one', 'two', 'zettakey']
+
+    def test_kickstart_addactivationkeys_noarg(self, shell):
+        """
+        Test do_kickstart_addactivationkeys add activation keys.
+
+        :param shell:
+        :return:
+        """
+        spacecmd.kickstart.do_kickstart_addactivationkeys(shell, "")
+        assert not shell.client.kickstart.profile.keys.addActivationKey.called
+        assert shell.help_kickstart_addactivationkeys.called
