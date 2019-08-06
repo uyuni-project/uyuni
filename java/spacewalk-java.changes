@@ -1,3 +1,4 @@
+- Add missing permission checks on formula api (bsc#1123274)
 - generate metadata with empty vendor (bsc#1158480)
 - remove undefined variable from redhat_register snippet
 - Add a method in API to check if the provided session key is a valid one.
