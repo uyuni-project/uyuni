@@ -698,27 +698,20 @@ def complete_kickstart_listactivationkeys(self, text, line, beg, end):
 
 
 def do_kickstart_listactivationkeys(self, args, doreturn=False):
-    arg_parser = get_argument_parser()
-
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    args, _options = parse_command_arguments(args, get_argument_parser())
 
     if not args:
         self.help_kickstart_listactivationkeys()
         return
 
     profile = args[0]
-
-    keys = \
-        self.client.kickstart.profile.keys.getActivationKeys(self.session,
-                                                             profile)
-
-    keys = [k.get('key') for k in keys]
+    keys = sorted([k.get('key') for k in self.client.kickstart.profile.keys.getActivationKeys(self.session, profile)])
 
     if doreturn:
         return keys
     else:
         if keys:
-            print('\n'.join(sorted(keys)))
+            print('\n'.join(keys))
 
 ####################
 
