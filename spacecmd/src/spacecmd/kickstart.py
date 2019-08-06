@@ -779,8 +779,9 @@ def do_kickstart_removeactivationkeys(self, args):
     profile = args[0]
     keys = args[1:]
 
-    if not self.user_confirm('Remove these keys [y/N]:'):
-        return
+    if not self.options.yes:
+        if not self.user_confirm('Remove these keys [y/N]:'):
+            return
 
     for key in keys:
         self.client.kickstart.profile.keys.removeActivationKey(self.session,
