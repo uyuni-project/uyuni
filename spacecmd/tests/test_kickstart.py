@@ -696,3 +696,14 @@ echo 'some more hello'
         spacecmd.kickstart.do_kickstart_addactivationkeys(shell, "someprofile")
         assert not shell.client.kickstart.profile.keys.addActivationKey.called
         assert shell.help_kickstart_addactivationkeys.called
+
+    def test_kickstart_addactivationkeys(self, shell):
+        """
+        Test do_kickstart_addactivationkeys
+
+        :param shell:
+        :return:
+        """
+        spacecmd.kickstart.do_kickstart_addactivationkeys(shell, "someprofile somekey")
+        assert not shell.help_kickstart_addactivationkeys.called
+        assert shell.client.kickstart.profile.keys.addActivationKey.called
