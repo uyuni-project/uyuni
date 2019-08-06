@@ -768,25 +768,18 @@ def complete_kickstart_removeactivationkeys(self, text, line, beg,
 
 
 def do_kickstart_removeactivationkeys(self, args):
-    arg_parser = get_argument_parser()
+    args, _options = parse_command_arguments(args, get_argument_parser())
 
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    if len(args) > 1:
+        if not self.options.yes:
+            if not self.user_confirm('Remove these keys [y/N]:'):
+                return
 
-    if len(args) < 2:
+        profile = args[0]
+        for key in args[1:]:
+            self.client.kickstart.profile.keys.removeActivationKey(self.session, profile, key)
+    else:
         self.help_kickstart_removeactivationkeys()
-        return
-
-    profile = args[0]
-    keys = args[1:]
-
-    if not self.options.yes:
-        if not self.user_confirm('Remove these keys [y/N]:'):
-            return
-
-    for key in keys:
-        self.client.kickstart.profile.keys.removeActivationKey(self.session,
-                                                               profile,
-                                                               key)
 
 ####################
 
