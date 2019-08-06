@@ -604,3 +604,19 @@ echo 'some more hello'
         assert not shell.help_kickstart_removecryptokeys.called
         assert shell.client.kickstart.profile.system.removeKeys.called
 
+    def test_kickstart_listactivationkeys_noarg(self, shell):
+        """
+        Test do_kickstart_listactivationkeys with no arguments.
+
+        :param shell:
+        :return:
+        """
+        mprint = MagicMock()
+        with patch("spacecmd.kickstart.print", mprint) as prt:
+            out = spacecmd.kickstart.do_kickstart_listactivationkeys(shell, "")
+
+        assert out is None
+        assert not shell.client.kickstart.profile.keys.getActivationKeys.called
+        assert shell.help_kickstart_listactivationkeys.called
+
+
