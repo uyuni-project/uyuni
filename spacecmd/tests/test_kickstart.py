@@ -655,3 +655,22 @@ echo 'some more hello'
         assert mprint.called
         assert_expect(mprint.call_args_list,
                       'andthree\none\ntwo\nzettakey')
+
+    def test_kickstart_listactivationkeys_data_sorted(self, shell):
+        """
+        Test do_kickstart_listactivationkeys with no key data in them.
+
+        :param shell:
+        :return:
+        """
+        mprint = MagicMock()
+        shell.client.kickstart.profile.keys.getActivationKeys = MagicMock(return_value=[
+            {"key": "zettakey"}, {"key": "one"}, {"key": "two"}, {"key": "andthree"}
+        ])
+        with patch("spacecmd.kickstart.print", mprint) as prt:
+            out = spacecmd.kickstart.do_kickstart_listactivationkeys(shell, "profile", doreturn=True)
+
+        assert not mprint.called
+        assert out is not None
+        assert len(out) == 4
+        assert out == ['andthree', 'one', 'two', 'zettakey']
