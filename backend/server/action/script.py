@@ -43,7 +43,7 @@ def run(server_id, action_id, dry_run=0):
         data['username'] = info['username']
         data['groupname'] = info['groupname']
         data['timeout'] = info['timeout'] or ''
-        data['script'] = rhnSQL.read_lob(info['script']).decode() or ''
+        data['script'] = rhnSQL._fix_encoding(rhnSQL.read_lob(info['script']) or '')
         # used to make the resulting times make some sense in the db
         data['now'] = info['now']
 

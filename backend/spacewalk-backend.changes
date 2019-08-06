@@ -1,3 +1,4 @@
+- Fix encoding issues with DB bytes values (bsc#1144300)
 - Fix import of rhnAuthPAM to avoid issues when using rhnpush.
 - Avoid traceback on mgr-inter-sync when there are problems
   with cache of packages (bsc#1143016)
