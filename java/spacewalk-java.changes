@@ -1,3 +1,4 @@
+- Add missing permission checks on formula api (bsc#1123274)
 - use channel name from product tree instead of constructing it (bsc#1157317)
 - Add the system.getMinionIdMap XMLRPC method
 - generate metadata with empty vendor (bsc#1158480)
