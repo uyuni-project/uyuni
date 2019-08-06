@@ -582,6 +582,17 @@ echo 'some more hello'
         assert not shell.client.kickstart.profile.system.removeKeys.called
         assert shell.help_kickstart_removecryptokeys.called
 
+    def test_kickstart_removecryptokeys_wrongargs(self, shell):
+        """
+        Test do_kickstart_removecryptokeys with wrong args
+
+        :param shell:
+        :return:
+        """
+        spacecmd.kickstart.do_kickstart_removecryptokeys(shell, "profile")
+        assert not shell.client.kickstart.profile.system.removeKeys.called
+        assert shell.help_kickstart_removecryptokeys.called
+
     def test_kickstart_removecryptokeys(self, shell):
         """
         Test do_kickstart_removecryptokeys standard call.
