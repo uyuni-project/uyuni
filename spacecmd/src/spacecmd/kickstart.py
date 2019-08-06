@@ -705,7 +705,7 @@ def do_kickstart_listactivationkeys(self, args, doreturn=False):
         return
 
     profile = args[0]
-    keys = sorted([k.get('key') for k in self.client.kickstart.profile.keys.getActivationKeys(self.session, profile)])
+    keys = sorted(filter(None, [k.get('key') for k in self.client.kickstart.profile.keys.getActivationKeys(self.session, profile)]))
 
     if doreturn:
         return keys
