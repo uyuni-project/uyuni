@@ -741,6 +741,7 @@ echo 'some more hello'
         :param shell:
         :return:
         """
+        shell.options.yes = False
         shell.user_confirm = MagicMock(return_value=True)
         spacecmd.kickstart.do_kickstart_removeactivationkeys(shell, "profile key1 key2")
 
@@ -755,6 +756,7 @@ echo 'some more hello'
         :param shell:
         :return:
         """
+        shell.options.yes = False
         shell.user_confirm = MagicMock(return_value=False)
         spacecmd.kickstart.do_kickstart_removeactivationkeys(shell, "profile key1 key2")
 
@@ -769,6 +771,7 @@ echo 'some more hello'
         :param shell:
         :return:
         """
+        shell.options.yes = False
         shell.user_confirm = MagicMock(return_value=True)
         spacecmd.kickstart.do_kickstart_removeactivationkeys(shell, "profile key1 key2")
 
