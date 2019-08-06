@@ -54,6 +54,8 @@ Requires(preun): initscripts
 # We need package httpd to be able to assign group apache in files section
 Requires(pre): %{apachepkg}
 Requires:       openssl
+BuildRequires:  uyuni-base-common
+Requires(pre):  uyuni-base-common
 
 %global prepdir %{_var}/lib/rhn/rhn-satellite-prep
 
@@ -114,7 +116,6 @@ ln -sf  %{apacheconfdir}/conf/ssl.crt/server.crt $RPM_BUILD_ROOT/etc/pki/tls/cer
 %attr(0755,root,%{apache_group}) %dir %{rhnconfigdefaults}
 %config(noreplace) %{_var}/lib/cobbler/kickstarts/spacewalk-sample.ks
 %config(noreplace) %{_var}/lib/cobbler/snippets/spacewalk_file_preservation
-%attr(0750,root,%{apache_group}) %dir %{_sysconfdir}/rhn
 %attr(0640,root,%{apache_group}) %config(noreplace) %{_sysconfdir}/rhn/rhn.conf
 %attr(644,root,%{apache_group}) %{rhnconfigdefaults}/rhn_audit.conf
 %attr(0750,root,%{apache_group}) %dir %{_sysconfdir}/rhn/candlepin-certs
