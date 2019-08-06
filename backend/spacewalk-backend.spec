@@ -85,8 +85,9 @@ BuildArch:      noarch
 %endif
 
 Requires:       %{pythonX}
-# /etc/rhn is provided by spacewalk-proxy-common or by spacewalk-config
-Requires:       /etc/rhn
+# /etc/rhn is provided by uyuni-base-common
+Requires(pre):  uyuni-base-common
+BuildRequires:  uyuni-base-common
 %if 0%{?build_py3}
 Requires:       python3-%{name}-libs >= %{version}
 Requires:       python3-rhnlib >= 2.5.74
