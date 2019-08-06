@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Aug  6 13:27:54 CEST 2019 - mantel@suse.de
+
+- add /usr/share/rhn to uyuni-base-common
+
+-------------------------------------------------------------------
 Tue Aug  6 11:26:21 CEST 2019 - mantel@suse.de
 
 - Initial release of package uyuni-base and subpackages
