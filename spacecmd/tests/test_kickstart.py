@@ -570,3 +570,14 @@ echo 'some more hello'
 
         assert_args_expect(shell.client.kickstart.profile.system.addKeys.call_args_list,
                            [((shell.session, "my_profile", ["key1", "key2"]), {})])
+
+    def test_kickstart_removecryptokeys_noargs(self, shell):
+        """
+        Test do_kickstart_removecryptokeys with no args.
+
+        :param shell:
+        :return:
+        """
+        spacecmd.kickstart.do_kickstart_removecryptokeys(shell, "")
+        assert not shell.client.kickstart.profile.system.removeKeys.called
+        assert shell.help_kickstart_removecryptokeys.called
