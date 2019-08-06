@@ -1,3 +1,4 @@
+- make packages distribution agnostic
 - fix permission of /etc/rhn; add Requires and BuildRequires
 
 -------------------------------------------------------------------
