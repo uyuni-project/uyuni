@@ -68,6 +68,7 @@ mkdir -p %{buildroot}/var/spacewalk
 %files common
 %defattr(-,root,root)
 %dir %attr(755,root,www) /etc/rhn
+%dir /usr/share/rhn
 
 %files server
 %defattr(-,root,root)
