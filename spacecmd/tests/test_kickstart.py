@@ -685,3 +685,14 @@ echo 'some more hello'
         spacecmd.kickstart.do_kickstart_addactivationkeys(shell, "")
         assert not shell.client.kickstart.profile.keys.addActivationKey.called
         assert shell.help_kickstart_addactivationkeys.called
+
+    def test_kickstart_addactivationkeys_wrong_args(self, shell):
+        """
+        Test do_kickstart_addactivationkeys add activation keys with wrong amount of args.
+
+        :param shell:
+        :return:
+        """
+        spacecmd.kickstart.do_kickstart_addactivationkeys(shell, "someprofile")
+        assert not shell.client.kickstart.profile.keys.addActivationKey.called
+        assert shell.help_kickstart_addactivationkeys.called
