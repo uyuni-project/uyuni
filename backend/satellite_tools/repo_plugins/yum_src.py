@@ -543,7 +543,8 @@ class ContentSource:
         zypp_repo_url = self._prep_zypp_repo_url(self.url)
 
         mirrorlist = self._get_mirror_list(repo, zypp_repo_url)
-        repo.baseurl = repo.baseurl + mirrorlist
+        if mirrorlist:
+            repo.baseurl = mirrorlist
         repo.urls = repo.baseurl
 
         # Manually call Zypper
