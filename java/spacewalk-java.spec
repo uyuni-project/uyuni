@@ -92,6 +92,7 @@ Requires:       pgjdbc-ng
 Requires:       susemanager-docs_en
 Requires:       java-saml
 Requires:       joda-time
+Requires(pre):  uyuni-base-common
 Requires:       woodstox
 Requires:       xmlsec
 BuildRequires:  apache-commons-lang
@@ -113,6 +114,7 @@ BuildRequires:  snakeyaml
 BuildRequires:  statistics
 BuildRequires:  java-saml
 BuildRequires:  joda-time
+BuildRequires:  uyuni-base-common
 BuildRequires:  woodstox
 BuildRequires:  xmlsec
 # SUSE additional build requirements
@@ -1019,7 +1021,6 @@ fi
 %files config
 %defattr(644,root,root,755)
 %attr(755,root,www) %dir %{_prefix}/share/rhn/config-defaults
-%attr(0750,root,www) %dir /etc/rhn
 %{_prefix}/share/rhn/config-defaults/rhn_hibernate.conf
 %{_prefix}/share/rhn/config-defaults/rhn_taskomatic_daemon.conf
 %config(noreplace) %{_sysconfdir}/rhn/taskomatic.conf
