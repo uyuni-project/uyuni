@@ -747,3 +747,17 @@ echo 'some more hello'
         assert not shell.help_kickstart_removeactivationkeys.called
         assert shell.client.kickstart.profile.keys.removeActivationKey.called
         assert shell.user_confirm.called
+
+    def test_kickstart_removeactivationkeys_interactive_abort(self, shell):
+        """
+        Test do_kickstart_removeactivationkeys wrong args, interactive, abort.
+
+        :param shell:
+        :return:
+        """
+        shell.user_confirm = MagicMock(return_value=False)
+        spacecmd.kickstart.do_kickstart_removeactivationkeys(shell, "profile key1 key2")
+
+        assert not shell.help_kickstart_removeactivationkeys.called
+        assert not shell.client.kickstart.profile.keys.removeActivationKey.called
+        assert shell.user_confirm.called
