@@ -1,3 +1,5 @@
+- fix permission of /etc/rhn; add Requires and BuildRequires
+
 -------------------------------------------------------------------
 Tue Aug  6 13:27:54 CEST 2019 - mantel@suse.de
 
