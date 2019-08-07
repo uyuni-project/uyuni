@@ -1,6 +1,6 @@
 // @flow
-// Note: to use this component you have to make sure the current user roles are injected with withRolesTemplate
-// and jade mixin userRoles
+// Note: to use this component you have to make sure the current user localization are injected with
+// the jade mixin userLocalization
 import React from 'react';
 import type {Node} from 'react';
 
