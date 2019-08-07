@@ -48,6 +48,8 @@ BuildArch:      noarch
 %if 0%{?suse_version}
 BuildRequires:  spacewalk-config
 %endif
+BuildRequires:  uyuni-base-common
+Requires(pre):  uyuni-base-common
 
 %description
 Various utility scripts and data files for Spacewalk installations.
@@ -116,9 +118,6 @@ sed -i 's|#!/usr/bin/python|#!/usr/bin/python3|' $RPM_BUILD_ROOT/usr/bin/mgr-eve
 %{_unitdir}/spacewalk-wait-for-taskomatic.service
 %{_unitdir}/mgr-events-config.service
 %{_unitdir}/mgr-websockify.service
-%endif
-%if 0%{?suse_version}
-%attr(0750,root,www) %dir %{_sysconfdir}/rhn
 %endif
 
 %changelog

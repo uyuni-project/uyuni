@@ -1,3 +1,5 @@
+- Require uyuni-base-common for /etc/rhn
+
 -------------------------------------------------------------------
 Wed May 15 15:07:09 CEST 2019 - jgonzalez@suse.com
 

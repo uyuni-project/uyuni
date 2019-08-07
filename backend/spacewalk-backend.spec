@@ -1023,7 +1023,6 @@ rm -f %{rhnconf}/rhnSecret.py*
 %defattr(-,root,root)
 %doc LICENSE
 %doc README.ULN
-%attr(0750,root,%{apache_group}) %dir %{rhnconf}
 %attr(644,root,%{apache_group}) %{rhnconfigdefaults}/rhn_server_satellite.conf
 %config(noreplace) %{_sysconfdir}/logrotate.d/spacewalk-backend-tools
 %config(noreplace) %{rhnconf}/signing.conf
