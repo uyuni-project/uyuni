@@ -50,7 +50,7 @@ import spark.Response;
 public class NotificationMessageController {
 
     private static final Gson GSON = new GsonBuilder()
-            .registerTypeAdapter(Date.class, new ECMAScriptDateAdapter())
+            .registerTypeAdapter(Date.class, new UserLocalizationDateAdapter())
             .serializeNulls()
             .create();
 
