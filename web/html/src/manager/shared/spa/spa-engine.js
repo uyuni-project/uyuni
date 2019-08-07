@@ -66,7 +66,9 @@ window.pageRenderers.spa.init = function init() {
       }
 
       // If an error happens we make a full refresh to make sure the original request is shown instead of a SPA replacement
-      if (navigation.error && navigation.error.invalidStatus) {
+      if (
+        navigation.error && (navigation.error.invalidStatus || navigation.error.timeout || navigation.error.requestError)
+      ) {
         window.location = navigation.path;
       }
 
