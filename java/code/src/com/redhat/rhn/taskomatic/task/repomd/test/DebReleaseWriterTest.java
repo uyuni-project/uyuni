@@ -59,6 +59,7 @@ public class DebReleaseWriterTest extends BaseTestCaseWithUser {
 
         DebReleaseWriter writer = new DebReleaseWriter(channel, prefix);
         writer.generateRelease();
+        String releaseDatetime = DebReleaseWriter.RFC822_DATE_FORMAT.format(ZonedDateTime.now());
 
         String releaseContent = FileUtils.readStringFromFile(prefix + "Release");
 
@@ -66,7 +67,7 @@ public class DebReleaseWriterTest extends BaseTestCaseWithUser {
                 "Label: " + channel.getLabel() + "\n" +
                 "Suite: " + channel.getLabel() + "\n" +
                 "Architectures: ia64\n" +
-                "Date: " + DebReleaseWriter.RFC822_DATE_FORMAT.format(ZonedDateTime.now()) + "\n" +
+                "Date: " + releaseDatetime + "\n" +
                 "Description: TestChannel description\n" +
                 "MD5Sum:\n" +
                 " d41d8cd98f00b204e9800998ecf8427e 0 main/binary-ia64/Packages\n" +

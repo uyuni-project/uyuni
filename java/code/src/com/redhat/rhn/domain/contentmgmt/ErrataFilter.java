@@ -17,6 +17,9 @@ package com.redhat.rhn.domain.contentmgmt;
 
 import com.redhat.rhn.domain.errata.Errata;
 
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
@@ -35,11 +38,27 @@ public class ErrataFilter extends ContentFilter<Errata> {
         String field = getCriteria().getField();
         String value = getCriteria().getValue();
 
-        switch (matcher) {
-            case EQUALS:
-                return getField(erratum, field, String.class).equals(value);
+        switch (field) {
+            case "issue_date":
+                ZonedDateTime valDate = ZonedDateTime.parse(value, DateTimeFormatter.ISO_OFFSET_DATE_TIME);
+                ZonedDateTime issueDate = getField(erratum, field, ZonedDateTime.class);
+                switch (matcher) {
+                    case GREATEREQ:
+                        return !issueDate.isBefore(valDate);
+                    case GREATER:
+                        return issueDate.isAfter(valDate);
+                    default:
+                        throw new UnsupportedOperationException("Matcher " + matcher + " not supported");
+                }
+            case "advisory_name":
+                switch (matcher) {
+                    case EQUALS:
+                        return getField(erratum, field, String.class).equals(value);
+                    default:
+                        throw new UnsupportedOperationException("Matcher " + matcher + " not supported");
+                }
             default:
-                throw new UnsupportedOperationException("Matcher " + matcher + " not supported");
+                throw new UnsupportedOperationException("Field " + field + " not supported");
         }
     }
 
@@ -47,6 +66,8 @@ public class ErrataFilter extends ContentFilter<Errata> {
         switch (field) {
             case "advisory_name":
                 return type.cast(erratum.getAdvisoryName());
+            case "issue_date":
+                return type.cast(erratum.getIssueDate().toInstant().atZone(ZoneId.systemDefault()));
             default:
                 throw new UnsupportedOperationException("Field " + field + " not supported");
         }

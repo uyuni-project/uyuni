@@ -19,8 +19,11 @@ import com.redhat.rhn.domain.contentmgmt.FilterCriteria;
 import junit.framework.TestCase;
 
 import static com.redhat.rhn.domain.contentmgmt.ContentFilter.EntityType.PACKAGE;
+import static com.redhat.rhn.domain.contentmgmt.ContentFilter.EntityType.ERRATUM;
 import static com.redhat.rhn.domain.contentmgmt.FilterCriteria.Matcher.CONTAINS;
 import static com.redhat.rhn.domain.contentmgmt.FilterCriteria.Matcher.EQUALS;
+import static com.redhat.rhn.domain.contentmgmt.FilterCriteria.Matcher.GREATER;
+import static com.redhat.rhn.domain.contentmgmt.FilterCriteria.Matcher.GREATEREQ;
 import static com.redhat.rhn.domain.contentmgmt.FilterCriteria.validate;
 
 /**
@@ -32,6 +35,8 @@ public class FilterCriteriaTest extends TestCase {
         validate(PACKAGE, CONTAINS, "name");
         validate(PACKAGE, EQUALS, "nevr");
         validate(PACKAGE, EQUALS, "nevra");
+        validate(ERRATUM, GREATER, "issue_date");
+        validate(ERRATUM, GREATEREQ, "issue_date");
     }
 
     public void testIllegalValidation() {

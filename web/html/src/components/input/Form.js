@@ -132,7 +132,12 @@ class Form extends React.Component<Props, State> {
         model[component.props.name] = component.props.value;
         return { model };
       },
-      () => this.validate(component, component.props));
+      () => {
+        this.validate(component, component.props);
+        if (this.props.onChange) {
+          this.props.onChange(this.state.model, this.state.isValid);
+        };
+      });
     }
   }
 
