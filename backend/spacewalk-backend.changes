@@ -1,4 +1,5 @@
 - Require uyuni-base-common for /etc/rhn
+- Do not try to download RPMs from the unresolved mirrorlist URL
 - Fix encoding issues with DB bytes values (bsc#1144300)
 - Avoid traceback on mgr-inter-sync when there are problems
   with cache of packages (bsc#1143016)
