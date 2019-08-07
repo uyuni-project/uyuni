@@ -1,3 +1,4 @@
+- Normalize date formats for actions, notifications and clm (bsc#1142774)
 - Implement ALLOW filters in Content Lifecycle Management
 - implement "by date" Filter for Content Lifecycle Management
 - UI render without error if salt-formulas system folders are unreachable (bsc#1142309)

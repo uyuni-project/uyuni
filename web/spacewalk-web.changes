@@ -1,3 +1,4 @@
+- Normalize date formats for actions, notifications and clm (bsc#1142774)
 - Implement ALLOW filters in Content Lifecycle Management
 - implement "by date" Filter for Content Lifecycle Management
 
