@@ -88,7 +88,7 @@ def do_errata_apply(self, args, only_systems=None):
     arg_parser = get_argument_parser()
     arg_parser.add_argument('-s', '--start-time')
 
-    (args, options) = parse_command_arguments(args, arg_parser)
+    args, options = parse_command_arguments(args, arg_parser)
     only_systems = only_systems or []
 
     if not args:
@@ -98,7 +98,7 @@ def do_errata_apply(self, args, only_systems=None):
     # get the start time option
     # skip the prompt if we are running with --yes
     # use "now" if no start time was given
-    if is_interactive(options) and self.options.yes != True:
+    if is_interactive(options) and not self.options.yes:
         options.start_time = prompt_user('Start Time [now]:')
         options.start_time = parse_time_input(options.start_time)
     else:
@@ -116,8 +116,7 @@ def do_errata_apply(self, args, only_systems=None):
     for erratum in errata_list:
         try:
             # get the systems affected by each errata
-            affected_systems = \
-                self.client.errata.listAffectedSystems(self.session, erratum)
+            affected_systems = self.client.errata.listAffectedSystems(self.session, erratum)
 
             # build a list of systems that we will schedule errata for,
             # indexed by errata name
@@ -145,7 +144,7 @@ def do_errata_apply(self, args, only_systems=None):
     # get a unique list of all systems we need to touch
     for systemlist in to_apply_by_name.values():
         systems += systemlist
-    systems = list(set(systems))
+    systems = sorted(list(set(systems)))
 
     if not systems:
         logging.warning('No patches to apply')
@@ -158,7 +157,7 @@ def do_errata_apply(self, args, only_systems=None):
     print('')
     print('Start Time: %s' % options.start_time)
 
-    if not self.user_confirm('Apply these patches [y/N]:'):
+    if (is_interactive(options) and not self.user_confirm('Apply these patches [y/N]:')) or not self.options.yes:
         return
 
     # if the API supports it, try to schedule multiple systems for one erratum
@@ -178,10 +177,7 @@ def do_errata_apply(self, args, only_systems=None):
                 erratum_id = erratum.get('id')
 
                 if erratum.get('advisory_name') in errata_list:
-                    if erratum_id not in to_apply:
-                        to_apply[erratum_id] = []
-
-                    to_apply[erratum_id].append(system_id)
+                    to_apply.setdefault(erratum_id, []).append(system_id)
 
         # apply the errata
         for erratum in to_apply:
@@ -286,18 +282,21 @@ def do_errata_listcves(self, args):
 
     add_separator = False
 
-    for erratum in errata_list:
-        cves = self.client.errata.listCves(self.session, erratum)
+    if errata_list:
+        for erratum in errata_list:
+            cves = self.client.errata.listCves(self.session, erratum)
 
-        if cves:
-            if len(errata_list) > 1:
-                if add_separator:
-                    print(self.SEPARATOR)
-                add_separator = True
+            if cves:
+                if len(errata_list) > 1:
+                    if add_separator:
+                        print(self.SEPARATOR)
+                    add_separator = True
 
-                print('%s:' % erratum)
+                    print('%s:' % erratum)
 
-            print('\n'.join(sorted(cves)))
+                print('\n'.join(sorted(cves)))
+    else:
+        print("No errata has been found")
 
 ####################
 
@@ -312,18 +311,12 @@ def complete_errata_findbycve(self, text, line, beg, end):
 
 
 def do_errata_findbycve(self, args):
-    arg_parser = get_argument_parser()
-
-    (args, _options) = parse_command_arguments(args, arg_parser)
-
-    if not args:
+    cve_list, _options = parse_command_arguments(args, get_argument_parser())
+    if not cve_list:
         self.help_errata_findbycve()
         return
 
-    # More than one CVE may be specified
-    cve_list = args
     logging.debug("Got CVE list %s" % cve_list)
-
     add_separator = False
 
     # Then iterate over the requested CVEs and dump the errata which match
@@ -386,23 +379,23 @@ def do_errata_details(self, args):
         add_separator = True
 
         print('Name:       %s' % erratum)
-        print('Product:    %s' % details.get('product'))
-        print('Type:       %s' % details.get('type'))
-        print('Issue Date: %s' % details.get('issue_date'))
+        print('Product:    %s' % (details.get('product') or "N/A"))
+        print('Type:       %s' % (details.get('type') or "N/A"))
+        print('Issue Date: %s' % (details.get('issue_date') or "N/A"))
         print('')
         print('Topic')
         print('-----')
-        print('\n'.join(wrap(details.get('topic'))))
+        print('\n'.join(wrap(details.get('topic') or "N/A")))
         print('')
         print('Description')
         print('-----------')
-        print('\n'.join(wrap(details.get('description'))))
+        print('\n'.join(wrap(details.get('description') or "N/A")))
 
         if details.get('notes'):
             print('')
             print('Notes')
             print('-----')
-            print('\n'.join(wrap(details.get('notes'))))
+            print('\n'.join(wrap(details.get('notes') or "N/A")))
 
         print('')
         print('CVEs')
@@ -411,15 +404,15 @@ def do_errata_details(self, args):
         print('')
         print('Solution')
         print('--------')
-        print('\n'.join(wrap(details.get('solution'))))
+        print('\n'.join(wrap(details.get('solution') or "N/A")))
         print('')
         print('References')
         print('----------')
-        print('\n'.join(wrap(details.get('references'))))
+        print('\n'.join(wrap(details.get('references') or "N/A")))
         print('')
         print('Affected Channels')
         print('-----------------')
-        print('\n'.join(sorted([c.get('label') for c in channels])))
+        print('\n'.join(sorted(filter(None, [c.get('label') or "" for c in channels]))))
         print('')
         print('Affected Systems')
         print('----------------')
@@ -465,7 +458,7 @@ def do_errata_delete(self, args):
         channels = self.client.errata.applicableToChannels(self.session, erratum)
         print('%s    %s' % (erratum.ljust(20), str(len(channels)).rjust(3)))
 
-    if not self.user_confirm('Delete these patches [y/N]:'):
+    if not self.options.yes and not self.user_confirm('Delete these patches [y/N]:'):
         return
 
     for erratum in errata:
@@ -512,7 +505,7 @@ def do_errata_publish(self, args):
 
     print('\n'.join(sorted(errata)))
 
-    if not self.user_confirm('Publish these patches [y/N]:'):
+    if not self.options.yes and not self.user_confirm('Publish these patches [y/N]:'):
         return
 
     for erratum in errata:
@@ -543,6 +536,7 @@ def do_errata_search(self, args, doreturn=False):
         self.help_errata_search()
         return
 
+    out = []
     add_separator = False
 
     for query in args:
@@ -569,12 +563,13 @@ def do_errata_search(self, args, doreturn=False):
 
         if add_separator:
             print(self.SEPARATOR)
-        add_separator = True
-
-        if errata:
-            if doreturn:
-                return [erratum['advisory_name'] for erratum in errata]
-            else:
-                map(print_errata_summary, sorted(errata, reverse=True))
         else:
-            return []
+            add_separator = True
+
+        if doreturn:
+            out += [erratum['advisory_name'] for erratum in errata]
+        else:
+            for erratum in reversed(sorted(errata)):
+                print_errata_summary(erratum=erratum)
+
+    return out if doreturn else None

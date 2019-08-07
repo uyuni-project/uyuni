@@ -110,7 +110,7 @@ def do_user_create(self, args):
             # API requires a non-None password even though it's not used
             # when PAM is enabled
             if options.password:
-                logging.warning("Note password field is ignored for PAM mode")
+                logging.warning("Note: password was ignored due to PAM mode")
             options.password = ""
         else:
             options.pam = 0
@@ -146,7 +146,7 @@ def do_user_delete(self, args):
 
     name = args[0]
 
-    if self.user_confirm('Delete this user [y/N]:'):
+    if self.options.yes or self.user_confirm('Delete this user [y/N]:'):
         self.client.user.delete(self.session, name)
 
 ####################
@@ -209,13 +209,13 @@ def help_user_list(self):
 
 def do_user_list(self, args, doreturn=False):
     users = self.client.user.listUsers(self.session)
-    users = [u.get('login') for u in users]
+    users = sorted([u.get('login') for u in users])
 
     if doreturn:
         return users
     else:
         if users:
-            print('\n'.join(sorted(users)))
+            print('\n'.join(users))
 
 ####################
 
@@ -233,6 +233,8 @@ def do_user_listavailableroles(self, args, doreturn=False):
     else:
         if roles:
             print('\n'.join(sorted(roles)))
+        else:
+            logging.error("No roles has been found")
 
 ####################
 
@@ -335,13 +337,13 @@ def do_user_details(self, args):
             default_groups = \
                 self.client.user.listDefaultSystemGroups(self.session,
                                                          user)
-        except xmlrpclib.Fault:
+        except xmlrpclib.Fault as exc:
             logging.warning('%s is not a valid user' % user)
+            logging.debug("Error '{}' while getting data about user '{}': {}".format(
+                exc.faultCode, user, exc.faultString))
             continue
 
-        org_details = self.client.org.getDetails(self.session,
-                                                 details.get('org_id'))
-        organization = org_details.get('name')
+        org_name = self.client.org.getDetails(self.session, details.get('org_id')).get("name")
 
         if add_separator:
             print(self.SEPARATOR)
@@ -351,7 +353,7 @@ def do_user_details(self, args):
         print('First Name:    %s' % details.get('first_name'))
         print('Last Name:     %s' % details.get('last_name'))
         print('Email Address: %s' % details.get('email'))
-        print('Organization:  %s' % organization)
+        print('Organisation:  %s' % org_name)
         print('Last Login:    %s' % details.get('last_login_date'))
         print('Created:       %s' % details.get('created_date'))
         print('Enabled:       %s' % details.get('enabled'))
@@ -642,11 +644,9 @@ def complete_user_setprefix(self, text, line, beg, end):
 
 
 def do_user_setprefix(self, args):
-    arg_parser = get_argument_parser()
+    args, _ = parse_command_arguments(args, get_argument_parser())
 
-    (args, _options) = parse_command_arguments(args, arg_parser)
-
-    if len(args) > 2:
+    if not 0 < len(args) < 3:
         self.help_user_setprefix()
         return
 

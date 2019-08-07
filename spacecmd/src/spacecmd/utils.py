@@ -60,7 +60,7 @@ import rpm
 
 from spacecmd.argumentparser import SpacecmdArgumentParser
 
-__EDITORS = ['vim', 'vi', 'nano', 'emacs']
+__EDITORS = ['vim', 'vi', "emacs", 'nano']
 
 
 class CustomJsonEncoder(json.JSONEncoder):
@@ -118,7 +118,7 @@ def load_cache(cachefile):
             inputfile = open(cachefile, 'rb')
             data = pickle.load(inputfile)
             inputfile.close()
-        except EOFError:
+        except (EOFError, pickle.UnpicklingError) as exc:
             # If cache generation is interrupted (e.g by ctrl-c) you can end up
             # with an EOFError exception due to the partial picked file
             # So we catch this error and remove the corrupt partial file
@@ -127,6 +127,7 @@ def load_cache(cachefile):
             logging.warning("Loading cache file %s failed", cachefile)
             logging.warning("Cache generation was probably interrupted," +
                             "removing corrupt %s", cachefile)
+            logging.debug(str(exc))
             os.remove(cachefile)
         except IOError:
             logging.error("Couldn't load cache from %s", cachefile)
@@ -194,8 +195,10 @@ def editor(template='', delete=False):
             handle = os.fdopen(descriptor, 'w')
             handle.write(template)
             handle.close()
-        except IOError:
+        except IOError as exc:
             logging.warning('Could not open the temporary file')
+            logging.error(str(exc))
+            return
 
     # use the user's specified editor
     if 'EDITOR' in os.environ:
@@ -203,6 +206,7 @@ def editor(template='', delete=False):
             __EDITORS.insert(0, os.environ['EDITOR'])
 
     success = False
+    exit_code = -1
     for editor_cmd in __EDITORS:
         try:
             exit_code = os.spawnlp(os.P_WAIT, editor_cmd,
@@ -212,9 +216,9 @@ def editor(template='', delete=False):
                 success = True
                 break
             else:
-                logging.error('Editor exited with code %i', exit_code)
-        except OSError:
-            pass
+                logging.error('Editor "%s" exited with code %i', editor_cmd, exit_code)
+        except OSError as exc:
+            logging.error("General failure running editor: %s", str(exc))
 
     if not success:
         logging.error('No editors found')
@@ -234,10 +238,10 @@ def editor(template='', delete=False):
                 except OSError:
                     logging.error('Could not remove %s', file_name)
 
-            return (contents, file_name)
+            return contents, file_name
         except IOError:
             logging.error('Could not read %s', file_name)
-            return ([], '')
+            return [], ''
 
 
 def prompt_user(prompt, noblank=False, multiline=False):
@@ -281,7 +285,7 @@ def parse_time_input(userinput=''):
     if userinput == '' or re.match('now', userinput, re.I):
         timestamp = datetime.now()
 
-    # handle YYYMMDDHHMM times
+    # handle YYYYMMDDHHMM times
     if not timestamp:
         match = re.match(r'^(\d{4})(\d{2})(\d{2})(\d{2})?(\d{2})?(\d{2})?$', userinput)
 
@@ -390,15 +394,16 @@ def build_package_names(packages):
         package = '%s-%s-%s' % (
             p.get('name'), p.get('version'), p.get('release'))
 
-        if p.get('epoch') != ' ' and p.get('epoch') != '':
-            package += ':%s' % p.get('epoch')
+        epoch = p.get("epoch", "").strip()
+        if epoch:
+            package += ':%s' % epoch
 
         if p.get('arch'):
             # system.listPackages uses AMD64 instead of x86_64
-            arch = re.sub('AMD64', 'x86_64', p.get('arch'))
+            arch = re.sub('amd64', 'x86_64', p.get('arch', "").lower())
 
             package += '.%s' % arch
-        elif p.get('arch_label'):
+        elif p.get('arch_label', "").strip():
             package += '.%s' % p.get('arch_label')
 
         package_names.append(package)
@@ -416,7 +421,7 @@ def print_errata_summary(erratum):
     if erratum.get('date') is None:
         erratum['date'] = erratum.get('issue_date')
     if erratum['date'] is None:
-        erratum['date'] = "no_date"
+        erratum['date'] = "N/A"
     date_parts = erratum['date'].split()
 
     if len(date_parts) > 1:
@@ -568,11 +573,14 @@ def max_length(items, minimum=0):
 
 # read in a file
 def read_file(filename):
-    handle = open(filename, 'r')
-    contents = handle.read()
-    handle.close()
+    """
+    Read file.
 
-    return contents
+    :param filename:
+    :return:
+    """
+    with open(filename, "r") as fhd:
+        return fhd.read()
 
 
 def parse_str(s, type_to=None):
@@ -671,34 +679,33 @@ def json_dump(obj, fp, indent=4, **kwargs):
 def json_dump_to_file(obj, filename):
     json_data = json.dumps(obj, indent=4, sort_keys=True)
 
+    out = False
     if json_data is None:
         logging.error("Could not generate json data object!")
-        return False
+    else:
+        try:
+            with open(filename, 'w') as fdh:
+                fdh.write(json_data)
+            out = True
+        except IOError as exc:
+            logging.error("Could not open file %s for writing: %s", filename, str(exc))
 
-    try:
-        fd = open(filename, 'w')
-        fd.write(json_data)
-        fd.close()
-    except IOError as E:
-        logging.error("Could not open file %s for writing, permissions?",
-                      filename)
-        print(E.strerror)
-        return False
-
-    return True
+    return out
 
 
 def json_read_from_file(filename):
+    data = None
     try:
-        data = open(filename).read()
-        try:
-            jsondata = json.loads(data)
-            return jsondata
-        except ValueError:
-            print("could not read in data from %s" % filename)
-    except IOError:
-        print("could not open file %s for reading, check permissions?" % filename)
-        return None
+        with open(filename) as fhd:
+            data = json.loads(fhd.read())
+    except IOError as exc:
+        logging.error("Could not open file %s for reading: %s", filename, str(exc))
+    except ValueError as exc:
+        logging.error("Could not parse JSON data from %s: %s", filename, str(exc))
+    except Exception as exc:
+        logging.error("Error processing file %s: %s", filename, str(exc))
+
+    return data
 
 
 def get_string_diff_dicts(string1, string2, sep="-"):
@@ -707,7 +714,7 @@ def get_string_diff_dicts(string1, string2, sep="-"):
 
     If these strings are closly related, it returns two dictonaries of regular expressions.
 
-    The first dictionary can be used to transfrom type 1 strings into type 2 strings.
+    The first dictionary can be used to transform type 1 strings into type 2 strings.
     The second dictionary vice versa.
 
     These replacements blocks must be separated by "-".
@@ -773,6 +780,12 @@ def get_normalized_text(text, replacedict=None, excludes=None):
     # from the name differences of there components.
     # This will not work always, but it help in a lot of cases.
 
+    if not text:
+        return []
+
+    if not replacedict:
+        return text
+
     normalized_text = []
     if text:
         for st in text:
@@ -798,6 +811,9 @@ def file_is_binary(self, path):
     try:
         process = Popen(["file", "-b", "--mime-type", path], stdout=PIPE)
         output = process.communicate()[0]
+        if not isinstance(output, str):  # Py3 catch without six involved
+            output = output.decode("utf-8")
+
         exit_code = process.wait()
         if exit_code != 0:
             return True
@@ -810,6 +826,36 @@ def file_is_binary(self, path):
 
 
 def string_to_bool(input_string):
-    if not isinstance(input_string, bool):
-        return input_string.lower().rstrip(' ') == 'true'
-    return input_string
+    """
+    Convert string of "true" or "false", "yes" or "no" to boolean.
+
+    :param input_string:
+    :return:
+    """
+    if not isinstance(input_string, str):
+        raise IOError("Parameter {} not a string type, but {}.".format(
+            repr(input_string), type(input_string)
+        ))
+
+    return input_string.lower().strip() in ['true', 'yes']
+
+
+class DictToDefault:
+    """
+    Dict wrapper.
+    Returns specified string instead of
+    default None on .get() method.
+    """
+    def __init__(self, target, default=None):
+        self.__target = target
+        self.__default = default
+
+    def get(self, value, default=None):
+        """
+        Get a value from the target dict.
+
+        :param value:
+        :param default:
+        :return:
+        """
+        return self.__target.get(value, default or self.__default)
