@@ -69,6 +69,8 @@ BuildRequires:  perl
 Requires:       %{pythonX}-%{name} = %{version}-%{release}
 Conflicts:      mgr-osa-dispatcher < %{version}-%{release}
 Conflicts:      mgr-osa-dispatcher > %{version}-%{release}
+BuildRequires:  uyuni-base-common
+Requires(pre):  uyuni-base-common
 %if 0%{?suse_version} >= 1210
 BuildRequires:  systemd
 %{?systemd_requires}
@@ -594,7 +596,6 @@ rpm -ql osa-dispatcher | xargs -n 1 /sbin/restorecon -rvi {}
 %ghost %attr(640,%{apache_user},root) %{_var}/log/rhn/osa-dispatcher.log
 %if 0%{?suse_version}
 %{_sbindir}/rcosa-dispatcher
-%attr(750, root, %{apache_group}) %dir %{_sysconfdir}/rhn
 %dir %{rhnroot}
 %attr(755,root,%{apache_group}) %dir %{rhnroot}/config-defaults
 %dir %{_sysconfdir}/rhn/tns_admin
