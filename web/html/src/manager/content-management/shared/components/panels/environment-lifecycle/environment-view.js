@@ -69,7 +69,7 @@ const EnvironmentView = React.memo((props: Props) => {
           <dl className="row">
             <dt className="col-xs-3">Built time:</dt>
             <dd className="col-xs-9">
-              {moment(props.environment.builtTime).format("YYYY-MM-DD HH:mm:ss")}
+              {props.environment.builtTime}
             </dd>
           </dl>
           : null

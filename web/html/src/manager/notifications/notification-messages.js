@@ -355,7 +355,7 @@ class NotificationMessages extends React.Component {
               columnKey="created"
               comparator={Utils.sortByDate}
               header={t("Created")}
-              cell={ (row) => moment(row["created"]).format("DD/MM/YYYY HH:mm:ss") }
+              cell={ (row) => row["created"] }
             />
             <Column
               columnKey="action"
