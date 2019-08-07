@@ -22,6 +22,7 @@ import re
 import fnmatch
 import requests
 from functools import cmp_to_key
+from salt.utils.versions import LooseVersion
 from spacewalk.common import fileutils
 from spacewalk.common.suseLib import get_proxy
 from spacewalk.satellite_tools.download import get_proxies
@@ -58,6 +59,16 @@ class DebPackage(object):
 
     def __setitem__(self, key, value):
         return setattr(self, key, value)
+
+    def evr(self):
+        evr = ""
+        if self.epoch:
+           evr = evr + "{}:".format(self.epoch)
+        if self.version:
+           evr = evr + "{}".format(self.version)
+        if self.release:
+           evr = evr + "-{}".format(self.release)
+        return evr
 
     def is_populated(self):
         return all([attribute is not None for attribute in (self.name, self.epoch,
@@ -251,8 +262,13 @@ class ContentSource(object):
         pkglist = self.repo.get_package_list()
         self.num_packages = len(pkglist)
         if latest:
-            # TODO
-            pass
+            latest_pkgs = {}
+            new_pkgs = []
+            for pkg in pkglist:
+               ident = '{}.{}'.format(pkg.name, pkg.arch)
+               if ident not in latest_pkgs.keys() or LooseVersion(pkg.evr()) > LooseVersion(latest_pkgs[ident].evr()):
+                  latest_pkgs[ident] = pkg
+            pkglist = list(latest_pkgs.values())
         pkglist.sort(key = cmp_to_key(self._sort_packages))
 
         if not filters:
