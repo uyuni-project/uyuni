@@ -1,3 +1,4 @@
+- require lucene version we use
 - move /usr/share/rhn/config-defaults to uyuni-base-common
 - Add search server JDBC idle time config options to rhn_search.conf
 
