@@ -20,6 +20,16 @@
   %define _fillupdir /var/adm/fillup-templates
 %endif
 
+%if 0%{?suse_version}
+%define www_path /srv/
+%define apache_user wwwrun
+%define apache_group www
+%else
+%define www_path %{_var}
+%define apache_user apache
+%define apache_group apache
+%endif
+
 Name:           uyuni-base
 Version:        1.0.0
 Release:        0
@@ -43,13 +53,17 @@ Basic filesystem hierarchy for Uyuni server and proxy.
 %package server
 Summary:        Base structure for Uyuni server
 Group:          System/Fhs
+BuildRequires:  uyuni-base-common
+Requires(pre):  uyuni-base-common
 
 %description server
 Basic filesystem hierarchy for Uyuni server.
 
 %package proxy
-Summary:        Base structure for Uyuni proxy.
+Summary:        Base structure for Uyuni proxy
 Group:          System/Fhs
+BuildRequires:  uyuni-base-common
+Requires(pre):  uyuni-base-common
 
 %description proxy
 Basic filesystem hierarchy for Uyuni proxy.
@@ -67,12 +81,12 @@ mkdir -p %{buildroot}/var/spacewalk
 
 %files common
 %defattr(-,root,root)
-%dir %attr(755,root,www) /etc/rhn
+%dir %attr(750,root,%{apache_group}) /etc/rhn
 %dir /usr/share/rhn
 
 %files server
 %defattr(-,root,root)
-%dir %attr(755,wwwrun,root) /var/spacewalk
+%dir %attr(755,%{apache_user},root) /var/spacewalk
 
 %files proxy
 %defattr(-,root,root)

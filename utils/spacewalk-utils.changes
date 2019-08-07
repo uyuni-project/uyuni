@@ -1,3 +1,4 @@
+- Require uyuni-base-common for /etc/rhn
 - add spacewalk-watch-channel-sync.sh to spacewalk-utils
 
 -------------------------------------------------------------------
