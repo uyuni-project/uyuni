@@ -333,6 +333,17 @@ def Date(*args, **kwargs):
     db = __test_DB()
     return db.Date(*args, **kwargs)
 
+
+def _fix_encoding(text):
+    if isinstance(text, str):
+        return text
+    elif isinstance(text, bytes):
+        try:
+            return text.decode("utf8")
+        except:
+            return text.decode("iso8859-1")
+
+
 def read_lob(lob):
     if not lob:
         return None

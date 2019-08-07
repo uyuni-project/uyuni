@@ -1,4 +1,5 @@
 - Require uyuni-base-common for /etc/rhn
+- Support partly patched CVEs in CVE audit (bsc#1137229)
 - UI render without error if salt-formulas system folders are unreachable (bsc#1142309)
 - Add susemanager as prerequired for spacewalk-java
 - Cloning Errata from a specific channel should not take packages
