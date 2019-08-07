@@ -26,6 +26,12 @@ export const filtersOptionsEnum : FiltersOptionEnumType = new Proxy({
       entityType: 'erratum',
       matcher: 'equals',
       text: 'Patch (matches Advisory Name)',
+    },
+    ERRATUM_BYDATE: {
+      key: 'erratum_bydate',
+      entityType: 'erratum',
+      matcher: 'greatereq',
+      text: 'Patch (issued after)',
     }
   },
   objectDefaultValueHandler(defaultState)
@@ -42,7 +48,8 @@ function findByKey(key: string): FilterOptionType {
 function getFilterDescription (filter: Object): string {
   const matcherDescription = {
     equals: " matching ",
-    contains: " containing "
+    contains: " containing ",
+    greatereq: " greater or equal "
   }
 
   return `${filter.name}: deny ${filter.entityType} ${matcherDescription[filter.matcher] || ""} ${filter.criteriaValue} (${filter.criteriaKey})`;

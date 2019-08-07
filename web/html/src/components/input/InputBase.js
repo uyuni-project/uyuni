@@ -65,7 +65,11 @@ class InputBase extends React.Component<Props, State> {
 
   // eslint-disable-next-line
   UNSAFE_componentWillReceiveProps(nextProps) {
-    if (!(nextProps.value === this.props.value && nextProps.disabled === this.props.disabled
+    const valueNotChanged =
+      (nextProps.value instanceof Date && this.props.value instanceof Date
+        && nextProps.value.getTime() === this.props.value.getTime())
+      || nextProps.value === this.props.value;
+    if (!(valueNotChanged && nextProps.disabled === this.props.disabled
               && nextProps.required === this.props.required)) {
       if (this.props.validate) this.props.validate(this, nextProps);
       this.setState({

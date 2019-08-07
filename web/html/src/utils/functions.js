@@ -40,6 +40,19 @@ function dateWithTimezone(dateString: string): Date {
     return final;
 }
 
+// it does the opposite of dateWithTimezone: transforms its result on the original date
+function dateWithoutTimezone(dateStringToTransform: string, originalDateString: string): Date {
+  const offsetNum = originalDateString[originalDateString.length - 1].toUpperCase() === "Z"
+    ? 0
+    : parseInt(originalDateString.substring(originalDateString.length - 6).replace(':', ''), 10);
+  const serverOffset = Math.trunc(offsetNum / 100) * 60 + offsetNum % 100;
+  const dateToTransform = new Date(dateStringToTransform);
+  const clientOffset = -dateToTransform.getTimezoneOffset();
+
+  const final = new Date(dateToTransform.getTime() - (serverOffset - clientOffset) * 60000);
+  return final;
+}
+
 function LocalDateTime(date: Date): string {
     const padTo = (v) => {
         v = v.toString();
@@ -160,6 +173,7 @@ module.exports = {
         sortById: sortById,
         sortByText: sortByText,
         dateWithTimezone: dateWithTimezone,
+        dateWithoutTimezone: dateWithoutTimezone,
         sortByNumber: sortByNumber,
         sortByDate: sortByDate,
         urlBounce: urlBounce,

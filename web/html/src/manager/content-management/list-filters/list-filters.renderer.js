@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import ListFilters from './list-filters';
 import "./list-filters.css";
 import {RolesProvider} from "core/auth/roles-context";
+import {UserLocalizationProvider} from "core/user-localization/user-localization-context";
 
 window.pageRenderers = window.pageRenderers || {};
 window.pageRenderers.contentManagement = window.pageRenderers.contentManagement || {};
@@ -18,12 +19,14 @@ window.pageRenderers.contentManagement.listFilters.renderer = (id, {filters, pro
 
   ReactDOM.render(
     <RolesProvider>
-      <ListFilters
-        filters={filtersJson}
-        openFilterId={openFilterId}
-        projectLabel={projectLabel}
-        flashMessage={flashMessage}
-      />
+      <UserLocalizationProvider>
+        <ListFilters
+          filters={filtersJson}
+          openFilterId={openFilterId}
+          projectLabel={projectLabel}
+          flashMessage={flashMessage}
+        />
+      </UserLocalizationProvider>
     </RolesProvider>,
     document.getElementById(id),
   );
