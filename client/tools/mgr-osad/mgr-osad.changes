@@ -1,3 +1,5 @@
+- Require uyuni-base-common for /etc/rhn (for osa-dispatcher)
+
 -------------------------------------------------------------------
 Wed Jul 31 17:28:01 CEST 2019 - jgonzalez@suse.com
 
