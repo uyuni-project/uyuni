@@ -40,6 +40,8 @@ BuildRequires:  %{pythonX}
 BuildArch:      noarch
 Requires:       %{pythonX}-spacewalk-usix
 Requires:       httpd
+Requires(pre):  uyuni-base-common
+BuildRequires:  uyuni-base-common
 %if 0%{?pylint_check}
 BuildRequires:  spacewalk-python2-pylint
 %endif
@@ -492,7 +494,6 @@ fi
 %dir %{rhnroot}/wsgi
 %{_sbindir}/mgr-proxy-ssh-push-init
 %{_sbindir}/mgr-proxy-ssh-force-cmd
-%attr(755,root,%{apache_group}) %dir %{rhnroot}/config-defaults
 %attr(755,root,root) %dir %{_var}/lib/spacewalk
 %endif
 %if 0%{?build_py3}
