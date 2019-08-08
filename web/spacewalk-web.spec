@@ -38,6 +38,8 @@ Url:            https://github.com/uyuni-project/uyuni
 Source0:        https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildArch:      noarch
+Requires(pre):  uyuni-base-common
+BuildRequires:  uyuni-base-common
 BuildRequires:  perl(ExtUtils::MakeMaker)
 %if 0%{?suse_version}
 BuildRequires:  apache2
@@ -179,7 +181,6 @@ find $RPM_BUILD_ROOT -type f -name perllocal.pod -exec rm -f {} \;
 find $RPM_BUILD_ROOT -type f -name .packlist -exec rm -f {} \;
 
 mkdir -p $RPM_BUILD_ROOT/%{www_path}/www/htdocs/pub
-mkdir -p $RPM_BUILD_ROOT/%{_prefix}/share/rhn/config-defaults
 mkdir -p $RPM_BUILD_ROOT/%{_sysconfdir}/init.d
 mkdir -p $RPM_BUILD_ROOT/%{_sysconfdir}/httpd/conf
 mkdir -p $RPM_BUILD_ROOT/%{_sysconfdir}/cron.daily
@@ -221,7 +222,6 @@ cp html/src/dist/vendors/vendors.bundle.js.LICENSE %{buildroot}/srv/www/htdocs/v
 %files -n spacewalk-base-minimal-config
 %defattr(644,root,root,755)
 %dir %{_prefix}/share/rhn
-%dir %attr(755,root,%{apache_group}) %{_prefix}/share/rhn/config-defaults
 %attr(644,root,%{apache_group}) %{_prefix}/share/rhn/config-defaults/rhn_web.conf
 
 %files -n spacewalk-dobby
@@ -234,7 +234,6 @@ cp html/src/dist/vendors/vendors.bundle.js.LICENSE %{buildroot}/srv/www/htdocs/v
 %config %{_sysconfdir}/sysconfig/SuSEfirewall2.d/services/susemanager-database
 %{perl_vendorlib}/Dobby/
 %dir %{_prefix}/share/rhn
-%dir %attr(755,root,%{apache_group}) %{_prefix}/share/rhn/config-defaults
 
 %files -n spacewalk-html
 %defattr(644,root,root,755)
