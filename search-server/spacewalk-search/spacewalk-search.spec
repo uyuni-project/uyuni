@@ -46,6 +46,8 @@ Requires:       hadoop
 Requires:       lucene
 Requires:       nutch-core
 Requires:       picocontainer
+BuildRequires:  uyuni-base-common
+Requires(pre):  uyuni-base-common
 
 BuildRequires:  junit
 #Requires: apache-ibatis-sqlmap
@@ -137,7 +139,6 @@ Spacewalk Server.
 %install
 rm -fr ${RPM_BUILD_ROOT}
 ant -Djar.version=%{version} install
-install -d -m 755 $RPM_BUILD_ROOT%{_prefix}/share/rhn/config-defaults
 install -d -m 755 $RPM_BUILD_ROOT%{_prefix}/share/rhn/search
 install -d -m 755 $RPM_BUILD_ROOT%{_prefix}/share/rhn/search/lib
 install -d -m 755 $RPM_BUILD_ROOT%{_var}/lib/rhn/search
@@ -263,7 +264,6 @@ fi
 %{_var}/lib/rhn/search/indexes/docs
 %if 0%{?suse_version}
 %dir %attr(755, root, root) %{_var}/lib/rhn
-%dir %attr(755,root,www) %{_prefix}/share/rhn/config-defaults
 %dir /usr/share/rhn
 %dir /usr/share/rhn/search
 %dir /usr/share/rhn/search/lib
