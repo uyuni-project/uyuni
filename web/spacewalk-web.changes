@@ -1,3 +1,4 @@
+- move /usr/share/rhn/config-defaults to uyuni-base-common
 - implement "by date" Filter for Content Lifecycle Management
 - Hide channels managed by Content Lifecycle projects from available sources (bsc#1137965)
 - Add unsupported browser warning when using Internet Explorer

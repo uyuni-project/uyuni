@@ -1,3 +1,4 @@
+- move /usr/share/rhn/config-defaults to uyuni-base-common
 - implement "by date" Filter for Content Lifecycle Management
 - Require uyuni-base-common for /etc/rhn
 - Support partly patched CVEs in CVE audit (bsc#1137229)

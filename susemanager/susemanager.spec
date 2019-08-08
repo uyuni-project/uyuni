@@ -70,6 +70,8 @@ Requires:       susemanager-tools
 # migration.sh need either sqlplus or psql
 Requires:       spacewalk-db-virtual
 Requires:       susemanager-branding
+BuildRequires:  uyuni-base-common
+Requires(pre):  uyuni-base-common
 # yast module dependency
 %if 0%{?suse_version} > 1320
 Requires:       firewalld
@@ -287,7 +289,6 @@ fi
 %dir /srv/www/htdocs/pub/repositories/empty
 %dir /srv/www/htdocs/pub/repositories/empty/repodata
 %dir /srv/www/htdocs/pub/repositories/empty-deb
-%attr(0755,root,www) %dir %{_prefix}/share/rhn/config-defaults
 %config(noreplace) %{_sysconfdir}/logrotate.d/susemanager-tools
 %{_prefix}/share/rhn/config-defaults/rhn_*.conf
 %attr(0755,root,root) %{_sbindir}/mgr-register

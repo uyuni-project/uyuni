@@ -95,6 +95,8 @@ Requires:       joda-time
 Requires(pre):  uyuni-base-common
 Requires:       woodstox
 Requires:       xmlsec
+Requires(pre):  uyuni-base-common
+BuildRequires:  uyuni-base-common
 BuildRequires:  apache-commons-lang
 BuildRequires:  apache-commons-lang3
 BuildRequires:  classmate
@@ -1020,7 +1022,6 @@ fi
 
 %files config
 %defattr(644,root,root,755)
-%attr(755,root,www) %dir %{_prefix}/share/rhn/config-defaults
 %{_prefix}/share/rhn/config-defaults/rhn_hibernate.conf
 %{_prefix}/share/rhn/config-defaults/rhn_taskomatic_daemon.conf
 %config(noreplace) %{_sysconfdir}/rhn/taskomatic.conf

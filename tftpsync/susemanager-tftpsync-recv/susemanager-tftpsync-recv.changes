@@ -1,3 +1,5 @@
+- move /usr/share/rhn/config-defaults to uyuni-base-common
+
 -------------------------------------------------------------------
 Wed May 15 15:37:30 CEST 2019 - jgonzalez@suse.com
 

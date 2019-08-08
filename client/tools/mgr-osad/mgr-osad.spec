@@ -597,7 +597,6 @@ rpm -ql osa-dispatcher | xargs -n 1 /sbin/restorecon -rvi {}
 %if 0%{?suse_version}
 %{_sbindir}/rcosa-dispatcher
 %dir %{rhnroot}
-%attr(755,root,%{apache_group}) %dir %{rhnroot}/config-defaults
 %dir %{_sysconfdir}/rhn/tns_admin
 %attr(770,root,%{apache_group}) %dir %{_var}/log/rhn
 %endif

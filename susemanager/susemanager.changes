@@ -1,3 +1,4 @@
+- move /usr/share/rhn/config-defaults to uyuni-base-common
 - Add missing bootstrap repo entries for Ubuntu repositories
 
 -------------------------------------------------------------------
