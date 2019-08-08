@@ -127,9 +127,9 @@ public class ContentFilterTest extends JMockBaseTestCaseWithUser {
 
         FilterCriteria criteria = new FilterCriteria(FilterCriteria.Matcher.GREATER, "issue_date", "2019-05-01T00:00:00+00:00");
         ContentFilter filter = ContentManager.createFilter("bydate-filter", DENY, ERRATUM, criteria, user);
-        assertTrue(filter.test(erratum1));
-        assertFalse(filter.test(erratum2));
-        assertTrue(filter.test(erratum3));
+        assertFalse(filter.test(erratum1));
+        assertTrue(filter.test(erratum2));
+        assertFalse(filter.test(erratum3));
     }
 
     /**
@@ -150,11 +150,11 @@ public class ContentFilterTest extends JMockBaseTestCaseWithUser {
 
         FilterCriteria criteria = new FilterCriteria(FilterCriteria.Matcher.GREATEREQ, "issue_date", "2019-05-01T00:00:00+00:00");
         ContentFilter filter = ContentManager.createFilter("bydate-filter", DENY, ERRATUM, criteria, user);
-        assertTrue(filter.test(erratum1));
-        assertFalse(filter.test(erratum2));
+        assertFalse(filter.test(erratum1));
+        assertTrue(filter.test(erratum2));
 
         ZonedDateTime criteriaDate = ZonedDateTime.parse("2019-05-01T00:00:00+00:00", DateTimeFormatter.ISO_OFFSET_DATE_TIME);
-        assertFalse(erratum3.getIssueDate().toInstant().atZone(ZoneId.systemDefault()).toString()
+        assertTrue(erratum3.getIssueDate().toInstant().atZone(ZoneId.systemDefault()).toString()
                 + " should be equal " +  criteriaDate.toString(), filter.test(erratum3));
     }
 }
