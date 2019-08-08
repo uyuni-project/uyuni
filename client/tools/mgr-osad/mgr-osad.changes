@@ -1,3 +1,4 @@
+- move /usr/share/rhn/config-defaults to uyuni-base-common
 - Require uyuni-base-common for /etc/rhn (for osa-dispatcher)
 
 -------------------------------------------------------------------
