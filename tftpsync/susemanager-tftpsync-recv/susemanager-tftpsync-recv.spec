@@ -42,6 +42,8 @@ Requires:       apache2-mod_wsgi
 Requires:       spacewalk-backend
 Requires:       spacewalk-proxy-common
 Requires(pre):  coreutils
+BuildRequires:  uyuni-base-common
+Requires(pre):  uyuni-base-common
 
 %description
 Use SUSE Manager Proxy as installation server. Provide the capability
@@ -78,7 +80,6 @@ fi
 %doc answers.txt COPYING README
 %dir /srv/www/tftpsync
 %dir /%{_datadir}/rhn
-%attr(755,root,www) %dir %{_datadir}/rhn/config-defaults
 /srv/www/tftpsync/add
 /srv/www/tftpsync/delete
 %{_sbindir}/configure-tftpsync.sh
