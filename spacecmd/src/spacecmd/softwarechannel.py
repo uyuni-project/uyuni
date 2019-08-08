@@ -68,9 +68,9 @@ def do_softwarechannel_list(self, args, doreturn=False):
     arg_parser.add_argument('-v', '--verbose', action='store_true')
     arg_parser.add_argument('-t', '--tree', action='store_true')
 
-    (args, options) = parse_command_arguments(args, arg_parser)
+    args, options = parse_command_arguments(args, arg_parser)
 
-    if (options.tree):
+    if options.tree:
         labels = self.list_base_channels()
     else:
         channels = self.client.channel.listAllChannels(self.session)
@@ -83,7 +83,7 @@ def do_softwarechannel_list(self, args, doreturn=False):
     if doreturn:
         return labels
     elif labels:
-        if (options.verbose):
+        if options.verbose:
             for l in sorted(labels):
                 details = self.client.channel.software.getDetails(
                     self.session, l)
@@ -96,7 +96,7 @@ def do_softwarechannel_list(self, args, doreturn=False):
         else:
             for l in sorted(labels):
                 print("%s" % l)
-                if (options.tree):
+                if options.tree:
                     for c in self.list_child_channels(parent=l):
                         print(" |-%s" % c)
 
