@@ -12,6 +12,7 @@ const {Table, Column, SearchField} = require("components/table");
 const Messages = require("components/messages").Messages;
 const DeleteDialog = require("components/dialog/DeleteDialog").DeleteDialog;
 const ModalButton = require("components/dialog/ModalButton").ModalButton;
+const SpaRenderer  = require("core/spa/spa-renderer").default;
 
 /* global isAdmin */
 
@@ -188,7 +189,7 @@ class ImageStores extends React.Component {
   }
 }
 
-ReactDOM.render(
+SpaRenderer.renderNavigationReact(
   <ImageStores />,
   document.getElementById('image-stores')
 )

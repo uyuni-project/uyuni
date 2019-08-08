@@ -1,6 +1,6 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import GuestsConsole from './guests-console';
+import SpaRenderer from "core/spa/spa-renderer";
 
 window.pageRenderers = window.pageRenderers || {};
 window.pageRenderers.guests = window.pageRenderers.guests || {};
@@ -12,7 +12,7 @@ window.pageRenderers.guests.console.guestsConsoleRenderer = (id, {
   graphicsType,
   socketUrl,
 }) => {
-  ReactDOM.render(
+  SpaRenderer.renderNavigationReact(
     <GuestsConsole
       hostId={hostId}
       guestUuid={guestUuid}

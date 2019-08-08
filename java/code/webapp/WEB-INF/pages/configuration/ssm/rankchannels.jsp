@@ -6,9 +6,9 @@
 
 <html>
 <head>
-<script src="/javascript/rank_options.js?cb=${rhn:getConfig('web.version')}" type="text/javascript"> </script>
 </head>
 <body>
+<script src="/javascript/rank_options.js?cb=${rhn:getConfig('web.version')}" type="text/javascript"> </script>
     <%@ include file="/WEB-INF/pages/common/fragments/ssm/header.jspf" %>
 
 <h2>

@@ -13,6 +13,7 @@ const { InnerPanel } = require('components/panels/InnerPanel');
 const Functions = require("utils/functions");
 const Formats = Functions.Formats;
 const {ActionLink, ActionChainLink} = require("components/links");
+const SpaRenderer  = require("core/spa/spa-renderer").default;
 
 const messagesCounterLimit = 3;
 
@@ -218,7 +219,7 @@ class Highstate extends React.Component {
     }
 }
 
-ReactDOM.render(
+SpaRenderer.renderNavigationReact(
     <Highstate />,
     document.getElementById('highstate')
 );

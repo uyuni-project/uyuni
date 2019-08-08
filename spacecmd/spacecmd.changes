@@ -1,3 +1,7 @@
+- Add unit test for schedule, errata, user, utils, misc, configchannel
+  and kickstart modules
+- Multiple minor bugfixes alongside the unit tests
+
 -------------------------------------------------------------------
 Wed Jul 31 17:30:30 CEST 2019 - jgonzalez@suse.com
 

@@ -10,15 +10,15 @@
 <%@ include file="/WEB-INF/pages/common/fragments/ssm/header.jspf" %>
 
 <rhn:require acl="all_systems_in_set_have_feature(ftr_system_custom_values)">
-    <a id="profiles">&#160;</a>
+    <a id="profiles" class="js-spa">&#160;</a>
     <h2><bean:message key="ssm.misc.index.csi.header"/></h2>
     <div class="page-summary">
-      <p><a href="/rhn/systems/ssm/misc/CustomValue.do"><bean:message key="ssm.misc.index.csi.summary"/></a></p>
+      <p><a href="/rhn/systems/ssm/misc/CustomValue.do" class="js-spa"><bean:message key="ssm.misc.index.csi.summary"/></a></p>
     </div>
 </rhn:require>
 
 <rhn:require acl="user_role(org_admin); all_systems_in_set_have_feature(ftr_add_rm_addon_type)">
-    <a id="entitle">&#160;</a>
+    <a id="entitle" class="js-spa">&#160;</a>
     <h2><bean:message key="ssm.misc.index.entitle.header"/></h2>
     <div class="page-summary">
         <p><strong><bean:message key="ssm.misc.index.entitle.summary"/></strong></p>
@@ -26,7 +26,7 @@
 </rhn:require>
 
 <rhn:require acl="all_systems_in_set_have_feature(ftr_system_preferences)">
-    <a id="sysprefs">&#160;</a><h2><bean:message key="ssm.misc.index.syspref.header"/></h2>
+    <a id="sysprefs" class="js-spa">&#160;</a><h2><bean:message key="ssm.misc.index.syspref.header"/></h2>
     <div class="page-summary">
         <p><bean:message key="ssm.misc.index.syspref.summary"/></p>
     </div>

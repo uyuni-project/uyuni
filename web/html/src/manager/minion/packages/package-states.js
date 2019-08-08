@@ -9,6 +9,7 @@ const Network = require("utils/network");
 const Fields = require("components/fields");
 const Messages = require("components/messages").Messages;
 const MessagesUtils = require("components/messages").Utils;
+const SpaRenderer  = require("core/spa/spa-renderer").default;
 
 const AsyncButton = Buttons.AsyncButton;
 const TextField = Fields.TextField;
@@ -392,7 +393,7 @@ class PackageStates extends React.Component {
   }
 }
 
-ReactDOM.render(
+SpaRenderer.renderNavigationReact(
   <PackageStates />,
   document.getElementById('package-states')
 );

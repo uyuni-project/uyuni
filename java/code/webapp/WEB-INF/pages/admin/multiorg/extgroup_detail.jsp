@@ -5,33 +5,31 @@
 <%@ taglib uri="http://rhn.redhat.com/tags/list" prefix="rl" %>
 
 <html:html >
-    <head>
+    <body>
         <script language="javascript" type="text/javascript">
-          function toggle_checkboxes() {
-            org_checkbox = document.getElementById('role_org_admin');
-            sat_checkbox = document.getElementById('role_satellite_admin');
-            role_checkboxes = document.getElementsByName('regular_role');
-            for (var i = 0, n = role_checkboxes.length; i < n; i++) {
-              if (org_checkbox.checked) {
-                role_checkboxes[i].checked = org_checkbox.checked;
-              }
-              role_checkboxes[i].disabled = org_checkbox.checked;
+            function toggle_checkboxes() {
+                org_checkbox = document.getElementById('role_org_admin');
+                sat_checkbox = document.getElementById('role_satellite_admin');
+                role_checkboxes = document.getElementsByName('regular_role');
+                for (var i = 0, n = role_checkboxes.length; i < n; i++) {
+                    if (org_checkbox.checked) {
+                        role_checkboxes[i].checked = org_checkbox.checked;
+                    }
+                    role_checkboxes[i].disabled = org_checkbox.checked;
+                }
             }
-          }
 
-          function collect_regular_roles() {
-            selected = document.getElementById('selected_regular_roles');
-            role_checkboxes = document.getElementsByName('regular_role');
-            selected.value = '';
-            for (var i = 0, n = role_checkboxes.length; i < n; i++) {
-              if (role_checkboxes[i].checked) {
-                selected.value += role_checkboxes[i].id + ' ';
-              }
+            function collect_regular_roles() {
+                selected = document.getElementById('selected_regular_roles');
+                role_checkboxes = document.getElementsByName('regular_role');
+                selected.value = '';
+                for (var i = 0, n = role_checkboxes.length; i < n; i++) {
+                    if (role_checkboxes[i].checked) {
+                        selected.value += role_checkboxes[i].id + ' ';
+                    }
+                }
             }
-          }
         </script>
-    </head>
-    <body onLoad="toggle_checkboxes()">
 
         <c:choose>
             <c:when test="${empty gid}">
@@ -116,5 +114,8 @@
                     </div>
                 </div>
             </form>
+            <script>
+                toggle_checkboxes();
+            </script>
     </body>
 </html:html>

@@ -70,7 +70,7 @@
         <!-- Channels selection implementation in ReactJS -->
         <div id="activation-key-channels"></div>
         <script type="text/javascript">
-            const csrfToken = '<c:out value="${csrf_token}" />';
+            window.csrfToken = '<c:out value="${csrf_token}" />';
             window.pageRenderers = window.pageRenderers || {};
             window.pageRenderers.customValues = {
                 DOMid: 'activation-key-channels',

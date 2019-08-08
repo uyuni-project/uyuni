@@ -8,23 +8,20 @@
 <html>
 
 <head>
-
 <meta http-equiv="Pragma" content="no-cache" />
-
-
-<script language="javascript">
-function setStep(stepName) {
-        var field = document.getElementById("wizard-step");
-        field.value = stepName;
-}
-function setContinue() {
-        var field = document.getElementById("destroyDisks");
-        field.value = "true";
-}
-</script>
 </head>
 
 <body>
+<script language="javascript">
+    function setStep(stepName) {
+        var field = document.getElementById("wizard-step");
+        field.value = stepName;
+    }
+    function setContinue() {
+        var field = document.getElementById("destroyDisks");
+        field.value = "true";
+    }
+</script>
 <%@ include file="/WEB-INF/pages/common/fragments/systems/system-header.jspf" %>
 <h2>
   <rhn:icon type="header-kickstart" title="system.common.kickstartAlt" />

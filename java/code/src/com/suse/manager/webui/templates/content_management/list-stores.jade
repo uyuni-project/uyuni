@@ -3,8 +3,8 @@ include ../common.jade
 #image-stores
 
 script(type='text/javascript').
-    const csrfToken = "#{csrf_token}";
-    const isAdmin = #{is_admin};
+    window.csrfToken = "#{csrf_token}";
+    window.isAdmin = #{is_admin};
 
 +userPreferences
 script(src='/javascript/manager/images/image-stores.bundle.js?cb=#{webVersion}', type='text/javascript')

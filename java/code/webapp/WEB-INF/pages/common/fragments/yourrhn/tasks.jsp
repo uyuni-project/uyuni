@@ -20,7 +20,8 @@
           <rhn:require acl="user_role(org_admin)">
             <li class="list-group-item">
               <rhn:icon type="nav-bullet" /> <a
-                href="/rhn/manager/systems/keys">
+                    class="js-spa"
+                    href="/rhn/manager/systems/keys">
                    <bean:message key="yourrhn.jsp.tasks.minions" arg0="${requestScope.amountOfMinions}"/>
               </a>
             </li>
@@ -32,7 +33,8 @@
         <rhn:require acl="user_role(org_admin)">
           <li class="list-group-item">
             <rhn:icon type="nav-bullet" /> <a
-              href="/rhn/systems/RequiringReboot.do">
+                  class="js-spa"
+                  href="/rhn/systems/RequiringReboot.do">
                   <bean:message key="yourrhn.jsp.tasks.reboot" arg0="${requestScope.requiringReboot}"/>
             </a>
           </li>
@@ -43,7 +45,8 @@
         <rhn:require acl="user_role(org_admin)">
         <li class="list-group-item">
             <rhn:icon type="nav-bullet" /> <a
-              href="/rhn/systems/SystemEntitlements.do"> <bean:message
+                class="js-spa"
+                href="/rhn/systems/SystemEntitlements.do"> <bean:message
                   key="yourrhn.jsp.tasks.subscriptions" />
             </a>
           </li>
@@ -55,7 +58,9 @@
           <li class="list-group-item">
           <rhn:icon type="nav-bullet" /> <bean:message
                 key="yourrhn.jsp.task.manage_subscriptions" /> <br />
-              &ensp; &ensp;<a href="/rhn/systems/SystemEntitlements.do">
+              &ensp; &ensp;<a
+                  class="js-spa"
+                  href="/rhn/systems/SystemEntitlements.do">
                 <bean:message key="header.jsp.my_organization" />
             </a>
           </li>
@@ -65,7 +70,8 @@
       <rhn:require acl="user_role(org_admin)">
         <li class="list-group-item">
         <rhn:icon type="nav-bullet" /> <a
-            href="/rhn/manager/systems/bootstrap">
+                class="js-spa"
+                href="/rhn/manager/systems/bootstrap">
               <bean:message key="yourrhn.jsp.tasks.registersystem" />
           </a>
         </li>
@@ -75,7 +81,8 @@
         acl="user_role(activation_key_admin)">
         <li class="list-group-item">
         <rhn:icon type="nav-bullet" /> <a
-            href="/rhn/activationkeys/List.do"> <bean:message
+                class="js-spa"
+                href="/rhn/activationkeys/List.do"> <bean:message
                 key="yourrhn.jsp.tasks.activationkeys" />
           </a>
         </li>
@@ -86,14 +93,16 @@
         acl="user_role(config_admin)">
         <li class="list-group-item">
           <rhn:icon type="nav-bullet" /> <a
-            href="/rhn/kickstart/KickstartOverview.do"> <bean:message
+                class="js-spa"
+                href="/rhn/kickstart/KickstartOverview.do"> <bean:message
                 key="yourrhn.jsp.tasks.kickstart" />
           </a>
         </li>
 
         <li class="list-group-item">
           <rhn:icon type="nav-bullet" /> <a
-            href="/rhn/configuration/file/GlobalConfigFileList.do">
+                class="js-spa"
+                href="/rhn/configuration/file/GlobalConfigFileList.do">
               <bean:message key="yourrhn.jsp.tasks.configuration" />
           </a>
         </li>
@@ -101,6 +110,7 @@
         <rhn:require acl="user_role(satellite_admin)">
           <li class="list-group-item">
             <rhn:icon type="nav-bullet" /> <a
+              class="js-spa"
               href="/rhn/admin/multiorg/Organizations.do"> <bean:message
                   key="yourrhn.jsp.tasks.manage_sat_orgs" />
             </a>
@@ -112,7 +122,8 @@
       <rhn:require acl="user_role(satellite_admin)">
         <li class="list-group-item">
           <rhn:icon type="nav-bullet" /> <a
-            href="/rhn/admin/config/GeneralConfig.do"> <bean:message
+                class="js-spa"
+                href="/rhn/admin/config/GeneralConfig.do"> <bean:message
                 key="yourrhn.jsp.tasks.config_sat" />
           </a>
         </li>

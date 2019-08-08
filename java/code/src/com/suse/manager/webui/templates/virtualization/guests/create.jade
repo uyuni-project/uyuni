@@ -6,7 +6,7 @@ script(src='/javascript/validator/validator.min.js?cb=#{webVersion}', type='text
 script(src='/javascript/manager/virtualization/guests/create/guests-create.renderer.bundle.js?cb=#{webVersion}', type='text/javascript')
 
 script(type='text/javascript').
-    const csrfToken = "#{csrf_token}";
+    window.csrfToken = "#{csrf_token}";
 +userPreferences
 
 script(type='text/javascript').

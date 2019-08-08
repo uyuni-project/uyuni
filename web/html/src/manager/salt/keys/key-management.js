@@ -10,6 +10,7 @@ const Network = require("utils/network");
 const Functions = require("utils/functions");
 const Utils = Functions.Utils;
 const {Table, Column, SearchField, Highlight} = require("components/table");
+const SpaRenderer  = require("core/spa/spa-renderer").default;
 
 function listKeys() {
   return Network.get("/rhn/manager/api/systems/keys").promise;
@@ -179,7 +180,7 @@ class KeyManagement extends React.Component {
   }
 }
 
-ReactDOM.render(
+SpaRenderer.renderNavigationReact(
   <KeyManagement />,
   document.getElementById('key-management')
 );

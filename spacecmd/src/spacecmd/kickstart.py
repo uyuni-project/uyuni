@@ -30,6 +30,7 @@
 # invalid function name
 # pylint: disable=C0103
 
+import os
 from getpass import getpass
 from operator import itemgetter
 try:
@@ -66,14 +67,15 @@ def help_kickstart_list(self):
 
 
 def do_kickstart_list(self, args, doreturn=False):
-    kickstarts = self.client.kickstart.listKickstarts(self.session)
-    kickstarts = [k.get('name') for k in kickstarts]
+    kickstarts = sorted([kst.get('name') for kst in self.client.kickstart.listKickstarts(self.session)])
 
     if doreturn:
         return kickstarts
     else:
         if kickstarts:
-            print('\n'.join(sorted(kickstarts)))
+            print(os.linesep.join(kickstarts))
+        else:
+            logging.error("No kickstart profiles available")
 
 ####################
 
@@ -177,7 +179,7 @@ def complete_kickstart_delete(self, text, line, beg, end):
 def do_kickstart_delete(self, args):
     arg_parser = get_argument_parser()
 
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    args, _options = parse_command_arguments(args, arg_parser)
 
     if len(args) < 1:
         self.help_kickstart_delete()
@@ -193,13 +195,14 @@ def do_kickstart_delete(self, args):
         self.help_kickstart_delete()
         return
 
-    for label in labels:
-        if not label in all_labels:
-            logging.error("kickstart label %s doesn't exist!" % label)
-            continue
-
-        if self.user_confirm("Delete profile %s [y/N]:" % label):
-            self.client.kickstart.deleteProfile(self.session, label)
+    mismatched = sorted(set(args).difference(set(all_labels)))
+    if mismatched:
+        logging.error("The following kickstart labels are invalid:",
+                      ", ".join(mismatched))
+    else:
+        for label in labels:
+            if self.options.yes or self.user_confirm("Delete profile %s [y/N]:" % label):
+                self.client.kickstart.deleteProfile(self.session, label)
 
 ####################
 
@@ -595,23 +598,23 @@ def complete_kickstart_listcryptokeys(self, text, line, beg, end):
 def do_kickstart_listcryptokeys(self, args, doreturn=False):
     arg_parser = get_argument_parser()
 
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    args, _options = parse_command_arguments(args, arg_parser)
 
     if not args:
         self.help_kickstart_listcryptokeys()
         return
 
     profile = args[0]
-
-    keys = self.client.kickstart.profile.system.listKeys(self.session,
-                                                         profile)
-    keys = [k.get('description') for k in keys]
+    keys = self.client.kickstart.profile.system.listKeys(self.session, profile)
+    keys = sorted([k.get('description') for k in keys])
 
     if doreturn:
         return keys
     else:
         if keys:
-            print('\n'.join(sorted(keys)))
+            print('\n'.join(keys))
+        else:
+            logging.error("No crypto keys has been found")
 
 ####################
 
@@ -631,20 +634,12 @@ def complete_kickstart_addcryptokeys(self, text, line, beg, end):
 
 
 def do_kickstart_addcryptokeys(self, args):
-    arg_parser = get_argument_parser()
-
-    (args, _options) = parse_command_arguments(args, arg_parser)
-
-    if len(args) < 2:
+    args, _options = parse_command_arguments(args, get_argument_parser())
+    if len(args) > 1:
+        profile, keys = args[0], args[1:]
+        self.client.kickstart.profile.system.addKeys(self.session, profile, keys)
+    else:
         self.help_kickstart_addcryptokeys()
-        return
-
-    profile = args[0]
-    keys = args[1:]
-
-    self.client.kickstart.profile.system.addKeys(self.session,
-                                                 profile,
-                                                 keys)
 
 ####################
 
@@ -703,27 +698,20 @@ def complete_kickstart_listactivationkeys(self, text, line, beg, end):
 
 
 def do_kickstart_listactivationkeys(self, args, doreturn=False):
-    arg_parser = get_argument_parser()
-
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    args, _options = parse_command_arguments(args, get_argument_parser())
 
     if not args:
         self.help_kickstart_listactivationkeys()
         return
 
     profile = args[0]
-
-    keys = \
-        self.client.kickstart.profile.keys.getActivationKeys(self.session,
-                                                             profile)
-
-    keys = [k.get('key') for k in keys]
+    keys = sorted(filter(None, [k.get('key') for k in self.client.kickstart.profile.keys.getActivationKeys(self.session, profile)]))
 
     if doreturn:
         return keys
     else:
         if keys:
-            print('\n'.join(sorted(keys)))
+            print('\n'.join(keys))
 
 ####################
 
@@ -745,21 +733,14 @@ def complete_kickstart_addactivationkeys(self, text, line, beg, end):
 
 
 def do_kickstart_addactivationkeys(self, args):
-    arg_parser = get_argument_parser()
+    args, _options = parse_command_arguments(args, get_argument_parser())
 
-    (args, _options) = parse_command_arguments(args, arg_parser)
-
-    if len(args) < 2:
+    if len(args) > 1:
+        profile = args[0]
+        for key in args[1:]:
+            self.client.kickstart.profile.keys.addActivationKey(self.session, profile, key)
+    else:
         self.help_kickstart_addactivationkeys()
-        return
-
-    profile = args[0]
-    keys = args[1:]
-
-    for key in keys:
-        self.client.kickstart.profile.keys.addActivationKey(self.session,
-                                                            profile,
-                                                            key)
 
 ####################
 
@@ -787,24 +768,18 @@ def complete_kickstart_removeactivationkeys(self, text, line, beg,
 
 
 def do_kickstart_removeactivationkeys(self, args):
-    arg_parser = get_argument_parser()
+    args, _options = parse_command_arguments(args, get_argument_parser())
 
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    if len(args) > 1:
+        if not self.options.yes:
+            if not self.user_confirm('Remove these keys [y/N]:'):
+                return
 
-    if len(args) < 2:
+        profile = args[0]
+        for key in args[1:]:
+            self.client.kickstart.profile.keys.removeActivationKey(self.session, profile, key)
+    else:
         self.help_kickstart_removeactivationkeys()
-        return
-
-    profile = args[0]
-    keys = args[1:]
-
-    if not self.user_confirm('Remove these keys [y/N]:'):
-        return
-
-    for key in keys:
-        self.client.kickstart.profile.keys.removeActivationKey(self.session,
-                                                               profile,
-                                                               key)
 
 ####################
 
@@ -1835,32 +1810,31 @@ def complete_kickstart_listscripts(self, text, line, beg, end):
 def do_kickstart_listscripts(self, args):
     arg_parser = get_argument_parser()
 
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    args, _options = parse_command_arguments(args, arg_parser)
 
     if not args:
         self.help_kickstart_listscripts()
         return
 
     profile = args[0]
+    scripts = self.client.kickstart.profile.listScripts(self.session, profile)
+    if not scripts:
+        logging.error("No scripts has been found for profile '%s'", profile)
+    else:
+        add_separator = False
+        for script in scripts:
+            if add_separator:
+                print(self.SEPARATOR)
+            add_separator = True
 
-    scripts = \
-        self.client.kickstart.profile.listScripts(self.session, profile)
-
-    add_separator = False
-
-    for script in scripts:
-        if add_separator:
-            print(self.SEPARATOR)
-        add_separator = True
-
-        print('ID:          %i' % script.get('id'))
-        print('Type:        %s' % script.get('script_type'))
-        print('Chroot:      %s' % script.get('chroot'))
-        print('Interpreter: %s' % script.get('interpreter'))
-        print('')
-        print('Contents')
-        print('--------')
-        print(script.get('contents'))
+            print('ID:          %i' % script.get('id'))
+            print('Type:        %s' % script.get('script_type'))
+            print('Chroot:      %s' % script.get('chroot'))
+            print('Interpreter: %s' % script.get('interpreter'))
+            print('')
+            print('Contents')
+            print('--------')
+            print(script.get('contents'))
 
 ####################
 
@@ -2052,18 +2026,21 @@ def do_kickstart_clone(self, args):
     arg_parser.add_argument('-n', '--name')
     arg_parser.add_argument('-c', '--clonename')
 
-    (args, options) = parse_command_arguments(args, arg_parser)
+    args, options = parse_command_arguments(args, arg_parser)
+    profiles = sorted(filter(None, self.do_kickstart_list('', True)))
 
     if is_interactive(options):
-        profiles = self.do_kickstart_list('', True)
+        if not profiles:
+            logging.error("No kickstart profiles available")
+            return
+
         print('')
         print('Kickstart Profiles')
         print('------------------')
-        print('\n'.join(sorted(profiles)))
+        print('\n'.join(profiles))
         print('')
 
         options.name = prompt_user('Original Profile:', noblank=True)
-
         options.clonename = prompt_user('Cloned Profile:', noblank=True)
     else:
 
@@ -2074,6 +2051,11 @@ def do_kickstart_clone(self, args):
         if not options.clonename:
             logging.error('The Kickstart clone name is required')
             return
+
+    args.append(options.name)
+    if not filter_results(profiles, args):
+        logging.error("Kickstart profile you've entered was not found")
+        return
 
     self.client.kickstart.cloneProfile(self.session,
                                        options.name,

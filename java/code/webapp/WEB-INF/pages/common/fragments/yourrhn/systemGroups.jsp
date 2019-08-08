@@ -15,7 +15,7 @@
                  emptykey="yourrhn.jsp.systemgroups.none">
 
                 <rl:column headerkey="grouplist.jsp.status">
-                <a href="/rhn/groups/ListErrata.do?sgid=${current.id}">
+                <a class="js-spa" href="/rhn/groups/ListErrata.do?sgid=${current.id}">
                                 <c:choose>
                                         <c:when test="${current.mostSevereErrata == 'Security Advisory'}">
                                         <rhn:icon type="system-crit" title="grouplist.jsp.security" />
@@ -31,18 +31,18 @@
                 </rl:column>
 
                         <rl:column headerkey="yourrhn.jsp.systemgroups">
-                <a href="/rhn/groups/GroupDetail.do?sgid=${current.id}">
+                <a class="js-spa" href="/rhn/groups/GroupDetail.do?sgid=${current.id}">
                 <c:out value="${current.name}"/></a>
             </rl:column>
 
                 <rl:column headerkey="grouplist.jsp.systems">
-                <a href="/rhn/groups/GroupDetail.do?sgid=${current.id}">
+                <a class="js-spa" href="/rhn/groups/GroupDetail.do?sgid=${current.id}">
                 <c:out value="${current.serverCount}"/></a>
                 </rl:column>
 
                 </rl:list>
 
-                  <a href="/rhn/systems/SystemGroupList.do">
+                  <a class="js-spa" href="/rhn/systems/SystemGroupList.do">
                         <div class="btn btn-default spacewalk-btn-margin-vertical"><rhn:icon type="header-system-groups" /><bean:message key="yourrhn.jsp.allgroups" /></div>
                 </a>
 

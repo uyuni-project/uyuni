@@ -41,9 +41,9 @@ public class RendererTest extends RhnBaseTestCase {
         expectations.put("preNavLevel", "<ul class=\"nav nav-tabs nav-tabs-pf\">");
         expectations.put("preNavNode", "");
         expectations.put("navNodeActive", "<li class=\"active\">" +
-            "<a href=\"http://rhn.redhat.com\">name</a></li>\n");
+            "<a href=\"http://rhn.redhat.com\" class=\"js-spa\">name</a></li>\n");
         expectations.put("navNodeInactive",
-                         "<li><a href=\"http://rhn.redhat.com\">name</a></li>\n");
+                         "<li><a href=\"http://rhn.redhat.com\" class=\"js-spa\">name</a></li>\n");
         expectations.put("postNavNode", "");
         expectations.put("postNavLevel", "</ul>\n");
         expectations.put("nodeRenderInline", Boolean.FALSE);

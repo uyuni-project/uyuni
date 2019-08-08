@@ -6,9 +6,9 @@
 <html:html >
     <head>
         <meta http-equiv="Pragma" content="no-cache" />
-        <script language="javascript" src="/javascript/refresh.js?cb=${rhn:getConfig('web.version')}"></script>
     </head>
     <body>
+        <script language="javascript" src="/javascript/refresh.js?cb=${rhn:getConfig('web.version')}"></script>
         <rhn:toolbar base="h1" icon="header-kickstart"
                      deletionUrl="/rhn/kickstart/TreeDelete.do?kstid=${kstree.id}"
                      deletionType="deleteTree"

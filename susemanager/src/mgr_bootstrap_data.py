@@ -794,5 +794,15 @@ DATA = {
         'PDID' : [-1, 1918], 'PKGLIST' : PKGLISTUBUNTU1804,
         'DEST' : '/srv/www/htdocs/pub/repositories/ubuntu/18/4/bootstrap/',
         'TYPE' : 'deb'
+    },
+    'ubuntu-16.04-amd64-uyuni' : {
+        'BASECHANNEL' : 'ubuntu-16.04-pool-amd64-uyuni', 'PKGLIST' : PKGLISTUBUNTU1604,
+        'DEST' : '/srv/www/htdocs/pub/repositories/ubuntu/16/4/bootstrap/',
+        'TYPE' : 'deb'
+    },
+    'ubuntu-18.04-amd64-uyuni' : {
+        'BASECHANNEL' : 'ubuntu-18.04-pool-amd64-uyuni', 'PKGLIST' : PKGLISTUBUNTU1804,
+        'DEST' : '/srv/www/htdocs/pub/repositories/ubuntu/18/4/bootstrap/',
+        'TYPE' : 'deb'
     }
 }

@@ -3,6 +3,7 @@
 
 const React = require("react");
 const ReactDOM = require("react-dom");
+const SpaRenderer  = require("core/spa/spa-renderer").default;
 
 const NotFound = ({currentUrl}) =>
     <body>
@@ -35,7 +36,7 @@ const NotFound = ({currentUrl}) =>
 window.pageRenderers = window.pageRenderers || {};
 window.pageRenderers.errors = window.pageRenderers.errors || {};
 
-window.pageRenderers.errors.NotFoundRenderer = (id, {currentUrl}) => ReactDOM.render(
+window.pageRenderers.errors.NotFoundRenderer = (id, {currentUrl}) => SpaRenderer.renderNavigationReact(
     <NotFound
         currentUrl={currentUrl}
     />,

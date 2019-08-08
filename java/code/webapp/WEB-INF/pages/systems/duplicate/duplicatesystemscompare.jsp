@@ -6,38 +6,36 @@
 
 
 <html>
-<head>
+<body>
 <script type="text/javascript">
 
-        function toggleElement(row) {
-                if (row.style.display == '') {
-                         row.style.display = 'none';
-                }
-                else {
-                 row.style.display = '';
-                 }
+    function toggleElement(row) {
+        if (row.style.display == '') {
+            row.style.display = 'none';
         }
+        else {
+            row.style.display = '';
+        }
+    }
 
 
-        function pageToggleRows(linkId, ids){
-                for (var i = 0 ; i < ids.length; i++) {
-                        toggleElement(document.getElementById(ids[i]));
-                }
-                toggleElement(document.getElementById(linkId + 'Show'));
-                toggleElement(document.getElementById(linkId + 'Hide'));
+    function pageToggleRows(linkId, ids){
+        for (var i = 0 ; i < ids.length; i++) {
+            toggleElement(document.getElementById(ids[i]));
         }
+        toggleElement(document.getElementById(linkId + 'Show'));
+        toggleElement(document.getElementById(linkId + 'Hide'));
+    }
 
-        function handle_delete(div_del_id, div_confirm_id, form) {
-            var div_del = document.getElementById(div_del_id);
-            var div_confirm = document.getElementById(div_confirm_id);
-            div_del.style.display = 'none';
-                div_confirm.style.display = '';
-                return false;
-        }
+    function handle_delete(div_del_id, div_confirm_id, form) {
+        var div_del = document.getElementById(div_del_id);
+        var div_confirm = document.getElementById(div_confirm_id);
+        div_del.style.display = 'none';
+        div_confirm.style.display = '';
+        return false;
+    }
 
 </script>
-</head>
-<body>
 <rhn:toolbar base="h1" icon="header-system" imgAlt="system.common.systemAlt"
  helpUrl="/docs/reference/systems/systems-list.html#ref.webui.systems.systems.ood">
   <bean:message key="duplicates.jsp.header"/>

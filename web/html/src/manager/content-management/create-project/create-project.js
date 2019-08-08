@@ -38,7 +38,7 @@ const CreateProject = () => {
                   onAction(project, "create")
                     .then(
                       () => {
-                        window.location.href = `/rhn/manager/contentmanagement/project/${project.properties.label || ''}`
+                        window.pageRenderers.spa.navigate(`/rhn/manager/contentmanagement/project/${project.properties.label || ''}`);
                       }
                     )
                     .catch((error) => {

@@ -17,6 +17,7 @@ const PopUp = require("components/popup").PopUp;
 const ProgressBar = require("components/progressbar").ProgressBar;
 const CustomDiv = require("components/custom-objects").CustomDiv;
 const {Toggler} = require("components/toggler");
+const SpaRenderer  = require("core/spa/spa-renderer").default;
 
 const _DATA_ROOT_ID = 'baseProducts';
 
@@ -223,7 +224,7 @@ class ProductsPageWrapper extends React.Component {
     const tabs = 
       <div className='spacewalk-content-nav'>
         <ul className='nav nav-tabs'>
-          { _SETUP_WIZARD_STEPS.map(step => <li key={step.id} className={step.active ? 'active' : ''}><a href={step.url}>{t(step.label)}</a></li>)}
+          { _SETUP_WIZARD_STEPS.map(step => <li key={step.id} className={step.active ? 'active' : ''}><a className='js-spa' href={step.url}>{t(step.label)}</a></li>)}
         </ul>
       </div>;
 
@@ -896,7 +897,7 @@ class ChannelList extends React.Component {
   }
 }
 
-ReactDOM.render(
+SpaRenderer.renderNavigationReact(
   <ProductsPageWrapper />,
   document.getElementById('products')
 );

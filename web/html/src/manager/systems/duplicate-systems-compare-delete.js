@@ -6,6 +6,7 @@ const ReactDOM = require("react-dom");
 
 const {Utils} = require("../../utils/functions");
 const {DeleteSystem} = require("./delete-system");
+const SpaRenderer  = require("core/spa/spa-renderer").default;
 
 function postForm(serverId) {
   const form = $("table[class='list compare-list']").closest("form");
@@ -19,7 +20,7 @@ function postForm(serverId) {
 }
 
 getServerIdsToDelete().forEach(serverId => {
-  ReactDOM.render(
+  SpaRenderer.renderNavigationReact(
     <DeleteSystem serverId={serverId} onDeleteSuccess={() => postForm(serverId)}
       buttonText={t("Confirm Deletion")} buttonClass="btn-danger"
       />,
