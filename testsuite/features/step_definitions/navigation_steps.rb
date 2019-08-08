@@ -52,6 +52,7 @@ When(/^I wait until I see "([^"]*)" text, refreshing the page$/) do |text|
   text.gsub! '$PRODUCT', $product # TODO: Rid of this substitution, using another step
   repeat_until_timeout(message: "Couldn't find text '#{text}'") do
     break if page.has_content?(text)
+    sleep 3
     page.evaluate_script 'window.location.reload()'
   end
 end
@@ -60,6 +61,7 @@ When(/^I wait at most (\d+) seconds until the event is completed, refreshing the
   repeat_until_timeout(timeout: timeout.to_i, message: 'Event not yet completed') do
     break if page.has_content?("This action's status is: Completed.")
     raise 'Event failed' if page.has_content?("This action's status is: Failed.")
+    sleep 1
     page.evaluate_script 'window.location.reload()'
   end
 end
@@ -72,6 +74,7 @@ end
 When(/^I wait until I do not see "([^"]*)" text, refreshing the page$/) do |text|
   repeat_until_timeout(message: "Text '#{text}' is still visible") do
     break unless page.has_content?(text)
+    sleep 3
     page.evaluate_script 'window.location.reload()'
   end
 end
@@ -84,6 +87,7 @@ end
 Then(/^I wait until I see the (VNC|spice) graphical console$/) do |type|
   repeat_until_timeout(message: "The #{type} graphical console didn't load") do
     break unless page.has_xpath?('.//canvas')
+    sleep 3
   end
 end
 
@@ -351,11 +355,13 @@ end
 When(/^I wait until table row for "([^"]*)" contains button "([^"]*)"$/) do |text, button|
   xpath_query = "//tr[td[contains(., '#{text}')]]/td/descendant::*[self::a or self::button][@title='#{button}']"
   raise "xpath: #{xpath_query} not found" unless all(:xpath, xpath_query, wait: DEFAULT_TIMEOUT).any?
+  sleep 1
 end
 
 When(/^I wait until table row contains a "([^"]*)" text$/) do |text|
   xpath_query = "//div[@class=\"table-responsive\"]/table/tbody/tr[.//td[contains(.,'#{text}')]]"
   raise "xpath: #{xpath_query} not found" unless all(:xpath, xpath_query, wait: DEFAULT_TIMEOUT).any?
+  sleep 1
 end
 
 # login, logout steps
@@ -751,6 +757,7 @@ When(/^I click on "([^"]*)" in "([^"]*)" modal$/) do |btn, title|
   # the fade out animation might still be in progress
   repeat_until_timeout(message: "Couldn't find the #{title} modal") do
     break if all(:xpath, path).any?
+    sleep 1
   end
 
   within(:xpath, path) do
