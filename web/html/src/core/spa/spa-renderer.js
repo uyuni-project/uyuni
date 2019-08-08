@@ -27,7 +27,6 @@ function renderNavigationReact(element: ReactElement<any>, container: Element) {
       container,
       clean: () => ReactDOM.unmountComponentAtNode(container)
     });
-  // TODO: review this onDocumentReadyInitOldJS to run only once
   ReactDOM.render(element, container, () => onDocumentReadyInitOldJS());
 }
 
