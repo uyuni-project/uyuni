@@ -78,11 +78,13 @@ Basic filesystem hierarchy for Uyuni proxy.
 mkdir -p %{buildroot}/etc/rhn
 mkdir -p %{buildroot}/usr/share/rhn/proxy
 mkdir -p %{buildroot}/var/spacewalk
+mkdir -p %{buildroot}/%{_prefix}/share/rhn/config-defaults
 
 %files common
 %defattr(-,root,root)
 %dir %attr(750,root,%{apache_group}) /etc/rhn
-%dir /usr/share/rhn
+%dir %{_prefix}/share/rhn
+%dir %attr(755,root,%{apache_group}) %{_prefix}/share/rhn/config-defaults
 
 %files server
 %defattr(-,root,root)
