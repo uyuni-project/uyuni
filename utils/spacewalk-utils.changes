@@ -14,6 +14,7 @@ Wed Jul 31 17:37:23 CEST 2019 - jgonzalez@suse.com
 - common-channels: Fix repo type assignment for type YUM
 - Use the same client tools for openSUSE Leap 15.0 for all openSUSE Leap
   15.X releases.
+- Fixes SSL hostname matching (bsc#1141663)
 - hostname-rename: change hostname in cobbler db and autoinst data
 - Adds support for Ubuntu and Debian channels to spacewalk-common-channels.
 
