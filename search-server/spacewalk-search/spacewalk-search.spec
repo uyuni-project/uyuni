@@ -139,6 +139,7 @@ Spacewalk Server.
 %install
 rm -fr ${RPM_BUILD_ROOT}
 ant -Djar.version=%{version} install
+install -d -m 755 $RPM_BUILD_ROOT%{_prefix}/share/rhn/config-defaults
 install -d -m 755 $RPM_BUILD_ROOT%{_prefix}/share/rhn/search
 install -d -m 755 $RPM_BUILD_ROOT%{_prefix}/share/rhn/search/lib
 install -d -m 755 $RPM_BUILD_ROOT%{_var}/lib/rhn/search

@@ -139,6 +139,7 @@ install -m 0755 bin/* %{buildroot}/%{_prefix}/lib/susemanager/bin/
 ln -s mgr-setup %{buildroot}/%{_prefix}/lib/susemanager/bin/migration.sh
 ln -s pg-migrate-94-to-96.sh %{buildroot}/%{_prefix}/lib/susemanager/bin/pg-migrate.sh
 
+mkdir -p %{buildroot}/%{_prefix}/share/rhn/config-defaults
 mkdir -p %{buildroot}/%{_sysconfdir}/init.d
 mkdir -p %{buildroot}/%{_sysconfdir}/slp.reg.d
 mkdir -p %{buildroot}/%{_sysconfdir}/logrotate.d
