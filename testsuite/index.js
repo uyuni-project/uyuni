@@ -6,7 +6,7 @@ var reporter = require('cucumber-html-reporter');
 
 var options = {
   theme: 'bootstrap',
-  jsonFile: 'output.json',
+  jsonDir: '.',
   output: './cucumber_report/cucumber_report.html',
   reportSuiteAsScenarios: true,
   launchReport: false,
@@ -14,6 +14,7 @@ var options = {
   screenshotsDirectory: './cucumber_report/screenshots/',
   storeScreenshots: true,
   noInlineScreenshots: true,
+  ignoreBadJsonFile: true,
   name: 'SUSE Manager Testsuite',
   brandTitle: ' ',
   // metadata: {
