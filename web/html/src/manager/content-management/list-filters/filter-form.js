@@ -124,6 +124,42 @@ const FilterForm = (props: Props) => {
         }
 
         {
+          (filtersEnum.enum.ERRATUM_PKG_LT_EVR.key === props.filter.type ||
+          filtersEnum.enum.ERRATUM_PKG_LE_EVR.key === props.filter.type ||
+          filtersEnum.enum.ERRATUM_PKG_EQ_EVR.key === props.filter.type ||
+          filtersEnum.enum.ERRATUM_PKG_GE_EVR.key === props.filter.type ||
+          filtersEnum.enum.ERRATUM_PKG_GT_EVR.key === props.filter.type ) &&
+          <>
+            <Text
+              name="packageName"
+              label={t("Package Name")}
+              labelClass="col-md-3"
+              divClass="col-md-6"
+              required
+            />
+            <Text
+              name="epoch"
+              label={t("Epoch")}
+              labelClass="col-md-3"
+              divClass="col-md-6" />
+            <Text
+              name="version"
+              label={t("Version")}
+              labelClass="col-md-3"
+              divClass="col-md-6"
+              required
+            />
+            <Text
+              name="release"
+              label={t("Release")}
+              labelClass="col-md-3"
+              divClass="col-md-6"
+              required
+            />
+          </>
+        }
+
+        {
           filtersEnum.enum.ERRATUM.key === props.filter.type &&
           <div className="row">
             <Text
