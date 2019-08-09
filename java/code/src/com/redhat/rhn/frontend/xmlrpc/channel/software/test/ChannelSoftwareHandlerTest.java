@@ -445,7 +445,7 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
     }
 
     public void testDeleteChannel() throws Exception {
-        ChannelSoftwareHandler csh = new ChannelSoftwareHandler();
+        ChannelSoftwareHandler csh = getMockedHandler();
         addRole(admin, RoleFactory.CHANNEL_ADMIN);
         Channel c = ChannelFactoryTest.createTestChannel(admin);
         String label = c.getLabel();
@@ -462,6 +462,42 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
         }
         // taskomatic is up
         assertNull(reload(c));
+    }
+
+    public void testDeleteClonedChannel() throws Exception {
+        ChannelSoftwareHandler csh = getMockedHandler();
+        addRole(admin, RoleFactory.CHANNEL_ADMIN);
+
+        Channel c = ChannelFactoryTest.createTestChannel(admin);
+        Channel cClone1 = ChannelFactoryTest.createTestClonedChannel(c, admin);
+        Channel cClone2 = ChannelFactoryTest.createTestClonedChannel(cClone1, admin);
+        cClone2 = (Channel) reload(cClone2);
+
+        assertEquals(1, csh.delete(admin, cClone2.getLabel()));
+        assertNotNull(reload(c));
+        assertNotNull(reload(cClone1));
+        assertNull(reload(cClone2));
+    }
+
+    public void testDeleteChannelWithClones() throws Exception {
+        ChannelSoftwareHandler csh = getMockedHandler();
+        addRole(admin, RoleFactory.CHANNEL_ADMIN);
+
+        Channel c = ChannelFactoryTest.createTestChannel(admin);
+        Channel cClone1 = ChannelFactoryTest.createTestClonedChannel(c, admin);
+        Channel cClone2 = ChannelFactoryTest.createTestClonedChannel(cClone1, admin);
+        cClone1 = (Channel) reload(cClone1);
+        try {
+            csh.delete(admin, cClone1.getLabel());
+            fail();
+        }
+        catch (ValidatorException exc) {
+            assertEquals(exc.getResult().getErrors().size(), 1);
+            assertEquals(exc.getResult().getErrors().get(0).getKey(), "api.channel.delete.hasclones");
+            assertNotNull(reload(c));
+            assertNotNull(reload(cClone1));
+            assertNotNull(reload(cClone2));
+        }
     }
 
     public void testIsGloballySubscribable() throws Exception {
@@ -1180,12 +1216,19 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
     private ChannelSoftwareHandler getMockedHandler() throws Exception {
         TaskomaticApi taskomaticMock = MOCK_CONTEXT.mock(TaskomaticApi.class);
         ChannelSoftwareHandler systemHandler = new ChannelSoftwareHandler(taskomaticMock);
+        ChannelManager.setTaskomaticApi(taskomaticMock);
+
 
         MOCK_CONTEXT.checking(new Expectations() {{
             allowing(taskomaticMock).scheduleActionExecution(with(any(Action.class)));
             allowing(taskomaticMock)
                     .scheduleSubscribeChannels(with(any(User.class)), with(any(SubscribeChannelsAction.class)));
+            allowing(taskomaticMock)
+                    .getRepoSyncSchedule(with(any(Channel.class)), with(any(User.class)));
+            allowing(taskomaticMock).isRunning();
+            will(returnValue(true));
         }});
+
 
         return systemHandler;
     }
