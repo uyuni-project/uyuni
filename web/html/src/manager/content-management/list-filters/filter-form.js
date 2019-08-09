@@ -2,9 +2,9 @@
 import React from 'react';
 import {Text} from "components/input/Text";
 import {DateTime} from "components/input/DateTime";
+import {Radio} from "components/input/Radio";
 import {Select} from "components/input/Select";
 import {Form} from "components/input/Form";
-import {Check} from "components/input/Check";
 import type {FilterFormType} from "../shared/type/filter.type";
 import filtersEnum from "../shared/business/filters.enum";
 import type {FilterOptionType} from "../shared/business/filters.enum";
@@ -152,26 +152,17 @@ const FilterForm = (props: Props) => {
           </div>
         }
 
-        <Select
-            name="rule"
-            required
-            defaultValue="deny"
-            label={t("Rule")}
-            labelClass="col-md-3"
-            divClass="col-md-6">
-
-            <option
-              selected
-              key="deny"
-              value="deny">
-              {t("Deny")}
-            </option>
-            <option
-              key="allow"
-              value="allow">
-              {t("Allow")}
-            </option>
-        </Select>
+        <Radio
+          name="rule"
+          defaultValue="deny"
+          items={[
+            {"label": t("Deny"), "value": "deny"},
+            {"label": t("Allow"), "value": "allow"}
+          ]}
+          label={t("Rule")}
+          labelClass="col-md-3"
+          divClass="col-md-6">
+        </Radio>
 
       </React.Fragment>
     </Form>
