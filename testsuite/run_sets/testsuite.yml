@@ -66,6 +66,7 @@
 - features/secondary/min_docker_build_image.feature
 - features/secondary/trad_metadata_check.feature
 - features/secondary/srv_clone_channel_npn.feature
+- features/secondary/srv_delete_channel.feature
 - features/secondary/trad_cve_id_new_syntax.feature
 - features/secondary/trad_weak_deps.feature
 - features/secondary/srv_nagios.feature

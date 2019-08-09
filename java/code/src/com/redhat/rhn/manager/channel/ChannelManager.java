@@ -111,6 +111,9 @@ import static java.util.Optional.ofNullable;
  */
 public class ChannelManager extends BaseManager {
 
+    private static final int LIMIT_CHANNELS_IN_MESSAGE = 3;
+
+    private static TaskomaticApi taskomaticApi = new TaskomaticApi();
     private static Logger log = Logger.getLogger(ChannelManager.class);
 
     public static final String QRY_ROLE_MANAGE = "manage";
@@ -164,6 +167,14 @@ public class ChannelManager extends BaseManager {
 
     private ChannelManager() {
 
+    }
+
+    /**
+     * Set the {@link TaskomaticApi} instance to use. Only needed for unit tests.
+     * @param taskomaticApiIn the {@link TaskomaticApi}
+     */
+    public static void setTaskomaticApi(TaskomaticApi taskomaticApiIn) {
+        taskomaticApi = taskomaticApiIn;
     }
 
     /**
@@ -677,13 +688,23 @@ public class ChannelManager extends BaseManager {
             if (!ChannelFactory.listAllChildrenForChannel(toRemove).isEmpty()) {
                 throw new PermissionException("api.channel.delete.haschild");
             }
+            if (!toRemove.getClonedChannels().isEmpty()) {
+                ValidatorException
+                        .raiseException("api.channel.delete.hasclones",
+                                toRemove.getClonedChannels().stream()
+                                        .limit(LIMIT_CHANNELS_IN_MESSAGE)
+                                        .map(ClonedChannel::getLabel)
+                                        .collect(Collectors.joining(", ")),
+                                toRemove.getClonedChannels().size() > LIMIT_CHANNELS_IN_MESSAGE ? ", (etc)" : "");
+            }
             if (toRemove.containsDistributions()) {
                 ValidatorException.raiseException(
                         "message.channel.cannot-be-deleted.has-distros");
 
             }
+
             if (!skipTaskomatic) {
-                if (!new TaskomaticApi().isRunning()) {
+                if (!taskomaticApi.isRunning()) {
                     ValidatorException
                         .raiseException("message.channel.cannot-be-deleted.no-taskomatic");
                 }
@@ -704,13 +725,12 @@ public class ChannelManager extends BaseManager {
      */
     public static void unscheduleEventualRepoSync(Channel channel, User user)
         throws TaskomaticApiException {
-        TaskomaticApi tapi = new TaskomaticApi();
         try {
-            String cronExpr = tapi.getRepoSyncSchedule(channel, user);
+            String cronExpr = taskomaticApi.getRepoSyncSchedule(channel, user);
             if (!StringUtils.isEmpty(cronExpr)) {
                 log.info("Unscheduling repo sync schedule with " + cronExpr +
                         " for channel " + channel.getLabel());
-                tapi.unscheduleRepoSync(channel, user);
+                taskomaticApi.unscheduleRepoSync(channel, user);
             }
         }
         catch (TaskomaticApiException e) {

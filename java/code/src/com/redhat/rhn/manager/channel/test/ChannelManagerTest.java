@@ -17,6 +17,8 @@ package com.redhat.rhn.manager.channel.test;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
+import com.redhat.rhn.common.security.PermissionException;
+import com.redhat.rhn.common.validator.ValidatorException;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.channel.AccessTokenFactory;
 import com.redhat.rhn.domain.channel.Channel;
@@ -284,6 +286,43 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
         c = (Channel) reload(c);
         ChannelManager.deleteChannel(user, c.getLabel(), true);
         assertNull(reload(c));
+    }
+
+    public void testDeleteClonedChannel() throws Exception {
+        user.getOrg().addRole(RoleFactory.CHANNEL_ADMIN);
+        user.addPermanentRole(RoleFactory.CHANNEL_ADMIN);
+        TestUtils.saveAndFlush(user);
+
+        Channel c = ChannelFactoryTest.createTestChannel(user);
+        Channel cClone1 = ChannelFactoryTest.createTestClonedChannel(c, user);
+        Channel cClone2 = ChannelFactoryTest.createTestClonedChannel(cClone1, user);
+        cClone2 = (Channel) reload(cClone2);
+        ChannelManager.deleteChannel(user, cClone2.getLabel(), true);
+        assertNotNull(reload(c));
+        assertNotNull(reload(cClone1));
+        assertNull(reload(cClone2));
+    }
+
+    public void testDeleteChannelWithClones() throws Exception {
+        user.getOrg().addRole(RoleFactory.CHANNEL_ADMIN);
+        user.addPermanentRole(RoleFactory.CHANNEL_ADMIN);
+        TestUtils.saveAndFlush(user);
+
+        Channel c = ChannelFactoryTest.createTestChannel(user);
+        Channel cClone1 = ChannelFactoryTest.createTestClonedChannel(c, user);
+        Channel cClone2 = ChannelFactoryTest.createTestClonedChannel(cClone1, user);
+        cClone1 = (Channel) reload(cClone1);
+        try {
+            ChannelManager.deleteChannel(user, cClone1.getLabel(), true);
+            fail();
+        }
+        catch (ValidatorException exc) {
+            assertEquals(exc.getResult().getErrors().size(), 1);
+            assertEquals(exc.getResult().getErrors().get(0).getKey(), "api.channel.delete.hasclones");
+            assertNotNull(reload(c));
+            assertNotNull(reload(cClone1));
+            assertNotNull(reload(cClone2));
+        }
     }
 
     public void testDeleteChannelException() throws Exception {
