@@ -23,6 +23,9 @@ export function mapFilterFormToRequest(filterForm: FilterFormType, projectLabel:
       requestForm.criteriaValue =
         `${filterForm.packageName || ""}-${epochName}${filterForm.version || ""}-${filterForm.release || ""}.${filterForm.architecture}`;
     }
+  } else if (filterForm.type === filtersEnum.enum.ERRATUM_PKG_NAME.key) {
+    requestForm.criteriaKey = "package_name";
+    requestForm.criteriaValue = filterForm.criteria;
   } else if (filterForm.type === filtersEnum.enum.ERRATUM.key) {
     requestForm.criteriaKey = "advisory_name";
     requestForm.criteriaValue = filterForm.advisoryName;
@@ -106,6 +109,9 @@ export function mapResponseToFilterForm(filtersResponse: Array<FilterServerType>
     } else if (filterResponse.criteriaKey === "issue_date") {
       filterForm.type = filtersEnum.enum.ERRATUM_BYDATE.key;
       filterForm["issueDate"] = Functions.Utils.dateWithTimezone(filterResponse.criteriaValue);
+    } else if (filterResponse.criteriaKey === "package_name") {
+      filterForm.type = filtersEnum.enum.ERRATUM_PKG_NAME.key
+      filterForm.criteria = filterResponse.criteriaValue;
     } else if (filterResponse.criteriaKey === "name") {
       filterForm.type = filtersEnum.enum.PACKAGE.key;
       filterForm.criteria = filterResponse.criteriaValue;

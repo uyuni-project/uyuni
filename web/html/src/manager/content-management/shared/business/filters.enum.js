@@ -50,6 +50,12 @@ export const filtersOptionsEnum : FiltersOptionEnumType = new Proxy({
       entityType: 'erratum',
       matcher: 'contains',
       text: 'Patch (contains Synopsis)',
+    },
+    ERRATUM_PKG_NAME: {
+      key: 'erratum_pkg_name',
+      entityType: 'erratum',
+      matcher: 'contains_pkg_name',
+      text: 'Patch contains package name',
     }
   },
   objectDefaultValueHandler(defaultState)
@@ -67,7 +73,8 @@ function getFilterDescription (filter: Object): string {
   const matcherDescription = {
     equals: " matching ",
     contains: " containing ",
-    greatereq: " greater or equal "
+    greatereq: " greater or equal ",
+    contains_pkg_name: " contains package name "
   }
 
   return `${filter.name}: deny ${filter.entityType} ${matcherDescription[filter.matcher] || ""} ${filter.criteriaValue} (${filter.criteriaKey})`;
