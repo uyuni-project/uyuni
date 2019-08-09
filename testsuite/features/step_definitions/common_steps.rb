@@ -939,7 +939,7 @@ When(/^I wait until all events in history are completed$/) do
   end
 end
 
-And(/I should see a list item with text "([^"]*)" and bullet with "([^"]*)" icon/) do |text, class_name|
+Then(/^I should see a list item with text "([^"]*)" and bullet with "([^"]*)" icon$/) do |text, class_name|
   item_xpath = "//ul/li[text()='#{text}']/i[contains(@class, 'text-#{class_name}')]"
   find(:xpath, item_xpath)
 end
