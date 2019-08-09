@@ -225,4 +225,76 @@ public class ContentFilterTest extends JMockBaseTestCaseWithUser {
         filter = ContentManager.createFilter("rec-type-filter", DENY, ERRATUM, criteria, user);
         assertFalse(filter.test(erratum1));
     }
+
+    public void testErrataContainsPackageName() throws Exception {
+        String cveName1 = TestUtils.randomString().substring(0, 13);
+        Errata erratum1 = ErrataTestUtils.createTestErrata(user, Collections.singleton(ErrataTestUtils.createTestCve(cveName1)));
+        String pkgName = erratum1.getPackages().iterator().next().getPackageName().getName();
+
+        FilterCriteria criteria = new FilterCriteria(FilterCriteria.Matcher.CONTAINS_PKG_NAME, "package_name", pkgName);
+        ContentFilter filter = ContentManager.createFilter("contains-name-filter", DENY, ERRATUM, criteria, user);
+        assertTrue(filter.test(erratum1));
+
+        criteria = new FilterCriteria(FilterCriteria.Matcher.CONTAINS_PKG_NAME, "package_name", pkgName + "noFound");
+        filter = ContentManager.createFilter("contains-name-filter2", DENY, ERRATUM, criteria, user);
+        assertFalse(filter.test(erratum1));
+    }
+
+    public void testErrataContainsPackageEvr() throws Exception {
+        String cveName1 = TestUtils.randomString().substring(0, 13);
+        Errata erratum1 = ErrataTestUtils.createTestErrata(user, Collections.singleton(ErrataTestUtils.createTestCve(cveName1)));
+        Package pkg1 = erratum1.getPackages().iterator().next();
+        String pkgName = pkg1.getPackageName().getName();
+        String equalEvrString = "1:1.0.0-1"; // PackageEvrFactoryTest.createTestPackageEvr()
+        String lowerEvrString = "1:0.9";
+        String greaterEvrString = "1:1.0.0-1.1";
+
+        // 1:1.0.0-1 < 1:1.0.0-1
+        FilterCriteria criteria = new FilterCriteria(FilterCriteria.Matcher.CONTAINS_PKG_LT_EVR,
+                "package_nevr", pkgName + " " + equalEvrString);
+        ContentFilter filter = ContentManager.createFilter("contains-lt-nevr-filter", DENY, ERRATUM, criteria, user);
+        assertFalse(filter.test(erratum1));
+
+        // 1:1.0.0-1 < 1:1.0.0-1.1
+        criteria = new FilterCriteria(FilterCriteria.Matcher.CONTAINS_PKG_LT_EVR,
+                "package_nevr", pkgName + " " + greaterEvrString);
+        filter = ContentManager.createFilter("contains-lt-nevr-filter2", DENY, ERRATUM, criteria, user);
+        assertTrue(filter.test(erratum1));
+
+        // 1:1.0.0-1 <= 1:1.0.0-1
+        criteria = new FilterCriteria(FilterCriteria.Matcher.CONTAINS_PKG_LE_EVR,
+                "package_nevr", pkgName + " " + equalEvrString);
+        filter = ContentManager.createFilter("contains-le-nevr-filter", DENY, ERRATUM, criteria, user);
+        assertTrue(filter.test(erratum1));
+
+        // 1:1.0.0-1 == 1:1.0.0-1
+        criteria = new FilterCriteria(FilterCriteria.Matcher.CONTAINS_PKG_EQ_EVR,
+                "package_nevr", pkgName + " " + equalEvrString);
+        filter = ContentManager.createFilter("contains-eq-nevr-filter", DENY, ERRATUM, criteria, user);
+        assertTrue(filter.test(erratum1));
+
+        // 1:1.0.0-1 >= 1:1.0.0-1
+        criteria = new FilterCriteria(FilterCriteria.Matcher.CONTAINS_PKG_GE_EVR,
+                "package_nevr", pkgName + " " + equalEvrString);
+        filter = ContentManager.createFilter("contains-ge-nevr-filter", DENY, ERRATUM, criteria, user);
+        assertTrue(filter.test(erratum1));
+
+        // 1:1.0.0-1 > 1:1.0.0-1
+        criteria = new FilterCriteria(FilterCriteria.Matcher.CONTAINS_PKG_GT_EVR,
+                "package_nevr", pkgName + " " + equalEvrString);
+        filter = ContentManager.createFilter("contains-gt-nevr-filter", DENY, ERRATUM, criteria, user);
+        assertFalse(filter.test(erratum1));
+
+        // 1:1.0.0-1 > 1:0.9
+        criteria = new FilterCriteria(FilterCriteria.Matcher.CONTAINS_PKG_GT_EVR,
+                "package_nevr", pkgName + " " + lowerEvrString);
+        filter = ContentManager.createFilter("contains-gt-nevr-filter2", DENY, ERRATUM, criteria, user);
+        assertTrue(filter.test(erratum1));
+
+        // name does not match
+        criteria = new FilterCriteria(FilterCriteria.Matcher.CONTAINS_PKG_EQ_EVR,
+                "package_nevr", pkgName + "NotFound " + equalEvrString);
+        filter = ContentManager.createFilter("contains-eq-nevr-filter2", DENY, ERRATUM, criteria, user);
+        assertFalse(filter.test(erratum1));
+    }
 }
