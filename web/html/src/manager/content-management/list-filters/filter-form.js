@@ -183,6 +183,19 @@ const FilterForm = (props: Props) => {
           </div>
         }
 
+        {
+          filtersEnum.enum.ERRATUM_PKG_NAME.key === props.filter.type &&
+          <div className="row">
+            <Text
+              name="criteria"
+              label={t("Package name")}
+              labelClass="col-md-3"
+              divClass="col-md-6"
+              required
+            />
+          </div>
+        }
+
         <Radio
           inline
           name="rule"
@@ -194,6 +207,7 @@ const FilterForm = (props: Props) => {
           label={t("Rule")}
           labelClass="col-md-3"
           divClass="col-md-6" />
+
 
       </React.Fragment>
     </Form>
