@@ -40,8 +40,6 @@ BuildRequires:  %{pythonX}
 BuildArch:      noarch
 Requires:       %{pythonX}-spacewalk-usix
 Requires:       httpd
-Requires(pre):  uyuni-base-common
-BuildRequires:  uyuni-base-common
 %if 0%{?pylint_check}
 BuildRequires:  spacewalk-python2-pylint
 %endif
@@ -165,6 +163,8 @@ between an Spacewalk Proxy Server and parent Spacewalk server.
 %package common
 Summary:        Modules shared by Spacewalk Proxy components
 Group:          Applications/Internet
+Requires(pre):  uyuni-base-common
+BuildRequires:  uyuni-base-common
 %if 0%{?suse_version}
 BuildRequires:  apache2
 %else
@@ -477,7 +477,6 @@ fi
 %attr(750,%{apache_user},%{apache_group}) %dir %{_var}/spool/rhn-proxy/list
 %attr(770,root,%{apache_group}) %dir %{_var}/log/rhn
 # config files
-%attr(755,root,%{apache_group}) %dir %{rhnconf}
 %attr(640,root,%{apache_group}) %config(noreplace) %{rhnconf}/rhn.conf
 %attr(644,root,%{apache_group}) %{_prefix}/share/rhn/config-defaults/rhn_proxy.conf
 %attr(644,root,%{apache_group}) %config %{httpdconf}/spacewalk-proxy.conf
