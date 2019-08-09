@@ -180,6 +180,18 @@ Inside of the testsuite, the scenarios that are tagged with
 ```
 are executed only if you don't use a mirror.
 
+### Testing with a SCC crendentials
+
+Using the SCC crendentials with the testsuite is not mandatory.
+
+If you do not want to use SCC, do not define `scc_credentials` environment
+variable before you run the testsuite. That's all.
+If you want to use SCC, let this variable be equal to
+`"username|password"`:
+```bash
+export scc_credentials="username|password"
+```
+and then run the testsuite.
 
 ### Testing with external Docker or Kiwi profiles
 
