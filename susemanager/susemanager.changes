@@ -1,3 +1,5 @@
+- dmidecode does not exist on s390x (bsc#1145119)
+
 -------------------------------------------------------------------
 Thu Jul 18 10:05:23 CEST 2019 - jgonzalez@suse.com
 
