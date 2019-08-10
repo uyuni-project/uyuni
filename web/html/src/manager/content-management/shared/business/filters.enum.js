@@ -27,6 +27,12 @@ export const filtersOptionsEnum : FiltersOptionEnumType = new Proxy({
       matcher: 'equals',
       text: 'Patch (matches Advisory Name)',
     },
+    ERRATUM_BYTYPE: {
+      key: 'erratum_bytype',
+      entityType: 'erratum',
+      matcher: 'equals',
+      text: 'Patch (matches Advisory Type)',
+    },
     ERRATUM_BYDATE: {
       key: 'erratum_bydate',
       entityType: 'erratum',
