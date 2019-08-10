@@ -137,6 +137,23 @@ const FilterForm = (props: Props) => {
         }
 
         {
+          filtersEnum.enum.ERRATUM_BYTYPE.key === props.filter.type &&
+          <div className="row">
+            <Radio
+              name="advisoryType"
+              defaultValue="Security Advisory"
+              items={[
+                {"label": t("Security Advisory"), "value": "Security Advisory"},
+                {"label": t("Bug Fix Advisory"), "value": "Bug Fix Advisory"},
+                {"label": t("Product Enhancement Advisory"), "value": "Product Enhancement Advisory"}
+              ]}
+              label={t("Advisory Type")}
+              labelClass="col-md-3"
+              divClass="col-md-6" />            
+          </div>
+        }
+
+        {
           filtersEnum.enum.ERRATUM_BYDATE.key === props.filter.type &&
           <div className="row">
             <DateTime
