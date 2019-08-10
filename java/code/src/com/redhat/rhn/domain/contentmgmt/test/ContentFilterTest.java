@@ -18,6 +18,7 @@ package com.redhat.rhn.domain.contentmgmt.test;
 import com.redhat.rhn.domain.contentmgmt.ContentFilter;
 import com.redhat.rhn.domain.contentmgmt.FilterCriteria;
 import com.redhat.rhn.domain.errata.Errata;
+import com.redhat.rhn.domain.errata.ErrataFactory;
 import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.rhnpackage.test.PackageTest;
 import com.redhat.rhn.manager.contentmgmt.ContentManager;
@@ -204,5 +205,24 @@ public class ContentFilterTest extends JMockBaseTestCaseWithUser {
         ContentFilter filter3 = ContentManager.createFilter("synopsis-filter3", DENY, ERRATUM, criteria3, user);
         assertFalse(filter3.test(erratum1));
         assertFalse(filter3.test(erratum2));
+    }
+
+    /**
+     * Test basic Errata filtering based on advisory_type
+     *
+     * @throws Exception if anything goes wrong
+     */
+    public void testErrataTypeFilter() throws Exception {
+        String cveName1 = TestUtils.randomString().substring(0, 13);
+        Errata erratum1 = ErrataTestUtils.createTestErrata(user, Collections.singleton(ErrataTestUtils.createTestCve(cveName1)));
+        erratum1.setAdvisoryType(ErrataFactory.ERRATA_TYPE_SECURITY);
+
+        FilterCriteria criteria = new FilterCriteria(FilterCriteria.Matcher.EQUALS, "advisory_type", "Security Advisory");
+        ContentFilter filter = ContentManager.createFilter("sec-type-filter", DENY, ERRATUM, criteria, user);
+        assertTrue(filter.test(erratum1));
+
+        criteria = new FilterCriteria(FilterCriteria.Matcher.EQUALS, "advisory_type", "Bug Fix Advisory");
+        filter = ContentManager.createFilter("rec-type-filter", DENY, ERRATUM, criteria, user);
+        assertFalse(filter.test(erratum1));
     }
 }
