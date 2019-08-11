@@ -1,3 +1,5 @@
+- Set openSUSE Leap 15.1 as new Base OS for Uyuni Server and Proxy
+- Remove EOL openSUSE Leap 42.3 from spacewalk-common-channels
 - Require uyuni-base-common for /etc/rhn
 - add spacewalk-watch-channel-sync.sh to spacewalk-utils
 
