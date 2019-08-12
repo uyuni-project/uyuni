@@ -152,6 +152,20 @@ const FilterForm = (props: Props) => {
           </div>
         }
 
+        {
+          (filtersEnum.enum.ERRATUM_BYSYNOPSIS.key === props.filter.type
+              || filtersEnum.enum.ERRATUM_BYSYNOPSIS_CONTAINS.key === props.filter.type) &&
+          <div className="row">
+            <Text
+              name="synopsis"
+              label={t("Synopsis")}
+              labelClass="col-md-3"
+              divClass="col-md-6"
+              required
+            />
+          </div>
+        }
+
         <Radio
           inline
           name="rule"
