@@ -157,4 +157,23 @@ public class ContentFilterTest extends JMockBaseTestCaseWithUser {
         assertTrue(erratum3.getIssueDate().toInstant().atZone(ZoneId.systemDefault()).toString()
                 + " should be equal " +  criteriaDate.toString(), filter.test(erratum3));
     }
+
+    /**
+     * Test basic Errata filtering based on equal match on synopsis
+     *
+     * @throws Exception if anything goes wrong
+     */
+    public void testErrataByEqualSynopsisFilter() throws Exception {
+        String cveName1 = TestUtils.randomString().substring(0, 13);
+        Errata erratum1 = ErrataTestUtils.createTestErrata(user, Collections.singleton(ErrataTestUtils.createTestCve(cveName1)));
+        erratum1.setSynopsis("recommended update: " + cveName1);
+        String cveName2 = TestUtils.randomString().substring(0, 13);
+        Errata erratum2 = ErrataTestUtils.createTestErrata(user, Collections.singleton(ErrataTestUtils.createTestCve(cveName2)));
+        erratum2.setSynopsis("recommended update: " + cveName2);
+
+        FilterCriteria criteria = new FilterCriteria(FilterCriteria.Matcher.EQUALS, "synopsis", erratum1.getSynopsis());
+        ContentFilter filter = ContentManager.createFilter("synopsis-filter", DENY, ERRATUM, criteria, user);
+        assertTrue(filter.test(erratum1));
+        assertFalse(filter.test(erratum2));
+    }
 }
