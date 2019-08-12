@@ -20,7 +20,7 @@ CREATE TABLE rhnPackageChangeLogData
                     CONSTRAINT rhn_pkg_cld_id_pk PRIMARY KEY
                     USING INDEX TABLESPACE [[64k_tbs]],
     name        VARCHAR2(128) NOT NULL,
-    text        VARCHAR2(3000) NOT NULL,
+    text        CLOB NOT NULL,
     time        timestamp with local time zone NOT NULL,
     created     timestamp with local time zone
                     DEFAULT (current_timestamp) NOT NULL
