@@ -45,8 +45,9 @@ def is_sha256_capable():
     cmp = -1
     try:
         h = next(mi)
-        cmp = rpm.labelCompare([h['name'], h['version'], h['release']],
-                               [h['name'], '0.8.1', '1'])
+        cmp = rpm.labelCompare([h['name'].decode("utf-8"),
+                                h['version'].decode("utf-8"),
+                                h['release'].decode("utf-8")], [h['name'].decode("utf-8"), '0.8.1', '1'])
     except StopIteration:
         pass
     return (cmp > 0)
