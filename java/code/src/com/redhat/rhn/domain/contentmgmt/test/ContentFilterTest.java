@@ -176,4 +176,33 @@ public class ContentFilterTest extends JMockBaseTestCaseWithUser {
         assertTrue(filter.test(erratum1));
         assertFalse(filter.test(erratum2));
     }
+
+    /**
+     * Test basic Errata filtering based on partial match on synopsis
+     *
+     * @throws Exception if anything goes wrong
+     */
+    public void testErrataByContainsSynopsisFilter() throws Exception {
+        String cveName1 = TestUtils.randomString().substring(0, 13);
+        Errata erratum1 = ErrataTestUtils.createTestErrata(user, Collections.singleton(ErrataTestUtils.createTestCve(cveName1)));
+        erratum1.setSynopsis("recommended update: " + cveName1);
+        String cveName2 = TestUtils.randomString().substring(0, 13);
+        Errata erratum2 = ErrataTestUtils.createTestErrata(user, Collections.singleton(ErrataTestUtils.createTestCve(cveName2)));
+        erratum2.setSynopsis("recommended update: " + cveName2);
+
+        FilterCriteria criteria = new FilterCriteria(FilterCriteria.Matcher.CONTAINS, "synopsis", erratum1.getSynopsis());
+        ContentFilter filter = ContentManager.createFilter("synopsis-filter", DENY, ERRATUM, criteria, user);
+        assertTrue(filter.test(erratum1));
+        assertFalse(filter.test(erratum2));
+
+        FilterCriteria criteria2 = new FilterCriteria(FilterCriteria.Matcher.CONTAINS, "synopsis", "recommended update:");
+        ContentFilter filter2 = ContentManager.createFilter("synopsis-filter2", DENY, ERRATUM, criteria2, user);
+        assertTrue(filter2.test(erratum1));
+        assertTrue(filter2.test(erratum2));
+
+        FilterCriteria criteria3 = new FilterCriteria(FilterCriteria.Matcher.CONTAINS, "synopsis", "imsurethisdoesntexist");
+        ContentFilter filter3 = ContentManager.createFilter("synopsis-filter3", DENY, ERRATUM, criteria3, user);
+        assertFalse(filter3.test(erratum1));
+        assertFalse(filter3.test(erratum2));
+    }
 }
