@@ -153,6 +153,7 @@ const FilterForm = (props: Props) => {
         }
 
         <Radio
+          horizontal
           name="rule"
           defaultValue="deny"
           items={[

@@ -5,6 +5,7 @@ const { InputBase } = require('./InputBase');
 
 type Props = {
   items: Array<{label: string, value: string}>,
+  horizontal?: boolean,
   inputClass?: string,
 } & InputBase.Props;
 
@@ -24,12 +25,14 @@ function Radio(props: Props) {
           const onChange = (event: Object) => {
             setValue(event.target.name, event.target.value);
           };
+          const WrapperElem = props.horizontal ? "span" : "div";
           return (
             <>
               {
                 props.items.map(({label, value}) =>
-                                 <div>
-                                    <input
+                                 <WrapperElem>
+                                   <input
+                                      style={{marginRight: "5px"}}
                                       type="radio"
                                       name={props.name}
                                       value={value}
@@ -37,8 +40,10 @@ function Radio(props: Props) {
                                       className={inputClass}
                                       onBlur={onBlur}
                                       onChange={onChange} />
-                                    <label>{label}</label>
-                                </div>)
+                                   <label style={{marginRight: "5px"}}>
+                                     {label}
+                                   </label>
+                                </WrapperElem>)
               }
             </>
           );
