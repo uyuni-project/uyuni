@@ -810,7 +810,7 @@ public class ContentManager {
 
         // align the packages
         tgtChannel.getPackages().clear();
-        Set<Package> newPackages = filterPackages(srcChannel.getPackages(), filters);
+        Set<Package> newPackages = filterEntities(srcChannel.getPackages(), filters).getLeft();
         tgtChannel.getPackages().addAll(newPackages);
 
         // remove cache entries for only in tgt
@@ -819,7 +819,7 @@ public class ContentManager {
 
         // add cache entries for new ones
         ErrataCacheManager.insertCacheForChannelPackages(tgtChannel.getId(), null,
-                extractPackageIds(filterPackages(onlyInSrc, filters)));
+                extractPackageIds(filterEntities(onlyInSrc, filters).getLeft()));
     }
 
     /**
@@ -838,15 +838,9 @@ public class ContentManager {
      * @param user the {@link User}
      */
     private static void alignErrata(Channel src, Channel tgt, Collection<ErrataFilter> errataFilters, User user) {
-        Predicate<Errata> compositePredicate = errataFilters.stream()
-                .map(f -> (Predicate) f)
-                .reduce((f1, f2) -> f1.and(f2))
-                .orElse(p -> true);
-
-        Map<Boolean, List<Errata>> partitionedErrata = src.getErratas().stream()
-                .collect(partitioningBy(compositePredicate));
-        Set<Errata> includedErrata = new HashSet<>(partitionedErrata.get(true));
-        List<Errata> excludedErrata = partitionedErrata.get(false);
+        Pair<Set<Errata>, Set<Errata>> partitionedErrata = filterEntities(src.getErratas(), errataFilters);
+        Set<Errata> includedErrata = partitionedErrata.getLeft();
+        Set<Errata> excludedErrata = partitionedErrata.getRight();
 
         // Truncate extra errata in target channel
         ErrataManager.truncateErrata(includedErrata, tgt, user);
@@ -856,18 +850,44 @@ public class ContentManager {
         ErrataManager.mergeErrataToChannel(user, includedErrata, tgt, src, false, false);
     }
 
-    private static List<Long> extractPackageIds(Collection<Package> packages) {
-        return packages.stream().map(p -> p.getId()).collect(toList());
+    /**
+     * Filters given entities based on given filters.
+     *
+     * Returns a Pair containing:
+     * - Left side: set of entities that are kept (not filtered out)
+     * - Right side: set of entities that are filtered out
+     *
+     * Entities are processed one-by-one by filters as follows:
+     * - when any DENY filter is satisfied for an entity -> this entity gets filtered out
+     * - when an ALLOW is satisfied for an entity -> this entity gets NOT filtered out (even if it had been filtered out
+     *   by a DENY filter = ALLOW filters have higher priority)
+     *
+     * @param entities entities, e.g. packages
+     * @param filters filters, e.g. package filters
+     * @param <T> the type of the entity (e.g. Package)
+     * @return Pair containing (left side) a set of entities not filtered-out
+     * and (right side) a set of entities filtered out
+     */
+    private static <T> Pair<Set<T>, Set<T>> filterEntities(Set<T> entities,
+            Collection<? extends ContentFilter<T>> filters) {
+        Map<ContentFilter.Rule, List<ContentFilter<T>>> filtersByRule = filters.stream()
+                .collect(groupingBy(ContentFilter::getRule));
+
+        Predicate<T> denyPredicate = filtersByRule.getOrDefault(ContentFilter.Rule.DENY, emptyList()).stream()
+                .map(f -> (Predicate) f)
+                .reduce(x -> false, (f1, f2) -> f1.or(f2));
+
+        Predicate<T> allowPredicate = filtersByRule.getOrDefault(ContentFilter.Rule.ALLOW, emptyList()).stream()
+                .map(f -> (Predicate) f)
+                .reduce(x -> false, (f1, f2) -> f1.or(f2));
+
+        Predicate<T> compositePredicate = denyPredicate.negate().or(allowPredicate);
+        Map<Boolean, Set<T>> filteredEntities = entities.stream().collect(partitioningBy(compositePredicate, toSet()));
+        return Pair.of(filteredEntities.get(true), filteredEntities.get(false));
     }
 
-    private static Set<Package> filterPackages(Set<Package> packages, Collection<PackageFilter> packageFilters) {
-        Predicate<Package> compositePredicate = packageFilters.stream()
-                .map(f -> (Predicate) f)
-                .reduce((f1, f2) -> f1.and(f2))
-                .orElse(p -> true);
-        return packages.stream()
-                .filter(compositePredicate)
-                .collect(toSet());
+    private static List<Long> extractPackageIds(Collection<Package> packages) {
+        return packages.stream().map(p -> p.getId()).collect(toList());
     }
 
     /**

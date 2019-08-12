@@ -6,14 +6,14 @@ export type FilterServerType = {
   name?: string,
   criteriaKey?: string,
   criteriaValue?: string,
-  deny?: boolean,
+  rule: string,
   projects?: Array<string>
 }
 
 export type FilterFormType = {
   type: string,
   matcher: string,
-  deny?: boolean,
+  rule: string,
   id?: number,
   name?: string,
   projects?: Array<string>,

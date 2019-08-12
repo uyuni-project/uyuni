@@ -21,6 +21,7 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Optional;
+
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.Transient;
@@ -33,7 +34,7 @@ import javax.persistence.Transient;
 public class ErrataFilter extends ContentFilter<Errata> {
 
     @Override
-    public boolean testInternal(Errata erratum) {
+    public boolean test(Errata erratum) {
         FilterCriteria.Matcher matcher = getCriteria().getMatcher();
         String field = getCriteria().getField();
         String value = getCriteria().getValue();

@@ -25,7 +25,7 @@ public class FilterRequest {
     private String matcher;
     private String criteriaKey;
     private String criteriaValue;
-    private Boolean deny;
+    private String rule;
 
     public String getProjectLabel() {
         return projectLabel;
@@ -51,7 +51,7 @@ public class FilterRequest {
         return criteriaValue;
     }
 
-    public Boolean getDeny() {
-        return deny;
+    public String getRule() {
+        return rule;
     }
 }
