@@ -63,7 +63,7 @@ public class Notification {
             Optional.ofNullable(session.getUserProperties().get("webUserID"))
                     .map(webUserID -> (Long) webUserID)
                     .ifPresentOrElse(userId -> {
-                         LOG.debug(String.format("Hooked a new websocket session [id:%s]", session.getId()));
+                        LOG.debug(String.format("Hooked a new websocket session [id:%s]", session.getId()));
                         handshakeSession(userId, session);
 
                         // update the notification counter to the unread messages
