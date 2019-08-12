@@ -58,6 +58,13 @@ public class ErrataFilter extends ContentFilter<Errata> {
                     default:
                         throw new UnsupportedOperationException("Matcher " + matcher + " not supported");
                 }
+            case "synopsis":
+                switch (matcher) {
+                    case EQUALS:
+                        return getField(erratum, field, String.class).equals(value);
+                    default:
+                        throw new UnsupportedOperationException("Matcher " + matcher + " not supported");
+                }
             default:
                 throw new UnsupportedOperationException("Field " + field + " not supported");
         }
@@ -69,6 +76,8 @@ public class ErrataFilter extends ContentFilter<Errata> {
                 return type.cast(erratum.getAdvisoryName());
             case "issue_date":
                 return type.cast(erratum.getIssueDate().toInstant().atZone(ZoneId.systemDefault()));
+            case "synopsis":
+                return type.cast(erratum.getSynopsis());
             default:
                 throw new UnsupportedOperationException("Field " + field + " not supported");
         }
