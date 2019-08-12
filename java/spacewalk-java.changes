@@ -1,3 +1,4 @@
+- Implement ALLOW filters in Content Lifecycle Management
 - implement "by date" Filter for Content Lifecycle Management
 - UI render without error if salt-formulas system folders are unreachable (bsc#1142309)
 - Cloning Errata from a specific channel should not take packages
