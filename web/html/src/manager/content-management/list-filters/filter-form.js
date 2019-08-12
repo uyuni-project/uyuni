@@ -153,7 +153,7 @@ const FilterForm = (props: Props) => {
         }
 
         <Radio
-          horizontal
+          inline
           name="rule"
           defaultValue="deny"
           items={[
@@ -162,8 +162,7 @@ const FilterForm = (props: Props) => {
           ]}
           label={t("Rule")}
           labelClass="col-md-3"
-          divClass="col-md-6">
-        </Radio>
+          divClass="col-md-6" />
 
       </React.Fragment>
     </Form>
