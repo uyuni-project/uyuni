@@ -281,9 +281,10 @@ class PackageImport(ChannelPackageSubscription):
         unique_package_changelog_hash = {}
         unique_package_changelog = []
         for changelog in package['changelog']:
-            key = (changelog['name'], changelog['time'], changelog['text'])
+            key = (changelog['name'], changelog['time'], changelog['text'][:3000])
             if key not in unique_package_changelog_hash:
                 self.changelog_data[key] = None
+                changelog['text'] = changelog['text'][:3000]
                 unique_package_changelog.append(changelog)
                 unique_package_changelog_hash[key] = 1
         package['changelog'] = unique_package_changelog
