@@ -1,3 +1,5 @@
+- Prevent duplicate changelog entries due VARCHAR(3000)
+  db text column (bsc#1144889)
 - Avoid traceback on mgr-inter-sync when exception message
   contains UTF8 characters or there are problems with the
   package cache (bsc#1143016)
