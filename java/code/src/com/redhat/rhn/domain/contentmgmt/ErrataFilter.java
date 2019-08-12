@@ -62,6 +62,8 @@ public class ErrataFilter extends ContentFilter<Errata> {
                 switch (matcher) {
                     case EQUALS:
                         return getField(erratum, field, String.class).equals(value);
+                    case CONTAINS:
+                        return getField(erratum, field, String.class).contains(value);
                     default:
                         throw new UnsupportedOperationException("Matcher " + matcher + " not supported");
                 }
