@@ -5,7 +5,7 @@ const { InputBase } = require('./InputBase');
 
 type Props = {
   items: Array<{label: string, value: string}>,
-  horizontal?: boolean,
+  inline?: boolean,
   inputClass?: string,
 } & InputBase.Props;
 
@@ -19,31 +19,29 @@ function Radio(props: Props) {
     <InputBase {...propsToPass}>
       {
         ({
-          setValue,
-          onBlur,
-        }) => {
+           setValue,
+           onBlur,
+         }) => {
           const onChange = (event: Object) => {
             setValue(event.target.name, event.target.value);
           };
-          const WrapperElem = props.horizontal ? "span" : "div";
+          const radioClass = props.inline ? "radio-inline" : "radio";
           return (
             <>
               {
                 props.items.map(({label, value}) =>
-                                 <WrapperElem>
-                                   <input
-                                      style={{marginRight: "5px"}}
-                                      type="radio"
-                                      name={props.name}
-                                      value={value}
-                                      checked={props.value === value}
-                                      className={inputClass}
-                                      onBlur={onBlur}
-                                      onChange={onChange} />
-                                   <label style={{marginRight: "5px"}}>
-                                     {label}
-                                   </label>
-                                </WrapperElem>)
+                  <label className={radioClass}>
+                    <input
+                      type="radio"
+                      name={props.name}
+                      value={value}
+                      checked={props.value === value}
+                      className={inputClass}
+                      onBlur={onBlur}
+                      onChange={onChange} />
+                    {label}
+                  </label>
+                )
               }
             </>
           );
