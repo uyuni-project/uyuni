@@ -138,5 +138,5 @@ Feature: Content lifecycle
     When I follow the left menu "Content Lifecycle > Projects"
     And I follow "clp_name"
     When I click on "Delete"
-    Then I click on "Delete" in element "delete-project-modal"
+    And I click on "Delete" in "Delete Project" modal
     And I should see a "There are no entries to show." text
