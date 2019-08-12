@@ -32,6 +32,18 @@ export const filtersOptionsEnum : FiltersOptionEnumType = new Proxy({
       entityType: 'erratum',
       matcher: 'greatereq',
       text: 'Patch (issued after)',
+    },
+    ERRATUM_BYSYNOPSIS: {
+      key: 'erratum_bysynopsis',
+      entityType: 'erratum',
+      matcher: 'equals',
+      text: 'Patch (equals Synopsis)',
+    },
+    ERRATUM_BYSYNOPSIS_CONTAINS: {
+      key: 'erratum_bysynopsis_contains',
+      entityType: 'erratum',
+      matcher: 'contains',
+      text: 'Patch (contains Synopsis)',
     }
   },
   objectDefaultValueHandler(defaultState)
