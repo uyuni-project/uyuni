@@ -68,8 +68,7 @@ When(/^I wait until I see the event "([^"]*)" completed during last minute, refr
     now = Time.now
     current_minute = now.strftime('%H:%M')
     previous_minute = (now - 60).strftime('%H:%M')
-    break if all(:xpath, "//a[contains(text(),'#{event}')]/../..//td[4][contains(text(),'#{current_minute}') or contains(text(),'#{previous_minute}')]/../td[3]/a[1]").any?
-    sleep 1
+    break if find(:xpath, "//a[contains(text(),'#{event}')]/../..//td[4][contains(text(),'#{current_minute}') or contains(text(),'#{previous_minute}')]/../td[3]/a[1]", wait: 1)
     page.evaluate_script 'window.location.reload()'
   end
 end
@@ -439,18 +438,11 @@ end
 
 When(/^I click the channel list of product "(.*?)"$/) do |product|
   xpath = "//span[contains(text(), '#{product}')]/ancestor::div[contains(@class, 'product-details-wrapper')]/div/a[contains(@class, 'showChannels')]"
-  raise "xpath: #{xpath} not found" unless find_and_wait_click(:xpath, xpath).click
+  raise "xpath: #{xpath} not found" unless find(:xpath, xpath).click
 end
 
 Then(/^I see verification succeeded/) do
-  10.times do
-    begin
-      break if find('i.text-success')
-    rescue Capybara::ElementNotFound
-      sleep 3
-    end
-  end
-  find('i.text-success')
+  raise "xpath: i.text-success not found" unless find('i.text-success', wait: 100)
 end
 
 When(/^I enter the address of the HTTP proxy as "([^"]*)"/) do |hostname|
@@ -685,7 +677,8 @@ end
 
 Then(/^I should see "([^"]*)" at least (\d+) minutes after I scheduled an action$/) do |text, minutes|
   # TODO is there a better way then page.all ?
-  raise "Text #{text} not found in the page" unless page.all('div', text: text).any?
+  elements = page.all('div', text: text)
+  raise "Text #{text} not found in the page" if elements.nil?
   match = elements[0].text.match(/#{text}\s*(\d+\/\d+\/\d+ \d+:\d+:\d+ (AM|PM)+ [^\s]+)/)
   raise "No element found matching text '#{text}'" if match.nil?
   text_time = DateTime.strptime("#{match.captures[0]}", '%m/%d/%C %H:%M:%S %p %Z')
@@ -846,7 +839,6 @@ end
 And(/^I wait until radio button "([^"]*)" is checked, refreshing the page$/) do |arg1|
   repeat_until_timeout(message: "Couldn't find checked radio button #{arg1}") do
     break if has_checked_field?(arg1)
-    sleep 1
     page.evaluate_script 'window.location.reload()'
   end
 end
@@ -865,7 +857,7 @@ end
 And(/^I delete it via the "([^"]*)" button$/) do |target_button|
   if count_table_items != '0'
     xpath_for_delete_button = "//button[contains(text(), '#{target_button}')]"
-    raise "xpath: #{xpath_for_delete_button} not found" unless find_and_wait_click(:xpath, xpath_for_delete_button).click
+    raise "xpath: #{xpath_for_delete_button} not found" unless find(:xpath, xpath_for_delete_button).click
 
     step %(I wait until I see "1 message deleted successfully." text)
   end
@@ -874,7 +866,7 @@ end
 And(/^I mark as read it via the "([^"]*)" button$/) do |target_button|
   if count_table_items != '0'
     xpath_for_read_button = "//button[contains(text(), '#{target_button}')]"
-    raise "xpath: #{xpath_for_read_button} not found" unless find_and_wait_click(:xpath, xpath_for_read_button).click
+    raise "xpath: #{xpath_for_read_button} not found" unless find(:xpath, xpath_for_read_button).click
 
     step %(I wait until I see "1 message read status updated successfully." text)
   end

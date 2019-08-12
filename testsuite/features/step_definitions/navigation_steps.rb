@@ -41,7 +41,7 @@ When(/^I wait until I do not see "([^"]*)" text$/) do |text|
 end
 
 When(/^I wait at most (\d+) seconds until I see "([^"]*)" text$/) do |seconds, text|
-  raise "Text #{text} not found" unless page.has_content?(text, wait: seconds)
+  raise "Text #{text} not found" unless page.has_content?(text, wait: seconds.to_i)
 end
 
 When(/^I wait until I see "([^"]*)" text or "([^"]*)" text$/) do |text1, text2|
@@ -52,7 +52,6 @@ When(/^I wait until I see "([^"]*)" text, refreshing the page$/) do |text|
   text.gsub! '$PRODUCT', $product # TODO: Rid of this substitution, using another step
   repeat_until_timeout(message: "Couldn't find text '#{text}'") do
     break if page.has_content?(text)
-    sleep 3
     page.evaluate_script 'window.location.reload()'
   end
 end
@@ -61,7 +60,6 @@ When(/^I wait at most (\d+) seconds until the event is completed, refreshing the
   repeat_until_timeout(timeout: timeout.to_i, message: 'Event not yet completed') do
     break if page.has_content?("This action's status is: Completed.")
     raise 'Event failed' if page.has_content?("This action's status is: Failed.")
-    sleep 1
     page.evaluate_script 'window.location.reload()'
   end
 end
@@ -74,7 +72,6 @@ end
 When(/^I wait until I do not see "([^"]*)" text, refreshing the page$/) do |text|
   repeat_until_timeout(message: "Text '#{text}' is still visible") do
     break unless page.has_content?(text)
-    sleep 3
     page.evaluate_script 'window.location.reload()'
   end
 end
@@ -87,7 +84,6 @@ end
 Then(/^I wait until I see the (VNC|spice) graphical console$/) do |type|
   repeat_until_timeout(message: "The #{type} graphical console didn't load") do
     break unless page.has_xpath?('.//canvas')
-    sleep 3
   end
 end
 
@@ -189,7 +185,7 @@ When(/^I follow "([^"]*)" in element "([^"]*)"$/) do |arg1, arg2|
 end
 
 When(/^I want to add a new credential$/) do
-  raise 'xpath: i.fa-plus-circle not found' unless find_and_wait_click('i.fa-plus-circle').click
+  raise 'xpath: i.fa-plus-circle not found' unless find('i.fa-plus-circle').click
 end
 
 When(/^I follow "([^"]*)" in the (.+)$/) do |arg1, arg2|
@@ -354,14 +350,12 @@ end
 
 When(/^I wait until table row for "([^"]*)" contains button "([^"]*)"$/) do |text, button|
   xpath_query = "//tr[td[contains(., '#{text}')]]/td/descendant::*[self::a or self::button][@title='#{button}']"
-  raise "xpath: #{xpath_query} not found" unless all(:xpath, xpath_query, wait: DEFAULT_TIMEOUT).any?
-  sleep 1
+  raise "xpath: #{xpath_query} not found" unless find(:xpath, xpath_query, wait: DEFAULT_TIMEOUT)
 end
 
 When(/^I wait until table row contains a "([^"]*)" text$/) do |text|
   xpath_query = "//div[@class=\"table-responsive\"]/table/tbody/tr[.//td[contains(.,'#{text}')]]"
-  raise "xpath: #{xpath_query} not found" unless all(:xpath, xpath_query, wait: DEFAULT_TIMEOUT).any?
-  sleep 1
+  raise "xpath: #{xpath_query} not found" unless find(:xpath, xpath_query, wait: DEFAULT_TIMEOUT)
 end
 
 # login, logout steps
@@ -370,11 +364,11 @@ Given(/^I am authorized as "([^"]*)" with password "([^"]*)"$/) do |user, passwd
   visit Capybara.app_host
   next if page.all(:xpath, "//header//span[text()='#{user}']").any?
 
-  find_and_wait_click(:xpath, "//header//i[@class='fa fa-sign-out']").click if page.all(:xpath, "//header//i[@class='fa fa-sign-out']").any?
+  find(:xpath, "//header//i[@class='fa fa-sign-out']").click if page.all(:xpath, "//header//i[@class='fa fa-sign-out']").any?
 
   fill_in 'username', with: user
   fill_in 'password', with: passwd
-  click_button_and_wait('Sign In')
+  click_button('Sign In')
 
   step %(I should be logged in)
 end
@@ -384,7 +378,7 @@ Given(/^I am authorized$/) do
 end
 
 When(/^I sign out$/) do
-  find_and_wait_click(:xpath, "//a[@href='/rhn/Logout.do']").click
+  find(:xpath, "//a[@href='/rhn/Logout.do']").click
 end
 
 Then(/^I should not be authorized$/) do
@@ -494,14 +488,14 @@ end
 # Test for a visible link in the whole page
 #
 Then(/^I should see a "([^"]*)" link$/) do |text|
-  raise "Link #{text} is not visible" unless all(:link, text, visible: true).any?
+  raise "Link #{text} is not visible" unless has_link?(text)
 end
 
 #
 # Validate link is gone
 #
 Then(/^I should not see a "([^"]*)" link$/) do |arg1|
-  raise "Link #{arg1} is present" unless page.has_no_link?(arg1)
+  raise "Link #{arg1} is present" unless has_no_link?(arg1)
 end
 
 Then(/^I should see a "([^"]*)" button$/) do |arg1|
@@ -756,8 +750,7 @@ When(/^I click on "([^"]*)" in "([^"]*)" modal$/) do |btn, title|
   # We wait until the element becomes visible, because
   # the fade out animation might still be in progress
   repeat_until_timeout(message: "Couldn't find the #{title} modal") do
-    break if all(:xpath, path).any?
-    sleep 1
+    break if find(:xpath, path)
   end
 
   within(:xpath, path) do

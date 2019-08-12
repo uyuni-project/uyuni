@@ -169,14 +169,7 @@ When(/^I click on preview$/) do
 end
 
 When(/^I click on run$/) do
-  repeat_until_timeout(message: "Run button not found") do
-    begin
-      find('button#run').click
-      break
-    rescue Capybara::ElementNotFound
-      sleep(5)
-    end
-  end
+  find('button#run', wait: DEFAULT_TIMEOUT).click
 end
 
 Then(/^I should see "([^"]*)" hostname$/) do |host|
@@ -213,7 +206,6 @@ Then(/^I click on the css "(.*)" until page does not contain "([^"]*)" text$/) d
   repeat_until_timeout(message: "'#{text}' still found") do
     break unless page.has_content?(text)
     find(css).click
-    sleep 3
   end
 end
 
@@ -221,7 +213,6 @@ Then(/^I click on the css "(.*)" until page does contain "([^"]*)" text$/) do |c
   repeat_until_timeout(message: "'#{text}' was not found") do
     break if page.has_content?(text)
     find(css).click
-    sleep 3
   end
 end
 
