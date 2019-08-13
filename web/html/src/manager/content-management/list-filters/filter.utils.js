@@ -26,6 +26,9 @@ export function mapFilterFormToRequest(filterForm: FilterFormType, projectLabel:
   } else if (filterForm.type === filtersEnum.enum.ERRATUM.key) {
     requestForm.criteriaKey = "advisory_name";
     requestForm.criteriaValue = filterForm.advisoryName;
+  } else if (filterForm.type === filtersEnum.enum.ERRATUM_BYTYPE.key) {
+    requestForm.criteriaKey = "advisory_type";
+    requestForm.criteriaValue = filterForm.advisoryType;
   } else if (filterForm.type === filtersEnum.enum.ERRATUM_BYDATE.key) {
     requestForm.criteriaKey = "issue_date";
     requestForm.criteriaValue = filterForm.issueDate
@@ -90,6 +93,9 @@ export function mapResponseToFilterForm(filtersResponse: Array<FilterServerType>
     } else if (filterResponse.criteriaKey === "advisory_name") {
       filterForm.type = filtersEnum.enum.ERRATUM.key;
       filterForm["advisoryName"] = filterResponse.criteriaValue;
+    } else if (filterResponse.criteriaKey === "advisory_type") {
+      filterForm.type = filtersEnum.enum.ERRATUM_BYTYPE.key;
+      filterForm["advisoryType"] = filterResponse.criteriaValue;
     } else if (filterResponse.criteriaKey === "synopsis") {
       if (filterResponse.matcher === "equals") {
           filterForm.type = filtersEnum.enum.ERRATUM_BYSYNOPSIS.key;
