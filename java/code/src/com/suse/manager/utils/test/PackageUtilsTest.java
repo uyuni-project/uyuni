@@ -20,6 +20,7 @@ import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.domain.rhnpackage.test.PackageTest;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.suse.manager.utils.PackageUtils;
+import com.suse.manager.webui.controllers.DownloadController.PkgInfo;
 
 public class PackageUtilsTest extends BaseTestCaseWithUser {
 
@@ -84,5 +85,29 @@ public class PackageUtilsTest extends BaseTestCaseWithUser {
         assertNull(evr.getEpoch());
         assertEquals("2-3-4", evr.getVersion());
         assertEquals("5", evr.getRelease());
+    }
+
+    public void testParseRpmEvr() {
+        PackageEvr evr;
+
+        evr = PackageUtils.parseRpmEvr("1:1.2.3-4.5");
+        assertEquals("1", evr.getEpoch());
+        assertEquals("1.2.3", evr.getVersion());
+        assertEquals("4.5", evr.getRelease());
+
+        evr = PackageUtils.parseRpmEvr("1.2.3-4.5");
+        assertNull(evr.getEpoch());
+        assertEquals("1.2.3", evr.getVersion());
+        assertEquals("4.5", evr.getRelease());
+
+        evr = PackageUtils.parseRpmEvr("1:1.2.3-4.5");
+        assertEquals("1", evr.getEpoch());
+        assertEquals("1.2.3", evr.getVersion());
+        assertEquals("4.5", evr.getRelease());
+
+        evr = PackageUtils.parseRpmEvr("1.2.3");
+        assertNull(evr.getEpoch());
+        assertEquals("1.2.3", evr.getVersion());
+        assertEquals("", evr.getRelease());
     }
 }

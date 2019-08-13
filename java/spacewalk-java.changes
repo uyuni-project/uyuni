@@ -1,3 +1,4 @@
+- implement "patch contains package" Filter for Content Lifecycle Management
 - implement Filter Patch "by type" Content Lifecycle Management
 - Implement filtering errata by synopsis in Content Lifecycle Management
 - Normalize date formats for actions, notifications and clm (bsc#1142774)

@@ -199,7 +199,7 @@ public class ResponseMappers {
                         OffsetDateTime offsetDateTime = OffsetDateTime.parse(
                                 filter.getCriteria().getValue(), timeFormatter
                         );
-                        var criteriaValueDate = Date.from(Instant.from(offsetDateTime));
+                        Date criteriaValueDate = Date.from(Instant.from(offsetDateTime));
 
                         contentFilterResponse.setCriteriaValue(ViewHelper.getInstance().renderDate(criteriaValueDate));
                     }

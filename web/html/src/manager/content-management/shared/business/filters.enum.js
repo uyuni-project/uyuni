@@ -50,6 +50,42 @@ export const filtersOptionsEnum : FiltersOptionEnumType = new Proxy({
       entityType: 'erratum',
       matcher: 'contains',
       text: 'Patch (contains Synopsis)',
+    },
+    ERRATUM_PKG_NAME: {
+      key: 'erratum_pkg_name',
+      entityType: 'erratum',
+      matcher: 'contains_pkg_name',
+      text: 'Patch contains package name',
+    },
+    ERRATUM_PKG_LT_EVR: {
+      key: 'erratum_pkg_lt_evr',
+      entityType: 'erratum',
+      matcher: 'contains_pkg_lt_evr',
+      text: 'Patch contains package with version lower than',
+    },
+    ERRATUM_PKG_LE_EVR: {
+      key: 'erratum_pkg_le_evr',
+      entityType: 'erratum',
+      matcher: 'contains_pkg_le_evr',
+      text: 'Patch contains package with version lower or equal than',
+    },
+    ERRATUM_PKG_EQ_EVR: {
+      key: 'erratum_pkg_eq_evr',
+      entityType: 'erratum',
+      matcher: 'contains_pkg_eq_evr',
+      text: 'Patch contains package with version equal',
+    },
+    ERRATUM_PKG_GE_EVR: {
+      key: 'erratum_pkg_ge_evr',
+      entityType: 'erratum',
+      matcher: 'contains_pkg_ge_evr',
+      text: 'Patch contains package with version greater or equal than',
+    },
+    ERRATUM_PKG_GT_EVR: {
+      key: 'erratum_pkg_gt_evr',
+      entityType: 'erratum',
+      matcher: 'contains_pkg_gt_evr',
+      text: 'Patch contains package with version greater than',
     }
   },
   objectDefaultValueHandler(defaultState)
@@ -67,7 +103,13 @@ function getFilterDescription (filter: Object): string {
   const matcherDescription = {
     equals: " matching ",
     contains: " containing ",
-    greatereq: " greater or equal "
+    greatereq: " greater or equal ",
+    contains_pkg_name: " contains package name ",
+    contains_pkg_lt_evr: " contains package with version lower than ",
+    contains_pkg_le_evr: " contains package with version lower or equal than ",
+    contains_pkg_eq_evr: " contains package with version equal than ",
+    contains_pkg_ge_evr: " contains package with version greater or equal than ",
+    contains_pkg_gt_evr: " contains package with version greater than "
   }
 
   return `${filter.name}: deny ${filter.entityType} ${matcherDescription[filter.matcher] || ""} ${filter.criteriaValue} (${filter.criteriaKey})`;

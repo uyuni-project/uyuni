@@ -32,6 +32,13 @@ import static com.redhat.rhn.domain.contentmgmt.FilterCriteria.Matcher.CONTAINS;
 import static com.redhat.rhn.domain.contentmgmt.FilterCriteria.Matcher.EQUALS;
 import static com.redhat.rhn.domain.contentmgmt.FilterCriteria.Matcher.GREATER;
 import static com.redhat.rhn.domain.contentmgmt.FilterCriteria.Matcher.GREATEREQ;
+import static com.redhat.rhn.domain.contentmgmt.FilterCriteria.Matcher.CONTAINS_PKG_NAME;
+import static com.redhat.rhn.domain.contentmgmt.FilterCriteria.Matcher.CONTAINS_PKG_LT_EVR;
+import static com.redhat.rhn.domain.contentmgmt.FilterCriteria.Matcher.CONTAINS_PKG_LE_EVR;
+import static com.redhat.rhn.domain.contentmgmt.FilterCriteria.Matcher.CONTAINS_PKG_EQ_EVR;
+import static com.redhat.rhn.domain.contentmgmt.FilterCriteria.Matcher.CONTAINS_PKG_GE_EVR;
+import static com.redhat.rhn.domain.contentmgmt.FilterCriteria.Matcher.CONTAINS_PKG_GT_EVR;
+
 
 /**
  * The criteria used for matching objects (Package, Errata) in {@link ContentFilter}
@@ -60,6 +67,12 @@ public class FilterCriteria {
         validCombinations.add(Triple.of(ERRATUM, CONTAINS, "synopsis"));
         validCombinations.add(Triple.of(ERRATUM, GREATER, "issue_date"));
         validCombinations.add(Triple.of(ERRATUM, GREATEREQ, "issue_date"));
+        validCombinations.add(Triple.of(ERRATUM, CONTAINS_PKG_NAME, "package_name"));
+        validCombinations.add(Triple.of(ERRATUM, CONTAINS_PKG_LT_EVR, "package_nevr"));
+        validCombinations.add(Triple.of(ERRATUM, CONTAINS_PKG_LE_EVR, "package_nevr"));
+        validCombinations.add(Triple.of(ERRATUM, CONTAINS_PKG_EQ_EVR, "package_nevr"));
+        validCombinations.add(Triple.of(ERRATUM, CONTAINS_PKG_GE_EVR, "package_nevr"));
+        validCombinations.add(Triple.of(ERRATUM, CONTAINS_PKG_GT_EVR, "package_nevr"));
     }
 
     /**
@@ -67,6 +80,12 @@ public class FilterCriteria {
      */
     public enum Matcher {
         CONTAINS("contains"),
+        CONTAINS_PKG_NAME("contains_pkg_name"),
+        CONTAINS_PKG_LT_EVR("contains_pkg_lt_evr"), // <
+        CONTAINS_PKG_LE_EVR("contains_pkg_le_evr"), // <=
+        CONTAINS_PKG_EQ_EVR("contains_pkg_eq_evr"), // ==
+        CONTAINS_PKG_GE_EVR("contains_pkg_ge_evr"), // >=
+        CONTAINS_PKG_GT_EVR("contains_pkg_gt_evr"), // >
         EQUALS("equals"),
         GREATER("greater"),
         GREATEREQ("greatereq");
