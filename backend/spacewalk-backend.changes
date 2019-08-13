@@ -1,3 +1,4 @@
+- Fix broken spacewalk-data-fsck utility
 - /etc/rhn also was packaged for spacewalk-backend-tools
 - Add '--latest' support for reposync on DEB based repositories
 - Require uyuni-base-common for /etc/rhn
