@@ -1,3 +1,4 @@
+- Check that a channel doesn't have clones before deleting it (bsc#1138454)
 - Add unit test for schedule, errata, user, utils, misc, configchannel
   and kickstart modules
 - Multiple minor bugfixes alongside the unit tests
