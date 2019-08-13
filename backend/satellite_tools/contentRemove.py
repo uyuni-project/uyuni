@@ -224,6 +224,24 @@ def __listChannels():
     return labels, parents
 
 
+def __clonnedChannels(channelLabel):
+    sql = """
+        select c2.label
+        from rhnChannel c1 inner join rhnChannelCloned clone on c1.id=clone.original_id
+        inner join rhnChannel c2 on c2.id=clone.id
+        where c1.label = :label
+    """
+    h = rhnSQL.prepare(sql)
+    h.execute(label=channelLabel)
+    labels = []
+    while 1:
+        row = h.fetchone_dict()
+        if not row:
+            break
+        labels.append(row['label'])
+
+    return labels
+
 def delete_outside_channels(org):
     rpms_ids = list_packages_without_channels(org, sources=0)
     rpms_paths = _get_package_paths(rpms_ids, sources=0)
