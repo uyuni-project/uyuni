@@ -197,7 +197,7 @@ public class Notification {
      * @param userId authenticated user ID
      * @param session the session to add
      */
-    private static void handshakeSession(Long userId, Session session) {
+    private static void handshakeSession(long userId, Session session) {
         synchronized (LOCK) {
             wsSessions.put(session, userId);
         }
