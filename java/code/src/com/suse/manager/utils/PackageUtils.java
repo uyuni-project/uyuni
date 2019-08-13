@@ -74,6 +74,49 @@ public class PackageUtils {
         return new PackageEvr(epoch, version, release);
     }
 
+    /**
+     * Parses a RPM package version string to create a {@link PackageEvr} object.
+     *
+     * RPM package version policy format: [epoch:]version[-release]
+     *
+     * @param version the package version string
+     * @return the package EVR
+     */
+    public static PackageEvr parseRpmEvr(String version) {
+        String release = "";
+        String epoch = null;
+
+        int epochIndex = version.indexOf(':');
+        if (epochIndex > 0) {
+            // Strip away optional 'epoch'
+            epoch = version.substring(0, epochIndex);
+            version = version.substring(epochIndex + 1);
+        }
+
+        int releaseIndex = version.lastIndexOf('-');
+        if (releaseIndex > 0) {
+            // Strip away optional 'release'
+            release = version.substring(releaseIndex + 1);
+            version = version.substring(0, releaseIndex);
+        }
+
+        return new PackageEvr(epoch, version, release);
+    }
+
+    /**
+     * Detect package type and call the correct parser for the version string.
+     *
+     * @param pkg the package
+     * @param version the version string
+     * @return parsed PackageEvr object
+     */
+    public static PackageEvr parsePackageEvr(Package pkg, String version) {
+        if (PackageUtils.isTypeDeb(pkg)) {
+            return PackageUtils.parseDebianEvr(version);
+        }
+        return PackageUtils.parseRpmEvr(version);
+    }
+
     private static String getArchTypeLabel(Package pkg) {
         return pkg.getPackageArch().getArchType().getLabel();
     }

@@ -23,6 +23,18 @@ export function mapFilterFormToRequest(filterForm: FilterFormType, projectLabel:
       requestForm.criteriaValue =
         `${filterForm.packageName || ""}-${epochName}${filterForm.version || ""}-${filterForm.release || ""}.${filterForm.architecture}`;
     }
+  } else if (filterForm.type === filtersEnum.enum.ERRATUM_PKG_NAME.key) {
+    requestForm.criteriaKey = "package_name";
+    requestForm.criteriaValue = filterForm.criteria;
+  } else if (filterForm.type === filtersEnum.enum.ERRATUM_PKG_LT_EVR.key ||
+             filterForm.type === filtersEnum.enum.ERRATUM_PKG_LE_EVR.key ||
+             filterForm.type === filtersEnum.enum.ERRATUM_PKG_EQ_EVR.key ||
+             filterForm.type === filtersEnum.enum.ERRATUM_PKG_GE_EVR.key ||
+             filterForm.type === filtersEnum.enum.ERRATUM_PKG_GT_EVR.key) {
+    const epochName = !_isEmpty(filterForm.epoch) ? `${filterForm.epoch}:` : '';
+    requestForm.criteriaKey = "package_nevr"
+    requestForm.criteriaValue =
+      `${filterForm.packageName || ""} ${epochName}${filterForm.version|| ""}-${filterForm.release|| ""}`;
   } else if (filterForm.type === filtersEnum.enum.ERRATUM.key) {
     requestForm.criteriaKey = "advisory_name";
     requestForm.criteriaValue = filterForm.advisoryName;
@@ -55,6 +67,7 @@ export function mapResponseToFilterForm(filtersResponse: Array<FilterServerType>
 
     if(filterResponse.criteriaKey === "nevr") {
       filterForm.type = filtersEnum.enum.PACKAGE_NEVRA.key;
+
       if(!_isEmpty(filterResponse.criteriaValue)) {
         const [
           ,
@@ -90,6 +103,34 @@ export function mapResponseToFilterForm(filtersResponse: Array<FilterServerType>
         filterForm.release = release;
         filterForm.architecture = architecture;
       }
+    } else if(filterResponse.criteriaKey === "package_nevr") {
+      if (filterForm.matcher === "contains_pkg_lt_evr") {
+        filterForm.type = filtersEnum.enum.ERRATUM_PKG_LT_EVR.key;
+      } else if (filterForm.matcher === "contains_pkg_le_evr") {
+        filterForm.type = filtersEnum.enum.ERRATUM_PKG_LE_EVR.key;
+      } else if (filterForm.matcher === "contains_pkg_eq_evr") {
+        filterForm.type = filtersEnum.enum.ERRATUM_PKG_EQ_EVR.key;
+      } else if (filterForm.matcher === "contains_pkg_ge_evr") {
+        filterForm.type = filtersEnum.enum.ERRATUM_PKG_GE_EVR.key;
+      } else if (filterForm.matcher === "contains_pkg_gt_evr") {
+        filterForm.type = filtersEnum.enum.ERRATUM_PKG_GT_EVR.key;
+      }
+
+      if(!_isEmpty(filterResponse.criteriaValue)) {
+        const [
+          ,
+          packageName,
+          ,
+          epoch,
+          version,
+          release
+        ] = filterResponse.criteriaValue.match(/(.*) ((.*):)?(.*)-(.*)/);
+
+        filterForm.packageName = packageName;
+        filterForm.epoch = epoch;
+        filterForm.version = version;
+        filterForm.release = release;
+      }
     } else if (filterResponse.criteriaKey === "advisory_name") {
       filterForm.type = filtersEnum.enum.ERRATUM.key;
       filterForm["advisoryName"] = filterResponse.criteriaValue;
@@ -106,6 +147,9 @@ export function mapResponseToFilterForm(filtersResponse: Array<FilterServerType>
     } else if (filterResponse.criteriaKey === "issue_date") {
       filterForm.type = filtersEnum.enum.ERRATUM_BYDATE.key;
       filterForm["issueDate"] = Functions.Utils.dateWithTimezone(filterResponse.criteriaValue);
+    } else if (filterResponse.criteriaKey === "package_name") {
+      filterForm.type = filtersEnum.enum.ERRATUM_PKG_NAME.key
+      filterForm.criteria = filterResponse.criteriaValue;
     } else if (filterResponse.criteriaKey === "name") {
       filterForm.type = filtersEnum.enum.PACKAGE.key;
       filterForm.criteria = filterResponse.criteriaValue;
