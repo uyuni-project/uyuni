@@ -1,3 +1,5 @@
+- Check that a channel doesn't have clones before deleting it (bsc#1138454)
+
 -------------------------------------------------------------------
 Thu Jun 06 15:58:50 CEST 2019 - jgonzalez@suse.com
 
