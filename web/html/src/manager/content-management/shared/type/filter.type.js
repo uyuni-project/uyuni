@@ -23,6 +23,7 @@ export type FilterFormType = {
   release?: string,
   architecture?: string,
   advisoryName?: string,
+  synopsis?: string,
   criteria?: string,
   issueDate?: Date
 }
