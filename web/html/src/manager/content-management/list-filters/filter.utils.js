@@ -31,6 +31,9 @@ export function mapFilterFormToRequest(filterForm: FilterFormType, projectLabel:
     requestForm.criteriaValue = filterForm.issueDate
       ? moment(Functions.Utils.dateWithoutTimezone(filterForm.issueDate, localTime)).format("YYYY-MM-DDTHH:mm:ss.SSSZ")
       :  "";
+  } else if (filterForm.type === filtersEnum.enum.ERRATUM_BYSYNOPSIS.key || filterForm.type === filtersEnum.enum.ERRATUM_BYSYNOPSIS_CONTAINS.key) {
+    requestForm.criteriaKey = "synopsis";
+    requestForm.criteriaValue = filterForm.synopsis;
   } else {
     requestForm.criteriaKey = "name";
     requestForm.criteriaValue = filterForm.criteria;
@@ -87,6 +90,13 @@ export function mapResponseToFilterForm(filtersResponse: Array<FilterServerType>
     } else if (filterResponse.criteriaKey === "advisory_name") {
       filterForm.type = filtersEnum.enum.ERRATUM.key;
       filterForm["advisoryName"] = filterResponse.criteriaValue;
+    } else if (filterResponse.criteriaKey === "synopsis") {
+      if (filterResponse.matcher === "equals") {
+          filterForm.type = filtersEnum.enum.ERRATUM_BYSYNOPSIS.key;
+      } else if (filterResponse.matcher === "contains") {
+          filterForm.type = filtersEnum.enum.ERRATUM_BYSYNOPSIS_CONTAINS.key;
+      }
+      filterForm["synopsis"] = filterResponse.criteriaValue;
     } else if (filterResponse.criteriaKey === "issue_date") {
       filterForm.type = filtersEnum.enum.ERRATUM_BYDATE.key;
       filterForm["issueDate"] = Functions.Utils.dateWithTimezone(filterResponse.criteriaValue);
