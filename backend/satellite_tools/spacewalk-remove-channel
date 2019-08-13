@@ -38,7 +38,8 @@ from spacewalk.common.rhnConfig import initCFG
 from spacewalk.server import rhnSQL
 
 from spacewalk.satellite_tools.contentRemove import __listChannels, __serverCheck, \
-    __kickstartCheck, delete_channels, UserError, __getMinionsByChannel, __applyChannelState
+    __kickstartCheck, delete_channels, UserError, __getMinionsByChannel, __applyChannelState, \
+    __clonnedChannels
 
 options_table = [
     Option("-v", "--verbose",       action="count",
@@ -155,7 +156,21 @@ def main():
                 for child in children:
                     print("\t\t\t" + child)
 
-    if child_test_fail:
+    clone_test_fail = False
+    for channel in list(channels.keys()):
+        clones_not_deleted=[]
+        for clone in __clonnedChannels(channel):
+            # the clones channels will also be deleted?
+            if clone not in channels:
+                clone_test_fail = True
+                clones_not_deleted.append(clone)
+        if clones_not_deleted:
+            print("Error: cannot remove channel %s: clone channel(s) exist: " % (
+                channel))
+            for clone_channel_error in clones_not_deleted:
+                print("\t\t\t" + clone_channel_error)
+
+    if child_test_fail or clone_test_fail:
         sys.exit(-1)
     if options.unsubscribe:
         if not options.username:
