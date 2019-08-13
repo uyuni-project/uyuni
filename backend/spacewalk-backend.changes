@@ -1,3 +1,4 @@
+- spacewalk-remove-channel check that channel doesn't have cloned channels before deleting it (bsc#1138454)
 - Prevent duplicate changelog entries due VARCHAR(3000)
   db text column (bsc#1144889)
 - Avoid traceback on mgr-inter-sync when exception message
@@ -104,7 +105,7 @@ Wed Jul 25 09:28:48 CEST 2018 - jgonzalez@suse.com
 - Feature: implement optional signing repository metadata
 - Fix truncated result message of server actions (bsc#1039043)
 - Do not copy 'foreign_entitlement' from virtual host to the
-  registered guest (bsc#1093381) 
+  registered guest (bsc#1093381)
 
 -------------------------------------------------------------------
 Tue Jun 05 10:03:59 CEST 2018 - jgonzalez@suse.com
