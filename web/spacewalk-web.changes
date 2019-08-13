@@ -1,3 +1,4 @@
+- Fix the 'include recommended' button on channels selection in SSM (bsc#1145086)
 - Normalize date formats for actions, notifications and clm (bsc#1142774)
 - Add unsupported browser warning when using Internet Explorer
 
