@@ -6,7 +6,7 @@ import type {ProjectFilterServerType} from "../../../type/project.type";
 import {Loading} from "components/loading/loading";
 import _xor from "lodash/xor";
 import type {Node} from 'react';
-import filtersEnum from "../../../business/filters.enum";
+import {getClmFilterDescription} from "../../../business/filters.enum";
 
 type FiltersProps = {
   projectId: string,
@@ -60,7 +60,7 @@ const FiltersProjectSelection = (props:  FiltersProps): Node => {
             />
             <label
               htmlFor={"child_" + filter.id}>
-              {filtersEnum.getFilterDescription(filter)}
+              {getClmFilterDescription(filter)}
             </label>
           </div>
       )

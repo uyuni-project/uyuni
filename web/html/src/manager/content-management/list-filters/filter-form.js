@@ -1,15 +1,17 @@
 //@flow
-import React from 'react';
+import React, {useEffect} from 'react';
 import {Text} from "components/input/Text";
 import {DateTime} from "components/input/DateTime";
 import {Radio} from "components/input/Radio";
 import {Select} from "components/input/Select";
 import {Form} from "components/input/Form";
 import type {FilterFormType} from "../shared/type/filter.type";
-import filtersEnum from "../shared/business/filters.enum";
-import type {FilterOptionType} from "../shared/business/filters.enum";
+import type {ClmFilterOptionType, FilterMatcherType} from "../shared/business/filters.enum";
+import {clmFilterOptions, findClmFilterByKey, getClmFiltersOptions} from "../shared/business/filters.enum";
 import useUserLocalization from "core/user-localization/use-user-localization";
 import Functions from "utils/functions";
+import _isEmpty from "lodash/isEmpty";
+import produce from "immer";
 
 type Props = {
   filter: FilterFormType,
@@ -19,8 +21,26 @@ type Props = {
 }
 
 const FilterForm = (props: Props) => {
-
   const {timezone, localTime} = useUserLocalization();
+
+  // If the filter type changes, resets the matcher filter
+  useEffect(() => {
+    if(!props.editing) {
+      props.onChange(
+        produce(props.filter, draft => {
+          const selectedFilter = findClmFilterByKey(props.filter.type);
+          if (selectedFilter && selectedFilter.matchers.length === 1) {
+            draft.matcher = selectedFilter.matchers[0].key
+          } else {
+            delete draft.matcher
+          }
+        })
+      )
+    };
+  }, [props.filter.type])
+
+  const selectedFilter = findClmFilterByKey(props.filter.type);
+  const selectedFilterMatchers = selectedFilter && selectedFilter.matchers;
 
   return (
     <Form
@@ -40,7 +60,7 @@ const FilterForm = (props: Props) => {
         }
         <div className="row">
           <Text
-            name="name"
+            name="filter_name"
             label={t("Filter Name")}
             labelClass="col-md-3"
             divClass="col-md-6"
@@ -48,45 +68,68 @@ const FilterForm = (props: Props) => {
             disabled={props.editing}
           />
         </div>
-        <div className="row">
+
+        <Select
+          name="type"
+          label={t("Filter Type")}
+          labelClass="col-md-3"
+          divClass="col-md-6"
+          defaultValue={""}
+          required
+          onChange
+          disabled={props.editing}
+        >
+          <option disabled selected value=""> -- select a filter type -- </option>
+          {
+            getClmFiltersOptions().map((filter: ClmFilterOptionType) =>
+              <option
+                key={filter.key}
+                value={filter.key}
+              >
+                {`${filter.entityType.text} (${filter.text})`}
+              </option>
+            )
+          }
+        </Select>
+
+        {
+          selectedFilterMatchers &&
           <Select
-            name="type"
-            label={t("Filter Type")}
+            name="matcher"
+            label={t("Matcher")}
             labelClass="col-md-3"
             divClass="col-md-6"
             defaultValue={""}
             required
             disabled={props.editing}
           >
-            <option disabled selected value=""> -- select a filter type -- </option>
+            <option disabled selected value=""> -- select a matcher -- </option>
             {
-              filtersEnum.getFiltersOptions().map((filter: FilterOptionType) =>
+              selectedFilterMatchers.map((matcher: FilterMatcherType) =>
                 <option
-                  key={filter.key}
-                  value={filter.key}
+                  key={matcher.key}
+                  value={matcher.key}
                 >
-                  {t(filter.text)}
+                  {matcher.text}
                 </option>
               )
             }
           </Select>
-        </div>
-
-        {
-          filtersEnum.enum.PACKAGE.key === props.filter.type &&
-          <div className="row">
-            <Text
-              name="criteria"
-              label={t("Name contains")}
-              labelClass="col-md-3"
-              divClass="col-md-6"
-              required
-            />
-          </div>
         }
 
         {
-          filtersEnum.enum.PACKAGE_NEVRA.key === props.filter.type &&
+          clmFilterOptions.NAME.key === props.filter.type &&
+          <Text
+            name={clmFilterOptions.NAME.key}
+            label={t("Name contains")}
+            labelClass="col-md-3"
+            divClass="col-md-6"
+            required
+          />
+        }
+
+        {
+          clmFilterOptions.NEVRA.key === props.filter.type &&
           <>
             <Text
               name="packageName"
@@ -124,11 +167,7 @@ const FilterForm = (props: Props) => {
         }
 
         {
-          (filtersEnum.enum.ERRATUM_PKG_LT_EVR.key === props.filter.type ||
-          filtersEnum.enum.ERRATUM_PKG_LE_EVR.key === props.filter.type ||
-          filtersEnum.enum.ERRATUM_PKG_EQ_EVR.key === props.filter.type ||
-          filtersEnum.enum.ERRATUM_PKG_GE_EVR.key === props.filter.type ||
-          filtersEnum.enum.ERRATUM_PKG_GT_EVR.key === props.filter.type ) &&
+          clmFilterOptions.PACKAGE_NEVR.key === props.filter.type &&
           <>
             <Text
               name="packageName"
@@ -160,76 +199,64 @@ const FilterForm = (props: Props) => {
         }
 
         {
-          filtersEnum.enum.ERRATUM.key === props.filter.type &&
-          <div className="row">
-            <Text
-              name="advisoryName"
-              label={t("Advisory name")}
-              labelClass="col-md-3"
-              divClass="col-md-6"
-              required
-            />
-          </div>
+          clmFilterOptions.ADVISORY_NAME.key === props.filter.type &&
+          <Text
+            name={clmFilterOptions.ADVISORY_NAME.key}
+            label={t("Advisory name")}
+            labelClass="col-md-3"
+            divClass="col-md-6"
+            required
+          />
         }
 
         {
-          filtersEnum.enum.ERRATUM_BYTYPE.key === props.filter.type &&
-          <div className="row">
-            <Radio
-              name="advisoryType"
-              defaultValue="Security Advisory"
-              items={[
-                {"label": t("Security Advisory"), "value": "Security Advisory"},
-                {"label": t("Bug Fix Advisory"), "value": "Bug Fix Advisory"},
-                {"label": t("Product Enhancement Advisory"), "value": "Product Enhancement Advisory"}
-              ]}
-              label={t("Advisory Type")}
-              labelClass="col-md-3"
-              divClass="col-md-6" />            
-          </div>
+          clmFilterOptions.ADVISORY_TYPE.key === props.filter.type &&
+          <Radio
+            name={clmFilterOptions.ADVISORY_TYPE.key}
+            defaultValue="Security Advisory"
+            items={[
+              {"label": t("Security Advisory"), "value": "Security Advisory"},
+              {"label": t("Bug Fix Advisory"), "value": "Bug Fix Advisory"},
+              {"label": t("Product Enhancement Advisory"), "value": "Product Enhancement Advisory"}
+            ]}
+            label={t("Advisory Type")}
+            labelClass="col-md-3"
+            divClass="col-md-6" />
         }
 
         {
-          filtersEnum.enum.ERRATUM_BYDATE.key === props.filter.type &&
-          <div className="row">
-            <DateTime
-              name="issueDate"
-              label={t("Issued After")}
-              labelClass="col-md-3"
-              divClass="col-md-6"
-              required
-              timezone={timezone}
-              defaultValue={Functions.Utils.dateWithTimezone(localTime)}
-            />
-
-          </div>
+          clmFilterOptions.ISSUE_DATE.key === props.filter.type &&
+          <DateTime
+            name={clmFilterOptions.ISSUE_DATE.key}
+            label={t("Issued After")}
+            labelClass="col-md-3"
+            divClass="col-md-6"
+            required
+            timezone={timezone}
+            defaultValue={Functions.Utils.dateWithTimezone(localTime)}
+          />
         }
 
         {
-          (filtersEnum.enum.ERRATUM_BYSYNOPSIS.key === props.filter.type
-              || filtersEnum.enum.ERRATUM_BYSYNOPSIS_CONTAINS.key === props.filter.type) &&
-          <div className="row">
-            <Text
-              name="synopsis"
-              label={t("Synopsis")}
-              labelClass="col-md-3"
-              divClass="col-md-6"
-              required
-            />
-          </div>
+          clmFilterOptions.SYNOPSIS.key === props.filter.type &&
+          <Text
+            name={clmFilterOptions.SYNOPSIS.key}
+            label={t("Synopsis")}
+            labelClass="col-md-3"
+            divClass="col-md-6"
+            required
+          />
         }
 
         {
-          filtersEnum.enum.ERRATUM_PKG_NAME.key === props.filter.type &&
-          <div className="row">
-            <Text
-              name="criteria"
-              label={t("Package name")}
-              labelClass="col-md-3"
-              divClass="col-md-6"
-              required
-            />
-          </div>
+          clmFilterOptions.PACKAGE_NAME.key === props.filter.type &&
+          <Text
+            name={clmFilterOptions.PACKAGE_NAME.key}
+            label={t("Package name")}
+            labelClass="col-md-3"
+            divClass="col-md-6"
+            required
+          />
         }
 
         <Radio

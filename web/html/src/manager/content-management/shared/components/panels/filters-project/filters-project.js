@@ -9,7 +9,7 @@ import CreatorPanel from "components/panels/CreatorPanel";
 import type {ProjectFilterServerType} from "../../../type/project.type";
 import FiltersProjectSelection from "./filters-project-selection";
 import statesEnum from "../../../business/states.enum";
-import filtersEnum from "../../../business/filters.enum";
+import {getClmFilterDescription} from "../../../business/filters.enum";
 import useRoles from "core/auth/use-roles";
 import {isOrgAdmin} from "core/auth/auth.utils";
 
@@ -20,7 +20,7 @@ type FiltersProps = {
 };
 
 const renderFilterEntry = (filter, projectId) => {
-  const descr = filtersEnum.getFilterDescription(filter);
+  const descr = getClmFilterDescription(filter);
   const filterButton =
     <div className={styles.icon_wrapper_vertical_center}>
       <LinkButton

@@ -20,7 +20,6 @@ type Props = {
 };
 
 const ListFilters = (props: Props) => {
-
   const [displayedFilters, setDisplayedFilters]: [Array<FilterFormType>, Function] =
     useState(mapResponseToFilterForm(props.filters));
 
@@ -62,7 +61,7 @@ const ListFilters = (props: Props) => {
     <TopPanel title={t('Content Lifecycle Filters')} icon="fa-filter" button={panelButtons} helpUrl="/docs/reference/clm/clm-filters.html">
       <Table
         data={displayedFilters}
-        identifier={row => row.name}
+        identifier={row => row.filter_name}
         searchField={(
           <SearchField
             filter={searchData}
@@ -71,10 +70,10 @@ const ListFilters = (props: Props) => {
         )}
       >
         <Column
-          columnKey="name"
+          columnKey="filter_name"
           comparator={Functions.Utils.sortByText}
           header={t('Name')}
-          cell={row => row.name}
+          cell={row => row.filter_name}
         />
         <Column
           columnKey="projects"
