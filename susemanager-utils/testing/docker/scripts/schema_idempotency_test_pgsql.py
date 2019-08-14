@@ -34,7 +34,7 @@ def get_all_files_from_pr(pr_file, schema_path):
 def get_all_files_since(version, schema_path):
     """ Get all SQL files since a schema version """
     files = []
-    for element in os.listdir(schema_path):
+    for element in sorted(os.listdir(schema_path)):
         element_ver = re.search(
             r'^susemanager-schema-(\d+\.\d+[\d|.]*)-to-susemanager-schema-\d+\.\d+[\d|.]*$',
             element)
@@ -44,7 +44,7 @@ def get_all_files_since(version, schema_path):
         # https://hg.python.org/cpython/file/tip/Lib/distutils/version.py#l93
         if DV.LooseVersion(element_ver.group(1)) >= DV.LooseVersion(version):
             base_path = schema_path + '/' + element
-            for sql_file in os.listdir(base_path):
+            for sql_file in sorted(os.listdir(base_path)):
                 if re.search(r'^.*\.(sql|sql\.postgresql|sql\.oracle)$', sql_file):
                     files.append(base_path + '/' + sql_file)
     return files
@@ -53,7 +53,7 @@ def get_all_files_since(version, schema_path):
 def find_latest_version(schema_path):
     """ Find the latest version available for a migration path """
     latest_version = '0.0'
-    for element in os.listdir(schema_path):
+    for element in sorted(os.listdir(schema_path)):
         element_ver = re.search(
             r'^susemanager-schema-\d+\.\d+[\d|.]*-to-susemanager-schema-(\d+\.\d+[\d|.]*)$',
             element)
@@ -73,7 +73,7 @@ def get_ordered_files(path, start, end, schema_path):
     n = path[start].keys()[0]
     res = []
     d = "%s/%s-to-%s" % (schema_path, start, n)
-    for f in os.listdir(d):
+    for f in sorted(os.listdir(d)):
         res.append("%s/%s" % (d, f))
     if n != end:
         res.extend(get_ordered_files(path, n, end, schema_path))
@@ -188,7 +188,7 @@ def run_upgrade(upgrade_script, new_version):
     if run_command(command):
         print("Upgrade executed successfully")
     else:
-        for element in os.listdir(log_path):
+        for element in sorted(os.listdir(log_path)):
             if re.search(r'^schema-from-.*\.log$', element):
                 print("Content of file %s/%s" % (log_path, element))
                 with open(log_path + '/' + element) as file:
