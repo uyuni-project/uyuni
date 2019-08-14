@@ -113,14 +113,14 @@ class Form extends React.Component<Props, State> {
   }
 
   unregisterInput(component: React.ElementRef<any>) {
-    if (component.props && component.props.name) {
-      delete this.inputs[component.props.name];
+    if (component.props && component.props.name && this.inputs[component.props.name] === component) {
+        delete this.inputs[component.props.name];
 
-      this.setState((prevState) => {
-        const { model } = prevState;
-        delete model[component.props.name];
-        return { model };
-      });
+        this.setState((prevState) => {
+          const { model } = prevState;
+          delete model[component.props.name];
+          return { model };
+        });
     }
   }
 
