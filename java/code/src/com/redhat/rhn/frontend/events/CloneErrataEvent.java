@@ -49,7 +49,7 @@ public class CloneErrataEvent implements EventDatabaseMessage {
         chanId = chanIn.getId();
         errata = errataIn;
         userId = userIn.getId();
-        this.txn = HibernateFactory.getSession().getTransaction();
+        txn = HibernateFactory.getSession().getTransaction();
     }
 
     /**
@@ -60,9 +60,7 @@ public class CloneErrataEvent implements EventDatabaseMessage {
      * @param userIn the user
      */
     public CloneErrataEvent(Channel chanIn, Collection<Long> errataIn, boolean requestRepodataRegenIn, User userIn) {
-        this.chanId = chanIn.getId();
-        this.errata = errataIn;
-        this.userId = userIn.getId();
+        this(chanIn, errataIn, userIn);
         this.requestRepodataRegen = requestRepodataRegenIn;
     }
 
