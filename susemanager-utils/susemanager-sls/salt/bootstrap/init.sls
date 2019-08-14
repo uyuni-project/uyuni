@@ -138,7 +138,7 @@ mgr_update_basic_pkgs:
       - openssl
 {%- if grains['os_family'] == 'Suse' and grains['osrelease'] in ['11.3', '11.4'] %}
       - pmtools
-{%- else %}
+{%- elif grains['cpuarch'] in ['aarch64', 'x86_64'] %}
       - dmidecode
 {%- endif %}
 {%- if grains['os_family'] == 'Suse' %}
