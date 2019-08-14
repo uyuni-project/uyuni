@@ -290,12 +290,13 @@ public class ErrataManager extends BaseManager {
         errataToMerge.removeAll(clones);
 
         log.debug("Publishing");
-        CloneErrataEvent eve = new CloneErrataEvent(toChannel, getErrataIds(errataToMerge), repoRegen, user);
+        Set<Long> errataIds = getErrataIds(errataToMerge);
         if (async) {
+            CloneErrataEvent eve = new CloneErrataEvent(toChannel, errataIds, repoRegen, user);
             MessageQueue.publish(eve);
         }
         else {
-            new CloneErrataAction().execute(eve);
+            cloneErrata(toChannel.getId(), errataIds, repoRegen, user);
         }
 
         // no need to regenerate errata cache, because we didn't touch any packages
