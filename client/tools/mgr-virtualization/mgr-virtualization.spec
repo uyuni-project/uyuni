@@ -202,13 +202,13 @@ make -f Makefile.rhn-virtualization DESTDIR=$RPM_BUILD_ROOT PKGDIR0=%{_initrddir
 install -d %{buildroot}%{_unitdir}
 install -D -m 0644 scripts/mgr-virtualization.timer %{buildroot}%{_unitdir}/mgr-virtualization.timer
 install -D -m 0644 scripts/mgr-virtualization.service %{buildroot}%{_unitdir}/mgr-virtualization.service
-sed -i 's,@PYTHON@,python3,; s,@PYTHONPATH@,%{python3_sitelib},;' \
+sed -i 's,@PYTHON@,/usr/bin/python3,; s,@PYTHONPATH@,%{python3_sitelib},;' \
        %{buildroot}%{_unitdir}/mgr-virtualization.service
 
 %else
 install -d $RPM_BUILD_ROOT%{cron_dir}
 install -D -m 0644 scripts/rhn-virtualization.cron $RPM_BUILD_ROOT%{cron_dir}/rhn-virtualization.cron
-sed -i 's,@PYTHON@,python,; s,@PYTHONPATH@,%{python_sitelib},;' \
+sed -i 's,@PYTHON@,/usr/bin/python,; s,@PYTHONPATH@,%{python_sitelib},;' \
         $RPM_BUILD_ROOT/%{cron_dir}/rhn-virtualization.cron
 %endif
 
