@@ -20,6 +20,7 @@ import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.errata.ErrataFactory;
+import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.channel.manage.PublishErrataHelper;
 import com.redhat.rhn.manager.channel.ChannelManager;
 import com.redhat.rhn.manager.errata.ErrataManager;
@@ -46,17 +47,17 @@ public class CloneErrataAction implements MessageAction {
      */
     public void execute(EventMessage msgIn) {
         CloneErrataEvent msg = (CloneErrataEvent) msgIn;
-        cloneErrata(msg);
+        cloneErrata(msg.getChannelId(), msg.getErrata(), msg.isRequestRepodataRegen(), msg.getUser());
     }
 
-    private void cloneErrata(CloneErrataEvent msg) {
-        Channel channel = ChannelFactory.lookupById(msg.getChannelId());
+    private void cloneErrata(Long channelId, Collection<Long> errataToClone, boolean requestRepodataRegen, User user) {
+        Channel channel = ChannelFactory.lookupById(channelId);
         if (channel == null) {
-            log.error("Failed to clone errata " + msg.getErrata() +
-                    " Didn't find channel with id: " + msg.getChannelId().toString());
+            log.error("Failed to clone errata " + errataToClone +
+                    " Didn't find channel with id: " + channelId.toString());
             return;
         }
-        Collection<Long> list = msg.getErrata();
+        Collection<Long> list = errataToClone;
         List<Long> cids = new ArrayList<Long>();
         cids.add(channel.getId());
         // let's avoid deadlocks please
@@ -74,23 +75,23 @@ public class CloneErrataAction implements MessageAction {
                 Set<Channel> channelSet = new HashSet<Channel>();
                 channelSet.add(channel);
 
-                List<Errata> clones = ErrataManager.lookupPublishedByOriginal(msg.getUser(), errata);
+                List<Errata> clones = ErrataManager.lookupPublishedByOriginal(user, errata);
                 if (clones.size() == 0) {
                     log.debug("Cloning errata");
                     Errata published = PublishErrataHelper.cloneErrataFast(errata,
-                            msg.getUser().getOrg());
+                            user.getOrg());
                     published.setChannels(channelSet);
                     ErrataCacheManager.insertCacheForChannelErrata(cids, published);
                     published.addChannelNotification(channel, new Date());
                 }
                 else {
                     log.debug("Re-publishing clone");
-                    ErrataManager.publish(clones.get(0), cids, msg.getUser());
+                    ErrataManager.publish(clones.get(0), cids, user);
                 }
             }
         }
         // Trigger channel repodata re-generation
-        if (list.size() > 0 && msg.isRequestRepodataRegen()) {
+        if (list.size() > 0 && requestRepodataRegen) {
             channel.setLastModified(new Date());
             ChannelFactory.save(channel);
             ChannelManager.queueChannelChange(channel.getLabel(),
