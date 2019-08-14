@@ -1,3 +1,5 @@
+- dmidecode does not exist on ppc64le and s390x (bsc#1145119)
+
 -------------------------------------------------------------------
 Tue Jul 30 15:01:47 CEST 2019 - jgonzalez@suse.com
 
