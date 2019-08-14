@@ -46,6 +46,10 @@ public class CloneErrataAction implements MessageAction {
      */
     public void execute(EventMessage msgIn) {
         CloneErrataEvent msg = (CloneErrataEvent) msgIn;
+        cloneErrata(msg);
+    }
+
+    private void cloneErrata(CloneErrataEvent msg) {
         Channel currChan = msg.getChan();
         if (currChan == null) {
             log.error("Failed to clone errata " + msg.getErrata() +
@@ -93,7 +97,6 @@ public class CloneErrataAction implements MessageAction {
                     "java::cloneErrata", "Errata cloned");
         }
     }
-
 
 
 }
