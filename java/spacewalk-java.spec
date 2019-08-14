@@ -956,7 +956,6 @@ fi
 %{jardir}/xalan-j2.jar
 %{jardir}/xalan-j2-serializer.jar
 %{jardir}/xerces-j2.jar
-%{jardir}/xml-commons-apis.jar
 
 %if 0%{suse_version}
 %{jardir}/struts.jar
