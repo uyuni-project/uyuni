@@ -15,7 +15,7 @@ class TestSCSoftwareChannel:
     """
     def test_softwarechannel_list_doreturn_nolabels(self, shell):
         """
-        Test do_softwarechannel_list without args.
+        Test do_softwarechannel_list no labels, return data.
 
         :param shell:
         :return:
@@ -33,7 +33,7 @@ class TestSCSoftwareChannel:
 
     def test_softwarechannel_list_noreturn_nolabels(self, shell):
         """
-        Test do_softwarechannel_list without args.
+        Test do_softwarechannel_list no labels, no return data.
 
         :param shell:
         :return:
