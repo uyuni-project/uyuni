@@ -50,29 +50,29 @@ public class CloneErrataAction implements MessageAction {
     }
 
     private void cloneErrata(CloneErrataEvent msg) {
-        Channel currChan = msg.getChan();
-        if (currChan == null) {
+        Channel channel = ChannelFactory.lookupById(msg.getChannelId());
+        if (channel == null) {
             log.error("Failed to clone errata " + msg.getErrata() +
                     " Didn't find channel with id: " + msg.getChannelId().toString());
             return;
         }
         Collection<Long> list = msg.getErrata();
         List<Long> cids = new ArrayList<Long>();
-        cids.add(currChan.getId());
+        cids.add(channel.getId());
         // let's avoid deadlocks please
-        ChannelFactory.lock(currChan);
+        ChannelFactory.lock(channel);
 
         for (Long eid : list) {
             Errata errata = ErrataFactory.lookupById(eid);
             // we merge custom errata directly (non Redhat and cloned)
             if (errata.getOrg() != null) {
-                errata.addChannel(currChan);
+                errata.addChannel(channel);
                 ErrataCacheManager.insertCacheForChannelErrata(cids, errata);
-                errata.addChannelNotification(currChan, new Date());
+                errata.addChannelNotification(channel, new Date());
             }
             else {
                 Set<Channel> channelSet = new HashSet<Channel>();
-                channelSet.add(currChan);
+                channelSet.add(channel);
 
                 List<Errata> clones = ErrataManager.lookupPublishedByOriginal(msg.getUser(), errata);
                 if (clones.size() == 0) {
@@ -81,7 +81,7 @@ public class CloneErrataAction implements MessageAction {
                             msg.getUser().getOrg());
                     published.setChannels(channelSet);
                     ErrataCacheManager.insertCacheForChannelErrata(cids, published);
-                    published.addChannelNotification(currChan, new Date());
+                    published.addChannelNotification(channel, new Date());
                 }
                 else {
                     log.debug("Re-publishing clone");
@@ -91,9 +91,9 @@ public class CloneErrataAction implements MessageAction {
         }
         // Trigger channel repodata re-generation
         if (list.size() > 0 && msg.isRequestRepodataRegen()) {
-            currChan.setLastModified(new Date());
-            ChannelFactory.save(currChan);
-            ChannelManager.queueChannelChange(currChan.getLabel(),
+            channel.setLastModified(new Date());
+            ChannelFactory.save(channel);
+            ChannelManager.queueChannelChange(channel.getLabel(),
                     "java::cloneErrata", "Errata cloned");
         }
     }

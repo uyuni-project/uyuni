@@ -97,14 +97,6 @@ public class CloneErrataEvent implements EventDatabaseMessage {
     }
 
     /**
-     * @return Returns the chan.
-     */
-    public Channel getChan() {
-        return ChannelFactory.lookupById(chanId);
-    }
-
-
-    /**
      * @param chanIn The chan to set.
      */
     public void setChan(Channel chanIn) {
