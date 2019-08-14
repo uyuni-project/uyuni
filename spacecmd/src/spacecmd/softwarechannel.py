@@ -91,7 +91,7 @@ def do_softwarechannel_list(self, args, doreturn=False):
                 details = self.client.channel.software.getDetails(
                     self.session, l)
                 print("%s : %s" % (l, details['summary']))
-                if (options.tree):
+                if options.tree:
                     for c in self.list_child_channels(parent=l):
                         cdetails = self.client.channel.software.getDetails(
                             self.session, c)
