@@ -147,7 +147,7 @@ class OracleBackend(Backend):
               fields={
                   'id': DBint(),
                   'name': DBstring(128),
-                  'text': DBstring(3000),
+                  'text': DBblob(),
                   'time': DBdateTime()
               },
               ),
