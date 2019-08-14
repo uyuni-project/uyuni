@@ -2250,6 +2250,14 @@ public class ErrataManager extends BaseManager {
         mode.executeUpdate(params);
     }
 
+    /**
+     * Clone errata to given channel.
+     *
+     * @param channelId the channel id
+     * @param errataToClone the errata ids to clone
+     * @param requestRepodataRegen if channel repodata should be regenerated after the cloning
+     * @param user the user
+     */
     public static void cloneErrata(Long channelId, Collection<Long> errataToClone, boolean requestRepodataRegen,
             User user) {
         Channel channel = ChannelFactory.lookupById(channelId);
