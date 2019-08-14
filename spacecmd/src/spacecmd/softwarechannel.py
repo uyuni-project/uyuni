@@ -79,12 +79,15 @@ def do_softwarechannel_list(self, args, doreturn=False):
     # filter the list if arguments were passed
     if args:
         labels = filter_results(labels, args, True)
+    if labels:
+        labels = sorted(labels)
 
     if doreturn:
         return labels
+
     elif labels:
         if options.verbose:
-            for l in sorted(labels):
+            for l in labels:
                 details = self.client.channel.software.getDetails(
                     self.session, l)
                 print("%s : %s" % (l, details['summary']))
@@ -94,7 +97,7 @@ def do_softwarechannel_list(self, args, doreturn=False):
                             self.session, c)
                         print(" |-%s : %s" % (c, cdetails['summary']))
         else:
-            for l in sorted(labels):
+            for l in labels:
                 print("%s" % l)
                 if options.tree:
                     for c in self.list_child_channels(parent=l):
