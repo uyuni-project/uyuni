@@ -15,7 +15,7 @@ export type FilterFormType = {
   matcher: string,
   rule: string,
   id?: number,
-  name?: string,
+  filter_name?: string,
   projects?: Array<string>,
   packageName?: string,
   epoch?: string,
