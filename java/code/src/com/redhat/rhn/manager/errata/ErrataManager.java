@@ -56,7 +56,6 @@ import com.redhat.rhn.frontend.dto.OwnedErrata;
 import com.redhat.rhn.frontend.dto.PackageDto;
 import com.redhat.rhn.frontend.dto.PackageOverview;
 import com.redhat.rhn.frontend.dto.SystemOverview;
-import com.redhat.rhn.frontend.events.CloneErrataAction;
 import com.redhat.rhn.frontend.events.CloneErrataEvent;
 import com.redhat.rhn.frontend.events.NewCloneErrataEvent;
 import com.redhat.rhn.frontend.listview.PageControl;

@@ -18,14 +18,10 @@ import com.redhat.rhn.common.messaging.EventMessage;
 import com.redhat.rhn.common.messaging.MessageAction;
 import com.redhat.rhn.manager.errata.ErrataManager;
 
-import org.apache.log4j.Logger;
-
 /**
  * CloneErrataAction
  */
 public class CloneErrataAction implements MessageAction {
-
-    private static Logger log = Logger.getLogger(CloneErrataAction.class);
 
     /**
      * {@inheritDoc}
@@ -34,6 +30,5 @@ public class CloneErrataAction implements MessageAction {
         CloneErrataEvent msg = (CloneErrataEvent) msgIn;
         ErrataManager.cloneErrata(msg.getChannelId(), msg.getErrata(), msg.isRequestRepodataRegen(), msg.getUser());
     }
-
 
 }
