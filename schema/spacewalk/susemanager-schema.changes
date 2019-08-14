@@ -1,3 +1,5 @@
+- Bump version to 4.1.0
+- Allow package changelog entries with more than 3000 characters (bsc#1144889)
 - add caret sorting for rpm versioning
 - allow repo and manifest sources with the same url
 - improve performance for retrieving the user permissions on channels (bsc#1140644)
