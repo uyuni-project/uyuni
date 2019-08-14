@@ -74,6 +74,37 @@ class TestSCSoftwareChannel:
         assert_list_args_expect(mprint.call_args_list,
                                 ["label-last", "label-one", "label-three", "label-two"])
 
+    def test_softwarechannel_list_noreturn_labels_verbose(self, shell):
+        """
+        Test do_softwarechannel_list with label, no return data, verbose output.
+
+        :param shell:
+        :return:
+        """
+        shell.client.channel.listAllChannels = MagicMock(return_value=[
+            {"label": "test_channel"},
+        ])
+        shell.client.channel.software.getDetails = MagicMock(side_effect=[
+            {"summary": "Summary of test_channel"},
+            {"summary": "Summary of child_channel"},
+        ])
+        shell.list_child_channels = MagicMock(return_value=[
+            "child_channel"
+        ])
+
+        mprint = MagicMock()
+        with patch("spacecmd.softwarechannel.print", mprint) as prt:
+            out = spacecmd.softwarechannel.do_softwarechannel_list(
+                shell, "-v", doreturn=False)
+
+        assert out is None
+        assert not shell.help_softwarechannel_list.called
+        assert not shell.list_child_channels.called
+        assert shell.client.channel.software.getDetails.called
+        assert shell.client.channel.listAllChannels.called
+
+        assert_expect(mprint.call_args_list,
+                      'test_channel : Summary of test_channel')
 
     def test_softwarechannel_list_noreturn_labels_verbose_tree(self, shell):
         """
