@@ -506,10 +506,32 @@ public class ContentManagementHandler extends BaseHandler {
      * @return the created {@link ContentFilter}
      *
      * @xmlrpc.doc Create a Content Filter
+     * #paragraph_end()
+     * #paragraph()
+     * The following filters are available:
+     * #paragraph_end()
+     * #paragraph()
+     * Package filtering:
+     * #itemlist()
+     *   #item("by name - field:name matcher:contains")
+     *   #item("by name, epoch, version, release and architecture - field:nevr or nevra - matcher:equals")
+     *  #itemlist_end()
+     * #paragraph_end()
+     * #paragraph()
+     * Errata/Patch filtering:
+     * #itemlist()
+     *   #item("by advisory name - field:advisory_name matcher:equals")
+     *   #item("by synopsis - field:synopsis matcher:equals or contains")
+     *   #item("by date - field:issue_date matcher:greater or greatereq")
+     *   #item("by type - field:advisory_type matcher:equals")
+     *   #item("by affected package name - field:package_name matcher:contains_pkg_name")
+     *   #item("by affected package with version - field:package_nevr matcher:contains_pkg_lt_evr, contains_pkg_le_evr,
+     *   contains_pkg_eq_evr, contains_pkg_ge_evr or contains_pkg_gt_evr")
+     *  #itemlist_end()
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param_desc("string", "name", "Filter name")
-     * @xmlrpc.param #param_desc("string", "rule", "Filter rule (e.g. 'deny')")
-     * @xmlrpc.param #param_desc("string", "entityType", "Filter entityType (e.g. 'package')")
+     * @xmlrpc.param #param_desc("string", "rule", "Filter rule ('deny' or 'allow')")
+     * @xmlrpc.param #param_desc("string", "entityType", "Filter entityType ('package' or 'erratum')")
      * @xmlrpc.param
      *  #struct("criteria")
      *      #prop_desc("string", "matcher", "The matcher type of the filter (e.g. 'contains')")
@@ -543,10 +565,13 @@ public class ContentManagementHandler extends BaseHandler {
      * @return the updated {@link ContentFilter}
      *
      * @xmlrpc.doc Update a Content Filter
+     * #paragraph_end()
+     * #paragraph()
+     * See also: createFilter()
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param_desc("int", "filterId", "Filter id")
      * @xmlrpc.param #param_desc("string", "name", "New filter name")
-     * @xmlrpc.param #param_desc("string", "rule", "New filter rule (e.g. 'deny')")
+     * @xmlrpc.param #param_desc("string", "rule", "New filter rule ('deny' or 'allow')")
      * @xmlrpc.param
      *  #struct("criteria")
      *      #prop_desc("string", "matcher", "The matcher type of the filter (e.g. 'contains')")
