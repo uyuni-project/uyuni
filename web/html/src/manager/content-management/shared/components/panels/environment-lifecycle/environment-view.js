@@ -1,5 +1,4 @@
 //@flow
-/* global moment */
 import React from 'react';
 import _isEmpty from "lodash/isEmpty"
 
