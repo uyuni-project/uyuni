@@ -102,3 +102,15 @@
 #macro(return_int_success)
 <listitem><para>int - 1 on success, exception thrown otherwise.</para></listitem>
 #end
+#macro(itemlist)
+<itemizedlist spacing="compact">
+#end
+#macro(itemlist_end)
+</itemizedlist>
+#end
+#macro(paragraph)
+  <para>
+#end
+#macro(paragraph_end)
+  </para>
+#end
