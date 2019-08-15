@@ -495,6 +495,27 @@ public class ContentManagementHandler extends BaseHandler {
     }
 
     /**
+     * Returns a list of available filter criterias
+     *
+     * @param loggedInUser the user
+     * @return list of filter criteria
+     *
+     * @xmlrpc.doc List of available filter criteria
+     * @xmlrpc.param #session_key()
+     * @xmlrpc.returntype
+     * #array()
+     * #struct("Filter Criteria")
+     * #prop("string", "type")
+     * #prop("string", "matcher")
+     * #prop("string", "field")
+     * #struct_end()
+     * #array_end()
+     */
+    public List<Map<String, String>> listFilterCriteria(User loggedInUser) {
+        return FilterCriteria.listFilterCriteria();
+    }
+
+    /**
      * Create a {@link ContentFilter}
      *
      * @param loggedInUser the logged in user
