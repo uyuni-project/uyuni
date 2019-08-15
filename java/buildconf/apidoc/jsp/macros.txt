@@ -92,3 +92,15 @@ array:
 #macro(return_int_success)
     int - 1 on success, exception thrown otherwise.
 #end
+#macro(itemlist)
+  <ul>
+#end
+#macro(itemlist_end)
+  </ul>
+#end
+#macro(paragraph)
+  <p>
+#end
+#macro(paragraph_end)
+  </p>
+#end

@@ -20,7 +20,12 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.tuple.Triple;
 
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.persistence.EnumType;
@@ -156,6 +161,23 @@ public class FilterCriteria {
                     String.format("Invalid criteria combination (entityType: '%s', matcher: '%s', field: '%s')",
                             entityType, matcher, field));
         }
+    }
+
+    /**
+     * Return a list of available filter criterias
+     *
+     * @return list of filter criteria
+     */
+    public static List<Map<String, String>> listFilterCriteria() {
+        List<Map<String, String>> result = new LinkedList<>();
+        for (Triple<ContentFilter.EntityType, Matcher, String> c : validCombinations) {
+            Map<String, String> criteria = new HashMap<>();
+            criteria.put("type", c.getLeft().getLabel());
+            criteria.put("matcher", c.getMiddle().getLabel());
+            criteria.put("field", c.getRight());
+            result.add(criteria);
+        }
+        return result;
     }
 
     /**
