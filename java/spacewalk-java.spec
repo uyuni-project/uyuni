@@ -29,6 +29,8 @@
 %define jardir          /srv/tomcat/webapps/rhn/WEB-INF/lib
 %define run_checkstyle  0
 %define omit_tests      1
+%define apache_group    www
+
 
 Name:           spacewalk-java
 Summary:        Java web application files for Spacewalk
@@ -539,18 +541,18 @@ echo "#### SYMLINKS END ####"
 %post config
 if [ ! -d /var/log/rhn ]; then
     mkdir /var/log/rhn
-    chown root:www /var/log/rhn
+    chown root:%{apache_group} /var/log/rhn
     chmod 770 /var/log/rhn
 fi
 if [ ! -e /var/log/rhn/rhn_web_api.log ]; then
     touch /var/log/rhn/rhn_web_api.log
 fi
-chown tomcat:www /var/log/rhn/rhn_web_api.log
+chown tomcat:%{apache_group} /var/log/rhn/rhn_web_api.log
 
 if [ ! -e /var/log/rhn/gatherer.log ]; then
     touch /var/log/rhn/gatherer.log
 fi
-chown tomcat:www /var/log/rhn/gatherer.log
+chown tomcat:%{apache_group} /var/log/rhn/gatherer.log
 
 %post
 if [ $1 -gt 1 ]; then
