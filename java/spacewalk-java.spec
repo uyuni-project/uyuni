@@ -43,32 +43,110 @@ BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildArch:      noarch
 ExcludeArch:    ia64 aarch64
 
-Requires:       bcel
-Requires:       c3p0 >= 0.9.1
-Requires:       classpathx-mail
+BuildRequires:  ant
+BuildRequires:  ant-apache-regexp
+BuildRequires:  ant-contrib
+BuildRequires:  ant-junit
+BuildRequires:  ant-nodeps
+BuildRequires:  antlr >= 2.7.6
+BuildRequires:  apache-commons-cli
+BuildRequires:  apache-commons-codec
+BuildRequires:  apache-commons-collections
+BuildRequires:  apache-commons-io
+BuildRequires:  apache-commons-lang
+BuildRequires:  apache-commons-lang3
+BuildRequires:  apache-commons-logging
+BuildRequires:  bcel
+BuildRequires:  byte-buddy
+BuildRequires:  c3p0 >= 0.9.1
+BuildRequires:  cglib
+BuildRequires:  classmate
+BuildRequires:  classpathx-mail
+BuildRequires:  concurrent
+BuildRequires:  dom4j
+BuildRequires:  dwr >= 3
+BuildRequires:  ehcache >= 2.10.1
+BuildRequires:  google-gson >= 2.2.4
+BuildRequires:  hibernate-commons-annotations
+BuildRequires:  hibernate5
+BuildRequires:  httpcomponents-asyncclient
+BuildRequires:  httpcomponents-client
+BuildRequires:  jade4j
+BuildRequires:  jaf
+BuildRequires:  jakarta-commons-discovery
+BuildRequires:  jakarta-commons-el
+BuildRequires:  jakarta-commons-fileupload
+BuildRequires:  jakarta-commons-validator
+BuildRequires:  java-devel >= 11
+BuildRequires:  java-saml
+BuildRequires:  javapackages-tools
+BuildRequires:  javassist
+BuildRequires:  jboss-logging
+BuildRequires:  jcommon
+BuildRequires:  jdom
+BuildRequires:  joda-time
+BuildRequires:  jose4j
+BuildRequires:  jpa-api
+BuildRequires:  jsch
+BuildRequires:  jta
+BuildRequires:  libxml2
+BuildRequires:  libxml2-tools
+BuildRequires:  log4j
+BuildRequires:  netty
+BuildRequires:  objectweb-asm
+BuildRequires:  perl
+BuildRequires:  pgjdbc-ng
+BuildRequires:  postgresql-jdbc
+BuildRequires:  prometheus-client-java
+BuildRequires:  quartz
+BuildRequires:  redstone-xmlrpc
+BuildRequires:  salt-netapi-client >= 0.15.0
+BuildRequires:  simple-core
+BuildRequires:  simple-xml
+BuildRequires:  sitemesh
+BuildRequires:  snakeyaml
+BuildRequires:  spark-core
+BuildRequires:  spark-template-jade
+BuildRequires:  statistics
+BuildRequires:  stringtree-json
+BuildRequires:  struts >= 1.2.9
+BuildRequires:  tomcat >= 8
+BuildRequires:  tomcat-lib >= 8
+BuildRequires:  tomcat-taglibs-standard
+BuildRequires:  uyuni-base-common
+BuildRequires:  velocity
+BuildRequires:  woodstox
+BuildRequires:  xmlsec
+
+Requires:       /sbin/unix2_chkpwd
 Requires:       apache-commons-beanutils
 Requires:       apache-commons-collections
 Requires:       apache-commons-lang3
+Requires:       bcel
+Requires:       byte-buddy
+Requires:       c3p0 >= 0.9.1
+Requires:       classmate
+Requires:       classpathx-mail
 Requires:       cobbler >= 3.0.0
 Requires:       concurrent
-Requires:       google-gson >= 2.2.4
-Requires:       httpcomponents-client
-Requires:       jakarta-commons-digester
-Requires:       java >= 11
-Requires:       classmate
 Requires:       ehcache >= 2.10.1
 Requires:       gnu-jaf
-Requires:       byte-buddy
-Requires:       jpa-api
+Requires:       google-gson >= 2.2.4
 Requires:       hibernate-commons-annotations
 Requires:       hibernate5
+Requires:       httpcomponents-client
 Requires:       jade4j
+Requires:       jakarta-commons-digester
+Requires:       java >= 11
+Requires:       java-saml
 Requires:       javassist
 Requires:       jboss-logging
+Requires:       joda-time
 Requires:       jose4j
+Requires:       jpa-api
 Requires:       netty
 Requires:       objectweb-asm
-Requires:       /sbin/unix2_chkpwd
+Requires:       pgjdbc-ng
 Requires:       prometheus-client-java
 Requires:       salt-netapi-client >= 0.15.0
 Requires:       snakeyaml
@@ -76,49 +154,10 @@ Requires:       spark-core
 Requires:       spark-template-jade
 Requires:       statistics
 Requires:       sudo
-Requires:       tomcat-taglibs-standard
-Requires:       pgjdbc-ng
 Requires:       susemanager-docs_en
-Requires:       java-saml
-Requires:       joda-time
-Requires:       woodstox
-Requires:       xmlsec
+Requires:       tomcat-taglibs-standard
 Requires(pre):  uyuni-base-server
 BuildRequires:  uyuni-base-server
-BuildRequires:  apache-commons-lang
-BuildRequires:  apache-commons-lang3
-BuildRequires:  classmate
-BuildRequires:  ehcache >= 2.10.1
-BuildRequires:  google-gson >= 2.2.4
-BuildRequires:  byte-buddy
-BuildRequires:  jpa-api
-BuildRequires:  hibernate-commons-annotations
-BuildRequires:  hibernate5
-BuildRequires:  java-devel >= 11
-BuildRequires:  javassist
-BuildRequires:  jboss-logging
-BuildRequires:  jsch
-BuildRequires:  netty
-BuildRequires:  objectweb-asm
-BuildRequires:  snakeyaml
-BuildRequires:  statistics
-BuildRequires:  java-saml
-BuildRequires:  joda-time
-BuildRequires:  woodstox
-BuildRequires:  xmlsec
-# SUSE additional build requirements
-BuildRequires:  log4j
-# Spark and Salt integration
-BuildRequires:  httpcomponents-client
-BuildRequires:  httpcomponents-asyncclient
-BuildRequires:  jade4j
-BuildRequires:  jose4j
-BuildRequires:  prometheus-client-java
-BuildRequires:  salt-netapi-client >= 0.15.0
-BuildRequires:  spark-core
-BuildRequires:  spark-template-jade
-BuildRequires:  velocity
-BuildRequires: pgjdbc-ng
 Requires:       jakarta-commons-el
 Requires:       jakarta-commons-fileupload
 Requires:       jcommon
@@ -134,15 +173,14 @@ Requires:       spacewalk-java-config
 Requires:       spacewalk-java-jdbc
 Requires:       spacewalk-java-lib
 Requires:       stringtree-json
+Requires:       struts >= 1.2.9
+Requires:       woodstox
 Requires:       xalan-j2 >= 2.6.0
 Requires:       xerces-j2
-Requires:       struts >= 1.2.9
-Requires(pre): tomcat >= 8
+Requires:       xmlsec
+Requires(pre):  tomcat >= 8
 Requires:       tomcat-lib >= 8
 Requires:       mvn(org.apache.tomcat:tomcat-servlet-api) > 8
-BuildRequires:  struts >= 1.2.9
-BuildRequires:  tomcat >= 8
-BuildRequires:  tomcat-lib >= 8
 Requires(pre):  salt
 #!BuildIgnore:  udev-mini libudev-mini1
 Requires:       apache-commons-cli
@@ -150,50 +188,11 @@ Requires:       apache-commons-codec
 Requires:       apache-commons-io
 Requires:       apache-commons-lang3
 Requires:       apache-commons-logging
-Requires:       jakarta-commons-discovery
-Requires:       javapackages-tools
-BuildRequires:  ant-contrib
-BuildRequires:  ant-nodeps
-BuildRequires:  apache-commons-cli
-BuildRequires:  apache-commons-codec
-BuildRequires:  apache-commons-collections
-BuildRequires:  apache-commons-io
-BuildRequires:  apache-commons-logging
-BuildRequires:  jakarta-commons-discovery
-BuildRequires:  jakarta-commons-validator
-BuildRequires:  javapackages-tools
-
 Requires:       cglib
 Requires:       dwr >= 3
+Requires:       jakarta-commons-discovery
+Requires:       javapackages-tools
 
-BuildRequires:  libxml2
-BuildRequires:  libxml2-tools
-BuildRequires:  perl
-BuildRequires:  tomcat-taglibs-standard
-BuildRequires:  ant
-BuildRequires:  ant-apache-regexp
-BuildRequires:  ant-junit
-BuildRequires:  antlr >= 2.7.6
-BuildRequires:  bcel
-BuildRequires:  c3p0 >= 0.9.1
-BuildRequires:  cglib
-BuildRequires:  classpathx-mail
-BuildRequires:  concurrent
-BuildRequires:  dom4j
-BuildRequires:  dwr >= 3
-BuildRequires:  jaf
-BuildRequires:  jakarta-commons-el
-BuildRequires:  jakarta-commons-fileupload
-BuildRequires:  jcommon
-BuildRequires:  jdom
-BuildRequires:  jta
-BuildRequires:  postgresql-jdbc
-BuildRequires:  quartz
-BuildRequires:  redstone-xmlrpc
-BuildRequires:  simple-core
-BuildRequires:  simple-xml
-BuildRequires:  sitemesh
-BuildRequires:  stringtree-json
 %if 0%{?run_checkstyle}
 BuildRequires:  checkstyle
 %endif
@@ -287,38 +286,40 @@ This package contains apidoc-docbook xml sources of spacewalk-java.
 Summary:        Java version of taskomatic
 Group:          Applications/Internet
 
-Requires:       cglib
-
-Requires:       bcel
-Requires:       c3p0 >= 0.9.1
-Requires:       cobbler >= 3.0.0
-Requires:       java >= 11
-Requires:       jsch
 Requires:       /sbin/unix2_chkpwd
-Requires:       tomcat-taglibs-standard
+Requires:       apache-commons-cli
+Requires:       apache-commons-codec
+Requires:       apache-commons-lang3
+Requires:       apache-commons-logging
+Requires:       bcel
+Requires:       byte-buddy
+Requires:       c3p0 >= 0.9.1
+Requires:       cglib
+Requires:       classmate
+Requires:       cobbler >= 3.0.0
 Requires:       concurrent
+Requires:       ehcache >= 2.10.1
+Requires:       hibernate-commons-annotations
+Requires:       hibernate5
+Requires:       httpcomponents-client
+Requires:       httpcomponents-core
+Requires:       java >= 11
+Requires:       javassist
+Requires:       jboss-logging
 Requires:       jcommon
+Requires:       jpa-api
+Requires:       jsch
 Requires:       log4j
 Requires:       quartz
 Requires:       simple-core
 Requires:       spacewalk-java-config
 Requires:       spacewalk-java-jdbc
 Requires:       spacewalk-java-lib
+Requires:       statistics
+Requires:       susemanager-frontend-libs >= 2.1.5
+Requires:       tomcat-taglibs-standard
 Requires:       xalan-j2 >= 2.6.0
 Requires:       xerces-j2
-Requires:       classmate
-Requires:       ehcache >= 2.10.1
-Requires:       hibernate-commons-annotations
-Requires:       hibernate5
-Requires:       javassist
-Requires:       jboss-logging
-Requires:       statistics
-Requires:       byte-buddy
-Requires:       jpa-api
-Requires:       apache-commons-cli
-Requires:       apache-commons-codec
-Requires:       apache-commons-lang3
-Requires:       apache-commons-logging
 Conflicts:      quartz < 2.0
 Obsoletes:      taskomatic < 5.3.0
 Obsoletes:      taskomatic-sat < 5.3.0
@@ -326,9 +327,6 @@ Provides:       taskomatic = %{version}-%{release}
 Provides:       taskomatic-sat = %{version}-%{release}
 BuildRequires:  systemd
 %{?systemd_requires}
-Requires:       httpcomponents-client
-Requires:       httpcomponents-core
-Requires:       susemanager-frontend-libs >= 2.1.5
 
 %description -n spacewalk-taskomatic
 This package contains the Java version of taskomatic.
