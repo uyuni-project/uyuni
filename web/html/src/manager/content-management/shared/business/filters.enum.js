@@ -25,47 +25,47 @@ export const filterMatchers : FilterMatcherEnumType = {
   CONTAINS: {
     key: 'contains',
     text: 'contains (><)',
-    longDescription: ' containing '
+    longDescription: 'containing'
   },
   CONTAINS_PKG_NAME: {
     key: 'contains_pkg_name',
     text: 'contains (><)',
-    longDescription: ' contains package name '
+    longDescription: 'contains package name'
   },
   CONTAINS_PKG_LT_EVR: {
     key: 'contains_pkg_lt_evr',
     text: 'version lower than (<)',
-    longDescription: ' contains package with version lower than '
+    longDescription: 'contains package with version lower than'
   },
   CONTAINS_PKG_LE_EVR: {
     key: 'contains_pkg_le_evr',
     text: 'version lower or equal than (<=)',
-    longDescription: ' contains package with version lower or equal than '
+    longDescription: 'contains package with version lower or equal than'
   },
   CONTAINS_PKG_EQ_EVR: {
     key: 'contains_pkg_eq_evr',
     text: 'version equal (=)',
-    longDescription: ' contains package with version equal than '
+    longDescription: 'contains package with version equal than'
   },
   CONTAINS_PKG_GE_EVR: {
     key: 'contains_pkg_ge_evr',
     text: 'version greater or equal than (>=)',
-    longDescription: ' contains package with version greater or equal than '
+    longDescription: 'contains package with version greater or equal than'
   },
   CONTAINS_PKG_GT_EVR: {
     key: 'contains_pkg_gt_evr',
     text: 'version greater than (>)',
-    longDescription: ' contains package with version greater than '
+    longDescription: 'contains package with version greater than'
   },
   EQUALS: {
     key: 'equals',
     text: 'matches (=)',
-    longDescription: ' containing '
+    longDescription: 'matching'
   },
   GREATEREQ: {
     key: 'greatereq',
     text: 'greater or equal (>=)',
-    longDescription: ' greater or equal '
+    longDescription: 'greater or equal than'
   },
 
 };
@@ -139,5 +139,5 @@ function findFilterMatcherByKey(key: ?string): FilterMatcherType {
 
 export function getClmFilterDescription (filter: Object): string {
   const filterMatcher = findFilterMatcherByKey(filter.matcher);
-  return `${filter.name}: deny ${filter.entityType} ${filterMatcher.longDescription || ''} ${filter.criteriaValue} (${filter.criteriaKey})`;
+  return `${filter.name}: ${filter.rule} ${filter.entityType} ${filterMatcher.longDescription || ''} ${filter.criteriaValue} (${filter.criteriaKey})`;
 }

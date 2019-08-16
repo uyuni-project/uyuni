@@ -10,7 +10,6 @@ import type {ClmFilterOptionType, FilterMatcherType} from "../shared/business/fi
 import {clmFilterOptions, findClmFilterByKey, getClmFiltersOptions} from "../shared/business/filters.enum";
 import useUserLocalization from "core/user-localization/use-user-localization";
 import Functions from "utils/functions";
-import _isEmpty from "lodash/isEmpty";
 import produce from "immer";
 
 type Props = {

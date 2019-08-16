@@ -102,13 +102,6 @@ describe('Testing filters form <> request mappers', () => {
   });
 
   test('test patch by date', () => {
-    const filterForm = {
-      filter_name: "filter by date",
-      matcher: "equals",
-      type: "issue_date",
-      issue_date: "2017-10-01T00:00+01",
-      rule: "deny"
-    }
     // TODO: add this test when moment isn't a global dependency and comes from NPM
   });
 
