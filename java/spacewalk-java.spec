@@ -23,7 +23,6 @@
 %define cobprofdirwiz   %{cobprofdir}/wizard
 %define cobdirsnippets  %{cobblerdir}/snippets
 %define spacewalksnippetsdir  %{cobdirsnippets}/spacewalk
-%define run_checkstyle  1
 
 %define appdir          /srv/tomcat/webapps
 %define jardir          /srv/tomcat/webapps/rhn/WEB-INF/lib
