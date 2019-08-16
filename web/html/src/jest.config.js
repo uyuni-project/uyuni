@@ -3,5 +3,6 @@ module.exports = {
     "^core/(.*)$": "<rootDir>/core/$1",
     "^components/(.*)$": "<rootDir>/components/$1",
     "^utils/(.*)$": "<rootDir>/utils/$1"
-  }
+  },
+  setupFiles: ["./testSetupFile.js"]
 }

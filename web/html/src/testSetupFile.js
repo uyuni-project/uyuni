@@ -1,0 +1,1 @@
+global.t = string => string;
