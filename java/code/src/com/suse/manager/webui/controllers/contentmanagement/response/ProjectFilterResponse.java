@@ -25,7 +25,7 @@ public class ProjectFilterResponse {
     private String matcher;
     private String criteriaKey;
     private String criteriaValue;
-    private Boolean deny;
+    private String rule;
     private String state;
 
     public void setId(Long idIn) {
@@ -48,8 +48,8 @@ public class ProjectFilterResponse {
         this.criteriaValue = criteriaValueIn;
     }
 
-    public void setDeny(Boolean denyIn) {
-        this.deny = denyIn;
+    public void setRule(String ruleIn) {
+        this.rule = ruleIn;
     }
 
     public void setName(String nameIn) {
