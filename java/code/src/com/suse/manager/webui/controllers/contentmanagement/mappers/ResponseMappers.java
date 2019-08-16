@@ -236,7 +236,7 @@ public class ResponseMappers {
                     contentProjectFilterResponse.setMatcher(filter.getCriteria().getMatcher().getLabel());
                     contentProjectFilterResponse.setCriteriaKey(filter.getCriteria().getField());
                     contentProjectFilterResponse.setCriteriaValue(filter.getCriteria().getValue());
-                    contentProjectFilterResponse.setDeny(filter.getRule() == ContentFilter.Rule.DENY);
+                    contentProjectFilterResponse.setRule(filter.getRule().getLabel());
                     contentProjectFilterResponse.setState(projectFilter.getState().toString());
                     return contentProjectFilterResponse;
                 })
