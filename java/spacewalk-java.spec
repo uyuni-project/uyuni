@@ -46,7 +46,6 @@ ExcludeArch:    ia64 aarch64
 Requires:       bcel
 Requires:       c3p0 >= 0.9.1
 Requires:       classpathx-mail
-%if 0%{?suse_version}
 Requires:       apache-commons-beanutils
 Requires:       apache-commons-collections
 Requires:       apache-commons-lang3
@@ -120,7 +119,6 @@ BuildRequires:  spark-core
 BuildRequires:  spark-template-jade
 BuildRequires:  velocity
 BuildRequires: pgjdbc-ng
-%endif # 0{?suse_version}
 Requires:       jakarta-commons-el
 Requires:       jakarta-commons-fileupload
 Requires:       jcommon
@@ -138,7 +136,6 @@ Requires:       spacewalk-java-lib
 Requires:       stringtree-json
 Requires:       xalan-j2 >= 2.6.0
 Requires:       xerces-j2
-%if 0%{?suse_version}
 Requires:       struts >= 1.2.9
 Requires(pre): tomcat >= 8
 Requires:       tomcat-lib >= 8
@@ -146,10 +143,8 @@ Requires:       mvn(org.apache.tomcat:tomcat-servlet-api) > 8
 BuildRequires:  struts >= 1.2.9
 BuildRequires:  tomcat >= 8
 BuildRequires:  tomcat-lib >= 8
-%endif # 0{?suse_version}
 Requires(pre):  salt
 #!BuildIgnore:  udev-mini libudev-mini1
-%if 0%{?suse_version}
 Requires:       apache-commons-cli
 Requires:       apache-commons-codec
 Requires:       apache-commons-io
@@ -167,17 +162,14 @@ BuildRequires:  apache-commons-logging
 BuildRequires:  jakarta-commons-discovery
 BuildRequires:  jakarta-commons-validator
 BuildRequires:  javapackages-tools
-%endif # 0{?suse_version}
 
 Requires:       cglib
 Requires:       dwr >= 3
 
-%if 0%{?suse_version}
 BuildRequires:  libxml2
 BuildRequires:  libxml2-tools
 BuildRequires:  perl
 BuildRequires:  tomcat-taglibs-standard
-%endif # 0{?suse_version}
 BuildRequires:  ant
 BuildRequires:  ant-apache-regexp
 BuildRequires:  ant-junit
@@ -219,10 +211,8 @@ This package contains the code for the Java version of the Spacewalk Web Site.
 %package config
 Summary:        Configuration files for Spacewalk Java
 Group:          Applications/Internet
-%if 0%{?suse_version}
 Requires(post): apache2
 Requires(post): tomcat
-%endif
 Obsoletes:      rhn-java-config < 5.3.0
 Obsoletes:      rhn-java-config-sat < 5.3.0
 Provides:       rhn-java-config = %{version}-%{release}
@@ -249,9 +239,7 @@ and taskomatic process.
 Summary:        PostgreSQL database backend support files for Spacewalk Java
 Group:          Applications/Internet
 Requires:       postgresql-jdbc
-%if 0%{?suse_version}
 Requires:       tomcat >= 8
-%endif
 Provides:       spacewalk-java-jdbc = %{version}-%{release}
 
 %description postgresql
@@ -303,13 +291,11 @@ Requires:       cglib
 
 Requires:       bcel
 Requires:       c3p0 >= 0.9.1
-%if 0%{?suse_version}
 Requires:       cobbler >= 3.0.0
 Requires:       java >= 11
 Requires:       jsch
 Requires:       /sbin/unix2_chkpwd
 Requires:       tomcat-taglibs-standard
-%endif
 Requires:       concurrent
 Requires:       jcommon
 Requires:       log4j
@@ -320,7 +306,6 @@ Requires:       spacewalk-java-jdbc
 Requires:       spacewalk-java-lib
 Requires:       xalan-j2 >= 2.6.0
 Requires:       xerces-j2
-%if 0%{?suse_version}
 Requires:       classmate
 Requires:       ehcache >= 2.10.1
 Requires:       hibernate-commons-annotations
@@ -330,25 +315,20 @@ Requires:       jboss-logging
 Requires:       statistics
 Requires:       byte-buddy
 Requires:       jpa-api
-%endif
-%if 0%{?suse_version}
 Requires:       apache-commons-cli
 Requires:       apache-commons-codec
 Requires:       apache-commons-lang3
 Requires:       apache-commons-logging
-%endif # 0{?suse_version}
 Conflicts:      quartz < 2.0
 Obsoletes:      taskomatic < 5.3.0
 Obsoletes:      taskomatic-sat < 5.3.0
 Provides:       taskomatic = %{version}-%{release}
 Provides:       taskomatic-sat = %{version}-%{release}
-%if 0%{?suse_version}
 BuildRequires:  systemd
 %{?systemd_requires}
 Requires:       httpcomponents-client
 Requires:       httpcomponents-core
 Requires:       susemanager-frontend-libs >= 2.1.5
-%endif
 
 %description -n spacewalk-taskomatic
 This package contains the Java version of taskomatic.
@@ -394,9 +374,7 @@ done
 
 %build
 # compile only java sources (no packing here)
-%if 0%{?suse_version} >= 1500
 ant -Dprefix=$RPM_BUILD_ROOT -Dtomcat="tomcat9" init-install compile
-%endif
 
 %if 0%{?run_checkstyle}
 echo "Running checkstyle on java main sources"
@@ -438,9 +416,7 @@ find . -type f -name '*.xml' | xargs perl -CSAD -lne '
 %endif
 
 echo "Building apidoc docbook sources"
-%if 0%{?suse_version} >= 1500
 ant -Dprefix=$RPM_BUILD_ROOT -Dtomcat="tomcat9" init-install apidoc-docbook
-%endif
 cd build/reports/apidocs/docbook
 /usr/bin/xmllint --xinclude --postvalid book.xml > susemanager_api_doc.xml
 cd $RPM_BUILD_ROOT
@@ -449,19 +425,15 @@ cd $RPM_BUILD_ROOT
 export NO_BRP_CHECK_BYTECODE_VERSION=true
 export NO_BRP_STALE_LINK_ERROR=yes
 
-%if 0%{?suse_version}
 ant -Dprefix=$RPM_BUILD_ROOT -Dtomcat="tomcat9" install-tomcat9-suse
 install -d -m 755 $RPM_BUILD_ROOT%{appdir}/rhn/META-INF/
 install -m 755 conf/rhn-tomcat9.xml $RPM_BUILD_ROOT%{appdir}/rhn/META-INF/context.xml
-%endif # 0{?suse_version}
 
 # check spelling errors in all resources for English if aspell installed
 [ -x "$(which aspell)" ] && scripts/spelling/check_java.sh .. en_US
 
-%if 0%{?suse_version}
 install -d -m 755 $RPM_BUILD_ROOT%{_sbindir}
 install -d -m 755 $RPM_BUILD_ROOT%{_unitdir}
-%endif
 install -d -m 755 $RPM_BUILD_ROOT%{_bindir}
 install -d -m 755 $RPM_BUILD_ROOT%{_sysconfdir}/rhn
 install -d -m 755 $RPM_BUILD_ROOT%{_prefix}/share/rhn
@@ -476,10 +448,8 @@ install -d -m 755 $RPM_BUILD_ROOT%{cobprofdir}
 install -d -m 755 $RPM_BUILD_ROOT%{cobprofdirup}
 install -d -m 755 $RPM_BUILD_ROOT%{cobprofdirwiz}
 install -d -m 755 $RPM_BUILD_ROOT%{cobdirsnippets}
-%if 0%{?suse_version}
 install -d -m 755 $RPM_BUILD_ROOT/%{_localstatedir}/lib/spacewalk/scc
 install -d -m 755 $RPM_BUILD_ROOT/%{_localstatedir}/lib/spacewalk/subscription-matcher
-%endif
 
 install -d -m 755 $RPM_BUILD_ROOT%{_sysconfdir}/logrotate.d
 install -d $RPM_BUILD_ROOT/srv/susemanager/salt
@@ -492,9 +462,7 @@ install -d $RPM_BUILD_ROOT/srv/susemanager/tmp
 #######################################
 # this overwrite all the setting above!
 #######################################
-%if 0%{suse_version}
 cp conf/default/rhn_hibernate.conf.SUSE conf/default/rhn_hibernate.conf
-%endif
 
 install -m 644 conf/default/rhn_hibernate.conf $RPM_BUILD_ROOT%{_prefix}/share/rhn/config-defaults/rhn_hibernate.conf
 install -m 644 conf/default/rhn_taskomatic_daemon.conf $RPM_BUILD_ROOT%{_prefix}/share/rhn/config-defaults/rhn_taskomatic_daemon.conf
@@ -511,14 +479,12 @@ sed -i -e 's/^java.product_tree.tag =.*$/java.product_tree.tag = Uyuni/' $RPM_BU
 %endif
 install -m 644 conf/logrotate/rhn_web_api $RPM_BUILD_ROOT%{_sysconfdir}/logrotate.d/rhn_web_api
 install -m 644 conf/logrotate/gatherer $RPM_BUILD_ROOT%{_sysconfdir}/logrotate.d/gatherer
-%if 0%{?suse_version}
 # LOGROTATE >= 3.8 requires extra permission config
 sed -i 's/#LOGROTATE-3.8#//' $RPM_BUILD_ROOT%{_sysconfdir}/logrotate.d/rhn_web_api
 install -m 755 scripts/taskomatic $RPM_BUILD_ROOT%{_sbindir}
 install -m 644 scripts/taskomatic.service $RPM_BUILD_ROOT%{_unitdir}
 # add rc link
 ln -sf service $RPM_BUILD_ROOT/%{_sbindir}/rctaskomatic
-%endif
 
 install -m 644 scripts/unittest.xml $RPM_BUILD_ROOT/%{_datadir}/rhn/
 install -m 644 build/webapp/rhnjava/WEB-INF/lib/rhn.jar $RPM_BUILD_ROOT%{_datadir}/rhn/lib
@@ -541,10 +507,8 @@ install -m 644 conf/cobbler/snippets/sles_no_signature_checks $RPM_BUILD_ROOT%{s
 install -m 644 conf/cobbler/snippets/wait_for_networkmanager_script $RPM_BUILD_ROOT%{spacewalksnippetsdir}/wait_for_networkmanager_script
 
 ln -s -f %{_javadir}/dwr.jar $RPM_BUILD_ROOT%{jardir}/dwr.jar
-%if 0%{?suse_version}
 install -d -m 755 $RPM_BUILD_ROOT%{_datadir}/spacewalk/audit
 install -m 644 conf/audit/auditlog-config.yaml $RPM_BUILD_ROOT%{_datadir}/spacewalk/audit/auditlog-config.yaml
-%endif
 
 # special links for taskomatic
 TASKOMATIC_BUILD_DIR=%{_prefix}/share/spacewalk/taskomatic
@@ -574,7 +538,6 @@ echo "#### SYMLINKS START ####"
 find $RPM_BUILD_ROOT%{jardir} -name *.jar
 echo "#### SYMLINKS END ####"
 
-%if 0%{?suse_version}
 %pre -n spacewalk-taskomatic
 %service_add_pre taskomatic.service
 
@@ -603,8 +566,6 @@ if [ ! -e /var/log/rhn/gatherer.log ]; then
 fi
 chown tomcat:www /var/log/rhn/gatherer.log
 
-%endif
-
 %post
 if [ $1 -gt 1 ]; then
    if [ -f %{_sysconfdir}/tomcat6/Catalina/localhost/rhn.xml ]; then
@@ -615,10 +576,8 @@ if [ $1 -gt 1 ]; then
 fi
 
 %files
-%if 0%{?suse_version}
 %defattr(-,root,root)
 %dir %{_localstatedir}/lib/spacewalk
-%endif
 %defattr(644,tomcat,tomcat,775)
 %attr(775, salt, salt) %dir /srv/susemanager/salt/salt_ssh
 %attr(775, root, tomcat) %dir %{appdir}
@@ -666,7 +625,6 @@ fi
 %{jardir}/dom4j.jar
 %{jardir}/dwr.jar
 
-%if 0%{?suse_version}
 %{jardir}/google-gson.jar
 %{jardir}/snakeyaml.jar
 # SUSE extra runtime dependencies: spark, jade4j, salt API client + dependencies
@@ -706,7 +664,6 @@ fi
 %{jardir}/javassist.jar
 %{jardir}/jboss-logging.jar
 %{jardir}/statistics.jar
-%endif
 
 %{jardir}/jaf.jar
 %{jardir}/javamail.jar
@@ -727,13 +684,11 @@ fi
 %{jardir}/xalan-j2-serializer.jar
 %{jardir}/xerces-j2.jar
 
-%if 0%{suse_version}
 %{jardir}/struts.jar
 %{jardir}/objectweb-asm_asm.jar
 %{jardir}/taglibs-standard-impl.jar
 %{jardir}/taglibs-standard-jstlel.jar
 %{jardir}/taglibs-standard-spec.jar
-%endif
 
 # owned by cobbler needs cobbler permissions
 %attr(755,root,root) %dir %{cobprofdir}
@@ -751,24 +706,18 @@ fi
 %config %{spacewalksnippetsdir}/sles_register_script
 %config %{spacewalksnippetsdir}/sles_no_signature_checks
 %config %{spacewalksnippetsdir}/wait_for_networkmanager_script
-%if  0%{?suse_version}
 %config(noreplace) %{appdir}/rhn/META-INF/context.xml
 %attr(755,root,root) %dir %{cobblerdir}
-%endif
 
-%if 0%{?suse_version}
 %attr(755, tomcat, root) %dir %{_localstatedir}/lib/spacewalk/scc
 %attr(755, tomcat, root) %dir %{_localstatedir}/lib/spacewalk/subscription-matcher
 %dir %{appdir}/rhn/WEB-INF
 %dir %{jardir}
-%endif
 
 %files -n spacewalk-taskomatic
 %defattr(644,root,root,775)
-%if 0%{?suse_version}
 %attr(755, root, root) %{_sbindir}/taskomatic
 %attr(644, root, root) %{_unitdir}/taskomatic.service
-%endif
 %{_datarootdir}/spacewalk/taskomatic
 %{_sbindir}/rctaskomatic
 
