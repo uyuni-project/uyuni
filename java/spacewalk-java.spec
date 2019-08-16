@@ -334,18 +334,6 @@ This package contains the Java version of taskomatic.
 %prep
 %setup -q
 
-# missing tomcat juli JAR (needed for JSP precompilation) - bug 661244
-if test -d /usr/share/tomcat6; then
-    mkdir -p build/build-lib
-    if test ! -h /usr/share/java/tomcat6/tomcat-juli.jar; then
-        ln -s /usr/share/tomcat6/bin/tomcat-juli.jar \
-            build/build-lib/tomcat-juli.jar
-    else
-        ln -s /usr/share/java/tomcat6/tomcat-juli.jar \
-                build/build-lib/tomcat-juli.jar
-    fi
-fi
-
 %if ! 0%{?omit_tests} > 0 && ! 0%{?skip_xliff}
 find . -name 'StringResource_*.xml' |      while read i ;
     do echo $i
@@ -566,9 +554,7 @@ chown tomcat:www /var/log/rhn/gatherer.log
 
 %post
 if [ $1 -gt 1 ]; then
-   if [ -f %{_sysconfdir}/tomcat6/Catalina/localhost/rhn.xml ]; then
-      mv %{_sysconfdir}/tomcat6/Catalina/localhost/rhn.xml %{appdir}/rhn/META-INF/context.xml
-   elif [ -f %{_sysconfdir}/tomcat/Catalina/localhost/rhn.xml ]; then
+   if [ -f %{_sysconfdir}/tomcat/Catalina/localhost/rhn.xml ]; then
       mv %{_sysconfdir}/tomcat/Catalina/localhost/rhn.xml %{appdir}/rhn/META-INF/context.xml
    fi
 fi
