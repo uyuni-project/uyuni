@@ -1,5 +1,6 @@
 - implement provisioning for salt clients
 - dmidecode does not exist on ppc64le and s390x (bsc#1145119)
+- update susemanager.conf to use adler32 for computing the server_id for new minions
 
 -------------------------------------------------------------------
 Wed Jul 31 17:42:04 CEST 2019 - jgonzalez@suse.com
