@@ -22,13 +22,17 @@ function DateTime(props: Props) {
           const onChange = (value) => {
             setValue(props.name, value);
           };
-          return (
-            <DateTimePicker
-              onChange={onChange}
-              value={props.value}
-              timezone={timezone}
-            />
-          );
+          if(props.value instanceof Date) {
+            return (
+              <DateTimePicker
+                onChange={onChange}
+                value={props.value}
+                timezone={timezone}
+              />
+            );
+          } else {
+            return null
+          }
         }
       }
     </InputBase>
