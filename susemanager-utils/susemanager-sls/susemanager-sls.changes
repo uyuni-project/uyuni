@@ -1,5 +1,6 @@
 - Bootstrapping RES6/RHEL6/SLE11 with TLS1.2 now shows error message. (bsc#1147126)
 - dmidecode does not exist on ppc64le and s390x (bsc#1145119)
+- update susemanager.conf to use adler32 for computing the server_id for new minions
 
 -------------------------------------------------------------------
 Thu Jul 18 10:08:50 CEST 2019 - jgonzalez@suse.com
