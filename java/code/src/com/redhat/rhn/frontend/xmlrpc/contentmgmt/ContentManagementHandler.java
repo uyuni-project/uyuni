@@ -45,7 +45,7 @@ import static java.util.Optional.ofNullable;
 /**
  * Content Management XMLRPC handler
  *
- * @xmlrpc.namespace contentmgmt
+ * @xmlrpc.namespace contentmanagement
  * @xmlrpc.doc Provides methods to access and modify Content Lifecycle Management related entities
  * (Projects, Environments, Filters, Sources).
  */
