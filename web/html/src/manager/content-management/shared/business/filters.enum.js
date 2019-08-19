@@ -73,7 +73,7 @@ export const filterMatchers : FilterMatcherEnumType = {
 export const clmFilterOptions : ClmFilterOptionsEnumType = {
   NAME: {
     key: 'name',
-    text: t('name'),
+    text: t('Name'),
     entityType: filterEntity.PACKAGE,
     matchers: [filterMatchers.CONTAINS],
   },
@@ -97,25 +97,25 @@ export const clmFilterOptions : ClmFilterOptionsEnumType = {
   },
   SYNOPSIS: {
     key: 'synopsis',
-    text: t('synopsis'),
+    text: t('Synopsis'),
     entityType: filterEntity.ERRATUM,
     matchers: [filterMatchers.EQUALS, filterMatchers.CONTAINS]
   },
   ISSUE_DATE: {
     key: 'issue_date',
-    text: t('issued after'),
+    text: t('Issued after'),
     entityType: filterEntity.ERRATUM,
     matchers: [filterMatchers.GREATEREQ],
   },
   PACKAGE_NAME: {
     key: 'package_name',
-    text: t('contains Package Name'),
+    text: t('Contains Package Name'),
     entityType: filterEntity.ERRATUM,
     matchers: [filterMatchers.CONTAINS_PKG_NAME]
   },
   PACKAGE_NEVR: {
     key: 'package_nevr',
-    text: t('contains Package'),
+    text: t('Contains Package'),
     entityType: filterEntity.ERRATUM,
     matchers: [
       filterMatchers.CONTAINS_PKG_LT_EVR, filterMatchers.CONTAINS_PKG_LE_EVR,
