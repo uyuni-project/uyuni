@@ -68,6 +68,7 @@
 - features/trad_metadata_check.feature
 - features/srv_clone_channel_npn.feature
 - features/srv_delete_channel.feature
+- features/srv_spacewalk_remove_channel_tool.feature
 - features/trad_cve_id_new_syntax.feature
 - features/trad_weak_deps.feature
 - features/srv_cve_audit.feature

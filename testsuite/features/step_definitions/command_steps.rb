@@ -5,6 +5,17 @@ require 'xmlrpc/client'
 require 'timeout'
 require 'nokogiri'
 
+When(/^I delete these channels with spacewalk\-remove\-channel:$/) do |table|
+  channels_cmd = "spacewalk-remove-channel "
+  table.raw.each { |x| channels_cmd = channels_cmd + " -c " + x[0] }
+  $command_output, return_code = $server.run(channels_cmd, false)
+end
+
+When(/^I list channels with spacewalk\-remove\-channel$/) do
+  $command_output, return_code = $server.run("spacewalk-remove-channel -l")
+  raise "Unable to run spacewalk-remove-channel -l command on server" unless return_code.zero?
+end
+
 Then(/^"([^"]*)" should be installed on "([^"]*)"$/) do |package, host|
   node = get_target(host)
   node.run("rpm -q #{package}")
@@ -300,25 +311,11 @@ When(/^spacewalk\-channel fails with "([^"]*)"$/) do |arg1|
 end
 
 Then(/^I should get "([^"]*)"$/) do |arg1|
-  found = false
-  $command_output.each_line do |line|
-    if line.include?(arg1)
-      found = true
-      break
-    end
-  end
-  raise "'#{arg1}' not found in output '#{$command_output}'" unless found
+  raise "'#{arg1}' not found in output '#{$command_output}'" unless $command_output.include? arg1
 end
 
 Then(/^I shouldn't get "([^"]*)"$/) do |arg1|
-  found = false
-  $command_output.each_line do |line|
-    if line.include?(arg1)
-      found = true
-      break
-    end
-  end
-  raise "'#{arg1}' found in output '#{$command_output}'" if found
+  raise "'#{arg1}' found in output '#{$command_output}'" unless not $command_output.include? arg1
 end
 
 Then(/^I wait until mgr-sync refresh is finished$/) do
