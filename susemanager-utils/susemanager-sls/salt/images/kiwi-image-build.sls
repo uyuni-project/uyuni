@@ -14,19 +14,9 @@
 {%- set bundle_id  = pillar.get('build_id') %}
 {%- set activation_key = pillar.get('activation_key') %}
 {%- set kiwi_help = salt['cmd.run']('kiwi --help') %}
-{%- set have_bundle_build = kiwi_help.find('--bundle-build') > 0 %}
 
-# i586 build on x86_64 host must be called with linux32
-# let's consider the build i586 if there is no x86_64 repo specified
-{%- set kiwi = 'linux32 kiwi' if (pillar.get('kiwi_repositories')|join(' ')).find('x86_64') == -1 and grains.get('osarch') == 'x86_64' else 'kiwi' %}
-
-# in SLES11 Kiwi the --add-repotype is required
-{%- macro kiwi_params() -%}
-  --add-repo {{ common_repo }} --add-repotype rpm-dir --add-repoalias common_repo {{ ' ' }}
-{%- for repo in pillar.get('kiwi_repositories') -%}
-  --add-repo {{ repo }} --add-repotype rpm-md --add-repoalias key_repo{{ loop.index }} {{ ' ' }}
-{%- endfor -%}
-{%- endmacro %}
+# on SLES11 and SLES12 use legacy Kiwi, use Kiwi NG elsewhere
+{%- set use_kiwi_ng = not (salt['grains.get']('osfullname') == 'SLES' and salt['grains.get']('osmajorrelease')|int() < 15) %}
 
 mgr_buildimage_prepare_source:
   file.directory:
@@ -45,6 +35,57 @@ mgr_buildimage_prepare_activation_key_in_source:
         grains:
           susemanager:
             activation_key: {{ activation_key }}
+
+{%- if use_kiwi_ng %}
+# KIWI NG
+#
+{%- set kiwi = 'kiwi-ng' %}
+
+
+{%- macro kiwi_params() -%}
+  --add-repo file:{{ common_repo }},rpm-dir,common_repo,90,false,false {{ ' ' }}
+{%- for repo in pillar.get('kiwi_repositories') -%}
+  --add-repo {{ repo }},rpm-md,key_repo{{ loop.index }},90,false,false {{ ' ' }}
+{%- endfor -%}
+{%- endmacro %}
+
+mgr_buildimage_kiwi_prepare:
+  cmd.run:
+    - name: "{{ kiwi }} --logfile={{ root_dir }}/prepare.log  system prepare --description {{ source_dir }} --root {{ chroot_dir }} {{ kiwi_params() }}"
+    - require:
+      - module: mgr_buildimage_prepare_source
+      - file: mgr_buildimage_prepare_activation_key_in_source
+
+mgr_buildimage_kiwi_create:
+  cmd.run:
+    - name: "{{ kiwi }} --logfile={{ root_dir }}/create.log system create --root {{ chroot_dir }} --target-dir  {{ dest_dir }}"
+    - require:
+      - cmd: mgr_buildimage_kiwi_prepare
+
+mgr_buildimage_kiwi_bundle:
+  cmd.run:
+    - name: "{{ kiwi }} result bundle --target-dir {{ dest_dir }} --id {{ bundle_id }} --bundle-dir {{ bundle_dir }}"
+    - require:
+      - cmd: mgr_buildimage_kiwi_create
+
+
+{%- else %}
+# KIWI Legacy
+#
+
+{%- set have_bundle_build = kiwi_help.find('--bundle-build') > 0 %}
+
+# i586 build on x86_64 host must be called with linux32
+# let's consider the build i586 if there is no x86_64 repo specified
+{%- set kiwi = 'linux32 kiwi' if (pillar.get('kiwi_repositories')|join(' ')).find('x86_64') == -1 and grains.get('osarch') == 'x86_64' else 'kiwi' %}
+
+# in SLES11 Kiwi the --add-repotype is required
+{%- macro kiwi_params() -%}
+  --add-repo {{ common_repo }} --add-repotype rpm-dir --add-repoalias common_repo {{ ' ' }}
+{%- for repo in pillar.get('kiwi_repositories') -%}
+  --add-repo {{ repo }} --add-repotype rpm-md --add-repoalias key_repo{{ loop.index }} {{ ' ' }}
+{%- endfor -%}
+{%- endmacro %}
 
 mgr_buildimage_kiwi_prepare:
   cmd.run:
@@ -89,6 +130,9 @@ mgr_buildimage_kiwi_bundle:
       - cmd: mgr_buildimage_kiwi_bundle_tarball
 
 {%- endif %}
+
+{%- endif %}
+
 
 {%- if pillar.get('use_salt_transport') %}
 mgr_buildimage_kiwi_collect_image:
