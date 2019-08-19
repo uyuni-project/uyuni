@@ -33,6 +33,12 @@ const FilterForm = (props: Props) => {
           } else {
             delete draft.matcher
           }
+          if(clmFilterOptions.ADVISORY_TYPE.key === props.filter.type) {
+            draft[clmFilterOptions.ADVISORY_TYPE.key] = "Security Advisory";
+          }
+          if(clmFilterOptions.ISSUE_DATE.key === props.filter.type) {
+            draft[clmFilterOptions.ISSUE_DATE.key] = Functions.Utils.dateWithTimezone(localTime);
+          }
         })
       )
     };
@@ -73,9 +79,7 @@ const FilterForm = (props: Props) => {
           label={t("Filter Type")}
           labelClass="col-md-3"
           divClass="col-md-6"
-          defaultValue={""}
           required
-          onChange
           disabled={props.editing}
         >
           <option disabled selected value=""> -- select a filter type -- </option>
@@ -98,7 +102,6 @@ const FilterForm = (props: Props) => {
             label={t("Matcher")}
             labelClass="col-md-3"
             divClass="col-md-6"
-            defaultValue={""}
             required
             disabled={props.editing}
           >
@@ -212,7 +215,7 @@ const FilterForm = (props: Props) => {
           clmFilterOptions.ADVISORY_TYPE.key === props.filter.type &&
           <Radio
             name={clmFilterOptions.ADVISORY_TYPE.key}
-            defaultValue="Security Advisory"
+            required
             items={[
               {"label": t("Security Advisory"), "value": "Security Advisory"},
               {"label": t("Bug Fix Advisory"), "value": "Bug Fix Advisory"},
@@ -232,7 +235,6 @@ const FilterForm = (props: Props) => {
             divClass="col-md-6"
             required
             timezone={timezone}
-            defaultValue={Functions.Utils.dateWithTimezone(localTime)}
           />
         }
 
@@ -261,7 +263,6 @@ const FilterForm = (props: Props) => {
         <Radio
           inline
           name="rule"
-          defaultValue="deny"
           items={[
             {"label": t("Deny"), "value": "deny"},
             {"label": t("Allow"), "value": "allow"}

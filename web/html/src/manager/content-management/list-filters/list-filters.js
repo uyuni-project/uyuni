@@ -46,7 +46,7 @@ const ListFilters = (props: Props) => {
         hasEditingPermissions &&
         <FilterEdit
           id="create-filter-button"
-          initialFilterForm={{deny:true}}
+          initialFilterForm={{rule: "deny"}}
           icon='fa-plus'
           buttonText='Create Filter'
           openFilterId={props.openFilterId}
