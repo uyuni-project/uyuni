@@ -24,12 +24,12 @@ export const filterEntity : FilterEntityEnumType = {
 export const filterMatchers : FilterMatcherEnumType = {
   CONTAINS: {
     key: 'contains',
-    text: 'contains (><)',
+    text: 'contains',
     longDescription: 'containing'
   },
   CONTAINS_PKG_NAME: {
     key: 'contains_pkg_name',
-    text: 'contains (><)',
+    text: 'contains',
     longDescription: 'contains package name'
   },
   CONTAINS_PKG_LT_EVR: {
