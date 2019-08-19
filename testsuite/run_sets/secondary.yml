@@ -30,5 +30,7 @@
 - features/secondary/trad_action_chain.feature
 - features/secondary/min_action_chain.feature
 - features/secondary/minssh_action_chain.feature
+- features/secondary/srv_delete_channel.feature
+- features/secondary/srv_spacewalk_remove_channel_tool.feature
 
 ## Secondary features END ##
