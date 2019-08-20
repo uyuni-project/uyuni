@@ -1,6 +1,7 @@
 /* eslint-disable */
 "use strict";
 
+const {SectionToolbar} = require("components/section-toolbar/section-toolbar");
 const React = require("react");
 const MessageContainer = require("components/messages").Messages;
 const {Table, Column, SearchField, Highlight} = require("components/table");
@@ -287,7 +288,7 @@ class NotificationMessages extends React.Component {
       </div>
     ;
 
-    const panelButtons = <div className='spacewalk-section-toolbar'>
+    const panelButtons = <SectionToolbar>
         <div className='action-button-wrapper'>
           <div className='btn-group'>
             <AsyncButton id="reload" icon="fa-refresh" text={t('Refresh')} action={this.refreshServerData} />
@@ -301,7 +302,7 @@ class NotificationMessages extends React.Component {
                 disabled={this.state.selectedItems.length == 0 ? 'disabled' : ''} />
         </div>
       </div>
-    </div>;
+    </SectionToolbar>;
 
     const visibleMessages = this.state.messages.length > 3 ? this.state.messages.slice(this.state.messages.length - 3) : this.state.messages;
     const messages = visibleMessages.map(m => <MessageContainer items={[{severity: m.severity, text: <p>{t(m.text)}.</p> }]}/>);
