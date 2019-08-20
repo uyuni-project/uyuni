@@ -1,6 +1,7 @@
 /* eslint-disable */
 'use strict';
 
+const {SectionToolbar} = require("components/section-toolbar/section-toolbar");
 const React = require('react');
 const ReactDOM = require('react-dom');
 const Network = require('utils/network');
@@ -267,7 +268,7 @@ class ProductsPageWrapper extends React.Component {
           <div className='col-sm-9'>
             <Messages items={this.state.errors}/>
             <div>
-              <div className='spacewalk-section-toolbar'>
+              <SectionToolbar>
                 <div className='action-button-wrapper'>
                   <div className='btn-group'>
                     <Button
@@ -281,7 +282,7 @@ class ProductsPageWrapper extends React.Component {
                     {addProductButton}
                   </div>
                 </div>
-              </div>
+              </SectionToolbar>
               <Products
                   data={this.state.serverData}
                   loading={this.state.loading}
