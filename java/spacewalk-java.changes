@@ -1,3 +1,4 @@
+- Handle refreshing hardware of VM with changed UUID (bsc#1135380)
 - fix problems with Package Hub repos having multiple rpms with same NEVRA
   but different checksums (bsc#1146683)
 - Add check/message for project not found (bsc#1145755)
