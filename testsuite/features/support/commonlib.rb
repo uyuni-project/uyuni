@@ -2,6 +2,7 @@
 # Licensed under the terms of the MIT license.
 
 require 'tempfile'
+require 'yaml'
 
 # return current URL
 def current_url
@@ -14,6 +15,22 @@ def generate_temp_file(name, content)
     file.write(content)
     return file.path
   end
+end
+
+# extract terminals from a retail yaml configuration
+def get_terminals_from_yaml(name)
+  tree = YAML.load_file(name)
+  tree['branches'].values[0]['terminals'].keys
+end
+
+def get_branch_prefix_from_yaml(name)
+  tree = YAML.load_file(name)
+  tree['branches'].values[0]['branch_prefix']
+end
+
+def get_server_domain_from_yaml(name)
+  tree = YAML.load_file(name)
+  tree['branches'].values[0]['server_domain']
 end
 
 # get registration URL
@@ -41,6 +58,12 @@ def inject_salt_pillar_file(source, file)
   # make file readeable by salt
   $server.run("chgrp salt #{dest}")
   return_code
+end
+
+# WARN: It's working for /24 mask, but couldn't not work properly with others
+def get_reverse_net(net)
+  a = net.split('.')
+  a[2] + '.' + a[1] + '.' + a[0] + '.in-addr.arpa'
 end
 
 # Repeatedly executes a block raising an exception in case it is not finished within timeout seconds

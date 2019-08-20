@@ -91,7 +91,7 @@ end
 
 When(/^I accept "([^"]*)" key in the Salt master$/) do |host|
   system_name = get_system_name(host)
-  $server.run("salt-key -y --accept=#{system_name}")
+  $server.run("salt-key -y --accept=#{system_name}*")
 end
 
 When(/^I reject "([^"]*)" key in the Salt master$/) do |host|
@@ -238,6 +238,10 @@ When(/^I manually install the "([^"]*)" formula on the server$/) do |package|
   $server.run("zypper --non-interactive install --force #{package}-formula")
 end
 
+Then(/^I wait for "([^"]*)" formula to be installed on the server$/) do |package|
+  $server.run_until_ok("rpm -q #{package}-formula")
+end
+
 When(/^I manually uninstall the "([^"]*)" formula from the server$/) do |package|
   $server.run("zypper --non-interactive remove #{package}-formula")
 end
@@ -271,15 +275,7 @@ Then(/^the "([^"]*)" formula should be ([^ ]*)$/) do |formula, state|
 end
 
 When(/^I select "([^"]*)" in (.*) field$/) do |value, box|
-  boxids = { 'timezone name'            => 'timezone#name',
-             'language'                 => 'keyboard_and_language#language',
-             'keyboard layout'          => 'keyboard_and_language#keyboard_layout',
-             'disk label'               => 'partitioning#0#disklabel',
-             'first filesystem format'  => 'partitioning#0#partitions#0#format',
-             'first partition flags'    => 'partitioning#0#partitions#0#flags',
-             'second filesystem format' => 'partitioning#0#partitions#1#format',
-             'second partition flags'   => 'partitioning#0#partitions#1#flags' }
-  select(value, from: boxids[box])
+  select(value, from: FIELD_IDS[box])
 end
 
 # rubocop:disable Metrics/BlockLength
@@ -301,6 +297,35 @@ When(/^I enter the local IP address of "([^"]*)" in (.*) field$/) do |host, fiel
                'fourth A address'         => 'bind#available_zones#0#records#A#3#1',
                'internal network address' => 'tftpd#listen_ip',
                'vsftpd internal network address' => 'vsftpd_config#listen_address' }
+  addresses = { 'network'     => '0',
+                'client'      => '2',
+                'minion'      => '3',
+                'pxeboot'     => '4',
+                'range begin' => '128',
+                'range end'   => '253',
+                'proxy'       => '254',
+                'broadcast'   => '255' }
+  net_prefix = $private_net.sub(%r{\.0+/24$}, ".")
+  fill_in fieldids[field], with: net_prefix + addresses[host]
+end
+
+When(/^I enter the local IP address of "([^"]*)" in (.*) field for vsftpd$/) do |host, field|
+  fieldids = { 'IP'                       => 'branch_network#ip',
+               'domain name server'       => 'dhcpd#domain_name_servers#0',
+               'network IP'               => 'dhcpd#subnets#0#$key',
+               'dynamic IP range begin'   => 'dhcpd#subnets#0#range#0',
+               'dynamic IP range end'     => 'dhcpd#subnets#0#range#1',
+               'broadcast address'        => 'dhcpd#subnets#0#broadcast_address',
+               'routers'                  => 'dhcpd#subnets#0#routers#0',
+               'next server'              => 'dhcpd#subnets#0#next_server',
+               'first reserved IP'        => 'dhcpd#hosts#0#fixed_address',
+               'second reserved IP'       => 'dhcpd#hosts#1#fixed_address',
+               'third reserved IP'        => 'dhcpd#hosts#2#fixed_address',
+               'first A address'          => 'bind#available_zones#0#records#A#0#1',
+               'second A address'         => 'bind#available_zones#0#records#A#1#1',
+               'third A address'          => 'bind#available_zones#0#records#A#2#1',
+               'fourth A address'         => 'bind#available_zones#0#records#A#3#1',
+               'internal network address' => 'vsftpd_config#listen_address' }
   addresses = { 'network'     => '0',
                 'client'      => '2',
                 'minion'      => '3',
@@ -379,8 +404,7 @@ When(/^I enter the IP address of "([^"]*)" in (.*) field$/) do |host, field|
   node = get_target(host)
   output, _code = node.run("ip address show dev eth0")
   ip = output.split("\n")[2].split[1].split('/')[0]
-  fieldids = { 'fifth A address' => 'bind#available_zones#2#records#A#0#1' }
-  fill_in fieldids[field], with: ip
+  fill_in FIELD_IDS[field], with: ip
 end
 
 When(/^I enter the MAC address of "([^"]*)" in (.*) field$/) do |host, field|
@@ -391,32 +415,24 @@ When(/^I enter the MAC address of "([^"]*)" in (.*) field$/) do |host, field|
     output, _code = node.run("ip link show dev eth1")
     mac = output.split("\n")[1].split[1]
   end
-  fieldids = { 'first reserved MAC'  => 'dhcpd#hosts#0#hardware',
-               'second reserved MAC' => 'dhcpd#hosts#1#hardware',
-               'third reserved MAC'  => 'dhcpd#hosts#2#hardware' }
-  fill_in fieldids[field], with: 'ethernet ' + mac
+
+  fill_in FIELD_IDS[field], with: 'ethernet ' + mac
 end
 
 When(/^I enter the local zone name in (.*) field$/) do |field|
-  fieldids = { 'second configured zone name' => 'bind#configured_zones#1#$key',
-               'second available zone name'  => 'bind#available_zones#1#$key' }
-  a = $private_net.split('.')
-  reverse_net = a[2] + '.' + a[1] + '.' + a[0] + '.in-addr.arpa'
+  reverse_net = get_reverse_net($private_net)
   STDOUT.puts "#{$private_net} => #{reverse_net}"
-  fill_in fieldids[field], with: reverse_net
+  fill_in FIELD_IDS[field], with: reverse_net
 end
 
 When(/^I enter the local file name in (.*) field$/) do |field|
-  fieldids = { 'second file name' => 'bind#available_zones#1#file' }
-  a = $private_net.split('.')
-  reverse_filename = 'master/db.' + a[2] + '.' + a[1] + '.' + a[0] + '.in-addr.arpa'
+  reverse_filename = 'master/db.' + get_reverse_net($private_net)
   STDOUT.puts "#{$private_net} => #{reverse_filename}"
-  fill_in fieldids[field], with: reverse_filename
+  fill_in FIELD_IDS[field], with: reverse_filename
 end
 
 When(/^I enter the local network in (.*) field$/) do |field|
-  fieldids = { 'second generate reverse network' => 'bind#available_zones#1#generate_reverse#net' }
-  fill_in fieldids[field], with: $private_net
+  fill_in FIELD_IDS[field], with: $private_net
 end
 
 When(/^I press "Add Item" in (.*) section$/) do |section|
@@ -656,6 +672,7 @@ end
 # minion bootstrap steps
 When(/^I enter the hostname of "([^"]*)" as "([^"]*)"$/) do |host, hostname|
   system_name = get_system_name(host)
+  puts "The hostname of #{host} is #{system_name}"
   step %(I enter "#{system_name}" as "#{hostname}")
 end
 
