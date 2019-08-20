@@ -11,6 +11,7 @@ const getEditGroupSubtype = Functions.Formulas.getEditGroupSubtype;
 const EditGroupSubtype = Functions.Formulas.EditGroupSubtype;
 const deepCopy = Functions.Utils.deepCopy;
 const capitalize = Functions.Utils.capitalize;
+const {SectionToolbar} = require("components/section-toolbar/section-toolbar");
 
 //props:
 //dataUrl = url to get the server data
@@ -281,7 +282,7 @@ class FormulaForm extends React.Component {
                 <div>
                     {messages}
                     <form id="formula-form" className="form-horizontal" onSubmit={this.saveFormula}>
-                        <div className="spacewalk-section-toolbar">
+                        <SectionToolbar>
                             <div className="btn-group">
                                 <button id="prev-btn" type="button" onClick={() => window.location.href = prevHref} disabled={this.props.formulaId === 0} className="btn btn-default"><i className="fa fa-arrow-left" /> Prev</button>
                                 <button id="next-btn" type="button" onClick={() => window.location.href = nextHref} disabled={this.props.formulaId >= this.state.formulaList.length - 1} className="btn btn-default">Next <i className="fa fa-arrow-right fa-right" /></button>
@@ -292,7 +293,7 @@ class FormulaForm extends React.Component {
                                     <Button id="reset-btn" icon="fa-eraser" text="Clear values" className="btn btn-default" handler={this.clearValues} />
                                 </div>
                             </div>
-                        </div>
+                        </SectionToolbar>
                         <div className="panel panel-default">
                             <div className="panel-heading">
                                 <h4>{capitalize(get(this.state.formulaName, "Unnamed"))}</h4>
