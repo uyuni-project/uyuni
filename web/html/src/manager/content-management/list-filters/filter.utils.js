@@ -5,6 +5,8 @@ import {clmFilterOptions, findClmFilterByKey} from "../shared/business/filters.e
 import type {FilterFormType, FilterServerType} from "../shared/type/filter.type";
 import Functions from "utils/functions";
 
+declare var Loggerhead: any;
+
 export function mapFilterFormToRequest(filterForm: FilterFormType, projectLabel: string, localTime: string): FilterServerType {
   const requestForm = {};
   requestForm.projectLabel = projectLabel;
@@ -18,6 +20,8 @@ export function mapFilterFormToRequest(filterForm: FilterFormType, projectLabel:
     requestForm.entityType = selectedFilterOption.entityType.key;
     requestForm.criteriaKey = selectedFilterOption.key;
     requestForm.criteriaValue = filterForm[selectedFilterOption.key];
+  } else {
+    Loggerhead.error(`${filterForm.filter_name}: We couldn't find a matching filter for the form ${filterForm.type}`);
   }
 
   // Custom filters mappers for complex filter forms
@@ -52,7 +56,7 @@ export function mapResponseToFilterForm(filtersResponse: Array<FilterServerType>
   return filtersResponse.map(filterResponse => {
     let filterForm = {};
     filterForm.id = filterResponse.id;
-    filterForm.filter_name= filterResponse.name;
+    filterForm.filter_name = filterResponse.name;
     filterForm.rule = filterResponse.rule;
     filterForm.matcher = filterResponse.matcher;
     filterForm.projects = filterResponse.projects;
@@ -62,6 +66,8 @@ export function mapResponseToFilterForm(filtersResponse: Array<FilterServerType>
     if(selectedFilterOption) {
       filterForm.type = selectedFilterOption && selectedFilterOption.key;
       filterForm[selectedFilterOption.key] = filterResponse.criteriaValue;
+    } else {
+      Loggerhead.error(`${filterResponse.name}: We couldn't find a matching filter for ${filterResponse.criteriaKey}`);
     }
 
     // Custom filters mappers for complex filter forms

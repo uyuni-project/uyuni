@@ -101,9 +101,9 @@ describe('Testing filters form <> request mappers', () => {
     expect(mapFilterFormToRequest(filterForm).rule).toEqual("allow");
   });
 
-  test('test patch by date', () => {
+  // test('test patch by date', () => {
     // TODO: add this test when moment isn't a global dependency and comes from NPM
-  });
+  // });
 
   test('test Patch (contains Package) - package_nevr', () => {
     let filterForm = {
