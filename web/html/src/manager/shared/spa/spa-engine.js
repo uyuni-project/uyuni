@@ -36,6 +36,9 @@ window.pageRenderers.spa.init = function init() {
           }
           return body;
         }
+        screen.deactivate = function() {
+          SpaRenderer.cleanOldReactTrees();
+        }
         return screen;
       }
     }]);
