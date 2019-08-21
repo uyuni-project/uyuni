@@ -4,7 +4,132 @@
 Feature: Web UI - Main landing page menu, texts and links
 
   Background:
-    Given I am authorized
+    Given I am authorized as "admin" with password "admin"
+
+  Scenario: The Home menu
+    When I follow the left menu "Home"
+    And I should see a "Overview" link in the left menu
+    Then I should see a "Overview" text
+    And I should see a "Notification Messages" link in the left menu
+    And I should see a "User Account" link in the left menu
+    And I should see a "My Preferences" link in the left menu
+    And I should see a "My Organization" link in the left menu
+
+  Scenario: The user account submenu under the Home menu
+    When I follow the left menu "Home > User Account"
+    Then I should see a "My Account" text
+    And I should see a "My Account" link in the left menu
+    And I should see a "Addresses" link in the left menu
+    And I should see a "Change Email" link in the left menu
+    And I should see a "Account Deactivation" link in the left menu
+
+  Scenario: The my orginization menu under the Home menu
+    When I follow the left menu "Home > My Organization"
+    Then I should see a "Organization Configuration" text
+    And I should see a "Configuration" link in the left menu
+    And I should see a "Organization Trusts" link in the left menu
+    And I should see a "Configuration Channels" link in the left menu
+
+  Scenario: The Salt menu
+    When I follow the left menu "Salt"
+    Then I should see a "Keys" text
+    And I should see a "Keys" link in the left menu
+    And I should see a "Remote Commands" link in the left menu
+    And I should see a "Formula Catalog" link in the left menu
+
+  Scenario: The content lifeycle menu
+    When I follow the left menu "Content Lifecycle"
+    Then I should see a "Content Lifecycle Projects" text
+    And I should see a "Projects" link in the left menu
+    And I should see a "Filters" link in the left menu
+
+  Scenario: The images menu
+    When I follow the left menu "Images"
+    Then I should see a "Images" text
+    And I should see a "Image List" link in the left menu
+    And I should see a "Build" link in the left menu
+    And I should see a "Profiles" link in the left menu
+    And I should see a "Stores" link in the left menu
+
+  Scenario: The audit menu
+    When I follow the left menu "Audit"
+    Then I should see a "CVE Audit" text
+    And I should see a "CVE Audit" link in the left menu
+    And I should see a "Subscription Matching" link in the left menu
+    And I should see a "OpenSCAP" link in the left menu
+ 
+  Scenario: The OpenSCAP submenu menu
+    When I follow the left menu "Audit > OpenSCAP"
+    Then I should see a "OpenSCAP Scans" text
+    And I should see a "All Scans" link in the left menu
+    And I should see a "XCCDF Diff" link in the left menu
+    And I should see a "Advanced Search" link in the left menu
+
+  Scenario: The configuration menu
+    When I follow the left menu "Configuration"
+    Then I should see a "Configuration Overview" text
+    And I should see a "Overview" link in the left menu
+    And I should see a "Channels" link in the left menu
+    And I should see a "Files" link in the left menu
+
+  Scenario: The files menu under the configuaration menu
+    When I follow the left menu "Configuration > Files"
+    Then I should see a "Centrally-Managed Configuration Files" text
+    And I should see a "Centrally Managed" link in the left menu
+    And I should see a "Locally Managed" link in the left menu
+
+  Scenario: The systems submenu in the configuaration menu
+    When I follow the left menu "Configuration > Systems"
+    Then I should see a "Managed Systems" text
+    And I should see a "Managed" link in the left menu
+    And I should see a "Target" link in the left menu
+
+  Scenario: The schedule menu
+    When I follow the left menu "Schedule"
+    Then I should see a "Pending Actions" text
+    And I should see a "Pending Actions" link in the left menu
+    And I should see a "Failed Actions" link in the left menu
+    And I should see a "Archived Actions" link in the left menu
+    And I should see a "Action Chains" link in the left menu
+
+  Scenario: The users menu
+    When I follow the left menu "Users"
+    Then I should see a "Active Users" text
+    And I should see a "Users" link in the left menu
+    And I should see a "User List" link in the left menu
+    And I should see a "Active" link in the left menu
+    And I should see a "Deactivated" link in the left menu
+    And I should see a "All" link in the left menu
+    And I should see a "System Group Configuration" link in the left menu
+
+  Scenario: The admin menu
+    When I follow the left menu "Admin"
+    Then I should see a "Setup Wizard" text
+    And I should see a "Setup Wizard" link in the left menu
+    And I should see a "Organizations" link in the left menu
+    And I should see a "Users" link in the left menu
+    And I should see a "Manager Configuration" link in the left menu
+    And I should see a "ISS Configuration" link in the left menu
+    And I should see a "Task Schedules" link in the left menu
+    And I should see a "Task Engine Status" link in the left menu
+    And I should see a "Show Tomcat Logs" link in the left menu
+
+  Scenario: The manager configuration submenu of the admin menu
+    When I follow the left menu "Admin > Manager Configuration"
+    Then I should see a "SUSE Manager Configuration - General Configuration" text
+    And I should see a "General" link in the left menu
+    And I should see a "Bootstrap Script" link in the left menu
+    And I should see a "Organizations" link in the left menu
+    And I should see a "Restart" link in the left menu
+    And I should see a "Cobbler" link in the left menu
+    And I should see a "Bare-metal systems" link in the left menu
+    And I should see a "Monitoring" link in the left menu
+
+  Scenario: The ISS configuration submenu of the admin menu
+    When I follow the left menu "Admin > ISS Configuration"
+    Then I should see a "ISS Configuration - Master Setup" text
+    And I should see a "Master Setup" link in the left menu
+    And I should see a "Slave Setup" link in the left menu
 
   Scenario: The menu direct link accesses the first submenu level only
     When I follow the left menu "Patches > Patch List"
