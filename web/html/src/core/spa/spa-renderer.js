@@ -1,8 +1,8 @@
 //@flow
 // globals onDocumentReadyInitOldJS
 import type {Element as ReactElement} from 'react';
-import ReactDOM from 'react-dom';
 import React from 'react';
+import ReactDOM from 'react-dom';
 
 declare var onDocumentReadyInitOldJS: Function;
 
@@ -23,18 +23,16 @@ function renderGlobalReact(element: ReactElement<any>, container: Element) {
 
 function renderNavigationReact(element: ReactElement<any>, container: Element) {
   window.pageRenderers.spa.navigationRenderersToClean.push({
-      element,
-      container,
-      clean: () => ReactDOM.unmountComponentAtNode(container)
-    });
+    element,
+    container,
+    clean: () => {
+      ReactDOM.unmountComponentAtNode(container)
+    }
+  });
   ReactDOM.render(element, container, () => onDocumentReadyInitOldJS());
 }
 
-function onSpaEndNavigation() {
-  window.pageRenderers.spa.globalRenderersToUpdate.forEach(
-    comp => comp.onSPAEndNavigation && comp.onSPAEndNavigation()
-  );
-
+function cleanOldReactTrees() {
   window.pageRenderers.spa.navigationRenderersToClean.forEach(
     navigationRenderer => {
       try {
@@ -47,8 +45,15 @@ function onSpaEndNavigation() {
   window.pageRenderers.spa.navigationRenderersToClean = [];
 }
 
+function onSpaEndNavigation() {
+  window.pageRenderers.spa.globalRenderersToUpdate.forEach(
+    comp => comp.onSPAEndNavigation && comp.onSPAEndNavigation()
+  );
+}
+
 export default {
   renderGlobalReact,
   renderNavigationReact,
+  cleanOldReactTrees,
   onSpaEndNavigation
 }
