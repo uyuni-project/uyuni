@@ -863,6 +863,12 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
         List<PackageMetadata> pkgs = ProfileManager.comparePackageLists(new DataResult<PackageListItem>(profileList),
                 new DataResult<PackageListItem>(systemList), "foo");
 
+        TaskomaticApi taskomaticMock = mock(TaskomaticApi.class);
+        ActionManager.setTaskomaticApi(taskomaticMock);
+        context().checking(new Expectations() { {
+            allowing(taskomaticMock).scheduleActionExecution(with(any(Action.class)));
+        } });
+
         Action action = ActionManager.schedulePackageRunTransaction(user, srvr, pkgs,
                 new Date());
         assertTrue(action instanceof PackageAction);
