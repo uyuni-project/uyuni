@@ -1,6 +1,7 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react';
 import { DeleteDialog } from "./DeleteDialog";
+import { ActionConfirm } from "./ActionConfirm";
 import { ModalLink } from "./ModalLink";
 
 
@@ -27,4 +28,37 @@ storiesOf('Dialogs', module)
       />
     </div>
   ))
+  .add('Action confirmation dialog', () => {
+    const items = [
+      {name: "Item 1"},
+      {name: "Item 2"},
+      {name: "Item 3"},
+    ];
+    const doAction = (type, toAct, params) => {
+      const names = toAct.map(obj => obj.name).join();
+      alert(`doAction: ${type}, ${names}, force? ${params.force || false}`);
+    };
+    return (
+      <div>
+        <div style={{height: "100px", display: "flex", alignItems: "center",  justifyContent:"center"}}>
+          <ModalLink
+            id={`confirm-modal-link`}
+            text="delete (Click me for Testing the modal!!)"
+            target="confirm-modal"
+          />
+        </div>
+        <ActionConfirm
+          id="confirm-modal"
+          type="remove"
+          name="Remove"
+          itemName="item"
+          icon="fa-trash"
+          selected={items}
+          fn={doAction}
+          canForce={true}
+          forceName="Purge"
+        />
+      </div>
+    );
+  })
 
