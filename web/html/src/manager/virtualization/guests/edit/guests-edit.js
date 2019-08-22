@@ -15,6 +15,7 @@ const GuestNicsPanel = require('../properties/guest-nics-panel');
 const GuestDisksPanel = require('../properties/guest-disks-panel');
 const { VirtualizationGuestActionApi } = require('../virtualization-guest-action-api');
 const { VirtualizationGuestDefinitionApi } = require('../virtualization-guest-definition-api');
+const Functions = require('utils/functions');
 
 type Props = {
   host: Object,
@@ -69,6 +70,7 @@ class GuestsEdit extends React.Component<Props> {
       },
       nicsParams,
       disksParams,
+      {earliest: Functions.Formats.LocalDateTime(model.earliest)}
     );
   }
 
