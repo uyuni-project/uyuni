@@ -1,3 +1,4 @@
+- New Single Page Application engine for the UI. It can be enabled with the config 'web.spa.enable' set to true
 - Check that a channel doesn't have clones before deleting it (bsc#1138454)
 - Fix documentation of contentmanagement handler (bsc#1145753)
 - Add new API endpoint to list available Filter Criteria
@@ -13,7 +14,6 @@
 - Cloning Errata from a specific channel should not take packages
   from other channels (bsc#1142764)
 - Add susemanager as prerequired for spacewalk-java
-
 
 -------------------------------------------------------------------
 Wed Aug 14 16:49:07 CEST 2019 - mc@suse.de

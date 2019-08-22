@@ -1,3 +1,4 @@
+- New Single Page Application engine for the UI. It can be enabled with the config 'web.spa.enable' set to true
 - Add environment label when deleting environment (bsc#1145758)
 - Change color of disabled build button on clp page (bsc#1145626)
 - Fix the 'include recommended' button on channels selection in SSM (bsc#1145086)
