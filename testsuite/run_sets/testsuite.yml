@@ -33,7 +33,7 @@
 - features/reposync/srv_sync_channels.feature
 - features/reposync/srv_sync_products.feature
 - features/reposync/srv_enable_sync_products.feature
-#- features/reposync/srv_abort_all_sync.feature
+- features/reposync/srv_abort_all_sync.feature
 
 ## Core features END ###
 
