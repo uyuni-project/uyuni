@@ -8,20 +8,20 @@
 
 # IMMUTABLE ORDER
 
-- features/core_first_settings.feature
+- features/core/first_settings.feature
 # initialize SUSE Manager server
-- features/core_srv_channels_add.feature
-- features/core_srv_push_package.feature
-- features/core_srv_create_repository.feature
-- features/core_srv_users.feature
-- features/core_srv_create_activationkey.feature
-- features/core_srv_osimage_profiles.feature
-- features/core_srv_docker_profiles.feature
+- features/core/srv_channels_add.feature
+- features/core/srv_push_package.feature
+- features/core/srv_create_repository.feature
+- features/core/srv_users.feature
+- features/core/srv_create_activationkey.feature
+- features/core/srv_osimage_profiles.feature
+- features/core/srv_docker_profiles.feature
 # these features sync real channels (last core features)
-- features/core_srv_sync_channels.feature
-- features/core_srv_products_page.feature
-- features/core_srv_mgr_sync_products.feature
-- features/core_srv_abort_all_sync.feature
+- features/core/srv_sync_channels.feature
+- features/core/srv_products_page.feature
+- features/core/srv_mgr_sync_products.feature
+- features/core/srv_abort_all_sync.feature
 
 ## Core features END ###
 
@@ -30,9 +30,9 @@
 
 # IDEMPOTENT
 
-- features/srv_menu.feature
-- features/minkvm_guests.feature
-- features/minxen_guests.feature
+- features/secondary/srv_menu.feature
+- features/secondary/minkvm_guests.feature
+- features/secondary/minxen_guests.feature
 
 ## Secondary features END ##
 
