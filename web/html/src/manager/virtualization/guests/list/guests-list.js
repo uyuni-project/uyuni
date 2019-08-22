@@ -14,7 +14,7 @@ const Systems = require('components/systems');
 const { VirtualizationGuestActionApi } = require('../virtualization-guest-action-api');
 const { VirtualizationGuestsListRefreshApi } = require('../virtualization-guests-list-refresh-api');
 const { Utils: GuestsListUtils } = require('./guests-list.utils');
-const { ActionConfirm } = require('./ActionConfirm.js');
+const { ActionConfirm } = require('components/dialog/ActionConfirm');
 
 const { Utils } = Functions;
 
@@ -160,9 +160,10 @@ class GuestsList extends React.Component<Props, State> {
           key={`${action.type}-modal`}
           type={action.type}
           name={action.name}
+          itemName={t('Guest')}
           icon={action.icon}
           selected={[this.state.selected].filter(item => item)}
-          fn={fn}
+          fn={(type, guests, params) => fn(type, guests.map(guest => guest.uuid), params)}
           canForce={action.canForce}
           forceName={action.forceName}
           onClose={() => this.selectGuest({})}
@@ -173,9 +174,10 @@ class GuestsList extends React.Component<Props, State> {
           key={`${action.type}-selected-modal`}
           type={action.type}
           name={action.name}
+          itemName={t('Guest')}
           icon={action.icon}
           selected={this.state.selectedItems}
-          fn={fn}
+          fn={(type, guests, params) => fn(type, guests.map(guest => guest.uuid), params)}
           canForce={action.canForce}
           forceName={action.forceName}
         />
