@@ -1,3 +1,5 @@
+- Invalidate cache 5 minutes before actual expiration(bsc#1143562)
+
 -------------------------------------------------------------------
 Fri Jan 18 11:27:06 CET 2019 - jgonzalez@suse.com
 
