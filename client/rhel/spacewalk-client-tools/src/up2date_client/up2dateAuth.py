@@ -164,8 +164,10 @@ def readCachedLogin():
     log.log_debug("Checking pickled loginInfo, currentTime=", currentTime,
             ", createTime=", createdTime, ", expire-offset=",
             float(li['X-RHN-Auth-Expire-Offset']))
-    if (currentTime > expireTime):
-        log.log_debug("Pickled loginInfo has expired, created = %s, expire = %s." \
+
+    # Refresh loginInfo cache 5 minutes (300 seconds) before its actual expiration
+    if (currentTime + 300 > expireTime):
+        log.log_debug("Pickled loginInfo will be expiring soon so refresh cache, created = %s, expire = %s." \
                 %(createdTime, expireTime))
         return False
     _updateLoginInfo(li)
