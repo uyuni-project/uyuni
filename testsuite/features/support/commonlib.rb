@@ -117,7 +117,7 @@ module CapybaraNodeElementExtension
   def click
     super
     sleep 0.5
-    raise 'Timeout: Waiting AJAX transition (find::click)' unless page.has_no_css?('.senna-loading')
+    raise 'Timeout: Waiting AJAX transition (find::click)' unless has_no_css?('.senna-loading')
   end
 end
 
