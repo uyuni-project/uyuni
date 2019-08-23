@@ -47,6 +47,6 @@
 # IMMUTABLE ORDER
 
 # this feature is needed for gathering log/debug infos
-- features/srv_susemanager_debug.feature
+- features/finishing/srv_susemanager_debug.feature
 
 ## Post run features END ##
