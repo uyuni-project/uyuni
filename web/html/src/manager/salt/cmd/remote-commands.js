@@ -187,10 +187,10 @@ class RemoteCommand extends React.Component {
                 <div className="col-lg-12">
                   <div className="input-group">
                       <input id="command" className="form-control" type="text" defaultValue={this.state.command} onChange={this.commandChanged}
-                            disabled={this.state.executing.state() == "pending" ? "disabled" : ""}/>
+                            disabled={this.state.executing.state() == "pending" ? "disabled" : ""} placeholder={t('Type the command here')} />
                       <span className="input-group-addon">@</span>
                       <input id="target" className="form-control" type="text" defaultValue={this.state.target} onChange={this.targetChanged}
-                            disabled={this.state.executing.state() == "pending" ? "disabled" : ""}/>
+                            disabled={this.state.executing.state() == "pending" ? "disabled" : ""} placeholder={t('Type the minion_id pattern to target here')}/>
                       <div className="input-group-btn">
                         { button }
                       </div>
