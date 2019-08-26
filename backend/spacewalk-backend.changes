@@ -1,6 +1,8 @@
 -------------------------------------------------------------------
 Wed Aug 14 10:50:37 CEST 2019 - mc@suse.com
 
+- For backend-libs subpackages, exclude files for the server
+  (already part of spacewalk-backend) to avoid conflicts (bsc#1148125)
 - prevent duplicate key violates on repo-sync with long changelog
   entries (bsc#1144889)
   * Added: SUMA_4.0_patch_for_ptf_bsc1144889.patch
