@@ -1001,68 +1001,6 @@
           </context>
         </context-group>
       </trans-unit>
-      <trans-unit id="relogin.jsp.pleasesignin">
-        <source>Please Sign In</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/Relogin</context>
-        </context-group>
-        <target>कृपया साइन इन करें</target>
-      </trans-unit>
-      <trans-unit id="login.jsp.redhatlogin">
-        <source>@@PRODUCT_NAME@@ Login: </source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/Login</context>
-        </context-group>
-        <target>@@PRODUCT_NAME@@ लॉगिन: </target>
-      </trans-unit>
-      <trans-unit id="login.jsp.password">
-        <source>Password: </source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/Login</context>
-        </context-group>
-        <target>शब्दकूट: </target>
-      </trans-unit>
-      <trans-unit id="login.jsp.schemaupgraderequired">
-        <source>A schema upgrade is required. Please upgrade your schema at your earliest convenience to receive latest bug fixes and avoid potential problems.</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/Login</context>
-          <context context-type="sourcefile">/rhn/ReLogin</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="login.jsp.welcomemessage">
-        <source>Welcome to @@PRODUCT_NAME@@</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/Login</context>
-        </context-group>
-        <target>@@PRODUCT_NAME@@ में आपका स्वागत है</target>
-      </trans-unit>
-      <trans-unit id="login.jsp.satbody1">
-        <source>&lt;strong&gt;@@PRODUCT_NAME@@&lt;/strong&gt; is an open source (GPLv2) Linux systems management solution. Below are some links that should prove useful if you have any questions regarding your @@PRODUCT_NAME@@ server. </source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/Login</context>
-        </context-group>
-        <target>&lt;strong&gt;@@PRODUCT_NAME@@&lt;/strong&gt; एक मुक्त स्रोत (GPLv2) लिनक्स सिस्टम प्रबंधन समाधान है. नीचे कुछ लिंक हैं जो उपयोगी हो सकता है अगर आपके पास आपके सैटेलाइट के लिये कोई प्रश्न है सर्वर या @@PRODUCT_NAME@@ के बारे में आगे कोई.</target>
-      </trans-unit>
-      <trans-unit id="login.jsp.satbody2">
-        <source>For details on @@PRODUCT_NAME@@, please visit our web-site at &lt;a href="http://www.spacewalkproject.org/" target="_blank"&gt; http://www.spacewalkproject.org/&lt;/a&gt;. </source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/Login</context>
-        </context-group>
-        <target>@@PRODUCT_NAME@@ पर विस्तार के लिए, कृप्या हमारे वेबसाइट को यहाँ देखें &lt;a href=&quot;http://www.spacewalkproject.org/&quot; target=&quot;_blank&quot;&gt; http://www.spacewalkproject.org/&lt;/a&gt;. </target>
-      </trans-unit>
-      <trans-unit id="login.jsp.satbody3">
-        <source>For details on interacting with the @@PRODUCT_NAME@@ community, please visit us at  &lt;a href="http://www.spacewalkproject.org/communicate.html" target="_blank"&gt; http://www.spacewalkproject.org/communicate.html&lt;/a&gt;. </source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/Login</context>
-        </context-group>
-        <target>@@PRODUCT_NAME@@ समुदाय के साथ अंतःक्रिया पर विवरण के लिए, कृपया &lt;a href=&quot;http://www.spacewalkproject.org/communicate.html&quot; target=&quot;_blank&quot;&gt; http://www.spacewalkproject.org/communicate.html&lt;/a&gt; पर हमें देखें. </target>
-      </trans-unit>
-      <trans-unit id="login.jsp.satbody4">
-        <source> </source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/Login</context>
-        </context-group>
-      </trans-unit>
       <!-- preferences.jsp -->
       <trans-unit id="preferences.jsp.alt">
         <source>Preferences Icon</source>

@@ -61,7 +61,7 @@ window.pageRenderers.spa.init = function init() {
         document.getElementsByClassName("spacewalk-main-column-layout")[0].innerHTML = `
         <div class="container-fluid">
             <div class="alert alert-danger">
-                No session. Redirecting to login page...
+                No session. Taking you to login page...
             </div>
         </div>
       `;

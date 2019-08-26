@@ -1,0 +1,68 @@
+doctype html
+html
+    head
+        // enclosing head tags in layout_c.jsp
+        meta(http-equiv='X-UA-Compatible', content='IE=edge')
+        | <!--[if lt IE 9]> <script type='text/javascript' src="/javascript/html5.js"></script> <![endif]-->
+        | <!--[if lt IE 9]> <script type='text/javascript' src="/javascript/respond.js"></script> <![endif]-->
+        meta(http-equiv='content-type', content='text/html;charset=UTF-8')
+        title
+            | #{title}
+        link(rel='shortcut icon', href='/img/favicon.ico')
+        meta(name='viewport', content='width=device-width, initial-scale=1.0')
+        // import default fonts/icons styles
+        link(rel='stylesheet', href='/fonts/font-awesome/css/font-awesome.css?cb=#{webVersion}')
+        // import custom fonts/icons styles
+        link(rel='stylesheet', href='/fonts/font-spacewalk/css/spacewalk-font.css?cb=#{webVersion}')
+        // import spacewalk styles
+        if isDevMode
+            link(rel='stylesheet/less', href='/css/spacewalk.less')
+            script(type='text/javascript').
+                less = {env: 'development'};
+            script(src='/javascript/less.js')
+        else
+            link(rel='stylesheet', href='/css/spacewalk.css?cb=#{webVersion}')
+        script(src='/javascript/loggerhead.js?cb=#{webVersion}')
+        script(src='/javascript/frontend-log.js?cb=#{webVersion}')
+        script(src='/javascript/jquery.js?cb=#{webVersion}')
+        script(src='/javascript/bootstrap.js?cb=#{webVersion}')
+        script(src='/javascript/susemanager-translate.js?cb=#{webVersion}')
+        script(src='/vendors/vendors.bundle.js?cb=#{webVersion}')
+        script(src='/javascript/manager/polyfill.bundle.js?cb=#{webVersion}')
+        noscript
+            .alert.alert-danger
+                | Some features require JavaScript in order to work properly. Make sure you enable JavaScript in your browser.
+
+        include /templates/common.jade
+
+        body(class="login-page")
+            #login
+
+        +csrfToken
+        script(type='text/javascript').
+            const csrfToken = "#{csrf_token}";
+
+        script(src='/javascript/manager/login/login.renderer.bundle.js?cb=#{webVersion}', type='text/javascript')
+
+        div#init_data_url_bounce(style="display: none")
+            | #{url_bounce}
+        div#init_data_request_method(style="display: none")
+            | #{request_method}
+
+        script(type='text/javascript').
+            pageRenderers.login.renderer(
+                'login',
+                {
+                    isUyuni: JSON.parse("#{isUyuni}"),
+                    urlBounce: document.getElementById('init_data_url_bounce').textContent,
+                    validationErrors: JSON.parse('!{validationErrors}'),
+                    schemaUpgradeRequired: JSON.parse('!{schemaUpgradeRequired}'),
+                    webVersion: '!{webVersion}',
+                    productName: '!{productName}',
+                    customHeader: '!{customHeader}',
+                    customFooter: '!{customFooter}',
+                    legalNote: '!{legalNote}',
+                    loginLength: '!{loginLength}',
+                    passwordLength: '!{passwordLength}',
+                }
+            );

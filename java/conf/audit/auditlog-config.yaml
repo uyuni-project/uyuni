@@ -2,11 +2,7 @@
 # Login/Logout
 ###############################################################################
 
-/LoginSubmit.do:
-    type: LOGIN
-    log_failures: true
-
-/ReLoginSubmit.do:
+/manager/login:
     type: LOGIN
     log_failures: true
 
@@ -1235,4 +1231,3 @@
 
 /network/users/details/contact_methods/edit.pxt:
     type: ACTION_CHANGE
-

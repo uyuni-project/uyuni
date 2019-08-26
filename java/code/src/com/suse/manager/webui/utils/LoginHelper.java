@@ -12,7 +12,7 @@
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
-package com.redhat.rhn.frontend.action;
+package com.suse.manager.webui.utils;
 
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.db.WrappedSQLException;
@@ -44,11 +44,7 @@ import com.redhat.rhn.manager.user.UserManager;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.StopWatch;
 import org.apache.log4j.Logger;
-import org.apache.struts.action.ActionErrors;
-import org.apache.struts.action.ActionMessage;
-import org.apache.struts.action.ActionMessages;
 
-import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -57,9 +53,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.security.auth.login.LoginException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 
 /**
  * LoginHelper
@@ -71,6 +67,7 @@ public class LoginHelper {
     private static final String DEFAULT_KERB_USER_PASSWORD = "0";
     private static final Long MIN_PG_DB_VERSION = 90600L;
     private static final String MIN_PG_DB_VERSION_STRING = "9.6";
+    public static final String DEFAULT_URL_BOUNCE = "/rhn/YourRhn.do";
 
     /**
      * Utility classes can't be instantiated.
@@ -86,8 +83,8 @@ public class LoginHelper {
      * @return user, if externally authenticated
      */
     public static User checkExternalAuthentication(HttpServletRequest request,
-            ActionMessages messages,
-            ActionErrors errors) {
+            List<String> messages,
+            List<String> errors) {
         String remoteUserString = request.getRemoteUser();
         User remoteUser = null;
         if (remoteUserString != null) {
@@ -106,9 +103,7 @@ public class LoginHelper {
                     remoteUser = UserFactory.lookupByLogin(remoteUserString);
 
                 if (remoteUser.isDisabled()) {
-                    errors.add(ActionMessages.GLOBAL_MESSAGE,
-                            new ActionMessage("account.user.disabled",
-                                    new String[] {remoteUserString}));
+                    errors.add("Account " + remoteUserString + " has been deactivated");
                     remoteUser = null;
                 }
                 if (remoteUser != null) {
@@ -177,9 +172,9 @@ public class LoginHelper {
                 }
                 if (remoteUser != null &&
                         remoteUser.getPassword().equals(DEFAULT_KERB_USER_PASSWORD)) {
-                    messages.add(ActionMessages.GLOBAL_MESSAGE,
-                            new ActionMessage("message.kerbuserlogged",
-                                    new String[] {remoteUserString}));
+                    messages.add("You have logged in as an externally authenticated user. " +
+                            "To be able to login using this account with login and password " +
+                            "set your username and password in the user details page.");
                 }
             }
         }
@@ -261,9 +256,8 @@ public class LoginHelper {
      * @param request actual request
      * @param response actual reponse
      * @param user logged in user
-     * @return returns true, if redirect
      */
-    public static boolean successfulLogin(HttpServletRequest request,
+    public static void successfulLogin(HttpServletRequest request,
             HttpServletResponse response, User user) {
         // set last logged in
         user.setLastLoggedIn(new Date());
@@ -273,26 +267,37 @@ public class LoginHelper {
             updateWebUserId(request, response, user.getId());
 
         LoginHelper.publishUpdateErrataCacheEvent(user.getOrg());
-        // redirect, if url_bounce set
-        String urlBounce = request.getParameter("url_bounce");
-        String reqMethod = request.getParameter("request_method");
-
-        urlBounce = LoginAction.updateUrlBounce(urlBounce, reqMethod);
-        try {
-            if (urlBounce != null) {
-                log.info("redirect: " + urlBounce);
-                response.sendRedirect(urlBounce);
-                return true;
-            }
-        }
-        catch (IOException e) {
-            e.printStackTrace();
-        }
-        return false;
     }
 
     /**
-     * @param orgIn
+     * update url_bounce
+     * @param urlBounce url_bounce
+     * @param requestMethod request method
+     * @return updated url_bounce
+     */
+    public static String updateUrlBounce(String urlBounce, String requestMethod) {
+        if (StringUtils.isBlank(urlBounce)) {
+            urlBounce = DEFAULT_URL_BOUNCE;
+        }
+        else {
+            String urlBounceTrimmed = urlBounce.trim();
+            if (urlBounceTrimmed.equals("/rhn/") ||
+                    urlBounceTrimmed.equals("/rhn/manager/login") ||
+                    urlBounceTrimmed.endsWith("Logout.do") ||
+                    !urlBounceTrimmed.startsWith("/")) {
+                urlBounce = DEFAULT_URL_BOUNCE;
+            }
+        }
+        if (requestMethod != null && requestMethod.equals("POST")) {
+            urlBounce = DEFAULT_URL_BOUNCE;
+        }
+        return urlBounce;
+    }
+
+    /**
+     * Schedule update of the errata cache for a given organization.
+     *
+     * @param orgIn organization
      */
     private static void publishUpdateErrataCacheEvent(Org orgIn) {
         StopWatch sw = new StopWatch();
@@ -410,4 +415,23 @@ public class LoginHelper {
             ce.getLastCommandOutput().replace("\n", "") : null;
     }
 
+    /**
+     * Log a user into the site and create the user's session.
+     *
+     * @param username login name
+     * @param password unencrypted password
+     * @param errors list of error messages to be populated
+     * @return the user object
+     */
+    public static User loginUser(String username, String password, List<String> errors) {
+        User user = null;
+
+        try {
+            user = UserManager.loginUser(username, password);
+        }
+        catch (LoginException e) {
+            errors.add(e.getMessage());
+        }
+        return user;
+    }
 }

@@ -107,7 +107,7 @@ public class PxtAuthenticationServiceTest extends AuthenticationServiceAbstractT
 
     public final void testValidateSucceedsWhenRequestURIUnprotected() {
         setupPxtDelegate(false, false, 1234L);
-        setupGetRequestURI("/rhn/Login");
+        setupGetRequestURI("/rhn/manager/login");
         assertTrue(service.validate(getRequest(), getResponse()));
     }
 

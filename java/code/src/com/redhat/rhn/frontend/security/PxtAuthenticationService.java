@@ -16,7 +16,7 @@ package com.redhat.rhn.frontend.security;
 
 
 import com.redhat.rhn.common.util.ServletUtils;
-import com.redhat.rhn.frontend.action.LoginAction;
+import com.suse.manager.webui.utils.LoginHelper;
 import com.redhat.rhn.frontend.servlets.PxtSessionDelegate;
 
 import org.apache.commons.collections.set.UnmodifiableSet;
@@ -26,7 +26,6 @@ import org.apache.http.client.utils.URIBuilder;
 import java.io.IOException;
 import java.util.Set;
 import java.util.TreeSet;
-
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -45,9 +44,8 @@ public class PxtAuthenticationService extends BaseAuthenticationService {
 
     static {
         TreeSet set = new TreeSet();
-        set.add("/rhn/Login");
-        set.add("/rhn/ReLogin");
         set.add("/rhn/newlogin/");
+        set.add("/rhn/manager/login");
 
         LOGIN_URIS = UnmodifiableSet.decorate(set);
 
@@ -165,7 +163,7 @@ public class PxtAuthenticationService extends BaseAuthenticationService {
             }
             String urlBounce = redirectURI.toString();
             if (redirectURI.length() > MAX_URL_LENGTH) {
-                urlBounce = LoginAction.DEFAULT_URL_BOUNCE;
+                urlBounce = LoginHelper.DEFAULT_URL_BOUNCE;
             }
 
             // in case of logout, let's redirect to Login2.go
@@ -176,7 +174,7 @@ public class PxtAuthenticationService extends BaseAuthenticationService {
             }
 
             URIBuilder uriBuilder = new URIBuilder();
-            uriBuilder.setPath("/rhn/Login.do");
+            uriBuilder.setPath("/rhn/manager/login");
             uriBuilder.addParameter("url_bounce", urlBounce);
             uriBuilder.addParameter("request_method", request.getMethod());
 

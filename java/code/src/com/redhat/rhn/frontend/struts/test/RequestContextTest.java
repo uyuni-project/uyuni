@@ -14,13 +14,13 @@
  */
 package com.redhat.rhn.frontend.struts.test;
 
-import javax.servlet.http.HttpServletRequest;
-
-import org.jmock.integration.junit3.MockObjectTestCase;
-
 import com.redhat.rhn.frontend.action.test.LoginActionTest;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.testing.RhnMockHttpServletRequest;
+
+import org.jmock.integration.junit3.MockObjectTestCase;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * RequestContextTest
