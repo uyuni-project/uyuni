@@ -1,4 +1,8 @@
 - Don't skip Deb package tags on package import (bsc#1130040)
+- For backend-libs subpackages, exclude files for the server
+  (already part of spacewalk-backend) to avoid conflicts (bsc#1148125)
+- prevent duplicate key violates on repo-sync with long changelog
+  entries (bsc#1144889)
 - spacewalk-remove-channel check that channel doesn't have cloned channels before deleting it (bsc#1138454)
 - Fix broken spacewalk-data-fsck utility
 - /etc/rhn also was packaged for spacewalk-backend-tools
