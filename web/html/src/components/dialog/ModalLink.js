@@ -1,14 +1,12 @@
 /* eslint-disable */
-"use strict";
-
-const PropTypes = require('prop-types');
-const React = require("react");
-const showDialog = require("./util").showDialog;
+import PropTypes from 'prop-types';
+import React from "react";
+import { showDialog } from "./util";
 
 /**
  * Link to launch a modal dialog
  */
-function ModalLink(props) {
+export function ModalLink(props) {
     const margin = props.text != undefined ? "" : " no-margin"
     var icon = props.icon && <i className={'fa ' + props.icon + margin}/>;
     return (
@@ -37,8 +35,4 @@ ModalLink.propTypes = {
     icon: PropTypes.string,
     item: PropTypes.object,
     onClick: PropTypes.func
-};
-
-module.exports = {
-    ModalLink
 };

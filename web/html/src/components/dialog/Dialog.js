@@ -1,7 +1,7 @@
-const React = require("react");
-const PopUp = require("../popup").PopUp;
+import React from "react";
+import { PopUp } from "../popup";
 
-function closeDialog(modalId: string) {
+export function closeDialog(modalId: string) {
   const closeModalPromise = new Promise((resolve) => {
     $('#' + modalId).on('hidden.bs.modal', () => resolve());
   });
@@ -9,7 +9,7 @@ function closeDialog(modalId: string) {
   return closeModalPromise;
 }
 
-function Dialog(props) {
+export function Dialog(props) {
   const {onClosePopUp, buttons, ...OtherProps} = props;
 
   React.useEffect(() => {
@@ -26,8 +26,3 @@ function Dialog(props) {
       />
   );
 }
-
-module.exports = {
-    Dialog,
-    closeDialog
-};
