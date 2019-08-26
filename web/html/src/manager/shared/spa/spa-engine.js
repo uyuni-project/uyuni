@@ -5,7 +5,7 @@ import "./spa-engine.css"
 import SpaRenderer from "core/spa/spa-renderer";
 
 function isLoginPage (pathName) {
-  const allLoginPossiblePaths = ["/", "/rhn/Login.do", "/rhn/Login2.do", "/manager/login", "/rhn/ReLogin.do"];
+  const allLoginPossiblePaths = ["/", "/rhn/manager/login"];
   return allLoginPossiblePaths.some(loginPath => loginPath === pathName);
 }
 

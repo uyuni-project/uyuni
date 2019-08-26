@@ -296,7 +296,7 @@ EOF
 
 write_file('/etc/httpd/conf.d/auth_kerb.conf', <<"EOF");
 LoadModule auth_kerb_module modules/mod_auth_kerb.so
-<Location /rhn/Login.do>
+<Location /rhn/manager/login>
   AuthType Kerberos
   AuthName "Kerberos Login"
   KrbMethodNegotiate On

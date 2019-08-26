@@ -57,6 +57,7 @@ import com.suse.manager.webui.controllers.VisualizationController;
 import com.suse.manager.webui.controllers.channels.ChannelsApiController;
 import com.suse.manager.webui.controllers.contentmanagement.ContentManagementApiController;
 import com.suse.manager.webui.controllers.contentmanagement.ContentManagementViewsController;
+import com.suse.manager.webui.controllers.login.LoginController;
 import com.suse.manager.webui.errors.NotFoundException;
 
 import org.apache.http.HttpStatus;
@@ -84,6 +85,9 @@ public class Router implements SparkApplication {
         initNotFoundRoutes(jade);
 
         post("/manager/frontend-log", withUser(FrontendLogController::log));
+
+        // Login
+        LoginController.initRoutes(jade);
 
         //CVEAudit
 

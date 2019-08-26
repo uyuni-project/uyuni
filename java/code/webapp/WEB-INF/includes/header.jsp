@@ -47,11 +47,11 @@
     <li>
     <c:choose>
       <c:when test="${rhn:getConfig('java.sso')}">
-        <a href="/rhn/manager/sso/logout" title="<bean:message key="header.jsp.signout" />"
+        <a data-senna-off href="/rhn/manager/sso/logout" title="<bean:message key="header.jsp.signout" />"
            alt="<bean:message key="header.jsp.signout" />">
       </c:when>
       <c:otherwise>
-        <a href="/rhn/Logout.do" title="<bean:message key="header.jsp.signout" />"
+        <a data-senna-off href="/rhn/Logout.do" title="<bean:message key="header.jsp.signout" />"
           alt="<bean:message key="header.jsp.signout" />">
       </c:otherwise>
     </c:choose>
