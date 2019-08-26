@@ -1,3 +1,4 @@
+- Change color of disabled build button on clp page (bsc#1145626)
 - New Single Page Application engine for the UI
 - Fix the 'include recommended' button on channels selection in SSM (bsc#1145086)
 - implement "patch contains package" Filter for Content Lifecycle Management
