@@ -616,7 +616,6 @@ rm -f $RPM_BUILD_ROOT%{python2rhnroot}/common/__init__.py*
 %endif
 %endif
 
-
 %check
 # Copy spacewalk-usix python files to allow unit tests to run
 cp %{pythonrhnroot}/common/usix* $RPM_BUILD_ROOT%{pythonrhnroot}/common/
