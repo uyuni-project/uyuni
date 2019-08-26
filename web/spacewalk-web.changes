@@ -1,3 +1,4 @@
+- Remove/change text on edit filters for clp (bsc#1145608)
 - Fix sorting issues on content filter list page (bsc#1145591)
 
 -------------------------------------------------------------------
