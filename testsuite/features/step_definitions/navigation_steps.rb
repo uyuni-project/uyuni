@@ -415,7 +415,7 @@ Then(/^I should not be authorized$/) do
 end
 
 Then(/^I should be logged in$/) do
-  raise 'User is not logged in' unless all(:xpath, "//a[@href='/rhn/Logout.do']").any?
+  raise 'User is not logged in' unless find(:xpath, "//a[@href='/rhn/Logout.do']").visible?
 end
 
 Then(/^I am logged in$/) do
