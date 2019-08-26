@@ -1,9 +1,7 @@
 /* eslint-disable */
-"use strict";
-
-const PropTypes = require('prop-types');
-const React = require("react");
-const DangerDialog = require("./DangerDialog").DangerDialog;
+import PropTypes from 'prop-types';
+import React from "react";
+import { DangerDialog } from "./DangerDialog";
 
 /**
  * A pop-up dialog for delete confirmation.
@@ -11,7 +9,7 @@ const DangerDialog = require("./DangerDialog").DangerDialog;
  * Related data may be passed with the 'item' property.
  * This 'item' will be passed to the 'onConfirm' and 'onClosePopUp' handlers.
  */
-function DeleteDialog(props) {
+export function DeleteDialog(props) {
     return (
         <DangerDialog
           id={props.id}
@@ -35,8 +33,4 @@ DeleteDialog.propTypes = {
     content: PropTypes.node,
     item: PropTypes.object,
     onConfirm: PropTypes.func
-};
-
-module.exports = {
-    DeleteDialog
 };
