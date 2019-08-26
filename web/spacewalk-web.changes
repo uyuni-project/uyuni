@@ -1,3 +1,4 @@
+- Remove/change text on edit filters for clp (bsc#1145608)
 - Redirect to project when canceling creating a filter (bsc#1145750)
 - Better visualization of the filters attached to a CLM Project. Allow/deny are now split
 - Fix ui issues with content lifecycle project list page (bsc#1145587)
