@@ -2,25 +2,45 @@ import React from 'react';
 import { storiesOf } from '@storybook/react';
 import { Tree } from './tree';
 
+const simpleTreeData = {
+  rootId: "2",
+  items: [
+    {id: "2", children: ['3', '4', '8']},
+    {id: "3", data: {key: "three", description: "I am 3"}},
+    {id: "4", data: {key: "for", description: "I am 4 children"}, children: ["5", "6", "7"]},
+    {id: "5", data: {key: "five", description: "I am 5 children"}},
+    {id: "6", data: {key: "six", description: "I am 6 children"}, children: ["7"]},
+    {id: "7", data: {key: "seven", description: "I am 7 children"}},
+    {id: "8", data: {key: "eight", description: "I am 8 children"}}
+  ]
+}
+
 storiesOf('Tree component', module)
   .add('simple data', () => (
     <Tree
-      header={<h1>Testing</h1>}
-      data={{
-        rootId: "2",
-        items: [
-          {id: "2", children: ['3', '4']},
-          {id: "3", data: {key: "three", description: "I am 3"}},
-          {id: "4", data: {key: "for", description: "I am 4 children"}, children: ["5", "6"]},
-          {id: "5", data: {key: "five", description: "I am 5 children"}},
-          {id: "6", data: {key: "six", description: "I am 6 children"}}
-        ]
-      }}
+      header={<div>Simple Data</div>}
+      data={simpleTreeData}
       renderItem={(item, renderNameColumn) => {
         return (
           <>
-            Name Column:
-            {renderNameColumn(item.data.key)}
+            {renderNameColumn(<>Name Column: {item.data.key}</>)}
+            <div>{item.data.description}</div>
+          </>
+        );
+      }}
+    />
+  ))
+  .add('tree with selection and initially expanded', () => (
+    <Tree
+      header={<div>Tree with selection and initially expanded</div>}
+      data={simpleTreeData}
+      initiallyExpanded={["4"]}
+      initiallySelected={["6"]}
+      onItemSelectionChanged={(item, checked) => alert(`checkbox changed to ${checked} :  ${JSON.stringify(item)}`)}
+      renderItem={(item, renderNameColumn) => {
+        return (
+          <>
+            {renderNameColumn(<>Name Column: {item.data.key}</>)}
             <div>{item.data.description}</div>
           </>
         );
