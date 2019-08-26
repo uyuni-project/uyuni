@@ -1,3 +1,4 @@
+- Migrate login to Spark
 - enable provisioning for salt clients
 - Bump version to 4.1.0
 - Allow package changelog entries with more than 3000 characters (bsc#1144889)
