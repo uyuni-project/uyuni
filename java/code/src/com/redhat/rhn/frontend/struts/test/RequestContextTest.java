@@ -14,13 +14,25 @@
  */
 package com.redhat.rhn.frontend.struts.test;
 
-import com.redhat.rhn.frontend.action.test.LoginActionTest;
+import com.redhat.rhn.common.conf.Config;
+import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.testing.RhnMockHttpServletRequest;
+import com.redhat.rhn.testing.RhnMockHttpServletResponse;
+import com.redhat.rhn.testing.RhnMockHttpSession;
+import com.redhat.rhn.testing.UserTestUtils;
+import com.suse.manager.webui.controllers.login.LoginController;
+import com.suse.manager.webui.utils.LoginHelper;
 
 import org.jmock.integration.junit3.MockObjectTestCase;
 
-import javax.servlet.http.HttpServletRequest;
+import java.net.URI;
+import java.util.HashMap;
+
+import spark.ModelAndView;
+import spark.RequestResponseFactory;
+import spark.Response;
+import spark.routematch.RouteMatch;
 
 /**
  * RequestContextTest
@@ -39,9 +51,29 @@ public class RequestContextTest extends MockObjectTestCase {
      * @throws Exception if an error occurs
      */
     public final void testGetLoggedInUser() throws Exception {
-        LoginActionTest ltest = new LoginActionTest();
-        HttpServletRequest request = ltest.loginUserIntoSessionTest();
-        RequestContext requestContext = new RequestContext(request);
+        Config.get().setBoolean(ConfigDefaults.SINGLE_SIGN_ON_ENABLED, "false");
+
+        final String requestUrl = "http://localhost:8080/rhn/manager/login";
+        final RouteMatch match = new RouteMatch(new Object(), requestUrl, requestUrl, "");
+        final RhnMockHttpServletRequest mockRequest = new RhnMockHttpServletRequest();
+        RhnMockHttpSession session = new RhnMockHttpSession();
+        mockRequest.setSession(session);
+
+        mockRequest.setRequestURL(requestUrl);
+        mockRequest.setupGetMethod("POST");
+        mockRequest.setMethod("POST");
+        mockRequest.setupPathInfo(URI.create(requestUrl).getPath());
+        mockRequest.setupAddParameter("url_bounce", "/rhn/users/UserDetails.do?uid=1");
+
+        Response response = RequestResponseFactory.create(new RhnMockHttpServletResponse());
+        // logging in
+        LoginHelper.successfulLogin(mockRequest, response.raw(), UserTestUtils.findNewUser("testUser", "testOrg" +
+                this.getClass().getSimpleName()));
+        ModelAndView result = LoginController.loginView(RequestResponseFactory.create(match, mockRequest), response);
+        HashMap<String, String> model = (HashMap<String, String>) result.getModel();
+        assertNotNull(session.getAttribute("webUserID"));
+        assertEquals(model.get("url_bounce"), "/rhn/users/UserDetails.do?uid=1");
+        RequestContext requestContext = new RequestContext(RequestResponseFactory.create(match, mockRequest).raw());
         assertNotNull(requestContext.getCurrentUser());
     }
 

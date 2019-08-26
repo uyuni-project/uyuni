@@ -159,7 +159,7 @@ public class PxtAuthenticationServiceTest extends AuthenticationServiceAbstractT
         setupPxtDelegate(true, false, 1234L);
         setupGetRequestURI("/rhn/YourRhn.do");
 
-        URIBuilder uriBuilder = new URIBuilder("/rhn/Login.do");
+        URIBuilder uriBuilder = new URIBuilder("/rhn/manager/login");
         uriBuilder.addParameter("url_bounce", "/rhn/YourRhn.do");
         uriBuilder.addParameter("request_method", "POST");
 
@@ -202,7 +202,7 @@ public class PxtAuthenticationServiceTest extends AuthenticationServiceAbstractT
         uriBounceBuilder.addParameter("answer", "param 2 = 'Neo is the one!'");
 
         URIBuilder uriBuilder = new URIBuilder();
-        uriBuilder.setPath("/rhn/Login.do");
+        uriBuilder.setPath("/rhn/manager/login");
         uriBuilder.addParameter("url_bounce", uriBounceBuilder.toString());
         uriBuilder.addParameter("request_method", "POST");
 

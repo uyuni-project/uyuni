@@ -14,7 +14,7 @@
  */
 package com.redhat.rhn.frontend.servlets.test;
 
-import com.redhat.rhn.frontend.action.LoginAction;
+import com.suse.manager.webui.utils.LoginHelper;
 import com.redhat.rhn.frontend.servlets.CreateRedirectURI;
 
 import org.apache.commons.lang3.StringUtils;
@@ -23,7 +23,6 @@ import org.jmock.integration.junit3.MockObjectTestCase;
 
 import java.net.URLEncoder;
 import java.util.Vector;
-
 import javax.servlet.http.HttpServletRequest;
 
 /**
@@ -135,7 +134,7 @@ public class CreateRedirectURITest extends MockObjectTestCase {
         CreateRedirectURI command = new CreateRedirectURI();
         String redirectUrl = command.execute(getMockRequest());
 
-        assertEquals(LoginAction.DEFAULT_URL_BOUNCE, redirectUrl);
+        assertEquals(LoginHelper.DEFAULT_URL_BOUNCE, redirectUrl);
     }
 
 }
