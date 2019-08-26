@@ -15,7 +15,8 @@
     "build:novalidate": "BUILD_VALIDATION=false node build",
     "lint": "eslint . -f codeframe",
     "test": "BABEL_ENV=test jest",
-    "test:watch": "BABEL_ENV=test jest --watch"
+    "test:watch": "BABEL_ENV=test jest --watch",
+    "storybook": "start-storybook -s ./.storybook/public"
   },
   "devDependencies": {
     "flow-bin": "^0.93.0",
