@@ -68,7 +68,7 @@ const FilterEdit = (props: FilterEditProps) => {
   const {onAction, cancelAction, isLoading} = useLifecycleActionsApi({resource: 'filters'});
 
   const modalTitle = props.editing
-    ? t('Update filter')
+    ? t('Filter Details')
     : t('Create a new filter')
 
   return (
