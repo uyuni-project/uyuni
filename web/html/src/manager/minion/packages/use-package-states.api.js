@@ -8,79 +8,79 @@ import type {
 } from "./package.type";
 import * as packageHelpers from "./package-utils";
 
-const action = {
-  SAVE: "Save",
-  APPLY: "Apply",
-  GETSERVERPACKAGES: "GetServerPackages",
-  SEARCH: "Search"
-};
+type ActionType =
+  | {type: "Save", serverId: string, changed: ChangesMapObject}
+  | {type: "Apply", serverId: string}
+  | {type: "GetServerPackages", serverId: string}
+  | {type: "Search", serverId: string, filter: string}
 
 const usePackageStatesApi = () => {
   const [messages, setMessages] = useState("");
   const [packageStates, setPackageStates] = useState<Array<Package>>([]);
   const [searchResults, setSearchResults] = useState<Array<Package>>([]);
 
-  function fetchPackageStatesApi(apiAction: string,
-                                 serverId: string,
-                                 filter: string = "",
-                                 toSave: Array<Package> = [],
-                                 changed: ChangesMapObject = {}): Promise<any> {
-    if (apiAction === action.SAVE) {
-      console.log("Save posted");
-      return Network.post(
-        "/rhn/manager/api/states/packages/save",
-        JSON.stringify({
-          sid: serverId,
-          packageStates: toSave
-        }),
-        "application/json"
-      ).promise
-        .then((data: Array<Package>) => {
-            console.log("Save success: (data in next line)");
-            console.log(data);
-            updateAfterSave(data, changed);
-            setMessages(MessagesUtils.info(t('Package states have been saved.')));
+  function onActionPackageStatesApi(action: ActionType): Promise<any> {
+    switch (action.type) {
+      case 'Save': {
+        const toSave = [];
+        const changed = action.changed;
+        for (const state in changed) {
+          if (changed.hasOwnProperty(state) && typeof changed[state].value === 'object') {
+            toSave.push(changed[state].value);
+          } else {
+            console.log("Cannot save empty object.")
           }
-        )
-    } else if (apiAction === action.APPLY) {
-      console.log("Apply posted");
-      return Network.post(
-        "/rhn/manager/api/states/apply",
-        JSON.stringify({
-          id: serverId,
-          type: "SERVER",
-          states: ["packages"]
-        }),
-        "application/json"
-      ).promise
-        .then((data) => {
-          console.log("Apply success");
-          setMessages(MessagesUtils.info(<span>{t("Applying the packages states has been ")}
-            <a href={"/rhn/systems/details/history/Event.do?sid=" + serverId + "&aid=" + data}>{t("scheduled")}</a>
+        }
+        return Network.post(
+          "/rhn/manager/api/states/packages/save",
+          JSON.stringify({
+            sid: action.serverId,
+            packageStates: toSave
+          }),
+          "application/json"
+        ).promise
+          .then((data: Array<Package>) => {
+              updateAfterSave(data, changed);
+              setMessages(MessagesUtils.info(t('Package states have been saved.')));
+            }
+          )
+      }
+      case 'Apply': {
+        return Network.post(
+          "/rhn/manager/api/states/apply",
+          JSON.stringify({
+            id: action.serverId,
+            type: "SERVER",
+            states: ["packages"]
+          }),
+          "application/json"
+        ).promise
+          .then((data) => {
+            setMessages(MessagesUtils.info(<span>{t("Applying the packages states has been ")}
+              <a href={"/rhn/systems/details/history/Event.do?sid=" + action.serverId + "&aid=" + data}>{t("scheduled")}</a>
               </span>));
-        });
-    } else if (apiAction === action.GETSERVERPACKAGES) {
-      console.log("Getserverpackages executed");
-      return Network.get(
-        "/rhn/manager/api/states/packages?sid=" + serverId
-      ).promise
-        .then((data: Array<Package>) => {
-          console.log("Successfully got server packages.");
-          updateAfterServerGetPackages(data);
-        });
-    } else if (apiAction === action.SEARCH) {
-      console.log("Search executed");
-      return Network.get(
-        "/rhn/manager/api/states/packages/match?sid=" + serverId + "&target=" + filter
-      ).promise
-        .then((data: Array<Package>) => {
-          console.log("Search Results:");
-          console.log(data);
-          updateAfterSearch(data);
-          return null;
-        })
+          });
+      }
+      case 'GetServerPackages': {
+        return Network.get(
+          "/rhn/manager/api/states/packages?sid=" + action.serverId
+        ).promise
+          .then((data: Array<Package>) => {
+            updateAfterServerGetPackages(data);
+          });
+      }
+      case 'Search': {
+        return Network.get(
+          "/rhn/manager/api/states/packages/match?sid=" + action.serverId + "&target=" + action.filter
+        ).promise
+          .then((data: Array<Package>) => {
+            updateAfterSearch(data);
+            return null;
+          })
+      }
+      default:
+        return Promise.reject();
     }
-    return Promise.reject();
   }
 
   function updateAfterSearch(serverSearchResults: Array<Package>): void {
@@ -121,7 +121,7 @@ const usePackageStatesApi = () => {
   }
 
   return {
-    messages: messages, packageStates, searchResults, fetchPackageStatesApi
+    messages: messages, packageStates, searchResults, onActionPackageStatesApi
   }
 
 };
