@@ -200,10 +200,6 @@ if [ -f %{_unitdir}/rhnsd.service ]; then
         rm -f /etc/rc?.d/[SK]??rhnsd
     fi
 fi
-if [ -f %{_unitdir}/spacewalk-update-status.service ]; then
-    # take care that this is always enabled if it exists
-    /usr/bin/systemctl --quiet enable spacewalk-update-status.service 2>&1 ||:
-fi
 %endif
 %endif
 %if %{_vendor} == "debbuild"
@@ -281,6 +277,13 @@ if [ -f %{_unitdir}/rhnsd.service ]; then
     systemctl daemon-reload >/dev/null 2>&1 || :
 fi
 %endif
+
+%posttrans
+if [ -f %{_unitdir}/spacewalk-update-status.service ]; then
+    # take care that this is always enabled if it exists
+    /usr/bin/systemctl --quiet enable spacewalk-update-status.service 2>&1 ||:
+fi
+
 
 %if 0%{?fedora} || 0%{?suse_version} >= 1210 || 0%{?mageia} || 0%{?ubuntu} >= 1504 || 0%{?debian} >= 8 || 0%{?rhel} >= 7
 %files

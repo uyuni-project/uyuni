@@ -1,3 +1,5 @@
+- enable spacewalk-update-service on package installation
+  (bsc#1143789)
 - Invalidate cache 5 minutes before actual expiration(bsc#1143562)
 
 -------------------------------------------------------------------
