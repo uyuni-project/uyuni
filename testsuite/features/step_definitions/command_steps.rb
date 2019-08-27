@@ -679,41 +679,34 @@ When(/^I copy server\'s keys to the proxy$/) do
   end
 end
 
-# rubocop:disable Metrics/BlockLength
 When(/^I set up the private network on the terminals$/) do
   proxy = net_prefix + ADDRESSES['proxy']
-  # /etc/sysconfig/network/ifcfg-eth1
+  # /etc/sysconfig/network/ifcfg-eth1 and /etc/resolv.conf
   nodes = [$client, $minion]
   conf = "STARTMODE='auto'\\nBOOTPROTO='dhcp'"
   file = "/etc/sysconfig/network/ifcfg-eth1"
+  script2 = "-e '/^#/d' -e 's/^search /search example.org /' -e '$anameserver #{proxy}' -e '/^nameserver /d'"
+  file2 = "/etc/resolv.conf"
   nodes.each do |node|
     next if node.nil?
-    node.run("echo -e \"#{conf}\" > #{file} && ifup eth1")
+    node.run("echo -e \"#{conf}\" > #{file} && sed -i #{script2} #{file2} && ifup eth1")
   end
   # /etc/sysconfig/network-scripts/ifcfg-eth1 and /etc/sysconfig/network
   nodes = [$ceos_minion]
-  conf = "DEVICE='eth1'\\nSTARTMODE='auto'\\nBOOTPROTO='dhcp'\\nDNS1='#{proxy}'"
   file = "/etc/sysconfig/network-scripts/ifcfg-eth1"
   conf2 = "GATEWAYDEV=eth0"
   file2 = "/etc/sysconfig/network"
   nodes.each do |node|
     next if node.nil?
+    domain, _code = node.run("grep '^search' /etc/resolv.conf | sed 's/^search//'")
+    conf = "DOMAIN='#{domain.strip}'\\nDEVICE='eth1'\\nSTARTMODE='auto'\\nBOOTPROTO='dhcp'\\nDNS1='#{proxy}'"
     node.run("echo -e \"#{conf}\" > #{file} && echo -e \"#{conf2}\" > #{file2} && systemctl restart network")
   end
   # PXE boot minion
   if $pxeboot_mac
     step %(I restart the network on the PXE boot minion)
   end
-  # /etc/resolv.conf
-  nodes = [$client, $minion, $ceos_minion]
-  script = "-e '/^#/d' -e 's/^search /search example.org /' -e '$anameserver #{proxy}' -e '/^nameserver /d'"
-  file = "/etc/resolv.conf"
-  nodes.each do |node|
-    next if node.nil?
-    node.run("sed -i #{script} #{file}")
-  end
 end
-# rubocop:enable Metrics/BlockLength
 
 Then(/^terminal "([^"]*)" should have got a retail network IP address$/) do |host|
   node = get_target(host)
