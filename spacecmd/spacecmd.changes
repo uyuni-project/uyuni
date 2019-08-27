@@ -1,4 +1,7 @@
+-------------------------------------------------------------------
+Tue Aug 27 23:49:29 CEST 2019 - jgonzalez@suse.com
 
+- version 4.0.14-1
 - Fix missing runtime dependencies that made spacecmd return old versions of
   packages in some cases, even if newer ones were available (bsc#1148311)
 
