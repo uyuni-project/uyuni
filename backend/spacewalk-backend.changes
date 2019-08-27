@@ -1,3 +1,4 @@
+- Import additional fields for Deb packages
 - Prevent "reposync" crash when handling metadata on RPM repos (bsc#1138358)
 - Do not show expected WARNING messages from "c_rehash"
 - fix misspelling in spacewalk-repo-sync (bsc#1149633)

@@ -1,3 +1,4 @@
+- Import additional fields for Deb packages
 - replace requires susemanager with uyuni-base server for group(susemanager)
 - Add page to show virtual storage pools and volumes of a system
 - Migrate login to Spark
