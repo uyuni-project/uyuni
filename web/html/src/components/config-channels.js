@@ -276,7 +276,13 @@ class ConfigChannels extends React.Component {
         {elements.length > 0 ? elements :
             <tr>
                 <td colSpan="2">
-                    <div>{t("No states assigned. Use search to find and assign states.")}</div>
+                    <div>
+                      {
+                        this.state.view === "changes"
+                        ? t("No current changes.")
+                        : t("No states assigned. Use search to find and assign states.")
+                      }
+                    </div>
                 </td>
             </tr>
         }
@@ -285,11 +291,9 @@ class ConfigChannels extends React.Component {
   }
 
   setView(view) {
-    return event => {
-      this.setState({
-          view: view
-      });
-    }
+    this.setState({
+      view: view
+    });
   }
 
   showPopUp(channel) {
@@ -364,21 +368,54 @@ class ConfigChannels extends React.Component {
       <Messages items={this.state.messages}/>
       : null;
 
+    const headerTabs = () => {
+      const length = this.state.changed.size;
+      let changesText = t('Changes');
+      if (length === 1) {
+        changesText = t('1 Change');
+      } else if (length > 1) {
+        changesText = length + ' ' + t('Changes');
+      }
+
+      return (
+        <div className="spacewalk-content-nav">
+          <ul className="nav nav-tabs">
+            <li className={this.state.view === 'search' || this.state.view === '' ? 'active' : ''}>
+              <a href='#search' onClick={() => this.setView('search')}>{t('Search')}</a>
+            </li>
+            <li className={this.state.view === 'changes' ? 'active' : ''}>
+              <a href='#changes' onClick={() => this.setView('changes')}>{changesText}</a>
+            </li>
+            <li className={this.state.view === 'system' ? 'active' : ''}>
+              <a href='#system' onClick={() => this.setView('system')}>{t('System')}</a>
+            </li>
+          </ul>
+        </div>)
+    };
+
+
     return (
       <span>
         {messages}
         <InnerPanel title={t("Configuration Channels")} icon="spacewalk-icon-salt-add" buttons={buttons}>
-          { !this.state.rank &&
-            <PanelRow className="input-group">
-              <TextField id="search-field" value={this.state.filter} placeholder={t("Search in configuration channels")} onChange={this.onSearchChange} onPressEnter={this.search}/>
-              <span className="input-group-btn">
-                <AsyncButton id="search-states" text={t("Search")} action={this.search} />
-                <button id="system-btn" className={this.state.view == "system" ? "btn btn-info" : "btn btn-default"} onClick={this.setView("system")}>{t("System")}</button>
-                <button id="changes-btn" className={this.state.view == "changes" ? "btn btn-info" : "btn btn-default"} disabled={this.state.changed.size == 0} onClick={this.setView("changes")}>
-                  {this.state.changed.size > 0 ? this.state.changed.size : t("No")} {t("Changes")}
-                </button>
-              </span>
-            </PanelRow>
+
+          { !this.state.rank && headerTabs()}
+
+          {
+            !this.state.rank && this.state.view === "search" &&
+            <div className={"row"}>
+              <div className={"col-md-5"}>
+                <div style={{paddingBottom: 0.7 + 'em'}}>
+                  <div className="input-group">
+                    <TextField id="search-field" value={this.state.filter} placeholder={t("Search in configuration channels")}
+                               onChange={this.onSearchChange} onPressEnter={this.search} />
+                    <span className="input-group-btn">
+                      <AsyncButton id="search-states" text={t("Search")} action={this.search} />
+                     </span>
+                  </div>
+                </div>
+              </div>
+            </div>
           }
 
           { this.state.rank ?
