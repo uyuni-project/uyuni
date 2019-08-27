@@ -1,5 +1,4 @@
 - spacewalk-remove-channel check that channel doesn't have cloned channels before deleting it (bsc#1138454)
-- Don't skip Deb package tags on package import (bsc#1130040)
 - Fix broken spacewalk-data-fsck utility
 - Add '--latest' support for reposync on DEB based repositories
 - Do not try to download RPMs from the unresolved mirrorlist URL
