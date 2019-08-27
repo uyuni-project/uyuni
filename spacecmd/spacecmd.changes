@@ -1,6 +1,13 @@
 - Check that a channel doesn't have clones before deleting it (bsc#1138454)
 
 -------------------------------------------------------------------
+Tue Aug 27 23:49:29 CEST 2019 - jgonzalez@suse.com
+
+- version 4.0.14-1
+- Fix missing runtime dependencies that made spacecmd return old versions of
+  packages in some cases, even if newer ones were available (bsc#1148311)
+
+-------------------------------------------------------------------
 Thu Jun 06 15:58:50 CEST 2019 - jgonzalez@suse.com
 
 - version 4.0.13-1

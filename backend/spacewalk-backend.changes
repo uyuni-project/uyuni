@@ -9,11 +9,19 @@
   with cache of packages (bsc#1143016)
 
 -------------------------------------------------------------------
-Wed Aug 14 10:50:37 CEST 2019 - mc@suse.com
+Tue Aug 27 23:50:37 CEST 2019 - jgonzalez@suse.com
 
+- version 4.0.25-1
+- Don't skip Deb package tags on package import (bsc#1130040)
+
+-------------------------------------------------------------------
+Tue Aug 27 08:48:21 CEST 2019 - jgonzalez@suse.com
+
+- version 4.0.24-1
+- For backend-libs subpackages, exclude files for the server
+  (already part of spacewalk-backend) to avoid conflicts (bsc#1148125)
 - prevent duplicate key violates on repo-sync with long changelog
   entries (bsc#1144889)
-  * Added: SUMA_4.0_patch_for_ptf_bsc1144889.patch
 
 -------------------------------------------------------------------
 Tue Jul 30 14:52:05 CEST 2019 - jgonzalez@suse.com
