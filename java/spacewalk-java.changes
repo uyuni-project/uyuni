@@ -1,3 +1,4 @@
+- Import additional fields for Deb packages
 - enable Kiwi NG on SLE15
 - allow ssl connections from Tomcat to Postgres (bsc#1149210)
 - use default in case taskomatic.java.maxmemory is unset
