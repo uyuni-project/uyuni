@@ -148,6 +148,14 @@ public class PackageFactory extends HibernateFactory {
     }
 
     /**
+     * Store the package.
+     * @param pkg The object we are commiting.
+     */
+    public static void save(Package pkg) {
+        singleton.saveObject(pkg);
+    }
+
+    /**
      * Lookup a PackageArch by its id.
      * @param id package arch label id sought.
      * @return the PackageArch whose id matches the given id.

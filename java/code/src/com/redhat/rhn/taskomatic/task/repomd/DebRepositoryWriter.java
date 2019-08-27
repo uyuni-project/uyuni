@@ -17,6 +17,9 @@ package com.redhat.rhn.taskomatic.task.repomd;
 import java.io.File;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.db.datasource.DataResult;
@@ -96,6 +99,8 @@ public class DebRepositoryWriter extends RepositoryWriter {
         // like in RpmReporsitoryWriter?
         DataResult<PackageDto> packages = TaskManager.getChannelPackageDtos(channel);
         packages.elaborate();
+        loadExtraTags(packages);
+
         for (PackageDto pkgDto : packages) {
             writer.addPackage(pkgDto);
         }
@@ -125,4 +130,14 @@ public class DebRepositoryWriter extends RepositoryWriter {
                  channel.getLabel() + "' finished in " +
                  (int) (new Date().getTime() - start.getTime()) / 1000 + " seconds");
     }
+
+    private void loadExtraTags(DataResult<PackageDto> packageBatch) {
+        List<Long> pkgIds = packageBatch.stream()
+                .map(pkgDto -> pkgDto.getId())
+                .collect(Collectors.toList());
+        Map<Long, Map<String, String>> extraTags = TaskManager.getChannelPackageExtraTags(pkgIds);
+        packageBatch.stream().forEach(pkgDto ->
+                pkgDto.setExtraTags(extraTags.get(pkgDto.getId())));
+    }
+
 }
