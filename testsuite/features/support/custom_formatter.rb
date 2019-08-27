@@ -1,5 +1,6 @@
-# Copyright (c) 2013-2019 Novell, Inc.
+# Copyright (c) 2019 SUSE LLC
 # Licensed under the terms of the MIT license.
+
 module CustomFormatter
   # Extend the Cucumber Pretty Formatter and prepends the feature name on each step
   module PrependsFeatureName
@@ -8,7 +9,7 @@ module CustomFormatter
     end
 
     def before_feature(feature)
-      @current_feature_name = feature.location.filepath.filename
+      @current_feature_name = feature.location.file
       super(feature)
     end
 
