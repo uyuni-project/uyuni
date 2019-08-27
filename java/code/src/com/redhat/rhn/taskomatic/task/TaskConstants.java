@@ -207,5 +207,8 @@ public class TaskConstants {
     public static final String TASK_QUERY_DUPLICATED_VIRTUALINSTANCE_CLEANUP =
         "taskomatic_duplicated_virtualinstance_cleanup";
 
+    public static final String TASK_QUERY_CHANNEL_PACKAGE_EXTRATAGS =
+            "repomdgenerator_channel_package_extratags";
+
     private TaskConstants() { }
 }

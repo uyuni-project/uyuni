@@ -28,6 +28,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  *
@@ -126,5 +127,19 @@ public class TaskManager {
     public static DataResult getTaskStatusInfo() {
         SelectMode m = ModeFactory.getMode("Task_queries", "taskomatic_task_status");
         return m.execute(new HashMap());
+    }
+
+    /**
+     * Load extra tags for the given packages.
+     * @param pkgIds the package ids
+     * @return a map of maps with the package id as key and a map of tagName -> tagValue as value.
+     */
+    public static Map<Long, Map<String, String>> getChannelPackageExtraTags(List<Long> pkgIds) {
+        SelectMode m = ModeFactory.getMode(TaskConstants.MODE_NAME,
+                TaskConstants.TASK_QUERY_CHANNEL_PACKAGE_EXTRATAGS);
+        DataResult<Map<String, Object>> dataResult = m.execute(pkgIds);
+        return dataResult.stream().collect(
+                Collectors.groupingBy(map -> (Long)map.get("package_id"),
+                        Collectors.toMap(map -> (String)map.get("name"), map -> (String)map.get("value"))));
     }
 }

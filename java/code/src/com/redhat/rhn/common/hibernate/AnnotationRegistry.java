@@ -29,6 +29,7 @@ import com.redhat.rhn.domain.image.ProfileCustomDataValue;
 import com.redhat.rhn.domain.notification.NotificationMessage;
 import com.redhat.rhn.domain.notification.UserNotification;
 import com.redhat.rhn.domain.product.SUSEProductSCCRepository;
+import com.redhat.rhn.domain.rhnpackage.PackageExtraTagsKeys;
 import com.redhat.rhn.domain.scc.SCCOrderItem;
 import com.redhat.rhn.domain.scc.SCCRepository;
 import com.redhat.rhn.domain.scc.SCCRepositoryAuth;
@@ -56,7 +57,7 @@ public class AnnotationRegistry {
 
     private static final List<Class> ANNOTATION_CLASSES;
     static {
-        ANNOTATION_CLASSES = new LinkedList<Class>();
+        ANNOTATION_CLASSES = new LinkedList<>();
         ANNOTATION_CLASSES.add(ImageStore.class);
         ANNOTATION_CLASSES.add(ImageStoreType.class);
         ANNOTATION_CLASSES.add(DockerfileProfile.class);
@@ -80,6 +81,7 @@ public class AnnotationRegistry {
         ANNOTATION_CLASSES.add(SCCRepositoryNoAuth.class);
         ANNOTATION_CLASSES.add(SCCRepositoryBasicAuth.class);
         ANNOTATION_CLASSES.add(SCCRepositoryTokenAuth.class);
+        ANNOTATION_CLASSES.add(PackageExtraTagsKeys.class);
     }
 
     /**

@@ -1,5 +1,7 @@
+- Add tables rhnPackageExtraTag and rhnPackageExtraTagKey
 - Fix performance issue with Inter-Server Synchronization (bsc#1143954)
 - Fix: handle special deb package names (bsc#1150113)
+
 -------------------------------------------------------------------
 Thu Sep 19 01:01:02 CEST 2019 - jgonzalez@suse.com
 

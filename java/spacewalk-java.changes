@@ -1,3 +1,4 @@
+- Import additional fields for Deb packages
 - Fix: handle special deb package names (bsc#1150113)
 - Add -n option to spacecmd softwarechannel_adderrata to allow adding errata to
   non-cloned channel (bsc#1124307)

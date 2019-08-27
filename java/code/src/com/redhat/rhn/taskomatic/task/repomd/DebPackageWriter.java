@@ -177,14 +177,14 @@ public class DebPackageWriter {
             out.write(pkgDto.getPackageGroupName());
             out.newLine();
 
-            // Priority is not stored in DB
-            // out.write("Priority: ");
-            // out.write(pkgDto.get);
-            // out.newLine();
-
-            // out.write("Homepage: ");
-            // out.write(pkgDto.get);
-            // out.newLine();
+            if (pkgDto.getExtraTags() != null) {
+                for (var entry : pkgDto.getExtraTags().entrySet()) {
+                    out.write(entry.getKey());
+                    out.write(": ");
+                    out.write(entry.getValue());
+                    out.newLine();
+                }
+            }
 
             out.write("Description: ");
             out.write(pkgDto.getDescription());
