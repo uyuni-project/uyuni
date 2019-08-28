@@ -1,6 +1,12 @@
 - dmidecode does not exist on ppc64le and s390x (bsc#1145119)
 
 -------------------------------------------------------------------
+Wed Aug 28 17:53:06 CEST 2019 - jgonzalez@suse.com
+
+- version 4.0.18-1
+- Fix for issue with bootstrapping RES minions (bsc#1147126)
+
+-------------------------------------------------------------------
 Tue Jul 30 15:01:47 CEST 2019 - jgonzalez@suse.com
 
 - version 4.0.17-1
