@@ -1,3 +1,5 @@
+- Fix for issue with bootstrapping RES minions (bsc#1147126)
+
 -------------------------------------------------------------------
 Tue Jul 30 15:01:47 CEST 2019 - jgonzalez@suse.com
 
