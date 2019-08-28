@@ -1,3 +1,4 @@
+- Fix for issue with bootstrapping RES minions (bsc#1147126)
 - dmidecode does not exist on ppc64le and s390x (bsc#1145119)
 
 -------------------------------------------------------------------
