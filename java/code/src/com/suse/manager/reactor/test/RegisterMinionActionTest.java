@@ -1550,6 +1550,53 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
             assertTrue(minion.getFqdns().isEmpty());
         }, DEFAULT_CONTACT_METHOD);
     }
+
+    public void testMigrationMinionWithReActivationKey() throws Exception {
+        Channel assignedChannel = ChannelFactoryTest.createBaseChannel(user, "channel-x86_64");
+        Channel assignedChildChannel = ChannelFactoryTest.createTestChannel(user, "channel-x86_64");
+        assignedChildChannel.setParentChannel(assignedChannel);
+        TestUtils.saveAndFlush(assignedChildChannel);
+
+        MinionServer oldMinion = MinionServerFactoryTest.createTestMinionServer(user);
+        oldMinion.addChannel(assignedChannel);
+        oldMinion.addChannel(assignedChildChannel);
+        ServerFactory.save(oldMinion);
+
+        ChannelFamily channelFamily = createTestChannelFamily();
+        HibernateFactory.getSession().flush();
+        executeTest(
+                (saltServiceMock, key) -> new Expectations() {{
+                    allowing(saltServiceMock).getMasterHostname(MINION_ID);
+                    will(returnValue(Optional.of(MINION_ID)));
+                    allowing(saltServiceMock).getMachineId(MINION_ID);
+                    will(returnValue(Optional.of(MACHINE_ID)));
+                    allowing(saltServiceMock).syncGrains(with(any(MinionList.class)));
+                    allowing(saltServiceMock).syncModules(with(any(MinionList.class)));
+                    allowing(saltServiceMock).getGrains(MINION_ID);
+                    will(returnValue(getGrains(MINION_ID, null, null, key)));
+                }},
+                (DEFAULT_CONTACT_METHOD) -> {
+                    ActivationKey key = ActivationKeyTest.createTestActivationKey(user);
+                    // setting a server makes it a re-activation key
+                    key.setServer(oldMinion);
+                    key.setOrg(user.getOrg());
+                    ActivationKeyFactory.save(key);
+                    return key.getKey();
+                },
+                (optMinion, machineId, key) -> {
+                    assertTrue(optMinion.isPresent());
+                    MinionServer minion = optMinion.get();
+                    assertEquals(MINION_ID, minion.getName());
+                    assertNotNull(minion.getBaseChannel());
+
+                    assertTrue(minion.getFqdns().isEmpty());
+
+                    // State assignment file check
+                    Path slsPath = tmpSaltRoot.resolve("custom").resolve("custom_" + minion.getMachineId() + ".sls");
+                    assertTrue(slsPath.toFile().exists());
+                }, DEFAULT_CONTACT_METHOD);
+    }
+
     private Channel setupBaseAndRequiredChannels(ChannelFamily channelFamily,
             SUSEProduct product)
         throws Exception {
@@ -1612,14 +1659,23 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
         return saltService;
     }
 
-    private Optional<Map<String, Object>> getGrains(String minionId, String sufix, String akey) throws ClassNotFoundException, IOException {
+    private Optional<Map<String, Object>> getGrains(String minionId, String sufix, String akey)
+            throws ClassNotFoundException, IOException {
+        return getGrains(minionId, sufix, akey, null);
+    }
+
+    private Optional<Map<String, Object>> getGrains(String minionId, String sufix, String akey, String mkey)
+            throws ClassNotFoundException, IOException {
         Map<String, Object> grains = new JsonParser<>(Grains.items(false).getReturnType()).parse(
                 readFile("dummy_grains" + (sufix != null ? "_" + sufix : "") + ".json"));
         Map<String, String> susemanager = new HashMap<>();
         if (akey != null) {
             susemanager.put("activation_key", akey);
-            grains.put("susemanager", susemanager);
         }
+        if (mkey != null) {
+            susemanager.put("management_key", mkey);
+        }
+        grains.put("susemanager", susemanager);
         return Optional.of(grains);
     }
 
