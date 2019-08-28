@@ -14,6 +14,8 @@ mgr_server_localhost_alias_absent:
 # CentOS6 oscodename is bogus
 {%- if "centos" in grains['os']|lower %}
 {% set os_base = 'centos' %}
+{%- elif "redhat" in grains['os']|lower %}
+{% set os_base = 'res' %}
 {%- elif "opensuse" in grains['oscodename']|lower %}
 {% set os_base = 'opensuse' %}
 {%- endif %}
