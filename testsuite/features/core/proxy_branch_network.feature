@@ -19,6 +19,12 @@ Feature: Setup SUSE Manager for Retail branch network
 
 @proxy
 @private_net
+  Scenario: Install the Retail pattern on the server
+    When I install pattern "suma_retail" on this "server"
+    And I wait for "patterns-suma_retail" to be installed on this "server"
+
+@proxy
+@private_net
   Scenario: Enable the branch network formulas on the branch server
     Given I am on the Systems overview page of this "proxy"
     When I follow "Formulas" in the content area
@@ -122,6 +128,28 @@ Feature: Setup SUSE Manager for Retail branch network
   Scenario: Enable repositories for installing branch services
     When I enable repositories before installing branch server
     And I install package "expect" on this "proxy"
+
+@proxy
+@private_net
+@pxeboot_minion
+  Scenario: Parametrize DHCP and DNS for the PXE boot minion
+    Given I am on the Systems overview page of this "proxy"
+    # dhcpd:
+    When I follow "Formulas" in the content area
+    And I follow first "Dhcpd" in the content area
+    And I press "Add Item" in host reservations section
+    And I enter "pxeboot" in third reserved hostname field
+    And I enter the local IP address of "pxeboot" in third reserved IP field
+    And I enter the MAC address of "pxeboot-minion" in third reserved MAC field
+    And I click on "Save Formula"
+    Then I should see a "Formula saved" text
+    # bind:
+    When I follow first "Bind" in the content area
+    And I press "Add Item" in first A section
+    And I enter "pxeboot" in fourth A name field
+    And I enter the local IP address of "pxeboot" in fourth A address field
+    And I click on "Save Formula"
+    Then I should see a "Formula saved" text
 
 @proxy
 @private_net

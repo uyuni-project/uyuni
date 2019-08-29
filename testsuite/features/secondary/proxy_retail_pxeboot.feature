@@ -87,10 +87,6 @@ Feature: PXE boot a Retail terminal
     And I follow first "Dhcpd" in the content area
     And I enter the local IP address of "proxy" in next server field
     And I enter "boot/pxelinux.0" in filename field
-    And I press "Add Item" in host reservations section
-    And I enter "pxeboot" in third reserved hostname field
-    And I enter the local IP address of "pxeboot" in third reserved IP field
-    And I enter the MAC address of "pxeboot-minion" in third reserved MAC field
     And I click on "Save Formula"
     Then I should see a "Formula saved" text
 
@@ -225,7 +221,7 @@ Feature: PXE boot a Retail terminal
   Scenario: PXE boot the PXE boot minion
     Given I am authorized as "admin" with password "admin"
     When I reboot the PXE boot minion
-    And I wait at most 90 seconds until Salt master sees "pxeboot-minion" as "unaccepted"
+    And I wait at most 180 seconds until Salt master sees "pxeboot-minion" as "unaccepted"
     And I accept "pxeboot-minion" key in the Salt master
     And I navigate to "rhn/systems/Overview.do" page
     And I wait until I see the name of "pxeboot-minion", refreshing the page
@@ -270,7 +266,7 @@ Feature: PXE boot a Retail terminal
     When I click on "Delete Profile"
     And I wait until I see "has been deleted" text
     Then "pxeboot-minion" should not be registered
-    # TODO: for full idempotency, also stop salt-minion service
+    And I stop salt-minion on the PXE boot minion
 
 @proxy
 @private_net
