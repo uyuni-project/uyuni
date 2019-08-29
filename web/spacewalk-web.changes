@@ -1,3 +1,4 @@
+- Add environment label when deleting environment (bsc#1145758)
 - Change color of disabled build button on clp page (bsc#1145626)
 - Fix the 'include recommended' button on channels selection in SSM (bsc#1145086)
 - implement "patch contains package" Filter for Content Lifecycle Management
