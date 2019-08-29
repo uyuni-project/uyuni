@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Thu Aug 29 14:45:38 CEST 2019 - jgonzalez@suse.com
+
+- version 4.0.19-1
 - Bootstrapping RES6/RHEL6/SLE11 with TLS1.2 now shows error message. (bsc#1147126)
 
 -------------------------------------------------------------------
