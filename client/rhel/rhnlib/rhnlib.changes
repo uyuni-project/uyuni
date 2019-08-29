@@ -1,5 +1,6 @@
 - fix initialize ssl connection (bsc#1144155)
 - Add SNI support for clients
+- Fix bootstrapping SLE11SP4 trad client with SSL enabled (bsc#1148177)
 
 -------------------------------------------------------------------
 Wed May 15 15:04:15 CEST 2019 - jgonzalez@suse.com
