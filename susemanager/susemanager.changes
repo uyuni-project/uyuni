@@ -1,6 +1,7 @@
 - dmidecode does not exist on s390x (bsc#1145119)
 - move /usr/share/rhn/config-defaults to uyuni-base-common
 - Add missing bootstrap repo entries for Ubuntu repositories
+- Show help message when missing sub-command in  mgr-sync call (bsc#1134708)
 
 -------------------------------------------------------------------
 Wed Jul 31 17:45:28 CEST 2019 - jgonzalez@suse.com
