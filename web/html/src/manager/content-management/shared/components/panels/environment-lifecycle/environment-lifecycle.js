@@ -107,7 +107,7 @@ const EnvironmentLifecycle = (props: Props) => {
                               .then(() => {
                                 props.onChange(projectWithDeleteddEnvironment);
                               });
-                            showSuccessToastr(t("Environment " + environment.label + " deleted successfully"));
+                            showSuccessToastr(t("Environment {0} deleted successfully", environment.label));
                           })
                           .catch((error) => {
                             showErrorToastr(error, {autoHide: false});
