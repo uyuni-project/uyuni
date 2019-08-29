@@ -148,7 +148,7 @@ end
 # Click on a button which appears inside of <div> with
 # the given "id"
 When(/^I click on "([^"]*)" in element "([^"]*)"$/) do |text, element_id|
-  within(:xpath, "//div[@id=\"#{element_id}\"]") do
+  within(:xpath, "//div[@id='#{element_id}']") do
     click_button_and_wait(text, match: :first)
   end
 end
@@ -191,7 +191,7 @@ end
 # Click on a link which appears inside of <div> with
 # the given "id"
 When(/^I follow "([^"]*)" in element "([^"]*)"$/) do |arg1, arg2|
-  within(:xpath, "//div[@id=\"#{arg2}\"]") do
+  within(:xpath, "//div[@id='#{arg2}']") do
     step %(I follow "#{arg1}")
   end
 end
