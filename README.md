@@ -1,8 +1,6 @@
 Spacewalk
 =========
 
-[![Build Status](https://travis-ci.org/spacewalkproject/spacewalk.svg?branch=master)](https://travis-ci.org/spacewalkproject/spacewalk/builds)
-
 Spacewalk is an open source Linux systems management solution that was the
 beginning of [SUSE Manager](https://www.suse.com/products/suse-manager/).
 
