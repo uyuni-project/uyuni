@@ -378,7 +378,7 @@ class ConfigChannels extends React.Component {
       }
 
       return (
-        <div className="spacewalk-content-nav">
+        <div className="spacewalk-content-nav" id="config-channels-tabs">
           <ul className="nav nav-tabs">
             <li className={this.state.view === 'search' || this.state.view === '' ? 'active' : ''}>
               <a href='#search' onClick={() => this.setView('search')}>{t('Search')}</a>
@@ -403,7 +403,7 @@ class ConfigChannels extends React.Component {
 
           {
             !this.state.rank && this.state.view === "search" &&
-            <div className={"row"}>
+            <div className={"row"} id={"search-row"}>
               <div className={"col-md-5"}>
                 <div style={{paddingBottom: 0.7 + 'em'}}>
                   <div className="input-group">
