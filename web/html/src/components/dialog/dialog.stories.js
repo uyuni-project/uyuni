@@ -7,11 +7,13 @@ import { ModalLink } from "./ModalLink";
 storiesOf('Dialogs', module)
   .add('delete dialog', () => (
     <div>
-      <ModalLink
-        id={`delete-modal-link`}
-        text="delete"
-        target="delete-modal"
-      />
+      <div style={{height: "100px", display: "flex", alignItems: "center",  justifyContent:"center"}}>
+        <ModalLink
+          id={`delete-modal-link`}
+          text="delete (Click me for Testing the modal!!)"
+          target="delete-modal"
+        />
+      </div>
       <DeleteDialog id="delete-modal"
                     title={t("Delete project")}
                     content={
