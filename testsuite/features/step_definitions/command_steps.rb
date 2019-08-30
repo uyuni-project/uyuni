@@ -213,6 +213,23 @@ Then(/^the PXE default profile should be disabled$/) do
   step %(I wait until file "/srv/tftpboot/pxelinux.cfg/default" contains "ONTIMEOUT local" on server)
 end
 
+When(/^I restart the network on the PXE boot minion$/) do
+  # We have no IPv4 address on that machine yet,
+  # so the only way to contact it is via IPv6 link-local.
+  # We convert MAC address to IPv6 link-local address:
+  mac = $pxeboot_mac.tr(':', '')
+  hex = ((mac[0..5] + 'fffe' + mac[6..11]).to_i(16) ^ 0x0200000000000000).to_s(16)
+  ipv6 = 'fe80::' + hex[0..3] + ':' + hex[4..7] + ':' + hex[8..11] + ':' + hex[12..15] + "%eth1"
+  file = 'restart-network-pxeboot.exp'
+  source = File.dirname(__FILE__) + '/../upload_files/' + file
+  dest = "/tmp/" + file
+  return_code = file_inject($proxy, source, dest)
+  raise 'File injection failed' unless return_code.zero?
+  # We have no direct access to the PXE boot minion
+  # so we run the command from the proxy
+  $proxy.run("expect -f /tmp/#{file} #{ipv6}")
+end
+
 When(/^I reboot the PXE boot minion$/) do
   # we might have no or any IPv4 address on that machine
   # convert MAC address to IPv6 link-local address
@@ -226,6 +243,31 @@ When(/^I reboot the PXE boot minion$/) do
   return_code = file_inject($proxy, source, dest)
   raise 'File injection failed' unless return_code.zero?
   $proxy.run("expect -f /tmp/#{file} #{ipv6}")
+end
+
+When(/^I stop and disable avahi on the PXE boot minion$/) do
+  # we might have no or any IPv4 address on that machine
+  # convert MAC address to IPv6 link-local address
+  mac = $pxeboot_mac.tr(':', '')
+  hex = ((mac[0..5] + 'fffe' + mac[6..11]).to_i(16) ^ 0x0200000000000000).to_s(16)
+  ipv6 = 'fe80::' + hex[0..3] + ':' + hex[4..7] + ':' + hex[8..11] + ':' + hex[12..15] + "%eth1"
+  STDOUT.puts "Stoppping and disabling avahi on #{ipv6}..."
+  file = 'stop-avahi-pxeboot.exp'
+  source = File.dirname(__FILE__) + '/../upload_files/' + file
+  dest = "/tmp/" + file
+  return_code = file_inject($proxy, source, dest)
+  raise 'File injection failed' unless return_code.zero?
+  $proxy.run("expect -f /tmp/#{file} #{ipv6}")
+end
+
+When(/^I stop salt-minion on the PXE boot minion$/) do
+  file = 'cleanup-pxeboot.exp'
+  source = File.dirname(__FILE__) + '/../upload_files/' + file
+  dest = "/tmp/" + file
+  return_code = file_inject($proxy, source, dest)
+  raise 'File injection failed' unless return_code.zero?
+  ipv4 = net_prefix + ADDRESSES['pxeboot']
+  $proxy.run("expect -f /tmp/#{file} #{ipv4}")
 end
 
 When(/^I install the GPG key of the server on the PXE boot minion$/) do
@@ -344,6 +386,24 @@ Then(/^service "([^"]*)" is active on "([^"]*)"$/) do |service, host|
   output, _code = node.run("systemctl is-active '#{service}'", false)
   output = output.split(/\n+/)[-1]
   raise "Service #{service} not active" if output != 'active'
+end
+
+Then(/^service or socket "([^"]*)" is enabled on "([^"]*)"$/) do |name, host|
+  node = get_target(host)
+  output_service, _code_service = node.run("systemctl is-enabled '#{name}'", false)
+  output_service = output_service.split(/\n+/)[-1]
+  output_socket, _code_socket = node.run(" systemctl is-enabled '#{name}.socket'", false)
+  output_socket = output_socket.split(/\n+/)[-1]
+  raise if output_service != 'enabled' and output_socket != 'enabled'
+end
+
+Then(/^service or socket "([^"]*)" is active on "([^"]*)"$/) do |name, host|
+  node = get_target(host)
+  output_service, _code_service = node.run("systemctl is-active '#{name}'", false)
+  output_service = output_service.split(/\n+/)[-1]
+  output_socket, _code_socket = node.run(" systemctl is-active '#{name}.socket'", false)
+  output_socket = output_socket.split(/\n+/)[-1]
+  raise if output_service != 'active' and output_socket != 'active'
 end
 
 Then(/^socket "([^"]*)" is enabled on "([^"]*)"$/) do |service, host|
@@ -486,7 +546,7 @@ When(/^I register this client for SSH push via tunnel$/) do
            "    \"Password:\"                                              {send \"linux\r\"}\n" \
            "  }\n" \
            "}\n"
-  path = generate_temp_file('push-registration.expect', script)
+  path = generate_temp_file('push-registration.exp', script)
   step 'I copy "' + path + '" to "server"'
   `rm #{path}`
   # perform the registration
@@ -536,6 +596,20 @@ end
 When(/^I disable source package syncing$/) do
   node = get_target("server")
   cmd = "sed -i 's/^server.sync_source_packages = 1.*//g' /etc/rhn/rhn.conf"
+  node.run(cmd)
+end
+
+When(/^I install pattern "([^"]*)" on this "([^"]*)"$/) do |pattern, host|
+  node = get_target(host)
+  raise 'Not found: zypper' unless file_exists?(node, '/usr/bin/zypper')
+  cmd = "zypper --non-interactive install -t pattern #{pattern}"
+  node.run(cmd)
+end
+
+When(/^I remove pattern "([^"]*)" from this "([^"]*)"$/) do |pattern, host|
+  node = get_target(host)
+  raise 'Not found: zypper' unless file_exists?(node, '/usr/bin/zypper')
+  cmd = "zypper --non-interactive remove -t pattern #{pattern}"
   node.run(cmd)
 end
 
@@ -606,8 +680,7 @@ When(/^I copy server\'s keys to the proxy$/) do
 end
 
 When(/^I set up the private network on the terminals$/) do
-  net_prefix = $private_net.sub(%r{\.0+/24$}, ".")
-  proxy = net_prefix + "254"
+  proxy = net_prefix + ADDRESSES['proxy']
   # /etc/sysconfig/network/ifcfg-eth1 and /etc/resolv.conf
   nodes = [$client, $minion]
   conf = "STARTMODE='auto'\\nBOOTPROTO='dhcp'"
@@ -629,12 +702,15 @@ When(/^I set up the private network on the terminals$/) do
     conf = "DOMAIN='#{domain.strip}'\\nDEVICE='eth1'\\nSTARTMODE='auto'\\nBOOTPROTO='dhcp'\\nDNS1='#{proxy}'"
     node.run("echo -e \"#{conf}\" > #{file} && echo -e \"#{conf2}\" > #{file2} && systemctl restart network")
   end
+  # PXE boot minion
+  if $pxeboot_mac
+    step %(I restart the network on the PXE boot minion)
+  end
 end
 
 Then(/^terminal "([^"]*)" should have got a retail network IP address$/) do |host|
   node = get_target(host)
   output, return_code = node.run("ip -4 address show eth1")
-  net_prefix = $private_net.sub(%r{\.0+/24$}, ".")
   raise "Terminal #{host} did not get an address on eth1: #{output}" unless return_code.zero? and output.include? net_prefix
 end
 
@@ -976,4 +1052,55 @@ When(/^I wait until package "([^"]*)" is removed from "([^"]*)" via spacecmd$/) 
     sleep 1
     break unless result.include? pkg
   end
+end
+
+When(/^I copy the retail configuration file "([^"]*)" on server$/) do |file|
+  # Reuse the value during scenario (it will be automatically cleaned after it)
+  @retail_config = File.dirname(__FILE__) + '/../upload_files/' + file
+  dest = "/tmp/" + file
+  return_code = file_inject($server, @retail_config, dest)
+  raise "File #{file} couldn't be copied to server" unless return_code.zero?
+  sed_values = "s/<PROXY_HOSTNAME>/#{$proxy.full_hostname}/; "
+  sed_values << "s/<NET_PREFIX>/#{net_prefix}/; "
+  sed_values << "s/<PROXY>/#{ADDRESSES['proxy']}/; "
+  sed_values << "s/<RANGE_BEGIN>/#{ADDRESSES['range begin']}/; "
+  sed_values << "s/<RANGE_END>/#{ADDRESSES['range end']}/; "
+  sed_values << "s/<PXEBOOT>/#{ADDRESSES['pxeboot']}/; "
+  sed_values << "s/<PXEBOOT_MAC>/#{$pxeboot_mac}/; "
+  $server.run("sed -i '#{sed_values}' #{dest}")
+end
+
+Given(/^the retail configuration file name is "([^"]*)"$/) do |file|
+  @retail_config = File.dirname(__FILE__) + '/../upload_files/' + file
+end
+
+When(/^I import the retail configuration using retail_yaml command/) do
+  filepath = "/tmp/" + File.basename(@retail_config)
+  $server.run("retail_yaml --api-user admin --api-pass admin --from-yaml #{filepath}")
+end
+
+When(/^I delete all the terminals imported$/) do
+  terminals = get_terminals_from_yaml(@retail_config)
+  terminals.each do |terminal|
+    steps %(
+      When I follow "#{terminal}" terminal
+      And I follow "Delete System"
+      And I should see a "Confirm System Profile Deletion" text
+      And I click on "Delete Profile"
+      Then I should see a "has been deleted" text
+    )
+  end
+end
+
+When(/^I remove all the DHCP hosts created by retail_yaml$/) do
+  terminals = get_terminals_from_yaml(@retail_config)
+  terminals.each do |terminal|
+    raise unless find(:xpath, "//*[@value='#{terminal}']/../../../..//*[@title='Remove item']").click
+  end
+end
+
+When(/^I remove the bind zones created by retail_yaml$/) do
+  domain = get_branch_prefix_from_yaml(@retail_config)
+  raise unless find(:xpath, "//*[text()='Configured Zones']/../..//*[@value='#{domain}']/../../../..//*[@title='Remove item']").click
+  raise unless find(:xpath, "//*[text()='Available Zones']/../..//*[@value='#{domain}' and @name='Name']/../../../..//i[@title='Remove item']").click
 end

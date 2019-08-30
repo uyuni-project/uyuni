@@ -134,6 +134,11 @@ Before('@server_http_proxy') do
   skip_this_scenario unless $server_http_proxy
 end
 
+# Retail configuration file
+Before('@retail_massive_import') do
+  step %(the retail configuration file name is "massive-import-terminals.yml")
+end
+
 # have more infos about the errors
 def debug_server_on_realtime_failure
   puts '#' * 51 + ' /var/log/rhn/rhn_web_ui.log ' + '#' * 51

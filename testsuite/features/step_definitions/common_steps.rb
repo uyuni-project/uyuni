@@ -40,6 +40,22 @@ Then(/^I can see all system information for "([^"]*)"$/) do |host|
   step %(I should see a "#{os_pretty}" text) if os_pretty.include? 'SUSE Linux'
 end
 
+Then(/^I should see the terminals imported from the configuration file/) do
+  terminals = get_terminals_from_yaml(@retail_config)
+  terminals.each { |terminal| step %(I should see a "#{terminal}" text) }
+end
+
+Then(/^I should not see any terminals imported from the configuration file/) do
+  terminals = get_terminals_from_yaml(@retail_config)
+  terminals.each { |terminal| step %(I should not see a "#{terminal}" text) }
+end
+
+When(/^I enter the hostname of "([^"]*)" terminal as "([^"]*)"$/) do |host, hostname|
+  domain = get_branch_prefix_from_yaml(@retail_config)
+  puts "The hostname of #{host} terminal is #{host}.#{domain}"
+  step %(I enter "#{host}.#{domain}" as "#{hostname}")
+end
+
 # events
 
 When(/^I wait until event "([^"]*)" is completed$/) do |event|
@@ -168,6 +184,40 @@ end
 
 And(/^I navigate to "([^"]*)" page$/) do |page|
   visit("https://#{$server.full_hostname}/#{page}")
+end
+
+# nagios steps
+
+When(/^I perform a nagios check patches for "([^"]*)"$/) do |host|
+  system_name = get_system_name(host)
+  command = "/usr/lib/nagios/plugins/check_suma_patches #{system_name} > /tmp/nagios.out"
+  $server.run(command, false, 600, 'root')
+end
+
+When(/^I perform a nagios check last event for "([^"]*)"$/) do |host|
+  system_name = get_system_name(host)
+  command = "/usr/lib/nagios/plugins/check_suma_lastevent #{system_name} > /tmp/nagios.out"
+  $server.run(command, false, 600, 'root')
+end
+
+When(/^I perform an invalid nagios check patches$/) do
+  command = '/usr/lib/nagios/plugins/check_suma_patches does.not.exist > /tmp/nagios.out'
+  $server.run(command, false, 600, 'root')
+end
+
+Then(/^I should see CRITICAL: 1 critical patch pending$/) do
+  command = 'grep "CRITICAL: 1 critical patch(es) pending" /tmp/nagios.out'
+  $server.run(command, true, 600, 'root')
+end
+
+Then(/^I should see Completed: OpenSCAP xccdf scanning scheduled by admin/) do
+  command = 'grep "Completed: OpenSCAP xccdf scanning scheduled by admin" /tmp/nagios.out'
+  $server.run(command, true, 600, 'root')
+end
+
+Then(/^I should see an unknown system message$/) do
+  command = 'grep -i "^Unknown system:.*does.not.exist" /tmp/nagios.out 2>&1'
+  $server.run(command, true, 600, 'root')
 end
 
 # systemspage and clobber
@@ -509,6 +559,27 @@ When(/^I set the activation key "([^"]*)" in the bootstrap script on the server$
   $server.run("sed -i '/^ACTIVATION_KEYS=/c\\ACTIVATION_KEYS=#{key}' /srv/www/htdocs/pub/bootstrap/bootstrap.sh")
   output, code = $server.run('cat /srv/www/htdocs/pub/bootstrap/bootstrap.sh')
   assert(output.include?(key))
+end
+
+When(/^I create bootstrap script and set the activation key "([^"]*)" in the bootstrap script on the proxy$/) do |key|
+  $proxy.run('mgr-bootstrap')
+  $proxy.run("sed -i '/^ACTIVATION_KEYS=/c\\ACTIVATION_KEYS=#{key}' /srv/www/htdocs/pub/bootstrap/bootstrap.sh")
+  output, code = $proxy.run('cat /srv/www/htdocs/pub/bootstrap/bootstrap.sh')
+  assert(output.include?(key))
+end
+
+When(/^I bootstrap pxeboot minion via bootstrap script on the proxy$/) do
+  file = 'bootstrap-pxeboot.exp'
+  source = File.dirname(__FILE__) + '/../upload_files/' + file
+  dest = "/tmp/" + file
+  return_code = file_inject($proxy, source, dest)
+  raise 'File injection failed' unless return_code.zero?
+  ipv4 = net_prefix + ADDRESSES['pxeboot']
+  $proxy.run("expect -f /tmp/#{file} #{ipv4}")
+end
+
+When(/^I accept key of pxeboot minion in the Salt master$/) do
+  $server.run("salt-key -y --accept=pxeboot.example.org")
 end
 
 Then(/^file "([^"]*)" should contain "([^"]*)" on "([^"]*)"$/) do |filename, content, host|
