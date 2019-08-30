@@ -208,6 +208,8 @@ class Hierarchy extends React.Component {
   componentWillUnmount() {
     d3.select("#visualization-filter-wrapper").exit().remove();
     d3.select("#svg-wrapper").exit().remove();
+    // This was disabled in displayHierarchy
+    registerSpacewalkContentObservers && registerSpacewalkContentObservers();
   }
 
   showFilters = () => {
