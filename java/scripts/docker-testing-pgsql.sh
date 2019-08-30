@@ -22,7 +22,7 @@ cp /root/rhn.conf /etc/rhn/rhn.conf
 
 # Resolve libs and run tests
 cd /manager/java
-ant resolve-ivy
+ant -f manager-build.xml ivy
 
 cp buildconf/test/rhn.conf.postgresql-example buildconf/test/rhn.conf
 ant -f manager-build.xml refresh-branding-jar $TARGET
