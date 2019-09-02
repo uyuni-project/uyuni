@@ -653,17 +653,6 @@ When(/^I install Salt packages from "(.*?)"$/) do |host|
 end
 
 # minion bootstrap steps
-When(/^I enter the hostname of "([^"]*)" as "([^"]*)"$/) do |host, hostname|
-  system_name = get_system_name(host)
-  puts "The hostname of #{host} is #{system_name}"
-  step %(I enter "#{system_name}" as "#{hostname}")
-end
-
-When(/^I select the hostname of the proxy from "([^"]*)"$/) do |proxy|
-  next if $proxy.nil?
-  step %(I select "#{$proxy.full_hostname}" from "#{proxy}")
-end
-
 Then(/^I run spacecmd listevents for "([^"]*)"$/) do |host|
   system_name = get_system_name(host)
   $server.run('spacecmd -u admin -p admin clear_caches')

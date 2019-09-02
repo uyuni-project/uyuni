@@ -29,7 +29,7 @@ Feature: Build image with authenticated registry
     When I navigate to images build webpage
     And I select "portus_profile" from "profileId"
     And I enter "latest" as "version"
-    And I select sle-minion hostname in Build Host
+    And I select the hostname of "sle-minion" from "buildHostId"
     And I click on "submit-btn"
     Then I wait until I see "portus_profile" text
     # Verify the status of images in the authenticated image store

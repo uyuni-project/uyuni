@@ -110,7 +110,7 @@ Feature: Be able to register a CentOS 7 traditional client and do some basic ope
     When I check "manageWithSSH"
     And I enter the hostname of "ceos-ssh-minion" as "hostname"
     And I enter "linux" as "password"
-    And I select the hostname of the proxy from "proxies"
+    And I select the hostname of "proxy" from "proxies"
     And I click on "Bootstrap"
     And I wait until I see "Successfully bootstrapped host!" text
     And I navigate to "rhn/systems/Overview.do" page

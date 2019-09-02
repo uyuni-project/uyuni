@@ -15,7 +15,7 @@ Feature: Build OS images
     Given I am authorized as "kiwikiwi" with password "kiwikiwi"
     When I navigate to images build webpage
     And I select "suse_os_image" from "profileId"
-    And I select sle-minion hostname in Build Host
+    And I select the hostname of "sle-minion" from "buildHostId"
     And I click on "submit-btn"
     # Check the OS image built as Kiwi image administrator
     Given I am on the Systems overview page of this "sle-minion"
