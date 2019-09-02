@@ -22,10 +22,6 @@ def retrieve_minion_id
   minion_id
 end
 
-When(/^I select sle-minion hostname in Build Host$/) do
-  select($minion.full_hostname, from: 'buildHostId')
-end
-
 When(/^I navigate to images webpage$/) do
   visit("https://#{$server.full_hostname}/rhn/manager/cm/images")
 end

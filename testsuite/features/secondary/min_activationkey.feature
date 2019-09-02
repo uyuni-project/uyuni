@@ -58,7 +58,7 @@ Feature: Bootstrap a Salt minion via the GUI with an activation key
     And I enter "root" as "user"
     And I enter "linux" as "password"
     And I select "1-MINION-TEST" from "activationKeys"
-    And I select the hostname of the proxy from "proxies"
+    And I select the hostname of "proxy" from "proxies"
     And I click on "Bootstrap"
     And I wait until I see "Successfully bootstrapped host!" text
     When I navigate to "rhn/systems/Overview.do" page
