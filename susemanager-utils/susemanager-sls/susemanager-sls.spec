@@ -21,7 +21,7 @@
 %endif
 
 Name:           susemanager-sls
-Version:        4.0.17
+Version:        4.0.19
 Release:        1
 Summary:        Static Salt state files for SUSE Manager
 License:        GPL-2.0-only

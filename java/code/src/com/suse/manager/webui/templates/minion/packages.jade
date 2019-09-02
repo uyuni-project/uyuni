@@ -3,6 +3,6 @@ include ./minion-header.jade
 #package-states
 
 script(type='text/javascript').
-    const csrfToken = "#{csrf_token}";
-    const serverId = "#{server.id}";
+    window.csrfToken = "#{csrf_token}";
+    window.serverId = "#{server.id}";
 script(src='/javascript/manager/minion/packages/package-states.bundle.js?cb=#{webVersion}', type='text/javascript')

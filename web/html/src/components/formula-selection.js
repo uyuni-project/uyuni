@@ -10,6 +10,7 @@ const Buttons = require("../components/buttons");
 const Button = Buttons.Button;
 const AsyncButton = Buttons.AsyncButton;
 const capitalize = require("../utils/functions").Utils.capitalize;
+const {SectionToolbar} = require("components/section-toolbar/section-toolbar");
 
 class FormulaSelection extends React.Component {
     constructor(props) {
@@ -230,7 +231,7 @@ class FormulaSelection extends React.Component {
         return (
             <div>
                 <Messages items={items}/>
-                <div className="spacewalk-section-toolbar">
+                <SectionToolbar>
                     <div className="action-button-wrapper">
                         <span className="btn-group pull-right">
                             <AsyncButton id="save-btn" icon="fa-floppy-o" action={this.saveRequest} text={t("Save")} />
@@ -238,7 +239,7 @@ class FormulaSelection extends React.Component {
                             <Button id="reset-btn" icon="fa-undo" text="Reset Changes" className="btn btn-default" handler={this.resetChanges} />
                         </span>
                     </div>
-                </div>
+                </SectionToolbar>
                 <div className="panel panel-default">
                     <div className="panel-heading">
                         <h4>{t("Formulas")}</h4>

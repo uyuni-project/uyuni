@@ -3,8 +3,8 @@ include ../common.jade
 #key-management
 
 script(type='text/javascript').
-    const csrfToken = "#{csrf_token}";
-    const serverId = "#{serverId}";
+    window.csrfToken = "#{csrf_token}";
+    window.serverId = "#{serverId}";
 +userPreferences
 script(src='/javascript/manager/salt/keys/key-management.bundle.js?cb=#{webVersion}', type='text/javascript')
 

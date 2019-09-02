@@ -316,6 +316,7 @@ public class ColumnTag extends TagSupport {
 
         if (showUrl()) {
             setupAttribute(href, "href", getUrl());
+            href.setAttribute("class", "js-spa");
             out.print(href.renderOpenTag());
         }
     }
@@ -391,7 +392,7 @@ public class ColumnTag extends TagSupport {
 
             String title = LocalizationService.getInstance().
                 getMessage("listdisplay.sortyby");
-            retval = "<a title=\"" + title + "\" href=\"" + pageUrl + "\">" +
+            retval = "<a class=\"js-spa\" title=\"" + title + "\" href=\"" + pageUrl + "\">" +
                 contents + "</a>";
         }
         else {

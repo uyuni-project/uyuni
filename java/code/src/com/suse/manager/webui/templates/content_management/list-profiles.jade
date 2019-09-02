@@ -3,8 +3,8 @@ include ../common.jade
 #image-profiles
 
 script(type='text/javascript').
-    const csrfToken = "#{csrf_token}";
-    const isAdmin = #{isAdmin};
+    window.csrfToken = "#{csrf_token}";
+    window.isAdmin = #{isAdmin};
 
 +userPreferences
 script(src='/javascript/manager/images/image-profiles.bundle.js?cb=#{webVersion}', type='text/javascript')

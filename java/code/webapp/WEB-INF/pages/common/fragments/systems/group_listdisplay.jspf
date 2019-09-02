@@ -31,7 +31,7 @@
   <!--Updates Column -->
   <rl:column sortable="false" bound="false" headerkey="grouplist.jsp.status" styleclass="center" headerclass="thin-column">
 
-    <a href="/rhn/groups/ListErrata.do?sgid=${current.id}">
+    <a href="/rhn/groups/ListErrata.do?sgid=${current.id}" class="js-spa">
     <c:choose>
       <c:when test="${current.mostSevereErrata == 'Security Advisory'}">
         <rhn:icon type="system-crit" title="grouplist.jsp.security" />
@@ -47,7 +47,7 @@
 
   <!--Name Column -->
   <rl:column sortable="true" bound="false" headerkey="grouplist.jsp.name" sortattr="name">
-    <a href="/rhn/groups/GroupDetail.do?sgid=${current.id}">
+    <a href="/rhn/groups/GroupDetail.do?sgid=${current.id}" class="js-spa">
       <c:out value="${current.name}" escapeXml="true" />
     </a>
   </rl:column>
@@ -59,7 +59,7 @@
         <c:out value="${current.serverCount}" />
       </c:when>
       <c:otherwise>
-        <a href="/rhn/groups/ListRemoveSystems.do?sgid=${current.id}">
+        <a href="/rhn/groups/ListRemoveSystems.do?sgid=${current.id}" class="js-spa">
           ${current.serverCount}</a>
       </c:otherwise>
     </c:choose>
@@ -72,7 +72,7 @@
       styleclass="center"
       headerclass="center">
 
-    <a class="link-button" href="/rhn/systems/WorkWithGroup.do?sgid=${current.id}">
+    <a class="link-button" href="/rhn/systems/WorkWithGroup.do?sgid=${current.id}" class="js-spa">
       <bean:message key="grouplist.jsp.use"/>
     </a>
   </rl:column>

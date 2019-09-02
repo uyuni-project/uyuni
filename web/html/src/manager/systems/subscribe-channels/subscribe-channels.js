@@ -4,7 +4,6 @@
 
 const React = require("react");
 
-const ReactDOM = require("react-dom");
 const {AsyncButton, Button} = require("components/buttons");
 const {ActionSchedule} = require("components/action-schedule");
 const Network = require("utils/network");

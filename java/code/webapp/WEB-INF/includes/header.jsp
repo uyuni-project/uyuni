@@ -95,7 +95,7 @@
         </div>
       </form>
     </li>
-    <li class="ssm-box">
+    <li id="ssm-box" class="ssm-box">
       <a href="/rhn/ssm/index.do" id="manage-ssm" title="<bean:message key="manage"/>">
         <div id="header_selcount"><rhn:setdisplay user="${requestScope.session.user}" /></div>
       </a>
@@ -111,7 +111,7 @@
           <c:set var="rurl" value="${pageContext.request.requestURI}" />
         </c:otherwise>
       </c:choose>
-      <a id="clear-ssm" href="/rhn/systems/Overview.do?empty_set=true&amp;return_url=${rhn:urlEncode(rurl)}"
+      <a class="js-spa" id="clear-ssm" href="/rhn/systems/Overview.do?empty_set=true&amp;return_url=${rhn:urlEncode(rurl)}"
           title="<bean:message key="clear"/>">
         <i class="fa fa-eraser"></i>
       </a>

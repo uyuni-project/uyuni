@@ -5,18 +5,15 @@
 
 <html>
 
-<head>
+<body>
 <script src="/javascript/channel_tree.js?cb=${rhn:getConfig('web.version')}" type="text/javascript"></script>
 <script type="text/javascript">
-var filtered = ${requestScope.isFiltered};
-function showFiltered() {
-  if (filtered)
-    ShowAll();
-}
+    var filtered = ${requestScope.isFiltered};
+    function showFiltered() {
+        if (filtered)
+            ShowAll();
+    }
 </script>
-</head>
-
-<body onLoad="onLoadStuff(4); showFiltered();">
 <rhn:toolbar
    base="h1"
    icon="header-channel"
@@ -39,6 +36,11 @@ function showFiltered() {
   <rhn:submitted />
   <%@ include file="/WEB-INF/pages/common/fragments/channel/channel_tree_multiorg.jspf" %>
 </form>
+
+<script>
+    onLoadStuff(4);
+    showFiltered();
+</script>
 
 </body>
 </html>

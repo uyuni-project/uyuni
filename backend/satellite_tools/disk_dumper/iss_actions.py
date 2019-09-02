@@ -15,7 +15,7 @@
 
 import sys
 
-import iss_ui
+from . import iss_ui
 
 
 class ActionDeps:
@@ -65,7 +65,7 @@ class ActionDeps:
             'kickstarts',
             'supportinfo',
             'suse-products',
-            'scc-repositories'
+            'scc-repositories',
             'suse-product-channels',
             'suse-upgrade-paths',
             'suse-product-extensions',

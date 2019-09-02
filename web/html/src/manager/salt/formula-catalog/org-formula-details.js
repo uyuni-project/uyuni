@@ -6,6 +6,7 @@ const ReactDOM = require("react-dom");
 
 const { TopPanel } = require('components/panels/TopPanel');
 const Network = require("utils/network");
+const SpaRenderer  = require("core/spa/spa-renderer").default;
 
 class FormulaDetail extends React.Component {
     constructor(props, context) {
@@ -79,7 +80,7 @@ class FormulaDetail extends React.Component {
     }
 }
 
-ReactDOM.render(
+SpaRenderer.renderNavigationReact(
   <FormulaDetail />,
   document.getElementById('formula-details')
 );

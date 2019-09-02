@@ -43,7 +43,9 @@
          sortable="true"
          headerkey="org.trust.org"
          sortattr="orgName">
-            <a href="OrgDetails.do?oid=${current.org.id}"> <c:out
+            <a
+                class="js-spa"
+                href="OrgDetails.do?oid=${current.org.id}"> <c:out
                     value="${current.org.name}"/> </a>
       </rl:column>
       <rl:column

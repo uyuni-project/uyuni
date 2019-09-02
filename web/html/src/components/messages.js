@@ -1,7 +1,7 @@
 /* eslint-disable */
-const React = require("react");
+import React  from "react";
 
-class Messages extends React.Component {
+export class Messages extends React.Component {
     _classNames = {
         "error": "danger",
         "success": "success",
@@ -22,20 +22,17 @@ function msg(severityIn, ...textIn) {
     return textIn.map(function(txt) {return {severity: severityIn, text: textIn}});
 }
 
-module.exports = {
-    Messages : Messages,
-    Utils: {
-        info: function (textIn) {
-            return msg("info", textIn);
-        },
-        success: function (textIn) {
-            return msg("success", textIn);
-        },
-        warning: function (textIn) {
-            return msg("warning", textIn);
-        },
-        error: function (textIn) {
-            return msg("error", textIn);
-        }
-    }
+export const Utils = {
+  info: function (textIn) {
+    return msg("info", textIn);
+  },
+  success: function (textIn) {
+    return msg("success", textIn);
+  },
+  warning: function (textIn) {
+    return msg("warning", textIn);
+  },
+  error: function (textIn) {
+    return msg("error", textIn);
+  }
 }

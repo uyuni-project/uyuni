@@ -1,6 +1,6 @@
-const PropTypes = require('prop-types');
 /* eslint-disable */
-const React = require("react");
+import PropTypes from 'prop-types';
+import React from "react";
 
 /**
  * Various HTML button components.
@@ -26,7 +26,7 @@ class _ButtonBase extends React.Component {
 /**
  * A button which performs an asynchronous action and displays an animation while waiting for the result.
  */
-class AsyncButton extends _ButtonBase {
+export class AsyncButton extends _ButtonBase {
 
   constructor(props) {
     super(props);
@@ -124,7 +124,7 @@ AsyncButton.propTypes = {
 /**
  * A simple HTML button with an icon and an optional text.
  */
-class Button extends _ButtonBase {
+export class Button extends _ButtonBase {
 
   constructor(props) {
     super(props);
@@ -162,7 +162,7 @@ Button.propTypes = {
 /**
  * An HTML anchor which displays as a button.
  */
-class LinkButton extends _ButtonBase {
+export class LinkButton extends _ButtonBase {
   constructor(props) {
     super(props);
   }
@@ -201,7 +201,7 @@ LinkButton.props = {
 /**
  * A simple submit button with an icon and an optional text.
  */
-class SubmitButton extends _ButtonBase {
+export class SubmitButton extends _ButtonBase {
   constructor(props) {
     super(props);
   }
@@ -236,7 +236,7 @@ SubmitButton.props = {
 /**
  * A bootstrap-style dropdown button.
  */
-class DropdownButton extends _ButtonBase {
+export class DropdownButton extends _ButtonBase {
   constructor(props) {
     super(props);
   }
@@ -283,11 +283,3 @@ DropdownButton.props = {
   /** className of the button. 'dropdown-toggle' and 'btn' classes are always prepended. */
   className: PropTypes.string
 };
-
-module.exports = {
-    Button : Button,
-    LinkButton : LinkButton,
-    AsyncButton : AsyncButton,
-    SubmitButton : SubmitButton,
-    DropdownButton : DropdownButton
-}

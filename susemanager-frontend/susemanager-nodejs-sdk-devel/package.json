@@ -12,6 +12,9 @@
     "@babel/preset-env": "^7.3.1",
     "@babel/preset-flow": "^7.0.0",
     "@babel/preset-react": "^7.0.0",
+    "@storybook/addon-centered": "^5.1.11",
+    "@storybook/addon-info": "^5.1.11",
+    "@storybook/react": "^5.1.11",
     "babel-eslint": "^10.0.1",
     "babel-jest": "^24.7.1",
     "babel-loader": "^8.0.5",
@@ -48,6 +51,7 @@
     "react-dom": "^16.8.6",
     "react-hot-loader": "^4.12.9",
     "react-select": "2.4.4",
+    "senna": "^2.7.8",
     "toastr": "^2.1.4",
     "use-immer": "^0.3.0"
   },

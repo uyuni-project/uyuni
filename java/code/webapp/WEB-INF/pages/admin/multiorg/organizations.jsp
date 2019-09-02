@@ -30,7 +30,9 @@
                    sortable="true"
                    headerkey="org.nopunc.displayname"
                    sortattr="name">
-                <a href="/rhn/admin/multiorg/OrgDetails.do?oid=${current.id}">
+                <a
+                    class="js-spa"
+                    href="/rhn/admin/multiorg/OrgDetails.do?oid=${current.id}">
                         <c:out value="${current.name}"/>
                     </a>
                 <c:if test="${current.id == 1}">*</c:if>
@@ -51,7 +53,9 @@
               sortable="true"
               headerkey="org.trust.trusts"
               attr="users">
-      <a href="/rhn/admin/multiorg/OrgTrusts.do?oid=${current.id}">${current.trusts}</a>
+      <a
+          class="js-spa"
+          href="/rhn/admin/multiorg/OrgTrusts.do?oid=${current.id}">${current.trusts}</a>
    </rl:column>
 </rl:list>
 

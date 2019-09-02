@@ -1,6 +1,7 @@
 /* eslint-disable */
 'use strict';
 
+const SpaRenderer  = require("core/spa/spa-renderer").default;
 const Network = require('../../utils/network');
 const React = require('react');
 const ReactDOM = require('react-dom');
@@ -204,6 +205,13 @@ class Hierarchy extends React.Component {
       );
   }
 
+  componentWillUnmount() {
+    d3.select("#visualization-filter-wrapper").exit().remove();
+    d3.select("#svg-wrapper").exit().remove();
+    // This was disabled in displayHierarchy
+    registerSpacewalkContentObservers && registerSpacewalkContentObservers();
+  }
+
   showFilters = () => {
     const filterBox = $('#visualization-filter-wrapper');
     if (filterBox.hasClass("open")) {
@@ -241,7 +249,7 @@ class Hierarchy extends React.Component {
   }
 }
 
-ReactDOM.render(
+SpaRenderer.renderNavigationReact(
   <Hierarchy />,
   document.getElementById('hierarchy')
 );

@@ -1,6 +1,7 @@
 /* eslint-disable */
 'use strict';
 
+const {SectionToolbar} = require("components/section-toolbar/section-toolbar");
 const React = require('react');
 const ReactDOM = require('react-dom');
 const Network = require('utils/network');
@@ -17,6 +18,7 @@ const PopUp = require("components/popup").PopUp;
 const ProgressBar = require("components/progressbar").ProgressBar;
 const CustomDiv = require("components/custom-objects").CustomDiv;
 const {Toggler} = require("components/toggler");
+const SpaRenderer  = require("core/spa/spa-renderer").default;
 
 const _DATA_ROOT_ID = 'baseProducts';
 
@@ -223,7 +225,7 @@ class ProductsPageWrapper extends React.Component {
     const tabs = 
       <div className='spacewalk-content-nav'>
         <ul className='nav nav-tabs'>
-          { _SETUP_WIZARD_STEPS.map(step => <li key={step.id} className={step.active ? 'active' : ''}><a href={step.url}>{t(step.label)}</a></li>)}
+          { _SETUP_WIZARD_STEPS.map(step => <li key={step.id} className={step.active ? 'active' : ''}><a className='js-spa' href={step.url}>{t(step.label)}</a></li>)}
         </ul>
       </div>;
 
@@ -266,7 +268,7 @@ class ProductsPageWrapper extends React.Component {
           <div className='col-sm-9'>
             <Messages items={this.state.errors}/>
             <div>
-              <div className='spacewalk-section-toolbar'>
+              <SectionToolbar>
                 <div className='action-button-wrapper'>
                   <div className='btn-group'>
                     <Button
@@ -280,7 +282,7 @@ class ProductsPageWrapper extends React.Component {
                     {addProductButton}
                   </div>
                 </div>
-              </div>
+              </SectionToolbar>
               <Products
                   data={this.state.serverData}
                   loading={this.state.loading}
@@ -896,7 +898,7 @@ class ChannelList extends React.Component {
   }
 }
 
-ReactDOM.render(
+SpaRenderer.renderNavigationReact(
   <ProductsPageWrapper />,
   document.getElementById('products')
 );

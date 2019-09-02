@@ -1,6 +1,18 @@
 - dmidecode does not exist on ppc64le and s390x (bsc#1145119)
 
 -------------------------------------------------------------------
+Thu Aug 29 14:45:38 CEST 2019 - jgonzalez@suse.com
+
+- version 4.0.19-1
+- Bootstrapping RES6/RHEL6/SLE11 with TLS1.2 now shows error message. (bsc#1147126)
+
+-------------------------------------------------------------------
+Wed Aug 28 17:53:06 CEST 2019 - jgonzalez@suse.com
+
+- version 4.0.18-1
+- Fix for issue with bootstrapping RES minions (bsc#1147126)
+
+-------------------------------------------------------------------
 Tue Jul 30 15:01:47 CEST 2019 - jgonzalez@suse.com
 
 - version 4.0.17-1
