@@ -1,3 +1,4 @@
+- Do not crash 'rhn-satellite-exporter' with ModuleNotFound error (bsc#1146869)
 - spacewalk-remove-channel check that channel doesn't have cloned channels before deleting it (bsc#1138454)
 - Fix broken spacewalk-data-fsck utility
 - Add '--latest' support for reposync on DEB based repositories
