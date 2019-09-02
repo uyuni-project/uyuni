@@ -15,8 +15,8 @@ export type TreeData = {
 };
 
 export type Props = {
-  data: TreeData,
-  renderItem: (item: TreeItem, renderNameColumn: Function) => void,
+  data?: TreeData,
+  renderItem: (item: TreeItem, renderNameColumn: Function) => Node,
   header?: Node,
   initiallyExpanded?: Array<string>,
   onItemSelectionChanged?: (item: TreeItem, checked: boolean) => void,
@@ -48,15 +48,17 @@ export const Tree = (props: Props) => {
 
       setSelected(oldSelected => checked ? oldSelected.concat([id]) : oldSelected.filter(itemId => itemId !== id))
 
-      const item = props.data.items.find(item => item.id === id);
-      if (props.onItemSelectionChanged != null && item != null) {
-        props.onItemSelectionChanged(item, checked);
+      if (props.data) {
+        const item = props.data.items.find(item => item.id === id);
+        if (props.onItemSelectionChanged != null && item != null) {
+          props.onItemSelectionChanged(item, checked);
+        }
       }
     }
   }
 
   function renderItem (item: TreeItem, idx: number) {
-    const children = props.data.items
+    const children = (props.data != null ? props.data.items : [])
       .filter(row => (item.children || []).includes(row.id))
       .map((child, childIdx) => renderItem(child, childIdx));
     const sublistVisible = isSublistVisible(item.id);
@@ -107,13 +109,14 @@ export const Tree = (props: Props) => {
     );
   };
 
-  const rootNode = props.data.items.find(item => item.id === props.data.rootId);
+  const data = props.data || {items: [{id: '0'}], rootId: '0'};
+  const rootNode = data.items.find(item => item.id === data.rootId);
 
   if (rootNode == null) {
     return <div>{t('Invalid data')}</div>;
   }
 
-  const nodes = props.data.items
+  const nodes = data.items
     .filter(item => (rootNode.children || []).includes(item.id))
     .map((item, idx) => renderItem(item, idx));
 
