@@ -26,7 +26,7 @@ try:
 except ImportError:
     #  python3
     import io as cStringIO
-import dumper
+from . import dumper
 from spacewalk.common.usix import raise_with_tb
 from spacewalk.common import rhnMail
 from spacewalk.common.rhnConfig import CFG, initCFG
@@ -37,12 +37,15 @@ from spacewalk.server.rhnSQL import SQLError, SQLSchemaError, SQLConnectError
 from spacewalk.satellite_tools.exporter import xmlWriter
 from spacewalk.satellite_tools import xmlDiskSource, diskImportLib, progress_bar
 from spacewalk.satellite_tools.syncLib import initEMAIL_LOG, dumpEMAIL_LOG, log2email, log2stderr, log2stdout
-from iss_ui import UI
-from iss_actions import ActionDeps
-import iss_isos
+from .iss_ui import UI
+from .iss_actions import ActionDeps
+from . import iss_isos
 
 t = gettext.translation('spacewalk-backend-server', fallback=True)
-_ = t.ugettext
+try:
+    _ = t.ugettext
+except AttributeError:
+    _ = t.gettext
 
 # bare-except and broad-except
 # pylint: disable=W0702,W0703
@@ -103,7 +106,7 @@ class FileMapper:
             'suse_products': xmlDiskSource.SuseProductsDiskSource(self.mp),
             'suse_product_channels': xmlDiskSource.SuseProductChannelsDiskSource(self.mp),
             'suse_upgrade_paths': xmlDiskSource.SuseUpgradePathsDiskSource(self.mp),
-            'suse_product_extensions': xmlDiskSource.SuseProductEntensionsDiskSource(self.mp),
+            'suse_product_extensions': xmlDiskSource.SuseProductExtensionsDiskSource(self.mp),
             'suse_product_repositories': xmlDiskSource.SuseProductRepositoriesDiskSource(self.mp),
             'scc_repositories': xmlDiskSource.SCCRepositoriesDiskSource(self.mp),
             'suse_subscriptions': xmlDiskSource.SuseSubscriptionsDiskSource(self.mp),
@@ -1561,7 +1564,7 @@ def compress_file(f):
     """
     Gzip the given file and then remove the file.
     """
-    datafile = open(f, 'r')
+    datafile = open(f, 'rb')
     gzipper = gzip.GzipFile(f + '.gz', 'w', 9)
     gzipper.write(datafile.read())
     gzipper.flush()

@@ -61,8 +61,14 @@
     <delete dir="${test.results.dir}" />
   </target>
 
-  <target name="ivy" description="Retrieves dependencies through ivy">
-    <ivy-retrieve sync="true" />
+  <target name="obs-to-maven" description="Updates local maven repository with OBS jars">
+    <exec failonerror="true" executable="obs-to-maven">
+      <arg line="${basedir}/buildconf/ivy/obs-maven-config.yaml ${basedir}/buildconf/ivy/repository" />
+    </exec>
+  </target>
+
+  <target name="ivy" depends="obs-to-maven" description="Retrieves dependencies through ivy">
+    <ivy-retrieve sync="true" type="jar,bundle"/>
   </target>
 
   <target name="refresh-branding-jar" depends="clean" description="Compiles and builds the SUSE branding jar">
@@ -324,7 +330,7 @@
 
   <target name="checkstyle" depends="compile" description="Runs the checkstyle tool on sources">
     <taskdef resource="com/puppycrawl/tools/checkstyle/ant/checkstyle-ant-task.properties" classpathref="libjars" />
-    <checkstyle config="buildconf/checkstyle.xml">
+    <checkstyle config="${basedir}/buildconf/checkstyle.xml">
       <classpath>
         <path location="${build.dir}/classes" />
         <path refid="libjars" />

@@ -1,0 +1,142 @@
+// @flow
+import React, {useState} from 'react';
+import type {Node} from 'react';
+import { CustomDiv } from 'components/custom-objects';
+
+type TreeItem = {
+  id: string,
+  data?: Object,
+  children?: Array<string>,
+};
+
+type TreeData = {
+  rootId: string,
+  items: Array<TreeItem>,
+};
+
+type Props = {
+  data: TreeData,
+  renderItem: (item: TreeItem, renderNameColumn: Function) => void,
+  header?: Node,
+  initiallyExpanded?: Array<string>,
+  onItemSelectionChanged?: (item: TreeItem, checked: boolean) => void,
+  initiallySelected?: Array<string>,
+};
+
+export const Tree = (props: Props) => {
+  const [visibleSublists: Array<string>, setVisibleSublist] = useState(props.initiallyExpanded || []);
+  const [selected: Array<string>, setSelected] = useState(props.initiallySelected || []);
+
+  function isSublistVisible (id: string): boolean {
+    return visibleSublists.indexOf(id) !== -1;
+  }
+
+  function handleVisibleSublist (id: string): void {
+    setVisibleSublist(oldVisibleSublist => oldVisibleSublist.indexOf(id) !== -1
+      ? oldVisibleSublist.filter(item => item !== id)
+      : oldVisibleSublist.concat([id])
+    )
+  }
+
+  function isSelected (id: string): boolean {
+    return selected.indexOf(id) !== -1;
+  }
+
+  function handleSelectionChange (changeEvent: Event): void {
+    if (changeEvent.target instanceof HTMLInputElement) {
+      const { value: id, checked } = changeEvent.target;
+
+      setSelected(oldSelected => checked ? oldSelected.concat([id]) : oldSelected.filter(itemId => itemId !== id))
+
+      const item = props.data.items.find(item => item.id === id);
+      if (props.onItemSelectionChanged != null && item != null) {
+        props.onItemSelectionChanged(item, checked);
+      }
+    }
+  }
+
+  function renderItem (item: TreeItem, idx: number) {
+    const children = props.data.items
+      .filter(row => (item.children || []).includes(row.id))
+      .map((child, childIdx) => renderItem(child, childIdx));
+    const sublistVisible = isSublistVisible(item.id);
+    const openSubListIconClass = sublistVisible ? 'fa-angle-down' : 'fa-angle-right';
+
+    const renderNameColumn = (name: string): Node => {
+      const className = children.length > 0 ? "product-hover pointer" : "";
+      return (
+        <span
+          className={`product-description ${className}`}
+          onClick={() => handleVisibleSublist(item.id)}
+        >
+            {name}
+          </span>
+      );
+    };
+
+    return (
+      <li key={item.id} className={idx % 2 === 1 ? 'list-row-odd' : 'list-row-even'}>
+        <div className="product-details-wrapper" style={{'padding': '.7em'}}>
+          {
+            props.onItemSelectionChanged != null &&
+            <CustomDiv className="col" width="2" um="em">
+              <input type='checkbox'
+                     id={'checkbox-for-' + item.id}
+                     value={item.id}
+                     onChange={handleSelectionChange}
+                     checked={isSelected(item.id) ? 'checked' : ''}
+              />
+            </CustomDiv>
+          }
+          { (children.length > 0) &&
+          <CustomDiv className="col" width="2" um="em">
+            <i
+              className={`fa ${openSubListIconClass} fa-1-5x pointer product-hover`}
+              onClick={() => handleVisibleSublist(item.id)}
+            />
+          </CustomDiv>
+          }
+          {props.renderItem(item, renderNameColumn)}
+        </div>
+        { children.length > 0 && sublistVisible &&
+        <ul className="product-list">
+          { children }
+        </ul>
+        }
+      </li>
+    );
+  };
+
+  const rootNode = props.data.items.find(item => item.id === props.data.rootId);
+
+  if (rootNode == null) {
+    return <div>{t('Invalid data')}</div>;
+  }
+
+  const nodes = props.data.items
+    .filter(item => (rootNode.children || []).includes(item.id))
+    .map((item, idx) => renderItem(item, idx));
+
+  if (nodes == null || nodes.length === 0) {
+    return <div>{t('No data')}</div>;
+  }
+
+  return (
+    <ul className="product-list">
+      {props.header != null && (
+        <li className="list-header">
+          <div style={{'padding': '.7em'}}>
+            {
+              props.onItemSelectionChanged != null &&
+              <CustomDiv key="header1" className="col" width="2" um="em"/>
+            }
+            <CustomDiv key="header2" className="col" width="2" um="em"/>
+            {props.header}
+          </div>
+        </li>
+      )}
+      {nodes}
+    </ul>
+  );
+}
+

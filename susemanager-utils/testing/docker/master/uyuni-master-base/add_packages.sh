@@ -46,6 +46,7 @@ zypper --non-interactive in  \
 # Packages required to run the Java unit tests
 zypper --non-interactive in ant \
              ant-junit \
+             obs-to-maven \
              apache-ivy \
              java-11-openjdk-devel \
              pam \

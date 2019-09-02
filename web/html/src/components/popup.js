@@ -1,10 +1,8 @@
 /* eslint-disable */
-"use strict";
+import PropTypes from 'prop-types';
+import React from "react";
 
-const PropTypes = require('prop-types');
-const React = require("react");
-
-class PopUp extends React.Component {
+export class PopUp extends React.Component {
 
   componentDidMount() {
     $("#" + this.props.id).on("hidden.bs.modal", this.props.onClosePopUp);
@@ -65,8 +63,4 @@ PopUp.propTypes = {
 
 PopUp.defaultProps = {
   closableModal: true
-}
-
-module.exports = {
-  PopUp : PopUp
 }

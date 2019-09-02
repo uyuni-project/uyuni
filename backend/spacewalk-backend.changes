@@ -1,4 +1,5 @@
 - remove credentials also from potential rhn.conf backup files in spacewalk-debug (bsc#1146419)
+- Do not crash 'rhn-satellite-exporter' with ModuleNotFound error (bsc#1146869)
 - Don't skip Deb package tags on package import (bsc#1130040)
 - For backend-libs subpackages, exclude files for the server
   (already part of spacewalk-backend) to avoid conflicts (bsc#1148125)
