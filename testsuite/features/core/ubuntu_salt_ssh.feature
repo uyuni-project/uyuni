@@ -14,7 +14,7 @@ Feature: Bootstrap a SSH-managed Ubuntu minion and do some basic operations on i
     When I check "manageWithSSH"
     And I enter the hostname of "ubuntu-minion" as "hostname"
     And I enter "linux" as "password"
-    #    And I select the hostname of the proxy from "proxies"
+    And I select the hostname of "proxy" from "proxies"
     And I click on "Bootstrap"
     And I wait until I see "Successfully bootstrapped host!" text
     And I navigate to "rhn/systems/Overview.do" page
