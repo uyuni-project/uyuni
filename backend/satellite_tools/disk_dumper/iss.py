@@ -106,7 +106,7 @@ class FileMapper:
             'suse_products': xmlDiskSource.SuseProductsDiskSource(self.mp),
             'suse_product_channels': xmlDiskSource.SuseProductChannelsDiskSource(self.mp),
             'suse_upgrade_paths': xmlDiskSource.SuseUpgradePathsDiskSource(self.mp),
-            'suse_product_extensions': xmlDiskSource.SuseProductEntensionsDiskSource(self.mp),
+            'suse_product_extensions': xmlDiskSource.SuseProductExtensionsDiskSource(self.mp),
             'suse_product_repositories': xmlDiskSource.SuseProductRepositoriesDiskSource(self.mp),
             'scc_repositories': xmlDiskSource.SCCRepositoriesDiskSource(self.mp),
             'suse_subscriptions': xmlDiskSource.SuseSubscriptionsDiskSource(self.mp),
