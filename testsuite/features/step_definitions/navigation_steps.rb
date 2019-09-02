@@ -323,6 +323,23 @@ Given(/^I am on the "([^"]*)" page of this "([^"]*)"$/) do |page, host|
   )
 end
 
+When(/^I enter the hostname of "([^"]*)" as "([^"]*)"$/) do |host, hostname|
+  system_name = get_system_name(host)
+  puts "The hostname of #{host} is #{system_name}"
+  step %(I enter "#{system_name}" as "#{hostname}")
+end
+
+When(/^I select the hostname of "([^"]*)" from "([^"]*)"$/) do |host, hostname|
+  case host
+  when 'proxy'
+    # don't select anything if not in the list
+    next if $proxy.nil?
+    step %(I select "#{$proxy.full_hostname}" from "#{hostname}")
+  when 'sle-minion'
+    step %(I select "#{$minion.full_hostname}" from "#{hostname}")
+  end
+end
+
 When(/^I follow this "([^"]*)" link$/) do |host|
   system_name = get_system_name(host)
   step %(I follow "#{system_name}")
