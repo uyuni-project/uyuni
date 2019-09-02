@@ -21,8 +21,7 @@ server = ENV['SERVER']
 $stdout.sync = true
 STARTTIME = Time.new.to_i
 Capybara.default_max_wait_time = 10
-DEFAULT_TIMEOUT = 300
-CLICK_TIMEOUT = Capybara.default_max_wait_time * 2
+DEFAULT_TIMEOUT = 250
 
 def enable_assertions
   # include assertion globally
@@ -59,6 +58,13 @@ After do |scenario|
     # embed the image name in the cucumber HTML report
     embed('screenshots/' + img_name, 'image/png')
     debug_server_on_realtime_failure
+  end
+end
+
+AfterStep do
+  if all('.senna-loading').any?
+    puts "WARN: Step ends with an ajax transition not finished, let's wait a bit!"
+    raise 'Timeout: Waiting AJAX transition' unless has_no_css?('.senna-loading')
   end
 end
 

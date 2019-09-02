@@ -337,7 +337,7 @@ end
 
 Then(/^I clean the search index on the server$/) do
   output = sshcmd('/usr/sbin/rcrhn-search cleanindex', ignore_err: true)
-  raise if output[:stdout].include?('ERROR')
+  raise 'The output includes an error log' if output[:stdout].include?('ERROR')
 end
 
 When(/^I execute spacewalk\-channel and pass "([^"]*)"$/) do |arg1|
@@ -378,14 +378,14 @@ Then(/^service "([^"]*)" is enabled on "([^"]*)"$/) do |service, host|
   node = get_target(host)
   output, _code = node.run("systemctl is-enabled '#{service}'", false)
   output = output.split(/\n+/)[-1]
-  raise if output != 'enabled'
+  raise "Service #{service} not enabled" if output != 'enabled'
 end
 
 Then(/^service "([^"]*)" is active on "([^"]*)"$/) do |service, host|
   node = get_target(host)
   output, _code = node.run("systemctl is-active '#{service}'", false)
   output = output.split(/\n+/)[-1]
-  raise if output != 'active'
+  raise "Service #{service} not active" if output != 'active'
 end
 
 Then(/^service or socket "([^"]*)" is enabled on "([^"]*)"$/) do |name, host|
@@ -410,14 +410,14 @@ Then(/^socket "([^"]*)" is enabled on "([^"]*)"$/) do |service, host|
   node = get_target(host)
   output, _code = node.run("systemctl is-enabled '#{service}.socket'", false)
   output = output.split(/\n+/)[-1]
-  raise if output != 'enabled'
+  raise "Service #{service} not enabled" if output != 'enabled'
 end
 
 Then(/^socket "([^"]*)" is active on "([^"]*)"$/) do |service, host|
   node = get_target(host)
   output, _code = node.run("systemctl is-active '#{service}.socket'", false)
   output = output.split(/\n+/)[-1]
-  raise if output != 'active'
+  raise "Service #{service} not active" if output != 'active'
 end
 
 When(/^I run "([^"]*)" on "([^"]*)"$/) do |cmd, host|
