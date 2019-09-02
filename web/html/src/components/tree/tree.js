@@ -3,18 +3,18 @@ import React, {useState} from 'react';
 import type {Node} from 'react';
 import { CustomDiv } from 'components/custom-objects';
 
-type TreeItem = {
+export type TreeItem = {
   id: string,
   data?: Object,
   children?: Array<string>,
 };
 
-type TreeData = {
+export type TreeData = {
   rootId: string,
   items: Array<TreeItem>,
 };
 
-type Props = {
+export type Props = {
   data: TreeData,
   renderItem: (item: TreeItem, renderNameColumn: Function) => void,
   header?: Node,
