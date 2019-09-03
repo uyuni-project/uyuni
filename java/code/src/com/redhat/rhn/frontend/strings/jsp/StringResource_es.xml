@@ -22360,20 +22360,6 @@ given channel.</source>
         </context-group>
         <target>Este es el perfil Kickstart predeterminado de las organizaciones.</target>
       </trans-unit>
-      <trans-unit id="help.jsp.chat">
-        <source>IRC Chat</source>
-        <target>Chat IRC</target>
-      </trans-unit>
-      <trans-unit id="help.jsp.chatinfo">
-        <source>This page allows you to join an IRC chat room for discussions with other users
-                of @@PRODUCT_NAME@@.</source>
-        <target>Esta página le permite unirse a la sala de chat IRC para conversar con otros usuarios
-                de @@PRODUCT_NAME@@.</target>
-      </trans-unit>
-      <trans-unit id="help.jsp.chatlink">
-        <source>Access &lt;a href="http://webchat.freenode.net?channels=#spacewalk" target="_blank"&gt;#spacewalk&lt;/a&gt; channel on IRC.</source>
-        <target>Acceda al canal &lt;a href=&quot;http://webchat.freenode.net?channels=#spacewalk&quot; target=&quot;_blank&quot;&gt;#spacewalk&lt;/a&gt; en IRC.</target>
-      </trans-unit>
       <trans-unit id="help.jsp.about.title">
         <source>About @@PRODUCT_NAME@@</source>
         <context-group name="ctx">
