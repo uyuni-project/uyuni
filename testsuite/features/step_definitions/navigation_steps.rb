@@ -251,27 +251,36 @@ When(/^I follow the left menu "([^"]*)"$/) do |menu_path|
 
   # define reusable patterns
   prefix_path = "//aside/div[@id='nav']/nav"
-  link_path = "/ul/li/div/a[contains(.,'%s')]"
-  parent_wrapper_path = '/parent::div'
-  parent_level_path = '/parent::li'
+  level_path = "/ul/li[div[a[span[text()='%s']]]]"
+  level_element_path = '/div'
+  link_path = "/a[span[text()='%s']]"
 
   # point the target to the nav menu
-  target_link_path = prefix_path
+  target_level_path = prefix_path
 
   menu_levels.each_with_index do |menu_level, index|
-    # append the current target link and replace the placeholder with the current level value
-    target_link_path += (link_path % menu_level)
+    # append the current target level and replace the placeholder with the current level value
+    target_level_path += (level_path % menu_level)
     # if this is the last element of the path
-    break if index == (menu_levels.count - 1)
-    # open the submenu if needed
-    unless find(:xpath, target_link_path + parent_wrapper_path + parent_level_path)[:class].include?('open')
-      find(:xpath, target_link_path + parent_wrapper_path).click
+    if index == (menu_levels.count - 1)
+      link_path = (link_path % menu_level)
+      break
     end
-    # point the target to the current menu level
-    target_link_path += parent_wrapper_path + parent_level_path
+    # open the submenu if needed
+    unless find(:xpath, target_level_path)[:class].include?('open')
+      find(:xpath, target_level_path + level_element_path).click
+    end
   end
-  # finally go to the target page
-  find_and_wait_click(:xpath, target_link_path).click
+
+  # check if the target is a nodeLink element or a leafLink element
+  current_element = find(:xpath, target_level_path + level_element_path)
+  if current_element[:class].include?('nodeLink')
+    # if it is a nodeLink element, click on the directLink element
+    find_and_wait_click(:xpath, target_level_path + level_element_path + direct_link_path).click
+  else
+    # if it is a leafLink element, click on it
+    find_and_wait_click(:xpath, target_level_path + level_element_path + link_path).click
+  end
 end
 
 #
