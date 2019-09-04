@@ -542,7 +542,8 @@ public class HardwareMapper {
         String virtTypeLowerCase = StringUtils.lowerCase(
                 grains.getValueAsString("virtual"));
         String virtSubtype = grains.getValueAsString("virtual_subtype");
-        String virtUuid = grains.getValueAsString("uuid");
+        String instanceId = grains.getValueAsString("instance_id");
+        String virtUuid = (StringUtils.isEmpty(instanceId)) ? grains.getValueAsString("uuid") : instanceId;
 
         if (virtTypeLowerCase == null) {
             errors.add("Virtualization: Grain 'virtual' has no value");
@@ -619,7 +620,8 @@ public class HardwareMapper {
                     .lookupVirtualInstanceByUuid(virtUuid);
 
             if (grains.getValueAsString("os_family").contentEquals("Suse") &&
-                    grains.getValueAsString("osrelease").startsWith("11")) {
+                    grains.getValueAsString("osrelease").startsWith("11") &&
+                        StringUtils.isEmpty(instanceId)) {
                 virtUuid = fixAndReturnSle11Uuid(virtUuid);
                 // Fix the "uuid" for already wrong created virtual instances
                 for (VirtualInstance virtualInstance : virtualInstances) {
