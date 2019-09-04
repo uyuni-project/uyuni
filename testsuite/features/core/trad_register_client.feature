@@ -25,7 +25,7 @@ Feature: Register a traditional client
     And I should see a "Add to SSM" link
     And I should see a "Delete System" link
     And I should see a "Initial Registration Parameters:" text
-    And I should see a "OS: sles-release" text
+    And I should see a text describing the OS release
 
 @proxy
   Scenario: Check connection from traditional to proxy
