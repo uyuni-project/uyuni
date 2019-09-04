@@ -251,25 +251,24 @@ When(/^I follow the left menu "([^"]*)"$/) do |menu_path|
 
   # define reusable patterns
   prefix_path = "//aside/div[@id='nav']/nav"
-  level_path = "/ul/li[div[a[span[text()='%s']]]]"
-  level_element_path = '/div'
-  link_path = "/a[span[text()='%s']]"
+  link_path = "/ul/li/div/a[contains(.,'%s')]"
+  parent_wrapper_path = '/parent::div'
+  parent_level_path = '/parent::li'
 
   # point the target to the nav menu
-  target_level_path = prefix_path
+  target_link_path = prefix_path
 
   menu_levels.each_with_index do |menu_level, index|
-    # append the current target level and replace the placeholder with the current level value
-    target_level_path += (level_path % menu_level)
+    # append the current target link and replace the placeholder with the current level value
+    target_link_path += (link_path % menu_level)
     # if this is the last element of the path
-    if index == (menu_levels.count - 1)
-      link_path = (link_path % menu_level)
-      break
-    end
+    break if index == (menu_levels.count - 1)
     # open the submenu if needed
-    unless find(:xpath, target_level_path)[:class].include?('open')
-      find(:xpath, target_level_path + level_element_path).click
+    unless find(:xpath, target_link_path + parent_wrapper_path + parent_level_path)[:class].include?('open')
+      find(:xpath, target_link_path + parent_wrapper_path).click
     end
+    # point the target to the current menu level
+    target_link_path += parent_wrapper_path + parent_level_path
   end
   # finally go to the target page
   find_and_wait_click(:xpath, target_link_path).click
