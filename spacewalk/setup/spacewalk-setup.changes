@@ -1,4 +1,3 @@
-- prevent CherryPy timeouts (bsc#1118175)
 - configure 150 Tomcat workers by default, matching httpds MaxClients
 
 -------------------------------------------------------------------
