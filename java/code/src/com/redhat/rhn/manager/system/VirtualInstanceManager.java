@@ -28,6 +28,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import java.lang.IllegalArgumentException;
+
 
 import org.apache.log4j.Logger;
 
@@ -96,7 +98,12 @@ public class VirtualInstanceManager extends BaseManager {
             int vCpus = info.getGuestProperties().getVcpus();
             long memory = info.getGuestProperties().getMemorySize();
 
-            uuid = fixUuidIfSwappedUuidExists(uuid);
+            try {
+                uuid = fixUuidIfSwappedUuidExists(uuid);
+            }
+            catch (IllegalArgumentException e) {
+            }
+
             uuidsToRemove.remove(uuid);
             VirtualInstanceType type = vinst.getVirtualInstanceType(
                     info.getGuestProperties().getVirtType());
@@ -155,7 +162,12 @@ public class VirtualInstanceManager extends BaseManager {
                     String name = vmEntry.getKey();
                     String guid = vmEntry.getValue().replaceAll("-", "");
 
-                    guid = fixUuidIfSwappedUuidExists(guid);
+                    try {
+                        guid = fixUuidIfSwappedUuidExists(guid);
+                    }
+                    catch (IllegalArgumentException e) {
+                    }
+
                     uuidsToRemove.remove(guid);
                     List<VirtualInstance> virtualInstances =
                             vinst.lookupVirtualInstanceByUuid(guid);
