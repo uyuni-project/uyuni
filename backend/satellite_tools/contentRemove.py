@@ -297,6 +297,19 @@ def delete_channels(channelLabels, force=0, justdb=0, skip_packages=0, skip_chan
     if not channel_ids:
         return
 
+    clp = rhnSQL.prepare("""
+       select id
+       from susecontentenvironmenttarget
+       where channel_id = :cid
+       """)
+
+    for cid in channel_ids:
+        clp.execute(cid=cid)
+        row = clp.fetchone()
+        if row:
+            print("Channel belongs to a Content Lifecycle Project. Please use the web UI or API.")
+            return
+
     indirect_tables = [
         ['rhnKickstartableTree', 'channel_id', 'rhnKSTreeFile', 'kstree_id'],
     ]
