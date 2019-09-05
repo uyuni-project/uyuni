@@ -1,3 +1,5 @@
+- fix cobbler authentication module configuration required for
+  new cobbler package
 - configure 150 Tomcat workers by default, matching httpds MaxClients
 
 -------------------------------------------------------------------
