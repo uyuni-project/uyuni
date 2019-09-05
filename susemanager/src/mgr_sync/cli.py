@@ -43,7 +43,8 @@ def _create_parser():
                         choices=["1", "2", "3"],
                         help="Log additional debug information depending on DEBUG")
 
-    subparsers = parser.add_subparsers(title='Subcommands')
+    subparsers = parser.add_subparsers(title='Subcommands', dest='subcommands')
+    subparsers.required = True
 
     _create_list_subparser(subparsers)
     _create_add_subparser(subparsers)

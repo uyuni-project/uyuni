@@ -12,6 +12,7 @@ Thu Sep 19 00:53:28 CEST 2019 - jgonzalez@suse.com
 
 - version 3.2.20-1
 - dmidecode does not exist on s390x (bsc#1145119)
+- Show help message when missing sub-command in  mgr-sync call (bsc#1134708)
 
 -------------------------------------------------------------------
 Thu Jul 18 10:05:23 CEST 2019 - jgonzalez@suse.com
