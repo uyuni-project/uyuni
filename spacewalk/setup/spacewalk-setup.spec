@@ -272,7 +272,7 @@ if [ -f /etc/sudoers.d/spacewalk -a -f /etc/sudoers.d/susemanager ]; then
     mv /etc/sudoers.d/spacewalk.tmp /etc/sudoers.d/spacewalk
 fi
 
-if ! grep 'authn_spacewalk' /etc/cobbler/modules.conf > /dev/null 2>&1; then
+if grep 'authn_spacewalk' /etc/cobbler/modules.conf > /dev/null 2>&1; then
     sed -i 's/module = authn_spacewalk/module = authentication.spacewalk/' /etc/cobbler/modules.conf
 fi
 exit 0
