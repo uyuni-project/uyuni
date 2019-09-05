@@ -1,3 +1,6 @@
+- Require mgr-daemon (new name of spacewalksd) so we systems with
+  spacewalksd get always the new package installed (bsc#1149353)
+
 -------------------------------------------------------------------
 Tue Jul 30 14:39:43 CEST 2019 - jgonzalez@suse.com
 

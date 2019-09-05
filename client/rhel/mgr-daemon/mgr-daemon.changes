@@ -1,3 +1,5 @@
+- Adjust current name of the package to mgr-daemon and not
+  spacewalksd (bsc#1149353)
 - enable spacewalk-update-service on package installation
   (bsc#1143789)
 
