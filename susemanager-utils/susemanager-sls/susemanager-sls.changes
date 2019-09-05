@@ -1,3 +1,4 @@
+- implement provisioning for salt clients
 - dmidecode does not exist on ppc64le and s390x (bsc#1145119)
 
 -------------------------------------------------------------------
