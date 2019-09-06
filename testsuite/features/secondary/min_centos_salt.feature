@@ -40,7 +40,7 @@ Feature: Be able to bootstrap a CentOS minion and do some basic operations on it
     Given I am on the Systems overview page of this "ceos-minion"
     When I follow "Details" in the content area
     And I follow "Connection" in the content area
-    Then I should see "proxy" hostname
+    Then I should see "proxy" short hostname
 
 @proxy
 @centos_minion
