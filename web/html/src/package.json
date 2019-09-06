@@ -19,7 +19,10 @@
     "storybook": "start-storybook -s ./.storybook/public"
   },
   "devDependencies": {
-    "flow-bin": "^0.93.0",
+    "@storybook/addon-centered": "^5.1.11",
+    "@storybook/addon-info": "^5.1.11",
+    "@storybook/react": "^5.1.11",
+    "flow-bin": "^0.107.0",
     "webpack-dev-server": "^3.1.10"
   },
   "engines": {
