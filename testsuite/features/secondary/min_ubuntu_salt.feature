@@ -50,7 +50,7 @@ Feature: Be able to bootstrap an Ubuntu minion and do some basic operations on i
     Given I am on the Systems overview page of this "ubuntu-minion"
     When I follow "Details" in the content area
     And I follow "Connection" in the content area
-    Then I should see "proxy" hostname
+    Then I should see "proxy" short hostname
 
 @proxy
 @ubuntu_minion
