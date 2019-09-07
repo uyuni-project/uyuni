@@ -16,51 +16,25 @@ AS
     combination.channel_id,
     combination.user_id,
     combination.role,
+    combination.user_org_id AS org_id,
     CASE
       -- if channel is in an org trusted by the user's org, and if the channel itself is shared between the two, then user can subscribe it
-      WHEN combination.role = 'subscribe' AND combination.user_id IN (
-        SELECT u.id
-        FROM web_contact u
-          JOIN rhnSharedChannelView s ON s.org_trust_id = u.org_id
-        WHERE channel_id = combination.channel_id
-      )
+      WHEN combination.role = 'subscribe' AND sharedChannels.is_shared_channel IS NOT NULL
         THEN NULL
       -- otherwise, if channel is not in user's org, then user can't manage it
       WHEN combination.role = 'manage' AND combination.channel_org_id IS NULL OR combination.channel_org_id <> combination.user_org_id
         THEN 'channel_not_owned'
       -- otherwise, if channel is in a family without permissions for the user's org, then user can't subscribe it
-      WHEN combination.role = 'subscribe' AND combination.user_org_id NOT IN (
-        SELECT cfp.org_id
-          FROM rhnChannelFamilyMembers cfm
-            JOIN rhnOrgChannelFamilyPermissions cfp ON cfp.channel_family_id = cfm.channel_family_id
-            WHERE cfm.channel_id = combination.channel_id
-      )
+      WHEN combination.role = 'subscribe' AND channelPermissions.is_channel_available IS NULL
         THEN 'channel_not_available'
-      -- otherwise, if user is a channel admin or an org admin, he can both manage and subscribe it
-      WHEN combination.user_id IN (
-        SELECT u.id
-          FROM web_contact u
-            JOIN rhnUserGroupMembers m ON m.user_id = u.id
-            JOIN rhnUserGroup g ON g.id = m.user_group_id
-            JOIN rhnUserGroupType t ON t.id = g.group_type
-          WHERE t.label = 'channel_admin' OR t.label = 'org_admin'
-      )
+      -- otherwise, if channel is in a family without permissions for the user's org, then user can't subscribe it
+      WHEN adminUsers.is_admin_user IS NOT NULL
         THEN NULL
       -- otherwise, if channel does not have the "not_globally_subscribable" bit set, user can subscribe it
-      WHEN combination.role = 'subscribe' AND combination.channel_id NOT IN (
-        SELECT ocs.channel_id
-        FROM rhnOrgChannelSettings ocs
-          JOIN rhnOrgChannelSettingsType ocst ON ocst.id = ocs.setting_id
-        WHERE ocst.label = 'not_globally_subscribable' AND ocs.org_id = combination.user_org_id
-      )
+      WHEN combination.role = 'subscribe' AND notGloballySubscribableChannels.is_not_globally_subscribable IS NULL
         THEN NULL
       -- otherwise, user might have an explicit permission on this channel
-      WHEN combination.role IN (
-        SELECT cpr.label
-          FROM rhnChannelPermission cp
-            JOIN rhnChannelPermissionRole cpr ON cpr.id = cp.role_id
-          WHERE cp.channel_id = combination.channel_id AND cp.user_id = combination.user_id
-      )
+      WHEN explicitPermissions.has_explicit_permission IS NOT NULL
         THEN NULL
         -- otherwise, user can't either manage nor subscribe the channel
         ELSE 'direct_permission'
@@ -74,5 +48,32 @@ AS
           r.label AS role
           FROM rhnChannel c, web_contact u, rhnChannelPermissionRole r
       ) combination
+     LEFT JOIN 
+       (SELECT DISTINCT s.org_trust_id, s.id, 1 AS is_shared_channel
+        FROM rhnSharedChannelView s) sharedChannels
+     ON (sharedChannels.id = combination.channel_id AND sharedChannels.org_trust_id = combination.user_org_id)
+     LEFT JOIN
+       (SELECT DISTINCT cfp.org_id, cfm.channel_id, 1 AS is_channel_available
+        FROM rhnChannelFamilyMembers cfm
+          JOIN rhnOrgChannelFamilyPermissions cfp ON cfp.channel_family_id = cfm.channel_family_id) channelPermissions
+     ON (combination.user_org_id = channelPermissions.org_id AND channelPermissions.channel_id = combination.channel_id)
+     LEFT JOIN
+       (SELECT DISTINCT m.user_id, 1 AS is_admin_user
+        FROM rhnUserGroupMembers m
+          JOIN rhnUserGroup g ON g.id = m.user_group_id
+          JOIN rhnUserGroupType t ON t.id = g.group_type
+        WHERE t.label = 'channel_admin' OR t.label = 'org_admin') adminUsers
+     ON (adminUsers.user_id = combination.user_id)
+     LEFT JOIN
+       (SELECT DISTINCT ocs.channel_id, ocs.org_id, 1 AS is_not_globally_subscribable
+        FROM rhnOrgChannelSettings ocs
+          JOIN rhnOrgChannelSettingsType ocst ON ocst.id = ocs.setting_id
+        WHERE ocst.label = 'not_globally_subscribable') notGloballySubscribableChannels
+     ON (notGloballySubscribableChannels.channel_id = combination.channel_id AND notGloballySubscribableChannels.org_id = combination.user_org_id)
+     LEFT JOIN
+       (SELECT cpr.label, cp.channel_id, cp.user_id, 1 AS has_explicit_permission
+        FROM rhnChannelPermission cp
+          JOIN rhnChannelPermissionRole cpr ON cpr.id = cp.role_id) explicitPermissions
+     ON (explicitPermissions.channel_id = combination.channel_id AND explicitPermissions.user_id = combination.user_id AND explicitPermissions.label = combination.role)
     -- ORDER BY channel_id, user_id, role, result
 ;

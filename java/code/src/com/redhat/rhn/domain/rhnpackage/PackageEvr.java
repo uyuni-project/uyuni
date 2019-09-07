@@ -119,7 +119,7 @@ public class PackageEvr implements Comparable {
      * {@inheritDoc}
      */
     public boolean equals(Object obj) {
-        if (obj == null || !(obj instanceof PackageEvr)) {
+        if (!(obj instanceof PackageEvr)) {
             return false;
         }
 
@@ -142,6 +142,7 @@ public class PackageEvr implements Comparable {
     /**
      * {@inheritDoc}
      */
+    @Override
     public int compareTo(Object o) {
         // This method mirrors the perl function RHN::Manifest::vercmp
         // There is another perl function, RHN::DB::Package::vercmp which

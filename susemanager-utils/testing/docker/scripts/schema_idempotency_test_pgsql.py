@@ -34,7 +34,7 @@ def get_all_files_from_pr(pr_file, schema_path):
 def get_all_files_since(version, schema_path):
     """ Get all SQL files since a schema version """
     files = []
-    for element in os.listdir(schema_path):
+    for element in sorted(os.listdir(schema_path)):
         element_ver = re.search(
             r'^susemanager-schema-(\d+\.\d+[\d|.]*)-to-susemanager-schema-\d+\.\d+[\d|.]*$',
             element)
@@ -44,7 +44,7 @@ def get_all_files_since(version, schema_path):
         # https://hg.python.org/cpython/file/tip/Lib/distutils/version.py#l93
         if DV.LooseVersion(element_ver.group(1)) >= DV.LooseVersion(version):
             base_path = schema_path + '/' + element
-            for sql_file in os.listdir(base_path):
+            for sql_file in sorted(os.listdir(base_path)):
                 if re.search(r'^.*\.(sql|sql\.postgresql|sql\.oracle)$', sql_file):
                     files.append(base_path + '/' + sql_file)
     return files
@@ -53,7 +53,7 @@ def get_all_files_since(version, schema_path):
 def find_latest_version(schema_path):
     """ Find the latest version available for a migration path """
     latest_version = '0.0'
-    for element in os.listdir(schema_path):
+    for element in sorted(os.listdir(schema_path)):
         element_ver = re.search(
             r'^susemanager-schema-\d+\.\d+[\d|.]*-to-susemanager-schema-(\d+\.\d+[\d|.]*)$',
             element)
@@ -69,6 +69,41 @@ def find_next_version(schema_path):
     last_version = find_latest_version(schema_path)
     return last_version.rsplit('.', 1)[0] + '.' + str(int(last_version.rsplit('.', 1)[1])+1)
 
+def get_ordered_files(path, start, end, schema_path):
+    n = path[start].keys()[0]
+    res = []
+    d = "%s/%s-to-%s" % (schema_path, start, n)
+    for f in sorted(os.listdir(d)):
+        res.append("%s/%s" % (d, f))
+    if n != end:
+        res.extend(get_ordered_files(path, n, end, schema_path))
+    return res
+
+
+def get_all_files(start, end, schema_path):
+    start_schema = "susemanager-schema-%s" % start
+    end_schema = "susemanager-schema-%s" % end
+
+    upgrade_path = dict()
+    queue = [ end_schema ]
+    for t in queue:
+        lookup = glob.glob(schema_path + "/*-to-%s" % t)
+        for x in lookup:
+            x = x.replace(schema_path + "/", "")
+            x = x.replace("-to-%s" % t, "")
+            if x == start_schema:
+                print("found %s" % start_schema)
+            if x not in upgrade_path:
+                upgrade_path[x] = dict()
+            if t not in upgrade_path:
+                upgrade_path[t] = None
+            upgrade_path[x][t] = upgrade_path[t]
+            if x == start_schema:
+                break
+            queue.append(x)
+
+    return get_ordered_files(upgrade_path, start_schema, end_schema, schema_path)
+
 
 def create_fake_migration_path(schema_path, new_version, pr_file=None, version=None):
     """ Create a fake migration path with the next version after the last, adding
@@ -77,20 +112,28 @@ def create_fake_migration_path(schema_path, new_version, pr_file=None, version=N
     if pr_file:
         print("Creating migration path with the scripts from the PR")
         files = get_all_files_from_pr(pr_file, schema_path)
+    last_version = find_latest_version(schema_path)
     if version:
         print("Creating migration path with all scripts since %s" % version)
-        files = get_all_files_since(version, schema_path)
-    last_version = find_latest_version(schema_path)
+        files = get_all_files(version, last_version, schema_path)
     fake_path = schema_path + \
         '/susemanager-schema-%s-to-susemanager-schema-%s/' % (
             last_version, new_version)
     print("Creating: " + fake_path)
     os.mkdir(fake_path)
+    num = 0
     for migration_file in files:
-        m = re.search('susemanager-schema-\d+\.\d+[\d|.]*-to-susemanager-schema-(\d+\.\d+[\d|.]*)', migration_file)
-        dest_file = os.path.join(fake_path, "%s-%s" %(m.group(1), os.path.basename(migration_file)))
+        pcom = migration_file.split("/")
+        f = pcom.pop()
+        f = "%04d-%s" % (num, f)
+        fakedir = pcom.pop()
+        fakedir = "susemanager-schema-%s-to-susemanager-schema-%s" % (last_version, new_version)
+        pcom.append(fakedir)
+        pcom.append(f)
+        dest_file = os.path.join("/", *pcom)
         print("Copying %s to %s..." %(migration_file, dest_file))
         shutil.copy(migration_file, dest_file)
+        num += 1
 
 
 def run_command(command):
@@ -145,7 +188,7 @@ def run_upgrade(upgrade_script, new_version):
     if run_command(command):
         print("Upgrade executed successfully")
     else:
-        for element in os.listdir(log_path):
+        for element in sorted(os.listdir(log_path)):
             if re.search(r'^schema-from-.*\.log$', element):
                 print("Content of file %s/%s" % (log_path, element))
                 with open(log_path + '/' + element) as file:

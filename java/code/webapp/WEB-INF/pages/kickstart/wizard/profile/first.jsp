@@ -5,57 +5,56 @@
 <html:html>
 <head>
 <meta http-equiv="Pragma" content="no-cache" />
-
-<script language="javascript" type="text/javascript">
-
-function swapValues(fromCtlId, toCtlId) {
-   var fromCtl = document.getElementById(fromCtlId);
-   var toCtl = document.getElementById(toCtlId);
-   toCtl.value = fromCtl.value;
-}
-
-function moveNext() {
-   var form = $("form[name='kickstartCreateWizardForm']");
-   swapValues("wizard-nextstep", "wizard-curstep");
-   form.submit();
-}
-
-function refresh() {
-   var form = $("form[name='kickstartCreateWizardForm']");
-   form.submit();
-}
-
-function toggleKSTree(what) {
-   var form = $("form[name='kickstartCreateWizardForm']");
-   var select = form.find("select[name='kstreeId']");
-   if(what.checked) {
-       select.prop("disabled", "disabled");
-   } else {
-       select.prop("disabled", false);
-   }
-}
-
-function clickNewestRHTree() {
-   var form = $("form[name='kickstartCreateWizardForm']");
-   var treeCheckbox = form.find("input[name='useNewestTree']")
-   var rhTreeCheckbox = form.find("input[name='useNewestRHTree']")
-   if(rhTreeCheckbox.is(':checked')) {
-       treeCheckbox.attr('checked', false);
-   }
-}
-
-function clickNewestTree() {
-   var form = $("form[name='kickstartCreateWizardForm']");
-   var treeCheckbox = form.find("input[name='useNewestTree']")
-   var rhTreeCheckbox = form.find("input[name='useNewestRHTree']")
-   if(treeCheckbox.is(':checked')) {
-       rhTreeCheckbox.attr('checked', false);
-   }
-}
-</script>
 </head>
 
 <body>
+  <script language="javascript" type="text/javascript">
+
+    function swapValues(fromCtlId, toCtlId) {
+      var fromCtl = document.getElementById(fromCtlId);
+      var toCtl = document.getElementById(toCtlId);
+      toCtl.value = fromCtl.value;
+    }
+
+    function moveNext() {
+      var form = $("form[name='kickstartCreateWizardForm']");
+      swapValues("wizard-nextstep", "wizard-curstep");
+      form.submit();
+    }
+
+    function refresh() {
+      var form = $("form[name='kickstartCreateWizardForm']");
+      form.submit();
+    }
+
+    function toggleKSTree(what) {
+      var form = $("form[name='kickstartCreateWizardForm']");
+      var select = form.find("select[name='kstreeId']");
+      if(what.checked) {
+        select.prop("disabled", "disabled");
+      } else {
+        select.prop("disabled", false);
+      }
+    }
+
+    function clickNewestRHTree() {
+      var form = $("form[name='kickstartCreateWizardForm']");
+      var treeCheckbox = form.find("input[name='useNewestTree']")
+      var rhTreeCheckbox = form.find("input[name='useNewestRHTree']")
+      if(rhTreeCheckbox.is(':checked')) {
+        treeCheckbox.attr('checked', false);
+      }
+    }
+
+    function clickNewestTree() {
+      var form = $("form[name='kickstartCreateWizardForm']");
+      var treeCheckbox = form.find("input[name='useNewestTree']")
+      var rhTreeCheckbox = form.find("input[name='useNewestRHTree']")
+      if(treeCheckbox.is(':checked')) {
+        rhTreeCheckbox.attr('checked', false);
+      }
+    }
+  </script>
   <html:form method="post" action="/kickstart/CreateProfileWizard.do" styleClass="form-horizontal">
     <rhn:csrf />
     <rhn:submitted />

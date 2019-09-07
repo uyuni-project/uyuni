@@ -11,6 +11,7 @@ const { VirtualizationGuestActionApi } = require('../virtualization-guest-action
 const GuestPropertiesUtils = require('../properties/guest-properties-utils');
 const GuestNicsPanel = require('../properties/guest-nics-panel');
 const GuestDisksPanel = require('../properties/guest-disks-panel');
+const Functions = require('utils/functions');
 
 type Props = {
   host: Object,
@@ -45,6 +46,7 @@ class GuestsCreate extends React.Component<Props, State> {
       },
       nics.length !== 0 ? { interfaces: nics } : undefined,
       disks.length !== 0 ? { disks } : undefined,
+      {earliest: Functions.Formats.LocalDateTime(model.earliest)}
     );
   }
 

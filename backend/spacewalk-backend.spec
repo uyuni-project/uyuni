@@ -75,7 +75,7 @@ Name:           spacewalk-backend
 Summary:        Common programs needed to be installed on the Spacewalk servers/proxies
 License:        GPL-2.0-only
 Group:          Applications/Internet
-Version:        4.0.17
+Version:        4.0.19
 Release:        1%{?dist}
 Url:            https://github.com/uyuni-project/uyuni
 Source0:        https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
@@ -85,8 +85,9 @@ BuildArch:      noarch
 %endif
 
 Requires:       %{pythonX}
-# /etc/rhn is provided by spacewalk-proxy-common or by spacewalk-config
-Requires:       /etc/rhn
+# /etc/rhn is provided by uyuni-base-common
+Requires(pre):  uyuni-base-common
+BuildRequires:  uyuni-base-common
 %if 0%{?build_py3}
 Requires:       python3-%{name}-libs >= %{version}
 Requires:       python3-rhnlib >= 2.5.74
@@ -945,8 +946,8 @@ rm -f %{rhnconf}/rhnSecret.py*
 %defattr(-,root,root)
 %doc LICENSE
 %if 0%{?build_py3}
-%{python2rhnroot}
-%{python2rhnroot}/common
+%dir %{python2rhnroot}
+%dir %{python2rhnroot}/common
 %endif
 %{python2rhnroot}/common/checksum.py*
 %{python2rhnroot}/common/cli.py*
@@ -963,7 +964,7 @@ rm -f %{rhnconf}/rhnSecret.py*
 %files -n python3-%{name}-libs
 %defattr(-,root,root)
 %doc LICENSE
-%dir %{python3rhnroot}/common/__pycache__
+%dir %{python3rhnroot}/common
 %{python3rhnroot}/common/checksum.py
 %{python3rhnroot}/common/cli.py
 %{python3rhnroot}/common/fileutils.py
@@ -974,7 +975,17 @@ rm -f %{rhnconf}/rhnSecret.py*
 %{python3rhnroot}/common/stringutils.py
 %{python3rhnroot}/common/rhnLib.py*
 %{python3rhnroot}/common/timezone_utils.py*
-%{python3rhnroot}/common
+%dir %{python3rhnroot}/common/__pycache__
+%{python3rhnroot}/common/__pycache__/checksum.*
+%{python3rhnroot}/common/__pycache__/cli.*
+%{python3rhnroot}/common/__pycache__/fileutils.*
+%{python3rhnroot}/common/__pycache__/rhn_deb.*
+%{python3rhnroot}/common/__pycache__/rhn_mpm.*
+%{python3rhnroot}/common/__pycache__/rhn_pkg.*
+%{python3rhnroot}/common/__pycache__/rhn_rpm.*
+%{python3rhnroot}/common/__pycache__/stringutils.*
+%{python3rhnroot}/common/__pycache__/rhnLib.*
+%{python3rhnroot}/common/__pycache__/timezone_utils.*
 %endif
 
 %files config-files-common
@@ -1022,7 +1033,6 @@ rm -f %{rhnconf}/rhnSecret.py*
 %defattr(-,root,root)
 %doc LICENSE
 %doc README.ULN
-%attr(0750,root,%{apache_group}) %dir %{rhnconf}
 %attr(644,root,%{apache_group}) %{rhnconfigdefaults}/rhn_server_satellite.conf
 %config(noreplace) %{_sysconfdir}/logrotate.d/spacewalk-backend-tools
 %config(noreplace) %{rhnconf}/signing.conf

@@ -1,0 +1,71 @@
+# This file describes the order of features in a normal testsuite run.
+#
+# If you create new features, please see conventions about naming of the
+# feature files in testsuite/docs/Guidelines.md in "Rules for features" chapter,
+# as well as guidelines about idempotency in "Idempotency" chapter.
+
+## Parallelizable Secondary features  BEGIN ##
+
+# IDEMPOTENT
+
+- features/secondary/srv_menu.feature
+- features/secondary/srv_change_password.feature
+- features/secondary/srv_clone_channel_npn.feature
+- features/secondary/srv_nagios.feature
+- features/secondary/srv_cve_audit.feature
+- features/secondary/srv_xmlrpc_activationkey.feature
+- features/secondary/srv_distro_cobbler.feature
+- features/secondary/srv_mainpage.feature
+- features/secondary/srv_xmlrpc_user.feature
+- features/secondary/srv_salt_download_endpoint.feature
+- features/secondary/srv_docker_advanced_content_management.feature
+- features/secondary/srv_docker_cve_audit.feature
+- features/secondary/srv_datepicker.feature
+- features/secondary/srv_group_union_intersection.feature
+- features/secondary/srv_custom_system_info.feature
+- features/secondary/srv_security.feature
+- features/secondary/srv_salt.feature
+- features/secondary/srv_check_channels_page.feature
+- features/secondary/srv_xmlrpc_channel.feature
+- features/secondary/srv_patches_page.feature
+- features/secondary/srv_spacewalk_channel.feature
+- features/secondary/srv_change_task_schedule.feature
+- features/secondary/srv_notifications.feature
+
+- features/secondary/allcli_overview_systems_details.feature
+- features/secondary/allcli_system_group.feature
+- features/secondary/allcli_config_channel.feature
+- features/secondary/allcli_software_channels.feature
+- features/secondary/allcli_software_channels_dependencies.feature
+
+- features/secondary/minssh_centos_salt_install_package_and_patch.feature
+- features/secondary/min_ubuntu_salt_install_package.feature
+- features/secondary/min_bootstrap_xmlrpc.feature
+- features/secondary/min_salt_software_states.feature
+- features/secondary/min_docker_xmlrpc.feature
+- features/secondary/min_docker_build_image.feature
+- features/secondary/min_salt_install_with_staging.feature
+- features/secondary/min_salt_formulas.feature
+- features/secondary/min_docker_auth_registry.feature
+- features/secondary/min_osimage_build_image.feature
+- features/secondary/min_salt_install_package.feature
+- features/secondary/min_salt_openscap_audit.feature
+- features/secondary/min_salt_user_states.feature
+- features/secondary/min_salt_minion_details.feature
+- features/secondary/min_config_state_channel.feature
+- features/secondary/min_state_config_channel.feature
+- features/secondary/min_salt_pkgset_beacon.feature
+- features/secondary/min_custom_pkg_download_endpoint.feature
+
+- features/secondary/trad_need_reboot.feature
+- features/secondary/trad_metadata_check.feature
+- features/secondary/trad_cve_id_new_syntax.feature
+- features/secondary/trad_weak_deps.feature
+- features/secondary/trad_openscap_audit.feature
+- features/secondary/trad_inst_package_and_patch.feature
+- features/secondary/trad_check_patches_install.feature
+- features/secondary/trad_mgr_bootstrap.feature
+- features/secondary/trad_sp_migration.feature
+- features/secondary/trad_check_registration.feature
+
+## Parallelizable Secondary features END ##

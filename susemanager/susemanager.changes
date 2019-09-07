@@ -1,3 +1,11 @@
+- dmidecode does not exist on s390x (bsc#1145119)
+- move /usr/share/rhn/config-defaults to uyuni-base-common
+- Add missing bootstrap repo entries for Ubuntu repositories
+
+-------------------------------------------------------------------
+Wed Jul 31 17:45:28 CEST 2019 - jgonzalez@suse.com
+
+- version 4.0.15-1
 - add support for in-place migration (Uyuni only for now)
 - Make dmidecode part of the bootstrap repositiories (bsc#1137952)
 - respect new location for autoinstall templates during migration

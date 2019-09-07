@@ -35,7 +35,7 @@
 %endif
 
 Name:           spacewalk-utils
-Version:        4.0.10
+Version:        4.0.12
 Release:        1%{?dist}
 Summary:        Utilities that may be run against a Spacewalk server.
 License:        GPL-2.0-only AND GPL-3.0-or-later
@@ -60,7 +60,9 @@ BuildRequires:  spacewalk-backend-tools >= 1.7.24
 BuildRequires:  spacewalk-config
 BuildRequires:  yum
 %endif
+BuildRequires:  uyuni-base-common
 
+Requires(pre):  uyuni-base-common
 Requires:       bash
 Requires:       cobbler
 %if 0%{?fedora} >= 22
@@ -158,7 +160,6 @@ spacewalk-python2-pylint $RPM_BUILD_ROOT%{rhnroot}
 %{rhnroot}/utils/cloneByDate.py*
 %{rhnroot}/utils/depsolver.py*
 %{_mandir}/man8/*
-%attr(0750,root,%{apache_group}) %dir /etc/rhn
 %dir %{_datadir}/rhn
 %doc COPYING.GPLv2 COPYING.GPLv3
 

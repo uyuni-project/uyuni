@@ -3,6 +3,6 @@ include ../common.jade
 #image-import
 
 script(type='text/javascript').
-    const csrfToken = "#{csrf_token}";
+    window.csrfToken = "#{csrf_token}";
 
 script(src='/javascript/manager/images/image-import.bundle.js?cb=#{webVersion}', type='text/javascript')

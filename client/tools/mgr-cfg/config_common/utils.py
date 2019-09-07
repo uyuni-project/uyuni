@@ -178,7 +178,7 @@ def getContentChecksum(checksum_type, contents):
         engine = hashlib.new(checksum_type, usedforsecurity=False)
     else:
         engine = hashlib.new(checksum_type)
-    engine.update(contents)
+    engine.update(bstr(contents))
     return engine.hexdigest()
 
 def sha256_file(filename):

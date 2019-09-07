@@ -6244,7 +6244,7 @@ Follow this url to see the full list of inactive systems:
         </context-group>
       </trans-unit>
       <trans-unit id="sdc.details.edit.propertieschangedupdate">
-        <source>System properties changed for &lt;strong&gt;{0}&lt;/strong&gt;. &lt;br/&gt; &lt;strong&gt;{0}&lt;/strong&gt; will be &lt;strong&gt;fully updated&lt;/strong&gt; in accordance with Auto Errata Update preference.</source>
+        <source>&lt;strong&gt;{0}&lt;/strong&gt; will be &lt;strong&gt;fully updated&lt;/strong&gt; in accordance with Auto Errata Update preference.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Edit.do</context>
           <context context-type="paramnotes">{0} - name of a system ex: highwind</context>
@@ -6984,6 +6984,66 @@ Follow this url to see the full list of inactive systems:
         <source>Deleted {0} virtual systems.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/system/details/virtualization/VirtualGuestsConfirm.do</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="virt.shutdown">
+        <source>Shutdown</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">com.redhat.rhn.domain.action.ActionFormatter.getActionType</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="virt.start">
+        <source>Start</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">com.redhat.rhn.domain.action.ActionFormatter.getActionType</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="virt.suspend">
+        <source>Suspend</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">com.redhat.rhn.domain.action.ActionFormatter.getActionType</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="virt.resume">
+        <source>Resume</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">com.redhat.rhn.domain.action.ActionFormatter.getActionType</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="virt.reboot">
+        <source>Restart</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">com.redhat.rhn.domain.action.ActionFormatter.getActionType</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="virt.destroy">
+        <source>Destroy</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">com.redhat.rhn.domain.action.ActionFormatter.getActionType</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="virt.delete">
+        <source>Delete</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">com.redhat.rhn.domain.action.ActionFormatter.getActionType</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="virt.create">
+        <source>Create</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">com.redhat.rhn.domain.action.ActionFormatter.getActionType</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="virt.setMemory">
+        <source>Set Memory ({0} MB)</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">com.redhat.rhn.domain.action.ActionFormatter.getActionType</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="virt.setVCPUs">
+        <source>Set Virtual CPUs ({0})</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">com.redhat.rhn.domain.action.ActionFormatter.getActionType</context>
         </context-group>
       </trans-unit>
       <trans-unit id="channels.subscribers.updated">
@@ -7943,6 +8003,9 @@ Follow this url to see the full list of inactive systems:
       </trans-unit>
       <trans-unit id="api.channel.delete.haschild">
         <source>This channel has child channels associated with it.  You must delete those channels first before deleting the parent.</source>
+      </trans-unit>
+      <trans-unit id="api.channel.delete.hasclones">
+        <source>Unable to delete channel. The channel you have tried to delete has been cloned. You must delete the clones before you can delete this channel. Cloned channels include ({0}{1}).</source>
       </trans-unit>
       <trans-unit id="api.kickstart.tree.notfound">
         <source>The kickstart tree could not be found.  You may not have access to requested tree.</source>

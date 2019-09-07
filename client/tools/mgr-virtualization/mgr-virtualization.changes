@@ -1,3 +1,17 @@
+- Require mgr-daemon (new name of spacewalksd) so we systems with
+  spacewalksd get always the new package installed (bsc#1149353)
+- Fix mgr-virtualization timer
+
+-------------------------------------------------------------------
+Thu Aug 01 17:33:46 CEST 2019 - jgonzalez@suse.com
+
+- version 4.0.8-1
+- fix package dependencies to prevent file conflict (bsc#1143856)
+
+-------------------------------------------------------------------
+Wed Jul 31 17:29:14 CEST 2019 - jgonzalez@suse.com
+
+- version 4.0.7-1
 - Fix missing python 3 ugettext (bsc#1138494)
 
 -------------------------------------------------------------------

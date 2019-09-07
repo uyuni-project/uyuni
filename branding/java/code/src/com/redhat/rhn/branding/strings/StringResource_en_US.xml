@@ -1814,7 +1814,7 @@ available for this kickstart profile to function properly.
         <source>System &lt;strong&gt;{0}&lt;/strong&gt; has a pending autoinstallation scheduled.</source>
       </trans-unit>
       <trans-unit id="sdc.details.edit.propertieschangedupdate">
-        <source>System properties changed for &lt;strong&gt;{0}&lt;/strong&gt;. &lt;br/&gt; &lt;strong&gt;{0}&lt;/strong&gt; will be &lt;strong&gt;fully updated&lt;/strong&gt; in accordance with Auto Patch Update preference.</source>
+        <source>&lt;strong&gt;{0}&lt;/strong&gt; will be &lt;strong&gt;fully updated&lt;/strong&gt; in accordance with Auto Patch Update preference.</source>
       </trans-unit>
       <trans-unit id="api.errata.invaliderrata">
         <source>Invalid patch: {0}</source>
@@ -2028,8 +2028,17 @@ tree will not be usable for autoinstalling.
       <trans-unit id="task.status.mgr-sync-refresh">
         <source>Refresh mgr-sync data</source>
       </trans-unit>
+      <trans-unit id="task.status.minion-action-chain-cleanup">
+        <source>Cleanup action-chains on minions</source>
+      </trans-unit>
       <trans-unit id="task.status.minion-action-executor">
         <source>Execute actions on minions</source>
+      </trans-unit>
+      <trans-unit id="task.status.notifications-cleanup">
+        <source>Cleanup notifications</source>
+      </trans-unit>
+      <trans-unit id="task.status.minion-checkin">
+        <source>Execute check-in for minions</source>
       </trans-unit>
       <trans-unit id="task.status.token-cleanup">
         <source>Cleanup channel tokens</source>
@@ -2228,7 +2237,7 @@ tree will not be usable for autoinstalling.
 
       <!--  SCC refresh -->
       <trans-unit id="copyright.jsp.title">
-        <source>Copyright (c) 2011 - 2018 SUSE LLC.</source>
+        <source>Copyright (c) 2011 - 2019 SUSE LLC.</source>
       </trans-unit>
       <trans-unit id="copyright.jsp.urlagreement">
         <source>&lt;a href=&quot;/rhn/help/Eula.do&quot;&gt;SUSE MANAGER LICENSE AGREEMENT&lt;/a&gt;</source>
@@ -2771,6 +2780,9 @@ You may grant provisioning entitlements _here_.
       </trans-unit>
       <trans-unit id="Formula Catalog">
           <source>Formula Catalog</source>
+      </trans-unit>
+      <trans-unit id="formula.folders.unreachable">
+        <source>System folder(s) from salt-formula are unreachable. Check if folders(s) exists and have the correct permissions (755): {0}</source>
       </trans-unit>
       <trans-unit id="system.audit.schedulexccdf.jsp.nosoonerthan">
         <source>Earliest</source>

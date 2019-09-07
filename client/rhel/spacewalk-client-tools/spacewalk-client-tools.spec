@@ -60,7 +60,7 @@
 %define rhn_client_tools spacewalk-client-tools
 %define rhn_setup	 spacewalk-client-setup
 %define rhn_check	 spacewalk-check
-%define rhnsd		 spacewalksd
+%define rhnsd		 mgr-daemon
 #
 %define without_rhn_register 1
 %bcond_with    test
@@ -77,7 +77,7 @@ Group:          System Environment/Base
 Source0:        spacewalk-client-tools-%{version}.tar.gz
 Source1:        %{name}-rpmlintrc
 Url:            https://github.com/uyuni-project/uyuni
-Version:        4.0.8
+Version:        4.0.9
 Release:        1%{?dist}
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 %if 0%{?fedora} || 0%{?rhel} || 0%{?suse_version} >= 1210 || 0%{?mageia} >= 6

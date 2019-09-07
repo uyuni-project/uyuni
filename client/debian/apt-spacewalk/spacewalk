@@ -32,6 +32,7 @@ from up2date_client import config
 from up2date_client import rhnChannel
 from up2date_client import up2dateAuth
 from up2date_client import up2dateErrors
+from rhn.i18n import bstr
 
 
 
@@ -247,8 +248,8 @@ class spacewalk_method(pkg_acquire_method):
             data = res.read(4096)
             if not len(data):
                 break
-            hash_sha256.update(data)
-            hash_md5.update(data)
+            hash_sha256.update(bstr(data))
+            hash_md5.update(bstr(data))
             f.write(data)
         res.close()
         f.close()

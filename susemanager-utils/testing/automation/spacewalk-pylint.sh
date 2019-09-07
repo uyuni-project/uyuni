@@ -144,7 +144,6 @@ spacecmd/src/lib/softwarechannel.py
 tftpsync/susemanager-tftpsync/sync_post_tftpd_proxies.py
 tftpsync/susemanager-tftpsync/MultipartPostHandler.py
 usix/
-susemanager-utils/nagios-plugin/check_suma_common.py
 susemanager-utils/performance/locust/00_Core_LoginAndSystemOverview.py
 susemanager-utils/susemanager-sls/modules/pillar/suma_minion.py
 susemanager-utils/susemanager-sls/modules/runners/mgrk8s.py

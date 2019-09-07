@@ -7,47 +7,46 @@
 
 <head>
 <meta http-equiv="Pragma" content="no-cache">
-
-<script language="javascript">
-  function moveNext() {
-    var form = document.getElementsByName("kickstartScheduleWizardForm")[0];
-    form.submit();
-  }
-
-  function setStep(stepName) {
-    var field = document.getElementById("wizard-step");
-    field.value = stepName;
-  }
-
-  function getCheckedValue(radioObj) {
-    if (!radioObj)
-      return "";
-    var radioLength = radioObj.length;
-    if (radioLength == undefined)
-      if (radioObj.checked)
-        return radioObj.value;
-      else
-        return "";
-    for (var i = 0; i < radioLength; i++) {
-      if (radioObj[i].checked) {
-        return radioObj[i].value;
-      }
-    }
-    return "";
-  }
-
-  function enableBondStaticIpAddress() {
-    var staticBond = document.getElementsByName("kickstartScheduleWizardForm")[0].bondStatic
-    if (getCheckedValue(staticBond) == 'true') {
-      document.getElementById("bondAddress").disabled = false
-      document.getElementById("bondNetmask").disabled = false
-      document.getElementById("bondGateway").disabled = false
-    }
-  }
-</script>
 </head>
 
 <body>
+    <script language="javascript">
+        function moveNext() {
+            var form = document.getElementsByName("kickstartScheduleWizardForm")[0];
+            form.submit();
+        }
+
+        function setStep(stepName) {
+            var field = document.getElementById("wizard-step");
+            field.value = stepName;
+        }
+
+        function getCheckedValue(radioObj) {
+            if (!radioObj)
+                return "";
+            var radioLength = radioObj.length;
+            if (radioLength == undefined)
+                if (radioObj.checked)
+                    return radioObj.value;
+                else
+                    return "";
+            for (var i = 0; i < radioLength; i++) {
+                if (radioObj[i].checked) {
+                    return radioObj[i].value;
+                }
+            }
+            return "";
+        }
+
+        function enableBondStaticIpAddress() {
+            var staticBond = document.getElementsByName("kickstartScheduleWizardForm")[0].bondStatic
+            if (getCheckedValue(staticBond) == 'true') {
+                document.getElementById("bondAddress").disabled = false
+                document.getElementById("bondNetmask").disabled = false
+                document.getElementById("bondGateway").disabled = false
+            }
+        }
+    </script>
     <%@ include file="/WEB-INF/pages/common/fragments/systems/system-header.jspf"%>
 
     <c:set var="form" value="${kickstartScheduleWizardForm.map}" />

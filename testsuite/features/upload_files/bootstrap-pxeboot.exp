@@ -1,0 +1,18 @@
+set address [lindex $argv 0]
+
+spawn /usr/bin/scp -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null /srv/www/htdocs/pub/bootstrap/bootstrap.sh root@pxeboot.example.org:/root/bootstrap.sh
+expect {
+	"*?assword:*" { send "linux\r"; interact }
+	eof { exit }
+}
+
+spawn /usr/bin/ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null pxeboot.example.org
+match_max 100000
+expect "*?assword:*"
+send -- "linux\r"
+expect "#"
+send -- "chmod 750 /root/bootstrap.sh\r"
+expect "#"
+send -- "/root/bootstrap.sh\r"
+expect "?bootstrap complete?"
+puts "\r"

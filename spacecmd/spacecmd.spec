@@ -33,7 +33,7 @@
 %endif
 
 Name:           spacecmd
-Version:        4.0.11
+Version:        4.0.12
 Release:        1%{?dist}
 Summary:        Command-line interface to Spacewalk and Red Hat Satellite servers
 License:        GPL-3.0-or-later
@@ -56,14 +56,14 @@ BuildRequires:  spacewalk-python2-pylint
 %if 0%{?build_py3}
 BuildRequires:  python3
 BuildRequires:  python3-devel
-BuildRequires:  python3-rpm
-BuildRequires:  python3-simplejson
+Requires:       python3-rpm
+Requires:       python3-simplejson
 Requires:       python3
 %else
 BuildRequires:  python
 BuildRequires:  python-devel
-BuildRequires:  python-simplejson
-BuildRequires:  rpm-python
+Requires:       python-simplejson
+Requires:       rpm-python
 Requires:       python
 %if 0%{?suse_version}
 BuildRequires:  python-xml

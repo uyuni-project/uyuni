@@ -36,7 +36,7 @@ try: # python 3
     from configparser import SafeConfigParser
 except ImportError: # python 2
     from ConfigParser import SafeConfigParser
-from socket import getfqdn
+import socket
 
 _INTRO = '''Welcome to spacecmd, a command-line interface to Spacewalk.
 
@@ -46,6 +46,28 @@ Type: 'help' for a list of commands
 '''
 
 _SYSTEM_CONF_FILE = '/etc/spacecmd.conf'
+
+
+def get_localhost_fqdn():
+    """
+    Get FQDN of the current machine.
+
+    :return:
+    """
+    fqdn = None
+    try:
+        for family, socktype, proto, canonname, sockaddr in socket.getaddrinfo(
+                socket.gethostname(), 0, 0, 0, 0, socket.AI_CANONNAME):
+            if canonname:
+                fqdn = canonname
+                break
+    except socket.gaierror as exc:
+        logging.debug("Error while getting FQDN over the network: %s", str(exc))
+    except Exception as exc:
+        logging.error("Unhandled exception occurred while getting FQDN:", str(exc))
+
+    return fqdn or socket.getfqdn()
+
 
 if __name__ == '__main__':
     # disable no-member error message
@@ -116,7 +138,7 @@ if __name__ == '__main__':
     if shell.options.server:
         shell.config['server'] = shell.options.server
     else:
-        shell.config['server'] = getfqdn()
+        shell.config['server'] = get_localhost_fqdn()
 
     # don't automatically create config files passed via --config
     if shell.options.config:

@@ -8,6 +8,7 @@ const {Table, Column, SearchField, Highlight} = require("components/table");
 const Network = require("utils/network");
 const Functions = require("utils/functions");
 const Utils = Functions.Utils;
+const SpaRenderer  = require("core/spa/spa-renderer").default;
 
 class TaskoTop extends React.Component {
   state = {
@@ -17,7 +18,11 @@ class TaskoTop extends React.Component {
 
   UNSAFE_componentWillMount() {
     this.refreshServerData();
-    setInterval(this.refreshServerData, this.props.refreshInterval);
+    this.timerId = setInterval(this.refreshServerData, this.props.refreshInterval);
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.timerId)
   }
 
   refreshServerData = () => {
@@ -106,8 +111,8 @@ class TaskoTop extends React.Component {
     const headerTabs =
       <div className="spacewalk-content-nav">
         <ul className="nav nav-tabs">
-          <li><a href="/rhn/admin/TaskStatus.do">{t('Last Execution Times')}</a></li>
-          <li className="active"><a href="">{t('Runtime Status')}</a></li>
+          <li><a className="js-spa" href="/rhn/admin/TaskStatus.do">{t('Last Execution Times')}</a></li>
+          <li className="active js-spa"><a href="">{t('Runtime Status')}</a></li>
         </ul>
       </div>
     ;
@@ -208,7 +213,7 @@ const ErrorMessage = (props) => <MessageContainer items={
   } />
 ;
 
-ReactDOM.render(
+SpaRenderer.renderNavigationReact(
   <TaskoTop refreshInterval={5 * 1000} />,
   document.getElementById("taskotop")
 );

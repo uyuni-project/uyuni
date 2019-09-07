@@ -271,9 +271,9 @@ ORDER BY UPPER(C.name)
             where org.id = C.org_id) as org_name,
          CA.name as arch_name
         from rhnChannel C inner join
-         rhnUserChannel UC on UC.channel_id = C.id
+         suseChannelUserRoleView SCURV on SCURV.channel_id = C.id
         inner join rhnChannelArch CA ON CA.ID  = C.channel_arch_id
-         where UC.user_id = :user_id
+         where SCURV.user_id = :user_id AND SCURV.deny_reason IS NULL
     </query>
       <elaborator name="visible_server_count"/>
       <elaborator name="channel_errata_count"/>
@@ -295,10 +295,10 @@ ORDER BY UPPER(C.name)
             where org.id = C.org_id) as org_name,
          CA.name as arch_name
     from rhnSharedChannelView C inner join
-    rhnUserChannel UC on UC.channel_id = C.id
+    suseChannelUserRoleView SCURV on SCURV.channel_id = C.id
     inner join rhnChannelArch CA ON CA.ID  = C.channel_arch_id
     inner join web_contact U ON U.id = :user_id AND C.org_id = U.org_id
-    where UC.user_id = :user_id
+    where SCURV.user_id = :user_id AND SCURV.deny_reason IS NULL
     </query>
       <elaborator name="visible_server_count"/>
 </mode>
@@ -319,9 +319,9 @@ ORDER BY UPPER(C.name)
             where org.id = C.org_id) as org_name,
          CA.name as arch_name
          from rhnChannel C inner join
-         rhnUserChannel UC on UC.channel_id = C.id
+         suseChannelUserRoleView SCURV on SCURV.channel_id = C.id
          inner join rhnChannelArch CA ON CA.ID  = C.channel_arch_id
-         where UC.user_id = :user_id  AND
+         where SCURV.user_id = :user_id AND SCURV.deny_reason IS NULL AND
                    :server_count &lt;=
                    ( select count(SC.server_id)
                                 from rhnServerChannel SC
@@ -348,9 +348,9 @@ ORDER BY UPPER(C.name)
             where org.id = C.org_id) as org_name,
          CA.name as arch_name
         from rhnChannel C inner join
-         rhnUserChannel UC on UC.channel_id = C.id
+         suseChannelUserRoleView SCURV on SCURV.channel_id = C.id
         inner join rhnChannelArch CA ON CA.ID  = C.channel_arch_id
-         where UC.user_id = :user_id  and
+         where SCURV.user_id = :user_id AND SCURV.deny_reason IS NULL and
          C.end_of_life &lt; current_timestamp
     </query>
       <elaborator name="visible_server_count"/>
@@ -370,8 +370,8 @@ ORDER BY UPPER(C.name)
                                 ) AS package_count,
                    CA.name as arch_name
         from rhnChannel C inner join
-         rhnUserChannel UC ON UC.channel_id = C.id
-                          AND UC.user_id = :user_id inner join
+         suseChannelUserRoleView SCURV ON (SCURV.channel_id = C.id
+                          AND SCURV.user_id = :user_id AND SCURV.deny_reason IS NULL) inner join
          rhnChannelArch CA ON CA.ID  = C.channel_arch_id
         where C.org_id is null
     </query>
@@ -392,8 +392,9 @@ ORDER BY UPPER(C.name)
                                 ) AS package_count,
                    CA.name as arch_name
         from rhnChannel C inner join
-         rhnUserChannel UC ON UC.channel_id = C.id
-                          AND UC.user_id = :user_id
+         suseChannelUserRoleView SCURV ON SCURV.channel_id = C.id
+                          AND SCURV.user_id = :user_id
+                          AND SCURV.deny_reason IS NULL
                           AND C.org_id = :org_id inner join
          rhnChannelArch CA ON CA.ID  = C.channel_arch_id inner join
          web_customer WC ON WC.id = C.org_id
@@ -412,11 +413,12 @@ ORDER BY UPPER(C.name)
                 WHERE P.channel_id = V.id
                ) AS package_count
         FROM   rhnSharedChannelView V inner join
-         rhnUserChannel UC on UC.channel_id = V.id
+         suseChannelUserRoleView SCURV on SCURV.channel_id = V.id
         where 1=1
         and v.org_trust_id = :org_id
         AND v.org_id = :org_id2
-        AND UC.user_id = :user_id
+        AND SCURV.user_id = :user_id
+        AND SCURV.deny_reason IS NULL
     </query>
       <elaborator name="visible_server_count"/>
 </mode>
@@ -454,17 +456,18 @@ SELECT DISTINCT C.name AS NAME,
        ) AS PACKAGE_COUNT,
        CFM2.CHANNEL_FAMILY_ID,
        :family_id AS CHANNEL_FAMILY_SEARCHED_FOR
-  FROM rhnUserChannel UC,
+  FROM suseChannelUserRoleView SCURV,
        rhnChannelFamilyMembers CFM,
        rhnChannel C left join
        rhnChannel C2 on C.id = C2.parent_channel inner join
        rhnChannelFamilyMembers CFM2 on  C.id = CFM2.channel_id
- WHERE UC.user_id = :user_id
+ WHERE SCURV.user_id = :user_id
+   AND SCURV.deny_reason IS NULL
    AND ( CFM.channel_family_id = :family_id )
    AND (
-           (C.id = CFM.channel_id  AND  C.id = UC.channel_id)
-        OR (C.parent_channel = CFM.channel_id AND C.id = UC.channel_id  )
-        OR (C.id = UC.channel_id  AND C2.id = CFM.channel_id)
+           (C.id = CFM.channel_id  AND  C.id = SCURV.channel_id)
+        OR (C.parent_channel = CFM.channel_id AND C.id = SCURV.channel_id  )
+        OR (C.id = SCURV.channel_id  AND C2.id = CFM.channel_id)
         )
   </query>
   <elaborator name="visible_server_count"/>
@@ -499,16 +502,16 @@ ORDER BY  rhn_channel.channel_priority(ACh.parent_or_self_id), ACh.parent_or_sel
   <query params="user_id">
 SELECT  distinct C.name,
         UPPER(C.name),
-        UC.channel_id ID,
+        SCURV.channel_id ID,
         PC.label PARENT_CHANNEL,
         C.label,
         TO_CHAR(C.end_of_life, 'YYYY-MM-DD HH24:MI:SS') END_OF_LIFE,
         CA.name CHANNEL_ARCH
-  FROM rhnUserChannel UC
-    JOIN rhnChannel C ON UC.channel_id = C.id
+  FROM suseChannelUserRoleView SCURV
+    JOIN rhnChannel C ON SCURV.channel_id = C.id
     JOIN rhnChannelArch CA ON C.channel_arch_id = CA.id
     LEFT JOIN rhnChannel PC ON PC.id = C.parent_channel
- WHERE  UC.user_id = :user_id
+ WHERE  SCURV.user_id = :user_id AND SCURV.deny_reason IS NULL
 ORDER BY UPPER(C.name)
   </query>
   <elaborator name="visible_server_count"/>
@@ -665,10 +668,11 @@ SELECT  DISTINCT C.id,
                  C.gpg_key_url
   FROM  rhnChannelFamilyMembers CFM,
         rhnChannel C,
-  rhnUserChannel UC
- WHERE  UC.user_id = :user_id
-   AND  UC.role = 'subscribe'
-   AND  UC.channel_id = C.id
+  suseChannelUserRoleView SCURV
+ WHERE  SCURV.user_id = :user_id
+   AND  SCURV.role = 'subscribe'
+   AND  SCURV.channel_id = C.id
+   AND  SCURV.deny_reason IS NULL
    AND  C.parent_channel = :base_channel_id
    AND  C.id = CFM.channel_id
    AND  C.parent_channel IS NOT NULL

@@ -1,6 +1,6 @@
 const React = require('react');
-const ReactDOM = require('react-dom');
 const { GuestsEdit } = require('./guests-edit');
+const SpaRenderer  = require("core/spa/spa-renderer").default;
 
 window.pageRenderers = window.pageRenderers || {};
 window.pageRenderers.guests = window.pageRenderers.guests || {};
@@ -12,7 +12,7 @@ window.pageRenderers.guests.edit.guestsEditRenderer = (id, {
   localTime,
   actionChains,
 }) => {
-  ReactDOM.render(
+  SpaRenderer.renderNavigationReact(
     <GuestsEdit
       host={host}
       guestUuid={guestUuid}

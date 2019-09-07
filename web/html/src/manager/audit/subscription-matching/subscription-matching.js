@@ -14,6 +14,7 @@ const MessageContainer = require("components/messages").Messages;
 const { TopPanel } = require('components/panels/TopPanel');
 const MessagesUtils = require("components/messages").Utils;
 const Network = require("utils/network");
+const SpaRenderer  = require("core/spa/spa-renderer").default;
 
 class SubscriptionMatching extends React.Component {
   state = {
@@ -23,7 +24,11 @@ class SubscriptionMatching extends React.Component {
 
   UNSAFE_componentWillMount() {
     this.refreshServerData();
-    setInterval(this.refreshServerData, this.props.refreshInterval);
+    this.timerId = setInterval(this.refreshServerData, this.props.refreshInterval);
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.timerId)
   }
 
   refreshServerData = () => {
@@ -161,7 +166,7 @@ class SubscriptionMatchingTabContainer extends React.Component {
   }
 }
 
-ReactDOM.render(
+SpaRenderer.renderNavigationReact(
   <SubscriptionMatching refreshInterval={60 * 1000} />,
   document.getElementById("subscription-matching")
 );

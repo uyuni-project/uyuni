@@ -218,10 +218,13 @@ class PackageImport(ChannelPackageSubscription):
         self.suseProdfile_data = {}
         self.suseEula_data = {}
 
-    def _rpm_knows(self, tag):
+    def _skip_tag(self, package, tag):
+        # Allow all tags in case of DEB packages
+        if package['arch'] and package['arch'].endswith('deb'):
+            return False
         # See if the installed version of RPM understands a given tag
         # Assumed attr-format in RPM is 'RPMTAG_<UPPERCASETAG>'
-        return hasattr(rpm, 'RPMTAG_'+tag.upper())
+        return not hasattr(rpm, 'RPMTAG_'+tag.upper())
 
     def _processPackage(self, package):
         ChannelPackageSubscription._processPackage(self, package)
@@ -238,7 +241,7 @@ class PackageImport(ChannelPackageSubscription):
         package['copyright'] = self._fix_encoding(package['license'])
 
         for tag in ('recommends', 'suggests', 'supplements', 'enhances', 'breaks', 'predepends'):
-            if not self._rpm_knows(tag) or tag not in package or type(package[tag]) != type([]):
+            if self._skip_tag(package, tag) or tag not in package or type(package[tag]) != type([]):
                 # older spacewalk server do not export weak deps.
                 # and older RPM doesn't know about them either
                 # lets create an empty list
@@ -279,9 +282,10 @@ class PackageImport(ChannelPackageSubscription):
         unique_package_changelog_hash = {}
         unique_package_changelog = []
         for changelog in package['changelog']:
-            key = (self._fix_encoding(changelog['name']), self._fix_encoding(changelog['time']), self._fix_encoding(changelog['text']))
+            key = (self._fix_encoding(changelog['name']), self._fix_encoding(changelog['time']), self._fix_encoding(changelog['text'])[:3000])
             if key not in unique_package_changelog_hash:
                 self.changelog_data[key] = None
+                changelog['text'] = changelog['text'][:3000]
                 unique_package_changelog.append(changelog)
                 unique_package_changelog_hash[key] = 1
         package['changelog'] = unique_package_changelog

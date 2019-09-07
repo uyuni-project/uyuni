@@ -1,7 +1,7 @@
 Uyuni
 =====
 
-<a href="https://www.uyuni-project.org/"><img src="https://www.uyuni-project.org/img/logo.svg" width="100" height="100" alt="Uyuni logo" /></a>
+<a href="https://www.uyuni-project.org/"><img src="https://www.uyuni-project.org/img/uyuni-logo.svg" width="129" height="78" alt="Uyuni logo" /></a>
 
 [Uyuni](https://www.uyuni-project.org/) is an open source systems management solution, forked
 from [Spacewalk](https://spacewalkproject.github.io/).

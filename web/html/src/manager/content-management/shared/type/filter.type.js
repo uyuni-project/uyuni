@@ -3,19 +3,19 @@ export type FilterServerType = {
   entityType: string,
   matcher: string,
   id: number,
-  name?: string,
-  criteriaKey?: string,
-  criteriaValue?: string,
-  deny?: boolean,
+  name: string,
+  criteriaKey: string,
+  criteriaValue: string,
+  rule: string,
   projects?: Array<string>
 }
 
 export type FilterFormType = {
   type: string,
   matcher: string,
-  deny?: boolean,
+  rule: string,
   id?: number,
-  name?: string,
+  filter_name: string,
   projects?: Array<string>,
   packageName?: string,
   epoch?: string,
@@ -23,5 +23,8 @@ export type FilterFormType = {
   release?: string,
   architecture?: string,
   advisoryName?: string,
+  advisoryType?: string,
+  synopsis?: string,
   criteria?: string,
+  issueDate?: Date
 }

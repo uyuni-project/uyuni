@@ -5,11 +5,9 @@
 <%@ taglib uri="http://rhn.redhat.com/tags/config-managment" prefix="cfg" %>
 
 <html>
-    <head>
-        <script src="/javascript/rank_options.js?cb=${rhn:getConfig('web.version')}" type="text/javascript"></script>
-    </head>
     <body>
-        <%@ include file="/WEB-INF/pages/common/fragments/activationkeys/common-header.jspf" %>
+    <script src="/javascript/rank_options.js?cb=${rhn:getConfig('web.version')}" type="text/javascript"></script>
+    <%@ include file="/WEB-INF/pages/common/fragments/activationkeys/common-header.jspf" %>
         <html:form  method="post"
                     styleClass="form-horizontal"
                     action="/activationkeys/configuration/Rank.do?tid=${param.tid}">

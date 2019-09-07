@@ -57,7 +57,7 @@ const ListProjects = (props: Props) => {
           <LinkButton
             id="createcontentproject"
             icon="fa-plus"
-            className="btn-link"
+            className="btn-link js-spa"
             title={t('Create a new content lifecycle project')}
             text={t('Create Project')}
             href="/rhn/manager/contentmanagement/project"
@@ -83,7 +83,9 @@ const ListProjects = (props: Props) => {
             comparator={Functions.Utils.sortByText}
             header={t('Name')}
             cell={row =>
-              <a href={`/rhn/manager/contentmanagement/project/${row.label}`}>
+              <a
+                className="js-spa"
+                href={`/rhn/manager/contentmanagement/project/${row.label}`}>
                 {row.name}
               </a>
             }

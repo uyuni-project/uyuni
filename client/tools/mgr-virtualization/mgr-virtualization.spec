@@ -21,7 +21,7 @@
 %define rhn_client_tools spacewalk-client-tools
 %define rhn_setup	 spacewalk-client-setup
 %define rhn_check	 spacewalk-check
-%define rhnsd		 spacewalksd
+%define rhnsd		 mgr-daemon
 # Old name and version+1 before renaming to mgr-push
 %define oldname          rhn-virtualization
 %define oldversion       5.4.73
@@ -45,7 +45,7 @@ Name:           mgr-virtualization
 Summary:        Spacewalk action support for virualization
 License:        GPL-2.0-only
 Group:          System Environment/Base
-Version:        4.0.6
+Version:        4.0.8
 Provides:       rhn-virtualization = %{oldversion}
 Obsoletes:      rhn-virtualization < %{oldversion}
 Release:        1%{?dist}
@@ -75,8 +75,8 @@ Group:          System Environment/Base
 %{?python_provide:%python_provide python2-%{name}-common}
 Provides:       python-%{name}-common = %{oldversion}
 Obsoletes:      python-%{name}-common < %{oldversion}
-Provides:       python-%{oldname}-common = %{oldversion}
-Obsoletes:      python-%{oldname}-common < %{oldversion}
+Provides:       python2-%{oldname}-common = %{oldversion}
+Obsoletes:      python2-%{oldname}-common < %{oldversion}
 Provides:       %{name}-common = %{oldversion}
 Obsoletes:      %{name}-common < %{oldversion}
 Provides:       %{oldname}-common = %{oldversion}
@@ -202,13 +202,13 @@ make -f Makefile.rhn-virtualization DESTDIR=$RPM_BUILD_ROOT PKGDIR0=%{_initrddir
 install -d %{buildroot}%{_unitdir}
 install -D -m 0644 scripts/mgr-virtualization.timer %{buildroot}%{_unitdir}/mgr-virtualization.timer
 install -D -m 0644 scripts/mgr-virtualization.service %{buildroot}%{_unitdir}/mgr-virtualization.service
-sed -i 's,@PYTHON@,python3,; s,@PYTHONPATH@,%{python3_sitelib},;' \
+sed -i 's,@PYTHON@,/usr/bin/python3,; s,@PYTHONPATH@,%{python3_sitelib},;' \
        %{buildroot}%{_unitdir}/mgr-virtualization.service
 
 %else
 install -d $RPM_BUILD_ROOT%{cron_dir}
 install -D -m 0644 scripts/rhn-virtualization.cron $RPM_BUILD_ROOT%{cron_dir}/rhn-virtualization.cron
-sed -i 's,@PYTHON@,python,; s,@PYTHONPATH@,%{python_sitelib},;' \
+sed -i 's,@PYTHON@,/usr/bin/python,; s,@PYTHONPATH@,%{python_sitelib},;' \
         $RPM_BUILD_ROOT/%{cron_dir}/rhn-virtualization.cron
 %endif
 

@@ -5,11 +5,11 @@ include ../common.jade
 script(src='/javascript/validator/validator.min.js?cb=#{webVersion}', type='text/javascript')
 
 script(type='text/javascript').
-    const csrfToken = "#{csrf_token}";
-    const profileId = "#{profileId}";
-    const activationKeys = !{activationKeys};
-    const customDataKeys = !{customDataKeys};
-    const imageTypesDataFromTheServer = !{imageTypesDataFromTheServer};
+    window.csrfToken = "#{csrf_token}";
+    window.profileId = "#{profileId}";
+    window.activationKeys = !{activationKeys};
+    window.customDataKeys = !{customDataKeys};
+    window.imageTypesDataFromTheServer = !{imageTypesDataFromTheServer};
 
 script(src='/javascript/manager/images/image-profile-edit.bundle.js?cb=#{webVersion}', type='text/javascript')
 

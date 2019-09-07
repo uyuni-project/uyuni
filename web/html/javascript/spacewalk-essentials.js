@@ -1,21 +1,20 @@
-$(document).on("ready", function(){
-
+function onDocumentReadyGeneral(){
   /*
-   * System Set Manager: actions to hide the SSM toolbar
-   * when the Clear button is pressed or when
-   * no system is selected
-   */
+ * System Set Manager: actions to hide the SSM toolbar
+ * when the Clear button is pressed or when
+ * no system is selected
+ */
   $(document).on('click', '#clear-ssm-btn', function() {
     hidesystemtool();
   });
   function hidesystemtool(){
     $(".spacewalk-bar").animate({
-      "right": "-=50px",
-      "opacity": "0"},
-      300, function() {
-      /* after animation is complete we hide the element */
-      $(this).hide();
-    });
+          "right": "-=50px",
+          "opacity": "0"},
+        300, function() {
+          /* after animation is complete we hide the element */
+          $(this).hide();
+        });
   }
   // See if there is a system already selected as soon as the page loads
   updateSsmToolbarOpacity();
@@ -34,7 +33,9 @@ $(document).on("ready", function(){
   addTextareaLengthNotification();
 
   scrollTopBehavior();
-});
+}
+
+$(document).on("ready", onDocumentReadyGeneral);
 
 
 function adaptFluidColLayout() {
@@ -259,7 +260,7 @@ function showFatalError(message, exception) {
 // as much space as possible while still being responsive
 // So three col-md-auto would get col-md-4 each.
 // Five col-md-auto would get two with col-md-3 and three with col-md-2
-$(document).on("ready", function() {
+function onDocumentReadyAutoBootstrapGrid() {
   $.each(['xs', 'sm', 'md', 'lg'], function(idx, gridSize) {
     //for each div with class row
     $('.col-' + gridSize + '-auto:first').parent().each(function() {
@@ -279,8 +280,9 @@ $(document).on("ready", function() {
       }
     });
   });
-});
+}
 
+$(document).on("ready", onDocumentReadyAutoBootstrapGrid);
 
 // Put the focus on a given form element
 function formFocus(form, name) {
@@ -328,9 +330,7 @@ function humanizeDates() {
   });
 }
 
-$(document).on("ready", function() {
-  humanizeDates();
-});
+$(document).on("ready", humanizeDates);
 
 /**
  * Setups ACE editor in a textarea element
@@ -445,6 +445,13 @@ function t(key) {
   return result;
 }
 
+function adjustSpacewalkContent() {
+  alignContentDimensions();
+  // trigger the 'spacewalk-section-toolbar' (sst) handler on content change
+  // since it can happen that the sst has just been added right now
+  handleSst();
+}
+
 /*
 * Create an Observer object that monitors if something in the HTML has changes,
 * if that happens it fires the window resize computation event
@@ -453,19 +460,20 @@ function t(key) {
 // create an observer instance
 var spacewalkContentObserver = new MutationObserver(function(mutations) {
     if (mutations.length > 0) {
-        alignContentDimensions();
-        // trigger the 'spacewalk-section-toolbar' (sst) handler on content change
-        // since it can happen that the sst has just been added right now
-        handleSst();
+      adjustSpacewalkContent();
     }
 });
 
-$(document).ready(function() {
+function registerSpacewalkContentObservers() {
   var target = document.getElementById('spacewalk-content');
   // configuration of the observer:
   var config = { childList: true, characterData: true, subtree: true };
   // pass in the target node, as well as the observer options
   spacewalkContentObserver.observe(target, config);
+}
+
+$(document).ready(function() {
+  registerSpacewalkContentObservers();
 });
 
 $(document).on('click', '.toggle-box', function() {
@@ -544,4 +552,35 @@ function addTextareaLengthNotification() {
     $('#' + $(this).attr('id') + '-remaining-length')
       .html($(this).attr('maxlength') - $(this).val().length);
   });
+}
+
+function initIEWarningUse() {
+  const isIE = window.document.documentMode;
+  const bodyContentNode = document.getElementById("spacewalk-content");
+  if(isIE && bodyContentNode) {
+    let ieWarningNode = document.createElement("div");
+    ieWarningNode.className = 'alert alert-warning';
+    ieWarningNode.innerHTML = t(
+        "The browser Internet Explorer is not supported. " +
+        "Try using Firefox, Chrome or Edge"
+    );
+
+    bodyContentNode.insertBefore(
+        ieWarningNode,
+        bodyContentNode.firstChild
+    )
+  }
+}
+
+$(document).on("ready", function() {
+  initIEWarningUse();
+})
+
+// Function used to initialize old JS behaviour. (After react load/spa transition)
+// Please, don't add anything else to this file. The idea is to get rid of this file while migrating everything to react.
+function onDocumentReadyInitOldJS() {
+  sstScrollBehaviorSetupIsDone = false;
+  onDocumentReadyGeneral();
+  onDocumentReadyAutoBootstrapGrid();
+  humanizeDates();
 }

@@ -1,3 +1,22 @@
+- Set openSUSE Leap 15.1 as new Base OS for Uyuni Server and Proxy
+- Remove EOL openSUSE Leap 42.3 from spacewalk-common-channels
+- Require uyuni-base-common for /etc/rhn
+- add spacewalk-watch-channel-sync.sh to spacewalk-utils
+
+-------------------------------------------------------------------
+Thu Aug 01 19:00:44 CEST 2019 - jgonzalez@suse.com
+
+- version 4.0.12-1
+- common-channels: Duplicate Ubuntu channels for Uyuni
+
+-------------------------------------------------------------------
+Wed Jul 31 17:37:23 CEST 2019 - jgonzalez@suse.com
+
+- version 4.0.11-1
+- common-channels: Fix repo type assignment for type YUM
+- Use the same client tools for openSUSE Leap 15.0 for all openSUSE Leap
+  15.X releases.
+- Fixes SSL hostname matching (bsc#1141663)
 - hostname-rename: change hostname in cobbler db and autoinst data
 - Adds support for Ubuntu and Debian channels to spacewalk-common-channels.
 

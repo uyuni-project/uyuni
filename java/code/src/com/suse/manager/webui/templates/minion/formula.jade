@@ -3,8 +3,14 @@ include ./minion-header.jade
 #formula
 
 script(type='text/javascript').
-    var csrfToken = "#{csrf_token}";
-    var serverId = "#{server.id}";
-    var formulaId = #{formula_id};
+    window.csrfToken = "#{csrf_token}";
 
-script(src='/javascript/manager/minion/formula/minion-formula.bundle.js?cb=#{webVersion}', type='text/javascript')
+script(src='/javascript/manager/minion/formula/minion-formula.renderer.bundle.js?cb=#{webVersion}', type='text/javascript')
+script(type='text/javascript').
+    pageRenderers.minion.formula.renderer(
+        'formula',
+        {
+          serverId: "#{server.id}",
+          formulaId: #{formula_id}
+        }
+    );

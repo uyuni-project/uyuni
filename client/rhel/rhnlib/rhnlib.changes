@@ -1,3 +1,6 @@
+- fix initialize ssl connection (bsc#1144155)
+- Add SNI support for clients
+
 -------------------------------------------------------------------
 Wed May 15 15:04:15 CEST 2019 - jgonzalez@suse.com
 

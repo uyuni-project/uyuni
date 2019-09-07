@@ -1,11 +1,12 @@
 include /templates/common.jade
 
 +userRoles
++userLocalization
 
 #content-management-list-filters
 
 script(type='text/javascript').
-    const csrfToken = "#{csrf_token}";
+    window.csrfToken = "#{csrf_token}";
 
 div#init_data_filters(style="display: none")
     | #{contentFilters}

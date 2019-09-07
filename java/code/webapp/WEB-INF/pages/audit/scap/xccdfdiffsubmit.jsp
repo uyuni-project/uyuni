@@ -7,8 +7,11 @@
 
 <html>
 <head>
+</head>
+<body>
+
 <style>
-div.differs {
+  div.differs {
     background-color: #f5f3c4;
     display: inline-block;
     padding-bottom: 2px;
@@ -16,10 +19,8 @@ div.differs {
     padding-right: 9px;
     margin-bottom: 0px;
     border-radius: 10px;
-}
+  }
 </style>
-</head>
-<body>
 
 <rhn:toolbar base="h1" icon="header-search" imgAlt="search.alt.img">
   <bean:message key="scapdiff.jsp.toolbar"/>

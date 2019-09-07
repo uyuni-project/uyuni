@@ -28,10 +28,10 @@
 %define rhn_client_tools spacewalk-client-tools
 %define rhn_setup	 spacewalk-client-setup
 %define rhn_check	 spacewalk-check
-%define rhnsd		 spacewalksd
+%define rhnsd		 mgr-daemon
 #
 Name:           mgr-daemon
-Version:        4.0.5
+Version:        4.0.6
 Release:        1%{?dist}
 Summary:        Spacewalk query daemon
 License:        GPL-2.0-only
@@ -111,6 +111,11 @@ your machine, and runs any actions.
 
 %build
 make -f Makefile.rhnsd %{?_smp_mflags} CFLAGS="-pie -fPIE -Wl,-z,relro,-z,now %{optflags}" %{?is_deb:PLATFORM=deb}
+
+%if 0%{?suse_version} && 0%{?suse_version} <= 1315
+# systemd < v229 does not have RandomizedDelaySec keyword
+sed -i 's/RandomizedDelaySec=.*//' rhnsd.timer
+%endif
 
 %install
 make -f Makefile.rhnsd install VERSION=%{version}-%{release} PREFIX=$RPM_BUILD_ROOT MANPATH=%{_mandir} INIT_DIR=$RPM_BUILD_ROOT/%{_initrddir} %{?is_deb:PLATFORM=deb} CONFIG_DIR=$RPM_BUILD_ROOT/%{_sysconfdir}/sysconfig/rhn
@@ -195,10 +200,6 @@ if [ -f %{_unitdir}/rhnsd.service ]; then
         rm -f /etc/rc?.d/[SK]??rhnsd
     fi
 fi
-if [ -f %{_unitdir}/spacewalk-update-status.service ]; then
-    # take care that this is always enabled if it exists
-    /usr/bin/systemctl --quiet enable spacewalk-update-status.service 2>&1 ||:
-fi
 %endif
 %endif
 %if %{_vendor} == "debbuild"
@@ -276,6 +277,13 @@ if [ -f %{_unitdir}/rhnsd.service ]; then
     systemctl daemon-reload >/dev/null 2>&1 || :
 fi
 %endif
+
+%posttrans
+if [ -f %{_unitdir}/spacewalk-update-status.service ]; then
+    # take care that this is always enabled if it exists
+    /usr/bin/systemctl --quiet enable spacewalk-update-status.service 2>&1 ||:
+fi
+
 
 %if 0%{?fedora} || 0%{?suse_version} >= 1210 || 0%{?mageia} || 0%{?ubuntu} >= 1504 || 0%{?debian} >= 8 || 0%{?rhel} >= 7
 %files

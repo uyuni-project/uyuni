@@ -1,3 +1,35 @@
+- New Single Page Application engine for the UI
+- Check that a channel doesn't have clones before deleting it (bsc#1138454)
+- Fix: initialize the hibernate transaction when merging errata via XMLRPC API (bsc#1145584)
+- Fix documentation of contentmanagement handler (bsc#1145753)
+- Add new API endpoint to list available Filter Criteria
+- improve API documentation of Filter Criteria
+- implement "patch contains package" Filter for Content Lifecycle Management
+- implement Filter Patch "by type" Content Lifecycle Management
+- Improve websocket authentication to prevent errors in logs (bsc#1138454)
+- Implement filtering errata by synopsis in Content Lifecycle Management
+- Normalize date formats for actions, notifications and clm (bsc#1142774)
+- Implement ALLOW filters in Content Lifecycle Management
+- move /usr/share/rhn/config-defaults to uyuni-base-common
+- implement "by date" Filter for Content Lifecycle Management
+- Require uyuni-base-common for /etc/rhn
+- Support partly patched CVEs in CVE audit (bsc#1137229)
+- UI render without error if salt-formulas system folders are unreachable (bsc#1142309)
+- Add susemanager as prerequired for spacewalk-java
+- Cloning Errata from a specific channel should not take packages
+- Hide channels managed by Content Lifecycle projects from available sources (bsc#1137965)
+  from other channels (bsc#1142764)
+- add caret sorting for rpm versioning
+- improve performance for retrieving the user permissions on channels (bsc#1140644)
+
+-------------------------------------------------------------------
+Wed Jul 31 17:34:30 CEST 2019 - jgonzalez@suse.com
+
+- version 4.0.20-1
+- fix permissions of cobbler owned directories
+- Prerequire salt package to avoid not existing user issues
+- Remove duplicate information message when changing system properties (bsc#1111371)
+- Align selection column in software channel managers (bsc#1122559)
 - API Documentation: mention the shebang in the system.scheduleScriptRun doc strings (bsc#1138655)
 - Enable product detection for plain rhel systems (bsc#1136301)
 - For orphan contentsources, look also in susesccrepositoryauth to make sure they are not being referenced (bsc#1138275)

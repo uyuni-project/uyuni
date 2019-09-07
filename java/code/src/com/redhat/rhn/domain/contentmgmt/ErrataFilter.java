@@ -16,8 +16,18 @@
 package com.redhat.rhn.domain.contentmgmt;
 
 import com.redhat.rhn.domain.errata.Errata;
+import com.redhat.rhn.domain.rhnpackage.Package;
 
+import com.suse.manager.utils.PackageUtils;
+
+import java.util.List;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
 import java.util.Optional;
+import java.util.stream.Stream;
+
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.Transient;
@@ -30,16 +40,84 @@ import javax.persistence.Transient;
 public class ErrataFilter extends ContentFilter<Errata> {
 
     @Override
-    public boolean testInternal(Errata erratum) {
+    public boolean test(Errata erratum) {
         FilterCriteria.Matcher matcher = getCriteria().getMatcher();
         String field = getCriteria().getField();
         String value = getCriteria().getValue();
 
-        switch (matcher) {
-            case EQUALS:
-                return getField(erratum, field, String.class).equals(value);
+        switch (field) {
+            case "issue_date":
+                ZonedDateTime valDate = ZonedDateTime.parse(value, DateTimeFormatter.ISO_OFFSET_DATE_TIME);
+                ZonedDateTime issueDate = getField(erratum, field, ZonedDateTime.class);
+                switch (matcher) {
+                    case GREATEREQ:
+                        return !issueDate.isBefore(valDate);
+                    case GREATER:
+                        return issueDate.isAfter(valDate);
+                    default:
+                        throw new UnsupportedOperationException("Matcher " + matcher + " not supported");
+                }
+            case "advisory_name":
+                switch (matcher) {
+                    case EQUALS:
+                        return getField(erratum, field, String.class).equals(value);
+                    default:
+                        throw new UnsupportedOperationException("Matcher " + matcher + " not supported");
+                }
+            case "package_name":
+                switch (matcher) {
+                    case CONTAINS_PKG_NAME:
+                        return erratum.getPackages().stream()
+                                .anyMatch(p -> p.getPackageName().getName().equals(value));
+                    default:
+                        throw new UnsupportedOperationException("Matcher " + matcher + " not supported");
+                }
+            case "package_nevr":
+                List<String> split = Arrays.asList(value.split(" "));
+                if (split.size() != 2) {
+                    throw new IllegalArgumentException("Missing EVR in value");
+                }
+                String name = split.get(0);
+                String evr = split.get(1);
+                Stream<Package> pstream = erratum.getPackages().stream()
+                        .filter(p -> p.getPackageName().getName().equals(name));
+                switch (matcher) {
+                    case CONTAINS_PKG_LT_EVR:
+                        return pstream.anyMatch(p -> p.getPackageEvr().compareTo(
+                                PackageUtils.parsePackageEvr(p, evr)) < 0);
+                    case CONTAINS_PKG_LE_EVR:
+                        return pstream.anyMatch(p -> p.getPackageEvr().compareTo(
+                                PackageUtils.parsePackageEvr(p, evr)) <= 0);
+                    case CONTAINS_PKG_EQ_EVR:
+                        return pstream.anyMatch(p -> p.getPackageEvr().compareTo(
+                                PackageUtils.parsePackageEvr(p, evr)) == 0);
+                    case CONTAINS_PKG_GE_EVR:
+                        return pstream.anyMatch(p -> p.getPackageEvr().compareTo(
+                                PackageUtils.parsePackageEvr(p, evr)) >= 0);
+                    case CONTAINS_PKG_GT_EVR:
+                        return pstream.anyMatch(p -> p.getPackageEvr().compareTo(
+                                PackageUtils.parsePackageEvr(p, evr)) > 0);
+                    default:
+                        throw new UnsupportedOperationException("Matcher " + matcher + " not supported");
+                }
+            case "advisory_type":
+                switch (matcher) {
+                    case EQUALS:
+                        return getField(erratum, field, String.class).equals(value);
+                    default:
+                        throw new UnsupportedOperationException("Matcher " + matcher + " not supported");
+                }
+            case "synopsis":
+                switch (matcher) {
+                    case EQUALS:
+                        return getField(erratum, field, String.class).equals(value);
+                    case CONTAINS:
+                        return getField(erratum, field, String.class).contains(value);
+                    default:
+                        throw new UnsupportedOperationException("Matcher " + matcher + " not supported");
+                }
             default:
-                throw new UnsupportedOperationException("Matcher " + matcher + " not supported");
+                throw new UnsupportedOperationException("Field " + field + " not supported");
         }
     }
 
@@ -47,6 +125,12 @@ public class ErrataFilter extends ContentFilter<Errata> {
         switch (field) {
             case "advisory_name":
                 return type.cast(erratum.getAdvisoryName());
+            case "advisory_type":
+                return type.cast(erratum.getAdvisoryType());
+            case "issue_date":
+                return type.cast(erratum.getIssueDate().toInstant().atZone(ZoneId.systemDefault()));
+            case "synopsis":
+                return type.cast(erratum.getSynopsis());
             default:
                 throw new UnsupportedOperationException("Field " + field + " not supported");
         }

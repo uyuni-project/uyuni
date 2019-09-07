@@ -46,7 +46,11 @@ public class FrontendLogController {
     public static String log(Request request, Response response, User user) {
         Map<String, Object> map = GSON.fromJson(request.body(), Map.class);
         String type = map.get("level").toString();
-        String message = "[" + user.getId() + "] - " + map.get("message").toString();
+        String userId = "no-logged-user";
+        if (user != null) {
+            userId = user.getId().toString();
+        }
+        String message = "[" + userId + " - " + request.userAgent() + "] - " + map.get("message").toString();
 
         switch (type) {
             case "info": log.info(message); break;

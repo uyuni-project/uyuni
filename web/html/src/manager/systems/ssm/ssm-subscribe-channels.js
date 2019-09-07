@@ -16,6 +16,7 @@ const {ChannelLink, ActionLink, ActionChainLink, SystemLink} = require("componen
 const {PopUp} = require("components/popup");
 const {Toggler} = require("components/toggler");
 const ChannelUtils = require("core/channels/utils/channels-dependencies.utils");
+const SpaRenderer  = require("core/spa/spa-renderer").default;
 
 import type JsonResult from "utils/network";
 import type {ActionChain} from "components/action-schedule";
@@ -335,21 +336,19 @@ class ChildChannelPage extends React.Component<ChildChannelProps, ChildChannelSt
   }
 
   toggleRecommended = (change: SsmAllowedChildChannelsDto) => {
-    const recommendedChangeIds = change.childChannels
+    const recommendedChildChannelIds = change.childChannels
       .filter(channel => channel.recommended)
-      .map(channel => getAllowedChangeId(change, channel.id));
+      .map(channel => channel.id)
 
     if (this.areRecommendedChildrenSelected(change)) {
-      recommendedChangeIds
-        .filter(changeId => this.state.selections.get(changeId) === "SUBSCRIBE")
-        .forEach(changeId => this.state.selections.set(changeId, "NO_CHANGE"));
+      recommendedChildChannelIds
+        .filter(channelId => this.state.selections.get(getAllowedChangeId(change, channelId)) === "SUBSCRIBE")
+        .forEach(channelId => this.onChangeChild(change, channelId, "NO_CHANGE"));
     } else {
-      recommendedChangeIds
-        .filter(changeId => this.state.selections.get(changeId) !== "SUBSCRIBE")
-        .forEach(changeId => this.state.selections.set(changeId, "SUBSCRIBE"));
+      recommendedChildChannelIds
+        .filter(channelId => this.state.selections.get(getAllowedChangeId(change, channelId)) !== "SUBSCRIBE")
+        .forEach(channelId => this.onChangeChild(change, channelId, "SUBSCRIBE"));
     }
-
-    this.setState({selections: this.state.selections});
   }
 
   areRecommendedChildrenSelected = (change: SsmAllowedChildChannelsDto) => {
@@ -1021,7 +1020,7 @@ class SsmChannelPage extends React.Component<SsmChannelProps, SsmChannelState> {
 }
 
 
-ReactDOM.render(
+SpaRenderer.renderNavigationReact(
   <SsmChannelPage ref={(component) => window.ssmChannelPage = component}/>,
     document.getElementById("channels-div")
 );

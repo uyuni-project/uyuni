@@ -4,6 +4,7 @@ const CopyWebpackPlugin = require('copy-webpack-plugin')
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const LicenseCheckerWebpackPlugin = require("license-checker-webpack-plugin");
 const TerserPlugin = require('terser-webpack-plugin')
+const webpackAlias = require('./webpack.alias');
 
 
 module.exports = (env, argv) => {
@@ -50,6 +51,12 @@ module.exports = (env, argv) => {
             chunks: "all",
             name: "vendors/vendors",
             enforce: true
+          },
+          core: {
+            test: /[\\/]core.*/,
+            chunks: "all",
+            name: "javascript/manager/core",
+            enforce: true
           }
         }
       }
@@ -84,12 +91,7 @@ module.exports = (env, argv) => {
       ]
     },
     resolve: {
-      alias: {
-        components: path.resolve(__dirname, '../components/'),
-        core: path.resolve(__dirname, '../core/'),
-        utils: path.resolve(__dirname, '../utils/'),
-        "jquery": path.resolve(__dirname, './inject.global.jquery.js'),
-      }
+      alias: webpackAlias
     },
     plugins: pluginsInUse,
     devServer: {

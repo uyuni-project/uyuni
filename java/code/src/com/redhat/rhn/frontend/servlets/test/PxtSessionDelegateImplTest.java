@@ -288,6 +288,7 @@ public class PxtSessionDelegateImplTest extends MockObjectTestCase {
 
         context().checking(new Expectations() { {
             oneOf(mockPxtSession).setWebUserId(null);
+            oneOf(mockPxtSession).getWebUserId();
             allowing(mockResponse).addCookie(with(any(Cookie.class)));
         } });
 
@@ -299,6 +300,7 @@ public class PxtSessionDelegateImplTest extends MockObjectTestCase {
 
         context().checking(new Expectations() { {
             allowing(mockPxtSession).setWebUserId(null);
+            oneOf(mockPxtSession).getWebUserId();
             allowing(mockResponse).addCookie(with(any(Cookie.class)));
         } });
 
@@ -330,6 +332,7 @@ public class PxtSessionDelegateImplTest extends MockObjectTestCase {
 
         context().checking(new Expectations() { {
             allowing(mockPxtSession).setWebUserId(null);
+            oneOf(mockPxtSession).getWebUserId();
             oneOf(mockResponse).addCookie(with(zeroMaxAgeCookieMatcher()));
         } });
 

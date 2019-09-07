@@ -1,12 +1,16 @@
 //@flow
-import React from 'react';
+import React, {useEffect} from 'react';
 import {Text} from "components/input/Text";
+import {DateTime} from "components/input/DateTime";
+import {Radio} from "components/input/Radio";
 import {Select} from "components/input/Select";
 import {Form} from "components/input/Form";
-import {Check} from "components/input/Check";
 import type {FilterFormType} from "../shared/type/filter.type";
-import filtersEnum from "../shared/business/filters.enum";
-import type {FilterOptionType} from "../shared/business/filters.enum";
+import type {ClmFilterOptionType, FilterMatcherType} from "../shared/business/filters.enum";
+import {clmFilterOptions, findClmFilterByKey, getClmFiltersOptions} from "../shared/business/filters.enum";
+import useUserLocalization from "core/user-localization/use-user-localization";
+import Functions from "utils/functions";
+import produce from "immer";
 
 type Props = {
   filter: FilterFormType,
@@ -16,6 +20,32 @@ type Props = {
 }
 
 const FilterForm = (props: Props) => {
+  const {timezone, localTime} = useUserLocalization();
+
+  // If the filter type changes, resets the matcher filter
+  useEffect(() => {
+    if(!props.editing) {
+      props.onChange(
+        produce(props.filter, draft => {
+          const selectedFilter = findClmFilterByKey(props.filter.type);
+          if (selectedFilter && selectedFilter.matchers.length === 1) {
+            draft.matcher = selectedFilter.matchers[0].key
+          } else {
+            delete draft.matcher
+          }
+          if(clmFilterOptions.ADVISORY_TYPE.key === props.filter.type) {
+            draft[clmFilterOptions.ADVISORY_TYPE.key] = "Security Advisory";
+          }
+          if(clmFilterOptions.ISSUE_DATE.key === props.filter.type) {
+            draft[clmFilterOptions.ISSUE_DATE.key] = Functions.Utils.dateWithTimezone(localTime);
+          }
+        })
+      )
+    };
+  }, [props.filter.type])
+
+  const selectedFilter = findClmFilterByKey(props.filter.type);
+  const selectedFilterMatchers = selectedFilter && selectedFilter.matchers;
 
   return (
     <Form
@@ -35,7 +65,7 @@ const FilterForm = (props: Props) => {
         }
         <div className="row">
           <Text
-            name="name"
+            name="filter_name"
             label={t("Filter Name")}
             labelClass="col-md-3"
             divClass="col-md-6"
@@ -43,45 +73,65 @@ const FilterForm = (props: Props) => {
             disabled={props.editing}
           />
         </div>
-        <div className="row">
+
+        <Select
+          name="type"
+          label={t("Filter Type")}
+          labelClass="col-md-3"
+          divClass="col-md-6"
+          required
+          disabled={props.editing}
+        >
+          <option disabled selected value=""> -- select a filter type -- </option>
+          {
+            getClmFiltersOptions().map((filter: ClmFilterOptionType) =>
+              <option
+                key={filter.key}
+                value={filter.key}
+              >
+                {`${filter.entityType.text} (${filter.text})`}
+              </option>
+            )
+          }
+        </Select>
+
+        {
+          selectedFilterMatchers &&
           <Select
-            name="type"
-            label={t("Filter Type")}
+            name="matcher"
+            label={t("Matcher")}
             labelClass="col-md-3"
             divClass="col-md-6"
-            defaultValue={""}
             required
             disabled={props.editing}
           >
-            <option disabled selected value=""> -- select a filter type -- </option>
+            <option disabled selected value=""> -- select a matcher -- </option>
             {
-              filtersEnum.getFiltersOptions().map((filter: FilterOptionType) =>
+              selectedFilterMatchers.map((matcher: FilterMatcherType) =>
                 <option
-                  key={filter.key}
-                  value={filter.key}
+                  key={matcher.key}
+                  value={matcher.key}
                 >
-                  {t(filter.text)}
+                  {matcher.text}
                 </option>
               )
             }
           </Select>
-        </div>
-
-        {
-          filtersEnum.enum.PACKAGE.key === props.filter.type &&
-          <div className="row">
-            <Text
-              name="criteria"
-              label={t("Name contains")}
-              labelClass="col-md-3"
-              divClass="col-md-6"
-              required
-            />
-          </div>
         }
 
         {
-          filtersEnum.enum.PACKAGE_NEVRA.key === props.filter.type &&
+          clmFilterOptions.NAME.key === props.filter.type &&
+          <Text
+            name={clmFilterOptions.NAME.key}
+            label={t("Name contains")}
+            labelClass="col-md-3"
+            divClass="col-md-6"
+            required
+          />
+        }
+
+        {
+          clmFilterOptions.NEVRA.key === props.filter.type &&
           <>
             <Text
               name="packageName"
@@ -119,23 +169,107 @@ const FilterForm = (props: Props) => {
         }
 
         {
-          filtersEnum.enum.ERRATUM.key === props.filter.type &&
-          <div className="row">
+          clmFilterOptions.PACKAGE_NEVR.key === props.filter.type &&
+          <>
             <Text
-              name="advisoryName"
-              label={t("Advisory name")}
+              name="packageName"
+              label={t("Package Name")}
               labelClass="col-md-3"
               divClass="col-md-6"
               required
             />
-          </div>
+            <Text
+              name="epoch"
+              label={t("Epoch")}
+              labelClass="col-md-3"
+              divClass="col-md-6" />
+            <Text
+              name="version"
+              label={t("Version")}
+              labelClass="col-md-3"
+              divClass="col-md-6"
+              required
+            />
+            <Text
+              name="release"
+              label={t("Release")}
+              labelClass="col-md-3"
+              divClass="col-md-6"
+              required
+            />
+          </>
         }
 
-        <Check
-          name="deny"
-          label={t("deny")}
-          disabled
-          divClass="col-md-8 col-md-offset-3"/>
+        {
+          clmFilterOptions.ADVISORY_NAME.key === props.filter.type &&
+          <Text
+            name={clmFilterOptions.ADVISORY_NAME.key}
+            label={t("Advisory name")}
+            labelClass="col-md-3"
+            divClass="col-md-6"
+            required
+          />
+        }
+
+        {
+          clmFilterOptions.ADVISORY_TYPE.key === props.filter.type &&
+          <Radio
+            name={clmFilterOptions.ADVISORY_TYPE.key}
+            required
+            items={[
+              {"label": t("Security Advisory"), "value": "Security Advisory"},
+              {"label": t("Bug Fix Advisory"), "value": "Bug Fix Advisory"},
+              {"label": t("Product Enhancement Advisory"), "value": "Product Enhancement Advisory"}
+            ]}
+            label={t("Advisory Type")}
+            labelClass="col-md-3"
+            divClass="col-md-6" />
+        }
+
+        {
+          clmFilterOptions.ISSUE_DATE.key === props.filter.type &&
+          <DateTime
+            name={clmFilterOptions.ISSUE_DATE.key}
+            label={t("Issued After")}
+            labelClass="col-md-3"
+            divClass="col-md-6"
+            required
+            timezone={timezone}
+          />
+        }
+
+        {
+          clmFilterOptions.SYNOPSIS.key === props.filter.type &&
+          <Text
+            name={clmFilterOptions.SYNOPSIS.key}
+            label={t("Synopsis")}
+            labelClass="col-md-3"
+            divClass="col-md-6"
+            required
+          />
+        }
+
+        {
+          clmFilterOptions.PACKAGE_NAME.key === props.filter.type &&
+          <Text
+            name={clmFilterOptions.PACKAGE_NAME.key}
+            label={t("Package name")}
+            labelClass="col-md-3"
+            divClass="col-md-6"
+            required
+          />
+        }
+
+        <Radio
+          inline
+          name="rule"
+          items={[
+            {"label": t("Deny"), "value": "deny"},
+            {"label": t("Allow"), "value": "allow"}
+          ]}
+          label={t("Rule")}
+          labelClass="col-md-3"
+          divClass="col-md-6" />
 
 
       </React.Fragment>

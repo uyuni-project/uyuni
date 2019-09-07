@@ -1,3 +1,13 @@
+- Adjust current name of the package to mgr-daemon and not
+  spacewalksd (bsc#1149353)
+- enable spacewalk-update-service on package installation
+  (bsc#1143789)
+
+-------------------------------------------------------------------
+Wed Jul 31 17:26:37 CEST 2019 - jgonzalez@suse.com
+
+- version 4.0.6-1
+- fix systemd timer configuration on SLE12 (bsc#1142038)
 - rhnsd service was replaced by rhnsd timer (bsc#1138130)
 
 -------------------------------------------------------------------

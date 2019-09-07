@@ -20,7 +20,6 @@ type Props = {
 };
 
 const ListFilters = (props: Props) => {
-
   const [displayedFilters, setDisplayedFilters]: [Array<FilterFormType>, Function] =
     useState(mapResponseToFilterForm(props.filters));
 
@@ -47,7 +46,7 @@ const ListFilters = (props: Props) => {
         hasEditingPermissions &&
         <FilterEdit
           id="create-filter-button"
-          initialFilterForm={{deny:true}}
+          initialFilterForm={{rule: "deny"}}
           icon='fa-plus'
           buttonText='Create Filter'
           openFilterId={props.openFilterId}
@@ -62,7 +61,7 @@ const ListFilters = (props: Props) => {
     <TopPanel title={t('Content Lifecycle Filters')} icon="fa-filter" button={panelButtons} helpUrl="/docs/reference/clm/clm-filters.html">
       <Table
         data={displayedFilters}
-        identifier={row => row.name}
+        identifier={row => row.filter_name}
         searchField={(
           <SearchField
             filter={searchData}
@@ -71,16 +70,16 @@ const ListFilters = (props: Props) => {
         )}
       >
         <Column
-          columnKey="name"
+          columnKey="filter_name"
           comparator={Functions.Utils.sortByText}
           header={t('Name')}
-          cell={row => row.name}
+          cell={row => row.filter_name}
         />
         <Column
           columnKey="projects"
           header={t('Projects in use')}
           cell={row => row.projects.map(p =>
-            <a className="project-tag-link" href={`/rhn/manager/contentmanagement/project/${p}`}>
+            <a className="project-tag-link js-spa" href={`/rhn/manager/contentmanagement/project/${p}`}>
               {p}
             </a>
           )}

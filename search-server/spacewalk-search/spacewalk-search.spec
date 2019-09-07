@@ -23,7 +23,7 @@ Name:           spacewalk-search
 Summary:        Spacewalk Full Text Search Server
 License:        GPL-2.0-only AND Apache-2.0
 Group:          Applications/Internet
-Version:        4.0.7
+Version:        4.0.8
 Release:        1%{?dist}
 # This src.rpm is cannonical upstream
 # You can obtain it using this set of commands
@@ -38,14 +38,16 @@ ExcludeArch:    aarch64
 
 BuildRequires:  apache-mybatis
 BuildRequires:  hadoop
-BuildRequires:  lucene
+BuildRequires:  lucene == 2.4.1
 BuildRequires:  nutch-core
 BuildRequires:  picocontainer
 Requires:       apache-mybatis
 Requires:       hadoop
-Requires:       lucene
+Requires:       lucene == 2.4.1
 Requires:       nutch-core
 Requires:       picocontainer
+BuildRequires:  uyuni-base-common
+Requires(pre):  uyuni-base-common
 
 BuildRequires:  junit
 #Requires: apache-ibatis-sqlmap
@@ -263,7 +265,6 @@ fi
 %{_var}/lib/rhn/search/indexes/docs
 %if 0%{?suse_version}
 %dir %attr(755, root, root) %{_var}/lib/rhn
-%dir %attr(755,root,www) %{_prefix}/share/rhn/config-defaults
 %dir /usr/share/rhn
 %dir /usr/share/rhn/search
 %dir /usr/share/rhn/search/lib

@@ -1,5 +1,5 @@
-#!/usr/bin/python
-# -*- coding: UTF-8 -*-
+#!/usr/bin/python3
+# -*- coding: utf-8 -*-
 
 import sys
 import os
@@ -45,8 +45,8 @@ def is_sha256_capable():
     cmp = -1
     try:
         h = next(mi)
-        cmp = rpm.labelCompare([h['name'], h['version'], h['release']],
-                               [h['name'], '0.8.1', '1'])
+        cmp = rpm.labelCompare([h['name'].decode("utf-8"), h['version'].decode("utf-8"), h['release'].decode("utf-8")],
+                               [h['name'].decode("utf-8"), '0.8.1', '1'])
     except StopIteration:
         pass
     return (cmp > 0)
@@ -280,21 +280,24 @@ def delete_package_entry(row):
     return 0
 
 def check_disk_checksum(abs_path, checksum_type, db_checksum):
+    file_checksum = None
+    ret = 0
     try:
-        fp = file(abs_path, 'rb')
+        fp = open(abs_path, 'rb')
         h = checksum.getHashlibInstance(checksum_type, False)
         h.update(fp.read())
         file_checksum = h.hexdigest()
         fp.close()
-    except:
-        file_checksum = None
-    ret = 0
-    if file_checksum != db_checksum:
-        log(0, "File checksum mismatch: %s (%s: %s vs. %s)" %
-            (abs_path, checksum_type, db_checksum, file_checksum))
+    except Exception as exc:
+        log(0, "Unable to calculate checksum: {}".format(str(exc)))
+        ret = 1
+
+    if file_checksum is not None and file_checksum != db_checksum:
+        log(0, "File checksum mismatch: %s (%s: %s vs. %s)" % (abs_path, checksum_type, db_checksum, file_checksum))
         if options.remove_mismatch:
             remove_mismatch(abs_path, options)
         ret = 1
+
     return ret
 
 

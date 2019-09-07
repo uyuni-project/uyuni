@@ -40,6 +40,7 @@ Possible values are currently:
 | SLES Salt SSH minion | ```$ssh_minion``` | ```$SSHMINION``` | ```"ssh-minion"``` | ```"minion"``` |
 | Cent OS Salt minion or traditional client | ```$ceos_minion``` | ```$CENTOSMINION``` | ```"ceos-minion"```, ```"ceos-traditional-client"```, or ``"ceos-ssh-minion"``` | ```"minion"``` |
 | Ubuntu minion | ```$ubuntu_minion``` | ```$UBUNTUMINION``` | ```"ubuntu-minion"``` or ```"ubuntu-ssh-minion"``` | ```"minion"``` |
+| PXE-Boot minion |  None | ```$PXEBOOTMAC``` | ```"pxeboot-minion"``` | ```"pxeboot"``` |
 
 These names are such for historical reasons and might be made better in the future.
 
@@ -336,7 +337,8 @@ The check box can be identified by name, id or label text.
 * Select an item from a selection box
 
 ```cucumber
-  Then I select "Mr." from "prefix"
+  When I select "Mr." from "prefix"
+  When I select the hostname of "proxy" from "proxies"
 ```
 
 * Make sure an item in a selection box is selected
@@ -361,6 +363,7 @@ The check box can be identified by name, id or label text.
 ```cucumber
   When I enter "SUSE Test Key x86_64" as "description"
   When I enter "CVE-1999-12345" as "search_string" in the content area
+  When I enter the hostname of "proxy" as "hostname"
 ```
 
 * Make sure a text is in a given input field of a form

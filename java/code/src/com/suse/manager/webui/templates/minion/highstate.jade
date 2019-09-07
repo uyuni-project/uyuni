@@ -3,10 +3,10 @@ include ./minion-header.jade
 #highstate
 
 script(type='text/javascript').
-    const csrfToken = "#{csrf_token}";
-    const minions = [{id: #{server.id}, name: "#{server.name}"}];
-    const timezone = "#{h.renderTimezone()}";
-    const localTime = "#{h.renderLocalTime()}";
-    const actionChains = !{actionChains};
+    window.csrfToken = "#{csrf_token}";
+    window.minions = [{id: #{server.id}, name: "#{server.name}"}];
+    window.timezone = "#{h.renderTimezone()}";
+    window.localTime = "#{h.renderLocalTime()}";
+    window.actionChains = !{actionChains};
 
 script(src='/javascript/manager/highstate/highstate.bundle.js?cb=#{webVersion}', type='text/javascript')

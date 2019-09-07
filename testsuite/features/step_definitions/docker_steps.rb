@@ -22,10 +22,6 @@ def retrieve_minion_id
   minion_id
 end
 
-When(/^I select sle-minion hostname in Build Host$/) do
-  select($minion.full_hostname, from: 'buildHostId')
-end
-
 When(/^I navigate to images webpage$/) do
   visit("https://#{$server.full_hostname}/rhn/manager/cm/images")
 end
@@ -71,8 +67,8 @@ end
 
 When(/^I check the first image$/) do
   within(:xpath, '//section') do
-    row = first(:xpath, "//div[@class='table-responsive']/table/tbody/tr[.//td]")
-    row.first(:xpath, ".//input[@type='checkbox']").set(true)
+    row = find(:xpath, "//div[@class='table-responsive']/table/tbody/tr[.//td]", match: :first)
+    row.find(:xpath, ".//input[@type='checkbox']", match: :first).set(true)
   end
 end
 

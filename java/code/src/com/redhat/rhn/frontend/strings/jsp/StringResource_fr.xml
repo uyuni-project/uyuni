@@ -22356,20 +22356,6 @@ fois pour un canal donné.</target>
         </context-group>
         <target>Ceci est le profil kickstart par défaut de votre organisation.</target>
       </trans-unit>
-      <trans-unit id="help.jsp.chat">
-        <source>IRC Chat</source>
-        <target>Chat IRC</target>
-      </trans-unit>
-      <trans-unit id="help.jsp.chatinfo">
-        <source>This page allows you to join an IRC chat room for discussions with other users
-                of @@PRODUCT_NAME@@.</source>
-        <target>Cette page vous permet de rejoindre une salle de chat IRC pour discuter avec d'autres utilisateurs
-                de @@PRODUCT_NAME@@.</target>
-      </trans-unit>
-      <trans-unit id="help.jsp.chatlink">
-        <source>Access &lt;a href="http://webchat.freenode.net?channels=#spacewalk" target="_blank"&gt;#spacewalk&lt;/a&gt; channel on IRC.</source>
-        <target>Accéder au canal &lt;a href=&quot;http://webchat.freenode.net?channels=#spacewalk&quot; target=&quot;_blank&quot;&gt;#spacewalk&lt;/a&gt; sur IRC.</target>
-      </trans-unit>
       <trans-unit id="help.jsp.about.title">
         <source>About @@PRODUCT_NAME@@</source>
         <context-group name="ctx">

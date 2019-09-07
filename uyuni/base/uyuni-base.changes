@@ -1,0 +1,18 @@
+- uyuni-base-common is not really required at buildtime, so
+  remove respective BuildRequires
+- move /usr/share/rhn/config-defaults to uyuni-base-common
+- make packages distribution agnostic
+- fix permission of /etc/rhn; add Requires and BuildRequires
+
+-------------------------------------------------------------------
+Tue Aug  6 13:27:54 CEST 2019 - mantel@suse.de
+
+- add /usr/share/rhn to uyuni-base-common
+
+-------------------------------------------------------------------
+Tue Aug  6 11:26:21 CEST 2019 - mantel@suse.de
+
+- Initial release of package uyuni-base and subpackages
+  uyuni-base-common, uyuni-base-server and uyuni-base-proxy
+
+-------------------------------------------------------------------

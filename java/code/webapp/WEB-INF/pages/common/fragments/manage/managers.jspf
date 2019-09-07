@@ -31,13 +31,13 @@
             </rl:selectablecolumn>
         </c:if>
         <c:if test="${not is_custom}">
-            <rl:column>
+            <rl:column headertext="">
                 <input type="checkbox" disabled="1"/>
             </rl:column>
         </c:if>
     </c:if>
     <c:if test='${current.disabled}'>
-        <rl:column>
+        <rl:column headertext="">
             <input type="checkbox" disabled="1" checked="1"/>
         </rl:column>
     </c:if>
@@ -49,7 +49,7 @@
                filterattr="login"
                defaultsort="asc">
 
-        <a href="/rhn/users/UserDetails.do?uid=${current.id}">
+        <a class="js-spa" href="/rhn/users/UserDetails.do?uid=${current.id}">
             ${current.login}
         </a>
     </rl:column>

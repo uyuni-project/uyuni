@@ -1,4 +1,12 @@
 - Add mgr manpage links
+- Require mgr-daemon (new name of spacewalksd) so we systems with
+  spacewalksd get always the new package installed (bsc#1149353)
+
+-------------------------------------------------------------------
+Wed Jul 31 17:25:43 CEST 2019 - jgonzalez@suse.com
+
+- version 4.0.9-1
+- Ensure bytes type when using hashlib to avoid traceback (bsc#1138822)
 
 -------------------------------------------------------------------
 Wed May 15 20:06:15 CEST 2019 - jgonzalez@suse.com

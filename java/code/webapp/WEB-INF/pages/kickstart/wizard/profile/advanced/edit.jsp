@@ -4,22 +4,22 @@
 <html:html >
 <head>
 <meta http-equiv="Pragma" content="no-cache" />
-<script language="javascript" type="text/javascript">
-function clickNewestRHTree(obj) {
-   if (obj.checked == true) {
-       document.getElementById("updateAll").checked = false;
-   }
-}
-
-function clickNewestTree(obj) {
-   if (obj.checked == true) {
-       document.getElementById("updateRedHat").checked = false;
-   }
-}
-</script>
 </head>
 
 <body>
+<script language="javascript" type="text/javascript">
+        function clickNewestRHTree(obj) {
+                if (obj.checked == true) {
+                        document.getElementById("updateAll").checked = false;
+                }
+        }
+
+        function clickNewestTree(obj) {
+                if (obj.checked == true) {
+                        document.getElementById("updateRedHat").checked = false;
+                }
+        }
+</script>
 <%@ include file="/WEB-INF/pages/common/fragments/kickstart/advanced/header.jspf"%>
 <c:import url="/WEB-INF/pages/common/fragments/kickstart/advanced/details.jspf">
         <c:param name = "title_key" value="Kickstart Details"/>
