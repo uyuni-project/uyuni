@@ -967,6 +967,7 @@ public class KickstartFactory extends HibernateFactory {
      * @param tree to delete
      */
     public static void removeKickstartableTree(KickstartableTree tree) {
+        tree.removeSaltFS();
         singleton.removeObject(tree);
     }
 
