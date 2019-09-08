@@ -123,7 +123,7 @@ const FilterForm = (props: Props) => {
           clmFilterOptions.NAME.key === props.filter.type &&
           <Text
             name={clmFilterOptions.NAME.key}
-            label={t("Name contains")}
+            label={t("Package Name")}
             labelClass="col-md-3"
             divClass="col-md-6"
             required
