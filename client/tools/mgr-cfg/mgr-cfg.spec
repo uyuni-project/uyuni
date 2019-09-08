@@ -349,6 +349,12 @@ ln -s rhncfg-manager $RPM_BUILD_ROOT/%{_bindir}/mgrcfg-manager
 ln -s rhncfg-client $RPM_BUILD_ROOT/%{_bindir}/mgrcfg-client
 ln -s rhn-actions-control $RPM_BUILD_ROOT/%{_bindir}/mgr-actions-control
 
+pushd $RPM_BUILD_ROOT/%{_mandir}/man8
+for f in *.8*; do
+  echo ".so ${f/.gz}" | gzip > ${f/rhn/mgr}
+done
+popd
+
 %if 0%{?suse_version}
 %if 0%{?build_py2}
 %py_compile -O %{buildroot}/%{python_sitelib}
@@ -447,6 +453,7 @@ py3clean -p python3-%{name}-actions
 %{_bindir}/mgrcfg-client
 %attr(644,root,root) %config(noreplace) %{rhnconf}/rhncfg-client.conf
 %{_mandir}/man8/rhncfg-client.8*
+%{_mandir}/man8/mgrcfg-client.8*
 
 %if 0%{?build_py2}
 %files -n python2-%{name}-client
@@ -468,6 +475,7 @@ py3clean -p python3-%{name}-actions
 %{_bindir}/rhncfg-manager
 %attr(644,root,root) %config(noreplace) %{rhnconf}/rhncfg-manager.conf
 %{_mandir}/man8/rhncfg-manager.8*
+%{_mandir}/man8/mgrcfg-manager.8*
 
 %if 0%{?build_py2}
 %files -n python2-%{name}-management
@@ -489,6 +497,7 @@ py3clean -p python3-%{name}-actions
 %{_bindir}/rhn-actions-control
 %config(noreplace) %{client_caps_dir}/*
 %{_mandir}/man8/rhn-actions-control.8*
+%{_mandir}/man8/mgr-actions-control.8*
 %ghost %attr(600,root,root) %{_localstatedir}/log/rhncfg-actions
 
 %if 0%{?build_py2}

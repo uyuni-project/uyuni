@@ -1,4 +1,5 @@
-- Require mgr-daemon (new name of spacewalksd) so we systems with
+- Add mgr manpage links
+- Require mgr-daemon (new name of spacewalksd). So systems with
   spacewalksd get always the new package installed (bsc#1149353)
 
 -------------------------------------------------------------------
