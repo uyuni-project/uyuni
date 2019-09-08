@@ -37,6 +37,7 @@ import static com.redhat.rhn.domain.contentmgmt.FilterCriteria.Matcher.CONTAINS;
 import static com.redhat.rhn.domain.contentmgmt.FilterCriteria.Matcher.EQUALS;
 import static com.redhat.rhn.domain.contentmgmt.FilterCriteria.Matcher.GREATER;
 import static com.redhat.rhn.domain.contentmgmt.FilterCriteria.Matcher.GREATEREQ;
+import static com.redhat.rhn.domain.contentmgmt.FilterCriteria.Matcher.MATCHES;
 import static com.redhat.rhn.domain.contentmgmt.FilterCriteria.Matcher.CONTAINS_PKG_NAME;
 import static com.redhat.rhn.domain.contentmgmt.FilterCriteria.Matcher.CONTAINS_PKG_LT_EVR;
 import static com.redhat.rhn.domain.contentmgmt.FilterCriteria.Matcher.CONTAINS_PKG_LE_EVR;
@@ -93,7 +94,8 @@ public class FilterCriteria {
         CONTAINS_PKG_GT_EVR("contains_pkg_gt_evr"), // >
         EQUALS("equals"),
         GREATER("greater"),
-        GREATEREQ("greatereq");
+        GREATEREQ("greatereq"),
+        MATCHES("matches");
 
         private String label;
 
