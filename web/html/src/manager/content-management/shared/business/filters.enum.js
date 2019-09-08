@@ -67,6 +67,11 @@ const filterMatchers : FilterMatcherEnumType = {
     text: t('greater or equal (>=)'),
     longDescription: t('greater or equal than')
   },
+  MATCHES: {
+    key: 'matches',
+    text: t('matches (regex)'),
+    longDescription: t('matches regular expression')
+  },
 
 };
 
@@ -75,7 +80,7 @@ export const clmFilterOptions : ClmFilterOptionsEnumType = {
     key: 'name',
     text: t('Name'),
     entityType: filterEntity.PACKAGE,
-    matchers: [filterMatchers.CONTAINS],
+    matchers: [filterMatchers.CONTAINS, filterMatchers.MATCHES],
   },
   NEVRA: {
     key: 'nevra',
@@ -87,7 +92,7 @@ export const clmFilterOptions : ClmFilterOptionsEnumType = {
     key: 'advisory_name',
     text: t('Advisory Name'),
     entityType: filterEntity.ERRATUM,
-    matchers: [filterMatchers.EQUALS]
+    matchers: [filterMatchers.EQUALS, filterMatchers.MATCHES]
   },
   ADVISORY_TYPE: {
     key: 'advisory_type',
@@ -99,7 +104,7 @@ export const clmFilterOptions : ClmFilterOptionsEnumType = {
     key: 'synopsis',
     text: t('Synopsis'),
     entityType: filterEntity.ERRATUM,
-    matchers: [filterMatchers.EQUALS, filterMatchers.CONTAINS]
+    matchers: [filterMatchers.EQUALS, filterMatchers.CONTAINS, filterMatchers.MATCHES]
   },
   ISSUE_DATE: {
     key: 'issue_date',
