@@ -67,9 +67,12 @@ public class FilterCriteria {
         validCombinations.add(Triple.of(PACKAGE, CONTAINS, "name"));
         validCombinations.add(Triple.of(PACKAGE, EQUALS, "nevr"));
         validCombinations.add(Triple.of(PACKAGE, EQUALS, "nevra"));
+        validCombinations.add(Triple.of(PACKAGE, MATCHES, "name"));
         validCombinations.add(Triple.of(ERRATUM, EQUALS, "advisory_name"));
         validCombinations.add(Triple.of(ERRATUM, EQUALS, "advisory_type"));
         validCombinations.add(Triple.of(ERRATUM, EQUALS, "synopsis"));
+        validCombinations.add(Triple.of(ERRATUM, MATCHES, "advisory_name"));
+        validCombinations.add(Triple.of(ERRATUM, MATCHES, "synopsis"));
         validCombinations.add(Triple.of(ERRATUM, CONTAINS, "synopsis"));
         validCombinations.add(Triple.of(ERRATUM, GREATER, "issue_date"));
         validCombinations.add(Triple.of(ERRATUM, GREATEREQ, "issue_date"));

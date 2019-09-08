@@ -26,6 +26,7 @@ import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.Optional;
+import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
 import javax.persistence.DiscriminatorValue;
@@ -38,6 +39,8 @@ import javax.persistence.Transient;
 @Entity
 @DiscriminatorValue("errata")
 public class ErrataFilter extends ContentFilter<Errata> {
+
+    private Pattern pattern;
 
     @Override
     public boolean test(Errata erratum) {
@@ -61,6 +64,11 @@ public class ErrataFilter extends ContentFilter<Errata> {
                 switch (matcher) {
                     case EQUALS:
                         return getField(erratum, field, String.class).equals(value);
+                    case MATCHES:
+                        if (pattern == null) {
+                            pattern = Pattern.compile(value);
+                        }
+                        return pattern.matcher(getField(erratum, field, String.class)).matches();
                     default:
                         throw new UnsupportedOperationException("Matcher " + matcher + " not supported");
                 }
@@ -113,6 +121,11 @@ public class ErrataFilter extends ContentFilter<Errata> {
                         return getField(erratum, field, String.class).equals(value);
                     case CONTAINS:
                         return getField(erratum, field, String.class).contains(value);
+                    case MATCHES:
+                        if (pattern == null) {
+                            pattern = Pattern.compile(value);
+                        }
+                        return pattern.matcher(getField(erratum, field, String.class)).matches();
                     default:
                         throw new UnsupportedOperationException("Matcher " + matcher + " not supported");
                 }
