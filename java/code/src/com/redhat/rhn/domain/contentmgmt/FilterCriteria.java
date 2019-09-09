@@ -37,6 +37,8 @@ import static com.redhat.rhn.domain.contentmgmt.FilterCriteria.Matcher.CONTAINS;
 import static com.redhat.rhn.domain.contentmgmt.FilterCriteria.Matcher.EQUALS;
 import static com.redhat.rhn.domain.contentmgmt.FilterCriteria.Matcher.GREATER;
 import static com.redhat.rhn.domain.contentmgmt.FilterCriteria.Matcher.GREATEREQ;
+import static com.redhat.rhn.domain.contentmgmt.FilterCriteria.Matcher.MATCHES;
+import static com.redhat.rhn.domain.contentmgmt.FilterCriteria.Matcher.MATCHES_PKG_NAME;
 import static com.redhat.rhn.domain.contentmgmt.FilterCriteria.Matcher.CONTAINS_PKG_NAME;
 import static com.redhat.rhn.domain.contentmgmt.FilterCriteria.Matcher.CONTAINS_PKG_LT_EVR;
 import static com.redhat.rhn.domain.contentmgmt.FilterCriteria.Matcher.CONTAINS_PKG_LE_EVR;
@@ -66,12 +68,16 @@ public class FilterCriteria {
         validCombinations.add(Triple.of(PACKAGE, CONTAINS, "name"));
         validCombinations.add(Triple.of(PACKAGE, EQUALS, "nevr"));
         validCombinations.add(Triple.of(PACKAGE, EQUALS, "nevra"));
+        validCombinations.add(Triple.of(PACKAGE, MATCHES, "name"));
         validCombinations.add(Triple.of(ERRATUM, EQUALS, "advisory_name"));
         validCombinations.add(Triple.of(ERRATUM, EQUALS, "advisory_type"));
         validCombinations.add(Triple.of(ERRATUM, EQUALS, "synopsis"));
+        validCombinations.add(Triple.of(ERRATUM, MATCHES, "advisory_name"));
+        validCombinations.add(Triple.of(ERRATUM, MATCHES, "synopsis"));
         validCombinations.add(Triple.of(ERRATUM, CONTAINS, "synopsis"));
         validCombinations.add(Triple.of(ERRATUM, GREATER, "issue_date"));
         validCombinations.add(Triple.of(ERRATUM, GREATEREQ, "issue_date"));
+        validCombinations.add(Triple.of(ERRATUM, MATCHES_PKG_NAME, "package_name"));
         validCombinations.add(Triple.of(ERRATUM, CONTAINS_PKG_NAME, "package_name"));
         validCombinations.add(Triple.of(ERRATUM, CONTAINS_PKG_LT_EVR, "package_nevr"));
         validCombinations.add(Triple.of(ERRATUM, CONTAINS_PKG_LE_EVR, "package_nevr"));
@@ -85,6 +91,7 @@ public class FilterCriteria {
      */
     public enum Matcher {
         CONTAINS("contains"),
+        MATCHES_PKG_NAME("matches_pkg_name"),
         CONTAINS_PKG_NAME("contains_pkg_name"),
         CONTAINS_PKG_LT_EVR("contains_pkg_lt_evr"), // <
         CONTAINS_PKG_LE_EVR("contains_pkg_le_evr"), // <=
@@ -93,7 +100,8 @@ public class FilterCriteria {
         CONTAINS_PKG_GT_EVR("contains_pkg_gt_evr"), // >
         EQUALS("equals"),
         GREATER("greater"),
-        GREATEREQ("greatereq");
+        GREATEREQ("greatereq"),
+        MATCHES("matches");
 
         private String label;
 

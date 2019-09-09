@@ -24,11 +24,11 @@ describe('Testing filters enum and descriptions', () => {
       matcher: "equals"
     }
 
-    expect(getClmFilterDescription(filter)).toEqual("filter by nevra name: allow package matching asd-123:123-123.123 (nevra)")
+    expect(getClmFilterDescription(filter)).toEqual("filter by nevra name: allow package equal asd-123:123-123.123 (nevra)")
     filter.criteriaKey = "nevr";
     filter.criteriaValue = "asd-123-123";
     filter.rule = "deny";
-    expect(getClmFilterDescription(filter)).toEqual("filter by nevra name: deny package matching asd-123-123 (nevr)")
+    expect(getClmFilterDescription(filter)).toEqual("filter by nevra name: deny package equal asd-123-123 (nevr)")
   });
 
   test('test filter advisory name description', () => {
@@ -41,7 +41,7 @@ describe('Testing filters enum and descriptions', () => {
       matcher: "equals"
     }
 
-    expect(getClmFilterDescription(filter)).toEqual("filter by advisory name: allow patch matching advisory_name_12 (advisory_name)")
+    expect(getClmFilterDescription(filter)).toEqual("filter by advisory name: allow patch equal advisory_name_12 (advisory_name)")
   });
 
   test('test filter advisory type description', () => {
@@ -54,10 +54,10 @@ describe('Testing filters enum and descriptions', () => {
       matcher: "equals"
     }
 
-    expect(getClmFilterDescription(filter)).toEqual("filter by advisory type: allow patch matching Security Advisory (advisory_type)")
+    expect(getClmFilterDescription(filter)).toEqual("filter by advisory type: allow patch equal Security Advisory (advisory_type)")
     filter.criteriaValue = "Product Enhancement Advisory";
     filter.rule = "deny";
-    expect(getClmFilterDescription(filter)).toEqual("filter by advisory type: deny patch matching Product Enhancement Advisory (advisory_type)")
+    expect(getClmFilterDescription(filter)).toEqual("filter by advisory type: deny patch equal Product Enhancement Advisory (advisory_type)")
   });
 
   test('test filter synopsis description', () => {
@@ -70,7 +70,7 @@ describe('Testing filters enum and descriptions', () => {
       matcher: "equals"
     }
 
-    expect(getClmFilterDescription(filter)).toEqual("filter by synopsis type: allow patch matching namesynopsis_123 (synopsis)")
+    expect(getClmFilterDescription(filter)).toEqual("filter by synopsis type: allow patch equal namesynopsis_123 (synopsis)")
     filter.criteriaValue = "namesynopsis_1234";
     filter.matcher = "contains";
     filter.rule = "deny";
@@ -87,7 +87,7 @@ describe('Testing filters enum and descriptions', () => {
       matcher: "greatereq"
     }
 
-    expect(getClmFilterDescription(filter)).toEqual("filter by date: deny patch greater or equal than 2018-09-10T00:00+01:00 (issue_date)")
+    expect(getClmFilterDescription(filter)).toEqual("filter by date: deny patch later or equal than 2018-09-10T00:00+01:00 (issue_date)")
   });
 
   test('test Patch (contains Package) - package_nevr - description', () => {
@@ -100,16 +100,16 @@ describe('Testing filters enum and descriptions', () => {
       matcher: "contains_pkg_lt_evr"
     }
 
-    expect(getClmFilterDescription(filter)).toEqual("filter contains package name: allow patch contains package with version lower than asd 123:123-123 (package_nevr)")
+    expect(getClmFilterDescription(filter)).toEqual("filter contains package name: allow patch contains package with epoch/version/release lower than asd 123:123-123 (package_nevr)")
     filter.matcher = "contains_pkg_le_evr";
     filter.rule = "deny";
-    expect(getClmFilterDescription(filter)).toEqual("filter contains package name: deny patch contains package with version lower or equal than asd 123:123-123 (package_nevr)")
+    expect(getClmFilterDescription(filter)).toEqual("filter contains package name: deny patch contains package with epoch/version/release lower or equal than asd 123:123-123 (package_nevr)")
     filter.matcher = "contains_pkg_eq_evr";
-    expect(getClmFilterDescription(filter)).toEqual("filter contains package name: deny patch contains package with version equal than asd 123:123-123 (package_nevr)")
+    expect(getClmFilterDescription(filter)).toEqual("filter contains package name: deny patch contains package with epoch/version/release equal than asd 123:123-123 (package_nevr)")
     filter.matcher = "contains_pkg_ge_evr";
-    expect(getClmFilterDescription(filter)).toEqual("filter contains package name: deny patch contains package with version greater or equal than asd 123:123-123 (package_nevr)")
+    expect(getClmFilterDescription(filter)).toEqual("filter contains package name: deny patch contains package with epoch/version/release greater or equal than asd 123:123-123 (package_nevr)")
     filter.matcher = "contains_pkg_gt_evr";
-    expect(getClmFilterDescription(filter)).toEqual("filter contains package name: deny patch contains package with version greater than asd 123:123-123 (package_nevr)")
+    expect(getClmFilterDescription(filter)).toEqual("filter contains package name: deny patch contains package with epoch/version/release greater than asd 123:123-123 (package_nevr)")
   });
 
   test('test Patch (contains Package Name) - package_name', () => {
