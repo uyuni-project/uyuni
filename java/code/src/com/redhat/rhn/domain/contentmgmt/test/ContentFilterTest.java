@@ -290,6 +290,19 @@ public class ContentFilterTest extends JMockBaseTestCaseWithUser {
         assertFalse(filter.test(erratum1));
     }
 
+    public void testErrataMatchesPackageName() throws Exception {
+        String cveName1 = TestUtils.randomString().substring(0, 13);
+        Errata erratum1 = ErrataTestUtils.createTestErrata(user, Collections.singleton(ErrataTestUtils.createTestCve(cveName1)));
+
+        FilterCriteria criteria = new FilterCriteria(FilterCriteria.Matcher.MATCHES_PKG_NAME, "package_name", "\\d+JavaTest.*");
+        ContentFilter filter = ContentManager.createFilter("matches-name-filter", DENY, ERRATUM, criteria, user);
+        assertTrue(filter.test(erratum1));
+
+        criteria = new FilterCriteria(FilterCriteria.Matcher.MATCHES_PKG_NAME, "package_name", "JavaTest.*");
+        filter = ContentManager.createFilter("matches-name-filter2", DENY, ERRATUM, criteria, user);
+        assertFalse(filter.test(erratum1));
+    }
+
     public void testErrataContainsPackageEvr() throws Exception {
         String cveName1 = TestUtils.randomString().substring(0, 13);
         Errata erratum1 = ErrataTestUtils.createTestErrata(user, Collections.singleton(ErrataTestUtils.createTestCve(cveName1)));
