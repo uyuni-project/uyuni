@@ -8,6 +8,7 @@
 
 # IDEMPOTENT
 
+- features/secondary/srv_users.feature
 - features/secondary/allcli_reboot.feature
 - features/secondary/trad_config_channel.feature
 - features/secondary/trad_lock_packages.feature
