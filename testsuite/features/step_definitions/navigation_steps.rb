@@ -360,7 +360,7 @@ end
 Given(/^I am on the groups page$/) do
   steps %(
     Given I am on the Systems page
-    When I follow the left menu "Systems >System Groups"
+    When I follow the left menu "Systems > System Groups"
     )
 end
 
