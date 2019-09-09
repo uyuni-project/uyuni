@@ -27,6 +27,11 @@ const filterMatchers : FilterMatcherEnumType = {
     text: t('contains'),
     longDescription: t('containing')
   },
+  MATCHES_PKG_NAME: {
+    key: 'matches_pkg_name',
+    text: t('matches (regexp)'),
+    longDescription: t('regular expression matches package name')
+  },
   CONTAINS_PKG_NAME: {
     key: 'contains_pkg_name',
     text: t('contains'),
@@ -116,7 +121,7 @@ export const clmFilterOptions : ClmFilterOptionsEnumType = {
     key: 'package_name',
     text: t('Contains Package Name'),
     entityType: filterEntity.ERRATUM,
-    matchers: [filterMatchers.CONTAINS_PKG_NAME]
+    matchers: [filterMatchers.CONTAINS_PKG_NAME, filterMatchers.MATCHES_PKG_NAME]
   },
   PACKAGE_NEVR: {
     key: 'package_nevr',
