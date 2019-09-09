@@ -123,7 +123,7 @@ const FilterForm = (props: Props) => {
           clmFilterOptions.NAME.key === props.filter.type &&
           <Text
             name={clmFilterOptions.NAME.key}
-            label={t("Name contains")}
+            label={t("Package Name")}
             labelClass="col-md-3"
             divClass="col-md-6"
             required
@@ -230,7 +230,7 @@ const FilterForm = (props: Props) => {
           clmFilterOptions.ISSUE_DATE.key === props.filter.type &&
           <DateTime
             name={clmFilterOptions.ISSUE_DATE.key}
-            label={t("Issued After")}
+            label={t("Issued")}
             labelClass="col-md-3"
             divClass="col-md-6"
             required
@@ -253,7 +253,7 @@ const FilterForm = (props: Props) => {
           clmFilterOptions.PACKAGE_NAME.key === props.filter.type &&
           <Text
             name={clmFilterOptions.PACKAGE_NAME.key}
-            label={t("Package name")}
+            label={t("Package Name")}
             labelClass="col-md-3"
             divClass="col-md-6"
             required
