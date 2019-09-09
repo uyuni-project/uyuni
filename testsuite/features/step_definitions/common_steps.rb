@@ -937,7 +937,7 @@ end
 
 And(/^I delete it via the "([^"]*)" button$/) do |target_button|
   if count_table_items != '0'
-    xpath_for_delete_button = "//button[contains(text(), '#{target_button}')]"
+    xpath_for_delete_button = "//button[@title='#{target_button}']"
     raise "xpath: #{xpath_for_delete_button} not found" unless find(:xpath, xpath_for_delete_button).click
 
     step %(I wait until I see "1 message deleted successfully." text)
@@ -946,7 +946,7 @@ end
 
 And(/^I mark as read it via the "([^"]*)" button$/) do |target_button|
   if count_table_items != '0'
-    xpath_for_read_button = "//button[contains(text(), '#{target_button}')]"
+    xpath_for_read_button = "//button[@title='#{target_button}']"
     raise "xpath: #{xpath_for_read_button} not found" unless find(:xpath, xpath_for_read_button).click
 
     step %(I wait until I see "1 message read status updated successfully." text)
