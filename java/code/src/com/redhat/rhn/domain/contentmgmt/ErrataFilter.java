@@ -77,6 +77,12 @@ public class ErrataFilter extends ContentFilter<Errata> {
                     case CONTAINS_PKG_NAME:
                         return erratum.getPackages().stream()
                                 .anyMatch(p -> p.getPackageName().getName().equals(value));
+                    case MATCHES_PKG_NAME:
+                        if (pattern == null) {
+                            pattern = Pattern.compile(value);
+                        }
+                        return erratum.getPackages().stream()
+                                .anyMatch(p -> pattern.matcher(p.getPackageName().getName()).matches());
                     default:
                         throw new UnsupportedOperationException("Matcher " + matcher + " not supported");
                 }
