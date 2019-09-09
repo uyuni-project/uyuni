@@ -2234,7 +2234,7 @@ class RepoSync(object):
                         bz["id"] = bz_id_match.group(1)
                         log(2, "Bugzilla ID found: {0}".format(bz["id"]))
                     else:
-                        log2(0, 0, "Unable to found Bugzilla ID for {0}. Omitting".format(bz["id"]), stream=sys.stderr)
+                        log2(0, 0, "Unable to find Bugzilla ID for {0}. Omitting".format(bz["id"]), stream=sys.stderr)
                         continue
                 if bz['id'] not in bugs:
                     bug = importLib.Bug()
