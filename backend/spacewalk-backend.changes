@@ -1,3 +1,4 @@
+- fix misspelling in spacewalk-repo-sync (bsc#1149633)
 - remove credentials also from potential rhn.conf backup files in spacewalk-debug (bsc#1146419)
 - Do not crash 'rhn-satellite-exporter' with ModuleNotFound error (bsc#1146869)
 - spacewalk-remove-channel check that channel doesn't have cloned channels before deleting it (bsc#1138454)
