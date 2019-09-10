@@ -90,14 +90,14 @@ export const Tree = (props: Props) => {
               />
             </CustomDiv>
           }
-          { (children.length > 0) &&
           <CustomDiv className="col" width="2" um="em">
-            <i
-              className={`fa ${openSubListIconClass} fa-1-5x pointer product-hover`}
-              onClick={() => handleVisibleSublist(item.id)}
-            />
+            { (children.length > 0) &&
+              <i
+                className={`fa ${openSubListIconClass} fa-1-5x pointer product-hover`}
+                onClick={() => handleVisibleSublist(item.id)}
+              />
+            }
           </CustomDiv>
-          }
           {props.renderItem(item, renderNameColumn)}
         </div>
         { children.length > 0 && sublistVisible &&
