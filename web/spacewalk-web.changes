@@ -1,3 +1,4 @@
+- Add UI message when salt-formulas system folders are unreachable (bsc#1142309)
 - implement "regular expression" Filter for Content Lifecycle Management
   matching package names, patch name, patch synopsis and package names in patches
 - New Single Page Application engine for the UI. It can be enabled with the config 'web.spa.enable' set to true
