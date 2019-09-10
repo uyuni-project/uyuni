@@ -143,3 +143,26 @@ class TestSCSoftwareChannel:
                                 ['base_channel : Summary of test_channel',
                                  ' |-child_channel : Summary of child_channel'])
 
+    def test_softwarechannel_listmanageablechannels_noarg(self, shell):
+        """
+        Test do_softwarechannel_listmanageablechannels without arguments.
+
+        :param shell:
+        :return:
+        """
+        shell.client.channel.listManageableChannels = MagicMock(return_value=[
+            {"label": "x_channel"},
+            {"label": "z_channel"},
+            {"label": "a_channel"},
+        ])
+
+        mprint = MagicMock()
+        with patch("spacecmd.softwarechannel.print", mprint) as prt:
+            out = spacecmd.softwarechannel.do_softwarechannel_listmanageablechannels(shell, "")
+
+        assert out is None
+        assert not shell.client.channel.software.getDetails.called
+        assert shell.client.channel.listManageableChannels.called
+        assert_list_args_expect(mprint.call_args_list,
+                                ["a_channel", "x_channel", "z_channel"])
+
