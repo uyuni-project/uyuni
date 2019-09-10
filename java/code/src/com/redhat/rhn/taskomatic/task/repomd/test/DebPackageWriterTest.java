@@ -68,6 +68,7 @@ public class DebPackageWriterTest extends JMockBaseTestCaseWithUser {
         HibernateFactory.getSession().clear();
 
         DebPackageWriter writer = new DebPackageWriter(channel, tmpDir.normalize().toString() + File.separator);
+        writer.begin(channel);
 
         DataResult<PackageDto> packageBatch = TaskManager.getChannelPackageDtos(channel, 0, 100);
         packageBatch.elaborate();
@@ -76,7 +77,10 @@ public class DebPackageWriterTest extends JMockBaseTestCaseWithUser {
             pkgDto.setExtraTags(extraTags.get(pkgDto.getId()));
         }
 
-        packageBatch.forEach(pkgDto -> writer.addPackage(pkgDto));
+        for (PackageDto pkgDto: packageBatch) {
+            writer.addPackage(pkgDto);
+        }
+        writer.close();
 
         String packagesContent = FileUtils.readFileToString(tmpDir.resolve("Packages").toFile());
         packagesContent = packagesContent.replaceAll("Filename: channel.*/getPackage/", "Filename: channel/getPackage/");
@@ -122,6 +126,7 @@ public class DebPackageWriterTest extends JMockBaseTestCaseWithUser {
                 packagesContent.trim());
     }
 
+    @Override
     public void tearDown() throws Exception {
         super.tearDown();
         FileUtils.deleteDirectory(tmpDir.toFile());
