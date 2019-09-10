@@ -52,10 +52,9 @@ Feature: Bootstrap a SSH-managed CentOS minion and do some basic operations on i
     And I wait until event "Subscribe channels scheduled by admin" is completed
 
 @centos_minion
-  Scenario: Prepare a SSH-managed CentOS minion
+  Scenario: Prepare the SSH-managed CentOS minion
     Given I am authorized
-    When I enable repository "Devel_Galaxy_Manager_4.0_RES-Manager-Tools-7-x86_64" on this "ceos-client"
-    And  I enable repository "SLE-Manager-Tools-RES-7-x86_64" on this "ceos-client"
+    When I enable SUSE Manager tools repositories on "ceos-client"
     And  I enable repository "CentOS-Base" on this "ceos-client"
     And  I install package "hwdata m2crypto wget" on this "ceos-client"
     And  I install package "rhn-client-tools rhn-check rhn-setup rhnsd osad rhncfg-actions" on this "ceos-client"

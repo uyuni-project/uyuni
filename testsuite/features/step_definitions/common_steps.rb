@@ -569,16 +569,19 @@ end
 
 # Repository steps
 
-When(/^I enable SUSE Manager tools repository on "([^"]*)"$/) do |host|
+# Enable tools repositories (both stable and development)
+When(/^I enable SUSE Manager tools repositories on "([^"]*)"$/) do |host|
   node = get_target(host)
   os_version, os_family = get_os_version(node)
-  if os_family =~ /^opensuse/
-    repos, _code = $minion.run('zypper lr | grep Uyuni-Client-Tools | cut -d"|" -f2')
-  else
-    repos, _code = $minion.run('zypper lr | grep SLE-Manager-Tools | cut -d"|" -f2')
-    # This enables tools development repository too if it exists
+  if os_family =~ /^opensuse/ || os_family =~ /^sles/
+    repos, _code = node.run('zypper lr | grep Tools | cut -d"|" -f2')
+    node.run("zypper mr --enable #{repos.gsub(/\s/, ' ')}")
+  elsif os_family =~ /^centos/
+    repos, _code = node.run('yum repolist 2>/dev/null | grep Tools | cut -d" " -f1')
+    repos.gsub(/\s/, ' ').split.each do |repo|
+      node.run("sed -i 's/enabled=.*/enabled=1/g' /etc/yum.repos.d/#{repo}.repo")
+    end
   end
-  node.run("zypper mr --enable #{repos.gsub(/\s/, ' ')}")
 end
 
 When(/^I enable repositories before installing Docker$/) do
@@ -597,11 +600,7 @@ When(/^I enable repositories before installing Docker$/) do
   end
 
   # Tools
-  if os_family =~ /^opensuse/
-    repos, _code = $minion.run('zypper lr | grep Uyuni-Client-Tools | cut -d"|" -f2')
-  else
-    repos, _code = $minion.run('zypper lr | grep SLE-Manager-Tools | cut -d"|" -f2')
-  end
+  repos, _code = $minion.run('zypper lr | grep Tools | cut -d"|" -f2')
   puts $minion.run("zypper mr --enable #{repos.gsub(/\s/, ' ')}")
 
   # Container repositories
@@ -630,11 +629,7 @@ When(/^I disable repositories after installing Docker$/) do
   end
 
   # Tools
-  if os_family =~ /^opensuse/
-    repos, _code = $minion.run('zypper lr | grep Uyuni-Client-Tools | cut -d"|" -f2')
-  else
-    repos, _code = $minion.run('zypper lr | grep SLE-Manager-Tools | cut -d"|" -f2')
-  end
+  repos, _code = $minion.run('zypper lr | grep Tools | cut -d"|" -f2')
   puts $minion.run("zypper mr --disable #{repos.gsub(/\s/, ' ')}")
 
   # Container repositories
