@@ -104,27 +104,39 @@ def format_detail(message, last_result, report_result)
 end
 
 def click_button_and_wait(locator = nil, **options)
-  page.click_button(locator, options)
-  # TODO: Rid of sleep in those wrappers, sometimes .senna-loading still not loaded,
-  #       so we don't wait for the ajax transition. We added this sleep because using:
-  #       > has_css?('.senna-loading', wait: 0.3)
-  #       raise the error:
-  #       > stale element reference: element is not attached to the page document
-  #       We couldn't bring a better solution for now
-  sleep 0.5
-  raise 'Timeout: Waiting AJAX transition (click button)' unless page.has_no_css?('.senna-loading')
+  begin
+    page.click_button(locator, options)
+    # TODO: Rid of sleep in those wrappers, sometimes .senna-loading still not loaded,
+    #       so we don't wait for the ajax transition. We added this sleep because using:
+    #       > has_css?('.senna-loading', wait: 0.3)
+    #       raise the error:
+    #       > stale element reference: element is not attached to the page document
+    #       We couldn't bring a better solution for now
+    sleep 0.5
+    raise 'Timeout: Waiting AJAX transition (click button)' unless page.has_no_css?('.senna-loading')
+  rescue => e
+    puts e.message
+  end
 end
 
 def click_link_and_wait(locator = nil, **options)
-  page.click_link(locator, options)
-  sleep 0.5
-  raise 'Timeout: Waiting AJAX transition (click link)' unless page.has_no_css?('.senna-loading')
+  begin
+    page.click_link(locator, options)
+    sleep 0.5
+    raise 'Timeout: Waiting AJAX transition (click link)' unless page.has_no_css?('.senna-loading')
+  rescue => e
+    puts e.message
+  end
 end
 
 def click_link_or_button_and_wait(locator = nil, **options)
-  page.click_link_or_button(locator, options)
-  sleep 0.5
-  raise 'Timeout: Waiting AJAX transition (click link or button)' unless page.has_no_css?('.senna-loading')
+  begin
+    page.click_link_or_button(locator, options)
+    sleep 0.5
+    raise 'Timeout: Waiting AJAX transition (click link or button)' unless page.has_no_css?('.senna-loading')
+  rescue => e
+    puts e.message
+  end
 end
 
 # Capybara Node Element extension to override click method, clicking and then waiting for ajax transition
