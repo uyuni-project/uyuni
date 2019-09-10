@@ -62,7 +62,7 @@ When(/^I wait at most (\d+) seconds until all "([^"]*)" container images are bui
     end
   end
   # don't run this for sles11 (docker feature is not there)
-  ck_container_imgs(timeout, count) unless sle11family($minion)
+  ck_container_imgs(timeout, count) unless sle11family?($minion)
 end
 
 When(/^I check the first image$/) do

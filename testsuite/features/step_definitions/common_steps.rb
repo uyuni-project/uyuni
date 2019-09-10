@@ -692,6 +692,12 @@ Then(/^I should see "([^"]*)" as link$/) do |host|
   step %(I should see a "#{system_name}" link)
 end
 
+Then(/^I should see a text describing the OS release$/) do
+  os_version, os_family = get_os_version($client)
+  release = os_family =~ /^opensuse/ ? 'openSUSE-release' : 'sles-release'
+  step %(I should see a "OS: #{release}" text)
+end
+
 Then(/^config-actions are enabled$/) do
   unless file_exists?($client, '/etc/sysconfig/rhn/allowed-actions/configfiles/all')
     raise 'config actions are disabled: /etc/sysconfig/rhn/allowed-actions/configfiles/all does not exist on client'
