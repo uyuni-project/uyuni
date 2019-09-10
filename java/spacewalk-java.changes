@@ -1,4 +1,6 @@
 - Use 'SCC organization credentials' instead of 'SCC credentials' in error message (bsc#1149425)
+- implement "regular expression" Filter for Content Lifecycle Management
+  matching package names, patch name, patch synopsis and package names in patches
 - implement provisioning for salt clients
 - Explicitly mention in API docs that to preserve LF/CR, user needs to encode the data(bsc#1135442)
 - New Single Page Application engine for the UI. It can be enabled with the config 'web.spa.enable' set to true

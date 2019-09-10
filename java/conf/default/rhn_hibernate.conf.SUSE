@@ -1,7 +1,7 @@
 ############################################################################
 ## HIBERNATE CONFIGURATION
 ##
-## This is not the only way to configure hibernate.  You can 
+## This is not the only way to configure hibernate.  You can
 ## create a hibernate.cfg.xml file or you can create your own
 ## custom file which you parse and create a new Configuration object.
 ##
@@ -36,4 +36,4 @@ hibernate.jdbc.batch_size=0
 hibernate.cache.provider_class=org.hibernate.cache.EhCacheProvider
 hibernate.cache.region.factory_class=org.hibernate.cache.ehcache.SingletonEhCacheRegionFactory
 hibernate.id.new_generator_mappings = false
-
+hibernate.cache.ehcache.missing_cache_strategy=create
