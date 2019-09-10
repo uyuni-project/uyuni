@@ -1,3 +1,4 @@
+- disable legacy startup events for new minions
 - implement provisioning for salt clients
 - Bootstrapping RES6/RHEL6/SLE11 with TLS1.2 now shows error message. (bsc#1147126)
 - Fix for issue with bootstrapping RES minions (bsc#1147126)
