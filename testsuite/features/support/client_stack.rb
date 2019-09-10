@@ -1,4 +1,4 @@
-# Copyright (c) 2010-2017 SUSE-LINUX
+# Copyright (c) 2010-2019 SUSE-LINUX
 # Licensed under the terms of the MIT license.
 
 require 'nokogiri'
@@ -23,11 +23,6 @@ def client_raw_repodata_dir(channel)
   else
     "/var/cache/yum/#{channel}"
   end
-end
-
-def sle11family(node)
-  _out, code = node.run('pidof systemd', false)
-  return true if code.nonzero?
 end
 
 def client_system_id_to_i
@@ -84,4 +79,15 @@ def get_os_version(node)
   os_version.gsub!(/\./, '-SP') if os_family =~ /^sles/
 
   [os_version, os_family]
+end
+
+def sle11family?(node)
+  _out, code = node.run('pidof systemd', false)
+  code.nonzero?
+end
+
+def sle15family?(node)
+  os_version, os_family = get_os_version(node)
+  return false if os_version.nil? || os_family.nil?
+  (os_version =~ /^15/) && (os_family =~ /^sles/)
 end
