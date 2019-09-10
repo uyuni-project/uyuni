@@ -118,10 +118,8 @@ def do_softwarechannel_listmanageablechannels(self, args, doreturn=False):
     arg_parser = get_argument_parser()
     arg_parser.add_argument('-v', '--verbose', action='store_true')
 
-    (args, options) = parse_command_arguments(args, arg_parser)
-
-    channels = self.client.channel.listManageableChannels(self.session)
-    labels = [c.get('label') for c in channels]
+    args, options = parse_command_arguments(args, arg_parser)
+    labels = list(sorted([c.get('label') for c in self.client.channel.listManageableChannels(self.session)]))
 
     # filter the list if arguments were passed
     if args:
@@ -129,15 +127,14 @@ def do_softwarechannel_listmanageablechannels(self, args, doreturn=False):
 
     if doreturn:
         return labels
+
     elif labels:
         if options.verbose:
-            for l in sorted(labels):
-                details = \
-                    self.client.channel.software.getDetails(self.session, l)
-
+            for l in labels:
+                details = self.client.channel.software.getDetails(self.session, l)
                 print("%s : %s" % (l, details['summary']))
         else:
-            for l in sorted(labels):
+            for l in labels:
                 print("%s" % l)
 
 ####################
