@@ -20,10 +20,9 @@ Feature: Be able to register a CentOS 7 traditional client and do some basic ope
     Then "ceos-ssh-minion" should not be registered
 
 @centos_minion
-  Scenario: Prepare a CentOS 7 traditional client
+  Scenario: Prepare the CentOS 7 traditional client
     Given I am authorized
-    When I enable repository "Devel_Galaxy_Manager_4.0_RES-Manager-Tools-7-x86_64" on this "ceos-client"
-    And I enable repository "SLE-Manager-Tools-RES-7-x86_64" on this "ceos-client"
+    When I enable SUSE Manager tools repositories on "ceos-client"
     And I enable repository "CentOS-Base" on this "ceos-client"
     And I install package "hwdata m2crypto wget" on this "ceos-client"
     And I install package "rhn-client-tools rhn-check rhn-setup rhnsd mgr-osad rhncfg-actions" on this "ceos-client"
