@@ -1,3 +1,4 @@
+- disable legacy startup events for new minions
 - implement provisioning for salt clients
 - dmidecode does not exist on ppc64le and s390x (bsc#1145119)
 - update susemanager.conf to use adler32 for computing the server_id for new minions
