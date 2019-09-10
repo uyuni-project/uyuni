@@ -612,7 +612,7 @@ type=rpm-md
             rhnLog.log_clean(0, msg)
             sys.stdout.write(str(msg) + "\n")
             os.system("awk 'BEGIN {{c=0;}} /BEGIN CERT/{{c++}} {{ print > \"{0}/cert.\" c \".pem\"}}' < {1}".format(_ssl_capath, self.sslcacert))
-            os.system("c_rehash {}".format(_ssl_capath))
+            os.system("c_rehash {} 2&>1 /dev/null".format(_ssl_capath))
             query_params['ssl_capath'] = _ssl_capath
         if self.sslclientcert:
             query_params['ssl_clientcert'] = self.sslclientcert

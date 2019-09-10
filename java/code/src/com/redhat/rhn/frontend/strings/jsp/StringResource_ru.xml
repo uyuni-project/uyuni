@@ -22337,20 +22337,6 @@ given channel.</source>
         </context-group>
         <target>Это текущий профиль кикстарта вашей организации.</target>
       </trans-unit>
-      <trans-unit id="help.jsp.chat">
-        <source>IRC Chat</source>
-        <target>IRC</target>
-      </trans-unit>
-      <trans-unit id="help.jsp.chatinfo">
-        <source>This page allows you to join an IRC chat room for discussions with other users
-                of @@PRODUCT_NAME@@.</source>
-        <target>На этой странице можно войти в чат IRC и принять участие
-в обсуждении @@PRODUCT_NAME@@.</target>
-      </trans-unit>
-      <trans-unit id="help.jsp.chatlink">
-        <source>Access &lt;a href="http://webchat.freenode.net?channels=#spacewalk" target="_blank"&gt;#spacewalk&lt;/a&gt; channel on IRC.</source>
-        <target>Доступ к IRC-каналу &lt;a href=&quot;http://webchat.freenode.net?channels=#spacewalk&quot; target=&quot;_blank&quot;&gt;#spacewalk&lt;/a&gt;.</target>
-      </trans-unit>
       <trans-unit id="help.jsp.about.title">
         <source>About @@PRODUCT_NAME@@</source>
         <context-group name="ctx">

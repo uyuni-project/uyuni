@@ -39,7 +39,7 @@ Feature: Build container images
     When I navigate to images build webpage
     And I select "suse_real_key" from "profileId"
     And I enter "GUI_BUILT_IMAGE" as "version"
-    And I select sle-minion hostname in Build Host
+    And I select the hostname of "sle-minion" from "buildHostId"
     And I click on "submit-btn"
     Then I wait until I see "GUI_BUILT_IMAGE" text
 
@@ -48,7 +48,7 @@ Feature: Build container images
     When I navigate to images build webpage
     And I select "suse_real_key" from "profileId"
     And I enter "GUI_DOCKERADMIN" as "version"
-    And I select sle-minion hostname in Build Host
+    And I select the hostname of "sle-minion" from "buildHostId"
     And I click on "submit-btn"
     Then I wait until I see "GUI_DOCKERADMIN" text
 

@@ -18,10 +18,6 @@
     "test:watch": "BABEL_ENV=test jest --watch",
     "storybook": "start-storybook -s ./.storybook/public"
   },
-  "devDependencies": {
-    "flow-bin": "^0.93.0",
-    "webpack-dev-server": "^3.1.10"
-  },
   "engines": {
     "node": ">=8.0.0",
     "yarn": ">=1.0.0"

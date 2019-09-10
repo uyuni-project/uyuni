@@ -22320,20 +22320,6 @@ stesso pacchetto in un singolo canale, ciò potrebbe causare però il
         </context-group>
         <target>Questo è il profilo kickstart predefinito della vostra organizzazione.</target>
       </trans-unit>
-      <trans-unit id="help.jsp.chat">
-        <source>IRC Chat</source>
-        <target>IRC Chat</target>
-      </trans-unit>
-      <trans-unit id="help.jsp.chatinfo">
-        <source>This page allows you to join an IRC chat room for discussions with other users
-                of @@PRODUCT_NAME@@.</source>
-        <target>Questa pagina permette di entrare in una chat room di IRC per discutere con altri utenti di
-             @@PRODUCT_NAME@@.</target>
-      </trans-unit>
-      <trans-unit id="help.jsp.chatlink">
-        <source>Access &lt;a href="http://webchat.freenode.net?channels=#spacewalk" target="_blank"&gt;#spacewalk&lt;/a&gt; channel on IRC.</source>
-        <target>Accesso al canale &lt;a href=&quot;http://webchat.freenode.net?channels=#spacewalk&quot; target=&quot;_blank&quot;&gt;#spacewalk&lt;/a&gt; su IRC.</target>
-      </trans-unit>
       <trans-unit id="help.jsp.about.title">
         <source>About @@PRODUCT_NAME@@</source>
         <context-group name="ctx">

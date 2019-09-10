@@ -460,6 +460,16 @@ public class KickstartSession {
     }
 
     /**
+     * Mark this KickstartSession as complete.
+     * @param messageIn to fill into into the History field
+     */
+    public void markComplete(String messageIn) {
+        this.setState(KickstartFactory.SESSION_STATE_COMPLETE);
+        this.setAction(null);
+        this.addHistory(this.getState(), messageIn);
+    }
+
+    /**
      * Add a History entry
      * @param stateIn to set
      * @param messageIn to set on the history item

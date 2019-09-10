@@ -19133,16 +19133,6 @@ given channel.</source>
           <context context-type="sourcefile">/rhn/help/Search</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="help.jsp.chat">
-        <source>IRC Chat</source>
-      </trans-unit>
-      <trans-unit id="help.jsp.chatinfo">
-        <source>This page allows you to join an IRC chat room for discussions with other users
-                of @@PRODUCT_NAME@@.</source>
-      </trans-unit>
-      <trans-unit id="help.jsp.chatlink">
-        <source>Access &lt;a href="http://webchat.freenode.net?channels=#spacewalk" target="_blank"&gt;#spacewalk&lt;/a&gt; channel on IRC.</source>
-      </trans-unit>
       <trans-unit id="help.jsp.about.title">
         <source>About @@PRODUCT_NAME@@</source>
         <context-group name="ctx">

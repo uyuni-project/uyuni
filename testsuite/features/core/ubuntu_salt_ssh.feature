@@ -14,29 +14,28 @@ Feature: Bootstrap a SSH-managed Ubuntu minion and do some basic operations on i
     When I check "manageWithSSH"
     And I enter the hostname of "ubuntu-minion" as "hostname"
     And I enter "linux" as "password"
-    #    And I select the hostname of the proxy from "proxies"
+    And I select the hostname of "proxy" from "proxies"
     And I click on "Bootstrap"
     And I wait until I see "Successfully bootstrapped host!" text
     And I navigate to "rhn/systems/Overview.do" page
     And I wait until I see the name of "ubuntu-minion", refreshing the page
     And I wait until onboarding is completed for "ubuntu-minion"
 
-#TODO: Enable again the proxy, and test with it before deliver the feature
-#@proxy
-#@ubuntu_minion
-#  Scenario: Check connection from SSH-managed Ubuntu minion to proxy
-#    Given I am on the Systems overview page of this "ubuntu-minion"
-#    When I follow "Details" in the content area
-#    And I follow "Connection" in the content area
-#    Then I should see "proxy" hostname
+@proxy
+@ubuntu_minion
+  Scenario: Check connection from SSH-managed Ubuntu minion to proxy
+    Given I am on the Systems overview page of this "ubuntu-minion"
+    When I follow "Details" in the content area
+    And I follow "Connection" in the content area
+    Then I should see "proxy" hostname
 
-#@proxy
-#@ubuntu_minion
-#  Scenario: Check registration on proxy of SSH-managed Ubuntu minion
-#    Given I am on the Systems overview page of this "proxy"
-#    When I follow "Details" in the content area
-#    And I follow "Proxy" in the content area
-#    Then I should see "ubuntu-minion" hostname
+@proxy
+@ubuntu_minion
+  Scenario: Check registration on proxy of SSH-managed Ubuntu minion
+    Given I am on the Systems overview page of this "proxy"
+    When I follow "Details" in the content area
+    And I follow "Proxy" in the content area
+    Then I should see "ubuntu-minion" hostname
 
 @ubuntu_minion
   Scenario: Subscribe the SSH-managed Ubuntu minion to a base channel

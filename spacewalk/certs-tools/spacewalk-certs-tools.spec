@@ -22,7 +22,7 @@
 %define rhn_client_tools spacewalk-client-tools
 %define rhn_setup	 spacewalk-client-setup
 %define rhn_check	 spacewalk-check
-%define rhnsd		 spacewalksd
+%define rhnsd		 mgr-daemon
 #
 %if 0%{?suse_version}
 %global pub_bootstrap_dir /srv/www/htdocs/pub/bootstrap
