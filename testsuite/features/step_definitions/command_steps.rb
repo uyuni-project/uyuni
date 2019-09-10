@@ -564,7 +564,7 @@ When(/^I enable repository "([^"]*)" on this "([^"]*)"$/) do |repo, host|
   if file_exists?(node, '/usr/bin/zypper')
     cmd = "zypper mr --enable #{repo}"
   elsif file_exists?(node, '/usr/bin/yum')
-    cmd = "test -f /etc/yum.repos.d/#{repo}.repo && sed -i 's/enabled=.*/enabled=1/g' /etc/yum.repos.d/#{repo}.repo"
+    cmd = "sed -i 's/enabled=.*/enabled=1/g' /etc/yum.repos.d/#{repo}.repo"
   elsif file_exists?(node, '/usr/bin/apt-get')
     cmd = "sed -i '/^#\\s*deb.*/ s/^#\\s*deb /deb /' /etc/apt/sources.list.d/#{repo}.list"
   else
