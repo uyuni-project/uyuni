@@ -100,7 +100,7 @@ public class ProjectApiController {
 
         FlashScopeHelper.flash(
                 req,
-                String.format("Project %s created successfully.", projectPropertiesRequest.getLabel())
+                String.format("Project %s created successfully.", projectPropertiesRequest.getName())
         );
 
         return ControllerApiUtils.fullProjectJsonResponse(res, createdProject.getLabel(), user);
