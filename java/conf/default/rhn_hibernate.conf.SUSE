@@ -35,7 +35,4 @@ hibernate.jdbc.batch_size=0
 hibernate.cache.provider_class=org.hibernate.cache.EhCacheProvider
 hibernate.cache.region.factory_class=org.hibernate.cache.ehcache.SingletonEhCacheRegionFactory
 hibernate.id.new_generator_mappings = false
-<<<<<<< HEAD
-=======
 hibernate.cache.ehcache.missing_cache_strategy=create
->>>>>>> bdbecee744... Add default conf to disable missing_cache_strategy warning
