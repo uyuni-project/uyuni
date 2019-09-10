@@ -40,7 +40,14 @@ mgr_server_localhost_alias_absent:
 {%- endif %}
 
 {%- if not grains['os_family'] == 'Debian' %}
-{%- set bootstrap_repo_exists = (0 < salt['http.query'](bootstrap_repo_url + 'repodata/repomd.xml', status=True, verify_ssl=False)['status'] < 300) %}
+
+{%- set bootstrap_repo_request = salt['http.query'](bootstrap_repo_url + 'repodata/repomd.xml', status=True, verify_ssl=False) %}
+{# 901 is a special status code for the TLS issue with RHEL6 and SLE11. #}
+{%- if bootstrap_repo_request['status'] == 901 %}
+{{ raise(bootstrap_repo_request['error']) }}
+{%- endif %}
+{%- set bootstrap_repo_exists = (0 < bootstrap_repo_request['status'] < 300) %}
+
 bootstrap_repo:
   file.managed:
 {%- if grains['os_family'] == 'Suse' %}
