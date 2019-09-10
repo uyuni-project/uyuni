@@ -746,7 +746,7 @@ class RepoSync(object):
         log(0, "*** NOTE: Importing comps file for the channel '%s'. Previous comps will be discarded." % (self.channel['label']))        
 
         repoDataKey = 'group' if comps_type == 'comps' else comps_type
-        file_timestamp = plug.repo.repoXML.repoData[repoDataKey].timestamp
+        file_timestamp = os.path.getmtime(filename)
         last_modified = datetime.fromtimestamp(float(file_timestamp), utc)
 
 
@@ -2234,7 +2234,7 @@ class RepoSync(object):
                         bz["id"] = bz_id_match.group(1)
                         log(2, "Bugzilla ID found: {0}".format(bz["id"]))
                     else:
-                        log2(0, 0, "Unable to found Bugzilla ID for {0}. Omitting".format(bz["id"]), stream=sys.stderr)
+                        log2(0, 0, "Unable to find Bugzilla ID for {0}. Omitting".format(bz["id"]), stream=sys.stderr)
                         continue
                 if bz['id'] not in bugs:
                     bug = importLib.Bug()

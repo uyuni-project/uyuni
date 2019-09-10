@@ -549,13 +549,14 @@ public class KickstartScheduleCommand extends BaseSystemOperation {
         }
 
         // Install packages on the host server.
-        log.debug("** Creating packageAction");
-        Action packageAction =
-                ActionManager.schedulePackageInstall(
-                        this.user, hostServer, this.packagesToInstall, scheduleDate);
-        packageAction.setPrerequisite(removal);
-        log.debug("** Created packageAction ? " + packageAction.getId());
-
+        Action packageAction = null;
+        if (!this.packagesToInstall.isEmpty()) {
+            log.debug("** Creating packageAction");
+            packageAction = ActionManager.schedulePackageInstall(
+                    this.user, hostServer, this.packagesToInstall, scheduleDate);
+            packageAction.setPrerequisite(removal);
+            log.debug("** Created packageAction ? " + packageAction.getId());
+        }
 
         log.debug("** Cancelling existing sessions.");
         cancelExistingSessions();
@@ -567,9 +568,13 @@ public class KickstartScheduleCommand extends BaseSystemOperation {
             storeActivationKeyInfo();
         }
         Action kickstartAction = this.scheduleKickstartAction(packageAction);
-        ActionFactory.save(packageAction);
+        if (packageAction != null) {
+            ActionFactory.save(packageAction);
+        }
 
-        scheduleRebootAction(kickstartAction);
+        if (!hostServer.asMinionServer().isPresent()) {
+            scheduleRebootAction(kickstartAction);
+        }
 
         String host = this.getKickstartServerName();
         if (!StringUtils.isEmpty(this.getProxyHost())) {
@@ -1045,7 +1050,8 @@ public class KickstartScheduleCommand extends BaseSystemOperation {
      * @return Long id of Package used for this KS.
      */
     public ValidatorError validateKickstartPackage() {
-        if (cobblerOnly) {
+        if (cobblerOnly || server.asMinionServer().isPresent()) {
+            // cobbler only and minions do not need spacewalk-koan
             return null;
         }
 

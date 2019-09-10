@@ -112,7 +112,7 @@ class SSLSocket:
         self._connection = SSL.Connection(self._ctx, self._sock)
         # Set server name if defined. This allows connections to
         # SNI-enabled servers
-        if server_name is not None:
+        if server_name is not None and getattr(self._connection, "set_tlsext_host_name", None):
             self._connection.set_tlsext_host_name(bstr(server_name))
         # Place the connection in client mode
         self._connection.set_connect_state()

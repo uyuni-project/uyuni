@@ -1,3 +1,5 @@
+- Require mgr-daemon (new name of spacewalksd) so we systems with
+  spacewalksd get always the new package installed (bsc#1149353)
 - enable spacewalk-update-service on package installation
   (bsc#1143789)
 - Invalidate cache 5 minutes before actual expiration(bsc#1143562)

@@ -53,7 +53,6 @@ Basic filesystem hierarchy for Uyuni server and proxy.
 %package server
 Summary:        Base structure for Uyuni server
 Group:          System/Fhs
-BuildRequires:  uyuni-base-common
 Requires(pre):  uyuni-base-common
 
 %description server
@@ -62,7 +61,6 @@ Basic filesystem hierarchy for Uyuni server.
 %package proxy
 Summary:        Base structure for Uyuni proxy
 Group:          System/Fhs
-BuildRequires:  uyuni-base-common
 Requires(pre):  uyuni-base-common
 
 %description proxy

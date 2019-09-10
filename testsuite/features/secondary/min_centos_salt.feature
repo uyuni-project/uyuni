@@ -27,7 +27,7 @@ Feature: Be able to bootstrap a CentOS minion and do some basic operations on it
     And I enter "root" as "user"
     And I enter "linux" as "password"
     And I select "1-SUSE-PKG-x86_64" from "activationKeys"
-    And I select the hostname of the proxy from "proxies"
+    And I select the hostname of "proxy" from "proxies"
     And I click on "Bootstrap"
     And I wait until I see "Successfully bootstrapped host!" text
     And I navigate to "rhn/systems/Overview.do" page
@@ -127,7 +127,7 @@ Feature: Be able to bootstrap a CentOS minion and do some basic operations on it
     When I check "manageWithSSH"
     And I enter the hostname of "ceos-ssh-minion" as "hostname"
     And I enter "linux" as "password"
-    And I select the hostname of the proxy from "proxies"
+    And I select the hostname of "proxy" from "proxies"
     And I click on "Bootstrap"
     And I wait until I see "Successfully bootstrapped host!" text
     And I navigate to "rhn/systems/Overview.do" page

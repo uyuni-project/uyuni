@@ -18,6 +18,7 @@ package com.redhat.rhn.domain.contentmgmt;
 import com.redhat.rhn.domain.rhnpackage.Package;
 
 import java.util.Optional;
+import java.util.regex.Pattern;
 
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
@@ -30,6 +31,8 @@ import javax.persistence.Transient;
 @DiscriminatorValue("package")
 public class PackageFilter extends ContentFilter<Package> {
 
+    private Pattern pattern;
+
     @Override
     public boolean test(Package pack) {
         FilterCriteria.Matcher matcher = getCriteria().getMatcher();
@@ -41,6 +44,11 @@ public class PackageFilter extends ContentFilter<Package> {
                 return getField(pack, field, String.class).contains(value);
             case EQUALS:
                 return getField(pack, field, String.class).equals(value);
+            case MATCHES:
+                if (pattern == null) {
+                    pattern = Pattern.compile(value);
+                }
+                return pattern.matcher(getField(pack, field, String.class)).matches();
             default:
                 throw new UnsupportedOperationException("Matcher " + matcher + " not supported");
         }

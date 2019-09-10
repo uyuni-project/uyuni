@@ -337,7 +337,8 @@ The check box can be identified by name, id or label text.
 * Select an item from a selection box
 
 ```cucumber
-  Then I select "Mr." from "prefix"
+  When I select "Mr." from "prefix"
+  When I select the hostname of "proxy" from "proxies"
 ```
 
 * Make sure an item in a selection box is selected
@@ -362,6 +363,7 @@ The check box can be identified by name, id or label text.
 ```cucumber
   When I enter "SUSE Test Key x86_64" as "description"
   When I enter "CVE-1999-12345" as "search_string" in the content area
+  When I enter the hostname of "proxy" as "hostname"
 ```
 
 * Make sure a text is in a given input field of a form

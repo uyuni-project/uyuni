@@ -224,7 +224,7 @@ public class ContentSyncManager {
 
         List<Credentials> credentials = CredentialsFactory.lookupSCCCredentials();
         if (credentials.isEmpty()) {
-            throw new ContentSyncException("No SCC credentials found.");
+            throw new ContentSyncException("No SCC organization credentials found.");
         }
         else {
             return credentials;

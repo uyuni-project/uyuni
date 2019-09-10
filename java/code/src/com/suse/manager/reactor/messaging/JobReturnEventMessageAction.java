@@ -18,6 +18,7 @@ import com.redhat.rhn.common.messaging.EventMessage;
 import com.redhat.rhn.common.messaging.MessageAction;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
+import com.redhat.rhn.domain.action.kickstart.KickstartAction;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
@@ -30,6 +31,7 @@ import com.google.gson.JsonParseException;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 import com.suse.manager.reactor.hardware.CpuArchUtil;
+import com.suse.manager.utils.SaltKeyUtils;
 import com.suse.manager.utils.SaltUtils;
 import com.suse.manager.utils.SaltUtils.PackageChangeOutcome;
 import com.suse.manager.webui.services.SaltActionChainGeneratorService;
@@ -384,6 +386,14 @@ public class JobReturnEventMessageAction implements MessageAction {
                             sa.setStatus(ActionFactory.STATUS_PICKED_UP);
                             sa.setPickupTime(new Date());
                             return;
+                        }
+                        else if (action.get().getActionType().equals(ActionFactory.TYPE_KICKSTART_INITIATE) &&
+                                success) {
+                            KickstartAction ksAction = (KickstartAction) action.get();
+                            if (!ksAction.getKickstartActionDetails().getUpgrade()) {
+                                // Delete salt key from master
+                                SaltKeyUtils.deleteSaltKey(action.get().getSchedulerUser(), minionId);
+                            }
                         }
                         SaltUtils.INSTANCE.updateServerAction(sa,
                                 retcode,

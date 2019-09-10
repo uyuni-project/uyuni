@@ -27,45 +27,55 @@ const filterMatchers : FilterMatcherEnumType = {
     text: t('contains'),
     longDescription: t('containing')
   },
+  MATCHES_PKG_NAME: {
+    key: 'matches_pkg_name',
+    text: t('matches'),
+    longDescription: t('regular expression matches package name')
+  },
   CONTAINS_PKG_NAME: {
     key: 'contains_pkg_name',
-    text: t('contains'),
-    longDescription: t('contains package name')
+    text: t('equals'),
+    longDescription: t('contains package name equals')
   },
   CONTAINS_PKG_LT_EVR: {
     key: 'contains_pkg_lt_evr',
-    text: t('version lower than (<)'),
-    longDescription: t('contains package with version lower than')
+    text: t('version lower than'),
+    longDescription: t('contains package with epoch/version/release lower than')
   },
   CONTAINS_PKG_LE_EVR: {
     key: 'contains_pkg_le_evr',
-    text: t('version lower or equal than (<=)'),
-    longDescription: t('contains package with version lower or equal than')
+    text: t('version lower or equal than'),
+    longDescription: t('contains package with epoch/version/release lower or equal than')
   },
   CONTAINS_PKG_EQ_EVR: {
     key: 'contains_pkg_eq_evr',
-    text: t('version equal (=)'),
-    longDescription: t('contains package with version equal than')
+    text: t('version equal'),
+    longDescription: t('contains package with epoch/version/release equal than')
   },
   CONTAINS_PKG_GE_EVR: {
     key: 'contains_pkg_ge_evr',
-    text: t('version greater or equal than (>=)'),
-    longDescription: t('contains package with version greater or equal than')
+    text: t('version greater or equal than'),
+    longDescription: t('contains package with epoch/version/release greater or equal than')
   },
   CONTAINS_PKG_GT_EVR: {
     key: 'contains_pkg_gt_evr',
-    text: 'version greater than (>)',
-    longDescription: t('contains package with version greater than')
+    text: 'version greater than',
+    longDescription: t('contains package with epoch/version/release greater than')
   },
   EQUALS: {
     key: 'equals',
-    text: t('matches (=)'),
-    longDescription: t('matching')
+    text: t('equals'),
+    longDescription: t('equal')
   },
   GREATEREQ: {
     key: 'greatereq',
-    text: t('greater or equal (>=)'),
-    longDescription: t('greater or equal than')
+    text: t('later or equal'),
+    longDescription: t('later or equal than')
+  },
+  MATCHES: {
+    key: 'matches',
+    text: t('matches'),
+    longDescription: t('matches regular expression')
   },
 
 };
@@ -75,7 +85,7 @@ export const clmFilterOptions : ClmFilterOptionsEnumType = {
     key: 'name',
     text: t('Name'),
     entityType: filterEntity.PACKAGE,
-    matchers: [filterMatchers.CONTAINS],
+    matchers: [filterMatchers.CONTAINS, filterMatchers.MATCHES],
   },
   NEVRA: {
     key: 'nevra',
@@ -87,7 +97,7 @@ export const clmFilterOptions : ClmFilterOptionsEnumType = {
     key: 'advisory_name',
     text: t('Advisory Name'),
     entityType: filterEntity.ERRATUM,
-    matchers: [filterMatchers.EQUALS]
+    matchers: [filterMatchers.EQUALS, filterMatchers.MATCHES]
   },
   ADVISORY_TYPE: {
     key: 'advisory_type',
@@ -99,7 +109,7 @@ export const clmFilterOptions : ClmFilterOptionsEnumType = {
     key: 'synopsis',
     text: t('Synopsis'),
     entityType: filterEntity.ERRATUM,
-    matchers: [filterMatchers.EQUALS, filterMatchers.CONTAINS]
+    matchers: [filterMatchers.EQUALS, filterMatchers.CONTAINS, filterMatchers.MATCHES]
   },
   ISSUE_DATE: {
     key: 'issue_date',
@@ -111,7 +121,7 @@ export const clmFilterOptions : ClmFilterOptionsEnumType = {
     key: 'package_name',
     text: t('Contains Package Name'),
     entityType: filterEntity.ERRATUM,
-    matchers: [filterMatchers.CONTAINS_PKG_NAME]
+    matchers: [filterMatchers.CONTAINS_PKG_NAME, filterMatchers.MATCHES_PKG_NAME]
   },
   PACKAGE_NEVR: {
     key: 'package_nevr',

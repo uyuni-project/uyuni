@@ -25,6 +25,9 @@ CREATE TABLE rhnActionKickstart
     kickstart_host      VARCHAR2(256),
     static_device       VARCHAR2(32),
     cobbler_system_name VARCHAR2(256),
+    upgrade             CHAR(1) DEFAULT ('N') NOT NULL
+                            CONSTRAINT rhn_actionks_up_ck
+                                CHECK (upgrade in ('Y', 'N')),
     created             timestamp with local time zone
                             DEFAULT (current_timestamp) NOT NULL,
     modified            timestamp with local time zone
