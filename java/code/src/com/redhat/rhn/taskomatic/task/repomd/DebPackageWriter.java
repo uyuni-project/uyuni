@@ -20,9 +20,11 @@ import com.redhat.rhn.frontend.dto.PackageDto;
 import com.redhat.rhn.manager.task.TaskManager;
 import com.redhat.rhn.taskomatic.task.TaskConstants;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
 
 import java.io.BufferedWriter;
+import java.io.Closeable;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -36,12 +38,12 @@ import java.util.zip.GZIPOutputStream;
  * @version $Rev $
  *
  */
-public class DebPackageWriter {
+public class DebPackageWriter implements Closeable {
 
     private static Logger log = Logger.getLogger(DebPackageWriter.class);
     private String filenamePackages = "";
     private String channelLabel = "";
-
+    private BufferedWriter out;
     /**
      *
      * @param channel debian channel
@@ -64,153 +66,153 @@ public class DebPackageWriter {
     }
 
     /**
-     * add package info to Packages file in repository
-     *
-     * @param pkgDto package object
+     * Begin writing Packages file
+     * @param channel the channel
+     * @throws IOException in case of IO errors
      */
-    public void addPackage(PackageDto pkgDto) {
-        String packageName = null;
-        try {
-            BufferedWriter out = new BufferedWriter(new FileWriter(
-                    filenamePackages, true));
-
-            packageName = pkgDto.getName();
-            out.write("Package: ");
-            out.write(packageName);
-            out.newLine();
-
-            out.write("Version: ");
-            String epoch = pkgDto.getEpoch();
-            if (epoch != null && !epoch.equalsIgnoreCase("")) {
-                out.write(epoch + ":");
-            }
-            out.write(pkgDto.getVersion());
-            String release = pkgDto.getRelease();
-            if (release != null && !release.equalsIgnoreCase("X")) {
-                out.write("-" + release);
-            }
-            out.newLine();
-
-            out.write("Architecture: ");
-            out.write(pkgDto.getArchLabel().replace("-deb", ""));
-            out.newLine();
-
-            out.write("Maintainer: ");
-            out.write(pkgDto.getVendor());
-            out.newLine();
-
-            Long packagePayloadSize = pkgDto.getPayloadSize();
-            if (packagePayloadSize > 0) {
-                out.write("Installed-Size: ");
-                out.write(pkgDto.getPayloadSize().toString());
-                out.newLine();
-            }
-
-            // dependencies
-            addPackageDepData(
-                    out,
-                    TaskConstants.TASK_QUERY_REPOMD_GENERATOR_CAPABILITY_PROVIDES,
-                    pkgDto.getId(), "Provides");
-            addPackageDepData(
-                    out,
-                    TaskConstants.TASK_QUERY_REPOMD_GENERATOR_CAPABILITY_REQUIRES,
-                    pkgDto.getId(), "Depends");
-            addPackageDepData(
-                    out,
-                    TaskConstants.TASK_QUERY_REPOMD_GENERATOR_CAPABILITY_CONFLICTS,
-                    pkgDto.getId(), "Conflicts");
-            addPackageDepData(
-                    out,
-                    TaskConstants.TASK_QUERY_REPOMD_GENERATOR_CAPABILITY_OBSOLETES,
-                    pkgDto.getId(), "Replaces");
-            addPackageDepData(
-                    out,
-                    TaskConstants.TASK_QUERY_REPOMD_GENERATOR_CAPABILITY_SUGGESTS,
-                    pkgDto.getId(), "Suggests");
-            addPackageDepData(
-                    out,
-                    TaskConstants.TASK_QUERY_REPOMD_GENERATOR_CAPABILITY_RECOMMENDS,
-                    pkgDto.getId(), "Recommends");
-            addPackageDepData(
-                    out,
-                    TaskConstants.TASK_QUERY_REPOMD_GENERATOR_CAPABILITY_PREDEPENDS,
-                    pkgDto.getId(), "Pre-Depends");
-            addPackageDepData(
-                    out,
-                    TaskConstants.TASK_QUERY_REPOMD_GENERATOR_CAPABILITY_BREAKS,
-                    pkgDto.getId(), "Breaks");
-
-            out.write("Filename: " + channelLabel + "/getPackage/");
-            out.write(pkgDto.getName() + "_");
-            if (epoch != null && !epoch.equalsIgnoreCase("")) {
-                out.write(epoch + ":");
-            }
-            out.write(pkgDto.getVersion() + "-" + pkgDto.getRelease());
-            out.write("." + pkgDto.getArchLabel() + ".deb");
-            out.newLine();
-
-            // size of package, is checked by apt
-            out.write("Size: ");
-            out.write(pkgDto.getPackageSize().toString());
-            out.newLine();
-
-            // at least one checksum is required by apt
-            if (pkgDto.getChecksumType().equalsIgnoreCase("md5")) {
-                out.write("MD5sum: ");
-                out.write(pkgDto.getChecksum());
-                out.newLine();
-            }
-
-            if (pkgDto.getChecksumType().equalsIgnoreCase("sha1")) {
-                out.write("SHA1: ");
-                out.write(pkgDto.getChecksum());
-                out.newLine();
-            }
-
-            if (pkgDto.getChecksumType().equalsIgnoreCase("sha256")) {
-                out.write("SHA256: ");
-                out.write(pkgDto.getChecksum());
-                out.newLine();
-            }
-
-            out.write("Section: ");
-            out.write(pkgDto.getPackageGroupName());
-            out.newLine();
-
-            if (pkgDto.getExtraTags() != null) {
-                for (var entry : pkgDto.getExtraTags().entrySet()) {
-                    out.write(entry.getKey());
-                    out.write(": ");
-                    out.write(entry.getValue());
-                    out.newLine();
-                }
-            }
-
-            out.write("Description: ");
-            out.write(pkgDto.getDescription());
-            out.newLine();
-
-            // new line after package metadata
-            out.newLine();
-            out.flush();
-            out.close();
-        }
-        catch (Exception e) {
-            log.error("Failed to add deb package " + packageName, e);
-        }
+    public void begin(Channel channel) throws IOException {
+        out = new BufferedWriter(new FileWriter(
+                filenamePackages, true));
     }
 
     /**
-     * @param out
+     * add package info to Packages file in repository
      *
-     * @param pkgCapIter
-     *            pkg capability info
+     * @param pkgDto package object
+     * @throws IOException in case of IO erro
+     */
+    public void addPackage(PackageDto pkgDto) throws IOException {
+        String packageName = pkgDto.getName();
+        out.write("Package: ");
+        out.write(packageName);
+        out.newLine();
+
+        out.write("Version: ");
+        String epoch = pkgDto.getEpoch();
+        if (epoch != null && !epoch.equalsIgnoreCase("")) {
+            out.write(epoch + ":");
+        }
+        out.write(pkgDto.getVersion());
+        String release = pkgDto.getRelease();
+        if (release != null && !release.equalsIgnoreCase("X")) {
+            out.write("-" + release);
+        }
+        out.newLine();
+
+        out.write("Architecture: ");
+        out.write(pkgDto.getArchLabel().replace("-deb", ""));
+        out.newLine();
+
+        out.write("Maintainer: ");
+        out.write(pkgDto.getVendor());
+        out.newLine();
+
+        Long packagePayloadSize = pkgDto.getPayloadSize();
+        if (packagePayloadSize > 0) {
+            out.write("Installed-Size: ");
+            out.write(pkgDto.getPayloadSize().toString());
+            out.newLine();
+        }
+
+        // dependencies
+        addPackageDepData(
+                out,
+                TaskConstants.TASK_QUERY_REPOMD_GENERATOR_CAPABILITY_PROVIDES,
+                pkgDto.getId(), "Provides");
+        addPackageDepData(
+                out,
+                TaskConstants.TASK_QUERY_REPOMD_GENERATOR_CAPABILITY_REQUIRES,
+                pkgDto.getId(), "Depends");
+        addPackageDepData(
+                out,
+                TaskConstants.TASK_QUERY_REPOMD_GENERATOR_CAPABILITY_CONFLICTS,
+                pkgDto.getId(), "Conflicts");
+        addPackageDepData(
+                out,
+                TaskConstants.TASK_QUERY_REPOMD_GENERATOR_CAPABILITY_OBSOLETES,
+                pkgDto.getId(), "Replaces");
+        addPackageDepData(
+                out,
+                TaskConstants.TASK_QUERY_REPOMD_GENERATOR_CAPABILITY_SUGGESTS,
+                pkgDto.getId(), "Suggests");
+        addPackageDepData(
+                out,
+                TaskConstants.TASK_QUERY_REPOMD_GENERATOR_CAPABILITY_RECOMMENDS,
+                pkgDto.getId(), "Recommends");
+        addPackageDepData(
+                out,
+                TaskConstants.TASK_QUERY_REPOMD_GENERATOR_CAPABILITY_PREDEPENDS,
+                pkgDto.getId(), "Pre-Depends");
+        addPackageDepData(
+                out,
+                TaskConstants.TASK_QUERY_REPOMD_GENERATOR_CAPABILITY_BREAKS,
+                pkgDto.getId(), "Breaks");
+
+        out.write("Filename: " + channelLabel + "/getPackage/");
+        out.write(pkgDto.getName() + "_");
+        if (epoch != null && !epoch.equalsIgnoreCase("")) {
+            out.write(epoch + ":");
+        }
+        out.write(pkgDto.getVersion() + "-" + pkgDto.getRelease());
+        out.write("." + pkgDto.getArchLabel() + ".deb");
+        out.newLine();
+
+        // size of package, is checked by apt
+        out.write("Size: ");
+        out.write(pkgDto.getPackageSize().toString());
+        out.newLine();
+
+        // at least one checksum is required by apt
+        if (pkgDto.getChecksumType().equalsIgnoreCase("md5")) {
+            out.write("MD5sum: ");
+            out.write(pkgDto.getChecksum());
+            out.newLine();
+        }
+
+        if (pkgDto.getChecksumType().equalsIgnoreCase("sha1")) {
+            out.write("SHA1: ");
+            out.write(pkgDto.getChecksum());
+            out.newLine();
+        }
+
+        if (pkgDto.getChecksumType().equalsIgnoreCase("sha256")) {
+            out.write("SHA256: ");
+            out.write(pkgDto.getChecksum());
+            out.newLine();
+        }
+
+        out.write("Section: ");
+        out.write(pkgDto.getPackageGroupName());
+        out.newLine();
+
+        if (pkgDto.getExtraTags() != null) {
+            for (var entry : pkgDto.getExtraTags().entrySet()) {
+                out.write(entry.getKey());
+                out.write(": ");
+                out.write(entry.getValue());
+                out.newLine();
+            }
+        }
+
+        out.write("Description: ");
+        out.write(pkgDto.getDescription());
+        out.newLine();
+
+        // new line after package metadata
+        out.newLine();
+    }
+
+    /**
+     * @param outIn
+     *
+     * @param query
+     *            query to get dependencies
      * @param pkgId
      *            package Id to set
      * @param dep
      *            dependency info
      */
-    private void addPackageDepData(BufferedWriter out, String query,
+    private void addPackageDepData(BufferedWriter outIn, String query,
             Long pkgId, String dep) {
         int count = 0;
         Collection<PackageCapabilityDto> capabilities = TaskManager
@@ -222,7 +224,7 @@ public class DebPackageWriter {
         try {
             for (PackageCapabilityDto capability : capabilities) {
                 if (count == 0) {
-                    out.write(dep + ": ");
+                    outIn.write(dep + ": ");
                 }
 
                 count++;
@@ -236,16 +238,16 @@ public class DebPackageWriter {
 
             for (int iIndex = 0; iIndex < names.length; iIndex++) {
                 if (iIndex != 0) {
-                    out.write(", ");
+                    outIn.write(", ");
                 }
-                out.write(names[iIndex]);
+                outIn.write(names[iIndex]);
                 if (versions[iIndex] != null && !versions[iIndex].isEmpty()) {
-                    out.write(" (");
+                    outIn.write(" (");
                     if (senses[iIndex] != null) {
-                        out.write(senses[iIndex] + " ");
+                        outIn.write(senses[iIndex] + " ");
                     }
-                    out.write(versions[iIndex]);
-                    out.write(")");
+                    outIn.write(versions[iIndex]);
+                    outIn.write(")");
                 }
             }
         }
@@ -254,7 +256,7 @@ public class DebPackageWriter {
         }
         try {
             if (count > 0) {
-                out.newLine();
+                outIn.newLine();
             }
         }
         catch (Exception e) {
@@ -293,11 +295,10 @@ public class DebPackageWriter {
      * Create Packages.gz from Packages
      */
     public void generatePackagesGz() {
-        try {
-            // Create the GZIP output stream
-            String outFilename = filenamePackages + ".gz";
-            GZIPOutputStream out = new GZIPOutputStream(new FileOutputStream(
-                    outFilename, false));
+        // Create the GZIP output stream
+        String outFilename = filenamePackages + ".gz";
+        try (GZIPOutputStream outGz = new GZIPOutputStream(new FileOutputStream(
+                outFilename, false))) {
 
             // Open the input file
             FileInputStream in = new FileInputStream(filenamePackages);
@@ -306,17 +307,23 @@ public class DebPackageWriter {
             byte[] buf = new byte[1024];
             int len;
             while ((len = in.read(buf)) > 0) {
-                out.write(buf, 0, len);
+                outGz.write(buf, 0, len);
             }
             in.close();
 
             // Complete the GZIP file
-            out.finish();
-            out.close();
+            outGz.finish();
         }
         catch (IOException e) {
             log.error("Failed to create Packages.gz " + e.toString());
         }
     }
 
+    /**
+     * Finish writing the Package file.
+     */
+    @Override
+    public void close() {
+        IOUtils.closeQuietly(out);
+    }
 }
