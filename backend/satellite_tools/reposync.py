@@ -746,7 +746,7 @@ class RepoSync(object):
         log(0, "*** NOTE: Importing comps file for the channel '%s'. Previous comps will be discarded." % (self.channel['label']))
 
         repoDataKey = 'group' if comps_type == 'comps' else comps_type
-        file_timestamp = plug.repo.repoXML.repoData[repoDataKey].timestamp
+        file_timestamp = os.path.getmtime(filename)
         last_modified = datetime.fromtimestamp(float(file_timestamp), utc)
 
 

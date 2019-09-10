@@ -1,3 +1,5 @@
+- Prevent "reposync" crash when handling metadata on RPM repos (bsc#1138358)
+- Do not show expected WARNING messages from "c_rehash"
 - fix misspelling in spacewalk-repo-sync (bsc#1149633)
 - remove credentials also from potential rhn.conf backup files in spacewalk-debug (bsc#1146419)
 - Do not crash 'rhn-satellite-exporter' with ModuleNotFound error (bsc#1146869)
