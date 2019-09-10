@@ -571,9 +571,14 @@ end
 
 When(/^I enable SUSE Manager tools repository on "([^"]*)"$/) do |host|
   node = get_target(host)
-  out, _code = node.run('zypper lr | grep SLE-Manager-Tools | cut -d"|" -f2')
-  # This enables tools development repository too if it exists
-  node.run("zypper mr --enable #{out.gsub(/\s/, ' ')}")
+  os_version, os_family = get_os_version(node)
+  if os_family =~ /^opensuse/
+    repos, _code = $minion.run('zypper lr | grep Uyuni-Client-Tools | cut -d"|" -f2')
+  else
+    repos, _code = $minion.run('zypper lr | grep SLE-Manager-Tools | cut -d"|" -f2')
+    # This enables tools development repository too if it exists
+  end
+  node.run("zypper mr --enable #{repos.gsub(/\s/, ' ')}")
 end
 
 When(/^I enable repositories before installing Docker$/) do
@@ -592,14 +597,16 @@ When(/^I enable repositories before installing Docker$/) do
   end
 
   # Tools
-  repos, _code = $minion.run('zypper lr | grep SLE-Manager-Tools | cut -d"|" -f2')
+  if os_family =~ /^opensuse/
+    repos, _code = $minion.run('zypper lr | grep Uyuni-Client-Tools | cut -d"|" -f2')
+  else
+    repos, _code = $minion.run('zypper lr | grep SLE-Manager-Tools | cut -d"|" -f2')
+  end
   puts $minion.run("zypper mr --enable #{repos.gsub(/\s/, ' ')}")
 
   # Container repositories
   # They don't exist for SLES11 systems, only for SLES12 and upper systems
   unless os_version =~ /^11/
-    repos, _code = $minion.run('zypper lr | grep SLE-Manager-Tools | cut -d"|" -f2')
-    $minion.run("zypper mr --enable #{repos.gsub(/\s/, ' ')}")
     repos, _code = $minion.run('zypper lr | grep SLE-Module-Containers | cut -d"|" -f2')
     $minion.run("zypper mr --enable #{repos.gsub(/\s/, ' ')}")
   end
@@ -623,14 +630,16 @@ When(/^I disable repositories after installing Docker$/) do
   end
 
   # Tools
-  repos, _code = $minion.run('zypper lr | grep SLE-Manager-Tools | cut -d"|" -f2')
+  if os_family =~ /^opensuse/
+    repos, _code = $minion.run('zypper lr | grep Uyuni-Client-Tools | cut -d"|" -f2')
+  else
+    repos, _code = $minion.run('zypper lr | grep SLE-Manager-Tools | cut -d"|" -f2')
+  end
   puts $minion.run("zypper mr --disable #{repos.gsub(/\s/, ' ')}")
 
   # Container repositories
   # They don't exist for SLES11 systems, only for SLES12 and upper systems
   unless os_version =~ /^11/
-    repos, _code = $minion.run('zypper lr | grep SLE-Manager-Tools | cut -d"|" -f2')
-    $minion.run("zypper mr --disable #{repos.gsub(/\s/, ' ')}")
     repos, _code = $minion.run('zypper lr | grep SLE-Module-Containers | cut -d"|" -f2')
     $minion.run("zypper mr --disable #{repos.gsub(/\s/, ' ')}")
   end
