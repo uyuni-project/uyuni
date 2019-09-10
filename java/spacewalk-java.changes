@@ -1,4 +1,6 @@
 - Use 'SCC organization credentials' instead of 'SCC credentials' in error message (bsc#1149425)
+- implement "regular expression" Filter for Content Lifecycle Management
+  matching package names, patch name, patch synopsis and package names in patches
 - implement provisioning for salt clients
 - New Single Page Application engine for the UI
 - Check that a channel doesn't have clones before deleting it (bsc#1138454)
