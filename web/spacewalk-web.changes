@@ -1,3 +1,4 @@
+- Change form order and change project creation message (bsc#1145744)
 - Fix loading proper activation key details on SPA enabled (bsc#1157141)
 - Add self monitoring to Admin Monitoring UI (bsc#1143638)
 - Fix create VM dialog when there is no virtual storage pool or network
