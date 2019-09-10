@@ -1,3 +1,4 @@
+- ensure working directory is /root during setup (bsc#1148169)
 - dmidecode does not exist on s390x (bsc#1145119)
 
 -------------------------------------------------------------------
