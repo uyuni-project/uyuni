@@ -254,6 +254,7 @@ When(/^I follow the left menu "([^"]*)"$/) do |menu_path|
   level_path = "/ul/li[div[a[span[text()='%s']]]]"
   level_element_path = '/div'
   link_path = "/a[span[text()='%s']]"
+  direct_link_path = "/a[contains(@class, 'direct-link')]"
 
   # point the target to the nav menu
   target_level_path = prefix_path
