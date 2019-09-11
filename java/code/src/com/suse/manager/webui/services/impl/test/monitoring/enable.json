@@ -3,17 +3,17 @@
         "cmd_|-node_exporter_|-/usr/bin/rpm --query --info golang-github-prometheus-node_exporter_|-run": {
             "name": "/usr/bin/rpm --query --info golang-github-prometheus-node_exporter",
             "changes": {
-                "pid": 14796,
+                "pid": 6852,
                 "retcode": 0,
-                "stdout": "Name        : golang-github-prometheus-node_exporter\nVersion     : 0.17.0\nRelease     : 400.1.20.develHead\nArchitecture: x86_64\nInstall Date: Mon Apr 15 19:29:44 2019\nGroup       : System/Management\nSize        : 26918015\nLicense     : Apache-2.0\nSignature   : DSA/SHA1, Sun Apr 14 07:10:32 2019, Key ID 27fa41bd8a7c64f9\nSource RPM  : golang-github-prometheus-node_exporter-0.17.0-400.1.20.develHead.src.rpm\nBuild Date  : Sun Apr 14 07:10:10 2019\nBuild Host  : sheep17\nRelocations : (not relocatable)\nVendor      : obs://build.suse.de/Devel:Galaxy:Manager:Head\nURL         : https://prometheus.io/\nSummary     : Prometheus exporter for machine metrics\nDescription :\nPrometheus exporter for hardware and OS metrics exposed by *NIX kernels, written in Go with pluggable metric collectors.\nDistribution: Devel:Galaxy:Manager:Head / SLE_15_SP1",
+                "stdout": "Name        : golang-github-prometheus-node_exporter\nVersion     : 0.17.0\nRelease     : 5.7.uyuni\nArchitecture: x86_64\nInstall Date: Mon Nov  4 15:49:49 2019\nGroup       : System/Management\nSize        : 26923199\nLicense     : Apache-2.0\nSignature   : RSA/SHA256, Tue Oct 29 20:03:20 2019, Key ID 972e5d6c0d20833e\nSource RPM  : golang-github-prometheus-node_exporter-0.17.0-5.7.uyuni.src.rpm\nBuild Date  : Tue Oct 29 20:02:54 2019\nBuild Host  : build33\nRelocations : (not relocatable)\nVendor      : obs://build.opensuse.org/systemsmanagement:Uyuni\nURL         : https://prometheus.io/\nSummary     : Prometheus exporter for machine metrics\nDescription :\nPrometheus exporter for hardware and OS metrics exposed by *NIX kernels, written in Go with pluggable metric collectors.\nDistribution: systemsmanagement:Uyuni:Master / openSUSE_Leap_15.1",
                 "stderr": ""
             },
             "result": true,
             "comment": "Command \"/usr/bin/rpm --query --info golang-github-prometheus-node_exporter\" run",
             "__sls__": "srvmonitoring.enable",
             "__run_num__": 0,
-            "start_time": "17:29:01.673815",
-            "duration": 19.162,
+            "start_time": "16:14:43.894186",
+            "duration": 13.832,
             "__id__": "node_exporter"
         },
         "service_|-node_exporter_service_|-prometheus-node_exporter_|-running": {
@@ -25,24 +25,24 @@
             "comment": "Service prometheus-node_exporter has been enabled, and is running",
             "__sls__": "srvmonitoring.enable",
             "__run_num__": 1,
-            "start_time": "17:29:08.531213",
-            "duration": 417.3,
+            "start_time": "16:14:48.252353",
+            "duration": 301.093,
             "__id__": "node_exporter_service"
         },
         "cmd_|-postgres_exporter_|-/usr/bin/rpm --query --info golang-github-wrouesnel-postgres_exporter_|-run": {
             "name": "/usr/bin/rpm --query --info golang-github-wrouesnel-postgres_exporter",
             "changes": {
-                "pid": 14832,
+                "pid": 6884,
                 "retcode": 0,
-                "stdout": "Name        : golang-github-wrouesnel-postgres_exporter\nVersion     : 0.4.7\nRelease     : 400.12.3.develHead\nArchitecture: x86_64\nInstall Date: Wed Apr 24 16:08:37 2019\nGroup       : System/Management\nSize        : 12364337\nLicense     : Apache-2.0\nSignature   : DSA/SHA1, Mon Apr 22 11:30:09 2019, Key ID 27fa41bd8a7c64f9\nSource RPM  : golang-github-wrouesnel-postgres_exporter-0.4.7-400.12.3.develHead.src.rpm\nBuild Date  : Mon Apr 22 11:29:56 2019\nBuild Host  : sheep14\nRelocations : (not relocatable)\nVendor      : obs://build.suse.de/Devel:Galaxy:Manager:Head\nURL         : https://prometheus.io/\nSummary     : Prometheus exporter for PostgreSQL\nDescription :\nPrometheus exporter for PostgreSQL server metrics. Supported PostgreSQL versions: 9.1 and up.\nDistribution: Devel:Galaxy:Manager:Head / SLE_15_SP1",
+                "stdout": "Name        : golang-github-wrouesnel-postgres_exporter\nVersion     : 0.4.7\nRelease     : 4.3.uyuni\nArchitecture: x86_64\nInstall Date: Mon Nov  4 15:49:50 2019\nGroup       : System/Management\nSize        : 12364337\nLicense     : Apache-2.0\nSignature   : RSA/SHA256, Tue Oct 29 20:07:12 2019, Key ID 972e5d6c0d20833e\nSource RPM  : golang-github-wrouesnel-postgres_exporter-0.4.7-4.3.uyuni.src.rpm\nBuild Date  : Tue Oct 29 20:06:41 2019\nBuild Host  : cloud130\nRelocations : (not relocatable)\nVendor      : obs://build.opensuse.org/systemsmanagement:Uyuni\nURL         : https://prometheus.io/\nSummary     : Prometheus exporter for PostgreSQL\nDescription :\nPrometheus exporter for PostgreSQL server metrics. Supported PostgreSQL versions: 9.1 and up.\nDistribution: systemsmanagement:Uyuni:Master / openSUSE_Leap_15.1",
                 "stderr": ""
             },
             "result": true,
             "comment": "Command \"/usr/bin/rpm --query --info golang-github-wrouesnel-postgres_exporter\" run",
             "__sls__": "srvmonitoring.enable",
             "__run_num__": 2,
-            "start_time": "17:29:08.949055",
-            "duration": 18.807,
+            "start_time": "16:14:48.553831",
+            "duration": 12.793,
             "__id__": "postgres_exporter"
         },
         "file_|-postgres_exporter_configuration_|-/etc/postgres_exporter/postgres_exporter_queries.yaml_|-managed": {
@@ -53,20 +53,22 @@
             "result": true,
             "__sls__": "srvmonitoring.enable",
             "__run_num__": 3,
-            "start_time": "17:29:08.972303",
-            "duration": 29.72,
+            "start_time": "16:14:48.571443",
+            "duration": 27.17,
             "__id__": "postgres_exporter_configuration"
         },
         "file_|-postgres_exporter_service_|-/etc/sysconfig/prometheus-postgres_exporter_|-managed": {
-            "changes": {},
+            "changes": {
+                "diff": "--- \n+++ \n@@ -6,7 +6,7 @@\n #\n # Connection URL to postgresql instance\n #\n-DATA_SOURCE_NAME=\"postgresql://spacewalk:spacewalk@localhost:5432/susemanager?sslmode=disable\"\n+DATA_SOURCE_NAME=\"postgresql://admin:admin@localhost:5432/susemanager?sslmode=disable\"\n \n ## Path:           Applications/PostgreSQLExporter\n ## Description:    Prometheus exporter for PostgreSQL\n"
+            },
             "pchanges": {},
-            "comment": "File /etc/sysconfig/prometheus-postgres_exporter is in the correct state",
+            "comment": "File /etc/sysconfig/prometheus-postgres_exporter updated",
             "name": "/etc/sysconfig/prometheus-postgres_exporter",
             "result": true,
             "__sls__": "srvmonitoring.enable",
             "__run_num__": 4,
-            "start_time": "17:29:09.002921",
-            "duration": 25.516,
+            "start_time": "16:14:48.599508",
+            "duration": 29.397,
             "__id__": "postgres_exporter_service"
         },
         "service_|-postgres_exporter_service_|-prometheus-postgres_exporter_|-running": {
@@ -78,75 +80,235 @@
             "comment": "Service prometheus-postgres_exporter has been enabled, and is running",
             "__sls__": "srvmonitoring.enable",
             "__run_num__": 5,
-            "start_time": "17:29:09.029085",
-            "duration": 370.441,
+            "start_time": "16:14:48.629495",
+            "duration": 298.878,
             "__id__": "postgres_exporter_service"
         },
-        "cmd_|-jmx_exporter_|-/usr/bin/rpm --query --info jmx_exporter jmx_exporter-tomcat_|-run": {
-            "name": "/usr/bin/rpm --query --info jmx_exporter jmx_exporter-tomcat",
+        "cmd_|-jmx_exporter_|-/usr/bin/rpm --query --info prometheus-jmx_exporter prometheus-jmx_exporter-tomcat_|-run": {
+            "name": "/usr/bin/rpm --query --info prometheus-jmx_exporter prometheus-jmx_exporter-tomcat",
             "changes": {
-                "pid": 14865,
+                "pid": 6913,
                 "retcode": 0,
-                "stdout": "Name        : jmx_exporter\nVersion     : 0.3.1\nRelease     : 1.6\nArchitecture: noarch\nInstall Date: Mon Apr 15 19:30:10 2019\nGroup       : Development/Libraries/Java\nSize        : 726095\nLicense     : Apache-2.0\nSignature   : RSA/SHA256, Mon Apr 15 17:55:38 2019, Key ID acaa9cf7e6e5a213\nSource RPM  : jmx_exporter-0.3.1-1.6.src.rpm\nBuild Date  : Mon Apr 15 17:55:33 2019\nBuild Host  : build73\nRelocations : (not relocatable)\nVendor      : obs://build.opensuse.org/systemsmanagement\nURL         : http://github.com/prometheus/jmx_exporter\nSummary     : Prometheus exporter for JMX metrics\nDescription :\nA Collector that can configurably scrape and expose mBeans of a JMX target. It meant to be run as a Java Agent, exposing an HTTP server and scraping the local JVM.\n\nThis can be also run as an independent HTTP server and scrape remote JMX targets.\nDistribution: systemsmanagement:sumaform:tools / SLE_15_SP1\nName        : jmx_exporter-tomcat\nVersion     : 0.3.1\nRelease     : 1.6\nArchitecture: noarch\nInstall Date: Mon Apr 15 19:30:10 2019\nGroup       : Development/Libraries/Java\nSize        : 311\nLicense     : Apache-2.0\nSignature   : RSA/SHA256, Mon Apr 15 17:55:38 2019, Key ID acaa9cf7e6e5a213\nSource RPM  : jmx_exporter-0.3.1-1.6.src.rpm\nBuild Date  : Mon Apr 15 17:55:33 2019\nBuild Host  : build73\nRelocations : (not relocatable)\nVendor      : obs://build.opensuse.org/systemsmanagement\nURL         : http://github.com/prometheus/jmx_exporter\nSummary     : Prometheus exporter for JMX metrics - tomcat config\nDescription :\nA Collector that can configurably scrape and expose mBeans of a JMX target.\nThis package provide tomcat example configuration\nDistribution: systemsmanagement:sumaform:tools / SLE_15_SP1",
+                "stdout": "Name        : prometheus-jmx_exporter\nVersion     : 0.3.1\nRelease     : 3.3.uyuni\nArchitecture: noarch\nInstall Date: Mon Nov  4 15:50:01 2019\nGroup       : Development/Libraries/Java\nSize        : 726126\nLicense     : Apache-2.0\nSignature   : RSA/SHA256, Tue Oct 29 20:39:06 2019, Key ID 972e5d6c0d20833e\nSource RPM  : prometheus-jmx_exporter-0.3.1-3.3.uyuni.src.rpm\nBuild Date  : Tue Oct 29 20:38:52 2019\nBuild Host  : cloud113\nRelocations : (not relocatable)\nVendor      : obs://build.opensuse.org/systemsmanagement:Uyuni\nURL         : http://github.com/prometheus/jmx_exporter\nSummary     : Prometheus exporter for JMX metrics\nDescription :\nA Collector that can configurably scrape and expose mBeans of a JMX target. It meant to be run as a Java Agent, exposing an HTTP server and scraping the local JVM.\n\nThis can be also run as an independent HTTP server and scrape remote JMX targets.\nDistribution: systemsmanagement:Uyuni:Master / openSUSE_Leap_15.1\nName        : prometheus-jmx_exporter-tomcat\nVersion     : 0.3.1\nRelease     : 3.3.uyuni\nArchitecture: noarch\nInstall Date: Mon Nov  4 15:50:03 2019\nGroup       : Development/Libraries/Java\nSize        : 311\nLicense     : Apache-2.0\nSignature   : RSA/SHA256, Tue Oct 29 20:39:06 2019, Key ID 972e5d6c0d20833e\nSource RPM  : prometheus-jmx_exporter-0.3.1-3.3.uyuni.src.rpm\nBuild Date  : Tue Oct 29 20:38:52 2019\nBuild Host  : cloud113\nRelocations : (not relocatable)\nVendor      : obs://build.opensuse.org/systemsmanagement:Uyuni\nURL         : http://github.com/prometheus/jmx_exporter\nSummary     : Prometheus exporter for JMX metrics - tomcat config\nDescription :\nA Collector that can configurably scrape and expose mBeans of a JMX target.\nThis package provide tomcat example configuration\nDistribution: systemsmanagement:Uyuni:Master / openSUSE_Leap_15.1",
                 "stderr": ""
             },
             "result": true,
-            "comment": "Command \"/usr/bin/rpm --query --info jmx_exporter jmx_exporter-tomcat\" run",
+            "comment": "Command \"/usr/bin/rpm --query --info prometheus-jmx_exporter prometheus-jmx_exporter-tomcat\" run",
             "__sls__": "srvmonitoring.enable",
             "__run_num__": 6,
-            "start_time": "17:29:09.399993",
-            "duration": 19.196,
+            "start_time": "16:14:48.928750",
+            "duration": 12.73,
             "__id__": "jmx_exporter"
         },
-        "service_|-jmx_exporter_tomcat_service_|-prometheus-jmx_exporter@tomcat_|-running": {
-            "name": "jmx-exporter@tomcat",
-            "changes": {
-                "jmx-exporter@tomcat": true
-            },
+        "cmd_|-remove_tomcat_jmx_port_|-sed -ri 's/JAVA_OPTS=\"(.*)-Dcom\\.sun\\.management\\.jmxremote\\.port=[0-9]*(.*)\"/JAVA_OPTS=\"\\1 \\2\"/' /etc/sysconfig/tomcat_|-run": {
+            "name": "sed -ri 's/JAVA_OPTS=\"(.*)-Dcom\\.sun\\.management\\.jmxremote\\.port=[0-9]*(.*)\"/JAVA_OPTS=\"\\1 \\2\"/' /etc/sysconfig/tomcat",
+            "changes": {},
             "result": true,
-            "comment": "Service jmx-exporter@tomcat has been enabled, and is running",
+            "comment": "onlyif condition is false",
+            "skip_watch": true,
             "__sls__": "srvmonitoring.enable",
             "__run_num__": 7,
-            "start_time": "17:29:09.420372",
-            "duration": 456.254,
-            "__id__": "jmx_exporter_tomcat_service"
+            "start_time": "16:14:48.941835",
+            "duration": 7.032,
+            "__id__": "remove_tomcat_jmx_port"
         },
-        "file_|-jmx_exporter_taskomatic_systemd_config_|-/etc/jmx_exporter/taskomatic/environment_|-managed": {
+        "cmd_|-remove_tomcat_jmx_ssl_|-sed -i 's/JAVA_OPTS=\"\\(.*\\)-Dcom\\.sun\\.management\\.jmxremote\\.ssl=false\\(.*\\)\"/JAVA_OPTS=\"\\1 \\2\"/' /etc/sysconfig/tomcat_|-run": {
+            "name": "sed -i 's/JAVA_OPTS=\"\\(.*\\)-Dcom\\.sun\\.management\\.jmxremote\\.ssl=false\\(.*\\)\"/JAVA_OPTS=\"\\1 \\2\"/' /etc/sysconfig/tomcat",
             "changes": {},
-            "pchanges": {},
-            "comment": "File /etc/jmx_exporter/taskomatic/environment is in the correct state",
-            "name": "/etc/jmx_exporter/taskomatic/environment",
             "result": true,
+            "comment": "onlyif condition is false",
+            "skip_watch": true,
             "__sls__": "srvmonitoring.enable",
             "__run_num__": 8,
-            "start_time": "17:29:09.877145",
-            "duration": 3.355,
-            "__id__": "jmx_exporter_taskomatic_systemd_config"
+            "start_time": "16:14:48.949231",
+            "duration": 6.877,
+            "__id__": "remove_tomcat_jmx_ssl"
         },
-        "file_|-jmx_exporter_taskomatic_yaml_config_|-/etc/jmx_exporter/taskomatic/jmx_exporter.yml_|-managed": {
+        "cmd_|-remove_tomcat_jmx_auth_|-sed -i 's/JAVA_OPTS=\"\\(.*\\)-Dcom\\.sun\\.management\\.jmxremote\\.authenticate=false\\(.*\\)\"/JAVA_OPTS=\"\\1 \\2\"/' /etc/sysconfig/tomcat_|-run": {
+            "name": "sed -i 's/JAVA_OPTS=\"\\(.*\\)-Dcom\\.sun\\.management\\.jmxremote\\.authenticate=false\\(.*\\)\"/JAVA_OPTS=\"\\1 \\2\"/' /etc/sysconfig/tomcat",
             "changes": {},
-            "pchanges": {},
-            "comment": "File /etc/jmx_exporter/taskomatic/jmx_exporter.yml is in the correct state",
-            "name": "/etc/jmx_exporter/taskomatic/jmx_exporter.yml",
             "result": true,
+            "comment": "onlyif condition is false",
+            "skip_watch": true,
             "__sls__": "srvmonitoring.enable",
             "__run_num__": 9,
-            "start_time": "17:29:09.883815",
-            "duration": 2.582,
+            "start_time": "16:14:48.956466",
+            "duration": 6.767,
+            "__id__": "remove_tomcat_jmx_auth"
+        },
+        "cmd_|-remove_tomcat_jmx_hostname_|-sed -ri 's/JAVA_OPTS=\"(.*)-Djava\\.rmi\\.server\\.hostname=\\S*(.*)\"/JAVA_OPTS=\"\\1 \\2\"/' /etc/sysconfig/tomcat_|-run": {
+            "name": "sed -ri 's/JAVA_OPTS=\"(.*)-Djava\\.rmi\\.server\\.hostname=\\S*(.*)\"/JAVA_OPTS=\"\\1 \\2\"/' /etc/sysconfig/tomcat",
+            "changes": {},
+            "result": true,
+            "comment": "onlyif condition is false",
+            "skip_watch": true,
+            "__sls__": "srvmonitoring.enable",
+            "__run_num__": 10,
+            "start_time": "16:14:48.963584",
+            "duration": 6.529,
+            "__id__": "remove_tomcat_jmx_hostname"
+        },
+        "cmd_|-jmx_tomcat_config_|-sed -i 's/JAVA_OPTS=\"\\(.*\\)\"/JAVA_OPTS=\"\\1 -Dcom.sun.management.jmxremote.port=3333 -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.authenticate=false -Djava.rmi.server.hostname=test-srv.tf.local\"/' /etc/sysconfig/tomcat_|-run": {
+            "name": "sed -i 's/JAVA_OPTS=\"\\(.*\\)\"/JAVA_OPTS=\"\\1 -Dcom.sun.management.jmxremote.port=3333 -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.authenticate=false -Djava.rmi.server.hostname=test-srv.tf.local\"/' /etc/sysconfig/tomcat",
+            "changes": {
+                "pid": 6918,
+                "retcode": 0,
+                "stdout": "",
+                "stderr": ""
+            },
+            "result": true,
+            "comment": "Command \"sed -i 's/JAVA_OPTS=\"\\(.*\\)\"/JAVA_OPTS=\"\\1 -Dcom.sun.management.jmxremote.port=3333 -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.authenticate=false -Djava.rmi.server.hostname=test-srv.tf.local\"/' /etc/sysconfig/tomcat\" run",
+            "__sls__": "srvmonitoring.enable",
+            "__run_num__": 11,
+            "start_time": "16:14:48.971125",
+            "duration": 7.621,
+            "__id__": "jmx_tomcat_config"
+        },
+        "service_|-jmx_exporter_tomcat_service_|-prometheus-jmx_exporter@tomcat_|-running": {
+            "name": "prometheus-jmx_exporter@tomcat",
+            "changes": {
+                "prometheus-jmx_exporter@tomcat": true
+            },
+            "result": true,
+            "comment": "Service prometheus-jmx_exporter@tomcat has been enabled, and is running",
+            "__sls__": "srvmonitoring.enable",
+            "__run_num__": 12,
+            "start_time": "16:14:48.979962",
+            "duration": 347.668,
+            "__id__": "jmx_exporter_tomcat_service"
+        },
+        "file_|-jmx_exporter_taskomatic_systemd_config_|-/etc/prometheus-jmx_exporter/taskomatic/environment_|-managed": {
+            "changes": {},
+            "pchanges": {},
+            "comment": "File /etc/prometheus-jmx_exporter/taskomatic/environment is in the correct state",
+            "name": "/etc/prometheus-jmx_exporter/taskomatic/environment",
+            "result": true,
+            "__sls__": "srvmonitoring.enable",
+            "__run_num__": 13,
+            "start_time": "16:14:49.327986",
+            "duration": 2.472,
+            "__id__": "jmx_exporter_taskomatic_systemd_config"
+        },
+        "cmd_|-remove_taskomatic_jmx_port_|-sed -ri 's/JAVA_OPTS=\"(.*)-Dcom\\.sun\\.management\\.jmxremote\\.port=[0-9]*(.*)\"/JAVA_OPTS=\"\\1 \\2\"/' /etc/rhn/taskomatic.conf_|-run": {
+            "name": "sed -ri 's/JAVA_OPTS=\"(.*)-Dcom\\.sun\\.management\\.jmxremote\\.port=[0-9]*(.*)\"/JAVA_OPTS=\"\\1 \\2\"/' /etc/rhn/taskomatic.conf",
+            "changes": {},
+            "result": true,
+            "comment": "onlyif condition is false",
+            "skip_watch": true,
+            "__sls__": "srvmonitoring.enable",
+            "__run_num__": 14,
+            "start_time": "16:14:49.330573",
+            "duration": 6.169,
+            "__id__": "remove_taskomatic_jmx_port"
+        },
+        "cmd_|-remove_taskomatic_jmx_ssl_|-sed -i 's/JAVA_OPTS=\"\\(.*\\)-Dcom\\.sun\\.management\\.jmxremote\\.ssl=false\\(.*\\)\"/JAVA_OPTS=\"\\1 \\2\"/' /etc/rhn/taskomatic.conf_|-run": {
+            "name": "sed -i 's/JAVA_OPTS=\"\\(.*\\)-Dcom\\.sun\\.management\\.jmxremote\\.ssl=false\\(.*\\)\"/JAVA_OPTS=\"\\1 \\2\"/' /etc/rhn/taskomatic.conf",
+            "changes": {},
+            "result": true,
+            "comment": "onlyif condition is false",
+            "skip_watch": true,
+            "__sls__": "srvmonitoring.enable",
+            "__run_num__": 15,
+            "start_time": "16:14:49.337084",
+            "duration": 6.374,
+            "__id__": "remove_taskomatic_jmx_ssl"
+        },
+        "cmd_|-remove_taskomatic_jmx_auth_|-sed -i 's/JAVA_OPTS=\"\\(.*\\)-Dcom\\.sun\\.management\\.jmxremote\\.authenticate=false\\(.*\\)\"/JAVA_OPTS=\"\\1 \\2\"/' /etc/rhn/taskomatic.conf_|-run": {
+            "name": "sed -i 's/JAVA_OPTS=\"\\(.*\\)-Dcom\\.sun\\.management\\.jmxremote\\.authenticate=false\\(.*\\)\"/JAVA_OPTS=\"\\1 \\2\"/' /etc/rhn/taskomatic.conf",
+            "changes": {},
+            "result": true,
+            "comment": "onlyif condition is false",
+            "skip_watch": true,
+            "__sls__": "srvmonitoring.enable",
+            "__run_num__": 16,
+            "start_time": "16:14:49.343802",
+            "duration": 5.912,
+            "__id__": "remove_taskomatic_jmx_auth"
+        },
+        "cmd_|-remove_taskomatic_jmx_hostname_|-sed -ri 's/JAVA_OPTS=\"(.*)-Djava\\.rmi\\.server\\.hostname=\\S*(.*)\"/JAVA_OPTS=\"\\1 \\2\"/' /etc/rhn/taskomatic.conf_|-run": {
+            "name": "sed -ri 's/JAVA_OPTS=\"(.*)-Djava\\.rmi\\.server\\.hostname=\\S*(.*)\"/JAVA_OPTS=\"\\1 \\2\"/' /etc/rhn/taskomatic.conf",
+            "changes": {},
+            "result": true,
+            "comment": "onlyif condition is false",
+            "skip_watch": true,
+            "__sls__": "srvmonitoring.enable",
+            "__run_num__": 17,
+            "start_time": "16:14:49.350055",
+            "duration": 6.445,
+            "__id__": "remove_taskomatic_jmx_hostname"
+        },
+        "cmd_|-jmx_taskomatic_config_|-sed -i 's/JAVA_OPTS=\"\\(.*\\)\"/JAVA_OPTS=\"\\1 -Dcom.sun.management.jmxremote.port=3334 -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.authenticate=false -Djava.rmi.server.hostname=test-srv.tf.local\"/' /etc/rhn/taskomatic.conf_|-run": {
+            "name": "sed -i 's/JAVA_OPTS=\"\\(.*\\)\"/JAVA_OPTS=\"\\1 -Dcom.sun.management.jmxremote.port=3334 -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.authenticate=false -Djava.rmi.server.hostname=test-srv.tf.local\"/' /etc/rhn/taskomatic.conf",
+            "changes": {
+                "pid": 6967,
+                "retcode": 0,
+                "stdout": "",
+                "stderr": ""
+            },
+            "result": true,
+            "comment": "Command \"sed -i 's/JAVA_OPTS=\"\\(.*\\)\"/JAVA_OPTS=\"\\1 -Dcom.sun.management.jmxremote.port=3334 -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.authenticate=false -Djava.rmi.server.hostname=test-srv.tf.local\"/' /etc/rhn/taskomatic.conf\" run",
+            "__sls__": "srvmonitoring.enable",
+            "__run_num__": 18,
+            "start_time": "16:14:49.357508",
+            "duration": 6.578,
+            "__id__": "jmx_taskomatic_config"
+        },
+        "file_|-jmx_exporter_taskomatic_yaml_config_|-/etc/prometheus-jmx_exporter/taskomatic/prometheus-jmx_exporter.yml_|-managed": {
+            "changes": {},
+            "pchanges": {},
+            "comment": "File /etc/prometheus-jmx_exporter/taskomatic/prometheus-jmx_exporter.yml is in the correct state",
+            "name": "/etc/prometheus-jmx_exporter/taskomatic/prometheus-jmx_exporter.yml",
+            "result": true,
+            "__sls__": "srvmonitoring.enable",
+            "__run_num__": 19,
+            "start_time": "16:14:49.364421",
+            "duration": 2.345,
             "__id__": "jmx_exporter_taskomatic_yaml_config"
         },
         "service_|-jmx_exporter_taskomatic_service_|-prometheus-jmx_exporter@taskomatic_|-running": {
-            "name": "jmx-exporter@taskomatic",
+            "name": "prometheus-jmx_exporter@taskomatic",
             "changes": {
-                "jmx-exporter@taskomatic": true
+                "prometheus-jmx_exporter@taskomatic": true
             },
             "result": true,
-            "comment": "Service jmx-exporter@taskomatic has been enabled, and is running",
+            "comment": "Service prometheus-jmx_exporter@taskomatic has been enabled, and is running",
             "__sls__": "srvmonitoring.enable",
-            "__run_num__": 10,
-            "start_time": "17:29:09.887689",
-            "duration": 551.621,
+            "__run_num__": 20,
+            "start_time": "16:14:49.368056",
+            "duration": 331.989,
             "__id__": "jmx_exporter_taskomatic_service"
+        },
+        "cmd_|-mgr_enable_prometheus_self_monitoring_|-grep -q '^prometheus_monitoring_enabled.*=.*' /etc/rhn/rhn.conf && sed -i 's/^prometheus_monitoring_enabled.*/prometheus_monitoring_enabled = 1/' /etc/rhn/rhn.conf || echo 'prometheus_monitoring_enabled = 1' >> /etc/rhn/rhn.conf_|-run": {
+            "name": "grep -q '^prometheus_monitoring_enabled.*=.*' /etc/rhn/rhn.conf && sed -i 's/^prometheus_monitoring_enabled.*/prometheus_monitoring_enabled = 1/' /etc/rhn/rhn.conf || echo 'prometheus_monitoring_enabled = 1' >> /etc/rhn/rhn.conf",
+            "changes": {
+                "pid": 7012,
+                "retcode": 0,
+                "stdout": "",
+                "stderr": ""
+            },
+            "result": true,
+            "comment": "Command \"grep -q '^prometheus_monitoring_enabled.*=.*' /etc/rhn/rhn.conf && sed -i 's/^prometheus_monitoring_enabled.*/prometheus_monitoring_enabled = 1/' /etc/rhn/rhn.conf || echo 'prometheus_monitoring_enabled = 1' >> /etc/rhn/rhn.conf\" run",
+            "__sls__": "srvmonitoring.enable",
+            "__run_num__": 21,
+            "start_time": "16:14:49.700418",
+            "duration": 10.168,
+            "__id__": "mgr_enable_prometheus_self_monitoring"
+        },
+        "cmd_|-mgr_is_prometheus_self_monitoring_enabled_|-grep -qF 'prometheus_monitoring_enabled = 1' /etc/rhn/rhn.conf_|-run": {
+            "name": "grep -qF 'prometheus_monitoring_enabled = 1' /etc/rhn/rhn.conf",
+            "changes": {
+                "pid": 7015,
+                "retcode": 0,
+                "stdout": "",
+                "stderr": ""
+            },
+            "result": true,
+            "comment": "Command \"grep -qF 'prometheus_monitoring_enabled = 1' /etc/rhn/rhn.conf\" run",
+            "__sls__": "srvmonitoring.enable",
+            "__run_num__": 22,
+            "start_time": "16:14:49.710942",
+            "duration": 6.986,
+            "__id__": "mgr_is_prometheus_self_monitoring_enabled"
         }
     }
 }

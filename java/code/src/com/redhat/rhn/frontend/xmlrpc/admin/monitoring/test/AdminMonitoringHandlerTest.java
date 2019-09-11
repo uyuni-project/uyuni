@@ -31,18 +31,22 @@ public class AdminMonitoringHandlerTest extends BaseHandlerTestCase {
         BiFunction<String, Optional<String>, Optional<InputStream>> execCtl =
                 (String cmd, Optional<String> pillar) -> {
                     return Optional.of(this.getClass()
-                            .getResourceAsStream("/com/suse/manager/webui/services/impl/test/monitoring/status.json"));
+                            .getResourceAsStream("/com/suse/manager/webui/services/impl/test/monitoring/status_self_monitoring_restart.json"));
                 };
 
         MonitoringService.setExecCtlFunction(execCtl);
+        MonitoringService.setTomcatJmxStatusSupplier(() -> true);
+        MonitoringService.setTaskomaticJmxStatusSupplier(() -> true);
+        MonitoringService.setSelfMonitoringStatusSupplier(() -> true);
 
         AdminMonitoringHandler handler = new AdminMonitoringHandler();
 
-        Map<String, Boolean> res = handler.getStatus(satAdmin);
-        assertTrue(res.get("node"));
-        assertTrue(res.get("postgres"));
-        assertTrue(res.get("tomcat"));
-        assertTrue(res.get("taskomatic"));
+        Map<String, String> res = handler.getStatus(satAdmin);
+        assertEquals("enabled", res.get("node"));
+        assertEquals("enabled", res.get("postgres"));
+        assertEquals("enabled", res.get("tomcat"));
+        assertEquals("enabled:enable_again_to_sync_config", res.get("taskomatic"));
+        assertEquals("enabled", res.get("self_monitoring"));
     }
 
     public void testEnable() {
@@ -53,14 +57,18 @@ public class AdminMonitoringHandlerTest extends BaseHandlerTestCase {
                 };
 
         MonitoringService.setExecCtlFunction(execCtl);
+        MonitoringService.setTomcatJmxStatusSupplier(() -> true);
+        MonitoringService.setTaskomaticJmxStatusSupplier(() -> true);
+        MonitoringService.setSelfMonitoringStatusSupplier(() -> false);
 
         AdminMonitoringHandler handler = new AdminMonitoringHandler();
 
-        Map<String, Boolean> res = handler.enable(satAdmin);
-        assertTrue(res.get("node"));
-        assertTrue(res.get("postgres"));
-        assertTrue(res.get("tomcat"));
-        assertTrue(res.get("taskomatic"));
+        Map<String, String> res = handler.enable(satAdmin);
+        assertEquals("enabled", res.get("node"));
+        assertEquals("enabled", res.get("postgres"));
+        assertEquals("enabled", res.get("tomcat"));
+        assertEquals("enabled", res.get("taskomatic"));
+        assertEquals("enabled:restart_needed", res.get("self_monitoring"));
     }
 
     public void testDisable() {
@@ -71,27 +79,31 @@ public class AdminMonitoringHandlerTest extends BaseHandlerTestCase {
                 };
 
         MonitoringService.setExecCtlFunction(execCtl);
+        MonitoringService.setTomcatJmxStatusSupplier(() -> true);
+        MonitoringService.setTaskomaticJmxStatusSupplier(() -> true);
+        MonitoringService.setSelfMonitoringStatusSupplier(() -> true);
 
         AdminMonitoringHandler handler = new AdminMonitoringHandler();
 
-        Map<String, Boolean> res = handler.enable(satAdmin);
-        assertFalse(res.get("node"));
-        assertFalse(res.get("postgres"));
-        assertFalse(res.get("tomcat"));
-        assertFalse(res.get("taskomatic"));
+        Map<String, String> res = handler.disable(satAdmin);
+        assertEquals("disabled", res.get("node"));
+        assertEquals("disabled", res.get("postgres"));
+        assertEquals("disabled:restart_needed", res.get("tomcat"));
+        assertEquals("disabled:restart_needed", res.get("taskomatic"));
+        assertEquals("disabled:restart_needed", res.get("self_monitoring"));
     }
 
     public void testRoleCheck() {
         AdminMonitoringHandler handler = new AdminMonitoringHandler();
 
         try {
-            Map<String, Boolean> res = handler.enable(regular);
+            Map<String, String> res = handler.enable(regular);
             fail("PermissionCheckFailureException should be thrown");
         } catch (PermissionCheckFailureException e) {
         }
 
         try {
-            Map<String, Boolean> res = handler.enable(admin);
+            Map<String, String> res = handler.enable(admin);
             fail("PermissionCheckFailureException should be thrown");
         } catch (PermissionCheckFailureException e) {
         }

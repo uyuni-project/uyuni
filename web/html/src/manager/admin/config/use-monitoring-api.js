@@ -4,42 +4,52 @@ import Network from 'utils/network';
 
 import type JsonResult from "../../../utils/network";
 
-type ExportersStatusType = {
-  [string]: boolean
+type ExportersResultType = {
+  exporters: {[string]: boolean},
+  messages: {[string]: string}
 };
 
-type ExportersResultType = {
-  exporters: ExportersStatusType
-};
+function isRestartNeeded(data: ExportersResultType) {
+  return Object.keys(data.exporters).some(key => data.messages[key] === "restart");
+}
 
 const useMonitoringApi = () => {
-    const [loading, setLoading] = useState(false);
-    const [exportersStatus, setExportersStatus] = useState(null);
+    const [action, setAction] = useState<null|"checking"|"enabling"|"disabling">(null);
+    const [exportersStatus, setExportersStatus] = useState<?{[string]: boolean}>(null);
+    const [exportersMessages, setExportersMessages] = useState<{[string]: string}>({});
+    const [restartNeeded, setRestartNeeded] = useState<boolean>(false);
     const [messages, setMessages] = useState<Array<Object>>([]);
 
-    const monitoringEnabled = exportersStatus ? 
-      Object.keys(exportersStatus).every(key => exportersStatus[key] === true) :
-      null;
+    const handleResponseError = (jqXHR: Object, arg: string = "") => {
+      const msg = Network.responseErrorMessage(jqXHR);
+      setMessages(msg);
+    };
 
-    const fetchStatus = (): Promise<ExportersStatusType> => {
-      setLoading(true);
+    const fetchStatus = (): Promise<ExportersResultType> => {
+      setAction("checking");
       return Network.get("/rhn/manager/api/admin/config/monitoring").promise
       .then((data: JsonResult<ExportersResultType>) => {
         setExportersStatus(data.data.exporters);
+        setExportersMessages(data.data.messages);
+        setRestartNeeded(isRestartNeeded(data.data));
         return data.data.exporters;
       })
+      .catch(handleResponseError)      
       .finally(() => {
-        setLoading(false);
+        setAction(null);
       });
     };
 
     const changeStatus = (toEnable: boolean) => {
-      setLoading(true);
+      setAction(toEnable ? "enabling" : "disabling");
       return Network.post("/rhn/manager/api/admin/config/monitoring", JSON.stringify({"enable": toEnable}), "application/json").promise
       .then((data : JsonResult<ExportersResultType>) => {
           if (data.data.exporters) {
             setExportersStatus(data.data.exporters);
-            if (monitoringEnabled && !toEnable) { // enabled -> disabled
+            setExportersMessages(data.data.messages)
+            setRestartNeeded(isRestartNeeded(data.data));
+            
+            if (!toEnable) { // disable monitoring
               const allDisabled : boolean = Object.keys(data.data.exporters).every(key => data.data.exporters[key] === false);
               const someEnabled : boolean = Object.keys(data.data.exporters).some(key => data.data.exporters[key] === true);
               if (allDisabled) {
@@ -49,7 +59,7 @@ const useMonitoringApi = () => {
               } else {
                 return {success: false, message: "disabling_failed"};
               }
-            } else if (!monitoringEnabled && toEnable) { // disabled -> enabled
+            } else if (toEnable) { // enable monitoring
               const allEnabled : boolean = Object.keys(data.data.exporters).every(key => data.data.exporters[key] === true);
               const someDisabled : boolean = Object.keys(data.data.exporters).some(key => data.data.exporters[key] === false);
               if (allEnabled) {
@@ -64,20 +74,24 @@ const useMonitoringApi = () => {
             }
           } else {
               setExportersStatus(null);
+              setExportersMessages({});
+              setRestartNeeded(false);
               return {success: false, message: "unknown"};
           }
         })
+        .catch(handleResponseError)
         .finally(() => {
-          setLoading(false);
+          setAction(null);
         });
     };
 
     return {
-      loading,
-      monitoringEnabled,
+      action,
       fetchStatus,
       changeStatus,
       exportersStatus,
+      exportersMessages,
+      restartNeeded,
       messages,
       setMessages
     }

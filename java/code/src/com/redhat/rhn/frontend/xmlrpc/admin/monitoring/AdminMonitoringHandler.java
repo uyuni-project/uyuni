@@ -19,9 +19,12 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
 import com.redhat.rhn.frontend.xmlrpc.satellite.MonitoringException;
 import com.suse.manager.webui.services.impl.MonitoringService;
+import org.apache.commons.lang3.StringUtils;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * AdminMonitoringHandler
@@ -29,6 +32,28 @@ import java.util.Optional;
  * @xmlrpc.doc Provides methods to manage the monitoring of the Uyuni server.
  */
 public class AdminMonitoringHandler extends BaseHandler {
+
+    private static Map<String, String> messageMap;
+    {
+        messageMap = new HashMap<>();
+        messageMap.put("enable", "enable_again_to_sync_config");
+        messageMap.put("disable", "disable_again_to_sync_config");
+        messageMap.put("restart", "restart_needed");
+    }
+
+    private static String toString(boolean enabled, String msg) {
+        String str = enabled ? "enabled" : "disabled";
+        if (StringUtils.isNotEmpty(msg)) {
+            return str + ":" + Optional.ofNullable(messageMap.get(msg)).orElse(msg);
+        }
+        return str;
+    }
+
+    private Map<String, String> toResponse(MonitoringService.MonitoringStatus status) {
+        return status.getExporters().entrySet().stream()
+                .collect(Collectors.toMap(e -> e.getKey(),
+                        e -> toString(e.getValue(), status.getMessages().get(e.getKey()))));
+    }
 
     /**
      * Enable monitoring.
@@ -40,18 +65,22 @@ public class AdminMonitoringHandler extends BaseHandler {
      * @xmlrpc.returntype
      *  #array()
      *      #struct("Exporters")
-     *          #prop("boolean", "node")
-     *          #prop("boolean", "tomcat")
-     *          #prop("boolean", "taskomatic")
-     *          #prop("boolean", "postgres")
+     *          #prop("string", "node")
+     *          #prop("string", "tomcat")
+     *          #prop("string", "taskomatic")
+     *          #prop("string", "postgres")
+     *          #prop("string", "self_monitoring")
      *      #struct_end()
      *  #array_end()
      */
-    public Map<String, Boolean> enable(User loggedInUser) {
+    public Map<String, String> enable(User loggedInUser) {
         ensureSatAdmin(loggedInUser);
-        Optional<Map<String, Boolean>> exporters = MonitoringService.enableMonitoring();
-        return exporters.orElseThrow(() -> new MonitoringException("Error enabling server monitoring"));
+        MonitoringService.MonitoringStatus status = MonitoringService.enableMonitoring()
+                .orElseThrow(() -> new MonitoringException("Error enabling server monitoring"));
+        return toResponse(status);
     }
+
+
 
     /**
      * Disable monitoring.
@@ -63,17 +92,19 @@ public class AdminMonitoringHandler extends BaseHandler {
      * @xmlrpc.returntype
      *  #array()
      *      #struct("Exporters")
-     *          #prop("boolean", "node")
-     *          #prop("boolean", "tomcat")
-     *          #prop("boolean", "taskomatic")
-     *          #prop("boolean", "postgres")
+     *          #prop("string", "node")
+     *          #prop("string", "tomcat")
+     *          #prop("string", "taskomatic")
+     *          #prop("string", "postgres")
+     *          #prop("string", "self_monitoring")
      *      #struct_end()
      *  #array_end()
      */
-    public Map<String, Boolean> disable(User loggedInUser) {
+    public Map<String, String> disable(User loggedInUser) {
         ensureSatAdmin(loggedInUser);
-        Optional<Map<String, Boolean>> exporters = MonitoringService.disableMonitoring();
-        return exporters.orElseThrow(() -> new MonitoringException("Error disabling server monitoring"));
+        MonitoringService.MonitoringStatus status = MonitoringService.disableMonitoring()
+                .orElseThrow(() -> new MonitoringException("Error disabling server monitoring"));
+        return toResponse(status);
     }
 
     /**
@@ -86,17 +117,19 @@ public class AdminMonitoringHandler extends BaseHandler {
      * @xmlrpc.returntype
      *  #array()
      *      #struct("Exporters")
-     *          #prop("boolean", "node")
-     *          #prop("boolean", "tomcat")
-     *          #prop("boolean", "taskomatic")
-     *          #prop("boolean", "postgres")
+     *          #prop("string", "node")
+     *          #prop("string", "tomcat")
+     *          #prop("string", "taskomatic")
+     *          #prop("string", "postgres")
+     *          #prop("string", "self_monitoring")
      *      #struct_end()
      *  #array_end()
      */
-    public Map<String, Boolean> getStatus(User loggedInUser) {
+    public Map<String, String> getStatus(User loggedInUser) {
         ensureSatAdmin(loggedInUser);
-        Optional<Map<String, Boolean>> exporters = MonitoringService.getStatus();
-        return exporters.orElseThrow(() -> new MonitoringException("Error getting server monitoring status"));
+        MonitoringService.MonitoringStatus status = MonitoringService.getStatus()
+                .orElseThrow(() -> new MonitoringException("Error getting server monitoring status"));
+        return toResponse(status);
     }
 
 }

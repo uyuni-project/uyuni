@@ -9,8 +9,11 @@ import {Utils} from 'utils/functions';
 import {IconTag as Icon} from 'components/icontag';
 import withPageWrapper from 'components/general/with-page-wrapper';
 import useMonitoringApi from './use-monitoring-api.js';
+import './monitoring-admin.css';
 
 const {capitalize} = Utils;
+
+const msgRestart = t("Restart is needed for the configuration changes to take effect.");
 
 const msgMap = {
   "internal_error": t("An internal error has occured. See the server logs for details."),
@@ -20,6 +23,17 @@ const msgMap = {
   "disabling_failed_partially": t("Failed to disable all monitoring services. Some services are still enabled. See the server logs for details."),
   "enabling_succeeded": t("Monitoring enabled successfully."),
   "disabling_succeeded": t("Monitoring disabled successfully."),
+  "tomcat_msg_enable": t("The Tomcat Prometheus exporter is up but the JMX configuration is disabled. " +
+    "Click the Enable button to enable the JMX configuration or click Disable to stop the Prometheus exporter."),
+  "tomcat_msg_disable":t("The Tomcat Prometheus exporter is down but the JMX configuration is enabled. " +
+    "Click the Disable button to disable the JMX configuration or click Enable to start the Prometheus exporter."),
+  "taskomatic_msg_enable": t("The Taskomatic Prometheus exporter is up but the JMX configuration is disabled. " +
+    "Click the Enable button to enable the JMX configuration of click Disable to stop the Prometheus exporter."),
+  "taskomatic_msg_disable": t("The Taskomatic Prometheus exporter is down but the JMX configuration is enabled. " +
+    "Click the Disable button to disable the JMX configuration of click Enable to start the Prometheus exporter."),
+  "tomcat_msg_restart": msgRestart,
+  "taskomatic_msg_restart": msgRestart,
+  "self_monitoring_msg_restart": msgRestart,
   "no_change": t("Monitoring status hasn't changed."),
   "unknown_status": t("An error occured. Monitoring status unknown. Refresh the page.")
 };
@@ -28,51 +42,61 @@ const exporterMap = {
   "node": t("System"), 
   "tomcat": t("Tomcat (Java JMX)"),
   "taskomatic": t("Taskomatic (Java JMX)"),
-  "postgres": t("PostgreSQL database")
+  "postgres": t("PostgreSQL database"),
+  "self_monitoring": t("Server self monitoring")
 }
 
-const ExporterIcon = (props : {status: ?boolean}) => {
+const ExporterIcon = (props : {status: ?boolean, name: string, message: ?string}) => {
     let type;
+    let tooltip;
     if (props.status === true) {
-      type = "item-enabled";
-    } else if (props.status === false){
-      type = "item-error";
+      type = props.message === "restart" || props.message === "enable" || props.message === "disable" ? "item-enabled-pending" : "item-enabled";
+      if (props.message) { 
+        tooltip = t("Enabled") + ". " + msgMap[props.name + "_msg_" + (props.message ? props.message : "")]; // double check props.message to keep flow happy
+      } else {
+        tooltip = t("Enabled");
+      }
+    } else if (props.status === false) {
+      console.log("disabled " + props.name + " " + (props.message ? props.message : "null"));
+      type = props.message === "restart" || props.message === "enable" || props.message === "disable" ? "item-error-pending" : "item-error";
+      if (props.message) {
+        tooltip = t("Disabled") + ". " + msgMap[props.name + "_msg_" + (props.message ? props.message : "")]; // double check props.message to keep flow happy
+      } else {
+        tooltip = t("Disabled");
+      }
     } else {
       type = "item-disabled";
+      tooltip = null;
     }
-    return <Icon type={type} className="fa-1-5x"/>;
+    return <Icon type={type} className="fa-1-5x" title={ tooltip }/>;
 }
 
-const ExporterItem = (props: {name: string, status: boolean}) => {
-  return <li>
-    <ExporterIcon status={props.status}/>
+const ExporterItem = (props: {name: string, status: boolean, message: ?string}) => {
+  return <li key={props.name}>
+    <ExporterIcon status={props.status} message={props.message} name={props.name}/>
     { props.name in exporterMap ? exporterMap[props.name] : capitalize(props.name)}
     </li>;
 }
 
-const ExportersList = (props : {exporters: {[string]: boolean}}) => {
+const ExportersList = (props : {exporters: {[string]: boolean}, messages: {[string]: string}}) => {
     const keys = Object.keys(props.exporters).sort();
 
     return <ul style={{listStyle: 'none', paddingLeft: '0px'}}>
       { keys.map(key => <ExporterItem name={key} 
-            status={props.exporters[key]}/>)}
+            status={props.exporters[key]} message={props.messages[key]}/>)}
       </ul>;
 }
 
 const ListPlaceholderItem = (props) => {
-  return <li style={{margin: "5px 0px 5px 0px"}}>
-    <ExporterIcon status={null}/>
-    <div style={{display: 'inline-block', width: 200, height: '1em', backgroundColor: '#dddddd'}}></div>
+  return <li className="placeholder-item">
+    <Icon type="item-disabled" className="fa-1-5x"/>
+    <div/>
     </li>;
 }
 
 const ListPlaceholder = (props) => {
-  return <ul style={{listStyle: 'none', paddingLeft: '0px', color: "#dddddd", filter: "blur(2px)"}}>
-    {}
-    <ListPlaceholderItem/>
-    <ListPlaceholderItem/>
-    <ListPlaceholderItem/>
-    <ListPlaceholderItem/>   
+  return <ul className="placeholder">
+    { Object.keys(exporterMap).map(e => <ListPlaceholderItem/>) }
   </ul>
 }
 
@@ -89,9 +113,25 @@ const HelpPanel = (props) => {
   </div>);
 }
 
+const ExportersMessages = (props: {messages: {[string]: string}}) => {
+    if (props.messages) {
+      const keys = Object.keys(props.messages).sort();
+
+      return (<ul style={{listStyle: 'none', paddingLeft: '0px'}}>
+        { keys.filter(key => props.messages[key] !== "restart").map(key => 
+          <li key={key}>
+            <Icon type="system-warn" className="fa-1-5x"/>{ msgMap[key + "_msg_" + props.messages[key]] }
+          </li>)  
+        }
+        </ul>);
+    } else {
+      return null;
+    }
+}
+
 const MonitoringAdmin = (props) => {
   
-    const {loading, monitoringEnabled, fetchStatus, changeStatus, exportersStatus, messages, setMessages} = useMonitoringApi();
+    const {action, fetchStatus, changeStatus, exportersStatus, exportersMessages, restartNeeded, messages, setMessages} = useMonitoringApi();
 
     const handleResponseError = (jqXHR: Object, arg: string = "") => {
       const msg = Network.responseErrorMessage(jqXHR,
@@ -104,11 +144,11 @@ const MonitoringAdmin = (props) => {
       .catch(handleResponseError);
     }, []);
 
-    const changeMonitoringState = () => {
+    const changeMonitoringStatus = (enable: boolean) => {
       if (exportersStatus === null) {
         return;
       }
-      changeStatus(!monitoringEnabled)
+      changeStatus(enable)
         .then((result) => {
           if (result.success) {
             setMessages(MessagesUtils.success(msgMap[result.message]));
@@ -119,15 +159,53 @@ const MonitoringAdmin = (props) => {
         .catch(handleResponseError);
     }  
 
-    let buttonLoadingText = "";
-    if (loading) {
-      if (monitoringEnabled === null) {
-        buttonLoadingText = t("Checking services...");
-      } else if (monitoringEnabled === true) {
-        buttonLoadingText = t("Disabling services...");
-      } else if (monitoringEnabled === false) {
-        buttonLoadingText = t("Enabling services...");
+    let buttons;
+    if (action) {
+      switch(action) {
+        case "checking":
+          buttons = 
+                <React.Fragment>
+                  <Button id="enable-monitoring-btn" disabled={true}
+                    className="btn-default gap-right" icon="fa-play" text={ t("Enable") }/> 
+                  <Button id="disable-monitoring-btn" disabled={true} 
+                    className="btn-default" icon="fa-stop" text={ t("Disable") }/>               
+                </React.Fragment>;          
+          break;
+        case "enabling":
+          buttons = 
+                <React.Fragment>
+                  <Button id="enable-monitoring-btn" disabled={true} 
+                    className="btn-default gap-right" icon="fa-circle-o-notch fa-spin" text={ t("Enable") }/> 
+                  <Button id="disable-monitoring-btn" disabled={true} 
+                    className="btn-default" icon="fa-pause" text={ t("Disable") }/>
+                </React.Fragment>;
+          break;
+        case "disabling":
+          buttons = 
+                <React.Fragment>
+                  <Button id="enable-monitoring-btn" disabled={true} 
+                    className="btn-default gap-right" icon="fa-play" text={ t("Enable") }/> 
+                  <Button id="disable-monitoring-btn" disabled={true} 
+                    className="btn-default" icon="fa-circle-o-notch fa-spin" text={ t("Disable") }/>
+                </React.Fragment>;
+          break;
+        default:
+          buttons = null
       }
+    } else {
+      buttons = 
+                <React.Fragment>
+                  <AsyncButton id="enable-monitoring-btn" defaultType="btn-success"
+                    icon="fa-play"
+                    text={ t("Enable") }
+                    className="gap-right"
+                    action={() => changeMonitoringStatus(true) }/>
+                  <AsyncButton id="disable-monitoring-btn" defaultType="btn-danger"
+                    icon="fa-stop"
+                    text={ t("Disable") }
+                    action={() => changeMonitoringStatus(false) } 
+                  />                                       
+                </React.Fragment>
     }
     return (
     <div className="responsive-wizard">
@@ -165,28 +243,29 @@ const MonitoringAdmin = (props) => {
         footer={
           <div className="row">
             <div className="col-md-offset-3 col-md-9">
-              { loading ? 
-                <Button id="loading-btn" disabled={true} 
-                  className="btn-default" icon="fa-circle-o-notch fa-spin" text={buttonLoadingText}/> :
-                <AsyncButton id="monitoring-btn" defaultType={ monitoringEnabled ? "btn-default" : "btn-success" }
-                  icon={ monitoringEnabled ? "fa-pause": "fa-play"}
-                  text={ monitoringEnabled ? t("Disable services") : t("Enable services")}
-                  action={changeMonitoringState}
-                />
-              }
+              { buttons }
             </div>
           </div>
         }>
-          <div className="row">
+          <div className="row" style={{"display": "flex"}}>
             <div className="col-sm-9">
               <div className="col-md-4 text-left">
                 <label>{t("Monitoring")}</label>
               </div>
               <div className="col-md-8">
                 { exportersStatus ? 
-                  <ExportersList exporters={exportersStatus}/> :
+                  <ExportersList exporters={exportersStatus} messages={exportersMessages}/> :
                   <ListPlaceholder/>
-                  }
+                }
+                {
+                  restartNeeded ? 
+                    <div><Icon type="system-reboot" className="text-warning fa-1-5x"/>
+                      <a href="/rhn/admin/config/Restart.do?">{ t("Restarting") }</a>
+                      { t(" Tomcat and Taskomatic is needed for the configuration changes to take effect.") }
+                    </div> :
+                    null
+                }
+                <ExportersMessages messages={exportersMessages}/>
               </div>
             </div>
             <HelpPanel/>
