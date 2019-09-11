@@ -1,3 +1,4 @@
+- create susemanager group in uyuni-base-server
 - uyuni-base-common is not really required at buildtime, so
   remove respective BuildRequires
 - move /usr/share/rhn/config-defaults to uyuni-base-common
