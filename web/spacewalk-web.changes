@@ -1,3 +1,4 @@
+- Add self monitoring to Admin Monitoring UI (bsc#1143638)
 - Layout changes in formula forms, validation, deprecate $visibleIf and add new attributes:
   $disabled, $visisble, $required, $match
 - Fix create VM dialog when there is no virtual storage pool or network

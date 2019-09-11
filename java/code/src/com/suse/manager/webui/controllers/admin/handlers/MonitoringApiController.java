@@ -27,7 +27,6 @@ import org.apache.log4j.Logger;
 import spark.Request;
 import spark.Response;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
@@ -68,11 +67,9 @@ public class MonitoringApiController {
      * @return json response
      */
     public static String status(Request request, Response response, User user) {
-        Optional<Map<String, Boolean>> exporters = MonitoringService.getStatus();
-        if (exporters.isPresent()) {
-            Map<String, Object> jsonResult = new HashMap<>();
-            jsonResult.put("exporters", exporters.get());
-            return json(response, ResultJson.success(jsonResult));
+        Optional<MonitoringService.MonitoringStatus> status = MonitoringService.getStatus();
+        if (status.isPresent()) {
+            return json(response, ResultJson.success(status.get()));
         }
         else {
             return json(response, HttpStatus.SC_INTERNAL_SERVER_ERROR,
@@ -101,15 +98,12 @@ public class MonitoringApiController {
 
         Boolean enable = jsonRequest.get("enable");
         if (enable != null) {
-            Optional<Map<String, Boolean>> exporters = enable ?
+            Optional<MonitoringService.MonitoringStatus> exporters = enable ?
                     MonitoringService.enableMonitoring() :
                     MonitoringService.disableMonitoring();
 
             if (exporters.isPresent()) {
-                Map<String, Object> jsonResult = new HashMap<>();
-                jsonResult.put("exporters", exporters.get());
-
-                return json(response, ResultJson.success(jsonResult));
+                return json(response, ResultJson.success(exporters.get()));
             }
             else {
                 return json(response, HttpStatus.SC_INTERNAL_SERVER_ERROR,

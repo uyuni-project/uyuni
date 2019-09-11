@@ -6,7 +6,7 @@
 #
 # Connection URL to postgresql instance
 #
-DATA_SOURCE_NAME="postgresql://{{ pillar['db_user'] }}:{{ pillar['db_pass'] }}@localhost:5432/susemanager?sslmode=disable"
+DATA_SOURCE_NAME="postgresql://{{ pillar['db_user'] }}:{{ pillar['db_pass'] }}@{{ pillar['db_host'] }}:{{ pillar['db_port'] }}/{{ pillar['db_name'] }}?sslmode=disable"
 
 ## Path:           Applications/PostgreSQLExporter
 ## Description:    Prometheus exporter for PostgreSQL

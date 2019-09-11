@@ -19,6 +19,7 @@ import com.redhat.rhn.taskomatic.domain.TaskoBunch;
 import com.redhat.rhn.taskomatic.domain.TaskoRun;
 import com.redhat.rhn.taskomatic.domain.TaskoSchedule;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.quartz.SchedulerException;
 import org.quartz.Trigger;
@@ -635,5 +636,14 @@ public class TaskoXmlRpcHandler {
                         TaskoQuartzHelper.getGroupName(orgId))) != null)) {
             throw new InvalidParamException("jobLabel already in use");
         }
+    }
+
+    /**
+     * Check if JMX is enabled.
+     * @return true if JMX system props props
+     */
+    public boolean isJmxEnabled() {
+        return StringUtils.isNotEmpty(System.getProperty("com.sun.management.jmxremote.port")) &&
+                StringUtils.isNotEmpty(System.getProperty("java.rmi.server.hostname"));
     }
 }
