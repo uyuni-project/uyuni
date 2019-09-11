@@ -1,3 +1,4 @@
+- Migrate login to Spark
 - Add UI message when salt-formulas system folders are unreachable (bsc#1142309)
 - add missing strings for tasks
 

@@ -116,7 +116,7 @@ Feature: Web UI - Main landing page menu, texts and links
 
   Scenario: The manager configuration submenu of the admin menu
     When I follow the left menu "Admin > Manager Configuration"
-    Then I should see a "SUSE Manager Configuration - General Configuration" text
+    Then I should see a "Configuration - General Configuration" text
     And I should see a "General" link in the left menu
     And I should see a "Bootstrap Script" link in the left menu
     And I should see a "Organizations" link in the left menu

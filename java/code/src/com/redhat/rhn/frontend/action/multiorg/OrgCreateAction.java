@@ -19,7 +19,7 @@ import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.conf.UserDefaults;
 import com.redhat.rhn.common.util.MD5Crypt;
 import com.redhat.rhn.common.validator.ValidatorError;
-import com.redhat.rhn.frontend.action.LoginHelper;
+import com.suse.manager.webui.utils.LoginHelper;
 import com.redhat.rhn.frontend.action.user.UserActionHelper;
 import com.redhat.rhn.frontend.servlets.PxtSessionDelegate;
 import com.redhat.rhn.frontend.servlets.PxtSessionDelegateFactory;

@@ -14,15 +14,17 @@
  */
 package com.redhat.rhn.frontend.action.user;
 
-import java.io.IOException;
-import java.util.Date;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
+import com.redhat.rhn.common.conf.ConfigDefaults;
+import com.redhat.rhn.common.db.ResetPasswordFactory;
 import com.redhat.rhn.common.localization.LocalizationService;
+import com.redhat.rhn.domain.common.ResetPassword;
+import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.domain.user.UserFactory;
+import com.suse.manager.webui.utils.LoginHelper;
+import com.redhat.rhn.frontend.servlets.PxtSessionDelegateFactory;
+import com.redhat.rhn.manager.user.UserManager;
 import com.suse.manager.utils.MailHelper;
+
 import org.apache.log4j.Logger;
 import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionForm;
@@ -32,14 +34,11 @@ import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
 import org.apache.struts.action.DynaActionForm;
 
-import com.redhat.rhn.common.conf.ConfigDefaults;
-import com.redhat.rhn.common.db.ResetPasswordFactory;
-import com.redhat.rhn.domain.common.ResetPassword;
-import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.domain.user.UserFactory;
-import com.redhat.rhn.frontend.action.LoginAction;
-import com.redhat.rhn.frontend.servlets.PxtSessionDelegateFactory;
-import com.redhat.rhn.manager.user.UserManager;
+import java.io.IOException;
+import java.util.Date;
+import java.util.Map;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * ResetPasswordSubmitAction, responds to user pushing 'update' on the change-password
@@ -151,7 +150,7 @@ public class ResetPasswordSubmitAction extends UserEditActionHelper {
         // (probably YourRhn)
         String urlBounce = "/rhn" + mapping.findForward(SUCCESS).getPath();
         String reqMethod = "GET";
-        urlBounce = LoginAction.updateUrlBounce(urlBounce, reqMethod);
+        urlBounce = LoginHelper.updateUrlBounce(urlBounce, reqMethod);
         try {
             if (urlBounce != null) {
                 log.info("redirect: " + urlBounce);

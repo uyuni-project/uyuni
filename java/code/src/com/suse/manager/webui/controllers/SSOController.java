@@ -114,9 +114,7 @@ public final class SSOController {
                             PxtSessionDelegateFactory.getInstance().newPxtSessionDelegate().updateWebUserId(
                                     request.raw(), response.raw(), user.getId());
                             if (relayState != null && !relayState.isEmpty() &&
-                                    !relayState.equals(ServletUtils.getSelfRoutedURLNoQuery(request.raw())) &&
-                                    !relayState.contains("/login.jsp")) {
-                                // We don't want to be redirected to login.jsp neither
+                                    !relayState.equals(ServletUtils.getSelfRoutedURLNoQuery(request.raw()))) {
                                 response.redirect(request.raw().getParameter("RelayState"));
                                 return response;
                             }

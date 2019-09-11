@@ -5,13 +5,6 @@
 <struts-config>
 
     <form-beans>
-        <form-bean name="loginForm"
-            type="org.apache.struts.action.DynaActionForm">
-            <form-property name="username" type="java.lang.String"/>
-            <form-property name="password" type="java.lang.String"/>
-            <form-property name="url_bounce" type="java.lang.String"/>
-            <form-property name="request_method" type="java.lang.String"/>
-        </form-bean>
       <form-bean name="activationKeyForm"
            type="com.redhat.rhn.frontend.struts.ScrubbingDynaActionForm">
            <form-property name="description" type="java.lang.String"/>
@@ -1223,9 +1216,7 @@
     model 2 controller to choose as views
   -->
   <global-forwards>
-    <forward name="login" path="/Login.do" redirect="true" />
     <forward name="logout" path="/Logout.do" redirect="true" />
-    <forward name="relogin" path="/ReLogin.do" />
     <forward name="user" path="/users/ActiveList.do" redirect="true" />
     <forward name="audit" path="/audit/Overview.do" redirect="true" />
     <forward name="errata" path="/errata/RelevantErrata.do" redirect="true" />
@@ -1237,62 +1228,6 @@
   <!-- =          ACTION MAPPINGS          = -->
   <!-- ===================================== -->
   <action-mappings>
-
-    <action path="/ReLogin"
-            name="loginForm"
-            scope="request"
-            input="/WEB-INF/pages/common/relogin.jsp"
-            type="com.redhat.rhn.frontend.action.LoginSetupAction"
-            className="com.redhat.rhn.frontend.struts.RhnActionMapping">
-          <forward name="default" path="/WEB-INF/pages/common/relogin.jsp" />
-          <forward name="needuser" path="/newlogin/CreateFirstUser.do" redirect="true"/>
-          <forward name="loggedin" path="/YourRhn.do" redirect="true"/>
-    </action>
-
-    <action path="/ReLoginSubmit"
-        name="loginForm"
-        scope="request"
-        validate="false"
-        input="/WEB-INF/pages/common/relogin.jsp"
-        type="com.redhat.rhn.frontend.action.LoginAction"
-        className="com.redhat.rhn.frontend.struts.RhnActionMapping">
-      <set-property property="postRequired" value="true" />
-      <forward name="failure" path="/WEB-INF/pages/common/relogin.jsp" />
-      <forward name="error" path="/WEB-INF/pages/common/errors/loginerror.jsp" />
-    </action>
-
-    <action path="/Login"
-            scope="request"
-            input="/WEB-INF/pages/common/login.jsp"
-            type="com.redhat.rhn.frontend.action.LoginSetupAction"
-            className="com.redhat.rhn.frontend.struts.RhnActionMapping">
-          <forward name="default" path="/WEB-INF/pages/common/login.jsp" />
-          <forward name="needuser" path="/newlogin/CreateFirstUser.do" redirect="true"/>
-          <forward name="loggedin" path="/YourRhn.do" redirect="true"/>
-    </action>
-
-    <action path="/Login401"
-            scope="request"
-            input="/WEB-INF/pages/common/login.jsp"
-            type="com.redhat.rhn.frontend.action.Login401SetupAction"
-            className="com.redhat.rhn.frontend.struts.RhnActionMapping">
-          <forward name="default" path="/WEB-INF/pages/common/login.jsp" />
-          <forward name="needuser" path="/newlogin/CreateFirstUser.do" redirect="true"/>
-          <forward name="loggedin" path="/YourRhn.do" redirect="true"/>
-    </action>
-
-    <action path="/LoginSubmit"
-        name="loginForm"
-        scope="request"
-        validate="false"
-        input="/WEB-INF/pages/common/login.jsp"
-        type="com.redhat.rhn.frontend.action.LoginAction"
-        className="com.redhat.rhn.frontend.struts.RhnActionMapping">
-      <set-property property="postRequired" value="true" />
-      <forward name="failure" path="/WEB-INF/pages/common/relogin.jsp" />
-      <forward name="loggedin" path="/YourRhn.do" redirect="true"/>
-      <forward name="error" path="/WEB-INF/pages/common/errors/loginerror.jsp" />
-    </action>
 
     <action path="/ResetLink"
         name="passwordResetForm"

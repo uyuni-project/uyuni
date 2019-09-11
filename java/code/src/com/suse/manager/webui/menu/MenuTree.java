@@ -403,7 +403,7 @@ public class MenuTree {
             // About Spacewalk
             nodes.add(new MenuItem("About Spacewalk").withIcon("fa-question-circle")
                 .addChild(new MenuItem("Overview").withPrimaryUrl("/rhn/help/about.do"))
-                .addChild(new MenuItem("Sign In").withPrimaryUrl("/rhn/Login.do"))
+                .addChild(new MenuItem("Sign In").withPrimaryUrl("/rhn/manager/login"))
                 .addChild(new MenuItem("Documentation_version", Config.get().getString("web.version"))
                     .withPrimaryUrl("/docs/index.html").withTarget("_blank"))
                 .addChild(new MenuItem("Lookup Login/Password").withPrimaryUrl("/rhn/help/ForgotCredentials.do"))

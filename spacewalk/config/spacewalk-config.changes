@@ -1,3 +1,4 @@
+- Migrate login to Spark
 - Require uyuni-base-common for /etc/rhn
 
 -------------------------------------------------------------------

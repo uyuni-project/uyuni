@@ -1,5 +1,4 @@
 // @flow
-/* global module */
 
 const { hot } = require('react-hot-loader');
 const React = require('react');

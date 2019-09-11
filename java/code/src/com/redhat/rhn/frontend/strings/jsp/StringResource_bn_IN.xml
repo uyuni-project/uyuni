@@ -724,55 +724,6 @@
           </context>
         </context-group>
       </trans-unit>
-      <trans-unit id="relogin.jsp.pleasesignin">
-        <source>Please Sign In</source>
-        <target>অনুগ্রহ করে প্রবেশ করুন</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/Relogin</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="login.jsp.redhatlogin">
-        <source>@@PRODUCT_NAME@@ Login: </source>
-        <target>@@PRODUCT_NAME@@ লগ-ইন: </target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/Login</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="login.jsp.password">
-        <source>Password: </source>
-        <target>পাসওয়ার্ড: </target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/Login</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="login.jsp.welcomemessage">
-        <source>Welcome to @@PRODUCT_NAME@@</source>
-        <target>@@PRODUCT_NAME@@-এ স্বাগতম</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/Login</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="login.jsp.satbody1">
-        <source>&lt;strong&gt;@@PRODUCT_NAME@@&lt;/strong&gt; is an open source (GPLv2) Linux systems management solution. Below are some links that should prove useful if you have any questions regarding your @@PRODUCT_NAME@@ server. </source>
-        <target>Linux সিস্টেম পরিচালনার জন্য &lt;strong&gt;@@PRODUCT_NAME@@&lt;/strong&gt; একটি অগ্রগণ্য ওপেন সোর্স (GPLv2) পরিসেবা। আপনার @@PRODUCT_NAME@@ সার্ভার সংক্রান্ত অন্যান্য জিজ্ঞাসা থাকলে আপনি নীচে উল্লিখিত লিঙ্কগুলির সাহায্য নিতে পারেন।</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/Login</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="login.jsp.satbody2">
-        <source>For details on @@PRODUCT_NAME@@, please visit our web-site at &lt;a href="http://www.spacewalkproject.org/" target="_blank"&gt; http://www.spacewalkproject.org/&lt;/a&gt;. </source>
-        <target>@@PRODUCT_NAME@@ সম্পর্কে অধিক বিবরণের জন্য &lt;a href="http://www.spacewalkproject.org/" target="_blank"&gt; http://www.spacewalkproject.org/&lt;/a&gt;-এ উপস্থিত আমাদের ওয়েব-সাইট দেখুন।</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/Login</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="login.jsp.satbody3">
-        <source>For details on interacting with the @@PRODUCT_NAME@@ community, please visit us at  &lt;a href="http://www.spacewalkproject.org/communicate.html" target="_blank"&gt; http://www.spacewalkproject.org/communicate.html&lt;/a&gt;. </source>
-        <target>@@PRODUCT_NAME@@ সম্প্রদায়ের সাথে তথ্য বিনিময়ের জন্য অনুগ্রহ করে &lt;a href="http://www.spacewalkproject.org/communicate.html" target="_blank"&gt; http://www.spacewalkproject.org/communicate.html&lt;/a&gt;-এ চলুন। </target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/Login</context>
-        </context-group>
-      </trans-unit>
       <trans-unit id="preferences.jsp.alt">
         <source>Preferences Icon</source>
         <target>পছন্দ সংক্রান্ত আইকন</target>

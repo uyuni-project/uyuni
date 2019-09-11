@@ -5,7 +5,7 @@ import "./spa-engine.css"
 import SpaRenderer from "core/spa/spa-renderer";
 
 function isLoginPage (pathName) {
-  const allLoginPossiblePaths = ["/", "/rhn/Login.do", "/rhn/Login2.do", "/manager/login", "/rhn/ReLogin.do"];
+  const allLoginPossiblePaths = ["/", "/rhn/manager/login"];
   return allLoginPossiblePaths.some(loginPath => loginPath === pathName);
 }
 
@@ -61,7 +61,7 @@ window.pageRenderers.spa.init = function init() {
         document.getElementsByClassName("spacewalk-main-column-layout")[0].innerHTML = `
         <div class="container-fluid">
             <div class="alert alert-danger">
-                No session. Redirecting to login page...
+                No session. Taking you to login page...
             </div>
         </div>
       `;

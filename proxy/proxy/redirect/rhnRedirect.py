@@ -129,8 +129,8 @@ class RedirectHandler(SharedHandler):
                 for headerKey in list(headers.keys()):
                     if headerKey == 'location':
                         location = self._get_header(headerKey)
-                        relogin = re.compile(r'https?://.*(/rhn/(Re)?Login.do\?.*)')
-                        m = relogin.match(location[0])
+                        login = re.compile(r'https?://.*(/rhn/manager/login\?.*)')
+                        m = login.match(location[0])
                         if m:
                             # pull server name out of "t:o:k:e:n:hostname1,t:o:k:e:n:hostname2,..."
                             proxy_auth = self.req.headers_in['X-RHN-Proxy-Auth']
