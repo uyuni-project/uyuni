@@ -52,7 +52,8 @@ BuildRequires:  spacewalk-backend-sql-postgresql
 BuildRequires:  suseRegisterInfo
 
 PreReq:         %fillup_prereq %insserv_prereq tftp(server) postgresql-init
-Requires(pre):  tomcat salt
+Requires(pre):  salt
+Requires(post): user(wwwrun)
 Requires:       cobbler
 Requires:       openslp-server
 Requires:       spacewalk-admin
@@ -70,8 +71,8 @@ Requires:       susemanager-tools
 # migration.sh need either sqlplus or psql
 Requires:       spacewalk-db-virtual
 Requires:       susemanager-branding
-BuildRequires:  uyuni-base-common
-Requires(pre):  uyuni-base-common
+BuildRequires:  uyuni-base-server
+Requires(pre):  uyuni-base-server
 # yast module dependency
 %if 0%{?suse_version} > 1320
 Requires:       firewalld
@@ -195,9 +196,6 @@ find -name '*.py' -print0 | xargs -0 python %py_libdir/py_compile.py
 popd
 %endif
 
-%pre
-getent group susemanager >/dev/null || %{_sbindir}/groupadd -r susemanager
-
 %post
 POST_ARG=$1
 %{fillup_and_insserv susemanager}
@@ -215,10 +213,6 @@ if [ ! -d /srv/tftpboot ]; then
 fi
 # XE appliance overlay file created this with different user
 chown root.root /etc/sysconfig
-# ensure susemanager group can write in all subdirs under /var/spacewalk/systems
-getent passwd salt >/dev/null && usermod -a -G susemanager salt
-getent passwd tomcat >/dev/null && usermod -a -G susemanager tomcat
-getent passwd wwwrun >/dev/null && usermod -a -G susemanager wwwrun
 if [ $POST_ARG -eq 2 ] ; then
     # when upgrading make sure /var/spacewalk/systems has the correct perms and owner
     MOUNT_POINT=$(grep -oP "^mount_point =\s*\K([^ ]+)" /etc/rhn/rhn.conf || echo "/var/spacewalk")
