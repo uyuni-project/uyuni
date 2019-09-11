@@ -301,9 +301,9 @@ pylint --rcfile /etc/spacewalk-python3-pylint.rc \
 %{_bindir}/spacewalk-setup-db-ssl-certificates
 %{_bindir}/cobbler20-setup
 %{_mandir}/man[13]/*.[13]*
-%dir %attr(0755, root, root) %{_prefix}/share/salt-formulas/
-%dir %attr(0755, root, root) %{_prefix}/share/salt-formulas/states/
-%dir %attr(0755, root, root) %{_prefix}/share/salt-formulas/metadata/
+%dir %attr(0750, root, salt) %{_prefix}/share/salt-formulas/
+%dir %attr(0750, root, salt) %{_prefix}/share/salt-formulas/states/
+%dir %attr(0750, root, salt) %{_prefix}/share/salt-formulas/metadata/
 %dir %{_datadir}/spacewalk
 %{_datadir}/spacewalk/*
 %attr(755, %{apache_user}, root) %{misc_path}/spacewalk
