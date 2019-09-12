@@ -251,3 +251,20 @@ class TestSCSoftwareChannel:
         assert not shell.client.channel.software.getDetails.called
         assert shell.client.channel.listManageableChannels.called
         assert out == ["a_channel", "b_channel", "x_channel", "z_channel"]
+
+    def test_listchildchannels(self, shell):
+        """
+        Test do_softwarechannel_listchildchannels noargs.
+
+        :param shell:
+        :return:
+        """
+        shell.list_child_channels = MagicMock(return_value=["x_child_channel", "z_child_channel",
+                                                            "b_child_channel", "a_child_channel",])
+        mprint = MagicMock()
+        with patch("spacecmd.softwarechannel.print", mprint) as prt:
+            spacecmd.softwarechannel.do_softwarechannel_listchildchannels(shell, "")
+
+        assert not shell.client.channel.software.getDetails.called
+        assert_list_args_expect(mprint.call_args_list,
+                                ['a_child_channel\nb_child_channel\nx_child_channel\nz_child_channel'])
