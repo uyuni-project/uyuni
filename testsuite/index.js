@@ -11,6 +11,7 @@ var options = {
   reportSuiteAsScenarios: true,
   launchReport: false,
   columnLayout: 1,
+  scenarioTimestamp: true,
   screenshotsDirectory: './cucumber_report/screenshots/',
   storeScreenshots: true,
   noInlineScreenshots: true,
