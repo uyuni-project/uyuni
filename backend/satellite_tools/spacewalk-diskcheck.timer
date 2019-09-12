@@ -1,0 +1,9 @@
+[Unit]
+Description=Check available disk space on vital filesystems
+
+[Timer]
+OnCalendar=hourly
+
+[Install]
+WantedBy=timers.target
+

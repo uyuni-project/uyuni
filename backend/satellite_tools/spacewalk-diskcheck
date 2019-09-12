@@ -1,0 +1,73 @@
+#!/bin/bash
+
+systemctl status spacewalk.target > /dev/null 2>&1
+if [ $? != 0 ]; then
+    logger  "SPACECHECK: spacewalk services are not running - skipping disk check."
+    exit 0
+fi
+
+EMAIL_ADDRESS=`grep ^traceback_mail /etc/rhn/rhn.conf | sed -e "s/.*=[[:blank:]]*//"`
+SPACECHECKDIRS=`grep ^spacecheck_dirs /etc/rhn/rhn.conf | sed -e "s/.*=[[:blank:]]*//"`
+SPACECHECKALERT=`grep ^spacecheck_free_alert /etc/rhn/rhn.conf | sed -e "s/.*=[[:blank:]]*//"`
+SPACECHECKCRIT=`grep ^spacecheck_free_critical /etc/rhn/rhn.conf | sed -e "s/.*=[[:blank:]]*//"`
+
+if [ "x$EMAIL_ADDRESS" = "x" ]; then
+    EMAIL_ADDRESS="root@localhost"
+fi
+if [ "x$SPACECHECKDIRS" = "x" ]; then
+    SPACECHECKDIRS="/var/lib/pgsql /var/spacewalk /var/cache /srv"
+fi
+if [ "x$SPACECHECKALERT" = "x" ] || [ "$SPACECHECKALERT" -gt 90 ]; then
+    SPACECHECKALERT=10
+fi
+if [ "x$SPACECHECKCRIT" = "x" ] || [ "$SPACECHECKCRIT" -ge "$SPACECHECKALERT" ]; then
+    SPACECHECKCRIT=$(($SPACECHECKALERT / 2))
+fi
+
+STOPCHECK=0
+
+for DIR in $SPACECHECKDIRS
+do
+    if [ ! -d $DIR ]; then
+        logger "SPACECHECK: Directory $DIR does not exist!"
+        echo "SPACECHECK: Directory $DIR does not exist!" | mail -Ssendwait -s "SPACECHECK: Directory $DIR does not exist!" $EMAIL_ADDRESS
+        continue
+    fi
+    USEDSPACE=`df -PH $DIR | tail -1 | awk '{print $5}' | sed -e"s/\%//"`
+    FREESPACE=$((100 - $USEDSPACE))
+    if [ $FREESPACE -lt $SPACECHECKCRIT ] && [ "$STOPCHECK" = "0" ]; then
+        logger "SPACECHECK CRITICAL: Less than $SPACECHECKCRIT% of space available on $DIR - shutting down!"
+        cat << EOF | mail -Ssendwait -s "SPACECHECK CRITICAL: Less than $SPACECHECKCRIT% of space available on $DIR" $EMAIL_ADDRESS
+ATTENTION!
+
+Available space on $DIR has dropped below $SPACECHECKCRIT%, so SUSE Manager services
+have been shut down automatically to prevent running out of disk space!
+EOF
+    STOPCHECK=1
+    elif [ $FREESPACE -lt $SPACECHECKALERT ] && [ "$STOPCHECK" = "0" ]; then
+        logger "SPACECHECK ALERT: Less than $SPACECHECKALERT% of space available on $DIR"
+        cat << EOF | mail -Ssendwait -s "SPACECHECK ALERT: Less than $SPACECHECKALERT% of space available on $DIR" $EMAIL_ADDRESS
+ATTENTION!
+
+When available space on $DIR drops below $SPACECHECKCRIT%, SUSE Manager services
+will be shut down automatically to prevent running out of disk space!
+
+
+You can customize these values by adding the following lines to /etc/rhn/rhn.conf:
+Changes are in effect immediately; no need to restart anything.
+
+==========================================================================================
+# directories to monitor for free space; separated by blanks, no quotes!
+spacecheck_dirs = /var/lib/pgsql /var/spacewalk /var/cache /srv
+# if available space on any monitored directory drops below this value, send warn email
+spacecheck_free_alert = 10
+# if available space on any monitored directory drops below this value, shut down services
+spacecheck_free_critical = 5
+==========================================================================================
+EOF
+    fi
+done
+
+if [ "$STOPCHECK" = "1" ]; then
+    spacewalk-service stop
+fi
