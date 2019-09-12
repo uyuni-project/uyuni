@@ -19,7 +19,7 @@ INSERT INTO rhnTemplateString (id, category_id, label, value, description)
              (SELECT TC.id 
                 FROM rhnTemplateCategory TC
 	       WHERE TC.label = 'email_strings'),
-	     'email_footer', '-' || '-the SUSE Manager Team', 'Footer for SUSE Manager e-mail');
+	     'email_footer', '-' || '-the <product_name /> Team', 'Footer for <product_name /> e-mail');
 
 INSERT INTO rhnTemplateString (id, category_id, label, value, description) 
      VALUES (sequence_nextval('rhn_template_str_id_seq'),
@@ -28,6 +28,6 @@ INSERT INTO rhnTemplateString (id, category_id, label, value, description)
 	       WHERE TC.label = 'email_strings'),
 	     'email_account_info', '
 Account Information:
-  Your SUSE Manager login:         <login />
-  Your SUSE Manager email address: <email-address />', 'Account info lines for SUSE Manager e-mail');
+  Your <product_name /> login:         <login />
+  Your <product_name /> email address: <email-address />', 'Account info lines for <product_name /> e-mail');
 

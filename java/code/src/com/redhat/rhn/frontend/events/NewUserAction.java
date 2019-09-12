@@ -15,6 +15,7 @@
 
 package com.redhat.rhn.frontend.events;
 
+import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.messaging.EventMessage;
 import com.redhat.rhn.common.messaging.MessageAction;
@@ -56,11 +57,14 @@ public class NewUserAction extends BaseMailAction implements MessageAction {
         Map map = new HashMap();
         map.put("login", evt.getUser().getLogin());
         map.put("email-address", evt.getUser().getEmail());
+        map.put("product_name", Config.get().getString("web.product_name"));
 
         //set url and account info for email to accountOwner
         //url.append();
         String accountInfo = StringUtil.replaceTags(OrgFactory
                 .EMAIL_ACCOUNT_INFO.getValue(), map);
+        String emailFooter = StringUtil.replaceTags(OrgFactory
+                .EMAIL_FOOTER.getValue(), map);
 
         //gather information for the email to accountOwner
         Object[] subjectArgs = new Object[4];
@@ -72,7 +76,7 @@ public class NewUserAction extends BaseMailAction implements MessageAction {
         Object[] bodyArgs = new Object[3];
         bodyArgs[0] = accountInfo;
         bodyArgs[1] = evt.getUrl() + "rhn/users/ActiveList.do";
-        bodyArgs[2] = OrgFactory.EMAIL_FOOTER.getValue();
+        bodyArgs[2] = emailFooter;
 
         //Get the admin details(email) from the event message
         //and set in recipients to send the mail
