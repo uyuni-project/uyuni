@@ -183,20 +183,16 @@ def do_softwarechannel_listchildchannels(self, args):
     arg_parser = get_argument_parser()
     arg_parser.add_argument('-v', '--verbose', action='store_true')
 
-    (args, options) = parse_command_arguments(args, arg_parser)
-    if not args:
-        channels = self.list_child_channels()
-    else:
-        channels = self.list_child_channels(parent=args[0])
+    args, options = parse_command_arguments(args, arg_parser)
+    channels = sorted(self.list_child_channels() if not args else self.list_child_channels(parent=args[0]))
 
     if channels:
-        if (options.verbose):
-            for c in sorted(channels):
-                details = \
-                    self.client.channel.software.getDetails(self.session, c)
+        if options.verbose:
+            for c in channels:
+                details = self.client.channel.software.getDetails(self.session, c)
                 print("%s : %s" % (c, details['summary']))
         else:
-            print('\n'.join(sorted(channels)))
+            print('\n'.join(channels))
 
     return 0
 
