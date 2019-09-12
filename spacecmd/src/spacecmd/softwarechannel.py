@@ -212,7 +212,7 @@ def complete_softwarechannel_listsystems(self, text, line, beg, end):
 def do_softwarechannel_listsystems(self, args, doreturn=False):
     args, _options = parse_command_arguments(args, get_argument_parser())
 
-    if not args:
+    if len(args) != 1:
         self.help_softwarechannel_listsystems()
         return
 
