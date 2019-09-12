@@ -243,7 +243,7 @@ class TestSCSoftwareChannel:
         ])
 
         mprint = MagicMock()
-        with patch("spacecmd.softwarechannel.dir", mprint) as prt:
+        with patch("spacecmd.softwarechannel.print", mprint) as prt:
             out = spacecmd.softwarechannel.do_softwarechannel_listmanageablechannels(
                 shell, "--verbose", doreturn=True)
 
