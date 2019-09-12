@@ -294,3 +294,19 @@ class TestSCSoftwareChannel:
                                  'b_child_channel : B summary',
                                  'x_child_channel : X summary',
                                  'z_child_channel : Z summary'])
+
+    def test_listsystems_noargs(self, shell):
+        """
+        Test do_softwarechannel_listsystems no args.
+
+        :param shell:
+        :return:
+        """
+        mprint = MagicMock()
+        with patch("spacecmd.softwarechannel.print", mprint) as prt:
+            out = spacecmd.softwarechannel.do_softwarechannel_listsystems(shell, "")
+
+        assert out is None
+        assert not mprint.called
+        assert not shell.client.channel.software.listSubscribedSystems.called
+        assert shell.help_softwarechannel_listsystems.called
