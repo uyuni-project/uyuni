@@ -113,18 +113,24 @@ def click_button_and_wait(locator = nil, **options)
   #       We couldn't bring a better solution for now
   sleep 0.5
   raise 'Timeout: Waiting AJAX transition (click button)' unless page.has_no_css?('.senna-loading')
+rescue StandardError => e
+  puts e.message
 end
 
 def click_link_and_wait(locator = nil, **options)
   page.click_link(locator, options)
   sleep 0.5
   raise 'Timeout: Waiting AJAX transition (click link)' unless page.has_no_css?('.senna-loading')
+rescue StandardError => e
+  puts e.message
 end
 
 def click_link_or_button_and_wait(locator = nil, **options)
   page.click_link_or_button(locator, options)
   sleep 0.5
   raise 'Timeout: Waiting AJAX transition (click link or button)' unless page.has_no_css?('.senna-loading')
+rescue StandardError => e
+  puts e.message
 end
 
 # Capybara Node Element extension to override click method, clicking and then waiting for ajax transition
@@ -133,6 +139,8 @@ module CapybaraNodeElementExtension
     super
     sleep 0.5
     raise 'Timeout: Waiting AJAX transition (find::click)' unless has_no_css?('.senna-loading')
+  rescue StandardError => e
+    puts e.message
   end
 end
 
