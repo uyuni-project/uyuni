@@ -92,11 +92,10 @@ Requires:       pgjdbc-ng
 Requires:       susemanager-docs_en
 Requires:       java-saml
 Requires:       joda-time
-Requires(pre):  uyuni-base-common
 Requires:       woodstox
 Requires:       xmlsec
-Requires(pre):  uyuni-base-common
-BuildRequires:  uyuni-base-common
+Requires(pre):  uyuni-base-server
+BuildRequires:  uyuni-base-server
 BuildRequires:  apache-commons-lang
 BuildRequires:  apache-commons-lang3
 BuildRequires:  classmate
@@ -116,7 +115,6 @@ BuildRequires:  snakeyaml
 BuildRequires:  statistics
 BuildRequires:  java-saml
 BuildRequires:  joda-time
-BuildRequires:  uyuni-base-common
 BuildRequires:  woodstox
 BuildRequires:  xmlsec
 # SUSE additional build requirements
@@ -197,7 +195,6 @@ BuildRequires:  tomcat6-lib
 %endif # 0{?fedora} || 0{?rhel} >= 7
 Requires(pre):  salt
 #!BuildIgnore:  udev-mini libudev-mini1
-Requires(pre):  susemanager
 %if 0%{?fedora} || 0%{?rhel} >=7
 Requires:       apache-commons-cli
 Requires:       apache-commons-codec

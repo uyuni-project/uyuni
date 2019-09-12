@@ -53,7 +53,13 @@ Basic filesystem hierarchy for Uyuni server and proxy.
 %package server
 Summary:        Base structure for Uyuni server
 Group:          System/Fhs
+Provides:       group(susemanager)
 Requires(pre):  uyuni-base-common
+Requires(pre):  %{_sbindir}/groupadd
+Requires(pre):  %{_sbindir}/usermod
+Requires(pre):  tomcat
+Requires(pre):  salt
+Requires(pre):  user(wwwrun)
 
 %description server
 Basic filesystem hierarchy for Uyuni server.
@@ -77,6 +83,13 @@ mkdir -p %{buildroot}/etc/rhn
 mkdir -p %{buildroot}/usr/share/rhn/proxy
 mkdir -p %{buildroot}/var/spacewalk
 mkdir -p %{buildroot}/%{_prefix}/share/rhn/config-defaults
+
+%pre server
+getent group susemanager >/dev/null || %{_sbindir}/groupadd -r susemanager
+getent passwd salt >/dev/null && %{_sbindir}/usermod -a -G susemanager salt
+getent passwd tomcat >/dev/null && %{_sbindir}/usermod -a -G susemanager tomcat
+getent passwd wwwrun >/dev/null && %{_sbindir}/usermod -a -G susemanager wwwrun
+
 
 %files common
 %defattr(-,root,root)
