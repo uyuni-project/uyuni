@@ -334,3 +334,25 @@ class TestSCSoftwareChannel:
         assert shell.client.channel.software.listSubscribedSystems.called
         assert_list_args_expect(mprint.call_args_list,
                                 ['one.acme.lan\nthird.zoo.lan\ntwo.acme.lan\nzetta.acme.lan'])
+
+    def test_listsystems_noargs_channel_data_return(self, shell):
+        """
+        Test do_softwarechannel_listsystems one channel, data return.
+
+        :param shell:
+        :return:
+        """
+        shell.client.channel.software.listSubscribedSystems = MagicMock(return_value=[
+            {"name": "one.acme.lan"},
+            {"name": "two.acme.lan"},
+            {"name": "zetta.acme.lan"},
+            {"name": "third.zoo.lan"},
+        ])
+        mprint = MagicMock()
+        with patch("spacecmd.softwarechannel.print", mprint) as prt:
+            out = spacecmd.softwarechannel.do_softwarechannel_listsystems(shell, "my_channel", doreturn=True)
+
+        assert not shell.help_softwarechannel_listsystems.called
+        assert not mprint.called
+        assert out is not None
+        assert out == ['one.acme.lan', 'third.zoo.lan', 'two.acme.lan', 'zetta.acme.lan']
