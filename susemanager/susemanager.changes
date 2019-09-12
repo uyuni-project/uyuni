@@ -1,3 +1,4 @@
+- enable and start disk space checker script during setup
 - ensure working directory is /root during setup (bsc#1148169)
 - dmidecode does not exist on s390x (bsc#1145119)
 - move /usr/share/rhn/config-defaults to uyuni-base-common
