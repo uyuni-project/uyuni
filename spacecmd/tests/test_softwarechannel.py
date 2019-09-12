@@ -268,3 +268,29 @@ class TestSCSoftwareChannel:
         assert not shell.client.channel.software.getDetails.called
         assert_list_args_expect(mprint.call_args_list,
                                 ['a_child_channel\nb_child_channel\nx_child_channel\nz_child_channel'])
+
+    def test_listchildchannels_verbose(self, shell):
+        """
+        Test do_softwarechannel_listchildchannels verbose.
+
+        :param shell:
+        :return:
+        """
+        shell.list_child_channels = MagicMock(return_value=["x_child_channel", "z_child_channel",
+                                                            "b_child_channel", "a_child_channel",])
+        shell.client.channel.software.getDetails = MagicMock(side_effect=[
+            {"summary": "A summary"},
+            {"summary": "B summary"},
+            {"summary": "X summary"},
+            {"summary": "Z summary"},
+        ])
+        mprint = MagicMock()
+        with patch("spacecmd.softwarechannel.print", mprint) as prt:
+            spacecmd.softwarechannel.do_softwarechannel_listchildchannels(shell, "--verbose")
+
+        assert shell.client.channel.software.getDetails.called
+        assert_list_args_expect(mprint.call_args_list,
+                                ['a_child_channel : A summary',
+                                 'b_child_channel : B summary',
+                                 'x_child_channel : X summary',
+                                 'z_child_channel : Z summary'])
