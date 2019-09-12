@@ -356,3 +356,18 @@ class TestSCSoftwareChannel:
         assert not mprint.called
         assert out is not None
         assert out == ['one.acme.lan', 'third.zoo.lan', 'two.acme.lan', 'zetta.acme.lan']
+
+    def test_listpackages_noargs_nodata(self, shell):
+        """
+        Test do_softwarechannel_listpackages no args. No data return.
+
+        :param shell:
+        :return:
+        """
+        mprint = MagicMock()
+        with patch("spacecmd.softwarechannel.print", mprint) as prt:
+            out = spacecmd.softwarechannel.do_softwarechannel_listpackages(shell, "")
+
+        assert out is None
+        assert not shell.client.channel.software.listLatestPackages.called
+        assert shell.help_softwarechannel_listpackages.called
