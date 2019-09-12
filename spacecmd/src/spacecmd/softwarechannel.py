@@ -210,27 +210,19 @@ def complete_softwarechannel_listsystems(self, text, line, beg, end):
 
 
 def do_softwarechannel_listsystems(self, args, doreturn=False):
-    arg_parser = get_argument_parser()
-
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    args, _options = parse_command_arguments(args, get_argument_parser())
 
     if not args:
         self.help_softwarechannel_listsystems()
         return
 
-    channel = args[0]
-
-    systems = \
-        self.client.channel.software.listSubscribedSystems(self.session,
-                                                           channel)
-
-    systems = [s.get('name') for s in systems]
+    systems = sorted([s.get('name') for s in self.client.channel.software.listSubscribedSystems(self.session, args[0])])
 
     if doreturn:
         return systems
     else:
         if systems:
-            print('\n'.join(sorted(systems)))
+            print('\n'.join(systems))
 
 ####################
 
