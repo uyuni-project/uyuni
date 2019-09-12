@@ -69,5 +69,5 @@ EOF
 done
 
 if [ "$STOPCHECK" = "1" ]; then
-    spacewalk-service stop
+    spacewalk-service stop ; systemctl stop postgresql.service
 fi
