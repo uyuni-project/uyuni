@@ -1,3 +1,4 @@
+- Add check/message for project not found (bsc#1145755)
 - Fix combinatorial explosion when generating migrations (bsc#1151888)
 - Fix sorting issues on content filter list page (bsc#1145591)
 
