@@ -559,3 +559,17 @@ class TestSCSoftwareChannel:
         assert res["name"] == "emacs"
         assert res["arch"] == "x86_64"
         assert res["epoch"] == ""
+
+    def test_listlatestpackages_noargs_nodata(self, shell):
+        """
+        Test do_softwarechannel_listlatestpackages without args. No data return.
+
+        :return:
+        """
+        mprint = MagicMock()
+        with patch("spacecmd.softwarechannel.print", mprint) as prt:
+            out = spacecmd.softwarechannel.do_softwarechannel_listlatestpackages(shell, "")
+
+        assert out is None
+        assert not shell.client.channel.software.listAllPackages.called
+        assert shell.help_softwarechannel_listlatestpackages.called
