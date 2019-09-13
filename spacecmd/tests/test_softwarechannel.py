@@ -442,3 +442,18 @@ class TestSCSoftwareChannel:
         assert shell.client.channel.software.listLatestPackages.called
         assert out == ['emacs-42.0-9.x86_64', 'emacs-nox-42.0-10.x86_64',
                        'tiff-1.0-11:3.x86_64']
+
+    def test_listallpackages_noargs_nodata(self, shell):
+        """
+        Test do_softwarechannel_listallpackages no args. No data return.
+
+        :param shell:
+        :return:
+        """
+        mprint = MagicMock()
+        with patch("spacecmd.softwarechannel.print", mprint) as prt:
+            out = spacecmd.softwarechannel.do_softwarechannel_listallpackages(shell, "")
+
+        assert out is None
+        assert not shell.client.channel.software.listAllPackages.called
+        assert shell.help_softwarechannel_listallpackages.called
