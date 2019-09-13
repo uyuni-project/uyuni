@@ -39,7 +39,7 @@ Feature: Setup SUSE Manager proxy
 @proxy
   Scenario: Check proxy system details
     When I am on the Systems overview page of this "proxy"
-    Then I should see "proxy" hostname
+    Then I should see "proxy" short hostname
     And I wait until I see "SUSE Manager Proxy" text, refreshing the page
 
 @proxy
