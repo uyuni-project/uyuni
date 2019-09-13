@@ -34,61 +34,53 @@ BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildArch:      noarch
 ExcludeArch:    aarch64
 
-BuildRequires:  apache-mybatis
-BuildRequires:  hadoop
-BuildRequires:  lucene == 2.4.1
-BuildRequires:  nutch-core
-BuildRequires:  picocontainer
-Requires:       apache-mybatis
-Requires:       hadoop
-Requires:       lucene == 2.4.1
-Requires:       nutch-core
-Requires:       picocontainer
-BuildRequires:  uyuni-base-common
-Requires(pre):  uyuni-base-common
-
-BuildRequires:  junit
-#Requires: apache-ibatis-sqlmap
-Requires:       c3p0 >= 0.9.1
-Requires:       cglib
-Requires(pre): doc-indexes
-Requires:       jakarta-commons-httpclient
-Requires:       jakarta-oro
-Requires:       javapackages-tools
-#Requires: lucene
-Requires:       objectweb-asm
-Requires:       quartz >= 2.0
-Requires:       redstone-xmlrpc
-#Requires: picocontainer
-Requires:       simple-core
-Obsoletes:      rhn-search < 5.3.0
 BuildRequires:  ant
-#BuildRequires: apache-ibatis-sqlmap
-BuildRequires:  c3p0 >= 0.9.1
-BuildRequires:  cglib
-BuildRequires:  jakarta-commons-httpclient
-BuildRequires:  jakarta-oro
-BuildRequires:  java-devel >= 11
-BuildRequires:  javapackages-tools
-#BuildRequires: lucene
-BuildRequires:  objectweb-asm
-BuildRequires:  quartz >= 2.0
-BuildRequires:  redstone-xmlrpc
-#BuildRequires: picocontainer
-BuildRequires:  simple-core
-BuildRequires:  slf4j
-Requires:       apache-commons-cli
-Requires:       apache-commons-codec
-Requires:       apache-commons-lang3
-Requires:       apache-commons-logging
 BuildRequires:  apache-commons-cli
 BuildRequires:  apache-commons-codec
 BuildRequires:  apache-commons-lang3
 BuildRequires:  apache-commons-logging
-BuildRequires:  zip
-BuildRequires:  systemd
+BuildRequires:  apache-mybatis
+BuildRequires:  c3p0 >= 0.9.1
+BuildRequires:  cglib
 BuildRequires:  doc-indexes
+BuildRequires:  hadoop
+BuildRequires:  jakarta-commons-httpclient
+BuildRequires:  jakarta-oro
+BuildRequires:  java-devel >= 11
+BuildRequires:  javapackages-tools
+BuildRequires:  junit
+BuildRequires:  lucene == 2.4.1
+BuildRequires:  nutch-core
+BuildRequires:  objectweb-asm
+BuildRequires:  picocontainer
+BuildRequires:  quartz >= 2.0
+BuildRequires:  redstone-xmlrpc
+BuildRequires:  simple-core
+BuildRequires:  slf4j
+BuildRequires:  systemd
+BuildRequires:  uyuni-base-common
+BuildRequires:  zip
+Requires(pre):  doc-indexes
+Requires(pre):  uyuni-base-common
+Requires:       apache-commons-cli
+Requires:       apache-commons-codec
+Requires:       apache-commons-lang3
+Requires:       apache-commons-logging
+Requires:       apache-mybatis
+Requires:       c3p0 >= 0.9.1
+Requires:       cglib
+Requires:       hadoop
+Requires:       jakarta-commons-httpclient
+Requires:       jakarta-oro
+Requires:       javapackages-tools
+Requires:       lucene == 2.4.1
 Requires:       nutch-core
+Requires:       objectweb-asm
+Requires:       picocontainer
+Requires:       quartz >= 2.0
+Requires:       redstone-xmlrpc
+Requires:       simple-core
+Obsoletes:      rhn-search < 5.3.0
 %if 0%{?fedora} || 0%{?rhel} >=7
 Requires:       mchange-commons
 %endif
@@ -106,7 +98,6 @@ Spacewalk Server.
 
 %prep
 %setup -n %{name}-%{version}
-
 
 %install
 rm -fr ${RPM_BUILD_ROOT}
@@ -137,7 +128,6 @@ ln -s -f %{_prefix}/share/rhn/search/lib/spacewalk-search-%{version}.jar $RPM_BU
 # add rc link
 mkdir -p  $RPM_BUILD_ROOT/%{_sbindir}/
 ln -sf service $RPM_BUILD_ROOT/%{_sbindir}/rcrhn-search
-
 
 %post
 %service_add_post rhn-search.service
