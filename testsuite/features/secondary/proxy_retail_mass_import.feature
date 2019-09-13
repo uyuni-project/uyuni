@@ -53,6 +53,10 @@ Feature: Mass import Retail terminals
     Given I am on the Systems overview page of this "proxy"
     When I follow "Formulas" in the content area
     And I follow first "Bind" in the content area
+    # Temporary fix as "empty-zones-enable" option is rewritten by retail_yaml command
+    And I press "Add Item" in config options section
+    And I enter "empty-zones-enable" in first option field
+    And I enter "no" in first value field
     And I press "Add Item" in configured zones section
     And I enter "tf.local" in third configured zone name field
     And I press "Add Item" in available zones section
