@@ -133,9 +133,6 @@ install -p -m 644 src/config/rhn-search.service $RPM_BUILD_ROOT%{_unitdir}
 install -p -m 644 src/config/search/rhn_search.conf $RPM_BUILD_ROOT%{_prefix}/share/rhn/config-defaults/rhn_search.conf
 install -p -m 644 src/config/search/rhn_search_daemon.conf $RPM_BUILD_ROOT%{_prefix}/share/rhn/config-defaults/rhn_search_daemon.conf
 ln -s -f %{_prefix}/share/rhn/search/lib/spacewalk-search-%{version}.jar $RPM_BUILD_ROOT%{_prefix}/share/rhn/search/lib/spacewalk-search.jar
-%if 0%{?suse_version} >= 1315
-sed -i 's/^wrapper.java.classpath.19=.*/wrapper.java.classpath.19=\/usr\/share\/nutch\/nutch-core-1.0.jar/' $RPM_BUILD_ROOT%{_prefix}/share/rhn/config-defaults/rhn_search_daemon.conf
-%endif
 
 # add rc link
 mkdir -p  $RPM_BUILD_ROOT/%{_sbindir}/
