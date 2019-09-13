@@ -500,3 +500,31 @@ class TestSCSoftwareChannel:
         assert shell.client.channel.software.listAllPackages.called
         assert_list_args_expect(mprint.call_args_list,
                                 ['emacs-42.0-9.x86_64\nemacs-nox-42.0-10.x86_64\ntiff-1.0-11:3.x86_64'])
+
+    def test_listallpackages_one_channel_with_data(self, shell):
+        """
+        Test do_softwarechannel_listallpackages with one channel. With data return.
+
+        :param shell:
+        :return:
+        """
+        shell.client.channel.software.listAllPackages = MagicMock(
+            return_value=[
+                {"name": "emacs", "version": "42.0",
+                 "release": "9", "epoch": "", "arch": "x86_64"},
+                {"name": "emacs-nox", "version": "42.0",
+                 "release": "10", "epoch": "", "arch_label": "x86_64"},
+                {"name": "tiff", "version": "1.0",
+                 "release": "11", "epoch": "3", "arch": "amd64"},
+            ]
+        )
+        mprint = MagicMock()
+        with patch("spacecmd.softwarechannel.print", mprint) as prt:
+            out = spacecmd.softwarechannel.do_softwarechannel_listallpackages(
+                shell, "one_channel", doreturn=True)
+
+        assert out is not None
+        assert not shell.help_softwarechannel_listallpackages.called
+        assert shell.client.channel.software.listAllPackages.called
+        assert out == ['emacs-42.0-9.x86_64', 'emacs-nox-42.0-10.x86_64',
+                       'tiff-1.0-11:3.x86_64']
