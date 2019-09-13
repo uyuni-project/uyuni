@@ -177,7 +177,7 @@ export function PoolsList(props: Props) {
             <DataHandler
               data={getPoolsAndVolumes(tree)}
               identifier={(raw) => raw.id}
-              initialItemsPerPage={props.pageSize}
+              initialItemsPerPage={Number(props.pageSize)}
               loading={tree == null}
               additionalFilters={[]}
               searchField={
