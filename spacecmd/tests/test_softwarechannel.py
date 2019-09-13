@@ -573,3 +573,18 @@ class TestSCSoftwareChannel:
         assert out is None
         assert not shell.client.channel.software.listAllPackages.called
         assert shell.help_softwarechannel_listlatestpackages.called
+
+    def test_listlatestpackages_wrongargs_nodata(self, shell):
+        """
+        Test do_softwarechannel_listlatestpackages with wrong amount of args. No data return.
+
+        :return:
+        """
+        mprint = MagicMock()
+        with patch("spacecmd.softwarechannel.print", mprint) as prt:
+            out = spacecmd.softwarechannel.do_softwarechannel_listlatestpackages(
+                shell, "one two three")
+
+        assert out is None
+        assert not shell.client.channel.software.listAllPackages.called
+        assert shell.help_softwarechannel_listlatestpackages.called
