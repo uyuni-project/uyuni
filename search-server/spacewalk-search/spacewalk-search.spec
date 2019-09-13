@@ -107,11 +107,6 @@ Spacewalk Server.
 %prep
 %setup -n %{name}-%{version}
 
-# disable crash dumps in IBM java (OpenJDK have them off by default)
-#if java -version 2>&1 | grep -q IBM ; then
-#    sed -i '/#wrapper\.java\.additional\.[0-9]=-Xdump:none/ { s/^#//; }' \
-#        src/config/search/rhn_search_daemon.conf
-#fi
 
 %install
 rm -fr ${RPM_BUILD_ROOT}
@@ -150,33 +145,7 @@ ln -sf service $RPM_BUILD_ROOT/%{_sbindir}/rcrhn-search
 export NO_BRP_CHECK_BYTECODE_VERSION=true
 
 %post
-was_running=0
 %service_add_post rhn-search.service
-
-# Migrate original /usr/share/rhn/search/indexes/*
-# to /var/lib/rhn/search/indexes
-cd %{_prefix}/share/rhn/search/indexes && /bin/ls | /bin/grep -v docs | while read i ; do
-    if [ ! -e %{_var}/lib/rhn/search/indexes/$i ] ; then
-        if [ $was_running -eq 1 ] ; then
-            if [ -f /etc/init.d/rhn-search ]; then
-               /sbin/service rhn-search stop > /dev/null 2>&1
-               was_running=2
-            fi
-        fi
-        /bin/mv $i %{_var}/lib/rhn/search/indexes/$i
-        # If the mv failed for whatever reason, symlink
-        if [ -e $i ] ; then
-            /bin/rm -rf %{_var}/lib/rhn/search/indexes/$i
-            /bin/ln -s -f %{_prefix}/share/rhn/search/indexes/$i %{_var}/lib/rhn/search/indexes/$i
-        fi
-    fi
-done
-
-if [ -f /etc/init.d/rhn-search ]; then
-   if [ $was_running -eq 1 ] ; then
-       /sbin/service rhn-search status > /dev/null 2>&1 || /sbin/service rhn-search start > /dev/null 2>&1
-   fi
-fi
 
 %preun
 %service_del_preun rhn-search.service
