@@ -5,7 +5,7 @@ Feature: Patches display
 
   Scenario: Pre-require: enable old packages to fake a possible installation
     Given I am authorized as "admin" with password "admin"
-    And I run "zypper -n mr -e Devel_Galaxy_BuildRepo" on "sle-client"
+    And I run "zypper -n mr -e Test-Packages_Pool" on "sle-client"
     And I run "zypper -n ref" on "sle-client"
     And I run "zypper -n in --oldpackage andromeda-dummy-1.0" on "sle-client"
     And I run "zypper -n in --oldpackage virgo-dummy-1.0" on "sle-client"
@@ -49,11 +49,10 @@ Feature: Patches display
     And I should see a "Test update for virgo-dummy" text
 
   Scenario: Cleanup: regenerate search index for later tests
-    Then I clean the search index on the server
+    When I clean the search index on the server
 
   Scenario: Cleanup: remove old packages
-    Given I am authorized as "admin" with password "admin"
-    When I run "zypper -n mr -d Devel_Galaxy_BuildRepo" on "sle-client" without error control
+    When I run "zypper -n mr -d Test-Packages_Pool" on "sle-client" without error control
     And I run "zypper -n ref" on "sle-client" without error control
     And I run "zypper -n rm --oldpackage andromeda-dummy-1.0" on "sle-client" without error control
     And I run "zypper -n rm --oldpackage virgo-dummy-1.0" on "sle-client" without error control
