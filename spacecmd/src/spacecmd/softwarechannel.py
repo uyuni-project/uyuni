@@ -326,28 +326,20 @@ def complete_softwarechannel_listlatestpackages(self, text, line, beg, end):
 
 
 def do_softwarechannel_listlatestpackages(self, args, doreturn=False):
-    arg_parser = get_argument_parser()
+    args, _ = parse_command_arguments(args, get_argument_parser())
 
-    (args, _options) = parse_command_arguments(args, arg_parser)
-
-    if not args:
+    if len(args) != 1:
         self.help_softwarechannel_listlatestpackages()
         return
 
-    channel = args[0]
-
-    allpackages = self.client.channel.software.listAllPackages(self.session,
-                                                               channel)
-
-    latestpackages = filter_latest_packages(allpackages)
-
-    packages = build_package_names(latestpackages)
+    packages = list(sorted(build_package_names(filter_latest_packages(
+        self.client.channel.software.listAllPackages(self.session, args[0])))))
 
     if doreturn:
         return packages
     else:
         if packages:
-            print('\n'.join(sorted(packages)))
+            print('\n'.join(packages))
 
 ####################
 
