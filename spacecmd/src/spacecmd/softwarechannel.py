@@ -244,7 +244,7 @@ def complete_softwarechannel_listpackages(self, text, line, beg, end):
 def do_softwarechannel_listpackages(self, args, doreturn=False):
     args, _ = parse_command_arguments(args, get_argument_parser())
 
-    if not args:
+    if len(args) != 1:
         self.help_softwarechannel_listpackages()
         return
 
