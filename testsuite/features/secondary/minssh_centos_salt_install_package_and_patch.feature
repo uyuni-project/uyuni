@@ -5,7 +5,7 @@ Feature: Install a patch on the CentOS SSH minion via Salt through the UI
 
 @centos_minion
   Scenario: Pre-requisite: install virgo-dummy-1.0 and remove andromeda-dummy packages
-    When I enable repository "Devel_Galaxy_BuildRepo" on this "ceos-ssh-minion"
+    When I enable repository "Test-Packages_Pool" on this "ceos-ssh-minion"
     And I remove package "andromeda-dummy" from this "ceos-ssh-minion"
     And I install package "virgo-dummy-1.0" on this "ceos-ssh-minion"
 
@@ -67,4 +67,4 @@ Feature: Install a patch on the CentOS SSH minion via Salt through the UI
     And I click on "Confirm"
     Then I should see a "2 package removals have been scheduled" text
     And I wait until event "Package Removal scheduled by admin" is completed
-    And I disable repository "Devel_Galaxy_BuildRepo" on this "ceos-ssh-minion"
+    And I disable repository "Test-Packages_Pool" on this "ceos-ssh-minion"
