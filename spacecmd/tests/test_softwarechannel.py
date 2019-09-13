@@ -7,6 +7,8 @@ from mock import MagicMock, patch
 import spacecmd.softwarechannel
 from xmlrpc import client as xmlrpclib
 from helpers import shell, assert_expect, assert_list_args_expect, assert_args_expect
+import pytest
+import rpm
 
 
 class TestSCSoftwareChannel:
@@ -528,3 +530,32 @@ class TestSCSoftwareChannel:
         assert shell.client.channel.software.listAllPackages.called
         assert out == ['emacs-42.0-9.x86_64', 'emacs-nox-42.0-10.x86_64',
                        'tiff-1.0-11:3.x86_64']
+
+    @pytest.mark.skipif(not hasattr(rpm, "labelCompare"), reason="Full RPM bindings required")
+    def test_filter_latest_packages(self):
+        """
+        Test filter_latest_packages function.
+
+        :return:
+        """
+        data = [
+            {"name": "emacs", "version": "42.0",
+             "release": "9", "epoch": "", "arch": "x86_64"},
+            {"name": "emacs", "version": "42.0",
+             "release": "10", "epoch": "", "arch_label": "x86_64"},
+            {"name": "emacs", "version": "42.0",
+             "release": "8", "epoch": "", "arch": "x86_64"},
+            {"name": "emacs", "version": "42.1",
+             "release": "7", "epoch": "", "arch": "x86_64"},
+            {"name": "emacs", "version": "41.9",
+             "release": "11", "epoch": "", "arch_label": "x86_64"},
+        ]
+        out = list(spacecmd.softwarechannel.filter_latest_packages(data))
+        assert len(out) == 1
+        res = out[0]
+
+        assert res["release"] == "7"
+        assert res["version"] == "42.1"
+        assert res["name"] == "emacs"
+        assert res["arch"] == "x86_64"
+        assert res["epoch"] == ""
