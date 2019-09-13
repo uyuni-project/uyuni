@@ -371,3 +371,19 @@ class TestSCSoftwareChannel:
         assert out is None
         assert not shell.client.channel.software.listLatestPackages.called
         assert shell.help_softwarechannel_listpackages.called
+
+    def test_listpackages_too_much_args_nodata(self, shell):
+        """
+        Test do_softwarechannel_listpackages with too much much arguments.
+
+        :param shell:
+        :return:
+        """
+        mprint = MagicMock()
+        with patch("spacecmd.softwarechannel.print", mprint) as prt:
+            out = spacecmd.softwarechannel.do_softwarechannel_listpackages(
+                shell, "one_channel other_channel somemore_channels")
+
+        assert out is None
+        assert not shell.client.channel.software.listLatestPackages.called
+        assert shell.help_softwarechannel_listpackages.called
