@@ -138,8 +138,6 @@ ln -s -f %{_prefix}/share/rhn/search/lib/spacewalk-search-%{version}.jar $RPM_BU
 mkdir -p  $RPM_BUILD_ROOT/%{_sbindir}/
 ln -sf service $RPM_BUILD_ROOT/%{_sbindir}/rcrhn-search
 
-# mybatis is build with newer API. This statements needs to stay, until we have a build with 1.5
-export NO_BRP_CHECK_BYTECODE_VERSION=true
 
 %post
 %service_add_post rhn-search.service
