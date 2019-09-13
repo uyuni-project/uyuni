@@ -242,26 +242,20 @@ def complete_softwarechannel_listpackages(self, text, line, beg, end):
 
 
 def do_softwarechannel_listpackages(self, args, doreturn=False):
-    arg_parser = get_argument_parser()
-
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    args, _ = parse_command_arguments(args, get_argument_parser())
 
     if not args:
         self.help_softwarechannel_listpackages()
         return
 
-    channel = args[0]
-
-    packages = self.client.channel.software.listLatestPackages(self.session,
-                                                               channel)
-
-    packages = build_package_names(packages)
+    packages = list(sorted(build_package_names(
+        self.client.channel.software.listLatestPackages(self.session, args[0]))))
 
     if doreturn:
         return packages
     else:
         if packages:
-            print('\n'.join(sorted(packages)))
+            print('\n'.join(packages))
 
 ####################
 
