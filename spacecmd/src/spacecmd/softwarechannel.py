@@ -332,8 +332,8 @@ def do_softwarechannel_listlatestpackages(self, args, doreturn=False):
         self.help_softwarechannel_listlatestpackages()
         return
 
-    packages = list(sorted(build_package_names(filter_latest_packages(
-        self.client.channel.software.listAllPackages(self.session, args[0])))))
+    packages = list(sorted(build_package_names(list(filter_latest_packages(
+        self.client.channel.software.listAllPackages(self.session, args[0]))))))
 
     if doreturn:
         return packages
