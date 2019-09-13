@@ -300,7 +300,7 @@ def filter_latest_packages(pkglist):
     # for each arch.  This approach avoids nested loops :)
     latest = {}
     for p in pkglist:
-        tuplekey = p['name'], p['arch_label']
+        tuplekey = p['name'], p.get('arch_label', p.get("arch"))
         if tuplekey not in latest:
             latest[tuplekey] = p
         else:
