@@ -209,7 +209,7 @@ class RemoteCommand extends React.Component {
             <div className="panel-body" style={this.state.result.minions.size ? style : undefined}>
               {(() => {
                 if (!this.state.result.minions.size && !this.state.result.waitForSSH) {
-                   return(<span>{this.state.previewed.state() != "pending" ? t("No target systems previewed") : t("No target systems have been found")}</span>)
+                   return(<span>{this.state.previewed.state() != "pending" ? t("No target systems previewed") : t("No target systems found")}</span>)
                 } else {
                   return(this.commandResult(this.state.result))
                 }
