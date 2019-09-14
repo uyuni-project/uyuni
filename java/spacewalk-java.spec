@@ -17,19 +17,26 @@
 #
 
 
+#!BuildIgnore:  udev-mini libudev-mini1
+
 %define cobblerdir      %{_localstatedir}/lib/cobbler
 %define cobprofdir      %{cobblerdir}/templates
 %define cobprofdirup    %{cobprofdir}/upload
 %define cobprofdirwiz   %{cobprofdir}/wizard
 %define cobdirsnippets  %{cobblerdir}/snippets
 %define spacewalksnippetsdir  %{cobdirsnippets}/spacewalk
-
-%define appdir          /srv/tomcat/webapps
-%define jardir          /srv/tomcat/webapps/rhn/WEB-INF/lib
 %define run_checkstyle  0
 %define omit_tests      1
-%define apache_group    www
 
+%if 0%{?suse_version}
+%define appdir          /srv/tomcat/webapps
+%define jardir          /srv/tomcat/webapps/rhn/WEB-INF/lib
+%define apache_group    www
+%else
+%define appdir          %{_localstatedir}/lib/tomcat/webapps
+%define jardir          %{_localstatedir}/lib/tomcat/webapps/rhn/WEB-INF/lib
+%define apache_group    apache
+%endif
 
 Name:           spacewalk-java
 Summary:        Java web application files for Spacewalk
@@ -54,19 +61,25 @@ BuildRequires:  apache-commons-cli
 BuildRequires:  apache-commons-codec
 BuildRequires:  apache-commons-collections
 BuildRequires:  apache-commons-io
-BuildRequires:  apache-commons-lang
-BuildRequires:  apache-commons-lang3
+#??? BuildRequires:  apache-commons-lang
+BuildRequires:  apache-commons-lang3 >= 3.4
 BuildRequires:  apache-commons-logging
 BuildRequires:  bcel
 BuildRequires:  byte-buddy
 BuildRequires:  c3p0 >= 0.9.1
 BuildRequires:  cglib
+%if 0%{?suse_version}
 BuildRequires:  classmate
 BuildRequires:  classpathx-mail
+%endif
 BuildRequires:  concurrent
 BuildRequires:  dom4j
 BuildRequires:  dwr >= 3
+%if 0%{?suse_version}
 BuildRequires:  ehcache >= 2.10.1
+%else
+BuildRequires:  ehcache-core
+%endif
 BuildRequires:  google-gson >= 2.2.4
 BuildRequires:  hibernate-commons-annotations
 BuildRequires:  hibernate5
@@ -74,10 +87,17 @@ BuildRequires:  httpcomponents-asyncclient
 BuildRequires:  httpcomponents-client
 BuildRequires:  jade4j
 BuildRequires:  jaf
+%if 0%{?suse_version}
 BuildRequires:  jakarta-commons-discovery
 BuildRequires:  jakarta-commons-el
 BuildRequires:  jakarta-commons-fileupload
 BuildRequires:  jakarta-commons-validator
+%else
+BuildRequires:  apache-commons-discovery
+BuildRequires:  apache-commons-el
+BuildRequires:  apache-commons-fileupload
+BuildRequires:  apache-commons-validator
+%endif
 BuildRequires:  java-devel >= 11
 BuildRequires:  java-saml
 BuildRequires:  javapackages-tools
@@ -111,25 +131,33 @@ BuildRequires:  spark-template-jade
 BuildRequires:  statistics
 BuildRequires:  stringtree-json
 BuildRequires:  struts >= 1.2.9
-BuildRequires:  tomcat >= 8
-BuildRequires:  tomcat-lib >= 8
+BuildRequires:  tomcat >= 7
+BuildRequires:  tomcat-lib >= 7
 BuildRequires:  tomcat-taglibs-standard
-BuildRequires:  uyuni-base-common
+BuildRequires:  uyuni-base-server
 BuildRequires:  velocity
 BuildRequires:  woodstox
 BuildRequires:  xmlsec
 
 Requires:       /sbin/unix2_chkpwd
 Requires:       apache-commons-beanutils
+Requires:       apache-commons-cli
+Requires:       apache-commons-codec
 Requires:       apache-commons-collections
+Requires:       apache-commons-io
 Requires:       apache-commons-lang3
+Requires:       apache-commons-logging
 Requires:       bcel
 Requires:       byte-buddy
 Requires:       c3p0 >= 0.9.1
+Requires:       cglib
+%if 0%{?suse_version}
 Requires:       classmate
 Requires:       classpathx-mail
+%endif
 Requires:       cobbler >= 3.0.0
 Requires:       concurrent
+Requires:       dwr >= 3
 Requires:       ehcache >= 2.10.1
 Requires:       gnu-jaf
 Requires:       google-gson >= 2.2.4
@@ -140,6 +168,7 @@ Requires:       jade4j
 Requires:       jakarta-commons-digester
 Requires:       java >= 11
 Requires:       java-saml
+Requires:       javapackages-tools
 Requires:       javassist
 Requires:       jboss-logging
 Requires:       joda-time
@@ -158,9 +187,15 @@ Requires:       sudo
 Requires:       susemanager-docs_en
 Requires:       tomcat-taglibs-standard
 Requires(pre):  uyuni-base-server
-BuildRequires:  uyuni-base-server
+%if 0%{?suse_version}
+Requires:       jakarta-commons-discovery
 Requires:       jakarta-commons-el
 Requires:       jakarta-commons-fileupload
+%else
+Requires:       apache-commons-discovery
+Requires:       apache-commons-el
+Requires:       apache-commons-fileupload
+%endif
 Requires:       jcommon
 Requires:       jdom
 Requires:       jta
@@ -179,20 +214,14 @@ Requires:       woodstox
 Requires:       xalan-j2 >= 2.6.0
 Requires:       xerces-j2
 Requires:       xmlsec
-Requires(pre):  tomcat >= 8
-Requires:       tomcat-lib >= 8
+Requires(pre):  tomcat >= 7
+Requires:       tomcat-lib >= 7
+%if 0%{?suse_version}
 Requires:       mvn(org.apache.tomcat:tomcat-servlet-api) > 8
+%else
+Requires:       servlet >= 3.0
+%endif
 Requires(pre):  salt
-#!BuildIgnore:  udev-mini libudev-mini1
-Requires:       apache-commons-cli
-Requires:       apache-commons-codec
-Requires:       apache-commons-io
-Requires:       apache-commons-lang3
-Requires:       apache-commons-logging
-Requires:       cglib
-Requires:       dwr >= 3
-Requires:       jakarta-commons-discovery
-Requires:       javapackages-tools
 
 %if 0%{?run_checkstyle}
 BuildRequires:  checkstyle
@@ -239,7 +268,7 @@ and taskomatic process.
 Summary:        PostgreSQL database backend support files for Spacewalk Java
 Group:          Applications/Internet
 Requires:       postgresql-jdbc
-Requires:       tomcat >= 8
+Requires:       tomcat >= 7
 Provides:       spacewalk-java-jdbc = %{version}-%{release}
 
 %description postgresql
@@ -296,7 +325,9 @@ Requires:       bcel
 Requires:       byte-buddy
 Requires:       c3p0 >= 0.9.1
 Requires:       cglib
+%if 0%{?suse_version}
 Requires:       classmate
+%endif
 Requires:       cobbler >= 3.0.0
 Requires:       concurrent
 Requires:       ehcache >= 2.10.1
