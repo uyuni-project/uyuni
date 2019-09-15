@@ -8,5 +8,7 @@ script(type='text/javascript').
     window.csrfToken = "#{csrf_token}";
 
 +userPreferences
-script(src='/javascript/manager/notifications/notification-messages.renderer.bundle.js?cb=#{webVersion}')
 
+script(type='text/javascript').
+    spaImportReactPage('notifications/notification-messages')
+        .then(({renderer}) => renderer('notification-messages'));
