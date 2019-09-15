@@ -1,12 +1,8 @@
-// @flow
-
 import ReactDOM from 'react-dom';
 import React from 'react';
 import Login from './login';
 
-window.pageRenderers = window.pageRenderers || {};
-window.pageRenderers.login = window.pageRenderers.login || {};
-window.pageRenderers.login.renderer = (id, {
+export const renderer = (id, {
   isUyuni,
   urlBounce,
   validationErrors,

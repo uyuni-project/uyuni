@@ -1,5 +1,3 @@
-module.exports = {
-  entries: [
-    'login.renderer.js',
-  ],
-};
+export default {
+  'login/login': () => import('./login.renderer')
+}
