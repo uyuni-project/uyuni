@@ -1,11 +1,9 @@
 const path = require('path');
-const {pages} = require("../manager/index");
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const LicenseCheckerWebpackPlugin = require("license-checker-webpack-plugin");
 const TerserPlugin = require('terser-webpack-plugin')
 const webpackAlias = require('./webpack.alias');
-
 
 module.exports = (env, argv) => {
 
@@ -34,12 +32,14 @@ module.exports = (env, argv) => {
     ]
   }
 
-
   return [{
-    entry: pages,
+    entry: {
+      'javascript/manager/main': './manager/index.js'
+    },
     output: {
       filename: `[name].bundle.js`,
-      path: path.resolve(__dirname, "../dist"),
+      path: path.resolve(__dirname, "../dist/" ),
+      chunkFilename: 'javascript/manager/[name].bundle.js',
       publicPath: '/'
     },
     optimization: {
@@ -49,13 +49,13 @@ module.exports = (env, argv) => {
           vendor: {
             test: /node_modules/,
             chunks: "all",
-            name: "vendors/vendors",
+            name: "../../vendors/vendors",
             enforce: true
           },
           core: {
             test: /[\\/]core.*/,
             chunks: "all",
-            name: "javascript/manager/core",
+            name: "core",
             enforce: true
           }
         }
@@ -105,7 +105,7 @@ module.exports = (env, argv) => {
         context: ['!/sockjs-node/**'],
         target: (argv && argv.server) || "https://suma-refhead-srv.mgr.suse.de",
         ws: true,
-        secure: false,
+        secure: false
       }]
     },
   }]
