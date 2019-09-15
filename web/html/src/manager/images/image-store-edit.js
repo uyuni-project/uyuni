@@ -202,7 +202,7 @@ class CreateImageStore extends React.Component {
   }
 }
 
-SpaRenderer.renderNavigationReact(
+export const renderer = () => SpaRenderer.renderNavigationReact(
   <CreateImageStore />,
   document.getElementById('image-store-edit')
 )

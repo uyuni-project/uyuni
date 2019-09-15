@@ -6,5 +6,6 @@ script(type='text/javascript').
     window.csrfToken = "#{csrf_token}";
     window.storeId = "#{store_id}"
 
-script(src='/javascript/manager/images/image-store-edit.bundle.js?cb=#{webVersion}', type='text/javascript')
-
+script(type='text/javascript').
+    spaImportReactPage('images/image-store-edit')
+        .then(({renderer}) => renderer('image-store-edit'));

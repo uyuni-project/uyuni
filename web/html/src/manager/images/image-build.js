@@ -302,7 +302,7 @@ class BuildImage extends React.Component {
   }
 }
 
-SpaRenderer.renderNavigationReact(
+export const renderer = () => SpaRenderer.renderNavigationReact(
   <BuildImage/>,
   document.getElementById("image-build")
 )
