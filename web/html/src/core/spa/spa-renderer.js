@@ -9,8 +9,22 @@ declare var onDocumentReadyInitOldJS: Function;
 window.pageRenderers = window.pageRenderers || {};
 window.pageRenderers.spa = window.pageRenderers.spa || {};
 
+// React trees that are always available on the page: Menu, Breadcrumbs, etc
 window.pageRenderers.spa.globalRenderersToUpdate = window.pageRenderers.spa.globalRenderersToUpdate || [];
-window.pageRenderers.spa.navigationRenderersToClean = window.pageRenderers.spa.navigationRenderersToClean || [];
+// Name of all the react apps in the current route
+window.pageRenderers.spa.reactAppsName  = window.pageRenderers.spa.reactAppsName || [];
+// Renderers of all the react apps in the current route
+window.pageRenderers.spa.reactRenderers = window.pageRenderers.spa.reactRenderers || [];
+// Previous renderers of all the react apps in the current route
+window.pageRenderers.spa.previousReactRenderers = window.pageRenderers.spa.previousReactRenderers || [];
+
+function addReactApp(appName: string) {
+  window.pageRenderers.spa.reactAppsName.push(appName);
+}
+
+function hasReactApp() {
+  return window.pageRenderers.spa.reactAppsName.length > 0;
+}
 
 function renderGlobalReact(element: ReactElement<any>, container: Element) {
 
@@ -22,18 +36,26 @@ function renderGlobalReact(element: ReactElement<any>, container: Element) {
 }
 
 function renderNavigationReact(element: ReactElement<any>, container: Element) {
-  window.pageRenderers.spa.navigationRenderersToClean.push({
+  window.pageRenderers.spa.reactRenderers.push({
     element,
     container,
     clean: () => {
       ReactDOM.unmountComponentAtNode(container)
     }
   });
-  ReactDOM.render(element, container, () => onDocumentReadyInitOldJS());
+  ReactDOM.render(element, container, () => {
+    onDocumentReadyInitOldJS();
+  });
 }
 
-function cleanOldReactTrees() {
-  window.pageRenderers.spa.navigationRenderersToClean.forEach(
+function beforeNavigation() {
+  window.pageRenderers.spa.previousReactRenderers = window.pageRenderers.spa.reactRenderers;
+  window.pageRenderers.spa.reactAppsName = [];
+  window.pageRenderers.spa.reactRenderers = [];
+}
+
+function afterNavigationTransition() {
+  window.pageRenderers.spa.previousReactRenderers.forEach(
     navigationRenderer => {
       try {
         navigationRenderer.clean()
@@ -42,7 +64,7 @@ function cleanOldReactTrees() {
       }
     }
   );
-  window.pageRenderers.spa.navigationRenderersToClean = [];
+  window.pageRenderers.spa.previousReactRenderers = [];
 }
 
 function onSpaEndNavigation() {
@@ -52,8 +74,11 @@ function onSpaEndNavigation() {
 }
 
 export default {
+  addReactApp,
+  hasReactApp,
   renderGlobalReact,
   renderNavigationReact,
-  cleanOldReactTrees,
+  beforeNavigation,
+  afterNavigationTransition,
   onSpaEndNavigation
 }
