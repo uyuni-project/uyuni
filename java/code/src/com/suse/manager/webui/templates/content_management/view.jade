@@ -11,4 +11,7 @@ script(type='text/javascript').
     window.isRuntimeInfoEnabled = #{isRuntimeInfoEnabled};
 
 +userPreferences
-script(src='/javascript/manager/images/image-view.bundle.js?cb=#{webVersion}', type='text/javascript')
+
+script(type='text/javascript').
+    spaImportReactPage('images/image-view')
+        .then(({renderer}) => renderer('image-view'));

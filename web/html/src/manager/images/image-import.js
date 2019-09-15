@@ -297,7 +297,7 @@ class ImageImport extends React.Component {
 
 }
 
-SpaRenderer.renderNavigationReact(
+export const renderer = () => SpaRenderer.renderNavigationReact(
   <ImageImport />,
   document.getElementById('image-import')
 )

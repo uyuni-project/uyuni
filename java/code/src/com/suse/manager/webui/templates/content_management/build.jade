@@ -11,4 +11,6 @@ script(type='text/javascript').
     window.localTime = "#{h.renderLocalTime()}";
     window.actionChains = !{actionChains};
 
-script(src='/javascript/manager/images/image-build.bundle.js?cb=#{webVersion}', type='text/javascript')
+script(type='text/javascript').
+    spaImportReactPage('images/image-build')
+        .then(({renderer}) => renderer('image-build'));

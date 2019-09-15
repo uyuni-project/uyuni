@@ -689,7 +689,7 @@ class ImageViewDetails extends React.Component {
   }
 }
 
-SpaRenderer.renderNavigationReact(
+export const renderer = () => SpaRenderer.renderNavigationReact(
   <ImageView runtimeInfoEnabled={isRuntimeInfoEnabled}/>,
   document.getElementById('image-view')
 )
