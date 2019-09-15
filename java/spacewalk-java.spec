@@ -384,6 +384,7 @@ export ADDITIONAL_OPTIONS="-Djavadoc.method.scope=nothing \
 -Dcheckstyle.header.file=buildconf/LICENSE.txt"
 find . -name *.java | grep -E '/test/' | grep -vE '(/jsp/|/playpen/)' | \
 xargs checkstyle -c buildconf/checkstyle.xml
+%endif
 
 # catch macro name errors
 find . -type f -name '*.xml' | xargs perl -CSAD -lne '
@@ -400,7 +401,6 @@ find . -type f -name '*.xml' | xargs perl -CSAD -lne '
               }
           }
           END { exit $exit }'
-%endif
 
 echo "Building apidoc docbook sources"
 ant -Dprefix=$RPM_BUILD_ROOT -Dtomcat="tomcat9" init-install apidoc-docbook
@@ -409,7 +409,6 @@ cd build/reports/apidocs/docbook
 cd $RPM_BUILD_ROOT
 
 %install
-export NO_BRP_CHECK_BYTECODE_VERSION=true
 export NO_BRP_STALE_LINK_ERROR=yes
 
 ant -Dprefix=$RPM_BUILD_ROOT -Dtomcat="tomcat9" install-tomcat9-suse
