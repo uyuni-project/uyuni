@@ -44,6 +44,7 @@ function renderNavigationReact(element: ReactElement<any>, container: Element) {
     }
   });
   ReactDOM.render(element, container, () => {
+    window.pageRenderers.spaengine.finishBodySurfaceTransition && window.pageRenderers.spaengine.finishBodySurfaceTransition();
     onDocumentReadyInitOldJS();
   });
 }

@@ -1,6 +1,6 @@
 /* global onDocumentReadyInitOldJS, Loggerhead */
-import App, {HtmlScreen} from "senna";
-import "senna/build/senna.css"
+import App, {HtmlScreen, DelayedAsyncTransitionSurface} from "lneves-test-spa-next";
+import "lneves-test-spa-next/build/senna.css"
 import "./spa-engine.css"
 import SpaRenderer from "core/spa/spa-renderer";
 
@@ -19,7 +19,10 @@ window.pageRenderers.spaengine.init = function init() {
     // appInstance.setLinkSelector("a.js-spa");
     appInstance.setFormSelector("form.js-spa");
 
-    appInstance.addSurfaces(["left-menu-data", "ssm-box", "page-body"])
+    const pageBodySurface = new DelayedAsyncTransitionSurface("page-body");
+    window.pageRenderers.spaengine.pageBodySurface = pageBodySurface;
+
+    appInstance.addSurfaces(["left-menu-data", "ssm-box", pageBodySurface])
     appInstance.addRoutes([{
       path: /.*/,
       handler: function (route, a, b) {
@@ -41,7 +44,6 @@ window.pageRenderers.spaengine.init = function init() {
         screen.beforeActivate = function() {
           // Preparing already for the new DelayedAsyncTransitionSurface(page-body) surface
           SpaRenderer.beforeNavigation();
-          SpaRenderer.afterNavigationTransition();
         };
 
         return screen;
@@ -84,6 +86,10 @@ window.pageRenderers.spaengine.init = function init() {
       SpaRenderer.onSpaEndNavigation();
       onDocumentReadyInitOldJS();
 
+      if(!SpaRenderer.hasReactApp()) {
+        window.pageRenderers.spaengine.finishBodySurfaceTransition();
+      }
+
     });
 
     return appInstance;
@@ -96,4 +102,9 @@ window.pageRenderers.spaengine.navigate = function navigate(url) {
   } else {
     window.location = url;
   }
+}
+
+window.pageRenderers.spaengine.finishBodySurfaceTransition = function finishBodySurfaceTransition() {
+  window.pageRenderers.spaengine.pageBodySurface && window.pageRenderers.spaengine.pageBodySurface.finishTransition();
+  SpaRenderer.afterNavigationTransition();
 }
