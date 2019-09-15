@@ -1,5 +1,3 @@
-module.exports = {
-  entries: [
-    'not-found.js'
-  ]
-};
+export default {
+  'errors/not-found': () => import('./not-found')
+}
