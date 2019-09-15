@@ -8,6 +8,7 @@
     "@babel/plugin-proposal-class-properties",
     "@babel/plugin-transform-flow-strip-types",
     "@babel/plugin-syntax-object-rest-spread",
+    "@babel/plugin-syntax-dynamic-import",
     "react-hot-loader/babel"
   ],
   "env": {
