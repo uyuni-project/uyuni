@@ -393,7 +393,7 @@ class PackageStates extends React.Component {
   }
 }
 
-SpaRenderer.renderNavigationReact(
+export const renderer = id => SpaRenderer.renderNavigationReact(
   <PackageStates />,
-  document.getElementById('package-states')
+  document.getElementById(id)
 );

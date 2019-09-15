@@ -10,10 +10,7 @@ var FormulaForm = FormulaFormModule.FormulaForm;
 const capitalize = require("utils/functions").Utils.capitalize;
 const SpaRenderer  = require("core/spa/spa-renderer").default;
 
-window.pageRenderers = window.pageRenderers || {};
-window.pageRenderers.minion = window.pageRenderers.minion || {};
-window.pageRenderers.minion.formula = window.pageRenderers.minion.formula || {};
-window.pageRenderers.minion.formula.renderer = (renderId, {serverId, formulaId}) => {
+export const renderer = (renderId, {serverId, formulaId}) => {
 
   const msgMap = {
     "formula_saved": <p>{t("Formula saved. Apply the ")}<a
