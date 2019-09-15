@@ -19,11 +19,13 @@ function postForm(serverId) {
   form.submit();
 }
 
-getServerIdsToDelete().forEach(serverId => {
-  SpaRenderer.renderNavigationReact(
-    <DeleteSystem serverId={serverId} onDeleteSuccess={() => postForm(serverId)}
-      buttonText={t("Confirm Deletion")} buttonClass="btn-danger"
+export const renderer = () => {
+  getServerIdsToDelete().forEach(serverId => {
+    SpaRenderer.renderNavigationReact(
+      <DeleteSystem serverId={serverId} onDeleteSuccess={() => postForm(serverId)}
+                    buttonText={t("Confirm Deletion")} buttonClass="btn-danger"
       />,
       document.getElementById("div_confirm" + serverId)
-  );
-});
+    );
+  });
+}

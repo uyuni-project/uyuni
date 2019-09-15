@@ -5,4 +5,7 @@ script(type='text/javascript').
     window.csrfToken = "#{csrf_token}";
 
 +userPreferences
-script(src='/javascript/manager/systems/virtualhostmanager/virtualhostmanager.bundle.js?cb=#{webVersion}', type='text/javascript')
+
+script(type='text/javascript').
+    spaImportReactPage('systems/virtualhostmanager/virtualhostmanager')
+        .then(({renderer}) => renderer('virtual-host-managers'));

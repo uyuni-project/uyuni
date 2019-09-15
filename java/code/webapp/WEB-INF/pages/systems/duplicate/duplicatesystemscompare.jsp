@@ -225,6 +225,9 @@ function getServerIdsToDelete() {
 <c:otherwise><p><bean:message key = "nosystems.message"/></p></c:otherwise>
 </c:choose>
 </rl:listset>
-<script src="/javascript/manager/systems/duplicate-systems-compare-delete.bundle.js?cb=${rhn:getConfig('web.version')}" type="text/javascript"></script>
+<script>
+    spaImportReactPage('systems/duplicate-systems-compare-delete')
+        .then(({renderer}) => renderer());
+</script>
 </body>
 </html>

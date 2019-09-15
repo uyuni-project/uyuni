@@ -9,7 +9,7 @@ import SpaRenderer from "core/spa/spa-renderer";
 window.pageRenderers = window.pageRenderers || {};
 const customValues = window.pageRenderers.customValues || {DOMid: 'activation-key-channels'};
 
-SpaRenderer.renderNavigationReact(
+export const renderer = () => SpaRenderer.renderNavigationReact(
     <ActivationKeyChannels activationKeyId={customValues.activationKeyId ? customValues.activationKeyId : -1} />,
     document.getElementById(customValues.DOMid)
 );
