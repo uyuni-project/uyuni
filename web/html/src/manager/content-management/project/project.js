@@ -89,7 +89,7 @@ const Project = (props: Props) => {
 
                       onAction(project, 'delete', project.properties.label)
                         .then(() => {
-                          window.pageRenderers.spa.navigate(`/rhn/manager/contentmanagement/projects`);
+                          window.pageRenderers.spaengine.navigate(`/rhn/manager/contentmanagement/projects`);
                         })
                         .catch((error) => {
                           showErrorToastr(error, {autoHide: false});

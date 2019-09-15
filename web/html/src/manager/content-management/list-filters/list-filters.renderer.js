@@ -5,12 +5,7 @@ import {RolesProvider} from "core/auth/roles-context";
 import {UserLocalizationProvider} from "core/user-localization/user-localization-context";
 import SpaRenderer from "core/spa/spa-renderer";
 
-window.pageRenderers = window.pageRenderers || {};
-window.pageRenderers.contentManagement = window.pageRenderers.contentManagement || {};
-window.pageRenderers.contentManagement.listFilters = window.pageRenderers.contentManagement.listFilters || {};
-window.pageRenderers.contentManagement.listFilters.renderer = (id, {filters, projectLabel, openFilterId, flashMessage}) => {
-
-  console.log(openFilterId);
+export const renderer = (id, {filters, projectLabel, openFilterId, flashMessage}) => {
 
   let filtersJson = [];
   try{
