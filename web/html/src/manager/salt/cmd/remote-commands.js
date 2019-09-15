@@ -510,7 +510,7 @@ function errorMessageByStatus(status) {
   }
 }
 
-SpaRenderer.renderNavigationReact(
+export const renderer = (id) => SpaRenderer.renderNavigationReact(
   <RemoteCommand />,
-  document.getElementById('remote-commands')
+  document.getElementById(id)
 );
