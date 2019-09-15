@@ -336,7 +336,7 @@ class CVEAudit extends React.Component {
   }
 }
 
-SpaRenderer.renderNavigationReact(
+export const renderer = () => SpaRenderer.renderNavigationReact(
   <CVEAudit />,
   document.getElementById('cveaudit')
 );
