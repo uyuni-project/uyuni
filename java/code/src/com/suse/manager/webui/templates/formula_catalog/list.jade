@@ -3,13 +3,13 @@ include ../common.jade
 #formula-catalog
 
 +userPreferences
-script(src='/javascript/manager/salt/formula-catalog/org-formula-catalog.renderer.bundle.js?cb=#{webVersion}')
 
 script(type='text/javascript').
-    pageRenderers.salt.formulaCatalog.renderer(
-        'formula-catalog',
-        {
-          flashMessage: "#{info}",
-          warningMessage: "#{warning}"
-        }
-    );
+    spaImportReactPage('salt/formula-catalog/org-formula-catalog')
+        .then(({renderer}) => renderer(
+          'formula-catalog',
+          {
+            flashMessage: "#{info}",
+            warningMessage: "#{warning}"
+          }
+        ));

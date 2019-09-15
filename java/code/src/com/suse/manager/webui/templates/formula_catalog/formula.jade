@@ -3,4 +3,7 @@
 script(type="text/javascript").
     window.csrfToken = "#{csrf_token}";
     window.formulaName = "#{formulaName}";
-script(src='/javascript/manager/salt/formula-catalog/org-formula-details.bundle.js?cb=#{webVersion}')
+
+script(type='text/javascript').
+    spaImportReactPage('salt/formula-catalog/org-formula-details')
+        .then(({renderer}) => renderer('formula-details'));

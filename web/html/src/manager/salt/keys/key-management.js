@@ -184,7 +184,7 @@ class KeyManagement extends React.Component {
   }
 }
 
-SpaRenderer.renderNavigationReact(
+export const renderer = (id) => SpaRenderer.renderNavigationReact(
   <KeyManagement />,
-  document.getElementById('key-management')
+  document.getElementById(id)
 );

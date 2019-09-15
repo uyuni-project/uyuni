@@ -4,4 +4,7 @@ script(type="text/javascript").
     window.csrfToken = "#{csrf_token}";
     window.availableActivationKeys = !{availableActivationKeys};
     window.proxies = !{proxies}
-script(src='/javascript/manager/systems/bootstrap/bootstrap-minions.bundle.js?cb=#{webVersion}')
+
+script(type='text/javascript').
+    spaImportReactPage('systems/bootstrap/bootstrap-minions')
+        .then(({renderer}) => renderer('bootstrap-minions'));
