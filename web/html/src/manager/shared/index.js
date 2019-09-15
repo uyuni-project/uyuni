@@ -1,7 +1,3 @@
-module.exports = {
-  entries: [
-    'menu/menu.js',
-    'polyfill.js',
-    'spa/spa-engine.js'
-  ],
-};
+export default {
+  'shared/menu': () => import('./menu/menu'),
+}
