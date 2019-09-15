@@ -53,13 +53,12 @@
           <decorator:body />
         </section>
       </div>
-      <script src='/javascript/manager/shared/menu/menu.bundle.js?cb=${rhn:getConfig('web.buildtimestamp')}'></script>
-      <script src='/javascript/manager/shared/spa/spa-engine.bundle.js?cb=${rhn:getConfig('web.buildtimestamp')}'></script>
+      <script type="text/javascript">
+        spaImportReactPage('shared/menu');
         <c:if test="${rhn:getConfig('web.spa.enable')}">
-          <script type="text/javascript">
-            window.pageRenderers  && window.pageRenderers.spa.init && window.pageRenderers.spa.init();
-          </script>
+          window.pageRenderers  && window.pageRenderers.spaengine.init && window.pageRenderers.spaengine.init();
         </c:if>
+      </script>
     </div>
     <button id="scroll-top"><i class='fa fa-angle-up'></i></button>
   </body>

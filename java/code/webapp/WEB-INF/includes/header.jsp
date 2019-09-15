@@ -61,7 +61,9 @@
   </ul>
   <ul class="nav navbar-nav navbar-primary">
     <li id="notifications">
-      <script src='/javascript/manager/notifications/notifications.bundle.js?cb=${rhn:getConfig('web.buildtimestamp')}'></script>
+      <script>
+        spaImportReactPage('notifications/notifications')
+      </script>
     </li>
     <c:if test="${requestScope.legends != null}">
       <li class="legend">
