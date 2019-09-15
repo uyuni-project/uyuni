@@ -1,6 +1,4 @@
-module.exports = {
-  entries: [
-    'cveaudit/cveaudit.js',
-    'subscription-matching/subscription-matching.js'
-  ]
-};
+export default {
+  'audit/cveaudit': () => import('./cveaudit/cveaudit'),
+  'audit/subscription-matching': () => import('./subscription-matching/subscription-matching')
+}
