@@ -38,7 +38,7 @@ class VirtualHostManagerList extends React.Component {
                     columnKey="label"
                     comparator={Utils.sortByText}
                     header={t('Label')}
-                    cell={(row, criteria) => <a href={"#/details/" + row.id}><i className="fa spacewalk-icon-virtual-host-manager"/>{row.label}</a>}
+                    cell={(row, criteria) => <a data-senna-off href={"#/details/" + row.id}><i className="fa spacewalk-icon-virtual-host-manager"/>{row.label}</a>}
                 />
                 <Column
                     columnKey="gathererModule"

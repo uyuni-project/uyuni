@@ -77,7 +77,11 @@
                     activationKeyId: '<c:out value="${param.tid}" />'
                 }
         </script>
-        <script src="/javascript/manager/systems/activation-key/activation-key-channels.renderer.bundle.js?cb=${rhn:getConfig('web.buildtimestamp')}"></script>
+
+        <script>
+            spaImportReactPage('systems/activation-key/activation-key-channels')
+                .then(({renderer}) => renderer());
+        </script>
 
         <div class="form-group">
             <label class="col-lg-3 control-label">

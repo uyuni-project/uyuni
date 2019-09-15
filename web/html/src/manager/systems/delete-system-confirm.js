@@ -8,8 +8,8 @@ const {Utils} = require("utils/functions");
 const {DeleteSystem} = require("./delete-system");
 const SpaRenderer  = require("core/spa/spa-renderer").default;
 
-SpaRenderer.renderNavigationReact(
+export const renderer = (id) => SpaRenderer.renderNavigationReact(
   <DeleteSystem serverId={getServerIdToDelete()} onDeleteSuccess={() => Utils.urlBounce("/rhn/systems/Overview.do")}
    buttonText={t("Delete Profile")} buttonClass="btn-danger"/>,
-    document.getElementById("delete_system_button")
+    document.getElementById(id)
 );

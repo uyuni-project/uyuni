@@ -19,6 +19,9 @@
         var userPrefPageSize = <%= new com.redhat.rhn.frontend.struts.RequestContext(request).getCurrentUser().getPageSize() %>;
         var actionChains = ${actionChainsJson};
   </script>
-  <script src="/javascript/manager/systems/ssm/ssm-subscribe-channels.bundle.js?cb=${rhn:getConfig('web.buildtimestamp')}" type="text/javascript"></script>
+  <script>
+    spaImportReactPage('systems/ssm/ssm-subscribe-channels')
+      .then(({renderer}) => renderer('channels-div'));
+  </script>
 </body>
 </html>
