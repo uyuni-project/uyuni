@@ -206,6 +206,13 @@
     <antcall target="apidoc" />
   </target>
 
+  <target name="apidoc-asciidoc" description="Generate asciidoc from the API">
+    <property name="doclet.class" value="AsciidocDoclet" />
+    <property name="template.dir" value="asciidoc" />
+    <property name="apidoc.output" value="${report.dir}/apidocs/${template.dir}/" />
+    <antcall target="apidoc" />
+  </target>
+
   <target name="apidoc" description="Generate the api documentation" depends="init">
     <path id="javadocpath">
     <path refid="buildjars" />
