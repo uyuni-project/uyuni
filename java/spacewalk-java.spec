@@ -547,12 +547,6 @@ if [ ! -e /var/log/rhn/gatherer.log ]; then
 fi
 chown tomcat:%{apache_group} /var/log/rhn/gatherer.log
 
-%post
-if [ $1 -gt 1 ]; then
-   if [ -f %{_sysconfdir}/tomcat/Catalina/localhost/rhn.xml ]; then
-      mv %{_sysconfdir}/tomcat/Catalina/localhost/rhn.xml %{appdir}/rhn/META-INF/context.xml
-   fi
-fi
 
 %files
 %defattr(-,root,root)
