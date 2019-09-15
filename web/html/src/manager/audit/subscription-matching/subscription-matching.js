@@ -166,7 +166,7 @@ class SubscriptionMatchingTabContainer extends React.Component {
   }
 }
 
-SpaRenderer.renderNavigationReact(
+export const renderer = () => SpaRenderer.renderNavigationReact(
   <SubscriptionMatching refreshInterval={60 * 1000} />,
   document.getElementById("subscription-matching")
 );

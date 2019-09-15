@@ -6,4 +6,7 @@ script(type='text/javascript').
     window.csrfToken = "#{csrf_token}";
 
 +userPreferences
-script(src='/javascript/manager/audit/cveaudit/cveaudit.bundle.js?cb=#{webVersion}', type='text/javascript')
+
+script(type='text/javascript').
+    spaImportReactPage('audit/cveaudit')
+        .then(({renderer}) => renderer('cveaudit'));
