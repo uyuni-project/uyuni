@@ -5,12 +5,12 @@ include ./minion-header.jade
 script(type='text/javascript').
     window.csrfToken = "#{csrf_token}";
 
-script(src='/javascript/manager/minion/formula/minion-formula-selection.renderer.bundle.js?cb=#{webVersion}', type='text/javascript')
 script(type='text/javascript').
-    pageRenderers.minion.formulaSelection.renderer(
-        'formulas',
-        {
-          serverId: "#{server.id}",
-          warningMessage: "#{warning}"
-        }
-    );
+    spaImportReactPage('minion/formula/minion-formula-selection')
+        .then(({renderer}) => renderer(
+          'formulas',
+          {
+            serverId: "#{server.id}",
+            warningMessage: "#{warning}"
+          }
+        ));

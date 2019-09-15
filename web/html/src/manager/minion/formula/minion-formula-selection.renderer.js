@@ -9,10 +9,7 @@ const FormulaSelection = require("components/formula-selection").FormulaSelectio
 const capitalize = require("utils/functions").Utils.capitalize;
 const SpaRenderer  = require("core/spa/spa-renderer").default;
 
-window.pageRenderers = window.pageRenderers || {};
-window.pageRenderers.minion = window.pageRenderers.minion || {};
-window.pageRenderers.minion.formulaSelection = window.pageRenderers.minion.formulaSelection || {};
-window.pageRenderers.minion.formulaSelection.renderer = (renderId, {serverId, warningMessage}) => {
+export const renderer = (renderId, {serverId, warningMessage}) => {
 
 
   const messageTexts = {
