@@ -366,6 +366,10 @@ This package contains the Java version of taskomatic.
 %prep
 %setup -q
 
+%if 0%{?fedora}
+%define skip_xliff  1
+%endif
+
 %if ! 0%{?omit_tests} > 0 && ! 0%{?skip_xliff}
 find . -name 'StringResource_*.xml' |      while read i ;
     do echo $i
@@ -392,7 +396,7 @@ done
 
 %build
 # compile only java sources (no packing here)
-ant -Dprefix=$RPM_BUILD_ROOT -Dtomcat="tomcat9" init-install compile
+ant -Dprefix=$RPM_BUILD_ROOT init-install compile
 
 %if 0%{?run_checkstyle}
 echo "Running checkstyle on java main sources"
@@ -434,7 +438,7 @@ find . -type f -name '*.xml' | xargs perl -CSAD -lne '
           END { exit $exit }'
 
 echo "Building apidoc docbook sources"
-ant -Dprefix=$RPM_BUILD_ROOT -Dtomcat="tomcat9" init-install apidoc-docbook
+ant -Dprefix=$RPM_BUILD_ROOT init-install apidoc-docbook
 cd build/reports/apidocs/docbook
 /usr/bin/xmllint --xinclude --postvalid book.xml > susemanager_api_doc.xml
 cd $RPM_BUILD_ROOT
@@ -442,9 +446,15 @@ cd $RPM_BUILD_ROOT
 %install
 export NO_BRP_STALE_LINK_ERROR=yes
 
+%if 0%{?suse_version}
 ant -Dprefix=$RPM_BUILD_ROOT -Dtomcat="tomcat9" install-tomcat9-suse
 install -d -m 755 $RPM_BUILD_ROOT%{appdir}/rhn/META-INF/
 install -m 755 conf/rhn-tomcat9.xml $RPM_BUILD_ROOT%{appdir}/rhn/META-INF/context.xml
+%else
+ant -Dprefix=$RPM_BUILD_ROOT install-tomcat
+install -d -m 755 $RPM_BUILD_ROOT%{_sysconfdir}/tomcat/Catalina/localhost/
+install -m 644 conf/rhn-tomcat8.xml $RPM_BUILD_ROOT%{_sysconfdir}/tomcat/Catalina/localhost/rhn.xml
+%endif
 
 # check spelling errors in all resources for English if aspell installed
 [ -x "$(which aspell)" ] && scripts/spelling/check_java.sh .. en_US
@@ -613,7 +623,11 @@ chown tomcat:%{apache_group} /var/log/rhn/gatherer.log
 %{jardir}/antlr.jar
 %{jardir}/bcel.jar
 %{jardir}/c3p0*.jar
+%if 0%{?fedora} >= 25
+%{jardir}/cglib_cglib.jar
+%else
 %{jardir}/cglib.jar
+%endif
 %{jardir}/commons-beanutils.jar
 %{jardir}/commons-cli.jar
 %{jardir}/commons-codec.jar
@@ -710,7 +724,11 @@ chown tomcat:%{apache_group} /var/log/rhn/gatherer.log
 %config %{spacewalksnippetsdir}/sles_register_script
 %config %{spacewalksnippetsdir}/sles_no_signature_checks
 %config %{spacewalksnippetsdir}/wait_for_networkmanager_script
+%if 0%{?suse_version}
 %config(noreplace) %{appdir}/rhn/META-INF/context.xml
+%else
+%config(noreplace) %{_sysconfdir}/tomcat/Catalina/localhost/rhn.xml
+%endif
 %attr(755,root,root) %dir %{cobblerdir}
 
 %attr(755, tomcat, root) %dir %{_localstatedir}/lib/spacewalk/scc
