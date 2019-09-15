@@ -10,21 +10,23 @@ function isLoginPage (pathName) {
 }
 
 window.pageRenderers = window.pageRenderers || {};
-window.pageRenderers.spa = window.pageRenderers.spa || {};
+window.pageRenderers.spaengine = window.pageRenderers.spaengine || {};
 
-window.pageRenderers.spa.init = function init() {
+window.pageRenderers.spaengine.init = function init() {
   // We need this until the login page refactor using a different layout template is completed
   if(!isLoginPage(window.location.pathname)) {
     const appInstance = new App();
     // appInstance.setLinkSelector("a.js-spa");
     appInstance.setFormSelector("form.js-spa");
+
     appInstance.addSurfaces(["left-menu-data", "ssm-box", "page-body"])
     appInstance.addRoutes([{
       path: /.*/,
       handler: function (route, a, b) {
         const screen = new HtmlScreen();
+
         screen.setCacheable(false);
-        //TODO: remove after https://github.com/liferay/senna.js/pull/311/files
+        //workaround for posts until https://github.com/liferay/senna.js/pull/311/files is merged
         screen.setHttpHeaders({
           ...screen.getHttpHeaders(),
           ...{"Content-type": "application/x-www-form-urlencoded"}
@@ -36,13 +38,16 @@ window.pageRenderers.spa.init = function init() {
           }
           return body;
         }
-        screen.deactivate = function() {
-          SpaRenderer.cleanOldReactTrees();
-        }
+        screen.beforeActivate = function() {
+          // Preparing already for the new DelayedAsyncTransitionSurface(page-body) surface
+          SpaRenderer.beforeNavigation();
+          SpaRenderer.afterNavigationTransition();
+        };
+
         return screen;
       }
     }]);
-    window.pageRenderers.spa.appInstance = appInstance;
+    window.pageRenderers.spaengine.appInstance = appInstance;
 
     appInstance.on('beforeNavigate', function(navigation) {
       // Integration with bootstrap 3. We need to make sure all the existing modals get fully removed
@@ -73,15 +78,16 @@ window.pageRenderers.spa.init = function init() {
       Loggerhead.info('[' + new Date().toUTCString() + '] - Loading `' + window.location + '`');
       SpaRenderer.onSpaEndNavigation();
       onDocumentReadyInitOldJS();
+
     });
 
     return appInstance;
   }
 }
 
-window.pageRenderers.spa.navigate = function navigate(url) {
-  if(window.pageRenderers.spa.appInstance) {
-    window.pageRenderers.spa.appInstance.navigate(url);
+window.pageRenderers.spaengine.navigate = function navigate(url) {
+  if(window.pageRenderers.spaengine.appInstance) {
+    window.pageRenderers.spaengine.appInstance.navigate(url);
   } else {
     window.location = url;
   }
