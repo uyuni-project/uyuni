@@ -7,7 +7,8 @@ include /templates/common.jade
 script(type='text/javascript').
     window.csrfToken = "#{csrf_token}";
 
-script(src='/javascript/manager/content-management/create-project/create-project.renderer.bundle.js?cb=#{webVersion}')
-
 script(type='text/javascript').
-    pageRenderers.contentManagement.createProject.renderer('content-management-create-project');
+    spaImportReactPage('content-management/create-project')
+        .then(({renderer}) => {
+            renderer('content-management-create-project');
+        });

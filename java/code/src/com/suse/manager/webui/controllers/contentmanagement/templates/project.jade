@@ -10,13 +10,14 @@ script(type='text/javascript').
 div#init_data_project(style="display: none")
     | #{projectToEdit}
 
-script(src='/javascript/manager/content-management/project/project.renderer.bundle.js?cb=#{webVersion}')
-
 script(type='text/javascript').
-    pageRenderers.contentManagement.project.renderer(
-        'content-management-project',
-         {
-            project: document.getElementById('init_data_project').textContent,
-            wasFreshlyCreatedMessage: "#{wasFreshlyCreatedMessage}"
-         }
-    );
+    spaImportReactPage('content-management/project')
+        .then(({renderer}) => {
+            renderer(
+                'content-management-project',
+                 {
+                    project: document.getElementById('init_data_project').textContent,
+                    wasFreshlyCreatedMessage: "#{wasFreshlyCreatedMessage}"
+                 }
+            );
+        });
