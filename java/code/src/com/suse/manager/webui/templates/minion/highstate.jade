@@ -9,4 +9,6 @@ script(type='text/javascript').
     window.localTime = "#{h.renderLocalTime()}";
     window.actionChains = !{actionChains};
 
-script(src='/javascript/manager/highstate/highstate.bundle.js?cb=#{webVersion}', type='text/javascript')
+script(type='text/javascript').
+    spaImportReactPage('highstate/highstate')
+        .then(({renderer}) => renderer('highstate'));
