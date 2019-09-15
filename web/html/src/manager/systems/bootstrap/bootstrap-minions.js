@@ -282,7 +282,7 @@ class BootstrapMinions extends React.Component {
 
 }
 
-SpaRenderer.renderNavigationReact(
+export const renderer = id => SpaRenderer.renderNavigationReact(
     <BootstrapMinions availableActivationKeys={availableActivationKeys} proxies={proxies}/>,
-    document.getElementById('bootstrap-minions')
+    document.getElementById(id)
 );

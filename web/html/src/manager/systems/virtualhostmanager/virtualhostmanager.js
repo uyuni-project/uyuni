@@ -163,7 +163,7 @@ class VirtualHostManager extends React.Component {
                     title={t("Add a virtual host manager")}
                     className="btn-default"
                     items={this.state.availableModules.map(name =>
-                        <a href={"#/create/" + name.toLocaleLowerCase()}>{msgModuleTypes[name.toLocaleLowerCase()]}</a>
+                        <a data-senna-off href={"#/create/" + name.toLocaleLowerCase()}>{msgModuleTypes[name.toLocaleLowerCase()]}</a>
                     )}
                 />
             }
@@ -193,4 +193,5 @@ class VirtualHostManager extends React.Component {
     }
 }
 
-SpaRenderer.renderNavigationReact(<VirtualHostManager/>, document.getElementById('virtual-host-managers'));
+export const renderer = (id) =>
+  SpaRenderer.renderNavigationReact(<VirtualHostManager/>, document.getElementById(id));
