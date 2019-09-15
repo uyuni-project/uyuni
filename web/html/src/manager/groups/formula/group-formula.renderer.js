@@ -10,10 +10,7 @@ var FormulaForm = FormulaFormModule.FormulaForm;
 const capitalize = require("../../../utils/functions").Utils.capitalize;
 const SpaRenderer  = require("core/spa/spa-renderer").default;
 
-window.pageRenderers = window.pageRenderers || {};
-window.pageRenderers.group = window.pageRenderers.group || {};
-window.pageRenderers.group.formula = window.pageRenderers.group.formula || {};
-window.pageRenderers.group.formula.renderer = (renderId, {groupId, formulaId}) => {
+export const renderer = (renderId, {groupId, formulaId}) => {
 
   const msgMap = {
     "formula_saved" : <p>{t("Formula saved. Apply the ")}<a href={'/rhn/manager/groups/details/highstate?sgid=' + groupId}>{t("Highstate")}</a>{t(" for the changes to take effect.")}</p>,

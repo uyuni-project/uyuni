@@ -18,12 +18,12 @@
 script(type='text/javascript').
     window.csrfToken = "#{csrf_token}";
 
-script(src='/javascript/manager/groups/formula/group-formula.renderer.bundle.js?cb=#{webVersion}', type='text/javascript')
 script(type='text/javascript').
-    pageRenderers.group.formula.renderer(
-        'formula',
-        {
-          groupId: "#{groupId}",
-          formulaId: #{formula_id}
-        }
-    );
+    spaImportReactPage('groups/formula/group-formula')
+        .then(({renderer}) => renderer(
+            'formula',
+            {
+                groupId: "#{groupId}",
+                formulaId: #{formula_id}
+            }
+        ));

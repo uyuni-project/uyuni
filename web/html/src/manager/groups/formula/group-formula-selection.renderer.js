@@ -9,10 +9,7 @@ const FormulaSelection = require("../../../components/formula-selection").Formul
 const capitalize = require("../../../utils/functions").Utils.capitalize;
 const SpaRenderer  = require("core/spa/spa-renderer").default;
 
-window.pageRenderers = window.pageRenderers || {};
-window.pageRenderers.group = window.pageRenderers.group || {};
-window.pageRenderers.group.formulaSelection = window.pageRenderers.group.formulaSelection || {};
-window.pageRenderers.group.formulaSelection.renderer = (renderId, {groupId, warningMessage}) => {
+export const renderer = (renderId, {groupId, warningMessage}) => {
 
   const messageTexts = {
     "formulas_saved": <p>{t("Formula saved. Apply the ")}<a
