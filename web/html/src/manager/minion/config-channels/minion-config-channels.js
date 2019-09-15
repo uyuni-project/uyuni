@@ -46,7 +46,7 @@ function saveRequest(states) {
     );
 }
 
-SpaRenderer.renderNavigationReact(
+export const renderer = () => SpaRenderer.renderNavigationReact(
   <ConfigChannels matchUrl={matchUrl} saveRequest={saveRequest} applyRequest={applyRequest}/>,
   document.getElementById('config-channels')
 );
