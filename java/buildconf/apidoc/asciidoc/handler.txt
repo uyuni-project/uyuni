@@ -1,0 +1,67 @@
+
+
+
+[#$handler.name.replaceAll('\.', '_')]
+== $handler.name
+
+
+=== Available methods
+
+#foreach( $call in $handler.calls )
+* <<${handler.name.replaceAll('\.', '_')}-$call.name,$call.name>>
+#end
+
+=== Description
+
+$handler.desc
+
+*Namespace*:
+
+$handler.name
+
+'''
+
+#foreach( $call in $handler.calls )
+
+[#${handler.name.replaceAll('\.', '_')}-$call.name]
+#if($call.deprecated)
+=== Method: $call.name (Deprecated)
+#else
+=== Method: $call.name 
+#end
+
+Description:
+
+$call.doc
+
+
+#if($call.deprecated)
+Deprecated - $call.deprecatedReason
+#end
+
+
+Parameters:
+
+#foreach( $param in $call.params)
+#if ($param.trim().startsWith('*'))
+$param
+#else
+* $param
+#end
+#end
+
+Returns:
+
+#if ($call.returnDoc.trim().startsWith('*'))
+$call.returnDoc
+#else
+* $call.returnDoc
+#end
+
+#if($call.sinceAvailable)
+Available since API version: $call.sinceVersion
+#end
+
+'''
+
+#end

@@ -1,0 +1,146 @@
+= Sample Scripts
+
+== Perl Example
+
+This Perl example shows the `system.listUserSystems` call being used to get a
+list of systems a user has access to. In the example below, the name of each system will be printed.
+
+[source,perl]
+----
+#!/usr/bin/perl
+use Frontier::Client;
+
+my $HOST = 'manager.example.com';
+my $user = 'username';
+my $pass = 'password';
+
+my $client = new Frontier::Client(url => "http://$HOST/rpc/api");
+my $session = $client->call('auth.login',$user, $pass);
+
+my $systems = $client->call('system.listUserSystems', $session);
+foreach my $system (@$systems) {
+   print $system->{'name'}."\n";
+}
+$client->call('auth.logout', $session);
+----
+
+
+== Python 2 Example
+
+Below is an example of the `user.listUsers` call being used. Only the login of each
+user is printed.
+
+[source,python]
+----
+#!/usr/bin/python
+import xmlrpclib
+
+MANAGER_URL = "http://manager.example.com/rpc/api"
+MANAGER_LOGIN = "username"
+MANAGER_PASSWORD = "password"
+
+client = xmlrpclib.Server(MANAGER_URL, verbose=0)
+
+key = client.auth.login(MANAGER_LOGIN, MANAGER_PASSWORD)
+list = client.user.list_users(key)
+for user in list:
+  print user.get('login')
+
+client.auth.logout(key)
+----
+
+The following code shows how to use date-time parameters. This code will schedule immediate installation of package rhnlib-2.5.22.9.el6.noarch to system with id 1000000001.
+
+[source,python]
+----
+#!/usr/bin/python
+from datetime import datetime
+import time
+import xmlrpclib
+
+MANAGER_URL = "http://manager.example.com/rpc/api"
+MANAGER_LOGIN = "username"
+MANAGER_PASSWORD = "password"
+
+client = xmlrpclib.Server(MANAGER_URL, verbose=0)
+
+key = client.auth.login(MANAGER_LOGIN, MANAGER_PASSWORD)
+package_list = client.packages.findByNvrea(key, 'rhnlib', '2.5.22', '9.el6', '', 'noarch')
+today = datetime.today()
+earliest_occurrence = xmlrpclib.DateTime(today)
+client.system.schedulePackageInstall(key, 1000000001, package_list[0]['id'], earliest_occurrence)
+
+client.auth.logout(key)
+----
+
+== Python 3 with SSL Example
+
+Below is an example of the `user.listUsers` call being called.
+
+[source,python]
+----
+#!/usr/bin/env python3
+from xmlrpc.client import ServerProxy
+import ssl
+
+MANAGER_URL = "https://manager.example.com/rpc/api"
+MANAGER_LOGIN = "username"
+MANAGER_PASSWORD = "password"
+
+# You might need to set to set other options depending on your
+# server SSL configuartion and your local SSL configuration
+context = ssl.create_default_context()
+client = ServerProxy(MANAGER_URL, context=context)
+key = client.auth.login(MANAGER_LOGIN, MANAGER_PASSWORD)
+
+print(client.user.list_users(key))
+
+client.auth.logout(key)
+----
+
+
+== Python 3 Example
+
+Below is an example of the `user.listUsers` call being called.
+
+[source,python]
+----
+#!/usr/bin/env python3
+from xmlrpc.client import ServerProxy
+
+MANAGER_URL = "http://manager.example.com/rpc/api"
+MANAGER_LOGIN = "username"
+MANAGER_PASSWORD = "password"
+
+client = ServerProxy(MANAGER_URL)
+key = client.auth.login(MANAGER_LOGIN, MANAGER_PASSWORD)
+
+print(client.user.list_users(key))
+
+client.auth.logout(key)
+----
+
+== Ruby Example
+
+Below is an example of the `channel.listAllChannels` API call. List of channel labels is printed.
+
+[source,ruby]
+----
+#!/usr/bin/ruby
+require "xmlrpc/client"
+
+@MANAGER_URL = "http://manager.example.com/rpc/api"
+@MANAGER_LOGIN = "username"
+@MANAGER_PASSWORD = "password"
+
+@client = XMLRPC::Client.new2(@MANAGER_URL)
+
+@key = @client.call('auth.login', @MANAGER_LOGIN, @MANAGER_PASSWORD)
+channels = @client.call('channel.listAllChannels', @key)
+for channel in channels do
+   p channel["label"]
+end
+
+@client.call('auth.logout', @key)
+----
+
