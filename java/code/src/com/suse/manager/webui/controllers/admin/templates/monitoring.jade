@@ -5,9 +5,6 @@ include /templates/common.jade
 script(type='text/javascript').
     window.csrfToken = "#{csrf_token}";
 
-script(src='/javascript/manager/admin/config/monitoring.renderer.bundle.js?cb=#{webVersion}')
-
 script(type='text/javascript').
-    pageRenderers.admin.monitoring.renderer(
-        'monitoring'
-    );
+    spaImportReactPage('admin/config/monitoring')
+        .then(({renderer}) => renderer('monitoring'));

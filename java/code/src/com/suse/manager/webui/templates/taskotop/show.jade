@@ -5,4 +5,7 @@ script(type='text/javascript').
     window.csrfToken = "#{csrf_token}";
 
 +userPreferences
-script(src='/javascript/manager/admin/task-engine-status/taskotop.bundle.js?cb=#{webVersion}', type='text/javascript')
+
+script(type='text/javascript').
+    spaImportReactPage('admin/task-engine-status/taskotop')
+        .then(({renderer}) => renderer('taskotop'));

@@ -213,7 +213,7 @@ const ErrorMessage = (props) => <MessageContainer items={
   } />
 ;
 
-SpaRenderer.renderNavigationReact(
+export const renderer = () => SpaRenderer.renderNavigationReact(
   <TaskoTop refreshInterval={5 * 1000} />,
   document.getElementById("taskotop")
 );
