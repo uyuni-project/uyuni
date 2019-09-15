@@ -11,5 +11,6 @@ script(type='text/javascript').
     window.customDataKeys = !{customDataKeys};
     window.imageTypesDataFromTheServer = !{imageTypesDataFromTheServer};
 
-script(src='/javascript/manager/images/image-profile-edit.bundle.js?cb=#{webVersion}', type='text/javascript')
-
+script(type='text/javascript').
+    spaImportReactPage('images/image-profile-edit')
+        .then(({renderer}) => renderer('image-profile-edit'));

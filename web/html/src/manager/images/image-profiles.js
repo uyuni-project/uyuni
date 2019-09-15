@@ -196,7 +196,7 @@ class ImageProfiles extends React.Component {
   }
 }
 
-SpaRenderer.renderNavigationReact(
+export const renderer = () => SpaRenderer.renderNavigationReact(
   <ImageProfiles />,
   document.getElementById('image-profiles')
 )

@@ -7,5 +7,7 @@ script(type='text/javascript').
     window.isAdmin = #{isAdmin};
 
 +userPreferences
-script(src='/javascript/manager/images/image-profiles.bundle.js?cb=#{webVersion}', type='text/javascript')
 
+script(type='text/javascript').
+    spaImportReactPage('images/image-profiles')
+        .then(({renderer}) => renderer('image-profiles'));
