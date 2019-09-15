@@ -3,26 +3,26 @@ include ../../system-common.jade
 
 script(src='/javascript/momentjs/moment-with-langs.min.js?cb=#{webVersion}', type='text/javascript')
 script(src='/javascript/validator/validator.min.js?cb=#{webVersion}', type='text/javascript')
-script(src='/javascript/manager/virtualization/guests/create/guests-create.renderer.bundle.js?cb=#{webVersion}', type='text/javascript')
 
 script(type='text/javascript').
     window.csrfToken = "#{csrf_token}";
 +userPreferences
 
 script(type='text/javascript').
-    pageRenderers.guests.create.guestsCreateRenderer(
-        'virtualguests-create',
-        {
-            host: {
-                id: "#{server.id}",
-                cpu: {
-                    count: #{server.cpu.nrCPU},
-                    arch: "#{server.cpu.archName}"
-                },
-                saltEntitled: #{isSalt},
-            },
-            actionChains: !{actionChains},
-            timezone: "#{h.renderTimezone()}",
-            localTime: "#{h.renderLocalTime()}",
-        }
-    );
+    spaImportReactPage('virtualization/guests/create/guests-create')
+        .then(({renderer}) => renderer(
+          'virtualguests-create',
+          {
+              host: {
+                  id: "#{server.id}",
+                  cpu: {
+                      count: #{server.cpu.nrCPU},
+                      arch: "#{server.cpu.archName}"
+                  },
+                  saltEntitled: #{isSalt},
+              },
+              actionChains: !{actionChains},
+              timezone: "#{h.renderTimezone()}",
+              localTime: "#{h.renderLocalTime()}",
+          }
+        ));

@@ -2,10 +2,7 @@ import React from 'react';
 import GuestsConsole from './guests-console';
 import SpaRenderer from "core/spa/spa-renderer";
 
-window.pageRenderers = window.pageRenderers || {};
-window.pageRenderers.guests = window.pageRenderers.guests || {};
-window.pageRenderers.guests.console = window.pageRenderers.guests.console || {};
-window.pageRenderers.guests.console.guestsConsoleRenderer = (id, {
+export const renderer = (id, {
   hostId,
   guestUuid,
   guestName,
