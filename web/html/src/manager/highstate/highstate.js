@@ -219,7 +219,7 @@ class Highstate extends React.Component {
     }
 }
 
-SpaRenderer.renderNavigationReact(
+export const renderer = () => SpaRenderer.renderNavigationReact(
     <Highstate />,
     document.getElementById('highstate')
 );

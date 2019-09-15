@@ -1,5 +1,3 @@
-module.exports = {
-  entries: [
-    'highstate.js'
-  ]
-};
+export default {
+  'highstate/highstate': () => import('./highstate')
+}
