@@ -80,8 +80,8 @@ class FormulaDetail extends React.Component {
     }
 }
 
-SpaRenderer.renderNavigationReact(
+export const renderer = (id) => SpaRenderer.renderNavigationReact(
   <FormulaDetail />,
-  document.getElementById('formula-details')
+  document.getElementById(id)
 );
 

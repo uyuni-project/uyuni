@@ -1,8 +1,6 @@
-module.exports = {
-  entries: [
-    'cmd/remote-commands.js',
-    'formula-catalog/org-formula-catalog.renderer.js',
-    'formula-catalog/org-formula-details.js',
-    'keys/key-management.js'
-  ]
-};
+export default {
+  'salt/cmd/remote-commands': () => import('./cmd/remote-commands'),
+  'salt/formula-catalog/org-formula-catalog': () => import('./formula-catalog/org-formula-catalog.renderer'),
+  'salt/formula-catalog/org-formula-details': () => import('./formula-catalog/org-formula-details'),
+  'salt/keys/key-management': () => import('./keys/key-management')
+}
