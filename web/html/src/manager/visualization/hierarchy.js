@@ -247,7 +247,7 @@ class Hierarchy extends React.Component {
   }
 }
 
-SpaRenderer.renderNavigationReact(
+export const renderer = id => SpaRenderer.renderNavigationReact(
   <Hierarchy />,
-  document.getElementById('hierarchy')
+  document.getElementById(id)
 );

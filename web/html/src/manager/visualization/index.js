@@ -1,5 +1,3 @@
-module.exports = {
-  entries: [
-    'hierarchy.js'
-  ]
-};
+export default {
+  'visualization/hierarchy': () => import('./hierarchy')
+}
