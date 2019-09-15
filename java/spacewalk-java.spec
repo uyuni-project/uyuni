@@ -445,11 +445,6 @@ install -d -m 775 $RPM_BUILD_ROOT/srv/susemanager/pillar_data/images
 install -d $RPM_BUILD_ROOT/srv/susemanager/formula_data
 install -d $RPM_BUILD_ROOT/srv/susemanager/tmp
 
-#######################################
-# this overwrite all the setting above!
-#######################################
-cp conf/default/rhn_hibernate.conf.SUSE conf/default/rhn_hibernate.conf
-
 install -m 644 conf/default/rhn_hibernate.conf $RPM_BUILD_ROOT%{_prefix}/share/rhn/config-defaults/rhn_hibernate.conf
 install -m 644 conf/default/rhn_taskomatic_daemon.conf $RPM_BUILD_ROOT%{_prefix}/share/rhn/config-defaults/rhn_taskomatic_daemon.conf
 install -m 644 conf/default/taskomatic.conf $RPM_BUILD_ROOT%{_sysconfdir}/rhn/taskomatic.conf
