@@ -893,7 +893,7 @@ class ChannelList extends React.Component {
   }
 }
 
-SpaRenderer.renderNavigationReact(
+export const renderer = () => SpaRenderer.renderNavigationReact(
   <ProductsPageWrapper />,
   document.getElementById('products')
 );

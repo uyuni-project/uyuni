@@ -9,4 +9,7 @@ script(type='text/javascript').
     window.scc_refresh_file_locked_status = #{refreshFileLocked};
 
 +userPreferences
-script(src='/javascript/manager/admin/setup/products/products.bundle.js?cb=#{webVersion}', type='text/javascript')
+
+script(type='text/javascript').
+    spaImportReactPage('admin/setup/products/products')
+        .then(({renderer}) => renderer('products'));
