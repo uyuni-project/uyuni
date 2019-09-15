@@ -161,6 +161,9 @@ public class ApiDoclet {
         else if (docType.equals("docbook")) {
             writer = new DocBookWriter();
         }
+        else if (docType.equals("asciidoc")) {
+            writer = new AsciidocWriter();
+        }
         else {
             writer = new JSPWriter();
         }
