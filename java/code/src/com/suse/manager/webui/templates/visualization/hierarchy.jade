@@ -10,4 +10,6 @@ script(type='text/javascript').
     window.title = "#{title}";
     window.view = "#{view}";
 
-script(src='/javascript/manager/visualization/hierarchy.bundle.js?cb=#{webVersion}', type='text/javascript')
+script(type='text/javascript').
+    spaImportReactPage('visualization/hierarchy')
+        .then(({renderer}) => renderer('hierarchy'));
