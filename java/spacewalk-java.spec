@@ -38,6 +38,7 @@
 %define apache_commons_el          jakarta-commons-el
 %define apache_commons_fileupload  jakarta-commons-fileupload
 %define apache_commons_validator   jakarta-commons-validator
+%define java_version    11
 %else
 %define appdir          %{_localstatedir}/lib/tomcat/webapps
 %define jardir          %{_localstatedir}/lib/tomcat/webapps/rhn/WEB-INF/lib
@@ -48,6 +49,7 @@
 %define apache_commons_el          apache-commons-el
 %define apache_commons_fileupload  apache-commons-fileupload
 %define apache_commons_validator   apache-commons-validator
+%define java_version    1:11
 %endif
 
 Name:           spacewalk-java
@@ -99,7 +101,7 @@ BuildRequires:  %{apache_commons_discovery}
 BuildRequires:  %{apache_commons_el}
 BuildRequires:  %{apache_commons_fileupload}
 BuildRequires:  %{apache_commons_validator}
-BuildRequires:  java-devel >= 11
+BuildRequires:  java-devel >= %{java_version}
 BuildRequires:  java-saml
 BuildRequires:  javapackages-tools
 BuildRequires:  javassist
@@ -167,7 +169,7 @@ Requires:       hibernate5
 Requires:       httpcomponents-client
 Requires:       jade4j
 Requires:       jakarta-commons-digester
-Requires:       java >= 11
+Requires:       java >= %{java_version}
 Requires:       java-saml
 Requires:       javapackages-tools
 Requires:       javassist
@@ -330,7 +332,7 @@ Requires:       hibernate-commons-annotations
 Requires:       hibernate5
 Requires:       httpcomponents-client
 Requires:       httpcomponents-core
-Requires:       java >= 11
+Requires:       java >= %{java_version}
 Requires:       javassist
 Requires:       jboss-logging
 Requires:       jcommon
