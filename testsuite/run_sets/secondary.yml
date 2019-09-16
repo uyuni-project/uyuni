@@ -9,6 +9,7 @@
 # IDEMPOTENT
 
 - features/secondary/srv_users.feature
+- features/secondary/min_osimage_build_image.feature
 - features/secondary/allcli_reboot.feature
 - features/secondary/trad_config_channel.feature
 - features/secondary/trad_lock_packages.feature
@@ -23,8 +24,6 @@
 - features/secondary/trad_ssh_push.feature
 - features/secondary/srv_virtual_host_manager.feature
 - features/secondary/trad_baremetal_discovery.feature
-- features/secondary/proxy_retail_pxeboot.feature
-- features/secondary/proxy_retail_mass_import.feature
 - features/secondary/min_salt_minions_page.feature
 - features/secondary/min_empty_system_profiles.feature
 - features/secondary/srv_power_management.feature
