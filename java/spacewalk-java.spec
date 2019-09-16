@@ -32,10 +32,22 @@
 %define appdir          /srv/tomcat/webapps
 %define jardir          /srv/tomcat/webapps/rhn/WEB-INF/lib
 %define apache_group    www
+%define apache2         apache2
+%define ehcache         ehcache >= 2.10.1
+%define apache_commons_discovery   jakarta-commons-discovery
+%define apache_commons_el          jakarta-commons-el
+%define apache_commons_fileupload  jakarta-commons-fileupload
+%define apache_commons_validator   jakarta-commons-validator
 %else
 %define appdir          %{_localstatedir}/lib/tomcat/webapps
 %define jardir          %{_localstatedir}/lib/tomcat/webapps/rhn/WEB-INF/lib
 %define apache_group    apache
+%define apache2         httpd
+%define ehcache         ehcache-core >= 2.10.1
+%define apache_commons_discovery   apache-commons-discovery
+%define apache_commons_el          apache-commons-el
+%define apache_commons_fileupload  apache-commons-fileupload
+%define apache_commons_validator   apache-commons-validator
 %endif
 
 Name:           spacewalk-java
@@ -75,11 +87,7 @@ BuildRequires:  classpathx-mail
 BuildRequires:  concurrent
 BuildRequires:  dom4j
 BuildRequires:  dwr >= 3
-%if 0%{?suse_version}
-BuildRequires:  ehcache >= 2.10.1
-%else
-BuildRequires:  ehcache-core
-%endif
+BuildRequires:  %{ehcache}
 BuildRequires:  google-gson >= 2.2.4
 BuildRequires:  hibernate-commons-annotations
 BuildRequires:  hibernate5
@@ -87,17 +95,10 @@ BuildRequires:  httpcomponents-asyncclient
 BuildRequires:  httpcomponents-client
 BuildRequires:  jade4j
 BuildRequires:  jaf
-%if 0%{?suse_version}
-BuildRequires:  jakarta-commons-discovery
-BuildRequires:  jakarta-commons-el
-BuildRequires:  jakarta-commons-fileupload
-BuildRequires:  jakarta-commons-validator
-%else
-BuildRequires:  apache-commons-discovery
-BuildRequires:  apache-commons-el
-BuildRequires:  apache-commons-fileupload
-BuildRequires:  apache-commons-validator
-%endif
+BuildRequires:  %{apache_commons_discovery}
+BuildRequires:  %{apache_commons_el}
+BuildRequires:  %{apache_commons_fileupload}
+BuildRequires:  %{apache_commons_validator}
 BuildRequires:  java-devel >= 11
 BuildRequires:  java-saml
 BuildRequires:  javapackages-tools
@@ -158,7 +159,7 @@ Requires:       classpathx-mail
 Requires:       cobbler >= 3.0.0
 Requires:       concurrent
 Requires:       dwr >= 3
-Requires:       ehcache >= 2.10.1
+Requires:       %{ehcache}
 Requires:       gnu-jaf
 Requires:       google-gson >= 2.2.4
 Requires:       hibernate-commons-annotations
@@ -187,15 +188,9 @@ Requires:       sudo
 Requires:       susemanager-docs_en
 Requires:       tomcat-taglibs-standard
 Requires(pre):  uyuni-base-server
-%if 0%{?suse_version}
-Requires:       jakarta-commons-discovery
-Requires:       jakarta-commons-el
-Requires:       jakarta-commons-fileupload
-%else
-Requires:       apache-commons-discovery
-Requires:       apache-commons-el
-Requires:       apache-commons-fileupload
-%endif
+Requires:       %{apache_commons_discovery}
+Requires:       %{apache_commons_el}
+Requires:       %{apache_commons_fileupload}
 Requires:       jcommon
 Requires:       jdom
 Requires:       jta
@@ -240,7 +235,7 @@ This package contains the code for the Java version of the Spacewalk Web Site.
 %package config
 Summary:        Configuration files for Spacewalk Java
 Group:          Applications/Internet
-Requires(post): apache2
+Requires(post): %{apache2}
 Requires(post): tomcat
 Obsoletes:      rhn-java-config < 5.3.0
 Obsoletes:      rhn-java-config-sat < 5.3.0
@@ -330,7 +325,7 @@ Requires:       classmate
 %endif
 Requires:       cobbler >= 3.0.0
 Requires:       concurrent
-Requires:       ehcache >= 2.10.1
+Requires:       %{ehcache}
 Requires:       hibernate-commons-annotations
 Requires:       hibernate5
 Requires:       httpcomponents-client
