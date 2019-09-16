@@ -828,6 +828,8 @@ if [ "$DO_SETUP" = "1" -o "$DO_MIGRATION" = "1" ]; then
             /usr/sbin/spacewalk-service stop
             systemctl restart postgresql
             /usr/sbin/spacewalk-service start
+            systemctl --quiet enable spacewalk-diskcheck.timer
+            systemctl start spacewalk-diskcheck.timer
         fi
     fi
 fi

@@ -590,6 +590,9 @@ ln -s rhn-satellite-exporter $RPM_BUILD_ROOT/usr/bin/mgr-exporter
 
 install -m 644 rhn-conf/signing.cnf $RPM_BUILD_ROOT%{rhnconf}/signing.conf
 
+install -m 644 satellite_tools/spacewalk-diskcheck.service $RPM_BUILD_ROOT/%{_unitdir}
+install -m 644 satellite_tools/spacewalk-diskcheck.timer $RPM_BUILD_ROOT/%{_unitdir}
+
 %find_lang %{name}-server
 
 %if 0%{?is_opensuse}
@@ -1057,6 +1060,7 @@ rm -f %{rhnconf}/rhnSecret.py*
 %attr(755,root,root) %{_bindir}/spacewalk-fips-tool
 %attr(755,root,root) %{_bindir}/mgr-sign-metadata
 %attr(755,root,root) %{_bindir}/mgr-sign-metadata-ctl
+%attr(755,root,root) %{_bindir}/spacewalk-diskcheck
 %{pythonrhnroot}/satellite_tools/contentRemove.py*
 %{pythonrhnroot}/satellite_tools/SequenceServer.py*
 %{pythonrhnroot}/satellite_tools/messages.py*
@@ -1115,6 +1119,8 @@ rm -f %{rhnconf}/rhnSecret.py*
 %{_mandir}/man8/spacewalk-data-fsck.8*
 %{_mandir}/man8/spacewalk-update-signatures.8*
 %{_mandir}/man8/update-packages.8*
+%attr(644, root, root) %{_unitdir}/spacewalk-diskcheck.service
+%attr(644, root, root) %{_unitdir}/spacewalk-diskcheck.timer
 
 %files xml-export-libs
 %defattr(-,root,root)

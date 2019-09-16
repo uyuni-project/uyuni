@@ -1,3 +1,4 @@
+- enable and start disk space checker script during setup
 - remove creating group susemanager and require uyuni-base-server
   which does it now
 - ensure working directory is /root during setup (bsc#1148169)
