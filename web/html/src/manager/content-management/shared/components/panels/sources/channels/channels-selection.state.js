@@ -8,7 +8,7 @@ import type {ChannelType} from "core/channels/type/channels.type";
 import {getAllRecommentedIdsByBaseId} from "core/channels/utils/channels-state.utils";
 import {getChannelsToToggleWithDependencies} from "core/channels/utils/channels-dependencies.utils";
 
-export type FilterType = {id: string, text: string, isVisible: (ChannelType) => boolean}
+export type FilterType = {id: string, text: string, isVisible: (ChannelType) => boolean, selectedByDefault: boolean}
 export type FiltersType = { [key: string]: FilterType }
 
 export const channelsFiltersAvailable: FiltersType = {
@@ -16,22 +16,27 @@ export const channelsFiltersAvailable: FiltersType = {
     id: 'vendors',
     text: 'Vendors',
     isVisible: (c: ChannelType) => !c.custom,
+    selectedByDefault: true,
   },
   custom: {
     id: 'custom',
     text: 'Custom',
     isVisible: (c: ChannelType) => c.custom && !c.isCloned,
+    selectedByDefault: true,
   },
   clones: {
     id: 'clones',
     text: 'Clones',
     isVisible: (c: ChannelType) => c.isCloned,
+    selectedByDefault: false,
   }
 }
 
 export const getChannelsFiltersAvailableValues = (): Array<FilterType> => (Object.values(channelsFiltersAvailable) : any);
 
-export const getInitialFiltersState = (): Array<string> => Object.keys(channelsFiltersAvailable);
+export const getInitialFiltersState = (): Array<string> => getChannelsFiltersAvailableValues()
+  .filter(filter => filter.selectedByDefault)
+  .map(filter => filter.id) || [];
 
 
 export type StateChannelsSelectionType = {
