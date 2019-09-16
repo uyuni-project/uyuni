@@ -5,7 +5,7 @@ Feature: Action chain on salt minions
 
   Scenario: Pre-requisite: downgrade repositories to lower version on Salt minion
     Given I am authorized as "admin" with password "admin"
-    When I run "zypper -n mr -e Devel_Galaxy_BuildRepo" on "sle-minion"
+    When I run "zypper -n mr -e Test-Packages_Pool" on "sle-minion"
     And I run "zypper -n rm andromeda-dummy" on "sle-minion" without error control
     And I run "zypper -n rm virgo-dummy" on "sle-minion" without error control
     And I run "zypper -n in milkyway-dummy" on "sle-minion" without error control
@@ -305,7 +305,7 @@ Feature: Action chain on salt minions
     When I run "zypper -n rm andromeda-dummy" on "sle-minion" without error control
     And I run "zypper -n rm virgo-dummy" on "sle-minion" without error control
     And I run "zypper -n rm milkyway-dummy" on "sle-minion" without error control
-    And I run "zypper -n mr -d Devel_Galaxy_BuildRepo" on "sle-minion" without error control
+    And I run "zypper -n mr -d Test-Packages_Pool" on "sle-minion" without error control
 
   Scenario: Cleanup: remove temporary files for testing action chains on Salt minion
     When I run "rm -f /tmp/action_chain.log" on "sle-minion" without error control

@@ -4,7 +4,7 @@
 Feature: Install a patch on the client via Salt through the UI
 
   Scenario: Pre-requisite: install virgo-dummy-1.0 packages
-    When I enable repository "Devel_Galaxy_BuildRepo" on this "sle-minion"
+    When I enable repository "Test-Packages_Pool" on this "sle-minion"
     And I run "zypper -n ref" on "sle-minion"
     And I run "zypper -n in --oldpackage virgo-dummy-1.0" on "sle-minion" without error control
 
@@ -38,7 +38,6 @@ Feature: Install a patch on the client via Salt through the UI
     And I wait for "virgo-dummy-2.0-1.1" to be installed on this "sle-minion"
 
   Scenario: Cleanup: remove virgo-dummy packages from SLES minion
-    Given I am authorized as "admin" with password "admin"
-    And I run "zypper -n mr -d Devel_Galaxy_BuildRepo" on "sle-minion"
+    When I disable repository "Test-Packages_Pool" on this "sle-minion"
     And I run "zypper -n rm virgo-dummy" on "sle-minion" without error control
     And I run "zypper -n ref" on "sle-minion"

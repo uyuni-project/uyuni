@@ -12,7 +12,7 @@ Feature: Add a repository to a channel
     When I follow the left menu "Software > Manage Software Channels > Manage Repositories"
     And I follow "Create Repository"
     And I enter "Test-Repository-x86_64" as "label"
-    And I enter "http://localhost/pub/TestRepo/" as "url"
+    And I enter "http://localhost/pub/TestRepoRpmUpdates/" as "url"
     And I click on "Create Repository"
     Then I should see a "Repository created successfully" text
     And I should see "metadataSigned" as checked
@@ -49,7 +49,7 @@ Feature: Add a repository to a channel
     When I follow the left menu "Software > Manage Software Channels > Manage Repositories"
     And I follow "Create Repository"
     And I enter "Test-Repository-i586" as "label"
-    And I enter "file:///srv/www/htdocs/pub/TestRepo/" as "url"
+    And I enter "file:///srv/www/htdocs/pub/TestRepoRpmUpdates/" as "url"
     And I uncheck "metadataSigned"
     And I click on "Create Repository"
     Then I should see a "Repository created successfully" text

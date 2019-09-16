@@ -39,8 +39,8 @@ Since each features need to be idempotent, you need to:
 
 Basically, we use 2 repositories for test packages:
 
-1) `Devel_Galaxy_BuildRepo`: contains lower version of packages, and is disabled by default;
-2) `Test channel`: contains patches with higher version of packages, and is enabled. It is created by core features.
+1) `Test-Packages_Pool`: contains lower version of packages, and is disabled by default;
+2) `Test-Packages_Updates`: contains patches with higher version of packages, and is enabled. The associated channels are created by core features.
 
 Typical workflow for patches test:
 
