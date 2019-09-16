@@ -1,3 +1,4 @@
+- CLM - Disable clones by default of the shown CLM Project sources
 - Show virtual storage volumes and pools on salt minions
 - Migrate login to Spark
 - Add UI message when salt-formulas system folders are unreachable (bsc#1142309)
