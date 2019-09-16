@@ -16,6 +16,11 @@
 # Please submit bugfixes or comments via https://bugs.opensuse.org/
 #
 
+%if 0%{?suse_version}
+%define java_version   11
+%else
+%define java_version   1:11
+%endif
 
 Name:           spacewalk-search
 Summary:        Spacewalk Full Text Search Server
@@ -46,7 +51,7 @@ BuildRequires:  doc-indexes
 BuildRequires:  hadoop
 BuildRequires:  jakarta-commons-httpclient
 BuildRequires:  jakarta-oro
-BuildRequires:  java-devel >= 11
+BuildRequires:  java-devel >= %{java_version}
 BuildRequires:  javapackages-tools
 BuildRequires:  junit
 BuildRequires:  lucene == 2.4.1
