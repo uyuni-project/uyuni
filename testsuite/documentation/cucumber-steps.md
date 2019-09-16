@@ -322,7 +322,7 @@ The check box can be identified by name, id or label text.
   When I check the row with the "sle-client" hostname
   When I check the row with the "suse_docker_admin" text
   When I check "New Test Channel" in the list
-  When I uncheck "hoag-dummy-1.1-2.1" in the list
+  When I uncheck "hoag-dummy-1.1-1.1" in the list
 ```
 
 (will be unified)
@@ -399,8 +399,8 @@ The check box can be identified by name, id or label text.
 * Repositories
 
 ```cucumber
-  When I enable repository "Devel_Galaxy_BuildRepo" on this "sle-minion"
-  When I disable repository "Devel_Galaxy_BuildRepo" on this "sle-minion"
+  When I enable repository "Test-Packages_Pool" on this "sle-minion"
+  When I disable repository "Test-Packages_Pool" on this "sle-minion"
 ```
 
 * Packages
@@ -498,7 +498,7 @@ The check box can be identified by name, id or label text.
 * Execute spacewalk-repo-sync
 
 ```cucumber
-  When I call spacewalk-repo-sync for channel "test_base_channel" with a custom url "http://localhost/pub/TestRepo/"
+  When I call spacewalk-repo-sync for channel "test_base_channel" with a custom url "http://localhost/pub/TestRepoRpmUpdates/"
 ```
 
 
