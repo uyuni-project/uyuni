@@ -1,3 +1,4 @@
+- Return result in compatible type to what defined in database procedure (bsc#1150729)
 - Allow channels names to start with numbers
 - Fix: handle special deb package names (bsc#1150113)
 - Remove extra spaces in dependencies fields in Debian repo Packages file (bsc#1145551)

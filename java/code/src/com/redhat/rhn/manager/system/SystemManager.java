@@ -3557,11 +3557,10 @@ public class SystemManager extends BaseManager {
         params.put("value", value);
 
         Map<String, Integer> out = new HashMap<String, Integer>();
-        out.put("retval", Types.NUMERIC);
+        out.put("retval", Types.INTEGER);
 
         Map<String, Object> result = mode.execute(params, out);
-        Long retval = (Long) result.get("retval");
-        log.debug("bulk_set_custom_value returns: " + retval.intValue());
+        log.debug("bulk_set_custom_value returns: " + result.get("retval"));
     }
 
     /**
