@@ -90,6 +90,7 @@
 # OS image build tests are required for proxy_retail_pxeboot feature
 - features/secondary/min_osimage_build_image.feature
 - features/secondary/min_salt_install_package.feature
+- features/secondary/minssh_salt_install_package.feature
 - features/secondary/srv_power_management.feature
 - features/secondary/srv_datepicker.feature
 - features/secondary/trad_openscap_audit.feature
