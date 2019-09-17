@@ -1,3 +1,4 @@
+- BuildRequires: systemd for spacewalk-diskcheck
 - add option spacecheck_shutdown; tidy up wording of notifications
 - add disk space checker script
 - Prevent "reposync" crash when handling metadata on RPM repos (bsc#1138358)
