@@ -108,8 +108,15 @@ When(/^I get OS information of "([^"]*)" from the Master$/) do |host|
   $output, _code = $server.run("salt #{system_name} grains.get osfullname")
 end
 
-Then(/^it should contain a "(.*?)" text$/) do |content|
+Then(/^it should contain a "([^"]*?)" text$/) do |content|
   assert_match(/#{content}/, $output)
+end
+
+Then(/^it should contain the OS of "([^"]*)"$/) do |host|
+  node = get_target(host)
+  os_version, os_family = get_os_version(node)
+  family = os_family =~ /^opensuse/ ? 'Leap' : 'SLES'
+  assert_match(/#{family}/, $output)
 end
 
 When(/^I apply state "([^"]*)" to "([^"]*)"$/) do |state, host|
