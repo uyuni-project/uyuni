@@ -111,6 +111,12 @@ export const clmFilterOptions : ClmFilterOptionsEnumType = {
     entityType: filterEntity.ERRATUM,
     matchers: [filterMatchers.EQUALS, filterMatchers.CONTAINS, filterMatchers.MATCHES]
   },
+  KEYWORD: {
+    key: 'keyword',
+    text: t('Keyword'),
+    entityType: filterEntity.ERRATUM,
+    matchers: [filterMatchers.CONTAINS]
+  },
   ISSUE_DATE: {
     key: 'issue_date',
     text: t('Issue date'),
