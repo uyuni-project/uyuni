@@ -91,6 +91,7 @@
 # Disabled until the pxe-formula and branch-formula are compatible with openSUSE Leap 15.1
 #- features/secondary/min_osimage_build_image.feature
 - features/secondary/min_salt_install_package.feature
+- features/secondary/minssh_salt_install_package.feature
 - features/secondary/srv_power_management.feature
 - features/secondary/srv_datepicker.feature
 - features/secondary/trad_openscap_audit.feature
