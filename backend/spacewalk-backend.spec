@@ -448,6 +448,9 @@ Group:          Applications/Internet
 Requires:       %{name}
 Requires:       %{name}-app = %{version}-%{release}
 Requires:       %{name}-xmlrpc = %{version}-%{release}
+BuildRequires:  systemd
+%{?systemd_requires}
+
 %if 0%{?build_py3}
 Requires:       python3-python-dateutil
 Requires:       python3-gzipstream
