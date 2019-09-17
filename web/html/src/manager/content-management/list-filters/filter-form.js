@@ -257,11 +257,12 @@ const FilterForm = (props: Props) => {
             items={[
               {"label": t("Reboot Required"), "value": "reboot_suggested"},
               {"label": t("Package Manager Restart Required"), "value": "restart_suggested"},
-              {"label": t("Other Keyword:"), "value": ""}
             ]}
+            openOption
             label={t("Advisory Keywords")}
             labelClass="col-md-3"
-            divClass="col-md-6" />
+            divClass="col-md-6"
+          />
         }
 
         {
