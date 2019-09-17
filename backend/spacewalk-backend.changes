@@ -1,3 +1,4 @@
+- create /usr/lib/systemd/systemd during build
 - BuildRequires: systemd for spacewalk-diskcheck
 - add option spacecheck_shutdown; tidy up wording of notifications
 - add disk space checker script
