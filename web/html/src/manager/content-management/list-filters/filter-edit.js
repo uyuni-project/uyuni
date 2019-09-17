@@ -130,7 +130,11 @@ const FilterEdit = (props: FilterEditProps) => {
                         text={t('Cancel')}
                         handler={() => {
                           cancelAction();
-                          closeDialog(modalNameId);
+                          if(!_isEmpty(props.projectLabel)) {
+                            redirectToProject(props.projectLabel);
+                          } else {
+                           closeDialog(modalNameId);
+                          }
                         }}
                       />
                       <Button
@@ -146,7 +150,6 @@ const FilterEdit = (props: FilterEditProps) => {
                               onAction(mapFilterFormToRequest(item, props.projectLabel, localTime), "update", item.id)
                                 .then((updatedListOfFilters) => {
                                   if(!_isEmpty(props.projectLabel)){
-                                    closeDialog(modalNameId);
                                     redirectToProject(props.projectLabel);
                                   } else {
                                     closeDialog(modalNameId);
@@ -161,7 +164,6 @@ const FilterEdit = (props: FilterEditProps) => {
                               onAction(mapFilterFormToRequest(item, props.projectLabel, localTime), "create")
                                 .then((updatedListOfFilters) => {
                                   if(!_isEmpty(props.projectLabel)){
-                                    closeDialog(modalNameId);
                                     redirectToProject(props.projectLabel);
                                   } else {
                                     closeDialog(modalNameId);
