@@ -15,7 +15,20 @@ namespace :cucumber do
       html_results = "-f html -o output_#{filename}.html"
       cucumber_opts = %W[#{html_results} #{json_results} #{junit_results} -f rerun --out failed.txt -f pretty -r features]
       features = YAML.safe_load(File.read(entry))
-      t.cucumber_opts = cucumber_opts + features
+      t.cucumber_opts = cucumber_opts + features unless features.nil?
+    end
+  end
+  at_exit { post_nodejs_report }
+end
+
+namespace :parallel do
+  Dir.glob(File.join(Dir.pwd, 'run_sets', '*.yml')).each do |entry|
+    run_set = File.basename(entry, '.yml').to_sym
+    desc "Run Cucumber #{run_set} features in parallel"
+    task "#{run_set}" do
+      features = YAML.safe_load(File.read(File.join(Dir.pwd, 'run_sets', "#{run_set}.yml"))).join(' ')
+      cucumber_opts = "-f html -o output_#{run_set}-$TEST_ENV_NUMBER.html -f json -o output_#{run_set}-$TEST_ENV_NUMBER.json #{junit_results} -f rerun --out failed.txt -f CustomFormatter::PrettyFormatter -r features "
+      sh "bundle exec parallel_cucumber -n 5 -o '#{cucumber_opts}' #{features}"
     end
   end
   at_exit { post_nodejs_report }
@@ -24,31 +37,14 @@ end
 def post_nodejs_report
   sh 'rm -rf ./cucumber_report && mkdir cucumber_report', verbose: false
   sh 'timeout 60 bash -c -- "while find output*.json -type f -size 0 | grep json; do sleep 1;done"', verbose: false
-  sh 'node index.js'
+  sh 'node index.js &> cucumber_reporter.log', verbose: false
 end
 
-task :cucumber do
+task :cucumber_testsuite do
   Rake::Task['cucumber:testsuite'].invoke
 end
 
-task default: [:cucumber]
-
-namespace :parallel do
-  desc 'Run Cucumber init_clients features in parallel'
-  task :init_clients do
-    features = YAML.safe_load(File.read(File.join(Dir.pwd, 'run_sets', 'init_clients.yml'))).join(' ')
-    cucumber_opts = "-f html -o output_init_clients-$TEST_ENV_NUMBER.html -f json -o output_init_clients-$TEST_ENV_NUMBER.json #{junit_results} -f rerun --out failed.txt -f CustomFormatter::PrettyFormatter -r features "
-    sh "bundle exec parallel_cucumber -n 5 -o '#{cucumber_opts}' #{features}"
-  end
-
-  desc 'Run Cucumber secondary features in parallel'
-  task :secondary_parallelizable do
-    features = YAML.safe_load(File.read(File.join(Dir.pwd, 'run_sets', 'secondary_parallelizable.yml'))).join(' ')
-    cucumber_opts = "-f html -o output_secondary-$TEST_ENV_NUMBER.html -f json -o output_secondary-$TEST_ENV_NUMBER.json #{junit_results} -f CustomFormatter::PrettyFormatter -r features "
-    sh "bundle exec parallel_cucumber -n 4 -o '#{cucumber_opts}' #{features}"
-  end
-  at_exit { post_nodejs_report }
-end
+task default: [:cucumber_testsuite]
 
 namespace :utils do
   desc 'Generate feature file for a client from a template and include it in a yaml file'
