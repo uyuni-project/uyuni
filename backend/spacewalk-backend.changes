@@ -1,3 +1,4 @@
+- add option spacecheck_shutdown; tidy up wording of notifications
 - add disk space checker script
 
 -------------------------------------------------------------------
