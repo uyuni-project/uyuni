@@ -543,6 +543,7 @@ public class ContentManagementHandler extends BaseHandler {
      * #itemlist()
      *   #item("by advisory name - field:advisory_name matcher:equals")
      *   #item("by synopsis - field:synopsis matcher:equals or contains")
+     *   #item("by keyword - field:keyword matcher:contains")
      *   #item("by date - field:issue_date matcher:greater or greatereq")
      *   #item("by type - field:advisory_type matcher:equals")
      *   #item("by affected package name - field:package_name matcher:contains_pkg_name")
