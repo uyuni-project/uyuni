@@ -10,6 +10,7 @@ EMAIL_ADDRESS=`grep ^traceback_mail /etc/rhn/rhn.conf | sed -e "s/.*=[[:blank:]]
 SPACECHECKDIRS=`grep ^spacecheck_dirs /etc/rhn/rhn.conf | sed -e "s/.*=[[:blank:]]*//"`
 SPACECHECKALERT=`grep ^spacecheck_free_alert /etc/rhn/rhn.conf | sed -e "s/.*=[[:blank:]]*//"`
 SPACECHECKCRIT=`grep ^spacecheck_free_critical /etc/rhn/rhn.conf | sed -e "s/.*=[[:blank:]]*//"`
+SPACECHECKSHUTDOWN=`grep ^spacecheck_shutdown /etc/rhn/rhn.conf | sed -e "s/.*=[[:blank:]]*//"`
 
 if [ "x$EMAIL_ADDRESS" = "x" ]; then
     EMAIL_ADDRESS="root@localhost"
@@ -22,6 +23,9 @@ if [ "x$SPACECHECKALERT" = "x" ] || [ "$SPACECHECKALERT" -gt 90 ]; then
 fi
 if [ "x$SPACECHECKCRIT" = "x" ] || [ "$SPACECHECKCRIT" -ge "$SPACECHECKALERT" ]; then
     SPACECHECKCRIT=$(($SPACECHECKALERT / 2))
+fi
+if [ "x$SPACECHECKSHUTDOWN" = "x" ]; then
+    SPACECHECKSHUTDOWN="true"
 fi
 
 STOPCHECK=0
@@ -36,38 +40,53 @@ do
     USEDSPACE=`df -PH $DIR | tail -1 | awk '{print $5}' | sed -e"s/\%//"`
     FREESPACE=$((100 - $USEDSPACE))
     if [ $FREESPACE -lt $SPACECHECKCRIT ] && [ "$STOPCHECK" = "0" ]; then
-        logger "SPACECHECK CRITICAL: Less than $SPACECHECKCRIT% of space available on $DIR - shutting down!"
-        cat << EOF | mail -Ssendwait -s "SPACECHECK CRITICAL: Less than $SPACECHECKCRIT% of space available on $DIR" $EMAIL_ADDRESS
-ATTENTION!
-
-Available space on $DIR has dropped below $SPACECHECKCRIT%, so SUSE Manager services
-have been shut down automatically to prevent running out of disk space!
+        if [ "$SPACECHECKSHUTDOWN" = "true" ]; then
+            logger "SPACECHECK CRITICAL: Less than $SPACECHECKCRIT% of space available on $DIR - shutting down!"
+            cat << EOF | mail -Ssendwait -s "SPACECHECK CRITICAL: Less than $SPACECHECKCRIT% of space available on $DIR" $EMAIL_ADDRESS
+WARNING!
+Available space on $DIR is less than $SPACECHECKCRIT%.
+Some services have been shut down to avoid running out of disk space.
 EOF
-    STOPCHECK=1
+        else
+            logger "SPACECHECK CRITICAL: Less than $SPACECHECKCRIT% of space available on $DIR - NOT shutting down!"
+            cat << EOF | mail -Ssendwait -s "SPACECHECK CRITICAL: Less than $SPACECHECKCRIT% of space available on $DIR" $EMAIL_ADDRESS
+WARNING!
+Available space on $DIR is less than $SPACECHECKCRIT%.
+Automatic shutdown of services is disabled.
+You must shut down services to avoid running out of disk space.
+EOF
+        fi
+        STOPCHECK=1
+        break
     elif [ $FREESPACE -lt $SPACECHECKALERT ] && [ "$STOPCHECK" = "0" ]; then
         logger "SPACECHECK ALERT: Less than $SPACECHECKALERT% of space available on $DIR"
         cat << EOF | mail -Ssendwait -s "SPACECHECK ALERT: Less than $SPACECHECKALERT% of space available on $DIR" $EMAIL_ADDRESS
-ATTENTION!
+IMPORTANT
 
-When available space on $DIR drops below $SPACECHECKCRIT%, SUSE Manager services
-will be shut down automatically to prevent running out of disk space!
+If you run out of disk space, SUSE Manager will stop running, and this could lead to a loss of data.
+To avoid this, when the available space on $DIR drops below $SPACECHECKCRIT%, SUSE Manager will shut
+down services automatically.
 
+You can adjust when this happens by editing the values in the /etc/rhn/rhn.conf configuration file.
+Changes will happen immediately, without restarting services.
 
-You can customize these values by adding the following lines to /etc/rhn/rhn.conf:
-Changes are in effect immediately; no need to restart anything.
-
-==========================================================================================
-# directories to monitor for free space; separated by blanks, no quotes!
+==========================================================================================================
+# The directories to monitor for available space. Separate multiple directories with a space:
 spacecheck_dirs = /var/lib/pgsql /var/spacewalk /var/cache /srv
-# if available space on any monitored directory drops below this value, send warn email
+
+# A warning email is triggered when free space in a monitored directory reaches this level (as a percentage):
 spacecheck_free_alert = 10
-# if available space on any monitored directory drops below this value, shut down services
+
+# A critical alert is triggered when free space in a monitored directory reaches this level (as a percentage):
 spacecheck_free_critical = 5
-==========================================================================================
+
+# Allow spacewalk services to be automatically shut down when free space reaches critical level:
+spacecheck_shutdown = true
+==========================================================================================================
 EOF
     fi
 done
 
-if [ "$STOPCHECK" = "1" ]; then
+if [ "$STOPCHECK" = "1" ] && [ "$SPACECHECKSHUTDOWN" = "true" ]; then
     spacewalk-service stop ; systemctl stop postgresql.service
 fi
