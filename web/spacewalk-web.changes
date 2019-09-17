@@ -1,3 +1,4 @@
+- Redirect to project when canceling creating a filter (bsc#1145750)
 - CLM - Disable clones by default of the shown CLM Project sources
 - Change form order and change project creation message (bsc#1145744)
 - Add UI message when salt-formulas system folders are unreachable (bsc#1142309)
