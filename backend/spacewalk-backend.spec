@@ -447,6 +447,7 @@ Group:          Applications/Internet
 Requires:       %{name}
 Requires:       %{name}-app = %{version}-%{release}
 Requires:       %{name}-xmlrpc = %{version}-%{release}
+Requires:       systemd
 BuildRequires:  systemd
 %{?systemd_requires}
 
