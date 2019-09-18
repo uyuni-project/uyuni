@@ -2,12 +2,7 @@
 # TaskomaticDaemon start script
 . /etc/rhn/taskomatic.conf
 
-TASKO_MEM_LINE=$(grep "taskomatic.java.maxmemory" /etc/rhn/rhn.conf)
-# Check if commented out
-if [[ $TASKO_MEM_LINE != \#* ]]; then
-  # strip whitespace and then get value after =
-  TASKO_MAX_MEMORY=$(echo $TASKO_MEM_LINE | sed -r 's/\s+//g' | sed 's/^.*=//');
-fi
+TASKO_MAX_MEMORY=`grep ^[[:blank:]]*taskomatic.java.maxmemory /etc/rhn/rhn.conf | sed -e "s/.*=[[:blank:]]*//"`
 
 TASKO_PARAMS="-Dibm.dst.compatibility=true -Dfile.encoding=UTF-8 -Xms${TASKO_INIT_MEMORY}m -Xmx${TASKO_MAX_MEMORY}m ${TASKO_CRASH_PARAMS} ${TASKO_JAVA_OPTS}"
 TASKO_CLASSPATH="${TASKO_RHN_CLASSPATH}:${TASKO_RHN_JARS}:${TASKO_JARS}"
