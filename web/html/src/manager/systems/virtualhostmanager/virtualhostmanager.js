@@ -18,7 +18,10 @@ const hashUrlRegex = /^#\/([^\/]*)(?:\/(.+))?$/;
 const msgModuleTypes = {
     "file": t('File-based'),
     "vmware": t('VMWare-based'),
-    "kubernetes": t('Kubernetes Cluster')
+    "kubernetes": t('Kubernetes Cluster'),
+    "amazonec2": t('Amazon EC2'),
+    "googlece": t('Google Compute Engine'),
+    "azure": t('Azure')
 }
 
 function getHashId() {
@@ -113,7 +116,7 @@ class VirtualHostManager extends React.Component {
     }
 
     getCreateType() {
-        const types = ["file", "vmware", "kubernetes"];
+        const types = ["file", "vmware", "kubernetes", "amazonec2", "googlece", "azure"];
         return types.includes(this.state.id) ? this.state.id : types[0];
     }
 
