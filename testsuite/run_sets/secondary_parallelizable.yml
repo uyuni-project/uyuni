@@ -32,6 +32,7 @@
 - features/secondary/srv_change_task_schedule.feature
 - features/secondary/srv_notifications.feature
 
+- features/secondary/proxy_retail_pxeboot_and_mass_import.feature
 - features/secondary/allcli_overview_systems_details.feature
 - features/secondary/allcli_system_group.feature
 - features/secondary/allcli_config_channel.feature
@@ -48,7 +49,6 @@
 - features/secondary/min_salt_install_with_staging.feature
 - features/secondary/min_salt_formulas.feature
 - features/secondary/min_docker_auth_registry.feature
-- features/secondary/min_osimage_build_image.feature
 - features/secondary/min_salt_install_package.feature
 - features/secondary/min_salt_openscap_audit.feature
 - features/secondary/min_salt_user_states.feature
