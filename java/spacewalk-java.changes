@@ -1,3 +1,4 @@
+- Add support for Azure, Amazon EC2, and Google Compute Engine as Virtual Host Managers.
 - allow ssl connections from Tomcat to Postgres (bsc#1149210)
 - use default in case taskomatic.java.maxmemory is unset
 - fix parsing of /etc/rhn/rhn.conf for taskomatic.java.maxmemory (bsc#1151097)
