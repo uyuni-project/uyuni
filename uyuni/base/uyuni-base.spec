@@ -57,7 +57,7 @@ Provides:       group(susemanager)
 Requires(pre):  uyuni-base-common
 Requires(pre):  %{_sbindir}/groupadd
 Requires(pre):  %{_sbindir}/usermod
-%if ! (0%{rhel} == 6 || 0%{suse_version} == 1110)
+%if ! (0%{?rhel} == 6 || 0%{?suse_version} == 1110)
 Requires(pre):  tomcat
 %endif
 Requires(pre):  salt
