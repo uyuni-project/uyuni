@@ -13,7 +13,6 @@
 {%- set bundle_dir = root_dir + '/images/' %}
 {%- set bundle_id  = pillar.get('build_id') %}
 {%- set activation_key = pillar.get('activation_key') %}
-{%- set kiwi_help = salt['cmd.run']('kiwi --help') %}
 
 # on SLES11 and SLES12 use legacy Kiwi, use Kiwi NG elsewhere
 {%- set use_kiwi_ng = not (salt['grains.get']('osfullname') == 'SLES' and salt['grains.get']('osmajorrelease')|int() < 15) %}
@@ -77,6 +76,7 @@ mgr_buildimage_kiwi_bundle:
 # KIWI Legacy
 #
 
+{%- set kiwi_help = salt['cmd.run']('kiwi --help') %}
 {%- set have_bundle_build = kiwi_help.find('--bundle-build') > 0 %}
 
 # i586 build on x86_64 host must be called with linux32
