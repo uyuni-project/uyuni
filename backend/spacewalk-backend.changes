@@ -1,3 +1,4 @@
+- Add script to update additional fields in the DB for existing Deb packages
 - use active values for diskchecker mails
 - parse restart_suggested flag from patches and set it as keywords (bsc#1151467)
 - Import additional fields for Deb packages
