@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Thu Sep 19 01:01:02 CEST 2019 - jgonzalez@suse.com
+
+- version 3.2.21-1
 - improve performance for retrieving the user permissions on channels (bsc#1140644)
 
 -------------------------------------------------------------------
