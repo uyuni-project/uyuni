@@ -102,6 +102,7 @@ public class VirtualInstanceManager extends BaseManager {
                 uuid = fixUuidIfSwappedUuidExists(uuid);
             }
             catch (IllegalArgumentException e) {
+                // Systems running in Public Clouds are able to reporting a real "uuid"
             }
 
             uuidsToRemove.remove(uuid);
@@ -166,6 +167,7 @@ public class VirtualInstanceManager extends BaseManager {
                         guid = fixUuidIfSwappedUuidExists(guid);
                     }
                     catch (IllegalArgumentException e) {
+                        // Systems running in Public Clouds are able to reporting a real "uuid"
                     }
 
                     uuidsToRemove.remove(guid);
