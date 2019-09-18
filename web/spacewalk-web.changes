@@ -1,3 +1,5 @@
+- Show loading spin while loading salt keys data (bsc#1150180)
+
 -------------------------------------------------------------------
 Thu Sep 19 00:53:01 CEST 2019 - jgonzalez@suse.com
 
