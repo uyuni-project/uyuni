@@ -1,3 +1,4 @@
+- Add new types needed for Azure, Amazon EC2 and Google CE
 - enable provisioning for salt clients
 - Allow package changelog entries with more than 3000 characters (bsc#1144889)
 
