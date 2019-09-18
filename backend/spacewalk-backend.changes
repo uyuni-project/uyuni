@@ -1,3 +1,4 @@
+- do not require parameters to start on column 1
 - Add Requires: systemd for completeness
 - create /usr/lib/systemd/systemd during build
 - BuildRequires: systemd for spacewalk-diskcheck
