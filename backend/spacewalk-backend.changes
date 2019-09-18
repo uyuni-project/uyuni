@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Thu Sep 19 00:48:35 CEST 2019 - jgonzalez@suse.com
+
+- version 2.8.57.19-1
 - remove credentials also from potential rhn.conf backup files in spacewalk-debug (bsc#1146419)
 - Do not make 'rhn-satellite-exporter' to crash with "AttributeError" (bsc#1146869)
 - spacewalk-remove-channel check that channel doesn't have cloned channels before deleting it (bsc#1138454)
