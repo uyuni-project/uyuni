@@ -89,11 +89,12 @@ mkdir -p %{buildroot}/var/spacewalk
 mkdir -p %{buildroot}/%{_prefix}/share/rhn/config-defaults
 
 %pre server
+%if ! 0%{?suse_version} == 1110
 getent group susemanager >/dev/null || %{_sbindir}/groupadd -r susemanager
 getent passwd salt >/dev/null && %{_sbindir}/usermod -a -G susemanager salt
 getent passwd tomcat >/dev/null && %{_sbindir}/usermod -a -G susemanager tomcat
 getent passwd wwwrun >/dev/null && %{_sbindir}/usermod -a -G susemanager wwwrun
-
+%endif
 
 %files common
 %defattr(-,root,root)
