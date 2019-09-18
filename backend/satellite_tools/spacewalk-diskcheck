@@ -6,11 +6,11 @@ if [ $? != 0 ]; then
     exit 0
 fi
 
-EMAIL_ADDRESS=`grep ^traceback_mail /etc/rhn/rhn.conf | sed -e "s/.*=[[:blank:]]*//"`
-SPACECHECKDIRS=`grep ^spacecheck_dirs /etc/rhn/rhn.conf | sed -e "s/.*=[[:blank:]]*//"`
-SPACECHECKALERT=`grep ^spacecheck_free_alert /etc/rhn/rhn.conf | sed -e "s/.*=[[:blank:]]*//"`
-SPACECHECKCRIT=`grep ^spacecheck_free_critical /etc/rhn/rhn.conf | sed -e "s/.*=[[:blank:]]*//"`
-SPACECHECKSHUTDOWN=`grep ^spacecheck_shutdown /etc/rhn/rhn.conf | sed -e "s/.*=[[:blank:]]*//"`
+EMAIL_ADDRESS=`grep ^[[:blank:]]*traceback_mail /etc/rhn/rhn.conf | sed -e "s/.*=[[:blank:]]*//"`
+SPACECHECKDIRS=`grep ^[[:blank:]]*spacecheck_dirs /etc/rhn/rhn.conf | sed -e "s/.*=[[:blank:]]*//"`
+SPACECHECKALERT=`grep ^[[:blank:]]*spacecheck_free_alert /etc/rhn/rhn.conf | sed -e "s/.*=[[:blank:]]*//"`
+SPACECHECKCRIT=`grep ^[[:blank:]]*spacecheck_free_critical /etc/rhn/rhn.conf | sed -e "s/.*=[[:blank:]]*//"`
+SPACECHECKSHUTDOWN=`grep ^[[:blank:]]*spacecheck_shutdown /etc/rhn/rhn.conf | sed -e "s/.*=[[:blank:]]*//"`
 
 if [ "x$EMAIL_ADDRESS" = "x" ]; then
     EMAIL_ADDRESS="root@localhost"
