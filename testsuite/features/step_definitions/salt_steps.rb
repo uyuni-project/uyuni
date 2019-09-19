@@ -380,10 +380,18 @@ When(/^I enter "([^"]*)" in (.*) field$/) do |value, field|
                'first partition size'            => 'partitioning#0#partitions#0#size_MiB',
                'first mount point'               => 'partitioning#0#partitions#0#mountpoint',
                'first OS image'                  => 'partitioning#0#partitions#0#image',
+               'first partition password'        => 'partitioning#0#partitions#0#luks_pass',
                'second partition id'             => 'partitioning#0#partitions#1#$key',
                'second partition size'           => 'partitioning#0#partitions#1#size_MiB',
                'second mount point'              => 'partitioning#0#partitions#1#mountpoint',
                'second OS image'                 => 'partitioning#0#partitions#1#image',
+               'second partition password'       => 'partitioning#0#partitions#1#luks_pass',
+               'third partition id'              => 'partitioning#0#partitions#2#$key',
+               'third partition size'            => 'partitioning#0#partitions#2#size_MiB',
+               'third filesystem format'         => 'partitioning#0#partitions#2#format',
+               'third mount point'               => 'partitioning#0#partitions#2#mountpoint',
+               'third OS image'                  => 'partitioning#0#partitions#2#image',
+               'third partition password'        => 'partitioning#0#partitions#2#luks_pass',
                'FTP server directory'            => 'vsftpd_config#anon_root' }
   fill_in fieldids[field], with: value
 end
