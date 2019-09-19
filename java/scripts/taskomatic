@@ -4,7 +4,10 @@
 
 TASKO_MAX_MEMORY=`grep ^[[:blank:]]*taskomatic.java.maxmemory /etc/rhn/rhn.conf | sed -e "s/.*=[[:blank:]]*//"`
 if [ "x$TASKO_MAX_MEMORY" = "x" ]; then
-    TASKO_MAX_MEMORY=2048
+    TASKO_MAX_MEMORY=`grep ^[[:blank:]]*taskomatic.java.maxmemory /usr/share/rhn/config-defaults/rhn.conf | sed -e "s/.*=[[:blank:]]*//"`
+    if [ "x$TASKO_MAX_MEMORY" = "x" ]; then
+        TASKO_MAX_MEMORY=2048
+    fi
 fi
 
 TASKO_PARAMS="-Dibm.dst.compatibility=true -Dfile.encoding=UTF-8 -Xms${TASKO_INIT_MEMORY}m -Xmx${TASKO_MAX_MEMORY}m ${TASKO_CRASH_PARAMS} ${TASKO_JAVA_OPTS}"
