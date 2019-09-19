@@ -69,7 +69,6 @@
 - features/secondary/srv_spacewalk_remove_channel_tool.feature
 - features/secondary/trad_cve_id_new_syntax.feature
 - features/secondary/trad_weak_deps.feature
-- features/secondary/srv_nagios.feature
 - features/secondary/srv_cve_audit.feature
 - features/secondary/min_salt_install_with_staging.feature
 - features/secondary/srv_xmlrpc_activationkey.feature
