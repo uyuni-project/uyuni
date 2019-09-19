@@ -97,7 +97,6 @@ public class VirtualInstanceManager extends BaseManager {
             long memory = info.getGuestProperties().getMemorySize();
 
             uuid = fixUuidIfSwappedUuidExists(uuid);
-
             uuidsToRemove.remove(uuid);
             VirtualInstanceType type = vinst.getVirtualInstanceType(
                     info.getGuestProperties().getVirtType());
@@ -157,7 +156,6 @@ public class VirtualInstanceManager extends BaseManager {
                     String guid = vmEntry.getValue().replaceAll("-", "");
 
                     guid = fixUuidIfSwappedUuidExists(guid);
-
                     uuidsToRemove.remove(guid);
                     List<VirtualInstance> virtualInstances =
                             vinst.lookupVirtualInstanceByUuid(guid);
