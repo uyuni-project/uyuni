@@ -1,3 +1,4 @@
+- Trim strings when creating/updating image stores/profiles (bsc#1133429)
 - Show loading spin while loading salt keys data (bsc#1150180)
 
 -------------------------------------------------------------------

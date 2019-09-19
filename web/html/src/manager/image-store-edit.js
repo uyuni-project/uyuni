@@ -77,6 +77,8 @@ class CreateImageStore extends React.Component {
       return false;
     }
 
+    model.label = model.label.trim();
+    model.uri = model.uri.trim();
     return Network.post(
       "/rhn/manager/api/cm/imagestores/update/" + storeId,
       JSON.stringify(model),
@@ -99,6 +101,8 @@ class CreateImageStore extends React.Component {
       return false;
     }
 
+    model.label = model.label.trim();
+    model.uri = model.uri.trim();
     return Network.post(
       "/rhn/manager/api/cm/imagestores/create",
       JSON.stringify(model),

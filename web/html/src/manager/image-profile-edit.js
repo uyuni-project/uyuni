@@ -163,6 +163,8 @@ class CreateImageProfile extends React.Component {
 
     Object.assign(model, {customData: this.state.customData});
 
+    model.label = model.label.trim();
+    model.uri = model.uri.trim();
     return Network.post(
       "/rhn/manager/api/cm/imageprofiles/update/" + profileId,
       JSON.stringify(model),
@@ -187,6 +189,8 @@ class CreateImageProfile extends React.Component {
 
     Object.assign(model, {customData: this.state.customData});
 
+    model.label = model.label.trim();
+    model.uri = model.uri.trim();
     return Network.post(
       "/rhn/manager/api/cm/imageprofiles/create",
       JSON.stringify(model),
