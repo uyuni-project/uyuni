@@ -15,8 +15,12 @@
 package com.redhat.rhn.taskomatic.task.repomd;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.db.datasource.DataResult;
@@ -91,15 +95,26 @@ public class DebRepositoryWriter extends RepositoryWriter {
 
         log.info("Generating new DEB repository for channel " + channel.getLabel());
         Date start = new Date();
-        DebPackageWriter writer = new DebPackageWriter(channel, prefix);
-        // TODO: is it possible to make this batched to reduce memory requirements
-        // like in RpmReporsitoryWriter?
-        DataResult<PackageDto> packages = TaskManager.getChannelPackageDtos(channel);
-        packages.elaborate();
-        for (PackageDto pkgDto : packages) {
-            writer.addPackage(pkgDto);
+
+        // batch the elaboration so we don't have to hold many thousands of
+        // packages in memory at once
+        final int batchSize = 1000;
+        try (DebPackageWriter writer = new DebPackageWriter(channel, prefix)) {
+            writer.begin(channel);
+            for (long i = 0; i < channel.getPackageCount(); i += batchSize) {
+                DataResult<PackageDto> packageBatch = TaskManager.getChannelPackageDtos(channel, i, batchSize);
+                packageBatch.elaborate();
+                loadExtraTags(packageBatch);
+                for (PackageDto pkgDto : packageBatch) {
+                    writer.addPackage(pkgDto);
+                }
+            }
+            writer.generatePackagesGz();
         }
-        writer.generatePackagesGz();
+        catch (IOException e) {
+            log.error("Could not write Packages file for channel " + channel.getLabel(), e);
+            return;
+        }
 
         DebReleaseWriter releaseWriter = new DebReleaseWriter(channel, prefix);
         releaseWriter.generateRelease();
@@ -125,4 +140,14 @@ public class DebRepositoryWriter extends RepositoryWriter {
                  channel.getLabel() + "' finished in " +
                  (int) (new Date().getTime() - start.getTime()) / 1000 + " seconds");
     }
+
+    private void loadExtraTags(DataResult<PackageDto> packageBatch) {
+        List<Long> pkgIds = packageBatch.stream()
+                .map(pkgDto -> pkgDto.getId())
+                .collect(Collectors.toList());
+        Map<Long, Map<String, String>> extraTags = TaskManager.getChannelPackageExtraTags(pkgIds);
+        packageBatch.stream().forEach(pkgDto ->
+                pkgDto.setExtraTags(extraTags.get(pkgDto.getId())));
+    }
+
 }

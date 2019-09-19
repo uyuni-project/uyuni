@@ -103,7 +103,12 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
                 class="com.redhat.rhn.domain.rhnpackage.PackageObsoletes" />
         </set>
 
-
+        <map name="extraTags"
+             table="rhnPackageExtraTag" lazy="true">
+            <key column="package_id"/>
+            <map-key-many-to-many column="key_id" class="com.redhat.rhn.domain.rhnpackage.PackageExtraTagsKeys"/>
+            <element column="value" type="string" not-null="true"/>
+        </map>
 
         <many-to-one name="checksum" class="com.redhat.rhn.domain.common.Checksum"
                      column="checksum_id" />

@@ -40,6 +40,7 @@ import com.redhat.rhn.domain.image.ProfileCustomDataValue;
 import com.redhat.rhn.domain.notification.NotificationMessage;
 import com.redhat.rhn.domain.notification.UserNotification;
 import com.redhat.rhn.domain.product.SUSEProductSCCRepository;
+import com.redhat.rhn.domain.rhnpackage.PackageExtraTagsKeys;
 import com.redhat.rhn.domain.scc.SCCOrderItem;
 import com.redhat.rhn.domain.scc.SCCRepository;
 import com.redhat.rhn.domain.scc.SCCRepositoryAuth;
@@ -102,6 +103,7 @@ public class AnnotationRegistry {
         ANNOTATION_CLASSES.add(EnvironmentTarget.class);
         ANNOTATION_CLASSES.add(SoftwareEnvironmentTarget.class);
         ANNOTATION_CLASSES.add(ContentProjectHistoryEntry.class);
+        ANNOTATION_CLASSES.add(PackageExtraTagsKeys.class);
     }
 
     /**
