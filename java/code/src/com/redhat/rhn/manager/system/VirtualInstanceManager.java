@@ -96,13 +96,7 @@ public class VirtualInstanceManager extends BaseManager {
             int vCpus = info.getGuestProperties().getVcpus();
             long memory = info.getGuestProperties().getMemorySize();
 
-            // The "uuid" might not be following "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx" format
-            // in case of instances that are running on the Public Cloud.
-            // In such cases, we don't check if a swapped version exists.
-            try {
-                uuid = fixUuidIfSwappedUuidExists(uuid);
-            }
-            catch (IllegalArgumentException e) {}
+            uuid = fixUuidIfSwappedUuidExists(uuid);
 
             uuidsToRemove.remove(uuid);
             VirtualInstanceType type = vinst.getVirtualInstanceType(
@@ -162,13 +156,7 @@ public class VirtualInstanceManager extends BaseManager {
                     String name = vmEntry.getKey();
                     String guid = vmEntry.getValue().replaceAll("-", "");
 
-                    // The "uuid" might not be following "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx" format
-                    // in case of instances that are running on the Public Cloud.
-                    // In such cases, we don't check if a swapped version exists.
-                    try {
-                        guid = fixUuidIfSwappedUuidExists(guid);
-                    }
-                    catch (IllegalArgumentException e) {}
+                    guid = fixUuidIfSwappedUuidExists(guid);
 
                     uuidsToRemove.remove(guid);
                     List<VirtualInstance> virtualInstances =
@@ -358,13 +346,20 @@ public class VirtualInstanceManager extends BaseManager {
         // The uuid value for the VM might not be read properly as little endian,
         // so we always try to match it with the possible swapped version in case
         // it already exists in the database.
-        String virtUuidSwapped = SaltUtils.uuidToLittleEndian(uuid);
-        if (!VirtualInstanceFactory.getInstance()
-                .lookupVirtualInstanceByUuid(virtUuidSwapped).isEmpty()) {
-            log.warn("Detected swapped UUID for a virtual instance: Coercing [" +
-                    uuid + "] -> [" + virtUuidSwapped + "]");
-            return virtUuidSwapped;
+        //
+        // The "uuid" might not be following "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+        // format in case of instances that are running on the Public Cloud.
+        // In such cases, we don't check if a swapped version exists.
+        try {
+            String virtUuidSwapped = SaltUtils.uuidToLittleEndian(uuid);
+            if (!VirtualInstanceFactory.getInstance()
+                    .lookupVirtualInstanceByUuid(virtUuidSwapped).isEmpty()) {
+                log.warn("Detected swapped UUID for a virtual instance: Coercing [" +
+                        uuid + "] -> [" + virtUuidSwapped + "]");
+                return virtUuidSwapped;
+            }
         }
+        catch (IllegalArgumentException e) {}
         return uuid;
     }
 }
