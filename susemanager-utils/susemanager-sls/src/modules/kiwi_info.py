@@ -75,6 +75,10 @@ def parse_kiwi_result(dest):
     ret = {}
     if __salt__['file.file_exists'](path):
         try:
+            # pickle depends on availability of python kiwi modules
+            # which are not under our control so there is certain risk of failure
+            # return empty dict in such case
+            # the caller should handle all values as optional
             with open(path, 'rb') as f:
                 result = pickle.load(f)
                 ret['arch'] = result.xml_state.host_architecture
@@ -84,8 +88,8 @@ def parse_kiwi_result(dest):
                 ret['initrd_system'] = result.xml_state.build_type.initrd_system
         except:
             log.exception("Loading kiwi.result")
+            # continue with empty dict
     return ret
-
 
 def parse_packages(path):
     ret = []
