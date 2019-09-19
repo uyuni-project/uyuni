@@ -186,40 +186,6 @@ And(/^I navigate to "([^"]*)" page$/) do |page|
   visit("https://#{$server.full_hostname}/#{page}")
 end
 
-# nagios steps
-
-When(/^I perform a nagios check patches for "([^"]*)"$/) do |host|
-  system_name = get_system_name(host)
-  command = "/usr/lib/nagios/plugins/check_suma_patches #{system_name} > /tmp/nagios.out"
-  $server.run(command, false, 600, 'root')
-end
-
-When(/^I perform a nagios check last event for "([^"]*)"$/) do |host|
-  system_name = get_system_name(host)
-  command = "/usr/lib/nagios/plugins/check_suma_lastevent #{system_name} > /tmp/nagios.out"
-  $server.run(command, false, 600, 'root')
-end
-
-When(/^I perform an invalid nagios check patches$/) do
-  command = '/usr/lib/nagios/plugins/check_suma_patches does.not.exist > /tmp/nagios.out'
-  $server.run(command, false, 600, 'root')
-end
-
-Then(/^I should see CRITICAL: 1 critical patch pending$/) do
-  command = 'grep "CRITICAL: 1 critical patch(es) pending" /tmp/nagios.out'
-  $server.run(command, true, 600, 'root')
-end
-
-Then(/^I should see Completed: OpenSCAP xccdf scanning scheduled by admin/) do
-  command = 'grep "Completed: OpenSCAP xccdf scanning scheduled by admin" /tmp/nagios.out'
-  $server.run(command, true, 600, 'root')
-end
-
-Then(/^I should see an unknown system message$/) do
-  command = 'grep -i "^Unknown system:.*does.not.exist" /tmp/nagios.out 2>&1'
-  $server.run(command, true, 600, 'root')
-end
-
 # systemspage and clobber
 Given(/^I am on the Systems page$/) do
   steps %(
@@ -609,7 +575,7 @@ When(/^I enable SUSE Manager tools repositories on "([^"]*)"$/) do |host|
     repos, _code = node.run('zypper lr | grep Tools | cut -d"|" -f2')
     node.run("zypper mr --enable #{repos.gsub(/\s/, ' ')}")
   elsif os_family =~ /^centos/
-    repos, _code = node.run('yum repolist 2>/dev/null | grep Tools | cut -d" " -f1')
+    repos, _code = node.run('yum repolist disabled 2>/dev/null | grep Tools | cut -d" " -f1')
     repos.gsub(/\s/, ' ').split.each do |repo|
       node.run("sed -i 's/enabled=.*/enabled=1/g' /etc/yum.repos.d/#{repo}.repo")
     end

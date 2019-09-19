@@ -57,7 +57,7 @@ Feature: Bootstrap a SSH-managed CentOS minion and do some basic operations on i
     When I enable SUSE Manager tools repositories on "ceos-client"
     And  I enable repository "CentOS-Base" on this "ceos-client"
     And  I install package "hwdata m2crypto wget" on this "ceos-client"
-    And  I install package "rhn-client-tools rhn-check rhn-setup rhnsd mgr-osad rhncfg-actions" on this "ceos-client"
+    And  I install package "spacewalk-client-tools spacewalk-check spacewalk-client-setup mgr-daemon mgr-osad mgr-cfg-actions" on this "ceos-client"
     And  I install package "spacewalk-oscap scap-security-guide" on this "ceos-client"
 
 @centos_minion

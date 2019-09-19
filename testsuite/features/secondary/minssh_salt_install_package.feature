@@ -18,10 +18,10 @@ Feature: Install a package on the SSH minion via Salt through the UI
     Given I am on the Systems overview page of this "ssh-minion"
     And I follow "Software" in the content area
     And I follow "Install"
-    And I check "hoag-dummy-1.1-2.1" in the list
+    And I check "hoag-dummy-1.1-1.1" in the list
     And I click on "Install Selected Packages"
     And I click on "Confirm"
     Then I should see a "1 package install has been scheduled" text
     When I wait until event "Package Install/Upgrade scheduled by admin" is completed
-    Then "hoag-dummy-1.1-2.1" should be installed on "ssh-minion"
+    Then "hoag-dummy-1.1-1.1" should be installed on "ssh-minion"
 

@@ -1,4 +1,5 @@
 - allow ssl connections from Tomcat to Postgres (bsc#1149210)
+- use default in case taskomatic.java.maxmemory is unset
 - fix parsing of /etc/rhn/rhn.conf for taskomatic.java.maxmemory (bsc#1151097)
 - replace requires susemanager with uyuni-base server for group(susemanager)
 - Add page to show virtual storage pools and volumes of a system
