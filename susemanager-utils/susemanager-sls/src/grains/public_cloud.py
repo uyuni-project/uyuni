@@ -25,6 +25,8 @@ from __future__ import absolute_import, print_function, unicode_literals
 # Import python libs
 import os
 import socket
+from multiprocessing.pool import ThreadPool
+import logging
 
 # Import salt libs
 import salt.utils.http as http
@@ -40,6 +42,8 @@ AZURE_URL_PATH = 'metadata/instance/compute/'
 AZURE_API_ARGS = '?api-version=2017-08-01&format=text'
 GOOGLE_URL_PATH = 'computeMetadata/v1/instance/'
 
+log = logging.getLogger(__name__)
+
 
 def __virtual__():
     global INSTANCE_ID
@@ -48,18 +52,42 @@ def __virtual__():
     result = sock.connect_ex((INTERNAL_API_IP, 80))
     if result != 0:
         return False
-    ret = http.query(os.path.join(HOST, AMAZON_URL_PATH), status=True)
-    if ret.get('status') == 200 and "instance-id" in ret['body']:
+
+    def _do_api_request(data):
+        return {
+            data[0]: http.query(data[1], status=True, header_dict=data[2])
+        }
+
+    api_check_dict = [
+        ('amazon', os.path.join(HOST, AMAZON_URL_PATH), None),
+        ('google', os.path.join(HOST, GOOGLE_URL_PATH) + AZURE_API_ARGS, {"Metadata-Flavor": "Google"}),
+        ('azure', os.path.join(HOST, AZURE_URL_PATH) + AZURE_API_ARGS, {"Metadata":"true"}),
+    ]
+
+    api_ret = {}
+    results = []
+
+    try:
+       pool = ThreadPool(3)
+       results = pool.map(_do_api_request, api_check_dict)
+       pool.close()
+       pool.join()
+    except Exception as exc:
+       log.error("Exception while creating a ThreadPool for accessing metadata API: %s", exc)
+
+    for i in results:
+        api_ret.update(i)
+
+    if api_ret['amazon'].get('status') == 200 and "instance-id" in api_ret['amazon']['body']:
         INSTANCE_ID = http.query(os.path.join(HOST, AMAZON_URL_PATH, 'instance-id'))['body']
         return True
-    ret = http.query(os.path.join(HOST, AZURE_URL_PATH) + AZURE_API_ARGS, status=True, header_dict={"Metadata":"true"})
-    if ret.get('status') == 200 and "vmId" in ret['body']:
+    elif api_ret['azure'].get('status') == 200 and "vmId" in api_ret['azure']['body']:
         INSTANCE_ID = http.query(os.path.join(HOST, AZURE_URL_PATH, 'vmId') + AZURE_API_ARGS, header_dict={"Metadata":"true"})['body']
         return True
-    ret = http.query(os.path.join(HOST, GOOGLE_URL_PATH), status=True, header_dict={"Metadata-Flavor": "Google"})
-    if ret.get('status') == 200 and "id" in ret['body']:
+    elif api_ret['google'].get('status') == 200 and "id" in api_ret['google']['body']:
         INSTANCE_ID = http.query(os.path.join(HOST, GOOGLE_URL_PATH, 'id'), header_dict={"Metadata-Flavor": "Google"})['body']
         return True
+
     return False
 
 
