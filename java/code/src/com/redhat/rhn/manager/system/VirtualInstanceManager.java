@@ -96,12 +96,13 @@ public class VirtualInstanceManager extends BaseManager {
             int vCpus = info.getGuestProperties().getVcpus();
             long memory = info.getGuestProperties().getMemorySize();
 
+            // The "uuid" might not be following "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx" format
+            // in case of instances that are running on the Public Cloud.
+            // In such cases, we don't check if a swapped version exists.
             try {
                 uuid = fixUuidIfSwappedUuidExists(uuid);
             }
-            catch (IllegalArgumentException e) {
-                // Systems running in Public Clouds are able to reporting a real "uuid"
-            }
+            catch (IllegalArgumentException e) {}
 
             uuidsToRemove.remove(uuid);
             VirtualInstanceType type = vinst.getVirtualInstanceType(
@@ -161,12 +162,13 @@ public class VirtualInstanceManager extends BaseManager {
                     String name = vmEntry.getKey();
                     String guid = vmEntry.getValue().replaceAll("-", "");
 
+                    // The "uuid" might not be following "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx" format
+                    // in case of instances that are running on the Public Cloud.
+                    // In such cases, we don't check if a swapped version exists.
                     try {
                         guid = fixUuidIfSwappedUuidExists(guid);
                     }
-                    catch (IllegalArgumentException e) {
-                        // Systems running in Public Clouds are able to reporting a real "uuid"
-                    }
+                    catch (IllegalArgumentException e) {}
 
                     uuidsToRemove.remove(guid);
                     List<VirtualInstance> virtualInstances =
