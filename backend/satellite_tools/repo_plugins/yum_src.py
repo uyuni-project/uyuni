@@ -243,7 +243,8 @@ class UpdateNotice(object):
             'solution'         : '',
             'references'       : [],
             'pkglist'          : [],
-            'reboot_suggested' : False
+            'reboot_suggested' : False,
+            'restart_suggested' : False
         }
 
         if elem is not None:
@@ -349,7 +350,7 @@ class UpdateNotice(object):
     def _parse_package(self, elem):
         """
         Parse an individual package::
-            <!ELEMENT package (filename, sum, reboot_suggested)>
+            <!ELEMENT package (filename, sum, reboot_suggested, restart_suggested)>
                 <!ATTLIST package name CDATA #REQUIRED>
                 <!ATTLIST package version CDATA #REQUIRED>
                 <!ATTLIST package release CDATA #REQUIRED>
@@ -357,6 +358,7 @@ class UpdateNotice(object):
                 <!ATTLIST package epoch CDATA #REQUIRED>
                 <!ATTLIST package src CDATA #REQUIRED>
             <!ELEMENT reboot_suggested (#PCDATA)>
+            <!ELEMENT restart_suggested (#PCDATA)>
             <!ELEMENT filename (#PCDATA)>
             <!ELEMENT sum (#PCDATA)>
                 <!ATTLIST sum type (md5|sha1) "sha1">
@@ -377,6 +379,8 @@ class UpdateNotice(object):
                 package['sum'] = (child.attrib.get('type'), child.text)
             elif child.tag == 'reboot_suggested':
                 self._md['reboot_suggested'] = True
+            elif child.tag == 'restart_suggested':
+                self._md['restart_suggested'] = True
         return package
 
 
