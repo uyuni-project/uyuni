@@ -1,3 +1,4 @@
+- Provide custom grain to report "instance id" when running on Public Cloud instances
 - enable Kiwi NG on SLE15
 - disable legacy startup events for new minions
 - implement provisioning for salt clients

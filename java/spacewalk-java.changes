@@ -1,3 +1,4 @@
+- Add support for Azure, Amazon EC2, and Google Compute Engine as Virtual Host Managers.
 - Import additional fields for Deb packages
 - enable Kiwi NG on SLE15
 - allow ssl connections from Tomcat to Postgres (bsc#1149210)
