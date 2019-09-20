@@ -124,7 +124,7 @@ const FiltersProject = (props:  FiltersProps) => {
             {
               denyFilters.length > 0 &&
               <>
-                <h4>Deny <small>filter out</small></h4>
+                <h4>{t("Deny")} <small>{t("filter out")}</small></h4>
                 <ul className="list-group">
                   {
                     denyFilters.map((filter, index) => renderFilterEntry(filter, props.projectId,
@@ -139,7 +139,7 @@ const FiltersProject = (props:  FiltersProps) => {
             {
               allowFilters.length > 0 &&
                 <>
-                  <h4>Allow <small>select from the full source even if you have excluded them before with deny</small>
+                  <h4>{t("Allow")} <small>{t("select from the full source even if you have excluded them before with deny")}</small>
                   </h4>
                   <ul className="list-group">
                     {
