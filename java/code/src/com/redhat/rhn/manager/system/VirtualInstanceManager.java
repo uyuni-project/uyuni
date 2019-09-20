@@ -357,7 +357,7 @@ public class VirtualInstanceManager extends BaseManager {
                 return virtUuidSwapped;
             }
         }
-        catch (IllegalArgumentException e) {}
+        catch (IllegalArgumentException e) { }
         return uuid;
     }
 }
