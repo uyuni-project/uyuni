@@ -126,7 +126,7 @@ class DebRepo(object):
                                     verify=self.sslcacert)
                 if not data.ok:
                     return ''
-                filename = self.basecachedir + '/' + os.path.basename(urlparse.urlparse(url).path)
+                filename = os.path.join(self.basecachedir, os.path.basename(urlparse.urlparse(url).path))
                 fd = open(filename, 'wb')
                 try:
                     for chunk in data.iter_content(chunk_size=1024):
