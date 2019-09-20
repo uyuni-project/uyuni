@@ -171,6 +171,18 @@ public class ServerTest extends BaseTestCaseWithUser {
     }
 
     /**
+     * Test for {@link Server#doesOsSupportsMonitoring()} for Ubuntu.
+     */
+    public void testOsSupportsMonitoringUbuntu() throws Exception {
+        Server s = ServerFactoryTest.createTestServer(user, true,
+                ServerConstants.getServerGroupTypeSaltEntitled(),
+                ServerFactoryTest.TYPE_SERVER_MINION);
+        s.setOs("Ubuntu");
+        s.setRelease("18.04");
+        assertTrue(s.doesOsSupportsMonitoring());
+    }
+
+    /**
      * Test for {@link Server#doesOsSupportsOSImageBuilding()}.
      */
     public void testOsDoesNotSupportsOSImageBuilding() throws Exception {
@@ -183,14 +195,14 @@ public class ServerTest extends BaseTestCaseWithUser {
     }
 
     /**
-     * Test for {@link Server#doesOsSupportsMonitoring()} for Ubuntu.
+     * Test for {@link Server#doesOsSupportsMonitoring()}.
      */
     public void testOsDoesNotSupportsMonitoring() throws Exception {
         Server s = ServerFactoryTest.createTestServer(user, true,
                 ServerConstants.getServerGroupTypeSaltEntitled(),
                 ServerFactoryTest.TYPE_SERVER_MINION);
-        s.setOs("Ubuntu");
-        s.setRelease("18.04");
+        s.setOs("SLES");
+        s.setRelease("11.4");
         assertFalse(s.doesOsSupportsMonitoring());
     }
 
