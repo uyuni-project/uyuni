@@ -50,6 +50,7 @@ Group:          System/Fhs
 %description common
 Basic filesystem hierarchy for Uyuni server and proxy.
 
+%if ! (0%{?rhel} == 6 || 0%{?suse_version} == 1110)
 %package server
 Summary:        Base structure for Uyuni server
 Group:          System/Fhs
@@ -57,9 +58,7 @@ Provides:       group(susemanager)
 Requires(pre):  uyuni-base-common
 Requires(pre):  %{_sbindir}/groupadd
 Requires(pre):  %{_sbindir}/usermod
-%if ! (0%{?rhel} == 6 || 0%{?suse_version} == 1110)
 Requires(pre):  tomcat
-%endif
 Requires(pre):  salt
 %if 0%{?suse_version} >= 1500
 Requires(pre):  user(wwwrun)
@@ -67,6 +66,7 @@ Requires(pre):  user(wwwrun)
 
 %description server
 Basic filesystem hierarchy for Uyuni server.
+%endif
 
 %package proxy
 Summary:        Base structure for Uyuni proxy
@@ -85,11 +85,13 @@ Basic filesystem hierarchy for Uyuni proxy.
 %install
 mkdir -p %{buildroot}/etc/rhn
 mkdir -p %{buildroot}/usr/share/rhn/proxy
+%if ! (0%{?rhel} == 6 || 0%{?suse_version} == 1110)
 mkdir -p %{buildroot}/var/spacewalk
+%endif
 mkdir -p %{buildroot}/%{_prefix}/share/rhn/config-defaults
 
+%if ! (0%{?rhel} == 6 || 0%{?suse_version} == 1110)
 %pre server
-%if ! 0%{?suse_version} == 1110
 getent group susemanager >/dev/null || %{_sbindir}/groupadd -r susemanager
 getent passwd salt >/dev/null && %{_sbindir}/usermod -a -G susemanager salt
 getent passwd tomcat >/dev/null && %{_sbindir}/usermod -a -G susemanager tomcat
@@ -102,9 +104,11 @@ getent passwd wwwrun >/dev/null && %{_sbindir}/usermod -a -G susemanager wwwrun
 %dir %{_prefix}/share/rhn
 %dir %attr(755,root,%{apache_group}) %{_prefix}/share/rhn/config-defaults
 
+%if ! (0%{?rhel} == 6 || 0%{?suse_version} == 1110)
 %files server
 %defattr(-,root,root)
 %dir %attr(755,%{apache_user},root) /var/spacewalk
+%endif
 
 %files proxy
 %defattr(-,root,root)
