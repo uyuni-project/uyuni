@@ -523,7 +523,8 @@ class RepoSync(object):
                         relative_url = '_'.join(url.split('://')[1].split('/')[1:])
                         repo_name = relative_url.replace("?", "_").replace("&", "_").replace("=", "_")
 
-                    (ca_cert_file, client_cert_file, client_key_file) = (None, None, None)
+                    ca_cert_file = client_cert_file = client_key_file = repo_id = None
+
                     if data['id'] is not None:
                         h = rhnSQL.execute("""
                         select k1.description as ca_cert_name, k1.key as ca_cert, k1.org_id as ca_cert_org,
