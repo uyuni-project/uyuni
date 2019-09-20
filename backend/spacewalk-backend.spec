@@ -448,9 +448,11 @@ Group:          Applications/Internet
 Requires:       %{name}
 Requires:       %{name}-app = %{version}-%{release}
 Requires:       %{name}-xmlrpc = %{version}-%{release}
+%if 0%{?suse_version} > 1200 || 0%{?fedora} || 0%{?rhel} > 6
 Requires:       systemd
 BuildRequires:  systemd
 %{?systemd_requires}
+%endif
 
 %if 0%{?build_py3}
 Requires:       python3-python-dateutil
