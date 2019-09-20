@@ -13,9 +13,11 @@
  * in this software or its documentation.
  */
 /*
- * Copyright (c) 2010 SUSE LLC
+ * Copyright (c) 2010-2019 SUSE LLC
  */
 package com.redhat.rhn.manager.channel.repo;
+
+import org.apache.commons.validator.UrlValidator;
 
 import com.redhat.rhn.common.client.InvalidCertificateException;
 import com.redhat.rhn.domain.channel.ChannelFactory;
@@ -28,6 +30,7 @@ import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.frontend.xmlrpc.channel.repo.InvalidRepoLabelException;
 import com.redhat.rhn.frontend.xmlrpc.channel.repo.InvalidRepoTypeException;
 import com.redhat.rhn.frontend.xmlrpc.channel.repo.InvalidRepoUrlException;
+import com.redhat.rhn.frontend.xmlrpc.channel.repo.InvalidRepoUrlInputException;
 
 import java.util.Date;
 import java.util.HashSet;
@@ -189,9 +192,10 @@ public abstract class BaseRepoCommand {
      * in the org
      * @throws InvalidRepoTypeException in case repo wih given type already exists
      * in the org
+     * @throws InvalidRepoUrlInputException in case the user entered an invalid repo url
      */
     public void store() throws InvalidRepoUrlException, InvalidRepoLabelException,
-            InvalidRepoTypeException {
+            InvalidRepoTypeException, InvalidRepoUrlInputException {
 
         // create new repository
         if (repo == null) {
@@ -216,6 +220,10 @@ public abstract class BaseRepoCommand {
         }
 
         if (this.url != null && this.type != null) {
+            UrlValidator urlValidator = new UrlValidator();
+            if (!urlValidator.isValid(this.url)) {
+                throw new InvalidRepoUrlInputException(url);
+            }
             ContentSourceType cst = ChannelFactory.lookupContentSourceType(this.type);
             boolean alreadyExists = !ChannelFactory.lookupContentSourceByOrgAndRepo(
                     org, cst, url).isEmpty();
