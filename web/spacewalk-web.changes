@@ -1,3 +1,4 @@
+- implement "keyword" filter for Content Lifecycle Management
 - Enable Azure, Amazon EC2 and Google Compute Engine as available Virtual host Managers
 - Trim strings when creating/updating image stores/profiles (bsc#1133429)
 - Show loading spin while loading salt keys data (bsc#1150180)
