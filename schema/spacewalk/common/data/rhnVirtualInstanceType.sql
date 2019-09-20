@@ -35,3 +35,12 @@ insert into rhnVirtualInstanceType (id, name, label)
 
 insert into rhnVirtualInstanceType (id, name, label)
     values (sequence_nextval('rhn_vit_id_seq'), 'VirtualBox', 'virtualbox');
+
+insert into rhnVirtualInstanceType (id, name, label)
+    values (sequence_nextval('rhn_vit_id_seq'), 'Azure', 'azure');
+
+insert into rhnVirtualInstanceType (id, name, label)
+    values (sequence_nextval('rhn_vit_id_seq'), 'Amazon EC2', 'aws');
+
+insert into rhnVirtualInstanceType (id, name, label)
+    values (sequence_nextval('rhn_vit_id_seq'), 'Google CE', 'gce');
