@@ -143,6 +143,7 @@ class rpmBinaryPackage(Package, rpmPackage):
         'package_id': None,
         'product_files': None,
         'eulas': None,
+        'extra_tags': None,
     })
 
     def populate(self, header, size, checksum_type, checksum, path=None, org_id=None,
