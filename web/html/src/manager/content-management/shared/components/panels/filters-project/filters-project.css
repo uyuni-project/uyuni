@@ -1,5 +1,6 @@
 .wrapper {
-  position: relative
+  position: relative;
+  padding: 10px
 }
 
 .icon_wrapper_vertical_center {

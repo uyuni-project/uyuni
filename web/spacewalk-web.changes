@@ -1,3 +1,4 @@
+- Better visualization of the filters attached to a CLM Project. Allow/deny are now split
 - Fix ui issues with content lifecycle project list page (bsc#1145587)
 - implement "keyword" filter for Content Lifecycle Management
 - Enable Azure, Amazon EC2 and Google Compute Engine as available Virtual host Managers
