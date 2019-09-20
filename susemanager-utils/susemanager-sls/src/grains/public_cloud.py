@@ -60,7 +60,7 @@ def __virtual__():
 
     api_check_dict = [
         ('amazon', os.path.join(HOST, AMAZON_URL_PATH), None),
-        ('google', os.path.join(HOST, GOOGLE_URL_PATH) + AZURE_API_ARGS, {"Metadata-Flavor": "Google"}),
+        ('google', os.path.join(HOST, GOOGLE_URL_PATH), {"Metadata-Flavor": "Google"}),
         ('azure', os.path.join(HOST, AZURE_URL_PATH) + AZURE_API_ARGS, {"Metadata":"true"}),
     ]
 
