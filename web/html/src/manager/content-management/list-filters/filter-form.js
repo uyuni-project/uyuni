@@ -250,6 +250,22 @@ const FilterForm = (props: Props) => {
         }
 
         {
+          clmFilterOptions.KEYWORD.key === props.filter.type &&
+          <Radio
+            name={clmFilterOptions.KEYWORD.key}
+            required
+            items={[
+              {"label": t("Reboot Required"), "value": "reboot_suggested"},
+              {"label": t("Package Manager Restart Required"), "value": "restart_suggested"},
+            ]}
+            openOption
+            label={t("Advisory Keywords")}
+            labelClass="col-md-3"
+            divClass="col-md-6"
+          />
+        }
+
+        {
           clmFilterOptions.PACKAGE_NAME.key === props.filter.type &&
           <Text
             name={clmFilterOptions.PACKAGE_NAME.key}

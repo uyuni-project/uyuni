@@ -1,3 +1,4 @@
+- implement "keyword" filter for Content Lifecycle Management
 - Add support for Azure, Amazon EC2, and Google Compute Engine as Virtual Host Managers.
 - Import additional fields for Deb packages
 - enable Kiwi NG on SLE15
