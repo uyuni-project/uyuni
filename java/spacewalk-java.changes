@@ -1,3 +1,4 @@
+- Remove extra spaces in dependencies fields in Debian repo Packages file (bsc#1145551)
 - Import additional fields for Deb packages
 - Fix: handle special deb package names (bsc#1150113)
 - Add -n option to spacecmd softwarechannel_adderrata to allow adding errata to

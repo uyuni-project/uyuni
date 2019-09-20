@@ -20,9 +20,11 @@ import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
 import com.redhat.rhn.domain.rhnpackage.Package;
+import com.redhat.rhn.domain.rhnpackage.PackageCapability;
 import com.redhat.rhn.domain.rhnpackage.PackageExtraTagsKeys;
+import com.redhat.rhn.domain.rhnpackage.PackageRequires;
+import com.redhat.rhn.domain.rhnpackage.test.PackageCapabilityTest;
 import com.redhat.rhn.frontend.dto.PackageDto;
-import com.redhat.rhn.manager.rhnpackage.PackageManager;
 import com.redhat.rhn.manager.rhnpackage.test.PackageManagerTest;
 import com.redhat.rhn.manager.task.TaskManager;
 import com.redhat.rhn.taskomatic.task.repomd.DebPackageWriter;
@@ -56,13 +58,28 @@ public class DebPackageWriterTest extends JMockBaseTestCaseWithUser {
         pkg1.getExtraTags().put(tag1, "value1");
         pkg1.getExtraTags().put(tag2, "value2");
 
+        PackageCapability cap1 = PackageCapabilityTest.createTestCapability("python:any _0");
+        cap1.setVersion(" 2.4~");
+        PackageRequires req1 = new PackageRequires();
+        req1.setCapability(cap1);
+        req1.setPack(pkg1);
+        req1.setSense(12L);
+
+        PackageCapability cap2 = PackageCapabilityTest.createTestCapability("python-crypto _1");
+        cap2.setVersion(" 2.5.0");
+        PackageRequires req2 = new PackageRequires();
+        req2.setCapability(cap2);
+        req2.setPack(pkg1);
+        req2.setSense(12L);
+
+        pkg1.getRequires().add(req1);
+        pkg1.getRequires().add(req2);
+
         Package pkg2 = PackageManagerTest.addPackageToChannel("pkg_2", channel);
         pkg2.getExtraTags().put(tag2, "value2");
         pkg2.getExtraTags().put(tag3, "value3");
 
         Package pkg3 = PackageManagerTest.addPackageToChannel("pkg_3", channel);
-
-        PackageManager.createRepoEntrys(channel.getId());
 
         HibernateFactory.getSession().flush();
         HibernateFactory.getSession().clear();
@@ -88,6 +105,7 @@ public class DebPackageWriterTest extends JMockBaseTestCaseWithUser {
                         "Architecture: noarch\n" +
                         "Maintainer: Rhn-Java\n" +
                         "Installed-Size: 42\n" +
+                        "Depends: python:any (>= 2.4~), python-crypto (>= 2.5.0)\n" +
                         "Filename: channel/getPackage/pkg_1_1:1.0.0-1.noarch.deb\n" +
                         "Size: 42\n" +
                         "MD5sum: some-md5sum\n" +

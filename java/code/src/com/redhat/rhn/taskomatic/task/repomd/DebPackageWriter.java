@@ -222,13 +222,13 @@ public class DebPackageWriter implements Closeable {
                 if (iIndex != 0) {
                     outIn.write(", ");
                 }
-                outIn.write(names[iIndex]);
+                outIn.write(names[iIndex].trim());
                 if (versions[iIndex] != null && !versions[iIndex].isEmpty()) {
                     outIn.write(" (");
                     if (senses[iIndex] != null) {
                         outIn.write(senses[iIndex] + " ");
                     }
-                    outIn.write(versions[iIndex]);
+                    outIn.write(versions[iIndex].trim());
                     outIn.write(")");
                 }
             }
