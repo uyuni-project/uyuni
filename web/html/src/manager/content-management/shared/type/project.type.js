@@ -36,7 +36,7 @@ export type ProjectFilterServerType = {
   criteriaKey: string,
   criteriaValue: string,
   entityType: string,
-  deny: boolean,
+  rule: "deny" | "allow",
   state: string,
 }
 
