@@ -75,6 +75,7 @@ public class FilterCriteria {
         validCombinations.add(Triple.of(ERRATUM, MATCHES, "advisory_name"));
         validCombinations.add(Triple.of(ERRATUM, MATCHES, "synopsis"));
         validCombinations.add(Triple.of(ERRATUM, CONTAINS, "synopsis"));
+        validCombinations.add(Triple.of(ERRATUM, CONTAINS, "keyword"));
         validCombinations.add(Triple.of(ERRATUM, GREATER, "issue_date"));
         validCombinations.add(Triple.of(ERRATUM, GREATEREQ, "issue_date"));
         validCombinations.add(Triple.of(ERRATUM, MATCHES_PKG_NAME, "package_name"));
