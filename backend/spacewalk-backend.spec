@@ -16,6 +16,7 @@
 # Please submit bugfixes or comments via https://bugs.opensuse.org/
 #
 
+%{!?_unitdir: %global _unitdir /lib/systemd/system}
 
 %global rhnroot %{_prefix}/share/rhn
 %global rhnconfigdefaults %{rhnroot}/config-defaults
@@ -1128,6 +1129,10 @@ rm -f %{rhnconf}/rhnSecret.py*
 %{_mandir}/man8/update-packages.8*
 %attr(644, root, root) %{_unitdir}/spacewalk-diskcheck.service
 %attr(644, root, root) %{_unitdir}/spacewalk-diskcheck.timer
+%if 0%{?rhel} == 6 || 0%{?suse_version} == 1110
+%dir /lib/systemd
+%dir /lib/systemd/system
+%endif
 
 %files xml-export-libs
 %defattr(-,root,root)
