@@ -64,6 +64,7 @@ import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
+import com.redhat.rhn.frontend.action.common.BadParameterException;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.audit.ScapManager;
 import com.redhat.rhn.manager.errata.ErrataManager;
@@ -242,6 +243,10 @@ public class SaltUtils {
             JsonElement callResult, Server server) {
         final PackageChangeOutcome outcome;
 
+        if (function == null) {
+            LOG.error("NULL function for: " + server.getName() + callResult.toString());
+            throw new BadParameterException("function must not be NULL");
+        }
         if (PKG_STATE_MODULES.contains(function)) {
             Map<String, Change<Xor<String, List<Pkg.Info>>>> delta = Json.GSON.fromJson(
                 callResult,
