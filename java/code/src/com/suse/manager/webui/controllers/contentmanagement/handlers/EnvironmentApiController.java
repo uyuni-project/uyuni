@@ -49,13 +49,13 @@ public class EnvironmentApiController {
 
     /** Init routes for ContentManagement Environment Api.*/
     public static void initRoutes() {
-        post("/manager/contentmanagement/api/projects/:projectId/environments",
+        post("/manager/api/contentmanagement/projects/:projectId/environments",
                 withUser(EnvironmentApiController::createContentEnvironemnt));
 
-        put("/manager/contentmanagement/api/projects/:projectId/environments",
+        put("/manager/api/contentmanagement/projects/:projectId/environments",
                 withUser(EnvironmentApiController::updateContentEnvironemnt));
 
-        delete("/manager/contentmanagement/api/projects/:projectId/environments",
+        delete("/manager/api/contentmanagement/projects/:projectId/environments",
                 withUser(EnvironmentApiController::removeContentEnvironemnt));
     }
 
