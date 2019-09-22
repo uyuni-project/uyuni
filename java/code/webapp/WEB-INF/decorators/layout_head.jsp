@@ -65,4 +65,3 @@
     <script src='/vendors/vendors.bundle.js?cb=${cb_version}'></script>
     <script src='/javascript/manager/core.bundle.js?cb=${cb_version}'></script>
     <script src='/javascript/manager/shared/polyfill.bundle.js?cb=${cb_version}'></script>
-    <script src='/javascript/momentjs/moment-with-langs.min.js?cb=${cb_version}' type='text/javascript'></script>

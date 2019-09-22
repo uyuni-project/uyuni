@@ -3,3 +3,8 @@
 require('@babel/polyfill/dist/polyfill');
 require('core-js/shim');
 require('regenerator-runtime/runtime');
+
+
+
+const moment = require('moment-timezone')
+window.moment = moment;

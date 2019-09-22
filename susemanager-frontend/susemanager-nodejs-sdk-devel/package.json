@@ -12,6 +12,9 @@
     "@babel/preset-env": "^7.3.1",
     "@babel/preset-flow": "^7.0.0",
     "@babel/preset-react": "^7.0.0",
+    "@storybook/addon-centered": "^5.1.11",
+    "@storybook/addon-info": "^5.1.11",
+    "@storybook/react": "^5.1.11",
     "babel-eslint": "^10.0.1",
     "babel-jest": "^24.7.1",
     "babel-loader": "^8.0.5",
@@ -28,6 +31,7 @@
     "eslint-plugin-jsx-a11y": "^6.2.1",
     "eslint-plugin-react": "^7.12.4",
     "eslint-plugin-react-hooks": "^1.0.2",
+    "flow-bin": "^0.107.0",
     "jest": "^24.7.1",
     "license-checker-webpack-plugin": "^0.0.9",
     "shelljs": "^0.8.3",
@@ -35,10 +39,6 @@
     "terser-webpack-plugin": "^1.2.2",
     "webpack": "^4.29.5",
     "webpack-cli": "^3.2.3",
-    "@storybook/addon-centered": "^5.1.11",
-    "@storybook/addon-info": "^5.1.11",
-    "@storybook/react": "^5.1.11",
-    "flow-bin": "^0.107.0",
     "webpack-dev-server": "^3.1.10"
   },
   "dependencies": {
@@ -55,7 +55,8 @@
     "react-select": "2.4.4",
     "senna": "^2.7.8",
     "toastr": "^2.1.4",
-    "use-immer": "^0.3.0"
+    "use-immer": "^0.3.0",
+    "moment-timezone": "^0.5.26"
   },
   "resolutions": {
     "lodash": "4.17.15"
