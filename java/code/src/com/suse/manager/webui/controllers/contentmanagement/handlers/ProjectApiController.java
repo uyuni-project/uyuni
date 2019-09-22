@@ -55,13 +55,13 @@ public class ProjectApiController {
 
     /** Init routes for ContentManagement Project Api.*/
     public static void initRoutes() {
-        post("/manager/contentmanagement/api/projects",
+        post("/manager/api/contentmanagement/projects",
                 withUser(ProjectApiController::createContentProject));
 
-        delete("/manager/contentmanagement/api/projects/:projectId",
+        delete("/manager/api/contentmanagement/projects/:projectId",
                 withUser(ProjectApiController::removeContentProject));
 
-        put("/manager/contentmanagement/api/projects/:projectId/properties",
+        put("/manager/api/contentmanagement/projects/:projectId/properties",
                 withUser(ProjectApiController::updateContentProjectProperties));
 
     }

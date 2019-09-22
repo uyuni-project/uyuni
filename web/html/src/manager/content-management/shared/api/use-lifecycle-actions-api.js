@@ -24,12 +24,12 @@ const networkAction = {
 
 const getApiUrl = (resource, nestedResource, id) => {
   if (!id) {
-    return `/rhn/manager/contentmanagement/api/${resource}`;
+    return `/rhn/manager/api/contentmanagement/${resource}`;
   } else {
     if(!nestedResource) {
-      return `/rhn/manager/contentmanagement/api/${resource}/${id}`;
+      return `/rhn/manager/api/contentmanagement/${resource}/${id}`;
     } else {
-      return `/rhn/manager/contentmanagement/api/${resource}/${id}/${nestedResource}`;
+      return `/rhn/manager/api/contentmanagement/${resource}/${id}/${nestedResource}`;
     }
   }
 }
