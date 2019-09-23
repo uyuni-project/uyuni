@@ -1,3 +1,5 @@
+- Introduce dnf-susemanager-plugin for RHEL8 minions
+
 -------------------------------------------------------------------
 Thu Sep 19 01:01:37 CEST 2019 - jgonzalez@suse.com
 
