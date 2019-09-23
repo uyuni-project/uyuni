@@ -415,8 +415,9 @@ class PackageImport(ChannelPackageSubscription):
         fileList = package['files']
         for f in fileList:
             f['checksum_id'] = self.checksums[(f['checksum_type'], f['checksum'])]
-        for t in package['extra_tags']:
-            t['key_id'] = self.extraTags[t['name']]
+        if package['extra_tags'] is not None:
+            for t in package['extra_tags']:
+                t['key_id'] = self.extraTags[t['name']]
 
     def _comparePackages(self, package1, package2):
         if (package1['checksum_type'] == package2['checksum_type']

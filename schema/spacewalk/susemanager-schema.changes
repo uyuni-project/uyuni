@@ -1,3 +1,4 @@
+- Add new types needed for Azure, Amazon EC2 and Google CE
 - Migrate login to Spark
 - enable provisioning for salt clients
 - Bump version to 4.1.0

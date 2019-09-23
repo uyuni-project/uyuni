@@ -1,4 +1,6 @@
-- use value from config-defaults/rhn.conf if not set in /etc/rhn/rhn.conf
+- use default value from systemd unit file if not set in /etc/rhn/rhn.conf
+- implement "keyword" filter for Content Lifecycle Management
+- Add support for Azure, Amazon EC2, and Google Compute Engine as Virtual Host Managers.
 - Import additional fields for Deb packages
 - enable Kiwi NG on SLE15
 - allow ssl connections from Tomcat to Postgres (bsc#1149210)
