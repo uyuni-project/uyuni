@@ -51,17 +51,69 @@ public class RpmVersionComparator implements Comparator<String> {
         int b1 = 0;
         int b2 = 0;
 
+        // Handling for Debian packages that contain a '-' in version (e.g. 8-20180414)
+        // These packages have a version like upstream_version-debian_revision
+        String debUpstreamVer1 = o1;
+        String debUpstreamVer2 = o2;
+        String debRevisionVer1 = o1;
+        String debRevisionVer2 = o2;
+
+        if (o1.length() > 1 && o1.indexOf('-') > 0) {
+            debUpstreamVer1 = o1.substring(0, o1.indexOf('-'));
+        }
+        if (o2.length() > 1 && o2.indexOf('-') > 0) {
+            debUpstreamVer2 = o2.substring(0, o2.indexOf('-'));
+        }
+        if (!debUpstreamVer1.equals(debUpstreamVer2)) {
+            // different upstream_version: we just compare the upstream_version
+            str1 = debUpstreamVer1;
+            str2 = debUpstreamVer2;
+        }
+        else {
+            // same upstream_version: we compare only the debian revision
+            if (o1.indexOf('-') > 0) {
+                debRevisionVer1 = o1.substring(o1.indexOf('-') + 1);
+            }
+            if (o2.indexOf('-') > 0) {
+                debRevisionVer2 = o2.substring(o2.indexOf('-') + 1);
+            }
+            str1 = debRevisionVer1;
+            str2 = debRevisionVer2;
+        }
 
         /* loop through each version segment of str1 and str2 and compare them */
         while (true) {
             b1 = skipNonAlnum(str1, b1);
             b2 = skipNonAlnum(str2, b2);
 
+            /* handle the tilde separator, it sorts before everything else */
             if (xchar(str1, b1) == '~' || xchar(str2, b2) == '~') {
                 if (xchar(str1, b1) == '\0' || xchar(str1, b1) != '~') {
                     return 1;
                 }
                 if (xchar(str2, b2) == '\0' || xchar(str2, b2) != '~') {
+                    return -1;
+                }
+                b1++;
+                b2++;
+                continue;
+            }
+            /*
+             * Handle caret separator. Concept is the same as tilde,
+             * except that if one of the strings ends (base version),
+             * the other is considered as higher version.
+             */
+            if (xchar(str1, b1) == '^' || xchar(str2, b2) == '^') {
+                if (xchar(str1, b1) == '\0') {
+                    return -1;
+                }
+                if (xchar(str2, b2) == '\0') {
+                    return 1;
+                }
+                if (xchar(str1, b1) != '^') {
+                    return 1;
+                }
+                if (xchar(str2, b2) != '^') {
                     return -1;
                 }
                 b1++;
@@ -159,7 +211,7 @@ public class RpmVersionComparator implements Comparator<String> {
     }
 
     private int skipNonAlnum(String s, int i) {
-        while (i < s.length() && xchar(s, i) != '~' && !xisalnum(xchar(s, i))) {
+        while (i < s.length() && xchar(s, i) != '~' && xchar(s, i) != '^' && !xisalnum(xchar(s, i))) {
             i++;
         }
         return i;
