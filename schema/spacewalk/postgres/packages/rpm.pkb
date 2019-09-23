@@ -65,6 +65,14 @@ $$ language 'plpgsql';
         then
             return 0;
         end if;
+        if regexp_match(str1, '[[:digit:]](-)[[:digit:]]{8}') is not null
+	    then
+		    str1 := replace(str1, '-', '~');
+	    end if;
+        if regexp_match(str2, '[[:digit:]](-)[[:digit:]]{8}') is not null
+	    then
+		    str2 := replace(str2, '-', '~');
+	    end if;
         one := str1;
         two := str2;
 
