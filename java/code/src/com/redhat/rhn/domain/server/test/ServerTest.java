@@ -145,6 +145,31 @@ public class ServerTest extends BaseTestCaseWithUser {
         s.setRelease("12.1");
         assertTrue(s.doesOsSupportsOSImageBuilding());
     }
+
+    /**
+     * Test for {@link Server#doesOsSupportsMonitoring()} for SLES.
+     */
+    public void testOsSupportsMonitoring() throws Exception {
+        Server s = ServerFactoryTest.createTestServer(user, true,
+                ServerConstants.getServerGroupTypeSaltEntitled(),
+                ServerFactoryTest.TYPE_SERVER_MINION);
+        s.setOs("SLES");
+        s.setRelease("12.1");
+        assertTrue(s.doesOsSupportsMonitoring());
+    }
+
+    /**
+     * Test for {@link Server#doesOsSupportsMonitoring()} for Leap.
+     */
+    public void testOsSupportsMonitoringLeap() throws Exception {
+        Server s = ServerFactoryTest.createTestServer(user, true,
+                ServerConstants.getServerGroupTypeSaltEntitled(),
+                ServerFactoryTest.TYPE_SERVER_MINION);
+        s.setOs("Leap");
+        s.setRelease("15.0");
+        assertTrue(s.doesOsSupportsMonitoring());
+    }
+
     /**
      * Test for {@link Server#doesOsSupportsOSImageBuilding()}.
      */
@@ -155,6 +180,18 @@ public class ServerTest extends BaseTestCaseWithUser {
         s.setOs("SLES");
         s.setRelease("11.4");
         assertFalse(s.doesOsSupportsContainerization());
+    }
+
+    /**
+     * Test for {@link Server#doesOsSupportsMonitoring()} for Ubuntu.
+     */
+    public void testOsDoesNotSupportsMonitoring() throws Exception {
+        Server s = ServerFactoryTest.createTestServer(user, true,
+                ServerConstants.getServerGroupTypeSaltEntitled(),
+                ServerFactoryTest.TYPE_SERVER_MINION);
+        s.setOs("Ubuntu");
+        s.setRelease("18.04");
+        assertFalse(s.doesOsSupportsMonitoring());
     }
 
     public void testGetIpAddress() throws Exception {

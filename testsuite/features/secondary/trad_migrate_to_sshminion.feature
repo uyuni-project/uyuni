@@ -117,7 +117,7 @@ Feature: Migrate a traditional client into a Salt SSH minion
 
   Scenario: Cleanup: register SSH minion again as traditional client
     When I enable SUSE Manager tools repositories on "sle-client"
-    And I install package "spacewalk-client-setup spacewalk-oscap rhncfg-actions" on this "sle-client"
+    And I install package "spacewalk-client-setup spacewalk-oscap mgr-cfg-actions" on this "sle-client"
     And I register using "1-SUSE-DEV-x86_64" key
 
   Scenario: Cleanup: change contact method of activation key back to default

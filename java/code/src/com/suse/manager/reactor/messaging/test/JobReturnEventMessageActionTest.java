@@ -1019,6 +1019,13 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         });
     }
 
+    public void testHardwareProfilePublicCloud()  throws Exception {
+        MinionServer minion = testHardwareProfileUpdate("hardware.profileupdate.public_cloud.json", (server) -> {
+            assertNotNull(server);
+            assertEquals("iabcdef1234567890", server.getVirtualInstance().getUuid());
+        });
+    }
+
     /**
      * Read a Salt job return event while substituting the corresponding action id.
      *

@@ -135,6 +135,13 @@ public class ErrataFilter extends ContentFilter<Errata> {
                     default:
                         throw new UnsupportedOperationException("Matcher " + matcher + " not supported");
                 }
+            case "keyword":
+                switch (matcher) {
+                    case CONTAINS:
+                        return erratum.hasKeyword(value);
+                    default:
+                        throw new UnsupportedOperationException("Matcher " + matcher + " not supported");
+                }
             default:
                 throw new UnsupportedOperationException("Field " + field + " not supported");
         }

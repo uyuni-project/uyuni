@@ -360,4 +360,31 @@ public class ContentFilterTest extends JMockBaseTestCaseWithUser {
         filter = ContentManager.createFilter("contains-eq-nevr-filter2", DENY, ERRATUM, criteria, user);
         assertFalse(filter.test(erratum1));
     }
+
+    /**
+     * Test basic Errata filtering: match keywords
+     *
+     * @throws Exception if anything goes wrong
+     */
+    public void testErrataContainsKeywordFilter() throws Exception {
+        String cveName1 = TestUtils.randomString().substring(0, 13);
+        Errata erratum1 = ErrataTestUtils.createTestErrata(user, Collections.singleton(ErrataTestUtils.createTestCve(cveName1)));
+        erratum1.setSynopsis("recommended update: " + cveName1);
+        erratum1.addKeyword("reboot_suggested");
+        String cveName2 = TestUtils.randomString().substring(0, 13);
+        Errata erratum2 = ErrataTestUtils.createTestErrata(user, Collections.singleton(ErrataTestUtils.createTestCve(cveName2)));
+        erratum2.setSynopsis("recommended update: " + cveName2);
+        erratum2.addKeyword("restart_suggested");
+
+        FilterCriteria criteria = new FilterCriteria(FilterCriteria.Matcher.CONTAINS, "keyword", "reboot_suggested");
+        ContentFilter filter = ContentManager.createFilter("reboot-filter", DENY, ERRATUM, criteria, user);
+        assertTrue(filter.test(erratum1));
+        assertFalse(filter.test(erratum2));
+
+        FilterCriteria criteria2 = new FilterCriteria(FilterCriteria.Matcher.CONTAINS, "keyword", "restart_suggested");
+        ContentFilter filter2 = ContentManager.createFilter("restart-filter2", DENY, ERRATUM, criteria2, user);
+        assertFalse(filter2.test(erratum1));
+        assertTrue(filter2.test(erratum2));
+    }
+
 }

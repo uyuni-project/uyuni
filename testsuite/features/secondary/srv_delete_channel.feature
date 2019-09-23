@@ -43,7 +43,7 @@ Feature: Delete channels with child or clone is not allowed
     Then I should see a "Clone of Clone of Test-Channel-x86_64" text
     And I should see a "has been deleted" text
 
-  Scenario: Clone a child channel to the Clone of  x86_64 test channel
+  Scenario: Clone a child channel to the clone of x86_64 test channel
     Given I am on the manage software channels page
     When I follow "Clone Channel"
     And I select "Test-Channel-x86_64 Child Channel" as the origin channel

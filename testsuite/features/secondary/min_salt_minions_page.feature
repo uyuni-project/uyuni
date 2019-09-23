@@ -56,7 +56,7 @@ Feature: Management of minion keys
     Given I am authorized as "testing" with password "testing"
     And the Salt master can reach "sle-minion"
     When I get OS information of "sle-minion" from the Master
-    Then it should contain a "SLES" text
+    Then it should contain the OS of "sle-minion"
 
   Scenario: Delete profile of unreacheable minion
     Given I am on the Systems overview page of this "sle-minion"
