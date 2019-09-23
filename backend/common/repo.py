@@ -45,11 +45,24 @@ class DpkgRepo:
             self.size = size
             self.uri = uri
 
+    class EntryDict(dict):
+        """
+        Parsed release container.
+        """
+        def __init__(self, repo: "DpkgRepo"):
+            dict(self)
+            self.__repo = repo
+
+        def get(self, key: typing.Any) -> typing.Optional[typing.Any]:
+            if not self.__repo.is_flat():
+                key = "/".join(parse.urlparse(self.__repo._url).path.strip("/").split("/")[-2:] + [key])
+            return self[key]
+
     def __init__(self, url):
         self._url = url
         self._flat = None
         self._pkg_index = None, None
-        self._release = {}
+        self._release = DpkgRepo.EntryDict(self)
 
     def get_pkg_index_raw(self) -> typing.Tuple[str, bytes]:
         """
