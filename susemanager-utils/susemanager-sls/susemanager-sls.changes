@@ -1,3 +1,4 @@
+- Introduce dnf-susemanager-plugin for RHEL8 minions
 - Provide custom grain to report "instance id" when running on Public Cloud instances
 - enable Kiwi NG on SLE15
 - disable legacy startup events for new minions
