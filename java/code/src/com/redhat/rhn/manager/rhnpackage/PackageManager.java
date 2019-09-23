@@ -1533,15 +1533,9 @@ public class PackageManager extends BaseManager {
     public static synchronized void createRepoEntrys(Long cid) {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("cid", cid);
-        try {
-            WriteMode writeMode = ModeFactory.getWriteMode("Package_queries",
-                "create_repo_entrys");
-            writeMode.executeUpdate(params);
-            HibernateFactory.commitTransaction();
-        }
-        catch (Exception e) {
-            HibernateFactory.rollbackTransaction();
-        }
+        WriteMode writeMode = ModeFactory.getWriteMode("Package_queries",
+            "create_repo_entrys");
+        writeMode.executeUpdate(params);
     }
 
     private static void updateRepoEntry(Long packageId, String xml, String type) {
