@@ -49,6 +49,12 @@ window.pageRenderers.spa.init = function init() {
       $('.modal').remove();
       $('.modal-backdrop').remove();
       $('body').removeClass( "modal-open" );
+
+      let urlParser = document.createElement('a');
+      urlParser.href = navigation.path;
+      if(isLoginPage(urlParser.pathname)) {
+        window.location = navigation.path;
+      }
     })
 
     appInstance.on('endNavigate', function(navigation) {
