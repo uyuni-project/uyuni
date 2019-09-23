@@ -170,6 +170,24 @@ class DpkgRepo:
 
         return bool(self._flat)
 
+    def verify_packages_index(self) -> bool:
+        """
+        Verify Packages index against all listed checksum algorithms.
+
+        :param name: name of the packages index
+        :return: result (boolean)
+        """
+        res = False
+        if not self.is_flat():
+            name, data = self.get_pkg_index_raw()
+            entry = self.get_release_index().get(name)
+            for algorithm in ["md5", "sha1", "sha256"]:
+                res = getattr(hashlib, algorithm)(data).hexdigest() == getattr(entry.checksum, algorithm)
+                if not res:
+                    break
+        return res
+
+
 
 if __name__ == "__main__":
     d = DpkgRepo("http://ftp.halifax.rwth-aachen.de/ubuntu/dists/bionic/restricted/binary-amd64/")
