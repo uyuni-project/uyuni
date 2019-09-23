@@ -24,10 +24,28 @@ class DpkgRepo:
     such as "flat", classic tree, PPA etc.
     """
 
+    class ReleaseEntry:
+        """
+        Release file entry
+        """
+        class Checksum:
+            """
+            Checksums of the Release file
+            """
+            md5: str = ""
+            sha1: str = ""
+            sha256: str = ""
+
+        def __init__(self, size: int, uri: str):
+            self.checksum = DpkgRepo.ReleaseEntry.Checksum()
+            self.size = size
+            self.uri = uri
+
     def __init__(self, url):
         self._url = url
         self._flat = None
         self._pkg_index = None, None
+        self._release = {}
 
     def get_pkg_index_raw(self) -> typing.Tuple[str, bytes]:
         """
