@@ -8,6 +8,7 @@ import http
 import os
 import zlib
 import lzma
+from urllib import parse
 import hashlib
 
 
@@ -83,13 +84,64 @@ class DpkgRepo:
 
         return cnt_data.decode("utf-8")
 
-    def get_release_index(self) -> str:
+    def _parse_release_index(self, release: str) -> typing.Dict[str, "DpkgRepo.ReleaseEntry"]:
+        """
+        Parse release index to a structure.
+
+        :param release: decoded content of the Release file
+        :return: dictionary
+        """
+        for line in release.split(os.linesep):
+            cs_s_path = tuple(filter(None, line.strip().replace("\t", " ").split(" ")))
+            if len(cs_s_path) == 3 and len(cs_s_path[0]) in [32, 40, 64]:
+                try:
+                    int(cs_s_path[0], 0x10)
+                    rel_entry = DpkgRepo.ReleaseEntry(int(cs_s_path[1]), cs_s_path[2])
+                    self._release.setdefault(rel_entry.uri, rel_entry)
+                    if len(cs_s_path[0]) == 32:
+                        self._release[rel_entry.uri].checksum.md5 = cs_s_path[0]
+                    elif len(cs_s_path[0]) == 40:
+                        self._release[rel_entry.uri].checksum.sha1 = cs_s_path[0]
+                    elif len(cs_s_path[0]) == 64:
+                        self._release[rel_entry.uri].checksum.sha256 = cs_s_path[0]
+
+                except ValueError:
+                    pass
+
+        return self._release
+
+    def get_release_index(self) -> typing.Dict[str, "DpkgRepo.ReleaseEntry"]:
         """
         Find and return contents of Release file.
 
         :raises DpkgRepoException if the Release file cannot be found.
         :return: string
         """
+        resp = requests.get(self._get_parent_url(self._url, 2, "Release"))
+        try:
+            self._flat = resp.status_code == http.HTTPStatus.NOT_FOUND
+            self._release = self._parse_release_index(resp.content.decode("utf-8"))
+            if resp.status_code not in [http.HTTPStatus.NOT_FOUND, http.HTTPStatus.OK]:
+                raise DpkgRepoException("HTTP error {} occurred while connecting to the URL".format(resp.status_code))
+        finally:
+            resp.close()
+
+        return self._release
+
+
+    @staticmethod
+    def _get_parent_url(url, depth=1, add_path=""):
+        """
+        Get parent url from the given one.
+
+        :param url: an url
+        :return: parent url
+        """
+        p_url = parse.urlparse(url)
+        p_path = p_url.path.rstrip("/").split("/")
+        return parse.urlunparse(parse.ParseResult(scheme=p_url.scheme, netloc=p_url.netloc,
+                                                  path="/".join(p_path[:-depth] + add_path.strip("/").split("/")),
+                                                  params=p_url.params, query=p_url.query, fragment=p_url.fragment))
 
     def is_flat(self) -> bool:
         """
@@ -98,11 +150,9 @@ class DpkgRepo:
         :return:
         """
         if self._flat is None:
-            resp = requests.get(self._url)
-            if resp.status_code != http.HTTPStatus.OK:
-                raise DpkgRepoException("HTTP error {} occurred while connecting to the URL".format(resp.status_code))
+            self.get_release_index()
 
-        return self._flat
+        return bool(self._flat)
 
 
 if __name__ == "__main__":
