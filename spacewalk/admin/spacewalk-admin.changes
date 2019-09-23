@@ -1,3 +1,6 @@
+- avoid a "Permission denied" salt error when publisher_acl
+  is set (bsc#1150154)
+
 -------------------------------------------------------------------
 Tue Apr 09 10:16:56 CEST 2019 - jgonzalez@suse.com
 
