@@ -24,6 +24,9 @@ class DpkgRepo:
     The repositories in Debian world have several layouts,
     such as "flat", classic tree, PPA etc.
     """
+    PKG_GZ = "Packages.gz"
+    PKG_XZ = "Packages.xz"
+    PKG_RW = "Packages"
 
     class ReleaseEntry:
         """
@@ -55,7 +58,7 @@ class DpkgRepo:
         :return: bytes of the content
         """
         if self._pkg_index[0] is None:
-            for cnt_fname in ["Packages.gz", "Packages.xz", "Packages"]:
+            for cnt_fname in [DpkgRepo.PKG_GZ, DpkgRepo.PKG_XZ, DpkgRepo.PKG_RW]:
                 packages_url = os.path.join(self._url, cnt_fname)
                 resp = requests.get(packages_url)
                 if resp.status_code == http.HTTPStatus.OK:
@@ -73,9 +76,9 @@ class DpkgRepo:
         """
         fname, cnt_data = self.get_pkg_index_raw()
         try:
-            if fname.endswith(".gz"):
+            if fname == DpkgRepo.PKG_GZ:
                 cnt_data = zlib.decompress(cnt_data, 0x10 + zlib.MAX_WBITS)
-            elif fname.endswith(".xz"):
+            elif fname == DpkgRepo.PKG_XZ:
                 cnt_data = lzma.decompress(cnt_data)
         except zlib.error as exc:
             raise DpkgRepoException(exc)
@@ -93,16 +96,16 @@ class DpkgRepo:
         """
         for line in release.split(os.linesep):
             cs_s_path = tuple(filter(None, line.strip().replace("\t", " ").split(" ")))
-            if len(cs_s_path) == 3 and len(cs_s_path[0]) in [32, 40, 64]:
+            if len(cs_s_path) == 3 and len(cs_s_path[0]) in [0x20, 0x28, 0x40]:
                 try:
                     int(cs_s_path[0], 0x10)
                     rel_entry = DpkgRepo.ReleaseEntry(int(cs_s_path[1]), cs_s_path[2])
                     self._release.setdefault(rel_entry.uri, rel_entry)
-                    if len(cs_s_path[0]) == 32:
+                    if len(cs_s_path[0]) == 0x20:
                         self._release[rel_entry.uri].checksum.md5 = cs_s_path[0]
-                    elif len(cs_s_path[0]) == 40:
+                    elif len(cs_s_path[0]) == 0x28:
                         self._release[rel_entry.uri].checksum.sha1 = cs_s_path[0]
-                    elif len(cs_s_path[0]) == 64:
+                    elif len(cs_s_path[0]) == 0x40:
                         self._release[rel_entry.uri].checksum.sha256 = cs_s_path[0]
 
                 except ValueError:
