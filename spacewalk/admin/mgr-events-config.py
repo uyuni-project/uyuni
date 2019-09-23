@@ -33,4 +33,4 @@ config = {
 with open("/etc/salt/master.d/susemanager_engine.conf", "w") as f:
     f.write(yaml.safe_dump(config, default_flow_style=False, allow_unicode=True))
     os.fchown(f.fileno(), pwd.getpwnam("salt").pw_uid, grp.getgrnam("salt").gr_gid)
-    os.fchmod(f.fileno(), 0o600)
+    os.fchmod(f.fileno(), 0o640)
