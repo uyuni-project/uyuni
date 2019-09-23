@@ -58,26 +58,15 @@ window.pageRenderers.spa.init = function init() {
     })
 
     appInstance.on('endNavigate', function(navigation) {
-      // workaround to redirect to the login page when there is no session:
-      // More info: https://github.com/liferay/senna.js/issues/302
-      const urlPath = appInstance.browserPathBeforeNavigate;
-      let urlParser = document.createElement('a');
-      urlParser.href = urlPath;
-      if(isLoginPage(urlParser.pathname)) {
-        document.getElementsByClassName("spacewalk-main-column-layout")[0].innerHTML = `
-        <div class="container-fluid">
-            <div class="alert alert-danger">
-                No session. Redirecting to login page...
-            </div>
-        </div>
-      `;
-        window.location = urlPath;
-      }
-
       // If an error happens we make a full refresh to make sure the original request is shown instead of a SPA replacement
       if (
-        navigation.error && (navigation.error.invalidStatus || navigation.error.timeout || navigation.error.requestError)
-      ) {
+        navigation.error
+        && (
+          navigation.error.statusCode === 401
+          || navigation.error.invalidStatus
+          || navigation.error.timeout
+          || navigation.error.requestError
+        )) {
         window.location = navigation.path;
       }
 
