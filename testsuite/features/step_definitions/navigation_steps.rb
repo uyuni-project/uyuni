@@ -233,7 +233,8 @@ end
 When(/^I follow "([^"]*)" on "(.*?)" row$/) do |text, host|
   system_name = get_system_name(host)
   xpath_query = "//tr[td[contains(.,'#{system_name}')]]//a[contains(., '#{text}')]"
-  raise "xpath: #{xpath_query} not found" unless find_and_wait_click(:xpath, xpath_query).click
+  element = find_and_wait_click(:xpath, xpath_query)
+  element.click
 end
 
 When(/^I enter "(.*?)" in the editor$/) do |arg1|
