@@ -5,4 +5,4 @@ script(type='text/javascript').
 
 script(type='text/javascript').
     spaImportReactPage('salt/cmd/remote-commands')
-        .then((module) => module.renderer('remote-commands'));
+        .then(function(module) { module.renderer('remote-commands') });

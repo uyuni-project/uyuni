@@ -8,4 +8,4 @@ script(type='text/javascript').
 
 script(type='text/javascript').
     spaImportReactPage('admin/task-engine-status/taskotop')
-        .then((module) => module.renderer('taskotop'));
+        .then(function(module) { module.renderer('taskotop') });

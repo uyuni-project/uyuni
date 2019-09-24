@@ -20,10 +20,12 @@ script(type='text/javascript').
 
 script(type='text/javascript').
     spaImportReactPage('groups/formula/group-formula-selection')
-        .then((module) => module.renderer(
-            'formulas',
-            {
-                groupId: "#{groupId}",
-                warningMessage: "#{warning}"
-            }
-        ));
+        .then(function(module) {
+             module.renderer(
+                'formulas',
+                {
+                    groupId: "#{groupId}",
+                    warningMessage: "#{warning}"
+                }
+             )
+        });

@@ -8,10 +8,12 @@ script(type='text/javascript').
 
 script(type='text/javascript').
     spaImportReactPage('virtualization/pools/list/pools-list')
-        .then((module) => module.renderer(
-          'virtualpools',
-          {
-              serverId: "#{server.id}",
-              pageSize: "#{pageSize}",
-          }
-        ));
+        .then(function(module) {
+             module.renderer(
+              'virtualpools',
+              {
+                  serverId: "#{server.id}",
+                  pageSize: "#{pageSize}",
+              }
+            )
+        });
