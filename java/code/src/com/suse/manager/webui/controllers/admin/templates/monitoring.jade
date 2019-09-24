@@ -7,4 +7,4 @@ script(type='text/javascript').
 
 script(type='text/javascript').
     spaImportReactPage('admin/config/monitoring')
-        .then(({renderer}) => renderer('monitoring'));
+        .then((module) => module.renderer('monitoring'));

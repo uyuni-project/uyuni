@@ -10,7 +10,7 @@ script(type='text/javascript').
 
 script(type='text/javascript').
     spaImportReactPage('virtualization/guests/create/guests-create')
-        .then(({renderer}) => renderer(
+        .then((module) => module.renderer(
           'virtualguests-create',
           {
               host: {

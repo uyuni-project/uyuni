@@ -14,4 +14,4 @@ script(type='text/javascript').
 
 script(type='text/javascript').
     spaImportReactPage('images/image-view')
-        .then(({renderer}) => renderer('image-view'));
+        .then((module) => module.renderer('image-view'));

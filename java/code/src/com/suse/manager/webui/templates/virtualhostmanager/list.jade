@@ -8,4 +8,4 @@ script(type='text/javascript').
 
 script(type='text/javascript').
     spaImportReactPage('systems/virtualhostmanager/virtualhostmanager')
-        .then(({renderer}) => renderer('virtual-host-managers'));
+        .then((module) => module.renderer('virtual-host-managers'));

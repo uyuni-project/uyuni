@@ -24,7 +24,7 @@
     </script>
     <script>
         spaImportReactPage('systems/delete-system-confirm')
-            .then(({renderer}) => renderer('delete_system_button'));
+            .then((module) => module.renderer('delete_system_button'));
     </script>
 </body>
 </html:html>
