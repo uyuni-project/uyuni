@@ -6,6 +6,36 @@ from mock import MagicMock, patch
 from spacewalk.common.repo import DpkgRepo
 import hashlib
 
+class FakeRequests:
+    """
+    Fake requests object.
+    """
+
+    class FakeResponse:
+        """
+        Fake request's response struct
+        """
+
+    def close(self):
+        """
+        Close request. Does nothing actually.
+
+        :return:
+        """
+
+    def conf(self, **kwargs):
+        """
+        Configure response for the test purposes.
+
+        :param kwargs:
+        :return:
+        """
+        for kkw, vkw in kwargs.items():
+            setattr(self, kkw, vkw)
+
+        return self
+
+
 
 class TestCommonRepo:
     """
