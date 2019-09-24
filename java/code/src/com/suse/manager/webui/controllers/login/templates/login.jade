@@ -29,7 +29,7 @@ html
         script(src='/javascript/susemanager-translate.js?cb=#{webVersion}')
         script(src='/vendors/vendors.bundle.js?cb=#{webVersion}')
         script(src='/javascript/manager/core.bundle.js?cb=#{webVersion}')
-        script(src='/javascript/manager//main.bundle.js?cb=#{webVersion}')
+        script(src='/javascript/manager/main.bundle.js?cb=#{webVersion}')
         noscript
             .alert.alert-danger
                 | Some features require JavaScript in order to work properly. Make sure you enable JavaScript in your browser.
@@ -50,7 +50,8 @@ html
 
         script(type='text/javascript').
             spaImportReactPage('login/login')
-                .then(({renderer}) => renderer(
+                .then(function (module) {
+                    module.renderer(
                       'login',
                       {
                           isUyuni: JSON.parse("#{isUyuni}"),
@@ -65,4 +66,5 @@ html
                           loginLength: '!{loginLength}',
                           passwordLength: '!{passwordLength}',
                       }
-                ));
+                    )
+                });

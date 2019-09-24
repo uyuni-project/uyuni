@@ -8,7 +8,7 @@ script(type='text/javascript').
 
 script(type='text/javascript').
     spaImportReactPage('virtualization/pools/list/pools-list')
-        .then(({renderer}) => renderer(
+        .then((module) => module.renderer(
           'virtualpools',
           {
               serverId: "#{server.id}",

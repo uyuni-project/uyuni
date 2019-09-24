@@ -20,4 +20,4 @@ script(src='/javascript/jquery-ui.js?cb=#{webVersion}')
 
 script(type='text/javascript').
     spaImportReactPage('organizations/config-channels/org-config-channels')
-        .then(({renderer}) => renderer('config-channels'));
+        .then((module) => module.renderer('config-channels'));

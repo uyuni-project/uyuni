@@ -80,7 +80,7 @@
 
         <script>
             spaImportReactPage('systems/activation-key/activation-key-channels')
-                .then(({renderer}) => renderer());
+                .then((module) => module.renderer());
         </script>
 
         <div class="form-group">

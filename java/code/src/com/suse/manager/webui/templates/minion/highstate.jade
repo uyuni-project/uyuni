@@ -11,4 +11,4 @@ script(type='text/javascript').
 
 script(type='text/javascript').
     spaImportReactPage('highstate/highstate')
-        .then(({renderer}) => renderer('highstate'));
+        .then((module) => module.renderer('highstate'));

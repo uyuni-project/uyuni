@@ -10,5 +10,5 @@ script(type='text/javascript').
 
 script(type='text/javascript').
     spaImportReactPage('images/image-stores')
-        .then(({renderer}) => renderer('image-stores'));
+        .then((module) => module.renderer('image-stores'));
 

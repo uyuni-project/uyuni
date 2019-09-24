@@ -6,4 +6,4 @@ script(type="text/javascript").
 
 script(type='text/javascript').
     spaImportReactPage('salt/formula-catalog/org-formula-details')
-        .then(({renderer}) => renderer('formula-details'));
+        .then((module) => module.renderer('formula-details'));

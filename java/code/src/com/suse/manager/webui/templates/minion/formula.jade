@@ -7,7 +7,7 @@ script(type='text/javascript').
 
 script(type='text/javascript').
     spaImportReactPage('minion/formula/minion-formula')
-        .then(({renderer}) => renderer(
+        .then((module) => module.renderer(
           'formula',
           {
             serverId: "#{server.id}",

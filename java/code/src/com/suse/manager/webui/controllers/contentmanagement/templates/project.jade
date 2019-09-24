@@ -12,8 +12,8 @@ div#init_data_project(style="display: none")
 
 script(type='text/javascript').
     spaImportReactPage('content-management/project')
-        .then(({renderer}) => {
-            renderer(
+        .then((module) => {
+            module.renderer(
                 'content-management-project',
                  {
                     project: document.getElementById('init_data_project').textContent,

@@ -539,20 +539,21 @@ function addTextareaLengthNotification() {
 }
 
 function initIEWarningUse() {
-  const isIE = window.document.documentMode;
-  const bodyContentNode = document.getElementById("spacewalk-content");
-  if(isIE && bodyContentNode) {
-    let ieWarningNode = document.createElement("div");
-    ieWarningNode.className = 'alert alert-warning';
-    ieWarningNode.innerHTML = t(
-        "The browser Internet Explorer is not supported. " +
-        "Try using Firefox, Chrome or Edge"
-    );
+  if(window.document.documentMode) {
+    const bodyContentNode = document.getElementById("spacewalk-content");
+    if(bodyContentNode) {
+      let ieWarningNode = document.createElement("div");
+      ieWarningNode.className = 'alert alert-warning';
+      ieWarningNode.innerHTML = t(
+          "The browser Internet Explorer is not supported. " +
+          "Try using Firefox, Chrome or Edge"
+      );
 
-    bodyContentNode.insertBefore(
-        ieWarningNode,
-        bodyContentNode.firstChild
-    )
+      bodyContentNode.insertBefore(
+          ieWarningNode,
+          bodyContentNode.firstChild
+      )
+    }
   }
 }
 
@@ -567,4 +568,5 @@ function onDocumentReadyInitOldJS() {
   onDocumentReadyGeneral();
   onDocumentReadyAutoBootstrapGrid();
   humanizeDates();
+  initIEWarningUse();
 }

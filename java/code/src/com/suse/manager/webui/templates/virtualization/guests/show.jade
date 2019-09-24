@@ -9,7 +9,7 @@ script(type='text/javascript').
 
 script(type='text/javascript').
     spaImportReactPage('virtualization/guests/list/guests-list')
-        .then(({renderer}) => renderer(
+        .then((module) => module.renderer(
           'virtualguests',
           {
               serverId: "#{server.id}",

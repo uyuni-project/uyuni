@@ -25,7 +25,7 @@
 
     <script>
       spaImportReactPage('systems/subscribe-channels/subscribe-channels')
-        .then(({renderer}) => renderer('subscribe-channels-div'));
+        .then((module) => module.renderer('subscribe-channels-div'));
     </script>
 
 </body>

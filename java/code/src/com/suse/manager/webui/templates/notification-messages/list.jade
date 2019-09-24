@@ -11,4 +11,4 @@ script(type='text/javascript').
 
 script(type='text/javascript').
     spaImportReactPage('notifications/notification-messages')
-        .then(({renderer}) => renderer('notification-messages'));
+        .then((module) => module.renderer('notification-messages'));
