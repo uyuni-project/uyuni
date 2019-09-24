@@ -49,6 +49,7 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Stack;
 import java.util.function.Function;
@@ -88,6 +89,10 @@ public class JobReturnEventMessageAction implements MessageAction {
 
         // React according to the function the minion ran
         String function = jobReturnEvent.getData().getFun();
+
+        if (Objects.isNull(function)) {
+            LOG.error("Unexpected: Function is Null in JobReturnEvent ->" + jobReturnEvent);
+        }
 
         if (LOG.isDebugEnabled()) {
             LOG.debug("Job return event for minion: " +
