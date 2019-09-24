@@ -56,3 +56,15 @@ class TestCommonRepo:
         """
         url = "http://mygreathost.com/ubuntu/dists/bionic/restricted/binary-amd64/"
         assert DpkgRepo._get_parent_url(url) == "http://mygreathost.com/ubuntu/dists/bionic/restricted/"
+
+    def test_get_parent_url_no_subpath_with_depth(self):
+        """
+        Return parent URL without adding subpath with depth.
+
+        :return:
+        """
+        url = "http://mygreathost.com/ubuntu/dists/bionic/restricted/binary-amd64/"
+        assert DpkgRepo._get_parent_url(url, depth=2) == "http://mygreathost.com/ubuntu/dists/bionic/"
+        assert DpkgRepo._get_parent_url(url, depth=3) == "http://mygreathost.com/ubuntu/dists/"
+        assert DpkgRepo._get_parent_url(url, depth=4) == "http://mygreathost.com/ubuntu/"
+        assert DpkgRepo._get_parent_url(url, depth=5) == "http://mygreathost.com/"
