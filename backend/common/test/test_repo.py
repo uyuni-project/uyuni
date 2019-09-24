@@ -141,3 +141,38 @@ class TestCommonRepo:
         with pytest.raises(DpkgRepoException) as exc:
             assert repo.get_release_index()
         assert str(exc.value) == "HTTP error 204 occurred while connecting to the URL"
+
+    def test_parse_release_index(self):
+        """
+        Parse release index.
+
+        :return:
+        """
+        release = """
+Irrelevant data
+9f067fc9044265ff132cefef4f741ede     999 one/Release.gz
+ee27992a1c0154454601fd8e5a808256    1298 two/Release.gz
+some more irrelevant data here
+c373e78514584fc3a6b3505aa0ce1525b83e4ceb     999 one/Release.gz
+70d7c8225fb5b6ee67ba089681425c5b712e0b19    1298 two/Release.gz
+something in between
+ef73ea0cc071ad4a13fb52717f99b1951bb41bc2198d2307b30cc0edfb3aed03     999 one/Release.gz
+4843bbb823a63f3bde6104ceecc86daebf8b84efd4f6fb1373138b4589a84803    1298 two/Release.gz
+Some more irrelevant data
+"""
+        repo = DpkgRepo("http://dummy/url")
+        parsed = repo._parse_release_index(release)
+
+        assert len(parsed) == 2
+        assert "one/Release.gz" in parsed
+        assert "two/Release.gz" in parsed
+
+        assert parsed["one/Release.gz"].checksum.md5 == "9f067fc9044265ff132cefef4f741ede"
+        assert parsed["one/Release.gz"].checksum.sha1 == "c373e78514584fc3a6b3505aa0ce1525b83e4ceb"
+        assert parsed["one/Release.gz"].checksum.sha256 == "ef73ea0cc071ad4a13fb52717f99b1951bb41bc2198d2307b30cc0edfb3aed03"
+        assert parsed["one/Release.gz"].size == 999
+
+        assert parsed["two/Release.gz"].checksum.md5 == "ee27992a1c0154454601fd8e5a808256"
+        assert parsed["two/Release.gz"].checksum.sha1 == "70d7c8225fb5b6ee67ba089681425c5b712e0b19"
+        assert parsed["two/Release.gz"].checksum.sha256 == "4843bbb823a63f3bde6104ceecc86daebf8b84efd4f6fb1373138b4589a84803"
+        assert parsed["two/Release.gz"].size == 1298
