@@ -105,7 +105,7 @@ class TestCommonRepo:
     @patch("spacewalk.common.repo.DpkgRepo._parse_release_index", MagicMock(return_value="Plasma conduit overflow"))
     def test_get_release_index_flat(self):
         """
-        Get release index file contents.
+        Get release index file contents, flat.
 
         :return:
         """
@@ -118,7 +118,7 @@ class TestCommonRepo:
     @patch("spacewalk.common.repo.DpkgRepo._parse_release_index", MagicMock(return_value="Plasma conduit overflow"))
     def test_get_release_index_standard(self):
         """
-        Get release index file contents.
+        Get release index file contents, standard.
 
         :return:
         """
