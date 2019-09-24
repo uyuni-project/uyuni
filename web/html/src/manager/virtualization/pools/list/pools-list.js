@@ -7,8 +7,12 @@ import { ProgressBar } from 'components/progressbar';
 import { CustomDataHandler } from 'components/table/CustomDataHandler';
 import { SearchField } from 'components/table/SearchField';
 import { AsyncButton } from 'components/buttons';
+import { Messages } from 'components/messages';
+import { Utils as MessagesUtils } from 'components/messages';
+import { ActionStatus } from 'components/action/ActionStatus';
 import { VirtualizationPoolsListRefreshApi } from '../virtualization-pools-list-refresh-api';
 import { VirtualizationPoolsActionApi } from '../virtualization-pools-action-api';
+import { useVirtNotification } from '../../useVirtNotification.js';
 
 type Props = {
   serverId: string,
@@ -93,9 +97,42 @@ function FilteredTree(props: FilteredTreeProps) {
 }
 
 export function PoolsList(props: Props) {
+  const [errors, setErrors] = React.useState([]);
+
+  const [actionsResults, setActionsResults] = useVirtNotification(errors, setErrors,
+                                                                  props.serverId);
+
+  const actionCallback = (results: Object) => {
+    const newActions = Object.keys(results).reduce((actions, poolName) => {
+      const newAction = { [`pool-${poolName}`]: { id: results[poolName], status: 'Queued' } };
+      return Object.assign(actions, newAction);
+    }, {});
+    setActionsResults(Object.assign({}, actionsResults, newActions));
+  }
+
+  function renderActionStatus(type: string, name: string): React.Node {
+    const actionResult = actionsResults[`${type}-${name}`];
+    if (actionResult !== undefined) {
+      return <ActionStatus serverId={props.serverId} actionId={actionResult.id} status={actionResult.status}/>;
+    }
+    return null;
+  }
+
+  function getCreationActionMessages(): React.Node {
+    return Object.keys(actionsResults)
+      .filter(key => key.startsWith("new-") && actionsResults[key].type === "virt.pool_create")
+      .flatMap(key => {
+        const action = actionsResults[key];
+        return MessagesUtils.info(
+          <p>{renderActionStatus("new", action.id)}{action.name}</p>
+        );
+      });
+  }
+
   return (
     <VirtualizationPoolsActionApi
       hostid={props.serverId}
+      callback={actionCallback}
     >
     {
       ({
@@ -114,7 +151,7 @@ export function PoolsList(props: Props) {
             }) => {
               function renderPool(pool: Object, renderNameColumn: Function): React.Node {
                 return [
-                  <CustomDiv key="name" className="col" width="30" um="%">
+                  <CustomDiv key="name" className="col" width="25" um="%">
                     {renderNameColumn(pool.name)}
                   </CustomDiv>,
                   <CustomDiv key="state" className="col text-center" width="5" um="%">{pool.state}</CustomDiv>,
@@ -142,6 +179,9 @@ export function PoolsList(props: Props) {
                       <span>{t("Unknown")}</span>
                     }
                   </CustomDiv>,
+                  <CustomDiv key="actionStatus" className="col" width="5" um="%">
+                    {renderActionStatus('pool', pool.name)}
+                  </CustomDiv>,
                   <CustomDiv key="actions" className="col text-right" width="10" um="%">
                     <div className="btn-group">
                       { pool.state === 'running' &&
@@ -159,7 +199,7 @@ export function PoolsList(props: Props) {
 
               function renderVolume (volume: Object, renderNameColumn: Function): React.Node {
                 return [
-                  <CustomDiv key="name" className="col" width="calc((100% + 3em) * 0.3 - 3em)" um="">
+                  <CustomDiv key="name" className="col" width="calc((100% + 3em) * 0.25 - 3em)" um="">
                     {renderNameColumn(volume.name)}
                   </CustomDiv>,
                   <CustomDiv key="usedBy" className="col" width="calc((100% + 3em) * 0.45)" um="">{volume.usedBy != null ? volume.usedBy.join(", ") : ''}</CustomDiv>,
@@ -174,6 +214,9 @@ export function PoolsList(props: Props) {
                       <span>{t("Unknown")}</span>
                     }
                   </CustomDiv>,
+                  <CustomDiv key="actionStatus" className="col" width="calc(100% + 3em) * 0.05" um="">
+                    {renderActionStatus('volume', volume.name)}
+                  </CustomDiv>,
                   <CustomDiv key="actions" className="col text-right" width="calc((100% + 3em) * 0.1)" um="">
                     <div className="btn-group">
                     </div>
@@ -187,7 +230,8 @@ export function PoolsList(props: Props) {
                   volume: renderVolume,
                 };
                 if (item.data != null) {
-                  return itemRenderers[item.data.itemType](item.data, renderNameColumn);
+                  const itemData = item.data;
+                  return itemRenderers[itemData.itemType](itemData, renderNameColumn);
                 } else {
                   return null;
                 }
@@ -195,40 +239,46 @@ export function PoolsList(props: Props) {
 
               const tree = poolsInfoToTree(pools);
               const header = [
-                <CustomDiv key="name" className="col col-class-calc-width" width="30" um="%">{t('Name')}</CustomDiv>,
+                <CustomDiv key="name" className="col" width="25" um="%">{t('Name')}</CustomDiv>,
                 <CustomDiv key="state" className="col text-center" width="5" um="%">{t('State')}</CustomDiv>,
                 <CustomDiv key="autostart" className="col text-center" width="5" um="%">{t('Autostart')}</CustomDiv>,
                 <CustomDiv key="persistent" className="col text-center" width="5" um="%">{t('Persistent')}</CustomDiv>,
                 <CustomDiv key="target" className="col" width="30" um="%">{t('Location')}</CustomDiv>,
                 <CustomDiv key="usage" className="col" width="10" um="%">{t('Usage')}</CustomDiv>,
+                <CustomDiv key="actionStatus" className="col" width="5" um="%"/>,
                 <CustomDiv key="actions" className="col text-right" width="10" um="%">{t('Actions')}</CustomDiv>,
               ];
 
               return (
-                <CustomDataHandler
-                  data={getPoolsAndVolumes(tree)}
-                  identifier={(raw) => raw.id}
-                  initialItemsPerPage={Number(props.pageSize)}
-                  loading={tree == null}
-                  additionalFilters={[]}
-                  searchField={
-                      <SearchField filter={searchData}
-                          criteria={''}
-                          placeholder={t('Filter by pool or volume name')}
-                          name='pool-name-filter'
+                <>
+                  <h2>{t('Virtual Storage Pools and Volumes')}</h2>
+                  <p>{t('This is the list of storage pools defined on this host containing virtual guests disks.')}</p>
+                  <Messages items={[].concat(messages, refreshError || [], getCreationActionMessages())}/>
+                  <CustomDataHandler
+                    data={getPoolsAndVolumes(tree)}
+                    identifier={(raw) => raw.id}
+                    initialItemsPerPage={Number(props.pageSize)}
+                    loading={tree == null}
+                    additionalFilters={[]}
+                    searchField={
+                        <SearchField filter={searchData}
+                            criteria={''}
+                            placeholder={t('Filter by pool or volume name')}
+                            name='pool-name-filter'
+                        />
+                    }
+                  >
+                  {
+                    tree != null &&
+                    <FilteredTree tree={tree}>
+                      <Tree
+                        header={header}
+                        renderItem={renderItem}
                       />
+                    </FilteredTree>
                   }
-                >
-                {
-                  tree != null &&
-                  <FilteredTree tree={tree}>
-                    <Tree
-                      header={header}
-                      renderItem={renderItem}
-                    />
-                  </FilteredTree>
-                }
-                </CustomDataHandler>
+                  </CustomDataHandler>
+                </>
               );
             }
           }
