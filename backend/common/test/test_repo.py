@@ -3,8 +3,9 @@
 Py-test based unit tests for common/repo
 """
 from mock import MagicMock, patch
-from spacewalk.common.repo import DpkgRepo
+from spacewalk.common.repo import DpkgRepo, DpkgRepoException
 import http
+import pytest
 
 
 class FakeRequests:
@@ -125,3 +126,18 @@ class TestCommonRepo:
         repo = DpkgRepo("http://dummy/url")
         assert repo.get_release_index() == "Plasma conduit overflow"
         assert not repo.is_flat()
+
+    @patch("spacewalk.common.repo.requests.get", MagicMock(
+        return_value=FakeRequests().conf(status_code=http.HTTPStatus.NO_CONTENT, content=b"")))
+    @patch("spacewalk.common.repo.DpkgRepo._parse_release_index", MagicMock(return_value="Plasma conduit overflow"))
+    def test_get_release_index_exception(self):
+        """
+        Get release index file contents, other than flat or standard error code.
+
+        :return:
+        """
+        repo = DpkgRepo("http://dummy/url")
+
+        with pytest.raises(DpkgRepoException) as exc:
+            assert repo.get_release_index()
+        assert str(exc.value) == "HTTP error 204 occurred while connecting to the URL"
