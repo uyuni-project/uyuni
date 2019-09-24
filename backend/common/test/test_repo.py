@@ -47,3 +47,12 @@ class TestCommonRepo:
 
         DpkgRepo.get_release_index = mock_release_index
         assert DpkgRepo("http://dummy").is_flat()
+
+    def test_get_parent_url_no_subpath_default(self):
+        """
+        Return parent URL without adding subpath and default params.
+
+        :return:
+        """
+        url = "http://mygreathost.com/ubuntu/dists/bionic/restricted/binary-amd64/"
+        assert DpkgRepo._get_parent_url(url) == "http://mygreathost.com/ubuntu/dists/bionic/restricted/"
