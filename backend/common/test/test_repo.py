@@ -112,3 +112,16 @@ class TestCommonRepo:
         repo = DpkgRepo("http://dummy/url")
         assert repo.get_release_index() == "Plasma conduit overflow"
         assert repo.is_flat()
+
+    @patch("spacewalk.common.repo.requests.get", MagicMock(
+        return_value=FakeRequests().conf(status_code=http.HTTPStatus.OK, content=b"")))
+    @patch("spacewalk.common.repo.DpkgRepo._parse_release_index", MagicMock(return_value="Plasma conduit overflow"))
+    def test_get_release_index_standard(self):
+        """
+        Get release index file contents.
+
+        :return:
+        """
+        repo = DpkgRepo("http://dummy/url")
+        assert repo.get_release_index() == "Plasma conduit overflow"
+        assert not repo.is_flat()
