@@ -24,12 +24,17 @@ import com.redhat.rhn.manager.rhnpackage.PackageManager;
 import com.redhat.rhn.manager.rhnpackage.test.PackageManagerTest;
 import com.redhat.rhn.taskomatic.task.repomd.DebRepositoryWriter;
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
+import com.redhat.rhn.testing.TestUtils;
 import org.apache.commons.io.FileUtils;
 
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.zip.GZIPInputStream;
 
 public class DebRepositoryWriterTest extends JMockBaseTestCaseWithUser {
 
@@ -65,6 +70,21 @@ public class DebRepositoryWriterTest extends JMockBaseTestCaseWithUser {
         assertTrue(fileNames.contains("Release"));
         assertTrue(fileNames.contains("Packages"));
         assertTrue(fileNames.contains("Packages.gz"));
+
+        String packagesContent = FileUtils.readFileToString(tmpDir.resolve("rhn/repodata/" + channel.getLabel() + "/Packages").toFile());
+        packagesContent = DebPackageWriterTest.cleanupContent(packagesContent);
+
+        try (FileInputStream fin = new FileInputStream(tmpDir.resolve("rhn/repodata/" + channel.getLabel() + "/Packages.gz").toFile());
+             InputStream gzipStream = new GZIPInputStream(fin)) {
+
+            String packagesGzContent = TestUtils.readAll(gzipStream);
+            packagesGzContent = DebPackageWriterTest.cleanupContent(packagesGzContent);
+
+            assertEquals(packagesContent, packagesGzContent);
+        }
+        catch (IOException e) {
+            fail(e.getMessage());
+        }
 
 //        String releaseContent = FileUtils.readFileToString(channelRepodataDir.resolve("Release").toFile());
 //        System.out.println(releaseContent);
