@@ -12,4 +12,4 @@ script(type='text/javascript').
 
 script(type='text/javascript').
     spaImportReactPage('admin/setup/products/products')
-        .then((module) => module.renderer('products'));
+        .then(function(module) { module.renderer('products') });

@@ -2,13 +2,15 @@
 
 script(type='text/javascript').
     spaImportReactPage('virtualization/guests/console/guests-console')
-        .then((module) => module.renderer(
-          'virtualguests-console',
-          {
-              hostId: "#{server.id}",
-              guestUuid: "#{guestUuid}",
-              guestName: "#{guestName}",
-              graphicsType: "#{graphicsType}",
-              socketUrl: "#{socketUrl}",
-          }
-        ));
+        .then(function(module) {
+             module.renderer(
+              'virtualguests-console',
+              {
+                  hostId: "#{server.id}",
+                  guestUuid: "#{guestUuid}",
+                  guestName: "#{guestName}",
+                  graphicsType: "#{graphicsType}",
+                  socketUrl: "#{socketUrl}",
+              }
+            )
+        });

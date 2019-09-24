@@ -10,19 +10,20 @@ script(type='text/javascript').
 
 script(type='text/javascript').
     spaImportReactPage('virtualization/guests/create/guests-create')
-        .then((module) => module.renderer(
-          'virtualguests-create',
-          {
-              host: {
-                  id: "#{server.id}",
-                  cpu: {
-                      count: #{server.cpu.nrCPU},
-                      arch: "#{server.cpu.archName}"
+        .then(function(module) {
+            module.renderer(
+              'virtualguests-create',
+              {
+                  host: {
+                      id: "#{server.id}",
+                      cpu: {
+                          count: #{server.cpu.nrCPU},
+                          arch: "#{server.cpu.archName}"
+                      },
+                      saltEntitled: #{isSalt},
                   },
-                  saltEntitled: #{isSalt},
-              },
-              actionChains: !{actionChains},
-              timezone: "#{h.renderTimezone()}",
-              localTime: "#{h.renderLocalTime()}",
-          }
-        ));
+                  actionChains: !{actionChains},
+                  timezone: "#{h.renderTimezone()}",
+                  localTime: "#{h.renderLocalTime()}",
+              }
+        )});

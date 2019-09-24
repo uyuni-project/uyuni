@@ -6,7 +6,9 @@ script(src='/javascript/manager/errors/not-found.bundle.js?cb=#{webVersion}', ty
 
 script(type='text/javascript').
     spaImportReactPage('errors/not-found')
-        .then((module) => module.renderer(
+        .then(function(module) {
+            module.renderer(
                 'notfoundpage',
                 { currentUrl: '#{currentUrl}' }
-        ));
+            )
+        });

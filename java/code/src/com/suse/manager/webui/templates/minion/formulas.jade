@@ -7,10 +7,12 @@ script(type='text/javascript').
 
 script(type='text/javascript').
     spaImportReactPage('minion/formula/minion-formula-selection')
-        .then((module) => module.renderer(
-          'formulas',
-          {
-            serverId: "#{server.id}",
-            warningMessage: "#{warning}"
-          }
-        ));
+        .then(function(module) {
+             module.renderer(
+              'formulas',
+              {
+                serverId: "#{server.id}",
+                warningMessage: "#{warning}"
+              }
+            )
+        });

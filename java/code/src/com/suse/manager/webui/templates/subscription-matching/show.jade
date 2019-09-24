@@ -8,4 +8,4 @@ script(type='text/javascript').
 
 script(type='text/javascript').
     spaImportReactPage('audit/subscription-matching')
-        .then((module) => module.renderer('subscription-matching'));
+        .then(function(module) { module.renderer('subscription-matching') });

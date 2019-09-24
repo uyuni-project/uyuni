@@ -227,7 +227,7 @@ function getServerIdsToDelete() {
 </rl:listset>
 <script>
     spaImportReactPage('systems/duplicate-systems-compare-delete')
-        .then((module) => module.renderer());
+        .then(function(module) { module.renderer() });
 </script>
 </body>
 </html>
