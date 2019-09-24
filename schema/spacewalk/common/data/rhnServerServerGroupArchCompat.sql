@@ -847,4 +847,8 @@ insert into rhnServerServerGroupArchCompat ( server_arch_id, server_group_type)
     values (lookup_server_arch('x86_64-redhat-linux'),
             lookup_sg_type('monitoring_entitled'));
 
+insert into rhnServerServerGroupArchCompat ( server_arch_id, server_group_type)
+    values (lookup_server_arch('amd64-debian-linux'),
+            lookup_sg_type('monitoring_entitled'));
+
 commit;
