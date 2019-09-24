@@ -52,21 +52,6 @@
                jars="${run.jar.dependencies}" dir="${run-external.lib.dir}"/>
     </target>
 
-  <!-- Generates Eclipse .classpath  -->
-  <target name="gen-eclipse-base" depends="resolve"
-          description = "Generates eclipse .classpath file">
-      <exec executable="../scripts/gen-eclipse.py"
-        output="${basedir}/.classpath" >
-        <arg value="code/internal/src:code/src"/>
-        <arg value="${eclipse.lib.dirs}:${env.JAVA_HOME}/lib/tools.jar" />
-    </exec>
-  </target>
-
-  <!-- Generates Eclipse classpath after setting up dependent jars   -->
-  <target name="gen-eclipse" depends="gen-eclipse-base"
-          description = "Generates eclipse .classpath file after linking jars">
-  </target>
-
   <target name="missingstrings"
           description="prints out a report with untranslated strings.">
     <mkdir dir="${report.dir}" />
@@ -952,16 +937,13 @@ delete from rhnChannel where label like 'ChannelLabel%';
     </delete>
   </target>
 
-  <!--
-     Set up Eclipse project files
-     NOTE: If this fails due to missing-jars, and you want to continue,
-     then execute "ant gen-eclipse-base" and retry
-    -->
-  <target name="make-eclipse-project" depends = "gen-eclipse"
+  <target name="make-eclipse-project"
           description="Configures this checkout as an eclipse project.">
     <copy toDir="${rhn-home}" overwrite="false">
       <fileset dir="${rhn-home}/conf/eclipse/">
         <include name=".project" />
+        <include name=".checkstyle" />
+        <include name=".classpath" />
         <include name=".settings/*" />
         <!-- include name=".externalToolBuilders/*" /-->
       </fileset>
