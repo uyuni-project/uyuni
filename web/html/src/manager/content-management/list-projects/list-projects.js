@@ -9,6 +9,7 @@ import withPageWrapper from 'components/general/with-page-wrapper';
 import {hot} from 'react-hot-loader';
 import useRoles from "core/auth/use-roles";
 import {isOrgAdmin} from "core/auth/auth.utils";
+import _truncate from "lodash/truncate";
 
 type ContentProjectOverviewType = {
   properties: {
@@ -47,7 +48,7 @@ const ListProjects = (props: Props) => {
     label: project.properties.label,
     name: project.properties.name,
     description: project.properties.description,
-    environmentLifecycle: project.environments.join(' - ')
+    environmentLifecycle: project.environments.join(' > ')
   }));
 
   const panelButtons = (
@@ -71,6 +72,7 @@ const ListProjects = (props: Props) => {
         <Table
           data={normalizedProjects}
           identifier={row => row.label}
+          initialSortColumnKey="name"
           searchField={(
             <SearchField
               filter={searchData}
@@ -94,7 +96,7 @@ const ListProjects = (props: Props) => {
             columnKey="description"
             comparator={Functions.Utils.sortByText}
             header={t('Description')}
-            cell={row => row.description}
+            cell={row => _truncate(row.description,{length: 120})}
           />
           <Column
             columnKey="environmentLifecycle"
