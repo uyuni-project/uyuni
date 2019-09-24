@@ -45,6 +45,7 @@ import java.util.Set;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 import javax.websocket.EndpointConfig;
@@ -210,26 +211,39 @@ public class VirtNotifications {
      * @param action the action that changed
      */
     public static void spreadActionUpdate(Action action) {
-        synchronized (LOCK) {
-            if (action instanceof BaseVirtualizationAction) {
+
+        // Map each virtualization action types to an id supplier. The id is indeed
+        // different for guests, pools, volumes and networks
+        Map<Class<? extends Action>, Supplier<String>> idsMapper = Map.of(
+            BaseVirtualizationAction.class,
+            () -> {
                 BaseVirtualizationAction virtAction = (BaseVirtualizationAction)action;
-                // Notify sessions waiting for this action and stop watching for it
-                wsSessions.forEach((session, servers) -> {
-                    Optional<ServerAction> serverAction = action.getServerActions().stream()
-                            .filter(sa -> servers.contains(sa.getServerId())).findFirst();
+                return virtAction.getUuid();
+            }
+        );
 
-                    serverAction.ifPresent(sa -> {
-                        Map<String, Object> actions = new HashMap<>();
-                        actions.put("id", action.getId());
-                        actions.put("status", sa.getStatus().getName());
+        synchronized (LOCK) {
+            idsMapper.keySet().stream()
+                .filter(clazz -> clazz.isInstance(action))
+                .findFirst()
+                .ifPresent(virtClazz -> {
+                    // Notify sessions waiting for this action and stop watching for it
+                    wsSessions.forEach((session, servers) -> {
+                        Optional<ServerAction> serverAction = action.getServerActions().stream()
+                                .filter(sa -> servers.contains(sa.getServerId())).findFirst();
 
-                        Map<String, Object> msg = new HashMap<>();
-                        msg.put(virtAction.getUuid(), actions);
+                        serverAction.ifPresent(sa -> {
+                            Map<String, Object> actions = new HashMap<>();
+                            actions.put("id", action.getId());
+                            actions.put("status", sa.getStatus().getName());
 
-                        sendMessage(session, GSON.toJson(msg));
+                            Map<String, Object> msg = new HashMap<>();
+                            msg.put(idsMapper.get(virtClazz).get(), actions);
+
+                            sendMessage(session, GSON.toJson(msg));
+                        });
                     });
                 });
-            }
         }
     }
 
