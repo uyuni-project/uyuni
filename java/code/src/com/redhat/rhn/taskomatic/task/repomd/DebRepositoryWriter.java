@@ -15,12 +15,15 @@
 package com.redhat.rhn.taskomatic.task.repomd;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import java.util.zip.GZIPOutputStream;
 
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.db.datasource.DataResult;
@@ -99,8 +102,8 @@ public class DebRepositoryWriter extends RepositoryWriter {
         // batch the elaboration so we don't have to hold many thousands of
         // packages in memory at once
         final int batchSize = 1000;
+        String packagesFile;
         try (DebPackageWriter writer = new DebPackageWriter(channel, prefix)) {
-            writer.begin(channel);
             for (long i = 0; i < channel.getPackageCount(); i += batchSize) {
                 DataResult<PackageDto> packageBatch = TaskManager.getChannelPackageDtos(channel, i, batchSize);
                 packageBatch.elaborate();
@@ -109,10 +112,18 @@ public class DebRepositoryWriter extends RepositoryWriter {
                     writer.addPackage(pkgDto);
                 }
             }
-            writer.generatePackagesGz();
+            packagesFile = writer.getFilenamePackages();
         }
         catch (IOException e) {
             log.error("Could not write Packages file for channel " + channel.getLabel(), e);
+            return;
+        }
+
+        try {
+            gzipCompress(packagesFile);
+        }
+        catch (IOException e) {
+            log.error("Failed to create Packages.gz " + e.toString());
             return;
         }
 
@@ -148,6 +159,32 @@ public class DebRepositoryWriter extends RepositoryWriter {
         Map<Long, Map<String, String>> extraTags = TaskManager.getChannelPackageExtraTags(pkgIds);
         packageBatch.stream().forEach(pkgDto ->
                 pkgDto.setExtraTags(extraTags.get(pkgDto.getId())));
+    }
+
+    /**
+     * Compresses file using GZIP
+     * @param filename the filename to compress
+     * @throws IOException io error
+     */
+    public void gzipCompress(String filename) throws IOException {
+        // Create the GZIP output stream
+        String outFilename = filename + ".gz";
+        try (GZIPOutputStream outGz = new GZIPOutputStream(new FileOutputStream(
+                outFilename, false))) {
+
+            // Open the input file
+            try (FileInputStream in = new FileInputStream(filename)) {
+                // Transfer bytes from the input file to the GZIP output stream
+                byte[] buf = new byte[1024];
+                int len;
+                while ((len = in.read(buf)) > 0) {
+                    outGz.write(buf, 0, len);
+                }
+            }
+
+            // Complete the GZIP file
+            outGz.finish();
+        }
     }
 
 }
