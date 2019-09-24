@@ -4,7 +4,8 @@ Py-test based unit tests for common/repo
 """
 from mock import MagicMock, patch
 from spacewalk.common.repo import DpkgRepo
-import hashlib
+import http
+
 
 class FakeRequests:
     """
@@ -98,3 +99,16 @@ class TestCommonRepo:
         assert DpkgRepo._get_parent_url(url, depth=3) == "http://mygreathost.com/ubuntu/dists/"
         assert DpkgRepo._get_parent_url(url, depth=4) == "http://mygreathost.com/ubuntu/"
         assert DpkgRepo._get_parent_url(url, depth=5) == "http://mygreathost.com/"
+
+    @patch("spacewalk.common.repo.requests.get", MagicMock(
+        return_value=FakeRequests().conf(status_code=http.HTTPStatus.NOT_FOUND, content=b"")))
+    @patch("spacewalk.common.repo.DpkgRepo._parse_release_index", MagicMock(return_value="Plasma conduit overflow"))
+    def test_get_release_index(self):
+        """
+        Get release index file contents.
+
+        :return:
+        """
+        repo = DpkgRepo("http://dummy/url")
+        assert repo.get_release_index() == "Plasma conduit overflow"
+        assert repo.is_flat()
