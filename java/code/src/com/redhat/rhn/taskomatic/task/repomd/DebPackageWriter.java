@@ -26,13 +26,10 @@ import org.apache.log4j.Logger;
 import java.io.BufferedWriter;
 import java.io.Closeable;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.Map;
-import java.util.zip.GZIPOutputStream;
 
 /**
  *
@@ -49,29 +46,13 @@ public class DebPackageWriter implements Closeable {
      *
      * @param channel debian channel
      * @param prefix path to repository
+     * @throws IOException in case of IO error
      */
-    public DebPackageWriter(Channel channel, String prefix) {
+    public DebPackageWriter(Channel channel, String prefix) throws IOException {
         log.debug("DebPackageWriter created");
-        try {
-            channelLabel = channel.getLabel();
-            filenamePackages = prefix + "Packages";
-            File f = new File(filenamePackages);
-            if (f.exists()) {
-                f.delete();
-            }
-            f.createNewFile();
-        }
-        catch (Exception e) {
-            log.error("Create file Packages failed " + e.toString());
-        }
-    }
-
-    /**
-     * Begin writing Packages file
-     * @param channel the channel
-     * @throws IOException in case of IO errors
-     */
-    public void begin(Channel channel) throws IOException {
+        channelLabel = channel.getLabel();
+        filenamePackages = prefix + "Packages";
+        new File(filenamePackages).delete();
         out = new BufferedWriter(new FileWriter(
                 filenamePackages, true));
     }
@@ -293,31 +274,10 @@ public class DebPackageWriter implements Closeable {
     }
 
     /**
-     * Create Packages.gz from Packages
+     * @return filenamePackages to get
      */
-    public void generatePackagesGz() {
-        // Create the GZIP output stream
-        String outFilename = filenamePackages + ".gz";
-        try (GZIPOutputStream outGz = new GZIPOutputStream(new FileOutputStream(
-                outFilename, false))) {
-
-            // Open the input file
-            FileInputStream in = new FileInputStream(filenamePackages);
-
-            // Transfer bytes from the input file to the GZIP output stream
-            byte[] buf = new byte[1024];
-            int len;
-            while ((len = in.read(buf)) > 0) {
-                outGz.write(buf, 0, len);
-            }
-            in.close();
-
-            // Complete the GZIP file
-            outGz.finish();
-        }
-        catch (IOException e) {
-            log.error("Failed to create Packages.gz " + e.toString());
-        }
+    public String getFilenamePackages() {
+        return filenamePackages;
     }
 
     /**

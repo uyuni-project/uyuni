@@ -67,9 +67,6 @@ public class DebPackageWriterTest extends JMockBaseTestCaseWithUser {
         HibernateFactory.getSession().flush();
         HibernateFactory.getSession().clear();
 
-        DebPackageWriter writer = new DebPackageWriter(channel, tmpDir.normalize().toString() + File.separator);
-        writer.begin(channel);
-
         DataResult<PackageDto> packageBatch = TaskManager.getChannelPackageDtos(channel, 0, 100);
         packageBatch.elaborate();
         Map<Long, Map<String, String>> extraTags = TaskManager.getChannelPackageExtraTags(Arrays.asList(pkg1.getId(), pkg2.getId()));
@@ -77,15 +74,14 @@ public class DebPackageWriterTest extends JMockBaseTestCaseWithUser {
             pkgDto.setExtraTags(extraTags.get(pkgDto.getId()));
         }
 
-        for (PackageDto pkgDto: packageBatch) {
-            writer.addPackage(pkgDto);
+        try (DebPackageWriter writer = new DebPackageWriter(channel, tmpDir.normalize().toString() + File.separator)) {
+            for (PackageDto pkgDto: packageBatch) {
+                writer.addPackage(pkgDto);
+            }
         }
-        writer.close();
 
         String packagesContent = FileUtils.readFileToString(tmpDir.resolve("Packages").toFile());
-        packagesContent = packagesContent.replaceAll("Filename: channel.*/getPackage/", "Filename: channel/getPackage/");
-        packagesContent = packagesContent.replaceAll("MD5sum: .*\\s", "MD5sum: some-md5sum\n");
-        packagesContent = packagesContent.replaceAll("Section: .*\\s", "Section: some-section\n");
+        packagesContent = cleanupContent(packagesContent);
 
         assertEquals("Package: pkg_1\n" +
                         "Version: 1:1.0.0-1\n" +
@@ -124,6 +120,13 @@ public class DebPackageWriterTest extends JMockBaseTestCaseWithUser {
                         "Section: some-section\n" +
                         "Description: RHN-JAVA Package Test",
                 packagesContent.trim());
+    }
+
+    public static String cleanupContent(String packagesContent) {
+        packagesContent = packagesContent.replaceAll("Filename: channel.*/getPackage/", "Filename: channel/getPackage/");
+        packagesContent = packagesContent.replaceAll("MD5sum: .*\\s", "MD5sum: some-md5sum\n");
+        packagesContent = packagesContent.replaceAll("Section: .*\\s", "Section: some-section\n");
+        return packagesContent;
     }
 
     @Override
