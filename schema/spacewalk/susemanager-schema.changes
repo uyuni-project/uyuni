@@ -1,3 +1,4 @@
+- Refactor in suseChannelUserRoleView for retrieving the parent_channel_id (bsc#1151399)
 - Add tables rhnPackageExtraTag and rhnPackageExtraTagKey
 - Allow monitoring for Ubuntu systems
 - Add new types needed for Azure, Amazon EC2 and Google CE
