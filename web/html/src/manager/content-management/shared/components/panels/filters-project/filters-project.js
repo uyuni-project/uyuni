@@ -32,19 +32,22 @@ const renderFilterEntry = (filter, projectId, symbol, last) => {
       />
     </div>;
 
-  let filterClassName = null;
-  let filterIconName = null;
+  let filterClassName;
+  let filterIconName;
 
   if (filter.state === statesEnum.enum.ATTACHED.key) {
     filterClassName = `text-success`;
     filterIconName = 'fa-plus';
-  } else if (filter.state === statesEnum.enum.EDITED.key) {
+  }
+  else if (filter.state === statesEnum.enum.EDITED.key) {
     filterClassName = `text-warning`;
     filterIconName = 'fa-edit';
-  } else if (filter.state === statesEnum.enum.DETACHED.key) {
+  }
+  else if (filter.state === statesEnum.enum.DETACHED.key) {
     filterClassName = `text-danger ${styles.dettached}`;
     filterIconName = 'fa-minus';
-  } else {
+  }
+  else {
     filterClassName = `${styles.wrapper}`;
   }
 
