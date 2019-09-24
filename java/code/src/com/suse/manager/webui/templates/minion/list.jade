@@ -9,5 +9,5 @@ script(type='text/javascript').
 
 script(type='text/javascript').
     spaImportReactPage('salt/keys/key-management')
-        .then(({renderer}) => renderer('key-management'));
+        .then((module) => module.renderer('key-management'));
 

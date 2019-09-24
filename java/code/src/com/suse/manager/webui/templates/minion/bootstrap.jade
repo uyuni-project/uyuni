@@ -7,4 +7,4 @@ script(type="text/javascript").
 
 script(type='text/javascript').
     spaImportReactPage('systems/bootstrap/bootstrap-minions')
-        .then(({renderer}) => renderer('bootstrap-minions'));
+        .then((module) => module.renderer('bootstrap-minions'));

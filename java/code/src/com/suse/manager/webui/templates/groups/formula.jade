@@ -20,7 +20,7 @@ script(type='text/javascript').
 
 script(type='text/javascript').
     spaImportReactPage('groups/formula/group-formula')
-        .then(({renderer}) => renderer(
+        .then((module) => module.renderer(
             'formula',
             {
                 groupId: "#{groupId}",

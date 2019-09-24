@@ -9,4 +9,4 @@ script(type='text/javascript').
 
 script(type='text/javascript').
     spaImportReactPage('audit/cveaudit')
-        .then(({renderer}) => renderer('cveaudit'));
+        .then((module) => module.renderer('cveaudit'));

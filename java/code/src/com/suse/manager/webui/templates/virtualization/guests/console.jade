@@ -2,7 +2,7 @@
 
 script(type='text/javascript').
     spaImportReactPage('virtualization/guests/console/guests-console')
-        .then(({renderer}) => renderer(
+        .then((module) => module.renderer(
           'virtualguests-console',
           {
               hostId: "#{server.id}",
