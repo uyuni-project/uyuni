@@ -103,7 +103,7 @@ class TestCommonRepo:
     @patch("spacewalk.common.repo.requests.get", MagicMock(
         return_value=FakeRequests().conf(status_code=http.HTTPStatus.NOT_FOUND, content=b"")))
     @patch("spacewalk.common.repo.DpkgRepo._parse_release_index", MagicMock(return_value="Plasma conduit overflow"))
-    def test_get_release_index(self):
+    def test_get_release_index_flat(self):
         """
         Get release index file contents.
 
