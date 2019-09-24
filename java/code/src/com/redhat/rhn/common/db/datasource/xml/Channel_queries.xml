@@ -519,36 +519,27 @@ ORDER BY UPPER(C.name)
 
 <mode name="owned_channels_tree" class="com.redhat.rhn.frontend.dto.ChannelTreeNode">
   <query params="user_id">
-SELECT CTV.name, CTV.id, CA.name AS arch_name, C.org_id,
-       (SELECT ORG.name
-            FROM web_customer ORG
-            WHERE ORG.id = C.org_id) AS org_name,
-       CASE WHEN NOT CTV.parent_or_self_id = CTV.id THEN CTV.parent_or_self_id END AS parent_id,
-       (SELECT COUNT (cp.package_id)
-          FROM rhnchannelpackage cp
-         WHERE cp.channel_id = CTV.id) AS package_count,
-       CTV.label AS channel_label
-  FROM rhnchannel C, rhnChannelTreeView CTV, rhnChannel C2, rhnChannelArch CA
- WHERE CTV.id = C.ID
-   AND  CTV.channel_arch_id = CA.id
-   AND  CTV.parent_or_self_id = C2.id
-   AND EXISTS (
-      SELECT 1
-          FROM suseChannelUserRoleView scur
-          WHERE
-              scur.channel_id = C.id AND
-              scur.user_id = :user_id AND
-              scur.role = 'manage' AND
-              deny_reason IS NULL
-          UNION
-              SELECT 1
-                  FROM suseChannelUserRoleView scur
-                  WHERE scur.channel_id IN (SELECT C2.id FROM rhnChannel C2 WHERE C2.parent_channel = C.id) AND
-                      scur.user_id = :user_id AND
-                      scur.role = 'manage' AND
-                      deny_reason IS NULL
-   )
- ORDER BY UPPER(C2.name), depth, UPPER(C.name)
+     SELECT CTV.name, CTV.id, CA.name AS arch_name, C.org_id,
+            (SELECT ORG.name
+             FROM web_customer ORG
+             WHERE ORG.id = C.org_id) AS org_name,
+            CASE WHEN NOT CTV.parent_or_self_id = CTV.id THEN CTV.parent_or_self_id END AS parent_id,
+            (SELECT COUNT (cp.package_id)
+             FROM rhnchannelpackage cp
+             WHERE cp.channel_id = CTV.id) AS package_count,
+            CTV.label AS channel_label
+     FROM rhnchannel C
+       INNER JOIN rhnChannelTreeView CTV ON (CTV.id = C.ID)
+       INNER JOIN rhnChannelArch CA ON (CTV.channel_arch_id = CA.id)
+     WHERE EXISTS (
+        SELECT 1
+        FROM suseChannelUserRoleView scur
+        WHERE (scur.channel_id = C.id OR scur.parent_channel_id = C.id)
+          AND scur.user_id = :user_id
+          AND scur.role = 'manage'
+          AND deny_reason IS NULL
+          )
+     ORDER BY UPPER(CTV.parent_or_self_label), depth, UPPER(C.name)
   </query>
   <elaborator name="visible_server_count"/>
 </mode>
