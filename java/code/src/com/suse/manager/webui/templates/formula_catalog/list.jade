@@ -6,10 +6,12 @@ include ../common.jade
 
 script(type='text/javascript').
     spaImportReactPage('salt/formula-catalog/org-formula-catalog')
-        .then((module) => module.renderer(
-          'formula-catalog',
-          {
-            flashMessage: "#{info}",
-            warningMessage: "#{warning}"
-          }
-        ));
+        .then(function(module) {
+             module.renderer(
+              'formula-catalog',
+              {
+                flashMessage: "#{info}",
+                warningMessage: "#{warning}"
+              }
+            )
+        });

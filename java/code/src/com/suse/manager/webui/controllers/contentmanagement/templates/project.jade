@@ -12,7 +12,7 @@ div#init_data_project(style="display: none")
 
 script(type='text/javascript').
     spaImportReactPage('content-management/project')
-        .then((module) => {
+        .then(function(module) {
             module.renderer(
                 'content-management-project',
                  {

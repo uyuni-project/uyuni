@@ -9,12 +9,14 @@ script(type='text/javascript').
 
 script(type='text/javascript').
     spaImportReactPage('virtualization/guests/list/guests-list')
-        .then((module) => module.renderer(
-          'virtualguests',
-          {
-              serverId: "#{server.id}",
-              saltEntitled: #{salt_entitled},
-              foreignEntitled: #{foreign_entitled},
-              isAdmin: #{is_admin}
-          }
-        ));
+        .then(function(module) {
+             module.renderer(
+              'virtualguests',
+              {
+                  serverId: "#{server.id}",
+                  saltEntitled: #{salt_entitled},
+                  foreignEntitled: #{foreign_entitled},
+                  isAdmin: #{is_admin}
+              }
+            )
+        });

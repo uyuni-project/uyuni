@@ -12,4 +12,4 @@ script(src='/javascript/jquery-ui.js?cb=#{webVersion}')
 
 script(type='text/javascript').
     spaImportReactPage('minion/config-channels/minion-config-channels')
-        .then((module) => module.renderer('config-channels'));
+        .then(function(module) { module.renderer('config-channels') });

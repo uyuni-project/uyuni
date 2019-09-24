@@ -8,4 +8,4 @@ script(type='text/javascript').
 
 script(type='text/javascript').
     spaImportReactPage('minion/packages/package-states')
-        .then((module) => module.renderer('package-states'));
+        .then(function(module) { module.renderer('package-states')});
