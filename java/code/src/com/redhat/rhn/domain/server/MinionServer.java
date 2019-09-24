@@ -191,7 +191,7 @@ public class MinionServer extends Server implements SaltConfigurable {
     }
 
     private boolean isUbuntu1804() {
-        return ServerConstants.UBUNTU.equalsIgnoreCase(getOs()) && getRelease().equals("18.04");
+        return ServerConstants.UBUNTU.equals(getOs()) && getRelease().equals("18.04");
     }
 
     /**
