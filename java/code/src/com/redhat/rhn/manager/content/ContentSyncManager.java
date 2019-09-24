@@ -1600,13 +1600,16 @@ public class ContentSyncManager {
                     .orElseGet(Collections::emptyList);
             boolean isAccessible = entries.stream()
                     .filter(e -> e.isMandatory())
-                    .allMatch(entry ->
-                 entry.getProduct().getChannelFamily().isPublic() &&
-                 // isMirrorable
-                 repoIdsWithAuth.contains(entry.getRepository().getId())
-            );
+                    .allMatch(entry -> {
+                        boolean isPublic = entry.getProduct().getChannelFamily().isPublic();
+                        boolean hasAuth = repoIdsWithAuth.contains(entry.getRepository().getId());
+                        log.debug(entry.getChannelLabel() + " isPublic: " + isPublic + " hasAuth: " + hasAuth);
+                        return  isPublic &&
+                                // isMirrorable
+                                hasAuth;
+                    });
 
-            log.debug(isAccessible + " " + entries.stream().map(s -> s.getId().toString())
+            log.debug(isAccessible + " " + entries.stream().map(s -> s.getChannelLabel())
                     .collect(Collectors.joining(",")));
 
              if (isAccessible) {
