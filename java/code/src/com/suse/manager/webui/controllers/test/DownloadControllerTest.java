@@ -27,6 +27,7 @@ import com.redhat.rhn.domain.channel.AccessToken;
 import com.redhat.rhn.domain.channel.AccessTokenFactory;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.Comps;
+import com.redhat.rhn.domain.channel.Modules;
 import com.redhat.rhn.domain.product.Tuple3;
 import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.rhnpackage.PackageArch;
@@ -592,7 +593,7 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
         String compsName = compsRelativeDirPath + "123hash123-comps-Server.x86_64";
         File compsDir = new File(compsDirPath);
         try {
-            compsDir.mkdirs();
+            assertTrue(compsDir.mkdirs());
             File compsFile = File.createTempFile(compsDirPath + "/" + compsName, ".xml", compsDir);
             Files.write(compsFile.getAbsoluteFile().toPath(),
                     TestUtils.randomString().getBytes());
@@ -615,6 +616,57 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
             }
         } finally {
             FileUtils.deleteDirectory(compsDir);
+        }
+    }
+
+    /**
+     * Test if modules.yaml file is served correctly.
+     *
+     * @throws Exception if anything goes wrong
+     */
+    public void testDownloadModules() throws Exception {
+        DownloadTokenBuilder tokenBuilder = new DownloadTokenBuilder(user.getOrg().getId());
+        tokenBuilder.useServerSecret();
+        String tokenOrg = tokenBuilder.getToken();
+
+        Map<String, String> params = new HashMap<>();
+        params.put(tokenOrg, "");
+        Request request =  SparkTestUtils.createMockRequestWithParams(
+                "http://localhost:8080/rhn/manager/download/:channel/repodata/:file",
+                params,
+                Collections.emptyMap(),
+                channel.getLabel(), "modules.yaml");
+
+        String modulesRelativeDirPath = "rhn/modules/" + channel.getName();
+        String modulesDirPath = Config.get().getString(ConfigDefaults.MOUNT_POINT) + "/" + modulesRelativeDirPath;
+        String modulesName = modulesRelativeDirPath + "123hash123-modules";
+        File modulesDir = new File(modulesDirPath);
+        try {
+            assertTrue(modulesDir.mkdirs());
+            File modulesFile = File.createTempFile(modulesDirPath + "/" + modulesName, ".yaml", modulesDir);
+            Files.write(modulesFile.getAbsoluteFile().toPath(),
+                    TestUtils.randomString().getBytes());
+
+            // create modules object
+            Modules modules = new Modules();
+            modules.setChannel(channel);
+            modules.setRelativeFilename(modulesRelativeDirPath + "/" + modulesFile.getName());
+            channel.setModules(modules);
+
+            try {
+                assertNotNull(DownloadController.downloadMetadata(request, response));
+
+                assertEquals(modulesFile.getAbsolutePath(), response.raw().getHeader("X-Sendfile"));
+                assertEquals("application/octet-stream", response.raw().getHeader("Content-Type"));
+                assertEquals("attachment; filename=" + modulesFile.getName(),
+                        response.raw().getHeader("Content-Disposition"));
+            }
+            catch (spark.HaltException e) {
+                fail("No HaltException should be thrown with a valid token!");
+            }
+        }
+        finally {
+            FileUtils.deleteDirectory(modulesDir);
         }
     }
 

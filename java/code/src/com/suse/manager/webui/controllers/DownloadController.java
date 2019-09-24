@@ -20,6 +20,7 @@ import com.redhat.rhn.domain.channel.AccessTokenFactory;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.channel.Comps;
+import com.redhat.rhn.domain.channel.Modules;
 import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.rhnpackage.PackageEvr;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
@@ -174,10 +175,18 @@ public class DownloadController {
             validateToken(token, channelLabel, filename);
         }
 
-        if (!file.exists() && filename.equals("comps.xml")) {
-            File compsFile = getCompsFile(ChannelFactory.lookupByLabel(channelLabel));
-            if (compsFile != null && compsFile.exists()) {
-                file = compsFile;
+        if (!file.exists()) {
+            // Check if a comps.xml/modules.yaml file is being requested and if we have it
+            File mdFile = null;
+            if (filename.equals("comps.xml")) {
+                mdFile = getCompsFile(ChannelFactory.lookupByLabel(channelLabel));
+            }
+            else if (filename.equals("modules.yaml")) {
+                mdFile = getModulesFile(ChannelFactory.lookupByLabel(channelLabel));
+            }
+
+            if (mdFile != null && mdFile.exists()) {
+                file = mdFile;
             }
         }
 
@@ -201,6 +210,27 @@ public class DownloadController {
         if (comps != null) {
             return new File(MOUNT_POINT_PATH, comps.getRelativeFilename())
                     .getAbsoluteFile();
+        }
+
+        return null;
+    }
+
+    /**
+     * Determines the modules file for a channel.
+     * If the channel doesn't have modules file associated and it's a cloned one, try to
+     * use the modules of the original channel.
+     *
+     * @param channel - the channel
+     * @return modules file to be used for this channel
+     */
+    private static File getModulesFile(Channel channel) {
+        Modules modules = channel.getModules();
+
+        if (modules == null && channel.isCloned()) {
+            modules = channel.getOriginal().getModules();
+        }
+        if (modules != null) {
+            return new File(MOUNT_POINT_PATH, modules.getRelativeFilename()).getAbsoluteFile();
         }
 
         return null;
