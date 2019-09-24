@@ -1,3 +1,4 @@
+- Improve performance for 'Manage Software Channels' view (bsc#1151399)
 - Allow monitoring for managed systems running Ubuntu 18.04 and RedHat 6/7
 - use default value from systemd unit file if not set in /etc/rhn/rhn.conf
 - implement "keyword" filter for Content Lifecycle Management
