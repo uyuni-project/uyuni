@@ -36,6 +36,15 @@ class FakeRequests:
         return self
 
 
+def mock_release_index(self):
+    """
+    Set flat to True.
+
+    :param self:
+    :return:
+    """
+    self._flat = True
+
 
 class TestCommonRepo:
     """
@@ -60,22 +69,13 @@ class TestCommonRepo:
             repo = DpkgRepo("http://mygreathost.com/ubuntu/dists/bionic/restricted/binary-amd64/")
             assert repo.verify_packages_index()
 
+    @patch("spacewalk.common.repo.DpkgRepo.get_release_index", mock_release_index)
     def test_is_flat(self):
         """
         Return True or (False) if repo has flat (or not) format.
 
         :return:
         """
-        def mock_release_index(self):
-            """
-            Set flat to True
-
-            :param self:
-            :return:
-            """
-            self._flat = True
-
-        DpkgRepo.get_release_index = mock_release_index
         assert DpkgRepo("http://dummy").is_flat()
 
     def test_get_parent_url_no_subpath_default(self):
