@@ -94,7 +94,8 @@ When(/^I follow the event "([^"]*)" completed during last minute$/) do |event|
   current_minute = now.strftime('%H:%M')
   previous_minute = (now - 60).strftime('%H:%M')
   xpath_query = "//a[contains(text(), '#{event}')]/../..//td[4][contains(text(),'#{current_minute}') or contains(text(),'#{previous_minute}')]/../td[3]/a[1]"
-  raise "xpath: #{xpath_query} not found" unless find_and_wait_click(:xpath, xpath_query).click
+  element = find_and_wait_click(:xpath, xpath_query)
+  element.click
 end
 
 # spacewalk errors steps
