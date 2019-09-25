@@ -214,9 +214,9 @@ Some more irrelevant data
         assert out == "макарони"
 
     @patch("spacewalk.common.repo.DpkgRepo.get_pkg_index_raw", MagicMock(return_value=("Packages.gz", "content")))
-    def test_decompress_pkg_index_gz_failure(self):
+    def test_decompress_pkg_index_gz_general_failure(self):
         """
-        Test decompression for Packages.gz file failure handling.
+        Test decompression for Packages.gz file general failure handling.
 
         :return:
         """
@@ -235,9 +235,9 @@ Some more irrelevant data
         assert "symlinks" in err
 
     @patch("spacewalk.common.repo.DpkgRepo.get_pkg_index_raw", MagicMock(return_value=("Packages.xz", "content")))
-    def test_decompress_pkg_index_xz_failure(self):
+    def test_decompress_pkg_index_xz_general_failure(self):
         """
-        Test decompression for Packages.xz file failure handling.
+        Test decompression for Packages.xz file general failure handling.
 
         :return:
         """
