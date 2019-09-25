@@ -40,13 +40,13 @@ public class RpmVersionComparatorTest extends TestCase {
         // Some equality
         assertCompareSymm(0, "0", "0");
         assertCompareSymm(0, "1-a.1", "1-a.1");
-        assertCompareSymm(0, "1-a.1", "1.a-1");
+        assertCompareSymm(0, "1_a.1", "1.a_1");
         assertCompareSymm(0, "", "");
 
         // all not alphanum signs are treated as the same
-        assertCompareSymm(0, "-", ".");
-        assertCompareSymm(0, "--", "-");
-        assertCompareSymm(0, "1-1-", "1-1.");
+        assertCompareSymm(0, "_", ".");
+        assertCompareSymm(0, "__", ".");
+        assertCompareSymm(0, "1-1_", "1-1.");
 
         // Some asymmetry .. not really a total ordering
         assertCompareSymm(1, "1.1", "1a");
@@ -108,6 +108,22 @@ public class RpmVersionComparatorTest extends TestCase {
         assertCompareSymm(1, "1.0^git1", "1.0^git1~pre");
     }
 
+    public void testDebianVersionCompare() {
+        assertCompareSymm(-1, "8-20180414-1ubuntu2", "8.2.0-1ubuntu2~18.04");
+        assertCompareSymm(1, "0.2017-01-15.gdad1bbc6-1", "0.2017-01-15.gdad1bbc6");
+        assertCompareSymm(0, "0.2017-01-15.gdad1bbc6-1", "0.2017-01-15.gdad1bbc6-1");
+        /*
+        assertCompareSymm(1, "", "");
+        assertCompareSymm(1, "", "");
+        assertCompareSymm(1, "", "");
+        assertCompareSymm(1, "", "");
+        assertCompareSymm(1, "", "");
+        assertCompareSymm(1, "", "");
+        assertCompareSymm(1, "", "");
+        assertCompareSymm(1, "", "");
+        assertCompareSymm(1, "", "");
+        */
+    }
     private void assertCompareAsym(int exp, String v1, String v2) {
         assertCompare(exp, v1, v2);
         assertCompare(exp, v2, v1);

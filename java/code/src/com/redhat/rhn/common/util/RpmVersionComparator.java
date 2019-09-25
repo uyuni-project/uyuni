@@ -14,7 +14,9 @@
  */
 package com.redhat.rhn.common.util;
 
+import java.util.Arrays;
 import java.util.Comparator;
+import java.util.List;
 
 /**
  * Implement the rpmvercmp function provided by librpm
@@ -48,6 +50,25 @@ public class RpmVersionComparator implements Comparator<String> {
 
         String str1 = (String) o1;
         String str2 = (String) o2;
+
+        if (str1.contains("-") || str2.contains("-")) {
+            List<String> vl1 = Arrays.asList(str1.split("-"));
+            List<String> vl2 = Arrays.asList(str2.split("-"));
+            int n = vl1.size() < vl2.size() ? vl1.size() : vl2.size();
+            int c = 0;
+            while (c < n) {
+                if (!vl1.get(c).equals(vl2.get(c))) {
+                    return compare(vl1.get(c), vl2.get(c));
+                }
+                c++;
+            }
+            if (vl1.size() == vl2.size()) {
+                return 0;
+            }
+            else {
+                return vl1.size() > vl2.size() ? 1 : -1;
+            }
+        }
         int b1 = 0;
         int b2 = 0;
 
