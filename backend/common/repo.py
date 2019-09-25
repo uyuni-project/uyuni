@@ -78,6 +78,10 @@ class DpkgRepo:
                     self._pkg_index = cnt_fname, resp.content
                     break
                 resp.close()
+
+        if self._pkg_index == (None, None,):
+            raise DpkgRepoException("No variants of package index has been found on {} repo".format(self._url))
+
         return self._pkg_index
 
     def decompress_pkg_index(self) -> str:
