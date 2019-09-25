@@ -1,3 +1,4 @@
+- Add tables rhnPackageExtraTag and rhnPackageExtraTagKey
 - Allow monitoring for Ubuntu systems
 - Add new types needed for Azure, Amazon EC2 and Google CE
 - Migrate login to Spark
