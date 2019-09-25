@@ -1,8 +1,12 @@
 <ivysettings>
-  <settings defaultResolver="default" />
+  <settings defaultResolver="central" />
   <resolvers>
-    <url name="default">
-      <artifact pattern="http://ramrod.mgr.suse.de/ivy/[artifact]-[revision].[ext]" />
-    </url>
+    <filesystem name="suse" m2compatible="true" local="true">
+      <artifact pattern="${ivy.conf.dir}/repository/[organization]/[artifact]/[revision]/[artifact]-[revision].[ext]" />
+    </filesystem>
+    <ibiblio name="central" m2compatible="true"/>
   </resolvers>
+  <modules>
+    <module organisation="suse" name="*" resolver="suse"/>
+  </modules>
 </ivysettings>
