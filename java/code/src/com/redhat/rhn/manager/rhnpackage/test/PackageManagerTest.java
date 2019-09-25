@@ -649,8 +649,6 @@ public class PackageManagerTest extends BaseTestCaseWithUser {
 
     public void testRepodata() throws Exception {
 
-        // *Some*body in here is doing a commit :(
-
         OutputStream st = new ByteArrayOutputStream();
         SimpleContentHandler tmpHandler = getTemporaryHandler(st);
 
@@ -687,7 +685,6 @@ public class PackageManagerTest extends BaseTestCaseWithUser {
         String prim = dto.getPrimaryXml();
         String other = dto.getOtherXml();
         assertEquals(prim, test);
-        commitHappened();
     }
 
     public static PackageExtraTagsKeys createExtraTagKey(String name) {
