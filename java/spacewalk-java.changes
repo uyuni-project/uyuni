@@ -1,4 +1,4 @@
-- Allow monitoring for managed systems running Ubuntu 18.04
+- Allow monitoring for managed systems running Ubuntu 18.04 and RedHat 6/7
 - use default value from systemd unit file if not set in /etc/rhn/rhn.conf
 - implement "keyword" filter for Content Lifecycle Management
 - Add support for Azure, Amazon EC2, and Google Compute Engine as Virtual Host Managers.
