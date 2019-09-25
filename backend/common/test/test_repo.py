@@ -102,6 +102,8 @@ class TestCommonRepo:
         assert DpkgRepo._get_parent_url(url, depth=3) == "http://mygreathost.com/ubuntu/dists/"
         assert DpkgRepo._get_parent_url(url, depth=4) == "http://mygreathost.com/ubuntu/"
         assert DpkgRepo._get_parent_url(url, depth=5) == "http://mygreathost.com/"
+        assert DpkgRepo._get_parent_url(url, depth=6) == "http://mygreathost.com/"
+        assert DpkgRepo._get_parent_url(url, depth=7) == "http://mygreathost.com/"
 
     @patch("spacewalk.common.repo.requests.get", MagicMock(
         return_value=FakeRequests().conf(status_code=http.HTTPStatus.NOT_FOUND, content=b"")))
