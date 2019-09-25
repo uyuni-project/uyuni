@@ -194,3 +194,21 @@ Some more irrelevant data
         assert not xdcmp.called
         assert zdcmp.called
         assert out == "макарони"
+
+    @patch("spacewalk.common.repo.DpkgRepo.get_pkg_index_raw", MagicMock(return_value=("Packages.xz", "content")))
+    def test_decompress_pkg_index_xz(self):
+        """
+        Test decompression for Packages.xz file.
+
+        :return:
+        """
+        data = b'\xd0\xbc\xd0\xb0\xd0\xba\xd0\xb0\xd1\x80\xd0\xbe\xd0\xbd\xd0\xb8'
+        zdcmp = MagicMock(return_value=data)
+        xdcmp = MagicMock(return_value=data)
+        with patch("spacewalk.common.repo.zlib.decompress", zdcmp) as m_zlib, \
+            patch("spacewalk.common.repo.lzma.decompress", xdcmp) as m_lzma:
+            out = DpkgRepo("http://dummy_url").decompress_pkg_index()
+
+        assert not zdcmp.called
+        assert xdcmp.called
+        assert out == "макарони"
