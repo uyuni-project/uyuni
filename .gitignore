@@ -34,11 +34,14 @@ java/**/*.iml
 thrift/gen-*
 search-server/spacewalk-search/.classpath
 search-server/spacewalk-search/.project
+search-server/spacewalk-search/.checkstyle
+search-server/spacewalk-search/.settings
 search-server/spacewalk-search/build
 search-server/spacewalk-search/lib
 search-server/spacewalk-search/dist
 search-server/spacewalk-search/rhn-search.pid
 search-server/spacewalk-search/rhn_search_daemon.log
+search-server/spacewalk-search/buildconf/repository/
 *~
 *#*#*
 .project
