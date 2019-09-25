@@ -98,6 +98,7 @@ class TestCommonRepo:
         :return:
         """
         url = "http://mygreathost.com/ubuntu/dists/bionic/restricted/binary-amd64/"
+        assert DpkgRepo._get_parent_url(url, depth=0) == "http://mygreathost.com/ubuntu/dists/bionic/restricted/binary-amd64/"
         assert DpkgRepo._get_parent_url(url, depth=2) == "http://mygreathost.com/ubuntu/dists/bionic/"
         assert DpkgRepo._get_parent_url(url, depth=3) == "http://mygreathost.com/ubuntu/dists/"
         assert DpkgRepo._get_parent_url(url, depth=4) == "http://mygreathost.com/ubuntu/"
