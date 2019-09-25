@@ -148,7 +148,6 @@ class DpkgRepo:
 
         return self._release
 
-
     @staticmethod
     def _get_parent_url(url, depth=1, add_path=""):
         """
