@@ -274,3 +274,21 @@ Some more irrelevant data
         assert not zdcmp.called
         assert xdcmp.called
         assert "/dev/null" in str(exc.value)
+
+    @patch("spacewalk.common.repo.DpkgRepo.get_pkg_index_raw", MagicMock(return_value=("Packages.gz", "content")))
+    def test_decompress_pkg_index_gz_failure(self):
+        """
+        Test decompression for Packages.gz file failure handling.
+
+        :return:
+        """
+        zdcmp = MagicMock(side_effect=zlib.error("Firewall currently too hot"))
+        xdcmp = MagicMock(side_effect=lzma.LZMAError(""))
+        with patch("spacewalk.common.repo.zlib.decompress", zdcmp) as m_zlib, \
+            patch("spacewalk.common.repo.lzma.decompress", xdcmp) as m_lzma:
+            with pytest.raises(DpkgRepoException) as exc:
+                DpkgRepo("http://dummy_url").decompress_pkg_index()
+
+        assert not xdcmp.called
+        assert zdcmp.called
+        assert "hot" in str(exc.value)
