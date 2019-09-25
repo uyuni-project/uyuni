@@ -72,16 +72,16 @@ Changes will happen immediately, without restarting services.
 
 ==========================================================================================================
 # The directories to monitor for available space. Separate multiple directories with a space:
-spacecheck_dirs = /var/lib/pgsql /var/spacewalk /var/cache /srv
+spacecheck_dirs = $SPACECHECKDIRS
 
 # A warning email is triggered when free space in a monitored directory reaches this level (as a percentage):
-spacecheck_free_alert = 10
+spacecheck_free_alert = $SPACECHECKALERT
 
 # A critical alert is triggered when free space in a monitored directory reaches this level (as a percentage):
-spacecheck_free_critical = 5
+spacecheck_free_critical = $SPACECHECKCRIT
 
 # Allow spacewalk services to be automatically shut down when free space reaches critical level:
-spacecheck_shutdown = true
+spacecheck_shutdown = $SPACECHECKSHUTDOWN
 ==========================================================================================================
 EOF
     fi
