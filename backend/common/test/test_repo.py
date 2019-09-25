@@ -6,6 +6,8 @@ from mock import MagicMock, patch
 from spacewalk.common.repo import DpkgRepo, DpkgRepoException
 import http
 import pytest
+import lzma
+import zlib
 
 
 class FakeRequests:
@@ -254,3 +256,21 @@ Some more irrelevant data
         err = str(exc.value)
         assert err.startswith("Unhandled exception occurred while decompressing Packages.xz:")
         assert "Software" in err
+
+    @patch("spacewalk.common.repo.DpkgRepo.get_pkg_index_raw", MagicMock(return_value=("Packages.xz", "content")))
+    def test_decompress_pkg_index_xz_failure(self):
+        """
+        Test decompression for Packages.xz file failure handling.
+
+        :return:
+        """
+        zdcmp = MagicMock(side_effect=zlib.error(""))
+        xdcmp = MagicMock(side_effect=lzma.LZMAError("/dev/null is busy while upgrading"))
+        with patch("spacewalk.common.repo.zlib.decompress", zdcmp) as m_zlib, \
+            patch("spacewalk.common.repo.lzma.decompress", xdcmp) as m_lzma:
+            with pytest.raises(DpkgRepoException) as exc:
+                DpkgRepo("http://dummy_url").decompress_pkg_index()
+
+        assert not zdcmp.called
+        assert xdcmp.called
+        assert "/dev/null" in str(exc.value)
