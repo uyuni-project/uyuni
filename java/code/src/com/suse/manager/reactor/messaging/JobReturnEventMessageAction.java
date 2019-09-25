@@ -91,7 +91,7 @@ public class JobReturnEventMessageAction implements MessageAction {
         String function = jobReturnEvent.getData().getFun();
 
         if (Objects.isNull(function)) {
-            LOG.error("Unexpected: Function is Null in JobReturnEvent ->" + jobReturnEvent);
+            LOG.error("Unexpected: Function is null in JobReturnEvent -> \n" + Json.GSON.toJson(jobReturnEvent));
         }
 
         if (LOG.isDebugEnabled()) {
