@@ -3,13 +3,16 @@ Repository tools
 """
 # coding: utf-8
 import typing
-import requests
 import http
 import os
 import zlib
 import lzma
 from urllib import parse
 import hashlib
+
+import requests
+
+# pylint:disable=W0612,W0212,C0301
 
 
 class DpkgRepoException(Exception):
@@ -28,11 +31,11 @@ class DpkgRepo:
     PKG_XZ = "Packages.xz"
     PKG_RW = "Packages"
 
-    class ReleaseEntry:
+    class ReleaseEntry:  # pylint: disable=W0612,R0903
         """
         Release file entry
         """
-        class Checksum:
+        class Checksum:  # pylint: disable=R0903
             """
             Checksums of the Release file
             """
@@ -50,7 +53,7 @@ class DpkgRepo:
         Parsed release container.
         """
         def __init__(self, repo: "DpkgRepo"):
-            dict(self)
+            super().__init__()
             self.__repo = repo
 
         def get(self, key: typing.Any) -> typing.Optional[typing.Any]:
