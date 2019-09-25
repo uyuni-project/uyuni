@@ -93,10 +93,10 @@ class DpkgRepo:
                 cnt_data = zlib.decompress(cnt_data, 0x10 + zlib.MAX_WBITS)
             elif fname == DpkgRepo.PKG_XZ:
                 cnt_data = lzma.decompress(cnt_data)
-        except zlib.error as exc:
+        except (zlib.error, lzma.LZMAError) as exc:
             raise DpkgRepoException(exc)
         except Exception as exc:
-            raise DpkgRepoException("Unhandled exception occurred while decompressing {}: {}", fname, exc)
+            raise DpkgRepoException("Unhandled exception occurred while decompressing {}: {}".format(fname, exc))
 
         return cnt_data.decode("utf-8")
 
