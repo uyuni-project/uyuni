@@ -233,3 +233,24 @@ Some more irrelevant data
         err = str(exc.value)
         assert err.startswith("Unhandled exception occurred while decompressing Packages.gz:")
         assert "symlinks" in err
+
+    @patch("spacewalk.common.repo.DpkgRepo.get_pkg_index_raw", MagicMock(return_value=("Packages.xz", "content")))
+    def test_decompress_pkg_index_xz_failure(self):
+        """
+        Test decompression for Packages.xz file failure handling.
+
+        :return:
+        """
+        zdcmp = MagicMock(side_effect=DpkgRepoException(""))
+        xdcmp = MagicMock(side_effect=DpkgRepoException("Software design limitation"))
+        with patch("spacewalk.common.repo.zlib.decompress", zdcmp) as m_zlib, \
+            patch("spacewalk.common.repo.lzma.decompress", xdcmp) as m_lzma:
+            with pytest.raises(DpkgRepoException) as exc:
+                DpkgRepo("http://dummy_url").decompress_pkg_index()
+
+        assert not zdcmp.called
+        assert xdcmp.called
+
+        err = str(exc.value)
+        assert err.startswith("Unhandled exception occurred while decompressing Packages.xz:")
+        assert "Software" in err
