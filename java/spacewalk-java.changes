@@ -1,3 +1,4 @@
+- Fix: handle special deb package names (bsc#1150113)
 - Remove extra spaces in dependencies fields in Debian repo Packages file (bsc#1145551)
 - Allow monitoring for managed systems running Ubuntu 18.04 and RedHat 6/7
 - Improve performance for 'Manage Software Channels' view (bsc#1151399)
