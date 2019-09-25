@@ -563,6 +563,7 @@ install -d $RPM_BUILD_ROOT%{pythonrhnroot}
 install -d $RPM_BUILD_ROOT%{pythonrhnroot}/common
 install -d $RPM_BUILD_ROOT%{rhnconf}
 install -d $RPM_BUILD_ROOT/%{_unitdir}
+install -d $RPM_BUILD_ROOT/%{_prefix}/lib/susemanager/bin/
 
 make -f Makefile.backend install PREFIX=$RPM_BUILD_ROOT \
     MANDIR=%{_mandir} APACHECONFDIR=%{apacheconfd} PYTHON_BIN=%{pythonX}
@@ -626,6 +627,8 @@ rm -f $RPM_BUILD_ROOT%{python2rhnroot}/__init__.py*
 rm -f $RPM_BUILD_ROOT%{python2rhnroot}/common/__init__.py*
 %endif
 %endif
+
+install -m 755 satellite_tools/mgr-update-pkg-extra-tags $RPM_BUILD_ROOT%{_prefix}/lib/susemanager/bin/
 
 %check
 # Copy spacewalk-usix python files to allow unit tests to run
@@ -711,6 +714,8 @@ rm -f %{rhnconf}/rhnSecret.py*
 %defattr(-,root,root)
 %doc LICENSE
 %dir %{pythonrhnroot}
+%dir %{_prefix}/lib/susemanager
+%dir %{_prefix}/lib/susemanager/bin
 %{pythonrhnroot}/common/suseLib.py*
 %{pythonrhnroot}/common/apache.py*
 %{pythonrhnroot}/common/byterange.py*
@@ -1069,6 +1074,7 @@ rm -f %{rhnconf}/rhnSecret.py*
 %attr(755,root,root) %{_bindir}/mgr-sign-metadata
 %attr(755,root,root) %{_bindir}/mgr-sign-metadata-ctl
 %attr(755,root,root) %{_bindir}/spacewalk-diskcheck
+%attr(755,root,root) %{_prefix}/lib/susemanager/bin/mgr-update-pkg-extra-tags
 %{pythonrhnroot}/satellite_tools/contentRemove.py*
 %{pythonrhnroot}/satellite_tools/SequenceServer.py*
 %{pythonrhnroot}/satellite_tools/messages.py*
