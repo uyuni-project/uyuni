@@ -18,6 +18,7 @@ import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.ClientCapability;
 import com.redhat.rhn.domain.server.EntitlementServerGroup;
+import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.NetworkInterface;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerConstants;
@@ -179,6 +180,30 @@ public class ServerTest extends BaseTestCaseWithUser {
                 ServerFactoryTest.TYPE_SERVER_MINION);
         s.setOs("Ubuntu");
         s.setRelease("18.04");
+        assertTrue(s.doesOsSupportsMonitoring());
+    }
+
+    /**
+     * Test for {@link Server#doesOsSupportsMonitoring()} for RedHat 6.
+     */
+    public void testOsSupportsMonitoringRedHat6() throws Exception {
+        MinionServer s = (MinionServer) ServerFactoryTest.createTestServer(user, true,
+                ServerConstants.getServerGroupTypeSaltEntitled(),
+                ServerFactoryTest.TYPE_SERVER_MINION);
+        s.setOsFamily("RedHat");
+        s.setRelease("6");
+        assertTrue(s.doesOsSupportsMonitoring());
+    }
+
+    /**
+     * Test for {@link Server#doesOsSupportsMonitoring()} for RedHat 7.
+     */
+    public void testOsSupportsMonitoringRedHat7() throws Exception {
+        MinionServer s = (MinionServer) ServerFactoryTest.createTestServer(user, true,
+                ServerConstants.getServerGroupTypeSaltEntitled(),
+                ServerFactoryTest.TYPE_SERVER_MINION);
+        s.setOsFamily("RedHat");
+        s.setRelease("7");
         assertTrue(s.doesOsSupportsMonitoring());
     }
 
