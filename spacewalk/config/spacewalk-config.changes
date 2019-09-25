@@ -1,4 +1,4 @@
-- remove superfluous 'apache' entries from sudoers configuration
+- remove superfluous 'apache' entries from sudoers configuration (bsc#1151632)
 - Migrate login to Spark
 - Require uyuni-base-common for /etc/rhn
 
