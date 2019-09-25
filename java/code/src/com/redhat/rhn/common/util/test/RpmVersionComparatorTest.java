@@ -40,7 +40,7 @@ public class RpmVersionComparatorTest extends TestCase {
         // Some equality
         assertCompareSymm(0, "0", "0");
         assertCompareSymm(0, "1-a.1", "1-a.1");
-        //assertCompareSymm(0, "1-a.1", "1.a-1");
+        assertCompareSymm(0, "1_a.1", "1.a_1");
         assertCompareSymm(0, "", "");
 
         // all not alphanum signs are treated as the same
@@ -111,7 +111,12 @@ public class RpmVersionComparatorTest extends TestCase {
         assertCompareSymm(1, "0.2017-01-15.gdad1bbc69", "0.2016-08-15.cafecafe");
         assertCompareSymm(-1, "0.2017-01-15.gdad1bbc69", "1.0");
         assertCompareSymm(1, "8-20180414", "8");
-        assertCompareSymm(-1, "8.0.9", "a.8.0.9-22");
+        assertCompareSymm(-1, "8.0.9", "8.0.9.22");
+        assertCompareSymm(-1, "8.0.9.22-abcd", "8.0.9.22-abcd-expr1");
+        // TODO: implement new deb comparator and uncomment the following test
+        // assertCompareSymm(-1, "8.0.9", "a.8.0.9-22");
+        // The lexical comparison is a comparison of ASCII values modified so that all the letters sort earlier
+        // than all the non-letters
     }
 
     /* from official rpm tests */
