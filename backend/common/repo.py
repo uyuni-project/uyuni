@@ -143,8 +143,16 @@ class DpkgRepo:
             self._release = self._parse_release_index(resp.content.decode("utf-8"))
             if resp.status_code not in [http.HTTPStatus.NOT_FOUND, http.HTTPStatus.OK]:
                 raise DpkgRepoException("HTTP error {} occurred while connecting to the URL".format(resp.status_code))
+
+            if not self._release and self.is_flat():
+                resp = requests.get(self._get_parent_url(self._url, 0, "Release"))
+                if resp.status_code == http.HTTPStatus.OK:
+                    self._release = self._parse_release_index(resp.content.decode("utf-8"))
         finally:
             resp.close()
+
+        if not self._release:
+            raise DpkgRepoException("Repository seems either broken or has unsupported format")
 
         return self._release
 
@@ -158,8 +166,11 @@ class DpkgRepo:
         """
         p_url = parse.urlparse(url)
         p_path = p_url.path.rstrip("/").split("/")
+        if depth:
+            p_path = p_path[:-depth]
+
         return parse.urlunparse(parse.ParseResult(scheme=p_url.scheme, netloc=p_url.netloc,
-                                                  path="/".join(p_path[:-depth] + add_path.strip("/").split("/")) or "/",
+                                                  path="/".join(p_path + add_path.strip("/").split("/")) or "/",
                                                   params=p_url.params, query=p_url.query, fragment=p_url.fragment))
 
     def is_flat(self) -> bool:
@@ -180,14 +191,13 @@ class DpkgRepo:
         :param name: name of the packages index
         :return: result (boolean)
         """
-        res = False
-        if not self.is_flat():
-            name, data = self.get_pkg_index_raw()
-            entry = self.get_release_index().get(name)
-            for algorithm in ["md5", "sha1", "sha256"]:
-                res = getattr(hashlib, algorithm)(data).hexdigest() == getattr(entry.checksum, algorithm)
-                if not res:
-                    break
+        name, data = self.get_pkg_index_raw()
+        entry = self.get_release_index().get(name)
+        for algorithm in ["md5", "sha1", "sha256"]:
+            res = getattr(hashlib, algorithm)(data).hexdigest() == getattr(entry.checksum, algorithm)
+            if not res:
+                break
+
         return res
 
 
