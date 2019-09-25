@@ -24,6 +24,7 @@ import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.manager.rhnpackage.test.PackageManagerTest;
 import com.redhat.rhn.taskomatic.task.repomd.DebPackageWriter;
 import com.redhat.rhn.taskomatic.task.repomd.DebReleaseWriter;
+import com.redhat.rhn.taskomatic.task.repomd.DebRepositoryWriter;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 
 import java.io.File;
@@ -55,10 +56,13 @@ public class DebReleaseWriterTest extends BaseTestCaseWithUser {
         pkg1.setPackageArch(pa);
 
         DebPackageWriter pkgWriter = new DebPackageWriter(channel, prefix);
-        pkgWriter.generatePackagesGz();
+        pkgWriter.close();
 
-        DebReleaseWriter writer = new DebReleaseWriter(channel, prefix);
-        writer.generateRelease();
+        DebRepositoryWriter repoWriter = new DebRepositoryWriter("", prefix);
+        repoWriter.gzipCompress(pkgWriter.getFilenamePackages());
+
+        DebReleaseWriter releaseWriter = new DebReleaseWriter(channel, prefix);
+        releaseWriter.generateRelease();
         String releaseDatetime = DebReleaseWriter.RFC822_DATE_FORMAT.format(ZonedDateTime.now());
 
         String releaseContent = FileUtils.readStringFromFile(prefix + "Release");

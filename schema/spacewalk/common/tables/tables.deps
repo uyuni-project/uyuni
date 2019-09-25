@@ -139,6 +139,8 @@ rhnPackagePredepends           :: rhnPackage rhnPackageCapability
 rhnPackageSource               :: web_customer rhnSourceRPM rhnFile rhnPackageGroup \
                                   rhnChecksum
 rhnPackageSyncBlacklist        :: rhnPackageName web_customer
+rhnPackageExtraTagKey          :: rhnPackage
+rhnPackageExtraTag             :: rhnPackage rhnPackageExtraTagKey
 rhnProxyInfo                   :: rhnServer
 rhnPushClient                  :: rhnServer rhnPushClientState
 rhnRam                         :: rhnServer
