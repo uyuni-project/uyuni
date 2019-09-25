@@ -176,3 +176,21 @@ Some more irrelevant data
         assert parsed["two/Release.gz"].checksum.sha1 == "70d7c8225fb5b6ee67ba089681425c5b712e0b19"
         assert parsed["two/Release.gz"].checksum.sha256 == "4843bbb823a63f3bde6104ceecc86daebf8b84efd4f6fb1373138b4589a84803"
         assert parsed["two/Release.gz"].size == 1298
+
+    @patch("spacewalk.common.repo.DpkgRepo.get_pkg_index_raw", MagicMock(return_value=("Packages.gz", "content")))
+    def test_decompress_pkg_index_gz(self):
+        """
+        Test decompression for Packages.gz file.
+
+        :return:
+        """
+        data = b'\xd0\xbc\xd0\xb0\xd0\xba\xd0\xb0\xd1\x80\xd0\xbe\xd0\xbd\xd0\xb8'
+        zdcmp = MagicMock(return_value=data)
+        xdcmp = MagicMock(return_value=data)
+        with patch("spacewalk.common.repo.zlib.decompress", zdcmp) as m_zlib, \
+            patch("spacewalk.common.repo.lzma.decompress", xdcmp) as m_lzma:
+            out = DpkgRepo("http://dummy_url").decompress_pkg_index()
+
+        assert not xdcmp.called
+        assert zdcmp.called
+        assert out == "макарони"
