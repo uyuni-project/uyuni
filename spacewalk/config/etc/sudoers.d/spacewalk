@@ -9,15 +9,12 @@ Cmnd_Alias CONFIG_RHN = /usr/sbin/rhn-sat-restart-silent,\
 # The CONFIG_RHN commands are required for reconfiguration of a
 # running Red Hat Satellite.  They should be enabled for proper operation
 # of the Red Hat Satellite.
-apache  ALL=(root)      NOPASSWD: CONFIG_RHN
 tomcat  ALL=(root)      NOPASSWD: CONFIG_RHN
 
 # These two directives allow tomcat and apache to invoke CONFIG_RHN
 # commands via sudo even without a real tty
 Defaults:tomcat !requiretty
-Defaults:apache !requiretty
 
 # These two commands allow tomcat and apache to check permissions of
 # the minion bootstrap ssh-known_hosts file
-apache  ALL=(root)      NOPASSWD: /usr/bin/ls -la /var/lib/salt/.ssh/known_hosts
 tomcat  ALL=(root)      NOPASSWD: /usr/bin/ls -la /var/lib/salt/.ssh/known_hosts
