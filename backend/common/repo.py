@@ -159,7 +159,7 @@ class DpkgRepo:
         p_url = parse.urlparse(url)
         p_path = p_url.path.rstrip("/").split("/")
         return parse.urlunparse(parse.ParseResult(scheme=p_url.scheme, netloc=p_url.netloc,
-                                                  path="/".join(p_path[:-depth] + add_path.strip("/").split("/")),
+                                                  path="/".join(p_path[:-depth] + add_path.strip("/").split("/")) or "/",
                                                   params=p_url.params, query=p_url.query, fragment=p_url.fragment))
 
     def is_flat(self) -> bool:
