@@ -56,9 +56,9 @@ class TestCommonRepo:
     """
     @patch("spacewalk.common.repo.DpkgRepo.get_pkg_index_raw", MagicMock(return_value=("Packages.gz", b"\x00")))
     @patch("spacewalk.common.repo.DpkgRepo.is_flat", MagicMock(return_value=False))
-    def test_get_pkg_index_raw(self):
+    def test_verify_packages_index(self):
         """
-        Test get_pkg_index_raw method.
+        Test verify_packages_index method.
 
         :return:
         """
