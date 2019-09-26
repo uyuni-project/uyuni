@@ -1,0 +1,17 @@
+name: Checkstyle
+
+on:
+  push:
+    paths:
+      - 'java/**.java'
+
+jobs:
+  checkstyle:
+    runs-on: ubuntu-latest
+    container: registry.opensuse.org/systemsmanagement/uyuni/master/docker/containers/uyuni-master-pgsql:latest
+    steps:
+    - uses: actions/checkout@v1
+    - name: Prepare the config file for osc
+      run: echo '${{ secrets.OSCRC_CONTENTS }}' > ~/.oscrc
+    - name: Run checkstyle
+      run: ant -f java/manager-build.xml ivy checkstyle
