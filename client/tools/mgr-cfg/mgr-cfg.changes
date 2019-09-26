@@ -1,3 +1,4 @@
+- Obsolete all old python2-rhncfg* packages to avoid conflicts (bsc#1152290)
 - Fix data type issue to correctly decode if needed (bsc#1150320)
 - Require mgr-daemon (new name of spacewalksd) so we systems with
   spacewalksd get always the new package installed (bsc#1149353)
