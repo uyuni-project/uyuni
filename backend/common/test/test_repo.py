@@ -3,7 +3,7 @@
 Py-test based unit tests for common/repo
 """
 from mock import MagicMock, patch
-from spacewalk.common.repo import DpkgRepo, DpkgRepoException
+from spacewalk.common.repo import DpkgRepo, GeneralRepoException
 import http
 import pytest
 import lzma
@@ -143,7 +143,7 @@ class TestCommonRepo:
         """
         repo = DpkgRepo("http://dummy/url")
 
-        with pytest.raises(DpkgRepoException) as exc:
+        with pytest.raises(GeneralRepoException) as exc:
             assert repo.get_release_index()
         assert str(exc.value) == "HTTP error 204 occurred while connecting to the URL"
 
@@ -225,11 +225,11 @@ Some more irrelevant data
 
         :return:
         """
-        zdcmp = MagicMock(side_effect=DpkgRepoException("Too many symlinks found in binary data"))
-        xdcmp = MagicMock(side_effect=DpkgRepoException(""))
+        zdcmp = MagicMock(side_effect=GeneralRepoException("Too many symlinks found in binary data"))
+        xdcmp = MagicMock(side_effect=GeneralRepoException(""))
         with patch("spacewalk.common.repo.zlib.decompress", zdcmp) as m_zlib, \
             patch("spacewalk.common.repo.lzma.decompress", xdcmp) as m_lzma:
-            with pytest.raises(DpkgRepoException) as exc:
+            with pytest.raises(GeneralRepoException) as exc:
                 DpkgRepo("http://dummy_url").decompress_pkg_index()
 
         assert not xdcmp.called
@@ -246,11 +246,11 @@ Some more irrelevant data
 
         :return:
         """
-        zdcmp = MagicMock(side_effect=DpkgRepoException(""))
-        xdcmp = MagicMock(side_effect=DpkgRepoException("Software design limitation"))
+        zdcmp = MagicMock(side_effect=GeneralRepoException(""))
+        xdcmp = MagicMock(side_effect=GeneralRepoException("Software design limitation"))
         with patch("spacewalk.common.repo.zlib.decompress", zdcmp) as m_zlib, \
             patch("spacewalk.common.repo.lzma.decompress", xdcmp) as m_lzma:
-            with pytest.raises(DpkgRepoException) as exc:
+            with pytest.raises(GeneralRepoException) as exc:
                 DpkgRepo("http://dummy_url").decompress_pkg_index()
 
         assert not zdcmp.called
@@ -271,7 +271,7 @@ Some more irrelevant data
         xdcmp = MagicMock(side_effect=lzma.LZMAError("/dev/null is busy while upgrading"))
         with patch("spacewalk.common.repo.zlib.decompress", zdcmp) as m_zlib, \
             patch("spacewalk.common.repo.lzma.decompress", xdcmp) as m_lzma:
-            with pytest.raises(DpkgRepoException) as exc:
+            with pytest.raises(GeneralRepoException) as exc:
                 DpkgRepo("http://dummy_url").decompress_pkg_index()
 
         assert not zdcmp.called
@@ -289,7 +289,7 @@ Some more irrelevant data
         xdcmp = MagicMock(side_effect=lzma.LZMAError(""))
         with patch("spacewalk.common.repo.zlib.decompress", zdcmp) as m_zlib, \
             patch("spacewalk.common.repo.lzma.decompress", xdcmp) as m_lzma:
-            with pytest.raises(DpkgRepoException) as exc:
+            with pytest.raises(GeneralRepoException) as exc:
                 DpkgRepo("http://dummy_url").decompress_pkg_index()
 
         assert not xdcmp.called
@@ -304,7 +304,7 @@ Some more irrelevant data
 
         :return:
         """
-        with pytest.raises(DpkgRepoException) as exc:
+        with pytest.raises(GeneralRepoException) as exc:
             DpkgRepo("http://dummy/url").get_pkg_index_raw()
 
         assert "No variants of package index has been found on http://dummy/url repo" == str(exc.value)

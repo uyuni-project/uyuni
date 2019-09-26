@@ -15,7 +15,7 @@ import requests
 # pylint:disable=W0612,W0212,C0301
 
 
-class DpkgRepoException(Exception):
+class GeneralRepoException(Exception):
     """
     Dpkg repository exception
     """
@@ -83,7 +83,7 @@ class DpkgRepo:
                 resp.close()
 
         if self._pkg_index == (None, None,):
-            raise DpkgRepoException("No variants of package index has been found on {} repo".format(self._url))
+            raise GeneralRepoException("No variants of package index has been found on {} repo".format(self._url))
 
         return self._pkg_index
 
@@ -91,7 +91,7 @@ class DpkgRepo:
         """
         Find and return contents of Packages.gz file.
 
-        :raises DpkgRepoException if the Packages.gz file cannot be found.
+        :raises GeneralRepoException if the Packages.gz file cannot be found.
         :return: string
         """
         fname, cnt_data = self.get_pkg_index_raw()
@@ -101,9 +101,9 @@ class DpkgRepo:
             elif fname == DpkgRepo.PKG_XZ:
                 cnt_data = lzma.decompress(cnt_data)
         except (zlib.error, lzma.LZMAError) as exc:
-            raise DpkgRepoException(exc)
+            raise GeneralRepoException(exc)
         except Exception as exc:
-            raise DpkgRepoException("Unhandled exception occurred while decompressing {}: {}".format(fname, exc))
+            raise GeneralRepoException("Unhandled exception occurred while decompressing {}: {}".format(fname, exc))
 
         return cnt_data.decode("utf-8")
 
@@ -137,7 +137,7 @@ class DpkgRepo:
         """
         Find and return contents of Release file.
 
-        :raises DpkgRepoException if the Release file cannot be found.
+        :raises GeneralRepoException if the Release file cannot be found.
         :return: string
         """
         resp = requests.get(self._get_parent_url(self._url, 2, "Release"))
@@ -145,7 +145,7 @@ class DpkgRepo:
             self._flat = resp.status_code == http.HTTPStatus.NOT_FOUND
             self._release = self._parse_release_index(resp.content.decode("utf-8"))
             if resp.status_code not in [http.HTTPStatus.NOT_FOUND, http.HTTPStatus.OK]:
-                raise DpkgRepoException("HTTP error {} occurred while connecting to the URL".format(resp.status_code))
+                raise GeneralRepoException("HTTP error {} occurred while connecting to the URL".format(resp.status_code))
 
             if not self._release and self.is_flat():
                 resp = requests.get(self._get_parent_url(self._url, 0, "Release"))
@@ -155,7 +155,7 @@ class DpkgRepo:
             resp.close()
 
         if not self._release:
-            raise DpkgRepoException("Repository seems either broken or has unsupported format")
+            raise GeneralRepoException("Repository seems either broken or has unsupported format")
 
         return self._release
 
