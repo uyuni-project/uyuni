@@ -29,6 +29,8 @@ from spacewalk.satellite_tools.download import get_proxies
 from spacewalk.satellite_tools.repo_plugins import ContentPackage, CACHE_DIR
 from spacewalk.satellite_tools.syncLib import log2
 from spacewalk.common.rhnConfig import CFG, initCFG
+from spacewalk.common import repo
+
 try:
     #  python 2 
     from urllib import unquote
@@ -99,6 +101,16 @@ class DebRepo:
         self.exclude = []
         self.pkgdir = pkg_dir
         self.http_headers = {}
+
+    def verify(self):
+        """
+        Verify package index checksum and signature.
+
+        :return:
+        """
+        # TODO: Signature verification is not yet implemented here.
+        if not repo.DpkgRepo(self.url).verify_packages_index():
+            raise repo.DpkgRepoException("Package index checksum failure")
 
     def _download(self, url):
         if url.startswith('file://'):
@@ -236,6 +248,7 @@ class ContentSource:
 
         self.repo = DebRepo(url, os.path.join(CACHE_DIR, self.org, name),
                             os.path.join(CFG.MOUNT_POINT, CFG.PREPENDED_DIR, self.org, 'stage'), self.proxy_addr, self.proxy_user, self.proxy_pass)
+        self.repo.verify()
 
         self.num_packages = 0
         self.num_excluded = 0
