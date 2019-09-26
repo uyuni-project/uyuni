@@ -106,7 +106,7 @@ public abstract class BaseSystemPackagesAction extends RhnAction {
             }
         }
         if (hasModules) {
-            addMessage(request, "packagelist.jsp.modulespresent");
+            createErrorMessage(request, "packagelist.jsp.modulespresent", null);
         }
         return mapping.findForward(RhnHelper.DEFAULT_FORWARD);
     }

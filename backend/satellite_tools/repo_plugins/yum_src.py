@@ -647,9 +647,13 @@ type=rpm-md
         """
         if not self.repo.is_configured:
             self.setup_repo(self.repo)
-        _md_files = glob.glob(self._get_repodata_path() + "/*{}.xml.gz".format(tag)) or glob.glob(self._get_repodata_path() + "/*{}.xml".format(tag))
-        if _md_files:
-            return _md_files[0]
+
+        _repodata_path = self._get_repodata_path()
+        _file_globs = ["/*{}.xml.gz", "/*{}.xml", "/*{}.yaml.gz", "/*{}.yaml"]
+        for f in _file_globs:
+            _md_files = glob.glob(_repodata_path + f.format(tag))
+            if _md_files:
+                return _md_files[0]
         return None
 
     def _get_repodata_path(self):
