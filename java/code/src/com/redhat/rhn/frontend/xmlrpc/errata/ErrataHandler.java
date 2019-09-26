@@ -936,6 +936,33 @@ public class ErrataHandler extends BaseHandler {
      * Clones a list of errata into a specified channel
      *
      * @param loggedInUser The current user
+     * @param sourceChannelLabel the source channel that holds the errata
+     * @param destChannelLabel the channel's label that we are cloning into
+     * @param advisoryNames an array of String objects containing the advisory name
+     *          of every errata you want to clone
+     * @throws InvalidChannelRoleException if the user perms are incorrect
+     * @return Returns an array of Errata objects, which get serialized into XMLRPC
+     *
+     * @xmlrpc.doc Clone a list of errata into the specified channel.
+     *
+     * @xmlrpc.param #session_key()
+     * @xmlrpc.param #param("string", "channel_label")
+     * @xmlrpc.param
+     *     #array_single("string", " advisory - The advisory name of the errata to clone.")
+     * @xmlrpc.returntype
+     *          #array()
+     *              $ErrataSerializer
+     *          #array_end()
+     */
+    public Object[] clone(User loggedInUser, String sourceChannelLabel, String destChannelLabel,
+                          List advisoryNames) throws InvalidChannelRoleException {
+        return clone(loggedInUser, Optional.of(sourceChannelLabel), destChannelLabel, advisoryNames, true, false);
+    }
+
+    /**
+     * Clones a list of errata into a specified channel
+     *
+     * @param loggedInUser The current user
      * @param channelLabel the channel's label that we are cloning into
      * @param advisoryNames an array of String objects containing the advisory name
      *          of every errata you want to clone
@@ -955,7 +982,7 @@ public class ErrataHandler extends BaseHandler {
      */
     public Object[] clone(User loggedInUser, String channelLabel,
             List advisoryNames) throws InvalidChannelRoleException {
-        return clone(loggedInUser, channelLabel, advisoryNames, false, false);
+        return clone(loggedInUser, Optional.empty(), channelLabel, advisoryNames, false, false);
     }
 
     /**
@@ -979,26 +1006,28 @@ public class ErrataHandler extends BaseHandler {
      */
     public int cloneAsync(User loggedInUser, String channelLabel,
             List advisoryNames) throws InvalidChannelRoleException {
-        clone(loggedInUser, channelLabel, advisoryNames, false, true);
+        clone(loggedInUser, Optional.empty(), channelLabel, advisoryNames, false, true);
         return 1;
     }
 
 
-    private Object[] clone(User loggedInUser, String channelLabel,
+    private Object[] clone(User loggedInUser, Optional<String> sourceChannelLabel, String channelLabel,
             List<String> advisoryNames, boolean inheritPackages,
             boolean asynchronous) {
         Channel channel = ChannelFactory.lookupByLabelAndUser(channelLabel,
                 loggedInUser);
+        Optional<Channel> sourceChannel = sourceChannelLabel
+                .map(label -> ChannelFactory.lookupByLabelAndUser(label, loggedInUser));
 
         if (channel == null) {
             throw new NoSuchChannelException();
         }
 
-        Channel original = ChannelFactory.lookupOriginalChannel(channel);
+        Channel original = sourceChannel.orElse(ChannelFactory.lookupOriginalChannel(channel));
 
         //if calling cloneAsOriginal, do additional checks to verify a clone
         if (inheritPackages) {
-            if (!channel.isCloned()) {
+            if (!sourceChannel.isPresent() && !channel.isCloned()) {
                 throw new InvalidChannelException("Cloned channel expected: " +
                         channel.getLabel());
             }
@@ -1043,8 +1072,8 @@ public class ErrataHandler extends BaseHandler {
                     "until asychronous errata clone jobs are done.");
         }
         else {
-            return ErrataManager.cloneErrataApi(channel, errataToClone,
-                    loggedInUser, inheritPackages);
+            return ErrataManager.cloneErrataApi(sourceChannel, channel, errataToClone,
+                    loggedInUser, inheritPackages, true);
         }
     }
 
@@ -1106,7 +1135,7 @@ public class ErrataHandler extends BaseHandler {
      */
     public Object[] cloneAsOriginal(User loggedInUser, String channelLabel,
             List<String> advisoryNames) throws InvalidChannelRoleException {
-        return clone(loggedInUser, channelLabel, advisoryNames, true, false);
+        return clone(loggedInUser, Optional.empty(), channelLabel, advisoryNames, true, false);
     }
 
     /**
@@ -1132,7 +1161,7 @@ public class ErrataHandler extends BaseHandler {
      */
     public int cloneAsOriginalAsync(User loggedInUser, String channelLabel,
             List<String> advisoryNames) throws InvalidChannelRoleException {
-        clone(loggedInUser, channelLabel, advisoryNames, true, true);
+        clone(loggedInUser, Optional.empty(), channelLabel, advisoryNames, true, true);
         return 1;
     }
 

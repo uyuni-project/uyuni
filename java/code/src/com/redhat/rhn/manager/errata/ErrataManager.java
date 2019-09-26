@@ -97,6 +97,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -1448,11 +1449,14 @@ public class ErrataManager extends BaseManager {
      */
     public static Object[] cloneErrataApi(Channel chan, Collection<Errata> errata,
             User user, boolean inheritPackages) {
-        return cloneErrataApi(chan, errata, user, inheritPackages, true);
+        return cloneErrataApi(Optional.empty(), chan, errata, user, inheritPackages, true);
     }
 
     /**
      * Clone errata to a channel
+     * @param sourceChan the source channel that holds the errata. Optional, if not present the
+     *                   target channel is assumed to be cloned and the errata is looked up in the
+     *                   original channel
      * @param chan the channel
      * @param errata list of errata ids
      * @param user the user doing the push
@@ -1463,7 +1467,7 @@ public class ErrataManager extends BaseManager {
      * things yourself.
      * @return an array of Errata that have been published
      */
-    public static Object[] cloneErrataApi(Channel chan, Collection<Errata> errata,
+    public static Object[] cloneErrataApi(Optional<Channel> sourceChan, Channel chan, Collection<Errata> errata,
             User user, boolean inheritPackages, boolean performPostActions) {
         List<Errata> errataToPublish = new ArrayList<Errata>();
         // For each errata look up existing clones, or manually clone it
@@ -1484,7 +1488,7 @@ public class ErrataManager extends BaseManager {
             }
         }
 
-        List<Errata> published = ErrataFactory.publishToChannel(errataToPublish, chan,
+        List<Errata> published = ErrataFactory.publishToChannel(errataToPublish, sourceChan, chan,
                 user, inheritPackages, performPostActions);
         for (Errata e : published) {
             ErrataFactory.save(e);

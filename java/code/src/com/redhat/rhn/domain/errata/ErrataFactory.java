@@ -255,7 +255,7 @@ public class ErrataFactory extends HibernateFactory {
      */
     public static List<Errata> publishToChannel(List<Errata> errataList, Channel chan,
             User user, boolean inheritPackages) {
-        return publishToChannel(errataList, chan, user, inheritPackages, true);
+        return publishToChannel(errataList, Optional.empty(), chan, user, inheritPackages, true);
     }
 
     /**
@@ -264,6 +264,7 @@ public class ErrataFactory extends HibernateFactory {
      *      the appropriate channel. (Appropriate as defined as the channel previously
      *      having a package with the same name).
      * @param errataList list of errata to publish
+     * @param source optional source channel
      * @param chan channel to publish it into.
      * @param user the user doing the pushing
      * @param inheritPackages include only original channel packages
@@ -272,7 +273,7 @@ public class ErrataFactory extends HibernateFactory {
      * things yourself.
      * @return the published errata
      */
-    public static List<Errata> publishToChannel(List<Errata> errataList, Channel chan,
+    public static List<Errata> publishToChannel(List<Errata> errataList, Optional<Channel> source, Channel chan,
             User user, boolean inheritPackages, boolean performPostActions) {
         List<com.redhat.rhn.domain.errata.Errata> toReturn = new ArrayList<Errata>();
         for (Errata errata : errataList) {
@@ -286,11 +287,11 @@ public class ErrataFactory extends HibernateFactory {
             DataResult<PackageOverview> packs;
             if (inheritPackages) {
 
-                if (!chan.isCloned()) {
+                if (!source.isPresent() && !chan.isCloned()) {
                     throw new InvalidChannelException("Cloned channel expected: " +
                             chan.getLabel());
                 }
-                Channel original = chan.getOriginal();
+                Channel original = source.orElseGet(() -> chan.getOriginal());
                 // see BZ 805714, if we are a clone of a clone the 1st clone
                 // may not have the errata we want
                 Set<Channel> associatedChannels = errata.getChannels();

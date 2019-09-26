@@ -1677,6 +1677,7 @@ def help_softwarechannel_adderrata(self):
     print('Options:')
     print('    -q/--quick : Don\'t display list of packages (slightly faster)')
     print('    -s/--skip :  Skip errata which appear to exist already in DEST')
+    print('    -n/--dest-no-clone : DEST is not a cloned channel')
 
 
 def complete_softwarechannel_adderrata(self, text, line, beg, end):
@@ -1692,6 +1693,7 @@ def do_softwarechannel_adderrata(self, args):
     arg_parser = get_argument_parser()
     arg_parser.add_argument('-q', '--quick', action='store_true')
     arg_parser.add_argument('-s', '--skip', action='store_true')
+    arg_parser.add_argument('-n', '--dest-no-clone', action='store_true')
 
     (args, options) = parse_command_arguments(args, arg_parser)
 
@@ -1786,7 +1788,12 @@ def do_softwarechannel_adderrata(self, args):
     # lead to timeouts on the server
     for erratum in errata:
         logging.debug('Cloning %s' % erratum)
-        if self.check_api_version('10.11'):
+        if options.dest_no_clone:
+            logging.warning("If you have base channels for multiple OS" +
+                            " versions, check no unexpected packages have been added")
+            self.client.errata.clone(self.session, source_channel, dest_channel, [erratum])
+            
+        elif self.check_api_version('10.11'):
             # This call is poorly documented, but it stops errata.clone
             # pushing EL6 packages into EL5 channels when the errata
             # package list contains both versions, ref bz678721
