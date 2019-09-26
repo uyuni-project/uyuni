@@ -155,7 +155,7 @@ public class MinionServer extends Server implements SaltConfigurable {
 
     @Override
     public boolean doesOsSupportsMonitoring() {
-        return isSLES12() || isSLES15() || isLeap15() || isUbuntu1804();
+        return isSLES12() || isSLES15() || isLeap15() || isUbuntu1804() || isRedHat6() || isRedHat7();
     }
 
     /**
@@ -191,7 +191,18 @@ public class MinionServer extends Server implements SaltConfigurable {
     }
 
     private boolean isUbuntu1804() {
-        return ServerConstants.UBUNTU.equalsIgnoreCase(getOs()) && getRelease().equals("18.04");
+        return ServerConstants.UBUNTU.equals(getOs()) && getRelease().equals("18.04");
+    }
+
+    /**
+     * This is supposed to cover all RedHat flavors (incl. RHEL, RES and CentOS Linux)
+     */
+    private boolean isRedHat6() {
+        return ServerConstants.REDHAT.equals(getOsFamily()) && getRelease().equals("6");
+    }
+
+    private boolean isRedHat7() {
+        return ServerConstants.REDHAT.equals(getOsFamily()) && getRelease().equals("7");
     }
 
     /**

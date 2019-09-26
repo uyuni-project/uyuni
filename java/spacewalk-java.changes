@@ -1,6 +1,6 @@
+- Allow monitoring for managed systems running Ubuntu 18.04 and RedHat 6/7
 - Improve performance for 'Manage Software Channels' view (bsc#1151399)
 - Import additional fields for Deb packages
-- Allow monitoring for managed systems running Ubuntu 18.04
 - use value from systemd unit file if not set in /etc/rhn/rhn.conf
 - implement "keyword" filter for Content Lifecycle Management
 - Add support for Azure, Amazon EC2, and Google Compute Engine as Virtual Host Manager.
