@@ -122,8 +122,8 @@ Summary:        Spacewalk Configuration Client Libraries
 Group:          Applications/System
 Provides:       python-%{name} = %{oldversion}
 Obsoletes:      python-%{name} < %{oldversion}
-Provides:       python-%{oldname} = %{oldversion}
-Obsoletes:      python-%{oldname} < %{oldversion}
+Provides:       python2-%{oldname} = %{oldversion}
+Obsoletes:      python2-%{oldname} < %{oldversion}
 Requires:       %{name} = %{version}-%{release}
 Requires:       python
 Requires:       python2-rhn-client-tools >= 2.8.4
@@ -187,8 +187,8 @@ Summary:        Spacewalk Configuration Client
 Group:          Applications/System
 Provides:       python-%{name}-client = %{oldversion}
 Obsoletes:      python-%{name}-client < %{oldversion}
-Provides:       python-%{oldname}-client = %{oldversion}
-Obsoletes:      python-%{oldname}-client < %{oldversion}
+Provides:       python2-%{oldname}-client = %{oldversion}
+Obsoletes:      python2-%{oldname}-client < %{oldversion}
 Requires:       %{name}-client = %{version}-%{release}
 %if %{_vendor} == "debbuild"
 # For scriptlets
@@ -234,8 +234,8 @@ Summary:        Spacewalk Configuration Management Client
 Group:          Applications/System
 Provides:       python-%{name}-management = %{oldversion}
 Obsoletes:      python-%{name}-management < %{oldversion}
-Provides:       python-%{oldname}-management = %{oldversion}
-Obsoletes:      python-%{oldname}-management < %{oldversion}
+Provides:       python2-%{oldname}-management = %{oldversion}
+Obsoletes:      python2-%{oldname}-management < %{oldversion}
 Requires:       %{name}-management = %{version}-%{release}
 %if %{_vendor} == "debbuild"
 # For scriptlets
@@ -281,8 +281,8 @@ Summary:        Spacewalk Configuration Client Actions
 Group:          Applications/System
 Provides:       python-%{name}-actions = %{oldversion}
 Obsoletes:      python-%{name}-actions < %{oldversion}
-Provides:       python-%{oldname}-actions = %{oldversion}
-Obsoletes:      python-%{oldname}-actions < %{oldversion}
+Provides:       python2-%{oldname}-actions = %{oldversion}
+Obsoletes:      python2-%{oldname}-actions < %{oldversion}
 Requires:       %{name}-actions = %{version}-%{release}
 Requires:       python2-%{name}-client
 %if %{_vendor} == "debbuild"
