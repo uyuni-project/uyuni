@@ -43,7 +43,7 @@ RETRY_DELAY = 1
 FORMAT_PRIORITY = ['.xz', '.gz', '']
 
 
-class DebPackage(object):
+class DebPackage:
     def __init__(self):
         self.name = None
         self.epoch = None
@@ -77,7 +77,7 @@ class DebPackage(object):
                                                             self.checksum)])
 
 
-class DebRepo(object):
+class DebRepo:
     # url example - http://ftp.debian.org/debian/dists/jessie/main/binary-amd64/
     def __init__(self, url, cache_dir, pkg_dir, proxy_addr="", proxy_user="", proxy_pass=""):
         self.url = url
@@ -215,7 +215,7 @@ class DebRepo(object):
         return to_return
 
 
-class ContentSource(object):
+class ContentSource:
 
     def __init__(self, url, name, insecure=False, interactive=True, yumsrc_conf=None,
                  org="1", channel_label="", no_mirrors=False, ca_cert_file=None,
