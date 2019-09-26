@@ -5,7 +5,10 @@ BUILDOPTS=
 #--no-cache=true
 PUSH_IT=false
 
-all: uyuni-master-root uyuni-master-base uyuni-master-cobbler uyuni-master-gatherer uyuni-master-spacewalkkoan uyuni-master-pgsql uyuni-master-pgsql-4eclipse uyuni-master-nodejs uyuni-push-to-obs
+public_containers: uyuni-master-root uyuni-master-base uyuni-master-cobbler uyuni-master-gatherer uyuni-master-spacewalkkoan uyuni-master-pgsql uyuni-master-pgsql-4eclipse uyuni-master-nodejs
+
+all: public_containers uyuni-push-to-obs
+
 
 uyuni-master-root::
 	@echo "=================================="
