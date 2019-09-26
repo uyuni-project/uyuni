@@ -129,8 +129,6 @@ public class RpmVersionComparatorTest extends TestCase {
         assertCompareSymm(0, "0", "0-0");
         assertCompareSymm(-1, "2.5", "7.5");
         assertCompareSymm(0, "0foo", "0foo");
-        assertCompareSymm(0, "0foo", "0foo");
-        assertCompareSymm(0, "0foo", "0foo");
         assertCompareSymm(0, "0foo-0", "0foo");
         assertCompareSymm(0, "0foo", "0foo-0");
         assertCompareSymm(1, "0foo", "0fo");
