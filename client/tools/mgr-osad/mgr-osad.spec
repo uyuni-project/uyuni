@@ -116,8 +116,8 @@ Summary:        Open Source Architecture Daemon
 Group:          System Environment/Daemons
 Provides:       python-%{name} = %{oldversion}
 Obsoletes:      python-%{name} < %{oldversion}
-Provides:       python-%{oldname} = %{oldversion}
-Obsoletes:      python-%{oldname} < %{oldversion}
+Provides:       python2-%{oldname} = %{oldversion}
+Obsoletes:      python2-%{oldname} < %{oldversion}
 Requires:       %{name} = %{version}-%{release}
 Requires:       python
 Requires:       python-jabberpy
