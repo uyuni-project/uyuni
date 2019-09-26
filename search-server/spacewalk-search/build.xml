@@ -76,7 +76,7 @@
         <jpackage-deps jars="${jpackage.jars}" dir="${java.lib.dir}" />
     </target>
     
-    <target name="obs-to-maven" description="Updates local maven repository with OBS jars">
+    <target name="obs-to-maven" description="Updates local maven repository with OBS jars" unless="installbuild">
       <exec failonerror="true" executable="obs-to-maven">
         <arg line="${basedir}/buildconf/obs-maven-config.yaml ${basedir}/buildconf/repository" />
       </exec>
