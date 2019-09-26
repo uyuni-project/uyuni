@@ -105,13 +105,12 @@ CREATE OR REPLACE PACKAGE BODY rpm AS
             str1 := debupstreamv1;
             str2 := debupstreamv2;
         else
-            if INSTR(str1, '-') <> 0
+            if INSTR(str1, '-') <> 0 and INSTR(str2, '-') <> 0
             then
                 debrevisionv1 := SUBSTR(str1, INSTR(str1, '-') + 1);
-            end if;
-            if INSTR(str2, '-') <> 0
-            then
                 debrevisionv2 := SUBSTR(str2, INSTR(str2, '-') + 1);
+	    else
+		return 0;
             end if;
             str1 = debrevisionv1;
             str2 = debrevisionv2;
