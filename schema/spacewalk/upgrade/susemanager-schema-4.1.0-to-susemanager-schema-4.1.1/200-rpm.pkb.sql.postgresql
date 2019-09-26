@@ -1,4 +1,4 @@
--- oracle equivalent source sha1 281bf1dac87b6394a1b58b10d451bf1f9493492a
+-- oracle equivalent source sha1 08e24a17f1f2a7d4109058687f38f77baa83f8fb
 -- create schema rpm;
 
 --update pg_setting
@@ -71,8 +71,8 @@ $$ language 'plpgsql';
         end if;
         debupstreamv1 := str1;
         debupstreamv2 := str2;
-        debrevisionv1 := str1;
-        debrevisionv2 := str2;
+        debrevisionv1 := '';
+        debrevisionv2 := '';
         if INSTR(str1, '-') <> 0
         then
             debupstreamv1 := SUBSTR(str1, 0, INSTR(str1, '-'));
@@ -86,13 +86,12 @@ $$ language 'plpgsql';
             str1 := debupstreamv1;
             str2 := debupstreamv2;
         else
-            if INSTR(str1, '-') <> 0
+            if INSTR(str1, '-') <> 0 and INSTR(str2, '-') <> 0
             then
                 debrevisionv1 := SUBSTR(str1, INSTR(str1, '-') + 1);
-            end if;
-            if INSTR(str2, '-') <> 0
-            then
                 debrevisionv2 := SUBSTR(str2, INSTR(str2, '-') + 1);
+	    else
+		return 0;
             end if;
             str1 = debrevisionv1;
             str2 = debrevisionv2;

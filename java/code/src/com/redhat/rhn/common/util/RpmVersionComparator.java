@@ -55,8 +55,8 @@ public class RpmVersionComparator implements Comparator<String> {
         // These packages have a version like upstream_version-debian_revision
         String debUpstreamVer1 = o1;
         String debUpstreamVer2 = o2;
-        String debRevisionVer1 = o1;
-        String debRevisionVer2 = o2;
+        String debRevisionVer1 = "";
+        String debRevisionVer2 = "";
 
         if (o1.length() > 1 && o1.indexOf('-') > 0) {
             debUpstreamVer1 = o1.substring(0, o1.indexOf('-'));
@@ -71,11 +71,12 @@ public class RpmVersionComparator implements Comparator<String> {
         }
         else {
             // same upstream_version: we compare only the debian revision
-            if (o1.indexOf('-') > 0) {
+            if (o1.indexOf('-') > 0 && o2.indexOf('-') > 0) {
                 debRevisionVer1 = o1.substring(o1.indexOf('-') + 1);
-            }
-            if (o2.indexOf('-') > 0) {
                 debRevisionVer2 = o2.substring(o2.indexOf('-') + 1);
+            }
+            else {
+                return 0;
             }
             str1 = debRevisionVer1;
             str2 = debRevisionVer2;
