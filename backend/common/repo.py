@@ -202,10 +202,3 @@ class DpkgRepo:
                 break
 
         return res
-
-
-
-if __name__ == "__main__":
-    d = DpkgRepo("http://ftp.halifax.rwth-aachen.de/ubuntu/dists/bionic/restricted/binary-amd64/")
-    print("Is flat:", d.is_flat())
-    print(d.decompress_pkg_index())
