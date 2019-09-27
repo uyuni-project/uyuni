@@ -1,3 +1,6 @@
+- Require dmidecode only for SLE12 aarch64 and x86_64 (bsc#1152170)
+- Require pmtools only for SLE11 i586 and x86_64 (bsc#1150314)
+
 -------------------------------------------------------------------
 Thu Sep 19 00:53:28 CEST 2019 - jgonzalez@suse.com
 
