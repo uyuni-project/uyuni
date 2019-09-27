@@ -16,6 +16,7 @@
 #
 
 # system modules
+import os
 import sys
 import base64
 try:
@@ -623,7 +624,10 @@ class GetHandler(apacheRequest):
             raise rhnFault(21, _("Invalid URI %s" % self.req.path_info))
 
         self.channel, method = (array[2], array[3])
-        params = tuple(array[4:])
+        if method == "getPackage":
+            params = tuple([os.path.join(*array[4:])])
+        else:
+            params = tuple(array[4:])
         return method, params
 
     # send the response out for the GET requests

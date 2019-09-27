@@ -216,7 +216,7 @@ public class PrimaryXmlWriter extends RepomdWriter {
         String pkgFile = sanitize(pkgId, getProxyFriendlyFilename(pkgDto));
 
         attr.clear();
-        attr.addAttribute("href", "getPackage/" + pkgFile);
+        attr.addAttribute("href", "getPackage/" + sanitize(pkgId, pkgDto.getChecksum()) + "/" + pkgFile);
         localHandler.startElement("location", attr);
         localHandler.endElement("location");
     }
