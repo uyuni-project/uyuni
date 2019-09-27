@@ -14,6 +14,9 @@
  */
 package com.suse.manager.webui.controllers.contentmanagement.response;
 
+
+import org.apache.commons.lang3.tuple.ImmutablePair;
+
 import java.util.List;
 
 /**
@@ -28,7 +31,7 @@ public class FilterResponse {
     private String criteriaKey;
     private String criteriaValue;
     private String rule;
-    private List<String> projects;
+    private List<ImmutablePair<String, String>> projects;
 
     public void setId(Long idIn) {
         this.id = idIn;
@@ -58,7 +61,7 @@ public class FilterResponse {
         this.name = nameIn;
     }
 
-    public void setProjects(List<String> projectsIn) {
-        this.projects = projectsIn;
+    public void setProjects(List<ImmutablePair<String, String>> projectsIn) {
+         this.projects = projectsIn;
     }
 }
