@@ -90,8 +90,8 @@ public class JobReturnEventMessageAction implements MessageAction {
         // React according to the function the minion ran
         String function = jobReturnEvent.getData().getFun();
 
-        if (Objects.isNull(function)) {
-            LOG.error("Unexpected: Function is null in JobReturnEvent -> \n" + Json.GSON.toJson(jobReturnEvent));
+        if (Objects.isNull(function) && LOG.isDebugEnabled()) {
+            LOG.debug("Function is null in JobReturnEvent -> \n" + Json.GSON.toJson(jobReturnEvent));
         }
 
         if (LOG.isDebugEnabled()) {
