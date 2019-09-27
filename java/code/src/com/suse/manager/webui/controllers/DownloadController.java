@@ -43,6 +43,7 @@ import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.security.Key;
+import java.util.Arrays;
 import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
@@ -85,6 +86,7 @@ public class DownloadController {
         private String release;
         private String epoch;
         private String arch;
+        private Optional<String> checksum = Optional.empty();
 
         /**
          * Constructor
@@ -135,6 +137,22 @@ public class DownloadController {
          */
         public String getArch() {
             return arch;
+        }
+
+        /**
+         * Set the checksum
+         * @param checksumIn the checksum
+         */
+        public void setChecksum(String checksumIn) {
+            checksum = Optional.ofNullable(checksumIn);
+        }
+
+        /**
+         * Return the checksum if available
+         * @return the optional checksum
+         */
+        public Optional<String> getChecksum() {
+            return checksum;
         }
     }
 
@@ -235,16 +253,17 @@ public class DownloadController {
             validateToken(token, channel, basename);
         }
 
+        String mountPoint = Config.get().getString(ConfigDefaults.MOUNT_POINT);
         PkgInfo pkgInfo = parsePackageFileName(path);
-        Package pkg = PackageFactory.lookupByChannelLabelNevra(channel,
-                pkgInfo.getName(), pkgInfo.getVersion(), pkgInfo.getRelease(), pkgInfo.getEpoch(), pkgInfo.getArch());
+        Package pkg = PackageFactory.lookupByChannelLabelNevraCs(channel, pkgInfo.getName(),
+                pkgInfo.getVersion(), pkgInfo.getRelease(), pkgInfo.getEpoch(), pkgInfo.getArch(),
+                pkgInfo.getChecksum());
         if (pkg == null) {
             halt(HttpStatus.SC_NOT_FOUND,
                  String.format("%s not found in %s", basename, channel));
         }
 
-        File file = new File(Config.get().getString(ConfigDefaults.MOUNT_POINT),
-                pkg.getPath()).getAbsoluteFile();
+        File file = new File(mountPoint, pkg.getPath()).getAbsoluteFile();
 
         return downloadFile(request, response, file);
     }
@@ -256,6 +275,7 @@ public class DownloadController {
      * @return name, epoch, vesion, release, arch of package
      */
     public static PkgInfo parsePackageFileName(String path) {
+        List<String> parts = Arrays.asList(path.split("/"));
         String extension = FilenameUtils.getExtension(path);
         String basename = FilenameUtils.getBaseName(path);
         String arch = StringUtils.substringAfterLast(basename, ".");
@@ -281,7 +301,12 @@ public class DownloadController {
             name = StringUtils.substringBeforeLast(rest, "-");
             epoch = null;
         }
-        return new PkgInfo(name, epoch, version, release, arch);
+        PkgInfo p = new PkgInfo(name, epoch, version, release, arch);
+        // path has checksum
+        if (parts.size() == 6 && parts.get(4).equals("getPackage")) {
+            p.setChecksum(parts.get(5));
+        }
+        return p;
     }
 
     /**
