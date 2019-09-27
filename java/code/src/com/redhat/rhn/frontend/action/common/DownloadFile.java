@@ -560,6 +560,12 @@ public class DownloadFile extends DownloadAction {
         if (path.endsWith(".rpm")) {
             String[] split = StringUtils.split(path, '/');
             fileName = split[split.length - 1];
+            String checksum = split[split.length - 2];
+            if (checksum.matches("^[0-9a-f]{32,}$")) {
+                // ChannelFactory.lookupPackageByFilename* uses "like" for the path
+                // this works also with checksum/fileName
+                fileName = checksum + "/" + fileName;
+            }
             if (log.isDebugEnabled()) {
                 log.debug("RPM filename: " + fileName);
             }
