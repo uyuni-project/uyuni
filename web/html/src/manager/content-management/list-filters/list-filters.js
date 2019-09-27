@@ -22,7 +22,6 @@ type Props = {
 const ListFilters = (props: Props) => {
   const [displayedFilters, setDisplayedFilters]: [Array<FilterFormType>, Function] =
     useState(mapResponseToFilterForm(props.filters));
-
   const roles = useRoles();
   const hasEditingPermissions = isOrgAdmin(roles);
 
@@ -62,6 +61,7 @@ const ListFilters = (props: Props) => {
       <Table
         data={displayedFilters}
         identifier={row => row.filter_name}
+        initialSortColumnKey="filter_name"
         searchField={(
           <SearchField
             filter={searchData}
@@ -78,9 +78,10 @@ const ListFilters = (props: Props) => {
         <Column
           columnKey="projects"
           header={t('Projects in use')}
-          cell={row => row.projects.map(p =>
-            <a className="project-tag-link js-spa" href={`/rhn/manager/contentmanagement/project/${p}`}>
-              {p}
+          // {left: project label, right: project name}
+          cell={row => row.projects.sort((a, b) => a.right.toLowerCase().localeCompare(b.right.toLowerCase())).map(p =>
+            <a className="project-tag-link js-spa" href={`/rhn/manager/contentmanagement/project/${p.left}`}>
+              {p.right}
             </a>
           )}
         />

@@ -34,6 +34,8 @@ import com.suse.manager.webui.controllers.contentmanagement.response.ProjectResu
 import com.suse.manager.webui.controllers.contentmanagement.response.ProjectSoftwareSourceResponse;
 import com.suse.manager.webui.utils.ViewHelper;
 
+import org.apache.commons.lang3.tuple.ImmutablePair;
+
 import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
@@ -209,7 +211,7 @@ public class ResponseMappers {
                     contentFilterResponse.setRule(filter.getRule().getLabel());
                     contentFilterResponse.setProjects(
                             projects.stream()
-                                    .map(p -> p.getLabel())
+                                    .map(p -> new ImmutablePair<String, String>(p.getLabel(), p.getName()))
                                     .collect(Collectors.toList())
                     );
                     return contentFilterResponse;
