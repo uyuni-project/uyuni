@@ -1,3 +1,4 @@
+- Require pmtools only for SLE11 i586 and x86_65 (bsc#1150314)
 - do not break Servers registering to a Server
 - Introduce dnf-susemanager-plugin for RHEL8 minions
 - Provide custom grain to report "instance id" when running on Public Cloud instances
