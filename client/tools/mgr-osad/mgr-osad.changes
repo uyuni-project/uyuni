@@ -1,4 +1,4 @@
-- Obsolete all old python-osa* packages to avoid conflicts (bsc#1152290)
+- Obsolete all old python2-osa* packages to avoid conflicts (bsc#1152290)
 
 -------------------------------------------------------------------
 Tue Jul 30 14:40:28 CEST 2019 - jgonzalez@suse.com
