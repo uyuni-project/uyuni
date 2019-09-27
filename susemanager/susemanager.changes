@@ -1,3 +1,5 @@
+- Require dmidecode only for SLE12 aarch64 and x86_64
+- Require pmtools only for SLE11 i586 and x86_64 (bsc#1150314)
 - fix test for btrfs subvolume for new btrfs version (bsc#1151666)
 - ensure working directory is /root during setup (bsc#1148169)
 - dmidecode does not exist on s390x (bsc#1145119)
