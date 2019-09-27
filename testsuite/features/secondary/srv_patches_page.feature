@@ -32,7 +32,7 @@ Feature: Patches page
     And I enter "Test Solution" as "solution"
     And I enter "620212" as "buglistId"
     And I enter "Test Summary" as "buglistSummary"
-    And I enter "https://bugzilla.novell.com/show_bug.cgi?id=620212" as "buglistUrl"
+    And I enter "https://bugzilla.opensuse.org/show_bug.cgi?id=620212" as "buglistUrl"
     And I enter "test,keywords" as "keywords"
     And I enter "Test Reference" as "refersTo"
     And I enter "Test Note" as "notes"

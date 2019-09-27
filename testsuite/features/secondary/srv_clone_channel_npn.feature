@@ -77,7 +77,7 @@ Feature: Clone a channel
     And I follow "CL-hoag-dummy-7890"
     Then I should see a "CL-hoag-dummy-7890 - Security Advisory" text
     And I should see a "mcalmer" text
-    And I should see a "https://bugzilla.suse.com/show_bug.cgi?id=704608" link
+    And I should see a "https://bugzilla.opensuse.org/show_bug.cgi?id=704608" link
 
   Scenario: Check CM-virgo-dummy-3456 patches
     Given I am on the patches page
