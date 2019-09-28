@@ -603,20 +603,22 @@ When(/^I install pattern "([^"]*)" on this "([^"]*)"$/) do |pattern, host|
   node = get_target(host)
   raise 'Not found: zypper' unless file_exists?(node, '/usr/bin/zypper')
   cmd = "zypper --non-interactive install -t pattern #{pattern}"
-  node.run(cmd)
+  node.run(cmd, true, DEFAULT_TIMEOUT, root, [0, 100, 101, 102, 103, 106])
 end
 
 When(/^I remove pattern "([^"]*)" from this "([^"]*)"$/) do |pattern, host|
   node = get_target(host)
   raise 'Not found: zypper' unless file_exists?(node, '/usr/bin/zypper')
   cmd = "zypper --non-interactive remove -t pattern #{pattern}"
-  node.run(cmd)
+  node.run(cmd, true, DEFAULT_TIMEOUT, root, [0, 100, 101, 102, 103, 104, 106])
 end
 
 When(/^I install package "([^"]*)" on this "([^"]*)"$/) do |package, host|
   node = get_target(host)
+  successcodes = [0]
   if file_exists?(node, '/usr/bin/zypper')
     cmd = "zypper --non-interactive install -y #{package}"
+    successcodes = [0, 100, 101, 102, 103, 106]
   elsif file_exists?(node, '/usr/bin/yum')
     cmd = "yum -y install #{package}"
   elsif file_exists?(node, '/usr/bin/apt-get')
@@ -624,13 +626,15 @@ When(/^I install package "([^"]*)" on this "([^"]*)"$/) do |package, host|
   else
     raise 'Not found: zypper, yum or apt-get'
   end
-  node.run(cmd)
+  node.run(cmd, true, DEFAULT_TIMEOUT, root, successcodes)
 end
 
 When(/^I remove package "([^"]*)" from this "([^"]*)"$/) do |package, host|
   node = get_target(host)
+  successcodes = [0]
   if file_exists?(node, '/usr/bin/zypper')
     cmd = "zypper --non-interactive remove -y #{package}"
+    successcodes = [0, 100, 101, 102, 103, 104, 106]
   elsif file_exists?(node, '/usr/bin/yum')
     cmd = "yum -y remove #{package}"
   elsif file_exists?(node, '/usr/bin/dpkg')
@@ -638,7 +642,7 @@ When(/^I remove package "([^"]*)" from this "([^"]*)"$/) do |package, host|
   else
     raise 'Not found: zypper, yum or dpkg'
   end
-  node.run(cmd)
+  node.run(cmd, true, DEFAULT_TIMEOUT, root, successcodes)
 end
 
 When(/^I wait until the package "(.*?)" has been cached on this "(.*?)"$/) do |pkg_name, host|
