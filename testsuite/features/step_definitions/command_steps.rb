@@ -600,6 +600,9 @@ When(/^I disable source package syncing$/) do
 end
 
 When(/^I install pattern "([^"]*)" on this "([^"]*)"$/) do |pattern, host|
+  if pattern.include?("suma") && $product == "Uyuni"
+    pattern.gsub! "suma", "uyuni"
+  end
   node = get_target(host)
   raise 'Not found: zypper' unless file_exists?(node, '/usr/bin/zypper')
   cmd = "zypper --non-interactive install -t pattern #{pattern}"
