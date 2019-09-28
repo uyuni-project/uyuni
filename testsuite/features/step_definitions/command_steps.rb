@@ -607,6 +607,9 @@ When(/^I install pattern "([^"]*)" on this "([^"]*)"$/) do |pattern, host|
 end
 
 When(/^I remove pattern "([^"]*)" from this "([^"]*)"$/) do |pattern, host|
+  if pattern.include?("suma") && $product == "Uyuni"
+    pattern.gsub! "suma", "uyuni"
+  end
   node = get_target(host)
   raise 'Not found: zypper' unless file_exists?(node, '/usr/bin/zypper')
   cmd = "zypper --non-interactive remove -t pattern #{pattern}"
