@@ -603,7 +603,7 @@ When(/^I install pattern "([^"]*)" on this "([^"]*)"$/) do |pattern, host|
   node = get_target(host)
   raise 'Not found: zypper' unless file_exists?(node, '/usr/bin/zypper')
   cmd = "zypper --non-interactive install -t pattern #{pattern}"
-  node.run(cmd, true, DEFAULT_TIMEOUT, root, [0, 100, 101, 102, 103, 106])
+  node.run(cmd, true, DEFAULT_TIMEOUT, 'root', [0, 100, 101, 102, 103, 106])
 end
 
 When(/^I remove pattern "([^"]*)" from this "([^"]*)"$/) do |pattern, host|
@@ -613,7 +613,7 @@ When(/^I remove pattern "([^"]*)" from this "([^"]*)"$/) do |pattern, host|
   node = get_target(host)
   raise 'Not found: zypper' unless file_exists?(node, '/usr/bin/zypper')
   cmd = "zypper --non-interactive remove -t pattern #{pattern}"
-  node.run(cmd, true, DEFAULT_TIMEOUT, root, [0, 100, 101, 102, 103, 104, 106])
+  node.run(cmd, true, DEFAULT_TIMEOUT, 'root', [0, 100, 101, 102, 103, 104, 106])
 end
 
 When(/^I install package "([^"]*)" on this "([^"]*)"$/) do |package, host|
@@ -629,7 +629,7 @@ When(/^I install package "([^"]*)" on this "([^"]*)"$/) do |package, host|
   else
     raise 'Not found: zypper, yum or apt-get'
   end
-  node.run(cmd, true, DEFAULT_TIMEOUT, root, successcodes)
+  node.run(cmd, true, DEFAULT_TIMEOUT, 'root', successcodes)
 end
 
 When(/^I remove package "([^"]*)" from this "([^"]*)"$/) do |package, host|
@@ -645,7 +645,7 @@ When(/^I remove package "([^"]*)" from this "([^"]*)"$/) do |package, host|
   else
     raise 'Not found: zypper, yum or dpkg'
   end
-  node.run(cmd, true, DEFAULT_TIMEOUT, root, successcodes)
+  node.run(cmd, true, DEFAULT_TIMEOUT, 'root', successcodes)
 end
 
 When(/^I wait until the package "(.*?)" has been cached on this "(.*?)"$/) do |pkg_name, host|
