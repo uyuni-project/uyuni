@@ -6,6 +6,7 @@ Feature: Be able to bootstrap a Salt minion via the GUI
   Scenario: Create the bootstrap repository for a Salt client
      Given I am authorized
      And I create the "x86_64" bootstrap repository for "sle-minion" on the server
+     And I wait for "15" seconds
 
   Scenario: Bootstrap a SLES minion with wrong hostname
      Given I am authorized
