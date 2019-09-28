@@ -10,6 +10,7 @@ Feature: Bootstrap a SSH-managed Ubuntu minion and do some basic operations on i
   Scenario: Bootstrap a SSH-managed Ubuntu minion
     Given I am authorized
     When I go to the bootstrapping page
+    And I wait for "60" seconds
     Then I should see a "Bootstrap Minions" text
     When I check "manageWithSSH"
     And I enter the hostname of "ubuntu-minion" as "hostname"

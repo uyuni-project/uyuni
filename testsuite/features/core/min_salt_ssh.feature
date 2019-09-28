@@ -7,6 +7,7 @@ Feature: Be able to bootstrap a Salt host managed via salt-ssh
   Scenario: Bootstrap a SLES system managed via salt-ssh
     Given I am authorized
     And I go to the bootstrapping page
+    And I wait for "30" seconds
     Then I should see a "Bootstrap Minions" text
     And I check "manageWithSSH"
     And I enter the hostname of "ssh-minion" as "hostname"
