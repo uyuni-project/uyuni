@@ -46,6 +46,9 @@ inventory, provision, update and control your Linux machines.
 %package common
 Summary:        Base structure for Uyuni server and proxy
 Group:          System/Fhs
+%if 0%{?suse_version} >= 1500
+Requires(pre):  group(www)
+%endif
 
 %description common
 Basic filesystem hierarchy for Uyuni server and proxy.
