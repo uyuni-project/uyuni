@@ -636,6 +636,9 @@ Then(/^I wait for "([^"]*)" to be uninstalled on "([^"]*)"$/) do |package, host|
 end
 
 Then(/^I wait for "([^"]*)" to be installed on this "([^"]*)"$/) do |package, host|
+  if package.include?("suma") && $product == "Uyuni"
+    package.gsub! "suma", "uyuni"
+  end
   node = get_target(host)
   node.run_until_ok("rpm -q #{package}")
 end
