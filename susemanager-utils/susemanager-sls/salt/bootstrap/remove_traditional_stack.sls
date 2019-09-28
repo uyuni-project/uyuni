@@ -45,8 +45,7 @@ remove_traditional_stack:
     - require:
       - module: disable_repo*
 {%- endif %}
-    - unless: rpm -q spacewalk-proxy-common
-    - unless: rpm -q spacewalk-common
+    - unless: rpm -q spacewalk-proxy-common || rpm -q spacewalk-common
 
 # only removing apt-transport-spacewalk above
 # causes apt-get update to 'freeze' if this
