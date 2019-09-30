@@ -18,7 +18,7 @@ CREATE TABLE rhnPackageExtraTagKey
 )
 ;
 
-CREATE SEQUENCE rhn_package_extra_tags_keys_id_seq;
+CREATE SEQUENCE rhn_pkg_extra_tag_key_id_seq;
 
 CREATE UNIQUE INDEX rhn_pkg_extra_tag_key_idx
     ON rhnPackageExtraTagKey (name);

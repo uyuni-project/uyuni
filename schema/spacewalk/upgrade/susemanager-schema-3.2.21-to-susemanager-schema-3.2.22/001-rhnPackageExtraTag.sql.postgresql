@@ -20,7 +20,7 @@ CREATE TABLE IF NOT EXISTS rhnPackageExtraTagKey
 )
 ;
 
-CREATE SEQUENCE IF NOT EXISTS rhn_package_extra_tags_keys_id_seq;
+CREATE SEQUENCE IF NOT EXISTS rhn_pkg_extra_tag_key_id_seq;
 
 CREATE UNIQUE INDEX IF NOT EXISTS rhn_pkg_extra_tag_key_idx
     ON rhnPackageExtraTagKey (name);

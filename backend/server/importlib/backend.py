@@ -60,7 +60,7 @@ sequences = {
     'suseProducts': 'suse_products_id_seq',
     'suseSCCRepository': 'suse_sccrepository_id_seq',
     'suseProductSCCRepository': 'suse_prdrepo_id_seq',
-    'rhnPackageExtraTagKey': 'rhn_package_extra_tags_keys_id_seq'
+    'rhnPackageExtraTagKey': 'rhn_pkg_extra_tag_key_id_seq'
 }
 
 

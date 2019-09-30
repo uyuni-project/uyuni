@@ -48,7 +48,7 @@ public class PackageExtraTagsKeys implements Serializable {
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "pkgxtratagkeys_seq")
-    @SequenceGenerator(name = "pkgxtratagkeys_seq", sequenceName = "rhn_package_extra_tags_keys_id_seq",
+    @SequenceGenerator(name = "pkgxtratagkeys_seq", sequenceName = "rhn_pkg_extra_tag_key_id_seq",
             allocationSize = 1)
     public Long getId() {
         return id;
