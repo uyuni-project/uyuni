@@ -110,7 +110,7 @@ class DebRepo:
         """
         # TODO: Signature verification is not yet implemented here.
         if not repo.DpkgRepo(self.url).verify_packages_index():
-            raise repo.DpkgRepoException("Package index checksum failure")
+            raise repo.GeneralRepoException("Package index checksum failure")
 
     def _download(self, url):
         if url.startswith('file://'):
