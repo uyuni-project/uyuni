@@ -12,6 +12,7 @@ java/*.log
 java/*.log.*
 java/bin/*
 java/buildconf/builder/config/local
+java/buildconf/ivy/repository
 java/buildconf/manager-developer-build.properties
 java/buildconf/test/rhn.conf
 java/buildconf/tempjars/*
@@ -38,6 +39,9 @@ search-server/spacewalk-search/lib
 search-server/spacewalk-search/dist
 search-server/spacewalk-search/rhn-search.pid
 search-server/spacewalk-search/rhn_search_daemon.log
+search-server/spacewalk-search/buildconf/repository
+search-server/spacewalk-search/.checkstyle
+search-server/spacewalk-search/.settings
 *~
 *#*#*
 .project
