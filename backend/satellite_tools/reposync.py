@@ -554,16 +554,23 @@ class RepoSync(object):
                             else:
                                 raise ValueError("No valid SSL certificates were found for repository.")
 
-                    plugin = self.repo_plugin(url, repo_name, insecure, self.interactive,
-                                              org=str(self.org_id or ''),
-                                              channel_label=self.channel_label,
-                                              ca_cert_file=ca_cert_file,
-                                              client_cert_file=client_cert_file,
-                                              client_key_file=client_key_file)
+                    try:
+                        plugin = self.repo_plugin(url, repo_name, insecure, self.interactive,
+                                                  org=str(self.org_id or ''),
+                                                  channel_label=self.channel_label,
+                                                  ca_cert_file=ca_cert_file,
+                                                  client_cert_file=client_cert_file,
+                                                  client_key_file=client_key_file)
+                    except repo.GeneralRepoException as exc:
+                        log(0, "Plugin error: {}".format(exc))
+                        sync_error = -1
+                    except Exception as exc:
+                        log(0, "Unhandled error occurred: {}".format(exc))
+                        sync_error = -1
 
                     if self.show_packages_only:
                         self.show_packages(plugin, repo_id)
-                    else:
+                    elif plugin is not None:
                         if update_repodata:
                             plugin.clear_cache()
 
