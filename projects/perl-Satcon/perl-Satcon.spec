@@ -34,15 +34,10 @@ BuildRequires:  perl(ExtUtils::MakeMaker)
 %if 0%{?suse_version}
 Requires:       policycoreutils
 %else
-%if 0%{?fedora} && 0%{?fedora} >= 24
 BuildRequires:  coreutils
 BuildRequires:  findutils
 BuildRequires:  make
-%if 0%{?fedora} && 0%{?fedora} > 26
 BuildRequires:  perl-interpreter
-%else
-BuildRequires:  perl
-%endif
 BuildRequires:  perl-generators
 # Run-time:
 # bytes not used at tests
@@ -53,7 +48,6 @@ BuildRequires:  perl-generators
 BuildRequires:  perl(strict)
 # Tests:
 BuildRequires:  perl(Test)
-%endif
 Requires:       %{sbinpath}/restorecon
 %endif
 
