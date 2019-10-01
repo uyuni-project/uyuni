@@ -9,18 +9,18 @@
 -- http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 --
 
-CREATE TABLE IF NOT EXISTS rhnPackageError
+CREATE TABLE IF NOT EXISTS rhnChannelError
 (
     id          NUMERIC NOT NULL
                     CONSTRAINT rhn_pkg_errs_id_pk PRIMARY KEY,
-    package_id  NUMERIC NOT NULL
-                    CONSTRAINT rhn_pkg_err_pid_fk
-                       REFERENCES rhnPackage (id)
+    channel_id  NUMERIC NOT NULL
+                    CONSTRAINT rhn_channel_err_pid_fk
+                       REFERENCES rhnChannel (id)
                        ON DELETE CASCADE,
-    error       VARCHAR(2048) NOT NULL,
+    error       VARCHAR(4096) NOT NULL,
     created     TIMESTAMPTZ
                      DEFAULT (current_timestamp) NOT NULL
 )
 ;
 
-CREATE SEQUENCE IF NOT EXISTS rhn_package_err_id_seq;
+CREATE SEQUENCE IF NOT EXISTS rhn_channel_err_id_seq;
