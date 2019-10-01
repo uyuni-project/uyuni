@@ -58,8 +58,6 @@ public class CreateCommandTest extends RhnBaseTestCase {
         invalidChannelName("abc123\\");
         invalidChannelName(null);
         invalidChannelName("_123456");
-        invalidChannelName("0longerthansix");
-
 
         // V A L I D
         validChannelName("dude where's my car"); // we allow ' just don't advertise it
@@ -70,6 +68,7 @@ public class CreateCommandTest extends RhnBaseTestCase {
         validChannelName("bin/channel/ok");
         validChannelName("abc 123-foo/bar_under.ALPHA");
         validChannelName("Jesusrs API Test Channel");
+        validChannelName("0longerthansix");
 
         // we allow the following characters but don't advertise them
         // ' ( )
