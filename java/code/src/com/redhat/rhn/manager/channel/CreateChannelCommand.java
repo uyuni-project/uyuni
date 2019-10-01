@@ -45,7 +45,7 @@ public class CreateChannelCommand {
     public static final int CHANNEL_LABEL_MIN_LENGTH = 6;
 
     public static final String CHANNEL_NAME_REGEX =
-        "^[a-zA-Z][\\w\\d\\s\\-\\.\\'\\(\\)\\/\\_]*$";
+        "^[a-zA-Z\\d][\\w\\d\\s\\-\\.\\'\\(\\)\\/\\_]*$";
     public static final String CHANNEL_LABEL_REGEX =
         "^[a-z\\d][a-z\\d\\-\\.\\_]*$";
 

@@ -20116,7 +20116,7 @@ given channel.</source>
         Channel name and label are required.&lt;br&gt;
         They each must be at least 6 characters in length.&lt;br&gt;
         Channel name must not be longer than 256 characters and channel label must not be longer than 128 characters.&lt;br&gt;
-        Channel name must begin with a letter and channel label may begin with a letter or digit.&lt;br&gt;
+        Channel name and label may begin with a letter or digit.&lt;br&gt;
         They each must not begin with rhn, redhat or red hat.&lt;br&gt;
         They each must contain only lowercase letters, hyphens ('-'), periods ('.'), underscores ('_'), and numerals.&lt;br&gt;
         Channel name may also contain spaces, parentheses () and forward slashes ('/').
