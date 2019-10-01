@@ -24,12 +24,18 @@
 %endif
 
 %if 0%{?fedora} || 0%{?rhel} >= 8
-%{!?pylint_check: %global pylint_check 1}
+%{!?pylint_check: %global pylint_check 0}
 %endif
 
-%if 0%{?fedora} || 0%{?suse_version} > 1320
+%if 0%{?fedora} || 0%{?suse_version} > 1320 || 0%{?rhel} >= 8
 %global build_py3   1
 %global python_sitelib %{python3_sitelib}
+%endif
+
+%if 0%{?fedora} || 0%{?rhel} >= 8
+%global python2prefix python2
+%else
+%global python2prefix python
 %endif
 
 Name:           spacecmd
@@ -60,11 +66,11 @@ Requires:       python3-rpm
 Requires:       python3-simplejson
 Requires:       python3
 %else
-BuildRequires:  python
-BuildRequires:  python-devel
-Requires:       python-simplejson
+BuildRequires:  %{python2prefix}
+BuildRequires:  %{python2prefix}-devel
+Requires:       %{python2prefix}-simplejson
 Requires:       rpm-python
-Requires:       python
+Requires:       %{python2prefix}
 %if 0%{?suse_version}
 BuildRequires:  python-xml
 Requires:       python-xml
