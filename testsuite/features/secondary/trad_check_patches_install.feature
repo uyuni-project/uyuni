@@ -38,7 +38,7 @@ Feature: Patches display
     And I follow "Packages"
     Then I should see a "Test-Channel-x86_64" link
     And I should see a "Test-Channel-i586" link
-    And I should see a "sha256:4d9d095fb1865ae56cad2ccc3476cbca5664330be054b10e5927723247109641" text
+    And I should see a "sha256:a1ccca3cbb363b50682ef46a5def7784b0dc356dfb692b01241ffca4e321b5b7" text
     And I should see a "andromeda-dummy-2.0-1.1-noarch" link
 
   Scenario: Check relevant patches for this client
