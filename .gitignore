@@ -57,8 +57,8 @@ web/rpm-build
 web/rhn-web-*.tar.gz
 sqlnet.log
 *.tar.gz
-testsuite/.rakeTasks
-backend/reports
+*.tar.xz
+*.zip
 backend/satellite_tools/spacewalk-repo-syncc
 node_modules
 yarn-error.log
