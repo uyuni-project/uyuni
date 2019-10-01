@@ -583,8 +583,9 @@ When(/^I enable SUSE Manager tools repositories on "([^"]*)"$/) do |host|
 end
 
 When(/^I enable repositories before installing Docker$/) do
-  # Distribution Pool and Update
   os_version, os_family = get_os_version($minion)
+
+  # Distribution Pool and Update
   if os_family =~ /^opensuse/
     repos = "openSUSE-Leap-#{os_version}-Pool openSUSE-Leap-#{os_version}-Update"
     puts $minion.run("zypper mr --enable #{repos}")
@@ -602,8 +603,7 @@ When(/^I enable repositories before installing Docker$/) do
   puts $minion.run("zypper mr --enable #{repos.gsub(/\s/, ' ')}")
 
   # Container repositories
-  # They don't exist for SLES11 systems, only for SLES12 and upper systems
-  unless os_version =~ /^11/
+  unless os_family =~ /^opensuse/ || os_version =~ /^11/
     repos, _code = $minion.run('zypper lr | grep SLE-Module-Containers | cut -d"|" -f2')
     $minion.run("zypper mr --enable #{repos.gsub(/\s/, ' ')}")
   end
@@ -612,8 +612,9 @@ When(/^I enable repositories before installing Docker$/) do
 end
 
 When(/^I disable repositories after installing Docker$/) do
-  # Distribution Pool and Update
   os_version, os_family = get_os_version($minion)
+
+  # Distribution Pool and Update
   if os_family =~ /^opensuse/
     repos = "openSUSE-Leap-#{os_version}-Pool openSUSE-Leap-#{os_version}-Update"
     puts $minion.run("zypper mr --disable #{repos}")
@@ -631,8 +632,7 @@ When(/^I disable repositories after installing Docker$/) do
   puts $minion.run("zypper mr --disable #{repos.gsub(/\s/, ' ')}")
 
   # Container repositories
-  # They don't exist for SLES11 systems, only for SLES12 and upper systems
-  unless os_version =~ /^11/
+  unless os_family =~ /^opensuse/ || os_version =~ /^11/
     repos, _code = $minion.run('zypper lr | grep SLE-Module-Containers | cut -d"|" -f2')
     $minion.run("zypper mr --disable #{repos.gsub(/\s/, ' ')}")
   end
