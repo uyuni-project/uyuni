@@ -82,7 +82,7 @@ Feature: Be able to register a CentOS 7 traditional client and do some basic ope
     And I should see a "RHEL-7" text
     And I should see a "XCCDF Rule Results" text
     And I should see a "pass" text
-    And I should see a "service_" link
+    And I should see a "rpm_verify_hashes" link
 
 @centos_minion
   Scenario: Schedule some actions on the CentOS 7 traditional client
