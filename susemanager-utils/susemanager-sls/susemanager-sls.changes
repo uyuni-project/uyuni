@@ -1,3 +1,4 @@
+- Create Kiwi cache dir if not present
 - Require pmtools only for SLE11 i586 and x86_64 (bsc#1150314)
 - do not break Servers registering to a Server
 - Introduce dnf-susemanager-plugin for RHEL8 minions
