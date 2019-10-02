@@ -69,6 +69,7 @@ mgr_osimage_cert_deployed:
 mgr_kiwi_clear_cache:
   file.directory:
     - name: /var/cache/kiwi/zypper/
+    - makedirs: True
     - clean: True
 
 mgr_sshd_installed_enabled:
