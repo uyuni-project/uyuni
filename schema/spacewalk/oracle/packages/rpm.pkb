@@ -73,10 +73,6 @@ CREATE OR REPLACE PACKAGE BODY rpm AS
         str2 VARCHAR2(32767) := string2;
         one VARCHAR2(32767);
         two VARCHAR2(32767);
-        debupstreamv1 VARCHAR2(32767);
-        debupstreamv2 VARCHAR2(32767);
-        debrevisionv1 VARCHAR2(32767);
-        debrevisionv2 VARCHAR2(32767);
         isnum BOOLEAN;
     BEGIN
         if str1 is NULL or str2 is NULL
@@ -87,33 +83,6 @@ CREATE OR REPLACE PACKAGE BODY rpm AS
         if str1 = str2
         then
             return 0;
-        end if;
-        debupstreamv1 := str1;
-        debupstreamv2 := str2;
-        debrevisionv1 := str1;
-        debrevisionv2 := str2;
-        if INSTR(str1, '-') <> 0
-        then
-            debupstreamv1 := SUBSTR(str1, 0, INSTR(str1, '-'));
-        end if;
-        if INSTR(str2, '-') <> 0
-        then
-            debupstreamv2 := SUBSTR(str2, 0, INSTR(str2, '-'));
-        end if;
-        if (str1 <> str2)
-        then
-            str1 := debupstreamv1;
-            str2 := debupstreamv2;
-        else
-            if INSTR(str1, '-') <> 0 and INSTR(str2, '-') <> 0
-            then
-                debrevisionv1 := SUBSTR(str1, INSTR(str1, '-') + 1);
-                debrevisionv2 := SUBSTR(str2, INSTR(str2, '-') + 1);
-	    else
-		return 0;
-            end if;
-            str1 = debrevisionv1;
-            str2 = debrevisionv2;
         end if;
         -- loop through each version segment of str1 and str2 and compare them
         one := str1;
