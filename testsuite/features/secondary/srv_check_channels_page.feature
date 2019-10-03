@@ -47,7 +47,7 @@ Feature: The channels page
     And I follow "andromeda-dummy-2.0-1.1.noarch"
     Then I should see a "This is the andromeda dummy package used for testing SUSE Manager" text
     And I should see a "Test-Channel-x86_64" link
-    And I should see a "openSUSE Build Service" text
+    And I should see a "build.opensuse.org" text
     And I should see a "SHA256sum:" text
     And I should see a "9150047f536ea98655f3a4bb23ddfcedb4dbdff32cb5130c2e18e5caf0e6fd66" text
     And I should see a "packages/1/915/andromeda-dummy/2.0-1.1/noarch/9150047f536ea98655f3a4bb23ddfcedb4dbdff32cb5130c2e18e5caf0e6fd66/andromeda-dummy-2.0-1.1.noarch.rpm" text
