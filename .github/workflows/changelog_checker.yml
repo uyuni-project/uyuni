@@ -1,0 +1,20 @@
+name: changelog_test
+
+on:
+  pull_request:
+    types: [opened, edited, synchronize, reopened]
+
+jobs:
+  test:
+
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v1
+      with:
+        fetch-depth: 1
+    - uses: actions/setup-ruby@v1
+    - name: Run a changelog checker
+      run: |
+        files_modified=`git diff --name-only "origin/$GITHUB_BASE_REF..HEAD" | xargs`
+        ruby .github/scripts/changelog.rb $files_modified
