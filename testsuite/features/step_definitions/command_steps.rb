@@ -742,6 +742,16 @@ Then(/^name resolution should work on terminal "([^"]*)"$/) do |host|
     raise "Reverse name resolution of #{dest} on terminal #{host} doesn't work: #{output}" unless return_code.zero?
     STDOUT.puts "#{output}"
   end
+  repeat_until_timeout(message: "reverse lookup of client not working") do
+      all_resolved = true
+      ["10.84.80.136", "10.162.210.122"].each do |ip|
+          output, return_code = node.run("host #{ip}")
+          STDOUT.puts "#{output}"
+          all_resolved = false unless return_code.zero?
+      end
+      break if all_resolved
+      sleep 3
+  end
 end
 
 When(/^I configure the proxy$/) do
