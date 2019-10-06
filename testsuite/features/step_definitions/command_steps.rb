@@ -720,7 +720,7 @@ Then(/^name resolution should work on terminal "([^"]*)"$/) do |host|
   step "I install package \"bind-utils\" on this \"#{host}\""
   # direct name resolution
   ["proxy.example.org", "download.suse.de"].each do |dest|
-    output, return_code = node.run("host #{dest}")
+    output, return_code = node.run("host #{dest}", fatal = false)
     raise "Direct name resolution of #{dest} on terminal #{host} doesn't work: #{output}" unless return_code.zero?
     STDOUT.puts "#{output}"
   end
@@ -728,18 +728,14 @@ Then(/^name resolution should work on terminal "([^"]*)"$/) do |host|
   net_prefix = $private_net.sub(%r{\.0+/24$}, ".")
   client = net_prefix + "2"
   [client, "149.44.176.1"].each do |dest|
-    output, return_code = node.run("host #{dest}")
+    output, return_code = node.run("host #{dest}", fatal = false)
     raise "Reverse name resolution of #{dest} on terminal #{host} doesn't work: #{output}" unless return_code.zero?
     STDOUT.puts "#{output}"
   end
-  repeat_until_timeout(message: "reverse lookup of client not working") do
-      all_resolved = true
-      ["10.84.80.136", "10.162.210.122"].each do |ip|
-          output, return_code = node.run("host #{ip}")
-          STDOUT.puts "#{output}"
-          all_resolved = false unless return_code.zero?
-      end
-      break if all_resolved
+  repeat_until_timeout(message: "reverse lookup of #{host} not working") do
+      output, return_code = node.run("host $(ip -4 a s eth0 | grep -Po 'inet \K[\d.]+')", fatal = false)
+      STDOUT.puts "#{output}"
+      break if return_code.zero?
       sleep 3
   end
 end
