@@ -743,9 +743,11 @@ Then(/^name resolution should work on terminal "([^"]*)"$/) do |host|
     STDOUT.puts "#{output}"
   end
   repeat_until_timeout(message: "reverse lookup of #{host} not working") do
-      output, return_code = node.run("host $(ip -4 a s eth0 | grep -Po 'inet \K[\d.]+')", fatal = false)
+      output, return_code = node.run("host $(ip -4 a s eth0 | grep -Po 'inet \\K[\\d.]+')", fatal = false)
       STDOUT.puts "#{output}"
       break if return_code.zero?
+      # reason for this is mostly a not 100% working nameserver
+      $proxy.run('rcnamed restart', fatal = false)
       sleep 3
   end
 end
