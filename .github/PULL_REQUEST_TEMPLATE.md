@@ -1,6 +1,10 @@
+## Maintenance Update status
+
+Check http://ramrod.mgr.suse.de/pub/mu-badges/ and if any of the versions has an active Maintenance Update, please consider if this PR should be ported to the Maintenance Update branch.
+
 ## What does this PR change?
 
-**add description**
+Port of # **remove rest of file if this is a port**
 
 ## GUI diff
 
@@ -13,13 +17,15 @@ After:
 - [ ] **DONE**
 
 ## Documentation
+- No documentation needed: only internal and user invisible changes
 - No documentation needed: **add explanation. This can't be used if there is a GUI diff**
-- [doc-susemanager](https://github.com/SUSE/doc-susemanager) PR or issue was created (GitHub automatic link expected below)
+- [doc-susemanager PR](https://github.com/SUSE/doc-susemanager/pulls) or [documentation board issue](https://github.com/SUSE/spacewalk/projects/31) was created (GitHub automatic link expected below)
 
 - [ ] **DONE**
 
 ## Test coverage
 - No tests: **add explanation**
+- No tests: already covered
 - Unit tests were added
 - Cucumber tests were added
 
@@ -28,7 +34,11 @@ After:
 ## Links
 
 Fixes #
-Tracks # **add downstream PR, if any**
+
+Relevant branches (GitHub automatic links expected below):
+ - Manager-3.2
+ - Manager-4.0
+ - Uyuni
 
 - [ ] **DONE**
 
@@ -53,4 +63,4 @@ If you need to re-run a test, please mark the related checkbox, it will be unche
 - [ ] Re-run test "schema_migration_test_oracle"
 - [ ] Re-run test "schema_migration_test_pgsql"		 
 - [ ] Re-run test "susemanager_unittests"
-- [ ] Re-run test "javascript_lint"		 
+- [ ] Re-run test "javascript_lint"
