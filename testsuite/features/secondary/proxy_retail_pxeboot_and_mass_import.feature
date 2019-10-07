@@ -14,8 +14,8 @@
 Feature: PXE boot a Retail terminal
   In order to use SUSE Manager for Retail solution
   As the system administrator
-  I want to PXE boot one of the terminals
-  I want perform a mass import of several virtual terminals and one real minion
+  I PXE boot one of the terminals
+  I perform a mass import of several virtual terminals and one real minion
 
 @proxy
 @private_net
@@ -265,6 +265,22 @@ Feature: PXE boot a Retail terminal
 @proxy
 @private_net
 @pxeboot_minion
+  Scenario: Cleanup: remove a package on the new Retail terminal
+    Given I am on the Systems page
+    When I follow "pxeboot" terminal
+    And I follow "Software" in the content area
+    And I follow "List / Remove"
+    And I enter "virgo" in the css "input[placeholder='Filter by Package Name: ']"
+    And I click on the css "button.spacewalk-button-filter"
+    And I check "virgo-dummy-2.0-1.1" in the list
+    And I click on "Remove Packages"
+    And I click on "Confirm"
+    Then I should see a "1 package removal has been scheduled" text
+    When I wait until event "Package Removal scheduled by admin" is completed
+
+@proxy
+@private_net
+@pxeboot_minion
   Scenario: Cleanup: delete the new Retail terminal
     Given I am on the Systems overview page of this "pxeboot-minion"
     When I follow "Delete System"
@@ -350,6 +366,7 @@ Feature: PXE boot a Retail terminal
 @private_net
 @retail_massive_import
   Scenario: Mass import of terminals
+    Given the retail configuration file name is "massive-import-terminals.yml"
     When I copy the retail configuration file "massive-import-terminals.yml" on server
     And I import the retail configuration using retail_yaml command
     And I am on the Systems page
@@ -392,8 +409,8 @@ Feature: PXE boot a Retail terminal
 @proxy
 @private_net
 @pxeboot_minion
-@retail_massive_import
   Scenario: Bootstrap the PXE boot minion
+    Given the retail configuration file name is "massive-import-terminals.yml"
     And I am authorized
     And I stop and disable avahi on the PXE boot minion
     And I create bootstrap script and set the activation key "1-SUSE-DEV-x86_64" in the bootstrap script on the proxy
@@ -406,7 +423,6 @@ Feature: PXE boot a Retail terminal
 @proxy
 @private_net
 @pxeboot_minion
-@retail_massive_import
   Scenario: Check connection from bootstrapped terminal to proxy
     Given I am on the Systems page
     And I follow "pxeboot" terminal
@@ -417,7 +433,6 @@ Feature: PXE boot a Retail terminal
 @proxy
 @private_net
 @pxeboot_minion
-@retail_massive_import
   Scenario: Install a package on the bootstrapped terminal
     Given I am on the Systems page
     When I follow "pxeboot" terminal
@@ -432,7 +447,6 @@ Feature: PXE boot a Retail terminal
 @proxy
 @private_net
 @pxeboot_minion
-@retail_massive_import
   Scenario: Cleanup: remove a package on the bootstrapped terminal
     Given I am on the Systems page
     When I follow "pxeboot" terminal
@@ -448,7 +462,6 @@ Feature: PXE boot a Retail terminal
 
 @proxy
 @private_net
-@retail_massive_import
   Scenario: Cleanup: delete all imported Retail terminals
     Given I am on the Systems page
     When I delete all the terminals imported
