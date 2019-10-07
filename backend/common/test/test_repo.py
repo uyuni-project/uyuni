@@ -322,3 +322,11 @@ Some more irrelevant data
 
         assert dpr.append_index_file(DpkgRepo.PKG_XZ) == \
             "https://domainname.ext/PATH/Updates/Distro/version/arch/update/Packages.xz?very_long_auth_token"
+
+    def test_append_index_file_to_url_no_difference(self):
+        """
+        Test append index files to the given url, but no changes has to be applied
+        :return:
+        """
+        url = "https://domainname.ext/PATH/Updates/Distro/version/arch/update/Packages.gz?very_long_auth_token"
+        assert url == DpkgRepo(url).append_index_file(DpkgRepo.PKG_GZ)
