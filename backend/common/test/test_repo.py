@@ -308,3 +308,17 @@ Some more irrelevant data
             DpkgRepo("http://dummy/url").get_pkg_index_raw()
 
         assert "No variants of package index has been found on http://dummy/url repo" == str(exc.value)
+
+    def test_append_index_file_to_url(self):
+        """
+        Test append index files to the given url.
+        :return:
+        """
+        url = "https://domainname.ext/PATH/Updates/Distro/version/arch/update/?very_long_auth_token"
+        dpr = DpkgRepo(url)
+
+        assert dpr.append_index_file(DpkgRepo.PKG_GZ) == \
+            "https://domainname.ext/PATH/Updates/Distro/version/arch/update/Packages.gz?very_long_auth_token"
+
+        assert dpr.append_index_file(DpkgRepo.PKG_XZ) == \
+            "https://domainname.ext/PATH/Updates/Distro/version/arch/update/Packages.xz?very_long_auth_token"
