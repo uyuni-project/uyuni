@@ -330,3 +330,14 @@ Some more irrelevant data
         """
         url = "https://domainname.ext/PATH/Updates/Distro/version/arch/update/Packages.gz?very_long_auth_token"
         assert url == DpkgRepo(url).append_index_file(DpkgRepo.PKG_GZ)
+
+    def test_append_index_file_to_url_exception(self):
+        """
+        Test append index files to the given url, but exception happens due to unsupported URL
+        :return:
+        """
+        url = "https://domainname.ext/PATH/Updates/Distro/version/arch/Packages.gz/update?very_long_auth_token"
+        with pytest.raises(GeneralRepoException) as exc:
+            DpkgRepo(url).append_index_file(DpkgRepo.PKG_GZ)
+
+        assert str(exc.value) == "URL has already Packages.gz mentioned in it."
