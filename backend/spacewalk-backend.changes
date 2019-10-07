@@ -1,3 +1,4 @@
+- Add Ubuntu repository checksum index checking for flat and default repository formats
 - Always use the same RPM database when running "spacewalk-repo-sync"
   from the command line or via taskomatic (bsc#1163468)
 - call mgr-create-bootstrap-repo after repo sync
