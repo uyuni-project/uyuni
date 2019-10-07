@@ -942,6 +942,7 @@ end
 When(/^I delete all the terminals imported$/) do
   terminals = get_terminals_from_yaml(@retail_config)
   terminals.each do |terminal|
+    puts "Deleting terminal with name: #{terminal}"
     steps %(
       When I follow "#{terminal}" terminal
       And I follow "Delete System"
