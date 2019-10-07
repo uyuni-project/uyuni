@@ -61,11 +61,28 @@ class DpkgRepo:
                 key = "/".join(parse.urlparse(self.__repo._url).path.strip("/").split("/")[-2:] + [key])
             return self[key]
 
-    def __init__(self, url):
+    def __init__(self, url: str):
         self._url = url
         self._flat = None
         self._pkg_index = None, None
         self._release = DpkgRepo.EntryDict(self)
+
+    def append_index_file(self, index_file: str) -> str:
+        """
+        Append an index file, such as Packages.gz or Packagex.xz etc
+        to the given URL, if it does not contains any.
+
+        :param index_file: string
+        :return: url string
+        """
+        p_url = parse.urlparse(self._url)
+        path = p_url.path
+        if not path.endswith(index_file):
+            if index_file in path:
+                raise GeneralRepoException("URL has already {} mentioned in it.".format(index_file))
+            path = os.path.join(path.rstrip("/"), index_file)
+
+        return parse.urlunparse((p_url.scheme, p_url.netloc, path, p_url.params, p_url.query, p_url.fragment,))
 
     def get_pkg_index_raw(self) -> typing.Tuple[str, bytes]:
         """
@@ -75,7 +92,7 @@ class DpkgRepo:
         """
         if self._pkg_index[0] is None:
             for cnt_fname in [DpkgRepo.PKG_GZ, DpkgRepo.PKG_XZ, DpkgRepo.PKG_RW]:
-                packages_url = os.path.join(self._url, cnt_fname)
+                packages_url = self.append_index_file(cnt_fname)
                 resp = requests.get(packages_url)
                 if resp.status_code == http.HTTPStatus.OK:
                     self._pkg_index = cnt_fname, resp.content
