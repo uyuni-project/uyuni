@@ -56,15 +56,22 @@ class DpkgRepo:
             super().__init__()
             self.__repo = repo
 
-        def get(self, key: typing.Any) -> typing.Optional[typing.Any]:
+        def get(self, key: typing.Any) -> typing.Optional[typing.Any]:  # type: ignore
+            """
+            Automatically update key if the repo is flat.
+
+            :param key:
+            :return:
+            """
             if not self.__repo.is_flat():
                 key = "/".join(parse.urlparse(self.__repo._url).path.strip("/").split("/")[-2:] + [key])
             return self[key]
 
     def __init__(self, url: str):
         self._url = url
-        self._flat = None
-        self._pkg_index = None, None
+        self._flat_checked: typing.Optional[int] = None
+        self._flat: bool = False
+        self._pkg_index: typing.Tuple[str, bytes] = ("", b"", )
         self._release = DpkgRepo.EntryDict(self)
 
     def append_index_file(self, index_file: str) -> str:
@@ -90,7 +97,7 @@ class DpkgRepo:
 
         :return: bytes of the content
         """
-        if self._pkg_index[0] is None:
+        if self._pkg_index[0] == "":
             for cnt_fname in [DpkgRepo.PKG_GZ, DpkgRepo.PKG_XZ, DpkgRepo.PKG_RW]:
                 packages_url = self.append_index_file(cnt_fname)
                 resp = requests.get(packages_url)
@@ -99,7 +106,7 @@ class DpkgRepo:
                     break
                 resp.close()
 
-        if self._pkg_index == (None, None,):
+        if self._pkg_index == ("", b"",):
             raise GeneralRepoException("No variants of package index has been found on {} repo".format(self._url))
 
         return self._pkg_index
@@ -124,7 +131,7 @@ class DpkgRepo:
 
         return cnt_data.decode("utf-8")
 
-    def _parse_release_index(self, release: str) -> typing.Dict[str, "DpkgRepo.ReleaseEntry"]:
+    def _parse_release_index(self, release: str) -> "EntryDict":
         """
         Parse release index to a structure.
 
@@ -174,6 +181,8 @@ class DpkgRepo:
         if not self._release:
             raise GeneralRepoException("Repository seems either broken or has unsupported format")
 
+        self._flat_checked = 1
+
         return self._release
 
     @staticmethod
@@ -199,7 +208,7 @@ class DpkgRepo:
 
         :return:
         """
-        if self._flat is None:
+        if self._flat_checked is None:
             self.get_release_index()
 
         return bool(self._flat)
@@ -214,7 +223,10 @@ class DpkgRepo:
         name, data = self.get_pkg_index_raw()
         entry = self.get_release_index().get(name)
         for algorithm in ["md5", "sha1", "sha256"]:
-            res = getattr(hashlib, algorithm)(data).hexdigest() == getattr(entry.checksum, algorithm)
+            if entry is None:
+                res = False
+            else:
+                res = getattr(hashlib, algorithm)(data).hexdigest() == getattr(entry.checksum, algorithm)
             if not res:
                 break
 
