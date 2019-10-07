@@ -529,7 +529,8 @@ public class ContentManagementHandler extends BaseHandler {
      * @xmlrpc.doc Create a Content Filter
      * #paragraph_end()
      * #paragraph()
-     * The following filters are available:
+     * The following filters are available (you can get the list in machine-readable format using
+     * the listFilterCriteria() endpoint):
      * #paragraph_end()
      * #paragraph()
      * Package filtering:
@@ -592,7 +593,7 @@ public class ContentManagementHandler extends BaseHandler {
      * @xmlrpc.doc Update a Content Filter
      * #paragraph_end()
      * #paragraph()
-     * See also: createFilter()
+     * See also: createFilter(), listFilterCriteria()
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param_desc("int", "filterId", "Filter id")
      * @xmlrpc.param #param_desc("string", "name", "New filter name")
