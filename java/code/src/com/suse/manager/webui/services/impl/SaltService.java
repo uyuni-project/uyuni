@@ -283,6 +283,7 @@ public class SaltService {
     public <R> Optional<R> callSync(RunnerCall<R> call,
                                     Function<SaltError, Optional<R>> errorHandler) {
         try {
+            LOG.debug("Runner callSync: " + runnerCallToString(call));
             Result<R> result = adaptException(call.callSync(SALT_CLIENT, PW_AUTH));
             return result.fold(p -> errorHandler.apply(p),
                     r -> Optional.of(r)
@@ -354,6 +355,7 @@ public class SaltService {
     public <R> Optional<R> callSync(WheelCall<R> call,
                                      Function<SaltError, Optional<R>> errorHandler) {
         try {
+            LOG.debug("Wheel callSync: " + wheelCallToString(call));
             WheelResult<Result<R>> result = adaptException(call.callSync(SALT_CLIENT, PW_AUTH));
             return result.getData().getResult().fold(
                     err -> errorHandler.apply(err),
@@ -747,6 +749,7 @@ public class SaltService {
 
         if (!regularMinionIds.isEmpty()) {
             ScheduleMetadata metadata = ScheduleMetadata.getDefaultMetadata().withBatchMode();
+            LOG.debug("Local callSync: " + SaltService.localCallToString(callIn));
             List<Map<String, Result<T>>> callResult =
                     adaptException(callIn.withMetadata(metadata).callSync(SALT_CLIENT,
                             new MinionList(regularMinionIds), PW_AUTH, defaultBatch));
@@ -758,6 +761,18 @@ public class SaltService {
         }
 
         return results;
+    }
+
+    /**
+     * Return local call options as a string (for debugging)
+     *
+     * @param call the local call
+     * @return string representation
+     */
+    public static String localCallToString(LocalCall<?> call) {
+        return "[" + call.getModuleName() + "." +
+                call.getFunctionName() + "] with payload [" +
+                call.getPayload() + "]";
     }
 
     /**
@@ -802,6 +817,7 @@ public class SaltService {
             Optional<ScheduleMetadata> metadataIn) throws SaltException {
         ScheduleMetadata metadata =
                 Opt.fold(metadataIn, () -> ScheduleMetadata.getDefaultMetadata(), Function.identity()).withBatchMode();
+        LOG.debug("Local callAsync: " + SaltService.localCallToString(callIn));
         return adaptException(callIn.withMetadata(metadata).callAsync(SALT_CLIENT, target, PW_AUTH, defaultBatch));
     }
 
