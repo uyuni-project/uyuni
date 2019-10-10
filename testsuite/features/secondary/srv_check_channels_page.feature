@@ -51,8 +51,8 @@ Feature: The channels page
     And I should see a "Test-Channel-x86_64" link
     And I should see a "openSUSE Build Service" text
     And I should see a "SHA256sum:" text
-    And I should see a "9150047f536ea98655f3a4bb23ddfcedb4dbdff32cb5130c2e18e5caf0e6fd66" text
-    And I should see a "packages/1/915/andromeda-dummy/2.0-1.1/noarch/9150047f536ea98655f3a4bb23ddfcedb4dbdff32cb5130c2e18e5caf0e6fd66/andromeda-dummy-2.0-1.1.noarch.rpm" text
+    And I should see a "11d493dcec20274eb2f312d0b552eaaf3155ee81dd13fe7945cbd7aa44f70761" text
+    And I should see a "packages/1/11d/andromeda-dummy/2.0-1.1/noarch/11d493dcec20274eb2f312d0b552eaaf3155ee81dd13fe7945cbd7aa44f70761/andromeda-dummy-2.0-1.1.noarch.rpm" text
 
   Scenario: Check package dependencies page
     Given I am authorized as "admin" with password "admin"
@@ -62,7 +62,7 @@ Feature: The channels page
     And I follow "andromeda-dummy-2.0-1.1.noarch"
     And I follow "Dependencies"
     Then I should see a "pam" text
-    And I should see a "rpmlib(PayloadIsLzma) <= 4.4.6-1" text
+    And I should see a "rpmlib(PayloadIsXz) <= 5.2-1" text
     And I should see a "andromeda-dummy = 2.0-1.1" text
 
   Scenario: Check package change log page
@@ -84,4 +84,4 @@ Feature: The channels page
     And I follow "File List"
     Then I should see a "This package contains the following files." text
     And I should see a "/usr/share/doc/packages/andromeda-dummy/COPYING" text
-    And I should see a "md5: 94d55d512a9ba36caa9b7df079bae19f" text
+    And I should see a "sha256: 32b1062f7da84967e7019d01ab805935caa7ab7321a7ced0e30ebe75e5df1670" text
