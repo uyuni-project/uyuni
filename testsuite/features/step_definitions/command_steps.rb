@@ -270,7 +270,7 @@ When(/^I stop salt-minion on the PXE boot minion$/) do
 end
 
 When(/^I install the GPG key of the server on the PXE boot minion$/) do
-  file = 'galaxy.key'
+  file = 'uyuni.key'
   source = File.dirname(__FILE__) + '/../upload_files/' + file
   dest = "/tmp/" + file
   return_code = file_inject($server, source, dest)
