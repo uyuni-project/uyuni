@@ -61,6 +61,7 @@ Feature: CVE Audit
 
   Scenario: Select a system for the System Set Manager
     Given I am authorized as "admin" with password "admin"
+    And I follow "Clear"
     When I follow the left menu "Audit > CVE Audit"
     And I select "1999" from "cveIdentifierYear"
     And I enter "9999" as "cveIdentifierId"
@@ -110,3 +111,6 @@ Feature: CVE Audit
     When I run "zypper -n mr -d Test-Packages_Pool" on "sle-client" without error control
     And I run "zypper -n rm milkyway-dummy" on "sle-client" without error control
     And I run "rhn_check -vvv" on "sle-client" without error control
+
+  Scenario: Cleanup: remove remaining systems from SSM
+    When I follow "Clear"

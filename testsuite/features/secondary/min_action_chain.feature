@@ -313,3 +313,6 @@ Feature: Action chain on salt minions
     And I run "rm -f /tmp/action_chain_done" on "sle-minion" without error control
     And I run "rm -f /etc/action-chain.cnf" on "sle-minion" without error control
     And I run "rm -f /tmp/action_chain_one_system_done" on "sle-minion" without error control
+
+  Scenario: Cleanup: remove remaining systems from SSM
+    When I follow "Clear"

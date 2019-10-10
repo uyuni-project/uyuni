@@ -62,6 +62,12 @@ The Salt minion must always be ready to build containers and OS images.
 Always re-enable these entitlements when you delete the minion and re-register it.
 
 
+## Systems selected
+
+At the end of each feature we need to assure that no systems are selected.
+We can do it using the "Clear" button, in the top-right options.
+
+
 ## Other
 
 For more prerequisites, look at the core features.
