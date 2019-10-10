@@ -111,7 +111,7 @@ Feature: Lock packages on traditional client
   Scenario: Mix package locks and unlock events part 2
     And I follow "Software" in the content area
     And I follow "Lock"
-    When I select all the packages
+    When I click on "Select All"
     And I click on "Unlock"
     Then I should see a "Packages has been requested for being unlocked." text
     When I follow "Lock"

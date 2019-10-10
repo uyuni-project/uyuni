@@ -119,3 +119,6 @@ Feature: Bare metal discovery
   Scenario: Cleanup: register a traditional client after bare metal tests
     When I register using "1-SUSE-DEV-x86_64" key
     Then I should see "sle-client" in spacewalk
+
+  Scenario: Cleanup: remove remaining systems from SSM
+    When I follow "Clear"

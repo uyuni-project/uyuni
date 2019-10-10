@@ -122,3 +122,6 @@ Feature: Clone a channel
     And I click on "Delete Channel"
     Then I should see a "Clone 3 of Test-Channel-x86_64" text
     And I should see a "has been deleted." text
+
+  Scenario: Cleanup: remove remaining systems from SSM
+    When I follow "Clear"
