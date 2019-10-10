@@ -41,3 +41,6 @@ Feature: Build OS images
     And I click on "Delete"
     And I click on "Delete" in "Delete Selected Image(s)" modal
     And I wait until I see "Deleted successfully." text
+
+  Scenario: Cleanup: remove remaining systems from SSM
+    When I follow "Clear"

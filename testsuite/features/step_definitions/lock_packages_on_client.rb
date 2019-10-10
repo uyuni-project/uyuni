@@ -88,14 +88,3 @@ Then(/^only packages "(.*?)" are reported as pending to be unlocked$/) do |pkgs|
 
   raise "Matches count #{matches.size} is different than packages count #{pkgs.size}" if matches.size != pkgs.size
 end
-
-When(/^I select all the packages$/) do
-  within(:xpath, '//section') do
-    # use div/div/div for cve audit which has two tables
-    top_level_xpath_query = "//div[@class='table-responsive']/table/thead/tr[.//input[@type='checkbox']]"
-    row = find(:xpath, top_level_xpath_query, match: :first)
-    raise "xpath: #{top_level_xpath_query} not found" if row.nil?
-
-    row.find(:xpath, './/input[@type="checkbox"]', match: :first).set(true)
-  end
-end

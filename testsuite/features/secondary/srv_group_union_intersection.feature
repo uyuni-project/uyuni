@@ -152,3 +152,6 @@ Feature: Work with Union and Intersection buttons in the group list
     And I follow "Delete Group" in the content area
     And I click on "Confirm Deletion"
     Then I should see a "deleted" text
+
+  Scenario: Cleanup: remove remaining systems from SSM
+    When I follow "Clear"

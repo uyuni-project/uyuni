@@ -661,27 +661,36 @@ Then(/^I should see a "([^"]*)" button in "([^"]*)" form$/) do |arg1, arg2|
 end
 
 Then(/^I select the "([^"]*)" repo$/) do |repo|
-  repo = find(:xpath, "//a[contains(.,'#{repo}')]/../..//*[@type='checkbox']", match: :first)
-  repo.set(true) unless repo.nil?
+  step %(I check "#{repo}" in the list)
 end
 
-Then(/^I check the row with the "([^"]*)" link$/) do |arg1|
-  within(:xpath, "//a[text()='#{arg1}']/../..") do
-    find('input[type=checkbox]', match: :first).set(true)
-  end
+Then(/^I check the row with the "([^"]*)" link$/) do |text|
+  step %(I check "#{text}" in the list)
 end
 
 Then(/^I check the row with the "([^"]*)" text$/) do |text|
-  within(:xpath, "//tr[td[contains(., '#{text}')]]") do
-    find('input[type=checkbox]', match: :first).set(true)
-  end
+  step %(I check "#{text}" in the list)
 end
 
 Then(/^I check the row with the "([^"]*)" hostname$/) do |host|
   system_name = get_system_name(host)
-  within(:xpath, "//tr[td[contains(., '#{system_name}')]]") do
-    find('input[type=checkbox]', match: :first).set(true)
-  end
+  step %(I check "#{system_name}" in the list)
+end
+
+When(/^I check "([^"]*)" in the list$/) do |text|
+  top_level_xpath_query = "//div[@class=\"table-responsive\"]/table/tbody//a[contains(.,'#{text}')]/../..//*[@type='checkbox']"
+  row = find(:xpath, top_level_xpath_query, match: :first)
+  raise "xpath: #{top_level_xpath_query} not found" if row.nil?
+
+  row.set(true)
+end
+
+When(/^I uncheck "([^"]*)" in the list$/) do |text|
+  top_level_xpath_query = "//div[@class=\"table-responsive\"]/table/tbody//a[contains(.,'#{text}')]/../..//*[@type='checkbox' and @checked]"
+  row = find(:xpath, top_level_xpath_query, match: :first)
+  raise "xpath: #{top_level_xpath_query} not found" if row.nil?
+
+  row.set(false)
 end
 
 #
@@ -742,28 +751,6 @@ end
 
 Then(/^I should see a Sign Out link$/) do
   raise unless all(:xpath, "//a[@href='/rhn/Logout.do']").any?
-end
-
-When(/^I check "([^"]*)" in the list$/) do |text|
-  within(:xpath, '//section') do
-    # use div/div/div for cve audit which has two tables
-    top_level_xpath_query = "//div[@class=\"table-responsive\"]/table/tbody/tr[.//td[contains(.,'#{text}')]]"
-    row = find(:xpath, top_level_xpath_query, match: :first)
-    raise "xpath: #{top_level_xpath_query} not found" if row.nil?
-
-    row.find(:xpath, './/input[@type="checkbox"]', match: :first).set(true)
-  end
-end
-
-When(/^I uncheck "([^"]*)" in the list$/) do |text|
-  within(:xpath, '//section') do
-    # use div/div/div for cve audit which has two tables
-    top_level_xpath_query = "//div[@class='table-responsive']/table/tbody/tr[.//td[contains(.,'#{text}')] and .//input[@type='checkbox' and @checked]]"
-    row = find(:xpath, top_level_xpath_query, match: :first)
-    raise "xpath: #{top_level_xpath_query} not found" if row.nil?
-
-    row.find(:xpath, './/input[@type="checkbox"]', match: :first).set(false)
-  end
 end
 
 Then(/^I should see (\d+) "([^"]*)" fields in "([^"]*)" form$/) do |count, name, id|

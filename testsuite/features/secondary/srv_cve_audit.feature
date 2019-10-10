@@ -61,6 +61,7 @@ Feature: CVE Audit
 
   Scenario: Select a system for the System Set Manager
     Given I am authorized as "admin" with password "admin"
+    And I follow "Clear"
     When I follow the left menu "Audit > CVE Audit"
     And I select "1999" from "cveIdentifierYear"
     And I enter "9999" as "cveIdentifierId"
@@ -68,7 +69,7 @@ Feature: CVE Audit
     And I should see a "Affected, at least one patch available in an assigned channel" text
     When I check the row with the "sle-client" hostname
     Then I should see a "system selected" text
-    When I am on the System Manager System Overview page
+    And I am on the System Manager System Overview page
     Then I should see "sle-client" as link
     And I follow "Clear"
 
@@ -111,3 +112,6 @@ Feature: CVE Audit
     And I run "zypper -n mr -d Devel_Galaxy_BuildRepo" on "sle-client" without error control
     And I run "zypper -n rm milkyway-dummy" on "sle-client" without error control
     And I run "rhn_check -vvv" on "sle-client" without error control
+
+  Scenario: Cleanup: remove remaining systems from SSM
+    When I follow "Clear"
