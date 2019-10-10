@@ -1,3 +1,5 @@
+- Java api expects content as encoded string instead of encode bytes like before (bsc#1153277)
+
 -------------------------------------------------------------------
 Tue Oct 15 11:44:32 CEST 2019 - jgonzalez@suse.com
 

@@ -1270,6 +1270,9 @@ def import_configchannel_fromdetails(self, ccdetails):
                         logging.debug("base64 encoding file")
                         filedetails['contents'] = \
                             base64.b64encode(filedetails['contents'].encode('utf8'))
+
+                        #change bytes to string before sending
+                        filedetails['contents'] =  filedetails['contents'].decode('utf8')
                         filedetails['contents_enc64'] = True
 
                 logging.debug("Creating %s %s" %
