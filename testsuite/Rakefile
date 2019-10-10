@@ -29,7 +29,8 @@ namespace :parallel do
     task "#{run_set}" do
       timestamp = Time.now.strftime('%Y%m%d%H%M%S')
       features = YAML.safe_load(File.read(File.join(Dir.pwd, 'run_sets', "#{run_set}.yml"))).join(' ')
-      cucumber_opts = "-f html -o output_#{timestamp}-#{run_set}-$TEST_ENV_NUMBER.html -f json -o output_#{timestamp}-#{run_set}-$TEST_ENV_NUMBER.json #{junit_results} -f rerun --out failed.txt -f CustomFormatter::PrettyFormatter -r features "      sh "bundle exec parallel_cucumber -n 5 -o '#{cucumber_opts}' #{features}"
+      cucumber_opts = "-f html -o output_#{timestamp}-#{run_set}-$TEST_ENV_NUMBER.html -f json -o output_#{timestamp}-#{run_set}-$TEST_ENV_NUMBER.json #{junit_results} -f rerun --out failed.txt -f CustomFormatter::PrettyFormatter -r features "
+      sh "bundle exec parallel_cucumber -n 5 -o '#{cucumber_opts}' #{features}"
     end
   end
   at_exit { post_nodejs_report }
