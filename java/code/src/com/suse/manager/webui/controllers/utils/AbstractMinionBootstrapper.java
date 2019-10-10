@@ -264,10 +264,16 @@ public abstract class AbstractMinionBootstrapper {
             return Collections.singletonList(activationKeyErrorMessage.get());
         }
 
-        if (saltService.keyExists(input.getHost(), KeyStatus.ACCEPTED, KeyStatus.DENIED, KeyStatus.REJECTED)) {
-            return Collections.singletonList("A salt key for this" +
-                    " host (" + input.getHost() +
-                    ") seems to already exist, please check!");
+        try {
+            if (saltService.keyExists(input.getHost(), KeyStatus.ACCEPTED, KeyStatus.DENIED, KeyStatus.REJECTED)) {
+                return Collections.singletonList("A salt key for this" +
+                        " host (" + input.getHost() +
+                        ") seems to already exist, please check!");
+            }
+        }
+        catch (RuntimeException e) {
+            return Collections.singletonList("Server Error: unable to check existing keys: " +
+                    e.getMessage());
         }
 
         return MinionServerFactory.findByMinionId(input.getHost())
