@@ -273,8 +273,7 @@ public class DistUpgradeManager extends BaseManager {
                         SUSEProductFactory.findAllBaseProductsOf(product));
                 intersection.retainAll(combination.getAddonProducts());
                 if (intersection.isEmpty() &&
-                        !SUSEProductFactory.findAllBaseProductsOf(product).contains(
-                                combination.getBaseProduct())) {
+                        !SUSEProductFactory.findAllBaseProductsOf(product).contains(combination.getBaseProduct())) {
                     result.remove(combination);
                     if (logger.isDebugEnabled()) {
                         logger.debug("Remove incompatible target: " +
@@ -295,8 +294,7 @@ public class DistUpgradeManager extends BaseManager {
             List<SUSEProductSet> migrationTargets, ChannelArch arch, User user) {
         for (SUSEProductSet target : migrationTargets) {
             // Look for the target product's base channel
-            Channel baseChannel = getProductBaseChannel(target.getBaseProduct().getId(),
-                    arch, user);
+            Channel baseChannel = getProductBaseChannel(target.getBaseProduct().getId(), arch, user);
 
             if (baseChannel == null) {
                 // No base channel found
@@ -353,19 +351,16 @@ public class DistUpgradeManager extends BaseManager {
                 // installed_extensions = @installed_products - [base_product]
                 List<SUSEProduct> installedExtensions = prd.getAddonProducts();
                 // base_successors = [base_product] + base_product.successors
-                final List<SUSEProduct> baseSuccessors = new ArrayList<>(
-                        baseProduct.getUpgrades().size() + 1);
+                final List<SUSEProduct> baseSuccessors = new ArrayList<>(baseProduct.getUpgrades().size() + 1);
                 baseSuccessors.add(baseProduct);
                 baseSuccessors.addAll(baseProduct.getUpgrades());
                 if (logger.isDebugEnabled()) {
-                    logger.debug("Found '" + baseSuccessors.size() +
-                            "' successors for the base product.");
+                    logger.debug("Found '" + baseSuccessors.size() + "' successors for the base product.");
                     baseSuccessors.stream().forEach(bp -> logger.debug(bp.getFriendlyName()));
                 }
 
                 // extension_successors = installed_extensions.map {|e| [e] + e.successors }
-                final List<List<SUSEProduct>> extensionSuccessors =
-                        new ArrayList<>(installedExtensions.size());
+                final List<List<SUSEProduct>> extensionSuccessors = new ArrayList<>(installedExtensions.size());
                 for (SUSEProduct e : installedExtensions) {
                     final List<SUSEProduct> s = new ArrayList<>(e.getUpgrades().size() + 1);
                     s.add(e);
@@ -373,34 +368,28 @@ public class DistUpgradeManager extends BaseManager {
                     extensionSuccessors.add(s);
                     if (logger.isDebugEnabled()) {
                         logger.debug("Extension: " + e.getFriendlyName());
-                        e.getUpgrades().forEach(ex -> {
-                            logger.debug("Extension successor: " + ex.getFriendlyName());
-                        });
+                        e.getUpgrades().forEach(ex -> logger.debug("Extension successor: " + ex.getFriendlyName()));
                         logger.debug("-----------------------");
                     }
                 }
 
-                final List<SUSEProduct> currentCombination =
-                        new ArrayList<>(installedExtensions.size() + 1);
+                final List<SUSEProduct> currentCombination = new ArrayList<>(installedExtensions.size() + 1);
                 currentCombination.add(baseProduct);
                 currentCombination.addAll(installedExtensions);
 
                 // combinations = base_successors.product(*extension_successors)
                 // combinations.delete([base_product] + installed_extensions)
 
-                final List<List<SUSEProduct>> comb =
-                        new ArrayList<>(extensionSuccessors.size() + 1);
+                final List<List<SUSEProduct>> comb = new ArrayList<>(extensionSuccessors.size() + 1);
                 comb.add(baseSuccessors);
                 comb.addAll(extensionSuccessors);
-
 
                 for (List<SUSEProduct> combination : Lists.combinations(comb)) {
                     if (!combination.equals(currentCombination)) {
                         SUSEProduct base = combination.get(0);
                         if (!ContentSyncManager.isProductAvailable(base, base)) {
                             // No Product Channels means, no subscription to access the channels
-                            logger.debug("No SUSE Product Channels for " + base.getFriendlyName() +
-                                    ". Skipping");
+                            logger.debug("No SUSE Product Channels for " + base.getFriendlyName() + ". Skipping");
                             continue;
                         }
                         if (combination.size() == 1) {
@@ -408,8 +397,7 @@ public class DistUpgradeManager extends BaseManager {
                             result.add(new SUSEProductSet(base, Collections.emptyList()));
                         }
                         else {
-                            List<SUSEProduct> addonProducts = combination
-                                    .subList(1, combination.size());
+                            List<SUSEProduct> addonProducts = combination.subList(1, combination.size());
                             //No Product Channels means, no subscription to access the channels
                             if (addonProducts.stream()
                                     .anyMatch(ap -> !ContentSyncManager.isProductAvailable(ap, base))) {
@@ -423,8 +411,7 @@ public class DistUpgradeManager extends BaseManager {
                                 continue;
                             }
                             logger.debug("Found Target: " + base.getFriendlyName());
-                            addonProducts.forEach(ext -> logger.debug("   - " +
-                                    ext.getFriendlyName()));
+                            addonProducts.forEach(ext -> logger.debug("   - " + ext.getFriendlyName()));
                             result.add(new SUSEProductSet(base, addonProducts));
                         }
                     }
