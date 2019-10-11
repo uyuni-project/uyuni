@@ -12,13 +12,13 @@ end
 
 Then(/^I should see a "(.*)" text in the content area$/) do |txt|
   within('#spacewalk-content') do
-    raise "Text #{txt} not found" unless page.has_content?(txt)
+    raise "Text #{txt} not found" unless has_content?(txt)
   end
 end
 
 Then(/^I should not see a "(.*)" text in the content area$/) do |txt|
   within('#spacewalk-content') do
-    raise "Text #{txt} found" unless page.has_no_content?(txt)
+    raise "Text #{txt} found" unless has_no_content?(txt)
   end
 end
 
@@ -33,33 +33,33 @@ Then(/^the current path is "([^"]*)"$/) do |arg1|
 end
 
 When(/^I wait until I see "([^"]*)" text$/) do |text|
-  raise "Text #{text} not found" unless page.has_text?(text, wait: DEFAULT_TIMEOUT)
+  raise "Text #{text} not found" unless has_text?(text, wait: DEFAULT_TIMEOUT)
 end
 
 When(/^I wait until I do not see "([^"]*)" text$/) do |text|
-  raise "Text #{text} found" unless page.has_no_text?(text, wait: DEFAULT_TIMEOUT)
+  raise "Text #{text} found" unless has_no_text?(text, wait: DEFAULT_TIMEOUT)
 end
 
 When(/^I wait at most (\d+) seconds until I see "([^"]*)" text$/) do |seconds, text|
-  raise "Text #{text} not found" unless page.has_content?(text, wait: seconds.to_i)
+  raise "Text #{text} not found" unless has_content?(text, wait: seconds.to_i)
 end
 
 When(/^I wait until I see "([^"]*)" text or "([^"]*)" text$/) do |text1, text2|
-  raise "Text #{text1} or #{text2} not found" unless page.has_content?(text1, wait: DEFAULT_TIMEOUT) || page.has_content?(text2, wait: DEFAULT_TIMEOUT)
+  raise "Text #{text1} or #{text2} not found" unless has_content?(text1, wait: DEFAULT_TIMEOUT) || has_content?(text2, wait: DEFAULT_TIMEOUT)
 end
 
 When(/^I wait until I see "([^"]*)" text, refreshing the page$/) do |text|
   repeat_until_timeout(message: "Couldn't find text '#{text}'") do
-    break if page.has_content?(text)
-    page.evaluate_script 'window.location.reload()'
+    break if has_content?(text)
+    evaluate_script 'window.location.reload()'
   end
 end
 
 When(/^I wait at most (\d+) seconds until the event is completed, refreshing the page$/) do |timeout|
   repeat_until_timeout(timeout: timeout.to_i, message: 'Event not yet completed') do
-    break if page.has_content?("This action's status is: Completed.")
-    raise 'Event failed' if page.has_content?("This action's status is: Failed.")
-    page.evaluate_script 'window.location.reload()'
+    break if has_content?("This action's status is: Completed.")
+    raise 'Event failed' if has_content?("This action's status is: Failed.")
+    evaluate_script 'window.location.reload()'
   end
 end
 
@@ -70,8 +70,8 @@ end
 
 When(/^I wait until I do not see "([^"]*)" text, refreshing the page$/) do |text|
   repeat_until_timeout(message: "Text '#{text}' is still visible") do
-    break unless page.has_content?(text)
-    page.evaluate_script 'window.location.reload()'
+    break unless has_content?(text)
+    evaluate_script 'window.location.reload()'
   end
 end
 
@@ -82,12 +82,12 @@ end
 
 Then(/^I wait until I see the (VNC|spice) graphical console$/) do |type|
   repeat_until_timeout(message: "The #{type} graphical console didn't load") do
-    break unless page.has_xpath?('.//canvas')
+    break unless has_xpath?('.//canvas')
   end
 end
 
 When(/^I close the window$/) do
-  page.evaluate_script 'window.close();'
+  evaluate_script 'window.close();'
 end
 
 #
@@ -238,7 +238,7 @@ When(/^I follow "([^"]*)" on "(.*?)" row$/) do |text, host|
 end
 
 When(/^I enter "(.*?)" in the editor$/) do |arg1|
-  page.execute_script("ace.edit('contents-editor').insert('#{arg1}')")
+  execute_script("ace.edit('contents-editor').insert('#{arg1}')")
 end
 
 #
@@ -290,7 +290,7 @@ end
 
 Given(/^I access the host the first time$/) do
   visit Capybara.app_host
-  raise unless page.has_content?('Create SUSE Manager Administrator')
+  raise unless has_content?('Create SUSE Manager Administrator')
 end
 
 # Admin Page steps
@@ -391,9 +391,9 @@ end
 
 Given(/^I am authorized as "([^"]*)" with password "([^"]*)"$/) do |user, passwd|
   visit Capybara.app_host
-  next if page.all(:xpath, "//header//span[text()='#{user}']").any?
+  next if all(:xpath, "//header//span[text()='#{user}']").any?
 
-  find(:xpath, "//header//i[@class='fa fa-sign-out']").click if page.all(:xpath, "//header//i[@class='fa fa-sign-out']").any?
+  find(:xpath, "//header//i[@class='fa fa-sign-out']").click if all(:xpath, "//header//i[@class='fa fa-sign-out']").any?
 
   fill_in 'username', with: user
   fill_in 'password', with: passwd
@@ -420,7 +420,7 @@ end
 
 Then(/^I am logged in$/) do
   raise 'User is not logged in' unless find(:xpath, "//a[@href='/rhn/Logout.do']").visible?
-  raise 'The welcome message is not shown' unless page.has_content?('You have just created your first SUSE Manager user. To finalize your installation please use the Setup Wizard')
+  raise 'The welcome message is not shown' unless has_content?('You have just created your first SUSE Manager user. To finalize your installation please use the Setup Wizard')
 end
 
 Given(/^I am on the patches page$/) do
@@ -482,11 +482,11 @@ end
 # Test for a text in the whole page
 #
 Then(/^I should see a "([^"]*)" text$/) do |text|
-  raise "Text #{text} not found" unless page.has_content?(text)
+  raise "Text #{text} not found" unless has_content?(text)
 end
 
 Then(/^I should see a "([^"]*)" text or "([^"]*)" text$/) do |text1, text2|
-  raise "Text #{text1} and #{text2} are not found" unless page.has_content?(text1) || page.has_content?(text2)
+  raise "Text #{text1} and #{text2} are not found" unless has_content?(text1) || has_content?(text2)
 end
 
 #
@@ -494,7 +494,7 @@ end
 #
 Then(/^I should see "([^"]*)" in the textarea$/) do |arg1|
   within('textarea') do
-    raise "Text #{arg1} not found" unless page.has_content?(arg1)
+    raise "Text #{arg1} not found" unless has_content?(arg1)
   end
 end
 
@@ -502,14 +502,14 @@ end
 # Test for a text in the whole page using regexp
 #
 Then(/^I should see a text like "([^"]*)"$/) do |title|
-  raise "Text #{title} not found" unless page.has_content?(Regexp.new(title))
+  raise "Text #{title} not found" unless has_content?(Regexp.new(title))
 end
 
 #
 # Test for a text not allowed in the whole page
 #
 Then(/^I should not see a "([^"]*)" text$/) do |text|
-  raise "#{text} found on the page! FAIL" unless page.has_no_content?(text)
+  raise "#{text} found on the page! FAIL" unless has_no_content?(text)
 end
 
 #
@@ -576,7 +576,7 @@ Then(/^I should see a "([^"]*)" link in the table (.*) column$/) do |link, colum
     # try column by name
     # unquote if neeeded
     colname = column.gsub(/\A['"]+|['"]+\Z/, '')
-    cols = page.all(:xpath, '//table//thead/tr[1]/th').map(&:text)
+    cols = all(:xpath, '//table//thead/tr[1]/th').map(&:text)
     idx = cols.index(colname)
   end
   raise("Unknown column '#{column}'") unless idx
@@ -591,11 +591,11 @@ When(/^I wait until the table contains "FINISHED" or "SKIPPED" followed by "FINI
     visit current_url
     # get all texts in the table column under the "Status" header
     status_tds = "//tr/td[count(//th[contains(*/text(), 'Status')]/preceding-sibling::*) + 1]"
-    statuses = page.all(:xpath, status_tds).map(&:text)
+    statuses = all(:xpath, status_tds).map(&:text)
 
     # get all texts in the table column under the "Start time" header
     start_time_tds = "//tr/td[count(//th[contains(*/text(), 'Start Time')]/preceding-sibling::*) + 1]"
-    start_times = page.all(:xpath, start_time_tds).map(&:text)
+    start_times = all(:xpath, start_time_tds).map(&:text)
 
     # disregard any number of initial unimportant rows, that is:
     #  - INTERRUPTED rows with no start time (expected when Taskomatic had been restarted)
@@ -723,15 +723,15 @@ end
 # Test if a checkbox is disabled
 #
 Then(/^the "([^\"]*)" checkbox should be disabled$/) do |arg1|
-  page.has_css?("##{arg1}[disabled]")
+  has_css?("##{arg1}[disabled]")
 end
 
 Then(/^the "([^\"]*)" field should be disabled$/) do |arg1|
-  page.has_css?("##{arg1}[disabled]")
+  has_css?("##{arg1}[disabled]")
 end
 
 Then(/^I should see "([^"]*)" in field "([^"]*)"$/) do |arg1, arg2|
-  raise "Field #{arg2} with #{arg1} value not found" unless page.has_field?(arg2, with: arg1)
+  raise "Field #{arg2} with #{arg1} value not found" unless has_field?(arg2, with: arg1)
 end
 
 Then(/^I should see a "([^"]*)" element in "([^"]*)" form$/) do |arg1, arg2|
@@ -743,7 +743,7 @@ end
 Then(/^I should see a "([^"]*)" editor in "([^"]*)" form$/) do |arg1, arg2|
   within(:xpath, "//form[@id=\"#{arg2}\"] | //form[@name=\"#{arg2}\"]") do
     raise "xpath: textarea##{arg1} not found" unless find("textarea##{arg1}", visible: false)
-    raise "css: ##{arg1}-editor not found" unless page.has_css?("##{arg1}-editor")
+    raise "css: ##{arg1}-editor not found" unless has_css?("##{arg1}-editor")
   end
 end
 

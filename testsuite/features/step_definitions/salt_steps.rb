@@ -181,22 +181,22 @@ end
 
 Then(/^I should see "([^"]*)" short hostname$/) do |host|
   system_name = get_system_name(host).partition('.').first
-  raise "Hostname #{system_name} is not present" unless page.has_content?(system_name)
+  raise "Hostname #{system_name} is not present" unless has_content?(system_name)
 end
 
 Then(/^I should not see "([^"]*)" short hostname$/) do |host|
   system_name = get_system_name(host).partition('.').first
-  raise "Hostname #{system_name} is present" if page.has_content?(system_name)
+  raise "Hostname #{system_name} is present" if has_content?(system_name)
 end
 
 Then(/^I should see "([^"]*)" hostname$/) do |host|
   system_name = get_system_name(host)
-  raise "Hostname #{system_name} is not present" unless page.has_content?(system_name)
+  raise "Hostname #{system_name} is not present" unless has_content?(system_name)
 end
 
 Then(/^I should not see "([^"]*)" hostname$/) do |host|
   system_name = get_system_name(host)
-  raise "Hostname #{system_name} is present" if page.has_content?(system_name)
+  raise "Hostname #{system_name} is present" if has_content?(system_name)
 end
 
 When(/^I expand the results for "([^"]*)"$/) do |host|
@@ -215,20 +215,20 @@ end
 Then(/^I should see "([^"]*)" in the command output for "([^"]*)"$/) do |text, host|
   system_name = get_system_name(host)
   within("pre[id='#{system_name}-results']") do
-    raise "Text '#{text}' not found in the results of #{system_name}" unless page.has_content?(text)
+    raise "Text '#{text}' not found in the results of #{system_name}" unless has_content?(text)
   end
 end
 
 Then(/^I click on the css "(.*)" until page does not contain "([^"]*)" text$/) do |css, text|
   repeat_until_timeout(message: "'#{text}' still found") do
-    break unless page.has_content?(text)
+    break unless has_content?(text)
     find(css).click
   end
 end
 
 Then(/^I click on the css "(.*)" until page does contain "([^"]*)" text$/) do |css, text|
   repeat_until_timeout(message: "'#{text}' was not found") do
-    break if page.has_content?(text)
+    break if has_content?(text)
     find(css).click
   end
 end
@@ -580,7 +580,7 @@ When(/^I see "([^"]*)" fingerprint$/) do |host|
   node = get_target(host)
   output, _code = node.run('salt-call --local key.finger')
   fing = output.split("\n")[1].strip!
-  raise "Text: #{fing} not found" unless page.has_content?(fing)
+  raise "Text: #{fing} not found" unless has_content?(fing)
 end
 
 When(/^I accept "([^"]*)" key$/) do |host|

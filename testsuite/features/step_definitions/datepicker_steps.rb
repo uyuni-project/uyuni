@@ -69,7 +69,7 @@ Given(/^I open the date picker$/) do
 end
 
 Then(/^the date picker is closed$/) do
-  raise unless page.has_no_css?('.datepicker')
+  raise unless has_no_css?('.datepicker')
 end
 
 Then(/^the date picker title should be the current month and year$/) do
@@ -78,7 +78,7 @@ Then(/^the date picker title should be the current month and year$/) do
 end
 
 Then(/^the date picker title should be "([^"]*)"$/) do |arg1|
-  step %(I open the date picker) if page.has_no_css?('.datepicker')
+  step %(I open the date picker) if has_no_css?('.datepicker')
   switch = find('.datepicker .datepicker-days th.datepicker-switch')
   raise unless switch.has_content?(arg1)
 end
@@ -92,13 +92,13 @@ end
 
 When(/^I pick (\d+) minutes from now as schedule time$/) do |arg1|
   action_time = get_future_time(arg1)
-  page.execute_script("$('#date_timepicker_widget_input')
+  execute_script("$('#date_timepicker_widget_input')
     .timepicker('setTime', '#{action_time}').trigger('changeTime');")
 end
 
 When(/^I schedule action to (\d+) minutes from now$/) do |minutes|
   action_time = (DateTime.now + Rational(1,1440) * minutes.to_i + Rational(59,86400)).strftime("%Y-%m-%dT%H:%M%:z")
-  page.execute_script("window.schedulePage.setScheduleTime('#{action_time}')")
+  execute_script("window.schedulePage.setScheduleTime('#{action_time}')")
 end
 
 Then(/^the time field is set to "([^"]*)"$/) do |arg1|
