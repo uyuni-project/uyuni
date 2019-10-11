@@ -4,6 +4,8 @@ branches:
     branch_prefix: example.org
     dedicated_nic: true
     configure_firewall: true
+    firewall:
+      enable_SLAAC_with_routing: true
     dyn_range:
     - <NET_PREFIX><RANGE_BEGIN>
     - <NET_PREFIX><RANGE_END>
