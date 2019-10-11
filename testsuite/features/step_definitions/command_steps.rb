@@ -270,7 +270,7 @@ When(/^I stop salt-minion on the PXE boot minion$/) do
   $proxy.run("expect -f /tmp/#{file} #{ipv4}")
 end
 
-When(/^I install the GPG key of the server on the PXE boot minion$/) do
+When(/^I install the GPG key of the test packages repository on the PXE boot minion$/) do
   file = 'uyuni.key'
   source = File.dirname(__FILE__) + '/../upload_files/' + file
   dest = "/tmp/" + file

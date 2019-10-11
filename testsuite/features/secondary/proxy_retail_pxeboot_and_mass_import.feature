@@ -253,7 +253,7 @@ Feature: PXE boot a Retail terminal
 @pxeboot_minion
   Scenario: Install a package on the new Retail terminal
     Given I am on the Systems overview page of this "pxeboot-minion"
-    When I install the GPG key of the server on the PXE boot minion
+    When I install the GPG key of the test packages repository on the PXE boot minion
     And I follow "Software" in the content area
     And I follow "Install"
     And I check "virgo-dummy-2.0-1.1" in the list
@@ -267,7 +267,7 @@ Feature: PXE boot a Retail terminal
 @pxeboot_minion
   Scenario: Cleanup: remove a package on the new Retail terminal
     Given I am on the Systems page
-    When I follow "pxeboot" terminal
+    When I follow "pxeboot-minion" terminal
     And I follow "Software" in the content area
     And I follow "List / Remove"
     And I enter "virgo" in the css "input[placeholder='Filter by Package Name: ']"
