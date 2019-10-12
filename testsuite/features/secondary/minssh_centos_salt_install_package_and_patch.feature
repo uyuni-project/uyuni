@@ -16,6 +16,20 @@ Feature: Install a patch on the CentOS SSH minion via Salt through the UI
     Then spacecmd should show packages "virgo-dummy-1.0" installed on "ceos-ssh-minion"
 
 @centos_minion
+  Scenario: Pre-requisite: re-subscribe the SSH-managed CentOS minion to a base channel
+    Given I am on the Systems overview page of this "ceos-ssh-minion"
+    When I follow "Software" in the content area
+    And I follow "Software Channels" in the content area
+    And I wait until I do not see "Loading..." text
+    And I check radio button "Test-Channel-x86_64"
+    And I wait until I do not see "Loading..." text
+    And I click on "Next"
+    Then I should see a "Confirm Software Channel Change" text
+    When I click on "Confirm"
+    Then I should see a "Changing the channels has been scheduled." text
+    And I wait until event "Subscribe channels scheduled by admin" is completed
+
+@centos_minion
   Scenario: Schedule errata refresh to reflect channel assignment on Centos SSH minion
     Given I am on the Systems overview page of this "ceos-ssh-minion"
     When I follow "Software" in the content area
