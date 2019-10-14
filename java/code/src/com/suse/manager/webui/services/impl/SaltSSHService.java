@@ -27,6 +27,7 @@ import com.redhat.rhn.domain.token.ActivationKeyFactory;
 import com.suse.manager.utils.SaltUtils;
 import com.suse.manager.webui.controllers.StatesAPI;
 import com.suse.manager.webui.controllers.utils.ContactMethodUtil;
+import com.suse.manager.webui.services.FutureUtils;
 import com.suse.manager.webui.services.SaltActionChainGeneratorService;
 import com.suse.manager.webui.services.impl.runner.MgrUtilRunner;
 import com.suse.manager.webui.utils.ActionSaltState;
@@ -779,7 +780,7 @@ public class SaltSSHService {
      * @return list of error messages or empty if no error
      */
     public Optional<List<String>> cleanupSSHMinion(MinionServer minion, int timeout) {
-        CompletableFuture timeoutAfter = SaltService.INSTANCE.failAfter(timeout);
+        CompletableFuture timeoutAfter = FutureUtils.failAfter(timeout);
         try {
             Map<String, Object> pillarData = new HashMap<>();
             if (!minion.getServerPaths().isEmpty()) {
@@ -964,7 +965,7 @@ public class SaltSSHService {
     public void cleanPendingActionChainAsync(MinionServer minion) {
         LOG.warn("Cleaning up pending action chain execution on ssh minion " + minion.getMinionId());
         CompletableFuture<GenericError> cancel =
-                SaltService.INSTANCE.failAfter(ConfigDefaults.get().getSaltSSHConnectTimeout());
+                FutureUtils.failAfter(ConfigDefaults.get().getSaltSSHConnectTimeout());
         Map<String, CompletionStage<Result<Map<String, Boolean>>>> completionStages =
                 callAsyncSSH(MgrActionChains.clean(), new MinionList(minion.getMinionId()), cancel);
         completionStages.forEach((minionId, future) ->
