@@ -110,7 +110,4 @@ public interface SystemQuery {
 
     @Deprecated
     Optional<Map<String, State.ApplyResult>> applyState(String minionId, String state);
-
-    @Deprecated
-    <T> CompletableFuture<T> failAfter(int seconds);
 }
