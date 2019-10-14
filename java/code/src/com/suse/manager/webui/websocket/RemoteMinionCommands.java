@@ -24,6 +24,7 @@ import com.redhat.rhn.domain.session.WebSessionFactory;
 import com.redhat.rhn.frontend.events.TransactionHelper;
 import com.redhat.rhn.frontend.servlets.LocalizedEnvironmentFilter;
 import com.redhat.rhn.manager.system.SystemManager;
+import com.suse.manager.webui.services.FutureUtils;
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.websocket.json.AsyncJobStartEventDto;
 import com.suse.manager.webui.websocket.json.ExecuteMinionActionDto;
@@ -135,7 +136,7 @@ public class RemoteMinionCommands {
                         .map(MinionServer::getMinionId)
                         .collect(Collectors.toList());
 
-                this.failAfter = SaltService.INSTANCE.failAfter(timeOut);
+                this.failAfter = FutureUtils.failAfter(timeOut);
 
                 String target = StringUtils.trim(msg.getTarget());
 
@@ -252,7 +253,7 @@ public class RemoteMinionCommands {
                             "ERR_TARGET_NO_MATCH", ""));
                     return;
                 }
-                this.failAfter = SaltService.INSTANCE.failAfter(timeOut);
+                this.failAfter = FutureUtils.failAfter(timeOut);
                 Map<String, CompletionStage<Result<String>>> res;
                 try {
                     res = SaltService.INSTANCE
