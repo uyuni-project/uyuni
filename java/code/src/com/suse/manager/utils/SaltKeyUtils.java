@@ -19,6 +19,7 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.xmlrpc.PermissionCheckFailureException;
 
 import com.suse.manager.webui.services.impl.SaltService;
+import com.suse.manager.webui.services.impl.SystemQuery;
 import com.suse.salt.netapi.calls.wheel.Key;
 
 import java.util.stream.Stream;
@@ -28,7 +29,7 @@ import java.util.stream.Stream;
  */
 public class SaltKeyUtils {
 
-    private static final SaltService SALT_SERVICE = SaltService.INSTANCE;
+    private static final SystemQuery SALT_SERVICE = SaltService.INSTANCE;
 
     private SaltKeyUtils() { }
 

@@ -27,6 +27,7 @@ import com.suse.manager.utils.SaltUtils;
 import com.suse.manager.webui.services.SaltServerActionService;
 import com.suse.manager.webui.services.impl.SaltSSHService;
 import com.suse.manager.webui.services.impl.SaltService;
+import com.suse.manager.webui.services.impl.SystemQuery;
 import com.suse.manager.webui.utils.salt.MgrActionChains;
 import com.suse.manager.webui.utils.salt.custom.SystemInfo;
 import com.suse.salt.netapi.calls.LocalCall;
@@ -55,7 +56,7 @@ public class SSHPushWorkerSalt implements QueueWorker {
     private SystemSummary system;
     private TaskQueue parentQueue;
 
-    private SaltService saltService;
+    private SystemQuery saltService;
     private SaltSSHService saltSSHService;
     private SaltServerActionService saltServerActionService;
 

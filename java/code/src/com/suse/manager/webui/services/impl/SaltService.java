@@ -112,14 +112,14 @@ import java.util.stream.Stream;
 /**
  * Singleton class acting as a service layer for accessing the salt API.
  */
-public class SaltService {
+public class SaltService implements SystemQuery {
 
     private final Batch defaultBatch;
 
     /**
      * Singleton instance of this class
      */
-    public static final SaltService INSTANCE = new SaltService();
+    public static final SystemQuery INSTANCE = new SaltService();
 
     // Logger
     private static final Logger LOG = Logger.getLogger(SaltService.class);
