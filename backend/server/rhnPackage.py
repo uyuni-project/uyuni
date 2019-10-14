@@ -42,7 +42,7 @@ def get_package_path(server_id, pkg_spec, channel):
         pkg.insert(1, None)
     else:
         if "/" in pkg_spec:
-            checksum, pkg_spec = pkg_spec.split('/', 1)
+            org, checksum, pkg_spec = pkg_spec.split('/', 2)
         pkg = parseRPMFilename(pkg_spec)
         if pkg is None:
             log_debug(4, "Error", "Requested weird package", pkg_spec)

@@ -1,5 +1,6 @@
 /**
  * Copyright (c) 2009--2015 Red Hat, Inc.
+ * Copyright (c) 2019 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -216,7 +217,8 @@ public class PrimaryXmlWriter extends RepomdWriter {
         String pkgFile = sanitize(pkgId, getProxyFriendlyFilename(pkgDto));
 
         attr.clear();
-        attr.addAttribute("href", "getPackage/" + sanitize(pkgId, pkgDto.getChecksum()) + "/" + pkgFile);
+        attr.addAttribute("href", "getPackage/" + pkgDto.getOrgIdAsString() + "/" +
+                sanitize(pkgId, pkgDto.getChecksum()) + "/" + pkgFile);
         localHandler.startElement("location", attr);
         localHandler.endElement("location");
     }

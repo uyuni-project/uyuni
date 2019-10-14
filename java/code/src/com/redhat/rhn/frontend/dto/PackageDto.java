@@ -35,6 +35,7 @@ import java.util.TimeZone;
 public class PackageDto extends BaseDto {
 
     private Long id;
+    private Long orgId;
     private String name;
     private String version;
     private String release;
@@ -80,6 +81,27 @@ public class PackageDto extends BaseDto {
      */
     public void setId(Long idIn) {
         this.id = idIn;
+    }
+
+    /**
+     * @return the orgId as string
+     */
+    public String getOrgIdAsString() {
+        return orgId == null ? "NULL" : orgId.toString();
+    }
+
+    /**
+     * @return the orgId
+     */
+    public Long getOrgId() {
+        return orgId;
+    }
+
+    /**
+     * @param orgIdIn the org id to set
+     */
+    public void setOrgId(Long orgIdIn) {
+        this.orgId = orgIdIn;
     }
 
     /**
