@@ -33,6 +33,7 @@ import com.redhat.rhn.frontend.xmlrpc.TaskomaticApiException;
 import com.redhat.rhn.frontend.xmlrpc.configchannel.ConfigChannelHandler;
 import com.redhat.rhn.manager.action.ActionChainManager;
 import com.redhat.rhn.manager.action.ActionManager;
+import org.apache.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.Base64;
@@ -49,6 +50,8 @@ import java.util.stream.Collectors;
  * @xmlrpc.doc Provides the namespace for the Action Chain methods.
  */
 public class ActionChainHandler extends BaseHandler {
+
+    private static Logger log = Logger.getLogger(ActionChainHandler.class);
 
     private final ActionChainRPCCommon acUtil;
 
@@ -267,10 +270,23 @@ public class ActionChainHandler extends BaseHandler {
             throw new InvalidParameterException("No specified Erratas.");
         }
 
-        return ActionChainManager.scheduleErrataUpdate(
-                loggedInUser, this.acUtil.getServerById(serverId, loggedInUser), errataIds,
-                new Date(), this.acUtil.getActionChainByLabel(loggedInUser, chainLabel)
-        ).getId().intValue();
+        List<Long> actionIds = null;
+        try {
+            actionIds = ActionChainManager.scheduleErrataUpdate(loggedInUser,
+                    this.acUtil.getServerById(serverId, loggedInUser),
+                    errataIds, new Date(), this.acUtil.getActionChainByLabel(loggedInUser, chainLabel));
+        }
+        catch (com.redhat.rhn.taskomatic.TaskomaticApiException e) {
+            // this err should never be thrown
+            log.error("Taskomatic exception", e);
+            throw new TaskomaticApiException("Error scheduling staging jobs with Taskomatic.");
+        }
+
+        if (actionIds.isEmpty()) {
+            throw new NoSuchActionException("No actions created for applying errata.");
+        }
+
+        return actionIds.get(0).intValue();
     }
 
     /**
