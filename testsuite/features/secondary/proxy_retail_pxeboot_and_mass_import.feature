@@ -470,7 +470,7 @@ Feature: PXE boot a Retail terminal
   Scenario: Cleanup: delete all imported Retail terminals
     Given the retail configuration file name is "massive-import-terminals.yml"
     When I am on the Systems page
-    When I delete all the terminals imported
+    And I delete all the terminals imported
     Then I should not see any terminals imported from the configuration file
 
 @proxy
