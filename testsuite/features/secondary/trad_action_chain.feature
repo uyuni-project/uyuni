@@ -258,4 +258,5 @@ Feature: Action chain on traditional clients
     When I run "rm -f /tmp/action_chain.log" on "sle-client" without error control
 
   Scenario: Cleanup: remove remaining systems from SSM
-    When I follow "Clear"
+    When I am authorized as "admin" with password "admin"
+    And I follow "Clear"
