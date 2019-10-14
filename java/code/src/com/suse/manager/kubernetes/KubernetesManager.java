@@ -101,7 +101,7 @@ public class KubernetesManager {
                         .findFirst();
 
                 if (kubeconfig.isPresent() && context.isPresent()) {
-                    Optional<MgrK8sRunner.ContainersList> containers =
+                    Optional<List<MgrK8sRunner.Container>> containers =
                             saltService.getAllContainers(kubeconfig.get(), context.get());
 
                     if (!containers.isPresent()) {
@@ -111,7 +111,7 @@ public class KubernetesManager {
                     }
 
                     // Loop through 'running' containers (with container id present)
-                    containers.get().getContainers().stream()
+                    containers.get().stream()
                             .filter(c -> c.getContainerId().isPresent()).forEach(container -> {
                         String imgDigest = container.getImageId();
                         if (imgDigest.startsWith(DOCKER_PULLABLE)) {
