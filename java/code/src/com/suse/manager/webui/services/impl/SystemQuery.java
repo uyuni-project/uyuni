@@ -77,7 +77,7 @@ public interface SystemQuery {
         String command,
         String outputfile);
 
-    Optional<MgrK8sRunner.ContainersList> getAllContainers(String kubeconfig, String context);
+    Optional<List<MgrK8sRunner.Container>> getAllContainers(String kubeconfig, String context);
 
     Optional<List<String>> cleanupMinion(MinionServer minion, int timeout);
 
