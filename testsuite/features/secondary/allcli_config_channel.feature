@@ -253,4 +253,5 @@ Feature: Management of configuration of all types of clients in a single channel
     And I destroy "/etc/s-mgr" directory on "sle-minion"
 
   Scenario: Cleanup: remove remaining systems from SSM
-    When I follow "Clear"
+    When I am authorized as "admin" with password "admin"
+    And I follow "Clear"
