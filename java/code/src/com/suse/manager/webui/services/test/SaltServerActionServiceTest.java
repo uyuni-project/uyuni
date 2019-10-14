@@ -461,13 +461,6 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
 
         context().checking(new Expectations() { {
             allowing(taskomaticMock).scheduleActionChainExecution(with(any(ActionChain.class)));
-            allowing(saltServiceMock).callAsync(with(any(LocalCall.class)), with(any(Target.class)));
-            will(returnValue(new LocalAsyncResult() {
-                @Override
-                public List<String> getMinions() {
-                    return Collections.emptyList(); // results are not important for this test
-                }
-            }));
         } });
 
         ActionChainFactory.schedule(actionChain, earliestAction);

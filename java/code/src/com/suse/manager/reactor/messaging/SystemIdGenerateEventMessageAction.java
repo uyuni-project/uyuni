@@ -50,10 +50,7 @@ public class SystemIdGenerateEventMessageAction implements MessageAction {
         String minionId = ((SystemIdGenerateEventMessage) msg).getMinionId();
         MinionServerFactory.findByMinionId(minionId).ifPresent(minion -> {
             try {
-                ClientCertificate cert = SystemManager.createClientCertificate(minion);
-                Map<String, Object> data = new HashMap<>();
-                data.put("data", cert.toString());
-                SaltService.INSTANCE.callAsync(Event.fire(data, EVENT_TAG), new MinionList(minionId));
+                SaltService.INSTANCE.notifySystemIdGenerated(minion);
             }
             catch (InstantiationException e) {
                 LOG.warn(String.format("Unable to generate certificate: : %s", minionId));
