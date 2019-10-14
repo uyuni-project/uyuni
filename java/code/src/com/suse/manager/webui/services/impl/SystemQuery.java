@@ -82,6 +82,8 @@ public interface SystemQuery {
 
     Optional<List<String>> cleanupMinion(MinionServer minion, int timeout);
 
+    void notifySystemIdGenerated(MinionServer minion) throws InstantiationException, SaltException;
+
     @Deprecated
     <R> Optional<R> callSync(LocalCall<R> call, String minionId);
     @Deprecated
@@ -89,8 +91,6 @@ public interface SystemQuery {
     @Deprecated
     <T> Optional<LocalAsyncResult<T>> callAsync(LocalCall<T> callIn, Target<?> target,
                                                        Optional<ScheduleMetadata> metadataIn) throws SaltException;
-    @Deprecated
-    <T> Optional<LocalAsyncResult<T>> callAsync(LocalCall<T> callIn, Target<?> target) throws SaltException;
 
     Optional<MgrUtilRunner.ExecResult> collectKiwiImage(MinionServer minion, String filepath,
                                                                String imageStore);
