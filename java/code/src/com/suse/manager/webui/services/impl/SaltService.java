@@ -15,12 +15,14 @@
 package com.suse.manager.webui.services.impl;
 
 import com.google.gson.reflect.TypeToken;
+import com.redhat.rhn.common.client.ClientCertificate;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.manager.audit.scap.file.ScapFileManager;
 
+import com.redhat.rhn.manager.system.SystemManager;
 import com.suse.manager.reactor.PGEventStream;
 import com.suse.manager.reactor.SaltReactor;
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
@@ -39,14 +41,8 @@ import com.suse.salt.netapi.calls.LocalCall;
 import com.suse.salt.netapi.calls.RunnerCall;
 import com.suse.salt.netapi.calls.WheelCall;
 import com.suse.salt.netapi.calls.WheelResult;
-import com.suse.salt.netapi.calls.modules.Cmd;
-import com.suse.salt.netapi.calls.modules.Config;
-import com.suse.salt.netapi.calls.modules.Grains;
-import com.suse.salt.netapi.calls.modules.Match;
-import com.suse.salt.netapi.calls.modules.SaltUtil;
+import com.suse.salt.netapi.calls.modules.*;
 import com.suse.salt.netapi.calls.modules.State.ApplyResult;
-import com.suse.salt.netapi.calls.modules.Status;
-import com.suse.salt.netapi.calls.modules.Test;
 import com.suse.salt.netapi.calls.runner.Jobs;
 import com.suse.salt.netapi.calls.wheel.Key;
 import com.suse.salt.netapi.client.SaltClient;
@@ -826,7 +822,7 @@ public class SaltService implements SystemQuery {
      * @return the LocalAsyncResult of the call
      * @throws SaltException in case of an error executing the job with Salt
      */
-    public <T> Optional<LocalAsyncResult<T>> callAsync(LocalCall<T> call, Target<?> target)
+    private <T> Optional<LocalAsyncResult<T>> callAsync(LocalCall<T> call, Target<?> target)
             throws SaltException {
         return callAsync(call, target, Optional.empty());
     }
@@ -1159,6 +1155,17 @@ public class SaltService implements SystemQuery {
                     }
                 )
         ).map(s -> s.getContainers());
+    }
+
+    @Override
+    public void notifySystemIdGenerated(MinionServer minion) throws InstantiationException, SaltException {
+        ClientCertificate cert = SystemManager.createClientCertificate(minion);
+        Map<String, Object> data = new HashMap<>();
+        data.put("data", cert.toString());
+        callAsync(
+                Event.fire(data, "suse/systemid/generated"),
+                new MinionList(minion.getMinionId())
+        );
     }
 
     /**
