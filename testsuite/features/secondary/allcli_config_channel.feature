@@ -219,6 +219,7 @@ Feature: Management of configuration of all types of clients in a single channel
   Scenario: Re-add systems via SSM
     Given I am authorized as "admin" with password "admin"
     When I am on the System Overview page
+    And I follow "Clear"
     And I check the "sle-client" client
     And I check the "sle-minion" client
     And I am on System Set Manager Overview
@@ -250,3 +251,6 @@ Feature: Management of configuration of all types of clients in a single channel
   Scenario: Cleanup: delete configuration files on remaining systems
     When I destroy "/etc/s-mgr" directory on "sle-client"
     And I destroy "/etc/s-mgr" directory on "sle-minion"
+
+  Scenario: Cleanup: remove remaining systems from SSM
+    When I follow "Clear"
