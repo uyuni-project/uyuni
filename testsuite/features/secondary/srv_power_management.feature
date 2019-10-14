@@ -81,7 +81,9 @@ Feature: Power management
     And I should see a "Power On" button
     And I should see a "Power Off" button
     And I should see a "Reboot" button
-    And I follow "Clear"
 
   Scenario: Cleanup: don't fake an IPMI host
     Given the server stops mocking an IPMI host
+
+  Scenario: Cleanup: remove remaining systems from SSM
+    When I follow "Clear"

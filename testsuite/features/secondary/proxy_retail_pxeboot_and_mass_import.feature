@@ -519,3 +519,8 @@ Feature: PXE boot a Retail terminal
     When I follow "States" in the content area
     And I click on "Apply Highstate"
     And I wait until event "Apply highstate scheduled by admin" is completed
+
+@proxy
+@private_net
+  Scenario: Cleanup: remove remaining systems from SSM
+    When I follow "Clear"

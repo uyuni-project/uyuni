@@ -285,3 +285,6 @@ Feature: Configuration management of traditional clients
 
   Scenario: Cleanup: delete configuration file on client
     When I remove "/etc/mgr-test-file.cnf" from "sle-client"
+
+  Scenario: Cleanup: remove remaining systems from SSM
+    When I follow "Clear"
