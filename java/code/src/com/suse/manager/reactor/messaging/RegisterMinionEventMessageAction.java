@@ -55,6 +55,7 @@ import com.suse.manager.reactor.utils.ValueMap;
 import com.suse.manager.webui.services.SaltStateGeneratorService;
 import com.suse.manager.webui.services.impl.MinionPendingRegistrationService;
 import com.suse.manager.webui.services.impl.SaltService;
+import com.suse.manager.webui.services.impl.SystemQuery;
 import com.suse.salt.netapi.datatypes.target.MinionList;
 import com.suse.salt.netapi.errors.SaltError;
 import com.suse.salt.netapi.exception.SaltException;
@@ -89,7 +90,7 @@ public class RegisterMinionEventMessageAction implements MessageAction {
             RegisterMinionEventMessageAction.class);
 
     // Reference to the SaltService instance
-    private final SaltService SALT_SERVICE;
+    private final SystemQuery SALT_SERVICE;
 
     private static final String FQDN = "fqdn";
     private static final String TERMINALS_GROUP_NAME = "TERMINALS";
@@ -106,7 +107,7 @@ public class RegisterMinionEventMessageAction implements MessageAction {
      *
      * @param saltService the salt service to use
      */
-    public RegisterMinionEventMessageAction(SaltService saltService) {
+    public RegisterMinionEventMessageAction(SystemQuery saltService) {
         SALT_SERVICE = saltService;
     }
 

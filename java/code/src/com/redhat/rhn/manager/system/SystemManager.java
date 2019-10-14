@@ -95,6 +95,7 @@ import com.suse.manager.reactor.messaging.ChannelsChangedEventMessage;
 import com.suse.manager.webui.services.SaltStateGeneratorService;
 import com.suse.manager.webui.services.impl.SaltSSHService;
 import com.suse.manager.webui.services.impl.SaltService;
+import com.suse.manager.webui.services.impl.SystemQuery;
 import com.suse.utils.Opt;
 import com.suse.manager.webui.utils.salt.State;
 
@@ -135,7 +136,7 @@ import static java.util.Optional.ofNullable;
 public class SystemManager extends BaseManager {
 
     private static Logger log = Logger.getLogger(SystemManager.class);
-    private static SaltService saltServiceInstance = SaltService.INSTANCE;
+    private static SystemQuery saltServiceInstance = SaltService.INSTANCE;
 
     public static final String CAP_CONFIGFILES_UPLOAD = "configfiles.upload";
     public static final String CAP_CONFIGFILES_DIFF = "configfiles.diff";

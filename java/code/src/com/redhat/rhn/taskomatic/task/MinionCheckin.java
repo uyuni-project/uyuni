@@ -18,6 +18,7 @@ import com.redhat.rhn.taskomatic.task.checkin.CheckinCandidatesResolver;
 import com.redhat.rhn.taskomatic.task.checkin.SystemSummary;
 
 import com.suse.manager.webui.services.impl.SaltService;
+import com.suse.manager.webui.services.impl.SystemQuery;
 import com.suse.salt.netapi.datatypes.target.MinionList;
 import com.suse.salt.netapi.exception.SaltException;
 
@@ -32,7 +33,7 @@ import org.quartz.JobExecutionContext;
  */
 public class MinionCheckin extends RhnJavaJob {
 
-    private SaltService saltService = SaltService.INSTANCE;
+    private SystemQuery saltService = SaltService.INSTANCE;
 
     /**
      * @param context the job execution context

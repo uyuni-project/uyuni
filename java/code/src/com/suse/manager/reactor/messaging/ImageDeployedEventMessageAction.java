@@ -24,6 +24,7 @@ import com.redhat.rhn.domain.token.ActivationKey;
 import com.redhat.rhn.domain.token.ActivationKeyFactory;
 import com.suse.manager.reactor.utils.ValueMap;
 import com.suse.manager.webui.services.impl.SaltService;
+import com.suse.manager.webui.services.impl.SystemQuery;
 import com.suse.manager.webui.utils.salt.ImageDeployedEvent;
 import org.apache.log4j.Logger;
 
@@ -34,7 +35,7 @@ import java.util.Optional;
  */
 public class ImageDeployedEventMessageAction implements MessageAction {
 
-    private final SaltService saltService;
+    private final SystemQuery saltService;
 
     private static final Logger LOG = Logger.getLogger(ImageDeployedEventMessageAction.class);
 
@@ -50,7 +51,7 @@ public class ImageDeployedEventMessageAction implements MessageAction {
      *
      * @param saltServiceIn the salt service instance
      */
-    public ImageDeployedEventMessageAction(SaltService saltServiceIn) {
+    public ImageDeployedEventMessageAction(SystemQuery saltServiceIn) {
         this.saltService = saltServiceIn;
     }
 

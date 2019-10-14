@@ -22,6 +22,7 @@ import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
 import com.suse.manager.webui.services.impl.MinionPendingRegistrationService;
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.services.impl.SaltService.KeyStatus;
+import com.suse.manager.webui.services.impl.SystemQuery;
 import com.suse.manager.webui.utils.InputValidator;
 import com.suse.manager.webui.utils.gson.BootstrapParameters;
 import com.suse.manager.webui.utils.gson.BootstrapHostsJson;
@@ -46,7 +47,7 @@ public class RegularMinionBootstrapper extends AbstractMinionBootstrapper {
      * getInstance.
      * @param saltService salt service to use
      */
-    public RegularMinionBootstrapper(SaltService saltService) {
+    public RegularMinionBootstrapper(SystemQuery saltService) {
         super(saltService);
     }
 
