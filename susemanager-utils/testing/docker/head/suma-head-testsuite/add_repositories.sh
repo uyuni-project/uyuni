@@ -1,4 +1,4 @@
 #!/bin/bash
 set -e
 
-zypper ar -f http://download.suse.de/ibs/Devel:/Galaxy:/BuildRepo/SLE_12_SP2/ "buildrepo"
+zypper ar -f https://download.opensuse.org/repositories/systemsmanagement:/Uyuni:/Test-Packages:/Pool/rpm/ "buildrepo"
