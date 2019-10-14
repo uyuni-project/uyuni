@@ -1127,7 +1127,7 @@ public class SaltService implements SystemQuery {
      * @param context kubeconfig context to use
      * @return a list of containers
      */
-    public Optional<MgrK8sRunner.ContainersList> getAllContainers(String kubeconfig,
+    public Optional<List<MgrK8sRunner.Container>> getAllContainers(String kubeconfig,
                                                         String context) {
         RunnerCall<MgrK8sRunner.ContainersList> call =
                 MgrK8sRunner.getAllContainers(kubeconfig, context);
@@ -1158,7 +1158,7 @@ public class SaltService implements SystemQuery {
                         throw new NoSuchElementException();
                     }
                 )
-        );
+        ).map(s -> s.getContainers());
     }
 
     /**
