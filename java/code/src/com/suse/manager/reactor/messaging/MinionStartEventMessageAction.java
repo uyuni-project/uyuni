@@ -19,6 +19,7 @@ import com.redhat.rhn.common.messaging.MessageAction;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 
 import com.suse.manager.webui.services.impl.SaltService;
+import com.suse.manager.webui.services.impl.SystemQuery;
 import com.suse.salt.netapi.datatypes.target.MinionList;
 import org.apache.log4j.Logger;
 
@@ -32,7 +33,7 @@ public class MinionStartEventMessageAction implements MessageAction {
     private static final Logger LOG = Logger.getLogger(MinionStartEventMessageAction.class);
 
     // Reference to the SaltService instance
-    private final SaltService SALT_SERVICE;
+    private final SystemQuery SALT_SERVICE;
 
     /**
      * Default constructor.
@@ -46,7 +47,7 @@ public class MinionStartEventMessageAction implements MessageAction {
      *
      * @param saltService the salt service to use
      */
-    public MinionStartEventMessageAction(SaltService saltService) {
+    public MinionStartEventMessageAction(SystemQuery saltService) {
         SALT_SERVICE = saltService;
     }
 

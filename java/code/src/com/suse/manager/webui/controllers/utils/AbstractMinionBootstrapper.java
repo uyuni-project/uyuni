@@ -26,6 +26,7 @@ import com.suse.manager.utils.SaltUtils;
 import com.suse.manager.webui.services.impl.SaltSSHService;
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.services.impl.SaltService.KeyStatus;
+import com.suse.manager.webui.services.impl.SystemQuery;
 import com.suse.manager.webui.utils.gson.BootstrapParameters;
 import com.suse.manager.webui.utils.gson.BootstrapHostsJson;
 import com.suse.salt.netapi.calls.modules.State;
@@ -52,7 +53,7 @@ import static com.suse.manager.webui.services.SaltConstants.SALT_SSH_DIR_PATH;
  */
 public abstract class AbstractMinionBootstrapper {
 
-    protected final SaltService saltService;
+    protected final SystemQuery saltService;
 
     private static final Logger LOG = Logger.getLogger(AbstractMinionBootstrapper.class);
 
@@ -60,7 +61,7 @@ public abstract class AbstractMinionBootstrapper {
      * Constructor
      * @param saltServiceIn salt service
      */
-    protected AbstractMinionBootstrapper(SaltService saltServiceIn) {
+    protected AbstractMinionBootstrapper(SystemQuery saltServiceIn) {
         this.saltService = saltServiceIn;
     }
 

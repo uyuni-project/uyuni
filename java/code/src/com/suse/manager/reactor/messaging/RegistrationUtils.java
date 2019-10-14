@@ -50,8 +50,8 @@ import com.redhat.rhn.taskomatic.TaskomaticApiException;
 import com.suse.manager.reactor.utils.RhelUtils;
 import com.suse.manager.reactor.utils.ValueMap;
 import com.suse.manager.webui.controllers.StatesAPI;
-import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.services.pillar.MinionPillarManager;
+import com.suse.manager.webui.services.impl.SystemQuery;
 import com.suse.manager.webui.utils.salt.custom.PkgProfileUpdateSlsResult;
 import com.suse.salt.netapi.calls.modules.State;
 import com.suse.salt.netapi.calls.modules.Zypper;
@@ -222,8 +222,8 @@ public class RegistrationUtils {
      * @param activationKey the activation key
      * @param activationKeyLabel the activation key label
      */
-    public static void subscribeMinionToChannels(SaltService saltService, MinionServer server,
-            ValueMap grains, Optional<ActivationKey> activationKey, Optional<String> activationKeyLabel) {
+    public static void subscribeMinionToChannels(SystemQuery saltService, MinionServer server,
+                                                 ValueMap grains, Optional<ActivationKey> activationKey, Optional<String> activationKeyLabel) {
         String minionId = server.getMinionId();
 
         if (!activationKey.isPresent() && activationKeyLabel.isPresent()) {
@@ -315,7 +315,7 @@ public class RegistrationUtils {
         );
     }
 
-    private static Set<SUSEProduct> identifyProduct(SaltService saltService, MinionServer server, ValueMap grains) {
+    private static Set<SUSEProduct> identifyProduct(SystemQuery saltService, MinionServer server, ValueMap grains) {
         if ("suse".equalsIgnoreCase(grains.getValueAsString(OS))) {
             Optional<List<Zypper.ProductInfo>> productList =
                     saltService.callSync(Zypper.listProducts(false), server.getMinionId());
