@@ -266,8 +266,7 @@ Feature: PXE boot a Retail terminal
 @private_net
 @pxeboot_minion
   Scenario: Cleanup: remove a package on the new Retail terminal
-    Given I am on the Systems page
-    When I follow "pxeboot-minion" terminal
+    Given I am on the Systems overview page of this "pxeboot-minion"
     And I follow "Software" in the content area
     And I follow "List / Remove"
     And I enter "virgo" in the css "input[placeholder='Filter by Package Name: ']"
@@ -427,7 +426,8 @@ Feature: PXE boot a Retail terminal
 @private_net
 @pxeboot_minion
   Scenario: Check connection from bootstrapped terminal to proxy
-    Given I am on the Systems page
+    Given the retail configuration file name is "massive-import-terminals.yml"
+    When I am on the Systems page
     And I follow "pxeboot" terminal
     When I follow "Details" in the content area
     And I follow "Connection" in the content area
@@ -437,8 +437,9 @@ Feature: PXE boot a Retail terminal
 @private_net
 @pxeboot_minion
   Scenario: Install a package on the bootstrapped terminal
-    Given I am on the Systems page
-    When I follow "pxeboot" terminal
+    Given the retail configuration file name is "massive-import-terminals.yml"
+    When I am on the Systems page
+    And I follow "pxeboot" terminal
     And I follow "Software" in the content area
     And I follow "Install"
     And I check "virgo-dummy-2.0-1.1" in the list
@@ -451,8 +452,9 @@ Feature: PXE boot a Retail terminal
 @private_net
 @pxeboot_minion
   Scenario: Cleanup: remove a package on the bootstrapped terminal
-    Given I am on the Systems page
-    When I follow "pxeboot" terminal
+    Given the retail configuration file name is "massive-import-terminals.yml"
+    When I am on the Systems page
+    And I follow "pxeboot" terminal
     And I follow "Software" in the content area
     And I follow "List / Remove"
     And I enter "virgo" in the css "input[placeholder='Filter by Package Name: ']"
@@ -466,7 +468,8 @@ Feature: PXE boot a Retail terminal
 @proxy
 @private_net
   Scenario: Cleanup: delete all imported Retail terminals
-    Given I am on the Systems page
+    Given the retail configuration file name is "massive-import-terminals.yml"
+    When I am on the Systems page
     When I delete all the terminals imported
     Then I should not see any terminals imported from the configuration file
 
