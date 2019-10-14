@@ -86,4 +86,5 @@ Feature: Power management
     Given the server stops mocking an IPMI host
 
   Scenario: Cleanup: remove remaining systems from SSM
-    When I follow "Clear"
+    When I am authorized as "admin" with password "admin"
+    And I follow "Clear"

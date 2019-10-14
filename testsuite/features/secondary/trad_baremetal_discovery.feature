@@ -121,4 +121,5 @@ Feature: Bare metal discovery
     Then I should see "sle-client" in spacewalk
 
   Scenario: Cleanup: remove remaining systems from SSM
-    When I follow "Clear"
+    When I am authorized as "admin" with password "admin"
+    And I follow "Clear"

@@ -6,7 +6,7 @@ Feature: Chanel subscription via SSM
   Scenario: Change child channels for two systems subscribed to a base channel
     Given I am authorized as "admin" with password "admin"
     When I am on the System Overview page
-    When I follow "Clear"
+    And I follow "Clear"
     And I check the "sle-minion" client
     And I check the "sle-client" client
     And I should see "2" systems selected for SSM
@@ -215,4 +215,5 @@ Feature: Chanel subscription via SSM
     Then channel "Test-Channel-x86_64 Child Channel" should not be enabled on "sle-client"
 
   Scenario: Cleanup: remove remaining systems from SSM
-    When I follow "Clear"
+    When I am authorized as "admin" with password "admin"
+    And I follow "Clear"
