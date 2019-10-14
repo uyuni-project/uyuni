@@ -18,6 +18,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 import com.suse.manager.webui.services.impl.SaltService;
+import com.suse.manager.webui.services.impl.SystemQuery;
 import com.suse.salt.netapi.calls.LocalCall;
 
 import java.util.Arrays;
@@ -33,7 +34,7 @@ import java.util.stream.Collectors;
  */
 public class VirtManager {
 
-    private static SaltService saltService = SaltService.INSTANCE;
+    private static SystemQuery saltService = SaltService.INSTANCE;
 
     /**
      * Query virtual machine definition

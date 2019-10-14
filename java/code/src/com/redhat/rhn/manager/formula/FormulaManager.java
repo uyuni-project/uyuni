@@ -23,6 +23,7 @@ import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.ServerGroupFactory;
 import com.redhat.rhn.domain.user.User;
 import com.suse.manager.webui.services.impl.SaltService;
+import com.suse.manager.webui.services.impl.SystemQuery;
 import com.suse.salt.netapi.datatypes.target.MinionList;
 import com.suse.utils.Opt;
 
@@ -41,7 +42,7 @@ import java.util.stream.Collectors;
 public class FormulaManager {
 
     private static FormulaManager instance;
-    private SaltService saltService;
+    private SystemQuery saltService;
     private static final String DEFAULT_KEY = "$default";
     private static final String TYPE_KEY = "$type";
     private static final String EDIT_GROUP = "edit-group";

@@ -26,6 +26,7 @@ import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManagerFactory
 import com.suse.manager.model.kubernetes.ContainerInfo;
 import com.suse.manager.model.kubernetes.ImageUsage;
 import com.suse.manager.webui.services.impl.SaltService;
+import com.suse.manager.webui.services.impl.SystemQuery;
 import com.suse.manager.webui.services.impl.runner.MgrK8sRunner;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
@@ -48,7 +49,7 @@ public class KubernetesManager {
     private static final Logger LOG = Logger.getLogger(KubernetesManager.class);
     private static final String DOCKER_PULLABLE = "docker-pullable://";
 
-    private SaltService saltService;
+    private SystemQuery saltService;
 
     /**
      * No arg constructor.
@@ -196,7 +197,7 @@ public class KubernetesManager {
     /**
      * @param saltServiceIn to set
      */
-    public void setSaltService(SaltService saltServiceIn) {
+    public void setSaltService(SystemQuery saltServiceIn) {
         this.saltService = saltServiceIn;
     }
 }

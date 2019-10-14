@@ -48,7 +48,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
-
+import com.suse.manager.webui.services.impl.SystemQuery;
 import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
@@ -60,7 +60,7 @@ import spark.template.jade.JadeTemplateEngine;
 public class MinionController {
 
     // Reference to the SaltService instance
-    private static final SaltService SALT_SERVICE = SaltService.INSTANCE;
+    private static final SystemQuery SALT_SERVICE = SaltService.INSTANCE;
 
     private MinionController() { }
 
