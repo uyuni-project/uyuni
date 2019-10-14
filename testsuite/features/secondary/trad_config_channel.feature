@@ -287,4 +287,5 @@ Feature: Configuration management of traditional clients
     When I remove "/etc/mgr-test-file.cnf" from "sle-client"
 
   Scenario: Cleanup: remove remaining systems from SSM
-    When I follow "Clear"
+    When I am authorized as "admin" with password "admin"
+    And I follow "Clear"

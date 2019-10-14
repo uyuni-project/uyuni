@@ -112,4 +112,5 @@ Feature: CVE Audit
     And I run "rhn_check -vvv" on "sle-client" without error control
 
   Scenario: Cleanup: remove remaining systems from SSM
-    When I follow "Clear"
+    When I am authorized as "admin" with password "admin"
+    And I follow "Clear"
