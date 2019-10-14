@@ -297,4 +297,5 @@ Feature: Salt SSH action chain
     And I run "rm -f /tmp/action_chain_one_system_done" on "ssh-minion" without error control
 
   Scenario: Cleanup: remove remaining systems from SSM
-    When I follow "Clear"
+    When I am authorized as "admin" with password "admin"
+    And I follow "Clear"

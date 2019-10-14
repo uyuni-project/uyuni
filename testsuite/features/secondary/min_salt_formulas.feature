@@ -164,4 +164,5 @@ Feature: Use salt formulas
      And I manually uninstall the "locale" formula from the server
 
   Scenario: Cleanup: remove remaining systems from SSM
-     When I follow "Clear"
+     When I am authorized as "admin" with password "admin"
+     And I follow "Clear"
