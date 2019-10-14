@@ -44,6 +44,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Map;
 import java.util.Optional;
 
@@ -150,8 +151,7 @@ public class SSHPushWorkerSalt implements QueueWorker {
         try {
             // first check if there's any pending action chain execution on the minion
             // fetch the extra_filerefs and next_action_id
-            pendingResume = saltService.callSync(MgrActionChains.getPendingResume(),
-                    new MinionList(minion.getMinionId()));
+            pendingResume = saltService.getPendingResume(Collections.singletonList(minion.getMinionId()));
         }
         catch (SaltException e) {
             log.error("Could not retrive pending action chain executions for minion", e);

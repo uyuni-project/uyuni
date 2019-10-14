@@ -58,6 +58,7 @@ public interface SystemQuery {
     void refreshPillar(MinionList minionList);
     void syncGrains(MinionList minionList);
     void syncModules(MinionList minionList);
+    void syncAll(MinionList minionList);
 
     Optional<LocalAsyncResult<String>> checkIn(MinionList targetIn) throws SaltException;
     void updateSystemInfo(MinionList minionTarget);
@@ -84,13 +85,15 @@ public interface SystemQuery {
 
     void notifySystemIdGenerated(MinionServer minion) throws InstantiationException, SaltException;
 
+    Map<String, Result<Map<String, String>>> getPendingResume(List<String> minionIds) throws SaltException;
+    Map<String, Result<Object>> showHighstate(String minionId) throws SaltException;
+
     @Deprecated
     <R> Optional<R> callSync(LocalCall<R> call, String minionId);
     @Deprecated
-    <T> Map<String, Result<T>> callSync(LocalCall<T> callIn, MinionList target) throws SaltException;
-    @Deprecated
     <T> Optional<LocalAsyncResult<T>> callAsync(LocalCall<T> callIn, Target<?> target,
                                                        Optional<ScheduleMetadata> metadataIn) throws SaltException;
+    void deployChannels(List<String> minionIds) throws SaltException;
 
     Optional<MgrUtilRunner.ExecResult> collectKiwiImage(MinionServer minion, String filepath,
                                                                String imageStore);
