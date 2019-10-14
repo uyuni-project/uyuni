@@ -225,9 +225,7 @@ public class SSHPushWorkerSaltTest extends JMockBaseTestCaseWithUser {
         worker = successWorker();
 
         context().checking(new Expectations() {{
-            oneOf(saltServiceMock).callSync(
-                    with(any(LocalCall.class)),
-                    with(any(MinionList.class)));
+            oneOf(saltServiceMock).getPendingResume(with(any(List.class)));
 
             Map<String, Result<Map<String, String>>> result = new HashMap<>();
             Map<String, String> values = new HashMap<>();

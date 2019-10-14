@@ -69,9 +69,7 @@ public class TokenCleanup extends RhnJavaJob {
 
             List<String> changedMinionIds = changedMinions.map(m -> m.getMinionId()).collect(Collectors.toList());
             if (Config.get().getBoolean(ConfigDefaults.TOKEN_REFRESH_AUTO_DEPLOY)) {
-                SaltService.INSTANCE.callSync(
-                        State.apply(ApplyStatesEventMessage.CHANNELS),
-                        new MinionList(changedMinionIds));
+                SaltService.INSTANCE.deployChannels(changedMinionIds);
             }
             else {
                 log.warn("The following minions got channel tokens changed and" +
