@@ -1,3 +1,4 @@
+- Add FQDN resolver for spacewalk-manage-channel-lifecycle (bsc#1153578)
 - Fix typo in CentOS 7 Software Collection
 
 -------------------------------------------------------------------
