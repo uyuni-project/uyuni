@@ -15,14 +15,13 @@
 
 package com.redhat.rhn.manager.action.test;
 
-import static java.util.Collections.singleton;
 import static java.util.Collections.singletonList;
 
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionChain;
 import com.redhat.rhn.domain.action.ActionChainFactory;
 import com.redhat.rhn.domain.errata.Errata;
-import com.redhat.rhn.domain.errata.test.ErrataFactoryTest;
+import com.redhat.rhn.domain.errata.ErrataFactory;
 import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.rhnpackage.test.PackageTest;
 import com.redhat.rhn.domain.role.RoleFactory;
@@ -30,16 +29,17 @@ import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.test.ServerFactoryTest;
 import com.redhat.rhn.manager.action.ActionChainManager;
 import com.redhat.rhn.manager.action.ActionManager;
+import com.redhat.rhn.manager.errata.cache.test.ErrataCacheManagerTest;
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
-import com.redhat.rhn.testing.TestUtils;
 
+import com.redhat.rhn.testing.TestUtils;
 import org.jmock.lib.legacy.ClassImposteriser;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * Tests for {@link ActionChainManager}.
@@ -91,18 +91,23 @@ public class ActionChainManagerTest extends JMockBaseTestCaseWithUser {
     public void testScheduleErrataUpdates() throws Exception {
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
 
-        Server s = ServerFactoryTest.createTestServer(user, true);
+        Map<String, Object> info =
+                ErrataCacheManagerTest.createServerNeededCache(user,
+                        ErrataFactory.ERRATA_TYPE_BUG);
+        List<Integer> upgradePackages = new ArrayList<Integer>();
+        Server s = (Server) info.get("server");
+        Errata e = (Errata) info.get("errata");
 
-        Errata e = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
-
-        Set<Long> serverIds = singleton(s.getId());
         List<Integer> errataIds = singletonList(e.getId().intValue());
         String label = TestUtils.randomString();
         ActionChain actionChain = ActionChainFactory.createActionChain(label, user);
-        Set<Action> actions = ActionChainManager.scheduleErrataUpdates(user, serverIds,
+        List<Long> actions = ActionChainManager.scheduleErrataUpdate(user, s,
                 errataIds, new Date(), actionChain);
 
-        assertSame(actionChain.getEntries().iterator().next().getAction(),
+        assertEquals(1, actionChain.getEntries().size());
+
+        assertSame(actionChain.getEntries().iterator().next().getAction().getId(),
                 actions.iterator().next());
     }
+
 }

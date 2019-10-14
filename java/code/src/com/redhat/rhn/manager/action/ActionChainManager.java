@@ -30,7 +30,6 @@ import com.redhat.rhn.domain.action.salt.build.ImageBuildActionDetails;
 import com.redhat.rhn.domain.action.script.ScriptActionDetails;
 import com.redhat.rhn.domain.action.script.ScriptRunAction;
 import com.redhat.rhn.domain.channel.Channel;
-import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.image.ImageInfo;
 import com.redhat.rhn.domain.image.ImageInfoCustomDataValue;
 import com.redhat.rhn.domain.image.ImageInfoFactory;
@@ -48,6 +47,7 @@ import com.redhat.rhn.taskomatic.TaskomaticApiException;
 import com.suse.manager.utils.MinionServerUtils;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
@@ -511,45 +511,21 @@ public class ActionChainManager {
      * @param errataIds a list of erratas IDs
      * @param earliest the earliest execution date
      * @param actionChain the action chain
-     * @return scheduled actions
+     * @return list of scheduled action ids
+     * @throws TaskomaticApiException if there was a Taskomatic error
+     * (typically: Taskomatic is down)
      */
-    public static Action scheduleErrataUpdate(User user, Server server,
-            List<Integer> errataIds, Date earliest, ActionChain actionChain) {
-        Set<Long> serverIds = new HashSet<Long>();
-        serverIds.add(server.getId());
-        Set<Action> actions = scheduleErrataUpdates(user, serverIds, errataIds, earliest,
-                actionChain);
-        return actions.iterator().next();
-    }
+    public static List<Long> scheduleErrataUpdate(User user, Server server, List<Integer> errataIds,
+                                              Date earliest, ActionChain actionChain) throws TaskomaticApiException  {
 
-    /**
-     * Schedules one or more Errata updates on multiple servers.
-     * @param user the user scheduling actions
-     * @param serverIds the affected servers' IDs
-     * @param errataIds a list of erratas IDs
-     * @param earliest the earliest execution date
-     * @param actionChain the action chain
-     * @return scheduled actions
-     */
-    public static Set<Action> scheduleErrataUpdates(User user, Set<Long> serverIds,
-        List<Integer> errataIds, Date earliest, ActionChain actionChain) {
+        // This won't actually apply the errata because we're passing in an action chain
+        return ErrataManager.applyErrata(user,
+                errataIds.stream().map(Integer::longValue).collect(Collectors.toList()),
+                earliest,
+                actionChain,
+                Arrays.asList(server.getId())
+        );
 
-        Set<Action> actions = new HashSet<Action>();
-
-        for (Integer errataId : errataIds) {
-            Errata currErrata = ErrataManager.lookupErrata(Long.valueOf(errataId), user);
-            Action update = ActionManager.createErrataAction(user, currErrata);
-            ActionManager.storeAction(update);
-            int sortOrder = ActionChainFactory.getNextSortOrderValue(actionChain);
-
-            for (Long serverId : serverIds) {
-                ActionChainFactory.queueActionChainEntry(update, actionChain,
-                    serverId, sortOrder);
-            }
-            actions.add(update);
-        }
-
-        return actions;
     }
 
     /**

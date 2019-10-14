@@ -1922,7 +1922,8 @@ public class ErrataManager extends BaseManager {
            actionIds.add(action.getId());
         });
         //Taskomatic part is needed only for minionActions
-        if (!minionTaskoActions.isEmpty()) {
+        //and only if actions are not added to an action chain
+        if (actionChain == null && !minionTaskoActions.isEmpty()) {
             taskomaticApi.scheduleMinionActionExecutions(minionTaskoActions, false);
             MinionActionManager.scheduleStagingJobsForMinions(minionTaskoActions, user);
         }

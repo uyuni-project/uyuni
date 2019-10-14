@@ -47,6 +47,7 @@ import com.redhat.rhn.frontend.xmlrpc.NoSuchActionChainException;
 import com.redhat.rhn.frontend.xmlrpc.NoSuchActionException;
 import com.redhat.rhn.frontend.xmlrpc.chain.ActionChainHandler;
 import com.redhat.rhn.frontend.xmlrpc.test.BaseHandlerTestCase;
+import com.redhat.rhn.manager.errata.cache.ErrataCacheManager;
 import com.redhat.rhn.manager.errata.cache.test.ErrataCacheManagerTest;
 import com.redhat.rhn.manager.rhnpackage.PackageManager;
 import com.redhat.rhn.manager.system.SystemManager;
@@ -79,6 +80,7 @@ public class ActionChainHandlerTest extends BaseHandlerTestCase {
     private Package pkg;
     private Package channelPackage;
     private Errata errata;
+    private Errata errata2;
     private ActionChain actionChain;
     private static final String UNAUTHORIZED_EXCEPTION_EXPECTED =
             "Expected an exception of type " +
@@ -111,6 +113,8 @@ public class ActionChainHandlerTest extends BaseHandlerTestCase {
         // Add errata available to the installation
         this.errata = ErrataFactoryTest.createTestPublishedErrata(
                 this.admin.getOrg().getId());
+        this.errata2 = ErrataFactoryTest.createTestPublishedErrata(
+                this.admin.getOrg().getId());
 
         // Install one package on the server
         InstalledPackage ipkg = new InstalledPackage();
@@ -122,6 +126,10 @@ public class ActionChainHandlerTest extends BaseHandlerTestCase {
         serverPkgs.add(ipkg);
 
         ServerFactory.save(this.server);
+
+        ErrataCacheManager.insertNeededErrataCache(
+                this.server.getId(), this.errata.getId(), this.pkg.getId());
+
         this.server = ActionChainHandlerTest.reload(this.server);
         ach = new ActionChainHandler();
         actionChain = ActionChainFactory.createActionChain(CHAIN_LABEL, admin);
@@ -176,6 +184,7 @@ public class ActionChainHandlerTest extends BaseHandlerTestCase {
     public void testAcAddErrataUpdate() throws Exception {
         List<Integer> errataIds = new ArrayList<Integer>();
         errataIds.add(this.errata.getId().intValue());
+        errataIds.add(this.errata2.getId().intValue());
         assertEquals(true, this.ach.addErrataUpdate(this.admin,
                                                     this.server.getId().intValue(),
                                                     errataIds,
