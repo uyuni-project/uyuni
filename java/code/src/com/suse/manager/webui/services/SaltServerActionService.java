@@ -485,11 +485,10 @@ public class SaltServerActionService {
         // start the action chain synchronously
         try {
             // first check if there's an action chain with a reboot already executing
-            Map<String, Result<Map<String, String>>> pendingResumeConf = saltService.callSync(
-                    MgrActionChains.getPendingResume(),
-                    new MinionList(sshMinions.stream().map(minion -> minion.getMinionId())
-                            .collect(Collectors.toList())));
-
+            Map<String, Result<Map<String, String>>> pendingResumeConf = saltService.getPendingResume(
+                    sshMinions.stream().map(minion -> minion.getMinionId())
+                            .collect(Collectors.toList())
+            );
             List<MinionSummary> targetSSHMinions = sshMinions.stream()
                     .filter(sshMinion -> {
                         Optional<Map<String, String>> confValues = pendingResumeConf.get(sshMinion.getMinionId())
