@@ -41,6 +41,7 @@ import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
 import com.suse.manager.webui.services.impl.SaltSSHService;
 import com.suse.manager.webui.services.impl.SaltService;
+import com.suse.manager.webui.services.impl.SystemQuery;
 import com.suse.manager.webui.utils.salt.State;
 
 import org.apache.log4j.Logger;
@@ -63,7 +64,7 @@ public class SystemEntitler {
 
     public static final SystemEntitler INSTANCE = new SystemEntitler();
 
-    private SaltService saltService = SaltService.INSTANCE;
+    private SystemQuery saltService = SaltService.INSTANCE;
 
     /**
      * Checks whether or not a given server can be entitled with a specific entitlement

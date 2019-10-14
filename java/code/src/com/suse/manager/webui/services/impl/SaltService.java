@@ -33,6 +33,7 @@ import com.suse.manager.webui.services.impl.runner.MgrK8sRunner;
 import com.suse.manager.webui.services.impl.runner.MgrKiwiImageRunner;
 import com.suse.manager.webui.services.impl.runner.MgrUtilRunner;
 import com.suse.manager.webui.utils.gson.BootstrapParameters;
+import com.suse.manager.webui.utils.salt.MgrActionChains;
 import com.suse.manager.webui.utils.salt.State;
 import com.suse.manager.webui.utils.salt.custom.ScheduleMetadata;
 import com.suse.salt.netapi.AuthModule;
@@ -754,7 +755,7 @@ public class SaltService implements SystemQuery {
      * @return the result of the call
      * @throws SaltException in case of an error executing the job with Salt
      */
-    public <T> Map<String, Result<T>> callSync(LocalCall<T> callIn, MinionList target)
+    private <T> Map<String, Result<T>> callSync(LocalCall<T> callIn, MinionList target)
             throws SaltException {
         HashSet<String> uniqueMinionIds = new HashSet<>(target.getTarget());
         Map<Boolean, List<String>> minionPartitions =
@@ -785,6 +786,18 @@ public class SaltService implements SystemQuery {
         }
 
         return results;
+    }
+
+    @Override
+    public Map<String, Result<Object>> showHighstate(String minionId) throws SaltException {
+        return callSync(com.suse.salt.netapi.calls.modules.State.showHighstate(), new MinionList(minionId));
+    }
+
+    @Override
+    public Map<String, Result<Map<String, String>>> getPendingResume(List<String> minionIds) throws SaltException {
+        return callSync(
+                MgrActionChains.getPendingResume(),
+                new MinionList(minionIds));
     }
 
     /**
@@ -843,6 +856,13 @@ public class SaltService implements SystemQuery {
                 Opt.fold(metadataIn, () -> ScheduleMetadata.getDefaultMetadata(), Function.identity()).withBatchMode();
         LOG.debug("Local callAsync: " + SaltService.localCallToString(callIn));
         return adaptException(callIn.withMetadata(metadata).callAsync(SALT_CLIENT, target, PW_AUTH, defaultBatch));
+    }
+
+    @Override
+    public void deployChannels(List<String> minionIds) throws SaltException {
+        callSync(
+                com.suse.salt.netapi.calls.modules.State.apply(ApplyStatesEventMessage.CHANNELS),
+                new MinionList(minionIds));
     }
 
     /**
