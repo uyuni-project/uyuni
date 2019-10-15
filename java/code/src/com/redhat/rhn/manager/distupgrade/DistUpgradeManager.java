@@ -30,6 +30,7 @@ import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
 import java.util.stream.Collectors;
+import static java.util.stream.Collectors.toList;
 
 import com.redhat.rhn.common.util.RpmVersionComparator;
 import com.suse.utils.Lists;
@@ -309,7 +310,7 @@ public class DistUpgradeManager extends BaseManager {
                                 .map(pr -> {
                                     logger.warn("Mandatory channel not synced: " + pr.getChannelLabel());
                                     return pr.getChannelLabel();
-                                }).collect(Collectors.toList());
+                                }).collect(toList());
                         target.addMissingChannels(missing);
                     }
                 }
