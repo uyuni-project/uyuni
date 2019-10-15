@@ -526,14 +526,14 @@ end
 When(/^I set the activation key "([^"]*)" in the bootstrap script on the server$/) do |key|
   $server.run("sed -i '/^ACTIVATION_KEYS=/c\\ACTIVATION_KEYS=#{key}' /srv/www/htdocs/pub/bootstrap/bootstrap.sh")
   output, code = $server.run('cat /srv/www/htdocs/pub/bootstrap/bootstrap.sh')
-  assert(output.include?(key))
+  raise "Key: #{key} not included" unless output.include? key
 end
 
 When(/^I create bootstrap script and set the activation key "([^"]*)" in the bootstrap script on the proxy$/) do |key|
   $proxy.run('mgr-bootstrap')
   $proxy.run("sed -i '/^ACTIVATION_KEYS=/c\\ACTIVATION_KEYS=#{key}' /srv/www/htdocs/pub/bootstrap/bootstrap.sh")
   output, code = $proxy.run('cat /srv/www/htdocs/pub/bootstrap/bootstrap.sh')
-  assert(output.include?(key))
+  raise "Key: #{key} not included" unless output.include? key
 end
 
 When(/^I bootstrap pxeboot minion via bootstrap script on the proxy$/) do
