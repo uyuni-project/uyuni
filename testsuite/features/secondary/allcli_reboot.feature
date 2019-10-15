@@ -56,9 +56,5 @@ Feature: Reboot systems managed by SUSE Manager
     And I should see a "Reboot system" button
     When I click on "Reboot system"
     Then I should see a "Reboot scheduled for system" text
-    And I follow "scheduled" in the content area
-    And I follow first "System reboot scheduled by admin"
-    And I wait until I see "This action's status is: Picked Up." text, refreshing the page
-    And I wait and check that "ubuntu-minion" has rebooted
-    Then I wait until I see "This action's status is: Completed." text, refreshing the page
-    And I should see a "Reboot completed." text
+    When I wait at most 600 seconds until event "System reboot scheduled by admin" is completed
+    Then I should see a "Reboot completed." text
