@@ -318,7 +318,7 @@ public class RegistrationUtils {
     private static Set<SUSEProduct> identifyProduct(SystemQuery saltService, MinionServer server, ValueMap grains) {
         if ("suse".equalsIgnoreCase(grains.getValueAsString(OS))) {
             Optional<List<Zypper.ProductInfo>> productList =
-                    saltService.callSync(Zypper.listProducts(false), server.getMinionId());
+                    saltService.getProducts(server.getMinionId());
             return Opt.stream(productList).flatMap(pl -> pl.stream()
                     .flatMap(pi -> {
                         String osName = pi.getName().toLowerCase();

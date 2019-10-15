@@ -44,13 +44,7 @@ public class VirtManager {
      * @return the XML definition or an empty Optional
      */
     public static Optional<GuestDefinition> getGuestDefinition(String minionId, String domainName) {
-        Map<String, Object> args = new LinkedHashMap<>();
-        args.put("vm_", domainName);
-        LocalCall<String> call =
-                new LocalCall<>("virt.get_xml", Optional.empty(), Optional.of(args), new TypeToken<String>() { });
-
-        Optional<String> result = saltService.callSync(call, minionId);
-        return result.filter(s -> !s.startsWith("ERROR")).map(xml -> GuestDefinition.parse(xml));
+        return saltService.getGuestDefinition(minionId, domainName);
     }
 
     /**
@@ -60,11 +54,7 @@ public class VirtManager {
      * @return the output of the salt virt.all_capabilities call in JSON
      */
     public static Optional<Map<String, JsonElement>> getCapabilities(String minionId) {
-        LocalCall<Map<String, JsonElement>> call =
-                new LocalCall<>("virt.all_capabilities", Optional.empty(), Optional.empty(),
-                        new TypeToken<Map<String, JsonElement>>() { });
-
-        return saltService.callSync(call, minionId);
+        return saltService.getCapabilities(minionId);
     }
 
     /**
@@ -74,11 +64,7 @@ public class VirtManager {
      * @return the output of the salt virt.pool_capabilities call
      */
     public static Optional<PoolCapabilitiesJson> getPoolCapabilities(String minionId) {
-        LocalCall<PoolCapabilitiesJson> call =
-                new LocalCall<>("virt.pool_capabilities", Optional.empty(), Optional.empty(),
-                        new TypeToken<PoolCapabilitiesJson>() { });
-
-        return saltService.callSync(call, minionId);
+        return saltService.getPoolCapabilities(minionId);
     }
 
     /**
@@ -89,21 +75,7 @@ public class VirtManager {
      * @return the XML definition or an empty Optional
      */
     public static Optional<PoolDefinition> getPoolDefinition(String minionId, String poolName) {
-        Map<String, JsonObject> infos = getPools(minionId);
-
-        Map<String, Object> args = new LinkedHashMap<>();
-        args.put("name", poolName);
-        LocalCall<String> call =
-                new LocalCall<>("virt.pool_get_xml", Optional.empty(), Optional.of(args), new TypeToken<String>() { });
-
-        Optional<String> result = saltService.callSync(call, minionId);
-        return result.filter(s -> !s.startsWith("ERROR")).map(xml -> {
-            PoolDefinition pool = PoolDefinition.parse(xml);
-            if (pool != null) {
-                pool.setAutostart(infos.get(poolName).get("autostart").getAsInt() == 1);
-            }
-            return pool;
-        });
+        return saltService.getPoolDefinition(minionId, poolName);
     }
 
     /**
@@ -113,18 +85,7 @@ public class VirtManager {
      * @return a list of the network names
      */
     public static Map<String, JsonObject> getNetworks(String minionId) {
-        Map<String, Object> args = new LinkedHashMap<>();
-        LocalCall<Map<String, JsonElement>> call =
-                new LocalCall<>("virt.network_info", Optional.empty(), Optional.of(args),
-                        new TypeToken<Map<String, JsonElement>>() { });
-
-        Optional<Map<String, JsonElement>> nets = saltService.callSync(call, minionId);
-        Map<String, JsonElement> result = nets.orElse(new HashMap<String, JsonElement>());
-
-        // Workaround: Filter out the entries that don't match since we may get a retcode=0 one.
-        return result.entrySet().stream()
-                    .filter(entry -> entry.getValue().isJsonObject())
-                    .collect(Collectors.toMap(entry -> entry.getKey(), entry -> entry.getValue().getAsJsonObject()));
+        return saltService.getNetworks(minionId);
     }
 
     /**
@@ -134,18 +95,7 @@ public class VirtManager {
      * @return a map associating pool names with their informations as Json elements
      */
     public static Map<String, JsonObject> getPools(String minionId) {
-        Map<String, Object> args = new LinkedHashMap<>();
-        LocalCall<Map<String, JsonElement>> call =
-                new LocalCall<>("virt.pool_info", Optional.empty(), Optional.of(args),
-                        new TypeToken<Map<String, JsonElement>>() { });
-
-        Optional<Map<String, JsonElement>> pools = saltService.callSync(call, minionId);
-        Map<String, JsonElement> result = pools.orElse(new HashMap<String, JsonElement>());
-
-        // Workaround: Filter out the entries that don't match since we may get a retcode=0 one.
-        return result.entrySet().stream()
-                    .filter(entry -> entry.getValue().isJsonObject())
-                    .collect(Collectors.toMap(entry -> entry.getKey(), entry -> entry.getValue().getAsJsonObject()));
+        return saltService.getPools(minionId);
     }
 
     /**
@@ -155,13 +105,7 @@ public class VirtManager {
      * @return a map associating pool names with the list of volumes it contains mapped by their names
      */
     public static Map<String, Map<String, JsonObject>> getVolumes(String minionId) {
-        List<?> args = Arrays.asList(null, null);
-        LocalCall<Map<String, Map<String, JsonObject>>> call =
-                new LocalCall<>("virt.volume_infos", Optional.of(args), Optional.empty(),
-                        new TypeToken<Map<String, Map<String, JsonObject>>>() { });
-
-        Optional<Map<String, Map<String, JsonObject>>> volumes = saltService.callSync(call, minionId);
-        return volumes.orElse(new HashMap<String, Map<String, JsonObject>>());
+        return saltService.getVolumes(minionId);
     }
 
     /**
