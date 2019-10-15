@@ -531,6 +531,7 @@ class Package(IncompletePackage):
         # And initialize the specific ones
         for k in self.attributeTypes.keys():
             self[k] = None
+        self['extra_tags'] = None
 
 
 class SourcePackage(IncompletePackage):

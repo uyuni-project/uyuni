@@ -100,6 +100,8 @@ class debBinaryPackage(headerSource.rpmBinaryPackage):
         self._populateChangeLog(header)
         # Channels
         self._populateChannels(channels)
+        # populate extraTags from headers not in already mapped fields
+        self._populateExtraTags(header)
 
         self['source_rpm'] = None
 
@@ -175,3 +177,39 @@ class debBinaryPackage(headerSource.rpmBinaryPackage):
             obj.populate(dict)
             l.append(obj)
         self['channels'] = l
+
+    def _populateExtraTags(self, header):
+        already_processed = ['arch',
+                            'name',
+                            'summary',
+                            'epoch',
+                            'version',
+                            'release',
+                            'payload_size',
+                            'vendor',
+                            'package_group',
+                            'requires',
+                            'obsoletes',
+                            'predepends',
+                            'package',
+                            'architecture',
+                            'description',
+                            'maintainer',
+                            'section',
+                            'version',
+                            'depends',
+                            'provides',
+                            'conflicts',
+                            'replaces',
+                            'recommends',
+                            'suggests',
+                            'breaks',
+                            'pre-depends',
+                            'installed-size',
+                            ]
+        l = []
+        for k, v in header.items():
+            if k.lower() not in already_processed and v:
+                l.append({'name': k, 'value': v})
+
+        self['extra_tags'] = l

@@ -127,6 +127,9 @@ public class TaskConstants {
     public static final String TASK_QUERY_REPOMD_GENERATOR_CHANNEL_PACKAGES =
         "repomdgenerator_channel_packages";
 
+    public static final String TASK_QUERY_REPOMD_GENERATOR_CHANNEL_PACKAGES_BATCH =
+            "repomdgenerator_channel_package_batch";
+
     public static final String TASK_QUERY_REPOMD_GENERATOR_CAPABILITY_FILES =
         "repomdgenerator_capability_files";
 
@@ -206,6 +209,9 @@ public class TaskConstants {
 
     public static final String TASK_QUERY_DUPLICATED_VIRTUALINSTANCE_CLEANUP =
         "taskomatic_duplicated_virtualinstance_cleanup";
+
+    public static final String TASK_QUERY_CHANNEL_PACKAGE_EXTRATAGS =
+            "repomdgenerator_channel_package_extratags";
 
     private TaskConstants() { }
 }

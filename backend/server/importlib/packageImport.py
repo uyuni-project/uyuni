@@ -217,6 +217,7 @@ class PackageImport(ChannelPackageSubscription):
         self.changelog_data = {}
         self.suseProdfile_data = {}
         self.suseEula_data = {}
+        self.extraTags = {}
 
     def _skip_tag(self, package, tag):
         # Allow all tags in case of DEB packages
@@ -310,6 +311,10 @@ class PackageImport(ChannelPackageSubscription):
                 key = (eula['text'], eula['checksum'])
                 self.suseEula_data[key] = None
 
+        if package['extra_tags'] is not None:
+            for tag in package['extra_tags']:
+                self.extraTags[tag['name']] = None
+
     def fix(self):
         # If capabilities are available, process them
         if self.capabilities:
@@ -330,6 +335,7 @@ class PackageImport(ChannelPackageSubscription):
 
         self.backend.lookupSourceRPMs(self.sourceRPMs)
         self.backend.lookupPackageGroups(self.groups)
+        self.backend.processExtraTags(self.extraTags)
         # Postprocess the gathered information
         self.__postprocess()
 
@@ -408,6 +414,9 @@ class PackageImport(ChannelPackageSubscription):
         fileList = package['files']
         for f in fileList:
             f['checksum_id'] = self.checksums[(f['checksum_type'], f['checksum'])]
+        if package['extra_tags'] is not None:
+            for t in package['extra_tags']:
+                t['key_id'] = self.extraTags[t['name']]
 
     def _comparePackages(self, package1, package2):
         if (package1['checksum_type'] == package2['checksum_type']

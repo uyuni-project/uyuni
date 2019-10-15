@@ -406,6 +406,8 @@ make -f Makefile.backend all
 install -d $RPM_BUILD_ROOT%{rhnroot}
 install -d $RPM_BUILD_ROOT%{pythonrhnroot}
 install -d $RPM_BUILD_ROOT%{rhnconf}
+install -d $RPM_BUILD_ROOT/%{_prefix}/lib/susemanager/bin/
+
 make -f Makefile.backend install PREFIX=$RPM_BUILD_ROOT \
     MANDIR=%{_mandir} APACHECONFDIR=%{apacheconfd}
 
@@ -469,6 +471,7 @@ rm -f $RPM_BUILD_ROOT%{python3rhnroot}/common/__init__.py*
 %endif
 %endif
 
+install -m 755 satellite_tools/mgr-update-pkg-extra-tags $RPM_BUILD_ROOT%{_prefix}/lib/susemanager/bin/
 
 %check
 cp %{pythonrhnroot}/common/usix.py $RPM_BUILD_ROOT%{pythonrhnroot}/common
@@ -534,6 +537,8 @@ rm -f %{rhnconf}/rhnSecret.py*
 %doc LICENSE
 %dir %{pythonrhnroot}
 %dir %{pythonrhnroot}/common
+%dir %{_prefix}/lib/susemanager
+%dir %{_prefix}/lib/susemanager/bin
 %{pythonrhnroot}/common/suseLib.py*
 %{pythonrhnroot}/common/apache.py*
 %{pythonrhnroot}/common/byterange.py*
@@ -866,6 +871,7 @@ rm -f %{rhnconf}/rhnSecret.py*
 %attr(755,root,root) %{_bindir}/spacewalk-fips-tool
 %attr(755,root,root) %{_bindir}/mgr-sign-metadata
 %attr(755,root,root) %{_bindir}/mgr-sign-metadata-ctl
+%attr(755,root,root) %{_prefix}/lib/susemanager/bin/mgr-update-pkg-extra-tags
 %{pythonrhnroot}/satellite_tools/contentRemove.py*
 %{pythonrhnroot}/satellite_tools/SequenceServer.py*
 %{pythonrhnroot}/satellite_tools/messages.py*
