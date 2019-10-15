@@ -371,7 +371,7 @@ Then(/^I wait until mgr-sync refresh is finished$/) do
 end
 
 Then(/^I should see "(.*?)" in the output$/) do |arg1|
-  assert_includes(@command_output, arg1)
+  raise "Command Output #{@command_output} don't include #{arg1}" unless @command_output.include? arg1
 end
 
 Then(/^service "([^"]*)" is enabled on "([^"]*)"$/) do |service, host|
