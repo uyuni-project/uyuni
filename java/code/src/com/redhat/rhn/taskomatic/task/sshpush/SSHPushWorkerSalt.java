@@ -336,8 +336,8 @@ public class SSHPushWorkerSalt implements QueueWorker {
     private void performCheckin(MinionServer minion) {
         // Ping minion and perform check-in on success
         log.info("Performing a check-in for: " + minion.getMinionId());
-        Optional<Boolean> result = saltService
-                .callSync(Test.ping(), minion.getMinionId());
+        Optional<Boolean> result = saltService.ping(minion.getMinionId());
+
         result.ifPresent(res -> minion.updateServerInfo());
     }
 

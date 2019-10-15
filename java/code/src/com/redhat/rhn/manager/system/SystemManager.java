@@ -3772,9 +3772,6 @@ public class SystemManager extends BaseManager {
     }
 
     private static void updateLibvirtEngine(MinionServer minion) {
-        Map<String, Object> pillar = new HashMap<>();
-        pillar.put("virt_entitled", minion.hasVirtualizationEntitlement());
-        saltServiceInstance.callSync(State.apply(Collections.singletonList("virt.engine-events"),
-                                                 Optional.of(pillar)), minion.getMinionId());
+        saltServiceInstance.updateLibvirtEngine(minion);
     }
 }

@@ -1,7 +1,9 @@
 package com.suse.manager.webui.services.impl;
 
+import com.google.gson.JsonElement;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.suse.manager.reactor.SaltReactor;
+import com.suse.manager.virtualization.GuestDefinition;
 import com.suse.manager.webui.services.impl.runner.MgrK8sRunner;
 import com.suse.manager.webui.services.impl.runner.MgrUtilRunner;
 import com.suse.manager.webui.utils.gson.BootstrapParameters;
@@ -11,6 +13,7 @@ import com.suse.salt.netapi.calls.LocalCall;
 import com.suse.salt.netapi.calls.modules.Event;
 import com.suse.salt.netapi.calls.modules.SaltUtil;
 import com.suse.salt.netapi.calls.modules.State;
+import com.suse.salt.netapi.calls.modules.Zypper;
 import com.suse.salt.netapi.calls.runner.Jobs;
 import com.suse.salt.netapi.calls.wheel.Key;
 import com.suse.salt.netapi.datatypes.target.MinionList;
@@ -22,7 +25,6 @@ import com.suse.salt.netapi.results.Result;
 import com.suse.salt.netapi.results.SSHResult;
 
 import java.time.LocalDateTime;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -30,6 +32,14 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionStage;
 
 public interface SystemQuery {
+
+    Optional<Map<String, JsonElement>> getCapabilities(String minionId);
+
+    Map<String, JsonElement> getNetworks(String minionId);
+
+    Optional<GuestDefinition> getGuestDefinition(String minionId, String domainName);
+
+    Optional<Boolean> ping(String minionId);
 
     Key.Names getKeys();
     boolean keyExists(String id, SaltService.KeyStatus... statusIn);
@@ -44,6 +54,10 @@ public interface SystemQuery {
     Map<String, Result<String>> runRemoteCommand(MinionList target, String cmd);
     Map<String, CompletionStage<Result<String>>> runRemoteCommandAsync(
             MinionList target, String cmd, CompletableFuture<GenericError> cancel);
+
+    Map<String, JsonElement> getPools(String minionId);
+
+    Map<String, Map<String, JsonElement>> getVolumes(String minionId);
 
     Map<String, Result<List<SaltUtil.RunningInfo>>> running(MinionList target);
     Optional<Jobs.Info> listJob(String jid);
@@ -86,8 +100,8 @@ public interface SystemQuery {
     Map<String, Result<Map<String, String>>> getPendingResume(List<String> minionIds) throws SaltException;
     Map<String, Result<Object>> showHighstate(String minionId) throws SaltException;
 
-    @Deprecated
-    <R> Optional<R> callSync(LocalCall<R> call, String minionId);
+    Optional<List<Zypper.ProductInfo>> getProducts(String minionId);
+
     @Deprecated
     <T> Optional<LocalAsyncResult<T>> callAsync(LocalCall<T> callIn, Target<?> target,
                                                        Optional<ScheduleMetadata> metadataIn) throws SaltException;
@@ -95,6 +109,11 @@ public interface SystemQuery {
 
     Optional<MgrUtilRunner.ExecResult> collectKiwiImage(MinionServer minion, String filepath,
                                                                String imageStore);
+
+    void updateLibvirtEngine(MinionServer minion);
+
+    Optional<JsonElement> rawJsonCall(LocalCall<?> call, String minionId);
+
     Optional<Map<String, Jobs.ListJobsEntry>> jobsByMetadata(Object metadata);
     Optional<Map<String, Jobs.ListJobsEntry>> jobsByMetadata(
             Object metadata,
@@ -109,4 +128,5 @@ public interface SystemQuery {
 
     @Deprecated
     Optional<Map<String, State.ApplyResult>> applyState(String minionId, String state);
+
 }

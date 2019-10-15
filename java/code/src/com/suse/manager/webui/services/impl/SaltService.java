@@ -14,6 +14,8 @@
  */
 package com.suse.manager.webui.services.impl;
 
+import com.google.gson.JsonElement;
+import com.google.gson.reflect.TypeToken;
 import com.redhat.rhn.common.client.ClientCertificate;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.server.MinionServer;
@@ -26,11 +28,13 @@ import com.suse.manager.reactor.PGEventStream;
 import com.suse.manager.reactor.SaltReactor;
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
 import com.suse.manager.utils.MinionServerUtils;
+import com.suse.manager.virtualization.GuestDefinition;
 import com.suse.manager.webui.controllers.utils.ContactMethodUtil;
 import com.suse.manager.webui.services.SaltActionChainGeneratorService;
 import com.suse.manager.webui.services.impl.runner.MgrK8sRunner;
 import com.suse.manager.webui.services.impl.runner.MgrKiwiImageRunner;
 import com.suse.manager.webui.services.impl.runner.MgrUtilRunner;
+import com.suse.manager.webui.utils.ElementCallJson;
 import com.suse.manager.webui.utils.gson.BootstrapParameters;
 import com.suse.manager.webui.utils.salt.MgrActionChains;
 import com.suse.manager.webui.utils.salt.State;
@@ -82,17 +86,8 @@ import java.nio.file.attribute.PosixFileAttributeView;
 import java.nio.file.attribute.PosixFilePermissions;
 import java.nio.file.attribute.UserPrincipalLookupService;
 import java.time.LocalDateTime;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.Map.Entry;
-import java.util.NoSuchElementException;
-import java.util.Optional;
-import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionException;
 import java.util.concurrent.CompletionStage;
@@ -220,6 +215,47 @@ public class SaltService implements SystemQuery {
         catch (SaltException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @Override
+    public Optional<Map<String, JsonElement>> getCapabilities(String minionId) {
+        LocalCall<Map<String, JsonElement>> call =
+                new LocalCall<>("virt.all_capabilities", Optional.empty(), Optional.empty(),
+                        new TypeToken<Map<String, JsonElement>>() { });
+
+        return callSync(call, minionId);
+    }
+
+    @Override
+    public Map<String, JsonElement> getNetworks(String minionId) {
+        Map<String, Object> args = new LinkedHashMap<>();
+        LocalCall<Map<String, JsonElement>> call =
+                new LocalCall<>("virt.network_info", Optional.empty(), Optional.of(args),
+                        new TypeToken<Map<String, JsonElement>>() { });
+
+        Optional<Map<String, JsonElement>> nets = callSync(call, minionId);
+        Map<String, JsonElement> result = nets.orElse(new HashMap<>());
+
+        // Workaround: Filter out the entries that don't match since we may get a retcode=0 one.
+        return result.entrySet().stream()
+                .filter(entry -> entry.getValue().isJsonObject())
+                .collect(Collectors.toMap(entry -> entry.getKey(), entry -> entry.getValue()));
+    }
+
+    @Override
+    public Optional<GuestDefinition> getGuestDefinition(String minionId, String domainName) {
+        Map<String, Object> args = new LinkedHashMap<>();
+        args.put("vm_", domainName);
+        LocalCall<String> call =
+                new LocalCall<>("virt.get_xml", Optional.empty(), Optional.of(args), new TypeToken<String>() { });
+
+        Optional<String> result = callSync(call, minionId);
+        return result.filter(s -> !s.startsWith("ERROR")).map(xml -> GuestDefinition.parse(xml));
+    }
+
+    @Override
+    public Optional<Boolean> ping (String minionId) {
+        return callSync(Test.ping(), minionId);
     }
 
     /**
@@ -579,6 +615,33 @@ public class SaltService implements SystemQuery {
         return promise;
     }
 
+    @Override
+    public Map<String, JsonElement> getPools(String minionId) {
+        Map<String, Object> args = new LinkedHashMap<>();
+        LocalCall<Map<String, JsonElement>> call =
+                new LocalCall<>("virt.pool_info", Optional.empty(), Optional.of(args),
+                        new TypeToken<Map<String, JsonElement>>() { });
+
+        Optional<Map<String, JsonElement>> pools = callSync(call, minionId);
+        Map<String, JsonElement> result = pools.orElse(new HashMap<String, JsonElement>());
+
+        // Workaround: Filter out the entries that don't match since we may get a retcode=0 one.
+        return result.entrySet().stream()
+                .filter(entry -> entry.getValue().isJsonObject())
+                .collect(Collectors.toMap(entry -> entry.getKey(), entry -> entry.getValue()));
+    }
+
+    @Override
+    public Map<String, Map<String, JsonElement>> getVolumes(String minionId) {
+        List<?> args = Arrays.asList(null, null);
+        LocalCall<Map<String, Map<String, JsonElement>>> call =
+                new LocalCall<>("virt.volume_infos", Optional.of(args), Optional.empty(),
+                        new TypeToken<Map<String, Map<String, JsonElement>>>() { });
+
+        Optional<Map<String, Map<String, JsonElement>>> volumes = callSync(call, minionId);
+        return volumes.orElse(new HashMap<String, Map<String, JsonElement>>());
+    }
+
     /**
      * Returns the currently running jobs on the target
      *
@@ -592,6 +655,19 @@ public class SaltService implements SystemQuery {
         catch (SaltException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @Override
+    public void updateLibvirtEngine(MinionServer minion) {
+        Map<String, Object> pillar = new HashMap<>();
+        pillar.put("virt_entitled", minion.hasVirtualizationEntitlement());
+        callSync(State.apply(Collections.singletonList("virt.engine-events"),
+                Optional.of(pillar)), minion.getMinionId());
+    }
+
+    @Override
+    public Optional<JsonElement> rawJsonCall(LocalCall<?> call, String minionId) {
+        return callSync(new ElementCallJson(call), minionId);
     }
 
     /**
@@ -715,6 +791,11 @@ public class SaltService implements SystemQuery {
         catch (SaltException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @Override
+    public Optional<List<Zypper.ProductInfo>> getProducts(String minionId) {
+        return callSync(Zypper.listProducts(false), minionId);
     }
 
     /**
