@@ -225,18 +225,14 @@ public class DistUpgradeManager extends BaseManager {
     public static List<SUSEProductSet> getTargetProductSets(
             SUSEProductSet installedProducts, ChannelArch arch, User user) {
         List<SUSEProductSet> migrationTargets = migrationTargets(installedProducts);
-        Collections.sort(migrationTargets, new Comparator<SUSEProductSet>() {
-            @Override
-            public int compare(SUSEProductSet o1, SUSEProductSet o2) {
-                int i = PRODUCT_VERSION_COMPARATOR
-                        .compare(o2.getBaseProduct(), o1.getBaseProduct());
-                if (i != 0) {
-                    return i;
-                }
-                else {
-                    return PRODUCT_LIST_VERSION_COMPARATOR
-                            .compare(o2.getAddonProducts(), o1.getAddonProducts());
-                }
+        Collections.sort(migrationTargets, (tgt1, tgt2) -> {
+            int i = PRODUCT_VERSION_COMPARATOR.compare(tgt2.getBaseProduct(), tgt1.getBaseProduct());
+            if (i != 0) {
+                return i;
+            }
+            else {
+                return PRODUCT_LIST_VERSION_COMPARATOR
+                        .compare(tgt2.getAddonProducts(), tgt1.getAddonProducts());
             }
         });
         return addMissingChannels(
