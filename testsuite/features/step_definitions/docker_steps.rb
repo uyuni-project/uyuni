@@ -128,13 +128,13 @@ end
 When(/^I list image store types and image stores via XML-RPC$/) do
   cont_op.login('admin', 'admin')
   store_typ = cont_op.list_image_store_types
-  assert_equal(store_typ.length, 2, 'we have only type support for Registry and OS Image Store type! New method added?! please update the tests')
-  assert_equal(store_typ[0]['label'], 'registry', 'imagestore label type should be registry!')
-  assert_equal(store_typ[1]['label'], 'os_image', 'imagestore label type should be OS image!')
+  raise 'We have only type support for Registry and OS Image Store type! New method added?! please update the tests' unless store_typ.length == 2
+  raise "imagestore label type should be 'registry' but is #{store_typ[0]['label']}" unless store_typ[0]['label'] == 'registry'
+  raise "imagestore label type should be 'os_image' but is #{store_typ[1]['label']}" unless store_typ[1]['label'] == 'os_image'
+
   registry_list = cont_op.list_image_stores
-  puts registry_list
-  assert_equal(registry_list[0]['label'], 'galaxy-registry', 'label is galaxy!')
-  assert_equal(registry_list[0]['uri'], 'registry.mgr.suse.de', 'uri should be registry.mgr.suse.de')
+  raise "Label #{registry_list[0]['label']} is different than 'galaxy-registry'" unless registry_list[0]['label'] == 'galaxy-registry'
+  raise "URI #{registry_list[0]['uri']} is different than 'registry.mgr.suse.de'" unless registry_list[0]['uri'] == 'registry.mgr.suse.de'
 end
 
 When(/^I set and get details of image store via XML-RPC$/) do
@@ -149,8 +149,8 @@ When(/^I set and get details of image store via XML-RPC$/) do
   cont_op.set_details('Norimberga', details_store)
   # test getDetails call
   details = cont_op.get_details_store('Norimberga')
-  assert_equal(details['uri'], 'Germania', 'uri should be Germania')
-  assert_equal(details['username'], '', 'username should be empty')
+  raise "uri should be Germania but is #{details['uri']}" unless details['uri'] == 'Germania'
+  raise "username should be empty but is #{details['username']}" unless details['username'] == ''
   cont_op.delete_store('Norimberga')
 end
 
@@ -171,11 +171,11 @@ When(/^I create and delete profile custom values via XML-RPC$/) do
   values['arancio'] = 'arancia xmlrpc tests'
   cont_op.set_profile_custom_values('fakeone', values)
   pro_det = cont_op.get_profile_custom_values('fakeone')
-  assert_equal(pro_det['arancio'], 'arancia xmlrpc tests', 'setting custom profile value failed')
+  raise "setting custom profile value failed: #{pro_det['arancio']} != 'arancia xmlrpc tests'" unless pro_det['arancio'] == 'arancia xmlrpc tests'
   pro_type = cont_op.list_image_profile_types
-  assert_equal(pro_type.length, 2, 'support for Dockerfile and Kiwi profiles')
-  assert_equal(pro_type[0], 'dockerfile', 'type is not dockerfile?')
-  assert_equal(pro_type[1], 'kiwi', 'type is not kiwi?')
+  raise "Number of image profile types is #{pro_type.length}" unless pro_type.length == 2
+  raise "type #{pro_type[0]} is not dockerfile" unless pro_type[0] == 'dockerfile'
+  raise "type #{pro_type[1]} is not kiwi" unless pro_type[1] == 'kiwi'
   key = ['arancio']
   cont_op.delete_profile_custom_values('fakeone', key)
 end
@@ -185,7 +185,7 @@ When(/^I list image profiles via XML-RPC$/) do
   puts cont_op.list_image_profiles
   ima_profiles = cont_op.list_image_profiles
   imagelabel = ima_profiles.select { |image| image['label'] = 'fakeone' }
-  assert_equal(imagelabel[0]['label'], 'fakeone', 'label of container should be fakeone!')
+  raise "label of container should be fakeone! #{imagelabel[0]['label']} != 'fakeone'" unless imagelabel[0]['label'] == 'fakeone'
 end
 
 When(/^I set and get profile details via XML-RPC$/) do
@@ -196,7 +196,7 @@ When(/^I set and get profile details via XML-RPC$/) do
   details['activationKey'] = ''
   cont_op.set_profile_details('fakeone', details)
   cont_detail = cont_op.get_details('fakeone')
-  assert_equal(cont_detail['label'], 'fakeone', 'label test fail!')
-  assert_equal(cont_detail['imageType'], 'dockerfile', 'imagetype test fail!')
+  raise "label test fail! #{cont_detail['label']} != 'fakeone'" unless cont_detail['label'] == 'fakeone'
+  raise "imagetype test fail! #{cont_detail['imageType']} != 'dockerfile'" unless cont_detail['imageType'] == 'dockerfile'
   cont_op.delete_profile('fakeone')
 end
