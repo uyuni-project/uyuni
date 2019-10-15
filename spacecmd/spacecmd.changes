@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Tue Oct 15 11:44:32 CEST 2019 - jgonzalez@suse.com
+
+- version 4.0.15-1
 - Fix building and installing on CentOS8/RES8/RHEL8
 - Check that a channel doesn't have clones before deleting it (bsc#1138454)
 
