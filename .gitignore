@@ -60,6 +60,8 @@ backend/satellite_tools/spacewalk-repo-syncc
 node_modules
 yarn-error.log
 
+rel-eng/custom/__pycache__
+
 # Intellij IDEA
 .idea/
 *.iml
