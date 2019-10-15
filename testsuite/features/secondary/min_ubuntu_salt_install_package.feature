@@ -5,7 +5,7 @@ Feature: Install and upgrade package on the Ubuntu minion via Salt through the U
 
 @ubuntu_minion
   Scenario: Pre-requisite: install virgo-dummy-1.0 packages
-    When I enable repository "Test-Packages_Pool" on this "ubuntu-minion"
+    When I enable repository "test_repo_deb_pool" on this "ubuntu-minion"
     And I run "apt update" on "ubuntu-minion"
     And I remove package "andromeda-dummy" from this "ubuntu-minion"
     And I install package "virgo-dummy=1.0" on this "ubuntu-minion"
@@ -47,6 +47,6 @@ Feature: Install and upgrade package on the Ubuntu minion via Salt through the U
     And I remove package "andromeda-dummy" from this "ubuntu-minion"
     And I install package "andromeda-dummy=1.0" on this "ubuntu-minion"
     And I remove package "virgo-dummy" from this "ubuntu-minion"
-    And I disable repository "Test-Packages_Pool" on this "ubuntu-minion"
+    And I disable repository "test_repo_deb_pool" on this "ubuntu-minion"
     And I run "apt update" on "ubuntu-minion"
 

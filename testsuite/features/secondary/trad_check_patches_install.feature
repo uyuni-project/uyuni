@@ -5,7 +5,7 @@ Feature: Patches display
 
   Scenario: Pre-require: enable old packages to fake a possible installation
     Given I am authorized as "admin" with password "admin"
-    And I run "zypper -n mr -e Test-Packages_Pool" on "sle-client"
+    When I enable repository "test_repo_rpm_pool" on this "sle-client"
     And I run "zypper -n ref" on "sle-client"
     And I run "zypper -n in --oldpackage andromeda-dummy-1.0" on "sle-client"
     And I run "zypper -n in --oldpackage virgo-dummy-1.0" on "sle-client"
@@ -52,7 +52,7 @@ Feature: Patches display
     When I clean the search index on the server
 
   Scenario: Cleanup: remove old packages
-    When I run "zypper -n mr -d Test-Packages_Pool" on "sle-client" without error control
+    When I disable repository "test_repo_rpm_pool" on this "sle-client" without error control
     And I run "zypper -n ref" on "sle-client" without error control
     And I run "zypper -n rm --oldpackage andromeda-dummy-1.0" on "sle-client" without error control
     And I run "zypper -n rm --oldpackage virgo-dummy-1.0" on "sle-client" without error control

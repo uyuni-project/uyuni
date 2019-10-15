@@ -8,7 +8,7 @@ Feature: CVE Audit
 
   Scenario: Pre-requisite: downgrade milkyway-dummy to lower version
     Given I am authorized as "admin" with password "admin"
-    When I run "zypper -n mr -e Test-Packages_Pool" on "sle-client"
+    When I enable repository "test_repo_rpm_pool" on this "sle-client"
     And I run "zypper -n in --oldpackage milkyway-dummy-1.0" on "sle-client"
     And I run "zypper -n ref" on "sle-client"
     And I run "rhn_check -vvv" on "sle-client"
@@ -107,7 +107,7 @@ Feature: CVE Audit
     Then I logout from XML-RPC cve audit namespace
 
   Scenario: Cleanup: remove installed packages
-    When I run "zypper -n mr -d Test-Packages_Pool" on "sle-client" without error control
+    When I disable repository "test_repo_rpm_pool" on this "sle-client" without error control
     And I run "zypper -n rm milkyway-dummy" on "sle-client" without error control
     And I run "rhn_check -vvv" on "sle-client" without error control
 
