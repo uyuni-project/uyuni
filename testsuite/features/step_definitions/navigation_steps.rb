@@ -676,7 +676,7 @@ Then(/^I check the row with the "([^"]*)" hostname$/) do |host|
 end
 
 When(/^I check "([^"]*)" in the list$/) do |text|
-  top_level_xpath_query = "//div[@class=\"table-responsive\"]/table/tbody//a[contains(.,'#{text}')]/../..//*[@type='checkbox']"
+  top_level_xpath_query = "//div[@class=\"table-responsive\"]/table/tbody//td[contains(.,'#{text}')]/../..//*[@type='checkbox']"
   row = find(:xpath, top_level_xpath_query, match: :first)
   raise "xpath: #{top_level_xpath_query} not found" if row.nil?
 
@@ -684,7 +684,7 @@ When(/^I check "([^"]*)" in the list$/) do |text|
 end
 
 When(/^I uncheck "([^"]*)" in the list$/) do |text|
-  top_level_xpath_query = "//div[@class=\"table-responsive\"]/table/tbody//a[contains(.,'#{text}')]/../..//*[@type='checkbox' and @checked]"
+  top_level_xpath_query = "//div[@class=\"table-responsive\"]/table/tbody//td[contains(.,'#{text}')]/../..//*[@type='checkbox' and @checked]"
   row = find(:xpath, top_level_xpath_query, match: :first)
   raise "xpath: #{top_level_xpath_query} not found" if row.nil?
 
