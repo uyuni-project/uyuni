@@ -323,6 +323,10 @@ public class DistUpgradeManager extends BaseManager {
                     }
                 }
 
+                final List<SUSEProduct> currentCombination = new ArrayList<>(installedExtensions.size() + 1);
+                currentCombination.add(baseProduct);
+                currentCombination.addAll(installedExtensions);
+
                 // base_successors.each do |base|
                 //   available_extensions = installed_extensions.map do |ext|
                 //     options = ext.successors.merge(migration_path_scope)
@@ -361,43 +365,37 @@ public class DistUpgradeManager extends BaseManager {
 
                     return Lists.combinations(compatibleExtensionSuccessors).stream();
                 })
-                        .filter(comb -> !comb.equals(List.of(baseProduct)))
+                        .filter(comb -> !comb.equals(List.of(baseProduct)) && !comb.equals(currentCombination))
                         .collect(toList());
 
-                final List<SUSEProduct> currentCombination = new ArrayList<>(installedExtensions.size() + 1);
-                currentCombination.add(baseProduct);
-                currentCombination.addAll(installedExtensions);
-
                 for (List<SUSEProduct> combination : combinations) {
-                    if (!combination.equals(currentCombination)) {
-                        SUSEProduct base = combination.get(0);
-                        if (!ContentSyncManager.isProductAvailable(base, base)) {
-                            // No Product Channels means, no subscription to access the channels
-                            logger.debug("No SUSE Product Channels for " + base.getFriendlyName() + ". Skipping");
+                    SUSEProduct base = combination.get(0);
+                    if (!ContentSyncManager.isProductAvailable(base, base)) {
+                        // No Product Channels means, no subscription to access the channels
+                        logger.debug("No SUSE Product Channels for " + base.getFriendlyName() + ". Skipping");
+                        continue;
+                    }
+                    if (combination.size() == 1) {
+                        logger.debug("Found Target: " + base.getFriendlyName());
+                        result.add(new SUSEProductSet(base, Collections.emptyList()));
+                    }
+                    else {
+                        List<SUSEProduct> addonProducts = combination.subList(1, combination.size());
+                        //No Product Channels means, no subscription to access the channels
+                        if (addonProducts.stream()
+                                .anyMatch(ap -> !ContentSyncManager.isProductAvailable(ap, base))) {
+                            if (logger.isDebugEnabled()) {
+                                addonProducts.stream()
+                                        .filter(ap -> !ContentSyncManager.isProductAvailable(ap, base))
+                                        .forEach(ap -> logger.debug("No SUSE Product Channels for " +
+                                                ap.getFriendlyName() + ". Skipping " +
+                                                base.getFriendlyName()));
+                            }
                             continue;
                         }
-                        if (combination.size() == 1) {
-                            logger.debug("Found Target: " + base.getFriendlyName());
-                            result.add(new SUSEProductSet(base, Collections.emptyList()));
-                        }
-                        else {
-                            List<SUSEProduct> addonProducts = combination.subList(1, combination.size());
-                            //No Product Channels means, no subscription to access the channels
-                            if (addonProducts.stream()
-                                    .anyMatch(ap -> !ContentSyncManager.isProductAvailable(ap, base))) {
-                                if (logger.isDebugEnabled()) {
-                                    addonProducts.stream()
-                                            .filter(ap -> !ContentSyncManager.isProductAvailable(ap, base))
-                                            .forEach(ap -> logger.debug("No SUSE Product Channels for " +
-                                                    ap.getFriendlyName() + ". Skipping " +
-                                                    base.getFriendlyName()));
-                                }
-                                continue;
-                            }
-                            logger.debug("Found Target: " + base.getFriendlyName());
-                            addonProducts.forEach(ext -> logger.debug("   - " + ext.getFriendlyName()));
-                            result.add(new SUSEProductSet(base, addonProducts));
-                        }
+                        logger.debug("Found Target: " + base.getFriendlyName());
+                        addonProducts.forEach(ext -> logger.debug("   - " + ext.getFriendlyName()));
+                        result.add(new SUSEProductSet(base, addonProducts));
                     }
                 }
                 return result;
