@@ -17,7 +17,7 @@ Feature: Reboot required after patch
 
   Scenario: Enable old packages to test a "needing reboot"
     Given I am authorized as "admin" with password "admin"
-    When I run "zypper -n mr -e Test-Packages_Pool" on "sle-client"
+    When I enable repository "test_repo_rpm_pool" on this "sle-client"
     And I run "zypper -n ref" on "sle-client"
     And I run "zypper -n in --oldpackage andromeda-dummy-1.0" on "sle-client"
     And I run "rhn_check -vvv" on "sle-client"
@@ -44,4 +44,4 @@ Feature: Reboot required after patch
 
   Scenario: Cleanup: remove packages and restore non-update repo after needing reboot tests
     When I run "zypper -n rm andromeda-dummy" on "sle-client"
-    And I run "zypper -n mr -d Test-Packages_Pool" on "sle-client"
+    And I disable repository "test_repo_rpm_pool" on this "sle-client"

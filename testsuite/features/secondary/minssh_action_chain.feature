@@ -8,7 +8,7 @@ Feature: Salt SSH action chain
 @ssh_minion
   Scenario: Pre-requisite: downgrade repositories to lower version on SSH minion
     Given I am authorized as "admin" with password "admin"
-    When I run "zypper -n mr -e Test-Packages_Pool" on "ssh-minion"
+    When I enable repository "test_repo_rpm_pool" on this "ssh-minion"
     And I run "zypper -n rm andromeda-dummy" on "ssh-minion" without error control
     And I run "zypper -n rm virgo-dummy" on "ssh-minion" without error control
     And I run "zypper -n in milkyway-dummy" on "ssh-minion" without error control
@@ -287,7 +287,7 @@ Feature: Salt SSH action chain
     When I run "zypper -n rm andromeda-dummy" on "ssh-minion" without error control
     And I run "zypper -n rm virgo-dummy" on "ssh-minion" without error control
     And I run "zypper -n rm milkyway-dummy" on "ssh-minion" without error control
-    And I run "zypper -n mr -d Test-Packages_Pool" on "ssh-minion" without error control
+    And I disable repository "test_repo_rpm_pool" on this "ssh-minion" without error control
 
 @ssh_minion
   Scenario: Cleanup: remove temporary files for testing action chains on SSH minion

@@ -5,7 +5,7 @@ Feature: Action chain on traditional clients
 
   Scenario: Pre-requisite: downgrade repositories to lower version on traditional client
     Given I am authorized as "admin" with password "admin"
-    When I run "zypper -n mr -e Test-Packages_Pool" on "sle-client"
+    When I enable repository "test_repo_rpm_pool" on this "sle-client"
     And I run "zypper -n rm andromeda-dummy" on "sle-client" without error control
     And I run "zypper -n rm virgo-dummy" on "sle-client" without error control
     And I run "zypper -n in milkyway-dummy" on "sle-client" without error control
@@ -252,7 +252,7 @@ Feature: Action chain on traditional clients
     When I run "zypper -n rm andromeda-dummy" on "sle-client" without error control
     And I run "zypper -n rm virgo-dummy" on "sle-client" without error control
     And I run "zypper -n rm milkyway-dummy" on "sle-client" without error control
-    And I run "zypper -n mr -d Test-Packages_Pool" on "sle-client" without error control
+    And I disable repository "test_repo_rpm_pool" on this "sle-client" without error control
 
   Scenario: Cleanup: remove temporary files for testing action chains on traditional client
     When I run "rm -f /tmp/action_chain.log" on "sle-client" without error control
