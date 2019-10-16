@@ -360,7 +360,9 @@ public class DistUpgradeManager extends BaseManager {
                     compatibleExtensionSuccessors.add(0, List.of(baseSucc));
 
                     return Lists.combinations(compatibleExtensionSuccessors).stream();
-                }).collect(toList());
+                })
+                        .filter(comb -> !comb.equals(List.of(baseProduct)))
+                        .collect(toList());
 
                 final List<SUSEProduct> currentCombination = new ArrayList<>(installedExtensions.size() + 1);
                 currentCombination.add(baseProduct);
