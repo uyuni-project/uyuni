@@ -5,7 +5,7 @@ Feature: System package list is updated if packages are manually installed or re
 
   Scenario: Pre-requisite: install milkyway-dummy-1.0 packages
     Given I am authorized as "admin" with password "admin"
-    And I run "zypper -n mr -e Test-Packages_Pool" on "sle-minion"
+    When I enable repository "test_repo_rpm_pool" on this "sle-minion"
     And I run "zypper -n ref" on "sle-minion"
     And I run "zypper -n in --oldpackage milkyway-dummy-1.0" on "sle-minion" without error control
 
@@ -48,6 +48,6 @@ Feature: System package list is updated if packages are manually installed or re
     And I click on the css "button.spacewalk-button-filter" until page does not contain "milkyway-dummy" text
 
   Scenario: Cleanup: remove milkyway-dummy packages from SLES minion
-    When I run "zypper -n mr -d Test-Packages_Pool" on "sle-minion"
+    When I disable repository "test_repo_rpm_pool" on this "sle-minion"
     And I run "zypper -n rm milkyway-dummy" on "sle-minion" without error control
     And I run "zypper -n ref" on "sle-minion"

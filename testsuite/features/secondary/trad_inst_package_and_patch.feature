@@ -20,7 +20,7 @@ Feature: Install a package to the traditional client
     Then "virgo-dummy-2.0-1.1" should be installed on "sle-client"
 
   Scenario: Enable old packages for testing a patch install
-    When I run "zypper -n mr -e Test-Packages_Pool" on "sle-client"
+    When I enable repository "test_repo_rpm_pool" on this "sle-client"
     And I run "zypper -n in --oldpackage andromeda-dummy-1.0" on "sle-client"
     And I run "rhn_check -vvv" on "sle-client"
 
@@ -49,5 +49,5 @@ Feature: Install a package to the traditional client
   Scenario: Cleanup: remove packages and restore non-update repo
     When I run "zypper -n rm andromeda-dummy" on "sle-client"
     And I run "zypper -n rm virgo-dummy" on "sle-client"
-    And I run "zypper -n mr -d Test-Packages_Pool" on "sle-client"
+    And I disable repository "test_repo_rpm_pool" on this "sle-client"
     And I run "rhn_check -vvv" on "sle-client"

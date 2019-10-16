@@ -558,8 +558,8 @@ When(/^I register this client for SSH push via tunnel$/) do
   $server.run('mv /etc/sysconfig/rhn/up2date.BACKUP /etc/sysconfig/rhn/up2date')
 end
 
-# Packages management
-When(/^I enable repository "([^"]*)" on this "([^"]*)"$/) do |repo, host|
+# Repositories and packages management
+When(/^I enable repository "([^"]*)" on this "([^"]*)"((?: without error control)?)$/) do |repo, host, error_control|
   node = get_target(host)
   if file_exists?(node, '/usr/bin/zypper')
     cmd = "zypper mr --enable #{repo}"
@@ -570,10 +570,10 @@ When(/^I enable repository "([^"]*)" on this "([^"]*)"$/) do |repo, host|
   else
     raise 'Not found: zypper, yum or apt-get'
   end
-  node.run(cmd, true)
+  node.run(cmd, error_control.empty?)
 end
 
-When(/^I disable repository "([^"]*)" on this "([^"]*)"$/) do |repo, host|
+When(/^I disable repository "([^"]*)" on this "([^"]*)"((?: without error control)?)$/) do |repo, host, error_control|
   node = get_target(host)
   if file_exists?(node, '/usr/bin/zypper')
     cmd = "zypper mr --disable #{repo}"
@@ -584,7 +584,7 @@ When(/^I disable repository "([^"]*)" on this "([^"]*)"$/) do |repo, host|
   else
     raise 'Not found: zypper, yum or apt-get'
   end
-  node.run(cmd, true)
+  node.run(cmd, error_control.empty?)
 end
 
 When(/^I enable source package syncing$/) do
