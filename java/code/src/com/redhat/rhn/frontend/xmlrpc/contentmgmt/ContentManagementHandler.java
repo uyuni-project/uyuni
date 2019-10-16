@@ -542,8 +542,8 @@ public class ContentManagementHandler extends BaseHandler {
      * #paragraph()
      * Errata/Patch filtering:
      * #itemlist()
-     *   #item("by advisory name - field:advisory_name (e.g. 'Security Advisory'); matcher:equals or matches")
-     *   #item("by type - field:advisory_type; matcher:equals")
+     *   #item("by advisory name - field:advisory_name; matcher:equals or matches")
+     *   #item("by type - field:advisory_type (e.g. 'Security Advisory'); matcher:equals")
      *   #item("by synopsis - field:synopsis; matcher:equals, contains or matches")
      *   #item("by keyword - field:keyword; matcher:contains")
      *   #item("by date - field:issue_date; matcher:greater or greatereq")
