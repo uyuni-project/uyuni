@@ -1,3 +1,4 @@
+- fix re-registration with re-activation key (bsc#1154275)
 - Change the default value of taskomatic maxmemory to 4GB
 - Add basic support for importing modular repositories
 - Add script to update additional fields in the DB for existing Deb packages
