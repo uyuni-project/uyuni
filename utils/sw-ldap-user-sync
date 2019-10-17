@@ -1,4 +1,5 @@
-#!/usr/bin/python
+#!/root/testenv/bin/python
+#/usr/bin/python3
 
 ## purpose: creates new spacewalk accounts for users in a specific LDAP
 ##          group, removes spacewalk accounts after deleting users from a
@@ -11,6 +12,8 @@ import logging
 import ldap
 import yaml
 import sys
+
+MODE = "ad"  # "ad" for Active Directiry or "ldap"
 
 try:
     import xmlrpclib
@@ -42,7 +45,11 @@ except Exception as e:
     logging.error("unable to connect to spacewalk server: %s" % e)
     sys.exit(1)
 
-filter = '(objectclass=groupOfNames)'
+if MODE == "ad":
+    ldap_filter = '(objectclass=group)'
+else:
+    ldap_filter = '(objectclass=groupOfNames)'
+
 attrs = ['member']
 
 try:
@@ -58,34 +65,60 @@ for user in result:
         users[user.get('login')] = 1
 
 try:
-    (dn, data) = directory.search_s(settings["directory"]["group"], ldap.SCOPE_SUBTREE, filter, attrs)[0]
+    dn, data = directory.search_s(settings["directory"]["group"], ldap.SCOPE_SUBTREE, ldap_filter, attrs)[0]
+    for k in data:
+        buff = []
+        for e in data[k]:
+            buff.append(e.decode("utf-8"))
+        data[k] = buff
+
 except Exception as e:
     logging.error("unable to fetch user entries from LDAP group: %s" % e)
     sys.exit(1)
 
-for uid in data['member']:
-    filter = "(objectclass=posixAccount)"
-    attrs = ['givenName', 'sn', 'mail', 'uid']
 
+if MODE == "ad":
+    ldap_filter = "(objectclass=user)"
+else:
+    ldap_filter = "(objectclass=posixAccount)"
+attrs = ['givenName', 'sn', 'mail', 'uid']
+
+for uid in data['member']:
     try:
-        (userdn, userdata) = directory.search_s(uid, ldap.SCOPE_SUBTREE, filter, attrs)[0]
-        if userdata["uid"][0] in users:
-            del users[userdata["uid"][0]]
+        userdn, userdata = directory.search_s(uid, ldap.SCOPE_SUBTREE, ldap_filter, attrs)[0]
+
+        is_valid = True
+        for attr in attrs:
+            if attr not in userdata:
+                logging.error("Skipping user: %s", str(userdn))
+                logging.error("Attribute %s is missing", attr)
+                is_valid = False
+                break
+
+        if not is_valid:
+            continue
+
+        luser_id = userdata["uid"][0].decode("utf-8")
+        lgiven_name = userdata["givenName"][0].decode("utf-8")
+        lsecond_name = "sn" in userdata and userdata["sn"][0].decode("utf-8") or ""
+        lmail = "mail" in userdata and userdata["mail"][0].decode("utf-8") or ""
+
+        if luser_id in users:
+            del users[luser_id]
         else:
-            logging.info("creating new user account for ldap user %s" % userdata["uid"][0])
+            logging.info("creating new user account for ldap user %s", luser_id)
 
             try:
-                spacewalk.user.create(spacewalk_token, userdata["uid"][0], "",
-                  userdata["givenName"][0], userdata["sn"][0], userdata["mail"][0], 1)
+                spacewalk.user.create(spacewalk_token, luser_id, "",
+                                      lgiven_name, lsecond_name, lmail, 1)
             except Exception as e:
-                logging.error("unable to create new user account %s on spacewalk server: %s" % (userdata["uid"], e))
+                logging.error("unable to create new user account %s on spacewalk server: %s", (luser_id, e))
     except Exception as e:
         logging.error("unable to fetch user details for user %s from LDAP server: %s" % (uid, e))
 
 
 for user in list(users.keys()):
-    logging.info("deleting user %s" % user)
-
+    logging.info("deleting user %s", user)
     try:
         spacewalk.user.delete(spacewalk_token, user)
     except Exception as e:
@@ -94,4 +127,3 @@ for user in list(users.keys()):
 
 directory.unbind()
 spacewalk.auth.logout(spacewalk_token)
-
