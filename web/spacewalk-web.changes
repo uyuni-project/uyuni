@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Thu Oct 17 12:27:03 CEST 2019 - jgonzalez@suse.com
+
+- version 4.0.16-1
 - Redirect to project when canceling creating a filter (bsc#1145750)
 - Better visualization of the filters attached to a CLM Project. Allow/deny are now split
 - Fix ui issues with content lifecycle project list page (bsc#1145587)
