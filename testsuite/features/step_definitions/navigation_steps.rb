@@ -388,6 +388,10 @@ When(/^I wait until table row contains a "([^"]*)" text$/) do |text|
   raise "xpath: #{xpath_query} not found" unless find(:xpath, xpath_query, wait: DEFAULT_TIMEOUT)
 end
 
+When(/^I wait until button "([^"]*)" becomes enabled$/) do |text|
+  raise "Button '#{text}' still disabled after #{DEFAULT_TIMEOUT} seconds" unless find_button(text, disabled: false, wait: DEFAULT_TIMEOUT)
+end
+
 # login, logout steps
 
 Given(/^I am authorized as "([^"]*)" with password "([^"]*)"$/) do |user, passwd|
