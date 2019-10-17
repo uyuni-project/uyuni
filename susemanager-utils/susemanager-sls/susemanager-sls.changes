@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Thu Oct 17 12:35:00 CEST 2019 - jgonzalez@suse.com
+
+- version 4.0.20-1
 - Require pmtools only for SLE11 i586 and x86_64 (bsc#1150314)
 - Introduce dnf-susemanager-plugin for RHEL8 minions
 - Provide custom grain to report "instance id" when running on Public Cloud instances
