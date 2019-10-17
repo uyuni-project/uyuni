@@ -13,7 +13,7 @@
 Feature: Install a package on the minion with staging enabled
 
   Scenario: Pre-requisite: install virgo-dummy-1.0 package, make sure orion-dummy is not present
-    When I enable repository "Test-Packages_Pool" on this "sle-minion"
+    When I enable repository "test_repo_rpm_pool" on this "sle-minion"
     And I run "zypper --non-interactive remove -y orion-dummy" on "sle-minion" without error control
     And I install package "virgo-dummy-1.0" on this "sle-minion"
 
@@ -64,7 +64,7 @@ Feature: Install a package on the minion with staging enabled
     Then I should see a "1 patch update has been scheduled for" text
     And I wait until the package "virgo-dummy-2.0-1.1.noarch" has been cached on this "sle-minion"
     And I wait for "virgo-dummy-2.0-1.1" to be installed on this "sle-minion"
-    Then I disable repository "Test-Packages_Pool" on this "sle-minion"
+    Then I disable repository "test_repo_rpm_pool" on this "sle-minion"
 
   Scenario: Cleanup: remove virgo-dummy package from SLES minion
     Given I am on the Systems overview page of this "sle-minion"
