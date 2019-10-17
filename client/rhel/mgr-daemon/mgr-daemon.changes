@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Thu Oct 17 12:18:09 CEST 2019 - jgonzalez@suse.com
+
+- version 4.0.8-1
 - Adjust current name of the package to mgr-daemon and not
   spacewalksd (bsc#1149353)
 - enable spacewalk-update-service on package installation
