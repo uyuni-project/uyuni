@@ -366,9 +366,11 @@ public class LoginHelper {
             LocalizationService ls = LocalizationService.getInstance();
             if (serverVersion < MIN_PG_DB_VERSION) {
                 validationErrors.add(ls.getMessage("error.unsupported_db", pgVersion, MIN_PG_DB_VERSION_STRING));
+                log.error(ls.getMessage("error.unsupported_db", pgVersion, MIN_PG_DB_VERSION_STRING));
             }
             else if (!ConfigDefaults.get().isUyuni() && serverVersion < 100001 && osVersion >= 12.4) {
                 validationErrors.add(ls.getMessage("error.unsupported_db_on_os", pgVersion, osName, "10"));
+                log.error(ls.getMessage("error.unsupported_db_on_os", pgVersion, osName, "10"));
             }
         }
         return validationErrors;
