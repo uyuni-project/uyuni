@@ -495,7 +495,7 @@ public class ContentManagementHandler extends BaseHandler {
     }
 
     /**
-     * Returns a list of available filter criterias
+     * Returns a list of available filter criteria
      *
      * @param loggedInUser the user
      * @return list of filter criteria
@@ -529,27 +529,31 @@ public class ContentManagementHandler extends BaseHandler {
      * @xmlrpc.doc Create a Content Filter
      * #paragraph_end()
      * #paragraph()
-     * The following filters are available:
+     * The following filters are available (you can get the list in machine-readable format using
+     * the listFilterCriteria() endpoint):
      * #paragraph_end()
      * #paragraph()
      * Package filtering:
      * #itemlist()
-     *   #item("by name - field:name matcher:contains")
-     *   #item("by name, epoch, version, release and architecture - field:nevr or nevra - matcher:equals")
+     *   #item("by name - field:name; matchers:contains or matches")
+     *   #item("by name, epoch, version, release and architecture - field:nevr or nevra; matcher:equals")
      *  #itemlist_end()
      * #paragraph_end()
      * #paragraph()
      * Errata/Patch filtering:
      * #itemlist()
-     *   #item("by advisory name - field:advisory_name matcher:equals")
-     *   #item("by synopsis - field:synopsis matcher:equals or contains")
-     *   #item("by keyword - field:keyword matcher:contains")
-     *   #item("by date - field:issue_date matcher:greater or greatereq")
-     *   #item("by type - field:advisory_type matcher:equals")
-     *   #item("by affected package name - field:package_name matcher:contains_pkg_name")
-     *   #item("by affected package with version - field:package_nevr matcher:contains_pkg_lt_evr, contains_pkg_le_evr,
+     *   #item("by advisory name - field:advisory_name; matcher:equals or matches")
+     *   #item("by type - field:advisory_type (e.g. 'Security Advisory'); matcher:equals")
+     *   #item("by synopsis - field:synopsis; matcher:equals, contains or matches")
+     *   #item("by keyword - field:keyword; matcher:contains")
+     *   #item("by date - field:issue_date; matcher:greater or greatereq")
+     *   #item("by affected package name - field:package_name; matcher:contains_pkg_name or matches_pkg_name")
+     *   #item("by affected package with version - field:package_nevr; matcher:contains_pkg_lt_evr, contains_pkg_le_evr,
      *   contains_pkg_eq_evr, contains_pkg_ge_evr or contains_pkg_gt_evr")
-     *  #itemlist_end()
+     * #itemlist_end()
+     *
+     * Note: The 'matches' matcher works on Java regular expressions.
+     *
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param_desc("string", "name", "Filter name")
      * @xmlrpc.param #param_desc("string", "rule", "Filter rule ('deny' or 'allow')")
@@ -589,7 +593,7 @@ public class ContentManagementHandler extends BaseHandler {
      * @xmlrpc.doc Update a Content Filter
      * #paragraph_end()
      * #paragraph()
-     * See also: createFilter()
+     * See also: createFilter(), listFilterCriteria()
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param_desc("int", "filterId", "Filter id")
      * @xmlrpc.param #param_desc("string", "name", "New filter name")
