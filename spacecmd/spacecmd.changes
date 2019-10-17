@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Thu Oct 17 12:18:46 CEST 2019 - jgonzalez@suse.com
+
+- version 4.0.16-1
 - Java api expects content as encoded string instead of encode bytes like before (bsc#1153277)
 
 -------------------------------------------------------------------
