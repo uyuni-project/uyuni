@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Thu Oct 17 12:10:30 CEST 2019 - jgonzalez@suse.com
+
+- version 4.0.10-1
 - Obsolete all old python2-osa* packages to avoid conflicts (bsc#1152290)
 
 -------------------------------------------------------------------
