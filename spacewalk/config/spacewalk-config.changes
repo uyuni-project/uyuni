@@ -1,3 +1,4 @@
+- Change the default value of taskomatic maxmemory to 4GB
 - Resolve modules.yaml file for modular repositories
 - remove superfluous 'apache' entries from sudoers configuration (bsc#1151632)
 - Migrate login to Spark
