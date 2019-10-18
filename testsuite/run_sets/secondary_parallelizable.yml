@@ -57,7 +57,6 @@
 - features/secondary/min_salt_pkgset_beacon.feature
 - features/secondary/min_custom_pkg_download_endpoint.feature
 
-- features/secondary/trad_need_reboot.feature
 - features/secondary/trad_metadata_check.feature
 - features/secondary/trad_cve_id_new_syntax.feature
 - features/secondary/trad_weak_deps.feature
