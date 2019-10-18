@@ -1,3 +1,4 @@
+- Prevent error when piping stdout in Python 2 (bsc#1153090)
 - Java api expects content as encoded string instead of encoded bytes like before (bsc#1153277)
 - Enable building and installing for Ubuntu 16.04 and Ubuntu 18.04
 - Fix building and installing on CentOS8/RES8/RHEL8
