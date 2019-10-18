@@ -51,6 +51,7 @@ if [ ! -f ${CREDENTIALS} ]; then
 fi
 
 PUSH_CMD="/manager/susemanager-utils/testing/docker/scripts/push-to-obs.sh -d '${DESTINATIONS}' -c /tmp/.oscrc ${VERBOSE} ${TEST}"
+CLEAN_CMD="cd /manager; /manager/susemanager-utils/testing/docker/scripts/clean-push-to-obs.sh"
 
 docker pull $REGISTRY/$PUSH2OBS_CONTAINER
-docker run --rm=true -v "$GITROOT:/manager" -v "/srv/mirror:/srv/mirror" --mount type=bind,source=${CREDENTIALS},target=/tmp/.oscrc $REGISTRY/$PUSH2OBS_CONTAINER /bin/bash -c "${PUSH_CMD}"
+docker run --rm=true -v "$GITROOT:/manager" -v "/srv/mirror:/srv/mirror" --mount type=bind,source=${CREDENTIALS},target=/tmp/.oscrc $REGISTRY/$PUSH2OBS_CONTAINER /bin/bash -c "${PUSH_CMD}; RET=\${?}; ${CLEAN_CMD} && exit \${RET}"
