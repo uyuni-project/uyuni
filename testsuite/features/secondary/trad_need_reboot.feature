@@ -1,6 +1,9 @@
 # COPYRIGHT (c) 2017-2019 SUSE LLC
 # Licensed under the terms of the MIT license.
 
+# TODO: This feature must run before install a patch in the client
+# Feature dependency: trad_action_chain.feature
+
 Feature: Reboot required after patch
   In order to avoid systems with different running/installed kernel
   As an authorized user
