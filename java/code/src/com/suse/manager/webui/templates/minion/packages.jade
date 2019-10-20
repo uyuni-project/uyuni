@@ -4,8 +4,14 @@ include ./minion-header.jade
 
 script(type='text/javascript').
     window.csrfToken = "#{csrf_token}";
-    window.serverId = "#{server.id}";
 
 script(type='text/javascript').
     spaImportReactPage('minion/packages/package-states')
-        .then(function(module) { module.renderer('package-states')});
+        .then(function(module) {
+            module.renderer(
+                'package-states',
+                {
+                    serverId: "#{server.id}"
+                }
+            )
+        })
