@@ -1,13 +1,13 @@
 // @flow
 import React, {useEffect, useState, useRef} from "react";
 import {useImmer} from 'use-immer';
-import Buttons from "components/buttons";
+import * as Buttons from "components/buttons";
 import {InnerPanel} from 'components/panels/InnerPanel';
 import Fields from "components/fields";
 import {Messages} from "components/messages";
 import withPageWrapper from "components/general/with-page-wrapper";
 import {hot} from 'react-hot-loader';
-import {showErrorToastr} from "../../../components/toastr/toastr";
+import {showErrorToastr} from "components/toastr/toastr";
 import usePackageStatesApi from "./use-package-states.api";
 import type {
   ChangesMapObject,
