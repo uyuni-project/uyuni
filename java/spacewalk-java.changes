@@ -1,3 +1,5 @@
+- fix problems with Package Hub repos having multiple rpms with same NEVRA
+  but different checksums (bsc#1146683)
 - enable Kiwi NG on SLE15
 - Add check/message for project not found (bsc#1145755)
 - Fix combinatorial explosion when generating migrations (bsc#1151888)
