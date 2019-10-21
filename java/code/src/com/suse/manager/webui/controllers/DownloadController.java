@@ -44,6 +44,7 @@ import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.security.Key;
+import java.util.Arrays;
 import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
@@ -86,6 +87,8 @@ public class DownloadController {
         private String release;
         private String epoch;
         private String arch;
+        private Optional<Long> orgId = Optional.empty();
+        private Optional<String> checksum = Optional.empty();
 
         /**
          * Constructor
@@ -136,6 +139,51 @@ public class DownloadController {
          */
         public String getArch() {
             return arch;
+        }
+
+        /**
+         * Set the checksum
+         * @param checksumIn the checksum
+         */
+        public void setChecksum(String checksumIn) {
+            checksum = Optional.ofNullable(checksumIn);
+        }
+
+        /**
+         * Return the checksum if available
+         * @return the optional checksum
+         */
+        public Optional<String> getChecksum() {
+            return checksum;
+        }
+
+        /**
+         * Set the org id
+         * @param orgIdIn the org id
+         */
+        public void setOrgId(Long orgIdIn) {
+            orgId = Optional.ofNullable(orgIdIn);
+        }
+
+        /**
+         * Set the org id as string
+         * @param orgIdIn the org is as string
+         */
+        public void setOrgId(String orgIdIn) {
+            try {
+                orgId = Optional.of(Long.valueOf(orgIdIn));
+            }
+            catch (NumberFormatException e) {
+                orgId = Optional.empty();
+            }
+        }
+
+        /**
+         * Return the org id if available
+         * @return the optional org id
+         */
+        public Optional<Long> getOrgId() {
+            return orgId;
         }
     }
 
@@ -265,16 +313,17 @@ public class DownloadController {
             validateToken(token, channel, basename);
         }
 
+        String mountPoint = Config.get().getString(ConfigDefaults.MOUNT_POINT);
         PkgInfo pkgInfo = parsePackageFileName(path);
-        Package pkg = PackageFactory.lookupByChannelLabelNevra(channel,
-                pkgInfo.getName(), pkgInfo.getVersion(), pkgInfo.getRelease(), pkgInfo.getEpoch(), pkgInfo.getArch());
+        Package pkg = PackageFactory.lookupByChannelLabelNevraCs(channel, pkgInfo.getName(),
+                pkgInfo.getVersion(), pkgInfo.getRelease(), pkgInfo.getEpoch(), pkgInfo.getArch(),
+                pkgInfo.getChecksum());
         if (pkg == null) {
             halt(HttpStatus.SC_NOT_FOUND,
                  String.format("%s not found in %s", basename, channel));
         }
 
-        File file = new File(Config.get().getString(ConfigDefaults.MOUNT_POINT),
-                pkg.getPath()).getAbsoluteFile();
+        File file = new File(mountPoint, pkg.getPath()).getAbsoluteFile();
 
         return downloadFile(request, response, file);
     }
@@ -286,6 +335,7 @@ public class DownloadController {
      * @return name, epoch, vesion, release, arch of package
      */
     public static PkgInfo parsePackageFileName(String path) {
+        List<String> parts = Arrays.asList(path.split("/"));
         String extension = FilenameUtils.getExtension(path);
         String basename = FilenameUtils.getBaseName(path);
         String arch = StringUtils.substringAfterLast(basename, ".");
@@ -311,7 +361,13 @@ public class DownloadController {
             name = StringUtils.substringBeforeLast(rest, "-");
             epoch = null;
         }
-        return new PkgInfo(name, epoch, version, release, arch);
+        PkgInfo p = new PkgInfo(name, epoch, version, release, arch);
+        // path is getPackage/<org>/<checksum>/filename
+        if (parts.size() == 9 && parts.get(5).equals("getPackage")) {
+            p.setOrgId(parts.get(6));
+            p.setChecksum(parts.get(7));
+        }
+        return p;
     }
 
     /**

@@ -218,9 +218,13 @@ public class Router implements SparkApplication {
         // Download endpoint
         get("/manager/download/:channel/getPackage/:file",
                 DownloadController::downloadPackage);
+        get("/manager/download/:channel/getPackage/:org/:checksum/:file",
+                DownloadController::downloadPackage);
         get("/manager/download/:channel/repodata/:file",
                 DownloadController::downloadMetadata);
         head("/manager/download/:channel/getPackage/:file",
+                DownloadController::downloadPackage);
+        head("/manager/download/:channel/getPackage/:org/:checksum/:file",
                 DownloadController::downloadPackage);
         head("/manager/download/:channel/repodata/:file",
                 DownloadController::downloadMetadata);

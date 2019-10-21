@@ -450,7 +450,7 @@ where snc.errata_id = :errata_id
 </mode>
 
 <query name="repomdgenerator_package_elab" class="com.redhat.rhn.frontend.dto.PackageDto">
-  SELECT p.id, pn.name as name, pevr.epoch as epoch,
+  SELECT p.id, p.org_id, pn.name as name, pevr.epoch as epoch,
          pevr.version as version, pevr.release as release,
          p.summary, p.description, pa.label as arch_label,
          p.build_time, p.path, p.package_size, p.payload_size, p.installed_size,
