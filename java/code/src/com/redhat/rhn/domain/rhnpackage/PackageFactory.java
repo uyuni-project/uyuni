@@ -39,6 +39,7 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 
 import javax.persistence.criteria.CriteriaBuilder;
@@ -302,25 +303,27 @@ public class PackageFactory extends HibernateFactory {
     }
 
     /**
-     * Find a package based off of the channel and NEVRA
+     * Find a package based off of the channel, NEVRA and checksum
      * @param channel the channel label
      * @param name the name to search for
      * @param version the version to search for
      * @param release the release to search for
      * @param epoch if epoch is null, the best match for epoch will be used.
      * @param arch the arch to search for
+     * @param checksum Optional the checksum to search for
      * @return the requested Package
      */
-    public static Package lookupByChannelLabelNevra(String channel, String name,
-            String version, String release, String epoch, String arch) {
+    public static Package lookupByChannelLabelNevraCs(String channel, String name,
+            String version, String release, String epoch, String arch, Optional<String> checksum) {
         @SuppressWarnings("unchecked")
         List<Package> packages = HibernateFactory.getSession()
-                .getNamedQuery("Package.lookupByChannelLabelNevra")
+                .getNamedQuery("Package.lookupByChannelLabelNevraCs")
                 .setString("channel", channel)
                 .setString("name", name)
                 .setString("version", version)
                 .setString("release", release)
                 .setString("arch", arch)
+                .setString("checksum", checksum.orElse(null))
                 .list();
 
         if (packages.isEmpty()) {
