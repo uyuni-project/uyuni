@@ -483,13 +483,13 @@ Then(/^the timezone on "([^"]*)" should be "([^"]*)"$/) do |minion, timezone|
   output, _code = node.run('date +%Z')
   result = output.strip
   result = 'CET' if result == 'CEST'
-  raise unless result == timezone
+  raise "The timezone #{timezone} is different to #{result}" unless result == timezone
 end
 
 Then(/^the keymap on "([^"]*)" should be "([^"]*)"$/) do |minion, keymap|
   node = get_target(minion)
   output, _code = node.run('cat /etc/vconsole.conf')
-  raise unless output.strip == "KEYMAP=#{keymap}"
+  raise "The keymap #{keymap} is different to the output: #{output.strip}" unless output.strip == "KEYMAP=#{keymap}"
 end
 
 Then(/^the language on "([^"]*)" should be "([^"]*)"$/) do |minion, language|
@@ -497,7 +497,7 @@ Then(/^the language on "([^"]*)" should be "([^"]*)"$/) do |minion, language|
   output, _code = node.run("grep 'RC_LANG=' /etc/sysconfig/language")
   unless output.strip == "RC_LANG=\"#{language}\""
     output, _code = node.run("grep 'LANG=' /etc/locale.conf")
-    raise unless output.strip == "LANG=#{language}"
+    raise "The language #{language} is different to the output: #{output.strip}" unless output.strip == "LANG=#{language}"
   end
 end
 
@@ -505,7 +505,7 @@ When(/^I refresh the pillar data$/) do
   $server.run("salt '#{$minion.ip}' saltutil.refresh_pillar")
 end
 
-Then(/^the pillar data for "([^"]*)" should be "([^"]*)" on "([^"]*)"$/) do |key, value, minion|
+Then(/^the pillar data for "([^"]*)" should (be|contain|not contain) "([^"]*)" on "([^"]*)"$/) do |key, verb, value, minion|
   system_name = get_system_name(minion)
   if minion == 'sle-minion'
     cmd = 'salt'
@@ -518,10 +518,16 @@ Then(/^the pillar data for "([^"]*)" should be "([^"]*)" on "([^"]*)"$/) do |key
     raise 'Invalid target'
   end
   output, _code = $server.run("#{cmd} '#{system_name}' pillar.get '#{key}' #{extra_cmd}")
-  if value == ''
-    raise unless output.split("\n").length == 1
+  if verb == 'be' && value == ''
+    raise "Output has more than one line: #{output}" unless output.split("\n").length == 1
+  elsif verb == 'be'
+    raise "Output value is different than #{value}: #{output}" unless output.split("\n")[1].strip == value
+  elsif verb == 'contain'
+    raise "Output doesn't contain #{value}: #{output}" unless output.include? value
+  elsif verb == 'not contain'
+    raise "Output contains #{value}: #{output}" if output.include? value
   else
-    raise unless output.split("\n")[1].strip == value
+    raise 'Invalid verb'
   end
 end
 
