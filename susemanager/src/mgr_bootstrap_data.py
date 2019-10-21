@@ -782,6 +782,10 @@ DATA = {
         'PDID' : [1929], 'PKGLIST' : PKGLIST15 + PKGLIST15_X86_ARM,
         'DEST' : '/srv/www/htdocs/pub/repositories/opensuse/15/1/bootstrap/'
     },
+    'openSUSE-Leap-15.2-x86_64' : {
+        'PDID' : [2001], 'PKGLIST' : PKGLIST15 + PKGLIST15_X86_ARM,
+        'DEST' : '/srv/www/htdocs/pub/repositories/opensuse/15/2/bootstrap/'
+    },
     'centos-6-x86_64' : {
         'BASECHANNEL' : 'centos6-x86_64', 'PKGLIST' : RES6,
         'DEST' : '/srv/www/htdocs/pub/repositories/centos/6/bootstrap/'
