@@ -17,6 +17,7 @@ After:
 - [ ] **DONE**
 
 ## Documentation
+- No documentation needed: only internal and user invisible changes
 - No documentation needed: **add explanation. This can't be used if there is a GUI diff**
 - [doc-susemanager PR](https://github.com/SUSE/doc-susemanager/pulls) or [documentation board issue](https://github.com/SUSE/spacewalk/projects/31) was created (GitHub automatic link expected below)
 
@@ -24,6 +25,7 @@ After:
 
 ## Test coverage
 - No tests: **add explanation**
+- No tests: already covered
 - Unit tests were added
 - Cucumber tests were added
 
@@ -34,8 +36,8 @@ After:
 Fixes #
 
 Relevant branches (GitHub automatic links expected below):
- - Manager-3.1
  - Manager-3.2
+ - Manager-4.0
  - Uyuni
 
 - [ ] **DONE**
@@ -61,3 +63,4 @@ If you need to re-run a test, please mark the related checkbox, it will be unche
 - [ ] Re-run test "schema_migration_test_oracle"
 - [ ] Re-run test "schema_migration_test_pgsql"		 
 - [ ] Re-run test "susemanager_unittests"
+- [ ] Re-run test "javascript_lint"
