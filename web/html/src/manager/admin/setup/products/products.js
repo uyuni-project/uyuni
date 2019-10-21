@@ -1,6 +1,8 @@
 /* eslint-disable */
 'use strict';
 
+import {searchCriteriaInExtension} from "./products.utils";
+
 const {SectionToolbar} = require("components/section-toolbar/section-toolbar");
 const React = require('react');
 const ReactDOM = require('react-dom');
@@ -424,13 +426,6 @@ class Products extends React.Component {
     this.props.handleUnSelectedItems(items);
   };
 
-  searchData = (datum, criteria) => {
-    if (criteria && datum.label) {
-      return (datum.label).toLowerCase().includes(criteria.toLowerCase());
-    }
-    return true;
-  };
-
   buildRows = (message) => {
     return Object.keys(message).map((id) => message[id]);
   };
@@ -465,7 +460,7 @@ class Products extends React.Component {
           loading={this.props.loading}
           additionalFilters={[archFilter]}
           searchField={
-              <SearchField filter={this.searchData}
+              <SearchField filter={searchCriteriaInExtension}
                   criteria={''}
                   placeholder={t('Filter by product Description')}
                   name='product-description-filter'
