@@ -776,8 +776,12 @@ DATA = {
         'BASECHANNEL' : 'opensuse_leap15_0-x86_64', 'PKGLIST' : PKGLIST15 + PKGLIST15_X86_ARM,
         'DEST' : '/srv/www/htdocs/pub/repositories/opensuse/15/0/bootstrap/'
     },
-    'openSUSE-Leap-15.1-x86_64' : {
+    'openSUSE-Leap-15.1-x86_64-uyuni' : {
         'BASECHANNEL' : 'opensuse_leap15_1-x86_64', 'PKGLIST' : PKGLIST15 + PKGLIST15_X86_ARM,
+        'DEST' : '/srv/www/htdocs/pub/repositories/opensuse/15/1/bootstrap/'
+    },
+    'openSUSE-Leap-15.1-x86_64' : {
+        'PDID' : [1929], 'PKGLIST' : PKGLIST15 + PKGLIST15_X86_ARM,
         'DEST' : '/srv/www/htdocs/pub/repositories/opensuse/15/1/bootstrap/'
     },
     'centos-6-x86_64' : {
