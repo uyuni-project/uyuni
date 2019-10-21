@@ -29,6 +29,8 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
+
+import static java.util.Collections.singletonList;
 import static java.util.stream.Collectors.toList;
 
 import com.redhat.rhn.common.util.RpmVersionComparator;
@@ -365,11 +367,11 @@ public class DistUpgradeManager extends BaseManager {
             }
 
             // the base successor will be always on the 1st position in the combinations below
-            compatibleExtensionSuccessors.add(0, List.of(baseSucc));
+            compatibleExtensionSuccessors.add(0, singletonList(baseSucc));
 
             return Lists.combinations(compatibleExtensionSuccessors).stream();
         })
-                .filter(comb -> !comb.equals(List.of(baseProduct)) && !comb.equals(currentCombination))
+                .filter(comb -> !comb.equals(singletonList(baseProduct)) && !comb.equals(currentCombination))
                 .collect(toList());
 
         for (List<SUSEProduct> combination : combinations) {
