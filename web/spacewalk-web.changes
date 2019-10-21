@@ -1,3 +1,4 @@
+- Filter by description on the Products page works recursively
 - Add check/message for project not found (bsc#1145755)
 - Fix sorting issues on content filter list page (bsc#1145591)
 - Improve the UI of the salt packages state and configuration channels page to use tabs instead
