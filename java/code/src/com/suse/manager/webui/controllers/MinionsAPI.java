@@ -31,6 +31,8 @@ import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.utils.gson.BootstrapHostsJson;
 import com.suse.manager.webui.utils.gson.SaltMinionJson;
 import com.suse.salt.netapi.calls.wheel.Key;
+import com.suse.salt.netapi.exception.SaltException;
+
 import org.apache.log4j.Logger;
 import spark.Request;
 import spark.Response;
@@ -72,9 +74,15 @@ public class MinionsAPI {
      * @return json result of the API call
      */
     public static String listKeys(Request request, Response response, User user) {
-        Key.Fingerprints fingerprints = SALT_SERVICE.getFingerprints();
-
+        Key.Fingerprints fingerprints = null;
         Map<String, Object> data = new TreeMap<>();
+        try {
+            fingerprints = SALT_SERVICE.getFingerprints();
+        }
+        catch (SaltException e) {
+            return json(response, data);
+        }
+
         data.put("isOrgAdmin", user.hasRole(RoleFactory.ORG_ADMIN));
 
         Set<String> minionIds = Stream.of(
@@ -118,7 +126,6 @@ public class MinionsAPI {
         }
         catch (Exception e) {
             MinionPendingRegistrationService.removeMinion(target);
-            throw e;
         }
         return json(response, true);
     }
@@ -149,7 +156,10 @@ public class MinionsAPI {
      */
     public static String reject(Request request, Response response, User user) {
         String target = request.params("target");
-        SALT_SERVICE.rejectKey(target);
+        try {
+            SALT_SERVICE.rejectKey(target);
+        }
+        catch (Exception e) { }
         return json(response, true);
     }
 

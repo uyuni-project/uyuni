@@ -20,6 +20,7 @@ import com.redhat.rhn.frontend.xmlrpc.PermissionCheckFailureException;
 
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.salt.netapi.calls.wheel.Key;
+import com.suse.salt.netapi.exception.SaltException;
 
 import java.util.stream.Stream;
 
@@ -43,7 +44,13 @@ public class SaltKeyUtils {
             throws PermissionCheckFailureException {
 
         //Note: since salt only allows globs we have to do our own strict matching
-        Key.Names keys = SALT_SERVICE.getKeys();
+        Key.Names keys = null;
+        try {
+            keys = SALT_SERVICE.getKeys();
+        }
+        catch (SaltException e) {
+            return false;
+        }
         boolean exists = Stream.concat(
                 Stream.concat(
                         keys.getDeniedMinions().stream(),

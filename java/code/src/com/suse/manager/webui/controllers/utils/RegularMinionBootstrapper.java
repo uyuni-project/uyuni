@@ -19,6 +19,7 @@ import com.redhat.rhn.domain.server.ContactMethod;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.user.User;
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
+import com.suse.manager.webui.controllers.utils.AbstractMinionBootstrapper.BootstrapResult;
 import com.suse.manager.webui.services.impl.MinionPendingRegistrationService;
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.services.impl.SaltService.KeyStatus;
@@ -26,6 +27,8 @@ import com.suse.manager.webui.utils.InputValidator;
 import com.suse.manager.webui.utils.gson.BootstrapParameters;
 import com.suse.manager.webui.utils.gson.BootstrapHostsJson;
 import com.suse.salt.netapi.calls.wheel.Key;
+import com.suse.salt.netapi.exception.SaltException;
+
 import org.apache.log4j.Logger;
 
 import java.util.Arrays;
@@ -78,10 +81,15 @@ public class RegularMinionBootstrapper extends AbstractMinionBootstrapper {
                                                    String contactMethod) {
         Map<String, Object> pillarData = super.createPillarData(user, input, contactMethod);
 
-        Key.Pair keyPair = saltService.generateKeysAndAccept(input.getHost(), false);
-        if (keyPair.getPub().isPresent() && keyPair.getPriv().isPresent()) {
-            pillarData.put("minion_pub",  keyPair.getPub().get());
-            pillarData.put("minion_pem", keyPair.getPriv().get());
+        try {
+            Key.Pair keyPair = saltService.generateKeysAndAccept(input.getHost(), false);
+            if (keyPair.getPub().isPresent() && keyPair.getPriv().isPresent()) {
+                pillarData.put("minion_pub",  keyPair.getPub().get());
+                pillarData.put("minion_pem", keyPair.getPriv().get());
+            }
+        }
+        catch (SaltException e) {
+            LOG.error("Failed to generate Key Pair");
         }
 
         return pillarData;
@@ -106,10 +114,17 @@ public class RegularMinionBootstrapper extends AbstractMinionBootstrapper {
 
         // If a key is pending for this minion, temporarily reject it
         boolean weRejectedIt = false;
-        if (saltService.keyExists(minionId, KeyStatus.UNACCEPTED)) {
-            LOG.info("Pending key exists for " + minionId + ", rejecting...");
-            saltService.rejectKey(minionId);
-            weRejectedIt = true;
+        try {
+            if (saltService.keyExists(minionId, KeyStatus.UNACCEPTED)) {
+                LOG.info("Pending key exists for " + minionId + ", rejecting...");
+                saltService.rejectKey(minionId);
+                weRejectedIt = true;
+            }
+        }
+        catch (SaltException e) {
+            return new BootstrapResult(false, Optional.empty(),
+                    "Error during applying the bootstrap" +
+                    " state, message: " + e.getMessage());
         }
 
         BootstrapResult result = super.bootstrapInternal(input, user, defaultContactMethod);

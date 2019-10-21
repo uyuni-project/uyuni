@@ -298,8 +298,9 @@ public class SaltService {
      * Get the minion keys from salt with their respective status.
      *
      * @return the keys with their respective status as returned from salt
+     * @throws SaltException if anything goes wrong
      */
-    public Key.Names getKeys() {
+    public Key.Names getKeys() throws SaltException {
         return callSync(Key.listAll())
                 .orElseThrow(() -> new RuntimeException("no wheel results"));
     }
@@ -310,8 +311,9 @@ public class SaltService {
      * @param call wheel call
      * @param <R> result type of the wheel call
      * @return the result of the call or empty on error
+     * @throws SaltException if anything goes wrong
      */
-    public <R> Optional<R> callSync(WheelCall<R> call) {
+    public <R> Optional<R> callSync(WheelCall<R> call) throws SaltException {
         return callSync(call,  p ->
                 p.fold(
                     e -> {
@@ -351,9 +353,10 @@ public class SaltService {
      * @param errorHandler function that handles errors
      * @param <R> result type of the wheel call
      * @return the result of the call or empty on error
+     * @throws SaltException if anything goes wrong
      */
     public <R> Optional<R> callSync(WheelCall<R> call,
-                                     Function<SaltError, Optional<R>> errorHandler) {
+                                     Function<SaltError, Optional<R>> errorHandler) throws SaltException {
         try {
             LOG.debug("Wheel callSync: " + wheelCallToString(call));
             WheelResult<Result<R>> result = adaptException(call.callSync(SALT_CLIENT, PW_AUTH));
@@ -362,7 +365,8 @@ public class SaltService {
                     r -> Optional.of(r));
         }
         catch (SaltException e) {
-            throw new RuntimeException(e);
+            LOG.error("Call to salt api failed: " + e);
+            throw e;
         }
     }
 
@@ -379,8 +383,9 @@ public class SaltService {
      * @param id the id to check for
      * @param statusIn array of key status to consider
      * @return true if there is a key with the given id, false otherwise
+     * @throws SaltException if anything goes wrong
      */
-    public boolean keyExists(String id, KeyStatus... statusIn) {
+    public boolean keyExists(String id, KeyStatus... statusIn) throws SaltException {
         final Set<KeyStatus> status = new HashSet<>(Arrays.asList(statusIn));
         if (status.isEmpty()) {
             status.addAll(Arrays.asList(KeyStatus.values()));
@@ -397,8 +402,9 @@ public class SaltService {
      * Get the minion keys from salt with their respective status and fingerprint.
      *
      * @return the keys with their respective status and fingerprint as returned from salt
+     * @throws SaltException if anything goes wrong
      */
-    public Key.Fingerprints getFingerprints() {
+    public Key.Fingerprints getFingerprints() throws SaltException {
         return callSync(Key.finger("*"))
                 .orElseThrow(() -> new RuntimeException("no wheel results"));
     }
@@ -409,9 +415,9 @@ public class SaltService {
      * @param id the id to use
      * @param force set true to overwrite an already existing key
      * @return the generated key pair
+     * @throws SaltException if anything goes wrong
      */
-    public Key.Pair generateKeysAndAccept(String id,
-            boolean force) {
+    public Key.Pair generateKeysAndAccept(String id, boolean force) throws SaltException {
         return callSync(Key.genAccept(id, Optional.of(force)))
                 .orElseThrow(() -> new RuntimeException("no wheel results"));
     }
@@ -451,8 +457,14 @@ public class SaltService {
      * @param match a pattern for minion ids
      */
     public void acceptKey(String match) {
-        callSync(Key.accept(match))
+        try {
+            callSync(Key.accept(match))
                 .orElseThrow(() -> new RuntimeException("no wheel results"));
+        }
+        catch (SaltException e) {
+            LOG.error("Failed to accept the minion key");
+            throw new RuntimeException(e);
+        }
     }
 
     /**
@@ -461,8 +473,14 @@ public class SaltService {
      * @param minionId id of the minion
      */
     public void deleteKey(String minionId) {
-        callSync(Key.delete(minionId))
+        try {
+            callSync(Key.delete(minionId))
                 .orElseThrow(() -> new RuntimeException("no wheel results"));
+        }
+        catch (SaltException e) {
+            LOG.error("Failed to delete the minion key");
+            throw new RuntimeException(e);
+        }
     }
 
     /**
@@ -471,8 +489,14 @@ public class SaltService {
      * @param minionId id of the minion
      */
     public void rejectKey(String minionId) {
-        callSync(Key.reject(minionId))
+        try {
+            callSync(Key.reject(minionId))
                 .orElseThrow(() -> new RuntimeException("no wheel results"));
+        }
+        catch (SaltException e) {
+            LOG.error("Failed to delete the minion key");
+            throw new RuntimeException(e);
+        }
     }
 
     /**

@@ -271,7 +271,7 @@ public abstract class AbstractMinionBootstrapper {
                         ") seems to already exist, please check!");
             }
         }
-        catch (RuntimeException e) {
+        catch (SaltException e) {
             return Collections.singletonList("Server Error: unable to check existing keys: " +
                     e.getMessage());
         }

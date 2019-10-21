@@ -21,6 +21,7 @@ import com.redhat.rhn.frontend.listview.PageControl;
 import com.redhat.rhn.manager.system.SystemManager;
 
 import com.suse.manager.webui.services.impl.SaltService;
+import com.suse.salt.netapi.exception.SaltException;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -39,8 +40,13 @@ public class TasksRenderer extends BaseFragmentRenderer {
     protected void render(User user, PageControl pc, HttpServletRequest request) {
         request.setAttribute(TASKS, Boolean.TRUE);
         request.setAttribute("documentation", ConfigDefaults.get().isDocAvailable());
-        request.setAttribute("amountOfMinions",
-                SaltService.INSTANCE.getKeys().getUnacceptedMinions().size());
+        try {
+            request.setAttribute("amountOfMinions",
+                    SaltService.INSTANCE.getKeys().getUnacceptedMinions().size());
+        }
+        catch (SaltException e) {
+            request.setAttribute("amountOfMinions", 0);
+        }
         request.setAttribute("requiringReboot", SystemManager.requiringRebootList(user).size());
         RendererHelper.setTableStyle(request, null);
     }
