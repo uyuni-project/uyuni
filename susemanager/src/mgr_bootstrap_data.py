@@ -776,7 +776,7 @@ DATA = {
         'DEST' : '/srv/www/htdocs/pub/repositories/opensuse/42/3/bootstrap/'
     },
     'openSUSE-Leap-15-x86_64' : {
-        'BASECHANNEL' : 'opensuse_leap15_0-x86_64', 'PKGLIST' : PKGLIST15 + PKGLIST15_X86_ARM,
+        'BASECHANNEL' : 'opensuse_leap15_0-x86_64', 'PKGLIST' : PKGLIST15_TRAD + PKGLIST15_SALT + PKGLIST15_X86_ARM,
         'DEST' : '/srv/www/htdocs/pub/repositories/opensuse/15/0/bootstrap/'
     },
     'openSUSE-Leap-15.1-x86_64-uyuni' : {
