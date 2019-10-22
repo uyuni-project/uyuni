@@ -1,4 +1,5 @@
 - Fix sorting issues on content filter list page (bsc#1145591)
+- Improve the UI of the salt packages state and configuration channels page to use tabs instead
 - Remove/change text on edit filters for clp (bsc#1145608)
 - Redirect to project when canceling creating a filter (bsc#1145750)
 - Better visualization of the filters attached to a CLM Project. Allow/deny are now split
