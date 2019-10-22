@@ -158,7 +158,7 @@ MYNAME=`hostname -f`
 LCMYNAME=`echo $MYNAME | tr '[:upper:]' '[:lower:]'`
 LCHOSTNAME=`echo $HOSTNAME | tr '[:upper:]' '[:lower:]'`
 
-if [ $LCMYNAME == $LCHOSTNAME ]; then
+if [ "$LCMYNAME" == "$LCHOSTNAME" ]; then
     echo "Name of client and of SUSE Manager server are the same."
     echo "Do not try to register a SUSE Manager server at itself!"
     echo "Aborting."
