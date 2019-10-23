@@ -18,6 +18,7 @@
 import time
 import socket
 import re
+import os
 try:
     # python 3
     from urllib.parse import urlparse, urlunparse
@@ -465,6 +466,8 @@ class BrokerHandler(SharedHandler):
         else:
             # Some other type of request
             (req_type, reqident, reqaction, reqparams) = self._split_url(req)
+            if reqaction == 'getPackage':
+                reqparams = tuple([os.path.join(*reqparams)])
 
         if req_type is None or (req_type not in
                                 ['$RHN', 'GET-REQ', 'tinyurl', 'ks-dist']):
