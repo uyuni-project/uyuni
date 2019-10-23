@@ -1,4 +1,8 @@
 <services>
+  <service name="extract_file" mode="disabled">
+    <param name="archive">*.obscpio</param>
+    <param name="files">*</param>
+  </service>
   <service name="tar" mode="buildtime"/>
   <service name="recompress" mode="buildtime">
     <param name="file">*.tar</param>
