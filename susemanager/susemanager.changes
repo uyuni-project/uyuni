@@ -1,3 +1,6 @@
+- prepare bootstrap data for upcoming openSUSE 15.2
+- add bootstrap data for openSUSE 15.1 when mirrored as
+  Vendor Channels (bsc#1154474)
 - Require dmidecode only for SLE12 aarch64 and x86_64 (bsc#1152170)
 - Require pmtools only for SLE11 i586 and x86_64 (bsc#1150314)
 - fix test for btrfs subvolume for new btrfs version (bsc#1151666)
