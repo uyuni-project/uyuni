@@ -643,7 +643,7 @@ end
 
 When(/^I wait until the package "(.*?)" has been cached on this "(.*?)"$/) do |pkg_name, host|
   node = get_target(host)
-  cmd = "ls /var/cache/zypp/packages/susemanager:test-channel-x86_64/getPackage/#{pkg_name}*.rpm"
+  cmd = "ls /var/cache/zypp/packages/susemanager:test-channel-x86_64/getPackage/*/*/#{pkg_name}*.rpm"
   repeat_until_timeout(message: "Package #{pkg_name} was not cached") do
     result, return_code = node.run(cmd, false)
     break if return_code.zero?
