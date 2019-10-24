@@ -5,7 +5,7 @@
 
 <html>
 <head>
-<c:set var="cb_version" value="${rhn:getConfig('web.version')}" />
+<c:set var="cb_version" value="${rhn:getConfig('web.buildtimestamp')}" />
 
 <c:if test="${requestScope.inactiveSystems == 'y'}">
         <script type="text/javascript" src="/rhn/dwr/interface/InactiveSystemsRenderer.js?cb=${cb_version}"></script>

@@ -6,7 +6,7 @@
 <html>
 
 <head>
-    <script src="/javascript/channel_tree.js?cb=${rhn:getConfig('web.version')}" type="text/javascript"></script>
+    <script src="/javascript/channel_tree.js?cb=${rhn:getConfig('web.buildtimestamp')}" type="text/javascript"></script>
     <script type="text/javascript">
         var filtered = ${requestScope.isFiltered};
         function showFiltered() {
