@@ -15,7 +15,7 @@
   .details td, .details th { white-space: nowrap; }
 </style>
 <c:if test="${not failed and not complete}">
-  <script type="text/javascript" src="/javascript/rememberScroll.js?cb=${rhn:getConfig('web.version')}"> </script>
+  <script type="text/javascript" src="/javascript/rememberScroll.js?cb=${rhn:getConfig('web.buildtimestamp')}"> </script>
 </c:if>
 
 <%@ include file="/WEB-INF/pages/common/fragments/systems/system-header.jspf" %>

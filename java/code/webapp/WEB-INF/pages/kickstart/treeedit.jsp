@@ -8,7 +8,7 @@
         <meta http-equiv="Pragma" content="no-cache" />
     </head>
     <body>
-        <script language="javascript" src="/javascript/refresh.js?cb=${rhn:getConfig('web.version')}"></script>
+        <script language="javascript" src="/javascript/refresh.js?cb=${rhn:getConfig('web.buildtimestamp')}"></script>
         <rhn:toolbar base="h1" icon="header-kickstart"
                      deletionUrl="/rhn/kickstart/TreeDelete.do?kstid=${kstree.id}"
                      deletionType="deleteTree"
