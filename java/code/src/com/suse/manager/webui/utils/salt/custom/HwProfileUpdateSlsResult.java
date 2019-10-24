@@ -26,6 +26,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+
 /**
  * Object representation of the results of a call to state.apply hardware.profileupdate.
  */
@@ -49,6 +50,10 @@ public class HwProfileUpdateSlsResult {
 
     @SerializedName("module_|-network-modules_|-sumautil.get_net_modules_|-run")
     private StateApplyResult<Ret<Map<String, Optional<String>>>> networkModules;
+
+    @SerializedName("module_|-fqdns_|-network.fqdns_|-run")
+    private Optional<StateApplyResult<Ret<Map<String, List<String>>>>> fqdnsFromNetworkModule =
+            Optional.empty();
 
     @SerializedName("module_|-smbios-records-bios_|-smbios.records_|-run")
     private Optional<StateApplyResult<Ret<List<Smbios.Record>>>> smbiosRecordsBios =
@@ -148,6 +153,16 @@ public class HwProfileUpdateSlsResult {
         }
         return "";
     }
+
+    /**
+     * Get the fqdns from network.fqdns module
+     * and if module is not available then fall back to 'fqdns' grain.
+     * @return fqdns of the system
+     */
+    public List<String> getFqdns() {
+       return fqdnsFromNetworkModule.map(s->s.getChanges().getRet().get("fqdns"))
+               .orElseGet(()-> (List<String>)this.getGrains().get("fqdns"));
+     }
 
     private Optional<Map<String, Object>> getSmbiosRecords(
             Optional<StateApplyResult<Ret<List<Smbios.Record>>>> smbiosRecords) {
