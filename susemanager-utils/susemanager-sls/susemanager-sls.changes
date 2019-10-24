@@ -1,3 +1,4 @@
+- Bump version to 4.1.0 (bsc#1154940)
 - Always install latest available salt during bootstrap
 - Create Kiwi cache dir if not present
 - Require pmtools only for SLE11 i586 and x86_64 (bsc#1150314)
