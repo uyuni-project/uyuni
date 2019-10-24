@@ -1,3 +1,5 @@
+- Fix malformed XML response when data contains non-ASCII chars (bsc#1154968)
+
 -------------------------------------------------------------------
 Thu Aug 29 23:44:17 CEST 2019 - jgonzalez@suse.com
 
