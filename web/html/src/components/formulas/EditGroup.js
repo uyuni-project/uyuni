@@ -1,11 +1,15 @@
 /* eslint-disable */
-const React = require("react");
-const EditGroupSubtype = require("../../utils/functions").Formulas.EditGroupSubtype;
-const getEditGroupSubtype = require("../../utils/functions").Formulas.getEditGroupSubtype;
-const deepCopy = require("../../utils/functions").Utils.deepCopy;
+import * as React from 'react';
+import {Utils, Formulas} from 'utils/functions';
+import {generateFormulaComponent, generateFormulaComponentForId} from './FormulaComponentGenerator';
+import HelpIcon from 'components/HelpIcon';
+import "./formula-form.css";
+import SectionToggle from './SectionToggle';
+
+const EditGroupSubtype = Formulas.EditGroupSubtype;
+const getEditGroupSubtype = Formulas.getEditGroupSubtype;
+const deepCopy = Utils.deepCopy;
 // circular dependencies are bad
-const generateFormulaComponent = require("./FormulaComponentGenerator").generateFormulaComponent;
-const generateFormulaComponentForId = require("./FormulaComponentGenerator").generateFormulaComponentForId;
 
 /*
  * Base class for edit-group.
@@ -14,16 +18,16 @@ const generateFormulaComponentForId = require("./FormulaComponentGenerator").gen
 class EditGroup extends React.Component {
     constructor(props) {
         super(props);
-
-        this.handleAddItem = this.handleAddItem.bind(this);
-        this.handleRemoveItem = this.handleRemoveItem.bind(this);
-        this.isDisabled = this.isDisabled.bind(this);
+        this.state = {
+            visible: true
+        };
+        ["handleAddItem", "handleRemoveItem", "isDisabled", "setVisible", "isVisible"].forEach(method => this[method] = this[method].bind(this));
     }
 
     isDisabled() {
         const formScope = this.props.formulaForm.props.scope;
         const elementScope = this.props.element.$scope;
-        return elementScope === "readonly" || (formScope !== elementScope && elementScope !== "system");
+        return elementScope === "readonly" || (formScope !== elementScope && elementScope !== "system") || this.props.disabled;
     }
 
     handleAddItem(event) {
@@ -52,6 +56,14 @@ class EditGroup extends React.Component {
         });
     }
 
+    isVisible(index) {
+        return this.state.visible;
+    }
+
+    setVisible(index, visible) { // index not needed here
+        this.setState({visible: visible});
+    }
+
     render() {
         const element = this.props.element;
         const subType = getEditGroupSubtype(element);
@@ -66,32 +78,35 @@ class EditGroup extends React.Component {
         }
 
         return (
-            <div className="panel panel-default" id={this.props.id}>
-                <div className="panel-heading">
-                    <h4>{this.props.element.$name}</h4>
-                </div>
-                <div className="panel-body">
-                    <Component
-                        handleRemoveItem={this.handleRemoveItem}
-                        isDisabled={this.isDisabled}
-                        id={this.props.id}
-                        key={this.props.key}
-                        element={this.props.element}
-                        value={this.props.value}
-                        formulaForm={this.props.formulaForm}/>
-                    <button className="btn btn-default"
-                        type="button"
+            <div id={this.props.id} className={this.isVisible() ? "formula-content-section-open" : "formula-content-section-closed"}>
+                <div className="group-heading">
+                    <SectionToggle setVisible={this.setVisible} isVisible={this.isVisible}>
+                        <h4>{this.props.element.$name}</h4>
+                    </SectionToggle>
+                    <i className="fa fa-plus"
                         id={this.props.id + '#add_item'}
-                        title={this.props.element.$maxItems <= this.props.value.length ? "Max number of items reached" : "Add Element"}
+                        title={this.props.element.$maxItems <= this.props.value.length ? "Max number of items reached" : "Add Item"}
                         onClick={this.handleAddItem}
-                        disabled={this.props.element.$maxItems <= this.props.value.length}>
-                        <i className="fa fa-plus" /> Add Item
-                    </button>
+                        disabled={(this.props.element.$maxItems <= this.props.value.length) || this.props.disabled}>
+                    </i>
+                </div>
+                <div>
+                    { this.state.visible ?
+                    <React.Fragment>
+                        { "$help" in this.props.element ? <p>{this.props.element.$help}</p> : null }
+                        <Component
+                            handleRemoveItem={this.handleRemoveItem}
+                            isDisabled={this.isDisabled()}
+                            id={this.props.id}
+                            key={this.props.key}
+                            element={this.props.element}
+                            value={this.props.value}
+                        formulaForm={this.props.formulaForm}/>
+                    </React.Fragment> : null }
                 </div>
             </div>);
     }
 }
-
 
 /*
  * Used for rendering edit-groups in the form of "list of primitive types",
@@ -101,18 +116,27 @@ class EditPrimitiveGroup extends React.Component {
 
     constructor(props) {
         super(props);
+        ["simpleWrapper"].forEach(method => this[method] = this[method].bind(this));
+
     };
 
-    simpleWrapper(name, element) {
+    simpleWrapper(name, required, element, help = null) {
         return (
-            <div className="col-lg-3">
-                {element}
-            </div>);
+            <React.Fragment>
+                <div className="col-lg-3">
+                    {element}
+                </div>
+                {required ? <span className="required-form-field" style={{float: "left", paddingRight: "10px"}}>*</span> : null}
+                <HelpIcon text={this.props.element["$help"]}/>
+        </React.Fragment>);
     }
 
     render() {
         let elements = [];
         for (let i in this.props.value) {
+            if (i === "$meta") {
+                continue;
+            }
             let id = this.props.id + "#" + i;
             elements.push(
                 <div className="form-group" id={id} key={id}>
@@ -121,7 +145,8 @@ class EditPrimitiveGroup extends React.Component {
                         this.props.value[i],
                         this.props.formulaForm,
                         id,
-                        this.simpleWrapper)}
+                        this.simpleWrapper,
+                        this.props.isDisabled)}
                     <RemoveButton
                         minItems={this.props.element.$minItems}
                         currentLength={this.props.value.length}
@@ -145,10 +170,12 @@ class EditPrimitiveDictionaryGroup extends React.Component {
     };
 
     pairElementWrapper(elementName) {
-        return (name, element) => (
+        return (name, required, element) => (
             <div key={elementName}>
                 <label className="col-lg-1 control-label">
-                    {elementName + ":"}
+                    {elementName}
+                    {required ? <span className="required-form-field"> *</span> : null}
+                    :
                 </label>
                 <div className="col-lg-3">
                     {element}
@@ -160,6 +187,9 @@ class EditPrimitiveDictionaryGroup extends React.Component {
         let elements = [];
 
         for(let i in this.props.value) {
+            if (i === "$meta") {
+                continue;
+            }
             let id = this.props.id + "#" + i;
             elements.push(
                 <div className="form-group" id={id} key={id}>
@@ -168,13 +198,17 @@ class EditPrimitiveDictionaryGroup extends React.Component {
                         this.props.value[i][0],
                         this.props.formulaForm,
                         id + "#0",
-                        this.pairElementWrapper(this.props.element.$prototype.$key.$name))}
+                        this.pairElementWrapper(this.props.element.$prototype.$key.$name),
+                        this.props.isDisabled
+                        )}
                     {generateFormulaComponentForId(
                         this.props.element.$prototype,
                         this.props.value[i][1],
                         this.props.formulaForm,
                         id + "#1",
-                        this.pairElementWrapper(get(this.props.element.$prototype.$name, "Value")))}
+                        this.pairElementWrapper(get(this.props.element.$prototype.$name, "Value")),
+                        this.props.isDisabled
+                        )}
                     <RemoveButton
                         minItems={this.props.element.$minItems}
                         currentLength={this.props.value.length}
@@ -211,9 +245,13 @@ class RemoveButton extends React.Component {
 class EditDictionaryGroup extends React.Component {
     constructor(props) {
         super(props);
+        this.state = {
+            visibility: new Map()
+        };
+        ["isVisible", "setVisible"].forEach(method => this[method] = this[method].bind(this));
     }
 
-    wrapKeyGroup(element_name, innerHTML) {
+    wrapKeyGroup(element_name, required, innerHTML) {
         return (
             <div className="form-group" key={element_name}>
                 <label className="col-lg-3 control-label">
@@ -236,9 +274,23 @@ class EditDictionaryGroup extends React.Component {
         return name;
     }
 
+    isVisible(index) {
+        return this.state.visibility.get(index) === undefined ||
+            this.state.visibility.get(index) === true;
+    }
+
+    setVisible(index, visible) {
+        const { visibility } = this.state;
+        visibility.set(index, visible);
+        this.setState({ visibility });
+    }
+
     render() {
         let elements = [];
         for (let i in this.props.value) {
+            if (i === "$meta") {
+                continue;
+            }
             let id = this.props.id + "#" + i;
 
             let item_elements = [];
@@ -249,21 +301,24 @@ class EditDictionaryGroup extends React.Component {
                     this.props.value[i][element_name],
                     this.props.formulaForm,
                     id,
-                    element_name === "$key" ? this.wrapKeyGroup : undefined
+                    element_name === "$key" ? this.wrapKeyGroup : undefined,
+                    this.props.isDisabled
                  ));
             }
 
             elements.push(
-                <div className="panel panel-default" id={id} key={id}>
-                    <div className="panel-heading edit-group-heading">
-                        <h4>{this.generateItemName(i)}</h4>
+                <div id={id} key={id} className={this.isVisible(i) ? "formula-content-section-open" : "formula-content-section-closed"}>
+                    <div className="group-heading">
+                        <SectionToggle index={i} setVisible={this.setVisible} isVisible={this.isVisible}>
+                            <h4>{this.generateItemName(i)}</h4>
+                        </SectionToggle>
                         <i className="fa fa-minus"
                             onClick={() => this.props.handleRemoveItem(i)}
                             title={this.props.element.$minItems >= this.props.value.length ? "Min number of items reached" : "Remove item"}
-                            disabled={this.props.element.$minItems >= this.props.value.length || this.props.isDisabled()} />
+                            disabled={this.props.element.$minItems >= this.props.value.length || this.props.isDisabled} />
                     </div>
-                    <div className="panel-body">
-                        {item_elements}
+                    <div>
+                        {this.state.visibility.get(i) === undefined || this.state.visibility.get(i) === true ? item_elements : null }
                     </div>
                 </div>
             );
@@ -278,7 +333,4 @@ function get(value, default_value) {
     return value;
 }
 
-
-module.exports = {
-  EditGroup: EditGroup
-}
+export default EditGroup;

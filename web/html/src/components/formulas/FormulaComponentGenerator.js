@@ -1,39 +1,55 @@
 /* eslint-disable */
-// needed because of circular deps
-module.exports = {
-  generateFormulaComponent: generateFormulaComponent,
-  generateFormulaComponentForId: generateFormulaComponentForId
-}
+import * as React from 'react';
+import EditGroup from './EditGroup';
+import Group from './Group';
+import PasswordInput from './PasswordInput';
+import {default as Jexl} from 'jexl';
+import HelpIcon from 'components/HelpIcon';
 
-const React = require("react");
-const EditGroup = require("./EditGroup").EditGroup;
-const PasswordInput = require("./PasswordInput").PasswordInput;
 const BASIC_INPUT_TYPES = ["text", "email", "url", "date", "time"];
 
 
-function generateFormulaComponent(element, value, formulaForm, parents, wrapper) {
+export function generateFormulaComponent(element, value, formulaForm, parents, wrapper, disabled = false) {
     const id = (parents ? parents + "#" : "") + element.$id;
-    return generateFormulaComponentForId(element, value, formulaForm, id, wrapper);
+    return generateFormulaComponentForId(element, value, formulaForm, id, wrapper, disabled);
 }
 
-function generateFormulaComponentForId(element, value, formulaForm, id, wrapper) {
+export function generateFormulaComponentForId(element, value, formulaForm, id, wrapper, disabled = false) {
     wrapper = get(wrapper, defaultWrapper);
 
-    var isDisabled = (formulaForm.props.scope !== element.$scope && element.$scope !== "system");
+    var isDisabled = (formulaForm.props.scope !== element.$scope && element.$scope !== "system") || 
+        ("$disabled" in element && evalExpression(id, element.$disabled, formulaForm)) ||
+        (!("$disabled" in element) && disabled);
 
+    if ("$visible" in element && !evalExpression(id, element.$visible, formulaForm)) {
+        return null;
+    }
+
+    // $visibleIf is deprecated
     if ("$visibleIf" in element && !checkVisibilityCondition(id, element.$visibleIf, formulaForm))
         return null;
+
+    const required = ("$required" in element) && evalExpression(id, element.$required, formulaForm);
 
     if (BASIC_INPUT_TYPES.indexOf(element.$type) >= 0) //Element is a basic html input type
         return wrapper(
             element.$name,
-            <input type={element.$type} name={element.$name} id={id} className="form-control" onChange={formulaForm.handleChange} placeholder={element.$placeholder} title={element.$help} disabled={isDisabled} value={value} />
+            required,
+            <input type={element.$type} name={element.$name} id={id} className="form-control"
+                onChange={formulaForm.handleChange} placeholder={element.$placeholder} title={element.$help}
+                disabled={isDisabled} value={value}
+                required={required}
+                pattern={element.$match} />,
+            element.$help
         );
     else if (element.$type === "password")
-        return <PasswordInput id={id} key={id} element={element} value={value} onChange={formulaForm.handleChange} disabled={isDisabled} />;
+        return <PasswordInput id={id} key={id} element={element} value={value} onChange={formulaForm.handleChange} disabled={isDisabled} required={required}
+            help={element.$help}
+        />;
     else if (element.$type === "color")
         return wrapper(
                 element.$name,
+                required,
                 <div className="input-group small-color-picker">
                     <input type="color" name={element.$name} id={id} className="form-control" onChange={formulaForm.handleChange} title={element.$help} disabled={isDisabled} value={value} />
                     <span className="input-group-btn">
@@ -41,29 +57,31 @@ function generateFormulaComponentForId(element, value, formulaForm, id, wrapper)
                             <i className="fa fa-undo no-margin" />
                         </button>
                     </span>
-                </div>
+                </div>,
+                element.$help
         );
     else if (element.$type === "datetime")
         return wrapper(
                 element.$name,
-                <input type="datetime-local" name={element.$name} id={id} className="form-control" onChange={formulaForm.handleChange} placeholder={element.$placeholder} title={element.$help} disabled={isDisabled} value={value} />
+                required,
+                <input type="datetime-local" name={element.$name} id={id} className="form-control" onChange={formulaForm.handleChange} placeholder={element.$placeholder} title={element.$help} disabled={isDisabled} value={value} />,
+                element.$help
         );
     else if (element.$type === "number")
         return wrapper(
                 element.$name,
-                <input type="number" steps="1" max={get(element.$max, "")} min={get(element.$min, "")} name={element.$name} id={id} className="form-control" onChange={formulaForm.handleChange} placeholder={element.$placeholder} title={element.$help} disabled={isDisabled} value={value} />
+                required,
+                <input type="number" steps="1" max={get(element.$max, "")} min={get(element.$min, "")} name={element.$name} id={id} className="form-control" onChange={formulaForm.handleChange} placeholder={element.$placeholder}
+                    title={element.$help}
+                    disabled={isDisabled}
+                    value={value}
+                    required={required} />,
+                element.$help
         );
     else if (element.$type === "group") {
-        return (
-            <div className="panel panel-default" id={id} key={id}>
-                <div className="panel-heading">
-                    <h4>{element.$name}</h4>
-                </div>
-                <div className="panel-body">
-                    {generateChildrenFormItems(element, value, formulaForm, id)}
-                </div>
-            </div>
-        );
+        return <Group id={id} key={id} header={element.$name} help={element.$help}>
+            {generateChildrenFormItems(element, value, formulaForm, id, isDisabled)}
+        </Group>;
     }
     else if (element.$type === "namespace")
         return generateChildrenFormItems(element, value, formulaForm, id);
@@ -73,28 +91,61 @@ function generateFormulaComponentForId(element, value, formulaForm, id, wrapper)
             key={element.$name}
             element={element}
             value={value}
-            formulaForm={formulaForm} />;
+            formulaForm={formulaForm}
+            disabled={isDisabled} />;
     } else if (element.$type === "select")
         return wrapper(
                 element.$name,
+                required,
                 <select className="form-control" name={element.$name} id={id} onChange={formulaForm.handleChange} title={element.$help} disabled={isDisabled} value={value}>
                     {generateSelectList(element.$values)}
-                </select>
+                </select>,
+                element.$help
         );
     else if (element.$type === "boolean")
         return wrapper(
                 element.$name,
+                required,
                 <div className="checkbox">
                     <input type="checkbox" onChange={formulaForm.handleChange} name={element.$name} id={id} title={element.$help} disabled={isDisabled} checked={value} />
-                </div>
+                </div>,
+                element.$help
         );
     else {
         console.error("Unknown $type: " + element.$type);
         return wrapper(
                 element.$name,
+                required,
                 <div>{JSON.stringify(value)}</div>
         );
     }
+}
+
+function evalExpression(id, condition, formulaForm) {
+    const context = {
+        "this": buildValuePath(id, formulaForm.getFormulaValues()),
+        formValues: formulaForm.getFormulaValues()
+    }
+    return Jexl.evalSync(condition + "", context);
+}
+
+function buildValuePath(id, formValues) {
+    const tokens = id.split("#");
+    let value = formValues;
+    let prevPath = null;
+    let path = null;
+    for (let i in tokens) {
+        if (value[tokens[i]] === undefined) {
+            return null;
+        }
+        value = value[tokens[i]];
+        path = {
+            parent: prevPath,
+            value: value
+        };
+        prevPath = path;
+    }
+    return path;
 }
 
 function getConditionValue(value) {
@@ -131,11 +182,11 @@ function checkVisibilityCondition(id, condition, formulaForm) {
     return false;
 }
 
-function generateChildrenFormItems(element, value, formulaForm, id) {
+function generateChildrenFormItems(element, value, formulaForm, id, disabled = false) {
     var child_items = [];
     for (var child_name in element) {
         if (child_name.startsWith("$")) continue;
-        child_items.push(generateFormulaComponent(element[child_name], value[child_name], formulaForm, id));
+        child_items.push(generateFormulaComponent(element[child_name], value[child_name], formulaForm, id, undefined, disabled));
     }
     return child_items;
 }
@@ -147,27 +198,32 @@ function generateSelectList(data) {
     return options;
 }
 
-function defaultWrapper(elementName, element) {
-    return wrapFormGroupWithLabel(elementName,
+function defaultWrapper(elementName, required, element, help = null) {
+    return wrapFormGroupWithLabel(elementName, required,
+        <React.Fragment>
             <div className="col-lg-6">
               {element}
             </div>
+            <HelpIcon text={help}/>
+        </React.Fragment>
         );
 }
 
-function wrapFormGroupWithLabel(element_name, innerHTML) {
+function wrapFormGroupWithLabel(element_name, required, innerHTML) {
     return (
         <div className="form-group" key={element_name}>
-            {wrapLabel(element_name)}
+            {wrapLabel(element_name, required)}
             {innerHTML}
         </div>
     );
 }
 
-function wrapLabel(text, label_for) {
+function wrapLabel(text, required, label_for) {
     return (
         <label htmlFor={label_for} className="col-lg-3 control-label">
-            {text + ":"}
+            {text}
+            {required ? <span className="required-form-field"> *</span> : null}
+            :
         </label>
     );
 }
@@ -177,5 +233,3 @@ function get(value, def) {
         return def;
     return value;
 }
-
-
