@@ -94,6 +94,32 @@ public class KubernetesManagerTest extends JMockBaseTestCaseWithUser {
                 getMatchingContainers(imgInfo, usages).filter(c -> "other".equals(c.getPodNamespace())).count());
     }
 
+    public void testGetContainersUsageWithoutDockerPullable() throws Exception {
+        expectGetAllContainers("local-context", "get_all_containers.caasp4.json");
+
+        VirtualHostManager cluster1 = createVirtHostManager();
+
+        ImageInfo imgInfo = ImageTestUtils.createImageInfo("ip-172-31-8-0.eu-central-1.compute.internal:5000/apache-production:latest", "latest", user);
+
+        ImageBuildHistory history1 = createImageBuildHistory(imgInfo, 1,
+                "ip-172-31-8-0.eu-central-1.compute.internal:5000/apache-production@sha256:362f5f5d8d3670c9c499ae171ce059e9fa1889c879bfc2db78b97f37998dc717");
+
+        imgInfo.getBuildHistory().add(history1);
+        imgInfo.setRevisionNumber(1);
+
+        TestUtils.saveAndFlush(imgInfo);
+
+        Set<ImageUsage> usages = manager.getImagesUsage();
+
+        assertEquals(1, usages.size());
+        assertEquals(imgInfo, usages.iterator().next().getImageInfo());
+        assertTrue(getMatchingContainers(imgInfo, usages).allMatch(c -> c.getBuildRevision().get() == 1));
+        assertTrue(getMatchingContainers(imgInfo, usages).allMatch(c -> c.getVirtualHostManager().equals(cluster1)));
+
+        assertEquals(4,
+                getMatchingContainers(imgInfo, usages).filter(c -> "default".equals(c.getPodNamespace())).count());
+    }
+
     /**
      * Containers have two different versions of the same image.
      * @throws Exception

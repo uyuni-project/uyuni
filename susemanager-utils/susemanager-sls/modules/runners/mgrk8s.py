@@ -25,9 +25,9 @@ def get_all_containers(kubeconfig=None, context=None):
        {
             "containers": [
                 {
-                    "image_id": "docker-pullable://some/image@sha256:hash....",
+                    "image_id": "(docker-pullable://)?some/image@sha256:hash....",
                     "image": "myregistry/some/image:v1",
-                    "container_id": "docker://...hash...",
+                    "container_id": "(docker|cri-o)://...hash...",
                     "pod_name": "kubernetes-pod",
                     "pod_namespace": "pod-namespace"
                 }
