@@ -1,3 +1,5 @@
+- fix hostname-rename script for cobbler files
+
 -------------------------------------------------------------------
 Thu Oct 17 13:05:59 CEST 2019 - jgonzalez@suse.com
 
