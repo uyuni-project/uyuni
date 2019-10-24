@@ -944,9 +944,14 @@ class RepoSync(object):
             ident = "%s-%s%s-%s.%s" % (pack.name, epoch, pack.version, pack.release, pack.arch)
             self.available_packages[ident] = 1
 
-            db_pack = rhnPackage.get_info_for_package(
+            packs = rhnPackage.get_info_for_package(
                 [pack.name, pack.version, pack.release, pack.epoch, pack.arch],
                 channel_id, self.org_id)
+            db_pack = None
+            for p in packs:
+                if p['checksum'] == pack.checksum:
+                    db_pack = p
+                    break
 
             to_download = True
             to_link = True
@@ -1201,9 +1206,14 @@ class RepoSync(object):
 
         for pack in packages:
 
-            db_pack = rhnPackage.get_info_for_package(
+            packs = rhnPackage.get_info_for_package(
                 [pack.name, pack.version, pack.release, pack.epoch, pack.arch],
                 channel_id, self.org_id)
+            db_pack = None
+            for p in packs:
+                if p['checksum'] == pack.checksum:
+                    db_pack = p
+                    break
 
             pack_status = " + "  # need to be downloaded by default
             pack_full_name = "%-60s\t" % (pack.name + "-" + pack.version + "-" + pack.release + "." +
