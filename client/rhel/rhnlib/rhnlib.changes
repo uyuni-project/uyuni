@@ -1,3 +1,4 @@
+- Fix malformed XML response when data contains non-ASCII chars (bsc#1154968)
 - fix initialize ssl connection (bsc#1144155)
 - Add SNI support for clients
 - Fix bootstrapping SLE11SP4 trad client with SSL enabled (bsc#1148177)
