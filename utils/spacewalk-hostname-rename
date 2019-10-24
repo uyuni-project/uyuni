@@ -518,10 +518,15 @@ SET kernel_options = REPLACE(kernel_options, '$OLD_HOSTNAME', '$HOSTNAME'),
 COMMIT;
 $DBSHELL_QUIT
 EOS
-for FILE in /var/lib/cobbler/collections/profiles/*
+for COBBLERDIR in /var/lib/cobbler/collections/*
 do
-    backup_file $FILE
-    sed -i "s/$OLD_HOSTNAME/$HOSTNAME/g" $FILE
+    if [ -d $COBBLERDIR ] && [ ! -z "$(ls $COBBLERDIR)" ]; then
+        for FILE in $COBBLERDIR/*
+        do
+            backup_file $FILE
+            sed -i "s/$OLD_HOSTNAME/$HOSTNAME/g" $FILE
+        done
+    fi
 done
 print_status 0  # just simulate end
 
