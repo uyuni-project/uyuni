@@ -1,14 +1,15 @@
 /* eslint-disable */
 'use strict';
 
-var React = require("react");
-const ReactDOM = require("react-dom");
+import * as React from 'react';
+import ReactDOM from 'react-dom';
 
-var Network = require("utils/network");
-var FormulaFormModule = require("components/FormulaForm");
-var FormulaForm = FormulaFormModule.FormulaForm;
-const capitalize = require("utils/functions").Utils.capitalize;
-const SpaRenderer  = require("core/spa/spa-renderer").default;
+import Network from "../../../utils/network";
+import FormulaForm from "components/FormulaForm";
+import {Utils} from 'utils/functions';
+import SpaRenderer from "core/spa/spa-renderer";
+
+const capitalize = Utils.capitalize;
 
 export const renderer = (renderId, {serverId, formulaId}) => {
 

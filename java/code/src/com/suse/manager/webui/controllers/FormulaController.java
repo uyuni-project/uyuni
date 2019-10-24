@@ -170,6 +170,7 @@ public class FormulaController {
         map.put("layout", FormulaFactory
                 .getFormulaLayoutByName(formulaName)
                 .orElseGet(Collections::emptyMap));
+        map.put("metadata", FormulaFactory.getMetadata(formulaName));
         return GSON.toJson(map);
     }
 

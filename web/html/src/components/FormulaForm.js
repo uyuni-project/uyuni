@@ -1,17 +1,17 @@
 /* eslint-disable */
-const React = require("react");
-const Network = require("../utils/network");
-const Functions = require("../utils/functions");
-const Buttons = require("../components/buttons");
-const Messages = require("../components/messages").Messages;
-const generateFormulaComponent = require("./formulas/FormulaComponentGenerator").generateFormulaComponent;
+import * as React from 'react';
+import Network from "../utils/network";
+import {Utils, Formulas} from 'utils/functions';
+import {default as Jexl} from 'jexl';
+import {Button} from "../components/buttons";
+import {Messages} from "../components/messages";
+import {generateFormulaComponent} from "./formulas/FormulaComponentGenerator";
+import {SectionToolbar} from "components/section-toolbar/section-toolbar";
 
-const Button = Buttons.Button;
-const getEditGroupSubtype = Functions.Formulas.getEditGroupSubtype;
-const EditGroupSubtype = Functions.Formulas.EditGroupSubtype;
-const deepCopy = Functions.Utils.deepCopy;
-const capitalize = Functions.Utils.capitalize;
-const {SectionToolbar} = require("components/section-toolbar/section-toolbar");
+const getEditGroupSubtype = Formulas.getEditGroupSubtype;
+const EditGroupSubtype = Formulas.EditGroupSubtype;
+const deepCopy = Utils.deepCopy;
+const capitalize = Utils.capitalize;
 
 //props:
 //dataUrl = url to get the server data
@@ -24,7 +24,7 @@ class FormulaForm extends React.Component {
     constructor(props) {
         super(props);
 
-        ["saveFormula", "handleChange", "clearValues", "getMessageText"].forEach(method => this[method] = this[method].bind(this));
+        ["saveFormula", "handleChange", "clearValues", "getMessageText", "getEmptyValues"].forEach(method => this[method] = this[method].bind(this));
 
         const previewMessage = <p>On this page you can configure <a href="https://docs.saltstack.com/en/latest/topics/development/conventions/formulas.html" target="_blank" rel="noopener noreferrer">Salt Formulas</a> to automatically install and configure software.</p>;
 
@@ -60,7 +60,8 @@ class FormulaForm extends React.Component {
                     formulaList: [],
                     formulaLayout: {},
                     formulaValues: {},
-                    formulaChanged: false
+                    formulaChanged: false,
+                    metadata: {}
                 });
             else {
                 const layout = preprocessLayout(data.layout);
@@ -73,28 +74,72 @@ class FormulaForm extends React.Component {
                     formulaList: data.formula_list,
                     formulaLayout: layout,
                     formulaValues: values,
-                    formulaChanged: false
+                    formulaChanged: false,
+                    formulaMetadata: data.metadata
                 });
             }
         });
     }
 
-    getEmptyValues$key() {
-      let requiredErrors = [];
-
-      function checkDeepInt(values) {
-        if (values instanceof Object) {
-          if ("$key" in values && !values['$key']) {
-            requiredErrors.push(values['$key_name']);
-          }
-
-          Object.values(values).forEach((value) => checkDeepInt(value));
+    walkValueTree(value, formulaValues, validationFunc) {
+        if (value instanceof Object) {
+            for (let key in value) {
+                if (!key.startsWith("$meta$")) {
+                    if (("$meta$" + key) in value) {
+                        const meta = value["$meta$" + key];
+                        validationFunc(value[key], meta, formulaValues);
+                    }
+                }
+            }
+            for (let key in value) {
+                if (!key.startsWith("$meta$")) {
+                    this.walkValueTree(value[key], formulaValues, validationFunc);
+                }
+            }
         }
-      }
+    }    
 
-      checkDeepInt(this.state.formulaValues)
+    getEmptyValues() {
+        let requiredErrors = []
+        this.walkValueTree(this.state.formulaValues, this.state.formulaValues, 
+            (val, meta, formulaValues) => {
+                if(meta["required"]) {
+                    const required = Jexl.evalSync(meta["required"] + "", formulaValues); // TODO use evalExpression()
+                    if (required) {
+                        if (Array.isArray(val) && val.some(v => !v)) {
+                            requiredErrors.push(meta["name"]);
+                        } else if (!val) {
+                            requiredErrors.push(meta["name"]);
+                        }
+                    }
+                }
+            });
+        return requiredErrors;
+    }
 
-      return requiredErrors;
+    checkFieldsFormat() {
+        const errors = [];
+        this.walkValueTree(this.state.formulaValues, this.state.formulaValues, 
+            (value, meta, formulaValues) => {
+                if(meta["match"]) {
+                    try {
+                        const re = new RegExp(meta["match"]);
+                        if (Array.isArray(value)) {
+                            // match each value
+                            if (!value.every(v => re.test(v))) {
+                                errors.push(meta["name"]);
+                            }
+                        } else {
+                            if (!re.test(value)) {
+                                errors.push(meta["name"]);
+                            }
+                        }
+                    } catch (err) {
+                        console.log("Error matching regex: '" + meta["match"] + "':" + err);
+                    }
+                }
+            });
+        return errors;
     }
 
     saveFormula(event) {
@@ -112,12 +157,20 @@ class FormulaForm extends React.Component {
             content: this.getValuesClean(preprocessCleanValues(this.state.formulaValues, this.state.formulaLayout))
         };
 
-        const emptyRequiredFields = [...new Set(this.getEmptyValues$key())];
+        const emptyRequiredFields = [...new Set(this.getEmptyValues())];
+        const checkFieldsFormat = [...new Set(this.checkFieldsFormat())];
 
-        if(emptyRequiredFields.length > 0) {
+        if(emptyRequiredFields.length > 0 || checkFieldsFormat.length > 0) {
+            const messages = [];
+            if (emptyRequiredFields.length > 0) {
+                messages.push(t("Please input required fields: {0}", emptyRequiredFields.join(', ')));
+            }
+            if (checkFieldsFormat.length > 0) {
+                messages.push(t("Invalid format of fields: {0}", checkFieldsFormat.join(', ')));
+            }
             this.setState({
                     messages: [],
-                    errors: [ t("Please input required fields: {0}", emptyRequiredFields.join(', ')) ]
+                    errors: messages
             });
         } else {
           Network.post(
@@ -147,18 +200,38 @@ class FormulaForm extends React.Component {
     getValuesClean(values = this.state.formulaValues, layout = this.state.formulaLayout) {
         let result = {};
         for (let key in values) {
+            if (key.startsWith("$meta")) {
+                continue;
+            }
             let value = values[key];
             let element = layout[key];
-
             if (element.$type === "group" || element.$type === "namespace") {
                 value = this.getValuesClean(value, element);
                 if (!$.isEmptyObject(value))
                     result[key] = value;
             }
             else if ((element.$scope === this.props.currentScope || element.$scope === "system") && !(value && value.length === 0)) {
-                value = this.checkIfEmptyValueAttrExists(value, element, values)
-                result[key] = value;
+                value = this.checkIfEmptyValueAttrExists(value, element, values);
+                result[key] = this.cleanMeta(value);
             }
+        }
+        return result;
+    }
+
+    /**
+    * Remove $meta element from all form values.
+    */
+    cleanMeta(value) {
+        let result = {};
+        if (value instanceof Object && !Array.isArray(value)) {
+            for (let key in value) {
+                if (key.startsWith("$meta")) {
+                    continue;
+                }
+                result[key] = this.cleanMeta(value[key]);
+            }
+        } else {
+            result = value;
         }
         return result;
     }
@@ -247,6 +320,10 @@ class FormulaForm extends React.Component {
       return this.props.messageTexts[msg] ? t(this.props.messageTexts[msg]) : msg;
     }
 
+    getFormulaValues() {
+        return this.state.formulaValues;
+    }
+
     render() {
         let messageItems = this.state.messages.map((msg) => {
             return { severity: "info", text: msg };
@@ -296,10 +373,14 @@ class FormulaForm extends React.Component {
                         </SectionToolbar>
                         <div className="panel panel-default">
                             <div className="panel-heading">
-                                <h4>{capitalize(get(this.state.formulaName, "Unnamed"))}</h4>
+                                <h3>{capitalize(get(this.state.formulaName, "Unnamed"))}</h3>
                             </div>
                             <div className="panel-body">
+                                <div className="formula-content">
+                                <p>{this.state.formulaMetadata.description}</p>
+                                <hr/>
                                 {this.renderForm()}
+                                </div>
                             </div>
                         </div>
                     </form>
@@ -350,6 +431,10 @@ function adjustElementBasicAttrs([elementName, element], scope) {
 
     if (element.$name === undefined && elementName === "$key") {
         element.$name = "Key";
+    }
+
+    if (elementName === "$key") {
+        element["$required"] = true;
     }
 
     element.$id = elementName;
@@ -518,6 +603,10 @@ function preprocessCleanValues(values, layout) {
     const result = {};
     Object.entries(values)
         .forEach(([key, value]) => {
+            if (key === "$required") {
+                return;
+            }
+
             const element = layout[key];
             const editGroupSubType = getEditGroupSubtype(element);
 
@@ -600,6 +689,24 @@ function generateValues(layout, group_data, system_data) {
             if(key === '$key') {
               result['$key_name'] = element.$name;
             }
+
+            if ((element.$type === "edit-group") && 
+                !(getEditGroupSubtype(element) === EditGroupSubtype.LIST_OF_DICTIONARIES ||
+                    getEditGroupSubtype(element) === EditGroupSubtype.DICTIONARY_OF_DICTIONARIES)) {
+                result["$meta$"+ key] = {
+                    required: key == "$key" ? true : element.$prototype["$required"],
+                    disabled: element.$prototype["$disabled"],
+                    name: element["$name"],
+                    match: element.$prototype["$match"]
+                };
+            } else {
+                result["$meta$"+ key] = {
+                    required: key == "$key" ? true : element["$required"],
+                    disabled: element["$disabled"],
+                    name: element["$name"],
+                    match: element["$match"]
+                };
+            }
         }
         return result;
     }
@@ -613,7 +720,4 @@ function get(value, def) {
     return value;
 }
 
-
-module.exports = {
-    FormulaForm: FormulaForm
-}
+export default FormulaForm;

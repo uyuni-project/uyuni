@@ -425,6 +425,7 @@ public class FormulaFactory {
             }
         }
         catch (FileNotFoundException | YAMLException e) {
+            LOG.error("Error loading layout for formula '" + name + "'", e);
             return Optional.empty();
         }
     }
