@@ -1,3 +1,4 @@
+- Bump version to 4.1.0 (bsc#1154940)
 - create susemanager group in uyuni-base-server
 - uyuni-base-common is not really required at buildtime, so
   remove respective BuildRequires

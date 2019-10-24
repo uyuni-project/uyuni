@@ -1,3 +1,4 @@
+- Bump version to 4.1.0 (bsc#1154940)
 - prepare bootstrap data for upcoming openSUSE 15.2
 - add bootstrap data for openSUSE 15.1 when mirrored as
   Vendor Channels (bsc#1154474)

@@ -1,3 +1,4 @@
+- Bump version to 4.1.0 (bsc#1154940)
 - use /etc/rhn from uyuni-base-common
 - move /usr/share/rhn/config-defaults to uyuni-base-common
 

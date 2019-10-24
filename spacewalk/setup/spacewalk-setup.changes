@@ -1,3 +1,4 @@
+- Bump version to 4.1.0 (bsc#1154940)
 - fix cobbler authentication module configuration required for
   new cobbler package
 - prevent CherryPy timeouts (bsc#1118175)
