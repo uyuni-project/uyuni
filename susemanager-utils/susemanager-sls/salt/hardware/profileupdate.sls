@@ -43,4 +43,6 @@ mainframe-sysinfo:
   module.run:
     - name: mainframesysinfo.read_values
 {% endif %}
-
+fqdns:
+  module.run:
+    - name: network.fqdns
