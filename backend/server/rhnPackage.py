@@ -249,13 +249,14 @@ def get_info_for_package(pkg, channel_id, org_id):
     h = rhnSQL.prepare(statement)
     h.execute(**params)
 
-    ret = h.fetchone_dict()
+    ret = h.fetchall_dict() or []
     if not ret:
         return ret
-    if ret['org_id'] == None:
-        ret['org_id'] = ''
-    else:
-        ret['org_id'] = str(ret['org_id'])
+    for i in ret:
+        if i['org_id'] == None:
+            i['org_id'] = ''
+        else:
+            i['org_id'] = str(i['org_id'])
     return ret
 
 
