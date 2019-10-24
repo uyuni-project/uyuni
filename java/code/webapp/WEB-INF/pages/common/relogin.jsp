@@ -6,7 +6,7 @@
 <head>
 </head>
 <body>
-    <script src="/javascript/susemanager-login.js?cb=${rhn:getConfig('web.version')}"></script>
+    <script src="/javascript/susemanager-login.js?cb=${rhn:getConfig('web.buildtimestamp')}"></script>
 
     <c:if test="${schemaUpgradeRequired == 'true'}">
         <div class="alert alert-danger">

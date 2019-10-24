@@ -7,7 +7,7 @@
     <head>
     </head>
     <body>
-        <script src="/javascript/rank_options.js?cb=${rhn:getConfig('web.version')}" type="text/javascript"></script>
+        <script src="/javascript/rank_options.js?cb=${rhn:getConfig('web.buildtimestamp')}" type="text/javascript"></script>
         <%@ include file="/WEB-INF/pages/common/fragments/systems/system-header.jspf" %>
         <html:form  method="post"
                     styleClass="form-horizontal"

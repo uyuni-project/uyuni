@@ -22,7 +22,7 @@
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <c:set var="cb_version" value="${rhn:getConfig('web.version')}" />
+    <c:set var="cb_version" value="${rhn:getConfig('web.buildtimestamp')}" />
 
 
 <!-- import default fonts/icons styles -->

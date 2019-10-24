@@ -9,7 +9,7 @@
 </head>
 
 <body>
-  <link rel="stylesheet" type="text/css" href="/css/susemanager-sp-migration.css?cb=${rhn:getConfig('web.version')}" />
+  <link rel="stylesheet" type="text/css" href="/css/susemanager-sp-migration.css?cb=${rhn:getConfig('web.buildtimestamp')}" />
   <%@ include file="/WEB-INF/pages/common/fragments/systems/system-header.jspf"%>
 
   <rhn:toolbar base="h2" icon="header-channel">

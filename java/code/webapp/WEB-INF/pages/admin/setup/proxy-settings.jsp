@@ -2,9 +2,9 @@
 
 <html>
     <body>
-        <script type="text/javascript" src="/rhn/dwr/interface/ProxySettingsRenderer.js?cb=${rhn:getConfig('web.version')}"></script>
-        <script type="text/javascript" src="/javascript/susemanager-setup-wizard.js?cb=${rhn:getConfig('web.version')}"></script>
-        <script type="text/javascript" src="/javascript/susemanager-setup-wizard-proxy-settings.js?cb=${rhn:getConfig('web.version')}"></script>
+        <script type="text/javascript" src="/rhn/dwr/interface/ProxySettingsRenderer.js?cb=${rhn:getConfig('web.buildtimestamp')}"></script>
+        <script type="text/javascript" src="/javascript/susemanager-setup-wizard.js?cb=${rhn:getConfig('web.buildtimestamp')}"></script>
+        <script type="text/javascript" src="/javascript/susemanager-setup-wizard-proxy-settings.js?cb=${rhn:getConfig('web.buildtimestamp')}"></script>
         <div class="responsive-wizard">
             <rhn:toolbar base="h1" icon="header-preferences" helpUrl="/docs/reference/admin/setup-wizard.html">
                 Setup Wizard

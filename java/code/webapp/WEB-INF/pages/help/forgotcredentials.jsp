@@ -7,7 +7,7 @@
 <html:xhtml/>
 <html>
 <body>
-  <script type="text/javascript" src="/javascript/highlander.js?cb=${rhn:getConfig('web.version')}"></script>
+  <script type="text/javascript" src="/javascript/highlander.js?cb=${rhn:getConfig('web.buildtimestamp')}"></script>
   <rhn:toolbar base="h1" icon="header-search"
                helpUrl="/docs/reference/home/user-account-your-account.html">
     <bean:message key="help.credentials.jsp.logininfo"/>

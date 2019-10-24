@@ -9,8 +9,8 @@
 </head>
 
 <body>
-    <link rel="stylesheet" type="text/css" href="/css/susemanager-sp-migration.css?cb=${rhn:getConfig('web.version')}" />
-    <script src="/javascript/susemanager-sp-migration.js?cb=${rhn:getConfig('web.version')}"></script>
+    <link rel="stylesheet" type="text/css" href="/css/susemanager-sp-migration.css?cb=${rhn:getConfig('web.buildtimestamp')}" />
+    <script src="/javascript/susemanager-sp-migration.js?cb=${rhn:getConfig('web.buildtimestamp')}"></script>
     <%@ include file="/WEB-INF/pages/common/fragments/systems/system-header.jspf"%>
 
     <rhn:toolbar base="h2" icon="header-channel">
