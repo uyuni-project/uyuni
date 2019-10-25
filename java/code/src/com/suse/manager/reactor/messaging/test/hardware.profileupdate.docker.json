@@ -221,6 +221,23 @@
         "changes": {},
         "__id__": "smbios-records-system"
       },
+      "module_|-fqdns_|-network.fqdns_|-run": {
+        "__id__": "fqdns",
+        "__run_num__": 13,
+        "__sls__": "hardware.profileupdate",
+        "changes": {
+          "ret": {
+            "fqdns": [
+              "minionsles12-suma3pg.vagrant.local"
+            ]
+          }
+        },
+        "comment": "Module function network.fqdns executed",
+        "duration": 105.654,
+        "name": "network.fqdns",
+        "result": true,
+        "start_time": "13:58:24.817053"
+      },
       "module_|-network-ips_|-sumautil.primary_ips_|-run": {
         "comment": "Module function sumautil.primary_ips executed",
         "name": "sumautil.primary_ips",
