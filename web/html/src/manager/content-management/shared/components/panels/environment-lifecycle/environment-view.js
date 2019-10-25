@@ -46,7 +46,7 @@ const EnvironmentView = React.memo((props: Props) => {
       {/*</dl>*/}
       <dl className="row">
         <dt className="col-xs-3">Version:</dt>
-        <dd className="col-xs-9">{versionMessage}</dd>
+        <dd className="col-xs-9"><pre>{versionMessage}</pre></dd>
       </dl>
       {
         props.environment.version > 0 ?

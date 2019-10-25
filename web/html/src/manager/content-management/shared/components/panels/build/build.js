@@ -91,17 +91,7 @@ const Build = ({projectId, onBuild, currentHistoryEntry = {}, changesToBuild, di
                     <dl className="row">
                       <dt className="col-md-3 control-label">Version {buildVersionForm.version} history:</dt>
                       <dd className="col-md-9">
-                        <ul className="list-unstyled">
-                          {
-                            changesToBuild.map((change, index) => {
-                              return (
-                                <li key={index}>
-                                  {change}
-                                </li>
-                              )
-                            })
-                          }
-                        </ul>
+		        <pre>{changesToBuild}</pre>
                       </dd>
                     </dl>
                   </Form>
@@ -123,7 +113,7 @@ const Build = ({projectId, onBuild, currentHistoryEntry = {}, changesToBuild, di
                         handler={() => {
                           onAction({
                             projectLabel: projectId,
-                            message: buildVersionForm.message,
+                            message: buildVersionForm.message.concat('\n\n').concat(changesToBuild.join('')),
                           }, "action", projectId)
                             .then((projectWithUpdatedSources) => {
                               closeDialog(modalNameId);

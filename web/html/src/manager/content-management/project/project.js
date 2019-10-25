@@ -56,17 +56,22 @@ const Project = (props: Props) => {
   const projectId = project.properties.label;
   const currentHistoryEntry = _last(project.properties.historyEntries);
 
-  let changesToBuild = project.softwareSources
-    .filter(source => statesEnum.isEdited(source.state))
-    .map(source => `Source: ${source.type} ${source.name} ${statesEnum.findByKey(source.state).description}`);
+  let changesToBuild = ["Software Channels:\n"];
   changesToBuild = changesToBuild.concat(
-    project
-      .filters
-      .filter(filter => statesEnum.isEdited(filter.state))
-      .map(filter =>
-        `${getClmFilterDescription(filter)} ${statesEnum.findByKey(filter.state).description}`
-      )
+     project.softwareSources
+      .map(source => `\n ${statesEnum.findByKey(source.state).sign} ${source.name}`)
   );
+  if (project.filters.length > 0) {
+    changesToBuild = changesToBuild.concat("\n\nSoftware Filter:\n");
+    changesToBuild = changesToBuild.concat(
+      project
+        .filters
+        .map(filter =>
+          `\n ${statesEnum.findByKey(filter.state).sign} ${getClmFilterDescription(filter)}`
+        )
+    );
+  }
+
   const isProjectEdited = changesToBuild.length > 0;
   const isBuildDisabled = !hasEditingPermissions || _isEmpty(project.environments) || _isEmpty(project.softwareSources);
 
