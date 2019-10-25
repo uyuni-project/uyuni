@@ -18,7 +18,6 @@ import Errors from "./errors";
 import Groups from "./groups";
 import Highstate from "./highstate";
 import Images from "./images";
-import Login from "./login";
 import Minion from "./minion";
 import Notifications from "./notifications";
 import Organizations from "./organizations";
@@ -36,7 +35,6 @@ const pages = {
   ...Groups,
   ...Highstate,
   ...Images,
-  ...Login,
   ...Minion,
   ...Notifications,
   ...Organizations,
