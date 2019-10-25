@@ -1,3 +1,4 @@
+- Fix: match `image_id` with newer k8s (bsc#1149741)
 - Bump version to 4.1.0 (bsc#1154940)
 - Always install latest available salt during bootstrap
 - Create Kiwi cache dir if not present
