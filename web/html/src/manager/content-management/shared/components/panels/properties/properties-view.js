@@ -19,13 +19,13 @@ const PropertiesHistoryEntries = (props) =>
       props.entries.map((history, index) => {
         const versionMessage = getVersionMessage(history)
         return (
-          <li key={`historyentries_${props.id}_${index}`}>
+          <li key={`historyentries_${props.id}_${index}`}><pre>
             {
               index === 0
                 ? <strong>{versionMessage}</strong>
                 : versionMessage
             }
-          </li>
+          </pre></li>
         )
       })
     }
