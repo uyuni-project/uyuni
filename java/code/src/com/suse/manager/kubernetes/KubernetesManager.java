@@ -113,7 +113,7 @@ public class KubernetesManager {
                     containers.get().getContainers().stream()
                             .filter(c -> c.getContainerId().isPresent()).forEach(container -> {
                         String imgDigest = container.getImageId();
-                        if (container.getImageId().startsWith(DOCKER_PULLABLE)) {
+                         if (imgDigest.startsWith(DOCKER_PULLABLE)) {
                             imgDigest = StringUtils.removeStart(container.getImageId(), DOCKER_PULLABLE);
                         }
                         ImageBuildHistory imgBuildHistory = digestToHistory.get(imgDigest);
