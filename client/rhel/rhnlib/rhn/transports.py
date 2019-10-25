@@ -701,7 +701,7 @@ class BaseOutput:
             self.set_header("Content-Type", "text/base64")
             self.data = base64.encodestring(self.data).decode()
 
-        self.set_header("Content-Length", len(self.data.encode()))
+        self.set_header("Content-Length", len(bstr(self.data)))
 
         rpc_version = __version__
         if len(__version__.split()) > 1:
