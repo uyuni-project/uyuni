@@ -585,6 +585,23 @@ public class ContentSyncManager {
     }
 
     /**
+     * Return true if a refresh of Product Data is needed
+     *
+     * @param mirrorUrl a mirrorURL
+     * @return true if a refresh is needed, otherwise false
+     */
+    public boolean isRefreshNeeded(String mirrorUrl) {
+        for (SCCRepositoryAuth a : SCCCachingFactory.lookupRepositoryAuthWithContentSource()) {
+            ContentSource cs = a.getContentSource();
+            String overwriteUrl = contentSourceUrlOverwrite(a.getRepository(), a.getUrl(), mirrorUrl);
+            if (!cs.getSourceUrl().equals(overwriteUrl)) {
+                return true;
+            }
+        }
+        return SCCCachingFactory.refreshNeeded();
+    }
+
+    /**
      * Update authentication for all repos of the given credential.
      * Removes authentication if they have expired
      *
