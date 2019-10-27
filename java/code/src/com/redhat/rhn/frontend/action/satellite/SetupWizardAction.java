@@ -15,12 +15,12 @@
 package com.redhat.rhn.frontend.action.satellite;
 
 import com.redhat.rhn.domain.iss.IssFactory;
-import com.redhat.rhn.domain.scc.SCCCachingFactory;
 import com.redhat.rhn.frontend.nav.NavCache;
 import com.redhat.rhn.frontend.nav.NavNode;
 import com.redhat.rhn.frontend.nav.NavTree;
 import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.frontend.struts.RhnHelper;
+import com.redhat.rhn.manager.content.ContentSyncManager;
 import com.redhat.rhn.taskomatic.TaskoFactory;
 import com.redhat.rhn.taskomatic.domain.TaskoRun;
 
@@ -95,7 +95,8 @@ public class SetupWizardAction extends RhnAction {
                         .get(0));
 
         request.setAttribute(ISS_MASTER, IssFactory.getCurrentMaster() == null);
-        request.setAttribute(REFRESH_NEEDED, SCCCachingFactory.refreshNeeded());
+        ContentSyncManager csm = new ContentSyncManager();
+        request.setAttribute(REFRESH_NEEDED, csm.isRefreshNeeded(null));
 
         TaskoRun latestRun = TaskoFactory.getLatestRun("mgr-sync-refresh-bunch");
         request.setAttribute(REFRESH_RUNNING,
