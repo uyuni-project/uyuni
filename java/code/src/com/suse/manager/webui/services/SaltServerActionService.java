@@ -14,16 +14,10 @@
  */
 package com.suse.manager.webui.services;
 
-import static com.redhat.rhn.domain.action.ActionFactory.STATUS_COMPLETED;
-import static com.redhat.rhn.domain.action.ActionFactory.STATUS_FAILED;
-import static com.suse.manager.webui.services.SaltConstants.SALT_FS_PREFIX;
-import static com.suse.manager.webui.services.SaltConstants.SCRIPTS_DIR;
-import static java.util.Collections.emptyMap;
-import static java.util.Collections.singletonList;
-import static java.util.Collections.singletonMap;
-import static java.util.Optional.ofNullable;
-import static java.util.stream.Collectors.toList;
-
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonSyntaxException;
+import com.google.gson.reflect.TypeToken;
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
@@ -65,9 +59,9 @@ import com.redhat.rhn.domain.image.ImageStore;
 import com.redhat.rhn.domain.image.ImageStoreFactory;
 import com.redhat.rhn.domain.image.KiwiProfile;
 import com.redhat.rhn.domain.server.ErrataInfo;
-import com.redhat.rhn.domain.server.MinionSummary;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
+import com.redhat.rhn.domain.server.MinionSummary;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.token.ActivationKey;
 import com.redhat.rhn.domain.token.ActivationKeyFactory;
@@ -96,20 +90,6 @@ import com.suse.salt.netapi.results.Ret;
 import com.suse.salt.netapi.results.StateApplyResult;
 import com.suse.utils.Json;
 import com.suse.utils.Opt;
-
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonSyntaxException;
-import com.google.gson.reflect.TypeToken;
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang3.tuple.ImmutablePair;
-import org.apache.commons.lang3.tuple.Pair;
-import org.apache.log4j.Logger;
-import org.hibernate.Hibernate;
-import org.hibernate.proxy.HibernateProxy;
-import org.jose4j.lang.JoseException;
-
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.FileSystem;
@@ -138,6 +118,24 @@ import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.tuple.ImmutablePair;
+import org.apache.commons.lang3.tuple.Pair;
+import org.apache.log4j.Logger;
+import org.hibernate.Hibernate;
+import org.hibernate.proxy.HibernateProxy;
+import org.jose4j.lang.JoseException;
+
+import static com.redhat.rhn.domain.action.ActionFactory.STATUS_COMPLETED;
+import static com.redhat.rhn.domain.action.ActionFactory.STATUS_FAILED;
+import static com.suse.manager.webui.services.SaltConstants.SALT_FS_PREFIX;
+import static com.suse.manager.webui.services.SaltConstants.SCRIPTS_DIR;
+import static java.util.Collections.emptyMap;
+import static java.util.Collections.singletonList;
+import static java.util.Collections.singletonMap;
+import static java.util.Optional.ofNullable;
+import static java.util.stream.Collectors.toList;
 
 /**
  * Takes {@link Action} objects to be executed via salt.
@@ -1062,10 +1060,8 @@ public class SaltServerActionService {
 
             // state.apply remotecommands
             Map<String, Object> pillar = new HashMap<>();
-            pillar.put("mgr_remote_cmd_script",
-                    SALT_FS_PREFIX + SCRIPTS_DIR + "/" + scriptFile.getFileName());
-            pillar.put("mgr_remote_cmd_runas",
-                    scriptAction.getScriptActionDetails().getUsername());
+            pillar.put("mgr_remote_cmd_script", SALT_FS_PREFIX + SCRIPTS_DIR + "/" + scriptFile.getFileName());
+            pillar.put("mgr_remote_cmd_runas", scriptAction.getScriptActionDetails().getUsername());
             pillar.put("mgr_remote_cmd_timeout", scriptAction.getScriptActionDetails().getTimeout());
             ret.put(State.apply(Arrays.asList(REMOTE_COMMANDS), Optional.of(pillar)), minions);
         }
