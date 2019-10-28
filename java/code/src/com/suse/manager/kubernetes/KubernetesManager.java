@@ -112,66 +112,63 @@ public class KubernetesManager {
                     // Loop through 'running' containers (with container id present)
                     containers.get().getContainers().stream()
                             .filter(c -> c.getContainerId().isPresent()).forEach(container -> {
-
-                        if (container.getImageId().startsWith(DOCKER_PULLABLE)) {
-                            String imgDigest = StringUtils
-                                    .removeStart(container.getImageId(), DOCKER_PULLABLE);
-                            ImageBuildHistory imgBuildHistory =
-                                    digestToHistory.get(imgDigest);
-                            Optional<Integer> imgBuildRevision = Optional.empty();
-                            Optional<ImageUsage> usage;
-                            if (imgBuildHistory != null) {
-                                imgBuildRevision =
-                                        Optional.of(imgBuildHistory.getRevisionNumber());
-                                usage = Optional.of(imgToUsage.computeIfAbsent(
-                                        imgBuildHistory.getImageInfo().getId(),
-                                        (infoId) -> new ImageUsage(
-                                                imgBuildHistory.getImageInfo())));
-                            }
-                            else {
-                                LOG.debug("Image build history not found for digest: " +
-                                        imgDigest + " (maybe the image was not built " +
-                                        "by SUSE Manager).");
-                                String[] tokens =
-                                        StringUtils.split(container.getImage(), "/", 2);
-                                if (tokens.length < 2) {
-                                    LOG.warn("No repository available in the image name '" +
-                                            container.getImage() +
-                                            "'. Ignoring the image.");
-                                    return;
-                                }
-
-                                String repo = tokens[0];
-                                String[] imgTag = StringUtils.split(tokens[1], ":", 2);
-                                String name = imgTag[0];
-                                String tag = imgTag.length > 1 ? imgTag[1] : "latest";
-
-                                Optional<ImageInfo> imgByRepoNameTag =
-                                        ImageStoreFactory.lookupBylabelAndOrg(repo, virtHostMgr.getOrg())
-                                                .flatMap(st -> ImageInfoFactory.lookupByName(name, tag, st.getId()));
-                                usage = imgByRepoNameTag
-                                        .map(imgInfo -> imgToUsage.get(imgInfo.getId()))
-                                        .map(Optional::of).orElseGet(() -> imgByRepoNameTag
-                                                .map(imgInfo -> new ImageUsage(imgInfo))
-                                                .map(usg -> {
-                                                    imgToUsage
-                                                            .put(usg.getImageInfo().getId(),
-                                                                    usg);
-                                                    return usg;
-                                                }));
-                                if (!usage.isPresent()) {
-                                    return;
-                                }
-                            }
-
-                            ContainerInfo containerUsage = new ContainerInfo();
-                            containerUsage.setContainerId(container.getContainerId().get());
-                            containerUsage.setPodName(container.getPodName());
-                            containerUsage.setPodNamespace(container.getPodNamespace());
-                            containerUsage.setBuildRevision(imgBuildRevision);
-                            containerUsage.setVirtualHostManager(virtHostMgr);
-                            usage.ifPresent(u -> u.getContainerInfos().add(containerUsage));
+                        String imgDigest = container.getImageId();
+                        if (imgDigest.startsWith(DOCKER_PULLABLE)) {
+                            imgDigest = StringUtils.removeStart(container.getImageId(), DOCKER_PULLABLE);
                         }
+                        ImageBuildHistory imgBuildHistory = digestToHistory.get(imgDigest);
+                        Optional<Integer> imgBuildRevision = Optional.empty();
+                        Optional<ImageUsage> usage;
+                        if (imgBuildHistory != null) {
+                            imgBuildRevision = Optional.of(imgBuildHistory.getRevisionNumber());
+                            usage = Optional.of(imgToUsage.computeIfAbsent(
+                                    imgBuildHistory.getImageInfo().getId(),
+                                    (infoId) -> new ImageUsage(
+                                            imgBuildHistory.getImageInfo())));
+                        }
+                        else {
+                            LOG.debug("Image build history not found for digest: " +
+                                    imgDigest + " (maybe the image was not built " +
+                                    "by SUSE Manager).");
+                            String[] tokens =
+                                    StringUtils.split(container.getImage(), "/", 2);
+                            if (tokens.length < 2) {
+                                LOG.warn("No repository available in the image name '" +
+                                        container.getImage() +
+                                        "'. Ignoring the image.");
+                                return;
+                            }
+
+                            String repo = tokens[0];
+                            String[] imgTag = StringUtils.split(tokens[1], ":", 2);
+                            String name = imgTag[0];
+                            String tag = imgTag.length > 1 ? imgTag[1] : "latest";
+
+                            Optional<ImageInfo> imgByRepoNameTag =
+                                    ImageStoreFactory.lookupBylabelAndOrg(repo, virtHostMgr.getOrg())
+                                            .flatMap(st -> ImageInfoFactory.lookupByName(name, tag, st.getId()));
+                            usage = imgByRepoNameTag
+                                    .map(imgInfo -> imgToUsage.get(imgInfo.getId()))
+                                    .map(Optional::of).orElseGet(() -> imgByRepoNameTag
+                                            .map(imgInfo -> new ImageUsage(imgInfo))
+                                            .map(usg -> {
+                                                imgToUsage
+                                                        .put(usg.getImageInfo().getId(),
+                                                                usg);
+                                                return usg;
+                                            }));
+                            if (!usage.isPresent()) {
+                                return;
+                            }
+                        }
+
+                        ContainerInfo containerUsage = new ContainerInfo();
+                        containerUsage.setContainerId(container.getContainerId().get());
+                        containerUsage.setPodName(container.getPodName());
+                        containerUsage.setPodNamespace(container.getPodNamespace());
+                        containerUsage.setBuildRevision(imgBuildRevision);
+                        containerUsage.setVirtualHostManager(virtHostMgr);
+                        usage.ifPresent(u -> u.getContainerInfos().add(containerUsage));
                     });
                 }
                 else {

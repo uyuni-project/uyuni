@@ -1,6 +1,9 @@
 #formula-details
 
 script(type="text/javascript").
-    var csrfToken = "#{csrf_token}";
-    var formulaName = "#{formulaName}";
-script(src='/javascript/manager/salt/formula-catalog/org-formula-details.bundle.js?cb=#{webVersion}')
+    window.csrfToken = "#{csrf_token}";
+    window.formulaName = "#{formulaName}";
+
+script(type='text/javascript').
+    spaImportReactPage('salt/formula-catalog/org-formula-details')
+        .then(function(module) { module.renderer('formula-details') });

@@ -18,6 +18,7 @@ import com.redhat.rhn.common.messaging.EventMessage;
 import com.redhat.rhn.common.messaging.MessageAction;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
+import com.redhat.rhn.domain.action.kickstart.KickstartAction;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
@@ -30,6 +31,7 @@ import com.google.gson.JsonParseException;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 import com.suse.manager.reactor.hardware.CpuArchUtil;
+import com.suse.manager.utils.SaltKeyUtils;
 import com.suse.manager.utils.SaltUtils;
 import com.suse.manager.utils.SaltUtils.PackageChangeOutcome;
 import com.suse.manager.webui.services.SaltActionChainGeneratorService;
@@ -47,6 +49,7 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Stack;
 import java.util.function.Function;
@@ -86,6 +89,10 @@ public class JobReturnEventMessageAction implements MessageAction {
 
         // React according to the function the minion ran
         String function = jobReturnEvent.getData().getFun();
+
+        if (Objects.isNull(function)) {
+            LOG.error("Unexpected: Function is null in JobReturnEvent -> \n" + Json.GSON.toJson(jobReturnEvent));
+        }
 
         if (LOG.isDebugEnabled()) {
             LOG.debug("Job return event for minion: " +
@@ -384,6 +391,14 @@ public class JobReturnEventMessageAction implements MessageAction {
                             sa.setStatus(ActionFactory.STATUS_PICKED_UP);
                             sa.setPickupTime(new Date());
                             return;
+                        }
+                        else if (action.get().getActionType().equals(ActionFactory.TYPE_KICKSTART_INITIATE) &&
+                                success) {
+                            KickstartAction ksAction = (KickstartAction) action.get();
+                            if (!ksAction.getKickstartActionDetails().getUpgrade()) {
+                                // Delete salt key from master
+                                SaltKeyUtils.deleteSaltKey(action.get().getSchedulerUser(), minionId);
+                            }
                         }
                         SaltUtils.INSTANCE.updateServerAction(sa,
                                 retcode,

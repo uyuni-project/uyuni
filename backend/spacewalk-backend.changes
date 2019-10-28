@@ -1,3 +1,62 @@
+- Bump version to 4.1.0 (bsc#1154940)
+- Improve error message when deleting channel that's in a content lifecycle project (bsc#1145769)
+- fix problems with Package Hub repos having multiple rpms with same NEVRA
+  but different checksums (bsc#1146683)
+- fix re-registration with re-activation key (bsc#1154275)
+- Change the default value of taskomatic maxmemory to 4GB
+- Add basic support for importing modular repositories
+- Add script to update additional fields in the DB for existing Deb packages
+- use active values for diskchecker mails
+- parse restart_suggested flag from patches and set it as keywords (bsc#1151467)
+- Import additional fields for Deb packages
+- do not require parameters to start on column 1
+- Add Requires: systemd for completeness
+- create /usr/lib/systemd/systemd during build
+- BuildRequires: systemd for spacewalk-diskcheck
+- add option spacecheck_shutdown; tidy up wording of notifications
+- add disk space checker script
+- Prevent "reposync" crash when handling metadata on RPM repos (bsc#1138358)
+- Do not show expected WARNING messages from "c_rehash"
+- fix misspelling in spacewalk-repo-sync (bsc#1149633)
+- remove credentials also from potential rhn.conf backup files in spacewalk-debug (bsc#1146419)
+- Do not crash 'rhn-satellite-exporter' with ModuleNotFound error (bsc#1146869)
+- Don't skip Deb package tags on package import (bsc#1130040)
+- For backend-libs subpackages, exclude files for the server
+  (already part of spacewalk-backend) to avoid conflicts (bsc#1148125)
+- prevent duplicate key violates on repo-sync with long changelog
+  entries (bsc#1144889)
+- spacewalk-remove-channel check that channel doesn't have cloned channels before deleting it (bsc#1138454)
+- Fix broken spacewalk-data-fsck utility
+- /etc/rhn also was packaged for spacewalk-backend-tools
+- Add '--latest' support for reposync on DEB based repositories
+- Require uyuni-base-common for /etc/rhn
+- Do not try to download RPMs from the unresolved mirrorlist URL
+- Fix encoding issues with DB bytes values (bsc#1144300)
+- Avoid traceback on mgr-inter-sync when there are problems
+  with cache of packages (bsc#1143016)
+- do not overwrite comps and module data with older versions
+- fix issue with "dists" keyword in url hostname
+- import packages from all collections of a patch not just first one
+
+-------------------------------------------------------------------
+Thu Aug 01 12:43:45 CEST 2019 - jgonzalez@suse.com
+
+- version 4.0.19-1
+- Fix import of rhnAuthPAM to avoid issues when using rhnpush.
+
+-------------------------------------------------------------------
+Wed Jul 31 17:30:57 CEST 2019 - jgonzalez@suse.com
+
+- version 4.0.18-1
+- Ensure bytes type when using hashlib to avoid traceback
+  on XMLRPC call to "registration.register_osad" (bsc#1138822)
+- Fix for CVE-2019-10136. An attacker with a valid, but expired,
+  authenticated set of headers could move some digits around,
+  artificially extending the session validity without modifying
+  the checksum. (bsc#1136480)
+- Do not duplicate "http://" protocol when using proxies with "deb"
+  repositories (bsc#1138313)
+- Fix reposync when dealing with RedHat CDN (bsc#1138358)
 - Prevent FileNotFoundError: repomd.xml.key traceback (bsc#1137940)
 - Add journalctl output to spacewalk-debug tarballs
 - Prevent unnecessary triggering of channel-repodata tasks when GPG

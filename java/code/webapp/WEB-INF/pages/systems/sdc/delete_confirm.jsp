@@ -22,6 +22,9 @@
             return ${sid};
         }
     </script>
-    <script src="/javascript/manager/systems/delete-system-confirm.bundle.js?cb=${rhn:getConfig('web.version')}" type="text/javascript"></script>
+    <script>
+        spaImportReactPage('systems/delete-system-confirm')
+            .then(function(module) { module.renderer('delete_system_button') });
+    </script>
 </body>
 </html:html>

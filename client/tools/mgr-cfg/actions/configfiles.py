@@ -25,7 +25,7 @@ from config_client import rpc_cli_repository
 
 from up2date_client import config
 
-from spacewalk.common.usix import StringType, UnicodeType
+from spacewalk.common.usix import StringType, UnicodeType, PY3
 
 
 # this is a list of the methods that get exported by a module
@@ -333,6 +333,8 @@ def diff(params, cache_only=None):
         if isinstance(in_string, UnicodeType):
             return True
         elif isinstance(in_string, StringType):
+            if PY3:
+                return True
             try:
                 in_string.decode('utf-8')
                 return True

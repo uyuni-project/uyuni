@@ -56,7 +56,6 @@ import com.redhat.rhn.frontend.dto.OwnedErrata;
 import com.redhat.rhn.frontend.dto.PackageDto;
 import com.redhat.rhn.frontend.dto.PackageOverview;
 import com.redhat.rhn.frontend.dto.SystemOverview;
-import com.redhat.rhn.frontend.events.CloneErrataAction;
 import com.redhat.rhn.frontend.events.CloneErrataEvent;
 import com.redhat.rhn.frontend.events.NewCloneErrataEvent;
 import com.redhat.rhn.frontend.listview.PageControl;
@@ -291,12 +290,13 @@ public class ErrataManager extends BaseManager {
         errataToMerge.removeAll(clones);
 
         log.debug("Publishing");
-        CloneErrataEvent eve = new CloneErrataEvent(toChannel, getErrataIds(errataToMerge), repoRegen, user);
+        Set<Long> errataIds = getErrataIds(errataToMerge);
         if (async) {
+            CloneErrataEvent eve = new CloneErrataEvent(toChannel, errataIds, repoRegen, user);
             MessageQueue.publish(eve);
         }
         else {
-            new CloneErrataAction().execute(eve);
+            cloneErrata(toChannel.getId(), errataIds, repoRegen, user);
         }
 
         // no need to regenerate errata cache, because we didn't touch any packages
@@ -2248,5 +2248,61 @@ public class ErrataManager extends BaseManager {
         params.put("task_data", image.getId());
         params.put("earliest", new Timestamp(System.currentTimeMillis()));
         mode.executeUpdate(params);
+    }
+
+    /**
+     * Clone errata to given channel.
+     *
+     * @param channelId the channel id
+     * @param errataToClone the errata ids to clone
+     * @param requestRepodataRegen if channel repodata should be regenerated after the cloning
+     * @param user the user
+     */
+    public static void cloneErrata(Long channelId, Collection<Long> errataToClone, boolean requestRepodataRegen,
+            User user) {
+        Channel channel = ChannelFactory.lookupById(channelId);
+        if (channel == null) {
+            log.error("Failed to clone errata " + errataToClone + " Didn't find channel with id: " +
+                    channelId.toString());
+            return;
+        }
+        Collection<Long> list = errataToClone;
+        List<Long> cids = new ArrayList<Long>();
+        cids.add(channel.getId());
+        // let's avoid deadlocks please
+        ChannelFactory.lock(channel);
+
+        for (Long eid : list) {
+            Errata errata = ErrataFactory.lookupById(eid);
+            // we merge custom errata directly (non Redhat and cloned)
+            if (errata.getOrg() != null) {
+                errata.addChannel(channel);
+                ErrataCacheManager.insertCacheForChannelErrata(cids, errata);
+                errata.addChannelNotification(channel, new Date());
+            }
+            else {
+                Set<Channel> channelSet = new HashSet<>();
+                channelSet.add(channel);
+
+                List<Errata> clones = lookupPublishedByOriginal(user, errata);
+                if (clones.size() == 0) {
+                    log.debug("Cloning errata");
+                    Errata published = PublishErrataHelper.cloneErrataFast(errata, user.getOrg());
+                    published.setChannels(channelSet);
+                    ErrataCacheManager.insertCacheForChannelErrata(cids, published);
+                    published.addChannelNotification(channel, new Date());
+                }
+                else {
+                    log.debug("Re-publishing clone");
+                    publish(clones.get(0), cids, user);
+                }
+            }
+        }
+        // Trigger channel repodata re-generation
+        if (list.size() > 0 && requestRepodataRegen) {
+            channel.setLastModified(new Date());
+            ChannelFactory.save(channel);
+            ChannelManager.queueChannelChange(channel.getLabel(), "java::cloneErrata", "Errata cloned");
+        }
     }
 }

@@ -101,6 +101,11 @@ while read PKG_NAME PKG_VER PKG_DIR; do
   ${VERBOSE:+cat "$T_LOG"}
 
   eval $(awk '/^Wrote:.*src.rpm/{srpm=$2}/^Wrote:.*.changes/{changes=$2}END{ printf "SRPM=\"%s\"\n",srpm; printf "CHANGES=\"%s\"\n",changes; }' "$T_LOG")
+  if [ "$(head -n1 ${CHANGES}|grep '^- ')" != "" ]; then
+    echo "*** Untagged package, adding fake header..."
+    sed -i "1i Fri Jan 01 00:00:00 CEST 2038 - faketagger@suse.inet\n" ${CHANGES}
+    sed -i '1i -------------------------------------------------------------------' ${CHANGES}
+  fi
   if [ -e "$SRPM" -a -e "$CHANGES" ]; then
     mkdir "$T_DIR"
     ( set -e; cd "$T_DIR"; unrpm "$SRPM"; ) >/dev/null 2>&1

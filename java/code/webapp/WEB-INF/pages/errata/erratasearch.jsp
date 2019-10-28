@@ -8,7 +8,10 @@
 
 <html>
     <head>
-        <script language="javascript">
+    </head>
+
+<body>
+    <script language="javascript">
         jQuery(window).load(
             function() {
                 issueDateSearchOptions();
@@ -21,11 +24,8 @@
                 $('#issueDateOptions').hide();
             }
         }
-        </script>
-    </head>
-
-<body>
-<rhn:toolbar base="h1" icon="header-errata"
+    </script>
+  <rhn:toolbar base="h1" icon="header-errata"
                helpUrl="/docs/reference/patches/patches-advanced-search.html">
     <bean:message key="erratasearch.jsp.toolbar"/>
   </rhn:toolbar>

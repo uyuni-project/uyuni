@@ -1,6 +1,4 @@
-module.exports = {
-  entries: [
-    'notification-messages.renderer.js',
-    'notifications.js'
-  ]
-};
+export default {
+  'notifications/notifications': () => import('./notifications'),
+  'notifications/notification-messages': () => import('./notification-messages.renderer')
+}

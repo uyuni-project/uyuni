@@ -22,6 +22,7 @@ import re
 import fnmatch
 import requests
 from functools import cmp_to_key
+from salt.utils.versions import LooseVersion
 from spacewalk.common import fileutils
 from spacewalk.common.suseLib import get_proxy
 from spacewalk.satellite_tools.download import get_proxies
@@ -59,6 +60,16 @@ class DebPackage(object):
     def __setitem__(self, key, value):
         return setattr(self, key, value)
 
+    def evr(self):
+        evr = ""
+        if self.epoch:
+           evr = evr + "{}:".format(self.epoch)
+        if self.version:
+           evr = evr + "{}".format(self.version)
+        if self.release:
+           evr = evr + "-{}".format(self.release)
+        return evr
+
     def is_populated(self):
         return all([attribute is not None for attribute in (self.name, self.epoch,
                                                             self.version, self.release, self.arch,
@@ -70,7 +81,7 @@ class DebRepo(object):
     # url example - http://ftp.debian.org/debian/dists/jessie/main/binary-amd64/
     def __init__(self, url, cache_dir, pkg_dir, proxy_addr="", proxy_user="", proxy_pass=""):
         self.url = url
-        parts = url.split('/dists')
+        parts = url.rsplit('/dists/', 1)
         self.base_url = [parts[0]]
         # Make sure baseurl ends with / and urljoin will work correctly
         if self.base_url[0][-1] != '/':
@@ -101,14 +112,15 @@ class DebRepo(object):
             try:
                 proxies=""
                 if self.proxy:
+                    (scheme, netloc, path, query, fragid) = urlparse.urlsplit(self.proxy)
                     proxies = {
-                        'http' : 'http://'+self.proxy,
-                        'https' : 'http://'+self.proxy
+                        'http' : 'http://'+netloc,
+                        'https' : 'http://'+netloc
                     }
                     if self.proxy_username and self.proxy_password:
                         proxies = {
-                            'http' : 'http://'+self.proxy_username+":"+self.proxy_password+"@"+self.proxy,
-                            'https' : 'http://'+self.proxy_username+":"+self.proxy_password+"@"+self.proxy,
+                            'http' : 'http://'+self.proxy_username+":"+self.proxy_password+"@"+netloc,
+                            'https' : 'http://'+self.proxy_username+":"+self.proxy_password+"@"+netloc,
                         }
                 data = requests.get(url, proxies=proxies, cert=(self.sslclientcert, self.sslclientkey),
                                     verify=self.sslcacert)
@@ -250,8 +262,13 @@ class ContentSource(object):
         pkglist = self.repo.get_package_list()
         self.num_packages = len(pkglist)
         if latest:
-            # TODO
-            pass
+            latest_pkgs = {}
+            new_pkgs = []
+            for pkg in pkglist:
+               ident = '{}.{}'.format(pkg.name, pkg.arch)
+               if ident not in latest_pkgs.keys() or LooseVersion(pkg.evr()) > LooseVersion(latest_pkgs[ident].evr()):
+                  latest_pkgs[ident] = pkg
+            pkglist = list(latest_pkgs.values())
         pkglist.sort(key = cmp_to_key(self._sort_packages))
 
         if not filters:

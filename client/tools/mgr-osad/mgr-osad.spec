@@ -50,9 +50,9 @@ Name:           mgr-osad
 Summary:        Open Source Architecture Daemon
 License:        GPL-2.0-only
 Group:          System Environment/Daemons
-Version:        4.0.8
+Version:        4.1.0
 Provides:       %{oldname} = %{oldversion}
-Obsoletes:      %{oldname} = %{oldversion}
+Obsoletes:      %{oldname} < %{oldversion}
 Release:        1%{?dist}
 Url:            https://github.com/uyuni-project/uyuni
 Source0:        https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
@@ -69,6 +69,8 @@ BuildRequires:  perl
 Requires:       %{pythonX}-%{name} = %{version}-%{release}
 Conflicts:      mgr-osa-dispatcher < %{version}-%{release}
 Conflicts:      mgr-osa-dispatcher > %{version}-%{release}
+BuildRequires:  uyuni-base-common
+Requires(pre):  uyuni-base-common
 %if 0%{?suse_version} >= 1210
 BuildRequires:  systemd
 %{?systemd_requires}
@@ -114,8 +116,8 @@ Summary:        Open Source Architecture Daemon
 Group:          System Environment/Daemons
 Provides:       python-%{name} = %{oldversion}
 Obsoletes:      python-%{name} < %{oldversion}
-Provides:       python-%{oldname} = %{oldversion}
-Obsoletes:      python-%{oldname} < %{oldversion}
+Provides:       python2-%{oldname} = %{oldversion}
+Obsoletes:      python2-%{oldname} < %{oldversion}
 Requires:       %{name} = %{version}-%{release}
 Requires:       python
 Requires:       python-jabberpy
@@ -594,9 +596,7 @@ rpm -ql osa-dispatcher | xargs -n 1 /sbin/restorecon -rvi {}
 %ghost %attr(640,%{apache_user},root) %{_var}/log/rhn/osa-dispatcher.log
 %if 0%{?suse_version}
 %{_sbindir}/rcosa-dispatcher
-%attr(750, root, %{apache_group}) %dir %{_sysconfdir}/rhn
 %dir %{rhnroot}
-%attr(755,root,%{apache_group}) %dir %{rhnroot}/config-defaults
 %dir %{_sysconfdir}/rhn/tns_admin
 %attr(770,root,%{apache_group}) %dir %{_var}/log/rhn
 %endif

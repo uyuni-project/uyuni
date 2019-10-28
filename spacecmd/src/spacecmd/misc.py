@@ -115,7 +115,7 @@ def help_clear(self):
 
 
 def do_clear(self, args):
-    os.system('clear')
+    print("\x1b[H\x1b[J")
 
 ####################
 
@@ -207,12 +207,8 @@ def help_toggle_confirmations(self):
 
 
 def do_toggle_confirmations(self, args):
-    if self.options.yes:
-        self.options.yes = False
-        print('Confirmation messages are enabled')
-    else:
-        self.options.yes = True
-        logging.warning('Confirmation messages are DISABLED!')
+    self.options.yes = not self.options.yes
+    print('Confirmation messages are', "disabled" if self.options.yes else "enabled")
 
 ####################
 
@@ -237,7 +233,7 @@ def do_login(self, args):
         server = args[1]
     else:
         # use the server we were already using
-        server = self.config['server']
+        server = self.config.get("server")
 
     # bail out if not server was given
     if not server:
@@ -260,7 +256,7 @@ def do_login(self, args):
         username = ''
 
     # set the protocol
-    if 'nossl' in self.config and self.config['nossl']:
+    if self.config.get("nossl"):
         proto = 'http'
     else:
         proto = 'https'
@@ -281,12 +277,14 @@ def do_login(self, args):
     try:
         self.api_version = self.client.api.getVersion()
         logging.debug('Server API Version = %s', self.api_version)
-    except:
+    except Exception as exc:
         if self.options.debug > 0:
             e = sys.exc_info()[0]
             logging.exception(e)
 
         logging.error('Failed to connect to %s', server_url)
+        logging.debug("Error while connecting to the server %s: %s",
+                      server_url, str(exc))
         self.client = None
         return False
 
@@ -307,7 +305,7 @@ def do_login(self, args):
             sessionfile = open(session_file, 'r')
 
             # read the session (format = username:session)
-            for line in sessionfile:
+            for line in sessionfile.readlines():
                 parts = line.split(':')
 
                 # if a username was passed, make sure it matches
@@ -356,13 +354,10 @@ def do_login(self, args):
         # login to the server
         try:
             self.session = self.client.auth.login(username, password)
-
-            # don't keep the password around
-            password = None
-        except xmlrpclib.Fault:
+        except xmlrpclib.Fault as exc:
             logging.error('Invalid credentials')
+            logging.debug("Login error: %s (%s)", exc.faultString, exc.faultCode)
             return False
-
         try:
             # make sure ~/.spacecmd/<server> exists
             conf_dir = os.path.join(self.conf_dir, server)
@@ -377,8 +372,8 @@ def do_login(self, args):
             sessionfile = open(session_file, 'w')
             sessionfile.write(line)
             sessionfile.close()
-        except IOError:
-            logging.error('Could not write session file')
+        except IOError as exc:
+            logging.error('Could not write session file: %s', str(exc))
 
     # load the system/package/errata caches
     self.load_caches(server, username)
@@ -512,10 +507,9 @@ def generate_errata_cache(self, force=False):
 
     for c in channels:
         try:
-            errata = \
-                self.client.channel.software.listErrata(self.session, c)
-        except xmlrpclib.Fault:
-            logging.debug('No access to %s', c)
+            errata = self.client.channel.software.listErrata(self.session, c)
+        except xmlrpclib.Fault as exc:
+            logging.debug('No access to %s (%s): %s', c, exc.faultCode, exc.faultString)
             continue
 
         for erratum in errata:
@@ -527,9 +521,7 @@ def generate_errata_cache(self, force=False):
                      'date': erratum.get('date'),
                      'advisory_synopsis': erratum.get('advisory_synopsis')}
 
-    self.errata_cache_expire = \
-        datetime.now() + timedelta(self.ERRATA_CACHE_TTL)
-
+    self.errata_cache_expire = datetime.now() + timedelta(self.ERRATA_CACHE_TTL)
     self.save_errata_cache()
 
     if not self.options.quiet:
@@ -564,8 +556,7 @@ def generate_package_cache(self, force=False):
 
     for c in channels:
         try:
-            packages = \
-                self.client.channel.software.listAllPackages(self.session, c)
+            packages = self.client.channel.software.listAllPackages(self.session, c)
         except xmlrpclib.Fault:
             logging.debug('No access to %s', c)
             continue
@@ -576,7 +567,7 @@ def generate_package_cache(self, force=False):
 
             longname = build_package_names(p)
 
-            if not longname in self.all_packages:
+            if longname not in self.all_packages:
                 self.all_packages[longname] = [p.get('id')]
             else:
                 self.all_packages[longname].append(p.get('id'))
@@ -595,9 +586,7 @@ def generate_package_cache(self, force=False):
 
             self.all_packages_by_id[i] = k
 
-    self.package_cache_expire = \
-        datetime.now() + timedelta(seconds=self.PACKAGE_CACHE_TTL)
-
+    self.package_cache_expire = datetime.now() + timedelta(seconds=self.PACKAGE_CACHE_TTL)
     self.save_package_caches()
 
     if not self.options.quiet:
@@ -644,12 +633,15 @@ def get_package_id(self, name):
 
 
 def get_package_name(self, package_id):
-    self.generate_package_cache()
+    """
+    Get package name by ID.
 
-    try:
-        return self.all_packages_by_id[package_id]
-    except KeyError:
-        return
+    :param self:
+    :param package_id:
+    :return:
+    """
+    self.generate_package_cache()
+    return self.all_packages_by_id.get(package_id)
 
 
 def clear_system_cache(self):
@@ -943,6 +935,13 @@ def user_confirm(self, prompt='Is this ok [y/N]:', nospacer=False,
 
 # check if the available API is recent enough
 def check_api_version(self, want):
+    """
+    A quick API version checker, supporting only "<number>.<number>" format.
+
+    :param self:
+    :param want:
+    :return:
+    """
     want_parts = [int(i) for i in want.split('.')]
     have_parts = [int(i) for i in self.api_version.split('.')]
 

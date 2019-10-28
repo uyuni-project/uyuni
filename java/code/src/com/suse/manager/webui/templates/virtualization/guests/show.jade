@@ -4,15 +4,19 @@ include ../../system-common.jade
 script(src='/javascript/momentjs/moment-with-langs.min.js?cb=#{webVersion}', type='text/javascript')
 
 script(type='text/javascript').
-    const csrfToken = "#{csrf_token}";
+    window.csrfToken = "#{csrf_token}";
 +userPreferences
-script(src='/javascript/manager/virtualization/guests/list/guests-list.renderer.bundle.js?cb=#{webVersion}', type='text/javascript')
+
 script(type='text/javascript').
-    pageRenderers.guests.list.renderer(
-        'virtualguests',
-        {
-            serverId: "#{server.id}",
-            saltEntitled: #{salt_entitled},
-            isAdmin: #{is_admin}
-        }
-    );
+    spaImportReactPage('virtualization/guests/list/guests-list')
+        .then(function(module) {
+             module.renderer(
+              'virtualguests',
+              {
+                  serverId: "#{server.id}",
+                  saltEntitled: #{salt_entitled},
+                  foreignEntitled: #{foreign_entitled},
+                  isAdmin: #{is_admin}
+              }
+            )
+        });

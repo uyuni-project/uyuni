@@ -35,7 +35,7 @@ Summary:        Support package for spacewalk koan interaction
 License:        GPL-2.0-only
 Group:          System Environment/Kernel
 Name:           spacewalk-koan
-Version:        4.0.5
+Version:        4.1.0
 Release:        1%{?dist}
 Source0:        https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
 Source1:        %{name}-rpmlintrc
@@ -46,6 +46,15 @@ BuildArch:      noarch
 %endif
 Requires:       %{pythonX}-%{name} = %{version}-%{release}
 Requires:       koan
+# dd, du
+Requires:       coreutils
+Requires:       cpio
+Requires:       e2fsprogs
+# gzip, zcat
+Requires:       gzip
+Requires:       tar
+# mount, umount
+Requires:       util-linux
 Requires:       xz
 Conflicts:      rhn-kickstart
 Conflicts:      rhn-kickstart-common

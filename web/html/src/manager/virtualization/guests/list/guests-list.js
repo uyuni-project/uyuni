@@ -1,5 +1,4 @@
 // @flow
-/* global module */
 
 const { hot } = require('react-hot-loader');
 const React = require('react');
@@ -10,12 +9,12 @@ const { Column } = require('components/table');
 const { SearchField } = require('components/table');
 const Functions = require('utils/functions');
 const { LinkButton, AsyncButton } = require('components/buttons');
-const { DangerDialog } = require('components/dialog/DangerDialog');
 const { ModalButton } = require('components/dialog/ModalButton');
 const Systems = require('components/systems');
 const { VirtualizationGuestActionApi } = require('../virtualization-guest-action-api');
 const { VirtualizationGuestsListRefreshApi } = require('../virtualization-guests-list-refresh-api');
 const { Utils: GuestsListUtils } = require('./guests-list.utils');
+const { ActionConfirm } = require('./ActionConfirm.js');
 
 const { Utils } = Functions;
 
@@ -25,6 +24,7 @@ type Props = {
   serverId: string,
   refreshInterval: number,
   saltEntitled: boolean,
+  foreignEntitled: boolean,
   isAdmin: boolean,
 };
 
@@ -155,39 +155,29 @@ class GuestsList extends React.Component<Props, State> {
     return ([
       !action.bulkonly
       && (
-        <DangerDialog
-          key={`${action.type}-modal`}
+        <ActionConfirm
           id={`${action.type}-modal`}
-          title={t(`${action.name} Guest`)}
-          content={(
-            <span>
-              {t(`Are you sure you want to ${action.name.toLowerCase()} guest `)}
-              <strong>{this.state.selected ? this.state.selected.name : ''}</strong>
-              ?
-            </span>
-          )}
-          item={this.state.selected}
-          onConfirm={item => fn(action.type, [item.uuid], {})}
-          onClosePopUp={() => this.selectGuest({})}
-          submitText={action.name}
-          submitIcon={action.icon}
+          key={`${action.type}-modal`}
+          type={action.type}
+          name={action.name}
+          icon={action.icon}
+          selected={[this.state.selected].filter(item => item)}
+          fn={fn}
+          canForce={action.canForce}
+          forceName={action.forceName}
+          onClose={() => this.selectGuest({})}
         />
       ), (
-        <DangerDialog
-          key={`${action.type}-selected-modal`}
+        <ActionConfirm
           id={`${action.type}-selected-modal`}
-          title={t(`${action.name} Selected Guest(s)`)}
-          content={(
-            <span>
-              {this.state.selectedItems.length === 1
-                ? t('Are you sure you want to {0} the selected guest?', action.name.toLowerCase())
-                : t('Are you sure you want to {0} the selected guests? ({1} guests selected)',
-                  action.name.toLowerCase(), this.state.selectedItems.length)}
-            </span>
-          )}
-          onConfirm={() => fn(action.type, this.state.selectedItems, {})}
-          submitText={action.name}
-          submitIcon={action.icon}
+          key={`${action.type}-selected-modal`}
+          type={action.type}
+          name={action.name}
+          icon={action.icon}
+          selected={this.state.selectedItems}
+          fn={fn}
+          canForce={action.canForce}
+          forceName={action.forceName}
         />
       ),
     ]);
@@ -224,10 +214,10 @@ class GuestsList extends React.Component<Props, State> {
                 type: 'start', name: t('Start / Resume'), icon: 'fa-play', bulkonly: true,
               },
               {
-                type: 'shutdown', name: t('Stop'), icon: 'fa-stop', bulkonly: false,
+                type: 'shutdown', name: t('Stop'), icon: 'fa-stop', bulkonly: false, canForce: true, forceName: t('Force off'),
               },
               {
-                type: 'restart', name: t('Restart'), icon: 'fa-refresh', bulkonly: false,
+                type: 'restart', name: t('Restart'), icon: 'fa-refresh', bulkonly: false, canForce: true, forceName: t('Reset'),
               },
               {
                 type: 'suspend', name: t('Suspend'), icon: 'fa-pause', bulkonly: false,
@@ -236,6 +226,7 @@ class GuestsList extends React.Component<Props, State> {
                 type: 'delete', name: t('Delete'), icon: 'fa-trash', bulkonly: false,
               },
             ];
+            const isActionVisible = (action, props) => !props.foreignEntitled && (action.type !== 'delete' || props.saltEntitled);
             const panelButtons = (
               <div className="pull-right btn-group">
                 {this.props.saltEntitled
@@ -249,7 +240,7 @@ class GuestsList extends React.Component<Props, State> {
                   />)
                 }
                 {modalsData
-                  .filter(action => action.type !== 'delete' || this.props.saltEntitled)
+                  .filter(action => isActionVisible(action, this.props))
                   .map(action => this.createSelectedModalButton(action))}
               </div>);
 
@@ -277,8 +268,8 @@ class GuestsList extends React.Component<Props, State> {
                         initialSortColumnKey="name"
                         initialItemsPerPage={userPrefPageSize}
                         selectable
-                        selectedItems={this.state.selectedItems}
-                        onSelect={this.handleSelectItems}
+                        selectedItems={this.state.selectedItems.map(guest => guest.uuid)}
+                        onSelect={items => this.handleSelectItems(guests.filter(guest => items.includes(guest.uuid)))}
                         searchField={(
                           <SearchField
                             filter={GuestsList.searchData}
@@ -372,8 +363,9 @@ class GuestsList extends React.Component<Props, State> {
                             }
                             return '-';
                           }}
-                        />)}
-                        <Column
+                            />)}
+                        {!this.props.foreignEntitled &&
+                         (<Column
                           header={t('Actions')}
                           columnClass="text-right"
                           headerClass="text-right"
@@ -414,11 +406,12 @@ class GuestsList extends React.Component<Props, State> {
                               </div>
                             );
                           }}
-                        />
+                          />)
+                        }
                       </Table>
 
                       {modalsData
-                        .filter(action => action.type !== 'delete' || this.props.saltEntitled)
+                        .filter(action => isActionVisible(action, this.props))
                         .map(action => this.createConfirmModal(action, onAction).map(modal => modal))}
                     </div>
                   )

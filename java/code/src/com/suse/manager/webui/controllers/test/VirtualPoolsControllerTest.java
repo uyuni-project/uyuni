@@ -24,10 +24,10 @@ import com.redhat.rhn.manager.system.VirtualizationActionCommand;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.testing.ServerTestUtils;
 
-import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
+import com.google.gson.reflect.TypeToken;
 import com.suse.manager.reactor.messaging.test.SaltTestUtils;
 import com.suse.manager.virtualization.VirtManager;
 import com.suse.manager.webui.controllers.VirtualPoolsController;
@@ -71,7 +71,6 @@ public class VirtualPoolsControllerTest extends BaseControllerTestCase {
         SystemManager.mockSaltService(saltServiceMock);
 
         host = ServerTestUtils.createVirtHostWithGuests(user, 1, true);
-        host.asMinionServer().get().setMinionId("testminion.local");
     }
 
     public void testData() throws Exception {
@@ -83,6 +82,13 @@ public class VirtualPoolsControllerTest extends BaseControllerTestCase {
                     "/com/suse/manager/webui/controllers/test/virt.pool.info.json",
                     null,
                     new TypeToken<Map<String, JsonElement>>() { }.getType())));
+            oneOf(saltServiceMock).callSync(
+                    with(SaltTestUtils.functionEquals("virt", "volume_infos")),
+                    with(host.asMinionServer().get().getMinionId()));
+            will(returnValue(SaltTestUtils.getSaltResponse(
+                    "/com/suse/manager/webui/controllers/test/virt.volume.info.json",
+                    null,
+                    new TypeToken<Map<String, Map<String, JsonElement>>>() { }.getType())));
         }});
 
         String json = VirtualPoolsController.data(getRequestWithCsrf(

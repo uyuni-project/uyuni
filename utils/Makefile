@@ -10,7 +10,8 @@ SCRIPTS = sw-system-snapshot migrate-system-profile spacewalk-api apply_errata \
 	  spacewalk-common-channels delete-old-systems-interactive spacewalk-hostname-rename \
 	  spacewalk-dump-schema spacewalk-clone-by-date spacewalk-sync-setup \
 	  spacewalk-manage-channel-lifecycle spacewalk-export spacewalk-export-channels \
-	  spacewalk-final-archive sw-ldap-user-sync taskotop spacewalk-manage-snapshots
+	  spacewalk-final-archive sw-ldap-user-sync taskotop spacewalk-manage-snapshots \
+      spacewalk-watch-channel-sync.sh
 CONFIGS = spacewalk-common-channels.ini sw-ldap-user-sync.conf
 
 DOCBOOK = $(wildcard /usr/bin/docbook2man)

@@ -18,7 +18,7 @@
 
 
 Name:           spacewalk-setup-jabberd
-Version:        4.0.3
+Version:        4.1.0
 Release:        1%{?dist}
 Summary:        Tools to setup jabberd for Spacewalk
 License:        GPL-2.0-only

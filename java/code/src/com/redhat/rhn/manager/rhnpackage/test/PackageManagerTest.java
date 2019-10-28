@@ -29,6 +29,7 @@ import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.rhnpackage.PackageCapability;
 import com.redhat.rhn.domain.rhnpackage.PackageEvr;
 import com.redhat.rhn.domain.rhnpackage.PackageEvrFactory;
+import com.redhat.rhn.domain.rhnpackage.PackageExtraTagsKeys;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.domain.rhnpackage.PackageName;
 import com.redhat.rhn.domain.rhnpackage.test.PackageCapabilityTest;
@@ -648,8 +649,6 @@ public class PackageManagerTest extends BaseTestCaseWithUser {
 
     public void testRepodata() throws Exception {
 
-        // *Some*body in here is doing a commit :(
-
         OutputStream st = new ByteArrayOutputStream();
         SimpleContentHandler tmpHandler = getTemporaryHandler(st);
 
@@ -686,6 +685,12 @@ public class PackageManagerTest extends BaseTestCaseWithUser {
         String prim = dto.getPrimaryXml();
         String other = dto.getOtherXml();
         assertEquals(prim, test);
-        commitHappened();
+    }
+
+    public static PackageExtraTagsKeys createExtraTagKey(String name) {
+        PackageExtraTagsKeys tag1 = new PackageExtraTagsKeys();
+        tag1.setName(name);
+        HibernateFactory.getSession().save(tag1);
+        return tag1;
     }
 }

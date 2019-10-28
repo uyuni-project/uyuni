@@ -16,6 +16,7 @@
 # Please submit bugfixes or comments via https://bugs.opensuse.org/
 #
 
+%{!?_unitdir: %global _unitdir /lib/systemd/system}
 
 %global rhnroot %{_prefix}/share/rhn
 %global rhnconfigdefaults %{rhnroot}/config-defaults
@@ -75,7 +76,7 @@ Name:           spacewalk-backend
 Summary:        Common programs needed to be installed on the Spacewalk servers/proxies
 License:        GPL-2.0-only
 Group:          Applications/Internet
-Version:        4.0.17
+Version:        4.1.0
 Release:        1%{?dist}
 Url:            https://github.com/uyuni-project/uyuni
 Source0:        https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
@@ -85,8 +86,9 @@ BuildArch:      noarch
 %endif
 
 Requires:       %{pythonX}
-# /etc/rhn is provided by spacewalk-proxy-common or by spacewalk-config
-Requires:       /etc/rhn
+# /etc/rhn is provided by uyuni-base-common
+Requires(pre):  uyuni-base-common
+BuildRequires:  uyuni-base-common
 %if 0%{?build_py3}
 Requires:       python3-%{name}-libs >= %{version}
 Requires:       python3-rhnlib >= 2.5.74
@@ -447,6 +449,12 @@ Group:          Applications/Internet
 Requires:       %{name}
 Requires:       %{name}-app = %{version}-%{release}
 Requires:       %{name}-xmlrpc = %{version}-%{release}
+%if 0%{?suse_version} > 1200 || 0%{?fedora} || 0%{?rhel} > 6
+Requires:       systemd
+BuildRequires:  systemd
+%{?systemd_requires}
+%endif
+
 %if 0%{?build_py3}
 Requires:       python3-python-dateutil
 Requires:       python3-gzipstream
@@ -554,6 +562,8 @@ install -d $RPM_BUILD_ROOT%{rhnroot}
 install -d $RPM_BUILD_ROOT%{pythonrhnroot}
 install -d $RPM_BUILD_ROOT%{pythonrhnroot}/common
 install -d $RPM_BUILD_ROOT%{rhnconf}
+install -d $RPM_BUILD_ROOT/%{_unitdir}
+install -d $RPM_BUILD_ROOT/%{_prefix}/lib/susemanager/bin/
 
 make -f Makefile.backend install PREFIX=$RPM_BUILD_ROOT \
     MANDIR=%{_mandir} APACHECONFDIR=%{apacheconfd} PYTHON_BIN=%{pythonX}
@@ -589,6 +599,9 @@ ln -s rhn-satellite-exporter $RPM_BUILD_ROOT/usr/bin/mgr-exporter
 
 install -m 644 rhn-conf/signing.cnf $RPM_BUILD_ROOT%{rhnconf}/signing.conf
 
+install -m 644 satellite_tools/spacewalk-diskcheck.service $RPM_BUILD_ROOT/%{_unitdir}
+install -m 644 satellite_tools/spacewalk-diskcheck.timer $RPM_BUILD_ROOT/%{_unitdir}
+
 %find_lang %{name}-server
 
 %if 0%{?is_opensuse}
@@ -614,6 +627,8 @@ rm -f $RPM_BUILD_ROOT%{python2rhnroot}/__init__.py*
 rm -f $RPM_BUILD_ROOT%{python2rhnroot}/common/__init__.py*
 %endif
 %endif
+
+install -m 755 satellite_tools/mgr-update-pkg-extra-tags $RPM_BUILD_ROOT%{_prefix}/lib/susemanager/bin/
 
 %check
 # Copy spacewalk-usix python files to allow unit tests to run
@@ -699,6 +714,8 @@ rm -f %{rhnconf}/rhnSecret.py*
 %defattr(-,root,root)
 %doc LICENSE
 %dir %{pythonrhnroot}
+%dir %{_prefix}/lib/susemanager
+%dir %{_prefix}/lib/susemanager/bin
 %{pythonrhnroot}/common/suseLib.py*
 %{pythonrhnroot}/common/apache.py*
 %{pythonrhnroot}/common/byterange.py*
@@ -945,8 +962,8 @@ rm -f %{rhnconf}/rhnSecret.py*
 %defattr(-,root,root)
 %doc LICENSE
 %if 0%{?build_py3}
-%{python2rhnroot}
-%{python2rhnroot}/common
+%dir %{python2rhnroot}
+%dir %{python2rhnroot}/common
 %endif
 %{python2rhnroot}/common/checksum.py*
 %{python2rhnroot}/common/cli.py*
@@ -963,7 +980,7 @@ rm -f %{rhnconf}/rhnSecret.py*
 %files -n python3-%{name}-libs
 %defattr(-,root,root)
 %doc LICENSE
-%dir %{python3rhnroot}/common/__pycache__
+%dir %{python3rhnroot}/common
 %{python3rhnroot}/common/checksum.py
 %{python3rhnroot}/common/cli.py
 %{python3rhnroot}/common/fileutils.py
@@ -974,7 +991,17 @@ rm -f %{rhnconf}/rhnSecret.py*
 %{python3rhnroot}/common/stringutils.py
 %{python3rhnroot}/common/rhnLib.py*
 %{python3rhnroot}/common/timezone_utils.py*
-%{python3rhnroot}/common
+%dir %{python3rhnroot}/common/__pycache__
+%{python3rhnroot}/common/__pycache__/checksum.*
+%{python3rhnroot}/common/__pycache__/cli.*
+%{python3rhnroot}/common/__pycache__/fileutils.*
+%{python3rhnroot}/common/__pycache__/rhn_deb.*
+%{python3rhnroot}/common/__pycache__/rhn_mpm.*
+%{python3rhnroot}/common/__pycache__/rhn_pkg.*
+%{python3rhnroot}/common/__pycache__/rhn_rpm.*
+%{python3rhnroot}/common/__pycache__/stringutils.*
+%{python3rhnroot}/common/__pycache__/rhnLib.*
+%{python3rhnroot}/common/__pycache__/timezone_utils.*
 %endif
 
 %files config-files-common
@@ -1022,7 +1049,6 @@ rm -f %{rhnconf}/rhnSecret.py*
 %defattr(-,root,root)
 %doc LICENSE
 %doc README.ULN
-%attr(0750,root,%{apache_group}) %dir %{rhnconf}
 %attr(644,root,%{apache_group}) %{rhnconfigdefaults}/rhn_server_satellite.conf
 %config(noreplace) %{_sysconfdir}/logrotate.d/spacewalk-backend-tools
 %config(noreplace) %{rhnconf}/signing.conf
@@ -1047,6 +1073,8 @@ rm -f %{rhnconf}/rhnSecret.py*
 %attr(755,root,root) %{_bindir}/spacewalk-fips-tool
 %attr(755,root,root) %{_bindir}/mgr-sign-metadata
 %attr(755,root,root) %{_bindir}/mgr-sign-metadata-ctl
+%attr(755,root,root) %{_bindir}/spacewalk-diskcheck
+%attr(755,root,root) %{_prefix}/lib/susemanager/bin/mgr-update-pkg-extra-tags
 %{pythonrhnroot}/satellite_tools/contentRemove.py*
 %{pythonrhnroot}/satellite_tools/SequenceServer.py*
 %{pythonrhnroot}/satellite_tools/messages.py*
@@ -1105,6 +1133,12 @@ rm -f %{rhnconf}/rhnSecret.py*
 %{_mandir}/man8/spacewalk-data-fsck.8*
 %{_mandir}/man8/spacewalk-update-signatures.8*
 %{_mandir}/man8/update-packages.8*
+%attr(644, root, root) %{_unitdir}/spacewalk-diskcheck.service
+%attr(644, root, root) %{_unitdir}/spacewalk-diskcheck.timer
+%if 0%{?rhel} == 6 || 0%{?suse_version} == 1110
+%dir /lib/systemd
+%dir /lib/systemd/system
+%endif
 
 %files xml-export-libs
 %defattr(-,root,root)

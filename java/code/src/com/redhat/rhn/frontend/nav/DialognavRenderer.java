@@ -201,6 +201,7 @@ public class DialognavRenderer extends Renderable {
         }
 
         a.setAttribute("href", url);
+        a.setAttribute("class", "js-spa");
         a.addBody(text);
         return a.render();
     }

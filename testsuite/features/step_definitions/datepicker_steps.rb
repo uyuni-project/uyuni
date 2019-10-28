@@ -1,4 +1,4 @@
-# Copyright (c) 2017-2019 SUSE
+# Copyright (c) 2017-2019 SUSE LLC.
 # Licensed under the terms of the MIT license.
 
 require 'date'
@@ -85,7 +85,7 @@ end
 
 Given(/^I pick "([^"]*)" as time$/) do |arg1|
   find('.ui-timepicker-input').click
-  timepicker = first('ul.ui-timepicker-list')
+  timepicker = find('ul.ui-timepicker-list', match: :first)
   time = timepicker.find(:xpath, "//*[normalize-space(text())='#{arg1}']")
   time.click
 end

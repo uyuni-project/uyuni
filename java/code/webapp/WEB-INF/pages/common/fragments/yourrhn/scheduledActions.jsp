@@ -29,7 +29,7 @@
                 <rhn:icon type="system-unknown" title="yourrhn.jsp.actions.unknown" />
             </c:otherwise>
         </c:choose>
-      <a href="/rhn/schedule/ActionDetails.do?aid=${current.id}"><c:out value="${current.actionName}" /></a>
+      <a class="js-spa" href="/rhn/schedule/ActionDetails.do?aid=${current.id}"><c:out value="${current.actionName}" /></a>
     </rhn:column>
 
         <rhn:column header="yourrhn.jsp.user"
@@ -54,7 +54,7 @@
   </rhn:listdisplay>
 
   <span class="full-width-note-right">
-      <a href="/rhn/schedule/PendingActions.do">
+      <a class="js-spa" href="/rhn/schedule/PendingActions.do">
           <bean:message key="yourrhn.jsp.allactions" />
       </a>
   </span>

@@ -1,3 +1,14 @@
+- Bump version to 4.1.0 (bsc#1154940)
+- Change the default value of taskomatic maxmemory to 4GB
+- Resolve modules.yaml file for modular repositories
+- remove superfluous 'apache' entries from sudoers configuration (bsc#1151632)
+- Migrate login to Spark
+- Require uyuni-base-common for /etc/rhn
+
+-------------------------------------------------------------------
+Wed Jul 31 17:33:40 CEST 2019 - jgonzalez@suse.com
+
+- version 4.0.10-1
 - mark zz-spacewalk-www.conf and os-images.conf as plain %config
   instead of %config(noreplace):
   Those files were never meant to be edited by the user. The package

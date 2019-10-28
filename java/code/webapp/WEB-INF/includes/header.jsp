@@ -47,11 +47,11 @@
     <li>
     <c:choose>
       <c:when test="${rhn:getConfig('java.sso')}">
-        <a href="/rhn/manager/sso/logout" title="<bean:message key="header.jsp.signout" />"
+        <a data-senna-off href="/rhn/manager/sso/logout" title="<bean:message key="header.jsp.signout" />"
            alt="<bean:message key="header.jsp.signout" />">
       </c:when>
       <c:otherwise>
-        <a href="/rhn/Logout.do" title="<bean:message key="header.jsp.signout" />"
+        <a data-senna-off href="/rhn/Logout.do" title="<bean:message key="header.jsp.signout" />"
           alt="<bean:message key="header.jsp.signout" />">
       </c:otherwise>
     </c:choose>
@@ -61,7 +61,9 @@
   </ul>
   <ul class="nav navbar-nav navbar-primary">
     <li id="notifications">
-      <script src='/javascript/manager/notifications/notifications.bundle.js?cb=${rhn:getConfig('web.version')}'></script>
+      <script>
+        spaImportReactPage('notifications/notifications')
+      </script>
     </li>
     <c:if test="${requestScope.legends != null}">
       <li class="legend">
@@ -95,7 +97,7 @@
         </div>
       </form>
     </li>
-    <li class="ssm-box">
+    <li id="ssm-box" class="ssm-box">
       <a href="/rhn/ssm/index.do" id="manage-ssm" title="<bean:message key="manage"/>">
         <div id="header_selcount"><rhn:setdisplay user="${requestScope.session.user}" /></div>
       </a>
@@ -111,7 +113,7 @@
           <c:set var="rurl" value="${pageContext.request.requestURI}" />
         </c:otherwise>
       </c:choose>
-      <a id="clear-ssm" href="/rhn/systems/Overview.do?empty_set=true&amp;return_url=${rhn:urlEncode(rurl)}"
+      <a class="js-spa" id="clear-ssm" href="/rhn/systems/Overview.do?empty_set=true&amp;return_url=${rhn:urlEncode(rurl)}"
           title="<bean:message key="clear"/>">
         <i class="fa fa-eraser"></i>
       </a>

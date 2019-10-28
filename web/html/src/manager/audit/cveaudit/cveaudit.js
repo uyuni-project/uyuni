@@ -10,6 +10,7 @@ const Functions = require("utils/functions");
 const Utils = Functions.Utils;
 const {Table, Column, SearchField, Highlight} = require("components/table");
 const Messages = require("components/messages").Messages;
+const SpaRenderer  = require("core/spa/spa-renderer").default;
 
 const AFFECTED_PATCH_INAPPLICABLE = "AFFECTED_PATCH_INAPPLICABLE";
 const AFFECTED_PATCH_APPLICABLE = "AFFECTED_PATCH_APPLICABLE";
@@ -158,13 +159,13 @@ class CVEAudit extends React.Component {
   render() {
     return (
       <span>
-        <TopPanel title="CVE Audit" icon="fa-search" helpUrl="/docs/reference/audit/audit-cve-audit.html">
+        <TopPanel title={t("CVE Audit")} icon="fa-search" helpUrl="/docs/reference/audit/audit-cve-audit.html">
           <Messages items={this.state.messages.map(msg => {
               return {severity: "warning", text: msg};
           })}/>
           <div className="input-group">
                <span className="input-group-addon">
-                    CVE
+                 {t("CVE")}
                </span>
                <select id="cveIdentifierYear" value={this.state.cveYear} onChange={this.onCVEYearChange} className="form-control">
                {
@@ -335,7 +336,7 @@ class CVEAudit extends React.Component {
   }
 }
 
-ReactDOM.render(
+export const renderer = () => SpaRenderer.renderNavigationReact(
   <CVEAudit />,
   document.getElementById('cveaudit')
 );

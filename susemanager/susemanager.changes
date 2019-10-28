@@ -1,3 +1,23 @@
+- Bump version to 4.1.0 (bsc#1154940)
+- prepare bootstrap data for upcoming openSUSE 15.2
+- add bootstrap data for openSUSE 15.1 when mirrored as
+  Vendor Channels (bsc#1154474)
+- Require dmidecode only for SLE12 aarch64 and x86_64 (bsc#1152170)
+- Require pmtools only for SLE11 i586 and x86_64 (bsc#1150314)
+- fix test for btrfs subvolume for new btrfs version (bsc#1151666)
+- enable and start disk space checker script during setup
+- remove creating group susemanager and require uyuni-base-server
+  which does it now
+- ensure working directory is /root during setup (bsc#1148169)
+- dmidecode does not exist on s390x (bsc#1145119)
+- move /usr/share/rhn/config-defaults to uyuni-base-common
+- Add missing bootstrap repo entries for Ubuntu repositories
+
+-------------------------------------------------------------------
+Wed Jul 31 17:45:28 CEST 2019 - jgonzalez@suse.com
+
+- version 4.0.15-1
+- add support for in-place migration (Uyuni only for now)
 - Make dmidecode part of the bootstrap repositiories (bsc#1137952)
 - respect new location for autoinstall templates during migration
 

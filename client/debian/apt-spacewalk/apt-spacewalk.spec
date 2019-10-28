@@ -34,7 +34,7 @@ Requires: python-apt
 Requires: rhn-client-tools
 Requires: python-six
 
-Recommends: rhnsd
+Recommends: mgr-daemon
 
 %description -n apt-transport-spacewalk
  Supplies the APT method for fetching packages from Spacewalk.

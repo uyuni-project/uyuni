@@ -17,7 +17,6 @@ package com.suse.manager.webui.websocket;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.notification.UserNotificationFactory;
 
-import com.redhat.rhn.domain.user.User;
 import org.apache.log4j.Logger;
 
 import javax.websocket.OnOpen;
@@ -33,6 +32,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.Optional;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
@@ -49,7 +49,7 @@ public class Notification {
     private static final Logger LOG = Logger.getLogger(Notification.class);
 
     private static final Object LOCK = new Object();
-    private static Map<Session, User> wsSessions = new HashMap<>();
+    private static Map<Session, Long> wsSessions = new HashMap<>();
     private static Set<Session> brokenSessions = new HashSet<>();
 
     /**
@@ -59,23 +59,23 @@ public class Notification {
      */
     @OnOpen
     public void onOpen(Session session, EndpointConfig config) {
-        User user = (User)session.getUserProperties().get("currentUser");
         if (session != null) {
-            if (user != null) {
-                LOG.debug(String.format("Hooked a new websocket session [id:%s]", session.getId()));
-                handshakeSession(user, session);
+            Optional.ofNullable(session.getUserProperties().get("webUserID"))
+                    .map(webUserID -> (Long) webUserID)
+                    .ifPresentOrElse(userId -> {
+                        LOG.debug(String.format("Hooked a new websocket session [id:%s]", session.getId()));
+                        handshakeSession(userId, session);
 
-                // update the notification counter to the unread messages
-                try {
-                    sendMessage(session, String.valueOf(UserNotificationFactory.unreadUserNotificationsSize(user)));
-                }
-                finally {
-                    HibernateFactory.closeSession();
-                }
-            }
-            else {
-                LOG.debug("no authenticated user.");
-            }
+                        // update the notification counter to the unread messages
+                        try {
+                            sendMessage(session,
+                                    String.valueOf(UserNotificationFactory.unreadUserNotificationsSize(userId)));
+                        }
+                        finally {
+                            HibernateFactory.closeSession();
+                        }
+                    },
+                    ()-> LOG.debug("no authenticated user."));
         }
         else {
             LOG.debug("No web sessionId available. Closing the web socket.");
@@ -194,11 +194,12 @@ public class Notification {
 
     /**
      * Add a new WebSocket Session to the collection
+     * @param userId authenticated user ID
      * @param session the session to add
      */
-    private static void handshakeSession(User user, Session session) {
+    private static void handshakeSession(long userId, Session session) {
         synchronized (LOCK) {
-            wsSessions.put(session, user);
+            wsSessions.put(session, userId);
         }
     }
 

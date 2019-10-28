@@ -7,6 +7,7 @@ const { TopPanel } = require('components/panels/TopPanel');
 const Messages = require("components/messages").Messages;
 const Network = require("utils/network");
 const {AsyncButton, LinkButton} = require("components/buttons");
+const SpaRenderer  = require("core/spa/spa-renderer").default;
 
 class BootstrapMinions extends React.Component {
 
@@ -147,7 +148,7 @@ class BootstrapMinions extends React.Component {
         var messages = undefined;
         if (this.state.success) {
             messages = <Messages items={[{severity: "success", text:
-                <p>{t('Successfully bootstrapped host! Your system should appear in')} <a href="/rhn/systems/SystemList.do">{t('systems')}</a> {t('shortly')}.</p>
+                <p>{t('Successfully bootstrapped host! Your system should appear in')} <a className="js-spa" href="/rhn/systems/SystemList.do">{t('systems')}</a> {t('shortly')}.</p>
             }]}/>;
         } else if (this.state.messages.length > 0) {
             messages = <Messages items={this.state.messages.map(function(msg) {
@@ -206,7 +207,7 @@ class BootstrapMinions extends React.Component {
                     <label className="col-md-3 control-label">Activation Key:</label>
                     <div className="col-md-6">
                        <select value={this.state.activationKey} onChange={this.activationKeyChanged} className="form-control" name="activationKeys">
-                         <option key="none" value="">None</option>
+                         <option key="none" value="">{t("None")}</option>
                          {
                              this.props.availableActivationKeys.map(k =>
                                 <option key={k} value={k}>{ k }</option>
@@ -219,7 +220,7 @@ class BootstrapMinions extends React.Component {
                     <label className="col-md-3 control-label">{t("Proxy")}:</label>
                     <div className="col-md-6">
                        <select value={this.state.proxy} onChange={this.proxyChanged} className="form-control" name="proxies">
-                         <option key="none" value="">None</option>
+                         <option key="none" value="">{t("None")}</option>
                          {
                              this.props.proxies.map(p =>
                                 <option key={p.id} value={p.id}>{ p.name }
@@ -281,7 +282,7 @@ class BootstrapMinions extends React.Component {
 
 }
 
-ReactDOM.render(
+export const renderer = id => SpaRenderer.renderNavigationReact(
     <BootstrapMinions availableActivationKeys={availableActivationKeys} proxies={proxies}/>,
-    document.getElementById('bootstrap-minions')
+    document.getElementById(id)
 );

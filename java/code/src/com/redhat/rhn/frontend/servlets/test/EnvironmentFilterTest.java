@@ -28,7 +28,7 @@ public class EnvironmentFilterTest extends BaseFilterTst {
 
     public void setUp() throws Exception {
         super.setUp();
-        this.request.setRequestURL("http://rhn.webdev.redhat.com/rhn/Login.do");
+        this.request.setRequestURL("http://rhn.webdev.redhat.com/rhn/manager/login");
     }
 
     public void testNonSSLUrls() throws Exception {
@@ -51,7 +51,7 @@ public class EnvironmentFilterTest extends BaseFilterTst {
             c.setBoolean(ConfigDefaults.SSL_AVAILABLE, origValue.toString());
         }
         // Check that we got the expected redirect.
-        String expectedRedir = "https://mymachine.rhndev.redhat.com/rhn/Login.do";
+        String expectedRedir = "https://mymachine.rhndev.redhat.com/rhn/manager/login";
         assertEquals(expectedRedir, response.getRedirect());
 
         request.setupGetRequestURI("/rhn/kickstart/DownloadFile");

@@ -3,7 +3,16 @@ include ./minion-header.jade
 #formulas
 
 script(type='text/javascript').
-    var csrfToken = "#{csrf_token}";
-    var serverId = "#{server.id}";
+    window.csrfToken = "#{csrf_token}";
 
-script(src='/javascript/manager/minion/formula/minion-formula-selection.bundle.js?cb=#{webVersion}', type='text/javascript')
+script(type='text/javascript').
+    spaImportReactPage('minion/formula/minion-formula-selection')
+        .then(function(module) {
+             module.renderer(
+              'formulas',
+              {
+                serverId: "#{server.id}",
+                warningMessage: "#{warning}"
+              }
+            )
+        });

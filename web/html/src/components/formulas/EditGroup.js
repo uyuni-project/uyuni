@@ -216,13 +216,15 @@ class EditDictionaryGroup extends React.Component {
     wrapKeyGroup(element_name, innerHTML) {
         return (
             <div className="form-group" key={element_name}>
-                <label className="col-lg-3 control-label" style={{"color": "green"}}>
-                    {element_name + ":"}
+                <label className="col-lg-3 control-label">
+                    {element_name}
+                    <span className="required-form-field"> *</span>
+                    :
                 </label>
                 <div className="col-lg-6" >
                     {innerHTML}
                 </div>
-                <i className="fa fa-question-circle" title="This field is used as a 'key' identifier in the resulting pillar data."></i>
+                <i className="fa fa-question-circle" title={t("This field is used as a 'key' identifier in the resulting pillar data.")}></i>
             </div>
         );
     }

@@ -1,0 +1,40 @@
+# This file describes the order of features in a normal testsuite run.
+#
+# If you create new features, please see conventions about naming of the
+# feature files in testsuite/docs/Guidelines.md in "Rules for features" chapter,
+# as well as guidelines about idempotency in "Idempotency" chapter.
+
+## Secondary features BEGIN ##
+
+# IDEMPOTENT
+
+- features/secondary/srv_users.feature
+- features/secondary/min_osimage_build_image.feature
+- features/secondary/allcli_reboot.feature
+- features/secondary/trad_config_channel.feature
+- features/secondary/trad_lock_packages.feature
+- features/secondary/min_centos_salt.feature
+- features/secondary/trad_centos_client.feature
+- features/secondary/min_ubuntu_salt.feature
+- features/secondary/minssh_bootstrap_xmlrpc.feature
+- features/secondary/min_bootstrap_script.feature
+- features/secondary/min_activationkey.feature
+- features/secondary/trad_migrate_to_minion.feature
+- features/secondary/trad_migrate_to_sshminion.feature
+- features/secondary/trad_ssh_push.feature
+- features/secondary/srv_virtual_host_manager.feature
+- features/secondary/trad_baremetal_discovery.feature
+- features/secondary/min_salt_minions_page.feature
+- features/secondary/min_empty_system_profiles.feature
+- features/secondary/srv_power_management.feature
+- features/secondary/trad_need_reboot.feature
+- features/secondary/trad_action_chain.feature
+- features/secondary/min_action_chain.feature
+- features/secondary/minssh_action_chain.feature
+- features/secondary/srv_delete_channel.feature
+- features/secondary/srv_spacewalk_remove_channel_tool.feature
+- features/secondary/min_docker_build_image.feature
+- features/secondary/min_docker_auth_registry.feature
+- features/secondary/min_docker_xmlrpc.feature
+
+## Secondary features END ##

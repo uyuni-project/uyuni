@@ -3,6 +3,15 @@ include ./minion-header.jade
 #package-states
 
 script(type='text/javascript').
-    const csrfToken = "#{csrf_token}";
-    const serverId = "#{server.id}";
-script(src='/javascript/manager/minion/packages/package-states.bundle.js?cb=#{webVersion}', type='text/javascript')
+    window.csrfToken = "#{csrf_token}";
+
+script(type='text/javascript').
+    spaImportReactPage('minion/packages/package-states')
+        .then(function(module) {
+            module.renderer(
+                'package-states',
+                {
+                    serverId: "#{server.id}"
+                }
+            )
+        })

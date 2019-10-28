@@ -14,10 +14,37 @@
  */
 package com.redhat.rhn.domain.action.virtualization;
 
+import java.util.Map;
+
 /**
  * VirtualizationRebootAction - Class representing TYPE_VIRTUALIZATION_REBOOT
  * @version $Rev$
  */
 public class VirtualizationRebootAction extends BaseVirtualizationAction {
 
+    private boolean force = false;
+
+    /**
+     * @return Returns whether to force off rather than cleanly shutting down.
+     */
+    public boolean isForce() {
+        return force;
+    }
+
+    /**
+     * @param forceIn whether to force off rather than cleanly shutting down.
+     */
+    public void setForce(boolean forceIn) {
+        force = forceIn;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void extractParameters(Map context) {
+        if (context.containsKey(BaseVirtualizationAction.FORCE_STRING)) {
+            setForce(Boolean.valueOf((String)context.get(
+                    BaseVirtualizationAction.FORCE_STRING)));
+        }
+    }
 }

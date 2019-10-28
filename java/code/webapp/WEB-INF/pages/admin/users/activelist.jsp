@@ -36,7 +36,7 @@
                    headerkey="username.nopunc.displayname"
                    attr="userLogin"
                    filterattr="login">
-                <c:out value="<a href=\"/rhn/users/UserDetails.do?uid=${current.id}\">${current.userLogin}</a>" escapeXml="false" />
+                <c:out value="<a href=\"/rhn/users/UserDetails.do?uid=${current.id}\" class=\"js-spa\">${current.userLogin}</a>" escapeXml="false" />
         </rl:column>
 
         <!-- Real name column -->

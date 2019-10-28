@@ -19,7 +19,7 @@
 <rl:listset name="systemListSet" legend="system">
   <rhn:csrf />
   <c:if test="${not groups}">
-    <a href="/rhn/systems/Overview.do?showgroups=true">
+    <a class="js-spa" href="/rhn/systems/Overview.do?showgroups=true">
       <div class="btn btn-default spacewalk-btn-margin-vertical">
         <rhn:icon type="header-system-groups" /> <bean:message key="overview.jsp.systems"/>
       </div>
@@ -29,7 +29,7 @@
   </c:if>
 
   <c:if test="${groups}">
-    <a href="/rhn/systems/Overview.do?showgroups=false">
+    <a class="js-spa" href="/rhn/systems/Overview.do?showgroups=false">
       <div class="btn btn-default spacewalk-btn-margin-vertical">
         <rhn:icon type="header-system" /> <bean:message key="overview.jsp.groups"/>
       </div>

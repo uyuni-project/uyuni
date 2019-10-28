@@ -21,6 +21,7 @@ import time
 from spacewalk.common import usix
 
 from spacewalk.server import rhnSQL
+from rhn.i18n import bstr
 
 
 class InvalidTokenError(Exception):
@@ -191,12 +192,12 @@ class ActivationKey:
 
     def generate_token(self):
         s = hashlib.new('sha1')
-        s.update(str(os.getpid()))
+        s.update(bstr(str(os.getpid())))
         for field in ['org_id', 'user_id', 'server_id']:
             if self._row_reg_token.has_key(field):
                 val = self._row_reg_token[field]
-            s.update(str(val))
-        s.update("%.8f" % time.time())
+            s.update(bstr(str(val)))
+        s.update(bstr("%.8f" % time.time()))
         self._token = s.hexdigest()
         return self._token
 

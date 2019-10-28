@@ -12,8 +12,8 @@
   <property name="ivy.14.compatible" value="true"/>
   <available file="${java.lib.dir}/tomcat6" type="dir" property="tomcat" value="tomcat6" />
   <available file="${java.lib.dir}/tomcat" type="dir" property="tomcat" value="tomcat" />
-  <available file="/usr/share/java/tomcat-jsp-2.3-api.jar" type="file" property="tomcat" value="tomcat8" />
-  <available file="/usr/share/java/tomcat-jsp-2.3-api.jar" type="file" property="tomcat" value="tomcat9" />
+  <available file="/usr/share/java/tomcat/tomcat-servlet-3.1-api.jar" type="file" property="tomcat" value="tomcat8" />
+  <available file="/usr/share/java/tomcat/tomcat-servlet-4.0-api.jar" type="file" property="tomcat" value="tomcat9" />
   <property name="tomcat" value="tomcat5" />
   <echo message="Importing buildconf/build-props-${tomcat}.xml" />
   <import file="buildconf/build-props-${tomcat}.xml" />
@@ -51,21 +51,6 @@
     <link-jars ivyxml="${rhn-home}/ivy.xml" libdir="${lib.dir}"
                jars="${run.jar.dependencies}" dir="${run-external.lib.dir}"/>
     </target>
-
-  <!-- Generates Eclipse .classpath  -->
-  <target name="gen-eclipse-base" depends="resolve"
-          description = "Generates eclipse .classpath file">
-      <exec executable="../scripts/gen-eclipse.py"
-        output="${basedir}/.classpath" >
-        <arg value="code/internal/src:code/src"/>
-        <arg value="${eclipse.lib.dirs}:${env.JAVA_HOME}/lib/tools.jar" />
-    </exec>
-  </target>
-
-  <!-- Generates Eclipse classpath after setting up dependent jars   -->
-  <target name="gen-eclipse" depends="gen-eclipse-base"
-          description = "Generates eclipse .classpath file after linking jars">
-  </target>
 
   <target name="missingstrings"
           description="prints out a report with untranslated strings.">
@@ -952,16 +937,14 @@ delete from rhnChannel where label like 'ChannelLabel%';
     </delete>
   </target>
 
-  <!--
-     Set up Eclipse project files
-     NOTE: If this fails due to missing-jars, and you want to continue,
-     then execute "ant gen-eclipse-base" and retry
-    -->
-  <target name="make-eclipse-project" depends = "gen-eclipse"
+  <target name="make-eclipse-project"
           description="Configures this checkout as an eclipse project.">
     <copy toDir="${rhn-home}" overwrite="false">
       <fileset dir="${rhn-home}/conf/eclipse/">
         <include name=".project" />
+        <include name=".checkstyle" />
+        <include name=".classpath" />
+        <include name=".settings/*" />
         <!-- include name=".externalToolBuilders/*" /-->
       </fileset>
     </copy>

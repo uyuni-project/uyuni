@@ -16,6 +16,8 @@ package com.suse.manager.webui.utils.gson;
 
 import com.google.gson.JsonObject;
 
+import java.util.List;
+
 /**
  * Represents the virtual storage pool informations data to display in the UI.
  * Those data are directly passed over from Salt response.
@@ -32,14 +34,16 @@ public class VirtualStoragePoolInfoJson {
     private Long allocation;
     private Long capacity;
     private Long free;
+    private List<VirtualStorageVolumeInfoJson> volumes;
 
     /**
      * Build up an instance from the data returned from salt virt.pool_info
      *
      * @param nameIn the name of the pool
      * @param values the JSON values returned by salt
+     * @param volumesIn the pool volumes infos
      */
-    public VirtualStoragePoolInfoJson(String nameIn, JsonObject values) {
+    public VirtualStoragePoolInfoJson(String nameIn, JsonObject values, List<VirtualStorageVolumeInfoJson> volumesIn) {
         setName(nameIn);
         setUuid(values.get("uuid").getAsString());
         setAutostart(values.get("autostart").getAsInt() == 1);
@@ -50,6 +54,7 @@ public class VirtualStoragePoolInfoJson {
         setAllocation(values.get("allocation").getAsLong());
         setCapacity(values.get("capacity").getAsLong());
         setFree(values.get("free").getAsLong());
+        volumes = volumesIn;
     }
 
 
@@ -210,5 +215,14 @@ public class VirtualStoragePoolInfoJson {
      */
     public void setFree(Long freeIn) {
         free = freeIn;
+    }
+
+
+
+    /**
+     * @return Returns the volumes infos.
+     */
+    public List<VirtualStorageVolumeInfoJson> getVolumes() {
+        return volumes;
     }
 }

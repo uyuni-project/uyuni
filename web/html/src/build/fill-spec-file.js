@@ -4,6 +4,8 @@ function fillSpecFile() {
     delete require.cache[require.resolve("../vendors/npm.licenses.structured")];
     const {npmLicensesArray} =  require("../vendors/npm.licenses.structured");
     const processedLicenses = [...new Set(npmLicensesArray)].sort().join(" and ");
+    //https://github.com/metal/metal.js/issues/411
+    const mappedProcessedLicenses = processedLicenses.replace("BSD", "0BSD");
 
     const specFileLocation = "../../spacewalk-web.spec";
 
@@ -12,15 +14,15 @@ function fillSpecFile() {
             if (err) {
                 throw err;
             }
-            var specFileEdited = specFile.replace(/(?<=%package -n susemanager-web-libs[\s\S]*?)License:.*/m, `License:\t\t${processedLicenses}`);
+            var specFileEdited = specFile.replace(/(?<=%package -n susemanager-web-libs[\s\S]*?)License:.*/m, `License:\t\t${mappedProcessedLicenses}`);
 
             fs.writeFile(specFileLocation, specFileEdited, 'utf8', function (err) {
                 if (err) {
                     throw err;
                 }
 
-                resolve({processedLicenses});
-                console.log(`susemanager-web-libs.spec was generated successfully with the following licenses: ${processedLicenses}`);
+                resolve({mappedProcessedLicenses});
+                console.log(`susemanager-web-libs.spec was generated successfully with the following licenses: ${mappedProcessedLicenses}`);
             });
 
         });

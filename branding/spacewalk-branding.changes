@@ -1,3 +1,16 @@
+- Bump version to 4.1.0 (bsc#1154940)
+- Improve menu scrollbar style for firefox
+- Migrate login to Spark
+- Add UI message when salt-formulas system folders are unreachable (bsc#1142309)
+- add missing strings for tasks
+
+-------------------------------------------------------------------
+Wed Jul 31 17:31:26 CEST 2019 - jgonzalez@suse.com
+
+- version 4.0.11-1
+- set Copyright year to 2019 (bsc#1141598)
+- Remove duplicate information message when changing system properties (bsc#1111371)
+- Fix big formula checkbox not supported in Firefox
 - Update help URLs in the UI
 
 -------------------------------------------------------------------

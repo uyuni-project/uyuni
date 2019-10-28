@@ -40,7 +40,7 @@ public class RpmVersionComparatorTest extends TestCase {
         // Some equality
         assertCompareSymm(0, "0", "0");
         assertCompareSymm(0, "1-a.1", "1-a.1");
-        assertCompareSymm(0, "1-a.1", "1.a-1");
+        assertCompareSymm(0, "1_a.1", "1.a_1");
         assertCompareSymm(0, "", "");
 
         // all not alphanum signs are treated as the same
@@ -78,6 +78,96 @@ public class RpmVersionComparatorTest extends TestCase {
         assertCompareSymm(-1, "alt0.8", "ipl4mdk");
         assertCompareSymm(1, "1asp", "alt1");
 
+    }
+
+    /* from official rpm tests */
+    public void testTildeSorting() {
+        assertCompareSymm(0, "1.0~rc1", "1.0~rc1");
+        assertCompareSymm(-1, "1.0~rc1", "1.0");
+        assertCompareSymm(1, "1.0", "1.0~rc1");
+        assertCompareSymm(-1, "1.0~rc1", "1.0~rc2");
+        assertCompareSymm(1, "1.0~rc2", "1.0~rc1");
+        assertCompareSymm(0, "1.0~rc1~git123", "1.0~rc1~git123");
+        assertCompareSymm(-1, "1.0~rc1~git123", "1.0~rc1");
+        assertCompareSymm(1, "1.0~rc1", "1.0~rc1~git123");
+    }
+
+    /* from official rpm tests */
+    public void testCaretSorting() {
+        assertCompareSymm(1, "1.0^", "1.0");
+        assertCompareSymm(1, "1.0^git1", "1.0");
+        assertCompareSymm(-1, "1.0^git1", "1.0^git2");
+        assertCompareSymm(-1, "1.0^git1", "1.01");
+        assertCompareSymm(-1, "1.0^20160101", "1.0.1");
+        assertCompareSymm(1, "1.0^20160102", "1.0^20160101^git1");
+    }
+
+    public void testUbuntuBugzilla1150113() {
+        assertCompareSymm(-1, "8-20180414", "8.3.0");
+        assertCompareSymm(-1, "2.7.15~rc1", "2.7.15");
+        assertCompareSymm(-1, "1.20.4", "14.1");
+        assertCompareSymm(1, "1.0.0~alpha+201804191824-24b36a9", "0.99");
+        assertCompareSymm(0, "0.2017-01-15.gdad1bbc69", "0.2017-01-15.gdad1bbc69");
+        assertCompareSymm(1, "0.2017-01-15.gdad1bbc69", "0.2016-08-15.cafecafe");
+        assertCompareSymm(-1, "0.2017-01-15.gdad1bbc69", "1.0");
+        assertCompareSymm(0, "8-20180414", "8");
+        assertCompareSymm(-1, "8.0.9", "8.0.9.22");
+        assertCompareSymm(-1, "8.0.9.22-abcd", "8.0.9.22-abcd-expr1");
+        // TODO: implement new deb comparator and uncomment the following test
+        // assertCompareSymm(-1, "8.0.9", "a.8.0.9-22");
+        // The lexical comparison is a comparison of ASCII values modified so that all the letters sort earlier
+        // than all the non-letters
+        //
+        // Debian dpkg test cases follow [ https://git.dpkg.org/cgit/dpkg/dpkg.git/tree/scripts/t/Dpkg_Version.t ]
+        // Commented out tests are the one that should be working with the new comparator
+        // (to be developed, see TODO above)
+        assertCompareSymm(-1, "1.0-1", "2.0-2");
+        assertCompareSymm(-1, "2.2~rc-4", "2.2-1");
+        assertCompareSymm(1, "2.2-1", "2.2~rc-4");
+        assertCompareSymm(0, "1.0000-1", "1.0-1");
+        assertCompareSymm(0, "1", "1");
+        assertCompareSymm(0, "0", "0-0");
+        assertCompareSymm(-1, "2.5", "7.5");
+        assertCompareSymm(0, "0foo", "0foo");
+        assertCompareSymm(0, "0foo-0", "0foo");
+        assertCompareSymm(0, "0foo", "0foo-0");
+        assertCompareSymm(1, "0foo", "0fo");
+//        assertCompareSymm(-1, "0foo-0", "0foo+");
+        assertCompareSymm(-1, "0foo~1", "0foo");
+        assertCompareSymm(-1, "0foo~foo+Bar", "0foo~foo+bar");
+        assertCompareSymm(-1, "0foo~~", "0foo~");
+        assertCompareSymm(-1, "1~", "1");
+        assertCompareSymm(-1, "12345+that-really-is-some-ver-0", "12345+that-really-is-some-ver-10");
+        assertCompareSymm(-1, "0foo-0", "0foo-01");
+//        assertCompareSymm(1, "0foo.bar", "0foobar");
+//        assertCompareSymm(1, "0foo.bar", "0foo1bar");
+//        assertCompareSymm(1, "0foo.bar", "0foo0bar");
+        assertCompareSymm(-1, "0foo1bar-1", "0foobar-1");
+        assertCompareSymm(1, "0foo2.0", "0foo2");
+        assertCompareSymm(-1, "0foo2.0.0", "0foo2.10.0");
+        assertCompareSymm(-1, "0foo2.0", "0foo2.0.0");
+        assertCompareSymm(-1, "0foo2.0", "0foo2.10");
+        assertCompareSymm(-1, "0foo2.1", "0foo2.10");
+        assertCompareSymm(0, "1.09", "1.9");
+        assertCompareSymm(1, "1.0.8+nmu1", "1.0.8");
+        assertCompareSymm(1, "3.11", "3.10+nmu1");
+        assertCompareSymm(1, "0.9j-20080306-4", "0.9i-20070324-2");
+        assertCompareSymm(1, "1.2.0~b7-1", "1.2.0~b6-1");
+        assertCompareSymm(1, "1.011-1", "1.06-2");
+        assertCompareSymm(1, "0.0.9+dfsg1-1", "0.0.8+dfsg1-3");
+        assertCompareSymm(1, "4.6.99+svn6582-1", "4.6.99+svn6496-1");
+        assertCompareSymm(1, "53", "52");
+        assertCompareSymm(1, "0.9.9~pre122-1", "0.9.9~pre111-1");
+        assertCompareSymm(1, "2.3.2-2+lenny2", "2.3.2-2");
+        assertCompareSymm(1, "3.8.1-1", "3.8.GA-1");
+        assertCompareSymm(1, "1.0.1+gpl-1", "1.0.1-2");
+        assertCompareSymm(-1, "1a", "1000a");
+    }
+
+    /* from official rpm tests */
+    public void testTildeAndCaretSorting() {
+        assertCompareSymm(1, "1.0~rc1^git1", "1.0~rc1");
+        assertCompareSymm(1, "1.0^git1", "1.0^git1~pre");
     }
 
     private void assertCompareAsym(int exp, String v1, String v2) {

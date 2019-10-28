@@ -59,7 +59,8 @@ sequences = {
     'suseEula': 'suse_eula_id_seq',
     'suseProducts': 'suse_products_id_seq',
     'suseSCCRepository': 'suse_sccrepository_id_seq',
-    'suseProductSCCRepository': 'suse_prdrepo_id_seq'
+    'suseProductSCCRepository': 'suse_prdrepo_id_seq',
+    'rhnPackageExtraTagKey': 'rhn_package_extra_tags_keys_id_seq'
 }
 
 
@@ -244,6 +245,42 @@ class Backend:
         sql = "insert into rhnCVE (id, name) values (:id, :name)"
         h = self.dbmodule.prepare(sql)
         h.executemany(id=toinsert[0], name=toinsert[1])
+
+    def processExtraTags(self, extraTags):
+        query_lookup = """
+            SELECT id
+              FROM rhnPackageExtraTagKey
+             WHERE name = :name
+        """
+        h_lookup = self.dbmodule.prepare(query_lookup)
+        toinsert = [[], []]
+
+        for name in list(extraTags.keys()):
+            val = {}
+            _buildExternalValue(val, { 'name'     : name},
+                                self.tables['rhnPackageExtraTagKey'])
+            h_lookup.execute(name=name)
+            row = h_lookup.fetchone_dict()
+            if row:
+                extraTags[name] = row['id']
+                continue
+
+            # Generate an id
+            id = self.sequences['rhnPackageExtraTagKey'].next()
+            extraTags[name] = id
+
+            toinsert[0].append(id)
+            toinsert[1].append(val['name'])
+
+        if not toinsert[0]:
+            # Nothing to do
+            return
+
+        query_insert = """
+            INSERT INTO rhnPackageExtraTagKey (id, name)
+            VALUES (:id, :name)"""
+        h_insert = self.dbmodule.prepare(query_insert)
+        h_insert.executemany(id=toinsert[0], name=toinsert[1])
 
     def lookupErrataFileTypes(self, hash):
         hash.clear()
@@ -830,6 +867,7 @@ class Backend:
             'rhnPackageChangeLogRec':  'package_id',
             'susePackageProductFile':  'package_id',
             'susePackageEula':         'package_id',
+            'rhnPackageExtraTag':     'package_id',
         }
 
         if CFG.has_key('package_import_skip_changelog') and CFG.package_import_skip_changelog:

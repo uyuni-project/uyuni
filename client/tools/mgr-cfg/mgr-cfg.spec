@@ -21,7 +21,7 @@
 %define rhn_client_tools spacewalk-client-tools
 %define rhn_setup	 spacewalk-client-setup
 %define rhn_check	 spacewalk-check
-%define rhnsd		 spacewalksd
+%define rhnsd		 mgr-daemon
 # Old name and version+1 before renaming to mgr-cfg
 %define oldname          rhncfg
 %define oldversion       5.10.123
@@ -68,7 +68,7 @@
 %endif
 
 Name:           mgr-cfg
-Version:        4.0.8
+Version:        4.1.0
 Provides:       %{oldname} = %{oldversion}
 Obsoletes:      %{oldname} < %{oldversion}
 Release:        1%{?dist}
@@ -122,8 +122,8 @@ Summary:        Spacewalk Configuration Client Libraries
 Group:          Applications/System
 Provides:       python-%{name} = %{oldversion}
 Obsoletes:      python-%{name} < %{oldversion}
-Provides:       python-%{oldname} = %{oldversion}
-Obsoletes:      python-%{oldname} < %{oldversion}
+Provides:       python2-%{oldname} = %{oldversion}
+Obsoletes:      python2-%{oldname} < %{oldversion}
 Requires:       %{name} = %{version}-%{release}
 Requires:       python
 Requires:       python2-rhn-client-tools >= 2.8.4
@@ -187,8 +187,8 @@ Summary:        Spacewalk Configuration Client
 Group:          Applications/System
 Provides:       python-%{name}-client = %{oldversion}
 Obsoletes:      python-%{name}-client < %{oldversion}
-Provides:       python-%{oldname}-client = %{oldversion}
-Obsoletes:      python-%{oldname}-client < %{oldversion}
+Provides:       python2-%{oldname}-client = %{oldversion}
+Obsoletes:      python2-%{oldname}-client < %{oldversion}
 Requires:       %{name}-client = %{version}-%{release}
 %if %{_vendor} == "debbuild"
 # For scriptlets
@@ -234,8 +234,8 @@ Summary:        Spacewalk Configuration Management Client
 Group:          Applications/System
 Provides:       python-%{name}-management = %{oldversion}
 Obsoletes:      python-%{name}-management < %{oldversion}
-Provides:       python-%{oldname}-management = %{oldversion}
-Obsoletes:      python-%{oldname}-management < %{oldversion}
+Provides:       python2-%{oldname}-management = %{oldversion}
+Obsoletes:      python2-%{oldname}-management < %{oldversion}
 Requires:       %{name}-management = %{version}-%{release}
 %if %{_vendor} == "debbuild"
 # For scriptlets
@@ -281,8 +281,8 @@ Summary:        Spacewalk Configuration Client Actions
 Group:          Applications/System
 Provides:       python-%{name}-actions = %{oldversion}
 Obsoletes:      python-%{name}-actions < %{oldversion}
-Provides:       python-%{oldname}-actions = %{oldversion}
-Obsoletes:      python-%{oldname}-actions < %{oldversion}
+Provides:       python2-%{oldname}-actions = %{oldversion}
+Obsoletes:      python2-%{oldname}-actions < %{oldversion}
 Requires:       %{name}-actions = %{version}-%{release}
 Requires:       python2-%{name}-client
 %if %{_vendor} == "debbuild"
@@ -348,6 +348,12 @@ done
 ln -s rhncfg-manager $RPM_BUILD_ROOT/%{_bindir}/mgrcfg-manager
 ln -s rhncfg-client $RPM_BUILD_ROOT/%{_bindir}/mgrcfg-client
 ln -s rhn-actions-control $RPM_BUILD_ROOT/%{_bindir}/mgr-actions-control
+
+pushd $RPM_BUILD_ROOT/%{_mandir}/man8
+for f in *.8*; do
+  echo ".so ${f/.gz}" | gzip > ${f/rhn/mgr}
+done
+popd
 
 %if 0%{?suse_version}
 %if 0%{?build_py2}
@@ -447,6 +453,7 @@ py3clean -p python3-%{name}-actions
 %{_bindir}/mgrcfg-client
 %attr(644,root,root) %config(noreplace) %{rhnconf}/rhncfg-client.conf
 %{_mandir}/man8/rhncfg-client.8*
+%{_mandir}/man8/mgrcfg-client.8*
 
 %if 0%{?build_py2}
 %files -n python2-%{name}-client
@@ -468,6 +475,7 @@ py3clean -p python3-%{name}-actions
 %{_bindir}/rhncfg-manager
 %attr(644,root,root) %config(noreplace) %{rhnconf}/rhncfg-manager.conf
 %{_mandir}/man8/rhncfg-manager.8*
+%{_mandir}/man8/mgrcfg-manager.8*
 
 %if 0%{?build_py2}
 %files -n python2-%{name}-management
@@ -489,6 +497,7 @@ py3clean -p python3-%{name}-actions
 %{_bindir}/rhn-actions-control
 %config(noreplace) %{client_caps_dir}/*
 %{_mandir}/man8/rhn-actions-control.8*
+%{_mandir}/man8/mgr-actions-control.8*
 %ghost %attr(600,root,root) %{_localstatedir}/log/rhncfg-actions
 
 %if 0%{?build_py2}

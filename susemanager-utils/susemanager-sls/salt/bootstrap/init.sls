@@ -14,6 +14,8 @@ mgr_server_localhost_alias_absent:
 # CentOS6 oscodename is bogus
 {%- if "centos" in grains['os']|lower %}
 {% set os_base = 'centos' %}
+{%- elif "redhat" in grains['os']|lower %}
+{% set os_base = 'res' %}
 {%- elif "opensuse" in grains['oscodename']|lower %}
 {% set os_base = 'opensuse' %}
 {%- endif %}
@@ -40,7 +42,14 @@ mgr_server_localhost_alias_absent:
 {%- endif %}
 
 {%- if not grains['os_family'] == 'Debian' %}
-{%- set bootstrap_repo_exists = (0 < salt['http.query'](bootstrap_repo_url + 'repodata/repomd.xml', status=True, verify_ssl=False)['status'] < 300) %}
+
+{%- set bootstrap_repo_request = salt['http.query'](bootstrap_repo_url + 'repodata/repomd.xml', status=True, verify_ssl=False) %}
+{# 901 is a special status code for the TLS issue with RHEL6 and SLE11. #}
+{%- if bootstrap_repo_request['status'] == 901 %}
+{{ raise(bootstrap_repo_request['error']) }}
+{%- endif %}
+{%- set bootstrap_repo_exists = (0 < bootstrap_repo_request['status'] < 300) %}
+
 bootstrap_repo:
   file.managed:
 {%- if grains['os_family'] == 'Suse' %}
@@ -109,7 +118,7 @@ trust_suse_manager_tools_deb_gpg_key:
 {%- endif %}
 
 salt-minion-package:
-  pkg.installed:
+  pkg.latest:
     - name: salt-minion
     - require:
       - file: bootstrap_repo
@@ -136,9 +145,9 @@ mgr_update_basic_pkgs:
   pkg.latest:
     - pkgs:
       - openssl
-{%- if grains['os_family'] == 'Suse' and grains['osrelease'] in ['11.3', '11.4'] %}
+{%- if grains['os_family'] == 'Suse' and grains['osrelease'] in ['11.3', '11.4'] and grains['cpuarch'] in ['i586', 'x86_64'] %}
       - pmtools
-{%- else %}
+{%- elif grains['cpuarch'] in ['aarch64', 'x86_64'] %}
       - dmidecode
 {%- endif %}
 {%- if grains['os_family'] == 'Suse' %}

@@ -7,12 +7,12 @@
 
 <html>
 <head>
-
-    <style type="text/css">
-        .fixedwidth { font-family: Courier, Monospace; }
-    </style>
 </head>
 <body>
+
+<style type="text/css">
+    .fixedwidth { font-family: Courier, Monospace; }
+</style>
 
 <rhn:toolbar base="h1" icon="header-system" imgAlt="audit.jsp.alt"
  helpUrl="/docs/reference/systems/systems-overview.html">

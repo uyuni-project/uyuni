@@ -9,7 +9,7 @@ import CreatorPanel from "components/panels/CreatorPanel";
 import type {ProjectFilterServerType} from "../../../type/project.type";
 import FiltersProjectSelection from "./filters-project-selection";
 import statesEnum from "../../../business/states.enum";
-import filtersEnum from "../../../business/filters.enum";
+import {getClmFilterDescription} from "../../../business/filters.enum";
 import useRoles from "core/auth/use-roles";
 import {isOrgAdmin} from "core/auth/auth.utils";
 
@@ -19,60 +19,49 @@ type FiltersProps = {
   onChange: Function,
 };
 
-const renderFilterEntry = (filter, projectId) => {
-  const descr = filtersEnum.getFilterDescription(filter);
+const renderFilterEntry = (filter, projectId, symbol, last) => {
+  const descr = getClmFilterDescription(filter);
   const filterButton =
     <div className={styles.icon_wrapper_vertical_center}>
       <LinkButton
         id={`edit-filter-${filter.id}`}
         icon='fa-edit'
         title={t(`Edit Filter ${filter.name}`)}
-        className='pull-right'
-        text={t("Edit")}
+        className='pull-right js-spa'
         href={`/rhn/manager/contentmanagement/filters?openFilterId=${filter.id}&projectLabel=${projectId}`}
       />
     </div>;
 
+  let filterClassName;
+  let filterIconName;
+
   if (filter.state === statesEnum.enum.ATTACHED.key) {
-    return (
-      <li
-        key={`filter_list_item_${filter.id}`}
-        className={`list-group-item text-success ${styles.wrapper}`}>
-        <i className='fa fa-plus'/>
-        <b>{descr}</b>
-        {filterButton}
-      </li>
-    );
+    filterClassName = `text-success`;
+    filterIconName = 'fa-plus';
   }
-  if (filter.state === statesEnum.enum.EDITED.key) {
-    return (
-      <li
-        key={`filter_list_item_${filter.id}`}
-        className={`list-group-item text-warning ${styles.wrapper}`}>
-        <i className='fa fa-edit'/>
-        <b>{descr}</b>
-        {filterButton}
-      </li>
-    );
+  else if (filter.state === statesEnum.enum.EDITED.key) {
+    filterClassName = `text-warning`;
+    filterIconName = 'fa-edit';
   }
-  if (filter.state === statesEnum.enum.DETACHED.key) {
-    return (
-      <li
-        key={`filter_list_item_${filter.id}`}
-        className={`list-group-item text-danger ${styles.wrapper} ${styles.dettached}`}>
-        <i className='fa fa-minus'/>
-        <b>{descr}</b>
-        {filterButton}
-      </li>
-    );
+  else if (filter.state === statesEnum.enum.DETACHED.key) {
+    filterClassName = `text-danger ${styles.dettached}`;
+    filterIconName = 'fa-minus';
   }
+  else {
+    filterClassName = `${styles.wrapper}`;
+  }
+
   return (
-    <li
-      key={`filter_list_item_${filter.id}`}
-      className={`list-group-item text-sucess ${styles.wrapper}`}>
-      {descr}
-      {filterButton}
-    </li>
+    <>
+      <li
+        key={`filter_list_item_${filter.id}`}
+        className={`list-group-item ${styles.wrapper} ${filterClassName}`}>
+        {filterIconName && <i class={`fa ${filterIconName}`}></i>}
+        {descr}
+        {filterButton}
+      </li>
+      {!last && <div style={{margin: "4px"}} className="row text-center">{symbol}</div>}
+    </>
   );
 }
 
@@ -86,6 +75,9 @@ const FiltersProject = (props:  FiltersProps) => {
 
   const displayingFilters = [...props.selectedFilters];
   displayingFilters.sort((a, b) => a.name.toLowerCase().localeCompare(b.name.toLowerCase()));
+
+  const allowFilters = displayingFilters.filter(filter => filter.rule === "allow");
+  const denyFilters = displayingFilters.filter(filter => filter.rule === "deny");
 
   return (
 
@@ -112,7 +104,7 @@ const FiltersProject = (props:  FiltersProps) => {
             props.onChange(projectWithUpdatedSources)
           })
           .catch((error) => {
-            showErrorToastr(error);
+            showErrorToastr(error, {autoHide: false});
           });
       }}
       renderCreationContent={({setItem}) => {
@@ -131,11 +123,36 @@ const FiltersProject = (props:  FiltersProps) => {
       }}
       renderContent={() =>
         <div className="min-height-panel">
-          <ul className="list-group">
+          <div className="col-md-6">
             {
-              displayingFilters.map(filter => renderFilterEntry(filter, props.projectId))
+              denyFilters.length > 0 &&
+              <>
+                <h4>{t("Deny")} <small>{t("filter out")}</small></h4>
+                <ul className="list-group">
+                  {
+                    denyFilters.map((filter, index) => renderFilterEntry(filter, props.projectId,
+                      <i class="fa fa-filter"/>, index === denyFilters.length - 1))
+                  }
+                </ul>
+              </>
             }
-          </ul>
+          </div>
+
+          <div className="col-md-6">
+            {
+              allowFilters.length > 0 &&
+                <>
+                  <h4>{t("Allow")} <small>{t("select from the full source even if you have excluded them before with deny")}</small>
+                  </h4>
+                  <ul className="list-group">
+                    {
+                      allowFilters.map((filter, index) => renderFilterEntry(filter, props.projectId,
+                        <i className="fa fa-plus-circle"/>, index === allowFilters.length - 1))
+                    }
+                  </ul>
+                </>
+            }
+          </div>
         </div>
       }
     />

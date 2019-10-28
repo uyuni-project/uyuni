@@ -35,7 +35,7 @@
                         sortable="true"
                         headerkey="username.nopunc.displayname"
                         sortattr="userLogin">
-                        <c:out value="<a href=\"UserDetails.do?uid=${current.id}\">${current.userLogin}</a>" escapeXml="false" />
+                        <c:out value="<a class=\"js-spa\" href=\"UserDetails.do?uid=${current.id}\">${current.userLogin}</a>" escapeXml="false" />
                 </rl:column>
 
 

@@ -22,7 +22,11 @@
             return ${system.id};
         }
     </script>
-    <script src="/javascript/manager/systems/subscribe-channels/subscribe-channels.renderer.bundle.js?cb=${rhn:getConfig('web.version')}" type="text/javascript"></script>
+
+    <script>
+      spaImportReactPage('systems/subscribe-channels/subscribe-channels')
+        .then(function(module) { module.renderer('subscribe-channels-div') });
+    </script>
 
 </body>
 </html:html>

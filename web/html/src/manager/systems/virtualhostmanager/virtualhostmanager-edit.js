@@ -178,6 +178,9 @@ class VirtualHostManagerEdit extends React.Component {
         if (name.toLowerCase() === "password") {
             return (<Password name={"module_" + name} label={Utils.capitalize(name)} required={required} labelClass="col-md-3" divClass="col-md-6"
                             hint={ this.isEdit() ? "Fill this field to change the password." : null }/>);
+        } else if (name.toLowerCase().includes("secret")) {
+            return (<Password name={"module_" + name} label={Utils.capitalize(name)} required={required} labelClass="col-md-3" divClass="col-md-6"
+                            hint={ this.isEdit() ? "Fill this field to change this value." : null }/>);
         } else {
             return (<Text name={"module_" + name} label={Utils.capitalize(name)} required={required} labelClass="col-md-3" divClass="col-md-6"
                             />);

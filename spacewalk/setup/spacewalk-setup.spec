@@ -36,7 +36,7 @@
 %{!?fedora: %global sbinpath /sbin}%{?fedora: %global sbinpath %{_sbindir}}
 
 Name:           spacewalk-setup
-Version:        4.0.8
+Version:        4.1.0
 Release:        1%{?dist}
 Summary:        Initial setup tools for Spacewalk
 License:        GPL-2.0-only
@@ -270,6 +270,10 @@ if [ -f /etc/sudoers.d/spacewalk -a -f /etc/sudoers.d/susemanager ]; then
     cp /etc/sudoers.d/spacewalk /etc/sudoers.d/spacewalk.tmp
     rm -f /etc/sudoers.d/spacewalk /etc/sudoers.d/susemanager
     mv /etc/sudoers.d/spacewalk.tmp /etc/sudoers.d/spacewalk
+fi
+
+if grep 'authn_spacewalk' /etc/cobbler/modules.conf > /dev/null 2>&1; then
+    sed -i 's/module = authn_spacewalk/module = authentication.spacewalk/' /etc/cobbler/modules.conf
 fi
 exit 0
 

@@ -29,7 +29,9 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -77,6 +79,8 @@ public class Package extends BaseDomainHelper {
     private Set<PackageRequires> requires = new HashSet();
     private Set<PackageObsoletes> obsoletes = new HashSet();
     private Set<PackageConflicts> conflicts = new HashSet();
+
+    private Map<PackageExtraTagsKeys, String> extraTags = new HashMap<>();
 
     /**
      * @param lockPendingIn Set pending status. Default is False.
@@ -680,6 +684,20 @@ public class Package extends BaseDomainHelper {
      */
     public void setHeaderEnd(Long headerEndIn) {
         this.headerEnd = headerEndIn;
+    }
+
+    /**
+     * @return extraTags to get
+     */
+    public Map<PackageExtraTagsKeys, String> getExtraTags() {
+        return extraTags;
+    }
+
+    /**
+     * @param extraTagsIn to set
+     */
+    public void setExtraTags(Map<PackageExtraTagsKeys, String> extraTagsIn) {
+        this.extraTags = extraTagsIn;
     }
 
     /**

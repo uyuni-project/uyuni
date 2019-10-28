@@ -243,15 +243,7 @@ public class SystemManager extends BaseManager {
      * @return true if the system requires a reboot i.e: because kernel updates.
      */
     public static boolean requiresReboot(User user, Long sid) {
-        SelectMode m = ModeFactory.getMode("System_queries",
-                "has_errata_with_keyword_applied_since_last_reboot");
-        Map<String, Object> params = new HashMap<String, Object>();
-        params.put("user_id", user.getId());
-        params.put("org_id", user.getOrg().getId());
-        params.put("sid", sid);
-        params.put("keyword", "reboot_suggested");
-        DataResult dr = m.execute(params);
-        return !dr.isEmpty();
+        return !getSystemsRequiringReboot(user, Optional.of(sid)).isEmpty();
     }
 
     /**
@@ -260,20 +252,30 @@ public class SystemManager extends BaseManager {
      *
      * @param user
      *            Currently logged in user.
-     * @param pc
-     *            PageControl
      * @return list of SystemOverviews.
      */
-    public static DataResult<SystemOverview> requiringRebootList(User user,
-            PageControl pc) {
-        SelectMode m = ModeFactory.getMode("System_queries",
-                "having_errata_with_keyword_applied_since_last_reboot");
+    public static DataResult<SystemOverview> requiringRebootList(User user) {
+        return getSystemsRequiringReboot(user, Optional.empty());
+    }
+
+    /**
+     * Returns a list of systems that match a serverId and require a reboot (i.e: because kernel updates,
+     * visible to user, sorted by name).
+     * If the serverId parameter is empty, this query will return all the systems that require a reboot.
+     *
+     * @param user Currently logged in user.
+     * @param serverId the serverId.
+     * @return list of SystemOverviews.
+     */
+    private static DataResult<SystemOverview> getSystemsRequiringReboot(User user, Optional<Long> serverId) {
+        SelectMode m = ModeFactory.getSelectMode("System_queries",
+                "systems_requiring_reboot", true);
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("org_id", user.getOrg().getId());
         params.put("user_id", user.getId());
-        params.put("keyword", "reboot_suggested");
+        params.put("sid", serverId.orElse(null));
         Map<String, Object> elabParams = new HashMap<String, Object>();
-        return makeDataResult(params, elabParams, pc, m, SystemOverview.class);
+        return makeDataResult(params, elabParams, null, m, SystemOverview.class);
     }
 
     /**
@@ -3555,11 +3557,10 @@ public class SystemManager extends BaseManager {
         params.put("value", value);
 
         Map<String, Integer> out = new HashMap<String, Integer>();
-        out.put("retval", Types.NUMERIC);
+        out.put("retval", Types.INTEGER);
 
         Map<String, Object> result = mode.execute(params, out);
-        Long retval = (Long) result.get("retval");
-        log.debug("bulk_set_custom_value returns: " + retval.intValue());
+        log.debug("bulk_set_custom_value returns: " + result.get("retval"));
     }
 
     /**

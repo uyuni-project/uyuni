@@ -1,5 +1,3 @@
-module.exports = {
-  entries: [
-    'config-channels/org-config-channels.js'
-  ]
-};
+export default {
+  'organizations/config-channels/org-config-channels': () => import('./config-channels/org-config-channels')
+}

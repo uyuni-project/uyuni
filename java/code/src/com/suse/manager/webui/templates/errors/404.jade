@@ -5,7 +5,10 @@ include ../common.jade
 script(src='/javascript/manager/errors/not-found.bundle.js?cb=#{webVersion}', type='text/javascript')
 
 script(type='text/javascript').
-    pageRenderers.errors.NotFoundRenderer(
-        'notfoundpage',
-        { currentUrl: '#{currentUrl}' }
-    );
+    spaImportReactPage('errors/not-found')
+        .then(function(module) {
+            module.renderer(
+                'notfoundpage',
+                { currentUrl: '#{currentUrl}' }
+            )
+        });

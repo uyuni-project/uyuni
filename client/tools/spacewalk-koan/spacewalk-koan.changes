@@ -1,3 +1,6 @@
+- Bump version to 4.1.0 (bsc#1154940)
+- require commands we use in merge-rd.sh
+
 -------------------------------------------------------------------
 Wed May 15 15:11:51 CEST 2019 - jgonzalez@suse.com
 

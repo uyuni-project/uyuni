@@ -22,7 +22,7 @@
 %define pythonX %{?build_py3:python3}%{!?build_py3:python2}
 
 Name:           susemanager
-Version:        4.0.14
+Version:        4.1.0
 Release:        1%{?dist}
 Summary:        SUSE Manager specific scripts
 License:        GPL-2.0-only
@@ -52,7 +52,8 @@ BuildRequires:  spacewalk-backend-sql-postgresql
 BuildRequires:  suseRegisterInfo
 
 PreReq:         %fillup_prereq %insserv_prereq tftp(server) postgresql-init
-Requires(pre):  tomcat salt
+Requires(pre):  salt
+Requires(post): user(wwwrun)
 Requires:       cobbler
 Requires:       openslp-server
 Requires:       spacewalk-admin
@@ -70,6 +71,8 @@ Requires:       susemanager-tools
 # migration.sh need either sqlplus or psql
 Requires:       spacewalk-db-virtual
 Requires:       susemanager-branding
+BuildRequires:  uyuni-base-server
+Requires(pre):  uyuni-base-server
 # yast module dependency
 %if 0%{?suse_version} > 1320
 Requires:       firewalld
@@ -193,9 +196,6 @@ find -name '*.py' -print0 | xargs -0 python %py_libdir/py_compile.py
 popd
 %endif
 
-%pre
-getent group susemanager >/dev/null || %{_sbindir}/groupadd -r susemanager
-
 %post
 POST_ARG=$1
 %{fillup_and_insserv susemanager}
@@ -213,10 +213,6 @@ if [ ! -d /srv/tftpboot ]; then
 fi
 # XE appliance overlay file created this with different user
 chown root.root /etc/sysconfig
-# ensure susemanager group can write in all subdirs under /var/spacewalk/systems
-getent passwd salt >/dev/null && usermod -a -G susemanager salt
-getent passwd tomcat >/dev/null && usermod -a -G susemanager tomcat
-getent passwd wwwrun >/dev/null && usermod -a -G susemanager wwwrun
 if [ $POST_ARG -eq 2 ] ; then
     # when upgrading make sure /var/spacewalk/systems has the correct perms and owner
     MOUNT_POINT=$(grep -oP "^mount_point =\s*\K([^ ]+)" /etc/rhn/rhn.conf || echo "/var/spacewalk")
@@ -287,7 +283,6 @@ fi
 %dir /srv/www/htdocs/pub/repositories/empty
 %dir /srv/www/htdocs/pub/repositories/empty/repodata
 %dir /srv/www/htdocs/pub/repositories/empty-deb
-%attr(0755,root,www) %dir %{_prefix}/share/rhn/config-defaults
 %config(noreplace) %{_sysconfdir}/logrotate.d/susemanager-tools
 %{_prefix}/share/rhn/config-defaults/rhn_*.conf
 %attr(0755,root,root) %{_sbindir}/mgr-register

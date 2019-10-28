@@ -32,8 +32,8 @@ const EnvironmentLifecycle = (props: Props) => {
   return (
     <CreatorPanel
       id="environmentLifecycle"
-      title="Environment Lifecycle"
-      creatingText="Add Environment"
+      title={t("Environment Lifecycle")}
+      creatingText={t("Add Environment")}
       panelLevel="2"
       disableEditing={!hasEditingPermissions}
       collapsible
@@ -47,7 +47,7 @@ const EnvironmentLifecycle = (props: Props) => {
             props.onChange(projectWithCreatedEnvironment)
           })
           .catch((error) => {
-            showErrorToastr(error);
+            showErrorToastr(error, {autoHide: false});
           })}
       onOpen={({ setItem }) => setItem({})}
       onCancel={() => cancelAction()}
@@ -96,7 +96,7 @@ const EnvironmentLifecycle = (props: Props) => {
                             showSuccessToastr(t("Environment updated successfully"));
                           })
                           .catch((error) => {
-                            showErrorToastr(error);
+                            showErrorToastr(error, {autoHide: false});
                           })}
                       onOpen={({ setItem }) => setItem(environment)}
                       onCancel={() => cancelAction()}
@@ -110,7 +110,7 @@ const EnvironmentLifecycle = (props: Props) => {
                             showSuccessToastr(t("Environment deleted successfully"));
                           })
                           .catch((error) => {
-                            showErrorToastr(error);
+                            showErrorToastr(error, {autoHide: false});
                           })
                       }}
                       renderCreationContent={({ open, item, setItem }) => {

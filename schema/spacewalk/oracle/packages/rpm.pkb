@@ -73,6 +73,10 @@ CREATE OR REPLACE PACKAGE BODY rpm AS
         str2 VARCHAR2(32767) := string2;
         one VARCHAR2(32767);
         two VARCHAR2(32767);
+        debupstreamv1 VARCHAR2(32767);
+        debupstreamv2 VARCHAR2(32767);
+        debrevisionv1 VARCHAR2(32767);
+        debrevisionv2 VARCHAR2(32767);
         isnum BOOLEAN;
     BEGIN
         if str1 is NULL or str2 is NULL
@@ -84,6 +88,33 @@ CREATE OR REPLACE PACKAGE BODY rpm AS
         then
             return 0;
         end if;
+        debupstreamv1 := str1;
+        debupstreamv2 := str2;
+        debrevisionv1 := str1;
+        debrevisionv2 := str2;
+        if INSTR(str1, '-') <> 0
+        then
+            debupstreamv1 := SUBSTR(str1, 0, INSTR(str1, '-'));
+        end if;
+        if INSTR(str2, '-') <> 0
+        then
+            debupstreamv2 := SUBSTR(str2, 0, INSTR(str2, '-'));
+        end if;
+        if (str1 <> str2)
+        then
+            str1 := debupstreamv1;
+            str2 := debupstreamv2;
+        else
+            if INSTR(str1, '-') <> 0 and INSTR(str2, '-') <> 0
+            then
+                debrevisionv1 := SUBSTR(str1, INSTR(str1, '-') + 1);
+                debrevisionv2 := SUBSTR(str2, INSTR(str2, '-') + 1);
+	    else
+		return 0;
+            end if;
+            str1 = debrevisionv1;
+            str2 = debrevisionv2;
+        end if;
         -- loop through each version segment of str1 and str2 and compare them
         one := str1;
         two := str2;
@@ -94,33 +125,56 @@ CREATE OR REPLACE PACKAGE BODY rpm AS
             declare
                 segm1 VARCHAR2(32767);
                 segm2 VARCHAR2(32767);
+                onechar CHAR(1);
+                twochar CHAR(1);
             begin
                 --DBMS_OUTPUT.PUT_LINE('Params: ' || one || ',' || two);
                 -- Throw out all non-alphanum characters
-                -- 126 == ~
-                while one is not null and not isalphanum(one) and ascii(one) <> 126
+                onechar := substr(one, 1, 1);
+                twochar := substr(two, 1, 1);
+                while one is not null and not isalphanum(one) and onechar != '~' and onechar != '^'
                 loop
                     one := substr(one, 2);
                 end loop;
-                while two is not null and not isalphanum(two) and ascii(two) <> 126
+                while two is not null and not isalphanum(two) and twochar != '~' and twochar != '^'
                 loop
                     two := substr(two, 2);
                 end loop;
                 --DBMS_OUTPUT.PUT_LINE('new params: ' || one || ',' || two);
 
-                if ascii(one) = 126 or ascii(two) = 126
+                onechar := substr(one, 1, 1);
+                twochar := substr(two, 1, 1);
+                --DBMS_OUTPUT.PUT_LINE('new chars: ' || onechar || ',' || twochar);
+                /* handle the tilde separator, it sorts before everything else */
+                if (onechar = '~' or twochar = '~')
                 then
-                    if one is NULL or ascii(one) <> 126 then return 1; end if;
-                    if two is NULL or ascii(two) <> 126 then return -1; end if;
+                    if (onechar != '~' or onechar is null) then return 1; end if;
+                    if (twochar != '~' or twochar is null) then return -1; end if;
+                    --DBMS_OUTPUT.PUT_LINE('passed tilde chars: ' || onechar || ',' || twochar);
                     one := substr(one, 2);
                     two := substr(two, 2);
                     continue;
                 end if;
 
-                if one is null or two is null
+                /*
+                 * Handle caret separator. Concept is the same as tilde,
+                 * except that if one of the strings ends (base version),
+                 * the other is considered as higher version.
+                 */
+                onechar := substr(one, 1, 1);
+                twochar := substr(two, 1, 1);
+                if (onechar = '^' or twochar = '^')
                 then
-                    exit;
+                    if (one is null) then return -1; end if;
+                    if (two is null) then return 1; end if;
+                    if (onechar != '^' or onechar is null) then return 1; end if;
+                    if (twochar != '^' or twochar is null) then return -1; end if;
+                    one := substr(one, 2);
+                    two := substr(two, 2);
+                    continue;
                 end if;
+
+                if (not (one is not null and two is not null)) then exit segment_loop; end if;
 
                 str1 := one;
                 str2 := two;

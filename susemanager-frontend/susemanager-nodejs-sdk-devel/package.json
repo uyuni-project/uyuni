@@ -7,18 +7,22 @@
     "@babel/core": "^7.3.3",
     "@babel/plugin-proposal-class-properties": "^7.3.3",
     "@babel/plugin-proposal-object-rest-spread": "^7.3.2",
+    "@babel/plugin-syntax-dynamic-import": "^7.2.0",
     "@babel/plugin-syntax-object-rest-spread": "^7.2.0",
     "@babel/plugin-transform-arrow-functions": "^7.2.0",
     "@babel/preset-env": "^7.3.1",
     "@babel/preset-flow": "^7.0.0",
     "@babel/preset-react": "^7.0.0",
+    "@storybook/addon-centered": "^5.1.11",
+    "@storybook/addon-info": "^5.1.11",
+    "@storybook/react": "^5.1.11",
     "babel-eslint": "^10.0.1",
     "babel-jest": "^24.7.1",
     "babel-loader": "^8.0.5",
     "clean-webpack-plugin": "^1.0.1",
     "copy-webpack-plugin": "^4.6.0",
     "css-loader": "^2.1.0",
-    "eslint": "^5.14.1",
+    "eslint": "5.16.0",
     "eslint-config-react-app": "^3.0.7",
     "eslint-import-resolver-alias": "^1.1.2",
     "eslint-loader": "^2.1.2",
@@ -28,13 +32,15 @@
     "eslint-plugin-jsx-a11y": "^6.2.1",
     "eslint-plugin-react": "^7.12.4",
     "eslint-plugin-react-hooks": "^1.0.2",
+    "flow-bin": "^0.107.0",
     "jest": "^24.7.1",
     "license-checker-webpack-plugin": "^0.0.9",
     "shelljs": "^0.8.3",
     "style-loader": "^0.23.1",
     "terser-webpack-plugin": "^1.2.2",
     "webpack": "^4.29.5",
-    "webpack-cli": "^3.2.3"
+    "webpack-cli": "^3.2.3",
+    "webpack-dev-server": "^3.1.10"
   },
   "dependencies": {
     "@babel/polyfill": "^7.2.5",
@@ -42,17 +48,23 @@
     "@spice-project/spice-html5": "^0.2.1",
     "create-react-class": "^15.6.3",
     "immer": "^3.1.1",
-    "lodash": "^4.17.11",
+    "lodash": "^4.17.15",
     "prop-types": "^15.7.2",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
-    "react-hot-loader": "^4.8.4",
-    "react-select": "^2.4.3",
+    "react-hot-loader": "^4.12.9",
+    "react-select": "2.4.4",
+    "senna": "^2.7.8",
     "toastr": "^2.1.4",
     "use-immer": "^0.3.0"
   },
+  "resolutions": {
+    "lodash": "4.17.15"
+  },
   "scripts": {
     "clean": "rm -rf node_modules",
+    "remove-packages-before-obs-zip": "yarn remove @storybook/addon-centered @storybook/addon-info @storybook/react flow-bin webpack-dev-server --no-lockfile",
+    "restore-packages-after-obs-zip": "git checkout package.json",
     "zip": "rm -f susemanager-nodejs-modules.tar.gz && (tar czf susemanager-nodejs-modules.tar.gz node_modules/)"
   }
 }

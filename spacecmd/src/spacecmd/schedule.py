@@ -149,6 +149,7 @@ def do_schedule_cancel(self, args):
     # cancel all actions
     if '.*' in args:
         if not self.user_confirm('Cancel all pending actions [y/N]:'):
+            logging.info("All pending actions left untouched")
             return
 
         actions = self.client.schedule.listInProgressActions(self.session)
@@ -158,17 +159,21 @@ def do_schedule_cancel(self, args):
 
     # convert strings to integers
     actions = []
+    failed_actions = []
     for a in strings:
         try:
             actions.append(int(a))
         except ValueError:
-            logging.warning('%s is not a valid ID' % str(a))
-            continue
+            logging.warning('"%s" is not a valid ID' % str(a))
+            failed_actions.append(a)
 
-    self.client.schedule.cancelActions(self.session, actions)
-
-    for a in actions:
-        logging.info('Canceled action %i' % a)
+    if actions:
+        self.client.schedule.cancelActions(self.session, actions)
+        for a in actions:
+            logging.info('Canceled action: %i', a)
+    if failed_actions:
+        for action in failed_actions:
+            logging.info("Failed action: %s", action)
 
     print('Canceled %i action(s)' % len(actions))
 
@@ -216,18 +221,16 @@ def do_schedule_reschedule(self, args):
                 if action_id in failed_actions:
                     to_reschedule.append(action_id)
                 else:
-                    logging.warning('%i is not a failed action' % action_id)
+                    logging.warning('"%i" is not a failed action' % action_id)
             except ValueError:
-                logging.warning('%s is not a valid ID' % str(a))
+                logging.warning('"%s" is not a valid ID' % str(a))
                 continue
 
     if not to_reschedule:
         logging.warning('No failed actions to reschedule')
-        return
-
-    self.client.schedule.rescheduleActions(self.session, to_reschedule, True)
-
-    print('Rescheduled %i action(s)' % len(to_reschedule))
+    else:
+        self.client.schedule.rescheduleActions(self.session, to_reschedule, True)
+        print('Rescheduled %i action(s)' % len(to_reschedule))
 
 ####################
 
@@ -245,65 +248,52 @@ def do_schedule_details(self, args):
     if not args:
         self.help_schedule_details()
         return
+    else:
+        action_id = args[0]
 
     try:
-        action_id = int(args[0])
+        action_id = int(action_id)
     except ValueError:
-        logging.warning('%s is not a valid ID' % str(action_id))
+        logging.warning('The ID "%s" is invalid' % action_id)
         return
 
-    completed = self.client.schedule.listCompletedSystems(self.session,
-                                                          action_id)
-
+    completed = self.client.schedule.listCompletedSystems(self.session, action_id)
     failed = self.client.schedule.listFailedSystems(self.session, action_id)
+    pending = self.client.schedule.listInProgressSystems(self.session, action_id)
+    action = {acn.get("id"): acn for acn in self.client.schedule.listAllActions(self.session)}.get(action_id)
 
-    pending = self.client.schedule.listInProgressSystems(self.session,
-                                                         action_id)
-
-    # put all the system arrays together for the summary
-    all_systems = []
-    all_systems.extend(completed)
-    all_systems.extend(failed)
-    all_systems.extend(pending)
-
-    # schedule.getAction() API call would make this easier
-    all_actions = self.client.schedule.listAllActions(self.session)
-    action = None
-    for a in all_actions:
-        if a.get('id') == action_id:
-            action = a
-            del all_actions
-            break
-
-    print('ID:        %i' % action.get('id'))
-    print('Action:    %s' % action.get('name'))
-    print('User:      %s' % action.get('scheduler'))
-    print('Date:      %s' % action.get('earliest'))
-    print('')
-    print('Completed: %s' % str(len(completed)).rjust(3))
-    print('Failed:    %s' % str(len(failed)).rjust(3))
-    print('Pending:   %s' % str(len(pending)).rjust(3))
-
-    if completed:
+    if action is not None:
+        print('ID:        %i' % action.get('id'))
+        print('Action:    %s' % action.get('name'))
+        print('User:      %s' % action.get('scheduler'))
+        print('Date:      %s' % action.get('earliest'))
         print('')
-        print('Completed Systems')
-        print('-----------------')
-        for s in completed:
-            print(s.get('server_name'))
+        print('Completed: %s' % str(len(completed)).rjust(3))
+        print('Failed:    %s' % str(len(failed)).rjust(3))
+        print('Pending:   %s' % str(len(pending)).rjust(3))
 
-    if failed:
-        print('')
-        print('Failed Systems')
-        print('--------------')
-        for s in failed:
-            print(s.get('server_name'))
+        if completed:
+            print('')
+            print('Completed Systems')
+            print('-----------------')
+            for s in completed:
+                print(s.get('server_name'))
 
-    if pending:
-        print('')
-        print('Pending Systems')
-        print('---------------')
-        for s in pending:
-            print(s.get('server_name'))
+        if failed:
+            print('')
+            print('Failed Systems')
+            print('--------------')
+            for s in failed:
+                print(s.get('server_name'))
+
+        if pending:
+            print('')
+            print('Pending Systems')
+            print('---------------')
+            for s in pending:
+                print(s.get('server_name'))
+    else:
+        logging.error('No action found with the ID "%s"' % action_id)
 
 ####################
 
@@ -325,18 +315,17 @@ def do_schedule_getoutput(self, args):
     try:
         action_id = int(args[0])
     except ValueError:
-        logging.error('%s is not a valid action ID' % str(args[0]))
+        logging.error('"%s" is not a valid action ID' % str(args[0]))
         return
 
     script_results = None
     try:
-        script_results = \
-            self.client.system.getScriptResults(self.session, action_id)
-    except xmlrpclib.Fault:
-        pass
+        script_results = self.client.system.getScriptResults(self.session, action_id)
+    except xmlrpclib.Fault as exc:
+        logging.debug("Exception occurrect while get script results: %s", str(exc))
 
     # scripts have a different data structure than other actions
-    if script_results:
+    if script_results is not None:
         add_separator = False
         for r in script_results:
             if add_separator:
@@ -356,30 +345,30 @@ def do_schedule_getoutput(self, args):
             print('Output')
             print('------')
             if r.get('output_enc64'):
-                print(base64.b64decode(r.get('output')))
+                print(base64.b64decode(r.get('output') or b'Ti9B\n').decode("utf-8"))
             else:
-                print(r.get('output').encode('UTF8'))
+                print((r.get('output') or "N/A").encode('UTF8').decode("utf-8"))
 
     else:
-        completed = self.client.schedule.listCompletedSystems(self.session,
-                                                              action_id)
-
-        failed = self.client.schedule.listFailedSystems(self.session,
-                                                        action_id)
+        completed = self.client.schedule.listCompletedSystems(self.session, action_id)
+        failed = self.client.schedule.listFailedSystems(self.session, action_id)
 
         add_separator = False
 
-        for action in completed + failed:
-            if add_separator:
-                print(self.SEPARATOR)
-            add_separator = True
+        if completed or failed:
+            for action in completed + failed:
+                if add_separator:
+                    print(self.SEPARATOR)
+                add_separator = True
 
-            print('System:    %s' % action.get('server_name'))
-            print('Completed: %s' % action.get('timestamp'))
-            print('')
-            print('Output')
-            print('------')
-            print(action.get('message'))
+                print('System:    %s' % action.get('server_name'))
+                print('Completed: %s' % action.get('timestamp'))
+                print('')
+                print('Output')
+                print('------')
+                print(action.get('message'))
+        else:
+            logging.error("No systems found")
 
 ####################
 

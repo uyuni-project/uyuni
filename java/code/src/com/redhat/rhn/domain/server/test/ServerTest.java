@@ -18,6 +18,7 @@ import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.ClientCapability;
 import com.redhat.rhn.domain.server.EntitlementServerGroup;
+import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.NetworkInterface;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerConstants;
@@ -145,8 +146,9 @@ public class ServerTest extends BaseTestCaseWithUser {
         s.setRelease("12.1");
         assertTrue(s.doesOsSupportsOSImageBuilding());
     }
+
     /**
-     * Test for {@link Server#doesOsSupportsOSImageBuilding()}.
+     * Test for {@link Server#doesOsSupportsMonitoring()} for SLES.
      */
     public void testOsSupportsMonitoring() throws Exception {
         Server s = ServerFactoryTest.createTestServer(user, true,
@@ -156,8 +158,9 @@ public class ServerTest extends BaseTestCaseWithUser {
         s.setRelease("12.1");
         assertTrue(s.doesOsSupportsMonitoring());
     }
+
     /**
-     * Test for {@link Server#doesOsSupportsOSImageBuilding()}.
+     * Test for {@link Server#doesOsSupportsMonitoring()} for Leap.
      */
     public void testOsSupportsMonitoringLeap() throws Exception {
         Server s = ServerFactoryTest.createTestServer(user, true,
@@ -167,6 +170,43 @@ public class ServerTest extends BaseTestCaseWithUser {
         s.setRelease("15.0");
         assertTrue(s.doesOsSupportsMonitoring());
     }
+
+    /**
+     * Test for {@link Server#doesOsSupportsMonitoring()} for Ubuntu.
+     */
+    public void testOsSupportsMonitoringUbuntu() throws Exception {
+        Server s = ServerFactoryTest.createTestServer(user, true,
+                ServerConstants.getServerGroupTypeSaltEntitled(),
+                ServerFactoryTest.TYPE_SERVER_MINION);
+        s.setOs("Ubuntu");
+        s.setRelease("18.04");
+        assertTrue(s.doesOsSupportsMonitoring());
+    }
+
+    /**
+     * Test for {@link Server#doesOsSupportsMonitoring()} for RedHat 6.
+     */
+    public void testOsSupportsMonitoringRedHat6() throws Exception {
+        MinionServer s = (MinionServer) ServerFactoryTest.createTestServer(user, true,
+                ServerConstants.getServerGroupTypeSaltEntitled(),
+                ServerFactoryTest.TYPE_SERVER_MINION);
+        s.setOsFamily("RedHat");
+        s.setRelease("6");
+        assertTrue(s.doesOsSupportsMonitoring());
+    }
+
+    /**
+     * Test for {@link Server#doesOsSupportsMonitoring()} for RedHat 7.
+     */
+    public void testOsSupportsMonitoringRedHat7() throws Exception {
+        MinionServer s = (MinionServer) ServerFactoryTest.createTestServer(user, true,
+                ServerConstants.getServerGroupTypeSaltEntitled(),
+                ServerFactoryTest.TYPE_SERVER_MINION);
+        s.setOsFamily("RedHat");
+        s.setRelease("7");
+        assertTrue(s.doesOsSupportsMonitoring());
+    }
+
     /**
      * Test for {@link Server#doesOsSupportsOSImageBuilding()}.
      */
@@ -178,17 +218,19 @@ public class ServerTest extends BaseTestCaseWithUser {
         s.setRelease("11.4");
         assertFalse(s.doesOsSupportsContainerization());
     }
+
     /**
-     * Test for {@link Server#doesOsSupportsOSImageBuilding()}.
+     * Test for {@link Server#doesOsSupportsMonitoring()}.
      */
     public void testOsDoesNotSupportsMonitoring() throws Exception {
         Server s = ServerFactoryTest.createTestServer(user, true,
                 ServerConstants.getServerGroupTypeSaltEntitled(),
                 ServerFactoryTest.TYPE_SERVER_MINION);
-        s.setOs("Ubuntu");
-        s.setRelease("18.04");
+        s.setOs("SLES");
+        s.setRelease("11.4");
         assertFalse(s.doesOsSupportsMonitoring());
     }
+
     public void testGetIpAddress() throws Exception {
         Server s = ServerTestUtils.createTestSystem(user);
         assertNull(s.getIpAddress());

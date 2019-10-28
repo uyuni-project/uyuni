@@ -15,7 +15,6 @@
 package com.redhat.rhn.frontend.struts.test;
 
 import com.redhat.rhn.common.validator.ValidatorError;
-import com.redhat.rhn.frontend.action.LoginAction;
 import com.redhat.rhn.frontend.action.configuration.channel.ChannelOverviewAction;
 import com.redhat.rhn.frontend.struts.RhnValidationHelper;
 import com.redhat.rhn.testing.RhnBaseTestCase;
@@ -42,17 +41,6 @@ public class RhnValidationHelperTest extends RhnBaseTestCase {
         ActionErrors am = RhnValidationHelper.validatorErrorToActionErrors(errors);
         assertNotNull(am);
         assertTrue(am.size() == 3);
-     }
-
-     public void testValidateDynaActionForm() throws Exception {
-         LoginAction la = new LoginAction();
-         RhnMockDynaActionForm form = new RhnMockDynaActionForm();
-         form.setFormName("loginForm");
-         form.set("username", "");
-         form.set("password", "somepassword");
-         assertNotNull(RhnValidationHelper.validateDynaActionForm(la, form));
-         form.set("username", "something");
-         assertTrue(RhnValidationHelper.validateDynaActionForm(la, form).isEmpty());
      }
 
      public void testValidateDynaActionFormPathed() throws Exception {

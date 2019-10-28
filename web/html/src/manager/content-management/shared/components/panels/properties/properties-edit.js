@@ -57,7 +57,7 @@ const PropertiesEdit = (props: Props) => {
               props.onChange(editedProject)
             })
             .catch((error) => {
-              showErrorToastr(error);
+              showErrorToastr(error, {autoHide: false});
             })
         }}
         onCancel={() => cancelAction()}

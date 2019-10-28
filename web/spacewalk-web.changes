@@ -1,3 +1,48 @@
+- Fix WebUI invalidation time by using the package build time instead
+  of the WebUI version (bsc#1154868)
+- Bump version to 4.1.0 (bsc#1154940)
+- Filter by description on the Products page works recursively
+- Add check/message for project not found (bsc#1145755)
+- Fix sorting issues on content filter list page (bsc#1145591)
+- Improve the UI of the salt packages state and configuration channels page to use tabs instead
+- Remove/change text on edit filters for clp (bsc#1145608)
+- Redirect to project when canceling creating a filter (bsc#1145750)
+- Better visualization of the filters attached to a CLM Project. Allow/deny are now split
+- Fix ui issues with content lifecycle project list page (bsc#1145587)
+- implement "keyword" filter for Content Lifecycle Management
+- Enable Azure, Amazon EC2 and Google Compute Engine as available Virtual host Managers
+- Trim strings when creating/updating image stores/profiles (bsc#1133429)
+- Show loading spin while loading salt keys data (bsc#1150180)
+- CLM - Disable clones by default of the shown CLM Project sources
+- Show virtual storage volumes and pools on salt minions
+- Migrate login to Spark
+- Add UI message when salt-formulas system folders are unreachable (bsc#1142309)
+- implement "regular expression" Filter for Content Lifecycle Management
+  matching package names, patch name, patch synopsis and package names in patches
+- Change color of disabled build button on clp page (bsc#1145626)
+- New Single Page Application engine for the UI
+- Fix the 'include recommended' button on channels selection in SSM (bsc#1145086)
+- implement "patch contains package" Filter for Content Lifecycle Management
+- implement Filter Patch "by type" Content Lifecycle Management
+- Implement filtering errata by synopsis in Content Lifecycle Management
+- Normalize date formats for actions, notifications and clm (bsc#1142774)
+- Implement ALLOW filters in Content Lifecycle Management
+- move /usr/share/rhn/config-defaults to uyuni-base-common
+- implement "by date" Filter for Content Lifecycle Management
+- Hide channels managed by Content Lifecycle projects from available sources (bsc#1137965)
+- Add unsupported browser warning when using Internet Explorer
+
+-------------------------------------------------------------------
+Wed Jul 31 17:38:44 CEST 2019 - jgonzalez@suse.com
+
+- version 4.0.12-1
+- Add new validation to avoid creating content lifecycle projects starting with a number (bsc#1139493)
+- Redirect to first step of channel assignment after change channel submit (bsc#1137244)
+- add error messages, hints for image profile edit page (bsc#1127319)
+- Allow virtualization tab for foreign systems (bsc#1116869)
+- Add checks for empty required entries on formula forms (bsc#1109639)
+- Fix big formula checkbox not supported in Firefox
+- Allow forcing off or resetting VMs
 - Adjust title icons
 - Fix VM creation dialog with non-default pools and networks (bsc#1138268)
 - Update help URLs in the UI (bsc#1136764)

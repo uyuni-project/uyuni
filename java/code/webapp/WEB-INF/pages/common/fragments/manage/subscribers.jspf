@@ -31,7 +31,7 @@
             filterattr="login"
             defaultsort="asc" >
 
-            <a href="/rhn/users/UserDetails.do?uid=${current.id}">
+            <a class="js-spa" href="/rhn/users/UserDetails.do?uid=${current.id}">
                 ${current.login}
             </a>
          </rl:column>

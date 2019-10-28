@@ -15,22 +15,29 @@
 package com.suse.manager.webui.controllers;
 
 import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.withCsrfToken;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withUser;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.withUserPreferences;
 import static spark.Spark.get;
 
+import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.system.SystemManager;
 
 import com.google.gson.JsonElement;
 import com.suse.manager.virtualization.VirtManager;
 import com.suse.manager.webui.errors.NotFoundException;
 import com.suse.manager.webui.utils.gson.VirtualStoragePoolInfoJson;
+import com.suse.manager.webui.utils.gson.VirtualStorageVolumeInfoJson;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
 import spark.template.jade.JadeTemplateEngine;
@@ -48,9 +55,48 @@ public class VirtualPoolsController {
      * @param jade jade engine
      */
     public static void initRoutes(JadeTemplateEngine jade) {
+        get("/manager/systems/details/virtualization/storage/:sid",
+                withUserPreferences(withCsrfToken(withUser(VirtualPoolsController::show))), jade);
         get("/manager/api/systems/details/virtualization/pools/:sid/data",
                 withUser(VirtualPoolsController::data));
     }
+
+    /**
+     * Displays the virtual storages page.
+     *
+     * @param request the request
+     * @param response the response
+     * @param user the user
+     * @return the ModelAndView object to render the page
+     */
+    public static ModelAndView show(Request request, Response response, User user) {
+        Map<String, Object> data = new HashMap<>();
+        Long serverId;
+        Server server;
+
+        try {
+            serverId = Long.parseLong(request.params("sid"));
+        }
+        catch (NumberFormatException e) {
+            throw new NotFoundException();
+        }
+
+        try {
+            server = SystemManager.lookupByIdAndUser(serverId, user);
+        }
+        catch (LookupException e) {
+            throw new NotFoundException();
+        }
+
+        /* For system-common.jade */
+        data.put("server", server);
+        data.put("inSSM", RhnSetDecl.SYSTEMS.get(user).contains(serverId));
+
+        /* For the rest of the template */
+
+        return new ModelAndView(data, "templates/virtualization/pools/show.jade");
+    }
+
 
     /**
      * Returns JSON data describing the storage pools
@@ -73,13 +119,19 @@ public class VirtualPoolsController {
         String minionId = host.asMinionServer().orElseThrow(() -> new NotFoundException()).getMinionId();
 
         Map<String, JsonElement> infos = VirtManager.getPools(minionId);
-        List<VirtualStoragePoolInfoJson> networks = infos.entrySet().stream().map(entry -> {
-            VirtualStoragePoolInfoJson net = new VirtualStoragePoolInfoJson(entry.getKey(),
-                    entry.getValue().getAsJsonObject());
+        Map<String, Map<String, JsonElement>> volInfos = VirtManager.getVolumes(minionId);
+        List<VirtualStoragePoolInfoJson> pools = infos.entrySet().stream().map(entry -> {
+            Map<String, JsonElement> poolVols = volInfos.getOrDefault(entry.getKey(), new HashMap<>());
+            List<VirtualStorageVolumeInfoJson> volumes = poolVols.entrySet().stream().map(volEntry -> {
+                return new VirtualStorageVolumeInfoJson(volEntry.getKey(), volEntry.getValue().getAsJsonObject());
+            }).collect(Collectors.toList());
 
-            return net;
+            VirtualStoragePoolInfoJson pool = new VirtualStoragePoolInfoJson(entry.getKey(),
+                    entry.getValue().getAsJsonObject(), volumes);
+
+            return pool;
         }).collect(Collectors.toList());
 
-        return json(response, networks);
+        return json(response, pools);
     }
 }

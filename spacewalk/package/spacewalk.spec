@@ -23,12 +23,9 @@
 %else
 %global postgresql /usr/bin/psql
 %endif
-%if !0%{?is_opensuse}
-%define with_oracle     1
-%endif
 
 Name:           spacewalk
-Version:        4.0.4
+Version:        4.1.0
 Release:        1%{?dist}
 Summary:        Spacewalk Systems Management Application
 License:        GPL-2.0-only
@@ -42,7 +39,7 @@ Spacewalk is a systems management application that will
 inventory, provision, update and control your Linux machines.
 
 %package common
-Summary:        Spacewalk Systems Management Application with Oracle database backend
+Summary:        Spacewalk Systems Management Application with postgresql database backend
 Group:          Applications/Internet
 Obsoletes:      spacewalk < 0.7.0
 

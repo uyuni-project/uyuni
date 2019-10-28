@@ -7,13 +7,15 @@ include /templates/common.jade
 div#init_data_projects(style="display: none")
     | #{contentProjects}
 
-script(src='/javascript/manager/content-management/list-projects/list-projects.renderer.bundle.js?cb=#{webVersion}')
 
 script(type='text/javascript').
-    pageRenderers.contentManagement.listProjects.renderer(
-        'content-management-list-projects',
-        {
-          projects: document.getElementById('init_data_projects').textContent,
-          flashMessage: "#{flashMessage}"
-        }
-    );
+    spaImportReactPage('content-management/list-projects')
+        .then(function(module) {
+            module.renderer(
+                'content-management-list-projects',
+                {
+                    projects: document.getElementById('init_data_projects').textContent,
+                    flashMessage: "#{flashMessage}"
+                }
+            );
+        });

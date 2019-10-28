@@ -10,6 +10,7 @@ const Network = require("utils/network");
 const Functions = require("utils/functions");
 const Utils = Functions.Utils;
 const {Table, Column, SearchField, Highlight} = require("components/table");
+const SpaRenderer  = require("core/spa/spa-renderer").default;
 
 function listKeys() {
   return Network.get("/rhn/manager/api/systems/keys").promise;
@@ -77,16 +78,19 @@ class KeyManagement extends React.Component {
     ["searchData", "rowKey", "reloadKeys"].forEach(method => this[method] = this[method].bind(this));
     this.state = {
       keys: [],
-      isOrgAdmin: false
+      isOrgAdmin: false,
+      loading: true,
     };
     this.reloadKeys();
   }
 
   reloadKeys() {
+    this.setState({loading: true});
     return listKeys().then(data => {
       this.setState({
         keys: data["minions"],
-        isOrgAdmin: data["isOrgAdmin"]
+        isOrgAdmin: data["isOrgAdmin"],
+        loading: false,
       });
     });
   }
@@ -121,6 +125,7 @@ class KeyManagement extends React.Component {
               identifier={this.rowKey}
               initialSortColumnKey="id"
               initialItemsPerPage={userPrefPageSize}
+              loading={this.state.loading}
               searchField={
                   <SearchField filter={this.searchData} criteria={""} />
               }>
@@ -179,7 +184,7 @@ class KeyManagement extends React.Component {
   }
 }
 
-ReactDOM.render(
+export const renderer = (id) => SpaRenderer.renderNavigationReact(
   <KeyManagement />,
-  document.getElementById('key-management')
+  document.getElementById(id)
 );

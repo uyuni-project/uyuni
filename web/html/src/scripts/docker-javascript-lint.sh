@@ -2,7 +2,7 @@
 set -euxo pipefail
 
 zypper --non-interactive install git
-npm install -g flow-bin@0.93.0
+npm install -g flow-bin@0.107.0
 
 cd /manager/web/html/src
 

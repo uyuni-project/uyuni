@@ -12,6 +12,7 @@ const {Table, Column, SearchField} = require("components/table");
 const Messages = require("components/messages").Messages;
 const DeleteDialog = require("components/dialog/DeleteDialog").DeleteDialog;
 const ModalButton = require("components/dialog/ModalButton").ModalButton;
+const SpaRenderer  = require("core/spa/spa-renderer").default;
 
 /* global isAdmin */
 
@@ -112,7 +113,7 @@ class ImageStores extends React.Component {
 
     return (
       <span>
-        <TopPanel title="Image Stores" icon="fa-list" helpUrl="/docs/reference/images/images-stores.html" button={ panelButtons }>
+        <TopPanel title={t("Image Stores")} icon="fa-list" helpUrl="/docs/reference/images/images-stores.html" button={ panelButtons }>
           {this.state.messages}
           <Table
             data={this.state.imagestores}
@@ -188,7 +189,7 @@ class ImageStores extends React.Component {
   }
 }
 
-ReactDOM.render(
+export const renderer = () => SpaRenderer.renderNavigationReact(
   <ImageStores />,
   document.getElementById('image-stores')
 )

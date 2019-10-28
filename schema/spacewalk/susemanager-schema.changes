@@ -1,3 +1,23 @@
+- Bump version to 4.1.0 (bsc#1154940)
+- Fix in schema migration script when recreating the 'suseUserRoleView' (bsc#1151280)
+- Fix: handle special deb package names (bsc#1150113)
+- Refactor in suseChannelUserRoleView for retrieving the parent_channel_id (bsc#1151399)
+- Add tables rhnPackageExtraTag and rhnPackageExtraTagKey
+- Allow monitoring for Ubuntu systems
+- Add new types needed for Azure, Amazon EC2 and Google CE
+- Migrate login to Spark
+- enable provisioning for salt clients
+- Allow package changelog entries with more than 3000 characters (bsc#1144889)
+- add caret sorting for rpm versioning
+- allow repo and manifest sources with the same url
+- improve performance for retrieving the user permissions on channels (bsc#1140644)
+
+-------------------------------------------------------------------
+Wed Jul 31 17:40:45 CEST 2019 - jgonzalez@suse.com
+
+- version 4.0.13-1
+- Drop no longer used 'allServerKeywordSinceReboot' view (fate#327780)
+- Allow forcing off or resetting VMs
 - fix schema migration for suseSCCRepositoryAuth (bsc#1136558)
 - Add built time column to suseContentEnvironmentTarget
 

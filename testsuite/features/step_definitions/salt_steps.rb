@@ -91,7 +91,7 @@ end
 
 When(/^I accept "([^"]*)" key in the Salt master$/) do |host|
   system_name = get_system_name(host)
-  $server.run("salt-key -y --accept=#{system_name}")
+  $server.run("salt-key -y --accept=#{system_name}*")
 end
 
 When(/^I reject "([^"]*)" key in the Salt master$/) do |host|
@@ -108,8 +108,15 @@ When(/^I get OS information of "([^"]*)" from the Master$/) do |host|
   $output, _code = $server.run("salt #{system_name} grains.get osfullname")
 end
 
-Then(/^it should contain a "(.*?)" text$/) do |content|
+Then(/^it should contain a "([^"]*?)" text$/) do |content|
   assert_match(/#{content}/, $output)
+end
+
+Then(/^it should contain the OS of "([^"]*)"$/) do |host|
+  node = get_target(host)
+  os_version, os_family = get_os_version(node)
+  family = os_family =~ /^opensuse/ ? 'Leap' : 'SLES'
+  assert_match(/#{family}/, $output)
 end
 
 When(/^I apply state "([^"]*)" to "([^"]*)"$/) do |state, host|
@@ -169,24 +176,17 @@ When(/^I click on preview$/) do
 end
 
 When(/^I click on run$/) do
-  repeat_until_timeout(message: "Run button not found") do
-    begin
-      find('button#run').click
-      break
-    rescue Capybara::ElementNotFound
-      sleep(5)
-    end
-  end
+  find('button#run', wait: DEFAULT_TIMEOUT).click
 end
 
 Then(/^I should see "([^"]*)" hostname$/) do |host|
   system_name = get_system_name(host)
-  raise unless page.has_content?(system_name)
+  raise "Hostname #{system_name} is not present" unless page.has_content?(system_name)
 end
 
 Then(/^I should not see "([^"]*)" hostname$/) do |host|
   system_name = get_system_name(host)
-  raise if page.has_content?(system_name)
+  raise "Hostname #{system_name} is present" if page.has_content?(system_name)
 end
 
 When(/^I expand the results for "([^"]*)"$/) do |host|
@@ -205,7 +205,7 @@ end
 Then(/^I should see "([^"]*)" in the command output for "([^"]*)"$/) do |text, host|
   system_name = get_system_name(host)
   within("pre[id='#{system_name}-results']") do
-    raise unless page.has_content?(text)
+    raise "Text '#{text}' not found in the results of #{system_name}" unless page.has_content?(text)
   end
 end
 
@@ -213,7 +213,6 @@ Then(/^I click on the css "(.*)" until page does not contain "([^"]*)" text$/) d
   repeat_until_timeout(message: "'#{text}' still found") do
     break unless page.has_content?(text)
     find(css).click
-    sleep 3
   end
 end
 
@@ -221,12 +220,11 @@ Then(/^I click on the css "(.*)" until page does contain "([^"]*)" text$/) do |c
   repeat_until_timeout(message: "'#{text}' was not found") do
     break if page.has_content?(text)
     find(css).click
-    sleep 3
   end
 end
 
 When(/^I click on the css "(.*)"$/) do |css|
-  find(css).click
+  find_and_wait_click(css).click
 end
 
 When(/^I enter "(.*)" in the css "(.*)"$/) do |input, css|
@@ -236,6 +234,10 @@ end
 # salt formulas
 When(/^I manually install the "([^"]*)" formula on the server$/) do |package|
   $server.run("zypper --non-interactive install --force #{package}-formula")
+end
+
+Then(/^I wait for "([^"]*)" formula to be installed on the server$/) do |package|
+  $server.run_until_ok("rpm -q #{package}-formula")
 end
 
 When(/^I manually uninstall the "([^"]*)" formula from the server$/) do |package|
@@ -252,11 +254,11 @@ When(/^I ([^ ]*) the "([^"]*)" formula$/) do |action, formula|
   xpath_query = "//a[@id = '#{formula}']/i[@class = 'fa fa-lg fa-square-o']" if action == 'check'
   xpath_query = "//a[@id = '#{formula}']/i[@class = 'fa fa-lg fa-check-square-o']" if action == 'uncheck'
   if all(:xpath, xpath_query).any?
-    raise unless find(:xpath, xpath_query).click
+    raise "xpath: #{xpath_query} not found" unless find(:xpath, xpath_query).click
   else
     xpath_query = "//a[@id = '#{formula}']/i[@class = 'fa fa-lg fa-check-square-o']" if action == 'check'
     xpath_query = "//a[@id = '#{formula}']/i[@class = 'fa fa-lg fa-square-o']" if action == 'uncheck'
-    assert all(:xpath, xpath_query).any?, 'Checkbox could not be found'
+    raise "xpath: #{xpath_query} not found" unless all(:xpath, xpath_query).any?
   end
 end
 
@@ -271,15 +273,7 @@ Then(/^the "([^"]*)" formula should be ([^ ]*)$/) do |formula, state|
 end
 
 When(/^I select "([^"]*)" in (.*) field$/) do |value, box|
-  boxids = { 'timezone name'            => 'timezone#name',
-             'language'                 => 'keyboard_and_language#language',
-             'keyboard layout'          => 'keyboard_and_language#keyboard_layout',
-             'disk label'               => 'partitioning#0#disklabel',
-             'first filesystem format'  => 'partitioning#0#partitions#0#format',
-             'first partition flags'    => 'partitioning#0#partitions#0#flags',
-             'second filesystem format' => 'partitioning#0#partitions#1#format',
-             'second partition flags'   => 'partitioning#0#partitions#1#flags' }
-  select(value, from: boxids[box])
+  select(value, from: FIELD_IDS[box])
 end
 
 # rubocop:disable Metrics/BlockLength
@@ -301,6 +295,35 @@ When(/^I enter the local IP address of "([^"]*)" in (.*) field$/) do |host, fiel
                'fourth A address'         => 'bind#available_zones#0#records#A#3#1',
                'internal network address' => 'tftpd#listen_ip',
                'vsftpd internal network address' => 'vsftpd_config#listen_address' }
+  addresses = { 'network'     => '0',
+                'client'      => '2',
+                'minion'      => '3',
+                'pxeboot'     => '4',
+                'range begin' => '128',
+                'range end'   => '253',
+                'proxy'       => '254',
+                'broadcast'   => '255' }
+  net_prefix = $private_net.sub(%r{\.0+/24$}, ".")
+  fill_in fieldids[field], with: net_prefix + addresses[host]
+end
+
+When(/^I enter the local IP address of "([^"]*)" in (.*) field for vsftpd$/) do |host, field|
+  fieldids = { 'IP'                       => 'branch_network#ip',
+               'domain name server'       => 'dhcpd#domain_name_servers#0',
+               'network IP'               => 'dhcpd#subnets#0#$key',
+               'dynamic IP range begin'   => 'dhcpd#subnets#0#range#0',
+               'dynamic IP range end'     => 'dhcpd#subnets#0#range#1',
+               'broadcast address'        => 'dhcpd#subnets#0#broadcast_address',
+               'routers'                  => 'dhcpd#subnets#0#routers#0',
+               'next server'              => 'dhcpd#subnets#0#next_server',
+               'first reserved IP'        => 'dhcpd#hosts#0#fixed_address',
+               'second reserved IP'       => 'dhcpd#hosts#1#fixed_address',
+               'third reserved IP'        => 'dhcpd#hosts#2#fixed_address',
+               'first A address'          => 'bind#available_zones#0#records#A#0#1',
+               'second A address'         => 'bind#available_zones#0#records#A#1#1',
+               'third A address'          => 'bind#available_zones#0#records#A#2#1',
+               'fourth A address'         => 'bind#available_zones#0#records#A#3#1',
+               'internal network address' => 'vsftpd_config#listen_address' }
   addresses = { 'network'     => '0',
                 'client'      => '2',
                 'minion'      => '3',
@@ -357,10 +380,18 @@ When(/^I enter "([^"]*)" in (.*) field$/) do |value, field|
                'first partition size'            => 'partitioning#0#partitions#0#size_MiB',
                'first mount point'               => 'partitioning#0#partitions#0#mountpoint',
                'first OS image'                  => 'partitioning#0#partitions#0#image',
+               'first partition password'        => 'partitioning#0#partitions#0#luks_pass',
                'second partition id'             => 'partitioning#0#partitions#1#$key',
                'second partition size'           => 'partitioning#0#partitions#1#size_MiB',
                'second mount point'              => 'partitioning#0#partitions#1#mountpoint',
                'second OS image'                 => 'partitioning#0#partitions#1#image',
+               'second partition password'       => 'partitioning#0#partitions#1#luks_pass',
+               'third partition id'              => 'partitioning#0#partitions#2#$key',
+               'third partition size'            => 'partitioning#0#partitions#2#size_MiB',
+               'third filesystem format'         => 'partitioning#0#partitions#2#format',
+               'third mount point'               => 'partitioning#0#partitions#2#mountpoint',
+               'third OS image'                  => 'partitioning#0#partitions#2#image',
+               'third partition password'        => 'partitioning#0#partitions#2#luks_pass',
                'FTP server directory'            => 'vsftpd_config#anon_root' }
   fill_in fieldids[field], with: value
 end
@@ -379,8 +410,7 @@ When(/^I enter the IP address of "([^"]*)" in (.*) field$/) do |host, field|
   node = get_target(host)
   output, _code = node.run("ip address show dev eth0")
   ip = output.split("\n")[2].split[1].split('/')[0]
-  fieldids = { 'fifth A address' => 'bind#available_zones#2#records#A#0#1' }
-  fill_in fieldids[field], with: ip
+  fill_in FIELD_IDS[field], with: ip
 end
 
 When(/^I enter the MAC address of "([^"]*)" in (.*) field$/) do |host, field|
@@ -391,32 +421,24 @@ When(/^I enter the MAC address of "([^"]*)" in (.*) field$/) do |host, field|
     output, _code = node.run("ip link show dev eth1")
     mac = output.split("\n")[1].split[1]
   end
-  fieldids = { 'first reserved MAC'  => 'dhcpd#hosts#0#hardware',
-               'second reserved MAC' => 'dhcpd#hosts#1#hardware',
-               'third reserved MAC'  => 'dhcpd#hosts#2#hardware' }
-  fill_in fieldids[field], with: 'ethernet ' + mac
+
+  fill_in FIELD_IDS[field], with: 'ethernet ' + mac
 end
 
 When(/^I enter the local zone name in (.*) field$/) do |field|
-  fieldids = { 'second configured zone name' => 'bind#configured_zones#1#$key',
-               'second available zone name'  => 'bind#available_zones#1#$key' }
-  a = $private_net.split('.')
-  reverse_net = a[2] + '.' + a[1] + '.' + a[0] + '.in-addr.arpa'
+  reverse_net = get_reverse_net($private_net)
   STDOUT.puts "#{$private_net} => #{reverse_net}"
-  fill_in fieldids[field], with: reverse_net
+  fill_in FIELD_IDS[field], with: reverse_net
 end
 
 When(/^I enter the local file name in (.*) field$/) do |field|
-  fieldids = { 'second file name' => 'bind#available_zones#1#file' }
-  a = $private_net.split('.')
-  reverse_filename = 'master/db.' + a[2] + '.' + a[1] + '.' + a[0] + '.in-addr.arpa'
+  reverse_filename = 'master/db.' + get_reverse_net($private_net)
   STDOUT.puts "#{$private_net} => #{reverse_filename}"
-  fill_in fieldids[field], with: reverse_filename
+  fill_in FIELD_IDS[field], with: reverse_filename
 end
 
 When(/^I enter the local network in (.*) field$/) do |field|
-  fieldids = { 'second generate reverse network' => 'bind#available_zones#1#generate_reverse#net' }
-  fill_in fieldids[field], with: $private_net
+  fill_in FIELD_IDS[field], with: $private_net
 end
 
 When(/^I press "Add Item" in (.*) section$/) do |section|
@@ -453,13 +475,13 @@ Then(/^the timezone on "([^"]*)" should be "([^"]*)"$/) do |minion, timezone|
   output, _code = node.run('date +%Z')
   result = output.strip
   result = 'CET' if result == 'CEST'
-  raise unless result == timezone
+  raise "The timezone #{timezone} is different to #{result}" unless result == timezone
 end
 
 Then(/^the keymap on "([^"]*)" should be "([^"]*)"$/) do |minion, keymap|
   node = get_target(minion)
   output, _code = node.run('cat /etc/vconsole.conf')
-  raise unless output.strip == "KEYMAP=#{keymap}"
+  raise "The keymap #{keymap} is different to the output: #{output.strip}" unless output.strip == "KEYMAP=#{keymap}"
 end
 
 Then(/^the language on "([^"]*)" should be "([^"]*)"$/) do |minion, language|
@@ -467,7 +489,7 @@ Then(/^the language on "([^"]*)" should be "([^"]*)"$/) do |minion, language|
   output, _code = node.run("grep 'RC_LANG=' /etc/sysconfig/language")
   unless output.strip == "RC_LANG=\"#{language}\""
     output, _code = node.run("grep 'LANG=' /etc/locale.conf")
-    raise unless output.strip == "LANG=#{language}"
+    raise "The language #{language} is different to the output: #{output.strip}" unless output.strip == "LANG=#{language}"
   end
 end
 
@@ -480,7 +502,7 @@ Then(/^the pillar data for "([^"]*)" should (be|contain|not contain) "([^"]*)" o
   if minion == 'sle-minion'
     cmd = 'salt'
     extra_cmd = ''
-  elsif ['ssh-minion', 'ceos-minion', 'ceos-ssh-minion', 'ubuntu-minion', 'ubuntu-ssh-minion'].include?(minion)
+  elsif %w[ssh-minion ceos-minion ceos-ssh-minion ubuntu-minion ubuntu-ssh-minion].include?(minion)
     cmd = 'salt-ssh'
     extra_cmd = '-i --roster-file=/tmp/roster_tests -w -W 2>/dev/null'
     $server.run("printf '#{system_name}:\n  host: #{system_name}\n  user: root\n  passwd: linux\n' > /tmp/roster_tests")
@@ -489,13 +511,13 @@ Then(/^the pillar data for "([^"]*)" should (be|contain|not contain) "([^"]*)" o
   end
   output, _code = $server.run("#{cmd} '#{system_name}' pillar.get '#{key}' #{extra_cmd}")
   if verb == 'be' && value == ''
-    raise unless output.split("\n").length == 1
+    raise "Output has more than one line: #{output}" unless output.split("\n").length == 1
   elsif verb == 'be'
-    raise unless output.split("\n")[1].strip == value
+    raise "Output value is different than #{value}: #{output}" unless output.split("\n")[1].strip == value
   elsif verb == 'contain'
-    raise unless output.include? value
+    raise "Output doesn't contain #{value}: #{output}" unless output.include? value
   elsif verb == 'not contain'
-    raise if output.include? value
+    raise "Output contains #{value}: #{output}" if output.include? value
   else
     raise 'Invalid verb'
   end
@@ -535,26 +557,26 @@ end
 When(/^I reject "([^"]*)" from the Pending section$/) do |host|
   system_name = get_system_name(host)
   xpath_query = "//tr[td[contains(.,'#{system_name}')]]//button[@title = 'Reject']"
-  raise unless find(:xpath, xpath_query).click
+  raise "xpath: #{xpath_query} not found" unless find(:xpath, xpath_query).click
 end
 
 When(/^I delete "([^"]*)" from the Rejected section$/) do |host|
   system_name = get_system_name(host)
   xpath_query = "//tr[td[contains(.,'#{system_name}')]]//button[@title = 'Delete']"
-  raise unless find(:xpath, xpath_query).click
+  raise "xpath: #{xpath_query} not found" unless find(:xpath, xpath_query).click
 end
 
 When(/^I see "([^"]*)" fingerprint$/) do |host|
   node = get_target(host)
   output, _code = node.run('salt-call --local key.finger')
   fing = output.split("\n")[1].strip!
-  raise unless page.has_content?(fing)
+  raise "Text: #{fing} not found" unless page.has_content?(fing)
 end
 
 When(/^I accept "([^"]*)" key$/) do |host|
   system_name = get_system_name(host)
   xpath_query = "//tr[td[contains(.,'#{system_name}')]]//button[@title = 'Accept']"
-  raise unless find(:xpath, xpath_query).click
+  raise "xpath: #{xpath_query} not found" unless find(:xpath, xpath_query).click
 end
 
 When(/^I go to the minion onboarding page$/) do
@@ -586,6 +608,7 @@ When(/^I refresh page until I do not see "(.*?)" hostname as text$/) do |minion|
 end
 
 When(/^I list packages with "(.*?)"$/) do |str|
+  find(:xpath, "//a[@href='#search']").click
   find('input#package-search').set(str)
   find('button#search').click
 end
@@ -614,6 +637,9 @@ Then(/^I wait for "([^"]*)" to be uninstalled on "([^"]*)"$/) do |package, host|
 end
 
 Then(/^I wait for "([^"]*)" to be installed on this "([^"]*)"$/) do |package, host|
+  if package.include?("suma") && $product == "Uyuni"
+    package.gsub! "suma", "uyuni"
+  end
   node = get_target(host)
   node.run_until_ok("rpm -q #{package}")
 end
@@ -654,16 +680,6 @@ When(/^I install Salt packages from "(.*?)"$/) do |host|
 end
 
 # minion bootstrap steps
-When(/^I enter the hostname of "([^"]*)" as "([^"]*)"$/) do |host, hostname|
-  system_name = get_system_name(host)
-  step %(I enter "#{system_name}" as "#{hostname}")
-end
-
-When(/^I select the hostname of the proxy from "([^"]*)"$/) do |proxy|
-  next if $proxy.nil?
-  step %(I select "#{$proxy.full_hostname}" from "#{proxy}")
-end
-
 Then(/^I run spacecmd listevents for "([^"]*)"$/) do |host|
   system_name = get_system_name(host)
   $server.run('spacecmd -u admin -p admin clear_caches')

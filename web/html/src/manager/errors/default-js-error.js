@@ -1,7 +1,7 @@
 import React from "react";
 
 const DefaultJsError = () =>
-  <body>
+  <div className="container-fluid">
     <h1>
       Something wrong happened.
     </h1>
@@ -9,6 +9,6 @@ const DefaultJsError = () =>
       Please reload the page.
       If the problem persists, please check log files.
     </p>
-  </body>
+  </div>
 
 export default DefaultJsError;

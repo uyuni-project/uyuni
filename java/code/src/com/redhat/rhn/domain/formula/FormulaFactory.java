@@ -36,6 +36,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import com.redhat.rhn.common.validator.ValidatorError;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.suse.utils.Opt;
@@ -150,6 +151,27 @@ public class FormulaFactory {
     }
 
     /**
+     * Return a warning message in case some folder doesn't exist or have wrong access level.
+     * @return a warning message if cannot access one folder. NULL if all folder are ok.
+     */
+    public static String getWarningMessageAccessFormulaFolders() {
+        String message = "";
+        boolean error = false;
+        if (!new File(METADATA_DIR_STANDALONE_SALT).canRead()) {
+            message += (error ? " and '" : " '") + METADATA_DIR_STANDALONE_SALT + "'";
+            error = true;
+        }
+        if (!new File(METADATA_DIR_MANAGER).canRead()) {
+            message += (error ? " and '" : " '") + METADATA_DIR_MANAGER + "'";
+            error = true;
+        }
+        if (!new File(METADATA_DIR_CUSTOM).canRead()) {
+            message += (error ? " and '" : " '") + METADATA_DIR_CUSTOM + "'";
+            error = true;
+        }
+        return error ? new ValidatorError("formula.folders.unreachable", message).getLocalizedMessage() : null;
+    }
+    /**
      * Returns the list of the names of all currently installed formulas.
      * @return the names of all currently installed formulas.
      */
@@ -157,10 +179,11 @@ public class FormulaFactory {
         File standaloneDir = new File(METADATA_DIR_STANDALONE_SALT);
         File managerDir = new File(METADATA_DIR_MANAGER);
         File customDir = new File(METADATA_DIR_CUSTOM);
-        List<File> files = new LinkedList<>(
-                Arrays.asList(standaloneDir.listFiles()));
-        files.addAll(Arrays.asList(managerDir.listFiles()));
-        files.addAll(Arrays.asList(customDir.listFiles()));
+        List<File> files = new LinkedList<>();
+        files.addAll(getFormulasFiles(standaloneDir));
+        files.addAll(getFormulasFiles(managerDir));
+        files.addAll(getFormulasFiles(customDir));
+
         List<String> formulasList = new LinkedList<>();
 
         for (File f : files) {
@@ -172,6 +195,16 @@ public class FormulaFactory {
         }
         formulasList.sort(String.CASE_INSENSITIVE_ORDER);
         return FormulaFactory.orderFormulas(formulasList);
+    }
+
+    private static List<File> getFormulasFiles(File formulasFolder) {
+        return Optional.ofNullable(formulasFolder.listFiles())
+                .map(filesList -> Arrays.asList(filesList))
+                .orElseGet(() -> {
+                    LOG.error("Unable to read formulas from folder '" + formulasFolder.getAbsolutePath() + "'" +
+                            ". Check if it exists and have the correct permissions (755).");
+                    return Collections.EMPTY_LIST;
+                });
     }
 
     /**

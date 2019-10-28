@@ -1,3 +1,16 @@
+- Bump version to 4.1.0 (bsc#1154940)
+- Require mgr-daemon (new name of spacewalksd) so we systems with
+  spacewalksd get always the new package installed (bsc#1149353)
+- enable spacewalk-update-service on package installation
+  (bsc#1143789)
+- Invalidate cache 5 minutes before actual expiration(bsc#1143562)
+
+-------------------------------------------------------------------
+Wed Jul 31 17:32:48 CEST 2019 - jgonzalez@suse.com
+
+- version 4.0.9-1
+- Make a explicit requirement to systemd for spacewalk-client-tools
+  when rhnsd timer is installed
 - The rhnsd service was replaced by rhnsd timer, so
   registration script and systemd presets are now adapted
   to this (bsc#1138130)

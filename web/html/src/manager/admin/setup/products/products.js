@@ -1,6 +1,9 @@
 /* eslint-disable */
 'use strict';
 
+import {searchCriteriaInExtension} from "./products.utils";
+
+const {SectionToolbar} = require("components/section-toolbar/section-toolbar");
 const React = require('react');
 const ReactDOM = require('react-dom');
 const Network = require('utils/network');
@@ -17,6 +20,7 @@ const PopUp = require("components/popup").PopUp;
 const ProgressBar = require("components/progressbar").ProgressBar;
 const CustomDiv = require("components/custom-objects").CustomDiv;
 const {Toggler} = require("components/toggler");
+const SpaRenderer  = require("core/spa/spa-renderer").default;
 
 const _DATA_ROOT_ID = 'baseProducts';
 
@@ -223,7 +227,7 @@ class ProductsPageWrapper extends React.Component {
     const tabs = 
       <div className='spacewalk-content-nav'>
         <ul className='nav nav-tabs'>
-          { _SETUP_WIZARD_STEPS.map(step => <li key={step.id} className={step.active ? 'active' : ''}><a href={step.url}>{t(step.label)}</a></li>)}
+          { _SETUP_WIZARD_STEPS.map(step => <li key={step.id} className={step.active ? 'active' : ''}><a className='js-spa' href={step.url}>{t(step.label)}</a></li>)}
         </ul>
       </div>;
 
@@ -266,7 +270,7 @@ class ProductsPageWrapper extends React.Component {
           <div className='col-sm-9'>
             <Messages items={this.state.errors}/>
             <div>
-              <div className='spacewalk-section-toolbar'>
+              <SectionToolbar>
                 <div className='action-button-wrapper'>
                   <div className='btn-group'>
                     <Button
@@ -280,7 +284,7 @@ class ProductsPageWrapper extends React.Component {
                     {addProductButton}
                   </div>
                 </div>
-              </div>
+              </SectionToolbar>
               <Products
                   data={this.state.serverData}
                   loading={this.state.loading}
@@ -422,13 +426,6 @@ class Products extends React.Component {
     this.props.handleUnSelectedItems(items);
   };
 
-  searchData = (datum, criteria) => {
-    if (criteria && datum.label) {
-      return (datum.label).toLowerCase().includes(criteria.toLowerCase());
-    }
-    return true;
-  };
-
   buildRows = (message) => {
     return Object.keys(message).map((id) => message[id]);
   };
@@ -463,7 +460,7 @@ class Products extends React.Component {
           loading={this.props.loading}
           additionalFilters={[archFilter]}
           searchField={
-              <SearchField filter={this.searchData}
+              <SearchField filter={searchCriteriaInExtension}
                   criteria={''}
                   placeholder={t('Filter by product Description')}
                   name='product-description-filter'
@@ -835,12 +832,12 @@ const ChannelsPopUp = (props) => {
     props.item != null ?
       (
         <div>
-          <ChannelList title='Mandatory Channels'
+          <ChannelList title={t("Mandatory Channels")}
               items={props.item.channels.filter(c => !c.optional)
                 .sort((a, b) => a.label.toLowerCase().localeCompare(b.label.toLowerCase()))
               }
               className={'product-channel-list'} />
-          <ChannelList title='Optional Channels'
+          <ChannelList title={t("Optional Channels")}
               items={props.item.channels.filter(c => c.optional)
                 .sort((a, b) => a.label.toLowerCase().localeCompare(b.label.toLowerCase()))
               }
@@ -896,7 +893,7 @@ class ChannelList extends React.Component {
   }
 }
 
-ReactDOM.render(
+export const renderer = () => SpaRenderer.renderNavigationReact(
   <ProductsPageWrapper />,
   document.getElementById('products')
 );

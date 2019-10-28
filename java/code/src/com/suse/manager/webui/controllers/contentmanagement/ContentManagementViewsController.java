@@ -108,7 +108,12 @@ public class ContentManagementViewsController {
             );
             data.put("projectToEdit", GSON.toJson(ResponseMappers.mapProjectFromDB(project, contentEnvironments)));
         });
-        data.put("wasFreshlyCreatedMessage", FlashScopeHelper.flash(req));
+        if (!projectToEdit.isEmpty()) {
+            data.put("wasFreshlyCreatedMessage", FlashScopeHelper.flash(req));
+        }
+        else {
+            data.put("projectToEdit", GSON.toJson(null));
+        }
 
         return new ModelAndView(data, "controllers/contentmanagement/templates/project.jade");
     }

@@ -14,13 +14,12 @@
  */
 package com.redhat.rhn.frontend.servlets;
 
-import com.redhat.rhn.frontend.action.LoginAction;
+import com.suse.manager.webui.utils.LoginHelper;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.Enumeration;
-
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 
@@ -32,7 +31,7 @@ import javax.servlet.http.HttpServletRequest;
  * values (from a POST request) added to the new query string.
  * <p>
  * If the length exceeds <code>MAX_URL_LENGTH</code>, then the redirect URI will default
- * to a value of {@link LoginAction#DEFAULT_URL_BOUNCE};
+ * to a value of {@link LoginHelper#DEFAULT_URL_BOUNCE};
  * <p>
  * <strong>Note:</strong> This implementation does not support multi-value parameters.
  * <p>
@@ -76,7 +75,7 @@ public class CreateRedirectURI {
         }
 
         if (redirectURI.length() > MAX_URL_LENGTH) {
-            return LoginAction.DEFAULT_URL_BOUNCE;
+            return LoginHelper.DEFAULT_URL_BOUNCE;
         }
 
         return redirectURI.toString();

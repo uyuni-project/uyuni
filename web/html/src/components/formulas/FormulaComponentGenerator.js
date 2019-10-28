@@ -37,7 +37,7 @@ function generateFormulaComponentForId(element, value, formulaForm, id, wrapper)
                 <div className="input-group small-color-picker">
                     <input type="color" name={element.$name} id={id} className="form-control" onChange={formulaForm.handleChange} title={element.$help} disabled={isDisabled} value={value} />
                     <span className="input-group-btn">
-                        <button className="btn btn-default" title="Reset" onClick={function (event) { event.preventDefault(); console.warn("Reseting color picker is not implemented!"); /* TODO: reset Value */ }}>
+                        <button className="btn btn-default" title={t("Reset")} onClick={function (event) { event.preventDefault(); console.warn("Reseting color picker is not implemented!"); /* TODO: reset Value */ }}>
                             <i className="fa fa-undo no-margin" />
                         </button>
                     </span>
@@ -84,7 +84,9 @@ function generateFormulaComponentForId(element, value, formulaForm, id, wrapper)
     else if (element.$type === "boolean")
         return wrapper(
                 element.$name,
-                <input type="checkbox" className="big-checkbox" onChange={formulaForm.handleChange} name={element.$name} id={id} title={element.$help} disabled={isDisabled} checked={value} />
+                <div className="checkbox">
+                    <input type="checkbox" onChange={formulaForm.handleChange} name={element.$name} id={id} title={element.$help} disabled={isDisabled} checked={value} />
+                </div>
         );
     else {
         console.error("Unknown $type: " + element.$type);

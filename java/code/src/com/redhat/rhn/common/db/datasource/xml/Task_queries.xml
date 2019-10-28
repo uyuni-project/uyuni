@@ -450,7 +450,7 @@ where snc.errata_id = :errata_id
 </mode>
 
 <query name="repomdgenerator_package_elab" class="com.redhat.rhn.frontend.dto.PackageDto">
-  SELECT p.id, pn.name as name, pevr.epoch as epoch,
+  SELECT p.id, p.org_id, pn.name as name, pevr.epoch as epoch,
          pevr.version as version, pevr.release as release,
          p.summary, p.description, pa.label as arch_label,
          p.build_time, p.path, p.package_size, p.payload_size, p.installed_size,
@@ -500,6 +500,16 @@ where snc.errata_id = :errata_id
         LIMIT :limit OFFSET :offset
     </query>
     <elaborator name="repomdgenerator_package_elab" />
+</mode>
+
+<mode name="repomdgenerator_channel_package_extratags">
+    <query>
+        SELECT pet.package_id as package_id, petk.name as name, pet.value as value
+        FROM
+            rhnPackageExtraTag pet join rhnPackageExtraTagKey petk on pet.key_id = petk.id
+        WHERE
+            pet.package_id in (%s)
+    </query>
 </mode>
 
 <mode name="repomdgenerator_capability_files"

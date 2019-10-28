@@ -1110,7 +1110,7 @@ class Syncer:
 
             for pid in pids:
                 # XXX Catch errors
-                if (not package_collection.has_package(pid)
+                if (not package_collection.has_package(pid) or not package_collection.get_package(pid)
                         or package_collection.get_package(pid)['last_modified']
                         != short_package_collection.get_package(pid)['last_modified']):
                     # not in the cache

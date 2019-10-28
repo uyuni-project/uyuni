@@ -111,7 +111,7 @@ class User:
                                    self.contact["login"])
             if data['use_pam_authentication'] == 'Y':
                 # use PAM
-                import rhnAuthPAM
+                from . import rhnAuthPAM
                 return rhnAuthPAM.check_password(self.contact["login"],
                                                  password, CFG.pam_auth_service)
         # If the entry in rhnUserInfo is 'N', perform regular authentication
@@ -387,7 +387,7 @@ def __reserve_user_db(user, password):
         # contact exists, check password
         if data['use_pam_authentication'] == 'Y' and CFG.pam_auth_service:
             # We use PAM for authentication
-            import rhnAuthPAM
+            from . import rhnAuthPAM
             if rhnAuthPAM.check_password(user, password, CFG.pam_auth_service) > 0:
                 return 1
             return -1
@@ -478,7 +478,7 @@ def __new_user_db(username, password, email, org_id, org_password):
     # Note that if the user is only reserved we don't do PAM authentication
     if data.get('use_pam_authentication') == 'Y' and CFG.pam_auth_service:
         # Check the password with PAM
-        import rhnAuthPAM
+        from . import rhnAuthPAM
         if rhnAuthPAM.check_password(username, password, CFG.pam_auth_service) <= 0:
             # Bad password
             raise rhnFault(2)

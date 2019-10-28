@@ -28,7 +28,7 @@ License:        GPL-2.0-only
 Group:          Applications/Internet
 Name:           spacewalk-admin
 Url:            https://github.com/uyuni-project/uyuni
-Version:        4.0.7
+Version:        4.1.0
 Release:        1%{?dist}
 Source0:        https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
@@ -48,6 +48,8 @@ BuildArch:      noarch
 %if 0%{?suse_version}
 BuildRequires:  spacewalk-config
 %endif
+BuildRequires:  uyuni-base-common
+Requires(pre):  uyuni-base-common
 
 %description
 Various utility scripts and data files for Spacewalk installations.
@@ -116,9 +118,6 @@ sed -i 's|#!/usr/bin/python|#!/usr/bin/python3|' $RPM_BUILD_ROOT/usr/bin/mgr-eve
 %{_unitdir}/spacewalk-wait-for-taskomatic.service
 %{_unitdir}/mgr-events-config.service
 %{_unitdir}/mgr-websockify.service
-%endif
-%if 0%{?suse_version}
-%attr(0750,root,www) %dir %{_sysconfdir}/rhn
 %endif
 
 %changelog

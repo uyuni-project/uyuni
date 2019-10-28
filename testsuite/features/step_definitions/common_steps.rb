@@ -1,4 +1,4 @@
-# Copyright (c) 2010-2019 SUSE
+# Copyright (c) 2010-2019 SUSE LLC.
 # Licensed under the terms of the MIT license.
 
 require 'jwt'
@@ -40,6 +40,22 @@ Then(/^I can see all system information for "([^"]*)"$/) do |host|
   step %(I should see a "#{os_pretty}" text) if os_pretty.include? 'SUSE Linux'
 end
 
+Then(/^I should see the terminals imported from the configuration file/) do
+  terminals = get_terminals_from_yaml(@retail_config)
+  terminals.each { |terminal| step %(I should see a "#{terminal}" text) }
+end
+
+Then(/^I should not see any terminals imported from the configuration file/) do
+  terminals = get_terminals_from_yaml(@retail_config)
+  terminals.each { |terminal| step %(I should not see a "#{terminal}" text) }
+end
+
+When(/^I enter the hostname of "([^"]*)" terminal as "([^"]*)"$/) do |host, hostname|
+  domain = get_branch_prefix_from_yaml(@retail_config)
+  puts "The hostname of #{host} terminal is #{host}.#{domain}"
+  step %(I enter "#{host}.#{domain}" as "#{hostname}")
+end
+
 # events
 
 When(/^I wait until event "([^"]*)" is completed$/) do |event|
@@ -68,8 +84,7 @@ When(/^I wait until I see the event "([^"]*)" completed during last minute, refr
     now = Time.now
     current_minute = now.strftime('%H:%M')
     previous_minute = (now - 60).strftime('%H:%M')
-    break if page.has_xpath?("//a[contains(text(),'#{event}')]/../..//td[4][contains(text(),'#{current_minute}') or contains(text(),'#{previous_minute}')]/../td[3]/a[1]")
-    sleep 1
+    break if find(:xpath, "//a[contains(text(),'#{event}')]/../..//td[4][contains(text(),'#{current_minute}') or contains(text(),'#{previous_minute}')]/../td[3]/a[1]", wait: 1)
     page.evaluate_script 'window.location.reload()'
   end
 end
@@ -79,7 +94,8 @@ When(/^I follow the event "([^"]*)" completed during last minute$/) do |event|
   current_minute = now.strftime('%H:%M')
   previous_minute = (now - 60).strftime('%H:%M')
   xpath_query = "//a[contains(text(), '#{event}')]/../..//td[4][contains(text(),'#{current_minute}') or contains(text(),'#{previous_minute}')]/../td[3]/a[1]"
-  raise unless find(:xpath, xpath_query).click
+  element = find_and_wait_click(:xpath, xpath_query)
+  element.click
 end
 
 # spacewalk errors steps
@@ -105,7 +121,7 @@ end
 
 # action chains
 When(/^I check radio button "(.*?)"$/) do |arg1|
-  raise unless choose(arg1)
+  raise "#{arg1} can't be checked" unless choose(arg1)
 end
 
 When(/^I enter as remote command this script in$/) do |multiline|
@@ -138,14 +154,13 @@ Then(/^I should see the CPU frequency of the client$/) do
   step %(I should see a "#{cpu.to_i / 1000} GHz" text)
 end
 
-Then(/^I should see the power is "([^"]*)"$/) do |arg1|
+Then(/^I should see the power is "([^"]*)"$/) do |status|
   within(:xpath, "//*[@for='powerStatus']/..") do
-    10.times do
-      break if has_content?(arg1)
-      find(:xpath, '//button[@value="Get status"]').click unless has_content?(arg1)
-      sleep 3
+    repeat_until_timeout(timeout: DEFAULT_TIMEOUT, message: "power is not #{status}") do
+      break if has_content?(status)
+      find(:xpath, '//button[@value="Get status"]').click
     end
-    raise unless has_content?(arg1)
+    raise "Power status #{status} not found" unless has_content?(status)
   end
 end
 
@@ -170,40 +185,6 @@ end
 
 And(/^I navigate to "([^"]*)" page$/) do |page|
   visit("https://#{$server.full_hostname}/#{page}")
-end
-
-# nagios steps
-
-When(/^I perform a nagios check patches for "([^"]*)"$/) do |host|
-  system_name = get_system_name(host)
-  command = "/usr/lib/nagios/plugins/check_suma_patches #{system_name} > /tmp/nagios.out"
-  $server.run(command, false, 600, 'root')
-end
-
-When(/^I perform a nagios check last event for "([^"]*)"$/) do |host|
-  system_name = get_system_name(host)
-  command = "/usr/lib/nagios/plugins/check_suma_lastevent #{system_name} > /tmp/nagios.out"
-  $server.run(command, false, 600, 'root')
-end
-
-When(/^I perform an invalid nagios check patches$/) do
-  command = '/usr/lib/nagios/plugins/check_suma_patches does.not.exist > /tmp/nagios.out'
-  $server.run(command, false, 600, 'root')
-end
-
-Then(/^I should see CRITICAL: 1 critical patch pending$/) do
-  command = 'grep "CRITICAL: 1 critical patch(es) pending" /tmp/nagios.out'
-  $server.run(command, true, 600, 'root')
-end
-
-Then(/^I should see Completed: OpenSCAP xccdf scanning scheduled by admin/) do
-  command = 'grep "Completed: OpenSCAP xccdf scanning scheduled by admin" /tmp/nagios.out'
-  $server.run(command, true, 600, 'root')
-end
-
-Then(/^I should see an unknown system message$/) do
-  command = 'grep -i "^Unknown system:.*does.not.exist" /tmp/nagios.out 2>&1'
-  $server.run(command, true, 600, 'root')
 end
 
 # systemspage and clobber
@@ -340,7 +321,8 @@ Then(/^"([^"]*)" should exist in the metadata for "([^"]*)"$/) do |file, host|
   node = $client
   arch, _code = node.run('uname -m')
   arch.chomp!
-  raise unless file_exists?(node, "#{client_raw_repodata_dir("test-channel-#{arch}")}/#{file}")
+  dir_file = client_raw_repodata_dir("test-channel-#{arch}")
+  raise "File #{dir_file}/#{file} not exist" unless file_exists?(node, "#{dir_file}/#{file}")
 end
 
 Then(/^I should have '([^']*)' in the patch metadata$/) do |text|
@@ -352,7 +334,7 @@ end
 
 # package steps
 Then(/^I should see package "([^"]*)"$/) do |package|
-  raise unless has_xpath?("//div[@class=\"table-responsive\"]/table/tbody/tr/td/a[contains(.,'#{package}')]")
+  step %(I should see a "#{package}" text)
 end
 
 Given(/^I am on the manage software channels page$/) do
@@ -383,35 +365,36 @@ end
 # setup wizard
 
 When(/^I make the credentials primary$/) do
-  raise unless find('i.fa-star-o').click
+  raise 'xpath: i.fa-star-o not found' unless find('i.fa-star-o').click
 end
 
 When(/^I delete the primary credentials$/) do
-  raise unless find('i.fa-trash-o', match: :first).click
+  raise 'xpath: i.fa-trash-o not found' unless find('i.fa-trash-o', match: :first).click
   step 'I click on "Delete"'
 end
 
 When(/^I view the primary subscription list$/) do
-  raise unless find('i.fa-th-list', match: :first).click
+  raise 'xpath: i.fa-th-list not found' unless find('i.fa-th-list', match: :first).click
 end
 
 When(/^I view the primary subscription list for SCC user$/) do
   within(:xpath, "//h3[contains(text(), 'SCC user')]/../..") do
-    raise unless find('i.fa-th-list', match: :first).click
+    raise 'xpath: i.fa-th-list not found' unless find('i.fa-th-list', match: :first).click
   end
 end
 
 And(/^I select "(.*?)" in the dropdown list of the architecture filter$/) do |architecture|
   # let the the select2js box filter open the hidden options
-  raise unless find(:xpath, "//div[@id='s2id_product-arch-filter']/ul/li/input").click
+  xpath_query = "//div[@id='s2id_product-arch-filter']/ul/li/input"
+  raise "xpath: #{xpath_query} not found" unless find(:xpath, xpath_query).click
   # select the desired option
-  raise unless find(:xpath, "//div[@id='select2-drop']/ul/li/div[contains(text(), '#{architecture}')]").click
+  raise "Architecture #{architecture} not found" unless find(:xpath, "//div[@id='select2-drop']/ul/li/div[contains(text(), '#{architecture}')]").click
 end
 
 When(/^I select "([^\"]*)" as a product$/) do |product|
   # click on the checkbox to select the product
   xpath = "//span[contains(text(), '#{product}')]/ancestor::div[contains(@class, 'product-details-wrapper')]/div/input[@type='checkbox']"
-  raise unless find(:xpath, xpath).set(true)
+  raise "xpath: #{xpath} not found" unless find(:xpath, xpath).set(true)
 end
 
 And(/^I open the sub-list of the product "(.*?)"$/) do |product|
@@ -419,60 +402,64 @@ And(/^I open the sub-list of the product "(.*?)"$/) do |product|
   # within(:xpath, xpath) do
   #   raise unless find('i.fa-angle-down').click
   # end
-  raise unless find(:xpath, xpath).click
+  raise "xpath: #{xpath} not found" unless find(:xpath, xpath).click
 end
 
 When(/^I select the addon "(.*?)"$/) do |addon|
   # click on the checkbox of the sublist to select the addon product
   xpath = "//span[contains(text(), '#{addon}')]/ancestor::div[contains(@class, 'product-details-wrapper')]/div/input[@type='checkbox']"
-  raise unless find(:xpath, xpath).set(true)
+  raise "xpath: #{xpath} not found" unless find(:xpath, xpath).set(true)
 end
 
 And(/^I should see that the "(.*?)" product is "(.*?)"$/) do |product, recommended|
   xpath = "//span[text()[normalize-space(.) = '#{product}'] and ./span/text() = '#{recommended}']"
-  raise unless find(:xpath, xpath)
+  raise "xpath: #{xpath} not found" unless find(:xpath, xpath)
 end
 
 Then(/^I should see the "(.*?)" selected$/) do |product|
   xpath = "//span[contains(text(), '#{product}')]/ancestor::div[contains(@class, 'product-details-wrapper')]"
   product_identifier = find(:xpath, xpath)['data-identifier']
-  raise unless has_checked_field?('checkbox-for-' + product_identifier)
+  raise "#{product_identifier} is not checked" unless has_checked_field?('checkbox-for-' + product_identifier)
+end
+
+And(/^I wait until I see "(.*?)" product has been added$/) do |product|
+  repeat_until_timeout(message: "Couldn't find the installed product #{product} in the list") do
+    xpath = "//span[contains(text(), '#{product}')]/ancestor::div[contains(@class, 'product-details-wrapper')]"
+    begin
+      product_wrapper = find(:xpath, xpath)
+      break if product_wrapper[:class].include?('product-installed')
+    rescue Capybara::ElementNotFound => e
+      puts e
+    end
+    sleep 1
+  end
 end
 
 When(/^I click the Add Product button$/) do
-  raise unless find('button#addProducts').click
+  raise "xpath: button#addProducts not found" unless find('button#addProducts').click
 end
 
 Then(/^the SLE12 products should be added$/) do
   output = sshcmd('echo -e "admin\nadmin\n" | mgr-sync list channels', ignore_err: true)
   sle_module = '[I] SLE-Module-Legacy12-Updates for x86_64 Legacy Module 12 x86_64 [sle-module-legacy12-updates-x86_64-sp2]'
   raise unless output[:stdout].include? '[I] SLES12-SP2-Pool for x86_64 SUSE Linux Enterprise Server 12 SP2 x86_64 [sles12-sp2-pool-x86_64]'
-  raise unless output[:stdout].include? '[I] SLE-Manager-Tools12-Pool for x86_64 SUSE Linux Enterprise Server 12 SP2 x86_64 [sle-manager-tools12-pool-x86_64-sp2]'
   raise unless output[:stdout].include? sle_module
 end
 
 Then(/^the SLE15 products should be added$/) do
   output = sshcmd('echo -e "admin\nadmin\n" | mgr-sync list channels', ignore_err: true)
   raise unless output[:stdout].include? '[I] SLE-Product-SLES15-Pool for x86_64 SUSE Linux Enterprise Server 15 x86_64 [sle-product-sles15-pool-x86_64]'
-  raise unless output[:stdout].include? '[I] SLE-Manager-Tools15-Pool for x86_64 SUSE Manager Tools 15 x86_64 [sle-manager-tools15-pool-x86_64]'
   raise unless output[:stdout].include? '[I] SLE-Module-Basesystem15-Updates for x86_64 Basesystem Module 15 x86_64 [sle-module-basesystem15-updates-x86_64]'
   raise unless output[:stdout].include? '[I] SLE-Module-Server-Applications15-Pool for x86_64 Server Applications Module 15 x86_64 [sle-module-server-applications15-pool-x86_64]'
 end
 
 When(/^I click the channel list of product "(.*?)"$/) do |product|
   xpath = "//span[contains(text(), '#{product}')]/ancestor::div[contains(@class, 'product-details-wrapper')]/div/a[contains(@class, 'showChannels')]"
-  raise unless find(:xpath, xpath).click
+  raise "xpath: #{xpath} not found" unless find(:xpath, xpath).click
 end
 
 Then(/^I see verification succeeded/) do
-  10.times do
-    begin
-      break if find('i.text-success')
-    rescue Capybara::ElementNotFound
-      sleep 3
-    end
-  end
-  find('i.text-success')
+  raise "xpath: i.text-success not found" unless find('i.text-success', wait: 100)
 end
 
 When(/^I enter the address of the HTTP proxy as "([^"]*)"/) do |hostname|
@@ -483,21 +470,21 @@ end
 
 Then(/^I should see a table line with "([^"]*)", "([^"]*)", "([^"]*)"$/) do |arg1, arg2, arg3|
   within(:xpath, "//div[@class=\"table-responsive\"]/table/tbody/tr[.//td[contains(.,'#{arg1}')]]") do
-    raise unless find_link(arg2)
-    raise unless find_link(arg3)
+    raise "Link #{arg2} not found" unless find_link(arg2)
+    raise "Link #{arg3} not found" unless find_link(arg3)
   end
 end
 
 Then(/^I should see a table line with "([^"]*)", "([^"]*)"$/) do |arg1, arg2|
   within(:xpath, "//div[@class=\"table-responsive\"]/table/tbody/tr[.//td[contains(.,'#{arg1}')]]") do
-    raise unless find_link(arg2)
+    raise "Link #{arg2} not found" unless find_link(arg2)
   end
 end
 
 Then(/^a table line should contain system "([^"]*)", "([^"]*)"$/) do |host, text|
   system_name = get_system_name(host)
   within(:xpath, "//div[@class=\"table-responsive\"]/table/tbody/tr[.//td[contains(.,'#{system_name}')]]") do
-    raise unless find_all(:xpath, "//td[contains(., '#{text}')]")
+    raise "Text #{text} not found" unless find_all(:xpath, "//td[contains(., '#{text}')]")
   end
 end
 
@@ -538,7 +525,28 @@ end
 When(/^I set the activation key "([^"]*)" in the bootstrap script on the server$/) do |key|
   $server.run("sed -i '/^ACTIVATION_KEYS=/c\\ACTIVATION_KEYS=#{key}' /srv/www/htdocs/pub/bootstrap/bootstrap.sh")
   output, code = $server.run('cat /srv/www/htdocs/pub/bootstrap/bootstrap.sh')
-  assert(output.include?(key))
+  raise "Key: #{key} not included" unless output.include? key
+end
+
+When(/^I create bootstrap script and set the activation key "([^"]*)" in the bootstrap script on the proxy$/) do |key|
+  $proxy.run('mgr-bootstrap')
+  $proxy.run("sed -i '/^ACTIVATION_KEYS=/c\\ACTIVATION_KEYS=#{key}' /srv/www/htdocs/pub/bootstrap/bootstrap.sh")
+  output, code = $proxy.run('cat /srv/www/htdocs/pub/bootstrap/bootstrap.sh')
+  raise "Key: #{key} not included" unless output.include? key
+end
+
+When(/^I bootstrap pxeboot minion via bootstrap script on the proxy$/) do
+  file = 'bootstrap-pxeboot.exp'
+  source = File.dirname(__FILE__) + '/../upload_files/' + file
+  dest = "/tmp/" + file
+  return_code = file_inject($proxy, source, dest)
+  raise 'File injection failed' unless return_code.zero?
+  ipv4 = net_prefix + ADDRESSES['pxeboot']
+  $proxy.run("expect -f /tmp/#{file} #{ipv4}")
+end
+
+When(/^I accept key of pxeboot minion in the Salt master$/) do
+  $server.run("salt-key -y --accept=pxeboot.example.org")
 end
 
 Then(/^file "([^"]*)" should contain "([^"]*)" on "([^"]*)"$/) do |filename, content, host|
@@ -560,90 +568,86 @@ end
 
 # Repository steps
 
-When(/^I enable SUSE Manager tools repository on "([^"]*)"$/) do |host|
+# Enable tools repositories (both stable and development)
+When(/^I enable SUSE Manager tools repositories on "([^"]*)"$/) do |host|
   node = get_target(host)
-  out, _code = node.run('zypper lr | grep SLE-Manager-Tools | cut -d"|" -f2')
-  # This enables tools development repository too if it exists
-  node.run("zypper mr --enable #{out.gsub(/\s/, ' ')}")
+  os_version, os_family = get_os_version(node)
+  if os_family =~ /^opensuse/ || os_family =~ /^sles/
+    repos, _code = node.run('zypper lr | grep "tools" | cut -d"|" -f2')
+    node.run("zypper mr --enable #{repos.gsub(/\s/, ' ')}")
+  elsif os_family =~ /^centos/
+    repos, _code = node.run('yum repolist disabled 2>/dev/null | grep "tools" | cut -d" " -f1')
+    repos.gsub(/\s/, ' ').split.each do |repo|
+      node.run("sed -i 's/enabled=.*/enabled=1/g' /etc/yum.repos.d/#{repo}.repo")
+    end
+  end
 end
 
 When(/^I enable repositories before installing Docker$/) do
+  os_version, os_family = get_os_version($minion)
+
   # Distribution Pool and Update
-  os_version = get_os_version($minion, false)
-  arch, _code = $minion.run('uname -m')
-  puts $minion.run("zypper mr --enable SLE-#{os_version}-#{arch.strip}-Pool")
-  puts $minion.run("zypper mr --enable SLE-#{os_version}-#{arch.strip}-Update")
+  repos = "os_pool_repo os_update_repo"
+  puts $minion.run("zypper mr --enable #{repos}")
 
   # Tools
-  out, _code = $minion.run('zypper lr | grep SLE-Manager-Tools | cut -d"|" -f2')
-  puts $minion.run("zypper mr --enable #{out.gsub(/\s/, ' ')}")
+  repos, _code = $minion.run('zypper lr | grep "tools" | cut -d"|" -f2')
+  puts $minion.run("zypper mr --enable #{repos.gsub(/\s/, ' ')}")
 
   # Container repositories
-  # They don't exist for SLES11 systems, only for SLES12 and upper systems
-  _out, code = $minion.run('pidof systemd', false)
-  if code.zero?
-    repos, _code = $minion.run('zypper lr | grep SLE-Manager-Tools | cut -d"|" -f2')
-    $minion.run("zypper mr --enable #{repos.gsub(/\s/, ' ')}")
-    repos, _code = $minion.run('zypper lr | grep SLE-Module-Containers | cut -d"|" -f2')
-    $minion.run("zypper mr --enable #{repos.gsub(/\s/, ' ')}")
+  unless os_family =~ /^opensuse/ || os_version =~ /^11/
+    repos = "containers_pool_repo containers_updates_repo"
+    puts $minion.run("zypper mr --enable #{repos}")
   end
 
   $minion.run('zypper -n --gpg-auto-import-keys ref')
 end
 
 When(/^I disable repositories after installing Docker$/) do
+  os_version, os_family = get_os_version($minion)
+
   # Distribution Pool and Update
-  os_version = get_os_version($minion, false)
-  arch, _code = $minion.run('uname -m')
-  puts $minion.run("zypper mr --disable SLE-#{os_version}-#{arch.strip}-Update")
-  puts $minion.run("zypper mr --disable SLE-#{os_version}-#{arch.strip}-Pool")
+  repos = "os_pool_repo os_update_repo"
+  puts $minion.run("zypper mr --disable #{repos}")
 
   # Tools
-  out, _code = $minion.run('zypper lr | grep SLE-Manager-Tools | cut -d"|" -f2')
-  puts $minion.run("zypper mr --disable #{out.gsub(/\s/, ' ')}")
+  repos, _code = $minion.run('zypper lr | grep "tools" | cut -d"|" -f2')
+  puts $minion.run("zypper mr --disable #{repos.gsub(/\s/, ' ')}")
 
   # Container repositories
-  # They don't exist for SLES11 systems, only for SLES12 and upper systems
-  _out, code = $minion.run('pidof systemd', false)
-  if code.zero?
-    repos, _code = $minion.run('zypper lr | grep SLE-Manager-Tools | cut -d"|" -f2')
-    $minion.run("zypper mr --disable #{repos.gsub(/\s/, ' ')}")
-    repos, _code = $minion.run('zypper lr | grep SLE-Module-Containers | cut -d"|" -f2')
-    $minion.run("zypper mr --disable #{repos.gsub(/\s/, ' ')}")
+  unless os_family =~ /^opensuse/ || os_version =~ /^11/
+    repos = "containers_pool_repo containers_updates_repo"
+    puts $minion.run("zypper mr --disable #{repos}")
   end
 
   $minion.run('zypper -n --gpg-auto-import-keys ref')
 end
 
 When(/^I enable repositories before installing branch server$/) do
+  os_version, os_family = get_os_version($proxy)
+
   # Distribution Pool and Update
-  os_version = get_os_version($proxy, false)
-  os_family, _code = $proxy.run('grep "ID" /etc/os-release')
-  if /opensuse/ =~ os_family
-    leap_version = get_os_version($proxy)
-    puts $proxy.run("zypper mr --enable openSUSE-Leap-#{leap_version}-Pool")
-    puts $proxy.run("zypper mr --enable openSUSE-Leap-#{leap_version}-Update")
-  else
-    arch, _code = $proxy.run('uname -m')
-    # take all repos that matche the following pattern "SLE.*#{os_version}-#{arch.strip}.*"
-    repos, _code = $proxy.run("zypper lr | grep SLE.*#{os_version}-#{arch.strip}.* | cut -d'|' -f2")
-    puts $proxy.run("zypper mr --enable #{repos.gsub(/\s/, ' ')}")
+  repos = "os_pool_repo os_update_repo"
+  puts $proxy.run("zypper mr --enable #{repos}")
+
+  # Server Applications Pool and Update
+  if os_family =~ /^sles/ && os_version =~ /^15/
+    repos = "module_server_applications_pool_repo module_server_applications_update_repo"
+    puts $proxy.run("zypper mr --enable #{repos}")
   end
 end
 
 When(/^I disable repositories after installing branch server$/) do
+  os_version, os_family = get_os_version($proxy)
+
   # Distribution Pool and Update
-  os_version = get_os_version($proxy, false)
-  os_family, _code = $proxy.run('grep "ID" /etc/os-release')
-  if /opensuse/ =~ os_family
-    leap_version = get_os_version($proxy)
-    puts $proxy.run("zypper mr --disable openSUSE-Leap-#{leap_version}-Pool")
-    puts $proxy.run("zypper mr --disable openSUSE-Leap-#{leap_version}-Update")
-  else
-    arch, _code = $proxy.run('uname -m')
-    # take all repos that matche the following pattern "SLE.*#{os_version}-#{arch.strip}.*"
-    repos, _code = $proxy.run("zypper lr | grep SLE.*#{os_version}-#{arch.strip}.* | cut -d'|' -f2")
-    puts $proxy.run("zypper mr --disable #{repos.gsub(/\s/, ' ')}")
+  repos = "os_pool_repo os_update_repo"
+  puts $proxy.run("zypper mr --disable #{repos}")
+
+  # Server Applications Pool and Update
+  if os_family =~ /^sles/ && os_version =~ /^15/
+    repos = "module_server_applications_pool_repo module_server_applications_update_repo"
+    puts $proxy.run("zypper mr --disable #{repos}")
   end
 end
 
@@ -667,6 +671,12 @@ end
 Then(/^I should see "([^"]*)" as link$/) do |host|
   system_name = get_system_name(host)
   step %(I should see a "#{system_name}" link)
+end
+
+Then(/^I should see a text describing the OS release$/) do
+  os_version, os_family = get_os_version($client)
+  release = os_family =~ /^opensuse/ ? 'openSUSE-release' : 'sles-release'
+  step %(I should see a "OS: #{release}" text)
 end
 
 Then(/^config-actions are enabled$/) do
@@ -694,7 +704,7 @@ end
 Then(/^I should see "([^"]*)" at least (\d+) minutes after I scheduled an action$/) do |text, minutes|
   # TODO is there a better way then page.all ?
   elements = page.all('div', text: text)
-  raise if elements.nil?
+  raise "Text #{text} not found in the page" if elements.nil?
   match = elements[0].text.match(/#{text}\s*(\d+\/\d+\/\d+ \d+:\d+:\d+ (AM|PM)+ [^\s]+)/)
   raise "No element found matching text '#{text}'" if match.nil?
   text_time = DateTime.strptime("#{match.captures[0]}", '%m/%d/%C %H:%M:%S %p %Z')
@@ -751,10 +761,10 @@ And(/^I should see the toggler "([^"]*)"$/) do |target_status|
   case target_status
   when 'enabled'
     xpath = "//i[contains(@class, 'fa-toggle-on')]"
-    raise unless find(:xpath, xpath)
+    raise "xpath: #{xpath} not found" unless find(:xpath, xpath)
   when 'disabled'
     xpath = "//i[contains(@class, 'fa-toggle-off')]"
-    raise unless find(:xpath, xpath)
+    raise "xpath: #{xpath} not found" unless find(:xpath, xpath)
   else
     raise 'Invalid target status.'
   end
@@ -764,10 +774,10 @@ And(/^I click on the "([^"]*)" toggler$/) do |target_status|
   case target_status
   when 'enabled'
     xpath = "//i[contains(@class, 'fa-toggle-on')]"
-    raise unless find(:xpath, xpath).click
+    raise "xpath: #{xpath} not found" unless find(:xpath, xpath).click
   when 'disabled'
     xpath = "//i[contains(@class, 'fa-toggle-off')]"
-    raise unless find(:xpath, xpath).click
+    raise "xpath: #{xpath} not found" unless find(:xpath, xpath).click
   else
     raise 'Invalid target status.'
   end
@@ -781,9 +791,9 @@ And(/^I should see the child channel "([^"]*)" "([^"]*)"$/) do |target_channel, 
 
   case target_status
   when 'selected'
-    raise unless has_checked_field?(channel_checkbox_id)
+    raise "#{channel_checkbox_id} is not selected" unless has_checked_field?(channel_checkbox_id)
   when 'unselected'
-    raise if has_checked_field?(channel_checkbox_id)
+    raise "#{channel_checkbox_id} is selected" if has_checked_field?(channel_checkbox_id)
   else
     raise 'Invalid target status.'
   end
@@ -799,9 +809,9 @@ And(/^I should see the child channel "([^"]*)" "([^"]*)" and "([^"]*)"$/) do |ta
 
   case target_status
   when 'selected'
-    raise unless has_checked_field?(channel_checkbox_id, disabled: true)
+    raise "#{channel_checkbox_id} is not selected" unless has_checked_field?(channel_checkbox_id, disabled: true)
   when 'unselected'
-    raise if has_checked_field?(channel_checkbox_id, disabled: true)
+    raise "#{channel_checkbox_id} is selected" if has_checked_field?(channel_checkbox_id, disabled: true)
   else
     raise 'Invalid target status.'
   end
@@ -813,7 +823,7 @@ And(/^I select the child channel "([^"]*)"$/) do |target_channel|
   xpath = "//label[contains(text(), '#{target_channel}')]"
   channel_checkbox_id = find(:xpath, xpath)['for']
 
-  raise if has_checked_field?(channel_checkbox_id)
+  raise "Field #{channel_checkbox_id} is checked" if has_checked_field?(channel_checkbox_id)
   find(:xpath, "//input[@id='#{channel_checkbox_id}']").click
 end
 
@@ -832,9 +842,9 @@ And(/^I should see "([^"]*)" "([^"]*)" for the "([^"]*)" channel$/) do |target_r
 
   case target_status
   when 'selected'
-    raise if find(:xpath, xpath)['checked'].nil?
+    raise "xpath: #{xpath} is not selected" if find(:xpath, xpath)['checked'].nil?
   when 'unselected'
-    raise unless find(:xpath, xpath)['checked'].nil?
+    raise "xpath: #{xpath} is selected" unless find(:xpath, xpath)['checked'].nil?
   end
 end
 
@@ -845,17 +855,16 @@ And(/^the notification badge and the table should count the same amount of messa
 
   if table_notifications_count == '0'
     puts "All notification-messages are read, I expect no notification badge"
-    raise if page.has_xpath?(badge_xpath)
+    raise "xpath: #{badge_xpath} found" if all(:xpath, badge_xpath).any?
   else
     puts "Unread notification-messages count = " + table_notifications_count
-    raise unless find(:xpath, badge_xpath)
+    raise "xpath: #{badge_xpath} not found" unless find(:xpath, badge_xpath)
   end
 end
 
 And(/^I wait until radio button "([^"]*)" is checked, refreshing the page$/) do |arg1|
   repeat_until_timeout(message: "Couldn't find checked radio button #{arg1}") do
     break if has_checked_field?(arg1)
-    sleep 1
     page.evaluate_script 'window.location.reload()'
   end
 end
@@ -865,8 +874,8 @@ Then(/^I check the first notification message$/) do
     puts "There are no notification messages, nothing to do then"
   else
     within(:xpath, '//section') do
-      row = first(:xpath, "//div[@class=\"table-responsive\"]/table/tbody/tr[.//td]")
-      row.first(:xpath, './/input[@type="checkbox"]').set(true)
+      row = find(:xpath, "//div[@class=\"table-responsive\"]/table/tbody/tr[.//td]", match: :first)
+      row.find(:xpath, './/input[@type="checkbox"]', match: :first).set(true)
     end
   end
 end
@@ -874,7 +883,7 @@ end
 And(/^I delete it via the "([^"]*)" button$/) do |target_button|
   if count_table_items != '0'
     xpath_for_delete_button = "//button[contains(text(), '#{target_button}')]"
-    raise unless find(:xpath, xpath_for_delete_button).click
+    raise "xpath: #{xpath_for_delete_button} not found" unless find(:xpath, xpath_for_delete_button).click
 
     step %(I wait until I see "1 message deleted successfully." text)
   end
@@ -883,7 +892,7 @@ end
 And(/^I mark as read it via the "([^"]*)" button$/) do |target_button|
   if count_table_items != '0'
     xpath_for_read_button = "//button[contains(text(), '#{target_button}')]"
-    raise unless find(:xpath, xpath_for_read_button).click
+    raise "xpath: #{xpath_for_read_button} not found" unless find(:xpath, xpath_for_read_button).click
 
     step %(I wait until I see "1 message read status updated successfully." text)
   end
@@ -945,5 +954,23 @@ When(/^I wait until all events in history are completed$/) do
     end
     break unless pickedup
     sleep 1
+  end
+end
+
+Then(/^I should see a list item with text "([^"]*)" and bullet with "([^"]*)" icon$/) do |text, class_name|
+  item_xpath = "//ul/li[text()='#{text}']/i[contains(@class, 'text-#{class_name}')]"
+  find(:xpath, item_xpath)
+end
+
+When(/^I enter the SCC credentials$/) do
+  user = ENV['scc_credentials'].split('|')[0]
+  password = ENV['scc_credentials'].split('|')[1]
+  unless page.has_content?(user)
+    steps %(
+      And I want to add a new credential
+      And I enter "#{user}" as "edit-user"
+      And I enter "#{password}" as "edit-password"
+      And I click on "Save"
+    )
   end
 end

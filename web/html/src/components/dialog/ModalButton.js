@@ -1,15 +1,13 @@
 /* eslint-disable */
-"use strict";
-
-const PropTypes = require('prop-types');
-const React = require("react");
-const Button = require("../buttons").Button;
-const showDialog = require("./util").showDialog;
+import PropTypes from 'prop-types';
+import React from "react";
+import { Button } from "../buttons";
+import { showDialog } from "./util";
 
 /**
  * Button to launch a modal dialog
  */
-function ModalButton(props) {
+export function ModalButton(props) {
     return (
         <Button
             id={props.id}
@@ -36,8 +34,4 @@ ModalButton.propTypes = {
     disabled: PropTypes.bool,
     item: PropTypes.object,
     onClick: PropTypes.func
-};
-
-module.exports = {
-    ModalButton
 };

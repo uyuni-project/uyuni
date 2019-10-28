@@ -5,18 +5,19 @@ include /templates/common.jade
 #content-management-project
 
 script(type='text/javascript').
-    const csrfToken = "#{csrf_token}";
+    window.csrfToken = "#{csrf_token}";
 
 div#init_data_project(style="display: none")
     | #{projectToEdit}
 
-script(src='/javascript/manager/content-management/project/project.renderer.bundle.js?cb=#{webVersion}')
-
 script(type='text/javascript').
-    pageRenderers.contentManagement.project.renderer(
-        'content-management-project',
-         {
-            project: document.getElementById('init_data_project').textContent,
-            wasFreshlyCreatedMessage: "#{wasFreshlyCreatedMessage}"
-         }
-    );
+    spaImportReactPage('content-management/project')
+        .then(function(module) {
+            module.renderer(
+                'content-management-project',
+                 {
+                    project: document.getElementById('init_data_project').textContent,
+                    wasFreshlyCreatedMessage: "#{wasFreshlyCreatedMessage}"
+                 }
+            );
+        });

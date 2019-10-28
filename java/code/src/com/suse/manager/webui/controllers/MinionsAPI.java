@@ -20,6 +20,9 @@ import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.xmlrpc.PermissionCheckFailureException;
+
+import com.suse.manager.utils.SaltKeyUtils;
 import com.suse.manager.webui.controllers.utils.ContactMethodUtil;
 import com.suse.manager.webui.controllers.utils.RegularMinionBootstrapper;
 import com.suse.manager.webui.controllers.utils.SSHMinionBootstrapper;
@@ -130,34 +133,11 @@ public class MinionsAPI {
     public static String delete(Request request, Response response, User user) {
         String target = request.params("target");
 
-        //Note: since salt only allows globs we have to do our own strict matching
-        Key.Names keys = SALT_SERVICE.getKeys();
-        boolean exists = Stream.concat(
-                Stream.concat(
-                        keys.getDeniedMinions().stream(),
-                        keys.getMinions().stream()),
-                Stream.concat(
-                        keys.getUnacceptedMinions().stream(),
-                        keys.getRejectedMinions().stream())
-        ).anyMatch(target::equals);
-
-        if (exists) {
-            return MinionServerFactory.findByMinionId(target).map(minionServer -> {
-                if (minionServer.getOrg().equals(user.getOrg())) {
-                    SALT_SERVICE.deleteKey(target);
-                    return json(response, true);
-                }
-                else {
-                    return json(response, false);
-                }
-            }).orElseGet(() -> {
-                SALT_SERVICE.deleteKey(target);
-                return json(response, true);
-            });
+        // Is org admin checked somewhere else ?
+        if (!user.hasRole(RoleFactory.ORG_ADMIN)) {
+            throw new PermissionCheckFailureException(RoleFactory.ORG_ADMIN);
         }
-        else {
-            return json(response, false);
-        }
+        return json(response, SaltKeyUtils.deleteSaltKey(user, target));
     }
 
     /**

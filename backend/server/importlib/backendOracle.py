@@ -147,7 +147,7 @@ class OracleBackend(Backend):
               fields={
                   'id': DBint(),
                   'name': DBstring(128),
-                  'text': DBstring(3000),
+                  'text': DBblob(),
                   'time': DBdateTime()
               },
               ),
@@ -630,6 +630,23 @@ class OracleBackend(Backend):
             },
             pk          = ['package_id', 'eula_id'],
             attribute   = 'eulas',
+        ),
+        Table('rhnPackageExtraTagKey',
+              fields={
+                  'id'      : DBint(),
+                  'name'    : DBstring(256),
+              },
+              pk=['id'],
+              attribute='extra_tags',
+              ),
+        Table('rhnPackageExtraTag',
+            fields={
+              'package_id'  : DBint(),
+              'key_id'      : DBint(),
+              'value'       : DBstring(2048),
+            },
+            pk=['package_id', 'key_id'],
+            attribute='extra_tags',
         ),
     )
 

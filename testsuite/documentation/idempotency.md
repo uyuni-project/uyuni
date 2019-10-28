@@ -39,8 +39,8 @@ Since each features need to be idempotent, you need to:
 
 Basically, we use 2 repositories for test packages:
 
-1) `Devel_Galaxy_BuildRepo`: contains lower version of packages, and is disabled by default;
-2) `Test channel`: contains patches with higher version of packages, and is enabled. It is created by core features.
+1) `Test-Packages_Pool`: contains lower version of packages, and is disabled by default;
+2) `Test-Packages_Updates`: contains patches with higher version of packages, and is enabled. The associated channels are created by core features.
 
 Typical workflow for patches test:
 
@@ -60,6 +60,12 @@ Take a look at this feature: ``features/trad_check_patches_install.feature``
 The Salt minion must always be ready to build containers and OS images.
 
 Always re-enable these entitlements when you delete the minion and re-register it.
+
+
+## Systems selected
+
+At the end of each feature we need to assure that no systems are selected.
+We can do it using the "Clear" button, in the top-right options.
 
 
 ## Other

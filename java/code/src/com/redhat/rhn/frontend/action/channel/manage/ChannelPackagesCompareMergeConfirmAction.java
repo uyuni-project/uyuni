@@ -77,6 +77,7 @@ public class ChannelPackagesCompareMergeConfirmAction extends ChannelPackagesCom
 
         request.setAttribute(RequestContext.CID, chan.getId());
         request.setAttribute(CHANNEL_NAME, chan.getName());
+        request.setAttribute(ListTagHelper.PARENT_URL, request.getRequestURI() + "?" + request.getQueryString());
         request.setAttribute(ListTagHelper.PARENT_URL, request.getRequestURI());
         request.setAttribute(RequestContext.PAGE_LIST, result);
 

@@ -1,10 +1,12 @@
 /* eslint-disable */
 "use strict";
+import SpaRenderer from "../../../core/spa/spa-renderer";
+
 const React = require("react");
 const ReactDOM = require("react-dom");
 
 const Link = (props) =>
-  <a href={props.url} className={props.cssClass} target={props.target} title={props.title}>
+  <a href={props.url} className={props.cssClass  + " js-spa"} target={props.target} title={props.title}>
     {props.responsiveLabel}
     {props.label}
   </a>
@@ -47,9 +49,9 @@ class Element extends React.Component {
 
   UNSAFE_componentWillReceiveProps(nextProps) {
     this.setState({
-      open: nextProps.element.open && !nextProps.forceCollapse,
+      open: nextProps.element.active && !nextProps.forceCollapse,
       visiblityForcedByParent: nextProps.visiblityForcedByParent
-    });
+    })
   }
 
   isCurrentVisible = (element, search) => {
@@ -148,6 +150,10 @@ class Nav extends React.Component {
     this.setState({search: '', forceCollapse: true});
   };
 
+  onSPAEndNavigation = () => {
+    this.setState({search: '', forceCollapse: false});
+  }
+
   render() {
     const isSearchActive = this.state.search != null && this.state.search.length > 0;
     return (
@@ -170,7 +176,7 @@ class Nav extends React.Component {
   }
 }
 
-ReactDOM.render(
+SpaRenderer.renderGlobalReact(
   <Nav />,
   document.getElementById('nav')
 );
@@ -178,6 +184,10 @@ ReactDOM.render(
 
 class Breadcrumb extends React.Component {
   componentDidMount() {
+  }
+
+  onSPAEndNavigation() {
+    this.forceUpdate();
   }
 
   render() {
@@ -191,15 +201,15 @@ class Breadcrumb extends React.Component {
     const product_name_link =
       _IS_UYUNI ?
         <Link key='home' cssClass="navbar-brand" url='/'
-            responsiveLabel={<i className='fa fa-home' title="Uyuni homepage"></i>}
-            label={<span>Uyuni</span>}
+            responsiveLabel={<i className='fa fa-home' title={t("Uyuni homepage")}></i>}
+            label={<span>{t("Uyuni")}</span>}
             target=''
             title={t("Uyuni homepage")}
           />
         :
         <Link key='home' cssClass="navbar-brand" url='/'
-          responsiveLabel={<i className='fa fa-home' title="SUSE Manager homepage"></i>}
-          label={<span>SUSE<i className="fa fa-registered"></i>Manager</span>}
+          responsiveLabel={<i className='fa fa-home' title={t("SUSE Manager homepage")}></i>}
+          label={<span>{t("SUSE")}<i className="fa fa-registered"></i>{t("Manager")}</span>}
           target=''
           title={t("SUSE Manager homepage")}
         />
@@ -223,7 +233,7 @@ class Breadcrumb extends React.Component {
   }
 }
 
-ReactDOM.render(
+SpaRenderer.renderGlobalReact(
   <Breadcrumb />,
   document.getElementById('breadcrumb')
 );

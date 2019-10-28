@@ -38,11 +38,11 @@ const CreateProject = () => {
                   onAction(project, "create")
                     .then(
                       () => {
-                        window.location.href = `/rhn/manager/contentmanagement/project/${project.properties.label || ''}`
+                        window.pageRenderers.spaengine.navigate(`/rhn/manager/contentmanagement/project/${project.properties.label || ''}`);
                       }
                     )
                     .catch((error) => {
-                      showErrorToastr(error);
+                      showErrorToastr(error, {autoHide: false});
                     })
                 }
               />

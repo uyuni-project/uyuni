@@ -16,6 +16,7 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
         <property name="kickstartHost" type="string" column="kickstart_host"/>
         <property name="staticDevice" type="string" column="static_device"/>
         <property name="cobblerSystemName" type="string" column="cobbler_system_name"/>
+        <property name="upgrade" column="upgrade" type="yes_no" not-null="true"/>
 
                 <many-to-one name="parentAction" column="action_id"
                         class="com.redhat.rhn.domain.action.Action" outer-join="true"

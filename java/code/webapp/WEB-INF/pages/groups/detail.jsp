@@ -63,7 +63,7 @@
       </c:if>
       <rhn:require acl="user_role(system_group_admin)">
       <br />
-      <a href="/rhn/groups/AdminList.do?sgid=${id}"><bean:message key="systemgroup.details.manageadmins"/></a>
+      <a href="/rhn/groups/AdminList.do?sgid=${id}" class="js-spa"><bean:message key="systemgroup.details.manageadmins"/></a>
       </rhn:require>
     </td>
   </tr>
@@ -71,7 +71,7 @@
     <th><bean:message key="systemgroup.details.systems"/></th>
     <td>
       <c:if test="${system_count > 0}">
-        <a href="/rhn/groups/ListRemoveSystems.do?sgid=${id}">
+        <a href="/rhn/groups/ListRemoveSystems.do?sgid=${id}" class="js-spa">
           <bean:message key="systemgroup.details.systems.systems" arg0="${system_count}"/>
         </a>
       </c:if>
@@ -103,7 +103,7 @@
 <div class="panel-heading">
   <h3><bean:message key="systemgroup.details.properties"/>
   <rhn:require acl="user_role(system_group_admin)">
-    (<a href="/rhn/groups/EditGroup.do?sgid=${id}"><bean:message key="systemgroup.details.editproperties"/></a>)
+    (<a href="/rhn/groups/EditGroup.do?sgid=${id}" class="js-spa"><bean:message key="systemgroup.details.editproperties"/></a>)
   </rhn:require></h3>
 </div>
 

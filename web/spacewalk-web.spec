@@ -32,12 +32,14 @@ Name:           spacewalk-web
 Summary:        Spacewalk Web site - Perl modules
 License:        GPL-2.0-only
 Group:          Applications/Internet
-Version:        4.0.11
+Version:        4.1.0
 Release:        1%{?dist}
 Url:            https://github.com/uyuni-project/uyuni
 Source0:        https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildArch:      noarch
+Requires(pre):  uyuni-base-common
+BuildRequires:  uyuni-base-common
 BuildRequires:  perl(ExtUtils::MakeMaker)
 %if 0%{?suse_version}
 BuildRequires:  apache2
@@ -54,7 +56,7 @@ but it does generate a number of sub-packages.
 
 %package -n susemanager-web-libs
 Summary:        Vendor bundles for spacewalk-web
-License:		BSD-3-Clause and LGPL-3.0-or-later and MIT and MPL-2.0
+License:		0BSD and BSD-3-Clause and LGPL-3.0-or-later and MIT and MPL-2.0
 Group:          Applications/Internet
 
 BuildArch:      noarch
@@ -170,6 +172,7 @@ ln -sf %{nodejs_sitelib} .
 BUILD_VALIDATION=false node build.js
 popd
 %endif
+sed -i -r "s/^(web.buildtimestamp *= *)_OBS_BUILD_TIMESTAMP_$/\1$(date +"%Y%m%d%H%M%S")/" conf/rhn_web.conf
 
 %install
 make -C modules install DESTDIR=$RPM_BUILD_ROOT PERLARGS="INSTALLDIRS=vendor" %{?_smp_mflags}
@@ -221,7 +224,6 @@ cp html/src/dist/vendors/vendors.bundle.js.LICENSE %{buildroot}/srv/www/htdocs/v
 %files -n spacewalk-base-minimal-config
 %defattr(644,root,root,755)
 %dir %{_prefix}/share/rhn
-%dir %attr(755,root,%{apache_group}) %{_prefix}/share/rhn/config-defaults
 %attr(644,root,%{apache_group}) %{_prefix}/share/rhn/config-defaults/rhn_web.conf
 
 %files -n spacewalk-dobby
@@ -234,7 +236,6 @@ cp html/src/dist/vendors/vendors.bundle.js.LICENSE %{buildroot}/srv/www/htdocs/v
 %config %{_sysconfdir}/sysconfig/SuSEfirewall2.d/services/susemanager-database
 %{perl_vendorlib}/Dobby/
 %dir %{_prefix}/share/rhn
-%dir %attr(755,root,%{apache_group}) %{_prefix}/share/rhn/config-defaults
 
 %files -n spacewalk-html
 %defattr(644,root,root,755)

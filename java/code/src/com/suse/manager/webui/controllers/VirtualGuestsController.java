@@ -28,6 +28,7 @@ import com.redhat.rhn.domain.action.ActionChain;
 import com.redhat.rhn.domain.action.ActionChainFactory;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.ActionType;
+import com.redhat.rhn.domain.action.virtualization.BaseVirtualizationAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationCreateAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationCreateActionDiskDetails;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationCreateActionInterfaceDetails;
@@ -155,6 +156,7 @@ public class VirtualGuestsController {
 
         /* For the rest of the template */
         data.put("salt_entitled", server.hasEntitlement(EntitlementManager.SALT));
+        data.put("foreign_entitled", server.hasEntitlement(EntitlementManager.FOREIGN));
         data.put("is_admin", user.hasRole(RoleFactory.ORG_ADMIN));
 
         return new ModelAndView(data, "templates/virtualization/guests/show.jade");
@@ -328,7 +330,11 @@ public class VirtualGuestsController {
                                                               ((VirtualGuestSetterActionJson)data).getValue());
                         }
                         else {
-                            result = triggerGuestAction(host, guest, type, user, new HashMap<>());
+                            Map<String, String> context = new HashMap<>();
+                            if (data.getForce() != null) {
+                                context.put(BaseVirtualizationAction.FORCE_STRING, Boolean.toString(data.getForce()));
+                            }
+                            result = triggerGuestAction(host, guest, type, user, context);
                         }
                     }
                     String status = result != null ? result : "Failed";
@@ -591,6 +597,10 @@ public class VirtualGuestsController {
                                              ActionType actionType,
                                              User user,
                                              Map<String, String> context) {
+        if (host.hasEntitlement(EntitlementManager.FOREIGN)) {
+            LOG.warn("Foreign systems don't support virtual guest actions");
+            return null;
+        }
         // Traditionally registered systems aren't able to really delete the VM: fail
         // the delete action for them
         if (host.hasEntitlement(EntitlementManager.MANAGEMENT) &&

@@ -22,7 +22,6 @@ import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.errata.ErrataFactory;
-import com.redhat.rhn.domain.formula.FormulaFactory;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.domain.role.RoleFactory;
@@ -247,6 +246,27 @@ public class Access extends BaseHandler {
     }
 
     /**
+     * Check if any system has a Foreign entitlement.
+     * @param ctx Context map to pass in.
+     * @param params Parameters to use to fetch from context.
+     * @return True if system has foreign entitlement, false otherwise.
+     */
+    public boolean aclSystemHasForeignEntitlement(Object ctx, String[] params) {
+        @SuppressWarnings("unchecked")
+        Map<String, Object> map = (Map<String, Object>) ctx;
+        Long sid = getAsLong(map.get("sid"));
+        boolean ret = false;
+        if (sid != null) {
+            User user = (User) map.get("user");
+            Server server = SystemManager.lookupByIdAndUser(sid, user);
+            if (server != null) {
+                ret = server.hasEntitlement(EntitlementManager.FOREIGN);
+            }
+        }
+        return ret;
+    }
+
+    /**
      * Check if a system is a {@link com.redhat.rhn.domain.server.MinionServer} which has a bootstrap entitlement
      * @param ctx Context map to pass in.
      * @param params Parameters to use to fetch from context.
@@ -293,16 +313,6 @@ public class Access extends BaseHandler {
                     Arrays.asList("enterprise_entitled")) > 0;
         }
         return ret;
-    }
-
-    /**
-     * Check if there is any Salt formulas installed.
-     * @param ctx Context map to pass in.
-     * @param params Parameters to use to fetch from context.
-     * @return True if any Salt formulas are installed, false otherwise.
-     */
-    public boolean aclSaltFormulasInstalled(Object ctx, String[] params) {
-        return !FormulaFactory.listFormulaNames().isEmpty();
     }
 
     /**

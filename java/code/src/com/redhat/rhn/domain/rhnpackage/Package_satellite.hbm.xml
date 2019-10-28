@@ -103,7 +103,12 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
                 class="com.redhat.rhn.domain.rhnpackage.PackageObsoletes" />
         </set>
 
-
+        <map name="extraTags"
+             table="rhnPackageExtraTag" lazy="true">
+            <key column="package_id"/>
+            <map-key-many-to-many column="key_id" class="com.redhat.rhn.domain.rhnpackage.PackageExtraTagsKeys"/>
+            <element column="value" type="string" not-null="true"/>
+        </map>
 
         <many-to-one name="checksum" class="com.redhat.rhn.domain.common.Checksum"
                      column="checksum_id" />
@@ -170,12 +175,13 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
         ]]>
     </query>
 
-    <sql-query name="Package.lookupByChannelLabelNevra">
+    <sql-query name="Package.lookupByChannelLabelNevraCs">
         <![CDATA[ select {p.*}
                 from
                   rhnPackageArch pa,
                   rhnChannelPackage cp,
                   rhnPackage p,
+                  rhnChecksum cs,
                   rhnPackageEVR pe,
                   rhnPackageName pn,
                   rhnChannel c
@@ -190,6 +196,8 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
             and p.id = cp.package_id
             and p.evr_id = pe.id
             and p.package_arch_id = pa.id
+            and p.checksum_id = cs.id
+            and (:checksum is null or cs.checksum = :checksum)
         ]]>
         <return alias="p" class="com.redhat.rhn.domain.rhnpackage.Package" />
     </sql-query>

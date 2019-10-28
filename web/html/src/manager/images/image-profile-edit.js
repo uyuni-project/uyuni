@@ -14,6 +14,7 @@ const { Select } = require('components/input/Select');
 const { Text } = require('components/input/Text');
 const Validation = require("components/validation");
 const Utils = require("utils/functions").Utils;
+const SpaRenderer  = require("core/spa/spa-renderer").default;
 
 /* global profileId, customDataKeys, activationKeys */
 
@@ -23,7 +24,9 @@ const typeMap = {
 };
 
 const msgMap = {
-  "invalid_type": "Invalid image type."
+  "invalid_type": "Invalid image type.",
+  "activation_key_required": "Please give an activation key",
+  "": "There was an error."
 };
 
 class CreateImageProfile extends React.Component {
@@ -166,6 +169,8 @@ class CreateImageProfile extends React.Component {
 
     Object.assign(model, {customData: this.state.customData});
 
+    model.label = model.label.trim();
+    model.path = model.path.trim();
     return Network.post(
       "/rhn/manager/api/cm/imageprofiles/update/" + profileId,
       JSON.stringify(model),
@@ -190,6 +195,8 @@ class CreateImageProfile extends React.Component {
 
     Object.assign(model, {customData: this.state.customData});
 
+    model.label = model.label.trim();
+    model.path = model.path.trim();
     return Network.post(
       "/rhn/manager/api/cm/imageprofiles/create",
       JSON.stringify(model),
@@ -304,10 +311,10 @@ class CreateImageProfile extends React.Component {
     );
 
     return (
-      <Select name="activationKey" label={t("Activation Key")}
+      <Select name="activationKey" label={t("Activation Key")} invalidHint={t("Activation key is required for kiwi images.")}
         onChange={this.handleTokenChange} labelClass="col-md-3" divClass="col-md-6"
         hint={hint} required={isRequired}>
-        <option key="0" value="">None</option>
+        <option key="0" value="">{t("None")}</option>
         {
           activationKeys.sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase())).map(k =>
             <option key={k} value={k}>{k}</option>
@@ -403,7 +410,7 @@ class CreateImageProfile extends React.Component {
   }
 }
 
-ReactDOM.render(
+export const renderer = () => SpaRenderer.renderNavigationReact(
   <CreateImageProfile />,
   document.getElementById('image-profile-edit')
 )
