@@ -36,13 +36,12 @@ def test_cpusockets_dmidecode():
 
     sample = mockery.get_test_data('dmidecode.sample')
     cpuinfo.log = MagicMock()
-    with patch('salt.utils.path.which_bin', MagicMock(return_value="/bogus/path")):
-        with patch('salt.utils.which_bin', MagicMock(return_value="/bogus/path")):
-            with patch.dict(cpuinfo.__salt__, {'cmd.run_all': MagicMock(return_value={'retcode': 0, 'stdout': sample})}):
-                out = cpuinfo._dmidecode([])
-                assert type(out) == dict
-                assert 'cpusockets' in out
-                assert out['cpusockets'] == 1
+    with patch('src.modules.udevdb.which_bin', MagicMock(return_value="/bogus/path")):
+        with patch.dict(cpuinfo.__salt__, {'cmd.run_all': MagicMock(return_value={'retcode': 0, 'stdout': sample})}):
+            out = cpuinfo._dmidecode([])
+            assert type(out) == dict
+            assert 'cpusockets' in out
+            assert out['cpusockets'] == 1
 
 
 def test_cpusockets_parse_cpuinfo():
@@ -74,13 +73,12 @@ def test_cpusockets_lscpu():
     '''
     for fn_smpl in ['lscpu.ppc64le.sample', 'lscpu.s390.sample', 'lscpu.sample']:
         cpuinfo.log = MagicMock()
-        with patch('salt.utils.path.which_bin', MagicMock(return_value="/bogus/path")):
-            with patch('salt.utils.which_bin', MagicMock(return_value="/bogus/path")):
-                with patch.dict(cpuinfo.__salt__,
-                                {'cmd.run_all': MagicMock(return_value={'retcode': 0,
-                                                                        'stdout': mockery.get_test_data(fn_smpl)})}):
-                    out = cpuinfo._lscpu([])
-                    assert type(out) == dict
-                    assert 'cpusockets' in out
-                    assert out['cpusockets'] == 1
+        with patch('src.modules.udevdb.which_bin', MagicMock(return_value="/bogus/path")):
+            with patch.dict(cpuinfo.__salt__,
+                            {'cmd.run_all': MagicMock(return_value={'retcode': 0,
+                                                                    'stdout': mockery.get_test_data(fn_smpl)})}):
+                out = cpuinfo._lscpu([])
+                assert type(out) == dict
+                assert 'cpusockets' in out
+                assert out['cpusockets'] == 1
 
