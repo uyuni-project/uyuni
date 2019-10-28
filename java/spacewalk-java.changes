@@ -1,3 +1,4 @@
+- Consider timeout value in salt remote script (bsc#1153181)
 - rename SUSE Products to just Products in UI
 - Fix: regression with Ubuntu version compare (bsc#1150113)
 - Add formula metadata to form data response
