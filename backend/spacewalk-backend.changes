@@ -1,3 +1,74 @@
+- fix problems with Package Hub repos having multiple rpms with same NEVRA
+  but different checksums (bsc#1146683)
+
+-------------------------------------------------------------------
+Thu Oct 17 13:28:44 CEST 2019 - jgonzalez@suse.com
+
+- version 4.0.27-1
+- fix re-registration with re-activation key (bsc#1154275)
+
+-------------------------------------------------------------------
+Thu Oct 17 12:19:52 CEST 2019 - jgonzalez@suse.com
+
+- version 4.0.26-1
+- Change the default value of taskomatic maxmemory to 4GB
+- Add basic support for importing modular repositories
+- Import additional fields for Deb packages
+- Add script to update additional fields in the DB for existing Deb packages
+- use active values for diskchecker mails
+- parse restart_suggested flag from patches and set it as keywords (bsc#1151467)
+- Improve error message when deleting channel that's in a content lifecycle project (bsc#1145769)
+- Prevent "reposync" crash when handling metadata on RPM repos (bsc#1138358)
+- Do not show expected WARNING messages from "c_rehash"
+- fix misspelling in spacewalk-repo-sync (bsc#1149633)
+- remove credentials also from potential rhn.conf backup files in spacewalk-debug (bsc#1146419)
+- Do not crash 'rhn-satellite-exporter' with ModuleNotFound error (bsc#1146869)
+- spacewalk-remove-channel check that channel doesn't have cloned channels before deleting it (bsc#1138454)
+- Fix broken spacewalk-data-fsck utility
+- Add '--latest' support for reposync on DEB based repositories
+- Do not try to download RPMs from the unresolved mirrorlist URL
+- Fix encoding issues with DB bytes values (bsc#1144300)
+- Fix import of rhnAuthPAM to avoid issues when using rhnpush.
+- Avoid traceback on mgr-inter-sync when there are problems
+  with cache of packages (bsc#1143016)
+
+-------------------------------------------------------------------
+Tue Aug 27 23:50:37 CEST 2019 - jgonzalez@suse.com
+
+- version 4.0.25-1
+- Don't skip Deb package tags on package import (bsc#1130040)
+
+-------------------------------------------------------------------
+Tue Aug 27 08:48:21 CEST 2019 - jgonzalez@suse.com
+
+- version 4.0.24-1
+- For backend-libs subpackages, exclude files for the server
+  (already part of spacewalk-backend) to avoid conflicts (bsc#1148125)
+- prevent duplicate key violates on repo-sync with long changelog
+  entries (bsc#1144889)
+
+-------------------------------------------------------------------
+Tue Jul 30 14:52:05 CEST 2019 - jgonzalez@suse.com
+
+- version 4.0.23-1
+- do not overwrite comps and module data with older versions
+- fix issue with "dists" keyword in url hostname
+- import packages from all collections of a patch not just first one
+- Ensure bytes type when using hashlib to avoid traceback
+  on XMLRPC call to "registration.register_osad" (bsc#1138822)
+
+-------------------------------------------------------------------
+Thu Jun 20 10:28:20 CEST 2019 - jgonzalez@suse.com
+
+- version 4.0.22-1
+- Do not duplicate "http://" protocol when using proxies with "deb"
+  repositories (bsc#1138313)
+
+-------------------------------------------------------------------
+Thu Jun 20 10:09:38 CEST 2019 - jgonzalez@suse.com
+
+- version 4.0.21-1
+- Fix reposync when dealing with RedHat CDN (bsc#1138358)
 - Fix for CVE-2019-10136. An attacker with a valid, but expired,
   authenticated set of headers could move some digits around,
   artificially extending the session validity without modifying

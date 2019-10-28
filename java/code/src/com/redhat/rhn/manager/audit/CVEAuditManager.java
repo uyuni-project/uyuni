@@ -23,11 +23,13 @@ import com.redhat.rhn.common.db.datasource.WriteMode;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelArch;
+import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.image.ImageInfo;
 import com.redhat.rhn.domain.image.ImageInfoFactory;
 import com.redhat.rhn.domain.product.CachingSUSEProductFactory;
 import com.redhat.rhn.domain.product.SUSEProduct;
 import com.redhat.rhn.domain.product.SUSEProductFactory;
+import com.redhat.rhn.domain.rhnpackage.PackageEvr;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.user.User;
@@ -611,6 +613,7 @@ public class CVEAuditManager {
         private final String errataAdvisory;
         private final Optional<Long> packageId;
         private final Optional<String> packageName;
+        private final Optional<PackageEvr> packageEvr;
         private final boolean packageInstalled;
         private final Optional<Long> channelId;
         private final String channelName;
@@ -636,9 +639,11 @@ public class CVEAuditManager {
         CVEPatchStatus(long systemIdIn, String systemNameIn,
                 Optional<Long> errataIdIn, String errataAdvisoryIn,
                 Optional<Long> packageIdIn, Optional<String> packageNameIn,
-                boolean packageInstalledIn, Optional<Long> channelIdIn,
-                String channelNameIn, String channelLabelIn,
-                boolean channelAssignedIn, Optional<Long> channelRankIn) {
+                Optional<String> packageEpochIn, Optional<String> packageVersionIn,
+                Optional<String> packageReleaseIn, boolean packageInstalledIn,
+                Optional<Long> channelIdIn, String channelNameIn,
+                String channelLabelIn, boolean channelAssignedIn,
+                Optional<Long> channelRankIn) {
             this.systemId = systemIdIn;
             this.systemName = systemNameIn;
             this.errataId = errataIdIn;
@@ -651,6 +656,8 @@ public class CVEAuditManager {
             this.channelLabel = channelLabelIn;
             this.channelAssigned = channelAssignedIn;
             this.channelRank = channelRankIn;
+            this.packageEvr = packageVersionIn
+                    .map(v -> new PackageEvr(packageEpochIn.orElse(null), v, packageReleaseIn.orElse(null)));
         }
 
         /**
@@ -699,6 +706,13 @@ public class CVEAuditManager {
          */
         public Optional<String> getPackageName() {
             return packageName;
+        }
+
+        /**
+         * @return the package EVR
+         */
+        public Optional<PackageEvr> getPackageEvr() {
+            return packageEvr;
         }
 
         /**
@@ -768,6 +782,9 @@ public class CVEAuditManager {
                         (String) row.get("errata_advisory"),
                         Optional.ofNullable((Long)row.get("package_id")),
                         Optional.ofNullable((String)row.get("package_name")),
+                        Optional.ofNullable((String)row.get("package_epoch")),
+                        Optional.ofNullable((String)row.get("package_version")),
+                        Optional.ofNullable((String)row.get("package_release")),
                         getBooleanValue(row, "package_installed"),
                         Optional.ofNullable((Long)row.get("channel_id")),
                         (String) row.get("channel_name"),
@@ -796,6 +813,9 @@ public class CVEAuditManager {
                     (String) row.get("errata_advisory"),
                     Optional.ofNullable((Long)row.get("package_id")),
                     Optional.ofNullable((String)row.get("package_name")),
+                    Optional.ofNullable((String)row.get("package_epoch")),
+                    Optional.ofNullable((String)row.get("package_version")),
+                    Optional.ofNullable((String)row.get("package_release")),
                     getBooleanValue(row, "package_installed"),
                     Optional.ofNullable((Long)row.get("channel_id")),
                     (String) row.get("channel_name"),
@@ -957,31 +977,48 @@ public class CVEAuditManager {
 
     /**
      * Finds the best candidate channel among the CVE query results for a single
-     * package, or none if the package is already patched
+     * package, or none if the package is already fully patched
      * @param packageResults the list of CVE audit query results for a specific
      * package
      * @return best candidate channel result for a patch on the specified package,
      * or empty if the package is already patched
      */
     private static Optional<CVEPatchStatus> getPatchCandidateResult(List<CVEPatchStatus> packageResults) {
-        if (packageResults.stream().anyMatch(r -> r.isPackageInstalled() && r.getChannelRank().orElse(null) < 100000)) {
+        Comparator<CVEPatchStatus> evrComparator = Comparator.comparing(r -> r.getPackageEvr().get());
+
+        Optional<CVEPatchStatus> latestInstalled = packageResults.stream()
+                .filter(r -> r.isPackageInstalled() && r.getChannelRank().orElse(null) < 100000)
+                .max(evrComparator);
+
+        Optional<CVEPatchStatus> result = latestInstalled.map(li -> {
             // Found a result entry which suggests that the affected package is patched
-            // No patch candidates needed
             // (This check initially excludes old products. They should be considered
             // patched only if there are no newer products offering a patch. If the only
             // result is an installed package in an old product, this method will
             // return Optional.empty anyway, indicating that the package is patched.
             // @see CVEAuditManagerTest#testIgnoreOldProductsWhenCurrentPatchAvailable)
-            return Optional.empty();
-        }
 
-        // Compare channel ranks to find the top channel (assigned channels come first)
-        return packageResults.stream()
-                .sorted(Comparator.comparing(CVEPatchStatus::isChannelAssigned)
-                        .thenComparing(
-                                Comparator.nullsLast(Comparator.comparingLong(r -> r.getChannelRank().orElse(null))))
-                        .reversed())
-                .findFirst();
+            Channel instChannel = ChannelFactory.lookupById(li.getChannelId().get());
+
+            // In some rare cases, a CVE is covered by multiple patches. When a system is assigned snapshot clone
+            // channels, they might be partly patched. To cover this case, check if a newer patch is available in the
+            // same channel, or the original channel if this is a clone.
+            Optional<CVEPatchStatus> newerPatch = packageResults.stream()
+                    .filter(r -> instChannel.getId().equals(r.getChannelId().get()) || (instChannel.isCloned() &&
+                            instChannel.getOriginal() != null && instChannel.getOriginal().getId()
+                            .equals(r.getChannelId().get())))
+                    .filter(r -> li.getPackageEvr().get().compareTo(r.getPackageEvr().get()) < 0)
+                    .max(evrComparator);
+
+            // Return the newer patch, or Optional.empty if the latest is already installed
+            return newerPatch;
+        }).orElse(
+                // The CVE is not patched against
+                // Compare channel ranks to find the top channel (assigned channels come first)
+                packageResults.stream().max(Comparator.comparing(CVEPatchStatus::isChannelAssigned)
+                .thenComparing(Comparator.nullsLast(Comparator.comparingLong(r -> r.getChannelRank().orElse(null))))));
+
+        return result;
     }
 
     /**

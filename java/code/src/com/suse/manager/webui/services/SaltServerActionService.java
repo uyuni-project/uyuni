@@ -41,6 +41,8 @@ import com.redhat.rhn.domain.action.config.ConfigRevisionAction;
 import com.redhat.rhn.domain.action.dup.DistUpgradeAction;
 import com.redhat.rhn.domain.action.dup.DistUpgradeChannelTask;
 import com.redhat.rhn.domain.action.errata.ErrataAction;
+import com.redhat.rhn.domain.action.kickstart.KickstartActionDetails;
+import com.redhat.rhn.domain.action.kickstart.KickstartInitiateAction;
 import com.redhat.rhn.domain.action.rhnpackage.PackageRemoveAction;
 import com.redhat.rhn.domain.action.rhnpackage.PackageUpdateAction;
 import com.redhat.rhn.domain.action.salt.ApplyStatesAction;
@@ -53,6 +55,7 @@ import com.redhat.rhn.domain.action.scap.ScapAction;
 import com.redhat.rhn.domain.action.scap.ScapActionDetails;
 import com.redhat.rhn.domain.action.script.ScriptAction;
 import com.redhat.rhn.domain.action.server.ServerAction;
+import com.redhat.rhn.domain.action.virtualization.BaseVirtualizationAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationCreateAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationCreateActionDiskDetails;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationCreateActionInterfaceDetails;
@@ -75,6 +78,9 @@ import com.redhat.rhn.domain.image.ImageProfileFactory;
 import com.redhat.rhn.domain.image.ImageStore;
 import com.redhat.rhn.domain.image.ImageStoreFactory;
 import com.redhat.rhn.domain.image.KiwiProfile;
+import com.redhat.rhn.domain.kickstart.KickstartFactory;
+import com.redhat.rhn.domain.kickstart.KickstartableTree;
+import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.server.ErrataInfo;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
@@ -86,6 +92,7 @@ import com.redhat.rhn.domain.token.ActivationKey;
 import com.redhat.rhn.domain.token.ActivationKeyFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.action.ActionManager;
+import com.redhat.rhn.manager.kickstart.cobbler.CobblerXMLRPCHelper;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
 import com.google.gson.JsonElement;
@@ -117,13 +124,19 @@ import com.suse.utils.Opt;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.log4j.Logger;
+import org.cobbler.CobblerConnection;
+import org.cobbler.Distro;
+import org.cobbler.Profile;
+import org.cobbler.SystemRecord;
 import org.hibernate.Hibernate;
 import org.hibernate.proxy.HibernateProxy;
 import org.jose4j.lang.JoseException;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.FileSystem;
@@ -176,6 +189,7 @@ public class SaltServerActionService {
     private static final String PARAM_FILES = "param_files";
     private static final String REMOTE_COMMANDS = "remotecommands";
     private static final String SYSTEM_REBOOT = "system.reboot";
+    private static final String KICKSTART_INITIATE = "bootloader.autoinstall";
 
     /** SLS pillar parameter name for the list of update stack patch names. */
     public static final String PARAM_UPDATE_STACK_PATCHES = "param_update_stack_patches";
@@ -294,31 +308,31 @@ public class SaltServerActionService {
         else if (ActionFactory.TYPE_VIRTUALIZATION_SHUTDOWN.equals(actionType)) {
             VirtualizationShutdownAction virtAction =
                     (VirtualizationShutdownAction)actionIn;
-            return virtStateChangeAction(minions, virtAction.getUuid(), "stopped");
+            return virtStateChangeAction(minions, virtAction.getUuid(), "stopped", virtAction);
         }
         else if (ActionFactory.TYPE_VIRTUALIZATION_START.equals(actionType)) {
             VirtualizationStartAction virtAction = (VirtualizationStartAction)actionIn;
-            return virtStateChangeAction(minions, virtAction.getUuid(), "running");
+            return virtStateChangeAction(minions, virtAction.getUuid(), "running", virtAction);
         }
         else if (ActionFactory.TYPE_VIRTUALIZATION_SUSPEND.equals(actionType)) {
             VirtualizationSuspendAction virtAction =
                     (VirtualizationSuspendAction)actionIn;
-            return virtStateChangeAction(minions, virtAction.getUuid(), "suspended");
+            return virtStateChangeAction(minions, virtAction.getUuid(), "suspended", virtAction);
         }
         else if (ActionFactory.TYPE_VIRTUALIZATION_RESUME.equals(actionType)) {
             VirtualizationResumeAction virtAction =
                     (VirtualizationResumeAction)actionIn;
-            return virtStateChangeAction(minions, virtAction.getUuid(), "resumed");
+            return virtStateChangeAction(minions, virtAction.getUuid(), "resumed", virtAction);
         }
         else if (ActionFactory.TYPE_VIRTUALIZATION_REBOOT.equals(actionType)) {
             VirtualizationRebootAction virtAction =
                     (VirtualizationRebootAction)actionIn;
-            return virtStateChangeAction(minions, virtAction.getUuid(), "rebooted");
+            return virtStateChangeAction(minions, virtAction.getUuid(), "rebooted", virtAction);
         }
         else if (ActionFactory.TYPE_VIRTUALIZATION_DELETE.equals(actionType)) {
             VirtualizationDeleteAction virtAction =
                     (VirtualizationDeleteAction)actionIn;
-            return virtStateChangeAction(minions, virtAction.getUuid(), "deleted");
+            return virtStateChangeAction(minions, virtAction.getUuid(), "deleted", virtAction);
         }
         else if (ActionFactory.TYPE_VIRTUALIZATION_SET_VCPUS.equals(actionType)) {
             VirtualizationSetVcpusAction virtAction =
@@ -336,6 +350,10 @@ public class SaltServerActionService {
             VirtualizationCreateAction createAction =
                     (VirtualizationCreateAction)actionIn;
             return virtCreateAction(minions, createAction);
+        }
+        else if (ActionFactory.TYPE_KICKSTART_INITIATE.equals(actionType)) {
+            KickstartInitiateAction autoInitAction = (KickstartInitiateAction)actionIn;
+            return autoinstallInitAction(minions, autoInitAction);
         }
         else {
             if (LOG.isDebugEnabled()) {
@@ -1438,7 +1456,7 @@ public class SaltServerActionService {
     }
 
     private Map<LocalCall<?>, List<MinionSummary>> virtStateChangeAction(
-            List<MinionSummary> minionSummaries, String uuid, String state) {
+            List<MinionSummary> minionSummaries, String uuid, String state, BaseVirtualizationAction action) {
         Map<LocalCall<?>, List<MinionSummary>> ret = minionSummaries.stream().collect(
                 Collectors.toMap(minion -> {
 
@@ -1453,8 +1471,18 @@ public class SaltServerActionService {
                                     Collections.singletonList("virt." + state),
                                     Optional.of(pillar));
                         }
+                        else if (state.equals("rebooted") && ((VirtualizationRebootAction)action).isForce()) {
+                            return State.apply(
+                                    Collections.singletonList("virt.reset"),
+                                    Optional.of(pillar));
+                        }
                         else {
-                            pillar.put("domain_state", state);
+                            if (state.equals("stopped") && ((VirtualizationShutdownAction)action).isForce()) {
+                                pillar.put("domain_state", "powered_off");
+                            }
+                            else {
+                                pillar.put("domain_state", state);
+                            }
 
                             return State.apply(
                                     Collections.singletonList("virt.statechange"),
@@ -1577,6 +1605,100 @@ public class SaltServerActionService {
         ret.remove(null);
 
         return ret;
+    }
+
+    private Map<LocalCall<?>, List<MinionSummary>> autoinstallInitAction(List<MinionSummary> minions,
+            KickstartInitiateAction autoInitAction) {
+
+        Map<LocalCall<?>, List<MinionSummary>> ret = new HashMap<>();
+        KickstartActionDetails ksActionDetails = autoInitAction.getKickstartActionDetails();
+        String cobblerSystem = ksActionDetails.getCobblerSystemName();
+        String host = ksActionDetails.getKickstartHost();
+        CobblerConnection con = CobblerXMLRPCHelper.getAutomatedConnection();
+        SystemRecord system = SystemRecord.lookupByName(con, cobblerSystem);
+        Profile profile = system.getProfile();
+        Distro dist = profile.getDistro();
+        String kernel = dist.getKernel();
+        String initrd = dist.getInitrd();
+
+        List<String> nameParts = Arrays.asList(dist.getName().split(":"));
+        String saltFSKernel = Paths.get(nameParts.get(1), nameParts.get(0), new File(kernel).getName()).toString();
+        String saltFSInitrd = Paths.get(nameParts.get(1), nameParts.get(0), new File(initrd).getName()).toString();
+        KickstartableTree tree = KickstartFactory.lookupKickstartTreeByLabel(nameParts.get(0),
+                OrgFactory.lookupById(Long.valueOf(nameParts.get(1))));
+        tree.createOrUpdateSaltFS();
+        String kOpts = buildKernelOptions(system, profile, dist, host);
+        Map<String, Object> pillar = new HashMap<>();
+        pillar.put("uyuni-reinstall-kernel", saltFSKernel);
+        pillar.put("uyuni-reinstall-initrd", saltFSInitrd);
+        pillar.put("uyuni-reinstall-kopts", kOpts);
+        pillar.put("uyuni-reinstall-name", "reinstall-system");
+
+        if (kOpts.contains("autoupgrade=1") || kOpts.contains("uyuni_keep_saltkey=1")) {
+            ksActionDetails.setUpgrade(true);
+        }
+        ret.put(State.apply(Arrays.asList(KICKSTART_INITIATE), Optional.of(pillar)), minions);
+
+        return ret;
+    }
+
+    private String buildKernelOptions(SystemRecord sys, Profile prof, Distro dist, String host) {
+        String breed = dist.getBreed();
+        Map<String, Object> kopts =
+                Stream.of(dist.getKernelOptions(), prof.getKernelOptions(), sys.getKernelOptions())
+                .flatMap(map -> map.entrySet().stream())
+                .collect(Collectors.toMap(
+                        Map.Entry::getKey,
+                        Map.Entry::getValue,
+                        (v1, v2) -> v2));
+        if (breed.equals("suse")) {
+            //SUSE is not using 'text'. Instead 'textmode' is used as kernel option.
+            if (kopts.containsKey("textmode")) {
+                kopts.remove("text");
+            }
+            else if (kopts.containsKey("text")) {
+                kopts.remove("text");
+                kopts.put("textmode", "1");
+            }
+        }
+        // no additional initrd parameter allowed
+        kopts.remove("initrd");
+        String kernelOptions = convertOptionsMap(kopts);
+        String autoinst = "http://" + host + "/cblr/svc/op/autoinstall/system/" + sys.getName();
+
+        if (StringUtils.isBlank(breed) || breed.equals("redhat")) {
+           kernelOptions += " kssendmac ks=" + autoinst;
+        }
+        else if (breed.equals("suse")) {
+            kernelOptions += "autoyast=" + autoinst;
+        }
+        else if (breed.equals("debian") || breed.equals("ubuntu")) {
+            kernelOptions += "auto-install/enable=true priority=critical netcfg/choose_interface=auto url=" + autoinst;
+        }
+        return kernelOptions;
+    }
+
+    private String convertOptionsMap(Map<String, Object> map) {
+        StringBuilder string = new StringBuilder();
+        for (String key : map.keySet()) {
+            List<String> keyList;
+            try {
+                 keyList = (List)map.get(key);
+            }
+            catch (ClassCastException e) {
+                keyList = new ArrayList<String>();
+                keyList.add((String) map.get(key));
+            }
+            if (keyList.isEmpty()) {
+                string.append(key + " ");
+            }
+            else {
+                for (String value : keyList) {
+                    string.append(key + "=" + value + " ");
+                }
+            }
+        }
+        return string.toString();
     }
 
     /**

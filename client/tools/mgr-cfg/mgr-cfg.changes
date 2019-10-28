@@ -1,4 +1,19 @@
 -------------------------------------------------------------------
+Thu Oct 17 12:17:15 CEST 2019 - jgonzalez@suse.com
+
+- version 4.0.10-1
+- Obsolete all old python2-rhncfg* packages to avoid conflicts (bsc#1152290)
+- Fix data type issue to correctly decode if needed (bsc#1150320)
+- Require mgr-daemon (new name of spacewalksd) so we systems with
+  spacewalksd get always the new package installed (bsc#1149353)
+
+-------------------------------------------------------------------
+Tue Jul 30 14:39:43 CEST 2019 - jgonzalez@suse.com
+
+- version 4.0.9-1
+- Ensure bytes type when using hashlib to avoid traceback (bsc#1138822)
+
+-------------------------------------------------------------------
 Wed May 15 20:06:15 CEST 2019 - jgonzalez@suse.com
 
 - version 4.0.8-1

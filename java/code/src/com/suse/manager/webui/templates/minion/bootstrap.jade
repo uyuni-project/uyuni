@@ -1,7 +1,10 @@
 #bootstrap-minions
 
 script(type="text/javascript").
-    var csrfToken = "#{csrf_token}";
-    var availableActivationKeys = !{availableActivationKeys};
-    var proxies = !{proxies}
-script(src='/javascript/manager/systems/bootstrap/bootstrap-minions.bundle.js?cb=#{webVersion}')
+    window.csrfToken = "#{csrf_token}";
+    window.availableActivationKeys = !{availableActivationKeys};
+    window.proxies = !{proxies}
+
+script(type='text/javascript').
+    spaImportReactPage('systems/bootstrap/bootstrap-minions')
+        .then(function(module) { module.renderer('bootstrap-minions') });

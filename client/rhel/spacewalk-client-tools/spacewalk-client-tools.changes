@@ -1,4 +1,14 @@
 -------------------------------------------------------------------
+Thu Oct 17 12:14:10 CEST 2019 - jgonzalez@suse.com
+
+- version 4.0.10-1
+- Require mgr-daemon (new name of spacewalksd) so we systems with
+  spacewalksd get always the new package installed (bsc#1149353)
+- enable spacewalk-update-service on package installation
+  (bsc#1143789)
+- Invalidate cache 5 minutes before actual expiration(bsc#1143562)
+
+-------------------------------------------------------------------
 Tue Jun 18 10:27:23 CEST 2019 - jgonzalez@suse.com
 
 - version 4.0.9-1

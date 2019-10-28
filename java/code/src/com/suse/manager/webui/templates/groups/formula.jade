@@ -16,8 +16,16 @@
 #formula
 
 script(type='text/javascript').
-    var csrfToken = "#{csrf_token}";
-    var groupId = "#{groupId}";
-    var formulaId = #{formula_id};
+    window.csrfToken = "#{csrf_token}";
 
-script(src='/javascript/manager/groups/formula/group-formula.bundle.js?cb=#{webVersion}', type='text/javascript')
+script(type='text/javascript').
+    spaImportReactPage('groups/formula/group-formula')
+        .then(function(module) {
+             module.renderer(
+                'formula',
+                {
+                    groupId: "#{groupId}",
+                    formulaId: #{formula_id}
+                }
+            )
+        });

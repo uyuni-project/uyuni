@@ -71,7 +71,7 @@ public class ScheduledAction extends BaseDto implements RowCallback {
      * @return the earliest date the action will be run.
      */
     public String getEarliest() {
-        return LocalizationService.getInstance().formatDate(earliest);
+        return LocalizationService.getInstance().formatCustomDate(earliest);
     }
 
     /**

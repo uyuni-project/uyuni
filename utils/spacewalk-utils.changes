@@ -1,3 +1,25 @@
+- fix hostname-rename script for cobbler files
+
+-------------------------------------------------------------------
+Thu Oct 17 13:05:59 CEST 2019 - jgonzalez@suse.com
+
+- version 4.0.13-1
+- Add FQDN resolver for spacewalk-manage-channel-lifecycle (bsc#1153578)
+
+-------------------------------------------------------------------
+Thu Oct 17 12:41:30 CEST 2019 - jgonzalez@suse.com
+
+- version 4.0.12-1
+- common-channels: Fix repo type assignment for type YUM
+
+-------------------------------------------------------------------
+Tue Jul 30 14:49:01 CEST 2019 - jgonzalez@suse.com
+
+- version 4.0.11-1
+- Fixes SSL hostname matching (bsc#1141663)
+- hostname-rename: change hostname in cobbler db and autoinst data
+- Adds support for Ubuntu and Debian channels to spacewalk-common-channels.
+
 -------------------------------------------------------------------
 Wed May 15 15:20:26 CEST 2019 - jgonzalez@suse.com
 

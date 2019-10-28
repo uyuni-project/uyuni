@@ -116,8 +116,9 @@ public class AuthFilter implements Filter {
             if (servletRequest.getServletPath().startsWith("/manager/download/")) {
                 chain.doFilter(request, response);
             }
-            // Send 401 for unauthorized API requests, else redirect to login
-            else if (servletRequest.getServletPath().startsWith("/manager/api/")) {
+            // Send 401 for unauthorized API requests and senna SPA requests, else redirect to login
+            else if (servletRequest.getServletPath().startsWith("/manager/api/") ||
+                    Boolean.valueOf(servletRequest.getHeader("x-pjax"))) {
                 servletResponse.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             }
             else {

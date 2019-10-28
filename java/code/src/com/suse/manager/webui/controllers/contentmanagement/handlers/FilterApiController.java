@@ -61,19 +61,19 @@ public class FilterApiController {
     /** Init routes for ContentManagement Filter Api.*/
     public static void initRoutes() {
 
-        put("/manager/contentmanagement/api/projects/:projectId/filters",
+        put("/manager/api/contentmanagement/projects/:projectId/filters",
                 withUser(FilterApiController::updateFiltersOfProject));
 
-        get("/manager/contentmanagement/api/filters",
+        get("/manager/api/contentmanagement/filters",
                 withUser(FilterApiController::getContentFilters));
 
-        post("/manager/contentmanagement/api/filters",
+        post("/manager/api/contentmanagement/filters",
                 withUser(FilterApiController::createContentFilter));
 
-        put("/manager/contentmanagement/api/filters/:filterId",
+        put("/manager/api/contentmanagement/filters/:filterId",
                 withUser(FilterApiController::updateContentFilter));
 
-        delete("/manager/contentmanagement/api/filters/:filterId",
+        delete("/manager/api/contentmanagement/filters/:filterId",
                 withUser(FilterApiController::removeContentFilter));
     }
 
@@ -162,7 +162,7 @@ public class FilterApiController {
         try {
             createdFilter = ContentManager.createFilter(
                     createFilterRequest.getName(),
-                    createFilterRequest.getDeny() ? ContentFilter.Rule.DENY : ContentFilter.Rule.ALLOW,
+                    ContentFilter.Rule.lookupByLabel(createFilterRequest.getRule()),
                     ContentFilter.EntityType.lookupByLabel(createFilterRequest.getEntityType()),
                     filterCriteria,
                     user
@@ -206,7 +206,7 @@ public class FilterApiController {
         ContentManager.updateFilter(
                 Long.parseLong(req.params("filterId")),
                 Optional.ofNullable(updateFilterRequest.getName()),
-                Optional.of(updateFilterRequest.getDeny() ? ContentFilter.Rule.DENY : ContentFilter.Rule.ALLOW),
+                Optional.ofNullable(updateFilterRequest.getRule()).map(ContentFilter.Rule::lookupByLabel),
                 Optional.of(filterCriteria),
                 user
         );

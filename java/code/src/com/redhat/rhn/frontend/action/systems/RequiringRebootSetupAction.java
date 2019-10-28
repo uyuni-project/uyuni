@@ -31,7 +31,7 @@ public class RequiringRebootSetupAction extends BaseSystemsAction {
     @Override
     protected DataResult<SystemOverview> getDataResult(User user,
             PageControl pc, ActionForm formIn) {
-        return SystemManager.requiringRebootList(user, null);
+        return SystemManager.requiringRebootList(user);
     }
 
 }

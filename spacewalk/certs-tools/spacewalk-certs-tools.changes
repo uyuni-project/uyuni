@@ -1,3 +1,18 @@
+- make traditional bootstrap more robust for unknown hostname (bsc#1152298)
+
+-------------------------------------------------------------------
+Thu Oct 17 12:21:56 CEST 2019 - jgonzalez@suse.com
+
+- version 4.0.12-1
+- Require mgr-daemon (new name of spacewalksd) so we systems with
+  spacewalksd get always the new package installed (bsc#1149353)
+
+-------------------------------------------------------------------
+Tue Jul 30 14:53:01 CEST 2019 - jgonzalez@suse.com
+
+- version 4.0.11-1
+- Run bootstrap.sh completely unattended on Ubuntu (bsc#1137881)
+
 -------------------------------------------------------------------
 Thu Jun 06 15:57:36 CEST 2019 - jgonzalez@suse.com
 

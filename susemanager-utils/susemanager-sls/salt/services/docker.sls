@@ -2,6 +2,7 @@
 mgr_install_docker:
   pkg.installed:
     - pkgs:
+      - git-core
       - docker: '>=1.9.0'
 {%- if grains['pythonversion'][0] == 3 %}
     {%- if grains['osmajorrelease'] == 12 %}

@@ -155,7 +155,7 @@ function ConfigParams(props) {
       data.config.context = "<default>";
     }
 
-    const items = Object.keys(data.config).map(key => {
+    const items = Object.keys(data.config).filter(key => !key.includes("secret")).map(key => {
         return (
             <tr>
                 <td>{Utils.capitalize(key)}:</td>

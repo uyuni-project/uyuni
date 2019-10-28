@@ -21,6 +21,10 @@ CREATE TABLE rhnActionVirtReboot
                        REFERENCES rhnAction (id)
                        ON DELETE CASCADE,
     uuid       VARCHAR2(128) NOT NULL,
+    force      CHAR(1)
+                   DEFAULT ('N') NOT NULL
+                   CONSTRAINT rhn_avreboot_force_ck
+                       CHECK (force in ('Y','N')),
     created    timestamp with local time zone
                    DEFAULT (current_timestamp) NOT NULL,
     modified   timestamp with local time zone

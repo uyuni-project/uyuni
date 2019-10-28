@@ -25,7 +25,7 @@ import com.redhat.rhn.domain.contentmgmt.ContentProjectFactory;
 import com.redhat.rhn.domain.contentmgmt.EnvironmentTarget.Status;
 import com.redhat.rhn.domain.contentmgmt.SoftwareEnvironmentTarget;
 import com.redhat.rhn.manager.EntityNotExistsException;
-import com.redhat.rhn.manager.channel.ChannelManager;
+import com.redhat.rhn.manager.contentmgmt.ContentManager;
 import com.redhat.rhn.manager.user.UserManager;
 import org.apache.log4j.Logger;
 
@@ -61,7 +61,7 @@ public class AlignSoftwareTargetAction implements MessageAction {
 
             LOG.info("Asynchronously aligning: " + msg);
             Instant start = Instant.now();
-            ChannelManager.alignEnvironmentTargetSync(filters, sourceChannel, targetChannel, msg.getUser());
+            ContentManager.alignEnvironmentTargetSync(filters, sourceChannel, targetChannel, msg.getUser());
             target.setStatus(Status.GENERATING_REPODATA);
             LOG.info("Finished aligning " + msg + " in " + Duration.between(start, Instant.now()));
         }
@@ -79,7 +79,7 @@ public class AlignSoftwareTargetAction implements MessageAction {
     public Consumer<Exception> getExceptionHandler() {
         return (e) -> {
             if (e instanceof AlignSoftwareTargetException) {
-                LOG.error("Error aligning target " + ((AlignSoftwareTargetException) e).getTarget(), e);
+                LOG.error("Error aligning target " + ((AlignSoftwareTargetException) e).getTarget().getId(), e);
                 AlignSoftwareTargetException exc = ((AlignSoftwareTargetException) e);
                 exc.getTarget().setStatus(Status.FAILED);
                 ContentProjectFactory.save(exc.getTarget());

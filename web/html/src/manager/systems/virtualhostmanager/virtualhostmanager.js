@@ -11,13 +11,17 @@ const {VirtualHostManagerList} = require("./virtualhostmanager-list");
 const {VirtualHostManagerDetails} = require("./virtualhostmanager-details");
 const {VirtualHostManagerEdit} = require("./virtualhostmanager-edit");
 const MessagesUtils = require("components/messages").Utils;
+const SpaRenderer  = require("core/spa/spa-renderer").default;
 
 const hashUrlRegex = /^#\/([^\/]*)(?:\/(.+))?$/;
 
 const msgModuleTypes = {
     "file": t('File-based'),
     "vmware": t('VMWare-based'),
-    "kubernetes": t('Kubernetes Cluster')
+    "kubernetes": t('Kubernetes Cluster'),
+    "amazonec2": t('Amazon EC2'),
+    "googlece": t('Google Compute Engine'),
+    "azure": t('Azure')
 }
 
 function getHashId() {
@@ -112,7 +116,7 @@ class VirtualHostManager extends React.Component {
     }
 
     getCreateType() {
-        const types = ["file", "vmware", "kubernetes"];
+        const types = ["file", "vmware", "kubernetes", "amazonec2", "googlece", "azure"];
         return types.includes(this.state.id) ? this.state.id : types[0];
     }
 
@@ -159,7 +163,7 @@ class VirtualHostManager extends React.Component {
                     title={t("Add a virtual host manager")}
                     className="btn-default"
                     items={this.state.availableModules.map(name =>
-                        <a href={"#/create/" + name.toLocaleLowerCase()}>{msgModuleTypes[name.toLocaleLowerCase()]}</a>
+                        <a data-senna-off href={"#/create/" + name.toLocaleLowerCase()}>{msgModuleTypes[name.toLocaleLowerCase()]}</a>
                     )}
                 />
             }
@@ -189,4 +193,5 @@ class VirtualHostManager extends React.Component {
     }
 }
 
-ReactDOM.render(<VirtualHostManager/>, document.getElementById('virtual-host-managers'));
+export const renderer = (id) =>
+  SpaRenderer.renderNavigationReact(<VirtualHostManager/>, document.getElementById(id));

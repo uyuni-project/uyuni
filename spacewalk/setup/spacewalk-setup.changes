@@ -1,4 +1,18 @@
 -------------------------------------------------------------------
+Thu Oct 17 12:24:26 CEST 2019 - jgonzalez@suse.com
+
+- version 4.0.11-1
+- fix cobbler authentication module configuration required for
+  new cobbler package
+- configure 150 Tomcat workers by default, matching httpds MaxClients
+
+-------------------------------------------------------------------
+Wed Sep 04 23:07:27 CEST 2019 - jgonzalez@suse.com
+
+- version 4.0.10-1
+- prevent CherryPy timeouts (bsc#1118175, bsc#1149343)
+
+-------------------------------------------------------------------
 Thu May 30 10:56:50 CEST 2019 - jgonzalez@suse.com
 
 - version 4.0.9-1

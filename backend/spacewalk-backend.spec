@@ -75,7 +75,7 @@ Name:           spacewalk-backend
 Summary:        Common programs needed to be installed on the Spacewalk servers/proxies
 License:        GPL-2.0-only
 Group:          Applications/Internet
-Version:        4.0.20
+Version:        4.0.27
 Release:        1%{?dist}
 Url:            https://github.com/uyuni-project/uyuni
 Source0:        https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
@@ -554,6 +554,7 @@ install -d $RPM_BUILD_ROOT%{rhnroot}
 install -d $RPM_BUILD_ROOT%{pythonrhnroot}
 install -d $RPM_BUILD_ROOT%{pythonrhnroot}/common
 install -d $RPM_BUILD_ROOT%{rhnconf}
+install -d $RPM_BUILD_ROOT/%{_prefix}/lib/susemanager/bin/
 
 make -f Makefile.backend install PREFIX=$RPM_BUILD_ROOT \
     MANDIR=%{_mandir} APACHECONFDIR=%{apacheconfd} PYTHON_BIN=%{pythonX}
@@ -614,6 +615,8 @@ rm -f $RPM_BUILD_ROOT%{python2rhnroot}/__init__.py*
 rm -f $RPM_BUILD_ROOT%{python2rhnroot}/common/__init__.py*
 %endif
 %endif
+
+install -m 755 satellite_tools/mgr-update-pkg-extra-tags $RPM_BUILD_ROOT%{_prefix}/lib/susemanager/bin/
 
 %check
 # Copy spacewalk-usix python files to allow unit tests to run
@@ -699,6 +702,8 @@ rm -f %{rhnconf}/rhnSecret.py*
 %defattr(-,root,root)
 %doc LICENSE
 %dir %{pythonrhnroot}
+%dir %{_prefix}/lib/susemanager
+%dir %{_prefix}/lib/susemanager/bin
 %{pythonrhnroot}/common/suseLib.py*
 %{pythonrhnroot}/common/apache.py*
 %{pythonrhnroot}/common/byterange.py*
@@ -945,8 +950,8 @@ rm -f %{rhnconf}/rhnSecret.py*
 %defattr(-,root,root)
 %doc LICENSE
 %if 0%{?build_py3}
-%{python2rhnroot}
-%{python2rhnroot}/common
+%dir %{python2rhnroot}
+%dir %{python2rhnroot}/common
 %endif
 %{python2rhnroot}/common/checksum.py*
 %{python2rhnroot}/common/cli.py*
@@ -963,7 +968,7 @@ rm -f %{rhnconf}/rhnSecret.py*
 %files -n python3-%{name}-libs
 %defattr(-,root,root)
 %doc LICENSE
-%dir %{python3rhnroot}/common/__pycache__
+%dir %{python3rhnroot}/common
 %{python3rhnroot}/common/checksum.py
 %{python3rhnroot}/common/cli.py
 %{python3rhnroot}/common/fileutils.py
@@ -974,7 +979,17 @@ rm -f %{rhnconf}/rhnSecret.py*
 %{python3rhnroot}/common/stringutils.py
 %{python3rhnroot}/common/rhnLib.py*
 %{python3rhnroot}/common/timezone_utils.py*
-%{python3rhnroot}/common
+%dir %{python3rhnroot}/common/__pycache__
+%{python3rhnroot}/common/__pycache__/checksum.*
+%{python3rhnroot}/common/__pycache__/cli.*
+%{python3rhnroot}/common/__pycache__/fileutils.*
+%{python3rhnroot}/common/__pycache__/rhn_deb.*
+%{python3rhnroot}/common/__pycache__/rhn_mpm.*
+%{python3rhnroot}/common/__pycache__/rhn_pkg.*
+%{python3rhnroot}/common/__pycache__/rhn_rpm.*
+%{python3rhnroot}/common/__pycache__/stringutils.*
+%{python3rhnroot}/common/__pycache__/rhnLib.*
+%{python3rhnroot}/common/__pycache__/timezone_utils.*
 %endif
 
 %files config-files-common
@@ -1047,6 +1062,7 @@ rm -f %{rhnconf}/rhnSecret.py*
 %attr(755,root,root) %{_bindir}/spacewalk-fips-tool
 %attr(755,root,root) %{_bindir}/mgr-sign-metadata
 %attr(755,root,root) %{_bindir}/mgr-sign-metadata-ctl
+%attr(755,root,root) %{_prefix}/lib/susemanager/bin/mgr-update-pkg-extra-tags
 %{pythonrhnroot}/satellite_tools/contentRemove.py*
 %{pythonrhnroot}/satellite_tools/SequenceServer.py*
 %{pythonrhnroot}/satellite_tools/messages.py*

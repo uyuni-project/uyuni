@@ -1,9 +1,9 @@
-# Copyright (c) 2010-2011 Novell, Inc.
+# Copyright (c) 2010-2019 SUSE LLC.
 # Licensed under the terms of the MIT license.
 
 Then(/^"(.*?)" is locked on this client$/) do |pkg|
   zypp_lock_file = '/etc/zypp/locks'
-  raise unless file_exists?($client, zypp_lock_file)
+  raise "File already exist: #{zypp_lock_file}" unless file_exists?($client, zypp_lock_file)
   command = "zypper locks  --solvables | grep #{pkg}"
   $client.run(command, true, 600, 'root')
 end
@@ -11,13 +11,14 @@ end
 Then(/^package "(.*?)" is reported as locked$/) do |pkg|
   find(:xpath, "(//a[text()='#{pkg}'])[1]")
   locked_pkgs = all(:xpath, "//i[@class='fa fa-lock']/../a")
-  raise if locked_pkgs.empty?
-  raise unless locked_pkgs.find { |a| a.text =~ /^#{pkg}/ }
+  raise 'No packages locked' if locked_pkgs.empty?
+  raise "Package #{pkg} not found as locked" unless locked_pkgs.find { |a| a.text =~ /^#{pkg}/ }
 end
 
 Then(/^"(.*?)" is unlocked on this client$/) do |pkg|
   zypp_lock_file = '/etc/zypp/locks'
-  raise unless file_exists?($client, zypp_lock_file)
+  raise "File #{zypp_lock_file} not found" unless file_exists?($client, zypp_lock_file)
+
   command = "zypper locks  --solvables | grep #{pkg}"
   $client.run(command, false, 600, 'root')
 end
@@ -26,14 +27,14 @@ Then(/^package "(.*?)" is reported as unlocked$/) do |pkg|
   find(:xpath, "(//a[text()='#{pkg}'])[1]")
   locked_pkgs = all(:xpath, "//i[@class='fa fa-lock']/../a")
 
-  raise if locked_pkgs.find { |a| a.text =~ /^#{pkg}/ }
+  raise "Package #{pkg} found as locked" if locked_pkgs.find { |a| a.text =~ /^#{pkg}/ }
 end
 
 Then(/^the package scheduled is "(.*?)"$/) do |pkg|
   match = find(:xpath, "//li[@class='list-group-item']//li")
 
-  raise unless match
-  raise unless match.text =~ /^#{pkg}/
+  raise 'List of packages not found' unless match
+  raise "Package #{pkg} not found" unless match.text =~ /^#{pkg}/
 end
 
 Then(/^the action status is "(.*?)"$/) do |status|
@@ -85,19 +86,5 @@ Then(/^only packages "(.*?)" are reported as pending to be unlocked$/) do |pkgs|
                 "span[@class='label label-info' and contains(text(), 'Unlocking...')]]"
   matches = all(:xpath, xpath_query)
 
-  raise if matches.size != pkgs.size
-end
-
-When(/^I select all the packages$/) do
-  within(:xpath, '//section') do
-    # use div/div/div for cve audit which has two tables
-    top_level_xpath_query = "//div[@class='table-responsive']/table/thead/tr[.//input[@type='checkbox']]"
-    row = first(:xpath, top_level_xpath_query)
-    if row.nil?
-      sleep 1
-      $stderr.puts 'ERROR - try again'
-      row = first(:xpath, top_level_xpath_query)
-    end
-    row.first(:xpath, './/input[@type="checkbox"]').set(true)
-  end
+  raise "Matches count #{matches.size} is different than packages count #{pkgs.size}" if matches.size != pkgs.size
 end

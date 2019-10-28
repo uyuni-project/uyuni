@@ -41,14 +41,14 @@ const PropertiesView = (props: Props) => {
     <div>
       <React.Fragment>
         <dl className="row">
-          <dt className="col-xs-2">{t("Label:")}</dt>
-          <dd className="col-xs-6">{propertiesToShow.label}</dd>
-        </dl>
-        <dl className="row">
           <dt className="col-xs-2">{t("Name")}</dt>
           <dd className="col-xs-10">{propertiesToShow.name}</dd>
         </dl>
         <dl className="row">
+          <dt className="col-xs-2">{t("Label:")}</dt>
+          <dd className="col-xs-6">{propertiesToShow.label}</dd>
+        </dl>
+                <dl className="row">
           <dt className="col-xs-2">{t("Description")}</dt>
           <dd className="col-xs-10">{propertiesToShow.description}</dd>
         </dl>

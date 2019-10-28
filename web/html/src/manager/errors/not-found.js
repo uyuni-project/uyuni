@@ -3,9 +3,10 @@
 
 const React = require("react");
 const ReactDOM = require("react-dom");
+const SpaRenderer  = require("core/spa/spa-renderer").default;
 
 const NotFound = ({currentUrl}) =>
-    <body>
+    <>
         <h1>
             {t('Page Not Found')}
         </h1>
@@ -30,12 +31,9 @@ const NotFound = ({currentUrl}) =>
                     'this message.')}
             </li>
         </ol>
-    </body>;
+    </>;
 
-window.pageRenderers = window.pageRenderers || {};
-window.pageRenderers.errors = window.pageRenderers.errors || {};
-
-window.pageRenderers.errors.NotFoundRenderer = (id, {currentUrl}) => ReactDOM.render(
+export const renderer = (id, {currentUrl}) => SpaRenderer.renderNavigationReact(
     <NotFound
         currentUrl={currentUrl}
     />,

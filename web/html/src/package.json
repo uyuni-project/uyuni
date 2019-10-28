@@ -15,11 +15,8 @@
     "build:novalidate": "BUILD_VALIDATION=false node build",
     "lint": "eslint . -f codeframe",
     "test": "BABEL_ENV=test jest",
-    "test:watch": "BABEL_ENV=test jest --watch"
-  },
-  "devDependencies": {
-    "flow-bin": "^0.93.0",
-    "webpack-dev-server": "^3.1.10"
+    "test:watch": "BABEL_ENV=test jest --watch",
+    "storybook": "start-storybook -s ./.storybook/public"
   },
   "engines": {
     "node": ">=8.0.0",

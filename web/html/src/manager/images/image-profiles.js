@@ -12,6 +12,7 @@ const {Table, Column, SearchField} = require("components/table");
 const Messages = require("components/messages").Messages;
 const DeleteDialog = require("components/dialog/DeleteDialog").DeleteDialog;
 const ModalButton = require("components/dialog/ModalButton").ModalButton;
+const SpaRenderer  = require("core/spa/spa-renderer").default;
 
 /* global isAdmin */
 
@@ -112,7 +113,7 @@ class ImageProfiles extends React.Component {
 
     return (
       <span>
-        <TopPanel title="Image Profiles" icon="spacewalk-icon-manage-configuration-files" helpUrl="/docs/reference/images/images-profiles.html" button={ panelButtons }>
+        <TopPanel title={t("Image Profiles")} icon="spacewalk-icon-manage-configuration-files" helpUrl="/docs/reference/images/images-profiles.html" button={ panelButtons }>
           {this.state.messages}
           <Table
             data={this.state.imageprofiles}
@@ -195,7 +196,7 @@ class ImageProfiles extends React.Component {
   }
 }
 
-ReactDOM.render(
+export const renderer = () => SpaRenderer.renderNavigationReact(
   <ImageProfiles />,
   document.getElementById('image-profiles')
 )

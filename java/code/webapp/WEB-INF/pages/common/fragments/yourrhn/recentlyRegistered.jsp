@@ -25,7 +25,7 @@
                 <rl:column bound="false"
                            headerkey="systemlist.jsp.system"
                            >
-                <a href="/rhn/systems/details/Overview.do?sid=${current.id}">
+                <a class="js-spa" href="/rhn/systems/details/Overview.do?sid=${current.id}">
                 <c:out value="${current.serverName}"/></a>
                 </rl:column>
 
@@ -37,7 +37,7 @@
                                 <bean:message key="none.message"/>
                         </c:when>
                         <c:otherwise>
-                                <a href="/rhn/channels/ChannelDetail.do?cid=${current.channelId}">
+                                <a class="js-spa" href="/rhn/channels/ChannelDetail.do?cid=${current.channelId}">
                                         <c:out value = "${current.channelLabels}"/>
                                 </a>
                         </c:otherwise>
@@ -73,7 +73,7 @@
   </span>
 
   <span class="full-width-note-right">
-        <a href="/rhn/systems/Registered.do">
+        <a class="js-spa" href="/rhn/systems/Registered.do">
                 <bean:message key="yourrhn.jsp.recentlyregistered.all" />
         </a>
   </span>

@@ -1,3 +1,84 @@
+- Fix: match `image_id` with newer k8s (bsc#1149741)
+- Handle refreshing hardware of VM with changed UUID (bsc#1135380)
+- fix problems with Package Hub repos having multiple rpms with same NEVRA
+  but different checksums (bsc#1146683)
+- enable Kiwi NG on SLE15
+- Add check/message for project not found (bsc#1145755)
+- Fix combinatorial explosion when generating migrations (bsc#1151888)
+- Fix sorting issues on content filter list page (bsc#1145591)
+
+-------------------------------------------------------------------
+Thu Oct 17 12:22:47 CEST 2019 - jgonzalez@suse.com
+
+- version 4.0.24-1
+- Change the default value of taskomatic maxmemory to 4GB
+- Silence cache strategy Hibernate warning
+- Return result in compatible type to what defined in database procedure (bsc#1150729)
+- Allow channels names to start with numbers
+- Fix: handle special deb package names (bsc#1150113)
+- Remove extra spaces in dependencies fields in Debian repo Packages file (bsc#1145551)
+- Allow monitoring for managed systems running Ubuntu 18.04 and RedHat 6/7
+- Improve performance for 'Manage Software Channels' view (bsc#1151399)
+- Import additional fields for Deb packages
+- use value from systemd unit file if not set in /etc/rhn/rhn.conf
+- implement "keyword" filter for Content Lifecycle Management
+- Add support for Azure, Amazon EC2, and Google Compute Engine as Virtual Host Manager.
+- allow ssl connections from Tomcat to Postgres (bsc#1149210)
+- use default in case taskomatic.java.maxmemory is unset
+- fix parsing of /etc/rhn/rhn.conf for taskomatic.java.maxmemory (bsc#1151097)
+- Change form order and change project creation message (bsc#1145744)
+- Use 'SCC organization credentials' instead of 'SCC credentials' in error message (bsc#1149425)
+- implement "regular expression" Filter for Content Lifecycle Management
+  matching package names, patch name, patch synopsis and package names in patches
+- implement provisioning for salt clients
+- Explicitly mention in API docs that to preserve LF/CR, user needs to encode the data(bsc#1135442)
+- New Single Page Application engine for the UI. It can be enabled with the config 'web.spa.enable' set to true
+- Check that a channel doesn't have clones before deleting it (bsc#1138454)
+- Fix documentation of contentmanagement handler (bsc#1145753)
+- Add new API endpoint to list available Filter Criteria
+- improve API documentation of Filter Criteria
+- implement "patch contains package" Filter for Content Lifecycle Management
+- implement Filter Patch "by type" Content Lifecycle Management
+- Improve websocket authentication to prevent errors in logs (bsc#1138454)
+- Implement filtering errata by synopsis in Content Lifecycle Management
+- Normalize date formats for actions, notifications and clm (bsc#1142774)
+- Implement ALLOW filters in Content Lifecycle Management
+- implement "by date" Filter for Content Lifecycle Management
+- UI render without error if salt-formulas system folders are unreachable (bsc#1142309)
+- Cloning Errata from a specific channel should not take packages
+  from other channels (bsc#1142764)
+- Add susemanager as prerequired for spacewalk-java
+
+-------------------------------------------------------------------
+Wed Aug 14 16:49:07 CEST 2019 - mc@suse.de
+
+- version 4.0.23-1
+- Fix: initialize the hibernate transaction when merging errata
+  via XMLRPC API (bsc#1145584)
+
+-------------------------------------------------------------------
+Tue Jul 30 14:57:55 CEST 2019 - jgonzalez@suse.com
+
+- version 4.0.22-1
+- improve performance for retrieving the user permissions on channels (bsc#1140644)
+- fix permissions of cobbler owned directories
+- Prerequire salt package to avoid not existing user issues
+- Support partly patched CVEs in CVE audit (bsc#1137229)
+- Remove duplicate information message when changing system properties (bsc#1111371)
+- Align selection column in software channel managers (bsc#1122559)
+- Hide channels managed by Content Lifecycle projects from available sources (bsc#1137965)
+- add caret sorting for rpm versioning
+- API Documentation: mention the shebang in the system.scheduleScriptRun doc strings (bsc#1138655)
+- For orphan contentsources, look also in susesccrepositoryauth to make sure they are not being referenced(bsc#1138275)
+- Fallback to logged-in-user org and then vendor errata when looking up erratum on cloning (bsc#1137308)
+- Add new validation to avoid creating content lifecycle projects starting with a number (bsc#1139493)
+- Allow virtualization tab for foreign systems (bsc#1116869)
+- Improve performance of 'Systems requiring reboot' page (fate#327780)
+- Allow forcing off or resetting VMs
+- Keep querystring on ListTag parent_url for actions that have the cid param (bsc#1134677)
+- Add XML-RPC API calls to manage server monitoring
+- Fix profiles package scheduling when epoch is null (bsc#1137144)
+
 -------------------------------------------------------------------
 Thu Jun 06 16:00:06 CEST 2019 - jgonzalez@suse.com
 

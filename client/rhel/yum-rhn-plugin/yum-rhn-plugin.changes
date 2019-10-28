@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Thu Oct 17 12:16:48 CEST 2019 - jgonzalez@suse.com
+
+- version 4.0.7-1
+- Require mgr-daemon (new name of spacewalksd) so we systems with
+  spacewalksd get always the new package installed (bsc#1149353)
+
+-------------------------------------------------------------------
 Wed May 15 15:37:55 CEST 2019 - jgonzalez@suse.com
 
 - version 4.0.6-1

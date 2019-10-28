@@ -724,6 +724,10 @@ insert into rhnServerServerGroupArchCompat ( server_arch_id, server_group_type )
 	values (lookup_server_arch('mips-debian-linux'),
             lookup_sg_type('foreign_entitled'));
 
+insert into rhnServerServerGroupArchCompat ( server_arch_id, server_group_type )
+	values (lookup_server_arch('cloud'),
+            lookup_sg_type('foreign_entitled'));
+
 -- container_build_host* compatibilities --
 
 insert into rhnServerServerGroupArchCompat ( server_arch_id, server_group_type)
@@ -841,6 +845,10 @@ insert into rhnServerServerGroupArchCompat ( server_arch_id, server_group_type)
 
 insert into rhnServerServerGroupArchCompat ( server_arch_id, server_group_type)
     values (lookup_server_arch('x86_64-redhat-linux'),
+            lookup_sg_type('monitoring_entitled'));
+
+insert into rhnServerServerGroupArchCompat ( server_arch_id, server_group_type)
+    values (lookup_server_arch('amd64-debian-linux'),
             lookup_sg_type('monitoring_entitled'));
 
 commit;

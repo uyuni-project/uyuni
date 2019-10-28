@@ -4,7 +4,7 @@
 }
 
 :global(.toast) {
-    padding: 15px !important;
+    padding: 15px 30px !important;
     text-align: center !important;
     width: 32% !important;
     font-size: 15px;
@@ -36,6 +36,7 @@
     background-color: #f2dede !important;
     border-color: #ebccd1 !important;
     background-image: none !important;
+    opacity: 1 !important;
 }
 
 :global(.toast-error .toast-message:after) {
@@ -55,6 +56,7 @@
     background-color: #fcf8e3 !important;
     border-color: #faebcc !important;
     background-image: none !important;
+    opacity: 1 !important;
 }
 
 :global(.toast-warning .toast-message:after) {
@@ -74,6 +76,7 @@
     background-color: #d9edf7 !important;
     border-color: #bce8f1 !important;
     background-image: none !important;
+    opacity: 1 !important;
 }
 
 :global(.toast-info .toast-message:after) {

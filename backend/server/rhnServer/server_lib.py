@@ -28,6 +28,7 @@ from spacewalk.common.rhnException import rhnException
 from spacewalk.common.rhnConfig import CFG
 
 from spacewalk.server import rhnSQL
+from rhn.i18n import bstr
 
 # Do not import server.apacheAuth in this module, or the secret generation
 # script will traceback - since it would try to import rhnSecret which doesn't
@@ -345,13 +346,13 @@ def generate_random_string(length=20):
     random_bytes = 16
     length = int(length)
     s = hashlib.new('sha1')
-    s.update("%.8f" % time.time())
-    s.update(str(os.getpid()))
-    devrandom = open('/dev/urandom')
+    s.update(bstr("%.8f" % time.time()))
+    s.update(bstr(str(os.getpid())))
+    devrandom = open('/dev/urandom', mode='rb')
     result = []
     cur_length = 0
     while 1:
-        s.update(devrandom.read(random_bytes))
+        s.update(bstr(devrandom.read(random_bytes)))
         buf = s.hexdigest()
         result.append(buf)
         cur_length = cur_length + len(buf)

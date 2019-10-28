@@ -1,4 +1,40 @@
 - Using new module path for which_bin to get rid of DeprecationWarning
+- Fix: match `image_id` with newer k8s (bsc#1149741)
+- enable Kiwi NG on SLE15
+
+-------------------------------------------------------------------
+Thu Oct 17 12:35:00 CEST 2019 - jgonzalez@suse.com
+
+- version 4.0.20-1
+- Require pmtools only for SLE11 i586 and x86_64 (bsc#1150314)
+- Introduce dnf-susemanager-plugin for RHEL8 minions
+- Provide custom grain to report "instance id" when running on Public Cloud instances
+- disable legacy startup events for new minions
+- implement provisioning for salt clients
+- dmidecode does not exist on ppc64le and s390x (bsc#1145119)
+- update susemanager.conf to use adler32 for computing the server_id for new minions
+
+-------------------------------------------------------------------
+Thu Aug 29 14:45:38 CEST 2019 - jgonzalez@suse.com
+
+- version 4.0.19-1
+- Bootstrapping RES6/RHEL6/SLE11 with TLS1.2 now shows error message. (bsc#1147126)
+
+-------------------------------------------------------------------
+Wed Aug 28 17:53:06 CEST 2019 - jgonzalez@suse.com
+
+- version 4.0.18-1
+- Fix for issue with bootstrapping RES minions (bsc#1147126)
+
+-------------------------------------------------------------------
+Tue Jul 30 15:01:47 CEST 2019 - jgonzalez@suse.com
+
+- version 4.0.17-1
+- Force VM off before deleting it (bsc#1138127)
+- Check for result of image rsync transfer to catch failures early (bsc#1104949)
+- Allow forcing off or resetting VMs
+- Make sure dmidecode is installed during bootstrap to ensure that hardware
+  refresh works for all operating systems (bsc#1137952)
 
 -------------------------------------------------------------------
 Thu Jun 13 10:43:11 CEST 2019 - jgonzalez@suse.com

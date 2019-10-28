@@ -1,4 +1,4 @@
-# Copyright (c) 2016-2019 SUSE-LINUX
+# Copyright (c) 2016-2019 SUSE LLC.
 # Licensed under the terms of the MIT license.
 
 require 'twopence'
@@ -87,13 +87,21 @@ def get_system_name(host)
     # The PXE boot minion is not directly accessible on the network,
     # therefore it is not represented by a twopence node
     output, _code = $server.run('salt-key')
-    system_name = output.split.find { |word| word =~ /example.pxeboot-/ }
-    system_name = '' if system_name.nil?
+    system_name = output.split.find do |word|
+      word =~ /example.Intel-Genuine-None-/ || word =~ /example.pxeboot-/ || word =~ /example.Intel/
+    end
+    system_name = 'pxeboot.example.org' if system_name.nil?
   else
     node = get_target(host)
     system_name = node.full_hostname
   end
   system_name
+end
+
+# This function returns the net prefix, caching it
+def net_prefix
+  $net_prefix = $private_net.sub(%r{\.0+/24$}, '.') if $net_prefix.nil?
+  $net_prefix
 end
 
 # This function tests whether a file exists on a node
@@ -121,10 +129,10 @@ def file_inject(node, local_file, remote_file)
 end
 
 # Other global variables
-$sle15_minion = minion_is_sle15
+$sle15_minion = sle15family?($minion)
 $pxeboot_mac = ENV['PXEBOOTMAC']
 $private_net = ENV['PRIVATENET'] if ENV['PRIVATENET']
 $mirror = ENV['MIRROR']
 $git_profiles = ENV['GITPROFILES']
-$product = product
 $server_http_proxy = ENV['SERVER_HTTP_PROXY'] if ENV['SERVER_HTTP_PROXY']
+$scc_credentials = ENV['scc_credentials'] if ENV['scc_credentials']

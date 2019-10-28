@@ -1,6 +1,7 @@
 // @flow
 
 const React = require('react');
+const {SectionToolbar} = require("components/section-toolbar/section-toolbar");
 
 type Props = {
   title: string,
@@ -16,13 +17,13 @@ function InnerPanel(props: Props) {
         <i className={`fa ${props.icon}`} />
         {props.title}
       </h2>
-      <div className="spacewalk-section-toolbar">
+      <SectionToolbar>
         <div className="action-button-wrapper">
           <div className="btn-group">
             {props.buttons}
           </div>
         </div>
-      </div>
+      </SectionToolbar>
       <div className="row">
         <div className="panel panel-default">
           <div className="panel-body">

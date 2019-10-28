@@ -43,7 +43,7 @@ public class ProjectSourcesApiController {
 
     /** Init routes for ContentManagement Sources Api.*/
     public static void initRoutes() {
-        put("/manager/contentmanagement/api/projects/:projectId/softwaresources",
+        put("/manager/api/contentmanagement/projects/:projectId/softwaresources",
                 withUser(ProjectSourcesApiController::updateContentSoftwareSources));
     }
 

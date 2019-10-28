@@ -6,6 +6,7 @@ const ReactDOM = require("react-dom");
 const {Button} = require("components/buttons");
 const { TopPanel } = require('components/panels/TopPanel')
 const Network = require("utils/network");
+const SpaRenderer  = require("core/spa/spa-renderer").default;
 
 function object2map(obj) {
   return Object.keys(obj).reduce((acc, id) => {
@@ -186,10 +187,10 @@ class RemoteCommand extends React.Component {
                 <div className="col-lg-12">
                   <div className="input-group">
                       <input id="command" className="form-control" type="text" defaultValue={this.state.command} onChange={this.commandChanged}
-                            disabled={this.state.executing.state() == "pending" ? "disabled" : ""}/>
+                            disabled={this.state.executing.state() == "pending" ? "disabled" : ""} placeholder={t('Type the command here')} />
                       <span className="input-group-addon">@</span>
                       <input id="target" className="form-control" type="text" defaultValue={this.state.target} onChange={this.targetChanged}
-                            disabled={this.state.executing.state() == "pending" ? "disabled" : ""}/>
+                            disabled={this.state.executing.state() == "pending" ? "disabled" : ""} placeholder={t('Type the minion_id pattern to target here')}/>
                       <div className="input-group-btn">
                         { button }
                       </div>
@@ -208,7 +209,7 @@ class RemoteCommand extends React.Component {
             <div className="panel-body" style={this.state.result.minions.size ? style : undefined}>
               {(() => {
                 if (!this.state.result.minions.size && !this.state.result.waitForSSH) {
-                   return(<span>{this.state.previewed.state() != "pending" ? t("No target systems previewed") : t("No target systems have been found")}</span>)
+                   return(<span>{this.state.previewed.state() != "pending" ? t("No target systems previewed") : t("No target systems found")}</span>)
                 } else {
                   return(this.commandResult(this.state.result))
                 }
@@ -509,7 +510,7 @@ function errorMessageByStatus(status) {
   }
 }
 
-ReactDOM.render(
+export const renderer = (id) => SpaRenderer.renderNavigationReact(
   <RemoteCommand />,
-  document.getElementById('remote-commands')
+  document.getElementById(id)
 );

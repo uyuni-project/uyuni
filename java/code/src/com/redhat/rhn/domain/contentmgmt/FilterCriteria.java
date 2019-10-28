@@ -20,7 +20,12 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.tuple.Triple;
 
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.persistence.EnumType;
@@ -30,6 +35,17 @@ import static com.redhat.rhn.domain.contentmgmt.ContentFilter.EntityType.ERRATUM
 import static com.redhat.rhn.domain.contentmgmt.ContentFilter.EntityType.PACKAGE;
 import static com.redhat.rhn.domain.contentmgmt.FilterCriteria.Matcher.CONTAINS;
 import static com.redhat.rhn.domain.contentmgmt.FilterCriteria.Matcher.EQUALS;
+import static com.redhat.rhn.domain.contentmgmt.FilterCriteria.Matcher.GREATER;
+import static com.redhat.rhn.domain.contentmgmt.FilterCriteria.Matcher.GREATEREQ;
+import static com.redhat.rhn.domain.contentmgmt.FilterCriteria.Matcher.MATCHES;
+import static com.redhat.rhn.domain.contentmgmt.FilterCriteria.Matcher.MATCHES_PKG_NAME;
+import static com.redhat.rhn.domain.contentmgmt.FilterCriteria.Matcher.CONTAINS_PKG_NAME;
+import static com.redhat.rhn.domain.contentmgmt.FilterCriteria.Matcher.CONTAINS_PKG_LT_EVR;
+import static com.redhat.rhn.domain.contentmgmt.FilterCriteria.Matcher.CONTAINS_PKG_LE_EVR;
+import static com.redhat.rhn.domain.contentmgmt.FilterCriteria.Matcher.CONTAINS_PKG_EQ_EVR;
+import static com.redhat.rhn.domain.contentmgmt.FilterCriteria.Matcher.CONTAINS_PKG_GE_EVR;
+import static com.redhat.rhn.domain.contentmgmt.FilterCriteria.Matcher.CONTAINS_PKG_GT_EVR;
+
 
 /**
  * The criteria used for matching objects (Package, Errata) in {@link ContentFilter}
@@ -52,7 +68,23 @@ public class FilterCriteria {
         validCombinations.add(Triple.of(PACKAGE, CONTAINS, "name"));
         validCombinations.add(Triple.of(PACKAGE, EQUALS, "nevr"));
         validCombinations.add(Triple.of(PACKAGE, EQUALS, "nevra"));
+        validCombinations.add(Triple.of(PACKAGE, MATCHES, "name"));
         validCombinations.add(Triple.of(ERRATUM, EQUALS, "advisory_name"));
+        validCombinations.add(Triple.of(ERRATUM, EQUALS, "advisory_type"));
+        validCombinations.add(Triple.of(ERRATUM, EQUALS, "synopsis"));
+        validCombinations.add(Triple.of(ERRATUM, MATCHES, "advisory_name"));
+        validCombinations.add(Triple.of(ERRATUM, MATCHES, "synopsis"));
+        validCombinations.add(Triple.of(ERRATUM, CONTAINS, "synopsis"));
+        validCombinations.add(Triple.of(ERRATUM, CONTAINS, "keyword"));
+        validCombinations.add(Triple.of(ERRATUM, GREATER, "issue_date"));
+        validCombinations.add(Triple.of(ERRATUM, GREATEREQ, "issue_date"));
+        validCombinations.add(Triple.of(ERRATUM, MATCHES_PKG_NAME, "package_name"));
+        validCombinations.add(Triple.of(ERRATUM, CONTAINS_PKG_NAME, "package_name"));
+        validCombinations.add(Triple.of(ERRATUM, CONTAINS_PKG_LT_EVR, "package_nevr"));
+        validCombinations.add(Triple.of(ERRATUM, CONTAINS_PKG_LE_EVR, "package_nevr"));
+        validCombinations.add(Triple.of(ERRATUM, CONTAINS_PKG_EQ_EVR, "package_nevr"));
+        validCombinations.add(Triple.of(ERRATUM, CONTAINS_PKG_GE_EVR, "package_nevr"));
+        validCombinations.add(Triple.of(ERRATUM, CONTAINS_PKG_GT_EVR, "package_nevr"));
     }
 
     /**
@@ -60,7 +92,17 @@ public class FilterCriteria {
      */
     public enum Matcher {
         CONTAINS("contains"),
-        EQUALS("equals");
+        MATCHES_PKG_NAME("matches_pkg_name"),
+        CONTAINS_PKG_NAME("contains_pkg_name"),
+        CONTAINS_PKG_LT_EVR("contains_pkg_lt_evr"), // <
+        CONTAINS_PKG_LE_EVR("contains_pkg_le_evr"), // <=
+        CONTAINS_PKG_EQ_EVR("contains_pkg_eq_evr"), // ==
+        CONTAINS_PKG_GE_EVR("contains_pkg_ge_evr"), // >=
+        CONTAINS_PKG_GT_EVR("contains_pkg_gt_evr"), // >
+        EQUALS("equals"),
+        GREATER("greater"),
+        GREATEREQ("greatereq"),
+        MATCHES("matches");
 
         private String label;
 
@@ -128,6 +170,23 @@ public class FilterCriteria {
                     String.format("Invalid criteria combination (entityType: '%s', matcher: '%s', field: '%s')",
                             entityType, matcher, field));
         }
+    }
+
+    /**
+     * Return a list of available filter criterias
+     *
+     * @return list of filter criteria
+     */
+    public static List<Map<String, String>> listFilterCriteria() {
+        List<Map<String, String>> result = new LinkedList<>();
+        for (Triple<ContentFilter.EntityType, Matcher, String> c : validCombinations) {
+            Map<String, String> criteria = new HashMap<>();
+            criteria.put("type", c.getLeft().getLabel());
+            criteria.put("matcher", c.getMiddle().getLabel());
+            criteria.put("field", c.getRight());
+            result.add(criteria);
+        }
+        return result;
     }
 
     /**

@@ -50,9 +50,9 @@ Name:           mgr-osad
 Summary:        Open Source Architecture Daemon
 License:        GPL-2.0-only
 Group:          System Environment/Daemons
-Version:        4.0.8
+Version:        4.0.10
 Provides:       %{oldname} = %{oldversion}
-Obsoletes:      %{oldname} = %{oldversion}
+Obsoletes:      %{oldname} < %{oldversion}
 Release:        1%{?dist}
 Url:            https://github.com/uyuni-project/uyuni
 Source0:        https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
@@ -114,8 +114,8 @@ Summary:        Open Source Architecture Daemon
 Group:          System Environment/Daemons
 Provides:       python-%{name} = %{oldversion}
 Obsoletes:      python-%{name} < %{oldversion}
-Provides:       python-%{oldname} = %{oldversion}
-Obsoletes:      python-%{oldname} < %{oldversion}
+Provides:       python2-%{oldname} = %{oldversion}
+Obsoletes:      python2-%{oldname} < %{oldversion}
 Requires:       %{name} = %{version}-%{release}
 Requires:       python
 Requires:       python-jabberpy

@@ -1,7 +1,8 @@
-# Copyright (c) 2013-2019 Novell, Inc.
+# Copyright (c) 2013-2019 SUSE LLC.
 # Licensed under the terms of the MIT license.
 
 require 'tempfile'
+require 'yaml'
 
 # return current URL
 def current_url
@@ -14,6 +15,22 @@ def generate_temp_file(name, content)
     file.write(content)
     return file.path
   end
+end
+
+# extract terminals from a retail yaml configuration
+def get_terminals_from_yaml(name)
+  tree = YAML.load_file(name)
+  tree['branches'].values[0]['terminals'].keys
+end
+
+def get_branch_prefix_from_yaml(name)
+  tree = YAML.load_file(name)
+  tree['branches'].values[0]['branch_prefix']
+end
+
+def get_server_domain_from_yaml(name)
+  tree = YAML.load_file(name)
+  tree['branches'].values[0]['server_domain']
 end
 
 # get registration URL
@@ -33,14 +50,6 @@ def count_table_items
   items_label.split('of ')[1]
 end
 
-def product
-  _product_raw, code = $server.run('rpm -q patterns-uyuni_server', false)
-  return 'Uyuni' if code.zero?
-  _product_raw, code = $server.run('rpm -q patterns-suma_server', false)
-  return 'SUSE Manager' if code.zero?
-  raise 'Could not determine product'
-end
-
 # This function creates salt pillar file in the default pillar_roots location
 def inject_salt_pillar_file(source, file)
   dest = '/srv/pillar/' + file
@@ -49,6 +58,12 @@ def inject_salt_pillar_file(source, file)
   # make file readeable by salt
   $server.run("chgrp salt #{dest}")
   return_code
+end
+
+# WARN: It's working for /24 mask, but couldn't not work properly with others
+def get_reverse_net(net)
+  a = net.split('.')
+  a[2] + '.' + a[1] + '.' + a[0] + '.in-addr.arpa'
 end
 
 # Repeatedly executes a block raising an exception in case it is not finished within timeout seconds
@@ -86,4 +101,48 @@ def format_detail(message, last_result, report_result)
   formatted_message = "#{': ' unless message.nil?}#{message}"
   formatted_result = "#{', last result was: ' unless last_result.nil?}#{last_result}" if report_result
   "#{formatted_message}#{formatted_result}"
+end
+
+def click_button_and_wait(locator = nil, **options)
+  page.click_button(locator, options)
+  begin
+    raise 'Timeout: Waiting AJAX transition (click link)' unless page.has_no_css?('.senna-loading', wait: 1)
+  rescue StandardError => e
+    puts e.message # Skip errors related to .senna-loading element
+  end
+end
+
+def click_link_and_wait(locator = nil, **options)
+  page.click_link(locator, options)
+  begin
+    raise 'Timeout: Waiting AJAX transition (click link)' unless page.has_no_css?('.senna-loading', wait: 1)
+  rescue StandardError => e
+    puts e.message # Skip errors related to .senna-loading element
+  end
+end
+
+def click_link_or_button_and_wait(locator = nil, **options)
+  page.click_link_or_button(locator, options)
+  begin
+    raise 'Timeout: Waiting AJAX transition (click link)' unless page.has_no_css?('.senna-loading', wait: 1)
+  rescue StandardError => e
+    puts e.message # Skip errors related to .senna-loading element
+  end
+end
+
+# Capybara Node Element extension to override click method, clicking and then waiting for ajax transition
+module CapybaraNodeElementExtension
+  def click
+    super
+    begin
+      raise 'Timeout: Waiting AJAX transition (click link)' unless page.has_no_css?('.senna-loading', wait: 1)
+    rescue StandardError => e
+      puts e.message # Skip errors related to .senna-loading element
+    end
+  end
+end
+
+def find_and_wait_click(*args, **options, &optional_filter_block)
+  element = page.find(*args, options, &optional_filter_block)
+  element.extend(CapybaraNodeElementExtension)
 end

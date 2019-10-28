@@ -81,6 +81,7 @@ import com.redhat.rhn.manager.rhnset.RhnSetManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.manager.system.test.SystemManagerTest;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
+import com.redhat.rhn.taskomatic.TaskomaticApiException;
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.ServerTestUtils;
@@ -96,6 +97,9 @@ import org.apache.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
 import org.jmock.Expectations;
+import org.jmock.Mockery;
+import org.jmock.integration.junit3.JUnit3Mockery;
+import org.jmock.lib.concurrent.Synchroniser;
 import org.jmock.lib.legacy.ClassImposteriser;
 
 import java.util.ArrayList;
@@ -118,6 +122,11 @@ import java.util.stream.Collectors;
  */
 public class ActionManagerTest extends JMockBaseTestCaseWithUser {
     private static Logger log = Logger.getLogger(ActionManagerTest.class);
+    private static TaskomaticApi taskomaticApi;
+    private final Mockery MOCK_CONTEXT = new JUnit3Mockery() {{
+        setThreadingPolicy(new Synchroniser());
+        setImposteriser(ClassImposteriser.INSTANCE);
+    }};
 
     @Override
     public void setUp() throws Exception {
@@ -685,6 +694,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
     }
 
     public void testSchedulePackageRemoval() throws Exception {
+        ActionManager.setTaskomaticApi(getTaskomaticApi());
         Server srvr = ServerFactoryTest.createTestServer(user, true);
         RhnSet set = RhnSetManager.createSet(user.getId(), "removable_package_list",
                 SetCleanup.NOOP);
@@ -707,6 +717,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
     }
 
     public void testSchedulePackageVerify() throws Exception {
+        ActionManager.setTaskomaticApi(getTaskomaticApi());
         Server srvr = ServerFactoryTest.createTestServer(user, true);
         RhnSet set = RhnSetManager.createSet(user.getId(), "verify_package_list",
                 SetCleanup.NOOP);
@@ -719,6 +730,13 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
                 pkg.getPackageArch().getId());
         RhnSetManager.store(set);
 
+        TaskomaticApi taskomaticMock = mock(TaskomaticApi.class);
+        ActionManager.setTaskomaticApi(taskomaticMock);
+
+        context().checking(new Expectations() { {
+            allowing(taskomaticMock).scheduleActionExecution(with(any(Action.class)));
+        } });
+
         PackageAction pa = ActionManager.schedulePackageVerify(user, srvr, set, new Date());
         assertNotNull(pa);
         assertNotNull(pa.getId());
@@ -728,6 +746,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
     }
 
     public void testScheduleScriptRun() throws Exception {
+        ActionManager.setTaskomaticApi(getTaskomaticApi());
         Server srvr = ServerFactoryTest.createTestServer(user, true);
         SystemManagerTest.giveCapability(srvr.getId(), "script.run", 1L);
         assertNotNull(srvr);
@@ -833,6 +852,8 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
 
     @SuppressWarnings("rawtypes")
     public void testSchedulePackageDelta() throws Exception {
+        ActionManager.setTaskomaticApi(getTaskomaticApi());
+
         Server srvr = ServerFactoryTest.createTestServer(user, true);
 
         List<PackageListItem> profileList = new ArrayList<>();
@@ -855,6 +876,12 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
 
         List<PackageMetadata> pkgs = ProfileManager.comparePackageLists(new DataResult<PackageListItem>(profileList),
                 new DataResult<PackageListItem>(systemList), "foo");
+
+        TaskomaticApi taskomaticMock = mock(TaskomaticApi.class);
+        ActionManager.setTaskomaticApi(taskomaticMock);
+        context().checking(new Expectations() { {
+            allowing(taskomaticMock).scheduleActionExecution(with(any(Action.class)));
+        } });
 
         Action action = ActionManager.schedulePackageRunTransaction(user, srvr, pkgs,
                 new Date());
@@ -1047,4 +1074,18 @@ VALUES
     }
 
     //schedulePackageDelta
+
+
+    private TaskomaticApi getTaskomaticApi() throws TaskomaticApiException {
+        if (taskomaticApi == null) {
+            taskomaticApi = MOCK_CONTEXT.mock(TaskomaticApi.class);
+            MOCK_CONTEXT.checking(new Expectations() {
+                {
+                    allowing(taskomaticApi).scheduleActionExecution(with(any(Action.class)));
+                }
+            });
+        }
+
+        return taskomaticApi;
+    }
 }

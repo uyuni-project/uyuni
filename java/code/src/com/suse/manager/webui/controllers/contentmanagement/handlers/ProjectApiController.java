@@ -55,13 +55,13 @@ public class ProjectApiController {
 
     /** Init routes for ContentManagement Project Api.*/
     public static void initRoutes() {
-        post("/manager/contentmanagement/api/projects",
+        post("/manager/api/contentmanagement/projects",
                 withUser(ProjectApiController::createContentProject));
 
-        delete("/manager/contentmanagement/api/projects/:projectId",
+        delete("/manager/api/contentmanagement/projects/:projectId",
                 withUser(ProjectApiController::removeContentProject));
 
-        put("/manager/contentmanagement/api/projects/:projectId/properties",
+        put("/manager/api/contentmanagement/projects/:projectId/properties",
                 withUser(ProjectApiController::updateContentProjectProperties));
 
     }
@@ -100,7 +100,7 @@ public class ProjectApiController {
 
         FlashScopeHelper.flash(
                 req,
-                String.format("Project %s created successfully.", projectPropertiesRequest.getLabel())
+                String.format("Project %s created successfully.", projectPropertiesRequest.getName())
         );
 
         return ControllerApiUtils.fullProjectJsonResponse(res, createdProject.getLabel(), user);

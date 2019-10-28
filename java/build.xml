@@ -962,6 +962,7 @@ delete from rhnChannel where label like 'ChannelLabel%';
     <copy toDir="${rhn-home}" overwrite="false">
       <fileset dir="${rhn-home}/conf/eclipse/">
         <include name=".project" />
+        <include name=".settings/*" />
         <!-- include name=".externalToolBuilders/*" /-->
       </fileset>
     </copy>

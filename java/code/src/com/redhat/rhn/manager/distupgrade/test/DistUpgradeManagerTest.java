@@ -141,8 +141,7 @@ public class DistUpgradeManagerTest extends BaseTestCaseWithUser {
         SUSEProduct sourceProduct = SUSEProductTestUtils.createTestSUSEProduct(family);
         SUSEProductTestUtils.createBaseChannelForBaseProduct(sourceProduct, user);
         sourceProduct = TestUtils.saveAndReload(sourceProduct);
-        SUSEProductSet sourceProducts = new SUSEProductSet(
-                sourceProduct, Collections.emptyList());
+        SUSEProductSet sourceProducts = new SUSEProductSet(sourceProduct, Collections.emptyList());
 
         SUSEProduct targetBaseProduct = SUSEProductTestUtils.createTestSUSEProduct(family);
         SUSEProductTestUtils.createBaseChannelForBaseProduct(targetBaseProduct, user);

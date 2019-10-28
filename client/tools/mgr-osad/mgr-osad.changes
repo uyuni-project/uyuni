@@ -1,4 +1,18 @@
 -------------------------------------------------------------------
+Thu Oct 17 12:10:30 CEST 2019 - jgonzalez@suse.com
+
+- version 4.0.10-1
+- Obsolete all old python2-osa* packages to avoid conflicts (bsc#1152290)
+
+-------------------------------------------------------------------
+Tue Jul 30 14:40:28 CEST 2019 - jgonzalez@suse.com
+
+- version 4.0.9-1
+- Fix obsolete for old osad packages, to allow installing mgr-osad
+  even by using osad at yum/zyppper install (bsc#1139453)
+- Ensure bytes type when using hashlib to avoid traceback (bsc#1138822)
+
+-------------------------------------------------------------------
 Wed May 15 20:07:58 CEST 2019 - jgonzalez@suse.com
 
 - version 4.0.8-1

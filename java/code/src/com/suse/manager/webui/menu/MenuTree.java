@@ -173,7 +173,7 @@ public class MenuTree {
                 .addChild(new MenuItem("Keys").withPrimaryUrl("/rhn/manager/systems/keys"))
                 .addChild(new MenuItem("Remote Commands").withPrimaryUrl("/rhn/manager/systems/cmd"))
                 .addChild(new MenuItem("Formula Catalog").withPrimaryUrl("/rhn/manager/formula-catalog")
-                    .withVisibility(adminRoles.get("org") && checkAcl(user, "salt_formulas_installed()"))));
+                    .withVisibility(adminRoles.get("org"))));
 
             // Images
             nodes.add(new MenuItem("Images").withIcon("spacewalk-icon-manage-configuration-files")
@@ -364,16 +364,16 @@ public class MenuTree {
                 );
 
             // Help
-            nodes.add(new MenuItem("Help").withIcon("fa-book").withTarget("blank")
+            nodes.add(new MenuItem("Help").withIcon("fa-book").withTarget("_blank")
                 .addChild(new MenuItem("Documentation_version", Config.get().getString("web.version"))
-                    .withPrimaryUrl("/docs/index.html").withTarget("blank"))
-                .addChild(new MenuItem("Release Notes").withTarget("blank")
+                    .withPrimaryUrl("/docs/index.html").withTarget("_blank"))
+                .addChild(new MenuItem("Release Notes").withTarget("_blank")
                         .addChild(new MenuItem("product_server")
                             .withPrimaryUrl("/docs/release-notes/release-notes-server.html")
-                            .withTarget("blank"))
+                            .withTarget("_blank"))
                         .addChild(new MenuItem("product_proxy")
                                 .withPrimaryUrl("/docs/release-notes/release-notes-proxy.html")
-                                .withTarget("blank"))
+                                .withTarget("_blank"))
                         )
                 .addChild(new MenuItem("API")
                     .addChild(new MenuItem("Overview").withPrimaryUrl("/rhn/apidoc/index.jsp")
@@ -388,10 +388,10 @@ public class MenuTree {
             nodes.add(new MenuItem("External Links").withIcon("fa-link")
                 .addChild(new MenuItem("header.jsp.knowledgebase")
                     .withPrimaryUrl("https://www.suse.com/support/kb/product.php?id=SUSE_Manager")
-                    .withTarget("blank"))
+                    .withTarget("_blank"))
                 .addChild(new MenuItem("header.jsp.documentation")
                     .withPrimaryUrl("https://www.suse.com/documentation/suse_manager/")
-                    .withTarget("blank"))
+                    .withTarget("_blank"))
                 );
         }
         else {
@@ -405,15 +405,15 @@ public class MenuTree {
                 .addChild(new MenuItem("Overview").withPrimaryUrl("/rhn/help/about.do"))
                 .addChild(new MenuItem("Sign In").withPrimaryUrl("/rhn/Login.do"))
                 .addChild(new MenuItem("Documentation_version", Config.get().getString("web.version"))
-                    .withPrimaryUrl("/docs/index.html").withTarget("blank"))
+                    .withPrimaryUrl("/docs/index.html").withTarget("_blank"))
                 .addChild(new MenuItem("Lookup Login/Password").withPrimaryUrl("/rhn/help/ForgotCredentials.do"))
-                .addChild(new MenuItem("Release Notes").withTarget("blank")
+                .addChild(new MenuItem("Release Notes").withTarget("_blank")
                         .addChild(new MenuItem("product_server")
                             .withPrimaryUrl("/docs/release-notes/release-notes-server.html")
-                            .withTarget("blank"))
+                            .withTarget("_blank"))
                         .addChild(new MenuItem("product_proxy")
                                 .withPrimaryUrl("/docs/release-notes/release-notes-proxy.html")
-                                .withTarget("blank"))
+                                .withTarget("_blank"))
                         )
                 .addChild(new MenuItem("API")
                     .addChild(new MenuItem("Overview").withPrimaryUrl("/rhn/apidoc/index.jsp")
@@ -428,10 +428,10 @@ public class MenuTree {
             nodes.add(new MenuItem("External Links").withIcon("fa-link")
                 .addChild(new MenuItem("header.jsp.knowledgebase")
                     .withPrimaryUrl("https://www.suse.com/support/kb/product.php?id=SUSE_Manager")
-                    .withTarget("blank"))
+                    .withTarget("_blank"))
                 .addChild(new MenuItem("header.jsp.documentation")
                     .withPrimaryUrl("https://www.suse.com/documentation/suse_manager/")
-                    .withTarget("blank"))
+                    .withTarget("_blank"))
                 );
         }
 

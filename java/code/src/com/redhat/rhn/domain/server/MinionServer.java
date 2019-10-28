@@ -127,7 +127,7 @@ public class MinionServer extends Server implements SaltConfigurable {
      * Return <code>true</code> if OS on this system supports OS Image building,
      * <code>false</code> otherwise.
      * <p>
-     * Note: For SLES, we are only checking if it's not 10 nor 11 nor 15.
+     * Note: For SLES, we are only checking if it's not 10.
      * Older than SLES 10 are not being checked.
      * </p>
      *
@@ -135,7 +135,7 @@ public class MinionServer extends Server implements SaltConfigurable {
      */
     @Override
     public boolean doesOsSupportsOSImageBuilding() {
-        return !isSLES10() && !isSLES15();
+        return !isSLES10();
     }
 
     /**
@@ -155,7 +155,7 @@ public class MinionServer extends Server implements SaltConfigurable {
 
     @Override
     public boolean doesOsSupportsMonitoring() {
-        return isSLES12() || isSLES15() || isLeap15();
+        return isSLES12() || isSLES15() || isLeap15() || isUbuntu1804() || isRedHat6() || isRedHat7();
     }
 
     /**
@@ -188,6 +188,21 @@ public class MinionServer extends Server implements SaltConfigurable {
 
     private boolean isLeap15() {
         return ServerConstants.LEAP.equalsIgnoreCase(getOs()) && getRelease().startsWith("15");
+    }
+
+    private boolean isUbuntu1804() {
+        return ServerConstants.UBUNTU.equals(getOs()) && getRelease().equals("18.04");
+    }
+
+    /**
+     * This is supposed to cover all RedHat flavors (incl. RHEL, RES and CentOS Linux)
+     */
+    private boolean isRedHat6() {
+        return ServerConstants.REDHAT.equals(getOsFamily()) && getRelease().equals("6");
+    }
+
+    private boolean isRedHat7() {
+        return ServerConstants.REDHAT.equals(getOsFamily()) && getRelease().equals("7");
     }
 
     /**

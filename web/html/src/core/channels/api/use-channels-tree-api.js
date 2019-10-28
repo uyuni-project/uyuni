@@ -49,7 +49,7 @@ const useChannelsTreeApi = (): UseChannelsType => {
   const [isChannelsTreeLoaded, setIsChannelsTreeLoaded] = useState(false);
 
   const fetchChannelsTree = (): Promise<ChannelsTreeType> => {
-    return  Network.get(`/rhn/manager/api/activation-keys/base-channels/-1/child-channels`)
+    return  Network.get(`/rhn/manager/api/channels?filterClm=true`)
       .promise.then(data => {
         const channelsTree = flattenChannelsTree(data.data);
         setChannelsTree(channelsTree);

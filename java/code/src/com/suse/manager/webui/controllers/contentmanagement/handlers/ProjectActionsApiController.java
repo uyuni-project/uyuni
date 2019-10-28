@@ -49,11 +49,11 @@ public class ProjectActionsApiController {
 
     /** Init routes for ContentManagement Sources Api.*/
     public static void initRoutes() {
-        get("/manager/contentmanagement/api/projects/:projectId",
+        get("/manager/api/contentmanagement/projects/:projectId",
                 withUser(ProjectActionsApiController::project));
-        post("/manager/contentmanagement/api/projects/:projectId/build",
+        post("/manager/api/contentmanagement/projects/:projectId/build",
                 withUser(ProjectActionsApiController::buildProject));
-        post("/manager/contentmanagement/api/projects/:projectId/promote",
+        post("/manager/api/contentmanagement/projects/:projectId/promote",
                 withUser(ProjectActionsApiController::promoteProject));
     }
 

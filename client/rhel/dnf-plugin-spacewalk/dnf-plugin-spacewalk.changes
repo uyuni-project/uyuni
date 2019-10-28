@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue Jul 30 14:39:13 CEST 2019 - jgonzalez@suse.com
+
+- version 4.0.7-1
+- ignore broken json cache data
+
+-------------------------------------------------------------------
 Wed May 15 14:57:49 CEST 2019 - jgonzalez@suse.com
 
 - version 4.0.6-1

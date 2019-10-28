@@ -239,6 +239,7 @@ public class FormulaController {
         data.put("groupName",
                 ServerGroupFactory.lookupByIdAndOrg(Long.valueOf(serverGroupId),
                 user.getOrg()).getName());
+        data.put("warning", FormulaFactory.getWarningMessageAccessFormulaFolders());
         return new ModelAndView(data, "templates/groups/formulas.jade");
     }
 
@@ -348,6 +349,7 @@ public class FormulaController {
            User user) {
        Map<String, Object> data = new HashMap<>();
        data.put("server", ServerFactory.lookupById(Long.valueOf(request.queryParams("sid"))));
+       data.put("warning", FormulaFactory.getWarningMessageAccessFormulaFolders());
        return new ModelAndView(data, "templates/minion/formulas.jade");
    }
 

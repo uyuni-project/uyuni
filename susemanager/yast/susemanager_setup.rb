@@ -62,4 +62,5 @@ module Yast
   end
 end
 
+Dir.chdir("/root")
 Yast::SusemanagerSetupClient.new.main

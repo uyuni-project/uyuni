@@ -6,43 +6,46 @@ All the routes exported on the files '<*folder_name*>/index.js' will be automati
 Check the file content-management/index.js for an example
 */
 
-const { readdirSync, statSync } = require('fs')
-const { join } = require('path')
+import './polyfills';
 
-const readDirs = p => readdirSync(p).filter(f => statSync(join(p, f)).isDirectory())
-const dirs = readDirs("./manager");
+import SpaRenderer from "core/spa/spa-renderer";
+import 'core/spa/spa-engine.js';
 
-const dirsWithRoutes = dirs.filter(dir => {
-  try {
-    return require(`./${dir}`).entries
-  } catch(e){
-    return false;
-  };
-})
+import Admin from "./admin";
+import Audit from "./audit";
+import ContentManagement from "./content-management";
+import Errors from "./errors";
+import Groups from "./groups";
+import Highstate from "./highstate";
+import Images from "./images";
+import Minion from "./minion";
+import Notifications from "./notifications";
+import Organizations from "./organizations";
+import Salt from "./salt";
+import Shared from "./shared";
+import Systems from "./systems";
+import Virtualization from "./virtualization";
+import Visualization from "./visualization";
 
-
-const pagesEntries = dirsWithRoutes.reduce((newRoutes, nextDir) => {
-  const nextDirRoutes = require(`./${nextDir}`).entries;
-  const nextDirRoutesFormated = nextDirRoutes.reduce((routesFormated, nextRoute) => {
-    const formatedKey = `${nextDir}/${nextRoute.split('.').slice(0, -1).join('.')}`;
-    const formatedValue = `./manager/${nextDir}/${nextRoute}`;
-
-    return {
-      ...routesFormated,
-      ...{[formatedKey]: formatedValue}
-    }
-  }, {});
-
-  return {...newRoutes, ...nextDirRoutesFormated};
-}, {});
-
-const allPages = {...pagesEntries};
-
-Object.keys(allPages).forEach((key) => {
-  allPages["javascript/manager/" + key] = allPages[key];
-  delete allPages[key]
-});
-
-module.exports = {
-  pages: allPages
+const pages = {
+  ...Admin,
+  ...Audit,
+  ...ContentManagement,
+  ...Errors,
+  ...Groups,
+  ...Highstate,
+  ...Images,
+  ...Minion,
+  ...Notifications,
+  ...Organizations,
+  ...Salt,
+  ...Shared,
+  ...Systems,
+  ...Virtualization,
+  ...Visualization,
 }
+
+window.spaImportReactPage =  function spaImportReactPage(pageName) {
+  SpaRenderer.addReactApp(pageName);
+  return pages[pageName]();
+};

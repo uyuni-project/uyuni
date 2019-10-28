@@ -4,6 +4,7 @@ const React = require('react');
 const { Text } = require('./Text');
 const { Password } = require('./Password');
 const { Check } = require('./Check');
+const { Radio } = require('./Radio');
 const { Select } = require('./Select');
 const { DateTime } = require('./DateTime');
 
@@ -112,14 +113,14 @@ class Form extends React.Component<Props, State> {
   }
 
   unregisterInput(component: React.ElementRef<any>) {
-    if (component.props && component.props.name) {
-      delete this.inputs[component.props.name];
+    if (component.props && component.props.name && this.inputs[component.props.name] === component) {
+        delete this.inputs[component.props.name];
 
-      this.setState((prevState) => {
-        const { model } = prevState;
-        delete model[component.props.name];
-        return { model };
-      });
+        this.setState((prevState) => {
+          const { model } = prevState;
+          delete model[component.props.name];
+          return { model };
+        });
     }
   }
 
@@ -132,7 +133,12 @@ class Form extends React.Component<Props, State> {
         model[component.props.name] = component.props.value;
         return { model };
       },
-      () => this.validate(component, component.props));
+      () => {
+        this.validate(component, component.props);
+        if (this.props.onChange) {
+          this.props.onChange(this.state.model, this.state.isValid);
+        };
+      });
     }
   }
 
@@ -153,7 +159,7 @@ class Form extends React.Component<Props, State> {
 
     // TODO [LuNeves] [Cedric] After upgrading react to v16 this could be improved with Context:
     // formPropsProvider and a formPropsConsumer on the component inputBase
-    const fieldTypes = [<Text />.type, <Password />.type, <Check />.type, <Select />.type, <DateTime />.type];
+    const fieldTypes = [<Text />.type, <Password />.type, <Check />.type, <Radio />.type, <Select />.type, <DateTime />.type];
     if (fieldTypes.includes(child.type)) {
       const name = child.props && child.props.name;
 

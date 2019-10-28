@@ -1,3 +1,23 @@
+- Fix malformed XML response when data contains non-ASCII chars (bsc#1154968)
+
+-------------------------------------------------------------------
+Thu Aug 29 23:44:17 CEST 2019 - jgonzalez@suse.com
+
+- version 4.0.11-1
+- Fix bootstrapping SLE11SP4 trad client with SSL enabled (bsc#1148177)
+
+-------------------------------------------------------------------
+Mon Aug 05 11:28:08 CEST 2019 - mc@suse.de
+
+- version 4.0.10-1
+- fix initialize ssl connection (bsc#1144155)
+
+-------------------------------------------------------------------
+Tue Jul 30 14:41:35 CEST 2019 - jgonzalez@suse.com
+
+- version 4.0.9-1
+- Add SNI support for clients
+
 -------------------------------------------------------------------
 Wed May 15 15:04:15 CEST 2019 - jgonzalez@suse.com
 

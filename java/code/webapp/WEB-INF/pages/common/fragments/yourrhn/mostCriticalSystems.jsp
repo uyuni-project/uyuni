@@ -19,7 +19,7 @@
                 <rl:column
                         headerkey="actions.jsp.system"
                         headerclass="row-2">
-                        <a href="/rhn/systems/details/Overview.do?sid=${current.id}">
+                        <a class="js-spa" href="/rhn/systems/details/Overview.do?sid=${current.id}">
                         <c:out value="${current.serverName}"/></a>
                 </rl:column>
 
@@ -49,7 +49,7 @@
                         ${paginationMessage}
                 </div>
                 <div class="col-md-6 text-right">
-                        <a href="/rhn/systems/OutOfDate.do">
+                        <a class="js-spa" href="/rhn/systems/OutOfDate.do">
                                 <bean:message key="yourrhn.jsp.allcriticalsystems" />
                         </a>
                 </div>

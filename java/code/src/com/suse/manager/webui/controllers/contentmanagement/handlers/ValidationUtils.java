@@ -14,14 +14,14 @@
  */
 package com.suse.manager.webui.controllers.contentmanagement.handlers;
 
+import com.redhat.rhn.manager.channel.CreateChannelCommand;
+
 import java.util.regex.Pattern;
 
 /**
  * Utility class for validations
  */
 public class ValidationUtils {
-    private static final String PROJECT_LABEL_REGEX =
-            "^[a-z\\d][a-z\\d\\-\\.\\_]*$";
 
     private ValidationUtils() { }
 
@@ -31,7 +31,8 @@ public class ValidationUtils {
      * @return true if label is valid
      */
     public static Boolean isLabelValid(String label) {
-        return Pattern.compile(PROJECT_LABEL_REGEX).matcher(label).find();
+        return Pattern.compile(CreateChannelCommand.CHANNEL_LABEL_REGEX).matcher(label).find() &&
+                Pattern.compile(CreateChannelCommand.CHANNEL_NAME_REGEX).matcher(label).find();
     }
 
 }

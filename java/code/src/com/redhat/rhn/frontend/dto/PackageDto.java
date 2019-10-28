@@ -23,6 +23,7 @@ import java.sql.Blob;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Map;
 import java.util.TimeZone;
 /**
  * PackageDto
@@ -34,6 +35,7 @@ import java.util.TimeZone;
 public class PackageDto extends BaseDto {
 
     private Long id;
+    private Long orgId;
     private String name;
     private String version;
     private String release;
@@ -61,6 +63,7 @@ public class PackageDto extends BaseDto {
     private Blob otherXml;
     private Blob filelistXml;
     private String cookie;
+    private Map<String, String> extraTags;
 
 
     // Pre-existing queries returning this as a string.
@@ -78,6 +81,27 @@ public class PackageDto extends BaseDto {
      */
     public void setId(Long idIn) {
         this.id = idIn;
+    }
+
+    /**
+     * @return the orgId as string
+     */
+    public String getOrgIdAsString() {
+        return orgId == null ? "NULL" : orgId.toString();
+    }
+
+    /**
+     * @return the orgId
+     */
+    public Long getOrgId() {
+        return orgId;
+    }
+
+    /**
+     * @param orgIdIn the org id to set
+     */
+    public void setOrgId(Long orgIdIn) {
+        this.orgId = orgIdIn;
     }
 
     /**
@@ -583,5 +607,19 @@ public class PackageDto extends BaseDto {
      */
     public String getFile() {
         return PackageHelper.getPackageFileFromPath(getPath());
+    }
+
+    /**
+     * @return extraTags to get
+     */
+    public Map<String, String> getExtraTags() {
+        return extraTags;
+    }
+
+    /**
+     * @param extraTagsIn to set
+     */
+    public void setExtraTags(Map<String, String> extraTagsIn) {
+        this.extraTags = extraTagsIn;
     }
 }

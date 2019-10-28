@@ -32,7 +32,7 @@ Name:           spacewalk-web
 Summary:        Spacewalk Web site - Perl modules
 License:        GPL-2.0-only
 Group:          Applications/Internet
-Version:        4.0.13
+Version:        4.0.16
 Release:        1%{?dist}
 Url:            https://github.com/uyuni-project/uyuni
 Source0:        https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
@@ -54,7 +54,7 @@ but it does generate a number of sub-packages.
 
 %package -n susemanager-web-libs
 Summary:        Vendor bundles for spacewalk-web
-License:		BSD-3-Clause and LGPL-3.0-or-later and MIT and MPL-2.0
+License:		0BSD and BSD-3-Clause and LGPL-3.0-or-later and MIT and MPL-2.0
 Group:          Applications/Internet
 
 BuildArch:      noarch
@@ -170,6 +170,7 @@ ln -sf %{nodejs_sitelib} .
 BUILD_VALIDATION=false node build.js
 popd
 %endif
+sed -i -r "s/^(web.buildtimestamp *= *)_OBS_BUILD_TIMESTAMP_$/\1$(date +"%Y%m%d%H%M%S")/" conf/rhn_web.conf
 
 %install
 make -C modules install DESTDIR=$RPM_BUILD_ROOT PERLARGS="INSTALLDIRS=vendor" %{?_smp_mflags}

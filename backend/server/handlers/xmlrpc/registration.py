@@ -319,7 +319,7 @@ class Registration(rhnHandler):
                 newserv.dispose_packages()
                 # The new server may have a different base channel
                 suse_products = None
-                if data.has_key('suse_products'):
+                if 'suse_products' in data:
                     suse_products = data['suse_products']
                 newserv.change_base_channel(release, suse_products=suse_products)
 

@@ -221,7 +221,7 @@ fi
 FSTYPE=`df -T $DIR | tail -1 | awk '{print $2}'`
 echo -n "Filesystem type for $DIR is $FSTYPE - "
 if [ $FSTYPE == "btrfs" ]; then
-    TESTDIR=`echo $DIR | cut -b 2-`
+    TESTDIR=`basename $DIR`
     btrfs subvolume list /var | grep "$TESTDIR" > /dev/null
     if [ ! $? -eq 0 ]; then
         echo "creating subvolume."

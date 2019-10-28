@@ -542,7 +542,8 @@ public class HardwareMapper {
         String virtTypeLowerCase = StringUtils.lowerCase(
                 grains.getValueAsString("virtual"));
         String virtSubtype = grains.getValueAsString("virtual_subtype");
-        String virtUuid = grains.getValueAsString("uuid");
+        String instanceId = grains.getValueAsString("instance_id");
+        String virtUuid = (StringUtils.isEmpty(instanceId)) ? grains.getValueAsString("uuid") : instanceId;
 
         if (virtTypeLowerCase == null) {
             errors.add("Virtualization: Grain 'virtual' has no value");
@@ -619,7 +620,8 @@ public class HardwareMapper {
                     .lookupVirtualInstanceByUuid(virtUuid);
 
             if (grains.getValueAsString("os_family").contentEquals("Suse") &&
-                    grains.getValueAsString("osrelease").startsWith("11")) {
+                    grains.getValueAsString("osrelease").startsWith("11") &&
+                        StringUtils.isEmpty(instanceId)) {
                 virtUuid = fixAndReturnSle11Uuid(virtUuid);
                 // Fix the "uuid" for already wrong created virtual instances
                 for (VirtualInstance virtualInstance : virtualInstances) {
@@ -638,10 +640,26 @@ public class HardwareMapper {
             }
 
             if (virtualInstances.isEmpty()) {
-                VirtualInstanceManager.addGuestVirtualInstance(
-                        virtUuid, server.getName(), type,
-                        VirtualInstanceFactory.getInstance().getRunningState(),
-                        null, server);
+                // For some reason, the uuid of the VM may have changed.
+                // Check if we already have a VM with the same virtual_system_id.
+                VirtualInstance virtualInstance = VirtualInstanceFactory.getInstance().lookupByGuestId(server.getId());
+                if (virtualInstance == null) {
+                    VirtualInstanceManager.addGuestVirtualInstance(
+                            virtUuid, server.getName(), type,
+                            VirtualInstanceFactory.getInstance().getRunningState(),
+                            null, server);
+                }
+                else {
+                    String name = virtualInstance.getName();
+                    virtualInstance.setUuid(virtUuid);
+                    if (StringUtils.isBlank(name)) {
+                        // use minion name only when the hypervisor name is unknown
+                        name = server.getName();
+                    }
+                    VirtualInstanceManager.updateGuestVirtualInstance(virtualInstance, name,
+                            VirtualInstanceFactory.getInstance().getRunningState(),
+                            virtualInstance.getHostSystem(), server);
+                }
             }
             else {
                 virtualInstances.forEach(virtualInstance -> {

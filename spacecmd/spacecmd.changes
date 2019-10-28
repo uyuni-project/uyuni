@@ -1,3 +1,25 @@
+- Prevent error when piping stdout in Python 2 (bsc#1153090)
+
+-------------------------------------------------------------------
+Thu Oct 17 12:18:46 CEST 2019 - jgonzalez@suse.com
+
+- version 4.0.16-1
+- Java api expects content as encoded string instead of encode bytes like before (bsc#1153277)
+
+-------------------------------------------------------------------
+Tue Oct 15 11:44:32 CEST 2019 - jgonzalez@suse.com
+
+- version 4.0.15-1
+- Fix building and installing on CentOS8/RES8/RHEL8
+- Check that a channel doesn't have clones before deleting it (bsc#1138454)
+
+-------------------------------------------------------------------
+Tue Aug 27 23:49:29 CEST 2019 - jgonzalez@suse.com
+
+- version 4.0.14-1
+- Fix missing runtime dependencies that made spacecmd return old versions of
+  packages in some cases, even if newer ones were available (bsc#1148311)
+
 -------------------------------------------------------------------
 Thu Jun 06 15:58:50 CEST 2019 - jgonzalez@suse.com
 

@@ -10,6 +10,7 @@ import FilterForm from "./filter-form";
 import {showDialog} from "components/dialog/util";
 import {mapFilterFormToRequest} from "./filter.utils";
 import _isEmpty from "lodash/isEmpty";
+import useUserLocalization from "core/user-localization/use-user-localization";
 
 const FilterEditModalContent = ({open, isLoading, filter, onChange, onClientValidate, editing}) => {
   if (!open) {
@@ -44,7 +45,7 @@ type FilterEditProps = {
 };
 
 const redirectToProject = (projectLabel: string) => {
-  window.location.href = `/rhn/manager/contentmanagement/project/${projectLabel || ''}`
+  window.pageRenderers.spaengine.navigate(`/rhn/manager/contentmanagement/project/${projectLabel || ''}`);
 }
 
 const FilterEdit = (props: FilterEditProps) => {
@@ -52,6 +53,7 @@ const FilterEdit = (props: FilterEditProps) => {
   const [open, setOpen] = useState(false);
   const [item, setFormData] = useState(props.initialFilterForm);
   const [formValidInClient, setFormValidInClient] = useState(true);
+  const {localTime} = useUserLocalization();
 
   const modalNameId = `${props.id}-modal`;
 
@@ -66,7 +68,7 @@ const FilterEdit = (props: FilterEditProps) => {
   const {onAction, cancelAction, isLoading} = useLifecycleActionsApi({resource: 'filters'});
 
   const modalTitle = props.editing
-    ? t('Update filter')
+    ? t('Filter Details')
     : t('Create a new filter')
 
   return (
@@ -107,14 +109,14 @@ const FilterEdit = (props: FilterEditProps) => {
                         text={t('Delete')}
                         disabled={isLoading}
                         handler={() => {
-                          onAction(mapFilterFormToRequest(item, props.projectLabel), "delete", item.id)
+                          onAction(mapFilterFormToRequest(item, props.projectLabel, localTime), "delete", item.id)
                             .then((updatedListOfFilters) => {
                               closeDialog(modalNameId);
                               showSuccessToastr(t("Filter deleted successfully"));
                               props.onChange(updatedListOfFilters);
                             })
                             .catch((error) => {
-                              showErrorToastr(error);
+                              showErrorToastr(error, {autoHide: false});
                             })
                         }}
                       />
@@ -128,7 +130,11 @@ const FilterEdit = (props: FilterEditProps) => {
                         text={t('Cancel')}
                         handler={() => {
                           cancelAction();
-                          closeDialog(modalNameId);
+                          if(!_isEmpty(props.projectLabel)) {
+                            redirectToProject(props.projectLabel);
+                          } else {
+                           closeDialog(modalNameId);
+                          }
                         }}
                       />
                       <Button
@@ -138,13 +144,12 @@ const FilterEdit = (props: FilterEditProps) => {
                         disabled={isLoading}
                         handler={() => {
                           if (!formValidInClient) {
-                            showErrorToastr(t("Check the required fields below"));
+                            showErrorToastr(t("Check the required fields below"), {autoHide : false});
                           } else {
                             if (props.editing) {
-                              onAction(mapFilterFormToRequest(item, props.projectLabel), "update", item.id)
+                              onAction(mapFilterFormToRequest(item, props.projectLabel, localTime), "update", item.id)
                                 .then((updatedListOfFilters) => {
                                   if(!_isEmpty(props.projectLabel)){
-                                    closeDialog(modalNameId);
                                     redirectToProject(props.projectLabel);
                                   } else {
                                     closeDialog(modalNameId);
@@ -153,13 +158,12 @@ const FilterEdit = (props: FilterEditProps) => {
                                   }
                                 })
                                 .catch((error) => {
-                                  showErrorToastr(error);
+                                  showErrorToastr(error, {autoHide: false});
                                 })
                             } else {
-                              onAction(mapFilterFormToRequest(item, props.projectLabel), "create")
+                              onAction(mapFilterFormToRequest(item, props.projectLabel, localTime), "create")
                                 .then((updatedListOfFilters) => {
                                   if(!_isEmpty(props.projectLabel)){
-                                    closeDialog(modalNameId);
                                     redirectToProject(props.projectLabel);
                                   } else {
                                     closeDialog(modalNameId);
@@ -168,7 +172,7 @@ const FilterEdit = (props: FilterEditProps) => {
                                   }
                                 })
                                 .catch((error) => {
-                                  showErrorToastr(error);
+                                  showErrorToastr(error, {autoHide: false});
                                 })
                             }
                           }

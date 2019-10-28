@@ -23,7 +23,7 @@ import com.redhat.rhn.domain.contentmgmt.ContentProjectFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.contentmgmt.ContentManager;
 
-import com.suse.manager.webui.controllers.ECMAScriptDateAdapter;
+import com.suse.manager.webui.controllers.UserLocalizationDateAdapter;
 import com.suse.manager.webui.controllers.contentmanagement.mappers.ResponseMappers;
 import com.suse.manager.webui.utils.gson.ResultJson;
 
@@ -42,7 +42,7 @@ import spark.Response;
  */
 public class ControllerApiUtils {
     public static final Gson GSON = new GsonBuilder()
-            .registerTypeAdapter(Date.class, new ECMAScriptDateAdapter())
+            .registerTypeAdapter(Date.class, new UserLocalizationDateAdapter())
             .serializeNulls()
             .create();
 

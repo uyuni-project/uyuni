@@ -1,4 +1,19 @@
 -------------------------------------------------------------------
+Thu Oct 17 12:18:09 CEST 2019 - jgonzalez@suse.com
+
+- version 4.0.8-1
+- Adjust current name of the package to mgr-daemon and not
+  spacewalksd (bsc#1149353)
+- enable spacewalk-update-service on package installation
+  (bsc#1143789, bsc#1150216)
+
+-------------------------------------------------------------------
+Tue Jul 30 14:50:40 CEST 2019 - jgonzalez@suse.com
+
+- version 4.0.7-1
+- fix systemd timer configuration on SLE12 (bsc#1142038)
+
+-------------------------------------------------------------------
 Tue Jun 18 10:26:37 CEST 2019 - jgonzalez@suse.com
 
 - version 4.0.6-1

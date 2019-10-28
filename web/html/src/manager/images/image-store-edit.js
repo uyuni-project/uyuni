@@ -13,6 +13,7 @@ const { Password } = require('components/input/Password');
 const { Select } = require('components/input/Select');
 const { Text } = require('components/input/Text');
 const Utils = require("utils/functions").Utils;
+const SpaRenderer  = require("core/spa/spa-renderer").default;
 
 /* global storeId */
 
@@ -81,6 +82,8 @@ class CreateImageStore extends React.Component {
       return false;
     }
 
+    model.label = model.label.trim();
+    model.uri = model.uri.trim();
     return Network.post(
       "/rhn/manager/api/cm/imagestores/update/" + storeId,
       JSON.stringify(model),
@@ -103,6 +106,8 @@ class CreateImageStore extends React.Component {
       return false;
     }
 
+    model.label = model.label.trim();
+    model.uri = model.uri.trim();
     return Network.post(
       "/rhn/manager/api/cm/imagestores/create",
       JSON.stringify(model),
@@ -197,7 +202,7 @@ class CreateImageStore extends React.Component {
   }
 }
 
-ReactDOM.render(
+export const renderer = () => SpaRenderer.renderNavigationReact(
   <CreateImageStore />,
   document.getElementById('image-store-edit')
 )

@@ -14,7 +14,12 @@
  */
 package com.suse.manager.webui.services.test;
 
-import com.google.gson.JsonElement;
+import static com.redhat.rhn.domain.action.ActionFactory.STATUS_COMPLETED;
+import static com.redhat.rhn.domain.action.ActionFactory.STATUS_FAILED;
+import static com.redhat.rhn.domain.action.ActionFactory.STATUS_PICKED_UP;
+import static com.redhat.rhn.domain.action.ActionFactory.STATUS_QUEUED;
+import static org.hamcrest.Matchers.containsString;
+
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionChain;
@@ -29,6 +34,8 @@ import com.redhat.rhn.domain.action.script.ScriptActionDetails;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.action.test.ActionFactoryTest;
 import com.redhat.rhn.domain.action.virtualization.BaseVirtualizationAction;
+import com.redhat.rhn.domain.action.virtualization.VirtualizationRebootAction;
+import com.redhat.rhn.domain.action.virtualization.VirtualizationShutdownAction;
 import com.redhat.rhn.domain.channel.AccessToken;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
@@ -54,6 +61,8 @@ import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.ServerTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 
+import com.google.gson.JsonElement;
+import com.suse.manager.reactor.messaging.test.SaltTestUtils;
 import com.suse.manager.utils.SaltUtils;
 import com.suse.manager.webui.services.SaltActionChainGeneratorService;
 import com.suse.manager.webui.services.SaltServerActionService;
@@ -64,6 +73,7 @@ import com.suse.manager.webui.utils.SaltSystemReboot;
 import com.suse.salt.netapi.calls.LocalAsyncResult;
 import com.suse.salt.netapi.calls.LocalCall;
 import com.suse.salt.netapi.datatypes.target.Target;
+
 import org.jmock.Expectations;
 import org.jmock.lib.legacy.ClassImposteriser;
 
@@ -84,11 +94,6 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static com.redhat.rhn.domain.action.ActionFactory.STATUS_COMPLETED;
-import static com.redhat.rhn.domain.action.ActionFactory.STATUS_FAILED;
-import static com.redhat.rhn.domain.action.ActionFactory.STATUS_PICKED_UP;
-import static com.redhat.rhn.domain.action.ActionFactory.STATUS_QUEUED;
-
 
 public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
 
@@ -108,6 +113,7 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
         saltServerActionService = new SaltServerActionService();
         saltServerActionService.setSaltService(saltServiceMock);
         saltServerActionService.setSkipCommandScriptPerms(true);
+        SystemManager.mockSaltService(saltServiceMock);
 
         sshPushSystemMock = mock(SystemSummary.class);
     }
@@ -292,7 +298,13 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
         assertEquals(result.size(), 3);
     }
 
-    public void testVirtACtions() throws Exception {
+    public void testVirtActions() throws Exception {
+        context().checking(new Expectations() {{
+            oneOf(saltServiceMock).callSync(
+                    with(SaltTestUtils.functionEquals("state", "apply")),
+                    with(containsString("serverfactorytest")));
+        }});
+
         MinionServer minionHost = (MinionServer)ServerTestUtils.createVirtHostWithGuests(user, 1, true);
         List<MinionSummary> minions = Arrays.asList(new MinionSummary(minionHost));
 
@@ -313,6 +325,63 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
 
             Map<LocalCall<?>, List<MinionSummary>> result = SaltServerActionService.INSTANCE.callsForAction(action, minions);
             assertEquals(1, result.size());
+        }
+    }
+
+    public void testVirtForceoff() throws Exception {
+        context().checking(new Expectations() {{
+            oneOf(saltServiceMock).callSync(
+                    with(SaltTestUtils.functionEquals("state", "apply")),
+                    with(containsString("serverfactorytest")));
+        }});
+
+        MinionServer minionHost = (MinionServer)ServerTestUtils.createVirtHostWithGuests(user, 1, true);
+        List<MinionSummary> minions = Arrays.asList(new MinionSummary(minionHost));
+
+        Action action = ActionFactoryTest.createAction(user, ActionFactory.TYPE_VIRTUALIZATION_SHUTDOWN);
+        VirtualizationShutdownAction va = (VirtualizationShutdownAction)action;
+        va.setUuid(minionHost.getGuests().iterator().next().getUuid());
+        va.setForce(true);
+        ActionFactory.addServerToAction(minionHost, action);
+
+        Map<LocalCall<?>, List<MinionSummary>> result = SaltServerActionService.INSTANCE.callsForAction(action, minions);
+        LocalCall<?> saltCall = result.keySet().iterator().next();
+        assertStateApplyWithPillar("virt.statechange", "domain_state", "powered_off", saltCall);
+    }
+
+    public void testVirtReset() throws Exception {
+        context().checking(new Expectations() {{
+            oneOf(saltServiceMock).callSync(
+                    with(SaltTestUtils.functionEquals("state", "apply")),
+                    with(containsString("serverfactorytest")));
+        }});
+
+        MinionServer minionHost = (MinionServer)ServerTestUtils.createVirtHostWithGuests(user, 1, true);
+        List<MinionSummary> minions = Arrays.asList(new MinionSummary(minionHost));
+
+        Action action = ActionFactoryTest.createAction(user, ActionFactory.TYPE_VIRTUALIZATION_REBOOT);
+        VirtualizationRebootAction va = (VirtualizationRebootAction)action;
+        va.setUuid(minionHost.getGuests().iterator().next().getUuid());
+        va.setForce(true);
+        ActionFactory.addServerToAction(minionHost, action);
+
+        Map<LocalCall<?>, List<MinionSummary>> result = SaltServerActionService.INSTANCE.callsForAction(action, minions);
+        LocalCall<?> saltCall = result.keySet().iterator().next();
+        assertStateApply("virt.reset", saltCall);
+    }
+
+    private void assertStateApply(String expectedState, LocalCall<?> call) {
+        assertStateApplyWithPillar(expectedState, null, null, call);
+    }
+
+    @SuppressWarnings("unchecked")
+    private void assertStateApplyWithPillar(String expectedState, String pillarEntry, Object pillarValue, LocalCall<?> call) {
+        assertEquals("state", call.getModuleName());
+        assertEquals("apply", call.getFunctionName());
+        Map<String, Object> kwargs = ((Map<String, Object>)call.getPayload().get("kwarg"));
+        assertTrue(((List<String>)kwargs.get("mods")).contains(expectedState));
+        if (pillarEntry != null) {
+            assertEquals(pillarValue, ((Map<String, Object>)kwargs.get("pillar")).get(pillarEntry));
         }
     }
 

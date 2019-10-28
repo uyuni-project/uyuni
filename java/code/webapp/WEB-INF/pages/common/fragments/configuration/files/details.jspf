@@ -73,7 +73,7 @@
                                 <c:set var="beanarg" scope="request">
                                     <rhn:icon type="header-user" title="user.common.userAlt" />
                                     <rhn:require acl="user_role(org_admin)">
-                                        <a href="/rhn/users/UserDetails.do?uid=${lastUserId}">
+                                        <a class="js-spa" href="/rhn/users/UserDetails.do?uid=${lastUserId}">
                                         </rhn:require>
                                         ${lastUser}
                                         <rhn:require acl="user_role(org_admin)">

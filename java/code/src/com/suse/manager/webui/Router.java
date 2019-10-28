@@ -54,6 +54,7 @@ import com.suse.manager.webui.controllers.VirtualHostManagerController;
 import com.suse.manager.webui.controllers.VirtualNetsController;
 import com.suse.manager.webui.controllers.VirtualPoolsController;
 import com.suse.manager.webui.controllers.VisualizationController;
+import com.suse.manager.webui.controllers.channels.ChannelsApiController;
 import com.suse.manager.webui.controllers.contentmanagement.ContentManagementApiController;
 import com.suse.manager.webui.controllers.contentmanagement.ContentManagementViewsController;
 import com.suse.manager.webui.errors.NotFoundException;
@@ -103,6 +104,9 @@ public class Router implements SparkApplication {
         // Content Management Routes
         ContentManagementViewsController.initRoutes(jade);
         ContentManagementApiController.initRoutes();
+
+        // Channels
+        ChannelsApiController.initRoutes();
 
         // Admin Router
         AdminViewsController.initRoutes(jade);
@@ -214,9 +218,13 @@ public class Router implements SparkApplication {
         // Download endpoint
         get("/manager/download/:channel/getPackage/:file",
                 DownloadController::downloadPackage);
+        get("/manager/download/:channel/getPackage/:org/:checksum/:file",
+                DownloadController::downloadPackage);
         get("/manager/download/:channel/repodata/:file",
                 DownloadController::downloadMetadata);
         head("/manager/download/:channel/getPackage/:file",
+                DownloadController::downloadPackage);
+        head("/manager/download/:channel/getPackage/:org/:checksum/:file",
                 DownloadController::downloadPackage);
         head("/manager/download/:channel/repodata/:file",
                 DownloadController::downloadMetadata);

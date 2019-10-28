@@ -1,16 +1,12 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import MonitoringAdmin from './monitoring-admin';
+import SpaRenderer from "core/spa/spa-renderer";
 
-window.pageRenderers = window.pageRenderers || {};
-window.pageRenderers.admin = window.pageRenderers.admin || {};
-window.pageRenderers.admin.monitoring = window.pageRenderers.admin.monitoring || {};
-window.pageRenderers.admin.monitoring.renderer = (id) => {
+export const renderer = (id) => {
 
-  ReactDOM.render(
+  SpaRenderer.renderNavigationReact(
     <MonitoringAdmin />,
     document.getElementById(id)
   );
  
 };
-

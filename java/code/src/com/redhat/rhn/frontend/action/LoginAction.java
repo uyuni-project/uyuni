@@ -64,22 +64,24 @@ public class LoginAction extends RhnAction {
         addErrors(request, errors);
         errors.clear();
 
+        String userAgent = request.getHeader("user-agent");
+
         // External-auth didn't return a user - try local-auth
         if (user == null) {
             user = loginUser(f.getString("username"), f.getString("password"),
                     request, response, errors);
             if (errors.isEmpty()) {
                 // No errors, log success
-                log.info("LOCAL AUTH SUCCESS: [" + user.getLogin() + "]");
+                log.info("LOCAL AUTH SUCCESS: [" + user.getLogin() + " - " + userAgent + "]");
             }
             else {
                 // Errors, log failure
-                log.error("LOCAL AUTH FAILURE: [" + f.getString("username") + "]");
+                log.error("LOCAL AUTH FAILURE: [" + f.getString("username") + " - " + userAgent + "]");
             }
         }
         // External-auth returned a user and no errors
         else if (errors.isEmpty()) {
-            log.info("EXTERNAL AUTH SUCCESS: [" + user.getLogin() + "]");
+            log.info("EXTERNAL AUTH SUCCESS: [" + user.getLogin() + " - " + userAgent + "]");
         }
 
         if (errors.isEmpty()) {

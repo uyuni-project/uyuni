@@ -1,16 +1,38 @@
 //@flow
+/* global moment */
 import _isEmpty from "lodash/isEmpty";
-import filtersEnum from "../shared/business/filters.enum";
+import {clmFilterOptions, findClmFilterByKey} from "../shared/business/filters.enum";
 import type {FilterFormType, FilterServerType} from "../shared/type/filter.type";
+import Functions from "utils/functions";
 
-export function mapFilterFormToRequest(filterForm: FilterFormType, projectLabel: string): FilterServerType {
+declare var Loggerhead: any;
+
+export function mapFilterFormToRequest(filterForm: FilterFormType, projectLabel: string, localTime: string): FilterServerType {
   const requestForm = {};
   requestForm.projectLabel = projectLabel;
-  requestForm.name = filterForm.name;
-  requestForm.deny = filterForm.deny;
-  requestForm.entityType = filtersEnum.findByKey(filterForm.type).entityType;
-  requestForm.matcher = filtersEnum.findByKey(filterForm.type).matcher;
-  if (filterForm.type === filtersEnum.enum.PACKAGE_NEVRA.key) {
+  requestForm.name = filterForm.filter_name;
+  requestForm.rule = filterForm.rule;
+  requestForm.matcher = filterForm.matcher;
+
+  const selectedFilterOption = findClmFilterByKey(filterForm.type);
+  if(selectedFilterOption) {
+    // By default the enum KEY is used either for the criteriaKey and to map the form field into the criteriaValue
+    requestForm.entityType = selectedFilterOption.entityType.key;
+    requestForm.criteriaKey = selectedFilterOption.key;
+    requestForm.criteriaValue = filterForm[selectedFilterOption.key];
+  } else {
+    Loggerhead.error(`${filterForm.filter_name}: We couldn't find a matching filter for the form ${filterForm.type}`);
+  }
+
+  // Custom filters mappers for complex filter forms
+  // If this starts growing we could define mapper functions in the enum itself, for now it's enough. (ex: mapCriteriaValueToRequest())
+  if (filterForm.type === clmFilterOptions.ISSUE_DATE.key) {
+    const formDateValue = filterForm[clmFilterOptions.ISSUE_DATE.key];
+    requestForm.criteriaValue = formDateValue
+      ? moment(Functions.Utils.dateWithoutTimezone(formDateValue, localTime)).format("YYYY-MM-DDTHH:mm:ss.SSSZ")
+      :  "";
+  } else if (filterForm.type === clmFilterOptions.NEVRA.key) {
+    // UI filter NEVRA form can map either into nevr or nevra
     const epochName = !_isEmpty(filterForm.epoch) ? `${filterForm.epoch}:` : '';
     if(_isEmpty(filterForm.architecture)){
       requestForm.criteriaKey = "nevr"
@@ -21,13 +43,12 @@ export function mapFilterFormToRequest(filterForm: FilterFormType, projectLabel:
       requestForm.criteriaValue =
         `${filterForm.packageName || ""}-${epochName}${filterForm.version || ""}-${filterForm.release || ""}.${filterForm.architecture}`;
     }
-  } else if (filterForm.type === filtersEnum.enum.ERRATUM.key) {
-    requestForm.criteriaKey = "advisory_name";
-    requestForm.criteriaValue = filterForm.advisoryName;
-  } else {
-    requestForm.criteriaKey = "name";
-    requestForm.criteriaValue = filterForm.criteria;
+  } else if (filterForm.type === clmFilterOptions.PACKAGE_NEVR.key) {
+    const epochName = !_isEmpty(filterForm.epoch) ? `${filterForm.epoch}:` : '';
+    requestForm.criteriaValue =
+      `${filterForm.packageName || ""} ${epochName}${filterForm.version|| ""}-${filterForm.release|| ""}`;
   }
+
   return requestForm;
 }
 
@@ -35,13 +56,27 @@ export function mapResponseToFilterForm(filtersResponse: Array<FilterServerType>
   return filtersResponse.map(filterResponse => {
     let filterForm = {};
     filterForm.id = filterResponse.id;
-    filterForm.name = filterResponse.name;
-    filterForm.deny = filterResponse.deny;
+    filterForm.filter_name = filterResponse.name;
+    filterForm.rule = filterResponse.rule;
     filterForm.matcher = filterResponse.matcher;
     filterForm.projects = filterResponse.projects;
 
-    if(filterResponse.criteriaKey === "nevr") {
-      filterForm.type = filtersEnum.enum.PACKAGE_NEVRA.key;
+    const selectedFilterOption = findClmFilterByKey(filterResponse.criteriaKey);
+    // If we can find a filter option using the CriteriaKey we assume the default behavior
+    if(selectedFilterOption) {
+      filterForm.type = selectedFilterOption && selectedFilterOption.key;
+      filterForm[selectedFilterOption.key] = filterResponse.criteriaValue;
+    } else {
+      Loggerhead.error(`${filterResponse.name}: We couldn't find a matching filter for ${filterResponse.criteriaKey}`);
+    }
+
+    // Custom filters mappers for complex filter forms
+    // If this starts growing we could define mapper functions in the enum itself, for now it's enough. (ex: mapCriteriaValueToRequest())
+    if (filterResponse.criteriaKey === clmFilterOptions.ISSUE_DATE.key) {
+      filterForm[clmFilterOptions.ISSUE_DATE.key] = Functions.Utils.dateWithTimezone(filterResponse.criteriaValue);
+    } else if(filterResponse.criteriaKey === "nevr") {
+    // NEVR filter is mapped into NEVRA in the UI
+      filterForm.type = clmFilterOptions.NEVRA.key;
       if(!_isEmpty(filterResponse.criteriaValue)) {
         const [
           ,
@@ -57,9 +92,23 @@ export function mapResponseToFilterForm(filtersResponse: Array<FilterServerType>
         filterForm.version = version;
         filterForm.release = release;
       }
-    } else if (filterResponse.criteriaKey === "nevra") {
-      filterForm.type = filtersEnum.enum.PACKAGE_NEVRA.key;
+    } else if (filterResponse.criteriaKey === clmFilterOptions.PACKAGE_NEVR.key) {
+      if(!_isEmpty(filterResponse.criteriaValue)) {
+        const [
+          ,
+          packageName,
+          ,
+          epoch,
+          version,
+          release
+        ] = filterResponse.criteriaValue.match(/(.*) ((.*):)?(.*)-(.*)/);
 
+        filterForm.packageName = packageName;
+        filterForm.epoch = epoch;
+        filterForm.version = version;
+        filterForm.release = release;
+      }
+    } else if(filterResponse.criteriaKey === clmFilterOptions.NEVRA.key) {
       if(!_isEmpty(filterResponse.criteriaValue)) {
         const [
           ,
@@ -77,12 +126,6 @@ export function mapResponseToFilterForm(filtersResponse: Array<FilterServerType>
         filterForm.release = release;
         filterForm.architecture = architecture;
       }
-    } else if (filterResponse.criteriaKey === "advisory_name") {
-      filterForm.type = filtersEnum.enum.ERRATUM.key;
-      filterForm["advisoryName"] = filterResponse.criteriaValue;
-    } else if (filterResponse.criteriaKey === "name") {
-      filterForm.type = filtersEnum.enum.PACKAGE.key;
-      filterForm.criteria = filterResponse.criteriaValue;
     }
 
     return filterForm;

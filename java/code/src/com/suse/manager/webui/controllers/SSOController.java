@@ -140,7 +140,7 @@ public final class SSOController {
             catch (LookupException e) {
                 LOG.error("Unable to find user: " + e.getMessage());
                 return "Internal error during SSO authentication phase." +
-                        "Have you created the corresponding user in SUSE Manager? See product documnetation";
+                        "Have you created the corresponding user in SUSE Manager? See product documentation";
             }
             catch (SettingsException e) {
                 LOG.error("Unable to parse settings for SSO: " + e.getMessage());

@@ -41,7 +41,7 @@ from spacewalk.common.usix import raise_with_tb
 from spacewalk.server import rhnPackage, rhnSQL, rhnChannel, suseEula
 from spacewalk.common import fileutils, rhnLog, rhnCache, rhnMail, suseLib
 from spacewalk.common.rhnTB import fetchTraceback
-from spacewalk.common.rhnLib import isSUSE
+from spacewalk.common.rhnLib import isSUSE, utc
 from spacewalk.common.checksum import getFileChecksum
 from spacewalk.common.rhnConfig import CFG, initCFG
 from spacewalk.common.rhnException import rhnFault
@@ -341,8 +341,8 @@ def write_ssl_set_cache(ca_cert, client_cert, client_key):
             cert_file = os.path.join(ssldir, "%s.pem" % name)
             if not os.path.exists(cert_file):
                 create_dir_tree(ssldir)
-                f = open(cert_file, "w")
-                f.write(str(pem))
+                f = open(cert_file, "wb")
+                f.write(pem)
                 f.close()
             filenames[cert] = cert_file
 
@@ -705,8 +705,9 @@ class RepoSync(object):
             elif notices_type == 'patches':
                 self.upload_patches(notices)
 
-    def copy_metadata_file(self, filename, comps_type, relative_dir):
+    def copy_metadata_file(self, plug, filename, comps_type, relative_dir):
         old_checksum = None
+        db_timestamp = datetime.fromtimestamp(0.0, utc)
         basename = os.path.basename(filename)
         log(0, '')
         log(0, "  Importing %s file %s." % (comps_type, basename))
@@ -725,12 +726,15 @@ class RepoSync(object):
                 abspath = abspath.rstrip(suffix)
                 relativepath = relativepath.rstrip(suffix)
 
-        h = rhnSQL.prepare("""select relative_filename
+        h = rhnSQL.prepare("""select relative_filename, last_modified
                                 from rhnChannelComps
                                where channel_id = :cid
                                  and comps_type_id = (select id from rhnCompsType where label = :ctype)""")
         if h.execute(cid=self.channel['id'], ctype=comps_type):
-            old_checksum = getFileChecksum('sha256', os.path.join(CFG.MOUNT_POINT, h.fetchone()[0]))
+            (db_filename, db_timestamp) = h.fetchone()
+            comps_path = os.path.join(CFG.MOUNT_POINT, db_filename)
+            if os.path.isfile(comps_path):
+                old_checksum = getFileChecksum('sha256', comps_path)
 
         src = fileutils.decompress_open(filename)
         dst = open(abspath, "w")
@@ -739,37 +743,52 @@ class RepoSync(object):
         src.close()
         if old_checksum and old_checksum != getFileChecksum('sha256', abspath):
             self.regen = True
+        log(0, "*** NOTE: Importing comps file for the channel '%s'. Previous comps will be discarded." % (self.channel['label']))
+
+        repoDataKey = 'group' if comps_type == 'comps' else comps_type
+        file_timestamp = os.path.getmtime(filename)
+        last_modified = datetime.fromtimestamp(float(file_timestamp), utc)
+
+
+        if db_timestamp >= last_modified:
+            # already have newer data, skip updating
+            return abspath
+
         # update or insert
         hu = rhnSQL.prepare("""update rhnChannelComps
                                   set relative_filename = :relpath,
-                                      modified = current_timestamp
+                                      modified = current_timestamp,
+                                      last_modified = :last_modified
                                 where channel_id = :cid
                                   and comps_type_id = (select id from rhnCompsType where label = :ctype)""")
-        hu.execute(cid=self.channel['id'], relpath=relativepath, ctype=comps_type)
+        hu.execute(cid=self.channel['id'], relpath=relativepath, ctype=comps_type,
+                   last_modified=last_modified)
 
         hi = rhnSQL.prepare("""insert into rhnChannelComps
-                              (id, channel_id, relative_filename, comps_type_id)
+                              (id, channel_id, relative_filename, last_modified, comps_type_id)
                               (select sequence_nextval('rhn_channelcomps_id_seq'),
                                       :cid,
                                       :relpath,
+                                      :last_modified,
                               (select id from rhnCompsType where label = :ctype)
                                  from dual
                                 where not exists (select 1 from rhnChannelComps
                                     where channel_id = :cid
                                     and comps_type_id = (select id from rhnCompsType where label = :ctype)))""")
-        hi.execute(cid=self.channel['id'], relpath=relativepath, ctype=comps_type)
+        hi.execute(cid=self.channel['id'], relpath=relativepath, ctype=comps_type,
+                   last_modified=last_modified)
         return abspath
 
     def import_groups(self, plug):
         groupsfile = plug.get_groups()
         if groupsfile:
-            abspath = self.copy_metadata_file(groupsfile, 'comps', relative_comps_dir)
+            abspath = self.copy_metadata_file(plug, groupsfile, 'comps', relative_comps_dir)
             plug.groupsfile = abspath
 
     def import_modules(self, plug):
         modulesfile = plug.get_modules()
         if modulesfile:
-            self.copy_metadata_file(modulesfile, 'modules', relative_modules_dir)
+            self.copy_metadata_file(plug, modulesfile, 'modules', relative_modules_dir)
     def _populate_erratum(self, notice):
         patch_name = self._patch_naming(notice)
         existing_errata = self.get_errata(patch_name)
@@ -830,11 +849,12 @@ class RepoSync(object):
             e['channels'].extend(existing_errata['channels'])
             e['packages'] = existing_errata['packages']
 
-        e['packages'] = self._updates_process_packages(
-            notice['pkglist'][0]['packages'], e['advisory_name'], e['packages'])
+        npkgs = [pkg for c in notice['pkglist'] for pkg in c['packages']]
+
+        e['packages'] = self._updates_process_packages(npkgs, e['advisory_name'], e['packages'])
         # One or more package references could not be found in the Database.
         # To not provide incomplete patches we skip this update
-        if not e['packages'] and not notice['pkglist'][0]['packages']:
+        if not e['packages'] and not npkgs:
             log(2, "Advisory %s has empty package list." % e['advisory_name'])
         elif not e['packages']:
             log(2, "Advisory %s skipped because of empty package list (filtered)."
@@ -924,9 +944,14 @@ class RepoSync(object):
             ident = "%s-%s%s-%s.%s" % (pack.name, epoch, pack.version, pack.release, pack.arch)
             self.available_packages[ident] = 1
 
-            db_pack = rhnPackage.get_info_for_package(
+            packs = rhnPackage.get_info_for_package(
                 [pack.name, pack.version, pack.release, pack.epoch, pack.arch],
                 channel_id, self.org_id)
+            db_pack = None
+            for p in packs:
+                if p['checksum'] == pack.checksum:
+                    db_pack = p
+                    break
 
             to_download = True
             to_link = True
@@ -979,7 +1004,7 @@ class RepoSync(object):
         for what in to_process:
             pack, to_download, to_link = what
             if to_download:
-                target_file = os.path.join(plug.repo.pkgdir, os.path.basename(pack.unique_id.relativepath))
+                target_file = os.path.join(plug.repo.pkgdir, pack.checksum, os.path.basename(pack.unique_id.relativepath))
                 pack.path = target_file
                 params = {}
                 checksum_type = pack.checksum_type
@@ -1114,8 +1139,12 @@ class RepoSync(object):
                 to_process[index] = (pack, False, False)
                 progress_bar.log(False, None)
             finally:
-                if is_non_local_repo and stage_path and os.path.exists(stage_path):
-                    os.remove(stage_path)
+                if is_non_local_repo and stage_path:
+                    if os.path.exists(stage_path):
+                        os.remove(stage_path)
+                    if os.path.exists(os.path.dirname(stage_path)):
+                        # remove the checksum directory
+                        os.rmdir(os.path.dirname(stage_path))
             pack.clear_header()
         if affected_channels:
             errataCache.schedule_errata_cache_update(affected_channels)
@@ -1177,9 +1206,14 @@ class RepoSync(object):
 
         for pack in packages:
 
-            db_pack = rhnPackage.get_info_for_package(
+            packs = rhnPackage.get_info_for_package(
                 [pack.name, pack.version, pack.release, pack.epoch, pack.arch],
                 channel_id, self.org_id)
+            db_pack = None
+            for p in packs:
+                if p['checksum'] == pack.checksum:
+                    db_pack = p
+                    break
 
             pack_status = " + "  # need to be downloaded by default
             pack_full_name = "%-60s\t" % (pack.name + "-" + pack.version + "-" + pack.release + "." +
@@ -2214,7 +2248,7 @@ class RepoSync(object):
                         bz["id"] = bz_id_match.group(1)
                         log(2, "Bugzilla ID found: {0}".format(bz["id"]))
                     else:
-                        log2(0, 0, "Unable to found Bugzilla ID for {0}. Omitting".format(bz["id"]), stream=sys.stderr)
+                        log2(0, 0, "Unable to find Bugzilla ID for {0}. Omitting".format(bz["id"]), stream=sys.stderr)
                         continue
                 if bz['id'] not in bugs:
                     bug = importLib.Bug()

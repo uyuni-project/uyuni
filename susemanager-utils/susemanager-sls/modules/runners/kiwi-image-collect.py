@@ -1,5 +1,5 @@
 # SUSE Manager
-# Copyright (c) 2018 SUSE LLC
+# Copyright (c) 2018,2019 SUSE LLC
 
 # runner to collect image from build host
 
@@ -9,16 +9,20 @@ import logging
 
 log = logging.getLogger(__name__)
 
-def upload_file_from_minion(hostname, filetoupload, targetdir):
-    src = 'root@' + hostname + ':' + filetoupload
-    return __salt__['salt.cmd'](
+def upload_file_from_minion(minion, filetoupload, targetdir):
+    src = 'root@' + minion + ':' + filetoupload
+    result = __salt__['salt.cmd'](
       'rsync.rsync',
       src, targetdir,
       rsh='ssh -o IdentityFile=/srv/susemanager/salt/salt_ssh/mgr_ssh_id -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null'
     )
+    if result['retcode'] != 0:
+      raise ConnectionError('Failed to transfer image from minion {}: {}'.format(minion, result['stderr']))
+    return result
 
 def move_file_from_minion_cache(minion, filetomove, targetdir):
     src = os.path.join(__opts__['cachedir'], 'minions', minion, 'files', filetomove.lstrip('/'))
+    # file.move throws an exception in case of error
     return __salt__['salt.cmd']('file.move', src, targetdir);
 
 def kiwi_collect_image(minion, filepath, image_store_dir):

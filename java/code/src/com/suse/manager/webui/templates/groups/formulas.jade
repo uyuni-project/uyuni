@@ -16,7 +16,16 @@
 #formulas
 
 script(type='text/javascript').
-    var csrfToken = "#{csrf_token}";
-    var groupId = "#{groupId}";
+    window.csrfToken = "#{csrf_token}";
 
-script(src='/javascript/manager/groups/formula/group-formula-selection.bundle.js?cb=#{webVersion}', type='text/javascript')
+script(type='text/javascript').
+    spaImportReactPage('groups/formula/group-formula-selection')
+        .then(function(module) {
+             module.renderer(
+                'formulas',
+                {
+                    groupId: "#{groupId}",
+                    warningMessage: "#{warning}"
+                }
+             )
+        });

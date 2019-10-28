@@ -40,6 +40,7 @@ Possible values are currently:
 | SLES Salt SSH minion | ```$ssh_minion``` | ```$SSHMINION``` | ```"ssh-minion"``` | ```"minion"``` |
 | Cent OS Salt minion or traditional client | ```$ceos_minion``` | ```$CENTOSMINION``` | ```"ceos-minion"```, ```"ceos-traditional-client"```, or ``"ceos-ssh-minion"``` | ```"minion"``` |
 | Ubuntu minion | ```$ubuntu_minion``` | ```$UBUNTUMINION``` | ```"ubuntu-minion"``` or ```"ubuntu-ssh-minion"``` | ```"minion"``` |
+| PXE-Boot minion |  None | ```$PXEBOOTMAC``` | ```"pxeboot-minion"``` | ```"pxeboot"``` |
 
 These names are such for historical reasons and might be made better in the future.
 
@@ -233,9 +234,9 @@ For a test with a regular expression, there is ```I should see a text like "..."
 * Same, but wait until text appears
 
 ```cucumber
-  Then I wait until I see "Successfully bootstrapped host! " text
-  Then I wait until I do not see "Loading..." text
-  Then I wait at most 360 seconds until I see "Product Description" text
+  When I wait until I see "Successfully bootstrapped host!" text
+  When I wait until I do not see "Loading..." text
+  When I wait at most 360 seconds until I see "Product Description" text
 ```
 
 * Same, but re-issue HTTP requests to refresh the page
@@ -321,7 +322,7 @@ The check box can be identified by name, id or label text.
   When I check the row with the "sle-client" hostname
   When I check the row with the "suse_docker_admin" text
   When I check "New Test Channel" in the list
-  When I uncheck "hoag-dummy-1.1-2.1" in the list
+  When I uncheck "hoag-dummy-1.1-1.1" in the list
 ```
 
 (will be unified)
@@ -336,7 +337,8 @@ The check box can be identified by name, id or label text.
 * Select an item from a selection box
 
 ```cucumber
-  Then I select "Mr." from "prefix"
+  When I select "Mr." from "prefix"
+  When I select the hostname of "proxy" from "proxies"
 ```
 
 * Make sure an item in a selection box is selected
@@ -361,6 +363,7 @@ The check box can be identified by name, id or label text.
 ```cucumber
   When I enter "SUSE Test Key x86_64" as "description"
   When I enter "CVE-1999-12345" as "search_string" in the content area
+  When I enter the hostname of "proxy" as "hostname"
 ```
 
 * Make sure a text is in a given input field of a form
@@ -396,8 +399,8 @@ The check box can be identified by name, id or label text.
 * Repositories
 
 ```cucumber
-  When I enable repository "Devel_Galaxy_BuildRepo" on this "sle-minion"
-  When I disable repository "Devel_Galaxy_BuildRepo" on this "sle-minion"
+  When I enable repository "Test-Packages_Pool" on this "sle-minion"
+  When I disable repository "Test-Packages_Pool" on this "sle-minion"
 ```
 
 * Packages
@@ -495,7 +498,7 @@ The check box can be identified by name, id or label text.
 * Execute spacewalk-repo-sync
 
 ```cucumber
-  When I call spacewalk-repo-sync for channel "test_base_channel" with a custom url "http://localhost/pub/TestRepo/"
+  When I call spacewalk-repo-sync for channel "test_base_channel" with a custom url "http://localhost/pub/TestRepoRpmUpdates/"
 ```
 
 
@@ -691,6 +694,15 @@ Then "test-vm" virtual machine on "virt-server" should have no cdrom
 
 ```cucumber
 When I delete all "test-vm.*" volumes from "default" pool on "kvm-server" without error control
+```
+
+* Add or remove virtual network or storage pools
+
+```cucumber
+When I create test-net1 virtual network on "kvm-server"
+When I create test-pool1 virtual storage pool on "kvm-server"
+When I delete test-net1 virtual network on "kvm-server"
+When I delete test-pool1 virtual storage pool on "kvm-server"
 ```
 
 <a name="c" />

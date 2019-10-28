@@ -3082,7 +3082,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.returntype #array_single("int", "actionId")
      */
     public List<Long> scheduleApplyErrata(User loggedInUser, List<Integer> serverIds,
-                                          List<Integer> errataIds, boolean allowModules) {
+                                          List<Integer> errataIds, Boolean allowModules) {
         return scheduleApplyErrata(loggedInUser, serverIds, errataIds, null, allowModules);
     }
 
@@ -3130,7 +3130,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.returntype #array_single("int", "actionId")
      */
     public List<Long> scheduleApplyErrata(User loggedInUser, List<Integer> serverIdsIn, List<Integer> errataIdsIn,
-                                          Date earliestOccurrence, boolean allowModules) {
+                                          Date earliestOccurrence, Boolean allowModules) {
 
         // we need long values to pass to ErrataManager.applyErrataHelper
         List<Long> serverIds = serverIdsIn.stream()
@@ -3222,7 +3222,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.returntype #array_single("int", "actionId")
      */
     public List<Long> scheduleApplyErrata(User loggedInUser, Integer sid, List<Integer> errataIds,
-                                          boolean allowModules) {
+                                          Boolean allowModules) {
         List<Integer> serverIds = new ArrayList<Integer>();
         serverIds.add(sid);
 
@@ -3275,7 +3275,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.returntype #array_single("int", "actionId")
      */
     public List<Long> scheduleApplyErrata(User loggedInUser, Integer sid, List<Integer> errataIds,
-                                          Date earliestOccurrence, boolean allowModules) {
+                                          Date earliestOccurrence, Boolean allowModules) {
         List<Integer> serverIds = new ArrayList<Integer>();
         serverIds.add(sid);
 
@@ -3622,7 +3622,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.returntype #array_single("int", "actionId")
      */
     public Long[] schedulePackageInstall(User loggedInUser, List<Integer> sids,
-                                         List<Integer> packageIds, Date earliestOccurrence, boolean allowModules) {
+                                         List<Integer> packageIds, Date earliestOccurrence, Boolean allowModules) {
 
         return schedulePackagesAction(loggedInUser, sids,
                 packageIdsToMaps(loggedInUser, packageIds), earliestOccurrence,
@@ -3678,7 +3678,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.returntype int actionId - The action id of the scheduled action
      */
     public Long schedulePackageInstall(User loggedInUser, final Integer sid,
-                                       List<Integer> packageIds, Date earliestOccurrence, boolean allowModules) {
+                                       List<Integer> packageIds, Date earliestOccurrence, Boolean allowModules) {
 
         List<Integer> sids = new ArrayList<Integer>();
         sids.add(sid);
@@ -3751,7 +3751,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.returntype #array_single("int", "actionId")
      */
     public Long[] schedulePackageInstallByNevra(User loggedInUser, List<Integer> sids, List<Map<String,
-            String>> packageNevraList, Date earliestOccurrence, boolean allowModules) {
+            String>> packageNevraList, Date earliestOccurrence, Boolean allowModules) {
 
         return schedulePackagesAction(loggedInUser, sids,
                 packageNevrasToMaps(loggedInUser, packageNevraList, false), earliestOccurrence,
@@ -3824,7 +3824,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.returntype int actionId - The action id of the scheduled action
      */
     public Long schedulePackageInstallByNevra(User loggedInUser, final Integer sid, List<Map<String,
-            String>> packageNevraList, Date earliestOccurrence, boolean allowModules) {
+            String>> packageNevraList, Date earliestOccurrence, Boolean allowModules) {
 
         List<Integer> sids = new ArrayList<Integer>();
         sids.add(sid);
@@ -3879,7 +3879,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.returntype #array_single("int", "actionId")
      */
     public Long[] schedulePackageRemove(User loggedInUser, List<Integer> sids,
-                                        List<Integer> packageIds, Date earliestOccurrence, boolean allowModules) {
+                                        List<Integer> packageIds, Date earliestOccurrence, Boolean allowModules) {
 
         return schedulePackagesAction(loggedInUser, sids,
                 packageIdsToMaps(loggedInUser, packageIds), earliestOccurrence,
@@ -3934,7 +3934,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.returntype int actionId - The action id of the scheduled action
      */
     public int schedulePackageRemove(User loggedInUser, Integer sid,
-                                     List<Integer> packageIds, Date earliestOccurrence, boolean allowModules) {
+                                     List<Integer> packageIds, Date earliestOccurrence, Boolean allowModules) {
 
         List<Integer> sids = new ArrayList<Integer>();
         sids.add(sid);
@@ -4007,7 +4007,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.returntype #array_single("int", "actionId")
      */
     public Long[] schedulePackageRemoveByNevra(User loggedInUser, List<Integer> sids, List<Map<String,
-            String>> packageNevraList, Date earliestOccurrence, boolean allowModules) {
+            String>> packageNevraList, Date earliestOccurrence, Boolean allowModules) {
 
         return schedulePackagesAction(loggedInUser, sids,
                 packageNevrasToMaps(loggedInUser, packageNevraList, true), earliestOccurrence,
@@ -4080,7 +4080,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.returntype #array_single("int", "actionId")
      */
     public int schedulePackageRemoveByNevra(User loggedInUser, final Integer sid, List<Map<String,
-            String>> packageNevraList, Date earliestOccurrence, boolean allowModules) {
+            String>> packageNevraList, Date earliestOccurrence, Boolean allowModules) {
 
         List<Integer> sids = new ArrayList<Integer>();
         sids.add(sid);
@@ -4253,7 +4253,8 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.param #param_desc("string", "groupname", "Group to run script as.")
      * @xmlrpc.param #param_desc("int", "timeout", "Seconds to allow the script to run
      *before timing out.")
-     * @xmlrpc.param #param_desc("string", "script", "Contents of the script to run.")
+     * @xmlrpc.param #param_desc("string", "script", "Contents of the script to run.
+     * Must start with a shebang (e.g. #!/bin/bash)")
      * @xmlrpc.param #param_desc("dateTime.iso8601", "earliestOccurrence",
      * "Earliest the script can run.")
      * @xmlrpc.returntype int - ID of the script run action created. Can be used to fetch
@@ -4317,7 +4318,8 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.param #param_desc("string", "groupname", "Group to run script as.")
      * @xmlrpc.param #param_desc("int", "timeout", "Seconds to allow the script to run
      *before timing out.")
-     * @xmlrpc.param #param_desc("string", "script", "Contents of the script to run.")
+     * @xmlrpc.param #param_desc("string", "script", "Contents of the script to run.
+     * Must start with a shebang (e.g. #!/bin/bash)")
      * @xmlrpc.param #param_desc("dateTime.iso8601", "earliestOccurrence",
      * "Earliest the script can run.")
      * @xmlrpc.returntype int - ID of the script run action created. Can be used to fetch
@@ -4350,7 +4352,8 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.param #param_desc("string", "groupname", "Group to run script as.")
      * @xmlrpc.param #param_desc("int", "timeout", "Seconds to allow the script to run
      *before timing out.")
-     * @xmlrpc.param #param_desc("string", "script", "Contents of the script to run.")
+     * @xmlrpc.param #param_desc("string", "script", "Contents of the script to run.
+     * Must start with a shebang (e.g. #!/bin/bash)")
      * @xmlrpc.param #param_desc("dateTime.iso8601", "earliestOccurrence",
      * "Earliest the script can run.")
      * @xmlrpc.returntype int - ID of the script run action created. Can be used to fetch
@@ -4389,7 +4392,8 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.param #param_desc("string", "groupname", "Group to run script as.")
      * @xmlrpc.param #param_desc("int", "timeout", "Seconds to allow the script to run
      *before timing out.")
-     * @xmlrpc.param #param_desc("string", "script", "Contents of the script to run.")
+     * @xmlrpc.param #param_desc("string", "script", "Contents of the script to run.
+     * Must start with a shebang (e.g. #!/bin/bash)")
      * @xmlrpc.param #param_desc("dateTime.iso8601", "earliestOccurrence",
      * "Earliest the script can run.")
      * @xmlrpc.returntype int - ID of the script run action created. Can be used to fetch
@@ -6838,7 +6842,7 @@ public class SystemHandler extends BaseHandler {
      *      #array_end()
      */
     public Object[] listSuggestedReboot(User loggedInUser) {
-            return SystemManager.requiringRebootList(loggedInUser, null).toArray();
+            return SystemManager.requiringRebootList(loggedInUser).toArray();
     }
 
     /**

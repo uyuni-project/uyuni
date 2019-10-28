@@ -10,6 +10,7 @@ const Buttons = require("../components/buttons");
 const Button = Buttons.Button;
 const AsyncButton = Buttons.AsyncButton;
 const capitalize = require("../utils/functions").Utils.capitalize;
+const {SectionToolbar} = require("components/section-toolbar/section-toolbar");
 
 class FormulaSelection extends React.Component {
     constructor(props) {
@@ -205,30 +206,32 @@ class FormulaSelection extends React.Component {
     }
 
     render() {
-        var messages = <Messages items={[{severity: "info", text:
+      var items = [{severity: "info", text:
             <p>On this page you can select <a href="https://docs.saltstack.com/en/latest/topics/development/conventions/formulas.html">Salt Formulas</a> for
             this group/system, which can then be configured on group and system level. This allows you to automatically install and configure software. 
             </p>
-        }]}/>;
+        }];
+        if(this.props.warningMessage){
+          items.push({severity: "warning", text: this.props.warningMessage});
+        }
         if (this.state.messages.length > 0) {
-            messages = <Messages items={this.state.messages.map(function(msg) {
+          items = items.concat(this.state.messages.map(function(msg) {
                 return {severity: "info", text: msg};
-            })}/>;
+            }));
         }
 
-        var errors = null;
         if (this.state.errors && this.state.errors.length > 0) {
-            errors = <Messages items={this.state.errors.map(function(e) {
+          items = items.concat(this.state.errors.map(function(e) {
                 return {severity: "error", text: e};
-            })}/>;
+            }));
         }
 
         this.props.addFormulaNavBar(this.state.activeFormulas);
 
         return (
             <div>
-                {errors}{messages}
-                <div className="spacewalk-section-toolbar">
+                <Messages items={items}/>
+                <SectionToolbar>
                     <div className="action-button-wrapper">
                         <span className="btn-group pull-right">
                             <AsyncButton id="save-btn" icon="fa-floppy-o" action={this.saveRequest} text={t("Save")} />
@@ -236,10 +239,10 @@ class FormulaSelection extends React.Component {
                             <Button id="reset-btn" icon="fa-undo" text="Reset Changes" className="btn btn-default" handler={this.resetChanges} />
                         </span>
                     </div>
-                </div>
+                </SectionToolbar>
                 <div className="panel panel-default">
                     <div className="panel-heading">
-                        <h4>Formulas</h4>
+                        <h4>{t("Formulas")}</h4>
                     </div>
                     <div className="panel-body">
                         <form id="chooseFormulaForm" className="form-horizontal" onSubmit={function (e) {e.preventDefault();}}>

@@ -1,4 +1,20 @@
 -------------------------------------------------------------------
+Thu Oct 17 12:27:36 CEST 2019 - jgonzalez@suse.com
+
+- version 4.0.17-1
+- Require dmidecode only for SLE12 aarch64 and x86_64 (bsc#1152170)
+- Require pmtools only for SLE11 i586 and x86_64 (bsc#1150314)
+- fix test for btrfs subvolume for new btrfs version (bsc#1151666)
+- ensure working directory is /root during setup (bsc#1148169)
+- dmidecode does not exist on s390x (bsc#1145119)
+
+-------------------------------------------------------------------
+Tue Jul 30 14:59:25 CEST 2019 - jgonzalez@suse.com
+
+- version 4.0.16-1
+- Make dmidecode part of the bootstrap repositiories (bsc#1137952)
+
+-------------------------------------------------------------------
 Thu Jun 06 15:58:24 CEST 2019 - jgonzalez@suse.com
 
 - version 4.0.15-1

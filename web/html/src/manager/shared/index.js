@@ -1,6 +1,3 @@
-module.exports = {
-  entries: [
-    'menu/menu.js',
-    'polyfill.js'
-  ],
-};
+export default {
+  'shared/menu': () => import('./menu/menu'),
+}

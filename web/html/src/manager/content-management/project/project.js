@@ -22,7 +22,7 @@ import useInterval from "core/hooks/use-interval";
 import useLifecycleActionsApi from "../shared/api/use-lifecycle-actions-api";
 import FiltersProject from "../shared/components/panels/filters-project/filters-project";
 import statesEnum from "../shared/business/states.enum";
-import filtersEnum from "../shared/business/filters.enum";
+import {getClmFilterDescription} from "../shared/business/filters.enum";
 
 type Props = {
   project: ProjectType,
@@ -49,6 +49,10 @@ const Project = (props: Props) => {
     }
   }, []);
 
+  if(!props.project) {
+    return (<div className="alert alert-danger"><span>The project you are looking for does not exist or has been deleted.</span></div>);
+  }
+
   const projectId = project.properties.label;
   const currentHistoryEntry = _last(project.properties.historyEntries);
 
@@ -60,7 +64,7 @@ const Project = (props: Props) => {
       .filters
       .filter(filter => statesEnum.isEdited(filter.state))
       .map(filter =>
-        `${filtersEnum.getFilterDescription(filter)} ${statesEnum.findByKey(filter.state).description}`
+        `${getClmFilterDescription(filter)} ${statesEnum.findByKey(filter.state).description}`
       )
   );
   const isProjectEdited = changesToBuild.length > 0;
@@ -69,6 +73,7 @@ const Project = (props: Props) => {
   return (
     <TopPanel
       title={t('Content Lifecycle Project - {0}', project.properties.name)}
+      helpUrl="/docs/reference/clm/clm-projects.html"
       // icon="fa-plus"
       button= {
         hasEditingPermissions &&
@@ -88,10 +93,10 @@ const Project = (props: Props) => {
 
                       onAction(project, 'delete', project.properties.label)
                         .then(() => {
-                          window.location.href = `/rhn/manager/contentmanagement/projects`
+                          window.pageRenderers.spaengine.navigate(`/rhn/manager/contentmanagement/projects`);
                         })
                         .catch((error) => {
-                          showErrorToastr(error);
+                          showErrorToastr(error, {autoHide: false});
                         })
                     }
       />

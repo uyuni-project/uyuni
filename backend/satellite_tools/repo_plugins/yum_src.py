@@ -37,10 +37,10 @@ import types
 import urlgrabber
 
 try:
-    from urllib import urlencode
+    from urllib import urlencode, unquote
     from urlparse import urlsplit, urlparse, urlunparse
 except:
-    from urllib.parse import urlsplit, urlencode, urlparse, urlunparse
+    from urllib.parse import urlsplit, urlencode, urlparse, urlunparse, unquote
 
 import xml.etree.ElementTree as etree
 
@@ -243,7 +243,8 @@ class UpdateNotice(object):
             'solution'         : '',
             'references'       : [],
             'pkglist'          : [],
-            'reboot_suggested' : False
+            'reboot_suggested' : False,
+            'restart_suggested' : False
         }
 
         if elem is not None:
@@ -349,7 +350,7 @@ class UpdateNotice(object):
     def _parse_package(self, elem):
         """
         Parse an individual package::
-            <!ELEMENT package (filename, sum, reboot_suggested)>
+            <!ELEMENT package (filename, sum, reboot_suggested, restart_suggested)>
                 <!ATTLIST package name CDATA #REQUIRED>
                 <!ATTLIST package version CDATA #REQUIRED>
                 <!ATTLIST package release CDATA #REQUIRED>
@@ -357,6 +358,7 @@ class UpdateNotice(object):
                 <!ATTLIST package epoch CDATA #REQUIRED>
                 <!ATTLIST package src CDATA #REQUIRED>
             <!ELEMENT reboot_suggested (#PCDATA)>
+            <!ELEMENT restart_suggested (#PCDATA)>
             <!ELEMENT filename (#PCDATA)>
             <!ELEMENT sum (#PCDATA)>
                 <!ATTLIST sum type (md5|sha1) "sha1">
@@ -377,6 +379,8 @@ class UpdateNotice(object):
                 package['sum'] = (child.attrib.get('type'), child.text)
             elif child.tag == 'reboot_suggested':
                 self._md['reboot_suggested'] = True
+            elif child.tag == 'restart_suggested':
+                self._md['restart_suggested'] = True
         return package
 
 
@@ -543,7 +547,8 @@ class ContentSource:
         zypp_repo_url = self._prep_zypp_repo_url(self.url)
 
         mirrorlist = self._get_mirror_list(repo, zypp_repo_url)
-        repo.baseurl = repo.baseurl + mirrorlist
+        if mirrorlist:
+            repo.baseurl = mirrorlist
         repo.urls = repo.baseurl
 
         # Manually call Zypper
@@ -604,12 +609,20 @@ type=rpm-md
         if self.proxy_pass:
             query_params['proxypass'] = self.proxy_pass
         if self.sslcacert:
-            query_params['ssl_capath'] = self.sslcacert
+            # Since Zypper only accepts CAPATH, we need to split the certificates bundle
+            # and run "c_rehash" on our custom CAPATH
+            _ssl_capath = os.path.dirname(self.sslcacert)
+            msg = "Preparing custom SSL CAPATH at {}".format(_ssl_capath)
+            rhnLog.log_clean(0, msg)
+            sys.stdout.write(str(msg) + "\n")
+            os.system("awk 'BEGIN {{c=0;}} /BEGIN CERT/{{c++}} {{ print > \"{0}/cert.\" c \".pem\"}}' < {1}".format(_ssl_capath, self.sslcacert))
+            os.system("c_rehash {} 2&>1 /dev/null".format(_ssl_capath))
+            query_params['ssl_capath'] = _ssl_capath
         if self.sslclientcert:
             query_params['ssl_clientcert'] = self.sslclientcert
         if self.sslclientkey:
             query_params['ssl_clientkey'] = self.sslclientkey
-        new_query = urlencode(query_params, doseq=True)
+        new_query = unquote(urlencode(query_params, doseq=True))
         if self.authtoken:
             ret_url = "{0}&{1}".format(url, new_query)
         else:
@@ -634,9 +647,13 @@ type=rpm-md
         """
         if not self.repo.is_configured:
             self.setup_repo(self.repo)
-        _md_files = glob.glob(self._get_repodata_path() + "/*{}.xml.gz".format(tag)) or glob.glob(self._get_repodata_path() + "/*{}.xml".format(tag))
-        if _md_files:
-            return _md_files[0]
+
+        _repodata_path = self._get_repodata_path()
+        _file_globs = ["/*{}.xml.gz", "/*{}.xml", "/*{}.yaml.gz", "/*{}.yaml"]
+        for f in _file_globs:
+            _md_files = glob.glob(_repodata_path + f.format(tag))
+            if _md_files:
+                return _md_files[0]
         return None
 
     def _get_repodata_path(self):

@@ -11,7 +11,7 @@
                                 headerclass="thin-column">
 
             <c:if test="${not current.isBareMetal}">
-               <a href="/rhn/systems/details/Overview.do?sid=${current.serverId}">
+               <a class="js-spa" href="/rhn/systems/details/Overview.do?sid=${current.serverId}">
                     <c:out value="${current.serverName}" escapeXml="true"/>
                </a>
                 </c:if>

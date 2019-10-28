@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Thu Oct 17 12:22:22 CEST 2019 - jgonzalez@suse.com
+
+- version 4.0.13-1
+- Change the default value of taskomatic maxmemory to 4GB
+- Resolve modules.yaml file for modular repositories
+
+-------------------------------------------------------------------
 Fri Jun 07 14:47:36 CEST 2019 - jgonzalez@suse.com
 
 - version 4.0.12-1

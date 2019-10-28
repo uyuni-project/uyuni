@@ -135,19 +135,6 @@ Inside of the testsuite, the scenarios that are tagged with
 ```
 are executed only if the minion is a SLE 15 system.
 
-### Testing Uyuni
-
-The test suite will determine automatically whether your server
-is running Uyuni or SUSE Manager
-
-Inside the testsuite, the scenarios that are tagged with
-
-```
-@susemanager
-```
-are executed only if the server has SUSE Manager installed and will
-not run if Uyuni is detected.
-
 ### Testing with a mirror
 
 Using a mirror with the testsuite is not mandatory.
@@ -172,6 +159,18 @@ Inside of the testsuite, the scenarios that are tagged with
 ```
 are executed only if you don't use a mirror.
 
+### Testing with a SCC crendentials
+
+Using the SCC crendentials with the testsuite is not mandatory.
+
+If you do not want to use SCC, do not define `scc_credentials` environment
+variable before you run the testsuite. That's all.
+If you want to use SCC, let this variable be equal to
+`"username|password"`:
+```bash
+export scc_credentials="username|password"
+```
+and then run the testsuite.
 
 ### Testing with external Docker or Kiwi profiles
 
