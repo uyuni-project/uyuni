@@ -1,3 +1,4 @@
+- Consider timeout value in salt remote script (bsc#1153181)
 - Require pmtools only for SLE11 i586 and x86_64 (bsc#1150314)
 - Introduce dnf-susemanager-plugin for RHEL8 minions
 

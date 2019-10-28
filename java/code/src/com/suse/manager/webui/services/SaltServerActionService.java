@@ -1066,6 +1066,7 @@ public class SaltServerActionService {
                     SALT_FS_PREFIX + SCRIPTS_DIR + "/" + scriptFile.getFileName());
             pillar.put("mgr_remote_cmd_runas",
                     scriptAction.getScriptActionDetails().getUsername());
+            pillar.put("mgr_remote_cmd_timeout", scriptAction.getScriptActionDetails().getTimeout());
             ret.put(State.apply(Arrays.asList(REMOTE_COMMANDS), Optional.of(pillar)), minions);
         }
         catch (IOException e) {
