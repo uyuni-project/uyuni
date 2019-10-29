@@ -1,3 +1,4 @@
+- Check if metadata refresh is needed before adding new channels (bsc#1153613)
 - Handle refreshing hardware of VM with changed UUID (bsc#1135380)
 - Fix combinatorial explosion when generating migrations (bsc#1151888)
 - Remove extra spaces in dependencies fields in Debian repo Packages file (bsc#1145551)

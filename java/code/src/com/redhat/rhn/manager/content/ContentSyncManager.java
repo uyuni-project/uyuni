@@ -585,6 +585,23 @@ public class ContentSyncManager {
     }
 
     /**
+     * Return true if a refresh of Product Data is needed
+     *
+     * @param mirrorUrl a mirrorURL
+     * @return true if a refresh is needed, otherwise false
+     */
+    public boolean isRefreshNeeded(String mirrorUrl) {
+        for (SCCRepositoryAuth a : SCCCachingFactory.lookupRepositoryAuthWithContentSource()) {
+            ContentSource cs = a.getContentSource();
+            String overwriteUrl = contentSourceUrlOverwrite(a.getRepository(), a.getUrl(), mirrorUrl);
+            if (!cs.getSourceUrl().equals(overwriteUrl)) {
+                return true;
+            }
+        }
+        return SCCCachingFactory.refreshNeeded();
+    }
+
+    /**
      * Update authentication for all repos of the given credential.
      * Removes authentication if they have expired
      *
@@ -1938,7 +1955,7 @@ public class ContentSyncManager {
      * @param url the url
      * @return Returns true in case we can access this URL, otherwise false
      */
-    private boolean accessibleUrl(String url) {
+    protected boolean accessibleUrl(String url) {
         try {
             URI uri = new URI(url);
             String username = null;
@@ -1962,7 +1979,7 @@ public class ContentSyncManager {
      * @param password the password
      * @return Returns true in case we can access this URL, otherwise false
      */
-    private boolean accessibleUrl(String url, String user, String password) {
+    protected boolean accessibleUrl(String url, String user, String password) {
         try {
             URI uri = new URI(url);
 

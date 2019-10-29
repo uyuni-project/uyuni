@@ -26,7 +26,6 @@ import com.redhat.rhn.domain.iss.IssFactory;
 import com.redhat.rhn.domain.product.SUSEProduct;
 import com.redhat.rhn.domain.product.SUSEProductFactory;
 import com.redhat.rhn.domain.role.RoleFactory;
-import com.redhat.rhn.domain.scc.SCCCachingFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.content.ContentSyncManager;
 import com.redhat.rhn.manager.content.MgrSyncProductDto;
@@ -79,9 +78,9 @@ public class ProductsController {
         TaskoRun latestRun = TaskoFactory.getLatestRun("mgr-sync-refresh-bunch");
 
         Map<String, Object> data = new HashMap<>();
-
+        ContentSyncManager csm = new ContentSyncManager();
         data.put(ISS_MASTER, String.valueOf(IssFactory.getCurrentMaster() == null));
-        data.put(REFRESH_NEEDED, String.valueOf(SCCCachingFactory.refreshNeeded()));
+        data.put(REFRESH_NEEDED, String.valueOf(csm.isRefreshNeeded(null)));
         data.put(REFRESH_RUNNING, String.valueOf(latestRun != null && latestRun.getEndTime() == null));
         data.put(REFRESH_FILE_LOCKED, String.valueOf(SCCRefreshLock.isAlreadyLocked()));
 
@@ -205,6 +204,11 @@ public class ProductsController {
         List<String> identifiers = Json.GSON.fromJson(request.body(), new TypeToken<List<String>>() { }.getType());
         if (!user.hasRole(RoleFactory.SAT_ADMIN)) {
             throw new IllegalArgumentException("Must be SAT_ADMIN to synchronize products");
+        }
+        ContentSyncManager csm = new ContentSyncManager();
+        if (csm.isRefreshNeeded(null)) {
+            log.fatal("addProduct failed: Product Data refresh needed");
+            json(response, identifiers.stream().collect(Collectors.toMap(ident -> ident, ident -> Boolean.FALSE)));
         }
         if (log.isDebugEnabled()) {
             log.debug("Add/Sync products: " + identifiers);
