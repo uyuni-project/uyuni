@@ -246,6 +246,8 @@ RES6 = [
     "python2-suseRegisterInfo",
     "python2-hwdata",
     "dmidecode",
+    "openssh-clients",
+    "libedit",
 ]
 
 RES7 = [
