@@ -1955,7 +1955,7 @@ public class ContentSyncManager {
      * @param url the url
      * @return Returns true in case we can access this URL, otherwise false
      */
-    private boolean accessibleUrl(String url) {
+    protected boolean accessibleUrl(String url) {
         try {
             URI uri = new URI(url);
             String username = null;
@@ -1979,7 +1979,7 @@ public class ContentSyncManager {
      * @param password the password
      * @return Returns true in case we can access this URL, otherwise false
      */
-    private boolean accessibleUrl(String url, String user, String password) {
+    protected boolean accessibleUrl(String url, String user, String password) {
         try {
             URI uri = new URI(url);
 
