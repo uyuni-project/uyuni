@@ -1,3 +1,4 @@
+- Check if metadata refresh is needed before adding new channels (bsc#1153613)
 - Fix: match `image_id` with newer k8s (bsc#1149741)
 - Handle refreshing hardware of VM with changed UUID (bsc#1135380)
 - Bump version to 4.1.0 (bsc#1154940)
