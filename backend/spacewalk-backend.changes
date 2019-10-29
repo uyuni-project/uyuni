@@ -24,7 +24,7 @@ Thu Oct 17 12:19:52 CEST 2019 - jgonzalez@suse.com
 - remove credentials also from potential rhn.conf backup files in spacewalk-debug (bsc#1146419)
 - Do not crash 'rhn-satellite-exporter' with ModuleNotFound error (bsc#1146869)
 - spacewalk-remove-channel check that channel doesn't have cloned channels before deleting it (bsc#1138454)
-- Fix broken spacewalk-data-fsck utility
+- Fix broken spacewalk-data-fsck utility (bsc#1131556)
 - Add '--latest' support for reposync on DEB based repositories
 - Do not try to download RPMs from the unresolved mirrorlist URL
 - Fix encoding issues with DB bytes values (bsc#1144300)
