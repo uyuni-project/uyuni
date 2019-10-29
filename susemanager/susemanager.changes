@@ -1,3 +1,5 @@
+- Allow bootstraping of Expanded Support 6, CentOS6 and Red Hat 6
+  salt-ssh minions when using the "Minimal" software set (bsc#1155295)
 - Require dmidecode only for SLE12 aarch64 and x86_64 (bsc#1152170)
 - Require pmtools only for SLE11 i586 and x86_64 (bsc#1150314)
 

@@ -235,7 +235,9 @@ RES6 = [
     "suseRegisterInfo",
     "python2-suseRegisterInfo",
     "dmidecode",
- ]
+    "openssh-clients",
+    "libedit",
+]
 
 RES7 = [
     "salt",
