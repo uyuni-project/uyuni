@@ -4,3 +4,4 @@ remote_command:
     - runas: {{ pillar.get('mgr_remote_cmd_runas', 'root') }}
     - timeout: {{ pillar.get('mgr_remote_cmd_timeout') }}
     # TODO GID
+
