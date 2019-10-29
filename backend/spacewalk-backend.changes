@@ -26,7 +26,7 @@
 - prevent duplicate key violates on repo-sync with long changelog
   entries (bsc#1144889)
 - spacewalk-remove-channel check that channel doesn't have cloned channels before deleting it (bsc#1138454)
-- Fix broken spacewalk-data-fsck utility
+- Fix broken spacewalk-data-fsck utility (bsc#1131556)
 - /etc/rhn also was packaged for spacewalk-backend-tools
 - Add '--latest' support for reposync on DEB based repositories
 - Require uyuni-base-common for /etc/rhn
