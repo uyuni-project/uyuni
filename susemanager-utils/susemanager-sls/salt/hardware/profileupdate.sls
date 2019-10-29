@@ -43,4 +43,8 @@ mainframe-sysinfo:
   module.run:
     - name: mainframesysinfo.read_values
 {% endif %}
-
+{% if 'network.fqdns' in salt %}
+fqdns:
+  module.run:
+    - name: network.fqdns
+{% endif%}

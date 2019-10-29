@@ -1,3 +1,4 @@
+- Fqdns are coming from salt network module instead of fqdns grain (bsc#1134860)
 - Check if metadata refresh is needed before adding new channels (bsc#1153613)
 - Fix: match `image_id` with newer k8s (bsc#1149741)
 - Handle refreshing hardware of VM with changed UUID (bsc#1135380)
