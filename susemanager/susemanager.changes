@@ -1,3 +1,4 @@
+- Show help message when missing sub-command in  mgr-sync call (bsc#1134708)
 - Use python2-uyuni-common-libs and python3-uyuni-common-libs for
   bootstrap repositories.
 - require uyuni-common-libs
