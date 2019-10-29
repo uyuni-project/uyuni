@@ -1,3 +1,6 @@
+- Allow bootstraping of Expanded Support 6, CentOS6 and Red Hat 6
+  salt-ssh minions when using the "Minimal" software set (bsc#1155295)
+
 -------------------------------------------------------------------
 Thu Oct 17 12:27:36 CEST 2019 - jgonzalez@suse.com
 
