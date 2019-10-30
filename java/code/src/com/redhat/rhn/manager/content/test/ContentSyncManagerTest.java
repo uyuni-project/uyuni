@@ -1054,6 +1054,36 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
     }
 
     /**
+     * Tests {@link ContentSyncManager#isRefreshNeeded}
+     * @throws Exception if anything goes wrong
+     */
+    public void testIsRefreshNeeded() throws Exception {
+        SUSEProductTestUtils.createVendorSUSEProductEnvironment(user, "/com/redhat/rhn/manager/content/test/smallBase", true);
+        HibernateFactory.getSession().flush();
+        HibernateFactory.getSession().clear();
+
+        // SLES12 GA
+        SUSEProductTestUtils.addChannelsForProduct(SUSEProductFactory.lookupByProductId(1117));
+        HibernateFactory.getSession().flush();
+        HibernateFactory.getSession().clear();
+
+        ContentSyncManager csm = new ContentSyncManager() {
+            @Override
+            protected boolean accessibleUrl(String url) {
+                return true;
+            }
+
+            @Override
+            protected boolean accessibleUrl(String url, String user, String password) {
+                return true;
+            }
+        };
+
+        assertFalse(csm.isRefreshNeeded(null));
+        assertTrue(csm.isRefreshNeeded("https://mirror.example.com/"));
+    }
+
+    /**
      * Test for {@link ContentSyncManager#addChannel}.
      * @throws Exception if anything goes wrong
      */

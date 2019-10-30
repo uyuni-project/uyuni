@@ -22,6 +22,7 @@ import com.redhat.rhn.domain.channel.ChannelFamily;
 import com.redhat.rhn.domain.channel.ChannelFamilyFactory;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
 import com.redhat.rhn.domain.channel.test.ChannelFamilyFactoryTest;
+import com.redhat.rhn.domain.common.ManagerInfoFactory;
 import com.redhat.rhn.domain.credentials.Credentials;
 import com.redhat.rhn.domain.credentials.CredentialsFactory;
 import com.redhat.rhn.domain.product.ReleaseStage;
@@ -316,6 +317,7 @@ public class SUSEProductTestUtils extends HibernateFactory {
             newAuth.setRepository(SCCCachingFactory.lookupRepositoryBySccId(-75L).get());
             SCCCachingFactory.saveRepositoryAuth(newAuth);
         }
+        ManagerInfoFactory.setLastMgrSyncRefresh();
     }
 
     public static void addChannelsForProduct(SUSEProduct product) {

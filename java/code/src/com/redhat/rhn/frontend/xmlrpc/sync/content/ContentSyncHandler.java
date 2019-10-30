@@ -251,6 +251,9 @@ public class ContentSyncHandler extends BaseHandler {
             throws ContentSyncException {
         ensureSatAdmin(loggedInUser);
         ContentSyncManager csm = new ContentSyncManager();
+        if (csm.isRefreshNeeded(mirrorUrl)) {
+            throw new ContentSyncException("Product Data refresh needed. Please call mgr-sync refresh.");
+        }
         csm.addChannel(channelLabel, mirrorUrl);
         return BaseHandler.VALID;
     }
@@ -274,6 +277,9 @@ public class ContentSyncHandler extends BaseHandler {
             throws ContentSyncException {
         ensureSatAdmin(loggedInUser);
         ContentSyncManager csm = new ContentSyncManager();
+        if (csm.isRefreshNeeded(mirrorUrl)) {
+            throw new ContentSyncException("Product Data refresh needed. Please call mgr-sync refresh.");
+        }
 
         List<String> mandatoryChannelLabels =
                 SUSEProductFactory.findNotSyncedMandatoryChannels(channelLabel)
