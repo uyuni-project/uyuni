@@ -26,5 +26,7 @@ export type FilterFormType = {
   advisoryType?: string,
   synopsis?: string,
   criteria?: string,
-  issueDate?: Date
+  issueDate?: Date,
+  moduleName?: string,
+  moduleStream?: string
 }

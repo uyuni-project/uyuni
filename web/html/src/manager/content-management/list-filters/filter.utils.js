@@ -47,6 +47,9 @@ export function mapFilterFormToRequest(filterForm: FilterFormType, projectLabel:
     const epochName = !_isEmpty(filterForm.epoch) ? `${filterForm.epoch}:` : '';
     requestForm.criteriaValue =
       `${filterForm.packageName || ""} ${epochName}${filterForm.version|| ""}-${filterForm.release|| ""}`;
+  } else if (filterForm.type === clmFilterOptions.STREAM.key) {
+    const streamName = !_isEmpty(filterForm.moduleStream) ? `:${filterForm.moduleStream}` : '';
+    requestForm.criteriaValue = `${filterForm.moduleName || ""}${streamName}`;
   }
 
   return requestForm;
@@ -125,6 +128,12 @@ export function mapResponseToFilterForm(filtersResponse: Array<FilterServerType>
         filterForm.version = version;
         filterForm.release = release;
         filterForm.architecture = architecture;
+      }
+    } else if(filterResponse.criteriaKey === clmFilterOptions.STREAM.key) {
+      if(!_isEmpty(filterResponse.criteriaValue)) {
+        const [, module, stream] = filterResponse.criteriaValue.match(/([^:]*)(?::(.*))?/);
+        filterForm.moduleName = module;
+        filterForm.moduleStream = stream;
       }
     }
 

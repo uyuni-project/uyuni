@@ -15,53 +15,33 @@
 
 package com.redhat.rhn.domain.contentmgmt;
 
-import com.redhat.rhn.domain.rhnpackage.Package;
-
-import java.util.Optional;
-import java.util.regex.Pattern;
-
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.Transient;
+import java.util.Optional;
 
 /**
  * Package Filter
  */
 @Entity
-@DiscriminatorValue("package")
-public class PackageFilter extends ContentFilter<Package> {
-
-    private Pattern pattern;
+@DiscriminatorValue("module")
+public class ModuleFilter extends ContentFilter<Module> {
 
     @Override
-    public boolean test(Package pack) {
+    public boolean test(Module module) {
         FilterCriteria.Matcher matcher = getCriteria().getMatcher();
         String field = getCriteria().getField();
         String value = getCriteria().getValue();
 
-        switch (matcher) {
-            case CONTAINS:
-                return getField(pack, field, String.class).contains(value);
-            case EQUALS:
-                return getField(pack, field, String.class).equals(value);
-            case MATCHES:
-                if (pattern == null) {
-                    pattern = Pattern.compile(value);
-                }
-                return pattern.matcher(getField(pack, field, String.class)).matches();
-            default:
-                throw new UnsupportedOperationException("Matcher " + matcher + " not supported");
+        if (!matcher.equals(FilterCriteria.Matcher.EQUALS)) {
+            throw new UnsupportedOperationException("Matcher " + matcher + " not supported");
         }
-    }
 
-    private static <T> T getField(Package pack, String field, Class<T> type) {
         switch (field) {
-            case "name":
-                return type.cast(pack.getPackageName().getName());
-            case "nevr":
-                return type.cast(pack.getNameEvr());
-            case "nevra":
-                return type.cast(pack.getNameEvra());
+            case "module":
+                return module.getName().equals(value);
+            case "stream":
+                return module.getStream().equals(value);
             default:
                 throw new UnsupportedOperationException("Field " + field + " not supported");
         }
@@ -70,12 +50,12 @@ public class PackageFilter extends ContentFilter<Package> {
     @Override
     @Transient
     public EntityType getEntityType() {
-        return EntityType.PACKAGE;
+        return EntityType.MODULE;
     }
 
     @Override
     public Optional<PackageFilter> asPackageFilter() {
-        return Optional.of(this);
+        return Optional.empty();
     }
 
     @Override
@@ -85,6 +65,6 @@ public class PackageFilter extends ContentFilter<Package> {
 
     @Override
     public Optional<ModuleFilter> asModuleFilter() {
-        return Optional.empty();
+        return Optional.of(this);
     }
 }

@@ -177,4 +177,9 @@ public class ErrataFilter extends ContentFilter<Errata> {
     public Optional<ErrataFilter> asErrataFilter() {
         return Optional.of(this);
     }
+
+    @Override
+    public Optional<ModuleFilter> asModuleFilter() {
+        return Optional.empty();
+    }
 }

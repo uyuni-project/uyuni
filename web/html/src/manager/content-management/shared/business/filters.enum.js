@@ -18,6 +18,10 @@ export const filterEntity : FilterEntityEnumType = {
   ERRATUM: {
     key: 'erratum',
     text: t('Patch')
+  },
+  MODULE: {
+    key: 'module',
+    text: t('Module')
   }
 };
 
@@ -138,6 +142,12 @@ export const clmFilterOptions : ClmFilterOptionsEnumType = {
       filterMatchers.CONTAINS_PKG_EQ_EVR, filterMatchers.CONTAINS_PKG_GE_EVR,
       filterMatchers.CONTAINS_PKG_GT_EVR
     ]
+  },
+  STREAM: {
+    key: 'module_stream',
+    text: t('Stream'),
+    entityType: filterEntity.MODULE,
+    matchers: [filterMatchers.EQUALS]
   }
 };
 

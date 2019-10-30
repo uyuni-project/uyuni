@@ -485,6 +485,9 @@ public class ContentProjectFactory extends HibernateFactory {
             case ERRATUM:
                 filter = new ErrataFilter();
                 break;
+            case MODULE:
+                filter = new ModuleFilter();
+                break;
             default:
                 throw new IllegalArgumentException("Incompatible type " + entityType);
         }
