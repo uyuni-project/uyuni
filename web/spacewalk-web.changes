@@ -1,3 +1,4 @@
+- rename SUSE Products to just Products in UI
 - Layout changes in formula forms, validation, deprecate $visibleIf and add new attributes:
   $disabled, $visisble, $required, $match
 - Fix WebUI invalidation time by using the package build time instead
