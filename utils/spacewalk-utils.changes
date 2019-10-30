@@ -1,3 +1,6 @@
+- add Fedora 30 to spacewalk-common-channels
+- remove EOL products Fedora 27 and 28 from spacewalk-common-channels
+- add command line argument --ssl-city=<SSL_CITY> to spacewalk-hostname-rename
 - Update URLs for Uyuni Master Server and Proxy
 - Bump version to 4.1.0 (bsc#1154940)
 - fix hostname-rename script for cobbler files

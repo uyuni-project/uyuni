@@ -46,7 +46,7 @@ Url:            https://github.com/uyuni-project/uyuni
 Source0:        %{name}-%{version}.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 
-%if 0%{?fedora} && 0%{?fedora} > 26
+%if 0%{?fedora}
 BuildRequires:  perl-interpreter
 %else
 BuildRequires:  perl
@@ -57,7 +57,7 @@ BuildRequires:  perl(ExtUtils::MakeMaker)
 #BuildRequires:  perl(Test::Pod::Coverage), perl(Test::Pod)
 
 BuildArch:      noarch
-%if 0%{?fedora} && 0%{?fedora} > 26
+%if 0%{?fedora}
 Requires:       perl-interpreter
 %else
 Requires:       perl

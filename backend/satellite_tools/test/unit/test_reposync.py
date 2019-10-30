@@ -152,7 +152,7 @@ class RepoSyncTest(unittest.TestCase):
         rs.urls = [
           {"source_url": ["http://none.host/bogus-url"], "id": 42, "metadata_signed": "N", "repo_label": None, 'repo_type': 'yum'}]
 
-        _mock_rhnsql(self.reposync, {})
+        _mock_rhnsql(self.reposync, None)
         rs = self._mock_sync(rs)
         rs.sync()
 
@@ -1021,5 +1021,5 @@ def _mock_rhnsql(module, return_values):
     query = Mock()
     returned_obj = Mock(side_effect=side_effect)
     query.fetchall_dict = query.fetchone_dict = returned_obj
-
+    module.rhnSQL.execute = Mock(return_value=query)
     module.rhnSQL.prepare = Mock(return_value=query)

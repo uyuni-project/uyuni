@@ -1,3 +1,4 @@
+- update spacewalk-create-channel with RHEL 7.7 channel definitions
 - Bump version to 4.1.0 (bsc#1154940)
 - add RHEL8
 
