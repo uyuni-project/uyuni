@@ -106,12 +106,6 @@ To check for the initial log in, prefer ```Then I am logged in```.
   When I follow the left menu "Systems > System List > System Currency"
 ```
 
-* Go to Admin => Setup Wizard
-
-```cucumber
-  When I am on the Admin page
-```
-
 * Go to Admin => Organizations
 
 ```cucumber

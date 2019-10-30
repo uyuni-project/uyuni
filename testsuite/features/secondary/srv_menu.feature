@@ -114,6 +114,12 @@ Feature: Web UI - Main landing page menu, texts and links
     And I should see a "Task Engine Status" link in the left menu
     And I should see a "Show Tomcat Logs" link in the left menu
 
+  Scenario: The Setup Wizard submenu of the admin menu
+    When I follow the left menu "Admin > Setup Wizard"
+    Then I should see a "HTTP Proxy" link in the left menu
+    And I should see a "Organization Credentials" link in the left menu
+    And I should see a "SUSE Products" link in the left menu
+
   Scenario: The manager configuration submenu of the admin menu
     When I follow the left menu "Admin > Manager Configuration"
     Then I should see a "Configuration - General Configuration" text
@@ -130,6 +136,11 @@ Feature: Web UI - Main landing page menu, texts and links
     Then I should see a "ISS Configuration - Master Setup" text
     And I should see a "Master Setup" link in the left menu
     And I should see a "Slave Setup" link in the left menu
+
+  Scenario: The Task Engine Status submenu of the admin menu
+    When I follow the left menu "Admin > Task Engine Status"
+    Then I should see a "Last Execution Times" link in the left menu
+    And I should see a "Runtime Status" link in the left menu
 
   Scenario: The menu direct link accesses the first submenu level only
     When I follow the left menu "Patches > Patch List"
