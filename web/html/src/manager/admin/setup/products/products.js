@@ -39,7 +39,7 @@ const _SETUP_WIZARD_STEPS = [
   },
   {
     id: 'wizard-step-suse-products',
-    label: 'SUSE Products',
+    label: 'Products',
     url: location.href.split(/\?|#/)[0],
     active: true
   }
@@ -329,7 +329,7 @@ class ProductsPageWrapper extends React.Component {
     else {
       pageContent = (
         <div className='alert alert-warning' role='alert'>
-          {t('This server is configured as an Inter-Server Synchronisation (ISS) slave. SUSE Products can only be managed on the ISS master.')}
+          {t('This server is configured as an Inter-Server Synchronisation (ISS) slave. Products can only be managed on the ISS master.')}
         </div>
       );
     }

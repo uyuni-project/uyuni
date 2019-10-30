@@ -2139,8 +2139,8 @@ tree will not be usable for autoinstalling.
       <trans-unit id="Mirror Credentials">
         <source>Organization Credentials</source>
       </trans-unit>
-      <trans-unit id="SUSE Products">
-        <source>SUSE Products</source>
+      <trans-unit id="Products">
+        <source>Products</source>
       </trans-unit>
       <trans-unit id="Sync Schedule">
         <source>Sync Schedule</source>

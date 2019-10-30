@@ -8,7 +8,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
     Given I am authorized for the "Admin" section
     # Order matters here, refresh first
     When I refresh SCC
-    And I follow the left menu "Admin > Setup Wizard > SUSE Products"
+    And I follow the left menu "Admin > Setup Wizard > Products"
     And I wait until I see "Product Description" text
     Then I should see a "Arch" text
     And I should see a "Channels" text
@@ -17,7 +17,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
 @scc_credentials
   Scenario: Use the products filter
     Given I am authorized for the "Admin" section
-    When I follow the left menu "Admin > Setup Wizard > SUSE Products"
+    When I follow the left menu "Admin > Setup Wizard > Products"
     And I wait until I see "Product Description" text
     And I enter "RHEL Expanded Support 7" in the css "input[name='product-description-filter']"
     Then I should see a "RHEL Expanded Support 7" text
@@ -25,7 +25,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
 @scc_credentials
   Scenario: View the channels list in the products page
     Given I am authorized for the "Admin" section
-    When I follow the left menu "Admin > Setup Wizard > SUSE Products"
+    When I follow the left menu "Admin > Setup Wizard > Products"
     And I wait until I see "Product Description" text
     And I enter "SUSE Linux Enterprise Server for SAP All-in-One 11 SP2" in the css "input[name='product-description-filter']"
     And I click the channel list of product "SUSE Linux Enterprise Server for SAP All-in-One 11 SP2"
@@ -36,7 +36,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
 @scc_credentials
   Scenario: Add a product and one of its modules
     Given I am authorized for the "Admin" section
-    When I follow the left menu "Admin > Setup Wizard > SUSE Products"
+    When I follow the left menu "Admin > Setup Wizard > Products"
     And I wait until I see "Product Description" text
     And I enter "SUSE Linux Enterprise Server 12 SP2" in the css "input[name='product-description-filter']"
     And I select "x86_64" in the dropdown list of the architecture filter
@@ -54,7 +54,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
 @scc_credentials
   Scenario: Add a product with recommended enabled
     Given I am authorized for the "Admin" section
-    When I follow the left menu "Admin > Setup Wizard > SUSE Products"
+    When I follow the left menu "Admin > Setup Wizard > Products"
     And I wait until I see "Product Description" text
     And I enter "SUSE Linux Enterprise Server 15" in the css "input[name='product-description-filter']"
     And I select "x86_64" in the dropdown list of the architecture filter

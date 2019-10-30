@@ -300,7 +300,7 @@ public class Router implements SparkApplication {
         post("/manager/notification-messages/retry-reposync/:channelId",
                 withUser(NotificationMessageController::retryReposync));
 
-        // SUSE Products
+        // Products
         get("/manager/admin/setup/products",
                 withUserPreferences(withCsrfToken(withOrgAdmin(ProductsController::show))), jade);
         get("/manager/api/admin/products", withUser(ProductsController::data));
