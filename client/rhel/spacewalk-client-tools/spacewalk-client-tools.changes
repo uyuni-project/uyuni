@@ -1,3 +1,4 @@
+- return a non-zero exit status on errors in rhn_check
 - Bump version to 4.1.0 (bsc#1154940)
 - Require mgr-daemon (new name of spacewalksd) so we systems with
   spacewalksd get always the new package installed (bsc#1149353)
