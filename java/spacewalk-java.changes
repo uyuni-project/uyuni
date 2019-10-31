@@ -11,6 +11,12 @@
 - Fix sorting issues on content filter list page (bsc#1145591)
 
 -------------------------------------------------------------------
+Thu Oct 31 15:10:37 CET 2019 - jgonzalez@suse.com
+
+- version 4.0.25-1
+- Fix: regression with Ubuntu version compare (bsc#1150113)
+
+-------------------------------------------------------------------
 Thu Oct 17 12:22:47 CEST 2019 - jgonzalez@suse.com
 
 - version 4.0.24-1
