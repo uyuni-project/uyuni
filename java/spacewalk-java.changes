@@ -1,3 +1,5 @@
+- Fix: regression with Ubuntu version compare (bsc#1150113)
+
 -------------------------------------------------------------------
 Thu Oct 17 12:22:47 CEST 2019 - jgonzalez@suse.com
 
