@@ -7,7 +7,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
     Given I am authorized for the "Admin" section
     # Order matters here, refresh first
     When I refresh SCC
-    And I follow "SUSE Products" in the content area
+    And I follow the left menu "Admin > Setup Wizard > SUSE Products"
     And I wait until I see "Product Description" text
     Then I should see a "Arch" text
     And I should see a "Channels" text
