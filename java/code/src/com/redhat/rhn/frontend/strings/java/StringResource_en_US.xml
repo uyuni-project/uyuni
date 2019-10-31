@@ -915,6 +915,18 @@
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="Last Execution Times">
+        <source>Last Execution Times</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Navigation Menu</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="Runtime Status">
+        <source>Runtime Status</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Navigation Menu</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="Show Tomcat Logs">
         <source>Show Tomcat Logs</source>
         <context-group name="ctx">

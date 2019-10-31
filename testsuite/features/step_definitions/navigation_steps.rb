@@ -294,17 +294,17 @@ Given(/^I access the host the first time$/) do
   raise "Text 'Create #{product} Administrator' not found" unless page.has_content?("Create #{product} Administrator")
 end
 
-# Admin Page steps
-Given(/^I am on the Admin page$/) do
-  steps %(
-    When I am authorized as "admin" with password "admin"
-    When I follow the left menu "Admin > Setup Wizard"
-    )
+# Menu permission check
+Given(/^I am authorized for the "([^"]*)" section$/) do |section|
+  case section
+  when 'Admin'
+    step %(When I am authorized as "admin" with password "admin")
+  end
 end
 
 When(/^I am on the Organizations page$/) do
   steps %(
-    When I am authorized as "admin" with password "admin"
+    Given I am authorized for the "Admin" section
     When I follow the left menu "Admin > Organizations"
     )
 end

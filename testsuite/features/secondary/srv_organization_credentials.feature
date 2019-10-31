@@ -5,14 +5,14 @@ Feature: Organization credentials in the Setup Wizard
 
 @scc_credentials
   Scenario: Enter valid SCC credentials
-    Given I am on the Admin page
-    When I follow "Organization Credentials" in the content area
+    Given I am authorized for the "Admin" section
+    When I follow the left menu "Admin > Setup Wizard > Organization Credentials"
     And I enter the SCC credentials
 
 @no_mirror
   Scenario: Create some organization credentials
-    Given I am on the Admin page
-    When I follow "Organization Credentials" in the content area
+    Given I am authorized for the "Admin" section
+    When I follow the left menu "Admin > Setup Wizard > Organization Credentials"
     And I want to add a new credential
     And I enter "SCC user" as "edit-user"
     And I enter "SCC password" as "edit-password"
@@ -21,14 +21,14 @@ Feature: Organization credentials in the Setup Wizard
 
 @no_mirror
   Scenario: Make the credentials primary
-    Given I am on the Admin page
-    When I follow "Organization Credentials" in the content area
+    Given I am authorized for the "Admin" section
+    When I follow the left menu "Admin > Setup Wizard > Organization Credentials"
     And I make the credentials primary
 
 @no_mirror
   Scenario: Check the associated subscription list
-    Given I am on the Admin page
-    When I follow "Organization Credentials" in the content area
+    Given I am authorized for the "Admin" section
+    When I follow the left menu "Admin > Setup Wizard > Organization Credentials"
     And I view the primary subscription list for SCC user
     Then I should see a "No subscriptions available" text
     When I click on "Close"
@@ -37,8 +37,8 @@ Feature: Organization credentials in the Setup Wizard
 
 @no_mirror
   Scenario: Cleanup: delete the new organization credentials
-    Given I am on the Admin page
-    When I follow "Organization Credentials" in the content area
+    Given I am authorized for the "Admin" section
+    When I follow the left menu "Admin > Setup Wizard > Organization Credentials"
     And I delete the primary credentials
     And I view the primary subscription list
     And I click on "Close"

@@ -76,8 +76,8 @@ Feature: Very first settings
 
 @server_http_proxy
   Scenario: Setup HTTP proxy
-    When I am authorized as "admin" with password "admin"
-    When I follow the left menu "Admin > Setup Wizard"
+    Given I am authorized for the "Admin" section
+    When I follow the left menu "Admin > Setup Wizard > HTTP Proxy"
     Then I should see a "HTTP Proxy Hostname" text
     And I should see a "HTTP Proxy Username" text
     And I should see a "HTTP Proxy Password" text
