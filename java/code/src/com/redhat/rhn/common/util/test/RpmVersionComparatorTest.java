@@ -162,6 +162,7 @@ public class RpmVersionComparatorTest extends TestCase {
         assertCompareSymm(1, "3.8.1-1", "3.8.GA-1");
         assertCompareSymm(1, "1.0.1+gpl-1", "1.0.1-2");
         assertCompareSymm(-1, "1a", "1000a");
+        assertCompareSymm(1, "3.1-20170329", "3.1-20150325");
     }
 
     /* from official rpm tests */
