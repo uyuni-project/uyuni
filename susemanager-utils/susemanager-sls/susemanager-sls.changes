@@ -1,3 +1,4 @@
+- Consider timeout value in salt remote script (bsc#1153181)
 - Using new module path for which_bin to get rid of DeprecationWarning
 - Fix: match `image_id` with newer k8s (bsc#1149741)
 - Bump version to 4.1.0 (bsc#1154940)
