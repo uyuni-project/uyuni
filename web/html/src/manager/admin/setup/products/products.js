@@ -317,7 +317,7 @@ class ProductsPageWrapper extends React.Component {
                 : null
             }
             <hr/>
-              <h4>{t("Why aren't all SUSE products displayed in the list?")}</h4>
+              <h4>{t("Why aren't all products displayed in the list?")}</h4>
               <p>{t('The products displayed on this list are directly linked to your \
                   Organization credentials (Mirror credentials) as well as your SUSE subscriptions.')}</p>
               <p>{t('If you believe there are products missing, make sure you have added the correct \
