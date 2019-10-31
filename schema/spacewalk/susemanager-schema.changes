@@ -1,3 +1,4 @@
+- Fix: regression with Ubuntu version compare (bsc#1150113)
 - Bump version to 4.1.0 (bsc#1154940)
 - Fix in schema migration script when recreating the 'suseUserRoleView' (bsc#1151280)
 - Fix: handle special deb package names (bsc#1150113)

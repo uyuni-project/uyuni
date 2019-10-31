@@ -1,3 +1,4 @@
+- Fix: regression with Ubuntu version compare (bsc#1150113)
 - Add formula metadata to form data response
 - ignore kickstarttrees for child channels and prevent
   appstream repos sync to cobbler
