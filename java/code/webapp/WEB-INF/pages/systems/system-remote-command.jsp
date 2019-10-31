@@ -18,7 +18,7 @@
             <div class="panel-body">
                 <c:choose>
                 <c:when test="${requestScope.has_script_run == true}">
-                <form name="remoteCommandForm" action="/rhn/systems/details/SystemRemoteCommand.do" method="post" class="form-horizontal" role="form">
+                <form name="remoteCommandForm" action="/rhn/systems/details/SystemRemoteCommand.do?sid=${system.id}" method="post" class="form-horizontal" role="form">
                     <rhn:csrf />
                     <div class="form-group">
                         <label class="col-lg-3 control-label" for="fUidInput">
