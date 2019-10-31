@@ -2139,8 +2139,8 @@ tree will not be usable for autoinstalling.
       <trans-unit id="Mirror Credentials">
         <source>Organization Credentials</source>
       </trans-unit>
-      <trans-unit id="SUSE Products">
-        <source>SUSE Products</source>
+      <trans-unit id="Products">
+        <source>Products</source>
       </trans-unit>
       <trans-unit id="Sync Schedule">
         <source>Sync Schedule</source>
@@ -2223,7 +2223,7 @@ tree will not be usable for autoinstalling.
         <source>What are Organization Credentials?</source>
       </trans-unit>
       <trans-unit id="mirror-credentials.jsp.info.p1">
-        <source>Organization credentials (Mirror credentials) are your access to SUSE product downloads.</source>
+        <source>Organization credentials (Mirror credentials) are your access to product downloads.</source>
       </trans-unit>
       <trans-unit id="mirror-credentials.jsp.info.h2">
         <source>Where do I find my Organization Credentials?</source>

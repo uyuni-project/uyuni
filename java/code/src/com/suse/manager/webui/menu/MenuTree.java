@@ -315,7 +315,7 @@ public class MenuTree {
                                 .withPrimaryUrl("/rhn/admin/setup/ProxySettings.do"))
                         .addChild(new MenuItem("Mirror Credentials")
                                 .withPrimaryUrl("/rhn/admin/setup/MirrorCredentials.do"))
-                        .addChild(new MenuItem("SUSE Products")
+                        .addChild(new MenuItem("Products")
                                 .withPrimaryUrl("/rhn/manager/admin/setup/products")))
                 .addChild(new MenuItem("Organizations")
                     .withPrimaryUrl("/rhn/admin/multiorg/Organizations.do")

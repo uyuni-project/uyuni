@@ -118,7 +118,7 @@ Feature: Web UI - Main landing page menu, texts and links
     When I follow the left menu "Admin > Setup Wizard"
     Then I should see a "HTTP Proxy" link in the left menu
     And I should see a "Organization Credentials" link in the left menu
-    And I should see a "SUSE Products" link in the left menu
+    And I should see a "Products" link in the left menu
 
   Scenario: The manager configuration submenu of the admin menu
     When I follow the left menu "Admin > Manager Configuration"
