@@ -209,6 +209,11 @@ if result <> -1
 then
 	raise notice 'rpm.rpmstrcmp(1a, 1000a) should be -1';
 end if;
+select * into result from rpm.rpmstrcmp('3.1-20170329', '3.1-20150325');
+if result <> 1
+then
+	raise notice 'rpm.rpmstrcmp('3.1-20170329', '3.1-20150325') should be 1';
+end if;
 
 end;
 $$

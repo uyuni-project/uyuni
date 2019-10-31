@@ -90,8 +90,8 @@ CREATE OR REPLACE PACKAGE BODY rpm AS
         end if;
         debupstreamv1 := str1;
         debupstreamv2 := str2;
-        debrevisionv1 := str1;
-        debrevisionv2 := str2;
+        debrevisionv1 := '';
+        debrevisionv2 := '';
         if INSTR(str1, '-') <> 0
         then
             debupstreamv1 := SUBSTR(str1, 0, INSTR(str1, '-'));
@@ -100,7 +100,7 @@ CREATE OR REPLACE PACKAGE BODY rpm AS
         then
             debupstreamv2 := SUBSTR(str2, 0, INSTR(str2, '-'));
         end if;
-        if (str1 <> str2)
+        if (debupstreamv1 <> debupstreamv2)
         then
             str1 := debupstreamv1;
             str2 := debupstreamv2;
@@ -112,8 +112,8 @@ CREATE OR REPLACE PACKAGE BODY rpm AS
 	    else
 		return 0;
             end if;
-            str1 = debrevisionv1;
-            str2 = debrevisionv2;
+            str1 := debrevisionv1;
+            str2 := debrevisionv2;
         end if;
         -- loop through each version segment of str1 and str2 and compare them
         one := str1;
