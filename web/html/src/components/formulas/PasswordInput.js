@@ -1,7 +1,8 @@
 /* eslint-disable */
-const React = require("react");
-const generatePassword = require("../../utils/functions").Utils.generatePassword;
+import * as React from 'react';
+import {Utils} from "../../utils/functions";
 
+const generatePassword = Utils.generatePassword;
 
 class PasswordInput extends React.Component {
     constructor(props) {
@@ -35,7 +36,9 @@ class PasswordInput extends React.Component {
         return (
             <div className="form-group">
                 <label className="col-lg-3 control-label">
-                    {this.props.element.$name + ":"}
+                    {this.props.element.$name}
+                    {this.props.required ? <span className="required-form-field"> *</span> : null}
+                    :
                 </label>
                 <div className="col-lg-6">
                     <div className="input-group">
@@ -43,6 +46,7 @@ class PasswordInput extends React.Component {
                             name={this.props.element.$name} id={this.props.id} className="form-control"
                             onChange={this.props.onChange} placeholder={this.props.element.$placeholder}
                             title={this.props.element.$help} disabled={this.props.disabled} value={this.props.value}
+                            required={this.props.required}
                         />
                         <span className="input-group-btn">
                             <button className="btn btn-default" title={t("Generate new password")} onClick={this.handleGeneratePassword}>
@@ -59,7 +63,4 @@ class PasswordInput extends React.Component {
     }
 }
 
-
-module.exports = {
-    PasswordInput: PasswordInput
-};
+export default PasswordInput;

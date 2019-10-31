@@ -1,3 +1,4 @@
+- Add formula metadata to form data response
 - ignore kickstarttrees for child channels and prevent
   appstream repos sync to cobbler
 - Check if metadata refresh is needed before adding new channels (bsc#1153613)
