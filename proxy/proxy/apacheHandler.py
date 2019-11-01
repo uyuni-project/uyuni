@@ -34,7 +34,7 @@ from spacewalk.common.rhnApache import rhnApache
 from spacewalk.common.rhnTB import Traceback
 from spacewalk.common.rhnException import rhnFault, rhnException
 from spacewalk.common import rhnFlags, apache
-from spacewalk.common.rhnLib import setHeaderValue
+from uyuni.common.rhnLib import setHeaderValue
 from spacewalk.common import byterange
 
 from rhn import rpclib, connections

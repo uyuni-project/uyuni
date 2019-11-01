@@ -30,7 +30,7 @@ import sys
 from hashlib import sha1
 
 # common imports
-from spacewalk.common.rhnLib import parseUrl
+from uyuni.common.rhnLib import parseUrl
 from spacewalk.common.rhnTB import Traceback
 from spacewalk.common.rhnLog import log_debug, log_error
 from spacewalk.common.rhnConfig import CFG
