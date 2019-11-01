@@ -17,8 +17,8 @@ import sys
 import time
 
 # pylint: disable=F0401
-from spacewalk.common import rhn_rpm, rhn_mpm
-from spacewalk.common.usix import ListType, TupleType
+from uyuni.common import rhn_rpm, rhn_mpm
+from uyuni.common.usix import ListType, TupleType
 
 
 def main():

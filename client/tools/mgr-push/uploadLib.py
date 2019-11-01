@@ -26,9 +26,9 @@ import getpass
 # pylint: disable=W0702,W0703
 
 import inspect
-from spacewalk.common import rhn_mpm
-from spacewalk.common.rhn_pkg import package_from_filename, get_package_header
-from spacewalk.common.usix import raise_with_tb
+from uyuni.common import rhn_mpm
+from uyuni.common.rhn_pkg import package_from_filename, get_package_header
+from uyuni.common.usix import raise_with_tb
 from up2date_client import rhnserver
 from rhn.i18n import sstr
 from rhnpush import rhnpush_cache
@@ -796,7 +796,7 @@ def packageCompare(pkg1, pkg2, is_mpm=None):
     if is_mpm:
         func = rhn_mpm.labelCompare
     else:
-        from spacewalk.common import rhn_rpm
+        from uyuni.common import rhn_rpm
         func = rhn_rpm.labelCompare
     return func(packages[0], packages[1])
 
