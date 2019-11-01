@@ -524,8 +524,6 @@ popd
 %if 0%{?build_py3}
 %py3_compile -O %{buildroot}/%{pythonrhnroot}
 %py_compile -O %{buildroot}/%{python2rhnroot}
-rm -f $RPM_BUILD_ROOT%{python2rhnroot}/__init__.py*
-rm -f $RPM_BUILD_ROOT%{python2rhnroot}/common/__init__.py*
 %endif
 %endif
 
@@ -605,6 +603,8 @@ rm -f %{rhnconf}/rhnSecret.py*
 %dir %{pythonrhnroot}
 %dir %{_prefix}/lib/susemanager
 %dir %{_prefix}/lib/susemanager/bin
+%{pythonrhnroot}/__init__.py*
+%{pythonrhnroot}/common/__init__.py*
 %{pythonrhnroot}/common/suseLib.py*
 %{pythonrhnroot}/common/apache.py*
 %{pythonrhnroot}/common/byterange.py*
