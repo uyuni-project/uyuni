@@ -28,7 +28,7 @@ import sys
 from virtualization.domain_directory import DomainDirectory
 from virtualization.domain_config    import DomainConfig, DomainConfigError
 from virtualization.errors           import VirtualizationException
-from spacewalk.common.usix import raise_with_tb
+from uyuni.common.usix import raise_with_tb
 
 ###############################################################################
 # Constants

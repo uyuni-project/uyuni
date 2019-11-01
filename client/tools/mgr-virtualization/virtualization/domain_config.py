@@ -17,7 +17,7 @@ from xml.dom.minidom import parse
 import os
 import sys
 
-from spacewalk.common.usix import raise_with_tb
+from uyuni.common.usix import raise_with_tb
 
 
 ###############################################################################

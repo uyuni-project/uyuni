@@ -20,7 +20,7 @@ try:
 except ImportError:
     import subprocess as commands
 
-from spacewalk.common.usix import StringType
+from uyuni.common.usix import StringType
 from distutils.sysconfig import get_python_lib
 
 COMMAND = "python%s %s/virtualization/poller.py" % (sys.version[0], get_python_lib())

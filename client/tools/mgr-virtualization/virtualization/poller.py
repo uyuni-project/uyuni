@@ -52,7 +52,7 @@ from virtualization.poller_state_cache import PollerStateCache
 
 from virtualization.domain_directory   import DomainDirectory
 
-from spacewalk.common.usix import raise_with_tb
+from uyuni.common.usix import raise_with_tb
 ###############################################################################
 # Globals
 ###############################################################################

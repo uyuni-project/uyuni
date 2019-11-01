@@ -26,7 +26,7 @@ from virtualization.notification     import Plan,                    \
                                             TargetType
 from virtualization.domain_config    import DomainConfig
 from virtualization.domain_directory import DomainDirectory
-from spacewalk.common.usix import UnicodeType
+from uyuni.common.usix import UnicodeType
 
 
 t = gettext.translation('rhn-virtualization', fallback=True)
