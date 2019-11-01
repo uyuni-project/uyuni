@@ -44,7 +44,7 @@ from spacewalk.common.rhnException import rhnFault
 from spacewalk.common.rhnConfig import CFG
 from spacewalk.common import rhnRepository
 from spacewalk.common.rhnTranslate import _
-from spacewalk.common.usix import raise_with_tb
+from uyuni.common.usix import raise_with_tb
 
 ## local imports
 from rhn import rpclib

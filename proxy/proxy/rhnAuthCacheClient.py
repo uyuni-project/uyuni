@@ -33,7 +33,7 @@ from spacewalk.common.rhnLog import log_debug, log_error
 from spacewalk.common.rhnTB import Traceback
 from spacewalk.common.rhnException import rhnFault
 from spacewalk.common.rhnTranslate import _
-from spacewalk.common.usix import raise_with_tb
+from uyuni.common.usix import raise_with_tb
 from .rhnAuthProtocol import CommunicationError, send, recv
 
 #
