@@ -49,9 +49,9 @@ from .sslToolLib import RhnSslToolException, \
         gendir, chdir, getMachineName, fixSerial, TempDir, \
         errnoGeneralError, errnoSuccess
 
-from spacewalk.common.fileutils import rotateFile, rhn_popen, cleanupAbsPath
+from uyuni.common.fileutils import rotateFile, rhn_popen, cleanupAbsPath
 
-from spacewalk.common.rhn_rpm import hdrLabelCompare, sortRPMs, get_package_header, \
+from uyuni.common.rhn_rpm import hdrLabelCompare, sortRPMs, get_package_header, \
         getInstalledHeader
 
 from .sslToolConfig import ConfigFile, figureSerial, getOption, CERT_PATH, \

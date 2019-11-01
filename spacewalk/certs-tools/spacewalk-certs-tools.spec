@@ -63,11 +63,11 @@ BuildRequires:  filesystem
 Requires:       susemanager-build-keys-web
 %endif
 %if 0%{?build_py3}
-Requires(post): python3-spacewalk-backend-libs
+Requires(post): python3-uyuni-common-libs
 Requires(post): python3-rhnlib
 Requires(post): python3-rpm
 %else
-Requires(post): spacewalk-backend-libs
+Requires(post): python2-uyuni-common-libs
 Requires(post): rhnlib
 Requires(post): rpm-python
 %endif
@@ -87,6 +87,7 @@ Group:          Applications/Internet
 Requires:       %{name} = %{version}-%{release}
 Requires:       python2-rhn-client-tools
 Requires:       spacewalk-backend-libs >= 0.8.28
+Requires:       python2-uyuni-common-libs
 %if 0%{?rhel} && 0%{?rhel} <= 5
 Requires:       python-hashlib
 %endif
@@ -102,6 +103,7 @@ Group:          Applications/Internet
 Requires:       %{name} = %{version}-%{release}
 Requires:       python3-rhn-client-tools
 Requires:       python3-spacewalk-backend-libs
+Requires:       python3-uyuni-common-libs
 BuildRequires:  python3
 BuildRequires:  python3-rpm-macros
 
