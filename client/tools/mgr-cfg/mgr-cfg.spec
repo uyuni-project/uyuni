@@ -128,7 +128,7 @@ Requires:       %{name} = %{version}-%{release}
 Requires:       python
 Requires:       python2-rhn-client-tools >= 2.8.4
 Requires:       rhnlib >= 2.8.3
-Requires:       spacewalk-usix
+Requires:       python2-uyuni-common-libs
 %if 0%{?rhel} && 0%{?rhel} <= 5
 Requires:       python-hashlib
 %endif
@@ -154,7 +154,7 @@ Obsoletes:      python3-%{oldname} < %{oldversion}
 Requires:       python3
 Requires:       python3-rhn-client-tools >= 2.8.4
 Requires:       python3-rhnlib >= 2.8.3
-Requires:       python3-spacewalk-usix
+Requires:       python3-uyuni-common-libs
 BuildRequires:  python3
 %if %{_vendor} != "debbuild"
 BuildRequires:  python3-rpm-macros

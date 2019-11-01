@@ -25,7 +25,7 @@ from config_client import rpc_cli_repository
 
 from up2date_client import config
 
-from spacewalk.common.usix import StringType, UnicodeType, PY3
+from uyuni.common.usix import StringType, UnicodeType, PY3
 
 
 # this is a list of the methods that get exported by a module
