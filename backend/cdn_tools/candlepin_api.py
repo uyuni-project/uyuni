@@ -19,7 +19,7 @@ import tempfile
 import requests
 
 from spacewalk.cdn_tools.constants import CA_CERT_PATH
-from spacewalk.common.cli import getUsernamePassword
+from uyuni.common.cli import getUsernamePassword
 from spacewalk.common.rhnConfig import CFG
 from spacewalk.satellite_tools.syncLib import log, log2
 

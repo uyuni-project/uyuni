@@ -25,7 +25,7 @@ try:
 except ImportError:
     #  python3
     from collections import UserDict
-from spacewalk.common.usix import ListType, StringType, DictType, IntType, UnicodeType
+from uyuni.common.usix import ListType, StringType, DictType, IntType, UnicodeType
 
 # A function that formats a UNIX timestamp to the session's format
 

@@ -39,16 +39,17 @@ sys.path.append("/usr/share/rhn")
 from up2date_client import config
 
 # __rhn imports__
-from spacewalk.common import usix
-from spacewalk.common import rhnMail, rhnLib
+from uyuni.common import usix
+from uyuni.common import rhnLib
+from spacewalk.common import rhnMail
 from spacewalk.common.rhnLog import initLOG
 from spacewalk.common.rhnConfig import CFG, initCFG, PRODUCT_NAME
 from spacewalk.common.rhnTB import exitWithTraceback, fetchTraceback
-from spacewalk.common.checksum import getFileChecksum
+from uyuni.common.checksum import getFileChecksum
 from spacewalk.server import rhnSQL
 from spacewalk.server.rhnSQL import SQLError, SQLSchemaError, SQLConnectError
 from spacewalk.server.rhnLib import get_package_path
-from spacewalk.common import fileutils
+from uyuni.common import fileutils
 
 # __rhn sync/import imports__
 from spacewalk.satellite_tools import xmlWireSource

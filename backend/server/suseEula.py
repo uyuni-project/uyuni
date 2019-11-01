@@ -12,7 +12,7 @@
 
 import hashlib
 from spacewalk.common.rhnException import rhnFault
-from spacewalk.common.stringutils import to_string
+from uyuni.common.stringutils import to_string
 from spacewalk.server import rhnSQL
 
 def find_or_create_eula(eula):

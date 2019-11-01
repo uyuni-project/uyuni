@@ -22,12 +22,12 @@ import sys
 from rhn import rpclib
 
 # common modules imports
-from spacewalk.common.usix import raise_with_tb
+from uyuni.common.usix import raise_with_tb
 from spacewalk.common import rhnRepository, rhnFlags, rhnCache
 from spacewalk.common.rhnLog import log_debug
 from spacewalk.common.rhnConfig import CFG
 from spacewalk.common.rhnException import rhnFault, redirectException
-from spacewalk.common.rhnLib import rfc822time, timestamp
+from uyuni.common.rhnLib import rfc822time, timestamp
 
 # local modules imports
 from spacewalk.server import rhnChannel, rhnPackage, taskomatic, rhnSQL

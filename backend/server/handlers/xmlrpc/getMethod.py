@@ -23,10 +23,8 @@
 import string
 import os
 import sys
-from spacewalk.common.usix import ClassType
+from uyuni.common.usix import ClassType, raise_with_tb
 from distutils.sysconfig import get_python_lib
-
-from spacewalk.common.usix import raise_with_tb
 
 class GetMethodException(Exception):
 

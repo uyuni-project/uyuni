@@ -16,7 +16,7 @@
 # Package import code on the app side
 #
 
-from spacewalk.common import rhn_rpm
+from uyuni.common import rhn_rpm
 from spacewalk.common.rhnLog import log_debug
 from spacewalk.common.rhnException import rhnFault
 
@@ -137,16 +137,16 @@ def _formatStatus(status):
 def _dump(object):
     if object is None:
         return ''
-    from spacewalk.common.usix import IntType, StringType, FloatType
+    from uyuni.common.usix import IntType, StringType, FloatType
     if type(object) in (IntType, StringType, FloatType):
         return object
-    from spacewalk.common.usix import ListType
+    from uyuni.common.usix import ListType
     if isinstance(object, ListType):
         return list(map(_dump, object))
-    from spacewalk.common.usix import TupleType
+    from uyuni.common.usix import TupleType
     if isinstance(object, TupleType):
         return tuple(map(_dump, object))
-    from spacewalk.common.usix import DictType
+    from uyuni.common.usix import DictType
     if isinstance(object, DictType):
         dict = {}
         for h, v in list(object.items()):

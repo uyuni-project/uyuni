@@ -16,7 +16,7 @@
 import pam
 import sys
 
-from spacewalk.common.usix import raise_with_tb
+from uyuni.common.usix import raise_with_tb
 from spacewalk.common.rhnLog import log_error
 from spacewalk.common.rhnException import rhnException
 

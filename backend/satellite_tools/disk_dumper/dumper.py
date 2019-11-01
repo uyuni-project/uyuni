@@ -24,8 +24,9 @@ except ImportError:
     #  python3
     from io import StringIO
 
-from spacewalk.common.usix import raise_with_tb, ListType
-from spacewalk.common import rhnCache, rhnLib, rhnFlags
+from uyuni.common.usix import raise_with_tb, ListType
+from uyuni.common import rhnLib
+from spacewalk.common import rhnCache, rhnFlags
 from spacewalk.common.rhnLog import log_debug, log_error
 from spacewalk.common.rhnConfig import CFG
 from spacewalk.common.rhnException import rhnFault

@@ -17,7 +17,7 @@ import sys
 from spacewalk.common.rhnLog import log_debug
 from spacewalk.server import rhnSQL
 from spacewalk.server.rhnLib import InvalidAction
-from spacewalk.common.usix import raise_with_tb
+from uyuni.common.usix import raise_with_tb
 
 __rhnexport__ = ['refresh',
                  'shutdown',

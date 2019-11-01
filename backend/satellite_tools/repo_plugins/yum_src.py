@@ -46,7 +46,8 @@ import xml.etree.ElementTree as etree
 
 from functools import cmp_to_key
 from salt.utils.versions import LooseVersion
-from spacewalk.common import checksum, rhnLog, fileutils
+from uyuni.common import checksum, fileutils
+from spacewalk.common import rhnLog
 from spacewalk.satellite_tools.repo_plugins import ContentPackage, CACHE_DIR
 from spacewalk.satellite_tools.download import get_proxies
 from spacewalk.common.rhnConfig import CFG, initCFG

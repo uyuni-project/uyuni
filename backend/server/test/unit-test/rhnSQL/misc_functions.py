@@ -20,7 +20,7 @@
 import os
 import sys
 import time
-from spacewalk.common import usix
+from uyuni.common import usix
 
 try:
     #  python 2

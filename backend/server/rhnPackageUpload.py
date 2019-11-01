@@ -17,12 +17,12 @@ import os
 import sys
 import tempfile
 
-from spacewalk.common.usix import raise_with_tb
-from spacewalk.common import rhn_mpm, rhn_deb, rhn_pkg
+from uyuni.common.usix import raise_with_tb
+from uyuni.common import rhn_mpm, rhn_deb, rhn_pkg
 from spacewalk.common.rhnLog import log_debug
 from spacewalk.common.rhnConfig import CFG
 from spacewalk.common.rhnException import rhnFault
-from spacewalk.common.rhn_rpm import get_header_byte_range
+from uyuni.common.rhn_rpm import get_header_byte_range
 
 from spacewalk.server import rhnSQL
 from spacewalk.server.importlib.backendOracle import SQLBackend

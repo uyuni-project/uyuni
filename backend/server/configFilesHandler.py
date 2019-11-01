@@ -27,11 +27,11 @@ except ImportError:
 import sys
 import hashlib
 
-from spacewalk.common.usix import raise_with_tb
+from uyuni.common.usix import raise_with_tb
 from spacewalk.common import rhnFlags
 from spacewalk.common.rhnLog import log_debug
 from spacewalk.common.rhnConfig import CFG
-from spacewalk.common.checksum import getStringChecksum
+from uyuni.common.checksum import getStringChecksum
 from spacewalk.common.rhnException import rhnFault, rhnException
 
 from spacewalk.server import rhnSQL, rhnUser, rhnCapability

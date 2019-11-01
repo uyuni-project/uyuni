@@ -25,7 +25,7 @@
 
 import sys
 from . import sql_types
-from spacewalk.common import usix
+from uyuni.common import usix
 
 
 def ociDict(names=None, row=None):

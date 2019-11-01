@@ -22,7 +22,7 @@ import time
 
 from spacewalk.common import rhnCache
 from spacewalk.common.rhnConfig import CFG
-from spacewalk.common.usix import UnicodeType
+from uyuni.common.usix import UnicodeType
 from spacewalk.server import rhnSQL
 
 from . import domain

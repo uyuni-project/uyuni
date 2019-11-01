@@ -30,7 +30,7 @@ from rhn.connections import idn_puny_to_unicode
 from spacewalk.common.rhnConfig import CFG, PRODUCT_NAME
 from spacewalk.common.rhnLog import log_error
 from spacewalk.common.rhnTranslate import _
-from spacewalk.common.stringutils import to_string
+from uyuni.common.stringutils import to_string
 from spacewalk.common import rhnMail
 from spacewalk.common import rhnFlags
 

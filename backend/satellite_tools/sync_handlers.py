@@ -15,10 +15,10 @@
 
 import sys
 
-from spacewalk.common import usix
+from uyuni.common import usix
 from spacewalk.server.importlib import channelImport, packageImport, errataImport, \
     kickstartImport
-from spacewalk.common.usix import raise_with_tb
+from uyuni.common.usix import raise_with_tb
 from . import diskImportLib
 from . import xmlSource
 from . import syncCache

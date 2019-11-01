@@ -29,8 +29,8 @@ import os.path
 from gzip import GzipFile
 from gzip import write32u
 
-from spacewalk.common.usix import LongType
-from spacewalk.common import checksum
+from uyuni.common.usix import LongType
+from uyuni.common import checksum
 from spacewalk.common import rhnCache
 from spacewalk.common.rhnLog import log_debug
 from spacewalk.common.rhnConfig import CFG

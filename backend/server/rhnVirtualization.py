@@ -21,7 +21,7 @@
 import time
 import sys
 
-from spacewalk.common.usix import raise_with_tb, LongType
+from uyuni.common.usix import raise_with_tb, LongType
 from spacewalk.common.rhnLog import log_debug, log_error
 from spacewalk.server import rhnSQL
 from spacewalk.server.rhnServer import server_lib

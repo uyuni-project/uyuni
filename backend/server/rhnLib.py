@@ -20,7 +20,7 @@ import base64
 import struct
 import posixpath
 
-from spacewalk.common.rhnLib import parseRPMName, parseDEBName
+from uyuni.common.rhnLib import parseRPMName, parseDEBName
 from spacewalk.common.rhnLog import log_debug
 from spacewalk.common.rhnException import rhnFault
 

@@ -17,8 +17,8 @@
 
 import os
 import gzip
-from spacewalk.common.fileutils import createPath
-from spacewalk.common.rhnLib import hash_object_id
+from uyuni.common.fileutils import createPath
+from uyuni.common.rhnLib import hash_object_id
 
 
 class MissingXmlDiskSourceFileError(Exception):

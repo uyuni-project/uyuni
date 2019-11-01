@@ -22,7 +22,7 @@ import time
 import sys
 
 from spacewalk.common.rhnConfig import CFG
-from spacewalk.common.usix import raise_with_tb
+from uyuni.common.usix import raise_with_tb
 
 from . import rhnSQL
 

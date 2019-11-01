@@ -28,7 +28,7 @@ except ImportError:
 
 from spacewalk.common import rhnCache
 from spacewalk.common.rhnLog import log_debug, log_error
-from spacewalk.common.rhnLib import timestamp
+from uyuni.common.rhnLib import timestamp
 
 from spacewalk.server import rhnSQL
 

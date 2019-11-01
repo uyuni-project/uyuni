@@ -17,7 +17,7 @@
 import csv
 import getpass
 from optparse import OptionParser
-from spacewalk.common import rhn_rpm
+from uyuni.common import rhn_rpm
 import sys
 import time
 try:

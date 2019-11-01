@@ -27,15 +27,15 @@ import sys
 import string
 import os
 import re
-from spacewalk.common import usix
+from uyuni.common import usix
 
 from rhn.UserDictCase import UserDictCase
-from spacewalk.common.usix import raise_with_tb, next
+from uyuni.common.usix import raise_with_tb, next
 from spacewalk.server import rhnSQL
 from spacewalk.common import rhnConfig
 from spacewalk.common.rhnLog import log_debug, log_error
 from spacewalk.common.rhnException import rhnException
-from spacewalk.common.stringutils import to_string
+from uyuni.common.stringutils import to_string
 from const import ORACLE
 
 ORACLE_TYPE_MAPPING = [

@@ -25,13 +25,13 @@ except ImportError:
 import sys
 from rhn import rpclib
 
-from spacewalk.common import usix
-from spacewalk.common import rhn_rpm
+from uyuni.common import usix
+from uyuni.common import rhn_rpm
+from uyuni.common.rhnLib import rfc822time
 
 # local imports
 from spacewalk.common import rhnFlags
 from spacewalk.common.rhnLog import log_debug
-from spacewalk.common.rhnLib import rfc822time
 from spacewalk.common.rhnException import rhnException, rhnFault, rhnNotFound
 from spacewalk.common.RPC_Base import RPC_Base
 

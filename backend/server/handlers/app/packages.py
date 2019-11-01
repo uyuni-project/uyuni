@@ -19,9 +19,7 @@
 
 import os
 import sys
-from spacewalk.common.usix import TupleType
-
-from spacewalk.common.usix import raise_with_tb
+from uyuni.common.usix import TupleType, raise_with_tb
 
 from spacewalk.common.rhnLog import log_debug, log_error
 from spacewalk.common.rhnConfig import CFG

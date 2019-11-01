@@ -5,11 +5,11 @@ import sys
 import os
 
 from spacewalk.common.rhnConfig import CFG, initCFG
-from spacewalk.common.fileutils import cleanupAbsPath
+from uyuni.common.fileutils import cleanupAbsPath
 from spacewalk.cdn_tools.common import CustomChannelSyncError, CdnMappingsLoadError, CountingPackagesError
 from spacewalk.cdn_tools.cdnsync import CdnSync
 from spacewalk.server import rhnSQL
-from spacewalk.common.usix import raise_with_tb
+from uyuni.common.usix import raise_with_tb
 from rhn import rhnLockfile
 from rhn.connections import idn_ascii_to_puny
 from spacewalk.server.importlib.importLib import InvalidArchError, \

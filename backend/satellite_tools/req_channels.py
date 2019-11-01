@@ -14,7 +14,7 @@
 #
 #
 
-from spacewalk.common import usix
+from uyuni.common import usix
 
 
 class RequestedChannels:

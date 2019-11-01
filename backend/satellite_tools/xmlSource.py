@@ -20,7 +20,7 @@ import re
 from xml.sax import make_parser, SAXParseException, ContentHandler, \
     ErrorHandler
 
-from spacewalk.common import usix
+from uyuni.common import usix
 from spacewalk.common import rhnFlags
 from spacewalk.common.rhnLog import log_debug
 from spacewalk.common.rhnConfig import CFG

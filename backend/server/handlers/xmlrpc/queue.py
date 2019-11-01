@@ -23,10 +23,9 @@ except ImportError:
     #  python3
     import xmlrpc.client as xmlrpclib
 
-from spacewalk.common.usix import IntType, TupleType, UnicodeType
+from uyuni.common.usix import IntType, TupleType, UnicodeType, raise_with_tb
 
 # Global modules
-from spacewalk.common.usix import raise_with_tb
 from spacewalk.common import rhnFlags
 from spacewalk.common.rhnLog import log_debug, log_error
 from spacewalk.common.rhnConfig import CFG

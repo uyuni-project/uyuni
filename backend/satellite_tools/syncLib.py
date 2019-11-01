@@ -27,11 +27,11 @@ except ImportError:
     from io import StringIO
 
 # rhn imports:
-from spacewalk.common.usix import raise_with_tb
-from spacewalk.common import rhnLib
+from uyuni.common.usix import raise_with_tb
+from uyuni.common import rhnLib
 from spacewalk.common.rhnConfig import CFG
 from spacewalk.common.rhnLog import log_time, log_clean
-from spacewalk.common.fileutils import createPath, setPermsPath
+from uyuni.common.fileutils import createPath, setPermsPath
 
 from . import messages
 
