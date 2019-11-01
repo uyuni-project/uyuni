@@ -1,3 +1,4 @@
+- Create Kiwi cache dir if not present
 - Consider timeout value in salt remote script (bsc#1153181)
 - Using new module path for which_bin to get rid of DeprecationWarning
 - Fix: match `image_id` with newer k8s (bsc#1149741)
