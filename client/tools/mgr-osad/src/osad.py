@@ -16,7 +16,7 @@
 import re
 import sys
 import time
-from spacewalk.common.usix import ListType
+from uyuni.common.usix import ListType
 from rhn import rpclib
 import random
 import socket

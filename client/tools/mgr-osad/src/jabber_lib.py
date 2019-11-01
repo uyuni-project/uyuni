@@ -30,7 +30,7 @@ try: # python 2
 except ImportError: # python 3
     from osad.rhn_log import log_debug, log_error
 
-from spacewalk.common.usix import raise_with_tb
+from uyuni.common.usix import raise_with_tb
 from rhn.i18n import bstr
 
 import warnings
