@@ -1,3 +1,4 @@
+- require uyuni-common-libs
 - Allow bootstraping of Expanded Support 6, CentOS6 and Red Hat 6
   salt-ssh minions when using the "Minimal" software set (bsc#1155295)
 - Bump version to 4.1.0 (bsc#1154940)

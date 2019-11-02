@@ -1,3 +1,4 @@
+- removed spacewalk-backend-libs subpackage; replaces by uyuni-common-libs
 - read LOBs explicitly
 - Bump version to 4.1.0 (bsc#1154940)
 - Improve error message when deleting channel that's in a content lifecycle project (bsc#1145769)
