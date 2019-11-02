@@ -86,7 +86,6 @@ Summary:        Spacewalk SSL Key/Cert Tool
 Group:          Applications/Internet
 Requires:       %{name} = %{version}-%{release}
 Requires:       python2-rhn-client-tools
-Requires:       spacewalk-backend-libs >= 0.8.28
 Requires:       python2-uyuni-common-libs
 %if 0%{?rhel} && 0%{?rhel} <= 5
 Requires:       python-hashlib
@@ -102,7 +101,7 @@ Summary:        Spacewalk SSL Key/Cert Tool
 Group:          Applications/Internet
 Requires:       %{name} = %{version}-%{release}
 Requires:       python3-rhn-client-tools
-Requires:       python3-spacewalk-backend-libs
+Requires:       spacewalk-backend
 Requires:       python3-uyuni-common-libs
 BuildRequires:  python3
 BuildRequires:  python3-rpm-macros
