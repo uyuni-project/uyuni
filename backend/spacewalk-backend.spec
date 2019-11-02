@@ -115,6 +115,7 @@ BuildRequires:  spacewalk-python2-pylint
 BuildRequires:  /usr/bin/docbook2man
 BuildRequires:  /usr/bin/msgfmt
 BuildRequires:  docbook-utils
+BuildRequires:  fdupes
 %if 0%{?fedora} || 0%{?rhel} || 0%{?suse_version} > 1310
 %if 0%{?build_py3}
 BuildRequires:  python3-uyuni-common-libs
@@ -512,6 +513,7 @@ sed -i 's/#DOCUMENTROOT#/\/srv\/www\/htdocs/' $RPM_BUILD_ROOT%{rhnconfigdefaults
 
 %if 0%{?build_py3}
 %py3_compile -O %{buildroot}/%{pythonrhnroot}
+%fdupes %{buildroot}/%{pythonrhnroot}
 %endif
 %endif
 
