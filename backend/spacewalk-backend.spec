@@ -616,7 +616,7 @@ rm -f %{rhnconf}/rhnSecret.py*
 %if 0%{?build_py3}
 %dir %{pythonrhnroot}/server/__pycache__/
 %dir %{pythonrhnroot}/server/rhnSQL/__pycache__/
-%{pythonrhnroot}/server/__pycache__/*
+%{pythonrhnroot}/server/__pycache__/__init__.*
 %{pythonrhnroot}/server/rhnSQL/__pycache__/*
 %endif
 
@@ -690,6 +690,8 @@ rm -f %{rhnconf}/rhnSecret.py*
 %if 0%{?build_py3}
 %dir %{pythonrhnroot}/server/importlib/__pycache__/
 %{pythonrhnroot}/server/importlib/__pycache__/*
+%{pythonrhnroot}/server/__pycache__/*
+%exclude %{pythonrhnroot}/server/__pycache__/__init__.*
 %endif
 %{rhnroot}/server/handlers/__init__.py*
 
@@ -911,6 +913,11 @@ rm -f %{rhnconf}/rhnSecret.py*
 %dir %{pythonrhnroot}/satellite_tools/disk_dumper/__pycache__/
 %dir %{pythonrhnroot}/satellite_tools/repo_plugins/__pycache__/
 %{pythonrhnroot}/satellite_tools/__pycache__/*
+%exclude %{pythonrhnroot}/satellite_tools/__pycache__/connection.*
+%exclude %{pythonrhnroot}/satellite_tools/__pycache__/diskImportLib.*
+%exclude %{pythonrhnroot}/satellite_tools/__pycache__/syncLib.*
+%exclude %{pythonrhnroot}/satellite_tools/__pycache__/xmlDiskSource.*
+%exclude %{pythonrhnroot}/satellite_tools/__pycache__/xmlSource.*
 %{pythonrhnroot}/satellite_tools/disk_dumper/__pycache__/*
 %{pythonrhnroot}/satellite_tools/repo_plugins/__pycache__/*
 %endif
@@ -958,6 +965,11 @@ rm -f %{rhnconf}/rhnSecret.py*
 %{pythonrhnroot}/satellite_tools/exporter/xmlWriter.py*
 %if 0%{?build_py3}
 %dir %{pythonrhnroot}/satellite_tools/exporter/__pycache__/
+%{pythonrhnroot}/satellite_tools/__pycache__/connection.*
+%{pythonrhnroot}/satellite_tools/__pycache__/diskImportLib.*
+%{pythonrhnroot}/satellite_tools/__pycache__/syncLib.*
+%{pythonrhnroot}/satellite_tools/__pycache__/xmlDiskSource.*
+%{pythonrhnroot}/satellite_tools/__pycache__/xmlSource.*
 %{pythonrhnroot}/satellite_tools/exporter/__pycache__/*
 %endif
 
