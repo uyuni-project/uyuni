@@ -576,21 +576,7 @@ rm -f %{rhnconf}/rhnSecret.py*
 %dir %{_prefix}/lib/susemanager
 %dir %{_prefix}/lib/susemanager/bin
 %{pythonrhnroot}/__init__.py*
-%{pythonrhnroot}/common/__init__.py*
-%{pythonrhnroot}/common/suseLib.py*
-%{pythonrhnroot}/common/apache.py*
-%{pythonrhnroot}/common/byterange.py*
-%{pythonrhnroot}/common/rhnApache.py*
-%{pythonrhnroot}/common/rhnCache.py*
-%{pythonrhnroot}/common/rhnConfig.py*
-%{pythonrhnroot}/common/rhnException.py*
-%{pythonrhnroot}/common/rhnFlags.py*
-%{pythonrhnroot}/common/rhnLog.py*
-%{pythonrhnroot}/common/rhnMail.py*
-%{pythonrhnroot}/common/rhnTB.py*
-%{pythonrhnroot}/common/rhnRepository.py*
-%{pythonrhnroot}/common/rhnTranslate.py*
-%{pythonrhnroot}/common/RPC_Base.py*
+%{pythonrhnroot}/common
 %attr(770,root,%{apache_group}) %dir %{_var}/log/rhn
 # Workaround for strict-whitespace-enforcement in httpd
 %attr(644,root,%{apache_group}) %config %{apacheconfd}/aa-spacewalk-server.conf
@@ -610,7 +596,6 @@ rm -f %{rhnconf}/rhnSecret.py*
 %if 0%{?build_py3}
 %dir %{pythonrhnroot}/__pycache__/
 %{pythonrhnroot}/__pycache__/*
-%{pythonrhnroot}/common/__pycache__/*
 %endif
 
 %files sql
