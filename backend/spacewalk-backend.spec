@@ -66,12 +66,6 @@
 %endif
 %endif
 
-%{!?python2_sitelib: %global python2_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print(get_python_lib())")}
-%global python2rhnroot %{python2_sitelib}/spacewalk
-%if !0%{?build_py3}
-%global pythonrhnroot %{python_sitelib}/spacewalk
-%endif
-
 Name:           spacewalk-backend
 Summary:        Common programs needed to be installed on the Spacewalk servers/proxies
 License:        GPL-2.0-only
@@ -515,26 +509,20 @@ sed -i 's/#DOCUMENTROOT#/\/var\/www\/html/' $RPM_BUILD_ROOT%{rhnconfigdefaults}/
 %if 0%{?suse_version}
 sed -i 's/#LOGROTATE-3.8#.*/    su root www/' $RPM_BUILD_ROOT%{_sysconfdir}/logrotate.d/spacewalk-backend-*
 sed -i 's/#DOCUMENTROOT#/\/srv\/www\/htdocs/' $RPM_BUILD_ROOT%{rhnconfigdefaults}/rhn.conf
-%if !0%{?build_py3}
-pushd $RPM_BUILD_ROOT
-find -name '*.py' -print0 | xargs -0 python %py_libdir/py_compile.py
-popd
-%endif
 
 %if 0%{?build_py3}
 %py3_compile -O %{buildroot}/%{pythonrhnroot}
-%py_compile -O %{buildroot}/%{python2rhnroot}
 %endif
 %endif
 
 install -m 755 satellite_tools/mgr-update-pkg-extra-tags $RPM_BUILD_ROOT%{_prefix}/lib/susemanager/bin/
 
 %check
-make -f Makefile.backend PYTHONPATH=$RPM_BUILD_ROOT%{python_sitelib} PYTHON_BIN=%{pythonX} test
+make -f Makefile.backend PYTHONPATH=$RPM_BUILD_ROOT%{python_sitelib}:$RPM_BUILD_ROOT%{python3_sitelib}/uyuni/common-libs PYTHON_BIN=%{pythonX} test
 
 %if 0%{?pylint_check}
 # check coding style
-export PYTHONPATH=$RPM_BUILD_ROOT%{pythonrhnroot}:/usr/lib/rhn:/usr/share/rhn
+export PYTHONPATH=$RPM_BUILD_ROOT%{pythonrhnroot}:/usr/lib/rhn:/usr/share/rhn:$RPM_BUILD_ROOT%{python3_sitelib}/uyuni/common-libs
 spacewalk-%{pythonX} $RPM_BUILD_ROOT%{pythonrhnroot}/common \
                      $RPM_BUILD_ROOT%{pythonrhnroot}/satellite_exporter \
                      $RPM_BUILD_ROOT%{pythonrhnroot}/satellite_tools \
@@ -542,24 +530,8 @@ spacewalk-%{pythonX} $RPM_BUILD_ROOT%{pythonrhnroot}/common \
                      $RPM_BUILD_ROOT%{pythonrhnroot}/upload_server \
                      $RPM_BUILD_ROOT%{pythonrhnroot}/wsgi
 
-%if 0%{?build_py3}
-export PYTHONPATH=$RPM_BUILD_ROOT%{python2rhnroot}:/usr/lib/rhn:/usr/share/rhn
-spacewalk-python2 $RPM_BUILD_ROOT%{python2rhnroot}/common \
-                  $RPM_BUILD_ROOT%{python2rhnroot}/satellite_exporter \
-                  $RPM_BUILD_ROOT%{python2rhnroot}/satellite_tools \
-                  $RPM_BUILD_ROOT%{python2rhnroot}/cdn_tools \
-                  $RPM_BUILD_ROOT%{python2rhnroot}/upload_server \
-                  $RPM_BUILD_ROOT%{python2rhnroot}/wsgi
-%endif
 %endif
 
-%if !0%{?build_py3}
-if [ -x %py_libdir/py_compile.py ]; then
-    pushd %{buildroot}
-    find -name '*.py' -print0 | xargs -0 python %py_libdir/py_compile.py
-    popd
-fi
-%endif
 
 %pre server
 OLD_SECRET_FILE=%{_var}/www/rhns/server/secret/rhnSecret.py

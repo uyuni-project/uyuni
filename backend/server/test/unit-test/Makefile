@@ -21,7 +21,7 @@ all:	$(addprefix test-,$(TESTS))
 
 test-%:
 	@echo Running $*
-	PYTHONPATH=$(PYTHONPATH):../../../ python $*
+	PYTHONPATH=$(PYTHONPATH):../../../ $(PYTHON_BIN) $*
 
 docker_shell ::
 	docker run --rm=true -t -i -e $(DOCKER_RUN_EXPORT) $(DOCKER_VOLUMES) $(DOCKER_REGISTRY)/$(DOCKER_CONTAINER_BASE)_oracle_$(DOCKER_TESTED_BRANCH) /bin/bash
