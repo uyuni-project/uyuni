@@ -20,12 +20,12 @@ import copy
 import string
 import sys
 
-from spacewalk.common.usix import raise_with_tb
-from spacewalk.common import rhn_rpm
+from uyuni.common.usix import raise_with_tb
+from uyuni.common import rhn_rpm
 from spacewalk.common.rhnConfig import CFG
 from spacewalk.common.rhnException import rhnFault
 from spacewalk.common.rhnLog import log_debug
-from spacewalk.common.stringutils import to_string
+from uyuni.common.stringutils import to_string
 from spacewalk.server import rhnSQL, rhnChannel, taskomatic
 from .importLib import Diff, Package, IncompletePackage, Erratum, \
     AlreadyUploadedError, InvalidPackageError, TransactionError, \

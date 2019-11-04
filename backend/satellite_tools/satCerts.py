@@ -24,8 +24,8 @@ from datetime import datetime
 from M2Crypto import X509
 
 # other rhn imports
-from spacewalk.common.rhnLib import utc
-from spacewalk.common.usix import raise_with_tb
+from uyuni.common.rhnLib import utc
+from uyuni.common.usix import raise_with_tb
 from spacewalk.server import rhnSQL
 from spacewalk.common.rhnTB import fetchTraceback
 

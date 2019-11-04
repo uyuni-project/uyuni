@@ -23,8 +23,9 @@ except ImportError:
 import random
 
 # common modules imports
-from spacewalk.common.usix import LongType
-from spacewalk.common import rhnCache, rhnFlags, rhn_rpm
+from uyuni.common.usix import LongType
+from uyuni.common import rhn_rpm
+from spacewalk.common import rhnCache, rhnFlags
 from spacewalk.common.rhnLog import log_debug
 from spacewalk.common.rhnConfig import CFG
 from spacewalk.common.rhnException import rhnFault

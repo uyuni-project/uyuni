@@ -19,9 +19,8 @@ import sys
 # pylint: disable=F0401,E0611,W0632
 from rhn import connections, rpclib
 
-from spacewalk.common.usix import ListType, TupleType, IntType
-from spacewalk.common.rhn_pkg import InvalidPackageError, package_from_filename
-from spacewalk.common.usix import raise_with_tb
+from uyuni.common.usix import ListType, TupleType, IntType, raise_with_tb
+from uyuni.common.rhn_pkg import InvalidPackageError, package_from_filename
 from rhnpush.utils import tupleify_urlparse
 
 if sys.version_info[0] == 3:

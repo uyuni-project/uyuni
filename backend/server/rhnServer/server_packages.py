@@ -19,10 +19,8 @@
 
 import sys
 import time
-from spacewalk.common.usix import DictType
-
-from spacewalk.common.usix import raise_with_tb
-from spacewalk.common import rhn_rpm
+from uyuni.common.usix import DictType, raise_with_tb
+from uyuni.common import rhn_rpm
 from spacewalk.common.rhnLog import log_debug
 from spacewalk.common.rhnException import rhnFault
 from spacewalk.server import rhnSQL, rhnAction

@@ -15,7 +15,7 @@
 
 import sys
 from rhn import rpclib
-from spacewalk.common.usix import raise_with_tb
+from uyuni.common.usix import raise_with_tb
 
 try:
     from socket import error, sslerror, herror, gaierror, timeout

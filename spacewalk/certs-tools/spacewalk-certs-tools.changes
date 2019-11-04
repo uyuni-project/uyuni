@@ -1,3 +1,4 @@
+- require uyuni-common-libs
 - Bump version to 4.1.0 (bsc#1154940)
 - make traditional bootstrap more robust for unknown hostname (bsc#1152298)
 - Require mgr-daemon (new name of spacewalksd) so we systems with

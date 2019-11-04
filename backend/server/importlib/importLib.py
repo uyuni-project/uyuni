@@ -18,7 +18,7 @@
 
 import os
 import shutil
-from spacewalk.common.usix import IntType, StringType, InstanceType
+from uyuni.common.usix import IntType, StringType, InstanceType
 try:
     #  python 2
     from UserDict import UserDict
@@ -27,8 +27,8 @@ except ImportError:
     #  python3
     from collections import UserList, UserDict
 
-from spacewalk.common.checksum import getFileChecksum
-from spacewalk.common.fileutils import createPath
+from uyuni.common.checksum import getFileChecksum
+from uyuni.common.fileutils import createPath
 from spacewalk.common.rhnConfig import CFG
 
 # no-op class, used to define the type of an attribute

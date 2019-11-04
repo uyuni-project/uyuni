@@ -12,7 +12,7 @@
 # in this software or its documentation.
 #
 
-from spacewalk.common import fileutils
+from uyuni.common import fileutils
 from . import constants
 
 

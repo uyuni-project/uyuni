@@ -24,7 +24,7 @@ except ImportError:
     #  python3
     import urllib.parse as urlparse # pylint: disable=F0401,E0611
 
-from spacewalk.common import usix
+from uyuni.common import usix
 
 
 def setHeaderValue(mp_table, name, values):

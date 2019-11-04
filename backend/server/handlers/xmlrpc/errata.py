@@ -20,7 +20,7 @@ import re
 # common modules imports
 from spacewalk.common.rhnTranslate import _
 from spacewalk.common import rhnFlags
-from spacewalk.common.rhnLib import parseRPMName
+from uyuni.common.rhnLib import parseRPMName
 from spacewalk.common.rhnLog import log_debug, log_error
 from spacewalk.common.rhnException import rhnFault
 

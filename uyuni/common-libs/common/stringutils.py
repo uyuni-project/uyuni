@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2009--2017 Red Hat, Inc.
+# Copyright (c) 2013--2016 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
 # version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -12,3 +12,21 @@
 # granted to use or replicate Red Hat trademarks that are incorporated
 # in this software or its documentation.
 #
+
+from uyuni.common.usix import StringType, UnicodeType
+
+
+def to_unicode(obj):
+    if isinstance(obj, StringType):
+        return UnicodeType(obj, 'utf8')
+    else:
+        return obj
+
+
+def to_string(obj):
+    if isinstance(obj, UnicodeType):
+        return obj
+    elif isinstance(obj, bytes):
+        return obj.decode('utf8')
+    else:
+        return obj

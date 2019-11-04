@@ -13,7 +13,7 @@
 import sys
 from spacewalk.common.rhnLog import log_debug
 from spacewalk.common.rhnException import rhnFault
-from spacewalk.common.usix import raise_with_tb
+from uyuni.common.usix import raise_with_tb
 from spacewalk.server import rhnSQL
 from spacewalk.server.rhnChannel import subscribe_channels, unsubscribe_channels
 from spacewalk.server.rhnLib import InvalidAction, ShadowAction

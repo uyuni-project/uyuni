@@ -16,7 +16,7 @@
 
 import os
 import sys
-from spacewalk.common import usix
+from uyuni.common import usix
 
 _topdir = os.path.abspath(os.path.dirname(sys.argv[0]))
 if _topdir not in sys.path:

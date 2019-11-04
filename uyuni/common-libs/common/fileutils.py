@@ -25,9 +25,9 @@ import select
 import stat
 import tempfile
 import io
-from spacewalk.common.checksum import getFileChecksum
-from spacewalk.common.rhnLib import isSUSE
-from spacewalk.common.usix import ListType, TupleType, MaxInt
+from uyuni.common.checksum import getFileChecksum
+from uyuni.common.rhnLib import isSUSE
+from uyuni.common.usix import ListType, TupleType, MaxInt
 
 def cleanupAbsPath(path):
     """ take ~taw/../some/path/$MOUNT_POINT/blah and make it sensible.

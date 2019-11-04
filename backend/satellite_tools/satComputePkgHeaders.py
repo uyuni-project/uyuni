@@ -21,8 +21,8 @@ import sys
 from optparse import OptionParser, Option
 
 from spacewalk.server import rhnSQL
-from spacewalk.common import rhn_rpm
-from spacewalk.common.rhn_pkg import InvalidPackageError
+from uyuni.common import rhn_rpm
+from uyuni.common.rhn_pkg import InvalidPackageError
 
 SERVER_RETURN = 0
 

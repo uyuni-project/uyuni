@@ -31,7 +31,7 @@ from . import sql_base
 from rhn.UserDictCase import UserDictCase
 from spacewalk.server import rhnSQL
 
-from spacewalk.common.usix import BufferType, raise_with_tb
+from uyuni.common.usix import BufferType, raise_with_tb
 from spacewalk.common.rhnLog import log_debug, log_error
 from spacewalk.common.rhnException import rhnException
 from .const import POSTGRESQL

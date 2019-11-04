@@ -31,7 +31,7 @@ except ImportError:
 
 from spacewalk.common.rhnLog import log_debug, log_error
 from spacewalk.common.rhnException import rhnFault
-from spacewalk.common.stringutils import to_string
+from uyuni.common.stringutils import to_string
 from .server_lib import getServerSecret
 from .server_lib import check_entitlement_by_machine_id
 

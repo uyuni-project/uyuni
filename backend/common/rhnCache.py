@@ -29,10 +29,10 @@ import sys
 from stat import ST_MTIME
 from errno import EEXIST
 
-from spacewalk.common.rhnLib import timestamp
+from uyuni.common.rhnLib import timestamp
 
-from spacewalk.common.usix import raise_with_tb
-from spacewalk.common.fileutils import makedirs, setPermsPath
+from uyuni.common.usix import raise_with_tb
+from uyuni.common.fileutils import makedirs, setPermsPath
 
 # this is a constant I'm not too happy about but one way or another we have
 # to reserve our own shared memory space.

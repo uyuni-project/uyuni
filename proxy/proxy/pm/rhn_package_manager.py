@@ -49,7 +49,7 @@ from optparse import Option, OptionParser
 
 # RHN imports
 from spacewalk.common.rhnConfig import CFG, initCFG
-from spacewalk.common.rhnLib import parseUrl
+from uyuni.common.rhnLib import parseUrl
 initCFG('proxy.package_manager')
 # pylint: disable=E0012, C0413
 from rhnpush.uploadLib import UploadError

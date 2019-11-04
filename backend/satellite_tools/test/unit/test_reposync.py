@@ -31,7 +31,7 @@ from spacewalk.satellite_tools.repo_plugins import ContentPackage
 from spacewalk.satellite_tools.repo_plugins import yum_src
 from spacewalk.server.importlib import importLib
 
-from spacewalk.common import rhn_rpm
+from uyuni.common import rhn_rpm
 
 RTYPE = 'yum' # a valid repotype
 

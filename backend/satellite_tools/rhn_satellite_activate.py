@@ -30,7 +30,8 @@ except ImportError:
     RhsmConfigParser = None
 
 # common, server imports
-from spacewalk.common import fileutils, rhnLog
+from uyuni.common import fileutils
+from spacewalk.common import rhnLog
 from spacewalk.common.rhnConfig import CFG, initCFG, PRODUCT_NAME
 from spacewalk.common.rhnTranslate import _
 from spacewalk.server.rhnServer import satellite_cert

@@ -15,7 +15,7 @@
 
 import re
 import rpm
-from spacewalk.common import rhn_pkg
+from uyuni.common import rhn_pkg
 from spacewalk.common.rhnException import rhnFault
 from spacewalk.server import rhnPackageUpload
 

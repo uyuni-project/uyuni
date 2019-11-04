@@ -25,7 +25,7 @@ from .backendLib import DBint, DBstring, DBdateTime, Table, \
 from spacewalk.server import rhnSQL
 from spacewalk.server.rhnSQL.const import ORACLE, POSTGRESQL
 from spacewalk.common.rhnConfig import CFG
-from spacewalk.common import timezone_utils
+from uyuni.common import timezone_utils
 
 
 class OracleBackend(Backend):

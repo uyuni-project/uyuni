@@ -16,7 +16,7 @@
 import os
 import sys
 import tempfile
-from spacewalk.common.usix import raise_with_tb
+from uyuni.common.usix import raise_with_tb
 
 try: # python2
     import xmlrpclib

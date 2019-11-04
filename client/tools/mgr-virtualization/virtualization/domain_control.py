@@ -20,7 +20,7 @@ except:
     # be on every system.
     libvirt = None
 
-from spacewalk.common.usix import raise_with_tb
+from uyuni.common.usix import raise_with_tb
 
 
 ###############################################################################

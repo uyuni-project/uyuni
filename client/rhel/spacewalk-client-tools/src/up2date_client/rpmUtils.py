@@ -20,7 +20,7 @@ from rhn.i18n import sstr
 from up2date_client import transaction
 from up2date_client import up2dateLog
 
-from spacewalk.common.usix import StringType, UnicodeType, PY3
+from uyuni.common.usix import StringType, UnicodeType, PY3
 
 import gettext
 t = gettext.translation('rhn-client-tools', fallback=True)

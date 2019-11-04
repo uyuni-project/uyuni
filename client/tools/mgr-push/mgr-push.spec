@@ -80,10 +80,9 @@ BuildRequires:  python-devel
 %endif
 Requires:       python2-rhn-client-tools
 Requires:       rhnlib >= 2.8.3
-Requires:       spacewalk-backend-libs >= 1.7.17
-Requires:       spacewalk-usix
+Requires:       python2-uyuni-common-libs
 BuildRequires:  python2-rhn-client-tools
-BuildRequires:  spacewalk-backend-libs > 1.8.33
+BuildRequires:  python2-uyuni-common-libs
 
 %description -n python2-%{name}
 Python 2 specific files for rhnpush.
@@ -103,12 +102,11 @@ Requires:       rpm-python3
 %endif
 Requires:       python3-rhn-client-tools
 Requires:       python3-rhnlib >= 2.8.3
-Requires:       python3-spacewalk-backend-libs
-Requires:       python3-spacewalk-usix
+Requires:       python3-uyuni-common-libs
 BuildRequires:  python3-devel
 BuildRequires:  python3-rhn-client-tools
 BuildRequires:  python3-rpm-macros
-BuildRequires:  python3-spacewalk-backend-libs > 1.8.33
+BuildRequires:  python3-uyuni-common-libs
 
 %description -n python3-%{name}
 Python 3 specific files for rhnpush.

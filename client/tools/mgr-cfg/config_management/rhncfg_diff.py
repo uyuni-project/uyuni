@@ -22,7 +22,7 @@ import sys
 from config_common import handler_base, utils, cfg_exceptions
 from config_common.rhn_log import log_debug, die
 from config_common.file_utils import f_date, ostr_to_sym
-from spacewalk.common.usix import next
+from uyuni.common.usix import next
 from rhn.i18n import bstr, sstr
 
 

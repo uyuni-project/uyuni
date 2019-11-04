@@ -25,8 +25,8 @@ from rhn import rpclib
 sys.path.append("/usr/share/rhn")
 from up2date_client import config
 
-from spacewalk.common.usix import raise_with_tb
-from spacewalk.common import rhnLib
+from uyuni.common.usix import raise_with_tb
+from uyuni.common import rhnLib
 from spacewalk.common.rhnConfig import CFG
 
 # local imports

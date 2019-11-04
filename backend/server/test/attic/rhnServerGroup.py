@@ -15,7 +15,7 @@
 #
 
 
-from spacewalk.common import usix
+from uyuni.common import usix
 
 from spacewalk.server import rhnSQL, rhnUser
 

@@ -124,7 +124,7 @@ Requires:       python-jabberpy
 Requires:       python2-mgr-osa-common = %{version}
 Requires:       python2-rhn-client-tools >= 2.8.4
 Requires:       rhnlib >= 2.8.3
-Requires:       spacewalk-usix
+Requires:       python2-uyuni-common-libs
 %if 0%{?rhel} && 0%{?rhel} <= 5
 Requires:       python-hashlib
 %endif
@@ -146,7 +146,7 @@ Requires:       python3-jabberpy
 Requires:       python3-mgr-osa-common = %{version}
 Requires:       python3-rhn-client-tools >= 2.8.4
 Requires:       python3-rhnlib >= 2.8.3
-Requires:       python3-spacewalk-usix
+Requires:       python3-uyuni-common-libs
 BuildRequires:  python3-devel
 
 %description -n python3-%{name}

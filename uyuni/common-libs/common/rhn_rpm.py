@@ -21,10 +21,10 @@ import functools
 
 import rpm
 
-from spacewalk.common.usix import raise_with_tb
-from spacewalk.common.usix import next as usix_next
-from spacewalk.common import checksum
-from spacewalk.common.rhn_pkg import A_Package, InvalidPackageError
+from uyuni.common.usix import raise_with_tb
+from uyuni.common.usix import next as usix_next
+from uyuni.common import checksum
+from uyuni.common.rhn_pkg import A_Package, InvalidPackageError
 from rhn.i18n import sstr
 
 # bare-except and broad-except

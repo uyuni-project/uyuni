@@ -14,9 +14,9 @@
 #
 
 import time
-from spacewalk.common.usix import StringType
+from uyuni.common.usix import StringType
 
-from spacewalk.common import rhnLib
+from uyuni.common import rhnLib
 from spacewalk.common.rhnLog import log_debug
 from spacewalk.server import rhnSQL
 

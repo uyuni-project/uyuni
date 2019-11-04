@@ -20,10 +20,9 @@ import time
 from .importLib import File, Dependency, ChangeLog, Channel, \
     IncompletePackage, Package, SourcePackage
 from .backendLib import gmtime, localtime
-from spacewalk.common.usix import ListType, TupleType, IntType, LongType, StringType, UnicodeType
+from uyuni.common.usix import ListType, TupleType, IntType, LongType, StringType, UnicodeType
+from uyuni.common.stringutils import to_string
 from spacewalk.common.rhnLog import log_debug
-from spacewalk.common.stringutils import to_string
-from spacewalk.common.usix import LongType
 
 
 class rpmPackage(IncompletePackage):

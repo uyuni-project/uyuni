@@ -27,7 +27,7 @@ from rhn.connections import idn_puny_to_unicode
 
 from spacewalk.common import apache
 
-from spacewalk.common.usix import raise_with_tb
+from uyuni.common.usix import raise_with_tb
 from spacewalk.common import rhnFlags
 from spacewalk.common.rhnLog import log_debug, log_error, log_setreq, initLOG
 from spacewalk.common.rhnConfig import CFG, initCFG

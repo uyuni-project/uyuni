@@ -55,7 +55,6 @@ BuildRequires:  docbook-utils
 BuildRequires:  python
 %if 0%{?fedora} || 0%{?rhel} > 5
 BuildRequires:  spacewalk-backend >= 1.7.24
-BuildRequires:  spacewalk-backend-libs >= 1.7.24
 BuildRequires:  spacewalk-backend-tools >= 1.7.24
 BuildRequires:  spacewalk-config
 BuildRequires:  yum
@@ -95,9 +94,9 @@ Requires:       salt
 Requires:       spacewalk-admin
 Requires:       spacewalk-backend
 %if 0%{?suse_version} >= 1320
-Requires:       python3-spacewalk-backend-libs
+Requires:       python3-uyuni-common-libs
 %else
-Requires:       spacewalk-backend-libs
+Requires:       python2-uyuni-common-libs
 %endif
 Requires:       spacewalk-backend-tools >= 2.2.27
 Requires:       spacewalk-certs-tools

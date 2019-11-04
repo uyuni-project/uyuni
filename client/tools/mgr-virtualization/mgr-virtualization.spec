@@ -82,7 +82,7 @@ Obsoletes:      %{name}-common < %{oldversion}
 Provides:       %{oldname}-common = %{oldversion}
 Obsoletes:      %{oldname}-common < %{oldversion}
 Requires:       python2-rhn-client-tools
-Requires:       spacewalk-usix
+Requires:       python2-uyuni-common-libs
 BuildRequires:  python
 %if 0%{?suse_version}
 # aaa_base provide chkconfig
@@ -107,7 +107,7 @@ Obsoletes:      python3-%{oldname}-common < %{oldversion}
 Obsoletes:      %{name}-common < %{oldversion}
 Obsoletes:      %{oldname}-common < %{oldversion}
 Requires:       python3-rhn-client-tools
-Requires:       python3-spacewalk-usix
+Requires:       python3-uyuni-common-libs
 BuildRequires:  python3-devel
 
 %description -n python3-%{name}-common

@@ -28,7 +28,8 @@ except ImportError:
 from spacewalk.common.rhnConfig import CFG
 from spacewalk.common.rhnLog import log_debug, log_error
 from spacewalk.common.rhnTB import Traceback
-from spacewalk.common import rhnFlags, rhnLib, apache
+from spacewalk.common import rhnFlags, apache
+from uyuni.common import rhnLib
 
 # rhnlib imports
 from rhn import connections

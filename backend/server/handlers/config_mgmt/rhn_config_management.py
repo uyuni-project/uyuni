@@ -19,10 +19,10 @@
 import sys
 import difflib
 from spacewalk.common.rhnLog import log_debug
-from spacewalk.common.usix import raise_with_tb, next
+from uyuni.common.usix import raise_with_tb, next
 from spacewalk.common.rhnException import rhnFault
 from spacewalk.server import rhnSQL, configFilesHandler
-from spacewalk.common.fileutils import f_date, ostr_to_sym
+from uyuni.common.fileutils import f_date, ostr_to_sym
 
 
 class ConfigManagement(configFilesHandler.ConfigFilesHandler):

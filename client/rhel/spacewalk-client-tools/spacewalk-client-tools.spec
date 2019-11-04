@@ -175,7 +175,7 @@ Requires:       rhnlib >= 2.5.78
 
 %if %{_vendor} != "debbuild"
 Requires:       rpm-python
-Requires:       spacewalk-usix
+Requires:       python2-uyuni-common-libs
 %ifnarch s390 s390x
 Requires:       python-dmidecode
 %endif
@@ -281,7 +281,7 @@ Requires:       python3-hwdata
 Requires:       python3-netifaces
 Requires:       python3-rhnlib >= 2.5.78
 Requires:       python3-rpm
-Requires:       python3-spacewalk-usix
+Requires:       python3-uyuni-common-libs
 
 %if %{_vendor} == "debbuild"
 BuildRequires: python3-dev

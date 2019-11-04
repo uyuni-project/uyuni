@@ -20,8 +20,8 @@ from . import headerSource
 import time
 from .importLib import Channel
 from .backendLib import gmtime, localtime
-from spacewalk.common.usix import IntType, UnicodeType
-from spacewalk.common.stringutils import to_string
+from uyuni.common.usix import IntType, UnicodeType
+from uyuni.common.stringutils import to_string
 
 
 class debBinaryPackage(headerSource.rpmBinaryPackage):

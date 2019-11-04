@@ -19,7 +19,7 @@
 import os
 import sys
 import time
-from spacewalk.common import usix
+from uyuni.common import usix
 import server.importlib.headerSource
 import server.importlib.packageImport
 import server.importlib.backendOracle

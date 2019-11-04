@@ -19,7 +19,7 @@ import sys
 import locale
 import unittest
 import time
-from spacewalk.common import rhnLib
+from uyuni.common import rhnLib
 
 TIMEZONE_SHIFT = time.timezone / 3600
 

@@ -20,7 +20,7 @@ import stat
 import re
 
 from rhn.UserDictCase import UserDictCase
-from spacewalk.common.usix import raise_with_tb
+from uyuni.common.usix import raise_with_tb
 
 # bare-except and broad-except
 # pylint: disable=W0702,W0703

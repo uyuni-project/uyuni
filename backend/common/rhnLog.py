@@ -36,8 +36,8 @@ import traceback
 import time
 import fcntl
 import atexit
-from spacewalk.common.fileutils import getUidGid
-from spacewalk.common.rhnLib import isSUSE
+from uyuni.common.fileutils import getUidGid
+from uyuni.common.rhnLib import isSUSE
 
 LOG = None
 

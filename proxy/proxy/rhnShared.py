@@ -35,9 +35,10 @@ from spacewalk.common.rhnTB import Traceback
 from spacewalk.common.rhnConfig import CFG
 from spacewalk.common.rhnException import rhnFault, rhnException
 from spacewalk.common.rhnLog import log_debug, log_error
-from spacewalk.common import rhnFlags, rhnLib, apache
+from spacewalk.common import rhnFlags, apache
 from spacewalk.common.rhnTranslate import _
-from spacewalk.common.usix import raise_with_tb, ListType, TupleType
+from uyuni.common import rhnLib
+from uyuni.common.usix import raise_with_tb, ListType, TupleType
 
 # local imports
 from . import rhnConstants

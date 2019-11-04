@@ -23,7 +23,7 @@ import shutil
 
 from config_common import file_utils, utils, cfg_exceptions
 from config_common.rhn_log import log_debug
-from spacewalk.common.usix import raise_with_tb
+from uyuni.common.usix import raise_with_tb
 
 class TargetNotFile(Exception): pass
 class DuplicateDeployment(Exception): pass

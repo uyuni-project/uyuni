@@ -18,7 +18,7 @@
 import os
 import hashlib
 import time
-from spacewalk.common import usix
+from uyuni.common import usix
 
 from spacewalk.server import rhnSQL
 from rhn.i18n import bstr

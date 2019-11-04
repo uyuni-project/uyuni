@@ -97,11 +97,13 @@ Group:          Productivity/Other
 
 %if 0%{?build_py3}
 Requires:       createrepo_c
+Requires:       python3-uyuni-common-libs
 Requires:       python3
 Requires:       python3-configobj
 BuildRequires:  python3-configobj
 %else
 Requires:       createrepo
+Requires:       python2-uyuni-common-libs
 Requires:       python
 Requires:       python-argparse
 Requires:       python-configobj

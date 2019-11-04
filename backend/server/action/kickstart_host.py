@@ -15,7 +15,7 @@
 
 import sys
 from spacewalk.common.rhnLog import log_debug
-from spacewalk.common.usix import raise_with_tb
+from uyuni.common.usix import raise_with_tb
 from spacewalk.server.rhnLib import InvalidAction, ShadowAction
 from spacewalk.server.action.utils import SubscribedChannel,\
     ChannelPackage, \

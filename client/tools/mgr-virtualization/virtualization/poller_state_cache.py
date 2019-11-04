@@ -23,7 +23,7 @@ except ImportError:
 import time
 import traceback
 
-from spacewalk.common.usix import LongType
+from uyuni.common.usix import LongType
 
 ###############################################################################
 # Constants

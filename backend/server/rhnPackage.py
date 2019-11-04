@@ -16,7 +16,7 @@
 import os
 import sys
 
-from spacewalk.common.usix import ListType
+from uyuni.common.usix import ListType
 
 from spacewalk.common import rhnFlags
 from spacewalk.common.rhnLog import log_debug, log_error

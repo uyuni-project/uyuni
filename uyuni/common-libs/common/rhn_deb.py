@@ -22,9 +22,9 @@ import tempfile
 
 from debian import debfile
 
-from spacewalk.common.usix import raise_with_tb
-from spacewalk.common import checksum
-from spacewalk.common.rhn_pkg import A_Package, InvalidPackageError
+from uyuni.common.usix import raise_with_tb
+from uyuni.common import checksum
+from uyuni.common.rhn_pkg import A_Package, InvalidPackageError
 
 # bare-except and broad-except
 # pylint: disable=W0702,W0703

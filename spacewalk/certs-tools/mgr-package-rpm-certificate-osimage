@@ -17,7 +17,7 @@ import argparse
 from certs.sslToolCli import CertExpTooShortException, \
         CertExpTooLongException, InvalidCountryCodeException
 from certs.sslToolLib import RhnSslToolException, chdir
-from spacewalk.common.fileutils import cleanupAbsPath, rhn_popen
+from uyuni.common.fileutils import cleanupAbsPath, rhn_popen
 from certs.rhn_ssl_tool import legacyTreeFixup, _disableRpmMacros, _reenableRpmMacros, \
     GenCaCertRpmException
 from certs.sslToolConfig import BUILD_DIR, CERT_PATH, CA_CERT_RPM_SUMMARY, \

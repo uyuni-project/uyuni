@@ -17,13 +17,13 @@
 import os
 import sys
 
-from spacewalk.common.usix import raise_with_tb
+from uyuni.common.usix import raise_with_tb
 from spacewalk.common import rhnFlags, rhnMail
 from spacewalk.common.rhnLog import log_debug, log_error
 from spacewalk.common.rhnConfig import CFG
 from spacewalk.common.rhnException import rhnFault
 from spacewalk.common.rhnTranslate import _, cat
-from spacewalk.common.rhnLib import checkValue
+from uyuni.common.rhnLib import checkValue
 from spacewalk.server.rhnLib import normalize_server_arch
 from spacewalk.server.rhnServer import server_route, server_lib
 from spacewalk.server.rhnServer.server_certificate import Certificate

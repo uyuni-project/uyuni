@@ -51,5 +51,7 @@ zypper --non-interactive in ant \
              java-11-openjdk-devel \
              pam \
              sudo \
-             tar
+             tar \
+             system-user-wwwrun \
+             system-user-mail
 

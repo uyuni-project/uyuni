@@ -6,7 +6,7 @@ import shutil
 import logging
 import subprocess
 from spacewalk.server import rhnSQL
-from spacewalk.common import usix
+from uyuni.common import usix
 from spacewalk.common.rhnConfig import CFG, initCFG
 from optparse import OptionParser
 import textwrap

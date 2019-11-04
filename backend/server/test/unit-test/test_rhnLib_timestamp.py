@@ -20,7 +20,7 @@
 import sys
 import time
 import unittest
-from spacewalk.common import rhnLib
+from uyuni.common import rhnLib
 
 
 class Tests(unittest.TestCase):

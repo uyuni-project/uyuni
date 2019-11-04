@@ -28,7 +28,7 @@ except ImportError:
 
 # common module imports
 from rhn.UserDictCase import UserDictCase
-from spacewalk.common.rhnLib import parseUrl
+from uyuni.common.rhnLib import parseUrl
 from spacewalk.common.rhnConfig import CFG
 from spacewalk.common.rhnLog import log_debug, log_error
 from spacewalk.common.rhnException import rhnFault

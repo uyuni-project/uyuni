@@ -38,13 +38,13 @@ except ImportError:
     import xmlrpc.client as xmlrpclib
 
 ## common imports
-from spacewalk.common.rhnLib import parseRPMName
+from uyuni.common.rhnLib import parseRPMName
 from spacewalk.common.rhnLog import log_debug
 from spacewalk.common.rhnException import rhnFault
 from spacewalk.common.rhnConfig import CFG
 from spacewalk.common import rhnRepository
 from spacewalk.common.rhnTranslate import _
-from spacewalk.common.usix import raise_with_tb
+from uyuni.common.usix import raise_with_tb
 
 ## local imports
 from rhn import rpclib

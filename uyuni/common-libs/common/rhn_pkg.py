@@ -15,7 +15,7 @@
 
 import os
 from rhn.i18n import bstr
-from spacewalk.common import checksum
+from uyuni.common import checksum
 
 def get_package_header(filename=None, file_obj=None, fd=None):
     # pylint: disable=E1103
@@ -44,13 +44,13 @@ def get_package_header(filename=None, file_obj=None, fd=None):
 
 def package_from_stream(stream, packaging):
     if packaging == 'deb':
-        from spacewalk.common import rhn_deb
+        from uyuni.common import rhn_deb
         a_pkg = rhn_deb.DEB_Package(stream)
     elif packaging == 'rpm':
-        from spacewalk.common import rhn_rpm
+        from uyuni.common import rhn_rpm
         a_pkg = rhn_rpm.RPM_Package(stream)
     elif packaging == 'mpm':
-        from spacewalk.common import rhn_mpm
+        from uyuni.common import rhn_mpm
         a_pkg = rhn_mpm.MPM_Package(stream)
     else:
         a_pkg = None

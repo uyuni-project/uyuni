@@ -16,7 +16,7 @@
 import os
 import gettext
 
-from spacewalk.common.usix import StringType
+from uyuni.common.usix import StringType
 
 class RHN_Translations(gettext.GNUTranslations):
     # Defining our own class, since we'd like to save the language we use

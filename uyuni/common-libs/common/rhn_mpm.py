@@ -30,13 +30,13 @@ except ImportError:
     import xmlrpc.client as xmlrpclib # pylint: disable=F0401
 import struct
 import sys
-from spacewalk.common import fileutils
+from uyuni.common import fileutils
 
-from spacewalk.common.usix import ListType, TupleType
+from uyuni.common.usix import ListType, TupleType
 
-from spacewalk.common.usix import raise_with_tb
-from spacewalk.common import checksum
-from spacewalk.common.rhn_pkg import A_Package, InvalidPackageError
+from uyuni.common.usix import raise_with_tb
+from uyuni.common import checksum
+from uyuni.common.rhn_pkg import A_Package, InvalidPackageError
 
 # bare-except and broad-except
 # pylint: disable=W0702,W0703
@@ -46,7 +46,7 @@ MPM_CHECKSUM_TYPE = 'md5'       # FIXME: this should be a configuration option
 
 def labelCompare(l1, l2):
     try:
-        from spacewalk.common import rhn_rpm
+        from uyuni.common import rhn_rpm
     except ImportError:
         # rhn_rpm not avalable; return a dummy comparison function
         return -1
@@ -90,7 +90,7 @@ def load_rpm(stream):
     # Hmm, maybe an rpm
 
     try:
-        from spacewalk.common import rhn_rpm
+        from uyuni.common import rhn_rpm
     except ImportError:
         raise_with_tb(InvalidPackageError, sys.exc_info()[2])
 

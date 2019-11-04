@@ -19,7 +19,7 @@
 import time
 
 from spacewalk.server.rhnServer import server_lib
-from spacewalk.common.usix import ListType, TupleType, StringType
+from uyuni.common.usix import ListType, TupleType, StringType
 from spacewalk.common import rhnFlags
 from spacewalk.common.rhnLog import log_debug, log_error
 from spacewalk.common.rhnConfig import CFG

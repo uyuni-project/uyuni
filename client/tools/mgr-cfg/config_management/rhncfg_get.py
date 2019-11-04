@@ -20,7 +20,7 @@ import tempfile
 from config_common import handler_base, utils, cfg_exceptions
 from config_common.rhn_log import log_debug, die
 from config_common.transactions import DeployTransaction, FailedRollback
-from spacewalk.common.usix import raise_with_tb
+from uyuni.common.usix import raise_with_tb
 
 
 def deploying_mesg_callback(path):

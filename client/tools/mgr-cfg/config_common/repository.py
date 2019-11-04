@@ -35,7 +35,7 @@ except ImportError: # python3
     import xmlrpc.client as xmlrpclib
     basestring = (str, bytes)
 
-from spacewalk.common.usix import raise_with_tb
+from uyuni.common.usix import raise_with_tb
 
 try:
     from selinux import lgetfilecon

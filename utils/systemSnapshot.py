@@ -16,7 +16,7 @@ from time import strptime
 from datetime import datetime
 
 from optparse import OptionParser, Option
-from spacewalk.common.cli import getUsernamePassword, xmlrpc_login, xmlrpc_logout
+from uyuni.common.cli import getUsernamePassword, xmlrpc_login, xmlrpc_logout
 
 try:
     import xmlrpclib

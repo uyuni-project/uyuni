@@ -18,7 +18,7 @@ import re
 import sys
 
 # common module
-from spacewalk.common.usix import raise_with_tb
+from uyuni.common.usix import raise_with_tb
 from spacewalk.common.rhnLog import log_debug
 from spacewalk.common.rhnException import rhnException
 

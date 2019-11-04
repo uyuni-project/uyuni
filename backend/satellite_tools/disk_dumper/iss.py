@@ -27,11 +27,11 @@ except ImportError:
     #  python3
     import io as cStringIO
 from . import dumper
-from spacewalk.common.usix import raise_with_tb
+from uyuni.common.usix import raise_with_tb
+from uyuni.common.checksum import getFileChecksum
 from spacewalk.common import rhnMail
 from spacewalk.common.rhnConfig import CFG, initCFG
 from spacewalk.common.rhnTB import Traceback, exitWithTraceback
-from spacewalk.common.checksum import getFileChecksum
 from spacewalk.server import rhnSQL
 from spacewalk.server.rhnSQL import SQLError, SQLSchemaError, SQLConnectError
 from spacewalk.satellite_tools.exporter import xmlWriter

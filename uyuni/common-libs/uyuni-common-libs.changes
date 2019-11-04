@@ -1,0 +1,8 @@
+- add conflicts to spacewalk-backend-libs and spacewalk-usix to
+  remove them on update
+
+-------------------------------------------------------------------
+Fri Nov  1 11:20:21 UTC 2019 - Michael Calmer <mc@suse.com>
+
+- initial release
+- replaces spacewalk-backend-libs and spacewalk-usix

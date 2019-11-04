@@ -14,23 +14,13 @@ SPACEWALK_FILES	=   __init__ \
             rhnConfig \
             rhnException \
             rhnFlags \
-            rhnLib \
             rhnLog \
             rhnMail \
             rhnRepository \
             rhnTB \
             rhnTranslate \
             RPC_Base \
-            suseLib \
-	    checksum \
-	    cli \
-	    fileutils \
-	    rhn_deb \
-	    rhn_mpm \
-	    rhn_pkg \
-	    rhn_rpm \
-	    stringutils \
-	    timezone_utils
+            suseLib
 
 SCRIPTS = spacewalk-cfg-get
 
