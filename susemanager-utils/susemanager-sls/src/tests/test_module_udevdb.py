@@ -15,10 +15,10 @@ def test_virtual():
 
     :return:
     '''
-    with patch('src.modules.udevdb.which_bin', MagicMock(return_value=None)):
+    with patch('src.modules.udevdb._which_bin', MagicMock(return_value=None)):
         assert udevdb.__virtual__() is False
 
-    with patch('src.modules.udevdb.which_bin', MagicMock(return_value="/bogus/path")):
+    with patch('src.modules.udevdb._which_bin', MagicMock(return_value="/bogus/path")):
         assert udevdb.__virtual__() is True
 
 
