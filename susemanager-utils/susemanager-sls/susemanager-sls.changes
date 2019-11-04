@@ -1,3 +1,5 @@
+- Add missing "public_cloud" custom grain (bsc#1155656)
+
 -------------------------------------------------------------------
 Thu Oct 17 12:35:00 CEST 2019 - jgonzalez@suse.com
 
