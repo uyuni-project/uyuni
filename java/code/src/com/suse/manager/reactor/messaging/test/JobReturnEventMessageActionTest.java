@@ -672,6 +672,20 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         });
     }
 
+    public void testHardwareProfileUpdateGrainsFqdns() throws Exception {
+        testHardwareProfileUpdate("hardware.profileupdate.ppc64.json", (server) -> {
+            assertNotNull(server);
+            assertEquals(2, server.getFqdns().size());
+        });
+    }
+
+    public void testHardwareProfileUpdateNetworkModuleFqdns() throws Exception {
+        testHardwareProfileUpdate("hardware.profileupdate.x86.json", (server) -> {
+            assertNotNull(server);
+            assertEquals(2, server.getFqdns().size());
+        });
+    }
+
     public void testHardwareProfileUpdateX86LongCPUValues()  throws Exception {
         testHardwareProfileUpdate("hardware.profileupdate.cpulongval.x86.json", (server) -> {
             assertNotNull(server);

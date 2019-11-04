@@ -699,17 +699,17 @@ public class HardwareMapper {
         return virtUuidSwapped;
     }
 
-    @SuppressWarnings("unchecked")
-    private void extractFqdnsFromGrains(MinionServer serverIn, ValueMap grainsIn) {
-        grainsIn.getValueAsCollection("fqdns").ifPresent(col -> {
+    private void setFqdns(MinionServer serverIn, List<String> fqdns) {
+        if (fqdns.isEmpty()) {
+            LOG.warn("Salt module 'network.fqdns' returned en empty value for minion: " + server.getMinionId());
+        }
+        else {
             Collection<ServerFQDN> serverFQDNs = serverIn.getFqdns();
-            Collection<ServerFQDN> fqdnsFromGrains = ((Collection<String>) col).stream()
-                    .map(fqdn -> new ServerFQDN(serverIn, fqdn))
+            Collection<ServerFQDN> srvFqdnsObj = fqdns.stream().map(fqdn -> new ServerFQDN(serverIn, fqdn))
                     .collect(Collectors.toList());
-
-            serverFQDNs.retainAll(fqdnsFromGrains);
-            serverFQDNs.addAll(fqdnsFromGrains);
-        });
+            serverFQDNs.retainAll(srvFqdnsObj);
+            serverFQDNs.addAll(srvFqdnsObj);
+        }
     }
 
     /**
@@ -718,10 +718,10 @@ public class HardwareMapper {
      * @param interfaces network interfaces
      * @param primaryIps primary IP addresses
      * @param netModules network modules
+     * @param fqdns fqdns
      */
-    public void mapNetworkInfo(Map<String, Network.Interface> interfaces,
-            Optional<Map<SumaUtil.IPVersion, SumaUtil.IPRoute>> primaryIps,
-            Map<String, Optional<String>> netModules) {
+    public void mapNetworkInfo(Map<String, Network.Interface> interfaces, Optional<Map<SumaUtil.IPVersion,
+            SumaUtil.IPRoute>> primaryIps, Map<String, Optional<String>> netModules, List<String> fqdns) {
         if (interfaces.isEmpty()) {
             errors.add("Network: Salt module 'network.interfaces' returned en empty value");
             LOG.error("Salt module 'network.interfaces' returned en empty value " +
@@ -738,7 +738,7 @@ public class HardwareMapper {
                     .filter(addr -> !"::1".equals(addr));
 
         server.setHostname(grains.getOptionalAsString("fqdn").orElse(null));
-        extractFqdnsFromGrains(server, grains);
+        setFqdns(server, fqdns);
 
         // remove interfaces not present in the Salt result
         server.getNetworkInterfaces().removeAll(
