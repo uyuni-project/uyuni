@@ -1,3 +1,4 @@
+- Do not show errors when polling internal metadata API (bsc#1155794)
 - Avoid traceback error due lazy loading which_bin (bsc#1155794)
 - Add missing "public_cloud" custom grain (bsc#1155656)
 - Consider timeout value in salt remote script (bsc#1153181)
