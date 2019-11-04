@@ -1,3 +1,4 @@
+- Avoid traceback error due lazy loading which_bin (bsc#1155794)
 - Using new module path for which_bin to get rid of DeprecationWarning
 
 -------------------------------------------------------------------
