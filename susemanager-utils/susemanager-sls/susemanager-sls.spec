@@ -21,7 +21,7 @@
 %endif
 
 Name:           susemanager-sls
-Version:        4.0.20
+Version:        4.0.21
 Release:        1
 Summary:        Static Salt state files for SUSE Manager
 License:        GPL-2.0-only
@@ -77,6 +77,7 @@ cp -R scap/* %{buildroot}/usr/share/susemanager/scap
 cp src/beacons/pkgset.py %{buildroot}/usr/share/susemanager/salt/_beacons
 cp src/beacons/virtpoller.py %{buildroot}/usr/share/susemanager/salt/_beacons
 cp src/grains/cpuinfo.py %{buildroot}/usr/share/susemanager/salt/_grains/
+cp src/grains/public_cloud.py %{buildroot}/usr/share/susemanager/salt/_grains/
 cp src/modules/sumautil.py %{buildroot}/usr/share/susemanager/salt/_modules
 cp src/modules/mainframesysinfo.py %{buildroot}/usr/share/susemanager/salt/_modules
 cp src/modules/udevdb.py %{buildroot}/usr/share/susemanager/salt/_modules
