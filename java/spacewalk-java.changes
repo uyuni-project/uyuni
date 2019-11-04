@@ -1,3 +1,4 @@
+- Define specific form for SSM system deletion (bsc#1155800)
 - Consider timeout value in salt remote script (bsc#1153181)
 - rename SUSE Products to just Products in UI
 - Fix: regression with Ubuntu version compare (bsc#1150113)

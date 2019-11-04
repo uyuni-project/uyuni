@@ -18,22 +18,24 @@
 <c:set var="noErrata" value="true"/>
 <c:set var="noAddToSsm" value="true"/>
 
-<rl:listset name="systemListSet" legend="system">
-    <rhn:csrf />
-    <rhn:submitted />
+<html:form method="post" action="/systems/ssm/DeleteConfirm.do">
+    <rl:listset name="systemListSet" legend="system">
+        <rhn:csrf />
+        <rhn:submitted />
 
-    <div class="spacewalk-section-toolbar">
-        <div class="action-button-wrapper">
-          <jsp:include page="/WEB-INF/pages/ssm/systems/deleteconfirmdialog.jspf">
-            <jsp:param name="saltMinionsPresent" value="${saltMinionsPresent}"/>
-          </jsp:include>
+        <div class="spacewalk-section-toolbar">
+            <div class="action-button-wrapper">
+              <jsp:include page="/WEB-INF/pages/ssm/systems/deleteconfirmdialog.jspf">
+                <jsp:param name="saltMinionsPresent" value="${saltMinionsPresent}"/>
+              </jsp:include>
+            </div>
         </div>
-    </div>
 
-    <%@ include file="/WEB-INF/pages/common/fragments/systems/system_listdisplay.jspf" %>
+        <%@ include file="/WEB-INF/pages/common/fragments/systems/system_listdisplay.jspf" %>
 
-    </div>
-</rl:listset>
+        </div>
+    </rl:listset>
+</html:form>
 
 </body>
 </html>

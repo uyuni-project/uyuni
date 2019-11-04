@@ -932,6 +932,12 @@
       <form-property name="submitted" type="java.lang.Boolean"/>
     </form-bean>
 
+    <form-bean name="ssmDeleteConfirmForm"
+                   type="com.redhat.rhn.frontend.struts.ScrubbingDynaActionForm" >
+            <form-property name="saltCleanup" type="java.lang.String" />
+            <form-property name="submitted" type="java.lang.Boolean" />
+    </form-bean>
+
     <form-bean name="ssmPreferencesForm"
                type="com.redhat.rhn.frontend.struts.ScrubbingDynaActionForm" >
       <form-property name="notify" type="java.lang.String"/>
@@ -3385,6 +3391,7 @@
     <!--System Details SSM Configuration -->
         <action path="/systems/ssm/DeleteConfirm"
         scope="request"
+        name="ssmDeleteConfirmForm"
         input="/WEB-INF/pages/ssm/systems/ssmdeleteconfirm.jsp"
         type="com.redhat.rhn.frontend.action.systems.SSMDeleteSystemsConfirm"
         className="com.redhat.rhn.frontend.struts.RhnActionMapping">
