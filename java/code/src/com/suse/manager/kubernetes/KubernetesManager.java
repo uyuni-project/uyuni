@@ -133,7 +133,7 @@ public class KubernetesManager {
                             String[] tokens =
                                     StringUtils.split(container.getImage(), "/", 2);
                             if (tokens.length < 2) {
-                                LOG.warn("No repository available in the image name '" +
+                                LOG.debug("No repository available in the image name '" +
                                         container.getImage() +
                                         "'. Ignoring the image.");
                                 return;
@@ -158,6 +158,7 @@ public class KubernetesManager {
                                                 return usg;
                                             }));
                             if (!usage.isPresent()) {
+                                LOG.debug("Usage of the image not found, exiting");
                                 return;
                             }
                         }
