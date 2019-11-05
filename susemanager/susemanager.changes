@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Tue Nov 05 14:30:22 CET 2019 - jgonzalez@suse.com
+
+- version 3.2.21-1
 - Allow bootstraping of Expanded Support 6, CentOS6 and Red Hat 6
   salt-ssh minions when using the "Minimal" software set (bsc#1155295)
 - Require dmidecode only for SLE12 aarch64 and x86_64 (bsc#1152170)
