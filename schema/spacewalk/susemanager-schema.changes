@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Tue Nov 05 14:31:20 CET 2019 - jgonzalez@suse.com
+
+- version 3.2.22-1
 - Fix: regression with Ubuntu version compare (bsc#1150113)
 - Add tables rhnPackageExtraTag and rhnPackageExtraTagKey
 - Fix performance issue with Inter-Server Synchronization (bsc#1143954)
