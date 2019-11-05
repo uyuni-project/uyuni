@@ -22,6 +22,10 @@
 %global build_py3 1
 %endif
 
+%if ( 0%{?rhel} && 0%{?rhel} < 8 ) || 0%{?suse_version}
+%global build_py2   1
+%endif
+
 %define pythonX %{?build_py3:python3}%{!?build_py3:python}
 
 %if 0%{?suse_version} >= 1500
@@ -51,7 +55,7 @@ BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 %description
 Uyuni server and client libs
 
-
+%if 0%{?build_py2}
 %package -n python2-%{name}
 Summary:        Uyuni server and client tools libraries for python2
 Group:          Development/Languages/Python
@@ -66,6 +70,7 @@ Conflicts:      spacewalk-usix
 
 %description -n python2-%{name}
 Python 2 libraries required by both Uyuni server and client tools.
+%endif
 
 %if 0%{?build_py3}
 %package -n python3-%{name}
@@ -84,7 +89,6 @@ Conflicts:      python3-spacewalk-usix
 
 %description -n python3-%{name}
 Python 3 libraries required by both Uyuni server and client tools.
-
 %endif
 
 %prep
@@ -108,19 +112,23 @@ cp $RPM_BUILD_ROOT%{python3root}/common/{checksum.py,cli.py,rhn_deb.py,rhn_mpm.p
     $RPM_BUILD_ROOT%{python2root}/common
 %endif
 
+%if 0%{?suse_version}
+%if 0%{?build_py2}
 %py_compile -O %{buildroot}/%{python2root}
 %fdupes %{buildroot}/%{python2root}
-
+%endif
 %if 0%{?build_py3}
 %py3_compile -O %{buildroot}/%{python3root}
 %fdupes %{buildroot}/%{python3root}
 %endif
+%endif
 
-
+%if 0%{?build_py2}
 %files -n python2-%{name}
 %defattr(-,root,root)
 %doc LICENSE
 %{python2root}
+%endif
 
 %if 0%{?build_py3}
 %files -n python3-%{name}

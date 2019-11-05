@@ -1,3 +1,4 @@
+- Fix building for CentOS6/RHEL6/Expanded Support 6
 - add conflicts to spacewalk-backend-libs and spacewalk-usix to
   remove them on update
 
