@@ -1,3 +1,6 @@
+- Use python2-uyuni-common-libs and python3-uyuni-common-libs for
+  bootstrap repositories (bsc#1173946)
+
 -------------------------------------------------------------------
 Wed Jun 10 14:22:48 CEST 2020 - jgonzalez@suse.com
 
