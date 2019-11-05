@@ -430,7 +430,6 @@ When(/^I run "([^"]*)" on "([^"]*)" with logging$/) do |cmd, host|
   puts "OUT: #{output}"
 end
 
-
 When(/^I run "([^"]*)" on "([^"]*)" without error control$/) do |cmd, host|
   node = get_target(host)
   _out, $fail_code = node.run(cmd, false)
