@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Tue Nov 05 14:27:57 CET 2019 - jgonzalez@suse.com
+
+- version 2.8.57.20-1
 - Add script to update additional fields in the DB for existing Deb packages
 - Import additional fields for Deb packages
 
