@@ -17,8 +17,6 @@
  */
 package com.redhat.rhn.manager.channel.repo;
 
-import org.apache.commons.validator.UrlValidator;
-
 import com.redhat.rhn.common.client.InvalidCertificateException;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.channel.ContentSource;
@@ -32,6 +30,7 @@ import com.redhat.rhn.frontend.xmlrpc.channel.repo.InvalidRepoTypeException;
 import com.redhat.rhn.frontend.xmlrpc.channel.repo.InvalidRepoUrlException;
 import com.redhat.rhn.frontend.xmlrpc.channel.repo.InvalidRepoUrlInputException;
 
+import java.net.URL;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -220,8 +219,10 @@ public abstract class BaseRepoCommand {
         }
 
         if (this.url != null && this.type != null) {
-            UrlValidator urlValidator = new UrlValidator();
-            if (!urlValidator.isValid(this.url)) {
+            final URL u;
+            try {
+                u = new URL(this.url);
+            } catch (Exception e) {
                 throw new InvalidRepoUrlInputException(url);
             }
             ContentSourceType cst = ChannelFactory.lookupContentSourceType(this.type);
