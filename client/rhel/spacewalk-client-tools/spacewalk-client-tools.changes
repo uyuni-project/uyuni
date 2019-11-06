@@ -1,3 +1,4 @@
+- Skip dmidecode data on aarch64 to prevent coredump (bsc#1113160)
 - replace spacewalk-usix with uyuni-common-libs
 - return a non-zero exit status on errors in rhn_check
 - Bump version to 4.1.0 (bsc#1154940)
