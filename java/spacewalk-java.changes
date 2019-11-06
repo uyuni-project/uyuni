@@ -1,3 +1,5 @@
+- Fix WebUI invalidation time by using the package build time instead
+  of the WebUI version (bsc#1154868)
 - fix metadata generation with oracle DB for deb repositories
 
 -------------------------------------------------------------------

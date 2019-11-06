@@ -138,7 +138,7 @@ ln -sf %{nodejs_sitelib} .
 node build
 popd
 %endif
-sed -i -r "s/^(web.buildtimestamp *= *)_OBS_BUILD_TIMESTAMP_$/\1$(date +"%Y%m%d%H%M%S")/" conf/rhn_web.conf
+sed -i -r "s/^(web.buildtimestamp *= *)_OBS_BUILD_TIMESTAMP_$/\1$(date +'%%Y%%m%%d%%H%%M%%S')/" conf/rhn_web.conf
 
 %install
 make -C modules install DESTDIR=$RPM_BUILD_ROOT PERLARGS="INSTALLDIRS=vendor" %{?_smp_mflags}
