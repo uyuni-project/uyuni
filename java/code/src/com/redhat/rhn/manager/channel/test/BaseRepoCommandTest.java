@@ -48,22 +48,13 @@ public class BaseRepoCommandTest extends RhnBaseTestCase {
         invalidUrlInput("example.com");
         invalidUrlInput("htp://some_test_url.com");
         invalidUrlInput("www.example.com");
-        invalidUrlInput("http://test123/example.net");
-        invalidUrlInput("ftp://example@test123.com");
-        invalidUrlInput("http://example_1.com");
-        invalidUrlInput("http://example#2.com");
-        invalidUrlInput("http://example;3.com");
-        invalidUrlInput("http://example:4.com");
-        invalidUrlInput("http://example=5.com");
-        invalidUrlInput("http://example,6.com");
-        invalidUrlInput("http://example$7.com");
-        invalidUrlInput("http://example$8.com");
-        invalidUrlInput("http://example(9).com");
-        invalidUrlInput("http://example[0].com");
-        invalidUrlInput("http://example.123");
-
 
         // V A L I D
+        validUrlInput("file:///srv/mirror");
+        validUrlInput("http://localhost");
+        validUrlInput("http://localhost:8080");
+        validUrlInput("http://localhost/pub");
+        validUrlInput("http://localhost.com.x/pub");
         validUrlInput("http://www.example.com");
         validUrlInput("http://www.example.co.uk");
         validUrlInput("https://www3.example.com");
