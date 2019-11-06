@@ -57,7 +57,7 @@ _ = t.ugettext
 import dbus
 import platform
 
-if platform.processor() not in ['s390', 's390x']:
+if platform.processor() not in ['s390', 's390x', 'aarch64']:
     import dmidecode
     _dmi_not_available = 0
 else:

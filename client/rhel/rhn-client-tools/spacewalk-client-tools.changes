@@ -1,3 +1,5 @@
+- Skip dmidecode data on aarch64 to prevent coredump (bsc#1113160) 
+
 -------------------------------------------------------------------
 Thu Sep 19 00:49:48 CEST 2019 - jgonzalez@suse.com
 
