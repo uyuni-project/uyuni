@@ -8139,6 +8139,9 @@ Follow this url to see the full list of inactive systems:
       <trans-unit id="edit.channel.repo.repourlinuse">
         <source>There's already a defined repository with given url, please reuse it.</source>
       </trans-unit>
+      <trans-unit id="edit.channel.repo.repourlinvalid">
+        <source>The given url is invalid. Please enter an url with valid syntax (e.g. specify the protocol).</source>
+      </trans-unit>
       <trans-unit id="edit.channel.repo.clientcertmissing">
         <source>Please set SSL Client Certificate, if you've set SSL Client Key.</source>
       </trans-unit>

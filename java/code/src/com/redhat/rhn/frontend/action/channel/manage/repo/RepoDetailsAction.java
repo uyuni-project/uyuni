@@ -13,7 +13,7 @@
  * in this software or its documentation.
  */
 /*
- * Copyright (c) 2010 SUSE LLC
+ * Copyright (c) 2010-2019 SUSE LLC
  */
 package com.redhat.rhn.frontend.action.channel.manage.repo;
 
@@ -58,6 +58,7 @@ import com.redhat.rhn.frontend.struts.RhnValidationHelper;
 import com.redhat.rhn.frontend.xmlrpc.InvalidParameterException;
 import com.redhat.rhn.frontend.xmlrpc.channel.repo.InvalidRepoLabelException;
 import com.redhat.rhn.frontend.xmlrpc.channel.repo.InvalidRepoUrlException;
+import com.redhat.rhn.frontend.xmlrpc.channel.repo.InvalidRepoUrlInputException;
 import com.redhat.rhn.manager.channel.repo.BaseRepoCommand;
 import com.redhat.rhn.manager.channel.repo.CreateRepoCommand;
 import com.redhat.rhn.manager.channel.repo.EditRepoCommand;
@@ -358,6 +359,10 @@ public class RepoDetailsAction extends RhnAction {
         catch (InvalidRepoUrlException e) {
             errors.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage(
                     "edit.channel.repo.repourlinuse", null));
+        }
+        catch (InvalidRepoUrlInputException e) {
+            errors.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage(
+                    "edit.channel.repo.repourlinvalid"));
         }
         catch (InvalidRepoLabelException e) {
             errors.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage(
