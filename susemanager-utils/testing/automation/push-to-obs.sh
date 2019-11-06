@@ -50,8 +50,9 @@ if [ ! -f ${CREDENTIALS} ]; then
   exit 1
 fi
 
-PUSH_CMD="/manager/susemanager-utils/testing/docker/scripts/push-to-obs.sh -d '${DESTINATIONS}' -c /tmp/.oscrc ${VERBOSE} ${TEST}"
-CLEAN_CMD="cd /manager; /manager/susemanager-utils/testing/docker/scripts/clean-push-to-obs.sh"
+INITIAL_CMD="/manager/susemanager-utils/testing/automation/initial-objects.sh"
+CMD="/manager/susemanager-utils/testing/docker/scripts/push-to-obs.sh -d '${DESTINATIONS}' -c /tmp/.oscrc ${VERBOSE} ${TEST}"
+CLEAN_CMD="/manager/susemanager-utils/testing/automation/clean-objects.sh"
 
 docker pull $REGISTRY/$PUSH2OBS_CONTAINER
-docker run --rm=true -v "$GITROOT:/manager" -v "/srv/mirror:/srv/mirror" --mount type=bind,source=${CREDENTIALS},target=/tmp/.oscrc $REGISTRY/$PUSH2OBS_CONTAINER /bin/bash -c "${PUSH_CMD}; RET=\${?}; ${CLEAN_CMD} && exit \${RET}"
+docker run --rm=true -v "$GITROOT:/manager" -v "/srv/mirror:/srv/mirror" --mount type=bind,source=${CREDENTIALS},target=/tmp/.oscrc $REGISTRY/$PUSH2OBS_CONTAINER /bin/bash -c "${INITIAL_CMD}; ${CMD}; RET=\${?}; ${CLEAN_CMD} && exit \${RET}"

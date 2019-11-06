@@ -155,10 +155,12 @@ susemanager-utils/susemanager-sls/salt/channels/yum-susemanager-plugin/susemanag
 susemanager-utils/susemanager-sls/src/
 "
 
-PYLINT_CMD="pylint --disable=E0203,E0611,E1101,E1102,C0111,I0011,R0801 --ignore=test --output-format=parseable --rcfile /manager/spacewalk/pylint/spacewalk-pylint.rc --reports=y --msg-template=\"{path}:{line}: [{msg_id}({symbol}), {obj}] {msg}\""
+INITIAL_CMD="/manager/susemanager-utils/testing/automation/initial-objects.sh"
+PYLINT_CMD="mkdir -p /manager/reports; cd /manager/; pylint --disable=E0203,E0611,E1101,E1102,C0111,I0011,R0801 --ignore=test --output-format=parseable --rcfile /manager/spacewalk/pylint/spacewalk-pylint.rc --reports=y --msg-template=\"{path}:{line}: [{msg_id}({symbol}), {obj}] {msg}\""
+CLEAN_CMD="/manager/susemanager-utils/testing/automation/clean-objects.sh"
 
 docker pull $REGISTRY/$PYLINT_CONTAINER
-docker run --rm=true -e $DOCKER_RUN_EXPORT -v "$GITROOT:/manager" $REGISTRY/$PGSQL_CONTAINER /bin/sh -c "mkdir -p /manager/reports; cd /manager/; $PYLINT_CMD `echo $SPACEWALK_FILES` > reports/pylint.log || :"
+docker run --rm=true -e $DOCKER_RUN_EXPORT -v "$GITROOT:/manager" $REGISTRY/$PGSQL_CONTAINER /bin/sh -c "${INITIAL_CMD}; $PYLINT_CMD `echo $SPACEWALK_FILES` > reports/pylint.log || :; RET=\${?}; ${CLEAN_CMD} && exit \${RET}"
 
 if [ $? -ne 0 ]; then
    EXIT=1
