@@ -102,10 +102,11 @@ public class DebRepositoryWriter extends RepositoryWriter {
         // batch the elaboration so we don't have to hold many thousands of
         // packages in memory at once
         final int batchSize = 1000;
+        DataResult<PackageDto> packages = TaskManager.getChannelPackageDtos(channel);
         String packagesFile;
         try (DebPackageWriter writer = new DebPackageWriter(channel, prefix)) {
-            for (long i = 0; i < channel.getPackageCount(); i += batchSize) {
-                DataResult<PackageDto> packageBatch = TaskManager.getChannelPackageDtos(channel, i, batchSize);
+            for (int i = 0; i < channel.getPackageCount(); i += batchSize) {
+                DataResult<PackageDto> packageBatch = packages.subList(i, i + batchSize);
                 packageBatch.elaborate();
                 loadExtraTags(packageBatch);
                 for (PackageDto pkgDto : packageBatch) {
