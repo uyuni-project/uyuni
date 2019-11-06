@@ -15,7 +15,7 @@ function statusDisplay(system, isAdmin) {
       url: isAdmin && "/rhn/systems/details/Edit.do?sid=" + sid
     },
     "awol": {
-      iconTitle: 'System not checking in with @@PRODUCT_NAME@@',
+      iconTitle: 'System not checking in',
       iconType: 'system-unknown',
       url: null
     },
