@@ -44,8 +44,12 @@ if [ ! -f ${CREDENTIALS} ]; then
   exit 1
 fi
 
+INITIAL_CMD="/manager/susemanager-utils/testing/automation/initial-objects.sh"
+CMD="/manager/java/scripts/docker-testing-pgsql.sh ${TARGET}"
+CLEAN_CMD="/manager/susemanager-utils/testing/automation/clean-objects.sh"
+
 docker pull $REGISTRY/$PGSQL_CONTAINER
 docker run --privileged --rm=true -v "$GITROOT:/manager" \
     --mount type=bind,source=${CREDENTIALS},target=/root/.oscrc \
     $REGISTRY/$PGSQL_CONTAINER \
-    /manager/java/scripts/docker-testing-pgsql.sh ${TARGET}
+    /bin/bash -c "${INITIAL_CMD}; ${CMD}; RET=\${?}; ${CLEAN_CMD} && exit \${RET}"
