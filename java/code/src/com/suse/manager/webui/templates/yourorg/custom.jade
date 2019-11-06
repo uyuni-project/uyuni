@@ -12,9 +12,9 @@ script(type='text/javascript').
     window.csrfToken = "#{csrf_token}";
     window.orgId = "#{orgId}";
 
-script(src='/javascript/ace-editor/src-min-noconflict/ace.js?cb=#{webVersion}')
-script(src='/javascript/ace-editor/src-min-noconflict/ext-modelist.js?cb=#{webVersion}')
-script(src='/javascript/jquery-ui.js?cb=#{webVersion}')
+script(src='/javascript/ace-editor/src-min-noconflict/ace.js?cb=#{webBuildtimestamp}')
+script(src='/javascript/ace-editor/src-min-noconflict/ext-modelist.js?cb=#{webBuildtimestamp}')
+script(src='/javascript/jquery-ui.js?cb=#{webBuildtimestamp}')
 
 script(type='text/javascript').
     spaImportReactPage('organizations/config-channels/org-config-channels')

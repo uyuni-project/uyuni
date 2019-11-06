@@ -1,8 +1,8 @@
 include ../../system-common.jade
 #virtualguests-create
 
-script(src='/javascript/momentjs/moment-with-langs.min.js?cb=#{webVersion}', type='text/javascript')
-script(src='/javascript/validator/validator.min.js?cb=#{webVersion}', type='text/javascript')
+script(src='/javascript/momentjs/moment-with-langs.min.js?cb=#{webBuildtimestamp}', type='text/javascript')
+script(src='/javascript/validator/validator.min.js?cb=#{webBuildtimestamp}', type='text/javascript')
 
 script(type='text/javascript').
     window.csrfToken = "#{csrf_token}";
