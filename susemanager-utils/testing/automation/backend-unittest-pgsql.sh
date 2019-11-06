@@ -11,16 +11,23 @@ fi
 
 DOCKER_RUN_EXPORT="PYTHONPATH=/manager/client/rhel/rhnlib/:/manager/client/rhel/rhn-client-tools/src"
 EXIT=0
+
+INITIAL_CMD="/manager/susemanager-utils/testing/automation/initial-objects.sh"
+CLEAN_CMD="/manager/susemanager-utils/testing/automation/clean-objects.sh"
+
 docker pull $REGISTRY/$PGSQL_CONTAINER
-docker run --rm=true -e $DOCKER_RUN_EXPORT -v "$GITROOT:/manager" $REGISTRY/$PGSQL_CONTAINER /manager/backend/test/docker-backend-common-tests.sh
+CMD="/manager/backend/test/docker-backend-common-tests.sh"
+docker run --rm=true -e $DOCKER_RUN_EXPORT -v "$GITROOT:/manager" $REGISTRY/$PGSQL_CONTAINER /bin/bash -c "${INITIAL_CMD}; ${CMD}; RET=\${?}; ${CLEAN_CMD} && exit \${RET}"
 if [ $? -ne 0 ]; then
     EXIT=1
 fi
-docker run --rm=true -e $DOCKER_RUN_EXPORT -v "$GITROOT:/manager" $REGISTRY/$PGSQL_CONTAINER /manager/backend/test/docker-backend-tools-tests.sh
+CMD="/manager/backend/test/docker-backend-tools-tests.sh"
+docker run --rm=true -e $DOCKER_RUN_EXPORT -v "$GITROOT:/manager" $REGISTRY/$PGSQL_CONTAINER /bin/bash -c "${INITIAL_CMD}; ${CMD}; RET=\${?}; ${CLEAN_CMD} && exit \${RET}"
 if [ $? -ne 0 ]; then
     EXIT=2
 fi
-docker run --privileged --rm=true -e $DOCKER_RUN_EXPORT -v "$GITROOT:/manager" $REGISTRY/$PGSQL_CONTAINER /manager/backend/test/docker-backend-pgsql-tests.sh
+CMD="/manager/backend/test/docker-backend-pgsql-tests.sh"
+docker run --privileged --rm=true -e $DOCKER_RUN_EXPORT -v "$GITROOT:/manager" $REGISTRY/$PGSQL_CONTAINER /bin/bash -c "${INITIAL_CMD}; ${CMD}; RET=\${?}; ${CLEAN_CMD} && exit \${RET}"
 if [ $? -ne 0 ]; then
     EXIT=3
 fi
