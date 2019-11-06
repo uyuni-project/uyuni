@@ -381,6 +381,7 @@ The check box can be identified by name, id or label text.
 
 ```cucumber
   When I run "rhn_check -vvv" on "sle-client"
+  When I run "apt update" on "ubuntu-minion" with logging
 ```
 
 * Run an arbitrary command and expect it to fail
