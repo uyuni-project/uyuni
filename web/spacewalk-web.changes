@@ -1,3 +1,4 @@
+- SPA: do not early drop modals they can contain inputs (bsc#1155800)
 - rename SUSE Products to just Products in UI
 - Layout changes in formula forms, validation, deprecate $visibleIf and add new attributes:
   $disabled, $visisble, $required, $match

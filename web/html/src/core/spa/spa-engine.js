@@ -51,8 +51,10 @@ window.pageRenderers.spaengine.init = function init() {
 
     appInstance.on('beforeNavigate', function(navigation) {
       // Integration with bootstrap 3. We need to make sure all the existing modals get fully removed
-      $('.modal').remove();
-      $('.modal-backdrop').remove();
+      // but we have to do it after the navigation ends unless all form inputs contained in the modal will be dropped
+      // before the form serialization happens and they will not submitted because they will not exist anymore
+      $('.modal').addClass('removeWhenNavigationEnds');
+      $('.modal-backdrop').addClass('removeWhenNavigationEnds');
       $('body').removeClass( "modal-open" );
 
       let urlParser = document.createElement('a');
@@ -63,6 +65,10 @@ window.pageRenderers.spaengine.init = function init() {
     })
 
     appInstance.on('endNavigate', function(navigation) {
+      // Drop everything that was marked to be removed
+      $('.modal.removeWhenNavigationEnds').remove();
+      $('.modal-backdrop.removeWhenNavigationEnds').remove();
+
       // If an error happens we make a full refresh to make sure the original request is shown instead of a SPA replacement
       if (
         navigation.error
