@@ -707,7 +707,11 @@ end
 
 When(/^I wait until the package "(.*?)" has been cached on this "(.*?)"$/) do |pkg_name, host|
   node = get_target(host)
-  cmd = "ls /var/cache/zypp/packages/susemanager:test-channel-x86_64/getPackage/*/*/#{pkg_name}*.rpm"
+  if host == 'sle-minion'
+    cmd = "ls /var/cache/zypp/packages/susemanager:test-channel-x86_64/getPackage/*/*/#{pkg_name}*.rpm"
+  elsif host == 'ubuntu-minion'
+    cmd = "ls /var/cache/apt/archives/#{pkg_name}*.deb"
+  end
   repeat_until_timeout(message: "Package #{pkg_name} was not cached") do
     result, return_code = node.run(cmd, false)
     break if return_code.zero?
