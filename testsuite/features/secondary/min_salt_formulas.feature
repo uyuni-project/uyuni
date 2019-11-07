@@ -6,7 +6,7 @@ Feature: Use salt formulas
   As an authorized user
   I want to be able to install and use salt formulas
 
-  Scenario: Install a formula package on the server
+  Scenario: Install the locale formula package on the server
      Given I am authorized
      When I manually install the "locale" formula on the server
      And I synchronize all Salt dynamic modules on "sle-minion"
@@ -109,7 +109,7 @@ Feature: Use salt formulas
      And the pillar data for "timezone" should be empty on "sle-minion"
      And the pillar data for "keyboard_and_language" should be empty on "sle-minion"
 
-  Scenario: Assign formula to minion via group formula
+  Scenario: Assign locale formula to minion via group formula
      Given I am on the groups page
      When I follow "Create Group"
      And I enter "locale-formula-group" as "name"
@@ -163,6 +163,6 @@ Feature: Use salt formulas
      Given I am authorized
      And I manually uninstall the "locale" formula from the server
 
-  Scenario: Cleanup: remove remaining systems from SSM
+  Scenario: Cleanup: remove remaining systems from SSM after formula tests
      When I am authorized as "admin" with password "admin"
      And I follow "Clear"

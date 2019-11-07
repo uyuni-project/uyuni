@@ -22,7 +22,7 @@ Feature: Salt SSH action chain
     Then spacecmd should show packages "milkyway-dummy andromeda-dummy-1.0" installed on "ssh-minion"
 
 @ssh_minion
-  Scenario: Pre-requisite: wait until downgrade is finished
+  Scenario: Pre-requisite: wait until downgrade is finished on SSH minion
     Given I am on the Systems overview page of this "ssh-minion"
     When I follow "Software" in the content area
     And I follow "List / Remove" in the content area
@@ -209,7 +209,7 @@ Feature: Salt SSH action chain
     Then I click on "Delete"
 
 @ssh_minion
-  Scenario: Cleanup: roll back action chain effects
+  Scenario: Cleanup: roll back action chain effects on SSH minion
     Given I am on the Systems overview page of this "ssh-minion"
     When I run "rm /tmp/action_chain_done" on "ssh-minion" without error control
     And I run "zypper -n rm andromeda-dummy" on "ssh-minion" without error control
@@ -263,7 +263,7 @@ Feature: Salt SSH action chain
     And I wait until there are no more scheduled actions
 
 @ssh_minion
-  Scenario: Cleanup: remove Salt client from configuration channel
+  Scenario: Cleanup: remove SSH minion from configuration channel
     Given I am authorized as "admin" with password "admin"
     When I follow the left menu "Configuration > Channels"
     And I follow "Action Chain Channel"
@@ -294,6 +294,6 @@ Feature: Salt SSH action chain
     And I run "rm -f /etc/action-chain.cnf" on "ssh-minion" without error control
     And I run "rm -f /tmp/action_chain_one_system_done" on "ssh-minion" without error control
 
-  Scenario: Cleanup: remove remaining systems from SSM
+  Scenario: Cleanup: remove remaining systems from SSM after action chain tests on SSH minion
     When I am authorized as "admin" with password "admin"
     And I follow "Clear"

@@ -39,33 +39,33 @@ Feature: Migrate a traditional client into a Salt SSH minion
     And I click on "Bootstrap"
     And I wait until I see "Successfully bootstrapped host!" text
 
-  Scenario: Check that the migrated system is now a ssh-minion
+  Scenario: Check that the migrated system is now a SSH minion
     Given I am on the Systems overview page of this "sle-migrated-minion"
     When I wait until I see the name of "sle-migrated-minion", refreshing the page
     And I follow "Properties" in the content area
     Then I wait until I see "Base System Type:     Salt" text, refreshing the page
 
 @proxy
-  Scenario: Check connection from migrated ssh-minion to proxy
+  Scenario: Check connection from migrated SSH minion to proxy
     Given I am on the Systems overview page of this "sle-migrated-minion"
     When I follow "Details" in the content area
     And I follow "Connection" in the content area
     Then I should see "proxy" hostname
 
 @proxy
-  Scenario: Check registration on proxy of migrated ssh-minion
+  Scenario: Check registration on proxy of migrated SSH minion
     Given I am on the Systems overview page of this "proxy"
     When I follow "Details" in the content area
     And I follow "Proxy" in the content area
     Then I should see "sle-migrated-minion" hostname
 
   # bsc#1020902 - moving from traditional to Salt with bootstrap is not disabling rhnsd
-  Scenario: Check that service nhsd has been stopped on migrated ssh-minion
+  Scenario: Check that service nhsd has been stopped on migrated SSH minion
     When I run "systemctl status nhsd" on "sle-migrated-minion" without error control
     Then the command should fail
 
   # bsc#1031081 - old and new activation keys shown for the migrated client
-  Scenario: Check that ssh-minion only has the new activation key
+  Scenario: Check that SSH minion only has the new activation key
     Given I am on the Systems overview page of this "sle-migrated-minion"
     Then I should see a "Activation Key:	1-SUSE-PKG-x86_64" text
     And I should not see a "1-SUSE-DEV-x86_64" text
@@ -80,7 +80,7 @@ Feature: Migrate a traditional client into a Salt SSH minion
     And I follow "History" in the content area
     Then I should see a "subscribed to channel test-channel-x86_64" text
 
-  Scenario: Install a package to the migrated ssh-minion
+  Scenario: Install a package to the migrated SSH minion
     Given I am on the Systems overview page of this "sle-migrated-minion"
     When I follow "Software" in the content area
     And I follow "Install"
@@ -90,7 +90,7 @@ Feature: Migrate a traditional client into a Salt SSH minion
     Then I should see a "1 package install has been scheduled for" text
     And I wait for "perseus-dummy-1.1-1.1" to be installed on this "sle-migrated-minion"
 
-  Scenario: Run a remote script on the migrated ssh-minion
+  Scenario: Run a remote script on the migrated SSH minion
     Given I am on the Systems overview page of this "sle-migrated-minion"
     When I follow "Remote Command" in the content area
     And I enter as remote command this script in
@@ -103,7 +103,7 @@ Feature: Migrate a traditional client into a Salt SSH minion
     When I wait until file "/tmp/remote-command-on-migrated-test" exists on "sle-migrated-minion"
     And I remove "/tmp/remote-command-on-migrated-test" from "sle-migrated-minion"
 
-  Scenario: Cleanup: remove package from the migrated ssh-minion
+  Scenario: Cleanup: remove package from the migrated SSH minion
     When I remove package "perseus-dummy-1.1-1.1" from this "sle-migrated-minion"
     And I remove package "orion-dummy-1.1-1.1" from this "sle-migrated-minion"
 
