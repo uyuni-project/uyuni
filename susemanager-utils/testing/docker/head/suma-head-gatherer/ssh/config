@@ -1,0 +1,5 @@
+host sumaoracletest.suse.de
+  identityFile ~/.ssh/id_rsa_docker_host
+  user root
+  StrictHostKeyChecking no
+  UserKnownHostsFile /dev/null
