@@ -1,5 +1,6 @@
 - Fix WebUI invalidation time by using the package build time instead
   of the WebUI version (bsc#1154868)
+- Tasks bunch detail page displays message "Task never started" in case a task get interrupted before start
 - Create a single action when adding erratas to an action chain via the API (bsc#1148457)
 - Add check for url input when creating/editing repositories
 - Fqdns are coming from salt network module instead of fqdns grain (bsc#1134860)
