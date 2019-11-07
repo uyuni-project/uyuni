@@ -46,9 +46,16 @@
                 <rl:column bound="false"
                            headerkey="task.edit.jsp.stattime"
                            sortattr="start_time" >
-                        <a href="/rhn/admin/ScheduleDetail.do?schid=${current.schedule_id}">
-                          <fmt:formatDate pattern="yyyy-MM-dd HH:mm:ss z" value="${current.start_time}"/>
-                        </a>
+                    <c:choose>
+                        <c:when test="${current.start_time == null && current.status == 'INTERRUPTED'}">
+                            Task never started
+                        </c:when>
+                        <c:otherwise>
+                            <a href="/rhn/admin/ScheduleDetail.do?schid=${current.schedule_id}">
+                               <fmt:formatDate pattern="yyyy-MM-dd HH:mm:ss z" value="${current.start_time}"/>
+                            </a>
+                        </c:otherwise>
+                    </c:choose>
                 </rl:column>
 
                 <rl:column bound="false"

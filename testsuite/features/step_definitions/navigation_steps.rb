@@ -601,7 +601,7 @@ When(/^I wait until the table contains "FINISHED" or "SKIPPED" followed by "FINI
     #  - INTERRUPTED rows with no start time (expected when Taskomatic had been restarted)
     #  - SKIPPED rows (expected when Taskomatic triggers the same task concurrently)
     first_non_skipped = statuses.zip(start_times).drop_while do |status, start_time|
-      (status == 'INTERRUPTED' && start_time.empty?) || status == 'SKIPPED'
+      (status == 'INTERRUPTED' && (start_time.empty? || start_time == 'Task never started')) || status == 'SKIPPED'
     end.first.first
 
     # halt in case we are done, or if an error is detected

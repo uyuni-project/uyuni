@@ -1,4 +1,5 @@
 - Create a single action when adding erratas to an action chain via the API (bsc#1148457)
+- Tasks bunch detail page displays message "Task never started" in case a task get interrupted before start
 - Consider timeout value in salt remote script (bsc#1153181)
 - Fqdns are coming from salt network module instead of fqdns grain (bsc#1134860)
 - Check if metadata refresh is needed before adding new channels (bsc#1153613)
