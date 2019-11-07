@@ -36,7 +36,7 @@ const Promote = (props: Props) => {
     }
   }, [open]);
 
-  const versionMessage = getVersionMessageByNumber(props.environmentPromote.version, props.historyEntries) || "not built";
+  const versionMessage = getVersionMessageByNumber(props.environmentPromote.version, props.historyEntries) || t("not built");
   const modalNameId = `${props.environmentPromote.label}-cm-promote-env-modal`;
   const disabled =
     !hasEditingPermissions
@@ -44,14 +44,14 @@ const Promote = (props: Props) => {
     || props.environmentPromote.version <= props.environmentTarget.version;
   return (
     <div
-      {...(disabled ? {title: "No version to promote"} : {})}
+      {...(disabled ? {title: t("No version to promote")} : {})}
     >
       <DownArrow/>
       <div className="text-center">
         <ModalButton
           id={`${props.environmentPromote.label}-promote-modal-link`}
           className="btn-default"
-          text="Promote"
+          text={t("Promote")}
           disabled={disabled}
           target={modalNameId}
           onClick={() => {
@@ -69,20 +69,20 @@ const Promote = (props: Props) => {
         }
         content={
           isLoading
-            ? <Loading text='Promoting project..'/>
+            ? <Loading text={t('Promoting project..')}/>
             :
             <React.Fragment>
               <dl className="row">
-                <dt className="col-xs-4">Version:</dt>
+                <dt className="col-xs-4">{t('Version')}:</dt>
                 <dd className="col-xs-8">{versionMessage}</dd>
               </dl>
               <dl className="row">
-                <dt className="col-xs-4">Target environment:</dt>
+                <dt className="col-xs-4">{t('Target environment')}:</dt>
                 <dd className="col-xs-8">{props.environmentTarget.name}</dd>
               </dl>
             </React.Fragment>
         }
-        title={`Promote version ${props.environmentPromote.version} into ${props.environmentTarget.name}`}
+        title={t('Promote version {0} into {1}', props.environmentPromote.version, props.environmentTarget.name)}
         buttons={
           <div className="col-lg-12">
             <div className="pull-right btn-group">
@@ -105,7 +105,7 @@ const Promote = (props: Props) => {
                   }, "action", props.projectId)
                     .then((projectWithUpdatedSources) => {
                       closeDialog(modalNameId);
-                      showSuccessToastr(`Version ${props.versionToPromote} successfully promoted into ${props.environmentTarget.name}`)
+                      showSuccessToastr(t('Version {0} successfully promoted into {1}', props.versionToPromote, props.environmentTarget.name))
                       props.onChange(projectWithUpdatedSources)
                     })
                     .catch((error) => {

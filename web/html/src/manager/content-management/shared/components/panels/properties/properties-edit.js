@@ -29,7 +29,7 @@ const PropertiesEdit = (props: Props) => {
 
   const defaultDraftHistory = {
     version: props.currentHistoryEntry ? props.currentHistoryEntry.version + 1 : 1 ,
-    message:'(draft - not built) - Check the changes below'
+    message:t('(draft - not built) - Check the changes below')
   };
 
   let propertiesToShow = produce(props.properties, draftProperties => {
@@ -41,7 +41,7 @@ const PropertiesEdit = (props: Props) => {
   return (
       <CreatorPanel
         id="properties"
-        creatingText="Edit Properties"
+        creatingText={t("Edit Properties")}
         panelLevel="2"
         disableEditing={!hasEditingPermissions}
         title={t('Project Properties')}
@@ -66,7 +66,7 @@ const PropertiesEdit = (props: Props) => {
 
           if (isLoading) {
             return (
-              <Loading text='Editing properties..'/>
+              <Loading text={t('Editing properties..')}/>
             )
           }
 

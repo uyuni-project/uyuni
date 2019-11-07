@@ -64,7 +64,7 @@ const PropertiesView = (props: Props) => {
               <>
                 <ModalLink
                   id={`properties-longlist-modal-button`}
-                  text="show more"
+                  text={t("show more")}
                   target="properties-longlist-modal-content"
                 />
                 <Dialog
