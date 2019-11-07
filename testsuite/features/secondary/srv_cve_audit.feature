@@ -112,6 +112,6 @@ Feature: CVE Audit
     And I run "zypper -n rm milkyway-dummy" on "sle-client" without error control
     And I run "rhn_check -vvv" on "sle-client" without error control
 
-  Scenario: Cleanup: remove remaining systems from SSM
+  Scenario: Cleanup: remove remaining systems from SSM after CVE audit tests
     When I am authorized as "admin" with password "admin"
     And I follow "Clear"

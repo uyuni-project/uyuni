@@ -252,6 +252,6 @@ Feature: Management of configuration of all types of clients in a single channel
     When I destroy "/etc/s-mgr" directory on "sle-client"
     And I destroy "/etc/s-mgr" directory on "sle-minion"
 
-  Scenario: Cleanup: remove remaining systems from SSM
+  Scenario: Cleanup: remove remaining systems from SSM after tests of configuration channel on all clients
     When I am authorized as "admin" with password "admin"
     And I follow "Clear"

@@ -524,6 +524,6 @@ Feature: PXE boot a Retail terminal
 
 @proxy
 @private_net
-  Scenario: Cleanup: remove remaining systems from SSM
+  Scenario: Cleanup: remove remaining systems from SSM after PXE boot tests
   When I am authorized as "admin" with password "admin"
   And I follow "Clear"

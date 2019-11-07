@@ -4,7 +4,7 @@
 Feature: Deleting channels with children or clones is not allowed
   We cannot delete a channel if it has a clone
 
-  Scenario: Clone the first channel
+  Scenario: Clone the first channel before deletion from tool test
     Given I am on the manage software channels page
     When I follow "Clone Channel"
     And I select "Test-Channel-x86_64" as the origin channel

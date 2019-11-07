@@ -120,6 +120,6 @@ Feature: Bare metal discovery
     When I register using "1-SUSE-DEV-x86_64" key
     Then I should see "sle-client" in spacewalk
 
-  Scenario: Cleanup: remove remaining systems from SSM
+  Scenario: Cleanup: remove remaining systems from SSM after bare metal tests
     When I am authorized as "admin" with password "admin"
     And I follow "Clear"
