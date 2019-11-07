@@ -50,7 +50,7 @@ const Project = (props: Props) => {
   }, []);
 
   if(!props.project) {
-    return (<div className="alert alert-danger"><span>The project you are looking for does not exist or has been deleted.</span></div>);
+    return (<div className="alert alert-danger"><span>{t('The project you are looking for does not exist or has been deleted')}.</span></div>);
   }
 
   const projectId = project.properties.label;
