@@ -2,7 +2,7 @@
 
 XSLPROC="xsltproc"
 SQLITE="sqlite3"
-STP_QUERY="/usr/share/doc/packages/jabberd/db-setup.sqlite"
+STP_QUERY="/etc/jabberd/scripts/db-setup.sqlite"
 
 # How to parse sm.xml config
 read -r -d '' SM_PARSE <<XML
