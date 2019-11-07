@@ -222,7 +222,8 @@ public abstract class BaseRepoCommand {
             final URL u;
             try {
                 u = new URL(this.url);
-            } catch (Exception e) {
+            }
+            catch (Exception e) {
                 throw new InvalidRepoUrlInputException(url);
             }
             ContentSourceType cst = ChannelFactory.lookupContentSourceType(this.type);
