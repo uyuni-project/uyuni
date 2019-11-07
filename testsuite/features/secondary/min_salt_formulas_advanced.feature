@@ -6,14 +6,14 @@ Feature: Use advanced features of Salt formulas
   As an authorized user
   I want to be able to install and use Salt formulas
 
-  Scenario: Install a formula package on the server
+  Scenario: Install a test formula package on the server
      Given I am authorized
      When I install "form.yml" to custom formula metadata directory "testform"
      And I install "metadata.yml" to custom formula metadata directory "testform"
      When I follow the left menu "Salt > Formula Catalog"
      Then I should see a "testform" text
 
-  Scenario: Assign formula to minion via group formula
+  Scenario: Assign test formula to minion via group formula
      Given I am on the groups page
      When I follow "Create Group"
      And I enter "test-formula-group" as "name"
