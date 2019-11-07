@@ -1,6 +1,10 @@
-- Show help message when missing sub-command in  mgr-sync call (bsc#1134708)
+- prepare bootstrap data for upcoming openSUSE 15.2
+- add bootstrap data for openSUSE 15.1 when mirrored as
+  Vendor Channels (bsc#1154474)
+- Show help message when missing sub-command in  mgr-sync call (bsc#113470)
 - Allow bootstraping of Expanded Support 6, CentOS6 and Red Hat 6
   salt-ssh minions when using the "Minimal" software set (bsc#1155295)
+
 
 -------------------------------------------------------------------
 Thu Oct 17 12:27:36 CEST 2019 - jgonzalez@suse.com
