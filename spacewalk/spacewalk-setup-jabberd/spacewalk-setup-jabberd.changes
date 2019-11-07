@@ -1,3 +1,5 @@
+- SQL scripts are now placed at /etc/jabberd/scripts to make jabberd
+  compatible with JeOS (bsc#1148352)
 - Bump version to 4.1.0 (bsc#1154940)
 
 -------------------------------------------------------------------
