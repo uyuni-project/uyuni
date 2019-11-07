@@ -22,7 +22,7 @@ Feature: Install a package on the minion with staging enabled
     And I wait until refresh package list on "sle-minion" is finished
     Then spacecmd should show packages "virgo-dummy-1.0" installed on "sle-minion"
 
-  Scenario: Pre-requisite: ensure the errata cache is computed
+  Scenario: Pre-requisite: ensure the errata cache is computed before staging tests
     Given I am authorized as "admin" with password "admin"
     When I follow the left menu "Admin > Task Schedules"
     And I follow "errata-cache-default"

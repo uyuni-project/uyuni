@@ -85,6 +85,6 @@ Feature: Power management
   Scenario: Cleanup: don't fake an IPMI host
     Given the server stops mocking an IPMI host
 
-  Scenario: Cleanup: remove remaining systems from SSM
+  Scenario: Cleanup: remove remaining systems from SSM after power management tests
     When I am authorized as "admin" with password "admin"
     And I follow "Clear"

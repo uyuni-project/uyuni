@@ -4,7 +4,7 @@
 Feature: Install and upgrade package on the Ubuntu minion via Salt through the UI
 
 @ubuntu_minion
-  Scenario: Pre-requisite: install virgo-dummy-1.0 packages
+  Scenario: Pre-requisite: install virgo-dummy-1.0 packages on Ubuntu minion
     When I enable repository "test_repo_deb_pool" on this "ubuntu-minion"
     And I run "apt update" on "ubuntu-minion"
     And I remove package "andromeda-dummy" from this "ubuntu-minion"

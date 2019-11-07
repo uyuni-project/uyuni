@@ -16,7 +16,7 @@ Feature: Check if source packages were successfully synced
     And I follow "virgo-dummy-2.0-1.1.noarch"
     Then I should see a "virgo-dummy-2.0-1.1.src.rpm" text
 
-  Scenario: Check sources for noarch package
+  Scenario: Check sources for x86_64 package
     When I follow "Test-Channel-x86_64"
     And I follow "Packages"
     And I follow "blackhole-dummy-1.0-1.1.x86_64"
