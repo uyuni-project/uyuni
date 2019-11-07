@@ -123,6 +123,6 @@ Feature: Clone a channel
     Then I should see a "Clone 3 of Test-Channel-x86_64" text
     And I should see a "has been deleted." text
 
-  Scenario: Cleanup: remove remaining systems from SSM
+  Scenario: Cleanup: remove remaining systems from SSM after channel cloning tests
     When I am authorized as "admin" with password "admin"
     And I follow "Clear"

@@ -18,7 +18,7 @@ Feature: Action chain on salt minions
     And I wait until refresh package list on "sle-minion" is finished
     Then spacecmd should show packages "milkyway-dummy andromeda-dummy-1.0" installed on "sle-minion"
 
-  Scenario: Pre-requisite: wait until downgrade is finished
+  Scenario: Pre-requisite: wait until downgrade is finished on SLE minion
     Given I am on the Systems overview page of this "sle-minion"
     When I follow "Software" in the content area
     And I follow "List / Remove" in the content area
@@ -238,7 +238,7 @@ Feature: Action chain on salt minions
     Then "andromeda-dummy" should be installed on "sle-client"
     And "andromeda-dummy" should be installed on "sle-minion"
 
-  Scenario: Cleanup: roll back action chain effects
+  Scenario: Cleanup: roll back action chain effects on Salt minion
     Given I am on the Systems overview page of this "sle-minion"
     When I run "rm /tmp/action_chain_done" on "sle-minion" without error control
     And I run "zypper -n rm andromeda-dummy" on "sle-minion" without error control
@@ -285,7 +285,7 @@ Feature: Action chain on salt minions
     Then file "/tmp/action_chain.log" should contain "123" on "sle-minion"
     And I wait until there are no more scheduled actions
 
-  Scenario: Cleanup: remove Salt client from configuration channel
+  Scenario: Cleanup: remove Salt minion from configuration channel
     Given I am authorized as "admin" with password "admin"
     When I follow the left menu "Configuration > Configuration Channels"
     And I follow "Action Chain Channel"
@@ -313,6 +313,6 @@ Feature: Action chain on salt minions
     And I run "rm -f /etc/action-chain.cnf" on "sle-minion" without error control
     And I run "rm -f /tmp/action_chain_one_system_done" on "sle-minion" without error control
 
-  Scenario: Cleanup: remove remaining systems from SSM
+  Scenario: Cleanup: remove remaining systems from SSM after action chain tests on normal minion
     When I am authorized as "admin" with password "admin"
     And I follow "Clear"

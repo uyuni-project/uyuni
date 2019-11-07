@@ -17,7 +17,7 @@ Feature: Salt package states
     And I wait until refresh package list on "sle-minion" is finished
     Then spacecmd should show packages "milkyway-dummy-1.0 virgo-dummy-1.0 andromeda-dummy-1.0" installed on "sle-minion"
 
-  Scenario: Pre-requisite: ensure the errata cache is computed
+  Scenario: Pre-requisite: ensure the errata cache is computed before software states tests
     Given I am on the Systems overview page of this "sle-minion"
     When I follow "Software" in the content area
     And I follow "List / Remove" in the content area

@@ -212,6 +212,6 @@ Feature: Chanel subscription via SSM
     And I wait until I see "1 system successfully completed this action." text, refreshing the page
     Then channel "Test-Channel-x86_64 Child Channel" should not be enabled on "sle-client"
 
-  Scenario: Cleanup: remove remaining systems from SSM
+  Scenario: Cleanup: remove remaining systems from SSM after channel subscription tests
     When I am authorized as "admin" with password "admin"
     And I follow "Clear"

@@ -11,7 +11,7 @@
 Feature: Be able to register a CentOS 7 traditional client and do some basic operations on it
 
 @centos_minion
-  Scenario: Delete the CentOS SSH minion
+  Scenario: Delete the CentOS SSH minion before traditional client tests
     When I am on the Systems overview page of this "ceos-ssh-minion"
     And I follow "Delete System"
     Then I should see a "Confirm System Profile Deletion" text
@@ -103,7 +103,7 @@ Feature: Be able to register a CentOS 7 traditional client and do some basic ope
     Then "ceos-client" should not be registered
 
 @centos_minion
-  Scenario: Cleanup: bootstrap a SSH-managed CentOS minion
+  Scenario: Cleanup: bootstrap a SSH-managed CentOS minion after traditional client tests
     Given I am authorized
     When I go to the bootstrapping page
     Then I should see a "Bootstrap Minions" text

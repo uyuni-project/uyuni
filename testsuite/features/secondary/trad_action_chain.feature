@@ -257,6 +257,6 @@ Feature: Action chain on traditional clients
   Scenario: Cleanup: remove temporary files for testing action chains on traditional client
     When I run "rm -f /tmp/action_chain.log" on "sle-client" without error control
 
-  Scenario: Cleanup: remove remaining systems from SSM
+  Scenario: Cleanup: remove remaining systems from SSM after action chain tests on traditional client
     When I am authorized as "admin" with password "admin"
     And I follow "Clear"

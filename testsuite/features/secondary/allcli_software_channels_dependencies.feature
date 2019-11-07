@@ -44,6 +44,6 @@ Feature: Chanel subscription with recommended/required dependencies
     Then I should see "Subscribe" "selected" for the "SLE-Module-Basesystem15-Pool for x86_64" channel
     And I should see "No change" "unselected" for the "SLE-Module-Basesystem15-Pool for x86_64" channel
 
-  Scenario: Cleanup: remove remaining systems from SSM
+  Scenario: Cleanup: remove remaining systems from SSM after software channel tests
     When I am authorized as "admin" with password "admin"
     And I follow "Clear"

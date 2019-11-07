@@ -42,6 +42,6 @@ Feature: Build OS images
     And I click on "Delete" in "Delete Selected Image(s)" modal
     And I wait until I see "Deleted successfully." text
 
-  Scenario: Cleanup: remove remaining systems from SSM
+  Scenario: Cleanup: remove remaining systems from SSM after OS image tests
     When I am authorized as "admin" with password "admin"
     And I follow "Clear"

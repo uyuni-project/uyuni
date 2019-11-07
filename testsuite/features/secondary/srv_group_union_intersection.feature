@@ -75,7 +75,7 @@ Feature: Work with Union and Intersection buttons in the group list
     And I click on "Add Systems"
     Then I should see a "1 systems were added to traditional server group." text
 
-  Scenario: Add the new group to SSM
+  Scenario: Add the sles group to SSM
     Given I am on the groups page
     When I click on "Use in SSM" in row "sles"
     And I should see a "systems selected" text
@@ -153,6 +153,6 @@ Feature: Work with Union and Intersection buttons in the group list
     And I click on "Confirm Deletion"
     Then I should see a "deleted" text
 
-  Scenario: Cleanup: remove remaining systems from SSM
+  Scenario: Cleanup: remove remaining systems from SSM after group union and intersection tests
     When I am authorized as "admin" with password "admin"
     And I follow "Clear"
