@@ -1,3 +1,4 @@
+- Split a query to the database for more reliability in case certain pages are visited and many systems are registered
 - Fix WebUI invalidation time by using the package build time instead
   of the WebUI version (bsc#1154868)
 - Add information message in Tasks bunch detail page if task gets interrupted before start
