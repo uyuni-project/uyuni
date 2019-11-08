@@ -267,7 +267,7 @@ public class SUSEProductFactory extends HibernateFactory {
     }
 
     /**
-     * Find all synced mandatoy channels for the given channel label
+     * Find all synced mandatory channels for the given channel label
      * @param channelLabel the channel label
      * @return a stream of synced {@link Channel}
      */
