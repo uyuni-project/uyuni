@@ -11,6 +11,8 @@
 {%- set chroot_dir = root_dir + '/chroot/' %}
 {%- set dest_dir   = root_dir + '/images.build' %}
 {%- set bundle_dir = root_dir + '/images/' %}
+# cache dir is used only with Kiwi-ng
+{%- set cache_dir  = root_dir + '/cache/' %}
 {%- set bundle_id  = pillar.get('build_id') %}
 {%- set activation_key = pillar.get('activation_key') %}
 
@@ -54,14 +56,14 @@ mgr_buildimage_prepare_activation_key_in_source:
 
 mgr_buildimage_kiwi_prepare:
   cmd.run:
-    - name: "{{ kiwi }} --logfile={{ root_dir }}/prepare.log {{ profile_opt }} system prepare --description {{ source_dir }} --root {{ chroot_dir }} {{ kiwi_params() }}"
+    - name: "{{ kiwi }} --logfile={{ root_dir }}/prepare.log --shared-cache-dir={{ cache_dir }} {{ profile_opt }} system prepare --description {{ source_dir }} --root {{ chroot_dir }} {{ kiwi_params() }}"
     - require:
       - module: mgr_buildimage_prepare_source
       - file: mgr_buildimage_prepare_activation_key_in_source
 
 mgr_buildimage_kiwi_create:
   cmd.run:
-    - name: "{{ kiwi }} --logfile={{ root_dir }}/create.log {{ profile_opt }} system create --root {{ chroot_dir }} --target-dir  {{ dest_dir }}"
+    - name: "{{ kiwi }} --logfile={{ root_dir }}/create.log --shared-cache-dir={{ cache_dir }} {{ profile_opt }} system create --root {{ chroot_dir }} --target-dir  {{ dest_dir }}"
     - require:
       - cmd: mgr_buildimage_kiwi_prepare
 
@@ -90,6 +92,13 @@ mgr_buildimage_kiwi_bundle:
   --add-repo {{ repo }} --add-repotype rpm-md --add-repoalias key_repo{{ loop.index }} {{ ' ' }}
 {%- endfor -%}
 {%- endmacro %}
+
+# old Kiwi can't change cache location, so we have to clear cache before each build
+mgr_kiwi_clear_cache:
+  file.directory:
+    - name: /var/cache/kiwi/
+    - makedirs: True
+    - clean: True
 
 mgr_buildimage_kiwi_prepare:
   cmd.run:
