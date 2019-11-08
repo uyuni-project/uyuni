@@ -2,8 +2,8 @@
 # Licensed under the terms of the MIT License.
 
 Feature: Delete channels with child or clone is not allowed
-  we cannot delete a channel if it has a child
-  or have a clone from it
+  Using the UI, we cannot delete a channel if it has a child
+  or a clone created from it
 
   Scenario: Clone the first channel before deletion from UI test
     Given I am on the manage software channels page
