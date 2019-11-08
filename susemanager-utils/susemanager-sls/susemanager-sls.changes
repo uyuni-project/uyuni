@@ -1,3 +1,4 @@
+- Always run Kiwi with empty cache (bsc#1155899)
 - Avoid traceback error due lazy loading which_bin (bsc#1155794)
 - Create Kiwi cache dir if not present
 - Consider timeout value in salt remote script (bsc#1153181)
