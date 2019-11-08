@@ -1616,7 +1616,8 @@ public class ContentSyncManager {
                                 hasAuth;
                     });
 
-            log.debug(isAccessible + " " + entries.stream().map(s -> s.getChannelLabel())
+            log.debug(product.getFriendlyName() + ": " + isAccessible + " " + entries.stream()
+                .map(s -> s.getChannelLabel())
                     .collect(Collectors.joining(",")));
 
              if (isAccessible) {
