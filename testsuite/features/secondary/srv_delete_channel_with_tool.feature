@@ -2,7 +2,8 @@
 # Licensed under the terms of the MIT License.
 
 Feature: Deleting channels with children or clones is not allowed
-  We cannot delete a channel if it has a clone
+  Using the tool spacewalk-remove-channel, we cannot delete a channel if it has a child
+  or a clone created from it
 
   Scenario: Clone the first channel before deletion from tool test
     Given I am on the manage software channels page
