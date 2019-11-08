@@ -31,8 +31,8 @@
 - features/secondary/trad_action_chain.feature
 - features/secondary/min_action_chain.feature
 - features/secondary/minssh_action_chain.feature
-- features/secondary/srv_delete_channel.feature
-- features/secondary/srv_spacewalk_remove_channel_tool.feature
+- features/secondary/srv_delete_channel_from_ui.feature
+- features/secondary/srv_delete_channel_with_tool.feature
 - features/secondary/min_docker_build_image.feature
 - features/secondary/min_docker_auth_registry.feature
 - features/secondary/min_docker_xmlrpc.feature
