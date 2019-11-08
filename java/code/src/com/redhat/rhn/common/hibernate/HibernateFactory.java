@@ -20,6 +20,7 @@ import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.SelectMode;
 
+import org.apache.commons.collections.ListUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.hibernate.Hibernate;
@@ -44,12 +45,15 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.function.BinaryOperator;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+
 import javax.persistence.FlushModeType;
 
 /**
@@ -768,7 +772,7 @@ public abstract class HibernateFactory {
 
     /**
      * Executes a 'lookup' query to retrieve data from the database given a list of ids.
-     * The query will be execute in batches of 1000 ids each.
+     * The query will be execute in batches of LIST_BATCH_MAX_SIZE ids each.
      * @param <T> the type of the returned objects
      * @param <ID>
      * @param ids the ids to search for
@@ -781,10 +785,31 @@ public abstract class HibernateFactory {
     }
 
     /**
+     * Executes an 'update' query to the database given a list of parameters.
+     * The query will be executed in batches of LIST_BATCH_MAX_SIZE parameters each.
+     * @param <E> the type of the list parameters
+     * @param list the list of parameters to search for
+     * @param queryName the name of the query to be executed
+     * @param parameterName the name of the parameter to match the parameters in the list
+     * @return the count of affected rows
+     */
+    @SuppressWarnings("unchecked")
+    protected static <E> int udpateByIds(List<E> list, String queryName, String parameterName,
+            Map<String, Object> parameters) {
+        Query<Integer> query = HibernateFactory.getSession().getNamedQuery(queryName);
+
+        parameters.entrySet().stream().forEach(entry -> {
+            query.setParameter(entry.getKey(), entry.getValue());
+        });
+
+        return splitAndExecuteQuery(list, parameterName, query, query::executeUpdate, 0, Integer::sum);
+    }
+
+    /**
      * Executes a 'lookup' query to retrieve data from the database given a list of ids.
-     * The query will be execute in batchs of 1000 ids each.
+     * The query will be execute in batches of LIST_BATCH_MAX_SIZE ids each.
      * @param <T> the type of the returned objects
-     * @param <ID>
+     * @param <ID> the type of the ids
      * @param ids the ids to search for
      * @param queryName the name of the query to be executed
      * @param idsParameterName the name of the parameter to match the ids
@@ -794,36 +819,39 @@ public abstract class HibernateFactory {
     @SuppressWarnings("unchecked")
     protected static <T, ID> List<T> findByIds(List<ID> ids, String queryName,
             String idsParameterName, Map<String, Object> parameters) {
-        Session session = HibernateFactory.getSession();
-        org.hibernate.query.Query<T> query = session.getNamedQuery(queryName);
+        Query<T> query = HibernateFactory.getSession().getNamedQuery(queryName);
+
         parameters.entrySet().stream().forEach(entry -> {
             query.setParameter(entry.getKey(), entry.getValue());
         });
-        List<T> results = new LinkedList<T>();
 
-        if (ids.size() == 0) {
-            return results;
-        }
-
-        if (ids.size() < LIST_BATCH_MAX_SIZE) {
-            query.setParameterList(idsParameterName, ids);
-            return query.getResultList();
-        }
-
-        List<ID> blockOfIds = new LinkedList<ID>();
-        for (ID sid : ids) {
-            blockOfIds.add(sid);
-            if (blockOfIds.size() == LIST_BATCH_MAX_SIZE - 1) {
-                query.setParameterList(idsParameterName, blockOfIds);
-                results.addAll(query.getResultList());
-                blockOfIds = new LinkedList<ID>();
-            }
-        }
-        // Deal with the remainder:
-        if (blockOfIds.size() > 0) {
-            query.setParameterList(idsParameterName, blockOfIds);
-            results.addAll(query.getResultList());
-        }
-        return results;
+        return splitAndExecuteQuery(ids, idsParameterName, query, query::getResultList,
+                new ArrayList<T>(), ListUtils::union);
     }
+
+    /**
+     * Splits a list of elements in batches of LIST_BATCH_MAX_SIZE and execute a query for each batch.
+     * Results from each query are reduced via `accumulator` using the provided `identity`.
+     * @param <T> the return type
+     * @param <E> the type of the elements in the list parameter
+     * @param <R> the type of the returned objects by the query
+     * @param list the list of parameters to search for
+     * @param parameterName the name of the parameter to match the parameters in the list
+     * @param query the query to be executed
+     * @param queryFunction the function to be call on the query
+     * @param identity the identity for the accumulator function
+     * @param accumulator the operation for the result accumulator
+     * @return an accumulated result of executing the query
+     */
+    private static <E, T, R> T splitAndExecuteQuery(List<E> list, String parameterName,
+            Query<R> query, Supplier<T> queryFunction, T identity, BinaryOperator<T> accumulator) {
+        int size = list.size();
+
+        List<List<E>> batches = IntStream.iterate(0, i -> i < size, i -> i + LIST_BATCH_MAX_SIZE)
+                .mapToObj(i -> list.subList(i, Math.min(i + LIST_BATCH_MAX_SIZE, size)))
+                .collect(Collectors.toList());
+        return batches.stream().map(b -> { query.setParameterList(parameterName, b); return queryFunction.get(); })
+                .reduce(identity, accumulator::apply);
+    }
+
 }

@@ -870,12 +870,11 @@ public class ActionFactory extends HibernateFactory {
         if (log.isDebugEnabled()) {
             log.debug("Action status " + status.getName() + " is going to b set for these servers: " + serverIds);
         }
-        HibernateFactory.getSession()
-                .getNamedQuery("Action.updateServerActions")
-                .setParameter("action_id", actionIn.getId())
-                .setParameter("server_ids", serverIds)
-                .setParameter("status", status.getId())
-                .executeUpdate();
+        Map<String, Object>  parameters = new HashMap<String, Object>();
+        parameters.put("action_id", actionIn.getId());
+        parameters.put("status", status.getId());
+
+        udpateByIds(serverIds, "Action.updateServerActions", "server_ids", parameters);
     }
 
     /**
