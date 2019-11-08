@@ -66,12 +66,6 @@ mgr_osimage_cert_deployed:
     - source: salt://images/rhn-org-trusted-ssl-cert-osimage-1.0-1.noarch.rpm
 {%- endif %}
 
-mgr_kiwi_clear_cache:
-  file.directory:
-    - name: /var/cache/kiwi/zypper/
-    - makedirs: True
-    - clean: True
-
 mgr_sshd_installed_enabled:
   pkg.installed:
     - name: openssh
