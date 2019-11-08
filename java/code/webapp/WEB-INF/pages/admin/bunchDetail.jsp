@@ -48,7 +48,7 @@
                            sortattr="start_time" >
                     <c:choose>
                         <c:when test="${current.start_time == null && current.status == 'INTERRUPTED'}">
-                            Task never started
+                            <bean:message key="bunch.jsp.nullstarttime"/>
                         </c:when>
                         <c:otherwise>
                             <a href="/rhn/admin/ScheduleDetail.do?schid=${current.schedule_id}">
