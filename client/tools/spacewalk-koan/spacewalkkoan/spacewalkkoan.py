@@ -169,6 +169,8 @@ def initiate(kickstart_host, base, extra_append, static_device=None, system_reco
         k.virt_type           = None
         k.virt_bridge         = None
         k.no_gfx              = 0
+        if hasattr(k, 'gfx_type'):
+            k.gfx_type        = 'vnc'
         k.add_reinstall_entry = None
         k.kopts_override      = None
         k.use_kexec           = None
