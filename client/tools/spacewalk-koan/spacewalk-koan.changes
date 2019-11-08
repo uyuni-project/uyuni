@@ -1,3 +1,4 @@
+- gfx_type needs to default to 'vnc' (bsc#1156211)
 - Bump version to 4.1.0 (bsc#1154940)
 - require commands we use in merge-rd.sh
 
