@@ -1,3 +1,5 @@
+- gfx_type needs to default to 'vnc' (bsc#1156211)
+
 -------------------------------------------------------------------
 Wed May 15 15:11:51 CEST 2019 - jgonzalez@suse.com
 
