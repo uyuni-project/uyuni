@@ -6,6 +6,7 @@ import type {ProjectEnvironmentType} from '../../../type/project.type.js';
 import type {ProjectHistoryEntry} from "../../../type/project.type";
 import {getVersionMessageByNumber} from "../properties/properties.utils";
 import {objectDefaultValueHandler} from "core/utils/objects";
+import propertiesStyles from "../properties/properties.css";
 
 type Props = {
   environment: ProjectEnvironmentType,
@@ -46,7 +47,16 @@ const EnvironmentView = React.memo((props: Props) => {
       {/*</dl>*/}
       <dl className="row">
         <dt className="col-xs-3">{t('Version')}:</dt>
-        <dd className="col-xs-9"><pre>{versionMessage}</pre></dd>
+        <dd className="col-xs-9">
+          <div className={`${propertiesStyles.version_collapse_line} pointer`} data-toggle="collapse"
+              data-target={`#historyentry_${props.environment.label}_${props.environment.version}`} role="button"
+              aria-expanded="false" aria-controls="collapseExample">
+            {versionMessage.split('\n')[0]}
+          </div>
+          <div class="collapse" id={`historyentry_${props.environment.label}_${props.environment.version}`}>
+            <pre>{versionMessage}</pre>
+          </div>
+        </dd>
       </dl>
       {
         props.environment.version > 0 ?
