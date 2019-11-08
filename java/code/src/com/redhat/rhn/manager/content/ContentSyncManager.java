@@ -1562,10 +1562,16 @@ public class ContentSyncManager {
         return entries.stream()
                 .filter(e -> e.getRootProduct().equals(root))
                 .filter(e -> e.isMandatory())
-                .allMatch(entry ->
-             entry.getProduct().getChannelFamily().isPublic() &&
-             // isMirrorable
-             entry.getRepository().isAccessible());
+                .allMatch(entry -> {
+                    boolean isPublic = entry.getProduct().getChannelFamily().isPublic();
+                    boolean isMirrorable = entry.getRepository().isAccessible();
+                    log.debug(product.getFriendlyName() + " - " + entry.getChannelLabel() +
+                            " isPublic: " + isPublic + " isMirrorable: " + isMirrorable);
+                    return  isPublic &&
+                            // isMirrorable
+                            isMirrorable;
+                }
+             );
     }
 
     /**
@@ -1603,7 +1609,8 @@ public class ContentSyncManager {
                     .allMatch(entry -> {
                         boolean isPublic = entry.getProduct().getChannelFamily().isPublic();
                         boolean hasAuth = repoIdsWithAuth.contains(entry.getRepository().getId());
-                        log.debug(entry.getChannelLabel() + " isPublic: " + isPublic + " hasAuth: " + hasAuth);
+                        log.debug(product.getFriendlyName() + " - " + entry.getChannelLabel() +
+                                " isPublic: " + isPublic + " hasAuth: " + hasAuth);
                         return  isPublic &&
                                 // isMirrorable
                                 hasAuth;
