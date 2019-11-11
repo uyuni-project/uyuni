@@ -1,119 +1,23 @@
 [
     {
-        "id" : 1232,
-        "name" : "Novell Open Enterprise Server 2 11",
-        "identifier" : "Open_Enterprise_Server",
+        "id" : -8,
+        "name" : "RHEL8 Base",
+        "identifier" : "rhel-base",
         "former_identifier" : "",
-        "version" : "11",
-        "release_type" : null,
-        "arch" : null,
-        "friendly_name" : "Novell Open Enterprise Server 2 11",
-        "product_class" : "OES2",
-        "cpe" : null,
-        "free" : false,
-        "description" : null,
-        "release_stage" : "released",
-        "eula_url" : "",
-        "product_type" : "extension",
-        "offline_predecessor_ids" : [
-        ],
-        "online_predecessor_ids" : [
-        ],
-        "shortname" : null,
-        "recommended" : false,
-        "extensions" : [
-        ],
-        "repositories" : [
-            {
-                "id" : -1,
-                "url" : "https://nu.novell.com/repo/$RCE/OES11-Pool/sle-11-x86_64/",
-                "name" : "OES11-Pool",
-                "distro_target" : "sle-11-x86_64",
-                "description" : "Novell Open Enterprise Server 11",
-                "enabled" : true,
-                "autorefresh" : false,
-                "installer_updates" : false
-            },
-            {
-                "id" : -2,
-                "url" : "https://nu.novell.com/repo/$RCE/OES11-Updates/sle-11-x86_64/",
-                "name" : "OES11-Updates",
-                "distro_target" : "sle-11-x86_64",
-                "description" : "Novell Open Enterprise Server 11",
-                "enabled" : true,
-                "autorefresh" : true,
-                "installer_updates" : false
-            }
-        ]
-    },
-    {
-        "id" : 1241,
-        "name" : "Novell Open Enterprise Server 2 11.1",
-        "identifier" : "Open_Enterprise_Server",
-        "former_identifier" : "",
-        "version" : "11.1",
-        "release_type" : null,
-        "arch" : null,
-        "friendly_name" : "Novell Open Enterprise Server 2 11.1",
-        "product_class" : "OES2",
-        "cpe" : null,
-        "free" : false,
-        "description" : null,
-        "release_stage" : "released",
-        "eula_url" : "",
-        "product_type" : "extension",
-        "offline_predecessor_ids" : [
-        ],
-        "online_predecessor_ids" : [
-            1232
-        ],
-        "shortname" : null,
-        "recommended" : false,
-        "extensions" : [
-        ],
-        "repositories" : [
-            {
-                "id" : -3,
-                "url" : "https://nu.novell.com/repo/$RCE/OES11-SP1-Pool/sle-11-x86_64/",
-                "name" : "OES11-SP1-Pool",
-                "distro_target" : "sle-11-x86_64",
-                "description" : "Novell Open Enterprise Server 11.1",
-                "enabled" : true,
-                "autorefresh" : false,
-                "installer_updates" : false
-            },
-            {
-                "id" : -4,
-                "url" : "https://nu.novell.com/repo/$RCE/OES11-SP1-Updates/sle-11-x86_64/",
-                "name" : "OES11-SP1-Updates",
-                "distro_target" : "sle-11-x86_64",
-                "description" : "Novell Open Enterprise Server 11.1",
-                "enabled" : true,
-                "autorefresh" : true,
-                "installer_updates" : false
-            }
-        ]
-    },
-    {
-        "id" : 1242,
-        "name" : "Novell Open Enterprise Server 2 11.2",
-        "identifier" : "Open_Enterprise_Server",
-        "former_identifier" : "",
-        "version" : "11.2",
+        "version" : "8",
         "release_type" : null,
         "arch" : "x86_64",
-        "friendly_name" : "Novell Open Enterprise Server 2 11.2",
-        "product_class" : "OES2",
+        "friendly_name" : "RHEL8 Base x86_64",
+        "product_class" : "SLE-M-T-ALPHA",
         "cpe" : null,
         "free" : false,
         "description" : null,
-        "release_stage" : "released",
+        "release_stage" : "alpha",
         "eula_url" : "",
-        "product_type" : "extension",
+        "product_type" : "base",
         "offline_predecessor_ids" : [
         ],
         "online_predecessor_ids" : [
-            1241
         ],
         "shortname" : null,
         "recommended" : false,
@@ -121,47 +25,36 @@
         ],
         "repositories" : [
             {
-                "id" : -5,
-                "url" : "https://nu.novell.com/repo/$RCE/OES11-SP2-Pool/sle-11-x86_64/",
-                "name" : "OES11-SP2-Pool",
-                "distro_target" : "sle-11-x86_64",
-                "description" : "Novell Open Enterprise Server 11.2",
+                "id" : -82,
+                "url" : "http://localhost/pub/repositories/empty/",
+                "name" : "RHEL8-Pool",
+                "distro_target" : "x86_64",
+                "description" : "RHEL8-Pool",
                 "enabled" : true,
                 "autorefresh" : false,
-                "installer_updates" : false
-            },
-            {
-                "id" : -6,
-                "url" : "https://nu.novell.com/repo/$RCE/OES11-SP2-Updates/sle-11-x86_64/",
-                "name" : "OES11-SP2-Updates",
-                "distro_target" : "sle-11-x86_64",
-                "description" : "Novell Open Enterprise Server 11.2",
-                "enabled" : true,
-                "autorefresh" : true,
                 "installer_updates" : false
             }
         ]
     },
     {
-        "id" : 44,
-        "name" : "Open Enterprise Server 11 SP3",
-        "identifier" : "Open_Enterprise_Server",
+        "id" : -7,
+        "name" : "RHEL7 Base",
+        "identifier" : "rhel-base",
         "former_identifier" : "",
-        "version" : "11.3",
+        "version" : "7",
         "release_type" : null,
         "arch" : "x86_64",
-        "friendly_name" : "Open Enterprise Server 11 SP3",
-        "product_class" : "OES2",
+        "friendly_name" : "RHEL7 Base x86_64",
+        "product_class" : "SLE-M-T",
         "cpe" : null,
         "free" : false,
         "description" : null,
         "release_stage" : "released",
         "eula_url" : "",
-        "product_type" : "extension",
+        "product_type" : "base",
         "offline_predecessor_ids" : [
         ],
         "online_predecessor_ids" : [
-            1242
         ],
         "shortname" : null,
         "recommended" : false,
@@ -169,23 +62,235 @@
         ],
         "repositories" : [
             {
-                "id" : -7,
-                "url" : "https://nu.novell.com/repo/$RCE/OES11-SP3-Pool/sle-11-x86_64/",
-                "name" : "OES11-SP3-Pool",
-                "distro_target" : "sle-11-x86_64",
-                "description" : "Open Enterprise Server 11 SP3",
+                "id" : -81,
+                "url" : "http://localhost/pub/repositories/empty/",
+                "name" : "RHEL7-Pool",
+                "distro_target" : "x86_64",
+                "description" : "RHEL7-Pool",
                 "enabled" : true,
                 "autorefresh" : false,
                 "installer_updates" : false
-            },
+            }
+        ]
+    },
+    {
+        "id" : -6,
+        "name" : "RHEL6 Base",
+        "identifier" : "rhel-base",
+        "former_identifier" : "",
+        "version" : "6",
+        "release_type" : null,
+        "arch" : "i386",
+        "friendly_name" : "RHEL6 Base i386",
+        "product_class" : "SLE-M-T",
+        "cpe" : null,
+        "free" : false,
+        "description" : null,
+        "release_stage" : "released",
+        "eula_url" : "",
+        "product_type" : "base",
+        "offline_predecessor_ids" : [
+        ],
+        "online_predecessor_ids" : [
+        ],
+        "shortname" : null,
+        "recommended" : false,
+        "extensions" : [
+        ],
+        "repositories" : [
             {
-                "id" : -8,
-                "url" : "https://nu.novell.com/repo/$RCE/OES11-SP3-Updates/sle-11-x86_64/",
-                "name" : "OES11-SP3-Updates",
-                "distro_target" : "sle-11-x86_64",
-                "description" : "Open Enterprise Server 11 SP3",
+                "id" : -81,
+                "url" : "http://localhost/pub/repositories/empty/",
+                "name" : "RHEL6-Pool",
+                "distro_target" : "i386",
+                "description" : "RHEL6-Pool",
                 "enabled" : true,
-                "autorefresh" : true,
+                "autorefresh" : false,
+                "installer_updates" : false
+            }
+        ]
+    },
+    {
+        "id" : -5,
+        "name" : "RHEL6 Base",
+        "identifier" : "rhel-base",
+        "former_identifier" : "",
+        "version" : "6",
+        "release_type" : null,
+        "arch" : "x86_64",
+        "friendly_name" : "RHEL6 Base x86_64",
+        "product_class" : "SLE-M-T",
+        "cpe" : null,
+        "free" : false,
+        "description" : null,
+        "release_stage" : "released",
+        "eula_url" : "",
+        "product_type" : "base",
+        "offline_predecessor_ids" : [
+        ],
+        "online_predecessor_ids" : [
+        ],
+        "shortname" : null,
+        "recommended" : false,
+        "extensions" : [
+        ],
+        "repositories" : [
+            {
+                "id" : -80,
+                "url" : "http://localhost/pub/repositories/empty/",
+                "name" : "RHEL6-Pool",
+                "distro_target" : "x86_64",
+                "description" : "RHEL6-Pool",
+                "enabled" : true,
+                "autorefresh" : false,
+                "installer_updates" : false
+            }
+        ]
+    },
+    {
+        "id" : -4,
+        "name" : "RHEL5 Base",
+        "identifier" : "rhel-base",
+        "former_identifier" : "",
+        "version" : "5",
+        "release_type" : null,
+        "arch" : "i386",
+        "friendly_name" : "RHEL5 Base i386",
+        "product_class" : "SLE-M-T",
+        "cpe" : null,
+        "free" : false,
+        "description" : null,
+        "release_stage" : "released",
+        "eula_url" : "",
+        "product_type" : "base",
+        "offline_predecessor_ids" : [
+        ],
+        "online_predecessor_ids" : [
+        ],
+        "shortname" : null,
+        "recommended" : false,
+        "extensions" : [
+        ],
+        "repositories" : [
+            {
+                "id" : -79,
+                "url" : "http://localhost/pub/repositories/empty/",
+                "name" : "RHEL5-Pool",
+                "distro_target" : "i386",
+                "description" : "RHEL5-Pool",
+                "enabled" : true,
+                "autorefresh" : false,
+                "installer_updates" : false
+            }
+        ]
+    },
+    {
+        "id" : -3,
+        "name" : "RHEL5 Base",
+        "identifier" : "rhel-base",
+        "former_identifier" : "",
+        "version" : "5",
+        "release_type" : null,
+        "arch" : "x86_64",
+        "friendly_name" : "RHEL5 Base x86_64",
+        "product_class" : "SLE-M-T",
+        "cpe" : null,
+        "free" : false,
+        "description" : null,
+        "release_stage" : "released",
+        "eula_url" : "",
+        "product_type" : "base",
+        "offline_predecessor_ids" : [
+        ],
+        "online_predecessor_ids" : [
+        ],
+        "shortname" : null,
+        "recommended" : false,
+        "extensions" : [
+        ],
+        "repositories" : [
+            {
+                "id" : -78,
+                "url" : "http://localhost/pub/repositories/empty/",
+                "name" : "RHEL5-Pool",
+                "distro_target" : "x86_64",
+                "description" : "RHEL5-Pool",
+                "enabled" : true,
+                "autorefresh" : false,
+                "installer_updates" : false
+            }
+        ]
+    },
+    {
+        "id" : -2,
+        "name" : "Ubuntu 16.04",
+        "identifier" : "Ubuntu-Client",
+        "former_identifier" : "",
+        "version" : "16.04",
+        "release_type" : null,
+        "arch" : "amd64",
+        "friendly_name" : "Ubuntu 16.04",
+        "product_class" : "SLE-M-T",
+        "cpe" : null,
+        "free" : false,
+        "description" : null,
+        "release_stage" : "released",
+        "eula_url" : "",
+        "product_type" : "base",
+        "offline_predecessor_ids" : [
+        ],
+        "online_predecessor_ids" : [
+        ],
+        "shortname" : null,
+        "recommended" : false,
+        "extensions" : [
+        ],
+        "repositories" : [
+            {
+                "id" : -76,
+                "url" : "http://localhost/pub/repositories/empty-deb/",
+                "name" : "ubuntu-16.04-pool",
+                "distro_target" : "amd64",
+                "description" : "Ubuntu 16.04 LTS",
+                "enabled" : true,
+                "autorefresh" : false,
+                "installer_updates" : false
+            }
+        ]
+    },
+    {
+        "id" : -1,
+        "name" : "Ubuntu 18.04",
+        "identifier" : "Ubuntu-Client",
+        "former_identifier" : "",
+        "version" : "18.04",
+        "release_type" : null,
+        "arch" : "amd64",
+        "friendly_name" : "Ubuntu 18.04",
+        "product_class" : "SLE-M-T",
+        "cpe" : null,
+        "free" : false,
+        "description" : null,
+        "release_stage" : "released",
+        "eula_url" : "",
+        "product_type" : "base",
+        "offline_predecessor_ids" : [
+        ],
+        "online_predecessor_ids" : [
+        ],
+        "shortname" : null,
+        "recommended" : false,
+        "extensions" : [
+        ],
+        "repositories" : [
+            {
+                "id" : -77,
+                "url" : "http://localhost/pub/repositories/empty-deb/",
+                "name" : "ubuntu-18.04-pool",
+                "distro_target" : "amd64",
+                "description" : "Ubuntu 18.04 LTS",
+                "enabled" : true,
+                "autorefresh" : false,
                 "installer_updates" : false
             }
         ]
@@ -279,6 +384,54 @@
                 "name" : "OES2015-SP1-Updates",
                 "distro_target" : "sle-11-x86_64",
                 "description" : "Open Enterprise Server 2015 SP1",
+                "enabled" : true,
+                "autorefresh" : true,
+                "installer_updates" : false
+            }
+        ]
+    },
+    {
+        "id" : 44,
+        "name" : "Open Enterprise Server 11 SP3",
+        "identifier" : "Open_Enterprise_Server",
+        "former_identifier" : "",
+        "version" : "11.3",
+        "release_type" : null,
+        "arch" : "x86_64",
+        "friendly_name" : "Open Enterprise Server 11 SP3",
+        "product_class" : "OES2",
+        "cpe" : null,
+        "free" : false,
+        "description" : null,
+        "release_stage" : "released",
+        "eula_url" : "",
+        "product_type" : "extension",
+        "offline_predecessor_ids" : [
+        ],
+        "online_predecessor_ids" : [
+            1242
+        ],
+        "shortname" : null,
+        "recommended" : false,
+        "extensions" : [
+        ],
+        "repositories" : [
+            {
+                "id" : -7,
+                "url" : "https://nu.novell.com/repo/$RCE/OES11-SP3-Pool/sle-11-x86_64/",
+                "name" : "OES11-SP3-Pool",
+                "distro_target" : "sle-11-x86_64",
+                "description" : "Open Enterprise Server 11 SP3",
+                "enabled" : true,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -8,
+                "url" : "https://nu.novell.com/repo/$RCE/OES11-SP3-Updates/sle-11-x86_64/",
+                "name" : "OES11-SP3-Updates",
+                "distro_target" : "sle-11-x86_64",
+                "description" : "Open Enterprise Server 11 SP3",
                 "enabled" : true,
                 "autorefresh" : true,
                 "installer_updates" : false
@@ -841,21 +994,21 @@
         ]
     },
     {
-        "id" : -1,
-        "name" : "Ubuntu 18.04",
-        "identifier" : "Ubuntu-Client",
+        "id" : 1232,
+        "name" : "Novell Open Enterprise Server 2 11",
+        "identifier" : "Open_Enterprise_Server",
         "former_identifier" : "",
-        "version" : "18.04",
+        "version" : "11",
         "release_type" : null,
-        "arch" : "amd64",
-        "friendly_name" : "Ubuntu 18.04",
-        "product_class" : "SLE-M-T",
+        "arch" : null,
+        "friendly_name" : "Novell Open Enterprise Server 2 11",
+        "product_class" : "OES2",
         "cpe" : null,
         "free" : false,
         "description" : null,
         "release_stage" : "released",
         "eula_url" : "",
-        "product_type" : "base",
+        "product_type" : "extension",
         "offline_predecessor_ids" : [
         ],
         "online_predecessor_ids" : [
@@ -866,36 +1019,47 @@
         ],
         "repositories" : [
             {
-                "id" : -77,
-                "url" : "http://localhost/pub/repositories/empty-deb/",
-                "name" : "ubuntu-18.04-pool",
-                "distro_target" : "amd64",
-                "description" : "Ubuntu 18.04 LTS",
+                "id" : -1,
+                "url" : "https://nu.novell.com/repo/$RCE/OES11-Pool/sle-11-x86_64/",
+                "name" : "OES11-Pool",
+                "distro_target" : "sle-11-x86_64",
+                "description" : "Novell Open Enterprise Server 11",
                 "enabled" : true,
                 "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -2,
+                "url" : "https://nu.novell.com/repo/$RCE/OES11-Updates/sle-11-x86_64/",
+                "name" : "OES11-Updates",
+                "distro_target" : "sle-11-x86_64",
+                "description" : "Novell Open Enterprise Server 11",
+                "enabled" : true,
+                "autorefresh" : true,
                 "installer_updates" : false
             }
         ]
     },
     {
-        "id" : -2,
-        "name" : "Ubuntu 16.04",
-        "identifier" : "Ubuntu-Client",
+        "id" : 1241,
+        "name" : "Novell Open Enterprise Server 2 11.1",
+        "identifier" : "Open_Enterprise_Server",
         "former_identifier" : "",
-        "version" : "16.04",
+        "version" : "11.1",
         "release_type" : null,
-        "arch" : "amd64",
-        "friendly_name" : "Ubuntu 16.04",
-        "product_class" : "SLE-M-T",
+        "arch" : null,
+        "friendly_name" : "Novell Open Enterprise Server 2 11.1",
+        "product_class" : "OES2",
         "cpe" : null,
         "free" : false,
         "description" : null,
         "release_stage" : "released",
         "eula_url" : "",
-        "product_type" : "base",
+        "product_type" : "extension",
         "offline_predecessor_ids" : [
         ],
         "online_predecessor_ids" : [
+            1232
         ],
         "shortname" : null,
         "recommended" : false,
@@ -903,36 +1067,47 @@
         ],
         "repositories" : [
             {
-                "id" : -76,
-                "url" : "http://localhost/pub/repositories/empty-deb/",
-                "name" : "ubuntu-16.04-pool",
-                "distro_target" : "amd64",
-                "description" : "Ubuntu 16.04 LTS",
+                "id" : -3,
+                "url" : "https://nu.novell.com/repo/$RCE/OES11-SP1-Pool/sle-11-x86_64/",
+                "name" : "OES11-SP1-Pool",
+                "distro_target" : "sle-11-x86_64",
+                "description" : "Novell Open Enterprise Server 11.1",
                 "enabled" : true,
                 "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -4,
+                "url" : "https://nu.novell.com/repo/$RCE/OES11-SP1-Updates/sle-11-x86_64/",
+                "name" : "OES11-SP1-Updates",
+                "distro_target" : "sle-11-x86_64",
+                "description" : "Novell Open Enterprise Server 11.1",
+                "enabled" : true,
+                "autorefresh" : true,
                 "installer_updates" : false
             }
         ]
     },
     {
-        "id" : -3,
-        "name" : "RHEL5 Base",
-        "identifier" : "rhel-base",
+        "id" : 1242,
+        "name" : "Novell Open Enterprise Server 2 11.2",
+        "identifier" : "Open_Enterprise_Server",
         "former_identifier" : "",
-        "version" : "5",
+        "version" : "11.2",
         "release_type" : null,
         "arch" : "x86_64",
-        "friendly_name" : "RHEL5 Base x86_64",
-        "product_class" : "SLE-M-T",
+        "friendly_name" : "Novell Open Enterprise Server 2 11.2",
+        "product_class" : "OES2",
         "cpe" : null,
         "free" : false,
         "description" : null,
-        "release_stage" : "alpha",
+        "release_stage" : "released",
         "eula_url" : "",
-        "product_type" : "base",
+        "product_type" : "extension",
         "offline_predecessor_ids" : [
         ],
         "online_predecessor_ids" : [
+            1241
         ],
         "shortname" : null,
         "recommended" : false,
@@ -940,161 +1115,23 @@
         ],
         "repositories" : [
             {
-                "id" : -78,
-                "url" : "http://localhost/pub/repositories/empty/",
-                "name" : "RHEL5-Pool",
-                "distro_target" : "x86_64",
-                "description" : "RHEL5-Pool",
+                "id" : -5,
+                "url" : "https://nu.novell.com/repo/$RCE/OES11-SP2-Pool/sle-11-x86_64/",
+                "name" : "OES11-SP2-Pool",
+                "distro_target" : "sle-11-x86_64",
+                "description" : "Novell Open Enterprise Server 11.2",
                 "enabled" : true,
                 "autorefresh" : false,
                 "installer_updates" : false
-            }
-        ]
-    },
-    {
-        "id" : -4,
-        "name" : "RHEL5 Base",
-        "identifier" : "rhel-base",
-        "former_identifier" : "",
-        "version" : "5",
-        "release_type" : null,
-        "arch" : "i386",
-        "friendly_name" : "RHEL5 Base i386",
-        "product_class" : "SLE-M-T",
-        "cpe" : null,
-        "free" : false,
-        "description" : null,
-        "release_stage" : "alpha",
-        "eula_url" : "",
-        "product_type" : "base",
-        "offline_predecessor_ids" : [
-        ],
-        "online_predecessor_ids" : [
-        ],
-        "shortname" : null,
-        "recommended" : false,
-        "extensions" : [
-        ],
-        "repositories" : [
+            },
             {
-                "id" : -79,
-                "url" : "http://localhost/pub/repositories/empty/",
-                "name" : "RHEL5-Pool",
-                "distro_target" : "i386",
-                "description" : "RHEL5-Pool",
+                "id" : -6,
+                "url" : "https://nu.novell.com/repo/$RCE/OES11-SP2-Updates/sle-11-x86_64/",
+                "name" : "OES11-SP2-Updates",
+                "distro_target" : "sle-11-x86_64",
+                "description" : "Novell Open Enterprise Server 11.2",
                 "enabled" : true,
-                "autorefresh" : false,
-                "installer_updates" : false
-            }
-        ]
-    },
-    {
-        "id" : -5,
-        "name" : "RHEL6 Base",
-        "identifier" : "rhel-base",
-        "former_identifier" : "",
-        "version" : "6",
-        "release_type" : null,
-        "arch" : "x86_64",
-        "friendly_name" : "RHEL6 Base x86_64",
-        "product_class" : "SLE-M-T",
-        "cpe" : null,
-        "free" : false,
-        "description" : null,
-        "release_stage" : "alpha",
-        "eula_url" : "",
-        "product_type" : "base",
-        "offline_predecessor_ids" : [
-        ],
-        "online_predecessor_ids" : [
-        ],
-        "shortname" : null,
-        "recommended" : false,
-        "extensions" : [
-        ],
-        "repositories" : [
-            {
-                "id" : -80,
-                "url" : "http://localhost/pub/repositories/empty/",
-                "name" : "RHEL6-Pool",
-                "distro_target" : "x86_64",
-                "description" : "RHEL6-Pool",
-                "enabled" : true,
-                "autorefresh" : false,
-                "installer_updates" : false
-            }
-        ]
-    },
-    {
-        "id" : -6,
-        "name" : "RHEL6 Base",
-        "identifier" : "rhel-base",
-        "former_identifier" : "",
-        "version" : "6",
-        "release_type" : null,
-        "arch" : "i386",
-        "friendly_name" : "RHEL6 Base i386",
-        "product_class" : "SLE-M-T",
-        "cpe" : null,
-        "free" : false,
-        "description" : null,
-        "release_stage" : "alpha",
-        "eula_url" : "",
-        "product_type" : "base",
-        "offline_predecessor_ids" : [
-        ],
-        "online_predecessor_ids" : [
-        ],
-        "shortname" : null,
-        "recommended" : false,
-        "extensions" : [
-        ],
-        "repositories" : [
-            {
-                "id" : -81,
-                "url" : "http://localhost/pub/repositories/empty/",
-                "name" : "RHEL6-Pool",
-                "distro_target" : "i386",
-                "description" : "RHEL6-Pool",
-                "enabled" : true,
-                "autorefresh" : false,
-                "installer_updates" : false
-            }
-        ]
-    },
-    {
-        "id" : -7,
-        "name" : "RHEL7 Base",
-        "identifier" : "rhel-base",
-        "former_identifier" : "",
-        "version" : "7",
-        "release_type" : null,
-        "arch" : "x86_64",
-        "friendly_name" : "RHEL7 Base x86_64",
-        "product_class" : "SLE-M-T",
-        "cpe" : null,
-        "free" : false,
-        "description" : null,
-        "release_stage" : "alpha",
-        "eula_url" : "",
-        "product_type" : "base",
-        "offline_predecessor_ids" : [
-        ],
-        "online_predecessor_ids" : [
-        ],
-        "shortname" : null,
-        "recommended" : false,
-        "extensions" : [
-        ],
-        "repositories" : [
-            {
-                "id" : -81,
-                "url" : "http://localhost/pub/repositories/empty/",
-                "name" : "RHEL7-Pool",
-                "distro_target" : "x86_64",
-                "description" : "RHEL7-Pool",
-                "enabled" : true,
-                "autorefresh" : false,
+                "autorefresh" : true,
                 "installer_updates" : false
             }
         ]
