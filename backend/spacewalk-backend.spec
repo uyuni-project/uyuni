@@ -687,15 +687,19 @@ fi
 
 %pre tools
 %service_add_pre spacewalk-diskcheck.service
+%service_add_pre spacewalk-diskcheck.timer
 
 %post tools
 %service_add_post spacewalk-diskcheck.service
+%service_add_post spacewalk-diskcheck.timer
 
 %preun tools
 %service_del_preun spacewalk-diskcheck.service
+%service_del_preun spacewalk-diskcheck.timer
 
 %postun tools
 %service_del_postun spacewalk-diskcheck.service
+%service_del_postun spacewalk-diskcheck.timer
 
 # Is secret key in our config file?
 regex="^[[:space:]]*(server\.|)secret_key[[:space:]]*=.*$"
