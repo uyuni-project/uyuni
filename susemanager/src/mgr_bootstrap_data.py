@@ -296,6 +296,25 @@ RES7 = [
     "dmidecode",
 ]
 
+RES8 = [
+    "salt",
+    "salt-minion",
+    "python3-salt",
+    "python3-babel",
+    "python3-msgpack",
+    "python3-tornado",
+    "python3-zmq",
+    "python3-jinja2",
+    "python3-m2crypto",
+    "python3-markupsafe",
+    "python3-psutil",
+    "python3-pyyaml",
+    "python3-requests",
+    "openpgm",
+    "zeromq",
+    "dmidecode",
+]
+
 PKGLIST15_SALT = [
     "libpgm-5_2-0",
     "libsodium23",
@@ -810,6 +829,14 @@ DATA = {
     'RHEL7-x86_64' : {
         'PDID' : [-7, 1683], 'PKGLIST' : RES7,
         'DEST' : '/srv/www/htdocs/pub/repositories/res/7/bootstrap/'
+    },
+    'SLE-ES8-x86_64' : {
+        'PDID' : [-8, 1921, 2007], 'PKGLIST' : RES8,
+        'DEST' : '/srv/www/htdocs/pub/repositories/res/8/bootstrap/'
+    },
+    'RHEL8-x86_64' : {
+        'PDID' : [-8, 2007], 'PKGLIST' : RES8,
+        'DEST' : '/srv/www/htdocs/pub/repositories/res/8/bootstrap/'
     },
     'ubuntu-16.04-amd64' : {
         'PDID' : [-2, 1917], 'PKGLIST' : PKGLISTUBUNTU1604,
