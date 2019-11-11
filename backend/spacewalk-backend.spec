@@ -685,16 +685,16 @@ if [ ! -e %{rhnconf}/rhn.conf ]; then
     exit 0
 fi
 
-%pre
+%pre tools
 %service_add_pre spacewalk-diskcheck.service
 
-%post
+%post tools
 %service_add_post spacewalk-diskcheck.service
 
-%preun
+%preun tools
 %service_del_preun spacewalk-diskcheck.service
 
-%postun
+%postun tools
 %service_del_postun spacewalk-diskcheck.service
 
 # Is secret key in our config file?
