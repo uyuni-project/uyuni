@@ -74,7 +74,9 @@ const Promote = (props: Props) => {
             <React.Fragment>
               <dl className="row">
                 <dt className="col-xs-4">{t('Version')}:</dt>
-                <dd className="col-xs-8">{versionMessage}</dd>
+                <dd className="col-xs-8">
+                  <pre>{versionMessage}</pre>
+              </dd>
               </dl>
               <dl className="row">
                 <dt className="col-xs-4">{t('Target environment')}:</dt>
