@@ -550,6 +550,18 @@ if [ ! -e %{rhnconf}/rhn.conf ]; then
     exit 0
 fi
 
+%pre
+%service_add_pre spacewalk-diskcheck.service
+
+%post
+%service_add_post spacewalk-diskcheck.service
+
+%preun
+%service_del_preun spacewalk-diskcheck.service
+
+%postun
+%service_del_postun spacewalk-diskcheck.service
+
 # Is secret key in our config file?
 regex="^[[:space:]]*(server\.|)secret_key[[:space:]]*=.*$"
 
