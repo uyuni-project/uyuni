@@ -2,7 +2,7 @@
 import type {ProjectHistoryEntry} from "../../../type/project.type";
 
 export function getVersionMessage(historyEntry: ProjectHistoryEntry): string {
-  return `Version ${historyEntry.version}: ${historyEntry.message || ""}`
+  return `${t('Version')} ${historyEntry.version}: ${historyEntry.message || ""}`
 }
 
 

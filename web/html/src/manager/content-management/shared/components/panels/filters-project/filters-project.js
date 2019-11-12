@@ -26,7 +26,7 @@ const renderFilterEntry = (filter, projectId, symbol, last) => {
       <LinkButton
         id={`edit-filter-${filter.id}`}
         icon='fa-edit'
-        title={t(`Edit Filter ${filter.name}`)}
+        title={t('Edit Filter {0}', filter.name)}
         className='pull-right js-spa'
         href={`/rhn/manager/contentmanagement/filters?openFilterId=${filter.id}&projectLabel=${projectId}`}
       />
@@ -84,7 +84,7 @@ const FiltersProject = (props:  FiltersProps) => {
     <CreatorPanel
       id="filters"
       title={t('Filters')}
-      creatingText="Attach/Detach Filters"
+      creatingText={t("Attach/Detach Filters")}
       panelLevel="2"
       collapsible
       customIconClass="fa-small"
@@ -100,7 +100,7 @@ const FiltersProject = (props:  FiltersProps) => {
         onAction(requestParam, "update", props.projectId)
           .then((projectWithUpdatedSources) => {
             closeDialog();
-            showSuccessToastr(t("Filters edited successfully"));
+            showSuccessToastr(t("Filter edited successfully"));
             props.onChange(projectWithUpdatedSources)
           })
           .catch((error) => {
