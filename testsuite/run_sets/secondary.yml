@@ -35,5 +35,6 @@
 - features/secondary/srv_delete_channel_with_tool.feature
 - features/secondary/min_docker_build_image.feature
 - features/secondary/min_docker_auth_registry.feature
+- features/secondary/min_docker_xmlrpc.feature
 
 ## Secondary features END ##
