@@ -1,4 +1,4 @@
-- configure GPG keys for RHEL8 and ES8
+- configure GPG keys and SSL Certificates for RHEL8 and ES8
 
 -------------------------------------------------------------------
 Tue Nov 05 14:32:48 CET 2019 - jgonzalez@suse.com
