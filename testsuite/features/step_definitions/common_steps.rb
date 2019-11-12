@@ -85,7 +85,7 @@ When(/^I wait until I see the event "([^"]*)" completed during last minute, refr
     current_minute = now.strftime('%H:%M')
     previous_minute = (now - 60).strftime('%H:%M')
     break if find(:xpath, "//a[contains(text(),'#{event}')]/../..//td[4][contains(text(),'#{current_minute}') or contains(text(),'#{previous_minute}')]/../td[3]/a[1]", wait: 1)
-    page.evaluate_script 'window.location.reload()'
+    evaluate_script 'window.location.reload()'
   end
 end
 
@@ -705,7 +705,7 @@ end
 
 Then(/^I should see "([^"]*)" at least (\d+) minutes after I scheduled an action$/) do |text, minutes|
   # TODO is there a better way then page.all ?
-  elements = page.all('div', text: text)
+  elements = all('div', text: text)
   raise "Text #{text} not found in the page" if elements.nil?
   match = elements[0].text.match(/#{text}\s*(\d+\/\d+\/\d+ \d+:\d+:\d+ (AM|PM)+ [^\s]+)/)
   raise "No element found matching text '#{text}'" if match.nil?
@@ -867,7 +867,7 @@ end
 And(/^I wait until radio button "([^"]*)" is checked, refreshing the page$/) do |arg1|
   repeat_until_timeout(message: "Couldn't find checked radio button #{arg1}") do
     break if has_checked_field?(arg1)
-    page.evaluate_script 'window.location.reload()'
+    evaluate_script 'window.location.reload()'
   end
 end
 
@@ -930,7 +930,7 @@ And(/^I remove package "([^"]*)" from highstate$/) do |package|
     next unless tr.text.include?(package)
     puts tr.text
     tr.find("##{package}-pkg-state").select('Removed')
-    next if page.has_css?('#save[disabled]')
+    next if has_css?('#save[disabled]')
     steps %(
       Then I click on "Save"
       And I click on "Apply"
