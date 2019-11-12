@@ -1,3 +1,4 @@
+- require lucene version we use (bsc#1156176)
 - Fix rhn-search to read memory variable from rhnconf (bsc#1154586)
 
 -------------------------------------------------------------------
