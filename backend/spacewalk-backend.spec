@@ -16,6 +16,7 @@
 # Please submit bugfixes or comments via https://bugs.opensuse.org/
 #
 
+
 %{!?_unitdir: %global _unitdir /lib/systemd/system}
 
 %global rhnroot %{_prefix}/share/rhn
@@ -84,9 +85,9 @@ Requires:       %{pythonX}
 Requires(pre):  uyuni-base-common
 BuildRequires:  uyuni-base-common
 %if 0%{?build_py3}
-Requires:       python3-uyuni-common-libs
 Requires:       python3-rhnlib >= 2.5.74
 Requires:       python3-rpm
+Requires:       python3-uyuni-common-libs
 %else
 Requires:       python2-rhnlib >= 2.5.74
 Requires:       python2-uyuni-common-libs
@@ -118,16 +119,16 @@ BuildRequires:  docbook-utils
 BuildRequires:  fdupes
 %if 0%{?fedora} || 0%{?rhel} || 0%{?suse_version} > 1310
 %if 0%{?build_py3}
-BuildRequires:  python3-uyuni-common-libs
 BuildRequires:  python3-gzipstream
 BuildRequires:  python3-rhn-client-tools
 BuildRequires:  python3-rhnlib >= 2.5.74
 BuildRequires:  python3-rpm
+BuildRequires:  python3-uyuni-common-libs
 %else
-BuildRequires:  python2-uyuni-common-libs
 BuildRequires:  python2-gzipstream
 BuildRequires:  python2-rhn-client-tools
 BuildRequires:  python2-rhnlib >= 2.5.74
+BuildRequires:  python2-uyuni-common-libs
 %if 0%{?suse_version} >= 1500
 Requires:       python2-rpm
 %else
@@ -372,17 +373,17 @@ BuildRequires:  systemd
 %endif
 
 %if 0%{?build_py3}
-Requires:       python3-python-dateutil
 Requires:       python3-gzipstream
+Requires:       python3-python-dateutil
 Requires:       python3-rhn-client-tools
 Requires:       python3-solv
 Requires:       python3-urlgrabber
 %else
+Requires:       python-configparser
 Requires:       python-dateutil
+Requires:       python-solv
 Requires:       python2-gzipstream
 Requires:       python2-rhn-client-tools
-Requires:       python-solv
-Requires:       python-configparser
 Requires:       python2-urlgrabber
 %if 0%{?suse_version}
 Requires:       python-pyliblzma
@@ -534,7 +535,6 @@ spacewalk-%{pythonX} $RPM_BUILD_ROOT%{pythonrhnroot}/common \
 
 %endif
 
-
 %pre server
 OLD_SECRET_FILE=%{_var}/www/rhns/server/secret/rhnSecret.py
 if [ -f $OLD_SECRET_FILE ]; then
@@ -551,20 +551,16 @@ if [ ! -e %{rhnconf}/rhn.conf ]; then
 fi
 
 %pre tools
-%service_add_pre spacewalk-diskcheck.service
-%service_add_pre spacewalk-diskcheck.timer
+%service_add_pre spacewalk-diskcheck.service spacewalk-diskcheck.timer
 
 %post tools
-%service_add_post spacewalk-diskcheck.service
-%service_add_post spacewalk-diskcheck.timer
+%service_add_post spacewalk-diskcheck.service spacewalk-diskcheck.timer
 
 %preun tools
-%service_del_preun spacewalk-diskcheck.service
-%service_del_preun spacewalk-diskcheck.timer
+%service_del_preun spacewalk-diskcheck.service spacewalk-diskcheck.timer
 
 %postun tools
-%service_del_postun spacewalk-diskcheck.service
-%service_del_postun spacewalk-diskcheck.timer
+%service_del_postun spacewalk-diskcheck.service spacewalk-diskcheck.timer
 
 # Is secret key in our config file?
 regex="^[[:space:]]*(server\.|)secret_key[[:space:]]*=.*$"
