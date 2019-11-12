@@ -471,7 +471,8 @@ public class VirtualGuestsController {
             try {
                 WebSockifyTokenBuilder tokenBuilder = new WebSockifyTokenBuilder(hostname, port);
                 tokenBuilder.useServerSecret();
-                url = "wss://" + ConfigDefaults.get().getHostname() + ":8050/?token=" + tokenBuilder.getToken();
+                url = "wss://" + ConfigDefaults.get().getHostname() +
+                        "/rhn/websockify/?token=" + tokenBuilder.getToken();
             }
             catch (JoseException e) {
                 LOG.error(e);
