@@ -1,3 +1,4 @@
+- configure GPG keys and SSL Certificates for RHEL8 and ES8
 - Always run Kiwi with empty cache (bsc#1155899)
 - Do not show errors when polling internal metadata API (bsc#1155794)
 - Avoid traceback error due lazy loading which_bin (bsc#1155794)
