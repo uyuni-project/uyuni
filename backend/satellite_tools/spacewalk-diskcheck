@@ -1,0 +1,92 @@
+#!/bin/bash
+
+systemctl status spacewalk.target > /dev/null 2>&1
+if [ $? != 0 ]; then
+    logger  "SPACECHECK: spacewalk services are not running - skipping disk check."
+    exit 0
+fi
+
+EMAIL_ADDRESS=`grep ^[[:blank:]]*traceback_mail /etc/rhn/rhn.conf | sed -e "s/.*=[[:blank:]]*//"`
+SPACECHECKDIRS=`grep ^[[:blank:]]*spacecheck_dirs /etc/rhn/rhn.conf | sed -e "s/.*=[[:blank:]]*//"`
+SPACECHECKALERT=`grep ^[[:blank:]]*spacecheck_free_alert /etc/rhn/rhn.conf | sed -e "s/.*=[[:blank:]]*//"`
+SPACECHECKCRIT=`grep ^[[:blank:]]*spacecheck_free_critical /etc/rhn/rhn.conf | sed -e "s/.*=[[:blank:]]*//"`
+SPACECHECKSHUTDOWN=`grep ^[[:blank:]]*spacecheck_shutdown /etc/rhn/rhn.conf | sed -e "s/.*=[[:blank:]]*//"`
+
+if [ "x$EMAIL_ADDRESS" = "x" ]; then
+    EMAIL_ADDRESS="root@localhost"
+fi
+if [ "x$SPACECHECKDIRS" = "x" ]; then
+    SPACECHECKDIRS="/var/lib/pgsql /var/spacewalk /var/cache /srv"
+fi
+if [ "x$SPACECHECKALERT" = "x" ] || [ "$SPACECHECKALERT" -gt 90 ]; then
+    SPACECHECKALERT=10
+fi
+if [ "x$SPACECHECKCRIT" = "x" ] || [ "$SPACECHECKCRIT" -ge "$SPACECHECKALERT" ]; then
+    SPACECHECKCRIT=$(($SPACECHECKALERT / 2))
+fi
+if [ "x$SPACECHECKSHUTDOWN" = "x" ]; then
+    SPACECHECKSHUTDOWN="true"
+fi
+
+STOPCHECK=0
+
+for DIR in $SPACECHECKDIRS
+do
+    if [ ! -d $DIR ]; then
+        logger "SPACECHECK: Directory $DIR does not exist!"
+        echo "SPACECHECK: Directory $DIR does not exist!" | mail -Ssendwait -s "SPACECHECK: Directory $DIR does not exist!" $EMAIL_ADDRESS
+        continue
+    fi
+    USEDSPACE=`df -PH $DIR | tail -1 | awk '{print $5}' | sed -e"s/\%//"`
+    FREESPACE=$((100 - $USEDSPACE))
+    if [ $FREESPACE -lt $SPACECHECKCRIT ] && [ "$STOPCHECK" = "0" ]; then
+        if [ "$SPACECHECKSHUTDOWN" = "true" ]; then
+            logger "SPACECHECK CRITICAL: Less than $SPACECHECKCRIT% of space available on $DIR - shutting down!"
+            cat << EOF | mail -Ssendwait -s "SPACECHECK CRITICAL: Less than $SPACECHECKCRIT% of space available on $DIR" $EMAIL_ADDRESS
+WARNING!
+Available space on $DIR is less than $SPACECHECKCRIT%.
+Some services have been shut down to avoid running out of disk space.
+EOF
+        else
+            logger "SPACECHECK CRITICAL: Less than $SPACECHECKCRIT% of space available on $DIR - NOT shutting down!"
+            cat << EOF | mail -Ssendwait -s "SPACECHECK CRITICAL: Less than $SPACECHECKCRIT% of space available on $DIR" $EMAIL_ADDRESS
+WARNING!
+Available space on $DIR is less than $SPACECHECKCRIT%.
+Automatic shutdown of services is disabled.
+You must shut down services to avoid running out of disk space.
+EOF
+        fi
+        STOPCHECK=1
+        break
+    elif [ $FREESPACE -lt $SPACECHECKALERT ] && [ "$STOPCHECK" = "0" ]; then
+        logger "SPACECHECK ALERT: Less than $SPACECHECKALERT% of space available on $DIR"
+        cat << EOF | mail -Ssendwait -s "SPACECHECK ALERT: Less than $SPACECHECKALERT% of space available on $DIR" $EMAIL_ADDRESS
+IMPORTANT
+
+If you run out of disk space, SUSE Manager will stop running, and this could lead to a loss of data.
+To avoid this, when the available space on $DIR drops below $SPACECHECKCRIT%, SUSE Manager will shut
+down services automatically.
+
+You can adjust when this happens by editing the values in the /etc/rhn/rhn.conf configuration file.
+Changes will happen immediately, without restarting services.
+
+==========================================================================================================
+# The directories to monitor for available space. Separate multiple directories with a space:
+spacecheck_dirs = $SPACECHECKDIRS
+
+# A warning email is triggered when free space in a monitored directory reaches this level (as a percentage):
+spacecheck_free_alert = $SPACECHECKALERT
+
+# A critical alert is triggered when free space in a monitored directory reaches this level (as a percentage):
+spacecheck_free_critical = $SPACECHECKCRIT
+
+# Allow spacewalk services to be automatically shut down when free space reaches critical level:
+spacecheck_shutdown = $SPACECHECKSHUTDOWN
+==========================================================================================================
+EOF
+    fi
+done
+
+if [ "$STOPCHECK" = "1" ] && [ "$SPACECHECKSHUTDOWN" = "true" ]; then
+    spacewalk-service stop ; systemctl stop postgresql.service
+fi

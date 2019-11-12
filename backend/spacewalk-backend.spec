@@ -75,7 +75,7 @@ Name:           spacewalk-backend
 Summary:        Common programs needed to be installed on the Spacewalk servers/proxies
 License:        GPL-2.0-only
 Group:          Applications/Internet
-Version:        4.0.27
+Version:        4.0.28
 Release:        1%{?dist}
 Url:            https://github.com/uyuni-project/uyuni
 Source0:        https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
@@ -447,6 +447,10 @@ Group:          Applications/Internet
 Requires:       %{name}
 Requires:       %{name}-app = %{version}-%{release}
 Requires:       %{name}-xmlrpc = %{version}-%{release}
+Requires:       systemd
+BuildRequires:  systemd
+%{?systemd_requires}
+
 %if 0%{?build_py3}
 Requires:       python3-python-dateutil
 Requires:       python3-gzipstream
@@ -555,6 +559,7 @@ install -d $RPM_BUILD_ROOT%{pythonrhnroot}
 install -d $RPM_BUILD_ROOT%{pythonrhnroot}/common
 install -d $RPM_BUILD_ROOT%{rhnconf}
 install -d $RPM_BUILD_ROOT/%{_prefix}/lib/susemanager/bin/
+install -d $RPM_BUILD_ROOT/%{_unitdir}
 
 make -f Makefile.backend install PREFIX=$RPM_BUILD_ROOT \
     MANDIR=%{_mandir} APACHECONFDIR=%{apacheconfd} PYTHON_BIN=%{pythonX}
@@ -589,6 +594,9 @@ ln -s satellite-sync.8.gz $RPM_BUILD_ROOT/usr/share/man/man8/mgr-inter-sync.8.gz
 ln -s rhn-satellite-exporter $RPM_BUILD_ROOT/usr/bin/mgr-exporter
 
 install -m 644 rhn-conf/signing.cnf $RPM_BUILD_ROOT%{rhnconf}/signing.conf
+
+install -m 644 satellite_tools/spacewalk-diskcheck.service $RPM_BUILD_ROOT/%{_unitdir}
+install -m 644 satellite_tools/spacewalk-diskcheck.timer $RPM_BUILD_ROOT/%{_unitdir}
 
 %find_lang %{name}-server
 
@@ -676,6 +684,22 @@ sysconf_addword /etc/sysconfig/apache2 APACHE_MODULES wsgi
 if [ ! -e %{rhnconf}/rhn.conf ]; then
     exit 0
 fi
+
+%pre tools
+%service_add_pre spacewalk-diskcheck.service
+%service_add_pre spacewalk-diskcheck.timer
+
+%post tools
+%service_add_post spacewalk-diskcheck.service
+%service_add_post spacewalk-diskcheck.timer
+
+%preun tools
+%service_del_preun spacewalk-diskcheck.service
+%service_del_preun spacewalk-diskcheck.timer
+
+%postun tools
+%service_del_postun spacewalk-diskcheck.service
+%service_del_postun spacewalk-diskcheck.timer
 
 # Is secret key in our config file?
 regex="^[[:space:]]*(server\.|)secret_key[[:space:]]*=.*$"
@@ -1063,6 +1087,7 @@ rm -f %{rhnconf}/rhnSecret.py*
 %attr(755,root,root) %{_bindir}/mgr-sign-metadata
 %attr(755,root,root) %{_bindir}/mgr-sign-metadata-ctl
 %attr(755,root,root) %{_prefix}/lib/susemanager/bin/mgr-update-pkg-extra-tags
+%attr(755,root,root) %{_bindir}/spacewalk-diskcheck
 %{pythonrhnroot}/satellite_tools/contentRemove.py*
 %{pythonrhnroot}/satellite_tools/SequenceServer.py*
 %{pythonrhnroot}/satellite_tools/messages.py*
@@ -1121,6 +1146,8 @@ rm -f %{rhnconf}/rhnSecret.py*
 %{_mandir}/man8/spacewalk-data-fsck.8*
 %{_mandir}/man8/spacewalk-update-signatures.8*
 %{_mandir}/man8/update-packages.8*
+%attr(644, root, root) %{_unitdir}/spacewalk-diskcheck.service
+%attr(644, root, root) %{_unitdir}/spacewalk-diskcheck.timer
 
 %files xml-export-libs
 %defattr(-,root,root)
