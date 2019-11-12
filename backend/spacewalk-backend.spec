@@ -92,8 +92,8 @@ Requires:       python3-%{name}-libs >= %{version}
 Requires:       python3-rhnlib >= 2.5.74
 Requires:       python3-rpm
 %else
-Requires:       python2-rhnlib >= 2.5.74
 Requires:       %{name}-libs >= %{version}
+Requires:       python2-rhnlib >= 2.5.74
 %if 0%{?suse_version} >= 1500
 Requires:       python2-rpm
 %else
@@ -226,11 +226,11 @@ Group:          Applications/Internet
 Requires(pre): %{name}-sql = %{version}-%{release}
 Requires:       %{name}-sql = %{version}-%{release}
 %if 0%{?build_py3}
-Requires:       python3-spacewalk-usix
 Requires:       python3-python-pam
+Requires:       python3-spacewalk-usix
 %else
-Requires:       python2-spacewalk-usix
 Requires:       python-python-pam
+Requires:       python2-spacewalk-usix
 %endif
 Requires:       spacewalk-config
 Obsoletes:      rhns-server < 5.3.0
@@ -258,8 +258,8 @@ Summary:        Handler for /XMLRPC
 Group:          Applications/Internet
 Requires:       %{name}-server = %{version}-%{release}
 %if 0%{?build_py3}
-Requires:       python3-spacewalk-usix
 Requires:       python3-rpm
+Requires:       python3-spacewalk-usix
 %else
 Requires:       python2-spacewalk-usix
 %if 0%{?suse_version} >= 1500
@@ -339,8 +339,8 @@ Summary:        Listener for the Server XML dumper
 Group:          Applications/Internet
 Requires:       %{name}-xml-export-libs = %{version}-%{release}
 %if 0%{?build_py3}
-Requires:       python3-spacewalk-usix
 Requires:       python3-rpm
+Requires:       python3-spacewalk-usix
 %else
 Requires:       python2-spacewalk-usix
 %if 0%{?suse_version} >= 1500
@@ -452,17 +452,17 @@ BuildRequires:  systemd
 %{?systemd_requires}
 
 %if 0%{?build_py3}
-Requires:       python3-python-dateutil
 Requires:       python3-gzipstream
+Requires:       python3-python-dateutil
 Requires:       python3-rhn-client-tools
 Requires:       python3-solv
 Requires:       python3-urlgrabber
 %else
+Requires:       python-configparser
 Requires:       python-dateutil
+Requires:       python-solv
 Requires:       python2-gzipstream
 Requires:       python2-rhn-client-tools
-Requires:       python-solv
-Requires:       python-configparser
 Requires:       python2-urlgrabber
 %if 0%{?suse_version}
 Requires:       python-pyliblzma
@@ -490,11 +490,11 @@ Recommends:     cobbler20
 Requires:       %{m2crypto}
 Requires:       %{pythonX}-requests
 %if 0%{?build_py3}
-Requires:       python3-spacewalk-usix
 Requires:       python3-rhnlib  >= 2.5.57
+Requires:       python3-spacewalk-usix
 %else
-Requires:       python2-spacewalk-usix
 Requires:       python2-rhnlib  >= 2.5.57
+Requires:       python2-spacewalk-usix
 %endif
 %if 0%{?fedora} || 0%{?rhel}
 BuildRequires:  python-requests
@@ -686,20 +686,16 @@ if [ ! -e %{rhnconf}/rhn.conf ]; then
 fi
 
 %pre tools
-%service_add_pre spacewalk-diskcheck.service
-%service_add_pre spacewalk-diskcheck.timer
+%service_add_pre spacewalk-diskcheck.service spacewalk-diskcheck.timer
 
 %post tools
-%service_add_post spacewalk-diskcheck.service
-%service_add_post spacewalk-diskcheck.timer
+%service_add_post spacewalk-diskcheck.service spacewalk-diskcheck.timer
 
 %preun tools
-%service_del_preun spacewalk-diskcheck.service
-%service_del_preun spacewalk-diskcheck.timer
+%service_del_preun spacewalk-diskcheck.service spacewalk-diskcheck.timer
 
 %postun tools
-%service_del_postun spacewalk-diskcheck.service
-%service_del_postun spacewalk-diskcheck.timer
+%service_del_postun spacewalk-diskcheck.service spacewalk-diskcheck.timer
 
 # Is secret key in our config file?
 regex="^[[:space:]]*(server\.|)secret_key[[:space:]]*=.*$"

@@ -15,6 +15,7 @@
 # Please submit bugfixes or comments via https://bugs.opensuse.org/
 #
 
+
 %if 0%{?suse_version} > 1320
 # SLE15 builds on Python 3
 %global build_py3   1
@@ -79,8 +80,8 @@ Requires:       SuSEfirewall2
 Requires:       postfix
 Requires:       yast2-users
 # mgr-setup want to call mksubvolume
-Requires:       snapper
 Requires:       reprepro
+Requires:       snapper
 %define python_sitelib %(%{pythonX} -c "from distutils.sysconfig import get_python_lib; print(get_python_lib())")
 %global pythonsmroot %{python_sitelib}/spacewalk
 
@@ -112,7 +113,6 @@ Requires:       suseRegisterInfo
 Requires:       susemanager-build-keys
 Requires:       susemanager-sync-data
 BuildRequires:  docbook-utils
-
 
 %description tools
 This package contains SUSE Manager tools
@@ -308,4 +308,5 @@ fi
 /srv/www/htdocs/pub/repositories/empty/repodata/*.xml*
 /srv/www/htdocs/pub/repositories/empty-deb/Packages
 /srv/www/htdocs/pub/repositories/empty-deb/Release
+
 %changelog
