@@ -4,7 +4,8 @@ import _find from "lodash/find";
 
 type stateType = {
   key: string,
-    description: string
+  description: string,
+  sign: string
 }
 
 type statesEnumType = {
@@ -14,10 +15,10 @@ type statesEnumType = {
 const defaultState = {};
 
 const statesEnum: statesEnumType = new Proxy({
-    ATTACHED: {key: "ATTACHED", description: "added", deletion: false, edited: true},
-    DETACHED: {key: "DETACHED", description: "deleted", deletion: true, edited: true},
-    EDITED: {key: "EDITED", description: "edited", deletion: false, edited: true},
-    BUILT: {key: "BUILT", description: "built", deletion: false, edited: false},
+    ATTACHED: {key: "ATTACHED", description: "added", deletion: false, edited: true, sign: "+"},
+    DETACHED: {key: "DETACHED", description: "deleted", deletion: true, edited: true, sign: "-"},
+    EDITED: {key: "EDITED", description: "edited", deletion: false, edited: true, sign: " "},
+    BUILT: {key: "BUILT", description: "built", deletion: false, edited: false, sign: " "},
   },
   objectDefaultValueHandler(defaultState)
 );

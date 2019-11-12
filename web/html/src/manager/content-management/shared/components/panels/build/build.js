@@ -49,7 +49,7 @@ const Build = ({projectId, onBuild, currentHistoryEntry = {}, changesToBuild, di
         <ModalButton
           id={`build-contentmngt-modal-link`}
           className={ disabled ? `btn-secondary` : `btn-success` }
-          text={changesToBuild.length > 0 ? `Build (${changesToBuild.length})` : `Build`}
+          text={changesToBuild.length > 0 ? t('Build ({0})', changesToBuild.length) : t('Build')}
           disabled={disabled}
           target={modalNameId}
           onClick={() => {
@@ -89,19 +89,9 @@ const Build = ({projectId, onBuild, currentHistoryEntry = {}, changesToBuild, di
                         divClass="col-md-9"/>
                     </div>
                     <dl className="row">
-                      <dt className="col-md-3 control-label">Version {buildVersionForm.version} history:</dt>
+                      <dt className="col-md-3 control-label">{t('Version {0} history', buildVersionForm.version)}:</dt>
                       <dd className="col-md-9">
-                        <ul className="list-unstyled">
-                          {
-                            changesToBuild.map((change, index) => {
-                              return (
-                                <li key={index}>
-                                  {change}
-                                </li>
-                              )
-                            })
-                          }
-                        </ul>
+                        <pre>{changesToBuild}</pre>
                       </dd>
                     </dl>
                   </Form>
@@ -123,11 +113,11 @@ const Build = ({projectId, onBuild, currentHistoryEntry = {}, changesToBuild, di
                         handler={() => {
                           onAction({
                             projectLabel: projectId,
-                            message: buildVersionForm.message,
+                            message: buildVersionForm.message.concat('\n\n').concat(changesToBuild.join('')),
                           }, "action", projectId)
                             .then((projectWithUpdatedSources) => {
                               closeDialog(modalNameId);
-                              showSuccessToastr(`Version ${buildVersionForm.version} successfully built into ${projectWithUpdatedSources.environments[0].name}`)
+                              showSuccessToastr(t('Version {0} succesfully built into {1}', buildVersionForm.version, projectWithUpdatedSources.environments[0].name))
                               onBuild(projectWithUpdatedSources)
                             })
                             .catch((error) => {
