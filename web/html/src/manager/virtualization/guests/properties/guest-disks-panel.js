@@ -15,6 +15,7 @@ function getFileSourceFields(model: Object, index: number, pools: Array<Object>,
     if (model[`disk${index}_device`] === 'cdrom') {
       return [];
     }
+    const first_pool = pools.length > 0 ? pools[0].name : '';
     return [
       <Select
         key={`disk${index}_source_pool`}
@@ -24,7 +25,7 @@ function getFileSourceFields(model: Object, index: number, pools: Array<Object>,
         divClass="col-md-6"
         disabled={!onlyHandledDisks}
         required
-        defaultValue={pools.find(pool => pool.name === 'default') ? 'default' : pools[0].name}
+        defaultValue={pools.find(pool => pool.name === 'default') ? 'default' : first_pool}
       >
         {
           pools.map(k => <option key={k.name} value={k.name}>{k.name}</option>)
@@ -84,13 +85,14 @@ function addDisk(model: Object, changeModel: Function, domainCaps: Object, pools
   const allDisks = GuestPropertiesUtils.getOrderedDevicesFromModel(model, 'disk');
   const index = Number.parseInt(allDisks[allDisks.length - 1].substring('disk'.length), 10) + 1;
   const preferredBusses = ['virtio', 'xen'].filter(type => busTypes.includes(type));
+  const first_pool = pools.length > 0 ? pools[0].name : '';
 
   changeModel(Object.assign(model, {
     [`disk${index}_editable`]: true,
     [`disk${index}_type`]: 'file',
     [`disk${index}_device`]: 'disk',
     [`disk${index}_bus`]: preferredBusses.length > 0 ? preferredBusses[0] : busTypes[0],
-    [`disk${index}_source_pool`]: pools.find(item => item.name === 'default') ? 'default' : pools[0].name,
+    [`disk${index}_source_pool`]: pools.find(item => item.name === 'default') ? 'default' : first_pool,
     [`disk${index}_source_template`]: undefined,
     [`disk${index}_source_size`]: 10,
   }));

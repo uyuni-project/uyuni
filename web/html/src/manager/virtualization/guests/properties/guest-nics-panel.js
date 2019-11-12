@@ -12,10 +12,11 @@ const GuestPropertiesUtils = require('./guest-properties-utils');
 function addNic(model: Object, changeModel: Function, networks: Array<Object>) {
   const allNics = GuestPropertiesUtils.getOrderedDevicesFromModel(model, 'network');
   const index = Number.parseInt(allNics[allNics.length - 1].substring('network'.length), 10) + 1;
+  const first_nic = networks.length > 0 ? networks[0].name : '';
 
   changeModel(Object.assign(model, {
     [`network${index}_type`]: 'network',
-    [`network${index}_source`]: networks.find(item => item.name === 'default') ? 'default' : networks[0].name,
+    [`network${index}_source`]: networks.find(item => item.name === 'default') ? 'default' : first_nic,
     [`network${index}_mac`]: '',
   }));
 }
@@ -28,6 +29,7 @@ function guestNicFields(model: Object, index: number, networks: Array<Object>,
       return Object.assign(res, property);
     }, {}));
   };
+  const first_nic = networks.length > 0 ? networks[0].name : '';
 
   return (
     <Panel
@@ -60,7 +62,7 @@ function guestNicFields(model: Object, index: number, networks: Array<Object>,
             key={`network${index}_source`}
             disabled={!onlyHandledNics}
             required
-            defaultValue={networks.find(net => net.name === 'default') ? 'default' : networks[0].name}
+            defaultValue={networks.find(net => net.name === 'default') ? 'default' : first_nic}
           >
             {
               networks.map(k => <option key={k.name} value={k.name}>{k.name}</option>)
