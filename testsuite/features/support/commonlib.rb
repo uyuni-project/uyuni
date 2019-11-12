@@ -104,27 +104,27 @@ def format_detail(message, last_result, report_result)
 end
 
 def click_button_and_wait(locator = nil, **options)
-  page.click_button(locator, options)
+  click_button(locator, options)
   begin
-    raise 'Timeout: Waiting AJAX transition (click link)' unless page.has_no_css?('.senna-loading', wait: 1)
+    raise 'Timeout: Waiting AJAX transition (click link)' unless has_no_css?('.senna-loading', wait: 1)
   rescue StandardError => e
     puts e.message # Skip errors related to .senna-loading element
   end
 end
 
 def click_link_and_wait(locator = nil, **options)
-  page.click_link(locator, options)
+  click_link(locator, options)
   begin
-    raise 'Timeout: Waiting AJAX transition (click link)' unless page.has_no_css?('.senna-loading', wait: 1)
+    raise 'Timeout: Waiting AJAX transition (click link)' unless has_no_css?('.senna-loading', wait: 1)
   rescue StandardError => e
     puts e.message # Skip errors related to .senna-loading element
   end
 end
 
 def click_link_or_button_and_wait(locator = nil, **options)
-  page.click_link_or_button(locator, options)
+  click_link_or_button(locator, options)
   begin
-    raise 'Timeout: Waiting AJAX transition (click link)' unless page.has_no_css?('.senna-loading', wait: 1)
+    raise 'Timeout: Waiting AJAX transition (click link)' unless has_no_css?('.senna-loading', wait: 1)
   rescue StandardError => e
     puts e.message # Skip errors related to .senna-loading element
   end
@@ -135,7 +135,7 @@ module CapybaraNodeElementExtension
   def click
     super
     begin
-      raise 'Timeout: Waiting AJAX transition (click link)' unless page.has_no_css?('.senna-loading', wait: 1)
+      raise 'Timeout: Waiting AJAX transition (click link)' unless has_no_css?('.senna-loading', wait: 1)
     rescue StandardError => e
       puts e.message # Skip errors related to .senna-loading element
     end
@@ -143,6 +143,6 @@ module CapybaraNodeElementExtension
 end
 
 def find_and_wait_click(*args, **options, &optional_filter_block)
-  element = page.find(*args, options, &optional_filter_block)
+  element = find(*args, options, &optional_filter_block)
   element.extend(CapybaraNodeElementExtension)
 end
