@@ -156,6 +156,18 @@ When(/^I wait until file "([^"]*)" contains "([^"]*)" on server$/) do |file, con
   end
 end
 
+Then(/^file "([^"]*)" should contain "([^"]*)" on server$/) do |file, content|
+  output = sshcmd("grep -F '#{content}' #{file}", ignore_err: true)
+  raise "'#{content}' not found in file #{file}" if output[:stdout] !~ /#{content}/
+  "\n-----\n#{output[:stderr]}\n-----\n"
+end
+
+Then(/^file "([^"]*)" should not contain "([^"]*)" on server$/) do |file, content|
+  output = sshcmd("grep -F '#{content}' #{file} || echo 'notfound'", ignore_err: true)
+  raise "'#{content}' found in file #{file}" if output[:stdout] != "notfound\n"
+  "\n-----\n#{output[:stderr]}\n-----\n"
+end
+
 When(/^I check the tomcat logs for errors$/) do
   output = $server.run('cat /var/log/tomcat/*')
   msgs = %w[ERROR NullPointer]

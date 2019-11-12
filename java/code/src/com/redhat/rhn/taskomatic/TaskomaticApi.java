@@ -651,4 +651,13 @@ public class TaskomaticApi {
             invoke("tasko.unscheduleSatBunches", jobLabels);
         }
     }
+
+    /**
+     * Check if the Taskomatic java process has JMX enabled.
+     * @return true is JMX enabled
+     * @throws TaskomaticApiException if there was an error
+     */
+    public boolean isJmxEnabled() throws TaskomaticApiException {
+        return (Boolean)invoke("tasko.isJmxEnabled");
+    }
 }

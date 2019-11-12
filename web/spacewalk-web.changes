@@ -1,3 +1,4 @@
+- Add self monitoring to Admin Monitoring UI (bsc#1143638)
 - Fix create VM dialog when there is no virtual storage pool or network
 - show channels and filters in CLM history
 - SPA: do not early drop modals they can contain inputs (bsc#1155800)

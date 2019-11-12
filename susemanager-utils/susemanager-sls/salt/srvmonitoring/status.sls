@@ -18,3 +18,18 @@ postgres_exporter_service:
     - name: service.status
     - m_name: "prometheus-postgres_exporter.service"
 
+jmx_tomcat_java_config:
+  module.run:
+    - name: file.search
+    - path: /etc/sysconfig/tomcat
+    - pattern: "-Dcom\\.sun\\.management\\.jmxremote\\.port=3333 -Dcom\\.sun\\.management\\.jmxremote\\.ssl=false -Dcom\\.sun\\.management\\.jmxremote\\.authenticate=false -Djava\\.rmi\\.server\\.hostname="
+
+jmx_taskomatic_java_config:
+  module.run:
+    - name: file.search
+    - path: /etc/rhn/taskomatic.conf
+    - pattern: "-Dcom\\.sun\\.management\\.jmxremote\\.port=3334 -Dcom\\.sun\\.management\\.jmxremote\\.ssl=false -Dcom\\.sun\\.management\\.jmxremote\\.authenticate=false -Djava\\.rmi\\.server\\.hostname="
+
+mgr_is_prometheus_self_monitoring_enabled:
+  cmd.run:
+    - name: grep -q 'prometheus_monitoring_enabled\s*=\s*1\s*$' /etc/rhn/rhn.conf

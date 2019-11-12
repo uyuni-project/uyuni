@@ -23,8 +23,11 @@ import com.google.gson.reflect.TypeToken;
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.product.Tuple2;
+import com.redhat.rhn.taskomatic.TaskomaticApi;
+import com.redhat.rhn.taskomatic.TaskomaticApiException;
 import com.suse.salt.netapi.results.ModuleRun;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
 import java.io.BufferedReader;
@@ -36,6 +39,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 import java.util.function.BiFunction;
+import java.util.function.Supplier;
 
 /**
  * Service to manage server monitoring.
@@ -60,6 +64,43 @@ public class MonitoringService {
          */
         public T getLocal() {
             return local;
+        }
+    }
+
+    /**
+     * Status of monitoring services.
+     */
+    public static class MonitoringStatus {
+
+        private Map<String, Boolean> exporters = new HashMap<>();
+        private Map<String, String> messages = new HashMap<>();
+
+        /**
+         * @return exporters to get
+         */
+        public Map<String, Boolean> getExporters() {
+            return exporters;
+        }
+
+        /**
+         * @param exportersIn to set
+         */
+        public void setExporters(Map<String, Boolean> exportersIn) {
+            this.exporters = exportersIn;
+        }
+
+        /**
+         * @return config to get
+         */
+        public Map<String, String> getMessages() {
+            return messages;
+        }
+
+        /**
+         * @param messagesIn to set
+         */
+        public void setMessages(Map<String, String> messagesIn) {
+            this.messages = messagesIn;
         }
     }
 
@@ -90,8 +131,54 @@ public class MonitoringService {
         }
     };
 
+    private static Supplier<Boolean> tomcatJmxStatusSupplier = () ->
+            StringUtils.isNotEmpty(System.getProperty("com.sun.management.jmxremote.port")) &&
+                StringUtils.isNotEmpty(System.getProperty("java.rmi.server.hostname"));
+
+    private static Supplier<Boolean> taskomaticJmxStatusSupplier = () -> {
+        TaskomaticApi taskomatic = new TaskomaticApi();
+        try {
+            return taskomatic.isJmxEnabled();
+        }
+        catch (TaskomaticApiException e) {
+            LOG.error("Error getting Taskomatic JMX status", e);
+            throw new RuntimeException(e.getMessage(), e);
+        }
+    };
+
+    private static Supplier<Boolean> selfMonitoringStatusSupplier =
+            () -> ConfigDefaults.get().isPrometheusMonitoringEnabled();
+
+    /**
+     * Used only for unit tests
+     * @param execCtlIn to set
+     */
     public static void setExecCtlFunction(BiFunction<String, Optional<String>, Optional<InputStream>> execCtlIn) {
         MonitoringService.execCtl = execCtlIn;
+    }
+
+    /**
+     * Used only for unit tests
+     * @param tomcatJmxEnabledIn to set
+     */
+    public static void setTomcatJmxStatusSupplier(Supplier<Boolean> tomcatJmxEnabledIn) {
+        MonitoringService.tomcatJmxStatusSupplier = tomcatJmxEnabledIn;
+    }
+
+    /**
+     * Used only for unit tests
+     * @param taskomaticJmxEnabledIn to set
+     */
+    public static void setTaskomaticJmxStatusSupplier(Supplier<Boolean> taskomaticJmxEnabledIn) {
+        MonitoringService.taskomaticJmxStatusSupplier = taskomaticJmxEnabledIn;
+    }
+
+    /**
+     * Used only for unit tests
+     * @param selfMonitoringStatusSupplierIn to set
+     */
+    public static void setSelfMonitoringStatusSupplier(Supplier<Boolean> selfMonitoringStatusSupplierIn) {
+        MonitoringService.selfMonitoringStatusSupplier = selfMonitoringStatusSupplierIn;
     }
 
     /**
@@ -101,7 +188,7 @@ public class MonitoringService {
      */
     public static boolean isMonitoringEnabled() {
         return getStatus()
-                .map(status -> status.values().contains(true))
+                .map(status -> status.getExporters().values().contains(true))
                 .orElse(false);
     }
 
@@ -109,8 +196,8 @@ public class MonitoringService {
      * Get the status of Prometheus exporters.
      * @return a {@link Map} with the status of each Prometheus exporter
      */
-    public static Optional<Map<String, Boolean>> getStatus() {
-        return invokeMonitoringCtl("status", Optional.empty(),
+    public static Optional<MonitoringStatus> getStatus() {
+        Optional<Map<String, Boolean>> res = invokeMonitoringCtl("status", Optional.empty(),
                 new Tuple2<>("node",
                         "module_|-node_exporter_service_|-service.status_|-run"),
                 new Tuple2<>("postgres",
@@ -118,8 +205,77 @@ public class MonitoringService {
                 new Tuple2<>("tomcat",
                         "module_|-jmx_tomcat_exporter_service_|-service.status_|-run"),
                 new Tuple2<>("taskomatic",
-                        "module_|-jmx_taskomatic_exporter_service_|-service.status_|-run")
+                        "module_|-jmx_taskomatic_exporter_service_|-service.status_|-run"),
+                new Tuple2<>("tomcat:config",
+                        "module_|-jmx_tomcat_java_config_|-file.search_|-run"),
+                new Tuple2<>("taskomatic:config",
+                        "module_|-jmx_taskomatic_java_config_|-file.search_|-run"),
+                new Tuple2<>("self_monitoring",
+                        "cmd_|-mgr_is_prometheus_self_monitoring_enabled_|-grep*")
                 );
+        return res.map(map -> {
+            MonitoringStatus status = new MonitoringStatus();
+            status.getExporters().put("node", map.get("node"));
+            status.getExporters().put("postgres", map.get("postgres"));
+            status.getExporters().put("tomcat", map.get("tomcat"));
+            status.getExporters().put("taskomatic", map.get("taskomatic"));
+            status.getExporters().put("self_monitoring", map.get("self_monitoring"));
+
+            getTomcatMessage(map.get("tomcat"), map.get("tomcat:config"))
+                    .ifPresent(msg -> status.getMessages().put("tomcat", msg));
+            getTaskomaticMessage(map.get("taskomatic"), map.get("taskomatic:config"))
+                    .ifPresent(msg -> status.getMessages().put("taskomatic", msg));
+            getSelfMonitoringMessage(map.get("self_monitoring"))
+                    .ifPresent(msg -> status.getMessages().put("self_monitoring", msg));
+
+            return status;
+        });
+    }
+
+    private static Optional<String> getSelfMonitoringMessage(boolean selfMonitoringConfigEnabled) {
+        if (selfMonitoringConfigEnabled != getSelfMonitoringStatus())  {
+            return Optional.of("restart");
+        }
+        return Optional.empty();
+    }
+
+    private static Optional<String> getTomcatMessage(boolean exporterUp, boolean configPresent) {
+        return computeMessage(exporterUp, configPresent, getTomcatRuntimeJmxStatus());
+    }
+
+    private static Optional<String> getTaskomaticMessage(boolean exporterUp, boolean configPresent) {
+        return computeMessage(exporterUp, configPresent, getTaskomaticRuntimeJmxStatus());
+    }
+
+    private static Optional<String> computeMessage(boolean exporterUp, boolean configPresent,
+                                                   boolean runtimeJmxEnabled) {
+        if (exporterUp && configPresent && !runtimeJmxEnabled) {
+            return Optional.of("restart");
+        }
+        else if (exporterUp && !configPresent) {
+            // enable again to add missing config. Runtime JMX status doesn't matter in this case
+            return Optional.of("enable");
+        }
+        else if (!exporterUp && !configPresent && runtimeJmxEnabled) {
+            return Optional.of("restart");
+        }
+        else if (!exporterUp && configPresent) {
+            // disable again to remove config. Runtime JMX status doesn't matter in this case
+            return Optional.of("disable");
+        }
+        return Optional.empty();
+    }
+
+    private static boolean getTaskomaticRuntimeJmxStatus() {
+        return taskomaticJmxStatusSupplier.get();
+    }
+
+    private static boolean getTomcatRuntimeJmxStatus() {
+        return tomcatJmxStatusSupplier.get();
+    }
+
+    private static boolean getSelfMonitoringStatus() {
+        return selfMonitoringStatusSupplier.get();
     }
 
     /**
@@ -127,15 +283,21 @@ public class MonitoringService {
      * @return a {@link Map} with the status of each exporter (true - running, false - stopped)
      * or an empty optional in case of error
      */
-    public static Optional<Map<String, Boolean>> enableMonitoring() {
+    public static Optional<MonitoringStatus> enableMonitoring() {
         String dbUser = Config.get().getString(ConfigDefaults.DB_USER);
         String dbPass = Config.get().getString(ConfigDefaults.DB_PASSWORD);
+        String dbHost = Config.get().getString(ConfigDefaults.DB_HOST);
+        String dbPort = Config.get().getString(ConfigDefaults.DB_PORT);
+        String dbName = Config.get().getString(ConfigDefaults.DB_NAME);
         Map<String, String> pillar = new HashMap<>();
         pillar.put("db_user", dbUser);
         pillar.put("db_pass", dbPass);
+        pillar.put("db_host", dbHost);
+        pillar.put("db_port", dbPort);
+        pillar.put("db_name", dbName);
         String pillarJson = GSON.toJson(pillar);
         // started successfully (true) -> service state (true - running)
-        return invokeMonitoringCtl("enable", Optional.of(pillarJson),
+        Optional<Map<String, Boolean>> res =  invokeMonitoringCtl("enable", Optional.of(pillarJson),
                 new Tuple2<>("node",
                         "service_|-node_exporter_service_|-prometheus-node_exporter_|-running"),
                 new Tuple2<>("postgres",
@@ -143,8 +305,32 @@ public class MonitoringService {
                 new Tuple2<>("tomcat",
                         "service_|-jmx_exporter_tomcat_service_|-prometheus-jmx_exporter@tomcat_|-running"),
                 new Tuple2<>("taskomatic",
-                        "service_|-jmx_exporter_taskomatic_service_|-prometheus-jmx_exporter@taskomatic_|-running")
+                        "service_|-jmx_exporter_taskomatic_service_|-prometheus-jmx_exporter@taskomatic_|-running"),
+                new Tuple2<>("tomcat:config",
+                        "cmd_|-jmx_tomcat_config_|-sed*"),
+                new Tuple2<>("taskomatic:config",
+                        "cmd_|-jmx_taskomatic_config_|-sed*"),
+                new Tuple2<>("self_monitoring",
+                        "cmd_|-mgr_is_prometheus_self_monitoring_enabled_|-grep*")
         );
+
+        return res.map(map -> {
+            MonitoringStatus status = new MonitoringStatus();
+            status.getExporters().put("node", map.get("node"));
+            status.getExporters().put("postgres", map.get("postgres"));
+            status.getExporters().put("tomcat", map.get("tomcat"));
+            status.getExporters().put("taskomatic", map.get("taskomatic"));
+            status.getExporters().put("self_monitoring", map.get("self_monitoring"));
+
+            getTomcatMessage(map.get("tomcat"), map.get("tomcat:config"))
+                    .ifPresent(msg -> status.getMessages().put("tomcat", msg));
+            getTaskomaticMessage(map.get("taskomatic"), map.get("taskomatic:config"))
+                    .ifPresent(msg -> status.getMessages().put("taskomatic", msg));
+            getSelfMonitoringMessage(map.get("self_monitoring"))
+                    .ifPresent(msg -> status.getMessages().put("self_monitoring", msg));
+
+            return status;
+        });
     }
 
     /**
@@ -152,7 +338,7 @@ public class MonitoringService {
      * @return a {@link Map} with the status of each exporter (true - running, false - stopped)
      * or an empty optional in case of error
      */
-    public static Optional<Map<String, Boolean>> disableMonitoring() {
+    public static Optional<MonitoringStatus> disableMonitoring() {
         return invokeMonitoringCtl("disable", Optional.empty(),
                 new Tuple2<>("node",
                         "service_|-node_exporter_service_|-prometheus-node_exporter_|-dead"),
@@ -161,11 +347,30 @@ public class MonitoringService {
                 new Tuple2<>("tomcat",
                         "service_|-jmx_exporter_tomcat_service_|-prometheus-jmx_exporter@tomcat_|-dead"),
                 new Tuple2<>("taskomatic",
-                        "service_|-jmx_exporter_taskomatic_service_|-prometheus-jmx_exporter@taskomatic_|-dead")
+                        "service_|-jmx_exporter_taskomatic_service_|-prometheus-jmx_exporter@taskomatic_|-dead"),
+                new Tuple2<>("tomcat:config",
+                        "cmd_|-jmx_tomcat_config_|-grep*"),
+                new Tuple2<>("taskomatic:config",
+                        "cmd_|-jmx_taskomatic_config_|-grep*"),
+                new Tuple2<>("self_monitoring",
+                        "cmd_|-mgr_is_prometheus_self_monitoring_disabled_|-grep*")
                 ).map(map -> {
                     // disabled successfully (true) -> service state (false - not running)
-                    map.forEach((k, v) -> map.put(k, !v));
-                    return map;
+                    MonitoringStatus status = new MonitoringStatus();
+                    status.getExporters().put("node", !map.get("node"));
+                    status.getExporters().put("postgres", !map.get("postgres"));
+                    status.getExporters().put("tomcat", !map.get("tomcat"));
+                    status.getExporters().put("taskomatic", !map.get("taskomatic"));
+                    status.getExporters().put("self_monitoring", !map.get("self_monitoring"));
+
+                    getTomcatMessage(!map.get("tomcat"), !map.get("tomcat:config"))
+                            .ifPresent(msg -> status.getMessages().put("tomcat", msg));
+                    getTaskomaticMessage(!map.get("taskomatic"), !map.get("taskomatic:config"))
+                            .ifPresent(msg -> status.getMessages().put("taskomatic", msg));
+                    getSelfMonitoringMessage(!map.get("self_monitoring"))
+                            .ifPresent(msg -> status.getMessages().put("self_monitoring", msg));
+
+                    return status;
                 });
     }
 
@@ -206,8 +411,16 @@ public class MonitoringService {
     }
 
     private static boolean isResultTrue(Map<String, ModuleRun<JsonElement>> result, String key) {
+        if (key.endsWith("*")) {
+            return result.entrySet().stream()
+                    .filter(e -> e.getKey().startsWith(key.substring(0, key.length() - 1)))
+                    .map(e -> e.getValue().isResult())
+                    .findFirst()
+                    .orElseThrow(() -> new RuntimeException(key + " not found in salt result"));
+        }
         return Optional.ofNullable(result.get(key))
-                .map(r -> r.isResult()).orElse(false);
+                .map(r -> r.isResult())
+                .orElseThrow(() -> new RuntimeException(key + " not found in salt result"));
     }
 
 }
