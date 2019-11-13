@@ -17,7 +17,7 @@ class RPCClient:
     """
     RPC Client
     """
-    def __init__(self, url: str, user: str, password: Optional[str]):
+    def __init__(self, url: str, user: str, password: str):
         """
         XML-RPC client interface.
 
@@ -31,7 +31,7 @@ class RPCClient:
 
         self.conn = xmlrpc.client.ServerProxy(url, context=ctx)
         self._user: str = user
-        self._password: Optional[str] = password
+        self._password: str = password
         self.token: Optional[str] = None
 
     def get_token(self, refresh=False):
