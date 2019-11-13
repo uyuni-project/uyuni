@@ -38,12 +38,12 @@ ExcludeArch:    aarch64
 
 BuildRequires:  apache-mybatis
 BuildRequires:  hadoop
-BuildRequires:  lucene
+BuildRequires:  lucene == 2.4.1
 BuildRequires:  nutch-core
 BuildRequires:  picocontainer
 Requires:       apache-mybatis
 Requires:       hadoop
-Requires:       lucene
+Requires:       lucene == 2.4.1
 Requires:       nutch-core
 Requires:       picocontainer
 
