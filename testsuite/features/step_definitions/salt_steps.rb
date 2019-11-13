@@ -464,7 +464,7 @@ When(/^I press "Add Item" in (.*) section$/) do |section|
                  'third A'           => 'bind#available_zones#2#records#A#add_item',
                  'third NS'          => 'bind#available_zones#2#records#NS#@#add_item',
                  'partitions'        => 'partitioning#0#partitions#add_item' }
-  find(:xpath, "//button[@id='#{sectionids[section]}']").click
+  find(:xpath, "//i[@id='#{sectionids[section]}']").click
 end
 
 When(/^I press "Remove Item" in (.*) section$/) do |section|
