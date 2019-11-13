@@ -111,13 +111,15 @@ class UyuniUsers:
     def manage(self, name: str, password: str, email: str, first_name: str = "", last_name: str = "",
                org: str = "", roles: Optional[List[str]] = None) -> Dict[str, Any]:
         """
-        Manage user with the data. If anything is updated,
+        Manage user with the data. If anything of the initial data is updated, is going to be added.
 
-        :param name: UID for the user
+        :param name: UID of the user
         :param password: Password for the user
         :param email: Email of the user
         :param first_name: First name (optional)
         :param last_name: Second name (options)
+        :param org: Organisation
+        :param roles: list of roles
 
         :return:
         """
