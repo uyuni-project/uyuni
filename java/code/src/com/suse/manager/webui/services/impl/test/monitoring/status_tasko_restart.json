@@ -68,10 +68,10 @@
         "module_|-jmx_taskomatic_java_config_|-file.search_|-run": {
             "name": "file.search",
             "changes": {
-                "ret": false
+                "ret": true
             },
             "comment": "Module function file.search executed",
-            "result": false,
+            "result": true,
             "__sls__": "srvmonitoring.status",
             "__run_num__": 5,
             "start_time": "12:49:53.927770",
@@ -94,6 +94,5 @@
             "duration": 13.586,
             "__id__": "mgr_is_prometheus_self_monitoring_enabled"
         }
-
     }
 }

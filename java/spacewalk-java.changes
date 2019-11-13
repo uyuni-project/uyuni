@@ -1,3 +1,4 @@
+- Add self monitoring to Admin Monitoring UI (bsc#1143638)
 - Add formula metadata to form data response
 - Use apache proxy of websockify (bsc#1155455)
 - Create a single action when adding erratas to an action chain via the API (bsc#1148457)
