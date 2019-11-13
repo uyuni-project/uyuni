@@ -123,7 +123,7 @@ def clean_wrong():
 
     del_keyass_query = rhnSQL.prepare(_delete_key_association_query)
     del_key_query = rhnSQL.prepare(_delete_key_query)
-    if verbose: print "Processing %s possible wrong keyids" % len(keyids)
+    if verbose: print ("Processing %s possible wrong keyids" % len(keyids))
     i = 0
     for K in keyids:
         del_keyass_query.execute(id=K['key_id'])
@@ -148,7 +148,7 @@ def process_package_data():
         # Nothing to change
         return
     if verbose:
-        print "Processing %s packages" % len(pkgs)
+        print ("Processing %s packages" % len(pkgs))
     pb = ProgressBar(prompt='standby: ', endTag=' - Complete!',
                      finalSize=len(pkgs), finalBarLength=40, stream=sys.stdout)
     pb.printAll(1)
@@ -194,7 +194,7 @@ def process_package_data():
     rhnSQL.commit()
     sys.stderr.write("Transaction Committed! \n")
     if verbose:
-        print " Skipping %s packages, paths not found" % len(skip_list)
+        print (" Skipping %s packages, paths not found" % len(skip_list))
     return
 
 
