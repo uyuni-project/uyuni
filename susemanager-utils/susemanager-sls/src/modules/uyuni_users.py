@@ -77,7 +77,15 @@ class UyuniUsers:
     def __init__(self, client: RPCClient):
         self.client = client
 
-    def create_user(self, uid, password, email, first_name="", last_name=""):
+    def _get_user(self, name: str) -> Dict[str, Any]:
+        """
+        Get existing user data from the Uyuni.
+
+        :return:
+        """
+        return self.client("user.getDetails", self.client.get_token(), name)
+
+    def create(self, uid: str, password: str, email: str, first_name: str = "", last_name: str = "") -> bool:
         """
         Create user in Uyuni.
 
@@ -113,27 +121,36 @@ class UyuniUsers:
 
         :return:
         """
+        result: Optional[bool] = None
         ret = {
             'name': name,
             'changes': {},
-            'result': None,
-            'comment': ""
+            'result': result,
+            'comment': "",
         }
 
         existing_user = None
-        for user in self.client("user.listUsers", self.client.get_token()):
-            if user.get("login") == name:
-                existing_user = user
-                break
-
-        if existing_user is None:
-            ret["changes"] = {"uid": name, "password": password, "email": email,
-                              "first_name": first_name, "last_name": last_name}
-            ret["comment"] = "Added new user {}".format(name)
-            self.create_user(**ret["changes"])
-            ret["changes"]["password"] = "(hidden)"
+        try:
+            for user in self.client("user.listUsers", self.client.get_token()):
+                if user.get("login") == name:
+                    existing_user = self._get_user(name)
+                    break
+        except UyuniUsersException as exc:
+            ret["comment"] = "Error manage user '{}': {}".format(name, exc)
+            ret["result"] = False
+            log.error(ret["comment"])
         else:
-            ret["comment"] = "No changes has been done"
+            if existing_user is None:
+                changes = {"uid": name, "password": password, "email": email,
+                           "first_name": first_name, "last_name": last_name}
+                self.create(**changes)
+                changes["password"] = "(hidden)"
+
+                ret["changes"] = changes
+                ret["comment"] = "Added new user {}".format(name)
+                ret["result"] = True
+            else:
+                ret["comment"] = "No changes has been done"
 
         return ret
 
