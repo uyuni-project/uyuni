@@ -170,7 +170,7 @@ def __virtual__():
     if __rpc is None and "xmlrpc" in __pillar__.get("uyuni", {}):
         rpc_conf = __pillar__["uyuni"]["xmlrpc"] or {}
         __rpc = RPCClient(rpc_conf.get("url", "https://localhost/rpc/api"),
-                          rpc_conf.get("user", ""), rpc_conf.get("password"))
+                          rpc_conf.get("user", ""), rpc_conf.get("password", ""))
 
     return __virtualname__ if __rpc is not None else False
 
