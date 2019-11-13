@@ -2,7 +2,7 @@
 """
 Uyuni users state module
 """
-from typing import Any, Dict, Optional
+from typing import Any, Dict, List, Optional
 import ssl
 import xmlrpc.client  # type: ignore
 import logging
@@ -11,6 +11,12 @@ import logging
 log = logging.getLogger(__name__)
 __pillar__: Dict[str, Any] = {}
 __virtualname__: str = "uyuni"
+
+
+class UyuniUsersException(Exception):
+    """
+    Uyuni users Exception
+    """
 
 
 class RPCClient:
@@ -34,31 +40,34 @@ class RPCClient:
         self._password: str = password
         self.token: Optional[str] = None
 
-    def get_token(self, refresh=False):
+    def get_token(self, refresh: bool = False) -> Optional[str]:
         """
         Authenticate.
 
         :return:
         """
         if self.token is None or refresh:
-            self.token = self.conn.auth.login(self._user, self._password)
+            try:
+                self.token = self.conn.auth.login(self._user, self._password)
+            except Exception as exc:
+                log.error("Unable to login to the Uyuni server: %s", exc)
 
         return self.token
 
     def __call__(self, method, *args, **kwargs):
         self.get_token()
-        try:
-            return getattr(self.conn, method)(*args, **kwargs)
-        except Exception as exc:
-            err = [str(exc)]
-            log.debug("Fall back to the second try due to %s", exc)
-            self.get_token(refresh=True)
+        if self.token is not None:
             try:
-                getattr(self.conn, method, *args, **kwargs)
+                return getattr(self.conn, method)(*args, **kwargs)
             except Exception as exc:
-                log.error("Unable to call RPC function: %s", exc)
-                err.append(exc)
-        return err
+                log.debug("Fall back to the second try due to %s", exc)
+                self.get_token(refresh=True)
+                try:
+                    return getattr(self.conn, method)(*args, **kwargs)
+                except Exception as exc:
+                    log.error("Unable to call RPC function: %s", exc)
+                    raise UyuniUsersException(exc)
+        raise UyuniUsersException("XML-RPC backend authentication error.")
 
 
 class UyuniUsers:
