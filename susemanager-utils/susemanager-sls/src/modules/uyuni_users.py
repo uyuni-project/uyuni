@@ -91,7 +91,8 @@ class UyuniUsers:
 
         return bool(ret)
 
-    def managed(self, name, password, email, first_name="", last_name="", org="", roles=None):
+    def manage(self, name: str, password: str, email: str, first_name: str = "", last_name: str = "",
+               org: str = "", roles: Optional[List[str]] = None) -> Dict[str, Any]:
         """
         Manage user with the data. If anything is updated,
 
@@ -164,5 +165,5 @@ def user_present(name, password, email, first_name, last_name, org="", roles=Non
     :raises: UyuniException if roles aren't correctly spelt.
     :return: dictionary for Salt communication protocol
     """
-    return UyuniUsers(__rpc).managed(name=name, password=password, email=email, first_name=first_name,
-                                     last_name=last_name, org=org, roles=roles)
+    return UyuniUsers(__rpc).manage(name=name, password=password, email=email, first_name=first_name,
+                                    last_name=last_name, org=org, roles=roles)
