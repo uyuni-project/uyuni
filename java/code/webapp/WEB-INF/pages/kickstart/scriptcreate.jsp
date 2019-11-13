@@ -3,12 +3,9 @@
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 
-<head>
-<%@ include file="/WEB-INF/pages/common/fragments/editarea.jspf" %>
-</head>
-
 <html:html >
 <body>
+<%@ include file="/WEB-INF/pages/common/fragments/editarea.jspf" %>
 <%@ include file="/WEB-INF/pages/common/fragments/kickstart/kickstart-toolbar.jspf" %>
 
 <rhn:dialogmenu mindepth="0" maxdepth="1"

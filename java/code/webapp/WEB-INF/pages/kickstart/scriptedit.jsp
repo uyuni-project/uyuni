@@ -4,13 +4,9 @@
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 
-<head>
-<%@ include file="/WEB-INF/pages/common/fragments/editarea.jspf" %>
-</head>
-
-
 <html>
 <body>
+<%@ include file="/WEB-INF/pages/common/fragments/editarea.jspf" %>
 <rhn:toolbar base="h1" icon="header-kickstart"
            deletionUrl="/rhn/kickstart/KickstartScriptDelete.do?kssid=${kssid}&ksid=${ksdata.id}"
            deletionType="kickstartscript" >
