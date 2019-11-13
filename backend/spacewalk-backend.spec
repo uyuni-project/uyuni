@@ -447,9 +447,11 @@ Group:          Applications/Internet
 Requires:       %{name}
 Requires:       %{name}-app = %{version}-%{release}
 Requires:       %{name}-xmlrpc = %{version}-%{release}
+%if 0%{?suse_version} >= 1210
 Requires:       systemd
 BuildRequires:  systemd
 %{?systemd_requires}
+%endif
 
 %if 0%{?build_py3}
 Requires:       python3-gzipstream
@@ -559,7 +561,9 @@ install -d $RPM_BUILD_ROOT%{pythonrhnroot}
 install -d $RPM_BUILD_ROOT%{pythonrhnroot}/common
 install -d $RPM_BUILD_ROOT%{rhnconf}
 install -d $RPM_BUILD_ROOT/%{_prefix}/lib/susemanager/bin/
+%if 0%{?suse_version} >= 1210
 install -d $RPM_BUILD_ROOT/%{_unitdir}
+%endif
 
 make -f Makefile.backend install PREFIX=$RPM_BUILD_ROOT \
     MANDIR=%{_mandir} APACHECONFDIR=%{apacheconfd} PYTHON_BIN=%{pythonX}
@@ -595,8 +599,10 @@ ln -s rhn-satellite-exporter $RPM_BUILD_ROOT/usr/bin/mgr-exporter
 
 install -m 644 rhn-conf/signing.cnf $RPM_BUILD_ROOT%{rhnconf}/signing.conf
 
+%if 0%{?suse_version} >= 1210
 install -m 644 satellite_tools/spacewalk-diskcheck.service $RPM_BUILD_ROOT/%{_unitdir}
 install -m 644 satellite_tools/spacewalk-diskcheck.timer $RPM_BUILD_ROOT/%{_unitdir}
+%endif
 
 %find_lang %{name}-server
 
@@ -685,6 +691,7 @@ if [ ! -e %{rhnconf}/rhn.conf ]; then
     exit 0
 fi
 
+%if 0%{?suse_version} >= 1210
 %pre tools
 %service_add_pre spacewalk-diskcheck.service spacewalk-diskcheck.timer
 
@@ -696,6 +703,7 @@ fi
 
 %postun tools
 %service_del_postun spacewalk-diskcheck.service spacewalk-diskcheck.timer
+%endif
 
 # Is secret key in our config file?
 regex="^[[:space:]]*(server\.|)secret_key[[:space:]]*=.*$"
@@ -1142,8 +1150,10 @@ rm -f %{rhnconf}/rhnSecret.py*
 %{_mandir}/man8/spacewalk-data-fsck.8*
 %{_mandir}/man8/spacewalk-update-signatures.8*
 %{_mandir}/man8/update-packages.8*
+%if 0%{?suse_version} >= 1210
 %attr(644, root, root) %{_unitdir}/spacewalk-diskcheck.service
 %attr(644, root, root) %{_unitdir}/spacewalk-diskcheck.timer
+%endif
 
 %files xml-export-libs
 %defattr(-,root,root)
