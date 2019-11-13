@@ -1,7 +1,7 @@
 // @flow
 
 const React = require('react');
-const {useState, useEffect} = require('react');
+const { useState } = require('react');
 const { InputBase } = require('./InputBase');
 
 const styles = require('./Radio.css');
