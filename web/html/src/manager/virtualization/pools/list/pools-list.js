@@ -121,10 +121,15 @@ export function PoolsList(props: Props) {
               </CustomDiv>,
               <CustomDiv key="target" className="col" width="30" um="%">{pool.targetPath}</CustomDiv>,
               <CustomDiv key="usage" className="col" width="10" um="%">
-                <ProgressBar
-                  progress={Math.round(100 * pool.allocation / pool.capacity)}
-                  title={t(`${pool.allocation / (1024 * 1024)} GiB / ${pool.capacity / (1024 * 1024)} GiB in use`)}
-                />
+                { pool.capacity !== 0 &&
+                  <ProgressBar
+                    progress={Math.round(100 * pool.allocation / pool.capacity)}
+                    title={t(`${pool.allocation / (1024 * 1024)} GiB / ${pool.capacity / (1024 * 1024)} GiB in use`)}
+                  />
+                }
+                { pool.capacity === 0 &&
+                  <span>{t("Unknown")}</span>
+                }
               </CustomDiv>,
               <CustomDiv key="actions" className="col text-right" width="10" um="%">
               </CustomDiv>,
@@ -138,10 +143,15 @@ export function PoolsList(props: Props) {
               </CustomDiv>,
               <CustomDiv key="usedBy" className="col" width="calc((100% + 3em) * 0.45)" um="">{volume.usedBy != null ? volume.usedBy.join(", ") : ''}</CustomDiv>,
               <CustomDiv key="usage" className="col" width="calc((100% + 3em) * 0.1)" um="">
-                <ProgressBar
-                  progress={Math.min(100, Math.round(100 * volume.allocation / volume.capacity))}
-                  title={t(`${volume.allocation / (1024 * 1024)} GiB / ${volume.capacity / (1024 * 1024)} GiB in use`)}
-                />
+                { volume.capacity !== 0 &&
+                  <ProgressBar
+                    progress={Math.min(100, Math.round(100 * volume.allocation / volume.capacity))}
+                    title={t(`${volume.allocation / (1024 * 1024)} GiB / ${volume.capacity / (1024 * 1024)} GiB in use`)}
+                  />
+                }
+                { volume.capacity === 0 &&
+                  <span>{t("Unknown")}</span>
+                }
               </CustomDiv>,
               <CustomDiv key="actions" className="col text-right" width="calc((100% + 3em) * 0.1)" um="">
                 <div className="btn-group">
