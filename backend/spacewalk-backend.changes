@@ -1,3 +1,4 @@
+- fix spacewalk-update-signatures for python3 (bsc#1156521)
 - fix problems with Package Hub repos having multiple rpms with same NEVRA
   but different checksums (bsc#1146683)
 
