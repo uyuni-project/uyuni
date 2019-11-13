@@ -1,2 +1,2 @@
 #!/bin/bash
-find /manager > /tmp/objects-init.txt
+find /manager | sort > /tmp/objects-init.txt
