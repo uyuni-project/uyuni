@@ -6,7 +6,6 @@ import type {ProjectPropertiesType} from '../../../type/project.type.js';
 import {getVersionMessage} from "./properties.utils";
 import {ModalLink} from "components/dialog/ModalLink";
 import {Dialog} from "components/dialog/Dialog";
-import {Panel} from "../../../../../../components/panels/Panel";
 import styles from "./properties.css";
 
 type Props = {
