@@ -108,6 +108,31 @@ class UyuniUsers:
 
         return bool(ret)
 
+    def delete(self, name: str) -> Dict[str, Any]:
+        """
+        Remove user from the Uyuni org.
+
+        :param name: UID of the user
+
+        :return: dict for Salt communication
+        """
+        result: Optional[bool] = None
+        ret = {
+            'name': name,
+            'changes': {},
+            'result': result,
+            'comment': "User {} has been deleted".format(name),
+        }
+
+        try:
+            self.client("user.delete", self.client.get_token(), name)
+            ret["result"] = True
+        except Exception as exc:
+            ret["result"] = False
+            ret["comment"] = str(exc)
+
+        return ret
+
     def manage(self, name: str, password: str, email: str, first_name: str = "", last_name: str = "",
                org: str = "", roles: Optional[List[str]] = None) -> Dict[str, Any]:
         """
@@ -195,3 +220,14 @@ def user_present(name, password, email, first_name, last_name, org="", roles=Non
     """
     return UyuniUsers(__rpc).manage(name=name, password=password, email=email, first_name=first_name,
                                     last_name=last_name, org=org, roles=roles)
+
+
+def user_absent(name):
+    """
+    Remove Uyuni user.
+
+    :param name: Uyuni user name
+
+    :return: dictionary for Salt communication protocol
+    """
+    return UyuniUsers(__rpc).delete(name)
