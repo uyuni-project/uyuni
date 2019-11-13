@@ -3,12 +3,10 @@
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 
-<head>
-    <%@ include file="/WEB-INF/pages/common/fragments/editarea.jspf" %>
-</head>
-
 <html:html>
     <body>
+        <%@ include file="/WEB-INF/pages/common/fragments/editarea.jspf" %>
+
         <%@ include file="/WEB-INF/pages/common/fragments/kickstart/kickstart-rules.jspf" %>
         <c:choose>
             <c:when test = "${not empty requestScope.create_mode}">
