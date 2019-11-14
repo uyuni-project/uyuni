@@ -5,7 +5,7 @@ on:
     types: [opened, edited, synchronize, reopened]
 
 jobs:
-  test:
+  changelog_test:
 
     runs-on: ubuntu-latest
     
