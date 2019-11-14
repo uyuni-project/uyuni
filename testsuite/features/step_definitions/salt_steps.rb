@@ -416,12 +416,15 @@ end
 When(/^I enter the MAC address of "([^"]*)" in (.*) field$/) do |host, field|
   if host == 'pxeboot-minion'
     mac = $pxeboot_mac
+  elsif host.include? 'ubuntu'
+    node = get_target(host)
+    output, _code = node.run("ip link show dev ens4")
+    mac = output.split("\n")[1].split[1]
   else
     node = get_target(host)
     output, _code = node.run("ip link show dev eth1")
     mac = output.split("\n")[1].split[1]
   end
-
   fill_in FIELD_IDS[field], with: 'ethernet ' + mac
 end
 
