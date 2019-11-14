@@ -1,3 +1,4 @@
+- Enable aarch64 builds
 - Add self monitoring to Admin Monitoring UI (bsc#1143638)
 - Use apache proxy of websockify (bsc#1155455)
 - Split a query to the database for more reliability in case certain pages are visited and many systems are registered

@@ -63,7 +63,7 @@ Source0:        https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{
 Source1:        %{name}-rpmlintrc
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildArch:      noarch
-ExcludeArch:    ia64 aarch64
+ExcludeArch:    ia64
 
 BuildRequires:  ant
 BuildRequires:  ant-apache-regexp
