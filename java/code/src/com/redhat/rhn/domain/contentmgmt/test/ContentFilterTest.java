@@ -17,6 +17,7 @@ package com.redhat.rhn.domain.contentmgmt.test;
 
 import com.redhat.rhn.domain.contentmgmt.ContentFilter;
 import com.redhat.rhn.domain.contentmgmt.FilterCriteria;
+import com.redhat.rhn.domain.contentmgmt.modulemd.Module;
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.errata.ErrataFactory;
 import com.redhat.rhn.domain.rhnpackage.Package;
@@ -34,6 +35,7 @@ import java.util.Collections;
 import java.util.Date;
 
 import static com.redhat.rhn.domain.contentmgmt.ContentFilter.EntityType.ERRATUM;
+import static com.redhat.rhn.domain.contentmgmt.ContentFilter.EntityType.MODULE;
 import static com.redhat.rhn.domain.contentmgmt.ContentFilter.EntityType.PACKAGE;
 import static com.redhat.rhn.domain.contentmgmt.ContentFilter.Rule.DENY;
 import static com.redhat.rhn.domain.role.RoleFactory.ORG_ADMIN;
@@ -385,6 +387,36 @@ public class ContentFilterTest extends JMockBaseTestCaseWithUser {
         ContentFilter filter2 = ContentManager.createFilter("restart-filter2", DENY, ERRATUM, criteria2, user);
         assertFalse(filter2.test(erratum1));
         assertTrue(filter2.test(erratum2));
+    }
+
+    /**
+     * Test AppStream module filtering
+     */
+    public void testModuleStreamFilter() {
+        Module module1 = new Module("mymodule1", "mystream1");
+        Module module2 = new Module("mymodule1", "mystream2");
+        Module module3 = new Module("mymodule2", "mystream2");
+
+        // Filter by module name only
+        FilterCriteria criteria = new FilterCriteria(FilterCriteria.Matcher.EQUALS, "module_stream", "mymodule1");
+        ContentFilter filter = ContentManager.createFilter("mymodule-filter-1", DENY, MODULE, criteria, user);
+        assertTrue(filter.test(module1));
+        assertTrue(filter.test(module2));
+        assertFalse(filter.test(module3));
+
+        // Filter by module:stream
+        criteria = new FilterCriteria(FilterCriteria.Matcher.EQUALS, "module_stream", "mymodule1:mystream1");
+        filter = ContentManager.createFilter("mymodule-filter-2", DENY, MODULE, criteria, user);
+        assertTrue(filter.test(module1));
+        assertFalse(filter.test(module2));
+        assertFalse(filter.test(module3));
+
+        // Filter by stream name only. Should not match anything
+        criteria = new FilterCriteria(FilterCriteria.Matcher.EQUALS, "module_stream", "mystream1");
+        filter = ContentManager.createFilter("mymodule-filter-3", DENY, MODULE, criteria, user);
+        assertFalse(filter.test(module1));
+        assertFalse(filter.test(module2));
+        assertFalse(filter.test(module3));
     }
 
 }

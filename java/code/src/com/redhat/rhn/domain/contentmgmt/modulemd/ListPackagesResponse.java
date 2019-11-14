@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2019 SUSE LLC
+ * Copyright (c) 2020 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -13,11 +13,18 @@
  * in this software or its documentation.
  */
 
-package com.redhat.rhn.domain.contentmgmt;
+package com.redhat.rhn.domain.contentmgmt.modulemd;
+
+import java.util.List;
 
 /**
- * Thrown when a selected repository is not modular
+ * modulemd API response from 'list_packages' call
  */
-public class RepositoryNotModularException extends UnsupportedOperationException {
+public class ListPackagesResponse {
 
+    private List<String> packages;
+
+    public List<String> getPackages() {
+        return packages;
+    }
 }

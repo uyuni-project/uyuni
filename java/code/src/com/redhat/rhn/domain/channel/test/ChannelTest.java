@@ -21,6 +21,7 @@ import com.redhat.rhn.domain.channel.ChannelFamily;
 import com.redhat.rhn.domain.channel.ChannelFamilyFactory;
 import com.redhat.rhn.domain.channel.ContentSource;
 import com.redhat.rhn.domain.channel.ContentSourceType;
+import com.redhat.rhn.domain.channel.Modules;
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.errata.test.ErrataFactoryTest;
 import com.redhat.rhn.domain.rhnpackage.Package;
@@ -224,6 +225,16 @@ public class ChannelTest extends BaseTestCaseWithUser {
         c.setChannelArch(arch);
 
         assertTrue(c.isTypeDeb());
+    }
+
+    public void testIsModular() throws Exception {
+        Channel c = ChannelFactoryTest.createTestChannel(user);
+        assertNull(c.getModules());
+        assertFalse(c.isModular());
+
+        c.setModules(new Modules());
+        assertNotNull(c.getModules());
+        assertTrue(c.isModular());
     }
 
 }

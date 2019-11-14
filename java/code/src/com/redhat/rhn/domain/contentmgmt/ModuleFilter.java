@@ -15,13 +15,19 @@
 
 package com.redhat.rhn.domain.contentmgmt;
 
+import com.redhat.rhn.domain.contentmgmt.modulemd.Module;
+
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.Transient;
 import java.util.Optional;
 
 /**
- * Package Filter
+ * This filter must be applied on {@link Module} objects. In order to apply the filtering on
+ * {@link com.redhat.rhn.domain.rhnpackage.Package} objects instead, these filters must be replaced with
+ * {@link PackageFilter} counterparts.
+ *
+ * @see com.redhat.rhn.manager.contentmgmt.DependencyResolver#resolveModularDependencies
  */
 @Entity
 @DiscriminatorValue("module")
@@ -31,20 +37,28 @@ public class ModuleFilter extends ContentFilter<Module> {
     public boolean test(Module module) {
         FilterCriteria.Matcher matcher = getCriteria().getMatcher();
         String field = getCriteria().getField();
-        String value = getCriteria().getValue();
 
         if (!matcher.equals(FilterCriteria.Matcher.EQUALS)) {
             throw new UnsupportedOperationException("Matcher " + matcher + " not supported");
         }
 
-        switch (field) {
-            case "module":
-                return module.getName().equals(value);
-            case "stream":
-                return module.getStream().equals(value);
-            default:
-                throw new UnsupportedOperationException("Field " + field + " not supported");
+        Module moduleValue = getModule();
+        if ("module_stream".equals(field)) {
+            // Match every stream if no stream value is provided
+            return moduleValue.getName().equals(module.getName()) && (moduleValue.getStream() == null || moduleValue
+                    .getStream().equals(module.getStream()));
         }
+        throw new UnsupportedOperationException("Field " + field + " not supported");
+    }
+
+    /**
+     * Get the value of this filter as a {@link Module} instance
+     * @return the module instance
+     */
+    @Transient
+    public Module getModule() {
+        String[] nameStreamPair = getCriteria().getValue().split(":", 2);
+        return new Module(nameStreamPair[0], nameStreamPair.length > 1 ? nameStreamPair[1] : null);
     }
 
     @Override

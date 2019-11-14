@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2019 SUSE LLC
+ * Copyright (c) 2020 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -13,31 +13,24 @@
  * in this software or its documentation.
  */
 
-package com.redhat.rhn.domain.contentmgmt;
+package com.redhat.rhn.domain.contentmgmt.modulemd;
 
 /**
- * Represents a module in a modular repository
+ * Exception thrown when a selected module is not found
  */
-public class Module {
+public class ModuleNotFoundException extends Exception {
 
-    private String name;
-    private String stream;
+    private Module module;
 
     /**
-     * Initialize a new Module instance
-     * @param nameIn the name of the module
-     * @param streamIn the name of the stream
+     * Initialize a new instance
+     * @param moduleIn the selected module
      */
-    public Module(String nameIn, String streamIn) {
-        this.name = nameIn;
-        this.stream = streamIn;
+    public ModuleNotFoundException(Module moduleIn) {
+        this.module = moduleIn;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public String getStream() {
-        return stream;
+    public Module getModule() {
+        return module;
     }
 }

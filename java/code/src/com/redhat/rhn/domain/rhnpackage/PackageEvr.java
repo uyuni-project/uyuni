@@ -60,6 +60,15 @@ public class PackageEvr implements Comparable {
     }
 
     /**
+     * Copy constructor that creates a new instance copying the provided object. Use PackageEvrFactory to create
+     * PackageEvrs if you want to persist them to the Database. ONLY USE for non-persisting evr objects.
+     * @param other the evr object to copy from
+     */
+    public PackageEvr(PackageEvr other) {
+        this(other.getEpoch(), other.getVersion(), other.getRelease());
+    }
+
+    /**
      * @return Returns the epoch.
      */
     public String getEpoch() {

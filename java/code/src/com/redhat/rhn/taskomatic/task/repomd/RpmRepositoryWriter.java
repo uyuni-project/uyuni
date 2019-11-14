@@ -398,7 +398,9 @@ public class RpmRepositoryWriter extends RepositoryWriter {
             return null;
         }
 
-        if (channel.isCloned()) {
+        // Modules file gets copied for cloned channels, so we don't need to recurse to the original channels to get it.
+        // (Reverts https://bugzilla.redhat.com/585901 for modules)
+        if (channel.isCloned() && metadataType.equals(GROUP)) {
             // use a hack not to use ClonedChannel and it's getOriginal() method
             Long originalChannelId = ChannelManager.lookupOriginalId(channel);
             Channel originalChannel = ChannelFactory.lookupById(originalChannelId);

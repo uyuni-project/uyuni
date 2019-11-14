@@ -31,6 +31,7 @@ import com.redhat.rhn.domain.contentmgmt.ContentProjectHistoryEntry;
 import com.redhat.rhn.domain.contentmgmt.EnvironmentTarget;
 import com.redhat.rhn.domain.contentmgmt.ErrataFilter;
 import com.redhat.rhn.domain.contentmgmt.FilterCriteria;
+import com.redhat.rhn.domain.contentmgmt.modulemd.ModuleNotFoundException;
 import com.redhat.rhn.domain.contentmgmt.PackageFilter;
 import com.redhat.rhn.domain.contentmgmt.ProjectSource;
 import com.redhat.rhn.domain.contentmgmt.ProjectSource.Type;
@@ -48,6 +49,7 @@ import com.redhat.rhn.manager.channel.CloneChannelCommand;
 import com.redhat.rhn.manager.errata.ErrataManager;
 import com.redhat.rhn.manager.errata.cache.ErrataCacheManager;
 import org.apache.commons.lang3.tuple.Pair;
+import org.apache.log4j.Logger;
 
 import java.util.Collection;
 import java.util.Date;
@@ -81,6 +83,7 @@ import static java.util.stream.Collectors.toSet;
 public class ContentManager {
 
     private static final String DELIMITER = "-";
+    private static final Logger LOG = Logger.getLogger(ContentManager.class);
 
     // forbid instantiation
     private ContentManager() { }
@@ -642,9 +645,28 @@ public class ContentManager {
                 .sorted((t1, t2) -> Boolean.compare(t1.getChannel().isBaseChannel(), t2.getChannel().isBaseChannel()))
                 .forEach(toRemove -> ContentProjectFactory.purgeTarget(toRemove));
 
+        // Resolve filters for dependencies
+        try {
+            DependencyResolver resolver = new DependencyResolver(env.getContentProject());
+            resolver.resolveFilters(filters);
+        }
+        catch (DependencyResolutionException e) {
+            if (e.getCause() instanceof ModuleNotFoundException) {
+                ModuleNotFoundException cause = (ModuleNotFoundException) e.getCause();
+                LOG.info(String.format("Module '%s:%s' not found.", cause.getModule().getName(),
+                        cause.getModule().getStream()));
+            }
+            else {
+                throw new RuntimeException(e);
+            }
+        }
+
         // align the contents
         newSrcTgtPairs.forEach(srcTgt ->
                 alignEnvironmentTarget(srcTgt.getLeft(), srcTgt.getRight(), filters, async, user));
+    }
+
+        }
     }
 
     /**
