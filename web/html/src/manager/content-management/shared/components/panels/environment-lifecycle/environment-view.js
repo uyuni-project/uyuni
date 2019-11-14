@@ -6,7 +6,7 @@ import type {ProjectEnvironmentType} from '../../../type/project.type.js';
 import type {ProjectHistoryEntry} from "../../../type/project.type";
 import {getVersionMessageByNumber} from "../properties/properties.utils";
 import {objectDefaultValueHandler} from "core/utils/objects";
-import propertiesStyles from "../properties/properties.css";
+import BuildVersion from "../build/build-version";
 
 type Props = {
   environment: ProjectEnvironmentType,
@@ -33,8 +33,6 @@ const environmentStatusEnum: EnvironmentStatusEnumType = new Proxy({
 
 // $FlowFixMe  // upgrade flow
 const EnvironmentView = React.memo((props: Props) => {
-  let  versionMessage = getVersionMessageByNumber(props.environment.version, props.historyEntries) || t("not built");
-
   return (
     <React.Fragment>
       <dl className="row">
@@ -48,14 +46,10 @@ const EnvironmentView = React.memo((props: Props) => {
       <dl className="row">
         <dt className="col-xs-3">{t('Version')}:</dt>
         <dd className="col-xs-9">
-          <div className={`${propertiesStyles.version_collapse_line} pointer`} data-toggle="collapse"
-              data-target={`#historyentry_${props.environment.label}_${props.environment.version}`} role="button"
-              aria-expanded="false" aria-controls="collapseExample">
-            {versionMessage.split('\n')[0]}
-          </div>
-          <div class="collapse" id={`historyentry_${props.environment.label}_${props.environment.version}`}>
-            <pre>{versionMessage}</pre>
-          </div>
+          <BuildVersion
+              id={`${props.environment.version}_${props.environment.label}`}
+              text={getVersionMessageByNumber(props.environment.version, props.historyEntries) || t("not built")}
+              collapsed={true} />
         </dd>
       </dl>
       {
