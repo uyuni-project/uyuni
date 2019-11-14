@@ -1,3 +1,4 @@
+- test
 - Bump version to 4.1.0 (bsc#1154940)
 - Prevent error when piping stdout in Python 2 (bsc#1153090)
 - Java api expects content as encoded string instead of encoded bytes like before (bsc#1153277)
