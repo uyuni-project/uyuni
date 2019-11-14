@@ -37,7 +37,6 @@ Url:            https://github.com/uyuni-project/uyuni
 Source0:        %{name}-%{version}.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildArch:      noarch
-ExcludeArch:    aarch64
 
 BuildRequires:  ant
 BuildRequires:  apache-commons-cli
