@@ -11,7 +11,7 @@ import {Loading} from "components/loading/loading";
 import useRoles from "core/auth/use-roles";
 import {isOrgAdmin} from "core/auth/auth.utils";
 import useLifecycleActionsApi from "../../../api/use-lifecycle-actions-api";
-
+import BuildVersion from "../build/build-version";
 
 type Props = {
   projectId: string,
@@ -36,7 +36,6 @@ const Promote = (props: Props) => {
     }
   }, [open]);
 
-  const versionMessage = getVersionMessageByNumber(props.environmentPromote.version, props.historyEntries) || t("not built");
   const modalNameId = `${props.environmentPromote.label}-cm-promote-env-modal`;
   const disabled =
     !hasEditingPermissions
@@ -75,7 +74,11 @@ const Promote = (props: Props) => {
               <dl className="row">
                 <dt className="col-xs-4">{t('Version')}:</dt>
                 <dd className="col-xs-8">
-                  <pre>{versionMessage}</pre>
+                  <BuildVersion
+                      id={`${props.environmentPromote.version}_promote_${props.environmentTarget.label}`}
+                      text={getVersionMessageByNumber(props.environmentPromote.version, props.historyEntries) || t("not built")}
+                      collapsed={true}
+                  />
               </dd>
               </dl>
               <dl className="row">

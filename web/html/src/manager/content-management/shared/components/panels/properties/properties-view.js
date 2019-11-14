@@ -6,8 +6,7 @@ import type {ProjectPropertiesType} from '../../../type/project.type.js';
 import {getVersionMessage} from "./properties.utils";
 import {ModalLink} from "components/dialog/ModalLink";
 import {Dialog} from "components/dialog/Dialog";
-import {Panel} from "../../../../../../components/panels/Panel";
-import styles from "./properties.css";
+import BuildVersion from "../build/build-version";
 
 type Props = {
   properties: ProjectPropertiesType,
@@ -25,22 +24,7 @@ const PropertiesHistoryEntries = (props) =>
             {
               index === 0
                 ? versionMessage
-                : <div>
-                    <div className={`${styles.version_collapse_line} pointer`} data-toggle="collapse"
-                        data-target={`#historyentries_${props.id}_${index}`} role="button"
-                        aria-expanded="false" aria-controls="collapseExample">
-                      {t('Version {0}: {1}', history.version, history.message.split('\n')[0])}
-                    </div>
-                    <div class="collapse" id={`historyentries_${props.id}_${index}`}>
-                      <pre>
-                        {
-                          index === 0
-                            ? <strong>{versionMessage}</strong>
-                            : versionMessage
-                        }
-                      </pre>
-                    </div>
-                  </div>
+                : <BuildVersion id={`${history.version}_historyentry`} text={versionMessage} collapsed={true} />
             }
           </li>
         )
