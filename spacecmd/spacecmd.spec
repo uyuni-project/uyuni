@@ -1,5 +1,5 @@
 #
-# spec file for package spacecmd
+# spec file for package spacecmd 
 #
 # Copyright (c) 2019 SUSE LINUX GmbH, Nuernberg, Germany.
 # Copyright (c) 2008-2018 Red Hat, Inc.
