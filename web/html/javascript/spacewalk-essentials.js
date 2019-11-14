@@ -501,10 +501,6 @@ $(document).click(function (e) {
   });
 });
 
-$(document).on('click', '.navbar-toggle', function() {
-  $('aside').toggle();
-});
-
 /* prevent jumping to the top of the page because
 of an <a href> tag that is actually not a link */
 $(document).on('click', 'a', function(e) {
