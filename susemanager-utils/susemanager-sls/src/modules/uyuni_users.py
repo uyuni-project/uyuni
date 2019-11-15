@@ -445,7 +445,7 @@ def user_absent(name):
     return UyuniUsers(__rpc).delete(name)
 
 
-def org_present(name, admin_login, admin_password, admin_prefix, first_name, last_name, email, pam,
+def org_present(name, admin_login, admin_password, admin_prefix, first_name, last_name, email, pam=False,
                 content_staging=None, errata_email_notif=None, org_admin_enable=None,
                 crash_file_size_limit=None, crash_reporting=None, crash_file_upload=None,
                 scap_file_upload=None, scap_file_size_limit=None, scap_result_delete=None,
