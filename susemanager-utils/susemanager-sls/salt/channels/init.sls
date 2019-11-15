@@ -1,6 +1,9 @@
-{%- set is_yum = salt['cmd.which']("yum") %}
-{%- set is_dnf = salt['cmd.which']("dnf") %}
 {%- if grains['os_family'] == 'RedHat' %}
+
+{%- set yum_version = salt['pkg.version']("yum") %}
+{%- set is_yum = yum_version and salt['pkg.version_cmp'](yum_version, "4") < 0 %}
+{%- set is_dnf = salt['pkg.version']("dnf") %}
+
 {%- if is_dnf %}
 mgrchannels_susemanagerplugin_dnf:
   file.managed:
