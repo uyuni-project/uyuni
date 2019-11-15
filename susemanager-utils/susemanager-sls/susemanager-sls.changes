@@ -1,3 +1,5 @@
+- dockerhost: install python2 and python3 salt packages only when
+  major python version is available (bsc#1129627)
 - Support license entry in kiwi image packages list
 - Install yum plguin for only yum < 4 (bsc#1156173)
 - Add self monitoring to Admin Monitoring UI (bsc#1143638)
