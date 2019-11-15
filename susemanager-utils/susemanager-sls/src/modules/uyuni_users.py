@@ -79,6 +79,21 @@ class UyuniFunctions:
     def __init__(self, client: RPCClient):
         self.client = client
 
+    def _get_proto_ret(self, name: str) -> Dict[str, Any]:
+        """
+        State proto return container.
+
+        :param name:
+        :return:
+        """
+        result: Optional[bool] = None
+        return {
+                'name': name,
+                'changes': {},
+                'result': result,
+                'comment': "",
+            }
+
 
 class UyuniOrgs(UyuniFunctions):
     """
