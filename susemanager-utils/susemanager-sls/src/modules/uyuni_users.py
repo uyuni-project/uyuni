@@ -2,7 +2,7 @@
 """
 Uyuni users state module
 """
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Optional, Union, Tuple
 import ssl
 import xmlrpc.client  # type: ignore
 import logging
@@ -57,6 +57,7 @@ class RPCClient:
     def __call__(self, method: str, *args, **kwargs):
         self.get_token()
         if self.token is not None:
+            ret: Optional[Any] = None
             try:
                 return getattr(self.conn, method)(*args, **kwargs)
             except Exception as exc:
@@ -67,6 +68,7 @@ class RPCClient:
                 except Exception as exc:
                     log.error("Unable to call RPC function: %s", exc)
                     raise UyuniUsersException(exc)
+
         raise UyuniUsersException("XML-RPC backend authentication error.")
 
 
@@ -76,6 +78,157 @@ class UyuniFunctions:
     """
     def __init__(self, client: RPCClient):
         self.client = client
+
+
+class UyuniOrgs(UyuniFunctions):
+    """
+    Uyuni operations over orgs and trusts.
+    """
+    class Policy:
+        """
+        Policy control
+        """
+        def __init__(self, orgid: int):
+            """
+            Policy object.
+
+            :param orgid: Organisation ID
+            """
+
+            self.orgid = orgid
+
+            # Crash files
+            self.crash_file_upload: Optional[bool] = None
+            self.crash_file_size_limit: Optional[int] = None
+            self.crash_reporting: Optional[bool] = None
+
+            # SCAP
+            self.scap_file_upload: Optional[bool] = None
+            self.scap_file_limit: Optional[int] = None
+            self.scap_result_delete: Optional[bool] = None
+            self.scap_result_retention_days: Optional[int] = None
+
+        def get_crash_file_policies(self) -> List[Tuple[str, Dict[str, Union[Optional[bool], Optional[int]]]]]:
+            """
+            Get the policies of crash reporting settings for the given organisation.
+
+            :return:
+            """
+            policy: List[Tuple[str, Dict[str, Union[Optional[bool], Optional[int]]]]] = []
+            if self.crash_file_size_limit is not None:
+                policy.append(
+                    (
+                        "setCrashFileSizeLimit", {
+                            "orgid": self.orgid,
+                            "limit": self.crash_file_size_limit,
+                        },
+                    )
+                )
+            if self.crash_file_upload is not None:
+                policy.append(
+                    (
+                        "setCrashfileUpload", {
+                            "orgid": self.orgid,
+                            "enable": self.crash_file_upload
+                        },
+                    )
+                )
+            if self.crash_reporting is not None:
+                policy.append(
+                    (
+                        "setCrashReporting", {
+                            "orgid": self.orgid,
+                            "enable": self.crash_file_size_limit
+                        },
+                    )
+                )
+
+            return policy
+
+        def get_scap_file_upload(self) -> List[Tuple[str, Dict[str, Union[Optional[bool], Optional[int]]]]]:
+            """
+            Get the status of SCAP detailed result file upload settings for the given organisation.
+
+            :return: dict
+            """
+            policy: List[Tuple[str, Dict[str, Union[Optional[bool], Optional[int]]]]] = []
+            if self.scap_file_limit is not None and self.scap_file_upload is not None:
+                policy.append(
+                    (
+                        "setPolicyForScapFileUpload", {
+                            "enabled": self.scap_file_upload,
+                            "size_limit": self.scap_file_limit,
+                        },
+                    )
+                )
+
+            return policy
+
+        def get_scap_result_delete(self) -> List[Tuple[str, Dict[str, Union[Optional[bool], Optional[int]]]]]:
+            """
+            Get the status of SCAP result deletion settins for the given organisation.
+
+            :return:
+            """
+            policy: List[Tuple[str, Dict[str, Union[Optional[bool], Optional[int]]]]] = []
+            if self.scap_result_delete is not None and self.scap_result_retention_days is not None:
+                policy.append(
+                    (
+                        "setPolicyForScapResultDeletion", {
+                            "enabled": self.scap_result_delete,
+                            "retention_period": self.scap_result_retention_days,
+                        },
+                    )
+                )
+
+            return policy
+
+    def create(self, name: str, admin_login: str, admin_password: str, admin_prefix: str, first_name: str,
+               last_name: str, email: str, pam: bool):
+        """
+        Create Uyuni org.
+
+        :param name:
+        :param admin_login:
+        :param admin_password:
+        :param admin_prefix:
+        :param first_name:
+        :param last_name:
+        :param email:
+        :param pam:
+        :return:
+        """
+
+    def delete(self, name: str):
+        """
+        Delete Uyuni org.
+
+        :param name:
+        :return:
+        """
+
+    def manage(self, name: str, admin_login: str, admin_password: str, admin_prefix: str, first_name: str,
+               last_name: str, email: str, pam: bool, content_staging: Optional[bool] = None,
+               errata_email_notif: Optional[bool] = None, org_admin_enable: Optional[bool] = None,
+               scap_policies: Optional[Policy] = None, crash_policies: Optional[Policy] = None):
+        """
+        Manage Uyuni organisation.
+
+        :param name:
+        :param admin_login:
+        :param admin_password:
+        :param admin_prefix:
+        :param first_name:
+        :param last_name:
+        :param email:
+        :param pam:
+        :param content_staging:
+        :param errata_email_notif:
+        :param org_admin_enable:
+        :param scap_policies:
+        :param crash_policies:
+        :return:
+        """
 
 
 class UyuniUsers(UyuniFunctions):
