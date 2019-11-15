@@ -103,14 +103,14 @@ class UyuniOrgs(UyuniFunctions):
         """
         Policy control
         """
-        def __init__(self, orgid: int):
+        def __init__(self):
             """
             Policy object.
 
             :param orgid: Organisation ID
             """
 
-            self.orgid = orgid
+            self.__orgid: Optional[int] = None
 
             # Crash files
             self.crash_file_upload: Optional[bool] = None
@@ -122,6 +122,29 @@ class UyuniOrgs(UyuniFunctions):
             self.scap_file_limit: Optional[int] = None
             self.scap_result_delete: Optional[bool] = None
             self.scap_result_retention_days: Optional[int] = None
+
+        @property
+        def orgid(self) -> int:
+            """
+            Org ID property
+
+            :return: integer or None
+            """
+            if self.__orgid is None:
+                raise UyuniUsersException("Org ID was not set to the policy container")
+
+            return self.__orgid
+
+        @orgid.setter
+        def orgid(self, value: int):
+            """
+            Org ID setter. Works once per an instance.
+
+            :param value:
+            :return:
+            """
+            if self.__orgid is None:
+                self.__orgid = value
 
         def get_crash_file_policies(self) -> List[Tuple[str, Dict[str, Union[Optional[bool], Optional[int]]]]]:
             """
