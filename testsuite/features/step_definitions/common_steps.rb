@@ -47,7 +47,10 @@ end
 
 Then(/^I should not see any terminals imported from the configuration file/) do
   terminals = get_terminals_from_yaml(@retail_config)
-  terminals.each { |terminal| step %(I should not see a "#{terminal}" text) }
+  terminals.each do |terminal|
+    next if (terminal.include? 'minion') || (terminal.include? 'client')
+    step %(I should not see a "#{terminal}" text) 
+  end
 end
 
 When(/^I enter the hostname of "([^"]*)" terminal as "([^"]*)"$/) do |host, hostname|
