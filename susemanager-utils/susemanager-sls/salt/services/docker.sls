@@ -14,9 +14,10 @@ mgr_install_docker:
       - python-docker-py: '>=1.6.0'
 {%- endif %}
 {%- if grains['saltversioninfo'][0] >= 2018 %}
-    {%- if grains['osmajorrelease'] == 12 %}
+    {%- if salt['pkg.info_available']('python3', 'python36' 'python3.6') %}
       - python3-salt
-    {%- else %}
+    {%- endif %}
+    {%- if salt['pkg.info_available']('python', 'python2') %}
       - python2-salt
     {%- endif %}
 {%- endif %}
