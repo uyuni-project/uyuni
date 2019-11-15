@@ -99,6 +99,8 @@ class UyuniOrgs(UyuniFunctions):
     """
     Uyuni operations over orgs and trusts.
     """
+    ADMIN_PREFIXES = ["Dr.", "Hr.", "Miss", "Mr.", "Mrs.", "Ms.", "Sr."]
+
     class Policy:
         """
         Policy control
