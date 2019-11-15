@@ -427,3 +427,49 @@ def user_absent(name):
     :return: dictionary for Salt communication protocol
     """
     return UyuniUsers(__rpc).delete(name)
+
+
+def org_present(name, admin_login, admin_password, admin_prefix, first_name, last_name, email, pam,
+                content_staging=None, errata_email_notif=None, org_admin_enable=None,
+                crash_file_size_limit=None, crash_reporting=None, crash_file_upload=None,
+                scap_file_upload=None, scap_file_size_limit=None, scap_result_delete=None,
+                scap_result_retention_days=None):
+    """
+    Ensure org present or managed with the given state.
+
+    :param name:
+    :param admin_login:
+    :param admin_password:
+    :param admin_prefix:
+    :param first_name:
+    :param last_name:
+    :param email:
+    :param pam:
+    :param content_staging:
+    :param errata_email_notif:
+    :param org_admin_enable:
+    :param crash_file_size_limit:
+    :param crash_reporting:
+    :param crash_file_upload:
+    :param scap_file_upload:
+    :param scap_file_size_limit:
+    :param scap_result_delete:
+    :param scap_result_retention_days:
+    :return:
+    """
+
+    policy = UyuniOrgs.Policy()
+
+    policy.scap_file_upload = scap_file_upload
+    policy.scap_file_limit = scap_file_size_limit
+    policy.scap_result_delete = scap_result_delete
+    policy.scap_result_retention_days = scap_result_retention_days
+
+    policy.crash_reporting = crash_reporting
+    policy.crash_file_upload = crash_file_upload
+    policy.crash_file_size_limit = crash_file_size_limit
+
+    return UyuniOrgs(__rpc).manage(name=name, admin_login=admin_login, admin_password=admin_password,
+                                   admin_prefix=admin_prefix, first_name=first_name, last_name=last_name, email=email,
+                                   pam=pam, content_staging=content_staging, errata_email_notif=errata_email_notif,
+                                   org_admin_enable=org_admin_enable, policy=policy)
