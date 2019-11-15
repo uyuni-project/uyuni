@@ -223,6 +223,20 @@ class UyuniOrgs(UyuniFunctions):
 
             return policy
 
+    def _get_org_by_name(self, name: str) -> Dict[str, Union[int, str, bool]]:
+        """
+        Get org data by name.
+
+        :param name: organisation name
+        :return:
+        """
+        try:
+            org_data = self.client("org.getDetails", self.client.get_token(), name)
+        except UyuniUsersException:
+            org_data = {}
+
+        return org_data
+
     def create(self, name: str, admin_login: str, admin_password: str, admin_prefix: str, first_name: str,
                last_name: str, email: str, pam: bool):
         """
