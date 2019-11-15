@@ -70,13 +70,18 @@ class RPCClient:
         raise UyuniUsersException("XML-RPC backend authentication error.")
 
 
-class UyuniUsers:
+class UyuniFunctions:
     """
-    Uyuni users operations.
+    RPC client
     """
     def __init__(self, client: RPCClient):
         self.client = client
 
+
+class UyuniUsers(UyuniFunctions):
+    """
+    Uyuni operations over users.
+    """
     def _get_user(self, name: str) -> Dict[str, Any]:
         """
         Get existing user data from the Uyuni.
