@@ -425,7 +425,7 @@ end
 
 Then(/^I am logged in$/) do
   raise 'User is not logged in' unless find(:xpath, "//a[@href='/rhn/Logout.do']").visible?
-  raise 'The welcome message is not shown' unless has_content?('You have just created your first SUSE Manager user. To finalize your installation please use the Setup Wizard')
+  raise 'The welcome message is not shown' unless has_content?('You have just created your first #{product} user. To finalize your installation please use the Setup Wizard')
 end
 
 Given(/^I am on the patches page$/) do
