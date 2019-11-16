@@ -698,6 +698,16 @@ When(/^I set up the private network on the terminals$/) do
     conf = "DOMAIN='#{domain.strip}'\\nDEVICE='eth1'\\nSTARTMODE='auto'\\nBOOTPROTO='dhcp'\\nDNS1='#{proxy}'"
     node.run("echo -e \"#{conf}\" > #{file} && echo -e \"#{conf2}\" > #{file2} && systemctl restart network")
   end
+  # /etc/netplan/01-netcfg.yaml
+  nodes = [$ubuntu_minion]
+  source = File.dirname(__FILE__) + '/../upload_files/ubuntu-set-netplan.sh'
+  dest = "/tmp/ubuntu-set-netplan.sh"
+  nodes.each do |node|
+    next if node.nil?
+    return_code = file_inject($ubuntu_minion, source, dest)
+    raise 'File injection failed' unless return_code.zero?
+    $ubuntu_minion.run('bash /tmp/ubuntu-set-netplan.sh')
+  end
   # PXE boot minion
   if $pxeboot_mac
     step %(I restart the network on the PXE boot minion)
@@ -727,14 +737,6 @@ Then(/^name resolution should work on terminal "([^"]*)"$/) do |host|
     output, return_code = node.run("host #{dest}", fatal = false)
     raise "Reverse name resolution of #{dest} on terminal #{host} doesn't work: #{output}" unless return_code.zero?
     STDOUT.puts "#{output}"
-  end
-  repeat_until_timeout(message: "reverse lookup of #{host} not working") do
-      output, return_code = node.run("host $(ip -4 a s eth0 | grep -Po 'inet \\K[\\d.]+')", fatal = false)
-      STDOUT.puts "#{output}"
-      break if return_code.zero?
-      # reason for this is mostly a not 100% working nameserver
-      $proxy.run('rcnamed restart', fatal = false)
-      sleep 3
   end
 end
 
