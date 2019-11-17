@@ -16,7 +16,6 @@
 # Please submit bugfixes or comments via https://bugs.opensuse.org/
 #
 
-%define rhnroot %{_prefix}/share/rhn
 %if 0%{?fedora} || 0%{?rhel} >= 7
 %{!?pylint_check: %global pylint_check 1}
 %endif
@@ -102,17 +101,16 @@ do
 done
 
 %install
-install -d $RPM_BUILD_ROOT/%{rhnroot}
-make install PREFIX=$RPM_BUILD_ROOT ROOT=%{rhnroot} \
+make install PREFIX=$RPM_BUILD_ROOT ROOT=%{python3_sitelib} \
     MANDIR=%{_mandir} %{?pod2man}
 pushd %{buildroot}
-%py3_compile -O %{buildroot}/
+%py3_compile -O %{buildroot}%{python3_sitelib}
 popd
 
 %check
 %if 0%{?pylint_check}
 # check coding style
-spacewalk-python3-pylint $RPM_BUILD_ROOT%{rhnroot}
+spacewalk-python3-pylint $RPM_BUILD_ROOT%{python3_sitelib}
 %endif
 
 %files
@@ -120,14 +118,14 @@ spacewalk-python3-pylint $RPM_BUILD_ROOT%{rhnroot}
 %config %{_sysconfdir}/rhn/spacewalk-common-channels.ini
 %config(noreplace) %{_sysconfdir}/rhn/sw-ldap-user-sync.conf
 %attr(755,root,root) %{_bindir}/*
-%dir %{rhnroot}/utils
-%{rhnroot}/utils/__init__.py*
-%{rhnroot}/utils/systemSnapshot.py*
-%{rhnroot}/utils/migrateSystemProfile.py*
-%{rhnroot}/utils/cloneByDate.py*
-%{rhnroot}/utils/depsolver.py*
+%dir %{python3_sitelib}/utils
+%{python3_sitelib}/utils/__init__.py*
+%{python3_sitelib}/utils/systemSnapshot.py*
+%{python3_sitelib}/utils/migrateSystemProfile.py*
+%{python3_sitelib}/utils/cloneByDate.py*
+%{python3_sitelib}/utils/depsolver.py*
+%{python3_sitelib}/utils/__pycache__
 %{_mandir}/man8/*
-%dir %{_datadir}/rhn
 %doc COPYING.GPLv2 COPYING.GPLv3
 
 %changelog
