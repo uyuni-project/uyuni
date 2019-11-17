@@ -39,9 +39,6 @@
 %global apache_user wwwrun
 %global apache_group www
 %global apache_pkg apache2
-%if !0%{?is_opensuse}
-%define with_oracle     1
-%endif
 %global m2crypto python3-M2Crypto
 %endif
 
@@ -100,18 +97,6 @@ Requires:       %{name}-sql-virtual = %{version}-%{release}
 %description sql
 This package contains the basic code that provides SQL connectivity for
 the Spacewalk backend modules.
-
-%if 0%{?with_oracle}
-%package sql-oracle
-Summary:        Oracle backend for Spacewalk
-Group:          Applications/Internet
-Requires:       python(:DBAPI:oracle)
-Provides:       %{name}-sql-virtual = %{version}-%{release}
-
-%description sql-oracle
-This package contains provides Oracle connectivity for the Spacewalk backend
-modules.
-%endif
 
 %package sql-postgresql
 Summary:        Postgresql backend for Spacewalk
@@ -304,10 +289,9 @@ install -d $RPM_BUILD_ROOT/%{_unitdir}
 install -d $RPM_BUILD_ROOT/%{_prefix}/lib/susemanager/bin/
 
 make -f Makefile.backend install PREFIX=$RPM_BUILD_ROOT \
-%if !0%{?with_oracle}
-rm -f $RPM_BUILD_ROOT%{pythonrhnroot}/server/rhnSQL/driver_cx_Oracle.py*
-%endif
     MANDIR=%{_mandir} APACHECONFDIR=%{apacheconfd} PYTHON_BIN=python3
+# no support for oracle DB anymore
+rm -f $RPM_BUILD_ROOT%{python3rhnroot}/server/rhnSQL/driver_cx_Oracle.py*
 
 export PYTHON_MODULE_NAME=%{name}
 export PYTHON_MODULE_VERSION=%{version}
@@ -444,12 +428,6 @@ rm -f %{rhnconf}/rhnSecret.py*
 %dir %{python3rhnroot}/server
 %{python3rhnroot}/server/__init__.py*
 %{rhnroot}/server/__init__.py*
-%if 0%{?with_oracle}
-%files sql-oracle
-%defattr(-,root,root)
-%doc LICENSE
-%{pythonrhnroot}/server/rhnSQL/driver_cx_Oracle.py*
-%endif
 %dir %{python3rhnroot}/server/rhnSQL
 %{python3rhnroot}/server/rhnSQL/const.py*
 %{python3rhnroot}/server/rhnSQL/dbi.py*
