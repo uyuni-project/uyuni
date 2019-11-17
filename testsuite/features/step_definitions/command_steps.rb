@@ -704,9 +704,9 @@ When(/^I set up the private network on the terminals$/) do
   dest = "/tmp/ubuntu-set-netplan.sh"
   nodes.each do |node|
     next if node.nil?
-    return_code = file_inject($ubuntu_minion, source, dest)
+    return_code = file_inject(node, source, dest)
     raise 'File injection failed' unless return_code.zero?
-    $ubuntu_minion.run('bash /tmp/ubuntu-set-netplan.sh')
+    node.run('bash /tmp/ubuntu-set-netplan.sh')
   end
   # PXE boot minion
   if $pxeboot_mac

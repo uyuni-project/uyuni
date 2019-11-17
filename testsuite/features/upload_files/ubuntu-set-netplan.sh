@@ -14,3 +14,4 @@ network:
 END
 
 netplan apply
+systemctl restart systemd-networkd
