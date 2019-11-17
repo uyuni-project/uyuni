@@ -30,9 +30,9 @@
 Name:           spacewalk-utils
 Version:        4.1.0
 Release:        1%{?dist}
-Summary:        Utilities that may be run against a Spacewalk server.
+Summary:        Utilities that may be run against a Uyuni server
 License:        GPL-2.0-only AND GPL-3.0-or-later
-Group:          Applications/Internet
+Group:          Productivity/Other
 
 Url:            https://github.com/uyuni-project/uyuni
 Source0:        https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
@@ -85,7 +85,7 @@ Requires:       python3-yaml
 %endif
 
 %description
-Generic utilities that may be run against a Spacewalk server.
+Generic utilities that may be run against a Uyuni server.
 
 
 %prep
