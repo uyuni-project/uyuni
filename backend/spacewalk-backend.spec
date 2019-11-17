@@ -411,11 +411,13 @@ fi
 %dir %{python3rhnroot}/server/rhnSQL/__pycache__/
 %{python3rhnroot}/server/__pycache__/__init__.*
 %{python3rhnroot}/server/rhnSQL/__pycache__/*
+%exclude %{python3rhnroot}/server/rhnSQL/__pycache__/driver_postgresql.*
 
 %files sql-postgresql
 %defattr(-,root,root)
 %doc LICENSE
 %{python3rhnroot}/server/rhnSQL/driver_postgresql.py*
+%{python3rhnroot}/server/rhnSQL/__pycache__/driver_postgresql.*
 
 %files server -f %{name}-server.lang
 %defattr(-,root,root)
@@ -474,6 +476,8 @@ fi
 %{python3rhnroot}/server/importlib/__pycache__/*
 %{python3rhnroot}/server/__pycache__/*
 %exclude %{python3rhnroot}/server/__pycache__/__init__.*
+%exclude %{python3rhnroot}/server/__pycache__/auditlog.*
+%exclude %{python3rhnroot}/server/__pycache__/configFilesHandler.*
 %{rhnroot}/server/handlers/__init__.py*
 
 # Repomd stuff
@@ -522,6 +526,7 @@ fi
 %dir %{python3rhnroot}/server/action_extra_data
 %{python3rhnroot}/server/action_extra_data/*
 %{python3rhnroot}/server/auditlog.py*
+%{python3rhnroot}/server/__pycache__/auditlog.*
 # config files
 %attr(644,root,%{apache_group}) %{rhnconfigdefaults}/rhn_server_xmlrpc.conf
 %config(noreplace) %{_sysconfdir}/logrotate.d/spacewalk-backend-xmlrpc
@@ -577,6 +582,7 @@ fi
 %defattr(-,root,root)
 %doc LICENSE
 %{python3rhnroot}/server/configFilesHandler.py*
+%{python3rhnroot}/server/__pycache__/configFilesHandler.*
 %dir %{python3rhnroot}/server/config_common
 %{python3rhnroot}/server/config_common/*
 
@@ -675,6 +681,8 @@ fi
 %dir %{python3rhnroot}/satellite_tools/disk_dumper/__pycache__/
 %dir %{python3rhnroot}/satellite_tools/repo_plugins/__pycache__/
 %{python3rhnroot}/satellite_tools/__pycache__/*
+%exclude %{python3rhnroot}/satellite_tools/__pycache__/__init__.*
+%exclude %{python3rhnroot}/satellite_tools/__pycache__/geniso.*
 %exclude %{python3rhnroot}/satellite_tools/__pycache__/connection.*
 %exclude %{python3rhnroot}/satellite_tools/__pycache__/diskImportLib.*
 %exclude %{python3rhnroot}/satellite_tools/__pycache__/syncLib.*
@@ -721,6 +729,8 @@ fi
 %{python3rhnroot}/satellite_tools/exporter/exportLib.py*
 %{python3rhnroot}/satellite_tools/exporter/xmlWriter.py*
 %dir %{python3rhnroot}/satellite_tools/exporter/__pycache__/
+%{python3rhnroot}/satellite_tools/__pycache__/__init__.*
+%{python3rhnroot}/satellite_tools/__pycache__/geniso.*
 %{python3rhnroot}/satellite_tools/__pycache__/connection.*
 %{python3rhnroot}/satellite_tools/__pycache__/diskImportLib.*
 %{python3rhnroot}/satellite_tools/__pycache__/syncLib.*
