@@ -1,0 +1,12 @@
+# Ubuntu netplan configuration for the testsuite
+network:
+  version: 2
+  renderer: networkd
+  ethernets:
+    ens3:
+      dhcp4: yes
+      dhcp4-overrides:
+        use-dns: no
+        use-routes: no
+    ens4:
+      dhcp4: yes
