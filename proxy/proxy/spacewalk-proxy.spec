@@ -80,21 +80,7 @@ Requires:       sos
 Requires:       spacewalk-proxy-selinux
 Requires(preun): initscripts
 %endif
-Obsoletes:      rhns-proxy < 5.3.0
-Obsoletes:      rhns-proxy-management < 5.3.0
 BuildRequires:  /usr/bin/docbook2man
-Obsoletes:      rhns-proxy-tools < 5.3.0
-Provides:       rhns-proxy-tools = 5.3.0
-Obsoletes:      spacewalk-proxy-tools < 0.5.3
-Provides:       spacewalk-proxy-tools = %{version}
-Obsoletes:      rhns-auth-daemon < 5.2.0
-Provides:       rhns-auth-daemon = 1:%{version}
-Obsoletes:      rhn-modssl < 2.9.0
-Provides:       rhn-modssl = 1:%{version}
-Obsoletes:      rhn-modpython < 2.8.0
-Provides:       rhn-modpython = 1:%{version}
-Obsoletes:      rhn-apache < 1.4.0
-Provides:       rhn-apache = 1:%{version}
 
 %description management
 This package require all needed packages for Spacewalk Proxy Server.
@@ -117,9 +103,6 @@ Requires:       apache2-mod_wsgi-python3
 Requires(post): %{name}-common
 Conflicts:      %{name}-redirect < %{version}-%{release}
 Conflicts:      %{name}-redirect > %{version}-%{release}
-# We don't want proxies and satellites on the same box
-Conflicts:      rhns-satellite-tools
-Obsoletes:      rhns-proxy-broker < 5.3.0
 
 %description broker
 The Spacewalk Proxy Server allows package caching
@@ -136,7 +119,6 @@ Summary:        The SSL Redirect component for the Spacewalk Proxy Server
 Group:          Applications/Internet
 Requires:       httpd
 Requires:       spacewalk-proxy-broker = %{version}-%{release}
-Obsoletes:      rhns-proxy-redirect < 5.3.0
 
 %description redirect
 The Spacewalk Proxy Server allows package caching
@@ -163,7 +145,6 @@ Requires:       apache2-mod_wsgi-python3
 Requires:       %{name}-broker >= %{version}
 Requires:       spacewalk-backend >= 1.7.24
 Requires(pre):  policycoreutils
-Obsoletes:      rhns-proxy-common < 5.3.0
 
 %description common
 The Spacewalk Proxy Server allows package caching
@@ -185,8 +166,6 @@ Requires:       spacewalk-backend >= 1.7.24
 Requires:       python3-mgr-push
 BuildRequires:  /usr/bin/docbook2man
 BuildRequires:  python3-devel
-Obsoletes:      rhn_package_manager < 5.3.0
-Obsoletes:      rhns-proxy-package-manager < 5.3.0
 
 %description package-manager
 The Spacewalk Proxy Server allows package caching
@@ -203,15 +182,11 @@ Group:          Applications/Internet
 Requires:       systemd
 Requires(pre):  salt
 Requires(pre):  %{name}-common
-
 %if 0%{?suse_version} >= 1210
 BuildRequires:  systemd-rpm-macros
 %endif
-
 %{?systemd_requires}
 
-# We don't want proxies and satellites on the same box
-Conflicts:      rhns-satellite-tools
 
 %description salt
 A ZeroMQ Proxy for Salt Minions
