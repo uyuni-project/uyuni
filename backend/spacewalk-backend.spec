@@ -347,12 +347,6 @@ spacewalk-python3 $RPM_BUILD_ROOT%{python3rhnroot}/common \
 
 %endif
 
-%pre server
-OLD_SECRET_FILE=%{_var}/www/rhns/server/secret/rhnSecret.py
-if [ -f $OLD_SECRET_FILE ]; then
-    install -d -m 750 -o root -g %{apache_group} %{rhnconf}
-    mv ${OLD_SECRET_FILE}*  %{rhnconf}
-fi
 
 %post server
 %if 0%{?suse_version}
@@ -374,26 +368,6 @@ fi
 %postun tools
 %service_del_postun spacewalk-diskcheck.service spacewalk-diskcheck.timer
 
-# Is secret key in our config file?
-regex="^[[:space:]]*(server\.|)secret_key[[:space:]]*=.*$"
-
-if grep -E -i $regex %{rhnconf}/rhn.conf > /dev/null 2>&1 ; then
-    # secret key already there
-    rm -f %{rhnconf}/rhnSecret.py*
-    exit 0
-fi
-
-# Generate a secret key if old one is not present
-if [ -f %{rhnconf}/rhnSecret.py ]; then
-    secret_key=$(PYTHONPATH=%{rhnconf} %{__python} -c \
-        "from rhnSecret import SECRET_KEY; print SECRET_KEY")
-else
-    secret_key=$(dd if=/dev/urandom bs=1024 count=1 2>/dev/null | sha1sum - |
-        awk '{print $1}')
-fi
-
-echo "server.secret_key = $secret_key" >> %{rhnconf}/rhn.conf
-rm -f %{rhnconf}/rhnSecret.py*
 
 %files
 %defattr(-,root,root)
