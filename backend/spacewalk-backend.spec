@@ -45,7 +45,7 @@
 Name:           spacewalk-backend
 Summary:        Common programs needed to be installed on the Spacewalk servers/proxies
 License:        GPL-2.0-only
-Group:          Applications/Internet
+Group:          System/Management
 Version:        4.1.0
 Release:        1%{?dist}
 Url:            https://github.com/uyuni-project/uyuni
@@ -89,7 +89,7 @@ This package includes the common code required by all servers/proxies.
 
 %package sql
 Summary:        Core functions providing SQL connectivity for the Spacewalk backend modules
-Group:          Applications/Internet
+Group:          System/Management
 Requires(pre):  %{name} = %{version}-%{release}
 Requires:       %{name} = %{version}-%{release}
 Requires:       %{name}-sql-virtual = %{version}-%{release}
@@ -100,7 +100,7 @@ the Spacewalk backend modules.
 
 %package sql-postgresql
 Summary:        Postgresql backend for Spacewalk
-Group:          Applications/Internet
+Group:          System/Management
 Requires:       python3-psycopg2 >= 2.0.14-2
 Provides:       %{name}-sql-virtual = %{version}-%{release}
 
@@ -110,7 +110,7 @@ backend modules.
 
 %package server
 Summary:        Basic code that provides Spacewalk Server functionality
-Group:          Applications/Internet
+Group:          System/Management
 Requires(pre):  %{name}-sql = %{version}-%{release}
 Requires:       %{name}-sql = %{version}-%{release}
 Requires:       python3-python-pam
@@ -129,7 +129,7 @@ receivers and get them enabled automatically.
 
 %package xmlrpc
 Summary:        Handler for /XMLRPC
-Group:          Applications/Internet
+Group:          System/Management
 Requires:       %{name}-server = %{version}-%{release}
 Requires:       python3-rpm
 
@@ -140,7 +140,7 @@ and the up2date clients.
 
 %package applet
 Summary:        Handler for /APPLET
-Group:          Applications/Internet
+Group:          System/Management
 Requires:       %{name}-server = %{version}-%{release}
 
 %description applet
@@ -149,7 +149,7 @@ provides the functions for the Spacewalk applet.
 
 %package app
 Summary:        Handler for /APP
-Group:          Applications/Internet
+Group:          System/Management
 Requires:       %{name}-server = %{version}-%{release}
 
 %description app
@@ -158,7 +158,7 @@ Calls to /APP are used by internal maintenance tools (rhnpush).
 
 %package iss
 Summary:        Handler for /SAT
-Group:          Applications/Internet
+Group:          System/Management
 Requires:       %{name}-server = %{version}-%{release}
 
 %description iss
@@ -172,7 +172,7 @@ capability.
 
 %package iss-export
 Summary:        Listener for the Server XML dumper
-Group:          Applications/Internet
+Group:          System/Management
 Requires:       %{name}-xml-export-libs = %{version}-%{release}
 Requires:       python3-rpm
 
@@ -186,7 +186,7 @@ This package contains listener for the Server XML dumper.
 
 %package config-files-common
 Summary:        Common files for the Configuration Management project
-Group:          Applications/Internet
+Group:          System/Management
 Requires:       %{name}-server = %{version}-%{release}
 
 %description config-files-common
@@ -194,7 +194,7 @@ Common files required by the Configuration Management project
 
 %package config-files
 Summary:        Handler for /CONFIG-MANAGEMENT
-Group:          Applications/Internet
+Group:          System/Management
 Requires:       %{name}-config-files-common = %{version}-%{release}
 
 %description config-files
@@ -202,7 +202,7 @@ This package contains the server-side code for configuration management.
 
 %package config-files-tool
 Summary:        Handler for /CONFIG-MANAGEMENT-TOOL
-Group:          Applications/Internet
+Group:          System/Management
 Requires:       %{name}-config-files-common = %{version}-%{release}
 
 %description config-files-tool
@@ -210,7 +210,7 @@ This package contains the server-side code for configuration management tool.
 
 %package package-push-server
 Summary:        Listener for rhnpush (non-XMLRPC version)
-Group:          Applications/Internet
+Group:          System/Management
 Requires:       %{name}-server = %{version}-%{release}
 
 %description package-push-server
@@ -218,7 +218,7 @@ Listener for rhnpush (non-XMLRPC version)
 
 %package tools
 Summary:        Spacewalk Services Tools
-Group:          Applications/Internet
+Group:          System/Management
 Requires:       %{name}
 Requires:       %{name}-app = %{version}-%{release}
 Requires:       %{name}-xmlrpc = %{version}-%{release}
@@ -251,7 +251,7 @@ Various utilities for the Spacewalk Server.
 
 %package xml-export-libs
 Summary:        Spacewalk XML data exporter
-Group:          Applications/Internet
+Group:          System/Management
 Requires:       %{name}-server = %{version}-%{release}
 
 %description xml-export-libs
@@ -259,7 +259,7 @@ Libraries required by various exporting tools
 
 %package cdn
 Summary:        CDN tools
-Group:          Applications/Internet
+Group:          System/Management
 Requires:       %{m2crypto}
 Requires:       %{name}-server = %{version}-%{release}
 Requires:       python3-argparse
