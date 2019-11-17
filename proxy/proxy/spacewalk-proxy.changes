@@ -1,3 +1,4 @@
+- build as python3 only package
 - replace spacewalk-usix with uyuni-common-libs
 - don't skip auth token check for remote actions
 - Bump version to 4.1.0 (bsc#1154940)
