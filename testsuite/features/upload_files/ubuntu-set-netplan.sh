@@ -9,9 +9,12 @@ network:
     ens3:
       dhcp4: no
       addresses: [ $(ip a s ens3 | grep "inet " | awk '{print $2}') ]
+      nameservers:
+        search: [ $(hostname -d) ]
     ens4:
       dhcp4: yes
 END
 
 netplan apply
+
 systemctl restart systemd-networkd
