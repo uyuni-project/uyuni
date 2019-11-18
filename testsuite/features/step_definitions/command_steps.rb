@@ -697,6 +697,7 @@ When(/^I copy server\'s keys to the proxy$/) do
   end
 end
 
+# rubocop:disable Metrics/BlockLength
 When(/^I set up the private network on the terminals$/) do
   proxy = net_prefix + ADDRESSES['proxy']
   # /etc/sysconfig/network/ifcfg-eth1 and /etc/resolv.conf
@@ -722,19 +723,20 @@ When(/^I set up the private network on the terminals$/) do
   end
   # /etc/netplan/01-netcfg.yaml
   nodes = [$ubuntu_minion]
-  source = File.dirname(__FILE__) + '/../upload_files/ubuntu-set-netplan.sh'
-  dest = "/tmp/ubuntu-set-netplan.sh"
+  source = File.dirname(__FILE__) + '/../upload_files/01-netcfg.yaml'
+  dest = "/etc/netplan/01-netcfg.yaml"
   nodes.each do |node|
     next if node.nil?
-    return_code = file_inject($ubuntu_minion, source, dest)
+    return_code = file_inject(node, source, dest)
     raise 'File injection failed' unless return_code.zero?
-    $ubuntu_minion.run('bash /tmp/ubuntu-set-netplan.sh')
+    node.run('netplan apply')
   end
   # PXE boot minion
   if $pxeboot_mac
     step %(I restart the network on the PXE boot minion)
   end
 end
+# rubocop:enable Metrics/BlockLength
 
 Then(/^terminal "([^"]*)" should have got a retail network IP address$/) do |host|
   node = get_target(host)
