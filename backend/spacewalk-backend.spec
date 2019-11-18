@@ -19,24 +19,13 @@
 
 %{!?_unitdir: %global _unitdir /lib/systemd/system}
 
+%{!?python3_sitelib: %global python3_sitelib %(%{__python3} -c "from distutils.sysconfig import get_python_lib; print(get_python_lib())")}
+%{!?pylint_check: %global pylint_check 0}
 %global rhnroot %{_prefix}/share/rhn
 %global rhnconfigdefaults %{rhnroot}/config-defaults
 %global rhnconf %{_sysconfdir}/rhn
 %global m2crypto m2crypto
-
-%if 0%{?fedora} || 0%{?suse_version} >= 1500 || 0%{?rhel} >= 8
-%{!?python3_sitelib: %global python3_sitelib %(%{__python3} -c "from distutils.sysconfig import get_python_lib; print(get_python_lib())")}
-%global python_sitelib %{python3_sitelib}
 %global python3rhnroot %{python3_sitelib}/spacewalk
-%global pythonrhnroot %{python3_sitelib}/spacewalk
-%global build_py3 1
-%endif
-
-%define pythonX %{?build_py3:python3}%{!?build_py3:python}
-
-%if 0%{?fedora} || 0%{?rhel} >= 7
-%{!?pylint_check: %global pylint_check 0}
-%endif
 
 %if 0%{?fedora} || 0%{?rhel}
 %global apacheconfd %{_sysconfdir}/httpd/conf.d
@@ -46,31 +35,17 @@
 %endif
 
 %if 0%{?suse_version}
-%{!?pylint_check: %global pylint_check 0}
 %global apacheconfd %{_sysconfdir}/apache2/conf.d
 %global apache_user wwwrun
 %global apache_group www
 %global apache_pkg apache2
-%global m2crypto %{pythonX}-M2Crypto
-%if !0%{?is_opensuse}
-%define with_oracle     1
-%endif
-%endif
-
-%if 0%{?suse_version} >= 1500
-%global python_prefix python3
-%else
-%if  0%{?fedora} >= 28  || 0%{?rhel} >= 8
-%global python_prefix python2
-%else
-%global python_prefix python
-%endif
+%global m2crypto python3-M2Crypto
 %endif
 
 Name:           spacewalk-backend
 Summary:        Common programs needed to be installed on the Spacewalk servers/proxies
 License:        GPL-2.0-only
-Group:          Applications/Internet
+Group:          System/Management
 Version:        4.1.0
 Release:        1%{?dist}
 Url:            https://github.com/uyuni-project/uyuni
@@ -80,80 +55,33 @@ BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildArch:      noarch
 %endif
 
-Requires:       %{pythonX}
+Requires:       python3
 # /etc/rhn is provided by uyuni-base-common
 Requires(pre):  uyuni-base-common
 BuildRequires:  uyuni-base-common
-%if 0%{?build_py3}
 Requires:       python3-rhnlib >= 2.5.74
 Requires:       python3-rpm
 Requires:       python3-uyuni-common-libs
-%else
-Requires:       python2-rhnlib >= 2.5.74
-Requires:       python2-uyuni-common-libs
-%if 0%{?suse_version} >= 1500
-Requires:       python2-rpm
-%else
-Requires:       rpm-python
-%endif
-%if 0%{?suse_version}
-Requires:       python-pyliblzma
-%else
-%if 0%{?rhel}
-Requires:       pyliblzma
-%endif # if 0{?rhel}
-%endif # 0{?suse_version}
-%endif # 0{?build_py3}
+Requires(pre):  %{apache_pkg}
+Requires:       %{apache_pkg}
+Requires:       python3-pycurl
 # for Debian support
-Requires:       %{python_prefix}-debian
+Requires:       python3-debian
 %if 0%{?pylint_check}
-%if 0%{?build_py3}
 BuildRequires:  spacewalk-python3-pylint
-%else
-BuildRequires:  spacewalk-python2-pylint
-%endif
 %endif
 BuildRequires:  /usr/bin/docbook2man
 BuildRequires:  /usr/bin/msgfmt
 BuildRequires:  docbook-utils
 BuildRequires:  fdupes
-%if 0%{?fedora} || 0%{?rhel} || 0%{?suse_version} > 1310
-%if 0%{?build_py3}
 BuildRequires:  python3-gzipstream
 BuildRequires:  python3-rhn-client-tools
 BuildRequires:  python3-rhnlib >= 2.5.74
 BuildRequires:  python3-rpm
 BuildRequires:  python3-uyuni-common-libs
-%else
-BuildRequires:  python2-gzipstream
-BuildRequires:  python2-rhn-client-tools
-BuildRequires:  python2-rhnlib >= 2.5.74
-BuildRequires:  python2-uyuni-common-libs
-%if 0%{?suse_version} >= 1500
-Requires:       python2-rpm
-%else
-Requires:       rpm-python
-%endif
-%endif
-BuildRequires:  %{python_prefix}-debian
-
+BuildRequires:  python3-debian
 BuildRequires:  %{m2crypto}
-%endif
-Requires(pre): %{apache_pkg}
-Requires:       %{apache_pkg}
 
-%if 0%{?suse_version}
-Requires:       %{pythonX}-pycurl
-%endif
-
-# we don't really want to require this redhat-release, so we protect
-# against installations on other releases using conflicts...
-Obsoletes:      rhns < 5.3.0
-Obsoletes:      rhns-common < 5.3.0
-Provides:       rhns = 1:%{version}-%{release}
-Provides:       rhns-common = 1:%{version}-%{release}
-Obsoletes:      spacewalk-backend-upload-server < 1.2.28
-Provides:       spacewalk-backend-upload-server = 1:%{version}-%{release}
 
 %description
 Generic program files needed by the Spacewalk server machines.
@@ -161,37 +89,19 @@ This package includes the common code required by all servers/proxies.
 
 %package sql
 Summary:        Core functions providing SQL connectivity for the Spacewalk backend modules
-Group:          Applications/Internet
+Group:          System/Management
 Requires(pre):  %{name} = %{version}-%{release}
 Requires:       %{name} = %{version}-%{release}
-Obsoletes:      rhns-sql < 5.3.0
-Provides:       rhns-sql = 1:%{version}-%{release}
 Requires:       %{name}-sql-virtual = %{version}-%{release}
 
 %description sql
 This package contains the basic code that provides SQL connectivity for
 the Spacewalk backend modules.
 
-%if 0%{?with_oracle}
-%package sql-oracle
-Summary:        Oracle backend for Spacewalk
-Group:          Applications/Internet
-Requires:       python(:DBAPI:oracle)
-Provides:       %{name}-sql-virtual = %{version}-%{release}
-
-%description sql-oracle
-This package contains provides Oracle connectivity for the Spacewalk backend
-modules.
-%endif
-
 %package sql-postgresql
 Summary:        Postgresql backend for Spacewalk
-Group:          Applications/Internet
-%if 0%{?build_py3}
+Group:          System/Management
 Requires:       python3-psycopg2 >= 2.0.14-2
-%else
-Requires:       python-psycopg2 >= 2.0.14-2
-%endif
 Provides:       %{name}-sql-virtual = %{version}-%{release}
 
 %description sql-postgresql
@@ -200,28 +110,16 @@ backend modules.
 
 %package server
 Summary:        Basic code that provides Spacewalk Server functionality
-Group:          Applications/Internet
-Requires(pre): %{name}-sql = %{version}-%{release}
+Group:          System/Management
+Requires(pre):  %{name}-sql = %{version}-%{release}
 Requires:       %{name}-sql = %{version}-%{release}
-%if 0%{?build_py3}
 Requires:       python3-python-pam
-%else
-Requires:       python-python-pam
-%endif
 Requires:       spacewalk-config
-Obsoletes:      rhns-server < 5.3.0
-Provides:       rhns-server = 1:%{version}-%{release}
+Requires:       apache2-mod_wsgi-python3
 
-#this exists only on rhel5 and rhel6
-Conflicts:      python-sgmlop
 # cobbler-web is known to break our configuration
 Conflicts:      cobbler-web
 
-%if 0%{?build_py3}
-Requires:       apache2-mod_wsgi-python3
-%else
-Requires:       mod_wsgi
-%endif
 
 %description server
 This package contains the basic code that provides server/backend
@@ -231,21 +129,9 @@ receivers and get them enabled automatically.
 
 %package xmlrpc
 Summary:        Handler for /XMLRPC
-Group:          Applications/Internet
+Group:          System/Management
 Requires:       %{name}-server = %{version}-%{release}
-%if 0%{?build_py3}
 Requires:       python3-rpm
-%else
-%if 0%{?suse_version} >= 1500
-Requires:       python2-rpm
-%else
-Requires:       rpm-python
-%endif
-%endif
-Obsoletes:      rhns-server-xmlrpc < 5.3.0
-Obsoletes:      rhns-xmlrpc < 5.3.0
-Provides:       rhns-server-xmlrpc = 1:%{version}-%{release}
-Provides:       rhns-xmlrpc = 1:%{version}-%{release}
 
 %description xmlrpc
 These are the files required for running the /XMLRPC handler, which
@@ -254,10 +140,8 @@ and the up2date clients.
 
 %package applet
 Summary:        Handler for /APPLET
-Group:          Applications/Internet
+Group:          System/Management
 Requires:       %{name}-server = %{version}-%{release}
-Obsoletes:      rhns-applet < 5.3.0
-Provides:       rhns-applet = 1:%{version}-%{release}
 
 %description applet
 These are the files required for running the /APPLET handler, which
@@ -265,18 +149,8 @@ provides the functions for the Spacewalk applet.
 
 %package app
 Summary:        Handler for /APP
-Group:          Applications/Internet
+Group:          System/Management
 Requires:       %{name}-server = %{version}-%{release}
-Obsoletes:      rhns-app < 5.3.0
-Obsoletes:      rhns-server-app < 5.3.0
-Provides:       rhns-app = 1:%{version}-%{release}
-Provides:       rhns-server-app = 1:%{version}-%{release}
-Obsoletes:      spacewalk-backend-xp < 1.8.38
-Provides:       spacewalk-backend-xp = %{version}-%{release}
-Obsoletes:      rhns-server-xp < 5.3.0
-Obsoletes:      rhns-xp < 5.3.0
-Provides:       rhns-server-xp = 1:%{version}-%{release}
-Provides:       rhns-xp = 1:%{version}-%{release}
 
 %description app
 These are the files required for running the /APP handler.
@@ -284,10 +158,8 @@ Calls to /APP are used by internal maintenance tools (rhnpush).
 
 %package iss
 Summary:        Handler for /SAT
-Group:          Applications/Internet
+Group:          System/Management
 Requires:       %{name}-server = %{version}-%{release}
-Obsoletes:      rhns-sat < 5.3.0
-Provides:       rhns-sat = 1:%{version}-%{release}
 
 %description iss
 %{name} contains the basic code that provides server/backend
@@ -300,17 +172,9 @@ capability.
 
 %package iss-export
 Summary:        Listener for the Server XML dumper
-Group:          Applications/Internet
+Group:          System/Management
 Requires:       %{name}-xml-export-libs = %{version}-%{release}
-%if 0%{?build_py3}
 Requires:       python3-rpm
-%else
-%if 0%{?suse_version} >= 1500
-Requires:       python2-rpm
-%else
-Requires:       rpm-python
-%endif
-%endif
 
 %description iss-export
 %{name} contains the basic code that provides server/backend
@@ -322,130 +186,83 @@ This package contains listener for the Server XML dumper.
 
 %package config-files-common
 Summary:        Common files for the Configuration Management project
-Group:          Applications/Internet
+Group:          System/Management
 Requires:       %{name}-server = %{version}-%{release}
-Obsoletes:      rhns-config-files-common < 5.3.0
-Provides:       rhns-config-files-common = 1:%{version}-%{release}
 
 %description config-files-common
 Common files required by the Configuration Management project
 
 %package config-files
 Summary:        Handler for /CONFIG-MANAGEMENT
-Group:          Applications/Internet
+Group:          System/Management
 Requires:       %{name}-config-files-common = %{version}-%{release}
-Obsoletes:      rhns-config-files < 5.3.0
-Provides:       rhns-config-files = 1:%{version}-%{release}
 
 %description config-files
 This package contains the server-side code for configuration management.
 
 %package config-files-tool
 Summary:        Handler for /CONFIG-MANAGEMENT-TOOL
-Group:          Applications/Internet
+Group:          System/Management
 Requires:       %{name}-config-files-common = %{version}-%{release}
-Obsoletes:      rhns-config-files-tool < 5.3.0
-Provides:       rhns-config-files-tool = 1:%{version}-%{release}
 
 %description config-files-tool
 This package contains the server-side code for configuration management tool.
 
 %package package-push-server
 Summary:        Listener for rhnpush (non-XMLRPC version)
-Group:          Applications/Internet
+Group:          System/Management
 Requires:       %{name}-server = %{version}-%{release}
-Obsoletes:      rhns-package-push-server < 5.3.0
-Provides:       rhns-package-push-server = 1:%{version}-%{release}
 
 %description package-push-server
 Listener for rhnpush (non-XMLRPC version)
 
 %package tools
 Summary:        Spacewalk Services Tools
-Group:          Applications/Internet
+Group:          System/Management
 Requires:       %{name}
 Requires:       %{name}-app = %{version}-%{release}
 Requires:       %{name}-xmlrpc = %{version}-%{release}
-%if 0%{?suse_version} > 1200 || 0%{?fedora} || 0%{?rhel} > 6
 Requires:       systemd
 BuildRequires:  systemd
 %{?systemd_requires}
-%endif
 
-%if 0%{?build_py3}
 Requires:       python3-gzipstream
 Requires:       python3-python-dateutil
 Requires:       python3-rhn-client-tools
 Requires:       python3-solv
 Requires:       python3-urlgrabber
-%else
-Requires:       python-configparser
-Requires:       python-dateutil
-Requires:       python-solv
-Requires:       python2-gzipstream
-Requires:       python2-rhn-client-tools
-Requires:       python2-urlgrabber
-%if 0%{?suse_version}
-Requires:       python-pyliblzma
-%else
-%if 0%{?fedora} || 0%{?rhel} > 6
-Requires:       pyliblzma
-%endif # 0{?fedora} || 0{?rhel} > 6
-%endif # 0{?suse_version}
-%endif # 0{?build_py3}
 Requires:       spacewalk-admin >= 0.1.1-0
 Requires:       spacewalk-certs-tools
+Requires:       susemanager-tools
 %if 0%{?suse_version}
 Requires:       apache2-prefork
-Requires:       susemanager-tools
 %endif
 %if 0%{?fedora} || 0%{?rhel}
 Requires:       mod_ssl
-Requires:       python2-devel
 %endif
 Requires:       %{name}-xml-export-libs
-Requires:       cobbler >= 2.0.0
-%if 0%{?fedora} >= 22
-Recommends:     cobbler20
-%endif
+Requires:       cobbler >= 3.0.0
 Requires:       %{m2crypto}
-Requires:       %{pythonX}-requests
-%if 0%{?build_py3}
+Requires:       python3-requests
 Requires:       python3-rhnlib  >= 2.5.57
-%else
-Requires:       python2-rhnlib  >= 2.5.57
-%endif
-%if 0%{?fedora} || 0%{?rhel}
-BuildRequires:  python-requests
-%endif
-Obsoletes:      rhns-satellite-tools < 5.3.0
-Obsoletes:      spacewalk-backend-satellite-tools <= 0.2.7
-Provides:       rhns-satellite-tools = 1:%{version}-%{release}
-Provides:       spacewalk-backend-satellite-tools = %{version}-%{release}
 
 %description tools
 Various utilities for the Spacewalk Server.
 
 %package xml-export-libs
 Summary:        Spacewalk XML data exporter
-Group:          Applications/Internet
+Group:          System/Management
 Requires:       %{name}-server = %{version}-%{release}
-Obsoletes:      rhns-xml-export-libs < 5.3.0
-Provides:       rhns-xml-export-libs = 1:%{version}-%{release}
 
 %description xml-export-libs
 Libraries required by various exporting tools
 
 %package cdn
 Summary:        CDN tools
-Group:          Applications/Internet
+Group:          System/Management
 Requires:       %{m2crypto}
 Requires:       %{name}-server = %{version}-%{release}
-%if 0%{?build_py3}
 Requires:       python3-argparse
-%else
-Requires:       python-argparse
-%endif
 Requires:       subscription-manager
 
 %description cdn
@@ -455,29 +272,26 @@ Tools for syncing content from Red Hat CDN
 %setup -q
 
 %build
-make -f Makefile.backend all PYTHON_BIN=%{pythonX}
+make -f Makefile.backend all PYTHON_BIN=python3
 
 # Fixing shebang for Python 3
-%if 0%{?build_py3}
 for i in `find . -type f`;
 do
 	sed -i '1s=^#!/usr/bin/\(python\|env python\)[0-9.]*=#!/usr/bin/python3=' $i;
 done
-%endif
 
 %install
 install -d $RPM_BUILD_ROOT%{rhnroot}
-install -d $RPM_BUILD_ROOT%{pythonrhnroot}
-install -d $RPM_BUILD_ROOT%{pythonrhnroot}/common
+install -d $RPM_BUILD_ROOT%{python3rhnroot}
+install -d $RPM_BUILD_ROOT%{python3rhnroot}/common
 install -d $RPM_BUILD_ROOT%{rhnconf}
 install -d $RPM_BUILD_ROOT/%{_unitdir}
 install -d $RPM_BUILD_ROOT/%{_prefix}/lib/susemanager/bin/
 
 make -f Makefile.backend install PREFIX=$RPM_BUILD_ROOT \
-    MANDIR=%{_mandir} APACHECONFDIR=%{apacheconfd} PYTHON_BIN=%{pythonX}
-%if !0%{?with_oracle}
-rm -f $RPM_BUILD_ROOT%{pythonrhnroot}/server/rhnSQL/driver_cx_Oracle.py*
-%endif
+    MANDIR=%{_mandir} APACHECONFDIR=%{apacheconfd} PYTHON_BIN=python3
+# no support for oracle DB anymore
+rm -f $RPM_BUILD_ROOT%{python3rhnroot}/server/rhnSQL/driver_cx_Oracle.py*
 
 export PYTHON_MODULE_NAME=%{name}
 export PYTHON_MODULE_VERSION=%{version}
@@ -512,35 +326,27 @@ sed -i 's/#DOCUMENTROOT#/\/var\/www\/html/' $RPM_BUILD_ROOT%{rhnconfigdefaults}/
 sed -i 's/#LOGROTATE-3.8#.*/    su root www/' $RPM_BUILD_ROOT%{_sysconfdir}/logrotate.d/spacewalk-backend-*
 sed -i 's/#DOCUMENTROOT#/\/srv\/www\/htdocs/' $RPM_BUILD_ROOT%{rhnconfigdefaults}/rhn.conf
 
-%if 0%{?build_py3}
-%py3_compile -O %{buildroot}/%{pythonrhnroot}
-%fdupes %{buildroot}/%{pythonrhnroot}
-%endif
+%py3_compile -O %{buildroot}/%{python3rhnroot}
+%fdupes %{buildroot}/%{python3rhnroot}
 %endif
 
 install -m 755 satellite_tools/mgr-update-pkg-extra-tags $RPM_BUILD_ROOT%{_prefix}/lib/susemanager/bin/
 
 %check
-make -f Makefile.backend PYTHONPATH=$RPM_BUILD_ROOT%{python_sitelib}:$RPM_BUILD_ROOT%{python3_sitelib}/uyuni/common-libs PYTHON_BIN=%{pythonX} test
+make -f Makefile.backend PYTHONPATH=$RPM_BUILD_ROOT%{python3_sitelib}:$RPM_BUILD_ROOT%{python3_sitelib}/uyuni/common-libs PYTHON_BIN=python3 test
 
 %if 0%{?pylint_check}
 # check coding style
-export PYTHONPATH=$RPM_BUILD_ROOT%{pythonrhnroot}:/usr/lib/rhn:/usr/share/rhn:$RPM_BUILD_ROOT%{python3_sitelib}/uyuni/common-libs
-spacewalk-%{pythonX} $RPM_BUILD_ROOT%{pythonrhnroot}/common \
-                     $RPM_BUILD_ROOT%{pythonrhnroot}/satellite_exporter \
-                     $RPM_BUILD_ROOT%{pythonrhnroot}/satellite_tools \
-                     $RPM_BUILD_ROOT%{pythonrhnroot}/cdn_tools \
-                     $RPM_BUILD_ROOT%{pythonrhnroot}/upload_server \
-                     $RPM_BUILD_ROOT%{pythonrhnroot}/wsgi
+export PYTHONPATH=$RPM_BUILD_ROOT%{python3rhnroot}:/usr/lib/rhn:/usr/share/rhn:$RPM_BUILD_ROOT%{python3_sitelib}/uyuni/common-libs
+spacewalk-python3 $RPM_BUILD_ROOT%{python3rhnroot}/common \
+                     $RPM_BUILD_ROOT%{python3rhnroot}/satellite_exporter \
+                     $RPM_BUILD_ROOT%{python3rhnroot}/satellite_tools \
+                     $RPM_BUILD_ROOT%{python3rhnroot}/cdn_tools \
+                     $RPM_BUILD_ROOT%{python3rhnroot}/upload_server \
+                     $RPM_BUILD_ROOT%{python3rhnroot}/wsgi
 
 %endif
 
-%pre server
-OLD_SECRET_FILE=%{_var}/www/rhns/server/secret/rhnSecret.py
-if [ -f $OLD_SECRET_FILE ]; then
-    install -d -m 750 -o root -g %{apache_group} %{rhnconf}
-    mv ${OLD_SECRET_FILE}*  %{rhnconf}
-fi
 
 %post server
 %if 0%{?suse_version}
@@ -562,35 +368,15 @@ fi
 %postun tools
 %service_del_postun spacewalk-diskcheck.service spacewalk-diskcheck.timer
 
-# Is secret key in our config file?
-regex="^[[:space:]]*(server\.|)secret_key[[:space:]]*=.*$"
-
-if grep -E -i $regex %{rhnconf}/rhn.conf > /dev/null 2>&1 ; then
-    # secret key already there
-    rm -f %{rhnconf}/rhnSecret.py*
-    exit 0
-fi
-
-# Generate a secret key if old one is not present
-if [ -f %{rhnconf}/rhnSecret.py ]; then
-    secret_key=$(PYTHONPATH=%{rhnconf} %{__python} -c \
-        "from rhnSecret import SECRET_KEY; print SECRET_KEY")
-else
-    secret_key=$(dd if=/dev/urandom bs=1024 count=1 2>/dev/null | sha1sum - |
-        awk '{print $1}')
-fi
-
-echo "server.secret_key = $secret_key" >> %{rhnconf}/rhn.conf
-rm -f %{rhnconf}/rhnSecret.py*
 
 %files
 %defattr(-,root,root)
 %doc LICENSE
-%dir %{pythonrhnroot}
+%dir %{python3rhnroot}
 %dir %{_prefix}/lib/susemanager
 %dir %{_prefix}/lib/susemanager/bin
-%{pythonrhnroot}/__init__.py*
-%{pythonrhnroot}/common
+%{python3rhnroot}/__init__.py*
+%{python3rhnroot}/common
 %attr(770,root,%{apache_group}) %dir %{_var}/log/rhn
 # Workaround for strict-whitespace-enforcement in httpd
 %attr(644,root,%{apache_group}) %config %{apacheconfd}/aa-spacewalk-server.conf
@@ -604,122 +390,105 @@ rm -f %{rhnconf}/rhnSecret.py*
 %{rhnroot}/wsgi/__init__.py*
 %{rhnroot}/wsgi/wsgiHandler.py*
 %{rhnroot}/wsgi/wsgiRequest.py*
-%if 0%{?suse_version}
 %dir %{rhnroot}
-%endif
-%if 0%{?build_py3}
-%dir %{pythonrhnroot}/__pycache__/
-%{pythonrhnroot}/__pycache__/*
-%endif
+%dir %{python3rhnroot}/__pycache__/
+%{python3rhnroot}/__pycache__/*
 
 %files sql
 %defattr(-,root,root)
 %doc LICENSE
-%if 0%{?suse_version}
 %dir %{rhnroot}/server
-%endif
 # Need __init__ = share it with rhns-server
-%dir %{pythonrhnroot}/server
-%{pythonrhnroot}/server/__init__.py*
+%dir %{python3rhnroot}/server
+%{python3rhnroot}/server/__init__.py*
 %{rhnroot}/server/__init__.py*
-%dir %{pythonrhnroot}/server/rhnSQL
-%{pythonrhnroot}/server/rhnSQL/const.py*
-%{pythonrhnroot}/server/rhnSQL/dbi.py*
-%{pythonrhnroot}/server/rhnSQL/__init__.py*
-%{pythonrhnroot}/server/rhnSQL/sql_*.py*
-%if 0%{?build_py3}
-%dir %{pythonrhnroot}/server/__pycache__/
-%dir %{pythonrhnroot}/server/rhnSQL/__pycache__/
-%{pythonrhnroot}/server/__pycache__/__init__.*
-%{pythonrhnroot}/server/rhnSQL/__pycache__/*
-%endif
-
-%if 0%{?with_oracle}
-%files sql-oracle
-%defattr(-,root,root)
-%doc LICENSE
-%{pythonrhnroot}/server/rhnSQL/driver_cx_Oracle.py*
-%endif
+%dir %{python3rhnroot}/server/rhnSQL
+%{python3rhnroot}/server/rhnSQL/const.py*
+%{python3rhnroot}/server/rhnSQL/dbi.py*
+%{python3rhnroot}/server/rhnSQL/__init__.py*
+%{python3rhnroot}/server/rhnSQL/sql_*.py*
+%dir %{python3rhnroot}/server/__pycache__/
+%dir %{python3rhnroot}/server/rhnSQL/__pycache__/
+%{python3rhnroot}/server/__pycache__/__init__.*
+%{python3rhnroot}/server/rhnSQL/__pycache__/*
+%exclude %{python3rhnroot}/server/rhnSQL/__pycache__/driver_postgresql.*
 
 %files sql-postgresql
 %defattr(-,root,root)
 %doc LICENSE
-%{pythonrhnroot}/server/rhnSQL/driver_postgresql.py*
+%{python3rhnroot}/server/rhnSQL/driver_postgresql.py*
+%{python3rhnroot}/server/rhnSQL/__pycache__/driver_postgresql.*
 
 %files server -f %{name}-server.lang
 %defattr(-,root,root)
 %doc LICENSE
-%if 0%{?suse_version}
 %dir %{rhnroot}/server
-%endif
 # modules
-%{pythonrhnroot}/server/apacheAuth.py*
-%{pythonrhnroot}/server/apacheHandler.py*
-%{pythonrhnroot}/server/apacheRequest.py*
-%{pythonrhnroot}/server/apacheServer.py*
-%{pythonrhnroot}/server/apacheUploadServer.py*
-%{pythonrhnroot}/server/rhnAction.py*
-%{pythonrhnroot}/server/rhnAuthPAM.py*
-%{pythonrhnroot}/server/rhnCapability.py*
-%{pythonrhnroot}/server/rhnChannel.py*
-%{pythonrhnroot}/server/rhnDependency.py*
-%{pythonrhnroot}/server/rhnPackage.py*
-%{pythonrhnroot}/server/rhnPackageUpload.py*
-%{pythonrhnroot}/server/basePackageUpload.py*
-%{pythonrhnroot}/server/rhnHandler.py*
-%{pythonrhnroot}/server/rhnImport.py*
-%{pythonrhnroot}/server/rhnLib.py*
-%{pythonrhnroot}/server/rhnMapping.py*
-%{pythonrhnroot}/server/rhnRepository.py*
-%{pythonrhnroot}/server/rhnSession.py*
-%{pythonrhnroot}/server/rhnUser.py*
-%{pythonrhnroot}/server/rhnVirtualization.py*
-%{pythonrhnroot}/server/taskomatic.py*
-%{pythonrhnroot}/server/suseEula.py*
-%dir %{pythonrhnroot}/server/rhnServer
-%{pythonrhnroot}/server/rhnServer/*
-%dir %{pythonrhnroot}/server/importlib
-%{pythonrhnroot}/server/importlib/__init__.py*
-%{pythonrhnroot}/server/importlib/archImport.py*
-%{pythonrhnroot}/server/importlib/backend.py*
-%{pythonrhnroot}/server/importlib/backendLib.py*
-%{pythonrhnroot}/server/importlib/backendOracle.py*
-%{pythonrhnroot}/server/importlib/backend_checker.py*
-%{pythonrhnroot}/server/importlib/channelImport.py*
-%{pythonrhnroot}/server/importlib/debPackage.py*
-%{pythonrhnroot}/server/importlib/errataCache.py*
-%{pythonrhnroot}/server/importlib/errataImport.py*
-%{pythonrhnroot}/server/importlib/headerSource.py*
-%{pythonrhnroot}/server/importlib/importLib.py*
-%{pythonrhnroot}/server/importlib/kickstartImport.py*
-%{pythonrhnroot}/server/importlib/mpmSource.py*
-%{pythonrhnroot}/server/importlib/packageImport.py*
-%{pythonrhnroot}/server/importlib/packageUpload.py*
-%{pythonrhnroot}/server/importlib/productNamesImport.py*
-%{pythonrhnroot}/server/importlib/userAuth.py*
-%{pythonrhnroot}/server/importlib/orgImport.py*
-%{pythonrhnroot}/server/importlib/contentSourcesImport.py*
-%{pythonrhnroot}/server/importlib/supportInformationImport.py*
-%{pythonrhnroot}/server/importlib/suseProductsImport.py*
-%if 0%{?build_py3}
-%dir %{pythonrhnroot}/server/importlib/__pycache__/
-%{pythonrhnroot}/server/importlib/__pycache__/*
-%{pythonrhnroot}/server/__pycache__/*
-%exclude %{pythonrhnroot}/server/__pycache__/__init__.*
-%endif
+%{python3rhnroot}/server/apacheAuth.py*
+%{python3rhnroot}/server/apacheHandler.py*
+%{python3rhnroot}/server/apacheRequest.py*
+%{python3rhnroot}/server/apacheServer.py*
+%{python3rhnroot}/server/apacheUploadServer.py*
+%{python3rhnroot}/server/rhnAction.py*
+%{python3rhnroot}/server/rhnAuthPAM.py*
+%{python3rhnroot}/server/rhnCapability.py*
+%{python3rhnroot}/server/rhnChannel.py*
+%{python3rhnroot}/server/rhnDependency.py*
+%{python3rhnroot}/server/rhnPackage.py*
+%{python3rhnroot}/server/rhnPackageUpload.py*
+%{python3rhnroot}/server/basePackageUpload.py*
+%{python3rhnroot}/server/rhnHandler.py*
+%{python3rhnroot}/server/rhnImport.py*
+%{python3rhnroot}/server/rhnLib.py*
+%{python3rhnroot}/server/rhnMapping.py*
+%{python3rhnroot}/server/rhnRepository.py*
+%{python3rhnroot}/server/rhnSession.py*
+%{python3rhnroot}/server/rhnUser.py*
+%{python3rhnroot}/server/rhnVirtualization.py*
+%{python3rhnroot}/server/taskomatic.py*
+%{python3rhnroot}/server/suseEula.py*
+%dir %{python3rhnroot}/server/rhnServer
+%{python3rhnroot}/server/rhnServer/*
+%dir %{python3rhnroot}/server/importlib
+%{python3rhnroot}/server/importlib/__init__.py*
+%{python3rhnroot}/server/importlib/archImport.py*
+%{python3rhnroot}/server/importlib/backend.py*
+%{python3rhnroot}/server/importlib/backendLib.py*
+%{python3rhnroot}/server/importlib/backendOracle.py*
+%{python3rhnroot}/server/importlib/backend_checker.py*
+%{python3rhnroot}/server/importlib/channelImport.py*
+%{python3rhnroot}/server/importlib/debPackage.py*
+%{python3rhnroot}/server/importlib/errataCache.py*
+%{python3rhnroot}/server/importlib/errataImport.py*
+%{python3rhnroot}/server/importlib/headerSource.py*
+%{python3rhnroot}/server/importlib/importLib.py*
+%{python3rhnroot}/server/importlib/kickstartImport.py*
+%{python3rhnroot}/server/importlib/mpmSource.py*
+%{python3rhnroot}/server/importlib/packageImport.py*
+%{python3rhnroot}/server/importlib/packageUpload.py*
+%{python3rhnroot}/server/importlib/productNamesImport.py*
+%{python3rhnroot}/server/importlib/userAuth.py*
+%{python3rhnroot}/server/importlib/orgImport.py*
+%{python3rhnroot}/server/importlib/contentSourcesImport.py*
+%{python3rhnroot}/server/importlib/supportInformationImport.py*
+%{python3rhnroot}/server/importlib/suseProductsImport.py*
+%dir %{python3rhnroot}/server/importlib/__pycache__/
+%{python3rhnroot}/server/importlib/__pycache__/*
+%{python3rhnroot}/server/__pycache__/*
+%exclude %{python3rhnroot}/server/__pycache__/__init__.*
+%exclude %{python3rhnroot}/server/__pycache__/auditlog.*
+%exclude %{python3rhnroot}/server/__pycache__/configFilesHandler.*
 %{rhnroot}/server/handlers/__init__.py*
 
 # Repomd stuff
-%dir %{pythonrhnroot}/server/repomd
-%{pythonrhnroot}/server/repomd/__init__.py*
-%{pythonrhnroot}/server/repomd/domain.py*
-%{pythonrhnroot}/server/repomd/mapper.py*
-%{pythonrhnroot}/server/repomd/repository.py*
-%{pythonrhnroot}/server/repomd/view.py*
-%if 0%{?build_py3}
-%dir %{pythonrhnroot}/server/repomd/__pycache__/
-%{pythonrhnroot}/server/repomd/__pycache__/*
-%endif
+%dir %{python3rhnroot}/server/repomd
+%{python3rhnroot}/server/repomd/__init__.py*
+%{python3rhnroot}/server/repomd/domain.py*
+%{python3rhnroot}/server/repomd/mapper.py*
+%{python3rhnroot}/server/repomd/repository.py*
+%{python3rhnroot}/server/repomd/view.py*
+%dir %{python3rhnroot}/server/repomd/__pycache__/
+%{python3rhnroot}/server/repomd/__pycache__/*
 
 # the cache
 %attr(755,%{apache_user},%{apache_group}) %dir %{_var}/cache/rhn
@@ -744,35 +513,30 @@ rm -f %{rhnconf}/rhnSecret.py*
 # logs and other stuff
 %config(noreplace) %{_sysconfdir}/logrotate.d/spacewalk-backend-server
 
-%if 0%{?suse_version}
 %dir %{rhnroot}/server
 %dir %{rhnroot}/server/handlers
-%endif
 
 %files xmlrpc
 %defattr(-,root,root)
 %doc LICENSE
 %dir %{rhnroot}/server/handlers/xmlrpc
 %{rhnroot}/server/handlers/xmlrpc/*
-%dir %{pythonrhnroot}/server/action
-%{pythonrhnroot}/server/action/*
-%dir %{pythonrhnroot}/server/action_extra_data
-%{pythonrhnroot}/server/action_extra_data/*
-%{pythonrhnroot}/server/auditlog.py*
+%dir %{python3rhnroot}/server/action
+%{python3rhnroot}/server/action/*
+%dir %{python3rhnroot}/server/action_extra_data
+%{python3rhnroot}/server/action_extra_data/*
+%{python3rhnroot}/server/auditlog.py*
+%{python3rhnroot}/server/__pycache__/auditlog.*
 # config files
 %attr(644,root,%{apache_group}) %{rhnconfigdefaults}/rhn_server_xmlrpc.conf
 %config(noreplace) %{_sysconfdir}/logrotate.d/spacewalk-backend-xmlrpc
-%if 0%{?suse_version}
 %dir %{rhnroot}/server
 %dir %{rhnroot}/server/handlers
-%endif
 
 %files applet
 %defattr(-,root,root)
 %doc LICENSE
-%if 0%{?suse_version}
 %dir %{rhnroot}/server
-%endif
 %dir %{rhnroot}/server/handlers/applet
 %{rhnroot}/server/handlers/applet/*
 # config files
@@ -782,9 +546,7 @@ rm -f %{rhnconf}/rhnSecret.py*
 %files app
 %defattr(-,root,root)
 %doc LICENSE
-%if 0%{?suse_version}
 %dir %{rhnroot}/server
-%endif
 %dir %{rhnroot}/server/handlers/app
 %{rhnroot}/server/handlers/app/*
 # config files
@@ -794,9 +556,7 @@ rm -f %{rhnconf}/rhnSecret.py*
 %files iss
 %defattr(-,root,root)
 %doc LICENSE
-%if 0%{?suse_version}
 %dir %{rhnroot}/server
-%endif
 %dir %{rhnroot}/server/handlers/sat
 %{rhnroot}/server/handlers/sat/*
 %config(noreplace) %{_sysconfdir}/logrotate.d/spacewalk-backend-iss
@@ -804,35 +564,32 @@ rm -f %{rhnconf}/rhnSecret.py*
 %files iss-export
 %defattr(-,root,root)
 %doc LICENSE
-%dir %{pythonrhnroot}/satellite_exporter
-%{pythonrhnroot}/satellite_exporter/__init__.py*
-%{pythonrhnroot}/satellite_exporter/satexport.py*
+%dir %{python3rhnroot}/satellite_exporter
+%{python3rhnroot}/satellite_exporter/__init__.py*
+%{python3rhnroot}/satellite_exporter/satexport.py*
 
 %dir %{rhnroot}/satellite_exporter
 %dir %{rhnroot}/satellite_exporter/handlers
 %{rhnroot}/satellite_exporter/__init__.py*
 %{rhnroot}/satellite_exporter/handlers/__init__.py*
 %{rhnroot}/satellite_exporter/handlers/non_auth_dumper.py*
-%if 0%{?build_py3}
-%dir %{pythonrhnroot}/satellite_exporter/__pycache__/
-%{pythonrhnroot}/satellite_exporter/__pycache__/*
-%endif
+%dir %{python3rhnroot}/satellite_exporter/__pycache__/
+%{python3rhnroot}/satellite_exporter/__pycache__/*
 # config files
 %config(noreplace) %{_sysconfdir}/logrotate.d/spacewalk-backend-iss-export
 
 %files config-files-common
 %defattr(-,root,root)
 %doc LICENSE
-%{pythonrhnroot}/server/configFilesHandler.py*
-%dir %{pythonrhnroot}/server/config_common
-%{pythonrhnroot}/server/config_common/*
+%{python3rhnroot}/server/configFilesHandler.py*
+%{python3rhnroot}/server/__pycache__/configFilesHandler.*
+%dir %{python3rhnroot}/server/config_common
+%{python3rhnroot}/server/config_common/*
 
 %files config-files
 %defattr(-,root,root)
 %doc LICENSE
-%if 0%{?suse_version}
 %dir %{rhnroot}/server
-%endif
 %dir %{rhnroot}/server/handlers/config
 %{rhnroot}/server/handlers/config/*
 %attr(644,root,%{apache_group}) %{rhnconfigdefaults}/rhn_server_config-management.conf
@@ -841,9 +598,7 @@ rm -f %{rhnconf}/rhnSecret.py*
 %files config-files-tool
 %defattr(-,root,root)
 %doc LICENSE
-%if 0%{?suse_version}
 %dir %{rhnroot}/server
-%endif
 %dir %{rhnroot}/server/handlers/config_mgmt
 %{rhnroot}/server/handlers/config_mgmt/*
 %attr(644,root,%{apache_group}) %{rhnconfigdefaults}/rhn_server_config-management-tool.conf
@@ -891,50 +646,50 @@ rm -f %{rhnconf}/rhnSecret.py*
 %attr(755,root,root) %{_bindir}/mgr-sign-metadata-ctl
 %attr(755,root,root) %{_bindir}/spacewalk-diskcheck
 %attr(755,root,root) %{_prefix}/lib/susemanager/bin/mgr-update-pkg-extra-tags
-%{pythonrhnroot}/satellite_tools/contentRemove.py*
-%{pythonrhnroot}/satellite_tools/SequenceServer.py*
-%{pythonrhnroot}/satellite_tools/messages.py*
-%{pythonrhnroot}/satellite_tools/progress_bar.py*
-%{pythonrhnroot}/satellite_tools/req_channels.py*
-%{pythonrhnroot}/satellite_tools/satsync.py*
-%{pythonrhnroot}/satellite_tools/satCerts.py*
-%{pythonrhnroot}/satellite_tools/satComputePkgHeaders.py*
-%{pythonrhnroot}/satellite_tools/syncCache.py*
-%{pythonrhnroot}/satellite_tools/sync_handlers.py*
-%{pythonrhnroot}/satellite_tools/rhn_satellite_activate.py*
-%{pythonrhnroot}/satellite_tools/rhn_ssl_dbstore.py*
-%{pythonrhnroot}/satellite_tools/xmlWireSource.py*
-%{pythonrhnroot}/satellite_tools/updatePackages.py*
-%{pythonrhnroot}/satellite_tools/reposync.py*
-%{pythonrhnroot}/satellite_tools/constants.py*
-%{pythonrhnroot}/satellite_tools/download.py*
-%dir %{pythonrhnroot}/satellite_tools/disk_dumper
-%{pythonrhnroot}/satellite_tools/disk_dumper/__init__.py*
-%{pythonrhnroot}/satellite_tools/disk_dumper/iss.py*
-%{pythonrhnroot}/satellite_tools/disk_dumper/iss_ui.py*
-%{pythonrhnroot}/satellite_tools/disk_dumper/iss_isos.py*
-%{pythonrhnroot}/satellite_tools/disk_dumper/iss_actions.py*
-%{pythonrhnroot}/satellite_tools/disk_dumper/dumper.py*
-%{pythonrhnroot}/satellite_tools/disk_dumper/string_buffer.py*
-%dir %{pythonrhnroot}/satellite_tools/repo_plugins
+%{python3rhnroot}/satellite_tools/contentRemove.py*
+%{python3rhnroot}/satellite_tools/SequenceServer.py*
+%{python3rhnroot}/satellite_tools/messages.py*
+%{python3rhnroot}/satellite_tools/progress_bar.py*
+%{python3rhnroot}/satellite_tools/req_channels.py*
+%{python3rhnroot}/satellite_tools/satsync.py*
+%{python3rhnroot}/satellite_tools/satCerts.py*
+%{python3rhnroot}/satellite_tools/satComputePkgHeaders.py*
+%{python3rhnroot}/satellite_tools/syncCache.py*
+%{python3rhnroot}/satellite_tools/sync_handlers.py*
+%{python3rhnroot}/satellite_tools/rhn_satellite_activate.py*
+%{python3rhnroot}/satellite_tools/rhn_ssl_dbstore.py*
+%{python3rhnroot}/satellite_tools/xmlWireSource.py*
+%{python3rhnroot}/satellite_tools/updatePackages.py*
+%{python3rhnroot}/satellite_tools/reposync.py*
+%{python3rhnroot}/satellite_tools/constants.py*
+%{python3rhnroot}/satellite_tools/download.py*
+%dir %{python3rhnroot}/satellite_tools/disk_dumper
+%{python3rhnroot}/satellite_tools/disk_dumper/__init__.py*
+%{python3rhnroot}/satellite_tools/disk_dumper/iss.py*
+%{python3rhnroot}/satellite_tools/disk_dumper/iss_ui.py*
+%{python3rhnroot}/satellite_tools/disk_dumper/iss_isos.py*
+%{python3rhnroot}/satellite_tools/disk_dumper/iss_actions.py*
+%{python3rhnroot}/satellite_tools/disk_dumper/dumper.py*
+%{python3rhnroot}/satellite_tools/disk_dumper/string_buffer.py*
+%dir %{python3rhnroot}/satellite_tools/repo_plugins
 %attr(755,root,%{apache_group}) %dir %{_var}/log/rhn/reposync
-%{pythonrhnroot}/satellite_tools/repo_plugins/__init__.py*
-%{pythonrhnroot}/satellite_tools/repo_plugins/yum_src.py*
-%{pythonrhnroot}/satellite_tools/repo_plugins/uln_src.py*
-%{pythonrhnroot}/satellite_tools/repo_plugins/deb_src.py*
-%if 0%{?build_py3}
-%dir %{pythonrhnroot}/satellite_tools/__pycache__/
-%dir %{pythonrhnroot}/satellite_tools/disk_dumper/__pycache__/
-%dir %{pythonrhnroot}/satellite_tools/repo_plugins/__pycache__/
-%{pythonrhnroot}/satellite_tools/__pycache__/*
-%exclude %{pythonrhnroot}/satellite_tools/__pycache__/connection.*
-%exclude %{pythonrhnroot}/satellite_tools/__pycache__/diskImportLib.*
-%exclude %{pythonrhnroot}/satellite_tools/__pycache__/syncLib.*
-%exclude %{pythonrhnroot}/satellite_tools/__pycache__/xmlDiskSource.*
-%exclude %{pythonrhnroot}/satellite_tools/__pycache__/xmlSource.*
-%{pythonrhnroot}/satellite_tools/disk_dumper/__pycache__/*
-%{pythonrhnroot}/satellite_tools/repo_plugins/__pycache__/*
-%endif
+%{python3rhnroot}/satellite_tools/repo_plugins/__init__.py*
+%{python3rhnroot}/satellite_tools/repo_plugins/yum_src.py*
+%{python3rhnroot}/satellite_tools/repo_plugins/uln_src.py*
+%{python3rhnroot}/satellite_tools/repo_plugins/deb_src.py*
+%dir %{python3rhnroot}/satellite_tools/__pycache__/
+%dir %{python3rhnroot}/satellite_tools/disk_dumper/__pycache__/
+%dir %{python3rhnroot}/satellite_tools/repo_plugins/__pycache__/
+%{python3rhnroot}/satellite_tools/__pycache__/*
+%exclude %{python3rhnroot}/satellite_tools/__pycache__/__init__.*
+%exclude %{python3rhnroot}/satellite_tools/__pycache__/geniso.*
+%exclude %{python3rhnroot}/satellite_tools/__pycache__/connection.*
+%exclude %{python3rhnroot}/satellite_tools/__pycache__/diskImportLib.*
+%exclude %{python3rhnroot}/satellite_tools/__pycache__/syncLib.*
+%exclude %{python3rhnroot}/satellite_tools/__pycache__/xmlDiskSource.*
+%exclude %{python3rhnroot}/satellite_tools/__pycache__/xmlSource.*
+%{python3rhnroot}/satellite_tools/disk_dumper/__pycache__/*
+%{python3rhnroot}/satellite_tools/repo_plugins/__pycache__/*
 %config %attr(644,root,%{apache_group}) %{rhnconfigdefaults}/rhn_server_iss.conf
 %{_mandir}/man8/rhn-satellite-exporter.8*
 %{_mandir}/man8/rhn-charsets.8*
@@ -956,51 +711,43 @@ rm -f %{rhnconf}/rhnSecret.py*
 %{_mandir}/man8/update-packages.8*
 %attr(644, root, root) %{_unitdir}/spacewalk-diskcheck.service
 %attr(644, root, root) %{_unitdir}/spacewalk-diskcheck.timer
-%if 0%{?rhel} == 6 || 0%{?suse_version} == 1110
-%dir /lib/systemd
-%dir /lib/systemd/system
-%endif
 
 %files xml-export-libs
 %defattr(-,root,root)
 %doc LICENSE
-%dir %{pythonrhnroot}/satellite_tools
-%{pythonrhnroot}/satellite_tools/__init__.py*
-%{pythonrhnroot}/satellite_tools/geniso.py*
+%dir %{python3rhnroot}/satellite_tools
+%{python3rhnroot}/satellite_tools/__init__.py*
+%{python3rhnroot}/satellite_tools/geniso.py*
 # A bunch of modules shared with satellite-tools
-%{pythonrhnroot}/satellite_tools/connection.py*
-%{pythonrhnroot}/satellite_tools/diskImportLib.py*
-%{pythonrhnroot}/satellite_tools/syncLib.py*
-%{pythonrhnroot}/satellite_tools/xmlDiskSource.py*
-%{pythonrhnroot}/satellite_tools/xmlSource.py*
-%dir %{pythonrhnroot}/satellite_tools/exporter
-%{pythonrhnroot}/satellite_tools/exporter/__init__.py*
-%{pythonrhnroot}/satellite_tools/exporter/exportLib.py*
-%{pythonrhnroot}/satellite_tools/exporter/xmlWriter.py*
-%if 0%{?build_py3}
-%dir %{pythonrhnroot}/satellite_tools/exporter/__pycache__/
-%{pythonrhnroot}/satellite_tools/__pycache__/connection.*
-%{pythonrhnroot}/satellite_tools/__pycache__/diskImportLib.*
-%{pythonrhnroot}/satellite_tools/__pycache__/syncLib.*
-%{pythonrhnroot}/satellite_tools/__pycache__/xmlDiskSource.*
-%{pythonrhnroot}/satellite_tools/__pycache__/xmlSource.*
-%{pythonrhnroot}/satellite_tools/exporter/__pycache__/*
-%endif
+%{python3rhnroot}/satellite_tools/connection.py*
+%{python3rhnroot}/satellite_tools/diskImportLib.py*
+%{python3rhnroot}/satellite_tools/syncLib.py*
+%{python3rhnroot}/satellite_tools/xmlDiskSource.py*
+%{python3rhnroot}/satellite_tools/xmlSource.py*
+%dir %{python3rhnroot}/satellite_tools/exporter
+%{python3rhnroot}/satellite_tools/exporter/__init__.py*
+%{python3rhnroot}/satellite_tools/exporter/exportLib.py*
+%{python3rhnroot}/satellite_tools/exporter/xmlWriter.py*
+%dir %{python3rhnroot}/satellite_tools/exporter/__pycache__/
+%{python3rhnroot}/satellite_tools/__pycache__/__init__.*
+%{python3rhnroot}/satellite_tools/__pycache__/geniso.*
+%{python3rhnroot}/satellite_tools/__pycache__/connection.*
+%{python3rhnroot}/satellite_tools/__pycache__/diskImportLib.*
+%{python3rhnroot}/satellite_tools/__pycache__/syncLib.*
+%{python3rhnroot}/satellite_tools/__pycache__/xmlDiskSource.*
+%{python3rhnroot}/satellite_tools/__pycache__/xmlSource.*
+%{python3rhnroot}/satellite_tools/exporter/__pycache__/*
 
 %files cdn
 %defattr(-,root,root)
 %attr(755,root,root) %{_bindir}/cdn-sync
-%dir %{pythonrhnroot}/cdn_tools
-%{pythonrhnroot}/cdn_tools/*.py*
+%dir %{python3rhnroot}/cdn_tools
+%{python3rhnroot}/cdn_tools/*.py*
 %attr(755,root,%{apache_group}) %dir %{_var}/log/rhn/cdnsync
 %config(noreplace) %{_sysconfdir}/logrotate.d/spacewalk-backend-cdn
 %{_mandir}/man8/cdn-sync.8*
-%if 0%{?suse_version}
-%dir %{pythonrhnroot}/cdn_tools
-%if 0%{?build_py3}
-%dir %{pythonrhnroot}/cdn_tools/__pycache__/
-%{pythonrhnroot}/cdn_tools/__pycache__/*
-%endif
-%endif
+%dir %{python3rhnroot}/cdn_tools
+%dir %{python3rhnroot}/cdn_tools/__pycache__/
+%{python3rhnroot}/cdn_tools/__pycache__/*
 
 %changelog
