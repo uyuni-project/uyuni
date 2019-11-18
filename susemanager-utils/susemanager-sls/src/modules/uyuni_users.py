@@ -230,6 +230,16 @@ class UyuniOrgs(UyuniFunctions):
         :param name:
         :return:
         """
+        ret: Dict[str, Any] = self._get_proto_ret(name=name)
+        org_id = self._get_org_by_name(name=name).get("id", -1)
+        if org_id > -1:
+            ret["result"] = bool(self.client("org.delete", self.client.get_token(), org_id))
+            ret["comment"] = 'Organisation "{}" has been removed.'.format(name)
+        else:
+            ret["result"] = False
+            ret["comment"] = 'Organisation "{}" was not found.'.format(name)
+
+        return ret
 
     def manage(self, name: str, admin_login: str, admin_password: str, admin_prefix: str, first_name: str,
                last_name: str, email: str, pam: bool, content_staging: Optional[bool] = None,
