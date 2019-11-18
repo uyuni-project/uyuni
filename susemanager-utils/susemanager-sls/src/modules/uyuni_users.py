@@ -222,6 +222,8 @@ class UyuniOrgs(UyuniFunctions):
         :param pam:
         :return:
         """
+        return self.client("org.create", self.client.get_token(), name, admin_login, admin_password, admin_prefix,
+                           first_name, last_name, email, pam)
 
     def delete(self, name: str):
         """
