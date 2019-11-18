@@ -244,9 +244,8 @@ class UyuniOrgs(UyuniFunctions):
         return ret
 
     def manage(self, name: str, admin_login: str, admin_password: str, admin_prefix: str, first_name: str,
-               last_name: str, email: str, pam: bool, content_staging: Optional[bool] = None,
-               errata_email_notif: Optional[bool] = None, org_admin_enable: Optional[bool] = None,
-               scap_policies: Optional[Policy] = None, crash_policies: Optional[Policy] = None):
+               last_name: str, email: str, pam: bool, policy: Policy, content_staging: Optional[bool] = None,
+               errata_email_notif: Optional[bool] = None, org_admin_enable: Optional[bool] = None) -> Dict[str, Any]:
         """
         Manage Uyuni organisation.
 
@@ -261,10 +260,33 @@ class UyuniOrgs(UyuniFunctions):
         :param content_staging:
         :param errata_email_notif:
         :param org_admin_enable:
-        :param scap_policies:
-        :param crash_policies:
+        :param policy:
         :return:
         """
+        ret = self._get_proto_ret(name)
+        if admin_prefix not in self.ADMIN_PREFIXES:
+            ret["result"] = False
+            ret["comment"] = "Admin prefix must be one of the {}.".format(
+                ", ".join(('"{}"'.format(prefix) for prefix in self.ADMIN_PREFIXES)))
+        else:
+            org_data = self._get_org_by_name(name)
+            if not org_data:
+                org_data = self.create(name=name, email=email,  admin_login=admin_login, admin_password=admin_password,
+                                       admin_prefix=admin_prefix, first_name=first_name, last_name=last_name, pam=pam)
+                ret["result"] = True
+                ret["comment"] = "New org '{}' has been created.".format(name)
+
+            # Set policies
+            applied = 0
+            policy.orgid = int(org_data.get("id", -1))
+            for p_set in [policy.get_crash_file_policies(), policy.get_scap_file_upload(), policy.get_scap_result_delete()]:
+                for rpc_func, params in p_set:
+                    self.client(rpc_func, self.client.get_token(), *params)
+                    applied += 1
+            if applied:
+                ret["comment"] = "{} Applied {} policies.".format(ret["comment"], applied).strip()
+
+        return ret
 
 
 class UyuniUsers(UyuniFunctions):
