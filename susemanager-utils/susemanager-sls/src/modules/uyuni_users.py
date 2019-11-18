@@ -57,14 +57,13 @@ class RPCClient:
     def __call__(self, method: str, *args, **kwargs):
         self.get_token()
         if self.token is not None:
-            ret: Optional[Any] = None
             try:
-                return getattr(self.conn, method)(*args, **kwargs)
+                return getattr(self.conn, method)(*args)
             except Exception as exc:
                 log.debug("Fall back to the second try due to %s", exc)
                 self.get_token(refresh=True)
                 try:
-                    return getattr(self.conn, method)(*args, **kwargs)
+                    return getattr(self.conn, method)(*args)
                 except Exception as exc:
                     log.error("Unable to call RPC function: %s", exc)
                     raise UyuniUsersException(exc)
@@ -145,81 +144,52 @@ class UyuniOrgs(UyuniFunctions):
             :param value:
             :return:
             """
+            if value is None or value < 0:
+                raise UyuniUsersException("Org ID should be an integer")
+
             if self.__orgid is None:
                 self.__orgid = value
 
-        def get_crash_file_policies(self) -> List[Tuple[str, Dict[str, Union[Optional[bool], Optional[int]]]]]:
+        def get_crash_file_policies(self) -> List[Tuple[str, List[Union[str, Optional[int], Optional[bool]]]]]:
             """
             Get the policies of crash reporting settings for the given organisation.
 
             :return:
             """
-            policy: List[Tuple[str, Dict[str, Union[Optional[bool], Optional[int]]]]] = []
+            policy: List[Tuple[str, List[Union[str, Optional[int], Optional[bool]]]]] = []
             if self.crash_file_size_limit is not None:
-                policy.append(
-                    (
-                        "setCrashFileSizeLimit", {
-                            "orgid": self.orgid,
-                            "limit": self.crash_file_size_limit,
-                        },
-                    )
-                )
+                policy.append(("org.setCrashFileSizeLimit", [self.orgid, self.crash_file_size_limit],))
+
             if self.crash_file_upload is not None:
-                policy.append(
-                    (
-                        "setCrashfileUpload", {
-                            "orgid": self.orgid,
-                            "enable": self.crash_file_upload
-                        },
-                    )
-                )
+                policy.append(("org.setCrashfileUpload", [self.orgid, self.crash_file_upload],))
+
             if self.crash_reporting is not None:
-                policy.append(
-                    (
-                        "setCrashReporting", {
-                            "orgid": self.orgid,
-                            "enable": self.crash_file_size_limit
-                        },
-                    )
-                )
+                policy.append(("org.setCrashReporting", [self.orgid, self.crash_file_size_limit],))
 
             return policy
 
-        def get_scap_file_upload(self) -> List[Tuple[str, Dict[str, Union[Optional[bool], Optional[int]]]]]:
+        def get_scap_file_upload(self) -> List[Tuple[str, List[Union[str, Optional[int], Optional[bool]]]]]:
             """
             Get the status of SCAP detailed result file upload settings for the given organisation.
 
             :return: dict
             """
-            policy: List[Tuple[str, Dict[str, Union[Optional[bool], Optional[int]]]]] = []
+            policy: List[Tuple[str, List[Union[str, Optional[int], Optional[bool]]]]] = []
             if self.scap_file_limit is not None and self.scap_file_upload is not None:
-                policy.append(
-                    (
-                        "setPolicyForScapFileUpload", {
-                            "enabled": self.scap_file_upload,
-                            "size_limit": self.scap_file_limit,
-                        },
-                    )
-                )
+                policy.append(("org.setPolicyForScapFileUpload", [self.scap_file_upload, self.scap_file_limit],))
 
             return policy
 
-        def get_scap_result_delete(self) -> List[Tuple[str, Dict[str, Union[Optional[bool], Optional[int]]]]]:
+        def get_scap_result_delete(self) -> List[Tuple[str, List[Union[str, Optional[int], Optional[bool]]]]]:
             """
             Get the status of SCAP result deletion settins for the given organisation.
 
             :return:
             """
-            policy: List[Tuple[str, Dict[str, Union[Optional[bool], Optional[int]]]]] = []
+            policy: List[Tuple[str, List[Union[str, Optional[int], Optional[bool]]]]] = []
             if self.scap_result_delete is not None and self.scap_result_retention_days is not None:
-                policy.append(
-                    (
-                        "setPolicyForScapResultDeletion", {
-                            "enabled": self.scap_result_delete,
-                            "retention_period": self.scap_result_retention_days,
-                        },
-                    )
-                )
+                policy.append(("org.setPolicyForScapResultDeletion", [self.scap_result_delete,
+                                                                      self.scap_result_retention_days],))
 
             return policy
 
