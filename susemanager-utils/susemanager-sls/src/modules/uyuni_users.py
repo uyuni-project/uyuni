@@ -493,3 +493,13 @@ def org_present(name, admin_login, admin_password, admin_prefix, first_name, las
                                    admin_prefix=admin_prefix, first_name=first_name, last_name=last_name, email=email,
                                    pam=pam, content_staging=content_staging, errata_email_notif=errata_email_notif,
                                    org_admin_enable=org_admin_enable, policy=policy)
+
+
+def org_absent(name):
+    """
+    Delete organisation.
+
+    :param name:
+    :return:
+    """
+    return UyuniOrgs(__rpc).delete(name=name)
