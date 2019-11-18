@@ -21,12 +21,6 @@
 %{!?pylint_check: %global pylint_check 1}
 %endif
 
-%if 0%{?suse_version} > 1320
-# SLE15 builds on Python 3
-%global build_py3   1
-%endif
-%define pythonX %{?build_py3:python3}%{!?build_py3:python2}
-
 Name:           spacewalk-proxy
 Summary:        Spacewalk Proxy Server
 License:        GPL-2.0-only
@@ -36,15 +30,15 @@ Release:        1%{?dist}
 Url:            https://github.com/uyuni-project/uyuni
 Source0:        https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
-BuildRequires:  %{pythonX}
+BuildRequires:  python3
 BuildArch:      noarch
-Requires:       %{pythonX}-uyuni-common-libs
+Requires:       python3-uyuni-common-libs
 Requires:       httpd
 %if 0%{?pylint_check}
-BuildRequires:  spacewalk-python2-pylint
+BuildRequires:  spacewalk-python3-pylint
 %endif
 BuildRequires:  mgr-push >= 4.0.0
-BuildRequires:  %{pythonX}-mgr-push
+BuildRequires:  python3-mgr-push
 BuildRequires:  spacewalk-backend >= 1.7.24
 
 %define rhnroot %{_usr}/share/rhn
@@ -59,8 +53,6 @@ BuildRequires:  spacewalk-backend >= 1.7.24
 %define apache_user apache
 %define apache_group apache
 %endif
-
-%define python_sitelib %(%{pythonX} -c "from distutils.sysconfig import get_python_lib; print(get_python_lib())")
 
 %description
 This package is never built.
@@ -88,21 +80,7 @@ Requires:       sos
 Requires:       spacewalk-proxy-selinux
 Requires(preun): initscripts
 %endif
-Obsoletes:      rhns-proxy < 5.3.0
-Obsoletes:      rhns-proxy-management < 5.3.0
 BuildRequires:  /usr/bin/docbook2man
-Obsoletes:      rhns-proxy-tools < 5.3.0
-Provides:       rhns-proxy-tools = 5.3.0
-Obsoletes:      spacewalk-proxy-tools < 0.5.3
-Provides:       spacewalk-proxy-tools = %{version}
-Obsoletes:      rhns-auth-daemon < 5.2.0
-Provides:       rhns-auth-daemon = 1:%{version}
-Obsoletes:      rhn-modssl < 2.9.0
-Provides:       rhn-modssl = 1:%{version}
-Obsoletes:      rhn-modpython < 2.8.0
-Provides:       rhn-modpython = 1:%{version}
-Obsoletes:      rhn-apache < 1.4.0
-Provides:       rhn-apache = 1:%{version}
 
 %description management
 This package require all needed packages for Spacewalk Proxy Server.
@@ -121,17 +99,10 @@ Requires:       http_proxy
 Requires:       mod_ssl
 Requires:       squid
 %endif
-%if 0%{?suse_version} > 1320
 Requires:       apache2-mod_wsgi-python3
-%else
-Requires:       mod_wsgi
-%endif
 Requires(post): %{name}-common
 Conflicts:      %{name}-redirect < %{version}-%{release}
 Conflicts:      %{name}-redirect > %{version}-%{release}
-# We don't want proxies and satellites on the same box
-Conflicts:      rhns-satellite-tools
-Obsoletes:      rhns-proxy-broker < 5.3.0
 
 %description broker
 The Spacewalk Proxy Server allows package caching
@@ -148,7 +119,6 @@ Summary:        The SSL Redirect component for the Spacewalk Proxy Server
 Group:          Applications/Internet
 Requires:       httpd
 Requires:       spacewalk-proxy-broker = %{version}-%{release}
-Obsoletes:      rhns-proxy-redirect < 5.3.0
 
 %description redirect
 The Spacewalk Proxy Server allows package caching
@@ -171,15 +141,10 @@ BuildRequires:  apache2
 Requires:       mod_ssl
 %endif
 Requires:       curl
-%if 0%{?suse_version} > 1320
 Requires:       apache2-mod_wsgi-python3
-%else
-Requires:       mod_wsgi
-%endif
 Requires:       %{name}-broker >= %{version}
 Requires:       spacewalk-backend >= 1.7.24
-Requires(pre): policycoreutils
-Obsoletes:      rhns-proxy-common < 5.3.0
+Requires(pre):  policycoreutils
 
 %description common
 The Spacewalk Proxy Server allows package caching
@@ -193,16 +158,14 @@ Spacewalk Proxy components.
 %package package-manager
 Summary:        Custom Channel Package Manager for the Spacewalk Proxy Server
 Group:          Applications/Internet
-Requires:       %{pythonX}
-Requires:       %{pythonX}-rhnlib >= 2.5.56
+Requires:       python3
+Requires:       python3-rhnlib >= 2.5.56
 Requires:       mgr-push >= 4.0.0
 Requires:       spacewalk-backend >= 1.7.24
 # proxy isn't Python 3 yet
-Requires:       %{pythonX}-mgr-push
+Requires:       python3-mgr-push
 BuildRequires:  /usr/bin/docbook2man
-BuildRequires:  %{pythonX}-devel
-Obsoletes:      rhn_package_manager < 5.3.0
-Obsoletes:      rhns-proxy-package-manager < 5.3.0
+BuildRequires:  python3-devel
 
 %description package-manager
 The Spacewalk Proxy Server allows package caching
@@ -219,15 +182,11 @@ Group:          Applications/Internet
 Requires:       systemd
 Requires(pre):  salt
 Requires(pre):  %{name}-common
-
 %if 0%{?suse_version} >= 1210
 BuildRequires:  systemd-rpm-macros
 %endif
-
 %{?systemd_requires}
 
-# We don't want proxies and satellites on the same box
-Conflicts:      rhns-satellite-tools
 
 %description salt
 A ZeroMQ Proxy for Salt Minions
@@ -239,12 +198,10 @@ A ZeroMQ Proxy for Salt Minions
 make -f Makefile.proxy
 
 # Fixing shebang for Python 3
-%if 0%{?build_py3}
 for i in $(find . -type f);
 do
     sed -i '1s=^#!/usr/bin/\(python\|env python\)[0-9.]*=#!/usr/bin/python3=' $i;
 done
-%endif
 
 %install
 make -f Makefile.proxy install PREFIX=$RPM_BUILD_ROOT
@@ -263,15 +220,9 @@ touch $RPM_BUILD_ROOT/%{httpdconf}/cobbler-proxy.conf
 
 ln -sf rhn-proxy $RPM_BUILD_ROOT%{_sbindir}/spacewalk-proxy
 
-
 pushd %{buildroot}
-%if !0%{?build_py3}
-find -name '*.py' -print0 | xargs -0 %{pythonX} %py_libdir/py_compile.py
-%else
 %py3_compile -O %{buildroot}
-%endif
 popd
-
 
 install -m 0750 salt-broker/salt-broker %{buildroot}/%{_bindir}/
 mkdir -p %{buildroot}/%{_sysconfdir}/salt/
@@ -288,8 +239,8 @@ install -d -m 0755 $RPM_BUILD_ROOT/%{_var}/lib/spacewalk
 %check
 %if 0%{?pylint_check}
 # check coding style
-export PYTHONPATH=$RPM_BUILD_ROOT/usr/share/rhn:$RPM_BUILD_ROOT%{python_sitelib}:/usr/share/rhn
-spacewalk-%{pythonX}-pylint $RPM_BUILD_ROOT/usr/share/rhn
+export PYTHONPATH=$RPM_BUILD_ROOT/usr/share/rhn:$RPM_BUILD_ROOT%{python3_sitelib}:/usr/share/rhn
+spacewalk-python3-pylint $RPM_BUILD_ROOT/usr/share/rhn
 %endif
 
 %post broker
@@ -314,9 +265,9 @@ if [ -f $RHN_CONFIG_PY ] ; then
     # Check whether the config command supports the ability to retrieve a
     # config variable arbitrarily.  Versions of  < 4.0.6 (rhn) did not.
 
-    %{pythonX} $RHN_CONFIG_PY proxy.broker > /dev/null 2>&1
+    %{python3} $RHN_CONFIG_PY proxy.broker > /dev/null 2>&1
     if [ $? -eq 1 ] ; then
-        RHN_PKG_DIR=$(%{pythonX} $RHN_CONFIG_PY get proxy.broker pkg_dir)
+        RHN_PKG_DIR=$(%{python3} $RHN_CONFIG_PY get proxy.broker pkg_dir)
     fi
 fi
 
@@ -434,15 +385,8 @@ fi
 %config(noreplace) %{_sysconfdir}/logrotate.d/rhn-proxy-broker
 # config files
 %attr(644,root,%{apache_group}) %{_prefix}/share/rhn/config-defaults/rhn_proxy_broker.conf
-%if 0%{?suse_version}
-%dir %{destdir}/broker
-%endif
-%if 0%{?build_py3}
-%dir %{destdir}/__pycache__/
 %dir %{destdir}/broker/__pycache__/
-%{destdir}/__pycache__/*
 %{destdir}/broker/__pycache__/*
-%endif
 
 %files redirect
 %defattr(-,root,root)
@@ -453,13 +397,9 @@ fi
 %config(noreplace) %{_sysconfdir}/logrotate.d/rhn-proxy-redirect
 # config files
 %attr(644,root,%{apache_group}) %{_prefix}/share/rhn/config-defaults/rhn_proxy_redirect.conf
-%if 0%{?suse_version}
 %dir %{destdir}/redirect
-%endif
-%if 0%{?build_py3}
 %dir %{destdir}/redirect/__pycache__/
 %{destdir}/redirect/__pycache__/*
-%endif
 
 %files common
 %defattr(-,root,root)
@@ -488,17 +428,16 @@ fi
 # the cache
 %attr(750,%{apache_user},root) %dir %{_var}/cache/rhn
 %attr(750,%{apache_user},root) %dir %{_var}/cache/rhn/proxy-auth
-%if 0%{?suse_version}
 %dir %{rhnroot}
 %dir %{rhnroot}/wsgi
 %{_sbindir}/mgr-proxy-ssh-push-init
 %{_sbindir}/mgr-proxy-ssh-force-cmd
 %attr(755,root,root) %dir %{_var}/lib/spacewalk
-%endif
-%if 0%{?build_py3}
 %dir %{rhnroot}/wsgi/__pycache__/
 %{rhnroot}/wsgi/__pycache__/*
-%endif
+%dir %{destdir}/broker
+%dir %{destdir}/__pycache__/
+%{destdir}/__pycache__/*
 
 %files package-manager
 %defattr(-,root,root)
@@ -508,13 +447,9 @@ fi
 %{rhnroot}/PackageManager/rhn_package_manager.py*
 %{rhnroot}/PackageManager/__init__.py*
 %{_mandir}/man8/rhn_package_manager.8.gz
-%if 0%{?suse_version}
 %dir %{rhnroot}/PackageManager
-%endif
-%if 0%{?build_py3}
 %dir %{rhnroot}/PackageManager/__pycache__/
 %{rhnroot}/PackageManager/__pycache__/*
-%endif
 
 %files management
 %defattr(-,root,root)
