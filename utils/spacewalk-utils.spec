@@ -16,13 +16,6 @@
 # Please submit bugfixes or comments via https://bugs.opensuse.org/
 #
 
-%if 0%{?suse_version} > 1320
-# SLE15 builds on Python 3
-%global build_py3   1
-%endif
-%define pythonX %{?build_py3:python3}%{!?build_py3:python2}
-
-%define rhnroot %{_prefix}/share/rhn
 %if 0%{?fedora} || 0%{?rhel} >= 7
 %{!?pylint_check: %global pylint_check 1}
 %endif
@@ -37,9 +30,9 @@
 Name:           spacewalk-utils
 Version:        4.1.0
 Release:        1%{?dist}
-Summary:        Utilities that may be run against a Spacewalk server.
+Summary:        Utilities that may be run against a Uyuni server
 License:        GPL-2.0-only AND GPL-3.0-or-later
-Group:          Applications/Internet
+Group:          Productivity/Other
 
 Url:            https://github.com/uyuni-project/uyuni
 Source0:        https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
@@ -47,30 +40,18 @@ BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildArch:      noarch
 
 %if 0%{?pylint_check}
-BuildRequires:  spacewalk-python2-pylint
+BuildRequires:  spacewalk-python3-pylint
 %endif
 BuildRequires:  /usr/bin/docbook2man
 BuildRequires:  /usr/bin/pod2man
 BuildRequires:  docbook-utils
-BuildRequires:  python
-%if 0%{?fedora} || 0%{?rhel} > 5
-BuildRequires:  spacewalk-backend >= 1.7.24
-BuildRequires:  spacewalk-backend-tools >= 1.7.24
-BuildRequires:  spacewalk-config
-BuildRequires:  yum
-%endif
+BuildRequires:  python3
 BuildRequires:  uyuni-base-common
 
 Requires(pre):  uyuni-base-common
 Requires:       bash
 Requires:       cobbler
-%if 0%{?fedora} >= 22
-Recommends:     cobbler20
-%endif
 Requires:       coreutils
-%if ! 0%{?suse_version}
-Requires:       initscripts
-%endif
 Requires:       /usr/bin/spacewalk-sql
 Requires:       iproute
 Requires:       net-tools
@@ -80,71 +61,56 @@ Requires:       perl = %{perl_version}
 %else
 Requires:       perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $version))
 %endif
-Requires:       python
-Requires:       rpm-python
-%if 0%{?rhel} == 6
-Requires:       %{pythonX}-argparse
-%endif
-Requires:       %{pythonX}-rhnlib >= 2.5.20
+Requires:       python3
+Requires:       python3-rpm
+Requires:       python3-argparse
+Requires:       python3-rhnlib >= 2.5.20
 Requires:       rpm
-%if ! 0%{?suse_version}
-Requires:       setup
-%endif
 Requires:       salt
 Requires:       spacewalk-admin
 Requires:       spacewalk-backend
-%if 0%{?suse_version} >= 1320
 Requires:       python3-uyuni-common-libs
-%else
-Requires:       python2-uyuni-common-libs
-%endif
 Requires:       spacewalk-backend-tools >= 2.2.27
 Requires:       spacewalk-certs-tools
 Requires:       spacewalk-config
 Requires:       spacewalk-reports
 Requires:       spacewalk-setup
 
-Requires:       %{pythonX}-curses
-Requires:       %{pythonX}-ldap
+Requires:       python3-curses
+Requires:       python3-ldap
 %if 0%{?suse_version} >= 1320
 Requires:       python3-PyYAML
 %else
-Requires:       %{pythonX}-yaml
+Requires:       python3-yaml
 %endif
 
 %description
-Generic utilities that may be run against a Spacewalk server.
+Generic utilities that may be run against a Uyuni server.
 
 
 %prep
 %setup -q
 
-%if  0%{?suse_version} && 0%{?suse_version} < 1200
-%define pod2man POD2MAN=pod2man
-%endif
 %build
 make all %{?pod2man}
 
 # Fixing shebang for Python 3
-%if 0%{?build_py3}
 for i in $(find . -type f);
 do
     sed -i '1s=^#!/usr/bin/\(python\|env python\)[0-9.]*=#!/usr/bin/python3=' $i;
 done
-%endif
 
 %install
-install -d $RPM_BUILD_ROOT/%{rhnroot}
-make install PREFIX=$RPM_BUILD_ROOT ROOT=%{rhnroot} \
+make install PREFIX=$RPM_BUILD_ROOT ROOT=%{python3_sitelib} \
     MANDIR=%{_mandir} %{?pod2man}
 pushd %{buildroot}
-find -name '*.py' -print0 | xargs -0 python %py_libdir/py_compile.py
+%py3_compile -O %{buildroot}%{python3_sitelib}
 popd
 
 %check
 %if 0%{?pylint_check}
 # check coding style
-spacewalk-python2-pylint $RPM_BUILD_ROOT%{rhnroot}
+spacewalk-python3-pylint $RPM_BUILD_ROOT%{python3_sitelib}
 %endif
 
 %files
@@ -152,14 +118,14 @@ spacewalk-python2-pylint $RPM_BUILD_ROOT%{rhnroot}
 %config %{_sysconfdir}/rhn/spacewalk-common-channels.ini
 %config(noreplace) %{_sysconfdir}/rhn/sw-ldap-user-sync.conf
 %attr(755,root,root) %{_bindir}/*
-%dir %{rhnroot}/utils
-%{rhnroot}/utils/__init__.py*
-%{rhnroot}/utils/systemSnapshot.py*
-%{rhnroot}/utils/migrateSystemProfile.py*
-%{rhnroot}/utils/cloneByDate.py*
-%{rhnroot}/utils/depsolver.py*
+%dir %{python3_sitelib}/utils
+%{python3_sitelib}/utils/__init__.py*
+%{python3_sitelib}/utils/systemSnapshot.py*
+%{python3_sitelib}/utils/migrateSystemProfile.py*
+%{python3_sitelib}/utils/cloneByDate.py*
+%{python3_sitelib}/utils/depsolver.py*
+%{python3_sitelib}/utils/__pycache__
 %{_mandir}/man8/*
-%dir %{_datadir}/rhn
 %doc COPYING.GPLv2 COPYING.GPLv3
 
 %changelog
