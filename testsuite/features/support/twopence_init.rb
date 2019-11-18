@@ -99,9 +99,10 @@ def get_mac_address(host)
     mac = ENV['PXEBOOTMAC']
   else
     node = get_target(host)
-    output, _code = node.run("ip link show dev eth1")
+    output, _code = node.run('ip link show dev eth1')
     mac = output.split("\n")[1].split[1]
   end
+  mac
 end
 
 # This function returns the net prefix, caching it

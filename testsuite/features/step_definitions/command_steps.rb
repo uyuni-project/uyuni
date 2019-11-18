@@ -936,9 +936,9 @@ When(/^I copy the retail configuration file "([^"]*)" on server$/) do |file|
   sed_values << "s/<PXEBOOT>/#{ADDRESSES['pxeboot']}/; "
   sed_values << "s/<PXEBOOT_MAC>/#{$pxeboot_mac}/; "
   sed_values << "s/<MINION>/#{ADDRESSES['minion']}/; "
-  sed_values << "s/<MINION_MAC>/#{get_mac_address('sle-minion')}/; "  
+  sed_values << "s/<MINION_MAC>/#{get_mac_address('sle-minion')}/; "
   sed_values << "s/<CLIENT>/#{ADDRESSES['client']}/; "
-  sed_values << "s/<CLIENT_MAC>/#{get_mac_address('sle-client')}/; "      
+  sed_values << "s/<CLIENT_MAC>/#{get_mac_address('sle-client')}/; "
   # Retail DNS fix for client and minion
   $server.run("sed -i '#{sed_values}' #{dest}")
 end
