@@ -27,10 +27,13 @@ import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.system.SystemManager;
 
 import com.google.gson.JsonObject;
+import com.suse.manager.virtualization.PoolCapabilitiesJson;
 import com.suse.manager.virtualization.VirtManager;
 import com.suse.manager.webui.errors.NotFoundException;
 import com.suse.manager.webui.utils.gson.VirtualStoragePoolInfoJson;
 import com.suse.manager.webui.utils.gson.VirtualStorageVolumeInfoJson;
+
+import org.apache.http.HttpStatus;
 
 import java.util.HashMap;
 import java.util.List;
@@ -41,6 +44,7 @@ import java.util.stream.Collectors;
 import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
+import spark.Spark;
 import spark.template.jade.JadeTemplateEngine;
 
 /**
@@ -60,6 +64,8 @@ public class VirtualPoolsController {
                 withUserPreferences(withCsrfToken(withUser(VirtualPoolsController::show))), jade);
         get("/manager/api/systems/details/virtualization/pools/:sid/data",
                 withUser(VirtualPoolsController::data));
+        get("/manager/api/systems/details/virtualization/pools/:sid/capabilities",
+                withUser(VirtualPoolsController::getCapabilities));
     }
 
     /**
@@ -110,6 +116,34 @@ public class VirtualPoolsController {
         }).collect(Collectors.toList());
 
         return json(response, pools);
+    }
+
+    /**
+     * Executes the GET query to extract the pool capabilities
+     *
+     * @param request the request
+     * @param response the response
+     * @param user the user
+     * @return JSON-formatted capabilities
+     */
+    public static String getCapabilities(Request request, Response response, User user) {
+        Long serverId;
+        try {
+            serverId = Long.parseLong(request.params("sid"));
+        }
+        catch (NumberFormatException e) {
+            throw new NotFoundException();
+        }
+
+        Server host = SystemManager.lookupByIdAndUser(serverId, user);
+        String minionId = host.asMinionServer().orElseThrow(() ->
+            Spark.halt(HttpStatus.SC_BAD_REQUEST, "Can only get capabilities of Salt system")).getMinionId();
+
+        PoolCapabilitiesJson caps = VirtManager.getPoolCapabilities(minionId)
+            .orElseThrow(() -> Spark.halt(HttpStatus.SC_BAD_REQUEST,
+                "Failed to get virtual host storage pool capabilities"));
+
+        return json(response, caps);
     }
 
     /**
