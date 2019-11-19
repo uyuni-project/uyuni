@@ -95,3 +95,48 @@ class RPCClient:
 
         raise UyuniUsersException("XML-RPC backend authentication error.")
 
+
+class UyuniRemoteObject:
+    """
+    RPC client
+    """
+    def __init__(self, ext_pillar: Optional[Dict[str, Any]] = None):
+        self.client: RPCClient = RPCClient.init(ext_pillar=ext_pillar)
+
+
+class UyuniUser(UyuniRemoteObject):
+    """
+    CRUD operation on users.
+    """
+    def create(self, uid: str, password: str, email: str, first_name: str = "", last_name: str = "") -> bool:
+        """
+        Create user in Uyuni.
+
+        :param uid: desired login name, safe to use if login name is already in use
+        :param password: desired password for the user
+        :param email: valid email address
+        :param first_name: First name
+        :param last_name: Second name
+
+        :return: boolean
+        """
+        log.debug("Adding user to Uyuni")
+        if not email:
+            ret = 0
+            log.debug("Not all parameters has been specified")
+            log.error("Email should be specified when create user")
+        else:
+            ret = self.client("user.create", self.client.get_token(), uid, password, first_name, last_name, email)
+            log.debug("User has been created")
+
+        return bool(ret)
+
+
+def __virtual__():
+    """
+    Provide Uyuni Users state module.
+
+    :return:
+    """
+
+    return __virtualname__

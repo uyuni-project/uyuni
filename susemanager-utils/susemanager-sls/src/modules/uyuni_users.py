@@ -4,11 +4,13 @@ Uyuni users state module
 """
 from typing import Any, Dict, List, Optional, Union, Tuple
 import logging
-from salt.modules.uyuni import RPCClient, UyuniUsersException
+from salt.modules.uyuni import RPCClient, UyuniUsersException, UyuniUser
 
 
 log = logging.getLogger(__name__)
 __pillar__: Dict[str, Any] = {}
+__salt__: Dict[str, Any] = {}
+__context__: Dict[str, Any] = {}
 __virtualname__: str = "uyuni"
 
 
@@ -260,7 +262,8 @@ class UyuniUsers(UyuniFunctions):
             log.debug("Not all parameters has been specified")
             log.error("Email should be specified when create user")
         else:
-            ret = self.client("user.create", self.client.get_token(), uid, password, first_name, last_name, email)
+            ret = UyuniUser(ext_pillar=__pillar__).create(uid=uid, password=password, email=email,
+                                                          first_name=first_name, last_name=last_name)
             log.debug("User has been created")
 
         return bool(ret)
