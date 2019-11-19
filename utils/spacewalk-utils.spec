@@ -63,7 +63,6 @@ Requires:       perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $versi
 %endif
 Requires:       python3
 Requires:       python3-rpm
-Requires:       python3-argparse
 Requires:       python3-rhnlib >= 2.5.20
 Requires:       rpm
 Requires:       salt

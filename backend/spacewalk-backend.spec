@@ -262,7 +262,6 @@ Summary:        CDN tools
 Group:          System/Management
 Requires:       %{m2crypto}
 Requires:       %{name}-server = %{version}-%{release}
-Requires:       python3-argparse
 Requires:       subscription-manager
 
 %description cdn
