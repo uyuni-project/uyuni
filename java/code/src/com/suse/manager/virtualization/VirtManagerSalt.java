@@ -14,14 +14,16 @@
  */
 package com.suse.manager.virtualization;
 
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.reflect.TypeToken;
 import com.redhat.rhn.domain.server.MinionServer;
+
 import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.iface.VirtManager;
 import com.suse.manager.webui.utils.salt.State;
 import com.suse.salt.netapi.calls.LocalCall;
+
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.reflect.TypeToken;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -69,6 +71,18 @@ public class VirtManagerSalt implements VirtManager {
         LocalCall<Map<String, JsonElement>> call =
                 new LocalCall<>("virt.all_capabilities", Optional.empty(), Optional.empty(),
                         new TypeToken<Map<String, JsonElement>>() { });
+
+        return saltApi.callSync(call, minionId);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Optional<PoolCapabilitiesJson> getPoolCapabilities(String minionId) {
+        LocalCall<PoolCapabilitiesJson> call =
+                new LocalCall<>("virt.pool_capabilities", Optional.empty(), Optional.empty(),
+                        new TypeToken<PoolCapabilitiesJson>() { });
 
         return saltApi.callSync(call, minionId);
     }

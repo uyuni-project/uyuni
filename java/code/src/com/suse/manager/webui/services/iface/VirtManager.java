@@ -14,10 +14,13 @@
  */
 package com.suse.manager.webui.services.iface;
 
+import com.redhat.rhn.domain.server.MinionServer;
+
+import com.suse.manager.virtualization.GuestDefinition;
+import com.suse.manager.virtualization.PoolCapabilitiesJson;
+
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.redhat.rhn.domain.server.MinionServer;
-import com.suse.manager.virtualization.GuestDefinition;
 
 import java.util.Map;
 import java.util.Optional;
@@ -43,6 +46,14 @@ public interface VirtManager {
      * @return the output of the salt virt.all_capabilities call in JSON
      */
     Optional<Map<String, JsonElement>> getCapabilities(String minionId);
+
+    /**
+     * Query virtual storage pool capabilities
+     *
+     * @param minionId the salt minion virtual host to ask about
+     * @return the output of the salt virt.pool_capabilities call
+     */
+    Optional<PoolCapabilitiesJson> getPoolCapabilities(String minionId);
 
     /**
      * Query the list of virtual networks defined on a salt minion.

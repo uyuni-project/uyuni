@@ -14,11 +14,14 @@
  */
 package com.suse.manager.virtualization.test;
 
+import com.redhat.rhn.domain.server.MinionServer;
+
+import com.suse.manager.virtualization.GuestDefinition;
+import com.suse.manager.virtualization.PoolCapabilitiesJson;
+import com.suse.manager.webui.services.iface.VirtManager;
+
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.redhat.rhn.domain.server.MinionServer;
-import com.suse.manager.virtualization.GuestDefinition;
-import com.suse.manager.webui.services.iface.VirtManager;
 
 import java.util.Map;
 import java.util.Optional;
@@ -47,6 +50,11 @@ public class TestVirtManager implements VirtManager {
 
     @Override
     public Map<String, Map<String, JsonObject>> getVolumes(String minionId) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public Optional<PoolCapabilitiesJson> getPoolCapabilities(String minionId) {
         throw new UnsupportedOperationException();
     }
 
