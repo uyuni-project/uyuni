@@ -242,3 +242,32 @@ def __virtual__():
     """
 
     return __virtualname__
+
+
+def create_org(name, admin_login, first_name, last_name, email, admin_password=None, admin_prefix="Mr.", pam=False):
+    """
+    Create org in Uyuni.
+
+    :param name:
+    :param admin_login:
+    :param first_name:
+    :param last_name:
+    :param email:
+    :param admin_password:
+    :param admin_prefix:
+    :param pam:
+    :return:
+    """
+    return UyuniOrg(pillar=__pillar__).create(name=name, admin_login=admin_login, admin_password=admin_password,
+                                              email=email, first_name=first_name, last_name=last_name,
+                                              admin_prefix=admin_login, pam=pam)
+
+
+def delete_org(name):
+    """
+    Delete organisation by name.
+
+    :param name:
+    :return:
+    """
+    return UyuniOrg(pillar=__pillar__).delete(name=name)
