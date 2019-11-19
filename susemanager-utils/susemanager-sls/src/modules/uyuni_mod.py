@@ -198,10 +198,21 @@ class UyuniOrg(UyuniRemoteObject):
         :param last_name:
         :param email:
         :param pam:
-        :return:
+        :return: tuple of data and error/log message
         """
-        return self.client("org.create", self.client.get_token(), name, admin_login, admin_password, admin_prefix,
-                           first_name, last_name, email, pam)
+        try:
+            ret = self.client("org.create", self.client.get_token(), name, admin_login, admin_password, admin_prefix,
+                              first_name, last_name, email, pam)
+            msg = 'Organisation "{}" has been created successfully'.format(name)
+            log.debug(msg)
+        except UyuniUsersException as exc:
+            ret = {}
+            msg = 'Error while creating organisation: {}'.format(str(exc))
+        except Exception as exc:
+            ret = {}
+            msg = 'Unhandled exception occurred while creating new organisation: {}'.format(str(exc))
+
+        return ret, msg
 
     def delete(self, name: str) -> Tuple[bool, str]:
         """
