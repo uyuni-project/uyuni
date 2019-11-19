@@ -186,7 +186,7 @@ class UyuniOrg(UyuniRemoteObject):
         return org_data
 
     def create(self, name: str, admin_login: str, admin_password: str, admin_prefix: str, first_name: str,
-               last_name: str, email: str, pam: bool) -> Dict[str, Union[str, int, bool]]:
+               last_name: str, email: str, pam: bool) -> Tuple[Dict[str, Union[str, int, bool]], str]:
         """
         Create Uyuni org.
 
