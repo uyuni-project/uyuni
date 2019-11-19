@@ -67,6 +67,20 @@ public class VirtManager {
     }
 
     /**
+     * Query virtual storage pool capabilities
+     *
+     * @param minionId the salt minion virtual host to ask about
+     * @return the output of the salt virt.pool_capabilities call
+     */
+    public static Optional<PoolCapabilitiesJson> getPoolCapabilities(String minionId) {
+        LocalCall<PoolCapabilitiesJson> call =
+                new LocalCall<>("virt.pool_capabilities", Optional.empty(), Optional.empty(),
+                        new TypeToken<PoolCapabilitiesJson>() { });
+
+        return saltService.callSync(call, minionId);
+    }
+
+    /**
      * Query the list of virtual networks defined on a salt minion.
      *
      * @param minionId the minion to ask about
