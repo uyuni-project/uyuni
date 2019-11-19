@@ -4,7 +4,7 @@ Uyuni users state module
 """
 from typing import Any, Dict, List, Optional, Union, Tuple
 import logging
-from salt.modules.uyuni import RPCClient, UyuniUsersException, UyuniUser
+from salt.modules.uyuni import UyuniUsersException, UyuniUser, UyuniOrg, RPCClient
 
 
 log = logging.getLogger(__name__)
@@ -21,6 +21,7 @@ class UyuniFunctions:
     def __init__(self):
         self.client = RPCClient.init(pillar=__pillar__)
         self.users = UyuniUser(pillar=__pillar__)
+        self.orgs = UyuniOrg(pillar=__pillar__)
 
     @staticmethod
     def _get_proto_ret(name: str, result: Optional[bool] = None) -> Dict[str, Any]:
@@ -138,38 +139,6 @@ class UyuniOrgs(UyuniFunctions):
 
             return policy
 
-    def _get_org_by_name(self, name: str) -> Dict[str, Union[int, str, bool]]:
-        """
-        Get org data by name.
-
-        :param name: organisation name
-        :return:
-        """
-        try:
-            org_data = self.client("org.getDetails", self.client.get_token(), name)
-        except UyuniUsersException:
-            org_data = {}
-
-        return org_data
-
-    def create(self, name: str, admin_login: str, admin_password: str, admin_prefix: str, first_name: str,
-               last_name: str, email: str, pam: bool) -> Dict[str, Union[str, int, bool]]:
-        """
-        Create Uyuni org.
-
-        :param name:
-        :param admin_login:
-        :param admin_password:
-        :param admin_prefix:
-        :param first_name:
-        :param last_name:
-        :param email:
-        :param pam:
-        :return:
-        """
-        return self.client("org.create", self.client.get_token(), name, admin_login, admin_password, admin_prefix,
-                           first_name, last_name, email, pam)
-
     def delete(self, name: str):
         """
         Delete Uyuni org.
@@ -178,13 +147,7 @@ class UyuniOrgs(UyuniFunctions):
         :return:
         """
         ret: Dict[str, Any] = self._get_proto_ret(name=name)
-        org_id = int(self._get_org_by_name(name=name).get("id", -1))
-        if org_id > -1:
-            ret["result"] = bool(self.client("org.delete", self.client.get_token(), org_id))
-            ret["comment"] = 'Organisation "{}" has been removed.'.format(name)
-        else:
-            ret["result"] = False
-            ret["comment"] = 'Organisation "{}" was not found.'.format(name)
+        ret["result"], ret["comment"] = self.orgs.delete(name)
 
         return ret
 
@@ -214,10 +177,11 @@ class UyuniOrgs(UyuniFunctions):
             ret["comment"] = "Admin prefix must be one of the {}.".format(
                 ", ".join(('"{}"'.format(prefix) for prefix in self.ADMIN_PREFIXES)))
         else:
-            org_data = self._get_org_by_name(name)
+            org_data = self.orgs.get_org_by_name(name)
             if not org_data:
-                org_data = self.create(name=name, email=email,  admin_login=admin_login, admin_password=admin_password,
-                                       admin_prefix=admin_prefix, first_name=first_name, last_name=last_name, pam=pam)
+                org_data = self.orgs.create(name=name, email=email,  admin_login=admin_login,
+                                            admin_password=admin_password, admin_prefix=admin_prefix,
+                                            first_name=first_name, last_name=last_name, pam=pam)
                 ret["result"] = True
                 ret["comment"] = "New org '{}' has been created.".format(name)
 

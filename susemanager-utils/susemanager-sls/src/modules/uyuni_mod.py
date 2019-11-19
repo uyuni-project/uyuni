@@ -167,6 +167,62 @@ class UyuniUser(UyuniRemoteObject):
         return ret
 
 
+class UyuniOrg(UyuniRemoteObject):
+    """
+    CRUD operations on orgs
+    """
+    def get_org_by_name(self, name: str) -> Dict[str, Union[int, str, bool]]:
+        """
+        Get org data by name.
+
+        :param name: organisation name
+        :return:
+        """
+        try:
+            org_data = self.client("org.getDetails", self.client.get_token(), name)
+        except UyuniUsersException:
+            org_data = {}
+
+        return org_data
+
+    def create(self, name: str, admin_login: str, admin_password: str, admin_prefix: str, first_name: str,
+               last_name: str, email: str, pam: bool) -> Dict[str, Union[str, int, bool]]:
+        """
+        Create Uyuni org.
+
+        :param name:
+        :param admin_login:
+        :param admin_password:
+        :param admin_prefix:
+        :param first_name:
+        :param last_name:
+        :param email:
+        :param pam:
+        :return:
+        """
+        return self.client("org.create", self.client.get_token(), name, admin_login, admin_password, admin_prefix,
+                           first_name, last_name, email, pam)
+
+    def delete(self, name: str) -> Tuple[bool, str]:
+        """
+        Delete Uyuni org.
+
+        :param name:
+        :return: boolean, True if organisation has been deleted.
+        """
+        org_id = int(self.get_org_by_name(name=name).get("id", -1))
+        if org_id > -1:
+            res = bool(self.client("org.delete", self.client.get_token(), org_id))
+            msg = 'Organisation "{}" (ID: "{}") has been removed.'.format(name, org_id)
+            log.debug(msg)
+        else:
+            res = False
+            msg = 'Organisation "{}" was not found.'.format(name)
+            log.error(msg)
+
+        return res, msg
+
+
 def __virtual__():
     """
     Provide Uyuni Users state module.
