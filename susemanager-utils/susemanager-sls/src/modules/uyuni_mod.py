@@ -108,6 +108,22 @@ class UyuniUser(UyuniRemoteObject):
     """
     CRUD operation on users.
     """
+    def get_user(self, name: str) -> Dict[str, Any]:
+        """
+        Get existing user data from the Uyuni.
+
+        :return:
+        """
+        return self.client("user.getDetails", self.client.get_token(), name)
+
+    def get_all_users(self):
+        """
+        Return all Uyuni users.
+
+        :return:
+        """
+        return self.client("user.listUsers", self.client.get_token())
+
     def create(self, uid: str, password: str, email: str, first_name: str = "", last_name: str = "") -> bool:
         """
         Create user in Uyuni.
@@ -130,6 +146,25 @@ class UyuniUser(UyuniRemoteObject):
             log.debug("User has been created")
 
         return bool(ret)
+
+    def delete(self, name: str) -> bool:
+        """
+        Remove user from the Uyuni org.
+
+        :param name: UID of the user
+
+        :return: boolean, True if user has been deleted successfully.
+        """
+        try:
+            ret = bool(self.client("user.delete", self.client.get_token(), name))
+        except UyuniUsersException as exc:
+            log.error('Unable to delete user "%s": %s', name, exc)
+            ret = False
+        except Exception as exc:
+            log.error('Unhandled error had happend while deleting user "%s": %s', name, exc)
+            ret = False
+
+        return ret
 
 
 def __virtual__():
