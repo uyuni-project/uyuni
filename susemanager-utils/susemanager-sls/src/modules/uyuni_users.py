@@ -179,11 +179,10 @@ class UyuniOrgs(UyuniFunctions):
         else:
             org_data = self.orgs.get_org_by_name(name)
             if not org_data:
-                org_data = self.orgs.create(name=name, email=email,  admin_login=admin_login,
-                                            admin_password=admin_password, admin_prefix=admin_prefix,
-                                            first_name=first_name, last_name=last_name, pam=pam)
-                ret["result"] = True
-                ret["comment"] = "New org '{}' has been created.".format(name)
+                org_data, ret["comment"] = self.orgs.create(name=name, email=email,  admin_login=admin_login,
+                                                            admin_password=admin_password, admin_prefix=admin_prefix,
+                                                            first_name=first_name, last_name=last_name, pam=pam)
+                ret["result"] = bool(org_data)
 
             # Set policies
             applied = 0
