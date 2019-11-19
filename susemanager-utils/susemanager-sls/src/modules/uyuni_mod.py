@@ -7,6 +7,10 @@ import logging
 
 log = logging.getLogger(__name__)
 
+__pillar__: Dict[str, Any] = {}
+__context__: Dict[str, Any] = {}
+__virtualname__: str = "uyuni"
+
 
 class UyuniUsersException(Exception):
     """
