@@ -18,23 +18,25 @@ class UyuniFunctions:
     """
     RPC client
     """
-    def __init__(self, client: RPCClient):
-        self.client = client
+    def __init__(self):
+        self.client = RPCClient.init(pillar=__pillar__)
+        self.users = UyuniUser(pillar=__pillar__)
 
-    def _get_proto_ret(self, name: str) -> Dict[str, Any]:
+    @staticmethod
+    def _get_proto_ret(name: str, result: Optional[bool] = None) -> Dict[str, Any]:
         """
         State proto return container.
 
         :param name:
         :return:
         """
-        result: Optional[bool] = None
+        changes: Dict[str, str] = {}
         return {
-                'name': name,
-                'changes': {},
-                'result': result,
-                'comment': "",
-            }
+            'name': name,
+            'changes': changes,
+            'result': result,
+            'comment': "",
+        }
 
 
 class UyuniOrgs(UyuniFunctions):
@@ -231,19 +233,18 @@ class UyuniOrgs(UyuniFunctions):
 
         return ret
 
+    def info(self, name):
+        ret = self._get_proto_ret(name)
+        #ret["comment"] = str(self._get_org_by_name(name))
+        ret["comment"] = str(self.client("org.listOrgs", self.client.get_token()))
+
+        return ret
+
 
 class UyuniUsers(UyuniFunctions):
     """
     Uyuni operations over users.
     """
-    def _get_user(self, name: str) -> Dict[str, Any]:
-        """
-        Get existing user data from the Uyuni.
-
-        :return:
-        """
-        return self.client("user.getDetails", self.client.get_token(), name)
-
     def create(self, uid: str, password: str, email: str, first_name: str = "", last_name: str = "") -> bool:
         """
         Create user in Uyuni.
@@ -262,8 +263,8 @@ class UyuniUsers(UyuniFunctions):
             log.debug("Not all parameters has been specified")
             log.error("Email should be specified when create user")
         else:
-            ret = UyuniUser(ext_pillar=__pillar__).create(uid=uid, password=password, email=email,
-                                                          first_name=first_name, last_name=last_name)
+            ret = self.users.create(uid=uid, password=password, email=email,
+                                    first_name=first_name, last_name=last_name)
             log.debug("User has been created")
 
         return bool(ret)
@@ -276,17 +277,14 @@ class UyuniUsers(UyuniFunctions):
 
         :return: dict for Salt communication
         """
-        result: Optional[bool] = None
-        ret = {
-            'name': name,
-            'changes': {},
-            'result': result,
-            'comment': "User {} has been deleted".format(name),
-        }
+        ret = self._get_proto_ret(name, result=False)
 
         try:
-            self.client("user.delete", self.client.get_token(), name)
-            ret["result"] = True
+            ret["result"] = self.users.delete(name)
+            if ret["result"]:
+                ret["comment"] = "User {} has been deleted".format(name)
+            else:
+                ret["comment"] = "Deleting user {} failed. See logs for more details".format(name)
         except Exception as exc:
             ret["result"] = False
             ret["comment"] = str(exc)
@@ -318,9 +316,9 @@ class UyuniUsers(UyuniFunctions):
 
         existing_user = None
         try:
-            for user in self.client("user.listUsers", self.client.get_token()):
+            for user in self.users.get_all_users():
                 if user.get("login") == name:
-                    existing_user = self._get_user(name)
+                    existing_user = self.users.get_user(name)
                     break
         except UyuniUsersException as exc:
             ret["comment"] = "Error manage user '{}': {}".format(name, exc)
@@ -337,12 +335,10 @@ class UyuniUsers(UyuniFunctions):
                 ret["comment"] = "Added new user {}".format(name)
                 ret["result"] = True
             else:
+                # Changes
                 ret["comment"] = "No changes has been done"
 
         return ret
-
-
-__rpc: Optional[RPCClient] = None
 
 
 def __virtual__():
@@ -351,13 +347,7 @@ def __virtual__():
 
     :return:
     """
-    global __rpc
-    if __rpc is None and "xmlrpc" in __pillar__.get("uyuni", {}):
-        rpc_conf = __pillar__["uyuni"]["xmlrpc"] or {}
-        __rpc = RPCClient(rpc_conf.get("url", "https://localhost/rpc/api"),
-                          rpc_conf.get("user", ""), rpc_conf.get("password", ""))
-
-    return __virtualname__ if __rpc is not None else False
+    return __virtualname__ if RPCClient.init(pillar=__pillar__) is not None else False
 
 
 # Salt exported API
@@ -378,8 +368,8 @@ def user_present(name, password, email, first_name, last_name, org="", roles=Non
     :raises: UyuniException if roles aren't correctly spelt.
     :return: dictionary for Salt communication protocol
     """
-    return UyuniUsers(__rpc).manage(name=name, password=password, email=email, first_name=first_name,
-                                    last_name=last_name, org=org, roles=roles)
+    return UyuniUsers().manage(name=name, password=password, email=email, first_name=first_name,
+                               last_name=last_name, org=org, roles=roles)
 
 
 def user_absent(name):
@@ -390,7 +380,7 @@ def user_absent(name):
 
     :return: dictionary for Salt communication protocol
     """
-    return UyuniUsers(__rpc).delete(name)
+    return UyuniUsers().delete(name)
 
 
 def org_present(name, admin_login, admin_password, admin_prefix, first_name, last_name, email, pam=False,
@@ -433,10 +423,10 @@ def org_present(name, admin_login, admin_password, admin_prefix, first_name, las
     policy.crash_file_upload = crash_file_upload
     policy.crash_file_size_limit = crash_file_size_limit
 
-    return UyuniOrgs(__rpc).manage(name=name, admin_login=admin_login, admin_password=admin_password,
-                                   admin_prefix=admin_prefix, first_name=first_name, last_name=last_name, email=email,
-                                   pam=pam, content_staging=content_staging, errata_email_notif=errata_email_notif,
-                                   org_admin_enable=org_admin_enable, policy=policy)
+    return UyuniOrgs().manage(name=name, admin_login=admin_login, admin_password=admin_password,
+                              admin_prefix=admin_prefix, first_name=first_name, last_name=last_name, email=email,
+                              pam=pam, content_staging=content_staging, errata_email_notif=errata_email_notif,
+                              org_admin_enable=org_admin_enable, policy=policy)
 
 
 def org_absent(name):
@@ -446,4 +436,8 @@ def org_absent(name):
     :param name:
     :return:
     """
-    return UyuniOrgs(__rpc).delete(name=name)
+    return UyuniOrgs().delete(name=name)
+
+
+def org_info(name):
+    return UyuniOrgs().info(name)

@@ -45,7 +45,7 @@ class RPCClient:
         self.token: Optional[str] = None
 
     @staticmethod
-    def init(ext_pillar: Optional[Dict[str, Any]] = None):
+    def init(pillar: Optional[Dict[str, Any]] = None):
         """
         Create new instance
 
@@ -54,7 +54,7 @@ class RPCClient:
         if RPCClient.__instance__ is None:
             plr: Optional[Dict[str, Any]] = __pillar__ or {}
             if "xmlrpc" not in (plr or {}).keys():
-                plr = ext_pillar
+                plr = pillar
 
             if "xmlrpc" in (plr or {}).get("uyuni", {}):
                 rpc_conf = (plr or {})["uyuni"]["xmlrpc"] or {}
@@ -100,8 +100,8 @@ class UyuniRemoteObject:
     """
     RPC client
     """
-    def __init__(self, ext_pillar: Optional[Dict[str, Any]] = None):
-        self.client: RPCClient = RPCClient.init(ext_pillar=ext_pillar)
+    def __init__(self, pillar: Optional[Dict[str, Any]] = None):
+        self.client: RPCClient = RPCClient.init(pillar=pillar)
 
 
 class UyuniUser(UyuniRemoteObject):
