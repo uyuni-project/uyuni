@@ -18,6 +18,8 @@ class RPCClient:
     """
     RPC Client
     """
+    __instance__: Optional["RPCClient"] = None
+
     def __init__(self, url: str, user: str, password: str):
         """
         XML-RPC client interface.
@@ -26,6 +28,9 @@ class RPCClient:
         :param user: username for the XML-RPC endpoints
         :param password: password credentials for the XML-RPC endpoints
         """
+        if self.__instance__ is not None:
+            raise UyuniUsersException("Object already instantiated. Use init() method instead.")
+
         ctx: ssl.SSLContext = ssl.create_default_context()
         ctx.check_hostname = False
         ctx.verify_mode = ssl.CERT_NONE
@@ -34,6 +39,27 @@ class RPCClient:
         self._user: str = user
         self._password: str = password
         self.token: Optional[str] = None
+
+    @staticmethod
+    def init(ext_pillar: Optional[Dict[str, Any]] = None):
+        """
+        Create new instance
+
+        :return:
+        """
+        if RPCClient.__instance__ is None:
+            plr: Optional[Dict[str, Any]] = __pillar__ or {}
+            if "xmlrpc" not in (plr or {}).keys():
+                plr = ext_pillar
+
+            if "xmlrpc" in (plr or {}).get("uyuni", {}):
+                rpc_conf = (plr or {})["uyuni"]["xmlrpc"] or {}
+                RPCClient.__instance__ = RPCClient(rpc_conf.get("url", "https://localhost/rpc/api"),
+                                                   rpc_conf.get("user", ""), rpc_conf.get("password", ""))
+            else:
+                raise UyuniUsersException("Unable to find Pillar configuration for Uyuni XML-RPC API")
+
+        return RPCClient.__instance__
 
     def get_token(self, refresh: bool = False) -> Optional[str]:
         """
