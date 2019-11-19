@@ -197,13 +197,6 @@ class UyuniOrgs(UyuniFunctions):
 
         return ret
 
-    def info(self, name):
-        ret = self._get_proto_ret(name)
-        #ret["comment"] = str(self._get_org_by_name(name))
-        ret["comment"] = str(self.client("org.listOrgs", self.client.get_token()))
-
-        return ret
-
 
 class UyuniUsers(UyuniFunctions):
     """
@@ -401,7 +394,3 @@ def org_absent(name):
     :return:
     """
     return UyuniOrgs().delete(name=name)
-
-
-def org_info(name):
-    return UyuniOrgs().info(name)
