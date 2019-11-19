@@ -95,7 +95,7 @@ def parse_packages(path):
     ret = []
     if __salt__['file.file_exists'](path):
         packages = __salt__['cp.get_file_str'](path)
-        pattern = re.compile(r"^(?P<name>.*)\|(?P<epoch>.*)\|(?P<version>.*)\|(?P<release>.*)\|(?P<arch>.*)\|(?P<disturl>.*)$")
+        pattern = re.compile(r"^(?P<name>.*?)\|(?P<epoch>.*?)\|(?P<version>.*?)\|(?P<release>.*?)\|(?P<arch>.*?)\|(?P<disturl>.*?)(\|(?P<license>.*))?$")
         for line in packages.splitlines():
             match = pattern.match(line)
             if match:
