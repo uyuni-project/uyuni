@@ -1,3 +1,4 @@
+- Load modules to enable Apache static file compression
 - Proxy websockify through Apache (bsc#1155455)
 - Bump version to 4.1.0 (bsc#1154940)
 - Change the default value of taskomatic maxmemory to 4GB
