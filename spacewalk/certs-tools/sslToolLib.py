@@ -48,7 +48,7 @@ def fixSerial(serial):
     # make sure the padding is correct
     # if odd number of digits, pad with a 0
     # e.g., '100' --> '0100'
-    if len(serial)/2.0 != len(serial)/2:
+    if len(serial)/2.0 != len(serial)//2:
         serial = '0'+serial
 
     return serial
