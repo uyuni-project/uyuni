@@ -1774,16 +1774,23 @@ def do_system_delete(self, args):
     if not self.user_confirm('Delete these systems [y/N]:'):
         return
 
-    self.client.system.deleteSystems(self.session, system_ids, options.cleanuptype)
+    logging.debug("System IDs to remove: %s", system_ids)
+    logging.debug("System names to IDs: %s", systems)
 
+    self.client.system.deleteSystems(self.session, system_ids, options.cleanuptype)
     logging.info('%i system(s) scheduled for removal', len(system_ids))
 
     # regenerate the system name cache
     self.generate_system_cache(True, delay=1)
 
     # remove these systems from the SSM and update the cache
-    all(self.ssm.pop(system_name) for system_name in list(systems))
+    for system_name in list(systems):
+        if system_name in self.ssm:
+            self.ssm.pop(system_name)
+    logging.debug("SSM stack updated")
+
     save_cache(self.ssm_cache_file, self.ssm)
+    logging.debug("SSM cache saved")
 
 
 ####################
