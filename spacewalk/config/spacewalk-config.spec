@@ -168,6 +168,8 @@ sysconf_addword /etc/sysconfig/apache2 APACHE_MODULES proxy_wstunnel
 sysconf_addword /etc/sysconfig/apache2 APACHE_MODULES rewrite
 sysconf_addword /etc/sysconfig/apache2 APACHE_MODULES headers
 sysconf_addword /etc/sysconfig/apache2 APACHE_MODULES xsendfile
+sysconf_addword /etc/sysconfig/apache2 APACHE_MODULES filter
+sysconf_addword /etc/sysconfig/apache2 APACHE_MODULES deflate
 sysconf_addword /etc/sysconfig/apache2 APACHE_SERVER_FLAGS SSL
 sysconf_addword /etc/sysconfig/apache2 APACHE_SERVER_FLAGS ISSUSE
 sysconf_addword -r /etc/sysconfig/apache2 APACHE_MODULES access_compat
