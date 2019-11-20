@@ -20,6 +20,7 @@ import yaml
 import json
 import sys
 import re
+import fnmatch
 import salt.utils.dictupdate
 import salt.utils.stringutils
 
@@ -101,6 +102,15 @@ def ext_pillar(minion_id, *args):
                 ret.update(yaml.load(open(data_filename).read()))
             except Exception as error:
                 log.error('Error accessing "{pillar_file}": {message}'.format(pillar_file=data_filename, message=str(error)))
+
+    data_filename_prefix = 'pillar_{minion_id}_*.yml'.format(minion_id=minion_id)
+    for file in os.listdir(MANAGER_PILLAR_DATA_PATH):
+        if fnmatch.fnmatch(file, data_filename_prefix):
+            try:
+                ret.update(yaml.load(open(os.path.join(MANAGER_PILLAR_DATA_PATH, file)).read()))
+            except Exception as error:
+                log.error(
+                    'Error accessing "{pillar_file}": {message}'.format(pillar_file=file, message=str(error)))
 
     # Including formulas into pillar data
     try:
