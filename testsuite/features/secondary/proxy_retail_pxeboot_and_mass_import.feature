@@ -33,7 +33,10 @@ Feature: PXE boot a Retail terminal
   Scenario: Enable the PXE formulas on the branch server
     Given I am on the Systems overview page of this "proxy"
     When I follow "Formulas" in the content area
-    And I check the "tftpd" formula
+    Then I should see a "Choose formulas" text
+    And I should see a "Suse Manager For Retail" text
+    And I should see a "General System Configuration" text
+    When I check the "tftpd" formula
     And I check the "vsftpd" formula
     And I check the "pxe" formula
     And I click on "Save"
