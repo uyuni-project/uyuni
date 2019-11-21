@@ -42,6 +42,7 @@ import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.MinionSummary;
 import com.redhat.rhn.domain.server.NetworkInterface;
+import com.redhat.rhn.domain.server.ServerFQDN;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.VirtualInstanceFactory;
 import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
@@ -680,6 +681,17 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         testHardwareProfileUpdate("hardware.profileupdate.ppc64.json", (server) -> {
             assertNotNull(server);
             assertEquals(2, server.getFqdns().size());
+        });
+    }
+
+    public void testHardwareProfileUpdateCustomFqdns() throws Exception {
+        testHardwareProfileUpdate("hardware.profileupdate.x86.custom.fqdns.json", (server) -> {
+            assertNotNull(server);
+            assertEquals(5, server.getFqdns().size());
+            List<String> collect = server.getFqdns().stream().map(ServerFQDN::getName).collect(Collectors.toList());
+            assertTrue(collect.contains("custom.fqdns.name.one"));
+            assertTrue(collect.contains("custom.fqdns.name.two"));
+            assertTrue(collect.contains("custom.fqdns.name.three"));
         });
     }
 
