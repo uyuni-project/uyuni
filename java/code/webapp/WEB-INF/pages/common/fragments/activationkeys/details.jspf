@@ -72,15 +72,16 @@
         <script type="text/javascript">
             window.csrfToken = '<c:out value="${csrf_token}" />';
             window.pageRenderers = window.pageRenderers || {};
-            window.pageRenderers.customValues = {
-                DOMid: 'activation-key-channels',
-                    activationKeyId: '<c:out value="${param.tid}" />'
-                }
+            window.pageRenderers.customValues = { DOMid: 'activation-key-channels' }
+
+            function getActivationKeyId(){
+                return ${param.tid};
+            }
         </script>
 
         <script>
             spaImportReactPage('systems/activation-key/activation-key-channels')
-                .then(function(module) { module.renderer() });
+                .then(function(module) { module.renderer('activation-key-channels') });
         </script>
 
         <div class="form-group">
