@@ -1,4 +1,4 @@
-= SUSE Manager Documentation Repository
+= Uyuni Docs
 ifdef::env-github,backend-html5[]
 //Admonitions
 :tip-caption: :bulb:
@@ -49,19 +49,19 @@ image:https://github.com/SUSE/doc-susemanager/workflows/feature%20tests/badge.sv
 
 [suma.doc.intro]
 == Introduction
-This is the source for the official SUSE Manager documentation.
+This is the source for the official Uyuni documentation.
 
 We welcome pull requests.
 Please follow these instructions to create your pull request.
 
-For more details on contributing to SUSE Manager documentation, visit the https://github.com/SUSE/doc-susemanager/wiki[SUSE Manager Documentation Wiki].
+For more details on contributing to Uyuni documentation, visit the https://github.com/SUSE/doc-susemanager/wiki[SUSE Manager Documentation Wiki].
 The wiki contains information about word usage, markup conventions, our docs toolchain, building locally, and publishing documentation.
 
 
 [suma.doc.first.contribution]
 == First Contribution
 
-To contribute to SUSE Manager documentation:
+To contribute to Uyuni documentation:
 
 . Clone the repository to your local machine:
 +
