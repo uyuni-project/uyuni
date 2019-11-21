@@ -227,7 +227,7 @@ Update your local copy from master whenever you switch branches.
 
 
 [suma.docs.team]
-== The SUSE Manager Documentation Team
+== The Uyuni Documentation Team
 
 * Joseph Cayouette @jcayouette
 * Karl Eichwalder @keichwa
