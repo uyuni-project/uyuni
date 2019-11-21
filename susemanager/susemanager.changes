@@ -1,3 +1,4 @@
+- update requirements to match documented values (bsc#1154599)
 - add bootstrap repo for RHEL 8 and ES 8
 - Show help message when missing sub-command in  mgr-sync call (bsc#1134708)
 - Use python2-uyuni-common-libs and python3-uyuni-common-libs for
