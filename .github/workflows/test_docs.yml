@@ -36,7 +36,7 @@ jobs:
         npm i -g @antora/cli@2.1 @antora/site-generator-default@2.1
         npm install -g gitlab:antora/xref-validator
     - name: '[TOOLCHAIN] Lunr/Antora Custom Docker Image'
-      run: docker build -t lunr/antora:custom -f docs/Dockerfile.custom
+      run: docker build -t lunr/antora:custom -f Dockerfile.custom .docs/
 
     - name: '[TEST] Validate Antora XREFS'
       run: |
