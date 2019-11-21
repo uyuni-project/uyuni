@@ -1,0 +1,179 @@
+[[salt-states]]
+= Salt States
+
+States are configuration templates.
+They allow you to describe what each of your systems should look like, including the applications and services that are installed and running.
+Salt state files are referred to as SLS (SaLt State) files.
+
+States are applied to the target systems by matching relevant state data to clients.
+The state data comes from {productname} in the form of package and custom states.
+
+For more information on states, see https://docs.saltstack.com/en/latest/topics/tutorials/starting_states.html.
+
+
+You can target clients at three specific levels of hierarchy and priority: individual clients, system groups, and organization.
+Individual clients have priority over groups, and groups have priority over the organization.
+
+For example:
+
+* The Organization requires that version 1 is installed.
+All clients are part of the same Organization.
+* Group A requires that version 2 is installed.
+Client1, Client2, and Client3 are part of Group A.
+* Group B requires any version installed.
+Client4 is part of Group B.
+
+Leading to these possible scenarios:
+
+* Client1 wants package removed, package is removed (Client Level)
+* Client2 wants version 2, gets version 2 (Client Level)
+* Client3 wants any version, gets version 2 (Group Level)
+* Client4 wants any version, gets version 1 (Organization Level)
+
+
+Custom user-created states can be made with {productname}.
+All user-created Salt state (SLS) files are saved on the {productname} Server, in the [path]``/srv/susemanager/salt/`` directory.
+Within that directory, each organization has a sub-directory.
+
+.Example: SLS File Directory Structure
+
+----
+├── manager_org_DEVEL
+│   ├── files
+│   │    ... files needed by states (uploaded by users)...
+│   └── state.sls
+         ... other SLS files (created by users)...
+For example:
+├── manager_org_TESTING
+│   ├── files
+│   │   └── motd     # user created
+│   │    ... other files needed by states ...
+│   └── motd.sls     # user created
+            ... other SLS files ...
+----
+
+
+
+== Salt Pillars
+
+
+{productname} exposes a small amount of internal data as pillars which can be used with custom states.
+Pillars are created on the {productname} Server, and contain information about a client or group of clients.
+Pillars are useful for sensitive data, configuration of clients, variables, and any arbitrary data.
+
+Pillars are managed either automatically by {productname}, or manually by the user.
+
+For more information on pillars, see https://docs.saltstack.com/en/latest/topics/tutorials/pillar.html.
+
+
+To avoid hard-coding organization IDs within {sles} files, a pillar entry is added for each organization:
+
+----
+org-files-dir: relative_path_to_files
+----
+
+The specified file is available for all clients which belong to the organization.
+
+This is an example of a Pillar located at [path]``/etc/motd``:
+
+----
+file.managed:
+    - source: salt://{{ pillar['org-files-dir']}}/motd
+    - user: root
+    - group: root
+    - mode: 644
+----
+
+
+
+== Group States
+
+Pillar data can be used to perform bulk actions, like applying all assigned states to clients within the group.
+This section contains some examples of bulk actions that you can take using group states.
+
+To perform these actions, you will need to determine the ID of the group that you want to manipulate.
+You can determine the Group ID by using the [command]``spacecmd`` command:
+----
+spacecmd group_details
+----
+
+In these examples we will use an example Group ID of [systemitem]``GID``.
+
+
+To apply all states assigned to the group:
+----
+salt -I 'group_ids:GID' state.apply custom.group_GID
+----
+
+To apply any state (whether or not it is assigned to the group):
+----
+salt -I 'group_ids:GID' state.apply ``state``
+----
+
+To apply a custom state:
+----
+salt -I 'group_ids:2130' state.apply manager_org_1.``customstate``
+----
+
+Apply the highstate to all clients in the group:
+----
+salt -I 'group_ids:GID' state.apply
+----
+
+
+By default, {productname} assumes that the download endpoint to use is the FQDN of the {productname} Server or Proxy.
+However, there are some cases where you might like to use a different FQDN as the download endpoint.
+The most common example is if you need to use load balancing, caching proxies, or in environments with complicated networking requirements.
+
+To change the package download endpoint, you can manually adjust three Salt pillars:
+* [systemitem]``pkg_download_point_protocol``, defaults to [systemitem]``https``.
+* [systemitem]``pkg_download_point_host``, defaults to the FQDN of the {productname} Server (or Proxy, if in use).
+* [systemitem]``pkg_download_point_port``, defaults to [systemitem]``443``.
+
+If you do not adjust these pillars directly, {productname} will fall back to the default values.
+
+
+.Procedure: Changing the Package Download Endpoint Pillar
+. Navigate to [path]``/srv/pillar/`` and create a file called [filename]``top.sls``  with these contents:
++
+----
+base:
+  '*':
+    - pkg_download_points
+----
++
+This example directs Salt to look at the [filename]``pkg_download_points.sls`` file to determine the base URL to use.
+You can adjust this file to target different clients or groups, depending on your environment.
++
+. Remain in [path]``/srv/pillar/`` and create a file called [filename]``pkg_download_points.sls`` with the base URLs you want to use.
+For example:
++
+----
+pkg_download_point_protocol: http
+pkg_download_point_host: example.com
+pkg_download_point_port: 444
+----
+. OPTIONAL: If you want to use external pillars, for example Group IDs, open the master configuration file and set the [systemitem]``ext_pillar_first`` parameter to [systemitem]``true``.
+You can then use Group IDs to set conditional values, for example:
++
+----
+{% if pillar['group_ids'] is defined and 8 in pillar['group_ids'] %}
+  pkg_download_point_protocol: http
+  pkg_download_point_host: example.com
+  pkg_download_point_port: 444
+{% else %}
+  pkg_download_point_protocol: ftp
+  pkg_download_point_host: example.com
+  pkg_download_point_port: 445
+{%- endif %}
+----
+. OPTIONAL: You can also use grains to set conditional values, for example:
+----
+{% if grains['fqdn'] == 'client1.example.com' %}
+    pkg_download_point: example1.com
+{% elif grains['fqdn'] == 'client2.example.com'' %}
+    pkg_download_point: example2.com
+{% else %}
+    pkg_download_point: example.com
+{% endif %}
+----

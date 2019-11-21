@@ -1,0 +1,7 @@
+[[ref.webui.schedule.fail]]
+= Failed Actions
+
+Sometimes actions cannot be completed.
+If the action returns an error, it is displayed here.
+
+image::schedule_failed_actions.png[scaledwidth=80%]

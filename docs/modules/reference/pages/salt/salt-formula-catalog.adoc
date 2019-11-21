@@ -1,0 +1,7 @@
+[[ref.webui.salt.formula_catalog]]
+= Formula Catalog
+
+The [guimenu]``Formula Catalog`` is a feature preview: The formula catalog page enables viewing of currently installed link:https://docs.saltstack.com/en/latest/topics/development/conventions/formulas.html[Salt formulas]. Apply these formulas to individual systems or server groups. Formulas allow automatic installation and configuration of software and may be installed via RPM packages. We would be glad to receive your feedback in the link:https://forums.suse.com/forumdisplay.php?22-SUSE-Manager[SUSE Manager Forum].
+
+image::formula-catalog.png[scaledwidth=80%]
+

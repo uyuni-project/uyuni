@@ -1,0 +1,46 @@
+[[ref.webui.systems.visualization]]
+= Visualization Menu
+
+ifdef::showremarks[]
+#
+All images in this section are placeholders from the wiki until we can create a test setup
+   with Fennek. These images are outdated and need to be replaced before release!!#
+endif::showremarks[]
+
+
+You can visualize your virtualized, proxy, and systems group topologies.
+Listed under menu:Systems[Visualization] you will find the [guimenu]``Virtualization Hierarchy``, [guimenu]``Proxy Hierarchy``, and [guimenu]``Systems Grouping`` subpages.
+This features allows you to search, filter, and partition systems by name, base channel, check-in date, group, etc.
+
+To visualize your systems select menu:Main Menu[Systems > Visualization].
+
+Click the btn:[Show Filters] button in the upper right corner to open the filters panel.
+On the [guimenu]``Filtering`` tab, systems are filterable by name, base channel, installed products, or with special properties such as security, bug fix, and product enhancement advisories,
+etc.
+
+
+image::systems_visualization_filter_example.png[scaledwidth=80%]
+
+
+On the [guimenu]``Partitioning`` tab, systems may also be partitioned by check-in time.
+Select the check-in date and time and click the btn:[Apply] button.
+The btn:[Clear] button will revert current partition configuration.
+
+
+image::systems_visualization_partition_example.png[scaledwidth=80%]
+
+
+All elements of the network tree are selectable.
+Clicking any element in the tree opens a box containing information about the selected systems and will be displayed in the top-right of the visualization area.
+
+
+image::systems_visualization_selections_example.png[scaledwidth=80%]
+
+
+Systems shown in the visualization view may be added to System Set Manager (SSM) for futher management.
+This can be performed in two ways:
+
+* Select single systems and click the btn:[Add system to SSM] button in the top-right detail box.
+* Add all visible child elements of any parent node in the view (visible means when filters have been applied) by clicking the btn:[Add Children to SSM] button at the bottom of the selection details panel.
+
+

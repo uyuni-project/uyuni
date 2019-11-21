@@ -1,0 +1,31 @@
+[[ref.webui.channels.search]]
+= Package Search
+
+The [guimenu]``Package Search`` page allows you to search through packages using various criteria provided by the [guimenu]``What to search for`` selection list:
+
+* [guimenu]``Free Form`` -- a general keyword search useful when the details of a particular package and its contents are unknown.
+* [guimenu]``Name Only`` -- Targeted search to find a specific package known by name.
+* [guimenu]``Name and Summary`` -- Search for a package or program which might not show up in the respective package name but in its one-line summary.
+* [guimenu]``Name and Description`` -- Search package names and their descriptions.
+
+image::channels_search_channels.png[scaledwidth=80%]
+
+The [guimenu]``Free Form`` field additionally allows you to search using field names that you prepend to search queries and filter results by that field keyword.
+
+For example, if you wanted to search all of the {sle} packages for the word `java` in the description and summary, type the following in the [guimenu]``Free Form`` field:
+
+----
+summary:java and description:java
+----
+
+Other supported field names include:
+
+* ``name``: search package names for a particular keyword,
+* ``version``: search for a particular package version,
+* ``filename``: search the package file names for a particular keyword,
+* ``description``: search the packages' detailed descriptions for a particular keyword,
+* ``summary``: search the packages' brief summary for a particular keyword,
+* ``arch``: search the packages by their architecture (such as ``x86_64``, ``ppc64le``, or ``s390``).
+
+You can also limit searches to [guimenu]``Channels relevant to your systems`` by clicking the check box.
+Additionally, you can restrict your search by platform ([guimenu]``Specific channel you have access to``) or architecture ([guimenu]``Packages of a specific architecture``).

@@ -1,0 +1,68 @@
+:grub: Grub
+:ibmz: IBM Z
+:zsystems: {ibmz}
+:zseries: {ibmz}
+:ppc: POWER
+:ppc64le: IBM Power PC
+:ipf : Itanium
+:x86: x86
+:x86_64: x86_64
+:rhel: Red Hat Enterprise Linux
+:rhnminrelease6: Red Hat Enterprise Linux Server 6
+:rhnminrelease7: Red Hat Enterprise Linux Server 7
+:ubuntu: Ubuntu
+:kickstart: Kickstart
+:productname:
+:productproxy: {productname} Proxy
+:susemgr: SUSE Manager
+:smr: SUSE Manager for Retail
+:uyuni: Uyuni
+:smrproductnumber: 3.2
+:slepos: SUSE Linux Enterprise Point of Service
+:susemgrproxy: SUSE Manager Proxy
+:productnumber: 4.0
+:docversion: 4.0
+:saltversion: 2019.2.0
+:webui: Web UI
+:sles-version: 12
+:sp-version: SP1
+//:sp-version-l: sp3
+:jeos: JeOS
+:scc: SUSE Customer Center
+:sls: SUSE Linux Enterprise Server
+:sle: SUSE Linux Enterprise
+:slsa: SLES
+:suse: SUSE
+:slea: {sle}
+:sleda: SLED
+:ay: AutoYaST
+:baseos:
+:deploy: Deployment Guide
+:upgrade: Upgrade Guide
+:yast: YaST
+:rootuser: root
+:ruser: root
+:mdash: -
+:rhela: RHEL
+:mgradvtop: Advanced Topics Guide
+:mgrgetstart: Getting Started Guide
+:mgrrefguide: Reference Guide
+:mgrbestpract: Best Practices Guide
+:openscap: OpenSCAP
+:uarr:
+:ncc: Novell Customer Center
+//:sp-ver: {sp-version}
+:rmtool: Repository Management Tool
+:smtool: {rmtool}
+:vmguest: VM Guest
+:vmhost: VM Host Server
+:xen: Xen
+:kvm: KVM
+:homepage: https://github.com/SUSE/doc-susemanager
+:linkattrs:
+:sectlinks:
+:icons: font
+:experimental:
+:sourcedir: .
+:imagesdir: images
+:doctype: book

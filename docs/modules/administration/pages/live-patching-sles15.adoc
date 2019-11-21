@@ -1,0 +1,114 @@
+[[live-patching-sles15]]
+= Live Patching on SLES{nbsp}15
+
+On SLES{nbsp}15 systems and newer, live patching is managed by the [systemitem]``klp livepatch`` tool.
+
+Before you begin, ensure:
+
+* {productname} is fully updated
+* You have one or more Salt clients running SLES{nbsp}15 (SP1 or later)
+* Your SLES{nbsp}15 Salt clients are registered with {productname}
+* You have access to the SLES{nbsp}15 channels appropriate for your architecture, including the Live Patching child channel (or channels)
+* The clients are fully synchronized
+
+.Procedure: Setting up for Live Patching
+
+. Select the client you want to manage with Live Patching from menu:Systems[Overview], and navigate to the menu:Software[Packages > Install] tab.
+Search for the [systemitem]``kernel-livepatch`` package, and install it.
++
+image::enable_live_patching_kernel_live_install.png[scaledwidth=80%]
+. Apply the highstate to enable Live Patching, and reboot the client.
+. Repeat for each client that you want to manage with Live Patching.
+. To check that Live Patching has been enabled correctly, select the client from menu:Systems[System List], and ensure that [systemitem]``Live Patch`` appears in the [guimenu]``Kernel`` field.
+
+
+When you have the Live Patching channel installed on the client, you can clone the default vendor channel.
+This cloned channel will be used to manage Live Patching on your clients.
+
+Cloned vendor channels should be prefixed by ``dev`` for development, ``testing``, or  ``prod`` for production.
+In this procedure, you will create a ``dev`` cloned channel, and later, you will need to promote the channel to ``testing``.
+
+
+.Procedure: Cloning Live Patching Channels
+
+. At the command prompt on the client, as `root`, obtain the current package channel tree:
++
+
+[subs=attributes]
+----
+# spacewalk-manage-channel-lifecycle --list-channels
+Spacewalk Username: admin
+Spacewalk Password:
+Channel tree:
+
+ 1. sles15-{sp-vert}-pool-x86_64
+      \__ sle-live-patching15-pool-x86_64-{sp-vert}
+      \__ sle-live-patching15-updates-x86_64-{sp-vert}
+      \__ sle-manager-tools15-pool-x86_64-{sp-vert}
+      \__ sle-manager-tools15-updates-x86_64-{sp-vert}
+      \__ sles15-{sp-vert}-updates-x86_64
+----
+
+. Use the [command]``spacewalk-manage-channel`` command with the [option]``init`` argument to automatically create a new development clone of the original vendor channel:
++
+[subs=attributes]
+----
+spacewalk-manage-channel-lifecycle --init -c sles15-{sp-vert}-pool-x86_64
+----
+[subs=attributes]
+. Check that [systemitem]``dev-sles15-{sp-vert}-updates-x86_64`` is available in your channel list.
+
+Check the ``dev`` cloned channel you created, and remove any kernel updates that require a reboot.
+
+.Procedure: Removing Non-Live Kernel Patches from Cloned Channels
+
+. Check the current kernel version by selecting the client from menu:Systems[System List], and taking note of the version displayed in the [guimenu]``Kernel`` field.
+. In the {productname} {webui}, select the client from menu:Systems[Overview], navigate to the menu:Software[Manage > Channels] tab, and select [systemitem]``dev-sles15-sp{sp-vert}-updates-x86_64``.
+Navigate to the [guimenu]``Patches`` tab, and click btn:[List/Remove Patches].
+. In the search bar, type [systemitem]``kernel`` and identify the kernel version that matches the kernel currently used by your client.
+. Remove all kernel versions that are newer than the currently installed kernel.
+
+Your channel is now set up for Live Patching, and can be promoted to ``testing``.
+In this procedure, you will also add the Live Patching child channels to your client, ready to be applied.
+
+.Procedure: Promoting Live Patching Channels
+
+. At the command prompt on the client, as `root`, promote and clone the `dev-sles15-{sp-vert}-pool-x86_64` channel to a new testing channel:
++
+[subs=attributes]
+----
+# spacewalk-manage-channel-lifecycle --promote -c dev-sles15-{sp-vert}-pool-x86_64
+----
+. In the {productname} {webui}, select the client from menu:Systems[Overview], and navigate to the menu:Software[Software Channels] tab.
+. Check the new [systemitem]``test-sles15-sp3-pool-x86_64`` custom channel to change the base channel, and check both corresponding Live Patching child channels.
+. Click btn:[Next], confirm that the details are correct, and click btn:[Confirm] to  save the changes.
+
+You can now select and view available CVE patches, and apply these important kernel updates with Live Patching.
+
+.Procedure: Applying Live Patches to a Kernel
+
+. In the {productname} {webui}, select the client from menu:Systems[Overview].
+You will see  a banner at the top of the screen showing the number of critical and non-critical packages available for the client:
++
+image::live_patching_criticalupdates.png[scaledwidth=80%]
+
+. Click btn:[Critical] to see a list of the available critical patches.
+. Select any patch with a synopsis reading [guimenu]``Important: Security update for the Linux kernel``.
+Security bugs will also include their CVE number, where applicable.
+. OPTIONAL: If you know the CVE number of a patch you want to apply, you can search for it in menu:Audit[CVE Audit], and apply the patch to any clients that require it.
+
+[IMPORTANT]
+====
+Not all kernel patches are Live Patches!
+Non-Live kernel patches are represented by a `Reboot Required` icon located next to the `Security` shield icon.
+These patches will always require a reboot.
+====
+
+
+[IMPORTANT]
+====
+Not all security issues can be fixed by applying a live patch.
+Some security issues can only be fixed by applying a full kernel update and will require a reboot.
+The assigned CVE numbers for these issues are not included in live patches.
+A CVE audit will display this requirement.
+====

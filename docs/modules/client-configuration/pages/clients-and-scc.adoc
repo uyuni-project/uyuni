@@ -1,0 +1,13 @@
+[[client-cfg-scc]]
+= {scc}
+
+
+// This content isn't specific to clients, and seems a little too sales-y. 
+// Removed from the nav. LKB 2019-05-01
+
+{scc} (SCC) is the central place to manage your purchased {suse} subscriptions, helping you access your update channels and get in contact with {suse} experts.
+The user-friendly interface gives you a centralized view of all your {suse} subscriptions, allowing you to easily find all subscription information you need.
+The improved registration provides faster access to your patches and updates.
+{scc} is also designed to provide a common platform for your support requests and feedback.
+Discover a new way of managing your {suse} account and subscriptions via one interface--anytime, anywhere.
+For more information on using {scc}, see: https://scc.suse.com/docs/userguide.

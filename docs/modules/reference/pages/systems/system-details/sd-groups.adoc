@@ -1,0 +1,33 @@
+[[sd-groups]]
+= SD Groups
+
+The [guimenu]``Groups`` tab and its subtabs allow you to manage the system's group memberships.
+
+
+
+[[sd-groups-list-leave]]
+== List/Leave
+
+This subtab lists groups to which the system belongs and enables you to cancel membership.
+
+image::system_details_traditional_list_groups.png[scaledwidth=80%]
+
+Only System Group Administrators and {productname} Administrators can remove systems from groups.
+Non-admins see a [guimenu]``Review this system's group membership`` page.
+To remove the system from one or more groups, select the respective check boxes of these groups and click the btn:[Leave Selected Groups] button.
+To see the [guimenu]``System Group Details`` page, click the group's name.
+For more about system groups, see xref:reference:systems/system-groups.adoc[].
+
+
+
+[[sd-groups-join]]
+== Join
+
+Lists groups that the system can be subscribed to.
+
+image::system_details_traditional_add_group.png[scaledwidth=80%]
+
+Only System Group Administrators and {productname} Administrators can add a system to groups.
+
+Non-admins see a [guimenu]``Review this system's group membership`` page.
+To add the system to groups, select the groups' check boxes and click the btn:[Join Selected Groups] button.

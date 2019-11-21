@@ -1,0 +1,23 @@
+[[ref.webui.systems.autoinst.preserve]]
+= File Preservation
+
+Collects lists of files to be protected and re-deployed on systems during {kickstart}.
+For instance, if you have many custom configuration files located on a system to be kickstarted, enter them here as a list and associate that list with the Kickstart profile to be used.
+
+To use this feature, click the [guimenu]``Create File Preservation List`` link at the top.
+Enter a suitable label and all files and directories to be preserved.
+Enter absolute paths to all files and directories.
+Then click btn:[Create List].
+
+[IMPORTANT]
+====
+Although file preservation is useful, it does have limitations.
+Each list is limited to a total size of 1 MB.
+Special devices like [path]``/dev/hda1`` and [path]``/dev/sda1`` are not supported.
+Only file and directory names may be entered.
+No regular expression wildcards can be used.
+====
+
+When finished, you may include the file preservation list in the Kickstart profile to be used on systems containing those files.
+
+For more information, see xref:reference:systems/autoinst-profiles.adoc#ref.webui.systems.autoinst.profiles.create[].

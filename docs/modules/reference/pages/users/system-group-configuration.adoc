@@ -1,0 +1,32 @@
+[[ref.webui.users.sgc]]
+= System Group Configuration
+
+System Groups help when different users shall administer different groups of systems within one organization.
+
+
+[[ref.webui.users.sgc.cfg]]
+== Group Configuration
+
+Enable [guimenu]``Create a user default System Group`` and confirm with btn:[Update].
+
+Assign such a group to systems via the menu:System Details[Groups > Join] subtab.
+For more information, see: xref:reference:systems/system-details/sd-groups.adoc[].
+
+
+image::users_system_group_config.png[scaledwidth=80%]
+
+
+
+[[ref.webui.users.sgc.extauth]]
+== External Authentication
+
+Allows to create an external group with the [guimenu]``Create External Group`` link.
+
+Users can join such groups via the [guimenu]``System Groups`` of the user details page, then check the wanted [guimenu]``Group``, and confirm with btn:[Update Permissions].
+
+
+image::users_system_group_config_external_auth.png[scaledwidth=80%]
+
+
+For more information, see xref:reference:users/user-details.adoc[].
+

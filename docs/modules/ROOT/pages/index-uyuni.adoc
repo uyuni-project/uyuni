@@ -1,0 +1,52 @@
+= {productname} {productnumber} Documentation
+
+
+== What is {productname}?
+
+{productname} is a solution for organizations that require absolute control over maintenance and package deployment on their servers.
+{productname} enables you to manage large sets of Linux systems and keep them up to date, with automated software management, asset management, and system provisioning.
+{productname} allows you to maintain a high level of security while effectively managing system life-cycle requirements.
+
+{productname} uses _Salt_ to provide event-driven configuration and management control.
+The Salt-master orchestrates thousands of Salt clients ({productname} Clients) using remote execution.
+
+{productname} offers seamless management of {sle}, {rhel}, Ubuntu, CentOS, and Scientific Linux client systems and is fully compatible with Red Hat Satellite Server.
+
+
+
+== Available Documentation
+
+The following documentation is available for {productname} version {productnumber}.
+
+////
+[cols=2*, options="header"]
+|===
+| Available Documentation | Formats
+
+| Installation Guide            | xref:installation:install-intro.adoc[HTML] link:../pdf/uyuni_installation_guide.pdf[PDF]
+| Client Configuration Guide    | xref:client-configuration:client-config-overview.adoc[HTML] link:../pdf/uyuni_client_configuration_guide.pdf[PDF]
+| Upgrade Guide                 | xref:upgrade:upgrade-overview.adoc[HTML] link:../pdf/uyuni_upgrade_guide.pdf[PDF]
+| Reference Guide               | xref:reference:intro.adoc[HTML] link:../pdf/uyuni_reference_manual.pdf[PDF]
+| Administration Guide          | xref:administration:intro.adoc[HTML] link:../pdf/uyuni_administration_guide.pdf[PDF]
+| Salt Guide                    | xref:salt:salt-intro.adoc[HTML] link:../pdf/uyuni_salt_guide.pdf[PDF]
+| Retail Guide                  | xref:retail:retail-introduction.adoc[HTML] link:../pdf/uyuni_retail_guide.pdf[PDF]
+| Architecture                  | xref:architecture:architecture-intro.adoc[HTML] link:../pdf/uyuni_architecture.pdf[PDF]
+|===
+////
+
+[cols=4*, options="header"]
+|===
+| Document | Format | Document | Format
+
+| Installation Guide | xref:installation:install-intro.adoc[HTML] link:../pdf/uyuni_installation_guide.pdf[PDF] | Administration Guide | xref:administration:intro.adoc[HTML] link:../pdf/uyuni_administration_guide.pdf[PDF]
+| Client Configuration Guide | xref:client-configuration:client-config-overview.adoc[HTML] link:../pdf/uyuni_client_configuration_guide.pdf[PDF] | Salt Guide | xref:salt:salt-intro.adoc[HTML] link:../pdf/uyuni_salt_guide.pdf[PDF]
+| Upgrade Guide | xref:upgrade:upgrade-overview.adoc[HTML] link:../pdf/uyuni_upgrade_guide.pdf[PDF] | Retail Guide | xref:retail:retail-introduction.adoc[HTML] link:../pdf/uyuni_retail_guide.pdf[PDF]
+| Reference Guide | xref:reference:intro.adoc[HTML] link:../pdf/uyuni_reference_manual.pdf[PDF] | |
+//| Architecture               | xref:architecture:architecture-intro.adoc[HTML] link:../pdf/uyuni_architecture.pdf[PDF]
+|===
+
+
+
+
+
+

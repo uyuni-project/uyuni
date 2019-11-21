@@ -1,0 +1,36 @@
+[[installation-network-requirements]]
+= Network Requirements
+
+This section details the networking and port requirements for {productname}.
+
+Fully Qualified Domain Name (FQDN)::
+The {productname} server must resolve its FQDN correctly.
+If the FQDN cannot be resolved, it can cause serious problems in a number of different components.
++
+For more information about configuring the hostname and DNS, see https://documentation.suse.com/sles/15-SP1/html/SLES-all/cha-network.html#sec-network-yast-change-host.
+
+Hostname and IP Address::
+To ensure that the {productname} domain name can be resolved by its clients, both server and client machines must be connected to a working DNS server.
+You also need to ensure that reverse lookups are correctly configured.
++
+For more information about setting up a DNS server, see https://documentation.suse.com/sles/15-SP1/html/SLES-all/cha-dns.html.
+
+Using a Proxy When Installing from {sle} Media::
+If you are on an internal network and do not have access to {scc}, you can set up and use a proxy during installation.
++
+For more information about configuring a proxy for access to {scc} during a {sle} installation, see https://documentation.suse.com/sles/15-SP1/html/SLES-all/cha-boot-parameters.html#sec-boot-parameters-advanced-proxy.
+
+
+[IMPORTANT]
+====
+The hostname of {productname} must not contain uppercase letters as this may cause _jabberd_ to fail.
+Choose the hostname of your {productname} server carefully.
+Although changing the server name is possible, it is a complex process and unsupported.
+====
+
+
+In a production environment, the {productname} Server and clients should always use a firewall.
+For a comprehensive list of the required ports, see xref:installation:ports.adoc[].
+
+
+For more information on disconnected setup and port configuration, see xref:administration:disconnected-setup.adoc#client-cfg-reg-with-bootstrap-disconnected[].

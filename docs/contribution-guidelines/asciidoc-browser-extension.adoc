@@ -1,0 +1,13 @@
+= Asciidoctorjs Browser Extension
+:uri-chrome-extension: https://chrome.google.com/webstore/detail/asciidoctorjs-live-previe/iaalpfgpbocpdfblpnhhgllgbdbchmia
+:uri-firefox-addon: https://addons.mozilla.org/en/firefox/addon/asciidoctorjs-live-preview
+:uri-opera-extension: https://addons.opera.com/fr/extensions/details/asciidoctorjs-live-preview
+:experimental:
+
+
+
+You can preview an AsciiDoc document in a web browser by installing the {uri-chrome-extension}[Chrome extension], the {uri-firefox-addon}[Firefox add-on] or the {uri-opera-extension}[Opera extension].
+After installation you can visit a raw adoc document on github and it will render in html fully styled.
+
+
+If you are working locally make sure to go to the extension settings and enable the btn:[Allow access to file URLs] toggle.

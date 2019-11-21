@@ -1,0 +1,105 @@
+[[installation-zsystems]]
+= Installing on {ibmz}
+
+
+This section is intended for z/VM systems programmers responsible for operating the {ibmz} mainframes.
+It assumes that you are a z/VM systems programmer trained on {ibmz} operating protocols, and steps you through installing {productname} onto an existing mainframe system.
+This section does not cover the variety of hardware configuration profiles available on {ibmz}, but provides a foundational overview of the procedure and requirements necessary for a successful {productname} Server deployment on {ibmz}.
+
+
+
+== System Requirements
+
+Before you begin, check that your environment meets the base system requirements.
+
+The base system for {productname}{nbsp}{productnumber} is SLES{nbsp}{sles-version}{nbsp}{sp-version}.
+
+.Compatible {ibmz} Systems:
+
+* IBM zEnterprise System z196
+* IBM zEnterprise System z114
+* IBM zEnterprise EC12
+* IBM zEnterprise EC12
+* IBM zEnterprise BC12
+* IBM z13
+* LinuxOne Rockhopper
+* LinuxOne Emperor
+
+
+[cols="1,1", options="header"]
+.Hardware Requirements
+|===
+| Hardware     | Recommended
+| CPU          | Minimum 4 dedicated 64-bit CPU cores
+| RAM:         | Test Server: Minimum 3{nbsp}GB RAM and 2{nbsp}GB Swap space
+|              | Base Installation: Minimum 16{nbsp}GB
+|              | Production Server: Minimum 32{nbsp}GB
+| Disk Space:  | Root Partition: Minimum 100{nbsp}GB
+|              | [path]``/var/lib/pgsql``: Minimum 50{nbsp}GB
+|              | [path]``/var/spacewalk``: Minimum 50{nbsp}GB per SUSE product and 360{nbsp}GB per Red Hat product
+|===
+
+[IMPORTANT]
+====
+Memory should be split across available RAM, VDISK, and swap to suit your environment.
+On a production system the ratio of physical memory to VDISK will need to be evaluated based on the number of clients you will be installing.
+====
+
+You will require an additional disk for database storage.
+This should be an [systemitem]``zFCP`` or [systemitem]``DASD`` device as these are preferred for use with [systemitem]``HYPERPAV``.
+The database storage disk should have:
+
+* At least 50{nbsp}GB for [path]``/var/lib/pgsql``
+* At least 50{nbsp}GB for each SUSE product in [path]``/var/spacewalk``
+* At least 360{nbsp}GB for each Red Hat product in [path]``/var/spacewalk``
+
+You will need to ensure you have sufficient disk storage for {productname} before running [command]``yast2 susemanager_setup``.
+By default, the {productname} file system, including the embedded database and patch directories, reside within the root directory.
+While adjustments are possible when installation is complete, it is important that you specify and monitor these adjustments closely.
+For information on storage management and reclaiming disk space, see the troubleshooting section in the {productname} Administration Guide.
+
+[WARNING]
+====
+If your {productname} runs out of disk space, this can have a severe impact on its database and file structure.
+A full recovery is only possible with a previous backup or a new {productname} installation.
+{suse} technical services will not be able to provide support for systems suffering from low disk space conditions.
+====
+
+.Network Requirements:
+
+* OSA Express Ethernet (including Fast and Gigabit Ethernet)
+* HiperSockets or Guest LAN
+* 10{nbsp}GBE, VSWITCH
+* RDMA over Converged Ethernet (RoCE)
+
+These interfaces are still included but no longer supported:
+
+* CTC or virtual CTC
+* IP network interface for IUCV
+
+The z/VM guest you want to run {productname} from will require a static IP address and hostname before you begin, as these cannot easily be changed after initial installation.
+The hostname should contain less than eight characters and must not contain any upper case letters.
+
+
+.Media Requirements:
+
+{sle}{nbsp}{sles-version}{nbsp}{sp-version} Installation Media for {ibmz} is available from https://www.suse.com/products/server/download/
+
+
+== Installing {productname} on {ibmz}
+
+This section covers the installation of {productname}{nbsp}{productnumber} as an extension to {sles}{nbsp}{sles-version}{nbsp}{sp-version}.
+
+// TBD: Is this correct? SUSE Manager as an extension? Doesn't SLES15SP1 on z also have the new module concept with SUSE Manager being a base product?
+
+For more information on deploying SLES {sles-version}{nbsp}{sp-version} on your hardware, see https://documentation.suse.com/sles/15-SP1/html/SLES-all/cha-zseries.html.
+
+. Install {sles}{nbsp}{sles-version}{nbsp}{sp-version} from the installation media, and select {productname} as an extension.
+. If you have not already done so, set up any additional storage required for [path]``/var/spacewalk`` and [path]``/var/lib/pgsql`` and swap space using the {yast} partitioner tool.
+This must be set up before you continue with installation.
+. Perform a {yast} online update and reboot the system.
+. Run {productname} setup to finalize the {productname} installation:
++
+----
+yast2 susemanager_setup
+----

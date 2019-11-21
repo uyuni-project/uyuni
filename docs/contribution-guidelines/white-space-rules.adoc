@@ -1,0 +1,139 @@
+= White Space Guidelines
+ifndef::env-github[]
+:author: Joseph Cayouette
+:revdate:
+:revnumber: Version 1.0
+:revremark: First Draft
+:keywords: introduction, asciidoctor, best practices, syntax
+:experimental:
+:sectlinks:
+:sectanchor:
+// Table of Contents
+:toc:
+endif::[]
+// Github Admonitions
+ifdef::env-github[]
+:tip-caption: :bulb:
+:note-caption: :information_source:
+:important-caption: :heavy_exclamation_mark:
+:caution-caption: :fire:
+:warning-caption: :warning:
+// Section Options
+:sectlinks:
+:sectanchor:
+// Images For this Guide
+:imagesdir: ./images
+:toc: []
+:experimental:
+endif::[]
+
+
+
+== Introduction
+
+We recommend the following white space rules as they help to keep blocks and sections clearly and sensibly defined.
+
+
+
+=== The Two Golden Rules
+
+There are currently only two rules for line breaks in use. These are section breaks and content breaks.
+
+
+==== Section Breaks
+
+Add three line breaks between document sections.
+
+----
+= Document title
+:author: Penguin
+
+
+
+== Introduction
+
+Introduction text...
+
+
+
+== Content One
+
+Some text...
+
+
+
+=== Subcontent
+
+Some more text...
+----
+
+
+==== Content Breaks
+
+Ascidoc content is organized into blocks. Add one line break between all other blocks of content.
+
+----
+= Single Break Examples
+
+.List One
+* Item 1
+* Item 2
+* Item 3
+
+The above list is a unordered list.
+You can use unordered lists to stay ordered...
+
+[NOTE]
+====
+This is a note... Notice the single space between each block of content.
+====
+
+.A formal table
+|===
+|Name of Column 1 |Name of Column 2
+
+|Cell in column 1, row 1
+|Cell in column 2, row 1
+
+|Cell in column 1, row 2
+|Cell in column 2, row 2
+|===
+----
+
+
+
+
+=== Example Document:: Using both rules
+
+.Example Document: 3 Per Section, 1 Per content
+----
+[[_s2_sattools_org_details_details]]
+= menu:Organizations[Organization Details]
+
+The menu:Organization[Organization Details] page lists the details of the selected organization.
+
+image::admin_organization_details.png[scaledwidth=80%]
+
+The following details are available:
+
+* menu:Organization Details[Organization Name] : String (between 3 and 128 characters).
+* menu:Organization Details[Organization ID] : Number
+* menu:Organization Details[Active Users] : Number. Clicking this number will open the menu:Organization Details[Users] tab.
+* menu:Organization Details[Systems] : Number
+* menu:Organization Details[System Groups] : Number
+* menu:Organization Details[Activation Keys] : Number
+* menu:Organization Details[Autoinstallation Profiles] : Number
+* menu:Organization Details[Configuration Channels] : Number
+
+
+
+[[_s2_sattools_org_details_users]]
+== menu:Organization Details[Users]
+
+List of all the users of an organization.
+
+image::admin_organization_users.png[scaledwidth=80%]
+
+You can modify the user details if you belong to that organization and have organization administrator privileges.
+For more information, see <<_ref.webui.admin.users>>.
+----

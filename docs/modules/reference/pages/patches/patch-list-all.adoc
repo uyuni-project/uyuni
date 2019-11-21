@@ -1,0 +1,9 @@
+[[ref.webui.patches.all]]
+= All Patches
+
+The [guimenu]``All`` patches page displays a list of all patches released by {suse}, irrelevant of whether they apply to your registered systems or not.
+
+image::patches_all_patches.png[scaledwidth=80%]
+
+Like in the [guimenu]``Relevant Patches`` page, clicking either [guimenu]``Advisory`` or the number of systems affected takes you to related tabs of the [guimenu]``Patch Details`` page.
+Refer to xref:reference:patches/patch-details.adoc[Patch Details] for more information.

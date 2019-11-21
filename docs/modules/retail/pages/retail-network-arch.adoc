@@ -1,0 +1,45 @@
+[[retail-network-arch]]
+= Network Architecture
+
+{smr} uses a layered architecture:
+
+* The first layer contains the {susemgr} Server.
+* The second layer contains one or more branch servers to provide local network and boot services.
+It also contains one or more build hosts.
+* The final layer contains any number of deployed point-of-service terminals.
+
+image::retail_arch.png[scaledwidth=80%]
+
+
+Branch servers should be physically located close to point-of-service terminals, such as in an individual store or branch office.
+We recommend you have a fast network connection between the branch server and its terminals.
+Branch servers provide services for PXE boot, and act as an image cache, Salt broker, and proxy for software components (RPM packages).
+The branch server can also manage local networking, and provide DHCP and DNS services.
+
+{smr} Branch servers are implemented as enhanced {susemgr} Proxy servers.
+For technical background information on {smr} Branch servers, see also the documentation on {susemgr} Proxy servers (xref:installation:install-proxy-unified.adoc[]).
+
+
+
+== Branch Server Network Configuration
+
+The branch server can operate in several different network configurations.
+The two most common configurations are a dedicated network, or a shared network.
+
+
+
+=== Dedicated Network Architecture
+
+The branch server has a dedicated network interface card and terminals use an isolated internal branch network.
+In this configuration, the branch server manages the internal network and provides DHCP, DNS, PXE, FTP, and TFTP services.
+
+image::retail_dedicated_nic.png[scaledwidth=80%]
+
+
+
+=== Shared Network Architecture
+
+The branch server and the terminals are connected to the same network as the {susemgr} server.
+In this configuration, the branch server is not required to manage a network (DHCP and DNS services), but acts as a PXE boot server and provides FTP and TFTP services.
+
+image::retail_shared_network.png[scaledwidth=80%]

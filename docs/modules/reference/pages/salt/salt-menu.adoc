@@ -1,0 +1,7 @@
+[[ref.webui.salt]]
+= Salt Menu
+
+Open menu:Main Menu[Salt] from the left navigation sidebar.
+menu:Main Menu[Salt > Keys] provides an overview of your Salt clients (minions).
+Use [guimenu]``Remote Commands`` to execute remote commands on your Salt clients.
+You can also define a [guimenu]``State Catalog`` for creating a collection of salt system states.

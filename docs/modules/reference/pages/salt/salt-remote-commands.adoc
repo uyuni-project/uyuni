@@ -1,0 +1,28 @@
+[[ref.webui.salt.remote.commands]]
+= Remote Commands
+
+The remote commands page allows you to execute and run commands from the {productname} server on several clients.
+
+.Remote Commands
+
+image::remote_commands.png[scaledwidth=80%]
+
+// Mounting /tmp with noexec ===
+Salt runs remote commands from [filename]``/tmp`` of the client's filesystem.
+Therefore you must not mount [filename]``/tmp`` with the [option]``noexec`` option.
+
+.Remote Commands Security
+[WARNING]
+====
+All commands run from the [guimenu]``Remote Commands`` page are executed as {rootuser} on clients.
+Wildcards can be used to run commands across any number of systems, so always take extra precaution as this may have drastic consequences for your systems.
+====
+
+On the menu:Salt[Remote Commands] page you will see two text boxes.
+The first box is for entering commands.
+The second box is for targeting clients by the [literal]``minion_id`` value (name), or by a partial match using wildcards.
+
+Enter the command you want to execute.
+Add a target client to execute the command on, or use wildcard matching to target a group of clients.
+Click btn:[Find Targets] to verify which clients will be targeted.
+Click btn:[Run Command] to execute the command on the target systems.

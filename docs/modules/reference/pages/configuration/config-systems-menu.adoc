@@ -1,0 +1,5 @@
+[[ref.webui.config.systems]]
+= Configuration Systems Menu
+
+Displays status information about your system in relation to configuration.
+There are two sub-pages: [guimenu]``Managed Systems`` and [guimenu]``Target Systems``.

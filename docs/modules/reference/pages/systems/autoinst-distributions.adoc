@@ -1,0 +1,69 @@
+[[ref.webui.systems.autoinst.distribution]]
+= Distributions
+
+The [guimenu]``Distributions`` page enables you to find and create custom installation trees that may be used for automated installations.
+
+[NOTE]
+====
+The [guimenu]``Distributions`` page does not display distributions already provided.
+They can be found within the [guimenu]``Distribution`` drop-down menu of the [guimenu]``Autoinstallation Details`` page.
+====
+
+For more information about installing SUSE distributions, see https://documentation.suse.com/sles/15-SP1/html/SLES-all/book-sle-deployment.html.
+
+For more information about installing Red Hat distributions, see https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/7/html/installation_guide/chap-kickstart-installations.
+
+The installation tree must be located in a local directory on the {productname} Server.
+
+
+
+.Procedure: Creating a Distribution for Autoinstallation
+. To create a distribution, on the [guimenu]``Autoinstallable Distributions`` page click [guimenu]``Create Distribution`` in the upper right corner.
+. On the [guimenu]``Create Autoinstallable Distribution`` page, provide the following data:
++
+** Enter a label (without spaces) in the [guimenu]``Distribution Label`` field, such as `my-orgs-sles-15-sp1` or ``my-orgs-rhel-as-7``.
+** In the menu:Tree Path[] field, paste the path to the base of the installation tree.
+** Select the matching distribution from the [guimenu]``Base Channel`` and [guimenu]``Installer Generation`` drop-down menus, such as `SUSE Linux` for {sle}, or `Red Hat Enterprise Linux 7` for {rhel} 7 client systems.
+. When finished, click the btn:[Create Autoinstallable Distribution] button.
+
+
+
+[[s4-sm-system-kick-dist-variables]]
+== Variables
+
+Autoinstallation variables can be used to substitute values into Kickstart and {ay} profiles.
+To define a variable, create a name-value pair ([replaceable]``name/value``) in the text box.
+
+For example, if you want to autoinstall a system that joins the network of a specified organization (for example the Engineering department) you can create a profile variable to set the IP address and the gateway server address to a variable that any system using that profile will use.
+Add the following line to the [guimenu]``Variables`` text box.
+
+----
+IPADDR=192.168.0.28
+GATEWAY=192.168.0.1
+----
+
+
+To use the distribution variable, use the name of the variable in the profile to substitute the value.
+For example, the [option]``network`` part of a {kickstart} file looks like the following:
+
+----
+network --bootproto=static --device=eth0 --onboot=on --ip=$IPADDR \
+  --gateway=$GATEWAY
+----
+
+
+The [option]``$IPADDR`` will be resolved to ``192.168.0.28``, and the [option]``$GATEWAY`` to ``192.168.0.1``.
+
+[NOTE]
+====
+There is a hierarchy when creating and using variables in Kickstart files.
+System Kickstart variables take precedence over Profile variables, which in turn take precedence over Distribution variables.
+Understanding this hierarchy can alleviate confusion when using variables in {kickstart}s.
+====
+
+
+In {ay} profiles you can use such variables as well.
+
+Using variables are just one part of the larger Cobbler infrastructure for creating templates that can be shared between multiple profiles and systems.
+
+For more information about Cobbler and templates, see xref:client-configuration:cobbler.adoc[].

@@ -1,0 +1,42 @@
+[[vhm-azure]]
+= VHM and Azure
+
+You can use a {productname} VHM to gather instances from Microsoft Azure.
+
+The VHM allows {productname} to obtain and report information about your virtual machines.
+For more information on VHMs, see xref:client-configuration:vhm.adoc[].
+
+
+
+== Create an Azure VHM
+
+
+The Virtual Host Manager (VHM) runs on the {productname} Server.
+
+Ensure you have installed the [systemitem]``virtual-host-gatherer-libcloud`` package on the {productname} Server.
+
+
+.Procedure: Creating an Azure VHM
+
+. In the {productname} {webui}, navigate to menu:Systems[Virtual Host Managers].
+. Click btn:[Create] and select [guimenu]``Azure`` from the drop-down menu.
+. In the [guimenu]``Add an Azure Virtual Host Manager`` section, use these parameters:
+* In the [guimenu]``Label`` field, type a custom name for your VHM.
+* In the [guimenu]``Subscription ID`` field, type the subscription ID provided by Azure.
+* In the [guimenu]``Application ID`` field, type the application ID provided by Azure.
+* In the [guimenu]``Tenant ID`` field, type the tenant ID provided by Azure.
+* In the [guimenu]``Secret Key`` field, type the secret key associated with the Azure instance.
+* In the [guimenu]``Zone`` field, type the zone your VM is located in.
+This is required for subscription matching to work.
+. Click btn:[Create] to save your changes and create the VHM.
+. On the [guimenu]``Virtual Host Managers`` page, select the new VHM.
+. On the [guimenu]``Properties`` page, click btn:[Refresh Data] to inventory the new VHM.
+
+To see which objects and resources have been inventoried, navigate to menu:Systems[System List > Virtual Systems].
+
+
+Instances running on the Azure public cloud will report this UUID to {productname} Server:
+
+----
+13f56399-bd52-4150-9748-7190aae1ff21
+----

@@ -1,0 +1,66 @@
+[[ref.webui.channels.manage]]
+= Manage Menu
+
+This menu allows administrators to create, clone, and delete custom channels.
+These channels may contain altered versions of distribution-based channels or custom packages.
+
+
+
+[[ref.webui.channels.manage.overview]]
+== Overview
+
+The [guimenu]``Overview`` page of the [guimenu]``Manage Software Channels`` menu lists all available channels including custom, distribution-based, and child channels.
+
+To clone an existing channel, click the [guimenu]``Clone Channel`` link.
+Select the channel to be cloned from the drop-down box, select whether to clone the current state (including patches) or the original state (without patches).
+You can also select specific patches to use for cloning.
+Then click the btn:[Create Channel] button.
+In the next screen select options for the new channel, including base architecture and GPG, then click [guimenu]``Create Channel``.
+
+
+[NOTE]
+.GPG Key URL
+====
+The GPG key URL may be either an internal file location such as `file:///` or you may use an external URL.
+====
+
+To create a new channel, click the [guimenu]``Create Channel`` link.
+Select the appropriate options for the new channel, including base architecture and GPG options, then click btn:[Create Channel].
+Note that a channel created in this manner is blank, containing no packages.
+You must either upload software packages or add packages from other repositories.
+You may also choose to include patches in your custom channel.
+
+
+[IMPORTANT]
+.Enable GPG Check
+====
+`Enable GPG Check` is automatically selected when creating a new channel.
+If you would like to add custom packages and applications to your channel, make sure you deselect this box or you cannot install/add unsigned packages.
+Keep in mind this is a security risk for packages from an untrusted source.
+====
+
+
+
+[[s3-chnl-mgmt-channel-details]]
+== Channel Details
+
+
+This page lists the settings made during channel creation.
+
+
+
+[[s4-chnlmgmt-cdetails-manage]]
+=== Channel Permissions
+
+{productname} administrators and channel administrators may alter or delete any channel.
+
+[WARNING]
+====
+If you delete a channel that has been assigned to a set of clients, it will trigger an immediate update of the channel state for any clients associated with the deleted channel.
+This is to ensure that the changes are reflected accurately in the repository file.
+====
+
+To grant other users rights to alter or delete this channel, check the box next to the user's name and click btn:[Update].
+
+To allow all users to manage the channel, click the btn:[Select All] button at the bottom of the list then click btn:[Update].
+To remove a user's right to manage the channel, uncheck the box next to their name and click btn:[Update].

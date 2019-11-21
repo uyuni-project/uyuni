@@ -1,0 +1,296 @@
+[[s4-system-ks-details-details]]
+= Profile Details
+
+On the menu:Autoinstallation Details[Details] page, you have the following options:
+
+* Change the profile [guimenu]``Label``.
+* Change the operating system by clicking [guimenu]``(Change)``.
+* Change the [guimenu]``Virtualization Type``.
++
+NOTE: Changing the [guimenu]``Virtualization Type`` may require changes to the Kickstart profile bootloader and partition options, potentially overwriting user customizations.
+Consult the [guimenu]``Partitioning`` tab to verify any new or changed settings.
++
+
+* Change the amount of [guimenu]``Virtual Memory`` (in Megabytes of RAM) allocated to virtual guests autoinstalled with this profile.
+* Change the number of [guimenu]``Virtual CPUs`` for each virtual guest.
+* Change the [guimenu]``Virtual Storage Path`` from the default in [path]``/var/lib/xen/`` .
+* Change the amount of [guimenu]``Virtual Disk Space`` (in GB) allotted to each virtual guest.
+* Change the [guimenu]``Virtual Bridge`` for networking of the virtual guest.
+* Deactivate the profile so that it cannot be used to schedule a {kickstart} by removing the [guimenu]``Active`` check mark.
+* Check whether to enable logging for custom [option]``%post`` scripts to the [path]``/root/ks-post.log`` file.
+* Decide whether to enable logging for custom [option]``%pre`` scripts to the [path]``/root/ks-pre.log`` file.
+* Choose whether to preserve the [path]``ks.cfg`` file and all `%include` fragments to the [path]``/root/`` directory of all systems autoinstalled with this profile.
+* Select whether this profile is the default for all of your organization's {kickstart}s by checking or unchecking the box.
+* Add any [guimenu]``Kernel Options`` in the corresponding text box.
+* Add any [guimenu]``Post Kernel Options`` in the corresponding text box.
+* Enter comments that are useful to you in distinguishing this profile from others.
+
+
+
+[[s4-system-ks-details-options]]
+== Operating System
+
+On this page, you can make the following changes to the operating system that the Kickstart profile installs:
+
+Change the base channel::
+Select from the available base channels. {productname} administrators see a list of all base channels that are currently synced to the {productname}.
+
+Child Channels::
+Subscribe to available child channels of the base channel, such as the Tools channel.
+
+Available Trees::
+Use the drop-down menu to choose from available trees associated with the base channel.
+
+Always use the newest Tree for this base channel.::
+Instead of selecting a specific tree, you can also check the box menu:Always use the newest Tree for this base channel.[]
+This setting lets {productname} automatically pick the latest tree that is associated with the specified base channels.
+If you add new trees later, {productname} will always keep the most recently created or modified.
+
+Software URL (File Location)::
+The exact location from which the Kickstart tree is mounted.
+This value is determined when the profile is created.
+You can view it on this page but you cannot change it.
+
+
+
+[[s4-sm-system-kick-details-variables]]
+== Variables
+
+Autoinstallation variables can substitute values in Kickstart and {ay} profiles.
+To define a variable, create a name-value pair ([replaceable]``name/value``) in the text box.
+
+For example, if you want to autoinstall a system that joins the network of a specified organization (for example the Engineering department), you can create a profile variable to set the IP address and the gateway server address to a variable that any system using that profile will use.
+Add the following line to the [guimenu]``Variables`` text box.
+
+----
+IPADDR=192.168.0.28
+GATEWAY=192.168.0.1
+----
+
+
+Now you can use the name of the variable in the profile instead of a specific value.
+For example, the [option]``network`` part of a Kickstart file looks like the following:
+
+----
+network --bootproto=static --device=eth0 --onboot=on --ip=$IPADDR \
+  --gateway=$GATEWAY
+----
+
+
+The [option]``$IPADDR`` will be resolved to ``192.168.0.28``, and the [option]``$GATEWAY`` to `192.168.0.1`
+
+[NOTE]
+====
+There is a hierarchy when creating and using variables in Kickstart files.
+System Kickstart variables take precedence over [guimenu]``Profile`` variables, which in turn take precedence over [guimenu]``Distribution`` variables.
+Understanding this hierarchy can alleviate confusion when using variables in {kickstart}s.
+====
+
+
+Using variables are just one part of the larger Cobbler infrastructure for creating templates that can be shared between multiple profiles and systems.
+For more about Cobbler and templates, see xref:client-configuration:cobbler.adoc[].
+
+
+
+[[s4-sm-system-kick-details-advanced]]
+== Advanced Options
+
+From this page, you can toggle several installation options on and off by checking and unchecking the boxes to the left of the option.
+For most installations, the default options are correct.
+Refer to Red Hat Enterprise Linux documentation for details.
+
+
+
+[[s4-sm-system-kick-details-defprofile]]
+== Assigning Default Profiles to an Organization
+
+You can specify an Organization Default Profile by clicking menu:Autoinstallation[Profiles > profile name > Details], then checking the [guimenu]``Organization Default Profile`` box and finally clicking [guimenu]``Update``.
+
+
+
+[[s4-sm-system-kick-details-iprange]]
+== Assigning IP Ranges to Profiles
+
+You can associate an IP range to an autoinstallation profile by clicking on menu:Autoinstallation[Profiles > profile name > Bare Metal Autoinstallation], adding an IPv4 range and finally clicking menu:Add IP Range[].
+
+
+
+[[s4-sm-system-kick-details-packages]]
+==  Bare Metal Autoinstallation
+
+This subtab provides the information necessary to Kickstart systems that are not currently registered with {productname}.
+Using the on-screen instructions, you may either autoinstall systems using boot media (CD-ROM) or by IP address.
+
+
+
+[[s4-sm-system-kick-details-pre]]
+== Details
+
+Displays subtabs that are available from the [guimenu]``System Details`` tab.
+
+On the menu:System Details[Details] page, you have the following options:
+
+* Select between DHCP and static IP, depending on your network.
+* Choose the level of SELinux that is configured on kickstarted systems.
+* Enable configuration management or remote command execution on kickstarted systems.
+* Change the root password associated with this profile.
+
+image::details-ks-4.png[scaledwidth=444]
+
+
+
+[[s4-sm-system-kick-details-post]]
+== Locale
+
+Change the timezone for kickstarted systems.
+
+
+
+[[s4-system-ks-sysd-partition]]
+== Partitioning
+
+From this subtab, indicate the partitions that you wish to create during installation.
+For example:
+
+----
+partition /boot --fstype=ext3 --size=200
+partition swap --size=2000
+partition pv.01 --size=1000 --grow
+volgroup myvg pv.01 logvol / --vgname=myvg --name=rootvol --size=1000 --grow
+----
+
+
+
+[[s4-system-ks-sysd-file-pres]]
+== File Preservation
+
+If you have previously created a file preservation list, include this list as part of the {kickstart}.
+This will protect the listed files from being over-written during the installation process.
+For more on file preservation lists, see xref:reference:systems/autoinst-file-preservation.adoc[].
+
+
+
+[[s4-system-ks-sysd-gpg-ssl]]
+== GPG & SSL
+
+From this subtab, select the GPG keys and/or SSL certificates to be exported to the kickstarted system during the %post section of the {kickstart}.
+For {productname} customers, this list includes the SSL Certificate used during the installation of {productname}.
+
+[NOTE]
+====
+Any GPG key you wish to export to the kickstarted system must be in ASCII rather than binary format.
+====
+
+
+
+[[s4-system-ks-sysd-trouble]]
+== Troubleshooting
+
+From this subtab, change information that may help with troubleshooting hardware problems:
+
+Bootloader::
+For some headless systems, it is better to select the non-graphic LILO bootloader.
+
+Kernel Parameters::
+Enter kernel parameters here that may help to narrow down the source of hardware issues.
+
+
+
+[[s4-system-ks-soft-pkg-group]]
+== Package Groups
+
+image::details-ks-5.png[scaledwidth=444]
+
+The image above shows subtabs that are available from the [guimenu]``Software`` tab.
+
+Enter the package groups, such as [systemitem]``@office`` or [systemitem]``@admin-tools`` you would like to install on the kickstarted system in the large text box.
+If you would like to know what package groups are available, and what packages they contain, refer to the [path]``RedHat/base/`` file of your Kickstart tree.
+
+
+
+
+[[s4-system-ks-soft-pkg-profile]]
+== Package Profiles
+
+If you have previously created a Package Profile from one of your registered systems, you can use that profile as a template for the files to be installed on a kickstarted system.
+For more about package profiles, see xref:reference:systems/system-details/sd-packages.adoc#s1-package-profiles[].
+
+
+
+[[s4-system-ks-act-keys]]
+== Activation Keys
+
+.Activation Keys
+
+image::details-ks-6.png[scaledwidth=444]
+
+
+The [guimenu]``Activation Keys`` tab allows you to select Activation Keys to include as part of the Kickstart profile.
+These keys, which must be created before the Kickstart profile, will be used when re-registering kickstarted systems.
+
+
+
+
+[[s4-system-ks-scripts]]
+== Scripts
+
+.Scripts
+image::details-ks-7.png[scaledwidth=444]
+
+The [guimenu]``Scripts`` tab is where [option]``%pre`` and [option]``%post`` scripts are created.
+This page lists any scripts that have already been created for this Kickstart profile.
+To create a Kickstart script, perform the following procedure:
+
+. Click the [guimenu]``add new kickstart script`` link in the upper right corner.
+. Enter the path to the scripting language used to create the script, such as ``/usr/bin/perl``.
+. Enter the full script in the large text box.
+. Indicate whether this script is to be executed in the [option]``%pre`` or [option]``%post`` section of the Kickstart process.
+. Indicate whether this script is to run outside of the chroot environment. Refer to the [ref]_Post-installation Script_ section of the [ref]_Red Hat Enterprise Linux System Administration Guide_ for further explanation of the [option]``nochroot`` option.
+
+[NOTE]
+====
+{productname} supports the inclusion of separate files within the Partition Details section of the Kickstart profile.
+For instance, you may dynamically generate a partition file based on the machine type and number of disks at {kickstart} time.
+This file can be created via [option]``%pre`` script and placed on the system, such as [path]``/tmp/part-include``.
+Then you can call for that file by entering the following line in the Partition Details field of the menu:System Details[Partitioning] tab:
+
+----
+%include /tmp/part-include
+----
+====
+
+
+
+[[s4-system-ks-ks-file]]
+== Autoinstallation File
+
+.Autoinstallation File
+image::details-ks-8.png[scaledwidth=444]
+
+The [guimenu]``Autoinstallation File`` tab allows you to view or download the profile that has been generated from the options chosen in the previous tabs.
+
+
+
+[[ref.webui.systems.autoinst.profiles.upload]]
+== Upload Kickstart/{ay} File
+
+Click the [guimenu]``Upload Kickstart/Autoyast File`` link from the menu:Systems[Autoinstallation] page to upload an externally prepared {ay} or Kickstart profile.
+
+. In the first line, enter a profile [guimenu]``Label`` for the automated installation. This label[] drop-down menu is only populated if one or more distributions have been created for the selected base channel (see xref:reference:systems/autoinst-distributions.adoc[]).
+. Instead of selecting a specific tree, you can also check the box [guimenu]``Always use the newest Tree`` for this base channel. This setting lets {productname} automatically pick the latest tree that is associated with the specified base channels. If you add new trees later, {productname} will always keep the most recently created or modified.
+. Select the [guimenu]``Virtualization Type`` from the drop-down menu. For more information about virtualization with **traditional clients**, see xref:client-configuration:virtualization.adoc[].
+
++
+NOTE: If you do not intend to use the autoinstall profile to create virtual guest systems, you can leave the drop-down set to the default choice [guimenu]``KVM Virtualized Guest``.
++
+
+. Either cut-and-paste the file contents, or update the file from the local storage medium:
+** Paste it into the [guimenu]``File Contents`` box and click [guimenu]``Create``, or
+** enter the file name in the [guimenu]``File to Upload`` field and click btn:[Upload File].
+
+Four subtabs are now available:
+
+* [guimenu]``Details``
+* [guimenu]``Bare Metal``
+* [guimenu]``Variables``
+* [guimenu]``Autoinstallable File``

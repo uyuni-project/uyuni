@@ -1,0 +1,122 @@
+[[retail-components]]
+= Components
+
+{smr} is made up of various components.
+For more on how these components work together, see xref:retail-network-arch.adoc[].
+
+
+
+== The {susemgr} Server
+
+The {susemgr} server contains information about infrastructure, network topology, and everything required to automate image deployment and perform day-to-day operations on branches and terminals.
+This can include database entries of registered systems, Salt pillar data for images, image assignments, partitioning, network setup, network services, and more.
+
+
+
+== Build Hosts
+
+Build hosts can be arbitrary servers or virtual machines.
+They are used to securely build operating system images.
+
+For more information on build hosts, see xref:administration:image-management.adoc[].
+
+== Branch Server
+
+Branch servers should be physically located close to point-of-service terminals, such as in an individual store or branch office.
+Branch servers provide services for PXE boot, and act as an image cache, Salt broker, and proxy for software components (RPM packages).
+The branch server can also manage local networking, and provide DHCP and DNS services.
+
+
+
+== Point-of-Service Terminals
+
+Point-of-Service (PoS) terminals can come in many different formats, such as point-of-sale terminals, kiosks, digital scales, self-service systems, and reverse-vending systems.
+Every terminal, however, is provided by a vendor, who set basic information about the device in the firmware.
+{smr} accesses this vendor information to determine how best to work with the terminal in use.
+
+In most cases, different terminals will require a different operating system (OS) image to ensure they work correctly.
+For example, an information kiosk has a high-resolution touchscreen, where a cashier terminal might only have a very basic display.
+While both of these terminals require similar processing and network functionality, they will require different OS images.
+The OS images ensure that the different display mechanisms work correctly.
+
+// This should be in the Requirements section, not here. LKB 2019-10-09
+The minimum memory requirement is 1 GB for hosts that need to run OS images built with Kiwi (PXE booted or not).
+
+*Hardware Requirements for PoS Terminals:*
+. At least 1 GB of RAM.
+For more information, see the documentation of the underlying system (in this case: {sles}{nbsp}12).
+. Disk space depending on the image size.
+
+For more information on {smr} PoS terminals, see documentation on {susemgr} Salt clients (xref:client-configuration:client-config-overview.adoc[]).
+
+{smr} supports PoS terminals that boot using both BIOS and UEFI.
+For UEFI booting terminals, you will need to configure the EFI partition in the Saltboot formula.
+For more information on EFI in the Saltboot formula, see xref:salt:formula-saltboot.adoc[].
+
+
+
+== Fitting It All Together
+
+{smr} uses the same technology as {susemgr}, but is customized to address the needs of retail organizations.
+
+
+
+=== Hardware Types
+
+Because every environment is different, and can contain many different configurations of many different terminals, {smr} uses hardware types to simplify device management.
+
+Hardware types allow you to group devices according to manufacturer and device name.
+Then all devices of a particular type can be managed as one.
+
+
+
+=== Branch System Groups
+
+{smr} uses system groups to organize the various devices in your environment.
+
+Each branch requires a system group, containing a single branch server, and the PoS terminals associated with that server.
+Each system group is identified with a Branch ID.
+The Branch ID is used in formulas and scripts to automatically update the entire group.
+
+
+
+=== Salt Formulas
+
+{smr} uses Salt formulas to help simplify configuration.
+Formulas are pre-written Salt states, that are used to configure your installation.
+
+You can use formulas to apply configuration patterns to your hardware groups.
+{smr} uses the Saltboot formula, which defines partitioning and OS images for terminals.
+
+You can use default settings for formulas, or edit them to make them more specific to your environment.
+
+For more information about formulas, see xref:retail:retail-formulas-intro.adoc[].
+
+
+
+=== Saltboot
+
+Saltboot is a collection of tools and processes that are used to bootstrap, deploy and validate {smr} terminals.
+
+Saltboot consists of:
+
+* Initialization:
++
+The saltboot ``initrd`` is created during image building and is required for bootstrapping terminals.
+
+* Saltboot state:
++
+The Salt state that contains the logic for the entire saltboot process.
+
+* Partitioning pillars:
++
+The Salt pillar structure that describes how terminals are partitioned and what image is deployed on each terminal.
+
+* Images and boot images pillars:
++
+When the image building feature in {productname} successfully builds an image that contains the saltboot ``initrd``, the image and boot image Salt pillars are created.
+
+
+The saltboot process involves the {productname} Server, a terminal running the saltboot ``initrd``, and the branch server providing the saltboot services to the terminal.
+
+For a detailed diagram explaining how the saltboot boot process works, see xref:retail:retail-saltboot-diagram.adoc[].

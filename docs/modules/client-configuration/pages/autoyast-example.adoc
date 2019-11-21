@@ -1,0 +1,150 @@
+[[autoyast-example]]
+= AutoYast Example File
+
+
+[[advanced.topics.app.ay.example-simple]]
+== Minimalist AutoYaST Profile for Automated Installations and Useful Enhancements
+
+The {ay} profile in this section installs a {sles} system with all default installation options including a default network configuration using DHCP.
+After the installation is finished, a bootstrap script located on the {productname} server is executed in order to register the freshly installed system with {productname}.
+You need to adjust the IP address of the {productname} server, the name of the bootstrap script, and the root password according to your environment:
+
+----
+<user>
+ ...
+ <username>root</username>
+ <user_password>`linux`</user_password>
+</user>
+
+<location>http://`192.168.1.1`/pub/bootstrap/`my_bootstrap.sh`</location>
+----
+
+The complete {ay} file:
+
+----
+<?xml version="1.0"?>
+<!DOCTYPE profile>
+<profile xmlns="http://www.suse.com/1.0/yast2ns"
+         xmlns:config="http://www.suse.com/1.0/configns">
+ <general>
+  <mode>
+   <confirm config:type="boolean">false</confirm>
+  </mode>
+ </general>
+ <networking>
+  <keep_install_network config:type="boolean">true</keep_install_network>
+ </networking>
+ <software>
+  <install_recommended config:type="boolean">true</install_recommended>
+   <patterns config:type="list">
+    <pattern>base</pattern>
+   </patterns>
+ </software>
+ <users config:type="list">
+  <user>
+   <encrypted config:type="boolean">false</encrypted>
+   <fullname>root</fullname>
+   <gid>0</gid>
+   <home>/root</home>
+   <password_settings>
+    <expire></expire>
+    <flag></flag>
+    <inact></inact>
+    <max></max>
+    <min></min>
+    <warn></warn>
+   </password_settings>
+   <shell>/bin/bash</shell>
+   <uid>0</uid>
+   <username>root</username>
+   <user_password>linux</user_password>
+  </user>
+ </users>
+ <scripts>
+  <init-scripts config:type="list">
+   <script>
+    <interpreter>shell</interpreter>
+    <location>http://192.168.1.1/pub/bootstrap/my_bootstrap.sh</location>
+   </script>
+  </init-scripts>
+ </scripts>
+</profile>
+----
+
+
+Use this enhancement fragment to add child channels:
+
+----
+<add-on>
+ <add_on_products config:type="list">
+  <listentry>
+   <ask_on_error config:type="boolean">true</ask_on_error>
+   <media_url>http://$c_server/ks/dist/child/`channel-label`/`distribution-label`</media_url>
+   <name>$c_name</name>
+   <product>$c_product</product>
+   <product_dir>/</product_dir>
+  </listentry>
+  <listentry>
+  <!-- SLES SUSE Manager tools Pool -->
+    <media_url>http://$c_server/ks/dist/child/`channel-label`/`sle-manager-tools`/`distribution-label`</media_url>
+    ...
+  </listentry>
+  ...
+ </add_on_products>
+</add-on>
+----
+
+Replace [replaceable]``channel-label`` and [replaceable]``distribution-label`` with the correct labels (such as `sles12-sp4-updates-x86_64` and `sles12-sp4-x86_64`).
+Ensure that the distribution label corresponds to the Autoinstallable Distribution.
+Set the variables (such as ``$c_server``) according to your environment.
+For more information about variables, see xref:reference:systems/autoinst-distributions.adoc[].
+
+
+Here is a literal example for `sles12-sp4-x86_64`:
+
+----
+<add-on>
+  <add_on_products config:type="list">
+    <listentry>
+      <!-- SLES12 Updates -->
+      <media_url>http://192.168.150.10/ks/dist/child/dev-sles12-sp4-updates-x86_64/dev-sles12sp4</media_url>
+      <product>SLES 12 Updates</product>
+      <product_dir>/</product_dir>
+      <name>SLES12 Updates</name>
+    </listentry>
+    <listentry>
+      <!-- SLES12 SUSE Manager Tools Pool -->
+      <media_url>http://192.168.150.10/ks/dist/child/dev-sle-manager-tools12-pool-x86_64-sp4/dev-sles12sp4</media_url>
+      <product>SLES 12 Pool SUSE Manager Tools</product>
+      <product_dir>/</product_dir>
+      <name>SLES12 Pool SUSE Manager Tools</name>
+    </listentry>
+    <listentry>
+      <!-- SLES12  SUSE Manager Tools Updates -->
+      <media_url>http://192.168.150.10/ks/dist/child/dev-sle-manager-tools12-updates-x86_64-sp4/dev-sles12sp4</media_url>
+      <product>SLES 12 Updates SUSE Manager Tools</product>
+      <product_dir>/</product_dir>
+      <name>SLES12 Updates SUSE Manager Tools</name>
+    </listentry>
+  </add_on_products>
+</add-on>
+----
+
+[IMPORTANT]
+.Add the Updates Channel
+====
+It is required that you add the updates tools channel to the `<add-on>` {ay} snippet section.
+This ensures your systems are provided with an up-to-date version of the `libzypp` package.
+If you do not include the updates tools channel, you will encounter `400` errors.
+In this example, the (DISTRIBUTION_NAME) is replaced with the name of the autoinstallation distribution from menu:Systems[Autoinstallation > Distributions].
+
+----
+<listentry>
+  <ask_on_error config:type="boolean">true</ask_on_error>
+   <media_url>http://$redhat_management_server/ks/dist/child/sles12-sp2-updates-x86_64/(DISTRIBUTION_NAME)</media_url>
+  <name>sles12 sp2 updates</name>
+  <product>SLES12</product>
+  <product_dir>/</product_dir>
+</listentry>
+----
+====

@@ -1,0 +1,46 @@
+[[spacecmd.functions.kickstart.filepreservation]]
+= filepreservation_
+
+The following spacecmd commands are available for working with kickstart file preservation lists.
+
+== filepreservation_create
+
+Create a file preservation list.
+
+[source]
+--
+usage: filepreservation_create [NAME] [FILE ...]
+--
+
+
+
+== filepreservation_delete
+
+Delete a file preservation list.
+
+[source]
+--
+filepreservation_delete NAME
+--
+
+
+
+== filepreservation_details
+
+Show the details of a file preservation list.
+
+[source]
+--
+usage: filepreservation_details NAME
+--
+
+
+
+== filepreservation_list
+
+List all file preservations.
+
+[source]
+--
+usage: filepreservation_list
+--

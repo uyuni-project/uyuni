@@ -1,0 +1,11 @@
+[[ref.webui.overview.account.email]]
+= Change Email
+
+Set the email {productname} sends notifications to on the menu:Main Menu[Home > User Account > Change Email] page.
+If you would like to receive email notifications about patch alerts or daily summaries for your systems, check the btn:[Receive email notifications] checkbox located on the [guimenu]``My Preferences`` page.
+
+image::home_user_account_change_email.png[scaledwidth=80%]
+
+To change your preferred email address, click menu:Main Menu[Home > User Account > Change Email].
+Enter your new email address and click the btn:[Update] button.
+Invalid email addresses like those ending in `@localhost` are filtered and rejected.

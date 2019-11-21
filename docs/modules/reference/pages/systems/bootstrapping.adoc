@@ -1,0 +1,42 @@
+[[ref.webui.systems.bootstrapping]]
+= Bootstrapping [Salt]
+
+The [guimenu]``Bootstrapp Minions`` page allows you to bootstrap Salt clients from the {webui}.
+
+.Bootstrapping
+
+image::bootstrapping.png[scaledwidth=80%]
+
+
+.Bootstrapping Parameters
+Host::
+Place the FQDN of the client to be bootstrapped within this field.
+
+SSH Port::
+Place the SSH port that will be used to connect and bootstrap a machine.
+The default is ``22``.
+
+User::
+Input the clients user login.
+The default is {rootuser}.
+
+Password::
+Input the clients login password.
+
+Activation Key::
+Select the activation key (associated with a software source channel) that the client should use to bootstrap with.
+
+Disable SSH Strict Key Host Checking::
+This check box is selected by default.
+This allows the script to auto-accept host keys without requiring a user to manually authenticate.
+
+Manage System Completely via SSH (Will not Install an Agent)::
++
+.Technology Preview
+NOTE: This feature is a Technology preview.
++
+If selected a system will automatically be configured to use SSH.
+No other connection method will be configured.
+
+Once your client's connection details have been filled in click the btn:[Bootstrap] button.
+When the client has completed the bootstrap process, find your new client listed on the menu:Systems[Overview] page.

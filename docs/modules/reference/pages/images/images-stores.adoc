@@ -1,0 +1,27 @@
+[[ref.webui.images.stores]]
+= Stores
+
+If you click menu:Main Menu[Images > Stores], a listing of your [guimenu]``Image Stores`` appears.
+Several columns provide information about each store:
+
+image::images_image_stores.png[scaledwidth=80%]
+
+* Select box: To select image stores, mark the appropriate check boxes. Selected stores can be deleted simultaneously via the btn:[Delete] button that appears in the upper right corner while selecting stores.
+* [guimenu]``Label`` : Name of the store.
+* [guimenu]``Type`` : Currently, only Registry is available.
+* [guimenu]``Actions`` : btn:[Edit] and btn:[Delete] button. btn:[Edit] opens a the Store Details page for editing.
+
+In the upper right corner offers several action buttons: The btn:[Delete] button appears when one or more stores are selected. btn:[Refresh] and btn:[Create] are default buttons. btn:[Create] opens the [guimenu]``Create Image Store`` dialog:
+
+image::images_image_stores_create.png[scaledwidth=80%]
+
+.Image stores for Kiwi build type
+[NOTE]
+====
+The Kiwi build type is used to build system, virtual, and other images. 
+The image store for the Kiwi build type is pre-defined as a filesystem directory at [path]``/srv/www/os-images`` on the server.
+{productname} serves the image store over HTTP from [path]``https://example.com/pub/os-images/``.
+The image store location is unique and is not customizable. 
+
+Images are always stored in [path]``/srv/www/os-image/<organization id>``.
+====

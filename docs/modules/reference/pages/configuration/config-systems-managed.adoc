@@ -1,0 +1,14 @@
+[[config-systems-managed]]
+= Managed Systems
+
+By default the [guimenu]``Managed Systems`` page is displayed.
+The listed systems have been fully prepared for configuration file deployment.
+The number of locally-managed and centrally-managed files is displayed.
+
+Click the name of a system to show the relevant menu:System Details[Configuration > Overview] page.
+
+Click the number of local files to show the menu:System Details[Configuration > View/Modify Files > Locally-Managed Files] page, where you can manage which local (override) files apply to the system.
+
+Click the number of centrally-managed files to show the menu:System Details[Configuration > Manage Configuration Channels > List/Unsubscribe from Channels] page.
+On this page, you can unsubscribe from channels.
+

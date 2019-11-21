@@ -1,0 +1,17 @@
+[[ref.webui.intro.patch_alerts]]
+= Patch Alert Icons
+
+Throughout {productname} you will see three patch (errata) alert icons.
+
+* image:fa-shield.svg[Security Alert,scaledwidth=1.2em]{mdash}represents a security alert.
+* image:fa-bug.svg[Bug Fix Alert,scaledwidth=1.6em]{mdash}represents a bug fix alert.
+* image:spacewalk-icon-enhancement.svg[Enhancement Alert,scaledwidth=1.4em]{mdash}represents an enhancement alert.
+* icon:sync[role="none"]{mdash}indicates a required reboot
+* icon:archive[role="none"]{mdash}indicates that it affects package management
+
+On the menu:Main Menu[Home > Overview] page, in the [guimenu]``Relevant Security Patches`` section click the patch advisory to view details about the patch or click the number of affected systems to see which systems are affected by the patch alert.
+
+Both links take you to tabs of the [guimenu]``Patch Details`` page.
+If all patches are installed, there is just a [guimenu]``View All Patches`` link to open the menu:Main Menu[Patches] page.
+For more information, see xref:reference:patches/patch-details.adoc[Patch Details].
+

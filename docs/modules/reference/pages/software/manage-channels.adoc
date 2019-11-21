@@ -1,0 +1,123 @@
+[[ref.webui.channels.mgmnt.overview]]
+= Manage Channels
+
+The [guimenu]``Overview`` page of the [guimenu]``Manage Software Channels`` menu lists all available channels including custom, distribution-based, and child channels.
+
+To clone an existing channel, click the [guimenu]``Clone Channel`` link.
+Select the channel to be cloned from the drop-down box, select whether to clone the current state (including patches) or the original state (without patches).
+You can also select specific patches to use for cloning.
+Then click the btn:[Create Channel] button.
+In the next screen select options for the new channel, including base architecture and GPG, then click [guimenu]``Create Channel``.
+
+[NOTE]
+.GPG Key URL
+====
+The GPG key URL may be either an internal file location such as `file:///` or you may use an external URL.
+====
+
+To create a new channel, click the [guimenu]``Create Channel`` link.
+Select the appropriate options for the new channel, including base architecture and GPG options, then click btn:[Create Channel].
+Note that a channel created in this manner is blank, containing no packages.
+You must either upload software packages or add packages from other repositories.
+You may also choose to include patches in your custom channel.
+
+[IMPORTANT]
+.Enable GPG Check
+====
+`Enable GPG Check` is automatically selected when creating a new channel.
+If you would like to add custom packages and applications to your channel, make sure you deselect this box or you cannot install/add unsigned packages.
+Keep in mind this is a security risk for packages from an untrusted source.
+====
+
+
+
+[[s4-chnlmgmt-cdetails-cdetails]]
+== Channel Details
+
+This page lists the settings made during channel creation.
+
+
+
+[[channel.mgmt.cdetails.manage]]
+=== Managers
+
+{productname} administrators and channel administrators may alter or delete any channel.
+
+[WARNING]
+====
+If you delete a channel that has been assigned to a set of clients, it will trigger an immediate update of the channel state for any clients associated with the deleted channel.
+This is to ensure that the changes are reflected accurately in the repository file.
+====
+
+To grant other users rights to alter or delete this channel, check the box next to the user's name and click btn:[Update].
+
+To allow all users to manage the channel, click the btn:[Select All] button at the bottom of the list then click btn:[Update].
+To remove a user's right to manage the channel, uncheck the box next to their name and click btn:[Update].
+
+
+
+[[s4-chnlmgmt-cdetails-errata]]
+=== Patches
+
+Channel managers can list, remove, clone, and add patches to their custom channel.
+Custom channels not cloned from a distribution may not contain patches until packages are available.
+Only patches that match the base architecture and apply to a package in that channel may be added.
+Finally, only cloned or custom patches may be added to custom channels.
+Patches may be included in a cloned channel if they are selected during channel creation.
+
+The [guimenu]``Sync`` tab lists patches that were updated since they were originally cloned in the selected cloned channel.
+More specifically, a patch is listed here if and only if:
+
+* it is a cloned patch,
+* it belongs to the selected cloned channel,
+* it has already been published in the selected cloned channel,
+* it does not contain a package that the original patch has, or it has at least one package with a different version with regard to the corresponding one in the original patch, or both.
+
+
+* Clicking the btn:[Sync Patches] button opens a confirmation page in which a subset of those patches can be selected for synchronization.
+* Clicking the btn:[Confirm] button in the confirmation page results in such patches being copied over from the original channel to the cloned channel, thus updating corresponding packages.
+
+
+
+[[s4-cnlmgmt-cdetails-pkgs]]
+=== Packages
+
+As with patches, administrators can list, remove, compare, and add packages to a custom channel.
+
+To list all packages in the channel, click the [guimenu]``List / Remove Packages`` link.
+Check the box to the left of any package you want to remove, then click btn:[Remove Packages].
+
+To add packages, click the [guimenu]``Add Packages`` link.
+From the drop-down box activate a channel from which to add packages and click btn:[View] to continue.
+Check the box to the left of any package you want to add to the custom channel, then click btn:[Add Packages].
+
+To compare packages in the current channel with those in another, select a channel from the drop-down box and click btn:[Compare].
+Packages in both channels are compared, including architecture and the latest version of packages.
+The results are displayed on the next screen.
+
+To make the two channels identical, click the btn:[Merge Differences] button.
+In the next dialog, resolve any conflicts. btn:[Preview Merge] allows you to review the changes before applying them to the channels.
+Select those packages that you want to merge.
+Click btn:[Merge Packages] then btn:[Confirm] to perform the merge.
+
+
+
+[[s4-chnlmgmt-cdetails-repos]]
+=== Repositories
+
+On the [guimenu]``Repositories`` page, assign software repositories to the channel and synchronize repository content:
+
+* [guimenu]``Add/Remove`` lists configured repositories, which can be added and removed by selecting the check box next to the repository name and clicking btn:[Update Repositories].
+* [guimenu]``Sync`` lists configured repositories. The synchronization schedule can be set using the drop-down boxes, or an immediate synchronization can be performed by clicking btn:[Sync Now].
+
+The [guimenu]``Manage Repositories`` tab to the left shows all assigned repositories.
+Click a name to see details and possibly delete a repository.
+
+[IMPORTANT]
+.Channel with multiple repositories and comps files
+====
+Some repositories have a comps file associated with them.
+Comps files are used to define how packages are grouped within the repository.
+If you are synchronizing multiple repositories within the same channel, the comps file of the most recently synchronized repository will be used for the entire channel.
+If you want to access all your repository comps files, you will need to map each repository to a different channel.
+====

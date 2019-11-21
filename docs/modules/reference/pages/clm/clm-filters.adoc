@@ -1,0 +1,15 @@
+= Filters
+
+.Procedure: Add a new Filter to a Content Lifecycle Project
+
+. In the {productname} {webui}, navigate to menu:Content Lifecycle Management[Filters], and click btn:[Create Filter]
+. In the [guimenu]``name`` field, enter a descriptive name for your filter.
+. In the [guimenu]``filter type`` field, choose the entity you want to search.
+. Fill in the additional fields required for the filter (they vary according to the `filter type`).
+. In the [guimenu]``rule`` field, choose [guimenu]``Deny`` or [guimenu]``Allow`` depending on the type of the filter you want to create.
+. Click the btn:[Create] button to create your filter and return to the filter list.
+. Navigate to menu:Content Lifecycle Management[Projects].
+. Click btn:[Attach/Detach Filters].
+. In the [guimenu]``Filters`` dialog, select the filter you want to apply to the project.
+. Click the btn:[Save] button.
+You can create a new filter from within a project by the btn:[Create new Filter] in the [guimenu]``Filters`` dialog of a project as well.

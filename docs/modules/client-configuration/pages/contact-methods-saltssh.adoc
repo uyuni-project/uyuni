@@ -1,0 +1,64 @@
+[[contact-methods-saltssh]]
+= Push via Salt SSH
+
+
+Push via Salt SSH is used in environments where Salt clients cannot reach the {productname} Server directly.
+In this environment, clients are located in a firewall-protected zone called a DMZ.
+No system within the DMZ is authorized to open a connection to the internal network, including the {productname} Server.
+
+The Push via Salt SSH method creates an encrypted tunnel from the {productname} Server on the internal network to the clients located on the DMZ.
+After all actions and events are executed, the tunnel is closed.
+
+The server uses the [command]``salt-ssh`` tool to contact the clients at regular intervals, checking in and performing scheduled actions and events.
+For more information about Salt SSH, see xref:salt:salt-ssh.adoc[].
+
+This contact method works for Salt clients only.
+For traditional clients, use Push via SSH.
+
+This image demonstrates the Push via Salt SSH process path.
+All items left of the [systemitem]``Taskomatic`` block represent processes running on a {productname} client.
+
+image::salt-ssh-contact-taigon.png[scaledwidth=80%]
+
+
+To use Push via Salt SSH, you must have the SSH daemon running on the client, and reachable by the [systemitem]``salt-api`` daemon running on the {productname} Server.
+Additionally, Python must be available on the remote system, and be a version supported by Salt.
+
+[NOTE]
+====
+{rhel}{nbsp}5, {centos}{nbsp}5, and earlier are not supported, as they use unsupported versions of Python.
+====
+
+
+.Procedure: Registering Clients with Push via Salt SSH
+. In the {productname} {webui}, navigate to menu:Systems[Bootstrapping] and complete the appropriate fields.
+. Select an activation key with the Push via SSH contact method configured.
+For more information about activation keys, see xref:client-configuration:clients-and-activation-keys.adoc[].
+. Check the [systemitem]``Manage system completely via SSH`` checkbox.
+. Click btn:[Bootstrap] to begin registration.
+. Confirm that the system has been registered correctly by navigating to menu:Systems[Overview].
+
+
+When you are configuring Push via Salt SSH, you can modify parameters that are used when a system is registered, including the host, activation key, and password.
+The password is used only for bootstrapping, it is not saved anywhere.
+All future SSH sessions are authorized via a key/certificate pair.
+These parameters are configured in menu:Systems[Bootstrapping].
+
+You can also configure persistent parameters that are are used system-wide, including the sudo user.
+For more information on configuring the sudo user, see the Push via SSH section in this chapter.
+
+
+The Push via Salt SSH feature uses taskomatic to execute scheduled actions using [command]``salt-ssh``.
+The taskomatic job periodically checks for scheduled actions and executes them.
+Unlike Push via SSH on traditional clients, the Push via Salt SSH feature executes a complete [command]``salt-ssh`` call based on the scheduled action.
+
+There are some features that are not yet supported on Push via Salt SSH.
+These features will not work on Salt SSH clients:
+
+* OpenSCAP auditing
+* Beacons, resulting in:
+** Installing a package on a system using [command]``zypper`` will not invoke the package refresh.
+** Virtual Host functions (for example, a host to guests) will not work if the virtual host system is Salt SSH-based.
+
+
+For more information about Salt SSH, see https://docs.saltstack.com/en/latest/topics/ssh/.

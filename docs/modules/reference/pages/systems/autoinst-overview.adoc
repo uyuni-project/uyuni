@@ -1,0 +1,39 @@
+[[ref.webui.systems.autoinst]]
+= Autoinstallation Overview
+
+.Autoinstallation Types: {ay} and Kickstart
+[NOTE]
+====
+In the following section, {ay} and {ay} features apply for {sle} client systems only.
+For {rhela} systems, use Kickstart and Kickstart features.
+====
+
+////
+.Auto-Installing Salt Clients Currently Not Supported
+[IMPORTANT]
+====
+This procedure will work for traditionally  managed systems (system type [systemitem]``management``).
+It is not currently available for systems using Salt (system type [systemitem]``salt``).
+====
+////
+
+{ay} and Kickstart configuration files allow administrators to create an environment for automating otherwise time-consuming system installations, such as multiple servers or workstations.
+{ay} files have to be uploaded to be managed with {productname}.
+Kickstart files can be created, modified, and managed within the {productname} Web interface.
+
+{productname} also features the Cobbler installation server.
+For more information, see xref:client-configuration:cobbler.adoc[].
+
+
+{productname} provides an interface for developing Kickstart and {ay} profiles that can be used to install {rhel} or {sle} on either new or already-registered systems automatically according to certain specifications.
+
+.Autoinstallation Overview
+image::systems_kickstart_overview.png[scaledwidth=444]
+
+
+This overview page displays the status of automated installations (Kickstart and {ay}) on your client systems: the types and number of profiles you have created and the progress of systems that are scheduled to be installed using Kickstart or {ay}.
+
+In the upper right area is the menu:Autoinstallation Actions[] section, which contains a series of links to management actions for your Kickstart or {ay}  profiles.
+
+* For more on {ay}, see xref:client-configuration:client-automating-installation.adoc[].
+* For more on Kickstart, see xref:client-configuration:kickstart.adoc[].

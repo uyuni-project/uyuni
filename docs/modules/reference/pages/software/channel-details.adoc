@@ -1,0 +1,97 @@
+[[s4-sm-channel-details-details]]
+= Channel Details
+
+General information about the channel and its parent if applicable.
+This summary, description, and architecture is also displayed when clicking a channel.
+
+image::channels_details_channels.png[scaledwidth=80%]
+
+In addition, [guimenu]``Per-User Subscription Restrictions`` can be set globally by {productname} administrators and channel administrators.
+By default, any user can subscribe channels to a system.
+To manage user permissions, select [guimenu]``Only selected users within your organization may subscribe to this channel`` and click btn:[Update].
+The [guimenu]``Subscribers`` tab appears.
+Click it to grant specific users subscription permissions to a channel.
+{productname} administrators and channel administrators can always subscribe any channels to a system.
+
+Only customers with custom base channels can change their systems' base channel assignments via the {productname} Web interface in two ways:
+
+* Assign the system to a custom base channel.
+* Revert subscriptions from a custom base channel to the appropriate distribution-based base channel.
+
+[NOTE]
+====
+The assigned base channel must match the installed system.
+For example, a system running {sle}{nbsp}11 for `x86_64` cannot be registered to a {sle}{nbsp}12 for `s390x` base channel.
+Use the files [path]``/etc/os-release`` or [path]``/etc/SuSE-release`` to check your product, architecture (try [command]``uname -a``), version, and patch level.
+====
+
+
+
+[[s4-sm-channel-details-managers]]
+== Managers
+
+On the [guimenu]``Managers`` page, you can check which users are authorized to manage the selected channel.
+
+image::channels_details_managers_channels.png[scaledwidth=80%]
+
+Real name and e-mail address are listed with the user names.
+Organization and Channel administrators can manage any channel.
+As a {productname} administrator you can change roles for specific users by clicking the name.
+For more information on user management and the [guimenu]``User Details`` page, see:
+xref:reference:users/users-menu.adoc[Users].
+
+
+
+[[s4-sm-channel-details-errata]]
+== Patches
+
+The [guimenu]``Patches`` page lists patches to be applied to packages provided in the channel.
+
+image::channels_details_patches_channels.png[scaledwidth=80%]
+
+The list displays advisory types, names, summaries, and issue dates.
+Clicking an advisory name takes you to its [guimenu]``Patch Details`` page.
+for more information, see:
+xref:reference:patches/patch-details.adoc[Patch Details].
+
+
+
+[[s4-sm-channel-details-packages]]
+== Packages
+
+This page lists packages in the channel.
+Clicking a package name takes you to the [guimenu]``Package Details`` page.
+
+image::channels_details_packages_channels.png[scaledwidth=80%]
+
+This page displays a set of tabs with information about the package, including architectures on which it runs, the package size, build date, package dependencies, change log, list of files in the package, newer versions, and which systems have the package installed.
+Download the packages as RPMs.
+
+To search for a specific package or a subset of packages, use the package filter at the top of the list.
+Enter a substring to search for package names containing the string.
+For example, typing `dd` in the filter might return: [systemitem]``dd_rescue``, [systemitem]``ddclient``, and [systemitem]``uuidd``.
+The filter is case-insensitive.
+
+
+
+[[s4-sm-channel-details-subsys]]
+== Subscribed Systems
+
+The list displays system names and their system type.
+Clicking a system name takes you to its [guimenu]``System Details`` page.
+For more information, see:
+xref:reference:systems/system-details.adoc[System Details].
+
+
+
+[[s4-sm-channel-details-tarsys]]
+== Target Systems
+
+List of systems eligible for subscription to the channel.
+This tab appears only for child channels.
+Use the check boxes to select the systems, then click the [guimenu]``Confirm`` and btn:[Subscribe] button on the bottom right-hand corner.
+You will receive a success message or be notified of any errors.
+This can also be accomplished through the [guimenu]``Channels`` tab of the [guimenu]``System Details`` page.
+For more information, see:
+xref:reference:systems/system-details.adoc[System Details].
+

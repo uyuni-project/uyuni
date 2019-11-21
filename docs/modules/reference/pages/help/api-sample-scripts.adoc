@@ -1,0 +1,5 @@
+= API Sample Scripts
+
+The [guimenu]``API Sample Scripts`` menu item gives you some sample scripts for using the {productname} API in several common languages.
+
+For more sample scripts, see https://github.com/spacewalkproject/spacewalk/.

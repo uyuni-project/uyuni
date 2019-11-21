@@ -1,0 +1,10 @@
+[[ref.webui.overview.account.addresses]]
+= Addresses
+
+On the menu:Main Menu[Home > User Account > Addresses] page you can manage your mailing, billing and shipping addresses, and associated phone numbers.
+
+image::home_user_account_addresses.png[scaledwidth=80%]
+
+Click btn:[Fill in this address] or btn:[Edit this address] below the address to be modified or added, make your changes, and click btn:[Update].
+
+image::home_user_account_edit_address.png[scaledwidth=80%]

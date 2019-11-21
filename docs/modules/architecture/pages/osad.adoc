@@ -1,0 +1,45 @@
+[[arch.component.osad]]
+= osad
+
+
+
+
+
+
+== Functions
+
+*osad* is a primary component of {productname}. It performs the following functions in the stack.
+
+* **Client-side daemon for legacy clients**
+* **Calls mgr_check(rhn_check) when notified by Jabber**
+
+
+
+== osad --help
+
+The following options are available for use with *osad* on your legacy clients:
+
+----
+osad --help
+Usage: osad [options]
+
+Options:
+  -v, --verbose         Increase verbosity
+  -N, --nodetach        Suppress backgrounding and detachment of the process
+  --pid-file=PID_FILE   Write to this PID file
+  --logfile=LOGFILE     Write log information to this file
+  --cfg=CFG             Use this configuration file for defaults
+  --jabber-server=JABBER_SERVER
+                        Primary jabber server to connect to
+  -h, --help            show this help message and exit
+----
+
+
+
+== Log Files
+
+_Logs for *osad* are located in:_
+
+----
+/var/log/osad
+----

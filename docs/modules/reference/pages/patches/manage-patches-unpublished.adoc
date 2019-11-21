@@ -1,0 +1,7 @@
+[[s3-sm-errata-unpublished]]
+= Unpublished Patches
+
+Here all published patches are listed.
+It is possible to perform the same actions as with published patches.
+For more information, see xref:reference:patches/manage-patches-published.adoc[Published Patches].
+Additionally, on a patch details page, you can click btn:[Publish Patch] for publishing.

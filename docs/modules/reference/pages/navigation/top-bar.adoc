@@ -1,0 +1,9 @@
+= Top Bar
+
+The top bar provides access to commonly used tools and user settings.
+
+image::topnav.png[scaledwidth=100%]
+
+The right part of the top bar contains functionalities such as a bell icon with a counter bubble of unread notification messages, optionally, an eye icon with a context legend to the current page, quick search, links to background information, user preferences, and sign off.
+On the left is the so-called breadcrumb.
+The breadcrumb tells you how far you are from the root of the menu and it brings you back to any previous step.

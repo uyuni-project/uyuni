@@ -1,0 +1,3 @@
+= API Menu
+
+The [guimenu]``API`` section contains links to the available API calls, and includes an API FAQ and sample scripts.

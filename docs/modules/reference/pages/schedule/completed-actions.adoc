@@ -1,0 +1,6 @@
+[[ref.webui.schedule.compl]]
+= Completed Actions
+
+List of actions successfully carried out.
+
+image::schedule_completed_actions.png[scaledwidth=80%]

@@ -1,0 +1,84 @@
+[[ref.webui.overview.notifications]]
+= Notification Messages
+
+The menu:Main Menu[Home > Notification Messages] page allows you to manage your notification messages of the {productname} server.
+
+image::home_notification_messages.png[scaledwidth=80%]
+
+The default lifetime of notification messages is 30 days, after which messages are deleted from the database, regardless of read status.
+You can configure the amount of time in [path]``/etc/rhn/rhn.conf``:
+
+----
+# Configure the lifetime of notification messages in days
+java.notifications_lifetime = 30
+----
+
+All notification types are enabled by default.
+To disable a notification type, open the [path]``/etc/rhn/rhn.conf`` configuration file and edit the [systemitem]``java.notifications_type_disabled`` parameter:
+
+----
+# Configure the disablement of notification messages by type - example disabling all notification types
+java.notifications_type_disabled = OnboardingFailed,ChannelSyncFailed,ChannelSyncFinished
+----
+
+
+== Notification Messages Tabs
+
+The **Notification Messages** page displays two tabs:
+
+Unread Messages::
+Lists all unread messages.
+
+All Messages::
+Lists all messages.
+
+These tabs contain a list of collected messages filtered by tab name.
+
+
+
+== Notification Messages Buttons
+
+The following buttons are available for working with notification messages:
+
+Refresh::
+Refreshes the message list.
+
+Delete Selected Messages::
+Check any messages you would like removed and then mass delete them via this button.
+
+Mark all as Read::
+Mark all messages as read.
+
+
+
+== Notification Messages Legend
+
+Several columns provide information for each message:
+
+Severity:: The following severity levels are available and for every failure a customized button (in line with the message) is available to react to that failure:
+
+* image:info-circle.svg[Info,32,32] *Info*
+
+* image:exclamation-triangle-solid.svg[Warning,32,32] *Warning*
+
+* image:fa-times-circle-o.svg[Error,32,32] *Error*
+
+Type:: Available types are:
+
+* image:fa-times-circle-o.svg[Error,32,32] **Onboarding failed**
+
+* image:info-circle.svg[Info,32,32] **Channel sync finished**
+
+* image:fa-times-circle-o.svg[Error,32,32] **Channel sync failed**
+
+Description:: The text of the message with a link to the channel.
+
+Created:: The date when the message was created.
+
+Action (Read|Delete)::
+
+* Click the letter icon to flag a message as _Read_ or _Unread_.
+
+* Click the waste bin icon delete a message immediately.
+
+You can sort the messages by clicking a column label of the list header line.

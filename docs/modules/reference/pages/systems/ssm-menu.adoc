@@ -1,0 +1,187 @@
+[[ref.webui.systems.ssm]]
+= System Set Manager
+
+The following actions executed on individual systems from the System Details page may be performed for multiple systems via the System Set Manager.
+The System Set Manager can be used to schedule actions on both Salt and Traditional systems.
+
+The following table provides information on what actions may be performed across both Salt and Traditional systems.
+These two methods have different actions which may be accessed with the System Set Manager:
+
+.Available SSM Actions for Management Types
+[cols="1a,1a,1a", options="header"]
+|===
+
+| System Set Manager: Actions | Traditional SSM | Salt SSM
+
+| Systems::
+
+List Systems | Supported:: Supported | Supported:: Supported
+
+| Install Patches::
+
+Schedule Patch Updates | Supported:: Supported | Supported:: Supported
+
+| Install Packages:: Upgrade
++
+Install
++
+Remove
++
+Verify | Supported::
++
+Supported
++
+Supported
++
+Supported
++
+Supported
+
+| Limited::
++
+Supported
++
+Supported
++
+Supported
++
+Not Available
+
+| Groups::
++
+Create
++
+Manage
+
+| Supported::
++
+Supported
++
+Supported
+
+| Supported::
++
+Supported
++
+Supported
+
+| Channels::
++
+Channel Memberships
++
+Channel Subscriptions
++
+Deploy / Diff Channels
+
+| Supported::
++
+Supported
++
+Supported
++
+Supported
+
+| Limited::
++
+Supported
++
+Not Available
++
+Not Available
+
+| Provisioning::
++
+Autoinstall Systems
++
+Tag for Snapshot
++
+Remote Commands
++
+Power Management
++
+Power Management Operations
+
+| Supported::
++
+Supported
++
+Supported
++
+Supported
++
+Supported
++
+Supported
+
+| Not Available::
+
+| Misc::
++
+Update System Preferences
++
+Update Hardware Profiles
++
+Update Package Profiles
++
+Run Remote Commands
++
+Set and Remove Custom Values for Selected Systems
++
+Reboot Systems
++
+Migrate Systems to another Organization
++
+Delete Systems from SUSE Manager
+
+| Supported::
++
+Supported
++
+Supported
++
+Supported
++
+Supported
++
+Supported
++
+Supported
++
+Supported
++
+Supported
++
+Supported
+
+
+| Supported::
++
+Supported
++
+Supported
++
+Supported
++
+Supported
++
+Supported
++
+Supported
++
+Supported
++
+Supported
++
+Supported
+
+
+|===
+
+Before performing actions on multiple systems, select the systems to work with.
+To select systems, click menu:Main Menu[Systems > Systems > All] and check the boxes to the left of the systems you want to work with.
+
+Additionally, you can access the System Set Manager in three different ways:
+
+. Click the menu:Main Menu[System Set Manager].
+. Click the [guimenu]``Use in SSM`` link in the menu:Main Menu[Systems > System Groups].
+. Click the [guimenu]``Work with Group`` link on the [guimenu]``System Group Details`` page.

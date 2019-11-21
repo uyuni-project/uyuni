@@ -1,0 +1,50 @@
+= Component Legend
+
+These diagram components will be used in the following sections explaining the architecture of {productname}. Components in {productname} can communicate in three ways:
+
+* One way
+* Two way
+* Scheduled (time based)
+
+
+
+== Types of Components
+
+
+.One Way
+
+Components that communicate in only one direction are represented by:
+
+.One way communication between components
+
+image::dia-one-way-component.png[]
+
+
+
+.Two Way
+
+Components that communicate in both directions are represented by:
+
+.Two way communication between components
+
+image::dia-two-way-component.png[]
+
+
+
+.Database Connections
+
+A component that reads and writes to the database communicates in both directions are represented by:
+
+.Two way communication between a component and the database(read and write)
+
+image::dia-database-communication.png[]
+
+
+
+.Scheduled (Time based)
+
+Components that run on a schedule are represented by:
+
+.Component that runs on a schedule
+
+image::dia-component-schedule.png[]

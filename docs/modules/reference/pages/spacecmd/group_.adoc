@@ -1,0 +1,115 @@
+[[spacecmd.functions.group]]
+= group_
+
+== group_addsystems
+
+Add systems to a group.
+
+[source]
+--
+usage: group_addsystems GROUP <SYSTEMS>
+
+<SYSTEMS> can be any of the following:
+name
+ssm (see 'help ssm')
+search:QUERY (see 'help system_search')
+group:GROUP
+channel:CHANNEL
+--
+
+
+
+== group_backup
+
+Backup a system group.
+
+[source]
+--
+usage: group_backup NAME [OUTDIR]
+
+OUTDIR defaults to $HOME/spacecmd-backup/group/YYYY-MM-DD/NAME
+--
+
+
+
+== group_create
+
+Create a system group.
+
+[source]
+--
+usage: group_create [NAME] [DESCRIPTION]
+--
+
+
+
+== group_delete
+
+Delete a system group.
+
+[source]
+--
+usage: group_delete NAME ...
+--
+
+
+
+== group_details
+
+Show the details of a system group.
+
+[source]
+--
+usage: group_details GROUP ...
+--
+
+
+
+== group_list
+
+List available system groups.
+
+[source]
+--
+usage: group_list
+--
+
+
+
+== group_listsystems
+
+List the members of a group.
+
+[source]
+--
+usage: group_listsystems GROUP
+--
+
+
+
+== group_removesystems
+
+Remove systems from a group.
+
+[source]
+--
+usage: group_removesystems GROUP <SYSTEMS>
+
+<SYSTEMS> can be any of the following:
+name
+ssm (see 'help ssm')
+search:QUERY (see 'help system_search')
+group:GROUP
+channel:CHANNEL
+--
+
+
+
+== group_restore
+
+Restore a system group.
+
+[source]
+--
+usage: group_backup INPUTDIR [NAME] ...
+--

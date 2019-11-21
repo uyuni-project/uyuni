@@ -1,0 +1,32 @@
+[[client-cfg-autoinstallation-autoyast]]
+== Autoinstallation with {ay}
+
+When xref:client-configuration:client-automating-preparation.adoc[] is successfully finished you can begin with the actual installation.
+
+To start an autoinstallation the system must already be known to {productname}.
+You can use bare metal provisioning to bring systems into {productname}.
+For more information, see xref:reference:admin/bare-metal-systems.adoc[].
+
+On the command line, you can use the API calls [systemitem]``system.createSystemRecord`` or [systemitem]``system.createSystemProfile`` to bring systems into {productname}.
+For example (replace [literal]``<hw_addr>`` with a hardware address such as [literal]``00:25:22:71:e7:c6`` and [literal]``<name>`` with the name of your system):
+
+----
+spacecmd api -- --args '["systemname", {"hwAddress": "<hw_addr>", "hostname":"<name>"}]' system.createSystemProfile
+----
+
+.Procedure: Autoinstalling with {ay}
+. In {productname} {webui}, navigate to menu:Systems[Overview], and select the system for the automated installation.
+
+. On the systems details page, navigate to the menu:Provisioning[Autoinstallation > Schedule] tab, and select the {ay} profile you want to use to (re-)install the system.
+
+
+
+=== Advanced PXE Installation Configuration
+
+If the client needs to be installed for the first time, you can use the [guimenu]``Create PXE installation configuration`` option.
+This option creates a PXE boot configuration.
+When you power on the client system, it boots from the network and the correct profile is selected for installation.
+
+If the system is already managed, click btn:[Schedule Autoinstallation and Finish] to start the installation.
+
+For more information about {ay}, see https://doc.opensuse.org/projects/autoyast/.

@@ -1,0 +1,163 @@
+[[public-cloud-azure]]
+= {productname} with Azure
+
+You can use {productname} Server and Proxy with the Microsoft Azure public cloud.
+This section discusses what you will need for running {productname} in Azure, and how to set up your installation.
+
+
+== Configure the Azure Cloud Instance
+
+Use the ``SUSE Manager Server 4 BYOS`` image.
+The image is a pre-built image created by {suse}.
+It is based on JeoS, and SUSE Manager is pre-installed but not configured.
+Configuring SUSE Manager has to be done manually with {yast}.
+
+When you create your Azure virtual machine, choose something `like d8s_v3` with 8{nbsp}vCPUs and 32{nbsp}GB RAM.
+////
+* Up to 4 data disks
+* Max IOPS 2400
+* Temporary storage disk of 16{nbsp}GB.
+Data on this disk will be destroyed after the guest has been switched off.
+////
+
+When you are setting up disk partitioning, we recommend:
+
+* 30{nbsp}GB for the disk running the operating system
+* Select `Standard HDD` for the storage account type
+
+You will also require three additional data disks:
+
+* Disk 0: 64{nbsp}GB on Premium SSD, mounted at [path]``/var/lib/pgsql``
+* Disk 1: 512{nbsp}GB on Standard SSD, mounted at [path]``/var/spacewalk``
+* Disk 2: 128{nbsp}GB on Standard SSD, mounted at [path]``/var/cache``
+
+[NOTE]
+====
+Do not use LVM with Azure.
+If you need more disk space, extend a disk in the Azure portal, then extend the filesystem with [command]``xfs_growfs``.
+====
+
+Partition the disks like this:
+
+* [path]``/dev/sda``: 4 partitions containing the OS
+* [path]``/dev/sdb``: temporary storage disk, do not use
+* [path]``/dev/sdc``: contains [path]``/var/lib/pgsql``
+* [path]``/dev/sdd``: contains [path]``/var/spacewalk``
+* [path]``/dev/sde``: contains [path]``/var/cache``
+
+You can use these commands to create the disks:
+
+----
+for d in sdc sdd sde; do
+  parted --script /dev/$d mklabel gpt mkpart primary xfs 0% 100%
+  mkfs.xfs /dev/${d}1
+done
+mkdir /cachetmp
+mount /dev/sde1 /cachetmp
+cp -a /var/cache/* /cachetmp/
+umount /cachetmp
+echo "$(blkid /dev/sdc1|awk -F " " '{ print $2 }') /var/lib/pgsql xfs defaults,noatime 0 0" >> /etc/fstab
+echo "$(blkid /dev/sdd1|awk -F " " '{ print $2 }') /var/spacewalk xfs defaults,noatime 0 0" >> /etc/fstab
+echo "$(blkid /dev/sde1|awk -F " " '{ print $2 }') /var/cache     xfs defaults,noatime 0 0" >> /etc/fstab
+mkdir -p /var/spacewalk
+mount /var/spacewalk
+chown -R wwwrun:root /var/spacewalk
+mount /var/lib/pgsql
+chown -R postgres:postgres /var/lib/pgsql
+mv /var/cache /var/cache.old
+mkdir /var/cache
+mount /var/cache
+rm -r /var/cache.old
+----
+
+
+// REMARK: I guess you do this in your Azure instance
+When you are setting up networking, we recommend that you create a separate private network, with the IP range `10.0.0.0/24`.
+// REMARK: Where do you configure this?
+
+Configure the {productname} Server to use the internal IP address `10.0.0.4`.
+Ensure it is also accessible from outside the network with a fixed IP address.
+
+Configure the firewall to only allow inbound traffic on ports `22`, `80`, and `443` to IP address `10.0.0.4`.
+In this environment, if other servers are added to the network they cannot be reached from outside the network.
+
+Outbound is open from the private network.
+// REMARK: Was does this mean?
+This should be restricted for other servers in this private network.
+
+You will need to set the DNS zones in Azure before you can configure the {productname} Server.
+For more information on setting DNS zones, see the Azure documentation.
+
+
+
+== Configure {productname} Server
+
+Ensure that your {productname} Server is registered with {scc}.
+
+When your server is registered, install these extra packages:
+----
+zypper -n in spacecmd spacewalk-utils mlocate sysstat
+----
+// spacecmd will be installed by default next time
+
+Apply the latest updates and reboot the server:
+----
+zypper -n up -l
+reboot
+----
+
+Check that all filesystems are mounted and that PostgreSQL is running:
+----
+mount
+service postgresql status
+----
+
+Complete {productname} Server installation and configuration.
+For more information, see xref:installation:server-setup.adoc[].
+
+We recommend you configure the {productname} Server so that DHCP does not set the host name.
+Check [path]``/etc/sysconfig/network/dhcp`` and ensure that `DHCLIENT_SET_HOSTNAME` is set to [literal]``no``:
+----
+DHCLIENT_SET_HOSTNAME="no"
+----
+
+Add the Azure client to the [path]``/etc/hosts`` file.
+At the command prompt, replace [literal]``<ip_address>`` with the IP address of the server:
+// REMARK: hostname -i?
+----
+echo "<ip_address> $(hostname -f) $(hostname)" >> /etc/hosts
+----
+
+
+{productname} Server has a default administration user.
+In Azure, the system administrator user is called [literal]``admin``.
+The `admin` user's password is built with two parts.
+The first part can be found by using this command:
+----
+azuremetadata --instance-name
+----
+
+The second part of the password is [literal]``-suma``
+
+Alternatively, you can check the [path]``/var/log/susemanager_firstuser.log`` file.
+
+
+////
+
+REMARK: Do we want to list the details here?  Or is such a general xref good enough?
+
+For the SUSE Manager setup configuration in general, see xref:installation:server-setup.adoc[], _procedure "{productname} Setup"_.
+
+Pay special attention to the following settings:
+
+* In the first dialog, select [guimenu]``Set up SUSE Manager from scratch``
+* In the next dialog, enter a valid mail address for the administrator
+* It is very important to remember the password given for SSL.
+Without this password no SUSE Manager Proxy Server can be installed and no other changes can be made to the certificate.
+For example, this certificate is eg used on all registered systems to communicate with SUSE Manager Server.
+* In the [guimenu]``Database Settings`` dialog, it is enough to provide a password.
+Make sure also to remember this password.
+
+With these settings the installation can be started.
+The installation will finish without further input.
+////

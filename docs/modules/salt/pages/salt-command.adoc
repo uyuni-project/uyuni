@@ -1,0 +1,116 @@
+[[salt.command]]
+= The Salt Command
+
+Salt commands have three main components: target, function, and arguments.
+The calls are constructed in this format:
+----
+salt 'target' <function> [arguments]
+----
+
+The target defines the client, or group of clients, on which to run the function.
+
+The function is the particular task to be run.
+
+Arguments provide any extra data required by the function.
+
+
+== Salt Targets
+
+Salt command targets allow you to specify a client or group of clients.
+There are several different targets you can use.
+
+General Targeting::
+
+List available grains on all clients:
+----
+salt '*' grains.ls
+----
+
+Target a specific client:
+----
+salt 'web1.example.com' test.ping
+----
+
+Glob Targeting::
+
+Target all clients using a particular domain:
+----
+salt '*example.com' test.ping
+----
+
+Target all clients using a particular label:
+----
+salt 'label*' test.ping
+----
+
+List Targeting::
+
+Specify a flat list of clients, using their IDs:
+----
+salt -L 'client_ID1, client_ID2, client_ID3' test.ping
+----
+
+Regular Expression Targeting::
+
+You can also define targets with PCRE-compliant regular expressions:
+----
+salt -E '(?!web)' test.ping
+----
+
+IP Address Targeting::
+
+List available client IP addresses:
+----
+salt '*' network.ip_addrs
+----
+
+Target a specific client IP address:
+----
+salt -S '172.31.60.74' test.ping
+----
+
+Target all clients on a subnet:
+----
+salt -S 172.31.0.0/16 test.ping
+----
+
+////
+This is general Linux info, not specific to the topic.
+You can use the [command]``ip`` command to find the subnet mask in the format of ``192.168.1.1/24``:
+
+----
+ip -o -f inet addr show | awk '/scope global/ {print $4}'
+----
+////
+
+For more on targeting, see https://docs.saltstack.com/en/latest/topics/targeting/.
+
+
+
+== Salt Execution Modules
+
+When you have specified a target, provide the module and function to execute on the target.
+
+Find which modules can be executed on the target:
+----
+salt '*' sys.doc
+----
+
+For a full list of callable modules, see https://docs.saltstack.com/en/latest/ref/modules/all/index.html.
+
+
+
+== Salt Function Arguments
+
+Functions accept arguments for any extra data.
+
+For example, the [command]``pkg.install`` function requires an argument specifying which package to install:
+----
+salt '*' pkg.install yast2
+----
+
+You can provide more than one argument to a function, with spaces between them.
+For example:
+----
+salt '*' cmd.run 'echo "Hello: $FIRST_NAME"' env='{FIRST_NAME: "John"}'
+----

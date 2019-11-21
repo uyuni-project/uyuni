@@ -1,0 +1,628 @@
+// Reference Manual Antora Navivation List
+ifndef::backend-pdf[]
+
+* xref:intro.adoc[Reference Manual]
+** WebUI Reference
+// Navigation
+*** xref:navigation/navigation-menu.adoc[Navigation]
+**** xref:navigation/top-bar.adoc[Top Bar]
+**** xref:navigation/left-navigation-bar.adoc[Left Navigation Bar]
+**** xref:navigation/categories-and-pages.adoc[Categories]
+**** xref:navigation/tabs-subtabs.adoc[Tabs and Subtabs]
+**** xref:navigation/patch-alert-icons.adoc[Patch Alert Icons]
+**** xref:navigation/notification-messages-icon.adoc[Notification Messages Icon]
+**** xref:navigation/navigation-search.adoc[Search]
+**** xref:navigation/systems-selected.adoc[Systems Selected]
+**** xref:navigation/navigation-lists.adoc[Navigation Lists]
+// Home Menu
+*** xref:home/home-menu.adoc[Home]
+**** xref:home/home-overview.adoc[Overview]
+**** xref:home/home-notification-messages.adoc[Notification Messages]
+// User Account
+**** xref:home/user-account-menu.adoc[User Account Menu]
+***** xref:home/user-account-my-account.adoc[My Account]
+***** xref:home/user-account-addresses.adoc[Addresses]
+***** xref:home/user-account-change-email.adoc[Change Email]
+***** xref:home/user-account-account-deactivation.adoc[Account Deactivation]
+**** xref:home/home-my-preferences.adoc[My Preferences]
+// My Organization
+**** xref:home/my-organization-menu.adoc[My Organization]
+***** xref:home/my-organization-configuration.adoc[Configuration]
+***** xref:home/my-organization-trusts.adoc[Organization Trusts]
+***** xref:home/my-organization-configuration-channels.adoc[Configuration Channels]
+// Systems Menu
+*** xref:systems/systems-menu.adoc[Systems]
+**** xref:systems/systems-overview.adoc[Systems Overview]
+// Systems Details (SD)
+**** xref:systems/system-details.adoc[System Details]
+***** xref:systems/system-details/sd-properties.adoc[Properties]
+***** xref:systems/system-details/sd-remote-command.adoc[Remote Command]
+***** xref:systems/system-details/sd-reactivation.adoc[Reactivation]
+***** xref:systems/system-details/sd-hardware.adoc[Hardware]
+***** xref:systems/system-details/sd-migrate.adoc[Migrate]
+***** xref:systems/system-details/sd-notes.adoc[Notes]
+***** xref:systems/system-details/sd-custom-info.adoc[Custom Info]
+***** xref:systems/system-details/sd-proxy.adoc[Proxy]
+***** xref:systems/system-details/sd-software.adoc[Software]
+***** xref:systems/system-details/sd-patches.adoc[Patches]
+***** xref:systems/system-details/sd-packages.adoc[Packages]
+***** xref:systems/system-details/sd-software-channels.adoc[Software Channels]
+***** xref:systems/system-details/sd-sp-migration.adoc[Service Pack Migration]
+***** xref:systems/system-details/sd-configuration.adoc[Configuration]
+***** xref:systems/system-details/sd-provisioning.adoc[Provisioning]
+***** xref:systems/system-details/sd-groups.adoc[Groups]
+***** xref:systems/system-details/sd-virtualization.adoc[Virtualization]
+***** xref:systems/system-details/sd-audit.adoc[Audit]
+***** xref:systems/system-details/sd-states.adoc[States]
+***** xref:systems/system-details/sd-formulas.adoc[Formulas]
+***** xref:systems/system-details/sd-events.adoc[Events]
+// Systems List
+**** xref:systems/systems-list.adoc[Systems List]
+**** xref:systems/system-groups.adoc[System Groups]
+// System Set manager
+**** xref:systems/ssm-menu.adoc[System Set Manager]
+***** xref:systems/ssm-overview.adoc[Overview]
+***** xref:systems/ssm-task-log.adoc[Task Log]
+**** xref:systems/bootstrapping.adoc[Bootstrapping]
+// Systems Visualization
+**** xref:systems/visualization-menu.adoc[Visualization]
+***** xref:systems/virtualization-hierarchy.adoc[Virtualization Hierarchy]
+***** xref:systems/proxy-hierarchy.adoc[Proxy Hierarchy]
+***** xref:systems/systems-grouping.adoc[Systems Grouping]
+// Advanced Search
+**** xref:systems/advanced-search.adoc[Advanced Search]
+// Activation Keys
+**** xref:systems/activation-keys.adoc[Activation Keys]
+// Stored Profiles
+**** xref:systems/stored-profiles.adoc[Stored Profiles]
+// Custom System Info
+**** xref:systems/custom-system-info.adoc[Custom System Info]
+// Autoinstallation
+**** xref:systems/autoinst-menu.adoc[Autoinstallation]
+***** xref:systems/autoinst-overview.adoc[Overview]
+***** xref:systems/autoinst-profiles.adoc[Profiles]
+***** xref:systems/autoinst-profile-details.adoc[Profile Details]
+***** xref:systems/autoinst-unprovisioned.adoc[Unprovisioned]
+***** xref:systems/autoinst-gpg-and-ssl-keys.adoc[GPG and SSL Keys]
+***** xref:systems/autoinst-distributions.adoc[Distributions]
+***** xref:systems/autoinst-file-preservation.adoc[File Preservation]
+***** xref:systems/autoinst-snippets.adoc[Autoinstallation Snipppets]
+// Virtual Host Managers
+**** xref:systems/virtual-host-managers.adoc[Virtual Host Managers]
+// Salt Menu
+*** xref:salt/salt-menu.adoc[Salt]
+**** xref:salt/salt-keys.adoc[Keys]
+**** xref:salt/salt-remote-commands.adoc[Remote Commands]
+**** xref:salt/salt-formula-catalog.adoc[Formula Catalog]
+// Images Menu
+*** xref:images/images-menu.adoc[Images]
+**** xref:images/images-image-list.adoc[Image List]
+**** xref:images/images-build.adoc[Build]
+**** xref:images/images-profiles.adoc[Profiles]
+**** xref:images/images-stores.adoc[Stores]
+// Patches
+*** xref:patches/patches-menu.adoc[Patches]
+**** xref:patches/applying-patches.adoc[Applying Patches]
+**** xref:patches/patch-details.adoc[Patch Details]
+**** Patch List
+***** xref:patches/patch-list-relevant.adoc[Relevant]
+***** xref:patches/patch-list-all.adoc[All]
+**** xref:patches/patches-advanced-search.adoc[Advanced Search]
+**** xref:patches/manage-patches.adoc[Manage Patches]
+***** xref:patches/create-and-edit-patches.adoc[Create and Edit Patches]
+***** xref:patches/manage-patches-published.adoc[Published]
+***** xref:patches/manage-patches-unpublished.adoc[Unpublished]
+**** xref:patches/clone-patches.adoc[Clone Patches]
+// Software
+*** xref:software/software-menu.adoc[Software]
+**** xref:software/channel-details.adoc[Channel Details]
+**** xref:software/software-channel-list-menu.adoc[Channel List]
+***** xref:software/software-channel-list-filters.adoc[Channel Filters]
+**** xref:software/software-package-search.adoc[Package Search]
+**** xref:software/software-manage-menu.adoc[Manage]
+***** xref:software/manage-channels.adoc[Channels]
+***** xref:software/manage-packages.adoc[Packages]
+***** xref:software/manage-repositories.adoc[Repositories]
+**** xref:software/software-distribution-channel-mapping.adoc[Distribution Channel Mapping]
+// Content Lifecycle Management
+*** xref:clm/clm-menu.adoc[Content Lifecycle Management]
+**** xref:clm/clm-projects.adoc[Projects]
+**** xref:clm/clm-filters.adoc[Filters]
+// Audit
+*** xref:audit/audit-menu.adoc[Audit]
+**** xref:audit/system-details-audit.adoc[System Details Audit]
+**** xref:audit/audit-cve-audit.adoc[CVE Audit]
+**** xref:audit/audit-subscription-matching.adoc[Subscription Matching]
+**** xref:audit/openscap-menu.adoc[OpenSCAP]
+***** xref:audit/audit-openscap-overview.adoc[OpenSCAP Overview]
+***** xref:audit/openscap-all-scans.adoc[All Scans]
+***** xref:audit/openscap-xccdf-diff.adoc[XCCDF Diff]
+***** xref:audit/openscap-advanced-search.adoc[Advanced Search]
+// Configuration
+*** xref:configuration/config-menu.adoc[Configuration]
+**** xref:configuration/config-overview.adoc[Overview]
+**** xref:configuration/config-channels.adoc[Channels]
+**** xref:configuration/config-files-menu.adoc[Files]
+***** xref:configuration/files-centrally-managed.adoc[Centrally Managed]
+***** xref:configuration/files-locally-managed.adoc[Locally Managed]
+**** xref:configuration/config-systems-menu.adoc[Systems]
+***** xref:configuration/config-systems-managed.adoc[Managed]
+***** xref:configuration/config-systems-target.adoc[Target]
+// Schedule
+*** xref:schedule/schedule-menu.adoc[Schedule]
+**** xref:schedule/pending-actions.adoc[Pending Actions]
+**** xref:schedule/completed-actions.adoc[Completed Actions]
+**** xref:schedule/archived-actions.adoc[Archived Actions]
+**** xref:schedule/action-chains.adoc[Action Chains]
+// Users
+*** xref:users/users-menu.adoc[Users]
+**** xref:users/user-details.adoc[User Details]
+**** xref:users/users-list.adoc[Users List]
+***** xref:users/active-users.adoc[Active Users]
+***** xref:users/deactivated-users.adoc[Deactivated Users]
+***** xref:users/all-users.adoc[All Users]
+**** xref:users/system-group-configuration.adoc[System Group Configuration]
+// Admin
+*** xref:admin/admin-menu.adoc[Admin]
+**** xref:admin/setup-wizard.adoc[Setup Wizard]
+**** xref:admin/organizations.adoc[Organizations]
+**** xref:admin/users.adoc[Users]
+**** xref:admin/manager-configuration.adoc[Manager Configuration]
+***** xref:admin/general.adoc[General]
+***** xref:admin/bootstrap-script.adoc[Bootstrap Script]
+***** xref:admin/manager-config-organizations.adoc[Organizations]
+***** xref:admin/restart.adoc[Restart]
+***** xref:admin/cobbler.adoc[Cobbler]
+***** xref:admin/bare-metal-systems.adoc[Bare-metal Systems]
+**** xref:admin/iss-configuration.adoc[ISS Configuration]
+***** xref:admin/iss-master-setup.adoc[ISS Master Setup]
+***** xref:admin/iss-slave-setup.adoc[ISS Slave Setup]
+**** xref:admin/task-schedules.adoc[Task Schedules]
+**** xref:admin/task-engine-status.adoc[Task Engine Status]
+**** xref:admin/show-tomcat-logs.adoc[Show Tomcat Logs]
+// Help
+*** xref:help/help-menu.adoc[Help]
+**** xref:help/documentation-version.adoc[Documentation Version]
+**** xref:help/release-notes.adoc[Release Notes]
+**** xref:help/api-menu.adoc[API]
+***** xref:help/api-overview.adoc[Overview]
+***** xref:help/api-faq.adoc[FAQ]
+***** xref:help/api-sample-scripts.adoc[Sample Scripts]
+// spacecmd Command Reference
+** xref:spacecmd-intro.adoc[spacecmd Reference]
+*** xref:spacecmd/configuring-spacecmd.adoc[Configuring spacecmd]
+*** xref:spacecmd/spacecmd-help.adoc[Help]
+*** xref:spacecmd/spacecmd-history.adoc[History]
+*** xref:spacecmd/troubleshooting-spacecmd.adoc[Troubleshooting]
+*** xref:spacecmd/spacecmd-functions.adoc[spacecmd Functions]
+**** xref:spacecmd/activationkey_.adoc[activationkey_]
+**** xref:spacecmd/api.adoc[api]
+**** xref:spacecmd/clear.adoc[clear]
+**** xref:spacecmd/clear_caches.adoc[clear_caches]
+**** xref:spacecmd/configchannel_.adoc[configchannel_]
+**** xref:spacecmd/cryptokey_.adoc[cryptokey_]
+**** xref:spacecmd/custominfo_.adoc[custominfo_]
+**** xref:spacecmd/distribution_.adoc[distribution_]
+**** xref:spacecmd/errata_.adoc[errata_]
+**** xref:spacecmd/filepreservation_.adoc[filepreservation_]
+**** xref:spacecmd/get_.adoc[get_]
+**** xref:spacecmd/group_.adoc[group_]
+**** xref:spacecmd/kickstart_.adoc[kickstart_]
+**** xref:spacecmd/list_proxies.adoc[list_proxies]
+**** xref:spacecmd/login.adoc[login]
+**** xref:spacecmd/logout.adoc[logout]
+**** xref:spacecmd/org_.adoc[org_]
+**** xref:spacecmd/package_.adoc[package_]
+** xref:command-line-tools.adoc[Command Line Tools]
+//** xref:common_gfdl1.2_i.adoc[License]
+
+endif::[]
+
+
+// PDF Reference Manual
+ifdef::backend-pdf[]
+= Reference Manual: {productname} {productnumber}
+include::./branding/pdf/entities.adoc[]
+:toclevels: 3
+:doctype: book
+
+// License
+include::modules/reference/pages/common_gfdl1.2_i.adoc[leveloffset=+1]
+
+= WebUI Reference
+
+include::modules/reference/pages/navigation/navigation-menu.adoc[leveloffset=+1]
+
+include::modules/reference/pages/navigation/top-bar.adoc[leveloffset=+2]
+
+include::modules/reference/pages/navigation/left-navigation-bar.adoc[leveloffset=+2]
+
+include::modules/reference/pages/navigation/categories-and-pages.adoc[leveloffset=+2]
+
+include::modules/reference/pages/navigation/tabs-subtabs.adoc[leveloffset=+2]
+
+include::modules/reference/pages/navigation/patch-alert-icons.adoc[leveloffset=+2]
+
+include::modules/reference/pages/navigation/notification-messages-icon.adoc[leveloffset=+2]
+
+include::modules/reference/pages/navigation/navigation-search.adoc[leveloffset=+2]
+
+include::modules/reference/pages/navigation/systems-selected.adoc[leveloffset=+2]
+
+include::modules/reference/pages/navigation/navigation-lists.adoc[leveloffset=+2]
+
+// Home Menu
+include::modules/reference/pages/home/home-menu.adoc[leveloffset=+1]
+
+include::modules/reference/pages/home/home-overview.adoc[leveloffset=+2]
+
+include::modules/reference/pages/home/home-notification-messages.adoc[leveloffset=+2]
+
+//==== User Account
+include::modules/reference/pages/home/user-account-menu.adoc[leveloffset=+2]
+
+include::modules/reference/pages/home/user-account-my-account.adoc[leveloffset=+3]
+
+include::modules/reference/pages/home/user-account-addresses.adoc[leveloffset=+3]
+
+include::modules/reference/pages/home/user-account-change-email.adoc[leveloffset=+3]
+
+include::modules/reference/pages/home/user-account-account-deactivation.adoc[leveloffset=+3]
+
+include::modules/reference/pages/home/home-my-preferences.adoc[leveloffset=+3]
+
+// My Organization
+include::modules/reference/pages/home/my-organization-menu.adoc[leveloffset=+2]
+
+include::modules/reference/pages/home/my-organization-configuration.adoc[leveloffset=+3]
+
+include::modules/reference/pages/home/my-organization-trusts.adoc[leveloffset=+3]
+
+include::modules/reference/pages/home/my-organization-configuration-channels.adoc[leveloffset=+3]
+
+// Systems Menu
+include::modules/reference/pages/systems/systems-menu.adoc[leveloffset=+1]
+
+include::modules/reference/pages/systems/systems-overview.adoc[leveloffset=+2]
+// Systems Details (SD)
+include::modules/reference/pages/systems/system-details.adoc[leveloffset=+2]
+
+include::modules/reference/pages/systems/system-details/sd-properties.adoc[leveloffset=+3]
+
+include::modules/reference/pages/systems/system-details/sd-remote-command.adoc[leveloffset=+3]
+
+include::modules/reference/pages/systems/system-details/sd-reactivation.adoc[leveloffset=+3]
+
+include::modules/reference/pages/systems/system-details/sd-hardware.adoc[leveloffset=+3]
+
+include::modules/reference/pages/systems/system-details/sd-migrate.adoc[leveloffset=+3]
+
+include::modules/reference/pages/systems/system-details/sd-notes.adoc[leveloffset=+3]
+
+include::modules/reference/pages/systems/system-details/sd-custom-info.adoc[leveloffset=+3]
+
+include::modules/reference/pages/systems/system-details/sd-proxy.adoc[leveloffset=+3]
+
+include::modules/reference/pages/systems/system-details/sd-software.adoc[leveloffset=+3]
+
+include::modules/reference/pages/systems/system-details/sd-patches.adoc[leveloffset=+3]
+
+include::modules/reference/pages/systems/system-details/sd-packages.adoc[leveloffset=+3]
+
+include::modules/reference/pages/systems/system-details/sd-software-channels.adoc[leveloffset=+3]
+
+include::modules/reference/pages/systems/system-details/sd-sp-migration.adoc[leveloffset=+3]
+
+include::modules/reference/pages/systems/system-details/sd-configuration.adoc[leveloffset=+3]
+
+include::modules/reference/pages/systems/system-details/sd-provisioning.adoc[leveloffset=+3]
+
+include::modules/reference/pages/systems/system-details/sd-groups.adoc[leveloffset=+3]
+
+include::modules/reference/pages/systems/system-details/sd-virtualization.adoc[leveloffset=+3]
+
+include::modules/reference/pages/systems/system-details/sd-audit.adoc[leveloffset=+3]
+
+include::modules/reference/pages/systems/system-details/sd-states.adoc[leveloffset=+3]
+
+include::modules/reference/pages/systems/system-details/sd-formulas.adoc[leveloffset=+3]
+
+include::modules/reference/pages/systems/system-details/sd-events.adoc[leveloffset=+3]
+
+// Systems List
+include::modules/reference/pages/systems/systems-list.adoc[leveloffset=+2]
+
+include::modules/reference/pages/systems/system-groups.adoc[leveloffset=+2]
+
+// System Set manager
+include::modules/reference/pages/systems/ssm-menu.adoc[leveloffset=+2]
+
+include::modules/reference/pages/systems/ssm-overview.adoc[leveloffset=+3]
+
+include::modules/reference/pages/systems/ssm-task-log.adoc[leveloffset=+3]
+
+include::modules/reference/pages/systems/bootstrapping.adoc[leveloffset=+2]
+
+// Systems Visualization
+include::modules/reference/pages/systems/visualization-menu.adoc[leveloffset=+2]
+
+include::modules/reference/pages/systems/virtualization-hierarchy.adoc[leveloffset=+3]
+
+include::modules/reference/pages/systems/proxy-hierarchy.adoc[leveloffset=+3]
+
+include::modules/reference/pages/systems/systems-grouping.adoc[leveloffset=+3]
+
+// Advanced Search
+include::modules/reference/pages/systems/advanced-search.adoc[leveloffset=+2]
+
+// Activation Keys
+include::modules/reference/pages/systems/activation-keys.adoc[leveloffset=+2]
+
+// Stored Profiles
+include::modules/reference/pages/systems/stored-profiles.adoc[leveloffset=+2]
+
+// Custom System Info
+include::modules/reference/pages/systems/custom-system-info.adoc[leveloffset=+2]
+
+// Autoinstallation
+include::modules/reference/pages/systems/autoinst-menu.adoc[leveloffset=+2]
+
+include::modules/reference/pages/systems/autoinst-overview.adoc[leveloffset=+3]
+
+include::modules/reference/pages/systems/autoinst-profiles.adoc[leveloffset=+3]
+
+include::modules/reference/pages/systems/autoinst-profile-details.adoc[leveloffset=+3]
+
+include::modules/reference/pages/systems/autoinst-unprovisioned.adoc[leveloffset=+3]
+
+include::modules/reference/pages/systems/autoinst-gpg-and-ssl-keys.adoc[leveloffset=+3]
+
+include::modules/reference/pages/systems/autoinst-distributions.adoc[leveloffset=+3]
+
+include::modules/reference/pages/systems/autoinst-file-preservation.adoc[leveloffset=+3]
+
+include::modules/reference/pages/systems/autoinst-snippets.adoc[leveloffset=+3]
+
+// Software Crashes
+//include::modules/reference/pages/systems/software-crashes.adoc[leveloffset=+2]
+
+// Virtual Host Managers
+include::modules/reference/pages/systems/virtual-host-managers.adoc[leveloffset=+2]
+
+// Salt Menu
+include::modules/reference/pages/salt/salt-menu.adoc[leveloffset=+1]
+
+include::modules/reference/pages/salt/salt-keys.adoc[leveloffset=+2]
+
+include::modules/reference/pages/salt/salt-remote-commands.adoc[leveloffset=+2]
+
+include::modules/reference/pages/salt/salt-formula-catalog.adoc[leveloffset=+2]
+
+// Images Menu
+include::modules/reference/pages/images/images-menu.adoc[leveloffset=+1]
+
+include::modules/reference/pages/images/images-image-list.adoc[leveloffset=+2]
+
+include::modules/reference/pages/images/images-build.adoc[leveloffset=+2]
+
+include::modules/reference/pages/images/images-profiles.adoc[leveloffset=+2]
+
+include::modules/reference/pages/images/images-stores.adoc[leveloffset=+2]
+
+// Patches
+include::modules/reference/pages/patches/patches-menu.adoc[leveloffset=+1]
+
+include::modules/reference/pages/patches/applying-patches.adoc[leveloffset=+2]
+
+include::modules/reference/pages/patches/patch-details.adoc[leveloffset=+2]
+
+=== Patch List
+
+include::modules/reference/pages/patches/patch-list-relevant.adoc[leveloffset=+3]
+
+include::modules/reference/pages/patches/patch-list-all.adoc[leveloffset=+3]
+
+include::modules/reference/pages/patches/patches-advanced-search.adoc[leveloffset=+2]
+
+include::modules/reference/pages/patches/manage-patches.adoc[leveloffset=+2]
+
+include::modules/reference/pages/patches/create-and-edit-patches.adoc[leveloffset=+3]
+
+include::modules/reference/pages/patches/manage-patches-published.adoc[leveloffset=+3]
+
+include::modules/reference/pages/patches/manage-patches-unpublished.adoc[leveloffset=+3]
+
+include::modules/reference/pages/patches/clone-patches.adoc[leveloffset=+2]
+
+// Software
+include::modules/reference/pages/software/software-menu.adoc[leveloffset=+1]
+
+include::modules/reference/pages/software/channel-details.adoc[leveloffset=+2]
+
+include::modules/reference/pages/software/software-channel-list-menu.adoc[leveloffset=+2]
+
+include::modules/reference/pages/software/software-channel-list-filters.adoc[leveloffset=+3]
+
+include::modules/reference/pages/software/software-package-search.adoc[leveloffset=+2]
+
+include::modules/reference/pages/software/software-manage-menu.adoc[leveloffset=+2]
+
+include::modules/reference/pages/software/manage-channels.adoc[leveloffset=+3]
+
+include::modules/reference/pages/software/manage-packages.adoc[leveloffset=+3]
+
+include::modules/reference/pages/software/manage-repositories.adoc[leveloffset=+3]
+
+include::modules/reference/pages/software/software-distribution-channel-mapping.adoc[leveloffset=+2]
+
+// Content Lifecycle Management
+include::modules/reference/pages/clm/clm-menu.adoc[leveloffset=+1]
+
+include::modules/reference/pages/clm/clm-projects.adoc[leveloffset=+2]
+
+include::modules/reference/pages/clm/clm-filters.adoc[leveloffset=+2]
+
+// Audit
+include::modules/reference/pages/audit/audit-menu.adoc[leveloffset=+1]
+
+include::modules/reference/pages/audit/system-details-audit.adoc[leveloffset=+2]
+
+include::modules/reference/pages/audit/audit-cve-audit.adoc[leveloffset=+2]
+
+include::modules/reference/pages/audit/audit-subscription-matching.adoc[leveloffset=+2]
+
+include::modules/reference/pages/audit/openscap-menu.adoc[leveloffset=+2]
+
+include::modules/reference/pages/audit/audit-openscap-overview.adoc[leveloffset=+3]
+
+include::modules/reference/pages/audit/openscap-all-scans.adoc[leveloffset=+3]
+
+include::modules/reference/pages/audit/openscap-xccdf-diff.adoc[leveloffset=+3]
+
+include::modules/reference/pages/audit/openscap-advanced-search.adoc[leveloffset=+3]
+
+// Configuration
+include::modules/reference/pages/configuration/config-menu.adoc[leveloffset=+1]
+
+include::modules/reference/pages/configuration/config-overview.adoc[leveloffset=+2]
+
+include::modules/reference/pages/configuration/config-channels.adoc[leveloffset=+2]
+
+include::modules/reference/pages/configuration/config-files-menu.adoc[leveloffset=+2]
+
+include::modules/reference/pages/configuration/files-centrally-managed.adoc[leveloffset=+3]
+
+include::modules/reference/pages/configuration/files-locally-managed.adoc[leveloffset=+3]
+
+include::modules/reference/pages/configuration/config-systems-menu.adoc[leveloffset=+2]
+
+include::modules/reference/pages/configuration/config-systems-managed.adoc[leveloffset=+3]
+
+include::modules/reference/pages/configuration/config-systems-target.adoc[leveloffset=+3]
+
+// Schedule
+include::modules/reference/pages/schedule/schedule-menu.adoc[leveloffset=+1]
+
+include::modules/reference/pages/schedule/pending-actions.adoc[leveloffset=+2]
+
+include::modules/reference/pages/schedule/completed-actions.adoc[leveloffset=+2]
+
+include::modules/reference/pages/schedule/archived-actions.adoc[leveloffset=+2]
+
+include::modules/reference/pages/schedule/action-chains.adoc[leveloffset=+2]
+
+// Users
+include::modules/reference/pages/users/users-menu.adoc[leveloffset=+1]
+
+include::modules/reference/pages/users/users-list.adoc[leveloffset=+2]
+
+include::modules/reference/pages/users/active-users.adoc[leveloffset=+3]
+
+include::modules/reference/pages/users/deactivated-users.adoc[leveloffset=+3]
+
+include::modules/reference/pages/users/all-users.adoc[leveloffset=+3]
+
+include::modules/reference/pages/users/system-group-configuration.adoc[leveloffset=+2]
+
+// Admin
+include::modules/reference/pages/admin/admin-menu.adoc[leveloffset=+1]
+
+include::modules/reference/pages/admin/setup-wizard.adoc[leveloffset=+2]
+
+include::modules/reference/pages/admin/organizations.adoc[leveloffset=+2]
+
+include::modules/reference/pages/admin/users.adoc[leveloffset=+2]
+
+include::modules/reference/pages/admin/manager-configuration.adoc[leveloffset=+2]
+
+include::modules/reference/pages/admin/general.adoc[leveloffset=+3]
+
+include::modules/reference/pages/admin/bootstrap-script.adoc[leveloffset=+3]
+
+include::modules/reference/pages/admin/manager-config-organizations.adoc[leveloffset=+3]
+
+include::modules/reference/pages/admin/restart.adoc[leveloffset=+3]
+
+include::modules/reference/pages/admin/cobbler.adoc[leveloffset=+3]
+
+include::modules/reference/pages/admin/bare-metal-systems.adoc[leveloffset=+3]
+
+include::modules/reference/pages/admin/iss-configuration.adoc[leveloffset=+2]
+
+include::modules/reference/pages/admin/iss-master-setup.adoc[leveloffset=+3]
+
+include::modules/reference/pages/admin/iss-slave-setup.adoc[leveloffset=+3]
+
+include::modules/reference/pages/admin/task-schedules.adoc[leveloffset=+2]
+
+include::modules/reference/pages/admin/task-engine-status.adoc[leveloffset=+2]
+
+include::modules/reference/pages/admin/show-tomcat-logs.adoc[leveloffset=+2]
+
+// Help
+include::modules/reference/pages/help/help-menu.adoc[leveloffset=+1]
+
+include::modules/reference/pages/help/documentation-version.adoc[leveloffset=+2]
+
+include::modules/reference/pages/help/release-notes.adoc[leveloffset=+2]
+
+include::modules/reference/pages/help/api-menu.adoc[leveloffset=+2]
+
+include::modules/reference/pages/help/api-overview.adoc[leveloffset=+3]
+
+include::modules/reference/pages/help/api-faq.adoc[leveloffset=+3]
+
+include::modules/reference/pages/help/api-sample-scripts.adoc[leveloffset=+3]
+
+// spacecmd command reference
+include::modules/reference/pages/spacecmd-intro.adoc[leveloffset=+0]
+
+include::modules/reference/pages/spacecmd/configuring-spacecmd.adoc[leveloffset=+1]
+
+include::modules/reference/pages/spacecmd/spacecmd-help.adoc[leveloffset=+1]
+
+include::modules/reference/pages/spacecmd/spacecmd-history.adoc[leveloffset=+1]
+
+include::modules/reference/pages/spacecmd/troubleshooting-spacecmd.adoc[leveloffset=+1]
+
+// spacecmd Functions
+include::modules/reference/pages/spacecmd/spacecmd-functions.adoc[leveloffset=+1]
+
+include::modules/reference/pages/spacecmd/activationkey_.adoc[leveloffset=+2]
+
+include::modules/reference/pages/spacecmd/api.adoc[leveloffset=+2]
+
+include::modules/reference/pages/spacecmd/clear.adoc[leveloffset=+2]
+
+include::modules/reference/pages/spacecmd/clear_caches.adoc[leveloffset=+2]
+
+include::modules/reference/pages/spacecmd/configchannel_.adoc[leveloffset=+2]
+
+include::modules/reference/pages/spacecmd/cryptokey_.adoc[leveloffset=+2]
+
+include::modules/reference/pages/spacecmd/custominfo_.adoc[leveloffset=+2]
+
+include::modules/reference/pages/spacecmd/distribution_.adoc[leveloffset=+2]
+
+include::modules/reference/pages/spacecmd/errata_.adoc[leveloffset=+2]
+
+include::modules/reference/pages/spacecmd/filepreservation_.adoc[leveloffset=+2]
+
+include::modules/reference/pages/spacecmd/get_.adoc[leveloffset=+2]
+
+include::modules/reference/pages/spacecmd/group_.adoc[leveloffset=+2]
+
+include::modules/reference/pages/spacecmd/kickstart_.adoc[leveloffset=+2]
+
+include::modules/reference/pages/spacecmd/list_proxies.adoc[leveloffset=+2]
+
+include::modules/reference/pages/spacecmd/login.adoc[leveloffset=+2]
+
+include::modules/reference/pages/spacecmd/logout.adoc[leveloffset=+2]
+
+include::modules/reference/pages/spacecmd/org_.adoc[leveloffset=+2]
+
+include::modules/reference/pages/spacecmd/package_.adoc[leveloffset=+2]
+
+
+endif::[]

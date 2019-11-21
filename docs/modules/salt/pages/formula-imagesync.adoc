@@ -1,0 +1,19 @@
+[[image-sync-formula]]
+= Image Synchronization Formula
+
+The Image Synchronization formula is used to configure when OS images are synchronized to the branch server, and to specify which images to synchronize.
+
+If this formula is not enabled, synchronization must be started manually, and all images will be synchronized.
+
+
+.Procedure: Configuring Image Synchronization
+
+. In the {susemgr} {webui}, open the details page for the branch server, and navigate to the Formulas tab.
+. Check the [guimenu]``Image Synchronize`` formula, and click btn:[Save].
+. Navigate to the menu:Formulas[Image Synchronize] tab, and set these parameters:
+* Check the [guimenu]``Include Image Synchronization in Highstate`` field to have image synchronization occur every time highstate is applied.
+This ensures that you do not have to perform image synchronization manually, however it requires a high bandwidth environment.
+* In the [guimenu]``Synchronize only the listed images`` field, click btn:[Add item] to add the images you want to have synchronized automatically.
+Alternatively, you can leave this list blank to have all images synchronized.
+. Click btn:[Save Formula] to save your configuration.
+. Apply the highstate.

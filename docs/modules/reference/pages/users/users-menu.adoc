@@ -1,0 +1,16 @@
+[[ref.webui.users]]
+= Users Menu
+
+Only {productname} administrators can see menu:Main Menu[Users].
+With [guimenu]``Users`` you can grant and edit permissions for those who administer your system groups.
+Click a user name in the menu:Main Menu[Users > User List > Active] to modify the user.
+
+To add new users to your organization, click the [guimenu]``Create User`` link on the top right corner of the page.
+On the [guimenu]``Create User`` page, fill in the required values for the new user.
+
+Once all fields are completed, click the btn:[Create Login] button.
+{productname} now sends an e-mail to the specified address and takes you back to the menu:Main Menu[Users > User List > Active] page.
+If you want to set permissions and options for the new user, click the name in the list.
+The [guimenu]``User Details`` page for this user provides several tabs of options.
+
+For detailed descriptions of each tab, see xref:reference:users/active-users.adoc[]. 

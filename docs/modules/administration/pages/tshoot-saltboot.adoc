@@ -1,0 +1,50 @@
+[[troubleshooting-saltboot]]
+= Troubleshooting the Saltboot Formula
+
+////
+PUT THIS COMMENT AT THE TOP OF TROUBLESHOOTING SECTIONS
+
+Troubleshooting format:
+
+One sentence each:
+Cause: What created the problem?
+Consequence: What does the user see when this happens?
+Fix: What can the user do to fix this problem?
+Result: What happens after the user has completed the fix?
+
+If more detailed instructions are required, put them in a "Resolving" procedure:
+.Procedure: Resolving Widget Wobbles
+. First step
+. Another step
+. Last step
+////
+
+Because of a problem in the computed partition size value, the saltboot formula can sometimes fail when it is created on SLE{nbsp}11 SP3 clients, with an error like this:
+
+----
+          ID: disk1_partitioned
+    Function: saltboot.partitioned
+        Name: disk1
+      Result: false
+     Comment: An exception occurred in this state: Traceback (most recent call last):
+  File "/usr/lib/python2.6/site-packages/salt/state.py", line 1767, in call
+    **cdata['kwargs'])
+  File "/usr/lib/python2.6/site-packages/salt/loader.py", line 1705, in wrapper
+    return f(*args, **kwargs)
+  File "/var/cache/salt/minion/extmods/states/saltboot.py", line 393, in disk_partitioned
+    existing = __salt__['partition.list'](device, unit='MiB')
+  File "/usr/lib/python2.6/site-packages/salt/modules/parted.py", line 177, in list_
+    'Problem encountered while parsing output from parted')
+CommandExecutionError: Problem encountered while parsing output from parted
+----
+
+This problem can be resolved by manually configuring the size of the partition containing the operating system.
+When the size is set correctly, formula creation will work as expected.
+
+
+.Procedure: Manually Configuring the Partition Size in the Saltboot Formula
+
+. In the {productname} {webui}, navigate to menu:Systems[System Groups] and select the ``Hardware Type Group`` that contains the SLE{nbsp}11 SP3 client that is causing the error.
+In the [guimenu]``Formulas`` tab, navigate to the [guimenu]``Saltboot`` subtab.
+. Locate the partition that contains the operating system, and in the [guimenu]``Partition Size`` field, type the appropriate size (in MiB).
+. Click btn:[Save Formula], and apply the highstate to save your changes.

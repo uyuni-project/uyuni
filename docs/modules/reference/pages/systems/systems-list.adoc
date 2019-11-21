@@ -1,0 +1,213 @@
+[[ref.webui.systems.systems.x]]
+= Systems List
+
+
+Pages with various lists of system groupings.
+
+[[ref.webui.systems.systems.all]]
+== All
+
+The menu:Systems[Systems > All] page contains the default set of your systems.
+It displays every system you have permission to manage.
+You have permission if you are the only user in your organization, if you are a {productname} Administrator, or if the system belongs to a group for which you have admin rights.
+
+image::systems_all.png[scaledwidth=80%]
+
+
+
+[[ref.webui.systems.systems.physical]]
+== Physical Systems
+
+To reach this page, select menu:Systems[Systems > Physical Systems] from the left bar.
+This page lists each physical system of which {productname} is aware.
+
+image::systems_physical_systems.png[scaledwidth=80%]
+
+
+
+
+[[ref.webui.systems.systems.virtual]]
+== Virtual Systems
+
+To reach this page, select menu:Systems[Systems > Virtual Systems] from the left bar.
+This page lists each virtual host of which {productname} is aware and the guest systems on those hosts.
+
+image::systems_virtual_systems.png[scaledwidth=80%]
+
+menu:System[]::
+This column displays the name of each guest system.
+
+menu:Updates[]::
+This column shows whether there are patches (errata updates) available for the guest systems that have not yet been applied.
+
+menu:Status[]::
+This column indicates whether a guest is running, paused, or stopped.
+
+menu:Base Channel[]::
+This column displays the base channel to which the guest is currently subscribed.
+
+Only guests registered with {productname} are displayed with blue text.
+Clicking the host name of such a guest system displays its [guimenu]``System Details`` page.
+
+
+
+[[ref.webui.systems.systems.baremetal]]
+== Unprovisioned Systems
+
+Here, all unprovisioned (bare-metal) systems with hardware details are listed.
+For more information, see xref:reference:admin/bare-metal-systems.adoc[].
+
+
+image::systems_bare_metal.png[scaledwidth=80%]
+
+
+
+[[ref.webui.systems.systems.ood]]
+== Out of Date
+
+The menu:Systems[Systems > Out of Date] page displays all systems where applicable patch alerts have not been applied.
+
+image::systems_outofdate.png[scaledwidth=80%]
+
+
+
+[[ref.webui.systems.systems.reboot]]
+== Requiring Reboot
+
+The menu:Systems[Systems > Requiring Reboot] page displays all systems that need to be rebooted.
+Click a system name to go to the systems details page to schedule a reboot.
+
+image::systems_requiringreboot.png[scaledwidth=80%]
+
+
+
+[[ref.webui.systems.systems.non_compliant]]
+== Non-compliant Systems
+
+Non-compliant systems have packages installed which are not available from {productname}.
+The [guimenu]``Packages`` column shows how many installed packages are not available in the channels assigned to the system.
+A non-compliant system cannot be reinstalled.
+
+image::systems_noncompliant.png[scaledwidth=80%]
+
+
+
+[[ref.webui.systems.systems.wst]]
+== Without System Type
+
+The menu:Systems[Systems > Without System Type] page displays systems without a System Type.
+System types are:
+
+* Salt
+* Management
+* Foreign Host
+
+image::systems_without_system_type.png[scaledwidth=80%]
+
+
+
+[[ref.webui.systems.systems.ungrp]]
+== Ungrouped
+
+The menu:Systems[Systems > Ungrouped] page displays systems that have not yet been assigned to a system group.
+
+image::systems_ungrouped.png[scaledwidth=80%]
+
+
+
+[[ref.webui.systems.systems.inact]]
+== Inactive
+
+The menu:Systems[Systems > Inactive Systems] page displays systems that have not checked in with {productname} for 24 hours or more.
+
+image::systems_inactive.png[scaledwidth=80%]
+
+On traditional clients, checking in is performed periodically by client tools (specifically `mgr_check`) - client systems connect to {productname} to see if there are any updates available or if any actions have been scheduled.
+For Salt systems, a Taskomatic job checks on the clients periodically by pinging them when otherwise inactive.
+If you see a message telling you that check-ins are not taking place, the system is not successfully connecting to {productname}.
+
+The reason may be one of the following:
+
+* The system is not entitled to any {productname} service.
+System profiles that remain unentitled for 180 days (6 months) are removed.
+* The system is entitled, but [systemitem]``rhnsd`` has been disabled on the traditional client.
+For more on restarting and troubleshooting, see xref:client-configuration:contact-methods-intro.adoc[].
+* The system is behind a firewall that does not allow connections over [systemitem]``https`` (port 443).
+* The system is behind an HTTP proxy server that has not been properly configured.
+* The system is connected to a {productname} Proxy Server or {productname} that has not been properly configured.
+* The system itself has not been properly configured, perhaps pointing at the wrong {productname} Server.
+* The system is not in the network.
+* Some other barrier exists between the system and the {productname} Server.
+* For Salt clients, Taskomatic might not be operational.
+
+
+
+[[ref.webui.systems.systems.rregistered]]
+== Recently Registered
+
+The menu:Systems[Systems > Recently Registered] page displays any systems that have been registered in a given period.
+Use the drop-down box to specify the period in days, weeks, 30- and 180-day increments, and years.
+
+image::systems_recently_registered.png[scaledwidth=80%]
+
+
+
+[[ref.webui.systems.systems.proxy]]
+== Proxy
+
+The menu:Systems[Systems > Proxy] page displays the {productproxy} Server systems registered with your {productname} server.
+
+image::systems_proxy.png[scaledwidth=80%]
+
+
+
+[[ref.webui.systems.systems.dup]]
+== Duplicate Systems
+
+The menu:Systems[Systems > Duplicate Systems] page lists current systems and any active and inactive entitlements associated with them.
+
+image::systems_duplicate_systems.png[scaledwidth=80%]
+
+Active entitlements are in gray, while inactive entitlements are highlighted in yellow and their check boxes checked by default for you to delete them as needed by clicking the btn:[Delete Selected] button.
+Entitlements are inactive if the system has not checked in with {productname} in a time specified via the drop-down box btn:[A system profile is inactive if its system has not checked in for:].
+
+You can filter duplicate entitlements by clicking the respective tab:
+
+* menu:Duplicate Systems[IP Address]
+* menu:Duplicate Systems[IPv6 Address]
+* menu:Duplicate Systems[Hostname]
+* menu:Duplicate Systems[MAC address]
+
+
+You may filter further by inactive time or typing the system's host name, IP address, IPv6 address, or MAC address in the corresponding [guimenu]``Filter by`` text box.
+
+To compare up to three duplicate entitlements at one time, click the  [guimenu]``Compare Systems`` link in the [guimenu]``Last Checked In`` column.
+Inactive components of the systems are highlighted in yellow.
+
+You can determine which systems are inactive or duplicate and delete them by clicking the btn:[Delete System Profile] button.
+
+Click the btn:[Confirm Deletion] button to confirm your choice.
+
+
+
+[[ref.webui.systems.systems.currency]]
+== System Currency
+
+The System Currency Report displays an overview of severity scores of patches relevant to the system.
+The weighting is defined any systems, [guimenu]``System Details`` page.
+The default weight awards critical security patches with the heaviest weight and enhancements with the lowest.
+The report can be used to prioritize maintenance actions on the systems registered to {productname}.
+
+image::systems_currency_report.png[scaledwidth=80%]
+
+
+
+[[ref.webui.systems.systems.types]]
+== System Types
+
+System Types define the set of functionalities available for each system in {productname} such as the ability of installing software or creating guest virtual machines.
+
+image::systems_system_types.png[scaledwidth=80%]
+
+A list of profiled systems follows, with their base and add-on system types shown in the appropriate columns.
+To change system types, select the systems you want to modify, and click either the btn:[Add System Type] or btn:[Remove System Type] button.

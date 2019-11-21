@@ -1,0 +1,35 @@
+[[ref.webui.config.overview]]
+= Configuration Overview
+
+The [guimenu]``Configuration Overview`` page shows all of the configuration files that are managed by your organization in {productname}.
+
+
+image::configuration_overview.png[scaledwidth=80%]
+
+
+This list includes files that are managed centrally in configuration channels, and files that are managed locally with individual system profiles.
+
+Configuration Summary::
+Provides quick information about your configuration files.
+Click the blue text to the right to display relevant systems, channel details, or configuration files.
+
+Configuration Actions::
+[guimenu]``Configuration Actions`` offers direct access to the most common configuration management tasks.
+Deploy, compare, or create files on your systems.
+
+Recently Modified Configuration Files::
+The list shows which files have changed when and to which channel they belong.
+If no files have been changed, no list appears.
+Click the name of a file to see its [guimenu]``Details`` page.
+Click the channel name to see its [guimenu]``Channel Details`` page.
++
+File types that can appear here:
+* image:spacewalk-icon-software-channels.svg[Spacewalk Icon Software Channels,scaledwidth=1.6em] -- Centrally-managed configuration file provided by a global configuration channel.
+* image:fa-desktop.svg[FA Desktop,scaledwidth=1.6em] -- [Management] Locally-managed configuration file, maybe overriding a centrally-managed file.
+* image:spacewalk-icon-sandbox.svg[Spacewalk Icon Sandbox,scaledwidth=1.6em] -- [Management] Sandbox configuration file.
+
+Recently Scheduled Configuration File Deployments::
+Each scheduled action is listed along with the status of the action.
+Any scheduled configuration task, from enabling configuration management on a system to deploying a specific configuration file, is displayed.
+Here you can quickly assess if all tasks have been successfully carried out or fix any problems.
+Clicking the blue text displays the menu:System Details[Schedule] page for the specified system.

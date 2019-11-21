@@ -1,0 +1,24 @@
+[[ref.webui.schedule]]
+= Schedule Menu
+
+menu:Main Menu[Schedule] helps with managing actions and combining actions into action chains.
+
+menu:Main Menu[Schedule] features pages that enable you to manage the actions carried out on your systems.
+An action is a scheduled task to be performed on one or more client systems.
+For example, an action can be scheduled to apply all patches to a system.
+Actions can also be grouped into action chains to schedule them at the same time in a particular order, for example to reboot a system after deploying patches.
+
+{productname} keeps track of the following action types:
+
+* package alteration (installation, upgrade, and removal),
+* rollback package actions,
+* system reboots,
+* patch application,
+* configuration file alteration (deploy, upload, and diff),
+* hardware profile updates,
+* package list profile updates,
+* automated installation initiation,
+* service pack migrations,
+* remote commands.
+
+Each page in the menu:Main Menu[Schedule] category represents an action status.

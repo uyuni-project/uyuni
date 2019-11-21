@@ -1,0 +1,30 @@
+[[virtualization]]
+= Virtualization
+
+You can use {productname} to manage virtualized clients in addition to regular traditional or Salt clients.
+In this type of installation, a virtual host is installed on the {productname} Server to manage any number of virtual guests.
+If you choose to, you can install several virtual hosts to manage groups of guests.
+
+The range of capabilities that virtualized clients have depends on the third-party virtualization provider you choose.
+
+Xen and KVM hosts and guests can be managed directly in {productname}.
+This enables you to autoinstall hosts and guests using {ay} or {kickstart}, and manage guests in the {webui}.
+
+For VMWare, including VMWare vSphere, {productname} requires you to set up a virtual host manager (VHM) to control the VMs.
+This gives you control over the hosts and guests, but in a more limited way than available with Xen and KVM.
+
+////
+So I looked it up in their docs: "VMWare vSphere is a suite of virtualization applications that includes ESXi and vCenter Server". So I think using "VMWare vSphere" implies ESXi and vCenter without having to spell them out. Happy to be proven wrong. --LKB 2019-07-10
+////
+
+Other third-party virtualization providers are not directly supported by {productname}.
+However, if your provider allows you to export a JSON configuration file for the VM, you can upload that configuration file to {productname} and manage it with a VHM.
+
+
+////
+We could probably use a diagram here, to convey the meaning behind this:
+Virtual Host Managers (VHMs) can be used to manage one or more virtual hosts.
+Virtual Hosts are hypervisors provided by a third party.
+Each virtual host can contain one or more virtual guests.
+--LKB 2017-07-15
+////

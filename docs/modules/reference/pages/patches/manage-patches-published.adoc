@@ -1,0 +1,10 @@
+[[s3-sm-errata-published]]
+= Published Patches
+
+Here all published patches are listed.
+It is possible to perform the following actions:
+
+* To create a patch, click btn:[Create Patch].
+* To delete patches, select them first and then click btn:[Delete Patches].
+* Click an Advisory name to open the patch details page.
+

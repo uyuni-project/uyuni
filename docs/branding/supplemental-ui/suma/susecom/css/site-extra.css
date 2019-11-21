@@ -1,0 +1,130 @@
+i.fa[title='Note'] {
+  font-family: inherit;
+}
+
+i.fa[title='Important'] {
+  font-family: inherit;
+}
+
+i.fa[title='Warning'] {
+  font-family: inherit;
+}
+/* enable icons on admonitions
+.doc .admonitionblock .icon {
+  border-radius: 1rem;
+}
+
+i.fa[class^='icon-'], i.fa[class*=' icon-']:before {
+  content: "";
+  height: 1.25rem;
+  width: 1.25rem;
+  margin-right: 0.25rem;
+  margin-left: -0.5rem;
+}
+
+
+
+i.fa.icon-note:before {
+  background: no-repeat url("../img/note.svg");
+}
+
+i.fa.icon-tip:before {
+  background: no-repeat url("../img/tip.svg");
+}
+
+i.fa.icon-important:before {
+  background: no-repeat url("../img/important.svg");
+}
+
+i.fa.icon-warning:before {
+  background: no-repeat url("../img/warning.svg");
+}
+
+i.fa.icon-caution:before {
+  background: no-repeat url("../img/caution.svg");
+}
+*/
+/* HACK to fix https://github.com/SUSE/doc-susemanager/issues/567 */
+#twitter-link {
+  float: right;
+}
+
+.navbar {
+  background-color: #f1f1f2;
+  color: #000;
+  border-bottom: 4px;
+  border-bottom-style: solid;
+  border-bottom-color: #02d35f;
+}
+
+.doc h1, .doc h2, .doc h3, .doc h4, .doc h5, .doc h6 {
+  color: #3dd35f;
+}
+
+.nav-menu {
+  background-color: #f4f4f4;
+}
+
+a:hover {
+  color: #00b2e2;
+  text-decoration: none;
+}
+
+.toc-link.is-active-link {
+  font-weight: 600;
+  color: #00D35F;
+}
+
+.doc a, .doc a:visited {
+  color: #00b2e2;
+}
+
+
+.doc a:hover {
+  color: #3dd35f;
+}
+
+.toolbar {
+  color: #686565;
+  background-color: #e0dfdf;
+  -webkit-box-shadow: 0 1px 0 #e1e1e1;
+  box-shadow: 0 1px 0 #e1e1e1;
+}
+
+@media screen and (min-width: 1025px) {
+  .article-aside {
+    right: 50px;
+  }
+}
+
+.logo {
+  max-height: 35px;
+}
+
+.nav-panel-explore .context {
+
+  background-color: #e0dfdf ;
+}
+
+.nav-panel-explore .component .is-current a {
+  border-color: #00c081;
+  background-color: #00c081;
+  font-weight: 500;
+  color: #fff;
+}
+
+html, body {
+  text-rendering: optimizeLegibility;
+}
+
+.article-aside {
+  font-family: 'Montserrat', sans-serif;
+}
+
+.fa-file-pdf {
+  color: #00C081;
+}
+
+.fa-file-archive {
+  color: #00C081;
+}

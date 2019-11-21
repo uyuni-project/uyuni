@@ -1,0 +1,60 @@
+[[update.suse.manager]]
+= {productname} Server Update
+
+This update procedure covers simple package updates or a concerted micro update, which is also known as a maintenance update (MU).
+During a MU the user stops services, updates packages, runs the script to update the database, and restarts services.
+Example: [literal]``4.0.1`` → [literal]``4.0.2``.
+
+This means first you ensure that you have the latest version of all installed packages installed.
+Then you can upgrade the database schema.
+
+.Procedure: Updating Packages on the {productname} Server
+
+By default, several update channels are configured and enabled for the {productname} Server.
+New and updated packages will become available automatically.
+
+. On the {productname} Server, at the command prompt, as root, stop the spacewalk services:
++
+----
+spacewalk-service stop
+----
+. List available patches:
++
+----
+zypper list-patches
+----
+. Apply all available patches:
++
+----
+zypper patch
+----
+
+
+.Procedure: Upgrading the Database Schema
+
+If a patch includes a new database schema upgrade, you will need to use the [command]``spacewalk-schema-upgrade`` command.
+
+. On the {productname} Server, at the command prompt, as root, ensure the database service is running:
++
+----
+systemctl start postgresql
+----
+. Perform the schema update:
++
+----
+spacewalk-schema-upgrade
+----
+. Restart the spacewalk services:
++
+----
+spacewalk-service start
+----
+
+[IMPORTANT]
+====
+Services affected by a package update are not automatically restarted after an update.
+You need to restart these services manually to avoid potential failures.
+Use [command]``zypper ps`` to check for applications that are using old code and require restarting.
+====
+
+Reboot the server if a patch update recommends rebooting.

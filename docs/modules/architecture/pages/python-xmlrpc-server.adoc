@@ -1,0 +1,25 @@
+[[arch.component.python.xmlrpc.server]]
+= Python XMLRPC Server
+
+
+
+
+
+
+== Functions
+
+The Python XMLRPC Server is a primary component of {productname}. It performs the following functions in the stack.
+
+* **Provides the private XMLRPC API**
+* **Used primarily by client tools (mgr_check)**
+
+
+
+== Log Files
+
+__Logs for the Python XMLRPC Server are located in:__
+
+----
+/var/log/apache2/error_log
+/var/log/rhn/rhn_server_xmlrpc.log
+----

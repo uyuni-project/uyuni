@@ -1,0 +1,6 @@
+= API Overview
+
+The [guimenu]``API Overview`` menu item provides a list of available API calls.
+Click the name of the API call you are interested in to be taken to the documentation for that call.
+
+For the full API documentation as a PDF, see https://documentation.suse.com/suma/4.0/.

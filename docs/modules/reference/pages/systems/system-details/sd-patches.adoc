@@ -1,0 +1,28 @@
+[[sd-patches]]
+= SD Patches
+
+This subtab contains a list of patch (errata) alerts applicable to the system.
+For the meanings of the icons used in this tab, see xref:reference:navigation/patch-alert-icons.adoc[].
+
+image::system_details_traditional_software_patches.png[scaledwidth=80%]
+
+To apply updates, select them and click the btn:[Apply Patches] button.
+Double-check the updates to be applied on the confirmation page, then click the btn:[Confirm] button.
+
+The action is added to the menu:Main Menu[Schedule > Pending Actions] list.
+Patches that have been scheduled cannot be selected for update.
+Instead of a check box there is a clock icon.
+Click the clock to see the [guimenu]``Action Details`` page.
+
+The [guimenu]``Status`` column in the menu:System Details[Software > Patches] table shows whether an update has been scheduled.
+Possible values are:
+
+* None
+* Pending
+* Picked Up
+* Completed
+* Failed
+
+This column displays only the latest action related to a patch.
+For example, if an action fails and you reschedule it, this column shows the status of the patch as `Pending` with no mention of the previous failure.
+Clicking a status other than `None` takes you to the [guimenu]``Action Details`` page.

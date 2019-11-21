@@ -1,0 +1,975 @@
+
+[[at.spacecmd.repo]]
+=== repo_
+
+
+The following spacecmd functions are available for working with repositories.
+
+repo_addfilters::
+Add filters for a user repository.
++
+
+----
+usage: repo_addfilters repo <filter ...>
+----
+repo_clearfilters::
+Clears the filters for a user repository.
++
+
+----
+usage: repo_clearfilters repo
+----
+repo_create::
+Create a user repository.
++
+
+----
+usage: repo_create <options>
+
+options:
+  -n, --name   name of repository
+  -u, --url    url of repository
+
+  --ca         SSL CA certificate (not required)
+  --cert       SSL Client certificate (not required)
+  --key        SSL Client key (not required)
+----
+repo_delete::
+Delete a user repository.
++
+
+----
+usage: repo_delete <repo ...>
+----
+repo_details::
+Show the details of a user repository.
++
+
+----
+usage: repo_details <repo ...>
+----
+repo_list::
+List all available user repository.
++
+
+----
+usage: repo_list
+----
+repo_listfilters::
+Show the filters for a user repository.
++
+
+----
+usage: repo_listfilters repo
+----
+repo_removefilters::
+Remove filters from a user repository.
++
+
+----
+usage: repo_removefilters repo <filter ...>
+----
+repo_rename::
+Rename a user repository.
++
+
+----
+usage: repo_rename OLDNAME NEWNAME
+----
+repo_setfilters::
+Set the filters for a user repo.
++
+
+----
+usage: repo_setfilters repo <filter ...>
+----
+repo_updatessl::
+Change the SSL certificates of a user repository.
++
+
+----
+usage: repo_updatessl <options>
+options:
+  --ca         SSL CA certificate (not required)
+  --cert       SSL Client certificate (not required)
+  --key        SSL Client key (not required)
+----
+repo_updateurl::
+Change the URL of a user repository.
++
+
+----
+usage: repo_updateurl <repo> <url>
+----
+
+[[at.spacecmd.report]]
+=== report_
+
+
+The following spacecmd functions are available for working with reports.
+
+report_duplicates::
+List duplicate system profiles.
++
+
+----
+usage: report_duplicates
+----
+report_errata::
+List all errata and how many systems they affect.
++
+
+----
+usage: report_errata [ERRATA|search:XXX ...]
+----
+report_inactivesystems::
+List all inactive systems.
++
+
+----
+usage: report_inactivesystems [DAYS]
+----
+report_ipaddresses::
+List the hostname and IP of each system.
++
+
+----
+usage: report_network [<SYSTEMS>]
+
+<SYSTEMS> can be any of the following:
+name
+ssm (see 'help ssm')
+search:QUERY (see 'help system_search')
+group:GROUP
+channel:CHANNEL
+----
+report_kernels::
+List the running kernel of each system.
++
+
+----
+usage: report_kernels [<SYSTEMS>]
+
+<SYSTEMS> can be any of the following:
+name
+ssm (see 'help ssm')
+search:QUERY (see 'help system_search')
+group:GROUP
+channel:CHANNEL
+----
+report_outofdatesystems::
+List all out-of-date systems.
++
+
+----
+usage: report_outofdatesystems
+----
+report_ungroupedsystems::
+List all ungrouped systems.
++
+
+----
+usage: report_ungroupedsystems
+----
+
+[[at.spacecmd.scap]]
+=== scap_
+
+
+The following spacecmd functions are available for working with OpenSCAP.
+
+scap_getxccdfscandetails::
+Get details of given OpenSCAP XCCDF scan.
++
+
+----
+usage: scap_getxccdfscandetails <XID>
+----
+scap_getxccdfscanruleresults::
+Return a full list of RuleResults for given OpenSCAP XCCDF scan.
++
+
+----
+usage: scap_getxccdfscanruleresults <XID>
+----
+scap_listxccdfscans::
+Return a list of finished OpenSCAP scans for given systems.
++
+
+----
+usage: scap_listxccdfscans <SYSTEMS>
+----
+scap_schedulexccdfscan::
+Schedule Scap XCCDF scan.
++
+
+----
+usage: scap_schedulexccdfscan PATH_TO_XCCDF_FILE XCCDF_OPTIONS SYSTEMS
+
+Example:
+> scap_schedulexccdfscan '/usr/share/openscap/scap-security-xccdf.xml' 'profile Web-Default' \
+system-scap.example.com
+----
+
+[[at.spacecmd.schedule]]
+=== schedule_
+
+
+The following spacecmd functions are available for working with scheduling.
+
+schedule_cancel::
+Cancel a scheduled action.
++
+
+----
+usage: schedule_cancel ID|* ...
+----
+schedule_details::
+Show the details of a scheduled action.
++
+
+----
+usage: schedule_details ID
+----
+schedule_getoutput::
+Show the output from an action.
++
+
+----
+usage: schedule_getoutput ID
+----
+schedule_list::
+List all actions.
++
+
+----
+usage: schedule_list [BEGINDATE] [ENDDATE]
+
+Dates can be any of the following:
+Explicit Dates:
+Dates can be expressed as explicit date strings in the YYYYMMDD[HHMM]
+format.  The year, month and day are required, while the hours and
+minutes are not; the hours and minutes will default to 0000 if no
+values are provided.
+
+Deltas:
+Dates can be expressed as delta values.  For example, '2h' would
+mean 2 hours in the future.  You can also use negative values to
+express times in the past (e.g., -7d would be one week ago).
+
+Units:
+s -> seconds
+m -> minutes
+h -> hours
+d -> days
+----
+schedule_listarchived::
+List archived actions.
++
+
+----
+usage: schedule_listarchived [BEGINDATE] [ENDDATE]
+
+Dates can be any of the following:
+Explicit Dates:
+Dates can be expressed as explicit date strings in the YYYYMMDD[HHMM]
+format.  The year, month and day are required, while the hours and
+minutes are not; the hours and minutes will default to 0000 if no
+values are provided.
+
+Deltas:
+Dates can be expressed as delta values.  For example, '2h' would
+mean 2 hours in the future.  You can also use negative values to
+express times in the past (e.g., -7d would be one week ago).
+
+Units:
+s -> seconds
+m -> minutes
+h -> hours
+d -> days
+----
+schedule_listcompleted::
+List completed actions.
++
+
+----
+Dates can be any of the following:
+Explicit Dates:
+Dates can be expressed as explicit date strings in the YYYYMMDD[HHMM]
+format.  The year, month and day are required, while the hours and
+minutes are not; the hours and minutes will default to 0000 if no
+values are provided.
+
+Deltas:
+Dates can be expressed as delta values.  For example, '2h' would
+mean 2 hours in the future.  You can also use negative values to
+express times in the past (e.g., -7d would be one week ago).
+
+Units:
+s -> seconds
+m -> minutes
+h -> hours
+d -> days
+----
+schedule_listfailed::
+List failed actions.
++
+
+----
+usage: schedule_listfailed [BEGINDATE] [ENDDATE]
+
+Dates can be any of the following:
+Explicit Dates:
+Dates can be expressed as explicit date strings in the YYYYMMDD[HHMM]
+format.  The year, month and day are required, while the hours and
+minutes are not; the hours and minutes will default to 0000 if no
+values are provided.
+
+Deltas:
+Dates can be expressed as delta values.  For example, '2h' would
+mean 2 hours in the future.  You can also use negative values to
+express times in the past (e.g., -7d would be one week ago).
+
+Units:
+s -> seconds
+m -> minutes
+h -> hours
+d -> days
+----
+schedule_listpending::
+List pending actions.
++
+
+----
+usage: schedule_listpending [BEGINDATE] [ENDDATE]
+
+Dates can be any of the following:
+Explicit Dates:
+Dates can be expressed as explicit date strings in the YYYYMMDD[HHMM]
+format.  The year, month and day are required, while the hours and
+minutes are not; the hours and minutes will default to 0000 if no
+values are provided.
+
+Deltas:
+Dates can be expressed as delta values.  For example, '2h' would
+mean 2 hours in the future.  You can also use negative values to
+express times in the past (e.g., -7d would be one week ago).
+
+Units:
+s -> seconds
+m -> minutes
+h -> hours
+d -> days
+----
+schedule_reschedule::
+Reschedule failed actions.
++
+
+----
+usage: schedule_reschedule ID|* ...
+----
+
+[[at.spacecmd.snippet]]
+=== snippet_
+
+
+The following spacecmd functions are available for working with Kickstart snippets.
+
+snippet_create::
+Create a Kickstart snippet
++
+
+----
+usage: snippet_create [options]
+
+options:
+  -n NAME
+  -f FILE
+----
+snippet_delete::
+Delete a Kickstart snippet.
++
+
+----
+usage: snippet_removefile NAME
+----
+snippet_details::
+Show the contents of a snippet.
++
+
+----
+usage: snippet_details SNIPPET ...
+----
+snippet_list::
+List the available Kickstart snippets.
++
+
+----
+usage: snippet_list
+----
+snippet_update::
+Update a Kickstart snippet.
++
+
+----
+usage: snippet_update NAME
+----
+
+[[at.spacecmd.softwarechannel]]
+=== softwarechannel_
+
+
+The following spacecmd functions are available for working with software channels.
+
+softwarechannel_adderrata::
+Add patches from one channel into another channel.
++
+
+----
+usage: softwarechannel_adderrata SOURCE DEST <ERRATA|search:XXX ...>
+Options:
+    -q/--quick : Don't display list of packages (slightly faster)
+    -s/--skip :  Skip errata which appear to exist already in DEST
+----
+softwarechannel_adderratabydate::
+Add errata from one channel into another channel based on a date range.
++
+
+----
+usage: softwarechannel_adderratabydate [options] SOURCE DEST BEGINDATE ENDDATE
+Date format : YYYYMMDD
+Options:
+        -p/--publish : Publish errata to the channel (don't clone)
+----
+softwarechannel_addpackages::
+Add packages to a software channel.
++
+
+----
+usage: softwarechannel_addpackages CHANNEL <PACKAGE ...>
+----
+softwarechannel_addrepo::
+Add a repo to a software channel.
++
+
+----
+usage: softwarechannel_addrepo CHANNEL REPO
+----
+softwarechannel_clone::
+Clone a software channel.
++
+
+----
+usage: softwarechannel_clone [options]
+
+options:
+  -s SOURCE_CHANNEL
+  -n NAME
+  -l LABEL
+  -p PARENT_CHANNEL
+  --gpg-copy/-g (copy SOURCE_CHANNEL GPG details)
+  --gpg-url GPG_URL
+  --gpg-id GPG_ID
+  --gpg-fingerprint GPG_FINGERPRINT
+  -o do not clone any patches
+  --regex/-x "s/foo/bar" : Optional regex replacement,
+        replaces foo with bar in the clone name and label
+----
+softwarechannel_clonetree::
+Clone a software channel and its child channels.
++
+
+----
+usage: softwarechannel_clonetree [options]A
+             e.g    softwarechannel_clonetree foobasechannel -p "my_"
+                    softwarechannel_clonetree foobasechannel -x "s/foo/bar"
+                    softwarechannel_clonetree foobasechannel -x "s/^/my_"
+
+options:
+  -s/--source-channel SOURCE_CHANNEL
+  -p/--prefix PREFIX (is prepended to the label and name of all channels)
+  --gpg-copy/-g (copy GPG details for correspondoing source channel))
+  --gpg-url GPG_URL (applied to all channels)
+  --gpg-id GPG_ID (applied to all channels)
+  --gpg-fingerprint GPG_FINGERPRINT (applied to all channels)
+  -o do not clone any errata
+  --regex/-x "s/foo/bar" : Optional regex replacement,
+        replaces foo with bar in the clone name, label and description
+----
+softwarechannel_create::
+Create a software channel.
++
+
+----
+usage: softwarechannel_create [options]
+
+options:
+  -n NAME
+  -l LABEL
+  -p PARENT_CHANNEL
+  -a ARCHITECTURE ['ia32', 'ia64', 'x86_64', 'ppc',
+                  'i386-sun-solaris', 'sparc-sun-solaris']
+  -c CHECKSUM ['sha1', 'sha256', 'sha384', 'sha512']
+  -u GPG_URL
+  -i GPG_ID
+  -f GPG_FINGERPRINT
+----
+softwarechannel_delete::
+Delete a software channel.
++
+
+----
+usage: softwarechannel_delete <CHANNEL ...>
+----
+softwarechannel_details::
+Show the details of a software channel.
++
+
+----
+usage: softwarechannel_details <CHANNEL ...>
+----
+softwarechannel_diff::
+Check the difference between software channels.
++
+
+----
+usage: softwarechannel_diff SOURCE_CHANNEL TARGET_CHANNEL
+----
+softwarechannel_errata_diff::
+Check the difference between software channel files.
++
+
+----
+usage: softwarechannel_errata_diff SOURCE_CHANNEL TARGET_CHANNEL
+----
+softwarechannel_errata_sync::
+Sync errata of two software channels.
++
+
+----
+usage: softwarechannel_errata_sync SOURCE_CHANNEL TARGET_CHANNEL
+----
+softwarechannel_getorgaccess::
+Get the org-access for the software channel.
++
+
+----
+usage : softwarechannel_getorgaccess : get org access for all channels
+usage : softwarechannel_getorgaccess <channel_label(s)> : get org access for specific channel(s)
+----
+softwarechannel_list::
+List all available software channels.
++
+
+----
+usage: softwarechannel_list [options]'
+options:
+  -v verbose (display label and summary)
+  -t tree view (pretty-print child-channels)
+----
+softwarechannel_listallpackages::
+List all packages in a channel.
++
+
+----
+usage: softwarechannel_listallpackages CHANNEL
+----
+softwarechannel_listbasechannels::
+List all base software channels.
++
+
+----
+usage: softwarechannel_listbasechannels [options]
+options:
+  -v verbose (display label and summary)
+----
+softwarechannel_listchildchannels::
+List child software channels.
++
+
+----
+usage:
+softwarechannel_listchildchannels [options]
+softwarechannel_listchildchannels : List all child channels
+softwarechannel_listchildchannels CHANNEL : List children for a specific base channel
+options:
+ -v verbose (display label and summary)
+----
+softwarechannel_listerrata::
+List the errata associated with a software channel.
++
+
+----
+usage: softwarechannel_listerrata <CHANNEL ...> [from=yyyymmdd [to=yyyymmdd]]
+----
+softwarechannel_listerratabydate::
+List errata from channelbased on a date range.
++
+
+----
+usage: softwarechannel_listerratabydate CHANNEL BEGINDATE ENDDATE
+Date format : YYYYMMDD
+----
+softwarechannel_listlatestpackages::
+List the newest version of all packages in a channel.
++
+
+----
+usage: softwarechannel_listlatestpackages CHANNEL
+----
+softwarechannel_listpackages::
+List the most recent packages available from a software channel.
++
+
+----
+usage: softwarechannel_listpackages CHANNEL
+----
+softwarechannel_listrepos::
+List the repos for a software channel.
++
+
+----
+usage: softwarechannel_listrepos CHANNEL
+----
+softwarechannel_listsyncschedule::
+List sync schedules for all software channels.
++
+
+----
+usage: softwarechannel_listsyncschedule : List all channels
+----
+softwarechannel_listsystems::
+List all systems subscribed to a software channel.
++
+
+----
+usage: softwarechannel_listsystems CHANNEL
+----
+softwarechannel_mirrorpackages::
+Download packages of a given channel.
++
+
+----
+usage: softwarechannel_mirrorpackages CHANNEL
+Options:
+    -l/--latest : Only mirror latest package version
+----
+softwarechannel_regenerateneededcache::
+Regenerate the needed errata and package cache for all systems.
++
+
+----
+usage: softwarechannel_regenerateneededcache
+----
+softwarechannel_regenerateyumcache::
+Regenerate the YUM cache for a software channel.
++
+
+----
+usage: softwarechannel_regenerateyumcache <CHANNEL ...>
+----
+softwarechannel_removeerrata::
+Remove patches from a software channel.
++
+
+----
+usage: softwarechannel_removeerrata CHANNEL <ERRATA:search:XXX ...>
+----
+softwarechannel_removepackages::
+Remove packages from a software channel.
++
+
+----
+usage: softwarechannel_removepackages CHANNEL <PACKAGE ...>
+----
+softwarechannel_removerepo::
+Remove a repo from a software channel.
++
+
+----
+usage: softwarechannel_removerepo CHANNEL REPO
+----
+softwarechannel_removesyncschedule::
+Removes the repo sync schedule for a software channel.
++
+
+----
+usage: softwarechannel_setsyncschedule <CHANNEL>
+----
+softwarechannel_setorgaccess::
+Set the org-access for the software channel.
++
+
+----
+usage : softwarechannel_setorgaccess <channel_label> [options]
+-d,--disable : disable org access (private, no org sharing)
+-e,--enable : enable org access (public access to all trusted orgs)
+----
+softwarechannel_setsyncschedule::
+Sets the repo sync schedule for a software channel.
++
+
+----
+usage: softwarechannel_setsyncschedule <CHANNEL> <SCHEDULE>
+
+The schedule is specified in Quartz CronTrigger format without enclosing quotes.
+For example, to set a schedule of every day at 1am, <SCHEDULE> would be 0 0 1 * * ?
+----
+softwarechannel_sync::
+Sync the packages of two software channels.
++
+
+----
+usage: softwarechannel_sync SOURCE_CHANNEL TARGET_CHANNEL
+----
+softwarechannel_syncrepos::
+Sync users repos for a software channel.
++
+
+----
+usage: softwarechannel_syncrepos <CHANNEL ...>
+----
+
+[[at.spacecmd.ssm]]
+=== ssm_
+
+
+The following spacecmd functions are available for use with System Set Manager.
+
+ssm_add::
+Add systems to the SSM.
++
+
+----
+usage: ssm_add <SYSTEMS>
+
+see 'help ssm' for more details
+
+<SYSTEMS> can be any of the following:
+name
+ssm (see 'help ssm')
+search:QUERY (see 'help system_search')
+group:GROUP
+channel:CHANNEL
+----
+ssm_clear::
+Remove all systems from the SSM.
++
+
+----
+usage: ssm_clear
+----
+ssm_intersect::
+Replace the current SSM with the intersection of the current list of systems and the list of systems passed as arguments.
++
+
+----
+usage: ssm_intersect <SYSTEMS>
+
+see 'help ssm' for more details
+
+<SYSTEMS> can be any of the following:
+name
+ssm (see 'help ssm')
+search:QUERY (see 'help system_search')
+group:GROUP
+channel:CHANNE
+----
+ssm_list::
+List the systems currently in the SSM.
++
+
+----
+usage: ssm_list
+
+see 'help ssm' for more details
+----
+ssm_remove::
+Remove systems from the SSM.
++
+
+----
+usage: ssm_remove <SYSTEMS>
+
+see 'help ssm' for more details
+
+<SYSTEMS> can be any of the following:
+name
+ssm (see 'help ssm')
+search:QUERY (see 'help system_search')
+group:GROUP
+channel:CHANNEL
+----
+
+[[at.spacecmd.system]]
+=== system_
+
+
+The following spacecmd functions are available for use with systems.
+
+system_addchildchannels::
+Add child channels to a system.
++
+
+----
+usage: system_addchildchannels <SYSTEMS> <CHANNEL ...>
+
+<SYSTEMS> can be any of the following:
+name
+ssm (see 'help ssm')
+search:QUERY (see 'help system_search')
+group:GROUP
+channel:CHANNEL
+----
+system_addconfigchannels::
+Add config channels to a system.
++
+
+----
+usage: system_addconfigchannels <SYSTEMS> <CHANNEL ...> [options]
+
+options:
+  -t add channels to the top of the list
+  -b add channels to the bottom of the list
+
+<SYSTEMS> can be any of the following:
+name
+ssm (see 'help ssm')
+search:QUERY (see 'help system_search')
+group:GROUP
+channel:CHANNEL
+----
+system_addconfigfile::
+Create a configuration file.
++
+
+----
+Note this is only for system sandbox or locally-managed files
+Centrally managed files should be created via configchannel_addfile
+usage: system_addconfigfile [SYSTEM] [options]
+
+options:
+  -S/--sandbox : list only system-sandbox files
+  -L/--local   : list only locally managed files
+  -p PATH
+  -r REVISION
+  -o OWNER [default: root]
+  -g GROUP [default: root]
+  -m MODE [defualt: 0644]
+  -x SELINUX_CONTEXT
+  -d path is a directory
+  -s path is a symlink
+  -b path is a binary (or other file which needs base64 encoding)
+  -t SYMLINK_TARGET
+  -f local path to file contents
+
+  Note re binary/base64: Some text files, notably those containing trailing
+  newlines, those containing ASCII escape characters (or other charaters not
+  allowed in XML) need to be sent as binary (-b).  Some effort is made to auto-
+  detect files which require this, but you may need to explicitly specify.
+----
+system_addcustomvalue::
+Set a custom value for a system.
++
+
+----
+usage: system_addcustomvalue KEY VALUE <SYSTEMS>
+
+<SYSTEMS> can be any of the following:
+name
+ssm (see 'help ssm')
+search:QUERY (see 'help system_search')
+group:GROUP
+channel:CHANNEL
+----
+system_addentitlements::
+Add entitlements to a system.
++
+
+----
+usage: system_addentitlements <SYSTEMS> ENTITLEMENT
+
+<SYSTEMS> can be any of the following:
+name
+ssm (see 'help ssm')
+search:QUERY (see 'help system_search')
+group:GROUP
+channel:CHANNEL
+----
+system_addnote::
+Set a note for a system.
++
+
+----
+usage: system_addnote <SYSTEM> [options]
+
+options:
+  -s SUBJECT
+  -b BODY
+
+<SYSTEMS> can be any of the following:
+name
+ssm (see 'help ssm')
+search:QUERY (see 'help system_search')
+group:GROUP
+channel:CHANNEL
+----
+system_applyerrata::
+Apply errata to a system.
++
+
+----
+usage: system_applyerrata <SYSTEMS> [ERRATA|search:XXX ...]
+
+<SYSTEMS> can be any of the following:
+name
+ssm (see 'help ssm')
+search:QUERY (see 'help system_search')
+group:GROUP
+channel:CHANNEL
+----
+system_comparepackageprofile::
+Compare a system against a package profile.
++
+
+----
+usage: system_comparepackageprofile <SYSTEMS> PROFILE
+
+<SYSTEMS> can be any of the following:
+name
+ssm (see 'help ssm')
+search:QUERY (see 'help system_search')
+group:GROUP
+channel:CHANNEL
+----
+system_comparepackages::
+Compare the packages between two systems.
++
+
+----
+usage: system_comparepackages SOME_SYSTEM ANOTHER_SYSTEM
+----
+system_comparewithchannel::
+Compare the installed packages on a system with those in the channels it is registered to, or optionally some other channel.
++
+
+----
+usage: system_comparewithchannel <SYSTEMS> [options]
+options:
+         -c/--channel : Specific channel to compare against,
+                        default is those subscribed to, including
+                        child channels
+
+<SYSTEMS> can be any of the following:
+name
+ssm (see 'help ssm')
+search:QUERY (see 'help system_search')
+group:GROUP
+channel:CHANNEL
+----
+system_createpackageprofile::
+Create a package profile.
++
+
+----
+usage: system_createpackageprofile SYSTEM [options]

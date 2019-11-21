@@ -1,0 +1,59 @@
+[[at.spacecmd.custominfo]]
+= custominfo_
+
+The following spacecmd commands are available for working with custom keys.
+
+
+
+== custominfo_createkey
+
+Create a custom key.
+
+[source]
+--
+usage: custominfo_createkey [NAME] [DESCRIPTION]
+--
+
+
+
+== custominfo_deletekey
+
+Delete a custom key.
+
+[source]
+--
+usage: custominfo_deletekey KEY ...
+--
+
+
+
+== custominfo_details
+
+Show the details of a custom key.
+
+[source]
+--
+usage: custominfo_details KEY ...
+--
+
+
+
+== custominfo_listkeys
+
+List all custom keys.
+
+[source]
+--
+usage: custominfo_listkeys
+--
+
+
+
+== custominfo_updatekey
+
+Update a custom key.
+
+[source]
+--
+usage: custominfo_updatekey [NAME] [DESCRIPTION]
+--

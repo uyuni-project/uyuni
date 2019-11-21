@@ -1,0 +1,105 @@
+[[arch.contact.methods.saltssh.push]]
+= Salt SSH Push
+
+
+
+
+
+
+Salt SSH Push is intended to be used in environments where your Salt clients cannot reach the {productname} server directly to regularly checking in and, for example, fetch package updates.
+
+.Push via SSH
+[NOTE]
+====
+This feature is not related to Push via SSH for the traditional clients.
+For Push via SSH, see pass:c[xref:bp.contact.methods.ssh.push[Salt SSH Push]].
+====
+
+
+
+== Overview
+
+.Push via Salt SSH Contact Method
+
+image::salt-ssh-contact-taigon.png[scaledwidth=80%]
+
+
+Salt provides "`Salt SSH`"
+ ([command]``salt-ssh``), a feature to manage clients from a server.
+It works without installing Salt related software on clients.
+Using Salt SSH there is no need to have clients connected to the Salt master.
+Using this as a {productname} connect method, this feature provides similar functionality for Salt clients as the traditional Push via SSH feature for traditional clients.
+
+This feature allows:
+
+* Managing Salt entitled systems with the Push via SSH contact method using Salt SSH.
+* Bootstrapping such systems.
+
+
+
+== Requirements
+
+* SSH daemon must be running on the remote system and reachable by the [systemitem]``salt-api`` daemon (typically running on the {productname} server).
+* Python must be available on the remote system (Python must be supported by the installed Salt). Currently: python 2.6.
+
+.Unsupported Systems
+[NOTE]
+====
+{rhel}
+and CentOS versions <= 5 are not supported because they do not have Python 2.6 by default.
+====
+
+
+
+== Bootstrapping
+
+To bootstrap a Salt SSH system, proceed as follows:
+
+. Open the menu:Bootstrap Minions[] dialog in the Web UI (menu:Systems[Bootstrapping] ).
+. Fill out the required fields. Select an menu:Activation Key[] with the menu:Push via SSH[] contact method configured. For more information about activation keys, see:
+ pass:c[xref:ref.webui.systems.activ-keys].
+. Check the menu:Manage system completely via SSH[] option.
+. Confirm with clicking the menu:Bootstrap[] button.
+
+
+Now the system will be bootstrapped and registered in {productname}.
+If done successfully, it will appear in the menu:Systems[] list.
+
+
+
+== Configuration
+
+There are two kinds of parameters for Push via Salt SSH:
+
+* Bootstrap-time parameters {mdash} configured in the menu:Bootstrapping[] page:
+** Host
+** Activation key
+** Password {mdash} used only for bootstrapping, not saved anywhere; all future SSH sessions are authorized via a key/certificate pair
+* Persistent parameters {mdash} configured {productname}-wide:
+** sudo user {mdash} same as in pass:c[bp.contact.methods.ssh.push.sudo].
+
+
+
+== Action Execution
+
+The Push via Salt SSH feature uses a taskomatic job to execute scheduled actions using [command]``salt-ssh``.
+The taskomatic job periodically checks for scheduled actions and executes them.
+While on traditional clients with SSH push configured only [command]``mgr_check`` is executed via SSH, the Salt SSH push job executes a complete [command]``salt-ssh`` call based on the scheduled action.
+
+
+
+== Known Limitation
+
+* OpenSCAP auditing is not available on Salt SSH clients.
+* Beacons do not work with Salt SSH.
+** Installing a package on a system using [command]``zypper`` will not invoke the package refresh.
+** Virtual Host functions (for example, a host to guests) will not work if the virtual host system is Salt SSH-based.
+
+
+
+== For More Information
+
+For more information, see
+
+* https://wiki.microfocus.com/index.php/SUSE_Manager/SaltSSHServerPush
+* https://docs.saltstack.com/en/latest/topics/ssh/

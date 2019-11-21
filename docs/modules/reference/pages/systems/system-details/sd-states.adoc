@@ -1,0 +1,63 @@
+[[sd-states]]
+= SD States
+
+Overview of [guimenu]``States`` subtabs.
+
+[NOTE]
+====
+The following subtabs are only available for Salt minions.
+====
+
+[[sd-states-packages]]
+== Packages
+
+[guimenu]``Search and install`` packages then assign them with a pre-defined state for a selected machine.
+
+image::system_details_salt_states_packages.png[scaledwidth=80%]
+
+Here you can search for a specific package, for example [package]#vim#.
+Then with the drop-down box activate [guimenu]``Unmanaged``, [guimenu]``Installed``, or [guimenu]``Removed``.
+Select [guimenu]``Latest`` or [guimenu]``Any`` from the drop-down box. [guimenu]``Latest`` applies the latest package version available while [guimenu]``Any`` applies the package version required to fulfil dependencies.
+Click the btn:[Save] button to save changes to the database, then click btn:[Apply] to apply the new package state.
+
+
+
+[[sd-states-custom]]
+== Custom
+
+States which have been created on the [guimenu]``States Catalog`` page located under menu:Main Menu[Salt] may be assigned to a system on the [guimenu]``Custom`` page.
+
+image::system_details_salt_states_custom.png[scaledwidth=80%]
+
+Search for the custom state you want to apply to the system then select the [guimenu]``Assign`` check box.
+
+Click btn:[Save] to save the change to the database finally select btn:[Apply] to apply the changes.
+States applied at the system level will only be applied to the selected system.
+
+
+
+
+[[sd-states-highstate]]
+== Highstate
+
+
+From the [guimenu]``Highstate`` page you can view and apply the highstate for a selected system.
+
+Select the btn:[Test mode] toggle to test the highstate before applying it.
+
+.Using Test mode
+
+. Select the toggle btn:[Test mode].
+. Select btn:[Apply Highstate].
+. You will see the message:
++
+----
+Applying the highstate has been scheduled.
+----
+. Select [guimenu]``scheduled`` to see the results of the test.
+
+image::system_details_salt_states_highstate.png[scaledwidth=80%]
+
+
+Select a date and time to apply the highstate.
+Then click btn:[Apply Highstate].

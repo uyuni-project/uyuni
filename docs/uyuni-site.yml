@@ -1,0 +1,121 @@
+# Doc site [title, and start page]
+site:
+  title: Uyuni Documentation
+  start_page: uyuni::index
+  url: https://www.uyuni-project.org/uyuni-docs
+
+asciidoc:
+  attributes:
+
+    # Included products and versions
+    productname: 'Uyuni'
+    productnumber: 4.0
+    docversion: 4.0
+    minorversion402: '4.0.2'
+    saltversion: 2019.2.0
+    sles-version: 15
+    sp-vert: 0 #use for terminal block
+    sp-version: 0
+    sp-version-l: 0
+    smrproductnumber: 4.0
+
+    # Asciidoc Configuration Attributes
+    linkattrs: true
+    sectlinks: true
+    icons: font
+    experimental: true
+
+    # Enable or disable SUSE Manager conditional content (Not applicable to UYUNI - default is false)
+    suma-content: false
+    uyuni-content: true
+    #uyuni-ubuntu: true
+
+    # SUSE Manager/Uyuni Entities
+    grub: Grub
+    zseries: IBM Z
+    zsystems: IBM Z
+    ibmz: IBM Z
+    ppc: POWER
+    ppc64le: 'IBM Power PC'
+    ipf: Itanium
+    x86: x86
+    x86_64: x86_64
+    redhat: 'Red Hat'
+    rhel: 'Red Hat Enterprise Linux'
+    rhela: 'RHEL'
+    rhnminrelease6: 'Red Hat Enterprise Linux Server 6'
+    rhnminrelease7: 'Red Hat Enterprise Linux Server 7'
+    ubuntu: Ubuntu
+    debian: Debian
+    opensuse: openSUSE
+    centos: CentOS
+    kickstart: Kickstart
+    susemgr: 'SUSE Manager'
+    productproxy: '{productname} Proxy'
+    smr: 'SUSE Manager for Retail'
+    uyuni: Uyuni
+    slepos: 'SUSE Linux Enterprise Point of Service'
+    susemgrproxy: SUSE Manager Proxy
+    webui: Web UI
+    jeos: JeOS
+    scc: SUSE Customer Center
+    sles: SUSE Linux Enterprise Server
+    sle: SUSE Linux Enterprise
+    sleses: SUSE Linux Enterprise Server with Expanded Support
+    es: Expanded Support
+    slsa: SLES
+    suse: SUSE
+    slea: SLE
+    sleda: SLED
+    ay: AutoYaST
+    baseos:
+    deploy: Deployment Guide
+    upgrade: Upgrade Guide
+    yast: YaST
+    rootuser: root
+    ruser: root
+    mdash: '-'
+    mgradvtop: Advanced Topics Guide
+    mgrgetstart: Getting Started Guide
+    mgrrefguide: Reference Guide
+    mgrbestpract: Best Practices Guide
+    openscap: OpenSCAP
+    uarr:
+    ncc: Novell Customer Center
+    rmtool: Repository Management Tool
+    smtool: '{rmtool}'
+    vmguest: VM Guest
+    vmhost: VM Host Server
+    xen: Xen
+    kvm: KVM
+    k8s: Kubernetes
+    caasp: SUSE CaaS Platform
+    homepage: https://github.com/SUSE/doc-susemanager
+
+content:
+  sources:
+  # Uncomment to build from your local git clone
+  - url: .
+
+  # Uncomment to build from the remote github repository.
+  #- url: https://github.com/SUSE/doc-susemanager.git
+
+    # To build locally ensure you have your current local branch listed.
+    branches:
+    - 'master'
+
+    # Choose a default-ui to use
+    # - uyuni-default.zip (product branding theme OBS)
+    # - uyuni-primary.zip (do not use, will release with uyuni landing page)
+ui:
+  bundle:
+    url: ./branding/default-ui/suma/latest-bundle.zip
+    snapshot: true
+
+    # - uyuni-depreciated (use for now)
+    # - uyuni-webui (for gh-pages and WebUI will release with uyuni landing page)
+  supplemental_files: ./branding/supplemental-ui/uyuni/uyuni-webui
+output:
+  dir: ./build
+runtime:
+  cache_dir: ./.cache/antora

@@ -1,0 +1,35 @@
+[[arch.component.rhnsd]]
+= rhnsd
+
+*rhnsd* is a client-side daemon for traditional clients only.
+As of {productname} 4, it is only available on non-systemd systems ({sle} 11 and {rhnminrelease6}).
+For later versions, a systemd timer ([systemitem]``rhnsd.timer``) is available.
+
+
+
+== Functions
+*rhnsd* is a primary component of {productname}. It performs the following functions in the stack.
+
+* **Client-side daemon for traditional clients**
+* **Periodically calls mgr_check (symlinked to rhn_check)**
+* **Randomizes check time not to overload the server**
+
+
+
+== rhnsd --help
+The following options are available for use with rhnsd on your legacy clients:
+
+----
+rhnsd --help
+Usage: rhnsd [OPTION...]
+Spacewalk Services Daemon
+
+  -f, --foreground           Run in foreground
+  -i, --interval=MINS        Connect to Spacewalk every MINS minutes
+  -?, --help                 Give this help list
+      --usage                Give a short usage message
+  -V, --version              Print program version
+
+Mandatory or optional arguments to long options are also mandatory or optional
+for any corresponding short options.
+----

@@ -1,0 +1,176 @@
+[[large-scale-deployments]]
+= Large Scale Deployments
+
+{productname} is designed by default to work on small and medium scale installations.
+For installations with more than 1000 clients per {productname} Server, adequate hardware sizing and parameter tuning must be performed.
+
+There is no hard maximum number of supported systems.
+Many factors can affect how many clients can reliably be used in a particular installation.
+Factors can include which features are used, and how the hardware and systems are configured.
+
+
+[WARNING]
+====
+Large installations require standard Salt clients.
+These instructions cannot be used in environments using traditional clients or Salt SSH minions.
+====
+
+
+
+== Hardware and Infrastructure
+
+Not all problems can be solved with better hardware, but choosing the right hardware is an absolute necessity for large scale deployments.
+
+
+The minimum requirements for the {productname} Server are:
+
+* Eight or more recent {x86_64} CPU cores.
+* 32{nbsp}GiB RAM.
+For installations with thousands of clients, use 64{nbsp}GB or more.
+* Fast I/O storage devices, such as locally-attached SSDs.
+For PostgreSQL data directories, we recommend locally-attached RAID-0 SSDs.
+
+If the {productname} Server is virtualized, enable the `elevator=noop` kernel command line option, for the best input/output performance.
+You can check the current status with [command]``cat /sys/block/<DEVICE>/queue/scheduler``.
+This command will display a list of available schedulers with the currently active one in brackets.
+To change the scheduler before a reboot, use [command]``echo noop > /sys/block/<DEVICE>/queue/scheduler``.
+
+The minimum requirements for the {productname} Proxy are:
+
+* One {productname} Proxy per 500-1000 clients, depending on available network bandwidth.
+* Two or more recent {x86_64} CPU cores.
+* 16{nbsp}GB RAM, and sufficient storage for caching.
+
+Clients should never be directly attached to the {productname} Server in production systems.
+
+In large scale installations, the {productname} Proxy is used primarily as a local cache for content between the server and clients.
+Using proxies in this way can substantially reduce download time for clients, and decrease Server egress bandwidth use.
+
+The number of clients per proxy will affect the download time.
+Always take network structure and available bandwidth into account.
+
+We recommend you estimate the download time of typical usage to determine how many clients to connnect to each proxy.
+To do this, you will need to estimate the number of package upgrades required in every patch cycle.
+You can use this formula to calculate the download time:
+
+----
+Size of updates * Number of clients / Theoretical download speed / 60
+----
+
+For example, the total time needed to transfer 400{nbsp}MB of upgrades through a physical link speed of 1{nbsp}GB/s to 3000 clients:
+
+----
+400 MB  * 3000 / 119 MB/s / 60 = 169 min
+----
+
+
+
+== Operation Recommendations
+
+This section contains a range of recommendations for large scale deployments.
+
+[NOTE]
+====
+Always start small and scale up gradually.
+Monitor the server as you scale to identify problems early.
+====
+
+// Might be worth alphabetising these. LKB 2018-08-09
+
+=== Salt Client Onboarding Rate
+
+The rate at which {productname} can onboard clients is limited and depends on hardware resources.
+Onboarding clients at a faster rate than {productname} is configured for will build up a backlog of unprocessed keys.
+This slows down the process and can potentially exhaust resources.
+We recommend that you limit the acceptance key rate programmatically.
+A safe starting point would be to onboard a client every 15 seconds.
+You can do that with this command:
+
+----
+for k in $(salt-key -l un|grep -v Unaccepted); do salt-key -y -a $k; sleep 15; done
+----
+
+
+
+=== Salt Clients and the RNG
+
+All communication to and from Salt clients is encrypted.
+During client onboarding, Salt uses asymmetric cryptography, which requires available entropy from the Random Number Generator (RNG) facility in the kernel.
+If sufficient entropy is not available from the RNG, it will significantly slow down communications.
+This is especially true in virtualized environments.
+Ensure enough entropy is present, or change the virtualization host options.
+
+You can check the amount of available entropy with the [command]``cat /proc/sys/kernel/random/entropy_avail``.
+It should never be below 100-200.
+
+
+
+=== Clients Running with Unaccepted Salt Keys
+
+Clients which have not been onboarded, that is clients running with unaccepted Salt keys, consume more resources than clients that have been onboarded.
+Generally, this consumes about an extra 2.5 Kb/s of inbound network bandwidth per client.
+For example, 1000 idle clients will consume about 2.5 Mb/s extra.
+This consumption will reduce almost to zero when onboarding has been completed for all clients.
+Limit the number of non-onboarded clients for optimal performance.
+
+
+
+=== Disabling the Salt Mine
+
+In older versions, {productname} used a tool called Salt mine to check client availability.
+The Salt mine would cause clients to contact the server every hour, which created significant load.
+With the introduction of a more efficient mechanism in {productname}{nbsp}3.2, the Salt mine is no longer required.
+Instead, the {productname} Server uses Taskomatic to ping only the clients that appear to have been offline for twelve hours or more, with all clients being contacted at least once in every twenty four hour period by default.
+You can adjust this by changing the [systemitem]``web.system_checkin_threshold`` parameter in [path]``rhn.conf``.
+The value is expressed in days, and the default value is [literal]``1``.
+
+Newly registered Salt clients will have the Salt mine disabled by default.
+If the Salt mine is running on your system, you can reduce load by disabling it.
+This is especially effective if you have a large number of clients.
+
+Disable the Salt mine by running this command on the server:
+----
+salt '*' state.sls util.mgr_mine_config_clean_up
+----
+
+This will restart the clients and generate some Salt events to be processed by the server.
+If you have a large number of clients, handling these events could create excessive load.
+To avoid this, you can execute the command in batch mode with this command:
+----
+salt --batch-size 50 '*' state.sls util.mgr_mine_config_clean_up
+----
+
+You will need to wait for this command to finish executing.
+Do not end the process with kbd:[Ctrl+C].
+
+
+
+=== Disable Unnecessary Taskomatic jobs
+
+
+To minimize wasted resources, you can disable non-essential or unused Taskomatic jobs.
+
+You can see the list of Taskomatic jobs in the {productname} {webui}, at menu:Admin[Task Schedules].
+
+To disable a job, click the name of the job you want to disable, select [guimenu]``Disable Schedule``, and click  btn:[Update Schedule].
+
+To delete a job, click the name of the job you want to delete, and click  btn:[Delete Schedule].
+
+We recommend disabling these jobs:
+
+* Daily comparison of configuration files: [systemitem]``compare-configs-default``
+* Hourly synchronization of Cobbler files: [systemitem]``cobbler-sync-default``
+* Daily gatherer and subscription matcher: [systemitem]``gatherer-matcher-default``
+
+Do not attempt to disable any other jobs, as it could prevent {productname} from functioning correctly.
+
+
+=== Swap and Monitoring
+
+It is especially important in large scale deployments that you keep your {productname} Server constantly monitored and backed up.
+
+Swap space use can have significant impacts on performance.
+If significant non-transient swap usage is detected, you can increase the available hardware RAM.
+
+You can also consider tuning the Server to consume less memory.
+For more information on tuning, see xref:salt:large-scale-tuning.adoc[].

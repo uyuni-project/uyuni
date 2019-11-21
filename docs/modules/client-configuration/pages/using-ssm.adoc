@@ -1,0 +1,28 @@
+[[using-ssm]]
+= Using the System Set Manager
+
+System Set Manager (SSM) is used to administrate groups of systems, rather than performing actions on one system at a time.
+It works for both Salt and traditional clients.
+
+For a complete list of the tasks that you can perform with the SSM, see xref:reference:systems/ssm-menu.adoc[].
+
+
+
+== Setting up System Set Manager
+
+You need to select which systems or system group you want to work with before you can use SSM to perform operations.
+
+You can access SSM in three different ways:
+
+* Navigate to menu:Systems[System List], select systems you want to work with, and navigate to menu:Systems[System Set Manager].
+* Navigate to menu:Systems[System Groups], and click btn:[Use in SSM] for the system group you want to work with.
+* Navigate to menu:Systems[System Groups], select the group you want to work with, and click btn:[Work with Group].
+
+
+
+== Using System Set Manager
+
+The details you see in SSM might differ slightly from the details available in other parts of the {productname} {webui}.
+If you are looking at the details of a single system in the {webui}, then you will only be able to see the latest available versions of package updates.
+When you look at package updates in SSM, all available versions will be shown.
+This is intended to make it easier for system administrators to manage package versions, and choose to upgrade to packages that might not be the latest version.

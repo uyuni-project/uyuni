@@ -1,0 +1,13 @@
+[[spacecmd.functions.list.proxies]]
+= list_proxies
+
+The following spacecmd function is available for listing proxies.
+
+== list_proxies
+
+List the proxies within the user's organization.
+
+[source]
+--
+usage: list_proxies
+--

@@ -1,0 +1,97 @@
+[[retail.mass.config.example.yaml]]
+== Example YAML File for Mass Configuration
+
+You can use the [command]``retail_yaml`` command to import configuration parameters from a manually prepared YAML file.
+This section contains YAML example file with comments.
+
+.Example: YAML Mass Terminal Configuration File
+----
+branches:
+# there are 2 possible setups: with / without dedicated NIC
+#
+# with dedicated NIC
+  branchserver1.branch1.cz:     # salt ID of branch server
+    branch_prefix: branch1      # optional, default guessed from salt id
+    server_name: branchserver1  # optional, default guessed from salt id
+    server_domain: branch1.cz   # optional, default guessed from salt id
+    nic: eth1                   # nic used for connecting terminals, default taken from hw info in SUMA
+    dedicated_nic: true         # set to true if the terminals are on separate network
+    salt_cname: branchserver1.branch1.cz      # hostname of salt master / broker for terminals, mandatory
+    configure_firewall: true    # modify firewall configuration
+    branch_ip: 192.168.2.1      # default for dedicated NIC: 192.168.1.1
+    netmask: 255.255.255.0      # default for dedicated NIC: 255.255.255.0
+    dyn_range:                  # default for dedicated NIC: 192.168.1.10 - 192.168.1.250
+        - 192.168.2.10
+        - 192.168.2.250
+# without dedicated NIC
+# the DHCP formula is not used, DHCP is typically provided by a router
+# the network parameters can be autodetected if the machine is already connected to SUSE Manager
+  branchserver2.branch2.cz:     # salt ID of branch server
+    branch_prefix: branch2      # optional, default guessed from salt id
+    server_name: branchserver2  # optional, default guessed from salt id
+    server_domain: branch2.cz   # optional, default guessed from salt id
+    salt_cname: branchserver2.branch1.cz      # FQDN of salt master / broker for terminals, mandatory
+    branch_ip: 192.168.2.1      # optional, default taken from SUMA data if the machine is registered
+    netmask: 255.255.255.0      # optional, default taken from SUMA data if the machine is registered
+    exclude_formulas:           # optional, do not configure listed formulas
+      - dhcp                    # without dedicated NIC the dhcp service is typically provided by a router
+    hwAddress: 11:22:33:44:55:66 # optional, required to connect pre-configured entry with particular machine
+                                 # during onboarding
+    terminals:                       # configuration of static terminal entries
+      hostname1:                     # hostname
+        hwAddress: aa:aa:aa:bb:bb:bb # required as unique id of a terminal
+        IP: 192.168.2.50             # required for static dhcp and dns entry
+        saltboot:                    # optional, alternative 1: configure terminal-specific pillar data
+          partitioning:              # partitioning pillar as described in saltboot documentation
+            disk1:
+              device: /dev/sda
+              disklabel: msdos
+              partitions:
+                p1:
+                  flags: swap
+                  format: swap
+                  size_MiB: 2000.0
+                p2:
+                  image: POS_Image_JeOS6
+                  mountpoint: /
+              type: DISK
+      hostname2:                     # hostname
+        hwAddress: aa:aa:aa:bb:bb:cc # required as unique id of a terminal
+        IP: 192.168.2.51             # required for static dhcp and dns entry
+        hwtype: IBMCORPORATION-4838910 # optional, alternative 2: assign the terminal to hwtype group
+        # if neither of hwtype nor saltboot is specified, a group is assigned according to hwtype
+        # reported by bios on the first boot
+hwtypes:
+  IBMCORPORATION-4838910:      # HWTYPE string (manufacturer-model) as returned by bios
+    description: 4838-910       # freetext description
+    saltboot:
+      partitioning:             # partitioning pillar as described in saltboot documentation
+        disk1:
+          device: /dev/sda
+          disklabel: msdos
+          partitions:
+            p1:
+              flags: swap
+              format: swap
+              size_MiB: 1000.0
+            p2:
+              image: POS_Image_JeOS6
+              mountpoint: /
+          type: DISK
+  TOSHIBA-6140100:
+    description: HWTYPE:TOSHIBA-6140100
+    saltboot:
+      partitioning:
+        disk1:
+          device: /dev/sda
+          disklabel: msdos
+          partitions:
+            p1:
+              flags: swap
+              format: swap
+              size_MiB: 1000.0
+            p2:
+              image: POS_Image_JeOS6
+              mountpoint: /
+          type: DISK
+----

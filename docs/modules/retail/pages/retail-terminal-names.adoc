@@ -1,0 +1,144 @@
+[[retail.sect.admin.terminal_naming]]
+== Terminal Names
+
+Terminals can be named according to certain parameters, which can make it easier to match the physical device with its record in the {productname} {webui}.
+
+By default, terminals are named according to their hardware type.
+If the terminal IP address can be resolved to the hostname, those details will be used to name the terminal instead.
+
+You can change this behavior by changing this kernel parameter in the PXE formula settings:
+
+----
+DISABLE_HOSTNAME_ID = 1
+----
+
+For more information about the PXE formula, see xref:salt:formula-pxe.adoc[].
+
+
+
+=== Naming by Hardware Type
+
+Terminal names that are derived from the hardware type use this format:
+
+----
+BranchID.Manufacturer-ProductName-SerialNumber-UniqueID
+----
+
+For example:
+
+----
+B002.TOSHIBA-6140100-41BA03X-c643
+----
+
+
+The branch ID is the unique identifier for the branch server that the terminal is connected to.
+You can configure this value in the PXE formula settings for the branch server.
+
+The manufacturer, product name, and serial number are provided by the terminal hardware BIOS.
+If the terminal does not provide a serial number, it will be omitted from the terminal name.
+
+The unique ID is the first four characters of a generated machine identification number.
+You can disable this behavior by toggling the [systemitem]``DISABLE_UNIQUE_SUFFIX`` parameter in the PXE formula settings.
+
+For more information about the PXE formula, see xref:salt:formula-pxe.adoc[].
+
+
+
+=== Naming by Hostname
+
+Terminal names that are derived from the hostname use this format:
+
+----
+BranchID.FQDN-UniqueID
+----
+
+For example:
+
+----
+B002.terminal.example.com-c643
+----
+
+
+The [systemitem]``BranchID`` is the unique identifier for the branch server that the terminal is connected to.
+You can configure this value in the PXE formula settings for the branch server.
+
+The [systemitem]``FQDN`` is the fully-qualified domain name of the terminal.
+
+The [systemitem]``UniqueID`` is the first four characters of a generated machine identification number.
+You can disable this behavior by toggling the [systemitem]``DISABLE_UNIQUE_SUFFIX`` parameter in the PXE formula settings.
+
+For more information about the PXE formula, see xref:salt:formula-pxe.adoc[].
+
+
+
+=== Assign Hostnames to Terminals
+
+
+If you want terminal names to be derived from the hostname, you will need to ensure your terminals have a static hostname.
+This requires a static IP address to be able to resolve the static hostname.
+
+There are a number of different ways to assign hostnames to terminals.
+This section describes how to do this when DNS and DHCP services are managed by the branch server.
+
+
+.Procedure: Assigning IP Address and Hostname with Formulas
+
+. In the DHCP formula settings, navigate to [guimenu]``Hosts with Static IP Address`` and click btn:[Add Item].
+For more information on the DHCP formula, see xref:salt:formula-dhcpd.adoc[].
+. In the [guimenu]``Hostname`` field, type the hostname of the branch server.
+. In the [guimenu]``IP Address`` field, type the static IP address for the terminal.
+Ensure the IP address is within the range used by the branch server.
+. In the [guimenu]``Hardware Type and Address`` field, type the hardware type and address in this format:
++
+----
+ethernet <terminal_MAC_address>
+----
+. OPTIONAL: For multiple terminals, click btn:[Add Item] and fill in the details for each terminal.
+. Click btn:[Save Formula] to save the changes.
+. In the Bind formula settings, navigate to the A records of the appropriate non-reverse zone, and click btn:[Add Item].
+For more information on the bind formula, see xref:salt:formula-bind.adoc[].
+. In the [guimenu]``Hostname`` field, type the hostname of the branch server.
+. In the [guimenu]``IP Address`` field, type the static IP address you assigned to the terminal in the DHCP formula settings.
+. OPTIONAL: For multiple terminals, click btn:[Add Item] and fill in the details for each terminal.
+. Click btn:[Save Formula] to save the changes.
+. Apply the highstate on the branch server to apply the changes.
+
+[IMPORTANT]
+====
+If the terminal was previously registered using a name based on the hardware type instead of the hostname, you will need to delete the previous registration.
+When you re-register the terminal, use the new terminal name.
+====
+
+
+
+.Procedure: Assigning IP Address and Hostname with YAML
+
+. At the command prompt on the branch server, export a YAML configuration file:
++
+----
+retail_yaml --to-yaml retail.yaml
+----
+. Open the YAML file and navigate to the end of the branch server section.
+Add a new [systemitem]``terminals`` section if it does not already exist.
+. Add the IP address, MAC address, and hardware type for the terminal, using this format:
++
+----
+$hostname:
+        IP: <IP_Address>
+        hwAddress: <MAC_Address>
+        hwtype: <HWTYPE_Group_name_without_HWTYPE:_prefix>
+----
+. Import the modified YAML file:
++
+----
+retail_yaml --from-yaml retail.yaml
+----
+. Apply the highstate on the branch server to apply the changes.
+
+[IMPORTANT]
+====
+If the terminal was previously registered using a name based on the hardware type instead of the hostname, you will need to delete the previous registration.
+When you re-register the terminal, use the new terminal name.
+====
+
+For more information about using YAML configuration files, see xref:retail:retail-mass-config.adoc[].

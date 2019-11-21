@@ -1,0 +1,172 @@
+[[registering.clients.bootstrap]]
+= Registering Clients with a Bootstrap Script
+
+
+Registering your clients with a bootstrap script gives you more control over parameters, and can help if you have to register a large number of clients at once.
+This method works for both Salt and traditional clients.
+
+To register clients using a bootstrap script, we recommend you create a template bootstrap script to begin, which can then be copied and modified.
+The bootstrap script you create is executed on the client when it is registered, and ensures all the necessary packages are deployed to the client.
+There are some parameters contained in the bootstrap script which ensure the client system can be assigned to its base channel, including activation keys, and GPG keys.
+
+It is important that you check the repository information carefully, to ensure it matches the base channel repository.
+If the repository information does not match exactly, the bootstrap script will not be able to download the correct packages.
+
+If you are bootstrapping Salt clients using the {webui}, you will need to ensure that the client system has Python installed before you begin.
+For Salt clients running {sles}{nbsp}12 or older, you will also require the [package]``python-xml`` package.
+
+
+[IMPORTANT]
+.GPG Keys and Uyuni Client Tools
+====
+The GPG key used by Uyuni Client Tools is not trusted by default.
+When you create your bootstrap script, add a path to the file containing the public key fingerprint with the [systemitem]``ORG_GPG_KEY`` parameter.
+====
+
+[NOTE]
+.SLES 15 and Python 3
+====
+SLE 15 uses Python 3 by default.
+Bootstrap scripts based on Python 2 must be re-created for SLE 15 systems.
+Attempting to register SLE 15 systems using Python 2 bootstrap scripts will fail.
+====
+
+== Create a Bootstrap Script
+
+This procedure describes how to generate a bootstrap script.
+
+.Procedure: Creating a Bootstrap Script
+. In the {productname} {webui}, navigate to menu:Admin[Manager Configuration > Bootstrap Script].
+. In the [guimenu]``SUSE Manager Configuration - Bootstrap`` dialog, uncheck the [guimenu]``Bootstrap using Salt`` checkbox if you are installing a traditional client.
+For Salt clients, leave it checked.
+Use default settings and click the btn:[Update] button.
++
+
+image::mgr_configuration_bootstrap_trad.png[scaledwidth=80%]
++
+
+[WARNING]
+.Using SSL
+====
+Unchecking menu:Enable SSL[] in the {webui} or setting `USING_SSL=0` in the bootstrap script is not recommended.
+If you disable SSL nevertheless you will need to manage custom CA certificates to be able to run the registration process successfully.
+====
++
+
+. A template bootstrap script is generated and stored on the server's file system in the [path]``/srv/www/htdocs/pub/bootstrap`` directory.
++
+
+----
+cd /srv/www/htdocs/pub/bootstrap
+----
++
+The bootstrap script is also available at [path]``https://example.com/pub/bootstrap/bootstrap.sh``.
+
+
+
+[[modify.bootstrap.script]]
+== Edit a Bootstrap Script
+
+
+You can copy and modify the template bootstrap script you created to customize it.
+
+A minimal requirement when modifying a bootstrap script for use with {productname} is the inclusion of an activation key.
+
+Most packages are signed with GPG, so you will also need to have trusted GPG keys on your system to install them.
+
+In this procedure, you will need to know the exact name of your activation keys.
+Navigate to menu:Home[Overview] and click on [guimenu]``Manage Activation keys``.
+All keys created for channels are listed on this page.
+You must enter the full name of the key you wish to use in the bootstrap script exactly as presented in the key field.
+For more information about activation keys, see xref:client-configuration:clients-and-activation-keys.adoc[].
+
+
+.Procedure: Modifying a Bootstrap Script
+. Login as root from the command line on your {productname} server.
+. Navigate to the bootstrap directory with:
++
+----
+cd /srv/www/htdocs/pub/bootstrap/
+----
+. Create and rename two copies of the template bootstrap script for use with each of your clients.
++
+----
+cp bootstrap.sh bootstrap-sles11.sh
+cp bootstrap.sh bootstrap-sles12.sh
+----
+. Open [path]``bootstrap-sles12.sh`` for modification.
+Scroll down and modify both lines marked in green.
+You must comment out `exit 1` with a hash mark (``#``) to activate the script and then enter the name of the key for this script in the `ACTIVATION_KEYS=` field as follows:
++
+----
+echo "Enable this script: comment (with #'s) this block (or, at least just"
+echo "the exit below)"
+echo
+#exit 1
+
+# can be edited, but probably correct (unless created during initial install):
+# NOTE: ACTIVATION_KEYS *must* be used to bootstrap a client machine.
+ACTIVATION_KEYS=1-sles12
+ORG_GPG_KEY=
+----
+
+. When you have finished, save the file, and repeat this procedure for the second bootstrap script.
+
+
+
+== Connect Clients
+
+When you have finished creating your script, you can use it to register clients.
+
+
+.Procedure: Running the Bootstrap Script
+. On the {productname} Server, log in as root at the command prompt, and navigate to this directory:
++
+----
+cd /srv/www/htdocs/pub/bootstrap/
+----
+. Run this command to execute the bootstrap script on the client:
++
+----
+cat MODIFIED-SCRIPT.SH | ssh root@example.com /bin/bash
+----
+The script will execute and proceed to download the required dependencies located in the repositories directory you created earlier.
+. When the script has finished running, you can check that your client is registered correctly by opening the {productname} {webui} and navigating to menu:Systems[Overview] to ensure the new client is listed.
+
+[WARNING]
+====
+When new packages or updates are installed on the client using {productname}, any end user license agreements (EULAs) are automatically accepted.
+To review a package EULA, open the package detail page in the {webui}.
+====
+
+== Package Locks
+
+[NOTE]
+====
+Package locks can only be used on traditional clients that use the Zypper package manager.
+The feature is not currently supported on {rhel} or Salt clients.
+====
+
+Package locks are used to prevent unauthorized installation or upgrades to software packages on traditional clients.
+When a package has been locked, it will show a padlock icon, indicating that it can not be installed.
+Any attempt to install a locked package will be reported as an error in the event log.
+
+Locked packages can not be installed, upgraded, or removed, either through the {productname} {webui}, or directly on the client machine using a package manager.
+Locked packages will also indirectly lock any dependent packages.
+
+
+.Procedure: Using Package Locks
+. On the client machine, install the [package]``zypp-plugin-spacewalk`` package:
++
+----
+# zypper in zypp-plugin-spacewalk
+----
+
+. Navigate to the menu:Software[Packages > Lock] tab on the managed system to see a list of all available packages.
+. Select the packages to lock, and click btn:[Request Lock].
+You can also choose to enter a date and time for the lock to activate.
+Leave the date and time blank if you want the lock to activate as soon as possible.
+Note that the lock might not activate immediately.
+. To remove a package lock, select the packages to unlock and click btn:[Request Unlock].
+Leave the date and time blank if you want the lock to deactivate as soon as possible.
+Note that the lock might not deactivate immediately.

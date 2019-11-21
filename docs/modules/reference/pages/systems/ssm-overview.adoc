@@ -1,0 +1,495 @@
+[[ref.webui.systems.ssm.overview]]
+= System Set Manager Overview
+
+This page contains links to most SSM option tabs with short explanations.
+
+image::systems_ssm_overview.png[scaledwidth=80%]
+
+[[ref.webui.systems.ssm.systems]]
+== SSM Systems
+
+List of selected systems.
+
+
+image::systems_ssm_list_systems.png[scaledwidth=80%]
+
+
+
+
+[[ref.webui.systems.ssm.patches]]
+==  SSM Patches
+
+List of patch updates applicable to the current system set.
+
+
+image::systems_ssm_patches.png[scaledwidth=80%]
+
+
+Click the number in the Systems column to see to which systems in the System Set Manager a patch applies.
+To apply updates, select the patches and click the btn:[Apply Patches] button.
+
+
+
+[[ref.webui.systems.ssm.packages]]
+== SSM Packages
+
+Click the number in the Systems column to see the systems in the System Set Manager to which a package applies.
+Modify packages on the system via the following subtabs.
+
+
+image::systems_ssm_packages_overview.png[scaledwidth=80%]
+
+
+
+[[s4-sm-ssm-packages-install]]
+=== SSM Packages - Install
+
+This list includes all channels to which systems in the set are subscribed.
+A package is only installed on a system if the system is subscribed to the channel providing the package.
+
+
+image::systems_ssm_install.png[scaledwidth=80%]
+
+
+Click the channel name and select the packages from the list.
+Then click the btn:[Install Packages] button.
+
+
+
+[[s4-sm-ssm-packages-remove]]
+=== SSM Packages - Remove
+
+A list of all the packages installed on the selected systems that might be removed.
+
+
+image::systems_ssm_remove.png[scaledwidth=80%]
+
+
+Multiple versions appear if systems in the System Set Manager have more than one version installed.
+Select the packages to be deleted, then click the btn:[Remove Packages] button.
+
+
+
+[[s4-sm-ssm-packages-upgrade]]
+=== SSM Packages - Upgrade
+
+A list of all the packages installed on the selected systems that might be upgraded.
+
+
+image::systems_ssm_upgrade.png[scaledwidth=80%]
+
+
+Systems must be subscribed to a channel providing the packages to be upgraded.
+If multiple versions of a package are available, note that your system will be upgraded to the latest version.
+Select the packages to be upgraded, then click the btn:[Upgrade Packages] button.
+
+
+
+[[s3-sm-ssm-verify]]
+=== SSM Packages - Verify
+
+A list of all installed packages whose contents, file checksum, and other details may be verified.
+
+
+image::systems_ssm_verify.png[scaledwidth=80%]
+
+
+At the next check in, the verify event issues the command [command]``rpm --verify`` for the specified package.
+If there are any discrepancies, they are displayed in the System Details page for each system.
+
+Select the check box next to all packages to be verified, then click the btn:[Verify Packages] button.
+On the next page, select a date and time for the verification, then click the btn:[Schedule Verifications] button.
+
+
+
+[[ref.webui.systems.ssm.groups]]
+== SSM Groups
+
+Tools to create groups and manage system memberships.
+
+
+image::systems_ssm_groups.png[scaledwidth=80%]
+
+
+These functions are limited to {productname} Administrators and System Group Administrators.
+To add a new group, click [guimenu]``Create Group`` on the top-right corner.
+In the next page, type the group name and description in the respective fields and click the btn:[Create Group] button.
+To add or remove selected systems in any of the system groups, toggle the appropriate radio buttons and click the btn:[Alter Membership] button.
+
+
+
+[[ref.webui.systems.ssm.channels]]
+== SSM Channels
+
+As a Channel Administrator, you may change the base channels your systems are subscribed to.
+
+.Changing the Channels Is Now an Action
+[NOTE]
+====
+Since the 3.1 maintenance update (2018) changing the channels is an action that can be scheduled like any other action.
+Earlier channel changes were applied immediately.
+====
+
+
+Manage channel associations through the following wizard procedure:
+
+[guimenu]``Base Channel Alteration`` (Page 1)::
+Valid channels are either channels created by your organization, or the vendor's default base channel for your operating system version and processor type.
+Systems will be unsubscribed from all channels, and subscribed to their new base channels.
++
+
+.Changing Base Channel
+WARNING: This operation can have a dramatic effect on the packages and patches available to the systems.
+Use with caution.
++
+
+image::systems_ssm_base_channels.png[scaledwidth=80%]
++
+To change the base channel, select the new one from the [guimenu]``Desired base Channel``
+and confirm the action.
++
+On the this wizard page you see the [guimenu]``Current base Channel`` and how many [guimenu]``Systems`` are subscribed to it.
+Click the number link in the [guimenu]``Systems`` column to see which systems are actually selected.
++
+To change the base channel subscription select the [guimenu]``Desired base Channel`` from the selection box.
+Then click btn:[Next] in the lower left corner.
+
+[guimenu]``Child Channels`` (Page 2)::
+The [guimenu]``Child Channels`` page allows you to subscribe and unsubscribe individual child channels related to its parent or base channel.
+Systems must subscribe to a base channel before subscribing to a child channel.
+If you enable btn:[with recommended], recommended child channels are automatically selected for subscription.
+The handling of required channels is currently not implemented for system set manager.
++
+
+image::systems_ssm_child_subscriptions.png[scaledwidth=80%]
++
+
+Change the child channel subscription on this page.
+Then click btn:[Next] in the lower left corner.
+
+[guimenu]``Channel Changes Overview`` (Page 3)::
+Schedule when the channel changes should take place the earliest.
+Then click btn:[Confirm] in the lower left corner.
+
+[guimenu]``Channel Changes Actions`` (Page 4)::
+See the scheduled change actions.
+
+
+
+[[ref.webui.systems.ssm.config]]
+== SSM Configuration
+
+Like in the menu:System Details[Channels > Configuration] tab, the subtabs here can be used to subscribe the selected systems to configuration channels and deploy and compare the configuration files on the systems.
+The channels are created in the [guimenu]``Manage Config Channels`` interface within the menu:Main Menu[Software] category.
+For channel creation instructions, see xref:reference:configuration/config-channels.adoc[].
+
+To manage the configuration of a system, install the latest [path]``mgr-cfg*`` packages.
+For instructions on enabling and disabling scheduled actions for a system, see xref:reference:configuration/config-menu.adoc#ref.webui.config.preparing[Preparing Systems for Configuration Management].
+
+
+
+[[ref.webui.systems.ssm.config.deploy]]
+=== SSM Configuration - Deploy Files
+
+Use this subtab to distribute configuration files from your central repository on {productname} to each of the selected systems.
+
+
+image::systems_ssm_config_deploy_files.png[scaledwidth=80%]
+
+
+The table lists the configuration files associated with any of the selected systems.
+Clicking its system count displays the systems already subscribed to the file.
+
+To subscribe the selected systems to the available configuration files, select the check box for each wanted file.
+When done, click btn:[Deploy Configuration] and schedule the action.
+Note that the latest versions of the files, at the time of scheduling, are deployed.
+Newer versions created after scheduling are disregarded.
+
+
+
+[[ref.webui.systems.ssm.config.verify]]
+=== SSM Configuration - Compare Files
+
+Use this subtab to validate configuration files on the selected systems against copies in your central repository on {productname}.
+
+
+image::systems_ssm_config_compare_files.png[scaledwidth=80%]
+
+
+The table lists the configuration files associated with any of the selected systems.
+Clicking a file's system count displays the systems already subscribed to the file.
+
+To compare the configuration files deployed on the systems with those in {productname}, select the check box for each file to be validated.
+Then click menu:Analyze Differences[Schedule File Comparison].
+The comparisons for each system will not complete until each system checks in to {productname}.
+When each comparison is complete, any differences between the files will be accessible from each system's events page.
+
+Note that the latest versions of the files, at the time of scheduling, are compared.
+Newer versions created after scheduling are disregarded.
+Find the results in the main menu:Main Menu[Schedule] category or within the menu:System Details[Events] tab.
+
+
+
+[[ref.webui.systems.ssm.config.subs]]
+=== SSM Configuration - Subscribe to Channels
+
+Subscribe systems to configuration channels, and in a second step rank these channels according to the order of preference.
+This tab is available only to {productname} Administrators and Configuration Administrators.
+
+
+image::systems_ssm_config_subscribe_to_channels.png[scaledwidth=80%]
+
+
+
+. Select channels for subscription by activating the check box. When done, confirm with btn:[Continue].
+. In the second step, rank the channels with the arrow-up or arrow-down symbols.
++
+Then decide how the channels are applied to the selected systems.
+The three buttons below the channels reflect your options.
+Clicking btn:[Subscribe with Highest Priority] places all the ranked channels before any other channels to which the selected systems are currently subscribed.
+Clicking btn:[Subscribe With Lowest Priority] places the ranked channels after those channels to which the selected systems are currently subscribed.
+Clicking btn:[Replace Existing Subscriptions] removes any existing association and creates new ones with the ranked channels, leaving every system with the same configuration channels in the same order.
++
+.Confliction Ranks
+NOTE: In the first two cases, if any of the newly ranked configuration channels are already in a system's existing configuration channel list, the duplicate channel is removed and replaced according to the new rank, effectively reordering the system's existing channels.
+When such conflicts exist, you are presented with a confirmation page to ensure the intended action is correct.
+When the change has taken place, a message appears at the top of the page indicating the update was successful.
++
+
+Then, click btn:[Apply Subscriptions].
+
+Channels are accessed in the order of their rank.
+Your local configuration channel always overrides all other channels.
+
+
+
+[[ref.webui.systems.ssm.config.unsubs]]
+=== SSM Configuration - Unsubscribe from Channels
+
+Administrators may unsubscribe systems from configuration channels by clicking the check box next to the channel name and clicking the btn:[Unsubscribe Systems] button.
+
+
+image::systems_ssm_config_unsubscribe_from_channels.png[scaledwidth=80%]
+
+
+
+[[ref.webui.systems.ssm.config.enable]]
+=== SSM Configuration - Enable Configuration
+
+Registered systems without configuration management preparation will appear here in a list.
+
+image::systems_ssm_config_enable_config.png[]
+
+Administrators may enable configuration management by clicking the btn:[Enable SUSE Manager Configuration Management] button.
+You can also schedule the action by adjusting the [guimenu]``Schedule no sooner than`` date and time setting using the drop-down box, then clicking btn:[Enable SUSE Manager Configuration Management].
+
+Then the systems will get subscribed to the required {productname} tools channel and required [package]#mgr-cfg*# packages will get installed.
+
+
+
+[[ref.webui.systems.ssm.provision]]
+== SSM Provisioning
+
+Set the options for provisioning systems via the following subtabs.
+
+
+
+[[ref.webui.systems.ssm.provision_autoinst]]
+=== SSM Provisioning - Autoinstallation
+
+
+Use this subtab to reinstall clients.
+
+
+image::systems_ssm_autoinstallation.png[scaledwidth=80%]
+
+
+To schedule autoinstallations for these systems, select a distribution.
+The autoinstallation profile used for each system in the set is determined via the [guimenu]``Autoinstallable Type`` radio buttons.
+
+Choose [guimenu]``Select autoinstallation profile`` to apply the same profile to all systems in the set.
+This is the default option.
+You will see a list of available profiles to select from when you click btn:[Continue].
+
+Choose [guimenu]``Autoinstall by IP Address`` to apply different autoinstallation profiles to different systems in the set, by IP address.
+To do so, at least two autoinstallation profiles must be configured with associated IP ranges.
+
+If you use [guimenu]``Autoinstall by IP Address``, {productname} will automatically pick a profile for each system so that the system's IP address will be in one of the IP ranges specified in the profile itself.
+If such a profile cannot be found, {productname} will look for an organization default profile and apply that instead.
+If no matching IP ranges nor organization default profiles can be found, no autoinstallation will be performed on the system.
+You will be notified on the next page if that happens.
+
+To use Cobbler system records for autoinstallation, select [guimenu]``Create PXE Installation Configuration``.
+With PXE boot, you cannot only reinstall clients, but automatically install machines that do not have an operating system installed yet.
+{productname} and its network must be properly configured to enable boot using PXE.
+For more information on Cobbler and {kickstart} templates, see xref:client-configuration:cobbler.adoc[].
+
+
+[NOTE]
+====
+If a system set contains bare-metal systems and installed clients, only features working for systems without an operating system installed will be available.
+Full features will be enabled again when all bare-metal systems are removed from the set.
+====
+
+
+If any of the systems connect to {productname} via a proxy server, choose either the [guimenu]``Preserve Existing Configuration`` radio button or the [guimenu]``Use Proxy`` radio button.
+If you choose to autoinstall through a proxy server, select from the available proxies listed in the drop-down box beside the [guimenu]``Use Proxy`` radio button.
+All of the selected systems will autoinstall via the selected proxy.
+Click the btn:[Schedule Autoinstall] button to confirm your selections.
+When the autoinstallations for the selected systems are successfully scheduled, you will return to the [guimenu]``System Set Manager`` page.
+
+
+
+[[ref.webui.systems.ssm.provision.tag]]
+=== SSM Provisioning - Tag Systems
+
+Use this subtab to add meaningful descriptions to the most recent snapshots of your selected systems.
+
+
+image::systems_ssm_tag_systems.png[scaledwidth=80%]
+
+
+To tag the most recent system snapshots, enter a descriptive term in the [guimenu]``Tag name`` field and click the btn:[Tag Current Snapshots] button.
+
+
+
+[[ref.webui.systems.ssm.provision.roll]]
+=== SSM Provisioning - Rollback
+
+Use this subtab to rollback selected systems to previous snapshots marked with a tag.
+
+
+image::systems_ssm_rollback.png[scaledwidth=80%]
+
+
+Click the tag name, verify the systems to be reverted, and click the btn:[Rollback Systems] button.
+
+
+
+[[ref.webui.systems.ssm.provision.remote]]
+=== SSM Provisioning - Remote Command
+
+Use this subtab to issue remote commands.
+
+
+image::systems_ssm_remote_command.png[scaledwidth=80%]
+
+
+First create a [path]``run`` file on the client systems to allow this function to operate.
+For instructions, see xref:reference:systems/system-details/sd-remote-command.adoc[].
+Then identify a specific user, group, timeout period, and the script to run.
+Select a date and time to execute the command and click btn:[Schedule].
+
+
+
+[[ref.webui.systems.ssm.provision.pm_config]]
+=== SSM Provisioning - Power Management Configuration
+
+image::systems_ssm_power_management_config.png[scaledwidth=80%]
+
+
+
+[[ref.webui.systems.ssm.provision.pm_op]]
+=== SSM Provisioning - Power Management Operation
+
+
+image::systems_ssm_power_management_operations.png[scaledwidth=80%]
+
+
+
+[[ref.webui.systems.ssm.audit]]
+== SSM Audit
+
+
+System sets can be scheduled for XCCDF scans; XCCDF stands for "`The Extensible Configuration Checklist Description Format`".
+
+
+image::systems_ssm_audit.png[scaledwidth=80%]
+
+
+Enter the command and command line arguments, and the path to the XCCDF document.
+Then schedule the scan.
+All target systems are listed below with a flag whether they support OpenSCAP scans.
+For more details on OpenSCAP and audits, see xref:reference:audit/audit-menu.adoc[].
+
+
+
+[[ref.webui.systems.ssm.misc]]
+== SSM - Misc
+
+On the [guimenu]``Misc`` page, you can modify [guimenu]``Custom System Information``.
+Click [guimenu]``Set a custom value for selected systems``, then the name of a key.
+Enter values for all selected systems, then click the btn:[Set Values] button.
+To remove values for all selected systems, click [guimenu]``Remove a custom value from selected systems``, then the name of the key.
+Click the btn:[Remove Values] button to delete.
+
+Set [guimenu]``System Preferences`` via the respective radio buttons.
+
+
+
+[[s4-sm-ssm-misc-updates-hw]]
+=== SSM Misc - Hardware
+
+Click the [guimenu]``Hardware`` subtab to schedule a hardware profile refresh.
+Click btn:[Confirm Refresh].
+
+
+image::systems_ssm_misc_hardware_refresh.png[scaledwidth=80%]
+
+
+
+
+[[s4-sm-ssm-misc-updates-sw]]
+=== SSM Misc - Software
+
+Click the [guimenu]``Software`` subtab, then the btn:[Confirm Refresh] button to schedule a package profile update of the selected systems.
+
+
+image::systems_ssm_misc_software_refresh.png[scaledwidth=80%]
+
+
+
+
+[[s4-sm-ssm-misc-migrate]]
+=== SSM Misc - Migrate
+
+Click the [guimenu]``Migrate`` subtab to move selected systems to a selected organization.
+
+
+image::systems_ssm_misc_migrate_systems.png[scaledwidth=80%]
+
+
+
+
+[[s4-sm-ssm-misc-lock]]
+=== SSM Misc - Lock/Unlock
+
+Select the [guimenu]``Lock/Unlock`` subtab to select systems to be excluded from package updates.
+
+
+image::systems_ssm_misc_lock_unlock.png[scaledwidth=80%]
+
+
+Enter a [guimenu]``Lock reason`` in the text box and click the btn:[Lock] button.
+Already locked systems can be unlocked on this page.
+Select them and click btn:[Unlock].
+
+
+
+[[s4-sm-ssm-misc-delete]]
+=== SSM Misc - Delete
+
+Click the [guimenu]``Delete`` subtab, to remove systems by deleting their system profiles.
+Click the btn:[Confirm Deletion] button to remove the selected profiles permanently.
+
+
+image::systems_ssm_misc_delete_confirm.png[scaledwidth=80%]
+
+
+
+[[s4-sm-ssm-misc-reboot]]
+=== SSM Misc - Reboot
+
+Select the appropriate systems, then click the [guimenu]``Reboot Systems`` link to select these systems for reboot.
+
+For information about how to cancel a reboot action, see xref:reference:schedule/pending-actions.adoc[].

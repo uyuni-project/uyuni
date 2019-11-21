@@ -1,0 +1,34 @@
+[[ref.webui.intro.quick_search]]
+= Search
+
+In the top bar, {productname} offers a search functionality for Packages, Patches (Errata), Documentation, and Systems.
+To use the search, click the magnifier, then select the search item (choose from [guimenu]``Systems``, [guimenu]``Packages``, [guimenu]``Documentation``, and [guimenu]``Patches``) and type a string to look for a name match.
+Click the btn:[Search] button.
+Your results appear at the bottom of the page.
+
+
+image::top_search.png[scaledwidth=40%]
+
+
+If you misspell a word during your search query, the {productname} search engine performs approximate string (or fuzzy string) matching, returning results that may be similar in spelling to your misspelled queries.
+For example, if you want to search for a certain development system called `test-1.example.com` that is registered with {productname}, but you misspell your query ``tset``, the `test-1.example.com` system still appears in the search results.
+
+[NOTE]
+====
+If you add a distribution, newly synchronize channels, or register a system with a {productname} server, it may take several minutes for it to be indexed and appear in search results.
+To force the rebuild of the search index, enter [command]``rhn-search cleanindex`` on the command line and wait until the rebuild is finished.
+====
+
+* For advanced System searches, refer to:
+xref:reference:systems/advanced-search.adoc[Advanced Search]
+
+* For advanced Patch or Errata searches, refer to:
+xref:reference:patches/patches-advanced-search.adoc[Advanced Search for Patches]
+
+* For advanced Package searches, refer to:
+xref:reference:software/software-package-search.adoc[Package Search]
+
+//* For advanced Documentation searches, refer to:
+//TODO add missing reference:help/ search page content then update this link. Commenting out for 4.0-RC1 2019
+//<<reference-webui-help.adoc#s2-sm-your-rhn-help-docsearch, Documentation search>>.
+

@@ -1,0 +1,45 @@
+[[sd-events]]
+= SD Events
+
+The [guimenu]``Events`` page displays past, current, and scheduled actions on the system.
+You may cancel pending events here.
+The following sections describe the [guimenu]``Events`` subtabs and the features they offer.
+
+
+
+[[sd-events-pend]]
+== Pending
+
+Lists events that are scheduled but have not started.
+
+image::system_details_traditional_events_pending.png[scaledwidth=80%]
+
+
+A prerequisite action must complete successfully before the given action is attempted.
+If an action has a prerequisite, no check box is available to cancel that action.
+Instead, a check box appears next to the prerequisite action; canceling the prerequisite action causes the action in question to fail.
+
+Actions can be chained so that action 'a' requires action 'b' which requires action 'c'. Action 'c' is performed first and has a check box next to it until it is completed successfully.
+If any action in the chain fails, the remaining actions also fail.
+To unschedule a pending event, select the event and click the btn:[Cancel Selected Events] button.
+The following icons indicate the type of events:
+
+* image:spacewalk-icon-packages.png[scaledwidth=1em]
+ -- Package Event,
+* image:spacewalk-icon-patches.png[scaledwidth=1em]
+ -- Patch Event,
+* image:fa-cog.png[scaledwidth=1em]
+ -- Preferences Event,
+* image:fa-desktop.png[scaledwidth=1em]
+ -- System Event.
+
+
+[[sd-events-hist]]
+== History
+
+The default display of the [guimenu]``Events`` tab lists the type and status of events that have failed, occurred or are occurring.
+
+image::system_details_traditional_events_history.png[scaledwidth=80%]
+
+To view details of an event, click its summary in the [guimenu]``System History`` list.
+To go back to the table again, click btn:[Return to history list] at the bottom of the page.

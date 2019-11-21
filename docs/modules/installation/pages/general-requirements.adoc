@@ -1,0 +1,120 @@
+[[installation-general-requirements]]
+= General Requirements
+
+// REMARK this list needs to be cleaned up
+Before you begin installation, ensure that you have:
+
+* Current {scc} organization credentials
+* Access to installation media
+* Environment meets the hardware and networking requirements
+
+This section contains more information on each of these requirements.
+
+For a complete list of supported clients and features, see xref:client-configuration:supported-features.adoc[].
+
+
+[IMPORTANT]
+====
+{productname} {productnumber} is based on SLES {sles-version} {sp-version} as the host operating system.
+{productname} comes with a maintenance lifecycle of two years.
+For more information, see link:https://www.suse.com/lifecycle/[].
+
+Long Term Service Pack Support (LTSS) for {sles-version} cannot be added to {productname}.
+It is also not possible to use SLES for SAP as a base for {productname} to increase the lifecycle of the underlying operating system.
+====
+
+
+
+[[install.scc-register]]
+== Obtain Your SUSE Customer Center Credentials
+
+Create an account with {scc} before installation of {sles} and {productname}.
+
+[[creating.scc.account.mgr]]
+.Procedure: Obtaining Your SCC Organization Credentials
+. Navigate to https://scc.suse.com/login in your Web browser.
+. Log in to your SCC account, or follow the prompts to create a new account.
+. If you have not yet done so, click btn:[Connect to an Organization] and type or search for your organization.
+. Click btn:[Manage my Organizations] and select your organization from the list by clicking on the organization name.
+. Click the btn:[Organization] tab, and then select the btn:[Organization Credentials] tab.
+. Record your login information for use during {productname} setup.
+
+Depending on your organization's setup, you might also need to activate your subscription, using the btn:[Activate Subscriptions] menu.
+
+
+
+[[install.media]]
+== Obtain the Unified Installer
+
+{susemgr} Server and Proxy can be installed with the {sle} Unified Installer.
+
+//REMARK What about Uyuni?
+ifeval::[{suma-content} == true]
+You only require a valid registration code for {productname}.
+You do not require a separate code for SLES{nbsp}{sles-version} {sp-version}.
+endif::[]
+
+If not already done, download the {sle} Unified Installer from https://download.suse.com/index.jsp.
+Direct link to {sle} 15 SP1, required to install SUSE Manager 4.0: https://download.suse.com/index.jsp?product_id=&search=Search&families=22609&version=68287.
+With the Unified Installer you can install many SLE-based base products such as SLES, SLES for SAP Applications, or {susemgr}.
+
+
+
+[[installation-general-supportedbrowsers]]
+== Supported Browsers for the {susemgr} {webui}
+
+In order to use the {webui} to manage your {susemgr} environment, you will need to ensure you are running an up to date web browser.
+
+{susemgr} is supported on:
+
+* Latest Firefox browser shipped with SLES
+* Latest Chrome browser on all operating systems
+* Latest Edge browser shipped with Windows
+
+Windows Internet Explorer is not supported.
+The {productname} {webui} will not render correctly under Windows Internet Explorer.
+
+
+
+== Partition Permissions
+
+When you create disk partitions for the {productname} Server and Proxy, ensure you set the permissions correctly.
+
+For [path]``/var/lib/pgsql``:
+
+* Owner: Read, Write, Execute
+* Group: Read, Execute
+* User: None
+
+For [path]``/var/spacewalk``:
+
+* Owner: Read, Write, Execute
+* Group: Read, Write, Execute
+* User: Read, Execute
+
+Check the permissions with this command:
+
+----
+ls -l /var/lib/pgsql /var/spacewalk
+----
+
+The output should look like this:
+
+----
+drwxr-x--- 1 postgres postgres /var/lib/pgsql
+drwxrwxr-x 1 wwwrun   www      /var/spacewalk
+----
+
+If required, change the permissions with these commands:
+
+----
+chmod 750 /var/lib/pgsql
+chmod 775 /var/spacewalk
+----
+
+And owners with:
+
+----
+chown postgres:postgres /var/lib/pgsql
+chown wwwrun:www /var/spacewalk
+----

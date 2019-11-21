@@ -1,0 +1,135 @@
+[[ref.webui.config.channels]]
+= Configuration Channels
+
+{productname} manages both central and local configuration channels and files.
+Central configuration management allows you to deploy configuration files to multiple systems, and is available for both traditional and salt clients.
+For traditional clients, use local configuration management.
+For salt clients, use state  channels.
+For traditional clients, local configuration management is also available.
+Local configuration management allows you to specify overrides, and select configuration files that are not changed when the system is subscribed to a central channel.
+
+A state channel is a type of a configuration channel used only for Salt clients.
+In state channels, the [path]``init.sls`` file is not automatically generated, you must manually create and edit it.
+State channels can contain arbitrary configuration files that you can reference from within the [path]``init.sls`` file.
+
+.Referencing Configuration Files with Organization ID
+[NOTE]
+====
+You must reference configuration files with the `salt://` prefix, the organization ID, and the channel name.
+For example, to reference [path]``/etc/motd`` use:
+
+----
+file.managed:  - source: salt://manager_org_1/`channel_name`/etc/motd
+----
+====
+
+
+Central configuration or state channels must be created via the links on this page.
+
+Click the name of the configuration channel to see the details page for that channel.
+If you click the number of files in the channel, you are taken to the [guimenu]``List/Remove Files`` page of that channel.
+If you click the number of systems subscribed to the configuration channel, you are taken to the menu:Configuration Channel Details[Systems > Subscribed   Systems] page for that channel.
+
+To create a new central configuration channel:
+
+[[proc.config.channels.create.cfgch]]
+.Procedure: Creating Central Configuration Channel
+. In the {productname} {webui}, navigate to menu:Content Lifecycle Management[Projects], and click btn:[Create Config Channel].
+. Enter a name for the channel.
+. Enter a label for the channel. This field must contain only letters, numbers, hyphens (``-``) and underscores (``_``).
+. Enter a mandatory description for the channel that allows you to distinguish it from other channels.
+. Click the btn:[Create Config Channel] button to create the new channel.
+. The following page is a subset of the [guimenu]``Channel Details`` page and has three tabs: [guimenu]``Overview`` , [guimenu]``Add Files`` , and [guimenu]``Systems`` . The [guimenu]``Channel Details`` page is discussed in <<config-config-channels-channel-details>>.
+
+To create a new state channel with an [path]``init.sls`` file:
+
+[[proc.config.channels.create.statech]]
+.Procedure: Creating State Channel [Salt]
+. In the {productname} {webui}, navigate to menu:Content Lifecycle Management[Projects], and click btn:[Create State Channel].
+. Enter a name for the channel.
+. Enter a label for the channel. This field must contain only letters, numbers, hyphens (``-``) and underscores (``_``).
+. Enter a mandatory description for the channel that allows you to distinguish it from other channels.
+. Enter the [guimenu]``SLS Contents`` for the [path]``init.sls`` file.
+. Click the btn:[Create Config Channel] button to create the new channel.
+. The following page is a subset of the [guimenu]``Channel Details`` page and has four tabs: [guimenu]``Overview``, [guimenu]``List/Remove Files``, [guimenu]``Add Files``, and [guimenu]``Systems``. The [guimenu]``Channel Details`` page is discussed in <<config-config-channels-channel-details>>.
+
+
+[[config-config-channels-channel-details]]
+== Configuration Channel Details
+
+Overview::
+The [guimenu]``Overview`` page of the [guimenu]``Configuration Channel Details``
+page is divided into several panels.
+
+Channel Information:::
+Provides status information for the contents of the channel.
+
+Configuration Actions:::
+Provides access to the most common configuration tasks.
+For Salt clients, there is a link to edit the [path]``init.sls`` file.
+
+Channel Properties [Management]:::
+Edit the name, label, and description of the channel by clicking the btn:[Edit Properties] button.
+
+List/Remove Files::
+This page only appears if there are files in the configuration channel.
+You can remove files or copy the latest versions into a set of local overrides or into other central configuration channels.
+Check the box next to files you want to manipulate and click the respective action button.
+
+Add Files::
+The [guimenu]``Add Files`` page has three subtabs of its own, which allow you to [guimenu]``Upload``, [guimenu]``Import``, or [guimenu]``Create`` configuration files to be included in the channel.
+
+Upload File:::
+To upload a file into the configuration channel, browse for the file on your local system, populate all fields, and click the btn:[Upload Configuration File] button.
+The [guimenu]``Filename/Path`` field is the absolute path where the file will be deployed.
++
+You can set the [guimenu]``Ownership`` via the [guimenu]``user name`` and [guimenu]``group name`` and the [guimenu]``Permissions`` of the file when it is deployed.
++
+If the client has SELinux enabled, you can configure [guimenu]``SELinux contexts`` to enable the required file attributes (such as user, role, and file type).
++
+If the configuration file includes a macro (a variable in a configuration file), enter the symbol that marks the beginning and end of the macro.
+For more information on using macros, see: xref:reference:configuration/files-locally-managed.adoc#s3-sm-file-macros[Including Macros in your Configuration Files]
++
+Import Files:::
+To import files from other configuration channels, including any locally-managed channels, check the box to the left of any file you want to import.
+Then click the btn:[Import Configuration File(s)] button.
++
+
+NOTE: A sandbox icon (image:spacewalk-icon-sandbox.svg[Spacewalk Icon Sandbox,scaledwidth=0.9em]) indicates that the listed file is currently located in a local sandbox.
+Files in a system's sandbox are considered experimental and could be unstable.
+Use caution when selecting them for a central configuration channel.
++
+
+
+Create File:::
+Create a configuration file, directory, or symbolic link to be included in the configuration channel.
+
+.Procedure: Creating a Configuration File, Directory, or Symbolic Link
+... Choose whether you want to create a text file, directory, or symbolic link in the [guimenu]``File Type`` section.
+... In the [path]``Filename/Path`` text box, set the absolute path to where the file should be deployed.
+... If you are creating a symbolic link, indicate the target file and path in the [guimenu]``Symbolic Link Target Filename/Path`` text box.
+... Enter the [guimenu]``User name`` and [guimenu]``Group name`` for the file in the [guimenu]``Ownership`` section, and the [guimenu]``File Permissions Mode``.
+... If the client has SELinux enabled, you can configure [guimenu]``SELinux contexts`` to enable the required file attributes (such as user, role, and file type).
+... If the configuration file includes a macro, enter the symbol that marks the beginning and end of the macro.
+... Then enter the configuration file content in the [guimenu]``File Contents`` field, using the script drop-down box to choose the appropriate scripting language.
+... Click the btn:[Create Configuration File] button to create the new file.
+
+Deploy Files::
+This page only appears when there are files in the channel and a system is subscribed to the channel.
+Deploy all files by clicking the btn:[Deploy All Files] button or check selected files and click the btn:[Deploy Selected Files] button.
+Select to which systems the file(s) should be applied.
+All systems subscribed to this channel are listed.
+If you want to apply the file to a different system, subscribe it to the channel first.
+To deploy the files, click btn:[Confirm & Deploy to Selected Systems].
+
+Systems::
+Manage systems subscribed to the configuration channel via two subtabs:
+
+Subscribed Systems:::
+All systems subscribed to the current channel are displayed.
+Click the name of a system to see the [guimenu]``System Details`` page.
+
+Target Systems:::
+This subtab displays a list of systems enabled for configuration management but not yet subscribed to the channel.
+To add a system to the configuration channel, check the box to the left of the system's name and click the btn:[Subscribe System] button.
+

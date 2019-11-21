@@ -1,0 +1,81 @@
+[[troubleshooting-clients]]
+= Troubleshooting Clients
+
+// Keep this in alphabetical order. We might also want to consider breaking these into their own topics, like we have in the admin guide. LKB 2019-04-05
+
+== Bare Metal Systems
+
+If a bare metal system on the network is not automatically added to the [guilabel]``Systems`` list, check these things first:
+
+* You must have the [path]``pxe-default-image`` package installed.
+* File paths and parameters must be configured correctly. Check that the [path]``vmlinuz0`` and [path]``initrd0.img`` files, which are provided by [path]``pxe-default-image``, are in the locations specified in the [path]``rhn.conf`` configuration file.
+* Ensure the networking equipment connecting the bare metal system to the {productname} server is working correctly, and that you can reach the {productname} server IP address from the server.
+* The bare metal system to be provisioned must have PXE booting enabled in the boot sequence, and must not be attempting to boot an operating system.
+* The DHCP server must be responding to DHCP requests during boot. Check the PXE boot messages to ensure that:
+** the DHCP server is assigning the expected IP address
+** the DHCP server is assigning the the {productname} server IP address as [option]``next-server`` for booting.
+* Ensure Cobbler is running, and that the Discovery feature is enabled.
+
+If you see a blue Cobbler menu shortly after booting, discovery has started.
+If it does not complete successfully, temporarily disable automatic shutdown in order to help diagnose the problem. To disable automatic shutdown:
+
+. Select [option]``pxe-default-profile`` in the Cobbler menu with the arrow keys, and press the Tab key before the timer expires.
+. Add the kernel boot parameter [option]``spacewalk-finally=running`` using the integrated editor, and press Enter to continue booting.
+. Enter a shell with the username [option]``root`` and password [option]``linux`` to continue debugging.
+
+[IMPORTANT]
+.Duplicate profiles
+====
+Due to a technical limitation, it is not possible to reliably distinguish a new bare metal system from a system that has previously been discovered.
+Therefore, we recommended that you do not power on bare metal systems multiple times, as this will result in duplicate profiles.
+====
+
+
+== Cloned Salt Clients
+
+If you have used your hypervisor clone utility, and attempted to register the cloned Salt client, you might get this error:
+
+----
+We're sorry, but the system could not be found.
+----
+
+This is caused by the new, cloned, system having the same machine ID as an existing, registered, system.
+You can adjust this manually to correct the error and register the cloned system successfully.
+
+
+For more information and instructions, see xref:administration:tshoot-registerclones.adoc[].
+
+
+
+== Mounting /tmp with noexec
+
+Salt runs remote commands from [filename]``/tmp`` on the client's filesystem.
+Therefore you must not mount [filename]``/tmp`` with the [option]``noexec`` option.
+
+
+
+== SSL errors
+
+On SLES{nbsp}11 systems, clients can sometimes have SSL errors which make some operations unusable, including package management and bootstrapping.
+In this case, you will see an error like this:
+
+----
+Repository 'SLES11-SP4-SUSE-Manager-Tools x86_64' is invalid.
+[|] Valid metadata not found at specified URL(s)
+Please check if the URIs defined for this repository are pointing to a valid repository.
+Skipping repository 'SLES11-SP4-SUSE-Manager-Tools x86_64' because of the above error.
+Download (curl) error for 'www.example.com':
+Error code: Unrecognized error
+Error message: error:1409442E:SSL routines:SSL3_READ_BYTES:tlsv1 alert protocol version
+----
+
+This occurs because Apache requires TLS{nbsp}v1.2, but older versions of SLES do not support this version of the TLS protocol.
+To fix this error, you need to force Apache to accept a greater range of protocol versions.
+Open the [path]``/etc/apache2/ssl-global.conf`` configuration file, locate the [systemitem]``SSLProtocol`` line, and update it to read:
+
+----
+SSLProtocol all -SSLv2 -SSLv3
+----
+
+This will need to be done manually on the server, and with a Salt state on the Proxy.
+Restart the [systemitem]``apache`` service on each system after making the changes.

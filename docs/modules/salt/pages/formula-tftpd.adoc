@@ -1,0 +1,16 @@
+[[tftpd-formula]]
+= TFTPd Formula
+
+The TFTPd formula is used to configure the TFTP service on the branch server.
+
+
+.Procedure: Configuring TFTP
+
+. In the {susemgr} {webui}, open the details page for the branch server, and navigate to the [guimenu]``Formulas`` tab.
+. Select the [systemitem]``Tftpd`` formula, and click btn:[Save].
+. Navigate to the menu:Formulas[Tftpd] tab, and set these parameters:
+* In the [guimenu]``Internal Network Address`` field, enter the IP address of the branch server (for example: [systemitem]``192.168.1.5``).
+* In the [guimenu]``TFTP Base Directory`` field, enter the path to the saltboot directory (for example, [systemitem]``/srv/saltboot``).
+* In the [guimenu]``Run TFTP Under User`` field, enter [systemitem]``saltboot``.
+. Click btn:[Save Formula] to save your configuration.
+. Apply the highstate.

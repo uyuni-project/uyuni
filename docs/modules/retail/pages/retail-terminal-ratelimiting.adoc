@@ -1,0 +1,18 @@
+[[retail.terminal-ratelimiting]]
+== Rate Limiting Terminals
+
+Salt is able to run commands in parallel on a large number of terminals.
+This can potentially create heavy load on your infrastructure.
+You can use rate-limiting parameters to control the load in your environment.
+
+For more information about rate limiting on terminals, see xref:salt:salt-rate-limiting.adoc[].
+
+
+
+===  Troubleshooting
+
+Sometimes when attempting to reboot a terminal after attempting to apply the Saltboot formula, the terminal will hang at the boot screen.
+This can be caused by a presence ping timeout value being set at a value that is too low.
+You can adjust the presence ping timeout value to fix this problem.
+
+For more information about rate limiting on terminals, see xref:salt:salt-rate-limiting.adoc[].

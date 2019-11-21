@@ -1,0 +1,144 @@
+[[ref.webui.schedule.chains]]
+= Action Chains
+
+You can create action chains{mdash}or grouped actions{mdash}for example, in the menu:Main Menu[Software > Packages] or menu:Software[Packages] subtabs on a system details page (see: xref:reference:systems/system-details/sd-patches.adoc[SD Patches] or:
+xref:reference:systems/system-details/sd-packages.adoc[SD Packages]) or in the menu:Configuration[Deploy Files] subtab on a system details page (see xref:reference:systems/system-details/sd-configuration.adoc#sd-config-deploy-files[Deploy Files]).
+
+The following list of actions may be added to an action chain.
+These actions are supported on both traditional clients and Salt clients.
+Schedulable actions are located under a systems, [guimenu]``System Details`` page on the following subtabs.
+
+.Chainable Actions
+* menu:System Details[Remote Command]
+* menu:System Details[Schedule System Reboot]
+* menu:System Details[States > Highstate]
+* menu:System Details[Software > Packages > List/Remove]
+* menu:System Details[Software > Packages > Install]
+* menu:System Details[Software > Packages > Upgrade]
+* menu:System Details[Software > Patches]
+* menu:System Details[Software > Software Channels]
+* menu:System Details[Configuration]
+* menu:Main Menu[Images > Build]
+
+image::schedule_action_chains.png[scaledwidth=80%]
+
+In the [guimenu]``Action Chain List`` you can click the label to view or edit an [guimenu]``Action Chain``.
+In the top right corner is the [guimenu]``delete action chain`` link.
+To add actions to an existing chain, pick up a "`chainable`" action (such as running a remote command) from a system details page (see:
+xref:reference:systems/system-details.adoc[System Details]).
+
+Then check [guimenu]``Add to Action Chain`` and select an action chain from the drop-down box.
+Confirm with btn:[Schedule].
+
+To create a new action chain, configure the first action, then select [guimenu]``Add to Action Chain`` instead of [guimenu]``Schedule no sooner than``.
+Click the drop-down box, enter a name, and click btn:[Schedule] to save the chain.
+Then proceed to the next action and add it to the new chain.
+
+Action chains can be edited via the menu:Main Menu[Schedule > Action Chains] page.
+Click a chain name to see the actions in the order they will be performed.
+The following tasks can be carried out here:
+
+* Change the order of actions by dragging the respective action to the right position and dropping it.
+* Delete actions from the chain by clicking the [guimenu]``delete action`` link.
+* Inspect the list of systems on which an action is run by clicking the [guimenu]``+`` sign.
+* Delete a single system from an action chain by clicking the [guimenu]``delete system`` link.
+* Delete the complete action chain with the [guimenu]``delete action chain`` link in the top-left corner.
+* Change an action chain label by clicking it.
+* Schedule an action chain for execution on a certain date by clicking the btn:[Save and Schedule] button.
+
+.Unsaved Changes
+[NOTE]
+====
+If you leave the page without clicking either btn:[Save] or btn:[Save and Schedule] all unsaved changes will be discarded.
+In this case, a confirmation dialog will pop up.
+====
+
+
+Currently you cannot add an action to an action chain from the [guimenu]``Edit`` section of the action chain details page.
+When a Chain is scheduled, the actions it contains will be displayed under [guimenu]``Schedule`` on the appropriate pages: [guimenu]``Pending Actions``, [guimenu]``Failed Actions``, or [guimenu]``Completed Actions`` depending on the status.
+If one action fails on a system no other actions from the same chain will be executed on that systems.
+Because of technical limitations it is not possible to reuse Action Chains.
+
+
+
+[[ref.webui.schedule.list]]
+== Actions List
+
+On each action page, each row in the list represents a single scheduled event or action that might affect multiple systems and involve various packages.
+The list contains several columns of information:
+
+* [guimenu]``Filter by Action`` -- Enter a term to filter the listed actions or use the check boxes in this column to select actions. Then either add them to your selection list or archive them by clicking menu:Archive Actions[] . If you archive a pending action, it is not canceled, but the action item moves from the [guimenu]``Pending Actions`` list to the [guimenu]``Archived Actions`` list.
+* [guimenu]``Action`` -- Type of action to perform such as Patches or Package Install. Clicking an action name shows its [guimenu]``Action Details`` page. Refer to <<s3-sm-action-details>> for more information.
+* [guimenu]``Scheduled Time`` -- The earliest day and time the action will be performed.
+* [guimenu]``Succeeded`` -- Number of systems on which this action was successfully carried out.
+* [guimenu]``Failed`` -- Number of systems on which this action has been tried and failed.
+* [guimenu]``In Progress`` -- Number of systems on which this action is taking place.
+* [guimenu]``Total`` -- Total number of systems on which this action has been scheduled.
+
+
+
+
+[[s3-sm-action-details]]
+== Action Details
+
+If you click the name of an action, the [guimenu]``Action Details`` page appears.
+This page is split into the following tabs.
+
+
+
+[[s4-sm-action-details-details]]
+=== Details
+
+General information about the action.
+This is the first tab you see when you click an action.
+It displays the action type, scheduling administrator, earliest execution, and notes.
+
+.Patch Advisory
+[NOTE]
+====
+Clicking the Patch Advisory takes you to the [guimenu]``Patch Details`` page.
+The Patch Advisory appears only if the action is a patch.
+Refer to:
+xref:reference:patches/patch-details.adoc[Patch Details] for more information.
+====
+
+
+
+[[s4-sm-action-details-completed]]
+=== Completed Systems
+
+List of systems on which the action has been successfully performed.
+Clicking a system name displays its [guimenu]``System Details`` page.
+Refer to:
+xref:reference:systems/system-details.adoc[System Details] for more information.
+
+
+
+[[s4-sm-action-details-progress]]
+=== In Progress Systems
+
+List of systems on which the action is now being carried out.
+To cancel an action, select the system by marking the appropriate check box and click the btn:[Unschedule Action] button.
+Clicking a system name shows its [guimenu]``System Details`` page.
+Refer to:
+xref:reference:systems/system-details.adoc[System Details] for more information.
+
+
+
+[[s4-sm-action-details-failed]]
+=== Failed Systems
+
+List of systems on which the action has failed.
+It can be rescheduled here.
+Clicking a system name takes you to its [guimenu]``System Details`` page.
+Refer to:
+xref:reference:systems/system-details.adoc[System Details] for more information.
+
+
+
+[[s4-sm-action-details-packagelist]]
+=== Package List
+
+
+List of packages are associated with this action.
+The tab appears only if the action is package related (installation, removal, etc.).

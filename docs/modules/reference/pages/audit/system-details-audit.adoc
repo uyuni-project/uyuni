@@ -1,0 +1,132 @@
+[[sm-audit-page]]
+= Systems Audit Page
+
+To display a system's audit page, click menu:Systems[system_name > Audit].
+Use this page to schedule and view compliance scans for a particular system.
+Scans are performed by the OpenSCAP tool, which implements NIST's standard Security Content Automation Protocol (SCAP).
+Before you scan a system, make sure that the SCAP content is prepared and all prerequisites in
+xref:reference:audit/audit-openscap-overview.adoc#s1-openscap-suma-prerq[Prerequisites for Using OpenSCAP in {productname}] are met.
+
+== List Scans
+
+This subtab lists a summary of all scans completed on the system.
+The following columns are displayed:
+
+XCCDF Test Result::
+The scan test result name, which provides a link to the detailed results of the scan.
+
+Completed::
+The exact time the scan finished.
+
+Compliance::
+The unweighted pass/fail ratio of compliance based on the Standard used.
+
+P::
+Number of checks that passed.
+
+F::
+Number of checks that failed.
+
+E::
+Number of errors that occurred during the scan.
+
+U::
+Unknown.
+
+N::
+Not applicable to the machine.
+
+K::
+Not checked.
+
+S::
+Not Selected.
+
+I::
+Informational.
+
+X::
+Fixed.
+
+Total::
+Total number of checks.
+
+
+Each entry starts with an icon indicating the results of a comparison to a previous similar scan.
+The icons indicate the following:
+
+* "RHN List Checked" Icon -- no difference between the compared scans.
+* "RHN List Alert" Icon -- arbitrary differences between the compared scans.
+* "RHN List Error" Icon -- major differences between the compared scans. Either there are more failures than the previous scan or less passes
+* "RHN List Check In" Icon -- no comparable scan was found, therefore, no comparison was made.
+
+
+To find out what has changed between two scans in more detail, select the ones you are interested in and click menu:Compare Selected Scans[]
+.
+To delete scans that are no longer relevant, select those and click on menu:Remove Selected Scans[]
+.
+Scan results can also be downloaded in CSV format.
+
+== Scan Details
+
+
+The Scan Details page contains the results of a single scan.
+The page is divided into two sections:
+
+Details of the XCCDF Scan::
+This section displays various details about the scan, including:
+** File System Path: the path to the XCCDF file used for the scan.
+** Command-line Arguments: any additional command-line arguments that were used.
+** Profile Identifier: the profile identifier used for the scan.
+** Profile Title: the title of the profile used for the scan.
+** Scan's Error output: any errors encountered during the scan.
+
+XCCDF Rule Results::
+The rule results provide the full list of XCCDF rule identifiers, identifying tags, and the result for each of these rule checks.
+This list can be filtered by a specific result.
+
+
+[[sm-audit-schedule]]
+== Schedule Audit
+
+Use the Schedule New XCCDF Scan page to schedule new scans for specific machines.
+Scans occur at the system's next scheduled check-in that occurs after the date and time specified.
+The following fields can be configured:
+
+Command-line Arguments:::
+Optional arguments to the [command]``oscap`` command, either:
+** ``--profile PROFILE``: Specifies a particular profile from the XCCDF document.
++
+Profiles are determined by the Profile tag in the XCCDF XML file.
+Use the [command]``oscap`` command to see a list of profiles within a given XCCDF file, for example:
++
+
+----
+# oscap info /usr/local/share/scap/dist_sles12_scap-sles12-oval.xml
+Document type: XCCDF Checklist
+Checklist version: 1.1
+Status: draft
+Generated: 2015-12-12
+Imported: 2016-02-15T22:09:33
+Resolved: false
+Profiles: SLES12-Default
+----
++
+If not specified, the default profile is used.
+Some early versions of OpenSCAP in require that you use the `--profile` option or the scan will fail.
+** ``--skip-valid``: Do not validate input and output files. You can use this option to bypass the file validation process if you do not have well-formed XCCDF content.
+
+Path to XCCDF Document:::
+This is a required field.
+The path parameter points to the XCCDF content location on the client system.
+For example: [path]``/usr/local/share/scap/dist_sles12_scap-sles12-oval.xml``
++
+
+WARNING: The XCCDF content is validated before it is run on the remote system.
+Specifying invalid arguments can cause [command]``spacewalk-oscap`` to fail to validate or run.
+Due to security concerns, the [command]``oscap xccdf eval`` command only accepts a limited set of parameters.
++
+
+For information about how to schedule scans using the {webui}
+, refer to:
+xref:reference:audit/audit-openscap-overview.adoc#pro-os-suma-audit-scans-webui[Procedure: Scans via the Web Interface]

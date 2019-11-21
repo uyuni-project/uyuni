@@ -1,0 +1,15 @@
+[[contact-methods-intro]]
+= Contact Methods
+
+There are a number of ways that the {productname} Server can communicate with clients.
+Which one you use depends on your network architecture.
+
+The {productname} daemon ([command]``rhnsd``) runs on traditional client systems and periodically connects with {productname} to check for new updates and notifications.
+It does not apply to Salt clients.
+
+Push via SSH and Push via Salt SSH are used in environments where clients cannot reach the {productname} Server directly.
+In this environment, clients are located in a firewall-protected zone called a DMZ.
+No system within the DMZ is authorized to open a connection to the internal network, including the {productname} Server.
+
+OSAD is an alternative contact method between {productname} and its clients.
+OSAD allows registered client systems to execute scheduled actions immediately.

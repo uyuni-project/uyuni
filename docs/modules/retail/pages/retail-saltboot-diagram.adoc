@@ -1,0 +1,8 @@
+[[retail.saltboot.diagram]]
+== Saltboot Diagram
+
+The saltboot process involves the {productname} Server, a terminal running the saltboot ``initrd``, and the branch server providing the saltboot services to the terminal.
+
+This sequence diagram explains how the three components interact with each other to boot a {smr} terminal.
+
+image::saltboot-sequence.png[scaledwidth=80%]

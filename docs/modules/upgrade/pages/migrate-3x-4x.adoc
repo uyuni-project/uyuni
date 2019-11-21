@@ -1,0 +1,392 @@
+[[bp.chap.mgr.migration]]
+= Migrating from Version 3.2 to Version 4
+
+
+Migrating {productname} from version 3.2 to 4.0 must be done using two systems.
+The migration happens from the original source system to a new target system.
+In-place migration is not available.
+
+While this means that you temporarily need two systems, it also means that the source system remains fully functional.
+This is useful to reduce downtime, and can act as a fallback if the migration is not successful.
+
+Given the complexity of this process, if you experience any problems during the migration, you will need to start over from the beginning.
+
+The migration involves exporting the entire database from the source system and restoring it on the target system.
+Additionally, all of the channels and packages need to be copied to the target system.
+You should expect the entire process to take several hours.
+
+[WARNING]
+====
+Migrating to 4.0 from an older version can be difficult.
+We strongly recommend that you contact SUSE Consulting to assist with this process.
+====
+
+
+
+== Prepare to Migrate
+
+The source system must be running {productname} 3.2 with all the latest updates applied.
+Before you start, ensure that the system is up to date and all updates have been installed successfully.
+
+[IMPORTANT]
+====
+It is important that PostgreSQL 10 is already running on your {productname} 3.2 system.
+For more information, see xref:db-migration.adoc[].
+====
+
+During migration, the database on the source system needs to get exported.
+The database export is compressed, and temporarily stored on the target system.
+The compression is done using [command]``gzip`` using the default compression options.
+Maximum compression only yields about 10% of space savings.
+Before you begin, use this command on the source system to check the size of the database:
+----
+du -sch /var/lib/pgsql/data
+----
+
+Ensure you have at least 30% of the total database size available in [path]``/var/spacewalk/tmp`` on the target system.
+
+The [path]``/var/spacewalk/tmp`` directory will be created if it does not exist.
+If you want the export to be stored somewhere else, change the [var]``$TMPDIR`` variable at the beginning of the migration script.
+
+
+
+== Set Up the Target System
+
+In this example, we are using ``suma40`` as the hostname of the target system.
+
+.Procedure: Setting Up the Target System
+. On the target system, install {productname} Server 4.0 on {sle} 15 SP1, using the unified installer.
+For more information about installing {productname}, see xref:installation:install-server-unified.adoc[].
+. From the command prompt, run the {yast} {productname} setup tool:
++
+----
+yast2 susemanager_setup
+----
+. On the setup screen, check [guimenu]``Migrate a SUSE Manager compatible server``.
+. In the [guimenu]``Hostname of source SUSE Manager Server`` field, enter the source system hostname and domain.
+. Enter the database credentials of the source system.
+. Enter the IP address of the target system, or accept the default value if it is correct.
+If multiple IP addresses are available, ensure you specify the correct one.
+. Follow the prompts to complete the migration.
+{yast} will terminate after the process is complete.
+
+
+[IMPORTANT]
+====
+Be careful when you specify the database credentials.
+Ensure you use the same database parameters as the source system.
+Even if you intend to change it later on, the database credentials must match during migration.
+====
+
+
+[NOTE]
+====
+During the migration process, the target system will fake its hostname to match the source system.
+Do not change the hostname during the process.
+Be careful when you log in to your systems during migration, as they will both show the same hostname.
+====
+
+To speed up the actual migration and thus reducing the server downtime, you can copy the system data in advance.
+For more information, see <<migration.troubleshooting.systemdata>>.
+
+
+
+== Migration
+
+When your target system is ready, begin the migration with this command:
+
+----
+/usr/lib/susemanager/bin/mgr-setup -m
+----
+
+This command reads the data that was gathered during the setup procedure, sets up {productname} on the new target system, and transfers all of the data from the source system.
+
+Several operations need to be performed on the source system using SSH, so you will be prompted once for the root password of the source system.
+A temporary SSH key named `migration-key` is created and installed on the source system, so you need to give the {rootuser} password only once.
+The temporary SSH key will be deleted after the migration is finished.
+
+Depending on the size of the installation, the migration can take several hours.
+When the migration has finished successfully, a `migration successful`` message is shown, and you are prompted to shut down the source system.
+
+When you have received the `migration successful`` message, you need to reconfigure the network of the target system to use the same IP address and host name as the original system.
+You will also need to restart the target system before it can be used.
+
+
+
+[[migration.troubleshooting]]
+== Troubleshooting
+
+A complete migration can consume a lot of time.
+This is caused by the amount of data that must be copied.
+Here are some hints how you can compensate it.
+
+
+
+[[migration.troubleshooting.systemdata]]
+=== Copy System Data to the Target System
+
+
+These numbers from a test installation illustrate the approximate time it takes to export and import a small 1.8{nbsp}GB database:
+----
+14:53:37   Dumping remote database to /var/spacewalk/tmp/susemanager.dmp.gz on target system. Please wait...
+14:58:14   Database successfully dumped. Size is: 506M
+14:58:29   Importing database dump. Please wait...
+15:05:11   Database dump successfully imported.
+----
+
+In this example, exporting the database took around five minutes, and importing the export onto the target system took an additional seven minutes.
+For big installations this can take up to several hours.
+
+You also need to account for the time it takes to copy all the package data to the target system.
+Depending on your network infrastructure and hardware, this can also take a significant amount of time.
+
+You can copy the data at any time before the migration process.
+Copying the data before you migrate can significantly reduce the amount of downtime required.
+
+.Procedure: Migrating System Data
+
+. On the target system, at the command prompt, migrate the data:
++
+----
+mgr-setup -r
+----
+
+While the data migration is in progress, the SUSE Manager services will be shut down.
+This is to ensure that no data is written to the database during the migration.
+
+
+
+[[migration.troubleshooting.pkgdata]]
+=== Integrate Externally Stored Package Data
+
+.Procedure: Migrating Data on an External Storage Device
+
+If you have package data on external storage you do not need to copy this data to the new system.
+For example, if you have an NFS mount at [path]``/var/spacewalk/packages``.
+
+Follow this procedure after migration is finished, and before you start your target system for the first time.
+
+. Open the script at [path]``/usr/lib/susemanager/bin/mgr-setup``.
+. Locate the [command]``rsync`` command on or around line 442, delete or comment it out, and save the file.
+. Ensure your external storage is mounted on the target system.
+. If [path]``/srv/www/htdocs/pub`` exists on your external storage, ensure it is mounted.
+. Start the upgraded target system for the first time, and ensure it can access your external storage device.
+
+[IMPORTANT]
+====
+All files and directories that have not been copied by the migration tool will need to be manually copied to the new system.
+====
+
+
+// FIXME: 2019-05-16, ke: replace it with version 4 output
+// 2019-05-20, ke: Commented on dev request
+////
+[[bp.sec.mgr.migration.example]]
+== Example Session
+
+
+This is the output of a typical migration:
+
+----
+suma30# /usr/lib/susemanager/bin/mgr-setup -m
+  Filesystem type for /var/spacewalk is ext4 - ok.
+  Open needed firewall ports...
+  Migration needs to execute several commands on the remote machine.
+  Please enter the root password of the remote machine.
+Password:
+  Remote machine is SUSE Manager
+  Remote system is already migrated to SCC. Good.
+  Shutting down remote spacewalk services...
+  Shutting down spacewalk services...
+  Stopping Taskomatic...
+  Stopped Taskomatic.
+  Stopping cobbler daemon: ..done
+
+  Stopping rhn-search...
+  Stopped rhn-search.
+  Stopping MonitoringScout ...
+  [ OK ]
+  Stopping Monitoring ...
+  [ OK ]
+  Shutting down osa-dispatcher: ..done
+  Shutting down httpd2 (waiting for all children to terminate) ..done
+  Shutting down Tomcat (/usr/share/tomcat6)
+  ..done
+  Terminating jabberd processes...
+        Stopping router ..done
+        Stopping sm ..done
+        Stopping c2s ..done
+        Stopping s2s ..done
+  Done.
+  CREATE ROLE
+  * Loading answer file: /root/spacewalk-answers.
+  ** Database: Setting up database connection for PostgreSQL backend.
+  ** Database: Populating database.
+  ** Database: Skipping database population.
+  * Configuring tomcat.
+  * Setting up users and groups.
+  ** GPG: Initializing GPG and importing key.
+  * Performing initial configuration.
+  * Configuring apache SSL virtual host.
+  ** /etc/apache2/vhosts.d/vhost-ssl.conf has been backed up to vhost-ssl.conf-swsave
+  * Configuring jabberd.
+  * Creating SSL certificates.
+  ** Skipping SSL certificate generation.
+  * Deploying configuration files.
+  * Setting up Cobbler..
+  * Setting up Salt Master.
+  11:26:47   Dumping remote database. Please wait...
+  11:26:50   Database successfully dumped.
+  Copy remote database dump to local machine...
+  Delete remote database dump...
+  11:26:50   Importing database dump. Please wait...
+  11:28:55   Database dump successfully imported.
+  Schema upgrade: [susemanager-schema-2.1.50.14-3.2.devel21] -> [susemanager-schema-3.0.5-5.1.develHead]
+  Searching for upgrade path to: [susemanager-schema-3.0.5-5.1]
+  Searching for upgrade path to: [susemanager-schema-3.0.5]
+  Searching for upgrade path to: [susemanager-schema-3.0]
+  Searching for start path:  [susemanager-schema-2.1.50.14-3.2]
+  Searching for start path:  [susemanager-schema-2.1.50.14]
+  The path: [susemanager-schema-2.1.50.14] -> [susemanager-schema-2.1.50.15] -> [susemanager-schema-2.1.51] -> [susemanager-schema-3.0]
+  Planning to run schema upgrade with dir '/var/log/spacewalk/schema-upgrade/schema-from-20160112-112856'
+  Executing spacewalk-sql, the log is in [/var/log/spacewalk/schema-upgrade/schema-from-20160112-112856-to-susemanager-schema-3.0.log].
+(248/248) apply upgrade [schema-from-20160112-112856/99_9999-upgrade-end.sql]        e-suse-channels-to-public-channel-family.sql.postgresql]
+  The database schema was upgraded to version [susemanager-schema-3.0.5-5.1.develHead].
+  Copy files from old SUSE Manager...
+  receiving incremental file list
+  ./
+  packages/
+
+  sent 18 bytes  received 66 bytes  168.00 bytes/sec
+  total size is 0  speedup is 0.00
+  receiving incremental file list
+  ./
+  RHN-ORG-TRUSTED-SSL-CERT
+  res.key
+  rhn-org-trusted-ssl-cert-1.0-1.noarch.rpm
+  suse-307E3D54.key
+  suse-39DB7C82.key
+  suse-9C800ACA.key
+  bootstrap/
+  bootstrap/bootstrap.sh
+  bootstrap/client-config-overrides.txt
+  bootstrap/sm-client-tools.rpm
+
+  sent 189 bytes  received 66,701 bytes  44,593.33 bytes/sec
+  total size is 72,427  speedup is 1.08
+  receiving incremental file list
+  ./
+  .mtime
+  lock
+  web.ss
+  config/
+  config/distros.d/
+  config/images.d/
+  config/profiles.d/
+  config/repos.d/
+  config/systems.d/
+  kickstarts/
+  kickstarts/autoyast_sample.xml
+  loaders/
+  snippets/
+  triggers/
+  triggers/add/
+  triggers/add/distro/
+  triggers/add/distro/post/
+  triggers/add/distro/pre/
+  triggers/add/profile/
+  triggers/add/profile/post/
+  triggers/add/profile/pre/
+  triggers/add/repo/
+  triggers/add/repo/post/
+  triggers/add/repo/pre/
+  triggers/add/system/
+  triggers/add/system/post/
+  triggers/add/system/pre/
+  triggers/change/
+  triggers/delete/
+  triggers/delete/distro/
+  triggers/delete/distro/post/
+  triggers/delete/distro/pre/
+  triggers/delete/profile/
+  triggers/delete/profile/post/
+  triggers/delete/profile/pre/
+  triggers/delete/repo/
+  triggers/delete/repo/post/
+  triggers/delete/repo/pre/
+  triggers/delete/system/
+  triggers/delete/system/post/
+  triggers/delete/system/pre/
+  triggers/install/
+  triggers/install/post/
+  triggers/install/pre/
+  triggers/sync/
+  triggers/sync/post/
+  triggers/sync/pre/
+
+  sent 262 bytes  received 3,446 bytes  7,416.00 bytes/sec
+  total size is 70,742  speedup is 19.08
+  receiving incremental file list
+  kickstarts/
+  kickstarts/snippets/
+  kickstarts/snippets/default_motd
+  kickstarts/snippets/keep_system_id
+  kickstarts/snippets/post_delete_system
+  kickstarts/snippets/post_reactivation_key
+  kickstarts/snippets/redhat_register
+  kickstarts/snippets/sles_no_signature_checks
+  kickstarts/snippets/sles_register
+  kickstarts/snippets/sles_register_script
+  kickstarts/snippets/wait_for_networkmanager_script
+  kickstarts/upload/
+  kickstarts/wizard/
+
+  sent 324 bytes  received 1,063 bytes  2,774.00 bytes/sec
+  total size is 12,133  speedup is 8.75
+  receiving incremental file list
+  ssl-build/
+  ssl-build/RHN-ORG-PRIVATE-SSL-KEY
+  ssl-build/RHN-ORG-TRUSTED-SSL-CERT
+  ssl-build/index.txt
+  ssl-build/index.txt.attr
+  ssl-build/latest.txt
+  ssl-build/rhn-ca-openssl.cnf
+  ssl-build/rhn-ca-openssl.cnf.1
+  ssl-build/rhn-org-trusted-ssl-cert-1.0-1.noarch.rpm
+  ssl-build/rhn-org-trusted-ssl-cert-1.0-1.src.rpm
+  ssl-build/serial
+  ssl-build/d248/
+  ssl-build/d248/latest.txt
+  ssl-build/d248/rhn-org-httpd-ssl-archive-d248-1.0-1.tar
+  ssl-build/d248/rhn-org-httpd-ssl-key-pair-d248-1.0-1.noarch.rpm
+  ssl-build/d248/rhn-org-httpd-ssl-key-pair-d248-1.0-1.src.rpm
+  ssl-build/d248/rhn-server-openssl.cnf
+  ssl-build/d248/server.crt
+  ssl-build/d248/server.csr
+  ssl-build/d248/server.key
+  ssl-build/d248/server.pem
+
+  sent 380 bytes  received 50,377 bytes  101,514.00 bytes/sec
+  total size is 90,001  speedup is 1.77
+  SUSE Manager Database Control. Version 1.5.2
+  Copyright (c) 2012 by SUSE Linux Products GmbH
+
+  INFO: Database configuration has been changed.
+  INFO: Wrote new general configuration. Backup as /var/lib/pgsql/data/postgresql.2016-01-12-11-29-42.conf
+  INFO: Wrote new client auth configuration. Backup as /var/lib/pgsql/data/pg_hba.2016-01-12-11-29-42.conf
+  INFO: New configuration has been applied.
+  Database is online
+  System check finished
+
+  ============================================================================
+  Migration complete.
+  Please shut down the old SUSE Manager server now.
+  Reboot the new server and make sure it uses the same IP address and hostname
+  as the old SUSE Manager server!
+
+  IMPORTANT: Make sure, if applicable, that your external storage is mounted
+  in the new server as well as the ISO images needed for distributions before
+  rebooting the new server!
+  ============================================================================
+----
+////

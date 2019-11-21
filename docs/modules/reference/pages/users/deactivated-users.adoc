@@ -1,0 +1,14 @@
+[[ref.webui.users.list.deact]]
+= Deactivated Users
+
+
+The deactivated user list shows all deactivated users.
+You may also reactivate any user listed here.
+
+
+image::users_deactivated_user_list.png[scaledwidth=80%]
+
+
+Click the check box to the left of their name and click the btn:[Reactivate] button then the btn:[Confirm] button.
+Reactivated users retain the permissions and system group associations they had when they were deactivated.
+Clicking a user name shows the [guimenu]``User Details`` page.

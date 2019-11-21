@@ -1,0 +1,20 @@
+= Projects
+
+.Procedure: Creating a Content Lifecycle Project
+
+. In the {productname} {webui}, navigate to menu:Content Lifecycle Management[Projects], and click btn:[Create Project]
+. In the [guimenu]``label`` field, enter a label for your project.
+The [guimenu]``label`` field only accepts lowercase letters, numbers, periods (``.``), hyphens (``-``) and underscores (``_``).
+. In the [guimenu]``name`` field, enter a descriptive name for your project.
+. Click the btn:[Create] button to create your project and return to the project page.
+. Click btn:[Add new Source].
+. In the [guimenu]``Sources`` dialog, select the source type, and select a base channel for your project.
+The available child channels for the selected base channel will be displayed, including information on whether the channel is mandatory or recommended.
+. Select the child channels you require, and click btn:[Save] to return to the project page.
+The software channels you selected should now be showing.
+. Click btn:[Add new Environment].
+. In the [guimenu]``Environment Lifecycle`` dialog, give the first environment a name and a description, and click btn:[Save].
+The [guimenu]``name`` field only accepts lowercase letters, numbers, periods (``.``), hyphens (``-``) and underscores (``_``).
+. Continue creating environments until you have all the environments for your lifecycle completed.
+You can select the order of the environments in the lifecycle by selecting an environment in the [guimenu]``Insert before`` field when you create it.
+

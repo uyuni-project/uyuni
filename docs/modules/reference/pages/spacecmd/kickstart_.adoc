@@ -1,0 +1,595 @@
+[[spacecmd.functions.kickstart]]
+= kickstart_
+
+The following spacecmd functions are available for use with kickstart.
+
+== kickstart_addactivationkeys
+
+Add activation keys to a Kickstart profile.
+
+[source]
+--
+usage: kickstart_addactivationkeys PROFILE <KEY ...>
+--
+
+
+
+== kickstart_addchildchannels
+
+Add a child channels to a Kickstart profile.
+
+[source]
+--
+usage: kickstart_addchildchannels PROFILE <CHANNEL ...>
+--
+
+
+
+== kickstart_addcryptokeys
+
+Add cryptography keys to a Kickstart profile.
+
+[source]
+--
+usage: kickstart_addcryptokeys PROFILE <KEY ...>
+--
+
+
+
+== kickstart_addfilepreservations
+
+Add file preservations to a Kickstart profile.
+
+[source]
+--
+usage: kickstart_addfilepreservations PROFILE <FILELIST ...>
+--
+
+
+
+== kickstart_addoption
+
+Set an option for a Kickstart profile.
+
+[source]
+--
+usage: kickstart_addoption PROFILE KEY [VALUE]
+--
+
+
+
+== kickstart_addpackages
+
+Add packages to a Kickstart profile.
+
+[source]
+--
+usage: kickstart_addpackages PROFILE <PACKAGE ...>
+--
+
+
+
+== kickstart_addscript
+
+Add a script to a Kickstart profile.
+
+[source]
+--
+usage: kickstart_addscript PROFILE [options]
+
+options:
+  -p PROFILE
+  -e EXECUTION_TIME ['pre', 'post']
+  -i INTERPRETER
+  -f FILE
+  -c execute in a chroot environment
+  -t ENABLING_TEMPLATING
+--
+
+
+
+== kickstart_addvariable
+
+Add a variable to a Kickstart profile.
+
+[source]
+--
+usage: kickstart_addvariable PROFILE KEY VALUE
+--
+
+
+== kickstart_clone
+
+Clone a Kickstart profile.
+
+[source]
+--
+usage: kickstart_clone [options]
+
+options:
+  -n NAME
+  -c CLONE_NAME
+--
+
+
+
+== kickstart_create
+
+Create a Kickstart profile.
+
+[source]
+--
+usage: kickstart_create [options]
+
+options:
+  -n NAME
+  -d DISTRIBUTION
+  -p ROOT_PASSWORD
+  -v VIRT_TYPE ['none', 'para_host', 'qemu', 'xenfv', 'xenpv']
+--
+
+
+
+== kickstart_delete
+
+Delete kickstart profile(s).
+
+[source]
+--
+usage: kickstart_delete PROFILE
+usage: kickstart_delete PROFILE1 PROFILE2
+usage: kickstart_delete "PROF*"
+--
+
+
+
+== kickstart_details
+
+Show the details of a Kickstart profile.
+
+[source]
+--
+usage: kickstart_details PROFILE
+--
+
+
+
+== kickstart_diff
+
+List differences between two kickstart files.
+
+[source]
+--
+usage: kickstart_diff SOURCE_CHANNEL TARGET_CHANNEL
+--
+
+
+
+== kickstart_disableconfigmanagement
+
+Disable configuration management on a Kickstart profile.
+
+[source]
+--
+usage: kickstart_disableconfigmanagement PROFILE
+--
+
+
+
+== kickstart_disableremotecommands
+
+Disable remote commands on a Kickstart profile.
+
+[source]
+--
+usage: kickstart_disableremotecommands PROFILE
+--
+
+
+
+== kickstart_enableconfigmanagement
+
+Enable configuration management on a Kickstart profile.
+
+[source]
+--
+usage: kickstart_enableconfigmanagement PROFILE
+--
+
+
+
+== kickstart_enablelogging
+
+Enable logging for a Kickstart profile.
+
+[source]
+--
+usage: kickstart_enablelogging PROFILE
+--
+
+
+
+== kickstart_enableremotecommands
+Enable remote commands on a Kickstart profile.
+
+[source]
+--
+usage: kickstart_enableremotecommands PROFILE
+--
+
+
+
+== kickstart_export
+
+Export kickstart profile(s) to json formatted file.
+
+[source]
+--
+usage: kickstart_export <KSPROFILE>... [options]
+options:
+    -f outfile.json : specify an output filename, defaults to <KSPROFILE>.json
+                      if exporting a single kickstart, profiles.json for multiple
+                      kickstarts, or ks_all.json if no KSPROFILE specified
+                      e.g (export ALL)
+
+Note : KSPROFILE list is optional, default is to export ALL
+--
+
+
+
+== kickstart_getcontents
+
+Show the contents of a Kickstart profile as they would be presented to a client.
+
+[source]
+--
+usage: kickstart_getcontents LABEL
+--
+
+
+
+== kickstart_getsoftwaredetails
+
+Gets kickstart profile software details.
+
+[source]
+--
+usage: kickstart_getsoftwaredetails KS_LABEL
+usage: kickstart_getsoftwaredetails KS_LABEL KS_LABEL2 ...
+--
+
+
+
+== kickstart_getupdatetype
+
+Get the update type for a kickstart profile(s).
+
+[source]
+--
+usage: kickstart_getupdatetype PROFILE
+usage: kickstart_getupdatetype PROFILE1 PROFILE2
+usage: kickstart_getupdatetype "PROF*"
+--
+
+
+
+== kickstart_import
+
+Import a Kickstart profile from a file.
+
+[source]
+--
+usage: kickstart_import [options]
+
+options:
+  -f FILE
+  -n NAME
+  -d DISTRIBUTION
+  -v VIRT_TYPE ['none', 'para_host', 'qemu', 'xenfv', 'xenpv']
+--
+
+
+
+== kickstart_import_raw
+
+Import a raw Kickstart or autoyast profile from a file.
+
+[source]
+--
+usage: kickstart_import_raw [options]
+
+options:
+  -f FILE
+  -n NAME
+  -d DISTRIBUTION
+  -v VIRT_TYPE ['none', 'para_host', 'qemu', 'xenfv', 'xenpv']
+--
+
+
+
+== kickstart_importjson
+
+Import kickstart profile(s) from json file.
+
+[source]
+--
+usage: kickstart_import <JSONFILES...>
+--
+
+
+
+== kickstart_list
+
+List the available Kickstart profiles.
+
+[source]
+--
+usage: kickstart_list
+--
+
+
+
+== kickstart_listactivationkeys
+
+List the activation keys associated with a Kickstart profile.
+
+[source]
+--
+usage: kickstart_listactivationkeys PROFILE
+--
+
+
+
+== kickstart_listchildchannels
+
+List the child channels of a Kickstart profile.
+
+[source]
+--
+usage: kickstart_listchildchannels PROFILE
+--
+
+
+
+== kickstart_listcryptokeys
+
+List the crypto keys associated with a Kickstart profile.
+
+[source]
+--
+usage: kickstart_listcryptokeys PROFILE
+--
+
+
+
+== kickstart_listcustomoptions
+
+List the custom options of a Kickstart profile.
+
+[source]
+--
+usage: kickstart_listcustomoptions PROFILE
+--
+
+
+
+== kickstart_listoptions
+
+List the options of a Kickstart profile.
+
+[source]
+--
+usage: kickstart_listoptions PROFILE
+--
+
+
+
+== kickstart_listpackages
+
+List the packages for a Kickstart profile.
+
+[source]
+--
+usage: kickstart_listpackages PROFILE
+--
+
+
+
+== kickstart_listscripts
+
+List the scripts for a Kickstart profile.
+
+[source]
+--
+usage: kickstart_listscripts PROFILE
+--
+
+
+
+== kickstart_listvariables
+
+List the variables of a Kickstart profile.
+
+[source]
+--
+usage: kickstart_listvariables PROFILE
+--
+
+
+
+== kickstart_removeactivationkeys
+
+Remove activation keys from a Kickstart profile.
+
+[source]
+--
+usage: kickstart_removeactivationkeys PROFILE <KEY ...>
+--
+
+
+
+== kickstart_removechildchannels
+
+Remove child channels from a Kickstart profile.
+
+[source]
+--
+usage: kickstart_removechildchannels PROFILE <CHANNEL ...>
+--
+
+
+
+== kickstart_removecryptokeys
+
+Remove crypto keys from a Kickstart profile.
+
+[source]
+--
+usage: kickstart_removecryptokeys PROFILE <KEY ...>
+--
+
+
+
+== kickstart_removefilepreservations
+
+Remove file preservations from a Kickstart profile.
+
+[source]
+--
+usage: kickstart_removefilepreservations PROFILE <FILE ...>
+--
+
+
+
+== kickstart_removeoptions
+
+Remove options from a Kickstart profile.
+
+[source]
+--
+usage: kickstart_removeoptions PROFILE <OPTION ...>
+--
+
+
+
+== kickstart_removepackages
+
+Remove packages from a Kickstart profile.
+
+[source]
+--
+usage: kickstart_removepackages PROFILE <PACKAGE ...>
+--
+
+
+
+== kickstart_removescript
+
+Add a script to a Kickstart profile.
+
+[source]
+--
+usage: kickstart_removescript PROFILE [ID]
+--
+
+
+
+== kickstart_removevariables
+
+Remove variables from a Kickstart profile.
+
+[source]
+--
+usage: kickstart_removevariables PROFILE <KEY ...>
+--
+
+
+
+== kickstart_rename
+
+Rename a Kickstart profile
+
+[source]
+--
+usage: kickstart_rename OLDNAME NEWNAME
+--
+
+
+
+== kickstart_setcustomoptions
+
+Set custom options for a Kickstart profile.
+
+[source]
+--
+usage: kickstart_setcustomoptions PROFILE
+--
+
+
+
+== kickstart_setdistribution
+
+Set the distribution for a Kickstart profile.
+
+[source]
+--
+usage: kickstart_setdistribution PROFILE DISTRIBUTION
+--
+
+
+
+== kickstart_setlocale
+
+Set the locale for a Kickstart profile.
+
+[source]
+--
+usage: kickstart_setlocale PROFILE LOCALE
+--
+
+
+
+== kickstart_setpartitions
+
+Set the partitioning scheme for a Kickstart profile.
+
+[source]
+--
+usage: kickstart_setpartitions PROFILE
+--
+
+
+
+== kickstart_setselinux
+
+Set the SELinux mode for a Kickstart profile.
+
+[source]
+--
+usage: kickstart_setselinux PROFILE MODE
+--
+
+
+
+== kickstartsetupdatetype
+
+Set the update type for a kickstart profile(s).
+
+[source]
+--
+usage: kickstartsetupdatetype [options] KS_LABEL
+
+options:
+    -u UPDATE_TYPE ['red_hat', 'all', 'none']
+--
+
+
+
+== kickstart_updatevariable
+
+Update a variable in a Kickstart profile.
+
+[source]
+--
+usage: kickstart_updatevariable PROFILE KEY VALUE
+--

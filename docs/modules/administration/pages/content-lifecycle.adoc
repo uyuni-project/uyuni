@@ -1,0 +1,142 @@
+[[content-lifecycle]]
+= Content Lifecycle Management
+
+Content Lifecycle Management allows you to customize and test packages before updating production systems.
+This is especially useful if you need to apply updates during a limited maintenance window.
+
+Content Lifecycle Management allows you to select software channels as sources, adjust them as required for your environment, and thoroughly test them before installing onto your production systems.
+
+While you cannot directly modify vendor channels, you can clone them and then modify the clones by adding or removing packages and custom patches.
+You can then assign these cloned channels to test systems to ensure they work as expected and, once all tests pass, apply them to production servers.
+
+This is achieved through a series of environments that your software channels can move through on their lifecycle.
+Most environment lifecycles include at least test and production environments, but you can have as many environments as you require.
+
+This section covers the basic content lifecycle procedures, and the filters available.
+For more specific examples, see xref:administration:content-lifecycle-examples.adoc[].
+
+
+
+== Create a Content Lifecycle Project
+
+. In the {productname} {webui}, navigate to menu:Content Lifecycle[Content Lifecycle Projects], and click btn:[Create Project].
+. In the [guimenu]``Label`` field, enter a label for your project.
+The [guimenu]``Label`` field only accepts lowercase letters, numbers, periods (``.``), hyphens (``-``) and underscores (``_``).
+. In the [guimenu]``Name`` field, enter a descriptive name for your project.
+. Click the btn:[Create] button to create your project and return to the project page.
+. Click btn:[Attach/Detach Sources].
+. In the [guimenu]``Sources`` dialog, select the source type, and select a base channel for your project.
+The available child channels for the selected base channel are displayed, including information on whether the channel is mandatory or recommended.
+. Check the child channels you require, and click btn:[Save] to return to the project page.
+The software channels you selected should now be showing.
+. Click btn:[Attach/Detach Filters].
+. In the [guimenu]``Filters`` dialog, select the filters you want to attach to the project.
+To create a new filter, click btn:[Create new Filter].
+. Click btn:[Add Environment].
+. In the [guimenu]``Environment Lifecycle`` dialog, give the first environment a name and a description, and click btn:[Save].
+The [guimenu]``Name`` field only accepts lowercase letters, numbers, periods (``.``), hyphens (``-``) and underscores (``_``).
+. Continue creating environments until you have all the  environments for your lifecycle completed.
+You can select the order of the environments in the lifecycle by selecting an environment in the [guimenu]``Insert before`` field when you create it.
+
+
+
+== Filter Types
+
+{productname} allows you to create various types of filters to control the content on project build.
+This is the list of supported filters:
+
+* package filtering
+** by name
+** by name, epoch, version, release and architecture
+* patch filtering
+** by advisory name
+** by advisory type
+** by synopsis
+** by keyword
+** by date
+** by affected package
+
+
+[NOTE]
+====
+Package dependencies are not resolved during content filtering.
+====
+
+
+There are multiple matchers you can use with the filter.
+Which ones are available will depend on the filter type you choose.
+The full list is:
+
+* contains
+* matches (must take the form of a regular expression)
+* equals
+* greater
+* greater or equal
+* lower or equal
+* lower
+* later or equal
+
+
+=== Filter ``rule`` Parameter
+Moreover, each filter has a ``rule`` parameter set to either ``Allow`` or ``Deny``.
+The filters are processed:
+
+* If a package or patch satisfies a ``Deny`` filter, it will be excluded from the result.
+* If a package or patch satisfies an ``Allow`` filter, it will be included in the result (even if it was excluded by a ``Deny`` filter).
+
+This behavior is useful when you want to exclude large number of packages or patches using a general ``Deny`` filter and "cherry-pick" specific packages or patches with specific ``Allow`` filters.
+
+[NOTE]
+====
+Content filters are global in your organization and can be shared between projects.
+====
+
+[NOTE]
+====
+If your project already contains built sources, when you add an environment it will automatically populate with the existing content.
+Content will be drawn from the previous environment of the cycle if it had one.
+If there is no previous environment, it will be left empty until the project sources are built again.
+====
+
+
+
+== Build a Content Lifecycle Project
+
+When you have created your project, defined environments, and attached sources and filters, you can build the project for the first time.
+
+Building applies filters to the attached sources and clones them to the first environment in the project.
+
+.Procedure: Building a Content Lifecycle Project
+
+. In the {productname} {webui}, navigate to menu:Content Lifecycle[Content Lifecycle Projects], and select the project you want to build.
+. Review the attached sources and filters, and click btn:[Build].
+. You can monitor build progress in the [guimenu]``Environment Lifecycle`` section.
+
+After the build is finished, the environment version is increased by one and the built sources, such as software channels, can be assigned to your systems.
+
+
+
+== Promote Environments
+
+When the project has been built, the built sources can be sequentially promoted to the environments.
+
+.Procedure: Promoting Environments
+
+. In the {productname} {webui}, navigate to menu:Content Lifecycle[Content Lifecycle Projects], and select the project you want to work with.
+. In the [guimenu]``Environment Lifecycle`` section, locate the environment to promote to its successor, and click btn:[Promote].
+. You can monitor build progress in the [guimenu]``Environment Lifecycle`` section.
+
+
+
+== Assign Systems to Environments
+
+When you build and promote content lifecycle projects, it creates a tree of software channels.
+To add systems to the environment, assign the base and child software channels to your system using menu:Software[Software Channels] in the [guimenu]``System Details`` page for the system.
+
+[NOTE]
+====
+Newly added cloned channels are not assigned to systems automatically.
+If you add or promote sources you will need to manually check and update your channel assignments.
+
+Automatic assignment is intended to be added to {productname} in a future version.
+====

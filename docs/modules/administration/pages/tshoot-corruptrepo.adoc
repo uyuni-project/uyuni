@@ -1,0 +1,34 @@
+[[troubleshooting-corrupt-repos]]
+= Troubleshooting Corrupt Repositories
+
+////
+PUT THIS COMMENT AT THE TOP OF TROUBLESHOOTING SECTIONS
+
+Troubleshooting format:
+
+One sentence each:
+Cause: What created the problem?
+Consequence: What does the user see when this happens?
+Fix: What can the user do to fix this problem?
+Result: What happens after the user has completed the fix?
+
+If more detailed instructions are required, put them in a "Resolving" procedure:
+.Procedure: Resolving Widget Wobbles
+. First step
+. Another step
+. Last step
+////
+
+The information in the repository metadata files can become corrupt or out of date.
+This can create problems with updating clients.
+You can fix this by removing the files and regenerating it.
+With an new repository data file, updates should operate as expected.
+
+.Procedure: Resolving Corrupt Repository Data
+. Remove all files from [path]``/var/cache/rhn/repodata/<channel-label>-updates-x86_64``.
+If you do not know the channel label, you can find it in the {productname} {webui}, by navigating to menu:Software[Channels > Channel Label].
+. Regenerate the file from the command line:
++
+----
+spacecmd softwarechannel_regenerateyumcache <channel-label>-updates-x86_64
+----

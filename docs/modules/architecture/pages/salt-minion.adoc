@@ -1,0 +1,70 @@
+[[arch.component.salt.minion]]
+= salt-minion
+
+
+
+
+
+
+== Functions
+
+The *salt-minion* is a primary component of {productname}. It performs the following functions in the stack.
+
+* **Client-side main process for Salt clients (only pull method)**
+* **Communicates the client with salt-master via Salt event bus (ZeroMQ)**
+* **Executes the actions received from the Salt master on the client (minion)**
+
+
+== salt-minion --help
+
+The following options are available for the *salt-minion*. The following list is not comprehensive, for more information see: http://docs.saltstack.com[The Saltstack Docs]
+
+**Options:**
+
+----
+salt-minion --help
+Usage: salt-minion [options]
+
+The Salt Minion, receives commands from a remote Salt Master
+
+Options:
+  --version             show program's version number and exit
+  -V, --versions-report
+                        Show program's dependencies version number and exit.
+  -h, --help            show this help message and exit
+  --saltfile=SALTFILE   Specify the path to a Saltfile. If not passed, one
+                        will be searched for in the current working directory.
+  -c CONFIG_DIR, --config-dir=CONFIG_DIR
+                        Pass in an alternative configuration directory.
+                        Default: '/etc/salt'.
+  -u USER, --user=USER  Specify user to run salt-minion.
+  -d, --daemon          Run the salt-minion as a daemon.
+  --pid-file=PIDFILE    Specify the location of the pidfile. Default:
+                        '/var/run/salt-minion.pid'.
+
+  Logging Options:
+    Logging options which override any settings defined on the
+    configuration files.
+
+    -l LOG_LEVEL, --log-level=LOG_LEVEL
+                        Console logging log level. One of u'all', u'garbage',
+                        u'trace', u'debug', u'profile', u'info', u'warning',
+                        u'error', u'critical', u'quiet'. Default: 'warning'.
+    --log-file=LOG_FILE
+                        Log file path. Default: '/var/log/salt/minion'.
+    --log-file-level=LOG_LEVEL_LOGFILE
+                        Logfile logging log level. One of u'all', u'garbage',
+                        u'trace', u'debug', u'profile', u'info', u'warning',
+                        u'error', u'critical', u'quiet'. Default: 'warning'.
+
+You can find additional help about salt-minion issuing "man salt-minion" or on
+http://docs.saltstack.com
+----
+
+== Log Files
+
+_Logs for *salt-minion* are located in:_
+
+----
+/var/log/salt/minion
+----

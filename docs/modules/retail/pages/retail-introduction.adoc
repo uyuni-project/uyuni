@@ -1,0 +1,34 @@
+[[retail-intro]]
+= Retail Guide
+
+
+
+
+
+[[retail.sect.intro.what]]
+== What is {smr}?
+
+{smr} {productnumber} is an open source infrastructure management solution, optimized and tailored specifically for the retail industry.
+It uses the same technology as {susemgr}, but is customized to address the needs of retail organizations.
+
+{smr} is designed for use in retail situations where customers can use point-of-service terminals to purchase or exchange goods, take part in promotions, or collect loyalty points.
+In addition to retail installations, it can also be used for novel purposes, such as maintaining student computers in an educational environment, or self-service kiosks in banks or hospitals.
+
+{smr} is intended for use in installations that include servers, workstations, point-of-service terminals, and other devices.
+It allows administrators to install, configure, and update the software on their servers, and manage the deployment and provisioning of point-of-service machines.
+
+
+[[retail.sect.intro.book]]
+== About this book
+
+This document provides an overview of {smr}, and guides you through initial installation and setup.
+It should be read in conjunction with the {susemgr} documentation suite, available from https://documentation.suse.com/suma/4.0/.
+
+For more information about managing your {smr} environment, or to find out where to get help, see xref:retail:retail-next.adoc[].
+
+////
+[[retail.sect.intro.architecture]]
+== Architecture
+
+TODO: Import https://www.suse.com/documentation/suse-manager-for-retail-3-1/book_susemanager_retail/data/sec_overview_architecture.html here
+////

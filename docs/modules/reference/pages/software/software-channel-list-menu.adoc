@@ -1,0 +1,47 @@
+[[ref.webui.software.channel.list.menu]]
+= Channel List Menu
+
+
+
+[[ref.webui.software.channel.list.overview]]
+== Channels Overview
+
+The menu:Main Menu[Software > Channels List] menu item is the first to appear.
+A software channel provides packages grouped by products or applications to simplify the selection of packages to be installed on a system.
+
+There are two types of software channels: base channels and child channels.
+
+[[s3-sm-channel-list-base]]
+Base Channels::
+A base channel consists of packages built for a specific architecture and release.
+For example, all of the packages in {sles}{nbsp}12 for the `x86_64` architecture make up a base channel.
+The list of packages in {sles}{nbsp}12 for the `s390x` architecture make up a different base channel.
++
+
+A system must be subscribed to only one base channel assigned automatically during registration based on the {sle} release and system architecture.
+For paid base channels, an associated subscription must exist.
++
+
+[[sm-channel-list-child]]
+Child Channels::
+A child channel is associated with a base channel and provides extra packages.
+For example, an organization can create a child channel associated with {sles} on `x86_64` architecture that contains extra packages for a custom application.
++
+
+Especially important are the {productname} Tools channels that are available for every base channel.
+These tools channels provide the tools needed to connect the clients with the {productname} server.
++
+
+A system can be subscribed to multiple child channels of its base channel.
+Only packages provided by a subscribed channel can be installed or updated.
+{productname} Administrators and Channel Administrators have channel management authority.
+This authority gives them the ability to create and manage their own custom channels.
++
+
+[NOTE]
+====
+Do not create child channels containing packages that are not compatible with the client system.
+====
++
+
+Channels can be further distinguished by relevance: [guimenu]``All``, [guimenu]``SUSE``, [guimenu]``Channels``, [guimenu]``My Channels``, [guimenu]``Shared``, and [guimenu]``Retired``.

@@ -1,0 +1,210 @@
+[[s3-sm-user-active-details]]
+= User Details
+
+Clicking a user name on a menu:Main Menu[Users > User List] listing displays the [guimenu]``User Details`` page.
+
+
+image::users_user_list.png[scaledwidth=80%]
+
+
+Here {productname} administrators manage the permissions and activity of all the users.
+Here you can also delete or deactivate users.
+
+Users can be deactivated directly in the {productname} Web interface.
+{productname} administrators can deactivate or delete users of their organization.
+Users can deactivate their own accounts.
+
+[NOTE]
+.Users with {productname} Administrator Role
+====
+Users with the {productname} administrator role cannot be deactivated until that role is removed from their account.
+====
+
+Deactivated users cannot log in to the {productname} {webui} or schedule any actions.
+Actions scheduled by a user prior to their deactivation remain in the action queue.
+Deactivated users can be reactivated by {productname} administrators.
+
+[WARNING]
+.Irreversible Deletion
+====
+User deletion is irreversible; exercise it with caution.
+Consider deactivating the user first to assess the effect deletion will have on your infrastructure.
+====
+
+To deactivate a user:
+
+. Click a user name to navigate to the [guimenu]``User Details`` tab.
+. Verify that the user is not a {productname} administrator.
+If they are, uncheck the box to the left of that role and click the btn:[Submit] button.
+. Click the [guimenu]``Deactivate User`` link in the upper right corner of the dialog.
+. Click the btn:[Deactivate User] button to confirm.
+
+To delete a user:
+
+. Click a user name to navigate to the [guimenu]``User Details`` tab.
+. Verify that the user is not a {productname} administrator. Uncheck the box to remove the role if necessary.
+. Click the [guimenu]``Delete User`` link in the upper right corner of the dialog.
+. Click the btn:[Delete User] button to permanently delete the user.
+
+For instructions to deactivate your own account, see xref:reference:home/user-account-account-deactivation.adoc[].
+
+
+
+[[s4-usr-active-details-details]]
+== Details
+
+The [guimenu]``Details`` tab, displays the user name, first name, last name, e-mail address, roles of a user, and other details about the user.
+The menu:Details[] tab, displays the user name, first name, last name, e-mail address, roles of a user, and other details about the user.
+
+
+image::users_user_details.png[scaledwidth=80%]
+
+
+Edit this information as needed and then confirm with btn:[Update].
+When changing a user's password, you will only see asterisks as you type.
+
+To delegate responsibilities within your organization, {productname} provides several roles with varying degrees of access.
+This list describes the permissions of each role and the differences between them:
+
+* [guimenu]``User (normal user)`` -- Also known as a __System Group User__, this is the standard role associated with any newly created user.
+This person may be granted access to manage system groups and software channels, if the {productname} administrator sets the roles accordingly.
+The systems must be in system groups for which the user has permissions to manage them. However, all globally subscribable channels may be used by anyone.
+* [guimenu]``SUSE Manager Administrator`` -- This role allows a user to perform any function available in {productname}.
+
+As the master account for your organization, the person holding this role can alter the privileges of all other accounts of this organization, and conduct any of the tasks available to the other roles.
+Like with other roles, there can be multiple {productname} administrators.
+Go to menu:Main Menu[Admin > Users] and click the check box in the [guimenu]``SUSE Manager Admin`` row.
+For more information, see xref:reference:admin/users.adoc[].
+
+* A [guimenu]``SUSE Manager Administrator`` can create foreign organizations, but a [guimenu]``SUSE Manager Administrator`` can only create users for an organization if they have organization administrator privileges for this organization.
+* [guimenu]``Organization Administrator`` -- This role provides a user with all the permissions other administrators have, namely the activation key, configuration, channel, and system group administrator.
+A [guimenu]``Organization Administrator`` is not entitled to perform actions that belong to the menu:Main Menu[Admin] features.
+For more information, see xref:reference:admin/organizations.adoc[].
+
+* [guimenu]``Activation Key Administrator`` -- This role is designed to manage your collection of activation keys.
+A user assigned to this role can modify and delete any key within your organization.
+* [guimenu]``Image Administrator`` -- This role is designed to manage Image building.
+Modifiable content includes Image Profiles, Image Builds and Image Stores.
+A user assigned with this role can modify and delete all content located under the menu:Main Menu[Images].
+These changes will be applied across the organization.
+* [guimenu]``Configuration Administrator`` -- This role enables a user to manage the configuration of systems within the organization, using either the {productname} {webui} or tool from the [package]#mgr-cfg-management# package.
+* [guimenu]``Channel Administrator`` -- This role provides a user with full access to all software channels within your organization.
+This requires the {productname} synchronization tool ([command]``mgr-sync`` from the [package]#susemanager-tools# package).
+The channel administrator may change the base channels of systems, make channels globally subscribable, and create entirely new channels.
+* [guimenu]``System Group Administrator`` -- This role limits authority to systems or system groups to which access is granted.
+The System Group Administrator can create new system groups, delete any assigned systems from groups, add systems to groups, and manage user access to groups.
+
+Being a {productname} administrator enables you to remove administrator rights from other users.
+It is possible to remove your own privileges as long as you are not the only {productname} administrator.
+
+To assign a new role to a user, check the respective box.
+{productname} administrators are automatically granted administration access to all other roles, signified by grayed-out check boxes.
+Click btn:[Update] to submit your changes.
+
+
+
+[[s4-usr-active-details-sysg]]
+== System Groups
+
+This tab displays a list of system groups the user may administer.
+For more information about system groups, see xref:reference:systems/system-groups.adoc[].
+
+
+image::users_details_system_groups.png[scaledwidth=80%]
+
+
+{productname} administrators can set this user's access permissions to each system group.
+Check or uncheck the box to the left of the system group and click the btn:[Update Permissions] button to save the changes.
+
+{productname} administrators may select one or more default system groups for a user.
+When the user registers a system, it gets assigned to the selected group or groups.
+This allows the user to access the newly-registered system immediately.
+System groups to which this user has access are preceded by an (*).
+
+
+
+[[s4-usr-active-details-systems]]
+== Systems
+
+This tab lists all systems a user can access according to the system groups assigned to the user.
+
+
+image::users_details_systems.png[scaledwidth=80%]
+
+
+To carry out tasks on some of these systems, select the set of systems by checking the boxes to the left and click the btn:[Update List] button.
+Use the [guimenu]``System Set Manager`` page to execute actions on those systems.
+Clicking the name of a system takes you to its [guimenu]``System Details`` page.
+For more information, see xref:reference:systems/system-details/sd-groups.adoc[].
+
+
+
+[[s4-usr-active-details-chans]]
+== Channel Permissions
+
+This tab lists all channels available to your organization.
+
+
+image::users_details_channel_permissions.png[scaledwidth=80%]
+
+
+Grant explicit channel subscription permission to a user for each of the channels listed by checking the box to the left of the channel, then click the btn:[Update Permissions] button.
+Permissions granted by a {productname} administrator or channel administrator have no check box but a check icon like globally subscribable channels.
+
+[[s5-sm-user-details-chanperms-subs]]
+=== Channel Permissions > Subscription
+
+Identifies channels to which the user may subscribe systems.
+
+To change these, select or deselect the appropriate check boxes and click the btn:[Update Permissions] button.
+Note that channels subscribable because of the user's administrator status or the channel's global settings cannot be altered.
+They are identified with a check icon.
+
+
+
+[[s5-sm-user-details-chanperms-mgmt]]
+=== Channel Permissions > Management
+
+Identifies channels the user may manage.
+To change these, select or deselect the appropriate check boxes and click the btn:[Update Permissions] button.
+The permission to manage channels does not enable the user to create new channels.
+Note that channels automatically manageable through the user's admin status cannot be altered.
+These channels are identified with a check icon.
+Remember, {productname} administrators and channel administrators can subscribe to or manage any channel.
+
+
+[[s4-usr-active-details-prefs]]
+== Preferences
+
+Configure the following preference settings for a user.
+
+
+image::users_details_preferences.png[scaledwidth=80%]
+
+
+* [guimenu]``Email Notifications``: Determine whether this user should receive e-mail every time a patch alert is applicable to one or more systems in their {productname} account, and daily summaries of system events.
++
+* [guimenu]``SUSE Manager List Page Size``: Maximum number of items that appear in a list on a single page.
+If the list contains more items than can be displayed on one page, click the btn:[Next] button to see the next page.
+This preference applies to the user's view of system lists, patch lists, package lists, and so on.
+* [guimenu]``Overview Start Page``: Configure which information to be displayed on the "`Overview`" page at login.
+* [guimenu]``Time Zone``: Select the time zone from the drop-down box.
+Dates and times, like system check-in times, will be displayed according to the selected time zone.
+* [guimenu]``CSV Files``: Select whether to use the default comma or a semicolon as separator in downloadable CSV files.
+
+Change these options to fit your needs, then click the btn:[Save Preferences] button.
+
+
+
+[[s4-usr-active-details-addresses]]
+== Addresses
+
+This tab lists mailing addresses associated with the user's account.
+
+
+image::users_details_addresses.png[scaledwidth=80%]
+
+
+If there is no address specified yet, click btn:[Fill in this address] and fill out the form.
+When finished, click btn:[Update].
+To modify this information, click the btn:[Edit this address] button, change the relevant information, and click the btn:[Update] button.

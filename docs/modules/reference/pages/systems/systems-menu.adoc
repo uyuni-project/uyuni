@@ -1,0 +1,4 @@
+[[ref.webui.systems.menu]]
+= Systems Menu
+
+Manage all your systems (including virtual guests) here.

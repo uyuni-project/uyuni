@@ -1,0 +1,46 @@
+[[spacecmd.functions.get]]
+= get_
+
+The following spacecmd commands are available for use with get.
+
+== get_apiversion
+
+Display the API version of the server.
+
+[source]
+--
+usage: get_apiversion
+--
+
+
+
+== get_certificateexpiration
+
+Print the expiration date of the server's entitlement certificate.
+
+[source]
+--
+usage: get_certificateexpiration
+--
+
+
+
+== get_serverversion
+
+Display SUSE Manager server version.
+
+[source]
+--
+usage: get_serverversion
+--
+
+
+
+== get_session
+
+Show the current session string.
+
+[source]
+--
+usage: get_session
+--

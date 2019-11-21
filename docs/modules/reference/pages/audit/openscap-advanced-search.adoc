@@ -1,0 +1,16 @@
+[[ref.webui.audit.advanced.search]]
+= Advanced Search
+
+Use the Advanced Search page to search through your scans according to specified criteria including:
+
+* rule results,
+* targeted machine,
+* time frame of the scan.
+
+
+.OpenSCAP Advanced Search
+
+image::audit_openscap_advanced_search.png[scaledwidth=80%]
+
+
+The search either returns a list of results or a list of scans, which are included in the results.

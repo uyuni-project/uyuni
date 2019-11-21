@@ -1,0 +1,141 @@
+[[ref.webui.admin.org]]
+= Organizations
+
+The organizations feature allows {productname} administrators to create and manage multiple organizations across {productname}.
+Administrators can control an organization's access to system management tasks.
+
+image::admin_list_organizations.png[scaledwidth=80%]
+
+If you click the name of an organization, the Organization Details page appears.
+
+
+
+[[s2-sattools-org-details-details]]
+== Organization Details
+
+The menu:Organization[Organization Details] page lists the details of the selected organization.
+
+image::admin_organization_details.png[scaledwidth=80%]
+
+The following details are available:
+
+* menu:Organization Details[Organization Name] : String (between 3 and 128 characters).
+This is the only value that you can change here.
+When done, confirm with clicking the btn:[Update Organization] button.
+* menu:Organization Details[Organization ID] : Number
+* menu:Organization Details[Active Users] : Number.
+Clicking this number will open the menu:Organization Details[Users] tab.
+* menu:Organization Details[Systems] : Number
+* menu:Organization Details[System Groups] : Number
+* menu:Organization Details[Activation Keys] : Number
+* menu:Organization Details[Autoinstallation Profiles] : Number
+* menu:Organization Details[Configuration Channels] : Number
+
+
+
+[[s2-sattools-org-details-users]]
+== Organization Details > Users
+
+List of all the users of an organization.
+
+image::admin_organization_users.png[scaledwidth=80%]
+
+You can modify the user details if you belong to that organization and have organization administrator privileges.
+
+
+
+[[s2-sattools-org-details-trust]]
+== Organization Details > Trust
+
+Here establish trust between organizations.
+
+image::admin_organization_trusts.png[scaledwidth=80%]
+
+Such a trust allows sharing contents and migrate systems between these two organizations.
+You may add a trust by checking the box next to an organization (or remove a trust by unchecking it) and clicking the btn:[Modify Trusts] button.
+
+
+
+[[s2-sattools-org-details-conf]]
+== Organization Details > Configuration
+
+Allow the Organization Administrator to manage Organization configuration, configure the organization to use staged contents ("`pre-fetching`" packages, etc.), set up software crash reporting, and upload of SCAP files.
+
+image::admin_organization_configuration.png[scaledwidth=80%]
+
+SUSE Manager Configuration::
+Enable menu:SUSE Manager Configuration[Allow Organization Admin to manage Organization Configuration] if desired.
+
+Organization Configuration::
+
+* menu:Organization Configuration[Enable Staging Contents]
+* menu:Organization Configuration[Enable Errata E-mail Notifications (for users belonging to this organization)]
+* menu:Organization Configuration[Enable Software Crash Reporting]
+* menu:Organization Configuration[Enable Upload Of Crash Files]
+* menu:Organization Configuration[Crash File Upload Size Limit]
+* menu:Organization Configuration[Enable Upload Of Detailed SCAP Files]
+* menu:Organization Configuration[SCAP File Upload Size Limit]
+* menu:Organization Configuration[Allow Deletion of SCAP Results]
+* menu:Organization Configuration[Allow Deletion After (period in days)]
+
+When settings are done, confirm with clicking the btn:[Update Organization] button.
+
+
+////
+2018-12-10, ke: /etc/sysconfig/rhn/up2date still exists. @renner confirmed some tools use it
+                (at least, trad. client).  To be renamed in the future.
+////
+
+Enable Staging Contents::
+The clients will download packages in advance and stage them.
+This has the advantage that the package installation action will take place immediately, when the schedule is actually executed.
+This "`pre-fetching`" saves maintenance window time, which is good for service uptime.
+
+For staging contents ("`pre-fetching`"), edit on the server [path]``/etc/sysconfig/rhn/up2date``:
+
+----
+stagingContent=1
+stagingContentWindow=24
+----
+
+`stagingContentWindow` is a time value expressed in hours and determines when downloading will start.
+It is the number of hours before the scheduled installation or update time.
+In this case, it means `24` hours before the installation time.
+The start time for download depends on the selected contact method for a system.
+The assigned contact method sets the time for when the next [command]``mgr_check`` will be executed.
+
+Next time an action is scheduled, packages will automatically be downloaded but not installed yet.
+When the scheduled time comes, the action will use the staged version.
+
+Minion Content Staging::
+Every Organization administrator can enable Content Staging from the Organization configuration page menu:Admin[Organization > OrgName > Configuration > Enable Staging Contents].
+
+Staging content for clients is affected by two parameters.
+
+* [path]``salt_content_staging_advance:`` expresses the advance time, in hours, for the content staging window to open with regard to the scheduled installation/upgrade time.
+* [path]``salt_content_staging_window:`` expresses the duration, in hours, of the time window for Salt clients to stage packages in advance of scheduled installations or upgrades.
+
+A value of *salt_content_staging_advance* equal to *salt_content_staging_window* results in the content staging window closing exactly when the installation/upgrade is scheduled to be executed.
+A larger value allows separating download time from the installation time.
+
+These options are configured in [path]``/usr/share/rhn/config-defaults/rhn_java.conf``
+ and by default assume the following values:
+
+* [path]``salt_content_staging_advance: 8 hours``
+* [path]``salt_content_staging_window: 8 hours``
+
+[NOTE]
+====
+These parameters will only have an effect when Content Staging is enabled for the targeted Organization.
+====
+
+
+
+[[s2-sattools-org-details-states]]
+== Organization Details > States
+
+From the menu:Admin[Organizations > States] page you can assign State to all systems in an organization.
+For example, this way it is possible to define a few global security policies or add a common admin user to all machines.
+
+image::admin_organization_states.png[scaledwidth=80%]
+

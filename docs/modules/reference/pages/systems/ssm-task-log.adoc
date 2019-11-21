@@ -1,0 +1,16 @@
+= SSM Task Log
+
+The SSM Task Log lists all tasks performed against {productname} servers when using SSM. Click on an task's description to see more details.
+
+There are three tabs you may use to filter tasks by status:
+
+* *All* (List all tasks that have been performed)
+
+* **In Progress** (List all tasks currently being performed)
+
+* *Completed* (List all tasks which have been completed)
+
+[NOTE]
+====
+Only child channel subscription changes and package install/remove/upgrade/verify tasks are listed.
+====

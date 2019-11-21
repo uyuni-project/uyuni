@@ -1,0 +1,4 @@
+[[ref.webui.software]]
+= Software Menu
+
+The pages in the menu:Main Menu[Software] category enable you to view and manage software channels and packages associated with your systems.

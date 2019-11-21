@@ -1,0 +1,53 @@
+[[salt.useful-commands]]
+= Salt Useful Commands
+
+
+This section contains the most used Salt commands.
+
+For a complete list of available Salt commands, see https://docs.saltstack.com/en/latest/ref/cli/index.html.
+
+
+salt-run::
+Display all clients that are running:
+----
+salt-run manage.up
+----
+
+Display all clients that are not running:
+----
+salt-run manage.down
+----
+
+Display the current status of all Salt clients:
+----
+salt-run manage.status
+----
+
+Check the version of Salt running on the {productname} Server and active clients:
+----
+salt-run manage.versions
+----
+
+salt-cp::
+Copy a file to a client or set of clients.
+----
+salt-cp '*' foo.conf /root
+----
+
+salt-key -l::
+List public keys:
+----
+salt-key -l
+----
+
+salt-key -a my-minion::
+Accept pending key for a minion:
+----
+salt-key -a my-minion
+----
+
+salt-key -A::
+Accept all pending keys:
+----
+salt-key -A
+----

@@ -1,0 +1,74 @@
+[[salt.formula.example]]
+= Install the Salt Example Formula
+
+// This seems pretty pointless, and a bit out of date.Removed from nav. LKB 2019-08-20
+
+This section provides guidance on installing and using SUSE-provided Salt formulas.
+
+.Procedure: Installing the Locale Formula
+. Install the locale formula with:
++
+
+----
+zypper install locale-formula
+----
++
+NOTE: This installs the package contents to [path]``/usr/share/susemanager/formulas/{metadata,states}``
++
+
+. After installing the RPM, log in to the {productname} {webui}.
+
+. Browse to the menu:Main Menu[System Details] page of any client you would like to apply the formula to.
+
+. On the menu:Main Menu[System Details] page you will see a new btn:[Formulas] tab.
+Select it to view a list of installed formulas.
+
+. From the btn:[Formulas] list select menu:Formulas[Locale] and click btn:[Save].
+
+. A new tab will appear next to the menu:Formula[Locale] subtab. Select the new menu:Formulas[Locale] tab.
+
+. The menu:Formalas[Locale] tab contains options for setting the language, keyboard layout, timezone, and whether hardware clock is set to UTC. Select the desired options and click btn:[Save].
+
+. Run the following command to verify pillar settings. The output has been truncated.
++
+
+----
+salt '$your_client' pillar.items
+----
++
+
+----
+...
+   keyboard_and_language:
+       ----------
+       keyboard_layout:
+           English (US)
+       language:
+           English (US)
+   machine_password:
+       foobar
+   mgr_server:
+       manager_server
+   org_id:alt '$your_client_here'
+       1
+   timezone:
+       ----------
+       hardware_clock_set_to_utc:
+           True
+       name:
+           CET
+    ...
+----
+
+. Apply this state to your client by applying the highstate from the command line with:
++
+
+----
+salt '$your_client' state.highstate
+----
++
+
+[NOTE]
+====
+You can also apply the highstate from the previous formula tab from the {productname} {webui} by selecting menu:System Details[States] and clicking btn:[Apply Highstate].
+====

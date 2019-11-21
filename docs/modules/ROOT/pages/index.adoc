@@ -1,0 +1,73 @@
+= {productname} {productnumber} Documentation
+
+
+== What is {productname}?
+
+// [#salt.gloss] may be used to create a tooltip for a glossary term: see branding/supplemental-ui/suma/sumacom/partials/footer-scripts.hbs
+
+{productname} is a solution for organizations that require absolute control over maintenance and package deployment on their servers.
+{productname} enables you to manage large sets of Linux systems and keep them up to date, with automated software management, asset management, and system provisioning.
+{productname} allows you to maintain a high level of security while effectively managing system life-cycle requirements.
+
+{productname} uses Salt to provide event-driven configuration and management control.
+The Salt-master orchestrates thousands of Salt clients ({productname} Clients) using remote execution.
+
+{productname} offers seamless management of {sle}, {rhel}, Ubuntu, CentOS, and Scientific Linux client systems and is fully compatible with Red Hat Satellite Server.
+
+
+// SUMA index content
+ifeval::[{suma-content} == true]
+== Available Documentation
+
+The following documentation is available for {productname} version {productnumber}.
+
+[IMPORTANT]
+====
+{productname} documentation is available in several locations and formats.
+For the most up-to-date version of this documentation, check https://documentation.suse.com/suma/4.0/ first.
+====
+
+Download All PDFs icon:caret-right[] icon:file-archive[link="../../susemanager-docs_en-pdf.tar.gz"]
+
+
+[cols="<, ^,<,^", options="header"]
+|===
+| View HTML | View PDF | View HTML | View PDF
+
+| xref:installation:install-intro.adoc[Installation Guide]                          | icon:file-pdf[link="../../pdf/suse_manager_installation_guide.pdf", window="_blank" role="green"]
+| xref:client-configuration:client-config-overview.adoc[Client Configuration Guide] | icon:file-pdf[link="../../pdf/suse_manager_client_configuration_guide.pdf", window="_blank" role="green"]
+| xref:upgrade:upgrade-overview.adoc[Upgrade Guide]                                 | icon:file-pdf[link="../../pdf/suse_manager_upgrade_guide.pdf", window="_blank" role="green"]
+| xref:reference:intro.adoc[Reference Guide]                                        | icon:file-pdf[link="../../pdf/suse_manager_reference_manual.pdf", window="_blank" role="green"]
+| xref:administration:intro.adoc[Administration Guide]                               | icon:file-pdf[link="../../pdf/suse_manager_administration_guide.pdf", window="_blank" role="green"]
+| xref:salt:salt-intro.adoc[Salt Guide]                                             | icon:file-pdf[link="../../pdf/suse_manager_salt_guide.pdf", window="_blank" role="green"]
+| xref:retail:retail-introduction.adoc[Retail Guide]                                | icon:file-pdf[link="../../pdf/suse_manager_retail_guide.pdf", window="_blank" role="green"]
+
+//| Architecture               | xref:architecture:architecture-intro.adoc[HTML] link:../pdf/suse_manager_architecture.pdf[PDF]
+|===
+endif::[]
+
+
+//Uyuni Index content
+ifeval::[{uyuni-content} == true]
+== Available Documentation
+
+The following documentation is available for {productname} version {productnumber}.
+
+Download All PDFs icon:caret-right[] icon:file-archive[link="../uyuni-docs_en-pdf.tar.gz"]
+
+
+[cols="<, ^,<,^", options="header"]
+|===
+| View HTML | View PDF | View HTML | View PDF
+
+| xref:installation:install-intro.adoc[Installation Guide]                          | icon:file-pdf[link="../pdf/uyuni_installation_guide.pdf", window="_blank" role="green"]
+| xref:client-configuration:client-config-overview.adoc[Client Configuration Guide] | icon:file-pdf[link="../pdf/uyuni_client_configuration_guide.pdf", window="_blank" role="green"]
+| xref:upgrade:upgrade-overview.adoc[Upgrade Guide]                                 | icon:file-pdf[link="../pdf/uyuni_upgrade_guide.pdf", window="_blank" role="green"]
+| xref:reference:intro.adoc[Reference Guide]                                        | icon:file-pdf[link="../pdf/uyuni_reference_manual.pdf", window="_blank" role="green"]
+| xref:administration:intro.adoc[Administration Guide]                               | icon:file-pdf[link="../pdf/uyuni_administration_guide.pdf", window="_blank" role="green"]
+| xref:salt:salt-intro.adoc[Salt Guide]                                             | icon:file-pdf[link="../pdf/uyuni_salt_guide.pdf", window="_blank" role="green"]
+| xref:retail:retail-introduction.adoc[Retail Guide]                                | icon:file-pdf[link="../pdf/uyuni_retail_guide.pdf", window="_blank" role="green"]
+
+//| Architecture               | xref:architecture:architecture-intro.adoc[HTML] link:../pdf/suse_manager_architecture.pdf[PDF]
+|===
+endif::[]

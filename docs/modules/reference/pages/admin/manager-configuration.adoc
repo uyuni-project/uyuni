@@ -1,0 +1,4 @@
+[[ref.webui.admin.config]]
+= Manager Configuration
+
+The menu:Main Menu[Admin > Manager Configuration] page is split into tabs which allow you to configure many aspects of {productname}.

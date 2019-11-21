@@ -1,0 +1,73 @@
+[[pxe-formula]]
+= PXE Formula
+
+The PXE formula is used to configure PXE booting on the branch server.
+
+
+.Procedure: Configuring PXE Booting
+. In the {susemgr} {webui}, open the details page for the branch server, and navigate to the [guimenu]``Formulas`` tab.
+. Select the [systemitem]``Pxe`` formula, and click [btn]``Save``.
+. Navigate to the menu:Formulas[Pxe] tab, and set these parameters:
+* In the [guimenu]``Kernel filename`` field, keep the default value.
+* In the [guimenu]``Initrd filename`` field, keep the default value.
+* In the [guimenu]``Kernel command line parameters`` field, keep the default value.
+For more information about possible values, see <<retail.sect.formulas.pxe.kernelparams>>.
+* In the [guimenu]``PXE root directory`` field, enter the path to the saltboot directory (for example, [systemitem]``/srv/saltboot``).
+* In the [guimenu]``Branch id`` field, type a name to use as a branch identifier (for example: [systemitem]``Branch0001``).
+Use only alphanumeric characters for the branch identifier.
+. Click [btn]``Save Formula`` to save your configuration.
+. Apply the highstate.
+
+
+
+[[retail.sect.formulas.pxe.kernelparams]]
+== Saltboot Kernel Command Line Parameters
+Saltboot supports common kernel parameters and saltboot-specific kernel parameters.
+All the parameters can be entered in the [guimenu]``Kernel Command Line Parameters`` field of the PXE formula.
+
+[systemitem]``kiwidebug=1``::
+Starts a shell on tty2 during boot and enables debug logging in Salt.
++
+[WARNING]
+====
+Do not use this parameter in a production environment as it creates a major security hole.
+This parameter should be used only in a development environment for debug purposes.
+====
+
+[systemitem]``MASTER``::
+Overrides auto-detection of the Salt master. For example:
++
+----
+MASTER=myproxy.domain.com
+----
+
+[systemitem]``SALT_TIMEOUT``::
+Overrides the local boot fallback timeout if the Salt master does not apply the saltboot state within this timeout (default: 60 seconds).
+For example:
++
+----
+SALT_TIMEOUT=300
+----
+
+// see https://bugzilla.suse.com/show_bug.cgi?id=1111348#c3
+[systemitem]``DISABLE_HOSTNAME_ID``::
+If the terminal has a hostname assigned by DHCP, it is by default used as a minion ID.
+Setting this option to `1` disables this mechanism, and SMBios information will be used as a minion ID.
+
+[systemitem]``DISABLE_UNIQUE_SUFFIX``::
+Setting this option to `1` disables adding random generated suffix to terminal minion ID.
++
+If you set this parameter make sure your terminal has either a unique hostname provided by DHCP and DNS, or the terminal hardware comes with a unique serial number stored in its SMBios memory.
+Otherwise there is a risk of terminal minion ID duplicity, and bootstrapping the minion will fail.
+
+The following parameters (`MINION_ID_PREFIX`, `salt_device`, `root`) are usually autoconfigured and should be used only in specific conditions such as debugging or development:
+
+[systemitem]``MINION_ID_PREFIX``::
+Branch ID set in the PXE formula form.
+
+[systemitem]``salt_device``::
+Device that contains the Salt configuration.
+
+[systemitem]``root``::
+Device that contains the already deployed root filesystem.
+Used for falling back to local boot.

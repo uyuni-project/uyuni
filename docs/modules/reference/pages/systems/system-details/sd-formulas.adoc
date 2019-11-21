@@ -1,0 +1,14 @@
+[[sd-formualas]]
+= SD Formulas
+
+This is a feature preview.
+On the [guimenu]``Formualas`` page you can select Salt formulas for this system.
+
+This allows you to automatically install and configure software.
+
+Installed formulas are listed.
+Select from the listing by clicking the check box to the left.
+Then confirm with the btn:[Save] button on the right.
+When done, additional subtabs appear where you can configure the formulas.
+
+For more information about formulas, see xref:salt:formulas-intro.adoc[].

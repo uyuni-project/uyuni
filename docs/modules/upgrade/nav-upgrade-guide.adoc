@@ -1,0 +1,59 @@
+// Upgrade Guide Antora Navigation List
+ifndef::backend-pdf[]
+
+* xref:upgrade-overview.adoc[Upgrade Guide]
+** xref:server-update.adoc[Server Update]
+** xref:migrate-3x-4x.adoc[Migrating from Version 3.2 to 4.x]
+** xref:migrate-4x-4x.adoc[Migrating from Version 4 to 4.x]
+** xref:proxy-update.adoc[Proxy Update]
+** xref:proxy-migration.adoc[Proxy Upgrade 3.x to 4.x]
+** xref:client-migration.adoc[Client Migration]
+** xref:db-migration.adoc[Database Migration]
+** xref:troubleshooting.adoc[Troubleshooting]
+** xref:upgrade-script-example.adoc[Example Script for Automated Upgrades]
+//** xref:common_gfdl1.2_i.adoc[License]
+
+endif::[]
+
+
+// PDF Upgrade Guide
+ifdef::backend-pdf[]
+= Upgrade Guide: {productname} {productnumber}
+include::./branding/pdf/entities.adoc[]
+:toclevels: 2
+:doctype: book
+
+// Upgrade Overview
+include::modules/upgrade/pages/upgrade-overview.adoc[leveloffset=+1]
+
+// Server Update
+include::modules/upgrade/pages/server-update.adoc[leveloffset=+1]
+
+// Migration from Version 3x to 4x
+include::modules/upgrade/pages/migrate-3x-4x.adoc[leveloffset=+1]
+
+// Migration from Version 4x to 4x
+include::modules/upgrade/pages/migrate-4x-4x.adoc[leveloffset=+1]
+
+// Proxy Update
+include::modules/upgrade/pages/proxy-update.adoc[leveloffset=+1]
+
+// Proxy Migration
+include::modules/upgrade/pages/proxy-migration.adoc[leveloffset=+1]
+
+// Client Migration
+include::modules/upgrade/pages/client-migration.adoc[leveloffset=+1]
+
+// Database Migration
+include::modules/upgrade/pages/db-migration.adoc[leveloffset=+1]
+
+// Troubleshooting Upgrades and Migrations
+include::modules/upgrade/pages/troubleshooting.adoc[leveloffset=+1]
+
+// Upgrade Script Example
+include::modules/upgrade/pages/upgrade-script-example.adoc[leveloffset=+1]
+
+// License
+include::modules/upgrade/pages/common_gfdl1.2_i.adoc[leveloffset=+1]
+
+endif::[]

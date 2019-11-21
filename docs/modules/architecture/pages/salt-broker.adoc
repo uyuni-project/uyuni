@@ -1,0 +1,22 @@
+[[arch.component.salt.broker]]
+= salt-broker
+
+
+
+
+
+
+== Functions
+
+The *salt-broker* is a component of the {productname} proxy. It performs the following functions in the stack.
+
+* **Used only in the {productname} Proxy for clients using pull method**
+* **Forwards the ZeroMQ Salt channels from {productname} server to the proxy clients**
+
+== Log Files
+
+_Logs for *salt-broker* are located in:_
+
+----
+/var/log/salt/broker
+----

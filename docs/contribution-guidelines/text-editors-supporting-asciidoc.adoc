@@ -1,0 +1,63 @@
+= Recommended Text Editors and IDE's
+
+We recommend the following tools over any others because we have worked directly with them, appreciate their simplicity and value their "mostly" cross platform support:
+
+* **Visual Studio Code** (Free) link:https://code.visualstudio.com/download[]
+* *Atom* (Free) link:https://atom.io/[]
+* **Jetbrains Products** (Intellij, webstorm etc. Paid subscription) link:https://www.jetbrains.com/[]
+* **Sublime Text** (Trial/Paid) link:https://www.sublimetext.com/[]
+* *Vim* (Free) Install via your distribution (Linux or MacOS)
+* *Emacs* (Free) Install via your distribution (Linux or MacOS)
+
+However this list is not extensive and only provides the tools we have tested and are comfortable with. The aesthetic draw of asciidoc is that you can really use *any* text editor of your choice.
+
+
+
+== Linux
+
+Linux provides many editors that support asciidoc syntax highlighting.
+
+* *GEdit* (free)
+* **Sublime Text** (trial/paid)
+* *Emacs* (free)
+* *Vim* (free)
+* **Visual Studio Code** (full syntax highlighting supported with plugins, free)
+* **Atom** (full syntax highlighting supported with plugins, free)
+* **Jetbrains Products** (Webstorm, Intellij, etc. Full syntax highlighting supported with plugins, paid)
+
+
+
+== macOS
+
+macOS provides many editors that support asciidoc syntax highlighting.
+
+* *TextMate* (free)
+* **Sublime Text** (trial/paid)
+* *Emacs* (free)
+* *Vim* (free)
+* **Atom** (full syntax highlighting supported with plugins, free)
+* **Visual Studio Code** (full syntax highlighting supported with plugins, free)
+* **Jetbrains Products** (Webstorm, Intellij, etc. Full syntax highlighting supported with plugins, paid)
+
+
+
+== Windows
+
+Windows provides a few editors with asciidoc syntax highlighting.
+
+* *Notepad++* (free)
+* **Jetbrains Products** (Webstorm, Intellij, etc. Full syntax highlighting supported with plugins, paid)
+* **Atom** (full syntax highlighting supported with plugins, free)
+* **Visual Studio Code** (full syntax highlighting supported with plugins, free)
+
+'''
+
+*Linux* ® is the registered trademark of Linus Torvalds in the United States and other countries.
+
+*Mac*® and *macOS*® are trademarks of Apple Inc., registered in the US and other countries.
+
+*Microsoft*®, *Windows*®, are either registered trademarks or trademarks of Microsoft Corporation in the United States and/or other countries.
+
+
+
+

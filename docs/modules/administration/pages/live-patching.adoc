@@ -1,0 +1,9 @@
+[[live-patching]]
+= Live Patching with SUSE Manager
+
+
+Performing a kernel update usually requires a system reboot.
+Common vulnerability and exposure (CVE) patches should be applied as soon as possible, but if you cannot afford the downtime, you can use Live Patching to inject these important updates and skip the need to reboot.
+
+The procedure for setting up Live Patching is slightly different for SLES{nbsp}12 and SLES{nbsp}15.
+Both procedures are documented in this section.

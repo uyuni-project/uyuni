@@ -1,0 +1,35 @@
+[[upgrade-overview]]
+= Introduction
+
+{productname} has three main components, all of which will need regular updates.
+This guide covers updating your {productname} Server, Proxy, and clients.
+
+It is possible to automate the upgrades to some degree.
+
+This guide is not intended to be read cover to cover.
+Instead, navigate to the component you want to upgrade, then identify the versions you are upgrading from and to.
+
+
+
+== Server
+
+{productname} uses a [literal]``X.Y.Z`` versioning schema.
+
+* Z: If you are updating the server within the same minor version (Maintenace Update), see xref:server-update.adoc[].
+* Y: If you are upgrading the server within the same major version (SP Migration), see xref:upgrade:migrate-4x-4x.adoc[].
+* X: If you are migrating the server from a major version to the next major version, see xref:migrate-3x-4x.adoc[].
+
+In addition to updating the operating of the server, you are also likely to need to update other underlying technologies, including the database.
+For more information about updating the database, see xref:db-migration.adoc[].
+
+
+
+== Proxy
+
+See xref:proxy-update.adoc[] and xref:proxy-migration.adoc[].
+
+
+
+== Client
+
+See xref:client-migration.adoc[].

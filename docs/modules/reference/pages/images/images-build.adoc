@@ -1,0 +1,14 @@
+[[ref.webui.images.build]]
+= Build
+
+If you click menu::Main Menu[Images > Build], the dialog for building images appears:
+
+image::images_image_build.png[scaledwidth=80%]
+
+* [guimenu]``Version`` : The version string that you would like to see in the Images listing, applicable only to containers.
+* [guimenu]``Build Profile`` : Select an Image Profile created with the menu:Main Menu[Images > Profiles] page.
+* [guimenu]``Build Host`` : Select a Build Host.
+* [guimenu]``Earliest`` : Schedule build time.
+
+Confirm with btn:[Build] to start image building.
+When the image is done, find it listed in the [guimenu]``Images`` overview described in: xref:reference:images/images-image-list.adoc[Image List]

@@ -1,0 +1,58 @@
+[[arch.component.mgr.sync]]
+= mgr-sync
+
+
+
+
+
+
+== Functions
+
+*mgr-sync* is a command line tool for {productname}.
+It performs the following function.
+
+* **mgr-sync is a command line tool that synchronizes with {scc}(SCC) and retrieves data and package repositories.**
+
+[IMPORTANT]
+.mgr-sync and Open Source Distributions
+====
+__This tool is designed for use with a support subscription or trial account with {scc}. It is not required for open source distributions(OpenSUSE Leap , CentOS, Ubuntu, etc.).__
+====
+
+== mgr-sync --help
+
+__The following options are available for the *mgr-sync* command:__
+
+----
+mgr-sync --help
+usage: mgr-sync [-h] [--version] [-v] [-s] [-d {1,2,3}]
+                {list,add,refresh,delete} ...
+
+Synchronize SUSE Manager repositories.
+
+optional arguments:
+  -h, --help            show this help message and exit
+  --version             Print mgr-sync version
+  -v, --verbose         Be verbose
+  -s, --store-credentials
+                        Store credentials to the local dot file.
+  -d {1,2,3}, --debug {1,2,3}
+                        Log additional debug information depending on DEBUG
+
+Subcommands:
+  {list,add,refresh,delete}
+    list                List channels, SCC organization credentials or
+                        products
+    add                 add channels, SCC organization credentials or products
+    refresh             Refresh product, channel and subscription
+    delete              Delete SCC organization credentials
+----
+
+== Log Files
+
+_Logs for the mgr-sync tool are located in:_
+
+----
+/var/log/rhn/mgr-sync.log
+/var/log/rhn/rhn_web_api.log
+----

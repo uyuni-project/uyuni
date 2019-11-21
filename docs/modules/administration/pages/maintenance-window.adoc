@@ -1,0 +1,144 @@
+[[maintenance-window]]
+= Maintenance Window
+
+If you work with scheduled maintenance windows, you might find it difficult to remember all the things that you need to do before, during, and after that critical downtime of the {productname} Server.
+{productname} Server related systems such as Inter-Server Synchronization Slave Servers or {productname} Proxies are also affected and have to be considered.
+
+{suse} recommends you always keep your {productname} infrastructure updated.
+That includes servers, proxies, and build hosts.
+// It's similar to zypper at the package level:
+If you do not keep the {productname} Server updated, you might not be able to update some parts of your environment when you need to.
+
+This section contains a checklist for your maintenance window, with links to further information on performing each of the steps.
+
+
+
+== Server
+
+// ke, 2019-09-30: we'll stop spacewalk during the update
+// . Stop spacewalk services.
+// You will need to stop the spacewalk, SAP, and database services, along with any others you have running.
+// . Check if the configuration is still correct.
+. Apply the latest updates.
+See xref:upgrade:server-update.adoc[].
+. Upgrade to the latest service pack, if required.
+See xref:upgrade:migrate-4x-4x.adoc[].
+// We reboot during the above listed procedures.
+// . Reboot the server.
+// . Check if the configuration is still correct.
+// . Start any stopped services.
+. Run [command]``spacewalk-service status`` and check whether all required services are up and running.
+
+For information about database schema upgrades and PostgreSQL migrations, see xref:upgrade:db-migration.adoc[].
+
+You can install updates using your package manager.
+For information on using {yast}, see https://documentation.suse.com/sles/15-SP1/html/SLES-all/cha-onlineupdate-you.html.
+For information on using zypper, see https://documentation.suse.com/sles/15-SP1/html/SLES-all/cha-sw-cl.html#sec-zypper.
+
+////
+Preferable, you will run such a tool within a maintenance window; for more information, see xref:administration:maintenance-window.adoc#maintenance-window[].
+
+complete procedure, also see above:
+
+1. Log in as root user to the SUSE Manager server.
+2. Stop the Spacewalk service:
+   spacewalk-service stop
+3. Apply the patch using either zypper patch or YaST Online Update.
+4. Upgrade the database schema:
+    spacewalk-schema-upgrade
+5. Start the Spacewalk service:
+    spacewalk-service start
+////
+
+By default, several update channels are configured and enabled for the {productname} Server.
+New and updated packages will become available automatically.
+
+ifeval::[{suma-content} == true]
+To keep {susemgr} up to date, either connect it directly to {scc} or use {rmtool} (RMT).
+You can use RMT as a local installation source for disconnected environments.
+endif::[]
+
+ifeval::[{suma-content} == true]
+You can check that the update channels are available on your system with this command:
+
+----
+zypper lr
+----
+
+The output will look similar to this:
+
+----
+Name                                                   | Enabled | GPG Check | Refresh
+-------------------------------------------------------+---------+-----------+--------
+SLE-Module-Basesystem15-SP1-Pool                       | Yes     | (r ) Yes  | No
+SLE-Module-Basesystem15-SP1-Updates                    | Yes     | (r ) Yes  | Yes
+SLE-Module-Python2-15-SP1-Pool                         | Yes     | (r ) Yes  | No
+SLE-Module-Python2-15-SP1-Updates                      | Yes     | (r ) Yes  | Yes
+SLE-Product-SUSE-Manager-Server-4.0-Pool               | Yes     | (r ) Yes  | No
+SLE-Product-SUSE-Manager-Server-4.0-Updates            | Yes     | (r ) Yes  | Yes
+SLE-Module-SUSE-Manager-Server-4.0-Pool                | Yes     | (r ) Yes  | No
+SLE-Module-SUSE-Manager-Server-4.0-Updates             | Yes     | (r ) Yes  | Yes
+SLE-Module-Server-Applications15-SP1-Pool              | Yes     | (r ) Yes  | No
+SLE-Module-Server-Applications15-SP1-Updates           | Yes     | (r ) Yes  | Yes
+SLE-Module-Web-Scripting15-SP1-Pool                    | Yes     | (r ) Yes  | No
+SLE-Module-Web-Scripting15-SP1-Updates                 | Yes     | (r ) Yes  | Yes
+----
+endif::[]
+
+
+ifeval::[{suma-content} == true]
+{productname} releases maintenance updates (MUs) to provide newer packages.
+Maintenance updates are indicated with a new version number.
+For example, the major release 4.0 will be incremented to 4.0.1 when an MU is released.
+
+You can verify which version you are running by looking at the bottom of the navigation bar in the {webui}.
+You can also fetch the version number with the [literal]``api.getVersion()`` XMLRPC API call.
+
+// To upgrade to the latest MU, you can use the [command]``zypper migration`` command at the command prompt:
+//
+// ----
+// zypper migration
+// ----
+//
+// This procedure is also known as a Service Pack (SP) migration.
+endif::[]
+
+
+
+=== Client Tools
+
+When the server is updated consider to update some tools on the clients, too.
+Updating [package]``salt-minion``, [package]``zypper``, and other related management package on clients is not a strict requirement, but it is a best practice in general.
+For example, a maintenance update on the server might introduce a major new Salt version.
+Then minions will continue to work but might experience problems later on.
+To avoid this always update the salt-minion package when available.
+{suse} makes sure that [package]``salt-minion`` can always be updated safely.
+
+
+
+== Inter-Server Synchronization Slave Server
+
+If you are using an inter-server synchronization slave server,  update it after the {productname} Server update is complete.
+
+For more in inter-server synchronization, see xref:administration:iss.adoc[].
+
+
+
+== Monitoring Server
+
+If you are using a monitoring server for Prometheus, update it after the {productname} Server update is complete.
+
+For more information on monitoring, see xref:administration:monitoring.adoc[].
+
+
+
+== Proxy
+
+Proxies should be updated as soon as {productname} Server updates are complete.
+
+In general, running a proxy connected to a server on a different version is not supported.
+The only exception is for the duration of updates where it is expected that the server is updated first, so the proxy could run the previous version temporarily.
+
+Especially if you are migrating from version 3.2 to 4.0, upgrade the server first, then any proxy.
+
+For more information, see xref:upgrade:proxy-update.adoc[] and xref:upgrade:proxy-migration.adoc[].

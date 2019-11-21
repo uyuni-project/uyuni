@@ -1,0 +1,437 @@
+[[spacecmd.functions.activationkey]]
+= activationkey_
+
+
+
+The following spacecmd commands are available for use with activation keys.
+
+
+
+== activationkey_addchildchannels
+
+Add child channels to an activation key.
+
+[source]
+--
+usage: activationkey_addchildchannels KEY <CHANNEL ...>
+--
+
+
+
+== activationkey_addconfigchannels
+
+Add configuration channels to an activation key.
+
+[source]
+--
+usage: activationkey_addconfigchannels KEY <CHANNEL ...> [options]
+
+options:
+  -t add channels to the top of the list
+  -b add channels to the bottom of the list
+--
+
+
+
+== activationkey_addentitlements
+
+Add available entitlements to an activation key.
+
+.WebUI Name Change
+NOTE: In the WebUI entitlements are known as System Types.
+Nevertheless the spacecmd backend still utilizes the entitlements term.
+Therefore any scripts you may be using can remain unchanged.
+
+[source]
+--
+usage: activationkey_addentitlements KEY <ENTITLEMENT ...>
+--
+
+
+
+== activationkey_addgroups
+
+Add existing groups to an activation key.
+
+[source]
+--
+usage: activationkey_addgroups KEY <GROUP ...>
+--
+
+
+
+== activationkey_addpackages
+
+Add packages to an activation key.
+
+[source]
+--
+usage: activationkey_addpackages KEY <PACKAGE ...>
+--
+
+
+
+== activationkey_clone
+
+Clone an existing activation key.
+
+[source]
+--
+usage examples:
+                 activationkey_clone foo_key -c bar_key
+                 activationkey_clone foo_key1 foo_key2 -c prefix
+                 activationkey_clone foo_key -x "s/foo/bar"
+                 activationkey_clone foo_key1 foo_key2 -x "s/foo/bar"
+
+options:
+  -c CLONE_NAME  : Name of the resulting key, treated as a prefix for multiple
+                   keys
+  -x "s/foo/bar" : Optional regex replacement, replaces foo with bar in the
+                   clone description, base-channel label, child-channel
+                   labels, config-channel names
+--
+
+
+
+== activationkey_create
+
+Create a new activation key.
+
+[source]
+--
+usage: activationkey_create [options]
+
+options:
+  -n NAME
+  -d DESCRIPTION
+  -b BASE_CHANNEL
+  -u set key as universal default
+  -e [enterprise_entitled,virtualization_host]
+--
+
+
+
+== activationkey_delete
+
+Delete an existing activation key.
+
+[source]
+--
+usage: activationkey_delete KEY
+--
+
+
+
+== activationkey_details
+
+Show details of an existing activation key.
+
+
+[source]
+--
+usage: activationkey_details KEY ...
+--
+
+
+
+== activationkey_diff
+
+Check the difference between two activation keys.
+
+[source]
+--
+usage: activationkey_diff SOURCE_ACTIVATIONKEY TARGET_ACTIVATIONKEY
+--
+
+
+
+== activationkey_disable
+
+Disable an existing activation key.
+
+[source]
+--
+usage: activationkey_disable KEY [KEY ...]
+--
+
+
+
+== activationkey_disableconfigdeployment
+
+Disable configuration channel deployment for an existing activation key.
+
+[source]
+--
+usage: activationkey_disableconfigdeployment KEY
+--
+
+
+
+== activationkey_enable
+
+Enable an existing activation key.
+
+[source]
+--
+usage: activationkey_enable KEY [KEY ...]
+--
+
+
+
+== activationkey_enableconfigdeployment
+
+Enable configuration channel deployment for an existing activation key.
+
+[source]
+--
+usage: activationkey_enableconfigdeployment KEY
+--
+
+
+
+== activationkey_export
+
+Export activation key(s) to a JSON formatted file.
+
+[source]
+--
+usage: activationkey_export [options] [<KEY> ...]
+
+options:
+    -f outfile.json : specify an output filename, defaults to <KEY>.json
+                      if exporting a single key, akeys.json for multiple keys,
+                      or akey_all.json if no KEY specified (export ALL)
+
+Note : KEY list is optional, default is to export ALL keys
+--
+
+
+
+== activationkey_import
+Import activation key(s) from JSON file(s)
+
+[source]
+--
+usage: activationkey_import <JSONFILE ...>
+--
+
+
+
+== activationkey_list
+
+List all existing activation keys.
+
+[source]
+--
+usage: activationkey_list
+--
+
+
+
+== activationkey_listbasechannel
+
+List the base channel associated with an activation key.
+
+[source]
+--
+usage: activationkey_listbasechannel KEY
+--
+
+
+
+== activationkey_listchildchannels
+
+List child channels associated with an activation key.
+
+[source]
+--
+usage: activationkey_listchildchannels KEY
+--
+
+
+
+== activationkey_listconfigchannels
+
+List configuration channels associated with an activation key.
+
+[source]
+--
+usage: activationkey_listconfigchannels KEY
+--
+
+
+
+== activationkey_listentitlements
+
+List entitlements associated with an activation key.
+
+[source]
+--
+usage: activationkey_listentitlements KEY
+--
+
+
+
+== activationkey_listgroups
+
+List groups associated with an activation key
+
+[source]
+--
+usage: activationkey_listgroups KEY
+--
+
+
+
+== activationkey_listpackages
+
+List packages associated with an activation key.
+
+[source]
+--
+usage: activationkey_listpackages KEY
+--
+
+
+
+== activationkey_listsystems
+
+List systems registered with an activation key.
+
+[source]
+--
+usage: activationkey_listsystems KEY
+--
+
+
+
+== activationkey_removechildchannels
+
+Remove child channels from an activation key.
+
+[source]
+--
+usage: activationkey_removechildchannels KEY <CHANNEL ...>
+--
+
+
+
+== activationkey_removeconfigchannels
+
+Remove configuration channels from an activation key.
+
+[source]
+--
+usage: activationkey_removeconfigchannels KEY <CHANNEL ...>
+--
+
+
+
+== activationkey_removeentitlements
+
+Remove entitlements from an activation key.
+
+[source]
+--
+usage: activationkey_removeentitlements KEY <ENTITLEMENT ...>
+--
+
+
+
+== activationkey_removegroups
+
+Remove groups from an activation key.
+
+[source]
+--
+usage: activationkey_removegroups KEY <GROUP ...>
+--
+
+
+
+== activationkey_removepackages
+
+Remove packages from an activation key.
+
+[source]
+--
+usage: activationkey_removepackages KEY <PACKAGE ...>
+--
+
+
+
+== activationkey_setbasechannel
+
+Set the base channel for an activation key.
+
+[source]
+--
+usage: activationkey_setbasechannel KEY CHANNEL
+--
+
+
+
+== activationkey_setconfigchannelorder
+
+Set the ranked order of configuration channels.
+
+[source]
+--
+usage: activationkey_setconfigchannelorder KEY
+--
+
+
+
+== activationkey_setcontactmethod
+
+Set the contact method to use for systems registered with a specific key.
+(Use the XML-RPC API to access the latest contact methods.) The following contact methods are available for use with traditional spacecmd: ['default', 'ssh-push', 'ssh-push-tunnel']
+
+[source]
+--
+usage: activationkey_setcontactmethod KEY CONTACT_METHOD
+--
+
+
+
+== activationkey_setdescription
+
+Add a description for an activation key.
+
+[source]
+--
+usage: activationkey_setdescription KEY DESCRIPTION
+--
+
+
+
+== activationkey_setuniversaldefault
+
+Set a specific key as the universal default.
+
+[source]
+--
+usage: activationkey_setuniversaldefault KEY
+--
+
+.Universal Default Key
+WARNING: Using a universal default key is not a Best Practice recommendation.
+
+
+
+== activationkey_setusagelimit
+
+Set the usage limit of an activation key, can be a number or "unlimited".
+
+[source]
+--
+usage: activationkey_setbasechannel KEY <usage limit>
+usage: activationkey_setbasechannel KEY unlimited
+--
+
+.Usage Limits
+[TIP]
+====
+Usage limits are only applicable to traditionally managed systems.
+Currently usage limits do not apply to Salt or foreign managed systems.
+====

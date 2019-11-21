@@ -1,0 +1,16 @@
+[[ref.webui.channels.mapping]]
+= Distribution Channel Mapping
+
+The [guimenu]``Distribution Channel Mapping`` page displays a list of all your defined default base channels that clients will pick up according to their operating system and architecture at registration time.
+These mappings can be overriden, but cannot be deleted.
+To create such a mapping click [guimenu]``Create Distribution Channel Mapping`` in the upper-right corner.
+Several columns provide information for each mapping.
+
+
+[NOTE]
+.Using Distribution Channel Mapping
+====
+For {sle} or {rhel} {suse} does not use the [guimenu]``Distribution Channel Mapping`` feature.
+It can be used for other products (for example, for free products such as openSUSE, Fedora, Oracle Linux, etc.).
+It can help when letting clients pick up base channels automatically.
+====

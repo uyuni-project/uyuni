@@ -1,0 +1,30 @@
+[[channels]]
+= Software Channels
+
+
+Channels are a method of grouping software packages.
+In {productname}, channels are divided into base channels and child channels.
+Organizing channels in this way ensures that only compatible packages are installed on each system.
+
+A base channel consists of packages built for a specific operating system type, version, and architecture.
+For example, all of the packages in {sles}{nbsp}12 for the `x86_64` architecture make up a base channel.
+The list of packages in {sles}{nbsp}12 for the `s390x` architecture make up a different base channel.
+A system must be subscribed to only one base channel, which is assigned automatically during registration based on the {sle} release and system architecture.
+For paid channels provided by a vendor, you must have an associated subscription.
+
+A child channel is associated with a specific base channel and provides only packages that are compatible with that base channel.
+A system can be subscribed to multiple child channels of its base channel.
+When a system has been assigned to a base channel, it is only possible for that system to install the related child channels.
+For example, if a system has been assigned to the {sles}{nbsp}12 `x86_64` base channel, they will only be able to install or update packages compatible with {sles}{nbsp}12 `x86_64`.
+
+In the {productname} {webui} you can browse your available channels by navigating to menu:Software[Channel List > All].
+You can modify or create new channels by navigating to menu:Software[Manage > Channels].
+
+
+
+== Custom Channels
+
+If you require packages that are not provided by the standard {productname} base channels, you can create custom channels.
+{productname} Administrators and Channel Administrators have channel management authority, which gives them the ability to create and manage their own custom channels.
+
+For more on creating custom channels, see xref:administration:custom-channels.adoc[].

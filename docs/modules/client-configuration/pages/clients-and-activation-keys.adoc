@@ -1,0 +1,148 @@
+[[activation-keys]]
+= Activation Keys
+
+Activation keys are used with traditional and Salt clients to ensure that your clients have the correct software entitlements, are connecting to the appropriate channels, and are subscribed to the relevant groups.
+Each activation key is bound to an organization, which you can set when you create the key.
+
+In {productname}, an activation key is a group of configuration settings with a label.
+You can apply all configuration settings associated with an activation key by adding its label as a parameter to a bootstrap script.
+We recommend you use an activation key label in combination with a bootstrap script.
+When the bootstrap script is executed all configuration settings associated with the label are applied to the system the script is run on.
+
+An activation key can specify:
+
+* Channel Assignment
+* System Types (Traditionally called Add-on Entitlements)
+* Contact Method
+* Configuration Files
+* Packages to be Installed
+* System Group Assignment
+
+image::provision-config-keys.png[scaledwidth=80%]
+
+
+
+.Procedure: Creating an Activation Key
+. In the {productname} {webui}, as an administrator, navigate to menu:Systems[Activation Keys].
+. Click the btn:[Create Key] button.
+. On the [guimenu]``Activation Key Details`` page, in the [guimenu]``Description`` field, enter a name for the activation key.
+. In the [guimenu]``Key`` field, enter the distribution and service pack associated with the key.
+For example, ``SLES12-SP4`` for {sles}{nbsp}12{nbsp}SP4.
++
+[IMPORTANT]
+====
+Do not use commas in the [guimenu]``Key`` field for any {suse} products.
+However, you *must* use commas for Red Hat Products.
+For more information, see xref:reference:systems/activation-keys.adoc[].
+====
++
+. In the [guimenu]``Base Channels`` drop-down box, select the appropriate base software channel, and allow the relevant child channels to populate.
+For more information, see xref:reference:admin/setup-wizard.adoc#vle.webui.admin.wizard.products[] and xref:administration:custom-channels.adoc[].
+. Select the child channels you need (for example, the mandatory {susemgr} tools and updates channels).
+. We recommend you leave the [guimenu]``Contact Method`` set to [guimenu]``Default``.
+. We recommend you leave the [guimenu]``Universal Default`` setting unchecked.
+. Click btn:[Create Activation Key] to create the activation key.
+. Check the [guimenu]``Configuration File Deployment`` check box to enable configuration management for this key, and click btn:[Update Activation Key] to save this change.
+
+[NOTE]
+====
+The [guimenu]``Configuration File Deployment`` check box does not appear until after you have created the activation key.
+Ensure you go back and check the box if you need to enable configuration management.
+====
+
+
+
+== Combining Activation Keys
+
+
+You can combine activation keys when executing the bootstrap script on your clients.
+Combining keys allows for more control on what is installed on your systems and reduces duplication of keys for large or complex environments.
+
+image::combine-keys.png[scaledwidth=80%]
+
+image::combine-keys2.png[scaledwidth=80%]
+
+
+
+== Activation Key Best Practices
+
+.Default Parent Channel
+
+Avoid using the [systemitem]``SUSE Manager Default`` parent channel.
+This setting forces {productname} to choose a parent channel that best corresponds to the installed operating system, which can sometimes lead to unexpected behavior.
+Instead, we recommend you create activation keys specific to each distribution and architecture.
+
+.Bootstrapping with Activation Keys
+
+If you are using bootstrap scripts, consider creating an activation key for each script.
+This will help you align channel assignments, package installation, system group memberships, and configuration channel assignments.
+You will also need less manual interaction with your system after registration.
+
+.Bandwidth Requirements
+
+Using activation keys might result in automatic downloading of software at registration time, which might not be desirable in environments where bandwidth is constrained.
+
+These options create bandwidth usage:
+
+* Assigning a SUSE Product Pool channel will result in the automatic installation of the corresponding product descriptor package.
+* Any package in the [guimenu]``Packages`` section will be installed.
+* Any Salt state from the [guimenu]``Configuration`` section might trigger downloads depending on its contents.
+
+.Key Label Naming
+
+If you do not enter a human-readable name for your activation keys, the system will automatically generate a number string, which can make it difficult to manage your keys.
+
+Consider a naming scheme for your activation keys to help you keep track of them.
+Creating names which are associated with your organization's infrastructure will make it easier for you when performing more complex operations.
+
+When creating key labels, consider these tips:
+
+* OS naming (mandatory): Keys should always refer to the OS they provide settings for
+* Architecture naming (recommended): Unless your company is running on one architecture only, for example x86_64, then providing labels with an architecture type is a good idea.
+* Server type naming: What is, or what will this server be used for?
+* Location naming: Where is the server located? Room, building, or department?
+* Date naming: Maintenance windows, quarter, etc.
+* Custom naming: What naming scheme suits your organizations needs?
+
+Example activation key label names:
+
+----
+sles12-sp2-web_server-room_129-x86_64
+----
+
+----
+sles12-sp2-test_packages-blg_502-room_21-ppc64le
+----
+
+[IMPORTANT]
+====
+Do not use commas in the [guimenu]``Key`` field for any {suse} products.
+However, you *must* use commas for Red Hat Products.
+For more information, see xref:reference:systems/activation-keys.adoc[].
+====
+
+.Included Channels
+
+When creating activation keys you also need to keep in mind which software channels will be associated with it.
+
+[IMPORTANT]
+====
+Keys should have a specific base channel assigned to them, for example: ``SLES12-SP2-Pool-x86_64``.
+If this is not the case, {productname} cannot use specific stages.
+Using the default base channel is not recommended and may cause problems.
+====
+
+* Channels to be included:
+** suse-manager-tools
+* Typical packages to be included:
+** mgr-osad (pushing tasks)
+*** Installs [package]``python-jabberpy`` and [package]``pyxml`` as dependencies
+** [package]``mgr-cfg-actions`` (Remote Command, Configuration Management)
+*** Installs [package]``mgr-cfg`` and [package]``mgr-cfg-client`` as dependencies
+
+The [systemitem]``suse-manager-tools`` channel is mandatory.
+
+Typical packages to be included:
+
+* osad (pushing tasks): Installs [package]``python-jabberpy`` and [package]``pyxml`` as dependencies
+* [package]``rhncfg-actions`` (Remote Command, Configuration Managment): Installs [package]``rhncfg`` and [package]``rhncfg-client`` as dependencies

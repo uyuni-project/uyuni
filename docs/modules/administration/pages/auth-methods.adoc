@@ -1,0 +1,160 @@
+[[auth-methods]]
+= Authentication Methods
+
+{productname} supports several different authentication methods.
+This section discusses pluggable authentication modules (PAM) and single sign-on (SSO).
+
+
+== Authenticate with PAM
+
+{productname} supports network-based authentication systems using pluggable authentication modules (PAM).
+PAM is a suite of libraries that allows you to integrate {productname} with a centralized authentication mechanism, eliminating the need to remember multiple passwords.
+{productname} supports LDAP, Kerberos, and other network-based authentication systems using PAM.
+
+
+
+.Procedure: Enabling PAM
+
+. Create a PAM service file at [path]``/etc/pam.d/susemanager``.
+A standard [path]``/etc/pam.d/susemanager`` file should look like this.
+It configures {productname} to use the system wide PAM configuration:
++
+----
+#%PAM-1.0
+auth     include        common-auth
+account  include        common-account
+password include        common-password
+session  include        common-session
+----
+. Enforce the use of the service file by adding this line to [path]``/etc/rhn/rhn.conf``:
++
+----
+pam_auth_service = susemanager
+----
++
+In this example, the PAM service file is called [systemitem]``susemanager``.
+. Restart the {productname} services after a configuration change.
+. In the {productname} {webui}, navigate to [menuitem]``Create User`` and enable a new or existing user to authenticate with PAM.
+. Check the [guimenu]``Pluggable Authentication Modules (PAM)`` checkbox.
+It is below the password and password confirmation fields.
+
+
+
+[IMPORTANT]
+====
+Changing the password in the {productname} {webui} changes only the local password on the {productname} Server.
+If PAM is enabled for that user, the local password might not be used at all.
+In the above example, for instance, the Kerberos password will not be changed.
+Use the password change mechanism of your network service to change the password for these users.
+====
+
+
+To configure system-wide authentication you can use YaST.
+You will need to install the [package]``yast2-ldap-client`` and [package]``yast2-kerberos-client`` packages.
+
+
+For more information about configuring PAM, the SUSE Linux Enterprise Server Security Guide contains a generic example that will also work for other network-based authentication methods.
+It also describes how to configure an Active Directory Service.
+For more information, see https://documentation.suse.com/sles/15-SP1/html/SLES-all/part-auth.html.
+
+
+
+== Authenticate with Single Sign-On (SSO)
+
+[IMPORTANT]
+====
+This feature is provided as a technical preview.
+It is not supported for use in production environments.
+====
+
+{productname} supports single sign-on (SSO) by implementing the Security Assertion Markup Language (SAML){nbsp}2 protocol.
+
+Single sign-on is an authentication process that allows a user to access multiple applications with one set of credentials.
+SAML is an XML-based standard for exchanging authentication and authorization data.
+A SAML identity service provider (IdP) provides authentication and authorization services to service providers (SP), such as {productname}.
+{productname} exposes three endpoints which must be enabled for single sign-on.
+
+SSO in {productname} supports:
+
+* Log in with SSO.
+* Log out with service provider-initiated single logout (SLO), and Identity service provider single logout service (SLS).
+* Assertion and nameId encryption.
+* Assertion signatures.
+* Message signatures with AuthNRequest, LogoutRequest, and LogoutResponses.
+* Enable an Assertion consumer service endpoint.
+* Enable a single logout service endpoint.
+* Publish the SP metadata (which can be signed).
+
+SSO in {productname} does not support:
+
+* Product choosing and implementation for the Identity Service Provider (IdP).
+* SAML support for other products (check with the respective product documentation).
+
+
+
+=== Prerequisites
+
+Before you begin, you will need to have configured an external Identity Service Provider with these parameters.
+Check your IdP documentation for instructions.
+
+You will need these endpoints:
+
+* Assertion Consumer Service (or ACS): an endpoint to accept SAML messages to establish a session into the Service Provider.
+The endpoint for ACS in {productname} is: https://example.com/rhn/manager/sso/acs
+* Single Logout Service (or SLS): an endpoint to initiate a logout request from the IdP.
+The endpoint for SLS in {productname} is: https://example.com/rhn/manager/sso/sls
+* Metadata: an endpoint to retrieve {productname} metadata for SAML.
+The endpoint for Metadata in {productname} is: https://example.com/rhn/manager/sso/metadata
+
+[IMPORTANT]
+====
+Your IdP must have a SAML:Attribute containing the username of the IdP user domain, called `uid`.
+The `uid` attribute passed in the SAML:Attribute must be created in the {productname} user base before you activate single sign-on.
+====
+
+After the authentication with the IdP using the user `orgadmin` is successful, you will be logged in into {productname} as the `orgadmin` user, provided that the `orgadmin` user exists in {productname}.
+
+
+
+=== Enable SSO
+
+[NOTE]
+====
+Using SSO is mutually exclusive with other types of authentication: it is either enabled or disabled.
+SSO is disabled by default.
+====
+
+.Procedure: Enabling SSO
+
+. If your users do not yet exist in {productname}, create them first.
+. Edit `/etc/rhn/rhn.conf` and add this line at the end of the file:
++
+----
+java.sso = true
+----
+. Find the parameters you want to customize in `/usr/share/rhn/config-defaults/rhn_java_sso.conf`.
+Insert the parameters you want to customize into `/etc/rhn/rhn.conf` and prefix them with `java.sso.`.
++
+For example, in `/usr/share/rhn/config-defaults/rhn_java_sso.conf` find:
++
+----
+onelogin.saml2.sp.assertion_consumer_service.url = https://YOUR-PRODUCT-HOSTNAME-OR-IP/rhn/manager/sso/acs
+----
++
+In order to customize it, create the corresponding option in `/etc/rhn/rhn.conf` by prefixing the option name with `java.sso.`:
++
+----
+java.sso.onelogin.saml2.sp.assertion_consumer_service.url = https://YOUR-PRODUCT-HOSTNAME-OR-IP/rhn/manager/sso/acs
+----
++
+To find all the occurrences you need to change, search in the file for the placeholders [literal]``YOUR-PRODUCT`` and [literal]```YOUR-IDP-ENTITY``.
+Every parameter comes with a brief explanation of what it is meant for.
+. Restart the spacewalk service to pick up the changes:
++
+----
+spacewalk-service restart
+----
+
+When you visit the {productname} URL, you will be redirected to the IdP for SSO where you will be requested to authenticate.
+Upon successful authentication, you will be redirected to the {productname} {webui}, logged in as the authenticated user.
+If you encounter problems with logging in using SSO, check the {productname} logs for more information.

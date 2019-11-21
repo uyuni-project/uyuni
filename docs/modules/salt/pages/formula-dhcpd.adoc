@@ -1,0 +1,27 @@
+[[dhcpd-formula]]
+= DHCPd Formula
+
+The DHCPd formula is used to configure the DHCP service on the branch server.
+
+
+.Procedure: Configuring DHCP
+
+. In the {susemgr} {webui}, open the details page for the branch server, and navigate to the Formulas tab.
+. Check the [guimenu]``Dhcpd`` formula, and click btn:[Save].
+. Navigate to the menu:Formulas[Dhcpd] tab, and set these parameters:
+* In the [guimenu]``Domain Name`` field, enter the domain name for the branch server (for example: [systemitem]``branch1.example.com``).
+* In the [guimenu]``Domain Name Server`` field, enter either the IP address or resolvable FQDN of the branch DNS server (for example: [systemitem]``192.168.1.5``).
+* In the [guimenu]``Listen Interfaces`` field, enter the name of the network interface used to connect to the local branch network (for example: [systemitem]``eth1``).
+. Navigate to the [guimenu]``Network Configuration (subnet)`` section, and use these parameters for Network1:
+* In the [guimenu]``Network IP`` field, enter the IP address of the branch server network (for example: [systemitem]``192.168.1.0``).
+* In the [guimenu]``Netmask`` field, enter the network mask of the branch server network (for example: [systemitem]``255.255.255.0``).
+* In the [guimenu]``Domain Name`` field, enter the domain name for the branch server network (for example: [guimenu]``branch1.example.com``).
+. In the [guimenu]``Dynamic IP Range`` section, use these parameters to configure the IP range to be served by the DHCP service:
+* In the first input box, set the lower bound of the IP range (for example: [systemitem]``192.168.1.51``).
+* In the second input box, set the upper bound of the IP range (for example: [systemitem]``192.168.1.151``).
+. In the [guimenu]``Broadcast Address`` field, enter the broadcast IP address for the branch network (for example: [systemitem]``192.168.1.255``).
+. In the [guimenu]``Routers`` field, enter the IP address to be used by routers in the branch server network (for example: [systemitem]``192.168.1.5``).
+. In the [guimenu]``Next Server`` field, enter the hostname or IP address of the branch server (for example: [systemitem]``192.168.1.5``).
+. In the [guimenu]``Filename`` field, keep the default value of [systemitem]``/boot/pxelinux.0``.
+. Click btn:[Save Formula] to save your configuration.
+. Apply the highstate.

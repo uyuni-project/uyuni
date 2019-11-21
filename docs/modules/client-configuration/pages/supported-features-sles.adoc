@@ -1,0 +1,73 @@
+[[supported-features-suse]]
+= Supported {suse} and {opensuse} Client Features
+
+
+This table lists the availability of various features on {suse} and {opensuse} clients.
+This table covers all variants of the {sle} operating system, including {slsa}, {sleda}, {sles} for SAP, and {sles} for HPC.
+
+The icons in this table indicate:
+
+* icon:check[role="green"] the feature is available on both traditional and Salt clients
+* icon:times[role="danger"] the feature is not available
+* icon:question[role="gray"] the feature is under consideration, and may or may not be made available at a later date
+* ``Traditional`` the feature is supported only on traditional clients
+* ``Salt`` the feature is supported only on Salt clients.
+
+
+[cols="1,1,1,1,1", options="header"]
+.Supported Features on {suse} and {opensuse} Operating Systems
+|===
+| Feature | {sle}{nbsp}11 | {sle}{nbsp}12 | {sle}{nbsp}15 | {opensuse}{nbsp}15.1
+| Client | icon:check[role="green"] | icon:check[role="green"] | icon:check[role="green"] | icon:check[role="green"]
+| Operating system packages  | icon:check[role="green"] | icon:check[role="green"] | icon:check[role="green"] | icon:check[role="green"]
+| Registration | icon:check[role="green"] | icon:check[role="green"] | icon:check[role="green"] | ``Salt``
+| Install packages | icon:check[role="green"] | icon:check[role="green"] | icon:check[role="green"] | ``Salt``
+| Apply patches | icon:check[role="green"] | icon:check[role="green"] | icon:check[role="green"] | ``Salt``
+| Remote commands | icon:check[role="green"] | icon:check[role="green"] | icon:check[role="green"] | ``Salt``
+| System package states | ``Salt`` | ``Salt`` | ``Salt`` | ``Salt``
+| System custom states | ``Salt`` | ``Salt`` | ``Salt`` | ``Salt``
+| Group custom states | ``Salt`` | ``Salt`` | ``Salt`` | ``Salt``
+| Organization custom states    | ``Salt`` | ``Salt`` | ``Salt`` | ``Salt``
+| System set manager (SSM) | icon:check[role="green"] | icon:check[role="green"] | icon:check[role="green"] | ``Salt``
+| Service pack migration | icon:check[role="green"] | icon:check[role="green"] | icon:check[role="green"] | ``Salt``
+| Basic Virtual Guest Management icon:asterisk[role="none"] | ``Traditional`` | icon:check[role="green"] | icon:check[role="green"] | ``Salt`
+| Advanced Virtual Guest Management icon:asterisk[role="none"] | icon:times[role="danger"] | ``Salt`` | ``Salt`` | ``Salt``
+| Virtual Guest Installation ({ay}), as Host OS | ``Traditional`` | ``Traditional`` | ``Traditional`` | icon:times[role="danger"]
+| Virtual Guest Installation (image template), as Host OS | icon:times[role="danger"] | ``Salt`` | ``Salt`` | ``Salt``
+| Virtual Guest Management | icon:times[role="danger"] | ``Salt`` | ``Salt`` | ``Salt``
+| System redeployment ({ay}) | ``Traditional`` | icon:check[role="green"] | icon:check[role="green"] | ``Salt``
+| Contact methods | ``Traditional``: OSAD, RHNSD, SSH-push. +
+``Salt``: ZeroMQ, Salt-SSH | ``Traditional``: OSAD, RHNSD, SSH-push. +
+``Salt``: ZeroMQ, Salt-SSH | ``Traditional``: OSAD, RHNSD, SSH-push. +
+``Salt``: ZeroMQ, Salt-SSH | ``Salt``: ZeroMQ, Salt-SSH
+| Works with {productname} Proxy | icon:check[role="green"] | icon:check[role="green"] | icon:check[role="green"] | ``Salt``
+| Action chains | icon:check[role="green"] | icon:check[role="green"] | icon:check[role="green"] | ``Salt``
+| Software crash reporting | icon:times[role="danger"] | icon:times[role="danger"] | icon:times[role="danger"] | icon:times[role="danger"]
+| Staging (pre-download of packages)       |  icon:check[role="green"] | icon:check[role="green"] | icon:check[role="green"] | ``Salt``
+| Duplicate package reporting | icon:check[role="green"] | icon:check[role="green"] | icon:check[role="green"] | ``Salt``
+| CVE auditing |  icon:check[role="green"] | icon:check[role="green"] | icon:check[role="green"] | ``Salt``
+| SCAP auditing |   icon:check[role="green"] | icon:check[role="green"] | icon:check[role="green"] | ``Salt``
+| Package verification | ``Traditional`` | ``Traditional`` | ``Traditional`` | icon:times[role="danger"]
+| Package locking |  ``Traditional`` | ``Traditional`` | ``Traditional`` | icon:times[role="danger"]
+| System locking |  ``Traditional`` | ``Traditional`` | ``Traditional`` | icon:times[role="danger"]
+| System snapshot | ``Traditional`` | ``Traditional`` | ``Traditional`` | icon:times[role="danger"]
+| Configuration file management |  icon:check[role="green"] | icon:check[role="green"] | icon:check[role="green"] | ``Salt``
+| Package profiles |  ``Traditional``. +
+``Salt``: Profiles supported, Sync not supported | ``Traditional``. +
+``Salt``: Profiles supported, Sync not supported | ``Traditional``. +
+``Salt``: Profiles supported, Sync not supported | ``Salt``: Profiles supported, Sync not supported
+| Power management |  icon:check[role="green"] | icon:check[role="green"] | icon:check[role="green"] | icon:check[role="green"]
+| Monitoring |   icon:question[role="gray"]     | ``Salt`` | ``Salt`` | ``Salt``
+| Docker buildhost |  icon:times[role="danger"]     | ``Salt`` | ``Salt`` | icon:question[role="gray"]
+| Build Docker image with OS | icon:times[role="danger"]  | ``Salt`` | ``Salt`` | ``Salt``
+| Kiwi buildhost |   icon:times[role="danger"]     | ``Salt``  | icon:question[role="gray"] | icon:question[role="gray"]
+| Build Kiwi image with OS |  icon:times[role="danger"]     | ``Salt``  | icon:question[role="gray"] | icon:times[role="danger"]
+|===
+
+icon:asterisk[role="none"] Virtual Guest Management:
+
+In this table, virtual guest management is split into basic and advanced.
+
+Basic virtual guest management includes listing VMs, slow refresh, VM lifecycle actions (start, stop, resume, pause), and modifying VM vCPU and Memory.
+
+Advanced virtual guest management includes fast refresh, VM lifecycle actions (delete, reset, power off), modifying VM disk, network, graphical display, and graphical display configuration.

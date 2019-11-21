@@ -1,0 +1,17 @@
+[[ref.webui.overview.account]]
+= My Account
+
+Modify your personal information, such as name, password, and title from the menu:Main Menu[Home > User Account > My Account] page.
+To modify this information, make the changes in the appropriate text fields and click the btn:[Update] button at the bottom.
+
+image::home_user_account_user_details.png[scaledwidth=80%]
+
+If you change your {productname} password, for security reasons you will not see the new password while you enter it.
+Replace the asterisks in the [guimenu]``Password`` and [guimenu]``Confirm Password`` text fields with the new password.
+
+[NOTE]
+====
+If you forget your password or username, proceed to the sign in screen and select the [guimenu]``About`` link, then select the [guimenu]``Lookup Login/Password`` page.
+Here you can either specify your login and email address or only your email address if you are not sure about the username.
+Then click btn:[Send Password] or btn:[Send Login] respectively.
+====

@@ -1,0 +1,33 @@
+[[ref.webui.overview.prefs]]
+= My Preferences
+
+The menu:Main Menu[Home > My Preferences] page allows you to configure {productname} options.
+
+image::home_my_preferences.png[scaledwidth=80%]
+
+* [guimenu]``Email Notifications`` -- Determine whether you want to receive email every time a patch alert is applicable to one or more systems in your account.
++
+IMPORTANT: This setting enables Management and Provisioning customers to receive a daily summary of system events.
+These include actions affecting packages, such as scheduled patches, system reboots, or failures to check in.
+In addition to selecting this check box, you must identify each system to be included in this summary email.
+By default, all Management and Provisioning systems are included in the summary.
+Add more systems either individually on the [guimenu]``System Details`` page or for multiple systems at once in the menu:Main Menu[Systems > System Set Manager] interface.
+Note that {productname} sends these summaries only to verified email addresses.
+To disable all messages, simply deselect this check box.
++
+
+* [guimenu]``SUSE Manager List Page Size`` -- Maximum number of items that appear in a list on a single page.
+If more items are in the list, clicking the btn:[Next] button displays the next group of items.
+This preference applies to system lists, patch lists, package lists, and so on.
+* [guimenu]``"Overview" Start Page`` -- Select the information panes that are displayed on the menu:Main Menu[Home > Overview] page.
+Check the box to the left of each information pane that which be included.
+* [guimenu]``Time Zone`` - Set the {productname} interface to your local time by selecting the appropriate [guimenu]``Time Zone`` from the drop-down box.
+Click the btn:[Save Preferences] button to apply the selection.
++
+
+image::home_locale_preferences.png[scaledwidth=80%]
+
+* [guimenu]``CSV Files`` -- Select the separator character to be used in downloadable CSV files.
+btn:[Comma] is the default; as an alternative use btn:[Semicolon], which provides better compatibility with Microsoft Excel.
+
+After making changes to any of these options, click the btn:[Save Preferences] button.

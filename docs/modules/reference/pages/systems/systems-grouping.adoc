@@ -1,0 +1,13 @@
+[[ref.webui.systems.grouping.visualzation]]
+= Systems Grouping
+
+The following is a graphical representation tree of the all systems registered with {productname}.
+
+
+image::visualization_system_grouping_all.png[scaledwidth=80%]
+
+
+Systems are grouped according to preconfigured systems groups, and they may also be grouped into various group compositions by using the multi-select box.
+
+
+image::visualization_system_grouping.png[scaledwidth=80%]

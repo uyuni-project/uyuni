@@ -1,0 +1,5 @@
+[[sd-proxy]]
+= SD Proxy
+
+This tab is only available for {susemgrproxy} systems.
+The tab lists all clients registered with the selected {susemgrproxy} server.

@@ -1,0 +1,130 @@
+[[clients-centos]]
+= Registering {centos} Clients
+
+This section contains information about registering traditional and Salt clients running {centos} operating systems.
+
+[IMPORTANT]
+====
+{centos} clients are based on {centos} and are unrelated to {sleses}, RES, {redhat}, or {es}.
+You are responsible for arranging access to {centos} base media repositories and {centos} installation media, as well as connecting {productname} Server to the {centos} content delivery network.
+====
+
+ifeval::[{suma-content} == true]
+
+[IMPORTANT]
+====
+{suse} does not provide support for {centos} operating systems.
+{productname} allows you to manage {centos} clients, but support is not provided.
+====
+
+endif::[]
+
+[IMPORTANT]
+====
+Traditional clients are not available on {centos}{nbsp}8.￼ {centos}{nbsp}8 clients are only supported as Salt clients.
+====
+
+
+
+== Server Requirements
+
+Before you begin, check that your {productname} Server meets the requirements at xref:installation:hardware-requirements.adoc[].
+
+Taskomatic uses one CPU core, and requires at least 3072{nbsp}MB of RAM.
+To ensure that taskomatic has access to enough memory, open the [path]``/etc/rhn/rhn.conf`` configuration file, and add this line:
+
+----
+taskomatic.java.maxmemory=3072
+----
+
+Restart Taskomatic:
+----
+systemctl restart taskomatic
+----
+
+
+
+== Channel and Repository Management
+
+The [package]``spacewalk-utils`` package contains a number of command line tools required for client administration, including the [command]``spacewalk-common-channels`` tool.
+
+
+ifeval::[{suma-content} == true]
+
+[IMPORTANT]
+====
+{suse} only provides support for [command]``spacewalk-clone-by-date`` and [command]``spacewalk-manage-channel-lifecycle`` tools.
+====
+
+endif::[]
+
+
+
+.Procedure: Adding Channels and Repositories
+. At the command prompt on the {productname} Server, as root, install the [package]``spacewalk-utils`` package:
++
+----
+zypper in spacewalk-utils
+----
+
+// Because of the way mgr-create-bootstrap-repo works and because we don't have CentOS products at SCC, SUSE Manager users MUST use the same procedure as at Uyuni
+// They CANNOT use RES Client Tools.
+. Add the {centos} base, updates, and client channels, specifying the {centos} version and architecture:
++
+----
+spacewalk-common-channels -a x86_64 centos7 \
+centos7-uyuni-client centos7-uyuni-client
+----
+
+[NOTE]
+====
+The client tools channel provided by [command]``spacewalk-common-channels`` is sourced from {uyuni} and not from {suse}.
+====
+
+
+
+.Procedure: Synchronizing {centos} repositories
+
+. In the {productname} {webui}, navigate to menu:Software[Manage], and check every {centos} channel.
+. In the [guimenu]``Repositories`` tab, navigate to the [guimenu]``Sync`` subtab, and click btn:[Sync Now].
+You can also create a regular synchronization schedule on this page.
+
+
+
+== Create an Activation Key
+
+You will need to create an activation key that is associated with your {centos} channels.
+
+For more information on activation keys, see xref:client-configuration:clients-and-activation-keys.adoc[].
+
+
+
+ifeval::[{uyuni-content} == true]
+
+== Trust GPG Keys on Clients
+
+By default, {centos} does not trust the GPG key for {productname} {centos} client tools.
+
+The clients can be successfully bootstrapped without the GPG key being trusted.
+
+However, they will not be able to install new client tool packages or update them.
+
+To fix this, add this key to the [systemitem]``ORG_GPG_KEY=`` parameter in all {centos} bootstrap scripts:
+----
+uyuni-gpg-pubkey-0d20833e.key
+----
+
+ You do not need to delete any previously stored keys.
+
+If you are boostrapping clients from the {productname} {webui}, you will need to use a salt state to trust the key.
+Create the salt state and assign it to the organization.
+You can then use an activation key and configuration channels to deploy the key to the clients.
+
+endif::[]
+
+
+
+== Register Clients
+
+{centos} clients are registered in the same way as all other clients.
+For more information, see xref:client-configuration:registration-overview.adoc[].

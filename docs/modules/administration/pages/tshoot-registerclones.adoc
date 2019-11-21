@@ -1,0 +1,139 @@
+[[troubleshooting-register-clones]]
+= Troubleshooting Registering Cloned Clients
+
+////
+PUT THIS COMMENT AT THE TOP OF TROUBLESHOOTING SECTIONS
+
+Troubleshooting format:
+
+One sentence each:
+Cause: What created the problem?
+Consequence: What does the user see when this happens?
+Fix: What can the user do to fix this problem?
+Result: What happens after the user has completed the fix?
+
+If more detailed instructions are required, put them in a "Resolving" procedure:
+.Procedure: Resolving Widget Wobbles
+. First step
+. Another step
+. Last step
+////
+
+
+If you are using {productname} to manage virtual machines, you might find it useful to create clones of your VMs.
+A clone is a VM that uses a primary disk that is an exact copy of an existing disk.
+
+While cloning VMs can save you a lot of time, the duplicated identifying information on the disk can sometimes cause problems.
+
+If you have a client that is already registered, you create a clone of that client, and then try and register the clone, you probably want {productname} to register them as two separate clients.
+However, if the machine ID in both the original client and the clone is the same, {productname} will register both clients as one system, and the existing client data will be over-written with that of the clone.
+
+This can be resolved by changing the machine ID of the clone, so that {productname} recognizes them as two different clients.
+
+[NOTE]
+====
+Each step of this procedure is performed on the cloned client.
+This procedure does not manipulate the original client, which will still be registered to {productname}.
+====
+
+
+
+.Procedure: Resolving Duplicate Machine IDs in Cloned Salt Clients
+
+. On the cloned machine, change the hostname and IP addresses.
+Make sure [path]``/etc/hosts`` contains the changes you made and the correct host entries.
+. For distributions that support systemd: If your machines have the same machine ID, delete the file on each duplicated client and re-create it:
++
+----
+# rm /etc/machine-id
+# rm /var/lib/dbus/machine-id
+# dbus-uuidgen --ensure
+# systemd-machine-id-setup
+----
+
+. For distributions that do not support systemd: Generate a machine ID from dbus:
++
+----
+# rm /var/lib/dbus/machine-id
+# dbus-uuidgen --ensure
+----
+. If your clients still have the same Salt client ID, delete the [path]``minion_id`` file on each client (FQDN will be used when it is regenerated on client restart):
++
+----
+# rm /etc/salt/minion_id
+----
+. Delete accepted keys from the onboarding page and the system profile from {productname}, and restart the client with:
++
+----
+# service salt-minion restart
+----
+. Re-register the clients.
+Each client will now have a different [path]``/etc/machine-id`` and should be correctly displayed on the [guimenu]``System Overview`` page.
+
+
+
+.Procedure: Resolving Duplicate Machine IDs in Cloned Traditional Clients
+
+. On the cloned machine, change the hostname and IP addresses.
+Make sure [path]``/etc/hosts`` contains the changes you made and the correct host entries.
+. Stop the [systemitem]``rhnsd`` daemon, on {rhnminrelease6} and {sle} 11 with:
++
+----
+# /etc/init.d/rhnsd stop
+----
++
+or, on newer systemd-based systems, with:
++
+----
+# service rhnsd stop
+----
+. Stop [systemitem]``osad`` with:
++
+----
+# /etc/init.d/osad stop
+----
++
+or:
++
+----
+# service osad stop
+----
++
+or:
++
+----
+# rcosad stop
+----
+. Remove the [systemitem]``osad`` authentication configuration file and the system ID:
++
+----
+# rm -f /etc/sysconfig/rhn/{osad-auth.conf,systemid}
+----
+. Delete the files containing the machine IDs:
++
+* SLES{nbsp}12:
++
+----
+# rm /etc/machine-id
+# rm /var/lib/dbus/machine-id
+# dbus-uuidgen --ensure
+# systemd-machine-id-setup
+----
+* SLES{nbsp}11:
++
+----
+# suse_register -E
+----
+. Remove the credential files:
+* SLES clients:
++
+----
+# rm -f /etc/zypp/credentials.d/{SCCcredentials,NCCcredentials}
+----
+* {rhel} clients:
++
+----
+# rm  -f /etc/NCCcredentials
+----
+. Re-run the bootstrap script.
+You should now see the cloned system in {productname} without overriding the system it was cloned from.

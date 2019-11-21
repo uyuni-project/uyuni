@@ -1,0 +1,132 @@
+.navbar-brand .navbar-item + .navbar-item {
+  -ms-flex-positive: 1;
+  -webkit-box-flex: 1;
+  flex-grow: 1;
+  -ms-flex-pack: end;
+  -webkit-box-pack: end;
+  justify-content: flex-end;
+}
+
+.algolia-autocomplete .ds-dropdown-menu [class^=ds-dataset-] {
+  max-height: calc(100vh - 3.25rem);
+}
+
+@media screen and (max-width: 768px) {
+  .navbar-brand .navbar-item + .navbar-item {
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  .algolia-autocomplete .ds-dropdown-menu {
+    min-width: calc(100vw - 2.75rem) !important;
+  }
+}
+
+@media screen and (min-width: 1024px) {
+  .navbar-brand {
+    -ms-flex-positive: 1;
+    -webkit-box-flex: 1;
+    flex-grow: 1;
+  }
+
+  .navbar-menu {
+    -ms-flex-positive: 0;
+    -webkit-box-flex: 0;
+    flex-grow: 0;
+  }
+}
+
+#search-input {
+  color: #333;
+  font-family: inherit;
+  font-size:  0.95rem;
+  width: 150px;
+  border: 1px solid #dbdbdb;
+  border-radius: 0.1em;
+  line-height:  1.5;
+  padding: 0 0.25em;
+}
+
+@media screen and (min-width: 769px) {
+  #search-input {
+    width: 200px;
+  }
+}
+
+/* Font Awesome 5 Admonition Support */
+.doc .admonitionblock .icon {
+  border-radius: 1rem;
+}
+
+i.fa[class^='icon-'], i.fa[class*=' icon-']:before {
+  content: "";
+  height: 1.25rem;
+  width: 1.25rem;
+  margin-right: 0.25rem;
+  margin-left: -0.5rem;
+}
+
+i.fa.icon-note:before {
+  background: no-repeat url("../img/note.svg");
+}
+
+i.fa.icon-tip:before {
+  background: no-repeat url("../img/tip.svg");
+}
+
+i.fa.icon-important:before {
+  background: no-repeat url("../img/important.svg");
+}
+
+i.fa.icon-warning:before {
+  background: no-repeat url("../img/warning.svg");
+}
+
+i.fa.icon-caution:before {
+  background: no-repeat url("../img/caution.svg");
+}
+
+/* HACK to fix https://github.com/SUSE/doc-susemanager/issues/567 */
+#twitter-link {
+  float: right;
+}
+
+.logo {
+  max-height: 50px;
+  margin-left: 74px;
+}
+
+/* navbar background and bottom border color */
+.navbar {
+  background-color: #414141;
+  border-bottom-color: #25bbbf;
+}
+
+/* color primary links */
+.doc a, .doc a:visited {
+  color: #25BBBF;
+}
+
+/* color H1 heading */
+.doc h1, .doc h2, .doc h3, .doc h4, .doc h5, .doc h6 {
+  color: #3b3b3b;
+}
+
+/* Paragraph text color */
+.doc {
+  color: #3b3b3b;
+}
+
+.navbar-end .navbar-link:hover, .navbar-end>a.navbar-item:hover {
+    background-color: #25bbbf;
+    color: #fff;
+}
+
+.navbar-item.has-dropdown:hover .navbar-link {
+  background-color: #25bbbf;
+  color: #fff;
+}
+
+.navbar-end .navbar-link, .navbar-end>.navbar-item {
+  color: #25bbbf;
+}

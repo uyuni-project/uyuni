@@ -1,0 +1,8 @@
+[[ref.webui.admin.status]]
+= Task Engine Status
+
+This is a status report of the various tasks running by the {productname} task engine.
+
+image::admin_task_status_last_execution.png[scaledwidth=80%]
+
+Next to the task name you find the date and time of the last execution and the status.

@@ -1,0 +1,20 @@
+[[salt-intro]]
+= Introduction
+
+Salt is a remote execution engine, configuration management and orchestration system used by {productname} to manage clients.
+
+In {productname}, the Salt master runs on the {productname} Server, allowing you to register and manage Salt clients.
+
+This book is designed to be a primer for using Salt with {productname}.
+
+For more information about Salt, see the Salt documentation at https://docs.saltstack.com/en/latest/contents.html.
+
+The current version of Salt in {productname} is {saltversion}.
+
+[NOTE]
+====
+Throughout the {productname} documentation, we use the term `Salt clients` to refer to Salt machines that are connected to and controlled by the Salt master on the {productname} Server.
+This is to clearly differentiate them from traditional clients.
+In other documentation, and in some internal references, Salt clients are sometimes referred to as Salt `minions` instead.
+This is a difference in terminology only.
+====

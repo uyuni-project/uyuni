@@ -1,0 +1,676 @@
+[[formulas-custom]]
+= Custom Salt Formulas
+
+
+Some formulas are provided by default with {productname}.
+Other official formulas can be installed as RPM packages.
+You can also write your own, custom, formulas, and make them available to your systems in the {productname} {webui}.
+
+This section contains information about installing official formulas, and writing custom formulas.
+
+
+== Install Official Salt Formulas
+
+{suse} releases formulas as RPM packages.
+Available formulas can be located within the [systemitem]``SUSE-Manager-Server-VERSION-Pool`` channel.
+
+[IMPORTANT]
+====
+If a Salt Formula uses the same name as an existing Salt State, the two names will collide, and could result in the formula being used instead of the state.
+Always check states and formulas to avoid name clashes.
+====
+
+.Procedure: Installing Salt Formulas from an RPM
+. On the {productname} Server, at the command prompt, search for available formulas:
++
+----
+zypper se --type package formula
+----
+. Get more information about a formula:
++
+----
+zypper info locale-formula
+----
+. On the {productname} Server, at the command prompt, as root, install the formula:
++
+----
+zypper in locale-formula
+----
+
+
+
+== File Structure Overview
+
+RPM-based formulas must be placed in a specific directory structure to ensure that they work correctly.
+A formula contains two separate directories: [path]``states``, and [path]``metadata``.
+Folders in these directories need to have exactly matching names.
+
+The formula states directory contains anything necessary for a Salt state to work independently.
+This includes [path]``.sls`` files, a [path]``map.jinja`` file and any other required files.
+This directory should only be modified by RPMs and should not be edited manually.
+For example, the [package]``locale-formula`` states directory is located in:
+----
+/usr/share/salt-formulas/states/locale/
+----
+
+The metadata directory contains a [path]``form.yml`` file which defines the forms for {productname}.
+It also contains an optional [path]``metadata.yml`` file that contains additional information about a formula.
+For example, the [package]``locale-formula`` metadata directory is located in:
+----
+/usr/share/susemanager/formulas/metadata/locale/
+----
+
+
+If you have a custom formula that is not in an RPM, it must be in a state directory configured as a Salt file root.
+Custom state formula data must be in:
+----
+/srv/salt/<custom-formula-name>/
+----
+
+Custom metadata information must be in:
+----
+/srv/formula_metadata/<custom-formula-name>/
+----
+
+All custom folders must contain a [path]``form.yml`` file.
+These files are detected as form recipes and are applied to groups and systems from the {webui}:
+----
+/srv/formula_metadata/<custom-formula-name>/form.yml
+----
+
+[NOTE]
+====
+The Salt formula directory changed in {productname}{nbsp}4.0.
+The old directory location, [path]``/usr/share/susemanager/formulas``, will continue to work for some time.
+You should ensure that you update to the new directory location, [path]``/usr/share/salt-formulas/`` as soon as possible.
+====
+
+
+
+== Define Formula Data
+
+{productname} requires a file called [path]``form.yml``, to describe how formula data should look within the {webui}.
+The [path]``form.yml`` file is used by {productname} to generate the desired form, with values editable by a user.
+
+The file contains a list of editable attributes that start with a `$` sign.
+These attributes are used to determine how to display the formula in the {productname} {webui}.
+
+For example, the [path]``form.yml`` that is included with the [package]``locale-formula`` is in:
+----
+/usr/share/susemanager/formulas/metadata/locale/form.yml
+----
+
+Part of that file looks like this:
+
+----
+# This file is part of locale-formula.
+#
+# Foobar is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# Foobar is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
+
+timezone:
+  $type: group
+
+  name:
+    $type: select
+    $values: ["CET",
+              "CST6CDT",
+              "EET",
+              "EST",
+              "EST5EDT",
+              "GMT",
+              "GMT+0",
+              "GMT-0",
+              "GMT0",
+              "Greenwich",
+              "HST",
+              "MET",
+              "MST",
+              "MST7MDT",
+              "NZ",
+              "NZ-CHAT",
+              "Navajo",
+              "PST8PDT",
+              "UCT",
+              "UTC",
+              "Universal",
+              "W-SU",
+              "WET",
+              "Zulu",
+              "Etc/GMT+1",
+              "Etc/GMT+2",
+              "Etc/GMT+3",
+              "Etc/GMT+4",
+              "Etc/GMT+5",
+              "Etc/GMT+6",
+              "Etc/GMT+7",
+              "Etc/GMT+8",
+              "Etc/GMT+9",
+              "Etc/GMT+10",
+              "Etc/GMT+11",
+              "Etc/GMT+12",
+              "Etc/GMT-1",
+              "Etc/GMT-2",
+              "Etc/GMT-3",
+              "Etc/GMT-4",
+              "Etc/GMT-5",
+              "Etc/GMT-6",
+              "Etc/GMT-7",
+              "Etc/GMT-8",
+              "Etc/GMT-9",
+              "Etc/GMT-10",
+              "Etc/GMT-11",
+              "Etc/GMT-12",
+              "Etc/GMT-13",
+              "Etc/GMT-14",
+              "Etc/GMT",
+              "Etc/GMT+0",
+              "Etc/GMT-0",
+              "Etc/GMT0",
+              "Etc/Greenwich",
+              "Etc/UCT",
+              "Etc/UTC",
+              "Etc/Universal",
+              "Etc/Zulu"
+              ]
+    $default: CET
+
+  hardware_clock_set_to_utc:
+    $type: boolean
+    $default: True
+...
+----
+
+
+All values that start with a `$` sign are annotations used to display the UI that users interact with.
+These annotations are not part of pillar data itself and are handled as metadata.
+
+
+This section lists the available attributes:
+
+$type::
+The most important attribute is the `$type` attribute.
+It defines the type of the pillar value and the form-field that is generated.
+The supported types are:
+
+** `text`
+** `password`
+** `number`
+** `url`
+** `email`
+** `date`
+** `time`
+** `datetime`
+** `boolean`
+** `color`
+** `select`
+** `group`
+** `edit-group`
+** `namespace`
+** `hidden-group` (obsolete, renamed to ``namespace``)
+
+
+[NOTE]
+====
+The text attribute is the default and does not need to be specified explicitly.
+====
+
+
+Many of these values are self-explanatory:
+
+* The `text` type generates a simple text field
+* The `password` type generates a password field
+* The `color` type generates a color picker
+
+The ``group``, ``edit-group``, and `namespace` (formerly ``hidden-group``) types do not generate an editable field and are used to structure form and pillar data.
+All these types support nesting.
+
+The `group` and `namespace` types differ slightly.
+The `group` type generates a visible border with a heading.
+The `namespace` type shows nothing visually, and is only used to structure pillar data.
+
+The `edit-group` type allows you to structure and restrict editable fields in a more flexible way.
+The `edit-group` type is a collection of items of the same kind.
+Collections can have these four shapes:
+
+* List of primitive items
+* List of dictionaries
+* Dictionary of primitive items
+* Dictionary of dictionaries
+
+The size of each collection is variable.
+Users can add or remove elements.
+
+For example, `edit-group` supports the `$minItems` and `$maxItems` attributes, which simplifies complex and repeatable input structures.
+These, and also `itemName`, are optional.
+
+
+$default::
+Allows you to specify a default value to be displayed.
+This default value will be used if no other value is entered.
+In an `edit-group` it allows you to create initial members of the group and populate them with specified data.
+
+$optional::
+This type is a Boolean attribute.
+If it is `true` and the field is empty in the form, then this field will not be generated in the formula data and the generated dictionary will not contain the field name key.
+If it is `false` and the field is empty, the formula data will contain a `<field name>: null` entry.
+
+$ifEmpty::
+This type is used if the field is empty.
+This usually occurs because the user did not provide a value.
+The `ifEmpty` type can only be used when `$optional` is `false` or not defined.
+If `$optional` is `true`, then `$ifEmpty` is ignored.
+In this example, the `DP2` string would be used if the user leaves the field empty:
++
+----
+displayName:
+  $type: string
+  $ifEmpty: DP2
+----
+
+$name::
+Allows you to specify the name of a value that is shown in the form.
+If this value is not set, the pillar name is used and capitalized without underscores and dashes.
+Reference it in the same section with ``pass:c[${name}]``.
+
+$help and $placeholder::
+These attributes are used to give a user a better understanding of what the value should be.
+The `$help` type defines the message a user sees when hovering over a field
+The `$placeholder` type displays a gray placeholder text in the field
+
+Use `$placeholder` only with text fields like text, password, email or date fields.
+Do not add a placeholder if you also use `$default`, as it will hide the placeholder.
+
+$key::
+Applicable only if the `edit-group` has the shape of a dictionary.
+When the pillar data is a dictionary, the `$key` attribute determines the key of an entry in the dictionary.
++
+For example:
++
+----
+user_passwords:
+  $type: edit-group
+  $minItems: 1
+  $prototype:
+    $key:
+        $type: text
+    $type: text
+  $default:
+    alice: secret-password
+    bob: you-shall-not-pass
+----
++
+Pillar:
++
+----
+user_passwords:
+  alice:
+    secret-password
+  bob:
+    you-shall-not-pass
+----
+
+$minItems and $maxItems::
+In an ``edit-group``, `$minItems` and `$maxItems` specifies the lowest and highest numbers for the group.
+
+$itemName::
+In an ``edit-group``, `$itemName` defines a template for the name to be used for the members of the group.
+
+$prototype::
+In an ``edit-group``, `$prototype` is mandatory and defines the default pre-filled values for newly added members in the group.
+
+$scope::
+Specifies a hierarchy level at which a value may be edited.
+Possible values are ``system``, `group`, and ``readonly``.
++
+The default value is `$scope: system`, allows values to be edited at group and system levels.
+A value can be entered for each system but if no value is entered the system will fall back to the group default.
++
+The ``$scope: group`` option makes a value editable only for a group.
+On the system level you will be able to see the value, but not edit it.
++
+The `$scope: readonly` option makes a field read-only.
+It can be used to show data to the user, but will not allow them to edit it.
+This option should be used in combination with the ``$default`` attribute.
+
+$visibleIf::
+Allows you to show a field or group if a simple condition is met.
+An example condition is:
++
+----
+some_group#another_group#my_checkbox == true
+----
++
+The left part of the condition is the path to another value, and groups are separated by `$` signs.
+The middle section of the condition should be either `==` for a value to be equal or `!=` for values that should be not equal.
+The last field in the statement can be any value which a field should have or not have.
++
+The field with this attribute associated with it will be shown only when the condition is met.
+In this example the field will be shown only if `my_checkbox` is checked.
+The ability to use conditional statements is not limited to check boxes.
+It may also be used to check values of select-fields, text-fields, and similar.
++
+A check box should be structured like this:
++
+----
+some_group:
+  $type: group
+
+  another_group:
+    $type: group
+
+      my_checkbox:
+        $type: boolean
+----
++
+Relative paths can be specified using prefix dots.
+One dot indicates a sibling, two dots indicate a parent, and so on.
+This is mostly useful for ``edit-group``.
++
+----
+some_group:
+  $type: group
+
+  another_group:
+    $type: group
+
+    my_checkbox:
+      $type: boolean
+
+    my_text:
+      $visibleIf: .my_checkbox
+
+  yet_another_group:
+    $type: group
+
+    my_text2:
+      $visibleIf: ..another_group#my_checkbox
+
+----
++
+If you use multiple groups with the attribute, you can allow a users to select an option and show a completely different form, dependent upon the selected value.
++
+Values from hidden fields can be merged into the pillar data and sent to the client.
+A formula must check the condition again and use the appropriate data.
+For example:
++
+----
+show_option:
+  $type: checkbox
+some_text:
+  $visibleIf: show_option == true
+----
++
+----
+{% if pillar.show_option %}
+do_something:
+  with: {{ pillar.some_text }}
+{% endif %}
+----
+
+$values::
+Can only be used together with ``$type``
+Use to specify the different options in the select-field.
+`$values` must be a list of possible values to select.
+For example:
++
+----
+select_something:
+  $type: select
+  $values: ["option1", "option2"]
+----
++
+Or:
++
+----
+select_something:
+  $type: select
+  $values:
+    - option1
+    - option2
+----
+
+
+.Example: Basic edit-group
+----
+partitions:
+  $name: "Hard Disk Partitions"
+  $type: "edit-group"
+  $minItems: 1
+  $maxItems: 4
+  $itemName: "Partition ${name}"
+  $prototype:
+    name:
+      $default: "New partition"
+    mountpoint:
+      $default: "/var"
+    size:
+      $type: "number"
+      $name: "Size in GB"
+  $default:
+    - name: "Boot"
+      mountpoint: "/boot"
+    - name: "Root"
+      mountpoint: "/"
+      size: 5000
+----
+
+Click btn:[Add] to fill the form with the default values.
+
+The formula is called [path]``hd-partitions`` and will appear as [guimenu]``Hd Partitions`` in the {webui}.
+
+image::formula-custom-harddisk-partitions.png[]
+
+To remove the definition of a partition click the minus symbol in the title line of an inner group.
+
+When you are finished, click btn:[Save Formula].
+
+
+.Example: Nested edit-group
+----
+users:
+  $name: "Users"
+  $type: edit-group
+  $minItems: 2
+  $maxItems: 5
+  $prototype:
+    name:
+      $default: "username"
+    password:
+      $type: password
+    groups:
+      $type: edit-group
+      $minItems: 1
+      $prototype:
+        group_name:
+          $type: text
+  $default:
+    - name: "root"
+      groups:
+        - group_name: "users"
+        - group_name: "admins"
+    - name: "admin"
+      groups:
+        - group_name: "users"
+----
+
+
+
+== Writing Salt Formulas
+
+Salt formulas are pre-written Salt states.
+You can use Jinja to configure formulas with pillar data.
+
+Basic Jinja syntax is:
+----
+pillar.some.value
+----
+
+When you are sure a pillar exists, use this syntax:
+----
+salt['pillar.get']('some:value', 'default value')
+----
+
+You can also replace the `pillar` value with `grains`.
+For example, ``grains.some.value``.
+
+Using data this way makes the formula configurable.
+In this example, a specified package is installed in the ``package_name`` pillar:
+----
+install_a_package:
+  pkg.installed:
+    - name: {{ pillar.package_name }}
+----
+
+You can also use more complex constructs such as `if/else` and `for-loops` to provide greater functionality:
+----
+{% if pillar.installSomething %}
+something:
+  pkg.installed
+{% else %}
+anotherPackage:
+  pkg.installed
+{% endif %}
+----
+
+Another example:
+----
+{% for service in pillar.services %}
+start_{{ service }}:
+  service.running:
+    - name: {{ service }}
+{% endfor %}
+----
+
+Jinja also provides other helpful functions.
+For example, you can iterate over a dictionary:
+----
+{% for key, value in some_dictionary.items() %}
+do_something_with_{{ key }}: {{ value }}
+{% endfor %}
+----
+
+You can have Salt manage your files (for example, configuration files for a program), and change them with pillar data.
+
+In this example, Salt copies the file [path]``salt-file_roots/my_state/files/my_program.conf`` on the server to [path]``/etc/my_program/my_program.conf`` on the client and template it with Jinja:
+----
+/etc/my_program/my_program.conf:
+  file.managed:
+    - source: salt://my_state/files/my_program.conf
+    - template: jinja
+----
+
+This example allows you to use Jinja in the file, like the previous example for states:
+----
+some_config_option = {{ pillar.config_option_a }}
+----
+
+
+== Separate Data
+
+Separating data from a state can increase flexibility and make it easier to re-use.
+You can do this by writing values into a separate file named [path]``map.jinja``.
+This file must be within the same directory as the state files.
+
+This example sets `data` to a dictionary with different values, depending on which system the state runs on.
+It will also merge data with the pillar using the `some.pillar.data` value so you can access `some.pillar.data.value` by using ``data.value``.
+
+You can choose to override defined values from pillars.
+For example, by overriding `some.pillar.data.package` in this example:
+----
+{% set data = salt['grains.filter_by']({
+    'Suse': {
+        'package': 'packageA',
+        'service': 'serviceA'
+    },
+    'RedHat': {
+        'package': 'package_a',
+        'service': 'service_a'
+    }
+}, merge=salt['pillar.get']('some:pillar:data')) %}
+----
+
+When you have created a map file, you can maintain compatibility with multiple system types while accessing deep pillar data in a simpler way.
+
+Now you can import and use `data` in any file.
+For example:
+----
+{% from "some_folder/map.jinja" import data with context %}
+
+install_package_a:
+  pkg.installed:
+    - name: {{ data.package }}
+----
+
+You can define multiple variables by copying the `{% set ...%}` statement with different values and then merge it with other pillars.
+For example:
+----
+{% set server = salt['grains.filter_by']({
+    'Suse': {
+        'package': 'my-server-pkg'
+    }
+}, merge=salt['pillar.get']('myFormula:server')) %}
+{% set client = salt['grains.filter_by']({
+    'Suse': {
+        'package': 'my-client-pkg'
+    }
+}, merge=salt['pillar.get']('myFormula:client')) %}
+----
+
+To import multiple variables, separate them with a comma.
+For example:
+----
+{% from "map.jinja" import server, client with context %}
+----
+
+For more information about conventions to use when writing formulas, see https://docs.saltstack.com/en/latest/topics/development/conventions/formulas.html.
+
+
+
+== Generated Pillar Data
+
+Pillar data is generated by {productname} when events occur like generating the highstate.
+You can use an external pillar script to generate pillar data for packages and group IDs, and include all pillar data for a system:
+----
+/usr/share/susemanager/modules/pillar/suma_minion.py
+----
+
+The process is executed like this:
+
+. The `suma_minion.py` script starts and finds all formulas for a system by checking the `group_formulas.json` and `server_formulas.json` files.
+. The script loads the values for each formula (groups and from the system) and merges them with the highstate.
+By default, if no values are found, a group overrides a system if `$scope: group`.
+. The script also includes a list of formulas applied to the system in a pillar named ``formulas``.
+
+This structure makes it possible to include states.
+In this example, the top file is specifically generated by the `mgr_master_tops.py` script.
+The top file includes a state called ``formulas`` for each system.
+This includes the `formulas.sls` file located in [path]``/usr/share/susemanager/formulas/states`` or [path]``/usr/share/salt-formulas/states/``.
+The content looks similar to this:
+----
+include: {{ pillar["formulas"] }}
+----
+
+This pillar includes all formulas that are specified in the pillar data generated from the external pillar script.
+
+
+Formulas should be created directly after a {productname} installation.
+If you encounter any problems with formulas check these things first:
+
+* The external pillar script (``suma_minion.py``) must include formula data.
+* Data is saved to [path]``/srv/susemanager/formula_data`` and the [path]``pillar`` and [path]``group_pillar`` sub-directories.
+These directories should be automatically generated by the server.
+* Formulas must be included for every client listed in the top file.
+Currently this process is initiated by the [path]``mgr_master_tops.py`` script which includes the `formulas.sls` file located in [path]``/usr/share/susemanager/formulas/states/`` or [path]``/usr/share/salt-formulas/states/``.
+This directory must be a salt file root.
+File roots are configured on the salt-master ({productname}) located at [path]``/etc/salt/master.d/susemanager.conf``.

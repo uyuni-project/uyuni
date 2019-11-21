@@ -1,0 +1,12 @@
+[[sd-migrate]]
+= SD Migrate
+
+This subtab provides the option to migrate systems between organizations.
+Select an organization form the dropdown [guimenu]``Migrate System Between Organizations`` and click btn:[Migrate System] to initiate the migration.
+
+image::system_details_traditional_migrate.png[scaledwidth=80%]
+
+[NOTE]
+====
+Defined system details such as channel assignments, system group membership, custom data value, configuration channels, reactivation keys, and snapshots will be dropped from the system configuration after the migration.
+====

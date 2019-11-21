@@ -1,0 +1,45 @@
+[[retail-formulas]]
+= Introduction to Retail Formulas
+
+
+Formulas are pre-written Salt states, that are used to configure your {smr} installation.
+
+You can use the {productname} {webui} to apply common {productname} formulas.
+For the most commonly used formulas, see xref:salt:formulas-intro.adoc[].
+
+All formulas must be accurately configured for your {smr} installation to function correctly.
+If you are unsure of the correct formula configuration details, run the [command]``retail_branch_init`` command before you begin to create the recommended formula configuration.
+You can then manually edit the formulas as required.
+
+== Branch Server Formulas
+
+Branch servers are configured using formulas. 
+Formulas can be configured using {susemgr} {webui}, or the {susemgr} XMLRPC API.
+To fully configure {smr}, these formulas need to be enabled and configured on the branch server:
+
+* Branch network formula, see xref:salt:formula-branchnetwork.adoc[]
+* Bind formula, see xref:salt:formula-bind.adoc[]
+* DHCPD formula, see xref:salt:formula-dhcpd.adoc[]
+* PXE formula, see xref:salt:formula-pxe.adoc[]
+* TFTP formula, see xref:salt:formula-tftpd.adoc[]
+* VSFTP formula, see xref:salt:formula-vsftpd.adoc[]
+
+Optionally, you can also enable the image synchronization formula.
+For more information, see xref:salt:formula-imagesync.adoc[].
+
+[IMPORTANT]
+====
+Badly configured formulas can result in the branch server failing to work as expected.
+Due to the generic nature of formulas it is difficult to do overall validation.
+We recommend that you configure the branch server using the {smr} command line utilities, and use individual formula settings for further tuning if required.
+For more information, see xref:retail:retail-install-setup.adoc[].
+====
+
+[WARNING]
+====
+If a formula uses the same name as an existing Salt state, the two names will collide, and could result in the formula being used instead of the state.
+Always check the names of states and formulas to avoid name collisions.
+====
+
+When you have made changes to your formula, ensure you apply the highstate.
+The highstate propagates your changes to the appropriate services.

@@ -1,0 +1,47 @@
+# Uncomment name and title to build for SUSE Manager
+#name: suse-manager
+#title: SUSE Manager
+
+# Uncomment name and title to build for Uyuni
+name: uyuni
+title: Uyuni
+
+# Which branch is the default for this playbook.
+version: master
+
+# Starting page or home
+start_page: ROOT:index
+
+# Links to book navigation files. These nav files are used to build the left navigation sidebar in the form of asciidoctor lists.
+# We also keep our PDF lists in these files. Which one is used depends on what backend is selected via our Makefile. If you select to build pdf
+# the backend-pdf ifdef statement will take effect and include all necessary files and images.
+
+# WARNING: IF YOU ADD A NEW TOPIC TO THE ANTORA NAV LISTS YOU MUST ADD IT TO THE PDF LIST AS WELL!
+
+nav:
+  # ROOT Modules (release notes, introduction and resource links)
+  - modules/ROOT/nav.adoc
+
+  # Installation Guide
+  - modules/installation/nav-installation-guide.adoc
+
+  # Client Configuration Guide
+  - modules/client-configuration/nav-client-config-guide.adoc
+
+  # Upgrade Guide
+  - modules/upgrade/nav-upgrade-guide.adoc
+
+  # Reference Manual
+  - modules/reference/nav-reference-manual.adoc
+
+  # Administration Guide
+  - modules/administration/nav-administration-guide.adoc
+
+  # Salt Guide
+  - modules/salt/nav-salt-guide.adoc
+
+  # Retail Books
+  - modules/retail/nav-retail.adoc
+
+  # Architecture
+  #- modules/architecture/nav-architecture-components-guide.adoc

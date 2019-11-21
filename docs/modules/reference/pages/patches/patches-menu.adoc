@@ -1,0 +1,26 @@
+[[ref.webui.patches]]
+= Patches Menu
+
+The menu:Main Menu[Patches] menu from the left bar helps tracking the availability and application of patches to your managed systems.
+
+The menu:Main Menu[Patches > Patches] page displays all or relevant patches for at least one of your managed systems that have not been applied yet.
+
+.Receiving Patches for Your System
+[NOTE]
+====
+To receive an e-mail when patches are issued for your system, go to menu:Main Menu[Home > My Preferences] and select [guimenu]``Receive email notifications``.
+====
+
+{suse} distinguishes three types of patches: security updates, bug fix updates, and enhancement updates.
+Each patch consists of a summary of the problem and solution, including the RPM packages fixing the problem.
+
+Icons are used to identify the three types:
+
+* image:fa-shield.svg[Security Alert,scaledwidth=1.2em] -- Security Updates available, _strongly_ recommended
+* image:fa-bug.svg[Bug Fix Alert,scaledwidth=1.6em] -- Bug Fix Updates available, recommended
+* image:spacewalk-icon-enhancement.svg[Enhancement Alert,scaledwidth=1.4em] -- Enhancement Updates available, optional
+
+A summary of each patch is provided in list form displaying its type, advisory ID, synopsis (with the severity as a textual prefix in case of security updates, such as "`critical`", "`important`", "`moderate`", or "`low`"), number of affected systems in your network, and date updated.
+
+In addition, you may view patches by product line at the following location: link:http://download.suse.com/patch/psdb/[].
+For more information on security updates, see link:https://www.suse.com/support/security/[].

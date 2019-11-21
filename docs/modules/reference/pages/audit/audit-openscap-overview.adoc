@@ -1,0 +1,228 @@
+[[ch-openscap]]
+= System Security via OpenSCAP
+
+The Security Certification and Authorization Package (SCAP) is a standardized compliance checking solution for enterprise-level Linux infrastructures.
+It is a line of specifications maintained by the National Institute of Standards and Technology (NIST) for maintaining system security for enterprise systems.
+
+{productname} uses OpenSCAP to implement the SCAP specifications.
+OpenSCAP is an auditing tool that utilizes the Extensible Configuration Checklist Description Format (XCCDF). XCCDF is a standard way of expressing checklist content and defines security checklists.
+It also combines with other specifications such as Common Platform Enumeration (CPE), Common Configuration Enumeration (CCE), and Open Vulnerability and Assessment Language (OVAL), to create a SCAP-expressed checklist that can be processed by SCAP-validated products.
+
+[[s1-openscap-features]]
+== OpenSCAP Features
+
+
+OpenSCAP verifies the presence of patches by using content produced by the SUSE Security Team (https://www.suse.com/support/security/), checks system security configuration settings and examines systems for signs of compromise by using rules based on standards and specifications.
+
+To effectively use OpenSCAP, the following must be available:
+
+A tool to verify a system confirms to a standard::
+{productname} uses OpenSCAP as an auditing feature.
+It allows you to schedule and view compliance scans for any system.
+
+SCAP content::
+SCAP content files defining the test rules can be created from scratch if you understand at least XCCDF or OVAL.
+XCCDF content is also frequently published online under open source licenses and this content can be customized to suit your needs.
++
+The [systemitem]``openscap-content``
+package provides default content guidance for systems via a template.
+
+
+[NOTE]
+====
+{suse}
+supports the use of templates to evaluate your systems.
+However, you are creating custom content at your own risk.
+====
+ifdef::showremarks[]
+#
+ ke 2013-08-28: Do we have SCAP content providers? Such as: The United States Government
+   Configuration Baseline (USGCB) for RHEL5 Desktop or Community-provided content (openscap-content
+   package)? For more info, see
+   https://access.redhat.com/site/documentation/en-US/Red_Hat_Network_Satellite/5.5/html/User_Guide/chap-Red_Hat_Network_Satellite-User_Guide-OpenSCAP.html #
+endif::showremarks[]
+
+
+SCAP was created to provide a standardized approach to maintaining system security, and the standards that are used will therefore continually change to meet the needs of the community and enterprise businesses.
+New specifications are governed by NIST's SCAP Release cycle in order to provide a consistent and repeatable revision work flow.
+For more information, see http://scap.nist.gov/timeline.html.
+
+[[s1-openscap-suma-prerq]]
+== Prerequisites for Using OpenSCAP in {productname}
+
+
+The following sections describe the server and client prerequisites for using OpenSCAP.
+
+Package Requirements::
+As Server: {productname}
+1.7 or later.
++
+For the Client: [systemitem]``spacewalk-oscap`` package (available from the {productname} Tools Child Channel).
+
+Other Requirements::
+Client: Distribution of the XCCDF content to all client machines.
+
+
+.OpenSCAP Auditing Availability
+[NOTE]
+====
+OpenSCAP auditing is not available on Salt SSH clients.
+====
+
+
+You can distribute XCCDF content to client machines using any of the following methods:
+
+* Traditional Methods (CD, USB, NFS, scp, ftp)
+* {productname} Scripts
+* RPMs
+
+
+Custom RPMs are the recommended way to distribute SCAP content to other machines.
+RPM packages can be signed and verified to ensure their integrity.
+Installation, removal, and verification of RPM packages can be managed from the user interface.
+
+[[s2-openscap-suma-audit-scans]]
+== Performing Audit Scans
+
+
+OpenSCAP integration in {productname} provides the ability to perform audit scans on client systems.
+This section describes the available scanning methods.
+
+.OpenSCAP Scans via Salt ssh-push Clients
+[IMPORTANT]
+====
+Currently performing an OpenSCAP scan is disabled in the WebUI for Salt ssh-push clients.
+This functionality will be adapted and enabled in a future release.
+====
+
+[[pro-os-suma-audit-scans-webui]]
+.Procedure: Scans via the Web Interface
+. To perform a scan via the Web interface, log in to {productname} .
+. Click on menu:Systems[] and select the target system.
+. Click on menu:Audit[Schedule] .
+. Fill in the Schedule New XCCDF Scan form. For more information about the fields on this page, see:
+xref:reference:audit/system-details-audit.adoc#sm-audit-schedule[Schedule Audit]
++
+WARNING: The XCCDF content is validated before it is run on the remote system.
+Specifying invalid arguments can make spacewalk-oscap fail to validate or run.
+Due to security concerns the [command]``oscap xccdf eval`` command only accepts a limited set of parameters.
++
+
+
++
+Run the [command]``mgr_check`` command to ensure the action is being picked up by the client system.
++
+
+----
+mgr_check -vv
+----
++
+NOTE: If the {productname} daemon ([command]``rhnsd``) or [command]``osad`` are running on the client system, the action will be picked up by these services.
+On systemd-based systems, you can check if they are running with this command:
+
+----
+service rhnsd start
+----
+
+or
+
+----
+service osad start
+----
++
+
+
+
+To view the results of the scan, refer to <<s2-openscap-suma-audit-scans_view>>.
+
+.Scheduling a Scan via the Web Interface
+
+image::audit_openscap_schedule_scan.png[scaledwidth=80%]
+
+
+.Procedure: Scans via API
+. To perform an audit scan via API, choose an existing script or create a script for scheduling a system scan through ``system.scap.scheduleXccdfScan``, the front end API, for example:
++
+
+----
+#!/usr/bin/python
+client = xmlrpclib.Server('https://spacewalk.example.com/rpc/api')
+key = client.auth.login('username', 'password')
+client.system.scap.scheduleXccdfScan(key, 1000010001,
+    '/usr/local/share/scap/usgcb-sled11desktop-xccdf.xml',
+    '--profile united_states_government_configuration_baseline')
+----
++
+Where:
+** `1000010001` is the system ID (sid).
+** [path]``/usr/local/share/scap/usgcb-sled11desktop-xccdf.xml`` is the path to the content location on the client system. In this case, it assumes USGCB content in the [path]``/usr/local/share/scap`` directory.
+** [option]``--profile united_states_government_configuration_baseline`` is an additional argument for the [command]``oscap`` command. In this case, it is using the USGCB.
+. Run the script on the command-line interface of any system. The system needs the appropriate Python and XML-RPC libraries installed.
+. Run the [command]``mgr_check`` command to ensure that the action is being picked up by the client system.
++
+
+----
+mgr_check -vv
+----
++
+If the {productname} daemon ([command]``rhnsd``) or [command]``osad`` are running on the client system, the action will be picked up by these services.
+To check if they are running, use:
++
+
+----
+service rhnsd start
+----
++
+or
++
+
+----
+service osad start
+----
+
+
+.Enabling Upload of Detailed SCAP Files
+[NOTE]
+====
+To make sure detailed information about the scan will be available, activate the upload of detailed SCAP files on the clients to be evaluated.
+On the menu:Admin[]
+ page, click on menu:Organization[]
+ and select one.
+Click on the menu:Configuration[]
+ tab and check menu:Enable Upload Of Detailed SCAP Files[]
+.
+This feature generates an additional HTML version when you run a scan.
+The results will show an extra line like: ``Detailed Results: xccdf-report.html xccdf-results.xml
+     scap-yast2sec-oval.xml.result.xml``.
+====
+
+[[s2-openscap-suma-audit-scans_view]]
+== Viewing SCAP Results
+
+
+There are three methods of viewing the results of finished scans:
+
+* Via the Web interface. Once the scan has finished, the results should show up on the menu:Audit[] tab of a specific system. This page is discussed in <<s2-openscap-suma-pages>>.
+* Via the API functions in handler ``system.scap``.
+* Via the [command]``spacewalk-report`` command as follows:
++
+
+----
+spacewalk-report system-history-scap
+spacewalk-report scap-scan
+spacewalk-report scap-scan-results
+----
+
+
+[[s2-openscap-suma-pages]]
+== OpenSCAP {productname} Web Interface
+
+
+The following sections describe the tabs in the {productname} {webui} that provide access to OpenSCAP and its features.
+
+=== OpenSCAP Scans Page
+
+
+Click the menu:Audit[]
+ tab on the top navigation bar, then OpenSCAP on the left.
+Here you can view, search for, and compare completed OpenSCAP scans.

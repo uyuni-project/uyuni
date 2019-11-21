@@ -1,0 +1,8 @@
+[[ref.webui.systems.virtual.visualzation]]
+= Virtualization Hierarchy
+
+The following is an example graphical representation tree of the virtual network hierarchy of virtual systems registered with {productname}.
+
+
+image::systems_visualization_virtualization_hierarchy.png[scaledwidth=80%]
+

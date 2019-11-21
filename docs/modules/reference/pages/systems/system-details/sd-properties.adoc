@@ -1,0 +1,59 @@
+[[system-details-properties]]
+= SD Properties
+
+The [guimenu]``Properties`` subtab allows you to alter basic properties of the selected system.
+
+System Details::
+
+System Name:::
+By default, this is the host name of the system.
+You can however alter the profile name to anything that allows you to distinguish this system from others.
+
+Base System Type:::
+For information only.
+
+Add-on System Types:::
+Select one of the available system types such as ``Container Build Host``.
+
+
+Notifications:::
+Select whether notifications about this system should be sent and whether to include this system in the daily summary.
+This setting keeps you aware of all advisories pertaining to the system.
+Anytime an update is released for the system, you receive an e-mail notification.
++
+
+The daily summary reports system events that affect packages, such as scheduled patch updates, system reboots, or failures to check in.
+In addition to including the system here, you must activate to receive e-mail notification in menu:Main Menu[Home > Overview > My Preferences].
+
+Contact Method:::
+Select one of the following contact methods:
+
+* [guimenu]``Pull (Default)``
+* [guimenu]``Push via SSH``
+* [guimenu]``Push via SSH tunnel``
+
+[[varentry-system-details-properties-auto]]
+Auto Patch Update:::
+If this box is checked, available patches are automatically applied to the system when it checks in (Pull) or immediately if you select either Push option.
+This action takes place without user intervention.
++
+
+.Conflicts With Third Party Packages
+NOTE: Enabling auto-update might lead to failures because of conflicts between system updates and third party packages.
+To avoid failures caused by those issues, it is better to leave this box unchecked.
++
+
+Description:::
+By default, this text box records the operating system, release, and architecture of the system when it first registers.
+Edit this information to include anything you like.
+
+The remaining fields record the physical address at which the system is stored.
+To confirm any changes to these fields, click the btn:[Update Properties] button.
+
+
+[NOTE]
+.Setting Properties for Multiple Systems
+====
+Many of these properties can be set for multiple systems in one go via the System Set Manager interface.
+For more information, see xref:reference:systems/ssm-overview.adoc[].
+====

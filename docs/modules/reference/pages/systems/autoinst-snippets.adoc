@@ -1,0 +1,38 @@
+[[ref.webui.systems.autoinst.snippet]]
+= Autoinstallation Snippets
+
+Use snippets to store common blocks of code that can be shared across multiple Kickstart or {ay} profiles in {productname}.
+
+
+
+[[s4-sm-system-kick-snippet-default]]
+== Default Snippets
+
+Default snippets coming with {productname} are not editable.
+You can use a snippet, if you add the [guimenu]``Snippet Macro`` statement such as `$SNIPPET('spacewalk/sles_register_script')` to your autoinstallation profile.
+This is an {ay} profile example:
+
+----
+<init-scripts config:type="list">
+  $SNIPPET('spacewalk/sles_register_script')
+</init-scripts>
+----
+
+When you create a snippet with the [guimenu]``Create Snippet`` link, all profiles including that snippet will be updated accordingly.
+
+
+
+[[s4-sm-system-kick-snippet-custom]]
+== Custom Snippets
+
+This is the tab with custom snippets.
+Click a name of a snippet to view, edit, or delete it.
+
+
+
+[[s4-sm-system-kick-snippet-all]]
+== All Snippets
+
+The [guimenu]``All Snippets`` tab lists default and custom snippets together.
+
+

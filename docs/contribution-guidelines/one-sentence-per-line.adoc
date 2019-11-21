@@ -1,0 +1,23 @@
+= One Sentence Per Line
+
+Don’t wrap text at a fixed column width.
+Instead, put each sentence on its own line, a technique called sentence per line.
+Use soft wrap in your editor if you need a temporary wrap solution.
+
+For more information see:
+
+* link:https://asciidoctor.org/docs/asciidoc-recommended-practices/#one-sentence-per-line[]
+
+.Example
+----
+This is a sentence.
+This is also a sentence.
+This is another sentence.
+----
+
+.View Result
+This is a sentence.
+This is also a sentence.
+This is another sentence.
+
+

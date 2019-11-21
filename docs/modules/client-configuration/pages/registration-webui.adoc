@@ -1,0 +1,108 @@
+[[registering.clients.webui]]
+= Registering Clients with the {webui}
+
+Registering clients with the {productname} {webui} works for Salt clients only.
+
+
+.Procedure: Registering clients in the {webui}
+
+. In the {productname} {webui}, navigate to menu:Systems[Bootstrapping].
+. In the [guimenu]``Host`` field, type the fully qualified domain name (FQDN) of the client to be bootstrapped.
+. In the [guimenu]``SSH Port`` field, type the SSH port number to use to connect and bootstrap the client.
+By default, the SSH  port is [systemitem]``22``.
+. In the [guimenu]``User`` field, type the username to log in to the client.
+By default, the username is [systemitem]``root``.
+. In the [guimenu]``Password`` field, type password to log in to the client.
+. In the [guimenu]``Activation Key`` field, select the activation key that is associated with the software channel you want to use to bootstrap the client.
+For more information, see xref:client-configuration:clients-and-activation-keys.adoc[].
+. OPTIONAL: In the [guimenu]``Proxy`` field, select the proxy to register the client to.
+. By default, the [guimenu]``Disable SSH Strict Key Host Checking`` checkbox is selected.
+This allows the bootstrap process to automatically accept SSH host keys without requiring you to manually authenticate.
+. OPTIONAL: Check the [guimenu]``Manage System Completely via SSH`` checkbox.
+If you check this option, the client will be configured to use SSH for its connection to the Server, and no other connection method will be configured.
+. Click btn:[Bootstrap] to begin registration.
+When the bootstrap process has completed, your client will be listed at menu:Systems[System List].
+
+
+[WARNING]
+====
+When new packages or updates are installed on the client using {productname}, any end user license agreements (EULAs) are automatically accepted.
+To review a package EULA, open the package detail page in the {webui}.
+====
+
+////
+Old content below this line.
+No longer a recommended install method, as per BZ#1131398. LKB 2019-04-05
+
+This section describes using a bootstrap repository.
+Registering Salt clients with a bootstrap client is the same as registering traditional clients, which is described at xref:quickstart3_chap_suma_keys_and_first_client.adoc#registering.clients.traditional[Registering Traditional Clients]. When using this method, ensure you enable the [guimenu]``Bootstrap using Salt`` and activation key options in [guimenu]``Configuration File Deployment``, so that highstate is applied automatically.
+For information on using the {webui}, see xref:reference-webui-systems.adoc#ref.webui.systems.bootstrapping[Bootstrapping Salt].
+
+You can also use these methods to change existing traditional clients into Salt clients.
+
+[IMPORTANT]
+.GPG Keys and Uyuni Client Tools
+====
+The GPG key used by Uyuni Client Tools is not trusted by default.
+Either update your bootstrap repository to trust the key explicitly, or use the {webui} to manually trust the key from each client.
+====
+
+
+To register Salt clients with a bootstrap repository, you will need to have already set up a {susemgr} tools repository.
+For more information, see xref:quickstart3_chap_suma_keys_and_first_client.adoc#create.tools.repository[Create Tools Repository].
+You will also need to have fully synchronized a base channel for clients to obtain software packages (for example: `SLES12-SP4-Pool_for_x86_64`).
+
+
+.Procedure: Registering Salt Clients
+. On your client as {rootuser} enter the following command:
++
+
+----
+zypper ar http://FQDN.server.example.com/pub/repositories/sle/12/4/bootstrap/ \
+   sles12-sp4
+----
++
+
+[NOTE]
+====
+Do not use ``HTTPS``.
+Use `HTTP` instead to avoid errors.
+====
++
+
+. After adding the repository containing the necessary Salt packages execute:
++
+
+----
+zypper in salt-minion
+----
+. Modify the client configuration file to point to the fully qualified domain name ([replaceable]``FQDN``) of the {productname} server (master):
++
+
+----
+vi /etc/salt/minion
+----
++
+Find and change the line:
++
+
+----
+master: salt
+----
++
+to:
++
+
+----
+master: FQDN.server.example.com
+----
+. Restart the Salt client with:
++
+
+----
+systemctl restart salt-minion
+----
+
+Your newly registered client should now show up within the {webui} under menu:Salt[Keys].
+Accept the [guimenu]``pending`` key to begin management.
+////

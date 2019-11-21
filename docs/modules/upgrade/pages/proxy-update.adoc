@@ -1,0 +1,50 @@
+[[update.suse.manager.proxy]]
+= Update {productname} Proxy
+
+{productname} Proxies are managed in the same way as clients.
+Maintenance updates (MU) can be installed on a {productname} Proxy in the same way as other clients.
+MU updates require a restart of the proxy service.
+
+// a remote command (or a salt state) can perform the restart.
+// Creating an Action Chain can help with this task.
+// With an action chain you can update proxies on batches, or all at the same time:
+// These are the basic steps to run:
+////
+1. Run a salt command: `spacewalk-proxy stop`
+2. Update the packages
+3. Run a salt command: `spacewalk-proxy start`
+////
+
+
+
+== Prepare to Update
+
+Before you perform any proxy update, schedule a maintenance window.
+The clients registered to {productname} through the proxy will not be able to connect to {productname} while the update is in progress.
+For more information about maintenance windows, see xref:administration:maintenance-window.adoc[].
+
+
+
+
+== Update the Proxy
+
+To update a proxy you first stop the proxy service, then update the software and finally restart the proxy service.
+
+.Procedure: Updating the {productname} Proxy
+
+. On the {productname} Server where the proxy is registered as a client, stop the proxy service:
++
+----
+spacewalk-proxy stop
+----
+
+. Select the packages to be updated on the proxy, and then apply the selection.
+
+. On the {productname} Server where the proxy is registered as a client, start the proxy service:
++
+----
+spacewalk-proxy start
+----
+
+If you need to update many proxies, you can create an action chain of this command sequence.
+You can use the action chain to perform updates on multiple proxies at the same time.

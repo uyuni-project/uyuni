@@ -1,0 +1,20 @@
+[[arch.component.database]]
+= Database
+
+
+
+
+
+
+== Functions
+The database is a primary component of {productname}. It performs the following functions in the stack.
+
+* **Primarily stores application data**
+* **Functions as a data exchange area between components**
+
+== Log Files
+_Logs for the database are located in:_
+
+----
+/var/lib/pgsql/data/pg_log/*
+----

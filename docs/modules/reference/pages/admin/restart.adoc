@@ -1,0 +1,9 @@
+[[s3-sattools-config-restart]]
+= Restart
+
+The menu:Manager Configuration[Restart] page comprises the final step in configuring {productname}.
+
+image::admin_configuration_restart.png[scaledwidth=80%]
+
+Click the btn:[Restart] button to restart {productname} and incorporate all of the configuration options added on the previous screens.
+It will take between four and five minutes for a restart to finish.

@@ -1,0 +1,68 @@
+[[install-server-unified]]
+= Installing {productname} {productnumber} Server
+:toc: true
+
+{susemgr} 4.0 is a {suse} product within the {sle} 15 product family.
+This section describes how to install {susemgr} Server from the {sle} installation media.
+For this topic we assume that you have already registered your {susemgr} product with {scc} and have obtained a registration code.
+
+For information on registering with {scc}, retrieving your organization credentials from {scc}, or obtaining installation media, see xref:general-requirements.adoc[].
+
+[NOTE]
+====
+Before installing {susemgr}, ensure your physical or virtual machine has enough disk space and RAM by checking the requirements at xref:hardware-requirements.adoc[Hardware].
+====
+
+
+.Procedure: Installing {susemgr} Server from a DVD Image
+[role=procedure]
+
+. Boot your system with the Unified Installer.
+If booting fails you might need to adjust the boot order in the BIOS.
+. When prompted, select [guimenu]``Installation``.
++
+image::unifiedinstaller-install.png[scaledwidth=80%]
+. In the [guimenu]``Language, Keyboard and Product Selection`` screen, check the [guimenu]``SUSE Manager Server`` checkbox, and click btn:[Next].
+. Read and agree to the End User Licence Agreement, and click btn:[Next].
++
+image::unifiedinstaller-registration.png[scaledwidth=80%]
+. In the [guimenu]``Registration`` screen, check the [guimenu]``Register System via scc.suse.com`` checkbox, enter your {scc} credentials, and click btn:[Next].
+// +
+// The registration server offers update repositories.
++
+image::unifiedinstaller-extensions.png[scaledwidth=80%]
+. In the [guimenu]``Extension and Module Selection`` screen, select additional extensions or modules you require, and click btn:[Next].
+Mandatory modules are pre-selected and you cannot disable them.
++
+
+image::unifiedinstaller-addon.png[scaledwidth=80%]
+. OPTIONAL: In the [guimenu]``Add On Product`` screen, select any additional or add-on products you require, and click btn:[Next].
+We do not recommend that you run any other workloads on {productname}.
+Only use add-ons that you absolutely require, such as driver repositories from your hardware vendor.
+. In the [guimenu]``System Role`` screen, check the [guimenu]``SUSE Manager Server`` checkbox, and click btn:[Next].
+. In the [guimenu]``Suggested Partitioning`` screen, either accept the default values, or use the btn:[Guided Setup] or btn:[Expert Partitioner] options to customize your partitioning model, and click btn:[Next].
+. In the [guimenu]``Clock and Time Zone`` screen, enter your region and timezone, and click btn:[Next].
+. In the [guimenu]``Local Users`` screen, create a new user, and click btn:[Next].
+. In the [guimenu]``System Administrator "root"`` screen, create the "root" user, and click btn:[Next].
+. Review the settings on the [guimenu]``Installation Settings`` screen.
++
+.Graphical Desktop Environment
+[NOTE]
+====
+The default {productname} server installation does not enable a
+graphical desktop environment.  If you want to run setup tools such as
+{yast} with a graphical interface local on the {productname} server,
+click [guimenu]``Software`` and select the [guimenu]``X Window System``
+pattern.
+====
++
+On the [guimenu]``Installation Settings`` screen click btn:[Install].
+
+When the installation procedure has finished, you can check that you have all the required modules by using the [command]``SUSEConnect --status-text`` command at a command prompt.
+For {susemgr} Server, the expected modules are:
+
+* {sles} Basesystem Module
+* Python 2 Module
+* Server Applications Module
+* Web and Scripting Module
+* SUSE Manager Server Module

@@ -1,0 +1,17 @@
+[[ref.webui.systems.profiles]]
+= Stored Profiles
+
+{productname} Provisioning customers can create package profiles via the [guimenu]``System Details`` page.
+
+
+image::systems_stored_profiles.png[scaledwidth=80%]
+
+
+Under menu:System Details[Software > Packages > Profiles], click btn:[Create System Profile].
+Enter a [guimenu]``Profile Name`` and [guimenu]``Profile Description``, then click btn:[Create Profile].
+These profiles are displayed on the [guimenu]``Stored Profiles`` page (left navigation bar), where they can be edited or deleted.
+
+To edit a profile, click its name in the list, alter its name or description, and click the btn:[Update] button.
+To view software associated with the profile, click the [guimenu]``Packages`` subtab.
+To remove the profile entirely, click [guimenu]``Delete Profile`` at the upper-right corner of the page.
+

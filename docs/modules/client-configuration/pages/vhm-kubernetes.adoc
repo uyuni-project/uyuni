@@ -1,0 +1,182 @@
+[[kubernetes]]
+= VHM and Kubernetes
+
+You can use a {productname} VHM to manage {k8s} clusters.
+
+The VHM allows {productname} to obtain and report information about your clusters.
+For more information on VHMs, see xref:client-configuration:vhm.adoc[].
+
+
+To use {productname} with {k8s}, you will need to have your {productname} Server configured for container management, with all required channels present, and a registered container build host available.
+
+You will also require:
+
+* At least one {k8s} or {caasp} cluster available on your network.
+* The [systemitem]``virtual-host-gatherer-Kubernetes`` package installed on the {productname} Server.
+* {k8s} version 1.5.0 or higher, or {caasp}.
+* Docker version 1.12 or higher on the container build host.
+
+
+
+== Create a {k8s} VHM
+
+{k8s} clusters are registered with {productname} as a VHM.
+
+You will need a ``kubeconfig`` file to register and authorize your {k8s} cluster.
+You can get a ``kubeconfig`` file using the {k8s} command line tool ``kubectl``.
+If you are using {caasp}, you can download the file from the Velum interface.
+
+
+
+.Procedure: Creating a {k8s} VHM
+. In the {productname} {webui}, navigate to menu:Systems[Virtual Host Managers].
+. Click btn:[Create] and select [guimenu]``Kubernetes Cluster``.
+. In the [guimenu]``Add a Kubernetes Virtual Host Manager`` section, use these parameters:
+* In the [guimenu]``Label`` field, type a custom name for your VHM.
+* Select the [path]``kubeconfig`` file that contains the required data for the {k8s} cluster.
+. In the [guimenu]``context`` field, select the appropriate context for the cluister.
+This is specified in the [path]``kubeconfig`` file.
+. Click btn:[Create].
+
+
+
+.Procedure: Viewing the Nodes in a Cluster
+. In the {productname} {webui}, navigate to menu:Systems[Virtual Host Managers].
+. Select the {k8s} cluster.
+. Refresh the node data by clicking btn:[Schedule refresh data].
+
+The node data can take a few moments to update.
+You might need to refresh your browser window to see the updated information.
+
+Any connection or authentication problems are logged to [path]``gatherer.log``.
+
+
+[NOTE]
+====
+Node data is not refreshed during registration.
+You will need to manually refresh the data to see it.
+====
+
+
+
+== Retrieve Image Runtime Data
+
+You can view runtime data about {k8s} images in the {productname} {webui}, by navigating to menu:Images[Image List].
+
+The image list table contains three columns:
+
+* [guimenu]``Revision``:
++
+A sequence number that increments on every rebuild for images built by {productname}, or on every import for externally built images.
+* [guimenu]``Runtime``:
++
+Overall status of the running instances for each image in registered clusters.
+* [guimenu]``Instances``:
++
+Number of instances running this image across all the clusters registered in {productname}.
+You can see a breakdown of numbers by clicking the pop-up icon next to the number.
+
+The [guimenu]``Runtime`` column displays one of these status messages:
+
+* ``All instances are consistent with SUSE Manager``:
++
+All the running instances are running the same build of the image as tracked by {productname}.
+* ``Outdated instances found``:
++
+Some of the instances are running an older build of the image.
+You might need to redeploy the image.
+* ``No information``:
++
+The checksum of the instance image does not match the image data contained in {productname}.
+You might need to redeploy the image.
+
+
+
+// This procedure needs help. LKB 2019-10-03
+.Procedure: Building an Image
+. In the {productname} {webui}, navigate to menu:Images[Stores].
+. Click btn:[Create] to create an image store.
+. Navigate to menu:Images[Profiles].
+. Click btn:[Create] to create an image profile.
+You will need to use a dockerfile that is suitable to deploy to {k8s}.
+. Navigate to menu:Images[Build] to build an image with the new profile.
+. Deploy the image into one of the registered {k8s} clusters.
+You can do this with the [command]``kubectl`` tool.
+
+The updated data should now be available in the image list at menu:Images[Image List].
+
+
+
+// This procedure needs help. LKB 2019-10-03
+.Procedure: Importing a Previously Deployed Image
+. In the {productname} {webui}, navigate to menu:Images[Image Stores].
+. Add the registry that owns the image you want to import, if it is not already there.
+. Navigate to menu:Images[Image List] and click btn:[Import].
+. Complete the fields, select the image store you created, and click btn:[Import].
+
+The imported image should now be available in the image list at menu:Images[Image List].
+
+
+
+.Procedure: Rebuilding a Previously Deployed Image
+
+. In the {productname} {webui}, navigate to menu:Images[Image List], locate the row that contains the image you want to rebuild, and click btn:[Details].
+. Navigate to the [guimenu]``Build Status`` section, and click btn:[Rebuild].
+The rebuild can take some time to complete.
+
+When the rebuild has successfully completed, the runtime status of the image is updated in the image list at menu:Images[Image List].
+This shows that the instances are running a previous build of the image.
+
+[NOTE]
+====
+You can only rebuild images if they were originally built with {productname}.
+You cannot rebuild imported images.
+====
+
+
+
+.Procedure: Retrieving Additional Runtime Data
+. In the {productname} {webui}, navigate to menu:Images[Image List], locate the row that contains the running instance, and click btn:[Details].
+. Navigate to the [guimenu]``Overview`` tab.
+In the [guimenu]``Image Info`` section, there is data in the [guimenu]``Runtime`` and [guimenu]``Instances`` fields.
+. Navigate to the [guimenu]``Runtime`` tab.
+This section contains a information about the {k8s} pods running this image in all the registered clusters.
+The information in this section includes:
++
+* Pod name.
+* Namespace which the pod resides in.
+* The runtime status of the container in the specific pod.
+
+
+
+== Permissions and Certificates
+
+
+[IMPORTANT]
+====
+You can only use [path]``kubeconfig`` files with {productname} if they contain all embedded certificate data.
+====
+
+The API calls from {productname} are:
+
+* ``GET /api/v1/pods``
+* ``GET /api/v1/nodes``
+
+The minimum recommended permissions for {productname} are:
+
+* A ClusterRole to list all the nodes:
++
+----
+resources: ["nodes"]
+verbs: ["list"]
+----
+* A ClusterRole to list pods in all namespaces (role binding must not restrict the namespace):
++
+----
+resources: ["pods"]
+verbs: ["list"]
+----
+
+If ``/pods`` returns a 403 reponse, the entire cluster will be ignored by {productname}.
+
+For more information on working with RBAC Authorization, see https://kubernetes.io/docs/admin/authorization/rbac/.

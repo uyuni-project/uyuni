@@ -1,0 +1,11 @@
+[[ref.webui.patches.relevant]]
+= Relevant Patches
+
+The [guimenu]``Relevant`` patches page displays a customized list of patches applying to your registered systems.
+
+image::patches_relevant_patches.png[scaledwidth=80%]
+
+Clicking an [guimenu]``Advisory`` ID of a patch takes you to the [guimenu]``Details`` page of the [guimenu]``Patch Details`` page.
+
+Clicking the number of associated systems takes you to the [guimenu]``Affected Systems`` page of the [guimenu]``Patch Details`` page.
+Refer to xref:reference:patches/patch-details.adoc[Patch Details] for more information.

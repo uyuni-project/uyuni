@@ -1,0 +1,10 @@
+[[client-cfg-overview]]
+= Introduction
+
+Registering clients is the first step after installing {productname}, and most of the time you spend with {productname} will be spent on maintaining those clients.
+
+{productname} is compatible with a range of client technologies: you can install traditional or Salt clients, running {sle} or another Linux operating system, with a range of hardware options.
+
+For a complete list of supported clients and features, see xref:client-configuration:supported-features.adoc[].
+
+This guide discusses how to register and configure different clients, both manually and automatically.

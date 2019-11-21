@@ -1,0 +1,69 @@
+[[bp.contact.methods.rhnsd]]
+= Traditional Contact Method (rhnsd)
+
+For background information, see xref:architecture:rhnsd.adoc[].
+*rhnsd* is used non-systemd systems; on later systems, a systemd timer ([systemitem]``rhnsd.timer``) is used.
+
+The daemon is started by /etc/init.d/rhnsd, it does not use rhnsd.service. 
+
+
+
+
+== The Default Contact Method
+
+The {productname} *rhnsd* daemon runs on client systems and periodically connects with {productname} to check for new updates and notifications.
+The daemon, which runs in the background, is started by *rhnsd.service*.
+// FIXME: check it with the systemd.timer
+////
+By default, it will check every 4 hours for new actions, therefore it may take some time for your clients to begin updating after actions have been scheduled for them.
+////
+
+To check for updates, *rhnsd* runs the external *mgr_check* program located in `/usr/sbin/`.
+This is a small application that establishes the network connection to {productname}.
+The SUSE Manager daemon does not listen on any network ports or talk to the network directly.
+All network activity is done via the *mgr_check* utility.
+
+.Auto accepting (EULAs)
+[WARNING]
+====
+When new packages or updates are installed on the client using {productname}, any end user licence agreements (EULAs) are automatically accepted.
+To review a package EULA, open the package detail page in the {webui}.
+====
+
+This figure provides an overview of the default *rhnsd* process path.
+All items left of the *Python XMLRPC server* block represent processes running on an {productname} client.
+
+.rhnsd Contact Method
+image::dia-rhnsd-taigon.png[scaledwidth=80]
+
+
+
+=== Configuring {productname} rhnsd Daemon
+
+The {productname} daemon can be configured by editing the file on the client:
+
+----
+/etc/sysconfig/rhn/rhnsd
+----
+
+
+This is the configuration file the rhnsd initialization script uses.
+An important parameter for the daemon is its check-in frequency.
+The default interval time is four hours (240 minutes). If you modify the configuration file, you must as {rootuser} restart the daemon with:
+
+----
+/etc/init.d/rhnsd restart
+----
+
+.Minimum Allowed Check-in Parameter
+[IMPORTANT]
+====
+The minimum allowed time interval is one hour (60 minutes). If you set the interval below one hour, it will change back to the default of 4 hours (240 minutes).
+====
+
+=== Viewing rhnsd Daemon Status
+
+As the {ruser} you may view the status of rhnsd by typing the command:
+----
+/etc/init.d/rhnsd status
+----

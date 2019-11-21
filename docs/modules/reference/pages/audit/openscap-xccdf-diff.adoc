@@ -1,0 +1,19 @@
+= XCCDF Diff
+
+XCCDF Diff is an application that visualizes the comparison of two XCCDF scans.
+It shows metadata for two scans as well as the lists of results.
+
+Click the appropriate icon on the Scans page to access the diff output of similar scans.
+Alternatively, specify the ID of scans you want to compare.
+
+Items that show up in only one of the compared scans are considered to be "varying". Varying items are always highlighted in beige.
+There are three possible comparison modes:
+
+Full Comparison::
+all the scanned items.
+
+Only Changed Items:::
+items that have changed.
+
+Only Invariant:::
+unchanged or similar items.

@@ -1,0 +1,54 @@
+[[ref.webui.audit.openscap]]
+= All Scans
+
+If you click menu:Main Menu[Audit > OpenSCAP > All Scans], an overview of the {openscap} Scans appears.
+SCAP (Security Content Automation Protocol) is a framework to maintain the security of enterprise systems.
+It mainly performs the following tasks:
+
+* Automatically verifying the availability of patches
+* Checking system security configuration settings
+* Examining systems for signs of compromise
+
+For a description of the {webui} dialogs, see:
+xref:reference:audit/audit-openscap-overview.adoc[OpenSCAP {productname} Web Interface]
+
+For instructions and tips on how to best use OpenSCAP with {productname}, refer to: xref:reference:audit/audit-openscap-overview.adoc#ch-openscap[System Security via OpenSCAP]
+To learn more about OpenSCAP, see the project home page at http://open-scap.org.
+
+
+menu:All Scans[]
+ is the default page that appears on the menu:Audit[OpenSCAP]
+ page.
+Here you see all the completed OpenSCAP scans you have permission to view.
+Permissions for scans are derived from system permissions.
+
+== All Scans Legend
+
+For each scan, the following information is displayed:
+
+System:::
+the scanned system.
+
+XCCDF Profile:::
+the evaluated profile.
+
+Completed:::
+time of completion.
+
+Satisfied:::
+number of rules satisfied.
+A rule is considered to be satisfied if the result of the evaluation is either Pass or Fixed.
+
+Dissatisfied:::
+number of rules that were not satisfied.
+A rule is considered Dissatisfied if the result of the evaluation is a Fail.
+
+Unknown:::
+number of rules which failed to evaluate.
+A rule is considered to be Unknown if the result of the evaluation is an Error, Unknown or Not Checked.
+
+
+The evaluation of XCCDF rules may also return status results like ``Informational``, ``Not Applicable``, or not ``Selected``.
+In such cases, the given rule is not included in the statistics on this page.
+See menu:System Details[Audit]
+ for information on these types of results.

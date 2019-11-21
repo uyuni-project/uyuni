@@ -1,0 +1,71 @@
+[[ref.webui.systems.autoinst.profiles]]
+= Profiles (Kickstart and {ay})
+
+This page lists all profiles for your organization, shows whether these profiles are active, and specifies the distribution tree with which each profile is associated.
+
+
+image::systems_kickstart_overview.png[scaledwidth=444]
+
+
+You can either create a Kickstart profile by clicking the [guimenu]``Create Kickstart Profile`` link, upload or paste the contents of a new profile clicking the [guimenu]``Upload Kickstart/Autoyast File``, or edit an existing Kickstart profile by clicking the name of the profile.
+Note, you can only update {ay} profiles using the upload button.
+You can also view {ay} profiles in the edit box or change the virtualization type using the selection list.
+
+
+
+
+[[ref.webui.systems.autoinst.profiles.create]]
+== Create a Kickstart Profile
+
+
+Click on the [guimenu]``Create Kickstart Profile`` link from the menu:Main Menu[Systems > Autoinstallation] page to start the wizard that populates the base values needed for a Kickstart profile.
+
+
+image::create_profile_wizard.png[scaledwidth=444]
+
+
+.Procedure: Creating a Kickstart Profile
+. On the first line, enter a Kickstart profile label. This label cannot contain spaces, so use dashes (``-``) or underscores (``\_``) as separators.
+. Select a [guimenu]``Base Channel`` for this profile, which consists of packages based on a specific architecture and Red Hat Enterprise Linux release.
++
+.Creating Base Channel
+NOTE: Base channels are only available if a suitable distribution is created first.
+For creating distributions, see
+xref:reference:systems/autoinst-distributions.adoc[]
+
++
+
+. Select an [guimenu]``Kickstartable Tree`` for this profile. The [guimenu]``Kickstartable Tree`` drop-down menu is only populated if one or more distributions have been created for the selected base channel (see xref:reference:systems/autoinst-distributions.adoc[]).
+. Instead of selecting a specific tree, you can also check the box [guimenu]``Always use the newest Tree for this base channel``. This setting lets {productname} automatically pick the latest tree that is associated with the specified base channels. If you add new trees later, {productname} will always keep the most recently created or modified.
+. Select the [guimenu]``Virtualization Type`` from the drop-down menu.
++
+NOTE: If you do not intend to use the Kickstart profile to create virtual guest systems, you can leave the drop-down at the default [guimenu]``None`` choice.
++
+
+. On the second page, select (or enter) the location of the Kickstart tree.
+. On the third page, select a root password for the system.
+
+
+Depending on your base channel, your newly created Kickstart profile might be subscribed to a channel that is missing required packages.
+For {kickstart} to work properly, the following packages should be present in its base channel: [package]``pyOpenSSL``, [package]``rhnlib``, [package]``libxml2-python``, and [package]``spacewalk-koan`` and associated packages.
+
+To resolve this issue:
+
+* Make sure that the Tools software channel for the Kickstart profile's base channel is available to your organization. If it is not, you must request entitlements for the Tools software channel from the {productname} administrator.
+* Make sure that the Tools software channel for this Kickstart profile's base channel is available to your {productname} as a child channel.
+* Make sure that [package]``rhn-kickstart`` and associated packages corresponding to this {kickstart} are available in the Tools child channel.
+
+
+The final stage of the wizard presents the menu:Autoinstallation Details[Details] tab.
+On this tab and the other subtabs, nearly every option for the new Kickstart profile can be customized.
+
+Once created, you can access the Kickstart profile by downloading it from the [guimenu]``Autoinstallation Details`` page by clicking the [guimenu]``Autoinstallation File`` subtab and clicking the [guimenu]``Download Autoinstallation File`` link.
+
+If the Kickstart file is _not_ managed by {productname}, you can access it via the following URL:
+
+----
+http://`my.manager.server`/ks/dist/ks-rhel-`ARCH`-`VARIANT`-`VERSION`
+----
+
+
+In the above example, [replaceable]``ARCH`` is the architecture of the Kickstart file, [replaceable]``VARIANT`` is either `client` or ``server``, and [replaceable]``VERSION`` is the release of {rhel} associated with the Kickstart file.

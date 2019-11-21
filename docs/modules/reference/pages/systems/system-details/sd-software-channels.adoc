@@ -1,0 +1,38 @@
+[[sd-software-channels]]
+= SD Software Channels
+
+Software channels provide a well-defined method to determine which packages should be available to a system for installation or upgrade based on its operating systems, installed packages, and functionality.
+
+[IMPORTANT]
+.Beta Testing Participants
+====
+When a product moves out of the beta program to a released version, the repositories are updated with the new packages.
+However, the repository names do not change.
+When a beta program is released, you will need to refresh the software channels to get the updated packages.
+You can do this manually by running [command]``mgr-sync refresh`` and [command]``spacewalk-repo-sync``.
+Alternatively, these will be run automatically by Taskomatic during the next regular refresh.
+====
+
+image::system_details_traditional_software_system_channels.png[scaledwidth=80%]
+
+Click the chain icon right to a channel name to view its [guimenu]``Channel Details`` page.
+To change the base software channel the system is subscribed to select a different base channel in the left selection box.
+
+To modify the child channels associated with this system, in the right selection box use the check boxes left to the channel names.
+If you enable [guimenu]``include recommended``, recommended child channels are automatically selected for subscription.
+Starting with {sle} 15, child channels can depend on other channels—they are required.
+In the channel subscription you can see the dependencies by hovering with a mouse on a child channel name.
+Selecting a channel that depends on another channel will select this channel, too.
+Unselecting a channel on which some other channels depend will also unselect those channels.
+
+When done click btn:[Next] to schedule the Software Channel Change action.
+Then click btn:[Confirm].
+
+[NOTE]
+.Changing the Channels Is Now an Action
+====
+Since the 3.1 maintenance update (2018) changing the channels is an action that can be scheduled like any other action.
+Earlier channel changes were applied immediately.
+====
+
+For more information about channel management, see xref:reference:software/manage-channels.adoc[].

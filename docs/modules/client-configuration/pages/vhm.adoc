@@ -1,0 +1,35 @@
+[[virt-vhm]]
+= Virtual Host Managers
+
+Virtual Host Managers (VHMs) are used to gather information from a range of client types.
+
+VHMs can be used to collect private or public cloud instances and organize them into virtualization groups.
+With your virtualized clients organized this way, Taskomatic collects data on the clients for display in the {productname}{ {webui}.
+VHMs also allow you to use subscription matching on your virtualized clients.
+
+You can create a VHM on your {productname} Server, and use it to inventory available public cloud instances.
+You can also use a VHM to manage clusters created with {k8s} and {caasp}.
+
+For more information on using a VHM with Microsoft Azure, see xref:client-configuration:vhm-azure.adoc[].
+For more information on using a VHM with Amazon Web Services, see xref:client-configuration:vhm-aws.adoc[].
+For more information on using a VHM with Google Compute Engine, see xref:client-configuration:vhm-gce.adoc[].
+For more information on using a VHM with {k8s}, see xref:client-configuration:vhm-kubernetes.adoc[].
+//For more information on using a VHM with {caasp}, see xref:client-configuration:vhm-caasp.adoc[].
+
+
+
+== SUSE Support and VM Zones
+
+Public cloud providers use regions to define the physical geographic location of the datacenter providing virtual machines.
+For example, [systemitem]``US-East``, or [systemitem]``Asia``.
+
+Regions are then further divided into zones.
+For example, the [systemitem]``US-East`` region might contain zones called [systemitem]``us-east-2a`` and [systemitem]``us-east-2b``, among others.
+
+{suse} uses the zone of a virtual machine to determine the appropriate subscription to provide.
+If all of your VMs are provided by the same zone, you are within the terms and conditions of the ``1-2 Virtual Machines`` subscription.
+
+If your VMs are provided by different zones, even if they are within the same region, you might not meet the conditions of the ``1-2 Virtual Machines`` subscription.
+In this case, check your subscription carefully.
+
+For more information, see https://www.suse.com/products/terms_and_conditions.pdf or contact {suse}.

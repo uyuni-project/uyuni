@@ -1,0 +1,25 @@
+[[retail-next]]
+= What Next?
+
+This document covers only a sub-section of information about your {smr} installation.
+If you need further information or support, try one of these options.
+
+
+
+[[retail.sect.next.docs]]
+== More Documentation
+
+For {susemgr} documentation, visit https://documentation.suse.com/suma/4.0/.
+
+For legacy {slepos} documentation, see https://documentation.suse.com/sle-pos/11-SP3/.
+For legacy {smr} documentation, see https://documentation.suse.com/suma-retail/3.2/.
+Note, however, that {smr} documentation supersedes this information.
+
+
+
+[[retail.sect.next.support]]
+== Support
+
+For personalized support, log in to your {scc} account at https://scc.suse.com/login.
+
+For assistance with planning and installing your {smr} environment, contact the SUSE Consulting team.

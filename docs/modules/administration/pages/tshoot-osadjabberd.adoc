@@ -1,0 +1,204 @@
+[[troubleshooting-osad-jabberd]]
+= Troubleshooting OSAD and jabberd
+
+////
+PUT THIS COMMENT AT THE TOP OF TROUBLESHOOTING SECTIONS
+
+Troubleshooting format:
+
+One sentence each:
+Cause: What created the problem?
+Consequence: What does the user see when this happens?
+Fix: What can the user do to fix this problem?
+Result: What happens after the user has completed the fix?
+
+If more detailed instructions are required, put them in a "Resolving" procedure:
+.Procedure: Resolving Widget Wobbles
+. First step
+. Another step
+. Last step
+////
+
+
+
+== Open File Count Exceeded
+
+In some cases, the maximum number of files that jabber can open is lower than the number of connected OSAD clients.
+
+If this occurs, OSAD clients cannot contact the SUSE Manager Server, and jabberd will take an excessive amount of time to respond on port 5222.
+
+[[NOTE]]
+====
+This fix is only required if you have more than 8192 clients connected using OSAD.
+In this case, we recommend you consider using Salt clients instead.
+For more information about tuning large scale installations, see xref:salt:large-scale.adoc[].
+====
+
+You can increase the number of files available to jabber by editing the jabberd local configuration file.
+By default, the file is located at [path]``/etc/systemd/system/jabberd.service.d/override.conf``.
+
+
+
+.Procedure: Adjusting the Maximum File Count
+
+. At the command prompt, as root, open the local configuration file for editing:
++
+----
+systemctl edit jabberd
+----
+. Add or edit this section:
++
+----
+[Service]
+LimitNOFILE=<soft_limit>:<hard_limit>
+----
++
+The value you choose will vary depending on your environment.
+For example, if you have 9500 clients, increase the soft value by 100 to 9600, and the hard value by 1000 to 10500:
++
+----
+[Unit]
+LimitNOFILE=
+LimitNOFILE=9600:10500
+----
+. Save the file and exit the editor.
+
+[NOTE]
+====
+The default editor for systemctl files is vim.
+To save the file and exit, press kbd:[Esc] to enter ``normal`` mode, type kbd:[:wq] and press kbd:[Enter].
+====
+
+Ensure you also update the `max_fds` parameter in [path]``/etc/jabberd/c2s.xml``.
+For example: `<max_fds>10500</max_fds>`
+
+The soft file limit is the maximum number of open files for a single process.
+In {productname} the highest consuming process is ``c2s``, which opens a connection per client.
+100 additional files are added, here, to accommodate for any non-connection file that ``c2s`` requires to work correctly.
+The hard limit applies to all processes belonging to jabber, and also accounts for open files from the router, ``c2s`` and ``sm`` processes.
+
+
+
+////
+Delinking per https://github.com/SUSE/spacewalk/issues/9516 LKB 2019-09-23
+== jabberd Database Corruption
+
+``SYMPTOMS``: After _a disk is full error_ or a _disk crash event_, the [systemitem]``jabberd`` database may have become corrupted.
+[systemitem]``jabberd`` may then fail starting Spacewalk services:
+
+----
+Starting spacewalk services...
+   Initializing jabberd processes...
+       Starting router                                                                   done
+       Starting sm startproc:  exit status of parent of /usr/bin/sm: 2                   failed
+   Terminating jabberd processes...
+----
+
+[path]``/var/log/messages`` shows more details:
+
+----
+jabberd/sm[31445]: starting up
+jabberd/sm[31445]: process id is 31445, written to /var/lib/jabberd/pid/sm.pid
+jabberd/sm[31445]: loading 'db' storage module
+jabberd/sm[31445]: db: corruption detected! close all jabberd processes and run db_recover
+jabberd/router[31437]: shutting down
+----
+
+``CURE``: Remove the [systemitem]``jabberd`` database and restart.
+[systemitem]``jabberd`` will automatically re-create the database.
+Enter at the command prompt:
+
+----
+spacewalk-service stop
+rm -rf /var/lib/jabberd/db/*
+spacewalk-service start
+----
+////
+
+//   ke, 2019-08-08: not sure whether we want this here:
+
+////
+An alternative approach would be to test another database, but SUSE Manager does not deliver drivers for this:
+
+----
+rcosa-dispatcher stop
+rcjabberd stop
+cd /var/lib/jabberd/db
+rm *
+cp /usr/share/doc/packages/jabberd/db-setup.sqlite .
+sqlite3 sqlite.db < db-setup.sqlite
+chown jabber:jabber *
+rcjabberd start
+rcosa-dispatcher start
+----
+////
+
+
+////
+Delinking per https://github.com/SUSE/spacewalk/issues/9516 LKB 2019-09-23
+
+== Capturing XMPP Network Data for Debugging Purposes
+
+
+If you are experiencing bugs regarding OSAD, it can be useful to dump network messages in order to help with debugging.
+The following procedures provide information on capturing data from both the client and server side.
+
+.Procedure: Server Side Capture
+. Install the [package]#tcpdump# package on the server as root:
++
+
+----
+zypper in tcpdump
+----
+. Stop the OSA dispatcher and Jabber processes:
++
+
+----
+rcosa-dispatcher stop
+rcjabberd stop
+----
+. Start data capture on port 5222:
++
+
+----
+tcpdump -s 0 port 5222 -w server_dump.pcap
+----
+. Open a second terminal and start the OSA dispatcher and Jabber processes:
++
+
+----
+rcosa-dispatcher start
+rcjabberd start
+----
+. Operate the server and clients so the bug you formerly experienced is reproduced.
+. When you have finished your capture re-open the first terminal and stop the data capture with kbd:[CTRL+c].
+
+.Procedure: Client Side Capture
+. Install the tcpdump package on your client as root:
++
+
+----
+zypper in tcpdump
+----
+. Stop the OSA process:
++
+
+----
+rcosad stop
+----
+. Begin data capture on port 5222:
++
+
+----
+tcpdump -s 0 port 5222 -w client_client_dump.pcap
+----
+. Open a second terminal and start the OSA process:
++
+
+----
+rcosad start
+----
+. Operate the server and clients so the bug you formerly experienced is reproduced.
+. When you have finished your capture re-open the first terminal and stop the data capture with kbd:[CTRL+c].
+
+////

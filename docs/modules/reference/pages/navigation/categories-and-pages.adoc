@@ -1,0 +1,258 @@
+[[ref.webui.intro.categories_pages]]
+= Categories
+
+This section summarizes all of the categories and primary pages (those linked from the left navigation bar) within the {productname} Web interface ({webui}). It does not list the many subpages, tabs and subtabs accessible from the individual pages.
+Each area of the Web interface is explained in detail later in this guide.
+
+== Home
+
+Check your tasks and systems.
+View and manage your primary account information and get help.
+
+menu:Overview[]::
+Obtain a quick overview of your account.
+This page notifies you if your systems need attention, provides a quick link directly to these systems, displays the most recent patch alerts for your account, and recently registered systems.
+
+menu:My Account[]::
+Update your personal profile, addresses, email, and credentials.
+Deactivate your account.
+
+menu:My Preferences[]::
+Indicate if you wish to receive email notifications about available patches for your systems.
+Set how many items are displayed in system and group lists.
+Set contents of the overview start page.
+Select your preferred CSV separator.
+
+
+menu:Locale Preferences[]::
+Configure timezone.
+
+
+menu:My Organization[]::
+Update organization configuration and display organization trusts.
+
+
+== Systems
+
+Manage all your systems (including virtual guests) here.
+
+
+menu:Overview[]::
+View a summary of your systems or system groups showing how many available patches each system has and which systems are entitled.
+
+menu:Systems[]::
+Select and view subsets of your systems by specific criteria, such as Virtual Systems, Unprovisioned Systems, Recently Registered, Proxy, and Inactive.
+
+menu:System Groups[]::
+List your system groups.
+Create additional groups.
+
+menu:System Set Manager[]::
+Perform various actions on sets of systems, including scheduling patch updates, package management, listing and creating new groups, managing channel entitlements, deploying configuration files, schedule audits, apply system states, and check status.
+The availability of these actions depend on the system type.
+
+menu:Bootstrapping[]::
+Bootstrap client machines using SSH.
+Input SSH credentials and the activation key the selected system will use for its software sources.
+SUSE Manager will install required software (salt-minion packages on the client machine) and remotely perform the registration.
+
+menu:Visualization[]::
+Graphically visualize the client topology.
+
+menu:Advanced Search[]::
+Quickly search all your systems by specific criteria, such as name, hardware, devices, system info, networking, packages, and location.
+
+menu:Activation Keys[]::
+Generate an activation key for a {productname}-entitled system.
+This activation key can be used to grant a specific level of entitlement or group membership to a newly registered system using the [command]``rhnreg_ks`` command.
+
+menu:Stored Profiles[]::
+View system profiles used to provision systems.
+
+menu:Custom System Info[]::
+Create and edit system information keys with completely customizable values assigned while provisioning systems.
+
+menu:Autoinstallation[]::
+Display and modify various aspects of autoinstallation profiles (Kickstart and {ay}) used in provisioning systems.
+
+menu:Software Crashes[]::
+List software crashes grouped by UUID.
+
+menu:Virtual Host Managers[]::
+Display and modify virtual host managers, file-based or VMware-based.
+
+
+== Salt
+
+View all clients.
+Manage on-boarding, remote commands, and states catalogs.
+
+menu:Keys[]::
+Manage client keys.
+
+menu:Remote Commands[]::
+Execute remote commands on targeted systems.
+Select the preview button to ensure selected targets are available and click Run to execute.
+
+menu:Formula Catalog[]::
+The formula catalog page enables viewing of currently installed Salt formulas. Apply these formulas to individual systems or server groups. Formulas allow automatic installation and configuration of software and may be installed via RPM packages.
+
+
+== Images
+
+Image building and inspection.
+
+
+menu:Images[]::
+View all built images.
+
+menu:Build[]::
+Execute image build.
+
+menu:Profiles[]::
+View and create image building profiles.
+
+menu:Stores[]::
+View and create image stores.
+
+
+== Patches
+
+View and manage patch (errata) alerts here.
+
+
+menu:Patches[]::
+Lists patch alerts and downloads associated RPMs relevant to your systems.
+
+menu:Advanced Search[]::
+Search patch alerts based on specific criteria, such as synopsis, advisory type, and package name.
+
+menu:Manage Patches[]::
+Manage the patches for an organization's channels.
+
+menu:Clone Patches[]::
+Clone patches for an organization for ease of replication and distribution across an organization.
+
+
+== Software
+
+View and manage the available {productname} channels and the files they contain.
+
+menu:Channel List[]::
+View a list of all software channels and those applicable to your systems.
+
+menu:Package Search[]::
+Search packages using all or some portion of the package name, description, or summary, with support for limiting searches to supported platforms.
+
+menu:Manage Software Channels[]::
+Create and edit channels used to deploy configuration files.
+
+
+menu:Distribution Channel Mapping[]::
+Define default base channels for servers according to their operating system or architecture when registering.
+
+
+== Audit
+
+View and search CVE audits, system subscriptions, and OpenSCAP scans.
+
+
+menu:CVE Audit[]::
+View a list of systems with their patch status regarding a given CVE (Common Vulnerabilities and Exposures) number.
+
+menu:Subscription Matching[]::
+List subscriptions.
+
+
+menu:OpenSCAP[]::
+View and search OpenSCAP (Security Content Automation Protocol) scans.
+
+
+== Configuration
+
+Keep track of and manage configuration channels, actions, individual configuration files, and systems with {productname}-managed configuration files.
+
+menu:Overview[]::
+A general dashboard view that shows a configuration summary.
+
+menu:Configuration Channels[]::
+List and create configuration channels from which any subscribed system can receive configuration files.
+
+
+menu:Configuration Files[]::
+List and create files from which systems receive configuration input.
+
+menu:Systems[]::
+List the systems that have {productname}-managed configuration files.
+
+
+== Schedule
+Keep track of your scheduled actions.
+
+menu:Pending Actions[]::
+List scheduled actions that have not been completed.
+
+.menu:Failed Actions[]::
+List scheduled actions that have failed.
+
+menu:Completed Actions[]::
+List scheduled actions that have been completed.
+Completed actions can be archived at any time.
+
+menu:Archived Actions[]::
+List completed actions that have been selected to archive.
+
+menu:Action Chains[]::
+View and edit defined action chains.
+
+
+== Users
+View and manage users in your organization.
+
+
+menu:User List[]::
+List users in your organization.
+
+menu:System Group Configuration[]::
+Configure user group creation.
+
+
+== Admin
+Use the Setup Wizard to configure {productname}.
+List, create, and manage one or more {productname} organizations.
+The {productname} administrator can assign channel entitlements, create and assign administrators for each organization, and other tasks.
+
+menu:Setup Wizard[]::
+Streamlined configuration of basic tasks.
+
+menu:Organizations[]::
+List and create new organizations.
+
+menu:Users[]::
+List all users known by {productname}, across all organizations.
+Click individual user names to change administrative privileges of the user.
++
+NOTE: Users created for organization administration can only be configured by the organization administrator, _not_ the {productname}  administrator.
+
+menu:Manager Configuration[]::
+Make General configuration changes to the {productname} server, including Proxy settings, Certificate configuration, Bootstrap Script configuration, Organization changes, and Restart the {productname} server.
+
+menu:ISS Configuration[]::
+Configure master and slave servers for inter-server synchronization.
+
+menu:Task Schedules[]::
+View and create schedules.
+
+menu:Task Engine Status[]::
+View the status of the various tasks of the {productname} task engine.
+
+menu:Show Tomcat Logs[]::
+Display the log entries of the Tomcat server, on which the {productname} server is running.
+
+
+== Help
+List references to available help resources such as the product documentation, release notes, and a general search for all of this.
+
+
+menu:External Links[]::
+List external links to the knowledge base and the online documentation.

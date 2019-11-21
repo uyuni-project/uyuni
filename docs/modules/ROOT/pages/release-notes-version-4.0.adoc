@@ -1,0 +1,291 @@
+[[patch.notes.version.4.0]]
+= Documentation Release Notes for {minorversion402}
+include::ROOT:partial$entities.adoc[]
+:revnumber: 4.0.2
+:revdate: August 29, 2019
+
+// !!!CHANGE THIS FILE ON THE MASTER BRANCH ONLY BEFORE PUBLISHING A RELEASE BRANCH!!!
+// Otherwise this file is out of sync with our develop/master branch
+
+== Latest Changes
+
+{revnumber} {revdate}
+
+== {minorversion402} Changes
+
+The following list covers the primary documentation content changes and additions in {minorversion402}.
+
+.Changes During {minorversion402}
+
+* Added page level table of contents for individual page navigation
+* Added Next/Previous buttons to the Antora WebUI for navigating documents
+* Added link to bootstrap script creation
+* Added missing zypper entity
+* Added Canonical IP safeguard
+* Update for unified proxy installer
+* lunrjs integration (replaces Algolia with local search)
+* Antora UI improvements
+* The following new guides are available for contributors:
+** link:https://github.com/SUSE/doc-susemanager/wiki#our-toolchain[]
+** link:https://github.com/SUSE/doc-susemanager/wiki/wug[]
+* {jeos} docs cleaned up
+* Content review and cleanup on books (Administration, Installation, Salt, Retail, Client Configuration and Upgrade)
+* Removed outdated command (tailf)
+* Added missing images
+* Improved max size for configuration files
+* Added matching salt clients by minion_id or with a wildcard
+* Clarify image store for Kiwi images
+* Public cloud doc update
+* Content lifecycle manager filter update
+* Added note about support status of IE
+* Fixed IBM Z entity render issue
+* New Salt tuning guide
+
+
+.Bugzilla Fixes
+* 1146443 Documentation - Unclear how to use groups with SUMA 4 remote commands.
+A customer can go to the group of clients, add them to SSM, and then apply a Remote Command by menu:Main Menu[Systems > System Set Manager > Misc > Remote Command]
+* 1146411 Increasing the maximum size allowed for configuration files
+* 1132076 Interface used for branch network on branch server is not added to internal firewall zone
+
+
+
+== {docversion} Changes
+
+{productname} {docversion} includes a large number of changes to documents, additional material and a massive volume of qualitative updates.
+
+The following list covers the primary content changes and additions.
+
+.Changes in {docversion}
+* xrefs have been fully restored across books
+* Update to left nav bar
+* Update to centOS client docs
+* Add spacewalk-common-channels to Ubuntu client config
+* Proxy setup cleanup
+* Proxy install cleanup
+* Add uyuni/suma example grafana dashboard
+* Explain how comps file are processed
+* Update to the Salt Formula path
+* Salt Mine edits
+* Updated ISS section
+* Updated troubleshooting
+* Updated IBM Z section
+* Updated to Unified Installer in Install Guide and Retail Guide
+* Added Ubuntu Clients
+* New live patching section for SLES 15
+* New Content Staging feature/section
+* Channel-Setup with Autoyast
+* Update - Installing SUSE Manager Proxy Servers
+* Creating Delta Images
+* Update - smdba section
+* Update - Cobbler section
+* Update - Procedure for restoring from a manual backup
+* Update - Formulas with forms
+* The minion-action-cleanup task was added
+* See extensions/xref-converter.rb for converting xrefs into paths within our PDF documents
+* Reference - many xrefs have been updated (Systems and Users tabs remain)
+* Missing images have been restored
+* General editing and clean-up on many documents
+
+
+
+=== Known Issues in {docversion}
+
+xref-converter.rb - (Affects PDF Documents)::
+Our custom Asciidoctor xref extension converter requires minor refactoring as several links are incorrectly transforming during our PDF conversion. The cross reference styling will seem a little strange in our PDFs until we make the change.
+
+search - (Affects the Product WebUI)::
+The Algolia search field has been disabled in the {productname} documentation WebUI. Use the **Help -> Search** page in the WebUI to look for topics. Search will be integrated into the documentation WebUI in an update. Search is available on link:https:/www.suse.com/documentation/suse-manager-4/[].
++
+[NOTE]
+====
+From link:https:/www.suse.com/documentation/suse-manager-4/[] browse to {productname} 4.0 Documentation and use the search field to search in real-time through the docs.
+====
+
+
+== RC1 Changes
+
+RC1 includes a massive number of changes to documents, additional material and a large number of qualitative updates.
+
+There are far too many changes to include in the following list but these sufficiently cover the majority of content changes and additions.
+
+.Changes During RC1
+* Updated ISS section
+* Updated troubleshooting
+* Updated IBM Z section
+* Updated to Unified Installer in Install Guide and Retail Guide
+* Added Ubuntu Clients
+* New live patching section for SLES 15
+* New Content Staging feature/section
+* Channel-Setup with Autoyast
+* Update - Installing SUSE Manager Proxy Servers
+* Creating Delta Images
+* Update - smdba section
+* Update - Cobbler section
+* Update - Procedure for restoring from a manual backup
+* Update - Formulas with forms
+* The minion-action-cleanup task was added
+* See extensions/xref-converter.rb for converting xrefs into paths within our PDF documents
+* Reference - many xrefs have been updated (Systems and Users tabs remain)
+* Missing images have been restored
+* General editing and clean-up on many documents
+
+
+=== Known Issues in RC1
+
+xref-converter.rb::
+The converter still requires refactoring as several links are incorrectly transforming during PDF conversion.
+
+xrefs::
+Some cross references are still broken across the books. Fixes for these will be submitted in an update.
+
+
+
+
+== Beta 3 Changes
+
+Our focus for {productname} {productnumber} was to finish shifting the sources from our old IA (Information Architecture) into our new one. The Reference, Installation and Administration guides are now close to where we like them to be.
+
+There are far too many changes to include in the following list but these sufficiently represent the larger changes.
+
+
+
+=== Updated Items
+
+* Content Lifecycle (REF)
+* Added missing user menu content (REF)
+* Added missing configuration menu content (REF)
+* Added missing systems content (REF, autoinstallation coming soon.)
+* Updated process configuration files (SUMA and Uyuni playbooks)
+* Cleaned up our Makefile
+* Added many missing images (REF, INSTALL and ADMIN)
+* Added/updated missing Ubuntu content (CLIENT CONFIG)
+* Fixed several build errors (INSTALLATION)
+* Package lock notes (REF)
+* Live Patching updates
+* All future documentation will be based off the Master branch
+* Fix req's discrepancy in install guide
+* Unified Installer - Retail
+* smdba sections need update
+* *BZ#1131679* - Updated path for proxy config
+* *BZ#1131977* Create Group; (RETAIL)
+* *BZ#1131701* Bind formula procedure updated (retail)
+* *BZ#1131691* - Best Practices bad link
+* *BZ#1131398* - Client Registration
+* *BZ#1131398* - Registering Salt clients
+* *BZ#1131695* - Bad link in Retail book
+
+
+=== Known Issues
+
+
+==== Images
+
+Some images might be missing, or might fail to load.
+This is either because we need to take new screenshots, develop new graphics, or content that has not yet been moved from its old home.
+These will be corrected in a minor release.
+
+
+== Beta 2 Changes
+
+=== Updated Documentation Structure
+
+We have received an overwhelming amount of positive feedback about our documentation over the years, but we have also received some excellent ideas for improvement.
+That is how we know that the content we have is great, but it was sometimes difficult to find.
+In this release, we have reorganized our documentation and updated our tooling to make it clearer where information is, and make it easier for you to find the content you need, when you need it.
+
+Please keep the feedback coming!
+In this new layout, you can propose changes directly by clicking the btn:[Edit this Page] button.
+You can also report an issue by clicking [guimenu]``Report Issue`` in the [guimenu]``Resources`` menu.
+
+
+=== Goals for this Release
+
+* <<cleanup-ia>>
+* <<search>>
+* <<new-ui>>
+* <<view-branches>>
+* <<contribute>>
+* <<pdf-output>>
+* <<publishing>>
+
+
+
+[[cleanup-ia]]
+=== Content Cleanup
+
+All {productname} books have been reworked into a new structure.
+
+
+
+==== Old Naming Format
+
+* Getting Started
+* Best Practices
+* Reference
+* Advanced Topics
+
+
+
+==== New Naming Format
+
+* Installation Guide (Requirements, supported platforms, installation methods, etc)
+* Client Configuration Guide (Configuring and connecting clients to {productname})
+* Upgrade Guide (Migrate and update clients and {productname})
+* Reference (Comprehensive guide to the {webui})
+* Administration Guide (Maintenance and administration tasks in {susemgr})
+* Salt Guide (A comprehensive guide to Salt for system administrators)
+* Retail Guide (A guide to using {smr})
+* Architecture Guide (Details on components, Salt and traditional architectures, and diagrams)
+
+
+
+[[search]]
+=== Real Time Search
+
+We have added a prototype of real time search using Algolia.
+We are still developing an alternative for offline reading.
+
+
+The search feature of this beta release is a prototype and points to development and testing sources.
+[[new-ui]]
+=== Antora Static Site
+
+All {susemgr} documentation is now written in AsciiDoc and built with Antora.
+This makes it significantly easier for readers to become contributors by being able to edit the page directly in plain text (no more XML!).
+
+
+
+[[view-branches]]
+=== Documentation by Version
+
+Beginning with {productname}{nbsp}4.0, you will be able to select which version of the documentation you want to view, by using the version switcher at the bottom of the navigation pane.
+
+
+
+[[contribute]]
+=== User Contributions
+
+You may now contribute directly to any document you are currently viewing.
+
+.Procedure: Contributing to documentation
+. Select the btn:[Edit this page] link (Top right of the document)
+. You will be directed to Github. Login, make your changes then submit a pull request.
+. Your request will be reviewed by a technical writer and published.
+
+
+
+[[pdf-output]]
+=== PDF Output
+
+Draft PDF documents are now available from the documentation index page.
+Asciidoctor-pdf is currently used to produce PDF documents from our antora nav lists.
+These documents are draft and should not be used in production.
+
+
+
+[[publishing]]
+=== Faster Publishing
+
+Our new documentation site implements continuous integration with TravisCI.
+As soon as as change is approved, TravisCI rebuilds the documentation and updates the published version within 3-5 minutes.

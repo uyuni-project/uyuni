@@ -1,0 +1,66 @@
+[[branch-network-formula]]
+= Branch Network Formula
+
+The Branch Network formula is used to configure the networking services required by the branch server, including DHCP, DNS, TFTP, PXE, and FTP.
+
+The branch server can be configured to use networking in many different ways.
+The most common ways provide either a dedicated or shared LAN for terminals.
+
+
+
+== Set Up a Branch Server with a Dedicated LAN
+
+In this configuration, the branch server requires at least two network interfaces: one acts as a WAN to communicate with the {susemgr} server, and the other one acts as an isolated LAN to communicate with terminals.
+
+This configuration allows for the branch server to provide DHCP, DNS, TFTP, PXE, and FTP services to terminals.
+These services can be configured with Salt formulas in the {susemgr} {webui}.
+
+
+.Procedure: Setting Up a Branch Server with a Dedicated LAN
+
+. In the {susemgr} {webui}, open the details page for the branch server, and navigate to the [guimenu]``Formulas`` tab.
+. In the [guimenu]``Branch Network`` section, set these parameters:
+* Keep [guimenu]``Dedicated NIC`` checked.
+* In the [guimenu]``NIC`` field, enter the name of the network device that is connected to the internal LAN.
+* In the [guimenu]``IP`` field, enter the static IP address to be assigned to the branch server on the internal LAN.
+* In the [guimenu]``Netmask`` field, enter the network mask of the internal LAN.
+. Check [guimenu]``Enable Route`` if you want the branch server to route traffic from internal LAN to WAN.
+* Check [guimenu]``Enable NAT`` if you want the branch server to convert addresses from internal LAN to WAN.
+* Select the [guimenu]``bind`` DNS forwarder mode.
+* Check DNS forwarder fallback if you want to rely on an external DNS if the branch DNS fails.
+* Specify the working directory, and the directory owner and group.
+. Click btn:[Save] to save your changes.
+. Apply the highstate.
+
+
+
+== Set up a Branch Server with a Shared Network
+
+In this configuration, the branch server has only one network interface card, which is used to connect to the {susemgr} server as well as the terminals.
+
+This configuration allows for the branch server to provide DNS, TFTP, PXE, and FTP services to terminals.
+These services can be configured with Salt formulas in the {susemgr} {webui}.
+Optionally, the branch server can also provide DHCP services in this configuration.
+
+[NOTE]
+====
+If DHCP services are not provided by the branch server, ensure that your external DHCP configuration is set correctly:
+
+* The [systemitem]``next-server`` option must point to the branch server for PXE boot to work.
+* The [systemitem]``filename`` option must correctly identify the network boot program (by default, this is [path]``/boot/pxelinux``).
+* The [systemitem]``domain-name-servers`` option must point to the branch server for correct host name resolution.
+====
+
+
+.Procedure: Setting Up a Branch Server with a Shared Network
+
+. In the {susemgr} {webui}, open the details page for the branch server, and navigate to the [guimenu]``Formulas`` tab.
+. In the [guimenu]``Branch Network`` section, set these parameters:
+* Keep [guimenu]``Dedicated NIC`` unchecked.
+* Enable services on the branch server’s firewall.
+Ensure you include DNS, TFTP, and FTP services.
+* Select the [guimenu]``bind`` DNS forwarder mode.
+* Check DNS forwarder fallback if you want to rely on an external DNS if the branch DNS fails.
+* Specify the working directory, and the directory owner and group.
+. Click btn:[Save] to save your changes.
+. Apply the highstate.

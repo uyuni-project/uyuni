@@ -1,0 +1,17 @@
+[[arch.component.jabberd]]
+= jabberd
+
+
+
+
+== Functions
+jabberd is a component of {productname}. It performs the following function in the stack.
+
+* **Implements the Jabber (XMPP) protocol that osa-dispatcher uses**
+
+== Log Files
+_Logs for jabberd are located in:_
+
+----
+/var/log/messages
+----

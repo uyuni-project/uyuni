@@ -1,0 +1,43 @@
+[[sd-remote-command]]
+= SD Remote Command
+
+This subtab allows you to run remote commands on the selected system. Before doing so, you must first configure the system to accept such commands.
+
+. On SLE clients, subscribe the system to the {productname} Tools child channel.
+Then use Zypper to install the [systemitem]``rhncfg``, [systemitem]``rhncfg-client``, and [systemitem]``rhncfg-actions`` packages, if not already installed:
++
+
+----
+zypper in rhncfg rhncfg-client rhncfg-actions
+----
++
+
+On {rhela} clients, subscribe the system to the Tools child channel, and use [command]``yum`` to install the [systemitem]``rhncfg``, [systemitem]``rhncfg-client``, and [systemitem]``rhncfg-actions`` packages, if not already installed:
++
+
+----
+yum install rhncfg rhncfg-client rhncfg-actions
+----
+
+. Log in to the system as root and add the following file to the local {productname} configuration directory: [path]``allowed-actions/scripts/run``.
++
+
+* Create the necessary directory on the target system:
++
+
+----
+mkdir -p /etc/sysconfig/rhn/allowed-actions/script
+----
++
+
+* Create an empty [path]``run`` file in that directory to act as a flag to {productname}, signaling permission to allow remote commands:
++
+
+----
+touch /etc/sysconfig/rhn/allowed-actions/script/run
+----
+
+When the setup is complete, refresh the page to view the text boxes for remote commands.
+Identify a specific user, group, and timeout period, and the script to run.
+Select a date and time to execute the command, then click btn:[Schedule] or add the remote command to an action chain.
+For more about action chains, see xref:reference:schedule/action-chains.adoc[].

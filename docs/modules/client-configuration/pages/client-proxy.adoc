@@ -1,0 +1,15 @@
+[[client-proxy]]
+= Registering Clients on a Proxy
+
+Proxy servers can act as a broker and package cache for both tradional and Salt clients.
+Registering clients on a {productname} Proxy is very similar to registering them directly on {productname}, with a few key differences.
+
+This section contains information on registering Salt clients on a proxy using the {webui}, or with a bootstrap script.
+
+Within the {webui}, proxy pages will show information about both Salt and traditional clients.
+
+You can see a list of clients that are connected to a proxy by clicking on the name of the proxy in menu:Main Navigation[Systems > Systems > Proxy], selecting the [guimenu]``Details`` tab, and then selecting the [guimenu]``Proxy`` tab.
+
+A list of chained proxies for a Salt client can be seen by clicking on the name of the client in menu:Main Navigation[Systems > All], selecting the [guimenu]``Details`` tab, and then selecting the [guimenu]``Connection`` tab.
+
+If you decide to move any of your clients between proxies or the server you will need to repeat the registration process from the beginning.

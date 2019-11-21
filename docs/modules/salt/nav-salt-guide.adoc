@@ -1,0 +1,88 @@
+// Salt Guide Antora Navigation List
+ifndef::backend-pdf[]
+
+* Salt Guide
+** xref:salt-intro.adoc[Introduction]
+** xref:salt-terminology.adoc[Terminology]
+** xref:salt-command.adoc[Salt Command]
+** xref:salt-useful-commands.adoc[Salt Useful Commands]
+** xref:salt-states.adoc[Salt States]
+** xref:salt-file-locations.adoc[File Locations]
+// Formulas
+** xref:formulas-intro.adoc[Salt Formulas]
+*** xref:formula-bind.adoc[Bind Formula]
+*** xref:formula-branchnetwork.adoc[Branch Network Formula]
+*** xref:formula-dhcpd.adoc[DHCPd Formula]
+*** xref:formula-imagesync.adoc[Image Sync Formula]
+*** xref:formula-pxe.adoc[PXE Formula]
+*** xref:formula-saltboot.adoc[Saltboot Formula]
+*** xref:formula-tftpd.adoc[TFTPd Formula]
+*** xref:formula-vsftpd.adoc[VsFTPd Formula]
+*** xref:formulas-custom.adoc[Custom Formulas]
+//*** xref:salt-example-formula.adoc[Example Custom Formula]
+** xref:salt-ssh.adoc[Salt SSH]
+** xref:salt-rate-limiting.adoc[Rate Limiting]
+** xref:large-scale.adoc[Scaling Salt Minions]
+*** xref:large-scale-tuning.adoc[Tuning Large Scale Installations]
+//** xref:common_gfdl1.2_i.adoc[License]
+
+endif::[]
+
+
+// PDF Salt Guide
+ifdef::backend-pdf[]
+= Salt Guide: {productname} {productnumber}
+include::./branding/pdf/entities.adoc[]
+:toclevels: 2
+:doctype: book
+
+include::modules/salt/pages/common_gfdl1.2_i.adoc[leveloffset=+1]
+
+include::modules/salt/pages/salt-intro.adoc[leveloffset=+1]
+
+include::modules/salt/pages/salt-terminology.adoc[leveloffset=+1]
+
+include::modules/salt/pages/salt-command.adoc[leveloffset=+1]
+
+include::modules/salt/pages/salt-useful-commands.adoc[leveloffset=+1]
+
+include::modules/salt/pages/salt-states.adoc[leveloffset=+1]
+
+include::modules/salt/pages/salt-file-locations.adoc[leveloffset=+1]
+
+// Formulas
+include::modules/salt/pages/formulas-intro.adoc[leveloffset=+1]
+
+include::modules/salt/pages/formula-bind.adoc[leveloffset=+2]
+
+include::modules/salt/pages/formula-branchnetwork.adoc[leveloffset=+2]
+
+include::modules/salt/pages/formula-dhcpd.adoc[leveloffset=+2]
+
+include::modules/salt/pages/formula-imagesync.adoc[leveloffset=+2]
+
+include::modules/salt/pages/formula-pxe.adoc[leveloffset=+2]
+
+include::modules/salt/pages/formula-saltboot.adoc[leveloffset=+2]
+
+include::modules/salt/pages/formula-tftpd.adoc[leveloffset=+2]
+
+include::modules/salt/pages/formula-vsftpd.adoc[leveloffset=+2]
+
+include::modules/salt/pages/formulas-custom.adoc[leveloffset=+2]
+
+//*** xref:salt-example-formula.adoc[leveloffset=+2]
+
+include::modules/salt/pages/salt-ssh.adoc[leveloffset=+1]
+
+include::modules/salt/pages/salt-timeouts.adoc[leveloffset=+1]
+
+include::modules/salt/pages/salt-rate-limiting.adoc[leveloffset=+1]
+
+include::modules/salt/pages/large-scale.adoc[leveloffset=+1]
+
+include::modules/salt/pages/large-scale-tuning.adoc[leveloffset=+2]
+
+include::modules/salt/pages/common_gfdl1.2_i.adoc[leveloffset=+1]
+
+endif::[]

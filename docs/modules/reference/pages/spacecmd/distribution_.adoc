@@ -1,0 +1,81 @@
+[[spacecmd.fucntions.distribution]]
+= distribution_
+
+The following spacecmd commands are available for working with kickstart distributions.
+
+
+
+== distribution_create
+
+Create a Kickstart tree.
+
+[source]
+--
+usage: distribution_create [options]
+
+options:
+  -n NAME
+  -p path to tree
+  -b base channel to associate with
+  -t install type [fedora|rhel_4/5/6|suse|generic_rpm]
+--
+
+
+
+== distribution_delete
+
+Delete a Kickstart tree.
+
+[source]
+--
+usage: distribution_delete LABEL
+--
+
+
+
+== distribution_details
+
+Show the details of a Kickstart tree.
+
+[source]
+--
+usage: distribution_details LABEL
+--
+
+
+
+== distribution_list
+
+List the available autoinstall trees.
+
+[source]
+--
+usage: distribution_list
+--
+
+
+
+== distribution_rename
+
+Rename a Kickstart tree.
+
+[source]
+--
+usage: distribution_rename OLDNAME NEWNAME
+--
+
+
+
+== distribution_update
+
+Update the path of a Kickstart tree.
+
+[source]
+--
+usage: distribution_update NAME [options]
+
+options:
+  -p path to tree
+  -b base channel to associate with
+  -t install type [fedora|rhel_4/5/6|suse|generic_rpm]
+--

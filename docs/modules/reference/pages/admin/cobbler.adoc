@@ -1,0 +1,8 @@
+[[s3-sattools-config-cobbler]]
+= Cobbler
+
+On the menu:Manager Configuration[Cobbler] page you can run the Cobbler synchronization by clicking btn:[Update].
+
+image::admin_configuration_cobbler.png[scaledwidth=80%]
+
+Cobbler synchronization is used to repair or rebuild the contents of [path]``/srv/tftpboot`` or [path]``/srv/www/cobbler`` when a manual modification of the cobbler setup has occurred.

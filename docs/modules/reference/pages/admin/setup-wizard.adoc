@@ -1,0 +1,110 @@
+[[ref.webui.admin.wizard]]
+= Setup Wizard
+
+Setting up {productname} typically requires some extra steps after installation for common configuration tasks.
+
+The menu:Admin[Setup Wizard] link is displayed when the {productname} {webui} is used for the fist time and can be accessed later at any time by clicking menu:Admin[Setup Wizard].
+On the three tabs configure the HTTP proxy server, organization credentials, and {suse} products.
+
+menu:HTTP Proxy:[]::
+If needed configure a proxy server that {productname} will use to access SCC ({suse} Customer Center) and other remote servers here.
+Use `hostname:port` syntax in the menu:HTTP Proxy[HTTP Proxy Hostname:] field if the proxy port is not 8080.
+Clearing the fields disables proxy.
++
+
+image::admin_proxy_settings.png[scaledwidth=80%]
++
+
+menu:Organization Credentials:[]::
+Select menu:Admin[Setup Wizard > Organization Credentials > Add a new credential] then enter user name and password to give another organization/user access to {scc}.
++
+
+image::admin_organization_credentials.png[scaledwidth=80%]
++
+
+After saving, a new credential card will be displayed.
+Buttons below the credential card allow you to:
+
+* Check credential validation status (green tick or red cross icon).
+To re-check the credential with SCC, click the icon.
+* Set the primary credentials for inter-server synchronization (yellow star icon).
+* List the subscriptions related to a certain credential (list icon).
+* Edit the credential (pencil icon).
+* Delete the credential (trash can icon).
+
+
+
+[[vle.webui.admin.wizard.products]]
+menu:Main Menu[Admin > SUSE Products]::
+On the menu:Main Menu[Admin > SUSE Products] page, select product-specific channels you are entitled to.
++
+
+image::admin_suse_products.png[scaledwidth=80%]
++
+
+The products displayed are directly linked to your organization credentials and your {suse} subscriptions.
+Product extension and module lists are shown when you click the btn:[arrow] to the left of the product description.
+This is a cascading mechanism and allows to unfold several levels according to the integration of the extensions and modules in the base product.
++
+
+Products based on SUSE Linux Enterprise 15 or higher have a toggle button named btn:[include recommended].
+When the toogle button is enabled on a base product, recommended extensions and modules are automatically selected for synchronization.
+When the btn:[include recommended] button is enabled, you may uncheck product child channels you are not interested in syncing.
+Recommended channels are labeled accordingly.
+You cannot disable required channels.
++
+
+If you click the menu:Channels[] icon in a row of a product, a popup lists the underlying channels (repositories) that build the product.
++
+
+In the row above the product listing two filter options are available:
+
+* Search by the product description. The filter limits the search to base products.
+* Filter by architecture.
+Click in the search field (or press kbd:[Enter] ) and then select from drop-down menu.
+You can repeat this as often as necessary.
+To remove an architecture either click the "`x`" symbol (or press kbd:[Backspace] ).
++
+
+When you have made your selection(s), click btn:[Add products] in the upper right area.
+This is equivalent to running [command]``mgr-sync add products`` or [command]``mgr-sync`` without any arguments.
++
+
+View the synchronization progress in the status bar field to the right.
++
+
+[NOTE]
+.Synchronization Time
+====
+Channel synchronization will start and might take several hours.
+When finished the corresponding channels can be used in {productname}.
+====
++
+
+[IMPORTANT]
+.If Synchronization Fails
+====
+SUSE does not automatically trust 3rd party GPG keys.
+If a reposync fails check if an untrusted GPG key is the cause by viewing the log files located in:
+
+----
+/var/log/rhn/reposync
+----
+
+Look for lines similar to the following:
+
+----
+['/usr/bin/spacewalk-repo-sync', '--channel', 'sle-12-sp1-ga-desktop-
+nvidia-driver-x86_64', '--type', 'yum', '--non-interactive']
+ChannelException: The GPG key for this repository is not part of the keyring.
+Please run spacewalk-repo-sync in interactive mode to import it.
+----
+====
++
+
+Alternatively, you can add listed channels immediately by clicking the btn:[Add this product] button in the status column.
+A progress bar will be displayed.
+The main product will expand, and then you may select add-on products belonging to the product that is currently added.
+To overview required channels, select the list icon in the menu:SUSE Products[Channels] column.
+Once a product has finished downloading, the status bar state will change from a filled percentage value to menu:SUSE Products[Finished].
+

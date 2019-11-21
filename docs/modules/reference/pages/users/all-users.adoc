@@ -1,0 +1,12 @@
+[[ref.webui.users.list.all]]
+= All Users
+
+The [guimenu]``All`` page lists all users that belong to your organization.
+
+
+image::users_all_users.png[scaledwidth=80%]
+
+
+In addition to the fields listed in the previous two screens, the table of users includes a [guimenu]``Status`` field.
+This field indicates whether the user is [guimenu]``Active`` or [guimenu]``Deactivated``.
+Click a user name to see the [guimenu]``User Details`` page.

@@ -1,0 +1,10 @@
+[[ref.webui.admin.iss]]
+= ISS Configuration
+
+If you have more than one {productname} installation, you will probably want to ensure that they stay aligned on content and permissions.
+Inter-Server Synchronization (ISS) allows you to connect two or more {productname} Servers and keep them up-to-date.
+
+To set up ISS, you need to define one {productname} Server as a master, with the other as a slave.
+If conflicting configurations exist, the system will prioritize the master configuration.
+
+For more information about ISS, see the Inter-Server Synchronization section of the Administration Guide.

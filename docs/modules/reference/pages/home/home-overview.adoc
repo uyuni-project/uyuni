@@ -1,0 +1,77 @@
+[[ref.webui.overview.intro]]
+= Home Overview
+
+This topic introduces you to the {productname} {webui}.
+
+Entering the {productname} URL in a browser leads you to the [guimenu]``Sign In`` screen.
+
+Before logging in, select [guimenu]``About``, to browse and search for available documentation topics.
+You may reset your username and password from the menu:About[Lookup Login/Password] page.
+Refer to xref:reference:home/user-account-my-account.adoc[My Account] for more information.
+
+
+[NOTE]
+====
+New to the {productname} {webui}? Scan through xref:reference:navigation/navigation-menu.adoc[{WebUI} Navigation] to familiarize yourself with the layout and symbols used throughout this document.
+====
+
+
+Login to the {productname} {webui} to view the menu:Main Menu[Home > Overview] page.
+The Overview page contains summary panes that provide important information about your systems.
+
+[guimenu]``Overview`` is split into functional sections, with the most critical sections displayed first.
+Users can control which of the following sections are displayed by making selections on the menu:Main Menu[Home > My Preferences] page.
+Refer to xref:reference:home/home-my-preferences.adoc[My Preferences] for more information.
+
+image::home_overview.png[scaledwidth=80%]
+
+* The [guimenu]``Tasks`` pane lists the most common tasks an administrator performs via the Web interface.
+Click any link to reach the page within {productname} that allows you to accomplish that task.
++
+
+image::home_overview_tasks_pane.png[scaledwidth=40%]
+
+* The [guimenu]``Inactive Systems`` list provides a list of all systems that have stopped checking into {productname}.
++
+
+image::home_overview_inactive_systems_pane.png[scaledwidth=80%]
+
+* The [guimenu]``Most Critical Systems`` pane lists the most critical systems within your organization.
+It provides a link to quickly view those systems and displays a summary of the patch updates that have yet to be applied to those systems.
+Click the name of a system to see its [guimenu]``System Details`` page and apply the patch updates.
+Below the list is a link to [guimenu]``View All Critical Systems`` on one page.
++
+
+image::home_overview_critical_systems_pane.png[scaledwidth=80%]
+
+* The [guimenu]``Recently Scheduled Actions`` pane lists all actions less than thirty days old and their status: failed, completed, or pending.
+Click the label of any given action to view its details page.
+Below the list is a link to [guimenu]``View All Scheduled Actions`` on one page, which lists all actions that have not yet been carried out on your client systems.
++
+
+image::home_overview_pending_actions_pane.png[scaledwidth=80%]
+
+* The [guimenu]``Relevant Security Patches`` pane lists all available security patches that have yet to be applied to some or all of your client systems.
+It is critical that you apply these security patches to keep your systems secure.
+Below this list find links to all available patches [guimenu]``View All Patches``.
+You may also view patches that only apply to your systems [guimenu]``View All Relevant Patches``.
++
+
+image::home_overview_latest_errata_pane.png[scaledwidth=80%]
+
+* The [guimenu]``System Group Name`` pane lists groups you may have created and indicates whether the systems in those groups are fully updated.
+Click the link below this section to get to the menu:Main Menu[Systems > System Groups] page, where you can choose a [guimenu]``Group Name`` to use with the System Set Manager.
++
+
+image::home_overview_system_groups_pane.png[scaledwidth=80%]
+
+* The [guimenu]``Recently Registered Systems`` pane lists all systems added to {productname} in the past 30 days.
+Select a system's name to see its [guimenu]``System Details`` page.
+At the bottom of the [guimenu]``Recently Registered Systems`` pane select the [guimenu]``View All Recently Registered Systems`` link to view all recently registered systems on one page.
++
+
+image::home_overview_recently_registered_pane.png[scaledwidth=80%]
+
+To return to this page, select menu:Main Menu[Home > Overview] that is also known as _The Menu_.
+
+

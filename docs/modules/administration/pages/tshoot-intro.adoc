@@ -1,0 +1,4 @@
+[[troubleshooting-intro]]
+= Troubleshooting
+
+This section contains some common problems you might encounter with {productname}, and solutions to resolving them.

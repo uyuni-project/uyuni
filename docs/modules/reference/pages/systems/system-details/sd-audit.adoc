@@ -1,0 +1,10 @@
+[[sd-audit]]
+= SD Audit [Management]
+
+Via the [guimenu]``Audit`` tab, view OpenSCAP scan results or schedule scans.
+For more information on auditing and OpenSCAP, see xref:reference:audit/audit-menu.adoc[].
+
+
+image::system_details_traditional_list_audit.png[scaledwidth=80%]
+
+image::system_details_traditional_schedule_audit.png[scaledwidth=80%]

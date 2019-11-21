@@ -1,0 +1,55 @@
+[[troubleshooting-login-timeout]]
+= Troubleshooting Login Timeouts
+
+////
+PUT THIS COMMENT AT THE TOP OF TROUBLESHOOTING SECTIONS
+
+Troubleshooting format:
+
+One sentence each:
+Cause: What created the problem?
+Consequence: What does the user see when this happens?
+Fix: What can the user do to fix this problem?
+Result: What happens after the user has completed the fix?
+
+If more detailed instructions are required, put them in a "Resolving" procedure:
+.Procedure: Resolving Widget Wobbles
+. First step
+. Another step
+. Last step
+////
+
+By default, the {productname} {webui} will require users to log in again after 30{nbsp}minutes.
+Depending on your environment, you might want to adjust the login timeout value.
+
+To adjust the value, you will need to make the change in both [path]``rhn.conf`` and [path]``web.xml``.
+Ensure you set the value in seconds in [path]``/etc/rhn/rhn.conf``, and in minutes in [path]``web.xml``.
+The two values must equal the same amount of time.
+
+For example, to change the timeout value to one hour, set the value in [path]``rhn.conf`` to 3600 seconds, and the value in [path]``web.xml`` to 60 minutes.
+
+
+
+.Procedure: Adjusting the {webui} Login Timeout Value
+. Stop services:
++
+----
+spacewalk-service stop
+----
+. Open [path]``/etc/rhn/rhn.conf`` and add or edit this line to include the new timeout value in seconds:
++
+----
+web.session_database_lifetime = <Timeout_Value_in_Seconds>
+----
+. Save and close the file.
+. Open [path]``/srv/tomcat/webapps/rhn/WEB-INF/web.xml`` and add or edit this line to include the new timeout value in minutes:
++
+----
+<session-timeout>Timeout_Value_in_Minutes</session-timeout>
+----
+. Save and close the file.
+. Restart services:
++
+----
+spacewalk-service start
+----

@@ -1,0 +1,29 @@
+= Left Navigation Bar
+
+The left navigation bar is the main menu to the {productname} {webui} from where you load the {webui} pages.
+
+image::sidenav.png[scaledwidth=30%]
+
+Expand::
+If you click the icon or the down-arrow of a menu entry, it expands this part of the menu tree without actually loading a page.
+
+Collapse::
+To collapse an open part of the menu system, click the up-arrow of a menu entry.
+
+Autoload::
+If you click the name of a menu entry, the first available page of that menu entry will get loaded and displayed automatically.
+
+Search::
+Enter a search string in the [guimenu]``Search page`` field to find an entry of the menu tree.
+Available menu entries depend on the roles of the user.
+
+[IMPORTANT]
+====
+Only {productname} Administrators can access the following navigation items:
+
+* menu:Main Menu[Images]
+
+* menu:Main Menu[Users]
+
+* menu:Main Menu[Admin]
+====

@@ -1,0 +1,20 @@
+[[config-systems-target]]
+= Target Systems
+
+This page shows the systems that are not prepared for configuration file deployment, or are not yet subscribed to a configuration channel.
+
+The table has three columns:
+
+* The system name
+* If the system is prepared for configuration file deployment
+* The steps necessary to prepare the system.
+
+To prepare a system, check the box to the left of the profile name then click the btn:[Enable SUSE Manager Configuration Management] button.
+All of the preparatory steps that can be automatically performed are scheduled by {productname}.
+
+[NOTE]
+====
+You will need to perform some manual tasks to enable configuration file deployment.
+Follow the on-screen instructions provided to assist with each step.
+====
+

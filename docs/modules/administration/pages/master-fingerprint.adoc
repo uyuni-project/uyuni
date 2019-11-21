@@ -1,0 +1,32 @@
+[[security-master-fingerprint]]
+= Set up a Client to Master Validation Fingerprint
+
+In highly secure network configurations you may wish to ensure your Salt clients are connecting a specific master.
+To set up validation from client to master enter the master's fingerprint within the [path]``/etc/salt/minion`` configuration file.
+
+See the following procedure:
+
+. On the master, at the command prompt, as root, use this command to find the ``master.pub`` fingerprint:
++
+
+----
+salt-key -F master
+----
++
+
+On your client, open the [path]``/etc/salt/minion`` configuration file.
+Uncomment the following line and enter the master's fingerprint replacing the example fingerprint:
++
+
+----
+master_finger: 'ba:30:65:2a:d6:9e:20:4f:d8:b2:f3:a7:d4:65:11:13'
+----
+
+. Restart the salt-minion service:
++
+
+----
+# systemctl restart salt-minion
+----
+
+For information on configuring security from a client, see https://docs.saltstack.com/en/latest/ref/configuration/minion.html.

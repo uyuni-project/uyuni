@@ -1,0 +1,12 @@
+[[ref.webui.patches.manage]]
+= Manage Patches
+
+Custom patches enable organizations to issue patch alerts for the packages in their custom channels, schedule deployment and manage patches across organizations.
+
+image::patches_published_patches.png[scaledwidth=80%]
+
+[WARNING]
+====
+If the organization is using both {productname} and {productname} Proxy server, then manage patches only on the {productname} server since the proxy servers receive updates directly from it.
+Managing patches on a proxy in this combined configuration risks putting your servers out of synchronization.
+====

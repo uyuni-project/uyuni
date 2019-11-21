@@ -1,0 +1,234 @@
+= SUSE Manager Documentation Repository
+ifdef::env-github,backend-html5[]
+//Admonitions
+:tip-caption: :bulb:
+:note-caption: :information_source:
+:important-caption: :heavy_exclamation_mark:
+:caution-caption: :fire:
+:warning-caption: :warning:
+:linkattrs:
+// SUSE ENTITIES FOR GITHUB
+// System Architecture
+:zseries: z Systems
+:ppc: POWER
+:ppc64le: ppc64le
+:ipf : Itanium
+:x86: x86
+:x86_64: x86_64
+// Rhel Entities
+:rhel: Red Hat Enterprise Linux
+:rhnminrelease6: Red Hat Enterprise Linux Server 6
+:rhnminrelease7: Red Hat Enterprise Linux Server 7
+// SUSE Manager Entities
+:susemgr: SUSE Manager
+:susemgrproxy: SUSE Manager Proxy
+:productnumber: 3.2
+:saltversion: 2018.3.0
+:webui: WebUI
+// SUSE Product Entities
+:sles-version: 12
+:sp-version: SP3
+:jeos: JeOS
+:scc: SUSE Customer Center
+:sls: SUSE Linux Enterprise Server
+:sle: SUSE Linux Enterprise
+:slsa: SLES
+:suse: SUSE
+:ay: AutoYaST
+endif::[]
+// Asciidoctor Front Matter
+:doctype: book
+:sectlinks:
+:icons: font
+:experimental:
+:sourcedir: .
+:imagesdir: images
+
+image:https://github.com/SUSE/doc-susemanager/workflows/build%20test%20deploy/badge.svg?branch=master["Build Status", link="https://github.com/SUSE/doc-susemanager"]
+image:https://github.com/SUSE/doc-susemanager/workflows/feature%20tests/badge.svg?branch=master["Build Status", link="https://github.com/SUSE/doc-susemanager"]
+
+[suma.doc.intro]
+== Introduction
+This is the source for the official SUSE Manager documentation.
+
+We welcome pull requests.
+Please follow these instructions to create your pull request.
+
+For more details on contributing to SUSE Manager documentation, visit the https://github.com/SUSE/doc-susemanager/wiki[SUSE Manager Documentation Wiki].
+The wiki contains information about word usage, markup conventions, our docs toolchain, building locally, and publishing documentation.
+
+
+[suma.doc.first.contribution]
+== First Contribution
+
+To contribute to SUSE Manager documentation:
+
+. Clone the repository to your local machine:
++
+----
+git clone https://github.com/SUSE/doc-susemanager.git
+----
+
+. Check out the ``/master`` branch:
++
+----
+git checkout master
+----
+
+. Create a new working branch for your changes:
++
+----
+git checkout -b branchname
+----
+
+. Navigate to the [path]``adoc`` directory and make your changes using your preferred text editor.
+
+. Ensure your changes build locally. This step requires that you have your local environment set up correctly.
+ <!-- TODO: add environment setup instructions -->
+
+. Add the updated files to your commit:
++
+----
+git add .
+----
+
+. Commit your changes:
++
+----
+git commit -m "Commit message here"
+----
+
+. Push your changes:
++
+----
+git push
+----
++
+If git prompts you to set an upstream in order to push, use this command:
++
+----
+git push --set-upstream origin <branchname>
+----
+
+. Create a pull request (PR) by navigating to https://github.com/SUSE/doc-susemanager and clicking on [btn]``Compare and Create Pull Request``.
+Write an informative commit message detailing your changes, choose reviewers, and save your PR.
+If you haven't yet finished the work you want to do, make sure you create a Draft PR by selecting it from the drop down box in the github web UI.
+This lets your reviewers know that you haven't finished work yet, while still being transparent about what you are working on, and making sure we all understand current progress.
+
+
+[NOTE]
+====
+Choose your reviewers carefully!
+If you have made changes to the technical detail of the documentation, choose an appropriate subject matter expert (SME) to review those changes.
+Additionally, every change requires at least one documentation team member to approve.
+====
+
+
+.Review Standards
+
+These standards ensure that our documentation is accurate, that PRs are not left to age, and that the source code remains clean.
+Ensure you follow these standards if you are participating in the SUSE Manager documentation repository.
+
+* If you are still working on a PR, add ``[WIP]`` to the title of your PR.
+This allows people to review the PR, but notifies reviewers that you have not completed work.
+* Only the original author should merge PRs, do not merge other author's PRs unless you have express permission from them to do so.
+* _Do not_ merge a PR until you have received the following approvals:
+** For a technical change, approval from at least one SME
+** For all changes, approval from at least one other member of the documentation team
+
+
+[suma.doc.second.contribution]
+== Second Contribution
+
+Once you have checked out the repo and want to keep working on things, you need to ensure that your local copy of the repo remains up to date.
+If you don't do this, you *will* end up with merge conflicts.
+
+Every day, before you begin work, update your copy of master:
+
+. Check out the ``/master`` branch:
++
+----
+git checkout master
+----
+You will get a message like this:
++
+----
+Switched to branch 'master'
+Your branch is up to date with 'origin/master'.
+----
++
+[IMPORTANT]
+====
+BEWARE! This is usually a lie!
+====
++
+. Fetch all current branches:
++
+----
+git fetch --all
+----
+. Update your local copy to match the remotes:
++
+----
+git pull -ff
+----
+
+Now you can go ahead and check out the branch you are working on.
+
+Doing this regularly as you are working will mean you keep your local copies up to date and avoid conflicts.
+You should do it at least every day before you begin work, and again whenever you switch branches.
+
+For example, you are working on two separate pieces of content, one in the ``feature_1`` branch, and the other in the ``feature_2`` branch:
+
+. Start your day by checking out master, fetching the branches, and updating your local copy:
++
+----
+git checkout master
+git fetch --all
+git pull -ff
+----
+. Begin work on the first piece of content by creating a new feature branch:
++
+----
+git checkout -b feature_1
+----
+. Make your changes for Feature 1, then commit them to your branch:
++
+----
+git commit -m "Content for Feature 1"
+git push
+----
+. Make a PR for Feature 1, by navigating to https://github.com/SUSE/doc-susemanager and clicking on [btn]``Compare and Create Pull Request``.
+Write an informative commit message detailing your changes, choose reviewers, and save your PR.
+If you haven't yet finished the work you want to do on Feature 1, make sure you create a Draft PR by selecting it from the drop down box in the github web UI.
+That way, you can come back to Feature 1 later on.
+. Switch your local copy back to master, and update your local copy again:
++
+----
+git checkout master
+git fetch --all
+git pull -ff
+----
+. Now you can start work on Feature 2:
++
+----
+git checkout -b feature_2
+----
+. When you're finished on Feature 2, commit your changes and create another PR, just the same as you did for Feature 1.
+
+[WARNING]
+====
+Never leave feature branches lying around on your local system.
+Create your PR as soon as possible, and make liberal use of the Draft feature.
+Commit to your feature branch early and often!
+Update your local copy from master whenever you switch branches.
+====
+
+
+
+[suma.docs.team]
+== The SUSE Manager Documentation Team
+
+* Joseph Cayouette @jcayouette
+* Karl Eichwalder @keichwa
+* Lana Brindley @Loquacity

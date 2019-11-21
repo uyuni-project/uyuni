@@ -1,0 +1,35 @@
+[[installation-client-requirements]]
+= Supported Client Systems
+
+Supported operating systems for traditional and Salt clients are listed in this table.
+
+In this table, icon:check[role="green"] indicates that clients running the operating system are supported by {suse}, and icon:times[role="danger"] indicates that it is not supported.
+Fields marked as icon:question[role="gray"] are under consideration, and may or may not be supported at a later date.
+
+.Supported Versions and SP Levels
+[NOTE]
+====
+Client operating system versions and SP levels must be under general support (normal or LTSS) to be supported with {productname}.
+For details on supported product versions, see https://www.suse.com/lifecycle.
+====
+
+[[mgr.supported.clients]]
+[cols="1,1,1,1", options="header"]
+.Supported Client Systems
+|===
+| Operating System | Architecture | Traditional Clients | Salt Clients
+| {sle} 15 | {x86}_64, {ppc}, {ibmz}, ARM               | icon:check[role="green"]      | icon:check[role="green"]
+| {sle} 12 | {x86}_64, {ppc}, {ibmz}, ARM               | icon:check[role="green"]      | icon:check[role="green"]
+| {sle} 11 | {x86}, {x86}_64, {ipf}, IBM {ppc}, {ibmz}  | icon:check[role="green"]      | icon:check[role="green"]
+| {sles}-ES 7 | {x86}_64                                 | icon:check[role="green"]      | icon:check[role="green"]
+| {sles}-ES 6 | {x86}_64                                 | icon:check[role="green"]      | icon:check[role="green"]
+| {sles} for SAP | {x86}_64, {ppc}                       | icon:check[role="green"]      | icon:check[role="green"]
+| {rhel} 8 | {x86}_64                                   | icon:question[role="gray"]    | icon:question[role="gray"]
+| {rhel} 7 | {x86}_64                                   | icon:check[role="green"]      | icon:check[role="green"]
+| {rhel} 6 | {x86}, {x86}_64                            | icon:check[role="green"]      | icon:check[role="green"]
+| CentOS 7 | {x86}, {x86}_64                            | icon:question[role="gray"]    | icon:question[role="gray"]
+| CentOS 6 | {x86}, {x86}_64                            | icon:question[role="gray"]    | icon:question[role="gray"]
+| {opensuse} Leap 15.1 | {x86}_64                       | icon:times[role="danger"]      | icon:check[role="green"]
+| {ubuntu} 16.04 | {x86}_64                             | icon:times[role="danger"]      | icon:check[role="green"]
+| {ubuntu} 18.04 | {x86}_64                             | icon:times[role="danger"]      | icon:check[role="green"]
+|===

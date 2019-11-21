@@ -1,0 +1,13 @@
+[[s3-sattools-iss-master]]
+= ISS Master Setup
+
+If you are logged in to an ISS master, this page lists all slaves that can receive content from this master.
+
+To add new slaves to the master, click btn:[Add new slave].
+You will need the slave's Fully Qualified Domain Name (FQDN).
+
+Check the [guimenu]``Allow Slave to Sync?`` checkbox to enable the slave to synchronize with the master.
+
+Check the [guimenu]``Sync All Orgs to Slave?`` checkbox to synchronize all organizations to this slave.
+
+For more information about setting up ISS, see the Inter-Server Synchronization section of the Administration Guide.

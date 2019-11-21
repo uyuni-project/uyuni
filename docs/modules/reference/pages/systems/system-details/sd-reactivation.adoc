@@ -1,0 +1,24 @@
+[[sd-reactivation]]
+= SD Reactivation
+
+Reactivation keys include this system's ID, history, groups, and channels.
+This key can then be used only once with the [command]``rhnreg_ks`` command line utility to re-register this system and regain all {productname} settings.
+Unlike typical activation keys, which are not associated with a specific system ID, keys created here do not show up within the menu:Systems[Activation Keys] page.
+
+image::system_details_reactivation.png[scaledwidth=80%]
+
+Reactivation keys can be combined with activation keys to aggregate the settings of multiple keys for a single system profile.
+For example:
+
+----
+rhnreg_ks --server=<server-url>/XMLRPC \
+          --activationkey=<reactivation-key>,<activationkey> \
+          --force
+----
+
+[WARNING]
+====
+When autoinstalling a system with its existing {productname} profile, the profile uses the system-specific activation key created here to re-register the system and return its other {productname} settings.
+For this reason, you must not regenerate, delete, or use this key (with [command]``rhnreg_ks``) while a profile-based autoinstallation is in progress.
+If you do, the autoinstallation will fail.
+====

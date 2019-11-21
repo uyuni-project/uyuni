@@ -1,0 +1,96 @@
+// Retail Guide Antora Navigation List
+ifndef::backend-pdf[]
+
+* xref:retail-introduction.adoc[Retail Guide]
+** xref:retail-components.adoc[Components]
+// Installation
+** xref:retail-install.adoc[Installing]
+*** xref:retail-requirements.adoc[Requirements]
+*** xref:retail-install-unified.adoc[Installing with the Unified Installer]
+*** xref:retail-network-arch.adoc[Network Architecture]
+*** xref:retail-install-setup.adoc[Setting up]
+// Terminal ops
+** xref:retail-deploy-terminals.adoc[Deploying Terminals]
+*** xref:retail-saltboot-diagram.adoc[Terminal Boot Process]
+*** xref:retail-terminal-names.adoc[Terminal Names]
+*** xref:retail-offline.adoc[Offline Use]
+*** xref:retail-terminal-ratelimiting.adoc[Rate Limiting Terminals]
+// Formulas
+** xref:retail-formulas-intro.adoc[Formulas]
+// Admin
+** xref:retail-admin.adoc[Administration]
+*** xref:retail-mass-config.adoc[Mass Configuration]
+*** xref:retail-mass-config-yaml.adoc[Mass Configuration YAML Example]
+*** xref:retail-delta-images.adoc[Delta Images]
+// Retail Upgrade
+** xref:retail-migration-intro.adoc[Retail Upgrade]
+*** xref:retail-prepare-migration.adoc[Prepare for Migration]
+*** xref:retail-migration-slepostosuma.adoc[Migrate SLEPOS to SUMA]
+// End matter
+** xref:retail-next.adoc[What Next?]
+** xref:common_gfdl1.2_i.adoc[License]
+
+endif::[]
+
+
+// PDF Retail Guide
+ifdef::backend-pdf[]
+= Retail Guide: {productname} {productnumber}
+include::./branding/pdf/entities.adoc[]
+:toclevels: 3
+:doctype: book
+
+// Retail Guide Introduction
+include::modules/retail/pages/retail-introduction.adoc[leveloffset=+1]
+
+include::modules/retail/pages/retail-components.adoc[leveloffset=+2]
+
+// Installation
+include::modules/retail/pages/retail-install.adoc[leveloffset=+2]
+
+include::modules/retail/pages/retail-requirements.adoc[leveloffset=+3]
+
+include::modules/retail/pages/retail-install-unified.adoc[leveloffset=+3]
+
+// FIXME: needs research, 2019-07-23, ke:
+// include::modules/retail/pages/retail-install-packages.adoc[leveloffset=+3]
+
+include::modules/retail/pages/retail-network-arch.adoc[leveloffset=+3]
+
+include::modules/retail/pages/retail-install-setup.adoc[leveloffset=+3]
+
+// Terminal Ops
+
+include::modules/retail/pages/retail-deploy-terminals.adoc[leveloffset=+2]
+
+include::modules/retail/pages/retail-saltboot-diagram.adoc[leveloffset=+3]
+
+include::modules/retail/pages/retail-terminal-names.adoc[leveloffset=+3]
+
+include::modules/retail/pages/retail-terminal-ratelimiting.adoc[leveloffset=+3]
+
+// Formulas
+include::modules/retail/pages/retail-formulas-intro.adoc[leveloffset=+2]
+
+// Admin
+include::modules/retail/pages/retail-admin.adoc[leveloffset=+2]
+
+include::modules/retail/pages/retail-mass-config.adoc[leveloffset=+3]
+
+include::modules/retail/pages/retail-mass-config-yaml.adoc[leveloffset=+3]
+
+include::modules/retail/pages/retail-delta-images.adoc[leveloffset=+3]
+
+// Retail Upgrade
+include::modules/retail/pages/retail-migration-intro.adoc[leveloffset=+1]
+
+include::modules/retail/pages/retail-prepare-migration.adoc[leveloffset=+2]
+
+include::modules/retail/pages/retail-migration-slepostosuma.adoc[leveloffset=+2]
+
+//End matter
+include::modules/retail/pages/retail-next.adoc[leveloffset=+2]
+
+include::modules/retail/pages/common_gfdl1.2_i.adoc[leveloffset=+2]
+
+endif::[]

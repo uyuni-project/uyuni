@@ -1,0 +1,58 @@
+[[virt-vmware]]
+= Virtualization with VMWare
+
+You can use VMWare vSphere virtual machines, including ESXi and vCenter, with {productname} by setting up a virtual host manager (VHM).
+
+To begin, you will need to set up a VHM on your {productname} Server, and inventory the available VM hosts.
+Taskomatic can then begin data collection using the VMs API.
+
+
+
+== VHM Setup
+
+
+The Virtual Host Manager (VHM) runs on the {productname} Server.
+
+To run a VHM, your {productname} Server will need to have port 443 open, in order to access the VMWare API.
+
+VMWare hosts use access roles and permissions to control access to hosts and guests.
+Ensure that any VMWare objects or resources that you want to be inventoried by the VHM have at least [parameter]``read-only`` permissions.
+If you want to exclude any objects or resources, mark them with [parameter]``no-access``.
+
+When you are adding new hosts to {productname}, you will need to consider if the roles and permissions that have been assigned to users and objects need to be inventoried by {productname}.
+
+For more on users, roles, and permissions, see the VMWare vSphere documentation: https://docs.vmware.com/en/VMware-vSphere/index.html
+
+
+.Procedure: Creating a VMWare VHM
+
+. In the {productname} {webui}, navigate to menu:Systems[Virtual Host Managers].
+. Click btn:[Create] and select [guimenu]``VMWare-based``.
+. In the [guimenu]``Add a VMWare-based Virtual Host Manager`` section, use these parameters:
+* In the [guimenu]``Label`` field, type a custom name for your VHM.
+* In the [guimenu]``Hostname`` field, type the fully-qualified domain name (FQDN) or host IP address.
+* In the [guimenu]``Port`` field, type the ESXi API port to use (for example, [parameter]``443``).
+* In the [guimenu]``Username`` field, type the username associated with the VM host.
+* In the [guimenu]``Password`` field, type the password associated with the VM host user.
+. Click btn:[Create] to save your changes and create the VHM.
+. On the [guimenu]``Virtual Host Managers`` page select the new VHM.
+. On the [guimenu]``Properties`` page, click btn:[Refresh Data] to inventory the new VHM.
+
+To see which objects and resources have been inventoried, navigate to menu:Systems[System List > Virtual Systems].
+
+
+[NOTE]
+====
+Connecting to the ESXi server from a browser using HTTPS can sometimes log an ``invalid certificate`` error.
+If this occurs, refreshing the data from the virtual hosts server will fail.
+To correct the problem, extract the certificate from the ESXi server, and copy it to [path]``/etc/pki/trust/anchors``.
+Re-trust the certificate by running the [command]``update-ca-certificates`` command on the command line, and restart the spacewalk services.
+====
+
+After your VHM has been created and configured, Taskomatic will run data collection automatically.
+If you want to manually perform data collection, navigate to menu:Systems[Virtual Host Managers], select the appropriate VHM, and click btn:[Refresh Data].
+
+{productname} ships with a tool called [command]``virtual-host-gatherer`` that can connect to VHMs using their API, and request information about virtual hosts.
+[command]``virtual-host-gatherer`` maintains the concept of optional modules, where each module enables a specific VHM.
+This tool is automatically invoked nightly by Taskomatic.
+Log files for the [command]``virtual-host-gatherer`` tool are located at [path]``/var/log/rhn/gather.log``.

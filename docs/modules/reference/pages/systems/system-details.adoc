@@ -1,0 +1,211 @@
+[[s3-sm-system-details]]
+= System Details Overview
+
+When systems are registered to {productname}, they are displayed on the menu:Main Menu[Systems > Overview] page.
+Here and on any other page, clicking the name of a system takes you to the [guimenu]``System Details`` page of the client, where various types of administrative tasks can be performed.
+
+[IMPORTANT]
+====
+The menu:Delete System[] link in the upper right of this screen refers to the system profile only.
+Deleting a host system profile will not destroy or remove the registration of guest systems.
+Deleting a guest system profile does not remove it from the list of guests for its host, nor does it stop or pause the guest.
+It does, however, remove your ability to manage it via {productname}.
+
+If you mistakenly deleted a system profile from {productname}, you may re-register the system using the bootstrap script or [command]``rhnreg_ks`` manually.
+====
+
+The Details page has numerous subtabs that provide specific system information and other identifiers unique to the system.
+The following sections discuss these tabs and their subtabs in detail.
+
+[[s4-sm-system-details-details]]
+== System Details
+
+This page is not accessible from the left bar.
+However, clicking the name of a system anywhere in the Web interface displays such a System Details page.
+By default, the menu:Systems Details[Details > Overview] subtab is displayed.
+Other tabs are available, depending on the system type and add-on system type.
+
+For example, Traditional systems and Salt systems details  display different tabs.
+
+.System Details (Traditional)
+image::system_details_traditional_overview.png[scaledwidth=80%]
+
+.System Details (Salt)
+image::system_details_salt_overview.png[scaledwidth=80%]
+
+[[s5-sm-system-details-overview]]
+=== Overview
+
+This system summary page displays the system status message and the following key information about the system:
+
+menu:System Status[]::
+This message indicates the current state of your system in relation to {productname}.
++
+
+[NOTE]
+====
+If updates are available for any entitled system, the message [guimenu]``Software Updates Available`` appears, displaying the number of critical and non-critical updates and the sum of affected packages.
+To apply these updates, click menu:System Details[Packages] then select some or all packages to update, then click btn:[Upgrade Packages].
+====
+
+
+=== System Info
+
+Hostname::
+The host name as defined by the client system.
+A machine can have one and only one hostname.
+
+FQDN::
+The FQDN(Names) listed here represents the host.domain that the machine answers to.
+A machine can have any number of FQDNs.
+Keep in mind that FQDN is not equal to hostname.
+
+IP Address::
+The IP address of the client.
+
+IPv6 Address::
+The IPv6 address of the client.
+
+Minion Id::
+On salt clients only, shows the client identification value.
+
+Virtualization::
+If the client is a virtual machine, the type of virtualization is listed.
+
+UUID::
+Displays the universally unique identifier.
+
+Kernel::
+The kernel installed and operating on the client system.
+
+{productname} System ID::
+A unique identifier generated each time a system registers with {productname}.
++
+
+[NOTE]
+====
+The system ID can be used to eliminate duplicate profiles from {productname}.
+Compare the system ID listed on this page with the information stored on the client system in the [path]``/etc/sysconfig/rhn/systemid`` file.
+In that file, the system's current ID is listed under ``system_id``.
+The value starts after the characters ``ID-``.
+If the value stored in the file does not match the value listed in the profile, the profile is not the most recent one and may be removed.
+====
++
+
+Activation Key::
+Displays the activation key used to register the system.
+
+Installed Products::
+Lists the products installed on the system.
+
+Lock Status::
+Indicates whether a system has been locked.
++
+
+Actions cannot be scheduled for locked systems on the Web interface until the lock is removed manually.
+This does not include preventing automated patch updates scheduled via the Web interface.
+To prevent the application of automated patch updates, deselect menu:System Details[Properties > Auto Patch Update].
+For more information, see xref:reference:systems/system-details/sd-properties.adoc[].
++
+
+Locking a system can prevent you from accidentally changing a system.
+For example, the system may be a production system that should not receive updates or new packages until you decide to unlock it.
++
+
+[IMPORTANT]
+====
+Locking a system in the Web interface _will not_ prevent any actions that originate from the client system.
+For example, if a user logs in to the client directly and runs {yast} Online Update (on SLE) or [command]``pup`` (on {rhela}), the update tool will install available patches even if the system is locked in the Web interface.
+
+Locking a system _does not_ restrict the number of users who can access the system via the Web interface.
+If you want to restrict access to the system, associate that system with a System Group and assign a System Group Administrator to it.
+For more information about system groups, see xref:reference:systems/system-groups.adoc[].
+====
++
+
+It is also possible to lock multiple systems via the System Set Manager.
+For instructions, see xref:reference:systems/ssm-overview.adoc#s4-sm-ssm-misc-lock[].
+
+
+=== Subscribed Channels
+
+List of subscribed channels.
+Clicking a channel name takes you to the [guimenu]``Basic Channel Details`` page.
+To change subscriptions, click the [guimenu]``Alter Channel Subscriptions`` link right beside the title to assign available base and child channels to this system.
+When finished making selections, click the btn:[Change Subscriptions] button to change subscriptions and the base software channel.
+For more information, see xref:reference:systems/system-details/sd-software-channels.adoc[].
+
+
+Base Channel::
+The first line indicates the base channel to which this system is subscribed.
+The base channel should match the operating system of the client.
+
+
+Child Channels::
+The subsequent lines of text, which depend on the base channel, list child channels.
+An example is the ``SUSE Manager Tools`` channel.
+
+
+=== System Events
+
+Checked In::
+The date and time at which the system last checked in with {productname}.
+
+Registered::
+The date and time at which the system registered with {productname} and created this profile.
+
+Last Booted::
+The date and time at which the system was last started or restarted.
++
+
+[NOTE]
+====
+Systems with Salt or Management system type can be rebooted from this screen.
+
+. Select [guimenu]``Schedule system reboot``.
+. Provide the earliest date and time at which the reboot may take place.
+. Click the btn:[Schedule Reboot] button in the lower right.
+
+When the client checks in after the scheduled start time, {productname} will instruct the system to restart itself.
+====
+
+
+=== System Properties
+
+System Types::
+Lists system types and add-on types currently applied to the system.
+
+Notifications::
+Indicates the notification options for this system.
+You can activate whether you want to receive e-mail notifying you of available updates for this system.
+In addition, you may activate to include systems in the daily summary e-mail.
+
+Contact Method::
+Available methods: Default (Pull), Push via SSH, and Push via SSH tunnel.
++
+
+The so-called OSA status is also displayed for client systems registered with {productname} that have the OSA dispatcher (osad) configured.
++
+
+Push enables {productname} customers to immediately initiate tasks rather than wait for those systems to check in with {productname}.
+Scheduling actions through push is identical to the process of scheduling any other action, except that the task can immediately be carried out instead of waiting the set interval for the system to check in.
++
+
+In addition to the configuration of {productname}, to receive pushed actions each client system must have the [systemitem]``mgr-osad`` package installed and its service started.
+
+Auto Patch Update::
+Indicates whether this system is configured to accept updates automatically.
+
+System Name::
+By default, the host name of the client is displayed, but a different system name can be assigned.
+
+Description::
+This information is automatically generated at registration.
+You can edit the description to include any information you want.
+
+Location::
+This field displays the physical address of the system if specified.
+
+
+Clicking the [guimenu]``Edit These Properties`` link beside the [guimenu]``System Properties`` title opens the menu:System Details[Details > Properties] subtab.
+From this page you can edit any text fields you choose, then click the btn:[Update Properties] button to confirm.

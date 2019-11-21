@@ -1,0 +1,3 @@
+= API FAQ
+
+The [guimenu]``API FAQ`` menu item takes you to the frequently asked questions related to {productname} APIs.

@@ -1,0 +1,120 @@
+[[saltboot-formula]]
+= Saltboot Formula
+
+The Saltboot formula is used to configure disk images and partitioning for the selected hardware type.
+
+[IMPORTANT]
+====
+The Saltboot formula is meant to be used as a group formula.
+Enable and configure Saltboot formula for hardware type groups.
+====
+
+[IMPORTANT]
+====
+To apply changes to a terminal, terminal needs to be restarted. Applying highstate does not have any effect on running terminals.
+====
+
+.Procedure: Configuring the Hardware Type Group with Saltboot
+
+. Open the details page for your new hardware type group, and navigate to the [guimenu]``Formulas`` tab.
+. Select the Saltboot formula and click btn:[Save].
+. Navigate to the menu:Formulas[Saltboot] tab.
+. In the [guimenu]``Disk 1`` section, set these parameters:
+* In the [guimenu]``Disk symbolic ID`` field, enter a custom name for the disk (for example, [systemitem]``disk1``).
+* In the [guimenu]``Device type`` field, select [systemitem]``DISK``.
+* In the [guimenu]``Disk device`` field, select the device that corresponds to the device name on the target machine (for example, [path]``/dev/sda``).
+* In the [guimenu]``RAID level`` field, leave it empty.
+* In the [guimenu]``Disk Label`` field, select [systemitem]``gpt``.
+. In the [guimenu]``Partition`` section, set these parameters for [guimenu]``Partition 1``:
+* In the [guimenu]``Partition symbolic ID`` field, enter a custom name for the partition (for example, [systemitem]``p1``).
+* In the [guimenu]``Partition size`` use value 500.
+* In the [guimenu]``Device mount point`` use [path]``/boot/efi``.
+* In the [guimenu]``Filesystem format`` use [systemitem]``vfat``.
+* In the [guimenu]``OS Image to deploy`` field, leave it empty.
+* In the [guimenu]``Partition encryption password`` field, leave it empty.
+* In the [guimenu]``Partition flags`` use [systemitem]``boot``.
+. In the [guimenu]``Partition`` section, set these parameters for [guimenu]``Partition 2``:
+* In the [guimenu]``Partition symbolic ID`` field, enter a custom name for the partition (for example, [systemitem]``p2``).
+* In the [guimenu]``Partition size`` field, specify a size for the partition in Mebibytes (MiB).
+* In the [guimenu]``Device mount point`` field, select a location to mount the partition (for example, [path]``/data``).
+* In the [guimenu]``Filesystem format`` field, select your preferred format (for example, [systemitem]``xfs``).
+* In the [guimenu]``OS Image to deploy`` field, leave it empty.
+* In the [guimenu]``Partition encryption password`` field, enter a password if you want to encrypt the partition.
+* In the [guimenu]``Partition flags`` field, leave it empty.
+. In the [guimenu]``Partition`` section, set these parameters for [guimenu]``Partition 3``:
+* In the [guimenu]``Partition symbolic ID`` field, enter a custom name for the partition (for example, [systemitem]``p3``).
+* In the [guimenu]``Partition size`` field, specify a size for the partition in Mebibytes (MiB).
+* In the [guimenu]``Device mount point`` field, leave it empty.
+* In the [guimenu]``Filesystem format`` field, select [systemitem]``swap``.
+* In the [guimenu]``OS Image to deploy`` field, leave it empty.
+* In the [guimenu]``Partition encryption password`` field, enter a password if you want to encrypt the partition.
+* In the [guimenu]``Partition flags`` field, select [systemitem]``swap``.
+. In the [guimenu]``Partition`` section, set these parameters for [guimenu]``Partition 4``:
+* In the [guimenu]``Partition symbolic ID`` field, enter a custom name for the partition (for example, [systemitem]``p4``).
+* In the [guimenu]``Partition size`` field, leave it empty.
+This will ensure the partition uses up all remaining space.
+* In the [guimenu]``Device mount point`` field, select [systemitem]``/``.
+* In the [guimenu]``Filesystem format`` field, leave it empty.
+* In the [guimenu]``OS Image to deploy`` field, enter the name of the image to deploy.
+* In the [guimenu]``Image version`` field, leave it empty.
+This will ensure you use the latest available version.
+* In the [guimenu]``Partition encryption password`` field, enter a password if you want to encrypt the partition.
+* In the [guimenu]``Partition flags`` field, leave it empty.
+. Click btn:[Save Formula] to save your configuration.
+
+
+
+[[saltboot-formula-partition-types]]
+== Special Partition Types
+
+The Saltboot formula helps you with setting up special partition types.
+
+[IMPORTANT]
+====
+For terminal to be able to boot locally, either [systemitem]``BIOS grub`` or [systemitem]``EFI`` partition must be configured.
+====
+
+=== BIOS grub Partition
+
+A BIOS grub partition is needed for local booting from a `GPT` disk on non-EFI machines.
+For more information, see https://en.wikipedia.org/wiki/BIOS_boot_partition.
+
+In the formula, enter the following options:
+
+----
+Partition Symbolic ID: p1
+Partition Size (MiB): 50
+Partition Flags: bios_grub
+----
+
+Leave the other fields empty.
+
+
+
+=== EFI Partition
+
+An EFI partition is needed for local booting on EFI machines, [guimenu]``Partition Table Type`` must be `GPT`.
+For more information, see https://en.wikipedia.org/wiki/EFI_system_partition.
+
+In the formula, enter the following options:
+----
+Partition Symbolic ID: p1
+Partition Size (MiB): 500
+Device Mount Point: /boot/efi
+Filesystem Format: vfat
+Partition Flags: boot
+----
+
+Leave the other fields empty.
+
+
+
+== Troubleshooting the Saltboot Formula
+
+=== `msdos` Disklabel Limitations
+
+On `msdos` disk label it is possible to create maximally 4 primary partitions, extended partitions are not supported.
+This limitation is not present on `GPT` disk label.
+
+
+For more information on troubleshooting problems with the Saltboot formula, see xref:administration:tshoot-saltboot.adoc[].

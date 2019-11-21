@@ -1,0 +1,62 @@
+[[ref.webui.config]]
+= Configuration Menu
+
+Only Configuration Administrators or {productname} Administrators see the menu:Main Menu[Configuration] pages.
+
+Within the configuration pages, you can manage systems using configuration files, and configure channels offering configuration files, and configuration files themselves.
+Centrally-managed files are available to multiple systems, while locally-managed files are available to individual systems only.
+
+.Differences of System Types
+[NOTE]
+====
+Configuration Management is available for both traditionally and Salt clients.
+Some traditional features are not suitable for Salt clients, and thus not available and excluded from the {webui}.
+====
+
+
+
+== Configuration Management for Salt
+
+This matrix shows supported and unsupported configuration management features.
+
+.Missing {webui} Options
+[IMPORTANT]
+====
+Several {webui} tabs will be missing for Salt Configuration Management.
+These features are not suitable for Salt clients.
+====
+
+.Salt Configuration Management
+[cols="1,1", options="header"]
+|===
+| Configuration Management Features | Salt Support Status
+| Global Configuration Channels     | Supported
+| Deploying Files | Supported
+| Comparing Files | Supported (but the logic is currently inverted)
+| Locally Managed Files | Unsupported
+| Sandbox Files | Unsupported
+| Applying the Highstate | Apply the highstate and configuration channels will be deployed to all subscribed systems.
+| File Import from a Client | Unsupported
+| Configuration Macros | Unsupported
+|===
+
+
+
+[[ref.webui.config.preparing]]
+== Preparing Systems for Configuration Management [Management]
+
+To manage traditional client configuration with {productname}, the client must have the appropriate tools and the [path]``config-enable`` file installed.
+These tools will be available if you installed the system with the configuration management functionality using {ay} or Kickstart.
+If not, they can be found in the Tools child channel for your distribution.
+Download and install the latest [path]``mgr-cfg*`` packages:
+
+* [path]``mgr-cfg`` -- the base libraries and functions needed by all [path]``mgr-cfg-*`` packages,
+* [path]``mgr-cfg-actions`` -- the RPM package required to run configuration actions scheduled via {productname},
+* [path]``mgr-cfg-client`` -- the RPM package with a command line interface to the client features of the Configuration Management system,
+* [path]``mgr-cfg-management`` -- the RPM package with a command line interface used to manage {productname} configuration.
+
+
+Installation of these packages can also be accomplished during bootstrapping if you enable [guimenu]``Configuration File Deployment`` on the [guimenu]``Details`` page of the activation key after creating that activation key.
+For more information about activation keys, see:
+xref:reference:systems/activation-keys.adoc#s3-sm-system-keys-manage[Managing Activation Keys]
+

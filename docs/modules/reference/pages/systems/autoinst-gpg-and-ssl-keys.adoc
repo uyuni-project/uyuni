@@ -1,0 +1,18 @@
+[[ref.webui.systems.autoinst.keys]]
+= GPG and SSL Keys
+
+Lists keys and certificates available for inclusion in {kickstart} profiles and provides a means to create new ones.
+
+This is especially important for customers of {productname} or the Proxy Server because systems kickstarted by them must have the server key imported into {productname} and associated with the relevant {kickstart} profiles.
+
+Import a profile by creating a new key on this page and then make the profile association in the [guimenu]``GPG and SSL keys`` subtab of the [guimenu]``Autoinstallation Details`` page.
+
+To create a key or certificate, click the [guimenu]``Create Stored Key/Cert`` link in the upper-right corner of the page.
+Enter a description, select the type, upload the file, and click the btn:[Update Key] button.
+A unique description is required.
+
+[IMPORTANT]
+====
+The GPG key you upload to {productname} must be in ASCII format.
+Using a GPG key in binary format causes anaconda, and therefore the {kickstart} process, to fail.
+====

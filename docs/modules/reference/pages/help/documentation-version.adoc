@@ -1,0 +1,3 @@
+= Documentation {productnumber}
+
+The [guimenu]``Documentation {productnumber}`` menu item provides a link to this documentation suite.

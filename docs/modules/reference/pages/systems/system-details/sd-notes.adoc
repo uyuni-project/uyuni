@@ -1,0 +1,15 @@
+[[sd-notes]]
+= SD Notes
+
+This subtab provides a place to create notes about the system.
+
+Create Note::
+To add a new note, click the [guimenu]``Create Note`` link, type a subject and write your note, then click the btn:[Create] button.
+
+Modify Note::
+To modify a note, click its subject in the list of notes, make your changes, and click the btn:[Update] button.
+
+Remove Note::
+To remove a note, click its subject in the list of notes then click the [guimenu]``Delete Note`` link.
+
+image::system_details_traditional_notes.png[scaledwidth=80%]

@@ -1,0 +1,81 @@
+[[software.channel.list.all]]
+= Channel List
+
+
+
+[[s3-sm-channel-list-all]]
+== All
+
+Under menu:Main Menu[Software > Channels] select [guimenu]``All``.
+All channels available to your organization are listed.
+
+image::channels_all_channels.png[scaledwidth=80%]
+
+Links within this list go to different tabs of the [guimenu]``Software Channel Details`` page.
+Clicking a channel name takes you to the [guimenu]``Details`` tab.
+Clicking the number of packages takes you to the [guimenu]``Packages`` tab.
+Clicking the number of systems takes you to the [guimenu]``Subscribed Systems`` tab.
+Refer to: xref:reference:software/channel-details.adoc[Channel Details] for details.
+
+[IMPORTANT]
+.Package Count Update Change
+====
+During a channel synchronization all package are now downloaded before they are incremented and displayed within the {webui}.
+When packages have completed the initial download, packages will begin to increment in your channel as they are imported to the database.
+====
+
+
+
+[[s3-sm-channel-list-redhat]]
+== {suse}
+
+The [guimenu]``SUSE`` page displays all {suse} channels and any available child channels.
+
+image::channels_vendor_channels.png[scaledwidth=80%]
+
+
+[WARNING]
+.{suse}Channels Cannot be Deleted
+====
+When imported, {suse} channels cannot be deleted.
+Only custom software channels can be deleted.
+====
+
+
+
+[[s3-sm-channel-list-popular]]
+== Popular
+
+The [guimenu]``Popular`` page displays the software channels most subscribed by systems registered to your organization.
+
+image::channels_popular_channels.png[scaledwidth=80%]
+
+You can refine the search by using the drop-down box to list only the channels with at least a certain number of systems subscribed.
+
+
+
+[[s3-sm-channel-list-my]]
+== My Channels
+
+The [guimenu]``My Channels`` page displays all software channels that belong to your organization, including both {suse} and custom channels.
+Use the text box to filter by channel name.
+
+image::channels_custom_channels.png[scaledwidth=80%]
+
+
+
+[[s3-sm-channel-list-shared]]
+== Shared
+
+The [guimenu]``Shared`` page displays the channels shared with others in the organizational trust.
+
+image::channels_shared_channels.png[scaledwidth=80%]
+
+
+
+[[s3-sm-channel-list-retired]]
+== Retired
+
+The [guimenu]``Retired`` page displays available channels that have reached their end-of-life dates and do not receive updates.
+
+image::channels_retired_channels.png[scaledwidth=80%]

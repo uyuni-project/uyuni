@@ -1,0 +1,99 @@
+digraph G {
+
+  subgraph "cluster input" {
+     "Network\nBandwidth" "Client count" "Channel count" "OS mix" "User count"
+  }
+
+  # Influences
+  "Channel count" -> "java.taskomatic_channel_repodata_workers" [style=dashed]
+  "Client count" -> "java.message_queue_thread_pool_size" [style=dashed]
+  "Client count" -> "java.salt_batch_size" [style=dashed]
+  "Client count" -> "java.salt_presence_ping_gather_job_timeout" [style=dashed]
+  "Client count" -> "java.salt_presence_ping_timeout" [style=dashed]
+  "Client count" -> "org.quartz.threadPool.threadCount" [style=dashed]
+  "Client count" -> "org.quartz.scheduler.idleWaitTime" [style=dashed]
+  "Client count" -> "Proxy count" [style=dashed]
+  "Client count" -> "rhn-search.java.maxmemory" [style=dashed]
+  "Client count" -> "worker_threads" [style=dashed]
+  "Client count" -> "MinionActionExecutor.parallel_threads"
+  "Network\nBandwidth" -> "Proxy count" [style=dashed]
+  "OS mix" -> "Proxy count" [style=dashed]
+  "OS mix" -> "taskomatic.java.maxmemory" [style=dashed]
+  "Proxy count" -> "MaxClients" [style=dashed]
+  "User count" -> "MaxClients" [style=dashed]
+
+  # Depends
+  "hibernate.c3p0.max_size" -> "max_connections"
+  "java.message_queue_thread_pool_size" -> "hibernate.c3p0.max_size"
+  "java.message_queue_thread_pool_size" -> "thread_pool"
+  "java.message_queue_thread_pool_size" -> "Tomcat -Xmx"
+  "java.taskomatic_channel_repodata_workers" -> "taskomatic.java.maxmemory"
+  "max_connections" -> "memory usage"
+  "MaxClients" -> "maxThreads"
+  "MaxClients" -> "ServerLimit"
+  "maxThreads" -> "hibernate.c3p0.max_size"
+  "memory usage" -> "effective_cache_size"
+  "memory usage" -> "RAM"
+  "org.quartz.threadPool.threadCount" -> "hibernate.c3p0.max_size"
+  "org.quartz.threadPool.threadCount" -> "thread_pool"
+  "RAM" -> "effective_cache_size"
+  "RAM" -> "shared_buffers"
+  "RAM" -> "swappiness"
+  "rhn-search.java.maxmemory" -> "memory usage"
+  "taskomatic.java.maxmemory" -> "memory usage"
+  "thread_pool" -> "worker_threads"
+  "Tomcat -Xmx" -> "memory usage"
+  "work_mem" -> "RAM"
+  "worker_threads" -> "memory usage"
+
+   # Invisible edges to help dot output an acceptable graphical result
+   edge[style=invis];
+  "org.quartz.scheduler.idleWaitTime" ->
+  "rhn-search.java.maxmemory" ->
+  "rhn-search.java.maxmemory" ->
+  "java.salt_batch_size" ->
+  "java.salt_presence_ping_gather_job_timeout" ->
+  "java.salt_presence_ping_timeout" ->
+  "MinionActionExecutor.parallel_threads" ->
+  "work_mem";
+
+  # rhn.conf parameters
+  "hibernate.c3p0.max_size" [shape=rectangle, color=purple, file="/etc/rhn/rhn.conf"]
+  "java.message_queue_thread_pool_size" [shape=rectangle, color=purple, file="/etc/rhn/rhn.conf"]
+  "java.salt_batch_size" [shape=rectangle, color=purple, file="/etc/rhn/rhn.conf"]
+  "java.salt_presence_ping_gather_job_timeout" [shape=rectangle, color=purple]
+  "java.salt_presence_ping_timeout" [shape=rectangle, color=purple]
+  "java.taskomatic_channel_repodata_workers" [shape=rectangle, color=purple]
+  "org.quartz.threadPool.threadCount" [shape=rectangle, color=purple, file="/etc/rhn/rhn.conf"]
+  "org.quartz.scheduler.idleWaitTime" [shape=rectangle, color=purple, file="/etc/rhn/rhn.conf"]
+  "rhn-search.java.maxmemory"  [shape=rectangle, color=purple, file="/etc/rhn/rhn.conf"]
+  "taskomatic.java.maxmemory" [shape=rectangle, color=purple, file="/etc/rhn/rhn.conf"]
+  "MinionActionExecutor.parallel_threads" [shape=rectangle, color=purple, file="/etc/rhn/rhn.conf"]
+
+  # Tomcat parameters
+  "maxThreads" [shape=rectangle, color=brown, file="/etc/tomcat/server.xml"]
+  "Tomcat -Xmx" [shape=rectangle, color=brown, file="/etc/sysconfig/tomcat"]
+
+  # Salt parameters
+  "thread_pool" [shape=rectangle, color=blue, file="/etc/salt/master.d/tuning.conf"]
+  "worker_threads" [shape=rectangle, color=blue, file="/etc/salt/master.d/tuning.conf"]
+
+  # Apache httpd parameters
+  "MaxClients" [shape=rectangle, color=red, file="/etc/apache2/server-tuning.conf"]
+  "ServerLimit" [shape=rectangle, color=red, file="/etc/apache2/server-tuning.conf"]
+
+  # PostgreSQL parameters
+  "effective_cache_size" [shape=rectangle, color=grey, file="/var/lib/pgsql/data/postgresql.conf"]
+  "max_connections" [shape=rectangle, color=grey, file="/var/lib/pgsql/data/postgresql.conf"]
+  "shared_buffers" [shape=rectangle, color=grey, file="/var/lib/pgsql/data/postgresql.conf"]
+  "work_mem" [shape=rectangle, color=grey, file="/var/lib/pgsql/data/postgresql.conf"]
+
+  # Kernel parameters
+  "swappiness" [shape=rectangle, color=darkgrey, file="/etc/sysctl.conf"]
+
+  # Hardware
+  "Client count" [shape=box3d]
+  "Network\nBandwidth" [shape=box3d]
+  "Proxy count" [shape=box3d]
+  "RAM" [shape=box3d]
+}

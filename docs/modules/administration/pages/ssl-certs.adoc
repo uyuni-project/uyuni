@@ -1,0 +1,25 @@
+[[ssl-certs]]
+= SSL Certificates
+
+{productname} uses SSL certificates to ensure that clients are registered to the correct server.
+
+When you create an SSL certificate for your server, the certificate includes the host name of the server it is associated with.
+The certificate is then deployed on the server, and when clients attempt to connect, they check the certificate details.
+If the certificate contains the name of the server they are attempting to connect to, the connection will be successful.
+The client will also check if the certificate has been signed by a trusted certificate authority.
+
+All certificates must be signed by a certificate authority (CA), in order for them to be considered valid, and for clients to be able to successfully match against them.
+When an organization signs its own certificate, the certificate is considered self-signed.
+A self-signed certificate is easy to set up, and does not cost any money, but they are considered less secure.
+
+For additional security, you can arrange a third party CA to sign your certificates.
+Third party CAs perform checks to ensure that the information contained in the certificate is correct.
+They will usually charge an annual fee for this service.
+Using a third party CA makes certificates harder to spoof, and will provide additional protection for your installation.
+
+By default, {productname} uses a self-signed certificate.
+If you have certificates signed by a third party CA, you can import them to your {productname} installation.
+
+For more on self-signed certificates, see xref:administration:ssl-certs-selfsigned.adoc[].
+
+For more on imported certificates, see xref:administration:ssl-certs-imported.adoc[].

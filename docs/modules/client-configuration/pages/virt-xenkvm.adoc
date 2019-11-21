@@ -1,0 +1,248 @@
+[[virt-xenkvm]]
+= Virtualization with Xen and KVM
+
+Xen and KVM virtualized clients can be managed directly in {productname}.
+
+To begin, you will need to set up a virtual host on your {productname} Server.
+You can then set up autoinstallation using {ay} or {kickstart} for future virtual hosts, and for virtual guests.
+
+This section also includes information about administering your virtual guests after they have been installed.
+
+
+
+== Host Setup
+
+The way that you set up Xen or KVM on a VM host depends on what operating system you want to use on its associated guests.
+
+For {suse} operating systems, see the SLES Virtualization Guide available from https://documentation.suse.com/sles/15-SP1/html/SLES-all/book-virt.html.
+
+For {rhel} operating systems, refer to the Red Hat documentation for your version.
+
+{productname} uses [systemitem]``libvirt`` to install and manage guests.
+You must have the [daemon]``libvirtd`` package installed on your host.
+In most cases, the default settings are usually sufficient, and you should not need to adjust them.
+However, if you want to access the VNC console on your guests as a non-root user, you will need to perform some configuration changes.
+For more information about how to set this up, consult the relevant documentation for your operating system.
+
+You will require a bootstrap script on the {productname} Server.
+Your bootstrap script must include the activation key for your host.
+We also recommend that you include your GPG key for additional security.
+For more on creating a bootstrap script, see xref:client-configuration:registration-bootstrap.adoc[].
+
+When your bootstrap script is ready, execute it on the host to register it with the {productname} Server.
+For more on client registration, see xref:client-configuration:registration-overview.adoc[].
+
+For Salt clients, you will need to enable the [systemitem]``Virtualization Host`` entitlement.
+This allows you to see VM changes instantly.
+To do this, in the {productname} {webui}, navigate to the [guimenu]``System Details`` page for the host, and click on the [guimenu]``Properties`` tab.
+In the [guimenu]``Add-On System Types`` section, check [guimenu]``Virtualization Host``, and click btn:[Update Properties] to save the changes.
+You will need to schedule a hardware refresh to activate the change.
+Navigate to menu:System Details[Hardware], and click btn:[Schedule Hardware Refresh].
+
+By default, VM hosts use the [systemitem]``rhnsd`` service to check for scheduled actions every four hours, in order to load balance in environments where there are a lot of clients.
+This can create delays of up to four hours before an action is carried out.
+When you are managing VM guests, this long delay is not always ideal, especially for actions like rebooting a guest.
+To address this, you can disable the [systemitem]``rhnsd`` service, and enable the [daemon]``osad`` service.
+The [daemon]``osad`` service receives commands using a jabber protocol, and will execute commands instantly.
+
+To disable the [systemitem]``rhnsd`` service, and enable the [daemon]``osad`` daemon, run these commands as the root user:
+
+----
+service rhnsd stop
+service rhnsd disable
+----
+
+----
+service osad enable
+service osad start
+----
+
+
+
+== Autoinstallation
+
+
+You can use {ay} or {kickstart} to automatically install and register Xen and KVM guests.
+
+You will require an activation key for the VM host you want to register the guests to, and for each guest.
+Your activation key must have the [systemitem]``provisioning`` and [systemitem]``Virtualization Platform`` entitlements.
+Your activation key must also have access to the [package]``mgr-virtualization-host`` and  [package]``mgr-osad`` packages.
+For more on creating activation keys, see xref:client-configuration:clients-and-activation-keys.adoc[].
+
+If you want to automatically register the guests with {productname} after installation, you will need to create a bootstrap script.
+For more on creating a bootstrap script, see xref:client-configuration:registration-bootstrap.adoc[].
+
+[IMPORTANT]
+====
+Autoinstallation of VM guests works only if they are configured as Traditional clients.
+Salt clients can be created using a template disk image, but not by using {ay} or {kickstart}.
+====
+
+=== Create an Autoinstallable Distribution
+
+You will need to create an autoinstallable distribution on the VM host to be able to autoinstall clients from {productname}.
+The distribution can be made available from a mounted local or remote directory, or on a loop-mounted ISO image.
+
+The configuration of the autoinstallable distribution will differ depending on whether you are using a SLES or {rhel} operating system on your guests.
+The packages for a {rhel} installation are fetched from the associated base channel.
+Packages for installing {suse} systems are fetched from the autoinstallable distribution.
+Therefore, for SLES systems, the autoinstallable distribution must be a complete installation source.
+
+.Paths for autoinstallable distributions
+[cols="1,1,1", options="header"]
+|===
+| Operating System Type | Kernel Location | initrd Location
+| {rhel} | [path]``images/pxeboot/vmlinuz``    | [path]``images/pxeboot/initrd.img``
+| SLES | [path]``boot/<arch>/loader/initrd`` | [path]``boot/<arch>/loader/linux``
+|===
+
+In all cases, ensure that the base channel matches the autoinstallable distribution.
+
+Before you begin, ensure you have a installation media available to your VM Host.
+It can be on a network resource, a local directory, or an loop-mounted ISO image.
+Additionally, ensure that all files and directories are world-readable.
+
+
+.Procedure: Creating an Autoinstallable Distribution
+
+. In the {productname} {webui}, navigate to menu:Systems[Autoinstallation > Distributions] and click btn:[Create Distribution].
+. In the [guimenu]``Create Autoinstallable Distribution`` section, use these parameters:
+* In the [guimenu]``Distribution Label`` section, type a unique name for the distribution.
+Use only letters, numbers, hyphens (``-``), periods  (``.``), and underscores (``_``), and ensure the name is longer than four characters.
+* In the [guimenu]``Tree Path`` field, type an absolute path to the installation source.
+* In the [guimenu]``Base Channel`` field, select the channel that matches the installation source.
+This channel is used as the package source for non-{suse} installations.
+* In the [guimenu]``Installer Generation`` field, select the operating system version that matches the installation source.
+* In the [guimenu]``Kernel Options`` field, type any options to be passed to the kernel when booting for the installation.
+The [option]``install=`` parameter and the [option]``self_update=0 pt.options=self_update`` parameter are added by default.
+* In the [guimenu]``Post Kernel Options`` section, type any options to  be passed to the kernel when booting the installed system for the first time.
+. Click btn:[Create Autoinstallable Distribution] to save.
+
+When you have created an autoinstallable distribution, you can edit it by navigating to  menu:Systems[Autoinstallation > Distributions] and selecting the distribution you want to edit.
+
+
+
+=== Create and Upload an Autoinstallation Profile
+
+Autoinstallation profiles contain all the installation and configuration data needed to install a system.
+They can also contain scripts to be executed after the installation is complete.
+
+{kickstart} profiles can be created using the {productname} {webui}, by navigating to menu:Systems[Autoinstallation > Profiles], clicking btn:[Create New Kickstart File], and following the prompts.
+You can also create {ay} or {kickstart} autoinstallation profiles by hand.
+
+An example {ay} profile that includes a script for registering the client with {productname} is available in xref:client-configuration:autoyast-example.adoc[].
+If you are using {ay} to install SLES, you will also need to include this snippet:
+
+----
+<products config:type="list">
+  <listentry>SLES</listentry>
+</products>
+----
+
+* For more on {ay}, see xref:client-configuration:client-automating-installation.adoc[].
+* For more on {kickstart}, see xref:client-configuration:kickstart.adoc[], or refer to the Red Hat documentation for your installation.
+
+
+
+.Procedure: Uploading an Autoinstallation Profile
+
+. In the {productname} {webui}, navigate to menu:Systems[Autoinstallation > Profiles] and click btn:[Upload Kickstart/AutoYaST File].
+. In the [guimenu]``Create Autoinstallation Profile`` section, use these parameters:
+* In the [guimenu]``Label`` field, type a unique name for the profile.
+Use only letters, numbers, hyphens (``-``), periods  (``.``), and underscores (``_``), and ensure the name is longer than six characters.
+* In the [guimenu]``Autoinstall Tree`` field, select the autoinstallable distribution you created earlier.
+* In the [guimenu]``Virtualization Type`` field, select the relevant Guest type (for example, [parameter]``KVM Virtualized Guest``.
+Do not choose [guimenu]``Xen Virtualized Host`` here.
+* OPTIONAL: If you want to manually create your autoinstallation profile, you can type it directly into the [guimenu]``File Contents`` field.
+If you have a file already created, leave the [guimenu]``File Contents`` field blank.
+* In the [guimenu]``File to Upload`` field, click btn:[Choose File], and use the system dialog to select the file to upload.
+If the file is successfully uploaded, the filename will be shown in the [guimenu]``File to Upload`` field.
+* The contents of the uploaded file will be shown in the [guimenu]``File Contents`` field.
+If you need to make edits, you can do so directly.
+. Click btn:[Create] to save your changes and store the profile.
+
+When you have created an autoinstallation profile, you can edit it by navigating to  menu:Systems[Autoinstallation > Profiles] and selecting the profile you want to edit.
+Make the desired changes and save your settings by clicking btn:[Create].
+
+[IMPORTANT]
+====
+If you change the [guimenu]``Virtualization Type`` of an existing {kickstart} profile, it might also modify the bootloader and partition options, potentially overwriting any custom settings.
+Carefully review the [guimenu]``Partitioning`` tab to verify these settings before making changes.
+====
+
+
+
+=== Automatically Register Guests
+
+
+When you install VM guests automatically, they are not registered to {productname}.
+If you want your guests to be automatically registered as soon as they are installed, you can add a section to the autoinstallation profile that invokes a bootstrap script, and registers the guests.
+
+This section gives instructions for adding a bootstrap script to an existing {ay} profile.
+
+For more on creating a bootstrap script, see xref:client-configuration:registration-bootstrap.adoc[].
+For instructions on how to do this for {kickstart], refer to the Red Hat documentation for your installation.
+
+.Procedure: Adding a Bootstrap Script to an {ay} Profile
+
+. Ensure your bootstrap script contains the activation key for the VM guests you want to register with it, and that is located on the host at [path]``/srv/www/htdocs/pub/bootstrap_vm_guests.sh``.
+. In the {productname} {webui}, navigate to menu:Systems[Autoinstallation > Profiles], and select the {ay} profile to associate this script with.
+. In the [guimenu]``File Contents`` field, add this snippet at the end of the file, immediately before the closing ``</profile>`` tag.
+Ensure you replace the example IP address in the snippet with the correct IP address for your {productname} Server:
++
+----
+<scripts>
+  <init-scripts config:type="list">
+    <script>
+      <interpreter>shell </interpreter>
+      <location>
+        http://`192.168.1.1`/pub/bootstrap/bootstrap_vm_guests.sh
+      </location>
+    </script>
+  </init-scripts>
+</scripts>
+----
++
+. Click menu:Update[] to save your changes.
+
+[IMPORTANT]
+====
+If your {ay} profile already contains a ``<scripts>`` section, do not add a second one.
+Place the bootstrap snippet inside the existing ``<scripts>`` section.
+====
+
+
+=== Autoinstall VM Guests
+
+
+Once you have everything set up, you can start to autoinstall your VM guests.
+
+[IMPORTANT]
+====
+Each VM host can only install one guest at a time.
+If you are scheduling more than one autoinstallation, make sure you time them so that the next installation does not begin before the previous one has completed.
+If a guest installation starts while another one is still running, the running installation will be canceled.
+====
+
+
+. In the {productname} {webui}, navigate to menu:Systems[Overview], and select the VM host you want to install guests on.
+. Navigate to the [guiitem]``Virtualization`` tab, and the [guimenu]``Provisioning`` subtab.
+. Select the autoinstallation profile you want to use, and specify a unique name for the guest.
+. Choose a proxy if applicable and enter a schedule.
+. To change the guest's hardware profile and configuration options, click btn:[Advanced Options].
+. Click btn:[Schedule Autoinstallation and Finish] to complete.
+
+
+
+== Manage VM Guests
+
+
+You can use the {productname} {webui} to manage your VM Guests, including actions like shutting downa nd restarting, and adjusting CPU and memory allocations.
+
+To do this, you will need your Xen or KVM VM host registered to the {productname} Server, and have the [daemon]``libvirtd`` service running on the host.
+You will also need the [package]``mgr-cfg-actions`` package installed on your {productname} Server.
+
+In the {productname} {webui}, navigate to menu:Systems[System List], and click on the VM host for the guests you want to manage.
+Navigate to the [guimenu]``Virtualization`` tab to see all guests registered to this host, and access the management functions.
+
+For more information on managing VM guests using the {webui}, see xref:reference:systems/system-details/sd-virtualization.adoc[].

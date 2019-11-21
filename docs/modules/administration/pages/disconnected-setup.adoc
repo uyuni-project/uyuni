@@ -1,0 +1,153 @@
+[[disconnected-setup]]
+= Disconnected Setup
+
+When it is not possible to connect {productname} to the internet, you can use it within a disconnected environment.
+
+The repository mirroring tool (RMT) is available on {sle}{nbsp}15 and later.
+RMT replaces the subscription management tool (SMT), which can be used on older {sle} installations.
+
+In a disconnected {productname} setup, RMT or SMT uses an external network to connect to {scc}.
+All software channels and repositories are synchronized to a removable storage device.
+The storage device can then be used to update the disconnected {productname} installation.
+
+This setup allows your {productname} installation to remain in an offline, disconnected environment.
+
+[NOTE]
+====
+Your RMT or SMT instance must be used to managed a {productname} Server directly.
+It cannot be used to manage a second RMT or SMT instance, in a cascade.
+====
+
+For more information on RMT, see https://documentation.suse.com/sles/15-SP1/html/SLES-all/book-rmt.html.
+
+
+== Synchronize RMT
+
+You can use RMT on {sle} 15 installations to manage clients running {sle} 12 or later.
+
+We recommend you set up a dedicated RMT instance for each {productname} installation.
+
+.Procedure: Setting up RMT
+. On the RMT instance, install the RMT package:
++
+----
+zypper in rmt-server
+----
+. Configure RMT using {yast}:
++
+----
+yast2 rmt
+----
+. Follow the prompts to complete installation.
+For more information on setting up RMT, see https://documentation.suse.com/sles/15-SP1/html/SLES-all/book-rmt.html.
+
+.Procedure: Synchronizing RMT with SCC
+. On the RMT instance, list all available products and repositories for your organization:
++
+----
+rmt-cli products list --all
+rmt-cli repos list --all
+----
+. Synchronize all available updates for your organization:
++
+----
+rmt-cli sync
+----
+You can also configure RMT to synchronize regularly using systemd.
+. Enable the products you require.
+For example, to enable SLES 15:
++
+----
+rmt-cli product enable sles/15/x86_64
+----
+. Export the synchronized data to your removable storage.
+In this example, the storage medium is mounted at [path]``/mnt/usb``:
++
+----
+rmt-cli export data /mnt/usb
+----
+. Export the enabled repositories to your removable storage:
+----
+rmt-cli export settings /mnt/usb
+----
+
+[IMPORTANT]
+====
+Ensure that the external storage is mounted to a directory that is writeable by the RMT user.
+You can change RMT user settings in the `cli` section of [path]``/etc/rmt.conf``.
+====
+
+
+
+== Synchronize SMT
+
+
+SMT is included with {sle} 12, and can be used to manage clients running {sle} 10 or later.
+
+SMT requires you to create a local mirror directory on the SMT instance in order to synchronize repositories and packages.
+
+For more details on installing and configuring SMT, see https://documentation.suse.com/sles/12-SP4/html/SLES-all/book-smt.html.
+
+.Procedure: Synchronizing SMT with SCC
+. On the SMT instance, create a database replacement file:
++
+----
+smt-sync --createdbreplacementfile /tmp/dbrepl.xml
+----
+. Export the synchronized data to your removable storage.
+In this example, the storage medium is mounted at [path]``/mnt/usb``:
++
+----
+smt-sync --todir /mnt/usb
+smt-mirror --dbreplfile /tmp/dbrepl.xml --directory /mnt/usb \
+           --fromlocalsmt -L /var/log/smt/smt-mirror-export.log
+----
+. Export the enabled repositories to your removable storage:
+----
+rmt-cli export settings /mnt/usb
+----
+
+[IMPORTANT]
+====
+Ensure that the external storage is mounted to a directory that is writeable by the RMT user.
+You can change SMT user settings in [path]``/etc/smt.conf``.
+====
+
+
+
+== Synchronize a Disconnected Server
+
+When you have removable media loaded with your {scc} data, you can use it to synchronize your disconnected server.
+
+.Procedure: Synchronizing a Disconnected Server
+. Mount your removable media device to the {productname} server.
+In this example, the mount point is [path]``/media/disk``.
+. Open ``/etc/rhn/rhn.conf`` and define the mount point by adding or editing this line:
++
+----
+server.susemanager.fromdir = /media/disk
+----
++
+. Restart the Tomcat service:
++
+----
+systemctl restart tomcat
+----
+. Refresh the local data:
++
+----
+mgr-sync refresh
+----
+. Perform a synchronization:
++
+----
+mgr-sync list channels
+mgr-sync add channel channel-label
+----
+
+[WARNING]
+====
+The removable disk that you use for synchronization must always be available at the same mount point.
+Do not trigger a synchronization, if the storage medium is not mounted.
+This will result in data corruption.
+====

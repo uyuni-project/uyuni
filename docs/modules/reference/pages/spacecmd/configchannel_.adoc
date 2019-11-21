@@ -1,0 +1,252 @@
+[[spacecmd.functions.configchannel]]
+= configchannel_
+
+The following spacecmd commands are available for use with configuration channels.
+
+
+== configchannel_addfile
+
+Creates a configuration file.
+
+[source]
+--
+usage: configchannel_addfile [CHANNEL] [options]
+
+options:
+  -c CHANNEL
+  -p PATH
+  -r REVISION
+  -o OWNER [default: root]
+  -g GROUP [default: root]
+  -m MODE [defualt: 0644]
+  -x SELINUX_CONTEXT
+  -d path is a directory
+  -s path is a symlink
+  -b path is a binary (or other file which needs base64 encoding)
+  -t SYMLINK_TARGET
+  -f local path to file contents
+
+  Note re binary/base64: Some text files, notably those containing trailing
+  newlines, those containing ASCII escape characters (or other charaters not
+  allowed in XML) need to be sent as binary (-b).  Some effort is made to auto-
+  detect files which require this, but you may need to explicitly specify.
+--
+
+
+
+== configchannel_backup
+
+Backup a configuration channel.
+
+[source]
+--
+usage: configchannel_backup CHANNEL [OUTDIR]
+
+OUTDIR defaults to $HOME/spacecmd-backup/configchannel/YYYY-MM-DD/CHANNEL
+--
+
+
+
+== configchannel_clone
+
+Clone configuration channel(s).
+
+[source]
+--
+usage examples:
+                 configchannel_clone foo_label -c bar_label
+                 configchannel_clone foo_label1 foo_label2 -c prefix
+                 configchannel_clone foo_label -x "s/foo/bar"
+                 configchannel_clone foo_label1 foo_label2 -x "s/foo/bar"
+
+options:
+  -c CLONE_LABEL : name/label of the resulting cc (note does not update
+                   description, see -x option), treated as a prefix if
+                   multiple keys are passed
+  -x "s/foo/bar" : Optional regex replacement, replaces foo with bar in the
+                   clone name, label and description
+  Note : If no -c or -x option is specified, interactive is assumed
+--
+
+
+
+== configchannel_create
+
+Create a configuration channel.
+
+[source]
+--
+usage: configchannel_create [options]
+
+options:
+  -n NAME
+  -l LABEL
+  -d DESCRIPTION
+--
+
+
+
+== configchannel_delete
+
+Delete a configuration channel.
+
+[source]
+--
+usage: configchannel_delete CHANNEL ...
+--
+
+
+
+== configchannel_details
+
+Show the details of a configuration channel.
+
+[source]
+--
+usage: configchannel_details CHANNEL ...
+--
+
+
+
+== configchannel_diff
+
+Find differences between configuration channels.
+
+[source]
+--
+usage: configchannel_diff SOURCE_CHANNEL TARGET_CHANNEL
+--
+
+
+
+== configchannel_export
+
+Export configuration channel(s) to a json formatted file.
+
+[source]
+--
+usage: configchannel_export <CHANNEL>... [options]
+options:
+    -f outfile.json : specify an output filename, defaults to <CHANNEL>.json
+                      if exporting a single channel, ccs.json for multiple
+                      channels, or cc_all.json if no CHANNEL specified
+                      e.g (export ALL)
+
+Note : CHANNEL list is optional, default is to export ALL
+--
+
+
+
+== configchannel_filedetails
+
+Show the details of a file in a configuration channel.
+
+[source]
+--
+usage: configchannel_filedetails CHANNEL FILE [REVISION]
+--
+
+
+
+== configchannel_forcedeploy
+Forces a redeployment of files within a channel on all subscribed systems.
+
+[source]
+--
+usage: configchannel_forcedeploy CHANNEL
+--
+
+
+
+== configchannel_import
+
+Import configuration channel(s) from a json file.
+
+[source]
+--
+usage: configchannel_import <JSONFILES...>
+--
+
+
+
+== configchannel_list
+
+List all configuration channels.
+
+[source]
+--
+usage: configchannel_list
+--
+
+
+
+== configchannel_listfiles
+
+List all files in a configuration channel.
+
+[source]
+--
+usage: configchannel_listfiles CHANNEL ...
+--
+
+
+
+== configchannel_listsystems
+
+List all systems subscribed to a configuration channel.
+
+[source]
+--
+usage: configchannel_listsystems CHANNEL
+--
+
+
+
+== configchannel_removefiles
+
+Remove configuration files.
+
+[source]
+--
+usage: configchannel_removefile CHANNEL <FILE ...>
+--
+
+
+
+== configchannel_sync
+
+Sync configuration files between two configuration channels.
+
+[source]
+--
+usage: configchannel_sync SOURCE_CHANNEL TARGET_CHANNEL
+--
+
+
+
+== configchannel_updatefile
+
+Update a configuration file.
+
+[source]
+--
+usage: configchannel_updatefile CHANNEL FILE
+--
+
+
+
+== configchannel_verifyfile
+
+Verify a configuration file.
+
+[source]
+--
+usage: configchannel_verifyfile CHANNEL FILE <SYSTEMS>
+
+<SYSTEMS> may be substituted with any of the following targets:
+name
+ssm (see 'help ssm')
+search:QUERY (see 'help system_search')
+group:GROUP
+channel:CHANNEL
+--

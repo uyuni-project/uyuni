@@ -1,0 +1,121 @@
+[[sd-virtualization]]
+= SD Virtualization
+
+This tab allows you to create new virtual guests, apply images on a
+traditionally managed host system, or change the status of virtual guests.
+
+
+// TODO Update the screenshot for a salt minion
+image::system_details_traditional_virtualization_details.png[scaledwidth=80%]
+
+The [guimenu]``Virtualization`` tab has one subtab, [guimenu]``Guests``.
+For traditional systems that have Virtualization entitlements, you will also see two additional subtabs for [guimenu]``Provisioning``, and [guimenu]``Deployment``.
+These tabs appear only for systems having the Virtualization entitlement.
+It is not possible to create a guest system that runs on another guest system.
+
+[float]
+[[sdc-guests]]
+== Guests
+
+[guimenu]``Guests`` is the default virtualization tab.
+It presents a table of the host system's virtual guests.
+For each guest system, the following information is provided:
+
+[guimenu]``Status``::
+This field indicates whether the virtual system is running, paused, stopped, or has crashed.
+
+[guimenu]``Updates``::
+This field indicates whether patches (errata) applicable to the guest have yet to be applied.
+
+[guimenu]``Base Software Channel``::
+This field indicates the Base Channel to which the guest is subscribed.
+
+
+[NOTE]
+====
+If a guest system has not registered with {productname}, this information appears as plain text in the table.
+====
+
+[guimenu]``Actions``::
+This field contains the possible actions for the guest.
+These are depending on the virtual guest status, they may not refresh instantaneously when running a Start, Stop, Suspend, Resume action.
+The btn:[Edit] button allows changing virtual guest properties, including the amount of allocated memory and virtual CPUs.
+
+The btn:[Graphical Console] button opens the Spice or VNC display in a new tab.
+
+If you have System Group Administrator responsibilities assigned for your guest systems, a user might see the message [guimenu]``You do not have permission to access this system`` in the table.
+This is because it is possible to assign virtual guests on a single host to multiple System Group Administrators.
+Only users that have System Group Administrator privileges on the host system may create new virtual guests.
+
+For Salt systems, the btn:[Create Guest] button shows a dialog to configure and create a new virtual machine.
+
+[float]
+[[sd-editing-a-vm]]
+=== Editing a Virtual Machine
+
+[NOTE]
+====
+Traditional systems can only edit CPU and memory allocation.
+====
+
+The fields in this dialog are grouped into several panels.
+The [guimenu]``General`` panel contains the [guimenu]``CPU`` and [guimenu]``memory`` fields.
+The [guimenu]``Disks`` and [guimenu]``Network Interfaces`` panels list the fields corresponding to the matching devices of the virtal machine.
+The [guimenu]``Graphics`` panel allows configuring the display of the virtual machine.
+The [guimenu]``Schedule`` panel helps configuring when the edit should take place by choosing either an earliest time or an action chain to append to.
+
+[NOTE]
+====
+If a guest contains one or more disks or network interfaces not recognized by {susemgr}, you will not be able to edit the configuration.
+This prevents any possibility of {susemgr} destroying the setup because of an unhandled type.
+====
+
+The order of the disks is important: the disk naming will be computed from it. This means that the first virtio disk will be named 'vda', the second will be named 'vdb' and so on.
+
+When clicking the btn:[+] in the [guimenu]``Disks`` (or [guimenu]``Network Interfaces``) panel header, a new disk (or network interface) will be appended to the list.
+Likewise, clicking the btn:[-] button next to a disk or interface will remove it.
+The default size for a new disk is 8[nbsp]GB.
+The [guimenu]``Source image template URL`` field contains the URL to a disk image to be copied and used for the virtual machine.
+
+Click the btn:[Update] button to apply the changes.
+
+// TODO Add a screenshot of the edit page, maybe more
+
+[float]
+[[sd-createing-a-vm-salt]]
+=== Creating a virtual machine [Salt]
+
+To create a new virtual machine, the process is similar to editing, but there are some additional fields:
+
+The [guimenu]``Name`` field defining the name of the virtual machine to create.
+The [guimenu]``Hypervisor`` field to allow choosing among the available hypervisors of the host.
+The [guimenu]``Virtual Machine Type`` to choose between fully virtualized and para-virtualized virtual machines if applicable.
+The [guimenu]``Architecture`` to select the emulated CPU architecture, the default being the virtual host one.
+
+By default a disk and a network interfaces are added. The only required value to set is the disk [guimenu]``Source template image URL`` or the virtual machine will only have an empty disk.
+
+The new virtual machine will start immediately after it has been defined.
+
+// TODO Add a screenshot of the create page showing the additional fields
+
+
+[float]
+[[sdc-virt-host-guest-graphical-console]]
+===== Display a virtual machine graphical console [Salt]
+
+The virtual machine graphical console might prompt you for a password.
+This password is the Spice or VNC one.
+
+// TODO Add a screenshot of the graphical console
+
+For the Spice display to be adjusted to the window, the Spice VD agent needs to be installed within the virtual machine.
+
+
+[[sd-virtualization-deployment-management]]
+== Deployment [Management]
+
+In the menu:System Details[Virtualization] tab of a traditionally registered bare-metal machine, there is a  menu:System Details[Virtualization > Deployment] subtab. This form expects a URL to a ``qcow2`` type of image and some other parameters allowing the user to schedule the deployment of that image.
+
+image::system_details_traditional_virtualization_deployment.png[scaledwidth=80%]
+
+When the deploment scheduled it is listed as an action on the menu:Main Menu[Schedule > Pending Actions].

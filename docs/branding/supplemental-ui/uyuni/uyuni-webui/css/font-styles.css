@@ -1,0 +1,87 @@
+/*
+   Asciidoctor allowed elements
+   <base>
+   <link>
+   <meta>
+   <noscript>
+   <script>
+   <style>
+   <title>
+ see http://asciidoctor.org/docs/user-manual/#docinfo-file for more info */
+/* Dan Allen's semantic color names
+   palette based on http://paletton.com/#uid=5060u0kpDnlgIS3iWEhSCeIZAaP */
+.primary { color: #ba3925; }
+.primary-background { background-color: #ff8c7a; }
+.secondary { color: #9c1f58; }                        /* not in bootstrap */
+.secondary-background { background-color: #e25c99; }
+.success { color: #1b8a3d; }
+.success-background { background-color: #55d07a; }
+.info { color: #1a6074; }
+.info-background { background-color: #50a3bb; }
+.caution { color: #ba8d25; }                          /* not in bootstrap */
+.caution-background { background-color: #ffd268; }
+.warning { color: #ba7025; }
+.warning-background { background-color: #ffb468; }
+.danger { color: #ba3925; }                           /* danger (or maybe important) */
+.danger-background { background-color: #ff7d68; }
+.highlight { color: #cccc00; }                        /* not in bootstrap */
+.highlight-background { background-color: #ffff00; }
+.alert { color: #ff0000; }                            /* not in bootstrap */
+.alert-background { background-color: #ff5b5b; }
+/* Nicer Colors for the web based on http://clrs.cc/ */
+.aqua { color: #7FDBFF; }
+.black { color: #111111; }
+.blue { color: #0074D9; }
+.fuchsia { color: #F012BE; }
+.gray { color: #AAAAAA; }
+.green { color: #2ECC40; }
+.lime { color: #01FF70; }
+.maroon { color: #85144b; }
+.navy { color: #001f3f; }
+.olive { color: #3D9970; }
+.orange { color: #FF851B; }
+.purple { color: #B10DC9; }
+.red { color: #FF4136; }
+.silver { color: #DDDDDD; }
+.teal { color: #39CCCC; }
+.yellow { color: #FFDC00; }
+/* Current Colors in Asciidoctor Stylesheet */
+/*
+.aqua { color: #00bfbf; }
+.aqua-background { background-color: #00fafa; }
+.black { color: black; }
+.black-background { background-color: black; }
+.blue { color: #0000bf; }
+.blue-background { background-color: #0000fa; }
+.fuchsia { color: #bf00bf; }
+.fuchsia-background { background-color: #fa00fa; }
+.gray { color: #606060; }
+.gray-background { background-color: #7d7d7d; }
+.green { color: #006000; }
+.green-background { background-color: #007d00; }
+.lime { color: #00bf00; }
+.lime-background { background-color: #00fa00; }
+.maroon { color: #600000; }
+.maroon-background { background-color: #7d0000; }
+.navy { color: #000060; }
+.navy-background { background-color: #00007d; }
+.olive { color: #606000; }
+.olive-background { background-color: #7d7d00; }
+.purple { color: #600060; }
+.purple-background { background-color: #7d007d; }
+.red { color: #bf0000; }
+.red-background { background-color: #fa0000; }
+.silver { color: #909090; }
+.silver-background { background-color: #bcbcbc; }
+.teal { color: #006060; }
+.teal-background { background-color: #007d7d; }
+.white { color: #bfbfbf; }
+.white-background { background-color: #fafafa; }
+.yellow { color: #bfbf00; }
+.yellow-background { background-color: #fafa00; }
+*/
+/* add my own color ORANGE for roles. Usage
+      icon:folder[role=orange]
+  NOTE: case sensitive
+.orange { color: #ffa500; } replaced by nicer color above */
+.orange-background { background-color: #cc9900}

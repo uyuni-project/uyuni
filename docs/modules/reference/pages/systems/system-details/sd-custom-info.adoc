@@ -1,0 +1,15 @@
+[[sd-custom-info]]
+= SD Custom Info
+
+This subtab provides completely customizable information about the system.
+Unlike [guimenu]``Notes``, [guimenu]``Custom Info`` is structured, formalized, and can be searched.
+
+Before adding custom information about a system, you must create _Custom Information Keys_ by selecting the [guimenu]``Custom System Information`` link.
+Then, on the [guimenu]``Custom System Information`` page, select the [guimenu]``Create Key`` link.
+
+Provide [guimenu]``Key Label`` and [guimenu]``Description`` and confirm with btn:[Create Key].
+
+image::system_details_traditional_custom_info.png[scaledwidth=80%]
+
+Once you have created one or more keys, you may assign values for this system by selecting the [guimenu]``Create Value link``.
+Click the name of the key in the resulting list and enter a value for it in the [guimenu]``Value`` field, then click the btn:[Update Key] button.

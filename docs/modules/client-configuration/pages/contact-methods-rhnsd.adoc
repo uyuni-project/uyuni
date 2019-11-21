@@ -1,0 +1,70 @@
+[[contact-methods-rhnsd]]
+= SUSE Manager Daemon (rhnsd)
+
+
+The {productname} daemon ([command]``rhnsd``) runs on traditional client systems and periodically connects with {productname} to check for new updates and notifications.
+It does not apply to Salt clients.
+
+It is only used on {sle}{nbsp}11 and {rhnminrelease6}, as these systems do not use systemd.
+On later operating systems, a systemd timer ([systemitem]``rhnsd.timer``) is used and controlled by [systemitem]``rhnsd.service``.
+
+Start the daemon with [command]``/etc/init.d/rhnsd``.
+
+By default, it will check every four hours for new actions.
+This means it can take some time for clients to execute scheduled actions.
+
+To check for updates, [systemitem]``rhnsd`` runs the external [systemitem]``mgr_check`` program located in [path]``/usr/sbin/``.
+This is a small application that establishes the network connection to {productname}.
+The SUSE Manager daemon does not listen on any network ports or talk to the network directly.
+All network activity is performed by the [systemitem]``mgr_check`` utility.
+
+This figure provides an overview of the default [systemitem]``rhnsd`` process path.
+All items left of the [systemitem]``Python XMLRPC server`` block represent processes running on a {productname} client.
+
+image::rhnsd-taigon.png[scaledwidth=80]
+
+
+
+== Configure rhnsd
+
+The `rhnsd` initialization script has a configuration file on the client system at [path]``/etc/sysconfig/rhn/rhnsd``.
+
+An important parameter for the daemon is its check-in frequency.
+The default interval time is four hours (240 minutes).
+The minimum allowed time interval is one hour (60 minutes).
+If you set the interval below one hour, it will change back to the default of 4 hours (240 minutes).
+
+If you modify the `rhnsd` configuration file, execute this command as root to restart the daemon and pick up your changes:
+----
+/etc/init.d/rhnsd restart
+----
+
+To see the status of `rhnsd`, use this command as root:
+----
+/etc/init.d/rhnsd status
+----
+
+On {sle}{nbsp}12 and later, the default time interval is set in [path]``/etc/systemd/system/timers.target.wants/rhnsd.timer``, in this section:
+
+----
+[Timer]
+OnCalendar=00/4:00
+RandomizedDelaySec=30min
+----
+
+You can create an overriding drop-in file for [path]``rhnsd.timer`` using [command]``systemctl``:
+
+----
+systemctl edit rhnsd.timer
+----
+
+For example, if you want configure a two hour time interval:
+
+----
+[Timer]
+OnCalendar=00/2:00
+----
+
+The file will be saved as [path]``/etc/systemd/system/rhnsd.timer.d/override.conf``.
+
+For more information about system timers, see the [command]``systemd.timer`` and [command]``systemctl`` manpages.

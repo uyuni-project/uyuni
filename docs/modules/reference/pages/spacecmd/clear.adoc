@@ -1,0 +1,4 @@
+[[spacecmd.functions.clear]]
+= clear
+
+Clears the terminal screen

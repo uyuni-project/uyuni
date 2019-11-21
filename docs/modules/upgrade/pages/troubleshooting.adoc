@@ -1,0 +1,64 @@
+[[upgrade-troubleshooting]]
+= Troubleshooting
+
+This section contains some common problems you might encounter with {productname} upgrades, and solutions to resolving them.
+
+
+////
+
+PUT THIS COMMENT AT THE TOP OF TROUBLESHOOTING SECTIONS
+
+Troubleshooting format:
+
+One sentence each:
+Cause: What created the problem?
+Consequence: What does the user see when this happens?
+Fix: What can the user do to fix this problem?
+Result: What happens after the user has completed the fix?
+
+If more detailed instructions are required, put them in a "Resolving" procedure:
+.Procedure: Resolving Widget Wobbles
+. First step
+. Another step
+. Last step
+
+////
+
+
+
+== {webui} Fails to Load
+
+Sometimes, the {webui} will not load after migration.
+This is usually caused by browser caching, if the new system has the same hostname and IP address as the old system.
+This duplication can confuse some browsers.
+
+This issue is resolved by clearing the cache and reloading the page.
+In most browsers, you can do this quickly by pressing kbd:[Ctrl+F5].
+
+
+
+== Not Enough Disk Space
+
+Check the available disk space before you begin migration.
+We recommend locating [path]``/var/spacewalk`` and [path]``/var/lib/pgsql`` on separate XFS file systems.
+
+When you are setting up a separate file system, edit [path]``/etc/fstab`` and remove the [path]``/var/lib/pqsql`` subvolume.
+Reboot the server to pick up the changes.
+
+
+
+== Retrying to Set up the Target System
+
+If you need to retry setting up the target system, follow these steps:
+
+. Delete [path]``/root/.MANAGER_SETUP_COMPLETE``.
+. Stop PostgreSQL and remove [path]``/var/lib/pgsql/data``.
+. Set the target system hostname to match the source system hostname.
+. Check the [path]``/etc/hosts`` file, and correct it if necessary.
+. Check [path]``/etc/setup_env.sh`` on the target system, and ensure the database name is set:
++
+----
+MANAGER_DB_NAME='susemanager'
+----
+. Reboot the target system.
+. Run [command]``mgr-setup`` again.

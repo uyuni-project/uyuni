@@ -1,0 +1,31 @@
+[[security-morror-sources]]
+= Mirror Source Packages
+
+If you build your own packages locally, or if you require the source code for your packages for legal reasons, it is possible to mirror the source packages on {productname} Server.
+
+[NOTE]
+====
+Mirroring source packages can consume a significant amount of disk space.
+====
+
+.Procedure: Mirroring Source Packages
+. Open the [filename]``/etc/rhn/rhn.conf`` configuration file, and add this line:
++
+
+----
+server.sync_source_packages = 1
+----
+. Restart the Spacewalk service to pick up the changes:
++
+
+----
+spacewalk-service restart
+----
+
+Currently, this feature can only be enabled globally for all repositories.
+It is not possible to select individual repositories for mirroring.
+
+When this feature has been activated, the source packages will become available in the {productname} {webui}
+after the next repository synchronization.
+They will be shown as sources for the binary package, and can be downloaded directly from the {webui}.
+Source packages cannot be installed on clients using the {webui}.

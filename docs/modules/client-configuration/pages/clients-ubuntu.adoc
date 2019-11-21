@@ -1,0 +1,252 @@
+[[clients-ubuntu]]
+= Registering {ubuntu} Clients
+
+This section contains information about registering Salt clients running {ubuntu} operating systems.
+
+{susemgr} supports {ubuntu} 16.04 LTS and 18.04 LTS Clients using Salt.
+Traditional clients are not supported.
+
+[IMPORTANT]
+====
+Canonical does not endorse or support {susemgr}.
+====
+
+
+Supported features:
+
+* Bootstrapping
+* Synchronizing [systemitem]``.deb`` channels
+* Assigning [systemitem]``.deb`` channels to clients
+* GPG signing [systemitem]``.deb`` repositories
+* Information displayed in System details pages
+* Package install, update, and remove
+* Package install using [systemitem]``Package States``
+* Configuration and state channels
+
+Bootstrapping is supported for starting {ubuntu} clients and performing initial state runs such as setting repositories and performing profile updates.
+
+However, the root user on {ubuntu} is disabled by default, so in order to use bootstrapping, you will require an existing user with [command]``sudo`` privileges for Python.
+
+Some actions are not yet supported:
+
+* Patch and errata support
+* Bare metal installations, PXE booting, and virtual host provisioning
+* Live patching
+* CVE Audit
+* If you use are using a repository from storage media (`server.susemanager.fromdir = ...` option in rhn.conf), Ubuntu Client Tools will not work.
+// Reason: RMT and SMT cannot mirror Debian repositories (yet) and so cannot create it in that directory the correct files.
+// We are waiting for SMT to release the feature/fix to mirror Debian repositories. When this has been done, this comment and the limitation above can be removed.
+
+
+
+== Prepare to Register
+
+Some preparation is required before you can register {ubuntu} clients to the {productname} Server.
+
+
+
+ifeval::[{suma-content} == true]
+
+.Procedure: Adding client tools channels
+
+Before you begin, ensure you have the {ubuntu} product enabled, and have synchronized the {ubuntu} channels for {scc}:
+
+For {ubuntu} 16.04:
+
+* From the {webui}, add [systemitem]``Ubuntu 16.04`` and [systemitem]``SUSE Linux Enterprise Client Tools Ubuntu 1604 amd64``.
+* From the command prompt, add [systemitem]``ubuntu-16.04-pool-amd64`` and [systemitem]``ubuntu-16.04-suse-manager-tools-amd64``.
+
+For {ubuntu} 18.04:
+
+* From the {webui}, add [systemitem]``Ubuntu 18.04`` and [systemitem]``SUSE Linux Enterprise Client Tools Ubuntu 1804 amd64``.
+* From the command prompt, add [systemitem]``ubuntu-18.04-pool-amd64`` and [systemitem]``ubuntu-18.04-suse-manager-tools-amd64``.
+
+[NOTE]
+====
+The mandatory channels do not contain {ubuntu} upstream packages.
+The repositories and channels for synchronizing upstream content must be configured manually.
+====
+
+In the {productname} {webui}, navigate to menu:Software[Channel List > All].
+Verify that you have a base channel and a child channel for your architecture.
+
+For example:
+
+* Base channel: [systemitem]``ubuntu-18.04-pool for amd64``
+* Child channel: [systemitem]``Ubuntu-18.04-SUSE-Manager-Tools for amd64``
+
+
+
+.Procedure: Creating Custom Repositories
+
+. On the {productname} Server {webui}, navigate to menu:Software[Manage > Repositories].
+. Click btn:[Create Repository] and set these parameters for the ``main`` repository:
+* In the [guimenu]``Repository Label`` field, type [systemitem]``ubuntu-bionic-main``.
+* In the [guimenu]``Repository URL`` field, type [systemitem]``http://ubuntumirror.example.com/ubuntu/dists/bionic/main/binary-amd64/``.
+* In the [guimenu]``Repository Type`` field, select [systemitem]``deb``.
+* Leave all other fields as the default values.
+. Click btn:[Create Repository]
+. Click btn:[Create Repository] and set these parameters for the ``main-updates`` repository:
+* In the [guimenu]``Repository Label`` field, type [systemitem]``ubuntu-bionic-main-updates``.
+* In the [guimenu]``Repository URL`` field, type [systemitem]``http://ubuntumirror.example.com/ubuntu/dists/bionic-updates/main/binary-amd64/``.
+* In the [guimenu]``Repository Type`` field, select [systemitem]``deb``.
+* Leave all other fields as the default values.
+. Click btn:[Create Repository].
+
+When you have created the repositories, you can create the custom channels.
+
+Ensure the custom channels you create have `AMD64 Debian` architecture.
+
+Your custom channels should use this structure:
+
+* Parent channel: [systemitem]``ubuntu-18.04-pool for amd64``
+* Child vendor channel: [systemitem]``Ubuntu-18.04-SUSE-Manager-Tools for amd64``
+* Child custom channel: [systemitem]``ubuntu-18.04-amd64-main``
+* Child custom channel: [systemitem]``ubuntu-18.04-amd64-main-updates``
+
+When you have the channels set up, associate each channel with the appropriate repository, and synchronize then channels.
+
+[IMPORTANT]
+====
+You need all the new channels fully synchronized before bootstrapping any Ubuntu client.
+====
+endif::[]
+
+
+ifeval::[{suma-content} == true]
+
+[WARNING]
+====
+The ``spacewalk-utils`` package is not supported by {suse}, including the ``spacewalk-common-channels`` tool.
+You will not be supported if your system becomes inoperable by using these tools.
+====
+
+
+
+.Procedure: Alternative Method for Adding {ubuntu} Channels (Unsupported)
+
+. At the command prompt on the {productname} Server, as root, install the [systemitem]``spacewalk-utils`` package:
++
+----
+zypper in spacewalk-utils
+----
+. Add the {ubuntu} channels.
+Adjust the version of the channel names to match your {ubuntu} version:
++
+----
+spacewalk-common-channels ubuntu-1804-amd64-main \
+ubuntu-1804-amd64-security \
+ubuntu-1804-amd64-updates
+----
+. Synchronize the new custom channels.
+
+endif::[]
+
+
+
+ifeval::[{uyuni-content} == true]
+
+// Uyuni specific instructions, in fact this works at SUSE Manager as well, but spacewalk-common-channels script is NOT supported
+
+.Procedure: Adding the {ubuntu} Channels
+
+. At the command prompt on the {productname} Server, as root, install the [systemitem]``spacewalk-utils`` package:
++
+----
+zypper in spacewalk-utils
+----
+. Add the {ubuntu} channels.
+Adjust the version of the channel names to match your {ubuntu} version:
++
+----
+spacewalk-common-channels ubuntu-1804-pool-amd64-uyuni \
+ubuntu-1804-amd64-main-uyuni \
+ubuntu-1804-amd64-main-update-uyuni \
+ubuntu-1804-amd64-main-security-uyuni \
+ubuntu-1804-amd64-universe-uyuni \
+ubuntu-1804-amd64-uyuni-client
+----
+. Synchronize the new custom channels.
+
+[IMPORTANT]
+====
+You need all the new channels fully synchronized, including Universe (Universe contains important dependencies for Salt), before bootstrapping any Ubuntu client.
+====
+endif::[]
+
+[NOTE]
+====
+{ubuntu} channels can be very large.
+Synchronization can sometimes take several hours.
+====
+
+There are two ways to check if a channel has finished synchronizing:
+
+* In the {productname} {webui}, navigate to menu:Admin[Setup Wizard] and select the [guimenu]``SUSE Products`` tab.
++
+This dialog displays a completion bar for each product when they are being synchronized.
+* Check the synchronization log file at the command prompt with [command]``tail -f /var/log/rhn/reposync/channel-label.log``.
++
+Each child channel will generate its own log during the synchronization progress.
+You will need to check all the base and child channel log files to be sure that the synchronization is complete.
+
+
+
+ifeval::[{uyuni-content} == true]
+
+== Trust GPG Keys on Clients
+
+By default, {ubuntu} does not trust the GPG key for {productname} {ubuntu} client tools.
+
+The clients can be successfully bootstrapped without the GPG key being trusted.
+
+However, they will not be able to install new client tool packages or update them.
+
+To fix this, add this key to the [systemitem]``ORG_GPG_KEY=`` parameter in all {ubuntu} bootstrap scripts:
+----
+uyuni-gpg-pubkey-0d20833e.key
+----
+
+You do not need to delete any previously stored keys.
+
+If you are boostrapping clients from the {productname} {webui}, you will need to use a salt state to trust the key.
+Create the salt state and assign it to the organization.
+You can then use an activation key and configuration channels to deploy the key to the clients.
+
+endif::[]
+
+
+
+== Root Access
+
+The root user on {ubuntu} is disabled by default.
+You can enable it by editing the [filename]``sudoers`` file.
+
+
+
+.Procedure: Granting Root User Access
+
+. On the client, edit the [filename]``sudoers`` file:
++
+----
+sudo visudo
+----
++
+Grant [command]``sudo`` access to the user by adding this line to the [filename]``sudoers`` file. Replace [systemitem]``<user>`` with the name of the user that will be used to bootstrap the client in the {webui}:
++
+----
+<user>  ALL=NOPASSWD: /usr/bin/python, /usr/bin/python2, /usr/bin/python3
+----
+
+
+
+== Register Clients
+
+. To register your {ubuntu} clients, you will need a bootstrap repository.
+Create the bootstrap repository at the command prompt, with this command:
++
+----
+mgr-create-bootstrap-repo --with-custom-channels
+----
+
+For more information on registering your clients, see xref:client-configuration:registration-overview.adoc[].

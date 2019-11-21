@@ -1,0 +1,56 @@
+[[troubleshooting-rpc-timeout]]
+= Troubleshooting RPC Connection Timeouts
+
+////
+PUT THIS COMMENT AT THE TOP OF TROUBLESHOOTING SECTIONS
+
+Troubleshooting format:
+
+One sentence each:
+Cause: What created the problem?
+Consequence: What does the user see when this happens?
+Fix: What can the user do to fix this problem?
+Result: What happens after the user has completed the fix?
+
+If more detailed instructions are required, put them in a "Resolving" procedure:
+.Procedure: Resolving Widget Wobbles
+. First step
+. Another step
+. Last step
+////
+
+RPC connections can sometimes time out due to slow networks or a network link going down.
+This results in package downloads or batch jobs hanging or taking longer than expected.
+You can adjust the maximum time that an RPC connection can take by editing the configuration file.
+While this will not resolve networking problems, it will cause a process to fail rather than hang.
+
+
+.Procedure: Resolving RPC connection timeouts
+
+. On the {productname} Server, open the [filename]``/etc/rhn/rhn.conf`` file and set a maximum timeout value (in seconds):
++
+----
+server.timeout =`number`
+----
+. On the {productname} Proxy, open the [filename]``/etc/rhn/rhn.conf`` file and set a maximum timeout value (in seconds):
++
+----
+proxy.timeout =`number`
+----
+. On a {sles} client that uses zypper, open the [filename]``/etc/zypp/zypp.conf`` file and set a maximum timeout value (in seconds):
++
+----
+## Valid values:  [0,3600]
+## Default value: 180
+download.transfer_timeout = 180
+----
+. On a {rhel} client that uses yum, open the [filename]``/etc/yum.conf`` file and set a maximum timeout value (in seconds):
++
+----
+timeout =`number`
+----
+
+[NOTE]
+====
+If you limit RPC timeouts to less than `180` seconds, you risk aborting perfectly normal operations.
+====

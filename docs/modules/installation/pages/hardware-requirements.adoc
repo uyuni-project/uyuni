@@ -1,0 +1,56 @@
+[[install-hardware-requirements]]
+= Hardware Requirements
+
+This table outlines hardware and software requirements for the {productname} Server and Proxy, on {x86_64} and {ppc64le} architecture.
+
+For {ibmz} hardware requirements, see xref:installation:install-ibmz.adoc[].
+
+For {smr} hardware requirements, see xref:retail:retail-requirements.adoc[].
+
+
+
+== Server Hardware Requirements
+
+[cols="1,1", options="header"]
+.Server Hardware Requirements for {x86_64} Architecture
+|===
+| Hardware                 | Recommended
+| CPU                      | Minimum 4 dedicated 64-bit CPU cores
+| RAM:                     | _Test Server_ Minimum 8{nbsp}GB
+|                          | _Base Installation_ Minimum 16{nbsp}GB
+|                          | _Production Server_ Minimum 32{nbsp}GB
+| Disk Space:              | [path]``/`` _(root)_ Minimum 24{nbsp}GB
+|                          | [path]``/var/lib/pgsql`` Minimum 50{nbsp}GB
+|                          | [path]``/var/spacewalk`` Minimum 50{nbsp}GB per SUSE product and 360{nbsp}GB per Red Hat product
+| Swap space:               | 3{nbsp}GB
+|===
+
+[cols="1,1", options="header"]
+.Server Hardware Requirements for IBM POWER8 or POWER9 Architecture
+|===
+| Hardware                 | Recommended
+| CPU                      | Minimum 4 dedicated cores
+| RAM:                     | _Test Server_ Minimum 8{nbsp}GB
+|                          | _Base Installation_ Minimum 16{nbsp}GB
+|                          | _Production Server_ Minimum 32{nbsp}GB
+| Disk Space:              | [path]``/`` Minimum 100{nbsp}GB
+|                          | [path]``/var/lib/pgsql`` Minimum 50{nbsp}GB
+|                          | [path]``/var/spacewalk`` Minimum 50{nbsp}GB per SUSE product and 360{nbsp}GB per Red Hat product
+| Swap space:               | 3{nbsp}GB
+|===
+
+
+
+== Proxy Hardware Requirements
+
+[cols="1,1", options="header"]
+.Proxy Hardware Requirements
+|===
+| Hardware                 | Recommended
+| CPU                      | Minimum 2 dedicated 64-bit CPU cores
+| RAM:                     | _Test Server_ Minimum 2{nbsp}GB
+|                          | _Production Server_ Minimum 8{nbsp}GB
+| Disk Space:              | [path]``/`` _(root)_ Minimum 24{nbsp}GB
+|                          | [path]``/srv`` Minimum 100{nbsp}GB
+|                          | [path]``/var/cache`` _(Squid)_ Minimum 100{nbsp}GB
+|===

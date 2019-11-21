@@ -1,0 +1,6 @@
+[[s3-sattools-config-orgs]]
+= Organizations
+
+The menu:Manager Configuration[Organizations] page contains details about the organizations feature of {productname}, and links for creating and configuring organizations.
+
+image::admin_configuration_organization.png[scaledwidth=80%]

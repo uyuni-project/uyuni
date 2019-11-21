@@ -76,3 +76,9 @@ reports/
 
 # Python
 venv/
+
+# Docs
+docs/.cache/
+docs/build/
+docs/.vscode/
+docs/.idea/

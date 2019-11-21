@@ -1,0 +1,126 @@
+[[retail.deploy_terminals]]
+= Deploy Terminals
+
+
+When you have the {susemgr} Server and Branch Server set up, you are ready to deploy point-of-service terminals by following these steps:
+
+. Create hardware type groups
+. Assign and configure the Saltboot formula for each hardware type group
+. Synchronize images to the branch server
+. Deploy images to the terminals
+
+Each procedure is detailed in this section.
+
+If you have many terminals, and would prefer this to be handled with a script, see xref:retail:retail-mass-config.adoc[].
+
+Before terminals can be deployed, ensure you have prepared a Saltboot-based operating system image.
+For how to build OS images, see xref:administration:image-management.adoc[].
+
+[IMPORTANT]
+====
+After you have registered new terminals, always check the {susemgr} {webui} to ensure your terminals have connected successfully to the branch server, and not directly to the {susemgr} Server by mistake.
+====
+
+
+== Create A Hardware Type Group
+
+Each terminal requires a specific hardware type, which contains information about the product name and terminal manufacturer.
+However, at the beginning, the {susemgr} database does not have this information.
+To tell {susemgr} what image to deploy on each terminal, you can set hardware type groups.
+After you have created your new hardware type group, you can apply the Saltboot formula to the group and configure it for your environment.
+
+Hardware types allow you to group devices according to manufacturer and device name.
+Then, all devices of a particular type can be managed as one.
+
+Empty profiles can be assigned to a hardware type group either before or after registration.
+If an empty profile is not assigned to a hardware type group before registration, it will be assigned to group that best matches the product information available to it.
+
+For this procedure, you will require the system manufacturer name and product name for your terminal.
+
+.Procedure: Creating a Hardware Type Group
+
+. Determine the hardware type group name.
+Prefix the name with [systemitem]``HWTYPE:``, followed by the system manufacturer name and product name, separated by a hyphen.
+For example:
++
+----
+HWTYPE:POSVendor-Terminal1
+----
++
+[IMPORTANT]
+====
+Only use colons (``:``), hyphens (``-``) or underscores (``_``) in hardware type group names.
+Spaces and other non-alphanumeric characters will be removed when the name is processed.
+====
+. In the {susemgr} {webui}, navigate to menu:Systems[System Groups], and click the btn:[Create Group] button.
+. In the [guimenu]``Create System Group`` dialog, create a new system group, using the hardware type group name you created earlier.
+
+
+== Assign and Configure the Saltboot Formula for Each Hardware Type Group
+
+Each hardware type group must have the Saltboot formula applied.
+
+.Procedure: Assigning the Saltboot Formula
+
+. Open the details page for your new hardware type group, and navigate to the [guimenu]``Formulas`` tab.
+. Select the Saltboot formula and click btn:[Save].
+. Navigate to the menu:Formulas[Saltboot] tab.
+. Configure the Saltboot formula according to the instructions in xref:retail:retail-formulas-intro.adoc[].
+
+
+
+== Synchronize Images to the Branch Server
+
+.Procedure: Synchronizing Images to the Branch Server
+
+. On the {susemgr} server, run this command:
++
+----
+salt <branch_server_salt_id> state.apply image-sync
+----
+
+
+=== Using a {sles}11 SP3 32-bit based images
+
+If you have 32-bit machines included in your branch, then you must use a 32-bit boot image as a default boot image.
+
+[WARNING]
+====
+If 32-bit boot image is not used as a default boot image, 32-bit terminals will be unable to boot and operate properly.
+====
+
+You can check the available boot images and their architecture from the command line:
+
+----
+salt <branch_server_salt_id> pillar.item boot_images
+----
+
+Output:
+
+----
+POS_Image_JeOS6-6.0.0:
+      ----------
+      arch:
+          x86_64
+      ...
+legacy-6.0.0:
+      ----------
+      arch:
+          i686
+----
+
+In this example, the [systemitem]``legacy-6.0.0`` boot image is 32-bit.
+
+You can set the default boot image in the ``Image Synchronization`` formula on the branch server, by adding the chosen boot image name to the [guimenu]``Default boot image`` field.
+For more information about ``Image Synchronization`` formula, see xref:salt:formula-imagesync.adoc[].
+
+image::retail_imagesync_formula.png[scaledwidth=80%]
+
+
+
+== Deploy Images to the Terminals
+
+.Procedure: Deploying Images to the Terminals
+
+. Power on your POS terminals.
+. The branch server will bootstrap the terminals according to the data you have provided.

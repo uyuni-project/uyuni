@@ -1,0 +1,6 @@
+[[s2-sm-action-arch]]
+= Archived Actions
+
+If you selected actions to store for review, they are displayed here and can be deleted.
+
+image::schedule_archived_actions.png[scaledwidth=80%]

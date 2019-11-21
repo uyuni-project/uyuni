@@ -1,0 +1,26 @@
+[[arch.component.zypp.plugin.spacewalk]]
+= zypp-plugin-spacewalk
+
+
+
+
+
+
+== Functions
+
+*zypp-plugin-spacewalk* is a component of {productname}. It performs the following functions in the stack.
+
+* **Client-side add-on to zypper for legacy clients**
+* **Exposes SUSE Manager channels as zypper repositories**
+* **The plugin is not required on salt-minions**
+
+
+
+== Log Files
+
+_Logs for the *zypp-plugin-spacewalk* are located on your legacy clients in:_
+
+----
+/var/log/zypper.log
+/var/log/zypp/*
+----

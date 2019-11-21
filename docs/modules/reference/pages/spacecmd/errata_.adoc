@@ -1,0 +1,118 @@
+[[spacecmd.functions.errata]]
+= errata_
+
+The following spacecmd commands are available for use with errata data.
+
+
+
+== errata_apply
+
+Apply an patch to all affected systems.
+
+[source]
+--
+usage: errata_apply ERRATA|search:XXX ...
+--
+
+
+
+== errata_delete
+
+Delete an patch.
+
+[source]
+--
+usage: errata_delete ERRATA|search:XXX ...
+--
+
+
+
+== errata_details
+
+Show the details of an patch.
+
+[source]
+--
+usage: errata_details ERRATA|search:XXX ...
+--
+
+
+
+== errata_findbycve
+
+List errata addressing a CVE.
+
+[source]
+--
+usage: errata_findbycve CVE-YYYY-NNNN ...
+--
+
+
+
+== errata_list
+
+List all patches.
+
+[source]
+--
+usage: errata_list
+--
+
+
+
+== errata_listaffectedsystems
+
+List of systems affected by an patch.
+
+[source]
+--
+usage: errata_listaffectedsystems ERRATA|search:XXX ...
+--
+
+
+
+== errata_listcves
+
+List of CVEs addressed by an patch.
+
+[source]
+--
+usage: errata_listcves ERRATA|search:XXX ...
+--
+
+
+
+== errata_publish
+
+Publish an patch to a channel.
+
+[source]
+--
+usage: errata_publish ERRATA|search:XXX <CHANNEL ...>
+--
+
+
+
+== errata_search
+
+List patches that meet user provided criteria
+
+[source]
+--
+usage: errata_search CVE|RHSA|RHBA|RHEA|CLA ...
+
+Example:
+> errata_search CVE-2009:1674
+> errata_search RHSA-2009:1674
+--
+
+
+
+== errata_summary
+
+Print a summary of all errata.
+
+[source]
+--
+usage: errata_summary
+--

@@ -1,0 +1,25 @@
+[[troubleshooting-local-cert]]
+= Troubleshooting Local Issuer Certificates
+
+////
+PUT THIS COMMENT AT THE TOP OF TROUBLESHOOTING SECTIONS
+
+Troubleshooting format:
+
+One sentence each:
+Cause: What created the problem?
+Consequence: What does the user see when this happens?
+Fix: What can the user do to fix this problem?
+Result: What happens after the user has completed the fix?
+
+If more detailed instructions are required, put them in a "Resolving" procedure:
+.Procedure: Resolving Widget Wobbles
+. First step
+. Another step
+. Last step
+////
+
+Some older bootstrap scripts create a link to the local certificate in the wrong place.
+This results in zypper returning an ``Unrecognized error`` about the local issuer certificate.
+You can ensure that the link to the local issuer certificate has been created correctly by checking the [path]``/etc/ssl/certs/`` directory.
+If you come across this problem, you should consider updating your bootstrap scripts to ensure that zypper operates as expected.

@@ -1,0 +1,30 @@
+[[channel-management]]
+= Channel Management
+
+Channels are a method of grouping software packages.
+
+In {productname}, channels are grouped into base and child channels, with base channels grouped by operating system type, version, and architecture, and child channels being compatible with their related base channel.
+When a client has been assigned to a base channel, it is only possible for that system to install the related child channels.
+Organizing channels in this way ensures that only compatible packages are installed on each system.
+
+Software channels use repositories to provide packages.
+The channels mirror the repositories in {productname}, and the package names and other data are stored in the {productname} database.
+You can have any number of repositories associated with a channel.
+The software from those repositories can then be installed on clients by subscribing the client to the appropriate channel.
+
+Clients can only be assigned to one base channel.
+The client can then install or update packages from the repositories associated with that base channel and any of its child channels.
+
+{productname} provides a number of vendor channels, which provide you everything you need to run {productname}.
+{productname} Administrators and Channel Administrators have channel management authority, which gives them the ability to create and manage their own custom channels.
+If you want to use your own packages in your environment, you can create custom channels.
+Custom channels can be used as a base channel, or you can associate them with a vendor base channel.
+
+For more on creating custom channels, see xref:administration:custom-channels.adoc[].
+
+
+[NOTE]
+====
+When you subscribe to a vendor channel with a traditional client, the product package will automatically be installed.
+On Salt clients, the packages will be added to the package state, and you will need to apply the highstate to push the changes to your systems.
+====

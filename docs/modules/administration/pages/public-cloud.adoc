@@ -1,0 +1,366 @@
+[[public-cloud]]
+= Public Cloud
+
+
+Some public cloud environments provide images for {productname} Server and Proxy.
+This section discusses what you will need for running {productname} in a public cloud, and how to set up your installation.
+
+[NOTE]
+====
+Public clouds provide {productname} under a Bring Your Own Subscription (BYOS) model.
+This means that you must register them with the {scc}.
+For more information about registering {productname} with {scc}, see xref:installation:general-requirements.adoc[].
+====
+
+Depending on the public cloud network you are using, you can locate the {productname} installation images by searching for the  keywords [package]``suse``, [package]``manager``, [package]``proxy``, or [package]``BYOS``.
+
+For ``SUSE Manager Server in Azure``, see xref:administration:public-cloud-azure.adoc[].
+
+
+
+== Instance Requirements
+
+Select a public cloud instance that meets the hardware requirements in xref:installation:hardware-requirements.adoc[].
+
+In addition, be aware of these considerations:
+
+* The {productname} setup procedure performs a forward-confirmed reverse DNS lookup.
+This must succeed in order for the setup procedure to complete successfully and for {productname} to operate as expected.
+Therefore, it is important to perform hostname and IP configuration prior to running the {productname} setup procedure.
+* {productname} Server and Proxy instances are expected to run in a network configuration that provides you control over DNS entries, but cannot access the wider internet.
+Within this network configuration DNS resolution must be provided: `hostname -f` must return the fully-qualified domain name (FQDN).
+DNS resolution is also important for connecting clients.
+DNS is dependent on the cloud framework you choose, refer to the cloud service provider documentation for detailed instructions.
+* We recommend that you locate software repositories, the server database, and the proxy squid cache on an external virtual disk.
+This prevents data loss if the instance is unexpectedly terminated.
+Instructions for setting up an external virtual disk are contained in this section.
+
+
+
+== Network Setup
+
+On a public cloud service, you must run {productname} within a restricted network, such as VPC private subnet with an appropriate firewall setting.
+The instance must only be able to be accessed by machines in your specified IP ranges.
+
+[WARNING]
+====
+A world-accessible {productname} instance violates the terms of the {productname} EULA, and it will not be supported by {suse}.
+====
+
+To access the {productname} {webui}, allow HTTPS when you set up your networking environment.
+
+
+
+=== Set the Hostname
+
+{productname} requires a stable and reliable hostname.
+Changing the hostname at a later point can create errors.
+
+In most public cloud environments, the method shown in this section will work correctly.
+However, you will have to perform the same modification for every client.
+
+You might prefer to manage DNS resolution by creating a DNS entry in your network environment instead.
+
+You can also manage hostname resolution by editing the [path]``/etc/resolv.conf`` file.
+Depending on the order of your setup, if you start the {productname} instance prior to setting up DNS services the file may not contain the appropriate [systemitem]``search`` directive.
+Check that the proper search directive exists in [path]``/etc/resolv.conf`` and add it if it is missing.
+
+.Procedure: Setting the hostname locally
+
+. Disable hostname setup by editing the DHCP configuration file at [path]``/etc/sysconfig/network/dhcp``, and adding this line:
++
+----
+DHCLIENT_SET_HOSTNAME="no"
+----
+. Set the hostname locally with the [command]``hostnamectl`` command.
+Ensure you use the system name, not the FQDN.
+For example, if the FQDN is [path]``system_name.example.com``, the system name is [path]``system_name``, and the domain name is [path]``example.com``.
++
+----
+# hostnamectl set-hostname system_name
+----
+. Create a DNS entry in your network environment for domain name resolution, or force correct resolution by editing the [path]``/etc/hosts`` file.
+You can find the IP address by checking your public cloud web console, or from the command line:
++
+
+* Amazon EC2 instance:
++
+----
+# ec2metadata --local-ipv4
+----
+* Google Compute Engine:
++
+----
+# gcemetadata --query instance --network-interfaces --ip
+----
+* Microsoft Azure:
++
+----
+# azuremetadata --internal-ip
+----
++
+
+In the following command, replace [literal]``<ip_address>`` with IP address you retrieve from the command line above:
++
+
+----
+# echo "<ip_address> suma.cloud.net suma" >> /etc/hosts
+----
+
+
+=== Set up DNS Resolution
+
+You will need to update the DNS records for the instance within the DNS service of your network environment.
+Refer to the cloud service provider documentation for detailed instructions:
+
+* http://docs.aws.amazon.com/AmazonVPC/latest/UserGuide/vpc-dns.html[DNS setup on Amazon EC2]
+* https://cloud.google.com/compute/docs/networking[DNS setup on Google Compute Engine]
+*  https://azure.microsoft.com/en-us/documentation/articles/dns-operations-recordsets[DNS setup on Microsoft Azure]
+
+If you run a {productname} Server instance,  ensure the external storage is attached and prepared correctly, and that DNS resolution is set up as described.
+Start the ``susemanager_setup`` with {yast}:
+
+----
+# /sbin/yast2 susemanager_setup
+----
+
+
+// No need to duplicate this, since it exists within the docs suite. LKB 2019-05-29
+// Uncommenting, as it turns out some of this content is unique. Will need a more surgical look. LKB 2019-08-02
+
+
+The {productname} setup procedure in YaST is designed as a one pass process with no rollback or cleanup capability.
+Therefore, if the setup procedure is interrupted or ends with an error, it is not recommended that you repeat the setup process or attempts to manually fix the configuration.
+These methods are likely to result in a faulty {productname} installation.
+If you experience errors during setup, start a new instance, and begin the setup procedure again on a clean system.
+
+If you receive a message that there is not enough space available for setup, ensure that your root volume is at least 20 GB and double check that the instructions in <<using-separate-storage-volume>> have been completed correctly.
+
+// REMARK check this; will it still work for sle 15?
+////
+Commented out per https://github.com/SUSE/spacewalk/issues/8951 LKB 2019-08-06
+
+{productname} Server for the public cloud comes with a bootstrap data module pre-installed.
+The bootstrap module contains optimized package lists for bootstrapping instances started from {sle} images published by {suse}.
+If you intend to register such an instance, when you create the bootstrap repository run the [command]``mgr-create-bootstrap-repo`` script using this command, to create a bootstrap repository suitable for {sle} 12 SP1 instances.
+
+----
+$ mgr-create-bootstrap-repo --datamodule=mgr_pubcloud_bootstrap_data -c SLE-12-SP1-x86_64
+----
+
+
+See xref:client-configuration:creating-a-tools-repository.adoc[] for more information on bootstrapping.
+////
+
+Prior to registering instances started from on demand images remove the following packages from the instance to be registered:
+... cloud-regionsrv-client
+... *For Amazon EC2*
++
+regionServiceClientConfigEC2
++
+regionServiceCertsEC2
+... *For Google Compute Engine*
++
+cloud-regionsrv-client-plugin-gce
++
+regionServiceClientConfigGCE
++
+regionServiceCertsGCE
+... *For Microsoft Azure*
++
+regionServiceClientConfigAzure
++
+regionServiceCertsAzure
+
++
+If these packages are not removed it is possible to create interference between the repositories provided by {productname} and the repositories provided by the SUSE operated update infrastructure.
++
+Additionally remove the line from the [path]``/etc/hosts``
+file that contains the *susecloud.net* reference.
+** If you run a {productname} Proxy instance
++
+Launch the instance, optionally with external storage configured.
+If you use external storage (recommended), prepare it according to <<using-separate-storage-volume>>.
+It is recommended but not required to prepare the storage before configuring {productname} proxy, as the suma-storage script will migrate any existing cached data to the external storage.
+After preparing the instance, register the system with the parent SUSE Manager, which could be a {productname} Server or another {productname} Proxy.
+See the xref:installation:proxy-setup.adoc[] for details.
+When registered, run
++
+
+----
+$ /usr/sbin/configure-proxy.sh
+----
++
+to configure your {productname} Proxy instance.
+. After the completion of the configuration step, {productname} should be functional and running. For {productname} Server, the setup process created an administrator user with following user name:
++
+* User name: `admin`
++
+
+.Account credentials for admin user
+[cols="1,1,1", options="header"]
+|===
+|
+          Amazon EC2
+
+|
+          Google Compute Engine
+
+|
+          Microsoft Azure
+
+
+|
+
+[replaceable]``Instance-ID``
+|
+
+[replaceable]``Instance-ID``
+|
+
+[replaceable]``Instance-Name``**-suma**
+|===
++
+The current value for the [replaceable]``Instance-ID`` or [replaceable]``Instance-Name`` in case of the Azure Cloud, can be obtained from the public cloud Web console or from within a terminal session as follows:
+** Obtain instance id from within Amazon EC2 instance
++
+
+----
+$ ec2metadata --instance-id
+----
+** Obtain instance id from within Google Compute Engine instance
++
+
+----
+$ gcemetadata --query instance --id
+----
+** Obtain instance name from within Microsoft Azure instance
++
+
+----
+$ azuremetadata --instance-name
+----
+
++
+After logging in through the {productname} Server {webui}, *change* the default password.
++
+{productname} Proxy does not have administration access to the {webui}.
+It can be managed through its parent {productname} Server.
+
+
+
+[[using-separate-storage-volume]]
+=== Using Separate Storage Volume
+
+
+We recommend that the repositories and the database for {productname} be stored on a virtual storage device.
+This best practice will avoid data loss in cases where the {productname} instance may need to be terminated.
+These steps *must* be performed *prior* to running the YaST {productname}  setup procedure.
+
+
+. Provision a disk device in the public cloud environment, refer to the cloud service provider documentation for detailed instructions. The size of the disk is dependent on the number of distributions and channels you intend to manage with {productname}.
+For sizing information refer to https://www.suse.com/support/kb/doc.php?id=7015050[SUSE Manager sizing examples]. A rule of thumb is 25 GB per distribution per channel.
+. Once attached the device appears as Unix device node in your instance. For the following command to work this device node name is required. In many cases the attached storage appears as **/dev/sdb**. In order to check which disk devices exists on your system, call the following command:
++
+
+----
+$ hwinfo --disk | grep -E "Device File:"
+----
+. With the device name at hand the process of re-linking the directories in the filesystem {productname} uses to store data is handled by the suma-storage script. In the following example we use [path]``/dev/sdb`` as the device name.
++
+
+----
+$ /usr/bin/suma-storage /dev/sdb
+----
++
+After the call all database and repository files used by SUSE Manager Server are moved to the newly created xfs based storage.
+In case your instance is a {productname} Proxy, the script will move the Squid cache, which caches the software packages, to the newly created storage.
+The xfs partition is mounted below the path [path]``/manager_storage``.
+.
+. Create an entry in /etc/fstab (optional)
++
+Different cloud frameworks treat the attachment of external storage devices differently at instance boot time.
+Please refer to the cloud environment documentation for guidance about the fstab entry.
++
+If your cloud framework recommends to add an fstab entry, add the following line to the */etc/fstab* file.
++
+
+----
+/dev/sdb1 /manager_storage xfs defaults,nofail 1 1
+----
+
+
+[[registration-of-cloned-systems]]
+== Registration of Cloned Systems
+
+{productname} cannot distinguish between different instances that use the same system ID.
+If you register a second instance with the same system ID as a previous instance, {productname} will overwrite the original system data with the new system data.
+This can occur when you launch multiple instances from the same image, or when an image is created from a running instance.
+However, it is possible to clone systems and register them successfully by deleting the cloned system's ID, and generating a new ID.
+
+
+.Procedure: Registering Cloned Systems
+. Clone the system using your preferred hypervisor's cloning mechanism.
+. On the cloned system, change the hostname and IP addresses, and check the [path]``/etc/hosts`` file to ensure you have the right host entries.
+. On traditional clients, stop the [command]``rhnsd`` daemon with [command]``/etc/init.d/rhnsd stop`` or, on newer systemd-based systems, with [command]``service rhnsd stop``.
+Then [command]``service osad stop``.
+. For SLES 11 or {rhel} 5 or 6 clients, run these commands:
++
+----
+# rm /var/lib/dbus/machine-id
+# dbus-uuidgen --ensure
+----
++
+. For SLES 12 or {rhel} 7 clients, run these commands:
++
+----
+# rm /etc/machine-id
+# rm /var/lib/dbus/machine-id
+# dbus-uuidgen --ensure
+# systemd-machine-id-setup
+----
++
+. If you are using Salt, then you will also need to run these commands:
++
+----
+# service salt-minion stop
+# rm -rf /var/cache/salt
+----
++
+. If you are using a traditional client, clean up the working files with:
++
+----
+# rm -f /etc/sysconfig/rhn/{osad-auth.conf,systemid}
+----
+
+The bootstrap should now run with a new system ID, rather than a duplicate.
+
+
+If you are onboarding Salt client clones, then you will also need to check if they have the same Salt minion ID.
+You will need to delete the minion ID on each cloned client, using the [command]``rm`` command.
+Each operating system type stores this file in a slightly different location, check the table for the appropriate command.
+
+
+.Minion ID File Location
+Each operating system stores the minion ID file in a slightly different location, check the table for the appropriate command.
+
+[cols="1,1", options="header"]
+|===
+| Operating System | Commands
+| SLES 12        | [command]``rm /etc/salt/minion_id``
+
+                     [command]``rm  -f /etc/zypp/credentials.d/{SCCcredentials,NCCcredentials}``
+| SLES 11        | [command]``rm /etc/salt/minion_id``
+
+                     [command]``suse_register -E``
+| SLES 10        | [command]``rm -rf /etc/{zmd,zypp}``
+
+                     [command]``rm -rf /var/lib/zypp/``
+                     Do not delete [path]``/var/lib/zypp/db/products/``
+
+                     [command]``rm -rf /var/lib/zmd/``
+| {rhel} 5, 6, 7   | [command]`` rm  -f /etc/NCCcredentials``
+|===
+
+
+When you have deleted the minion ID file, re-run the bootstrap script, and restart the client to see the cloned system in {productname} with the new ID.

@@ -1,0 +1,36 @@
+[[arch.component.osa.dispatcher]]
+= osa-dispatcher
+
+
+
+
+
+
+== Functions
+*osa-dispatcher* is a component of {productname}. It performs the following function in the stack.
+
+* **Monitors database for actions, informing osad clients when they need to run them**
+
+== osa-dispatcher --help
+__The following options are available for the *osa-dispatcher*:__
+
+----
+osa-dispatcher --help
+Usage: osa-dispatcher [options]
+
+Options:
+  -v, --verbose        Increase verbosity
+  -N, --nodetach       Suppress backgrounding and detachment of the process
+  --pid-file=PID_FILE  Write to this PID file
+  --logfile=LOGFILE    Write log information to this file
+  -h, --help           show this help message and exit
+
+----
+
+
+== Log Files
+_Logs for the *osa-dispatcher* are located in:_
+
+----
+/var/log/rhn/osa_dispatcher.log
+----

@@ -1,0 +1,31 @@
+[[s3-sm-apply-errata]]
+= Applying Patches
+
+Patches include a list of updated packages.
+To apply patches to a system, the system must be entitled.
+
+Apply all applicable patches to a system by clicking menu:Main Menu[Systems > Systems].
+Click the name of an entitled system.
+Then open the menu:System Details[Software > Patches] subtab.
+When the relevant patch list appears, click btn:[Select All] then btn:[Apply Patches].
+Only patches not scheduled, scheduled but failed, or canceled patches are listed.
+Pending updates are excluded.
+
+In addition, users with appropriate roles can apply patches using two other methods:
+
+* To apply a specific patch to one or more systems, locate it in the patch list and click the number of systems affected, which takes you to the [guimenu]``Affected Systems`` page of the [guimenu]``Patch Details`` page. Select the individual systems to be updated and click the btn:[Apply Patches] button. Double-check the systems to be updated on the confirmation page, then click the btn:[Confirm] button.
+* To apply more than one patch to one or more systems, select the systems from the menu:Main Menu[Systems > Systems] list. Click the menu:Main Menu[Systems > System Set Manager > Overview], then click the [guimenu]``Systems`` tab. After ensuring the appropriate systems are selected, click the [guimenu]``Patches`` tab, select the patches to apply, and click the btn:[Apply Patches] button. Schedule a date and time for the patch to be applied. Default is the current date. Click the btn:[Confirm] button. You can follow the progress of the patch application via the [guimenu]``Pending Actions`` list. Refer to xref:reference:schedule/schedule-menu.adoc[Schedule] for more details.
+
+
+[IMPORTANT]
+====
+If you use scheduled package installation, the packages or patches are installed via the configured contact method.
+For more information, see xref:client-configuration:contact-methods-intro.adoc[].
+====
+
+
+The following rules apply to patches:
+
+* Each package is a member of one or more channels. If a selected system is not subscribed to a channel containing the package, the update will not be installed on that system.
+* If a newer version of the package is already installed on the system, the update will not be installed.
+* If an older version of the package is installed, the package will be upgraded.

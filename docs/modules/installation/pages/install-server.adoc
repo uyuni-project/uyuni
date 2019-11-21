@@ -1,0 +1,80 @@
+[[install-server]]
+= Installing {productname} Server
+
+This chapter provides the required KVM settings for installation of {sles} media as the base for {productname}.
+A kernel virtual machine KVM combined with Virtual Machine Manager ([command]``virt-manager``) will be used as a sandbox for this installation.
+
+== SLES KVM Requirements
+
+
+Enter the following settings when creating a new virtual machine using [command]``virt-manager`` (replace [replaceable]``version`` with the actual version string):
+
+[cols="1,1", options="header"]
+|===
+| KVM Settings for SLES
+| Installation Method: | Local install media (ISO image or CDROM)
+| OS:                  | Linux
+| Version:             |``SLE-[replaceable]``version``-Server-x86_64-GM-DVD1.iso``
+| Memory:              | 4096{nbsp}MB
+| CPUs:                | 2
+| Storage Format:      | ISO 3{nbsp}GB
+| Disk Space:          | 234{nbsp}GB split between 4{nbsp}GB swap and 130{nbsp}GB mounted at [path]``/var/spacewalk/``
+|                      | (Virtual Disk 1) and 50{nbsp}GB mounted at [path]``/var/lib/pgsql``
+|                      | (Virtual Disk 2).  The rest for the root partition (100{nbsp}GB+).
+| Name:                | example-server
+| Network              | Bridge br0
+|===
+
+[[sles.installation.within.kvm.media]]
+=== SLES KVM Settings
+
+
+This section provides guidance on installation of {productname}
+utilizing the full installation media with KVM and [command]``virt-manager``.
+This section assumes you have previously setup an account with SCC and downloaded the SLES full installation media.
+
+.Procedure: Preparing for SLES Installation
+. In [command]``virt-manager`` select menu:File[New Virtual Machine].
+
+. Select btn:[Local install media (ISO image or CDROM)].
+
+. Ensure btn:[Use ISO Image] is selected then click btn:[Browse] and locate the full SLES image you downloaded from your SCC account.
+
+. Configure your machine with at least 4096 MB RAM and a minimum of 2 CPUs.
+
+. Create a storage device with a minimum of 234 GB storage space for the installation.
+During the partitioning setup of the SLES installation this disk should be partitioned into the following disks:
++
+
+[cols="1", options="header"]
+|===
+| Disk Space Requirements
+|4{nbsp}GB Swap space
+|130{nbsp}GB XFS partition (or dedicated virtual disk) for [path]``/var/spacewalk/``
+|50{nbsp}GB XFS partition (or dedicated virtual disk) for [path]``/var/lib/pgsql/``
+|===
+
+. The remaining storage space will be used by the operating system for the root partition.
+Select btn:[Finish] to begin the installation.
+
+
+Installation of {sles} will begin.
+For more information on completing an installation of {sles}, see: https://documentation.suse.com/sles/15-SP1/html/SLES-all/art-sle-installquick.html.
+
+[[quickstart3.sec.suma.installation.sles.sumaext]]
+== Selecting the {productname} Extension
+
+. During {sles} installation, you will be presented with the [systemitem]``Extension and Module Selection`` screen.
++
+[NOTE]
+====
+This screen will not be shown if you have skipped the registration step at the beginning of the installation process.
+Ensure you have registered with {suse} and logged in.
+====
++
+. Select the {productname} Extension and then click the btn:[Next] button.
+
+. Complete the {sles} installation.
+//TODO Update image its outdated!
+
+image::manager-extension.png[scaledwidth=80%]

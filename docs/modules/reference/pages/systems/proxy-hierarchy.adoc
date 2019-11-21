@@ -1,0 +1,8 @@
+[[ref.webui.systems.proxy.visualzation]]
+= Proxy Hierarchy
+
+The following is an example graphical representation tree of the proxy network hierarchy of proxy systems and their clients registered with {productname}.
+
+
+image::systems_proxy_heirarchy.png[scaledwidth=80%]
+

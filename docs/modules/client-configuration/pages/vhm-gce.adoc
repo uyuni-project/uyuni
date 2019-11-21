@@ -1,0 +1,47 @@
+[[vhm-hce]]
+= VHM and Google Compute Engine
+
+You can use a {productname} VHM to gather instances from Google Compute Engine (GCE).
+
+The VHM allows {productname} to obtain and report information about your virtual machines.
+For more information on VHMs, see xref:client-configuration:vhm.adoc[].
+
+
+
+== Create a GCE VHM
+
+
+The Virtual Host Manager (VHM) runs on the {productname} Server.
+
+To run a VHM, your {productname} Server will need to have port 443 open, in order to access the clients.
+
+Ensure you have installed the [systemitem]``virtual-host-gatherer-libcloud`` package on the {productname} Server.
+
+Before you begin, log in to the GCE panel, and download a certificate file.
+Store this file locally on your {productname} Server, and take note of the path.
+
+
+
+.Procedure: Creating a GCE VHM
+
+. In the {productname} {webui}, navigate to menu:Systems[Virtual Host Managers].
+. Click btn:[Create] and select [guimenu]``Google Compute Engine`` from the drop-down menu.
+. In the [guimenu]``Add a Google Conpute Engine Virtual Host Manager`` section, use these parameters:
+* In the [guimenu]``Label`` field, type a custom name for your VHM.
+* In the [guimenu]``Service Account Email`` field, type the email address associated with your Google account.
+* In the [guimenu]``Cert Path`` field, type the path to the certificate downloaded from the GCE panel.
+* In the [guimenu]``Project ID`` field, type the project ID used by the GCE instance.
+* In the [guimenu]``Zone`` field, type the zone your VM is located in.
+This is required for subscription matching to work.
+. Click btn:[Create] to save your changes and create the VHM.
+. On the [guimenu]``Virtual Host Managers`` page, select the new VHM.
+. On the [guimenu]``Properties`` page, click btn:[Refresh Data] to inventory the new VHM.
+
+To see which objects and resources have been inventoried, navigate to menu:Systems[System List > Virtual Systems].
+
+
+Instances running on the Google public cloud will report this UUID to {productname} Server:
+
+----
+152986662232938449
+----

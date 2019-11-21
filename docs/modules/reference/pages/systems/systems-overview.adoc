@@ -1,0 +1,97 @@
+[[ref-systems-systems-intro]]
+= Systems Overview
+
+If you select menu:Main Menu[Systems > Overview], an overview of all Systems appears.
+From this page you can select systems to perform actions on and may create system profiles.
+
+[[ref-systems-systems-overview]]
+== Overview Conventions
+
+The menu:Main Menu[Systems > Overview] page displays a list of all your registered systems.
+Several columns provide information about each system:
+
+Select box::
+Systems without a system type cannot be selected. To select systems, mark the appropriate check boxes.
+Selected systems are added to the *System Set Manager*, where actions can be carried out simultaneously on all systems in the set.
+For more information, see xref:reference:systems/ssm-overview.adoc[].
++
+
+System::
+The name of the system specified during registration.
+The default name is the host name of the system.
+Clicking the name of a system displays its [guimenu]``System Details`` page.
+For more information, see xref:reference:systems/system-details.adoc[].
++
+
+* image:spacewalk-icon-virtual-host.svg[Virtual Host,scaledwidth=1.8em] -- Virtual Host.
+* image:spacewalk-icon-virtual-guest.svg[Virtual Guest,scaledwidth=1.8em] -- Virtual Guest.
+* image:fa-236-non-virtual-system.svg[Non-Virtual System,scaledwidth=1.8em] -- Non-Virtual System.
+* image:spacewalk-icon-unprov-system.svg[Unprovisioned System,scaledwidth=1.8em] -- Unprovisioned System.
++
+
+Updates::
+Shows which type of update action is applicable to the system or confirms that the system is up-to-date.
+Some icons are linked to related tasks.
+For example, the standard Updates icon is linked to the [guimenu]``Upgrade`` subtab of the packages list, while the Critical Updates icon links directly to the [guimenu]``Software Patches`` page.
++
+
+* image:fa-check-circle.svg[Check Circle,scaledwidth=1.6em] -- System is up-to-date.
+* image:fa-exclamation-circle.svg[Exclamation Circle,scaledwidth=1.6em] -- Critical patch (errata) available, update _strongly_ recommended.
+* image:fa-warning.svg[Warning,scaledwidth=1.6em] -- Updates available and recommended.
+* image:fa-question-circle.svg[Question,scaledwidth=1.8em] -- System not checking in properly (for 24 hours or more).
+* image:fa-lock.svg[Lock,scaledwidth=1.8em] -- System is locked; actions prohibited.
+* image:fa-rocket.svg[Rocket,scaledwidth=1.6em] -- System is being deployed using AutoYaST or Kickstart.
+* image:fa-clock-o.svg[Clock,scaledwidth=1.8em] -- Updates have been scheduled.
+* image:fa-times-circle.svg[Times,scaledwidth=1.8em] -- System not entitled to any update service.
++
+
+Patches::
+Total number of patch alerts applicable to the system.
++
+
+Packages:: Total number of package updates for the system, including packages related to patch alerts and newer versions of packages not related to patch alerts.
+For example, if a client system that has an earlier version of a package installed gets subscribed to the appropriate base channel (such as {sle} 12 SP2), that channel may have an updated version of the package.
+If so, the package appears in the list of available package updates.
++
+
+[IMPORTANT]
+.Package Conflict
+====
+If {productname} identifies package updates for the system, but the package updater (such as Red Hat Update Agent or {yast}) responds with a message such as "Your system is fully updated", a conflict likely exists in the system's package profile or in the [path]``up2date`` configuration file.
+To resolve the conflict, either schedule a package list update or remove the packages from the package exceptions list.
+For more information, see xref:reference:systems/system-details.adoc[].
+====
++
+
+Configs::
+Total number of configuration files applicable to the system.
++
+
+Base Channel::
+The primary channel for the system based on its operating system.
+For more information, see xref:reference:software/channel-details.adoc[].
++
+
+System Type::
+Shows whether the system is managed and at what service level.
+
+Links in the navigation bar below menu:Main Menu[Systems] enable you to select and view predefined sets of your systems.
+All of the options described above can be applied within these pages.
+
+
+
+[[ref.webui.systems.overview]]
+== Overview
+
+The menu:Main Menu[Systems > Overview] page provides a summary of your systems, including their status, number of associated patches (errata) and packages, and their so-called system type.
+Clicking the name of a system takes you to its [guimenu]``System Details`` page.
+For more information, see xref:reference:systems/system-details.adoc[].
+
+Clicking the btn:[View System Groups] button at the top of the page takes you to a summary of your system groups.
+It identifies group status and displays the number of systems contained.
+Clicking the number of systems in a group takes you to the menu:Main Menu[Systems > Systems Groups > Systems] tab.
+Selecting a group name takes you to the menu:Main Menu[Systems > System Groups > Group Details] tab for that system group.
+For more information, see xref:reference:systems/system-groups.adoc[].
+
+You can also click btn:[Use in SSM] from the menu:Systems[Overview > View System Groups] page to go directly to the menu:Systems[System Set Manager].
+For more information, see xref:reference:systems/ssm-overview.adoc[].

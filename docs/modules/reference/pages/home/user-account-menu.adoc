@@ -1,0 +1,4 @@
+[[ref.user.account.menu]]
+= User Account Menu
+
+This section provides information on adjusting user account preferences.

@@ -1,0 +1,24 @@
+[[spacecmd.functions.listing]]
+= spacecmd Reference
+
+
+The following section will help you become more familiar with the [command]``spacecmd`` command-line interface.
+This interface is available for {productname}, Satellite and Spacewalk servers.
+spacecmd is written in Python and uses the XML-RPC API provided by the server.
+
+.What can spacecmd do for me?
+* Manage almost all aspects of SUSE Manager from the command line with spacecmd
+* Tab completion is available for all commands
+* Single commands can be passed to spacecmd without entering the interactive shell (excellent for shell scripts)
+* May also be accessed and used as an interactive shell
+* Advanced search methods are available for finding specific systems, thus removing the need to create system groups (nevertheless groups are still recommended)
+* Complete functionality through the Spacewalk API. Almost all commands that can be executed from the {webui} can be performed via the spacecmd command-line
+
+
+
+
+
+
+
+
+

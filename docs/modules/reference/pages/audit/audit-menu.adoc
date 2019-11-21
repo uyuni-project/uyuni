@@ -1,0 +1,3 @@
+= Audit Menu
+
+Select menu:Main Menu[Audit] to audit your managed systems.

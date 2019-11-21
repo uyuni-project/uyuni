@@ -1,0 +1,28 @@
+[[arch.component.taskomatic]]
+= Taskomatic
+
+
+
+
+== Functions
+
+Taskomatic is a primary component of {productname}. It performs the following functions in the stack.
+
+* **Taskomatic handles most background jobs**
+* **Patch applicability status refresh**
+* **Server side scheduling**
+* **SSH push**
+* **Cobbler database sync**
+* **Repository synchronization and repository metadata generation**
+* **CVE audit pre-computation**
+* **Cleanup Jobs**
+* **Checks on clients**
+
+
+== Log Files
+__Log files for taskomatic are located in:__
+
+----
+/var/log/rhn/rhn_taskomatic_daemon.log
+/var/log/rhn/reposync/*
+----

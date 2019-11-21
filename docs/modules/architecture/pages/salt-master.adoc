@@ -1,0 +1,73 @@
+[[arch.component.salt.master]]
+= salt-master
+
+
+
+
+
+
+== Functions
+
+The *salt-master* is a primary component of {productname}. It performs the following functions in the stack.
+
+* **Core process of Salt on the server side**
+* **Provides communication with Salt clients**
+* **Handles Salt jobs, publishes to the Salt event Bus**
+* **Handles client responses**
+* **Manages states, highstates, pillar information, etc**
+
+
+== salt-master --help
+
+The following options are available for the *salt-master*. The following list is not comprehensive, for more information see: http://docs.saltstack.com[The Saltstack Docs]
+
+**Options:**
+
+----
+salt-master --help
+Usage: salt-master [options]
+
+The Salt Master, used to control the Salt Clients
+
+Options:
+  --version             show program's version number and exit
+  -V, --versions-report
+                        Show program's dependencies version number and exit.
+  -h, --help            show this help message and exit
+  --saltfile=SALTFILE   Specify the path to a Saltfile. If not passed, one
+                        will be searched for in the current working directory.
+  -c CONFIG_DIR, --config-dir=CONFIG_DIR
+                        Pass in an alternative configuration directory.
+                        Default: '/etc/salt'.
+  -u USER, --user=USER  Specify user to run salt-master.
+  -d, --daemon          Run the salt-master as a daemon.
+  --pid-file=PIDFILE    Specify the location of the pidfile. Default:
+                        '/var/run/salt-master.pid'.
+
+  Logging Options:
+    Logging options which override any settings defined on the
+    configuration files.
+
+    -l LOG_LEVEL, --log-level=LOG_LEVEL
+                        Console logging log level. One of u'all', u'garbage',
+                        u'trace', u'debug', u'profile', u'info', u'warning',
+                        u'error', u'critical', u'quiet'. Default: 'warning'.
+    --log-file=LOG_FILE
+                        Log file path. Default: '/var/log/salt/master'.
+    --log-file-level=LOG_LEVEL_LOGFILE
+                        Logfile logging log level. One of u'all', u'garbage',
+                        u'trace', u'debug', u'profile', u'info', u'warning',
+                        u'error', u'critical', u'quiet'. Default: 'warning'.
+
+You can find additional help about salt-master issuing "man salt-master" or on
+http://docs.saltstack.com
+
+----
+
+== Log Files
+
+_Logs for *salt-master* are located in:_
+
+----
+/var/log/salt/master
+----

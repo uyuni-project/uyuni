@@ -1,0 +1,50 @@
+[[arch.component.mgr.check]]
+= mgr_check
+
+
+
+
+
+
+== Functions
+*mgr_check* is a primary component of {productname}. It performs the following functions in the stack.
+
+* **Client-side command line tool for legacy clients that checks for actions on the server and executes them**
+
+[NOTE]
+.mgr_check and rhn_check
+====
+*mgr_check* is symlinked to *rhn_check* in `/usr/sbin/`.
+Both _mgr_check_ and _rhn_check_ can be used for checking for actions on the server.
+
+----
+lrwxrwxrwx 1 root root           9 Sep  9 09:05 mgr_check -> rhn_check*
+----
+====
+
+== mgr_check --help
+__The following options are available for the *rhn_check* on your legacy clients:__
+
+----
+mgr_check --help
+Usage: rhn_check [options]
+
+Options:
+  -v, --verbose         Show additional output. Repeat for more detail.
+  --proxy=PROXY         Specify an http proxy to use
+  --proxyUser=PROXYUSER
+                        Specify a username to use with an authenticated http
+                        proxy
+  --proxyPassword=PROXYPASSWORD
+                        Specify a password to use with an authenticated http
+                        proxy
+  --version             show program's version number and exit
+  -h, --help            show this help message and exit
+----
+
+== Log Files
+_Logs for the *mgr_check* are located on your legacy clients in:_
+
+----
+/var/log/up2date
+----

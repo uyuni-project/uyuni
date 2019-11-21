@@ -1,0 +1,18 @@
+<!-- <footer class="footer">
+</footer> -->
+<script src="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.js"></script>
+<!-- fetched from https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.js -->
+<script>
+function focusSearchInput () { document.querySelector('#search-input').focus() }
+var search = docsearch({
+  appId: 'JTG0JH5IZ8',
+  apiKey: '53832c21604e3e7cd2d1062f84b72f22',
+  indexName: 'uyuni',
+  inputSelector: '#search-input',
+  autocompleteOptions: { hint: false, keyboardShortcuts: ['s'] },
+  algoliaOptions: { hitsPerPage: 10 }
+}).autocomplete;
+search.on('autocomplete:closed', function () { search.autocomplete.setVal() });
+focusSearchInput();
+window.addEventListener('load', focusSearchInput)
+</script>

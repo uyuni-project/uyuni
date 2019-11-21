@@ -1,0 +1,997 @@
+[[suse.mgr.command.line.tools]]
+= SUSE Manager Command Line Tools
+
+This section explains some command line tools such as mgrcfg-client, mgrcfg-manager, mgr-actions-control, or mgr-sync.
+
+
+
+== Command Line Tools on Traditional Clients
+
+In addition to the SUSE Manager Web interface, SUSE Manager offers two command line tools for managing configuration files on _traditional_ clients:
+
+* The Configuration Client (*mgrcfg-client*, part of the [package]``mgr-cfg-client` package)
+* The Configuration Manager (*mgrcfg-manager*, part of the [package]``mgr-cfg-management`` package)
+
+You can use the *mgr-actions-control* tool (part of the [package]``mgr-cfg-actions`` package) to _enable_ and _disable_ configuration management on client systems.
+
+To work with these tools install them with the {webui}.
+Select the client's details page, then check whether these packages are already installed; click menu:System Details[Software > Packages > List/Remove] and, for example, enter `mgr-` as a search term.
+If the packages are not listed here, click the [guimenu]``Install`` sub-tab and select the packages for installation.
+
+
+
+[TIP]
+.Configuration File Backups
+====
+When a configuration file is deployed via SUSE Manager, a backup of the previous file including its full path is stored in the [path]``/var/lib/rhncfg/backups/``.
+The backup retains its filename but has a _.rhn-cfg-backup_ extension appended.
+====
+
+
+
+[[mgr.actions.control]]
+=== Actions Control  (mgr-actions-control)
+
+The Actions Control (*mgr-actions-control*) application is used to enable and disable configuration management on a system.
+Client systems cannot be managed in this fashion by default.
+This tool allows SUSE Manager administrators to enable or disable specific modes of allowable actions such as:
+
+* Deploying a configuration file on the system
+* Uploading a file from the system
+* Using the diff command to find out what is currently managed on a system with what is available
+* Running remote commands
+
+These various modes are enabled or disabled by placing or removing files and directories in the [path]``/etc/sysconfig/rhn/allowed-actions/`` directory.
+Because of to the default permissions of the [path]``/etc/sysconfig/rhn/`` directory, Actions Control has to be run by someone with root access.
+
+
+
+==== General command line options
+
+There is a manpage available, as for most command line tools.
+First, decide which scheduled actions should be enabled for use by system administrators.
+The following options enable the various scheduled action modes:
+
+--enable-deploy::
+Allow mgrcfg-client to deploy files.
+
+--enable-diff::
+Allow mgrcfg-client to diff files.
+
+--enable-upload::
+Allow mgrcfg-client to upload files.
+
+--enable-mtime-upload::
+Allow mgrcfg-client to upload mtime (file modification time).
+
+--enable-all::
+Allow mgrcfg-client to do everything.
+
+--enable-run::
+Enable running scripts.
+
+--disable-deploy::
+Disable deployment.
+
+--disable-diff::
+Prohibit diff use.
+
+--disable-upload::
+No file uploads allowed.
+
+--disable-mtime-upload::
+Disable mtime upload.
+
+--disable-all::
+Disable all options.
+
+--disable-run::
+No scripts allowed to run.
+
+--report::
+Report whether modes are enabled or disabled.
+
+-f, --force::
+Force the operation without asking first.
+
+-h, --help::
+Show help message and exit.
+
+Once a mode is set, your system is ready for configuration management through SUSE Manager.
+A common option is [command]``mgr-actions-control --enable-all``.
+
+
+
+[[mgrcfg.client.tool]]
+=== Configuration Client  (mgrcfg-client)
+
+The Configuration Client (mgrcfg-client) is installed on and run from an individual client system to gain knowledge about how SUSE Manager deploys configuration files to the client.
+
+The Configuration Client offers these primary modes:
+
+* list
+* get
+* channels
+* diff
+* verify
+
+==== Listing Configuration Files
+
+To list the configuration files for the machine and the labels of the config channels containing them, issue the command:
+
+----
+mgrcfg-client list
+----
+
+The output resembles the following list ("DoFoS" is a shortcut for "D or F or S", which means "Directory", "File", or "Something else"(?)):
+
+----
+DoFoS   Config Channel      File
+F      config-channel-17   /etc/example-config.txt
+F      config-channel-17   /var/spool/aalib.rpm
+F      config-channel-14   /etc/rhn/rhn.conf
+----
+
+These configuration files apply to your system.
+However, there may be duplicate files present in other channels.
+For example, issue the following command:
+
+----
+mgrcfg-manager list config-channel-14
+----
+
+and observe the following output:
+
+----
+Files in config channel 'config-channel-14'
+/etc/example-config.txt /etc/rhn/rhn.conf
+----
+
+You may wonder why the second version of [path]``/etc/example-config.txt`` in *config-channel-14* does not apply to the client system.
+The rank of the [path]``/etc/example-config.txt`` file in *config-channel-17* was higher than that of the same file in *config-channel-14*.
+As a result, the version of the configuration file in config-channel-14 is not deployed for this system, therefore mgrcfg-client command does not list the file.
+
+
+
+[[getting.a.config.file]]
+==== Downloading a Config File
+
+To download the most relevant configuration file for the machine, issue the command:
+
+----
+mgrcfg-client get /etc/example-config.txt
+----
+
+You should see output resembling:
+
+----
+Deploying /etc/example-config.txt
+----
+
+View the contents of the file with less or another pager.
+Note that the file is selected as the most relevant based on the rank of the config channel containing it.
+This is accomplished within the Configuration tab of the System Details page.
+
+Refer to Section "System Details" (Chapter 4, Systems, User Guide) for instructions.
+
+
+
+[[viewing.config.channels]]
+==== Viewing Config Channels
+
+To view the labels and names of the config channels that apply to the system, issue the command:
+
+----
+mgrcfg-client channels
+----
+
+You should see output resembling:
+
+----
+Config channels:
+Label                   Name
+-----                   ----
+config-channel-17       config chan 2
+config-channel-14       config chan 1
+----
+
+The list of options available for [command]``mgrcfg-client get``:
+
+--topdir=TOPDIR::
+Make all file operations relative to this string.
++
+
+--exclude=EXCLUDE::
+Exclude a file from being deployed with get.
+May be used multiple times.
++
+
+-h, --help::
+Show help message and exit.
+
+[[diff.between.config.files]]
+==== Differentiating between Config Files
+
+To view the differences between the config files deployed on the system and those stored by SUSE Manager, issue the command:
+
+----
+mgrcfg-client diff
+----
+
+The output resembles the following:
+
+----
+rhncfg-client diff
+--- /etc/test
++++ /etc/test 2013-08-28 00:14:49.405152824 +1000
+@@ -1 +1,2 @@
+This is the first line
++This is the second line added
+----
+
+In addition, you can include the [option]``--topdir`` option to compare config files with those located in an arbitrary (and unused) location on the client system, like this:
+
+----
+# mgrcfg-client diff --topdir /home/test/blah/
+/usr/bin/diff: /home/test/blah/etc/example-config.txt: No such file or directory
+/usr/bin/diff: /home/test/blah/var/spool/aalib.rpm: No such file or directory
+----
+
+
+[[verify.config.files]]
+==== Verifying Config Files
+
+To quickly determine if client configuration files are different from those associated with it via SUSE Manager, issue the command:
+
+----
+mgrcfg-client verify
+----
+
+The output resembles the following:
+
+----
+modified /etc/example-config.txt /var/spool/aalib.rpm
+----
+
+The file [filename]``example-config.txt`` is locally modified, while [package]``aalib.rpm`` is not.
+
+The list of the options available for mgrcfg-client verify:
+
+-v, --verbose::
+Increase the amount of output detail.
+Display differences in the mode, owner, and group permissions for the specified config file.
+
+-o, --only::
+Only show differing files.
+
+-h, --help::
+Show help message and exit.
+
+
+
+[[the.configuration.manager]]
+=== Configuration Manager (mgrcfg-manager)
+
+The Configuration Manager (*mgrcfg-manager*) is designed to maintain SUSE Manager's central repository of config files and channels, not those located on client systems.
+This tool offers a command line alternative to the configuration management features in the SUSE Manager Web interface.
+Additionally, some or all of the related maintenance tasks can be scripted.
+
+To use the command line interface, configuration administrators require a SUSE Manager account (username and password) with the appropriate permission set.
+The username may be specified in [path]``/etc/sysconfig/rhn/rhncfg-manager.conf`` or in the [option]``[rhncfg-manager]`` section of [path]``~/.rhncfgrc``.
+
+When the Configuration Manager is run as *root*, it attempts to pull in needed configuration values from the Red Hat Update Agent.
+When run as a user other than root, you may have to change the [path]``~/.rhncfgrc`` configuration file.
+The session file is cached in [path]``~/.rhncfg-manager-session`` to avoid having to log in for every command.
+
+The default timeout for the Configuration Manager is 30 minutes.
+To adjust this, add the [option]``server.session_lifetime`` option and a new value to the [path]``/etc/rhn/rhn.conf`` file on the server running the manager.
+For example set the time out to *120 minutes*:
+
+----
+server.session_lifetime = 120
+----
+
+The Configuration Manager offers the following primary *modes*:
+
+* add
+* create-channel
+* diff
+* diff-revisions
+* download-channel
+* get
+* list
+* list-channels
+* remove
+* remove-channel
+* revisions
+* update
+* upload-channel
+
+Each mode offers its own set of options, which can be displayed by issuing the following command:
+
+----
+mgrcfg-manager mode --help
+----
+
+Replace mode with the name of the mode whose options you want to see:
+
+----
+mgrcfg-manager diff-revisions --help
+----
+
+
+
+[[creating.a.config.channel]]
+==== Creating a Config Channel
+
+To create a config channel for your organization, issue the command:
+
+----
+mgrcfg-manager create-channel channel-label
+----
+
+If prompted for your SUSE Manager username and password, provide them.
+Once you have created a config channel, use the remaining modes listed above to populate and maintain that channel.
+
+
+
+[[adding.files.to.a.config.channel]]
+==== Adding Files to a Config Channel
+
+To add a file to a config channel, specify the channel label and the local file to be uploaded:
+
+----
+mgrcfg-manager add --channel=channel-label /path/to/file
+----
+
+In addition to the required channel label and the path to the file, you can use the available options for modifying the file during its addition.
+For instance, you can alter the path and file name by including the [option]``--dest-file`` option in the command:
+
+----
+mgrcfg-manager add --channel=channel-label \
+  --dest-file=/new/path/to/file.txt/path/to/file
+----
+
+The output resembles the following:
+
+----
+Pushing to channel example-channel
+Local file >/path/to/file -> remote file /new/path/to/file.txt
+----
+
+The list of options available for mgrcfg-manager add:
+
+-c CHANNEL --channel=CHANNEL::
+Upload files in this config channel.
+
+-d DEST_FILE --dest-file=DEST_FILE::
+Upload the file as this path.
+
+--delim-start=DELIM_START::
+Start delimiter for variable interpolation.
+
+--delim-end=DELIM_END::
+End delimiter for variable interpolation.
+
+-i, --ignore-missing::
+Ignore missing local files.
+
+-h, --help::
+Show help message and exit.
+
+
+[TIP]
+.Maximum File Size
+====
+By default, the maximum file size for configuration files is 128 KB.
+For information on changing the maximum file size value, see xref:reference:configuration/config-files-menu.adoc[].
+====
+
+
+
+[[diff.between.latest.config.files]]
+==== Differentiating between Latest Config Files
+
+To view the differences between the config files on disk and the latest revisions in a channel, issue the command:
+
+----
+mgrcfg-manager diff --channel=channel-label --dest-file=/path/to/file.txt \
+/local/path/to/file
+----
+
+You should see output resembling:
+
+----
+--- /tmp/dest_path/example-config.txt config_channel: example-channel revision: 1
++++ /home/test/blah/hello_world.txt 2003-12-14 19:08:59.000000000 -0500
+@@ -1 +1 @@
+-foo
++hello, world
+----
+
+The list of options available for [command]``mgrcfg-manager diff``:
+
+-c CHANNEL, --channel=CHANNEL::
+Get file(s) from this config channel.
+
+-r REVISION, --revision=REVISION::
+Use this revision.
+
+-d DEST_FILE, --dest-file=DEST_FILE::
+Upload the file at this path.
+
+-t TOPDIR, --topdir=TOPDIR::
+Make all files relative to this string.
+
+-h, --help::
+Show help message and exit.
+
+
+
+[[diff.between.various.versions]]
+==== Differentiating between Various Versions
+
+To compare different versions of a file across channels and revisions, use the *-r* flag to indicate which revision of the file should be compared and the *-n* flag to identify the two channels to be checked.
+Specify only one file name here since you are comparing the file against another version of itself.
+For example:
+
+----
+mgrcfg-manager diff-revisions -n=channel-label1 -r=1 \
+  -n=channel-label2 -r=1 \
+  /path/to/file.txt
+----
+
+The output resembles the following:
+
+----
+--- /tmp/dest_path/example-config.txt 2004-01-13 14:36:41 \
+config channel: example-channel2 revision: 1
+--- /tmp/dest_path/example-config.txt 2004-01-13 14:42:42 \
+config channel: example-channel3 revision: 1
+@@ -1 +1,20 @@
+-foo
++blah
++-----BEGIN PGP SIGNATURE-----
++Version: GnuPG v1.0.6 (GNU/Linux)
++Comment: For info see http://www.gnupg.org
++
++iD8DBQA9ZY6vse4XmfJPGwgRAsHcAJ9ud9dabUcdscdcqB8AZP7e0Fua0NmKsdhQCeOWHX
++VsDTfen2NWdwwPaTM+S+Cow=
++=Ltp2
++-----END PGP SIGNATURE-----
+----
+
+The list of options available for [command]``mgrcfg-manager diff-revisions``:
+
+-c CHANNEL, --channel=CHANNEL::
+Use this config channel.
+
+-r REVISION, --revision=REVISION::
+Use this revision.
+
+-h, --help::
+Show help message and exit.
+
+
+
+[[downloading.all.files.in.a.channel]]
+==== Downloading All Files in a Channel
+
+To download all the files in a channel to disk, create a directory and issue the following command:
+
+----
+mgrcfg-manager download-channel channel-label --topdir .
+----
+
+The output resembles the following:
+
+----
+Copying /tmp/dest_path/example-config.txt -> \
+blah2/tmp/dest_path/example-config.txt
+----
+
+The list of options available for mgrcfg-manager download-channel:
+
+-t TOPDIR, --topdir=TOPDIR::
+Directory to which all the file paths are relative. This option must be set.
+
+-h, --help::
+Show help message and exit.
+
+
+
+[[getting.the.contents.of.a.file]]
+=== Getting the Contents of a File
+
+To direct the contents of a particular file to stdout, issue the command:
+
+----
+mgrcfg-manager get --channel=channel-label \
+/tmp/dest_path/example-config.txt
+----
+
+You should see the contents of the file as the output.
+
+
+
+[[listing.all.files.in.a.channel]]
+==== Listing All Files in a Channel
+
+To list all the files in a channel, issue the command:
+
+----
+mgrcfg-manager list channel-label
+----
+
+You should see output resembling:
+
+----
+Files in config channel `example-channel3':
+/tmp/dest_path/example-config.txt
+----
+
+The list of the options available for mgrcfg-manager get:
+
+-c CHANNEL, --channel=CHANNEL::
+Get file(s) from this config channel.
+
+-t TOPDIR, --topdir=TOPDIR::
+Directory to which all files are relative.
+
+-r REVISION, --revision=REVISION::
+Get this file revision.
+
+-h, --help::
+Show help message and exit.
+
+
+
+[[listing.all.config.channels]]
+==== Listing All Config Channels
+To list all of your organization's configuration channels, issue the command:
+
+----
+mgrcfg-manager list-channels
+----
+
+The output resembles the following:
+
+----
+Available config channels:
+example-channel example-channel2 example-channel3 config-channel-14 config-channel-17
+----
+
+[NOTE]
+====
+This does not list *local_override* or *server_import* channels.
+====
+
+
+[[removing.a.file.from.a.channel]]
+==== Removing a File from a Channel
+To remove a file from a channel, issue the command:
+
+----
+mgrcfg-manager remove --channel=channel-label /tmp/dest_path/example-config.txt
+----
+
+If prompted for your SUSE Manager username and password, provide them.
+
+The list of the options available for mgrcfg-manager remove:
+
+-c CHANNEL, --channel=CHANNEL::
+Remove files from this config channel.
+
+-t TOPDIR, --topdir=TOPDIR::
+Directory to which all files are relative.
+
+-h, --help::
+Show help message and exit.
+
+
+
+[[deleting.a.config.channel]]
+==== Deleting a Config Channel
+
+To remove a config channel in your organization, issue the command:
+
+----
+mgrcfg-manager remove-channel channel-label
+----
+
+The output resembles the following:
+
+----
+Removing config channel example-channel
+Config channel example-channel removed
+----
+
+
+
+[[determine.the.number.of.file.revisions]]
+====  Determining the Number of File Revisions
+
+To find out how many revisions (from *1 to N* where N is an integer greater than 0) of a file/path are in a channel, issue the following command:
+
+----
+mgrcfg-manager revisions channel-label /tmp/dest_path/example-config.txt
+----
+
+The output resembles the following:
+
+----
+Analyzing files in config channel example-channel \
+/tmp/dest_path/example-config.txt: 1
+----
+
+
+
+[[update.a.file.in.a.channel]]
+==== Updating a File in a Channel
+
+To create a new revision of a file in a channel (or to add the first revision to that channel if none existed before for the given path), issue the following command:
+
+----
+mgrcfg-manager update --channel=channel-label \
+--dest-file=/path/to/file.txt /local/path/to/file
+----
+
+The output resembles the following:
+
+----
+Pushing to channel example-channel:
+Local file example-channel /tmp/local/example-config.txt -> \
+remote file /tmp/dest_path/example-config.txt
+----
+
+The list of the options available for mgrcfg-manager update:
+
+-c CHANNEL, --channel=CHANNEL::
+Upload files in this config channel.
+
+-d DEST_FILE, --dest-file=DEST_FILE::
+Upload the file to this path.
+
+-t TOPDIR, --topdir=TOPDIR::
+Directory to which all files are relative.
+
+--delim-start=DELIM_START::
+Start delimiter for variable interpolation.
+
+--delim-end=DELIM_END::
+End delimiter for variable interpolation.
+
+-h, --help::
+Show help message and exit.
+
+
+
+[[uploading.multiple.files.at.once]]
+==== Uploading Multiple Files at Once
+
+To upload multiple files to a config channel from a local disk at once, issue the command:
+
+----
+mgrcfg-manager upload-channel --topdir=topdir channel-label
+----
+
+The output resembles the following:
+
+----
+Using config channel example-channel4
+Uploading /tmp/ola_world.txt from blah4/tmp/ola_world.txt
+----
+
+The list of the options available for mgrcfg-manager upload-channel:
+
+-t TOPDIR, --topdir=TOPDIR::
+Directory all the file paths are relative to.
+
+-c CHANNEL, --channel=CHANNEL::
+List of channels the config info will be uploaded into channels delimited by ','. Example: --channel=foo,bar,baz.
+
+-h, --help::
+Show help message and exit.
+
+
+
+[[spacewalk-repo-sync]]
+== Synchronize Repositories with spacewalk-repo-sync
+
+The [command]``spacewalk-repo-sync`` tool synchronizes software repositories into {productname} channels.
+This usually happens automatically, but you can run it manually if required.
+This can be useful for debugging or for solving some synchronization problems.
+
+
+
+=== Normal Channel Synchronization
+
+Basic operation:
+
+[command]``spacewalk-repo-sync --list``::
+List all custom channels and the repositories assigned to them.
+[command]``spacewalk-repo-sync  --channel <custom-channel>``::
+Synchronize a single channel ``<custom-channel>`` to all repositories assigned to it with the {webui} or the API.
+
+
+
+=== Solve Checksum Problems
+
+Use the [option]``--deep-verify`` option to ignore cached package checksums.
+This can help with solving checksum problems.
+
+
+
+=== Force Re-import Patches
+
+Use the [option]``--force-all-errata`` option to force re-importing all the patches.
+To make this command run faster, you can use the [option]``--no-packages`` option.
+This option excludes packages from the operation.
+
+To find the root cause of synchronization problems you can look at the HTTP log as [command]``spacewalk-repo-sync`` is running.
+
+. Set and export [systemitem]``ZYPP_MEDIA_CURL_DEBUG``.
+This setting will allow downloading the metadata output by Zypper.
+Thus the following command will log the HTTP conversation into [path]``/var/log/zypper.log``:
++
+
+----
+ZYPP_MEDIA_CURL_DEBUG=2 spacewalk-repo-sync --channel <channel-label>
+----
+
+. Set and export [systemitem]``URLGRABBER_DEBUG`` for the RPM downloading part:
++
+----
+export URLGRABBER_DEBUG=DEBUG
+----
+. Start the synchronization:
++
+
+----
+/usr/bin/spacewalk-repo-sync --channel <channel-label> --type yum
+----
+
+To increase the debug level, add the [option]``-vvv`` option.
+
+When debugging is finished, disable debug mode:
+
+----
+unset URLGRABBER_DEBUG
+----
+
+
+
+=== For More Information
+
+For a complete list of command line options, see the [command]``spacewalk-repo-sync`` manpage:
+
+----
+man spacewalk-repo-sync
+----
+
+
+
+[[syncing.suse.mgr.repositories.scc]]
+== Synchronize SUSE Manager Repositories from SCC (mgr-sync)
+
+[command]``mgr-sync`` should be used if SUSE Manager is connected to SUSE Customer Center (SCC).
+With [command]``mgr-sync`` you may add or synchronize products and channels.
+The [command]``mgr-sync`` command also enables and refreshes SCC data.
+
+By default, [command]``mgr-sync`` writes basic debug information to [path]``/var/log/rhn/mgr-sync.log``.
+Get more debugging information with [option]``--debug`` or by adding [literal]``mgrsync.debug = <DEBUGLEVEL>`` to [path]``/etc/rhn/rhn.conf``.
+Settings in [path]``~/.mgr-sync`` will supersede values from [path]``rhn.conf``. For example, if you set
+----
+mgrsync.debug = ""
+----
+in [path]``~/.mgr-sync``, the value in [path]``rhn.conf`` will have no effect. 
+
+[IMPORTANT]
+.Admin credentials
+====
+[command]``mgr-sync`` requires username and password of a *SUSE Manager administrator*.
+Most functions are available as part of the public API.
+====
+
+mgr-sync provides a command structure with sub-commands similar to git or osc.
+For a complete list of command line option, see the mgr-sync manpage (man mgr-sync).
+Basic actions are:
+
+----
+mgr-sync list channel(s)|product(s)|credentials
+mgr-sync add  channel(s)|product(s)|credentials
+mgr-sync delete  credentials
+
+mgr-sync refresh [--refresh-channels] [--from-mirror MIRROR]
+----
+
+See the following examples.
+
+List channels::
++
+
+----
+mgr-sync list channels
+----
+
+Add a channel::
++
+
+----
+mgr-sync add channel LABEL
+----
+
+List products::
++
+
+----
+mgr-sync list products
+----
+
+Add a product::
++
+
+----
+mgr-sync add product
+----
+
+Refresh the data::
++
+
+----
+mgr-sync refresh
+----
+
+Refresh data and schedule a reposync for all installed vendor channels::
++
+
+----
+mgr-sync refresh --refresh-channels
+----
+
+List SCC credentials::
++
+
+----
+mgr-sync list credentials
+----
+
+Add new SCC credentials::
++
+
+----
+mgr-sync add credentials
+----
+
+[TIP]
+.Credentials
+====
+There can be one primary credential only.
+This is username/password used first when retrieving the list of available channels and packages.
+====
+
+Add SCC primary credentials::
++
+
+----
+mgr-sync add credentials --primary
+----
+
+Delete SCC credentials::
++
+
+----
+mgr-sync delete credentials
+----
+
+
+
+[[configure.suse.manager.database.smdba]]
+==  Configuring SUSE Manager's Database (smdba)
+
+SUSE Manager provides the smdba command for managing the installed database.
+It is the successor of [package]``db-control``, which is now *unsupported*.
+
+The smdba command works on local databases only, not remote.
+This utility allows you to do several administrative tasks like backing up and restoring the database.
+It also allows you to create, verify, restore backups, obtaining database status, and restart the database if necessary.
+The smdba command supports *PostgreSQL*.
+
+Find basic information about *smdba* in the *smdba manpage*.
+
+[NOTE]
+.Restart Spacewalk Services When Connection is Lost
+====
+If you have stopped or restarted the database, Spacewalk services can lose their connections. In such a case, run the following command:
+
+----
+spacewalk-service restart
+----
+====
+
+
+
+[[smdba.control.options]]
+=== Control Options
+
+Depending on the database installed, smdba provides several subcommands:
+
+----
+backup-hot      Enable continuous archiving backup
+backup-restore  Restore the SUSE Manager Database from backup.
+backup-status   Show backup status.
+db-start        Start the SUSE Manager Database.
+db-status       Show database status.
+db-stop         Stop the SUSE Manager Database.
+space-overview  Show database space report.
+space-reclaim   Free disk space from unused object in tables and indexes.
+space-tables    Show space report for each table.
+system-check    Common backend healthcheck.
+----
+
+For a list of available commands on your particular appliance, call smdba help.
+To display the help message for a specific subcommand, call [command]``smdba COMMAND help``.
+
+
+
+[[starting.and.stopping.the.database]]
+=== Starting and Stopping the Database
+
+There are three commands to start, stop, or get the status of the database.
+Use the following commands:
+
+----
+# smdba db-status
+Checking database core...       online
+# smdba db-stop
+Stopping the SUSE Manager database...
+Stopping listener:     done
+Stopping core:         done
+# smdba db-status
+Checking database core...       offline
+# smdba db-start
+Starting listener:     done
+Starting core...       done
+----
+
+
+
+[[at.clitools.createbootstraprepo]]
+== Creating a Bootstrap Repository (mgr-create-bootstrap-repo)
+
+
+The [code]``mgr-create-bootstrap-repo`` command is used on the {productname} Server to create a new bootstrap repository.
+
+Use the [code]``-l`` option to list all available repositories:
+
+----
+# mgr-create-bootstrap-repo -l
+----
+
+You can then invoke the command with the appropriate repository name to create the bootstrap repository you require, for example:
+
+----
+# mgr-create-bootstrap-repo SLE-version-x86_64
+----
+
+
+ [[at.clitools.createbootstraprepo.customchannels]]
+ === Creating a Bootstrap Repository with Custom Channels
+
+ Custom channels are channels that have been created to manage any custom packages that an organization might require.
+ To create a new bootstrap repository from a custom channel, use the [code]``mgr-create-bootstrap-repo`` command with the [code]``with-custom-channels`` option:
+
+----
+# mgr-create-bootstrap-repo --with-custom-channels
+----
+
+.Flushing a Bootstrap Repository to Remove Custom Channels
+[NOTE]
+====
+If you create a bootstrap repository that contains custom channels, and later attempt to rebuild with the [code]``mgr-create-bootstrap-repo`` command, the custom channel information will remain in the bootstrap repository.
+If you want to remove custom channel information from your bootstrap repository, you will need to use the [code]``flush`` option when you rebuild:
+
+----
+# mgr-create-bootstrap-repo --flush
+----
+====

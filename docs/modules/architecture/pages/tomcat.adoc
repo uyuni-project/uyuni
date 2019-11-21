@@ -1,0 +1,25 @@
+[[arch.component.apache.tomcat]]
+= Apache Tomcat
+
+
+
+
+== Functions
+
+Apache Tomcat is a primary component of {productname}. It performs the following functions in the stack.
+
+* **Contains servlet (Java) applications**
+* **The most important servlet is the RHN servlet:**
+* **Handles the majority of the Web UI**
+* **Public XMLRPC API**
+
+== Log Files
+
+__Logs for Apache Tomcat are located in:__
+
+----
+/var/log/rhn/rhn_web_ui.log
+/var/log/rhn/rhn_web_api.log
+/var/log/tomcat/catalina.out
+/var/log/tomcat/catalina.*.log
+----

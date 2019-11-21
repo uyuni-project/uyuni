@@ -1,0 +1,50 @@
+
+name: test_docs
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: '[CHECKOUT] Checkout branch that triggered this workflow'
+      uses: actions/checkout@v1
+
+    - name: '[TOOLCHAIN] Set up Ruby 2.6'
+      uses: actions/setup-ruby@v1
+      with:
+        ruby-version: 2.6.x
+
+    - name: '[TOOLCHAIN] Set up NodeJS'
+      uses: actions/setup-node@v1
+      with:
+        node-version: '10.x'
+    #- run: npm install
+
+    - name: '[TOOLCHAIN] Install Asciidoctor and Asciidoctor PDF'
+      run: |
+        gem install asciidoctor
+        gem install asciidoctor-pdf --pre
+        gem install rouge
+        gem install pygments.rb
+        gem install coderay
+        asciidoctor --version
+        asciidoctor-pdf --version
+    - name: '[TOOLCHAIN] Install Antora XREF Validator'
+      run: |
+        npm i -g @antora/cli@2.1 @antora/site-generator-default@2.1
+        npm install -g gitlab:antora/xref-validator
+    - name: '[TOOLCHAIN] Lunr/Antora Custom Docker Image'
+      run: docker build -t lunr/antora:custom -f Dockerfile.custom .
+
+    - name: '[TEST] Validate Antora XREFS'
+      run: |
+        NODE_PATH="$(npm -g root)" antora --generator @antora/xref-validator uyuni-site.yml
+    - name: '[BUILD] SUMA Docs with Lunr/Antora Custom Docker Image'
+      run: |
+        docker run -u $UID --privileged -e DOCSEARCH_ENABLED=true -e DOCSEARCH_ENGINE=lunr -v $GITHUB_WORKSPACE:/antora/ --rm -t lunr/antora:custom uyuni-site.yml --generator antora-site-generator-lunr
+        #cd build/
+        ls -a
+    - name: '[BUILD] SUMA PDF Documents with Asciidoctor-pdf'
+      run: make pdf-all-uyuni

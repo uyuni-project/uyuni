@@ -1,0 +1,105 @@
+[[bp.sp.migration.version]]
+= Upgrading from Version 4 to 4.x
+
+You can upgrade {productname} from version 4 to 4.x (when available) using either the {yast} online migration tool or the Zypper command line tool.
+This procedure is also known as SP migration (service pack migration).
+This procedure does not replace the server with an updated copy.
+It is an in-place upgrade.
+Example: [literal]``4.0.x`` → [literal]``4.1.0``.
+
+// So on my desktop, YaST calls it "online upgrades". We should check this terminology. LKB 2019-08-21
+
+[IMPORTANT]
+====
+Upgrades should be run from a text console, rather than a graphical interface like GNOME.
+If you are logged into a GNOME session running on the machine you are going to migrate, you will need to switch to a text console.
+This does not apply if you are logged in from a remote machine (unless you are running a VNC session with GNOME).
+====
+
+
+== Upgrade Using {yast}
+
+To perform the upgrade with {yast}, use the Online Migration tool.
+
+.Procedure: Upgrading with {yast}
+
+. From the command prompt, as root, launch the {yast} online migration tool:
++
+
+----
+yast2 migration
+----
++
+////
+TODO:
+2019-10-01, ke:
+With the advent of SLE 15 SP2 or SUMA 4.1 we probably must enhance this;
+For more info, see the maintenance/3.2 branch!
+Enhance the zypper section below accordingly
+////
+{yast} will show the possible migration targets with detailed summaries.
+// I've removed the graphical option, because we tell people to use a text console. LKB 2019-08-21
+. Select the appropriate target, and follow the prompts to complete the migration.
+. Reboot the server.
+. Ensure the spacewalk services are running:
++
+----
+spacewalk-service start
+----
+
+If the process fails, check these issues first:
+
+* If {yast} does not have the online migration module available, install the [package]``yast2-migration`` package.
+After installing, restart {yast} to ensure the module is available.
+* If there are older updates available, {yast} will notify you and ask to install them first.
+You must install all package updates before performing the migration.
+For more information, see xref:server-update.adoc[].
+
+// Does this also apply if you use zypper?  If yes, we must repeat this
+// sentence below.
+During the upgrade, {yast} will install all recommended packages.
+This can significantly increase the installation size of the system.
+To only install required packages, open the [path]``/etc/zypp/zypp.conf`` configuration file and set these variables:
+
+----
+solver.onlyRequires = true
+installRecommends = false
+----
+
+This changes the behavior of all future package operations.
+
+
+
+== Upgrade Using Zypper
+
+To perform the upgrade with Zypper, use the Zypper migration tool.
+
+
+.Procedure: Upgrading with Zypper
+. From the command prompt, as root, launch the Zypper migration tool:
++
+----
+zypper migration
+----
+Zypper will show the possible migration targets with detailed summaries.
+. Select the appropriate target, and follow the prompts to complete the migration.
+. Reboot the server.
+. Ensure the spacewalk services are running:
++
+----
+spacewalk-service start
+----
+
+
+If the process fails, check these issues first:
+
+* If Zypper does not have the migration tool available, install the [package]``zypper-migration-plugin`` package.
+* If there are older updates available, Zypper will notify you and ask to install them first.
+You must install all updates before performing the upgrade.
+
+
+
+== Database Schema Upgrade
+
+Most likely, you also must upgrade the database schema.
+For more information, see xref:server-update.adoc[], Procedure "Upgrading the Database Schema".

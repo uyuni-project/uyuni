@@ -1,0 +1,102 @@
+// Installation Guide Antora Navigation List
+ifndef::backend-pdf[]
+
+* Installation Guide
+** xref:install-intro.adoc[Introduction]
+** Requirements
+*** xref:general-requirements.adoc[General Requirements]
+*** xref:hardware-requirements.adoc[Hardware Requirements]
+*** xref:network-requirements.adoc[Network Requirements]
+**** xref:ports.adoc[Required Network Ports]
+*** xref:client-requirements.adoc[Supported Clients]
+*** xref:pubcloud-requirements.adoc[Public Cloud Requirements]
+** Installation
+ifeval::[{suma-content} == true]
+*** xref:install-server-unified.adoc[Install Server]
+*** xref:install-proxy-unified.adoc[Install Proxy]
+endif::[]
+*** xref:install-vm.adoc[Install Server in a Virtual Machine with JeOS]
+// better disabling for now; needs a complete overhaul
+// 2019-06-04, ke :
+// *** xref:install-server.adoc[Install Server from Packages]
+//*** xref:install-proxy.adoc[Install Proxy from Packages]
+*** xref:install-ibmz.adoc[Install on IBM Z]
+** Setting Up
+*** xref:server-setup.adoc[Server Setup]
+*** xref:proxy-registration.adoc[Proxy Registration]
+*** xref:proxy-setup.adoc[Proxy Setup]
+*** xref:pubcloud-setup[Public Cloud Setup]
+//GFDL
+//** xref:common_gfdl1.2_i.adoc[License]
+
+endif::[]
+
+
+// PDF Installation Guide
+ifdef::backend-pdf[]
+= Installation Guide: {productname} {productnumber}
+include::./branding/pdf/entities.adoc[]
+:toclevels: 3
+:doctype: book
+
+// License
+include::modules/installation/pages/common_gfdl1.2_i.adoc[leveloffset=+1]
+
+// Introduction
+include::modules/installation/pages/install-intro.adoc[leveloffset=+1]
+
+== Requirements
+
+// General Requirements
+include::modules/installation/pages/general-requirements.adoc[leveloffset=+2]
+
+// Hardware Requirements
+include::modules/installation/pages/hardware-requirements.adoc[leveloffset=+2]
+
+// Network Requirements
+include::modules/installation/pages/network-requirements.adoc[leveloffset=+2]
+
+include::modules/installation/pages/ports.adoc[leveloffset=+3]
+
+// Client Requirements
+include::modules/installation/pages/client-requirements.adoc[leveloffset=+2]
+
+// Public Cloud Requirements
+include::modules/installation/pages/pubcloud-requirements.adoc[leveloffset=+2]
+
+== Installation
+
+ifeval::[{productname} == "SUSE Manager"]
+
+include::modules/installation/pages/install-server-unified.adoc[leveloffset=+2]
+
+include::modules/installation/pages/install-proxy-unified.adoc[leveloffset=+2]
+
+endif::[]
+
+// Install the VM
+include::modules/installation/pages/install-vm.adoc[leveloffset=+2]
+
+// Install the Server
+include::modules/installation/pages/install-server.adoc[leveloffset=+2]
+
+// Install Proxy
+//include::modules/installation/pages/install-proxy.adoc[leveloffset=+2]
+
+// Install on IBM Z
+include::modules/installation/pages/install-ibmz.adoc[leveloffset=+2]
+
+== Setting Up
+
+// Server Setup
+include::modules/installation/pages/server-setup.adoc[leveloffset=+2]
+
+// Proxy Setup
+include::modules/installation/pages/proxy-registration.adoc[leveloffset=+2]
+include::modules/installation/pages/proxy-setup.adoc[leveloffset=+2]
+
+//Public Cloud Setup
+include::modules/installation/pages/pubcloud-setup.adoc[leveloffset=+2]
+
+
+endif::[]

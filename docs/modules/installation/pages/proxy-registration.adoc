@@ -1,0 +1,67 @@
+[[proxy-register]]
+= SUSE Manager Proxy Registration
+
+{productname} Proxy systems are registered as traditional clients or as Salt clients using a bootstrap script.
+Migrating a traditionally registered Proxy system to a Salt Proxy system is not possible.
+Re-install the Proxy if you want to switch to Salt.
+
+This procedure describes software channel setup and registering the installed {productname} Proxy with an activation key as a {productname} client.
+
+[IMPORTANT]
+.Downloading Channels
+====
+Before you can select the correct child channels while creating the activation key, ensure you have completely downloaded the {productname} Proxy 4 channel and all the recommended and mandatory {sle} 15 SP1 channels.
+====
+
+[[proxy-register-procedure]]
+.Procedure: Registering the Proxy
+
+. Create an activation key based on the [systemitem]``SLE-Product-SUSE-Manager-Proxy-4.0-Pool`` base channel.
+For more information about activation keys, see xref:client-configuration:clients-and-activation-keys.adoc[Creating Activation Key].
++
+
+.Proxy Activation Key
+image::proxy-key.png[]
+
+. From the [guimenu]``Child Channels`` listing select the recommended
+channels by clicking the ``include recommended`` icon:
++
+* SLE-Module-Basesystem15-SP1-Pool
+* SLE-Module-Basesystem15-SP1-Updates
+* SLE-Module-Server-Applications15-SP1-Pool
+* SLE-Module-Server-Applications15-SP1-Updates
+* SLE-Module-SUSE-Manager-Proxy-4.0-Pool
+* SLE-Module-SUSE-Manager-Proxy-4.0-Updates
++
+The [systemitem]``SLE-Product-SUSE-Manager-Proxy-4.0-Updates`` channel is mandatory.
++
+
+.Base and Child Proxy Channel
+image::proxy-child.png[]
+
+. Modify a bootstrap script for the proxy if needed.
+If you want to run the proxy on a traditional client (system type ``Management``) uncheck [guimenu]``Bootstrap using Salt``.
+Using Salt is the default.
+// What's up with:
+// Enable Remote Configuration
+// Enable Remote Commands
+For more information about bootstrap scripts, see
+xref:client-configuration:registration-bootstrap.adoc[].
++
+
+.Modifying Bootstrap Script
+image::proxy-bootstrap.png[]
+
+. Create the SUSE Manager Tools Repository for bootstrapping, see xref:client-configuration:creating-a-tools-repository.adoc[Create Tools Repository].
+. Bootstrap the client with the bootstrap script.
+For more information, see xref:client-configuration:registration-bootstrap.adoc[].
+. For Salt clients, accept the key on the menu:Salt[Keys] page by checking the appropriate checkbox.
+When accepted, it will appear in the menu:Systems[Overview].
+. Navigate to menu:System Details[Software > Software Channels], and check that the four proxy channels ([systemitem]``Pool`` and [systemitem]``Updates`` for [systemitem]``SLE-PRODUCT`` and [systemitem]``SLE-MODULE``) plus the recommended channels are selected.
+[systemitem]``SLE-PRODUCT-Pool`` must be the base channel and the others are child channels.
++
+
+.Proxy Channels
+image::sles15-proxy-channels.png[]
+
+Continue with setting up the registered {productname}: xref:proxy-setup.adoc[].

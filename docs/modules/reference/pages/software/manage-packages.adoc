@@ -1,0 +1,5 @@
+[[software.manage.packages]]
+= Manage Packages
+
+This page allows managing custom software packages, listing all software or viewing only packages in a custom channel.
+Select the respective channel from the drop-down box and click btn:[View Packages].

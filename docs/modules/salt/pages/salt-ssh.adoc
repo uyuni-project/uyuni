@@ -1,0 +1,304 @@
+[[salt.ssh]]
+= Salt SSH
+
+
+Salt SSH allows Salt commands and states to be issued directly over SSH.
+SSH connections are created on demand, when the server executes an action on a client.
+
+For more information about Salt SSH, see https://docs.saltstack.com/en/latest/topics/ssh/.
+
+
+
+== SSH Connection Methods
+
+In {productname} there are two SSH connection methods, `ssh-push` and `ssh-push-tunnel`.
+In both methods the server initiates an SSH connection to the client to execute a Salt call.
+
+In the `ssh-push` method, the package manager works as normal, and the HTTP or HTTPS connection is directly created.
+
+In the `ssh-push-tunnel` method, the server creates an HTTP or HTTPS connection through an SSH tunnel.
+The HTTP connection initiated by the package manager is redirected through the tunnel using `/etc/hosts` aliasing.
+Use this method for in-place firewall environments that block HTTP or HTTPS connections between server and client.
+
+
+
+== Salt SSH Integration
+
+As with all Salt calls, {productname} invokes `salt-ssh` via the `salt-api`.
+
+Salt SSH relies on a roster to obtain details such as hostname, ports, and the SSH parameters of a client. {
+{productname} keeps these details in the database and makes them available to Salt by generating a temporary roster file for each Salt SSH call.
+The location of the temporary roster file is supplied to `salt-ssh` using the `--roster-file= option`.
+
+
+
+== Authentication
+
+Salt SSH supports both password and key authentication.
+{productname} uses both methods:
+
+Password authentication is used only when bootstrapping.
+During the bootstrap step the key of the server is not authorized on the client and therefore a password must be used for a connection to be made.
+The password is used transiently in a temporary roster file used for bootstrapping.
+This password is not stored.
+
+All other common Salt calls use key authentication.
+During the bootstrap step the SSH key of the server is authorized on the client and added to the client's `~/.ssh/authorized_keys` file.
+Subsequent calls no longer require a password.
+
+
+
+== User Account
+
+The user for Salt SSH calls made by {productname} is taken from the `ssh_push_sudo_user` setting.
+By default, the user is root.
+
+If the value of `ssh_push_sudo_user` is not root, then the `--sudo` options of `salt-ssh` are used.
+
+
+== HTTP Redirection
+
+The `ssh-push-tunnel` method requires traffic to be redirected through an SSH tunnel.
+This allows traffic to bypass firewalls blocking a direct connection between the client and the server.
+
+This is achieved by using port 1233 in the repository URL:
+----
+https://suma-server:1233/repourl...
+----
+
+You can alias the suma-server hostname to `localhost` in [path]``/etc/hosts``:
+----
+127.0.0.1       localhost    suma-server
+----
+
+The server creates a reverse SSH tunnel that connects `localhost:1233` on the client to `suma-server:443`:
+----
+ssh ... -R 1233:suma-server:443
+----
+
+This means that the package manager will actually connect to `localhost:1233`, which is then forwarded to `suma-server:443` by the SSH tunnel.
+
+The package manager can contact the server only if the tunnel is open, which occurs only when the server executes an action on the client.
+
+Manual package manager operations that require server connectivity are not possible in this case.
+
+== Call Sequence
+
+Salt SSH calls run in this sequence:
+
+. Prepare the Salt roster for the call
+.. Create remote port forwarding option if the contact method is `ssh-push-tunnel`
+.. Compute the `ProxyCommand` if the client is connected through a proxy
+.. Create Roster content
+. Create a temporary roster file
+. Execute a synchronous `salt-ssh` call using the API
+. Remove the temporary roster file
+
+The roster content contains:
+
+* `hostname`
+* `user`
+* `port`
+* `remote_port_forwards`: The remote port forwarding SSH option
+* `ssh_options`: Other ssh options:
+** `ProxyCommand`: If the client connects through a proxy
+* `timeout`: defaults to 180 seconds
+* `minion_opts`:
+** `master`: Set to the minion ID if the contact method is `ssh-push-tunnel`
+
+
+For more information, see https://github.com/SUSE/spacewalk/blob/Manager/java/code/src/com/suse/manager/webui/services/impl/SaltSSHService.java
+
+
+== Bootstrap Sequence
+
+Salt SSH is used to bootstrap Salt clients.
+This happens for both regular and SSH clients.
+
+The bootstrap sequence differs slightly from other Salt SSH calls.
+
+. For a regular Salt client, generate and pre-authorize the Salt key of the client
+. For an SSH client, if a proxy was selected, retrieve the SSH public key of the proxy using the `mgrutil.chain_ssh_cmd` runner.
+The runner copies the public key of the proxy to the server using SSH.
+If needed it can chain multiple SSH commands to reach the proxy across multiple hops.
+. Generate pillar data for bootstrap.
+. If contact method is `ssh-push-tunnel`, fill the remote port forwarding option.
+. If the client connects through a proxy, compute the `ProxyCommand` option.
+This depends on the path used to connect to the proxy.
+For example, server to proxy1 to proxy2 to client.
+. Generate the roster for bootstrapping into a temporary file.
+. Execute this command using the Salt API:
++
+----
+salt-ssh --roster-file=<temporary_bootstrap_roster> minion state.apply certs,<bootstrap_state>`
+----
++
+For `bootstrap_state`, use `bootstrap` for regular clients or `ssh_bootstrap` for SSH clients.
+
+Pillar data contains:
+
+* mgr_server: The hostname of the {productname} Server
+* minion_id: The hostname of the client to bootstrap
+* contact_method: The connection type
+* mgr_sudo_user: The user for `salt-ssh`
+* activation_key: If selected
+* minion_pub: The pre-authorized public client key
+* minion_pem: The pre-authorized private client key
+* proxy_pub_key: The public SSH key that was retrieved from the proxy if the target is an SSH client and a proxy was selected
+
+The roster content contains:
+
+* `hostname`
+* `user`
+* `password`
+* `port`
+* `remote_port_forwards`: the remote port forwarding SSH option
+* `ssh_options`: other SSH options:
+** `ProxyCommand` if the client connects through a proxy
+* `timeout`: defaults to 180 seconds
+
+This image provides an overview of the Salt SSH bootstrap process.
+
+.Salt SSH Bootstrap Process
+// This image needs to be reworked. It probably violates copyright for use of the "minion", LKB 2019-10-30 image::salt-ssh-bootstrap-process.png[]
+
+For more information see these code snippets:
+
+* https://github.com/SUSE/spacewalk/blob/Manager/java/code/src/com/suse/manager/webui/controllers/utils/RegularMinionBootstrapper.java
+* https://github.com/SUSE/spacewalk/blob/Manager/java/code/src/com/suse/manager/webui/controllers/utils/SSHMinionBootstrapper.java
+* https://github.com/SUSE/spacewalk/blob/Manager/susemanager-utils/susemanager-sls/salt/bootstrap/init.sls
+* https://github.com/SUSE/spacewalk/blob/Manager/susemanager-utils/susemanager-sls/salt/ssh_bootstrap/init.sls
+
+
+
+== Proxy Support
+
+Salt SSH works with {productname} Proxy  by chaining the SSH connection from one server or proxy to the next.
+This is also known as a multi-hop or multi-gateway SSH connection.
+
+image::salt-ssh-proxy-multi-hop.png[]
+
+
+{productname} uses `ProxyCommand` to redirect SSH connections through proxies.
+This options invokes an arbitrary command that is expected to connect to the SSH port on the target host.
+The SSH process uses standard input and output of the command to communicate with the remote SSH daemon.
+
+`ProxyCommand` replaces a TCP/IP connection.
+It does not perform any authorization or encryption.
+Its role is simply to create a byte stream to the remote SSH daemon port.
+
+This image depicts a client connecting to a server that is behind a gateway.
+In this example `netcat` is used to pipe port 22 of the target host into the SSH standard input/output:
+
+image::salt-ssh-proxycommand.png[]
+
+
+The Salt SSH calls run in this sequence when a proxy is in use:
+
+. {productname} initiates the SSH connection.
+. `ProxyCommand` uses SSH to create a connection from the server to the client through the proxies.
+
+
+This example uses `ProxyCommand` with two proxies and the `ssh-push` method:
+----
+# Connect the server to the first proxy:
+/usr/bin/ssh -i /srv/susemanager/salt/salt_ssh/mgr_ssh_id -o StrictHostKeyChecking=no -o User=mgrsshtunnel  proxy1
+
+# Connect the first proxy to the second, and forward standard input/output on the client to client:22 using the `-W` option:
+/usr/bin/ssh -i /var/lib/spacewalk/mgrsshtunnel/.ssh/id_susemanager_ssh_push -o StrictHostKeyChecking=no -o User=mgrsshtunnel -W client:22  proxy2
+----
+
+image::salt-ssh-push-push-plain-sequence.png[]
+
+This example uses `ProxyCommand` with two proxies and the `ssh-push-tunnel` method:
+----
+# Connect the server to the first proxy:
+/usr/bin/ssh -i /srv/susemanager/salt/salt_ssh/mgr_ssh_id -o User=mgrsshtunnel  proxy1
+
+# Connect the first proxy to the second:
+/usr/bin/ssh -i /home/mgrsshtunnel/.ssh/id_susemanager_ssh_push -o User=mgrsshtunnel  proxy2
+
+# Connect the second proxy to the client and open an reverse tunnel (-R 1233:proxy2:443) from the client to the HTTPS port on the second proxy:
+/usr/bin/ssh -i /home/mgrsshtunnel/.ssh/id_susemanager_ssh_push -o User=root -R 1233:proxy2:443 client
+
+# Connect the client to itself and forward the standard input/output of the server to the SSH port of the client (-W client:22).
+This is equivalent to `ssh ... proxy2 netcat client 22`` and is needed because SSH does not allow both the reverse tunnel (-R 1233:proxy2:443) and the standard input/output forward (-W client:22) in the same command.
+/usr/bin/ssh -i /root/.ssh/mgr_own_id -W client:22 -o User=root client
+----
+
+image::salt-ssh-push-push-tunnel-sequence.png[]
+
+For more information, see https://github.com/SUSE/spacewalk/blob/Manager/java/code/src/com/suse/manager/webui/services/impl/SaltSSHService.java[].
+
+
+
+== Users and SSH Key Management
+
+To connect to a proxy, the parent server or proxy uses a specific user called `mgrsshtunnel`.
+When `mgrsshtunnel` connects, the SSH configuration of the proxy will force the execution of ``/usr/sbin/mgr-proxy-ssh-force-cmd`.
+This is a simple shell script that allows only the execution of `scp`, `ssh`, or `cat` commands.
+
+The connection to the proxy or client is authorized using SSH keys in this sequence:
+
+. The server connects to the client and to the first proxy using the key in ``/srv/susemanager/salt/salt_ssh/mgr_ssh_id`.
+. Each proxy has its own key pair in ``/home/mgrsshtunnel/.ssh/id_susemanager_ssh_push`.
+. Each proxy authorizes the key of the parent proxy or server.
+. The client authorizes its own key.
+
+image::salt-ssh-push-ssh-keys.png[]
+
+For more information, see https://github.com/SUSE/spacewalk/blob/Manager/proxy/proxy/mgr-proxy-ssh-force-cmd[].
+
+
+
+== Repository Access with a Proxy
+
+When {productname} connects to a repository using a proxy, it can use either `ssh-push` or `ssh-push-tunnel`.
+
+In both methods the client connects to the proxy to retrieve package and repository information.
+
+In the `ssh-push` method, the package manager connects directly to the proxy using HTTP or HTTPS.
+This works in cases where there is no firewall between the client and the proxy that blocks HTTP connections initiated by the client.
+
+image::salt-ssh-push-repo-access.png[]
+
+In the `ssh-push-tunnel` method, the HTTP connection to the proxy is redirected through a reverse SSH tunnel.
+
+image::salt-ssh-push-tunnel-repo-access.png[]
+
+
+
+== Proxy Setup
+
+When the `spacewalk-proxy` package is installed on the proxy, the `mgrsshtunnel` user is created.
+
+The initial configuration with `configure-proxy.sh` occurs using this sequence:
+
+. An SSH key pair is generated, or an existing keypair is imported.
+. The SSH key of the parent server or proxy is retrieved to authorize it on the proxy.
+. The `ssh` daemon on the proxy is configured to restrict the `mgrsshtunnel` user.
+This is done by the `mgr-proxy-ssh-push-init` script, which is called from `configure-proxy.sh`.
+It does not have to be manually invoked.
+
+The parent key is retrieved by calling an HTTP endpoint on the parent server or proxy.
+The first endpoint tried is `https://$PARENT/pub/id_susemanager_ssh_push.pub`.
+If the parent is a proxy then this will return the public SSH key of the proxy.
+
+If a 404 error is received from that endpoint, then the parent is assumed to be a server not a proxy, and `https://$PARENT/rhn/manager/download/saltssh/pubkey` is tried instead.
+
+If an SSH key exists at `/srv/susemanager/salt/salt_ssh/mgr_ssh_id.pub` on the server it is returned.
+
+If the public key does not exist because `salt-ssh` has not been invoked yet, a key will be generates by calling the `mgrutil.ssh_keygen` runner.
+
+[NOTE]
+====
+Salt SSH generates a keypair the first time it is invoked with `/srv/susemanager/salt/salt_ssh/mgr_ssh_id`.
+The sequence in this section is needed if a proxy is configured before Salt SSH was invoked for the first time.
+====
+
+For more information, see these code snippets:
+
+* https://github.com/SUSE/spacewalk/blob/Manager/java/code/src/com/suse/manager/webui/controllers/SaltSSHController.java
+* https://github.com/SUSE/spacewalk/blob/Manager/susemanager-utils/susemanager-sls/modules/runners/mgrutil.py
+* https://github.com/SUSE/spacewalk/blob/Manager/proxy/proxy/mgr-proxy-ssh-push-init
+* https://github.com/SUSE/spacewalk/blob/Manager/proxy/proxy/spacewalk-proxy.spec

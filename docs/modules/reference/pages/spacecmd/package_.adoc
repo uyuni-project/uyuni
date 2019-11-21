@@ -1,0 +1,106 @@
+[[spacecmd.functions.package]]
+= package_
+
+The following spacecmd functions are available for working with packages.
+
+
+
+== package_details
+
+Show the details of a software package.
+
+[source]
+--
+usage: package_details PACKAGE ...
+--
+
+
+
+== package_listdependencies
+
+List the dependencies for a package.
+
+[source]
+--
+usage: package_listdependencies PACKAGE
+--
+
+
+
+== package_listerrata
+
+List the errata that provide this package.
+
+[source]
+--
+usage: package_listerrata PACKAGE ...
+--
+
+
+
+== package_listinstalledsystems
+
+List the systems with a package installed.
+
+[source]
+--
+usage: package_listinstalledsystems PACKAGE ...
+--
+
+
+
+== package_listorphans
+
+List packages that are not in a channel.
+
+[source]
+--
+usage: package_listorphans
+--
+
+
+
+== package_remove
+
+Remove a package from SUSE Manager/Satellite
+
+[source]
+--
+usage: package_remove PACKAGE ...
+--
+
+
+
+== package_removeorphans
+
+Remove packages that are not in a channel.
+
+[source]
+--
+usage: package_removeorphans
+--
+
+
+
+== package_search
+
+Find packages that meet the given criteria.
+
+[source]
+--
+usage: package_search NAME|QUERY
+--
+
+[source]
+--
+Example: package_search kernel
+--
+
+Advanced Search
+
+[source]
+--
+Available Fields: name, epoch, version, release, arch, description, summary
+
+Example: name:kernel AND version:2.6.18 AND -description:devel
+--

@@ -1,0 +1,70 @@
+[[space-management]]
+= Managing Disk Space
+
+Running out of disk space can have a severe impact on the {productname} database and file structure which, in some cases, is not recoverable.
+
+{productname} monitors some directories for free disk space.
+You can modify which directories are monitored, and the warnings that are created.
+All settings are configured in the [path]``/etc/rhn/rhn.conf`` configuration file.
+
+
+
+== Monitored Directories
+
+By default, {productname} monitors these directories:
+
+* [path]``/var/lib/pgsql``
+* [path]``/var/spacewalk``
+* [path]``/var/cache``
+* [path]``/srv``
+
+You can change which directories are monitored with the [systemitem]``spacecheck_dirs`` parameter.
+You can specify multiple directories by separating them with a space.
+
+For example:
+
+----
+spacecheck_dirs = /var/lib/pgsql var/spacewalk /var/cache /srv
+----
+
+
+
+== Thresholds
+
+By default, {productname} will create a warning mail when a monitored directory has less than 10% of total space available.
+A critical alert is created when a monitored directory falls below 5% space available.
+
+You can change these alert thresholds with the [systemitem]``spacecheck_free_alert`` and [systemitem]``spacecheck_free_critical`` parameters.
+
+For example:
+
+----
+spacecheck_free_alert = 10
+spacecheck_free_critical = 5
+----
+
+
+
+== Shut Down Services
+
+By default, {productname} will shut down the spacewalk services when the critical alert threshold is reached.
+
+You can change this behavior with the [systemitem]``spacecheck_shutdown`` parameter.
+A value of ``true`` will enable the shut down feature.
+Any other value will disable it.
+
+For example:
+----
+spacecheck_shutdown = true
+----
+
+
+== Disable Space Checking
+
+The space checking tool is enabled by default.
+You can disable it entirely with these commands:
+
+----
+systemctl stop spacewalk-diskcheck.timer
+systemctl disable spacewalk-diskcheck.timer
+----

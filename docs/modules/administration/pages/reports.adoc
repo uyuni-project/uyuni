@@ -1,0 +1,89 @@
+[[reports]]
+= Generate Reports
+
+The [command]``spacewalk-report`` command is used to produce a variety of reports.
+These reports can be helpful for taking inventory of your subscribed systems, users, and organizations.
+Using reports is often simpler than gathering information manually from the {susemgr} {webui}, especially if you have many systems under management.
+
+To generate reports, you must have the [package]``spacewalk-reports`` package installed.
+
+The [command]``spacewalk-report`` command allows you to organize and display reports about content, systems, and user resources across {productname}.
+
+You can generate reports on:
+
+. System Inventory: list all the systems registered to {productname}.
+. Patches: list all the patches relevant to the registered systems.
+You can sort patches by severity, as well as the systems that apply to a particular patch.
+. Users: list all registered users and any systems associated with a particular user.
+
+To get the report in CSV format, run this command at the command prompt on the server:
+
+----
+spacewalk-report <report_name>
+----
+
+This table lists the available reports:
+
+
+[[tab.bp.troubleshooting.spacewalk-report]]
+.[command]``spacewalk-report`` Reports
+[cols="1,1,1", options="header"]
+|===
+|Report | Invoked as | Description
+| Actions | [command]``actions`` | All actions.
+| Activation Keys | [command]``activation-keys`` | All activation keys, and the entitlements, channels, configuration channels, system groups, and packages associated with them.
+| Activation Keys: Channels | [command]``activation-keys-channels`` | All activation keys and the entities associated with each key.
+| Activation Keys: Configuration | [command]``activation-keys-config`` | All activation keys and the configuration channels associated with each key.
+| Activation Keys: Server Groups | [command]``activation-keys-groups`` | All activation keys and the system groups associated with each key.
+| Activation Keys: Packages | [command]``activation-keys-packages`` | All activation keys and the packages each key can deploy.
+| Channel Packages | [command]``channel-packages`` | All packages in a channel.
+| Channel Report | [command]``channels`` | Detailed report of a given channel.
+| Cloned Channel Report | [command]``cloned-channels`` | Detailed report of cloned channels.
+| Configuration Files | [command]``config-files`` | All configuration file revisions for all organizations, including  file contents and file information.
+| Latest Configuration Files | [command]``config-files-latest`` | The most recent configuration file revisions for all organizations, including  file contents and file information.
+| Custom Channels | [command]``custom-channels`` | Channel metadata for all channels owned by specific organizations.
+| Custom Info | [command]``custom-info`` | Client custom information.
+| Patches in Channels | [command]``errata-channels`` | All patches in channels.
+| Patches Details | [command]``errata-list`` | All patches that affect registered clients.
+| All patches | [command]``errata-list-all`` | All patches.
+| Patches for Clients | [command]``errata-systems`` | Applicable patches and any registered clients that are affected.
+| Host Guests | [command]``host-guests`` | Host and guests mapping.
+| Inactive Clients | [command]``inactive-systems`` | Inactive clients.
+| System Inventory | [command]``inventory`` | Clients registered to the server, together with hardware and software information.
+| Kickstart Scripts | [command]``kickstart-scripts`` | All kickstart scripts, with details.
+| Kickstart Trees | [command]``kickstartable-trees`` | Kickstartable trees.
+| All Upgradable Versions | [command]``packages-updates-all`` | All newer package versions that can be upgraded.
+| Newest Upgradable Version | [command]``packages-updates-newest`` | Newest package versions that can be upgraded.
+| Proxy Overview | [command]``proxies-overview`` | All proxies and the clients registered to each.
+| Repositories | [command]``repositories`` | All repositories, with their associated SSL details, and any filters.
+| Result of SCAP | [command]``scap-scan`` | Result of OpenSCAP ``sccdf`` evaluations.
+| Result of SCAP | [command]``scap-scan-results`` | Result of OpenSCAP ``sccdf`` evaluations, in a different format.
+| System Data | [command]``splice-export`` | Client data needed for splice integration.
+| System Crash: Count | [command]``system-crash-count`` | The total number of client crashes.
+| System Crash: Details | [command]``system-crash-details`` | Crash details for all clients.
+| System Currency | [command]``system-currency`` | Number of available patches for each registered client.
+| System Extra Packages | [command]``system-extra-packages`` | All packages installed on all clients that are not available from channels the client is subscribed to.
+| System Groups | [command]``system-groups`` | System groups.
+| Activation Keys for System Groups | [command]``system-groups-keys`` | Activation keys for system groups.
+| Systems in System Groups | [command]``system-groups-systems`` | Clients in system groups.
+| System Groups Users | [command]``system-groups-users`` | System groups and users that have permissions on them.
+| History: System | [command]``system-history`` | Event history for each client.
+| History: Channels | [command]``system-history-channels`` | Channel event history.
+| History: Configuration | [command]``system-history-configuration`` | Configuration event history.
+| History: Entitlements | [command]``system-history-entitlements`` | System entitlement event history.
+| History: Errata | [command]``system-history-errata`` | Errata event history.
+| History: Kickstart | [command]``system-history-kickstart`` | Kickstart event history.
+| History: Packages | [command]``system-history-packages`` | Package event history.
+| History: SCAP | [command]``system-history-scap`` | OpenSCAP event history.
+| MD5 Certificates | [command]``system-md5-certificates`` | All registered clients using certificates with an MD5 checksum.
+| Installed Packages | [command]``system-packages-installed`` | Packages installed on clients.
+| System Profiles | [command]``system-profiles`` | All clients registered to the server, with software and system group information.
+| Users | [command]``users`` | All users registered to {productname}.
+| MD5 Users | [command]``users-md5`` | All users for all organizations using MD5 encrypted passwords, with their details and roles.
+| Systems administered | [command]``users-systems`` | Clients that individual users can administer.
+|===
+
+For more information about an individual report, run [command]``spacewalk-report`` with the option [option]``--info`` or [option]``--list-fields-info`` and the report name.
+The description and list of possible fields in the report will be shown.
+
+For further information on program invocation and options, see the [literal]``spacewalk-report(8)`` man page as well as the [option]``--help``parameter of the [command]``spacewalk-report`` command.

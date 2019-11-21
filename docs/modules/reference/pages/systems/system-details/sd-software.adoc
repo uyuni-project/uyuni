@@ -1,0 +1,4 @@
+[[sd-software]]
+= SD Software
+
+This tab and its subtabs allow you to manage the software on the system: patches (errata), packages and package profiles, software channel memberships, and migrations.

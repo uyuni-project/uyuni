@@ -1,0 +1,81 @@
+[[public-cloud-setup]]
+= Public Cloud Setup
+
+Public Cloud providers pre-install {productname}, so you do not need to perform any installation steps.
+However, {productname} Server needs to be registered with {scc} to receive updates before you can log in.
+
+For detailed instructions on registering {productname} to {scc}, see xref:installation:server-setup.adoc[].
+
+When you have registered, all {sle} modules will be activated.
+You will also need to activate the public cloud module.
+
+
+
+.Procedure: Activating the Public Cloud Module
+
+. On the {productname} Server, open the {yast} management tool, and navigate to menu:Software[Software Repositories].
+. Click btn:[Add] and select [guimenu]``Extensions and Modules from Registration Server``.
+. In the [guimenu]``Available extensions`` field, select [guimenu]``Public Cloud Module``.
+
+If you prefer to use the command line, you can add the module with this command:
+----
+SUSEConnect -p sle-module-public-cloud/15.1/x86_64
+----
+
+When the installation procedure has finished, you can check that you have all the required modules.
+At the command prompt, enter:
+
+----
+SUSEConnect --status-text
+----
+
+For {productname} Server on a public cloud, the expected modules are:
+
+* {sles} Basesystem Module
+* Python 2 Module
+* Server Applications Module
+* Web and Scripting Module
+* SUSE Manager Server Module
+* Public Cloud Module
+
+
+
+== Account Credentials
+
+An administrator account is created by default.
+The username and password varies depending on your provider.
+
+.Default Administrator Account Details
+[cols="1,1,1", options="header"]
+|===
+| Provider              | Default Username  | Default Password
+| Amazon EC2            | ``admin``         | ``<instance-ID>``
+| Google Compute Engine | ``admin``         | ``<instance-ID>``
+| Microsoft Azure       | ``admin``         |``<instance-name>``-suma
+|===
+
+You can retrieve the instance name or ID from the public cloud instance web console, or from the command prompt:
+
+Amazon EC2:
+
+----
+ec2metadata --instance-id
+----
+
+Google Compute Engine:
+
+----
+gcemetadata --query instance --id
+----
+
+Microsoft Azure:
+
+----
+azuremetadata --instance-name
+----
+
+
+[IMPORTANT]
+====
+When you have logged in to the administrator account for the first time, change the default password to protect your account.
+====

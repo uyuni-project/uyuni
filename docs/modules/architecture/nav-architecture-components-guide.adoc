@@ -1,0 +1,155 @@
+// Architecture Antora Navigation List
+ifndef::backend-pdf[]
+
+* xref:architecture-intro.adoc[Architecture Guide]
+** xref:architecture-legend.adoc[Legend]
+// The Salt Stack
+** xref:salt-overview.adoc[Salt]
+*** xref:salt-core-components.adoc[Core Salt Components]
+*** xref:salt-data-locations.adoc[Salt Data Locations]
+*** xref:salt-contact-method-overview.adoc[Salt Contact Methods]
+*** xref:salt-pull.adoc[Salt Pull]
+*** xref:salt-ssh-push.adoc[Salt SSH Push]
+*** xref:salt-ssh-push-tunnel.adoc[Salt SSH Push & Tunnel]
+*** xref:salt-bootstrapping-ui.adoc[Salt Bootstrapping WebUI]
+*** xref:salt-onboarding-and-registration.adoc[Onboarding and Registration]
+// The Traditional Stack
+** xref:traditional-overview.adoc[Traditional]
+*** xref:traditional-contact-method-overview.adoc[Contact Methods]
+*** xref:traditional-rhnsd.adoc[rhnsd]
+*** xref:traditional-osad.adoc[osad]
+*** xref:traditional-ssh-push.adoc[SSH Push]
+*** xref:traditional-ssh-pull.adoc[SSH Pull]
+// Repositories
+** xref:repositories-overview.adoc[Repositories]
+*** xref:pool-repositories.adoc[Pool Repositories]
+*** xref:devel-repositories.adoc[Devel Repositories]
+*** xref:tools-repositories.adoc[Tools Repositories]
+*** xref:maintenance-repositories.adoc[Maintenance Repositories]
+*** xref:syncing-repositories.adoc[Syncing Repositories]
+// Component Index
+** xref:components-overview.adoc[Component Index]
+*** xref:apache.adoc[Apache httpd]
+*** xref:tomcat.adoc[Tomcat]
+*** xref:python-xmlrpc-server.adoc[Python XMLRPC Server]
+*** xref:taskomatic.adoc[Taskomatic]
+*** xref:database.adoc[Database]
+*** xref:mgr-sync.adoc[mgr-sync]
+*** xref:spacewalk-repo-sync.adoc[spacewalk-repo-sync]
+*** xref:osa-dispatcher.adoc[osa-dispatcher]
+*** xref:jabberd.adoc[jabberd]
+*** xref:mgr_check.adoc[mgr_check]
+*** xref:plugin-zypp-spacewalk.adoc[zypp-plugin-spacewalk]
+*** xref:rhnsd.adoc[rhnsd]
+*** xref:osad.adoc[osad]
+*** xref:salt-master.adoc[salt-master]
+*** xref:salt-api.adoc[salt-api]
+*** xref:salt-minion.adoc[salt-minion]
+*** xref:salt-broker.adoc[salt-broker]
+//** xref:common_gfdl1.2_i.adoc[License]
+
+endif::[]
+
+
+// PDF Architecture
+ifdef::backend-pdf[]
+= Architecture Guide: {productname} {productnumber}
+include::./branding/pdf/entities.adoc[]
+:toclevels: 2
+
+// License
+include::modules/architecture/pages/common_gfdl1.2_i.adoc[leveloffset=+1]
+
+// Introduction
+include::modules/architecture/pages/architecture-intro.adoc[leveloffset=+1]
+
+// Legend
+include::modules/architecture/pages/architecture-legend.adoc[leveloffset=+1]
+
+== Salt Architecture
+
+include::modules/architecture/pages/salt-overview.adoc[leveloffset=+2]
+
+include::modules/architecture/pages/salt-core-components.adoc[leveloffset=+2]
+
+include::modules/architecture/pages/salt-data-locations.adoc[leveloffset=+2]
+
+include::modules/architecture/pages/salt-contact-method-overview.adoc[leveloffset=+2]
+
+include::modules/architecture/pages/salt-pull.adoc[leveloffset=+2]
+
+include::modules/architecture/pages/salt-ssh-push.adoc[leveloffset=+2]
+
+include::modules/architecture/pages/salt-ssh-push-tunnel.adoc[leveloffset=+2]
+
+include::modules/architecture/pages/salt-bootstrapping-ui.adoc[leveloffset=+2]
+
+include::modules/architecture/pages/salt-onboarding-and-registration.adoc[leveloffset=+2]
+
+== Traditional Architecture
+
+include::modules/architecture/pages/traditional-overview.adoc[leveloffset=+2]
+
+include::modules/architecture/pages/traditional-contact-method-overview.adoc[leveloffset=+2]
+
+include::modules/architecture/pages/traditional-rhnsd.adoc[leveloffset=+2]
+
+include::modules/architecture/pages/traditional-osad.adoc[leveloffset=+2]
+
+include::modules/architecture/pages/traditional-ssh-push.adoc[leveloffset=+2]
+
+include::modules/architecture/pages/traditional-ssh-pull.adoc[leveloffset=+2]
+
+== Repositories
+
+include::modules/architecture/pages/repositories-overview.adoc[leveloffset=+2]
+
+include::modules/architecture/pages/pool-repositories.adoc[leveloffset=+2]
+
+include::modules/architecture/pages/devel-repositories.adoc[leveloffset=+2]
+
+include::modules/architecture/pages/tools-repositories.adoc[leveloffset=+2]
+
+include::modules/architecture/pages/maintenance-repositories.adoc[leveloffset=+2]
+
+include::modules/architecture/pages/syncing-repositories.adoc[leveloffset=+2]
+
+== Component Index
+
+include::modules/architecture/pages/components-overview.adoc[leveloffset=+2]
+
+include::modules/architecture/pages/apache.adoc[leveloffset=+2]
+
+include::modules/architecture/pages/tomcat.adoc[leveloffset=+2]
+
+include::modules/architecture/pages/python-xmlrpc-server.adoc[leveloffset=+2]
+
+include::modules/architecture/pages/taskomatic.adoc[leveloffset=+2]
+
+include::modules/architecture/pages/database.adoc[leveloffset=+2]
+
+include::modules/architecture/pages/mgr-sync.adoc[leveloffset=+2]
+
+include::modules/architecture/pages/spacewalk-repo-sync.adoc[leveloffset=+2]
+
+include::modules/architecture/pages/osa-dispatcher.adoc[leveloffset=+2]
+
+include::modules/architecture/pages/jabberd.adoc[leveloffset=+2]
+
+include::modules/architecture/pages/mgr_check.adoc[leveloffset=+2]
+
+include::modules/architecture/pages/plugin-zypp-spacewalk.adoc[leveloffset=+2]
+
+include::modules/architecture/pages/rhnsd.adoc[leveloffset=+2]
+
+include::modules/architecture/pages/osad.adoc[leveloffset=+2]
+
+include::modules/architecture/pages/salt-master.adoc[leveloffset=+2]
+
+include::modules/architecture/pages/salt-api.adoc[leveloffset=+2]
+
+include::modules/architecture/pages/salt-minion.adoc[leveloffset=+2]
+
+include::modules/architecture/pages/salt-broker.adoc[leveloffset=+2]
+
+endif::[]

@@ -1,0 +1,41 @@
+[[vhm-aws]]
+= VHM and Amazon Web Services
+
+You can use a {productname} VHM to gather instances from Amazon Web Services (AWS).
+
+The VHM allows {productname} to obtain and report information about your clusters.
+For more information on VHMs, see xref:client-configuration:vhm.adoc[].
+
+
+
+== Create an Amazon EC2 VHM
+
+
+The Virtual Host Manager (VHM) runs on the {productname} Server.
+
+Ensure you have installed the [systemitem]``virtual-host-gatherer-libcloud`` package on the {productname} Server.
+
+
+.Procedure: Creating an Amazon EC2 VHM
+
+. In the {productname} {webui}, navigate to menu:Systems[Virtual Host Managers].
+. Click btn:[Create] and select [guimenu]``Amazon EC2`` from the drop-down menu.
+. In the [guimenu]``Add an Amazon EC2 Virtual Host Manager`` section, use these parameters:
+* In the [guimenu]``Label`` field, type a custom name for your VHM.
+* In the [guimenu]``Access Key ID`` field, type the access key ID provided by Amazon.
+* In the [guimenu]``Secret Access Key`` field, type the secret access key associated with the Amazon instance.
+* In the [guimenu]``Region`` field, type the region to use.
+* In the [guimenu]``Zone`` field, type the zone your VM is located in.
+This is required for subscription matching to work.
+. Click btn:[Create] to save your changes and create the VHM.
+. On the [guimenu]``Virtual Host Managers`` page, select the new VHM.
+. On the [guimenu]``Properties`` page, click btn:[Refresh Data] to inventory the new VHM.
+
+To see which objects and resources have been inventoried, navigate to menu:Systems[System List > Virtual Systems].
+
+
+Instances running on the Amazon public cloud will report this UUID to {productname} Server:
+
+----
+i-1234567890abcdef0
+----

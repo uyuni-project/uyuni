@@ -1,0 +1,7 @@
+[[ref.webui.overview.org.config]]
+= Organization Configuration
+
+On the menu:Main Menu[Home > My Organization > Configuration] page modify your personal information, such as name, password, and title.
+To modify any of this information, make the changes in the appropriate text fields and click the btn:[Update] button at the bottom.
+
+image::home_my_organization_configuration.png[scaledwidth=80%]

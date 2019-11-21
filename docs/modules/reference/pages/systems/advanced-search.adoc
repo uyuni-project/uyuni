@@ -1,0 +1,22 @@
+[[ref.webui.systems.search]]
+= Advanced Search
+
+Carry out an [guimenu]``Advanced Search`` on your systems according to the following criteria: network info, hardware devices, location, activity, packages, details, DMI info, and hardware.
+
+image::systems_advanced_search.png[scaledwidth=80%]
+
+Refine searches using the [guimenu]``Field to Search`` drop-down box, which is set to [guimenu]``Name/Description`` by default.
+
+The Activity selections ([guimenu]``Days Since Last Check-in``, for example) are useful in finding and removing outdated system profiles.
+
+Type the keyword, select the criterion to search by, use the radio buttons to specify whether you want to query all systems or only those in the [guimenu]``System Set Manager``, and click the btn:[Search] button.
+To list all systems that do _not_ match the criteria, select the [guimenu]``Invert Result`` check box.
+
+The results appear at the bottom of the page.
+For more on how to use the system list, see xref:reference:systems/systems-list.adoc[].
+
+[NOTE]
+====
+If you add a distribution, newly synchronize channels, or register a system with a {productname} server, it may take several minutes for it to be indexed and appear in search results.
+To force the rebuild of the search index, enter [command]``rhn-search cleanindex`` on the command line and wait until the rebuild is finished.
+====

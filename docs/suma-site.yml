@@ -1,0 +1,137 @@
+# Contribute, not edit this page
+# Doc site [title, and start page]
+site:
+  title: SUSE Manager Documentation
+  start_page: suse-manager::index
+  # site.url should be adjusted before building depending on the desired target.
+  # The site.url value is used to create the base url for the sitemap.xml file.
+  #
+  # The following selections are available
+  # - Product UI leave site.url blank
+  # - Github Pages: https://opensource.suse.com/doc-susemanager/
+  # - Docserv Production https://documentation.suse.com/external-tree/en-us/suma/4.0/
+  url: https://opensource.suse.com/doc-susemanager/
+
+
+asciidoc:
+  attributes:
+
+    # Included products and versions
+    productname: 'SUSE Manager'
+    productnumber: '4.0'
+    docversion: '4.0'
+    minorversion402: '4.0.2'
+    saltversion: 2019.2.0
+    sles-version: 15
+    sp-version: SP1 #use for normal text
+    sp-vert: sp1 #use for terminal block
+    sp-version-l: sp1
+    smrproductnumber: 4.0
+
+    # Asciidoc Configuration Attributes
+    linkattrs: true
+    sectlinks: true
+    icons: font
+    experimental: true
+
+    # Enable or disable SUSE Manager conditional content (Default is true)
+    suma-content: true
+    uyuni-content: false
+    # SUSE Manager/Uyuni Entities
+    grub: Grub
+    zseries: IBM Z
+    zsystems: IBM Z
+    ibmz: IBM Z
+    ppc: POWER
+    ppc64le: 'IBM Power PC'
+    ipf: Itanium
+    x86: x86
+    x86_64: x86_64
+    redhat: 'Red Hat'
+    rhel: 'Red Hat Enterprise Linux'
+    rhela: 'RHEL'
+    rhnminrelease6: 'Red Hat Enterprise Linux Server 6'
+    rhnminrelease7: 'Red Hat Enterprise Linux Server 7'
+    ubuntu: Ubuntu
+    debian: Debian
+    opensuse: openSUSE
+    centos: CentOS
+    kickstart: Kickstart
+    susemgr: 'SUSE Manager'
+    productproxy: '{productname} Proxy'
+    smr: 'SUSE Manager for Retail'
+    uyuni: Uyuni
+    slepos: 'SUSE Linux Enterprise Point of Service'
+    susemgrproxy: SUSE Manager Proxy
+    webui: Web UI
+    jeos: JeOS
+    scc: SUSE Customer Center
+    sles: SUSE Linux Enterprise Server
+    sle: SUSE Linux Enterprise
+    sleses: SUSE Linux Enterprise Server with Expanded Support
+    es: Expanded Support
+    slsa: SLES
+    suse: SUSE
+    slea: SLE
+    sleda: SLED
+    ay: AutoYaST
+    baseos:
+    deploy: Deployment Guide
+    upgrade: Upgrade Guide
+    yast: YaST
+    rootuser: root
+    ruser: root
+    mdash: '-'
+    mgradvtop: Advanced Topics Guide
+    mgrgetstart: Getting Started Guide
+    mgrrefguide: Reference Guide
+    mgrbestpract: Best Practices Guide
+    openscap: OpenSCAP
+    uarr:
+    ncc: Novell Customer Center
+    rmtool: Repository Management Tool
+    smtool: '{rmtool}'
+    vmguest: VM Guest
+    vmhost: VM Host Server
+    xen: Xen
+    kvm: KVM
+    k8s: Kubernetes
+    caasp: SUSE CaaS Platform
+    homepage: https://github.com/SUSE/doc-susemanager
+
+content:
+  sources:
+
+  # Uncomment to build from your local git clone
+  - url: .
+
+  # Uncomment to build from the remote github repository.
+  #- url: https://github.com/SUSE/doc-susemanager.git
+
+    # To build locally ensure you have your current local branch listed.
+    branches:
+      - '.'
+      - manager-4.0
+
+ui:
+  bundle:
+    # Choose a default-ui to use
+    # - suma-susecom.zip (current - suse.com branding theme)
+    # - suma-product-ui.zip (do not use for now. draft watermark no search currently with webui color scheme, for product webui)
+    # - suma-product.zip (no search no draft watermark use for OBS)
+    # - suma-gh-pages.zip (With algolia search, and product branding)
+    # - latest-bundle.zip (latest bundle for susecom with side toc and previous/next buttons on pages)
+
+    # local git repo bundle for development
+    url: ./branding/default-ui/suma/latest-bundle.zip
+    snapshot: true
+
+  # Choose a UI for your publishing endpoint
+  # - suma-webui (product ui on OBS)
+  # - suma-ghpages (for publishing to gh-pages)
+  # - suma-susecom (suse.com/documentation publishing and docserv)
+  supplemental_files: ./branding/supplemental-ui/suma/suma-ghpages
+output:
+  dir: ./build
+runtime:
+  cache_dir: ./.cache/antora

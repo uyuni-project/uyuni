@@ -1,0 +1,20 @@
+[[ref.webui.users.list.active]]
+= Active Users
+
+The active user list shows all active users on your {productname} and displays basic information about each user: user name, real name, roles, and date of their last sign in.
+
+The active user list shows all active users on your {productname} and displays basic information about each user: user name, real name, roles, and date of their last sign in.
+
+Each row in the [guimenu]``User List`` represents a user within your organization.
+There are four columns of information for each user:
+
+* [guimenu]``Username`` -- The login name of the user.
+Clicking a user name displays the [guimenu]``User Details`` page for the user.
+For more information, see xref:reference:users/user-details.adoc[]. 
+* [guimenu]``Real Name`` -- The full name of the user (last name, first name).
+* [guimenu]``Roles`` -- List of the user's privileges, such as organization administrator, channel administrator and normal user.
+Users can have multiple roles.
+* [guimenu]``Last Sign In`` -- Shows when the user last logged in to {productname}.
+
+
+image::users_user_list.png[scaledwidth=80%]

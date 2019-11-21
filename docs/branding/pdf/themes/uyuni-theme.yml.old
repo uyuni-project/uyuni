@@ -1,0 +1,411 @@
+###
+### This is the AsciiDoctor-PDF export template for SUSE Documentation
+###
+### Markus Napp (mnapp@suse.com), 2019
+###
+
+# Define font catalog
+font:
+  catalog:
+    Free Serif:
+      normal: freeserif.ttf
+      bold: freeserif_bold.ttf
+      italic: freeserif_italic.ttf
+      bold_italic: freeserif_bold_italic.ttf
+    Montserrat:
+      normal: montserrat-normal.ttf
+      bold: montserrat-bold.ttf
+      italic: montserrat-italic.ttf
+      bold_italic: montserrat-bold_italic.ttf
+    # Noto Serif supports Latin, Latin-1 Supplement, Latin Extended-A, Greek, Cyrillic, Vietnamese & an assortment of symbols
+    Noto Serif:
+      normal: notoserif-regular-subset.ttf
+      bold: notoserif-bold-subset.ttf
+      italic: notoserif-italic-subset.ttf
+      bold_italic: notoserif-bold_italic-subset.ttf
+    # M+ 1mn supports ASCII and the circled numbers used for conums
+    M+ 1mn:
+      normal: mplus1mn-regular-ascii-conums.ttf
+      bold: mplus1mn-bold-ascii.ttf
+      italic: mplus1mn-italic-ascii.ttf
+      bold_italic: mplus1mn-bold_italic-ascii.ttf
+    # M+ 1p supports Latin, Latin-1 Supplement, Latin Extended, Greek, Cyrillic, Vietnamese, Japanese & an assortment of symbols
+    # It also provides arrows for ->, <-, => and <= replacements in case these glyphs are missing from font
+    M+ 1p Fallback:
+      normal: mplus1p-regular-fallback.ttf
+      bold: mplus1p-regular-fallback.ttf
+      italic: mplus1p-regular-fallback.ttf
+      bold_italic: mplus1p-regular-fallback.ttf
+  fallbacks:
+    - M+ 1p Fallback
+
+brand:
+  font: Montserrat
+  # Colors from: https://www.suse.com/brandcentral/suse/identity.php#palette
+  primary:
+    susegrn: #02D35F
+    suseblu: #0D2C40
+  preferred:
+    lime: #A0FF5F
+    grass: #00C081
+    seafoam: #02A49C
+  secondary:
+    tourquise: #71D6E0
+    lightblue: #00B2E2
+    dark-blue: #0007B0
+    magenta: #DE0080
+    purple: #841781
+    slate: #24193B
+    pink: #F7A3D5
+    orange: #ED6924
+    lightorange: #FD9A2B
+    eggyolk: #FFEF8D
+  neutral:
+    black: #000000
+    darkgrey: #5F5F5F
+    grey: #A7A9AC
+    lightgrey: #DCDDDE
+    lightergrey: #EDEDED
+    white: #FFFFFF
+  # Colors from: https://www.eosdesignsystem.com/colors
+  elements:
+    link: #00B2E2
+    warning: #FFC107
+    error: #DC3545
+    text: #969494
+    decoration: #F75C03
+    decoration2: #841781
+# Configure style and layout of normal pages
+page:
+  background_color: #ffffff
+  layout: portrait
+  margin: [20mm, 27mm, 27mm, 20mm]
+  # margin_inner and margin_outer keys are used for recto/verso print margins when media=press
+  margin_inner: 20mm
+  margin_outer: 15mm
+  size: A4
+base:
+  font_size_xxxsmall:  6
+  font_size_xxsmall:  7
+  font_size_xsmall:  8
+  font_size_small: 9.5
+  font_size_normal: 11.15
+  font_size_large: 12.5
+  font_size_xlarge: 14
+  font_size_xxlarge: 16
+  font_size_xxxlarge: 20
+  font_size_superlarge: 24
+  font_size_ultralarge: 36
+  font_size_hyperlarge: 48
+  font_size_min: $base_font_size_xxxsmall
+  align: justify
+  # color as hex string (leading # is optional)
+  font_color: 333333
+  font_family: $brand_font
+  font_style: normal
+  font_size: $base_font_size_normal
+  line_height_length: 13.8
+  line_height: $base_line_height_length / $base_font_size
+  border_color: #EEEEEE
+  border_radius: 4
+  border_width: 0.5
+# FIXME vertical_rhythm is weird; we should think in terms of ems
+#vertical_rhythm: $base_line_height_length * 2 / 3
+# correct line height for Noto Serif metrics (comes with built-in line height)
+vertical_rhythm: $base_line_height_length
+horizontal_rhythm: $base_line_height_length
+# QUESTION should vertical_spacing be block_spacing instead?
+vertical_spacing: $vertical_rhythm
+link:
+  font_color: $brand_elements_link
+# literal is currently used for inline monospaced in prose and table cells
+literal:
+  font_color: $brand_preferred_grass
+  font_family: M+ 1mn
+  font_size: $base_font_size * 1.1
+# menu_caret_content: " <font size=\"1.15em\"><color rgb=\"b12146\">\u203a</color></font> "
+heading:
+  align: left
+  #font_color: 181818
+  font_color: #000000
+  font_family: $brand_font
+  font_style: bold
+  # h1 is used for part titles (book doctype only)
+  h1:
+    font_color: $brand_primary_susegrn
+    font_size: $base_font_size_superlarge
+    font_weight: normal
+  # h2 is used for chapter titles (book doctype only)
+  h2:
+    font_color: $brand_primary_susegrn
+    font_size: $base_font_size_xxxlarge
+    font_style: normal
+  h3:
+    font_color: $brand_primary_susegrn
+    font_size: $base_font_size_xxlarge
+    font_style: normal
+  h4:
+    font_color: $brand_primary_susegrn
+    font_size: $base_font_size_xlarge
+    font_style: normal
+  h5:
+    font_color: $brand_primary_susegrn
+    font_size: $base_font_size_normal
+    font_style: normal
+  h6:
+    font_color: $brand_primary_susegrn
+    font_size: $base_font_size_small
+  #line_height: 1.4
+  # correct line height for Noto Serif metrics (comes with built-in line height)
+  line_height: 1
+  margin_top: $vertical_rhythm * 0.4
+  margin_bottom: $vertical_rhythm * 0.9
+# Configure style and layout of title page
+title_page:
+  #background_color: $brand_primary_suseblu
+  background_image: image:images/uyuni_background.png[pdfwidth=100%]
+  align: left
+  font-family: $brand_font
+  logo:
+    align: left
+    top: 2%
+    image: image:images/uyuni_logo.png[pdfwidth=20%]
+  subtitle:
+    font_color: $brand_primary_susegrn
+    font_size: $heading_h3_font_size
+    font_style: normal
+    line_height: 1
+    margin_top: $base_font_size * 1.25
+  title:
+    font_color: ffffff
+    top: 20%
+    font_size: $heading_h1_font_size
+    line_height: 0.9
+  authors:
+    font_color: ffffff
+    margin_top: $base_font_size * 1.25
+    font_size: $base_font_size
+  revision:
+    font_color: ffffff
+    margin_top: $base_font_size * 1.25
+block:
+  margin_top: 0
+  margin_bottom: $vertical_rhythm
+caption:
+  align: left
+  font_size: $base_font_size_small
+  font_style: italic
+  font_color: $brand_primary_susegrn
+  # FIXME perhaps set line_height instead of / in addition to margins?
+  margin_inside: $vertical_rhythm / 3
+  #margin_inside: $vertical_rhythm / 4
+  margin_outside: 0
+lead:
+  font_size: $base_font_size_large
+  line_height: 1.4
+abstract:
+  font_color: 5c6266
+  font_size: $lead_font_size
+  line_height: $lead_line_height
+  font_style: italic
+  first_line_font_style: bold
+  title:
+    align: center
+    font_color: $heading_font_color
+    font_family: $heading_font_family
+    font_size: $heading_h4_font_size
+    font_style: $heading_font_style
+
+# Configure style of admonition boxes (Tip, Note, Warning etc.)
+admonition:
+  column_rule_color: $brand_neutral_lightgrey
+  column_rule_width: 2.5
+  column_rule_style: dotted
+  padding: [0, $horizontal_rhythm, 0, $horizontal_rhythm]
+  label:
+    align: center
+    vertical_align: middle
+    font_color: $brand_primary_suseblu
+    font_family: $base_font_family
+  # Icons from https://github.com/jessedoyle/prawn-icon packaged with AsciiDoctor-PDF
+  # Shipped version is FontAwesome 5.4.x / https://fontawesome.com/v5.4.1/icons
+  icon:
+    tip:
+      name: fa-lightbulb-o
+      stroke_color: $brand_preferred_grass
+      size: $base_font_size_ultralarge
+    note:
+      stroke_color: $brand_elements_link
+      name: fa-info-circle
+      size: $base_font_size_ultralarge
+    important:
+      name: fa-exclamation-circle
+      stroke_color: $brand_secondary_orange
+      size: $base_font_size_ultralarge
+    warning:
+      name: fa-exclamation-triangle
+      stroke_color: $brand_elements_warning
+      size: $base_font_size_ultralarge
+    caution:
+      name: fa-fire
+      stroke_color: $brand_elements_error
+      size: $base_font_size_ultralarge
+blockquote:
+  font_color: $base_font_color
+  font_size: $base_font_size_large
+  border_color: $base_border_color
+  border_width: 5
+  # FIXME disable negative padding bottom once margin collapsing is implemented
+  padding: [0, $horizontal_rhythm, $block_margin_bottom * -0.75, $horizontal_rhythm + $blockquote_border_width / 2]
+  cite_font_size: $base_font_size_small
+  cite_font_color: 999999
+# code is used for source blocks (perhaps change to source or listing?)
+code:
+  font_color: $base_font_color
+  font_family: $literal_font_family
+  font_size: $base_font_size_small
+  padding: $code_font_size
+  line_height: 1
+  background_color: $brand_neutral_lightergrey
+  border_color: $brand_neutral_grey
+  border_radius: $base_border_radius
+  border_width: 0.75
+conum:
+  font_family: $literal_font_family
+  font_color: $brand_primary_susegrn
+  font_size: $base_font_size
+  line_height: 4 / 3
+example:
+  border_color: $base_border_color
+  border_radius: $base_border_radius
+  border_width: 0.75
+  background_color: transparent
+  # FIXME reenable padding bottom once margin collapsing is implemented
+  padding: [$vertical_rhythm, $horizontal_rhythm, 0, $horizontal_rhythm]
+image:
+  align: left
+prose:
+  margin_top: $block_margin_top
+  margin_bottom: $block_margin_bottom
+sidebar:
+  border_color: $page_background_color
+  border_radius: $base_border_radius
+  border_width: $base_border_width
+  background_color: eeeeee
+  # FIXME reenable padding bottom once margin collapsing is implemented
+  padding: [$vertical_rhythm, $vertical_rhythm * 1.25, 0, $vertical_rhythm * 1.25]
+  title:
+    align: center
+    font_color: $heading_font_color
+    font_family: $heading_font_family
+    font_size: $heading_h4_font_size
+    font_style: $heading_font_style
+thematic_break:
+  border_color: $base_border_color
+  border_style: solid
+  border_width: $base_border_width
+  margin_top: $vertical_rhythm * 0.5
+  margin_bottom: $vertical_rhythm * 1.5
+description_list:
+  term_font_style: bold
+  term_spacing: $vertical_rhythm / 4
+  description_indent: $horizontal_rhythm * 1.25
+outline_list:
+  indent: $horizontal_rhythm * 1.5
+  #marker_font_color: 404040
+  # NOTE outline_list_item_spacing applies to list items that do not have complex content
+  item_spacing: $vertical_rhythm / 2
+table:
+  background_color: $page_background_color
+  head_background_color: f5f5f5
+  head_font_color: $base_font_color
+  head_font_style: bold
+  even_row_background_color: f9f9f9
+  #odd_row_background_color: <hex value>
+  foot_background_color: f0f0f0
+  border_color: dddddd
+  border_width: $base_border_width
+  # HACK accounting for line-height
+  cell_padding: [3, 3, 6, 3]
+toc:
+  title:
+    font_color: $brand_primary_susegrn
+  indent: $horizontal_rhythm
+  font_family: $brand_font
+  font_size: $base_font_size
+  font_color: $brand_primary_suseblu
+  line_height: 1.2
+  dot_leader:
+    content: ". "
+    font_color: $brand_primary_suseblu
+    levels: 2 3 4 5 6
+  h2_font_color: $brand_primary_susegrn
+  #h2_text_decoration: underline
+  #h5_font_style: italic
+# NOTE in addition to footer, header is also supported
+header:
+  font_size: $base_font_size_xsmall
+  font_color: #adadad
+  # NOTE if background_color is set, background and border will span width of page
+  border_color: dddddd
+  border_width: 0.25
+  height: 0.75in
+  line_height: $base_line_height
+  padding: [$base_line_height_length / 0, 0, 0, 0]
+  vertical_align: middle
+  recto:
+    left:
+      content:
+    center:
+      content: '*{section-title}*'
+    right:
+      content: 'v{revnumber}-{docdate}'
+  verso:
+    left:
+      content: $header_recto_left_content
+    center:
+      content: $header_recto_center_content
+    right:
+     content: $header_recto_right_content
+footer:
+  font_size: $base_font_size_xsmall
+  font_color: #adadad
+  # NOTE if background_color is set, background and border will span width of page
+  border_color: dddddd
+  border_width: 0.25
+  height: 0.75in
+  line_height: $base_line_height
+  padding: [$base_line_height_length / 0, 0, 0, 0]
+  vertical_align: top
+  image_vertical_align: middle
+  #image_vertical_align: <alignment> or <number>
+  # additional attributes for content:
+  # * {page-count}
+  # * {page-number}
+  # * {document-title}
+  # * {document-subtitle}
+  # * {chapter-title}
+  # * {section-title}
+  # * {section-or-chapter-title}
+  recto:
+    #columns: "<50% =0% >50%"
+    left:
+      content: '*{page-number} / {page-count}*'
+    center:
+      content:
+    right:
+      content: '{section-or-chapter-title} | {productname} {productnumber}'
+      #content: ' | {page-number}'
+    #center:
+    #  content: '{page-number}'
+  verso:
+    #columns: $footer_recto_columns
+    left:
+      content: $footer_recto_left_content
+    center:
+      content: $footer_recto_center_content
+    right:
+      content: $footer_recto_right_content
+      #content: '{page-number} | {chapter-title}'
+    #center:
+    #  content: '{page-number}'

@@ -1,0 +1,43 @@
+[[sd-sp-migration]]
+= SD Service Pack Migration
+
+Service Pack Migration (SP Migration) allows you to upgrade a system from one service pack to another.
+
+image::system_details_traditional_software_sp_migration.png[scaledwidth=80%]
+
+[WARNING]
+====
+During migration {productname} automatically accepts any required licenses (EULAs) before installation.
+====
+
+Beginning with SLE 12 {suse} supports service pack skipping, it is now possible to migrate from for example, SLE 12 SP2 to SLE 12 SP4.
+Note that SLE 11 may only be migrated step by step and individual service packs should not be skipped.
+Supported migrations include any of the following:
+
+* SLE 11 > SLE 11 SP1 > SLE 11 SP2 > SLE 11 SP3 > SLE 11 SP4
+* SLE 12 > SLE 12 SP1 > SLE 12 SP2 > SLE 12 SP3 > SLE 12 SP4
+* SLE 12 SP2 > SLE 12 SP4 (skipping SLE 12 SP3)
+
+
+
+[WARNING]
+.Migrating from an Earlier Version of SLES
+====
+It is not possible to migrate, for example, from SLE 11 to SLE 12 using this tool.
+You must use {ay} to perform a migration on this level.
+====
+
+
+[WARNING]
+.Rollback Not Possible
+====
+The migration feature does not cover any rollback functionality.
+When the migration procedure is started, rolling back is not possible.
+Therefore it is recommended to have a working system backup available for an emergency.
+====
+
+.Procedure: Performing a Migration
+. From the menu:Main Menu[Systems > Overview] page, select a client.
+. Select the menu:System Details[Software > SP Migration] tabs.
+. Select the target migration path and click btn:[Select Channels].
+. From the menu:System Details[Software > SP Migration > Service Pack Migration - Channels] view select the correct base channel, including `Mandatory Child Channels` and any additional ``Optional Child Channels``. Select btn:[Schedule Migration] when your channels have been configured properly.

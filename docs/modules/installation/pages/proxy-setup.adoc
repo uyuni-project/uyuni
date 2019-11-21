@@ -1,0 +1,249 @@
+[[proxy-setup]]
+= SUSE Manager Proxy Setup
+
+{productname} Proxy requires additional configuration.
+
+
+////
+[[at.manager.proxy.run.pattern]]
+== Install the [path]``suma_proxy`` pattern
+
+On the server select the [package]``pattern_suma_proxy`` package for installation, or make sure the [path]``suma_proxy`` pattern is installed using the following command on the proxy as root:
+
+----
+zypper in -t pattern suma_proxy
+----
+
+The new salt-broker service will be automatically started at the end of the package installation.
+This service forwards the Salt interactions to the {productname} server.
+////
+
+// REMARK 2019-08-23, ke: Is this a Salt proxy-only feature?
+[NOTE]
+.Proxy Chains
+====
+It is possible to arrange Salt proxies in a chain.
+In such a case, the upstream proxy is named `parent`.
+====
+
+Make sure the TCP ports `4505` and `4506` are open on the proxy.
+The proxy must be able to reach the {productname} Server or a parent proxy on these ports.
+
+
+
+[[at.manager.proxy.run.copycert]]
+== Copy Server Certificate and Key
+
+The proxy will share some SSL information with the {productname} Server.
+Copy the certificate and its key from the {productname} 4 Server or the parent proxy.
+
+As root, enter the following commands on the proxy using your {productname} 4 Server or parent Proxy 4 (named [replaceable]``PARENT``):
+
+----
+mkdir -m 700 /root/ssl-build
+cd /root/ssl-build
+scp root@PARENT:/root/ssl-build/RHN-ORG-PRIVATE-SSL-KEY .
+scp root@PARENT:/root/ssl-build/RHN-ORG-TRUSTED-SSL-CERT .
+scp root@PARENT:/root/ssl-build/rhn-ca-openssl.cnf .
+----
+
+
+[NOTE]
+====
+To keep the security chain intact, the {susemgrproxy} functionality requires the SSL certificate to be signed by the same CA as the {productname} Server certificate.
+Using certificates signed by different CAs for proxies and server is not supported.
+====
+
+
+
+[[at.manager.proxy.run.confproxy]]
+== Run [command]``configure-proxy.sh``
+
+The [command]``configure-proxy.sh`` script will finalize the setup of your {susemgrproxy}.
+
+Now execute the interactive [command]``configure-proxy.sh`` script.
+Pressing kbd:[Enter] without further input will make the script use the default values provided between brackets ``[]``.
+Here is some information about the requested settings:
+
+{productname} Parent::
+A {productname} parent can be either another proxy or a {productname} Server.
+
+HTTP Proxy::
+A HTTP proxy enables your {productname} proxy to access the Web.
+This is needed if direct access to the Web is prohibited by a firewall.
+
+Proxy Version to Activate::
+Normally, the correct value (3.0, 3.1, 3.2, or 4.0) should be offered as a default.
+
+Traceback Email::
+An email address where to report problems.
+
+Use SSL::
+For safety reasons, press ``Y``.
+
+Do You Want to Import Existing Certificates?::
+Answer ``N``.
+This ensures using the new certificates that were copied previously from the {productname} server.
+
+Organization::
+The next questions are about the characteristics to use for the SSL certificate of the proxy.
+The organization might be the same organization that was used on the server, unless of course your proxy is not in the same organization as your main server.
+
+Organization Unit::
+The default value here is the proxy's hostname.
+
+City::
+Further information attached to the proxy's certificate.
+
+State::
+Further information attached to the proxy's certificate.
+
+Country Code::
+In the [guimenu]``country code`` field, enter the country code set during the {productname} installation.
+For example, if your proxy is in the US and your {productname} is in DE, enter `DE` for the proxy.
++
+
+[NOTE]
+====
+The country code must be two upper case letters.
+For a complete list of country codes, see https://www.iso.org/obp/ui/#search.
+====
+
+Cname Aliases (Separated by Space)::
+Use this if your proxy can be accessed through various DNS CNAME aliases.
+Otherwise it can be left empty.
+
+CA Password::
+Enter the password that was used for the certificate of your {productname} Server.
+
+Do You Want to Use an Existing SSH Key for Proxying SSH-Push Salt Minion?::
+Use this option if you want to reuse a SSH key that was used for SSH-Push Salt clients on the server.
+
+Create and Populate Configuration Channel rhn_proxy_config_1000010001?::
+Accept default ``Y``.
+
+SUSE Manager Username::
+Use same user name and password as on the {productname} server.
+
+If parts are missing, such as CA key and public certificate, the script prints commands that you must execute to integrate the needed files.
+When the mandatory files are copied, run [command]``configure-proxy.sh`` again.
+If you receive an HTTP error during script execution, run the script again.
+
+[command]``configure-proxy.sh`` activates services required by {productname} Proxy, such as [systemitem]``squid``, [systemitem]``apache2``, [systemitem]``salt-broker``, and [systemitem]``jabberd``.
+
+To check the status of the proxy system and its clients, click the proxy system's details page on the {webui} (menu:Systems[Proxy], then the system name).
+[guimenu]``Connection`` and [guimenu]``Proxy`` subtabs display various status information.
+
+
+
+[[proxy.pxe.setup]]
+== Enable PXE Boot
+
+
+
+[[proxy.pxe.sync]]
+=== Synchronize Profiles and System Information
+
+To enable PXE boot through a proxy, additional software must be installed and configured on both the {susemgrproxy} and the  {productname} Server.
+
+. On the {susemgrproxy} install [package]#susemanager-tftpsync-recv#:
++
+
+----
+zypper in susemanager-tftpsync-recv
+----
+
+. On the {productname} Proxy, run the [command]``configure-tftpsync.sh`` setup script and enter the requested information:
++
+
+----
+configure-tftpsync.sh
+----
++
+
+It asks for hostname and IP address of the {productname} Server and of the proxy itself.
+Additionally, it asks for the tftpboot directory on the proxy.
+
+. On the {productname} Server, install [package]``susemanager-tftpsync``:
++
+
+----
+zypper in susemanager-tftpsync
+----
+
+// same file name on the server and proxy!
+. On the {productname} Server, run [command]``configure-tftpsync.sh`` to configure the upload to the {susemgrproxy}:
++
+
+----
+configure-tftpsync.sh FQDN_of_Proxy
+----
+
+. To start an initial synchronization on the {productname} Server run:
++
+
+----
+cobbler sync
+----
++
+
+It can also be done after a change within Cobbler that needs to be synchronized immediately.
+Otherwise Cobbler synchronization will run automatically when needed.
+For more information about Cobbler, see xref:client-configuration:cobbler.adoc[Cobbler].
+
+
+
+[[proxy.pxe.dhcp]]
+=== Configure DHCP for PXE through {susemgrproxy}
+
+{productname} is using Cobbler to provide provisioning.
+PXE (tftp) is installed and activated by default.
+To enable systems to find the PXE boot on the {susemgrproxy} add the following to the DHCP configuration for the zone containing the systems to be provisioned:
+
+----
+next-server: <IP_Address_of_SUSE_Manager_Proxy>
+filename: "pxelinux.0"
+----
+
+
+
+// REMARK: 2019-08-23, ke: this needs closer checking
+[[replacing.a.susemgrproxy]]
+== Replace a {susemgrproxy}
+
+A {susemgrproxy} is dumb in that it does not contain any information about the clients that are connected to it.
+A {susemgrproxy} can therefore be replaced by a new one.
+Naturally, the replacement proxy must have the same name and IP address as its predecessor.
+
+In order to replace a {susemgrproxy} and keeping the clients registered to the proxy leave the old proxy in {productname}.
+Create a reactivation key for this system and then register the new proxy using the reactivation key.
+If you do not use the reactivation key, you will need to re-register all the clients against the new proxy.
+
+[[proxy.migration3.replace]]
+.Procedure: Replacing a {susemgrproxy} and Keeping the Clients Registered
+. Before starting the actual migration procedure, save the data from the old proxy, if needed.
+Consider copying important data to a central place that can also be accessed by the new proxy.
+// REMARK: 2019-08-23, ke: this is unclear
+// ** Copy the scripts that are still needed.
+// ** Copy the activation keys from the previous server.
+// Of course, it is always better to re-create the keys.
+. Shut down the proxy.
+. Install a new {susemgrproxy}{nbsp}{productnumber}, following xref:install-proxy-unified.adoc[Proxy Installation].
+. In the {productname} {webui} select the newly installed {susemgrproxy} and delete it from the systems list.
+[[step.at.proxy.migration3.replace.react]]
+. In the {webui}, create a reactivation key for the old proxy system: On the System Details tab of the old proxy click [guimenu]``Reactivation``.
+Then click [guimenu]``Generate New Key``, and remember it (write it on a piece of paper or copy it to the clipboard).
+For more information about reactivation keys, see xref:reference:systems/system-details/sd-reactivation.adoc[Reactivation Keys].
+. After the installation of the new proxy, perform the following actions (if needed):
+** Copy the centrally saved data to the new proxy system.
+** Install any other needed software.
+** If the proxy is also used for autoinstallation, do not forget to setup TFTP synchronization.
+
+[IMPORTANT]
+.Proxy Installation and Client Connections
+====
+During the installation of the proxy, clients will not be able to reach the {productname} Server.
+After a {susemgrproxy} system has been deleted from the systems list, all clients connected to this proxy will be (incorrectly) listed as `directly connected` to the {productname} Server.
+After the first successful operation on a client _such as execution of a remote command or installation of a package or patch_ this information will automatically be corrected.
+This may take some hours.
+====

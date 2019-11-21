@@ -1,0 +1,95 @@
+[[security-repo-metadata]]
+= Signing Repository Metadata
+
+// TODO:: Explain why repository metadata should/would be signed.
+
+You will require a custom GPG key to be able to sign repository metadata.
+
+.Procedure: Generating a Custom GPG Key
+
+. As the root user, use the [command]``gpg`` command to generate a new key:
++
+----
+gpg --gen-key
+----
++
+. At the prompts, select [systemitem]``RSA`` as the key type, with a size of 2048 bits, and select an appropriate expiry date for your key.
+Check the details for your new key, and type [systemitem]``y`` to confirm.
+. At the prompts, enter a name and email address to be associated with your key.
+You can also add a comment to help you identify the key, if desired.
+When you are happy with the user identity, type [systemitem]``O`` to confirm.
+. At the prompt, enter a passphrase to protect your key.
+. The key should be automatically added to your keyring.
+You can check by listing the keys in your keyring:
++
+----
+gpg --list-keys
+----
++
+. Add the password for your keyring to the [filename]``/etc/rhn/signing.conf`` configuration file, by opening the file in your text editor and adding this line:
++
+----
+GPGPASS="password"
+----
+
+
+You can manage metadata signing on the command line using the [command]``mgr-sign-metadata-ctl`` command.
+
+
+.Procedure: Enabling Metadata Signing
+. You will need to know the short identifier for the key to use.
+You can list your available public keys in short format:
++
+----
+gpg --keyid-format short --list-keys
+...
+pub   rsa2048/3E7BFE0A 2019-04-02 [SC] [expires: 2021-04-01]
+      A43F9EC645ED838ED3014B035CFA51BF3E7BFE0A
+uid         [ultimate] SUSE Manager
+sub   rsa2048/118DE7FF 2019-04-02 [E] [expires: 2021-04-01]
+----
++
+. Enable metadata signing with the [command]``mgr-sign-metadata-ctl`` command:
++
+----
+mgr-sign-metadata-ctl enable 3E7BFE0A
+OK. Found key 3E7BFE0A in keyring.
+DONE. Set key 3E7BFE0A in /etc/rhn/signing.conf.
+DONE. Enabled metadata signing in /etc/rhn/rhn.conf.
+DONE. Exported key 4E2C3DD8 to /srv/susemanager/salt/gpg/mgr-keyring.gpg.
+DONE. Exported key 4E2C3DD8 to /srv/www/htdocs/pub/mgr-gpg-pub.key.
+NOTE. For the changes to become effective run:
+   mgr-sign-metadata-ctl regen-metadata
+----
+. You can check that your configuration is correct with this command:
++
+----
+mgr-sign-metadata-ctl check-config
+----
+. Restart the services and schedule metadata regeneration to pick up the changes:
++
+----
+mgr-sign-metadata-ctl regen-metadata
+----
+
+You can also use the [command]``mgr-sign-metadata-ctl`` command to perform other tasks.
+Use [command]``mgr-sign-metadata-ctl --help`` to see the complete list.
+
+Repository metadata signing is a global option.
+When it is enabled, it is enabled on all software channels on the server.
+This means that all clients connected to the server will need to trust the new  GPG key to be able to install or update packages.
+
+.Procedure: Importing GPG keys on Clients
+
+. For RPM-based client systems, use these remote commands:
++
+----
+rpm --import http://server.example.com/pub/mgr-gpg-pub.key
+----
+. For Ubuntu clients, you will need to reassign the channels, which will automatically pick up the new GPG key.
+You can do this through the {productname} {webui}, or from the command line on the server with this command:
++
+----
+salt <ubuntu-client> state.apply channels
+----
+. OPTIONAL: For Salt clients, you might prefer to use a state to manage your GPG keys.

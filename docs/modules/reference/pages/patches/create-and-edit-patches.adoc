@@ -1,0 +1,62 @@
+[[ref.webui.patches.manage.create.edit]]
+= Create and Edit Patches
+
+To create a custom patch alert, proceed as follows:
+
+. Click menu:Main Menu[Patches > Manage Patches > Published]. Then on the [guimenu]``Patches Management`` page, click [guimenu]``Create Patch``.
++
+
+image::patches_create_patch.png[scaledwidth=80%]
+
+. Enter a label for the patch in the [guimenu]``Advisory`` field, ideally following a naming convention adopted by your organization.
++
+ifdef::showremarks[]
+#emap: Similar patch beginnings for SUSE? "Note that this label cannot begin with the letters "RH" (capitalized or not) to prevent confusion between custom errata and those issued by Red Hat."#
+endif::showremarks[]
+. Complete all remaining required fields, then click the btn:[Create Patch] button. View standard SUSE Alerts for examples of properly completed fields.
+
+Patch management distinguishes between published and unpublished patches.
+
+* [guimenu]``Published`` : this page displays the patch alerts the organization has created and disseminated. To edit an existing published patch, follow the steps described in <<s3-sm-errata-assign-packs>>. To distribute the patch, click btn:[Send Notification] in the [guimenu]``Send Patch Mail`` section on the top of the [guimenu]``Patch Details`` page. The patch alert is sent to the administrators of all affected systems.
+* [guimenu]``Unublished`` : this page displays the patch alerts your organization has created but not yet distributed. To edit an existing unpublished patch, follow the steps described in <<s3-sm-errata-assign-packs>>. To publish the patch, click btn:[Publish Patch] on the top-right corner of the [guimenu]``Patch Details`` page. Confirm the channels associated with the patch and click the btn:[Publish Patch] button, now in the lower-right corner. The patch alert is moved to the [guimenu]``Published`` page awaiting distribution.
+
+{productname} administrators can also create patches by cloning an existing one.
+Cloning preserves package associations and simplifies issuing patches.
+See xref:reference:patches/clone-patches.adoc[Clone Patches] for instructions.
+
+To edit an existing patch alert's details, click its advisory on the [guimenu]``Patches Management`` page, make the changes in the appropriate fields of the [guimenu]``Details`` tab, and click the btn:[Update Patch] button.
+Click the [guimenu]``Channels`` tab to alter the patch's channel association.
+Click the [guimenu]``Packages`` tab to view and modify its packages.
+
+To delete patches, select their check boxes on the [guimenu]``Patches Management`` page, click the btn:[Delete Patches] button, and confirm the action.
+Deleting published patches might take a few minutes.
+
+
+
+[[s3-sm-errata-assign-packs]]
+== Assigning Packages to Patches
+
+To assign packages to patches, proceed as follows:
+
+. Select a patch, click the [guimenu]``Packages`` tab, then the [guimenu]``Add`` subtab.
+. To associate packages with the patch being edited, select the channel from the [guimenu]``View`` drop-down box that contains the packages and click btn:[View]. Packages already associated with the patch being edited are not displayed. Selecting [guimenu]``All managed packages`` presents all available packages.
+. After clicking btn:[View], the package list for the selected option appears. Note that the page header still lists the patch being edited.
+. In the list, select the check boxes of the packages to be assigned to the edited patch and click btn:[Add Packages].
+. A confirmation page appears with the packages listed. Click btn:[Confirm] to associate the packages with the patch. The [guimenu]``List/Remove`` subtab of the [guimenu]``Managed Patch Details`` page appears with the new packages listed.
+
+When packages are assigned to a patch, the patch cache is updated to reflect the changes.
+This update is delayed briefly so that users may finish editing a patch before all the changes are made available.
+To initiate the changes to the cache manually, follow the directions to btn:[Commit the Changes Immediately] at the top of the page.
+
+
+
+[[s3-sm-errata-publish]]
+== Publishing Patches
+
+After adding packages to the patch, the patch needs to be published to be disseminated to affected systems.
+Follow this procedure to publish patches:
+
+. On the top navigation bar, click menu:Main Menu[Patches > Manage Patches > Unpublished] to see all the unpublished patches listed.
+. Click the patch [guimenu]``Advisory`` name to open the patch details pages.
+. On the patch details page, click btn:[Publish Patch]. A confirmation page appears that will ask you to select which channels you want to make the patch available in. Choose the relevant channels.
+. At the bottom of the page, click btn:[Publish Patch]. The patch published will now appear on the [guimenu]``Published`` page of [guimenu]``Manage Patches``.

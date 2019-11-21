@@ -1,0 +1,18 @@
+<!-- <footer class="footer">
+</footer> -->
+<script src="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.js"></script>
+<!-- fetched from https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.js -->
+<script>
+function focusSearchInput () { document.querySelector('#search-input').focus() }
+var search = docsearch({
+  appId: 'X90GSPGHD0',
+  apiKey: '88197b3f73fb857531da692e68b19b07',
+  indexName: 'manager',
+  inputSelector: '#search-input',
+  autocompleteOptions: { hint: false, keyboardShortcuts: ['s'] },
+  algoliaOptions: { hitsPerPage: 10 }
+}).autocomplete;
+search.on('autocomplete:closed', function () { search.autocomplete.setVal() });
+focusSearchInput();
+window.addEventListener('load', focusSearchInput)
+</script>

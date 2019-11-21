@@ -1,0 +1,69 @@
+[[arch.component.salt.api]]
+= salt-api
+
+
+
+
+
+
+== Functions
+
+The *salt-api* is a primary component of {productname}. It performs the following functions in the stack.
+
+* **Internal API communicates the Java side of {productname} with the salt-master**
+* **Provides HTTPS and websocket interfaces with the salt-master**
+* **Handles the SSH connections to clients (SSH Push)**
+
+
+
+== salt-api --help
+
+The following options are available for the *salt-api*. The following list is not comprehensive, for more information see: http://docs.saltstack.com[The Saltstack Docs]
+
+**Options:**
+
+----
+salt-api --help
+Usage: salt-api [options]
+
+The Salt API system manages network API connectors for the Salt Master
+
+Options:
+  --version             show program's version number and exit
+  -V, --versions-report
+                        Show program's dependencies version number and exit.
+  -h, --help            show this help message and exit
+  -c CONFIG_DIR, --config-dir=CONFIG_DIR
+                        Pass in an alternative configuration directory.
+                        Default: '/etc/salt'.
+  -d, --daemon          Run the salt-api as a daemon.
+  --pid-file=PIDFILE    Specify the location of the pidfile. Default:
+                        '/var/run/salt-api.pid'.
+
+  Logging Options:
+    Logging options which override any settings defined on the
+    configuration files.
+
+    -l LOG_LEVEL, --log-level=LOG_LEVEL
+                        Console logging log level. One of u'all', u'garbage',
+                        u'trace', u'debug', u'profile', u'info', u'warning',
+                        u'error', u'critical', u'quiet'. Default: 'warning'.
+    --log-file=API_LOGFILE
+                        Log file path. Default: '/var/log/salt/api'.
+    --log-file-level=LOG_LEVEL_LOGFILE
+                        Logfile logging log level. One of u'all', u'garbage',
+                        u'trace', u'debug', u'profile', u'info', u'warning',
+                        u'error', u'critical', u'quiet'. Default: 'warning'.
+
+You can find additional help about salt-api issuing "man salt-api" or on
+http://docs.saltstack.com
+----
+
+== Log Files
+
+_Logs for *salt-api* are located in:_
+
+----
+/var/log/salt/master
+/var/log/salt/api
+----

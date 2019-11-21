@@ -1,0 +1,11 @@
+= Salt Architecture
+
+
+
+
+
+
+Some description...
+
+.Salt Stack Diagram
+image:dia-salt-stack.png[]

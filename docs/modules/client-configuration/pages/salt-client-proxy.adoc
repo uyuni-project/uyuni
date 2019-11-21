@@ -1,0 +1,63 @@
+[[salt-client-proxy]]
+= Registering with the Web UI on a Proxy
+
+Registering Salt clients to a {productname} Proxy using the {webui} is similar to registering clients directly with the {productname} Server.
+
+
+.Procedure: Registering clients to a proxy in the {webui}
+
+. In the {productname} {webui}, navigate to menu:Systems[Bootstrapping].
+. In the [guimenu]``Host`` field, type the fully-qualified domain name (FQDN) of the client to be bootstrapped.
+. In the [guimenu]``SSH Port`` field, type the SSH port number that will be used to connect and bootstrap the client.
+By default, the SSH  port is [systemitem]``22``.
+. In the [guimenu]``User`` field, type the username to log in to the client.
+By default, the username is [systemitem]``root``.
+. In the [guimenu]``Password`` field, type password to log in to the client.
+. In the [guimenu]``Activation Key`` field, select the activation key that is associated with the software channel you want to use to bootstrap the client.
+. In the [guimenu]``Proxy`` field, select the proxy server you want to register to.
+. By default, the [guimenu]``Disable SSH Strict Key Host Checking`` checkbox is selected.
+This allows the bootstrap process to automatically accept SSH host keys without requiring you to manually authenticate.
+. OPTIONAL: Check the [guimenu]``Manage System Completely via SSH`` checkbox.
+If you check this option, the client will be configured to use SSH for its connection to the server, and no other connection method will be configured.
+. Click btn:[Bootstrap] to begin registration.
+When the bootstrap process has completed, your client will be listed at menu:Systems[System List].
+
+
+
+// TODO: Might need an 'unsupported' note? LKB 2019-05-01
+
+Instead of the {webui}, you can use the command line to register a Salt client through a proxy.
+This procedure requires that you have installed the Salt package on the Salt client before registration, and have activated the [systemitem]``Advanced`` systems module.
+
+.Procedure: Registering clients to a proxy using the command line
+
+. Add the proxy FQDN as the master in the clients configuration file located at:
++
+----
+/etc/salt/minion
+----
++
+or:
++
+----
+/etc/salt/minion.d/NAME.conf
+----
+. Add the FQDN to the minion file:
++
+----
+master: proxy123.example.com
+----
++
+Save and restart the salt-minion service:
++
+----
+systemctl restart salt-minion
+----
+. On the Server, accept the new client key with:
++
+----
+salt-key -a 'client'
+----
++
+
+The client connects to the proxy exclusively for Salt operations and normal HTTP package downloads.

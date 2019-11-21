@@ -1,0 +1,9 @@
+[[sd-hardware]]
+= SD Hardware
+
+This subtab provides information about the system, such as networking, BIOS, memory, and other devices.
+
+This feature only works if you have included the hardware profile during registration.
+
+If the hardware profile looks incomplete or outdated, click the btn:[Schedule Hardware Refresh] button.
+The next time the system connects to {productname}, it will update your system profile with the latest hardware information.

@@ -1,0 +1,13 @@
+= Tabs and Subtabs
+
+Some pages have tabs and subtabs. These tabs offer an additional layer of granularity in performing tasks for systems or users.
+The following example displays the tabs and subtabs available under [guimenu]``System Details``.
+Green bars underline active tabs.
+
+image::subtabs.png[scaledwidth=60%]
+
+.Views Depending on User Roles
+[IMPORTANT]
+====
+This guide covers the administrator user role level, some tabs, pages, and even whole categories described here may not be visible to you. Text markers are not used to identify which functions are available to each user role level.
+====

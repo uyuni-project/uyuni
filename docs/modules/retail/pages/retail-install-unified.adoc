@@ -1,0 +1,109 @@
+[[install-server-unified]]
+= Installing with the Unified Installer
+
+{smr} 4.0 is a {suse} base product.
+This section describes how to install {smr} from {sles} installation media with the Unified Installer.
+
+Before you begin the installation, check that your environment meets the requirements at xref:installation:general-requirements.adoc[].
+
+== Installing {smr}
+
+.Procedure: Installing {smr} Server from a DVD Image
+
+. Boot your server from the installation image.
+In case of trouble, you might need to adjust the boot order in the BIOS.
+. When prompted, select [guimenu]``Installation``.
+. In the [guimenu]``Language, Keyboard and Product Selection`` screen, check the [guimenu]``SUSE Manager Server`` checkbox, and click btn:[Next].
++
+image::unifiedinstaller-install.png[scaledwidth=80%]
+. Read and agree to the End User Licence Agreement, and click btn:[Next].
+. In the [guimenu]``Registration`` screen, check the [guimenu]``Register System via scc.suse.com`` checkbox, enter your {scc} credentials, and click btn:[Next].
+. OPTIONAL: In the [guimenu]``Add On Product`` screen, select any additional or add-on products you require, and click btn:[Next].
+. In the [guimenu]``System Role`` screen, check the [guimenu]``SUSE Manager for Retail Server`` checkbox, and click btn:[Next].
++
+image::unifiedinstaller-system_role.png[scaledwidth=80%]
+. In the [guimenu]``Suggested Partitioning`` screen, accept the default values, or use the btn:[Guided Setup] or btn:[Expert Partitioner] options to customize your partitioning model, and click btn:[Next].
+. In the [guimenu]``Clock and Time Zone`` screen, enter your region and timezone, and click btn:[Next].
+. In the [guimenu]``Local Users`` screen, create a new user, and click btn:[Next].
+. In the [guimenu]``System Administrator "root"`` screen, create the "root" user, and click btn:[Next].
+. In the [guimenu]``Installation Settings`` screen ensure that SSH access is open.
+Review the settings and click btn:[Install].
+
+
+
+.Procedure: Run the Installation Script on the {susemgr} Server
+. Use SSH to access the command prompt of the {susemgr} Server.
+. Run the installation script:
++
+----
+yast susemanager_setup
+----
+. Follow the prompts to set up your account.
+Ensure you take note of the passwords you set, you will need them later on.
+
+Continue with general {susemgr} configuration and channel synchronization at xref:installation:server-setup.adoc[].
+
+== Installing {smr} Branch Server
+
+.Procedure: Installing the Branch Server from a DVD Image
+
+. Boot your server from the installation image.
+In case of trouble, you might need to adjust the boot order in the BIOS.
+. When prompted, select [guimenu]``Installation``.
+. In the [guimenu]``Language, Keyboard and Product Selection`` screen, check the [guimenu]``SUSE Manager Retail Branch Server`` checkbox, and click btn:[Next].
++
+image::unifiedinstaller-install_branch.png[scaledwidth=80%]
+. Read and agree to the End User Licence Agreement, and click btn:[Next].
+. In the [guimenu]``Registration`` screen, check the [guimenu]``Register System via scc.suse.com`` checkbox, enter your {scc} credentials, and click btn:[Next].
+. OPTIONAL: In the [guimenu]``Add On Product`` screen, select any additional or add-on products you require, and click btn:[Next].
+. In the [guimenu]``System Role`` screen, check the [guimenu]``SUSE Manager Proxy`` checkbox, and click btn:[Next].
++
+image::unifiedinstaller-system_role_branch.png[scaledwidth=80%]
+. In the [guimenu]``Suggested Partitioning`` screen, accept the default values, or use the btn:[Guided Setup] or btn:[Expert Partitioner] options to customize your partitioning model, and click btn:[Next].
+. In the [guimenu]``Clock and Time Zone`` screen, enter your region and timezone, and click btn:[Next].
+. In the [guimenu]``Local Users`` screen, create a new user, and click btn:[Next].
+. In the [guimenu]``System Administrator "root"`` screen, create the "root" user, and click btn:[Next].
+. In the [guimenu]``Installation Settings`` screen ensure that SSH access is open.
+Review the settings and click btn:[Install].
+
+
+.Procedure: Configuring and Registering the Branch Server
+. Create an activation key based on the [systemitem]``SLE-Product-SUSE-Manager-Retail-Branch-Server-4.0-Pool`` base channel.
+For more information about activation keys, see xref:client-configuration:clients-and-activation-keys.adoc[].
+. In the [guimenu]``Child Channels`` listing, select the recommended channels by clicking the ``include recommended`` icon:
++
+* SLE-Module-Basesystem15-SP1-Pool for x86_64 SMRBS 4.0
+* SLE-Module-Basesystem15-SP1-Updates for x86_64 SMRBS 4.0
+* SLE-Module-Server-Applications15-SP1-Pool for x86_64 SMRBS 4.0
+* SLE-Module-Server-Applications15-SP1-Updates for x86_64 SMRBS 4.0
+* SLE-Product-SUSE-Manager-Retail-Branch-Server-4.0-Updates for x86_64
+. Use this activation key in {susemgrproxy} registration at xref:installation:proxy-registration.adoc[].
+
+
+[WARNING]
+====
+Do not configure the branch server as a traditionally managed proxy.
+The branch server must be configured as a Salt client.
+====
+
+[NOTE]
+====
+Cobbler is not currently supported within {smr} environments.
+If you intend to use your installation with {smr} formulas, do not configure Cobbler on the {smr} branch server.
+====
+
+== Installing {susemgr} Build Host
+
+Build hosts are regular {sles} installations registered to {susemgr} as salt minions.
+For more information how to install and register salt minions to {susemgr} see xref:client-configuration:registration-overview.adoc[].
+
+For how to prepare build host from already registered salt minion, see xref:administration:image-management.adoc#at.images.kiwi.buildhost[].
+
+[IMPORTANT]
+====
+Supported base OS versions of {smr} build hosts:
+
+- {sles}12 SP3
+- {sles}12 SP4
+- {sles}11 SP3
+====

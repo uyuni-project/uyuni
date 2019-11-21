@@ -1,0 +1,185 @@
+[[spacecmd.help]]
+= help
+
+List all available spacecmd commands with the help function.
+
+Check for additional help on a specific function by calling for example:
+
+[source]
+--
+user_create --help
+--
+
+.Full List of Available Help Commands
+[source]
+--
+Documented commands (type help <topic>):
+========================================
+activationkey_addchildchannels         org_trustdetails
+activationkey_addconfigchannels        package_details
+activationkey_addentitlements          package_listdependencies
+activationkey_addgroups                package_listerrata
+activationkey_addpackages              package_listinstalledsystems
+activationkey_clone                    package_listorphans
+activationkey_create                   package_remove
+activationkey_delete                   package_removeorphans
+activationkey_details                  package_search
+activationkey_diff                     repo_addfilters
+activationkey_disable                  repo_clearfilters
+activationkey_disableconfigdeployment  repo_create
+activationkey_enable                   repo_delete
+activationkey_enableconfigdeployment   repo_details
+activationkey_export                   repo_list
+activationkey_import                   repo_listfilters
+activationkey_list                     repo_removefilters
+activationkey_listbasechannel          repo_rename
+activationkey_listchildchannels        repo_setfilters
+activationkey_listconfigchannels       repo_updatessl
+activationkey_listentitlements         repo_updateurl
+activationkey_listgroups               report_duplicates
+activationkey_listpackages             report_errata
+activationkey_listsystems              report_inactivesystems
+activationkey_removechildchannels      report_ipaddresses
+activationkey_removeconfigchannels     report_kernels
+activationkey_removeentitlements       report_outofdatesystems
+activationkey_removegroups             report_ungroupedsystems
+activationkey_removepackages           scap_getxccdfscandetails
+activationkey_setbasechannel           scap_getxccdfscanruleresults
+activationkey_setconfigchannelorder    scap_listxccdfscans
+activationkey_setcontactmethod         scap_schedulexccdfscan
+activationkey_setdescription           schedule_cancel
+activationkey_setuniversaldefault      schedule_details
+activationkey_setusagelimit            schedule_getoutput
+api                                    schedule_list
+clear                                  schedule_listarchived
+clear_caches                           schedule_listcompleted
+configchannel_addfile                  schedule_listfailed
+configchannel_backup                   schedule_listpending
+configchannel_clone                    schedule_reschedule
+configchannel_create                   snippet_create
+configchannel_delete                   snippet_delete
+configchannel_details                  snippet_details
+configchannel_diff                     snippet_list
+configchannel_export                   snippet_update
+configchannel_filedetails              softwarechannel_adderrata
+configchannel_forcedeploy              softwarechannel_adderratabydate
+configchannel_import                   softwarechannel_addpackages
+configchannel_list                     softwarechannel_addrepo
+configchannel_listfiles                softwarechannel_clone
+configchannel_listsystems              softwarechannel_clonetree
+configchannel_removefiles              softwarechannel_create
+configchannel_sync                     softwarechannel_delete
+configchannel_updatefile               softwarechannel_details
+configchannel_verifyfile               softwarechannel_diff
+cryptokey_create                       softwarechannel_errata_diff
+cryptokey_delete                       softwarechannel_errata_sync
+cryptokey_details                      softwarechannel_getorgaccess
+cryptokey_list                         softwarechannel_list
+custominfo_createkey                   softwarechannel_listallpackages
+custominfo_deletekey                   softwarechannel_listbasechannels
+custominfo_details                     softwarechannel_listchildchannels
+custominfo_listkeys                    softwarechannel_listerrata
+custominfo_updatekey                   softwarechannel_listerratabydate
+distribution_create                    softwarechannel_listlatestpackages
+distribution_delete                    softwarechannel_listpackages
+distribution_details                   softwarechannel_listrepos
+distribution_list                      softwarechannel_listsyncschedule
+distribution_rename                    softwarechannel_listsystems
+distribution_update                    softwarechannel_mirrorpackages
+errata_apply                           softwarechannel_regenerateneededcache
+errata_delete                          softwarechannel_regenerateyumcache
+errata_details                         softwarechannel_removeerrata
+errata_findbycve                       softwarechannel_removepackages
+errata_list                            softwarechannel_removerepo
+errata_listaffectedsystems             softwarechannel_removesyncschedule
+errata_listcves                        softwarechannel_setorgaccess
+errata_publish                         softwarechannel_setsyncschedule
+errata_search                          softwarechannel_sync
+errata_summary                         softwarechannel_syncrepos
+filepreservation_create                ssm_add
+filepreservation_delete                ssm_clear
+filepreservation_details               ssm_intersect
+filepreservation_list                  ssm_list
+get_apiversion                         ssm_remove
+get_certificateexpiration              system_addchildchannels
+get_serverversion                      system_addconfigchannels
+get_session                            system_addconfigfile
+group_addsystems                       system_addcustomvalue
+group_backup                           system_addentitlements
+group_create                           system_addnote
+group_delete                           system_applyerrata
+group_details                          system_comparepackageprofile
+group_list                             system_comparepackages
+group_listsystems                      system_comparewithchannel
+group_removesystems                    system_createpackageprofile
+group_restore                          system_delete
+help                                   system_deletecrashes
+history                                system_deletenotes
+kickstart_addactivationkeys            system_deletepackageprofile
+kickstart_addchildchannels             system_deployconfigfiles
+kickstart_addcryptokeys                system_details
+kickstart_addfilepreservations         system_getcrashfiles
+kickstart_addoption                    system_installpackage
+kickstart_addpackages                  system_list
+kickstart_addscript                    system_listbasechannel
+kickstart_addvariable                  system_listchildchannels
+kickstart_clone                        system_listconfigchannels
+kickstart_create                       system_listconfigfiles
+kickstart_delete                       system_listcrashedsystems
+kickstart_details                      system_listcrashesbysystem
+kickstart_diff                         system_listcustomvalues
+kickstart_disableconfigmanagement      system_listentitlements
+kickstart_disableremotecommands        system_listerrata
+kickstart_enableconfigmanagement       system_listevents
+kickstart_enablelogging                system_listhardware
+kickstart_enableremotecommands         system_listinstalledpackages
+kickstart_export                       system_listnotes
+kickstart_getcontents                  system_listpackageprofiles
+kickstart_getsoftwaredetails           system_listupgrades
+kickstart_getupdatetype                system_lock
+kickstart_import                       system_reboot
+kickstart_import_raw                   system_removechildchannels
+kickstart_importjson                   system_removeconfigchannels
+kickstart_list                         system_removecustomvalues
+kickstart_listactivationkeys           system_removeentitlement
+kickstart_listchildchannels            system_removepackage
+kickstart_listcryptokeys               system_rename
+kickstart_listcustomoptions            system_runscript
+kickstart_listoptions                  system_schedulehardwarerefresh
+kickstart_listpackages                 system_schedulepackagerefresh
+kickstart_listscripts                  system_search
+kickstart_listvariables                system_setbasechannel
+kickstart_removeactivationkeys         system_setconfigchannelorder
+kickstart_removechildchannels          system_setcontactmethod
+kickstart_removecryptokeys             system_show_packageversion
+kickstart_removefilepreservations      system_syncpackages
+kickstart_removeoptions                system_unlock
+kickstart_removepackages               system_updatecustomvalue
+kickstart_removescript                 system_upgradepackage
+kickstart_removevariables              toggle_confirmations
+kickstart_rename                       user_adddefaultgroup
+kickstart_setcustomoptions             user_addgroup
+kickstart_setdistribution              user_addrole
+kickstart_setlocale                    user_create
+kickstart_setpartitions                user_delete
+kickstart_setselinux                   user_details
+kickstartsetupdatetype                user_disable
+kickstart_updatevariable               user_enable
+list_proxies                           user_list
+login                                  user_listavailableroles
+logout                                 user_removedefaultgroup
+org_addtrust                           user_removegroup
+org_create                             user_removerole
+org_delete                             user_setemail
+org_details                            user_setfirstname
+org_list                               user_setlastname
+org_listtrusts                         user_setpassword
+org_listusers                          user_setprefix
+org_removetrust                        whoami
+org_rename                             whoamitalkingto
+
+
+Miscellaneous help topics:
+==========================
+time  systems  ssm
+--

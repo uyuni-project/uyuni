@@ -1,0 +1,13 @@
+[[s3-sattools-iss-slave]]
+= ISS Slave Setup
+
+If you are logged in to an ISS slave, this page lists all masters that the slave has previously synchronized with.
+
+To add a new master, click btn:[Add new master].
+You will need the master's Fully Qualified Domain Name (FQDN), and the full path to the CA Certificate.
+For example:
+----
+/etc/pki/trust/anchors
+----
+
+For more information about setting up ISS, see the Inter-Server Synchronization section of the Administration Guide.

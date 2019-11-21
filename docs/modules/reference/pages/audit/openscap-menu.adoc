@@ -1,0 +1,5 @@
+= OpenSCAP Menu
+
+Click the menu:Audit[]
+ tab on the top navigation bar, then OpenSCAP on the left.
+Here you can view, search for, and compare completed OpenSCAP scans.

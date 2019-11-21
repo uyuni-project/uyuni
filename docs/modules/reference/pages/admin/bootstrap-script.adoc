@@ -1,0 +1,52 @@
+[[s3-sattools-config-bootstrap]]
+= Bootstrap Script
+
+The menu:Manager Configuration[Bootstrap Script] page allows you to generate a bootstrap script that registers the client systems with {productname} and disconnects them from the remote {scc}.
+
+
+[IMPORTANT]
+.SLES 15 and Python 3
+====
+SLES 15 utilizes Python 3 as its default system version. Due to this change any older
+bootstrap scripts(based on python 2) must be re-created for SLES 15 systems. Attempting to
+register SLES 15 systems with SUSE Manager using Python 2 versions of the bootstrap script will
+fail.
+====
+
+image::admin_configuration_bootstrap.png[scaledwidth=80%]
+
+This generated script will be placed within the [path]``/srv/www/htdocs/pub/bootstrap/`` directory on your {productname} server.
+The bootstrap script will significantly reduce the effort involved in reconfiguring all systems, which by default obtain packages from the {scc}.
+The required fields are pre-populated with values derived from previous installation steps.
+Ensure this information is accurate.
+
+SUSE Manager server hostname::
+The name of the SUSE Manager server where you want to register the client (pre-populated).
+
+SSL cert location::
+Location and name of the SSL certificate (pre-populated).
+
+Bootstrap using Salt::
+To bootstrap traditional clients, uncheck menu:Client Bootstrap Script Configuration[Bootstrap using Salt].
+
+Refer to xref:client-configuration:registration-bootstrap.adoc[] for more information.
+//Registering Clients with a Bootstrap Script
+Enable SSL::
+It is advised keeping SSL enabled.
+If enabled the corporate public CA certificate will be installed on the client.
+If disabled the user must manage CA certificates to be able to run the registration ([command]``rhnreg_ks``).
+
+Enable Client GPG checking::
+GNU Privacy Guard (GPG)
+
+Enable Remote Configuration::
+Enable remote configuration management and remote command acceptance of the systems to be bootstrapped to the {productname}.
+Both features are useful for completing client configuration.
+
+Refer to xref:reference:configuration/config-menu.adoc[Configuration] and xref:reference:systems/system-details/sd-remote-command.adoc[Remote Command] for more information.
+
+Client HTTP Proxy::
+Client HTTP proxy settings if you are using an HTTP proxy server.
+
+When finished, click btn:[Update].
+

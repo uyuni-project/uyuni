@@ -1,0 +1,74 @@
+[[salt.terminology]]
+= Terminology
+
+
+Beacon::
+Beacons allow you to use the Salt event system to monitor non-Salt processes.
+Clients can use beacons to connect to various system processes for constant monitoring.
+When a monitored activity occurs, an event is sent on the Salt event bus that can then trigger a reactor.
+
+To use beacons on {sles} Salt clients, install the [package]``python-pyinotify`` package.
+For {rhel} systems, install the [package]``python-inotify`` package.
+
+For more information on beacons, see https://docs.saltstack.com/en/latest/topics/beacons/
+
+
+Broker::
+The Salt broker allows clients to pass commands to each other.
+
+The Salt broker acts like a switch, therefore peer communication will only work for clients on the same network, or connected to the same proxy.
+
+For more information on Salt and peer communication, see https://docs.saltstack.com/en/latest/ref/peer.html.
+
+
+Environment::
+{productname} implements Salt with a single environment.
+Multiple Salt environments are not supported.
+
+
+Grain::
+Grains provide information about the hardware of a client.
+This includes the operating system, IP addresses, network interfaces, and memory.
+
+When you run a Salt command any modules and functions are run locally from the system being called.
+
+Salt modules are stored on clients and the {productname} Server within the [path]``/usr/lib/python*/site-packages/salt/`` directory.
+
+List all available grains with the [command]``grains.ls`` function:
+----
+salt '*' grains.ls
+----
+
+You can also use [command]``grains.items`` to list collected grain system data:
+----
+salt '*' grains.items
+----
+
+For more information on grains, see https://docs.saltstack.com/en/latest/topics/grains/.
+
+
+Pillar::
+Pillars are created on the {productname} Server.
+They contain information about a client or group of clients.
+
+Pillars allow you to send confidential information to a targeted client or group of clients.
+Pillars are useful for sensitive data, configuration of clients, variables, and any arbitrary data.
+
+For more information on pillars, see https://docs.saltstack.com/en/latest/topics/tutorials/pillar.html.
+
+
+State::
+States are configuration templates.
+They allow you to describe what each of your systems should look like, including the applications and services that are installed and running.
+
+States are written, and then applied to the target systems.
+This automates the process of bringing a large number of systems into a known state, and then maintaining them.
+
+For more information on states, see https://docs.saltstack.com/en/latest/topics/tutorials/starting_states.html.
+
+[WARNING]
+====
+Do not update the [package]``salt`` package using states.
+Update all other system packages using states.
+You can then update the [package]``salt`` package from the {productname} {webui} as a separate step.
+====

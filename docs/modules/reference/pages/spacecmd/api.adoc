@@ -1,0 +1,35 @@
+[[spacecmd.functions.api]]
+= api
+
+The following API command and its options are available for calling the XML-RPC API directly.
+Calling the API directly allows you to use the latest features in SUSE Manager from the command-line using spacecmd as a wrapper for stand-alone commands or used from within scripts.
+
+.Use the api Command for Access to Latest Features
+[NOTE]
+====
+spacecmd is the traditional tool for spacewalk.
+It functions out of the box with SUSE Manager but you should know that latest features (for example, Salt) are often excluded from traditional spacecmd command-line tool.
+To gain access to the latest feature additions call [command]``api api.getApiCallList`` from within spacecmd to list all currently available API commands formatted in json.
+You can then call these commands directly.
+====
+
+== api_
+
+Call XML-RPC API with arguments directly.
+
+[source]
+--
+usage: api [options] API_STRING
+
+options:
+  -A, --args  Arguments for the API other than session id in comma separated
+              strings or JSON expression
+  -F, --format   Output format
+  -o, --output   Output file
+
+examples:
+  api api.getApiCallList
+  api --args "sysgroup_A" systemgroup.listSystems
+  api -A "rhel-i386-server-5,2011-04-01,2011-05-01" -F "%(name)s" \
+      channel.software.listAllPackages
+--

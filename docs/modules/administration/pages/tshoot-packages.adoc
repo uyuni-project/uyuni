@@ -1,0 +1,29 @@
+[[troubleshooting-packages]]
+= Troubleshooting Package Inconsistencies
+
+////
+PUT THIS COMMENT AT THE TOP OF TROUBLESHOOTING SECTIONS
+
+Troubleshooting format:
+
+One sentence each:
+Cause: What created the problem?
+Consequence: What does the user see when this happens?
+Fix: What can the user do to fix this problem?
+Result: What happens after the user has completed the fix?
+
+If more detailed instructions are required, put them in a "Resolving" procedure:
+.Procedure: Resolving Widget Wobbles
+. First step
+. Another step
+. Last step
+////
+
+When packages on a client are locked, {productname} Server may not be able to correctly determine the set of applicable patches.
+When this occurs, package updates will be available in the {webui}, but will not appear on the client, and attempts to update the client will fail.
+Check package locks and exclude lists to determine if packages are locked or excluded on the client.
+
+On the client, check package locks and exclude lists to determine if packages are locked or excluded:
+
+* On an Expanded Support Platform, check [path]``/etc/yum.conf`` and search for ``exclude=``.
+* On {sle} and {opensuse}, use the [command]``zypper locks`` command.

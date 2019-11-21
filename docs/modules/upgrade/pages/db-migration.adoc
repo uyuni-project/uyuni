@@ -1,0 +1,123 @@
+[[db-migration]]
+= Database Migration
+
+This section covers upgrading the PostgreSQL database from version 9 to version 10.
+If you are already using PostgreSQL 10, you do not need to perform this migration.
+
+If you want to upgrade to the latest {productname} version, you must be using PostgreSQL version 10.
+If you are using an older version, such as version 9.6, you must migrate PostgreSQL to version 10 before you begin the {productname} migration.
+// 2019-10-16, ke: I think we'd better keep the info on 9.4 for the moment
+
+[IMPORTANT]
+====
+If you run PostgreSQL{nbsp}9.4 on {productname} 3.2, see the product documentation at https://documentation.suse.com/external-tree/en-us/suma/3.2/susemanager-best-practices/html/book.suma.best.practices/bp.sp.migration.html#sp.migration.postgresql.
+You cannot migrate directly from PostgreSQL{nbsp}9.4 to version 10.
+====
+
+
+
+////
+== Background Information
+
+
+* {productname} 3.1.4, SLES 12 SP3, Postgres 9.6
+* {productname} 3.1.11, SLES 12 SP3, Postgres 9.6
+* {productname} 3.2.10, SLES 12 SP3, Postgres 9.6
+* {productname} 3.2.10, SLES 12 SP3, Postgres 10
+* {productname} 3.2.10, SLES 12 SP4, Postgres 10
+* {productname} 4.0.0, SLES 15 SP1, Postgres 10
+
+////
+
+
+
+
+[[db-migration-prepare]]
+== Prepare to Upgrade
+
+Before you begin the upgrade, prepare your existing {productname} Server and create a database backup.
+
+PostgreSQL stores data at [path]``/var/lib/pgsql/data/``.
+
+.Procedure: Preparing to Upgrade
+
+. Check the active PostgreSQL version:
++
+----
+psql --version
+----
++
+If you are using PostgreSQL{nbsp}9.6, you can upgrade to PostgreSQL{nbsp}10.
++
+If you are already using PostgreSQL 10, you do not need to perform this migration.
+. Check the active smdba version:
++
+----
+rpm -q smdba
+----
++
+PostgreSQL{nbsp}10 requires ``smdba`` version 1.6.2 or later.
+
+. Perform a database backup.
+For more information on backing up, see xref:administration:backup-restore.adoc[].
+
+
+
+
+== Upgrade PostgreSQL
+
+[WARNING]
+====
+Always create a database backup before performing a migration.
+For more information about a database backup, see xref:db-migration.adoc#db-migration-prepare[].
+====
+
+PostgreSQL upgrades can be performed in two ways: a regular upgrade, or a fast upgrade:
+
+A regular upgrade will create a complete copy of the database, so you will need double the existing database size of space available.
+Regular upgrades can take a considerable amount of time, depending on the size of the database and the speed of the storage system.
+
+A fast upgrade only takes a few minutes, and uses almost no additional disk space.
+However, if a fast upgrade fails, you must restore the database from the backup.
+A fast upgrade reduces the risk of running out of disk space.
+A regular upgrade will copy the database files instead of creating hard links between the files.
+
+PostgreSQL stores data at [path]``/var/lib/pgsql/data/``.
+
+.Procedure: Performing a Regular Upgrade
+. Perform a database backup.
+For more information on backing up, see xref:administration:backup-restore.adoc[].
+. Start the upgrade:
++
+----
+/usr/lib/susemanager/bin/pg-migrate-96-to-10.sh
+----
+. When the upgrade has successfully completed, you can safely delete the old database directory and reclaim lost disk space.
+The old directory is renamed to [path]``/var/lib/pgsql/data-pg96``.
+
+The [path]``pg-migrate-96-to-10.sh`` script performs these operations:
+
+* Stop spacewalk services
+* Shut down the running database
+* Check if PostgreSQL{nbsp}10 is installed and install it if necessary
+* Switch from PostgreSQL{nbsp}9.6 to PostgreSQL{nbsp}10 as the new default
+* Initiate the database migration
+* Create a PostgreSQL configuration file tuned for use by {productname}
+* Start the database and spacewalk services
+
+[NOTE]
+====
+If the upgrade fails, the migration script will attempt to restore the database to its original state.
+====
+
+.Procedure: Performing a Fast PostgreSQL Upgrade
+. Perform a database backup.
+Without a verified database backup, you must not initiate a fast upgrade.
+For more information on backing up, see xref:administration:backup-restore.adoc[].
+. Start the upgrade:
++
+----
+/usr/lib/susemanager/bin/pg-migrate-96-to-10.sh fast
+----
+. When the upgrade has successfully completed, you can safely delete the old database directory and reclaim lost disk space.
+The old directory is renamed to [path]``/var/lib/pgsql/data-pg96``.

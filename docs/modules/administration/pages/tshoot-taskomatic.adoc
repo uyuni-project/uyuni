@@ -1,0 +1,45 @@
+[[troubleshooting-taskomatic]]
+= Troubleshooting Taskomatic
+////
+PUT THIS COMMENT AT THE TOP OF TROUBLESHOOTING SECTIONS
+
+Troubleshooting format:
+
+One sentence each:
+Cause: What created the problem?
+Consequence: What does the user see when this happens?
+Fix: What can the user do to fix this problem?
+Result: What happens after the user has completed the fix?
+
+If more detailed instructions are required, put them in a "Resolving" procedure:
+.Procedure: Resolving Widget Wobbles
+. First step
+. Another step
+. Last step
+////
+
+If Taskomatic crashes, repository metadata regeneration can be prevented from happening regularly.
+Repository metadata regeneration is a relatively intensive process, so Taskomatic can normally take several minutes to complete it.
+When this occurs, package updates will be available in the {webui}, but will not appear on the client, and attempts to update the client will fail.
+To correct this, determine if Taskomatic is still in the process of generating repository metadata, or if a crash could have occurred.
+Wait for metadata regeneration to complete or restart Taskomatic after a crash in order for client updates to be carried out correctly.
+
+.Procedure: Resolving Taskomatic Problems
+
+. On the {productname} Server, check the [path]``/var/log/rhn/rhn_taskomatic_daemon.log`` file to determine if any metadata regeneration processes are still running, or if a crash occurred.
+. Restart taskomatic:
++
+----
+service taskomatic restart
+----
+
+
+In the Taskomatic log files, you can identify the section related to metadata regeneration by looking for opening and closing lines that look like this:
+
+----
+<YYYY-DD-MM> <HH:MM:SS>,174 [Thread-584] INFO  com.redhat.rhn.taskomatic.task.repomd.RepositoryWriter - Generating new repository metadata for channel 'cloned-2018-q1-sles12-sp3-updates-x86_64'(sha256) 550 packages, 140 errata
+
+...
+
+<YYYY-DD-MM> <HH:MM:SS>,704 [Thread-584] INFO  com.redhat.rhn.taskomatic.task.repomd.RepositoryWriter - Repository metadata generation for 'cloned-2018-q1-sles12-sp3-updates-x86_64' finished in 4 seconds
+----

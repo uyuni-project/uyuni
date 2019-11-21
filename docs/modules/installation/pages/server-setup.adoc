@@ -1,0 +1,178 @@
+[[server-setup]]
+= SUSE Manager Server Setup
+
+This section covers {productname} Server setup, using these procedures:
+
+* Start {productname} setup with YaST
+* Create the main administration account with the {productname} {webui}
+* Name your base organization and add login credentials
+* Synchronize the {sle} product channel from {scc}
+
+[WARNING]
+.Third Party Software
+--
+{productname} is part of the {sle} 4.0 product family and thus compatible with the software shipped with {sles}.
+
+{productname} is a complex system, and therefore installing third party software is not allowed.
+Installing monitoring software provided by a third party vendor is allowed only if you do not exchange basic libraries such as SSL, cryptographic software, and similar tools.
+As part of providing product support, SUSE reserves the right to ask to remove any third party software (and associated configuration changes) and then to reproduce the problem on a clean system.
+--
+
+
+
+== Set up {productname} with YaST
+
+This section will guide you through {productname} setup procedures.
+
+.Procedure: {productname} Setup
+. Log in to the {productname} Server and type [command]``yast2 susemanager_setup`` to begin the setup.
+
+// * Select menu:Applications[System Tools > YaST > SUSE Manager Setup].
+// * Open a terminal as root and type [command]``yast2 susemanager_setup`` to begin setup.
+
+. From the introduction screen select menu:SUSE Manager Setup[Setup SUSE Manager from scratch] and click btn:[Next] to continue.
+
+. Enter an email address to receive status notifications and click btn:[Next] to continue.
+{productname} can sometimes send a large volume of notification emails.
+You can disable email notifications in the {webui} after setup, if you need to.
+
+. Enter your certificate information and a password.
+Passwords must be at at least seven characters in length, and must not contain spaces, single or double quotation marks (``'`` or ``"``), exclamation marks (``!``), or dollar signs (``$``).
+Always store your passwords in a secure location.
++
+
+[IMPORTANT]
+.Certificate Password
+====
+Without this password it will not be possible to set up a {productname} Proxy Server.
+====
+
+. Click btn:[Next] to continue.
++
+
+image::quickstart-mgr-setup4-ncurses.png[scaledwidth=80%]
+
+. From the menu:SUSE Manager Setup[Database Settings] screen, enter a database user and password and click btn:[Next] to continue.
+Passwords must be at at least seven characters in length, and must not contain spaces, single or double quotation marks (``'`` or ``"``), exclamation marks (``!``), or dollar signs (``$``).
+Always store your passwords in a secure location.
++
+
+image::quickstart-mgr-setup5-ncurses.png[scaledwidth=80%]
+
+. Click btn:[Next] to continue.
+
+. Click btn:[Yes] to run setup when prompted.
+
+. When setup is complete, click btn:[Next] to continue.
+You will see the address of the {productname} {webui}.
+
+. Click btn:[Finish] to complete {productname} setup.
+
+// In the next section you will create the administrator's account and synchronize with {scc}.
+
+
+== Creating the Main Administration Account
+
+This section will walk you through creating your organization's main administration account for {productname}.
+
+[WARNING]
+.Admin and User Accounts
+====
+The main administration account is the _highest authority account_ within {productname} and therefore account access information should be stored in a secure location.
+
+For security it is recommended that the main administrator creates _low level admin accounts_ designated for administration of organizations and individual groups.
+====
+
+
+.Procedure: Setting Up the Main Administration Account
+. In the browser, enter the address provided after completing setup.
+With this address you open the {productname} {webui}.
+
+. In the {webui}, navigate to the menu:Create Organization[Organization Name] field and enter your organization name.
+
+. In the menu:Create Organization[Desired Login] and menu:Create Organization[Desired Password] fields, enter your username and password.
+
+. Fill in the Account Information fields including an email for system notifications.
+
+. Click btn:[Create Organization] to finish creating your administration account.
++
+
+image::quickstart-mgr-setup-admin1.png[scaledwidth=80%]
+
+You are now presented with the {productname} menu:Home[Overview] page.
+// In the next section you will prepare the server for connecting the first client.
+
+
+== Synchronizing Products from {scc}
+
+{scc} (SCC) maintains a collection of repositories which contain packages, software and updates for all supported enterprise client systems.
+These repositories are organized into channels each of which provide software specific to a distribution, release, and architecture.
+After synchronizing with SCC clients may receive updates, and be organized into groups and assigned to specific product software channels.
+
+This section covers synchronizing with SCC from the {webui} and adding your first client channel.
+
+Before you can synchronize software repositories with SCC, you will need to enter organization credentials in {susemgr}.
+In previous versions, so-called mirror credentials were used instead.
+The organization credentials give you access to the SUSE product downloads.
+You will find your organization credentials in https://scc.suse.com/organization.
+
+Enter your organization credentials in the {susemgr} {webui}:
+
+
+[[proc-admin-organization-credentials]]
+.Procedure: Entering Organization Credentials
+. In the {susemgr} {webui}, select menu:Main Menu[Admin > Setup Wizard].
+. From the [guimenu]``Setup Wizard`` page select the btn:[Organization Credentials] tab.
+. Click btn:[Add a new credential].
+. In the dialog, enter [guimenu]``Username`` and [guimenu]``Password``, and confirm with btn:[Save].
+
+When the credentials are confirmed with a check-mark icon, proceed with <<proc-quickstart-first-channel-sync>>.
+
+
+[[proc-quickstart-first-channel-sync]]
+.Procedure: Synchronizing with {scc}
+. In the {webui}, navigate to menu:Admin[Setup Wizard].
+
+. From the [guimenu]``Setup Wizard`` page select the btn:[SUSE Products] tab.
+Wait a moment for the products list to populate.
+If you previously registered with {scc} a list of products will populate the table.
+This table lists architecture, channels, and status information.
+For more information, see xref:reference:admin/setup-wizard.adoc[Wizard].
++
+
+image::admin_suse_products.png[scaledwidth=80%]
+
+. If your {sle} client is based on [systemitem]``x86_64`` architecture scroll down the page and select the check box for this channel now.
++
+
+* Add channels to {productname} by selecting the check box to the left of each channel.
+Click the arrow symbol to the left of the description to unfold a product and list available modules.
+* Click btn:[Add Products] to start product synchronization.
+
+After adding the channel, {productname} will schedule the channel to be synchronized.
+This can take a long time as {productname} will copy channel software sources from the {suse} repositories located at {scc} to local [path]``/var/spacewalk/`` directory of your server.
+
+
+[TIP]
+.PostgreSQL and Transparent Huge Pages
+====
+In some environments, _Transparent Huge Pages_ provided by the kernel may slow down PostgreSQL workloads significantly.
+
+To disable _Transparant Huge Pages_ set the [option]``transparent_hugepage`` kernel parameter to [option]``never``.
+This has to be changed in [path]``/etc/default/grub`` and added to the line [option]``GRUB_CMDLINE_LINUX_DEFAULT``, for example:
+
+----
+GRUB_CMDLINE_LINUX_DEFAULT="resume=/dev/sda1 splash=silent quiet showopts elevator=noop transparent_hugepage=never"
+----
+
+To write the new configuration run [command]``grub2-mkconfig -o /boot/grub2/grub.cfg``.
+====
+
+Monitor the channel synchronization process in real-time by viewing channel log files located in the directory [path]``/var/log/rhn/reposync``:
+
+----
+tail -f /var/log/rhn/reposync/<CHANNEL_NAME>.log
+----
+
+When the channel synchronization process is complete, you can continue with client registration.
+For more instructions, see xref:client-configuration:registration-overview.adoc[].

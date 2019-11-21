@@ -1,0 +1,3 @@
+= Release Notes
+
+The [guimenu]``Release Notes`` menu item provides a link to the current {productname} release notes.

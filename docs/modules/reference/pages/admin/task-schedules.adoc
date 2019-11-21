@@ -1,0 +1,120 @@
+[[ref.webui.admin.schedules]]
+= Task Schedules
+
+Under menu:Main Menu[Admin > Task Schedules] all predefined task bunches are listed.
+
+image::admin_task_schedules.png[scaledwidth=80%]
+
+Click a menu:SUSE Manager Schedules[Schedule name] to open its menu:Schedule Name[Basic Schedule Details] where you can disable it or change the frequency.
+Click btn:[Edit Schedule] to update the schedule with your settings.
+To delete a schedule, click btn:[Delete Schedule] in the upper right-hand corner.
+
+[WARNING]
+====
+Only disable or delete a schedule if you are absolutely certain this is necessary as they are essential for {productname} to work properly.
+====
+
+If you click a bunch name, a list of runs of that bunch type and their status will be displayed.
+Clicking the start time links takes you back to the menu:Schedule Name[Basic Schedule Details].
+
+For example, the following predefined task bunches are scheduled by default and can be configured:
+
+menu:channel-repodata-default:[]::
+(Re)generates repository metadata files.
+
+
+menu:cleanup-data-default:[]::
+Cleans up stale package change log and monitoring time series data from the database.
+
+
+menu:clear-taskologs-default:[]::
+Clears task engine (taskomatic) history data older than a specified number of days, depending on the job type, from the database.
+
+
+menu:cobbler-sync-default:[]::
+Synchronizes distribution and profile data from {productname} to Cobbler.
+For more information refer to:
+xref:client-configuration:cobbler.adoc[Cobbler]
+
+
+menu:compare-configs-default:[]::
+Compares configuration files as stored in configuration channels with the files stored on all configuration-enabled servers.
+To review comparisons, click the menu:Main Menu[Systems] tab and click the system of interest.
+Go to menu:Configuration[Compare Files].
+For more information, refer to:
+xref:reference:systems/system-details/sd-configuration.adoc#sd-config-compare-files[Compare Files].
+
+
+menu:cve-server-channels-default:[]::
+Updates internal pre-computed CVE data that is used to display results on the menu:Main Menu[Audit > CVE Audit] page.
+Search results in the menu:Main Menu[Audit > CVE Audit] page are updated to the last run of this schedule).
+For more information, see:
+xref:reference:audit/audit-cve-audit.adoc[CVE Audit]
+
+
+menu:daily-status-default:[]::
+Sends daily report e-mails to relevant addresses.
+To learn more about how to configure notifications for specific users, see:
+xref:reference:users/user-details.adoc[User Preferences]
+
+
+menu:errata-cache-default:[]::
+Updates internal patch cache database tables, which are used to look up packages that need updates for each server.
+Also, this sends notification emails to users that might be interested in certain patches.
+For more information on patches, see:
+xref:reference:patches/patches-menu.adoc[Patches]
+
+
+menu:errata-queue-default:[]::
+Queues automatic updates (patches) for servers that are configured to receive them.
+
+
+menu:kickstart-cleanup-default:[]::
+Cleans up stale kickstart session data.
+
+
+menu:kickstartfile-sync-default:[]::
+Generates Cobbler files corresponding to Kickstart profiles created by the configuration wizard.
+
+
+menu:mgr-register-default:[]::
+Calls the [command]``mgr-register`` command, which synchronizes client registration data with NCC (new, changed or deleted clients' data are forwarded).
+
+
+menu:mgr-sync-refresh-default:[]::
+the default time at which the start of synchronization with SUSE Customer Center (SCC) takes place (``mgr-sync-refresh``).
+
+menu:minion-action-cleanup-default:[]::
+deletes stale client action data from the file system.
+First it tries to complete any possibly unfinished actions by looking up the corresponding results; these results are stored in the Salt job cache.
+An unfinished action can occur if the server has missed the results of the action.
+For successfully completed actions it removes artifacts such as executed script files.
+
+
+menu:package-cleanup-default:[]::
+deletes stale package files from the file system.
+
+menu:reboot-action-cleanup-default:[]::
+any reboot actions pending for more than six hours are marked as failed and associated data is cleaned up in the database.
+For more information on scheduling reboot actions, see:
+xref:reference:systems/system-details/sd-provisioning.adoc#sd-power-management[Power Management]
+
+
+menu:sandbox-cleanup-default:[]::
+Cleans up Sandbox configuration files and channels that are older than the __sandbox_lifetime__ configuration parameter (3 days by default).
+Sandbox files are those imported from systems or files under development.
+For more information, see:
+xref:reference:systems/system-details/sd-configuration.adoc#sd-config-add-files[Add Files]
+
+
+menu:session-cleanup-default:[]::
+cleans up stale Web interface sessions, typically data that is temporarily stored when a user logs in and then closes the browser before logging out.
+
+
+menu:ssh-push-default:[]::
+prompts clients to check in with {productname} via SSH if they are configured with a menu:Contact Method[SSH Push].
+
+menu:token-cleanup-default:[]::
+deletes expired repository tokens that are used by Salt clients to download packages and metadata.
+
+

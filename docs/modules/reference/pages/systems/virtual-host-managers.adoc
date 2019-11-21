@@ -1,0 +1,16 @@
+[[ref.webui.systems.virt-host-managers]]
+= Virtual Host Managers
+
+Virtual Host Managers (VHMs) are used to gather information from a range of client types.
+
+VHMs can be used to collect private or public cloud instances and organize them into virtualization groups.
+With your virtualized clients organized this way, Taskomatic collects data on the clients for display in the {productname} {webui}.
+VHMs also allow you to use subscription matching on your virtualized clients.
+
+You can create a VHM on your {productname} Server, and use it to inventory available public cloud instances.
+You can also use a VHM to manage clusters created with {k8s} and {caasp}.
+
+After your VHM has been created and configured, Taskomatic will run data collection automatically.
+You can also begin data collection manually through the {webui}, by navigating to menu:Systems[Virtual Host Managers], selecting the appropriate VHM, and clicking btn:[Refresh Data].
+
+For more information on VHMs, see xref:client-configuration:vhm.adoc[].

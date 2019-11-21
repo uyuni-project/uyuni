@@ -1,0 +1,10 @@
+[[ref.webui.overview.org]]
+= My Organization Menu
+
+From the menu:Main Menu[Home > My Organization] page you can view the following pages:
+
+* xref:reference:home/my-organization-configuration.adoc[Configuration]
+
+* xref:reference:home/my-organization-trusts.adoc[Organization Trusts]
+
+* xref:reference:home/my-organization-configuration-channels.adoc[Configuration Channels]

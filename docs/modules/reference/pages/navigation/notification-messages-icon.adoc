@@ -1,0 +1,10 @@
+= Notification Messages Icon
+
+Selecting the **Notification Messages Icon** directs you to the menu:Home[Notification Messages] page. From this page you may review your notification messages provided by SUSE Manager server.
+
+For details see:
+
+//TODO convert cross book references to links. This allows both pdf and antora to work properly. Then use BOFH's new linkchecker to verify links upon publishing.
+
+xref:reference:home/home-notification-messages.adoc[Notification Messages]
+

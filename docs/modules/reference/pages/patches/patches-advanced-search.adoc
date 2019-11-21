@@ -1,0 +1,34 @@
+[[ref.webui.patches.search]]
+= Advanced Search for Patches
+
+The menu:Main Menu[Patches > Advanced Search] page allows you to search through patches by specific criteria.
+
+
+image::patches_advanced_search_patches.png[scaledwidth=80%]
+
+
+* [guimenu]``All Fields`` -- Search patches by synopsis, description, topic, or solution.
+* [guimenu]``Patch Advisory`` -- The name or the label of the patch.
++
+* [guimenu]``Package Name`` -- Search particular packages by name:
++
+
+----
+kernel
+----
++
+Results will be grouped by advisory.
+For example, searching for 'kernel' returns all package names containing the string ``kernel``, grouped by advisory.
+* [guimenu]``CVE`` -- The name assigned to the security advisory by the Common Vulnerabilities and Exposures (CVE) project at link:http://cve.mitre.org[]. For example:
++
+
+----
+CVE-2006-4535
+----
+
+
+To filter patch search results, check or uncheck the boxes next to the type of advisory:
+
+* Bug Fix Advisory -- Patches that fix issues reported by users or discovered during development or testing.
+* Security Advisory -- Patches fixing a security issue found during development, testing, or reported by users or a software security clearing house. A security advisory usually has one or more CVE names associated with each vulnerability found in each package.
+* Product Enhancement Advisory -- Patches providing new features, improving functionality, or enhancing performance of a package.

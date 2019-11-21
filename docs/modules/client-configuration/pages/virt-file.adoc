@@ -1,0 +1,95 @@
+[[virt-file]]
+= Virtualization with Other Third Party Providers
+
+If you want to use a third-party virtualization provider other than Xen, KVM, or VMware,  you can import a JSON configuration file to {productname}.
+
+Similarly, if you have a VMWare installation that does not provide direct access to the API, a file-based VHM will provide you with some basic management features.
+
+[NOTE]
+====
+This option is for importing files that have been created with the [command]``virtual-host-gatherer`` tool.
+It is not designed for manually created files.
+====
+
+// Add instructions for custom JSON file, including example if possible. LKB 2019-10-23
+// https://github.com/uyuni-project/uyuni-rfc/blob/master/accepted/00056-subscription-matching-in-public-clouds.md#the-output-from-a-virtual-host-gatherer-plugin
+
+
+.Procedure: Exporting and Importing a JSON File
+
+. Export the JSON configuration file by running [command]``virtual-host-gatherer`` on the VM network.
+. Save the produced file to a location accessible by your {productname} Server.
+. In the {productname} {webui}, navigate to menu:Systems[Virtual Host Managers].
+. Click btn:[Create] and select [guimenu]``File-based``.
+. In the [guimenu]``Add a file-based Virtual Host Manager`` section, use these parameters:
+* In the [guimenu]``Label`` field, type a custom name for your VHM.
+* In the [guimenu]``Url`` field, type the path to your exported JSON configuration file.
+. Click btn:[Create] to save your changes and create the VHM.
+. On the [guimenu]``Virtual Host Managers`` page, select the new VHM.
+. On the [guimenu]``Properties`` page, click btn:[Refresh Data] to inventory the new VHM.
+
+
+
+.Example: Exported JSON configuration file:
+
+----
+{
+    "examplevhost": {
+        "10.11.12.13": {
+            "cpuArch": "x86_64",
+            "cpuDescription": "AMD Opteron(tm) Processor 4386",
+            "cpuMhz": 3092.212727,
+            "cpuVendor": "amd",
+            "hostIdentifier": "'vim.HostSystem:host-182'",
+            "name": "11.11.12.13",
+            "os": "VMware ESXi",
+            "osVersion": "5.5.0",
+            "ramMb": 65512,
+            "totalCpuCores": 16,
+            "totalCpuSockets": 2,
+            "totalCpuThreads": 16,
+            "type": "vmware",
+            "vms": {
+                "vCenter": "564d6d90-459c-2256-8f39-3cb2bd24b7b0"
+            }
+        },
+        "10.11.12.14": {
+            "cpuArch": "x86_64",
+            "cpuDescription": "AMD Opteron(tm) Processor 4386",
+            "cpuMhz": 3092.212639,
+            "cpuVendor": "amd",
+            "hostIdentifier": "'vim.HostSystem:host-183'",
+            "name": "10.11.12.14",
+            "os": "VMware ESXi",
+            "osVersion": "5.5.0",
+            "ramMb": 65512,
+            "totalCpuCores": 16,
+            "totalCpuSockets": 2,
+            "totalCpuThreads": 16,
+            "type": "vmware",
+            "vms": {
+                "49737e0a-c9e6-4ceb-aef8-6a9452f67cb5": "4230c60f-3f98-2a65-f7c3-600b26b79c22",
+                "5a2e4e63-a957-426b-bfa8-4169302e4fdb": "42307b15-1618-0595-01f2-427ffcddd88e",
+                "NSX-gateway": "4230d43e-aafe-38ba-5a9e-3cb67c03a16a",
+                "NSX-l3gateway": "4230b00f-0b21-0e9d-dfde-6c7b06909d5f",
+                "NSX-service": "4230e924-b714-198b-348b-25de01482fd9"
+            }
+        }
+    }
+}
+----
+
+For more information, see the man page on your {productname} server for [command]``virtual-host-gatherer``:
+
+----
+man virtual-host-gatherer
+----
+
+
+The `README` file of that package provides background information about the `type` of a hypervisor, etc.:
+
+----
+/usr/share/doc/packages/virtual-host-gatherer/README.md
+----
+
+The man page and the `README` file also contain example configuration files.

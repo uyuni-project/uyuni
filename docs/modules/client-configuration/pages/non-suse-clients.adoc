@@ -1,0 +1,6 @@
+[[non-suse-clients]]
+= Other Clients
+
+It is possible to register clients using operating systems from Red Hat, CentOS, or Ubuntu.
+
+This section contains information specific to clients running operating systems other than those provided by {suse}.

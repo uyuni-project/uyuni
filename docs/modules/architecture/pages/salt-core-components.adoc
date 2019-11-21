@@ -1,0 +1,12 @@
+= Core Salt Components
+
+
+
+
+
+
+Comming soon...
+
+.Salt Core
+
+image::dia-salt-stack-core-block.png[]

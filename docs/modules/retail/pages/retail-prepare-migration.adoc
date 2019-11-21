@@ -1,0 +1,34 @@
+[[retail-prepare-migration]]
+= Before You Migrate
+
+This document is intended to guide you through migration your {slepos} or older {smr} installation (3.1 or 3.2) to the newest version of {smr}.
+
+This document is divided into scenarios.
+Pick the scenario that best suits your environment, and follow the instructions in that section to migrate your installation.
+
+[NOTE]
+====
+Ensure your existing installation is fully updated, and that you have performed a backup, before you begin your migration.
+====
+
+
+
+== Prepare to Migrate from {slepos}
+
+{slepos} cannot be upgraded directly to {smr}, so the migration process requires you to perform some manual configuration.
+To assist you in the migration, as much information as possible about the existing hardware configuration and network infrastructure is recorded.
+Then this information is used for rebuilding the new {smr} installation.
+
+In some cases, this will require a lengthy downtime to perform the migration.
+If you are not able to manage downtime, you can install new servers and run them in parallel to the existing ones while you perform the migration.
+This is especially relevant for large installations.
+
+It is possible to run a SLEPOS Admin server and a {susemgr} server in parallel.
+In such a scenario, branches that have been migrated will run on the {susemgr} server, while those that have not yet been migrated can continue to run on the SLEPOS Admin server.
+This includes all operations, such as adding new terminals, or building and deploying new images.
+
+However, if you run network services (especially DHCP) on the branch servers, you will not be able to run both old and new branch servers in parallel on the same branch, because they can conflict with each other.
+This can result in multiple terminals having the same IP address, or terminals randomly assigned to different branch servers.
+If you need to migrate in this environment, and you want to configure a new branch server while the branch is still running on old infrastructure, make sure that the new branch server is not connected to the network with the terminals.
+
+If your branch server does not provide DHCP services, you can configure the new one in parallel and, when you are ready, change the configuration of your DHCP server from the old to the new branch server.

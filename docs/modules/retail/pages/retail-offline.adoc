@@ -1,0 +1,53 @@
+[[retail.offline]]
+= Offline Use
+
+If the {productname} Server is offline, you can still perform some operations on the terminals.
+This is useful if the connection between the branch server and the {productname} Server is unstable or has low bandwidth.
+This feature uses caching to perform updates.
+
+[IMPORTANT]
+====
+Offline features and features relying on caching are available only for {productname} Server 4.0 and above.
+====
+
+
+
+== Offline Terminal Reboot
+
+If the {productname} Server is offline, and a terminal is rebooted, it will fall back to a previously installed image.
+
+This will occur in these situations:
+
+* If the Saltboot formula has not started within a specified time (default value is 60 seconds).
+* If the terminal does not acknowledge that the Saltboot formula has started.
+* If the root partition is specified on the kernel command line (handled by the PXE formula), is mountable (and is not encrypted), and contains [path]``/etc/ImageVersion`` (which is created by Kiwi).
+
+You can adjust the timeout value by changing the [parameter]``SALT_TIMEOUT`` kernel parameter.
+The parameter is measured in seconds, and defaults to [systemitem]``60``.
+
+----
+SALT_TIMEOUT = 60
+----
+
+For more about kernel parameters, see xref:salt:formula-pxe.adoc[].
+
+
+
+== Cached Terminal Updates
+
+If there is low bandwidth between the branch server and the terminal, or for optimization of terminal update process, POS images can be cached in advance on the terminal and the upgrade performed on the terminals later on.
+
+This functionality requires the terminal to have a dedicated service partition. A service partition is a partition mounted as `/srv/saltboot`.
+This partition must be created before the system partition and large enough to store a POS image.
+To ensure that terminals will always have such a partition, use the Saltboot formula for terminal hardware type to specify the partition details.
+For more information, see xref:salt:formula-saltboot.adoc[].
+
+When the service partition is set up on the terminal, a POS image can be downloaded in advance by applying the `saltboot.cache_image` state:
+
+----
+salt $TERMINALID state.apply saltboot.cache_image
+----
+
+This can be done regularly to ensure that terminals always have an uptodate POS image downloaded.
+
+When the terminal is rebooted and an uptodate POS image is found in the service partition, the terminal will automatically use this cached image for system redeployment.

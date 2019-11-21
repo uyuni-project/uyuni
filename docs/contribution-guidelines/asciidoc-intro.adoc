@@ -1,0 +1,43 @@
+= Writing with Asciidoctor:: Syntax and Best Practice
+ifndef::env-github[]
+:author: Joseph Cayouette
+:revdate:
+:revnumber: Version 1.0
+:revremark: First Draft
+:keywords: introduction, asciidoctor, best practices, syntax
+:experimental:
+// Table of Contents
+:toc:
+endif::[]
+// Github Admonitions
+ifdef::env-github[]
+:tip-caption: :bulb:
+:note-caption: :information_source:
+:important-caption: :heavy_exclamation_mark:
+:caution-caption: :fire:
+:warning-caption: :warning:
+// Section Options
+:sectlinks:
+:sectanchor:
+// Images For this Guide
+:imagesdir: ./images
+:toc: []
+:experimental:
+endif::[]
+
+
+
+
+== Introduction
+
+The goal of this guide is to provide a simple and well defined resource for contributors who take documentation seriously and wish to aid in the responsibility of making Uyuni/SUSE Manager documentation work for everyone.
+
+These cumulative changes could range from a typo in a one line command to a complex and innovative process documented on site by an engineer. Anyone can contribute, but we ask that you follow our guidelines to keep the process and our docs clean and organized.
+
+This document provides an overview of the recommended uses of Asciidoctor syntax in relation to our build process.
+
+
+[NOTE]
+====
+We treat documentation as code (branch, fix, pull request, review, merge). This means the guide you are now reading will grow and mature.
+====

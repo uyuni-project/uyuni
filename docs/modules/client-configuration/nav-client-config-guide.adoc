@@ -1,0 +1,180 @@
+// Client Configuration Guide Antora Navivation List
+ifndef::backend-pdf[]
+
+* xref:client-config-overview.adoc[Client Configuration Guide]
+** xref:supported-features.adoc[Supported Clients and Features]
+*** xref:supported-features-sles.adoc[SLES Supported Features]
+*** xref:supported-features-es.adoc[SLES-ES Supported Features]
+*** xref:supported-features-rh.adoc[Red Hat Supported Features]
+*** xref:supported-features-centos.adoc[CentOS Features]
+*** xref:supported-features-ubuntu.adoc[Ubuntu Supported Features]
+ifeval::[{uyuni-content} == true]
+*** xref:supported-features-debian.adoc[Debian Supported Features]
+endif::[]
+// Manual Registration
+** xref:registration-overview.adoc[Registration Overview]
+*** xref:registration-webui.adoc[Registering with the Web UI]
+*** xref:registration-bootstrap.adoc[Registering with Bootstrap]
+*** xref:clients-and-activation-keys.adoc[Activation Keys]
+// Clients on a Proxy
+** xref:client-proxy.adoc[Registering Clients on a Proxy]
+*** xref:salt-client-proxy.adoc[Registering with the Web UI on a Proxy]
+*** xref:script-client-proxy.adoc[Registering with Bootstrap on a Proxy]
+// Automated Installation
+** xref:autoinstallation-methods.adoc[Automating Client Installation]
+*** xref:client-automating-preparation.adoc[Preparation]
+*** xref:client-automating-installation.adoc[Installation]
+// *** xref:autoyast.adoc[AutoYaST]
+*** xref:kickstart.adoc[Kickstart]
+*** xref:cobbler.adoc[Cobbler]
+// Non-SUSE Clients
+** xref:non-suse-clients.adoc[Other Clients]
+*** xref:clients-sleses.adoc[Expanded Support Clients]
+*** xref:clients-rh.adoc[Red Hat Clients]
+*** xref:clients-centos.adoc[CentOS Clients]
+*** xref:clients-ubuntu.adoc[Ubuntu Clients]
+// Virtualization
+** xref:virtualization.adoc[Virtualization]
+*** xref:virt-xenkvm.adoc[Virtualization with Xen and KVM]
+*** xref:virt-vmware.adoc[Virtualization with VMWare]
+*** xref:virt-file.adoc[Virtualization with Other Hosts]
+// VHMs
+** xref:vhm.adoc[Virtual Host Managers]
+*** xref:vhm-aws.adoc[VHM and AWS]
+*** xref:vhm-azure.adoc[VHM and Azure]
+*** xref:vhm-gce.adoc[VHM and GCE]
+*** xref:vhm-kubernetes.adoc[VHM and Kubernetes]
+//*** xref:vhm-caasp.adoc[VHM and CaaSP]
+//  Client Admin Tasks
+** xref:channels.adoc[Channels]
+ifeval::[{suma-content} == true]
+** xref:creating-a-tools-repository.adoc[Creating a Tools Repository]
+endif::[]
+// Contact Methods
+** xref:contact-methods-intro.adoc[Client Contact Methods]
+*** xref:contact-methods-rhnsd.adoc[rhnsd]
+*** xref:contact-methods-pushssh.adoc[Push via SSH]
+*** xref:contact-methods-saltssh.adoc[Push via Salt SSH]
+*** xref:contact-methods-osad.adoc[OSAD]
+** xref:using-ssm.adoc[Using the System Set Manager]
+// Troubleshooting
+** xref:tshoot-clients.adoc[Troubleshooting Clients]
+// Appendices
+** xref:autoyast-example.adoc[AutoYaST Example]
+// Licence
+//** xref:common_gfdl1.2_i.adoc[License]
+
+endif::[]
+
+
+// PDF Client Configuration Guide
+ifdef::backend-pdf[]
+= Client Configuration Guide: {productname} {productnumber}
+include::./branding/pdf/entities.adoc[]
+:toclevels: 3
+
+include::modules/client-configuration/pages/client-config-overview.adoc[leveloffset=+1]
+
+include::modules/client-configuration/pages/supported-features.adoc[leveloffset=+2]
+include::modules/client-configuration/pages/supported-features-sles.adoc[leveloffset=+3]
+include::modules/client-configuration/pages/supported-features-es.adoc[leveloffset=+3]
+include::modules/client-configuration/pages/supported-features-rh.adoc[leveloffset=+3]
+include::modules/client-configuration/pages/supported-features-centos.adoc[leveloffset=+3]
+include::modules/client-configuration/pages/supported-features-ubuntu.adoc[leveloffset=+3]
+ifeval::[{uyuni-content} == true]
+include::modules/client-configuration/pages/supported-features-debian.adoc[leveloffset=+3]
+endif::[]
+
+// Manual Registration
+
+include::modules/client-configuration/pages/registration-overview.adoc[leveloffset=+1]
+
+include::modules/client-configuration/pages/registration-webui.adoc[leveloffset=+2]
+
+include::modules/client-configuration/pages/registration-bootstrap.adoc[leveloffset=+2]
+
+include::modules/client-configuration/pages/clients-and-activation-keys.adoc[leveloffset=+2]
+
+// Clients on a Proxy
+
+include::modules/client-configuration/pages/client-proxy.adoc[leveloffset=+1]
+
+include::modules/client-configuration/pages/salt-client-proxy.adoc[leveloffset=+2]
+
+include::modules/client-configuration/pages/script-client-proxy.adoc[leveloffset=+2]
+
+// Automated Installation
+
+include::modules/client-configuration/pages/autoinstallation-methods.adoc[leveloffset=+1]
+include::modules/client-configuration/pages/client-automating-preparation.adoc[leveloffset=+1]
+include::modules/client-configuration/pages/client-automating-installation.adoc[leveloffset=+1]
+
+// include::modules/client-configuration/pages/autoyast.adoc[leveloffset=+2]
+
+include::modules/client-configuration/pages/kickstart.adoc[leveloffset=+2]
+
+include::modules/client-configuration/pages/cobbler.adoc[leveloffset=+2]
+
+
+// Non-SUSE Clients
+
+include::modules/client-configuration/pages/non-suse-clients.adoc[leveloffset=+1]
+
+include::modules/client-configuration/pages/clients-sleses.adoc[leveloffset=+2]
+
+include::modules/client-configuration/pages/clients-rh.adoc[leveloffset=+2]
+
+include::modules/client-configuration/pages/clients-centos.adoc[leveloffset=+2]
+
+include::modules/client-configuration/pages/clients-ubuntu.adoc[leveloffset=+2]
+
+// Virtualization
+include::modules/client-configuration/pages/virtualization.adoc[leveloffset=+1]
+
+include::modules/client-configuration/pages/virt-xenkvm.adoc[leveloffset=+2]
+
+include::modules/client-configuration/pages/virt-vmware.adoc[leveloffset=+2]
+
+include::modules/client-configuration/pages/virt-file.adoc[leveloffset=+2]
+
+// VHMs
+include::modules/client-configuration/pages/vhm.adoc[leveloffset=+1]
+
+include::modules/client-configuration/pages/vhm-azure.adoc[leveloffset=+2]
+
+include::modules/client-configuration/pages/vhm-aws.adoc[leveloffset=+2]
+
+include::modules/client-configuration/pages/vhm-gce.adoc[leveloffset=+2]
+
+include::modules/client-configuration/pages/vhm-kubernetes.adoc[leveloffset=+2]
+
+// include::modules/client-configuration/pages/vhm-caasp.adoc[leveloffset=+2]
+
+// Client Admin Tasks
+include::modules/client-configuration/pages/channels.adoc[leveloffset=+1]
+
+include::modules/client-configuration/pages/creating-a-tools-repository.adoc[leveloffset=+1]
+
+// Contact Methods
+include::modules/client-configuration/pages/contact-methods-intro.adoc[leveloffset=+1]
+
+include::modules/client-configuration/pages/contact-methods-rhnsd.adoc[leveloffset=+2]
+
+include::modules/client-configuration/pages/contact-methods-pushssh.adoc[leveloffset=+2]
+
+include::modules/client-configuration/pages/contact-methods-saltssh.adoc[leveloffset=+2]
+
+include::modules/client-configuration/pages/contact-methods-osad.adoc[leveloffset=+2]
+
+include::modules/client-configuration/pages/using-ssm.adoc[leveloffset=+1]
+
+// Troubleshooting
+include::modules/client-configuration/pages/tshoot-clients.adoc[leveloffset=+1]
+
+// Appendices
+include::modules/client-configuration/pages/autoyast-example.adoc[leveloffset=+1]
+
+// Licence
+include::modules/client-configuration/pages/common_gfdl1.2_i.adoc[leveloffset=+1]
+
+endif::[]

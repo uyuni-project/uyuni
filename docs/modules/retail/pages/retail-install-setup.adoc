@@ -1,0 +1,194 @@
+[[retail-install-setup]]
+= Setting up
+
+To set up an {smr} environment, you will need to have already installed and configured {susemgr} Server, have one or more {smr} branch server, and one or more {susemgr} build host.
+
+This section covers how to configure your {smr} environment, including:
+* Prepare POS images
+* Configure services on the branch server
+* Synchronize POS images to the branch servers
+
+The very first time you set up an {smr} environment, you will need to perform all three steps.
+You will need to revisit some of these steps later on as you are working with {smr}.
+
+For example, the first time you configure the branch server, you will need to have images prepared for synchronization.
+If you are configuring more than one branch server, you can use the same images across different branch servers.
+
+If you have an existing environment, and need to build new images, you do not need to re-initialize the branches.
+You will need to synchronize the images, and can skip setting up the services on the branch server.
+
+Usually, POS images are rebuild when updated packages are available, and synchronized to the branch servers before the update window opens.
+
+== Prepare and Build Terminal Images
+
+For information about {susemgr} image building, see xref:administration:image-management.adoc[].
+
+{smr} POS images are images specifically tailored for {smr} environment and designed to be deployed using PXE booting mechanism.
+
+=== POS Image Templates
+
+As starting point, {suse} provides basic templates at https://github.com/SUSE/manager-build-profiles/tree/master/OSImage[].
+These templates need to be adapted for specific usecases, for example by including specific applications, configuration settings, and users.
+
+[IMPORTANT]
+====
+By default, POS templates do not include a system user.
+You will not be able to login as a user to a system that has been installed with a {suse} provided template.
+However you can use Salt to manage clients without a system user.
+You can use Salt to install a system user after the terminal has been deployed.
+====
+
+=== SLES{nbsp}11 SP{nbsp}3 Terminals
+
+POS Terminals based on {sles}{nbsp}11 SP{nbsp}3 can be deployed in much the same way as other terminals, with a few differences.
+
+* You must use the SLES{nbsp}11 template
+* SLES{nbsp}11 images need to be activated with the [systemitem]``SLES11 SP3 i586`` and [systemitem]``SLEPOS 11 SP3 i586`` channels
+
+[IMPORTANT]
+====
+Ensure that SLES{nbsp}11 images are built on the SLES{nbsp}11 build host.
+Building on the incorrect build host will cause your build to fail.
+====
+
+[WARNING]
+====
+If you are building images for SLES{nbsp}11 using profiles from an HTTPS git repository that uses TLS 1.0 or greater, it will fail.
+SLES{nbsp}11 does not support later versions of TLS.
+You will need to clone the repository locally in order to use it for building.
+====
+
+== Configure Services on the Branch Server
+
+Before you configure the branch server, ensure you have decided on networking topology, and know the minion ID of the branch server.
+For the information about the possible network topologies, see xref:retail:retail-network-arch.adoc[].
+
+Configure branch server services from the {susemgr} Server.
+The configuration is then applied to the selected branch server using Salt states.
+{susemgr} Formulas with Forms functionality is used to configure branch server services, however there are multiple ways to configure them:
+
+* {smr} provided command line tool [command]``retail_branch_init``
+* {smr} provided mass import command line tool [command]``retail_yaml``
+* {susemgr} web UI and configuring formulas manually (for advanced users)
+
+
+The branch server can be configured automatically using the [command]``retail_branch_init`` command, as shown in this section.
+If you prefer to manually configure the branch server, you can do so using formulas.
+For more information about formulas, see xref:retail:retail-formulas-intro.adoc[].
+
+.Procedure: Configuring Branch Server Formulas With a Helper Script
+
+. Branch server configuration is performed using the [command]``retail_branch_init`` command:
++
+----
+retail_branch_init <branch_server_minion_id>
+----
++
+This command will configure branch server formulas with default values and for shared networking topology.
+For dedicated network topology run this command:
++
+----
+retail_branch_init <branch_server_minion_id> --dedicated-nic <network_device>
+----
++
+You can customize network information as well, together with custom [systemitem]``branch prefix``. For example:
++
+----
+retail_branch_init <branch_server_minion_id> --dedicated-nic eth1
+                                             --branch-prefix B001
+                                             --server-domain <branch_server_subdomain>
+                                             --branch-ip 192.168.86.1
+                                             --netmask 255.255.255.0
+----
++
+You can use the [command]``retail_branch_init --help`` command for additional options.
+
+. Verify that your changes have been configured correctly by checking the {susemgr} {webui} branch server system formulas.
+. Apply highstate on the branch server.
+You can do this through the {webui}, or by running this command:
++
+----
+salt <branch_server_minion_id> state.apply
+----
+
+Similar results can be achieved by using mass import command line tool.
+
+.Procedure: Configuring Branch Server Formulas With a Mass Import Tool
+
+. Prepare branch specific YAML file:
++
+For example, create branch.yaml file with content:
++
+----
+branches:
+  <branch_server_minion_id>:
+    branch_prefix: branch1
+    server_name: branchserver1
+    server_domain: example.com
+    nic: eth1
+    dedicated_nic: true
+    configure_firewall: true
+    branch_ip: 192.168.2.1
+    netmask: 255.255.255.0
+    dyn_range:
+        - 192.168.2.10
+        - 192.168.2.250
+----
++
+For more information about mass import tool, see xref:retail:retail-mass-config.adoc[].
+. Import branch information from YAML file to {susemgr}
++
+----
+retail_yaml --from-yaml branch.yaml
+----
+. Verify that your changes have been configured correctly by checking the {susemgr} {webui} branch server system formulas.
+. Apply highstate on the branch server.
+
+[WARNING]
+====
+Both [command]``retail_branch_init`` and [command]``retail_yaml`` commands override existing configuration settings of the specified branch server.
+====
+
+After the initial configuration done by command line tools, branch server configuration can be further adjusted in {susemgr} {webui} through branch server formulas.
+
+=== Required System Groups
+
+{smr} requires system groups for terminals and servers.
+Manually create these system groups during installation:
+
+* [systemitem]``TERMINALS``
+* [systemitem]``SERVERS``
+
+Additionally, you will need to create a system group for each branch server, and each terminal hardware type in your environment.
+For more information about hardware type groups, see xref:retail:retail-deploy-terminals.adoc[].
+
+Branch server groups are named after branch server prefixes, for example group name [systemitem]``B0001`` for branch server prefix [systemitem]``BOO1``.
+
+You can create system groups using the {susemgr} {webui}.
+Navigate to menu:Systems[System Groups] and click btn:[Create System Group].
+
+For more information about system groups, see xref:reference:systems/system-groups.adoc[].
+
+[NOTE]
+====
+{smr} command line tools create required system groups and branch group automatically.
+====
+
+
+== Synchronize Images to the Branch Server
+
+The OS image you use on the {susemgr} server must be synchronized for use to the branch server.
+You can do this with the Salt [command]``image-sync`` state, part of the [systemitem]``Image Synchronization Formula``.
+
+.Procedure: Synchronizing Images to the Branch Server
+
+. On the {susemgr} server, run this command:
++
+----
+salt <branch_server_minion_id> state.apply image-sync
+----
+. The image details will be transferred to [path]``/srv/saltboot`` on the branch server.
+
+You can also set synchronization to run automatically on the branch server.
+Configure the image synchronization formula to apply the highstate regularly.
+For more information about [systemitem]``Image Synchronization Formula``, see xref:salt:formula-imagesync.adoc[].

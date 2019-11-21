@@ -1,0 +1,82 @@
+[[public-cloud-requirements]]
+= Public Cloud Requirements
+
+You can run {productname} Server on a public cloud instance from a third-party provider such as Amazon EC2, or Microsoft Azure.
+
+This section details the requirements for using {productname} on a public cloud instance.
+
+[NOTE]
+====
+Public clouds provide {productname} under a Bring Your Own Subscription (BYOS) model.
+This means that you must register instances with the {scc}.
+For more information about registering {productname} with {scc}, see xref:installation:general-requirements.adoc[].
+====
+
+Depending on the public cloud framework you are using, you can locate the {productname} images by searching for the  keywords [package]``suse``, [package]``manager``, [package]``proxy``, or [package]``BYOS``.
+
+
+== Instance Requirements
+
+Select a public cloud instance type that meets the hardware requirements in xref:installation:hardware-requirements.adoc[].
+
+Before you begin, here are some other considerations:
+
+* The {productname} setup procedure performs a forward-confirmed reverse DNS lookup.
+This must succeed in order for the setup procedure to complete and for {productname} to operate as expected.
+It is important to perform hostname and IP configuration before you set up {productname}.
+* {productname} Server and Proxy instances need to run in a network configuration that provides you control over DNS entries, but cannot be accessed from the internet at large.
+* Within this network configuration DNS resolution must be provided: `hostname -f` must return the fully-qualified domain name (FQDN).
+* DNS resolution is also important for connecting clients.
+* DNS is dependent on the cloud framework you choose.
+Refer to the cloud provider documentation for detailed instructions.
+* We recommend that you locate software repositories, the server database, and the proxy squid cache on an external virtual disk.
+This prevents data loss if the instance is unexpectedly terminated.
+This section includes instructions for setting up an external virtual disk.
+
+== Network Requirements
+
+When you use {productname} on a public cloud, you must use a restricted network.
+We recommend using a VPC private subnet with an appropriate firewall setting.
+Only machines in your specified IP ranges must be able to access the instance.
+
+[WARNING]
+====
+A world-accessible {productname} instance violates the terms of the {productname} EULA, and is not supported by {suse}.
+====
+
+To access the {productname} {webui}, allow HTTPS when configuring the network access controls.
+
+
+
+== Separate Storage Volumes
+
+We recommend that the repositories and the database for {productname} are stored on a seperate storage device.
+This will help to avoid data loss in cases when the {productname} instance is terminated.
+You must set up the storage device before you run the YaST {productname} setup procedure.
+
+Provision a disk device in the public cloud environment, according the cloud provider's documentation.
+The size of the disk is dependent on the number of distributions and channels you intend to manage with {productname}.
+We recommend at least 25{nbsp}GB for each distribution, and each channel.
+For more information on disk sizes, see https://www.suse.com/support/kb/doc.php?id=7015050[SUSE Manager sizing examples].
+
+When you attached the virtual disk, it will appear in your instance as a Unix device node.
+The name of the device node will vary depending on your provider, and the instance type selected.
+
+On your {productname} Server, use this command to find all available storage devices:
+
+----
+hwinfo --disk | grep -E "Device File:"
+----
+
+If you are not sure which device to choose, use the [command]``lsblk`` command to see the name and size of each device.
+Choose the name that matches with the size of the virtual disk you are looking for.
+
+Use the [command]``suma-storage`` command with the device name to set up the external disk as the location for the database and repositories:
+
+----
+/usr/bin/suma-storage <devicename>
+----
+
+The external storage will be set up as an XFS partition mounted at [path]``/manager_storage``.
+
+If you are installing a proxy, the [command]``suma-storage`` command will also move the Squid cache to the external storage location.

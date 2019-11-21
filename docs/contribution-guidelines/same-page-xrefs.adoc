@@ -1,0 +1,54 @@
+= Reference Sections in a Page
+
+
+
+== Reference a section in the same page
+
+//TODO: Test if you can use a section title as an id when publishing pdf
+// ----
+//  This is an in-page cross reference: <<Reference a section in the same page>>.
+// ----
+
+// Section title IDs are automatically generated when AsciiDoc pages are processed, so you can use them as links by referencing the section’s title.
+//However, the title must begin with an uppercase letter (in basic Latin) without any leading formatting marks.
+
+To create an in-page xref to a section use the section’s implicit ID.
+
+For example:
+
+[#create-id]
+.Create an explicit ID
+----
+[#reference-a-section-in-the-same-page]
+= Reference a Section in the Same Page
+
+Blah blah blah...
+----
+
+[#link-to-id]
+.Link to an Explicit ID in the same page
+----
+This is an in-page cross reference:
+<<reference-a-section-in-the-same-page,Check it out>>!
+----
+
+You can also create in-line ids.
+
+.Create an Inline ID
+----
+This is an [#name-me] inline ID.
+
+For more information <<name-me, see example>>.
+----
+
+[TIP]
+====
+We prefer to use the shorthand ID version for defining anchors within a document.
+
+----
+[#some-id]
+----
+====
+
+For more examples refer to: link:https://asciidoctor.org/docs/user-manual/#anchordef[Defining an Anchor] in the Asciidoctor Users Manual.
+

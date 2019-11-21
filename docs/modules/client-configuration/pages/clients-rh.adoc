@@ -1,0 +1,423 @@
+[[clients-rh]]
+= Registering {rhel} Clients
+
+This section contains information about registering traditional and Salt clients running {rhel} operating systems.
+
+[IMPORTANT]
+====
+{rhel} clients are based on {redhat} and are unrelated to {sleses}, RES, {redhat}, or {sles}.
+You are responsible for arranging access to {redhat} base media repositories and {rhela} installation media, as well as connecting {productname} Server to the {redhat} content delivery network.
+You must obtain support from {redhat} for all your {rhela} systems.
+If you do not do this, you might be violating your terms with {redhat}.
+====
+
+[IMPORTANT]
+====
+Traditional clients are not available on {rhel}{nbsp}8.
+{rhel}{nbsp}8 clients are only supported as Salt clients.
+====
+
+
+
+== Server Requirements
+
+Before you begin, check that your {productname} Server meets the requirements at xref:installation:hardware-requirements.adoc[].
+
+Taskomatic uses one CPU core, and requires at least 3072{nbsp}MB of RAM.
+To ensure that taskomatic has access to enough memory, open the [path]``/etc/rhn/rhn.conf`` configuration file, and add this line:
+
+----
+taskomatic.java.maxmemory=3072
+----
+
+Restart Taskomatic:
+----
+systemctl restart taskomatic
+----
+
+== Import Entitlements and CA Certificate
+
+{redhat} clients require a {redhat} certificate authority (CA) and entitlement certificate and entitlement key.
+
+Entitlement certificates are embedded with expiration dates, which match the length of the support subscription.
+To avoid disruption, you will need to repeat this process at the end of every support subscription period.
+
+{redhat} supply a subscription manager tool to manage subscription assignments.
+It runs locally to track installed products and subscriptions.
+Clients must be registered with the subscription manager to obtain certificates.
+
+{redhat} clients use a URL to replicate repositories.
+The URL will change depending on where the {redhat} client is registered.
+
+{redhat} clients can be registered in three different ways:
+
+* {redhat} content delivery network (CDN) at redhat.com
+* {redhat} Satellite Server
+* {redhat} update infrastructure (RHUI) in the cloud
+
+This guide covers clients registered to {redhat} CDN.
+You must have at least one system registered to the CDN, with an authorized subscription for repository content.
+
+[IMPORTANT]
+====
+Entitlement certificates for RHUI (cloud-based systems) only allow you to download content, not repository data.
+Satellite certificates for client systems require a Satellite server and subscription.
+Clients using Satellite certificates are not supported with {productname} Server.
+====
+
+[WARNING]
+====
+Entitlement certificates are embedded with expiration dates, which match the length of the support subscription.
+To avoid disruption, you will need to repeat this process at the end of every support subscription period.
+====
+
+{redhat} supplies the subscription-manager tool to manage subscription assignments.
+It runs locally on the client system to track installed products and subscriptions.
+Register to redhat.com with subscription-manager, then follow this procedure to obtain certificates.
+
+
+.Procedure: Registering Clients to Subscription Manager
+
+. On the client system, at the command prompt, register with the subscription manager tool:
++
+----
+subscription-manager register
+----
++
+Enter your {redhat} Portal username and password when prompted.
+. Copy your entitlement certificate and key from the client system, to a location that the {productname} Server can access:
++
+----
+cp /etc/pki/entitlement/ /<example>/entitlement/
+----
++
+[NOTE]
+====
+Your entitlement certificate and key will both have a file extension of [path]``.pem``.
+The key will also have [path]``key`` in the filename.
+====
++
+. Copy the {redhat} CA Certificate file from the client system, to the same web location as the entitlement certificate and key:
++
+----
+cp /etc/rhsm/ca/redhat-uep.pem /example/entitlement
+----
+
+
+To manage repositories on your {redhat} client, you need to import the CA and entitlement certificates to the {productname} Server.
+This requires three entries: one each for the entitlement certificate, the entitlement key, and the {redhat} certificate.
+
+
+
+.Procedure: Importing Certificates to the Server
+
+. On the {productname} Server {webui}, navigate to menu:Systems[Autoinstallation > GPG and SSL Keys].
++
+// Maybe we  should add a screenshot, as we have at the current guide: https://documentation.suse.com/sbp/all/html/SBP-sumaforrhel/index.html#sec-import
+// Not necessary, it's pretty simple to navigate to a page. LKB
+
+. Click btn:[Create Stored Key/Cert] and set these parameters for the entitlement certificate:
+* In the [guimenu]``Description`` field, type [systemitem]``Entitlement-Cert-date``.
+* In the [guimenu]``Type`` field, select [systemitem]``SSL``.
+* In the [guimenu]``Select file to upload`` field, browse to the location where you saved the entitlement certificate, and select the [path]``.pem`` certificate file.
+. Click btn:[Create Key].
+. Click btn:[Create Stored Key/Cert] and set these parameters for the entitlement key:
+* In the [guimenu]``Description`` field, type [systemitem]``Entitlement-key-date``.
+* In the [guimenu]``Type`` field, select [systemitem]``SSL``.
+* In the [guimenu]``Select file to upload`` field, browse to the location where you saved the entitlement key, and select the [path]``.pem`` key file.
+. Click btn:[Create Key].
+. Click btn:[Create Stored Key/Cert] and set these parameters for the {redhat} certificate:
+* In the [guimenu]``Description`` field, type [systemitem]``redhat-uep``.
+* In the [guimenu]``Type`` field, select [systemitem]``SSL``.
+* In the [guimenu]``Select file to upload`` field, browse to the location where you saved the {redhat} certificate, and select the certificate file.
+. Click btn:[Create Key].
+
+// put the screenshot here as a result. LKB
+
+
+
+== Repository Management
+
+
+You can use the subscription manager tool to get the URLs of the repositories you want to mirror:
+
+----
+subscription-manager repos
+----
+
+You can use these repository URLs to create custom repositories.
+This allows you to mirror only the content you need to manage your clients.
+
+[IMPORTANT]
+====
+You can only create custom versions of {redhat} repositories if you have the correct entitlements in your {redhat} Portal.
+====
+
+
+
+.Procedure: Creating Custom Repositories
+
+. On the {productname} Server {webui}, navigate to menu:Software[Manage > Repositories].
+. Click btn:[Create Repository] and set these parameters for the entitlement certificate:
+* In the [guimenu]``Repository Label`` field, type [systemitem]``rhel-7-server-rpms``.
+* In the [guimenu]``Repository URL`` field, type the URL of the repository to mirror.
+For example, [systemitem]``https://cdn.redhat.com/content/dist/rhel/server/7/7Server/x86_64/os/``.
+* In the [guimenu]``Has Signed Metadata?`` field, uncheck all Red Hat Enterprise Repositories.
+* In the [guimenu]``SSL CA Certificate`` field, select [systemitem]``redhat-uep``.
+* In the [guimenu]``SSL Client Certificate`` field, select [systemitem]``Entitlement-Cert-date``.
+* In the [guimenu]``SSL Client Key`` field, select [systemitem]``Entitlement-Key-date``.
+* Leave all other fields as the default values.
+. Click btn:[Create Repository].
+. Repeat for every repository you want to define.
+
+
+When you have created the custom repositories, you can create corresponding custom channels.
+
+
+
+.Procedure: Creating Custom Channels
+
+. On the {productname} Server {webui}, navigate to menu:Software[Manage > Channels].
+. Click btn:[Create Channel] and set these parameters for the entitlement certificate.
+Ensure you use the correct {rhela} version:
+* In the [guimenu]``Channel Name`` field, type [systemitem]``RHEL 7 x86_64``.
+* In the [guimenu]``Channel Label`` field, type [systemitem]``rhel7-x86_64-server``.
+* In the [guimenu]``Parent Channel`` field, select [systemitem]``None``.
+* In the [guimenu]``Architecture`` field, select [systemitem]``x86_64``.
+* In the [guimenu]``Repository Checksum Type`` field, select [systemitem]``sha1``.
+* In the [guimenu]``Channel Summary`` field, type [systemitem]``RHEL 7 x86_64``.
+* In the [guimenu]``Organization Sharing`` field, select [systemitem]``Public``.
+. Click btn:[Create Channel].
+. Navigate to the [guimenu]``Repositories`` tab, check the appropriate repository, and click btn:[Update repositories].
+. OPTIONAL: Navigate to the [guimenu]``Sync`` tab to set a recurring schedule for synchronization of this repository.
+. Click btn:[Sync Now] to begin synchronization immediately.
+
+
+[NOTE]
+====
+{rhel} channels can be very large.
+Synchronization can sometimes take several hours.
+====
+
+
+When you have created the custom channels and synchronized them with the repositories, you can create child channels.
+
+.Procedure: Creating Child Channels
+
+. On the {productname} Server {webui}, navigate to menu:Software[Manage > Channels].
+. Click btn:[Create Channel] and set these parameters for the entitlement certificate.
+Ensure you use the correct {rhela} version:
+* In the [guimenu]``Channel Name`` field, type [systemitem]``RHEL 7 x86_64``.
+* In the [guimenu]``Channel Label`` field, type [systemitem]``rhel7-x86_64-extras``.
+* In the [guimenu]``Parent Channel`` field, select [systemitem]``rhel7-x86_64-server``.
+* In the [guimenu]``Architecture`` field, select [systemitem]``x86_64``.
+* In the [guimenu]``Repository Checksum Type`` field, select [systemitem]``sha1``.
+* In the [guimenu]``Channel Summary`` field, type [systemitem]``RHEL 7 x86_64 Extras``.
+* In the [guimenu]``Organization Sharing`` field, select [systemitem]``Public``.
+. Click btn:[Create Channel].
+. Navigate to the [guimenu]``Repositories`` tab, check the appropriate repository, and click btn:[Update repositories].
+. OPTIONAL: Navigate to the [guimenu]``Sync`` tab to set a recurring schedule for synchronization of this repository.
+. Click btn:[Sync Now] to begin synchronization immediately.
+
+
+[NOTE]
+====
+{rhel} channels can be very large.
+Synchronization can sometimes take several hours.
+====
+
+
+
+== Add Client Tools
+
+When you have set up all the custom channels, you can add the client tools.
+
+For this section, you will require an activation key.
+For more information about activation keys, see xref:client-configuration:clients-and-activation-keys.adoc[].
+
+
+ifeval::[{suma-content} == true]
+
+Your {susemgr} subscription entitles you to the tools channels for {sleses} (also known as {redhat} Expanded Support or RES).
+You must use the client tools channel to create the bootstrap repository.
+This procedure applies to both traditional and Salt minions.
+
+
+.Procedure: Adding Client Tools Channels
+
+. On the {productname} Server, add the appropriate {es} channels:
++
+* For {es} 6:
++
+From the {webui}, add [systemitem]``RHEL6 Base x86_64`` and [systemitem]``SUSE Linux Enterprise Client Tools RES6 x86_64``.
++
+From the command prompt, add [systemitem]``rhel-x86_64-server-6`` and [systemitem]``res6-suse-manager-tools-x86_64``.
++
+* For {es} 7:
++
+From the {webui}, add [systemitem]``RHEL7 Base x86_64`` and [systemitem]``SUSE Linux Enterprise Client Tools RES7 x86_64``.
++
+From the command prompt, add [systemitem]``rhel-x86_64-server-7`` and [systemitem]``res7-suse-manager-tools-x86_64``.
+.  Synchronize the {productname} Server with the {SCC}.
+You can do this using the {webui}, or by running [command]``mgr-sync`` at the command prompt.
+. Add the new channel to your activation key.
+
+endif::[]
+
+
+ifeval::[{uyuni-content} == true]
+
+// spacewalk-common-channels can't be used because centosX-uyuni-client requires centos7 channel as well, which a RHEL user would not need.
+
+.Procedure: Adding Client Tools Channels
+
+. On the {productname} Server {webui}, navigate to menu:Software[Manage > Repositories].
+. Click btn:[Create Repository] and set these parameters for the entitlement certificate:
+* In the [guimenu]``Repository Label`` field, type [systemitem]``centos7-uyuni-client``.
+* In the [guimenu]``Repository URL`` field, type the URL of the repository to mirror.
+For example, [systemitem]``https://download.opensuse.org/repositories/systemsmanagement:/Uyuni:/Stable:/CentOS7-Uyuni-Client-Tools/CentOS_7/``.
+* In the [guimenu]``Has Signed Metadata?`` field, uncheck all Red Hat Enterprise Repositories.
+* Leave all other fields as the default values.
+. Click btn:[Create Repository].
+. Navigate to menu:Software[Manage > Channels].
+. Click btn:[Create Channel] and set these parameters.
+Ensure you use the correct {rhela} version:
+* In the [guimenu]``Channel Name`` field, type [systemitem]``Uyuni Client Tools for CentOS 7 (x86_64)``.
+* In the [guimenu]``Channel Label`` field, type [systemitem]``centos7-uyuni-client-x86_64``.
+* In the [guimenu]``Parent Channel`` field, select [systemitem]``rhel7-x86_64-server``.
+* In the [guimenu]``Architecture`` field, select [systemitem]``x86_64``.
+* In the [guimenu]``Repository Checksum Type`` field, select [systemitem]``sha1``.
+* In the [guimenu]``Channel Summary`` field, type [systemitem]``Uyuni Client Tools for CentOS 7 (x86_64)``.
+* In the [guimenu]``Organization Sharing`` field, select [systemitem]``Public``.
+. Click btn:[Create Channel].
+. Navigate to the [guimenu]``Repositories`` tab, check the [systemitem]``centos7-uyuni-client`` repository, and click btn:[Update repositories].
+. OPTIONAL: Navigate to the [guimenu]``Sync`` tab to set a recurring schedule for synchronization of this repository.
+. Click btn:[Sync Now] to begin synchronization immediately.
+. Add the new channel to your activation key.
+
+endif::[]
+
+You can choose to disable the {rhel} subscription-manager yum plugins.
+// Explain the use case.
+
+The yum plugins are disabled with a configuration Salt state.
+
+[NOTE]
+====
+This procedure is optional.
+====
+
+
+
+.Procedure: Creating a Salt State to Deploy Configuration Files
+
+. On the {productname} Server {webui}, navigate to menu:Configuration[Channels].
+. Click btn:[Create State Channel]
+* In the [guimenu]``Name`` field, type [systemitem]``subscription-manager: disable yum plugins``.
+* In the [guimenu]``Label`` field, type [systemitem]``subscription-manager-disable-yum-plugins``.
+* In the [guimenu]``Description`` field, type [systemitem]``subscription-manager: disable yum plugins``.
+* In the [guimenu]``SLS Contents`` field, leave it empty.
+. Click btn:[Create Config Channel]
+. Click btn:[Create Configuration File]
+* In the [guimenu]``Filename/Path`` field type [systemitem]``/etc/yum/pluginconf.d/subscription-manager.conf``.
+* In the [guimenu]``File Contents`` field type:
+----
+[main]
+enabled=0
+----
+. Click btn:[Create Configuration File]
+. Take note of the value of the field [guimenu]``Salt Filesystem Path```.
+. Click on the name of the Configuration Channel.
+. Click on [guimenu]``View/Edit 'init.sls' File``
+* In the [guimenu]``File Contents`` field, type:
+----
+configure_subscription-manager-disable-yum-plugins:
+  cmd.run:
+    - name: subscription-manager config --rhsm.auto_enable_yum_plugins=0
+    - watch:
+      - file: /etc/yum/pluginconf.d/subscription-manager.conf
+  file.managed:
+    - name: /etc/yum/pluginconf.d/subscription-manager.conf
+    - source: salt:///etc/yum/pluginconf.d/subscription-manager.conf
+----
+. Click btn:[Update Configuration File]
+
+
+
+.Procedure: Creating a System Group for {rhel} Clients
+
+. On the {productname} Server {webui}, navigate to menu:Systems[System Groups].
+. Click btn:[Create Group]
+* In the [guimenu]``Name`` field, type [systemitem]``rhel-systems``.
+* In the [guimenu]``Description`` field, type [systemitem]``All RHEL systems``.
+. Click btn:[Create Group]
+. Click [guimenu]``States`` tab
+. Click [guimenu]``Configuration Channels`` tab
+. Type [systemitem]``subscription-manager: disable yum plugins`` at the search box.
+. Click btn:[Search] and the state will appear.
+. Click the checkbox for the state at the [systemitem]``Assign`` column.
+. Click btn:[Save changes]
+. Click btn:[Confirm]
+
+If you already have RHEL systems added to ${productname}, assign them to the new system group, and then apply the highstate.
+
+
+
+.Procedure: Adding the System Group to Activation Keys
+
+You need to modify the activation keys you used for RHEL systems to include the system group created above.
+
+. On the {productname} Server {webui}, navigate to menu:Systems[Activation Keys].
+. For each the Activation Keys you used for RHEL systems, click on it and:
+. Navigate to the [guimenu]``Groups`` tab, and theb [guimenu]``Join`` subtab.
+. Check [systemitem]``Select rhel-systems```
+. Click btn:[Join Selected Groups]
+
+
+
+== Trust GPG Keys on Clients
+
+ifeval::[{suma-content} == true]
+By default, {rhel} does not trust the GPG key for {productname} {es} client tools.
+endif::[]
+
+ifeval::[{uyuni-content} == true]
+By default, {rhel} does not trust the GPG key for {productname} {centos} client tools.
+endif::[]
+
+The clients can be successfully bootstrapped without the GPG key being trusted.
+
+However, they will not be able to install new client tool packages or update them.
+
+If this occurs, add this key to the [systemitem]``ORG_GPG_KEY=`` parameter in all {rhel} bootstrap scripts:
+
+ifeval::[{suma-content} == true]
+----
+sle12-gpg-pubkey-39db7c82.key
+----
+endif::[]
+
+ifeval::[{uyuni-content} == true]
+----
+uyuni-gpg-pubkey-0d20833e.key
+----
+endif::[]
+
+You do not need to delete any previously stored keys.
+
+If you are boostrapping clients from the {productname} {webui}, you will need to use a salt state to trust the key.
+Create the salt state and assign it to the organization.
+You can then use an activation key and configuration channels to deploy the key to the clients.
+
+
+
+== Register Clients
+
+To register your {redhat} clients, you will need a bootstrap repository.
+Create the bootstrap repository at the command prompt, with this command:
+
+----
+mgr-create-bootstrap-repo --with-custom-channels
+----
+
+For more information on registering your clients, see xref:client-configuration:registration-overview.adoc[].

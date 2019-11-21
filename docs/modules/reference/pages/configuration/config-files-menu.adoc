@@ -1,0 +1,44 @@
+[[ref.webui.config.files]]
+= Files Menu
+
+This page allows you to manage your configuration files independently.
+Both centrally-managed and locally-managed files can be reached from sub-pages.
+
+.Maximum Size for Configuration Files
+[NOTE]
+====
+By default, the maximum file size for configuration files is 128 KB (131072 bytes).
+{suse} supports a configuration file size up to 1 MB; larger values are not guaranteed to work.
+====
+
+
+ifdef::showremarks[]
+# 2010-12-21 - ke: will "rhn" stay here? 2010-12-28 - kkaempf: "rhn" will
+    stay here. #
+endif::showremarks[]
+
+The default maximum file size is set on the {productname} Server in these files:
+
+----
+# /usr/share/rhn/config-defaults/rhn_web.conf
+web.maximum_config_file_size = 131072
+
+# /usr/share/rhn/config-defaults/rhn_server.conf
+maximum_config_file_size = 131072
+----
+
+Copy these variables to [filename]``/etc/rhn/rhn.conf`` and edit them.  
+Values are specified in bytes, for example:
+
+----
+# /etc/rhn/rhn.conf
+web.maximum_config_file_size = 262144
+server.maximum_config_file_size = 262144
+----
+
+
+Then restart [systemitem]``spacewalk``:
+
+----
+spacewalk-service restart
+----

@@ -1,0 +1,136 @@
+== Preparation
+
+A configured distribution and an autoinstallation profile is required.
+
+.Procedure: Preparing a Distribution
+
+. Provide the files required to start an installation.
+Unpack an installation medium such as a DVD image on your Server.
+It contains the Linux kernel, an initrd, and other files required to boot the OS in installation mode.
+
+. In the {productname} {webui}, navigate to menu:System[Autoinstallation > Distributions].
+
+. In the [guimenu]``Autoinstallable Distributions`` dialog, click [guimenu]``Create Distribution``:
+* In the [guimenu]``Distribution Label`` field, enter a name to identify your autoinstallable distribution.
+* In the [guimenu]``Tree Path`` field, enter the path to an installation tree located on your {productname} Server.
+* Select the matching [guimenu]``Base Channel`` mirrored on the {productname} Server.
+This base channel must represent the distribution you want to install.
+It can be the [guimenu]``Vendor``, [guimenu]``Custom``, or [guimenu]``Cloned Channels``.
+* The [guimenu]``Installer Generation`` should also match.
+* Optionally, you can specify kernel options which should be added when booting this distribution.
+Note that there are multiple places where you can provide kernel options.
+Only add options here that are generic for the distribution.
+. Click btn:[Create Autoinstallable Distribution].
+
+For more information, see xref:reference:systems/autoinst-distributions.adoc[].
+
+
+.Procedure: Preparing a Profile
+
+. In the {productname} {webui}, navigate to menu:System[Autoinstallation > Profiles].
+
+. In the [guimenu]``Autoinstallation Profiles`` dialog, add the profile for your  autoinstallation.
+It can be an ``AutoYaST`` or ``Kickstart`` profile.
+
+. There are two ways to create profiles:
+* Create a ``Kickstart`` profile using a wizard
+* Upload an externally created profile (``Kickstart`` or ``AutoYaST``)
+
+For more information about the ``Kickstart`` wizard, see xref:reference:systems/autoinst-profiles.adoc[].
+
+
+
+== Upload a Profile
+
+Profiles require a label, and an ``Autoinstallation Tree`` (distribution).
+
+// Virtualization type.
+// later?  and again kernel options.
+
+Upload the ``Kickstart`` or ``AutoyaST`` profile.
+You can write your own kickstart or {ay} profile directly in the {webui}, or create the profile and upload it from your local filesystem.
+
+AutoYaST is able to dump a profile from an existing installation.
+This can be used as template, but will need to be edited to make it usable by {productname}:
+
+
+* Change the [literal]``add-on`` section and add {productname} URLs.
+These URLs must have a special format:
++
+
+----
+http://$redhat_management_server/ks/dist/child/<channel-label>/<distribution-label>
+----
+
+* Replace [literal]``<channel-label>`` and [literal]``<distribution-label>`` with the correct labels.
+You can also use a variable for `distribution-label`.
+Ensure that the distribution label corresponds to the autoinstallable distribution you selected.
+You can only configure child channels in this file.
+The channels must be children of the base channel you selected in the distribution you use for this profile.
++
+[NOTE]
+====
+You do not need to specify a base channel.
+The base channel is defined in the distribution.
+====
+
+* Register the system after it is installed.
+For this step we provide script snippets that can be used.
++
+For Salt managed clients, use the `spacewalk/minion_script` snippet:
++
+----
+<scripts>
+  <init-scripts config:type="list">
+    $SNIPPET('spacewalk/minion_script')
+  </init-scripts>
+</scripts>
+----
++
+For traditional clients, use the `spacewalk/sles_register_script` snippet:
++
+----
+<scripts>
+  <init-scripts config:type="list">
+    $SNIPPET('spacewalk/sles_register_script')
+  </init-scripts>
+</scripts>
+----
++
+[IMPORTANT]
+====
+For registering Salt clients, you must accept the Salt key on the {productname} Server before you attempt autoinstallation.
+====
+
+For more information about autoinstallation profiles, see xref:reference:systems/autoinst-profiles.adoc[].
+
+
+
+=== Variables and snippets
+
+Profiles are not finalized until they are requested by a client.
+This allows you to use variables in profiles.
+You can define profile variables in the {webui} by navigating to menu:Profiles[Variables].
+
+Some common variables are:
+
+redhat_management_server::
+The server {redhat} clients register to (automatically set).
+org::
+The organization ID where this profile is created (automatically set).
+registration_key::
+The key used in the registration snippets.
+By specifying this variable, you can set the activation key to be used to register the system.
+dont_register::
+If specified, the registration will be skipped.
+allow_config_actions::
+If set to ``1``, it will allow traditional configuration management (traditional only).
+allow_remote_commands::
+If set to ``1``, it will allow traditional remote command execution (traditional only).
+dont_disable_automatic_onlineupdate::
+If set, the automatic online update will stay enabled (SUSE OSes only).
+dont_disable_local_repos::
+If set, local repositories will stay active (not recommended).
+
+Navigate to menu:Systems[Autoinstallation > Autoinstallation Snippets] to see which snippets are available.
+For more information, see xref:reference:systems/autoinst-snippets.adoc[].

@@ -1,0 +1,13 @@
+[[registration-overview]]
+= Client Registration Overview
+
+There are two ways to register clients to your {productname} Server.
+Both methods are described in this manual:
+
+* For Salt clients, the simplest method is to register your clients using the {productname} {webui}.
+For more information, see xref:client-configuration:registration-webui.adoc[].
+* If you need to have more control over the process, want to register many clients, or are registering traditional clients, we recommend creating a bootstrap script.
+For more information, see xref:client-configuration:registration-bootstrap.adoc[].
+
+You must create an activation key first, to use one of these methods.
+For more information, see xref:client-configuration:clients-and-activation-keys.adoc[].

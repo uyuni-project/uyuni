@@ -1,0 +1,15 @@
+[[ref.webui.salt.keys]]
+= Keys
+
+The [guimenu]``Keys`` page provides a summary of your clients, including their names, fingerprints, state, and actions you may perform on them.
+
+Once you have pointed a client to the {productname} server as its master within [replaceable]``/etc/salt/minion``, you can choose to accept or reject a client from this page.
+Toggle the check mark or cross in the `actions` column.
+
+.Keys Overview
+image::onboarding.png[scaledwidth=80%]
+
+For more information about key handling and onboarding, see:
+
+xref:client-configuration:clients-and-activation-keys.adoc[Activation Keys]
+

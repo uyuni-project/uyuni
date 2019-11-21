@@ -1,0 +1,75 @@
+[[arch.component.spacewalk.repo.sync]]
+= spacewalk-repo-sync
+
+
+
+
+
+
+== Functions
+
+spacewalk-repo-sync is a command line tool for {productname}. It performs the following functions.
+
+* **Copies a repo’s metadata to the database**
+* **Copies a repo’s RPM files to the filesystem**
+
+
+
+== mgr-sync --help
+
+__The following options are available for the *spacewalk-repo-sync* tool:__
+
+----
+spacewalk-repo-sync --help
+Usage: spacewalk-repo-sync [options]
+
+Options:
+  -h, --help            show this help message and exit
+  -l, --list            List the custom channels with the associated
+                        repositories.
+  -s, --show-packages   List all packages in a specified channel.
+  -u URL, --url=URL     The url of the repository. Can be used multiple times.
+  -c CHANNEL_LABEL, --channel=CHANNEL_LABEL
+                        The label of the channel to sync packages to. Can be
+                        used multiple times.
+  -p PARENT_LABEL, --parent-channel=PARENT_LABEL
+                        Synchronize the parent channel and all its child
+                        channels.
+  -d, --dry-run         Test run. No sync takes place.
+  --latest              Sync latest packages only. Use carefully - you might
+                        need to fix some dependencies on your own.
+  -g CONFIG, --config=CONFIG
+                        Configuration file
+  -t REPO_TYPE, --type=REPO_TYPE
+                        Force type of repository ("yum", "uln" and "deb" are
+                        supported)
+  -f, --fail            If a package import fails, fail the entire operation
+  -n, --non-interactive
+                        Do not ask anything, use default answers
+  -i FILTERS, --include=FILTERS
+                        Comma or space separated list of included packages or
+                        package groups.
+  -e FILTERS, --exclude=FILTERS
+                        Comma or space separated list of excluded packages or
+                        package groups.
+  --email               e-mail a report of what was synced/imported
+  --traceback-mail=TRACEBACK_MAIL
+                        alternative email address(es) for sync output (--email
+                        option)
+  --no-errata           Do not sync errata
+  --no-packages         Do not sync packages
+  --sync-kickstart      Sync kickstartable tree
+  --force-all-errata    Process metadata of all errata, not only missing.
+  --batch-size=BATCH_SIZE
+                        max. batch size for package import (debug only)
+  -Y, --deep-verify     Do not use cached package checksums
+  -v, --verbose         Verbose output. Possible to accumulate: -vvv
+----
+
+== Log Files
+
+_Logs for the **spacewalk-repo-sync** tool are located in:_
+
+----
+/var/log/rhn/reposync/*
+----

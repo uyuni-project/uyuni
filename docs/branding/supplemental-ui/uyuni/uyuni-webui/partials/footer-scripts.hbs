@@ -1,0 +1,88 @@
+<script src="https://unpkg.com/popper.js@1"></script>
+<script src="https://unpkg.com/tippy.js@4"></script>
+<script>
+    tippy.setDefaults({
+        placement: 'bottom',
+        arrow: true,
+        arrowType: 'sharp',
+        delay: 800,
+        theme: 'light',
+    });
+
+    tippy('#previousPage', {
+        content: "Previous Page",
+    });
+
+    tippy('#nextPage', {
+        content: "Next Page",
+    });
+
+    tippy('#createIssue', {
+        content: "Create Issue",
+    });
+
+    tippy('#submitPR', {
+        content: "Edit this page and submit a pull request",
+    });
+
+    /* Testing tooltips for terms */
+    tippy('#ubuntu', {
+        content: "Ubuntu is an open-source operating system (OS) based on the Debian GNU/Linux distribution.",
+
+    });
+
+    tippy('#salt', {
+        content: "Salt is a Python-based, open-source software for event-driven IT automation, remote task execution, and configuration management.",
+
+    });
+
+    tippy('#sle', {
+        content: "SUSE Linux Enterprise, or SLE, is the enterprise-grade version of SUSE's open source Linux operating system distribution.",
+
+    });
+
+    tippy('#rhel', {
+        content: "Red Hat Enterprise Linux, or RHEL, is the enterprise-grade version of Red Hat's open source Linux operating system distribution. ",
+
+    });
+
+    tippy('#centos', {
+        content: "Community Enterprise Operating System, or CentOS, is a distribution of the Linux operating system based on RHEL (Red Hat Enterprise Linux).",
+
+    });
+
+    tippy('#sl', {
+        content: "Scientific Linux (SL) is a Linux distribution produced by Fermilab, CERN, DESY and by ETH Zurich.",
+
+
+    });
+
+</script>
+<script type="text/javascript">
+    window.antora = window.antora || {}
+    window.antora.basePath = '{{or siteRootPath (or site.url siteRootUrl)}}'
+    window.antora.pagePath = '{{@root.page.url}}'
+</script>
+<script src="{{uiRootPath}}/js/site.js"></script>
+{{#if (eq env.DOCSEARCH_ENGINE 'lunr')}}
+    <script src="{{uiRootPath}}/js/vendor/lunr.js"></script>
+    <script src="{{uiRootPath}}/js/vendor/search.js"></script>
+    <script async src="{{uiRootPath}}/../search-index.js"></script>
+{{/if}}
+<script src="{{uiRootPath}}/js/vendor/highlight.js"></script>
+<script>hljs.initHighlighting()</script>
+<script src="{{uiRootPath}}/js/vendor/tocbot.min.js"></script>
+<script>
+    tocbot.init( {
+        tocSelector: '#article-toc',
+        contentSelector: 'article',
+        headingSelector: 'h2, h3, h4, h5, h6',
+        collapseDepth: 6,
+        positionFixedSelector: '#article-toc',
+        scrollSmooth: false
+    } );
+    var tocList = document.getElementById( 'article-toc' ).getElementsByClassName( 'toc-list' );
+    if ( tocList && tocList.length > 0 && tocList[0].childNodes.length > 0 ) {
+        document.getElementById( 'article-toc' ).parentNode.classList.remove( 'hidden' );
+    }
+</script>

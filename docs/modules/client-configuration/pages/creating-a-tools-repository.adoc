@@ -1,0 +1,60 @@
+[[client-cfg-tools-repository]]
+= Creating the {productname} Tools Repository
+
+A tools repository contains packages for installing Salt on clients, as well as the required packages for registering traditional clients during bootstrapping.
+You can create a tools repository on the {productname} Server.
+
+When you have created the tools repository, the packages in the repository will be installed during client registration.
+
+
+== Preparing to Create a Tools Repository
+
+Before you create the tools repository, ensure client is fully synchronized with your vendor channel.
+
+There are two ways to check if a channel has finished synchronizing:
+
+* In the {productname}{webui}, navigate to menu:Admin[Setup Wizard] and select the menu:SUSE Products[] tab.
+This dialog displays a completion bar for each product when they are being synchronized.
+* You can also check the synchronization log file at the command prompt.
+Use the [command]``cat`` or [command]``tail -f`` command to view the [path]``/var/log/rhn/reposync/channel-label.log`` file.
+If you use this method, remember that base channels can contain multiple child channels.
+Each of the child channels will generate its own log during the synchronization progress.
+You will need to check all the base and child channel log files to be sure that the synchronization is complete.
+
+
+== Generate a Tools Repository
+
+.Procedure: Generating the Tools Repository for {sle}
+. At the command prompt on the {productname} Server, as root, list the available bootstrap repositories:
++
+----
+mgr-create-bootstrap-repo -l
+----
+. Create the bootstrap repository, using the appropriate repository name as the product label:
++
+----
+mgr-create-bootstrap-repo -c SLE-version-x86_64
+----
+
+The client tools repository is located in [path]``/srv/www/htdocs/pub/repositories/``.
+
+
+.Procedure: Specify a Bootstrap Repository
+
+If you have mirrored more than one {sle}{nbsp}15 Product (for example, SLES and SLES for SAP), you can specify the one you are actually interested in.
+
+. Check what bootstrap repositories you have available:
++
+----
+mgr-create-bootstrap-repo -c SLE-15-x86_64 --with-custom-channel
+Multiple options for parent channel found. Please use option
+--with-parent-channel <label> and choose one of:
+- sle-product-sles15-pool-x86_64
+- sle-product-sles_sap15-pool-x86_64
+- sle-product-sled15-pool-x86_64
+----
+. Specify the appropriate repository:
++
+----
+mgr-create-bootstrap-repo -c SLE-15-x86_64 --with-parent-channel sle-product-sled15-pool-x86_64
+----

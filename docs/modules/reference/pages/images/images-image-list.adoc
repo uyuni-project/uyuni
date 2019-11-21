@@ -1,0 +1,33 @@
+[[ref.webui.images.list]]
+= Image List
+
+If you click menu:Main Menu[Images > Images], an overview listing of your images appears.
+Several columns provide information about each image:
+
+
+image::images_list_images.png[scaledwidth=80%]
+
+
+* Select box: To select images, mark the appropriate check boxes. Selected images can be deleted simultaneously via the btn:[Delete] button that appears in the upper right corner while selecting images.
+* [guimenu]``Name``:
+* [guimenu]``Version`` and [guimenu]``Revision``:
+* [guimenu]``Updates``: Shows which type of update action is applicable to the image or confirms that the image is up-to-date.
+
+For more information, see xref:reference:systems/systems-overview.adoc[].
+
+* [guimenu]``Patches`` and [guimenu]``Packages``:
+* [guimenu]``Build``:
+* [guimenu]``Last Modified``: Time when the images was modified last.
+* [guimenu]``Actions``: btn:[Details] and btn:[Delete] button. btn:[Details] opens a the Image Details page.
+
+There are action buttons in the upper right corner.
+The btn:[Delete] button appears when one or more images are selected.
+The btn:[Import] and btn:[Refresh] buttons are default buttons.
+The btn:[Import] button is used to import pre-built images.
+For more information on images, see xref:administration:image-management.adoc[].
+
+
+
+== Image Details
+
+The Image Details page contains the [guimenu]``Overview``, [guimenu]``Patches``, and [guimenu]``Packages`` tabs.

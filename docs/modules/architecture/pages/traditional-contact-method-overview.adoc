@@ -1,0 +1,13 @@
+[[bp.systems.management]]
+= Traditional Contact Methods
+
+
+
+
+== Selecting a Contact Method
+
+{productname} provides several methods for communication between client and server.
+All commands that the {productname} server sends to its clients will be routed through one of these contact methods.
+
+The contact method you select will depend on your network infrastructure.
+The following sections provide a starting point for selecting a method which best suits your network environment.

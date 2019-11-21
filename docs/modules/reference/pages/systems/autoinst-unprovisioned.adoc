@@ -1,0 +1,5 @@
+[[ref.webui.systems.autoinst.bare_metal]]
+= Unprovisioned (Bare Metal)
+
+Lists the IP addresses that have been associated with the profiles created by your organization.
+Click either the range or the profile name to access different tabs of the [guimenu]``Autoinstallation Details`` page.

@@ -1,0 +1,14 @@
+[[ref.webui.intro.systems_selected]]
+= Selected Systems
+
+On the menu:Main Menu[Systems > Overview] page, if you mark the check box next to a system, the [guimenu]``system selected`` number on the right area of the top bar increases.
+This number keeps track of the systems you have selected for use in the System Set Manager (SSM); for more information, refer to:
+xref:reference:systems/ssm-menu.adoc[System Set Manager]
+
+At any time, it identifies the number of selected systems and provides the means to work (simultaneously) with an entire selection.
+Clicking the the rubber symbol ([guimenu]``Clear``) deselects all systems, while clicking the [guimenu]``system selected`` string ([guimenu]``Manage``) launches the System Set Manager with your selected systems in place.
+
+These systems can be selected in a number of ways.
+Only systems with at least a Management system role are eligible for selection.
+On all system and system group lists, a check boxes exist for this purpose.
+Each time you select a check box next to the systems or groups the [guimenu]``systems selected`` counter at the top of the page changes to reflect the new number of systems ready for use in the System Set Manager.

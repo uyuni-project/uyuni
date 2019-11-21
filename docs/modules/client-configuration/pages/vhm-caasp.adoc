@@ -1,0 +1,43 @@
+[[vhm-caasp]]
+= VHM and SUSE CaaS Platform
+
+You can use a {productname} VHM to gather instances from {caasp}.
+
+The VHM allows {productname} to obtain and report information about your virtual machines.
+For more information on VHMs, see xref:client-configuration:vhm.adoc[].
+
+
+
+== Register CaaSP Nodes
+
+You can register each {caasp} node to {productname} using the same method as you would a Salt client.
+For more information, see xref:client-configuration:registration-overview.adoc[].
+
+We recommend that you create an activation key to associate {caasp} channels, and to onboard the associated nodes.
+For more on activation keys, see xref:client-configuration:clients-and-activation-keys.adoc[].
+
+If you are using ``cloud-init``, we recommended that you use a bootstrap script in the ``cloud-init`` configuration.
+For more on bootstrapping, see xref:client-configuration:registration-bootstrap.adoc[].
+
+
+When you have added the {caasp} nodes to {productname}, you will be able to:
+
+* View the patch level status of each node.
+* Perform configuration management operations against the nodes, including using Salt states.
+* Assign different set of channels to clusters using channel staging and lifecycle management filters.
+
+Updates related to {k8s} are managed using the ``skuba`` tool.
+For more information, see https://documentation.suse.com/suse-caasp/4/html/caasp-admin/_cluster_updates.html.
+
+////
+Waiting on clarification of this. LKB 2019-11-11
+[WARNING]
+====
+Do not use {productname} to perform these actions on any {caasp} nodes:
+
+* Install, upgrade, or removal of ``kubernetes-kubeadm``, ``kubernetes-kubelet``, ``kubernetes-client``, ``cri-o``, or ``cni-plugins``
+* Scheduling and executing a node reboot
+
+These actions are not supported.
+====
+////

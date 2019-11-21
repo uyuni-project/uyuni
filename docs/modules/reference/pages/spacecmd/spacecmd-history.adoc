@@ -1,0 +1,17 @@
+[[at.spacecmd.history]]
+= history
+
+List recent commands using the `history` command.
+
+[source]
+--
+spacecmd {SSM:0}> history
+   1  help
+   2  api
+   3  exit
+   4  help
+   5  time --help
+   6  quit
+   7  clear
+spacecmd {SSM:0}>
+--
