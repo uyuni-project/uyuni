@@ -58,7 +58,8 @@
                                 "epoch": "",
                                 "version": "13.1",
                                 "release": "14.15",
-                                "arch": "x86_64"
+                                "arch": "x86_64",
+                                "license": "MIT"
                             },
                             {
                                 "name": "kernel-firmware",
@@ -66,7 +67,8 @@
                                 "epoch": "",
                                 "version": "20170530",
                                 "release": "21.19.1",
-                                "arch": "noarch"
+                                "arch": "noarch",
+                                "license": "SUSE-Firmware AND GPL-2.0-only AND GPL-2.0-or-later AND MIT"
                             },
                             {
                                 "name": "file-magic",
