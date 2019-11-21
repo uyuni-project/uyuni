@@ -15,8 +15,8 @@ module Yast
       @args = GetInstArgs.argmap
       @product_name = SCR.Read(path(".usr_share_rhn_config_defaults_rhn.product_name")) || "SUSE Manager"
 
-      # 4GB
-      @enough_memory = 4000000
+      # 8GB
+      @enough_memory = 8000000
 
       @free_disk_space = 0
       @message = ""
@@ -85,7 +85,7 @@ module Yast
         if !Popup.AnyQuestionRichText(
             _("Not enough memory"),
             _(
-              "#{@product_name} requires 4G of memory to be installed and 16G for good perfomance. If you continue the product will not function correctly."
+              "#{@product_name} requires 8G of memory to be installed and 16G for good perfomance. If you continue the product will not function correctly."
             ),
             40,
             10,
@@ -131,7 +131,7 @@ module Yast
       )
       Builtins.y2milestone("check_disk_space.sh call: %1", @m)
       @free_disk_space = Builtins.tointeger(Ops.get_string(@m, "stdout", "0"))
-      if Ops.less_than(@free_disk_space, 30 * 1024 * 1024)
+      if Ops.less_than(@free_disk_space, 50 * 1024 * 1024)
         @message = Builtins.sformat(
           _("    Not enough disk space (only %1G free)"),
           Ops.divide(@free_disk_space, 1024 * 1024)
@@ -139,7 +139,7 @@ module Yast
         if !Popup.AnyQuestionRichText(
             @message,
             _(
-              "#{@product_name} requires 30G of free disk space in /var/lib/pgsql to be installed. If you continue the product will not function correctly."
+              "#{@product_name} requires 50G of free disk space in /var/lib/pgsql to be installed. If you continue the product will not function correctly."
             ),
             46,
             10,
