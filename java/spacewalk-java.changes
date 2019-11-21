@@ -1,3 +1,4 @@
+- support non discoverable fqdns via custom grain (bsc#1155281)
 - Handle the non-existent requested grains gracefully
 - Get the machineid grain from the minion startup event
 - use term 'patch' instead of 'errata' (bsc#1164649)
