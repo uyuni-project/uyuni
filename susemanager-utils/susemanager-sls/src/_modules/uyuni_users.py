@@ -1,8 +1,9 @@
 # coding: utf-8
-from typing import Any, Dict, List, Optional, Union, Tuple
+from typing import Any, Dict, Optional, Union, Tuple
 import ssl
 import xmlrpc.client  # type: ignore
 import logging
+import datetime
 
 
 log = logging.getLogger(__name__)
@@ -234,6 +235,46 @@ class UyuniOrg(UyuniRemoteObject):
         return res, msg
 
 
+class UyuniTrust(UyuniRemoteObject):
+    """
+    CRUD operations to trusts.
+    """
+    def get_trust_by_name(self, name: str) -> Dict[str, Union[int, datetime.datetime]]:
+        """
+        Get trust data by name.
+        Trust is a trusted organisation, so this method is looking basically
+        for an organisation that has trust enabled flag.
+
+        :param name:
+        :return:
+        """
+        return {}
+
+    def trust(self, name: str) -> bool:
+        """
+        Set organisation trusted.
+
+        :param name:
+
+        :raises UyuniUsersException: if RPC call has been failed.
+        :return: boolean, True if trust flag has been changed to True
+        """
+
+        return False
+
+    def untrust(self, name: str) -> bool:
+        """
+        Set organisation untrusted.
+
+        :param name: The organisation name
+
+        :raises UyuniUsersException: If RPC call has been failed.
+        :return: boolean, True if trust flag has been changed to False
+        """
+
+        return False
+
+
 def __virtual__():
     """
     Provide Uyuni Users state module.
@@ -260,7 +301,7 @@ def create_org(name, admin_login, first_name, last_name, email, admin_password=N
     """
     return UyuniOrg(pillar=__pillar__).create(name=name, admin_login=admin_login, admin_password=admin_password,
                                               email=email, first_name=first_name, last_name=last_name,
-                                              admin_prefix=admin_login, pam=pam)
+                                              admin_prefix=admin_prefix, pam=pam)
 
 
 def delete_org(name):
