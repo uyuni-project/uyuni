@@ -40,10 +40,10 @@ jobs:
 
     - name: '[TEST] Validate Antora XREFS'
       run: |
-        NODE_PATH="$(npm -g root)" antora --generator @antora/xref-validator uyuni-site.yml
+        NODE_PATH="$(npm -g root)" antora --generator @antora/xref-validator docs/uyuni-site.yml
     - name: '[BUILD] SUMA Docs with Lunr/Antora Custom Docker Image'
       run: |
-        docker run -u $UID --privileged -e DOCSEARCH_ENABLED=true -e DOCSEARCH_ENGINE=lunr -v $GITHUB_WORKSPACE:/antora/ --rm -t lunr/antora:custom uyuni-site.yml --generator antora-site-generator-lunr
+        docker run -u $UID --privileged -e DOCSEARCH_ENABLED=true -e DOCSEARCH_ENGINE=lunr -v $GITHUB_WORKSPACE:/antora/ --rm -t lunr/antora:custom docs/uyuni-site.yml --generator antora-site-generator-lunr
         #cd build/
         ls -a
     - name: '[BUILD] SUMA PDF Documents with Asciidoctor-pdf'
