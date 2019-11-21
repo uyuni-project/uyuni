@@ -1,4 +1,5 @@
 /* eslint-disable */
+/* global getActivationKeyId */
 import ActivationKeyChannels from './activation-key-channels';
 import React from 'react';
 import ReactDOM from 'react-dom';
@@ -10,6 +11,6 @@ window.pageRenderers = window.pageRenderers || {};
 const customValues = window.pageRenderers.customValues || {DOMid: 'activation-key-channels'};
 
 export const renderer = () => SpaRenderer.renderNavigationReact(
-    <ActivationKeyChannels activationKeyId={customValues.activationKeyId ? customValues.activationKeyId : -1} />,
+    <ActivationKeyChannels activationKeyId={getActivationKeyId() ? getActivationKeyId() : -1} />,
     document.getElementById(customValues.DOMid)
 );
