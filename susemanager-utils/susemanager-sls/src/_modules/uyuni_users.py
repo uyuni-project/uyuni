@@ -1,9 +1,11 @@
 # coding: utf-8
-from typing import Any, Dict, Optional, Union, Tuple
+from typing import Any, Dict, List, Optional, Union, Tuple
 import ssl
 import xmlrpc.client  # type: ignore
 import logging
 import datetime
+import copy
+import os
 
 
 log = logging.getLogger(__name__)
@@ -24,6 +26,7 @@ class RPCClient:
     RPC Client
     """
     __instance__: Optional["RPCClient"] = None
+    __instance_path__: str = "/var/cache/salt/minion/uyuni.rpc.s"
 
     def __init__(self, url: str, user: str, password: str):
         """
@@ -45,6 +48,50 @@ class RPCClient:
         self._password: str = password
         self.token: Optional[str] = None
 
+    def save_session(self) -> bool:
+        """
+        Save session of the RPC
+
+        :return: boolean, True on success
+        """
+        log.debug("*** FREEZING ***")
+        os.makedirs(os.path.dirname(RPCClient.__instance_path__), exist_ok=True)
+        with open(RPCClient.__instance_path__, 'wb') as fh:
+            try:
+                fh.write(str(self.get_token()).encode())
+                log.debug("Wrote RPC session to %s", RPCClient.__instance_path__)
+                ret = True
+            except OSError as exc:
+                ret = False
+                log.error("Unable to serialise RPC client: %s", exc)
+            except Exception as exc:
+               ret = False
+               log.error("Unhandled error while serialising RPC client object: %s", exc)
+
+        return ret
+
+    @staticmethod
+    def load_session() -> Optional[str]:
+        """
+        Read previously saved RPC session token from the disk.
+        If this is not possible, None is returned.
+
+        :return: string or None
+        """
+        obj: Optional[str] = None
+        try:
+            with open(RPCClient.__instance_path__, 'rb') as fh:
+                try:
+                    data: bytes = fh.read()
+                    if data:
+                        obj = data.decode()
+                except Exception as exc:
+                    log.debug("Unable to load saved RPC session: %s", exc)
+        except FileNotFoundError:
+            log.debug("No previously saved RPC session")
+
+        return obj
+
     @staticmethod
     def init(pillar: Optional[Dict[str, Any]] = None):
         """
@@ -61,6 +108,7 @@ class RPCClient:
                 rpc_conf = (plr or {})["uyuni"]["xmlrpc"] or {}
                 RPCClient.__instance__ = RPCClient(rpc_conf.get("url", "https://localhost/rpc/api"),
                                                    rpc_conf.get("user", ""), rpc_conf.get("password", ""))
+                RPCClient.__instance__.token = RPCClient.load_session()
             else:
                 raise UyuniUsersException("Unable to find Pillar configuration for Uyuni XML-RPC API")
 
@@ -75,6 +123,7 @@ class RPCClient:
         if self.token is None or refresh:
             try:
                 self.token = self.conn.auth.login(self._user, self._password)
+                self.save_session()
             except Exception as exc:
                 log.error("Unable to login to the Uyuni server: %s", exc)
 
