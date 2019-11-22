@@ -233,6 +233,14 @@ class UyuniOrg(UyuniRemoteObject):
     """
     CRUD operations on orgs
     """
+    def get_orgs(self) -> Dict[str, Union[int, str, bool]]:
+        """
+        List all orgs.
+
+        :return:
+        """
+        return self.client("org.listOrgs", self.client.get_token())
+
     def get_org_by_name(self, name: str) -> Dict[str, Union[int, str, bool]]:
         """
         Get org data by name.
