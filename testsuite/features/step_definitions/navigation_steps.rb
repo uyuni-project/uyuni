@@ -789,3 +789,7 @@ When(/^I enter uri, username and password for portus$/) do
   step %(I enter "#{ENV['PORTUS_USER']}" as "username")
   step %(I enter "#{ENV['PORTUS_PASS']}" as "password")
 end
+
+When(/^I scroll to the top of the page$/) do
+  execute_script('window.scrollTo(0,0)')
+end
