@@ -35,11 +35,14 @@ from rhnLib import parseRPMFilename
 # Returns a package path, given a server_id, package filename and channel label
 def get_package_path(server_id, pkg_spec, channel):
     log_debug(3, server_id, pkg_spec, channel)
+    checksum = None
     if isinstance(pkg_spec, ListType):
         pkg = pkg_spec[:4]
         # Insert EPOCH
         pkg.insert(1, None)
     else:
+        if "/" in pkg_spec:
+            org, checksum, pkg_spec = pkg_spec.split('/', 2)
         pkg = parseRPMFilename(pkg_spec)
         if pkg is None:
             log_debug(4, "Error", "Requested weird package", pkg_spec)
@@ -51,6 +54,7 @@ def get_package_path(server_id, pkg_spec, channel):
                 rhnPackageArch pa,
                 rhnChannelPackage cp,
                 rhnPackage p,
+                rhnChecksum cs,
                 rhnPackageEVR pe,
                 rhnServerChannel sc,
                 rhnPackageName pn,
@@ -69,11 +73,13 @@ def get_package_path(server_id, pkg_spec, channel):
             and p.evr_id = pe.id
             and sc.channel_id = cp.channel_id
             and p.package_arch_id = pa.id
+            and p.checksum_id = cs.id
+            and (:checksum IS NULL OR cs.checksum = :checksum)
     """
-    h = rhnSQL.prepare(statement)
     pkg = list(map(str, pkg))
+    h = rhnSQL.prepare(statement)
     h.execute(name=pkg[0], ver=pkg[2], rel=pkg[3], arch=pkg[4],
-              channel=channel, server_id=server_id)
+              channel=channel, server_id=server_id, checksum=checksum)
     rs = h.fetchall_dict()
     if not rs:
         log_debug(4, "Error", "Non-existant package requested", server_id,
@@ -243,13 +249,14 @@ def get_info_for_package(pkg, channel_id, org_id):
     h = rhnSQL.prepare(statement)
     h.execute(**params)
 
-    ret = h.fetchone_dict()
+    ret = h.fetchall_dict() or []
     if not ret:
         return ret
-    if ret['org_id'] == None:
-        ret['org_id'] = ''
-    else:
-        ret['org_id'] = str(ret['org_id'])
+    for i in ret:
+        if i['org_id'] == None:
+            i['org_id'] = ''
+        else:
+            i['org_id'] = str(i['org_id'])
     return ret
 
 

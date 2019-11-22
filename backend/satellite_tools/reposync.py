@@ -902,9 +902,14 @@ class RepoSync(object):
             ident = "%s-%s%s-%s.%s" % (pack.name, epoch, pack.version, pack.release, pack.arch)
             self.available_packages[ident] = 1
 
-            db_pack = rhnPackage.get_info_for_package(
+            packs = rhnPackage.get_info_for_package(
                 [pack.name, pack.version, pack.release, pack.epoch, pack.arch],
                 channel_id, self.org_id)
+            db_pack = None
+            for p in packs:
+                if p['checksum'] == pack.checksum:
+                    db_pack = p
+                    break
 
             to_download = True
             to_link = True
@@ -957,7 +962,7 @@ class RepoSync(object):
         for what in to_process:
             pack, to_download, to_link = what
             if to_download:
-                target_file = os.path.join(plug.repo.pkgdir, os.path.basename(pack.unique_id.relativepath))
+                target_file = os.path.join(plug.repo.pkgdir, pack.checksum, os.path.basename(pack.unique_id.relativepath))
                 pack.path = target_file
                 params = {}
                 checksum_type = pack.checksum_type
@@ -1092,8 +1097,12 @@ class RepoSync(object):
                 to_process[index] = (pack, False, False)
                 progress_bar.log(False, None)
             finally:
-                if is_non_local_repo and stage_path and os.path.exists(stage_path):
-                    os.remove(stage_path)
+                if is_non_local_repo and stage_path:
+                    if os.path.exists(stage_path):
+                        os.remove(stage_path)
+                    if os.path.exists(os.path.dirname(stage_path)):
+                        # remove the checksum directory
+                        os.rmdir(os.path.dirname(stage_path))
             pack.clear_header()
         if affected_channels:
             errataCache.schedule_errata_cache_update(affected_channels)
@@ -1155,9 +1164,14 @@ class RepoSync(object):
 
         for pack in packages:
 
-            db_pack = rhnPackage.get_info_for_package(
+            packs = rhnPackage.get_info_for_package(
                 [pack.name, pack.version, pack.release, pack.epoch, pack.arch],
                 channel_id, self.org_id)
+            db_pack = None
+            for p in packs:
+                if p['checksum'] == pack.checksum:
+                    db_pack = p
+                    break
 
             pack_status = " + "  # need to be downloaded by default
             pack_full_name = "%-60s\t" % (pack.name + "-" + pack.version + "-" + pack.release + "." +

@@ -1,3 +1,6 @@
+- fix problems with Package Hub repos having multiple rpms with same NEVRA
+  but different checksums (bsc#1146683)
+
 -------------------------------------------------------------------
 Tue Nov 05 14:27:57 CET 2019 - jgonzalez@suse.com
 
