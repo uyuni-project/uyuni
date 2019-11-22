@@ -1112,6 +1112,11 @@ When(/^I copy the retail configuration file "([^"]*)" on server$/) do |file|
   sed_values << "s/<RANGE_END>/#{ADDRESSES['range end']}/; "
   sed_values << "s/<PXEBOOT>/#{ADDRESSES['pxeboot']}/; "
   sed_values << "s/<PXEBOOT_MAC>/#{$pxeboot_mac}/; "
+  sed_values << "s/<MINION>/#{ADDRESSES['minion']}/; "
+  sed_values << "s/<MINION_MAC>/#{get_mac_address('sle-minion')}/; "
+  sed_values << "s/<CLIENT>/#{ADDRESSES['client']}/; "
+  sed_values << "s/<CLIENT_MAC>/#{get_mac_address('sle-client')}/; "
+  # Retail DNS fix for client and minion
   $server.run("sed -i '#{sed_values}' #{dest}")
 end
 
@@ -1127,6 +1132,7 @@ end
 When(/^I delete all the terminals imported$/) do
   terminals = get_terminals_from_yaml(@retail_config)
   terminals.each do |terminal|
+    next if (terminal.include? 'minion') || (terminal.include? 'client')
     puts "Deleting terminal with name: #{terminal}"
     steps %(
       When I follow "#{terminal}" terminal
