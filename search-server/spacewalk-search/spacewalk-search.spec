@@ -140,6 +140,7 @@ ant -Djar.version=%{version} install
 install -d -m 755 $RPM_BUILD_ROOT%{_prefix}/share/rhn/config-defaults
 install -d -m 755 $RPM_BUILD_ROOT%{_prefix}/share/rhn/search
 install -d -m 755 $RPM_BUILD_ROOT%{_prefix}/share/rhn/search/lib
+install -d -m 755 $RPM_BUILD_ROOT%{_prefix}/share/rhn/search/classes
 install -d -m 755 $RPM_BUILD_ROOT%{_var}/lib/rhn/search
 install -d -m 755 $RPM_BUILD_ROOT%{_var}/lib/rhn/search/indexes
 ln -s -f %{_prefix}/share/rhn/search/indexes/docs $RPM_BUILD_ROOT%{_var}/lib/rhn/search/indexes/docs
@@ -166,6 +167,7 @@ install -p -m 755 src/config/rhn-search.init $RPM_BUILD_ROOT%{_initrddir}/rhn-se
 %endif
 install -p -m 644 src/config/search/rhn_search.conf $RPM_BUILD_ROOT%{_prefix}/share/rhn/config-defaults/rhn_search.conf
 install -p -m 644 src/config/search/rhn_search_daemon.conf $RPM_BUILD_ROOT%{_prefix}/share/rhn/config-defaults/rhn_search_daemon.conf
+install -p -m 644 src/config/log4j.properties $RPM_BUILD_ROOT%{_prefix}/share/rhn/search/classes/log4j.properties
 ln -s -f %{_prefix}/share/rhn/search/lib/spacewalk-search-%{version}.jar $RPM_BUILD_ROOT%{_prefix}/share/rhn/search/lib/spacewalk-search.jar
 %if 0%{?fedora} && 0%{?fedora} >= 21
 sed -i 's/log4j.jar/log4j-1.jar/' $RPM_BUILD_ROOT%{_prefix}/share/rhn/config-defaults/rhn_search_daemon.conf
@@ -248,6 +250,7 @@ fi
 %files
 %defattr(644,root,root,755)
 %attr(755, root, root) %{_var}/log/rhn/search
+%dir /usr/share/rhn/search/classes/
 %{_prefix}/share/rhn/search/lib/*
 %attr(755, root, root) %{_sbindir}/rhn-search
 %if 0%{?fedora} || 0%{?rhel} >=7 || 0%{?suse_version} >= 1210
@@ -257,6 +260,7 @@ fi
 %endif
 %{_prefix}/share/rhn/config-defaults/rhn_search.conf
 %{_prefix}/share/rhn/config-defaults/rhn_search_daemon.conf
+%{_prefix}/share/rhn/search/classes/log4j.properties
 %{_sysconfdir}/logrotate.d/rhn-search
 %dir %attr(755, root, root) %{_var}/lib/rhn/search
 %dir %attr(755, root, root) %{_var}/lib/rhn/search/indexes
