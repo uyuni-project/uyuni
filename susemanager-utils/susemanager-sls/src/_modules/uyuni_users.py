@@ -153,6 +153,18 @@ class UyuniRemoteObject:
     def __init__(self, pillar: Optional[Dict[str, Any]] = None):
         self.client: RPCClient = RPCClient.init(pillar=pillar)
 
+    def get_proto_return(self, exc: Exception = None) -> Dict[str, Any]:
+        """
+        Protocol return structure.
+
+        :return: dictionary
+        """
+        ret: Dict[str, Any] = {}
+        if exc is not None:
+            ret["error"] = str(exc)
+
+        return ret
+
 
 class UyuniUser(UyuniRemoteObject):
     """
