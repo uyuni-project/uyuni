@@ -46,7 +46,7 @@ nodes.each do |node|
   raise 'No fully qualified domain name for node' if code.nonzero? || fqdn.empty?
   node.init_full_hostname(fqdn)
 
-  puts "Determined hostname #{hostname.strip} and fqdn #{fqdn.strip}"
+  puts "Determined hostname #{hostname.strip} and FQDN #{fqdn.strip}"
 end
 
 # Initialize IP address or domain name
