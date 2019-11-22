@@ -445,3 +445,13 @@ def delete_org(name):
     :return:
     """
     return UyuniOrg(pillar=__pillar__).delete(name=name)
+
+
+def list_orgs():
+    """
+    List all available organisations.
+
+    :return: List of hashes per organisation.
+    """
+    return UyuniOrg(pillar=__pillar__).get_orgs()
+
