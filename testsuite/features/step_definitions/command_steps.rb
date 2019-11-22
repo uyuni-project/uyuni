@@ -5,6 +5,39 @@ require 'xmlrpc/client'
 require 'timeout'
 require 'nokogiri'
 
+# Sanity checks
+
+Then(/^"([^"]*)" should have a FQDN$/) do |host|
+  node = get_target(host)
+  result_1, return_code_1 = node.run('hostname -f')
+  result_1.delete!("\n")
+  result_2, return_code_2 = node.run('python -c "import socket; print socket.getfqdn()"')
+  result_2.delete!("\n")
+  raise 'cannot determine hostname' unless return_code_1.zero? && return_code_2.zero?
+  raise 'hostname is not fully qualified' unless result_1 == node.full_hostname && result_2 == node.full_hostname
+end
+
+Then(/^"([^"]*)" should communicate with the server$/) do |host|
+  node = get_target(host)
+  node.run("ping -c1 #{$server.full_hostname}")
+  $server.run("ping -c1 #{node.full_hostname}")
+end
+
+Then(/^it should be possible to download the file "([^"]*)"$/) do |file|
+  $server.run("curl -k #{file} -o /dev/null")
+end
+
+Then(/^it should be possible to reach the (.*) registry$/) do |registry|
+  if registry == 'portus'
+    url='https://portus.mgr.suse.de:5000'
+  else
+    url='https://registry.mgr.suse.de:443'
+  end
+  $server.run("curl -k --fail #{url}")
+end
+
+# Channels
+
 When(/^I delete these channels with spacewalk\-remove\-channel:$/) do |table|
   channels_cmd = "spacewalk-remove-channel "
   table.raw.each { |x| channels_cmd = channels_cmd + " -c " + x[0] }
@@ -15,6 +48,8 @@ When(/^I list channels with spacewalk\-remove\-channel$/) do
   $command_output, return_code = $server.run("spacewalk-remove-channel -l")
   raise "Unable to run spacewalk-remove-channel -l command on server" unless return_code.zero?
 end
+
+# Packages
 
 Then(/^"([^"]*)" should be installed on "([^"]*)"$/) do |package, host|
   node = get_target(host)

@@ -8,6 +8,7 @@
 
 # IMMUTABLE ORDER
 
+- features/core/allcli_sanity.feature
 - features/core/first_settings.feature
 
 # initialize SUSE Manager server
