@@ -13,7 +13,7 @@ DOCKER_RUN_EXPORT="PYTHONPATH=/manager/client/rhel/rhnlib/:/manager/client/rhel/
 EXIT=0
 
 INITIAL_CMD="/manager/susemanager-utils/testing/automation/initial-objects.sh"
-CHOWN_CMD="/manager/susemanager-utils/testing/automation/chown-objects.sh $(id -u) $(id -g)""
+CHOWN_CMD="/manager/susemanager-utils/testing/automation/chown-objects.sh $(id -u) $(id -g)"
 
 docker pull $REGISTRY/$PGSQL_CONTAINER
 CMD="/manager/backend/test/docker-backend-common-tests.sh"
