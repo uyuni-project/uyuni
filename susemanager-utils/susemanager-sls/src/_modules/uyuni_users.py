@@ -455,3 +455,13 @@ def list_orgs():
     """
     return UyuniOrg(pillar=__pillar__).get_orgs()
 
+
+def list_trusts(name):
+    """
+    List trusted orgs on given organisation name.
+
+    :param name: Base organisation name
+
+    :return: dictionary of trusted organisations. See "org.trusts.listTrusted" from the Uyuni API.
+    """
+    return UyuniTrust(org_name=name, pillar=__pillar__).get_trusted()
