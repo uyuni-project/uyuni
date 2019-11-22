@@ -138,7 +138,7 @@ class RPCClient:
                 log.debug("Fall back to the second try due to %s", exc)
                 self.get_token(refresh=True)
                 try:
-                    return getattr(self.conn, method)(*args)
+                    return getattr(self.conn, method)(*((self.get_token(),) + args[1:]))
                 except Exception as exc:
                     log.error("Unable to call RPC function: %s", exc)
                     raise UyuniUsersException(exc)
