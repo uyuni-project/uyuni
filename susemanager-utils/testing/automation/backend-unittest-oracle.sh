@@ -14,7 +14,7 @@ EXIT=0
 
 INITIAL_CMD="/manager/susemanager-utils/testing/automation/initial-objects.sh"
 CMD="/manager/backend/test/docker-backend-oracle-tests.sh"
-CHOWN_CMD="/manager/susemanager-utils/testing/automation/chown-objects.sh $(id -u) $(id -g)""
+CHOWN_CMD="/manager/susemanager-utils/testing/automation/chown-objects.sh $(id -u) $(id -g)"
 
 docker pull $REGISTRY/$ORACLE_CONTAINER
 docker run --privileged --rm=true -e $DOCKER_RUN_EXPORT -v "$GITROOT:/manager" $REGISTRY/$ORACLE_CONTAINER /bin/bash -c "${INITIAL_CMD}; ${CMD}; RET=\${?}; ${CHOWN_CMD} && exit \${RET}"
