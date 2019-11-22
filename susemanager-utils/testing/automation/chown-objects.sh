@@ -1,5 +1,11 @@
 #/bin/bash -e
-echo "*************** CLEANING OBJECTS GENERATED INSIDE THE CONTAINER  ***************"
+if [ -z ${1} -o -z ${2} ]; then
+  echo "This scripts needs two parameters: the first one for the UID, the second one for the GID"
+  exit 1
+fi
+NEWUID=${1}
+NEWGID=${2}
+echo "*********** ADJUSTING PERMISSIONS FOR OBJECTS GENERATED INSIDE THE CONTAINER TO ${NEWUID}:${NEWGID} ***********"
 # Exit if the file does not exist or if it is empty
 if [ ! -f /tmp/objects-init.txt -o ! -s /tmp/objects-init.txt ]; then
   echo "No file with the initial list of objects"
@@ -7,9 +13,5 @@ if [ ! -f /tmp/objects-init.txt -o ! -s /tmp/objects-init.txt ]; then
 fi
 find /manager | sort > /tmp/objects-end.txt
 for LINE in $(diff /tmp/objects-init.txt /tmp/objects-end.txt|grep '^> .*$'|sed -e 's/^> //'); do
-  if [ -d ${LINE} ]; then
-    rm -rf ${LINE}
-  else
-    rm -f ${LINE}
-  fi
+  chown ${NEWUID}:${NEWGID} ${LINE}
 done
