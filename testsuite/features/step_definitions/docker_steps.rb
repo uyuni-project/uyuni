@@ -121,7 +121,7 @@ end
 When(/^I create and delete an image store via XML-RPC$/) do
   # create and delete a store, even with invalid URI
   cont_op.login('admin', 'admin')
-  cont_op.create_store('fake_store', 'https://github.com/SUSE/spacewalk-testsuite-base', 'registry')
+  cont_op.create_store('fake_store', 'https://github.com/uyuni-project/uyuni', 'registry')
   cont_op.delete_store('fake_store')
 end
 
@@ -141,7 +141,7 @@ When(/^I set and get details of image store via XML-RPC$/) do
   cont_op.login('admin', 'admin')
   # test setDetails call
   # delete if test fail in the middle. delete image doesn't raise an error if image doesn't exists
-  cont_op.create_store('Norimberga', 'https://github.com/SUSE/spacewalk-testsuite-base', 'registry')
+  cont_op.create_store('Norimberga', 'https://github.com/uyuni-project/uyuni', 'registry')
   details_store = {}
   details_store['uri'] = 'Germania'
   details_store['username'] = ''
