@@ -17,12 +17,11 @@ type Props = {
   divClass?: string,
   formDirection?: string,
   children: React.Node,
-  onChange?: Function,
+  onChange: Function,
   onValidate?: Function,
 };
 
 type State = {
-  model: Object,
   isValid: boolean,
 };
 
@@ -32,7 +31,6 @@ class Form extends React.Component<Props, State> {
     onSubmitInvalid: undefined,
     formRef: undefined,
     divClass: '',
-    onChange: undefined,
     onValidate: undefined,
     formDirection: "form-horizontal"
   };
@@ -42,29 +40,19 @@ class Form extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      model: props.model,
       isValid: true,
     };
   }
 
-  // eslint-disable-next-line
-  UNSAFE_componentWillReceiveProps(props: Props) {
-    this.setState({
-      model: props.model,
-    });
-  }
-
   onFieldChange(item: Object) {
     const component = this.inputs[item.name];
-    const { model } = this.state;
+    const { model } = this.props;
     model[item.name] = item.value;
-    this.setState({
-      model,
-    },
-    () => this.validate(component, component.props));
+
+    this.validate(model, component, component.props);
 
     if (this.props.onChange) {
-      this.props.onChange(this.state.model, this.state.isValid);
+      this.props.onChange(this.props.model, this.state.isValid);
     }
   }
 
@@ -86,18 +74,18 @@ class Form extends React.Component<Props, State> {
     }
   }
 
-  validate(component: React.ElementRef<any>, props: Object) {
+  validate(model: Object, component: React.ElementRef<any>, props: Object) {
     const { name } = props;
     const results = [];
     let isValid = true;
 
-    if (!props.disabled && (this.state.model[name] || props.required)) {
-      if (props.required && !this.state.model[name]) {
+    if (!props.disabled && (model[name] || props.required)) {
+      if (props.required && !model[name]) {
         isValid = false;
       } else if (props.validators) {
         const validators = Array.isArray(props.validators) ? props.validators : [props.validators];
         validators.forEach((v) => {
-          results.push(Promise.resolve(v(`${this.state.model[name] || ''}`)));
+          results.push(Promise.resolve(v(`${model[name] || ''}`)));
         });
       }
     }
@@ -114,13 +102,14 @@ class Form extends React.Component<Props, State> {
 
   unregisterInput(component: React.ElementRef<any>) {
     if (component.props && component.props.name && this.inputs[component.props.name] === component) {
-        delete this.inputs[component.props.name];
+      delete this.inputs[component.props.name];
 
-        this.setState((prevState) => {
-          const { model } = prevState;
-          delete model[component.props.name];
-          return { model };
-        });
+      const { model } = this.props;
+      delete model[component.props.name];
+
+      if (this.props.onChange != null) {
+        this.props.onChange(model, this.state.isValid);
+      }
     }
   }
 
@@ -128,26 +117,23 @@ class Form extends React.Component<Props, State> {
     if (component.props && component.props.name) {
       this.inputs[component.props.name] = component;
 
-      this.setState((prevState) => {
-        const { model } = prevState;
-        model[component.props.name] = component.props.value;
-        return { model };
-      },
-      () => {
-        this.validate(component, component.props);
-        if (this.props.onChange) {
-          this.props.onChange(this.state.model, this.state.isValid);
-        };
-      });
+      const { model } = this.props;
+      model[component.props.name] = component.props.value;
+
+      this.validate(model, component, component.props);
+
+      if (this.props.onChange != null) {
+        this.props.onChange(this.props.model, this.state.isValid);
+      };
     }
   }
 
   submit(event: Object) {
     event.preventDefault();
     if (this.state.isValid && this.props.onSubmit) {
-      this.props.onSubmit(this.state.model, event);
+      this.props.onSubmit(this.props.model, event);
     } else if (this.props.onSubmitInvalid) {
-      this.props.onSubmitInvalid(this.state.model, event);
+      this.props.onSubmitInvalid(this.props.model, event);
     }
   }
 
@@ -173,7 +159,7 @@ class Form extends React.Component<Props, State> {
         validate: this.validate.bind(this),
         onFormChange: this.onFieldChange.bind(this),
         invalidHint: child.props.invalidHint || (child.props.required && (`${child.props.label} is required.`)),
-        value: this.state.model[name] || child.props.defaultValue || '',
+        value: this.props.model[name] || child.props.defaultValue || '',
       };
 
       return React.cloneElement(child, Object.assign({}, child.props, newProps), child.props.children);
