@@ -1,3 +1,4 @@
+- Make rhn-search log to correct file (bsc#1156751)
 - Enable aarch64 builds
 - Fix rhn-search to read memory variable from rhnconf (bsc#1154586)
 - Bump version to 4.1.0 (bsc#1154940)
