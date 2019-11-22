@@ -84,7 +84,7 @@ public class DebPackageWriterTest extends JMockBaseTestCaseWithUser {
         HibernateFactory.getSession().flush();
         HibernateFactory.getSession().clear();
 
-        DataResult<PackageDto> packageBatch = TaskManager.getChannelPackageDtos(channel, 0, 100);
+        DataResult<PackageDto> packageBatch = TaskManager.getChannelPackageDtos(channel);
         packageBatch.elaborate();
         Map<Long, Map<String, String>> extraTags = TaskManager.getChannelPackageExtraTags(Arrays.asList(pkg1.getId(), pkg2.getId()));
         for (PackageDto pkgDto : packageBatch) {
