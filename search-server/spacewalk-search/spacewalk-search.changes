@@ -1,3 +1,5 @@
+- Make rhn-search log to correct file (bsc#1156751)
+
 -------------------------------------------------------------------
 Mon Nov 25 10:13:06 CET 2019 - jgonzalez@suse.com
 
