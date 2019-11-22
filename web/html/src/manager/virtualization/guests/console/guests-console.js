@@ -126,6 +126,10 @@ class GuestsConsole extends React.Component<Props, State> {
     this.setState({ popupState: 'askPassword' }, this.showPopup);
   });
 
+  onPasswordChange = (model: Object) => {
+    this.setState({ password: model.password });
+  }
+
   render() {
     const buttonValues = {
       askPassword: {
@@ -142,7 +146,7 @@ class GuestsConsole extends React.Component<Props, State> {
       }
       if (this.state.popupState === 'askPassword') {
         return (
-          <Form model={this.state} className="form-horizontal">
+          <Form model={this.state} className="form-horizontal" onChange={this.onPasswordChange}>
             <Password
               name="password"
               label={t('Password')}
