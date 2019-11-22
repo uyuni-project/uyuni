@@ -26,6 +26,6 @@ fi
 INITIAL_CMD="/manager/susemanager-utils/testing/automation/initial-objects.sh"
 MIGRATION_TEST='/manager/susemanager-utils/testing/docker/scripts/schema_migration_test_pgsql-31to40.sh'
 IDEMPOTENCY_TEST="/manager/susemanager-utils/testing/docker/scripts/schema_idempotency_test_pgsql.py ${IDEMPOTENCY_PARAMS}"
-CLEAN_CMD="/manager/susemanager-utils/testing/automation/clean-objects.sh"
+CHOWN_CMD="/manager/susemanager-utils/testing/automation/chown-objects.sh $(id -u) $(id -g)"
 
-docker run --privileged --rm=true -v "$GITROOT:/manager" $REGISTRY/$PGSQL_CONTAINER /bin/bash -c "${INITIAL_CMD}; ${MIGRATION_TEST} && ${IDEMPOTENCY_TEST}; RET=\${?}; ${CLEAN_CMD} && exit \${RET}"
+docker run --privileged --rm=true -v "$GITROOT:/manager" $REGISTRY/$PGSQL_CONTAINER /bin/bash -c "${INITIAL_CMD}; ${MIGRATION_TEST} && ${IDEMPOTENCY_TEST}; RET=\${?}; ${CHOWN_CMD} && exit \${RET}"
