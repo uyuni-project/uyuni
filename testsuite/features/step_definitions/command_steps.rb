@@ -9,12 +9,10 @@ require 'nokogiri'
 
 Then(/^"([^"]*)" should have a FQDN$/) do |host|
   node = get_target(host)
-  result_1, return_code_1 = node.run('hostname -f')
-  result_1.delete!("\n")
-  result_2, return_code_2 = node.run('python -c "import socket; print socket.getfqdn()"')
-  result_2.delete!("\n")
-  raise 'cannot determine hostname' unless return_code_1.zero? && return_code_2.zero?
-  raise 'hostname is not fully qualified' unless result_1 == node.full_hostname && result_2 == node.full_hostname
+  result, return_code = node.run('hostname -f')
+  result.delete!("\n")
+  raise 'cannot determine hostname' unless return_code.zero?
+  raise 'hostname is not fully qualified' unless result == node.full_hostname
 end
 
 Then(/^"([^"]*)" should communicate with the server$/) do |host|
@@ -28,11 +26,7 @@ Then(/^it should be possible to download the file "([^"]*)"$/) do |file|
 end
 
 Then(/^it should be possible to reach the (.*) registry$/) do |registry|
-  if registry == 'portus'
-    url='https://portus.mgr.suse.de:5000'
-  else
-    url='https://registry.mgr.suse.de:443'
-  end
+  url = registry == 'portus' ? 'https://portus.mgr.suse.de:5000' : 'https://registry.mgr.suse.de:443'
   $server.run("curl -k --fail #{url}")
 end
 
