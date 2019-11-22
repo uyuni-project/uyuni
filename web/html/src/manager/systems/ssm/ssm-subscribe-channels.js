@@ -21,7 +21,6 @@ const SpaRenderer  = require("core/spa/spa-renderer").default;
 import type JsonResult from "utils/network";
 import type {ActionChain} from "components/action-schedule";
 
-declare function getServerId(): number;
 declare var localTime: string;
 declare var timezone: string;
 declare var userPrefPageSize: string;
