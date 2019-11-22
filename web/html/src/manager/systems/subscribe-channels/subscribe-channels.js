@@ -18,7 +18,6 @@ const ChannelUtils = require("core/channels/utils/channels-dependencies.utils");
 import type JsonResult from "utils/network";
 import type {ActionChain} from "components/action-schedule";
 
-declare function getServerId(): number;
 declare var localTime: string;
 declare var timezone: string;
 declare var actionChains: Array<ActionChain>;
