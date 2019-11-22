@@ -337,9 +337,27 @@ class UyuniTrust(UyuniRemoteObject):
         :param name:
         :return:
         """
-        return {}
+        trust_data: Dict[str, Union[int, datetime.datetime]] = {}
+        for trusted_org in self.get_trusted():
+            if trusted_org["org_name"] == name:
+                trust_data = self.client("org.trusts.getDetails", self.client.get_token(), trusted_org["id"])
+                break
 
-    def trust(self, name: str) -> bool:
+        return trust_data
+
+    def get_trusted(self) -> List[Dict[str, Union[str, int]]]:
+        """
+        Get list of all trusted orgs.
+
+        :return:
+        """
+        try:
+            out = self.client("org.trusts.listOrgs", self.client.get_token())
+        except Exception as exc:
+            out = [self.get_proto_return(exc=exc)]
+        return out
+
+    def trust(self, *orgs: str) -> bool:
         """
         Set organisation trusted.
 
@@ -348,10 +366,25 @@ class UyuniTrust(UyuniRemoteObject):
         :raises UyuniUsersException: if RPC call has been failed.
         :return: boolean, True if trust flag has been changed to True
         """
+        ret = False
+        # Remove orgs that are already trusted
+        l_orgs = list(copy.deepcopy(orgs))
+        for trusted_org in self.get_trusted():
+            l_trusted_org = str(trusted_org["org_name"])
+            if l_trusted_org in l_orgs:
+                l_orgs.pop(l_orgs.index(l_trusted_org))
+                log.info('Skipping organisation "%s": already trusted', trusted_org)
 
-        return False
+        for org_name in l_orgs:
+            org_data = self.orgs.get_org_by_name(org_name)
+            assert org_data, "Adding trust: no information has been found for '{}' organisation".format(org_name)
+            self.client("org.trusts.addTrust", self.client.get_token(), self.this_org["id"], org_data["id"])
+            log.info('Added trusted organisation "%s" to the "%s"', org_name, self.this_org["name"])
+            ret = True
 
-    def untrust(self, name: str) -> bool:
+        return ret
+
+    def untrust(self, *orgs: str) -> bool:
         """
         Set organisation untrusted.
 
@@ -360,8 +393,19 @@ class UyuniTrust(UyuniRemoteObject):
         :raises UyuniUsersException: If RPC call has been failed.
         :return: boolean, True if trust flag has been changed to False
         """
+        fails = success = 0
 
-        return False
+        for org_name in orgs:
+            org_data = self.orgs.get_org_by_name(org_name)
+            assert org_data, "Trust removal: no information has been found for '{}' organisation".format(org_name)
+            try:
+                self.client("org.trusts.removeTrust", self.client.get_token(), self.this_org["id"], org_data["id"])
+                success += 1
+            except UyuniUsersException as exc:
+                log.error("Unable to remove trust: %s", exc)
+                fails += 1
+
+        return fails == 0 and success > 0
 
 
 def __virtual__():
