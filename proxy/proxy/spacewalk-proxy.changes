@@ -1,3 +1,5 @@
+- fix problems with Package Hub repos having multiple rpms with same NEVRA
+  but different checksums (bsc#1146683)
 - build as python3 only package
 - replace spacewalk-usix with uyuni-common-libs
 - don't skip auth token check for remote actions
