@@ -54,9 +54,6 @@ Feature: PXE boot a Retail terminal
     And I press "Add Item" in configured zones section
     And I enter "tf.local" in third configured zone name field
     # direct zone example.org:
-    And I press "Add Item" in first A section
-    And I enter "pxeboot" in fourth A name field
-    And I enter the local IP address of "pxeboot" in fourth A address field
     And I press "Add Item" in first CNAME section
     And I enter "ftp" in first CNAME alias field
     And I enter "proxy" in first CNAME name field
@@ -79,6 +76,8 @@ Feature: PXE boot a Retail terminal
     And I press "Add Item" in third NS section
     And I enter the hostname of "proxy" in third NS field
     # end
+    And I scroll to the top of the page
+    And I should see a "Bind" text
     And I click on "Save Formula"
     Then I should see a "Formula saved" text
 
