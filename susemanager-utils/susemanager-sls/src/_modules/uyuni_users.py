@@ -308,6 +308,26 @@ class UyuniTrust(UyuniRemoteObject):
     """
     CRUD operations to trusts.
     """
+    def __init__(self, org_name: str, pillar: Optional[Dict[str, Any]] = None):
+        """
+
+        :param org_name:
+        :param pillar:
+        """
+        UyuniRemoteObject.__init__(self, pillar=pillar)
+        self.orgs = UyuniOrg(pillar=pillar)
+        self.__this_org: Dict[str, Union[int, str, bool]] = self.orgs.get_org_by_name(org_name)
+
+    @property
+    def this_org(self):
+        """
+        Property getter.
+
+        :return: data of the current organisation
+        """
+        assert self.this_org, "No details could be found for the current organisation"
+        return self.__this_org
+
     def get_trust_by_name(self, name: str) -> Dict[str, Union[int, datetime.datetime]]:
         """
         Get trust data by name.
