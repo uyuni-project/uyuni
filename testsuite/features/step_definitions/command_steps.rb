@@ -4,6 +4,33 @@
 require 'xmlrpc/client'
 require 'timeout'
 
+# Sanity checks
+
+Then(/^"([^"]*)" should have a FQDN$/) do |host|
+  node = get_target(host)
+  result, return_code = node.run('hostname -f')
+  result.delete!("\n")
+  raise 'cannot determine hostname' unless return_code.zero?
+  raise 'hostname is not fully qualified' unless result == node.full_hostname
+end
+
+Then(/^"([^"]*)" should communicate with the server$/) do |host|
+  node = get_target(host)
+  node.run("ping -c1 #{$server.full_hostname}")
+  $server.run("ping -c1 #{node.full_hostname}")
+end
+
+Then(/^it should be possible to download the file "([^"]*)"$/) do |file|
+  $server.run("curl -k #{file} -o /dev/null")
+end
+
+Then(/^it should be possible to reach the (.*) registry$/) do |registry|
+  url = registry == 'portus' ? 'https://portus.mgr.suse.de:5000' : 'https://registry.mgr.suse.de:443'
+  $server.run("curl -k --fail #{url}")
+end
+
+# Channels
+
 When(/^I delete these channels with spacewalk\-remove\-channel:$/) do |table|
   channels_cmd = "spacewalk-remove-channel "
   table.raw.each { |x| channels_cmd = channels_cmd + " -c " + x[0] }
@@ -14,6 +41,8 @@ When(/^I list channels with spacewalk\-remove\-channel$/) do
   $command_output, return_code = $server.run("spacewalk-remove-channel -l")
   raise "Unable to run spacewalk-remove-channel -l command on server" unless return_code.zero?
 end
+
+# Packages
 
 Then(/^"([^"]*)" should be installed on "([^"]*)"$/) do |package, host|
   node = get_target(host)
