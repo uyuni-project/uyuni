@@ -36,16 +36,6 @@ Feature: Sanity checks
     Then "ubuntu-minion" should have a FQDN
     And "ubuntu-minion" should communicate with the server
 
-@virthost_kvm
-  Scenario: The KVM host is healthy
-    Then "kvm-server" should have a FQDN
-    And "kvm-server" should communicate with the server
-
-@virthost_xen
-  Scenario: The Xen host is healthy
-    Then "xen-server" should have a FQDN
-    And "xen-server" should communicate with the server
-
   Scenario: The external resources can be reached
     Then it should be possible to download the file "http://download.suse.de/ibs/SUSE/Products/SLE-SERVER/12-SP4/x86_64/product/media.1/products.key"
     And it should be possible to download the file "https://gitlab.suse.de/galaxy/suse-manager-containers/blob/master/test-profile/Dockerfile"
