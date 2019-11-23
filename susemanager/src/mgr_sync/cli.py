@@ -88,6 +88,13 @@ def _create_add_subparser(subparsers):
         dest='no_recommends',
         default=False,
         help='do not enable recommended products automatically')
+    add_parser.add_argument(
+        '--no-sync',
+        action='store_true',
+        dest='no_sync',
+        default=False,
+        help='do not syncronize product channels automatically after adding')
+
 
 
 def _create_list_subparser(subparsers):

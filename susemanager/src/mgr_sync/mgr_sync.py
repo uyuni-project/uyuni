@@ -138,11 +138,13 @@ class MgrSync(object):  # pylint: disable=too-few-public-methods
             if 'channel' in options.add_target:
                 self._add_channels(channels=options.target,
                                    mirror=options.mirror,
-                                   no_optionals=options.no_optionals)
+                                   no_optionals=options.no_optionals,
+                                   no_sync=options.no_sync)
             elif 'credentials' in options.add_target:
                 self._add_credentials(options.primary, options.target)
             elif 'product' in options.add_target:
-                self._add_products(mirror="", no_recommends=options.no_recommends)
+                self._add_products(mirror="", no_recommends=options.no_recommends,
+                                   no_sync=options.no_sync)
         elif 'refresh' in vars(options):
             self.exit_with_error = not self._refresh(
                 enable_reposync=options.refresh_channels,
@@ -236,7 +238,7 @@ class MgrSync(object):  # pylint: disable=too-few-public-methods
             self._execute_xmlrpc_method(self.conn.sync.content,
                                         "listChannels", self.auth.token()), self.log)
 
-    def _add_channels(self, channels, mirror="", no_optionals=False):
+    def _add_channels(self, channels, mirror="", no_optionals=False, no_sync=False):
         """ Add a list of channels.
 
         If the channel list is empty the interactive mode is started.
@@ -318,7 +320,8 @@ class MgrSync(object):  # pylint: disable=too-few-public-methods
             if channel not in channels_to_sync:
                 channels_to_sync.append(channel)
 
-        self._schedule_channel_reposync(channels_to_sync)
+        if not no_sync:
+            self._schedule_channel_reposync(channels_to_sync)
 
     def _schedule_channel_reposync(self, channels):
         """ Schedules a reposync for a set of channels.
@@ -410,7 +413,7 @@ class MgrSync(object):  # pylint: disable=too-few-public-methods
 
         return interactive_data
 
-    def _add_products(self, mirror="", no_recommends=False):
+    def _add_products(self, mirror="", no_recommends=False, no_sync=False):
         """ Add a list of products.
 
         If the products list is empty the interactive mode is started.
@@ -433,7 +436,7 @@ class MgrSync(object):  # pylint: disable=too-few-public-methods
             product.friendly_name))
         print("Adding channels required by '{0}' product".format(
             product.friendly_name))
-        self._add_channels(channels=mandatory_channels, mirror=mirror)
+        self._add_channels(channels=mandatory_channels, mirror=mirror, no_sync=no_sync)
         self.log.info("Product successfully added")
         print("Product successfully added")
 
