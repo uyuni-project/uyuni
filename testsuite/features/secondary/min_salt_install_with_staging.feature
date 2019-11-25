@@ -64,9 +64,8 @@ Feature: Install a package on the minion with staging enabled
     Then I should see a "1 patch update has been scheduled for" text
     And I wait until the package "virgo-dummy-2.0-1.1.noarch" has been cached on this "sle-minion"
     And I wait for "virgo-dummy-2.0-1.1" to be installed on this "sle-minion"
-    Then I disable repository "test_repo_rpm_pool" on this "sle-minion"
 
-  Scenario: Cleanup: remove virgo-dummy package from SLES minion
+  Scenario: Cleanup: remove virgo-dummy and orion-dummy packages from SLES minion
     Given I am on the Systems overview page of this "sle-minion"
     When I follow "Software" in the content area
     And I follow "List / Remove"
@@ -78,3 +77,4 @@ Feature: Install a package on the minion with staging enabled
     And I check "virgo-dummy" in the list
     And I click on "Remove Packages"
     And I click on "Confirm"
+    And I disable repository "test_repo_rpm_pool" on this "sle-minion"
