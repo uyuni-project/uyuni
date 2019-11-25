@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Mon Nov 25 10:22:32 CET 2019 - jgonzalez@suse.com
+
+- version 4.0.23-1
 - Support license entry in kiwi image packages list
 - Install yum plguin for only yum < 4 (bsc#1156173)
 - Add self monitoring to Admin Monitoring UI (bsc#1143638)
