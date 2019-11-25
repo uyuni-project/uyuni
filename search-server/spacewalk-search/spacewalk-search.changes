@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Mon Nov 25 10:13:06 CET 2019 - jgonzalez@suse.com
+
+- version 4.0.8-1
 - require lucene version we use (bsc#1156176)
 - Fix rhn-search to read memory variable from rhnconf (bsc#1154586)
 
