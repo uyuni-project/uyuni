@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Mon Nov 25 10:07:16 CET 2019 - jgonzalez@suse.com
+
+- version 4.0.29-1
 - fix specfile for systems that do not yet use systemd
 - fix spacewalk-update-signatures for python3 (bsc#1156521)
 - fix problems with Package Hub repos having multiple rpms with same NEVRA
