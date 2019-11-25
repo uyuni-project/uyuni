@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Mon Nov 25 10:11:34 CET 2019 - jgonzalez@suse.com
+
+- version 4.0.13-1
 - fix problems with Package Hub repos having multiple rpms with same NEVRA
   but different checksums (bsc#1146683)
 
