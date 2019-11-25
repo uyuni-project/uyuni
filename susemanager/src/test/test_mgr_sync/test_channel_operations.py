@@ -39,6 +39,7 @@ from spacewalk.susemanager.mgr_sync import logger
 class ChannelOperationsTest(unittest.TestCase):
 
     def setUp(self):
+        self.maxDiff = 100
         self.mgr_sync = MgrSync()
         self.mgr_sync.log = self.mgr_sync.__init__logger = MagicMock(
             return_value=logger.Logger(3, "tmp.log"))
@@ -646,6 +647,83 @@ Scheduling reposync for following channels:
             ]
 
             stubbed_xmlrpm_call.assert_has_calls(expected_xmlrpc_calls)
+
+    def test_sync_channels_interactive(self):
+        options = get_options("sync channels ".split())
+        available_channels = ['sles10-sp4-pool-x86_64', 'sle10-sdk-sp4-updates-x86_64']
+        chosen_channel = available_channels[0]
+        self.mgr_sync._list_channels = MagicMock(
+            return_value=available_channels)
+        stubbed_xmlrpm_call = MagicMock(
+            return_value=read_data_from_fixture(
+                'list_channels_simplified.data'))
+        self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call
+
+        with patch('spacewalk.susemanager.mgr_sync.mgr_sync.cli_ask') as mock:
+            mock.return_value = str(
+                available_channels.index(chosen_channel) + 1)
+            with ConsoleRecorder() as recorder:
+                self.mgr_sync.run(options)
+
+            expected_output = [
+                "Scheduling reposync for following channels:",
+                "- {0}".format(chosen_channel)
+            ]
+            self.assertEqual(expected_output, recorder.stdout)
+
+            self.mgr_sync._list_channels.assert_called_once_with(
+                expand=False, filter=None, no_optionals=False,
+                show_interactive_numbers=True, compact=False,
+                only_installed=True)
+
+            expected_xmlrpc_calls = [
+                call._execute_xmlrpc_method(self.mgr_sync.conn.channel.software,
+                                            "syncRepo",
+                                            self.fake_auth_token,
+                                            [chosen_channel])
+            ]
+
+            stubbed_xmlrpm_call.assert_has_calls(expected_xmlrpc_calls)
+
+    def test_sync_channels_interactive_with_children(self):
+        options = get_options("sync channels --with-children".split())
+        available_channels = ['sles10-sp4-pool-x86_64', 'sle10-sdk-sp4-updates-x86_64']
+        chosen_channel = available_channels[0]
+        self.mgr_sync._list_channels = MagicMock(
+            return_value=available_channels)
+        stubbed_xmlrpm_call = MagicMock(
+            return_value=read_data_from_fixture(
+                'list_channels_simplified.data'))
+        self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call
+
+        with patch('spacewalk.susemanager.mgr_sync.mgr_sync.cli_ask') as mock:
+            mock.return_value = str(
+                available_channels.index(chosen_channel) + 1)
+            with ConsoleRecorder() as recorder:
+                self.mgr_sync.run(options)
+
+            expected_output = [
+                "Scheduling reposync for following channels:",
+                "- sles10-sp4-pool-x86_64",
+                "- sle10-sdk-sp4-updates-x86_64",
+            ]
+            self.assertEqual(expected_output, recorder.stdout)
+
+            self.mgr_sync._list_channels.assert_called_once_with(
+                expand=False, filter=None, no_optionals=False,
+                show_interactive_numbers=True, compact=False,
+                only_installed=True)
+
+            expected_xmlrpc_calls = [
+                call._execute_xmlrpc_method(self.mgr_sync.conn.channel.software,
+                                            "syncRepo",
+                                            self.fake_auth_token,
+                                            ["sles10-sp4-pool-x86_64", "sle10-sdk-sp4-updates-x86_64"])
+            ]
+
+            stubbed_xmlrpm_call.assert_has_calls(expected_xmlrpc_calls)
+
+
 def xmlrpc_sideeffect(*args, **kwargs):
     if args[1] == "addChannels":
         return [args[3]]
