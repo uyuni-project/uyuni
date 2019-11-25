@@ -1,11 +1,11 @@
 // @flow
 
-const React = require('react');
-const { useState } = require('react');
-const { InputBase } = require('./InputBase');
-const { FormContext } = require('./Form');
+import React from 'react';
+import { useState } from 'react';
+import { InputBase } from './InputBase';
+import { FormContext } from './Form';
 
-const styles = require('./Radio.css');
+import styles from './Radio.css';
 
 type Props = {
   items: Array<{label: string, value: string}>,
@@ -14,7 +14,7 @@ type Props = {
   inputClass?: string,
 } & InputBase.Props;
 
-function Radio(props: Props) {
+export function Radio(props: Props) {
   const [isPristine, setIsPristine] = useState(true);
 
   const {
@@ -93,7 +93,3 @@ function Radio(props: Props) {
 Radio.defaultProps = Object.assign({
   inputClass: undefined,
 }, InputBase.defaultProps);
-
-module.exports = {
-  Radio,
-};

@@ -1,7 +1,7 @@
 /* eslint-disable */
 'use strict';
 
-const React = require("react");
+import React from "react";
 
 $.fn.datepicker.dates['en_US'] = {
     days:      [ 'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday',],
@@ -131,7 +131,7 @@ class TimePicker extends React.Component {
     }
 }
 
-class DateTimePicker extends React.Component {
+export class DateTimePicker extends React.Component {
 
     constructor(props) {
         super();
@@ -197,8 +197,4 @@ class DateTimePicker extends React.Component {
             </div>
         );
     }
-}
-
-module.exports = {
-    DateTimePicker : DateTimePicker
 }
