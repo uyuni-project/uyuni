@@ -4,14 +4,14 @@ const React = require('react');
 const { Select } = require('components/input/Select');
 const { Text } = require('components/input/Text');
 const { Panel } = require('components/panels/Panel');
+const { getOrderedItemsFromModel } = require('components/input/FormMultiInput');
 const { Button } = require('components/buttons');
 const { Messages } = require('components/messages');
 const { Utils: MessagesUtils } = require('components/messages');
-const GuestPropertiesUtils = require('./guest-properties-utils');
 
 function addNic(model: Object, changeModel: Function, networks: Array<Object>) {
-  const allNics = GuestPropertiesUtils.getOrderedDevicesFromModel(model, 'network');
-  const index = Number.parseInt(allNics[allNics.length - 1].substring('network'.length), 10) + 1;
+  const allNics = getOrderedItemsFromModel(model, 'network');
+  const index = allNics[allNics.length - 1] + 1;
   const first_nic = networks.length > 0 ? networks[0].name : '';
 
   changeModel(Object.assign(model, {
@@ -84,8 +84,8 @@ function guestNicFields(model: Object, index: number, networks: Array<Object>,
 }
 
 function guestNicsPanel(model: Object, changeModel: Function, networks: Array<Object>): React.Node {
-  const onlyHandledNics = GuestPropertiesUtils.getOrderedDevicesFromModel(model, 'network')
-    .every(nic => model[`${nic}_type`] === 'network');
+  const allNics = getOrderedItemsFromModel(model, 'network');
+  const onlyHandledNics = allNics.every(index => model[`network${index}_type`] === 'network');
 
   return (
     <Panel
@@ -108,12 +108,11 @@ function guestNicsPanel(model: Object, changeModel: Function, networks: Array<Ob
         && <Messages items={MessagesUtils.warning('At least one unsupported network interface: disabling editing.')} />
       }
       {
-        GuestPropertiesUtils.getOrderedDevicesFromModel(model, 'network')
-          .map(net => guestNicFields(model,
-            Number.parseInt(net.substring('network'.length), 10),
-            networks,
-            onlyHandledNics,
-            changeModel))
+        allNics.map(net => guestNicFields(model,
+          Number.parseInt(net.substring('network'.length), 10),
+          networks,
+          onlyHandledNics,
+          changeModel))
       }
     </Panel>
   );
@@ -137,11 +136,11 @@ function getModelFromDefinition(definition: Object): Object {
   );
 }
 
-function getRequestParams(model: Object, nic: string): Object {
+function getRequestParams(model: Object, index: number): Object {
   return {
-    type: model[`${nic}_type`],
-    source: model[`${nic}_source`],
-    mac: model[`${nic}_mac`],
+    type: model[`network${index}_type`],
+    source: model[`network${index}_source`],
+    mac: model[`network${index}_mac`],
   };
 }
 

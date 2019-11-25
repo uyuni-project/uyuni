@@ -9,8 +9,8 @@ const _isEqual = require('lodash/isEqual');
 const { TopPanel } = require('components/panels/TopPanel');
 const MessagesUtils = require('components/messages').Utils;
 const { Loading } = require('components/loading/loading');
+const { getOrderedItemsFromModel } = require('components/input/FormMultiInput');
 const { GuestProperties } = require('../guest-properties');
-const GuestPropertiesUtils = require('../properties/guest-properties-utils');
 const GuestNicsPanel = require('../properties/guest-nics-panel');
 const GuestDisksPanel = require('../properties/guest-disks-panel');
 const { VirtualizationGuestActionApi } = require('../virtualization-guest-action-api');
@@ -45,8 +45,8 @@ class GuestsEdit extends React.Component<Props> {
     const initialNicProps = Object.entries(initialModel).filter(entry => entry[0].startsWith('network'));
     const newNicProps = Object.entries(model).filter(entry => entry[0].startsWith('network'));
     const nics = !_isEqual(initialNicProps, newNicProps)
-      ? GuestPropertiesUtils.getOrderedDevicesFromModel(model, 'network')
-        .map(nic => GuestNicsPanel.getRequestParams(model, nic))
+      ? getOrderedItemsFromModel(model, 'network')
+        .map(index => GuestNicsPanel.getRequestParams(model, index))
       : [];
 
     const nicsParams = nics.length !== 0 ? { interfaces: nics } : undefined;
@@ -55,8 +55,8 @@ class GuestsEdit extends React.Component<Props> {
     const initialDiskProps = Object.entries(initialModel).filter(entry => entry[0].startsWith('disk'));
     const newDiskProps = Object.entries(model).filter(entry => entry[0].startsWith('disk'));
     const disks = !_isEqual(initialDiskProps, newDiskProps)
-      ? GuestPropertiesUtils.getOrderedDevicesFromModel(model, 'disk')
-        .map(disk => GuestDisksPanel.getRequestParams(model, disk))
+      ? getOrderedItemsFromModel(model, 'disk')
+        .map(index => GuestDisksPanel.getRequestParams(model, index))
       : [];
 
     const disksParams = disks.length !== 0 ? { disks } : undefined;
