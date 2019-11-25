@@ -18,6 +18,7 @@ import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import com.redhat.rhn.common.conf.Config;
+import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.util.StringUtil;
 
@@ -74,6 +75,16 @@ public class RhnTagFunctions {
      */
     public static String getConfig(String confIn) {
         return Config.get().getString(confIn);
+    }
+
+    /**
+     * Fetch the Version from the Configuration system.
+     * Makes a call into com.redhat.rhn.common.config.Config.get()
+     *
+     * @return Product Version String
+     */
+    public static String getProductVersion() {
+        return ConfigDefaults.get().getProductVersion();
     }
 
     /**
