@@ -2,6 +2,7 @@
 
 const React = require('react');
 const { InputBase } = require('./InputBase');
+const { FormContext } = require('./Form');
 
 type Props = {
   children: React.Node,
@@ -14,6 +15,7 @@ function Select(props: Props) {
     children,
     ...propsToPass
   } = props;
+  const formContext = React.useContext(FormContext);
   return (
     <InputBase {...propsToPass}>
       {
@@ -24,12 +26,13 @@ function Select(props: Props) {
           const onChange = (event: Object) => {
             setValue(event.target.name, event.target.value);
           };
+          const fieldValue = formContext.model[props.name] || props.defaultValue || '';
           return (
             <select
               className={`form-control${inputClass ? ` ${inputClass}` : ''}`}
               name={props.name}
               disabled={props.disabled}
-              value={props.value}
+              value={fieldValue}
               onBlur={onBlur}
               onChange={onChange}
             >

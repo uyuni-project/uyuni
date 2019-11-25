@@ -1,12 +1,6 @@
 // @flow
 
 const React = require('react');
-const { Text } = require('./Text');
-const { Password } = require('./Password');
-const { Check } = require('./Check');
-const { Radio } = require('./Radio');
-const { Select } = require('./Select');
-const { DateTime } = require('./DateTime');
 
 type Props = {
   model: Object,
@@ -22,8 +16,18 @@ type Props = {
 };
 
 type State = {
-  isValid: boolean,
+  inputsValidationStatus: Object,
 };
+
+type FormContextType = {
+  model: Object,
+  setModelValue: Function,
+  onFieldValidation: (string, boolean) => void,
+  registerInput: Function,
+  unregisterInput: Function,
+};
+
+const FormContext = React.createContext<FormContextType>({});
 
 class Form extends React.Component<Props, State> {
   static defaultProps = {
@@ -40,152 +44,108 @@ class Form extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      isValid: true,
+      inputsValidationStatus: {}
     };
   }
 
-  onFieldChange(item: Object) {
-    const component = this.inputs[item.name];
+  setModelValue(name: string, value: any) {
     const { model } = this.props;
-    model[item.name] = item.value;
-
-    this.validate(model, component, component.props);
-
-    if (this.props.onChange) {
-      this.props.onChange(this.props.model, this.state.isValid);
+    if (value == null && model[name] != null) {
+      delete model[name];
+      this.validateForm(model);
+      this.props.onChange(model);
+    } else if (value != null) {
+      model[name] = value;
+      this.validateForm(model);
+      this.props.onChange(model);
     }
   }
 
-  validateForm() {
-    let allValid = true;
+  allValid(): boolean {
+    return Object.values(this.state.inputsValidationStatus).every(status => status);
+  }
 
-    Object.keys(this.inputs).forEach((name) => {
-      if (!this.inputs[name].state.isValid) {
-        allValid = false;
-      }
-    });
+  validateForm(model: Object) {
+    const inputsValidationStatus = Object.keys(this.inputs).reduce((ret, name) => {
+      ret[name] = this.inputs[name].validate(model);
+      return ret;
+    }, {});
 
     this.setState({
-      isValid: allValid,
+      inputsValidationStatus,
+    }, () => {
+      const validForm = this.allValid();
+      if (this.props.onValidate != null) {
+        this.props.onValidate(validForm);
+      }
     });
-
-    if (this.props.onValidate) {
-      this.props.onValidate(allValid);
-    }
   }
 
-  validate(model: Object, component: React.ElementRef<any>, props: Object) {
-    const { name } = props;
-    const results = [];
-    let isValid = true;
-
-    if (!props.disabled && (model[name] || props.required)) {
-      if (props.required && !model[name]) {
-        isValid = false;
-      } else if (props.validators) {
-        const validators = Array.isArray(props.validators) ? props.validators : [props.validators];
-        validators.forEach((v) => {
-          results.push(Promise.resolve(v(`${model[name] || ''}`)));
-        });
+  onFieldValidation(name: string, isValid: boolean) {
+    this.setState(state => {
+      let { inputsValidationStatus } = state;
+      inputsValidationStatus[name] = isValid;
+      return { inputsValidationStatus };
+    },
+    () => {
+      const validForm = this.allValid();
+      if (this.props.onValidate) {
+        this.props.onValidate(validForm);
       }
-    }
-
-    Promise.all(results).then((result) => {
-      result.forEach((r) => {
-        isValid = isValid && r;
-      });
-      component.setState({
-        isValid,
-      }, this.validateForm.bind(this));
     });
   }
 
   unregisterInput(component: React.ElementRef<any>) {
     if (component.props && component.props.name && this.inputs[component.props.name] === component) {
       delete this.inputs[component.props.name];
-
-      const { model } = this.props;
-      delete model[component.props.name];
-
-      if (this.props.onChange != null) {
-        this.props.onChange(model, this.state.isValid);
-      }
     }
   }
 
   registerInput(component: React.ElementRef<any>) {
     if (component.props && component.props.name) {
       this.inputs[component.props.name] = component;
-
-      const { model } = this.props;
-      model[component.props.name] = component.props.value;
-
-      this.validate(model, component, component.props);
-
-      if (this.props.onChange != null) {
-        this.props.onChange(this.props.model, this.state.isValid);
-      };
+    } else {
+      throw new Error('Can not add input without "name" attribute');
     }
   }
 
   submit(event: Object) {
     event.preventDefault();
-    if (this.state.isValid && this.props.onSubmit) {
+    if (this.allValid() && this.props.onSubmit) {
       this.props.onSubmit(this.props.model, event);
     } else if (this.props.onSubmitInvalid) {
       this.props.onSubmitInvalid(this.props.model, event);
     }
   }
 
-  renderChild(child: React.Element<any>) {
-    if (typeof child !== 'object' || child === null) {
-      return child;
+  componentDidUpdate(prevProps: Object) {
+    if (prevProps.model !== this.props.model) {
+      this.validateForm(this.props.model);
     }
-
-
-    // TODO [LuNeves] [Cedric] After upgrading react to v16 this could be improved with Context:
-    // formPropsProvider and a formPropsConsumer on the component inputBase
-    const fieldTypes = [<Text />.type, <Password />.type, <Check />.type, <Radio />.type, <Select />.type, <DateTime />.type];
-    if (fieldTypes.includes(child.type)) {
-      const name = child.props && child.props.name;
-
-      if (!name) {
-        throw new Error('Can not add input without "name" attribute');
-      }
-
-      const newProps = {
-        registerInput: this.registerInput.bind(this),
-        unregisterInput: this.unregisterInput.bind(this),
-        validate: this.validate.bind(this),
-        onFormChange: this.onFieldChange.bind(this),
-        invalidHint: child.props.invalidHint || (child.props.required && (`${child.props.label} is required.`)),
-        value: this.props.model[name] || child.props.defaultValue || '',
-      };
-
-      return React.cloneElement(child, Object.assign({}, child.props, newProps), child.props.children);
-    }
-    const renderedChildren = this.renderChildren(child.props && child.props.children);
-    return React.cloneElement(child, child.props, renderedChildren);
-  }
-
-  renderChildren(children: React.Node) {
-    if (typeof children !== 'object' || children == null) {
-      return children;
-    }
-    return React.Children.map(children, child => this.renderChild(child));
   }
 
   render() {
     return (
-      <form ref={this.props.formRef} onSubmit={this.submit.bind(this)} className={this.props.className}>
-        <div className={`${this.props.formDirection || ''} ${this.props.divClass ? ` ${this.props.divClass}` : ''}`}>
-          {this.renderChildren(this.props.children)}
-        </div>
-      </form>
+      <FormContext.Provider value={
+        {
+          model: this.props.model,
+          setModelValue: this.setModelValue.bind(this),
+          registerInput: this.registerInput.bind(this),
+          unregisterInput: this.unregisterInput.bind(this),
+          onFieldValidation: this.onFieldValidation.bind(this),
+        }
+      }>
+        <form ref={this.props.formRef} onSubmit={this.submit.bind(this)} className={this.props.className}>
+          <div className={`${this.props.formDirection || ''} ${this.props.divClass ? ` ${this.props.divClass}` : ''}`}>
+            {this.props.children}
+          </div>
+        </form>
+      </FormContext.Provider>
     );
   }
 }
 
 module.exports = {
   Form,
+  FormContext,
 };

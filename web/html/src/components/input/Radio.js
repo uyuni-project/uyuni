@@ -3,6 +3,7 @@
 const React = require('react');
 const { useState } = require('react');
 const { InputBase } = require('./InputBase');
+const { FormContext } = require('./Form');
 
 const styles = require('./Radio.css');
 
@@ -21,6 +22,7 @@ function Radio(props: Props) {
     inputClass,
     ...propsToPass
   } = props;
+  const formContext = React.useContext(FormContext);
   return (
     <InputBase {...propsToPass}>
       {
@@ -34,9 +36,10 @@ function Radio(props: Props) {
             setIsPristine(false);
           };
 
+          const fieldValue = formContext.model[props.name] || props.defaultValue || '';
           const isOpenOption = props.openOption
-            && !props.items.some(item => item.value === props.value)
-            && (props.value || !isPristine);
+            && !props.items.some(item => item.value === fieldValue)
+            && (fieldValue || !isPristine);
 
           const radioClass = props.inline ? "radio-inline" : "radio";
           return (
@@ -48,7 +51,7 @@ function Radio(props: Props) {
                       type="radio"
                       name={props.name}
                       value={value}
-                      checked={props.value === value}
+                      checked={fieldValue === value}
                       className={inputClass}
                       onBlur={onBlur}
                       onChange={event => onChange(event.target.name, event.target.value)} />
@@ -74,7 +77,7 @@ function Radio(props: Props) {
                     name={props.name}
                     type="text"
                     disabled={!isOpenOption}
-                    value={isOpenOption ? props.value : ''}
+                    value={isOpenOption ? fieldValue : ''}
                     onChange={event => onChange(event.target.name, event.target.value)}
                   />
                 </div>
