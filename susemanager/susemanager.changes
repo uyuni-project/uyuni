@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Mon Nov 25 10:18:10 CET 2019 - jgonzalez@suse.com
+
+- version 4.0.19-1
 - add bootstrap repo for RHEL 8 and ES 8
 - prepare bootstrap data for upcoming openSUSE 15.2
 - add bootstrap data for openSUSE 15.1 when mirrored as
