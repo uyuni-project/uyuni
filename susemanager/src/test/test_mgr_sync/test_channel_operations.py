@@ -266,6 +266,42 @@ Status:
         self.assertEqual(['rhel-i386-as-4', 'rhel-x86_64-as-4', 'sle10-sdk-sp4-pool-x86_64'],
                          available_channels)
 
+    def test_list_installed_only_channels_interactive(self):
+        """ Test listing channels when interactive more is set """
+        stubbed_xmlrpm_call = MagicMock(
+            return_value=read_data_from_fixture(
+                'list_channels_simplified.data'))
+        self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call
+        available_channels = []
+        with ConsoleRecorder() as recorder:
+            available_channels = self.mgr_sync._list_channels(
+                expand=False,
+                filter=None,
+                no_optionals=True,
+                show_interactive_numbers=True,
+                only_installed=True)
+        expected_output = """Available Channels:
+
+
+Status:
+  - [I] - channel is installed
+  - [ ] - channel is not installed, but is available
+  - [U] - channel is unavailable
+
+  1) [I] SLES10-SP4-Pool for x86_64 SUSE Linux Enterprise Server 10 SP4 x86_64 [sles10-sp4-pool-x86_64]
+      2) [I] SLE10-SDK-SP4-Updates for x86_64 SUSE Linux Enterprise Software Development Kit 10 SP4 Software Development Kit [sle10-sdk-sp4-updates-x86_64]"""
+
+        self.assertEqual(expected_output.split("\n"), recorder.stdout)
+
+        stubbed_xmlrpm_call.assert_called_once_with(
+            self.mgr_sync.conn.sync.content,
+            "listChannels",
+            self.fake_auth_token)
+
+        self.assertEqual(['sles10-sp4-pool-x86_64', 'sle10-sdk-sp4-updates-x86_64'],
+                         available_channels)
+
+
     def test_add_available_base_channel_with_mirror(self):
         """ Test adding an available base channel"""
         mirror_url = "http://smt.suse.de"
