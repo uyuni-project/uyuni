@@ -108,7 +108,7 @@ Feature: Be able to manage KVM virtual machines via the GUI
     Given I am on the "Virtualization" page of this "kvm_server"
     When I click on "Edit" in row "test-vm"
     And I wait until I do not see "Loading..." text
-    And I click on "add_nic"
+    And I click on "add_network"
     And I select "test-net1" from "network1_source"
     And I click on "Update"
     Then I should see a "Hosted Virtual Systems" text
@@ -119,7 +119,7 @@ Feature: Be able to manage KVM virtual machines via the GUI
     Given I am on the "Virtualization" page of this "kvm_server"
     When I click on "Edit" in row "test-vm"
     And I wait until I do not see "Loading..." text
-    And I click on "remove_nic1"
+    And I click on "remove_network1"
     And I click on "Update"
     Then I should see a "Hosted Virtual Systems" text
     And "test-vm" virtual machine on "kvm_server" should have 1 NIC using "test-net1" network

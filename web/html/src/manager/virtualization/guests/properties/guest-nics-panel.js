@@ -3,15 +3,12 @@
 const React = require('react');
 const { Select } = require('components/input/Select');
 const { Text } = require('components/input/Text');
-const { Panel } = require('components/panels/Panel');
+const { FormMultiInput } = require('components/input/FormMultiInput');
 const { getOrderedItemsFromModel } = require('components/input/FormMultiInput');
-const { Button } = require('components/buttons');
 const { Messages } = require('components/messages');
 const { Utils: MessagesUtils } = require('components/messages');
 
-function addNic(model: Object, changeModel: Function, networks: Array<Object>) {
-  const allNics = getOrderedItemsFromModel(model, 'network');
-  const index = allNics[allNics.length - 1] + 1;
+function addNic(index: number, model: Object, changeModel: Function, networks: Array<Object>) {
   const first_nic = networks.length > 0 ? networks[0].name : '';
 
   changeModel(Object.assign(model, {
@@ -23,30 +20,10 @@ function addNic(model: Object, changeModel: Function, networks: Array<Object>) {
 
 function guestNicFields(model: Object, index: number, networks: Array<Object>,
   onlyHandledNics: boolean, changeModel: Function): React.Node {
-  const removeNic = (): void => {
-    changeModel(Object.entries(model).reduce((res, entry) => {
-      const property = !entry[0].startsWith(`network${index}_`) ? { [entry[0]]: entry[1] } : undefined;
-      return Object.assign(res, property);
-    }, {}));
-  };
   const first_nic = networks.length > 0 ? networks[0].name : '';
 
   return (
-    <Panel
-      key={`network${index}`}
-      title={t(`Network Interface ${model[`network${index}_mac`]}`)}
-      headingLevel="h3"
-      buttons={(
-        <Button
-          icon="fa-minus"
-          title={t('Remove')}
-          id={`remove_nic${index}`}
-          className="btn-default btn-sm"
-          handler={removeNic}
-          disabled={!onlyHandledNics}
-        />
-      )}
-    >
+    <>
       {
         model[`network${index}_type`] !== 'network'
         && <Messages items={MessagesUtils.warning('Unhandled network interface type')} />
@@ -79,7 +56,7 @@ function guestNicFields(model: Object, index: number, networks: Array<Object>,
         divClass="col-md-6"
         disabled={!onlyHandledNics}
       />
-    </Panel>
+    </>
   );
 }
 
@@ -87,34 +64,37 @@ function guestNicsPanel(model: Object, changeModel: Function, networks: Array<Ob
   const allNics = getOrderedItemsFromModel(model, 'network');
   const onlyHandledNics = allNics.every(index => model[`network${index}_type`] === 'network');
 
+  const removeNic = (index: number): void => {
+    changeModel(Object.entries(model).reduce((res, entry) => {
+      const property = !entry[0].startsWith(`network${index}_`) ? { [entry[0]]: entry[1] } : undefined;
+      return Object.assign(res, property);
+    }, {}));
+  };
+
+  const getNicPanelTitle = (index: number): string => {
+    return `Network Interface ${model[`network${index}_mac`]}`;
+  };
+
   return (
-    <Panel
-      key="network"
-      title={t('Network Interfaces')}
-      headingLevel="h2"
-      buttons={(
-        <Button
-          icon="fa-plus"
-          title={t('Add')}
-          id="add_nic"
-          className="btn-default btn-sm"
-          handler={() => addNic(model, changeModel, networks)}
-          disabled={!onlyHandledNics}
-        />
-      )}
-    >
+    <>
       {
         !onlyHandledNics
         && <Messages items={MessagesUtils.warning('At least one unsupported network interface: disabling editing.')} />
       }
-      {
-        allNics.map(net => guestNicFields(model,
-          Number.parseInt(net.substring('network'.length), 10),
-          networks,
-          onlyHandledNics,
-          changeModel))
-      }
-    </Panel>
+      <FormMultiInput
+        id="networks"
+        title={t('Networks')}
+        prefix="network"
+        onAdd={newIndex => addNic(newIndex, model, changeModel, networks)}
+        onRemove={removeNic}
+        disabled={!onlyHandledNics}
+        panelTitle={getNicPanelTitle}
+      >
+        {
+          (index: number) => guestNicFields(model, index, networks, onlyHandledNics, changeModel)
+        }
+      </FormMultiInput>
+    </>
   );
 }
 
