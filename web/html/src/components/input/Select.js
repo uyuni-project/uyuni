@@ -1,15 +1,15 @@
 // @flow
 
-const React = require('react');
-const { InputBase } = require('./InputBase');
-const { FormContext } = require('./Form');
+import * as React from 'react';
+import { InputBase } from './InputBase';
+import { FormContext } from './Form';
 
 type Props = {
   children: React.Node,
   inputClass?: string,
 } & InputBase.Props;
 
-function Select(props: Props) {
+export function Select(props: Props) {
   const {
     inputClass,
     children,
@@ -48,7 +48,3 @@ function Select(props: Props) {
 Select.defaultProps = Object.assign({
   inputClass: undefined,
 }, InputBase.defaultProps);
-
-module.exports = {
-  Select,
-};

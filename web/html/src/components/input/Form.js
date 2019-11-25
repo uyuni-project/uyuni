@@ -1,6 +1,6 @@
 // @flow
 
-const React = require('react');
+import * as React from 'react';
 
 type Props = {
   model: Object,
@@ -27,9 +27,9 @@ type FormContextType = {
   unregisterInput: Function,
 };
 
-const FormContext = React.createContext<FormContextType>({});
+export const FormContext = React.createContext<FormContextType>({});
 
-class Form extends React.Component<Props, State> {
+export class Form extends React.Component<Props, State> {
   static defaultProps = {
     onSubmit: undefined,
     onSubmitInvalid: undefined,
@@ -144,8 +144,3 @@ class Form extends React.Component<Props, State> {
     );
   }
 }
-
-module.exports = {
-  Form,
-  FormContext,
-};

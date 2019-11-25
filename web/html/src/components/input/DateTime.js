@@ -1,15 +1,15 @@
 // @flow
 
-const React = require('react');
-const { DateTimePicker } = require('../datetimepicker');
-const { InputBase } = require('./InputBase');
-const { FormContext } = require('./Form');
+import React from 'react';
+import { DateTimePicker } from '../datetimepicker';
+import { InputBase } from './InputBase';
+import { FormContext } from './Form';
 
 type Props = {
   timezone?: string,
 } & InputBase.Props;
 
-function DateTime(props: Props) {
+export function DateTime(props: Props) {
   const {
     timezone,
     ...propsToPass
@@ -45,8 +45,3 @@ function DateTime(props: Props) {
 DateTime.defaultProps = Object.assign({
   timezone: undefined,
 }, InputBase.defaultProps);
-
-
-module.exports = {
-  DateTime,
-};

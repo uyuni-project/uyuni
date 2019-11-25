@@ -1,7 +1,7 @@
 // @flow
-const React = require('react');
-const { InputBase } = require('./InputBase');
-const { FormContext } = require('./Form');
+import * as React from 'react';
+import { InputBase } from './InputBase';
+import { FormContext } from './Form';
 
 type Props = {
   type: string,
@@ -9,7 +9,7 @@ type Props = {
   inputClass?: string,
 } & InputBase.Props;
 
-const Text = (props: Props) => {
+export const Text = (props: Props) => {
   const {
     type,
     placeholder,
@@ -50,7 +50,3 @@ Text.defaultProps = Object.assign({
   placeholder: undefined,
   inputClass: undefined,
 }, InputBase.defaultProps);
-
-module.exports = {
-  Text,
-};
