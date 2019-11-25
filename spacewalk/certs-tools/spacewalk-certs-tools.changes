@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Mon Nov 25 10:08:20 CET 2019 - jgonzalez@suse.com
+
+- version 4.0.13-1
 - Fix certificate generation when the serial has leading zeroes to avoid
   "asn1 encoding routines:a2i_ASN1_INTEGER:odd number of chars" during setup
 - make traditional bootstrap more robust for unknown hostname (bsc#1152298)
