@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Mon Nov 25 10:06:16 CET 2019 - jgonzalez@suse.com
+
+- version 4.0.12-1
 - Fix malformed XML response when data contains non-ASCII chars (bsc#1154968)
 
 -------------------------------------------------------------------
