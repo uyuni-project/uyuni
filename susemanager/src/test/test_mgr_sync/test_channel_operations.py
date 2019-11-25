@@ -611,6 +611,41 @@ Scheduling reposync for following channels:
 
             stubbed_xmlrpm_call.assert_has_calls(expected_xmlrpc_calls)
 
+    def test_add_channels_interactive_no_sync(self):
+        options = get_options("add channel --no-sync".split())
+        available_channels = ['ch1', 'ch2']
+        chosen_channel = available_channels[0]
+        self.mgr_sync._list_channels = MagicMock(
+            return_value=available_channels)
+        stubbed_xmlrpm_call = MagicMock()
+        stubbed_xmlrpm_call.side_effect = xmlrpc_sideeffect
+        self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call
+
+        with patch('spacewalk.susemanager.mgr_sync.mgr_sync.cli_ask') as mock:
+            mock.return_value = str(
+                available_channels.index(chosen_channel) + 1)
+            with ConsoleRecorder() as recorder:
+                self.mgr_sync.run(options)
+
+            expected_output = [
+                "Added '{0}' channel".format(chosen_channel)
+            ]
+            self.assertEqual(expected_output, recorder.stdout)
+
+            self.mgr_sync._list_channels.assert_called_once_with(
+                expand=False, filter=None, no_optionals=False,
+                show_interactive_numbers=True, compact=False,
+                only_installed=False)
+
+            expected_xmlrpc_calls = [
+                call._execute_xmlrpc_method(self.mgr_sync.conn.sync.content,
+                                            "addChannels",
+                                            self.fake_auth_token,
+                                            chosen_channel,
+                                            '')
+            ]
+
+            stubbed_xmlrpm_call.assert_has_calls(expected_xmlrpc_calls)
 def xmlrpc_sideeffect(*args, **kwargs):
     if args[1] == "addChannels":
         return [args[3]]
