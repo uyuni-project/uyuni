@@ -1,8 +1,8 @@
-const React = require('react');
+import * as React from 'react';
 
-const { Label } = require('./Label');
-const { FormGroup } = require('./FormGroup');
-const { FormContext } = require('./Form');
+import { Label } from './Label';
+import { FormGroup } from './FormGroup';
+import { FormContext } from './Form';
 
 export type Props = {
   name: string,
@@ -28,7 +28,7 @@ type State = {
   showErrors: boolean,
 };
 
-class InputBase extends React.Component<Props, State> {
+export class InputBase extends React.Component<Props, State> {
   static defaultProps = {
     defaultValue: undefined,
     label: undefined,
@@ -152,7 +152,3 @@ class InputBase extends React.Component<Props, State> {
   }
 }
 InputBase.contextType = FormContext;
-
-module.exports = {
-  InputBase,
-};
