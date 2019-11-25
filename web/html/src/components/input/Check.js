@@ -2,6 +2,7 @@
 
 const React = require('react');
 const { InputBase } = require('./InputBase');
+const { FormContext } = require('./Form');
 
 type Props = {
   inputClass?: string,
@@ -13,6 +14,7 @@ function Check(props: Props) {
     inputClass,
     ...propsToPass
   } = props;
+  const formContext = React.useContext(FormContext);
   return (
     <InputBase {...propsToPass}>
       {
@@ -23,6 +25,7 @@ function Check(props: Props) {
           const setChecked = (event: Object) => {
             setValue(event.target.name, event.target.checked);
           };
+          const fieldValue = formContext.model[props.name] || props.defaultValue || '';
           return (
             <div className="checkbox">
               <label htmlFor={props.name}>
@@ -31,7 +34,7 @@ function Check(props: Props) {
                   className={inputClass}
                   name={props.name}
                   type="checkbox"
-                  checked={props.value}
+                  checked={fieldValue}
                   onChange={setChecked}
                   onBlur={onBlur}
                   disabled={props.disabled}

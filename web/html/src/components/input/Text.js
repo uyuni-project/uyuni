@@ -1,6 +1,7 @@
 // @flow
 const React = require('react');
 const { InputBase } = require('./InputBase');
+const { FormContext } = require('./Form');
 
 type Props = {
   type: string,
@@ -15,6 +16,7 @@ const Text = (props: Props) => {
     inputClass,
     ...propsToPass
   } = props;
+  const formContext = React.useContext(FormContext);
   return (
     <InputBase {...propsToPass}>
       {
@@ -25,12 +27,13 @@ const Text = (props: Props) => {
           const onChange = (event: Object) => {
             setValue(event.target.name, event.target.value);
           };
+          const fieldValue = formContext.model[props.name] || props.defaultValue || '';
           return (
             <input
               className={`form-control${inputClass ? ` ${inputClass}` : ''}`}
               type={type || 'text'}
               name={props.name}
-              value={props.value}
+              value={fieldValue}
               onChange={onChange}
               disabled={props.disabled}
               onBlur={onBlur}

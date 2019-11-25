@@ -3,6 +3,7 @@
 const React = require('react');
 const { DateTimePicker } = require('../datetimepicker');
 const { InputBase } = require('./InputBase');
+const { FormContext } = require('./Form');
 
 type Props = {
   timezone?: string,
@@ -13,6 +14,7 @@ function DateTime(props: Props) {
     timezone,
     ...propsToPass
   } = props;
+  const formContext = React.useContext(FormContext);
   return (
     <InputBase {...propsToPass}>
       {
@@ -22,11 +24,12 @@ function DateTime(props: Props) {
           const onChange = (value) => {
             setValue(props.name, value);
           };
-          if(props.value instanceof Date) {
+          const fieldValue = formContext.model[props.name] || props.defaultValue || '';
+          if(fieldValue instanceof Date) {
             return (
               <DateTimePicker
                 onChange={onChange}
-                value={props.value}
+                value={fieldValue}
                 timezone={timezone}
               />
             );

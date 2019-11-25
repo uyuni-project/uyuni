@@ -1,3 +1,4 @@
+- Use ReactJS Context in Form components
 - Product list in the Wizard doesn't show SLE products first (bsc#1173522)
 - Compute the websockify URL on browser side (bsc#1149644)
 
