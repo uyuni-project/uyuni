@@ -15,6 +15,7 @@
 package com.redhat.rhn.frontend.xmlrpc.api;
 
 import com.redhat.rhn.common.conf.Config;
+import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.util.StringUtil;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
@@ -51,7 +52,7 @@ public class ApiHandler extends BaseHandler {
      * @xmlrpc.returntype string
      */
     public String systemVersion() {
-        return Config.get().getString("web.version");
+        return ConfigDefaults.get().getProductVersion();
     }
 
     /**

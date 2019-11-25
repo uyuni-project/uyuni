@@ -15,6 +15,7 @@
 package com.suse.manager.webui.utils;
 
 import com.redhat.rhn.common.conf.Config;
+import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.security.CSRFTokenValidator;
 import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.domain.role.Role;
@@ -285,7 +286,7 @@ public class SparkApplicationHelper {
         sharedVariables.put("h", ViewHelper.getInstance());
         sharedVariables.put("isDevMode",
                 Config.get().getBoolean("java.development_environment"));
-        sharedVariables.put("webVersion", Config.get().getString("web.version"));
+        sharedVariables.put("webVersion", ConfigDefaults.get().getProductVersion());
         sharedVariables.put("webBuildtimestamp", Config.get().getString("web.buildtimestamp"));
         JadeConfiguration config = jade.configuration();
         config.setSharedVariables(sharedVariables);
