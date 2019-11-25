@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Mon Nov 25 10:24:00 CET 2019 - jgonzalez@suse.com
+
+- version 4.0.4-1
 - SQL scripts are now placed at /etc/jabberd/scripts to make jabberd
   compatible with JeOS (bsc#1148352)
 
