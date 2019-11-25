@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Mon Nov 25 10:06:47 CET 2019 - jgonzalez@suse.com
+
+- version 4.0.17-1
 - Enable building and installing for Ubuntu 16.04 and Ubuntu 18.04
 - Prevent error when piping stdout in Python 2 (bsc#1153090)
 
