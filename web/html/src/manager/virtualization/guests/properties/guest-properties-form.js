@@ -70,12 +70,6 @@ class GuestPropertiesForm extends React.Component<Props, State> {
     this.props.submit(model);
   }
 
-  changeModel = (model: Object) => {
-    this.setState({
-      model,
-    });
-  }
-
   onDateTimeChanged = (date: Date) => {
     this.setState(state => ({
       model: Object.assign({}, state.model, { earliest: date, actionChain: null }),
@@ -104,7 +98,7 @@ class GuestPropertiesForm extends React.Component<Props, State> {
           {
             this.props.children({
               model: this.state.model,
-              changeModel: this.changeModel,
+              changeModel: this.onChange,
             })
           }
           <Panel
