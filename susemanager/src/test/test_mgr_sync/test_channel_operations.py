@@ -240,7 +240,8 @@ Status:
                 expand=False,
                 filter=None,
                 no_optionals=True,
-                show_interactive_numbers=True)
+                show_interactive_numbers=True,
+                only_installed=False)
         expected_output = """Available Channels:
 
 
@@ -249,11 +250,11 @@ Status:
   - [ ] - channel is not installed, but is available
   - [U] - channel is unavailable
 
-01) [ ] RHEL i386 AS 4 RES 4 [rhel-i386-as-4]
-02) [ ] RHEL x86_64 AS 4 RES 4 [rhel-x86_64-as-4]
-    [I] SLES10-SP4-Pool for x86_64 SUSE Linux Enterprise Server 10 SP4 x86_64 [sles10-sp4-pool-x86_64]
-    03) [ ] SLE10-SDK-SP4-Pool for x86_64 SUSE Linux Enterprise Software Development Kit 10 SP4 Software Development Kit [sle10-sdk-sp4-pool-x86_64]
-        [I] SLE10-SDK-SP4-Updates for x86_64 SUSE Linux Enterprise Software Development Kit 10 SP4 Software Development Kit [sle10-sdk-sp4-updates-x86_64]"""
+  1) [ ] RHEL i386 AS 4 RES 4 [rhel-i386-as-4]
+  2) [ ] RHEL x86_64 AS 4 RES 4 [rhel-x86_64-as-4]
+     [I] SLES10-SP4-Pool for x86_64 SUSE Linux Enterprise Server 10 SP4 x86_64 [sles10-sp4-pool-x86_64]
+      3) [ ] SLE10-SDK-SP4-Pool for x86_64 SUSE Linux Enterprise Software Development Kit 10 SP4 Software Development Kit [sle10-sdk-sp4-pool-x86_64]
+         [I] SLE10-SDK-SP4-Updates for x86_64 SUSE Linux Enterprise Software Development Kit 10 SP4 Software Development Kit [sle10-sdk-sp4-updates-x86_64]"""
 
         self.assertEqual(expected_output.split("\n"), recorder.stdout)
 
@@ -515,7 +516,8 @@ Scheduling reposync for following channels:
 
             self.mgr_sync._list_channels.assert_called_once_with(
                 expand=False, filter=None, no_optionals=False,
-                show_interactive_numbers=True, compact=False)
+                show_interactive_numbers=True, compact=False,
+                only_installed=False)
 
             expected_xmlrpc_calls = [
                 call._execute_xmlrpc_method(self.mgr_sync.conn.sync.content,
@@ -556,7 +558,8 @@ Scheduling reposync for following channels:
 
             self.mgr_sync._list_channels.assert_called_once_with(
                 expand=False, filter=None, no_optionals=True,
-                show_interactive_numbers=True, compact=False)
+                show_interactive_numbers=True, compact=False,
+                only_installed=False)
 
             expected_xmlrpc_calls = [
                 call._execute_xmlrpc_method(self.mgr_sync.conn.sync.content,
