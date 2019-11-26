@@ -1,3 +1,4 @@
+- add 'full_page_writes = off' during migration for fast database import
 - update requirements to match documented values (bsc#1154599)
 - add bootstrap repo for RHEL 8 and ES 8
 - Show help message when missing sub-command in  mgr-sync call (bsc#1134708)
