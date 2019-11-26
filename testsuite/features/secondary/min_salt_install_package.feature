@@ -17,8 +17,8 @@ Feature: Install a patch on the client via Salt through the UI
     Given I am on the Systems overview page of this "sle-minion"
     When I follow "Software" in the content area
     And I follow "List / Remove" in the content area
-    And I enter "virgo-dummy" in the css "input[placeholder='Filter by Package Name: ']"
-    And I click on the css "button.spacewalk-button-filter" until page does contain "virgo-dummy" text
+    And I enter "virgo-dummy" as the filtered package name
+    And I click on the filter button until page does contain "virgo-dummy" text
     When I follow the left menu "Admin > Task Schedules"
     And I follow "errata-cache-default"
     And I follow "errata-cache-bunch"
