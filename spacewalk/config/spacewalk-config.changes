@@ -6,6 +6,7 @@
 - remove superfluous 'apache' entries from sudoers configuration (bsc#1151632)
 - Migrate login to Spark
 - Require uyuni-base-common for /etc/rhn
+- Apache configuration: cache vendors folder
 
 -------------------------------------------------------------------
 Wed Jul 31 17:33:40 CEST 2019 - jgonzalez@suse.com

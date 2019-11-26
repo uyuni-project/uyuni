@@ -4,7 +4,7 @@
 - Improve menu scrollbar style for firefox
 - Migrate login to Spark
 - Add UI message when salt-formulas system folders are unreachable (bsc#1142309)
-- add missing strings for tasks
+- Add missing strings for task status page
 
 -------------------------------------------------------------------
 Wed Jul 31 17:31:26 CEST 2019 - jgonzalez@suse.com
