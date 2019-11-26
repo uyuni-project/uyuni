@@ -9,7 +9,6 @@ import { Radio } from './Radio';
 import { Select } from './Select';
 import { SubmitButton } from 'components/buttons';
 
-
 storiesOf('Forms', module)
   .add('text input', () => {
     let model = {
