@@ -546,6 +546,7 @@ check_remote_type() {
 postgres_fast() {
     cp -a /var/lib/pgsql/data/postgresql.conf /var/lib/pgsql/data/postgresql.conf.migrate
     echo "fsync = off" >> /var/lib/pgsql/data/postgresql.conf
+    echo "full_page_writes = off" >> /var/lib/pgsql/data/postgresql.conf
     echo "checkpoint_completion_target = 0.9" >> /var/lib/pgsql/data/postgresql.conf
     systemctl restart postgresql
 }
