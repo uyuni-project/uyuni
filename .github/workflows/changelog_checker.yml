@@ -17,4 +17,4 @@ jobs:
     - name: Run a changelog checker
       run: |
         files_modified=`git diff --name-only "origin/$GITHUB_BASE_REF..HEAD" | xargs`
-        ruby .github/scripts/changelog.rb $files_modified
+        ruby .github/scripts/changelog.rb "$files_modified"
