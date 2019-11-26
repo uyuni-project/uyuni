@@ -26,15 +26,16 @@
 - Fix sorting issues on content filter list page (bsc#1145591)
 - Fix combinatorial explosion when generating migrations (bsc#1151888)
 - Change the default value of taskomatic maxmemory to 4GB
+- Silence cache strategy Hibernate warning
 - Return result in compatible type to what defined in database procedure (bsc#1150729)
 - Allow channels names to start with numbers
 - Fix: handle special deb package names (bsc#1150113)
 - Remove extra spaces in dependencies fields in Debian repo Packages file (bsc#1145551)
 - Improve performance for 'Manage Software Channels' view (bsc#1151399)
 - Allow monitoring for managed systems running Ubuntu 18.04 and RedHat 6/7
-- use default value from systemd unit file if not set in /etc/rhn/rhn.conf
+- use value from systemd unit file if not set in /etc/rhn/rhn.conf
 - implement "keyword" filter for Content Lifecycle Management
-- Add support for Azure, Amazon EC2, and Google Compute Engine as Virtual Host Managers.
+- Add support for Azure, Amazon EC2, and Google Compute Engine as Virtual Host Manager.
 - Import additional fields for Deb packages
 - enable Kiwi NG on SLE15
 - allow ssl connections from Tomcat to Postgres (bsc#1149210)
@@ -47,7 +48,7 @@
 - implement "regular expression" Filter for Content Lifecycle Management
   matching package names, patch name, patch synopsis and package names in patches
 - implement provisioning for salt clients
-- New Single Page Application engine for the UI
+- New Single Page Application engine for the UI. It can be enabled with the config 'web.spa.enable' set to true
 - Check that a channel doesn't have clones before deleting it (bsc#1138454)
 - Fix: initialize the hibernate transaction when merging errata via XMLRPC API (bsc#1145584)
 - Fix documentation of contentmanagement handler (bsc#1145753)
@@ -66,8 +67,8 @@
 - UI render without error if salt-formulas system folders are unreachable (bsc#1142309)
 - Add susemanager as prerequired for spacewalk-java
 - Cloning Errata from a specific channel should not take packages
-- Hide channels managed by Content Lifecycle projects from available sources (bsc#1137965)
   from other channels (bsc#1142764)
+- Hide channels managed by Content Lifecycle projects from available sources (bsc#1137965)
 - add caret sorting for rpm versioning
 - improve performance for retrieving the user permissions on channels (bsc#1140644)
 
@@ -81,7 +82,7 @@ Wed Jul 31 17:34:30 CEST 2019 - jgonzalez@suse.com
 - Align selection column in software channel managers (bsc#1122559)
 - API Documentation: mention the shebang in the system.scheduleScriptRun doc strings (bsc#1138655)
 - Enable product detection for plain rhel systems (bsc#1136301)
-- For orphan contentsources, look also in susesccrepositoryauth to make sure they are not being referenced (bsc#1138275)
+- For orphan contentsources, look also in susesccrepositoryauth to make sure they are not being referenced(bsc#1138275)
 - Fallback to logged-in-user org and then vendor errata when looking up erratum on cloning (bsc#1137308)
 - Add new validation to avoid creating content lifecycle projects starting with a number (bsc#1139493)
 - Improve performance of 'Systems requiring reboot' page (fate#327780)

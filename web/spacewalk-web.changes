@@ -28,7 +28,7 @@
 - implement "regular expression" Filter for Content Lifecycle Management
   matching package names, patch name, patch synopsis and package names in patches
 - Change color of disabled build button on clp page (bsc#1145626)
-- New Single Page Application engine for the UI
+- New Single Page Application engine for the UI. It can be enabled with the config 'web.spa.enable' set to true
 - Fix the 'include recommended' button on channels selection in SSM (bsc#1145086)
 - implement "patch contains package" Filter for Content Lifecycle Management
 - implement Filter Patch "by type" Content Lifecycle Management
@@ -55,6 +55,7 @@ Wed Jul 31 17:38:44 CEST 2019 - jgonzalez@suse.com
 - Fix VM creation dialog with non-default pools and networks (bsc#1138268)
 - Update help URLs in the UI (bsc#1136764)
 - Force python-numpy and python-PyJWT dependencies (bsc#1137357)
+- Display warning if product catalog refresh is already in progress (bsc#1132234)
 - Add state EDITED to filters in the Content Lifecycle
 - Add built time date to the Content Lifecycle Environments
 
@@ -155,6 +156,7 @@ Fri Oct 26 10:46:49 CEST 2018 - jgonzalez@suse.com
 Fri Aug 10 15:40:23 CEST 2018 - jgonzalez@suse.com
 
 - version 4.0.1-1
+- Change WebUI version 4.0.1
 - Bump version to 4.0.0 (bsc#1104034)
 - Fix copyright for the package specfile (bsc#1103696)
 - Allow relative path in visibleIf tag in formulas

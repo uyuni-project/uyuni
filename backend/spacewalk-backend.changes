@@ -1,11 +1,14 @@
+- Revert fixes systems that do not yet use systemd as spacewalk-backend
+  is no more part of client tools (replaced by uyuni-base)
 - convert spacewalk-backend to a python3 only package
 - fix spacewalk-update-signatures for python3 (bsc#1156521)
-- add diskchecker tool to 4.0.3 branch as well (bsc#1156397)
+- port diskcheck utility to 4.0.3 branch (bsc#1156397)
 - add systemd service macros for diskcheck.service
 - removed spacewalk-backend-libs subpackage; replaces by uyuni-common-libs
 - read LOBs explicitly
 - Bump version to 4.1.0 (bsc#1154940)
 - Improve error message when deleting channel that's in a content lifecycle project (bsc#1145769)
+- fix specfile for systems that do not yet use systemd
 - fix problems with Package Hub repos having multiple rpms with same NEVRA
   but different checksums (bsc#1146683)
 - fix re-registration with re-activation key (bsc#1154275)
