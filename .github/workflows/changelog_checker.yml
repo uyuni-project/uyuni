@@ -18,3 +18,11 @@ jobs:
       run: |
         files_modified=`git diff --name-only "origin/$GITHUB_BASE_REF..HEAD" | xargs`
         ruby .github/scripts/changelog.rb "$files_modified"
+        
+  changelog_approved:
+    needs: changelog_test
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Changelogs approved
+      run : echo "Changelogs approved"
