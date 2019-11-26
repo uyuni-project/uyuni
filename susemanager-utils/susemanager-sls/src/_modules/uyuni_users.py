@@ -54,7 +54,6 @@ class RPCClient:
 
         :return: boolean, True on success
         """
-        log.debug("*** FREEZING ***")
         os.makedirs(os.path.dirname(RPCClient.__instance_path__), exist_ok=True)
         with open(RPCClient.__instance_path__, 'wb') as fh:
             try:
