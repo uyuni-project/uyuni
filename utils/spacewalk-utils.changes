@@ -1,3 +1,4 @@
+- Add FQDN resolver for spacewalk-manage-channel-lifecycle (bsc#1153578)
 - build as python3 only package
 - require uyuni-common-libs
 - add Fedora 30 to spacewalk-common-channels
