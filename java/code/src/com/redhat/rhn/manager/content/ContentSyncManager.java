@@ -376,9 +376,7 @@ public class ContentSyncManager {
             List<Tuple2<SUSEProductSCCRepository, MgrSyncStatus>> childRepos = partitionBaseRepo.get(false);
 
             Set<MgrSyncChannelDto> allChannels = childRepos.stream().map(c -> new MgrSyncChannelDto(
-                    c.getA().getRepository().getName() +
-                    (c.getA().getRootProduct().getArch() != null ?
-                            " for " + c.getA().getRootProduct().getArch().getLabel() : ""),
+                    c.getA().getChannelName(),
                     c.getA().getChannelLabel(),
                     c.getA().getProduct().getFriendlyName(),
                     c.getA().getRepository().getDescription(),
@@ -395,9 +393,7 @@ public class ContentSyncManager {
             )).collect(Collectors.toSet());
 
             List<MgrSyncChannelDto> baseChannels = baseRepos.stream().map(baseRepo -> new MgrSyncChannelDto(
-                    baseRepo.getA().getRepository().getName() +
-                    (baseRepo.getA().getRootProduct().getArch() != null ?
-                            " for " + baseRepo.getA().getRootProduct().getArch().getLabel() : ""),
+                    baseRepo.getA().getChannelName(),
                     baseRepo.getA().getChannelLabel(),
                     baseRepo.getA().getProduct().getFriendlyName(),
                     baseRepo.getA().getRepository().getDescription(),
