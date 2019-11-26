@@ -15,6 +15,7 @@
 package com.redhat.rhn.frontend.xmlrpc.api.test;
 
 import com.redhat.rhn.common.conf.Config;
+import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.frontend.xmlrpc.api.ApiHandler;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 
@@ -27,7 +28,7 @@ public class ApiHandlerTest extends RhnBaseTestCase {
          * get *something*.
          */
 
-        String version = Config.get().getString("web.version");
+        String version = ConfigDefaults.get().getProductVersion();
         assertEquals(version, handler.systemVersion());
     }
 

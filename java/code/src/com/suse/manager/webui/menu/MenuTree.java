@@ -18,6 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.jsp.PageContext;
 
 import com.redhat.rhn.common.conf.Config;
+import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.security.acl.Access;
 import com.redhat.rhn.common.security.acl.Acl;
 import com.redhat.rhn.common.security.acl.AclFactory;
@@ -369,7 +370,7 @@ public class MenuTree {
 
             // Help
             nodes.add(new MenuItem("Help").withIcon("fa-book").withTarget("_blank")
-                .addChild(new MenuItem("Documentation_version", Config.get().getString("web.version"))
+                .addChild(new MenuItem("Documentation_version", ConfigDefaults.get().getProductVersion())
                     .withPrimaryUrl("/docs/index.html").withTarget("_blank"))
                 .addChild(new MenuItem("Release Notes").withTarget("_blank")
                         .addChild(new MenuItem("product_server")
@@ -408,7 +409,7 @@ public class MenuTree {
             nodes.add(new MenuItem("About Spacewalk").withIcon("fa-question-circle")
                 .addChild(new MenuItem("Overview").withPrimaryUrl("/rhn/help/about.do"))
                 .addChild(new MenuItem("Sign In").withPrimaryUrl("/rhn/manager/login"))
-                .addChild(new MenuItem("Documentation_version", Config.get().getString("web.version"))
+                .addChild(new MenuItem("Documentation_version", ConfigDefaults.get().getProductVersion())
                     .withPrimaryUrl("/docs/index.html").withTarget("_blank"))
                 .addChild(new MenuItem("Lookup Login/Password").withPrimaryUrl("/rhn/help/ForgotCredentials.do"))
                 .addChild(new MenuItem("Release Notes").withTarget("_blank")

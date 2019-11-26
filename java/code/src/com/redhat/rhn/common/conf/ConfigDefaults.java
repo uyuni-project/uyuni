@@ -83,6 +83,8 @@ public class ConfigDefaults {
 
     public static final String PRODUCT_NAME = "web.product_name";
     public static final String VENDOR_NAME = "java.vendor_name";
+    public static final String PRODUCT_VERSION_MGR = "web.version";
+    public static final String PRODUCT_VERSION_UYUNI = "web.version.uyuni";
     public static final String ENTERPRISE_LINUX_NAME = "java.enterprise_linux_name";
     public static final String VENDOR_SERVICE_NAME = "java.vendor_service_name";
 
@@ -623,6 +625,19 @@ public class ConfigDefaults {
      */
     public boolean isUyuni() {
         return isSpacewalk();
+    }
+
+    /**
+     * Return the product version string depending on the product.
+     * Either web.version or web.version.uyuni
+     *
+     * @return the product version
+     */
+    public String getProductVersion() {
+        if (isUyuni()) {
+            return Config.get().getString(PRODUCT_VERSION_UYUNI);
+        }
+        return Config.get().getString(PRODUCT_VERSION_MGR);
     }
 
     /**
