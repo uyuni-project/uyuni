@@ -1225,26 +1225,35 @@ public class SaltUtils {
             pillar.add("minion_blackout", true);
             List<Object> whitelist = new ArrayList<>();
             whitelist.add("test.ping");
+            whitelist.add("grains.item");
+            whitelist.add("grains.items");
+            whitelist.add("mgractionchains.start");
             whitelist.add("mgractionchains.start");
             whitelist.add("mgractionchains.get_pending_resume");
             whitelist.add("mgractionchains.resume");
             whitelist.add(
                     Collections.singletonMap("state.apply",
-                            Arrays.asList(
-                                    "channels",
-                                    "channels.disablelocalrepos",
-                                    "cleanup_minion",
-                                    "hardware.profileupdate",
-                                    "packages.pkginstall",
-                                    "packages.redhatproductinfo",
-                                    "packages.profileupdate",
-                                    "bootloader.autoinstall",
-                                    "configuration.deploy_files",
-                                    "configuration.diff_files",
-                                    "scap",
-                                    "certs"
-                            )));
+                            Collections.singletonMap("kwargs",
+                                    Collections.singletonMap("mods",
+                                            Arrays.asList(
+                                                    "hardware.profileupdate",
+                                                    "packages.profileupdate",
+                                                    "packages.redhatproductinfo",
+                                                    "util.synccustomall",
+                                                    "channels",
+                                                    "channels.*",
+                                                    "cleanup_minion",
+                                                    "cleanup_ssh_minion",
+                                                    "configuration.*",
+                                                    "custom",
+                                                    "custom_group",
+                                                    "custom_org",
+                                                    "scap",
+                                                    "certs",
+                                                    "util.*"
+                                            )))));
             pillar.add("minion_blackout_whitelist", whitelist);
+
             SaltStateGeneratorService.INSTANCE.generatePillar(server, pillar, "blackout");
             SaltService.INSTANCE.refreshPillar(new MinionList(server.getMinionId()));
         }
