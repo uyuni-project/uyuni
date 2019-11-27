@@ -1,3 +1,5 @@
+- Prevent SELECT INSTR error in Postgres logs every minute (bsc#1157034)
+
 -------------------------------------------------------------------
 Tue Nov 05 14:31:20 CET 2019 - jgonzalez@suse.com
 
