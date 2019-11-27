@@ -12,20 +12,14 @@
   </div>
 
     <div id="subscribe-channels-div"></div>
-    <script>
+    <script type="text/javascript">
         var csrfToken="<%= com.redhat.rhn.common.security.CSRFTokenValidator.getToken(session) %>";
         var timezone = "<%= com.suse.manager.webui.utils.ViewHelper.getInstance().renderTimezone() %>";
         var localTime = "<%= com.suse.manager.webui.utils.ViewHelper.getInstance().renderLocalTime() %>";
         var actionChains = ${actionChainsJson};
 
-        function getServerId(){
-            return ${system.id};
-        }
-    </script>
-
-    <script>
       spaImportReactPage('systems/subscribe-channels/subscribe-channels')
-        .then(function(module) { module.renderer('subscribe-channels-div') });
+        .then(function(module) { module.renderer('subscribe-channels-div', {systemId: '${system.id}'}) });
     </script>
 
 </body>
