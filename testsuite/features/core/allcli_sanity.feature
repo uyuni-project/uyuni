@@ -38,6 +38,7 @@ Feature: Sanity checks
 
   Scenario: The external resources can be reached
     Then it should be possible to download the file "http://download.suse.de/ibs/SUSE/Products/SLE-SERVER/12-SP4/x86_64/product/media.1/products.key"
+    And it should be possible to download the file "https://download.opensuse.org/repositories/systemsmanagement:/Uyuni:/Test-Packages:/Updates/rpm/repodata/repomd.xml"
     And it should be possible to download the file "https://gitlab.suse.de/galaxy/suse-manager-containers/blob/master/test-profile/Dockerfile"
     And it should be possible to download the file "https://github.com/uyuni-project/uyuni/blob/master/README.md"
     And it should be possible to reach the portus registry
