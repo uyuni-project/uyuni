@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Wed Nov 27 17:08:56 CET 2019 - jgonzalez@suse.com
+
+- version 4.1.1-1
 - add RHEL 8 Base product
 - changed RHEL 5, 6 and 7 products to released
 - Bump version to 4.1.0 (bsc#1154940)
