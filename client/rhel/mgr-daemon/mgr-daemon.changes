@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Wed Nov 27 16:55:27 CET 2019 - jgonzalez@suse.com
+
+- version 4.1.1-1
 - Bump version to 4.1.0 (bsc#1154940)
 - Adjust current name of the package to mgr-daemon and not
   spacewalksd (bsc#1149353)
