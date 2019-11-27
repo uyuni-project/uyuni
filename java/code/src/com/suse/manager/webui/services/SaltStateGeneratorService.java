@@ -63,6 +63,7 @@ import java.nio.file.Paths;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -197,11 +198,17 @@ public enum SaltStateGeneratorService {
         }
     }
 
-    public void generatePillar(MinionServer minion, SaltPillar pillar, String sufix) {
+    /**
+     * Write pillar data file.
+     * @param minion the minion
+     * @param pillar pillar data
+     * @param suffix file name suffix
+     */
+    public void generatePillar(MinionServer minion, SaltPillar pillar, String suffix) {
         try {
             Files.createDirectories(pillarDataPath);
             String fileName = PILLAR_DATA_FILE_PREFIX + "_" +
-                    minion.getMinionId() + "_" + sufix + "." +
+                    minion.getMinionId() + "_" + suffix + "." +
                     PILLAR_DATA_FILE_EXT;
             Path filePath = pillarDataPath.resolve(fileName);
             com.suse.manager.webui.utils.SaltStateGenerator saltStateGenerator =
@@ -209,7 +216,7 @@ public enum SaltStateGeneratorService {
             saltStateGenerator.generate(pillar);
         }
         catch (IOException e) {
-            LOG.error(e.getMessage(), e);
+            LOG.error("Error writing pillar data file", e);
         }
     }
 
@@ -401,13 +408,20 @@ public enum SaltStateGeneratorService {
      */
     public void removePillar(MinionServer minion) {
         LOG.debug("Removing pillar file for minion: " + minion.getMinionId());
-        Path filePath = pillarDataPath.resolve(
-                getServerPillarFileName(minion));
         try {
-            Files.deleteIfExists(filePath);
+            Iterator<Path> pillarFiles =
+                    Files.newDirectoryStream(pillarDataPath,
+                            PILLAR_DATA_FILE_PREFIX + "_" +
+                                    minion.getMinionId() + "*." +
+                                    PILLAR_DATA_FILE_EXT)
+                            .iterator();
+            while (pillarFiles.hasNext()) {
+                Path pillarFile = pillarFiles.next();
+                Files.deleteIfExists(pillarFile);
+            }
         }
         catch (IOException e) {
-            LOG.error("Could not remove pillar file " + filePath);
+            LOG.error("Could not remove pillar file", e);
         }
     }
 
