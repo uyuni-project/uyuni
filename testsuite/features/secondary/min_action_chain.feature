@@ -1,7 +1,7 @@
 # Copyright (c) 2018-2019 SUSE LLC
 # Licensed under the terms of the MIT license.
 
-Feature: Action chain on salt minions
+Feature: Action chains on Salt minions
 
   Scenario: Pre-requisite: downgrade repositories to lower version on Salt minion
     Given I am authorized as "admin" with password "admin"
@@ -11,7 +11,6 @@ Feature: Action chain on salt minions
     And I run "zypper -n in milkyway-dummy" on "sle-minion" without error control
     And I run "zypper -n in --oldpackage andromeda-dummy-1.0" on "sle-minion"
     And I run "zypper -n ref" on "sle-minion"
-    And I run "echo '/dev/vda1 / ext4 defaults 0 0' > /etc/fstab" on "sle-minion"
 
   Scenario: Pre-requisite: refresh package list and check installed packages after downgrade on SLE minion
     When I refresh packages list via spacecmd on "sle-minion"
