@@ -2273,10 +2273,9 @@ public class SystemManager extends BaseManager {
         ServerFactory.lookupById(sid).asMinionServer().ifPresent(s -> {
             SystemManager.refreshPillarDataForMinion(s);
 
-            // Configure the monitoring formula for cleanup if still assigned (disable exporters)
+            // Configure prometheus-exporters for cleanup (disable all exporters) if applicable
             if (EntitlementManager.MONITORING.equals(ent)) {
-                FormulaManager formulas = FormulaManager.getInstance();
-                if (formulas.hasSystemFormulaAssigned(PROMETHEUS_EXPORTERS, sid.intValue())) {
+                if (FormulaManager.getInstance().isMonitoringCleanupNeeded(s)) {
                     try {
                         // Get the current data and set all exporters to disabled
                         String minionId = s.getMinionId();

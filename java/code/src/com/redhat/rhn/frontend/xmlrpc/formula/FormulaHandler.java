@@ -237,7 +237,7 @@ public class FormulaHandler extends BaseHandler {
                 Object> content) throws IOFaultException, InvalidParameterException {
         try {
             FormulaManager manager = FormulaManager.getInstance();
-            boolean assigned = manager.hasSystemFormulaAssigned(formulaName, systemId);
+            boolean assigned = manager.hasSystemFormulaAssignedCombined(formulaName, systemId);
             if (assigned) {
                 manager.validateInput(formulaName, content);
                 manager.saveServerFormulaData(loggedInUser, systemId.longValue(), formulaName, content);

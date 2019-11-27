@@ -1,3 +1,4 @@
+- Fix a problem with removing the monitoring entitlement from a system
 - Introduce CLM AppStream filters for RHEL 8 support
 - kickstart --nobase option was removed in version F22. Do not use it
   for RHEL8
