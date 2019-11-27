@@ -1,3 +1,5 @@
+- Migration paths from 3.2.20 and 3.2.22 to 4.0.0
+- Migration path from 3.2.21 to 4.0.0 (bsc#1155030)
 - Fix: regression with Ubuntu version compare (bsc#1150113)
 - Bump version to 4.1.0 (bsc#1154940)
 - Fix in schema migration script when recreating the 'suseUserRoleView' (bsc#1151280)
