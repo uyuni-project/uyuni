@@ -415,7 +415,7 @@ When(/^I select the addon "(.*?)"$/) do |addon|
 end
 
 And(/^I should see that the "(.*?)" product is "(.*?)"$/) do |product, recommended|
-  xpath = "//span[text()[normalize-space(.) = '#{product}'] and ./span/text() = '#{recommended}']"
+  xpath = "//span[span[1] = '#{product}' and span[3] = '#{recommended}']"
   raise "xpath: #{xpath} not found" unless find(:xpath, xpath)
 end
 
