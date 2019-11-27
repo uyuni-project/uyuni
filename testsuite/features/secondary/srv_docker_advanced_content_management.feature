@@ -41,7 +41,7 @@ Feature: Advanced content management
     When I follow the left menu "Images > Profiles"
     And I check the row with the "suse_docker_admin" text
     And I click on "Delete"
-    And I click on the css "button.btn-danger"
+    And I click on the red confirmation button
     And I should see a "Image profile has been deleted." text
 
   Scenario: Cleanup: remove image store
@@ -49,7 +49,7 @@ Feature: Advanced content management
     When I follow the left menu "Images > Stores"
     And I check the row with the "docker_admin" text
     And I click on "Delete"
-    And I click on the css "button.btn-danger"
+    And I click on the red confirmation button
     And I should see a "Image store has been deleted." text
 
   Scenario: Cleanup: delete no role user

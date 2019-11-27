@@ -69,11 +69,11 @@ Feature: Install a package on the minion with staging enabled
     Given I am on the Systems overview page of this "sle-minion"
     When I follow "Software" in the content area
     And I follow "List / Remove"
-    And I enter "orion-dummy" in the css "input[placeholder='Filter by Package Name: ']"
-    And I click on the css "button.spacewalk-button-filter"
+    And I enter "orion-dummy" as the filtered package name
+    And I click on the filter button
     And I check "orion-dummy" in the list
-    And I enter "virgo-dummy" in the css "input[placeholder='Filter by Package Name: ']"
-    And I click on the css "button.spacewalk-button-filter"
+    And I enter "virgo-dummy" as the filtered package name
+    And I click on the filter button
     And I check "virgo-dummy" in the list
     And I click on "Remove Packages"
     And I click on "Confirm"
