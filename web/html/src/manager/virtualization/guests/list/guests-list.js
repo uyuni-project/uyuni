@@ -387,7 +387,7 @@ class GuestsList extends React.Component<Props, State> {
                                 {state !== 'stopped' && row.name !== 'Domain-0'
                                  && this.createModalButton('shutdown', modalsData, row) }
                                 {(state === 'paused' || state === 'running') && this.createModalButton('restart', modalsData, row) }
-                                {state === 'running' && (
+                                {this.props.saltEntitled && state === 'running' && (
                                   <LinkButton
                                     title={t('Graphical Console')}
                                     className="btn-default btn-sm"
