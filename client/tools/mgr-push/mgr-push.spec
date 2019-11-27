@@ -36,7 +36,7 @@ Summary:        Package uploader for the Spacewalk
 License:        GPL-2.0-only
 Group:          Applications/System
 Url:            https://github.com/uyuni-project/uyuni
-Version:        4.1.0
+Version:        4.1.1
 Provides:       %{oldname} = %{oldversion}
 Obsoletes:      %{oldname} < %{oldversion}
 Release:        1%{?dist}
