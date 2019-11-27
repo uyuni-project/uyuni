@@ -21,7 +21,7 @@
 %endif
 
 Name:           spacewalk-ssl-cert-check
-Version:        4.1.0
+Version:        4.1.1
 Release:        1%{?dist}
 Summary:        Check ssl certs for impending expiration
 License:        GPL-2.0-only
