@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Wed Nov 27 17:02:01 CET 2019 - jgonzalez@suse.com
+
+- version 4.1.1-1
 - gfx_type needs to default to 'vnc' (bsc#1156211)
 - Bump version to 4.1.0 (bsc#1154940)
 - require commands we use in merge-rd.sh
