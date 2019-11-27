@@ -51,6 +51,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -74,6 +75,12 @@ public enum SaltStateGeneratorService {
         suseManagerStatesFilesRoot = Paths.get(SUMA_STATE_FILES_ROOT_PATH);
     }
 
+    /**
+     * Write pillar data file.
+     * @param minion the minion
+     * @param pillar pillar data
+     * @param suffix file name suffix
+     */
     public void generatePillar(MinionServer minion, SaltPillar pillar, String sufix) {
         try {
             Files.createDirectories(pillarDataPath);
