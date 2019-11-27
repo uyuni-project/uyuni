@@ -1,7 +1,7 @@
 # Copyright (c) 2018-2019 SUSE LLC
 # Licensed under the terms of the MIT license.
 
-Feature: Action chain on salt minions
+Feature: Action chains on Salt minions
 
   Scenario: Pre-requisite: downgrade repositories to lower version on Salt minion
     Given I am authorized as "admin" with password "admin"
@@ -11,7 +11,6 @@ Feature: Action chain on salt minions
     And I run "zypper -n in milkyway-dummy" on "sle-minion" without error control
     And I run "zypper -n in --oldpackage andromeda-dummy-1.0" on "sle-minion"
     And I run "zypper -n ref" on "sle-minion"
-    And I run "echo '/dev/vda1 / ext4 defaults 0 0' > /etc/fstab" on "sle-minion"
 
   Scenario: Pre-requisite: refresh package list and check installed packages after downgrade on SLE minion
     When I refresh packages list via spacecmd on "sle-minion"
@@ -238,18 +237,20 @@ Feature: Action chain on salt minions
     Then "andromeda-dummy" should be installed on "sle-client"
     And "andromeda-dummy" should be installed on "sle-minion"
 
-  Scenario: Cleanup: roll back action chain effects on Salt minion
-    Given I am on the Systems overview page of this "sle-minion"
+  Scenario: Downgrade again repositories to lower version on Salt minion
     When I run "rm /tmp/action_chain_done" on "sle-minion" without error control
     And I run "zypper -n rm andromeda-dummy" on "sle-minion" without error control
     And I run "zypper -n rm virgo-dummy" on "sle-minion" without error control
     And I run "zypper -n in milkyway-dummy" on "sle-minion" without error control
     And I run "zypper -n in --oldpackage andromeda-dummy-1.0" on "sle-minion"
-    And I wait until all events in history are completed
-    When I follow "Software" in the content area
-    And I follow "List / Remove" in the content area
-    And I enter "andromeda-dummy" in the css "input[placeholder='Filter by Package Name: ']"
-    And I click on the css "button.spacewalk-button-filter" until page does contain "andromeda-dummy-1.0" text
+
+  Scenario: Refresh package list and check installed packages after second downgrade on SLE minion
+    When I refresh packages list via spacecmd on "sle-minion"
+    And I wait until refresh package list on "sle-minion" is finished
+    Then spacecmd should show packages "milkyway-dummy andromeda-dummy-1.0" installed on "sle-minion"
+
+  Scenario: Ensure again the errata cache is computed before testing on Salt minion
+    Given I am on the Systems overview page of this "sle-minion"
     When I follow the left menu "Admin > Task Schedules"
     And I follow "errata-cache-default"
     And I follow "errata-cache-bunch"
