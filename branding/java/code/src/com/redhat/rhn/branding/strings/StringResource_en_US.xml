@@ -2914,6 +2914,12 @@ You may grant provisioning entitlements _here_.
             <context context-type="sourcefile">/rhn/channels/manage/Delete.do</context>
       </context-group>
       </trans-unit>
+      <trans-unit id="message.channel.disable.delete.contentlifecycle.environment.in.use">
+        <source>This channel cannot be deleted. It is currently used in the Content Lifecycle Project '{0}' in the Environment '{1}'</source>
+        <context-group name="ctx">
+            <context context-type="sourcefile">/rhn/channels/manage/Delete.do</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="filedetails.jsp.note.macrosalt">
         <source>&lt;strong&gt;Note:&lt;/strong&gt; Macro delimiters will be ignored when deploying to systems managed via Salt.</source>
       </trans-unit>
