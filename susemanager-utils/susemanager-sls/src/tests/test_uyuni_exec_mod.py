@@ -99,3 +99,17 @@ class TestRPCClient:
         assert not self.rpc_client.save_session.called
         assert self.rpc_client.token is not None
         assert self.rpc_client.token.startswith("sunspot")
+
+    def test_call_rpc(self):
+        """
+        Call any XML-RPC method.
+
+        :return:
+        """
+        self.rpc_client.token = "The Borg"
+        out = self.rpc_client("heavymetal.playLoud", self.rpc_client.get_token())
+        mo = getattr(self.rpc_client.conn, "heavymetal.playLoud")
+
+        assert out is not None
+        assert mo.called
+        assert mo.call_args == [("The Borg",)]
