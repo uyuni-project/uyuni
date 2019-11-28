@@ -70,3 +70,17 @@ class TestRPCClient:
             assert len(mo.mock_calls) == 4
             assert mo.mock_calls[2][1][0] == b"28000 bps connection"
 
+    def test_get_token(self):
+        """
+        Get XML-RPC token from the Uyuni.
+
+        :return: string
+        """
+        self.rpc_client.conn.auth.login = MagicMock(return_value="improperly oriented keyboard")
+        self.rpc_client.token = None
+        self.rpc_client.save_session = MagicMock()
+        self.rpc_client.get_token()
+
+        assert self.rpc_client.save_session.called
+        assert self.rpc_client.token is not None
+        assert self.rpc_client.token.startswith("improperly")
