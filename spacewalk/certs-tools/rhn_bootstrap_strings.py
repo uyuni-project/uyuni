@@ -200,7 +200,10 @@ if [ $USING_SSL -eq 0 ] ; then
 fi
 
 INSTALLER=up2date
-if [ -x /usr/bin/zypper ] ; then
+
+if [ -x /usr/bin/dnf ] ; then
+    INSTALLER=yum
+elif [ -x /usr/bin/zypper ] ; then
     INSTALLER=zypper
 elif [ -x /usr/bin/yum ] ; then
     INSTALLER=yum
