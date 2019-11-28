@@ -6,8 +6,9 @@ Unit tests for modules/uyuni_users.py execution module
 import sys
 sys.path.append("../_modules")
 import uyuni_users
-from uyuni_users import RPCClient
+from uyuni_users import RPCClient, UyuniUsersException
 from unittest.mock import patch, MagicMock, mock_open
+import pytest
 
 
 class TestRPCClient:
@@ -113,3 +114,23 @@ class TestRPCClient:
         assert out is not None
         assert mo.called
         assert mo.call_args == [("The Borg",)]
+
+    def test_call_rpc_crash_handle(self):
+        """
+        Handle XML-RPC method crash.
+
+        :return:
+        """
+        self.rpc_client.token = "The Borg"
+        setattr(self.rpc_client.conn, "heavymetal.playLoud",
+                MagicMock(side_effect=Exception("Chewing gum on /dev/sd3c")))
+
+        with patch("uyuni_users.log") as logger:
+            with pytest.raises(UyuniUsersException):
+                out = self.rpc_client("heavymetal.playLoud", self.rpc_client.get_token())
+                mo = getattr(self.rpc_client.conn, "heavymetal.playLoud")
+
+                assert out is not None
+                assert mo.called
+                assert mo.call_args == [("The Borg",)]
+            assert logger.error.call_args[0] == ('Unable to call RPC function: %s', 'Chewing gum on /dev/sd3c')
