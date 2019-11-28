@@ -6,7 +6,7 @@ Unit tests for modules/uyuni_users.py execution module
 import sys
 sys.path.append("../_modules")
 import uyuni_users
-from uyuni_users import RPCClient, UyuniUsersException
+from uyuni_users import RPCClient, UyuniUsersException, UyuniRemoteObject
 from unittest.mock import patch, MagicMock, mock_open
 import pytest
 
@@ -134,3 +134,20 @@ class TestRPCClient:
                 assert mo.called
                 assert mo.call_args == [("The Borg",)]
             assert logger.error.call_args[0] == ('Unable to call RPC function: %s', 'Chewing gum on /dev/sd3c')
+
+
+class TestUyuniRemoteObject:
+    """
+    Test UyuniRemoteObject base class.
+    """
+
+    @patch("uyuni_users.RPCClient", MagicMock())
+    def test_get_proto_return(self):
+        """
+        Get protocol return.
+        """
+        uro = UyuniRemoteObject()
+        err = Exception("Suboptimal routing experience")
+
+        assert uro.get_proto_return() == {}
+        assert uro.get_proto_return(exc=err) == {"error": str(err)}
