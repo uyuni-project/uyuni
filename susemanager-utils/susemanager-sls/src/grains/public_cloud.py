@@ -54,9 +54,21 @@ def __virtual__():
         return False
 
     def _do_api_request(data):
-        return {
-            data[0]: http.query(data[1], status=True, header_dict=data[2], raise_error=False)
+        opts = {
+            'http_connect_timeout': 0.1,
+            'http_request_timeout': 0.1,
         }
+        try:
+            ret = {
+                data[0]: http.query(data[1],
+                                    status=True,
+                                    header_dict=data[2],
+                                    raise_error=False,
+                                    opts=opts)
+            }
+        except:
+            ret = { data[0]: dict() }
+        return ret
 
     api_check_dict = [
         ('amazon', os.path.join(HOST, AMAZON_URL_PATH), None),
@@ -80,13 +92,13 @@ def __virtual__():
     for i in results:
         api_ret.update(i)
 
-    if api_ret['amazon'].get('status') == 200 and "instance-id" in api_ret['amazon']['body']:
+    if api_ret['amazon'].get('status', 0) == 200 and "instance-id" in api_ret['amazon']['body']:
         INSTANCE_ID = http.query(os.path.join(HOST, AMAZON_URL_PATH, 'instance-id'), raise_error=False)['body']
         return True
-    elif api_ret['azure'].get('status') == 200 and "vmId" in api_ret['azure']['body']:
+    elif api_ret['azure'].get('status', 0) == 200 and "vmId" in api_ret['azure']['body']:
         INSTANCE_ID = http.query(os.path.join(HOST, AZURE_URL_PATH, 'vmId') + AZURE_API_ARGS, header_dict={"Metadata":"true"}, raise_error=False)['body']
         return True
-    elif api_ret['google'].get('status') == 200 and "id" in api_ret['google']['body']:
+    elif api_ret['google'].get('status', 0) == 200 and "id" in api_ret['google']['body']:
         INSTANCE_ID = http.query(os.path.join(HOST, GOOGLE_URL_PATH, 'id'), header_dict={"Metadata-Flavor": "Google"}, raise_error=False)['body']
         return True
 
