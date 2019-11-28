@@ -279,6 +279,8 @@ public class PackagesHandler extends BaseHandler {
      *           #item("suggests")
      *           #item("supplements")
      *           #item("enhances")
+     *           #item("predepends")
+     *           #item("breaks")
      *         #options_end()
      *       #prop("string", "dependency_modifier")
      *     #struct_end()
@@ -466,6 +468,12 @@ public class PackagesHandler extends BaseHandler {
         }
         else if (type.equals("enhances")) {
             return PackageManager.packageEnhances(pkg.getId());
+        }
+        else if ("predepends".equals(type)) {
+            return PackageManager.packagePreDepends(pkg.getId());
+        }
+        else if ("breaks".equals(type)) {
+            return PackageManager.packageBreaks(pkg.getId());
         }
         return null;
     }
