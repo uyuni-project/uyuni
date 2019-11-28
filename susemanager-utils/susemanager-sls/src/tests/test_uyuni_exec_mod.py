@@ -27,6 +27,7 @@ class TestRPCClient:
         :return:
         """
         self.rpc_client = RPCClient(url="https://somewhere", user="user", password="password")
+        self.rpc_client.conn = MagicMock()
 
     def teardown_method(self, method):
         """
@@ -43,10 +44,13 @@ class TestRPCClient:
 
         :return:
         """
-        with patch.object(uyuni_users, "open", mock_open(read_data="blet")) as mo:
+        with patch.object(uyuni_users, "open", mock_open(read_data=b"disk spinning backwards")) as mo:
             out = self.rpc_client.load_session()
-            print(">>>>", out)
-            print("....", mo.mock_calls)
+            assert mo.called
+            assert mo.call_count == 1
+            assert mo.call_args == [('/var/cache/salt/minion/uyuni.rpc.s', 'rb')]
+            assert out is not None
+            assert out.startswith("disk")
 
     def test_session_save(self):
         """
@@ -54,8 +58,15 @@ class TestRPCClient:
 
         :return:
         """
+        # Method "save_session" is called on the auth automatically and is not meant to be directly accessed.
+        # For this reason it is shifted away during testing and a Mock is called instead
+        self.rpc_client.conn.auth.login = MagicMock(return_value="28000 bps connection")
+        self.rpc_client._save_session = self.rpc_client.save_session
+        self.rpc_client.save_session = MagicMock()
+
         with patch.object(uyuni_users, "open", mock_open()) as mo:
-            out = self.rpc_client.save_session()
-            print(">>>>", out)
-            print("....", mo.mock_calls)
+            out = self.rpc_client._save_session()
+            assert out is True
+            assert len(mo.mock_calls) == 4
+            assert mo.mock_calls[2][1][0] == b"28000 bps connection"
 
