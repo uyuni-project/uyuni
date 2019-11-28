@@ -40,6 +40,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -141,6 +142,10 @@ public class PackageDetailsAction extends RhnAction {
 
             request.setAttribute("erratumEmpty", pkg.getPublishedErrata().isEmpty());
             request.setAttribute("erratum", pkg.getPublishedErrata());
+
+            request.setAttribute("extraTags", pkg.getExtraTags()
+                    .entrySet().stream().map(e -> Map.entry(e.getKey().getName(), e.getValue()))
+                    .collect(Collectors.toList()));
 
             return mapping.findForward(RhnHelper.DEFAULT_FORWARD);
         }

@@ -56,7 +56,26 @@ public class PackageFactory extends HibernateFactory {
     public static final PackageKeyType PACKAGE_KEY_TYPE_GPG = lookupKeyTypeByLabel("gpg");
 
     public static final String ARCH_TYPE_RPM = "rpm";
+    public static final String ARCH_TYPE_DEB = "deb";
     public static final String ARCH_TYPE_TAR = "tar";
+
+    private static final Map<String, Set<String>> PACKAGE_CAPABILITY_MAP;
+    static {
+        Map<String, Set<String>> map = new HashMap<>();
+        Set<String> rpmCaps = new HashSet<String>();
+        rpmCaps.add("dependencies");
+        rpmCaps.add("change_log");
+        rpmCaps.add("file_list");
+        rpmCaps.add("errata");
+        rpmCaps.add("remove");
+        rpmCaps.add("rpm");
+        map.put(PackageFactory.ARCH_TYPE_RPM, rpmCaps);
+        Set<String> debCaps = new HashSet<String>();
+        debCaps.add("dependencies");
+        debCaps.add("deb");
+        map.put(PackageFactory.ARCH_TYPE_DEB, debCaps);
+        PACKAGE_CAPABILITY_MAP = Collections.unmodifiableMap(map);
+    }
 
     private PackageFactory() {
         super();
@@ -524,17 +543,7 @@ public class PackageFactory extends HibernateFactory {
      * @return the map of {@literal arch label -> set of capabilities}
      */
     public static Map<String, Set<String>> getPackageCapabilityMap() {
-        Map<String, Set<String>> map = new HashMap<String, Set<String>>();
-
-        Set<String> rpmCaps = new HashSet<String>();
-        rpmCaps.add("dependencies");
-        rpmCaps.add("change_log");
-        rpmCaps.add("file_list");
-        rpmCaps.add("errata");
-        rpmCaps.add("remove");
-        rpmCaps.add("rpm");
-        map.put(PackageFactory.ARCH_TYPE_RPM, rpmCaps);
-        return map;
+        return PACKAGE_CAPABILITY_MAP;
     }
 
     /**

@@ -121,5 +121,33 @@
 </c:if>
 </p>
 
+<h2>
+<bean:message key="channel.jsp.dependencies.predepends.title"/>
+</h2>
+<p>
+<c:if test="${predepends != null}">
+   <c:forEach items="${predepends}" var="line">
+                ${line}<br />
+   </c:forEach>
+</c:if>
+<c:if test="${predepends == null}">
+   &#160;
+</c:if>
+</p>
+
+<h2>
+<bean:message key="channel.jsp.dependencies.breaks.title"/>
+</h2>
+<p>
+<c:if test="${breaks != null}">
+   <c:forEach items="${breaks}" var="line">
+                ${line}<br />
+   </c:forEach>
+</c:if>
+<c:if test="${breaks == null}">
+   &#160;
+</c:if>
+</p>
+
 </body>
 </html:html>

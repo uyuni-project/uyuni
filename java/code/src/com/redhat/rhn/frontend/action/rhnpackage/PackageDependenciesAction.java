@@ -105,6 +105,10 @@ public class PackageDependenciesAction extends RhnAction {
                 PackageManager.packageSupplements(pid)));
         request.setAttribute("enhances", createDependenciesStrings(
                 PackageManager.packageEnhances(pid)));
+        request.setAttribute("predepends", createDependenciesStrings(
+                PackageManager.packagePreDepends(pid)));
+        request.setAttribute("breaks", createDependenciesStrings(
+                PackageManager.packageBreaks(pid)));
 
         request.setAttribute("pid", pid);
         request.setAttribute("package_name", pkg.getFilename());
