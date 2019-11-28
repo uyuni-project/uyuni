@@ -57,40 +57,28 @@ public class DeleteChannelAction extends RhnAction {
 
     /** {@inheritDoc} */
     @Override
-    public ActionForward execute(ActionMapping actionMapping,
-            ActionForm actionForm,
-            HttpServletRequest request,
-            HttpServletResponse response)
-                    throws Exception {
+    public ActionForward execute(ActionMapping actionMapping, ActionForm actionForm, HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
 
         RequestContext context = new RequestContext(request);
         User user = context.getCurrentUser();
-
-        String sChannelId = request.getParameter("cid");
-        long channelId = Long.parseLong(sChannelId);
+        long channelId = Long.parseLong(request.getParameter("cid"));
+        Channel channel = ChannelManager.lookupByIdAndUser(channelId, user);
 
         // Stuff the channel object into the request so the page can use its values
-        Channel channel = ChannelManager.lookupByIdAndUser(channelId, user);
         request.setAttribute("channel", channel);
-
-        String channelLabel = channel.getLabel();
-
         // The channel doesn't carry its subscribed system count, so add this separately
-        int subscribedSystemsCount =
-                SystemManager.countSystemsSubscribedToChannel(channelId, user);
+        int subscribedSystemsCount = SystemManager.countSystemsSubscribedToChannel(channelId, user);
         request.setAttribute("subscribedSystemsCount", subscribedSystemsCount);
 
-        // Load the number of systems subscribed through a trust relationship to
-        // the channel
-        int trustedSystemsCount =
-                SystemManager.countSubscribedToChannelWithoutOrg(channel.getOrg().getId(),
-                        channelId);
-        request.setAttribute("trustedSystemsCount", trustedSystemsCount);
+        // Load the number of systems subscribed through a trust relationship to the channel
+        request.setAttribute("trustedSystemsCount",
+                SystemManager.countSubscribedToChannelWithoutOrg(channel.getOrg().getId(), channelId));
 
         // Is this channel in use in any Content Lifecycle Project Environment?
         // If so, deletion is disabled to prevent breaking the environment content build
         Optional<SoftwareEnvironmentTarget> environmentInUse =
-                ContentProjectFactory.lookupEnvironmentTargetByChannelLabel(channelLabel, user);
+                ContentProjectFactory.lookupEnvironmentTargetByChannelLabel(channel.getLabel(), user);
 
         if (environmentInUse.isPresent()) {
             createErrorMessageWithMultipleArgs(request,
@@ -105,15 +93,12 @@ public class DeleteChannelAction extends RhnAction {
         }
 
         if (context.isSubmitted()) {
-
-            boolean override = request.getParameter("unsubscribeSystems") != null;
-
-            if (override || subscribedSystemsCount == 0) {
+            if ((request.getParameter("unsubscribeSystems") != null) || subscribedSystemsCount == 0) {
                 DataResult dr;
                 try {
                     dr = PackageManager.listCustomPackageForChannel(channelId, user.getOrg().getId(), false);
                     List<MinionServer> minions = ServerFactory.listMinionsByChannel(channel.getId());
-                    ChannelManager.deleteChannel(user, channelLabel);
+                    ChannelManager.deleteChannel(user, channel.getLabel());
                     Optional<Long> actionId = ChannelManager.applyChannelState(user, minions);
                     if (actionId.isPresent()) {
                         createSuccessMessage(request, "message.channel.deleted.state.scheduled", actionId.toString());
@@ -131,13 +116,11 @@ public class DeleteChannelAction extends RhnAction {
 
                 createSuccessMessage(request, "message.channeldeleted", channel.getName());
                 if (dr.size() > 0) {
-                    prefillRhnSetWithElements(RhnSetDecl.DELETABLE_PACKAGE_LIST.get(user),
-                            dr.iterator());
+                    prefillRhnSetWithElements(RhnSetDecl.DELETABLE_PACKAGE_LIST.get(user), dr.iterator());
                     Map<String, Object> params = new HashMap<String, Object>();
                     params.put("selected_channel", "all_managed_packages");
                     params.put("forwarded", "true");
-                    return getStrutsDelegate().forwardParams(
-                            actionMapping.findForward("delete"), params);
+                    return getStrutsDelegate().forwardParams(actionMapping.findForward("delete"), params);
                 }
                 return actionMapping.findForward("success");
             }
@@ -145,11 +128,9 @@ public class DeleteChannelAction extends RhnAction {
             return actionMapping.findForward(RhnHelper.DEFAULT_FORWARD);
         }
         else if (channel.containsDistributions()) {
-            createErrorMessage(request,
-                    "message.channel.cannot-be-deleted.has-distros", null);
+            createErrorMessage(request, "message.channel.cannot-be-deleted.has-distros", null);
             request.setAttribute(DISABLE_DELETE, Boolean.TRUE);
         }
-
         return actionMapping.findForward(RhnHelper.DEFAULT_FORWARD);
     }
 
