@@ -40,7 +40,7 @@ Feature: Build image with authenticated registry
     When I follow the left menu "Images > Profiles"
     And I check the row with the "portus_profile" text
     And I click on "Delete"
-    And I click on the css "button.btn-danger"
+    And I click on the red confirmation button
     And I should see a "Image profile has been deleted." text
 
   Scenario: Cleanup: remove authenticated image store
@@ -48,7 +48,7 @@ Feature: Build image with authenticated registry
     When I follow the left menu "Images > Stores"
     And I check the row with the "portus" text
     And I click on "Delete"
-    And I click on the css "button.btn-danger"
+    And I click on the red confirmation button
     And I should see a "Image store has been deleted." text
 
   Scenario: Cleanup: delete portus image

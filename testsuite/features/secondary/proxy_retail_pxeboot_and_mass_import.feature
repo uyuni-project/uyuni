@@ -272,8 +272,8 @@ Feature: PXE boot a Retail terminal
     Given I am on the Systems overview page of this "pxeboot-minion"
     And I follow "Software" in the content area
     And I follow "List / Remove"
-    And I enter "virgo" in the css "input[placeholder='Filter by Package Name: ']"
-    And I click on the css "button.spacewalk-button-filter"
+    And I enter "virgo" as the filtered package name
+    And I click on the filter button
     And I check "virgo-dummy-2.0-1.1" in the list
     And I click on "Remove Packages"
     And I click on "Confirm"
@@ -461,8 +461,8 @@ Feature: PXE boot a Retail terminal
     And I follow "pxeboot" terminal
     And I follow "Software" in the content area
     And I follow "List / Remove"
-    And I enter "virgo" in the css "input[placeholder='Filter by Package Name: ']"
-    And I click on the css "button.spacewalk-button-filter"
+    And I enter "virgo" as the filtered package name
+    And I click on the filter button
     And I check "virgo-dummy-2.0-1.1" in the list
     And I click on "Remove Packages"
     And I click on "Confirm"

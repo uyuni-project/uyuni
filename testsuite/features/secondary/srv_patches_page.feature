@@ -79,8 +79,8 @@ Feature: Patches page
     Given I am on the patches page
     When I follow the left menu "Patches > Patches > All"
     And I follow "Bugfix Patches" in the content area
-    And I enter "Test Patch" in the css "input[placeholder='Filter by Synopsis: ']"
-    And I click on the css "button.spacewalk-button-filter"
+    And I enter "Test Patch" as the filtered synopsis
+    And I click on the filter button
     And I follow "Test Advisory"
     Then I should see a "Test Patch" text
     And I should see a "test@test.org" text

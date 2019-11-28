@@ -26,8 +26,8 @@ Feature: Salt SSH action chain
     Given I am on the Systems overview page of this "ssh-minion"
     When I follow "Software" in the content area
     And I follow "List / Remove" in the content area
-    And I enter "andromeda-dummy" in the css "input[placeholder='Filter by Package Name: ']"
-    And I click on the css "button.spacewalk-button-filter" until page does contain "andromeda-dummy-1.0" text
+    And I enter "andromeda-dummy" as the filtered package name
+    And I click on the filter button until page does contain "andromeda-dummy-1.0" text
 
 @ssh_minion
   Scenario: Pre-requisite: ensure the errata cache is computed before testing on SSH minion
@@ -61,8 +61,8 @@ Feature: Salt SSH action chain
     Given I am on the Systems overview page of this "ssh-minion"
     When I follow "Software" in the content area
     And I follow "List / Remove" in the content area
-    And I enter "milkyway-dummy" in the css "input[placeholder='Filter by Package Name: ']"
-    And I click on the css "button.spacewalk-button-filter"
+    And I enter "milkyway-dummy" as the filtered package name
+    And I click on the filter button
     And I check "milkyway-dummy" in the list
     And I click on "Remove Packages"
     And I check radio button "schedule-by-action-chain"
@@ -224,8 +224,8 @@ Feature: Salt SSH action chain
     And I wait until I do not see "Package List Refresh scheduled by admin" text, refreshing the page
     And I follow "Software" in the content area
     And I follow "List / Remove" in the content area
-    And I enter "andromeda-dummy" in the css "input[placeholder='Filter by Package Name: ']"
-    And I click on the css "button.spacewalk-button-filter" until page does contain "andromeda-dummy-1.0" text
+    And I enter "andromeda-dummy" as the filtered package name
+    And I click on the filter button until page does contain "andromeda-dummy-1.0" text
     When I follow the left menu "Admin > Task Schedules"
     And I follow "errata-cache-default"
     And I follow "errata-cache-bunch"

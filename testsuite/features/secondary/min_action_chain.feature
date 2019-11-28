@@ -21,8 +21,8 @@ Feature: Action chains on Salt minions
     Given I am on the Systems overview page of this "sle-minion"
     When I follow "Software" in the content area
     And I follow "List / Remove" in the content area
-    And I enter "andromeda-dummy" in the css "input[placeholder='Filter by Package Name: ']"
-    And I click on the css "button.spacewalk-button-filter" until page does contain "andromeda-dummy-1.0" text
+    And I enter "andromeda-dummy" as the filtered package name
+    And I click on the filter button until page does contain "andromeda-dummy-1.0" text
 
   Scenario: Pre-requisite: ensure the errata cache is computed before testing on Salt minion
     Given I am authorized as "admin" with password "admin"
@@ -52,8 +52,8 @@ Feature: Action chains on Salt minions
     Given I am on the Systems overview page of this "sle-minion"
     When I follow "Software" in the content area
     And I follow "List / Remove" in the content area
-    And I enter "milkyway-dummy" in the css "input[placeholder='Filter by Package Name: ']"
-    And I click on the css "button.spacewalk-button-filter"
+    And I enter "milkyway-dummy" as the filtered package name
+    And I click on the filter button
     And I check "milkyway-dummy" in the list
     And I click on "Remove Packages"
     And I check radio button "schedule-by-action-chain"
@@ -197,8 +197,8 @@ Feature: Action chains on Salt minions
     And I am on System Set Manager Overview
     And I follow "Install" in the content area
     And I follow "Test-Channel-x86_64" in the content area
-    And I enter "andromeda-dummy" in the css "input[placeholder='Filter by Package Name: ']"
-    And I click on the css "button.spacewalk-button-filter"
+    And I enter "andromeda-dummy" as the filtered package name
+    And I click on the filter button
     And I check "andromeda-dummy" in the list
     And I click on "Install Selected Packages"
     Then I should see "sle-minion" hostname

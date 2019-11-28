@@ -63,8 +63,8 @@ Feature: Action chain on traditional clients
     Given I am on the Systems overview page of this "sle-client"
     When I follow "Software" in the content area
     And I follow "List / Remove" in the content area
-    And I enter "milkyway-dummy" in the css "input[placeholder='Filter by Package Name: ']"
-    And I click on the css "button.spacewalk-button-filter"
+    And I enter "milkyway-dummy" as the filtered package name
+    And I click on the filter button
     And I check "milkyway-dummy" in the list
     And I click on "Remove Packages"
     And I check radio button "schedule-by-action-chain"
