@@ -1,3 +1,4 @@
+- Prevent ISE and warn disable deletion of a Content Lifecycle channel in use (bsc#1158012)
 - Prevent Package List Refresh actions to stay pending forever (bsc#1157034)
 
 -------------------------------------------------------------------
