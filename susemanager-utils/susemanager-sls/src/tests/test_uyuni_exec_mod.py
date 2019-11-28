@@ -84,3 +84,18 @@ class TestRPCClient:
         assert self.rpc_client.save_session.called
         assert self.rpc_client.token is not None
         assert self.rpc_client.token.startswith("improperly")
+
+    def test_get_token_recall(self):
+        """
+        Get XML-RPC token from the Uyuni, second call should be skipped.
+
+        :return: string
+        """
+        self.rpc_client.conn.auth.login = MagicMock(return_value="recursive recursion error")
+        self.rpc_client.token = "sunspot activity"
+        self.rpc_client.save_session = MagicMock()
+        self.rpc_client.get_token()
+
+        assert not self.rpc_client.save_session.called
+        assert self.rpc_client.token is not None
+        assert self.rpc_client.token.startswith("sunspot")
