@@ -83,11 +83,8 @@ public class DeleteChannelAction extends RhnAction {
         if (environmentInUse.isPresent()) {
             createErrorMessageWithMultipleArgs(request,
                     "message.channel.disable.delete.contentlifecycle.environment.in.use",
-                    new String[]{
-                            environmentInUse.get().getContentEnvironment().getContentProject().getName(),
-                            environmentInUse.get().getContentEnvironment().getName()
-                    }
-            );
+                    environmentInUse.get().getContentEnvironment().getContentProject().getName(),
+                    environmentInUse.get().getContentEnvironment().getName());
             request.setAttribute(DISABLE_DELETE, Boolean.TRUE);
             return actionMapping.findForward(RhnHelper.DEFAULT_FORWARD);
         }
