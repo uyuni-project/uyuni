@@ -1,3 +1,6 @@
+- fix bootstrap script generator to work with Expanded Support 8
+  product (bsc#1158002)
+
 -------------------------------------------------------------------
 Mon Nov 25 10:08:20 CET 2019 - jgonzalez@suse.com
 
