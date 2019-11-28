@@ -400,8 +400,8 @@ if [ "$INSTALLER" == yum ]; then
     # try update main packages for registration from any repo which is available
     get_rhnlib_pkgs
     yum -y upgrade {PKG_NAME_UPDATE_YUM} $RHNLIB_PKG ||:
-fi
-if [ "$INSTALLER" == zypper ]; then
+
+elif [ "$INSTALLER" == zypper ]; then
   function getZ_CLIENT_CODE_BASE() {{
     local BASE=""
     local VERSION=""
@@ -540,9 +540,8 @@ if [ "$INSTALLER" == zypper ]; then
   get_rhnlib_pkgs
   # try update main packages for registration from any repo which is available
   zypper --non-interactive up {PKG_NAME_UPDATE} $RHNLIB_PKG ||:
-fi
 
-if [ "$INSTALLER" == apt ]; then
+elif [ "$INSTALLER" == apt ]; then
     function check_deb_pkg_installed {{
         dpkg-query -W -f='${{Status}}' $1 2>/dev/null | grep -q "ok installed"
     }}
