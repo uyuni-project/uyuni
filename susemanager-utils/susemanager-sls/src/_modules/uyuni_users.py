@@ -132,14 +132,15 @@ class RPCClient:
         self.get_token()
         if self.token is not None:
             try:
+                log.debug("Calling RPC method %s", method)
                 return getattr(self.conn, method)(*args)
             except Exception as exc:
-                log.debug("Fall back to the second try due to %s", exc)
+                log.debug("Fall back to the second try due to %s", str(exc))
                 self.get_token(refresh=True)
                 try:
                     return getattr(self.conn, method)(*((self.get_token(),) + args[1:]))
                 except Exception as exc:
-                    log.error("Unable to call RPC function: %s", exc)
+                    log.error("Unable to call RPC function: %s", str(exc))
                     raise UyuniUsersException(exc)
 
         raise UyuniUsersException("XML-RPC backend authentication error.")
