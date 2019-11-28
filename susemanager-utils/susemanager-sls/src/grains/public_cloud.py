@@ -73,6 +73,8 @@ def __virtual__():
        pool.close()
        pool.join()
     except Exception as exc:
+       import traceback
+       log.error(traceback.format_exc())
        log.error("Exception while creating a ThreadPool for accessing metadata API: %s", exc)
 
     for i in results:
