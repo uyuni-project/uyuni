@@ -364,3 +364,16 @@ class TestUyuniOrg:
             _, msg = self.orgs.delete(name="B-Org")
 
         assert logger.debug.call_args_list[0][0] == (msg,)
+
+    def test_delete_not_found(self):
+        """
+        Test an attempt to delete org, but it was not found.
+
+        :return:
+        """
+        self.orgs.get_org_by_name = MagicMock(return_value={})
+        with patch("uyuni_users.log", MagicMock()) as logger:
+            _, msg = self.orgs.delete(name="B-Org")
+
+        assert not logger.debug.called
+        assert msg == 'Organisation "B-Org" was not found'
