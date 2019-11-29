@@ -214,3 +214,19 @@ class TestUyuniUser:
         assert logger.error.call_args_list[0][0] == ("Email should be specified when create user",)
         assert not self.uyuni_user.client.called
 
+    def test_delete(self):
+        """
+        Test user delete.
+
+        :return:
+        """
+        self.uyuni_user.client = MagicMock(return_value=True)
+        self.uyuni_user.client.get_token = MagicMock(return_value="footoken")
+
+        with patch("uyuni_users.log", MagicMock()) as logger:
+            out = self.uyuni_user.delete(name="Borg")
+
+        assert out
+        assert not logger.error.called
+        assert self.uyuni_user.client.call_args_list[0][0] == ("user.delete", "footoken", "Borg",)
+
