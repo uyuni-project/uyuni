@@ -352,3 +352,15 @@ class TestUyuniOrg:
         assert logger.debug.call_args_list[0][0] == ("Creating organisation %s", "B-Org")
         assert out == {}
         assert msg == "Unhandled exception occurred while creating new organisation: it is stuck in the web"
+
+    def test_delete(self):
+        """
+        Test delete org.
+
+        :return:
+        """
+        self.orgs.get_org_by_name = MagicMock(return_value={"id": 777})
+        with patch("uyuni_users.log", MagicMock()) as logger:
+            _, msg = self.orgs.delete(name="B-Org")
+
+        assert logger.debug.call_args_list[0][0] == (msg,)
