@@ -21,8 +21,8 @@ Feature: Salt package states
     Given I am on the Systems overview page of this "sle-minion"
     When I follow "Software" in the content area
     And I follow "List / Remove" in the content area
-    And I enter "andromeda-dummy" in the css "input[placeholder='Filter by Package Name: ']"
-    And I click on the css "button.spacewalk-button-filter" until page does contain "andromeda-dummy-1.0" text
+    And I enter "andromeda-dummy" as the filtered package name
+    And I click on the filter button until page does contain "andromeda-dummy-1.0" text
     When I follow the left menu "Admin > Task Schedules"
     And I follow "errata-cache-default"
     And I follow "errata-cache-bunch"

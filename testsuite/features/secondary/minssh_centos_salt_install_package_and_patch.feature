@@ -34,8 +34,8 @@ Feature: Install a patch on the CentOS SSH minion via Salt through the UI
     Given I am on the Systems overview page of this "ceos-ssh-minion"
     When I follow "Software" in the content area
     And I follow "List / Remove" in the content area
-    And I enter "virgo-dummy" in the css "input[placeholder='Filter by Package Name: ']"
-    And I click on the css "button.spacewalk-button-filter" until page does contain "virgo-dummy" text
+    And I enter "virgo-dummy" as the filtered package name
+    And I click on the filter button until page does contain "virgo-dummy" text
     When I follow the left menu "Admin > Task Schedules"
     And I follow "errata-cache-default"
     And I follow "errata-cache-bunch"
@@ -46,7 +46,7 @@ Feature: Install a patch on the CentOS SSH minion via Salt through the UI
 @centos_minion
   Scenario: Install a patch on the Centos SSH minion
     Given I am on the Systems overview page of this "ceos-ssh-minion"
-    And I follow "Software" in the content area
+    When I follow "Software" in the content area
     And I follow "Patches" in the content area
     When I check "virgo-dummy-3456" in the list
     And I click on "Apply Patches"
@@ -58,7 +58,7 @@ Feature: Install a patch on the CentOS SSH minion via Salt through the UI
 @centos_minion
   Scenario: Install a package on the Centos SSH minion
     Given I am on the Systems overview page of this "ceos-ssh-minion"
-    And I follow "Software" in the content area
+    When I follow "Software" in the content area
     And I follow "Install"
     And I check "andromeda-dummy" in the list
     And I click on "Install Selected Packages"
@@ -69,13 +69,13 @@ Feature: Install a patch on the CentOS SSH minion via Salt through the UI
 @centos_minion
   Scenario: Cleanup: remove virgo-dummy and andromeda-dummy packages from Centos SSH minion
     Given I am on the Systems overview page of this "ceos-ssh-minion"
-    And I follow "Software" in the content area
+    When I follow "Software" in the content area
     And I follow "List / Remove"
-    And I enter "andromeda" in the css "input[placeholder='Filter by Package Name: ']"
-    And I click on the css "button.spacewalk-button-filter"
+    And I enter "andromeda" as the filtered package name
+    And I click on the filter button
     And I check "andromeda-dummy" in the list
-    And I enter "virgo-dummy" in the css "input[placeholder='Filter by Package Name: ']"
-    And I click on the css "button.spacewalk-button-filter"
+    And I enter "virgo-dummy" as the filtered package name
+    And I click on the filter button
     And I check "virgo-dummy" in the list
     And I click on "Remove Packages"
     And I click on "Confirm"
