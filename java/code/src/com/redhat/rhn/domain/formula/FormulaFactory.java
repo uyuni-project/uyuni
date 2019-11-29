@@ -14,7 +14,6 @@
  */
 package com.redhat.rhn.domain.formula;
 
-import com.redhat.rhn.common.validator.ValidatorError;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
@@ -61,6 +60,11 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
+
+import com.redhat.rhn.common.validator.ValidatorError;
+import com.redhat.rhn.common.validator.ValidatorException;
+import org.apache.commons.collections.ListUtils;
+
 
 /**
  * Factory class for working with formulas.
@@ -194,10 +198,12 @@ public class FormulaFactory {
         File standaloneDir = new File(METADATA_DIR_STANDALONE_SALT);
         File managerDir = new File(metadataDirManager);
         File customDir = new File(METADATA_DIR_CUSTOM);
+        File diffDir = new File(metadataDirOfficial);
         List<File> files = new LinkedList<>();
         files.addAll(getFormulasFiles(standaloneDir));
         files.addAll(getFormulasFiles(managerDir));
         files.addAll(getFormulasFiles(customDir));
+        files.addAll(getFormulasFiles(diffDir));
 
         List<String> formulasList = new LinkedList<>();
 
@@ -519,6 +525,7 @@ public class FormulaFactory {
      */
     public static synchronized void saveGroupFormulas(Long groupId,
             List<String> selectedFormulas, Org org) throws IOException {
+        isFormulaPresent(selectedFormulas);
         saveFormulaOrder();
         File dataFile = new File(getGroupDataFile());
 
@@ -588,6 +595,24 @@ public class FormulaFactory {
     }
 
     /**
+     * Checks if a formula given is actually present.
+     * @param formulasList the new pending formulas to check
+     * @throws ValidatorException if an IOException occurs while saving the data
+     */
+    public static void isFormulaPresent(List<String> formulasList) throws ValidatorException {
+            // check if the passed formulas are actual formulas.
+            List<String> incorrectFormulas = ListUtils.subtract(formulasList, listFormulaNames());
+
+             if (!incorrectFormulas.isEmpty()) {
+                 throw new ValidatorException("\"" + String.join(", ", incorrectFormulas) + "\"" +
+                         (incorrectFormulas.size() > 1 ? " are" : " is") +
+                         " not found. Please make sure " +
+                         (incorrectFormulas.size() > 1 ? "they are" : "it is") +
+                         " spelled correctly or installed.");
+             }
+       }
+
+    /**
      * Save the selected formulas for a server.
      * This also deletes all saved values of that formula.
      * @param minionId the minion id
@@ -598,6 +623,7 @@ public class FormulaFactory {
     public static synchronized void saveServerFormulas(String minionId,
             List<String> selectedFormulas) throws IOException,
             UnsupportedOperationException {
+        isFormulaPresent(selectedFormulas);
         saveFormulaOrder();
         File dataFile = new File(getServerDataFile());
 
@@ -629,6 +655,8 @@ public class FormulaFactory {
         else {
             serverFormulas.put(minionId, orderedFormulas);
         }
+
+        isFormulaPresent(selectedFormulas);
 
         // Write minion_formulas file
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(dataFile))) {
