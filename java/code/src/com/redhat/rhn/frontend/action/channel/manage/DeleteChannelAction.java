@@ -19,8 +19,6 @@ import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.common.validator.ValidatorException;
 import com.redhat.rhn.domain.Identifiable;
 import com.redhat.rhn.domain.channel.Channel;
-import com.redhat.rhn.domain.contentmgmt.ContentProjectFactory;
-import com.redhat.rhn.domain.contentmgmt.SoftwareEnvironmentTarget;
 import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.domain.rhnset.RhnSetFactory;
 import com.redhat.rhn.domain.server.MinionServer;
@@ -74,20 +72,6 @@ public class DeleteChannelAction extends RhnAction {
         // Load the number of systems subscribed through a trust relationship to the channel
         request.setAttribute("trustedSystemsCount",
                 SystemManager.countSubscribedToChannelWithoutOrg(channel.getOrg().getId(), channelId));
-
-        // Is this channel in use in any Content Lifecycle Project Environment?
-        // If so, deletion is disabled to prevent breaking the environment content build
-        Optional<SoftwareEnvironmentTarget> environmentInUse =
-                ContentProjectFactory.lookupEnvironmentTargetByChannelLabel(channel.getLabel(), user);
-
-        if (environmentInUse.isPresent()) {
-            createErrorMessageWithMultipleArgs(request,
-                    "message.channel.disable.delete.contentlifecycle.environment.in.use",
-                    environmentInUse.get().getContentEnvironment().getContentProject().getName(),
-                    environmentInUse.get().getContentEnvironment().getName());
-            request.setAttribute(DISABLE_DELETE, Boolean.TRUE);
-            return actionMapping.findForward(RhnHelper.DEFAULT_FORWARD);
-        }
 
         if (context.isSubmitted()) {
             if ((request.getParameter("unsubscribeSystems") != null) || subscribedSystemsCount == 0) {
