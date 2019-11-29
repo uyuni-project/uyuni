@@ -250,6 +250,13 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
         setImposteriser(ClassImposteriser.INSTANCE);
         Config.get().setString("server.secret_key", "d8d796b3322d65928511769d180d284d2b15158165eb83083efa02c9024aa6cc");
         FormulaFactory.setDataDir(tmpSaltRoot.resolve("formulas/").toString() + "/");
+
+       Path metadataDirOfficial = Files.createTempDirectory("meta");
+       FormulaFactory.setMetadataDirOfficial(metadataDirOfficial.toString());
+       Path testFormulaDir = metadataDirOfficial.resolve("testFormula");
+       Files.createDirectories(testFormulaDir);
+       Path testFormulaFile = Paths.get(testFormulaDir.toString(), "form.yml");
+       Files.createFile(testFormulaFile);
     }
 
     /**

@@ -178,6 +178,31 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         );
     }
 
+    private void createMetadataFiles() {
+        try {
+            // prometheus-exporter files
+            Path prometheusDir = metadataDirOfficial.resolve("prometheus-exporters");
+            Path prometheusFile = Paths.get(prometheusDir.toString(),  "form.yml");
+            Files.createDirectories(prometheusDir);
+            Files.createFile(prometheusFile);
+            try (InputStream src = this.getClass().getResourceAsStream("prometheus/pillar.example");
+                 OutputStream dst = new FileOutputStream(prometheusDir.resolve("pillar.example").toFile())
+            ) {
+                IOUtils.copy(src, dst);
+            }
+
+            // test-formula files
+            Path testFormulaDir = metadataDirOfficial.resolve("test-formula");
+            Files.createDirectories(testFormulaDir);
+            Path testFormulaFile = Paths.get(testFormulaDir.toString(), "form.yml");
+            Files.createFile(testFormulaFile);
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+            fail(e.getMessage());
+        }
+    }
+
     public void testSnapshotServer() throws Exception {
         User user = UserTestUtils.findNewUser("testUser",
                 "testOrg" + this.getClass().getSimpleName());
@@ -233,7 +258,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
     public void testFormulaDataCleanUp() throws Exception {
         MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
         String minionId = minion.getMinionId();
-
+        FormulaFactory.setMetadataDirOfficial(metadataDirOfficial.toString() + File.separator);
         String formulaName = "test-formula";
         File formulaValues = Paths.get(FormulaFactory.getPillarDir(), minionId + "_" + formulaName + ".json").toFile();
         FormulaFactory.saveServerFormulas(minionId, singletonList(formulaName));

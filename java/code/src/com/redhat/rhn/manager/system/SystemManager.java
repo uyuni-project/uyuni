@@ -2027,7 +2027,6 @@ public class SystemManager extends BaseManager {
             }
         }
     }
-
     /**
      * Returns a DataResult containing the systems subscribed to a particular channel.
      *      but returns a DataResult of SystemOverview objects instead of maps
