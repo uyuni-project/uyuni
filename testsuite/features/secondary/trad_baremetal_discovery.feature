@@ -4,13 +4,13 @@
 Feature: Bare metal discovery
 
   Scenario: Delete the normal traditional client for bare metal feature
-    Given I am on the Systems overview page of this "sle-client"
+    Given I am on the Systems overview page of this "sle_client"
     When I follow "Delete System"
     Then I should see a "Confirm System Profile Deletion" text
     When I click on "Delete Profile"
     Then I should see a "System profile" text
     When I wait until I see "has been deleted" text
-    Then "sle-client" should not be registered
+    Then "sle_client" should not be registered
 
   Scenario: Enable bare metal discovery
     Given I am authorized as "admin" with password "admin"
@@ -24,10 +24,10 @@ Feature: Bare metal discovery
 
   Scenario: Register a client for bare metal discovery
     When I register using "1-spacewalk-bootstrap-activation-key" key
-    Then I should see "sle-client" in spacewalk
+    Then I should see "sle_client" in spacewalk
 
   Scenario: Check registration values of client
-    Given I am on the Systems overview page of this "sle-client"
+    Given I am on the Systems overview page of this "sle_client"
     Then I should see a "System Info" text
     And I should see a "Edit These Properties" link
     And I should not see a "[Management]" text
@@ -51,7 +51,7 @@ Feature: Bare metal discovery
   Scenario: Check unprovisioned system details
     Given I am on the Systems page
     When I follow the left menu "Systems > System List"
-    When I follow this "sle-client" link
+    When I follow this "sle_client" link
     Then I should see a "Details" link in the content area
     And I should not see a "Software" link in the content area
     And I should not see a "Configuration" link in the content area
@@ -68,7 +68,7 @@ Feature: Bare metal discovery
     And I should not see a "Custom Info" link in the content area
 
   Scenario: Check Provisioning page for this client
-    Given I am on the Systems overview page of this "sle-client"
+    Given I am on the Systems overview page of this "sle_client"
     When I follow "Provisioning" in the content area
     Then I should see a "Autoinstallation" link in the content area
     And I should not see a "Snapshots" link in the content area
@@ -78,7 +78,7 @@ Feature: Bare metal discovery
 
   Scenario: Check SSM with bare metal system
     Given I am on the Systems page
-    When I check the "sle-client" client
+    When I check the "sle_client" client
     And I wait for "30" seconds
     Then I am on System Set Manager Overview
   
@@ -99,12 +99,12 @@ Feature: Bare metal discovery
     And I follow "Clear"
 
   Scenario: Cleanup: delete the bare metal system profile
-    Given I am on the Systems overview page of this "sle-client"
+    Given I am on the Systems overview page of this "sle_client"
     When I follow "Delete System"
     Then I should see a "Confirm System Profile Deletion" text
     When I click on "Delete Profile"
     And I wait until I see "has been deleted" text
-    Then "sle-client" should not be registered
+    Then "sle_client" should not be registered
 
   Scenario: Cleanup: disable bare metal discovery
     Given I am authorized as "admin" with password "admin"
@@ -118,7 +118,7 @@ Feature: Bare metal discovery
   
   Scenario: Cleanup: register a traditional client after bare metal tests
     When I register using "1-SUSE-DEV-x86_64" key
-    Then I should see "sle-client" in spacewalk
+    Then I should see "sle_client" in spacewalk
 
   Scenario: Cleanup: remove remaining systems from SSM after bare metal tests
     When I am authorized as "admin" with password "admin"

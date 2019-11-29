@@ -15,7 +15,7 @@ Feature: Listing, adding and removing channels using the spacewalk-channel comma
     Then spacewalk-channel fails with "--add -c test_child_channel -u admin -p admin"
 
   Scenario: Add a valid child channel
-    When I run "spacewalk-channel --add -c test-channel-x86_64-child-channel -u admin -p admin" on "sle-client"
+    When I run "spacewalk-channel --add -c test-channel-x86_64-child-channel -u admin -p admin" on "sle_client"
     And I execute spacewalk-channel and pass "--list"
     Then I should get "test-channel-x86_64-child-channel"
 

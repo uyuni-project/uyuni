@@ -9,24 +9,24 @@ Feature: Be able to bootstrap a Salt host managed via salt-ssh
     And I go to the bootstrapping page
     Then I should see a "Bootstrap Minions" text
     And I check "manageWithSSH"
-    And I enter the hostname of "ssh-minion" as "hostname"
+    And I enter the hostname of "ssh_minion" as "hostname"
     And I enter "linux" as "password"
     And I select the hostname of "proxy" from "proxies"
     And I click on "Bootstrap"
     And I wait until I see "Successfully bootstrapped host!" text
     And I navigate to "rhn/systems/Overview.do" page
-    And I wait until I see the name of "ssh-minion", refreshing the page
-    And I wait until onboarding is completed for "ssh-minion"
+    And I wait until I see the name of "ssh_minion", refreshing the page
+    And I wait until onboarding is completed for "ssh_minion"
 
 @ssh_minion
   Scenario: Remove sle-manager-tools-release from state after bootstrap
-    Given I am on the Systems overview page of this "ssh-minion"
+    Given I am on the Systems overview page of this "ssh_minion"
     When I remove package "sle-manager-tools-release" from highstate
 
 @proxy
 @ssh_minion
   Scenario: Check connection from SSH minion to proxy
-    Given I am on the Systems overview page of this "ssh-minion"
+    Given I am on the Systems overview page of this "ssh_minion"
     When I follow "Details" in the content area
     And I follow "Connection" in the content area
     Then I should see "proxy" short hostname
@@ -37,11 +37,11 @@ Feature: Be able to bootstrap a Salt host managed via salt-ssh
     Given I am on the Systems overview page of this "proxy"
     When I follow "Details" in the content area
     And I follow "Proxy" in the content area
-    Then I should see "ssh-minion" hostname
+    Then I should see "ssh_minion" hostname
 
 @ssh_minion
   Scenario: Subscribe the SSH-managed SLES minion to a base channel
-    Given I am on the Systems overview page of this "ssh-minion"
+    Given I am on the Systems overview page of this "ssh_minion"
     When I follow "Software" in the content area
     And I follow "Software Channels" in the content area
     And I wait until I do not see "Loading..." text
@@ -55,5 +55,5 @@ Feature: Be able to bootstrap a Salt host managed via salt-ssh
 
 @ssh_minion
   Scenario: Check events history for failures on SSH minion
-    Given I am on the Systems overview page of this "ssh-minion"
+    Given I am on the Systems overview page of this "ssh_minion"
     Then I check for failed events on history event page

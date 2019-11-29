@@ -4,13 +4,13 @@
 Feature: Bootstrap a Salt minion via the GUI with an activation key
 
   Scenario: Delete SLES minion system profile
-    Given I am on the Systems overview page of this "sle-minion"
+    Given I am on the Systems overview page of this "sle_minion"
     When I follow "Delete System"
     Then I should see a "Confirm System Profile Deletion" text
     When I click on "Delete Profile"
     And I wait until I see "has been deleted" text
-    And I cleanup minion "sle-minion"
-    Then "sle-minion" should not be registered
+    And I cleanup minion "sle_minion"
+    Then "sle_minion" should not be registered
 
   Scenario: Create a configuration channel for the activation key
     Given I am authorized as "admin" with password "admin"
@@ -53,7 +53,7 @@ Feature: Bootstrap a Salt minion via the GUI with an activation key
     Given I am authorized
     When I go to the bootstrapping page
     Then I should see a "Bootstrap Minions" text
-    When I enter the hostname of "sle-minion" as "hostname"
+    When I enter the hostname of "sle_minion" as "hostname"
     And I enter "22" as "port"
     And I enter "root" as "user"
     And I enter "linux" as "password"
@@ -62,23 +62,23 @@ Feature: Bootstrap a Salt minion via the GUI with an activation key
     And I click on "Bootstrap"
     And I wait until I see "Successfully bootstrapped host!" text
     When I navigate to "rhn/systems/Overview.do" page
-    And I wait until I see the name of "sle-minion", refreshing the page
-    And I wait until onboarding is completed for "sle-minion"
+    And I wait until I see the name of "sle_minion", refreshing the page
+    And I wait until onboarding is completed for "sle_minion"
 
   Scenario: Verify that minion bootstrapped with Salt key and packages
     Given I am authorized
     When I go to the minion onboarding page
     Then I should see a "accepted" text
-    And the Salt master can reach "sle-minion"
-    And I wait for "orion-dummy" to be installed on this "sle-minion"
-    And I wait for "perseus-dummy" to be installed on this "sle-minion"
+    And the Salt master can reach "sle_minion"
+    And I wait for "orion-dummy" to be installed on this "sle_minion"
+    And I wait for "perseus-dummy" to be installed on this "sle_minion"
 
   Scenario: Check system ID of bootstrapped minion
-    Given I am on the Systems overview page of this "sle-minion"
-    Then I run spacecmd listevents for "sle-minion"
+    Given I am on the Systems overview page of this "sle_minion"
+    Then I run spacecmd listevents for "sle_minion"
 
   Scenario: Verify that minion bootstrapped with activation key
-    Given I am on the Systems overview page of this "sle-minion"
+    Given I am on the Systems overview page of this "sle_minion"
     Then I should see a "Activation Key: 	1-MINION-TEST" text
 
   Scenario: Verify that minion bootstrapped with base channel
@@ -87,7 +87,7 @@ Feature: Bootstrap a Salt minion via the GUI with an activation key
 
   # bsc#1080807 - Assigning configuration channel in activation key doesn't work
   Scenario: Verify that minion bootstrapped with configuration channel
-    Given I am on the Systems overview page of this "sle-minion"
+    Given I am on the Systems overview page of this "sle_minion"
     When I follow "Configuration" in the content area
     Then I should see a "1 configuration channel" text
     When I follow "View Files" in the content area
@@ -95,7 +95,7 @@ Feature: Bootstrap a Salt minion via the GUI with an activation key
     And I should see a "Key Channel" text
 
   Scenario: Cleanup: remove the package states
-    Given I am on the Systems overview page of this "sle-minion"
+    Given I am on the Systems overview page of this "sle_minion"
     When I follow "States" in the content area
     And I follow "Packages"
     Then I should see a "Package States" text
@@ -105,8 +105,8 @@ Feature: Bootstrap a Salt minion via the GUI with an activation key
     When I click save
     Then I wait until I see "Package states have been saved." text
     And I click apply
-    And I remove package "orion-dummy" from this "sle-minion"
-    And I remove package "perseus-dummy" from this "sle-minion"
+    And I remove package "orion-dummy" from this "sle_minion"
+    And I remove package "perseus-dummy" from this "sle_minion"
 
   Scenario: Cleanup: remove the key configuration channel
     Given I am authorized as "admin" with password "admin"
@@ -124,14 +124,14 @@ Feature: Bootstrap a Salt minion via the GUI with an activation key
     And I should see a "Activation key Minion testing has been deleted." text
 
   Scenario: Cleanup: turn the SLES minion into a container build host after activation key tests
-    Given I am on the Systems overview page of this "sle-minion"
+    Given I am on the Systems overview page of this "sle_minion"
     When I follow "Details" in the content area
     And I follow "Properties" in the content area
     And I check "container_build_host"
     And I click on "Update Properties"
 
   Scenario: Cleanup: turn the SLES minion into a OS image build host after activation key tests
-    Given I am on the Systems overview page of this "sle-minion"
+    Given I am on the Systems overview page of this "sle_minion"
     When I follow "Details" in the content area
     And I follow "Properties" in the content area
     And I check "osimage_build_host"
@@ -142,19 +142,19 @@ Feature: Bootstrap a Salt minion via the GUI with an activation key
     And I should see a "System properties changed" text
 
   Scenario: Cleanup: apply the highstate to build host after activation key tests
-    Given I am on the Systems overview page of this "sle-minion"
-    When I wait until no Salt job is running on "sle-minion"
+    Given I am on the Systems overview page of this "sle_minion"
+    When I wait until no Salt job is running on "sle_minion"
     And I enable repositories before installing Docker
-    And I apply highstate on "sle-minion"
-    And I wait until "docker" service is active on "sle-minion"
-    And I wait until file "/var/lib/Kiwi/repo/rhn-org-trusted-ssl-cert-osimage-1.0-1.noarch.rpm" exists on "sle-minion"
+    And I apply highstate on "sle_minion"
+    And I wait until "docker" service is active on "sle_minion"
+    And I wait until file "/var/lib/Kiwi/repo/rhn-org-trusted-ssl-cert-osimage-1.0-1.noarch.rpm" exists on "sle_minion"
     And I disable repositories after installing Docker
 
   Scenario: Cleanup: check that the minion is now a build host after activation key tests
-    Given I am on the Systems overview page of this "sle-minion"
+    Given I am on the Systems overview page of this "sle_minion"
     Then I should see a "[Container Build Host]" text
     Then I should see a "[OS Image Build Host]" text
 
   Scenario: Check events history for failures on SLES minion with activation key
-    Given I am on the Systems overview page of this "sle-minion"
+    Given I am on the Systems overview page of this "sle_minion"
     Then I check for failed events on history event page
