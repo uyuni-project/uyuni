@@ -341,7 +341,7 @@ class UyuniTrust(UyuniRemoteObject):
         trust_data: Dict[str, Union[int, datetime.datetime]] = {}
         for trusted_org in self.get_trusted():
             if trusted_org["org_name"] == name:
-                trust_data = self.client("org.trusts.getDetails", self.client.get_token(), trusted_org["id"])
+                trust_data = self.client("org.trusts.getDetails", self.client.get_token(), trusted_org["org_id"])
                 break
 
         return trust_data
