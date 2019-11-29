@@ -46,6 +46,7 @@ import com.redhat.rhn.frontend.xmlrpc.InvalidParentChannelException;
 import com.redhat.rhn.frontend.xmlrpc.NoSuchChannelException;
 import com.redhat.rhn.frontend.xmlrpc.NoSuchUserException;
 import com.redhat.rhn.frontend.xmlrpc.PermissionCheckFailureException;
+import com.redhat.rhn.frontend.xmlrpc.ValidationException;
 import com.redhat.rhn.frontend.xmlrpc.channel.software.ChannelSoftwareHandler;
 import com.redhat.rhn.frontend.xmlrpc.errata.ErrataHandler;
 import com.redhat.rhn.frontend.xmlrpc.system.SystemHandler;
@@ -491,9 +492,12 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
             csh.delete(admin, cClone1.getLabel());
             fail();
         }
-        catch (ValidatorException exc) {
-            assertEquals(exc.getResult().getErrors().size(), 1);
-            assertEquals(exc.getResult().getErrors().get(0).getKey(), "api.channel.delete.hasclones");
+        catch (ValidationException exc) {
+            assertEquals(exc.getErrorCode(), 2800);
+            assertContains(
+                    exc.getMessage(),
+                    "Unable to delete channel. The channel you have tried to delete has been cloned. " +
+                    "You must delete the clones before you can delete this channel.");
             assertNotNull(reload(c));
             assertNotNull(reload(cClone1));
             assertNotNull(reload(cClone2));
