@@ -309,3 +309,16 @@ class TestUyuniOrg:
         """
         self.orgs.client = MagicMock(side_effect=UyuniUsersException("Incomplete transient lockout"))
         assert self.orgs.get_org_by_name(name="Test Org") == {}
+
+    def test_create(self):
+        """
+        Test create org.
+
+        :return:
+        """
+        with patch("uyuni_users.log", MagicMock()) as logger:
+            _, msg = self.orgs.create(name="B-Org", admin_login="who", admin_password="co2", admin_prefix="Dr.",
+                                      first_name="Hans", last_name="Schmidt", email="", pam=1)
+
+        assert logger.debug.call_args_list[0][0] == ("Creating organisation %s", "B-Org")
+        assert logger.debug.call_args_list[1][0] == (msg,)
