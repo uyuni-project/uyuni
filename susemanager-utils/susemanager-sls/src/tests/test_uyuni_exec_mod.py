@@ -178,3 +178,23 @@ class TestUyuniUser:
         """
         self.uyuni_user = None
 
+    def test_create(self):
+        """
+        Test user create.
+
+        :return:
+        """
+        with patch("uyuni_users.log", MagicMock()) as logger:
+            out = self.uyuni_user.create(uid="Borg", password="futile-resistance", email="here@you.go")
+
+        assert out
+        assert logger.debug.called
+        assert logger.debug.call_count == 2
+        assert logger.debug.call_args_list[0][0] == ('Adding user to Uyuni',)
+        assert logger.debug.call_args_list[1][0] == ('User has been created',)
+        assert self.uyuni_user.client.called
+        assert self.uyuni_user.client.call_args_list[0][0] == ('user.create', 'xyz', 'Borg', 'futile-resistance',
+                                                               '', '', 'here@you.go')
+
+    def test_create_no_email(self):
+
