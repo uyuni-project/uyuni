@@ -326,7 +326,7 @@ class UyuniTrust(UyuniRemoteObject):
 
         :return: data of the current organisation
         """
-        assert self.this_org, "No details could be found for the current organisation"
+        assert self.__this_org, "No details could be found for the current organisation"
         return self.__this_org
 
     def get_trust_by_name(self, name: str) -> Dict[str, Union[int, datetime.datetime]]:
@@ -341,7 +341,7 @@ class UyuniTrust(UyuniRemoteObject):
         trust_data: Dict[str, Union[int, datetime.datetime]] = {}
         for trusted_org in self.get_trusted():
             if trusted_org["org_name"] == name:
-                trust_data = self.client("org.trusts.getDetails", self.client.get_token(), trusted_org["org_id"])
+                trust_data = self.client("org.trusts.getDetails", self.client.get_token(), trusted_org["id"])
                 break
 
         return trust_data

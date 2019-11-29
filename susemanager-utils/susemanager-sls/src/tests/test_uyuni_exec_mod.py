@@ -393,13 +393,12 @@ class TestUyuniTrust:
         :param name:
         :return:
         """
-        return [
-            {
-                "org_id": 42,
-                "org_name": name,
-                "shared_channels": 1,
-            }
-        ]
+        return {
+            "id": 42,
+            "org_id": 42,
+            "org_name": name,
+            "shared_channels": 1,
+        }
 
     @patch("uyuni_users.RPCClient", MagicMock())
     def setup_method(self, method):
@@ -410,7 +409,7 @@ class TestUyuniTrust:
         :return:
         """
         orgs = MagicMock()
-        orgs.get_org_by_name = self.obn
+        orgs().get_org_by_name = self.obn
         with patch("uyuni_users.UyuniOrg", orgs) as orgmock:
             self.trusts = UyuniTrust("B-Org", pillar={})
 
@@ -430,6 +429,6 @@ class TestUyuniTrust:
         """
         t_org = "Trusted Org"
 
-        self.trusts.get_trusted = MagicMock(return_value=self.obn(t_org))
+        self.trusts.get_trusted = MagicMock(return_value=[self.obn(t_org)])
         self.trusts.client = MagicMock(return_value="B-Org")
         assert self.trusts.get_trust_by_name(t_org) == "B-Org"
