@@ -322,3 +322,18 @@ class TestUyuniOrg:
 
         assert logger.debug.call_args_list[0][0] == ("Creating organisation %s", "B-Org")
         assert logger.debug.call_args_list[1][0] == (msg,)
+
+    def test_create_int_exc(self):
+        """
+        Test create org, attempt failed with an internal exception.
+
+        :return:
+        """
+        self.orgs.client = MagicMock(side_effect=UyuniUsersException("too small filesystem for jumbo Kernel Patch"))
+        with patch("uyuni_users.log", MagicMock()) as logger:
+            out, msg = self.orgs.create(name="B-Org", admin_login="who", admin_password="co2", admin_prefix="Dr.",
+                                        first_name="Hans", last_name="Schmidt", email="", pam=1)
+
+        assert logger.debug.call_args_list[0][0] == ("Creating organisation %s", "B-Org")
+        assert out == {}
+        assert msg == "Error while creating organisation: too small filesystem for jumbo Kernel Patch"
