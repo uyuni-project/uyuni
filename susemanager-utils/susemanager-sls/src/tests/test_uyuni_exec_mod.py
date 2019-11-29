@@ -197,4 +197,20 @@ class TestUyuniUser:
                                                                '', '', 'here@you.go')
 
     def test_create_no_email(self):
+        """
+        Test user create attempt without email specified
+
+        :return:
+        """
+        with patch("uyuni_users.log", MagicMock()) as logger:
+            out = self.uyuni_user.create(uid="Borg", password="futile-resistance", email="")
+
+        assert not out
+        assert logger.debug.called
+        assert logger.error.called
+        assert logger.debug.call_count == 2
+        assert logger.debug.call_args_list[0][0] == ("Adding user to Uyuni",)
+        assert logger.debug.call_args_list[1][0] == ("Not all parameters has been specified",)
+        assert logger.error.call_args_list[0][0] == ("Email should be specified when create user",)
+        assert not self.uyuni_user.client.called
 
