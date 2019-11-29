@@ -295,11 +295,11 @@ class UyuniOrg(UyuniRemoteObject):
         org_id = int(self.get_org_by_name(name=name).get("id", -1))
         if org_id > -1:
             res = bool(self.client("org.delete", self.client.get_token(), org_id))
-            msg = 'Organisation "{}" (ID: "{}") has been removed.'.format(name, org_id)
+            msg = 'Organisation "{}" (ID: "{}") has been removed'.format(name, org_id)
             log.debug(msg)
         else:
             res = False
-            msg = 'Organisation "{}" was not found.'.format(name)
+            msg = 'Organisation "{}" was not found'.format(name)
             log.error(msg)
 
         return res, msg
