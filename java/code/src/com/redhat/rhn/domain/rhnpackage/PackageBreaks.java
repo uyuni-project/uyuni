@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2009--2010 Red Hat, Inc.
+ * Copyright (c) 2016 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -19,16 +19,11 @@ import javax.persistence.Table;
 import java.io.Serializable;
 
 /**
- * PackageRequires
+ * PackagePreDepends
  * @version $Rev$
  */
 @Entity
-@Table(name = "rhnPackageRequires")
-public class PackageRequires extends PackageProperty implements Serializable {
-
-    /**
-     * Comment for <code>serialVersionUID</code>
-     */
-    private static final long serialVersionUID = -4501835317518752215L;
+@Table(name = "rhnPackageBreaks")
+public class PackageBreaks extends PackageProperty implements Serializable {
 
 }

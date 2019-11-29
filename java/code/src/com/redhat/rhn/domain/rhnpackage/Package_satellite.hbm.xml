@@ -103,6 +103,48 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
                 class="com.redhat.rhn.domain.rhnpackage.PackageObsoletes" />
         </set>
 
+        <set name="recommends" lazy="true" table="rhnPackageRecommends"
+             cascade="save-update,delete" inverse="true">
+            <key column="package_id"/>
+            <one-to-many
+                    class="com.redhat.rhn.domain.rhnpackage.PackageRecommends" />
+        </set>
+
+        <set name="suggests" lazy="true" table="rhnPackageSuggests"
+             cascade="save-update,delete" inverse="true">
+            <key column="package_id"/>
+            <one-to-many
+                    class="com.redhat.rhn.domain.rhnpackage.PackageSuggests" />
+        </set>
+
+        <set name="supplements" lazy="true" table="rhnPackageSupplements"
+             cascade="save-update,delete" inverse="true">
+            <key column="package_id"/>
+            <one-to-many
+                    class="com.redhat.rhn.domain.rhnpackage.PackageSupplements" />
+        </set>
+
+        <set name="enhances" lazy="true" table="rhnPackageEnhances"
+             cascade="save-update,delete" inverse="true">
+            <key column="package_id"/>
+            <one-to-many
+                    class="com.redhat.rhn.domain.rhnpackage.PackageEnhances" />
+        </set>
+
+        <set name="preDepends" lazy="true" table="rhnPackagePreDepends"
+             cascade="save-update,delete" inverse="true">
+            <key column="package_id"/>
+            <one-to-many
+                    class="com.redhat.rhn.domain.rhnpackage.PackagePreDepends" />
+        </set>
+
+        <set name="breaks" lazy="true" table="rhnPackageBreaks"
+             cascade="save-update,delete" inverse="true">
+            <key column="package_id"/>
+            <one-to-many
+                    class="com.redhat.rhn.domain.rhnpackage.PackageBreaks" />
+        </set>
+
         <map name="extraTags"
              table="rhnPackageExtraTag" lazy="true">
             <key column="package_id"/>
