@@ -223,7 +223,7 @@ class UyuniUser(UyuniRemoteObject):
             log.error('Unable to delete user "%s": %s', name, str(exc))
             ret = False
         except Exception as exc:
-            log.error('Unhandled error had happend while deleting user "%s": %s', name, str(exc))
+            log.error('Unhandled error had happened while deleting user "%s": %s', name, str(exc))
             ret = False
 
         return ret
