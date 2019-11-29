@@ -6,7 +6,7 @@ Unit tests for modules/uyuni_users.py execution module
 import sys
 sys.path.append("../_modules")
 import uyuni_users
-from uyuni_users import RPCClient, UyuniUsersException, UyuniRemoteObject, UyuniUser, UyuniOrg
+from uyuni_users import RPCClient, UyuniUsersException, UyuniRemoteObject, UyuniUser, UyuniOrg, UyuniTrust
 from unittest.mock import patch, MagicMock, mock_open
 import pytest
 
@@ -377,3 +377,59 @@ class TestUyuniOrg:
 
         assert not logger.debug.called
         assert msg == 'Organisation "B-Org" was not found'
+
+
+class TestUyuniTrust:
+    """
+    Test Uyuni trust.
+    """
+    trusts = None
+
+    @staticmethod
+    def obn(name):
+        """
+        Return list of all organisations, trusted by the user's organisation (mock).
+
+        :param name:
+        :return:
+        """
+        return [
+            {
+                "org_id": 42,
+                "org_name": name,
+                "shared_channels": 1,
+            }
+        ]
+
+    @patch("uyuni_users.RPCClient", MagicMock())
+    def setup_method(self, method):
+        """
+        Setup method before the test.
+
+        :param method:
+        :return:
+        """
+        orgs = MagicMock()
+        orgs.get_org_by_name = self.obn
+        with patch("uyuni_users.UyuniOrg", orgs) as orgmock:
+            self.trusts = UyuniTrust("B-Org", pillar={})
+
+    def teardown_method(self, method):
+        """
+        Teardown method settings before the
+        :param method:
+        :return:
+        """
+        self.trusts = None
+
+    def test_trust_by_name(self):
+        """
+        Test to get a trust by its name.
+
+        :return:
+        """
+        t_org = "Trusted Org"
+
+        self.trusts.get_trusted = MagicMock(return_value=self.obn(t_org))
+        self.trusts.client = MagicMock(return_value="B-Org")
+        assert self.trusts.get_trust_by_name(t_org) == "B-Org"
