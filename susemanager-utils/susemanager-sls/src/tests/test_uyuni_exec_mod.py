@@ -246,3 +246,20 @@ class TestUyuniUser:
         assert logger.error.called
         assert logger.error.call_args[0] == ('Unable to delete user "%s": %s', "Borg", "Stop-bit received",)
 
+    def test_delete_unhandled_exc(self):
+        """
+        Test user delete attempt, common Exception is raised.
+
+        :return:
+        """
+        self.uyuni_user.client = MagicMock(side_effect=Exception("Feature was not beta-tested"))
+        self.uyuni_user.client.get_token = MagicMock(return_value="abcd")
+
+        with patch("uyuni_users.log", MagicMock()) as logger:
+            out = self.uyuni_user.delete(name="Borg")
+
+        assert not out
+        assert logger.error.called
+        assert logger.error.call_args[0] == ('Unhandled error had happened while deleting user "%s": %s',
+                                             "Borg", "Feature was not beta-tested",)
+
