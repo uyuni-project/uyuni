@@ -6,7 +6,7 @@ Unit tests for modules/uyuni_users.py execution module
 import sys
 sys.path.append("../_modules")
 import uyuni_users
-from uyuni_users import RPCClient, UyuniUsersException, UyuniRemoteObject, UyuniUser
+from uyuni_users import RPCClient, UyuniUsersException, UyuniRemoteObject, UyuniUser, UyuniOrg
 from unittest.mock import patch, MagicMock, mock_open
 import pytest
 
@@ -262,4 +262,32 @@ class TestUyuniUser:
         assert logger.error.called
         assert logger.error.call_args[0] == ('Unhandled error had happened while deleting user "%s": %s',
                                              "Borg", "Feature was not beta-tested",)
+
+
+class TestUyuniOrg:
+    """
+    Test suite for Uyuni Org
+    """
+    orgs = None
+
+    @patch("uyuni_users.RPCClient", MagicMock())
+    def setup_method(self, method):
+        """
+        Setup method before the test.
+
+        :param method:
+        :return:
+        """
+        self.orgs = UyuniOrg()
+        self.orgs.client = MagicMock()
+        self.orgs.client.get_token = MagicMock(return_value="xyz")
+
+    def teardown_method(self, method):
+        """
+        Teardown method after the test.
+
+        :param method:
+        :return:
+        """
+        self.orgs = None
 
