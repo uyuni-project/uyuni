@@ -300,3 +300,12 @@ class TestUyuniOrg:
         rv = {"key": "value"}
         self.orgs.client = MagicMock(return_value=rv)
         assert rv == self.orgs.get_org_by_name(name="Test Org")
+
+    def test_get_org_by_name_exc(self):
+        """
+        Test get_org_by_name method, exception catching
+
+        :return:
+        """
+        self.orgs.client = MagicMock(side_effect=UyuniUsersException("Incomplete transient lockout"))
+        assert self.orgs.get_org_by_name(name="Test Org") == {}
