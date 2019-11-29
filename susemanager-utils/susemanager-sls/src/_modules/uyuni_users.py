@@ -220,10 +220,10 @@ class UyuniUser(UyuniRemoteObject):
         try:
             ret = bool(self.client("user.delete", self.client.get_token(), name))
         except UyuniUsersException as exc:
-            log.error('Unable to delete user "%s": %s', name, exc)
+            log.error('Unable to delete user "%s": %s', name, str(exc))
             ret = False
         except Exception as exc:
-            log.error('Unhandled error had happend while deleting user "%s": %s', name, exc)
+            log.error('Unhandled error had happend while deleting user "%s": %s', name, str(exc))
             ret = False
 
         return ret
