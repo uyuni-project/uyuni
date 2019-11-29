@@ -291,3 +291,12 @@ class TestUyuniOrg:
         """
         self.orgs = None
 
+    def test_get_org_by_name(self):
+        """
+        Test get_org_by_name method, normal operation.
+
+        :return:
+        """
+        rv = {"key": "value"}
+        self.orgs.client = MagicMock(return_value=rv)
+        assert rv == self.orgs.get_org_by_name(name="Test Org")
