@@ -230,3 +230,19 @@ class TestUyuniUser:
         assert not logger.error.called
         assert self.uyuni_user.client.call_args_list[0][0] == ("user.delete", "footoken", "Borg",)
 
+    def test_delete_internal_exc(self):
+        """
+        Test user delete attempt, UyuniUsersException is raised.
+
+        :return:
+        """
+        self.uyuni_user.client = MagicMock(side_effect=UyuniUsersException("Stop-bit received"))
+        self.uyuni_user.client.get_token = MagicMock(return_value="dogfood")
+
+        with patch("uyuni_users.log", MagicMock()) as logger:
+            out = self.uyuni_user.delete(name="Borg")
+
+        assert not out
+        assert logger.error.called
+        assert logger.error.call_args[0] == ('Unable to delete user "%s": %s', "Borg", "Stop-bit received",)
+
