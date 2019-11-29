@@ -38,6 +38,8 @@ import com.redhat.rhn.domain.channel.DistChannelMap;
 import com.redhat.rhn.domain.channel.InvalidChannelRoleException;
 import com.redhat.rhn.domain.channel.ProductName;
 import com.redhat.rhn.domain.channel.ReleaseChannelMap;
+import com.redhat.rhn.domain.contentmgmt.ContentProjectFactory;
+import com.redhat.rhn.domain.contentmgmt.SoftwareEnvironmentTarget;
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.kickstart.KickstartData;
 import com.redhat.rhn.domain.org.Org;
@@ -710,6 +712,16 @@ public class ChannelManager extends BaseManager {
                 }
                 ChannelManager.unscheduleEventualRepoSync(toRemove, user);
             }
+
+            // Is this channel in use in any Content Lifecycle Project Environment?
+            Optional<SoftwareEnvironmentTarget> environmentInUse =
+                    ContentProjectFactory.lookupEnvironmentTargetByChannelLabel(toRemove.getLabel(), user);
+            if (environmentInUse.isPresent()) {
+                ValidatorException.raiseException("message.channel.disable.delete.contentlifecycle.environment.in.use",
+                        environmentInUse.get().getContentEnvironment().getContentProject().getName(),
+                        environmentInUse.get().getContentEnvironment().getName());
+            }
+
             ChannelManager.queueChannelChange(label,
                     user.getLogin(), "java::deleteChannel");
             ChannelFactory.remove(toRemove);
