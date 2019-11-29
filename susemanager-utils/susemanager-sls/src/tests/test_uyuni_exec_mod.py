@@ -6,7 +6,7 @@ Unit tests for modules/uyuni_users.py execution module
 import sys
 sys.path.append("../_modules")
 import uyuni_users
-from uyuni_users import RPCClient, UyuniUsersException, UyuniRemoteObject
+from uyuni_users import RPCClient, UyuniUsersException, UyuniRemoteObject, UyuniUser
 from unittest.mock import patch, MagicMock, mock_open
 import pytest
 
@@ -151,3 +151,30 @@ class TestUyuniRemoteObject:
 
         assert uro.get_proto_return() == {}
         assert uro.get_proto_return(exc=err) == {"error": str(err)}
+
+
+class TestUyuniUser:
+    """
+    Test UyuniUser.
+    """
+    uyuni_user = None
+
+    @patch("uyuni_users.RPCClient", MagicMock())
+    def setup_method(self, method):
+        """
+        Setup each test.
+
+        :return:
+        """
+        self.uyuni_user = UyuniUser()
+        self.uyuni_user.client = MagicMock()
+        self.uyuni_user.client.get_token = MagicMock(return_value="xyz")
+
+    def teardown_method(self, method):
+        """
+        Remove setup for each test.
+
+        :return:
+        """
+        self.uyuni_user = None
+
