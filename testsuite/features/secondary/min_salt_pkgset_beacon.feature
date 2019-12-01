@@ -28,23 +28,23 @@ Feature: System package list is updated if packages are manually installed or re
     When I wait until the table contains "FINISHED" or "SKIPPED" followed by "FINISHED" in its first rows
 
   Scenario: Remove manually a package on a minion
-    Given I am on the Systems overview page of this "sle-minion"
+    Given I am on the Systems overview page of this "sle_minion"
     When I follow "Software" in the content area
     And I follow "List / Remove"
     And I enter "milkyway-dummy" as the filtered package name
     And I click on the filter button
     Then I should see a "milkyway-dummy" text
-    When I remove package "milkyway-dummy" from this "sle-minion"
+    When I remove package "milkyway-dummy" from this "sle_minion"
     And I click on the filter button until page does not contain "milkyway-dummy" text
 
   Scenario: Install manually a package on a minion
-    Given I am on the Systems overview page of this "sle-minion"
+    Given I am on the Systems overview page of this "sle_minion"
     When I follow "Software" in the content area
     And I follow "List / Remove"
     And I enter "milkyway-dummy" as the filtered package name
     And I click on the filter button
     Then I should not see a "milkyway-dummy" text
-    When I install package "milkyway-dummy" on this "sle-minion"
+    When I install package "milkyway-dummy" on this "sle_minion"
     And I click on the filter button until page does not contain "milkyway-dummy" text
 
   Scenario: Cleanup: remove milkyway-dummy packages from SLES minion
