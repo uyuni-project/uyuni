@@ -6,7 +6,11 @@ CREATE TABLE IF NOT EXISTS rhnActionVirtDelete
                        REFERENCES rhnAction (id)
                        ON DELETE CASCADE
                     CONSTRAINT rhn_avdl_aid_pk PRIMARY KEY,
-    uuid       VARCHAR(128) NOT NULL
+    uuid       VARCHAR(128) NOT NULL,
+    created    TIMESTAMPTZ
+               DEFAULT (current_timestamp) NOT NULL,
+    modified   TIMESTAMPTZ
+               DEFAULT (current_timestamp) NOT NULL
 );
 
 CREATE UNIQUE INDEX IF NOT EXISTS rhn_avdl_aid_uq
