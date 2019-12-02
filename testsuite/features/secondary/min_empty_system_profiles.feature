@@ -4,8 +4,8 @@
 @scope_onboarding
 Feature: Empty minion profile operations
 
-  Scenario: Log in as admin user
-    Given I am authorized for the "Admin" section
+  Scenario: Log in as org admin user
+    Given I am authorized
 
   Scenario: Create an empty minion profile with HW address via API
     When I call system.create_system_profile() with name "empty-profile" and HW address "00:11:22:33:44:55"

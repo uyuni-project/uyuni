@@ -13,8 +13,8 @@ Feature: Management of minion keys
   As an authorized user
   I want to verify all the minion key management features in the UI
 
-  Scenario: Log in as admin user
-    Given I am authorized for the "Admin" section
+  Scenario: Log in as org admin user
+    Given I am authorized
 
   Scenario: Delete SLES minion system profile before exploring the onboarding page
     Given I am on the Systems overview page of this "sle_minion"

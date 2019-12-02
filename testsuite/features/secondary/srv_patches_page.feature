@@ -7,8 +7,8 @@ Feature: Patches page
   As a authorized user
   I want to see all the texts and links
 
-  Scenario: Log in as admin user
-    Given I am authorized for the "Admin" section
+  Scenario: Log in as org admin user
+    Given I am authorized
 
   Scenario: Patches left menu
     When I follow the left menu "Patches > Patch List > Relevant"

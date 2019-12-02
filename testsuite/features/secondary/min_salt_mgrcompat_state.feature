@@ -17,8 +17,8 @@
 @scope_salt
 Feature: Verify that Salt mgrcompat state works when the new module.run syntax is enabled
 
-  Scenario: Log in as admin user
-    Given I am authorized for the "Admin" section
+  Scenario: Log in as org admin user
+    Given I am authorized
 
   Scenario: Remove mgrcompat module from minion synced modules and schedule Hardware Refresh
     Given I remove "minion/extmods/states/mgrcompat.py" from salt cache on "sle_minion"
@@ -27,7 +27,7 @@ Feature: Verify that Salt mgrcompat state works when the new module.run syntax i
     When I follow "Hardware"
     And I click on "Schedule Hardware Refresh"
     Then I should see a "You have successfully scheduled a hardware profile refresh" text
-    When I wait until event "Hardware List Refresh scheduled by admin" is completed
+    When I wait until event "Hardware List Refresh scheduled" is completed
     And I wait until there is no Salt job calling the module "hardware.profileupdate" on "sle_minion"
 
   Scenario: Remove saltutil grain and mgrcompat module from minion and schedule Hardware Refresh
@@ -39,7 +39,7 @@ Feature: Verify that Salt mgrcompat state works when the new module.run syntax i
     When I follow "Hardware"
     And I click on "Schedule Hardware Refresh"
     Then I should see a "You have successfully scheduled a hardware profile refresh" text
-    When I wait until event "Hardware List Refresh scheduled by admin" is completed
+    When I wait until event "Hardware List Refresh scheduled" is completed
     And I wait until there is no Salt job calling the module "hardware.profileupdate" on "sle_minion"
 
   Scenario: Delete SLES minion system profile before mgrcompat test
@@ -80,7 +80,7 @@ Feature: Verify that Salt mgrcompat state works when the new module.run syntax i
     And I follow "Hardware"
     And I click on "Schedule Hardware Refresh"
     Then I should see a "You have successfully scheduled a hardware profile refresh" text
-    When I wait until event "Hardware List Refresh scheduled by admin" is completed
+    When I wait until event "Hardware List Refresh scheduled" is completed
     And I wait until there is no Salt job calling the module "hardware.profileupdate" on "sle_minion"
 
   Scenario: Cleanup: Delete profile of the minion and disable new module.run syntax

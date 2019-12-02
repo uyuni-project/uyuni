@@ -14,7 +14,7 @@ Feature: Task Engine Status
     And I should see a "Runtime Status" text
     And I should see a "Last Execution Times" link in the left menu
     And I should see a "Runtime Status" link in the left menu
-  
+
   @uyuni
   Scenario: Check if the Task Engine Status page exists
     When I follow the left menu "Admin > Task Engine Status > Last Execution Times"
@@ -31,7 +31,7 @@ Feature: Task Engine Status
     And I should see a "The server is running or has finished executing the following tasks during the latest 5 minutes." text
     And I should see a "Last Execution Times" link in the left menu
     And I should see a "Runtime Status" link in the left menu
-  
+
   Scenario: Run a remote command on the server to check if it shows up on Last Execution Times page
     When I follow the left menu "Admin > Task Engine Status > Last Execution Times"
     And I run "cobbler sync" on "server"

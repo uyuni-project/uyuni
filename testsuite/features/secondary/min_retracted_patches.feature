@@ -4,8 +4,8 @@
 @scope_retracted_patches
 Feature: Retracted patches
 
-  Scenario: Log in as admin user
-    Given I am authorized for the "Admin" section
+  Scenario: Log in as org admin user
+    Given I am authorized
 
   Scenario: Installed retracted package should show icon in the system packages list
     When I install package "rute-dummy=2.1-1.1" on this "sle_minion"

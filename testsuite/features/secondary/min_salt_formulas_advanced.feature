@@ -7,8 +7,8 @@ Feature: Use advanced features of Salt formulas
   As an authorized user
   I want to be able to install and use Salt formulas
 
-   Scenario: Log in as admin user
-      Given I am authorized for the "Admin" section
+   Scenario: Log in as org admin user
+      Given I am authorized
 
   Scenario: Install a test formula package on the server
      When I install "form.yml" to custom formula metadata directory "testform"

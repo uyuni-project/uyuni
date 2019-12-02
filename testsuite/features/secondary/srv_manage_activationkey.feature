@@ -7,8 +7,8 @@ Feature: Manipulate activation keys
   As the testing user
   I want to create and edit activation keys
 
-  Scenario: Log in as admin user
-    Given I am authorized for the "Admin" section
+  Scenario: Log in as org admin user
+    Given I am authorized
 
   Scenario: Create an activation key for i586
     When I follow the left menu "Systems > Activation Keys"

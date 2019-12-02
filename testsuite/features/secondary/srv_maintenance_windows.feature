@@ -11,8 +11,8 @@
 @rhlike_minion
 Feature: Maintenance windows
 
-  Scenario: Log in as admin user
-    Given I am authorized for the "Admin" section
+  Scenario: Log in as org admin user
+    Given I am authorized
 
   Scenario: Create single calendar
     When I follow the left menu "Schedule > Maintenance Windows > Calendars"

@@ -10,8 +10,8 @@
 @scope_onboarding
 Feature: Bootstrap a Salt minion via the GUI using SSH key
 
-  Scenario: Log in as admin user
-    Given I am authorized for the "Admin" section
+  Scenario: Log in as org admin user
+    Given I am authorized
 
   Scenario: Delete SLES minion system profile before bootstrap with SSH key test
     Given I am on the Systems overview page of this "sle_minion"

@@ -12,7 +12,7 @@
 @scope_salt_ssh
 Feature: Salt SSH action chain
 
-  Scenario: Log in as admin user
+  Scenario: Log in as org admin user
     Given I am authorized for the "Admin" section
 
   Scenario: Pre-requisite: downgrade repositories to lower version on SSH minion
@@ -163,6 +163,7 @@ Feature: Salt SSH action chain
   Scenario: Execute the action chain from the web UI on SSH minion
     Given I am authorized for the "Admin" section
     When I follow the left menu "Schedule > Action Chains"
+    And I wait until I see "new action chain" text
     And I follow "new action chain"
     Then I click on "Save and Schedule"
     And I should see a "Action Chain new action chain has been scheduled for execution." text
@@ -200,7 +201,7 @@ Feature: Salt SSH action chain
     And I follow "Software" in the content area
     And I click on "Update Package List"
     And I follow "Events" in the content area
-    And I wait until I do not see "Package List Refresh scheduled by admin" text, refreshing the page
+    And I wait until I do not see "Package List Refresh scheduled" text, refreshing the page
     And I follow "Software" in the content area
     And I follow "List / Remove" in the content area
     And I enter "andromeda-dummy" as the filtered package name

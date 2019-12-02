@@ -12,8 +12,10 @@ Feature: Remote command on Debian-like Salt minion
   As an authorized user
   I want to run a remote command on it
 
+  Scenario: Log in as org admin user
+    Given I am authorized
+
   Scenario: Run a remote command on the Debian-like minion
-    Given I am authorized for the "Admin" section
     When I follow the left menu "Salt > Remote Commands"
     Then I should see a "Remote Commands" text in the content area
     When I enter command "cat /etc/os-release"

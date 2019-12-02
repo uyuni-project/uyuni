@@ -4,8 +4,8 @@
 @scope_cve_audit
 Feature: Support for new CVE-ID syntax
 
-  Scenario: Log in as admin user
-    Given I am authorized for the "Admin" section
+  Scenario: Log in as org admin user
+    Given I am authorized
 
   Scenario: Check perseus-dummy-7891 patches
     When I follow the left menu "Patches > Patch List > All"

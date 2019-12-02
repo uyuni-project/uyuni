@@ -6,8 +6,8 @@
 @scope_virtual_host_manager
 Feature: Virtual host manager web UI
 
-  Scenario: Log in as admin user
-    Given I am authorized for the "Admin" section
+  Scenario: Log in as org admin user
+    Given I am authorized
 
   Scenario: Check the VHM page
     When I follow the left menu "Systems > Virtual Host Managers"

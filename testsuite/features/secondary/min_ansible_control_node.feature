@@ -5,8 +5,8 @@
 @scope_ansible
 Feature: Operate an Ansible control node in a normal minion
 
-  Scenario: Log in as admin user
-    Given I am authorized for the "Admin" section
+  Scenario: Log in as org admin user
+    Given I am authorized
 
   Scenario: Pre-requisite: Deploy test playbooks and inventory file
     When I deploy testing playbooks and inventory files to "sle_minion"
@@ -33,7 +33,7 @@ Feature: Operate an Ansible control node in a normal minion
     Given I am on the Systems overview page of this "sle_minion"
     When I follow "States" in the content area
     And I click on "Apply Highstate"
-    And I wait until event "Apply highstate scheduled by admin" is completed
+    And I wait until event "Apply highstate scheduled" is completed
     Then "ansible" should be installed on "sle_minion"
 
   Scenario: The Ansible tab appears in the system overview page
@@ -78,7 +78,7 @@ Feature: Operate an Ansible control node in a normal minion
     And I select "/srv/playbooks/orion_dummy/hosts" from "inventory-path-select"
     And I click on "Schedule"
     Then I should see a "Playbook execution has been scheduled" text
-    And I wait until event "Execute playbook 'playbook_orion_dummy.yml' scheduled by admin" is completed
+    And I wait until event "Execute playbook 'playbook_orion_dummy.yml' scheduled" is completed
     And file "/tmp/file.txt" should exist on "sle_minion"
 
   Scenario: Cleanup: Disable Ansible and remove test playbooks and inventory file

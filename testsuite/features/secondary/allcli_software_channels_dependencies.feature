@@ -5,8 +5,8 @@
 @scc_credentials
 Feature: Channel subscription with recommended or required dependencies
 
-  Scenario: Log in as admin user
-    Given I am authorized for the "Admin" section
+  Scenario: Log in as org admin user
+    Given I am authorized
 
   Scenario: Pre-requisite: remove remaining systems from SSM after software channel tests
     When I click on the clear SSM button

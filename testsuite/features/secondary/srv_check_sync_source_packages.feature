@@ -9,8 +9,8 @@
 @scope_configuration_channels
 Feature: Check if source packages were successfully synced
 
-  Scenario: Log in as admin user
-    Given I am authorized for the "Admin" section
+  Scenario: Log in as org admin user
+    Given I am authorized
 
   Scenario: Check sources for noarch package
     When I follow the left menu "Software > Channel List > All"

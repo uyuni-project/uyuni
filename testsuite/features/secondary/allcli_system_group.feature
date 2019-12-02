@@ -5,8 +5,8 @@
 @scope_visualization
 Feature: Manage a group of systems
 
-  Scenario: Log in as admin user
-    Given I am authorized for the "Admin" section
+  Scenario: Log in as org admin user
+    Given I am authorized
 
   Scenario: Fail to create a group with only its name
     When I follow the left menu "Systems > System Groups"

@@ -7,8 +7,8 @@ Feature: Managing channels
   As an authorized user
   I want to manage channels
 
-  Scenario: Log in as admin user
-    Given I am authorized for the "Admin" section
+  Scenario: Log in as org admin user
+    Given I am authorized
 
   Scenario: Fail when trying to add a duplicate channel
     When I follow the left menu "Software > Manage > Channels"
