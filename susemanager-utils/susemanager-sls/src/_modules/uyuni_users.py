@@ -418,6 +418,41 @@ class UyuniTrust(UyuniRemoteObject):
         return fails == 0 and success > 0
 
 
+class UyuniChannels(UyuniRemoteObject):
+    """
+    Uyuni channels.
+    """
+    ACCESS_PUBLIC = "public"
+    ACCESS_PRIVATE = "private"
+    ACCESS_PROTECTED = "protected"
+
+    def get_sharing(self, channel: str) -> str:
+        """
+        Get sharing access control in the context to the current organisation.
+
+        :param channel: label of the channel
+
+        :return:
+        """
+        return self.client("channel.access.getOrgSharing", self.client.get_token(), channel)
+
+    def set_sharing(self, channel: str, access: str) -> None:
+        """
+        Set sharing access control in the context to the current organisation.
+
+        :param channel: label of the channel
+        :param access: access string
+
+        :raises UyuniUsersException: if setting access control was not successful.
+
+        :return:
+        """
+        if access not in [self.ACCESS_PRIVATE, self.ACCESS_PROTECTED, self.ACCESS_PUBLIC]:
+            raise UyuniChannelsException('Access type "%s" is not recognised:', access)
+
+        self.client("channel.access.setOrgSharing", self.client.get_token(), channel, access)
+
+
 def __virtual__():
     """
     Provide Uyuni Users state module.
@@ -475,3 +510,26 @@ def list_trusts(name):
     :return: dictionary of trusted organisations. See "org.trusts.listTrusted" from the Uyuni API.
     """
     return UyuniTrust(org_name=name, pillar=__pillar__).get_trusted()
+
+
+def share_channel(name, access):
+    """
+    Set organization sharing access control.
+
+    :param name:
+    :param access:
+
+    :return:
+    """
+    return UyuniChannels(pillar=__pillar__).set_sharing(channel=name, access=access)
+
+
+def shared_channel(name):
+    """
+    Get organization sharing access control.
+
+    :param name:
+
+    :return:
+    """
+    return UyuniChannels(pillar=__pillar__).get_sharing(channel=name)
