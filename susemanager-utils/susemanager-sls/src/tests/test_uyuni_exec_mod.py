@@ -471,3 +471,22 @@ class TestUyuniTrust:
         assert self.trusts.orgs.get_org_by_name.call_args_list[0][0] == ("Trusted Org",)
         assert logger.info.call_count == 1
         assert self.trusts.client.called
+
+    def test_untrust_org(self):
+        """
+        Test untrust org.
+
+        :return:
+        """
+        self.trusts.get_trusted = MagicMock(return_value=[])
+        self.trusts.orgs = MagicMock()
+        self.trusts.orgs.get_org_by_name = MagicMock(return_value={"id": 42})
+
+        with patch("uyuni_users.log", MagicMock()) as logger:
+            out = self.trusts.untrust("Trusted Org")
+
+        assert self.trusts.orgs.get_org_by_name.called
+        assert self.trusts.orgs.get_org_by_name.call_args_list[0][0] == ("Trusted Org",)
+        assert self.trusts.client.called
+        assert self.trusts.client.call_args_list[0][0][-2:] == (42, 42)
+        assert out
