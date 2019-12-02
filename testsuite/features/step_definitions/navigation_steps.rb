@@ -107,7 +107,23 @@ When(/^I check "([^"]*)" if not checked$/) do |arg1|
 end
 
 When(/^I select "([^"]*)" from "([^"]*)"$/) do |arg1, arg2|
-  select(arg1, from: arg2)
+  select(arg1, from: arg2, exact: false)
+end
+
+When(/^I select the maximum amount of items per page"$/) do
+  find(:xpath, "//select[@class='display-number']").find(:xpath, 'option[6]').select_option
+end
+
+When(/^I select the (base|parent) channel for the "([^"]*)" from "([^"]*)"$/) do |client, from|
+  select(CHANNEL_BY_CLIENT[client], from: from, exact: false)
+end
+
+When(/^I select the contact method for the "([^"]*)" from "([^"]*)"$/) do |client, from|
+  if client.include? 'ssh_minion'
+    select('Push via SSH', from: from)
+  else
+    select('Default', from: from)
+  end
 end
 
 When(/^I select "([^"]*)" from drop-down in table line with "([^"]*)"$/) do |value, line|
@@ -148,7 +164,7 @@ end
 # Click on a button which appears inside of <div> with
 # the given "id"
 When(/^I click on "([^"]*)" in element "([^"]*)"$/) do |text, element_id|
-  within(:xpath, "//div[@id='#{element_id}']") do
+  within(:xpath, "//div[@id=\"#{element_id}\"]") do
     click_button_and_wait(text, match: :first)
   end
 end
@@ -191,7 +207,7 @@ end
 # Click on a link which appears inside of <div> with
 # the given "id"
 When(/^I follow "([^"]*)" in element "([^"]*)"$/) do |arg1, arg2|
-  within(:xpath, "//div[@id='#{arg2}']") do
+  within(:xpath, "//div[@id=\"#{arg2}\"]") do
     step %(I follow "#{arg1}")
   end
 end
@@ -337,7 +353,7 @@ When(/^I select the hostname of "([^"]*)" from "([^"]*)"$/) do |host, hostname|
     # don't select anything if not in the list
     next if $proxy.nil?
     step %(I select "#{$proxy.full_hostname}" from "#{hostname}")
-  when 'sle-minion'
+  when 'sle_minion'
     step %(I select "#{$minion.full_hostname}" from "#{hostname}")
   end
 end
@@ -360,7 +376,7 @@ end
 Given(/^I am on the groups page$/) do
   steps %(
     Given I am on the Systems page
-    When I follow the left menu "Systems >System Groups"
+    When I follow the left menu "Systems > System Groups"
     )
 end
 
@@ -420,12 +436,12 @@ Then(/^I should not be authorized$/) do
 end
 
 Then(/^I should be logged in$/) do
-  raise 'User is not logged in' unless find(:xpath, "//a[@href='/rhn/Logout.do']").visible?
+  raise 'User is not logged in' unless all(:xpath, "//a[@href='/rhn/Logout.do']").any?
 end
 
 Then(/^I am logged in$/) do
   raise 'User is not logged in' unless find(:xpath, "//a[@href='/rhn/Logout.do']").visible?
-  raise 'The welcome message is not shown' unless has_content?("You have just created your first #{product} user. To finalize your installation please use the Setup Wizard")
+  raise 'The welcome message is not shown' unless has_content?('You have just created your first SUSE Manager user. To finalize your installation please use the Setup Wizard')
 end
 
 Given(/^I am on the patches page$/) do
@@ -440,6 +456,11 @@ end
 
 When(/^I check test channel$/) do
   step %(I check "Test Base Channel" in the list)
+end
+
+When(/^I check the child channel "([^"]*)"$/) do |channel|
+  checkbox = find(:xpath, "//label[contains(.,'#{channel}')]/..//input", match: :first)
+  checkbox.set(true)
 end
 
 When(/^I check "([^"]*)" patch$/) do |arg1|
@@ -679,6 +700,20 @@ end
 Then(/^I check the row with the "([^"]*)" hostname$/) do |host|
   system_name = get_system_name(host)
   step %(I check "#{system_name}" in the list)
+end
+
+Then(/^I check (a|the) "([^"]*)" patch in the list$/) do |client|
+  steps %(
+    When I select the maximum amount of items per page
+    And I check "#{PATCH_BY_CLIENT[client]}" in the list
+  )
+end
+
+Then(/^I check (a|the) "([^"]*)" package in the list$/) do |client|
+  steps %(
+    When I list packages with "#{PACKAGE_BY_CLIENT[client]}"
+    And I check "#{PACKAGE_BY_CLIENT[client]}" in the list
+  )
 end
 
 When(/^I check "([^"]*)" in the list$/) do |text|

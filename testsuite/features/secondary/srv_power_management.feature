@@ -7,7 +7,7 @@ Feature: Power management
     Given the server starts mocking an IPMI host
 
   Scenario: Check the power management page
-    Given I am on the Systems overview page of this "sle-client"
+    Given I am on the Systems overview page of this "sle_client"
     And I follow "Provisioning" in the content area
     And I follow "Power Management" in the content area
     Then I should see a "Power Management Settings" text
@@ -15,7 +15,7 @@ Feature: Power management
     And I should see a "Save" button
 
   Scenario: Save power management values
-    Given I am on the Systems overview page of this "sle-client"
+    Given I am on the Systems overview page of this "sle_client"
     And I follow "Provisioning" in the content area
     And I follow "Power Management" in the content area
     When I enter "127.0.0.1" as "powerAddress"
@@ -29,7 +29,7 @@ Feature: Power management
     And the cobbler report contains "Power Management Type          : ipmitool"
 
   Scenario: Test IPMI functions
-    Given I am on the Systems overview page of this "sle-client"
+    Given I am on the Systems overview page of this "sle_client"
     And I follow "Provisioning" in the content area
     And I follow "Power Management" in the content area
     Then I click on "Power On"
@@ -53,10 +53,10 @@ Feature: Power management
   Scenario: Check power management SSM configuration
     Given I am authorized
     And I am on the System Overview page
-    And I check the "sle-client" client
+    And I check the "sle_client" client
     And I am on System Set Manager Overview
     And I follow "Configure power management" in the content area
-    Then I should see "sle-client" as link
+    Then I should see "sle_client" as link
     And I should see a "Change Power Management Configuration" text
     And I should see a "Type" text
     And I should see a "Network address" text
@@ -77,7 +77,7 @@ Feature: Power management
     Given I am authorized
     And I am on System Set Manager Overview
     And I follow "power management operations" in the content area
-    Then I should see "sle-client" as link
+    Then I should see "sle_client" as link
     And I should see a "Power On" button
     And I should see a "Power Off" button
     And I should see a "Reboot" button
