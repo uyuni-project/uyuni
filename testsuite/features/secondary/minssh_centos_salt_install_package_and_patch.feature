@@ -45,7 +45,7 @@ Feature: Install a patch on the CentOS SSH minion via Salt through the UI
 
 @centos_minion
   Scenario: Install a patch on the Centos SSH minion
-    Given I am on the Systems overview page of this "ceos-ssh-minion"
+    Given I am on the Systems overview page of this "ceos_ssh_minion"
     When I follow "Software" in the content area
     And I follow "Patches" in the content area
     When I check "virgo-dummy-3456" in the list
@@ -57,7 +57,7 @@ Feature: Install a patch on the CentOS SSH minion via Salt through the UI
 
 @centos_minion
   Scenario: Install a package on the Centos SSH minion
-    Given I am on the Systems overview page of this "ceos-ssh-minion"
+    Given I am on the Systems overview page of this "ceos_ssh_minion"
     When I follow "Software" in the content area
     And I follow "Install"
     And I check "andromeda-dummy" in the list
@@ -68,7 +68,7 @@ Feature: Install a patch on the CentOS SSH minion via Salt through the UI
 
 @centos_minion
   Scenario: Cleanup: remove virgo-dummy and andromeda-dummy packages from Centos SSH minion
-    Given I am on the Systems overview page of this "ceos-ssh-minion"
+    Given I am on the Systems overview page of this "ceos_ssh_minion"
     When I follow "Software" in the content area
     And I follow "List / Remove"
     And I enter "andromeda" as the filtered package name

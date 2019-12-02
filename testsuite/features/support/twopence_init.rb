@@ -114,7 +114,7 @@ end
 # * for the PXE booted clients, it is derived from the branch name, the hardware type,
 #   and a fingerprint, e.g. example.Intel-Genuine-None-d6df84cca6f478cdafe824e35bbb6e3b
 def get_system_name(host)
-  if host == 'pxeboot-minion'
+  if host == 'pxeboot_minion'
     # The PXE boot minion is not directly accessible on the network,
     # therefore it is not represented by a twopence node
     output, _code = $server.run('salt-key')
@@ -131,7 +131,7 @@ end
 
 # Get MAC address of system
 def get_mac_address(host)
-  if host == 'pxeboot-minion'
+  if host == 'pxeboot_minion'
     mac = ENV['PXEBOOTMAC']
   else
     node = get_target(host)
