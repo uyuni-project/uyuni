@@ -1,12 +1,16 @@
-# Copyright (c) 2010-2020 SUSE LLC.
+# Copyright (c) 2010-2022 SUSE LLC.
 # Licensed under the terms of the MIT license.
 
+@scope_cobbler
 Feature: Cobbler and distribution autoinstallation
 
-  Background:
-    Given I am authorized with the feature's user
+  Scenario: Log in as testing user
+    Given I am authorized as "testing" with password "testing"
 
-  Scenario: Ask cobbler to create a distribution via XML-RPC
+  Scenario: Copy cobbler profiles on the server
+    When I copy autoinstall mocked files on server
+
+  Scenario: Ask cobbler to create a distribution via API
     Given cobblerd is running
     Then create distro "testdistro" as user "testing" with password "testing"
 
@@ -20,12 +24,12 @@ Feature: Cobbler and distribution autoinstallation
     Then I should see a "testprofile" text
     And I should see a "testdistro" text
 
-  Scenario: Create SUSE Distibution with installer updates
+  Scenario: Create SUSE distribution with installer updates
     When I follow the left menu "Systems > Autoinstallation > Distributions"
     And I follow "Create Distribution"
     And I enter "SLE-15-FAKE" as "label"
-    And I enter "/install/SLES11-SP1-x86_64/DVD1/" as "basepath"
-    And I select "SLE-Product-SLES15-Pool for x86_64" from "channelid"
+    And I enter "/var/autoinstall/SLES15-SP4-x86_64/DVD1/" as "basepath"
+    And I select "SLE-Product-SLES15-SP4-Pool for x86_64" from "channelid"
     And I select "SUSE Linux Enterprise 15" from "installtype"
     And I click on "Create Autoinstallable Distribution"
     Then I should see a "Autoinstallable Distributions" text
@@ -37,7 +41,7 @@ Feature: Cobbler and distribution autoinstallation
     When I follow the left menu "Systems > Autoinstallation > Distributions"
     And I follow "Create Distribution"
     When I enter "fedora_kickstart_distro" as "label"
-    And I enter "/install/Fedora_12_i386/" as "basepath"
+    And I enter "/var/autoinstall/Fedora_12_i386/" as "basepath"
     And I select "Fedora" from "installtype"
     And I click on "Create Autoinstallable Distribution"
     Then I should see a "Autoinstallable Distributions" text
@@ -54,11 +58,6 @@ Feature: Cobbler and distribution autoinstallation
     And I click on "Finish"
     Then I should see a "Autoinstallation: fedora_kickstart_profile" text
     And I should see a "Autoinstallation Details" link
-
-  Scenario: Autoinstallation profiles page
-    When I am on the Create Autoinstallation Profile page
-    When I follow the left menu "Systems > Autoinstallation > Profiles"
-    Then I should see a "Distributions" text
 
   Scenario: Upload a profile via the UI
     When I follow the left menu "Systems > Autoinstallation > Profiles"
@@ -110,7 +109,8 @@ Feature: Cobbler and distribution autoinstallation
   Scenario: Check default snippets
     When I follow the left menu "Systems > Autoinstallation > Autoinstallation Snippets"
     And I follow "Default Snippets"
-    And I click on "Next Page"
+    And I enter "spacewalk/sles_no_signature_checks" as the filtered snippet name
+    And I click on the filter button
     And I follow "spacewalk/sles_no_signature_checks"
     Then I should see "<signature-handling>" in the textarea
 
@@ -131,8 +131,8 @@ Feature: Cobbler and distribution autoinstallation
 
   Scenario: Test for PXE environment files
     Given cobblerd is running
-    Then file "/srv/tftpboot/pxelinux.cfg/default" should exist on server
-    When I wait until file "/srv/tftpboot/pxelinux.cfg/default" contains "ks=.*fedora_kickstart_profile:1" on server
+    When I wait until file "/srv/tftpboot/pxelinux.cfg/default" exists on server
+    And I wait until file "/srv/tftpboot/pxelinux.cfg/default" contains "ks=.*fedora_kickstart_profile:1" on server
     And I wait until file "/srv/tftpboot/pxelinux.cfg/default" contains "ks=.*fedora_kickstart_profile_upload:1" on server
     And I wait until file "/srv/tftpboot/images/fedora_kickstart_distro:1:SUSETest/initrd.img" exists on server
     And I wait until file "/srv/tftpboot/images/fedora_kickstart_distro:1:SUSETest/vmlinuz" exists on server
@@ -142,13 +142,14 @@ Feature: Cobbler and distribution autoinstallation
   Scenario: Trigger the creation of a cobbler system record
     When I trigger cobbler system record
 
-  Scenario: Create a cobbler system record via XML-RPC
-    When I am logged in via XML-RPC system with the feature's user
-    And I create a System Record
-    Then I wait until file "/srv/tftpboot/pxelinux.cfg/01-00-22-22-77-ee-cc" contains "ks=.*testserver:1" on server
-    And the cobbler report should contain "testserver.example.com" for cobbler system name "testserver:1"
+  Scenario: Create a cobbler system record via API
+    When I am logged in API as user "admin" and password "admin"
+    And I create a system record
+    And I logout from API
+    And I wait until file "/srv/tftpboot/pxelinux.cfg/01-00-22-22-77-ee-cc" contains "ks=.*testserver:1" on server
+    Then the cobbler report should contain "testserver.example.com" for cobbler system name "testserver:1"
     And the cobbler report should contain "1.1.1.1" for cobbler system name "testserver:1"
     And the cobbler report should contain "00:22:22:77:ee:cc" for cobbler system name "testserver:1"
 
   Scenario: Cleanup: delete test distro and profiles
-    Then I remove kickstart profiles and distros
+    When I remove kickstart profiles and distros

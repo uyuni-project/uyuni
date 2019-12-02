@@ -1,4 +1,4 @@
-# Copyright (c) 2020 SUSE LLC
+# Copyright (c) 2020-2022 SUSE LLC
 # Licensed under the terms of the MIT license.
 #
 #  1) bootstrap a new CentOS minion via salt-ssh
@@ -10,17 +10,19 @@ Feature: Bootstrap a CentOS 8 Salt SSH minion
   Scenario: Clean up sumaform leftovers on a CentOS 8 Salt SSH minion
     When I perform a full salt minion cleanup on "ceos8_ssh_minion"
 
+  Scenario: Log in as admin user
+    Given I am authorized for the "Admin" section
+
   Scenario: Bootstrap a CentOS 8 Salt SSH minion
-    Given I am authorized with the feature's user
-    When I go to the bootstrapping page
+    When I follow the left menu "Systems > Bootstrapping"
     Then I should see a "Bootstrap Minions" text
     When I check "manageWithSSH"
     And I enter the hostname of "ceos8_ssh_minion" as "hostname"
     And I enter "linux" as "password"
     And I select "1-ceos8_ssh_minion_key" from "activationKeys"
-    And I select the hostname of "proxy" from "proxies"
+    And I select the hostname of "proxy" from "proxies" if present
     And I click on "Bootstrap"
-    Then I wait until I see "Successfully bootstrapped host!" text
+    And I wait until I see "Successfully bootstrapped host!" text
     And I wait until onboarding is completed for "ceos8_ssh_minion"
 
 @proxy

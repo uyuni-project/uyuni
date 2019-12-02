@@ -1,11 +1,15 @@
-# Copyright (c) 2018-2020 SUSE LLC
+# Copyright (c) 2018-2022 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 @ssh_minion
+@scope_action_chains
+@scope_salt_ssh
 Feature: Salt SSH action chain
 
+  Scenario: Log in as admin user
+    Given I am authorized for the "Admin" section
+
   Scenario: Pre-requisite: downgrade repositories to lower version on SSH minion
-    Given I am authorized with the feature's user
     When I enable repository "test_repo_rpm_pool" on this "ssh_minion"
     And I remove package "andromeda-dummy" from this "ssh_minion" without error control
     And I remove package "virgo-dummy" from this "ssh_minion" without error control
@@ -26,7 +30,6 @@ Feature: Salt SSH action chain
     And I click on the filter button until page does contain "andromeda-dummy-1.0" text
 
   Scenario: Pre-requisite: ensure the errata cache is computed before testing on SSH minion
-    Given I am authorized with the feature's user
     When I follow the left menu "Admin > Task Schedules"
     And I follow "errata-cache-default"
     And I follow "errata-cache-bunch"
@@ -35,9 +38,10 @@ Feature: Salt SSH action chain
     And I wait until the table contains "FINISHED" or "SKIPPED" followed by "FINISHED" in its first rows
 
   Scenario: Pre-requisite: remove all action chains before testing on SSH minion
-    Given I am logged in via XML-RPC actionchain with the feature's user
+    Given I am logged in API as user "admin" and password "admin"
     When I delete all action chains
     And I cancel all scheduled actions
+    And I logout from API
 
   Scenario: Add a patch installation to the action chain on SSH minion
     Given I am on the Systems overview page of this "ssh_minion"
@@ -50,7 +54,6 @@ Feature: Salt SSH action chain
     Then I should see a "Action has been successfully added to the Action Chain" text
 
   Scenario: Add a package removal to the action chain on SSH minion
-    Given I am on the Systems overview page of this "ssh_minion"
     When I follow "Software" in the content area
     And I follow "List / Remove" in the content area
     And I enter "milkyway-dummy" as the filtered package name
@@ -62,7 +65,6 @@ Feature: Salt SSH action chain
     Then I should see a "Action has been successfully added to the Action Chain" text
 
   Scenario: Add a package installation to an action chain on SSH minion
-    Given I am on the Systems overview page of this "ssh_minion"
     When I follow "Software" in the content area
     And I follow "Install New Packages" in the content area
     And I check "virgo-dummy" in the list
@@ -72,7 +74,6 @@ Feature: Salt SSH action chain
     Then I should see a "Action has been successfully added to the Action Chain" text
 
   Scenario: Create a configuration channel for testing action chain on SSH minion
-    Given I am authorized with the feature's user
     When I follow the left menu "Configuration > Channels"
     And I follow "Create Config Channel"
     And I enter "Action Chain Channel" as "cofName"
@@ -82,7 +83,6 @@ Feature: Salt SSH action chain
     Then I should see a "Action Chain Channel" text
 
   Scenario: Add a configuration file to configuration channel for testing action chain on SSH minion
-    Given I am authorized with the feature's user
     When I follow the left menu "Configuration > Channels"
     And I follow "Action Chain Channel"
     And I follow "Create Configuration File or Directory"
@@ -103,7 +103,6 @@ Feature: Salt SSH action chain
     Then I should see a "Channel Subscriptions successfully changed for" text
 
   Scenario: Add a configuration file deployment to the action chain on SSH minion
-    Given I am authorized with the feature's user
     When I follow the left menu "Configuration > Channels"
     And I follow "Action Chain Channel"
     And I follow "Deploy Files" in the content area
@@ -128,8 +127,8 @@ Feature: Salt SSH action chain
     Then I should see a "Action has been successfully added to the Action Chain" text
 
   Scenario: Add a remote command to the action chain on SSH minion
-    Given I am on the Systems overview page of this "ssh_minion"
-    When I follow "Remote Command"
+    When I follow "Details" in the content area
+    When I follow "Remote Command" in the content area
     And I enter as remote command this script in
       """
       #!/bin/bash
@@ -140,7 +139,6 @@ Feature: Salt SSH action chain
     Then I should see a "Action has been successfully added to the Action Chain" text
 
   Scenario: Verify the action chain list on SSH minion
-    Given I am on the Systems overview page of this "ssh_minion"
     When I follow the left menu "Schedule > Action Chains"
     And I follow "new action chain"
     Then I should see a "1. Apply patch(es) andromeda-dummy-6789 on 1 system" text
@@ -157,7 +155,7 @@ Feature: Salt SSH action chain
     Then I should not see a "new action chain" link
 
   Scenario: Execute the action chain from the web UI on SSH minion
-    Given I am on the Systems overview page of this "ssh_minion"
+    Given I am authorized for the "Admin" section
     When I follow the left menu "Schedule > Action Chains"
     And I follow "new action chain"
     Then I click on "Save and Schedule"
@@ -180,7 +178,6 @@ Feature: Salt SSH action chain
     Then I should see a "Action has been successfully added to the Action Chain" text
 
   Scenario: Delete the action chain for SSH minion
-    Given I am authorized with the feature's user
     When I follow the left menu "Schedule > Action Chains"
     And I follow "new action chain"
     And I follow "delete action chain" in the content area
@@ -196,7 +193,7 @@ Feature: Salt SSH action chain
     And I follow "Software" in the content area
     And I click on "Update Package List"
     And I follow "Events" in the content area
-    And I wait until I do not see "Package List Refresh scheduled" text, refreshing the page
+    And I wait until I do not see "Package List Refresh scheduled by admin" text, refreshing the page
     And I follow "Software" in the content area
     And I follow "List / Remove" in the content area
     And I enter "andromeda-dummy" as the filtered package name
@@ -208,24 +205,25 @@ Feature: Salt SSH action chain
     Then I should see a "bunch was scheduled" text
     And I wait until the table contains "FINISHED" or "SKIPPED" followed by "FINISHED" in its first rows
 
-  Scenario: Add operations to the action chain via XML-RPC for SSH minions
-    Given I am logged in via XML-RPC actionchain with the feature's user
+  Scenario: Add operations to the action chain via API for SSH minions
+    Given I am logged in API as user "admin" and password "admin"
     And I want to operate on this "ssh_minion"
-    When I call XML-RPC createChain with chainLabel "throwaway_chain"
+    When I call actionchain.create_chain() with chain label "throwaway_chain"
     And I call actionchain.add_package_install()
     And I call actionchain.add_package_removal()
     And I call actionchain.add_package_upgrade()
     And I call actionchain.add_script_run() with the script "exit 1;"
     And I call actionchain.add_system_reboot()
     Then I should be able to see all these actions in the action chain
-    When I call actionchain.remove_action on each action within the chain
+    When I call actionchain.remove_action() on each action within the chain
     Then the current action chain should be empty
-    And I delete the action chain
+    When I delete the action chain
+    And I logout from API
 
-  Scenario: Run an action chain via XML-RPC on SSH minion
-    Given I am logged in via XML-RPC actionchain with the feature's user
+  Scenario: Run an action chain via API on SSH minion
+    Given I am logged in API as user "admin" and password "admin"
     And I want to operate on this "ssh_minion"
-    When I call XML-RPC createChain with chainLabel "multiple_scripts"
+    When I call actionchain.create_chain() with chain label "multiple_scripts"
     And I call actionchain.add_script_run() with the script "echo -n 1 >> /tmp/action_chain.log"
     And I call actionchain.add_script_run() with the script "echo -n 2 >> /tmp/action_chain.log"
     And I call actionchain.add_script_run() with the script "echo -n 3 >> /tmp/action_chain.log"
@@ -235,10 +233,10 @@ Feature: Salt SSH action chain
     Then I wait until there are no more action chains
     When I wait until file "/tmp/action_chain_done" exists on "ssh_minion"
     Then file "/tmp/action_chain.log" should contain "123" on "ssh_minion"
-    And I wait until there are no more scheduled actions
+    When I wait until there are no more scheduled actions
+    And I logout from API
 
   Scenario: Cleanup: remove SSH minion from configuration channel
-    Given I am authorized with the feature's user
     When I follow the left menu "Configuration > Channels"
     And I follow "Action Chain Channel"
     And I follow "Systems" in the content area
@@ -247,7 +245,6 @@ Feature: Salt SSH action chain
     Then I should see a "Successfully unsubscribed 1 system(s)." text
 
   Scenario: Cleanup: remove configuration channel for SSH minion
-    Given I am authorized with the feature's user
     When I follow the left menu "Configuration > Channels"
     And I follow "Action Chain Channel"
     And I follow "Delete Channel"
@@ -264,7 +261,3 @@ Feature: Salt SSH action chain
     And I run "rm -f /tmp/action_chain_done" on "ssh_minion" without error control
     And I run "rm -f /etc/action-chain.cnf" on "ssh_minion" without error control
     And I run "rm -f /tmp/action_chain_one_system_done" on "ssh_minion" without error control
-
-  Scenario: Cleanup: remove remaining systems from SSM after action chain tests on SSH minion
-    When I am authorized with the feature's user
-    And I follow "Clear"

@@ -86,22 +86,6 @@ STDOUT.puts "Capybara APP Host: #{Capybara.app_host}:#{Capybara.server_port}"
 # enable minitest assertions in steps
 enable_assertions
 
-# Before feature hook
-Before do |scenario|
-  feature_path = scenario.feature.location.file
-  next unless feature_path != $current_feature
-
-  $current_feature = feature_path
-  # Core features are always handled using admin user, the rest will use its own user based on feature filename
-  if feature_path.include? 'core'
-    $username = 'admin'
-    $password = 'admin'
-  else
-    username = $current_feature.split(%r{(\.feature|\/)})[-2]
-    step %(I create a user with name "#{username}" and password "linux") if $username.nil?
-  end
-end
-
 # embed a screenshot after each failed scenario
 After do |scenario|
   current_epoch = Time.new.to_i
@@ -150,6 +134,22 @@ Before do
   current_time = Time.new
   @scenario_start_time = current_time.to_i
   log "This scenario ran at: #{current_time}\n"
+end
+
+# Before feature hook
+Before do |scenario|
+  feature_path = scenario.feature.location.file
+  next unless feature_path != $current_feature
+
+  $current_feature = feature_path
+  # Core features are always handled using admin user, the rest will use its own user based on feature filename
+  if feature_path.include? 'core'
+    $username = 'admin'
+    $password = 'admin'
+  else
+    username = $current_feature.split(%r{(\.feature|\/)})[-2]
+    step %(I create a user with name "#{username}" and password "linux") if $username.nil?
+  end
 end
 
 # do some tests only if the corresponding node exists

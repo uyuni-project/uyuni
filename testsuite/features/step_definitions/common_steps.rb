@@ -247,9 +247,8 @@ end
 # systemspage and clobber
 Given(/^I am on the Systems page$/) do
   steps %(
-    When I am authorized with the feature's user
-    When I follow the left menu "Systems > Overview"
-    When I wait until I see "System Overview" text
+    And I follow the left menu "Systems > Overview"
+    And I wait until I see "System Overview" text
   )
 end
 
@@ -298,7 +297,7 @@ end
 
 When(/^I remove kickstart profiles and distros$/) do
   host = $server.full_hostname
-  $api_test.auth.login($username, $password)
+  $api_test.auth.login('admin', 'admin')
   # -------------------------------
   # Cleanup kickstart distros and their profiles, if any.
 

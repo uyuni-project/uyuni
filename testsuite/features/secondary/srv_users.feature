@@ -197,7 +197,7 @@ Feature: Manage users
     And I should not see a "user1" link
 
   Scenario: Display the CSV separator preference
-    Given I am authorized with the feature's user
+    Given I am authorized as "testing" with password "testing"
     When I follow the left menu "Home > My Preferences"
     Then I should see a "CSV Files" text
     And I should see a "Configure a separator character to be used in downloadable CSV files:" text
@@ -205,7 +205,7 @@ Feature: Manage users
     And I should see a "Semicolon" text
 
   Scenario: Configure the CSV separator char to semicolon
-    Given I am authorized with the feature's user
+    Given I am authorized as "testing" with password "testing"
     When I follow the left menu "Home > My Preferences"
     And I choose ";"
     And I click on "Save Preferences"
@@ -213,7 +213,7 @@ Feature: Manage users
     And radio button "radio-semicolon" is checked
 
   Scenario: Cleanup: configure the CSV separator char to comma
-    Given I am authorized with the feature's user
+    Given I am authorized as "testing" with password "testing"
     When I follow the left menu "Home > My Preferences"
     And I choose ","
     And I click on "Save Preferences"

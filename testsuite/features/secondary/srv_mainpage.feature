@@ -1,24 +1,29 @@
-# Copyright (c) 2015-2020 SUSE LLC
+# Copyright (c) 2015-2018 SUSE LLC
 # Licensed under the terms of the MIT license.
 
+@scope_visualization
 Feature: Main landing page options and preferences
+
+  Scenario: Clear browser cookies for main landing page validation
+    When I clear browser cookies
 
   Scenario: Access the Login page
     Given I am not authorized
     When I go to the home page
-    Then I should see something
+    Then I should see a "Sign In" text
 
+@uyuni
   Scenario: Access the About page
     Given I am not authorized
     When I go to the home page
     And I follow "About"
-    Then I should see a "About $PRODUCT" text
+    Then I should see a "About Uyuni" text
 
   Scenario: Access the Copyright Notice
     Given I am not authorized
     When I go to the home page
     And I follow "Copyright Notice"
-    Then I should see a "Copyright (c) 2011 - 2020 SUSE LLC." text
+    Then I should see a "Copyright (c) 2011 - 2022 SUSE LLC." text
 
 @susemanager
   Scenario: Access the EULA
@@ -28,7 +33,7 @@ Feature: Main landing page options and preferences
     And I follow "SUSE MANAGER LICENSE AGREEMENT"
     Then I should see a "SUSE Manager License Agreement" text
 
-  Scenario: Log into SUSE Manager
+  Scenario: Log into Uyuni
     Given I am not authorized
     When I go to the home page
     And I enter "testing" as "username"
@@ -36,12 +41,13 @@ Feature: Main landing page options and preferences
     And I click on "Sign In"
     Then I should be logged in
 
-  Scenario: Log out of SUSE Manager
+  Scenario: Log out of Uyuni
+    Given I am authorized
     When I sign out
     Then I should not be authorized
 
   Scenario: Top level bar
-    Given I am authorized as "admin" with password "admin"
+    Given I am authorized
     When I go to the home page
     And I should see a "Manage" link
     And I should see a "admin" text
@@ -50,7 +56,7 @@ Feature: Main landing page options and preferences
     And I should see a Sign Out link
 
   Scenario: Main menu as regular user
-    Given I am authorized as "testing" with password "testing"
+    Given I am authorized
     Then I should see a "Home" link
     And I should see a "Systems" link
     And I should see a "Salt" link
@@ -65,8 +71,10 @@ Feature: Main landing page options and preferences
     And I should see a "Help" link
     And I should see a "External Links" link
 
+  Scenario: Log in as admin user
+    Given I am authorized for the "Admin" section
+
   Scenario: Main menu as administrator
-    Given I am authorized as "admin" with password "admin"
     Then I should see a "Home" link
     And I should see a "Systems" link
     And I should see a "Salt" link
@@ -82,7 +90,7 @@ Feature: Main landing page options and preferences
     And I should see a "External Links" link
 
   Scenario: Main content
-    Given I am authorized with the feature's user
+    Given I am authorized
     Then I should see a "Tasks" text
     And I should see a "Inactive Systems" text
     And I should see a "Most Critical Systems" text

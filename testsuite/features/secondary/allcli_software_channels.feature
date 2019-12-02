@@ -1,16 +1,19 @@
-# Copyright (c) 2018-2020 SUSE LLC
+# Copyright (c) 2018-2022 SUSE LLC
 # Licensed under the terms of the MIT license.
 
-Feature: Chanel subscription via SSM
+@scope_changing_software_channels
+Feature: Channel subscription via SSM
+
+  Scenario: Log in as admin user
+    Given I am authorized for the "Admin" section
 
 @sle_minion
-  Scenario: Change child channels for SLES Minion subscribed to a base channel
-    Given I am authorized with the feature's user
-    When I am on the System Overview page
+  Scenario: Change child channels for SLES minion subscribed to a base channel
+    When I follow the left menu "Systems > Overview"
     And I follow "Clear"
     And I check the "sle_minion" client
     And I should see "1" systems selected for SSM
-    And I am on System Set Manager Overview
+    And I follow the left menu "Systems > System Set Manager > Overview"
     And I follow "channel memberships" in the content area
     Then I should see a "Base Channel" text
     And I should see a "Next" text
@@ -31,13 +34,12 @@ Feature: Chanel subscription via SSM
     And I follow "Clear"
 
 @sle_client
-  Scenario: Change child channels for SLES Client subscribed to a base channel
-    Given I am authorized with the feature's user
-    When I am on the System Overview page
+  Scenario: Change child channels for SLES client subscribed to a base channel
+    When I follow the left menu "Systems > Overview"
     And I follow "Clear"
     And I check the "sle_client" client
     And I should see "1" systems selected for SSM
-    And I am on System Set Manager Overview
+    And I follow the left menu "Systems > System Set Manager > Overview"
     And I follow "channel memberships" in the content area
     Then I should see a "Base Channel" text
     And I should see a "Next" text
@@ -89,16 +91,19 @@ Feature: Chanel subscription via SSM
     Then "1" channels with prefix "spacewalk:" should be enabled on "sle_client"
     And channel "Test-Channel-x86_64" should be enabled on "sle_client"
 
+  Scenario: Wait 3 minutes for the scheduled action to be executed
+    When I wait for "180" seconds
+
 @sle_minion
   Scenario: Check channel change has completed for the SLES minion
     Given I am on the Systems overview page of this "sle_minion"
-    When I wait until event "Subscribe channels scheduled" is completed
+    When I wait until event "Subscribe channels scheduled by admin" is completed
     Then I should see "The client completed this action on" at least 3 minutes after I scheduled an action
 
 @sle_client
   Scenario: Check channel change has completed for the SLES client
     Given I am on the Systems overview page of this "sle_client"
-    When I wait until event "Subscribe channels scheduled" is completed
+    When I wait until event "Subscribe channels scheduled by admin" is completed
     Then I should see "The client completed this action on" at least 3 minutes after I scheduled an action
 
 @sle_minion
@@ -137,12 +142,11 @@ Feature: Chanel subscription via SSM
 
 @centos_minion
   Scenario: System default channel can't be determined on the CentOS minion
-    Given I am authorized with the feature's user
-    When I am on the System Overview page
+    When I follow the left menu "Systems > Overview"
     And I follow "Clear"
     And I check the "ceos_minion" client
     Then I should see "1" systems selected for SSM
-    When I am on System Set Manager Overview
+    When I follow the left menu "Systems > System Set Manager > Overview"
     And I follow "channel memberships" in the content area
     And I select "System Default Base Channel" from drop-down in table line with "Test Base Channel"
     And I click on "Next"
@@ -160,7 +164,7 @@ Feature: Chanel subscription via SSM
     And I follow "Clear"
 
 @centos_minion
-  Scenario: Cleanup: make sure the CentOS SSH minion is still unchanged
+  Scenario: Cleanup: make sure the CentOS minion is still unchanged
     Given I am on the Systems overview page of this "ceos_minion"
     When I follow "Software" in the content area
     And I follow "Software Channels" in the content area
@@ -168,12 +172,11 @@ Feature: Chanel subscription via SSM
 
 @ubuntu_minion
   Scenario: System default channel can't be determined on the Ubuntu minion
-    Given I am authorized with the feature's user
-    When I am on the System Overview page
+    When I follow the left menu "Systems > Overview"
     And I follow "Clear"
     And I check the "ubuntu_minion" client
     Then I should see "1" systems selected for SSM
-    When I am on System Set Manager Overview
+    When I follow the left menu "Systems > System Set Manager > Overview"
     And I follow "channel memberships" in the content area
     And I select "System Default Base Channel" from drop-down in table line with "Test-Channel-Deb-AMD64"
     And I click on "Next"
@@ -234,5 +237,4 @@ Feature: Chanel subscription via SSM
     Then channel "Test-Channel-x86_64 Child Channel" should not be enabled on "sle_client"
 
   Scenario: Cleanup: remove remaining systems from SSM after channel subscription tests
-    When I am authorized with the feature's user
-    And I follow "Clear"
+    When I follow "Clear"

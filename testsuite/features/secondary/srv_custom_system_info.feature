@@ -1,10 +1,12 @@
-# Copyright (c) 2017-2019 SUSE LLC
+# Copyright (c) 2017-2021 SUSE LLC
 # Licensed under the terms of the MIT license.
 
+@scope_visualization
+@scope_onboarding
 Feature: Custom system info key-value pairs
 
-  Background:
-    Given I am authorized with the feature's user
+  Scenario: Log in as admin user
+    Given I am authorized for the "Admin" section
 
   Scenario: Create a new key
     When I follow the left menu "Systems > Custom System Info"
@@ -16,7 +18,7 @@ Feature: Custom system info key-value pairs
     Then I should see a "Successfully added 1 custom key." text
 
   Scenario: Add a value to a system
-    When I am on the System Overview page
+    When I follow the left menu "Systems > Overview"
     And I follow this "sle_client" link
     And I follow "Custom Info"
     And I follow "Create Value"
@@ -27,7 +29,7 @@ Feature: Custom system info key-value pairs
     And I should see a "key-value" link
 
   Scenario: Edit the value
-    When I am on the System Overview page
+    When I follow the left menu "Systems > Overview"
     And I follow this "sle_client" link
     And I follow "Custom Info"
     And I follow "key-value"
