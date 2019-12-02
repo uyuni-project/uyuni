@@ -3190,6 +3190,10 @@
                         "fqdn_ip6": [
                             "2620:113:80c0:8000:10:161:25:49"
                         ],
+                        "fqdns": [
+                            "minionsles12-suma3pg.vagrant.local",
+                            "minionsles12-suma3pg.dummy.vagrant.local"
+                        ],
                         "gpus": [],
                         "host": "pinotage-1",
                         "hwaddr_interfaces": {

@@ -3516,8 +3516,7 @@
                 "changes": {
                     "ret": {
                         "fqdns": [
-                            "minionsles12-suma3pg.vagrant.local",
-                            "minionsles12-suma3pg.dummy.vagrant.local"
+                            "minionsles12-suma3pg.vagrant.local"
                         ]
                     }
                 },
@@ -3525,7 +3524,7 @@
                 "duration": 105.654,
                 "name": "network.fqdns",
                 "result": true,
-                "start_time": "13:58:24.817053"
+                "start_time": "12:58:12.430383"
             },
             "module_|-network-ips_|-sumautil.primary_ips_|-run": {
                 "comment": "Module function sumautil.primary_ips executed",
@@ -3611,6 +3610,7 @@
                         "ps": "ps -efH",
                         "server_id": 1704458941,
                         "uuid": "4a531bb7-612f-e846-9d94-63af964e00e9",
+						"instance_id": "i-abcdef1234567890",
                         "ip6_interfaces": {
                             "lo": [
                                 "::1"
