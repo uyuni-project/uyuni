@@ -511,3 +511,28 @@ class TestUyuniTrust:
             assert out
 
         assert str(exc.value) == "Trust removal: no information has been found for 'Darkmatter Org' organisation"
+
+    def test_untrust_org_exception(self):
+        """
+        Test untrust org, exception raised
+
+        :return:
+        """
+        exc_msg = "Depressed server needs Prozak"
+        self.trusts.get_trusted = MagicMock(return_value=[])
+        self.trusts.client = MagicMock(side_effect=UyuniUsersException(exc_msg))
+        self.trusts.orgs = MagicMock()
+        self.trusts.orgs.get_org_by_name = MagicMock(return_value={"id": 42})
+
+        with patch("uyuni_users.log", MagicMock()) as logger:
+            out = self.trusts.untrust("Trusted Org")
+
+        assert self.trusts.orgs.get_org_by_name.called
+        assert self.trusts.orgs.get_org_by_name.call_args_list[0][0] == ("Trusted Org",)
+        assert self.trusts.client.called
+        assert self.trusts.client.call_args_list[0][0][-2:] == (42, 42)
+        assert not out
+        assert logger.error.called
+        assert logger.error.call_args[0][0] == "Unable to remove trust: %s"
+        assert isinstance(logger.error.call_args[0][1], UyuniUsersException)
+        assert str(logger.error.call_args[0][1]) == exc_msg
