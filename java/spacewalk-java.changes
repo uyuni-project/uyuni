@@ -1,3 +1,4 @@
+- Fix minion id when applying engine-events state (bsc#1158181)
 - Remove unnecessary WARN log entries from Kubernetes integration
 
 -------------------------------------------------------------------
