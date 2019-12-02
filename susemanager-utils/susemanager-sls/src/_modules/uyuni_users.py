@@ -133,7 +133,7 @@ class RPCClient:
 
         return self.token
 
-    def __call__(self, method: str, *args, **kwargs):
+    def __call__(self, method: str, *args, **kwargs) -> Any:
         self.get_token()
         if self.token is not None:
             try:
