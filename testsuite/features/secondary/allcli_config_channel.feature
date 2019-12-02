@@ -26,7 +26,7 @@ Feature: Management of configuration of all types of clients in a single channel
     And file "/srv/susemanager/salt/manager_org_1/mixedchannel/etc/s-mgr/config" should exist on server
 
   Scenario: Subscribe a traditional client to the configuration channel
-    When I am on the Systems overview page of this "sle-client"
+    When I am on the Systems overview page of this "sle_client"
     And I follow "Configuration" in the content area
     And I follow "Manage Configuration Channels" in the content area
     And I follow first "Subscribe to Channels" in the content area
@@ -36,7 +36,7 @@ Feature: Management of configuration of all types of clients in a single channel
     Then I should see a "Channel Subscriptions successfully changed for" text
 
   Scenario: Subscribe a Salt minion to the configuration channel
-    When I am on the Systems overview page of this "sle-minion"
+    When I am on the Systems overview page of this "sle_minion"
     And I follow "Configuration" in the content area
     And I follow "Manage Configuration Channels" in the content area
     And I follow first "Subscribe to Channels" in the content area
@@ -47,7 +47,7 @@ Feature: Management of configuration of all types of clients in a single channel
 
 @centos_minion
   Scenario: Subscribe a CentOS minion to the configuration channel
-    When I am on the Systems overview page of this "ceos-minion"
+    When I am on the Systems overview page of this "ceos_minion"
     And I follow "Configuration" in the content area
     And I follow "Manage Configuration Channels" in the content area
     And I follow first "Subscribe to Channels" in the content area
@@ -58,7 +58,7 @@ Feature: Management of configuration of all types of clients in a single channel
 
 @ubuntu_minion
   Scenario: Subscribe a Ubuntu minion to the configuration channel
-    When I am on the Systems overview page of this "ubuntu-minion"
+    When I am on the Systems overview page of this "ubuntu_minion"
     And I follow "Configuration" in the content area
     And I follow "Manage Configuration Channels" in the content area
     And I follow first "Subscribe to Channels" in the content area
@@ -69,7 +69,7 @@ Feature: Management of configuration of all types of clients in a single channel
 
 @ssh_minion
   Scenario: Subscribe a SSH minion to the configuration channel
-    When I am on the Systems overview page of this "ssh-minion"
+    When I am on the Systems overview page of this "ssh_minion"
     And I follow "Configuration" in the content area
     And I follow "Manage Configuration Channels" in the content area
     And I follow first "Subscribe to Channels" in the content area
@@ -80,62 +80,62 @@ Feature: Management of configuration of all types of clients in a single channel
 
   Scenario: Deploy the file to all systems
     Given I am authorized as "admin" with password "admin"
-    When I run "rhn-actions-control --enable-all" on "sle-client"
+    When I run "rhn-actions-control --enable-all" on "sle_client"
     And I follow the left menu "Configuration > Configuration Channels"
     And I follow "Mixed Channel"
     And I follow "Deploy all configuration files to all subscribed systems"
     Then I should see a "/etc/s-mgr/config" link
-    And I should see "sle-client" as link
-    And I should see "sle-minion" as link
+    And I should see "sle_client" as link
+    And I should see "sle_minion" as link
     When I click on "Deploy Files to Selected Systems"
     Then I should see a "revision-deploys are being scheduled," text
     And I should see a "0 revision-deploys overridden." text
 
   Scenario: Check that file has been created on traditional client
-    When I run "rhn_check -vvv" on "sle-client"
-    Then file "/etc/s-mgr/config" should contain "COLOR=white" on "sle-client"
+    When I run "rhn_check -vvv" on "sle_client"
+    Then file "/etc/s-mgr/config" should contain "COLOR=white" on "sle_client"
 
   Scenario: Check that file has been created on SLE minion
-    When I wait until file "/etc/s-mgr/config" exists on "sle-minion"
-    Then file "/etc/s-mgr/config" should contain "COLOR=white" on "sle-minion"
+    When I wait until file "/etc/s-mgr/config" exists on "sle_minion"
+    Then file "/etc/s-mgr/config" should contain "COLOR=white" on "sle_minion"
 
 @centos_minion
   Scenario: Check that file has been created on CentOS minion
-    When I wait until file "/etc/s-mgr/config" exists on "ceos-minion"
-    Then file "/etc/s-mgr/config" should contain "COLOR=white" on "ceos-minion"
+    When I wait until file "/etc/s-mgr/config" exists on "ceos_minion"
+    Then file "/etc/s-mgr/config" should contain "COLOR=white" on "ceos_minion"
 
 @ubuntu_minion
   Scenario: Check that file has been created on Ubuntu minion
-    When I wait until file "/etc/s-mgr/config" exists on "ubuntu-minion"
-    Then file "/etc/s-mgr/config" should contain "COLOR=white" on "ubuntu-minion"
+    When I wait until file "/etc/s-mgr/config" exists on "ubuntu_minion"
+    Then file "/etc/s-mgr/config" should contain "COLOR=white" on "ubuntu_minion"
 
 @ssh_minion
   Scenario: Check that file has been created on SSH minion
-    When I wait until file "/etc/s-mgr/config" exists on "ssh-minion"
-    Then file "/etc/s-mgr/config" should contain "COLOR=white" on "ssh-minion"
+    When I wait until file "/etc/s-mgr/config" exists on "ssh_minion"
+    Then file "/etc/s-mgr/config" should contain "COLOR=white" on "ssh_minion"
 
   Scenario: Apply highstate to override changed content on SLE minion
-    When I store "COLOR=blue" into file "/etc/s-mgr/config" on "sle-minion"
-    And I apply highstate on "sle-minion"
-    Then file "/etc/s-mgr/config" should contain "COLOR=white" on "sle-minion"
+    When I store "COLOR=blue" into file "/etc/s-mgr/config" on "sle_minion"
+    And I apply highstate on "sle_minion"
+    Then file "/etc/s-mgr/config" should contain "COLOR=white" on "sle_minion"
 
 @centos_minion
   Scenario: Apply highstate to override changed content on CentOS minion
-    When I store "COLOR=blue" into file "/etc/s-mgr/config" on "ceos-minion"
-    And I apply highstate on "ceos-minion"
-    Then file "/etc/s-mgr/config" should contain "COLOR=white" on "ceos-minion"
+    When I store "COLOR=blue" into file "/etc/s-mgr/config" on "ceos_minion"
+    And I apply highstate on "ceos_minion"
+    Then file "/etc/s-mgr/config" should contain "COLOR=white" on "ceos_minion"
 
 @ubuntu_minion
   Scenario: Apply highstate to override changed content on Ubuntu minion
-    When I store "COLOR=blue" into file "/etc/s-mgr/config" on "ubuntu-minion"
-    And I apply highstate on "ubuntu-minion"
-    Then file "/etc/s-mgr/config" should contain "COLOR=white" on "ubuntu-minion"
+    When I store "COLOR=blue" into file "/etc/s-mgr/config" on "ubuntu_minion"
+    And I apply highstate on "ubuntu_minion"
+    Then file "/etc/s-mgr/config" should contain "COLOR=white" on "ubuntu_minion"
 
 @ssh_minion
   Scenario: Apply highstate to override changed content on SSH minion
-    When I store "COLOR=blue" into file "/etc/s-mgr/config" on "ssh-minion"
-    And I apply highstate on "ssh-minion"
-    Then file "/etc/s-mgr/config" should contain "COLOR=white" on "ssh-minion"
+    When I store "COLOR=blue" into file "/etc/s-mgr/config" on "ssh_minion"
+    And I apply highstate on "ssh_minion"
+    Then file "/etc/s-mgr/config" should contain "COLOR=white" on "ssh_minion"
 
 @centos_minion
   Scenario: Unsubscribe CentOS minion and delete configuration files
@@ -143,10 +143,10 @@ Feature: Management of configuration of all types of clients in a single channel
     When I follow the left menu "Configuration > Configuration Channels"
     And I follow "Mixed Channel"
     And I follow "Systems" in the content area
-    And I check the "ceos-minion" client
+    And I check the "ceos_minion" client
     And I click on "Unsubscribe systems"
     Then I should see a "Successfully unsubscribed 1 system(s)." text
-    And I destroy "/etc/s-mgr" directory on "ceos-minion"
+    And I destroy "/etc/s-mgr" directory on "ceos_minion"
 
 @ubuntu_minion
   Scenario: Unsubscribe Ubuntu minion and delete configuration files
@@ -154,10 +154,10 @@ Feature: Management of configuration of all types of clients in a single channel
     When I follow the left menu "Configuration > Configuration Channels"
     And I follow "Mixed Channel"
     And I follow "Systems" in the content area
-    And I check the "ubuntu-minion" client
+    And I check the "ubuntu_minion" client
     And I click on "Unsubscribe systems"
     Then I should see a "Successfully unsubscribed 1 system(s)." text
-    And I destroy "/etc/s-mgr" directory on "ubuntu-minion"
+    And I destroy "/etc/s-mgr" directory on "ubuntu_minion"
 
 @ssh_minion
   Scenario: Unsubscribe SSH minion and delete configuration files
@@ -165,14 +165,14 @@ Feature: Management of configuration of all types of clients in a single channel
     When I follow the left menu "Configuration > Configuration Channels"
     And I follow "Mixed Channel"
     And I follow "Systems" in the content area
-    And I check the "ssh-minion" client
+    And I check the "ssh_minion" client
     And I click on "Unsubscribe systems"
     Then I should see a "Successfully unsubscribed 1 system(s)." text
-    And I destroy "/etc/s-mgr" directory on "ssh-minion"
+    And I destroy "/etc/s-mgr" directory on "ssh_minion"
 
   Scenario: Change file on Salt minion and compare
-    When I am on the Systems overview page of this "sle-minion"
-    And I store "COLOR=red" into file "/etc/s-mgr/config" on "sle-minion"
+    When I am on the Systems overview page of this "sle_minion"
+    And I store "COLOR=red" into file "/etc/s-mgr/config" on "sle_minion"
     And I follow "Configuration" in the content area
     And I follow "Compare Files" in the content area
     And I check "/etc/s-mgr/config" in the list
@@ -189,39 +189,39 @@ Feature: Management of configuration of all types of clients in a single channel
     Given I am logged in via XML-RPC configchannel as user "admin" and password "admin"
     Then channel "mixedchannel" should exist
     And channel "mixedchannel" should contain file "/etc/s-mgr/config"
-    And "sle-client" should be subscribed to channel "mixedchannel"
-    And "sle-minion" should be subscribed to channel "mixedchannel"
+    And "sle_client" should be subscribed to channel "mixedchannel"
+    And "sle_minion" should be subscribed to channel "mixedchannel"
     And I logout from XML-RPC configchannel namespace
 
   Scenario: Extend configuration channel and deploy files via XML-RPC
     Given I am logged in via XML-RPC configchannel as user "admin" and password "admin"
-    When I store "COLOR=green" into file "/etc/s-mgr/config" on "sle-minion"
-    And I store "COLOR=yellow" into file "/etc/s-mgr/config" on "sle-client"
+    When I store "COLOR=green" into file "/etc/s-mgr/config" on "sle_minion"
+    And I store "COLOR=yellow" into file "/etc/s-mgr/config" on "sle_client"
     And I add file "/etc/s-mgr/other" containing "NAME=Dante" to channel "mixedchannel"
     And I deploy all systems registered to channel "mixedchannel"
-    And I run "rhn_check -vvv" on "sle-client"
-    And I wait until file "/etc/s-mgr/other" exists on "sle-minion"
-    Then file "/etc/s-mgr/config" should contain "COLOR=white" on "sle-minion"
-    And file "/etc/s-mgr/other" should contain "NAME=Dante" on "sle-minion"
-    And file "/etc/s-mgr/config" should contain "COLOR=white" on "sle-client"
-    And file "/etc/s-mgr/other" should contain "NAME=Dante" on "sle-client"
+    And I run "rhn_check -vvv" on "sle_client"
+    And I wait until file "/etc/s-mgr/other" exists on "sle_minion"
+    Then file "/etc/s-mgr/config" should contain "COLOR=white" on "sle_minion"
+    And file "/etc/s-mgr/other" should contain "NAME=Dante" on "sle_minion"
+    And file "/etc/s-mgr/config" should contain "COLOR=white" on "sle_client"
+    And file "/etc/s-mgr/other" should contain "NAME=Dante" on "sle_client"
     And I logout from XML-RPC configchannel namespace
 
   Scenario: Unsubscribe systems via XML-RPC
     Given I am logged in via XML-RPC system as user "admin" and password "admin"
-    When I unsubscribe "sle-client" and "sle-minion" from configuration channel "mixedchannel"
+    When I unsubscribe "sle_client" and "sle_minion" from configuration channel "mixedchannel"
     And I logout from XML-RPC system namespace
     And I am logged in via XML-RPC configchannel as user "admin" and password "admin"
-    Then "sle-client" should not be subscribed to channel "mixedchannel"
-    And "sle-minion" should not be subscribed to channel "mixedchannel"
+    Then "sle_client" should not be subscribed to channel "mixedchannel"
+    And "sle_minion" should not be subscribed to channel "mixedchannel"
     And I logout from XML-RPC configchannel namespace
 
   Scenario: Re-add systems via SSM
     Given I am authorized as "admin" with password "admin"
     When I am on the System Overview page
     And I follow "Clear"
-    And I check the "sle-client" client
-    And I check the "sle-minion" client
+    And I check the "sle_client" client
+    And I check the "sle_minion" client
     And I am on System Set Manager Overview
     And I follow "config channel subscriptions" in the content area
     And I check "Mixed Channel" in the list
@@ -235,8 +235,8 @@ Feature: Management of configuration of all types of clients in a single channel
     When I follow the left menu "Configuration > Configuration Channels"
     And I follow "Mixed Channel"
     And I follow "Systems" in the content area
-    And I check the "sle-client" client
-    And I check the "sle-minion" client
+    And I check the "sle_client" client
+    And I check the "sle_minion" client
     And I click on "Unsubscribe systems"
     Then I should see a "Successfully unsubscribed 2 system(s)." text
 
@@ -249,8 +249,8 @@ Feature: Management of configuration of all types of clients in a single channel
     Then file "/srv/susemanager/salt/manager_org_1/mixedchannel/init.sls" should not exist on server
 
   Scenario: Cleanup: delete configuration files on remaining systems
-    When I destroy "/etc/s-mgr" directory on "sle-client"
-    And I destroy "/etc/s-mgr" directory on "sle-minion"
+    When I destroy "/etc/s-mgr" directory on "sle_client"
+    And I destroy "/etc/s-mgr" directory on "sle_minion"
 
   Scenario: Cleanup: remove remaining systems from SSM after tests of configuration channel on all clients
     When I am authorized as "admin" with password "admin"

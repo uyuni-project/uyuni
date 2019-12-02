@@ -12,19 +12,19 @@ Feature: Bootstrap a SSH-managed CentOS minion and do some basic operations on i
     When I go to the bootstrapping page
     Then I should see a "Bootstrap Minions" text
     When I check "manageWithSSH"
-    And I enter the hostname of "ceos-ssh-minion" as "hostname"
+    And I enter the hostname of "ceos_ssh_minion" as "hostname"
     And I enter "linux" as "password"
     And I select the hostname of "proxy" from "proxies"
     And I click on "Bootstrap"
     And I wait until I see "Successfully bootstrapped host!" text
     And I navigate to "rhn/systems/Overview.do" page
-    And I wait until I see the name of "ceos-ssh-minion", refreshing the page
-    And I wait until onboarding is completed for "ceos-ssh-minion"
+    And I wait until I see the name of "ceos_ssh_minion", refreshing the page
+    And I wait until onboarding is completed for "ceos_ssh_minion"
 
 @proxy
 @centos_minion
   Scenario: Check connection from SSH-managed CentOS minion to proxy
-    Given I am on the Systems overview page of this "ceos-ssh-minion"
+    Given I am on the Systems overview page of this "ceos_ssh_minion"
     When I follow "Details" in the content area
     And I follow "Connection" in the content area
     Then I should see "proxy" short hostname
@@ -35,11 +35,11 @@ Feature: Bootstrap a SSH-managed CentOS minion and do some basic operations on i
     Given I am on the Systems overview page of this "proxy"
     When I follow "Details" in the content area
     And I follow "Proxy" in the content area
-    Then I should see "ceos-ssh-minion" hostname
+    Then I should see "ceos_ssh_minion" hostname
 
 @centos_minion
   Scenario: Subscribe the SSH-managed CentOS minion to a base channel
-    Given I am on the Systems overview page of this "ceos-ssh-minion"
+    Given I am on the Systems overview page of this "ceos_ssh_minion"
     When I follow "Software" in the content area
     And I follow "Software Channels" in the content area
     And I wait until I do not see "Loading..." text
@@ -54,14 +54,14 @@ Feature: Bootstrap a SSH-managed CentOS minion and do some basic operations on i
 @centos_minion
   Scenario: Prepare the SSH-managed CentOS minion
     Given I am authorized
-    When I enable SUSE Manager tools repositories on "ceos-client"
-    And  I enable repository "CentOS-Base" on this "ceos-client"
-    And  I install package "hwdata m2crypto wget" on this "ceos-client"
+    When I enable SUSE Manager tools repositories on "ceos_client"
+    And  I enable repository "CentOS-Base" on this "ceos_client"
+    And  I install package "hwdata m2crypto wget" on this "ceos_client"
     # Intentionally not using new package names yet on this branch
-    And  I install package "rhn-client-tools rhn-check rhn-setup rhnsd osad rhncfg-actions" on this "ceos-client"
-    And  I install package "spacewalk-oscap scap-security-guide" on this "ceos-client"
+    And  I install package "rhn-client-tools rhn-check rhn-setup rhnsd osad rhncfg-actions" on this "ceos_client"
+    And  I install package "spacewalk-oscap scap-security-guide" on this "ceos_client"
 
 @centos_minion
   Scenario: Check events history for failures on SSH-managed CentOS minion
-    Given I am on the Systems overview page of this "ceos-ssh-minion"
+    Given I am on the Systems overview page of this "ceos_ssh_minion"
     Then I check for failed events on history event page

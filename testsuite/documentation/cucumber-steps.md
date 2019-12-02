@@ -34,12 +34,12 @@ Possible values are currently:
 | --------- | ----------- | -------------------------- | -------------- | --------------- |
 | SUSE Manager server | ```$server``` | ```$SERVER``` |  | ```"suse_manager"``` |
 | SUSE Manager proxy | ```$proxy``` | ```$PROXY``` | ```"proxy"``` | ```"suse_manager_proxy"``` |
-| SLES traditional client | ```$client``` | ```$CLIENT``` | ```"sle-client"``` | ```"client"``` |
-| SLES Salt minion | ```$minion``` | ```$MINION``` | ```"sle-minion"``` or ```"sle-migrated-minion"``` | ```"minion"``` |
-| SLES Salt SSH minion | ```$ssh_minion``` | ```$SSHMINION``` | ```"ssh-minion"``` | ```"minion"``` |
-| Cent OS Salt minion or traditional client | ```$ceos_minion``` | ```$CENTOSMINION``` | ```"ceos-minion"```, ```"ceos-traditional-client"```, or ``"ceos-ssh-minion"``` | ```"minion"``` |
-| Ubuntu minion | ```$ubuntu_minion``` | ```$UBUNTUMINION``` | ```"ubuntu-minion"``` or ```"ubuntu-ssh-minion"``` | ```"minion"``` |
-| PXE-Boot minion |  None | ```$PXEBOOTMAC``` | ```"pxeboot-minion"``` | ```"pxeboot"``` |
+| SLES traditional client | ```$client``` | ```$CLIENT``` | ```"sle_client"``` | ```"client"``` |
+| SLES Salt minion | ```$minion``` | ```$MINION``` | ```"sle_minion"``` or ```"sle_migrated_minion"``` | ```"minion"``` |
+| SLES Salt SSH minion | ```$ssh_minion``` | ```$SSHMINION``` | ```"ssh_minion"``` | ```"minion"``` |
+| Cent OS Salt minion or traditional client | ```$ceos_minion``` | ```$CENTOSMINION``` | ```"ceos_minion"```, ```"ceos_traditional_client"```, or ``"ceos_ssh_minion"``` | ```"minion"``` |
+| Ubuntu minion | ```$ubuntu_minion``` | ```$UBUNTUMINION``` | ```"ubuntu_minion"``` or ```"ubuntu_ssh_minion"``` | ```"minion"``` |
+| PXE-Boot minion |  None | ```$PXEBOOTMAC``` | ```"pxeboot_minion"``` | ```"pxeboot"``` |
 
 These names are such for historical reasons and might be made better in the future.
 
@@ -186,7 +186,7 @@ To check for the initial log in, prefer ```Then I am logged in```.
 * Go to details of a given client
 
 ```cucumber
-  When I am on the Systems overview page of this "sle-client"
+  When I am on the Systems overview page of this "sle_client"
 ```
 
 * Go to configuration of "SUSE Test" organization
@@ -212,8 +212,8 @@ To check for the initial log in, prefer ```Then I am logged in```.
   Then I should see a "System Overview" text
   Then I should not see a "[Management]" text
   Then I should see a "Keys" text in the content area
-  Then I should see "sle-minion" hostname
-  Then I should not see "sle-minion" hostname
+  Then I should see "sle_minion" hostname
+  Then I should not see "sle_minion" hostname
 ```
 
 For a test with a regular expression, there is ```I should see a text like "..."```
@@ -230,10 +230,10 @@ For a test with a regular expression, there is ```I should see a text like "..."
 ```cucumber
   When I wait until I see "Software Updates Available" text, refreshing the page
   When I wait until I do not see "Apply highstate scheduled by admin" text, refreshing the page
-  When I wait until I see the name of "sle-minion", refreshing the page
-  When I wait until I do not see the name of "sle-minion", refreshing the page
+  When I wait until I see the name of "sle_minion", refreshing the page
+  When I wait until I do not see the name of "sle_minion", refreshing the page
   When I wait until the table contains "FINISHED" or "SKIPPED" followed by "FINISHED" in its first rows
-  When I refresh page until I see "sle-minion" hostname as text
+  When I refresh page until I see "sle_minion" hostname as text
 ```
 
 (last one should probably be renamed - it looks in the contents area of the page)
@@ -305,7 +305,7 @@ The check box can be identified by name, id or label text.
 
 ```cucumber
   When I check the row with the "virgo-dummy-3456" link
-  When I check the row with the "sle-client" hostname
+  When I check the row with the "sle_client" hostname
   When I check the row with the "suse_docker_admin" text
   When I check "New Test Channel" in the list
   When I uncheck "hoag-dummy-1.1-1.1" in the list
@@ -366,8 +366,8 @@ The check box can be identified by name, id or label text.
 * Run an arbitrary command and expect it to succeed
 
 ```cucumber
-  When I run "rhn_check -vvv" on "sle-client"
-  When I run "apt update" on "ubuntu-minion" with logging
+  When I run "rhn_check -vvv" on "sle_client"
+  When I run "apt update" on "ubuntu_minion" with logging
 ```
 
 * Run an arbitrary command and expect it to fail
@@ -380,23 +380,23 @@ The check box can be identified by name, id or label text.
 * Repositories
 
 ```cucumber
-  When I enable repository "Test-Packages_Pool" on this "sle-minion"
-  When I disable repository "Test-Packages_Pool" on this "sle-minion"
+  When I enable repository "Test-Packages_Pool" on this "sle_minion"
+  When I disable repository "Test-Packages_Pool" on this "sle_minion"
 ```
 
 * Packages
 
 ```cucumber
-  When I install package "virgo-dummy-1.0-1.1" on this "sle-minion"
-  When I remove package "orion-dummy" from this "sle-minion"
-  When I refresh packages list via spacecmd on "sle-minion"
-  When I wait for "virgo-dummy-1.0" to be installed on this "sle-minion"
-  When I wait for "milkyway-dummy" to be uninstalled on "sle-minion"
-  When I wait until refresh package list on "sle-minion" is finished
-  When I wait until package "virgo-dummy" is installed on "sle-minion" via spacecmd
-  Then "man" should be installed on "sle-client"
-  Then "milkyway-dummy" should not be installed on "sle-minion"
-  Then spacecmd should show packages "virgo-dummy-1.0 milkyway-dummy" installed on "sle-minion"
+  When I install package "virgo-dummy-1.0-1.1" on this "sle_minion"
+  When I remove package "orion-dummy" from this "sle_minion"
+  When I refresh packages list via spacecmd on "sle_minion"
+  When I wait for "virgo-dummy-1.0" to be installed on this "sle_minion"
+  When I wait for "milkyway-dummy" to be uninstalled on "sle_minion"
+  When I wait until refresh package list on "sle_minion" is finished
+  When I wait until package "virgo-dummy" is installed on "sle_minion" via spacecmd
+  Then "man" should be installed on "sle_client"
+  Then "milkyway-dummy" should not be installed on "sle_minion"
+  Then spacecmd should show packages "virgo-dummy-1.0 milkyway-dummy" installed on "sle_minion"
 ```
 
 * Services
@@ -404,22 +404,22 @@ The check box can be identified by name, id or label text.
 ```cucumber
   When I shutdown the spacewalk service
   When I restart the spacewalk service
-  When I wait until "salt-minion" service is up and running on "ceos-minion"
+  When I wait until "salt-minion" service is up and running on "ceos_minion"
   Then service "bind" is enabled on "proxy"
   Then service "dhcpd" is running on "proxy"
 ```
 
 * File removal
 ```cucumber
-  When I remove "/root/foobar" from "sle-minion"
+  When I remove "/root/foobar" from "sle_minion"
   When I destroy "/var/lib/pgsql/data/pg_xlog" directory on server
-  When I destroy "/etc/s-mgr" directory on "sle-minion"
+  When I destroy "/etc/s-mgr" directory on "sle_minion"
 ```
 
 * File existence
 ```cucumber
-  When I wait until file "/root/foobar" exists on "sle-minion"
-  Then file "/etc/mgr-test-file.cnf" should exist on "sle-client"
+  When I wait until file "/root/foobar" exists on "sle_minion"
+  Then file "/etc/mgr-test-file.cnf" should exist on "sle_client"
   When I wait until file "/srv/tftpboot/pxelinux.cfg/default" exists on server
   Then file "/srv/susemanager/salt/manager_org_1/mixedchannel/init.sls" should exist on server
   Then file "/srv/susemanager/salt/manager_org_1/s-mgr/config/init.sls" should not exist on server
@@ -429,7 +429,7 @@ The check box can be identified by name, id or label text.
 
 ```cucumber
   When I wait until file "/srv/tftpboot/pxelinux.cfg/default" contains "kernel_option=a_value" on server
-  Then file "/etc/mgr-test-file.cnf" should contain "MGR_PROXY=yes" on "sle-client"
+  Then file "/etc/mgr-test-file.cnf" should contain "MGR_PROXY=yes" on "sle_client"
 
   When I get the contents of the remote file "/etc/salt/master.d/susemanager.conf"
   Then it should contain a "rest_cherrypy:" text
@@ -440,7 +440,7 @@ The check box can be identified by name, id or label text.
 * Wait for reboot to finish
 
 ```cucumber
-  When I wait and check that "sle-client" has rebooted
+  When I wait and check that "sle_client" has rebooted
 ```
 
 
@@ -466,7 +466,7 @@ The check box can be identified by name, id or label text.
 * Execute mgr-create-bootstrap-repo
 
 ```cucumber
-  When I create the "x86_64" bootstrap repository for "sle-minion" on the server
+  When I create the "x86_64" bootstrap repository for "sle_minion" on the server
 ```
 
 * Execute spacewalk-channel
@@ -490,14 +490,14 @@ The check box can be identified by name, id or label text.
 * Register (with ```rhnreg_ks```)
 
 ```cucumber
-  When I register "ceos-minion" as traditional client
+  When I register "ceos_minion" as traditional client
 ```
 
 * Test registration (with XML-RPC)
 
 ```cucumber
-  Then "ssh-minion" should not be registered
-  Then "ssh-minion" should be registered
+  Then "ssh_minion" should not be registered
+  Then "ssh_minion" should be registered
 ```
 
 * Check for base channel (with User Interface)
@@ -517,7 +517,7 @@ The check box can be identified by name, id or label text.
 * HTTP file transfer
 
 ```cucumber
-  When I fetch "pub/bootstrap/bootstrap-test.sh" to "sle-client"
+  When I fetch "pub/bootstrap/bootstrap-test.sh" to "sle_client"
 ```
 
 
@@ -528,7 +528,7 @@ The check box can be identified by name, id or label text.
 * Wait for task completion
 
 ```cucumber
-  When I wait until onboarding is completed for "ceos-minion"
+  When I wait until onboarding is completed for "ceos_minion"
   When I wait until event "Package Install/Upgrade scheduled by admin" is completed
 ```
 
@@ -542,9 +542,9 @@ The check box can be identified by name, id or label text.
 ```cucumber
   When I stop salt-master
   When I start salt-master
-  When I stop salt-minion on "ceos-minion"
-  When I start salt-minion on "ceos-minion"
-  When I restart salt-minion on "ceos-minion"
+  When I stop salt-minion on "ceos_minion"
+  When I start salt-minion on "ceos_minion"
+  When I restart salt-minion on "ceos_minion"
 ```
 
 * Control Salt processes
@@ -557,24 +557,24 @@ The check box can be identified by name, id or label text.
 * Wait until current Salt activity has finished
 
 ```cucumber
-  When I wait until no Salt job is running on "sle-minion"
+  When I wait until no Salt job is running on "sle_minion"
 ```
 
 * Test is Salt is working with ```test.ping```
 
 ```cucumber
-  Then the Salt master can reach "sle-minion"
+  Then the Salt master can reach "sle_minion"
 ```
 
 * Salt keys
 
 ```cucumber
-  When I accept "sle-minion" key
-  When I reject "sle-minion" from the Pending section
-  When I delete "ceos-minion" key in the Salt master
-  When I delete "sle-minion" from the Rejected section
-  When I wait until Salt master sees "sle-minion" as "rejected"
-  When I wait until the list of "all" keys contains the hostname of "sle-minion"
+  When I accept "sle_minion" key
+  When I reject "sle_minion" from the Pending section
+  When I delete "ceos_minion" key in the Salt master
+  When I delete "sle_minion" from the Rejected section
+  When I wait until Salt master sees "sle_minion" as "rejected"
+  When I wait until the list of "all" keys contains the hostname of "sle_minion"
 ```
 
 * Remote commands via Salt
@@ -583,22 +583,22 @@ The check box can be identified by name, id or label text.
   When I enter command "ls -lha /etc"
   When I click on preview
   When I click on run
-  When I expand the results for "sle-minion"
-  Then I should see "SuSE-release" in the command output for "sle-minion"
+  When I expand the results for "sle_minion"
+  Then I should see "SuSE-release" in the command output for "sle_minion"
 ```
 
 * Salt pillars
 
 ```cucumber
   When I refresh the pillar data
-  Then the pillar data for "timezone:name" should be "Etc/GMT-5" on "sle-minion"
-  Then the pillar data for "timezone" should be empty on "ssh-minion"
+  Then the pillar data for "timezone:name" should be "Etc/GMT-5" on "sle_minion"
+  Then the pillar data for "timezone" should be empty on "ssh_minion"
 ```
 
 * Apply the Salt highstate
 
 ```cucumber
-  When I apply highstate on "sle-minion"
+  When I apply highstate on "sle_minion"
 ```
 
 

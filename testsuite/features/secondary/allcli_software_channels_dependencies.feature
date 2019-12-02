@@ -5,7 +5,7 @@ Feature: Chanel subscription with recommended/required dependencies
 
 @sle15_minion
   Scenario: Play with recommended and required child channels selection for a single system
-    Given I am on the Systems overview page of this "sle-minion"
+    Given I am on the Systems overview page of this "sle_minion"
     When I follow "Software" in the content area
     And I follow "Software Channels" in the content area
     # check that the required channel by the base one is selected and disabled
@@ -27,8 +27,8 @@ Feature: Chanel subscription with recommended/required dependencies
   Scenario: Play with recommended and required child channels selection in SSM
     Given I am authorized as "admin" with password "admin"
     When I am on the System Overview page
-    And I check the "sle-minion" client
-    And I check the "sle-client" client
+    And I check the "sle_minion" client
+    And I check the "sle_client" client
     Then I should see "2" systems selected for SSM
     When I am on System Set Manager Overview
     And I follow "channel memberships" in the content area

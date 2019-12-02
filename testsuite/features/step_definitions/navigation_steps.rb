@@ -106,7 +106,23 @@ When(/^I check "([^"]*)" if not checked$/) do |arg1|
 end
 
 When(/^I select "([^"]*)" from "([^"]*)"$/) do |arg1, arg2|
-  select(arg1, from: arg2)
+  select(arg1, from: arg2, exact: false)
+end
+
+When(/^I select the maximum amount of items per page"$/) do
+  find(:xpath, "//select[@class='display-number']").find(:xpath, 'option[6]').select_option
+end
+
+When(/^I select the (base|parent) channel for the "([^"]*)" from "([^"]*)"$/) do |client, from|
+  select(CHANNEL_BY_CLIENT[client], from: from, exact: false)
+end
+
+When(/^I select the contact method for the "([^"]*)" from "([^"]*)"$/) do |client, from|
+  if client.include? 'ssh_minion'
+    select('Push via SSH', from: from)
+  else
+    select('Default', from: from)
+  end
 end
 
 When(/^I select "([^"]*)" from drop-down in table line with "([^"]*)"$/) do |value, line|
@@ -339,7 +355,7 @@ When(/^I select the hostname of "([^"]*)" from "([^"]*)"$/) do |host, hostname|
     # don't select anything if not in the list
     next if $proxy.nil?
     step %(I select "#{$proxy.full_hostname}" from "#{hostname}")
-  when 'sle-minion'
+  when 'sle_minion'
     step %(I select "#{$minion.full_hostname}" from "#{hostname}")
   end
 end
@@ -438,6 +454,11 @@ end
 
 When(/^I check test channel$/) do
   step %(I check "Test Base Channel" in the list)
+end
+
+When(/^I check the child channel "([^"]*)"$/) do |channel|
+  checkbox = find(:xpath, "//label[contains(.,'#{channel}')]/..//input", match: :first)
+  checkbox.set(true)
 end
 
 When(/^I check "([^"]*)" patch$/) do |arg1|
@@ -676,6 +697,20 @@ end
 Then(/^I check the row with the "([^"]*)" hostname$/) do |host|
   system_name = get_system_name(host)
   step %(I check "#{system_name}" in the list)
+end
+
+Then(/^I check (a|the) "([^"]*)" patch in the list$/) do |client|
+  steps %(
+    When I select the maximum amount of items per page
+    And I check "#{PATCH_BY_CLIENT[client]}" in the list
+  )
+end
+
+Then(/^I check (a|the) "([^"]*)" package in the list$/) do |client|
+  steps %(
+    When I list packages with "#{PACKAGE_BY_CLIENT[client]}"
+    And I check "#{PACKAGE_BY_CLIENT[client]}" in the list
+  )
 end
 
 When(/^I check "([^"]*)" in the list$/) do |text|

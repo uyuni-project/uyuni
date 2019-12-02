@@ -8,9 +8,9 @@ Feature: Weak dependencies in the package page and in the metadata on the client
     When I follow the left menu "Software > Channels > All"
 
   Scenario: Pre-requisite: remove packages before weak-dependancies test
-   When I run "zypper -n in virgo-dummy" on "sle-client" without error control
-   And I run "zypper -n in milkyway-dummy" on "sle-client" without error control
-   And I run "zypper -n in orion-dummy" on "sle-client" without error control
+   When I run "zypper -n in virgo-dummy" on "sle_client" without error control
+   And I run "zypper -n in milkyway-dummy" on "sle_client" without error control
+   And I run "zypper -n in orion-dummy" on "sle_client" without error control
 
   Scenario: Show Supplements information
     When I follow "Test-Channel-x86_64"
@@ -52,13 +52,13 @@ Feature: Weak dependencies in the package page and in the metadata on the client
     And I should see a "foobar" text
 
   Scenario: Check local metadata for weak dependencies
-    When I refresh the metadata for "sle-client"
-    Then I should have 'rpm:recommends.*filesystem.*rpm:recommends' in the metadata for "sle-client"
-    And I should have 'rpm:supplements.*packageand.a-blackhole:dummy.*rpm:supplements' in the metadata for "sle-client"
-    And I should have 'rpm:suggests.*apache2.*rpm:suggests' in the metadata for "sle-client"
-    And I should have 'rpm:enhances.*foobar.*rpm:enhances' in the metadata for "sle-client"
+    When I refresh the metadata for "sle_client"
+    Then I should have 'rpm:recommends.*filesystem.*rpm:recommends' in the metadata for "sle_client"
+    And I should have 'rpm:supplements.*packageand.a-blackhole:dummy.*rpm:supplements' in the metadata for "sle_client"
+    And I should have 'rpm:suggests.*apache2.*rpm:suggests' in the metadata for "sle_client"
+    And I should have 'rpm:enhances.*foobar.*rpm:enhances' in the metadata for "sle_client"
 
   Scenario: Cleanup: remove packages after weak dependancies tests
-   And I run "zypper -n rm virgo-dummy" on "sle-client"
-   And I run "zypper -n rm milkyway-dummy" on "sle-client"
-   And I run "zypper -n rm orion-dummy" on "sle-client"
+   And I run "zypper -n rm virgo-dummy" on "sle_client"
+   And I run "zypper -n rm milkyway-dummy" on "sle_client"
+   And I run "zypper -n rm orion-dummy" on "sle_client"

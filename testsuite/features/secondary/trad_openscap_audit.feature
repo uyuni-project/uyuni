@@ -7,17 +7,17 @@ Feature: openSCAP audit of traditional client
   I want to run an openSCAP scan on it
 
   Scenario: Schedule an audit job
-    Given I am on the Systems overview page of this "sle-client"
+    Given I am on the Systems overview page of this "sle_client"
     When I follow "Audit" in the content area
     And I follow "Schedule" in the content area
     And I enter "--profile RHEL6-Default" as "params"
     And I enter "/usr/share/openscap/scap-rhel6-xccdf.xml" as "path"
     And I click on "Schedule"
-    And I run "rhn_check -vvv" on "sle-client"
+    And I run "rhn_check -vvv" on "sle_client"
     Then I should see a "XCCDF scan has been scheduled" text
 
   Scenario: Check results of the audit job
-    Given I am on the Systems overview page of this "sle-client"
+    Given I am on the Systems overview page of this "sle_client"
     When I follow "Audit" in the content area
     And I follow "xccdf_org.open-scap_testresult_RHEL6-Default"
     Then I should see a "Details of XCCDF Scan" text
@@ -27,17 +27,17 @@ Feature: openSCAP audit of traditional client
     And I should see a "rule-" link
 
   Scenario: Schedule an audit job using the SUSE profile
-    Given I am on the Systems overview page of this "sle-client"
+    Given I am on the Systems overview page of this "sle_client"
     When I follow "Audit" in the content area
     And I follow "Schedule" in the content area
     And I enter "--profile Default" as "params"
     And I enter "/usr/share/openscap/scap-yast2sec-xccdf.xml" as "path"
     And I click on "Schedule"
-    And I run "rhn_check -vvv" on "sle-client"
+    And I run "rhn_check -vvv" on "sle_client"
     Then I should see a "XCCDF scan has been scheduled" text
 
   Scenario: Check results of the audit job SUSE profile
-    Given I am on the Systems overview page of this "sle-client"
+    Given I am on the Systems overview page of this "sle_client"
     When I follow "Audit" in the content area
     And I follow "xccdf_org.open-scap_testresult_Default"
     Then I should see a "Details of XCCDF Scan" text
@@ -55,7 +55,7 @@ Feature: openSCAP audit of traditional client
     Then I should see a "Organization SUSE Test was successfully updated." text
 
   Scenario: Delete audit results from traditional client
-    Given I am on the Systems overview page of this "sle-client"
+    Given I am on the Systems overview page of this "sle_client"
     When I follow "Audit" in the content area
     And I follow "List Scans" in the content area
     And I click on "Select All"

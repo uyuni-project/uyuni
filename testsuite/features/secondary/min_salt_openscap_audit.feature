@@ -8,7 +8,7 @@ Feature: openSCAP audit of Salt minion
 
   Scenario: Schedule an audit job on the minion
     Given I disable IPv6 forwarding on all interfaces of the SLE minion
-    And I am on the Systems overview page of this "sle-minion"
+    And I am on the Systems overview page of this "sle_minion"
     And I follow "Audit" in the content area
     And I follow "Schedule" in the content area
     When I enter "--profile Default" as "params"
@@ -18,7 +18,7 @@ Feature: openSCAP audit of Salt minion
     And I wait until event "OpenSCAP xccdf scanning" is completed
 
   Scenario: Check results of the audit job on the minion
-    Given I am on the Systems overview page of this "sle-minion"
+    Given I am on the Systems overview page of this "sle_minion"
     And I follow "Audit" in the content area
     When I follow "xccdf_org.open-scap_testresult_Default"
     Then I should see a "Details of XCCDF Scan" text
@@ -29,7 +29,7 @@ Feature: openSCAP audit of Salt minion
 
   Scenario: Create a second, almost identical, audit job
     Given I enable IPv6 forwarding on all interfaces of the SLE minion
-    And I am on the Systems overview page of this "sle-minion"
+    And I am on the Systems overview page of this "sle_minion"
     And I follow "Audit" in the content area
     And I follow "Schedule" in the content area
     When I enter "--profile Default" as "params"
@@ -40,7 +40,7 @@ Feature: openSCAP audit of Salt minion
     And I disable IPv6 forwarding on all interfaces of the SLE minion
 
   Scenario: Compare audit results
-    Given I am on the Systems overview page of this "sle-minion"
+    Given I am on the Systems overview page of this "sle_minion"
     And I follow "Audit" in the content area
     And I follow "List Scans" in the content area
     When I click on "Select All"
@@ -57,7 +57,7 @@ Feature: openSCAP audit of Salt minion
     Then I should see a "Organization SUSE Test was successfully updated." text
 
   Scenario: Delete audit results
-    Given I am on the Systems overview page of this "sle-minion"
+    Given I am on the Systems overview page of this "sle_minion"
     And I follow "Audit" in the content area
     And I follow "List Scans" in the content area
     When I click on "Select All"
