@@ -437,3 +437,18 @@ class TestUyuniTrust:
 
         assert logger.debug.called
         assert logger.debug.call_args_list[0][0] == ('Trust "%s" %s', 'Trusted Org', 'has been found')
+
+    def test_trust_org_already_accepted(self):
+        """
+        Test trust org.
+
+        :return:
+        """
+        self.trusts.get_trusted = MagicMock(return_value=[{"org_name": "Trusted Org"}])
+        self.trusts.orgs = MagicMock()
+
+        with patch("uyuni_users.log", MagicMock()) as logger:
+            self.trusts.trust("Trusted Org")
+
+        assert logger.info.call_count == 1
+        assert not self.trusts.orgs.get_org_by_name.called
