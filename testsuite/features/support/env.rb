@@ -20,7 +20,7 @@ server = ENV['SERVER']
 # the tests return much before that delay in case of success
 $stdout.sync = true
 STARTTIME = Time.new.to_i
-Capybara.default_max_wait_time = 10
+Capybara.default_max_wait_time = 30
 DEFAULT_TIMEOUT = 250
 
 def enable_assertions
