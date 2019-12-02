@@ -59,7 +59,7 @@ branches:
         hwAddress: <CLIENT_MAC>
       minion:
         IP: <NET_PREFIX><MINION>
-        hwAddress: <MINION_MAC>        
+        hwAddress: <MINION_MAC>
 
 hwtypes:
   Intel-Genuine:

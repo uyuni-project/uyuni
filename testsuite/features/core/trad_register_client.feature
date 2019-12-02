@@ -8,11 +8,11 @@ Feature: Register a traditional client
 
   Scenario: Register a traditional client
     When I register using "1-SUSE-DEV-x86_64" key
-    Then I should see "sle-client" in spacewalk
+    Then I should see "sle_client" in spacewalk
 
   Scenario: Check registration values
     Given I update the profile of this client
-    When I am on the Systems overview page of this "sle-client"
+    When I am on the Systems overview page of this "sle_client"
     And I click on the clear SSM button
     And I wait until I see "Software Updates Available" text, refreshing the page
     Then I should see a "System Status" text
@@ -29,7 +29,7 @@ Feature: Register a traditional client
 
 @proxy
   Scenario: Check connection from traditional to proxy
-    Given I am on the Systems overview page of this "sle-client"
+    Given I am on the Systems overview page of this "sle_client"
     When I follow "Details" in the content area
     And I follow "Connection" in the content area
     Then I should see "proxy" hostname
@@ -39,4 +39,4 @@ Feature: Register a traditional client
     Given I am on the Systems overview page of this "proxy"
     When I follow "Details" in the content area
     And I follow "Proxy" in the content area
-    Then I should see "sle-client" hostname
+    Then I should see "sle_client" hostname

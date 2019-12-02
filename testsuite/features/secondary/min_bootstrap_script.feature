@@ -10,13 +10,13 @@
 Feature: Register a Salt minion via Bootstrap-script
 
   Scenario: Delete SLES minion system profile before script bootstrap test
-    Given I am on the Systems overview page of this "sle-minion"
+    Given I am on the Systems overview page of this "sle_minion"
     When I follow "Delete System"
     Then I should see a "Confirm System Profile Deletion" text
     When I click on "Delete Profile"
     And I wait until I see "has been deleted" text
-    And I cleanup minion "sle-minion"
-    Then "sle-minion" should not be registered
+    And I cleanup minion "sle_minion"
+    Then "sle_minion" should not be registered
 
   Scenario: Create bootstrap script
     Given I am authorized as "admin" with password "admin"
@@ -29,36 +29,36 @@ Feature: Register a Salt minion via Bootstrap-script
     And I set the activation key "1-SUSE-PKG-x86_64" in the bootstrap script on the server
 
   Scenario: Download script to minion
-    When I fetch "pub/bootstrap/bootstrap.sh" to "sle-minion"
-    Then I wait until file "/root/bootstrap.sh" exists on "sle-minion"
-    And file "/root/bootstrap.sh" should contain "ACTIVATION_KEYS=1-SUSE-PKG-x86_64" on "sle-minion"
+    When I fetch "pub/bootstrap/bootstrap.sh" to "sle_minion"
+    Then I wait until file "/root/bootstrap.sh" exists on "sle_minion"
+    And file "/root/bootstrap.sh" should contain "ACTIVATION_KEYS=1-SUSE-PKG-x86_64" on "sle_minion"
 
   Scenario: Bootstrap the minion using the script
     Given I am authorized as "admin" with password "admin"
-    When I run "sh /root/bootstrap.sh" on "sle-minion"
+    When I run "sh /root/bootstrap.sh" on "sle_minion"
     And I wait for "5" seconds
     When I follow the left menu "Salt > Keys"
-    And I wait until I see the name of "sle-minion", refreshing the page
+    And I wait until I see the name of "sle_minion", refreshing the page
     And I should see a "pending" text
-    And I accept "sle-minion" key
+    And I accept "sle_minion" key
 
   Scenario: Check if onboarding for the script-bootstrapped minion was successful
     Given I am authorized as "admin" with password "admin"
     When I navigate to "rhn/systems/Overview.do" page
-    And I wait until I see the name of "sle-minion", refreshing the page
-    And I wait until onboarding is completed for "sle-minion"
+    And I wait until I see the name of "sle_minion", refreshing the page
+    And I wait until onboarding is completed for "sle_minion"
     And I run "rm /srv/www/htdocs/pub/bootstrap/bootstrap.sh" on "server"
-    And I run "rm /root/bootstrap.sh" on "sle-minion"
+    And I run "rm /root/bootstrap.sh" on "sle_minion"
 
   Scenario: Detect latest Salt changes on the script-bootstrapped SLES minion
-    When I query latest Salt changes on "sle-minion"
+    When I query latest Salt changes on "sle_minion"
 
   Scenario: Check the activation key
-    Given I am on the Systems overview page of this "sle-minion"
+    Given I am on the Systems overview page of this "sle_minion"
     Then I should see a "1-SUSE-PKG-x86_64" text
 
   Scenario: Subscribe the script-bootstrapped SLES minion to a base channel
-    Given I am on the Systems overview page of this "sle-minion"
+    Given I am on the Systems overview page of this "sle_minion"
     When I follow "Software" in the content area
     And I follow "Software Channels" in the content area
     And I wait until I do not see "Loading..." text
@@ -71,7 +71,7 @@ Feature: Register a Salt minion via Bootstrap-script
     And I wait until event "Subscribe channels scheduled by admin" is completed
 
   Scenario: Install a package to the script-bootstrapped SLES minion
-   Given I am on the Systems overview page of this "sle-minion"
+   Given I am on the Systems overview page of this "sle_minion"
    When I follow "Software" in the content area
    And I follow "Install"
    And I check "orion-dummy" in the list
@@ -79,14 +79,14 @@ Feature: Register a Salt minion via Bootstrap-script
    And I click on "Confirm"
    Then I should see a "1 package install has been scheduled for" text
    When I wait until event "Package Install/Upgrade scheduled by admin" is completed
-   Then "orion-dummy-1.1-1.1" should be installed on "sle-minion"
+   Then "orion-dummy-1.1-1.1" should be installed on "sle_minion"
 
   Scenario: Cleanup: remove package from script-bootstrapped SLES minion
-   When I remove package "orion-dummy-1.1-1.1" from this "sle-minion"
-   Then "orion-dummy-1.1-1.1" should not be installed on "sle-minion"
+   When I remove package "orion-dummy-1.1-1.1" from this "sle_minion"
+   Then "orion-dummy-1.1-1.1" should not be installed on "sle_minion"
 
   Scenario: Cleanup: turn the SLES minion into a container build host after script-bootstrap
-    Given I am on the Systems overview page of this "sle-minion"
+    Given I am on the Systems overview page of this "sle_minion"
     When I follow "Details" in the content area
     And I follow "Properties" in the content area
     And I check "container_build_host"
@@ -97,7 +97,7 @@ Feature: Register a Salt minion via Bootstrap-script
     And I should see a "System properties changed" text
 
   Scenario: Cleanup: turn the SLES minion into a OS image build host after script-bootstrap
-    Given I am on the Systems overview page of this "sle-minion"
+    Given I am on the Systems overview page of this "sle_minion"
     When I follow "Details" in the content area
     And I follow "Properties" in the content area
     And I check "osimage_build_host"
@@ -108,15 +108,15 @@ Feature: Register a Salt minion via Bootstrap-script
     And I should see a "System properties changed" text
 
   Scenario: Cleanup: apply the highstate to build host after script-bootstrap
-    Given I am on the Systems overview page of this "sle-minion"
-    When I wait until no Salt job is running on "sle-minion"
+    Given I am on the Systems overview page of this "sle_minion"
+    When I wait until no Salt job is running on "sle_minion"
     And I enable repositories before installing Docker
-    And I apply highstate on "sle-minion"
-    And I wait until "docker" service is active on "sle-minion"
-    And I wait until file "/var/lib/Kiwi/repo/rhn-org-trusted-ssl-cert-osimage-1.0-1.noarch.rpm" exists on "sle-minion"
+    And I apply highstate on "sle_minion"
+    And I wait until "docker" service is active on "sle_minion"
+    And I wait until file "/var/lib/Kiwi/repo/rhn-org-trusted-ssl-cert-osimage-1.0-1.noarch.rpm" exists on "sle_minion"
     And I disable repositories after installing Docker
 
   Scenario: Cleanup: check that the minion is now a build host after script-bootstrap
-    Given I am on the Systems overview page of this "sle-minion"
+    Given I am on the Systems overview page of this "sle_minion"
     Then I should see a "[Container Build Host]" text
     Then I should see a "[OS Image Build Host]" text
