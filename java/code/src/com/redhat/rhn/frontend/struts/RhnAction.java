@@ -224,10 +224,9 @@ public abstract class RhnAction extends Action {
      * Add an error message to the request with argument array
      * @param req to add the message to
      * @param beanKey resource key to lookup
-     * @param args String array to fill in for the message parameters
+     * @param args the message parameters to fill in placeholders
      */
-    protected void createErrorMessageWithMultipleArgs(HttpServletRequest req,
-            String beanKey, String[] args) {
+    protected void createErrorMessageWithMultipleArgs(HttpServletRequest req, String beanKey, String... args) {
         ActionErrors errs = new ActionErrors();
         String[] escArgs = new String[args.length];
         for (int i = 0; i < args.length; i++) {

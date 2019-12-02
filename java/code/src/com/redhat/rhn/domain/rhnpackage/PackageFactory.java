@@ -212,7 +212,7 @@ public class PackageFactory extends HibernateFactory {
      * @param pn the package name
      * @return a PackageName object that has a matching name
      */
-    public static synchronized PackageName lookupOrCreatePackageByName(String pn) {
+    public static PackageName lookupOrCreatePackageByName(String pn) {
         long id = lookupOrCreatePackageNameId(pn);
         return lookupPackageName(id);
     }
@@ -222,7 +222,7 @@ public class PackageFactory extends HibernateFactory {
      * @param name the package name
      * @return a package name id
      */
-    public static synchronized long lookupOrCreatePackageNameId(String name) {
+    public static long lookupOrCreatePackageNameId(String name) {
         CallableMode m = ModeFactory.getCallableMode("Package_queries", "lookup_package_name");
 
         Map inParams = new HashMap();
