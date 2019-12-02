@@ -20,6 +20,11 @@ class UyuniUsersException(Exception):
     Uyuni users Exception
     """
 
+class UyuniChannelsException(Exception):
+    """
+    Uyuni channels Exception
+    """
+
 
 class RPCClient:
     """
