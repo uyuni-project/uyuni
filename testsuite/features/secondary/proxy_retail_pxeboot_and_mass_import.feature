@@ -229,11 +229,11 @@ Feature: PXE boot a Retail terminal
   Scenario: PXE boot the PXE boot minion
     Given I am authorized as "admin" with password "admin"
     When I reboot the PXE boot minion
-    And I wait at most 180 seconds until Salt master sees "pxeboot-minion" as "unaccepted"
-    And I accept "pxeboot-minion" key in the Salt master
+    And I wait at most 180 seconds until Salt master sees "pxeboot_minion" as "unaccepted"
+    And I accept "pxeboot_minion" key in the Salt master
     And I navigate to "rhn/systems/Overview.do" page
-    And I wait until I see the name of "pxeboot-minion", refreshing the page
-    And I follow this "pxeboot-minion" link
+    And I wait until I see the name of "pxeboot_minion", refreshing the page
+    And I follow this "pxeboot_minion" link
     And I wait until event "Apply states [util.syncstates, saltboot] scheduled by (none)" is completed
     And I follow "Software" in the content area
     And I follow "Software Channels" in the content area
@@ -245,7 +245,7 @@ Feature: PXE boot a Retail terminal
 @private_net
 @pxeboot_minion
   Scenario: Check connection from terminal to branch server
-    Given I am on the Systems overview page of this "pxeboot-minion"
+    Given I am on the Systems overview page of this "pxeboot_minion"
     When I follow "Details" in the content area
     And I follow "Connection" in the content area
     Then I should see "proxy" short hostname
@@ -254,7 +254,7 @@ Feature: PXE boot a Retail terminal
 @private_net
 @pxeboot_minion
   Scenario: Install a package on the new Retail terminal
-    Given I am on the Systems overview page of this "pxeboot-minion"
+    Given I am on the Systems overview page of this "pxeboot_minion"
     When I install the GPG key of the test packages repository on the PXE boot minion
     And I follow "Software" in the content area
     And I follow "Install"
@@ -268,7 +268,7 @@ Feature: PXE boot a Retail terminal
 @private_net
 @pxeboot_minion
   Scenario: Cleanup: remove a package on the new Retail terminal
-    Given I am on the Systems overview page of this "pxeboot-minion"
+    Given I am on the Systems overview page of this "pxeboot_minion"
     And I follow "Software" in the content area
     And I follow "List / Remove"
     And I enter "virgo" as the filtered package name
@@ -283,12 +283,12 @@ Feature: PXE boot a Retail terminal
 @private_net
 @pxeboot_minion
   Scenario: Cleanup: delete the new Retail terminal
-    Given I am on the Systems overview page of this "pxeboot-minion"
+    Given I am on the Systems overview page of this "pxeboot_minion"
     When I follow "Delete System"
     Then I should see a "Confirm System Profile Deletion" text
     When I click on "Delete Profile"
     And I wait until I see "has been deleted" text
-    Then "pxeboot-minion" should not be registered
+    Then "pxeboot_minion" should not be registered
     And I stop salt-minion on the PXE boot minion
 
 @proxy
@@ -419,10 +419,10 @@ Feature: PXE boot a Retail terminal
     And I stop and disable avahi on the PXE boot minion
     And I create bootstrap script and set the activation key "1-SUSE-DEV-x86_64" in the bootstrap script on the proxy
     And I bootstrap pxeboot minion via bootstrap script on the proxy
-    And I wait at most 180 seconds until Salt master sees "pxeboot-minion" as "unaccepted"
+    And I wait at most 180 seconds until Salt master sees "pxeboot_minion" as "unaccepted"
     And I accept key of pxeboot minion in the Salt master
     Then I navigate to "rhn/systems/Overview.do" page
-    And I wait until I see the name of "pxeboot-minion", refreshing the page
+    And I wait until I see the name of "pxeboot_minion", refreshing the page
 
 @proxy
 @private_net

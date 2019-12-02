@@ -315,7 +315,7 @@ When(/^I install the GPG key of the test packages repository on the PXE boot min
   dest = "/tmp/" + file
   return_code = file_inject($server, source, dest)
   raise 'File injection failed' unless return_code.zero?
-  system_name = get_system_name('pxeboot-minion')
+  system_name = get_system_name('pxeboot_minion')
   $server.run("salt-cp #{system_name} #{dest} #{dest}")
   $server.run("salt #{system_name} cmd.run 'rpmkeys --import #{dest}'")
 end

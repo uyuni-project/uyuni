@@ -140,7 +140,7 @@ Feature: Setup SUSE Manager for Retail branch network
     And I press "Add Item" in host reservations section
     And I enter "pxeboot" in third reserved hostname field
     And I enter the local IP address of "pxeboot" in third reserved IP field
-    And I enter the MAC address of "pxeboot-minion" in third reserved MAC field
+    And I enter the MAC address of "pxeboot_minion" in third reserved MAC field
     And I click on "Save Formula"
     Then I should see a "Formula saved" text
     # bind:

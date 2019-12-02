@@ -153,7 +153,7 @@ Then(/^"(.*?)" should be registered$/) do |host|
 end
 
 Then(/^the PXE boot minion should have been reformatted$/) do
-  system_name = get_system_name('pxeboot-minion')
+  system_name = get_system_name('pxeboot_minion')
   output, _code = $server.run("salt #{system_name} file.file_exists /intact")
   raise 'Minion is intact' unless output.include? 'False'
 end
@@ -440,7 +440,7 @@ When(/^I enter the IP address of "([^"]*)" in (.*) field$/) do |host, field|
 end
 
 When(/^I enter the MAC address of "([^"]*)" in (.*) field$/) do |host, field|
-  if host == 'pxeboot-minion'
+  if host == 'pxeboot_minion'
     mac = $pxeboot_mac
   elsif host.include? 'ubuntu'
     node = get_target(host)
