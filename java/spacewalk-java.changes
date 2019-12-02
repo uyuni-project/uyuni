@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Mon Dec 02 10:00:13 CET 2019 - jgonzalez@suse.com
+
+- version 4.0.28-1
 - Prevent ISE and warn disable deletion of a Content Lifecycle channel in use (bsc#1158012)
 - Prevent Package List Refresh actions to stay pending forever (bsc#1157034)
 
