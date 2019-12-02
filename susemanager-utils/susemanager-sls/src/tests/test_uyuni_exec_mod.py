@@ -431,4 +431,9 @@ class TestUyuniTrust:
 
         self.trusts.get_trusted = MagicMock(return_value=[self.obn(t_org)])
         self.trusts.client = MagicMock(return_value="B-Org")
-        assert self.trusts.get_trust_by_name(t_org) == "B-Org"
+
+        with patch("uyuni_users.log", MagicMock()) as logger:
+            assert self.trusts.get_trust_by_name(t_org) == "B-Org"
+
+        assert logger.debug.called
+        assert logger.debug.call_args_list[0][0] == ('Trust "%s" %s', 'Trusted Org', 'has been found')
