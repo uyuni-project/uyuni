@@ -338,11 +338,15 @@ class UyuniTrust(UyuniRemoteObject):
         :param name:
         :return:
         """
+        found: bool = False
         trust_data: Dict[str, Union[int, datetime.datetime]] = {}
         for trusted_org in self.get_trusted():
             if trusted_org["org_name"] == name:
                 trust_data = self.client("org.trusts.getDetails", self.client.get_token(), trusted_org["id"])
+                found = True
                 break
+
+        log.debug('Trust "%s" %s', name, "not found" if not found else "has been found")
 
         return trust_data
 
