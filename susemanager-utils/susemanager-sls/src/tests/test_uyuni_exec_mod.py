@@ -490,3 +490,24 @@ class TestUyuniTrust:
         assert self.trusts.client.called
         assert self.trusts.client.call_args_list[0][0][-2:] == (42, 42)
         assert out
+
+    def test_untrust_org_not_found(self):
+        """
+        Test untrust org that was not found
+
+        :return:
+        """
+        self.trusts.get_trusted = MagicMock(return_value=[])
+        self.trusts.orgs = MagicMock()
+        self.trusts.orgs.get_org_by_name = MagicMock(return_value={})
+
+        with pytest.raises(AssertionError) as exc:
+            with patch("uyuni_users.log", MagicMock()) as logger:
+                out = self.trusts.untrust("Darkmatter Org")
+            assert self.trusts.orgs.get_org_by_name.called
+            assert self.trusts.orgs.get_org_by_name.call_args_list[0][0] == ("Darkmatter Org",)
+            assert self.trusts.client.called
+            assert self.trusts.client.call_args_list[0][0][-2:] == (42, 42)
+            assert out
+
+        assert str(exc.value) == "Trust removal: no information has been found for 'Darkmatter Org' organisation"
