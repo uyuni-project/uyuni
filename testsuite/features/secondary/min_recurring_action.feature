@@ -1,13 +1,10 @@
-# Copyright (c) 2021 SUSE LLC
+# Copyright (c) 2020 SUSE LLC
 # Licensed under the terms of the MIT license.
 
-@scope_recurring_actions
 Feature: Recurring Actions
 
-  Scenario: Log in as admin user
-    Given I am authorized for the "Admin" section
-
   Scenario: Create a minion Recurring Action
+    Given I am authorized with the feature's user
     When I am on the "States" page of this "sle_minion"
     And I follow "Recurring States" in the content area
     Then I should see a "No schedules created. Use Create to add a schedule" text
@@ -24,6 +21,7 @@ Feature: Recurring Actions
     And I should see a "0 0 0 ? * *" text
 
   Scenario: View a minion recurring actions details
+    Given I am authorized with the feature's user
     When I am on the "States" page of this "sle_minion"
     And I follow "Recurring States" in the content area
     Then I should see a "schedule_name" text
@@ -33,6 +31,7 @@ Feature: Recurring Actions
     Then I should see a "Schedules" text
 
   Scenario: Edit a minion Recurring Action
+    Given I am authorized with the feature's user
     When I am on the "States" page of this "sle_minion"
     And I follow "Recurring States" in the content area
     Then I should see a "schedule_name" text
@@ -47,6 +46,7 @@ Feature: Recurring Actions
     And I should see a "0 0 0 ? * 1" text
 
   Scenario: Create a System group for testing
+    Given I am authorized with the feature's user
     When I follow the left menu "Systems > System Groups"
     And I follow "Create Group"
     And I enter "Recurring-Action-test-group" as "name"
@@ -55,6 +55,7 @@ Feature: Recurring Actions
     Then I should see a "System group Recurring-Action-test-group created." text
 
   Scenario: Create a group Recurring Action
+    Given I am authorized with the feature's user
     When I follow the left menu "Systems > System Groups"
     And I follow "Recurring-Action-test-group"
     And I follow "States" in the content area
@@ -73,6 +74,7 @@ Feature: Recurring Actions
     And I should see a "0 0 0 ? * *" text
 
   Scenario: View a group recurring actions details
+    Given I am authorized with the feature's user
     When I follow the left menu "Systems > System Groups"
     And I follow "Recurring-Action-test-group"
     And I follow "States" in the content area
@@ -84,6 +86,7 @@ Feature: Recurring Actions
     Then I should see a "Schedules" text
 
   Scenario: Edit a group Recurring Action
+    Given I am authorized with the feature's user
     When I follow the left menu "Systems > System Groups"
     And I follow "Recurring-Action-test-group"
     And I follow "States" in the content area
@@ -100,6 +103,7 @@ Feature: Recurring Actions
     And I should see a "0 0 0 ? * 1" text
 
   Scenario: Create a yourorg Recurring Action
+    Given I am authorized with the feature's user
     When I follow the left menu "Home > My Organization > Recurring States"
     Then I should see a "No schedules created. Use Create to add a schedule" text
     When I click on "Create"
@@ -115,6 +119,7 @@ Feature: Recurring Actions
     And I should see a "0 0 0 ? * *" text
 
   Scenario: View a yourorg recurring actions details
+    Given I am authorized with the feature's user
     When I follow the left menu "Home > My Organization > Recurring States"
     Then I should see a "schedule_name" text
     When I click the "schedule_name" item details button
@@ -123,6 +128,7 @@ Feature: Recurring Actions
     Then I should see a "Schedules" text
 
   Scenario: Edit a yourorg Recurring Action
+    Given I am authorized with the feature's user
     When I follow the left menu "Home > My Organization > Recurring States"
     Then I should see a "schedule_name" text
     When I click the "schedule_name" item edit button
@@ -136,6 +142,7 @@ Feature: Recurring Actions
     And I should see a "0 0 0 ? * 1" text
 
   Scenario: Delete a yourorg Recurring Action
+    Given I am authorized with the feature's user
     When I follow the left menu "Home > My Organization > Recurring States"
     Then I should see a "schedule_name_edit" text
     When I click the "schedule_name" item delete button
@@ -145,6 +152,7 @@ Feature: Recurring Actions
     Then I should see a "No schedules created. Use Create to add a schedule" text
 
   Scenario: Create an admin org Recurring Action
+    Given I am authorized with the feature's user
     When I follow the left menu "Admin > Organizations"
     And I follow "SUSE Test" in the content area
     And I follow "States" in the content area
@@ -163,6 +171,7 @@ Feature: Recurring Actions
     And I should see a "0 0 0 ? * *" text
 
   Scenario: View an admin org recurring actions details
+    Given I am authorized with the feature's user
     When I follow the left menu "Admin > Organizations"
     And I follow "SUSE Test" in the content area
     And I follow "States" in the content area
@@ -174,6 +183,7 @@ Feature: Recurring Actions
     Then I should see a "Schedules" text
 
   Scenario: Edit an admin org Recurring Action
+    Given I am authorized with the feature's user
     When I follow the left menu "Admin > Organizations"
     And I follow "SUSE Test" in the content area
     And I follow "States" in the content area
@@ -190,6 +200,7 @@ Feature: Recurring Actions
     And I should see a "0 0 0 ? * 1" text
 
   Scenario: Check list of all actions
+    Given I am authorized with the feature's user
     When I follow the left menu "Schedule > Recurring States"
     Then I should not see a "Create" text
     And I should see a "schedule_name_minion" text
@@ -200,6 +211,7 @@ Feature: Recurring Actions
     And I should see a "Organization" text
 
  Scenario: View details in list of all actions
+    Given I am authorized with the feature's user
     When I follow the left menu "Schedule > Recurring States"
     And I click the "schedule_name_minion" item details button
     Then I should see a "Every Sunday at 00:00" text
@@ -210,6 +222,7 @@ Feature: Recurring Actions
     Then I should see a "schedule_name_group" text
 
   Scenario: Edit in list of all actions
+    Given I am authorized with the feature's user
     When I follow the left menu "Schedule > Recurring States"
     And I wait until I see "schedule_name_org" text
     And I click the "schedule_name_org" item edit button
@@ -223,6 +236,7 @@ Feature: Recurring Actions
     And I should see a "0 0 0 1 * ?" text
 
   Scenario: Delete from list of all actions
+    Given I am authorized with the feature's user
     When I follow the left menu "Schedule > Recurring States"
     When I click the "schedule_name_edit" item delete button
     Then I should see a "Delete Recurring State Schedule" text
@@ -232,6 +246,7 @@ Feature: Recurring Actions
     And I should see a "schedule_name_group" text
 
   Scenario: Delete a minion Recurring Action
+    Given I am authorized with the feature's user
     When I am on the "States" page of this "sle_minion"
     And I follow "Recurring States" in the content area
     Then I should see a "schedule_name_minion" text
@@ -242,6 +257,7 @@ Feature: Recurring Actions
     Then I should see a "No schedules created. Use Create to add a schedule" text
 
   Scenario: Delete a group Recurring Action
+    Given I am authorized as "admin" with password "admin"
     When I follow the left menu "Systems > System Groups"
     And I follow "Recurring-Action-test-group"
     And I follow "States" in the content area
@@ -254,6 +270,7 @@ Feature: Recurring Actions
     Then I should see a "No schedules created. Use Create to add a schedule" text
 
   Scenario: Cleanup after running the tests
+    Given I am authorized as "admin" with password "admin"
     When I follow the left menu "Systems > System Groups"
     And I follow "Recurring-Action-test-group"
     And I follow "Delete Group"

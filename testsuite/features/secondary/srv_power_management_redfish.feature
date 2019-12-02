@@ -1,15 +1,10 @@
-# Copyright (c) 2021-2022 SUSE LLC
+# Copyright (c) 2020 SUSE LLC
 # Licensed under the terms of the MIT license.
 
-@scope_power_management
-@scope_cobbler
 Feature: Redfish Power management
 
   Scenario: Setup a Redfish host
     When the server starts mocking a Redfish host
-
-  Scenario: Log in as admin user
-    Given I am authorized for the "Admin" section
 
   Scenario: Save power management values for Redfish
     Given I am on the Systems overview page of this "sle_minion"
@@ -27,6 +22,7 @@ Feature: Redfish Power management
     And the cobbler report should contain "Power Management Type          : redfish" for "sle_minion"
 
   Scenario: Test Redfish functions
+    Given I am on the Systems overview page of this "sle_minion"
     When I follow "Provisioning" in the content area
     And I follow "Power Management" in the content area
     And I click on "Power On"
@@ -47,10 +43,11 @@ Feature: Redfish Power management
     Then I should see the power is "On"
 
   Scenario: Check power management SSM configuration for Redfish
-    When I follow the left menu "Systems > Overview"
-    And I follow "Clear"
+    When I am authorized with the feature's user
+    And I am on the System Overview page
+    When I follow "Clear"
     And I check the "sle_minion" client
-    And I follow the left menu "Systems > System Set Manager > Overview"
+    And I am on System Set Manager Overview
     And I follow "Configure power management" in the content area
     Then I should see "sle_minion" as link
     And I should see a "Change Power Management Configuration" text
@@ -70,7 +67,8 @@ Feature: Redfish Power management
     And the cobbler report should contain "Power Management Type          : redfish" for "sle_minion"
 
   Scenario: Check power management SSM operation for Redfish
-    And I follow the left menu "Systems > System Set Manager > Overview"
+    When I am authorized with the feature's user
+    And I am on System Set Manager Overview
     When I follow "power management operations" in the content area
     Then I should see "sle_minion" as link
     And I should see a "Power On" button
@@ -78,13 +76,12 @@ Feature: Redfish Power management
     And I should see a "Reboot" button
 
   Scenario: Cleanup: reset Redfish values
-    Given I am logged in API as user "admin" and password "admin"
+    Given I am logged in via XML-RPC powermgmt with the feature's user
     And I want to operate on this "sle_minion"
     When I set power management value "" for "powerAddress"
     And I set power management value "" for "powerUsername"
     And I set power management value "" for "powerPassword"
     And I set power management value "ipmitool" for "powerType"
-    And I logout from API
     Then the cobbler report should contain "Power Management Address       :" for "sle_minion"
     And the cobbler report should contain "Power Management Username      :" for "sle_minion"
     And the cobbler report should contain "Power Management Password      :" for "sle_minion"
@@ -94,4 +91,5 @@ Feature: Redfish Power management
     When the server stops mocking a Redfish host
 
   Scenario: Cleanup: remove remaining systems from SSM after Redfish power management tests
-    When I follow "Clear"
+    When I am authorized with the feature's user
+    And I follow "Clear"

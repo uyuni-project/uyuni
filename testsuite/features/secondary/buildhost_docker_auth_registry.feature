@@ -1,61 +1,64 @@
-# Copyright (c) 2018-2022 SUSE LLC
+# Copyright (c) 2018-2020 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 @buildhost
-@scope_building_container_images
-@auth_registry
 Feature: Build image with authenticated registry
 
-  Scenario: Log in as docker user
-    Given I am authorized as "docker" with password "docker"
-    And I am logged in API as user "docker" and password "docker"
-
+@auth_registry
   Scenario: Create an authenticated image store as Docker admin
+    Given I am authorized as "docker" with password "docker"
     When I follow the left menu "Images > Stores"
     And I follow "Create"
-    And I enter "auth_registry" as "label"
+    And I enter "portus" as "label"
     And I check "useCredentials"
-    And I enter URI, username and password for registry
+    And I enter URI, username and password for portus
     And I click on "create-btn"
-    Then I wait until I see "registry" text
 
+@auth_registry
   Scenario: Create a profile for the authenticated image store as Docker admin
+    Given I am authorized as "docker" with password "docker"
     When I follow the left menu "Images > Profiles"
     And I follow "Create"
-    And I enter "auth_registry_profile" as "label"
-    And I select "auth_registry" from "imageStore"
+    And I enter "portus_profile" as "label"
+    And I select "portus" from "imageStore"
     And I select "1-DOCKER-TEST" from "activationKey"
     And I enter "Docker/authprofile" relative to profiles as "path"
     And I click on "create-btn"
-    Then I wait until I see "auth_registry_profile" text
 
+@auth_registry
   Scenario: Build an image in the authenticated image store
+    Given I am authorized as "docker" with password "docker"
     When I follow the left menu "Images > Build"
-    And I select "auth_registry_profile" from "profileId"
+    And I select "portus_profile" from "profileId"
     And I enter "latest" as "version"
     And I select the hostname of "build_host" from "buildHostId"
     And I click on "submit-btn"
-    Then I wait until I see "auth_registry_profile" text
+    Then I wait until I see "portus_profile" text
     # Verify the status of images in the authenticated image store
-    When I wait at most 660 seconds until image "auth_registry_profile" with version "latest" is built and inspected successfully via API
-    And I refresh the page
-    Then table row for "auth_registry_profile" should contain "1"
-    And the list of packages of image "auth_registry_profile" with version "latest" is not empty
+    When I wait at most 500 seconds until container "portus_profile" is built successfully
 
+@auth_registry
   Scenario: Cleanup: remove Docker profile for the authenticated image store
+    Given I am authorized as "docker" with password "docker"
     When I follow the left menu "Images > Profiles"
-    And I check the row with the "auth_registry_profile" text
+    And I check the row with the "portus_profile" text
     And I click on "Delete"
     And I click on the red confirmation button
     And I should see a "Image profile has been deleted." text
 
+@auth_registry
   Scenario: Cleanup: remove authenticated image store
+    Given I am authorized as "docker" with password "docker"
     When I follow the left menu "Images > Stores"
-    And I check the row with the "auth_registry" text
+    And I check the row with the "portus" text
     And I click on "Delete"
     And I click on the red confirmation button
     And I should see a "Image store has been deleted." text
 
-  Scenario: Cleanup: delete registry image
-    When I delete the image "auth_registry_profile" with version "latest" via API calls
-    And I logout from API
+@auth_registry
+  Scenario: Cleanup: delete portus image
+    When I delete the image "portus_profile" with version "latest" via XML-RPC calls
+
+@auth_registry
+  Scenario: Cleanup: kill stale portus image build jobs
+    When I kill remaining Salt jobs on "build_host"

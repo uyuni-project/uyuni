@@ -1,4 +1,4 @@
-# Copyright 2015-2022 SUSE LLC
+# Copyright 2015-2020 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 require 'timeout'
@@ -14,7 +14,7 @@ Given(/^the Salt master can reach "(.*?)"$/) do |minion|
     out, _code = $server.run("salt #{system_name} test.ping")
     if out.include?(system_name) && out.include?('True')
       finished = Time.now
-      log "Took #{finished.to_i - start.to_i} seconds to contact the minion"
+      puts "Took #{finished.to_i - start.to_i} seconds to contact the minion"
       break
     end
     sleep 1
@@ -28,41 +28,20 @@ end
 
 When(/^I stop salt-minion on "(.*?)"$/) do |minion|
   node = get_target(minion)
-  pkgname = $use_salt_bundle ? "venv-salt-minion" : "salt-minion"
-  os_version, os_family = get_os_version(node)
-  if os_family =~ /^sles/ && os_version =~ /^11/
-    node.run("rc#{pkgname} stop", check_errors: false)
-  else
-    node.run("systemctl stop #{pkgname}", check_errors: false)
-  end
+  node.run('rcsalt-minion stop', false) if minion == 'sle_minion'
+  node.run('systemctl stop salt-minion', false) if %w[ceos_minion ceos_ssh_minion ubuntu_minion ubuntu_ssh_minion kvm_server xen_server].include?(minion)
 end
 
 When(/^I start salt-minion on "(.*?)"$/) do |minion|
   node = get_target(minion)
-  pkgname = $use_salt_bundle ? "venv-salt-minion" : "salt-minion"
-  os_version, os_family = get_os_version(node)
-  if os_family =~ /^sles/ && os_version =~ /^11/
-    node.run("rc#{pkgname} start", check_errors: false)
-  else
-    node.run("systemctl start #{pkgname}", check_errors: false)
-  end
+  node.run('rcsalt-minion restart', false) if minion == 'sle_minion'
+  node.run('systemctl restart salt-minion', false) if %w[ceos_minion ceos_ssh_minion ubuntu_minion ubuntu_ssh_minion kvm_server xen_server].include?(minion)
 end
 
 When(/^I restart salt-minion on "(.*?)"$/) do |minion|
   node = get_target(minion)
-  pkgname = $use_salt_bundle ? "venv-salt-minion" : "salt-minion"
-  os_version, os_family = get_os_version(node)
-  if os_family =~ /^sles/ && os_version =~ /^11/
-    node.run("rc#{pkgname} restart", check_errors: false)
-  else
-    node.run("systemctl restart #{pkgname}", check_errors: false)
-  end
-end
-
-When(/^I refresh salt-minion grains on "(.*?)"$/) do |minion|
-  node = get_target(minion)
-  salt_call = $use_salt_bundle ? "venv-salt-call" : "salt-call"
-  node.run("#{salt_call} saltutil.refresh_grains")
+  node.run('rcsalt-minion restart', false) if minion == 'sle_minion'
+  node.run('systemctl restart salt-minion', false) if %w[ceos_minion ceos_ssh_minion ubuntu_minion ubuntu_ssh_minion kvm_server xen_server].include?(minion)
 end
 
 When(/^I wait at most (\d+) seconds until Salt master sees "([^"]*)" as "([^"]*)"$/) do |key_timeout, minion, key_type|
@@ -70,7 +49,7 @@ When(/^I wait at most (\d+) seconds until Salt master sees "([^"]*)" as "([^"]*)
   repeat_until_timeout(timeout: key_timeout.to_i, message: "Minion '#{minion}' is not listed among #{key_type} keys on Salt master") do
     system_name = get_system_name(minion)
     unless system_name.empty?
-      output, return_code = $server.run(cmd, check_errors: false)
+      output, return_code = $server.run(cmd, false)
       break if return_code.zero? && output.include?(system_name)
     end
     sleep 1
@@ -79,9 +58,8 @@ end
 
 When(/^I wait until no Salt job is running on "([^"]*)"$/) do |minion|
   target = get_target(minion)
-  salt_call = $use_salt_bundle ? "venv-salt-call" : "salt-call"
   repeat_until_timeout(message: "A Salt job is still running on #{minion}") do
-    output, _code = target.run("#{salt_call} -lquiet saltutil.running")
+    output, _code = target.run('salt-call -lquiet saltutil.running')
     break if output == "local:\n"
     sleep 3
   end
@@ -89,7 +67,7 @@ end
 
 When(/^I delete "([^"]*)" key in the Salt master$/) do |host|
   system_name = get_system_name(host)
-  $output, _code = $server.run("salt-key -y -d #{system_name}", check_errors: false)
+  $output, _code = $server.run("salt-key -y -d #{system_name}", false)
 end
 
 When(/^I accept "([^"]*)" key in the Salt master$/) do |host|
@@ -117,7 +95,7 @@ end
 
 Then(/^it should contain the OS of "([^"]*)"$/) do |host|
   node = get_target(host)
-  _os_version, os_family = get_os_version(node)
+  os_version, os_family = get_os_version(node)
   family = os_family =~ /^opensuse/ ? 'Leap' : 'SLES'
   assert_match(/#{family}/, $output)
 end
@@ -143,31 +121,43 @@ end
 
 Then(/^"(.*?)" should not be registered$/) do |host|
   system_name = get_system_name(host)
-  $api_test.auth.login('admin', 'admin')
-  refute_includes($api_test.system.list_systems.map { |s| s['name'] }, system_name)
-  $api_test.auth.logout
+  @rpc = XMLRPCSystemTest.new(ENV['SERVER'])
+  @rpc.login($username, $password)
+  refute_includes(@rpc.list_systems.map { |s| s['name'] }, system_name)
 end
 
 Then(/^"(.*?)" should be registered$/) do |host|
   system_name = get_system_name(host)
-  $api_test.auth.login('admin', 'admin')
-  assert_includes($api_test.system.list_systems.map { |s| s['name'] }, system_name)
-  $api_test.auth.logout
+  @rpc = XMLRPCSystemTest.new(ENV['SERVER'])
+  @rpc.login($username, $password)
+  assert_includes(@rpc.list_systems.map { |s| s['name'] }, system_name)
 end
 
-Then(/^"(.*?)" should have been reformatted$/) do |host|
-  system_name = get_system_name(host)
+Then(/^the PXE boot minion should have been reformatted$/) do
+  system_name = get_system_name('pxeboot_minion')
   output, _code = $server.run("salt #{system_name} file.file_exists /intact")
-  raise "Minion #{host} is intact" unless output.include? 'False'
+  raise 'Minion is intact' unless output.include? 'False'
 end
 
 # user salt steps
-Given(/^I am authorized as an example user with no roles$/) do
-  $api_test.auth.login('admin', 'admin')
-  @username = 'testuser' + (0...8).map { (65 + rand(26)).chr }.join.downcase
-  $api_test.user.create_user(@username, 'linux')
-  step %(I am authorized as "#{@username}" with password "linux")
-  $api_test.auth.logout
+Given(/^I create a user with name "([^"]*)" and password "([^"]*)"/) do |user, password|
+  @rpc = XMLRPCUserTest.new(ENV['SERVER'])
+  @rpc.login($username, $password)
+  $username = user
+  $password = password
+  @rpc.create_user($username, $password)
+  @rpc.add_role($username, 'satellite_admin')
+  @rpc.add_role($username, 'org_admin')
+  @rpc.add_role($username, 'channel_admin')
+  @rpc.add_role($username, 'config_admin')
+  @rpc.add_role($username, 'system_group_admin')
+  @rpc.add_role($username, 'activation_key_admin')
+  @rpc.add_role($username, 'image_admin')
+  puts "New user #{$username} created"
+end
+
+Then(/^I can cleanup the no longer needed user$/) do
+  @rpc.delete_user($username)
 end
 
 When(/^I click on preview$/) do
@@ -178,18 +168,37 @@ When(/^I click on run$/) do
   find('button#run', wait: DEFAULT_TIMEOUT).click
 end
 
+Then(/^I should see "([^"]*)" short hostname$/) do |host|
+  system_name = get_system_name(host).partition('.').first
+  raise "Hostname #{system_name} is not present" unless has_content?(system_name)
+end
+
+Then(/^I should not see "([^"]*)" short hostname$/) do |host|
+  system_name = get_system_name(host).partition('.').first
+  raise "Hostname #{system_name} is present" if has_content?(system_name)
+end
+
+Then(/^I should see "([^"]*)" hostname$/) do |host|
+  system_name = get_system_name(host)
+  raise "Hostname #{system_name} is not present" unless has_content?(system_name)
+end
+
+Then(/^I should not see "([^"]*)" hostname$/) do |host|
+  system_name = get_system_name(host)
+  raise "Hostname #{system_name} is present" if has_content?(system_name)
+end
+
 When(/^I expand the results for "([^"]*)"$/) do |host|
   system_name = get_system_name(host)
   find("div[id='#{system_name}']").click
 end
 
 When(/^I enter command "([^"]*)"$/) do |cmd|
-  fill_in('command', with: cmd, fill_options: { clear: :backspace })
+  fill_in 'command', with: cmd
 end
 
-When(/^I enter target "([^"]*)"$/) do |host|
-  value = get_system_name(host)
-  fill_in('target', with: value, fill_options: { clear: :backspace })
+When(/^I enter target "([^"]*)"$/) do |minion|
+  fill_in 'target', with: minion
 end
 
 Then(/^I should see "([^"]*)" in the command output for "([^"]*)"$/) do |text, host|
@@ -199,9 +208,49 @@ Then(/^I should see "([^"]*)" in the command output for "([^"]*)"$/) do |text, h
   end
 end
 
+Then(/^I click on the filter button until page does not contain "([^"]*)" text$/) do |text|
+  repeat_until_timeout(message: "'#{text}' still found") do
+    break unless has_content?(text)
+    find("button.spacewalk-button-filter").click
+    has_text?('is filtered', wait: 10)
+  end
+end
+
+Then(/^I click on the filter button until page does contain "([^"]*)" text$/) do |text|
+  repeat_until_timeout(message: "'#{text}' was not found") do
+    break if has_content?(text)
+    find("button.spacewalk-button-filter").click
+    has_text?('is filtered', wait: 10)
+  end
+end
+
+When(/^I click on the filter button$/) do
+  find_and_wait_click("button.spacewalk-button-filter").click
+  has_text?('is filtered', wait: 10)
+end
+
+When(/^I click on the red confirmation button$/) do
+  find_and_wait_click("button.btn-danger").click
+end
+
+When(/^I click on the clear SSM button$/) do
+  find_and_wait_click("a#clear-ssm").click
+end
+
+When(/^I enter "([^"]*)" as the filtered package name$/) do |input|
+  find("input[placeholder='Filter by Package Name: ']").set(input)
+end
+
+When(/^I enter "([^"]*)" as the filtered synopsis$/) do |input|
+  find("input[placeholder='Filter by Synopsis: ']").set(input)
+end
+
+When(/^I enter "([^"]*)" as the filtered product description$/) do |input|
+  find("input[name='product-description-filter']").set(input)
+end
+
 # Salt formulas
 When(/^I manually install the "([^"]*)" formula on the server$/) do |package|
-  $server.run("zypper --non-interactive refresh")
   $server.run("zypper --non-interactive install --force #{package}-formula")
 end
 
@@ -218,35 +267,19 @@ When(/^I synchronize all Salt dynamic modules on "([^"]*)"$/) do |host|
   $server.run("salt #{system_name} saltutil.sync_all")
 end
 
-When(/^I remove "([^"]*)" from salt cache on "([^"]*)"$/) do |filename, host|
-  node = get_target(host)
-  salt_cache = $use_salt_bundle ? "/var/cache/venv-salt-minion/" : "/var/cache/salt/"
-  file_delete(node, "#{salt_cache}#{filename}")
-end
-
-When(/^I remove "([^"]*)" from salt minion config directory on "([^"]*)"$/) do |filename, host|
-  node = get_target(host)
-  salt_config = $use_salt_bundle ? "/etc/venv-salt-minion/minion.d/" : "/etc/salt/minion.d/"
-  file_delete(node, "#{salt_config}#{filename}")
-end
-
-When(/^I store "([^"]*)" into file "([^"]*)" in salt minion config directory on "([^"]*)"$/) do |content, filename, host|
-  salt_config = $use_salt_bundle ? "/etc/venv-salt-minion/minion.d/" : "/etc/salt/minion.d/"
-  step %(I store "#{content}" into file "#{salt_config}#{filename}" on "#{host}")
-end
-
 When(/^I ([^ ]*) the "([^"]*)" formula$/) do |action, formula|
   # Complicated code because the checkbox is not a <input type=checkbox> but an <i>
   xpath_query = "//a[@id = '#{formula}']/i[@class = 'fa fa-lg fa-square-o']" if action == 'check'
   xpath_query = "//a[@id = '#{formula}']/i[@class = 'fa fa-lg fa-check-square-o']" if action == 'uncheck'
+  # WORKAROUND
   # DOM refreshes content of chooseFormulas element by accessing it. Then conditions are evaluated properly.
   find('#chooseFormulas')['innerHTML']
-  if has_xpath?(xpath_query, wait: DEFAULT_TIMEOUT)
+  if all(:xpath, xpath_query, wait: DEFAULT_TIMEOUT).any?
     raise "xpath: #{xpath_query} not found" unless find(:xpath, xpath_query, wait: DEFAULT_TIMEOUT).click
   else
     xpath_query = "//a[@id = '#{formula}']/i[@class = 'fa fa-lg fa-check-square-o']" if action == 'check'
     xpath_query = "//a[@id = '#{formula}']/i[@class = 'fa fa-lg fa-square-o']" if action == 'uncheck'
-    raise "xpath: #{xpath_query} not found" unless has_xpath?(xpath_query, wait: DEFAULT_TIMEOUT)
+    raise "xpath: #{xpath_query} not found" unless all(:xpath, xpath_query, wait: DEFAULT_TIMEOUT).any?
   end
 end
 
@@ -254,16 +287,235 @@ Then(/^the "([^"]*)" formula should be ([^ ]*)$/) do |formula, state|
   # Complicated code because the checkbox is not a <input type=checkbox> but an <i>
   xpath_query = "//a[@id = '#{formula}']/i[@class = 'fa fa-lg fa-square-o']" if state == 'checked'
   xpath_query = "//a[@id = '#{formula}']/i[@class = 'fa fa-lg fa-check-square-o']" if state == 'unchecked'
+  # WORKAROUND
   # DOM refreshes content of chooseFormulas element by accessing it. Then conditions are evaluated properly.
   find('#chooseFormulas')['innerHTML']
-  raise "Checkbox is not #{state}" if has_xpath?(xpath_query)
+  raise "Checkbox is not #{state}" if all(:xpath, xpath_query).any?
   xpath_query = "//a[@id = '#{formula}']/i[@class = 'fa fa-lg fa-check-square-o']" if state == 'checked'
   xpath_query = "//a[@id = '#{formula}']/i[@class = 'fa fa-lg fa-square-o']" if state == 'unchecked'
-  assert has_xpath?(xpath_query), 'Checkbox could not be found'
+  assert all(:xpath, xpath_query).any?, 'Checkbox could not be found'
 end
 
 When(/^I select "([^"]*)" in (.*) field$/) do |value, box|
   select(value, from: FIELD_IDS[box])
+end
+
+# rubocop:disable Metrics/BlockLength
+When(/^I enter the local IP address of "([^"]*)" in (.*) field$/) do |host, field|
+  fieldids = { 'IP'                       => 'branch_network#ip',
+               'domain name server'       => 'dhcpd#domain_name_servers#0',
+               'network IP'               => 'dhcpd#subnets#0#$key',
+               'dynamic IP range begin'   => 'dhcpd#subnets#0#range#0',
+               'dynamic IP range end'     => 'dhcpd#subnets#0#range#1',
+               'broadcast address'        => 'dhcpd#subnets#0#broadcast_address',
+               'routers'                  => 'dhcpd#subnets#0#routers#0',
+               'next server'              => 'dhcpd#subnets#0#next_server',
+               'first reserved IP'        => 'dhcpd#hosts#0#fixed_address',
+               'second reserved IP'       => 'dhcpd#hosts#1#fixed_address',
+               'third reserved IP'        => 'dhcpd#hosts#2#fixed_address',
+               'first A address'          => 'bind#available_zones#0#records#A#0#1',
+               'second A address'         => 'bind#available_zones#0#records#A#1#1',
+               'third A address'          => 'bind#available_zones#0#records#A#2#1',
+               'fourth A address'         => 'bind#available_zones#0#records#A#3#1',
+               'internal network address' => 'tftpd#listen_ip',
+               'vsftpd internal network address' => 'vsftpd_config#listen_address' }
+  addresses = { 'network'     => '0',
+                'client'      => '2',
+                'minion'      => '3',
+                'pxeboot'     => '4',
+                'range begin' => '128',
+                'range end'   => '253',
+                'proxy'       => '254',
+                'broadcast'   => '255' }
+  net_prefix = $private_net.sub(%r{\.0+/24$}, ".")
+  fill_in fieldids[field], with: net_prefix + addresses[host]
+end
+
+When(/^I enter the local IP address of "([^"]*)" in (.*) field for vsftpd$/) do |host, field|
+  fieldids = { 'IP'                       => 'branch_network#ip',
+               'domain name server'       => 'dhcpd#domain_name_servers#0',
+               'network IP'               => 'dhcpd#subnets#0#$key',
+               'dynamic IP range begin'   => 'dhcpd#subnets#0#range#0',
+               'dynamic IP range end'     => 'dhcpd#subnets#0#range#1',
+               'broadcast address'        => 'dhcpd#subnets#0#broadcast_address',
+               'routers'                  => 'dhcpd#subnets#0#routers#0',
+               'next server'              => 'dhcpd#subnets#0#next_server',
+               'first reserved IP'        => 'dhcpd#hosts#0#fixed_address',
+               'second reserved IP'       => 'dhcpd#hosts#1#fixed_address',
+               'third reserved IP'        => 'dhcpd#hosts#2#fixed_address',
+               'first A address'          => 'bind#available_zones#0#records#A#0#1',
+               'second A address'         => 'bind#available_zones#0#records#A#1#1',
+               'third A address'          => 'bind#available_zones#0#records#A#2#1',
+               'fourth A address'         => 'bind#available_zones#0#records#A#3#1',
+               'internal network address' => 'vsftpd_config#listen_address' }
+  addresses = { 'network'     => '0',
+                'client'      => '2',
+                'minion'      => '3',
+                'pxeboot'     => '4',
+                'range begin' => '128',
+                'range end'   => '253',
+                'proxy'       => '254',
+                'broadcast'   => '255' }
+  net_prefix = $private_net.sub(%r{\.0+/24$}, ".")
+  fill_in fieldids[field], with: net_prefix + addresses[host]
+end
+
+When(/^I enter "([^"]*)" in (.*) field$/) do |value, field|
+  fieldids = { 'NIC'                             => 'branch_network#nic',
+               'domain name'                     => 'dhcpd#domain_name',
+               'listen interfaces'               => 'dhcpd#listen_interfaces#0',
+               'network mask'                    => 'dhcpd#subnets#0#netmask',
+               'filename'                        => 'dhcpd#subnets#0#filename',
+               'first reserved hostname'         => 'dhcpd#hosts#0#$key',
+               'second reserved hostname'        => 'dhcpd#hosts#1#$key',
+               'third reserved hostname'         => 'dhcpd#hosts#2#$key',
+               'virtual network IPv4 address'    => 'default_net#ipv4#gateway',
+               'first IPv4 address for DHCP'     => 'default_net#ipv4#dhcp_start',
+               'last IPv4 address for DHCP'      => 'default_net#ipv4#dhcp_end',
+               'first option'                    => 'bind#config#options#0#0',
+               'first value'                     => 'bind#config#options#0#1',
+               'second option'                   => 'bind#config#options#1#0',
+               'second value'                    => 'bind#config#options#1#1',
+               'third option'                    => 'bind#config#options#2#0',
+               'third value'                     => 'bind#config#options#2#1',
+               'first configured zone name'      => 'bind#configured_zones#0#$key',
+               'first available zone name'       => 'bind#available_zones#0#$key',
+               'first file name'                 => 'bind#available_zones#0#file',
+               'first name server'               => 'bind#available_zones#0#soa#ns',
+               'first contact'                   => 'bind#available_zones#0#soa#contact',
+               'first A name'                    => 'bind#available_zones#0#records#A#0#0',
+               'second A name'                   => 'bind#available_zones#0#records#A#1#0',
+               'third A name'                    => 'bind#available_zones#0#records#A#2#0',
+               'fourth A name'                   => 'bind#available_zones#0#records#A#3#0',
+               'first NS'                        => 'bind#available_zones#0#records#NS#@#0',
+               'first CNAME alias'               => 'bind#available_zones#0#records#CNAME#0#0',
+               'first CNAME name'                => 'bind#available_zones#0#records#CNAME#0#1',
+               'second CNAME alias'              => 'bind#available_zones#0#records#CNAME#1#0',
+               'second CNAME name'               => 'bind#available_zones#0#records#CNAME#1#1',
+               'third CNAME alias'               => 'bind#available_zones#0#records#CNAME#2#0',
+               'third CNAME name'                => 'bind#available_zones#0#records#CNAME#2#1',
+               'second name server'              => 'bind#available_zones#1#soa#ns',
+               'second contact'                  => 'bind#available_zones#1#soa#contact',
+               'second NS'                       => 'bind#available_zones#1#records#NS#@#0',
+               'second for zones'                => 'bind#available_zones#1#generate_reverse#for_zones#0',
+               'third configured zone name'      => 'bind#configured_zones#2#$key',
+               'third available zone name'       => 'bind#available_zones#2#$key',
+               'third file name'                 => 'bind#available_zones#2#file',
+               'third name server'               => 'bind#available_zones#2#soa#ns',
+               'third contact'                   => 'bind#available_zones#2#soa#contact',
+               'TFTP base directory'             => 'tftpd#root_dir',
+               'branch id'                       => 'pxe#branch_id',
+               'disk id'                         => 'partitioning#0#$key',
+               'disk device'                     => 'partitioning#0#device',
+               'first partition id'              => 'partitioning#0#partitions#0#$key',
+               'first partition size'            => 'partitioning#0#partitions#0#size_MiB',
+               'first mount point'               => 'partitioning#0#partitions#0#mountpoint',
+               'first OS image'                  => 'partitioning#0#partitions#0#image',
+               'first partition password'        => 'partitioning#0#partitions#0#luks_pass',
+               'second partition id'             => 'partitioning#0#partitions#1#$key',
+               'second partition size'           => 'partitioning#0#partitions#1#size_MiB',
+               'second mount point'              => 'partitioning#0#partitions#1#mountpoint',
+               'second OS image'                 => 'partitioning#0#partitions#1#image',
+               'second partition password'       => 'partitioning#0#partitions#1#luks_pass',
+               'third partition id'              => 'partitioning#0#partitions#2#$key',
+               'third partition size'            => 'partitioning#0#partitions#2#size_MiB',
+               'third filesystem format'         => 'partitioning#0#partitions#2#format',
+               'third mount point'               => 'partitioning#0#partitions#2#mountpoint',
+               'third OS image'                  => 'partitioning#0#partitions#2#image',
+               'third partition password'        => 'partitioning#0#partitions#2#luks_pass',
+               'FTP server directory'            => 'vsftpd_config#anon_root' }
+  fill_in fieldids[field], with: value
+end
+# rubocop:enable Metrics/BlockLength
+
+When(/^I enter the hostname of "([^"]*)" in (.*) field$/) do |host, field|
+  system_name = get_system_name(host)
+  fieldids = { 'third CNAME name'   => 'bind#available_zones#0#records#CNAME#2#1',
+               'third name server'  => 'bind#available_zones#2#soa#ns',
+               'fifth A name'       => 'bind#available_zones#2#records#A#0#0',
+               'third NS'           => 'bind#available_zones#2#records#NS#@#0' }
+  fill_in fieldids[field], with: "#{system_name}."
+end
+
+When(/^I enter the IP address of "([^"]*)" in (.*) field$/) do |host, field|
+  node = get_target(host)
+  output, _code = node.run("ip address show dev eth0")
+  ip = output.split("\n")[2].split[1].split('/')[0]
+  fill_in FIELD_IDS[field], with: ip
+end
+
+When(/^I enter the MAC address of "([^"]*)" in (.*) field$/) do |host, field|
+  if host == 'pxeboot_minion'
+    mac = $pxeboot_mac
+  elsif host.include? 'ubuntu'
+    node = get_target(host)
+    output, _code = node.run("ip link show dev ens4")
+    mac = output.split("\n")[1].split[1]
+  else
+    node = get_target(host)
+    output, _code = node.run("ip link show dev eth1")
+    mac = output.split("\n")[1].split[1]
+  end
+
+  fill_in FIELD_IDS[field], with: 'ethernet ' + mac
+end
+
+When(/^I enter the local zone name in (.*) field$/) do |field|
+  reverse_net = get_reverse_net($private_net)
+  STDOUT.puts "#{$private_net} => #{reverse_net}"
+  fill_in FIELD_IDS[field], with: reverse_net
+end
+
+When(/^I enter the local file name in (.*) field$/) do |field|
+  reverse_filename = 'master/db.' + get_reverse_net($private_net)
+  STDOUT.puts "#{$private_net} => #{reverse_filename}"
+  fill_in FIELD_IDS[field], with: reverse_filename
+end
+
+When(/^I enter the local network in (.*) field$/) do |field|
+  fill_in FIELD_IDS[field], with: $private_net
+end
+
+When(/^I enter the image name in (.*) field$/) do |field|
+  name = compute_image_name
+  fill_in FIELD_IDS[field], with: name
+end
+
+When(/^I press "Add Item" in (.*) section$/) do |section|
+  sectionids = { 'host reservations' => 'dhcpd#hosts#add_item',
+                 'config options'    => 'bind#config#options#add_item',
+                 'configured zones'  => 'bind#configured_zones#add_item',
+                 'available zones'   => 'bind#available_zones#add_item',
+                 'first A'           => 'bind#available_zones#0#records#A#add_item',
+                 'first NS'          => 'bind#available_zones#0#records#NS#@#add_item',
+                 'first CNAME'       => 'bind#available_zones#0#records#CNAME#add_item',
+                 'second NS'         => 'bind#available_zones#1#records#NS#@#add_item',
+                 'second for zones'  => 'bind#available_zones#1#generate_reverse#for_zones#add_item',
+                 'third A'           => 'bind#available_zones#2#records#A#add_item',
+                 'third NS'          => 'bind#available_zones#2#records#NS#@#add_item',
+                 'partitions'        => 'partitioning#0#partitions#add_item' }
+  find(:xpath, "//i[@id='#{sectionids[section]}']").click
+end
+
+When(/^I press "Remove Item" in (.*) section$/) do |section|
+  sectionids = { 'first CNAME'       => 'bind#available_zones#0#records#CNAME#0',
+                 'second CNAME'      => 'bind#available_zones#0#records#CNAME#1',
+                 'third CNAME'       => 'bind#available_zones#0#records#CNAME#2',
+                 'fourth CNAME'      => 'bind#available_zones#0#records#CNAME#3',
+                 'fifth CNAME'       => 'bind#available_zones#0#records#CNAME#4' }
+  find(:xpath, "//div[@id='#{sectionids[section]}']/button").click
+end
+
+When(/^I press minus sign in (.*) section$/) do |section|
+  sectionids = { 'third configured zone' => 'bind#configured_zones#2',
+                 'third available zone'  => 'bind#available_zones#2' }
+  find(:xpath, "//div[@id='#{sectionids[section]}']/div[1]/i[@class='fa fa-minus']").click
+end
+
+When(/^I check (.*) box$/) do |box|
+  boxids = { 'enable SLAAC with routing' => 'branch_network#firewall#enable_SLAAC_with_routing',
+             'include forwarders'        => 'bind#config#include_forwarders' }
+  check boxids[box]
 end
 
 Then(/^the timezone on "([^"]*)" should be "([^"]*)"$/) do |minion, timezone|
@@ -290,27 +542,22 @@ Then(/^the language on "([^"]*)" should be "([^"]*)"$/) do |minion, language|
 end
 
 When(/^I refresh the pillar data$/) do
-  $server.run("salt '#{$minion.full_hostname}' saltutil.refresh_pillar wait=True")
-end
-
-When(/^I wait until there is no pillar refresh salt job active$/) do
-  repeat_until_timeout(message: "pillar refresh job still active") do
-    output, = $server.run("salt-run jobs.active")
-    break unless output.include?("saltutil.refresh_pillar")
-    sleep 1
-  end
+  $server.run("salt '#{$minion.ip}' saltutil.refresh_pillar wait=True")
 end
 
 def pillar_get(key, minion)
   system_name = get_system_name(minion)
   if minion == 'sle_minion'
     cmd = 'salt'
-  elsif %w[ssh_minion ceos_minion ubuntu_minion].include?(minion)
-    cmd = 'mgr-salt-ssh'
+    extra_cmd = ''
+  elsif %w[ssh_minion ceos_minion ceos_ssh_minion ubuntu_minion ubuntu_ssh_minion].include?(minion)
+    cmd = 'salt-ssh'
+    extra_cmd = '-i --roster-file=/tmp/roster_tests -w -W 2>/dev/null'
+    $server.run("printf '#{system_name}:\n  host: #{system_name}\n  user: root\n  passwd: linux\n' > /tmp/roster_tests")
   else
     raise 'Invalid target'
   end
-  $server.run("#{cmd} #{system_name} pillar.get #{key}")
+  $server.run("#{cmd} '#{system_name}' pillar.get '#{key}' #{extra_cmd}")
 end
 
 Then(/^the pillar data for "([^"]*)" should be "([^"]*)" on "([^"]*)"$/) do |key, value, minion|
@@ -364,6 +611,13 @@ Then(/^the download should get no error$/) do
   assert_nil(@download_error)
 end
 
+Then(/^the ([^ ]+) beacon should be enabled on "([^"]*)"$/) do |beacon, minion|
+  system_name = get_system_name(minion)
+
+  output, _code = $server.run("salt #{system_name} beacons.list")
+  raise "Beacon #{beacon} not enabled" unless output.split("\n").map(&:strip).include?("#{beacon}:")
+end
+
 # Perform actions
 When(/^I reject "([^"]*)" from the Pending section$/) do |host|
   system_name = get_system_name(host)
@@ -379,8 +633,7 @@ end
 
 When(/^I see "([^"]*)" fingerprint$/) do |host|
   node = get_target(host)
-  salt_call = $use_salt_bundle ? "venv-salt-call" : "salt-call"
-  output, _code = node.run("#{salt_call} --local key.finger")
+  output, _code = node.run('salt-call --local key.finger')
   fing = output.split("\n")[1].strip!
   raise "Text: #{fing} not found" unless has_content?(fing)
 end
@@ -389,6 +642,14 @@ When(/^I accept "([^"]*)" key$/) do |host|
   system_name = get_system_name(host)
   xpath_query = "//tr[td[contains(.,'#{system_name}')]]//button[@title = 'Accept']"
   raise "xpath: #{xpath_query} not found" unless find(:xpath, xpath_query).click
+end
+
+When(/^I go to the minion onboarding page$/) do
+  step %(I follow the left menu "Salt > Keys")
+end
+
+When(/^I go to the bootstrapping page$/) do
+  step %(I follow the left menu "Systems > Bootstrapping")
 end
 
 When(/^I refresh page until I see "(.*?)" hostname as text$/) do |minion|
@@ -433,36 +694,24 @@ end
 # salt-ssh steps
 When(/^I uninstall Salt packages from "(.*?)"$/) do |host|
   target = get_target(host)
-  pkgs = $use_salt_bundle ? "venv-salt-minion" : "salt salt-minion"
-  if %w[sle_minion ssh_minion sle_client].include?(host)
-    target.run("test -e /usr/bin/zypper && zypper --non-interactive remove -y #{pkgs}", check_errors: false)
-  elsif %w[ceos_minion].include?(host)
-    target.run("test -e /usr/bin/yum && yum -y remove #{pkgs}", check_errors: false)
-  elsif %w[ubuntu_minion].include?(host)
-    pkgname = "salt-common salt-minion" if $product != 'Uyuni'
-    target.run("test -e /usr/bin/apt && apt -y remove #{pkgs}", check_errors: false)
+  if %w[sle_minion ssh_minion sle_client sle_migrated_minion].include?(host)
+    target.run("test -e /usr/bin/zypper && zypper --non-interactive remove -y salt salt-minion", false)
+  elsif %w[ceos_minion ceos_ssh_minion].include?(host)
+    target.run("test -e /usr/bin/yum && yum -y remove salt salt-minion", false)
+  elsif %w[ubuntu_minion ubuntu_ssh_minion].include?(host)
+    target.run("test -e /usr/bin/apt && apt -y remove salt-common salt-minion", false)
   end
 end
 
 When(/^I install Salt packages from "(.*?)"$/) do |host|
   target = get_target(host)
-  pkgs = $use_salt_bundle ? "venv-salt-minion" : "salt salt-minion"
-  if %w[sle_minion ssh_minion sle_client].include?(host)
-    target.run("test -e /usr/bin/zypper && zypper --non-interactive install -y #{pkgs}", check_errors: false)
-  elsif %w[ceos_minion].include?(host)
-    target.run("test -e /usr/bin/yum && yum -y install #{pkgs}", check_errors: false)
-  elsif %w[ubuntu_minion].include?(host)
-    pkgs = "salt-common salt-minion" if $product != 'Uyuni'
-    target.run("test -e /usr/bin/apt && apt -y install #{pkgs}", check_errors: false)
+  if %w[sle_minion ssh_minion sle_client sle_migrated_minion].include?(host)
+    target.run("test -e /usr/bin/zypper && zypper --non-interactive install -y salt salt-minion", false)
+  elsif %w[ceos_minion ceos_ssh_minion].include?(host)
+    target.run("test -e /usr/bin/yum && yum -y install salt salt-minion", false)
+  elsif %w[ubuntu_minion ubuntu_ssh_minion].include?(host)
+    target.run("test -e /usr/bin/apt && apt -y install salt-common salt-minion", false)
   end
-end
-
-When(/^I enable repositories before installing Salt on this "([^"]*)"$/) do |host|
-  step %(I enable repository "tools_additional_repo" on this "#{host}" without error control)
-end
-
-When(/^I disable repositories after installing Salt on this "([^"]*)"$/) do |host|
-  step %(I disable repository "tools_additional_repo" on this "#{host}" without error control)
 end
 
 # minion bootstrap steps
@@ -478,32 +727,34 @@ When(/^I enter "([^"]*)" password$/) do |host|
   step %(I enter "#{ENV['VIRTHOST_XEN_PASSWORD']}" as "password") if host == "xen_server"
 end
 
-When(/^I perform a full salt minion cleanup on "([^"]*)"$/) do |host|
-  node = get_target(host)
-  pkgs = $use_salt_bundle ? "venv-salt-minion" : "salt salt-minion"
-  if host.include? 'ceos'
-    node.run("yum -y remove --setopt=clean_requirements_on_remove=1 #{pkgs}", check_errors: false)
-  elsif (host.include? 'ubuntu') || (host.include? 'debian')
-    pkgs = "salt-common salt-minion" if $product != 'Uyuni'
-    node.run("apt-get --assume-yes remove #{pkgs} && apt-get --assume-yes purge #{pkgs} && apt-get --assume-yes autoremove", check_errors: false)
-  else
-    node.run("zypper --non-interactive remove --clean-deps -y #{pkgs} spacewalk-proxy-salt", check_errors: false)
-  end
-  if $use_salt_bundle
-    node.run('rm -Rf /root/salt /var/cache/venv-salt-minion /run/venv-salt-minion /var/venv-salt-minion.log /etc/venv-salt-minion /var/tmp/.root*', check_errors: false)
-  else
-    node.run('rm -Rf /root/salt /var/cache/salt/minion /var/run/salt /run/salt /var/log/salt /etc/salt /var/tmp/.root*', check_errors: false)
-  end
-  step %(I disable the repositories "tools_update_repo tools_pool_repo" on this "#{host}" without error control)
+# TODO: Ideally we should do a full cleanup of the minion
+#       But we can't do that as we don't have products synced, so it will fail installing salt and sal-minion
+#       Instead we inject those packages when deploying through sumaform and we can't remove them.
+#       If someday we have synced products, we can proceed to run a full cleanup
+When(/^I clean up the minion's cache on "([^"]*)"$/) do |minion|
+  raise "#{minion} is not a salt minion" unless minion.include? 'minion'
+  node = get_target(minion)
+  node.run_until_ok('systemctl stop salt-minion')
+  node.run('rm -Rf /var/cache/salt/minion')
 end
 
-When(/^I install a salt pillar top file for "([^"]*)" with target "([^"]*)" on the server$/) do |files, host|
+When(/^I perform a full salt minion cleanup on "([^"]*)"$/) do |host|
+  node = get_target(host)
+  if host.include? 'ceos'
+    node.run('yum -y remove salt salt-minion')
+  elsif host.include? 'ubuntu'
+    node.run('apt-get --assume-yes remove salt salt-minion')
+  else
+    node.run('zypper --non-interactive remove -y salt salt-minion')
+  end
+  node.run('rm -Rf /var/cache/salt/minion /var/run/salt /var/log/salt /etc/salt')
+end
+
+When(/^I install a salt pillar top file for "([^"]*)" with target "([^"]*)" on the server$/) do |file, host|
   system_name = host == "*" ? "*" : get_system_name(host)
   script = "base:\n" \
-            "  '#{system_name}':\n"
-  files.split(/, */).each do |file|
-    script += "    - '#{file}'\n"
-  end
+            "  '#{system_name}':\n" \
+            "    - '#{file}'\n"
   path = generate_temp_file('top.sls', script)
   inject_salt_pillar_file(path, 'top.sls')
   `rm #{path}`
@@ -539,8 +790,17 @@ end
 
 When(/^I kill remaining Salt jobs on "([^"]*)"$/) do |minion|
   system_name = get_system_name(minion)
-  output, _code = $server.run("salt #{system_name} saltutil.kill_all_jobs")
+  output = $server.run("salt #{system_name} saltutil.kill_all_jobs")
   if output.include?(system_name) && output.include?('Signal 9 sent to job')
-    log output
+    puts output
   end
+end
+
+When(/^I set "([^"]*)" as NIC, "([^"]*)" as prefix, "([^"]*)" as branch server name and "([^"]*)" as domain$/) do |nic, prefix, server_name, domain|
+  net_prefix = $private_net.sub(%r{\.0+/24$}, ".")
+  cred = "--api-user admin --api-pass admin"
+  dhcp = "--dedicated-nic #{nic} --branch-ip #{net_prefix}#{ADDRESSES['proxy']} --netmask 255.255.255.0 --dyn-range #{net_prefix}#{ADDRESSES['range begin']} #{net_prefix}#{ADDRESSES['range end']}"
+  names = "--server-name #{server_name} --server-domain #{domain} --branch-prefix #{prefix}"
+  output, return_code = $server.run("retail_branch_init #{$proxy.full_hostname} #{dhcp} #{names} #{cred}")
+  raise "Command failed with following output: #{output}" unless return_code.zero?
 end

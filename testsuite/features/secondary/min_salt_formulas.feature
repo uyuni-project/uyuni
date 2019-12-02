@@ -1,20 +1,18 @@
-# Copyright (c) 2017-2021 SUSE LLC
+# Copyright (c) 2017-2019 SUSE LLC
 # Licensed under the terms of the MIT license.
 
-@scope_formulas
 Feature: Use salt formulas
   In order to use simple forms to apply changes to minions
   As an authorized user
   I want to be able to install and use salt formulas
 
-   Scenario: Log in as admin user
-      Given I am authorized for the "Admin" section
-
-   Scenario: Install the locale formula package on the server
+  Scenario: Install the locale formula package on the server
+     Given I am authorized with the feature's user
      When I manually install the "locale" formula on the server
      And I synchronize all Salt dynamic modules on "sle_minion"
 
   Scenario: The new formula appears on the server
+     Given I am authorized with the feature's user
      When I follow the left menu "Salt > Formula Catalog"
      Then I should see a "locale" text in the content area
 
@@ -26,13 +24,12 @@ Feature: Use salt formulas
      And I should see a "Locale" text
      When I check the "locale" formula
      And I click on "Save"
-     And I wait until I see "Formula saved." text
      Then the "locale" formula should be checked
 
   Scenario: Parametrize the formula on the minion
+     Given I am on the Systems overview page of this "sle_minion"
      When I follow "Formulas" in the content area
      And I follow first "Locale" in the content area
-     And I click on "Expand All Sections"
      And I select "Etc/GMT-5" in timezone name field
      And I select "French" in language field
      And I select "French (Canada)" in keyboard layout field
@@ -59,18 +56,20 @@ Feature: Use salt formulas
      When I click on the "disabled" toggler
      And I click on "Apply Highstate"
      Then I should see a "Applying the highstate has been scheduled." text
-     And I wait at most 300 seconds until event "Apply highstate in test-mode scheduled" is completed
+     And I wait until event "Apply highstate in test-mode scheduled" is completed
 
   Scenario: Apply the parametrized formula via the highstate
+     Given I am on the Systems overview page of this "sle_minion"
      And I follow "States" in the content area
      And I click on "Apply Highstate"
      Then I should see a "Applying the highstate has been scheduled." text
-     When I wait until event "Apply highstate scheduled by admin" is completed
+     When I wait until event "Apply highstate scheduled" is completed
      Then the timezone on "sle_minion" should be "+05"
      And the keymap on "sle_minion" should be "ca.map.gz"
      And the language on "sle_minion" should be "fr_FR.UTF-8"
 
   Scenario: Reset the formula on the minion
+     Given I am on the Systems overview page of this "sle_minion"
      When I follow "Formulas" in the content area
      And I follow first "Locale" in the content area
      And I click on "Clear values" and confirm
@@ -85,22 +84,23 @@ Feature: Use salt formulas
      And the pillar data for "keyboard_and_language:language" should be "English (US)" on "sle_minion"
 
   Scenario: Apply the reset formula via the highstate
+     Given I am on the Systems overview page of this "sle_minion"
      And I follow "States" in the content area
      And I click on "Apply Highstate"
      Then I should see a "Applying the highstate has been scheduled." text
-     When I wait until event "Apply highstate scheduled by admin" is completed
+     When I wait until event "Apply highstate scheduled" is completed
      Then the timezone on "sle_minion" should be "CET"
      And the keymap on "sle_minion" should be "us.map.gz"
      And the language on "sle_minion" should be "en_US.UTF-8"
 
   Scenario: Disable the formula on the minion
+     Given I am on the Systems overview page of this "sle_minion"
      When I follow "Formulas" in the content area
      Then I should see a "Choose formulas:" text
      And I should see a "General System Configuration" text
      And I should see a "Locale" text
      When I uncheck the "locale" formula
      And I click on "Save"
-     And I wait until I see "Formula saved." text
      Then the "locale" formula should be unchecked
 
   Scenario: Check the pillar data after disabling the formula
@@ -110,7 +110,7 @@ Feature: Use salt formulas
      And the pillar data for "keyboard_and_language" should be empty on "sle_minion"
 
   Scenario: Assign locale formula to minion via group formula
-     When I follow the left menu "Systems > System Groups"
+     Given I am on the groups page
      When I follow "Create Group"
      And I enter "locale-formula-group" as "name"
      And I enter "Test group with locale formula added" as "description"
@@ -122,7 +122,6 @@ Feature: Use salt formulas
      And I should see a "Locale" text
      When I check the "locale" formula
      And I click on "Save"
-     And I wait until I see "Formula saved." text
      And I follow "Target"
      And I check the "sle_minion" client
      And I click on "Add Systems"
@@ -142,7 +141,7 @@ Feature: Use salt formulas
      And the pillar data for "keyboard_and_language" should be empty on "ssh_minion"
 
   Scenario: Cleanup: remove "locale-formula-group" system group
-     When I follow the left menu "Systems > System Groups"
+     Given I am on the groups page
      And I follow "locale-formula-group" in the content area
      And I follow "Delete Group" in the content area
      When I click on "Confirm Deletion"
@@ -155,13 +154,15 @@ Feature: Use salt formulas
      And I follow "States" in the content area
      And I click on "Apply Highstate"
      Then I should see a "Applying the highstate has been scheduled." text
-     When I wait until event "Apply highstate scheduled by admin" is completed
+     When I wait until event "Apply highstate scheduled" is completed
      Then the timezone on "sle_minion" should be "CET"
      And the keymap on "sle_minion" should be "us.map.gz"
      And the language on "sle_minion" should be "en_US.UTF-8"
 
   Scenario: Cleanup: uninstall formula package from the server
+     Given I am authorized with the feature's user
      And I manually uninstall the "locale" formula from the server
 
   Scenario: Cleanup: remove remaining systems from SSM after formula tests
-     When I follow "Clear"
+     When I am authorized with the feature's user
+     And I follow "Clear"

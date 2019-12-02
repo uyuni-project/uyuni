@@ -1,10 +1,10 @@
-# Copyright (c) 2016-2021 SUSE LLC
+# Copyright (c) 2016-2020 SUSE LLC
 # Licensed under the terms of the MIT license.
 
-@scope_salt
 Feature: Salt package states
 
   Scenario: Pre-requisite: install old packages on SLES minion
+    Given I am authorized with the feature's user
     Then I apply highstate on "sle_minion"
     And I enable repository "test_repo_rpm_pool" on this "sle_minion"
     And I run "zypper -n ref" on "sle_minion"
@@ -16,9 +16,6 @@ Feature: Salt package states
     When I refresh packages list via spacecmd on "sle_minion"
     And I wait until refresh package list on "sle_minion" is finished
     Then spacecmd should show packages "milkyway-dummy-1.0 virgo-dummy-1.0 andromeda-dummy-1.0" installed on "sle_minion"
-
-  Scenario: Log in as admin user
-    Given I am authorized for the "Admin" section
 
   Scenario: Pre-requisite: ensure the errata cache is computed before software states tests
     Given I am on the Systems overview page of this "sle_minion"
@@ -40,6 +37,7 @@ Feature: Salt package states
     Then the system should have a base channel set
 
   Scenario: Remove a package through the UI
+    Given I am on the Systems overview page of this "sle_minion"
     Then I follow "States" in the content area
     And I follow "Packages"
     And I follow "Search"
@@ -55,6 +53,7 @@ Feature: Salt package states
     And I wait for "milkyway-dummy" to be uninstalled on "sle_minion"
 
   Scenario: Install a package through the UI
+    Given I am on the Systems overview page of this "sle_minion"
     Then I follow "States" in the content area
     And I follow "Packages"
     And I follow "Search"
@@ -70,6 +69,7 @@ Feature: Salt package states
     And I wait for "milkyway-dummy" to be installed on "sle_minion"
 
   Scenario: Install an already installed package through the UI
+    Given I am on the Systems overview page of this "sle_minion"
     Then I follow "States" in the content area
     And I follow "Packages"
     And I follow "Search"
@@ -85,6 +85,7 @@ Feature: Salt package states
     And I wait for "virgo-dummy-1.0" to be installed on "sle_minion"
 
   Scenario: Upgrade a package through the UI
+    Given I am on the Systems overview page of this "sle_minion"
     Then I follow "States" in the content area
     And I follow "Packages"
     And I follow "Search"
@@ -100,6 +101,7 @@ Feature: Salt package states
     And I wait for "andromeda-dummy-2.0-1.1" to be installed on "sle_minion"
 
   Scenario: Verify the package states
+    Given I am on the Systems overview page of this "sle_minion"
     Then I follow "States" in the content area
     And I follow "Packages"
     And I should see a "Package States" text
@@ -108,22 +110,19 @@ Feature: Salt package states
     And I should see a "virgo-dummy" text
 
   Scenario: Use Salt presence mechanism on an active minion
+    Given I am on the Systems overview page of this "sle_minion"
     Then I follow "States" in the content area
     And I follow "Highstate" in the content area
-    And I click on "Show full highstate output"
     And I wait for "6" seconds
     And I should see a "pkg_removed" or "running as PID" text in element "highstate"
 
   Scenario: Use Salt presence mechanism on an unreachable minion
+    Given I am on the Systems overview page of this "sle_minion"
     Then I follow "States" in the content area
-    And I run "pkill salt-minion" on "sle_minion" without error control
-    And I run "pkill python.original" on "sle_minion" without error control
+    And I run "pkill salt-minion" on "sle_minion"
     And I follow "Highstate" in the content area
-    And I click on "Show full highstate output"
     And I wait until I see "No reply from minion" text
-
-  Scenario: Cleanup: restart the salt service on SLES minion
-    When I restart salt-minion on "sle_minion"
+    And I run "rcsalt-minion restart" on "sle_minion"
 
   Scenario: Cleanup: remove old packages from SLES minion
     When I disable repository "test_repo_rpm_pool" on this "sle_minion"

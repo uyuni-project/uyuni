@@ -1,23 +1,20 @@
 # Copyright (c) 2017-2018 SUSE LLC
 # Licensed under the terms of the MIT license.
 
-@scope_formulas
 Feature: Use advanced features of Salt formulas
   In order to use forms to apply changes to minions
   As an authorized user
   I want to be able to install and use Salt formulas
 
-   Scenario: Log in as admin user
-      Given I am authorized for the "Admin" section
-
   Scenario: Install a test formula package on the server
+     Given I am authorized with the feature's user
      When I install "form.yml" to custom formula metadata directory "testform"
      And I install "metadata.yml" to custom formula metadata directory "testform"
      When I follow the left menu "Salt > Formula Catalog"
      Then I should see a "testform" text
 
   Scenario: Assign test formula to minion via group formula
-     When I follow the left menu "Systems > System Groups"
+     Given I am on the groups page
      When I follow "Create Group"
      And I enter "test-formula-group" as "name"
      And I enter "Test group with testform formula added" as "description"
@@ -29,7 +26,6 @@ Feature: Use advanced features of Salt formulas
      And I should see a "Testform" text
      When I check the "testform" formula
      And I click on "Save"
-     And I wait until I see "Formula saved." text
      And I follow "Target Systems"
      And I check the "sle_minion" client
      And I click on "Add Systems"
@@ -65,11 +61,10 @@ Feature: Use advanced features of Salt formulas
      And the pillar data for "testing:recursive_dict_of_dicts:def_gr1:entries:def_entry1:entry_desc" should be "some text" on "sle_minion"
 
   Scenario: Fill in and verify non-default values in group formula
-     When I follow the left menu "Systems > System Groups"
+     Given I am on the groups page
      When I follow "test-formula-group" in the content area
      And I follow "Formulas" in the content area
      And I follow first "Testform" in the content area
-     And I click on "Expand All Sections"
      And I enter "text1" as "testing#str"
      And I enter "text2" as "testing#str_def"
      And I enter "text3" as "testing#str_or_null"
@@ -83,7 +78,8 @@ Feature: Use advanced features of Salt formulas
      And I enter "pw3" as "testing#pw_opt"
      And I click on "Save Formula"
      Then I should see a "Formula saved" text
-     And the pillar data for "testing:str" should be "text1" on "sle_minion"
+     When I refresh the pillar data
+     Then the pillar data for "testing:str" should be "text1" on "sle_minion"
      And the pillar data for "testing:str_def" should be "text2" on "sle_minion"
      And the pillar data for "testing:str_or_null" should be "text3" on "sle_minion"
      And the pillar data for "testing:str_opt" should be "text4" on "sle_minion"
@@ -96,14 +92,15 @@ Feature: Use advanced features of Salt formulas
      And the pillar data for "testing:pw_opt" should be "pw3" on "sle_minion"
 
   Scenario: Clear values in group formula and verify the defaults again
-     When I follow the left menu "Systems > System Groups"
+     Given I am on the groups page
      When I follow "test-formula-group" in the content area
      And I follow "Formulas" in the content area
      And I follow first "Testform" in the content area
      And I click on "Clear values" and confirm
      And I click on "Save Formula"
      Then I should see a "Formula saved" text
-     And the pillar data for "testing:str" should be "" on "sle_minion"
+     When I refresh the pillar data
+     Then the pillar data for "testing:str" should be "" on "sle_minion"
      And the pillar data for "testing:str_def" should be "defvalue" on "sle_minion"
      And the pillar data for "testing:str_or_null" should be "None" on "sle_minion"
      And the pillar data for "testing" should not contain "str_opt" on "sle_minion"
@@ -129,18 +126,18 @@ Feature: Use advanced features of Salt formulas
      And the pillar data for "testing:recursive_dict_of_dicts:def_gr1:entries:def_entry1:entry_desc" should be "some text" on "sle_minion"
 
   Scenario: Fill in and verify mix of default and non-default values in group formula
-     When I follow the left menu "Systems > System Groups"
+     Given I am on the groups page
      When I follow "test-formula-group" in the content area
      And I follow "Formulas" in the content area
      And I follow first "Testform" in the content area
-     And I click on "Expand All Sections"
      And I enter "text1" as "testing#str"
      And I enter "1" as "testing#num"
      And I enter "2" as "testing#num_def"
      And I enter "pw1" as "testing#pw"
      And I click on "Save Formula"
      Then I should see a "Formula saved" text
-     And the pillar data for "testing:str" should be "text1" on "sle_minion"
+     When I refresh the pillar data
+     Then the pillar data for "testing:str" should be "text1" on "sle_minion"
      And the pillar data for "testing:str_def" should be "defvalue" on "sle_minion"
      And the pillar data for "testing:str_or_null" should be "None" on "sle_minion"
      And the pillar data for "testing" should not contain "str_opt" on "sle_minion"
@@ -158,7 +155,8 @@ Feature: Use advanced features of Salt formulas
      And I follow first "Testform" in the content area
      And I click on "Save Formula"
      Then I should see a "Formula saved" text
-     And the pillar data for "testing:str" should be "text1" on "sle_minion"
+     When I refresh the pillar data
+     Then the pillar data for "testing:str" should be "text1" on "sle_minion"
      And the pillar data for "testing:str_def" should be "defvalue" on "sle_minion"
      And the pillar data for "testing:str_or_null" should be "None" on "sle_minion"
      And the pillar data for "testing" should not contain "str_opt" on "sle_minion"
@@ -171,9 +169,9 @@ Feature: Use advanced features of Salt formulas
      And the pillar data for "testing" should not contain "pw_opt" on "sle_minion"
 
   Scenario: Fill in and verify non-default values in minion formula
+     Given I am on the Systems overview page of this "sle_minion"
      When I follow "Formulas" in the content area
      And I follow first "Testform" in the content area
-     And I click on "Expand All Sections"
      And I enter "min_text1" as "testing#str"
      And I enter "min_text2" as "testing#str_def"
      And I enter "min_text3" as "testing#str_or_null"
@@ -187,7 +185,8 @@ Feature: Use advanced features of Salt formulas
      And I enter "min_pw3" as "testing#pw_opt"
      And I click on "Save Formula"
      Then I should see a "Formula saved" text
-     And the pillar data for "testing:str" should be "min_text1" on "sle_minion"
+     When I refresh the pillar data
+     Then the pillar data for "testing:str" should be "min_text1" on "sle_minion"
      And the pillar data for "testing:str_def" should be "min_text2" on "sle_minion"
      And the pillar data for "testing:str_or_null" should be "min_text3" on "sle_minion"
      And the pillar data for "testing:str_opt" should be "min_text4" on "sle_minion"
@@ -201,12 +200,14 @@ Feature: Use advanced features of Salt formulas
 
 # https://github.com/SUSE/spacewalk/issues/4546
   Scenario: Clear values in minion formula and verify that the pillar is set to group values
+     Given I am on the Systems overview page of this "sle_minion"
      When I follow "Formulas" in the content area
      And I follow first "Testform" in the content area
      And I click on "Clear values" and confirm
      And I click on "Save Formula"
      Then I should see a "Formula saved" text
-     And the pillar data for "testing:str" should be "text1" on "sle_minion"
+     When I refresh the pillar data
+     Then the pillar data for "testing:str" should be "text1" on "sle_minion"
      And the pillar data for "testing:str_def" should be "defvalue" on "sle_minion"
      And the pillar data for "testing:str_or_null" should be "None" on "sle_minion"
      And the pillar data for "testing" should not contain "str_opt" on "sle_minion"
@@ -219,20 +220,34 @@ Feature: Use advanced features of Salt formulas
      And the pillar data for "testing" should not contain "pw_opt" on "sle_minion"
 
 #TODO test for adding/removing items in edit-group
-  Scenario: Cleanup: remove formula from minion
-     When I follow "Formulas" in the content area
-     And I uncheck the "testform" formula
+
+# this should not be necessary, but it is currently required to run this test repeatedly
+# https://github.com/SUSE/spacewalk/issues/4513
+  Scenario: Cleanup: remove "Testform" formula from "test-formula-group"
+     Given I am on the groups page
+     And I follow "test-formula-group" in the content area
+     And I follow "Formulas" in the content area
+     Then I should see a "Choose formulas:" text
+     And I should see a "Testform" text
+     When I uncheck the "testform" formula
      And I click on "Save"
-     And I wait until I see "Formula saved." text
-     Then the "testform" formula should be unchecked
+     Then I should see a "Formula saved" text
+#    The refresh is necessary, bsc#1028285 does not cover this.
+     When I refresh the pillar data
+     Then the pillar data for "testing" should be empty on "sle_minion"
 
   Scenario: Cleanup: remove "test-formula-group" system group
-     When I follow the left menu "Systems > System Groups"
+     Given I am on the groups page
      And I follow "test-formula-group" in the content area
      And I follow "Delete Group" in the content area
      When I click on "Confirm Deletion"
      Then I should see a "System group" text
      Then I should see a "test-formula-group" text
      And I should see a "deleted" text
-     And I wait until there is no pillar refresh salt job active
+#    The refresh is necessary, bsc#1028285 does not cover this.
+     When I refresh the pillar data
      Then the pillar data for "testing" should be empty on "sle_minion"
+
+   Scenario: Cleanup: remove remaining systems from SSM after advanced salt formulas tests
+      When I am authorized with the feature's user
+      And I follow "Clear"

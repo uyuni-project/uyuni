@@ -1,7 +1,6 @@
 # Copyright (c) 2015-17 SUSE LLC
 # Licensed under the terms of the MIT license.
 
-@scope_traditional_client
 Feature: Metadata attached to systems
 
   Scenario: Check pre requires
@@ -13,6 +12,7 @@ Feature: Metadata attached to systems
     Then I should not have 'epoch="0"' in the metadata for "sle_client"
 
   Scenario: Check local metadata does not contain \n at the end of the summary
+    Given I am authorized with the feature's user
     When I refresh the metadata for "sle_client"
     Then I should have 'summary.*</summary' in the metadata for "sle_client"
 

@@ -1,15 +1,10 @@
-# Copyright (c) 2017-2021 SUSE LLC
+# Copyright (c) 2017-2020 SUSE LLC
 # Licensed under the terms of the MIT license.
-# This feature depends on:
-# This features expect empty content in all the UI pages, so depends in almost all our features
-# TODO: Ideally we should refactor this Cucumber feature to only verify UI static content,
-#       only then we can move this feature to our parallel tests
 
-@scope_visualization
 Feature: Web UI - Main landing page menu, texts and links
 
-  Scenario: Log in as admin user
-    Given I am authorized for the "Admin" section
+  Background:
+    Given I am authorized with the feature's user
 
   Scenario: The Home menu
     When I follow the left menu "Home"
@@ -149,8 +144,8 @@ Feature: Web UI - Main landing page menu, texts and links
 
   Scenario: The menu direct link accesses the first submenu level only
     When I follow the left menu "Patches > Patch List"
-    Then I should see a "Patches Relevant to Your Systems" text in the content area
-    And I should not see a "The following patch list represents all patches accessible by your organization." text in the content area
+    Then I should see a "All Types" text in the content area
+    Then I should not see a "Patches Relevant to Your Systems" text in the content area
     When I follow the left menu "Configuration > Files"
     Then I should see a "Centrally-Managed Configuration Files" text in the content area
     And I should not see a "Locally Managed Configuration Files" text in the content area
@@ -174,6 +169,7 @@ Feature: Web UI - Main landing page menu, texts and links
     And I should see a "Custom System Info" link in the left menu
     And I should see a "Autoinstallation" link in the left menu
     And I should see a "View System Groups" link
+    And I should see a "Software Crashes" link in the left menu
     And I should see a "Download CSV" link
     And I should see a Sign Out link
 
@@ -203,7 +199,7 @@ Feature: Web UI - Main landing page menu, texts and links
   Scenario: Sidebar link destination for Systems => Virtual Systems
     When I follow the left menu "Systems > System List > Virtual Systems"
     Then I should see a "Virtual Systems" text
-    And the current path is "/rhn/manager/systems/list/virtual"
+    And the current path is "/rhn/systems/VirtualList.do"
 
   Scenario: Sidebar link destination for Systems => Out of Date
     When I follow the left menu "Systems > System List > Out of Date"
@@ -276,7 +272,7 @@ Feature: Web UI - Main landing page menu, texts and links
     And I should see a "Your organization has no system groups." text
 
   Scenario: Sidebar link destination for Systems => System Set Manager
-    When I follow the left menu "Systems > System Set Manager > Overview"
+    When I am on System Set Manager Overview
     Then I should see a "System Set Manager" text
     And I should see a "Task Log" link in the left menu
     And I should see a "Overview" link in the content area
@@ -311,7 +307,7 @@ Feature: Web UI - Main landing page menu, texts and links
     And I should see a "No Custom Info Keys Found" text
 
   Scenario: Sidebar link destination for Systems => Autoinstallation
-    When I follow the left menu "Systems > Autoinstallation > Overview"
+    When I am on Autoinstallation Overview page
     Then I should see a "Autoinstallation Overview" text
     And I should see a "Profiles" link in the left menu
     And I should see a "Unprovisioned" link in the left menu

@@ -1,16 +1,14 @@
-# Copyright (c) 2015-2021 SUSE LLC
+# Copyright (c) 2015-2019 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 Feature: Add a repository to a channel
   In order to distribute software to the clients
   As an authorized user
   I want to add a repository
-  I want to add this repository to the base channel
-
-  Scenario: Log in as admin user
-    Given I am authorized for the "Admin" section
+  And I want to add this repository to the base channel
 
   Scenario: Add a test repository for x86_64
+    Given I am authorized as "admin" with password "admin"
     When I follow the left menu "Software > Manage > Repositories"
     And I follow "Create Repository"
     And I enter "Test-Repository-x86_64" as "label"
@@ -20,6 +18,7 @@ Feature: Add a repository to a channel
     And I should see "metadataSigned" as checked
 
   Scenario: Disable metadata check for the x86_64 test repository
+    Given I am authorized as "admin" with password "admin"
     When I follow the left menu "Software > Manage > Repositories"
     And I follow "Test-Repository-x86_64"
     And I uncheck "metadataSigned"
@@ -28,6 +27,7 @@ Feature: Add a repository to a channel
     And I should see "metadataSigned" as unchecked
 
   Scenario: Add the repository to the x86_64 channel
+    Given I am authorized as "admin" with password "admin"
     When I follow the left menu "Software > Manage > Channels"
     And I follow "Test-Channel-x86_64"
     And I follow "Repositories" in the content area
@@ -36,6 +36,7 @@ Feature: Add a repository to a channel
     Then I should see a "Test-Channel-x86_64 repository information was successfully updated" text
 
   Scenario: Synchronize the repository in the x86_64 channel
+    Given I am authorized as "admin" with password "admin"
     When I enable source package syncing
     And I follow the left menu "Software > Manage > Channels"
     And I follow "Test-Channel-x86_64"
@@ -45,6 +46,7 @@ Feature: Add a repository to a channel
     Then I should see a "Repository sync scheduled for Test-Channel-x86_64." text
 
   Scenario: Add a test repository for i586
+    Given I am authorized as "admin" with password "admin"
     When I follow the left menu "Software > Manage > Repositories"
     And I follow "Create Repository"
     And I enter "Test-Repository-i586" as "label"
@@ -54,6 +56,7 @@ Feature: Add a repository to a channel
     Then I should see a "Repository created successfully" text
 
   Scenario: Add the repository to the i586 channel
+    Given I am authorized as "admin" with password "admin"
     When I follow the left menu "Software > Manage > Channels"
     And I follow "Test-Channel-i586"
     And I follow "Repositories" in the content area
@@ -62,8 +65,9 @@ Feature: Add a repository to a channel
     Then I should see a "Test-Channel-i586 repository information was successfully updated" text
 
   Scenario: Synchronize the repository in the i586 channel
+    Given I am authorized as "admin" with password "admin"
     When I disable source package syncing
-    And I follow the left menu "Software > Manage > Channels"
+    When I follow the left menu "Software > Manage > Channels"
     And I follow "Test-Channel-i586"
     And I follow "Repositories" in the content area
     And I follow "Sync"
@@ -72,6 +76,7 @@ Feature: Add a repository to a channel
 
 @ubuntu_minion
   Scenario: Add a test repository for Ubuntu
+    Given I am authorized as "admin" with password "admin"
     When I follow the left menu "Software > Manage > Repositories"
     And I follow "Create Repository"
     And I enter "Test-Repository-Deb" as "label"
@@ -88,6 +93,7 @@ Feature: Add a repository to a channel
 
 @ubuntu_minion
   Scenario: Add the Ubuntu repository to the AMD64 channel
+    Given I am authorized as "admin" with password "admin"
     When I follow the left menu "Software > Manage > Channels"
     And I follow "Test-Channel-Deb-AMD64"
     And I follow "Repositories" in the content area
@@ -97,6 +103,7 @@ Feature: Add a repository to a channel
 
 @ubuntu_minion
   Scenario: Synchronize the Ubuntu repository in the AMD64 channel
+    Given I am authorized as "admin" with password "admin"
     When I follow the left menu "Software > Manage > Channels"
     And I follow "Test-Channel-Deb-AMD64"
     And I follow "Repositories" in the content area
@@ -105,6 +112,7 @@ Feature: Add a repository to a channel
     Then I should see a "Repository sync scheduled for Test-Channel-Deb-AMD64." text
 
   Scenario: Refresh the errata cache
+    Given I am authorized as "admin" with password "admin"
     When I follow the left menu "Admin > Task Schedules"
     And I follow "errata-cache-default"
     And I follow "errata-cache-bunch"
@@ -113,6 +121,7 @@ Feature: Add a repository to a channel
     And I wait until the table contains "FINISHED" or "SKIPPED" followed by "FINISHED" in its first rows
 
   Scenario: Refresh the channel's repository data
+    Given I am authorized as "admin" with password "admin"
     When I follow the left menu "Admin > Task Schedules"
     And I follow "channel-repodata-default"
     And I follow "channel-repodata-bunch"
@@ -121,14 +130,16 @@ Feature: Add a repository to a channel
     And I wait until the table contains "FINISHED" or "SKIPPED" followed by "FINISHED" in its first rows
 
   Scenario: Reposync handles wrong encoding on RPM attributes
+    Given I am authorized as "admin" with password "admin"
     When I follow the left menu "Software > Channel List"
     And I follow "Test-Channel-x86_64"
     And I follow "Packages" in the content area
-    And I wait until I see "blackhole-dummy" text, refreshing the page
+    Then I should see a "blackhole-dummy" text
 
 @ubuntu_minion
   Scenario: Reposync handles wrong encoding on DEB attributes
+    Given I am authorized as "admin" with password "admin"
     When I follow the left menu "Software > Channel List"
     And I follow "Test-Channel-Deb-AMD64"
     And I follow "Packages" in the content area
-    And I wait until I see "blackhole-dummy" text, refreshing the page
+    Then I should see a "blackhole-dummy" text

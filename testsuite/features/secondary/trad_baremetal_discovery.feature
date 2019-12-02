@@ -1,11 +1,7 @@
-# Copyright (c) 2015-2021 SUSE LLC
+# Copyright (c) 2015-2020 SUSE LLC
 # Licensed under the terms of the MIT license.
 
-@scope_traditional_client
 Feature: Bare metal discovery
-
-  Scenario: Log in as admin user
-    Given I am authorized for the "Admin" section
 
   Scenario: Delete the normal traditional client for bare metal feature
     Given I am on the Systems overview page of this "sle_client"
@@ -16,21 +12,11 @@ Feature: Bare metal discovery
     When I wait until I see "has been deleted" text
     Then "sle_client" should not be registered
 
-@susemanager
   Scenario: Enable bare metal discovery
+    Given I am authorized with the feature's user
     When I follow the left menu "Admin > Manager Configuration > General"
     When I follow "Bare-metal systems" in the content area
-    Then I should see a "Allows SUSE Manager to automatically add bare-metal systems capable of PXE booting to an organization." text
-    And I should see a "Enable adding to this organization" button
-    When I click on "Enable adding to this organization"
-    Then I should see a "Automatic bare-metal system discovery has been successfully enabled" text
-    And the PXE default profile should be enabled
-
-@uyuni
-  Scenario: Enable bare metal discovery
-    When I follow the left menu "Admin > Manager Configuration > General"
-    When I follow "Bare-metal systems" in the content area
-    Then I should see a "Allows Uyuni to automatically add bare-metal systems capable of PXE booting to an organization." text
+    Then I should see a "Allows $PRODUCT to automatically add bare-metal systems capable of PXE booting to an organization." text
     And I should see a "Enable adding to this organization" button
     When I click on "Enable adding to this organization"
     Then I should see a "Automatic bare-metal system discovery has been successfully enabled" text
@@ -47,6 +33,7 @@ Feature: Bare metal discovery
     And I should not see a "[Management]" text
 
   Scenario: See the client in unprovisioned systems list
+    Given I am on the Systems page
     When I follow the left menu "Systems > System List > Unprovisioned Systems"
     Then I should see a "Unprovisioned Systems" text
     And I should see a "Detected on" text
@@ -62,6 +49,7 @@ Feature: Bare metal discovery
     And I check the MAC address value
 
   Scenario: Check unprovisioned system details
+    Given I am on the Systems page
     When I follow the left menu "Systems > System List"
     When I follow this "sle_client" link
     Then I should see a "Details" link in the content area
@@ -75,7 +63,7 @@ Feature: Bare metal discovery
     And I should not see a "Remote Command" link in the content area
     And I should not see a "Reactivation" link in the content area
     And I should see a "Hardware" link in the content area
-    And I should see a "Transfer" link in the content area
+    And I should see a "Migrate" link in the content area
     And I should see a "Notes" link in the content area
     And I should not see a "Custom Info" link in the content area
 
@@ -91,17 +79,19 @@ Feature: Bare metal discovery
   Scenario: Check SSM with bare metal system
     Given I am on the Systems page
     When I check the "sle_client" client
+    #TODO: Get rid of that wait, instead wait for some UI element
     And I wait for "30" seconds
-    Then I follow the left menu "Systems > System Set Manager > Overview"
+    Then I am on System Set Manager Overview
 
   Scenario: Check SSM page for bare metal system
-    Given I follow the left menu "Systems > System Set Manager > Overview"
+    Given I am authorized with the feature's user
+    And I am on System Set Manager Overview
     Then I should see a "List the systems" link in the content area
     And I should see a "Autoinstall" link in the content area
     And I should see a "Configure power management" link in the content area
     And I should see a "power management operations" link in the content area
     And I should see a "Delete" link in the content area
-    And I should see a "Transfer" link in the content area
+    And I should see a "Migrate" link in the content area
     And I should not see a "Patches" link in the content area
     And I should not see a "Packages" link in the content area
     And I should see a "Groups" link in the content area
@@ -117,29 +107,20 @@ Feature: Bare metal discovery
     And I wait until I see "has been deleted" text
     Then "sle_client" should not be registered
 
-@susemanager
   Scenario: Cleanup: disable bare metal discovery
+    Given I am authorized with the feature's user
     When I follow the left menu "Admin > Manager Configuration > General"
-    And I follow "Bare-metal systems" in the content area
-    Then I should see a "Allows SUSE Manager to automatically add bare-metal systems capable of PXE booting to an organization." text
-    And I should see a "Disable adding to this organization" button
-    When I click on "Disable adding to this organization"
-    Then I should see a "Automatic bare-metal system discovery has been successfully disabled" text
-    And the PXE default profile should be disabled
-
-@uyuni
-  Scenario: Cleanup: disable bare metal discovery
-    When I follow the left menu "Admin > Manager Configuration > General"
-    And I follow "Bare-metal systems" in the content area
-    Then I should see a "Allows Uyuni to automatically add bare-metal systems capable of PXE booting to an organization." text
+    When I follow "Bare-metal systems" in the content area
+    Then I should see a "Allows $PRODUCT to automatically add bare-metal systems capable of PXE booting to an organization." text
     And I should see a "Disable adding to this organization" button
     When I click on "Disable adding to this organization"
     Then I should see a "Automatic bare-metal system discovery has been successfully disabled" text
     And the PXE default profile should be disabled
 
   Scenario: Cleanup: register a traditional client after bare metal tests
-    When I bootstrap traditional client "sle_client" using bootstrap script with activation key "1-SUSE-KEY-x86_64" from the proxy
+    When I bootstrap traditional client "sle_client" using bootstrap script with activation key "1-SUSE-DEV-x86_64" from the proxy
     Then I should see "sle_client" via spacecmd
 
   Scenario: Cleanup: remove remaining systems from SSM after bare metal tests
-    When I follow "Clear"
+    When I am authorized with the feature's user
+    And I follow "Clear"

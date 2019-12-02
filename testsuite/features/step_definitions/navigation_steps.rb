@@ -1,19 +1,19 @@
-# Copyright (c) 2010-2022 SUSE LLC.
+# Copyright (c) 2010-2020 SUSE LLC.
 # Licensed under the terms of the MIT license.
 
 #
 # Texts and links
 #
 
-Then(/^I should see a "(.*)" text in the content area$/) do |text|
+Then(/^I should see a "(.*)" text in the content area$/) do |txt|
   within('#spacewalk-content') do
-    raise "Text '#{text}' not found" unless has_content?(text)
+    raise "Text #{txt} not found" unless has_content?(txt)
   end
 end
 
-Then(/^I should not see a "(.*)" text in the content area$/) do |text|
+Then(/^I should not see a "(.*)" text in the content area$/) do |txt|
   within('#spacewalk-content') do
-    raise "Text '#{text}' found" unless has_no_content?(text)
+    raise "Text #{txt} found" unless has_no_content?(txt)
   end
 end
 
@@ -34,26 +34,27 @@ Then(/^the current path is "([^"]*)"$/) do |arg1|
 end
 
 When(/^I wait until I see "([^"]*)" text$/) do |text|
-  raise "Text '#{text}' not found" unless has_text?(text, wait: DEFAULT_TIMEOUT)
+  raise "Text #{text} not found" unless has_text?(text, wait: DEFAULT_TIMEOUT)
 end
 
 When(/^I wait until I do not see "([^"]*)" text$/) do |text|
-  raise "Text '#{text}' found" unless has_no_text?(text, wait: DEFAULT_TIMEOUT)
+  raise "Text #{text} found" unless has_no_text?(text, wait: DEFAULT_TIMEOUT)
 end
 
 When(/^I wait at most (\d+) seconds until I see "([^"]*)" text$/) do |seconds, text|
-  raise "Text '#{text}' not found" unless has_content?(text, wait: seconds.to_i)
+  raise "Text #{text} not found" unless has_content?(text, wait: seconds.to_i)
 end
 
 When(/^I wait until I see "([^"]*)" text or "([^"]*)" text$/) do |text1, text2|
-  raise "Text '#{text1}' or '#{text2}' not found" unless has_content?(text1, wait: DEFAULT_TIMEOUT) || has_content?(text2, wait: DEFAULT_TIMEOUT)
+  raise "Text #{text1} or #{text2} not found" unless has_content?(text1, wait: DEFAULT_TIMEOUT) || has_content?(text2, wait: DEFAULT_TIMEOUT)
 end
 
-When(/^I wait until I see "([^"]*)" (text|regex), refreshing the page$/) do |text, type|
-  text = Regexp.new(text) if type == 'regex'
-  next if has_content?(text, wait: 3)
+When(/^I wait until I see "([^"]*)" text, refreshing the page$/) do |text|
+  text.gsub! '$PRODUCT', $product
+  # TODO: get rid of this substitution, using another step
+  next if has_content?(text)
   repeat_until_timeout(message: "Couldn't find text '#{text}'") do
-    break if has_content?(text, wait: 3)
+    break if has_content?(text)
     begin
       accept_prompt do
         execute_script 'window.location.reload()'
@@ -61,39 +62,18 @@ When(/^I wait until I see "([^"]*)" (text|regex), refreshing the page$/) do |tex
     rescue Capybara::ModalNotFound
       # ignored
     end
-  end
-end
-
-When(/^I wait at most (\d+) seconds until I do not see "([^"]*)" text, refreshing the page$/) do |seconds, text|
-  next if has_no_text?(text, wait: 3)
-  repeat_until_timeout(message: "I still see text '#{text}'", timeout: seconds.to_i) do
-    break if has_no_text?(text, wait: 3)
-    begin
-      accept_prompt do
-        execute_script 'window.location.reload()'
-      end
-    rescue Capybara::ModalNotFound
-      # ignored
-    end
-  end
-end
-
-When(/^I wait at most "([^"]*)" seconds until I do not see "([^"]*)" text$/) do |seconds, text|
-  next if has_no_text?(text, wait: 3)
-  repeat_until_timeout(message: "I still see text '#{text}'", timeout: seconds.to_i) do
-    break if has_no_text?(text, wait: 3)
   end
 end
 
 When(/^I wait at most (\d+) seconds until the event is completed, refreshing the page$/) do |timeout|
   last = Time.now
-  next if has_content?("This action's status is: Completed.", wait: 3)
+  next if has_content?("This action's status is: Completed.")
   repeat_until_timeout(timeout: timeout.to_i, message: 'Event not yet completed') do
-    break if has_content?("This action's status is: Completed.", wait: 3)
-    raise 'Event failed' if has_content?("This action's status is: Failed.", wait: 3)
+    break if has_content?("This action's status is: Completed.")
+    raise 'Event failed' if has_content?("This action's status is: Failed.")
     current = Time.now
     if current - last > 150
-      log "#{current} Still waiting for action to complete..."
+      STDOUT.puts "#{current} Still waiting for action to complete..."
       last = current
     end
     begin
@@ -112,9 +92,9 @@ When(/^I wait until I see the name of "([^"]*)", refreshing the page$/) do |host
 end
 
 When(/^I wait until I do not see "([^"]*)" text, refreshing the page$/) do |text|
-  next unless has_content?(text, wait: 3)
+  next unless has_content?(text)
   repeat_until_timeout(message: "Text '#{text}' is still visible") do
-    break unless has_content?(text, wait: 3)
+    break unless has_content?(text)
     begin
       accept_prompt do
         execute_script 'window.location.reload()'
@@ -151,11 +131,6 @@ When(/^I switch to last opened window$/) do
   page.driver.browser.switch_to.window(page.driver.browser.window_handles.last)
 end
 
-When(/^I close the last opened window$/) do
-  page.driver.browser.close
-  page.driver.browser.switch_to.window(page.driver.browser.window_handles.first)
-end
-
 #
 # Check a checkbox of the given id
 #
@@ -171,24 +146,23 @@ When(/^I check "([^"]*)" if not checked$/) do |arg1|
   check(arg1) unless has_checked_field?(arg1)
 end
 
-When(/^I select "([^"]*)" from "([^"]*)"$/) do |option, field|
-  if has_select?(field, with_options: [option], wait: 1)
-    select(option, from: field)
-  else
-    # Custom React selector
-    xpath_field = "//*[contains(@class, 'data-testid-#{field}-child__control')]"
-    xpath_option = ".//*[contains(@class, 'data-testid-#{field}-child__option') and contains(text(), '#{option}')]"
-    find(:xpath, xpath_field).click
-    find(:xpath, xpath_option, match: :first).click
-  end
+When(/^I select "([^"]*)" from "([^"]*)"$/) do |arg1, arg2|
+  select(arg1, from: arg2, exact: false)
+end
+
+# Select an item from a react Combobox
+When(/^I select "([^"]*)" from the Combobox "([^"]*)"$/) do |arg1, arg2|
+  xpath = "//div[@id='#{arg2}']"
+  find(:xpath, xpath).click
+  find(:xpath, "#{xpath}/div/div/div[normalize-space(text())='#{arg1}']", match: :first).click
 end
 
 When(/^I select the maximum amount of items per page$/) do
   find(:xpath, "//select[@class='display-number']").find(:xpath, 'option[6]').select_option
 end
 
-When(/^I select the parent channel for the "([^"]*)" from "([^"]*)"$/) do |client, from|
-  select(BASE_CHANNEL_BY_CLIENT[client], from: from, exact: false)
+When(/^I select the (base|parent) channel for the "([^"]*)" from "([^"]*)"$/) do |_channel_type, client, from|
+  select(CHANNEL_BY_CLIENT[client], from: from, exact: false)
 end
 
 When(/^I select the contact method for the "([^"]*)" from "([^"]*)"$/) do |client, from|
@@ -200,7 +174,7 @@ When(/^I select the contact method for the "([^"]*)" from "([^"]*)"$/) do |clien
 end
 
 When(/^I select "([^"]*)" from drop-down in table line with "([^"]*)"$/) do |value, line|
-  select = find(:xpath, ".//div[@class='table-responsive']/table/tbody/tr[contains(td/a,'#{line}')]//select")
+  select = find(:xpath, ".//div[@class='table-responsive']/table/tbody/tr[contains(td,'#{line}')]//select")
   select(value, from: select[:id])
 end
 
@@ -223,31 +197,22 @@ end
 #
 # Enter a text into a textfield
 #
-When(/^I enter "([^"]*)" as "([^"]*)"$/) do |text, field|
-  fill_in(field, with: text, fill_options: { clear: :backspace })
+When(/^I enter "([^"]*)" as "([^"]*)"$/) do |arg1, arg2|
+  fill_in arg2, with: arg1
 end
 
 When(/^I enter "([^"]*)" as "([^"]*)" text area$/) do |arg1, arg2|
   execute_script("document.getElementsByName('#{arg2}')[0].value = '#{arg1}'")
 end
 
-When(/^I enter "(.*?)" as "(.*?)" in the content area$/) do |text, field|
+When(/^I enter "(.*?)" as "(.*?)" in the content area$/) do |arg1, arg2|
   within(:xpath, '//section') do
-    fill_in(field, with: text, fill_options: { clear: :backspace })
+    fill_in arg2, with: arg1
   end
 end
 
-When(/^I enter the URI of the registry as "([^"]*)"$/) do |field|
-  fill_in(field, with: $no_auth_registry, fill_options: { clear: :backspace })
-end
-
-When(/^I enter "([^"]*)" on the search field$/) do |search_text|
-  step %(I enter "#{search_text}" as "search_string")
-end
-
-# Go back in the browser history
-When(/^I go back$/) do
-  page.driver.go_back
+When(/^I enter the URI of the registry as "([^"]*)"$/) do |arg1|
+  fill_in arg1, with: $no_auth_registry
 end
 
 #
@@ -290,6 +255,18 @@ end
 #
 When(/^I follow first "([^"]*)"$/) do |text|
   click_link_and_wait(text, match: :first)
+end
+
+#
+# Click on the terminal
+#
+When(/^I follow "([^"]*)" terminal$/) do |host|
+  domain = read_branch_prefix_from_yaml
+  if !host.include? 'pxeboot'
+    step %(I follow "#{domain}.#{host}")
+  else
+    step %(I follow "#{host}.#{domain}")
+  end
 end
 
 #
@@ -373,13 +350,7 @@ end
 #
 
 Given(/^I am not authorized$/) do
-  begin
-    page.reset!
-  rescue NoMethodError
-    log 'The browser session could not be cleaned.'
-  ensure
-    visit Capybara.app_host
-  end
+  visit Capybara.app_host
   raise "Button 'Sign In' not visible" unless find_button('Sign In').visible?
 end
 
@@ -397,9 +368,22 @@ Given(/^I am authorized for the "([^"]*)" section$/) do |section|
   case section
   when 'Admin'
     step %(I am authorized as "admin" with password "admin")
-  when 'Images'
-    step %(I am authorized as "kiwikiwi" with password "kiwikiwi")
   end
+end
+
+Given(/^I am on the Organizations page$/) do
+  steps %(
+    Given I am authorized for the "Admin" section
+    When I follow the left menu "Admin > Organizations"
+  )
+end
+
+Given(/^I am on the Products page$/) do
+  steps %(
+    Given I am authorized for the "Admin" section
+    When I follow the left menu "Admin > Setup Wizard > Products"
+    And I wait until I see "Product Description" text, refreshing the page
+  )
 end
 
 # access the clients
@@ -419,22 +403,23 @@ Given(/^I am on the "([^"]*)" page of this "([^"]*)"$/) do |page, host|
   )
 end
 
-When(/^I enter the hostname of "([^"]*)" as "([^"]*)"$/) do |host, field|
+When(/^I enter the hostname of "([^"]*)" as "([^"]*)"$/) do |host, hostname|
   system_name = get_system_name(host)
-  log "The hostname of #{host} is #{system_name}"
-  step %(I enter "#{system_name}" as "#{field}")
+  puts "The hostname of #{host} is #{system_name}"
+  step %(I enter "#{system_name}" as "#{hostname}")
 end
 
-When(/^I select the hostname of "([^"]*)" from "([^"]*)"((?: if present)?)$/) do |host, field, if_present|
-  begin
-    node = get_target(host)
-  rescue
-    raise "Host #{host} not found" if if_present.empty?
-
-    log "Host #{host} is not deployed, not trying to select it"
-    return
+When(/^I select the hostname of "([^"]*)" from "([^"]*)"$/) do |host, hostname|
+  case host
+  when 'proxy'
+    # don't select anything if not in the list
+    next if $proxy.nil?
+    step %(I select "#{$proxy.full_hostname}" from "#{hostname}")
+  when 'sle_minion'
+    step %(I select "#{$minion.full_hostname}" from "#{hostname}")
+  when 'build_host'
+    step %(I select "#{$build_host.full_hostname}" from "#{hostname}")
   end
-  step %(I select "#{node.full_hostname}" from "#{field}")
 end
 
 When(/^I follow this "([^"]*)" link$/) do |host|
@@ -452,6 +437,20 @@ When(/^I uncheck the "([^"]*)" client$/) do |host|
   step %(I uncheck "#{system_name}" in the list)
 end
 
+Given(/^I am on the groups page$/) do
+  steps %(
+    Given I am on the Systems page
+    When I follow the left menu "Systems > System Groups"
+  )
+end
+
+Given(/^I am on the active Users page$/) do
+  steps %(
+    Given I am authorized with the feature's user
+    When I follow the left menu "Users > User List > Active"
+  )
+end
+
 Then(/^table row for "([^"]*)" should contain "([^"]*)"$/) do |arg1, arg2|
   step %(I wait until table row for "#{arg1}" contains "#{arg2}")
 end
@@ -460,24 +459,6 @@ Then(/^I wait until table row for "([^"]*)" contains "([^"]*)"$/) do |arg1, arg2
   xpath_query = "//div[@class=\"table-responsive\"]/table/tbody/tr[.//*[contains(.,'#{arg1}')]]"
   within(:xpath, xpath_query) do
     raise "xpath: #{xpath_query} has no content #{arg2}" unless has_content?(arg2, wait: DEFAULT_TIMEOUT)
-  end
-end
-
-Then(/^the table row for "([^"]*)" should( not)? contain "([^"]*)" icon$/) do |row, should_not, icon|
-  case icon
-  when 'retracted'
-    content_selector = "i[class*='errata-retracted']"
-  else
-    raise "Unsupported icon '#{icon}' in the step definition"
-  end
-
-  xpath_query = "//div[@class=\"table-responsive\"]/table/tbody/tr[.//*[contains(.,'#{row}')]]"
-  within(:xpath, xpath_query) do
-    if should_not
-      raise "xpath: #{xpath_query} has no icon #{icon}" unless has_no_css?(content_selector, wait: DEFAULT_TIMEOUT)
-    else
-      raise "xpath: #{xpath_query} has no icon #{icon}" unless has_css?(content_selector, wait: DEFAULT_TIMEOUT)
-    end
   end
 end
 
@@ -502,58 +483,103 @@ end
 # login, logout steps
 
 Given(/^I am authorized as "([^"]*)" with password "([^"]*)"$/) do |user, passwd|
-  begin
-    page.reset!
-  rescue NoMethodError
-    log 'The browser session could not be cleaned.'
-  ensure
-    visit Capybara.app_host
-  end
-  next if all(:xpath, "//header//span[text()='#{user}']", wait: 0).any?
+  visit Capybara.app_host
 
-  find(:xpath, "//header//i[@class='fa fa-sign-out']").click if all(:xpath, "//header//i[@class='fa fa-sign-out']", wait: 0).any?
+  next if all(:xpath, "//header//span[text()='#{user}']").any?
 
-  fill_in('username', with: user)
-  fill_in('password', with: passwd)
+  find(:xpath, "//header//i[@class='fa fa-sign-out']").click if all(:xpath, "//header//i[@class='fa fa-sign-out']").any?
+
+  fill_in 'username', with: user
+  fill_in 'password', with: passwd
   click_button_and_wait('Sign In', match: :first)
 
   step %(I should be logged in)
 end
 
-Given(/^I am authorized$/) do
-  step %(I am authorized as "testing" with password "testing")
+Given(/^I am authorized with the feature's user$/) do
+  step %(I am authorized as "#{$username}" with password "#{$password}")
 end
 
 When(/^I sign out$/) do
+  visit Capybara.app_host
   find(:xpath, "//a[@href='/rhn/Logout.do']").click
 end
 
 Then(/^I should not be authorized$/) do
-  raise 'User is authorized' if has_xpath?("//a[@href='/rhn/Logout.do']")
+  raise 'User is authorized' if all(:xpath, "//a[@href='/rhn/Logout.do']").any?
 end
 
 Then(/^I should be logged in$/) do
   xpath_query = "//a[@href='/rhn/Logout.do']"
-  raise 'User is not logged in' unless find(:xpath, xpath_query)
+  raise 'User is not logged in' unless find(:xpath, xpath_query, wait: DEFAULT_TIMEOUT)
 end
 
 Then(/^I am logged in$/) do
   raise 'User is not logged in' unless find(:xpath, "//a[@href='/rhn/Logout.do']").visible?
-  text = "You have just created your first #{product} user. To finalize your installation please use the Setup Wizard"
+  text = 'You have just created your first $PRODUCT user. To finalize your installation please use the Setup Wizard'
+  text.gsub! '$PRODUCT', $product # TODO: Get rid of this substitution, using another step
   raise 'The welcome message is not shown' unless has_content?(text)
+end
+
+Given(/^I am on the patches page$/) do
+  step %(I am authorized with the feature's user)
+  visit("https://#{$server.full_hostname}/rhn/errata/RelevantErrata.do")
 end
 
 Then(/^I should see an update in the list$/) do
   xpath_query = '//div[@class="table-responsive"]/table/tbody/tr/td/a'
-  raise "xpath: #{xpath_query} not found" unless has_xpath?(xpath_query)
+  raise "xpath: #{xpath_query} not found" unless all(:xpath, xpath_query).any?
 end
 
 When(/^I check test channel$/) do
   step %(I check "Test Base Channel" in the list)
 end
 
+When(/^I check the child channel "([^"]*)"$/) do |channel|
+  find(:xpath, "//i[@class='fa fa-angle-right']").click unless find(:xpath, "//i[@class='fa fa-angle-down']", wait: 60)
+  checkbox = find(:xpath, "//label[contains(.,'#{channel}')]/..//input", match: :first, wait: 60)
+  checkbox.set(true)
+end
+
+When(/^I check the custom channels for "([^"]*)"$/) do |client|
+  node = get_target(client)
+  _os_version, os_family = get_os_version(node)
+  if os_family =~ /^ubuntu/
+    steps %(
+      When I check the child channel "main"
+      And I check the child channel "main-updates"
+    )
+  elsif os_family =~ /^centos/
+    step %(I check the child channel "DVD")
+  end
+  # Both minion and ssh_minion uses the same repositories, so the custom channels
+  client.sub! 'ssh_minion', 'minion'
+  channel = "Custom Channel for #{client}"
+  step %(I check the child channel "#{channel}")
+end
+
 When(/^I check "([^"]*)" patch$/) do |arg1|
   step %(I check "#{arg1}" in the list)
+end
+
+When(/^I am on System Set Manager Overview$/) do
+  visit("https://#{$server.full_hostname}/rhn/ssm/index.do")
+end
+
+When(/^I am on Autoinstallation Overview page$/) do
+  visit("https://#{$server.full_hostname}/rhn/kickstart/KickstartOverview.do")
+end
+
+When(/^I am on the System Manager System Overview page$/) do
+  visit("https://#{$server.full_hostname}/rhn/systems/ssm/ListSystems.do")
+end
+
+When(/^I am on the Create Autoinstallation Profile page$/) do
+  visit("https://#{$server.full_hostname}/rhn/kickstart/AdvancedModeCreate.do")
+end
+
+When(/^I am on the System Overview page$/) do
+  visit("https://#{$server.full_hostname}/rhn/systems/Overview.do")
 end
 
 Then(/^I should see something$/) do
@@ -573,45 +599,20 @@ end
 # Test for a text in the whole page
 #
 Then(/^I should see a "([^"]*)" text$/) do |text|
-  raise "Text '#{text}' not found" unless has_content?(text)
+  text.gsub! '$PRODUCT', $product # TODO: Get rid of this substitution, using another step
+  raise "Text #{text} not found" unless has_content?(text)
 end
 
 Then(/^I should see a "([^"]*)" text or "([^"]*)" text$/) do |text1, text2|
-  raise "Text '#{text1}' and '#{text2}' not found" unless has_content?(text1) || has_content?(text2)
-end
-
-Then(/^I should see "([^"]*)" short hostname$/) do |host|
-  system_name = get_system_name(host).partition('.').first
-  raise "Hostname #{system_name} is not present" unless has_content?(system_name)
-end
-
-Then(/^I should not see "([^"]*)" short hostname$/) do |host|
-  system_name = get_system_name(host).partition('.').first
-  raise "Hostname #{system_name} is present" if has_content?(system_name)
-end
-
-Then(/^I should see "([^"]*)" hostname$/) do |host|
-  system_name = get_system_name(host)
-  raise "Hostname #{system_name} is not present" unless has_content?(system_name)
-end
-
-Then(/^I should not see "([^"]*)" hostname$/) do |host|
-  system_name = get_system_name(host)
-  raise "Hostname #{system_name} is present" if has_content?(system_name)
+  raise "Text #{text1} and #{text2} are not found" unless has_content?(text1) || has_content?(text2)
 end
 
 #
 # Test for text in a snippet textarea
 #
-Then(/^I should see "([^"]*)" in the textarea$/) do |text|
+Then(/^I should see "([^"]*)" in the textarea$/) do |arg1|
   within('textarea') do
-    raise "Text '#{text}' not found" unless has_content?(text)
-  end
-end
-
-Then(/^I should see "([^"]*)" or "([^"]*)" in the textarea$/) do |text1, text2|
-  within('textarea') do
-    raise "Text '#{text1}' and '#{text2}' not found" unless has_content?(text1) || has_content?(text2)
+    raise "Text #{arg1} not found" unless has_content?(arg1)
   end
 end
 
@@ -619,14 +620,14 @@ end
 # Test for a text in the whole page using regexp
 #
 Then(/^I should see a text like "([^"]*)"$/) do |title|
-  raise "Regular expression '#{title}' not found" unless has_content?(Regexp.new(title))
+  raise "Text #{title} not found" unless has_content?(Regexp.new(title))
 end
 
 #
 # Test for a text not allowed in the whole page
 #
 Then(/^I should not see a "([^"]*)" text$/) do |text|
-  raise "Text '#{text}' found on the page" unless has_no_content?(text)
+  raise "#{text} found on the page! FAIL" unless has_no_content?(text)
 end
 
 #
@@ -649,19 +650,19 @@ end
 
 Then(/^I should see a "(.*?)" link in the text$/) do |linktext, text|
   within(:xpath, "//p/strong[contains(normalize-space(string(.)), '#{text}')]") do
-    assert has_xpath?("//a[text() = '#{linktext}']")
+    assert all(:xpath, "//a[text() = '#{linktext}']").any?
   end
 end
 
 Then(/^I should see a "([^"]*)" text in element "([^"]*)"$/) do |text, element|
   within(:xpath, "//div[@id=\"#{element}\" or @class=\"#{element}\"]") do
-    raise "Text '#{text}' not found in #{element}" unless has_content?(text)
+    raise "Text #{text} not found in #{element}" unless has_content?(text)
   end
 end
 
 Then(/^I should not see a "([^"]*)" text in element "([^"]*)"$/) do |text, element|
   within(:xpath, "//div[@id=\"#{element}\" or @class=\"#{element}\"]") do
-    raise "Text '#{text}' found in #{element}" if has_content?(text)
+    raise "Text #{text} found in #{element}" if has_content?(text)
   end
 end
 
@@ -682,7 +683,7 @@ Then(/^I should see a "([^"]*)" link in the table (.*) column$/) do |link, colum
   end
   raise("Unknown column '#{column}'") unless idx
   # find(:xpath, "//table//thead//tr/td[#{idx + 1}]/a[text()='#{link}']")
-  raise unless has_xpath?("//table//tr/td[#{idx + 1}]//a[text()='#{link}']")
+  raise unless all(:xpath, "//table//tr/td[#{idx + 1}]//a[text()='#{link}']").any?
 end
 
 When(/^I wait until the table contains "FINISHED" or "SKIPPED" followed by "FINISHED" in its first rows$/) do
@@ -765,78 +766,21 @@ Then(/^I check the row with the "([^"]*)" text$/) do |text|
   step %(I check "#{text}" in the list)
 end
 
+Then(/^I check the row with the "([^"]*)" hostname$/) do |host|
+  system_name = get_system_name(host)
+  step %(I check "#{system_name}" in the list)
+end
+
 When(/^I check the first patch in the list$/) do
   step %(I check the first row in the list)
 end
 
-When(/^I click on the red confirmation button$/) do
-  find_and_wait_click('button.btn-danger').click
-end
-
-When(/^I click on the clear SSM button$/) do
-  find_and_wait_click('a#clear-ssm').click
-end
-
-When(/^I click on the filter button$/) do
-  find_and_wait_click('button.spacewalk-button-filter').click
-  has_text?('is filtered', wait: 10)
-end
-
-Then(/^I click on the filter button until page does not contain "([^"]*)" text$/) do |text|
-  repeat_until_timeout(message: "'#{text}' still found") do
-    break unless has_content?(text)
-    find('button.spacewalk-button-filter').click
-    has_text?('is filtered', wait: 10)
-  end
-end
-
-Then(/^I click on the filter button until page does contain "([^"]*)" text$/) do |text|
-  repeat_until_timeout(message: "'#{text}' was not found") do
-    break if has_content?(text)
-    find('button.spacewalk-button-filter').click
-    has_text?('is filtered', wait: 10)
-  end
-end
-
-When(/^I enter the hostname of "([^"]*)" as the filtered system name$/) do |host|
-  system_name = get_system_name(host)
-  find("input[placeholder='Filter by System Name: ']").set(system_name)
-end
-
-When(/^I enter "([^"]*)" as the filtered package states name$/) do |input|
-  find("input[placeholder='Search package']").set(input)
-end
-
-When(/^I enter "([^"]*)" as the filtered package name$/) do |input|
-  find("input[placeholder='Filter by Package Name: ']").set(input)
-end
-
-When(/^I enter "([^"]*)" as the filtered synopsis$/) do |input|
-  find("input[placeholder='Filter by Synopsis: ']").set(input)
-end
-
-When(/^I enter "([^"]*)" as the filtered channel name$/) do |input|
-  find("input[placeholder='Filter by Channel Name: ']").set(input)
-end
-
-When(/^I enter "([^"]*)" as the filtered product description$/) do |input|
-  find("input[name='product-description-filter']").set(input)
-end
-
-When(/^I enter "([^"]*)" as the filtered XCCDF result type$/) do |input|
-  find("input[placeholder='Filter by Result: ']").set(input)
-end
-
-When(/^I enter "([^"]*)" as the filtered snippet name$/) do |input|
-  find("input[placeholder='Filter by Snippet Name: ']").set(input)
-end
-
-When(/^I enter the package for "([^"]*)" as the filtered package name$/) do |host|
-  step %(I enter "#{PACKAGE_BY_CLIENT[host]}" as the filtered package name)
-end
-
-When(/^I check the package for "([^"]*)" in the list$/) do |host|
-  step %(I check "#{PACKAGE_BY_CLIENT[host]}" in the list)
+Then(/^I check (a|the) "([^"]*)" package in the list$/) do |_article, client|
+  steps %(
+    When I enter "#{PACKAGE_BY_CLIENT[client]}" as the filtered package name
+    And I click on the filter button
+    And I check "#{PACKAGE_BY_CLIENT[client]}" in the list
+  )
 end
 
 When(/^I check row with "([^"]*)" and arch of "([^"]*)"$/) do |text, client|
@@ -891,24 +835,16 @@ end
 #
 # Test if an option is selected
 #
-Then(/^option "([^"]*)" is selected as "([^"]*)"$/) do |option, field|
-  next if has_select?(field, selected: option)
-
-  # Custom React selector
-  next if has_xpath?("//*[contains(@class, 'data-testid-#{field}-child__value-container')]/*[contains(text(),'#{option}')]")
-
-  raise "#{option} is not selected as #{field}"
+Then(/^option "([^"]*)" is selected as "([^"]*)"$/) do |arg1, arg2|
+  raise "#{arg1} is not selected as #{arg2}" unless has_select?(arg2, selected: arg1)
 end
 
 #
 # Wait for an option to appear in a list
 #
-When(/^I wait until option "([^"]*)" appears in list "([^"]*)"$/) do |option, field|
-  repeat_until_timeout(message: "#{option} has not been listed in #{field}") do
-    break if has_select?(field, with_options: [option])
-
-    # Custom React selector
-    break if has_xpath?("//*[contains(@class, 'data-testid-#{field}-child__value-container')]/*[contains(text(),'#{option}')]")
+When(/^I wait until option "([^"]*)" appears in list "([^"]*)"$/) do |arg1, arg2|
+  repeat_until_timeout(message: "#{arg1} has not been listed in #{arg2}") do
+    break if has_select?(arg2, with_options: [arg1])
   end
 end
 
@@ -962,7 +898,7 @@ Then(/^I should see a "([^"]*)" editor in "([^"]*)" form$/) do |editor, form|
 end
 
 Then(/^I should see a Sign Out link$/) do
-  raise unless has_xpath?("//a[@href='/rhn/Logout.do']")
+  raise unless all(:xpath, "//a[@href='/rhn/Logout.do']").any?
 end
 
 Then(/^I should see (\d+) "([^"]*)" fields in "([^"]*)" form$/) do |count, name, id|
@@ -977,29 +913,44 @@ When(/^I click on "([^"]*)" in "([^"]*)" modal$/) do |btn, title|
     '/ancestor::div[contains(@class, "modal-dialog")]'
 
   # We wait until the element becomes visible, because
-  # the fade in animation might still be in progress
-  repeat_until_timeout(message: "It couldn't find the #{title} modal dialog") do
-    break if has_xpath?(path, wait: 1)
+  # the fade out animation might still be in progress
+  repeat_until_timeout(message: "Couldn't find the #{title} modal") do
+    break if find(:xpath, path)
   end
 
   within(:xpath, path) do
-    click_button(btn, wait: 5)
-  end
-
-  # We wait until the element is not shown, because
-  # the fade out animation might still be in progress
-  repeat_until_timeout(message: "The #{title} modal dialog is still present") do
-    break if has_no_xpath?(path, wait: 1)
+    find(:xpath, ".//button[@title = \"#{btn}\"]").click
   end
 end
 
 # Wait until a modal window with a specific content is shown
 When(/^I wait at most (\d+) seconds until I see modal containing "([^"]*)" text$/) do |timeout, title|
-  path = "//*[contains(@class, \"modal-content\") and contains(., \"#{title}\")]" \
+  path = "//*[contains(@class, \"modal-body\") and contains(., \"#{title}\")]" \
     '/ancestor::div[contains(@class, "modal-dialog")]'
 
   dialog = find(:xpath, path, wait: timeout.to_i)
   raise "#{title} modal did not appear" unless dialog
+end
+
+# Image-specific steps
+When(/^I enter "([^"]*)" relative to profiles as "([^"]*)"$/) do |path, field|
+  git_profiles = ENV['GITPROFILES']
+  step %(I enter "#{git_profiles}/#{path}" as "#{field}")
+end
+
+When(/^I enter the image filename relative to profiles as "([^"]*)"$/) do |field|
+  git_profiles = ENV['GITPROFILES']
+  path = compute_image_filename
+  step %(I enter "#{git_profiles}/#{path}" as "#{field}")
+end
+
+When(/^I enter URI, username and password for portus$/) do
+  auth_registry_username, auth_registry_password = ENV['AUTH_REGISTRY_CREDENTIALS'].split('|')
+  steps %(
+    When I enter "#{$auth_registry}" as "uri"
+    And I enter "#{auth_registry_username}" as "username"
+    And I enter "#{auth_registry_password}" as "password"
+  )
 end
 
 When(/^I scroll to the top of the page$/) do
@@ -1008,7 +959,7 @@ end
 
 # Check a Prometheus exporter
 When(/^I check "([^"]*)" exporter$/) do |exporter_type|
-  step %(I check "exporters##{exporter_type}_exporter#enabled" if not checked)
+  step %(I check "#{exporter_type}_exporter#enabled")
 end
 
 # Navigate to a service endpoint
@@ -1032,97 +983,4 @@ end
 
 When(/^I enter the server hostname as the redfish server address$/) do
   step %(I enter "#{$server.full_hostname}:8443" as "powerAddress")
-end
-
-When(/^I clear browser cookies$/) do
-  page.driver.browser.manage.delete_all_cookies
-end
-
-When(/^I close the modal dialog$/) do
-  find(:xpath, "//*[contains(@class, 'modal-header')]/button[contains(@class, 'close')]").click
-end
-
-When(/^I refresh the page$/) do
-  begin
-    accept_prompt do
-      execute_script 'window.location.reload()'
-    end
-  rescue Capybara::ModalNotFound
-    # ignored
-  end
-end
-
-When(/^I make a list of the existing systems$/) do
-  system_elements_list = find_all(:xpath, "//td[contains(@class, 'sortedCol')]")
-  $systems_list = []
-  system_elements_list.each { |el| $systems_list << el.text }
-end
-
-Given(/^I have a property "([^"]*)" with value "([^"]*)" on "([^"]*)"$/) do |property_name, property_value, host|
-  steps %(
-    When I am on the Systems overview page of this "#{host}"
-    And I follow "Properties" in the content area
-    And I enter "#{property_value}" as "#{property_name}"
-    And I click on "Update Properties"
-    Then I should see a "System properties changed" text
-    And I clean the search index on the server
-        )
-end
-
-Given(/^I have a combobox property "([^"]*)" with value "([^"]*)" on "([^"]*)"$/) do |property_name, property_value, host|
-  steps %(
-    When I am on the Systems overview page of this "#{host}"
-    And I follow "Properties" in the content area
-    And I select "#{property_value}" from "#{property_name}"
-    And I click on "Update Properties"
-    Then I should see a "System properties changed" text
-    And I clean the search index on the server
-        )
-end
-
-# Confirm user has landed on a system's overview page
-Then(/^I should land on system's overview page$/) do
-  steps %(
-    Then I should see a "System Status" text
-    And I should see a "System Info" text
-    And I should see a "System Events" text
-    And I should see a "System Properties" text
-    And I should see a "Subscribed Channels" text
-        )
-end
-
-# In case of a search reindex not having finished yet, keep retrying until successful search or timeout
-When(/^I click on the search button$/) do
-  click_button_and_wait('Search', match: :first)
-  # after a search reindex, the UI will show a "Could not connect to search server" followed by a false "No matches found" for a while
-  if has_text?('Could not connect to search server.', wait: 0)
-    repeat_until_timeout(message: 'Could not perform a successful search after reindexation', timeout: 10) do
-      break unless has_text?('Could not connect to search server.', wait: 0) || has_text?('No matches found', wait: 0)
-      sleep 1
-      click_button('Search', match: :first, wait: false)
-    end
-  end
-end
-
-When(/^I enter "([^"]*)" hostname on the search field$/) do |host|
-  system_name = get_system_name(host)
-  step %(I enter "#{system_name}" on the search field)
-end
-
-Then(/^I should see "([^"]*)" hostname as first search result$/) do |host|
-  system_name = get_system_name(host)
-  within(:xpath, '//section') do
-    row = find(:xpath, "//div[@class='table-responsive']/table/tbody/tr[.//td]", match: :first)
-    within(row) do
-      raise "Text '#{system_name}' not found" unless has_text?(system_name)
-    end
-  end
-end
-
-When(/^I enter "([^"]*)" as the left menu search field$/) do |search_text|
-  step %(I enter "#{search_text}" as "nav-search")
-end
-
-Then(/^I should see left menu empty$/) do
-  raise StandardError, 'The left menu is not empty.' unless page.has_no_xpath?("//*[contains(@class, 'level1')]/*/*[contains(@class, 'nodeLink')]")
 end

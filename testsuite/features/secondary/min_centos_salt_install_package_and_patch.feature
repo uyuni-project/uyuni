@@ -20,7 +20,8 @@ Feature: Install a patch on the CentOS minion via Salt through the UI
     Given I am authorized for the "Admin" section
 
   Scenario: Pre-requisite: re-subscribe the CentOS minion to a base channel
-    Given I am on the Systems overview page of this "ceos_minion"
+    Given I am authorized with the feature's user
+    And I am on the Systems overview page of this "ceos_minion"
     When I follow "Software" in the content area
     And I follow "Software Channels" in the content area
     And I wait until I do not see "Loading..." text
@@ -30,7 +31,7 @@ Feature: Install a patch on the CentOS minion via Salt through the UI
     Then I should see a "Confirm Software Channel Change" text
     When I click on "Confirm"
     Then I should see a "Changing the channels has been scheduled." text
-    And I wait until event "Subscribe channels scheduled by admin" is completed
+    And I wait until event "Subscribe channels scheduled" is completed
 
   Scenario: Schedule errata refresh to reflect channel assignment on CentOS minion
     When I follow "Software" in the content area
@@ -61,7 +62,7 @@ Feature: Install a patch on the CentOS minion via Salt through the UI
     And I click on "Install Selected Packages"
     And I click on "Confirm"
     Then I should see a "1 package install has been scheduled for" text
-    And I wait until event "Package Install/Upgrade scheduled by admin" is completed
+    And I wait until event "Package Install/Upgrade scheduled" is completed
 
   Scenario: Cleanup: remove virgo-dummy and andromeda-dummy packages from CentOS minion
     When I follow "Software" in the content area
@@ -75,5 +76,5 @@ Feature: Install a patch on the CentOS minion via Salt through the UI
     And I click on "Remove Packages"
     And I click on "Confirm"
     Then I should see a "2 package removals have been scheduled" text
-    And I wait until event "Package Removal scheduled by admin" is completed
+    And I wait until event "Package Removal scheduled" is completed
     And I disable repository "test_repo_rpm_pool" on this "ceos_minion"
