@@ -441,7 +441,7 @@ class TestUyuniTrust:
 
     def test_trust_org_already_accepted(self):
         """
-        Test trust org.
+        Test trust org that already exists.
 
         :return:
         """
@@ -456,7 +456,7 @@ class TestUyuniTrust:
 
     def test_trust_org_new(self):
         """
-        Test trust org.
+        Test trust org, which is new.
 
         :return:
         """
