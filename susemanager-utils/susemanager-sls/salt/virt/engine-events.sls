@@ -5,6 +5,9 @@
         engines:
           - libvirt_events
 
+/var/cache/virt_state.cache:
+  file.absent
+
 {% else %}
 
 /etc/salt/minion.d/libvirt-events.conf:
