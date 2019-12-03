@@ -172,6 +172,8 @@ public class SaltUtils {
 
     public static final SaltUtils INSTANCE = new SaltUtils();
 
+    private static final String CAASP_PACKAGE_IDENTIFIER = "caasp";
+
     private Path scriptsDir = Paths.get(SUMA_STATE_FILES_ROOT_PATH, SCRIPTS_DIR);
 
     private SaltService saltService = SaltService.INSTANCE;
@@ -1215,15 +1217,18 @@ public class SaltUtils {
         // Trigger update of errata cache for this server
         ErrataManager.insertErrataCacheTask(server);
 
-        onPackageProfileUpdate(server);
+        // For special nodes: enable minion blackout (= read-only) via pillar
+        enableMinionBlackoutForSpecialNodes(server);
     }
 
-    private static void onPackageProfileUpdate(MinionServer server) {
+    private static void enableMinionBlackoutForSpecialNodes(MinionServer server) {
         if (server.getInstalledProducts().stream()
-                .anyMatch(p -> p.getName().equalsIgnoreCase("caasp"))) {
+                .anyMatch(p -> p.getName().equalsIgnoreCase(CAASP_PACKAGE_IDENTIFIER))) {
+            // Minion blackout is only enabled for nodes that have installed the `caasp-*` package
             SaltPillar pillar = new SaltPillar();
             pillar.add("minion_blackout", true);
             List<Object> whitelist = new ArrayList<>();
+            // List of Salt `module.function` that are allowed in blackout mode
             whitelist.add("test.ping");
             whitelist.add("grains.item");
             whitelist.add("grains.items");
@@ -1231,6 +1236,7 @@ public class SaltUtils {
             whitelist.add("mgractionchains.start");
             whitelist.add("mgractionchains.get_pending_resume");
             whitelist.add("mgractionchains.resume");
+            // List of Salt `state.apply` states that are allowed in blackout mode
             whitelist.add(
                     Collections.singletonMap("state.apply",
                             Collections.singletonMap("kwargs",
