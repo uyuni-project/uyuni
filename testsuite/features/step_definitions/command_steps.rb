@@ -148,18 +148,32 @@ When(/^I execute mgr\-sync refresh$/) do
   $command_output = sshcmd('mgr-sync refresh', ignore_err: true)[:stderr]
 end
 
-When(/^I make sure no spacewalk\-repo\-sync is executing$/) do
-  kill_failure_streak = 0
-  while kill_failure_streak <= 120
-    command_output = sshcmd('killall spacewalk-repo-sync', ignore_err: true)
-    kill_failed = !command_output[:stderr].empty?
-
-    if kill_failed
-      kill_failure_streak += 1
+When(/^I make sure no spacewalk\-repo\-sync is executing, excepted the ones needed to bootstrap$/) do
+  reposync_not_running_streak = 0
+  reposync_left_running_streak = 0
+  while reposync_not_running_streak <= 30 && reposync_left_running_streak <= 7200
+    command_output, _code = $server.run('ps -C spacewalk-repo-sync -o pid= -o cmd=', false)
+    if command_output.empty?
+      reposync_not_running_streak += 1
+      reposync_left_running_streak = 0
       sleep 1
-    else
-      kill_failure_streak = 0
+      next
     end
+    reposync_not_running_streak = 0
+    process = command_output.split("\n")[0]
+    pid = process.split(' ')[0]
+    channel = process.split(' ')[5]
+    # The following assumes the clients are SLE 12 SP4
+    if ['sles12-sp4-pool-x86_64', 'sle-manager-tools12-pool-x86_64-sp4', 'sle-module-containers12-pool-x86_64-sp4',
+        'sles12-sp4-updates-x86_64', 'sle-manager-tools12-updates-x86_64-sp4', 'sle-module-containers12-updates-x86_64-sp4'].include? channel
+      STDOUT.puts "Reposync of channel #{channel} left running" if (reposync_left_running_streak % 60).zero?
+      reposync_left_running_streak += 1
+      sleep 1
+      next
+    end
+    reposync_left_running_streak = 0
+    $server.run("kill #{pid}", false)
+    STDOUT.puts "Reposync of channel #{channel} killed"
   end
 end
 
