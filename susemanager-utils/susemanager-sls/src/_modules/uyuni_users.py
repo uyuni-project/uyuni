@@ -452,6 +452,32 @@ class UyuniChannels(UyuniRemoteObject):
 
         self.client("channel.access.setOrgSharing", self.client.get_token(), channel, access)
 
+    def restrict(self, label: str) -> None:
+        """
+        Enable user restrictions for the given channel. If enabled, only selected
+        users within the organization may subscribe to the channel.
+
+        :param label:
+
+        :raises UyuniChannelsException: if restriction setting was not successful.
+
+        :return: None
+        """
+        self.client("channel.access.enableUserRestrictions", self.client.get_token(), label)
+
+    def unrestrict(self, label: str) -> None:
+        """
+        Disable user restrictions for the given channel. If disabled, all users
+        within the organization may subscribe to the channel.
+
+        :param label:
+
+        :raises UyuniChannelsException: if restriction setting was not successful.
+
+        :return:
+        """
+        self.client("channel.access.disableUserRestrictions", self.client.get_token(), label)
+
 
 def __virtual__():
     """
