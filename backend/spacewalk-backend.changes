@@ -1,3 +1,5 @@
+- close config files after reading them (bsc#1158283)
+
 -------------------------------------------------------------------
 Wed Nov 27 16:58:20 CET 2019 - jgonzalez@suse.com
 
