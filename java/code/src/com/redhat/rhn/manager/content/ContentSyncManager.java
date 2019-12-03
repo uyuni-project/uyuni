@@ -297,6 +297,28 @@ public class ContentSyncManager {
         return repos;
     }
 
+    /**
+     * temporary fix to mitigate a duplicate id
+     * @param products broken list of products
+     * @return fixed lst of products
+     */
+    public static List<SCCProductJson> fixAdditionalProducts(List<SCCProductJson> products) {
+        return products.stream().map(p -> {
+            if (p.getId() == -7) {
+                p.getRepositories().forEach(r -> {
+                    if (r.getSCCId() == -81) {
+                        r.setSCCId(-83L);
+                    }
+                });
+                return p;
+            }
+            else {
+                return p;
+            }
+        })
+        .collect(Collectors.toList());
+    }
+
     /*
      * Return static list or OES products
      */
@@ -311,7 +333,7 @@ public class ContentSyncManager {
         catch (IOException e) {
             log.error(e);
         }
-        return oes;
+        return fixAdditionalProducts(oes);
     }
 
     /**
@@ -607,6 +629,20 @@ public class ContentSyncManager {
      */
     public void refreshRepositoriesAuthentication(
             Collection<SCCRepositoryJson> repositories, Credentials c, String mirrorUrl) {
+        refreshRepositoriesAuthentication(repositories, c, mirrorUrl, true);
+    }
+
+    /**
+     * Update authentication for all repos of the given credential.
+     * Removes authentication if they have expired
+     *
+     * @param repositories the new repositories
+     * @param c the credentials
+     * @param mirrorUrl optional mirror url
+     * @param withFix if fix for duplicate id -81 should be applied or not
+     */
+    public void refreshRepositoriesAuthentication(
+            Collection<SCCRepositoryJson> repositories, Credentials c, String mirrorUrl, boolean withFix) {
         List<Long> repoIdsFromCredential = new LinkedList<>();
         Map<Long, SCCRepository> availableRepos = SCCCachingFactory.lookupRepositories().stream()
                 .collect(Collectors.toMap(r -> r.getSccId(), r -> r));
@@ -739,6 +775,40 @@ public class ContentSyncManager {
         authList.stream()
             .filter(repoAuth -> !repoIdsFromCredential.contains(repoAuth.getRepository().getSccId()))
             .forEach(repoAuth -> SCCCachingFactory.deleteRepositoryAuth(repoAuth));
+
+        if (withFix) {
+            SUSEProductFactory.lookupPSRByChannelLabel("rhel6-pool-i386").stream().findFirst().ifPresent(rhel6 -> {
+                SUSEProductFactory.lookupPSRByChannelLabel("rhel7-pool-x86_64").stream()
+                        .findFirst().ifPresent(rhel7 -> {
+                    SCCRepository repository6 = rhel6.getRepository();
+                    SCCRepository repository7 = rhel7.getRepository();
+                    repository6.setDistroTarget("i386");
+                    // content source value in susesccrepositoryauth
+                    repository6.getBestAuth().ifPresent(auth -> {
+                        Channel channel7 = ChannelFactory.lookupByLabel(rhel7.getChannelLabel());
+                        Channel channel6 = ChannelFactory.lookupByLabel(rhel6.getChannelLabel());
+                        if (channel6 != null && channel7 != null) {
+                            repository7.getRepositoryAuth().forEach(ra -> {
+                                ra.setContentSource(auth.getContentSource());
+                                SCCCachingFactory.saveRepositoryAuth(ra);
+                            });
+                        }
+                        else if (channel6 == null && channel7 != null) {
+                            repository7.getRepositoryAuth().forEach(ra -> {
+                                ra.setContentSource(auth.getContentSource());
+                                SCCCachingFactory.saveRepositoryAuth(ra);
+                            });
+                            repository6.getRepositoryAuth().forEach(ra -> {
+                                ra.setContentSource(null);
+                                SCCCachingFactory.saveRepositoryAuth(ra);
+                            });
+                        }
+                    });
+                    SCCCachingFactory.saveRepository(repository6);
+                    SCCCachingFactory.saveRepository(repository7);
+                });
+            });
+        }
     }
 
     /**
@@ -1185,6 +1255,39 @@ public class ContentSyncManager {
         return loadStaticTree(tag);
     }
 
+    /**
+     * temporary fix to mitigate a duplicate id
+     * @param tree broken product tree
+     * @return fixed product tree
+     */
+    public List<ProductTreeEntry> productTreeFix(List<ProductTreeEntry> tree) {
+        Stream<ProductTreeEntry> productTreeEntries = tree.stream().map(e -> {
+            if (e.getProductId() == -7 && e.getRepositoryId() == -81) {
+                return new ProductTreeEntry(
+                        e.getChannelLabel(),
+                        e.getParentChannelLabel(),
+                        e.getChannelName(),
+                        e.getProductId(),
+                        -83,
+                        e.getParentProductId(),
+                        e.getRootProductId(),
+                        e.getUpdateTag(),
+                        e.isSigned(),
+                        e.isMandatory(),
+                        e.isRecommended(),
+                        e.getUrl(),
+                        e.getReleaseStage(),
+                        e.getProductType(),
+                        e.getTags()
+                );
+            }
+            else {
+                return e;
+            }
+        });
+        return productTreeEntries.collect(Collectors.toList());
+    }
+
     /*
      * load the static tree from file
      */
@@ -1212,9 +1315,11 @@ public class ContentSyncManager {
                 }
             }
         }
-        return tree.stream().filter(e -> {
-            return e.getTags().isEmpty() || e.getTags().contains(tag);
-        }).collect(Collectors.toList());
+        return productTreeFix(
+            tree.stream().filter(e -> {
+                return e.getTags().isEmpty() || e.getTags().contains(tag);
+            }).collect(Collectors.toList())
+        );
     }
 
     /**
@@ -1525,7 +1630,6 @@ public class ContentSyncManager {
                 Function.identity(),
                 (x, y) -> x
         ));
-
 
         Map<Long, SCCRepositoryJson> reposById = Stream.concat(
                 collectRepos(allProducts).stream(),
