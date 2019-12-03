@@ -1,3 +1,4 @@
+- Prevent Package List Refresh actions to stay pending forever (bsc#1157034)
 - Fix minion id when applying engine-events state (bsc#1158181)
 - Prevent ISE and warn disable deletion of a Content Lifecycle channel in use (bsc#1158012)
 - Remove unnecessary WARN log entries from Kubernetes integration
