@@ -156,7 +156,7 @@ class UyuniRemoteObject:
     RPC client
     """
     def __init__(self, pillar: Optional[Dict[str, Any]] = None):
-        self.client: RPCClient = RPCClient.init(pillar=pillar)
+        self.client: RPCClient = RPCClient.init(pillar=pillar or __pillar__)
 
     def get_proto_return(self, exc: Exception = None) -> Dict[str, Any]:
         """
@@ -477,9 +477,9 @@ def create_org(name, admin_login, first_name, last_name, email, admin_password=N
     :param pam:
     :return:
     """
-    return UyuniOrg(pillar=__pillar__).create(name=name, admin_login=admin_login, admin_password=admin_password,
-                                              email=email, first_name=first_name, last_name=last_name,
-                                              admin_prefix=admin_prefix, pam=pam)
+    return UyuniOrg().create(name=name, admin_login=admin_login, admin_password=admin_password,
+                             email=email, first_name=first_name, last_name=last_name,
+                             admin_prefix=admin_prefix, pam=pam)
 
 
 def delete_org(name):
@@ -489,7 +489,7 @@ def delete_org(name):
     :param name:
     :return:
     """
-    return UyuniOrg(pillar=__pillar__).delete(name=name)
+    return UyuniOrg().delete(name=name)
 
 
 def list_orgs():
@@ -498,7 +498,7 @@ def list_orgs():
 
     :return: List of hashes per organisation.
     """
-    return UyuniOrg(pillar=__pillar__).get_orgs()
+    return UyuniOrg().get_orgs()
 
 
 def list_trusts(name):
@@ -509,7 +509,7 @@ def list_trusts(name):
 
     :return: dictionary of trusted organisations. See "org.trusts.listTrusted" from the Uyuni API.
     """
-    return UyuniTrust(org_name=name, pillar=__pillar__).get_trusted()
+    return UyuniTrust(org_name=name).get_trusted()
 
 
 def share_channel(name, access):
@@ -521,7 +521,7 @@ def share_channel(name, access):
 
     :return:
     """
-    return UyuniChannels(pillar=__pillar__).set_sharing(channel=name, access=access)
+    return UyuniChannels().set_sharing(channel=name, access=access)
 
 
 def shared_channel(name):
@@ -532,4 +532,24 @@ def shared_channel(name):
 
     :return:
     """
-    return UyuniChannels(pillar=__pillar__).get_sharing(channel=name)
+    return UyuniChannels().get_sharing(channel=name)
+
+
+def restrict_channel(name):
+    """
+    Restrict channel to organisation users.
+
+    :param name:
+    :return: None
+    """
+    return UyuniChannels().restrict(label=name)
+
+
+def unrestrict_channel(name):
+    """
+    Remove channel restrictions from the organisation users.
+
+    :param name:
+    :return: None
+    """
+    return UyuniChannels().unrestrict(label=name)
