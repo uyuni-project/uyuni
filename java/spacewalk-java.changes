@@ -1,3 +1,4 @@
+- Associate VMs and systems with the same machine ID at bootstrap (bsc#1144176)
 - Fix minion id when applying engine-events state (bsc#1158181)
 - Remove unnecessary WARN log entries from Kubernetes integration
 

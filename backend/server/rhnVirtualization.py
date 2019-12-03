@@ -532,14 +532,27 @@ class VirtualizationEventHandler:
             raise VirtualizationEventError('unable to get virt instance id')
         id = row['id']
 
+        # Do we have a system with a machine id matching the uuid?
+        get_system_id_sql = """
+            SELECT s.id
+            FROM rhnServer s
+            LEFT JOIN rhnVirtualInstance vi on vi.virtual_system_id = s.id
+            WHERE s.machine_id = ':uuid' and vi.virtual_system_id IS NULL
+        """
+        query = rhnSQL.prepare(get_system_id_sql)
+        query.execute(uuid=uuid)
+        row = query.fetchone_dict() or {}
+
+        guest_id = row['id'] if row and 'id' in row else None
+
         insert_sql = """
             INSERT INTO rhnVirtualInstance
                 (id, host_system_id, virtual_system_id, uuid, confirmed)
             VALUES
-                (:id, :host_id, null, :uuid, 1)
+                (:id, :host_id, :guest_id, :uuid, 1)
         """
         query = rhnSQL.prepare(insert_sql)
-        query.execute(id=id, host_id=host_id, uuid=uuid)
+        query.execute(id=id, host_id=host_id, guest_id=guest_id, uuid=uuid)
 
         # Now we'll insert into the rhnVirtualInstanceInfo table.
 

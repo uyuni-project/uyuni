@@ -1,3 +1,5 @@
+- Associate VMs and systems with the same machine ID at bootstrap (bsc#1144176)
+
 -------------------------------------------------------------------
 Mon Nov 25 10:07:16 CET 2019 - jgonzalez@suse.com
 
