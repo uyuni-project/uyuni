@@ -641,11 +641,11 @@ do_migration() {
     ssh -i $KEYFILE root@$SATELLITE_IP "systemctl is-enabled osa-dispatcher > /dev/null 2>&1"
     if [ $? -eq 0 ]; then
         echo "Enable osa-dispatcher..."
-        systemctl enable osa-dispatcher > /dev/null 2>&1
+        systemctl --quiet enable osa-dispatcher
     else
         echo "Disable osa-dispatcher..."
-        systemctl disable osa-dispatcher > /dev/null 2>&1
-        systemctl disable jabberd > /dev/null 2>&1
+        systemctl --quiet disable osa-dispatcher
+        systemctl --quiet disable jabberd
     fi
 
     cleanup_hostname
