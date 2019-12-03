@@ -17,7 +17,7 @@ Feature: Custom system info key-value pairs
 
   Scenario: Add a value to a system
     When I follow the left menu "Systems > Overview"
-    When I follow this "sle-client" link
+    When I follow this "sle_client" link
     And I follow "Custom Info"
     And I follow "Create Value"
     And I follow "key-label"
@@ -28,7 +28,7 @@ Feature: Custom system info key-value pairs
 
   Scenario: Edit the value
     When I follow the left menu "Systems > Overview"
-    When I follow this "sle-client" link
+    When I follow this "sle_client" link
     And I follow "Custom Info"
     And I follow "key-value"
     And I should see a "Edit Custom Value" text
@@ -48,7 +48,7 @@ Feature: Custom system info key-value pairs
   Scenario: Delete the value
     When I follow the left menu "Systems > Custom System Info"
     And I follow "key-label"
-    And I follow this "sle-client" link
+    And I follow this "sle_client" link
     And I follow "Custom Info"
     And I follow "key-value-edited"
     And I follow "Delete Value"

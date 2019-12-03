@@ -70,11 +70,11 @@ Feature: Setup SUSE Manager for Retail branch network
     And I press "Add Item" in host reservations section
     And I enter "client" in first reserved hostname field
     And I enter the local IP address of "client" in first reserved IP field
-    And I enter the MAC address of "sle-client" in first reserved MAC field
+    And I enter the MAC address of "sle_client" in first reserved MAC field
     And I press "Add Item" in host reservations section
     And I enter "minion" in second reserved hostname field
     And I enter the local IP address of "minion" in second reserved IP field
-    And I enter the MAC address of "sle-minion" in second reserved MAC field
+    And I enter the MAC address of "sle_minion" in second reserved MAC field
     And I click on "Save Formula"
     Then I should see a "Formula saved" text
 
@@ -140,7 +140,7 @@ Feature: Setup SUSE Manager for Retail branch network
     And I press "Add Item" in host reservations section
     And I enter "pxeboot" in third reserved hostname field
     And I enter the local IP address of "pxeboot" in third reserved IP field
-    And I enter the MAC address of "pxeboot-minion" in third reserved MAC field
+    And I enter the MAC address of "pxeboot_minion" in third reserved MAC field
     And I click on "Save Formula"
     Then I should see a "Formula saved" text
     # bind:
@@ -175,7 +175,7 @@ Feature: Setup SUSE Manager for Retail branch network
 @private_net
   Scenario: Set up the terminals too
     When I set up the private network on the terminals
-    Then terminal "sle-client" should have got a retail network IP address
-    And name resolution should work on terminal "sle-client"
-    And terminal "sle-minion" should have got a retail network IP address
-    And name resolution should work on terminal "sle-minion"
+    Then terminal "sle_client" should have got a retail network IP address
+    And name resolution should work on terminal "sle_client"
+    And terminal "sle_minion" should have got a retail network IP address
+    And name resolution should work on terminal "sle_minion"

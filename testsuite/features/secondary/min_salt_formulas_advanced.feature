@@ -27,7 +27,7 @@ Feature: Use advanced features of Salt formulas
      When I check the "testform" formula
      And I click on "Save"
      And I follow "Target Systems"
-     And I check the "sle-minion" client
+     And I check the "sle_minion" client
      And I click on "Add Systems"
      Then I should see a "1 systems were added to test-formula-group server group." text
 
@@ -35,30 +35,30 @@ Feature: Use advanced features of Salt formulas
   Scenario: Verify default values
 #    The refresh is necessary, bsc#1028285 does not cover this.
      When I refresh the pillar data
-     Then the pillar data for "testing:str" should be "" on "sle-minion"
-     And the pillar data for "testing:str_def" should be "defvalue" on "sle-minion"
-     And the pillar data for "testing:str_or_null" should be "None" on "sle-minion"
-     And the pillar data for "testing" should not contain "str_opt" on "sle-minion"
-     And the pillar data for "testing:num" should be "" on "sle-minion"
-     And the pillar data for "testing:num_def" should be "0" on "sle-minion"
-     And the pillar data for "testing:num_or_null" should be "None" on "sle-minion"
-     And the pillar data for "testing" should not contain "num_opt" on "sle-minion"
-     And the pillar data for "testing:pw" should be "" on "sle-minion"
-     And the pillar data for "testing:pw_or_null" should be "None" on "sle-minion"
-     And the pillar data for "testing" should not contain "pw_opt" on "sle-minion"
-     And the pillar data for "testing:list_of_strings" should contain "def_item1" on "sle-minion"
-     And the pillar data for "testing:list_of_strings" should contain "def_item2" on "sle-minion"
-     And the pillar data for "testing:dict_of_strings:name1" should be "def_value1" on "sle-minion"
-     And the pillar data for "testing:dict_of_strings:name2" should be "def_value2" on "sle-minion"
-     And the pillar data for "testing:list_of_dicts:0:name" should be "def_user" on "sle-minion"
-     And the pillar data for "testing:list_of_dicts:0:password" should be "secret1" on "sle-minion"
-     And the pillar data for "testing:list_of_dicts:0" should not contain "full_name" on "sle-minion"
-     And the pillar data for "testing:dict_of_dicts:def_user:name" should be "root" on "sle-minion"
-     And the pillar data for "testing:dict_of_dicts:def_user:password" should be "secret2" on "sle-minion"
-     And the pillar data for "testing:dict_of_dicts:def_user:full_name" should be "None" on "sle-minion"
-     And the pillar data for "testing:recursive_dict_of_dicts:def_gr1:group_name" should be "default group 1" on "sle-minion"
-     And the pillar data for "testing:recursive_dict_of_dicts:def_gr1:entries:def_entry1:entry_name" should be "default entry 1" on "sle-minion"
-     And the pillar data for "testing:recursive_dict_of_dicts:def_gr1:entries:def_entry1:entry_desc" should be "some text" on "sle-minion"
+     Then the pillar data for "testing:str" should be "" on "sle_minion"
+     And the pillar data for "testing:str_def" should be "defvalue" on "sle_minion"
+     And the pillar data for "testing:str_or_null" should be "None" on "sle_minion"
+     And the pillar data for "testing" should not contain "str_opt" on "sle_minion"
+     And the pillar data for "testing:num" should be "" on "sle_minion"
+     And the pillar data for "testing:num_def" should be "0" on "sle_minion"
+     And the pillar data for "testing:num_or_null" should be "None" on "sle_minion"
+     And the pillar data for "testing" should not contain "num_opt" on "sle_minion"
+     And the pillar data for "testing:pw" should be "" on "sle_minion"
+     And the pillar data for "testing:pw_or_null" should be "None" on "sle_minion"
+     And the pillar data for "testing" should not contain "pw_opt" on "sle_minion"
+     And the pillar data for "testing:list_of_strings" should contain "def_item1" on "sle_minion"
+     And the pillar data for "testing:list_of_strings" should contain "def_item2" on "sle_minion"
+     And the pillar data for "testing:dict_of_strings:name1" should be "def_value1" on "sle_minion"
+     And the pillar data for "testing:dict_of_strings:name2" should be "def_value2" on "sle_minion"
+     And the pillar data for "testing:list_of_dicts:0:name" should be "def_user" on "sle_minion"
+     And the pillar data for "testing:list_of_dicts:0:password" should be "secret1" on "sle_minion"
+     And the pillar data for "testing:list_of_dicts:0" should not contain "full_name" on "sle_minion"
+     And the pillar data for "testing:dict_of_dicts:def_user:name" should be "root" on "sle_minion"
+     And the pillar data for "testing:dict_of_dicts:def_user:password" should be "secret2" on "sle_minion"
+     And the pillar data for "testing:dict_of_dicts:def_user:full_name" should be "None" on "sle_minion"
+     And the pillar data for "testing:recursive_dict_of_dicts:def_gr1:group_name" should be "default group 1" on "sle_minion"
+     And the pillar data for "testing:recursive_dict_of_dicts:def_gr1:entries:def_entry1:entry_name" should be "default entry 1" on "sle_minion"
+     And the pillar data for "testing:recursive_dict_of_dicts:def_gr1:entries:def_entry1:entry_desc" should be "some text" on "sle_minion"
 
   Scenario: Fill in and verify non-default values in group formula
      Given I am on the groups page
@@ -78,17 +78,17 @@ Feature: Use advanced features of Salt formulas
      And I enter "pw3" as "testing#pw_opt"
      And I click on "Save Formula"
      Then I should see a "Formula saved" text
-     And the pillar data for "testing:str" should be "text1" on "sle-minion"
-     And the pillar data for "testing:str_def" should be "text2" on "sle-minion"
-     And the pillar data for "testing:str_or_null" should be "text3" on "sle-minion"
-     And the pillar data for "testing:str_opt" should be "text4" on "sle-minion"
-     And the pillar data for "testing:num" should be "1" on "sle-minion"
-     And the pillar data for "testing:num_def" should be "2" on "sle-minion"
-     And the pillar data for "testing:num_or_null" should be "3" on "sle-minion"
-     And the pillar data for "testing:num_opt" should be "4" on "sle-minion"
-     And the pillar data for "testing:pw" should be "pw1" on "sle-minion"
-     And the pillar data for "testing:pw_or_null" should be "pw2" on "sle-minion"
-     And the pillar data for "testing:pw_opt" should be "pw3" on "sle-minion"
+     And the pillar data for "testing:str" should be "text1" on "sle_minion"
+     And the pillar data for "testing:str_def" should be "text2" on "sle_minion"
+     And the pillar data for "testing:str_or_null" should be "text3" on "sle_minion"
+     And the pillar data for "testing:str_opt" should be "text4" on "sle_minion"
+     And the pillar data for "testing:num" should be "1" on "sle_minion"
+     And the pillar data for "testing:num_def" should be "2" on "sle_minion"
+     And the pillar data for "testing:num_or_null" should be "3" on "sle_minion"
+     And the pillar data for "testing:num_opt" should be "4" on "sle_minion"
+     And the pillar data for "testing:pw" should be "pw1" on "sle_minion"
+     And the pillar data for "testing:pw_or_null" should be "pw2" on "sle_minion"
+     And the pillar data for "testing:pw_opt" should be "pw3" on "sle_minion"
 
   Scenario: Clear values in group formula and verify the defaults again
      Given I am on the groups page
@@ -98,30 +98,30 @@ Feature: Use advanced features of Salt formulas
      And I click on "Clear values" and confirm
      And I click on "Save Formula"
      Then I should see a "Formula saved" text
-     And the pillar data for "testing:str" should be "" on "sle-minion"
-     And the pillar data for "testing:str_def" should be "defvalue" on "sle-minion"
-     And the pillar data for "testing:str_or_null" should be "None" on "sle-minion"
-     And the pillar data for "testing" should not contain "str_opt" on "sle-minion"
-     And the pillar data for "testing:num" should be "" on "sle-minion"
-     And the pillar data for "testing:num_def" should be "0" on "sle-minion"
-     And the pillar data for "testing:num_or_null" should be "None" on "sle-minion"
-     And the pillar data for "testing" should not contain "num_opt" on "sle-minion"
-     And the pillar data for "testing:pw" should be "" on "sle-minion"
-     And the pillar data for "testing:pw_or_null" should be "None" on "sle-minion"
-     And the pillar data for "testing" should not contain "pw_opt" on "sle-minion"
-     And the pillar data for "testing:list_of_strings" should contain "def_item1" on "sle-minion"
-     And the pillar data for "testing:list_of_strings" should contain "def_item2" on "sle-minion"
-     And the pillar data for "testing:dict_of_strings:name1" should be "def_value1" on "sle-minion"
-     And the pillar data for "testing:dict_of_strings:name2" should be "def_value2" on "sle-minion"
-     And the pillar data for "testing:list_of_dicts:0:name" should be "def_user" on "sle-minion"
-     And the pillar data for "testing:list_of_dicts:0:password" should be "secret1" on "sle-minion"
-     And the pillar data for "testing:list_of_dicts:0" should not contain "full_name" on "sle-minion"
-     And the pillar data for "testing:dict_of_dicts:def_user:name" should be "root" on "sle-minion"
-     And the pillar data for "testing:dict_of_dicts:def_user:password" should be "secret2" on "sle-minion"
-     And the pillar data for "testing:dict_of_dicts:def_user:full_name" should be "None" on "sle-minion"
-     And the pillar data for "testing:recursive_dict_of_dicts:def_gr1:group_name" should be "default group 1" on "sle-minion"
-     And the pillar data for "testing:recursive_dict_of_dicts:def_gr1:entries:def_entry1:entry_name" should be "default entry 1" on "sle-minion"
-     And the pillar data for "testing:recursive_dict_of_dicts:def_gr1:entries:def_entry1:entry_desc" should be "some text" on "sle-minion"
+     And the pillar data for "testing:str" should be "" on "sle_minion"
+     And the pillar data for "testing:str_def" should be "defvalue" on "sle_minion"
+     And the pillar data for "testing:str_or_null" should be "None" on "sle_minion"
+     And the pillar data for "testing" should not contain "str_opt" on "sle_minion"
+     And the pillar data for "testing:num" should be "" on "sle_minion"
+     And the pillar data for "testing:num_def" should be "0" on "sle_minion"
+     And the pillar data for "testing:num_or_null" should be "None" on "sle_minion"
+     And the pillar data for "testing" should not contain "num_opt" on "sle_minion"
+     And the pillar data for "testing:pw" should be "" on "sle_minion"
+     And the pillar data for "testing:pw_or_null" should be "None" on "sle_minion"
+     And the pillar data for "testing" should not contain "pw_opt" on "sle_minion"
+     And the pillar data for "testing:list_of_strings" should contain "def_item1" on "sle_minion"
+     And the pillar data for "testing:list_of_strings" should contain "def_item2" on "sle_minion"
+     And the pillar data for "testing:dict_of_strings:name1" should be "def_value1" on "sle_minion"
+     And the pillar data for "testing:dict_of_strings:name2" should be "def_value2" on "sle_minion"
+     And the pillar data for "testing:list_of_dicts:0:name" should be "def_user" on "sle_minion"
+     And the pillar data for "testing:list_of_dicts:0:password" should be "secret1" on "sle_minion"
+     And the pillar data for "testing:list_of_dicts:0" should not contain "full_name" on "sle_minion"
+     And the pillar data for "testing:dict_of_dicts:def_user:name" should be "root" on "sle_minion"
+     And the pillar data for "testing:dict_of_dicts:def_user:password" should be "secret2" on "sle_minion"
+     And the pillar data for "testing:dict_of_dicts:def_user:full_name" should be "None" on "sle_minion"
+     And the pillar data for "testing:recursive_dict_of_dicts:def_gr1:group_name" should be "default group 1" on "sle_minion"
+     And the pillar data for "testing:recursive_dict_of_dicts:def_gr1:entries:def_entry1:entry_name" should be "default entry 1" on "sle_minion"
+     And the pillar data for "testing:recursive_dict_of_dicts:def_gr1:entries:def_entry1:entry_desc" should be "some text" on "sle_minion"
 
   Scenario: Fill in and verify mix of default and non-default values in group formula
      Given I am on the groups page
@@ -134,38 +134,38 @@ Feature: Use advanced features of Salt formulas
      And I enter "pw1" as "testing#pw"
      And I click on "Save Formula"
      Then I should see a "Formula saved" text
-     And the pillar data for "testing:str" should be "text1" on "sle-minion"
-     And the pillar data for "testing:str_def" should be "defvalue" on "sle-minion"
-     And the pillar data for "testing:str_or_null" should be "None" on "sle-minion"
-     And the pillar data for "testing" should not contain "str_opt" on "sle-minion"
-     And the pillar data for "testing:num" should be "1" on "sle-minion"
-     And the pillar data for "testing:num_def" should be "2" on "sle-minion"
-     And the pillar data for "testing:num_or_null" should be "None" on "sle-minion"
-     And the pillar data for "testing" should not contain "num_opt" on "sle-minion"
-     And the pillar data for "testing:pw" should be "pw1" on "sle-minion"
-     And the pillar data for "testing:pw_or_null" should be "None" on "sle-minion"
-     And the pillar data for "testing" should not contain "pw_opt" on "sle-minion"
+     And the pillar data for "testing:str" should be "text1" on "sle_minion"
+     And the pillar data for "testing:str_def" should be "defvalue" on "sle_minion"
+     And the pillar data for "testing:str_or_null" should be "None" on "sle_minion"
+     And the pillar data for "testing" should not contain "str_opt" on "sle_minion"
+     And the pillar data for "testing:num" should be "1" on "sle_minion"
+     And the pillar data for "testing:num_def" should be "2" on "sle_minion"
+     And the pillar data for "testing:num_or_null" should be "None" on "sle_minion"
+     And the pillar data for "testing" should not contain "num_opt" on "sle_minion"
+     And the pillar data for "testing:pw" should be "pw1" on "sle_minion"
+     And the pillar data for "testing:pw_or_null" should be "None" on "sle_minion"
+     And the pillar data for "testing" should not contain "pw_opt" on "sle_minion"
 
   Scenario: Verify that minion form inherits the values from group form
-     Given I am on the Systems overview page of this "sle-minion"
+     Given I am on the Systems overview page of this "sle_minion"
      When I follow "Formulas" in the content area
      And I follow first "Testform" in the content area
      And I click on "Save Formula"
      Then I should see a "Formula saved" text
-     Then the pillar data for "testing:str" should be "text1" on "sle-minion"
-     And the pillar data for "testing:str_def" should be "defvalue" on "sle-minion"
-     And the pillar data for "testing:str_or_null" should be "None" on "sle-minion"
-     And the pillar data for "testing" should not contain "str_opt" on "sle-minion"
-     And the pillar data for "testing:num" should be "1" on "sle-minion"
-     And the pillar data for "testing:num_def" should be "2" on "sle-minion"
-     And the pillar data for "testing:num_or_null" should be "None" on "sle-minion"
-     And the pillar data for "testing" should not contain "num_opt" on "sle-minion"
-     And the pillar data for "testing:pw" should be "pw1" on "sle-minion"
-     And the pillar data for "testing:pw_or_null" should be "None" on "sle-minion"
-     And the pillar data for "testing" should not contain "pw_opt" on "sle-minion"
+     Then the pillar data for "testing:str" should be "text1" on "sle_minion"
+     And the pillar data for "testing:str_def" should be "defvalue" on "sle_minion"
+     And the pillar data for "testing:str_or_null" should be "None" on "sle_minion"
+     And the pillar data for "testing" should not contain "str_opt" on "sle_minion"
+     And the pillar data for "testing:num" should be "1" on "sle_minion"
+     And the pillar data for "testing:num_def" should be "2" on "sle_minion"
+     And the pillar data for "testing:num_or_null" should be "None" on "sle_minion"
+     And the pillar data for "testing" should not contain "num_opt" on "sle_minion"
+     And the pillar data for "testing:pw" should be "pw1" on "sle_minion"
+     And the pillar data for "testing:pw_or_null" should be "None" on "sle_minion"
+     And the pillar data for "testing" should not contain "pw_opt" on "sle_minion"
 
   Scenario: Fill in and verify non-default values in minion formula
-     Given I am on the Systems overview page of this "sle-minion"
+     Given I am on the Systems overview page of this "sle_minion"
      When I follow "Formulas" in the content area
      And I follow first "Testform" in the content area
      And I enter "min_text1" as "testing#str"
@@ -181,37 +181,37 @@ Feature: Use advanced features of Salt formulas
      And I enter "min_pw3" as "testing#pw_opt"
      And I click on "Save Formula"
      Then I should see a "Formula saved" text
-     And the pillar data for "testing:str" should be "min_text1" on "sle-minion"
-     And the pillar data for "testing:str_def" should be "min_text2" on "sle-minion"
-     And the pillar data for "testing:str_or_null" should be "min_text3" on "sle-minion"
-     And the pillar data for "testing:str_opt" should be "min_text4" on "sle-minion"
-     And the pillar data for "testing:num" should be "101" on "sle-minion"
-     And the pillar data for "testing:num_def" should be "102" on "sle-minion"
-     And the pillar data for "testing:num_or_null" should be "103" on "sle-minion"
-     And the pillar data for "testing:num_opt" should be "104" on "sle-minion"
-     And the pillar data for "testing:pw" should be "min_pw1" on "sle-minion"
-     And the pillar data for "testing:pw_or_null" should be "min_pw2" on "sle-minion"
-     And the pillar data for "testing:pw_opt" should be "min_pw3" on "sle-minion"
+     And the pillar data for "testing:str" should be "min_text1" on "sle_minion"
+     And the pillar data for "testing:str_def" should be "min_text2" on "sle_minion"
+     And the pillar data for "testing:str_or_null" should be "min_text3" on "sle_minion"
+     And the pillar data for "testing:str_opt" should be "min_text4" on "sle_minion"
+     And the pillar data for "testing:num" should be "101" on "sle_minion"
+     And the pillar data for "testing:num_def" should be "102" on "sle_minion"
+     And the pillar data for "testing:num_or_null" should be "103" on "sle_minion"
+     And the pillar data for "testing:num_opt" should be "104" on "sle_minion"
+     And the pillar data for "testing:pw" should be "min_pw1" on "sle_minion"
+     And the pillar data for "testing:pw_or_null" should be "min_pw2" on "sle_minion"
+     And the pillar data for "testing:pw_opt" should be "min_pw3" on "sle_minion"
 
 # https://github.com/SUSE/spacewalk/issues/4546
   Scenario: Clear values in minion formula and verify that the pillar is set to group values
-     Given I am on the Systems overview page of this "sle-minion"
+     Given I am on the Systems overview page of this "sle_minion"
      When I follow "Formulas" in the content area
      And I follow first "Testform" in the content area
      And I click on "Clear values" and confirm
      And I click on "Save Formula"
      Then I should see a "Formula saved" text
-     Then the pillar data for "testing:str" should be "text1" on "sle-minion"
-     And the pillar data for "testing:str_def" should be "defvalue" on "sle-minion"
-     And the pillar data for "testing:str_or_null" should be "None" on "sle-minion"
-     And the pillar data for "testing" should not contain "str_opt" on "sle-minion"
-     And the pillar data for "testing:num" should be "1" on "sle-minion"
-     And the pillar data for "testing:num_def" should be "2" on "sle-minion"
-     And the pillar data for "testing:num_or_null" should be "None" on "sle-minion"
-     And the pillar data for "testing" should not contain "num_opt" on "sle-minion"
-     And the pillar data for "testing:pw" should be "pw1" on "sle-minion"
-     And the pillar data for "testing:pw_or_null" should be "None" on "sle-minion"
-     And the pillar data for "testing" should not contain "pw_opt" on "sle-minion"
+     Then the pillar data for "testing:str" should be "text1" on "sle_minion"
+     And the pillar data for "testing:str_def" should be "defvalue" on "sle_minion"
+     And the pillar data for "testing:str_or_null" should be "None" on "sle_minion"
+     And the pillar data for "testing" should not contain "str_opt" on "sle_minion"
+     And the pillar data for "testing:num" should be "1" on "sle_minion"
+     And the pillar data for "testing:num_def" should be "2" on "sle_minion"
+     And the pillar data for "testing:num_or_null" should be "None" on "sle_minion"
+     And the pillar data for "testing" should not contain "num_opt" on "sle_minion"
+     And the pillar data for "testing:pw" should be "pw1" on "sle_minion"
+     And the pillar data for "testing:pw_or_null" should be "None" on "sle_minion"
+     And the pillar data for "testing" should not contain "pw_opt" on "sle_minion"
 
 #TODO test for adding/removing items in edit-group
 
@@ -228,7 +228,7 @@ Feature: Use advanced features of Salt formulas
      Then I should see a "Formula saved" text
 #    The refresh is necessary, bsc#1028285 does not cover this.
      When I refresh the pillar data
-     Then the pillar data for "testing" should be empty on "sle-minion"
+     Then the pillar data for "testing" should be empty on "sle_minion"
 
   Scenario: Cleanup: remove "test-formula-group" system group
      Given I am on the groups page
@@ -240,4 +240,4 @@ Feature: Use advanced features of Salt formulas
      And I should see a "deleted" text
 #    The refresh is necessary, bsc#1028285 does not cover this.
      When I refresh the pillar data
-     Then the pillar data for "testing" should be empty on "sle-minion"
+     Then the pillar data for "testing" should be empty on "sle_minion"

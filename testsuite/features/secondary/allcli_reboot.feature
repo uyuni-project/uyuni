@@ -11,15 +11,15 @@ Feature: Reboot systems managed by SUSE Manager
 
 @ssh_minion
   Scenario: Reboot the SSH-managed SLES minion
-    Given I am on the Systems overview page of this "ssh-minion"
+    Given I am on the Systems overview page of this "ssh_minion"
     When I follow first "Schedule System Reboot"
     Then I should see a "System Reboot Confirmation" text
     And I should see a "Reboot system" button
     When I click on "Reboot system"
-    Then I wait and check that "ssh-minion" has rebooted
+    Then I wait and check that "ssh_minion" has rebooted
 
   Scenario: Schedule a reboot on a SLES Salt minion
-    Given I am on the Systems overview page of this "sle-minion"
+    Given I am on the Systems overview page of this "sle_minion"
     When I follow first "Schedule System Reboot"
     Then I should see a "System Reboot Confirmation" text
     And I should see a "Reboot system" button
@@ -29,17 +29,17 @@ Feature: Reboot systems managed by SUSE Manager
     And I should see a "Reboot completed." text
 
   Scenario: Reboot a SLES tradional client
-    Given I am on the Systems overview page of this "sle-client"
+    Given I am on the Systems overview page of this "sle_client"
     When I follow first "Schedule System Reboot"
     Then I should see a "System Reboot Confirmation" text
     And I should see a "Reboot system" button
     When I click on "Reboot system"
-    And I run "rhn_check -vvv" on "sle-client"
-    Then I wait and check that "sle-client" has rebooted
+    And I run "rhn_check -vvv" on "sle_client"
+    Then I wait and check that "sle_client" has rebooted
 
 @centos_minion
   Scenario: Reboot the CentOS minion and wait until reboot is completed
-    Given I am on the Systems overview page of this "ceos-minion"
+    Given I am on the Systems overview page of this "ceos_minion"
     When I follow first "Schedule System Reboot"
     Then I should see a "System Reboot Confirmation" text
     And I should see a "Reboot system" button
@@ -50,7 +50,7 @@ Feature: Reboot systems managed by SUSE Manager
 
 @ubuntu_minion
   Scenario: Reboot the Ubuntu minion and wait until reboot is completed
-    Given I am on the Systems overview page of this "ubuntu-minion"
+    Given I am on the Systems overview page of this "ubuntu_minion"
     When I follow first "Schedule System Reboot"
     Then I should see a "System Reboot Confirmation" text
     And I should see a "Reboot system" button

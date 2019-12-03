@@ -5,11 +5,11 @@ Feature: Patches display
 
   Scenario: Pre-require: enable old packages to fake a possible installation
     Given I am authorized as "admin" with password "admin"
-    When I enable repository "test_repo_rpm_pool" on this "sle-client"
-    And I run "zypper -n ref" on "sle-client"
-    And I run "zypper -n in --oldpackage andromeda-dummy-1.0" on "sle-client"
-    And I run "zypper -n in --oldpackage virgo-dummy-1.0" on "sle-client"
-    And I run "rhn_check -vvv" on "sle-client"
+    When I enable repository "test_repo_rpm_pool" on this "sle_client"
+    And I run "zypper -n ref" on "sle_client"
+    And I run "zypper -n in --oldpackage andromeda-dummy-1.0" on "sle_client"
+    And I run "zypper -n in --oldpackage virgo-dummy-1.0" on "sle_client"
+    And I run "rhn_check -vvv" on "sle_client"
     When I follow the left menu "Admin > Task Schedules"
     And I follow "errata-cache-default"
     And I follow "errata-cache-bunch"
@@ -38,11 +38,11 @@ Feature: Patches display
     And I follow "Packages"
     Then I should see a "Test-Channel-x86_64" link
     And I should see a "Test-Channel-i586" link
-    And I should see a "sha256:11d493dcec20274eb2f312d0b552eaaf3155ee81dd13fe7945cbd7aa44f70761" text
+    And I should see a "sha256:ba3f6d939fce43b60f4d20a09887e211f11024b61defb246dd62705bf4f4ced0" text
     And I should see a "andromeda-dummy-2.0-1.1-noarch" link
 
   Scenario: Check relevant patches for this client
-    Given I am on the Systems overview page of this "sle-client"
+    Given I am on the Systems overview page of this "sle_client"
     When I follow "Software" in the content area
     And I follow "Patches" in the content area
     Then I should see a "Relevant Patches" text
@@ -52,8 +52,8 @@ Feature: Patches display
     When I clean the search index on the server
 
   Scenario: Cleanup: remove old packages
-    When I disable repository "test_repo_rpm_pool" on this "sle-client" without error control
-    And I run "zypper -n ref" on "sle-client" without error control
-    And I run "zypper -n rm --oldpackage andromeda-dummy-1.0" on "sle-client" without error control
-    And I run "zypper -n rm --oldpackage virgo-dummy-1.0" on "sle-client" without error control
-    And I run "rhn_check -vvv" on "sle-client" without error control
+    When I disable repository "test_repo_rpm_pool" on this "sle_client" without error control
+    And I run "zypper -n ref" on "sle_client" without error control
+    And I run "zypper -n rm --oldpackage andromeda-dummy-1.0" on "sle_client" without error control
+    And I run "zypper -n rm --oldpackage virgo-dummy-1.0" on "sle_client" without error control
+    And I run "rhn_check -vvv" on "sle_client" without error control

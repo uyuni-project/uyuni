@@ -638,6 +638,16 @@ do_migration() {
     copy_remote_files
     wait_step
 
+    ssh -i $KEYFILE root@$SATELLITE_IP "systemctl is-enabled osa-dispatcher > /dev/null 2>&1"
+    if [ $? -eq 0 ]; then
+        echo "Enable osa-dispatcher..."
+        systemctl --quiet enable osa-dispatcher
+    else
+        echo "Disable osa-dispatcher..."
+        systemctl --quiet disable osa-dispatcher
+        systemctl --quiet disable jabberd
+    fi
+
     cleanup_hostname
     remove_ssh_key
     if [ -d /root/.ssh.new ]; then
@@ -827,6 +837,11 @@ if [ "$DO_SETUP" = "1" -o "$DO_MIGRATION" = "1" ]; then
         /usr/bin/smdba system-check autotuning
         if [ "$DO_SETUP" = "1" ]; then
             /usr/sbin/spacewalk-service stop
+
+            # explicitly enable OSA dispatcher as it's no longer part of spacewalk.target
+            echo "Enable osa-dispatcher..."
+            systemctl --quiet enable osa-dispatcher
+
             systemctl restart postgresql
             /usr/sbin/spacewalk-service start
             systemctl --quiet enable spacewalk-diskcheck.timer

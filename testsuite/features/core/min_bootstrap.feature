@@ -5,7 +5,7 @@ Feature: Be able to bootstrap a Salt minion via the GUI
 
   Scenario: Create the bootstrap repository for a Salt client
      Given I am authorized
-     And I create the "x86_64" bootstrap repository for "sle-minion" on the server
+     And I create the "x86_64" bootstrap repository for "sle_minion" on the server
      And I wait for "15" seconds
 
   Scenario: Bootstrap a SLES minion with wrong hostname
@@ -24,7 +24,7 @@ Feature: Be able to bootstrap a Salt minion via the GUI
      Given I am authorized
      And I go to the bootstrapping page
      Then I should see a "Bootstrap Minions" text
-     When I enter the hostname of "sle-minion" as "hostname"
+     When I enter the hostname of "sle_minion" as "hostname"
      And I enter "22" as "port"
      And I enter "FRANZ" as "user"
      And I enter "KAFKA" as "password"
@@ -36,7 +36,7 @@ Feature: Be able to bootstrap a Salt minion via the GUI
      Given I am authorized
      And I go to the bootstrapping page
      Then I should see a "Bootstrap Minions" text
-     When I enter the hostname of "sle-minion" as "hostname"
+     When I enter the hostname of "sle_minion" as "hostname"
      And I enter "11" as "port"
      And I enter "root" as "user"
      And I enter "linux" as "password"
@@ -49,7 +49,7 @@ Feature: Be able to bootstrap a Salt minion via the GUI
      Given I am authorized
      When I go to the bootstrapping page
      Then I should see a "Bootstrap Minions" text
-     When I enter the hostname of "sle-minion" as "hostname"
+     When I enter the hostname of "sle_minion" as "hostname"
      And I enter "22" as "port"
      And I enter "root" as "user"
      And I enter "linux" as "password"
@@ -61,14 +61,14 @@ Feature: Be able to bootstrap a Salt minion via the GUI
      Given I am authorized
      And I go to the minion onboarding page
      Then I should see a "accepted" text
-     And the Salt master can reach "sle-minion"
+     And the Salt master can reach "sle_minion"
      When I navigate to "rhn/systems/Overview.do" page
-     And I wait until I see the name of "sle-minion", refreshing the page
-     And I wait until onboarding is completed for "sle-minion"
+     And I wait until I see the name of "sle_minion", refreshing the page
+     And I wait until onboarding is completed for "sle_minion"
 
 @proxy
   Scenario: Check connection from minion to proxy
-    Given I am on the Systems overview page of this "sle-minion"
+    Given I am on the Systems overview page of this "sle_minion"
     When I follow "Details" in the content area
     And I follow "Connection" in the content area
     Then I should see "proxy" hostname
@@ -78,10 +78,10 @@ Feature: Be able to bootstrap a Salt minion via the GUI
     Given I am on the Systems overview page of this "proxy"
     When I follow "Details" in the content area
     And I follow "Proxy" in the content area
-    Then I should see "sle-minion" hostname
+    Then I should see "sle_minion" hostname
 
   Scenario: Subscribe the SLES minion to a base channel
-    Given I am on the Systems overview page of this "sle-minion"
+    Given I am on the Systems overview page of this "sle_minion"
     When I follow "Software" in the content area
     And I follow "Software Channels" in the content area
     And I wait until I do not see "Loading..." text
@@ -95,10 +95,10 @@ Feature: Be able to bootstrap a Salt minion via the GUI
 
   # bsc#1085436 - Apache returns 403 Forbidden after a zypper refresh on minion
   Scenario: Check the new channel is working
-    When I refresh the metadata for "sle-minion"
+    When I refresh the metadata for "sle_minion"
 
   Scenario: Detect latest Salt changes on the SLES minion
-    When I query latest Salt changes on "sle-minion"
+    When I query latest Salt changes on "sle_minion"
 
   Scenario: Run a remote command on normal SLES minion
     Given I am authorized as "testing" with password "testing"
@@ -106,22 +106,22 @@ Feature: Be able to bootstrap a Salt minion via the GUI
     Then I should see a "Remote Commands" text in the content area
     When I enter command "file /tmp"
     And I click on preview
-    Then I should see "sle-minion" hostname
+    Then I should see "sle_minion" hostname
     And I wait until I do not see "pending" text
     When I click on run
     And I wait until I do not see "pending" text
-    And I expand the results for "sle-minion"
-    Then I should see "/tmp: sticky, directory" in the command output for "sle-minion"
+    And I expand the results for "sle_minion"
+    Then I should see "/tmp: sticky, directory" in the command output for "sle_minion"
 
   Scenario: Check spacecmd system ID of bootstrapped minion
-    Given I am on the Systems overview page of this "sle-minion"
-    Then I run spacecmd listevents for "sle-minion"
+    Given I am on the Systems overview page of this "sle_minion"
+    Then I run spacecmd listevents for "sle_minion"
 
   Scenario: Bootstrap should fail when minion already exists
      Given I am authorized
      And I go to the bootstrapping page
      Then I should see a "Bootstrap Minions" text
-     When I enter the hostname of "sle-minion" as "hostname"
+     When I enter the hostname of "sle_minion" as "hostname"
      And I enter "22" as "port"
      And I enter "root" as "user"
      And I enter "linux" as "password"
@@ -131,7 +131,7 @@ Feature: Be able to bootstrap a Salt minion via the GUI
      And I should see a "seems to already exist, please check!" text
 
   Scenario: Turn the SLES minion into a container build host
-    Given I am on the Systems overview page of this "sle-minion"
+    Given I am on the Systems overview page of this "sle_minion"
     When I follow "Details" in the content area
     And I follow "Properties" in the content area
     And I check "container_build_host"
@@ -142,7 +142,7 @@ Feature: Be able to bootstrap a Salt minion via the GUI
     And I should see a "System properties changed" text
 
   Scenario: Turn the SLES minion into a OS image build host
-    Given I am on the Systems overview page of this "sle-minion"
+    Given I am on the Systems overview page of this "sle_minion"
     When I follow "Details" in the content area
     And I follow "Properties" in the content area
     And I check "osimage_build_host"
@@ -153,19 +153,19 @@ Feature: Be able to bootstrap a Salt minion via the GUI
     And I should see a "System properties changed" text
 
   Scenario: Apply the highstate to build host
-    Given I am on the Systems overview page of this "sle-minion"
-    When I wait until no Salt job is running on "sle-minion"
+    Given I am on the Systems overview page of this "sle_minion"
+    When I wait until no Salt job is running on "sle_minion"
     And I enable repositories before installing Docker
-    And I apply highstate on "sle-minion"
-    And I wait until "docker" service is active on "sle-minion"
-    And I wait until file "/var/lib/Kiwi/repo/rhn-org-trusted-ssl-cert-osimage-1.0-1.noarch.rpm" exists on "sle-minion"
+    And I apply highstate on "sle_minion"
+    And I wait until "docker" service is active on "sle_minion"
+    And I wait until file "/var/lib/Kiwi/repo/rhn-org-trusted-ssl-cert-osimage-1.0-1.noarch.rpm" exists on "sle_minion"
     And I disable repositories after installing Docker
 
   Scenario: Check that the minion is now a build host
-    Given I am on the Systems overview page of this "sle-minion"
+    Given I am on the Systems overview page of this "sle_minion"
     Then I should see a "[Container Build Host]" text
     Then I should see a "[OS Image Build Host]" text
 
   Scenario: Check events history for failures on SLES minion
-    Given I am on the Systems overview page of this "sle-minion"
+    Given I am on the Systems overview page of this "sle_minion"
     Then I check for failed events on history event page

@@ -18,22 +18,22 @@
 - features/core/srv_osimage_profiles.feature
 - features/core/srv_docker_profiles.feature
 # initialize SUSE Manager proxy
-  # one of: core/proxy_register_as_trad_with_script.feature
-  #         core/proxy_register_as_minion_with_script.feature
-  #         core/proxy_register_as_minion_with_gui.feature
+  # one of: proxy_register_as_trad_with_script.feature
+  #         proxy_register_as_minion_with_script.feature
+  #         proxy_register_as_minion_with_gui.feature
 - features/core/proxy_register_as_minion_with_gui.feature
 - features/core/proxy_branch_network.feature
 # initialize clients
-- features/core/trad_register_client.feature
-- features/core/min_bootstrap.feature
-- features/core/min_salt_ssh.feature
-- features/core/centos_salt_ssh.feature
-- features/core/ubuntu_salt_ssh.feature
+- features/init_clients/sle_client.feature
+- features/init_clients/sle_minion.feature
+- features/init_clients/sle_ssh_minion.feature
+- features/init_clients/centos_minion.feature
+- features/init_clients/ubuntu_ssh_minion.feature
 # these features sync real channels (last core features)
-- features/core/srv_sync_channels.feature
-- features/core/srv_products_page.feature
-- features/core/srv_mgr_sync_products.feature
-- features/core/srv_abort_all_sync.feature
+- features/reposync/srv_sync_channels.feature
+- features/reposync/srv_sync_products.feature
+- features/reposync/srv_enable_sync_products.feature
+- features/reposync/srv_abort_all_sync.feature
 
 ## Core features END ###
 
@@ -61,7 +61,6 @@
 - features/secondary/trad_ssh_push.feature
 - features/secondary/srv_organization_credentials.feature
 - features/secondary/srv_change_password.feature
-- features/secondary/srv_check_sync_source_packages.feature
 - features/secondary/min_salt_software_states.feature
 - features/secondary/min_docker_xmlrpc.feature
 - features/secondary/min_docker_build_image.feature
@@ -85,7 +84,6 @@
 - features/secondary/min_action_chain.feature
 - features/secondary/minssh_action_chain.feature
 - features/secondary/min_salt_formulas.feature
-- features/secondary/min_salt_formulas_advanced.feature
 - features/secondary/min_docker_auth_registry.feature
 - features/secondary/srv_docker_advanced_content_management.feature
 - features/secondary/srv_docker_cve_audit.feature
@@ -119,13 +117,10 @@
 - features/secondary/min_salt_pkgset_beacon.feature
 - features/secondary/srv_patches_page.feature
 - features/secondary/srv_spacewalk_channel.feature
-- features/secondary/srv_content_lifecycle.feature
 - features/secondary/allcli_software_channels.feature
 - features/secondary/allcli_software_channels_dependencies.feature
 - features/secondary/srv_change_task_schedule.feature
 - features/secondary/srv_notifications.feature
-- features/secondary/minkvm_guests.feature
-- features/secondary/minxen_guests.feature
 - features/secondary/min_empty_system_profiles.feature
 - features/secondary/min_custom_pkg_download_endpoint.feature
 - features/secondary/srv_monitoring.feature

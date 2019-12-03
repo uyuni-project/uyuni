@@ -164,12 +164,14 @@ class GuestsConsole extends React.Component<Props, State> {
           </div>
           <ul className="nav navbar-nav navbar-utility">
             <li>
-              <Button
-                title={t("Toggle full size")}
-                icon={this.state.expanded ? 'fa-compress' : 'fa-expand'}
-                handler={this.toggleScale}
-                disabled={!this.state.connected || !canResize}
-              />
+              {this.props.graphicsType === 'vnc' && (
+                <Button
+                  title={t("Toggle full size")}
+                  icon={this.state.expanded ? 'fa-compress' : 'fa-expand'}
+                  handler={this.toggleScale}
+                  disabled={!this.state.connected || !canResize}
+                />
+              )}
             </li>
           </ul>
         </header>

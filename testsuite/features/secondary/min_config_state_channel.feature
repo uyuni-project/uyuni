@@ -21,7 +21,7 @@ Feature: Configuration state channels
     And I should see a "Configuration Actions" text
 
   Scenario: Subscribe a minion to the state channel
-    When I am on the Systems overview page of this "sle-minion"
+    When I am on the Systems overview page of this "sle_minion"
     And I follow "Configuration" in the content area
     And I follow "Manage Configuration Channels" in the content area
     And I follow first "Subscribe to Channels" in the content area
@@ -41,14 +41,14 @@ Feature: Configuration state channels
     And I should see a "touch /root/foobar:" text
 
   Scenario: Apply the new state
-    When I am on the Systems overview page of this "sle-minion"
+    When I am on the Systems overview page of this "sle_minion"
     And I follow "States" in the content area
     And I follow "Configuration Channels" in the content area
     Then I should see a "Apply" button
     When I click on "Apply"
     Then I should see a "Applying the config channels has been scheduled" text
     When I wait until event "Apply states [custom] scheduled by admin" is completed
-    And I wait until file "/root/foobar" exists on "sle-minion"
+    And I wait until file "/root/foobar" exists on "sle_minion"
 
   Scenario: Try to remove init.sls file
     Given I am authorized as "admin" with password "admin"
@@ -68,4 +68,4 @@ Feature: Configuration state channels
     Then I should see a "Are you sure you want to delete this config channel?" text
     When I click on "Delete Config Channel"
     Then I should see a "Channel 'My State Channel' has been deleted." text
-    And I remove "/root/foobar" from "sle-minion"
+    And I remove "/root/foobar" from "sle_minion"

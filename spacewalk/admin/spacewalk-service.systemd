@@ -68,6 +68,11 @@ start() {
         touch $DISABLE_FILE
     fi
     systemctl start spacewalk.target
+    if systemctl is-enabled osa-dispatcher > /dev/null 2>&1; then
+        systemctl start jabberd
+        /usr/sbin/spacewalk-startup-helper wait-for-jabberd
+        systemctl start osa-dispatcher
+    fi
     rm -f $DISABLE_FILE
     echo "Done."
     return 0
@@ -75,6 +80,9 @@ start() {
 
 stop() {
     echo "Shutting down spacewalk services..."
+    if systemctl is-active osa-dispatcher > /dev/null 2>&1; then
+        systemctl stop jabberd
+    fi
     spacewalk_target_services | xargs systemctl stop
     echo "Done."
     return 0
@@ -83,6 +91,8 @@ stop() {
 status() {
     spacewalk_target_services | xargs systemctl status --no-pager -n0
     systemctl status -n0 spacewalk.target
+    systemctl status -n0 jabberd.service
+    systemctl status -n0 osa-dispatcher.service
     return $?
 }
 

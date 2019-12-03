@@ -57,7 +57,7 @@ class GuestsCreate extends React.Component<Props, State> {
     disk0_type: 'file',
     disk0_device: 'disk',
     network0_type: 'network',
-    graphicsType: 'spice',
+    graphicsType: 'vnc',
   })
 
   render() {
