@@ -324,16 +324,16 @@ public class ContentSyncManager {
      */
     private static List<SCCProductJson> getAdditionalProducts() {
         Gson gson = new GsonBuilder().create();
-        List<SCCProductJson> oes = new ArrayList<>();
+        List<SCCProductJson> additionalProducts = new ArrayList<>();
         try {
-            oes = gson.fromJson(new BufferedReader(new InputStreamReader(
+            additionalProducts = gson.fromJson(new BufferedReader(new InputStreamReader(
                             new FileInputStream(additionalProductsJson))),
                     SCCClientUtils.toListType(SCCProductJson.class));
         }
         catch (IOException e) {
             log.error(e);
         }
-        return fixAdditionalProducts(oes);
+        return fixAdditionalProducts(additionalProducts);
     }
 
     /**
