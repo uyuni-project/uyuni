@@ -391,14 +391,8 @@ if [ "$HTTP_PROXY" != "" ]; then
     fi
 fi
 
-VERSION_FROM_PARENT=$(rhn-proxy-activate --server=$RHN_PARENT \
-        --http-proxy="$HTTP_PROXY" \
-        --http-proxy-username="$HTTP_USERNAME" \
-        --http-proxy-password="$HTTP_PASSWORD" \
-        --ca-cert="$CA_CHAIN" \
-        --list-available-versions 2>/dev/null|sort|tail -n1)
-VERSION_FROM_RPM=$(rpm -q --queryformat %{version} spacewalk-proxy-installer|cut -d. -f1-2)
-default_or_input "Proxy version to activate" VERSION ${VERSION_FROM_PARENT:-$VERSION_FROM_RPM}
+VERSION=$(rpm -q --queryformat %{version} spacewalk-proxy-installer|cut -d. -f1-2)
+ACCUMULATED_ANSWERS+=$(printf "\n%q=%q" "VERSION" "$VERSION")
 
 default_or_input "Traceback email" TRACEBACK_EMAIL ''
 
