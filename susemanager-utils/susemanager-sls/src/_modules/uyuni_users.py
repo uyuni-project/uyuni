@@ -479,6 +479,53 @@ class UyuniChannels(UyuniRemoteObject):
         self.client("channel.access.disableUserRestrictions", self.client.get_token(), label)
 
 
+class UyuniSystemgroup(UyuniRemoteObject):
+    """
+    Provides methods to access and modify system groups.
+    """
+    def get(self, name: str) -> Dict[str, Union[int, str]]:
+        """
+        Retrieve details of a ServerGroup.
+
+        :param name: Name of the system group.
+
+        :return: data of the system group.
+        """
+        return self.client("systemgroup.getDetails", self.client.get_token(), name)
+
+    def create(self, name: str, description: str) -> Dict[str, Union[int, str]]:
+        """
+        Create a new system group.
+
+        :param name: Name of the system group.
+        :param description: Description of the system group.
+
+        :return:
+        """
+        return self.client("systemgroup.create", self.client.get_token(), name, description)
+
+    def delete(self, name: str) -> None:
+        """
+        Delete a system group.
+
+        :param name: Name of the system group.
+
+        :return:
+        """
+        self.client("systemgroup.delete", self.client.get_token(), name)
+
+    def update(self, name: str, description: str) -> Dict[str, Union[int, str]]:
+        """
+        Update an existing system group.
+
+        :param name: Name of the system group.
+        :param description: Description of the system group.
+
+        :return:
+        """
+        return self.client("systemgroup.update", self.client.get_token(), name, description)
+
+
 def __virtual__():
     """
     Provide Uyuni Users state module.
@@ -579,3 +626,38 @@ def unrestrict_channel(name):
     :return: None
     """
     return UyuniChannels().unrestrict(label=name)
+
+
+def create_sysgroup(name, descr):
+    """
+    Create system group.
+
+    :param name: Name of the system group.
+    :param descr: Description of the system group.
+
+    :return: server group structure.
+    """
+    return UyuniSystemgroup().create(name=name, description=descr)
+
+
+def update_sysgroup(name, descr):
+    """
+    Update system group.
+
+    :param name: Name of the system group.
+    :param descr: Description of the system group.
+
+    :return: server group structure.
+    """
+    return UyuniSystemgroup().update(name=name, description=descr)
+
+
+def delete_sysgroup(name):
+    """
+    Delete system group.
+
+    :param name: Name of the system group.
+
+    :return: None
+    """
+    return UyuniSystemgroup().delete(name=name)
