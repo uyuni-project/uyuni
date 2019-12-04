@@ -516,7 +516,7 @@ public class StatesAPI {
         boolean isTest = json.isTest();
 
         Map<String, String> params = new HashMap<>();
-        params.put("user", user.toString());
+        params.put("user_id", user.getId().toString());
         params.put("minionIds", ids.toString());
         params.put("type", type);
         params.putAll(cronTimes);

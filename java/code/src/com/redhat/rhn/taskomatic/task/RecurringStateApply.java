@@ -16,15 +16,16 @@ package com.redhat.rhn.taskomatic.task;
 
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.domain.user.UserFactory;
 import com.redhat.rhn.manager.action.ActionChainManager;
 import com.redhat.rhn.manager.system.SystemManager;
-import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
 import org.apache.http.HttpStatus;
 import org.quartz.JobDataMap;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -33,8 +34,7 @@ import java.util.stream.Collectors;
 import spark.Spark;
 
 /**
- * Used for syncing repos (like yum repos) to a channel.
- * This really just calls a python script.
+ * Used to run a scheduled Recurring Highstate Apply action
  */
 public class RecurringStateApply extends RhnJavaJob {
 
@@ -42,25 +42,33 @@ public class RecurringStateApply extends RhnJavaJob {
      * {@inheritDoc}
      */
     public void execute(JobExecutionContext context) throws JobExecutionException {
+        /* TODO: Adapt to execute general states not just highstates*/
 
         JobDataMap data = context.getJobDetail().getJobDataMap();
 
-        User user = (User) data.get("user");
-        List<Long> minionIds = (List<Long>) data.get("minionIds");
-        List<Long> sids =
-                MinionServerFactory.lookupByIds(minionIds).map(server -> {
-                    if (!SystemManager.isAvailableToUser(user, server.getId())) {
-                        Spark.halt(HttpStatus.SC_FORBIDDEN);
-                    }
-                    return server.getId();
-                }).collect(Collectors.toList());
-        boolean test = Boolean.parseBoolean((String) data.get("isTest"));
-        Date timeNow = context.getFireTime();
-
         try {
+            User user = Optional.ofNullable(data.get("user_id"))
+                    .map(id -> Long.parseLong(id.toString()))
+                    .map(userId -> UserFactory.lookupById(userId))
+                    .orElse(null);
+
+            List<Long> minionIds = Arrays.stream(data.get("minionIds").toString()
+                    .replaceAll("([\\[\\] ])", "")
+                    .split(",")).map(Long::parseLong).collect(Collectors.toList());
+
+            List<Long> sids = MinionServerFactory.lookupByIds(minionIds).map(server -> {
+                        if (!SystemManager.isAvailableToUser(user, server.getId())) {
+                            Spark.halt(HttpStatus.SC_FORBIDDEN);
+                        }
+                        return server.getId();
+                    }).collect(Collectors.toList());
+            boolean test = Boolean.parseBoolean((String) data.get("isTest"));
+            Date timeNow = context.getFireTime();
+
             ActionChainManager.scheduleApplyStates(user, sids, Optional.of(test), timeNow, null);
-        } catch(TaskomaticApiException e) {
-            throw new JobExecutionException("Invalid argument");
+
+        } catch(Exception e) {
+            throw new JobExecutionException(e.getMessage());
         }
     }
 }
