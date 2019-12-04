@@ -16,7 +16,7 @@ import Audit from "./audit";
 import ContentManagement from "./content-management";
 import Errors from "./errors";
 import Groups from "./groups";
-import Highstate from "./highstate";
+import Highstate from "./state";
 import Images from "./images";
 import Login from "./login";
 import Minion from "./minion";

@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.taskomatic;
 
+import static java.util.Collections.singletonList;
+
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.security.PermissionException;
@@ -38,21 +40,13 @@ import org.apache.log4j.Logger;
 
 import java.net.MalformedURLException;
 import java.time.ZonedDateTime;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import redstone.xmlrpc.XmlRpcClient;
 import redstone.xmlrpc.XmlRpcException;
 import redstone.xmlrpc.XmlRpcFault;
-
-import static java.util.Collections.singletonList;
 
 /**
  * TaskomaticApi
@@ -260,6 +254,29 @@ public class TaskomaticApi {
      * @param jobLabel name of the schedule
      * @param bunchName bunch name
      * @param cron cron expression
+     * @param params parameters
+     * @return date of the first schedule
+     * @throws TaskomaticApiException if there was an error
+     */
+    public Date scheduleSatBunch(User user, String jobLabel, String bunchName, String cron, Map<String, String> params)
+            throws TaskomaticApiException {
+        ensureSatAdminRole(user);
+        Map task = findSatScheduleByBunchAndLabel(bunchName, jobLabel, user);
+        if (task != null) {
+            unscheduleSatTask(jobLabel, user);
+        }
+        if (params == null) {
+            params = new HashMap();
+        }
+        return (Date) invoke("tasko.scheduleSatBunch", bunchName, jobLabel , cron, params);
+    }
+
+    /**
+     * Creates a new schedule, unschedules, if en existing is defined
+     * @param user shall be sat admin
+     * @param jobLabel name of the schedule
+     * @param bunchName bunch name
+     * @param cron cron expression
      * @return date of the first schedule
      * @throws TaskomaticApiException if there was an error
      */
@@ -315,6 +332,17 @@ public class TaskomaticApi {
     public List findActiveSchedules(User user) throws TaskomaticApiException {
         List<Map> schedules = (List<Map>) invoke("tasko.listActiveSatSchedules");
         return schedules;
+    }
+
+    public List<TaskoSchedule> findActiveSchedulesByBunch(User user, String bunchName) {
+        try {
+            return TaskoFactory.listActiveSchedulesByOrgAndBunch(null,
+                    bunchName);
+        }
+        catch (NoSuchBunchTaskException e) {
+            // no such schedules available
+            return new ArrayList<>();
+        }
     }
 
     /**

@@ -18,9 +18,11 @@ import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withUser;
 import static spark.Spark.get;
 import static spark.Spark.post;
+import static spark.Spark.delete;
 
 import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.security.PermissionException;
+import com.redhat.rhn.common.util.RecurringEventPicker;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionChain;
 import com.redhat.rhn.domain.action.ActionChainFactory;
@@ -30,17 +32,8 @@ import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.rhnpackage.PackageArch;
 import com.redhat.rhn.domain.rhnpackage.PackageEvr;
-import com.redhat.rhn.domain.server.MinionServer;
-import com.redhat.rhn.domain.server.MinionServerFactory;
-import com.redhat.rhn.domain.server.MinionSummary;
-import com.redhat.rhn.domain.server.ServerGroup;
-import com.redhat.rhn.domain.server.ServerGroupFactory;
-import com.redhat.rhn.domain.state.PackageState;
-import com.redhat.rhn.domain.state.PackageStates;
-import com.redhat.rhn.domain.state.ServerStateRevision;
-import com.redhat.rhn.domain.state.StateFactory;
-import com.redhat.rhn.domain.state.StateRevision;
-import com.redhat.rhn.domain.state.VersionConstraints;
+import com.redhat.rhn.domain.server.*;
+import com.redhat.rhn.domain.state.*;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.context.Context;
 import com.redhat.rhn.manager.action.ActionChainManager;
@@ -51,7 +44,11 @@ import com.redhat.rhn.manager.rhnpackage.PackageManager;
 import com.redhat.rhn.manager.system.ServerGroupManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
+import com.redhat.rhn.taskomatic.TaskomaticApiException;
+import com.redhat.rhn.taskomatic.domain.TaskoSchedule;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
 import com.suse.manager.reactor.utils.LocalDateTimeISOAdapter;
 import com.suse.manager.reactor.utils.OptionalTypeAdapterFactory;
@@ -62,27 +59,12 @@ import com.suse.manager.webui.services.SaltConstants;
 import com.suse.manager.webui.services.SaltStateGeneratorService;
 import com.suse.manager.webui.services.StateRevisionService;
 import com.suse.manager.webui.services.impl.SaltService;
-import com.suse.manager.webui.utils.SaltInclude;
-import com.suse.manager.webui.utils.SaltPkgInstalled;
-import com.suse.manager.webui.utils.SaltPkgLatest;
-import com.suse.manager.webui.utils.SaltPkgRemoved;
-import com.suse.manager.webui.utils.SaltStateGenerator;
-import com.suse.manager.webui.utils.YamlHelper;
-import com.suse.manager.webui.utils.gson.ConfigChannelJson;
-import com.suse.manager.webui.utils.gson.PackageStateJson;
-import com.suse.manager.webui.utils.gson.ServerApplyHighstateJson;
-import com.suse.manager.webui.utils.gson.ServerApplyStatesJson;
-import com.suse.manager.webui.utils.gson.ServerConfigChannelsJson;
-import com.suse.manager.webui.utils.gson.ServerPackageStatesJson;
-import com.suse.manager.webui.utils.gson.StateTargetType;
+import com.suse.manager.webui.utils.*;
+import com.suse.manager.webui.utils.gson.*;
 import com.suse.salt.netapi.calls.modules.State;
 import com.suse.salt.netapi.datatypes.target.MinionList;
 import com.suse.salt.netapi.exception.SaltException;
 import com.suse.salt.netapi.results.Result;
-
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpStatus;
 import org.apache.log4j.Logger;
@@ -94,14 +76,7 @@ import java.nio.file.Paths;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -145,6 +120,11 @@ public class StatesAPI {
         get("/manager/api/states/packages/match", StatesAPI::matchPackages);
         get("/manager/api/states/highstate", StatesAPI::showHighstate);
         get("/manager/api/states/:channelId/content", withUser(StatesAPI::stateContent));
+        get("/manager/api/states/schedules", withUser(StatesAPI::schedules));
+        get("/manager/api/states/schedules/:scheduleId", withUser(StatesAPI::singleSchedule));
+        post("/manager/api/states/schedules/save", withUser(StatesAPI::createSchedule));
+        post("/manager/api/states/schedules/:scheduleId/update", withUser(StatesAPI::updateSchedule));
+        delete("/manager/api/states/schedules/:scheduleId/delete", withUser(StatesAPI::deleteSchedule));
     }
 
     /**
@@ -175,6 +155,75 @@ public class StatesAPI {
         String content = ConfigChannelSaltManager.getInstance().getChannelStateContent(channel);
         response.type("text/plain");
         return content;
+    }
+
+    /**
+     * Processes a GET request to get a list of all Recurring Schedules
+     *
+     * @param request the request object
+     * @param response the response object
+     * @param user the authorized user
+     * @return the result JSON object
+     */
+    public static String schedules(Request request, Response response, User user) {
+        List<Map<String, String>> schedules = getRecurringStateApplySchedules(user);
+        return json(response,
+                ResultJson.success(schedules));
+    }
+
+    /**
+     * Processes a GET request to get a single Recurring Schedule
+     *
+     * @param request the request object
+     * @param response the response object
+     * @param user the authorized user
+     * @return the result schedule object
+     */
+    public static String singleSchedule(Request request, Response response, User user) {
+        String scheduleId = request.params("scheduleId");
+        Map<String, String> schedule = getSingleSchedule(scheduleId, user);
+        if (schedule == null) {
+            return json(response,
+                    ResultJson.error("Schedule not found"));
+        }
+        return json(response,
+                ResultJson.success(schedule));
+    }
+
+    /**
+     * Creates a list of objects from a list of {@link TaskoSchedule} instances
+     *
+     * @param user the authorized user
+     * @return the list of Recurring State Apply Schedules
+     */
+    private static List<Map<String, String>> getRecurringStateApplySchedules(User user) {
+        List<TaskoSchedule> taskoSchedules = new TaskomaticApi().findActiveSchedulesByBunch(user,
+                "recurring-state-apply-bunch");
+        return taskoSchedules.stream().map(taskoSchedule -> {
+            Map<String, String> schedule = (Map<String, String>) taskoSchedule.getDataMap();
+            schedule.put("scheduleId", taskoSchedule.getId().toString());
+            schedule.put("scheduleName", taskoSchedule.getJobLabel());
+            schedule.put("createdAt", taskoSchedule.getActiveFrom().toString());
+            schedule.put("frequency", taskoSchedule.getCronExpr());
+            return schedule;
+        }).collect(Collectors.toList());
+    }
+
+    /**
+     * Returns a single schedule with the given scheduleId
+     *
+     * @param scheduleId the id of the schedule
+     * @param user the authorized user
+     * @return the result schedule object
+     */
+    private static Map<String, String> getSingleSchedule(String scheduleId, User user) {
+        List<Map<String, String>> schedules = getRecurringStateApplySchedules(user);
+        for (Map<String, String> schedule : schedules) {
+            if (schedule.get("scheduleId").equals(scheduleId)) {
+                return schedule;
+            }
+        }
+        return null;
     }
 
     /**
@@ -388,6 +437,141 @@ public class StatesAPI {
             response.status(HttpStatus.SC_INTERNAL_SERVER_ERROR);
             return "{}";
         }
+    }
+
+    /**
+     * Creates a new Recurring State Schedule
+     *
+     * @param request the request
+     * @param response the response
+     * @param user the user
+     * @return string containing the json response
+     */
+    public static String createSchedule(Request request, Response response, User user) {
+        response.type("application/json");
+
+        List<String> errors = new LinkedList<>();
+
+        RecurringStateScheduleJson json = GSON.fromJson(request.body(),
+                RecurringStateScheduleJson.class);
+        try {
+            String scheduleName = json.getScheduleName();
+            if (scheduleName != null && new TaskomaticApi().satScheduleActive(scheduleName, user)) {
+                errors.add("Schedule Label already in use.");
+            } else {
+                errors.addAll(saveSchedule(json, user));
+            }
+        } catch(TaskomaticApiException e) {
+            errors.add(e.getMessage());
+        }
+
+        if (errors.isEmpty()) {
+            return json(response, ResultJson.success());
+        }
+        return json(response, ResultJson.error(errors));
+    }
+
+    /**
+     * Updates an existing Recurring State Schedule
+     *
+     * @param request the request
+     * @param response the response
+     * @param user the user
+     * @return string containing the json response
+     */
+    public static String updateSchedule(Request request, Response response, User user) {
+        response.type("application/json");
+
+        List<String> errors = new LinkedList<>();
+
+        String scheduleId = request.params("scheduleId");
+        if (getSingleSchedule(scheduleId, user) == null) {
+            errors.add("Schedule not found.");
+        } else {
+            RecurringStateScheduleJson json = GSON.fromJson(request.body(),
+                    RecurringStateScheduleJson.class);
+            errors.addAll(saveSchedule(json, user));
+        }
+
+        if (errors.isEmpty()) {
+            return json(response, ResultJson.success());
+        }
+        return json(response, ResultJson.error(errors));
+    }
+
+    /**
+     * Saves a Recurring State Schedule
+     *
+     * @param json the RecurringStateScheduleJson Object
+     * @return String List containing errors
+     */
+    private static List<String> saveSchedule(RecurringStateScheduleJson json, User user) {
+        List<String> errors = new LinkedList<>();
+
+        String scheduleName = json.getScheduleName();
+        List<Long> ids = json.getIds();
+        String type = json.getType();
+        Map<String, String> cronTimes = json.getCronTimes();
+        String cron = json.getCron();
+        boolean isTest = json.isTest();
+
+        Map<String, String> params = new HashMap<>();
+        params.put("user", user.toString());
+        params.put("minionIds", ids.toString());
+        params.put("type", type);
+        params.putAll(cronTimes);
+        params.put("isTest", isTest? "true" : "false");
+
+        if (StringUtils.isEmpty(scheduleName)) {
+            errors.add("Schedule Name must be specified.");
+        }
+
+        if (errors.isEmpty()) {
+            try {
+                if (cron.isEmpty()) {
+                    RecurringEventPicker picker = RecurringEventPicker.prepopulatePicker("date", type, cronTimes);
+                    cron = picker.getCronEntry();
+                }
+                TaskomaticApi tapi = new TaskomaticApi();
+                tapi.scheduleSatBunch(user, scheduleName, "recurring-state-apply-bunch", cron, params);
+            } catch (TaskomaticApiException e) {
+                if (e.getMessage().contains("InvalidParamException")) {
+                    if (e.getMessage().contains("Cron trigger")) {
+                        errors.add("Invalid Cron expression.");
+                    }
+                    else {
+                        errors.add("Schedule label already in use.");
+                    }
+                }
+                else {
+                    errors.add("Taskomatic is down.");
+                }
+            }
+        }
+        return errors;
+    }
+
+    /**
+     * Processes a DELETE request to delete a Recurring State Schedule
+     *
+     * @param request the request object
+     * @param response the response object
+     * @param user the authorized user
+     * @return the result JSON object
+     */
+    public static String deleteSchedule(Request request, Response response, User user) {
+        String scheduleId = request.params("scheduleId");
+        Map<String, String> schedule = getSingleSchedule(scheduleId, user);
+        if (schedule == null) {
+            return json(response, ResultJson.error("Schedule not found."));
+        }
+        String scheduleName = schedule.get("scheduleName");
+        try {
+            new TaskomaticApi().unscheduleSatTask(scheduleName, user);
+        } catch(TaskomaticApiException e) {
+            return json(response, ResultJson.error(e.getMessage()));
+        }
+        return json(response, ResultJson.success());
     }
 
     /**

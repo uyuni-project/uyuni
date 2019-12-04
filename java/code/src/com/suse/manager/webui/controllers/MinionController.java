@@ -21,20 +21,17 @@ import static com.suse.manager.webui.utils.SparkApplicationHelper.withUserPrefer
 import static spark.Spark.get;
 
 import com.redhat.rhn.domain.org.OrgFactory;
-import com.redhat.rhn.domain.server.MinionServer;
-import com.redhat.rhn.domain.server.MinionServerFactory;
-import com.redhat.rhn.domain.server.Server;
-import com.redhat.rhn.domain.server.ServerFactory;
-import com.redhat.rhn.domain.server.ServerGroup;
-import com.redhat.rhn.domain.server.ServerGroupFactory;
-import com.redhat.rhn.domain.server.ServerPath;
+import com.redhat.rhn.domain.server.*;
 import com.redhat.rhn.domain.token.ActivationKey;
 import com.redhat.rhn.domain.user.User;
-
 import com.redhat.rhn.frontend.struts.ActionChainHelper;
 import com.redhat.rhn.manager.ssm.SsmManager;
 import com.redhat.rhn.manager.token.ActivationKeyManager;
+
+import com.suse.manager.utils.MinionServerUtils;
 import com.suse.manager.webui.services.impl.SaltService;
+import com.suse.manager.webui.utils.gson.SimpleMinionJson;
+import com.suse.utils.Json;
 
 import java.util.Comparator;
 import java.util.HashMap;
@@ -42,9 +39,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import com.suse.manager.utils.MinionServerUtils;
-import com.suse.manager.webui.utils.gson.SimpleMinionJson;
-import com.suse.utils.Json;
 import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
@@ -95,22 +89,39 @@ public class MinionController {
         get("/manager/systems/details/highstate",
                 withCsrfToken(withUser(MinionController::highstate)),
                 jade);
+        get("/manager/systems/details/states/schedules",
+                withCsrfToken(withUser(MinionController::recurringStates)),
+                jade);
         get("/manager/multiorg/details/custom",
                 withCsrfToken(MinionController::orgCustomStates),
                 jade);
+        get("/manager/multiorg/details/recurring-states",
+                withCsrfToken(withUser(MinionController::orgRecurringStates)),
+                jade);
         get("/manager/yourorg/custom",
                 withCsrfToken(withUser(MinionController::yourOrgConfigChannels)),
+                jade);
+        get("/manager/yourorg/recurring-states",
+                withCsrfToken(withUser(MinionController::yourOrgRecurringStates)),
                 jade);
         get("/manager/groups/details/custom",
                 withCsrfToken(withUser(MinionController::serverGroupConfigChannels)),
                 jade);
         get("/manager/groups/details/highstate",
                 withCsrfToken(withUser(MinionController::serverGroupHighstate)), jade);
+        get("/manager/groups/details/states/schedules",
+                withCsrfToken(withUser(MinionController::serverGroupRecurringStates)),
+                jade);
+        get("/manager/schedule/recurring-actions",
+                withUserPreferences(withCsrfToken(withUser(MinionController::recurringActions))),
+                jade);
     }
 
     private static void initSSMRoutes(JadeTemplateEngine jade) {
         get("/manager/systems/ssm/highstate",
                 withCsrfToken(withUser(MinionController::ssmHighstate)), jade);
+        get("/manager/systems/ssm/states/schedules",
+                withCsrfToken(withUser(MinionController::ssmRecurringStates)), jade);
     }
 
     /**
@@ -278,6 +289,22 @@ public class MinionController {
         Server server = ServerFactory.lookupById(Long.valueOf(serverId));
         data.put("server", server);
         return new ModelAndView(data, "templates/minion/custom.jade");
+    }
+
+    /**
+     * Handler for the recurring-highstate page.
+     *
+     * @param request the request object
+     * @param response the response object
+     * @param user the current user
+     * @return the ModelAndView object to render the page
+     */
+    public static ModelAndView recurringStates(Request request, Response response, User user) {
+        String serverId = request.queryParams("sid");
+        Map<String, Object> data = new HashMap<>();
+        Server server = ServerFactory.lookupById(Long.valueOf(serverId));
+        data.put("server", server);
+        return new ModelAndView(data, "templates/minion/recurring-states.jade");
     }
 
     /**

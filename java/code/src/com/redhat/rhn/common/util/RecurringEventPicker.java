@@ -21,6 +21,7 @@ import org.apache.commons.lang3.StringUtils;
 import java.text.DateFormatSymbols;
 import java.util.Calendar;
 import java.util.Locale;
+import java.util.Map;
 import java.util.TimeZone;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -45,6 +46,7 @@ import javax.servlet.http.HttpServletRequest;
  * </pre>
  *
  * @version $Rev$
+ * #TODO
  */
 public class RecurringEventPicker {
 
@@ -148,9 +150,29 @@ public class RecurringEventPicker {
         return toReturn;
     }
 
+    /**
+     * Prepopulate the request with the picker
+     * @param cronTimes the Map containing the cron information
+     * @param name the name of the picker
+     * @param type the type of the cron entry
+     * @return The created picker
+     */
+    public static RecurringEventPicker prepopulatePicker(String name, String type, Map<String, String> cronTimes) {
 
+        RecurringEventPicker p = new RecurringEventPicker(name);
 
+        p.setCronEntry(buildCron(
+                cronTimes.get("minute"),
+                cronTimes.get("hour"),
+                cronTimes.get("dayOfMonth"),
+                cronTimes.get("dayOfWeek"),
+                type
+        ));
 
+        /* TODO: Get cronTimes from cronEntry */
+
+        return p;
+    }
 
     /**
      * Prepopulate the request with the picker
