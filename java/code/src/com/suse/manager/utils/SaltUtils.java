@@ -45,6 +45,7 @@ import com.redhat.rhn.domain.action.virtualization.BaseVirtualizationAction;
 import com.redhat.rhn.domain.channel.AccessToken;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.config.ConfigRevision;
+import com.redhat.rhn.domain.formula.FormulaFactory;
 import com.redhat.rhn.domain.image.ImageBuildHistory;
 import com.redhat.rhn.domain.image.ImageInfo;
 import com.redhat.rhn.domain.image.ImageInfoFactory;
@@ -68,6 +69,7 @@ import com.redhat.rhn.frontend.action.common.BadParameterException;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.audit.ScapManager;
 import com.redhat.rhn.manager.errata.ErrataManager;
+import com.redhat.rhn.manager.formula.FormulaManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
@@ -127,6 +129,7 @@ import org.apache.log4j.Logger;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
@@ -172,7 +175,7 @@ public class SaltUtils {
 
     public static final SaltUtils INSTANCE = new SaltUtils();
 
-    private static final String CAASP_PACKAGE_IDENTIFIER = "caasp";
+    private static final String CAASP_PRODUCT_IDENTIFIER = "caasp";
 
     private Path scriptsDir = Paths.get(SUMA_STATE_FILES_ROOT_PATH, SCRIPTS_DIR);
 
@@ -1223,45 +1226,23 @@ public class SaltUtils {
 
     private static void enableMinionBlackoutForSpecialNodes(MinionServer server) {
         if (server.getInstalledProducts().stream()
-                .anyMatch(p -> p.getName().equalsIgnoreCase(CAASP_PACKAGE_IDENTIFIER))) {
+                .anyMatch(p -> p.getName().equalsIgnoreCase(CAASP_PRODUCT_IDENTIFIER))) {
             // Minion blackout is only enabled for nodes that have installed the `caasp-*` package
-            SaltPillar pillar = new SaltPillar();
-            pillar.add("minion_blackout", true);
-            List<Object> whitelist = new ArrayList<>();
+            Map<String, Object> data = new HashMap<>();
+            data.put("minion_blackout", true);
             // List of Salt `module.function` that are allowed in blackout mode
-            whitelist.add("test.ping");
-            whitelist.add("grains.item");
-            whitelist.add("grains.items");
-            whitelist.add("mgractionchains.start");
-            whitelist.add("mgractionchains.start");
-            whitelist.add("mgractionchains.get_pending_resume");
-            whitelist.add("mgractionchains.resume");
-            // List of Salt `state.apply` states that are allowed in blackout mode
-            whitelist.add(
-                    Collections.singletonMap("state.apply",
-                            Collections.singletonMap("kwargs",
-                                    Collections.singletonMap("mods",
-                                            Arrays.asList(
-                                                    "hardware.profileupdate",
-                                                    "packages.profileupdate",
-                                                    "packages.redhatproductinfo",
-                                                    "util.synccustomall",
-                                                    "channels",
-                                                    "channels.*",
-                                                    "cleanup_minion",
-                                                    "cleanup_ssh_minion",
-                                                    "configuration.*",
-                                                    "custom",
-                                                    "custom_group",
-                                                    "custom_org",
-                                                    "scap",
-                                                    "certs",
-                                                    "util.*"
-                                            )))));
-            pillar.add("minion_blackout_whitelist", whitelist);
-
-            SaltStateGeneratorService.INSTANCE.generatePillar(server, pillar, "blackout");
-            SaltService.INSTANCE.refreshPillar(new MinionList(server.getMinionId()));
+            data.put("minion_blackout_whitelist", Arrays.asList(
+                    "test.ping",
+                    "grains.item",
+                    "grains.items"
+            ));
+            try {
+                FormulaManager.getInstance().enableFormula(server.getMinionId(), "salt-blackout");
+                FormulaFactory.saveServerFormulaData(data, server.getMinionId(), "salt-blackout");
+                SaltService.INSTANCE.refreshPillar(new MinionList(server.getMinionId()));
+            } catch (IOException e) {
+                LOG.error("Could not enable blackout formula", e);
+            }
         }
     }
 
