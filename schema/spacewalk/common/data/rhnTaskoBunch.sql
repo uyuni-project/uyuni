@@ -108,4 +108,7 @@ INSERT INTO rhnTaskoBunch (id, name, description, org_bunch)
 INSERT INTO rhnTaskoBunch (id, name, description, org_bunch)
    VALUES (sequence_nextval('rhn_tasko_bunch_id_seq'), 'minion-checkin-bunch', 'Perform a regular check-in on minions', null);
 
+INSERT INTO RhnTaskoBunch (id, name, description, org_bunch)
+   VALUES (sequence_nextval('rhn_tasko_bunch_id_seq'), 'recurring-state-apply-bunch', 'Applies salt state to minion/group/org', null);
+
 commit;
