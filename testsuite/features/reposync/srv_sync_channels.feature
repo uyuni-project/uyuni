@@ -27,12 +27,12 @@ Feature: Be able to list available channels and enable them
     When I execute mgr-sync "list products --expand"
     Then I should get "[ ] SUSE Linux Enterprise Server 12 x86_64"
     And I should get "[ ] SUSE Manager Proxy 2.1 x86_64"
-    And I should get "  [ ] SUSE Cloud 4 x86_64"
-    And I should get "  [ ] SUSE Linux Enterprise High Availability Extension 12 x86_64"
+    And I should get "  [ ] (R) SUSE Linux Enterprise Client Tools RES 7 x86_64"
+    And I should get "  [ ] (R) SUSE Manager Tools 15 x86_64"
 
   Scenario: List products with filter
     When I execute mgr-sync "list products --expand --filter x86_64"
-    Then I should get "[ ] SUSE Linux Enterprise Server for SAP All-in-One 11 SP4 x86_64"
+    Then I should get "[ ] SUSE Manager Retail Branch Server 4.0 x86_64"
     And I shouldn't get "ppc64"
     And I shouldn't get "s390x"
 
