@@ -1,3 +1,4 @@
+- close config files after reading them (bsc#1158283)
 - Associate VMs and systems with the same machine ID at bootstrap (bsc#1144176)
 
 -------------------------------------------------------------------
