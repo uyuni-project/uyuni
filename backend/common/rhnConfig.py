@@ -455,7 +455,8 @@ def read_file(filename):
     reads a text config file and returns its lines in a list
     """
     try:
-        return open(filename, 'r').readlines()
+        with open(filename, 'r') as configfile:
+            return configfile.readlines()
     except (IOError, OSError):
         e = sys.exc_info()[1]
         raise_with_tb(ConfigParserError("Can not read config file", filename, e.args[1]), sys.exc_info()[2])
