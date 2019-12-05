@@ -32,7 +32,7 @@ Feature: Be able to list available channels and enable them
 
   Scenario: List products with filter
     When I execute mgr-sync "list products --expand --filter x86_64"
-    Then I should get "[ ] SUSE Manager Retail Branch Server 4.0 x86_64"
+    Then I should get "[ ] SUSE Linux Enterprise Server 12 SP3 x86_64"
     And I shouldn't get "ppc64"
     And I shouldn't get "s390x"
 
