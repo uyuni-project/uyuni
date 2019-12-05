@@ -18,10 +18,10 @@
 - features/core/srv_osimage_profiles.feature
 - features/core/srv_docker_profiles.feature
 # these features sync real channels (last core features)
-- features/core/srv_sync_channels.feature
-- features/core/srv_products_page.feature
-- features/core/srv_mgr_sync_products.feature
-- features/core/srv_abort_all_sync.feature
+- features/reposync/srv_sync_channels.feature
+- features/reposync/srv_sync_products.feature
+- features/reposync/srv_enable_sync_products.feature
+- features/reposync/srv_abort_all_sync.feature
 
 ## Core features END ###
 
