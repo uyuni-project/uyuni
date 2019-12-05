@@ -50,5 +50,10 @@
     </c:if>
 </rhn:toolbar>
 
+<rhn:require acl="formula_value_equals(salt-blackout, minion_blackout, true)">
+<div class="alert alert-warning">
+<p>System is in blackout mode. Some operations are not allowed.</p>
+</div>
+</rhn:require>
 
 <rhn:dialogmenu mindepth="0" maxdepth="3" definition="/WEB-INF/nav/system_detail.xml" renderer="com.redhat.rhn.frontend.nav.DialognavRenderer" />
