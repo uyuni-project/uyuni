@@ -26,6 +26,7 @@ import com.redhat.rhn.manager.user.UserManager;
 import org.apache.log4j.Logger;
 
 import javax.security.auth.login.LoginException;
+import java.util.Objects;
 
 /**
  * AuthHandler
@@ -112,6 +113,21 @@ public class AuthHandler extends BaseHandler {
         //Create a new session with the user
         WebSession session = SessionManager.makeSession(user.getId(), duration);
         return session.getKey();
+    }
+
+    /**
+     * This method is used to see if the provided sessionKey is a valid one.
+     *
+     * @param sessionKey sessionKey to validate
+     * @return true if the token is valid, otherwise throws exception with the reason
+     *
+     * @xmlrpc.ignore Since this API is for internal integration between services and
+     * is not useful to external users of the API, the typical XMLRPC API documentation
+     * is not being included.
+     */
+    public boolean isSessionKeyValid(String sessionKey) {
+        WebSession session = SessionManager.loadSession(sessionKey);
+        return Objects.nonNull(session);
     }
 
     /**

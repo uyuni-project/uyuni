@@ -107,6 +107,28 @@ public class AuthHandlerTest extends RhnBaseTestCase {
         }
     }
 
+    public void testSessionKeyValidity() throws Exception {
+        AuthHandler handler = new AuthHandler();
+        User user = UserTestUtils.findNewUser("testUser",
+                "testOrg" + this.getClass().getSimpleName());
+
+        String key = handler.login(user.getLogin(), "password");
+
+        //Make sure key is a valid one
+        boolean isValid = handler.isSessionKeyValid(key);
+        assertEquals(isValid , true);
+        handler.logout(key);
+
+        //Make sure key is not a valid which means we get the exception
+        try {
+            handler.isSessionKeyValid(key);
+            fail("AuthHandler.logout() didn't kill session");
+        }
+        catch (LookupException e) {
+            //success
+        }
+    }
+
     public void testCheckAuthToken() {
         AuthHandler handler = new AuthHandler();
         assertTrue(handler.checkAuthToken(TestUtils.randomString(),
