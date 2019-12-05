@@ -418,7 +418,7 @@ Given(/^I am authorized as "([^"]*)" with password "([^"]*)"$/) do |user, passwd
 
   fill_in 'username', with: user
   fill_in 'password', with: passwd
-  click_button('Sign In')
+  click_button_and_wait('Sign In', match: :first)
 
   step %(I should be logged in)
 end
