@@ -15,6 +15,9 @@
 
 package com.suse.manager.webui.utils;
 
+import com.redhat.rhn.domain.formula.FormulaFactory;
+import com.redhat.rhn.domain.server.MinionServerFactory;
+import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.frontend.context.Context;
 import com.redhat.rhn.frontend.taglibs.helpers.RenderUtils;
 
@@ -22,10 +25,13 @@ import org.apache.commons.lang3.text.WordUtils;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Collections;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 import java.util.TimeZone;
 import java.util.stream.Collectors;
 
@@ -130,5 +136,26 @@ public enum ViewHelper {
         DateFormat isoFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mmXXX", locale);
         isoFormat.setTimeZone(new GregorianCalendar(timezone, locale).getTimeZone());
         return isoFormat.format(date);
+    }
+
+    public boolean formulaValueEquals(Server server, String formulaName, String valueName, String valueToCheck)  {
+        if (server == null) {
+            return false;
+        }
+        if (!server.asMinionServer().isPresent()) {
+            return false;
+        }
+        List<String> enabledFormulas = FormulaFactory.getFormulasByMinionId(MinionServerFactory.getMinionId(server.getId()));
+        if (!enabledFormulas.contains(formulaName)) {
+            return false;
+        }
+
+        Map<String, Object> systemData = FormulaFactory.
+                getFormulaValuesByNameAndMinionId(formulaName, server.asMinionServer().get().getMinionId())
+                .orElseGet(Collections::emptyMap);
+        Map<String, Object> groupData = FormulaFactory
+                .getGroupFormulaValuesByNameAndServerId(formulaName, server.getId())
+                .orElseGet(Collections::emptyMap);
+        return Objects.toString(systemData.get(valueName), "").equalsIgnoreCase(valueToCheck); // TODO complex value names
     }
 }

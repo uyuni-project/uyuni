@@ -34,6 +34,7 @@ import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.manager.user.UserManager;
 
+import com.suse.manager.webui.utils.ViewHelper;
 import org.apache.log4j.Logger;
 
 import java.util.Arrays;
@@ -498,5 +499,19 @@ public class Access extends BaseHandler {
         Long eid = getAsLong(map.get("eid"));
         Errata e = ErrataFactory.lookupById(eid);
         return e != null && e.getOrg() != null;
+    }
+
+    public boolean aclFormulaValueEquals(Object ctx, String[] params) {
+        Map map = (Map) ctx;
+        Long sid = getAsLong(map.get("sid"));
+        User user = (User) map.get("user");
+        if (params == null || params.length < 3) {
+            return false;
+        }
+        String formulaName = params[0];
+        String valueName = params[1];
+        String valueToCheck = params[2];
+        Server server = SystemManager.lookupByIdAndUser(sid, user);
+        return ViewHelper.getInstance().formulaValueEquals(server, formulaName, valueName, valueToCheck);
     }
 }

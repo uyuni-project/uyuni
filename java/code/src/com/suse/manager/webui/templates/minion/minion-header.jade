@@ -15,5 +15,9 @@
     | #{" " + server.name + " "}
     a(href="/docs/reference/systems/system-details.html", target="_blank")
       i.fa.fa-question-circle.spacewalk-help-link
+if h.formulaValueEquals(server, "salt-blackout", "minion_blackout", "true")
+  .alert.alert-warning
+    p.
+      System is in blackout mode. Some operations are not allowed.
 
 !{h.renderNavigationMenu(request, "/WEB-INF/nav/system_detail.xml")}
