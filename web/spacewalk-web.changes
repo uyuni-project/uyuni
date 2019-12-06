@@ -1,3 +1,4 @@
+- Add debug packages containing Javascript source map files
 - Don't validate mandatory fields that are not visible (bsc#1158943)
 - Show adequate message on saving formulas that change only pillar data
 - Report merge_subscriptions message in a readable way (bsc#1140332)
