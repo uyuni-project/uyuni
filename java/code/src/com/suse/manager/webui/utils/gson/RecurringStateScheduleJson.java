@@ -14,10 +14,8 @@
  */
 package com.suse.manager.webui.utils.gson;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 /**
  * JSON representation of the Recurring State Scheduling
@@ -25,13 +23,21 @@ import java.util.Optional;
 public class RecurringStateScheduleJson {
 
     /** Mionion ids */
-    private List<Long> ids;
+    private List<Long> minionIds;
+
+    /** Mionion Names */
+    private List<String> minionNames;
 
     /** Name of the schedule */
     private String scheduleName;
 
     /** The schedule type */
     private String type;
+
+    /** The schedule target Type.
+     * Either minion, group, selected minions or organization
+     */
+    private String targetType;
 
     /** Array containing Quartz information */
     private Map<String, String> cronTimes;
@@ -45,9 +51,12 @@ public class RecurringStateScheduleJson {
     /**
      * @return the minion ids
      */
-    public List<Long> getIds() {
-        return ids;
-    }
+    public List<Long> getMinionIds() {return minionIds;}
+
+    /**
+     * @return the minion names
+     */
+    public List<String> getMinionNames() {return minionNames;}
 
     /**
      * @return the name of the schedule
@@ -59,7 +68,12 @@ public class RecurringStateScheduleJson {
      */
     public String getType() {return type;}
 
-    /**4
+    /**
+     * @return the target type of the schedule
+     */
+    public String getTargetType() {return targetType;}
+
+    /**
      * @return the Array containing Quartz information
      */
     public Map<String, String> getCronTimes() {return cronTimes;}

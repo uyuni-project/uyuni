@@ -28,24 +28,27 @@ class RecurringStatesEdit extends React.Component {
             .forEach(method => this[method] = this[method].bind(this));
 
         this.state = {
-            messages: [],
+            minions : minions,
+            messages: []
         };
 
         if(this.isEdit()) {
             this.setSchedule(this.props.schedule);
+        } else {
+            this.getTargetType();
         }
     }
-
-    isEdit = () => {
-        return !!this.props.schedule;
-    };
 
     setSchedule = (schedule) => {
         Object.assign(
             this.state,
             {
                 scheduleName: schedule.scheduleName,
+                minions: schedule.minionIds.reduce((minions, minion, i) => {
+                    minions[i] = {id: minion, name: schedule.minionNames[i]};
+                    return minions;}, []),
                 type: schedule.type,
+                targetType: schedule.targetType,
                 cronTimes: {
                     minute: schedule.minute,
                     hour: schedule.hour,
@@ -56,6 +59,23 @@ class RecurringStatesEdit extends React.Component {
             });
     };
 
+    getTargetType = () => {
+        const search = window.location.search;
+        if (search.match("\\?sid")) {
+            Object.assign(this.state, {targetType: "Minion"});
+        } else if (search.match("\\?sgid")) {
+            Object.assign(this.state, {targetType: "Group"});
+        } else if (window.location.pathname.match("/ssm") && !search) {
+            Object.assign(this.state, {targetType: "System Set Manager"});
+        } else {
+            Object.assign(this.state, {targetType: "Organization"});
+        }
+    };
+
+    isEdit = () => {
+        return !!this.props.schedule;
+    };
+
     onCreate = () => {
         if (this.isEdit()) {
             return false;
@@ -63,9 +83,11 @@ class RecurringStatesEdit extends React.Component {
         return Network.post(
             "/rhn/manager/api/states/schedules/save",
             JSON.stringify({
-                ids: minions.map(m => m.id),
+                minionIds: this.state.minions.map(minion => minion.id),
+                minionNames: this.state.minions.map(minion => minion.name),
                 scheduleName: this.state.scheduleName,
                 type: this.state.type,
+                targetType: this.state.targetType,
                 cronTimes: this.state.cronTimes,
                 cron: this.state.customCron,
                 test: this.state.test
@@ -96,9 +118,11 @@ class RecurringStatesEdit extends React.Component {
         return Network.post(
             "/rhn/manager/api/states/schedules/" + this.props.schedule.scheduleId + "/update",
             JSON.stringify({
-                ids: minions.map(m => m.id),
+                minionIds: this.state.minions.map(minion => minion.id),
+                minionNames: this.state.minions.map(minion => minion.name),
                 scheduleName: this.state.scheduleName,
                 type: this.state.type,
+                targetType: this.state.targetType,
                 cronTimes: this.state.cronTimes,
                 cron: this.state.customCron,
                 test: this.state.test
@@ -180,7 +204,7 @@ class RecurringStatesEdit extends React.Component {
                                           onTypeChanged={this.onTypeChanged}
                                           onCronTimesChanged={this.onCronTimesChanged}
                                           onCustomCronChanged={this.onCustomCronChanged} />
-                    <DisplayHighstate/>
+                    <DisplayHighstate minions={this.state.minions}/>
                 </InnerPanel>
             </div>
         );

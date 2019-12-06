@@ -61,12 +61,14 @@ class RecurringEventPicker extends React.Component<RecurringEventPickerProps, Re
     }
 
     setTimeAndDays = (date: Date) => {
+        const hours = Number(this.state.cronTimes.hour);
+        const minutes = Number(this.state.cronTimes.minute);
         const time = new Date(
             date.getFullYear(),
             date.getMonth(),
             date.getDate(),
-            Number(this.state.cronTimes.hour) || date.getHours(),
-            Number(this.state.cronTimes.minute) || date.getMinutes(),
+            isNaN(hours) ? date.getHours() : hours,
+            isNaN(minutes) ? date.getMinutes() : minutes,
             date.getSeconds(),
             date.getMilliseconds()
         );

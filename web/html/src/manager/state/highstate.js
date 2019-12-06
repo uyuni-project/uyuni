@@ -95,7 +95,8 @@ class Highstate extends React.Component {
                action: undefined
             });
         } else {
-            Functions.Utils.urlBounce("/rhn/manager/systems/details/states/schedules" + loc.search);
+            const pathname = loc.pathname.replace("highstate", "states/schedules");
+            Functions.Utils.urlBounce(pathname + loc.search);
         }
     };
 
@@ -108,20 +109,22 @@ class Highstate extends React.Component {
         const buttons = [
             <div className="btn-group pull-right">
                 <Toggler text={t('Test mode')} value={this.state.test} className="btn" handler={this.toggleTestState.bind(this)} />
-                <Button
-                    className="btn-default"
-                    icon="fa-plus"
-                    text={t("Create Recurring")}
-                    title="Schedule a new Recurring Highstate"
-                    handler={() => {
-                        history.pushState(null, null, "#/create");
-                        this.setState({action: "create"});}}
-                />
                 <AsyncButton action={this.applyHighstate} defaultType="btn-success" text={t("Apply Highstate")} disabled={minions.length === 0} />
             </div>
         ];
+        const buttonsLeft = [
+            <Button
+                className="btn-default"
+                icon="fa-plus"
+                text={t("Create Recurring")}
+                title="Schedule a new Recurring Highstate"
+                handler={() => {
+                    history.pushState(null, null, "#/create");
+                    this.setState({action: "create"});}}
+            />
+        ];
         const showHighstate = [
-            <InnerPanel title={t("Highstate")} icon="spacewalk-icon-salt" buttons={buttons}>
+            <InnerPanel title={t("Highstate")} icon="spacewalk-icon-salt" buttons={buttons} buttonsLeft={buttonsLeft}>
                 <div className="panel panel-default">
                     <div className="panel-heading">
                         <div>

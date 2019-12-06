@@ -509,16 +509,20 @@ public class StatesAPI {
         List<String> errors = new LinkedList<>();
 
         String scheduleName = json.getScheduleName();
-        List<Long> ids = json.getIds();
+        List<Long> minionIds = json.getMinionIds();
+        List<String> minionNames = json.getMinionNames();
         String type = json.getType();
+        String targetType = json.getTargetType();
         Map<String, String> cronTimes = json.getCronTimes();
         String cron = json.getCron();
         boolean isTest = json.isTest();
 
         Map<String, String> params = new HashMap<>();
         params.put("user_id", user.getId().toString());
-        params.put("minionIds", ids.toString());
+        params.put("minionIds", minionIds.toString());
+        params.put("minionNames", minionNames.toString());
         params.put("type", type);
+        params.put("targetType", targetType);
         params.putAll(cronTimes);
         params.put("isTest", isTest? "true" : "false");
 

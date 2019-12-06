@@ -32,8 +32,9 @@ class RecurringStatesList extends React.Component {
                 elements.push(
                     <tr>
                         <td>{row.scheduleName}</td>
-                        <td>{row.frequency}</td>
+                        <td className="text-center">{row.frequency}</td>
                         <td className="text-center">{row.createdAt}</td>
+                        {this.props.disableCreate ? <td className="text-center">{row.targetType}</td> : null}
                         <td className="text-right">
                             <div className="btn-group">
                                 <Button
@@ -78,7 +79,7 @@ class RecurringStatesList extends React.Component {
             }
             </tbody>
         );
-    }
+    };
 
     render() {
         const createButton = [
@@ -92,10 +93,11 @@ class RecurringStatesList extends React.Component {
                 />
             </div>
         ];
+        const scope = this.props.disableCreate ? <th className="text-center">{t("Scope")}</th> : null;
 
         return (
             <div>
-                <InnerPanel title={t("Recurring States")} icon="spacewalk-icon-salt" buttons={createButton}>
+                <InnerPanel title={t("Recurring States")} icon="spacewalk-icon-salt" buttons={this.props.disableCreate ? null : createButton}>
                     <div className="panel panel-default">
                         <div className="panel-heading">
                             <div>
@@ -107,8 +109,9 @@ class RecurringStatesList extends React.Component {
                                 <thead>
                                 <tr>
                                     <th>{t("Schedule Name")}</th>
-                                    <th>{t("Frequency")}</th>
+                                    <th className="text-center">{t("Frequency")}</th>
                                     <th className="text-center">{t("Created at")}</th>
+                                    {scope}
                                     <th className="text-right">{t("Actions")}</th>
                                 </tr>
                                 </thead>

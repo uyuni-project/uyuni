@@ -97,11 +97,15 @@ class MinionHighstate extends React.Component {
 class DisplayHighstate extends React.Component {
     constructor(props) {
         super(props);
+
+        this.state = {
+            minions: this.props.minions || minions
+        };
     }
 
     renderMinions = () => {
         const minionList = [];
-        for(const system of minions) {
+        for(const system of this.state.minions) {
             minionList.push(<MinionHighstate data={system}/>);
         }
         return minionList;
@@ -110,13 +114,13 @@ class DisplayHighstate extends React.Component {
     render() {
         return (
             <div>
-                { minions.length === 1 ?
-                    <MinionHighstateSingle data={minions[0]}/>
+                { this.state.minions.length === 1 ?
+                    <MinionHighstateSingle data={this.state.minions[0]}/>
                     : <div className="panel panel-default">
                         <div className="panel-heading">
-                            <h4>Target Systems ({minions.length})</h4>
+                            <h4>Target Systems ({this.state.minions.length})</h4>
                         </div>
-                        { minions.length === 0 ?
+                        { this.state.minions.length === 0 ?
                             <div className="panel-body">
                                 {t("There are no applicable systems.")}
                             </div>

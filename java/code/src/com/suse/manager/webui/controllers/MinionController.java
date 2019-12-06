@@ -229,6 +229,34 @@ public class MinionController {
     }
 
     /**
+     * Handler for the server group recurring-states page.
+     *
+     * @param request the request object
+     * @param response the response object
+     * @param user the current user
+     * @return the ModelAndView object to render the page
+     */
+    public static ModelAndView serverGroupRecurringStates(Request request, Response response,
+                                                    User user) {
+        String grpId = request.queryParams("sgid");
+
+        ServerGroup group =
+                ServerGroupFactory.lookupByIdAndOrg(Long.parseLong(grpId), user.getOrg());
+
+        List<Server> groupServers = ServerGroupFactory.listServers(group);
+        List<SimpleMinionJson> minions = MinionServerUtils.filterSaltMinions(groupServers)
+                .map(SimpleMinionJson::fromMinionServer)
+                .collect(Collectors.toList());
+
+        Map<String, Object> data = new HashMap<>();
+        data.put("groupId", grpId);
+        data.put("groupName", ServerGroupFactory.lookupByIdAndOrg(Long.valueOf(grpId),
+                user.getOrg()).getName());
+        data.put("minions", Json.GSON.toJson(minions));
+        return new ModelAndView(data, "templates/groups/recurring-states.jade");
+    }
+
+    /**
      * Handler for the server group highstate page.
      *
      * @param request the request object
@@ -255,6 +283,24 @@ public class MinionController {
         data.put("minions", Json.GSON.toJson(minions));
         addActionChains(user, data);
         return new ModelAndView(data, "templates/groups/highstate.jade");
+    }
+
+    /**
+     * Handler for the SSM recurring-states page.
+     *
+     * @param request the request object
+     * @param response the response object
+     * @param user the current user
+     * @return the ModelAndView object to render the page
+     */
+    public static ModelAndView ssmRecurringStates(Request request, Response response, User user) {
+        List<SimpleMinionJson> minions = MinionServerFactory
+                .lookupByIds(SsmManager.listServerIds(user))
+                .map(SimpleMinionJson::fromMinionServer).collect(Collectors.toList());
+
+        Map<String, Object> data = new HashMap<>();
+        data.put("minions", Json.GSON.toJson(minions));
+        return new ModelAndView(data, "templates/ssm/recurring-states.jade");
     }
 
     /**
@@ -292,7 +338,21 @@ public class MinionController {
     }
 
     /**
-     * Handler for the recurring-highstate page.
+     * Handler for the Recurring Actions schedule page.
+     *
+     * @param request the request object
+     * @param response the response object
+     * @param user the current user
+     * @return the ModelAndView object to render the page
+     */
+    /* TODO: Create an own Schedule Controller */
+    public static ModelAndView recurringActions(Request request, Response response, User user) {
+        Map<String, Object> data = new HashMap<>();
+        return new ModelAndView(data, "templates/schedule/recurring-actions.jade");
+    }
+
+    /**
+     * Handler for the recurring-states page.
      *
      * @param request the request object
      * @param response the response object

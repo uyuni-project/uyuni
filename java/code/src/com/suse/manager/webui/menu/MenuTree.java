@@ -17,6 +17,7 @@ package com.suse.manager.webui.menu;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.jsp.PageContext;
 
+import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.security.acl.Access;
 import com.redhat.rhn.common.security.acl.Acl;
@@ -26,11 +27,10 @@ import com.redhat.rhn.frontend.struts.RequestContext;
 
 import com.google.gson.GsonBuilder;
 
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.jsp.PageContext;
 
 /**
  * The UI Menu Tree.
@@ -281,6 +281,7 @@ public class MenuTree {
             // Schedule
             nodes.add(new MenuItem("Schedule").withIcon("fa-clock-o").withDir("/rhn/schedule")
                 .addChild(new MenuItem("Pending Actions").withPrimaryUrl("/rhn/schedule/PendingActions.do"))
+                .addChild(new MenuItem("Recurring Actions").withPrimaryUrl("/rhn/manager/schedule/recurring-actions"))
                 .addChild(new MenuItem("Failed Actions").withPrimaryUrl("/rhn/schedule/FailedActions.do"))
                 .addChild(new MenuItem("Completed Actions").withPrimaryUrl("/rhn/schedule/CompletedActions.do"))
                 .addChild(new MenuItem("Archived Actions").withPrimaryUrl("/rhn/schedule/ArchivedActions.do"))
