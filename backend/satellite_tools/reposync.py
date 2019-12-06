@@ -1152,8 +1152,14 @@ class RepoSync(object):
                     if os.path.exists(stage_path):
                         os.remove(stage_path)
                     if os.path.exists(os.path.dirname(stage_path)):
-                        # remove the checksum directory
-                        os.rmdir(os.path.dirname(stage_path))
+                        # remove the checksum directory if empty
+                        try:
+                            os.rmdir(os.path.dirname(stage_path))
+                        except OSError as exc:
+                            if exc.errno == errno.ENOTEMPTY:
+                                pass
+                            else:
+                                raise exc
             pack.clear_header()
         if affected_channels:
             errataCache.schedule_errata_cache_update(affected_channels)
