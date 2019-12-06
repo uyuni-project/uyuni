@@ -136,8 +136,15 @@ public class PrimaryXmlWriter extends RepomdWriter {
 
         localHandler.addElementWithCharacters("rpm:license", sanitize(pkgId, pkgDto
                 .getCopyright()));
-        localHandler.addElementWithCharacters("rpm:vendor", sanitize(pkgId, pkgDto
-                .getVendor()));
+        if (pkgDto.getVendor().equalsIgnoreCase("Not defined")) {
+            // DB has a "not null" column. We cannot store an empty string or NULL
+            // An unset vendor is set to "Not defined"
+            localHandler.addEmptyElement("rpm:vendor");
+        }
+        else {
+            localHandler.addElementWithCharacters("rpm:vendor", sanitize(pkgId, pkgDto
+                    .getVendor()));
+        }
         localHandler.addElementWithCharacters("rpm:group", sanitize(pkgId, pkgDto
                 .getPackageGroupName()));
         localHandler.addElementWithCharacters("rpm:buildhost", sanitize(pkgId,
