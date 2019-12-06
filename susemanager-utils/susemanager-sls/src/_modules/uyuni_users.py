@@ -8,7 +8,9 @@ import copy
 import os
 
 import salt.config
+import salt.client
 import salt.utils.crypt
+from salt.exceptions import CommandExecutionError
 from salt.utils.minions import CkMinions
 
 log = logging.getLogger(__name__)
@@ -630,6 +632,31 @@ class UyuniChildMasterIntegration(UyuniRemoteObject):
         }
 
         return ret
+
+    def master(self, *args: List[str], **kwargs: Dict[str, Any]):
+        """
+        Run arbitrary commands on the target master.
+
+        :param args: First two positional arguments are "minion_id" and "module.function".
+                    Other are positional arguments to that module function.
+        :param kwargs: Named keywords to the remote "module.function".
+
+        :return:
+        """
+        if len(args) < 2:
+            raise CommandExecutionError("Should be target minion name and function passed")
+
+        expr, func = args[:2]
+        fargs = args[2:]
+        fkwargs = {}
+        for kw_key in kwargs:
+            if not kw_key.startswith("_"):
+                fkwargs[kw_key] = kwargs[kw_key]
+
+        client = salt.client.LocalClient()
+        return client.cmd(expr, func, fargs, kwarg=fkwargs)
+
+
 def __virtual__():
     """
     Provide Uyuni Users state module.
@@ -785,3 +812,16 @@ def list_minions(expr=None, tgt="glob", active=False, fp=False):
         ret = (cmi.list_minions if fp else cmi.list_minions)(active=active)
 
     return ret
+
+
+def master(*args, **kwargs):
+    """
+    Perform arbitrary operation on a remote master.
+
+    :param args: minimum two parameters, where first is minion name or a selector, second is a function. There can be
+                also positional parameters to the function itself.
+    :param kwargs: named arguments to the called remote function on the sibling master.
+
+    :return: return data from the target minion.
+    """
+    return UyuniChildMasterIntegration().master(*args, **kwargs)
