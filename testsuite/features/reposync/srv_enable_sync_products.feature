@@ -15,7 +15,7 @@ Feature: Be able to list available products and enable them
     When I execute mgr-sync "list products -e"
     Then I should get "[ ] SUSE Linux Enterprise Desktop 15 x86_64"
     And I should get "  [ ] (R) Basesystem Module 15 x86_64"
-    And I should get "  [ ] Development Tools Module 15 x86_64"
+    And I should get "  [ ] Desktop Applications Module 15 x86_64"
 
   Scenario: Enable "SUSE Linux Enterprise Desktop 15 x86_64" with recommended modules
     When I enable product "SUSE Linux Enterprise Desktop 15 x86_64"
