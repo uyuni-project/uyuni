@@ -4,7 +4,7 @@ Uyuni users state module
 """
 from typing import Any, Dict, List, Optional, Union, Tuple
 import logging
-from salt.modules.uyuni import UyuniUsersException, UyuniUser, UyuniOrg, RPCClient
+from salt.modules.uyuni import UyuniUsersException, UyuniUser, UyuniOrg, RPCClient, UyuniTrust
 
 
 log = logging.getLogger(__name__)
@@ -193,6 +193,48 @@ class UyuniOrgs(UyuniFunctions):
                     applied += 1
             if applied:
                 ret["comment"] = "{} Applied {} policies.".format(ret["comment"], applied).strip()
+
+        return ret
+
+    def trust(self, name, organisations):
+        """
+        Add trusted organisations to the org.
+
+        :param name:
+        :param organisations:
+        :return:
+        """
+        orgs_msg = ",".join(['"{}"'.format(org) for org in organisations])
+        ret = self._get_proto_ret(name)
+        try:
+            changes = UyuniTrust(org_name=name, pillar=__pillar__).trust(*organisations)
+            if changes:
+                ret["changes"] = {"Added:": changes}
+                ret["result"] = True
+        except Exception as exc:
+            ret["result"] = False
+            ret["comment"] = "Failed to add {} organisations: {}".format(orgs_msg, str(exc))
+
+        return ret
+
+    def untrust(self, name, organisations):
+        """
+        Remote trusted organisations from an organisation.
+
+        :param name:
+        :param organisations:
+        :return:
+        """
+        orgs_msg = ",".join(['"{}"'.format(org) for org in organisations])
+        ret = self._get_proto_ret(name)
+        try:
+            changes = UyuniTrust(org_name=name, pillar=__pillar__).untrust(*organisations)
+            if changes:
+                ret["changes"] = {"Removed:": changes}
+                ret["result"] = True
+        except Exception as exc:
+            ret["result"] = False
+            ret["comment"] = "Failed to remove {} organisations: {}".format(orgs_msg, str(exc))
 
         return ret
 
@@ -393,3 +435,25 @@ def org_absent(name):
     :return:
     """
     return UyuniOrgs().delete(name=name)
+
+
+def org_trusted(name, organisations):
+    """
+    Add trusted organisations to the trusted org.
+
+    :param name:
+    :param organisations:
+    :return:
+    """
+    return UyuniOrgs().trust(name, organisations=organisations)
+
+
+def org_untrusted(name, organisations):
+    """
+    Remove trusted organisations from the trusted org.
+
+    :param name:
+    :param organisations:
+    :return:
+    """
+    return UyuniOrgs().untrust(name, organisations=organisations)
