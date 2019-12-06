@@ -17,15 +17,15 @@ Feature: Synchronize products in the products page of the Setup Wizard
     Given I am on the Admin page
     When I follow "SUSE Products" in the content area
     And I wait until I see "Product Description" text
-    And I enter "RHEL Expanded Support 7" as the filtered product description
-    Then I should see a "RHEL Expanded Support 7" text
+    And I enter "RHEL7" as the filtered product description
+    Then I should see a "RHEL7 Base x86_64" text
 
   Scenario: View the channels list in the products page
     Given I am on the Admin page
     When I follow "SUSE Products" in the content area
     And I wait until I see "Product Description" text
-    And I enter "SUSE Linux Enterprise Server for SAP All-in-One 11 SP2" as the filtered product description
-    And I click the channel list of product "SUSE Linux Enterprise Server for SAP All-in-One 11 SP2"
+    And I enter "SUSE Linux Enterprise Server for SAP Applications 15 x86_64" as the filtered product description
+    And I click the channel list of product "SUSE Linux Enterprise Server for SAP Applications 15 x86_64"
     Then I should see a "Product Channels" text
     And I should see a "Mandatory Channels" text
     And I should see a "Optional Channels" text
