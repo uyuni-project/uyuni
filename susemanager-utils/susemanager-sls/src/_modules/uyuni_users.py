@@ -373,16 +373,16 @@ class UyuniTrust(UyuniRemoteObject):
             out = [self.get_proto_return(exc=exc)]
         return out
 
-    def trust(self, *orgs: str) -> bool:
+    def trust(self, *orgs: str) -> List[str]:
         """
         Set organisation trusted.
 
         :param name:
 
         :raises UyuniUsersException: if RPC call has been failed.
-        :return: boolean, True if trust flag has been changed to True
+        :return: Org names which flag has been changed
         """
-        ret = False
+        changes: List[str] = []
         # Remove orgs that are already trusted
         l_orgs = list(copy.deepcopy(orgs))
         for trusted_org in self.get_trusted():
@@ -394,13 +394,13 @@ class UyuniTrust(UyuniRemoteObject):
         for org_name in l_orgs:
             org_data = self.orgs.get_org_by_name(org_name)
             assert org_data, "Adding trust: no information has been found for '{}' organisation".format(org_name)
-            self.client("org.trusts.addTrust", self.client.get_token(), self.this_org["id"], org_data["id"])
-            log.info('Added trusted organisation "%s" to the "%s"', org_name, self.this_org["name"])
-            ret = True
+            if bool(self.client("org.trusts.addTrust", self.client.get_token(), self.this_org["id"], org_data["id"])):
+                changes.append(org_name)
+                log.info('Added trusted organisation "%s" to the "%s"', org_name, self.this_org["name"])
 
-        return ret
+        return changes
 
-    def untrust(self, *orgs: str) -> bool:
+    def untrust(self, *orgs: str) -> List[str]:
         """
         Set organisation untrusted.
 
@@ -409,19 +409,17 @@ class UyuniTrust(UyuniRemoteObject):
         :raises UyuniUsersException: If RPC call has been failed.
         :return: boolean, True if trust flag has been changed to False
         """
-        fails = success = 0
-
+        changes = []
         for org_name in orgs:
             org_data = self.orgs.get_org_by_name(org_name)
             assert org_data, "Trust removal: no information has been found for '{}' organisation".format(org_name)
             try:
                 self.client("org.trusts.removeTrust", self.client.get_token(), self.this_org["id"], org_data["id"])
-                success += 1
+                changes.append(org_name)
             except UyuniUsersException as exc:
                 log.error("Unable to remove trust: %s", exc)
-                fails += 1
 
-        return fails == 0 and success > 0
+        return changes
 
 
 class UyuniChannels(UyuniRemoteObject):
@@ -614,7 +612,7 @@ class UyuniChildMasterIntegration(UyuniRemoteObject):
         """
         return self._minions.check_minions(expr=expr, tgt_type=tgt)
 
-    def select_minions_fp(self, expr: str, tgt: str = "glob") -> Dict[str, str]:
+    def select_minions_fp(self, expr: str, tgt: str = "glob") -> Dict[str, Union[str, bool]]:
         """
         Select minion IDs that matches the expression.
 
