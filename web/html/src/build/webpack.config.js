@@ -43,7 +43,7 @@ module.exports = (env, argv) => {
       publicPath: '/'
     },
     optimization: {
-      minimizer: [new TerserPlugin({extractComments: true})],
+      minimizer: [new TerserPlugin({extractComments: true, sourceMap: true})],
       splitChunks: {
         cacheGroups: {
           vendor: {
@@ -61,6 +61,7 @@ module.exports = (env, argv) => {
         }
       }
     },
+    devtool: isProductionMode ? 'source-map' : 'eval-source-map',
     module: {
       rules: [
         {
