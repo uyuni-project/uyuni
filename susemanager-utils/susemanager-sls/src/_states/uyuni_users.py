@@ -196,7 +196,7 @@ class UyuniOrgs(UyuniFunctions):
 
         return ret
 
-    def trust(self, name, organisations):
+    def trust(self, name: str, organisations: List[str]) -> Dict[str, Any]:
         """
         Add trusted organisations to the org.
 
@@ -217,7 +217,7 @@ class UyuniOrgs(UyuniFunctions):
 
         return ret
 
-    def untrust(self, name, organisations):
+    def untrust(self, name: str, organisations: List[str]) -> Dict[str, Any]:
         """
         Remote trusted organisations from an organisation.
 
