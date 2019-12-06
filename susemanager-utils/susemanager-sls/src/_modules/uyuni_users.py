@@ -7,6 +7,9 @@ import datetime
 import copy
 import os
 
+import salt.config
+import salt.utils.crypt
+from salt.utils.minions import CkMinions
 
 log = logging.getLogger(__name__)
 
@@ -19,6 +22,7 @@ class UyuniUsersException(Exception):
     """
     Uyuni users Exception
     """
+
 
 class UyuniChannelsException(Exception):
     """
@@ -526,6 +530,106 @@ class UyuniSystemgroup(UyuniRemoteObject):
         return self.client("systemgroup.update", self.client.get_token(), name, description)
 
 
+class UyuniChildMasterIntegration(UyuniRemoteObject):
+    """
+    Integration with the Salt Master which is running
+    on the same host as this current Minion.
+    """
+    DEFAULT_MASTER_CONFIG_PATH = "/etc/salt/master"
+
+    class FCkMinions(CkMinions):
+        """
+        Minion data matcher.
+        """
+        def _get_key_fingerprint(self, minion_id: str) -> str:
+            """
+            Get minion key fingerprint.
+
+            :param minion_id:
+            :return: fingerprint or an empty string if not found
+            """
+            keypath = os.path.join(self.opts['pki_dir'], self.acc, minion_id)
+            return salt.utils.crypt.pem_finger(path=keypath, sum_type=self.opts["hash_type"])
+
+        def _get_fingerprints(self, minion_ids: List[str]) -> Dict[str, str]:
+            """
+            Resolve all fingerprints.
+
+            :param minion_ids:
+            :return:
+            """
+            minions = {}
+            for mid in minion_ids:
+                minions[mid] = self._get_key_fingerprint(minion_id=mid)
+
+            return minions
+
+    def __init__(self, pillar: Optional[Dict[str, Any]] = None):
+        UyuniRemoteObject.__init__(self, pillar=pillar)
+        self._minions = UyuniChildMasterIntegration.FCkMinions(salt.config.master_config(self._get_master_config()))
+
+    @staticmethod
+    def _get_master_config() -> str:
+        """
+        Return master config.
+        :return:
+        """
+        cfg_path = UyuniChildMasterIntegration.DEFAULT_MASTER_CONFIG_PATH
+        for path in __pillar__.get("uyuni", {}).get("masters", {}).get("configs", [cfg_path]):
+            if os.path.exists(path):
+                cfg_path = path
+                break
+
+        return cfg_path
+
+    def list_minions(self, active: bool = False) -> List[str]:
+        """
+        Return list of currently registered minions.
+
+        :param active: Return only active minions.
+        :return: list of minion ids
+        """
+        return self._minions.connected_ids() if active else self._minions._pki_minions()
+
+    def list_minions_fp(self, active: bool = False) -> Dict[str, str]:
+        """
+        Return list of currently registered minions, including their key fingerprints.
+
+        :param active: Return only active minions.
+        :return: mapping of minion ids to the fingerprints
+        """
+        return self._minions._get_fingerprints(self.list_minions(active=active))
+
+    def select_minions(self, expr: str, tgt: str = "glob") -> Dict[str, Union[List[str], bool]]:
+        """
+        Select minion IDs that matches the expression.
+
+        :param expr: expression
+        :param tgt: target type, one of the following: glob, grain, grain_pcre, pillar, pillar_pcre,
+                    pillar_exact, compound, compound_pillar_exact. Default: glob.
+
+        :return: list of minions
+        """
+        return self._minions.check_minions(expr=expr, tgt_type=tgt)
+
+    def select_minions_fp(self, expr: str, tgt: str = "glob") -> Dict[str, str]:
+        """
+        Select minion IDs that matches the expression.
+
+        :param expr: expression
+        :param tgt: target type, one of the following: glob, grain, grain_pcre, pillar, pillar_pcre,
+                    pillar_exact, compound, compound_pillar_exact. Default: glob.
+
+        :return: mapping of minion ids to the fingerprints
+        """
+        selected = self.select_minions(expr=expr, tgt=tgt)
+        ret = {
+            "minions": self._minions._get_fingerprints(selected["minions"]),
+            "missing": self._minions._get_fingerprints(selected["missing"]),
+            "ssh_minions": selected.get("ssh_minions", False)
+        }
+
+        return ret
 def __virtual__():
     """
     Provide Uyuni Users state module.
@@ -661,3 +765,23 @@ def delete_sysgroup(name):
     :return: None
     """
     return UyuniSystemgroup().delete(name=name)
+
+
+def list_minions(expr=None, tgt="glob", active=False, fp=False):
+    """
+    Return list of all available minions from the configured
+    Salt Master on the same host.
+
+    :param active: Return only active minions.
+    :param fp: Include fingerprints
+
+    :return: list of minion IDs
+    """
+    cmi = UyuniChildMasterIntegration()
+
+    if expr is not None:
+        ret = (cmi.select_minions_fp if fp else cmi.select_minions)(expr=expr, tgt=tgt)
+    else:
+        ret = (cmi.list_minions if fp else cmi.list_minions)(active=active)
+
+    return ret
