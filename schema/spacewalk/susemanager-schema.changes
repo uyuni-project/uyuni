@@ -1,3 +1,4 @@
+- generate metadata with empty vendor (bsc#1158480)
 - Fix rhnActionVirtDelete when migrating from 3.2 to 4.0 (bsc#1158178)
 
 -------------------------------------------------------------------

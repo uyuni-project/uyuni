@@ -1,3 +1,4 @@
+- generate metadata with empty vendor (bsc#1158480)
 - remove undefined variable from redhat_register snippet
 - Add a method in API to check if the provided session key is a valid one.
 - Associate VMs and systems with the same machine ID at bootstrap (bsc#1144176)
