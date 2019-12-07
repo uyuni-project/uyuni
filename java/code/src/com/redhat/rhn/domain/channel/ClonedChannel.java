@@ -16,6 +16,8 @@ package com.redhat.rhn.domain.channel;
 
 import com.redhat.rhn.domain.common.ChecksumType;
 
+import java.util.Optional;
+
 /**
  * ClonedChannel
  * @version $Rev$
@@ -46,6 +48,14 @@ public class ClonedChannel extends Channel {
     @Override
     public boolean isCloned() {
         return true;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Optional<ClonedChannel> asCloned() {
+        return Optional.of(this);
     }
 
     /**
