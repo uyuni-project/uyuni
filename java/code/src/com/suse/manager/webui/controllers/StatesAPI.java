@@ -200,10 +200,11 @@ public class StatesAPI {
         List<TaskoSchedule> taskoSchedules = new TaskomaticApi().findActiveSchedulesByBunch(user,
                 "recurring-state-apply-bunch");
         return taskoSchedules.stream().map(taskoSchedule -> {
+            String date = taskoSchedule.getActiveFrom().toString();
             Map<String, String> schedule = (Map<String, String>) taskoSchedule.getDataMap();
             schedule.put("scheduleId", taskoSchedule.getId().toString());
             schedule.put("scheduleName", taskoSchedule.getJobLabel());
-            schedule.put("createdAt", taskoSchedule.getActiveFrom().toString());
+            schedule.put("createdAt", date.substring(0, date.indexOf(".")));
             schedule.put("frequency", taskoSchedule.getCronExpr());
             return schedule;
         }).collect(Collectors.toList());
@@ -509,22 +510,20 @@ public class StatesAPI {
         List<String> errors = new LinkedList<>();
 
         String scheduleName = json.getScheduleName();
-        List<Long> minionIds = json.getMinionIds();
-        List<String> minionNames = json.getMinionNames();
         String type = json.getType();
-        String targetType = json.getTargetType();
         Map<String, String> cronTimes = json.getCronTimes();
         String cron = json.getCron();
-        boolean isTest = json.isTest();
+        String groupName = json.getGroupName();
 
         Map<String, String> params = new HashMap<>();
         params.put("user_id", user.getId().toString());
-        params.put("minionIds", minionIds.toString());
-        params.put("minionNames", minionNames.toString());
+        params.put("minionIds", json.getMinionIds().toString());
+        params.put("minionNames", json.getMinionNames().toString());
+        params.put("targetType", json.getTargetType());
+        if (groupName != null) params.put("groupName", groupName);
+        params.put("isTest", json.isTest() ? "true" : "false");
         params.put("type", type);
-        params.put("targetType", targetType);
         params.putAll(cronTimes);
-        params.put("isTest", isTest? "true" : "false");
 
         if (StringUtils.isEmpty(scheduleName)) {
             errors.add("Schedule Name must be specified.");

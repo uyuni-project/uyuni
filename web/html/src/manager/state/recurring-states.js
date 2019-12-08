@@ -6,10 +6,13 @@ const ReactDOM = require("react-dom");
 const Messages = require("components/messages").Messages;
 const Network = require("utils/network");
 const { InnerPanel } = require('components/panels/InnerPanel');
+const {RecurringStatesDetails} = require("./recurring-states-details");
 const {RecurringStatesList} = require("./recurring-states-list");
 const {RecurringStatesEdit} =  require("./recurring-states-edit");
 const MessagesUtils = require("components/messages").Utils;
 const SpaRenderer  = require("core/spa/spa-renderer").default;
+const Utils = require("utils/functions").Utils;
+
 
 const hashUrlRegex = /^#\/([^\/]*)(?:\/(.+))?$/;
 
@@ -53,7 +56,7 @@ class RecurringStates extends React.Component<RecurringStatesStates, RecurringSt
     constructor(props: RecurringStatesProps) {
         super(props);
 
-        ["deleteSchedule", "handleForwardAction", "handleEditAction", "handleResponseError"]
+        ["deleteSchedule", "handleForwardAction", "handleDetailsAction", "handleEditAction", "handleResponseError"]
             .forEach(method => this[method] = this[method].bind(this));
         this.state = {
             messages: [],
@@ -72,11 +75,11 @@ class RecurringStates extends React.Component<RecurringStatesStates, RecurringSt
 
     updateView(action, id) {
         if ((action === "edit" || action === "details") && id) {
-            /* TODO: implement edit and detail actions */
+            this.getScheduleDetails(id, action);
         } else if (!action) {
             this.getRecurringScheduleList();
         } else {
-            this.setState({action: action, id: id});
+            this.setState({action: action});
         }
         this.clearMessages();
     }
@@ -87,7 +90,6 @@ class RecurringStates extends React.Component<RecurringStatesStates, RecurringSt
 
     toArray = (string: String) => {
         return string
-            //.replace(/([\[\] ])/g, "")
             .slice(1, -1).split(",")
             .map(element => {
                 const num = Number(element.trim());
@@ -115,20 +117,23 @@ class RecurringStates extends React.Component<RecurringStatesStates, RecurringSt
             }).catch(this.handleResponseError);
     };
 
-    handleDetailsAction(row) {
-        /* TODO */
-    }
-
     getScheduleDetails(id, action) {
         return Network.get("/rhn/manager/api/states/schedules/" + id, "application/json").promise
-            .catch(this.handleResponseError);
+            .then(schedule => {
+                schedule.data.minionIds = this.toArray(schedule.data.minionIds);
+                schedule.data.minionNames = this.toArray(schedule.data.minionNames);
+                this.setState({selected: schedule.data, action: action});
+            }).catch(this.handleResponseError);
+    }
+
+    handleDetailsAction(row) {
+        this.getScheduleDetails(row.scheduleId, "details").then(() => {
+            history.pushState(null, null, "#/details/" + row.scheduleId);
+        });
     }
 
     handleEditAction(row) {
-        this.getScheduleDetails(row.scheduleId).then(schedule => {
-            schedule.data.minionIds = this.toArray(schedule.data.minionIds);
-            schedule.data.minionNames = this.toArray(schedule.data.minionNames);
-            this.setState({selected: schedule.data, action: "edit"});
+        this.getScheduleDetails(row.scheduleId, "edit").then(() => {
             history.pushState(null, null, "#/edit/" + row.scheduleId);
         });
     }
@@ -181,25 +186,32 @@ class RecurringStates extends React.Component<RecurringStatesStates, RecurringSt
         return (
             <div>
                 {messages}
-                { (this.state.action === 'create' && this.isFiltered()) ?
-                    <RecurringStatesEdit onMessageChanged={this.onMessageChanged}
-                                         onActionChanged={this.handleForwardAction}
+                { (this.state.action === 'details' && this.state.selected) ?
+                    <RecurringStatesDetails data={this.state.selected}
+                                            onCancel={this.handleForwardAction}
+                                            onEdit={this.handleEditAction}
+                                            onDelete={this.deleteSchedule}
                     />
                     :
-                    (this.state.action === 'edit' && this.state.selected) ?
-                        <RecurringStatesEdit schedule={this.state.selected}
-                                             onMessageChanged={this.onMessageChanged}
+                    (this.state.action === 'create' && this.isFiltered()) ?
+                        <RecurringStatesEdit onMessageChanged={this.onMessageChanged}
                                              onActionChanged={this.handleForwardAction}
-
                         />
                         :
-                        <RecurringStatesList data={this.state.schedules}
-                                             disableCreate={!this.isFiltered()}
-                                             onActionChanged={this.handleForwardAction}
-                                             onSelect={this.handleDetailsAction}
-                                             onEdit={this.handleEditAction}
-                                             onDelete={this.deleteSchedule}
-                        />
+                        (this.state.action === 'edit' && this.state.selected) ?
+                            <RecurringStatesEdit schedule={this.state.selected}
+                                                 onMessageChanged={this.onMessageChanged}
+                                                 onActionChanged={this.handleForwardAction}
+
+                            />
+                            :
+                            <RecurringStatesList data={this.state.schedules}
+                                                 disableCreate={!this.isFiltered()}
+                                                 onActionChanged={this.handleForwardAction}
+                                                 onSelect={this.handleDetailsAction}
+                                                 onEdit={this.handleEditAction}
+                                                 onDelete={this.deleteSchedule}
+                            />
                 }
             </div>
         );

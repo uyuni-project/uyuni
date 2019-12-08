@@ -49,13 +49,15 @@ class RecurringStatesEdit extends React.Component {
                     return minions;}, []),
                 type: schedule.type,
                 targetType: schedule.targetType,
+                groupName: schedule.groupName,
                 cronTimes: {
                     minute: schedule.minute,
                     hour: schedule.hour,
                     dayOfWeek: schedule.dayOfWeek,
                     dayOfMonth: schedule.dayOfMonth
                 },
-                customCron: schedule.frequency
+                customCron: schedule.frequency,
+                test: schedule.isTest === "true"
             });
     };
 
@@ -64,7 +66,10 @@ class RecurringStatesEdit extends React.Component {
         if (search.match("\\?sid")) {
             Object.assign(this.state, {targetType: "Minion"});
         } else if (search.match("\\?sgid")) {
-            Object.assign(this.state, {targetType: "Group"});
+            Object.assign(this.state, {
+                targetType: "Group",
+                groupName: groupName
+            });
         } else if (window.location.pathname.match("/ssm") && !search) {
             Object.assign(this.state, {targetType: "System Set Manager"});
         } else {
@@ -88,6 +93,7 @@ class RecurringStatesEdit extends React.Component {
                 scheduleName: this.state.scheduleName,
                 type: this.state.type,
                 targetType: this.state.targetType,
+                groupName: this.state.groupName,
                 cronTimes: this.state.cronTimes,
                 cron: this.state.customCron,
                 test: this.state.test
@@ -123,6 +129,7 @@ class RecurringStatesEdit extends React.Component {
                 scheduleName: this.state.scheduleName,
                 type: this.state.type,
                 targetType: this.state.targetType,
+                groupName: this.state.groupName,
                 cronTimes: this.state.cronTimes,
                 cron: this.state.customCron,
                 test: this.state.test

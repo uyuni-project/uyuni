@@ -39,6 +39,9 @@ public class RecurringStateScheduleJson {
      */
     private String targetType;
 
+    /** Contains the group name, if target type is group */
+    private String groupName;
+
     /** Array containing Quartz information */
     private Map<String, String> cronTimes;
 
@@ -72,6 +75,11 @@ public class RecurringStateScheduleJson {
      * @return the target type of the schedule
      */
     public String getTargetType() {return targetType;}
+
+    /**
+     * @return the group name of the group if available
+     */
+    public String getGroupName() {return groupName;}
 
     /**
      * @return the Array containing Quartz information

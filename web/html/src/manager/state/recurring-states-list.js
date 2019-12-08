@@ -33,7 +33,7 @@ class RecurringStatesList extends React.Component {
                     <tr>
                         <td>{row.scheduleName}</td>
                         <td className="text-center">{row.frequency}</td>
-                        <td className="text-center">{row.createdAt}</td>
+                        <td className="text-center">{row.createdAt + " " + timezone}</td>
                         {this.props.disableCreate ? <td className="text-center">{row.targetType}</td> : null}
                         <td className="text-right">
                             <div className="btn-group">
