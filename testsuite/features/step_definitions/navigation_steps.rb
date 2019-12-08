@@ -330,6 +330,7 @@ Given(/^I am on the Systems overview page of this "([^"]*)"$/) do |host|
   steps %(
     Given I am on the Systems page
     When I follow "#{system_name}"
+    I wait until I see "#{system_name}" text
   )
 end
 
