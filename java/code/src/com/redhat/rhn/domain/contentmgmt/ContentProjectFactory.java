@@ -21,6 +21,8 @@ import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.contentmgmt.ProjectSource.Type;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.manager.channel.ChannelManager;
+
 import org.apache.log4j.Logger;
 
 import java.util.HashSet;
@@ -274,14 +276,34 @@ public class ContentProjectFactory extends HibernateFactory {
     }
 
     /**
-     * Purge the Environment Target - delete it and delete its underlying resource (e.g. {@link Channel}) too
+     * Purge the Environment Target - delete it and delete its underlying resource (e.g. {@link Channel}) too.
+     * Reconstructs the 'original-clone' relation in case it'd be broken by the channel deletion.
      *
      * @param target the Environment Target
      */
     public static void purgeTarget(EnvironmentTarget target) {
+        target.asSoftwareTarget().ifPresent(swTgt -> {
+            Optional<Channel> prevChannel = swTgt.findPredecessorChannel();
+            Optional<Channel> nextChannel = swTgt.findSuccessorChannel();
+            // if both next and previous channel exist -> fix the original-clone relation
+            nextChannel.ifPresent(next -> prevChannel.ifPresent(prev -> {
+                next.asCloned().ifPresentOrElse(
+                        n -> n.setOriginal(prev),
+                        () -> {
+                            log.info("Channel is not a clone: " + next + ". Adding clone info.");
+                            ChannelManager.addCloneInfo(prev.getId(), next.getId());
+                        });
+            }));
+        });
+
+        // then remove the target and its channel
         target.getContentEnvironment().removeTarget(target);
         INSTANCE.removeObject(target);
-        target.asSoftwareTarget().ifPresent(swTgt -> ChannelFactory.remove(swTgt.getChannel()));
+
+        target.asSoftwareTarget().map(swTgt -> swTgt.getChannel()).ifPresent(channel -> {
+            HibernateFactory.getSession().evict(channel);
+            ChannelFactory.remove(channel);
+        });
     }
 
     /**

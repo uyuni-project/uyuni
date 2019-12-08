@@ -47,7 +47,9 @@ import com.redhat.rhn.manager.channel.ChannelManager;
 import com.redhat.rhn.manager.channel.CloneChannelCommand;
 import com.redhat.rhn.manager.errata.ErrataManager;
 import com.redhat.rhn.manager.errata.cache.ErrataCacheManager;
+
 import org.apache.commons.lang3.tuple.Pair;
+import org.apache.log4j.Logger;
 
 import java.util.Collection;
 import java.util.Date;
@@ -85,6 +87,8 @@ public class ContentManager {
 
     // forbid instantiation
     private ContentManager() { }
+
+    private static Logger log = Logger.getLogger(ContentManager.class);
 
     /**
      * Create a Content Project
@@ -661,26 +665,63 @@ public class ContentManager {
             Channel leader, Stream<Channel> channels, User user) {
         // first make sure the leader exists
         SoftwareEnvironmentTarget leaderTarget = lookupTarget(leader, env, user)
-                .map(tgt -> {
-                    tgt.getChannel().setParentChannel(null);
-                    return tgt;
-                })
+                .map(tgt -> fixTargetProperties(tgt, null))
                 .orElseGet(() -> createSoftwareTarget(leader, empty(), env, user));
 
         // then do the same with the children
         Stream<Pair<Channel, SoftwareEnvironmentTarget>> nonLeaderTargets = channels
                 .map(src -> lookupTarget(src, env, user)
-                        .map(tgt -> {
-                            tgt.getChannel().setParentChannel(leaderTarget.getChannel());
-                            return Pair.of(src, tgt);
-                        })
+                        .map(tgt -> fixTargetProperties(tgt, leaderTarget.getChannel()))
+                        .map(tgt -> Pair.of(src, tgt))
                         .orElseGet(() ->
                                 Pair.of(src, createSoftwareTarget(src, of(leaderTarget.getChannel()), env, user))));
 
-        return Stream.concat(
+        List<Pair<Channel, SoftwareEnvironmentTarget>> srcTgtPairs = Stream.concat(
                 Stream.of(Pair.of(leader, leaderTarget)),
                 nonLeaderTargets)
                 .collect(toList());
+
+        // let's also make sure the original-clone relation of the channels is ok
+        srcTgtPairs.forEach(srcTgt -> fixOriginalCloneRelation(srcTgt.getLeft(), srcTgt.getRight()));
+
+        return srcTgtPairs;
+    }
+
+    /**
+     * Fixes the original-clone relation of source and target. This makes sure that:
+     * 1. Old clones of source in the same content project will become clones of the target
+     * 2. Target will become clone of the source
+     *
+     * @param src the source
+     * @param swTgt the target
+     */
+    private static void fixOriginalCloneRelation(Channel src, SoftwareEnvironmentTarget swTgt) {
+        Channel tgt = swTgt.getChannel();
+        ContentProject tgtProject = swTgt.getContentEnvironment().getContentProject();
+
+        // fix the original-clone relation
+        // 1. old clones of src are clones of tgt now
+        src.getClonedChannels().stream()
+                .filter(srcClone -> !srcClone.equals(tgt))
+                .filter(srcClone -> ContentProjectFactory // only align the channels in the same content project!
+                        .lookupEnvironmentTargetByChannelLabel(srcClone.getLabel())
+                        .filter(t -> t.getContentEnvironment().getContentProject()
+                                .equals(tgtProject))
+                        .isPresent())
+                .forEach(cc -> cc.setOriginal(tgt));
+        // 2. tgt is clone of src now
+        tgt.asCloned().ifPresentOrElse(
+                t -> t.setOriginal(src),
+                () -> {
+                    log.info("Channel is not a clone: " + tgt + ". Adding clone info.");
+                    ChannelManager.addCloneInfo(src.getId(), tgt.getId());
+                });
+    }
+
+    private static SoftwareEnvironmentTarget fixTargetProperties(SoftwareEnvironmentTarget tgt, Channel newParent) {
+        // target already exists -> make sure its parent is set correctly
+        tgt.getChannel().setParentChannel(newParent);
+        return tgt;
     }
 
     private static Optional<SoftwareEnvironmentTarget> lookupTarget(Channel srcChannel, ContentEnvironment env,
