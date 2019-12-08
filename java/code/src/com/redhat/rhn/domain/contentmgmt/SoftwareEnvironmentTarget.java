@@ -119,7 +119,8 @@ public class SoftwareEnvironmentTarget extends EnvironmentTarget {
     }
 
     /**
-     * Find the predecessor {@link Channel} of the {@link Channel} of this {@link ContentEnvironment}
+     * Find the predecessor {@link Channel} of the {@link Channel} of this {@link ContentEnvironment}.
+     * In this case the predecessor is the original channel.
      *
      * @return the optional of the predecessor {@link Channel}
      */

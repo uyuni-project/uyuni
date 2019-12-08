@@ -1319,6 +1319,21 @@ public class ChannelManager extends BaseManager {
     }
 
     /**
+     * Add clone data to the channel (transform regular channel to a cloned one).
+     *
+     * @param originalId the original channel id
+     * @param channelId the channel id
+     * @return the number of rows added
+     */
+    public static int addCloneInfo(long originalId, long channelId) {
+        WriteMode m = ModeFactory.getWriteMode("Channel_queries", "add_clone_info");
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("original_id", originalId);
+        params.put("channel_id", channelId);
+        return m.executeUpdate(params);
+    }
+
+    /**
      * Finds the id of a child channel with the given parent channel id that contains
      * a package with the given name.  Returns all child channel unless expectOne is True
      * @param org Organization of the current user.

@@ -1183,4 +1183,10 @@ ORDER BY CC.modified DESC
   </query>
 </mode>
 
+<write-mode name="add_clone_info">
+    <query params="original_id, channel_id">
+        INSERT INTO rhnChannelCloned(original_id, id)
+        VALUES(:original_id, :channel_id)
+    </query>
+</write-mode>
 </datasource_modes>

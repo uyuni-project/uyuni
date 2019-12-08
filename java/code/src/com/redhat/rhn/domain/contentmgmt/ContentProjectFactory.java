@@ -18,6 +18,7 @@ package com.redhat.rhn.domain.contentmgmt;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
+import com.redhat.rhn.domain.channel.ClonedChannel;
 import com.redhat.rhn.domain.contentmgmt.ProjectSource.Type;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.user.User;
@@ -273,11 +274,23 @@ public class ContentProjectFactory extends HibernateFactory {
     }
 
     /**
-     * Purge the Environment Target - delete it and delete its underlying resource (e.g. {@link Channel}) too
+     * Purge the Environment Target - delete it and delete its underlying resource (e.g. {@link Channel}) too.
+     * Reconstructs the 'original-clone' relation in case it'd be broken by the channel deletion.
      *
      * @param target the Environment Target
      */
     public static void purgeTarget(EnvironmentTarget target) {
+        // firstly fix the original/clone relations of channels
+        Optional<Channel> prevChannel = target.asSoftwareTarget()
+                .flatMap(tgt -> tgt.findPredecessorChannel());
+        Optional<ClonedChannel> nextChannel = target.asSoftwareTarget()
+                .flatMap(tgt -> tgt.findSuccessorChannel())
+                .map(c -> c.asCloned().orElseThrow(() ->
+                        new IllegalStateException("Target channel must be a clone: " + c)));
+        // if both next and previous channel exist -> fix the original-clone relation
+        nextChannel.ifPresent(next -> prevChannel.ifPresent(prev -> next.setOriginal(prev)));
+
+        // then remove the target and its channel
         target.getContentEnvironment().removeTarget(target);
         INSTANCE.removeObject(target);
         target.asSoftwareTarget().ifPresent(swTgt -> ChannelFactory.remove(swTgt.getChannel()));
