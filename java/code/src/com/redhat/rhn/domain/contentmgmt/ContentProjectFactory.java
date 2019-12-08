@@ -423,6 +423,24 @@ public class ContentProjectFactory extends HibernateFactory {
     }
 
     /**
+     * Look up a successor (cloned) {@link Channel} of given {@link Channel} in given {@link ContentProject}
+     *
+     * @param channel the channel
+     * @param project the project
+     * @return the successor of the channel in the project
+     */
+    public static Optional<ClonedChannel> lookupSuccessorChannel(Channel channel, ContentProject project) {
+        Optional<Channel> successor = HibernateFactory.getSession()
+                .createQuery("SELECT tgt.channel FROM SoftwareEnvironmentTarget tgt " +
+                        "WHERE tgt.contentEnvironment.contentProject = :project " +
+                        "AND tgt.channel.original = :channel")
+                .setParameter("project", project)
+                .setParameter("channel", channel)
+                .uniqueResultOptional();
+        return successor.flatMap(Channel::asCloned);
+    }
+
+    /**
      * List filters visible to given user
      *
      * @param user the user
