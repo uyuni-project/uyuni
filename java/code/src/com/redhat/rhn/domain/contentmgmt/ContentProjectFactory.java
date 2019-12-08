@@ -23,9 +23,12 @@ import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.user.User;
 import org.apache.log4j.Logger;
 
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
@@ -335,6 +338,23 @@ public class ContentProjectFactory extends HibernateFactory {
         Root<SoftwareEnvironmentTarget> from = query.from(SoftwareEnvironmentTarget.class);
         query.where(builder.equal(from.get("id"), id));
         return getSession().createQuery(query).uniqueResultOptional();
+    }
+
+    /**
+     * Look up {@link SoftwareEnvironmentTarget}s in {@link ContentProject} whose {@link Channel}s have given suffix.
+     *
+     * @param suffix the channel suffix
+     * @param project the project
+     * @return the successor of the channel in the project
+     */
+    public static Set<SoftwareEnvironmentTarget> lookupSwTargetsWithSuffix(String suffix, ContentProject project) {
+        return new HashSet<>(HibernateFactory.getSession()
+                .createQuery("SELECT tgt FROM SoftwareEnvironmentTarget tgt " +
+                        "WHERE tgt.contentEnvironment.contentProject = :project " +
+                        "AND tgt.channel.label LIKE :suffix")
+                .setParameter("project", project)
+                .setParameter("suffix", "%" + suffix)
+                .list());
     }
 
     /**

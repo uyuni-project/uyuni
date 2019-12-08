@@ -73,6 +73,7 @@ import static java.util.Optional.ofNullable;
 import static java.util.stream.Collectors.groupingBy;
 import static java.util.stream.Collectors.partitioningBy;
 import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.toMap;
 import static java.util.stream.Collectors.toSet;
 
 /**
@@ -734,6 +735,38 @@ public class ContentManager {
      */
     private static String prefixString(ContentEnvironment env) {
         return env.getContentProject().getLabel() + DELIMITER + env.getLabel() + DELIMITER;
+    }
+
+    /**
+     * Given a {@link Channel}, try to look up its successor
+     * in the Environment Path (starting after given {@link ContentEnvironment})
+     *
+     * @param channel the Channel
+     * @param environment the Environment
+     * @return successor Channel in the Environment Path
+     */
+    public static Optional<Channel> lookupSuccessorInEnvPath(Channel channel, ContentEnvironment environment) {
+        String channelSuffix = channel.getLabel().replaceFirst("^" + prefixString(environment), "");
+        Map<ContentEnvironment, SoftwareEnvironmentTarget> targetsByEnvironment =
+                ContentProjectFactory.lookupSwTargetsWithSuffix(channelSuffix, environment.getContentProject()).stream()
+                        .collect(toMap(
+                                tgt -> tgt.getContentEnvironment(),
+                                tgt -> tgt));
+
+        return environment.getNextEnvironmentOpt()
+                .flatMap(next -> lookupSuccessor(next, targetsByEnvironment))
+                .map(tgt -> tgt.getChannel());
+    }
+
+    // helper method: recursively go through Environment Path and look for match in given map
+    private static Optional<SoftwareEnvironmentTarget> lookupSuccessor(
+            ContentEnvironment env,
+            Map<ContentEnvironment, SoftwareEnvironmentTarget> successorsByEnvironment) {
+        if (successorsByEnvironment.containsKey(env)) {
+            return of(successorsByEnvironment.get(env));
+        }
+
+        return env.getNextEnvironmentOpt().flatMap(next -> lookupSuccessor(next, successorsByEnvironment));
     }
 
     private static ContentProjectHistoryEntry addHistoryEntry(

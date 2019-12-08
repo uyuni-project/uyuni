@@ -16,6 +16,8 @@
 package com.redhat.rhn.domain.contentmgmt;
 
 import com.redhat.rhn.domain.channel.Channel;
+import com.redhat.rhn.manager.contentmgmt.ContentManager;
+
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
@@ -105,6 +107,24 @@ public class SoftwareEnvironmentTarget extends EnvironmentTarget {
                 .append(channel, that.channel)
                 .append(getContentEnvironment(), that.getContentEnvironment())
                 .isEquals();
+    }
+
+    /**
+     * Find the successor {@link Channel} of the {@link Channel} of this {@link ContentEnvironment}
+     *
+     * @return the optional of the successor {@link Channel}
+     */
+    public Optional<Channel> findSuccessorChannel() {
+        return ContentManager.lookupSuccessorInEnvPath(getChannel(), getContentEnvironment());
+    }
+
+    /**
+     * Find the predecessor {@link Channel} of the {@link Channel} of this {@link ContentEnvironment}.
+     *
+     * @return the optional of the predecessor {@link Channel}
+     */
+    public Optional<Channel> findPredecessorChannel() {
+        return getChannel().asCloned().map(c -> c.getOriginal());
     }
 
     /**
