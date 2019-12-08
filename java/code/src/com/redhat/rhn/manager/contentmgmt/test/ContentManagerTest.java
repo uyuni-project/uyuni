@@ -851,7 +851,7 @@ public class ContentManagerTest extends BaseTestCaseWithUser {
         ContentEnvironment env = ContentManager.createEnvironment(cp.getLabel(), empty(), "fst", "first env", "desc", false, user);
 
         // ... build by another user
-        Channel channel = createPopulatedChannel(user);
+        Channel channel = createPopulatedChannel();
         ContentManager.attachSource("cplabel", SW_CHANNEL, channel.getLabel(), empty(), user);
         ContentManager.buildProject("cplabel", empty(), false, adminSameOrg);
         assertEquals(Long.valueOf(1), env.getVersion());
@@ -878,7 +878,7 @@ public class ContentManagerTest extends BaseTestCaseWithUser {
         ContentProjectFactory.save(cp);
         ContentEnvironment env = ContentManager.createEnvironment(cp.getLabel(), empty(), "fst", "first env", "desc", false, user);
 
-        Channel channel = createPopulatedChannel(user);
+        Channel channel = createPopulatedChannel();
         ContentManager.attachSource("cplabel", SW_CHANNEL, channel.getLabel(), empty(), user);
         ContentManager.buildProject("cplabel", empty(), false, user);
         assertEquals(Long.valueOf(1), env.getVersion());
@@ -1129,10 +1129,6 @@ public class ContentManagerTest extends BaseTestCaseWithUser {
     }
 
     private Channel createPopulatedChannel() throws Exception {
-        return createPopulatedChannel(user);
-    }
-
-    private Channel createPopulatedChannel(User user) throws Exception {
         Channel channel = TestUtils.reload(ChannelFactoryTest.createTestChannel(user, false));
         channel.setChecksumType(ChannelFactory.findChecksumTypeByLabel("sha1"));
         Package pack = PackageTest.createTestPackage(user.getOrg());
