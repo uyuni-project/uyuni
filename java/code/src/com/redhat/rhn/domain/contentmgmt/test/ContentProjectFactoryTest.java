@@ -38,8 +38,10 @@ import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.ChannelTestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import static com.redhat.rhn.domain.contentmgmt.ProjectSource.Type.SW_CHANNEL;
 import static com.redhat.rhn.domain.contentmgmt.ProjectSource.Type.lookupByLabel;
@@ -568,5 +570,38 @@ public class ContentProjectFactoryTest extends BaseTestCaseWithUser {
         assertEquals(cp, ContentProjectFactory.listFilterProjects(filter).get(0));
         cp.detachFilter(filter);
         assertTrue(ContentProjectFactory.listFilterProjects(filter).isEmpty());
+    }
+
+    /**
+     * Tests looking up Software Targets corresponding to given suffix.
+     *
+     * @throws Exception if anything goes wrong
+     */
+    public void testLookupSwTargetWithSuffix() throws Exception {
+        var channelSuffix = "testlabel123";
+        var project = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());
+        ContentProjectFactory.save(project);
+        var devEnv = new ContentEnvironment("dev", "Development", null, project);
+        ContentProjectFactory.save(devEnv);
+        project.setFirstEnvironment(devEnv);
+        var devChannel = ChannelTestUtils.createBaseChannel(user);
+        devChannel.setLabel("cplabel-dev-" + channelSuffix);
+        var devTarget = new SoftwareEnvironmentTarget(devEnv, devChannel);
+        ContentProjectFactory.save(devTarget);
+
+        // test env does not contain any channels
+        var testEnv = new ContentEnvironment("test", "Test", null, project);
+        ContentProjectFactory.save(testEnv);
+
+        var prodEnv = new ContentEnvironment("prod", "Prod", null, project);
+        ContentProjectFactory.save(prodEnv);
+        var prodChannel = ChannelTestUtils.createBaseChannel(user);
+        prodChannel.setLabel("cplabel-prod-" + channelSuffix);
+        var prodTarget = new SoftwareEnvironmentTarget(prodEnv, prodChannel);
+        ContentProjectFactory.save(prodTarget);
+
+        assertEquals(
+                Set.of(devTarget, prodTarget),
+                new HashSet<>(ContentProjectFactory.lookupSwTargetsWithSuffix(channelSuffix, project)));
     }
 }
