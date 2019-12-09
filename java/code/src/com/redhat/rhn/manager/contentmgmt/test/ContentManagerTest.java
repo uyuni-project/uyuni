@@ -235,7 +235,6 @@ public class ContentManagerTest extends BaseTestCaseWithUser {
 
     /**
      * Test that removing a Environment also removes its targets
-     * to the first environment of the project is updated
      *
      * @throws Exception if anything goes wrong
      */
@@ -255,8 +254,9 @@ public class ContentManagerTest extends BaseTestCaseWithUser {
                 .setParameter("channel", channel)
                 .uniqueResultOptional()
                 .isPresent());
-        // but the channel stays
-        assertNotNull(ChannelFactory.lookupById(channel.getId()));
+
+        // channel is also removed
+        assertNull(ChannelFactory.lookupById(channel.getId()));
     }
 
     /**

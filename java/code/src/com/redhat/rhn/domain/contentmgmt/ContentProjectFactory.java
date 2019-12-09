@@ -25,6 +25,7 @@ import com.redhat.rhn.manager.channel.ChannelManager;
 
 import org.apache.log4j.Logger;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -230,10 +231,19 @@ public class ContentProjectFactory extends HibernateFactory {
     }
 
     /**
-     * Remove an environment from the path. It take care that chain stay intact
+     * Remove an environment from the path. Take care that chain stays intact.
+     * Also remove all channels belonging to this environment.
+     *
      * @param toRemove environment to remove.
      */
     public static void removeEnvironment(ContentEnvironment toRemove) {
+        // let's purge all the targets in the environment firstly
+        new ArrayList<>(toRemove.getTargets()).stream()
+                .sorted((t1, t2) -> Boolean.compare(// make sure a parent channel goes first
+                        t1.asSoftwareTarget().map(t -> t.getChannel().isBaseChannel()).orElse(false),
+                        t2.asSoftwareTarget().map(t -> t.getChannel().isBaseChannel()).orElse(false)))
+                .forEach(ContentProjectFactory::purgeTarget);
+
         if (toRemove.getNextEnvironmentOpt().isPresent()) {
             ContentEnvironment next = toRemove.getNextEnvironmentOpt().get();
             if (toRemove.getPrevEnvironmentOpt().isPresent()) {
