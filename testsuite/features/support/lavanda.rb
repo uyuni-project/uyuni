@@ -35,10 +35,10 @@ module LavandaBasic
   end
 
   # run functions
-  def run(cmd, fatal = true, timeout = DEFAULT_TIMEOUT, user = 'root')
+  def run(cmd, fatal = true, timeout = DEFAULT_TIMEOUT, user = 'root', successcodes = [0])
     out, _lo, _rem, code = test_and_store_results_together(cmd, user, timeout)
     if fatal
-      raise "FAIL: #{cmd} returned #{code}. output : #{out}" if code != 0
+      raise "FAIL: #{cmd} returned #{code}. output : #{out}" unless successcodes.include?(code)
     end
     [out, code]
   end
