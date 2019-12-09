@@ -65,8 +65,6 @@ BuildRequires:  python-devel
 %else
 BuildRequires:  python2-devel
 %endif
-Conflicts:      spacewalk-backend-libs
-Conflicts:      spacewalk-usix
 
 %description -n python2-%{name}
 Python 2 libraries required by both Uyuni server and client tools.
@@ -83,8 +81,6 @@ Requires:       python3-base
 %else
 Requires:       python3-libs
 %endif
-Conflicts:      python3-spacewalk-backend-libs
-Conflicts:      python3-spacewalk-usix
 
 
 %description -n python3-%{name}
