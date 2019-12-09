@@ -57,7 +57,8 @@ Feature: Very first settings
     And service "apache2" is active on "server"
     And service "cobblerd" is enabled on "server"
     And service "cobblerd" is active on "server"
-    And service "jabberd" is enabled on "server"
+    # jabberd is not longer enabled; it is tied to osa-dispatcher, so only test that jabberd is active
+    # And service "jabberd" is enabled on "server"
     And service "jabberd" is active on "server"
     And service "osa-dispatcher" is enabled on "server"
     And service "osa-dispatcher" is active on "server"
