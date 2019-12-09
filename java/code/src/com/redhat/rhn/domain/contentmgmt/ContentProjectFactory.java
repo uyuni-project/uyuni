@@ -40,6 +40,8 @@ import static java.util.Optional.empty;
  */
 public class ContentProjectFactory extends HibernateFactory {
 
+    private static final String DELIMITER = "-";
+
     private static final ContentProjectFactory INSTANCE = new ContentProjectFactory();
     private static Logger log = Logger.getLogger(ContentProjectFactory.class);
 
@@ -562,6 +564,19 @@ public class ContentProjectFactory extends HibernateFactory {
      */
     public static void remove(ContentProjectFilter filter) {
         INSTANCE.removeObject(filter);
+    }
+
+    /**
+     * Create a prefix from given {@link ContentEnvironment}
+     *
+     * e.g. Environment with label "bar" in a Project with label "foo"
+     * will return "foo-bar-".
+     *
+     * @param env the Environment
+     * @return the prefix
+     */
+    public static String prefixString(ContentEnvironment env) {
+        return env.getContentProject().getLabel() + DELIMITER + env.getLabel() + DELIMITER;
     }
 
     /**

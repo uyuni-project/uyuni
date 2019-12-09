@@ -59,6 +59,7 @@ import java.util.Set;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
+import static com.redhat.rhn.domain.contentmgmt.ContentProjectFactory.prefixString;
 import static com.redhat.rhn.domain.contentmgmt.ProjectSource.State.ATTACHED;
 import static com.redhat.rhn.domain.contentmgmt.ProjectSource.State.BUILT;
 import static com.redhat.rhn.domain.contentmgmt.ProjectSource.State.DETACHED;
@@ -79,8 +80,6 @@ import static java.util.stream.Collectors.toSet;
  * Content Management functionality
  */
 public class ContentManager {
-
-    private static final String DELIMITER = "-";
 
     // forbid instantiation
     private ContentManager() { }
@@ -721,19 +720,6 @@ public class ContentManager {
         return env.getPrevEnvironmentOpt()
                 .map(prevEnv -> srcChannelLabel.replaceAll("^" + prefixString(prevEnv), envPrefix))
                 .orElse(envPrefix + srcChannelLabel);
-    }
-
-    /**
-     * Create a prefix from given {@link ContentEnvironment}
-     *
-     * e.g. Environment with label "bar" in a Project with label "foo"
-     * will return "foo-bar-".
-     *
-     * @param env the Environment
-     * @return the prefix
-     */
-    private static String prefixString(ContentEnvironment env) {
-        return env.getContentProject().getLabel() + DELIMITER + env.getLabel() + DELIMITER;
     }
 
     private static ContentProjectHistoryEntry addHistoryEntry(
