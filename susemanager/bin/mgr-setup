@@ -840,6 +840,7 @@ if [ "$DO_SETUP" = "1" -o "$DO_MIGRATION" = "1" ]; then
 
             # explicitly enable OSA dispatcher as it's no longer part of spacewalk.target
             echo "Enable osa-dispatcher..."
+            systemctl --quiet enable jabberd
             systemctl --quiet enable osa-dispatcher
 
             systemctl restart postgresql
