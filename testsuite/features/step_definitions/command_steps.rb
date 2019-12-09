@@ -151,7 +151,7 @@ When(/^I make sure no spacewalk\-repo\-sync is executing, excepted the ones need
   reposync_not_running_streak = 0
   reposync_left_running_streak = 0
   while reposync_not_running_streak <= 30 && reposync_left_running_streak <= 7200
-    command_output, _code = $server.run('ps -C spacewalk-repo-sync -o pid= -o cmd=', false)
+    command_output, _code = $server.run('ps axo pid,cmd | grep spacewalk-repo-sync | grep -v grep', false)
     if command_output.empty?
       reposync_not_running_streak += 1
       reposync_left_running_streak = 0
