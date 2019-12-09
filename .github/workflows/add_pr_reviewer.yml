@@ -1,0 +1,50 @@
+name: add_pr_reviewer
+
+on:
+  pull_request:
+    types: [opened, edited, synchronize, reopened]
+
+jobs:
+  add_pr_reviewer:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+      with:
+        fetch-depth: 1
+    - uses: actions/setup-ruby@v1
+    - name: "Check if there are test framework changes"
+      id: review_step
+      run: |
+        files_modified=`git diff --name-only "origin/$GITHUB_BASE_REF..HEAD" | xargs`
+        review=`ruby .github/scripts/needs_qa_squad_review.rb "$files_modified"`
+        echo "##[set-output name=review;]$review"
+    - name: "Send Review Request to QA Squad"
+      if: steps.review_step.outputs.review == 'true' && github.actor == 'srbarrios'
+      uses: kunihiko-t/review-request-action@v0.1.3
+      with:
+        repo-token: "${{ secrets.GITHUB_TOKEN }}"
+        reviewers: "lkotek,ktsamis,Bischoff"
+    - name: "Send Review Request to QA Squad"
+      if: steps.review_step.outputs.review == 'true' && github.actor == 'lkotek'
+      uses: kunihiko-t/review-request-action@v0.1.3
+      with:
+        repo-token: "${{ secrets.GITHUB_TOKEN }}"
+        reviewers: "srbarrios,ktsamis,Bischoff"
+    - name: "Send Review Request to QA Squad"
+      if: steps.review_step.outputs.review == 'true' && github.actor == 'Bischoff'
+      uses: kunihiko-t/review-request-action@v0.1.3
+      with:
+        repo-token: "${{ secrets.GITHUB_TOKEN }}"
+        reviewers: "lkotek,ktsamis,srbarrios"
+    - name: "Send Review Request to QA Squad"
+      if: steps.review_step.outputs.review == 'true' && github.actor == 'ktsamis'
+      uses: kunihiko-t/review-request-action@v0.1.3
+      with:
+        repo-token: "${{ secrets.GITHUB_TOKEN }}"
+        reviewers: "lkotek,srbarrios,Bischoff"
+    - name: "Send Review Request to QA Squad"
+      if: steps.review_step.outputs.review == 'true' && github.actor != 'ktsamis' && github.actor != 'Bischoff' && github.actor != 'lkotek' && github.actor != 'srbarrios'
+      uses: kunihiko-t/review-request-action@v0.1.3
+      with:
+        repo-token: "${{ secrets.GITHUB_TOKEN }}"
+        reviewers: "lkotek,srbarrios,Bischoff,ktsamis"

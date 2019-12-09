@@ -1,7 +1,8 @@
-const React = require('react');
+import * as React from 'react';
 
-const { Label } = require('./Label');
-const { FormGroup } = require('./FormGroup');
+import { Label } from './Label';
+import { FormGroup } from './FormGroup';
+import { FormContext } from './Form';
 
 export type Props = {
   name: string,
@@ -20,10 +21,6 @@ export type Props = {
   disabled?: boolean,
   invalidHint?: string,
   onChange?: (name: string, value: string) => void,
-  onFormChange?: Function,
-  registerInput?: Function,
-  unregisterInput?: Function,
-  validate?: Function,
 };
 
 type State = {
@@ -31,7 +28,7 @@ type State = {
   showErrors: boolean,
 };
 
-class InputBase extends React.Component<Props, State> {
+export class InputBase extends React.Component<Props, State> {
   static defaultProps = {
     defaultValue: undefined,
     label: undefined,
@@ -42,10 +39,6 @@ class InputBase extends React.Component<Props, State> {
     disabled: false,
     invalidHint: undefined,
     onChange: undefined,
-    onFormChange: undefined,
-    registerInput: undefined,
-    unregisterInput: undefined,
-    validate: undefined,
   };
 
   constructor(props: Props) {
@@ -56,32 +49,27 @@ class InputBase extends React.Component<Props, State> {
     };
   }
 
-  // eslint-disable-next-line
-  UNSAFE_componentWillMount() {
-    if (this.props.registerInput) {
-      this.props.registerInput(this);
-    }
-  }
+  componentDidMount() {
+    if (this.props && this.props.name) {
+      this.context.registerInput(this);
 
-  // eslint-disable-next-line
-  UNSAFE_componentWillReceiveProps(nextProps) {
-    const valueNotChanged =
-      (nextProps.value instanceof Date && this.props.value instanceof Date
-        && nextProps.value.getTime() === this.props.value.getTime())
-      || nextProps.value === this.props.value;
-    if (!(valueNotChanged && nextProps.disabled === this.props.disabled
-              && nextProps.required === this.props.required)) {
-      if (this.props.validate) this.props.validate(this, nextProps);
-      this.setState({
-        showErrors: false,
-      });
+      const { model } = this.context;
+      const value = this.context.model[this.props.name] || this.props.defaultValue || '';
+      const valueChanged =
+        (value instanceof Date && model[this.props.name] instanceof Date
+          && value.getTime() !== model[this.props.name].getTime())
+        || value !== model[this.props.name];
+
+      if (valueChanged) {
+        model[this.props.name] = value;
+        this.context.setModelValue(this.props.name, value);
+      }
     }
   }
 
   componentWillUnmount() {
-    if (this.props.unregisterInput) {
-      this.props.unregisterInput(this);
-    }
+    this.context.unregisterInput(this);
+    this.context.setModelValue(this.props.name, undefined);
   }
 
   onBlur() {
@@ -90,20 +78,47 @@ class InputBase extends React.Component<Props, State> {
     });
   }
 
-  setValue(name: string, value: string) {
-    if (this.props.onFormChange) {
-      this.props.onFormChange({
-        name,
-        value,
-      });
+  validate(model: Object): boolean {
+    const { name } = this.props;
+    const results = [];
+    let isValid = true;
+
+    if (!this.props.disabled && (model[name] || this.props.required)) {
+      if (this.props.required && !model[name]) {
+        isValid = false;
+      } else if (this.props.validators) {
+        const validators = Array.isArray(this.props.validators) ? this.props.validators : [this.props.validators];
+        validators.forEach((v) => {
+          results.push(Promise.resolve(v(`${model[name] || ''}`)));
+        });
+      }
     }
+
+    Promise.all(results).then((result) => {
+      result.forEach((r) => {
+        isValid = isValid && r;
+      });
+      this.setState({isValid});
+      this.context.onFieldValidation(name, isValid);
+    });
+
+    this.setState({
+      isValid,
+    });
+    return isValid;
+  }
+
+  setValue(name: string, value: string) {
+    this.context.setModelValue(name, value);
 
     if (this.props.onChange) this.props.onChange(name, value);
   }
 
   render() {
     const isError = this.state.showErrors && !this.state.isValid;
-    const invalidHint = isError && this.props.invalidHint;
+    const invalidHint = isError && (
+      this.props.invalidHint || (this.props.required && (`${this.props.label} is required.`))
+    );
     const hint = [this.props.hint, (invalidHint && this.props.hint && <br />), invalidHint];
     return (
       <FormGroup isError={isError}>
@@ -136,7 +151,4 @@ class InputBase extends React.Component<Props, State> {
     );
   }
 }
-
-module.exports = {
-  InputBase,
-};
+InputBase.contextType = FormContext;

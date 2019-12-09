@@ -219,7 +219,7 @@ When(/^I trigger cobbler system record$/) do
   unless out.include? 'ssh-push-tunnel'
     # normal traditional client
     steps %(
-      And I follow this "sle-client" link
+      And I follow this "sle_client" link
       And I follow "Provisioning"
       And I click on "Create PXE installation configuration"
       And I click on "Continue"
@@ -268,10 +268,10 @@ end
 # weak dependencies steps
 When(/^I refresh the metadata for "([^"]*)"$/) do |host|
   case host
-  when 'sle-client'
+  when 'sle_client'
     $client.run('rhn_check -vvv', true, 500, 'root')
     client_refresh_metadata
-  when 'sle-minion'
+  when 'sle_minion'
     $minion.run_until_ok('zypper --non-interactive refresh -s')
   else
     raise 'Invalid target.'
@@ -302,7 +302,7 @@ Then(/^"(\d+)" channels with prefix "([^"]*)" should be enabled on "([^"]*)"$/) 
 end
 
 Then(/^I should have '([^']*)' in the metadata for "([^"]*)"$/) do |text, host|
-  raise 'Invalid target.' unless host == 'sle-client'
+  raise 'Invalid target.' unless host == 'sle_client'
   target = $client
   arch, _code = target.run('uname -m')
   arch.chomp!
@@ -311,7 +311,7 @@ Then(/^I should have '([^']*)' in the metadata for "([^"]*)"$/) do |text, host|
 end
 
 Then(/^I should not have '([^']*)' in the metadata for "([^"]*)"$/) do |text, host|
-  raise 'Invalid target.' unless host == 'sle-client'
+  raise 'Invalid target.' unless host == 'sle_client'
   target = $client
   arch, _code = target.run('uname -m')
   arch.chomp!
@@ -320,7 +320,7 @@ Then(/^I should not have '([^']*)' in the metadata for "([^"]*)"$/) do |text, ho
 end
 
 Then(/^"([^"]*)" should exist in the metadata for "([^"]*)"$/) do |file, host|
-  raise 'Invalid target.' unless host == 'sle-client'
+  raise 'Invalid target.' unless host == 'sle_client'
   node = $client
   arch, _code = node.run('uname -m')
   arch.chomp!
@@ -392,6 +392,10 @@ And(/^I select "(.*?)" in the dropdown list of the architecture filter$/) do |ar
   raise "xpath: #{xpath_query} not found" unless find(:xpath, xpath_query).click
   # select the desired option
   raise "Architecture #{architecture} not found" unless find(:xpath, "//div[@id='select2-drop']/ul/li/div[contains(text(), '#{architecture}')]").click
+end
+
+When(/^I enter the "(.*)" package in the css "(.*)"$/) do |client, css|
+  find(css).set(PACKAGE_BY_CLIENT[client])
 end
 
 When(/^I select "([^\"]*)" as a product$/) do |product|
@@ -885,7 +889,7 @@ end
 
 And(/^I delete it via the "([^"]*)" button$/) do |target_button|
   if count_table_items != '0'
-    xpath_for_delete_button = "//button[contains(text(), '#{target_button}')]"
+    xpath_for_delete_button = "//button[@title='#{target_button}']"
     raise "xpath: #{xpath_for_delete_button} not found" unless find(:xpath, xpath_for_delete_button).click
 
     step %(I wait until I see "1 message deleted successfully." text)
@@ -894,7 +898,7 @@ end
 
 And(/^I mark as read it via the "([^"]*)" button$/) do |target_button|
   if count_table_items != '0'
-    xpath_for_read_button = "//button[contains(text(), '#{target_button}')]"
+    xpath_for_read_button = "//button[@title='#{target_button}']"
     raise "xpath: #{xpath_for_read_button} not found" unless find(:xpath, xpath_for_read_button).click
 
     step %(I wait until I see "1 message read status updated successfully." text)
@@ -976,4 +980,8 @@ When(/^I enter the SCC credentials$/) do
       And I click on "Save"
     )
   end
+end
+
+When(/^I enter the MU repository for (salt|traditional) "([^"]*)" as URL$/) do |client_type, client|
+  fill_in 'url', with: $mu_repositories[client][client_type]
 end

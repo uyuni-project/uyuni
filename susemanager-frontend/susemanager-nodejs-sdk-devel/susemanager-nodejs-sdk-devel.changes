@@ -1,3 +1,9 @@
+- upgrade serialize-javascript - CVE-2019-16769
+
+-------------------------------------------------------------------
+Wed Nov 27 17:05:43 CET 2019 - jgonzalez@suse.com
+
+- version 4.1.1-1
 - Add jexl library
 - Bump version to 4.1.0 (bsc#1154940)
 - Add @babel/plugin-syntax-dynamic-import

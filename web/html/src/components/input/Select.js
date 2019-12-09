@@ -1,19 +1,21 @@
 // @flow
 
-const React = require('react');
-const { InputBase } = require('./InputBase');
+import * as React from 'react';
+import { InputBase } from './InputBase';
+import { FormContext } from './Form';
 
 type Props = {
   children: React.Node,
   inputClass?: string,
 } & InputBase.Props;
 
-function Select(props: Props) {
+export function Select(props: Props) {
   const {
     inputClass,
     children,
     ...propsToPass
   } = props;
+  const formContext = React.useContext(FormContext);
   return (
     <InputBase {...propsToPass}>
       {
@@ -24,12 +26,13 @@ function Select(props: Props) {
           const onChange = (event: Object) => {
             setValue(event.target.name, event.target.value);
           };
+          const fieldValue = formContext.model[props.name] || props.defaultValue || '';
           return (
             <select
               className={`form-control${inputClass ? ` ${inputClass}` : ''}`}
               name={props.name}
               disabled={props.disabled}
-              value={props.value}
+              value={fieldValue}
               onBlur={onBlur}
               onChange={onChange}
             >
@@ -45,7 +48,3 @@ function Select(props: Props) {
 Select.defaultProps = Object.assign({
   inputClass: undefined,
 }, InputBase.defaultProps);
-
-module.exports = {
-  Select,
-};

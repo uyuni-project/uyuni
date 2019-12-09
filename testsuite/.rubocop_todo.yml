@@ -225,6 +225,10 @@ Style/FormatStringToken:
     - 'features/step_definitions/command_steps.rb'
     - 'features/step_definitions/xmlrpc_common.rb'
 
+Style/MutableConstant:
+  Exclude:
+    - 'features/support/constants.rb'
+
 # Offense count: 304
 # Configuration parameters: AllowedVariables.
 Style/GlobalVars:
@@ -243,6 +247,7 @@ Style/GlobalVars:
     - 'features/support/env.rb'
     - 'features/support/twopence_init.rb'
     - 'features/support/xmlrpc_system.rb'
+    - 'features/support/constants.rb'
 
 # Offense count: 9
 # Cop supports --auto-correct.

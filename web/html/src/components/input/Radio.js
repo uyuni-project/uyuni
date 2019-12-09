@@ -1,10 +1,11 @@
 // @flow
 
-const React = require('react');
-const { useState } = require('react');
-const { InputBase } = require('./InputBase');
+import React from 'react';
+import { useState } from 'react';
+import { InputBase } from './InputBase';
+import { FormContext } from './Form';
 
-const styles = require('./Radio.css');
+import styles from './Radio.css';
 
 type Props = {
   items: Array<{label: string, value: string}>,
@@ -13,7 +14,7 @@ type Props = {
   inputClass?: string,
 } & InputBase.Props;
 
-function Radio(props: Props) {
+export function Radio(props: Props) {
   const [isPristine, setIsPristine] = useState(true);
 
   const {
@@ -21,6 +22,7 @@ function Radio(props: Props) {
     inputClass,
     ...propsToPass
   } = props;
+  const formContext = React.useContext(FormContext);
   return (
     <InputBase {...propsToPass}>
       {
@@ -34,9 +36,10 @@ function Radio(props: Props) {
             setIsPristine(false);
           };
 
+          const fieldValue = formContext.model[props.name] || props.defaultValue || '';
           const isOpenOption = props.openOption
-            && !props.items.some(item => item.value === props.value)
-            && (props.value || !isPristine);
+            && !props.items.some(item => item.value === fieldValue)
+            && (fieldValue || !isPristine);
 
           const radioClass = props.inline ? "radio-inline" : "radio";
           return (
@@ -48,7 +51,7 @@ function Radio(props: Props) {
                       type="radio"
                       name={props.name}
                       value={value}
-                      checked={props.value === value}
+                      checked={fieldValue === value}
                       className={inputClass}
                       onBlur={onBlur}
                       onChange={event => onChange(event.target.name, event.target.value)} />
@@ -74,7 +77,7 @@ function Radio(props: Props) {
                     name={props.name}
                     type="text"
                     disabled={!isOpenOption}
-                    value={isOpenOption ? props.value : ''}
+                    value={isOpenOption ? fieldValue : ''}
                     onChange={event => onChange(event.target.name, event.target.value)}
                   />
                 </div>
@@ -90,7 +93,3 @@ function Radio(props: Props) {
 Radio.defaultProps = Object.assign({
   inputClass: undefined,
 }, InputBase.defaultProps);
-
-module.exports = {
-  Radio,
-};

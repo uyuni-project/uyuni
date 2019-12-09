@@ -1,12 +1,6 @@
 // @flow
 
-const React = require('react');
-const { Text } = require('./Text');
-const { Password } = require('./Password');
-const { Check } = require('./Check');
-const { Radio } = require('./Radio');
-const { Select } = require('./Select');
-const { DateTime } = require('./DateTime');
+import * as React from 'react';
 
 type Props = {
   model: Object,
@@ -17,22 +11,30 @@ type Props = {
   divClass?: string,
   formDirection?: string,
   children: React.Node,
-  onChange?: Function,
+  onChange: Function,
   onValidate?: Function,
 };
 
 type State = {
-  model: Object,
-  isValid: boolean,
+  inputsValidationStatus: Object,
 };
 
-class Form extends React.Component<Props, State> {
+type FormContextType = {
+  model: Object,
+  setModelValue: Function,
+  onFieldValidation: (string, boolean) => void,
+  registerInput: Function,
+  unregisterInput: Function,
+};
+
+export const FormContext = React.createContext<FormContextType>({});
+
+export class Form extends React.Component<Props, State> {
   static defaultProps = {
     onSubmit: undefined,
     onSubmitInvalid: undefined,
     formRef: undefined,
     divClass: '',
-    onChange: undefined,
     onValidate: undefined,
     formDirection: "form-horizontal"
   };
@@ -42,164 +44,103 @@ class Form extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      model: props.model,
-      isValid: true,
+      inputsValidationStatus: {}
     };
   }
 
-  // eslint-disable-next-line
-  UNSAFE_componentWillReceiveProps(props: Props) {
+  setModelValue(name: string, value: any) {
+    const { model } = this.props;
+    if (value == null && model[name] != null) {
+      delete model[name];
+      this.validateForm(model);
+      this.props.onChange(model);
+    } else if (value != null) {
+      model[name] = value;
+      this.validateForm(model);
+      this.props.onChange(model);
+    }
+  }
+
+  allValid(): boolean {
+    return Object.values(this.state.inputsValidationStatus).every(status => status);
+  }
+
+  validateForm(model: Object) {
+    const inputsValidationStatus = Object.keys(this.inputs).reduce((ret, name) => {
+      ret[name] = this.inputs[name].validate(model);
+      return ret;
+    }, {});
+
     this.setState({
-      model: props.model,
+      inputsValidationStatus,
+    }, () => {
+      const validForm = this.allValid();
+      if (this.props.onValidate != null) {
+        this.props.onValidate(validForm);
+      }
     });
   }
 
-  onFieldChange(item: Object) {
-    const component = this.inputs[item.name];
-    const { model } = this.state;
-    model[item.name] = item.value;
-    this.setState({
-      model,
+  onFieldValidation(name: string, isValid: boolean) {
+    this.setState(state => {
+      let { inputsValidationStatus } = state;
+      inputsValidationStatus[name] = isValid;
+      return { inputsValidationStatus };
     },
-    () => this.validate(component, component.props));
-
-    if (this.props.onChange) {
-      this.props.onChange(this.state.model, this.state.isValid);
-    }
-  }
-
-  validateForm() {
-    let allValid = true;
-
-    Object.keys(this.inputs).forEach((name) => {
-      if (!this.inputs[name].state.isValid) {
-        allValid = false;
+    () => {
+      const validForm = this.allValid();
+      if (this.props.onValidate) {
+        this.props.onValidate(validForm);
       }
-    });
-
-    this.setState({
-      isValid: allValid,
-    });
-
-    if (this.props.onValidate) {
-      this.props.onValidate(allValid);
-    }
-  }
-
-  validate(component: React.ElementRef<any>, props: Object) {
-    const { name } = props;
-    const results = [];
-    let isValid = true;
-
-    if (!props.disabled && (this.state.model[name] || props.required)) {
-      if (props.required && !this.state.model[name]) {
-        isValid = false;
-      } else if (props.validators) {
-        const validators = Array.isArray(props.validators) ? props.validators : [props.validators];
-        validators.forEach((v) => {
-          results.push(Promise.resolve(v(`${this.state.model[name] || ''}`)));
-        });
-      }
-    }
-
-    Promise.all(results).then((result) => {
-      result.forEach((r) => {
-        isValid = isValid && r;
-      });
-      component.setState({
-        isValid,
-      }, this.validateForm.bind(this));
     });
   }
 
   unregisterInput(component: React.ElementRef<any>) {
     if (component.props && component.props.name && this.inputs[component.props.name] === component) {
-        delete this.inputs[component.props.name];
-
-        this.setState((prevState) => {
-          const { model } = prevState;
-          delete model[component.props.name];
-          return { model };
-        });
+      delete this.inputs[component.props.name];
     }
   }
 
   registerInput(component: React.ElementRef<any>) {
     if (component.props && component.props.name) {
       this.inputs[component.props.name] = component;
-
-      this.setState((prevState) => {
-        const { model } = prevState;
-        model[component.props.name] = component.props.value;
-        return { model };
-      },
-      () => {
-        this.validate(component, component.props);
-        if (this.props.onChange) {
-          this.props.onChange(this.state.model, this.state.isValid);
-        };
-      });
+    } else {
+      throw new Error('Can not add input without "name" attribute');
     }
   }
 
   submit(event: Object) {
     event.preventDefault();
-    if (this.state.isValid && this.props.onSubmit) {
-      this.props.onSubmit(this.state.model, event);
+    if (this.allValid() && this.props.onSubmit) {
+      this.props.onSubmit(this.props.model, event);
     } else if (this.props.onSubmitInvalid) {
-      this.props.onSubmitInvalid(this.state.model, event);
+      this.props.onSubmitInvalid(this.props.model, event);
     }
   }
 
-  renderChild(child: React.Element<any>) {
-    if (typeof child !== 'object' || child === null) {
-      return child;
+  componentDidUpdate(prevProps: Object) {
+    if (prevProps.model !== this.props.model) {
+      this.validateForm(this.props.model);
     }
-
-
-    // TODO [LuNeves] [Cedric] After upgrading react to v16 this could be improved with Context:
-    // formPropsProvider and a formPropsConsumer on the component inputBase
-    const fieldTypes = [<Text />.type, <Password />.type, <Check />.type, <Radio />.type, <Select />.type, <DateTime />.type];
-    if (fieldTypes.includes(child.type)) {
-      const name = child.props && child.props.name;
-
-      if (!name) {
-        throw new Error('Can not add input without "name" attribute');
-      }
-
-      const newProps = {
-        registerInput: this.registerInput.bind(this),
-        unregisterInput: this.unregisterInput.bind(this),
-        validate: this.validate.bind(this),
-        onFormChange: this.onFieldChange.bind(this),
-        invalidHint: child.props.invalidHint || (child.props.required && (`${child.props.label} is required.`)),
-        value: this.state.model[name] || child.props.defaultValue || '',
-      };
-
-      return React.cloneElement(child, Object.assign({}, child.props, newProps), child.props.children);
-    }
-    const renderedChildren = this.renderChildren(child.props && child.props.children);
-    return React.cloneElement(child, child.props, renderedChildren);
-  }
-
-  renderChildren(children: React.Node) {
-    if (typeof children !== 'object' || children == null) {
-      return children;
-    }
-    return React.Children.map(children, child => this.renderChild(child));
   }
 
   render() {
     return (
-      <form ref={this.props.formRef} onSubmit={this.submit.bind(this)} className={this.props.className}>
-        <div className={`${this.props.formDirection || ''} ${this.props.divClass ? ` ${this.props.divClass}` : ''}`}>
-          {this.renderChildren(this.props.children)}
-        </div>
-      </form>
+      <FormContext.Provider value={
+        {
+          model: this.props.model,
+          setModelValue: this.setModelValue.bind(this),
+          registerInput: this.registerInput.bind(this),
+          unregisterInput: this.unregisterInput.bind(this),
+          onFieldValidation: this.onFieldValidation.bind(this),
+        }
+      }>
+        <form ref={this.props.formRef} onSubmit={this.submit.bind(this)} className={this.props.className}>
+          <div className={`${this.props.formDirection || ''} ${this.props.divClass ? ` ${this.props.divClass}` : ''}`}>
+            {this.props.children}
+          </div>
+        </form>
+      </FormContext.Provider>
     );
   }
 }
-
-module.exports = {
-  Form,
-};

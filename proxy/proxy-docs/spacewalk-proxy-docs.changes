@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Wed Nov 27 16:45:58 CET 2019 - jgonzalez@suse.com
+
+- version 4.1.1-1
 - Enable aarch64 builds
 - Bump version to 4.1.0 (bsc#1154940)
 

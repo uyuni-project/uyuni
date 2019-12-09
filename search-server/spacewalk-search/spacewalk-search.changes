@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Wed Nov 27 16:49:11 CET 2019 - jgonzalez@suse.com
+
+- version 4.1.1-1
 - Make rhn-search log to correct file (bsc#1156751)
 - Enable aarch64 builds
 - Fix rhn-search to read memory variable from rhnconf (bsc#1154586)

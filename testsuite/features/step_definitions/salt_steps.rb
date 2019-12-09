@@ -36,20 +36,20 @@ end
 
 When(/^I stop salt-minion on "(.*?)"$/) do |minion|
   node = get_target(minion)
-  node.run('rcsalt-minion stop', false) if minion == 'sle-minion'
-  node.run('systemctl stop salt-minion', false) if ['ceos-minion', 'ceos-ssh-minion', 'ubuntu-minion', 'ubuntu-ssh-minion'].include?(minion)
+  node.run('rcsalt-minion stop', false) if minion == 'sle_minion'
+  node.run('systemctl stop salt-minion', false) if %w[ceos_minion ceos_ssh_minion ubuntu_minion ubuntu_ssh_minion].include?(minion)
 end
 
 When(/^I start salt-minion on "(.*?)"$/) do |minion|
   node = get_target(minion)
-  node.run('rcsalt-minion restart', false) if minion == 'sle-minion'
-  node.run('systemctl restart salt-minion', false) if ['ceos-minion', 'ceos-ssh-minion', 'ubuntu-minion', 'ubuntu-ssh-minion'].include?(minion)
+  node.run('rcsalt-minion restart', false) if minion == 'sle_minion'
+  node.run('systemctl restart salt-minion', false) if %w[ceos_minion ceos_ssh_minion ubuntu_minion ubuntu_ssh_minion].include?(minion)
 end
 
 When(/^I restart salt-minion on "(.*?)"$/) do |minion|
   node = get_target(minion)
-  node.run('rcsalt-minion restart', false) if minion == 'sle-minion'
-  node.run('systemctl restart salt-minion', false) if ['ceos-minion', 'ceos-ssh-minion', 'ubuntu-minion', 'ubuntu-ssh-minion'].include?(minion)
+  node.run('rcsalt-minion restart', false) if minion == 'sle_minion'
+  node.run('systemctl restart salt-minion', false) if %w[ceos_minion ceos_ssh_minion ubuntu_minion ubuntu_ssh_minion].include?(minion)
 end
 
 When(/^I wait at most (\d+) seconds until Salt master sees "([^"]*)" as "([^"]*)"$/) do |key_timeout, minion, key_type|
@@ -153,7 +153,7 @@ Then(/^"(.*?)" should be registered$/) do |host|
 end
 
 Then(/^the PXE boot minion should have been reformatted$/) do
-  system_name = get_system_name('pxeboot-minion')
+  system_name = get_system_name('pxeboot_minion')
   output, _code = $server.run("salt #{system_name} file.file_exists /intact")
   raise 'Minion is intact' unless output.include? 'False'
 end
@@ -177,6 +177,16 @@ end
 
 When(/^I click on run$/) do
   find('button#run', wait: DEFAULT_TIMEOUT).click
+end
+
+Then(/^I should see "([^"]*)" short hostname$/) do |host|
+  system_name = get_system_name(host).partition('.').first
+  raise "Hostname #{system_name} is not present" unless has_content?(system_name)
+end
+
+Then(/^I should not see "([^"]*)" short hostname$/) do |host|
+  system_name = get_system_name(host).partition('.').first
+  raise "Hostname #{system_name} is present" if has_content?(system_name)
 end
 
 Then(/^I should see "([^"]*)" hostname$/) do |host|
@@ -209,29 +219,45 @@ Then(/^I should see "([^"]*)" in the command output for "([^"]*)"$/) do |text, h
   end
 end
 
-Then(/^I click on the css "(.*)" until page does not contain "([^"]*)" text$/) do |css, text|
+Then(/^I click on the filter button until page does not contain "([^"]*)" text$/) do |text|
   repeat_until_timeout(message: "'#{text}' still found") do
     break unless has_content?(text)
-    find(css).click
+    find("button.spacewalk-button-filter").click
   end
 end
 
-Then(/^I click on the css "(.*)" until page does contain "([^"]*)" text$/) do |css, text|
+Then(/^I click on the filter button until page does contain "([^"]*)" text$/) do |text|
   repeat_until_timeout(message: "'#{text}' was not found") do
     break if has_content?(text)
-    find(css).click
+    find("button.spacewalk-button-filter").click
   end
 end
 
-When(/^I click on the css "(.*)"$/) do |css|
-  find_and_wait_click(css).click
+When(/^I click on the filter button$/) do
+  find_and_wait_click("button.spacewalk-button-filter").click
 end
 
-When(/^I enter "(.*)" in the css "(.*)"$/) do |input, css|
-  find(css).set(input)
+When(/^I click on the red confirmation button$/) do
+  find_and_wait_click("button.btn-danger").click
 end
 
-# salt formulas
+When(/^I click on the clear SSM button$/) do
+  find_and_wait_click("a#clear-ssm").click
+end
+
+When(/^I enter "([^"]*)" as the filtered package name$/) do |input|
+  find("input[placeholder='Filter by Package Name: ']").set(input)
+end
+
+When(/^I enter "([^"]*)" as the filtered synopsis$/) do |input|
+  find("input[placeholder='Filter by Synopsis: ']").set(input)
+end
+
+When(/^I enter "([^"]*)" as the filtered product description$/) do |input|
+  find("input[name='product-description-filter']").set(input)
+end
+
+# Salt formulas
 When(/^I manually install the "([^"]*)" formula on the server$/) do |package|
   $server.run("zypper --non-interactive install --force #{package}-formula")
 end
@@ -414,7 +440,7 @@ When(/^I enter the IP address of "([^"]*)" in (.*) field$/) do |host, field|
 end
 
 When(/^I enter the MAC address of "([^"]*)" in (.*) field$/) do |host, field|
-  if host == 'pxeboot-minion'
+  if host == 'pxeboot_minion'
     mac = $pxeboot_mac
   elsif host.include? 'ubuntu'
     node = get_target(host)
@@ -425,6 +451,7 @@ When(/^I enter the MAC address of "([^"]*)" in (.*) field$/) do |host, field|
     output, _code = node.run("ip link show dev eth1")
     mac = output.split("\n")[1].split[1]
   end
+
   fill_in FIELD_IDS[field], with: 'ethernet ' + mac
 end
 
@@ -502,10 +529,10 @@ end
 
 Then(/^the pillar data for "([^"]*)" should (be|contain|not contain) "([^"]*)" on "([^"]*)"$/) do |key, verb, value, minion|
   system_name = get_system_name(minion)
-  if minion == 'sle-minion'
+  if minion == 'sle_minion'
     cmd = 'salt'
     extra_cmd = ''
-  elsif %w[ssh-minion ceos-minion ceos-ssh-minion ubuntu-minion ubuntu-ssh-minion].include?(minion)
+  elsif %w[ssh_minion ceos_minion ceos_ssh_minion ubuntu_minion ubuntu_ssh_minion].include?(minion)
     cmd = 'salt-ssh'
     extra_cmd = '-i --roster-file=/tmp/roster_tests -w -W 2>/dev/null'
     $server.run("printf '#{system_name}:\n  host: #{system_name}\n  user: root\n  passwd: linux\n' > /tmp/roster_tests")
@@ -611,7 +638,6 @@ When(/^I refresh page until I do not see "(.*?)" hostname as text$/) do |minion|
 end
 
 When(/^I list packages with "(.*?)"$/) do |str|
-  find(:xpath, "//a[@href='#search']").click
   find('input#package-search').set(str)
   find('button#search').click
 end
@@ -662,22 +688,22 @@ end
 # salt-ssh steps
 When(/^I uninstall Salt packages from "(.*?)"$/) do |host|
   target = get_target(host)
-  if ['sle-minion', 'ssh-minion', 'sle-client', 'sle-migrated-minion'].include?(host)
+  if %w[sle_minion ssh_minion sle_client sle_migrated_minion].include?(host)
     target.run("test -e /usr/bin/zypper && zypper --non-interactive remove -y salt salt-minion", false)
-  elsif ['ceos-minion', 'ceos-ssh-minion'].include?(host)
+  elsif %w[ceos_minion ceos_ssh_minion].include?(host)
     target.run("test -e /usr/bin/yum && yum -y remove salt salt-minion", false)
-  elsif ['ubuntu-minion', 'ubuntu-ssh-minion'].include?(host)
+  elsif %w[ubuntu_minion ubuntu_ssh_minion].include?(host)
     target.run("test -e /usr/bin/apt && apt -y remove salt-common salt-minion", false)
   end
 end
 
 When(/^I install Salt packages from "(.*?)"$/) do |host|
   target = get_target(host)
-  if ['sle-minion', 'ssh-minion', 'sle-client', 'sle-migrated-minion'].include?(host)
+  if %w[sle_minion ssh_minion sle_client sle_migrated_minion].include?(host)
     target.run("test -e /usr/bin/zypper && zypper --non-interactive install -y salt salt-minion", false)
-  elsif ['ceos-minion'].include?(host)
+  elsif ['ceos_minion'].include?(host)
     target.run("test -e /usr/bin/yum && yum -y install salt salt-minion", false)
-  elsif ['ubuntu-minion', 'ubuntu-ssh-minion'].include?(host)
+  elsif %w[ubuntu_minion ubuntu_ssh_minion].include?(host)
     target.run("test -e /usr/bin/apt && apt -y install salt-common salt-minion", false)
   end
 end
@@ -690,17 +716,17 @@ Then(/^I run spacecmd listevents for "([^"]*)"$/) do |host|
 end
 
 When(/^I enter "([^"]*)" password$/) do |host|
-  raise "#{host} minion password is unknown" unless ['kvm-server', 'xen-server'].include?(host)
-  step %(I enter "#{ENV['VIRTHOST_KVM_PASSWORD']}" as "password") if host == "kvm-server"
-  step %(I enter "#{ENV['VIRTHOST_XEN_PASSWORD']}" as "password") if host == "xen-server"
+  raise "#{host} minion password is unknown" unless %w[kvm_server xen_server].include?(host)
+  step %(I enter "#{ENV['VIRTHOST_KVM_PASSWORD']}" as "password") if host == "kvm_server"
+  step %(I enter "#{ENV['VIRTHOST_XEN_PASSWORD']}" as "password") if host == "xen_server"
 end
 
 And(/^I cleanup minion "([^"]*)"$/) do |minion|
   node = get_target(minion)
-  if minion == 'sle-minion'
+  if minion == 'sle_minion'
     node.run('rcsalt-minion stop')
     node.run('rm -Rf /var/cache/salt/minion')
-  elsif ['ceos-minion', 'ceos-ssh-minion', 'ubuntu-minion', 'ubuntu-ssh-minion'].include?(minion)
+  elsif %w[ceos_minion ceos_ssh_minion ubuntu_minion ubuntu_ssh_minion].include?(minion)
     node.run('systemctl stop salt-minion')
     node.run('rm -Rf /var/cache/salt/minion')
   end

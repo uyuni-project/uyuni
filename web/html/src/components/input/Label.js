@@ -1,6 +1,6 @@
 // @flow
 
-const React = require('react');
+import React from 'react';
 
 type Props = {
   name: string,
@@ -9,7 +9,7 @@ type Props = {
   required?: boolean,
 };
 
-function Label(props: Props) {
+export function Label(props: Props) {
   return (
     <label
       className={`control-label${props.className ? ` ${props.className}` : ''}`}
@@ -25,8 +25,4 @@ function Label(props: Props) {
 Label.defaultProps = {
   className: undefined,
   required: false,
-};
-
-module.exports = {
-  Label,
 };

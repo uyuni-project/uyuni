@@ -15,6 +15,7 @@
 package com.redhat.rhn.manager.system;
 
 import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.VirtualInstance;
 import com.redhat.rhn.domain.server.VirtualInstanceFactory;
 import com.redhat.rhn.domain.server.VirtualInstanceState;
@@ -240,7 +241,21 @@ public class VirtualInstanceManager extends BaseManager {
             VirtualInstance virtualInstance = new VirtualInstance();
             virtualInstance.setUuid(vmGuid);
             virtualInstance.setConfirmed(1L);
-            virtualInstance.setGuestSystem(guest);
+
+            // Do we have a System with machineid matching the GUID that has no
+            // virtual instance?
+            if (guest == null) {
+                ServerFactory.findByMachineId(vmGuid)
+                    .ifPresent(system -> {
+                        if (system.getVirtualInstance() == null) {
+                            virtualInstance.setGuestSystem(system);
+                        }
+                    });
+            }
+            else {
+                virtualInstance.setGuestSystem(guest);
+            }
+
             virtualInstance.setState(state);
             virtualInstance.setName(name);
             virtualInstance.setType(type);

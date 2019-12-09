@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Wed Nov 27 16:42:09 CET 2019 - jgonzalez@suse.com
+
+- version 4.1.1-1
 - replace spacewalk-usix and spacewalk-backend-libs with uyuni-common-libs
 - Bump version to 4.1.0 (bsc#1154940)
 

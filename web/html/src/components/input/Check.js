@@ -1,18 +1,20 @@
 // @flow
 
-const React = require('react');
-const { InputBase } = require('./InputBase');
+import React from 'react';
+import { InputBase } from './InputBase';
+import { FormContext } from './Form';
 
 type Props = {
   inputClass?: string,
 } & InputBase.Props;
 
-function Check(props: Props) {
+export function Check(props: Props) {
   const {
     label,
     inputClass,
     ...propsToPass
   } = props;
+  const formContext = React.useContext(FormContext);
   return (
     <InputBase {...propsToPass}>
       {
@@ -23,6 +25,7 @@ function Check(props: Props) {
           const setChecked = (event: Object) => {
             setValue(event.target.name, event.target.checked);
           };
+          const fieldValue = formContext.model[props.name] || props.defaultValue || '';
           return (
             <div className="checkbox">
               <label htmlFor={props.name}>
@@ -31,7 +34,7 @@ function Check(props: Props) {
                   className={inputClass}
                   name={props.name}
                   type="checkbox"
-                  checked={props.value}
+                  checked={fieldValue}
                   onChange={setChecked}
                   onBlur={onBlur}
                   disabled={props.disabled}
@@ -49,7 +52,3 @@ function Check(props: Props) {
 Check.defaultProps = Object.assign({
   inputClass: undefined,
 }, InputBase.defaultProps);
-
-module.exports = {
-  Check,
-};

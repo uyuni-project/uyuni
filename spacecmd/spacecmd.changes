@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Wed Nov 27 16:57:34 CET 2019 - jgonzalez@suse.com
+
+- version 4.1.1-1
 - Bump version to 4.1.0 (bsc#1154940)
 - Prevent error when piping stdout in Python 2 (bsc#1153090)
 - Java api expects content as encoded string instead of encoded bytes like before (bsc#1153277)

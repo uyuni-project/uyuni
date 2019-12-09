@@ -80,10 +80,10 @@ end
 
 When(/^I apply highstate on "([^"]*)"$/) do |host|
   system_name = get_system_name(host)
-  if host == 'sle-minion'
+  if host == 'sle_minion'
     cmd = 'salt'
     extra_cmd = ''
-  elsif ['ssh-minion', 'ceos-minion', 'ceos-ssh-minion', 'ubuntu-minion', 'ubuntu-ssh-minion'].include?(host)
+  elsif ['ssh_minion', 'ceos_minion', 'ceos_ssh_minion', 'ubuntu_minion', 'ubuntu-ssh_minion'].include?(host)
     cmd = 'runuser -u salt -- salt-ssh --priv=/srv/susemanager/salt/salt_ssh/mgr_ssh_id'
     extra_cmd = '-i --roster-file=/tmp/roster_tests -w -W'
     $server.run("printf '#{system_name}:\n  host: #{system_name}\n  user: root\n  passwd: linux\n' > /tmp/roster_tests")
@@ -150,18 +150,32 @@ When(/^I execute mgr\-sync refresh$/) do
   $command_output = sshcmd('mgr-sync refresh', ignore_err: true)[:stderr]
 end
 
-When(/^I make sure no spacewalk\-repo\-sync is executing$/) do
-  kill_failure_streak = 0
-  while kill_failure_streak <= 120
-    command_output = sshcmd('killall spacewalk-repo-sync', ignore_err: true)
-    kill_failed = !command_output[:stderr].empty?
-
-    if kill_failed
-      kill_failure_streak += 1
+When(/^I make sure no spacewalk\-repo\-sync is executing, excepted the ones needed to bootstrap$/) do
+  reposync_not_running_streak = 0
+  reposync_left_running_streak = 0
+  while reposync_not_running_streak <= 30 && reposync_left_running_streak <= 7200
+    command_output, _code = $server.run('ps -C spacewalk-repo-sync -o pid= -o cmd=', false)
+    if command_output.empty?
+      reposync_not_running_streak += 1
+      reposync_left_running_streak = 0
       sleep 1
-    else
-      kill_failure_streak = 0
+      next
     end
+    reposync_not_running_streak = 0
+    process = command_output.split("\n")[0]
+    pid = process.split(' ')[0]
+    channel = process.split(' ')[5]
+    # The following assumes the clients are SLE 12 SP4
+    if ['sles12-sp4-pool-x86_64', 'sle-manager-tools12-pool-x86_64-sp4', 'sle-module-containers12-pool-x86_64-sp4',
+        'sles12-sp4-updates-x86_64', 'sle-manager-tools12-updates-x86_64-sp4', 'sle-module-containers12-updates-x86_64-sp4'].include? channel
+      STDOUT.puts "Reposync of channel #{channel} left running" if (reposync_left_running_streak % 60).zero?
+      reposync_left_running_streak += 1
+      sleep 1
+      next
+    end
+    reposync_left_running_streak = 0
+    $server.run("kill #{pid}", false)
+    STDOUT.puts "Reposync of channel #{channel} killed"
   end
 end
 
@@ -317,7 +331,7 @@ When(/^I install the GPG key of the test packages repository on the PXE boot min
   dest = "/tmp/" + file
   return_code = file_inject($server, source, dest)
   raise 'File injection failed' unless return_code.zero?
-  system_name = get_system_name('pxeboot-minion')
+  system_name = get_system_name('pxeboot_minion')
   $server.run("salt-cp #{system_name} #{dest} #{dest}")
   $server.run("salt #{system_name} cmd.run 'rpmkeys --import #{dest}'")
 end
@@ -520,6 +534,10 @@ When(/^I enable IPv6 forwarding on all interfaces of the SLE minion$/) do
 end
 
 And(/^I register "([^*]*)" as traditional client$/) do |client|
+  step %(I register "#{client}" as traditional client with activation key "1-SUSE-DEV-x86_64")
+end
+
+And(/^I register "([^*]*)" as traditional client with activation key "([^*]*)"$/) do |client, key|
   node = get_target(client)
   command = 'wget --no-check-certificate ' \
             '-O /usr/share/rhn/RHN-ORG-TRUSTED-SSL-CERT ' \
@@ -528,7 +546,7 @@ And(/^I register "([^*]*)" as traditional client$/) do |client|
   command = 'rhnreg_ks --username=admin --password=admin --force ' \
             "--serverUrl=#{registration_url} " \
             '--sslCACert=/usr/share/rhn/RHN-ORG-TRUSTED-SSL-CERT ' \
-            '--activationkey=1-SUSE-DEV-x86_64'
+            "--activationkey=#{key}"
   node.run(command)
 end
 
@@ -1142,9 +1160,9 @@ When(/^I copy the retail configuration file "([^"]*)" on server$/) do |file|
   sed_values << "s/<PXEBOOT>/#{ADDRESSES['pxeboot']}/; "
   sed_values << "s/<PXEBOOT_MAC>/#{$pxeboot_mac}/; "
   sed_values << "s/<MINION>/#{ADDRESSES['minion']}/; "
-  sed_values << "s/<MINION_MAC>/#{get_mac_address('sle-minion')}/; "
+  sed_values << "s/<MINION_MAC>/#{get_mac_address('sle_minion')}/; "
   sed_values << "s/<CLIENT>/#{ADDRESSES['client']}/; "
-  sed_values << "s/<CLIENT_MAC>/#{get_mac_address('sle-client')}/; "
+  sed_values << "s/<CLIENT_MAC>/#{get_mac_address('sle_client')}/; "
   # Retail DNS fix for client and minion
   $server.run("sed -i '#{sed_values}' #{dest}")
 end

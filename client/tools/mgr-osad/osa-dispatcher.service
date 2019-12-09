@@ -1,6 +1,8 @@
 [Unit]
 Description=OSA Dispatcher daemon
 After=syslog.target network.target jabberd.service
+BindsTo=jabberd.service
+Requires=spacewalk-wait-for-jabberd.service
 
 [Service]
 Type=forking

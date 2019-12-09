@@ -62,6 +62,7 @@ import com.redhat.rhn.frontend.xmlrpc.NoSuchContentSourceException;
 import com.redhat.rhn.frontend.xmlrpc.NoSuchPackageException;
 import com.redhat.rhn.frontend.xmlrpc.PermissionCheckFailureException;
 import com.redhat.rhn.frontend.xmlrpc.TaskomaticApiException;
+import com.redhat.rhn.frontend.xmlrpc.ValidationException;
 import com.redhat.rhn.frontend.xmlrpc.channel.repo.InvalidRepoLabelException;
 import com.redhat.rhn.frontend.xmlrpc.channel.repo.InvalidRepoUrlException;
 import com.redhat.rhn.frontend.xmlrpc.system.SystemHandler;
@@ -577,6 +578,9 @@ public class ChannelSoftwareHandler extends BaseHandler {
         }
         catch (com.redhat.rhn.taskomatic.TaskomaticApiException e) {
             throw new TaskomaticApiException(e.getMessage());
+        }
+        catch (com.redhat.rhn.common.validator.ValidatorException e) {
+            throw new ValidationException(e.getMessage());
         }
         return 1;
     }
