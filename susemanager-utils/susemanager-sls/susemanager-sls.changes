@@ -1,3 +1,4 @@
+- do not break Servers registering to a Server
 - Remove the virt-poller cache when applying Virtualization entitlement
 - Force HTTP request timeout on public cloud grain (bsc#1157975)
 
