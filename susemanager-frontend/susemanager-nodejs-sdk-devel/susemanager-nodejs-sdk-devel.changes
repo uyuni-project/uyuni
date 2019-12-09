@@ -1,3 +1,5 @@
+- upgrade serialize-javascript - CVE-2019-16769
+
 -------------------------------------------------------------------
 Mon Nov 25 10:19:33 CET 2019 - jgonzalez@suse.com
 
