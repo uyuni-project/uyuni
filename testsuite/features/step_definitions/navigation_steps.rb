@@ -437,9 +437,8 @@ Then(/^I should not be authorized$/) do
 end
 
 Then(/^I should be logged in$/) do
-  repeat_until_timeout(message: 'User is not logged in') do
-    break if all(:xpath, "//a[@href='/rhn/Logout.do']").any?
-  end
+  xpath_query = "//a[@href='/rhn/Logout.do']"
+  raise 'User is not logged in' unless find(:xpath, xpath_query, wait: DEFAULT_TIMEOUT)
 end
 
 Then(/^I am logged in$/) do
