@@ -330,6 +330,7 @@ Given(/^I am on the Systems overview page of this "([^"]*)"$/) do |host|
   steps %(
     Given I am on the Systems page
     When I follow "#{system_name}"
+    I wait until I see "#{system_name}" text
   )
 end
 
@@ -435,7 +436,8 @@ Then(/^I should not be authorized$/) do
 end
 
 Then(/^I should be logged in$/) do
-  raise 'User is not logged in' unless all(:xpath, "//a[@href='/rhn/Logout.do']").any?
+  xpath_query = "//a[@href='/rhn/Logout.do']"
+  raise 'User is not logged in' unless find(:xpath, xpath_query, wait: DEFAULT_TIMEOUT)
 end
 
 Then(/^I am logged in$/) do
