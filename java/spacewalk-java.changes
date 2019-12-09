@@ -1,3 +1,4 @@
+- Prevent Package List Refresh actions to stay pending forever (bsc#1157034)
 - Fqdns are coming from salt network module instead of fqdns grain (bsc#1134860)
 - fix problems with Package Hub repos having multiple rpms with same NEVRA
   but different checksums (bsc#1146683)
