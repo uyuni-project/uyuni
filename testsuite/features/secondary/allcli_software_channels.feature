@@ -104,7 +104,7 @@ Feature: Chanel subscription via SSM
   Scenario: System default channel can't be determined
     Given I am authorized as "admin" with password "admin"
     When I am on the System Overview page
-    And I check the "ceos_minion" client
+    And I check the "ceos_ssh_minion" client
     And I uncheck the "sle_minion" client
     And I uncheck the "sle_client" client
     Then I should see "1" systems selected for SSM
@@ -122,11 +122,11 @@ Feature: Chanel subscription via SSM
     When I click on "Confirm"
     Then I should see a "Channel Changes Actions" text
     And I should see a "Items 1 - 1 of 1" text
-    And a table line should contain system "ceos_minion", "Could not determine system default channel"
+    And a table line should contain system "ceos_ssh_minion", "Could not determine system default channel"
 
 @centos_minion
   Scenario: Cleanup: make sure the CentOS minion is still unchanged
-    Given I am on the Systems overview page of this "ceos_minion"
+    Given I am on the Systems overview page of this "ceos_ssh_minion"
     When I follow "Software" in the content area
     And I follow "Software Channels" in the content area
     Then radio button "Test Base Channel" is checked
@@ -135,7 +135,7 @@ Feature: Chanel subscription via SSM
   Scenario: Cleanup: remove CentOS systems from SSM
     Given I am authorized as "admin" with password "admin"
     And I am on the System Overview page
-    When I uncheck the "ceos_minion" client
+    When I uncheck the "ceos_ssh_minion" client
     And I check the "sle_minion" client
     And I check the "sle_client" client
     And I should see "2" systems selected for SSM
@@ -144,7 +144,7 @@ Feature: Chanel subscription via SSM
   Scenario: System default channel can't be determined
     Given I am authorized as "admin" with password "admin"
     When I am on the System Overview page
-    And I check the "ubuntu_minion" client
+    And I check the "ubuntu_ssh_minion" client
     And I uncheck the "sle_minion" client
     And I uncheck the "sle_client" client
     Then I should see "1" systems selected for SSM
@@ -162,11 +162,11 @@ Feature: Chanel subscription via SSM
     When I click on "Confirm"
     Then I should see a "Channel Changes Actions" text
     And I should see a "Items 1 - 1 of 1" text
-    And a table line should contain system "ubuntu_minion", "Could not determine system default channel"
+    And a table line should contain system "ubuntu_ssh_minion", "Could not determine system default channel"
 
 @ubuntu_minion
   Scenario: Cleanup: make sure the Ubuntu minion is still unchanged
-    Given I am on the Systems overview page of this "ubuntu_minion"
+    Given I am on the Systems overview page of this "ubuntu_ssh_minion"
     When I follow "Software" in the content area
     And I follow "Software Channels" in the content area
     Then radio button "Test-Channel-Deb-AMD64" is checked
@@ -175,7 +175,7 @@ Feature: Chanel subscription via SSM
   Scenario: Cleanup: remove Ubuntu system from SSM
     Given I am authorized as "admin" with password "admin"
     And I am on the System Overview page
-    When I uncheck the "ubuntu_minion" client
+    When I uncheck the "ubuntu_ssh_minion" client
     And I check the "sle_minion" client
     And I check the "sle_client" client
     And I should see "2" systems selected for SSM

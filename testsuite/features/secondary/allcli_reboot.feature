@@ -39,7 +39,7 @@ Feature: Reboot systems managed by SUSE Manager
 
 @centos_minion
   Scenario: Reboot the CentOS minion and wait until reboot is completed
-    Given I am on the Systems overview page of this "ceos_minion"
+    Given I am on the Systems overview page of this "ceos_ssh_minion"
     When I follow first "Schedule System Reboot"
     Then I should see a "System Reboot Confirmation" text
     And I should see a "Reboot system" button
@@ -50,7 +50,7 @@ Feature: Reboot systems managed by SUSE Manager
 
 @ubuntu_minion
   Scenario: Reboot the Ubuntu minion and wait until reboot is completed
-    Given I am on the Systems overview page of this "ubuntu_minion"
+    Given I am on the Systems overview page of this "ubuntu_ssh_minion"
     When I follow first "Schedule System Reboot"
     Then I should see a "System Reboot Confirmation" text
     And I should see a "Reboot system" button
