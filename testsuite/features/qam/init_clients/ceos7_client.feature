@@ -29,7 +29,7 @@ Feature: Be able to register a CentOS 7 traditional client and do some basic ope
     Then I should see "ceos7_client" hostname
 
   Scenario: Re-subscribe the CentOS 7 traditional client to a base channel
-    Given I am on the Systems overview page of this "ceos_minion"
+    Given I am on the Systems overview page of this "ceos_client"
     When I follow "Software" in the content area
     And I follow "Software Channels" in the content area
     And I wait until I do not see "Loading..." text

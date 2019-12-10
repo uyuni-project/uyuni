@@ -80,11 +80,11 @@ end
 
 When(/^I apply highstate on "([^"]*)"$/) do |host|
   system_name = get_system_name(host)
-  if host.include? 'ssh_minion'
+  if %w[ssh_minion ceos_ssh_minion ubuntu_ssh_minion].include?(host)
     cmd = 'runuser -u salt -- salt-ssh --priv=/srv/susemanager/salt/salt_ssh/mgr_ssh_id'
     extra_cmd = '-i --roster-file=/tmp/roster_tests -w -W'
     $server.run("printf '#{system_name}:\n  host: #{system_name}\n  user: root\n  passwd: linux\n' > /tmp/roster_tests")
-  elsif host.include? 'minion'
+  else
     cmd = 'salt'
     extra_cmd = ''
   end

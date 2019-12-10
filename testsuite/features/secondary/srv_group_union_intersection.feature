@@ -37,7 +37,7 @@ Feature: Work with Union and Intersection buttons in the group list
     Given I am on the groups page
     When I follow "centos"
     And I follow "Target Systems"
-    And I check the "ceos_minion" client
+    And I check the "ceos_ssh_minion" client
     And I click on "Add Systems"
     Then I should see a "1 systems were added to centos server group." text
 
@@ -55,7 +55,7 @@ Feature: Work with Union and Intersection buttons in the group list
     Given I am on the groups page
     When I follow "ubuntu"
     And I follow "Target Systems"
-    And I check the "ubuntu_minion" client
+    And I check the "ubuntu_ssh_minion" client
     And I click on "Add Systems"
     Then I should see a "1 systems were added to ubuntu server group." text
 
@@ -91,7 +91,7 @@ Feature: Work with Union and Intersection buttons in the group list
     And I click on "Work With Union"
     Then I should see "sle_client" as link
     And I should see "sle_minion" as link
-    And I should see "ceos_minion" as link
+    And I should see "ceos_ssh_minion" as link
 
 @centos_minion
   Scenario: Add an intersection of 2 groups to SSM - CentOS
@@ -101,7 +101,7 @@ Feature: Work with Union and Intersection buttons in the group list
     And I click on "Work With Intersection"
     Then I should see "sle_client" as link
     And I should not see a "sle_minion" link
-    And I should not see a "ceos_minion" link
+    And I should not see a "ceos_ssh_minion" link
 
 @ubuntu_minion
   Scenario: Add a union of 2 groups to SSM - Ubuntu
@@ -111,7 +111,7 @@ Feature: Work with Union and Intersection buttons in the group list
     And I click on "Work With Union"
     Then I should see "sle_client" as link
     And I should see "sle_minion" as link
-    And I should see "ubuntu_minion" as link
+    And I should see "ubuntu_ssh_minion" as link
 
 @ubuntu_minion
   Scenario: Add an intersection of 2 groups to SSM - Ubuntu
@@ -121,7 +121,7 @@ Feature: Work with Union and Intersection buttons in the group list
     And I click on "Work With Intersection"
     Then I should see "sle_client" as link
     And I should not see a "sle_minion" link
-    And I should not see a "ubuntu_minion" link
+    And I should not see a "ubuntu_ssh_minion" link
 
   Scenario: Cleanup: remove the sles group
     Given I am on the groups page
