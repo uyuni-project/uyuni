@@ -71,13 +71,6 @@ import com.redhat.rhn.manager.errata.ErrataManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
-
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonSyntaxException;
-import com.google.gson.reflect.TypeToken;
 import com.suse.manager.reactor.hardware.CpuArchUtil;
 import com.suse.manager.reactor.hardware.HardwareMapper;
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
@@ -104,8 +97,8 @@ import com.suse.manager.webui.utils.salt.custom.OSImageInspectSlsResult;
 import com.suse.manager.webui.utils.salt.custom.Openscap;
 import com.suse.manager.webui.utils.salt.custom.PkgProfileUpdateSlsResult;
 import com.suse.manager.webui.utils.salt.custom.RetOpt;
-import com.suse.manager.webui.websocket.VirtNotifications;
 import com.suse.manager.webui.utils.salt.custom.SystemInfo;
+import com.suse.manager.webui.websocket.VirtNotifications;
 import com.suse.salt.netapi.calls.modules.Pkg;
 import com.suse.salt.netapi.calls.modules.Pkg.Info;
 import com.suse.salt.netapi.calls.modules.Zypper.ProductInfo;
@@ -121,6 +114,12 @@ import com.suse.salt.netapi.utils.Xor;
 import com.suse.utils.Json;
 import com.suse.utils.Opt;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonSyntaxException;
+import com.google.gson.reflect.TypeToken;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
@@ -1026,7 +1025,8 @@ public class SaltUtils {
         ActionStatus as = ActionFactory.STATUS_COMPLETED;
         serverAction.setResultMsg("Success");
 
-        if (imageInfo.getProfile().asDockerfileProfile().isPresent()) {
+        if (Optional.ofNullable(imageInfo.getProfile()).isEmpty() ||
+                imageInfo.getProfile().asDockerfileProfile().isPresent()) {
             if (result.getDockerInspect().isResult()) {
                 ImageInspectSlsResult iret = result.getDockerInspect().getChanges().getRet();
                 imageInfo.setChecksum(ImageInfoFactory.convertChecksum(iret.getId()));
@@ -1098,8 +1098,7 @@ public class SaltUtils {
                 serverAction.setResultMsg(result.getDockerSlsBuild().getComment());
             }
         }
-
-        if (imageInfo.getProfile().asKiwiProfile().isPresent()) {
+        else {
             if (result.getKiwiInspect().isResult()) {
                 Long instantNow = new Date().getTime() / 1000L;
                 OSImageInspectSlsResult ret = result.getKiwiInspect().getChanges().getRet();
