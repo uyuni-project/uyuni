@@ -701,7 +701,7 @@ When(/^I install Salt packages from "(.*?)"$/) do |host|
   target = get_target(host)
   if %w[sle_minion ssh_minion sle_client sle_migrated_minion].include?(host)
     target.run("test -e /usr/bin/zypper && zypper --non-interactive install -y salt salt-minion", false)
-  elsif ['ceos_minion'].include?(host)
+  elsif %w[ceos_minion ceos_ssh_minion].include?(host)
     target.run("test -e /usr/bin/yum && yum -y install salt salt-minion", false)
   elsif %w[ubuntu_minion ubuntu_ssh_minion].include?(host)
     target.run("test -e /usr/bin/apt && apt -y install salt-common salt-minion", false)

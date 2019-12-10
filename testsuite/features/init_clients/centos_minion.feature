@@ -54,11 +54,11 @@ Feature: Bootstrap a SSH-managed CentOS minion and do some basic operations on i
 @centos_minion
   Scenario: Prepare the SSH-managed CentOS minion
     Given I am authorized
-    When I enable SUSE Manager tools repositories on "ceos_client"
-    And  I enable repository "CentOS-Base" on this "ceos_client"
-    And  I install package "hwdata m2crypto wget" on this "ceos_client"
-    And  I install package "spacewalk-client-tools spacewalk-check spacewalk-client-setup mgr-daemon mgr-osad mgr-cfg-actions" on this "ceos_client"
-    And  I install package "spacewalk-oscap scap-security-guide" on this "ceos_client"
+    When I enable SUSE Manager tools repositories on "ceos_ssh_minion"
+    And  I enable repository "CentOS-Base" on this "ceos_ssh_minion"
+    And  I install package "hwdata m2crypto wget" on this "ceos_ssh_minion"
+    And  I install package "spacewalk-client-tools spacewalk-check spacewalk-client-setup mgr-daemon mgr-osad mgr-cfg-actions" on this "ceos_ssh_minion"
+    And  I install package "spacewalk-oscap scap-security-guide" on this "ceos_ssh_minion"
 
 @centos_minion
   Scenario: Check events history for failures on SSH-managed CentOS minion

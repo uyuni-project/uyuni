@@ -80,15 +80,13 @@ end
 
 When(/^I apply highstate on "([^"]*)"$/) do |host|
   system_name = get_system_name(host)
-  if host == 'sle_minion'
-    cmd = 'salt'
-    extra_cmd = ''
-  elsif ['ssh_minion', 'ceos_minion', 'ceos_ssh_minion', 'ubuntu_minion', 'ubuntu-ssh_minion'].include?(host)
+  if %w[ssh_minion ceos_ssh_minion ubuntu_ssh_minion].include?(host)
     cmd = 'runuser -u salt -- salt-ssh --priv=/srv/susemanager/salt/salt_ssh/mgr_ssh_id'
     extra_cmd = '-i --roster-file=/tmp/roster_tests -w -W'
     $server.run("printf '#{system_name}:\n  host: #{system_name}\n  user: root\n  passwd: linux\n' > /tmp/roster_tests")
   else
-    raise 'Invalid target'
+    cmd = 'salt'
+    extra_cmd = ''
   end
   $server.run_until_ok("cd /tmp; #{cmd} #{system_name} state.highstate #{extra_cmd}")
 end
