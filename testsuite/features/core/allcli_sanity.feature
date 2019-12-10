@@ -28,13 +28,13 @@ Feature: Sanity checks
 
 @centos_minion
   Scenario: The Centos minion is healthy
-    Then "ceos_minion" should have a FQDN
-    And "ceos_minion" should communicate with the server
+    Then "ceos_ssh_minion" should have a FQDN
+    And "ceos_ssh_minion" should communicate with the server
 
 @ubuntu_minion
   Scenario: The Ubuntu minion is healthy
-    Then "ubuntu_minion" should have a FQDN
-    And "ubuntu_minion" should communicate with the server
+    Then "ubuntu_ssh_minion" should have a FQDN
+    And "ubuntu_ssh_minion" should communicate with the server
 
 @virthost_kvm
   Scenario: The KVM host is healthy

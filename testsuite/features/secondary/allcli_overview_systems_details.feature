@@ -13,13 +13,13 @@ Feature: The system details of each minion and client provides an overview of th
 
 @centos_minion
   Scenario: CentOS minion grains are displayed correctly on the details page
-    Given I am on the Systems overview page of this "ceos_minion"
-    Then I can see all system information for "ceos_minion"
+    Given I am on the Systems overview page of this "ceos_ssh_minion"
+    Then I can see all system information for "ceos_ssh_minion"
 
 @ubuntu_minion
   Scenario: Ubuntu minion grains are displayed correctly on the details page
-    Given I am on the Systems overview page of this "ubuntu_minion"
-    Then I can see all system information for "ubuntu_minion"
+    Given I am on the Systems overview page of this "ubuntu_ssh_minion"
+    Then I can see all system information for "ubuntu_ssh_minion"
 
 @ssh_minion
   Scenario: SSH-managed minion grains are displayed correctly on the details page
