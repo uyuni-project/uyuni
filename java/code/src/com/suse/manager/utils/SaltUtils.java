@@ -1010,7 +1010,8 @@ public class SaltUtils {
         ActionStatus as = ActionFactory.STATUS_COMPLETED;
         serverAction.setResultMsg("Success");
 
-        if (imageInfo.getProfile().asDockerfileProfile().isPresent()) {
+        if (Optional.ofNullable(imageInfo.getProfile()).isEmpty() ||
+                imageInfo.getProfile().asDockerfileProfile().isPresent()) {
             if (result.getDockerInspect().isResult()) {
                 ImageInspectSlsResult iret = result.getDockerInspect().getChanges().getRet();
                 imageInfo.setChecksum(ImageInfoFactory.convertChecksum(iret.getId()));
@@ -1082,8 +1083,7 @@ public class SaltUtils {
                 serverAction.setResultMsg(result.getDockerSlsBuild().getComment());
             }
         }
-
-        if (imageInfo.getProfile().asKiwiProfile().isPresent()) {
+        else {
             if (result.getKiwiInspect().isResult()) {
                 Long instantNow = new Date().getTime() / 1000L;
                 OSImageInspectSlsResult ret = result.getKiwiInspect().getChanges().getRet();
