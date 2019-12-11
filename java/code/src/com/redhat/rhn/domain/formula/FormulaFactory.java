@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2016 SUSE LLC
+ * Copyright (c) 2016--2019 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -81,6 +81,7 @@ public class FormulaFactory {
     private static final String GROUP_PILLAR_DIR = "group_pillar/";
     private static final String GROUP_DATA_FILE  = "group_formulas.json";
     private static final String SERVER_DATA_FILE = "minion_formulas.json";
+    private static final String ORDER_FILE = "formula_order.json";
     private static final String LAYOUT_FILE = "form.yml";
     private static final String METADATA_FILE = "metadata.yml";
     private static final String PILLAR_EXAMPLE_FILE = "pillar.example";
@@ -151,6 +152,14 @@ public class FormulaFactory {
     }
 
     /**
+     * Getter for path of order data file
+     * @return order data file
+     */
+    public static String getOrderDataFile() {
+        return dataDir + ORDER_FILE;
+    }
+
+    /**
      * Return a warning message in case some folder doesn't exist or have wrong access level.
      * @return a warning message if cannot access one folder. NULL if all folder are ok.
      */
@@ -171,6 +180,7 @@ public class FormulaFactory {
         }
         return error ? new ValidatorError("formula.folders.unreachable", message).getLocalizedMessage() : null;
     }
+
     /**
      * Returns the list of the names of all currently installed formulas.
      * @return the names of all currently installed formulas.
@@ -505,6 +515,7 @@ public class FormulaFactory {
      */
     public static synchronized void saveGroupFormulas(Long groupId,
             List<String> selectedFormulas, Org org) throws IOException {
+        saveFormulaOrder();
         File dataFile = new File(getGroupDataFile());
 
         Map<String, List<String>> groupFormulas;
@@ -583,6 +594,7 @@ public class FormulaFactory {
     public static synchronized void saveServerFormulas(String minionId,
             List<String> selectedFormulas) throws IOException,
             UnsupportedOperationException {
+        saveFormulaOrder();
         File dataFile = new File(getServerDataFile());
 
         Map<String, List<String>> serverFormulas;
@@ -713,6 +725,25 @@ public class FormulaFactory {
             }
         }
         return orderedList;
+    }
+
+    /**
+     * save the order of formulas
+     * @throws IOException an IOException occurs while saving the data
+     */
+    public static void saveFormulaOrder() throws IOException {
+        List<String> orderedList = orderFormulas(listFormulaNames());
+        File file = new File(getOrderDataFile());
+        try {
+            file.getParentFile().mkdirs();
+            file.createNewFile();
+        }
+        catch (FileAlreadyExistsException e) {
+        }
+
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
+            writer.write(GSON.toJson(orderedList));
+        }
     }
 
     /**
