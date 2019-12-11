@@ -1,0 +1,19 @@
+tftpd:
+  $type: hidden-group
+
+  listen_ip:
+     $name: 'Internal Network Address'
+     $type: text
+     $optional: True
+
+  root_dir:
+     $name: 'TFTP base directory'
+     $type: text
+     $default: '/srv/tftpboot'
+
+  tftpd_user:
+     $name: 'run TFTP under user'
+     $type: text
+     $default: 'tftp'
+
+      

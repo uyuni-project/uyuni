@@ -1,0 +1,6 @@
+hypervisor:
+  $type: select
+  $values: ["KVM",
+            "Xen"
+            ]
+  $default: KVM

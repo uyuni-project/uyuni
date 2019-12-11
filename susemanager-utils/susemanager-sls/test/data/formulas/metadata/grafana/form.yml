@@ -1,0 +1,74 @@
+grafana:
+  $type: namespace
+
+  enabled:
+    $type: boolean
+    $default: True
+    $help: disasbled grafana
+
+  admin_user:
+    $type: text
+    $name: Default admin user
+    $required: true
+    $disabled: "!formValues.grafana.enabled"
+    
+  admin_pass:
+    $type: password
+    $name: Default admin password  
+    $required: true
+    $disabled: "!formValues.grafana.enabled"
+
+  datasources:
+    $type: group
+    $disabled: "!formValues.grafana.enabled"
+    $help: Configure the data sources used by Grafana.
+
+    prometheus:
+      $type: edit-group
+      $minItems: 1
+      $name: Prometheus
+      $help: Configure Prometheus data sources.
+      $itemName: Prometheus data source ${i}
+      $prototype:
+        $type: group
+        $disabled: "!formValues.grafana.enabled"
+        $key:
+          $type: text
+          $name: Datasource name
+          $default: Prometheus
+          $help: Data source name
+        url:
+          $type: url
+          $default: http://localhost:9080
+          $required: true
+          $name: Prometheus URL
+          $help: URL of a Prometheus instance
+
+  dashboards:
+    $type: group
+    $disabled: "!formValues.grafana.enabled"
+    $help: Dashboards to install.
+
+    add_uyuni_dashboard:
+      $type: boolean
+      $name: Uyuni server dashboard
+      $help: Add dashboard for monitoring an Uyuni server
+      $default: True
+
+    add_uyuni_clients_dashboard:
+      $type: boolean
+      $name: Uyuni clients dashboard
+      $help: Add dashboard for monitoring Uyuni clients
+      $default: True
+
+    add_postgresql_dasboard:
+      $type: boolean
+      $name: PostgreSQL dashboard
+      $help: Add dashboard for monitoring a PostgreSQL database
+      $default: True
+
+    add_apache_dashboard:
+      $type: boolean
+      $name: Apache HTTPD dashboard
+      $help: Add dashboard for monitoring an Apache HTTPD server
+      $default: True

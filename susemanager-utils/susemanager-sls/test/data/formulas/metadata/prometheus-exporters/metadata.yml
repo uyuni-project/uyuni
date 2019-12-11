@@ -1,0 +1,4 @@
+description:
+  Enable and configure Prometheus exporters for managed systems.
+group: monitoring
+
