@@ -284,7 +284,7 @@ When(/^I ([^ ]*) the "([^"]*)" formula$/) do |action, formula|
   else
     xpath_query = "//a[@id = '#{formula}']/i[@class = 'fa fa-lg fa-check-square-o']" if action == 'check'
     xpath_query = "//a[@id = '#{formula}']/i[@class = 'fa fa-lg fa-square-o']" if action == 'uncheck'
-    raise "xpath: #{xpath_query} not found" unless all(:xpath, xpath_query).any?
+    raise "xpath: #{xpath_query} not found" unless all(:xpath, xpath_query, wait: DEFAULT_TIMEOUT).any?
   end
 end
 
