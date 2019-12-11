@@ -26,7 +26,7 @@ export function Select(props: Props) {
           const onChange = (event: Object) => {
             setValue(event.target.name, event.target.value);
           };
-          const fieldValue = formContext.model[props.name] || props.defaultValue || '';
+          const fieldValue = (formContext.model || {})[props.name] || props.defaultValue || '';
           return (
             <select
               className={`form-control${inputClass ? ` ${inputClass}` : ''}`}

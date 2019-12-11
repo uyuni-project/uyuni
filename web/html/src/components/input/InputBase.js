@@ -51,10 +51,12 @@ export class InputBase extends React.Component<Props, State> {
 
   componentDidMount() {
     if (this.props && this.props.name) {
-      this.context.registerInput(this);
+      if (this.context.registerInput != null) {
+        this.context.registerInput(this);
+      }
 
-      const { model } = this.context;
-      const value = this.context.model[this.props.name] || this.props.defaultValue || '';
+      const model = this.context.model || {};
+      const value = model[this.props.name] || this.props.defaultValue || '';
       const valueChanged =
         (value instanceof Date && model[this.props.name] instanceof Date
           && value.getTime() !== model[this.props.name].getTime())
@@ -62,14 +64,18 @@ export class InputBase extends React.Component<Props, State> {
 
       if (valueChanged) {
         model[this.props.name] = value;
-        this.context.setModelValue(this.props.name, value);
+        if (this.context.setModelValue != null) {
+          this.context.setModelValue(this.props.name, value);
+        }
       }
     }
   }
 
   componentWillUnmount() {
-    this.context.unregisterInput(this);
-    this.context.setModelValue(this.props.name, undefined);
+    if (Object.keys(this.context).length > 0) {
+      this.context.unregisterInput(this);
+      this.context.setModelValue(this.props.name, undefined);
+    }
   }
 
   onBlur() {
@@ -99,7 +105,9 @@ export class InputBase extends React.Component<Props, State> {
         isValid = isValid && r;
       });
       this.setState({isValid});
-      this.context.onFieldValidation(name, isValid);
+      if (this.context.onFieldValidation != null) {
+        this.context.onFieldValidation(name, isValid);
+      }
     });
 
     this.setState({
@@ -109,7 +117,9 @@ export class InputBase extends React.Component<Props, State> {
   }
 
   setValue(name: string, value: string) {
-    this.context.setModelValue(name, value);
+    if (this.context.setModelValue != null) {
+      this.context.setModelValue(name, value);
+    }
 
     if (this.props.onChange) this.props.onChange(name, value);
   }

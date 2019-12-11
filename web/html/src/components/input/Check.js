@@ -25,7 +25,7 @@ export function Check(props: Props) {
           const setChecked = (event: Object) => {
             setValue(event.target.name, event.target.checked);
           };
-          const fieldValue = formContext.model[props.name] || props.defaultValue || '';
+          const fieldValue = (formContext.model || {})[props.name] || props.defaultValue || '';
           return (
             <div className="checkbox">
               <label htmlFor={props.name}>
