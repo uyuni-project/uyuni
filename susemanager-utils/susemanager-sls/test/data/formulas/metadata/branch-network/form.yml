@@ -1,0 +1,100 @@
+branch_network:
+  $type: hidden-group
+  dedicated_NIC:
+    $type: boolean
+    $default: True
+
+  nic:
+    $default: eth1
+    $visibleIf: .dedicated_NIC == true
+  ip:
+    $default: 192.168.128.1
+    $visibleIf: .dedicated_NIC == true
+  netmask:
+    $default: 255.255.255.0
+    $visibleIf: .dedicated_NIC == true
+
+  configure_firewall:
+    $type: boolean
+    $default: true
+    $help: Uncheck to configure firewall manually.
+
+  firewall:
+    $type: group
+    $visibleIf: .configure_firewall == true
+    enable_route:
+      $type: boolean
+      $default: True
+      $visibleIf: ..dedicated_NIC == true
+    enable_NAT:
+      $type: boolean
+      $default: True
+      $visibleIf: ..dedicated_NIC == true
+    enable_SLAAC_with_routing:
+      $type: boolean
+      $default: False
+      $visibleIf: .enable_NAT == true
+      $name: Force enable IPv6 SLAAC together with forwarding
+      $help: Check to enable IPv6 autoconfiguration (SLAAC) even when Branch act as a router.
+    open_dhcp_port:
+      $visibleIf: ..dedicated_NIC == false
+      $type: boolean
+      $default: True
+    open_dns_port:
+      $visibleIf: ..dedicated_NIC == false
+      $type: boolean
+      $default: True
+    open_tftp_port:
+      $visibleIf: ..dedicated_NIC == false
+      $type: boolean
+      $default: True
+    open_ftp_port:
+      $visibleIf: ..dedicated_NIC == false
+      $type: boolean
+      $default: True
+    open_http_port:
+      $visibleIf: ..dedicated_NIC == false
+      $type: boolean
+      $default: True
+    open_https_port:
+      $visibleIf: ..dedicated_NIC == false
+      $type: boolean
+      $default: True
+    open_salt_ports:
+      $visibleIf: ..dedicated_NIC == false
+      $type: boolean
+      $default: True
+    open_ssh_port:
+      $type: boolean
+      $default: True
+    open_xmpp_server_port:
+      $type: boolean
+      $default: True
+    open_xmpp_client_port:
+      $type: boolean
+      $default: True
+
+  forwarder:
+    $type: select
+    $values:
+      - resolver
+      - bind
+      - dnsmasq
+    $default: bind
+
+  forwarder_fallback:
+    $type: boolean
+    $default: True
+
+  srv_directory:
+    $name:  'server directory'
+    $type: text
+    $default: '/srv/saltboot'
+  srv_directory_user:
+    $name: 'server directory user'
+    $type: text
+    $default: 'saltboot'
+  srv_directory_group:
+    $name: 'server directory group'
+    $type: text
+    $default: 'saltboot'
