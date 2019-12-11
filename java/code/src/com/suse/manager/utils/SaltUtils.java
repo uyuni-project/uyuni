@@ -1010,7 +1010,7 @@ public class SaltUtils {
         ActionStatus as = ActionFactory.STATUS_COMPLETED;
         serverAction.setResultMsg("Success");
 
-        if (Optional.ofNullable(imageInfo.getProfile()).isEmpty() ||
+        if (!Optional.ofNullable(imageInfo.getProfile()).isPresent() ||
                 imageInfo.getProfile().asDockerfileProfile().isPresent()) {
             if (result.getDockerInspect().isResult()) {
                 ImageInspectSlsResult iret = result.getDockerInspect().getChanges().getRet();
