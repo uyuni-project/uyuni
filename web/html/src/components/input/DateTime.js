@@ -24,7 +24,7 @@ export function DateTime(props: Props) {
           const onChange = (value) => {
             setValue(props.name, value);
           };
-          const fieldValue = formContext.model[props.name] || props.defaultValue || '';
+          const fieldValue = (formContext.model || {})[props.name] || props.defaultValue || '';
           if(fieldValue instanceof Date) {
             return (
               <DateTimePicker
