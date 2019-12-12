@@ -17,7 +17,7 @@ X-SuSE-YaST-SortKey=
 Icon=yast-network_services
 Exec=/sbin/yast2 susemanager_setup
 
-Name=Uyuni Setup
-GenericName=Configure Uyuni Server
+Name=YaST Uyuni Setup
+GenericName=Uyuni Setup
 StartupNotify=true
 
