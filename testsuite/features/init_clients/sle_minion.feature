@@ -57,13 +57,13 @@ Feature: Be able to bootstrap a Salt minion via the GUI
      And I wait until I see "Successfully bootstrapped host!" text
 
   Scenario: Check the new bootstrapped minion in System Overview page
-     Given I am authorized
-     When I navigate to "rhn/systems/Overview.do" page
-     And I wait until I see the name of "sle_minion", refreshing the page
-     And I wait until onboarding is completed for "sle_minion"
-     Then the Salt master can reach "sle_minion"
-     When I go to the minion onboarding page
-     Then I should see a "accepted" text
+    Given I am authorized
+    When I go to the minion onboarding page
+    Then I should see a "accepted" text
+    When I navigate to "rhn/systems/Overview.do" page
+    And I wait until I see the name of "sle_minion", refreshing the page
+    And I wait until onboarding is completed for "sle_minion"
+    Then the Salt master can reach "sle_minion"
 
 @proxy
   Scenario: Check connection from minion to proxy
