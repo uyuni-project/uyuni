@@ -56,6 +56,7 @@ Feature: Salt package states
     Given I am on the Systems overview page of this "sle_minion"
     Then I follow "States" in the content area
     And I follow "Packages"
+    And I follow "Search"
     And I should see a "Package States" text
     And I list packages with "dummy"
     Then I should see a "milkyway-dummy" text
