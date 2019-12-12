@@ -1,3 +1,4 @@
+- Don't validate mandatory fields that are not visible (bsc#1158943)
 - Fix count of changes to build (bsc#1160940)
 - Report merge_subscriptions message in a readable way (bsc#1140332)
 - Fix ordering by date (bsc#1158818)
