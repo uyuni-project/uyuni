@@ -25,13 +25,11 @@ import static java.util.Optional.empty;
 import static java.util.Optional.of;
 
 import com.redhat.rhn.common.conf.Config;
-import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.WriteMode;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.hibernate.LookupException;
-import com.redhat.rhn.common.util.FileUtils;
 import com.redhat.rhn.common.validator.ValidatorError;
 import com.redhat.rhn.common.validator.ValidatorResult;
 import com.redhat.rhn.common.validator.ValidatorWarning;
@@ -62,7 +60,6 @@ import com.redhat.rhn.domain.server.CPU;
 import com.redhat.rhn.domain.server.InstalledPackage;
 import com.redhat.rhn.domain.server.ManagedServerGroup;
 import com.redhat.rhn.domain.server.MinionServer;
-import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.NetworkInterface;
 import com.redhat.rhn.domain.server.Note;
 import com.redhat.rhn.domain.server.Server;
@@ -95,9 +92,6 @@ import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.rhnset.RhnSetManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.manager.system.SystemsExistException;
-import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
-import com.redhat.rhn.manager.system.entitling.SystemEntitler;
-import com.redhat.rhn.manager.system.entitling.SystemUnentitler;
 import com.redhat.rhn.manager.user.UserManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.testing.ChannelTestUtils;
@@ -110,9 +104,10 @@ import com.redhat.rhn.testing.UserTestUtils;
 
 import com.suse.manager.virtualization.VirtManagerSalt;
 import com.suse.manager.webui.controllers.utils.ContactMethodUtil;
-import com.suse.manager.webui.services.impl.SaltSSHService;
 import com.suse.manager.webui.services.impl.SaltService;
 
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 import org.cobbler.test.MockConnection;
 import org.hibernate.Session;
 import org.hibernate.type.IntegerType;
@@ -176,6 +171,18 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
                 new SystemUnentitler(),
                 new SystemEntitler(saltService, new VirtManagerSalt(saltService))
         );
+    }
+
+    @Override
+    public void tearDown() throws Exception {
+        super.tearDown();
+        try {
+            FileUtils.deleteDirectory(tmpSaltRoot.toFile());
+            FileUtils.deleteDirectory(metadataDirOfficial.toFile());
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private void createMetadataFiles() {
@@ -297,7 +304,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         assertTrue(FormulaFactory.getFormulasByMinionId(minionId).isEmpty());
         assertFalse(FormulaFactory.getFormulaValuesByNameAndMinionId(formulaName, minionId).isPresent());
         assertFalse(formulaValues.exists());
-        assertEquals("{}", FileUtils.readStringFromFile(FormulaFactory.getServerDataFile()));
+        assertEquals("{}", FileUtils.readFileToString(new File(FormulaFactory.getServerDataFile())));
     }
 
     public void testDeleteVirtualServer() throws Exception {
