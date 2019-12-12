@@ -1,3 +1,4 @@
+- Report merge_subscriptions message in a readable way (bsc#1140332)
 - Use ReactJS Context in Form components
 
 -------------------------------------------------------------------

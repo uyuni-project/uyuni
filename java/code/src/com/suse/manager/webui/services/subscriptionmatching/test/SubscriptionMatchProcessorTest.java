@@ -64,7 +64,7 @@ public class SubscriptionMatchProcessorTest extends BaseTestCaseWithUser {
         input = new InputJson(new Date(), new LinkedList<>(), new LinkedList<>(),
                 new LinkedList<>(), new LinkedList<>(), new LinkedList<>());
         output = new OutputJson(new Date(), new LinkedList<>(), new LinkedList<>(),
-                new HashMap<>());
+                new HashMap<>(), new LinkedList<>());
     }
 
     public void testMatcherDataNotAvailable() {
@@ -116,8 +116,10 @@ public class SubscriptionMatchProcessorTest extends BaseTestCaseWithUser {
     public void testUnsatisfiedMatchAdjustment() throws Exception {
         input.getSystems().add(new SystemJson(1L, "Sys1", null, true,
                 false, new HashSet<>(), new HashSet<>()));
-        input.getSubscriptions().add(new SubscriptionJson(100L, "123456", "subs name", 1,
-                new Date(), new Date(), "user", new HashSet<>()));
+        SubscriptionJson sub = new SubscriptionJson(100L, "123456", "subs name", 1,
+                new Date(), new Date(), "user", new HashSet<>());
+        input.getSubscriptions().add(sub);
+        output.getSubscriptions().add(sub);
 
         LinkedList<MessageJson> messages = new LinkedList<>();
         Map<String, String> messageData = new HashMap<>();
@@ -134,8 +136,10 @@ public class SubscriptionMatchProcessorTest extends BaseTestCaseWithUser {
     }
 
     public void testSubscriptions() {
-        input.getSubscriptions().add(new SubscriptionJson(1L, "123456", "subs name", 3,
-                new Date(0), new Date(1000), "user", new HashSet<>()));
+        SubscriptionJson sub = new SubscriptionJson(1L, "123456", "subs name", 3,
+                new Date(0), new Date(1000), "user", new HashSet<>());
+        input.getSubscriptions().add(sub);
+        output.getSubscriptions().add(sub);
 
         MatchJson match = new MatchJson(20L, 1L, 100L, 200, true);
         output.getMatches().add(match);
@@ -155,8 +159,10 @@ public class SubscriptionMatchProcessorTest extends BaseTestCaseWithUser {
     }
 
     public void testSubscriptionPolicy() {
-        input.getSubscriptions().add(new SubscriptionJson(1L, "123456", "subs name", 3,
-                new Date(0), new Date(1000), "user", new HashSet<>()));
+        SubscriptionJson sub = new SubscriptionJson(1L, "123456", "subs name", 3,
+                new Date(0), new Date(1000), "user", new HashSet<>());
+        input.getSubscriptions().add(sub);
+        output.getSubscriptions().add(sub);
         setSubscriptionPolicy(1L, "my policy");
 
         Subscription subscription = ((MatcherUiData) processor
@@ -167,8 +173,10 @@ public class SubscriptionMatchProcessorTest extends BaseTestCaseWithUser {
     }
 
     public void testSubscriptionNullPolicy() {
-        input.getSubscriptions().add(new SubscriptionJson(1L, "123456", "subs name", 3,
-                new Date(0), new Date(1000), "user", new HashSet<>()));
+        SubscriptionJson sub = new SubscriptionJson(1L, "123456", "subs name", 3,
+                new Date(0), new Date(1000), "user", new HashSet<>());
+        input.getSubscriptions().add(sub);
+        output.getSubscriptions().add(sub);
         setSubscriptionPolicy(1L, null);
 
         Map<String, Subscription> subscriptions = ((MatcherUiData) processor
@@ -304,6 +312,7 @@ public class SubscriptionMatchProcessorTest extends BaseTestCaseWithUser {
                 1, date("2009-03-01T00:00:00.000Z"), date("2018-02-28T00:00:00.000Z"), "",
                 Collections.singleton(1004L));
         input.setSubscriptions(Arrays.asList(subscription));
+        output.setSubscriptions(Arrays.asList(subscription));
         List<MatchJson> matches = Arrays.asList(new MatchJson(100L, 10L, 1000L, 100, true));
         input.setPinnedMatches(matches);
         output.setMatches(matches);
@@ -333,6 +342,7 @@ public class SubscriptionMatchProcessorTest extends BaseTestCaseWithUser {
                 1, date("2009-03-01T00:00:00.000Z"), date("2018-02-28T00:00:00.000Z"), "",
                 Collections.singleton(1004L));
         input.setSubscriptions(Arrays.asList(subscription));
+        output.setSubscriptions(Arrays.asList(subscription));
         input.setPinnedMatches(Arrays.asList(new MatchJson(100L, 10L, 1L, 100, null)));
 
         // create a corresponding pin
@@ -393,7 +403,7 @@ public class SubscriptionMatchProcessorTest extends BaseTestCaseWithUser {
                 0, date("2009-03-01T00:00:00.000Z"), date("2010-02-28T00:00:00.000Z"), "",
                 Collections.singleton(1004L)));
         input.setSubscriptions(subscriptions);
-
+        output.setSubscriptions(subscriptions);
 
         // SYSTEMS
         List<SystemJson> systems = new LinkedList<>();
