@@ -601,6 +601,12 @@ When(/^I enable repositories before installing Docker$/) do
   repos, _code = $minion.run('zypper lr | grep "tools" | cut -d"|" -f2')
   puts $minion.run("zypper mr --enable #{repos.gsub(/\s/, ' ')}")
 
+  # Development repositories
+  if os_family =~ /^sles/ && os_version =~ /^15/
+    repos = "devel_pool_repo devel_updates_repo"
+    puts $minion.run("zypper mr --enable #{repos}")
+  end
+
   # Container repositories
   unless os_family =~ /^opensuse/ || os_version =~ /^11/
     repos = "containers_pool_repo containers_updates_repo"
@@ -620,6 +626,12 @@ When(/^I disable repositories after installing Docker$/) do
   # Tools
   repos, _code = $minion.run('zypper lr | grep "tools" | cut -d"|" -f2')
   puts $minion.run("zypper mr --disable #{repos.gsub(/\s/, ' ')}")
+
+  # Development repositories
+  if os_family =~ /^sles/ && os_version =~ /^15/
+    repos = "devel_pool_repo devel_updates_repo"
+    puts $minion.run("zypper mr --disable #{repos}")
+  end
 
   # Container repositories
   unless os_family =~ /^opensuse/ || os_version =~ /^11/
