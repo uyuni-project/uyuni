@@ -23,7 +23,30 @@ use warnings;
 use Getopt::Long;
 use Spacewalk::Setup;
 
-my $isSUSE = 0;
+sub id_like_match {
+  $what = shift;
+  my $filename = '/etc/os-release';
+  if(! -e $filename) {
+    return 0;
+  }
+  open my $fh, "<", $filename or die "Could not open '$filename': $!\n";
+  while( my $line = <$fh> ) {
+    if ($line =~ m/ID_LIKE="$what"/) {
+      close $fh;
+      return 1;
+    }
+  }
+  close $fh;
+  return 0;
+}
+
+sub is_suse_like {
+   return id_like_match(".*suse.*");
+}
+
+sub is_opensuse {
+   return id_like_match(".*opensuse.*");
+}
 
 sub os_fips_mode_on {
         # For kernels without CONFIG_CRYPTO_FIPS enabled
@@ -37,29 +60,25 @@ sub os_fips_mode_on {
 }
 
 sub mod_ssl_fipsmode_option {
-	# FIXME: have a look if we can support fips mode
-	return 0 if($isSUSE);
+        # Remove this IF as soon as we have FIPS support enabled at openSUSE Leap 15.2.
+        if (is_opensuse()) {
+                return 0;
+        }
+        if(is_suse_like()) {
+                # Remove this return as soon as we have FIPS support enabled at SLE15SP2.
+                return 0;
 
-	my $mod_ssl_version = `rpm -q --qf='%{VERSION}' mod_ssl`;
-	my $mod_ssl_release = `rpm -q --qf='%{RELEASE}' mod_ssl`;
-
-	# RHEL-5 / CentOS-5 mod_ssl build 2.2.3-66 and above support SSLFIPS directive
-	if ($mod_ssl_version eq '2.2.3' and $mod_ssl_release ge '66') {
-		return 1;
-	}
-
-	# RHEL-6 / CentOS-6 mod_ssl builds do support FIPS, but do not have
-	# the SSLFIPS configuration option implemented
-	if ($mod_ssl_version eq '2.2.15' and $mod_ssl_release ge '5') {
-		return 0;
-	}
-
-	# mod_ssl > 2.4 supports SSLFIPS directive (Fedora 19, 20, ...)
-	if ($mod_ssl_version gt '2.4.0') {
-		return 1;
-	}
-
-	return 0;
+                $mod_ssl_version = `rpm -q --qf='%{VERSION}' apache2-prefork`;
+        }
+        else {
+                $mod_ssl_version = `rpm -q --qf='%{VERSION}' mod_ssl`;
+        }
+        # mod_ssl > 2.4 supports SSLFIPS directive (Fedora 19, 20, ...)
+        # apache2-prefork > 2.4 supports SSLFIPS directive (SLE15, openSUSE Leap 15.0, ...)
+        if ($mod_ssl_version gt '2.4.0') {
+                return 1;
+        }
+        return 0;
 }
 
 sub modify_conf_content {
@@ -89,13 +108,13 @@ sub setup_mod_ssl {
 
         my ($sslconf_content, $original_sslconf_content, $pre, $vhost, $post);
         my $sslconf_dir = '/etc/httpd/conf.d';
-        $sslconf_dir = '/etc/apache2/vhosts.d' if($isSUSE);
+        $sslconf_dir = '/etc/apache2/vhosts.d' if(is_suse_like());
         my $sslconf     = 'ssl.conf';
-        $sslconf = 'vhost-ssl.conf' if($isSUSE);
+        $sslconf = 'vhost-ssl.conf' if(is_suse_like());
 
 	my $sslconf_path = "$sslconf_dir/$sslconf";
 	local *FILE;
-        if($isSUSE && ! -f $sslconf_path)
+        if(is_suse_like() && ! -f $sslconf_path)
 	{
 		`cp "$sslconf_dir/vhost-ssl.template" "$sslconf_path"`;
 	}
@@ -141,22 +160,6 @@ sub setup_mod_ssl {
         return;
 }
 
-sub is_suse_like {
-  my $filename = '/etc/os-release';
-  if(! -e $filename) {
-    return;
-  }
-  open my $fh, "<", $filename or die "Could not open '$filename': $!\n";
-  while( my $line = <$fh> ) {
-    if ($line =~ m/ID_LIKE=".*suse.*"/) {
-      close $fh;
-      return 1;
-    }
-  }
-  close $fh;
-  return;
-}
-
 # main
 
 my $help;
@@ -179,16 +182,12 @@ if ($help) {
         exit 0;
 }
 
-if(is_suse_like) {
-  $isSUSE = 1;
-}
-
 setup_mod_ssl($fips_mode_on);
 
 =head1 NAME
 
 spacewalk-setup-httpd - utility for configuring httpd service to work with
-Spacewalk / Red Hat Satellite
+Uyuni / SUSE Manager
 
 =head1 SYNOPSIS
 
@@ -214,11 +213,11 @@ Print help message.
 =head1 DESCRIPTION
 
 B<spacewalk-setup-httpd> is a utility for configuring httpd service to work
-with Spacewalk / Red Hat Satellite. The script uses configuration templates
+with Uyuni / SUSE Manager. The script uses configuration templates
 to modify existing httpd configuration files.
 
 Ordinarily, spacewalk-setup-httpd is called by spacewalk-setup(1) during
-initial Spacewalk / Red Hat Satellite configuration or upgrade.
+initial Uyuni / SUSE Manager configuration or upgrade.
 
 =head1 FILES
 
