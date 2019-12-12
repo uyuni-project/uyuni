@@ -88,8 +88,37 @@ function sortByNumber(aRaw: Object, bRaw: Object, columnKey: string, sortDirecti
 }
 
 function sortByDate(aRaw: Object, bRaw: Object, columnKey: string, sortDirection: number): number {
-    const aDate = aRaw[columnKey] instanceof Date ? aRaw[columnKey] : new Date(aRaw[columnKey]);
-    const bDate = bRaw[columnKey] instanceof Date ? bRaw[columnKey] : new Date(bRaw[columnKey]);
+    /**
+     *  HACK
+     *
+     * Expected input String format: "YYYY-MM-DD HH:mm:ss z" where "z" is the timezone
+     * This is an 'unparsable' format for a javascript Date
+     *
+     * Assuming both dates are on the same timezone, we need to drop the timezone information in order to
+     * convert the String into a javascript Date and compare which one is before the other. In the end,
+     * if the initial assumption is true, the offset is the same.
+     * The troubles could start if the String format is not as expected or if the two timezones to compare are not the same.
+     *
+     * Expected output String format to convert to a javascript Date "YYYY-MM-DD HH:mm:ss"
+     *
+     * Explaining the regex:
+     *   "d{2,4}" => DD or YYYY
+     *   "." => anyseparator
+     *   "d{2}" => MM
+     *   "." => anyseparator
+     *   "d{2,4}" => DD or YYYY
+     *   "." => anyseparator
+     *   "d{1,2}" => h or HH
+     *   "." => anyseparator
+     *   "d{2}" => mm
+     *   "." => anyseparator
+     *   "d{2}" => ss
+     *   " \w+" => any timezone letters with a 'space' as a prefix separator from seconds; the timezone catching group is optionable
+     */
+    const unparsableDateRegex = /(\d{2,4}.\d{2}.\d{2,4}.\d{1,2}.\d{2}.\d{2})( \w+)*/g;
+
+    const aDate = aRaw[columnKey] instanceof Date ? aRaw[columnKey] : new Date(aRaw[columnKey].replace(unparsableDateRegex, "$1"));
+    const bDate = bRaw[columnKey] instanceof Date ? bRaw[columnKey] : new Date(bRaw[columnKey].replace(unparsableDateRegex, "$1"));
 
     const result = aDate > bDate ? 1 : (aDate < bDate ? -1 : 0);
     return result * sortDirection;
