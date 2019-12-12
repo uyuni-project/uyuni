@@ -54,7 +54,7 @@ Feature: Management of minion keys
 
   Scenario: The minion communicates with the Salt master
     Given I am authorized as "testing" with password "testing"
-    And the Salt master can reach "sle_minion"
+    Then the Salt master can reach "sle_minion"
     When I get OS information of "sle_minion" from the Master
     Then it should contain the OS of "sle_minion"
 
