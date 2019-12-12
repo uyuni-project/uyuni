@@ -1,3 +1,4 @@
+- generate metadata with empty vendor (bsc#1158480)
 - Read the subscriptions from the output instead of input (bsc#1140332)
 - remove undefined variable from redhat_register snippet
 - Add a method in API to check if the provided session key is a valid one.
