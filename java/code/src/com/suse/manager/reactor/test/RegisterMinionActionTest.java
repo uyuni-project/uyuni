@@ -88,7 +88,8 @@ import com.suse.salt.netapi.datatypes.target.MinionList;
 import com.suse.salt.netapi.parser.JsonParser;
 import com.suse.salt.netapi.results.Result;
 import com.suse.salt.netapi.utils.Xor;
-import com.suse.utils.Opt;
+
+import org.apache.commons.io.FileUtils;
 import org.jmock.Expectations;
 import org.jmock.lib.legacy.ClassImposteriser;
 
@@ -118,6 +119,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
     private static final String MACHINE_ID = "003f13081ddd408684503111e066f921";
     private static final String SSH_PUSH_CONTACT_METHOD = "ssh-push";
     private static final String DEFAULT_CONTACT_METHOD = "default";
+    private Path metadataDirOfficial;
 
     @FunctionalInterface
     private interface ExpectationsFunction {
@@ -251,12 +253,18 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
         Config.get().setString("server.secret_key", "d8d796b3322d65928511769d180d284d2b15158165eb83083efa02c9024aa6cc");
         FormulaFactory.setDataDir(tmpSaltRoot.resolve("formulas/").toString() + "/");
 
-       Path metadataDirOfficial = Files.createTempDirectory("meta");
+       metadataDirOfficial = Files.createTempDirectory("meta");
        FormulaFactory.setMetadataDirOfficial(metadataDirOfficial.toString());
        Path testFormulaDir = metadataDirOfficial.resolve("testFormula");
        Files.createDirectories(testFormulaDir);
        Path testFormulaFile = Paths.get(testFormulaDir.toString(), "form.yml");
        Files.createFile(testFormulaFile);
+    }
+
+    @Override
+    public void tearDown() throws Exception {
+        super.tearDown();
+        FileUtils.deleteDirectory(metadataDirOfficial.toFile());
     }
 
     /**

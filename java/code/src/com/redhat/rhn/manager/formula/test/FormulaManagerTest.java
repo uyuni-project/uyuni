@@ -36,6 +36,7 @@ import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.salt.netapi.datatypes.target.MinionList;
 import com.suse.utils.Json;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.cobbler.test.MockConnection;
 import org.jmock.Expectations;
@@ -70,10 +71,7 @@ public class FormulaManagerTest extends JMockBaseTestCaseWithUser {
     private FormulaManager manager = FormulaManager.getInstance();
     private Path metadataDir;
 
-    public FormulaManagerTest() throws Exception {
-        metadataDir = Files.createTempDirectory("metadata");
-        createMetadataFiles();
-    }
+    public FormulaManagerTest() { }
 
     @Override
     public void setUp() throws Exception {
@@ -82,6 +80,15 @@ public class FormulaManagerTest extends JMockBaseTestCaseWithUser {
         MockConnection.clear();
         saltServiceMock = mock(SaltService.class);
         manager.setSystemQuery(saltServiceMock);
+        manager.setSaltService(saltServiceMock);
+        metadataDir = Files.createTempDirectory("metadata");
+        createMetadataFiles();
+    }
+
+    @Override
+    public void tearDown() throws Exception {
+        super.tearDown();
+        FileUtils.deleteDirectory(metadataDir.toFile());
     }
 
     /**
