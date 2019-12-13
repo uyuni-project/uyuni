@@ -1,3 +1,6 @@
+- take care that osad is not disabled nor deactivated during update
+  (bsc#1157700, bsc#1158697)
+
 -------------------------------------------------------------------
 Thu Oct 17 12:10:30 CEST 2019 - jgonzalez@suse.com
 

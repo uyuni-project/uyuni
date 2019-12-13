@@ -449,6 +449,10 @@ fi
 if [ -x /usr/bin/systemctl ]; then
     (
         test "$YAST_IS_RUNNING" = instsys && exit 0
+        test -e /var/lib/systemd/migrated/enable-osad && /usr/bin/systemctl enable osad.service >/dev/null 2>&1
+        rm -f /var/lib/systemd/migrated/enable-osad 2> /dev/null
+        test -e /var/lib/systemd/migrated/activate-osad && /usr/bin/systemctl start osad.service >/dev/null 2>&1
+        rm -f /var/lib/systemd/migrated/activate-osad 2> /dev/null
         test -f /etc/sysconfig/services -a \
              -z "$DISABLE_RESTART_ON_UPDATE" && . /etc/sysconfig/services
         test "$DISABLE_RESTART_ON_UPDATE" = yes -o \
@@ -457,10 +461,19 @@ if [ -x /usr/bin/systemctl ]; then
     ) || :
 fi
 
-%if 0%{?suse_version} >= 1210
 %pre
+%if 0%{?suse_version} >= 1210
 %service_add_pre osad.service
+%endif
+if [ -x /usr/bin/systemctl ]; then
+  (
+    [ -d /var/lib/systemd/migrated ] || mkdir -p /var/lib/systemd/migrated || :
+    /usr/bin/systemctl is-enabled osad.service >/dev/null 2>&1 && touch /var/lib/systemd/migrated/enable-osad
+    /usr/bin/systemctl is-active osad.service >/dev/null 2>&1 && touch /var/lib/systemd/migrated/activate-osad
+  ) ||:
+fi
 
+%if 0%{?suse_version} >= 1210
 %pre -n mgr-osa-dispatcher
 %service_add_pre osa-dispatcher.service
 
