@@ -109,6 +109,17 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
                    ]]>
     </sql-query>
 
+    <sql-query name="ServerGroup.lookupMinionIds">
+        <![CDATA[
+            SELECT m.server_id, m.minion_id
+            FROM suseMinionInfo m
+              JOIN rhnServer s ON m.server_id = s.id
+              JOIN rhnServerGroupMembers sgm on m.server_id = sgm.server_id
+            WHERE sgm.server_group_id = :sgid
+              AND s.org_id = :org_id
+        ]]>
+    </sql-query>
+    
     <sql-query name="ServerGroup.lookupCurrentMembersValue">
         <![CDATA[ select Current_Members from rhnServerGroup
                                 where id = :sgid

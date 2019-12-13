@@ -1,3 +1,4 @@
+- Improve performance for States view in SystemGroups detail view (bsc#1158752)
 - prevent race condition on metadata generation (bsc#1170197)
 - Make automatic system locking for cluster node (CaaSP) user configurable
 - Assign Activation Key channels only (bsc#1166516)

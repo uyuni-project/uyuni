@@ -48,6 +48,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
+
 import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
@@ -329,10 +330,8 @@ public class MinionController {
         ServerGroup group =
                 ServerGroupFactory.lookupByIdAndOrg(Long.parseLong(grpId), user.getOrg());
 
-        List<Server> groupServers = ServerGroupFactory.listServers(group);
-        List<SimpleMinionJson> minions = MinionServerUtils.filterSaltMinions(groupServers)
-                .map(SimpleMinionJson::fromMinionServer)
-                .collect(Collectors.toList());
+        List<SimpleMinionJson> minions = ServerGroupFactory.listMinionIdsForServerGroup(group).stream()
+                .map(m -> new SimpleMinionJson(m.getServerId(), m.getMinionId())).collect(Collectors.toList());
 
         Map<String, Object> data = new HashMap<>();
         data.put("groupId", grpId);
@@ -353,9 +352,9 @@ public class MinionController {
      * @return the ModelAndView object to render the page
      */
     public static ModelAndView ssmHighstate(Request request, Response response, User user) {
-        List<SimpleMinionJson> minions = MinionServerFactory
-                .lookupByIds(SsmManager.listServerIds(user))
-                .map(SimpleMinionJson::fromMinionServer).collect(Collectors.toList());
+        List<SimpleMinionJson> minions =
+                MinionServerFactory.findMinionIdsByServerIds(SsmManager.listServerIds(user)).stream()
+                        .map(m -> new SimpleMinionJson(m.getServerId(), m.getMinionId())).collect(Collectors.toList());
 
         Map<String, Object> data = new HashMap<>();
         data.put("minions", Json.GSON.toJson(minions));

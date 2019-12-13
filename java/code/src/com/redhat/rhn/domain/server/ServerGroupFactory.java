@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.domain.server;
 
+import static java.util.stream.Collectors.toList;
+
 import com.redhat.rhn.common.hibernate.DuplicateObjectException;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.entitlement.Entitlement;
@@ -24,6 +26,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.hibernate.Session;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -268,6 +271,22 @@ public class ServerGroupFactory extends HibernateFactory {
             serverIds.add(n.longValue());
         }
         return ServerFactory.lookupByIds(serverIds);
+    }
+
+    /**
+     * Returns the a list of simple representations of the minions that belong to the passed serverGroup
+     * @param serverGroup the serverGroup
+     * @return the list of minion representations
+     */
+    @SuppressWarnings("unchecked")
+    public static List<MinionIds> listMinionIdsForServerGroup(ServerGroup serverGroup) {
+        return  ((List<Object[]>) HibernateFactory.getSession()
+                .getNamedQuery("ServerGroup.lookupMinionIds")
+                .setParameter("sgid", serverGroup.getId())
+                .setParameter("org_id", serverGroup.getOrg().getId())
+                .getResultList()).stream()
+                .map(row -> new MinionIds(((BigDecimal)row[0]).longValue(), row[1].toString()))
+                .collect(toList());
     }
 
     /**
