@@ -358,12 +358,12 @@ if [ "$INSTALLER" == yum ]; then
     function getY_CLIENT_CODE_BASE() {{
         local BASE=""
         local VERSION=""
-        if [ -f /etc/centos-release ]; then
-            grep -v '^#' /etc/centos-release | grep -q '\(CentOS\)' && BASE="centos"
-            VERSION=`grep -v '^#' /etc/centos-release | grep -Po '(?<=release )\d+'`
-        elif [ -f /etc/redhat-release ]; then
+        if [ -f /etc/redhat-release ]; then
             grep -v '^#' /etc/redhat-release | grep -q '\(Red Hat\)' && BASE="res"
             VERSION=`grep -v '^#' /etc/redhat-release | grep -Po '(?<=release )\d+'`
+        elif [ -f /etc/centos-release ]; then
+            grep -v '^#' /etc/centos-release | grep -q '\(CentOS\)' && BASE="centos"
+            VERSION=`grep -v '^#' /etc/centos-release | grep -Po '(?<=release )\d+'`
         fi
         Y_CLIENT_CODE_BASE="${{BASE:-unknown}}"
         Y_CLIENT_CODE_VERSION="${{VERSION:-unknown}}"

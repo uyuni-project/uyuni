@@ -1,3 +1,4 @@
+- Change the order to check the version correctly for RES (bsc#1152795)
 - Remove the virt-poller cache when applying Virtualization entitlement
 - Force HTTP request timeout on public cloud grain (bsc#1157975)
 
