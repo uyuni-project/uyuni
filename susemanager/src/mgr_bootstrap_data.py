@@ -854,6 +854,10 @@ DATA = {
         'BASECHANNEL' : 'centos7-x86_64', 'PKGLIST' : RES7,
         'DEST' : '/srv/www/htdocs/pub/repositories/centos/7/bootstrap/'
     },
+    'centos-8-x86_64' : {
+        'BASECHANNEL' : 'centos8-x86_64', 'PKGLIST' : RES8,
+        'DEST' : '/srv/www/htdocs/pub/repositories/centos/8/bootstrap/'
+    },
     'RHEL6-x86_64' : {
         'PDID' : [-5, 1682], 'PKGLIST' : RES6,
         'DEST' : '/srv/www/htdocs/pub/repositories/res/6/bootstrap/'
