@@ -12,6 +12,11 @@
 @sle_minion
 Feature: Build OS images
 
+  # WORKAROUND
+  # Remove as soon as the issue is fixed
+  Scenario: Work around issue https://github.com/SUSE/spacewalk/issues/10360
+    When I let Kiwi build from external repositories
+
   Scenario: Login as Kiwi image administrator and build an image
     Given I am authorized as "kiwikiwi" with password "kiwikiwi"
     When I navigate to images build webpage

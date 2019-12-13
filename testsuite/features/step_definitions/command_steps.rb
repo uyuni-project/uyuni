@@ -1089,6 +1089,13 @@ When(/^I reduce virtpoller run interval on "([^"]*)"$/) do |host|
   node.run("systemctl restart salt-minion")
 end
 
+# WORKAROUND
+# Work around issue https://github.com/SUSE/spacewalk/issues/10360
+# Remove as soon as the issue is fixed
+When(/^I let Kiwi build from external repositories$/) do
+  $server.run("sed -i 's/--ignore-repos-used-for-build//' /usr/share/susemanager/salt/images/kiwi-image-build.sls")
+end
+
 When(/^I refresh packages list via spacecmd on "([^"]*)"$/) do |client|
   node = get_system_name(client)
   $server.run("spacecmd -u admin -p admin clear_caches")
