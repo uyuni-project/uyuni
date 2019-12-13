@@ -28,6 +28,7 @@ import org.hibernate.Session;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -53,7 +54,7 @@ public class MinionServerFactory extends HibernateFactory {
      * @return the Server found
      */
     public static List<MinionServer> lookupByOrg(Long orgId) {
-        return (List<MinionServer>) HibernateFactory.getSession()
+        return HibernateFactory.getSession()
                 .createCriteria(MinionServer.class)
                 .setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY)
                 .add(Restrictions.eq("org.id", orgId))
@@ -135,7 +136,7 @@ public class MinionServerFactory extends HibernateFactory {
      * @return the minion found
      */
     public static Optional<MinionServer> lookupById(Long id) {
-        return Optional.ofNullable((MinionServer) getSession().get(MinionServer.class, id));
+        return Optional.ofNullable(getSession().get(MinionServer.class, id));
     }
 
     /**
@@ -273,6 +274,17 @@ public class MinionServerFactory extends HibernateFactory {
 
         return getSession().createQuery(query).stream()
                 .filter(s -> s.hasEntitlement(EntitlementManager.BOOTSTRAP))
+                .collect(toList());
+    }
+
+    /**
+     * Returns a list of Ids of the minions that match the passed server Ids
+     * @param serverIds the server Ids
+     * @return the list of minion Ids
+     */
+    public static List<MinionIds> findMinionIdsByServerIds(List<Long> serverIds) {
+        List<Object[]> results = findByIds(serverIds, "Server.findSimpleMinionsByServerIds", "serverIds");
+        return results.stream().map(row -> new MinionIds(((BigDecimal) row[0]).longValue(), row[1].toString()))
                 .collect(toList());
     }
 }
