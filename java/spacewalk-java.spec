@@ -491,7 +491,7 @@ install -m 644 conf/rhn_java_sso.conf $RPM_BUILD_ROOT%{_prefix}/share/rhn/config
 
 # Adjust product tree tag
 %if 0%{?sle_version} && !0%{?is_opensuse}
-sed -i -e 's/^java.product_tree.tag =.*$/java.product_tree.tag = SUMA4.0/' $RPM_BUILD_ROOT%{_prefix}/share/rhn/config-defaults/rhn_java.conf
+sed -i -e 's/^java.product_tree.tag =.*$/java.product_tree.tag = Beta/' $RPM_BUILD_ROOT%{_prefix}/share/rhn/config-defaults/rhn_java.conf
 %else
 sed -i -e 's/^java.product_tree.tag =.*$/java.product_tree.tag = Uyuni/' $RPM_BUILD_ROOT%{_prefix}/share/rhn/config-defaults/rhn_java.conf
 %endif
