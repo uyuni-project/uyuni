@@ -17,12 +17,20 @@ disable_osad:
     - name: osad
     - enable: False
 
-remove_traditional_stack:
+remove_traditional_stack_all:
   pkg.removed:
     - pkgs:
       - spacewalk-check
       - spacewalk-client-setup
-      - spacewalk-client-tools
+      - osad
+      - osa-common
+      - mgr-osad
+      - spacewalksd
+      - mgr-daemon
+      - rhncfg
+      - mgr-cfg
+      - rhnlib
+      - rhnmd
 {%- if grains['os_family'] == 'Suse' %}
       - zypp-plugin-spacewalk
       - suseRegisterInfo
@@ -35,12 +43,15 @@ remove_traditional_stack:
 {%- elif grains['os_family'] == 'Debian' %}
       - apt-transport-spacewalk
 {%- endif %}
-      - osad
-      - osa-common
-      - spacewalksd
-      - rhncfg
-      - rhnlib
-      - rhnmd
+{%- if repos_disabled.count > 0 %}
+    - require:
+      - module: disable_repo*
+{%- endif %}
+
+remove_traditional_stack:
+  pkg.removed:
+    - pkgs:
+      - spacewalk-client-tools
 {%- if repos_disabled.count > 0 %}
     - require:
       - module: disable_repo*
