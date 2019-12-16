@@ -1,3 +1,4 @@
+- Fix container image import (bsc#1154246)
 - generate metadata with empty vendor (bsc#1158480)
 - Prevent Package List Refresh actions to stay pending forever (bsc#1157034)
 - Fqdns are coming from salt network module instead of fqdns grain (bsc#1134860)
