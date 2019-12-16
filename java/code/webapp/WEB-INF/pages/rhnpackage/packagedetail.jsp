@@ -79,7 +79,7 @@
                     </c:if>
                     <c:if test="${package_key ==  null}">
                         <div class="col-lg-6">
-                            <bean:message key="package.jsp.key.unkown"/>
+                            <bean:message key="package.jsp.key.unknown"/>
                         </div>
                     </c:if>
                 </div>
