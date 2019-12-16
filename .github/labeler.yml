@@ -1,58 +1,82 @@
 #Dev Labels
 java: 
 - java/*
+- java/**/*
 ui: 
 - web/*
+- web/**/*
 webapp: 
 - java/code/webapp/*
+- java/code/webapp/**/*
 cobbler: 
 - java/code/src/org/cobbler/*
+- java/code/src/org/cobbler/**/*
 documentation: 
 - documentation/*
+- documentation/**/*
 proxy: 
 - proxy/*
+- proxy/**/*
 API: 
 - java/code/src/com/redhat/rhn/frontend/*
+- java/code/src/com/redhat/rhn/frontend/**/*
 Virtualization management: 
 - java/code/src/com/suse/manager/virtualization/*
+- java/code/src/com/suse/manager/virtualization/**/*
 monitoring: 
 - java/code/src/com/suse/manager/webui/services/impl/test/monitoring/*
+- java/code/src/com/suse/manager/webui/services/impl/test/monitoring/**/*
 - java/code/src/com/redhat/rhn/frontend/xmlrpc/admin/monitoring/*
+- java/code/src/com/redhat/rhn/frontend/xmlrpc/admin/monitoring/**/*
 python3: 
 - java/**/*.py
 - backend/**/*.py
 - client/**/*.py
 - susemanager/**/*.py
 - spacecmd/*
+- spacecmd/**/*
 database: 
 - schema/spacewalk/*
+- schema/spacewalk/**/*
 content-management: 
 - java/code/src/com/suse/manager/webui/controllers/contentmanagement/*
+- java/code/src/com/suse/manager/webui/controllers/contentmanagement/**/*
 
 #QA Labels
 testing: 
 - testsuite/*
+- testsuite/**/*
 core-features: 
 - testsuite/features/core/*
+- testsuite/features/core/**/*
 secondary-features: 
 - testsuite/features/secondary/*
+- testsuite/features/secondary/**/*
 ci-pipelines: 
 - testsuite/**/*.yml
 
 #Unit tests
 backend_unittests_pgsql: 
 - backend/*
+- backend/**/*
 javascript_lint: 
 - web/*
+- web/**/*
 java_lint_checkstyle: 
 - java/*
+- java/**/*
 java_pgsql_tests: 
 - java/*
+- java/**/*
 ruby_rubocop: 
 - testsuite/*
+- testsuite/**/*
 schema_migration_test_oracle: 
 - schema/spacewalk/*
+- schema/spacewalk/**/*
 schema_migration_test_pgsql: 
 - schema/spacewalk/*
+- schema/spacewalk/**/*
 susemanager_unittests: 
 - susemanager/*
+- susemanager/**/*
