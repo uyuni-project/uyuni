@@ -1,6 +1,13 @@
 - update requirements to match documented values (bsc#1154599)
 
 -------------------------------------------------------------------
+Mon Dec 16 13:30:41 CET 2019 - jgonzalez@suse.com
+
+- version 4.0.20-1
+- Allow creating bootstrap repositories for CentoS8 (bsc#1159206)
+- add bootstrap-repo data for SLE12 SP5 Family (bsc#1158963)
+
+-------------------------------------------------------------------
 Mon Nov 25 10:18:10 CET 2019 - jgonzalez@suse.com
 
 - version 4.0.19-1
