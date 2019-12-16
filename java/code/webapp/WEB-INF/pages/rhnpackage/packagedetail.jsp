@@ -60,7 +60,12 @@
                         <bean:message key="package.jsp.vendor"/>:
                     </label>
                     <div class="col-lg-6">
+                    <c:if test="${pack.vendor != null}">
                         <c:out value="${pack.vendor}" />
+                    </c:if>
+                    <c:if test="${pack.vendor == null}">
+                        <bean:message key="package.jsp.vendor.unkown"/>
+                    </c:if>
                     </div>
                 </div>
                 <div class="form-group">

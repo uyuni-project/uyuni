@@ -92,9 +92,7 @@ class rpmPackage(IncompletePackage):
             del(self['sigmd5'])
 
         # Fix some of the information up
-        vendor = self['vendor']
-        if not vendor:
-            self['vendor'] = 'Not defined'
+        vendor = self['vendor'] or None
         payloadFormat = self['payload_format']
         if payloadFormat is None:
             self['payload_format'] = 'cpio'

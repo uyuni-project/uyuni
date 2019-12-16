@@ -55,6 +55,7 @@ public class DebPackageWriterTest extends JMockBaseTestCaseWithUser {
         PackageExtraTagsKeys tag3 = PackageManagerTest.createExtraTagKey("Tag3");
 
         Package pkg1 = PackageManagerTest.addPackageToChannel("pkg_1", channel);
+        pkg1.setVendor(null);
         pkg1.getExtraTags().put(tag1, "value1");
         pkg1.getExtraTags().put(tag2, "value2");
 
@@ -103,7 +104,7 @@ public class DebPackageWriterTest extends JMockBaseTestCaseWithUser {
         assertEquals("Package: pkg_1\n" +
                         "Version: 1:1.0.0-1\n" +
                         "Architecture: noarch\n" +
-                        "Maintainer: Rhn-Java\n" +
+                        "Maintainer: Debian\n" +
                         "Installed-Size: 42\n" +
                         "Depends: python:any (>= 2.4~), python-crypto (>= 2.5.0)\n" +
                         "Filename: channel/getPackage/pkg_1_1:1.0.0-1.noarch.deb\n" +

@@ -593,7 +593,7 @@ end
 When(/^I enable repositories before installing Docker$/) do
   os_version, os_family = get_os_version($minion)
 
-  # Distribution Pool and Update
+  # Distribution
   repos = "os_pool_repo os_update_repo"
   puts $minion.run("zypper mr --enable #{repos}")
 
@@ -601,7 +601,15 @@ When(/^I enable repositories before installing Docker$/) do
   repos, _code = $minion.run('zypper lr | grep "tools" | cut -d"|" -f2')
   puts $minion.run("zypper mr --enable #{repos.gsub(/\s/, ' ')}")
 
-  # Container repositories
+  # Development
+  # (we do not install Python 2 repositories in this branch
+  #  because they are not needed anymore starting with version 4.1)
+  if os_family =~ /^sles/ && os_version =~ /^15/
+    repos = "devel_pool_repo devel_updates_repo"
+    puts $minion.run("zypper mr --enable #{repos}")
+  end
+
+  # Containers
   unless os_family =~ /^opensuse/ || os_version =~ /^11/
     repos = "containers_pool_repo containers_updates_repo"
     puts $minion.run("zypper mr --enable #{repos}")
@@ -613,7 +621,7 @@ end
 When(/^I disable repositories after installing Docker$/) do
   os_version, os_family = get_os_version($minion)
 
-  # Distribution Pool and Update
+  # Distribution
   repos = "os_pool_repo os_update_repo"
   puts $minion.run("zypper mr --disable #{repos}")
 
@@ -621,7 +629,15 @@ When(/^I disable repositories after installing Docker$/) do
   repos, _code = $minion.run('zypper lr | grep "tools" | cut -d"|" -f2')
   puts $minion.run("zypper mr --disable #{repos.gsub(/\s/, ' ')}")
 
-  # Container repositories
+  # Development
+  # (we do not install Python 2 repositories in this branch
+  #  because they are not needed anymore starting with version 4.1)
+  if os_family =~ /^sles/ && os_version =~ /^15/
+    repos = "devel_pool_repo devel_updates_repo"
+    puts $minion.run("zypper mr --disable #{repos}")
+  end
+
+  # Containers
   unless os_family =~ /^opensuse/ || os_version =~ /^11/
     repos = "containers_pool_repo containers_updates_repo"
     puts $minion.run("zypper mr --disable #{repos}")
@@ -633,11 +649,11 @@ end
 When(/^I enable repositories before installing branch server$/) do
   os_version, os_family = get_os_version($proxy)
 
-  # Distribution Pool and Update
+  # Distribution
   repos = "os_pool_repo os_update_repo"
   puts $proxy.run("zypper mr --enable #{repos}")
 
-  # Server Applications Pool and Update
+  # Server Applications
   if os_family =~ /^sles/ && os_version =~ /^15/
     repos = "module_server_applications_pool_repo module_server_applications_update_repo"
     puts $proxy.run("zypper mr --enable #{repos}")
@@ -647,11 +663,11 @@ end
 When(/^I disable repositories after installing branch server$/) do
   os_version, os_family = get_os_version($proxy)
 
-  # Distribution Pool and Update
+  # Distribution
   repos = "os_pool_repo os_update_repo"
   puts $proxy.run("zypper mr --disable #{repos}")
 
-  # Server Applications Pool and Update
+  # Server Applications
   if os_family =~ /^sles/ && os_version =~ /^15/
     repos = "module_server_applications_pool_repo module_server_applications_update_repo"
     puts $proxy.run("zypper mr --disable #{repos}")

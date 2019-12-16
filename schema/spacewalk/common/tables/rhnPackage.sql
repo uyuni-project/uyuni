@@ -49,7 +49,7 @@ CREATE TABLE rhnPackage
     checksum_id      NUMBER NOT NULL
                          CONSTRAINT rhn_package_chsum_fk
                              REFERENCES rhnChecksum (id),
-    vendor           VARCHAR2(64) NOT NULL,
+    vendor           VARCHAR2(64),
     payload_format   VARCHAR2(32),
     compat           NUMBER(1)
                          DEFAULT (0)

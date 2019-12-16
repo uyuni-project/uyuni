@@ -77,6 +77,7 @@ public class RpmRepositoryWriterTest extends BaseTestCaseWithUser {
         Channel channel = ChannelFactoryTest.createTestChannel(user);
         channel.setChecksumType(ChannelFactory.findChecksumTypeByLabel("sha256"));
         com.redhat.rhn.domain.rhnpackage.Package pkg1 = PackageManagerTest.addPackageToChannel("pkg1", channel);
+        pkg1.setVendor(null);
 
         PackageProvides prov1 = new PackageProvides();
         PackageCapability provCap = PackageCapabilityTest.createTestCapability("capProv1");
@@ -122,7 +123,7 @@ public class RpmRepositoryWriterTest extends BaseTestCaseWithUser {
                 "<summary>Created by RHN-JAVA unit tests. Please disregard.</summary><description>RHN-JAVA Package Test</description><packager/><url/>" +
                 "<time file=\"1544723761\" build=\"1544723761\"/><size package=\"42\" archive=\"42\" installed=\"42\"/>" +
                 "<location href=\"getPackage/$1$RAiHwOUL$bcHCUHDdGcmVfklrxaRVC1\"/><format><rpm:license>Red Hat - RHN - 2005</rpm:license>" +
-                "<rpm:vendor>Rhn-Java</rpm:vendor><rpm:group>4XwfQEUNzkDr3</rpm:group><rpm:buildhost>foo2</rpm:buildhost>" +
+                "<rpm:vendor/><rpm:group>4XwfQEUNzkDr3</rpm:group><rpm:buildhost>foo2</rpm:buildhost>" +
                 "<rpm:sourcerpm>ZL4ke7jOwX6Tz</rpm:sourcerpm><rpm:header-range start=\"-1\" end=\"-1\"/><rpm:provides>" +
                 "<rpm:entry name=\"capProv1\" flags=\"GE\" epoch=\"0\" ver=\"\" rel=\"1.0\"/></rpm:provides><rpm:requires>" +
                 "<rpm:entry name=\"capReq1\" flags=\"GE\" epoch=\"0\" ver=\"\" rel=\"1.0\"/></rpm:requires><rpm:conflicts/>" +

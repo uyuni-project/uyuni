@@ -62,7 +62,7 @@ public class SubscriptionMatchProcessor {
                     latestStart,
                     latestEnd,
                     messages(input.get(), output.get()),
-                    subscriptions(input.get(), output.get()),
+                    subscriptions(output.get()),
                     products,
                     unmatchedProductIds(products),
                     pinnedMatches(input.get(), output.get()),
@@ -143,9 +143,9 @@ public class SubscriptionMatchProcessor {
                 .map(m -> translateMessage(m, input)) .collect(toList());
     }
 
-    private Map<String, Subscription> subscriptions(InputJson input, OutputJson output) {
+    private Map<String, Subscription> subscriptions(OutputJson output) {
         Map<Long, Integer> matchedQuantity = matchedQuantity(output);
-        return input.getSubscriptions().stream()
+        return output.getSubscriptions().stream()
                 .filter(s -> s.getQuantity() != null)
                 .map(js -> new Subscription(js.getId(),
                         js.getPartNumber(),
