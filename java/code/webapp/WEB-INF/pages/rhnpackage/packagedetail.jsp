@@ -64,7 +64,7 @@
                         <c:out value="${pack.vendor}" />
                     </c:if>
                     <c:if test="${pack.vendor == null}">
-                        <bean:message key="package.jsp.vendor.unkown"/>
+                        <bean:message key="package.jsp.vendor.unknown"/>
                     </c:if>
                     </div>
                 </div>
@@ -79,7 +79,7 @@
                     </c:if>
                     <c:if test="${package_key ==  null}">
                         <div class="col-lg-6">
-                            <bean:message key="package.jsp.key.unknown"/>
+                            <bean:message key="package.jsp.key.unkown"/>
                         </div>
                     </c:if>
                 </div>
