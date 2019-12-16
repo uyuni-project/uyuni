@@ -22,6 +22,7 @@ import com.redhat.rhn.taskomatic.task.TaskConstants;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
 import java.io.BufferedWriter;
@@ -85,8 +86,9 @@ public class DebPackageWriter implements Closeable {
         out.write(pkgDto.getArchLabel().replace("-deb", ""));
         out.newLine();
 
+        String vendor = StringUtils.defaultString(pkgDto.getVendor(), "Debian");
         out.write("Maintainer: ");
-        out.write(pkgDto.getVendor());
+        out.write(vendor);
         out.newLine();
 
         Long packagePayloadSize = pkgDto.getPayloadSize();

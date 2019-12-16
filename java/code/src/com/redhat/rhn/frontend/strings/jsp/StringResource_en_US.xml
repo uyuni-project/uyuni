@@ -19540,6 +19540,9 @@ given channel.</source>
       <trans-unit id="package.jsp.vendor">
         <source>Vendor</source>
       </trans-unit>
+      <trans-unit id="package.jsp.vendor.unknown">
+        <source>Not defined</source>
+      </trans-unit>
       <trans-unit id="package.jsp.packagesize">
         <source>Package Size</source>
       </trans-unit>
