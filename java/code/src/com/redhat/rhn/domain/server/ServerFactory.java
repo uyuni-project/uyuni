@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.domain.server;
 
+import static java.util.stream.Collectors.toMap;
+
 import com.redhat.rhn.common.client.ClientCertificate;
 import com.redhat.rhn.common.client.InvalidCertificateException;
 import com.redhat.rhn.common.db.datasource.CallableMode;
@@ -230,6 +232,23 @@ public class ServerFactory extends HibernateFactory {
                     .stream()
                     .findFirst();
         }
+    }
+
+    /**
+     * Return a map from Salt minion IDs to System IDs.
+     * Map entries are limited to systems that are visible by the specified user.
+     *
+     * @param id a user ID
+     * @return the minion ID to system ID map
+     */
+    public static Map<String, Long> getMinionIdMap(Long id) {
+        var params = new HashMap<String, Object>();
+        params.put("user_id", id);
+        List<Object[]> result = singleton.listObjectsByNamedQuery("Server.listMinionIdMappings", params);
+        return result.stream().collect(toMap(
+                row -> (String)(row[0]),
+                row -> (Long)(row[1]))
+        );
     }
 
     /**
@@ -1166,7 +1185,7 @@ public class ServerFactory extends HibernateFactory {
                 Collectors.groupingBy(row -> (Long) row[0],
                         // Map from package name to version (requires package names
                         // to be unique which is guaranteed by the sql query
-                        Collectors.toMap(row -> (String)row[1], row -> (String)row[2])
+                        toMap(row -> (String)row[1], row -> (String)row[2])
                 )
         );
     }
@@ -1236,7 +1255,7 @@ public class ServerFactory extends HibernateFactory {
      */
     public static Map<String, Long> findServerIdsByMinionIds(List<String> minionIds) {
         List<Object[]> results = findByIds(minionIds, "Server.findServerIdsByMinionIds", "minionIds");
-        return results.stream().collect(Collectors.toMap(row -> row[0].toString(), row -> (Long)row[1]));
+        return results.stream().collect(toMap(row -> row[0].toString(), row -> (Long)row[1]));
     }
 
 }

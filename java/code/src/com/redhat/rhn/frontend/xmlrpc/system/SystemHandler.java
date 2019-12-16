@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.frontend.xmlrpc.system;
 
+import static java.util.stream.Collectors.toList;
+
 import com.redhat.rhn.FaultException;
 import com.redhat.rhn.common.client.ClientCertificate;
 import com.redhat.rhn.common.conf.ConfigDefaults;
@@ -152,7 +154,12 @@ import com.redhat.rhn.manager.system.UpdateChildChannelsCommand;
 import com.redhat.rhn.manager.system.VirtualizationActionCommand;
 import com.redhat.rhn.manager.token.ActivationKeyManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
+
 import com.suse.manager.webui.utils.gson.BootstrapHostsJson;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.log4j.Logger;
+import org.cobbler.SystemRecord;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -177,11 +184,6 @@ import java.util.TimeZone;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
-import org.cobbler.SystemRecord;
-
-import static java.util.stream.Collectors.toList;
 
 /**
  * SystemHandler
@@ -6996,6 +6998,22 @@ public class SystemHandler extends BaseHandler {
         catch (com.redhat.rhn.taskomatic.TaskomaticApiException e) {
             throw new TaskomaticApiException(e.getMessage());
         }
+    }
+
+    /**
+     * Return a map from Salt minion IDs to System IDs.
+     * Map entries are limited to systems that are visible by the current user.
+     *
+     * @param loggedInUser The current user
+     * @return the minion ID to system ID map
+     *
+     * @xmlrpc.doc Return a map from Salt minion IDs to System IDs.
+     * Map entries are limited to systems that are visible by the current user.
+     * @xmlrpc.param #session_key()
+     * @xmlrpc.returntype  Map from minion IDs to system IDs
+     */
+    public Map<String, Long> getMinionIdMap(User loggedInUser) {
+        return ServerFactory.getMinionIdMap(loggedInUser.getId());
     }
 
     /**

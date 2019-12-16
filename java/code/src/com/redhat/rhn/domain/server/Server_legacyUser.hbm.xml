@@ -415,7 +415,21 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
                 AND s.minionId IN (:minionIds)
     ]]>
     </query>
-    
+
+    <sql-query name="Server.listMinionIdMappings">
+        <return-scalar column="minion_id" type="string"/>
+        <return-scalar column="server_id" type="long"/>
+        <![CDATA[
+         SELECT m.minion_id AS minion_id, s.id AS server_id
+             FROM rhnServer s
+                 JOIN suseMinionInfo m ON s.id = m.server_id
+                 WHERE EXISTS (SELECT 1
+                               FROM rhnUserServerPerms USP
+                               WHERE USP.user_id = :user_id AND USP.server_id = s.id)
+        ]]>
+    </sql-query>
+
+
     <sql-query name="Server.lookupAdministrators">
         <![CDATA[select {wc.*}
                                                 from WEB_CONTACT wc
