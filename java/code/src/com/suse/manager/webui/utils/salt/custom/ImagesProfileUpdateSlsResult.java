@@ -69,9 +69,6 @@ public class ImagesProfileUpdateSlsResult {
      * @return getter
      */
     public StateApplyResult<Ret<OSImageInspectSlsResult>> getKiwiInspect() {
-        if (kiwiInspect.isPresent()) {
-            return kiwiInspect.get();
-        }
         return kiwiInspect.get();
     }
 }
