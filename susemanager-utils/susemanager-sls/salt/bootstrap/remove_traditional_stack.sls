@@ -27,8 +27,6 @@ remove_traditional_stack_all:
       - mgr-osad
       - spacewalksd
       - mgr-daemon
-      - rhncfg
-      - mgr-cfg
       - rhnlib
       - rhnmd
 {%- if grains['os_family'] == 'Suse' %}
@@ -52,6 +50,8 @@ remove_traditional_stack:
   pkg.removed:
     - pkgs:
       - spacewalk-client-tools
+      - rhncfg
+      - mgr-cfg
 {%- if repos_disabled.count > 0 %}
     - require:
       - module: disable_repo*
