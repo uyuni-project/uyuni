@@ -18,10 +18,11 @@ Feature: Build OS images
     And I select "suse_os_image" from "profileId"
     And I select the hostname of "sle_minion" from "buildHostId"
     And I click on "submit-btn"
-    # Check the OS image built as Kiwi image administrator
+
+  Scenario: Check the OS image built as Kiwi image administrator
     Given I am on the Systems overview page of this "sle_minion"
-    When I should see a "[OS Image Build Host]" text
-    And I wait at most 3300 seconds until event "Image Build suse_os_image scheduled by kiwikiwi" is completed
+    Then I should see a "[OS Image Build Host]" text
+    When I wait at most 3300 seconds until event "Image Build suse_os_image scheduled by kiwikiwi" is completed
     And I wait at most 300 seconds until event "Image Inspect 1//suse_os_image:latest scheduled by kiwikiwi" is completed
     And I navigate to "os-images/1/" page
     Then I should see a "POS_Image_JeOS6" text
