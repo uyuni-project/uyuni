@@ -13,6 +13,10 @@ const EditGroupSubtype = Formulas.EditGroupSubtype;
 const deepCopy = Utils.deepCopy;
 const capitalize = Utils.capitalize;
 
+const defaultMessageTexts = {
+    "pillar_only_formula_saved": <p>{t("Formula saved. Applying the highstate is not needed for this formula.")}</p>
+}
+
 //props:
 //dataUrl = url to get the server data
 //saveUrl = url to save the data, data is sent as post request
@@ -317,6 +321,9 @@ class FormulaForm extends React.Component {
     }
 
     getMessageText(msg) {
+      if (!this.props.messageTexts[msg] && defaultMessageTexts[msg]) {
+          return t(defaultMessageTexts[msg]);
+      }
       return this.props.messageTexts[msg] ? t(this.props.messageTexts[msg]) : msg;
     }
 

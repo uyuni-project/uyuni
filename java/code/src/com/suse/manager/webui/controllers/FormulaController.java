@@ -229,6 +229,10 @@ public class FormulaController {
                     Arrays.asList("Error while saving formula data: " +
                             e.getMessage()));
         }
+        Map<String, Object> metadata = FormulaFactory.getMetadata(formulaName);
+        if (Boolean.TRUE.equals(metadata.get("pillar_only"))) {
+            return GSON.toJson(Arrays.asList("pillar_only_formula_saved"));
+        }
         return GSON.toJson(Arrays.asList("formula_saved")); // Formula saved!
     }
 
