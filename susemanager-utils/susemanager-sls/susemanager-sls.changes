@@ -1,3 +1,5 @@
+- split remove_traditional_stack into two parts. One for all systems and
+  another for clients not being a Uyuni Server or Proxy (bsc#1121640)
 - configure GPG keys and SSL Certificates for RHEL8 and ES8
 
 -------------------------------------------------------------------
