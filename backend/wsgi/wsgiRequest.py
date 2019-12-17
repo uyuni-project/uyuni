@@ -16,6 +16,8 @@
 
 
 import socket
+from rhn.i18n import sstr
+
 try:
     #  python 2
     import httplib
@@ -58,7 +60,7 @@ class WsgiRequest:
         return repr(self.__dict__)
 
     def write(self, msg):
-        self.output.append(msg)
+        self.output.append(sstr(msg))
 
     def send_http_header(self, status=None):
         self.sent_header = 1
