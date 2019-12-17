@@ -82,7 +82,6 @@ import com.suse.manager.reactor.utils.ValueMap;
 import com.suse.manager.webui.services.SaltStateGeneratorService;
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.services.impl.runner.MgrUtilRunner;
-import com.suse.manager.webui.utils.SaltPillar;
 import com.suse.manager.webui.utils.YamlHelper;
 import com.suse.manager.webui.utils.salt.custom.DistUpgradeDryRunSlsResult;
 import com.suse.manager.webui.utils.salt.custom.DistUpgradeOldSlsResult;
@@ -137,7 +136,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.Duration;
 import java.time.Instant;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -1220,7 +1218,7 @@ public class SaltUtils {
         // Trigger update of errata cache for this server
         ErrataManager.insertErrataCacheTask(server);
 
-        // For special nodes: enable minion blackout (= read-only) via pillar
+        // For special nodes: enable minion blackout (= locking) via pillar
         enableMinionBlackoutForSpecialNodes(server);
     }
 
