@@ -63,6 +63,7 @@
 - features/secondary/srv_organization_credentials.feature
 - features/secondary/srv_change_password.feature
 - features/secondary/srv_check_sync_source_packages.feature
+- features/secondary/srv_manage_channels_page.feature
 - features/secondary/min_salt_software_states.feature
 - features/secondary/min_docker_xmlrpc.feature
 - features/secondary/min_docker_build_image.feature
