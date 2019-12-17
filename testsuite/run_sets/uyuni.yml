@@ -25,11 +25,11 @@
 # Disabled until the pxe-formula and branch-formula are compatible with openSUSE Leap 15.1
 #- features/core/proxy_branch_network.feature
 # initialize clients
-- features/core/trad_register_client.feature
-- features/core/min_bootstrap.feature
-- features/core/min_salt_ssh.feature
-- features/core/centos_salt_ssh.feature
-- features/core/ubuntu_salt_ssh.feature
+- features/init_clients/sle_client.feature
+- features/init_clients/sle_minion.feature
+- features/init_clients/sle_ssh_minion.feature
+- features/init_clients/centos_ssh_minion.feature
+- features/init_clients/ubuntu_ssh_minion.feature
 # these features sync real channels (last core features)
 - features/reposync/srv_sync_channels.feature
 - features/reposync/srv_sync_products.feature
