@@ -475,6 +475,12 @@ public class SaltUtils {
         // Determine the final status of the action
         if (actionFailed(function, jsonResult, success, retcode)) {
             serverAction.setStatus(ActionFactory.STATUS_FAILED);
+            // check if the minion is locked (blackout mode)
+            String output = getJsonResultWithPrettyPrint(jsonResult);
+            if (output.startsWith("\"ERROR") && output.contains("Minion in blackout mode")) {
+                serverAction.setResultMsg(output);
+                return;
+            }
         }
         else {
             serverAction.setStatus(ActionFactory.STATUS_COMPLETED);
