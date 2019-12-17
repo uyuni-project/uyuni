@@ -1,3 +1,5 @@
+- split remove_traditional_stack into two parts. One for all systems and
+  another for clients not being a Uyuni Server or Proxy (bsc#1121640)
 - Change the order to check the version correctly for RES (bsc#1152795)
 - do not break Servers registering to a Server
 - Remove the virt-poller cache when applying Virtualization entitlement
