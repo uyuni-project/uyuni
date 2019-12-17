@@ -19,14 +19,33 @@ import com.redhat.rhn.domain.BaseDomainHelper;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.IdClass;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+
 /**
  * PackageProperty
  * @version $Rev$
  */
+@Entity
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+@IdClass(PackagePropertyKey.class)
 public class PackageProperty extends BaseDomainHelper {
 
+    @Id
+    @ManyToOne
+    @JoinColumn(name = "package_id")
     private Package pack;
+
+    @Id
+    @ManyToOne
+    @JoinColumn(name = "capability_id")
     private PackageCapability capability;
+
     private Long sense;
 
     /**

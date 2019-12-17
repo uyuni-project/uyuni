@@ -284,6 +284,30 @@ ORDER BY UPPER(X.name), X.version
   </query>
 </mode>
 
+<mode name="package_predepends">
+    <query params="pid">
+        select * from (
+        SELECT  DISTINCT C.name, C.version, P.sense
+        FROM  rhnPackageCapability C, rhnPackagePredepends P
+        WHERE  P.package_id = :pid
+        AND  P.capability_id = C.id
+        ) X
+        ORDER BY UPPER(X.name), X.version
+    </query>
+</mode>
+
+<mode name="package_breaks">
+    <query params="pid">
+        select * from (
+        SELECT  DISTINCT C.name, C.version, P.sense
+        FROM  rhnPackageCapability C, rhnPackageBreaks P
+        WHERE  P.package_id = :pid
+        AND  P.capability_id = C.id
+        ) X
+        ORDER BY UPPER(X.name), X.version
+    </query>
+</mode>
+
 <mode name="package_files" class="com.redhat.rhn.frontend.dto.PackageFileDto">
   <query params="pid">
 SELECT C.name,

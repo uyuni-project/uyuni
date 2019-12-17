@@ -40,7 +40,17 @@ import com.redhat.rhn.domain.image.ProfileCustomDataValue;
 import com.redhat.rhn.domain.notification.NotificationMessage;
 import com.redhat.rhn.domain.notification.UserNotification;
 import com.redhat.rhn.domain.product.SUSEProductSCCRepository;
+import com.redhat.rhn.domain.rhnpackage.PackageBreaks;
+import com.redhat.rhn.domain.rhnpackage.PackageConflicts;
+import com.redhat.rhn.domain.rhnpackage.PackageEnhances;
 import com.redhat.rhn.domain.rhnpackage.PackageExtraTagsKeys;
+import com.redhat.rhn.domain.rhnpackage.PackageObsoletes;
+import com.redhat.rhn.domain.rhnpackage.PackagePreDepends;
+import com.redhat.rhn.domain.rhnpackage.PackageProvides;
+import com.redhat.rhn.domain.rhnpackage.PackageRecommends;
+import com.redhat.rhn.domain.rhnpackage.PackageRequires;
+import com.redhat.rhn.domain.rhnpackage.PackageSuggests;
+import com.redhat.rhn.domain.rhnpackage.PackageSupplements;
 import com.redhat.rhn.domain.scc.SCCOrderItem;
 import com.redhat.rhn.domain.scc.SCCRepository;
 import com.redhat.rhn.domain.scc.SCCRepositoryAuth;
@@ -104,6 +114,17 @@ public class AnnotationRegistry {
         ANNOTATION_CLASSES.add(SoftwareEnvironmentTarget.class);
         ANNOTATION_CLASSES.add(ContentProjectHistoryEntry.class);
         ANNOTATION_CLASSES.add(PackageExtraTagsKeys.class);
+        ANNOTATION_CLASSES.add(PackageProvides.class);
+        ANNOTATION_CLASSES.add(PackageRequires.class);
+        ANNOTATION_CLASSES.add(PackageRecommends.class);
+        ANNOTATION_CLASSES.add(PackageObsoletes.class);
+        ANNOTATION_CLASSES.add(PackageBreaks.class);
+        ANNOTATION_CLASSES.add(PackageSupplements.class);
+        ANNOTATION_CLASSES.add(PackageConflicts.class);
+        ANNOTATION_CLASSES.add(PackageSuggests.class);
+        ANNOTATION_CLASSES.add(PackagePreDepends.class);
+        ANNOTATION_CLASSES.add(PackageEnhances.class);
+
     }
 
     /**
