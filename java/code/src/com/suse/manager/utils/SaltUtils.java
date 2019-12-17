@@ -673,7 +673,7 @@ public class SaltUtils {
      */
     private String  getJsonResultWithPrettyPrint(JsonElement jsonResult) {
         Object returnObject = Json.GSON.fromJson(jsonResult, Object.class);
-        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        Gson gson = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
         return gson.toJson(returnObject);
     }
 
