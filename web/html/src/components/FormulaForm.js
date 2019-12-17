@@ -715,9 +715,6 @@ function generateValues(layout, group_data, system_data) {
             }
 
             result[key] = value
-            if(key === '$key') {
-              result['$key_name'] = element.$name;
-            }
 
             if ((element.$type === "edit-group") && 
                 !(getEditGroupSubtype(element) === EditGroupSubtype.LIST_OF_DICTIONARIES ||
