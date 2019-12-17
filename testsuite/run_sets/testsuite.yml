@@ -107,6 +107,7 @@
 - features/secondary/srv_salt.feature
 - features/secondary/min_salt_user_states.feature
 - features/secondary/srv_check_channels_page.feature
+- features/secondary/srv_manage_channels_page.feature
 - features/secondary/min_salt_minion_details.feature
 - features/secondary/trad_check_registration.feature
 - features/secondary/min_salt_minions_page.feature
