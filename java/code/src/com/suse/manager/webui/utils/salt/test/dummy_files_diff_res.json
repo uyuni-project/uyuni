@@ -31,16 +31,14 @@
   },
   "file_|-file_deploy_6_|-/tmp/gitrec_|-managed":{
     "comment":"The file /tmp/gitrec is set to be changed",
-    "pchanges":{
-      "newfile":"/tmp/gitrec"
-    },
+
     "name":"/tmp/gitrec",
     "start_time":"10:29:04.062771",
     "result":null,
     "duration":2.835,
     "__run_num__":5,
     "changes":{
-
+      "newfile":"/tmp/gitrec"
     },
     "__id__":"file_deploy_6"
   },
