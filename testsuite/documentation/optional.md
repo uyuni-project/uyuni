@@ -32,6 +32,34 @@ Inside of the testsuite, the scenarios that are tagged with
 are executed only if the proxy is available.
 
 
+### Testing with a SLE minion
+
+Using a minion with the testsuite is not mandatory.
+
+If you do not want a SLE minion, do not define `MINION` environment
+variable before you run the testsuite. That's all.
+If you want a SLE minion, make this variable point to the machine that
+will be the minion:
+```bash
+export MINION=myminion.example.com
+```
+and then run the testsuite.
+
+Sumaform can prepare a minion virtual machine and declare the `$MINION`
+variable on the controller (in `/root/.bashrc`).
+To declare a minion in your `main.tf` file, add a line
+to the controller declaration that looks like:
+```
+minion_configuration="${module.min-sles12sp3.configuration}"
+```
+
+Inside of the testsuite, the scenarios that are tagged with
+```
+@sle_minion
+```
+are executed only if the minion is available.
+
+
 ### Testing with a SSH minion
 
 Using a SSH minion with the testsuite is not mandatory.
@@ -50,7 +78,7 @@ variable on the controller (in `/root/.bashrc`).
 To declare a SSH minion in your `main.tf` file, add a line
 to the controller declaration that looks like:
 ```
-centos_configuration="${module.minsles12sp3ssh.configuration}"
+minionssh_configuration="${module.minsles12sp3ssh.configuration}"
 ```
 
 Inside of the testsuite, the scenarios that are tagged with
@@ -58,6 +86,34 @@ Inside of the testsuite, the scenarios that are tagged with
 @ssh_minion
 ```
 are executed only if the SSH minion is available.
+
+
+### Testing with a traditional client
+
+Using a traditional client with the testsuite is not mandatory.
+
+If you do not want a traditional client, do not define `CLIENT` environment
+variable before you run the testsuite. That's all.
+If you want a traditional client, make this variable point to the machine that
+will be the traditional client:
+```bash
+export CLIENT=mytraditionalclient.example.com
+```
+and then run the testsuite.
+
+Sumaform can prepare a traditional client virtual machine and declare the `$CLIENT`
+variable on the controller (in `/root/.bashrc`).
+To declare a traditional client in your `main.tf` file, add a line
+to the controller declaration that looks like:
+```
+client_configuration="${module.cli-sles12sp3.configuration}"
+```
+
+Inside of the testsuite, the scenarios that are tagged with
+```
+@sle_client
+```
+are executed only if the traditional client is available.
 
 
 ### Testing with a CentOS minion

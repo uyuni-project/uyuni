@@ -9,6 +9,7 @@
 #   java.kiwi_os_image_building_enabled = true
 # which means "Enable Kiwi OS Image building"
 
+@sle_minion
 Feature: Build OS images
 
   Scenario: Login as Kiwi image administrator and build an image
