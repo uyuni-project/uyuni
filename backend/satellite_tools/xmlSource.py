@@ -817,8 +817,10 @@ class SuseProductItem(BaseItem):
     item_name = 'suse-product'
     item_class = importLib.SuseProduct
     tagMap = {
-        'product-id'    : 'product_id',
-        'friendly-name' : 'friendly_name'
+        'product-id'           : 'product_id',
+        'friendly-name'        : 'friendly_name',
+        'release-stage'        : 'release_stage',
+        'channel-family-label' : 'channel_family_label'
     }
 addItem(SuseProductItem)
 

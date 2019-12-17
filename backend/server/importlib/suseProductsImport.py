@@ -21,6 +21,7 @@ class SuseProductsImport(GenericPackageImport):
 
     def preprocess(self):
         archs = {}
+        families = {}
         for item in self.batch:
             if item['arch'] not in archs:
                 archs[item['arch']] = None
@@ -30,6 +31,12 @@ class SuseProductsImport(GenericPackageImport):
                 item['release'] = None
             if item['version'] == 'None':
                 item['version'] = None
+            if item['channel_family_label'] not in families:
+                fam = {}
+                fam[item['channel_family_label']] = None
+                self.backend.lookupChannelFamilies(fam)
+                families[item['channel_family_label']] = fam[item['channel_family_label']]
+            item['channel_family_id'] = families[item['channel_family_label']]
             self._data.append(item)
 
     def fix(self):
