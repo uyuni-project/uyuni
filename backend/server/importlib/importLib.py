@@ -192,6 +192,10 @@ class SuseProduct(Information):
         'arch'          : StringType,
         'release'       : StringType,
         'product_id'    : IntType,
+        'free'          : StringType,
+        'base'          : StringType,
+        'release_stage' : StringType,
+        'channel_family_label' : StringType,
     }
 
 class SuseProductChannel(Information):
