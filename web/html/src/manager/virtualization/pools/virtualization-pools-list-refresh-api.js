@@ -2,6 +2,7 @@
 
 const React = require('react');
 const Network = require('utils/network');
+const MessagesUtils = require('components/messages.js').Utils;
 
 type Props = {
   serverId: string,
@@ -52,8 +53,9 @@ class VirtualizationPoolsListRefreshApi extends React.Component<Props, State> {
         });
       })
       .catch((response) => {
+        const errorMessage = Network.errorMessageByStatus(response.status);
         this.setState({
-          errors: [Network.errorMessageByStatus(response.status)],
+          errors: errorMessage !== '' ? [MessagesUtils.error(errorMessage)] : [],
         });
       });
   }
