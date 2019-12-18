@@ -1,3 +1,7 @@
+- Add universe updates to Ubuntu common channels
+- Rename ubuntu-XXXX-amd64-main-universe to ubuntu-XXXX-amd64-universe and
+  ubuntu-XXXX-amd64-main-universe-uyuni to ubuntu-XXXX-amd64-universe-uyuni
+  in common channels
 - Enable CentOS8 at spacewalk-common-channels (bsc#1159206)
 
 -------------------------------------------------------------------
