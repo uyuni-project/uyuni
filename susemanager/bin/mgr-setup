@@ -884,7 +884,7 @@ if [ "$DO_SETUP" = "1" -o "$DO_MIGRATION" = "1" ]; then
             /usr/sbin/spacewalk-service stop
             systemctl restart postgresql
             /usr/sbin/spacewalk-service start
-            systemctl --quiet enable spacewalk-diskcheck.timer
+            systemctl --quiet enable spacewalk-diskcheck.timer 2>&1
             systemctl start spacewalk-diskcheck.timer
         fi
     fi
@@ -904,7 +904,7 @@ if [ "$DO_SETUP" = "1" -o "$DO_MIGRATION" = "1" ]; then
             sysconf_addword /etc/sysconfig/SuSEfirewall2 FW_SERVICES_EXT_TCP "427" > /dev/null 2>&1
             sysconf_addword /etc/sysconfig/SuSEfirewall2 FW_SERVICES_EXT_UDP "427" > /dev/null 2>&1
         fi
-        systemctl --quiet enable slpd
+        systemctl --quiet enable slpd 2>&1
         systemctl start slpd
     fi
 fi
