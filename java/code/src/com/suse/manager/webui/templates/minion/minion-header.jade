@@ -15,7 +15,7 @@
     | #{" " + server.name + " "}
     a(href="/docs/reference/systems/system-details.html", target="_blank")
       i.fa.fa-question-circle.spacewalk-help-link
-if h.formulaValueEquals(server, "salt-blackout", "minion_blackout", "true")
+if h.formulaValueEquals(server, "system-lock", "minion_blackout", "true")
   .alert.alert-warning
     p.
       System is locked. Some operations are not allowed.
