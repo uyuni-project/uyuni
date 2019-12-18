@@ -894,6 +894,25 @@ public class ActionFactory extends HibernateFactory {
     }
 
     /**
+     * Return whether an action type is a virtualization one.
+     *
+     * @param actionType type to check
+     * @return true if it is a virtualization action type
+     */
+    public static boolean isVirtualizationActionType(ActionType actionType) {
+        return actionType.equals(TYPE_VIRTUALIZATION_CREATE) ||
+                actionType.equals(TYPE_VIRTUALIZATION_DELETE) ||
+                actionType.equals(TYPE_VIRTUALIZATION_DESTROY) ||
+                actionType.equals(TYPE_VIRTUALIZATION_REBOOT) ||
+                actionType.equals(TYPE_VIRTUALIZATION_RESUME) ||
+                actionType.equals(TYPE_VIRTUALIZATION_SET_MEMORY) ||
+                actionType.equals(TYPE_VIRTUALIZATION_SET_VCPUS) ||
+                actionType.equals(TYPE_VIRTUALIZATION_SHUTDOWN) ||
+                actionType.equals(TYPE_VIRTUALIZATION_START) ||
+                actionType.equals(TYPE_VIRTUALIZATION_SUSPEND);
+    }
+
+    /**
      * The constant representing the Action Status QUEUED
      */
     public static final ActionStatus STATUS_QUEUED =
