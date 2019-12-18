@@ -1,3 +1,5 @@
+- fix product id of SLES12 SP5 x86_64 and remove never released
+  SLED product (bsc#1158963)
 - add bootstrap-repo data for SLE12 SP5 Family (bsc#1158963)
 - add bootstrap repo for RHEL 8 and ES 8
 
