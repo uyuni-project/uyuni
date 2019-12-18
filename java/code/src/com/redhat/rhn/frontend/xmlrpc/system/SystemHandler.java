@@ -5581,6 +5581,7 @@ public class SystemHandler extends BaseHandler {
                 ActionFactory.TYPE_VIRTUALIZATION_SET_MEMORY,
                 vi.getHostSystem(),
                 vi.getUuid(),
+                vi.getName(),
                 context);
         try {
             cmd.store();
@@ -5622,6 +5623,7 @@ public class SystemHandler extends BaseHandler {
                 ActionFactory.TYPE_VIRTUALIZATION_SET_VCPUS,
                 vi.getHostSystem(),
                 vi.getUuid(),
+                vi.getName(),
                 context);
         try {
             cmd.store();
@@ -5681,6 +5683,7 @@ public class SystemHandler extends BaseHandler {
                         action,
                         vi.getHostSystem(),
                         vi.getUuid(),
+                        vi.getName(),
                         new HashMap<String, String>());
         try {
             cmd.store();
