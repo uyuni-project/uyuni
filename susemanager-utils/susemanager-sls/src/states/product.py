@@ -1,0 +1,90 @@
+'''
+Handles installation of SUSE products using zypper
+
+Only supported with :mod:`zypper <salt.modules.zypper>`
+'''
+
+import logging
+
+import salt.utils.path
+from salt.exceptions import CommandExecutionError
+
+log = logging.getLogger(__name__)
+
+__virtualname__ = 'product'
+
+def __virtual__():
+    '''
+    Only work on SUSE platforms with zypper
+    '''
+    if __grains__.get('os_family', '') != 'Suse':
+        return (False, "Module product: non SUSE OS not supported")
+    # Not all versions of SUSE use zypper, check that it is available
+    if not salt.utils.path.which('zypper'):
+        return (False, "Module product: zypper package manager not found")
+    return __virtualname__
+
+
+def _get_missing_products(refresh):
+    # Search for not installed products
+    products = []
+    try:
+        products = __salt__['pkg.search'](
+            'product()',
+            refresh=refresh,
+            match='exact',
+            provides=True,
+            not_installed_only=True
+        ).keys()
+
+        log.debug("The following products are not yet installed: %s", ', '.join(products))
+
+    except CommandExecutionError:
+        # No search results
+        return None
+
+    # Exclude products that are already provided by another to prevent conflicts
+    to_install = []
+    for pkg in products:
+        try:
+            res = __salt__['pkg.search'](
+                pkg,
+                match='exact',
+                provides=True
+            ).keys()
+
+            log.debug("The product '%s' is already provided by '%s'. Skipping.", pkg, ', '.join(res))
+
+        except CommandExecutionError:
+            # No search results
+            # Not provided by any installed package, add it to the list
+            to_install.append(pkg)
+
+    return to_install
+
+def all_installed(name, refresh=False, **kwargs):
+    '''
+    Ensure that all the subscribed products are installed.
+
+    refresh
+        force a refresh if set to True.
+        If set to False (default) it depends on zypper if a refresh is
+        executed.
+    '''
+
+    ret = {'name': name,
+           'changes': {},
+           'result': True,
+           'comment': ''}
+
+    to_install = _get_missing_products(refresh)
+
+    if not to_install:
+        # All product packages are already installed
+        ret['comment'] = "All subscribed products are already installed"
+        ret['result'] = True
+
+        log.debug("All products are already installed. Nothing to do.")
+        return ret
+
+    return __states__['pkg.installed'](name, pkgs=to_install)
