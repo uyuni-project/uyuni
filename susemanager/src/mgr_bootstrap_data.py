@@ -763,10 +763,6 @@ DATA = {
         'DEST' : '/srv/www/htdocs/pub/repositories/sle/12/5/bootstrap/'
     },
     'SLE-12-SP5-x86_64' : {
-        'PDID' : 1625, 'PKGLIST' : PKGLIST12 + ONLYSLE12 + ENHANCE12SP1 + PKGLIST12_X86_ARM,
-        'DEST' : '/srv/www/htdocs/pub/repositories/sle/12/5/bootstrap/'
-    },
-    'SLED-12-SP5-x86_64' : {
         'PDID' : 1878, 'PKGLIST' : PKGLIST12 + ONLYSLE12 + ENHANCE12SP1 + PKGLIST12_X86_ARM,
         'DEST' : '/srv/www/htdocs/pub/repositories/sle/12/5/bootstrap/'
     },

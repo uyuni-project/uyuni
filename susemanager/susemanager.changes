@@ -1,6 +1,13 @@
 - update requirements to match documented values (bsc#1154599)
 
 -------------------------------------------------------------------
+Wed Dec 18 11:28:13 CET 2019 - jgonzalez@suse.com
+
+- version 4.0.21-1
+- fix product id of SLES12 SP5 x86_64 and remove never released
+  SLED product (bsc#1158963)
+
+-------------------------------------------------------------------
 Mon Dec 16 13:30:41 CET 2019 - jgonzalez@suse.com
 
 - version 4.0.20-1
