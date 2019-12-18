@@ -174,6 +174,7 @@ public class SaltUtils {
     public static final SaltUtils INSTANCE = new SaltUtils();
 
     private static final String CAASP_PRODUCT_IDENTIFIER = "caasp";
+    public static final String SYSTEM_LOCK_FORMULA = "system-lock";
 
     private Path scriptsDir = Paths.get(SUMA_STATE_FILES_ROOT_PATH, SCRIPTS_DIR);
 
@@ -1225,10 +1226,10 @@ public class SaltUtils {
         ErrataManager.insertErrataCacheTask(server);
 
         // For special nodes: enable minion blackout (= locking) via pillar
-        enableMinionBlackoutForSpecialNodes(server);
+        enableMinionSystemLockForSpecialNodes(server);
     }
 
-    private static void enableMinionBlackoutForSpecialNodes(MinionServer server) {
+    private static void enableMinionSystemLockForSpecialNodes(MinionServer server) {
         if (server.getInstalledProducts().stream()
                 .anyMatch(p -> p.getName().equalsIgnoreCase(CAASP_PRODUCT_IDENTIFIER))) {
             // Minion blackout is only enabled for nodes that have installed the `caasp-*` package
@@ -1241,8 +1242,8 @@ public class SaltUtils {
                     "grains.items"
             ));
             try {
-                FormulaManager.getInstance().enableFormula(server.getMinionId(), "salt-blackout");
-                FormulaFactory.saveServerFormulaData(data, server.getMinionId(), "salt-blackout");
+                FormulaManager.getInstance().enableFormula(server.getMinionId(), SYSTEM_LOCK_FORMULA);
+                FormulaFactory.saveServerFormulaData(data, server.getMinionId(), SYSTEM_LOCK_FORMULA);
                 SaltService.INSTANCE.refreshPillar(new MinionList(server.getMinionId()));
             } catch (IOException e) {
                 LOG.error("Could not enable blackout formula", e);
