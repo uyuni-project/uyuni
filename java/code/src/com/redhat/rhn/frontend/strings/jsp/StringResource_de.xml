@@ -13832,8 +13832,8 @@ Anschließend wird das nicht-chroot Post-Skript ausgeführt, und zuletzt das Pos
           <target>rhncfg Paket-Installation planen</target>
         </trans-unit>
         <trans-unit id="targetsystems.jsp.installcfgactions">
-          <source>Schedule rhncfg-actions package install</source>
-          <target>rhncfg-actions Paket-Installation planen</target>
+          <source>Schedule mgr-cfg-actions package install</source>
+          <target>mgr-cfg-actions Paket-Installation planen</target>
         </trans-unit>
         <trans-unit id="targetsystems.jsp.installcfgclient">
           <source>Schedule rhncfg-client package install</source>
@@ -17808,8 +17808,8 @@ dieser Revisionen.  Möchten Sie dies wirklich tun?</target>
           <target>Keine Systeme innerhalb dieses Satzes sind zur Ausführung von Remote-Befehlen verfügbar.</target>
         </trans-unit>
         <trans-unit id="ssm.operations.provisioning.remotecommand.no_script_run">
-          <source>You must enable Remote Command execution on the target system by installing the &lt;code&gt;rhncfg-actions&lt;/code&gt; RPM.</source>
-          <target>Sie müssen die Ausführung von Remote-Befehlen am Zielsystem durch Installation des &lt;code&gt;rhncfg-actions&lt;/code&gt; RPM aktivieren.</target>
+          <source>You must enable Remote Command execution on the target system by installing the &lt;code&gt;mgr-cfg-actions&lt;/code&gt; RPM.</source>
+          <target>Sie müssen die Ausführung von Remote-Befehlen am Zielsystem durch Installation des &lt;code&gt;mgr-cfg-actions&lt;/code&gt; RPM aktivieren.</target>
         </trans-unit>
         <trans-unit id="stringutil.scriptcheck.error.noshelldefined">
           <source>Script does not contain shell definition.</source>
