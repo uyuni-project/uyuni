@@ -111,3 +111,9 @@ def instance_id():
     if INSTANCE_ID:
         ret['instance_id'] = INSTANCE_ID
     return ret
+
+def is_payg_instance():
+    ret = {}
+    if os.path.isfile('/usr/sbin/registercloudguest'):
+        ret['is_payg_instance'] = True
+    return ret
