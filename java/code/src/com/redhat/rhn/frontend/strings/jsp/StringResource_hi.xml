@@ -13099,7 +13099,7 @@ the &lt;strong&gt;Red Hat Enterprise Linux System Administration Guide.&lt;/stro
           <target>rhncfg संकुल अधिष्ठापन नियोजित करें</target>
         </trans-unit>
         <trans-unit id="targetsystems.jsp.installcfgactions">
-          <source>Schedule rhncfg-actions package install</source>
+          <source>Schedule mgr-cfg-actions package install</source>
           <target>rhncfg-क्रिया संकुल अधिष्ठापन को अनुसूचित करें</target>
         </trans-unit>
         <trans-unit id="targetsystems.jsp.installcfgclient">
@@ -16989,7 +16989,7 @@ any of these revisions.  Are you sure you want to do this?</source>
           <source>No systems within this set are available to run remote commands.</source>
         </trans-unit>
         <trans-unit id="ssm.operations.provisioning.remotecommand.no_script_run">
-          <source>You must enable Remote Command execution on the target system by installing the &lt;code&gt;rhncfg-actions&lt;/code&gt; RPM.</source>
+          <source>You must enable Remote Command execution on the target system by installing the &lt;code&gt;mgr-cfg-actions&lt;/code&gt; RPM.</source>
         </trans-unit>
         <trans-unit id="stringutil.scriptcheck.error.noshelldefined">
           <source>Script does not contain shell definition.</source>
