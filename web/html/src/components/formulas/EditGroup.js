@@ -11,6 +11,7 @@ const getEditGroupSubtype = Formulas.getEditGroupSubtype;
 const deepCopy = Utils.deepCopy;
 // circular dependencies are bad
 
+const productName = Utils.getProductName();
 /*
  * Base class for edit-group.
  * Based on the edit-group data, the corresponing shape of component is used.
@@ -271,6 +272,7 @@ class EditDictionaryGroup extends React.Component {
         let name = this.props.element.$itemName;
         name = name.replace(/\${i}/g, parseInt(item_index, 10) + 1);
         name = name.replace(/\${.*}/g, txt => get(this.props.value[item_index][txt.substring(2, txt.length - 1)], txt));
+        name = name.replace(/\${productName}/g, productName);
         return name;
     }
 
