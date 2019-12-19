@@ -1,3 +1,4 @@
+- Feat: enable Salt system lock when CaaSP node is onboarded
 - use term 'patch' instead of 'errata' (bsc#1164649)
 - enable provisioning API with salt and bootstrap entitled systems
 - remove oracle DB support
