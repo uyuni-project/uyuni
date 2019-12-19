@@ -1,4 +1,5 @@
 - Use 'changes' field if 'pchanges' field doesn't exist (bsc#1159202)
+- rename rhncfg-actions to mgr-cfg-actions in UI advice (bsc#1137248)
 - Show additional headers and dependencies for deb packages
 - Show adequate message on saving formulas that change only pillar data
 - Fix container image import (bsc#1154246)

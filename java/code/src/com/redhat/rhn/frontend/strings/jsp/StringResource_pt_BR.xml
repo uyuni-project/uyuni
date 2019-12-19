@@ -13837,7 +13837,7 @@ o &lt;strong&gt;Guia de Administração de Sistemas Red Hat Enterprise Li
           <target>Agendar Instalação de Pacotes rhncfg</target>
         </trans-unit>
         <trans-unit id="targetsystems.jsp.installcfgactions">
-          <source>Schedule rhncfg-actions package install</source>
+          <source>Schedule mgr-cfg-actions package install</source>
           <target>Agendar Instalação de Pacotes de ações rhncfg</target>
         </trans-unit>
         <trans-unit id="targetsystems.jsp.installcfgclient">
@@ -17812,8 +17812,8 @@ para qualquer uma das revisões, assim como todo o histórico de implementação
           <target>Nenhum sistema dentro deste conjunto está disponível para executar comandos remotos.</target>
         </trans-unit>
         <trans-unit id="ssm.operations.provisioning.remotecommand.no_script_run">
-          <source>You must enable Remote Command execution on the target system by installing the &lt;code&gt;rhncfg-actions&lt;/code&gt; RPM.</source>
-          <target>Você deve ativar a execução do Comando Remoto no sistema alvo, instalando o RPM &lt;code&gt;rhncfg-actions&lt;/code&gt;.</target>
+          <source>You must enable Remote Command execution on the target system by installing the &lt;code&gt;mgr-cfg-actions&lt;/code&gt; RPM.</source>
+          <target>Você deve ativar a execução do Comando Remoto no sistema alvo, instalando o RPM &lt;code&gt;mgr-cfg-actions&lt;/code&gt;.</target>
         </trans-unit>
         <trans-unit id="stringutil.scriptcheck.error.noshelldefined">
           <source>Script does not contain shell definition.</source>
