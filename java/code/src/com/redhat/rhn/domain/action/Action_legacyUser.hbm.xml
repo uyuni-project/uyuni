@@ -367,7 +367,7 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
             <key column="action_id"/>
             <property name="uuid" type="string" column="uuid"/>
             <property name="type" type="string" column="vm_type"/>
-            <property name="name" type="string" column="vm_name"/>
+            <property name="guestName" type="string" column="vm_name"/>
             <property name="osType" type="string" column="os_type"/>
             <property name="memory" type="long" column="memory"/>
             <property name="vcpus" type="long" column="vcpus"/>

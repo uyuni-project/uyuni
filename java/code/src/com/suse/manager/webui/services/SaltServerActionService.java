@@ -1539,7 +1539,7 @@ public class SaltServerActionService {
                 Collectors.toMap(minion -> {
                     // Some of these pillar data will be useless for update-vm, but they will just be ignored.
                     Map<String, Object> pillar = new HashMap<>();
-                    pillar.put("name", action.getName());
+                    pillar.put("name", action.getGuestName());
                     pillar.put("vcpus", action.getVcpus());
                     pillar.put("mem", action.getMemory());
                     pillar.put("vm_type", action.getType());
