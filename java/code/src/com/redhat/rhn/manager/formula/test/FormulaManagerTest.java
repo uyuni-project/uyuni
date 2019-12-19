@@ -27,10 +27,10 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.formula.FormulaManager;
 import com.redhat.rhn.manager.formula.InvalidFormulaException;
 import com.redhat.rhn.manager.system.SystemManager;
+import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
 import com.redhat.rhn.testing.ServerGroupTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
-import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.salt.netapi.datatypes.target.MinionList;
 import com.suse.utils.Json;
@@ -50,6 +50,7 @@ import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
@@ -59,7 +60,7 @@ import java.util.Map;
 public class FormulaManagerTest extends JMockBaseTestCaseWithUser {
 
     static final String FORMULA_DATA = "dhcpd-formula-data.json";
-    static final String FORMULA_DEFINATION = "dhcpd-formula-form.json";
+    static final String FORMULA_DEFINITION = "dhcpd-formula-form.json";
 
     static final String TEMP_PATH = "formulas/";
     static final String formulaName = "dhcpd";
@@ -91,7 +92,7 @@ public class FormulaManagerTest extends JMockBaseTestCaseWithUser {
     public void testValidContents() throws Exception {
 
         String contentsData = TestUtils.readAll(TestUtils.findTestData(FORMULA_DATA));
-        String layoutData = TestUtils.readAll(TestUtils.findTestData(FORMULA_DEFINATION));
+        String layoutData = TestUtils.readAll(TestUtils.findTestData(FORMULA_DEFINITION));
         Map<String, Object> contents = Json.GSON.fromJson(contentsData, Map.class);
 
         Map<String, Object> layout = Json.GSON.fromJson(layoutData, Map.class);
@@ -107,7 +108,7 @@ public class FormulaManagerTest extends JMockBaseTestCaseWithUser {
     public void testInValidContents() throws Exception {
 
         String contentsData = TestUtils.readAll(TestUtils.findTestData(FORMULA_DATA));
-        String layoutData = TestUtils.readAll(TestUtils.findTestData(FORMULA_DEFINATION));
+        String layoutData = TestUtils.readAll(TestUtils.findTestData(FORMULA_DEFINITION));
         Map<String, Object> contents = Json.GSON.fromJson(contentsData, Map.class);
         Map<String, Object> layout = Json.GSON.fromJson(layoutData, Map.class);
 
@@ -141,6 +142,25 @@ public class FormulaManagerTest extends JMockBaseTestCaseWithUser {
                         .orElseGet(Collections::emptyMap);
         assertNotNull(savedFormulaData);
         assertEquals(contents,savedFormulaData);
+    }
+
+    /**
+     * Test the enable formula method
+     * @throws Exception if the formula cannot be enabled
+     */
+    public void testEnableFormula() throws Exception {
+        String contentsData = TestUtils.readAll(TestUtils.findTestData(FORMULA_DATA));
+        Map<String, Object> contents = Json.GSON.fromJson(contentsData, Map.class);
+        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
+        FormulaFactory.setDataDir(tmpSaltRoot.resolve(TEMP_PATH).toString());
+
+        context().checking(new Expectations() {{
+            allowing(saltServiceMock).refreshPillar(with(any(MinionList.class)));
+        }});
+        manager.enableFormula(minion.getMinionId(), formulaName);
+        List<String> enabledFormulas = FormulaFactory.getFormulasByMinionId(minion.getMinionId());
+        assertNotNull(enabledFormulas);
+        assertEquals(true, enabledFormulas.contains(formulaName));
     }
 
     /**

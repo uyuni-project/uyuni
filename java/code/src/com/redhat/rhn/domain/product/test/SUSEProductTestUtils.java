@@ -44,16 +44,15 @@ import com.redhat.rhn.manager.content.ContentSyncManager;
 import com.redhat.rhn.manager.content.ProductTreeEntry;
 import com.redhat.rhn.testing.ChannelTestUtils;
 import com.redhat.rhn.testing.TestUtils;
-
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.reflect.TypeToken;
 import com.suse.salt.netapi.parser.JsonParser;
 import com.suse.scc.model.ChannelFamilyJson;
 import com.suse.scc.model.SCCProductJson;
 import com.suse.scc.model.SCCRepositoryJson;
 import com.suse.scc.model.UpgradePathJson;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 import org.apache.log4j.Logger;
 import org.hibernate.Session;
 
@@ -217,6 +216,61 @@ public class SUSEProductTestUtils extends HibernateFactory {
         product.setArch(PackageFactory.lookupPackageArchByLabel("x86_64"));
         product.setProductId(1324);
         product.setChannelFamily(cfha);
+        product.setReleaseStage(ReleaseStage.released);
+        TestUtils.saveAndFlush(product);
+
+        product = new SUSEProduct();
+        product.setName("sles");
+        product.setVersion("15.1");
+        product.setFriendlyName("SUSE Linux Enterprise Server 15 SP1");
+        product.setArch(PackageFactory.lookupPackageArchByLabel("x86_64"));
+        product.setProductId(1326);
+        product.setChannelFamily(cfsles);
+        product.setBase(true);
+        product.setReleaseStage(ReleaseStage.released);
+        TestUtils.saveAndFlush(product);
+
+        product = new SUSEProduct();
+        product.setName("sle-module-basesystem");
+        product.setVersion("15.1");
+        product.setFriendlyName("Basesystem Module");
+        product.setArch(PackageFactory.lookupPackageArchByLabel("x86_64"));
+        product.setProductId(1328);
+        product.setChannelFamily(cfsles);
+        product.setBase(false);
+        product.setReleaseStage(ReleaseStage.released);
+        TestUtils.saveAndFlush(product);
+
+        product = new SUSEProduct();
+        product.setName("sle-module-server-applications");
+        product.setVersion("15.1");
+        product.setFriendlyName("Server Applications Module");
+        product.setArch(PackageFactory.lookupPackageArchByLabel("x86_64"));
+        product.setProductId(1330);
+        product.setChannelFamily(cfsles);
+        product.setBase(false);
+        product.setReleaseStage(ReleaseStage.released);
+        TestUtils.saveAndFlush(product);
+
+        product = new SUSEProduct();
+        product.setName("sle-module-containers");
+        product.setVersion("15.1");
+        product.setFriendlyName("Containers Module");
+        product.setArch(PackageFactory.lookupPackageArchByLabel("x86_64"));
+        product.setProductId(1332);
+        product.setChannelFamily(cfsles);
+        product.setBase(false);
+        product.setReleaseStage(ReleaseStage.released);
+        TestUtils.saveAndFlush(product);
+
+        product = new SUSEProduct();
+        product.setName("caasp");
+        product.setVersion("4.0");
+        product.setFriendlyName("SUSE CaaS Platform 4.0");
+        product.setArch(PackageFactory.lookupPackageArchByLabel("x86_64"));
+        product.setProductId(1340);
+        //product.setChannelFamily(cfsles);
+        product.setBase(false);
         product.setReleaseStage(ReleaseStage.released);
         TestUtils.saveAndFlush(product);
     }

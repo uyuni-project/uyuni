@@ -173,7 +173,7 @@ public class SaltUtils {
 
     public static final SaltUtils INSTANCE = new SaltUtils();
 
-    private static final String CAASP_PRODUCT_IDENTIFIER = "caasp";
+    public static final String CAASP_PRODUCT_IDENTIFIER = "caasp";
     public static final String SYSTEM_LOCK_FORMULA = "system-lock";
 
     private Path scriptsDir = Paths.get(SUMA_STATE_FILES_ROOT_PATH, SCRIPTS_DIR);
