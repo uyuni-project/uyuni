@@ -29,7 +29,7 @@ type Props = {
 };
 
 type State = {
-  actionsResults: Object,
+  actionsResults: { [string]: Object },
   errors: Array<string>,
   selectedItems: Array<Object>,
   selected?: Object,
@@ -91,7 +91,31 @@ class GuestsList extends React.Component<Props, State> {
       ws.onmessage = (e) => {
         if (typeof e.data === 'string') {
           const newActions = JSON.parse(e.data);
-          this.setState(prevState => ({ actionsResults: Object.assign({}, prevState.actionsResults, newActions) }));
+          /*
+           * The received items are split in two maps:
+           *   - one with the actions that we don't already know about
+           *   - one with existing actions.
+           * Since for creation the key in the newActions map will not fit
+           * the one we already got before, update the existing actions by matching
+           * their IDs.
+           */
+          const aidMap = Object.keys(this.state.actionsResults)
+            .reduce((res, key) => Object.assign({}, res, {[this.state.actionsResults[key].id]: key}), {});
+          const updatedActions = Object.keys(newActions)
+            .filter(key => Object.keys(aidMap).includes(String(newActions[key].id)))
+            .reduce((res, key) => {
+              const newAction = newActions[key];
+              const action = this.state.actionsResults[newAction.id];
+              return Object.assign({},
+                res,
+                {[aidMap[newAction.id]]: Object.assign({}, action, {'status': newAction.status})});
+            }, {});
+          const addedActions = Object.keys(newActions)
+            .filter(key => !Object.keys(aidMap).includes(String(newActions[key].id)))
+            .reduce((res, key) => Object.assign({}, res, {[key]: newActions[key]}), {});
+          this.setState(prevState => ({
+            actionsResults: Object.assign({}, prevState.actionsResults, updatedActions, addedActions)
+          }));
         }
       };
 
@@ -200,6 +224,36 @@ class GuestsList extends React.Component<Props, State> {
     );
   }
 
+  renderActionStatus(action_id: string, status: string): React.Node {
+    const icons = {
+      Queued: 'fa-clock-o text-info',
+      Failed: 'fa-times-circle-o text-danger',
+      Completed: 'fa-check-circle text-success',
+      'Picked Up': 'fa-exchange text-info',
+    };
+    return (
+      <a href={`/rhn/systems/details/history/Event.do?sid=${this.props.serverId}&aid=${action_id}`}>
+        <i
+          className={`fa ${icons[status]} fa-1-5x`}
+          title={status}
+        />
+      </a>
+    );
+  }
+
+  getCreationActionMessages(): React.Node {
+    const { actionsResults } = this.state;
+    return Object.keys(actionsResults)
+      .filter(key => key.startsWith("new-") && actionsResults[key].type === "virt.create")
+      .flatMap(key => {
+        const action = actionsResults[key];
+        return MessagesUtils.info(
+          <p>{this.renderActionStatus(action.id, action.status)}{action.name}</p>
+        );
+      });
+  }
+
+
   render() {
     return (
       <VirtualizationGuestActionApi
@@ -260,7 +314,14 @@ class GuestsList extends React.Component<Props, State> {
                       {panelButtons}
                       <h2>{t('Hosted Virtual Systems')}</h2>
                       <p>{t('This is a list of virtual guests which are configured to run on this host.')}</p>
-                      <MessageContainer items={this.state.errors.map(msg => MessagesUtils.error(msg))} />
+                      <MessageContainer
+                        items={
+                          [].concat(
+                            this.state.errors.map(msg => MessagesUtils.error(msg)),
+                            this.getCreationActionMessages()
+                          )
+                        }
+                      />
                       { refreshError && <MessageContainer items={refreshError} /> }
                       { messages && <MessageContainer items={messages} /> }
                       <Table
@@ -350,18 +411,7 @@ class GuestsList extends React.Component<Props, State> {
                           cell={(row) => {
                             const actionResult = this.state.actionsResults[row.uuid];
                             if (actionResult !== undefined) {
-                              const icons = {
-                                Queued: 'fa-clock-o text-info',
-                                Failed: 'fa-times-circle-o text-danger',
-                                Completed: 'fa-check-circle text-success',
-                              };
-                              return (
-                                <a href={`/rhn/systems/details/history/Event.do?sid=${this.props.serverId}&aid=${actionResult.id}`}>
-                                  <i
-                                    className={`fa ${icons[actionResult.status]} fa-1-5x`}
-                                    title={actionResult.status}
-                                  />
-                                </a>);
+                              return this.renderActionStatus(actionResult.id, actionResult.status)
                             }
                             return '-';
                           }}

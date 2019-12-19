@@ -1,3 +1,4 @@
+- Show message for VMs pending creation in Guests list
 - Cleanup and document the Table component
 - scheme is not allowed for URI of image store's API endpoint (bsc#1165571)
 
