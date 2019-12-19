@@ -214,7 +214,25 @@ public class VirtualInstanceManager extends BaseManager {
     public static void addGuestVirtualInstance(String vmGuid, String name,
             VirtualInstanceType type, VirtualInstanceState state,
             Server host, Server guest) {
-        addGuestVirtualInstance(vmGuid, name, type, state, host, guest, 0, 0);
+        addGuestVirtualInstance(vmGuid, name, type, state, host, guest, 0, 0, false);
+    }
+
+    /**
+     * Creates a new (guest) VirtualInstance for given VM GUID.
+     * Sets given host as a host for this VirtualInstance.
+     *
+     * @param vmGuid - guid of the new VirtualInstance
+     * @param name - name of the guest
+     * @param type - virtualization type of the guest
+     * @param state - guest state
+     * @param host - host to be set as host system for the new VirtualInstance
+     * @param guest - guest to be set as the guest system for the new VirtualInstance
+     * @param isPAYG - is a PAYG instance (Pay-As-You-Go)
+     */
+    public static void addGuestVirtualInstance(String vmGuid, String name,
+            VirtualInstanceType type, VirtualInstanceState state,
+            Server host, Server guest, boolean isPAYG) {
+        addGuestVirtualInstance(vmGuid, name, type, state, host, guest, 0, 0, isPAYG);
     }
 
     /**
@@ -229,10 +247,30 @@ public class VirtualInstanceManager extends BaseManager {
      * @param guest - guest to be set as the guest system for the new VirtualInstance
      * @param vCpus - number of CPUs
      * @param memory - total Memory
-     */
+	 */
     public static void addGuestVirtualInstance(String vmGuid, String name,
             VirtualInstanceType type, VirtualInstanceState state,
             Server host, Server guest, int vCpus, long memory) {
+        addGuestVirtualInstance(vmGuid, name, type, state, host, guest, vCpus, memory, false);
+	}
+
+    /**
+     * Creates a new (guest) VirtualInstance for given VM GUID.
+     * Sets given host as a host for this VirtualInstance.
+     *
+     * @param vmGuid - guid of the new VirtualInstance
+     * @param name - name of the guest
+     * @param type - virtualization type of the guest
+     * @param state - guest state
+     * @param host - host to be set as host system for the new VirtualInstance
+     * @param guest - guest to be set as the guest system for the new VirtualInstance
+     * @param vCpus - number of CPUs
+     * @param memory - total Memory
+     * @param isPAYG - is a PAYG instance (Pay-As-You-Go)
+     */
+    public static void addGuestVirtualInstance(String vmGuid, String name,
+            VirtualInstanceType type, VirtualInstanceState state,
+            Server host, Server guest, int vCpus, long memory, boolean isPAYG) {
 
         List<VirtualInstance> virtualInstances = VirtualInstanceFactory
                 .getInstance().lookupVirtualInstanceByUuid(vmGuid);
@@ -241,6 +279,7 @@ public class VirtualInstanceManager extends BaseManager {
             VirtualInstance virtualInstance = new VirtualInstance();
             virtualInstance.setUuid(vmGuid);
             virtualInstance.setConfirmed(1L);
+            virtualInstance.setPayg(isPAYG);
 
             // Do we have a System with machineid matching the GUID that has no
             // virtual instance?
@@ -286,9 +325,11 @@ public class VirtualInstanceManager extends BaseManager {
      * @param state - instance state
      * @param host - the host or null
      * @param guest - the guest or null
+     * @param isPAYG - is a PAYG instance (Pay-As-You-Go)
      */
     public static void updateGuestVirtualInstance(VirtualInstance virtualInstance,
-            String name, VirtualInstanceState state, Server host, Server guest) {
+            String name, VirtualInstanceState state, Server host, Server guest,
+			boolean isPAYG) {
         int vCpu = 0;
         long memory = 0;
         if (virtualInstance.getNumberOfCPUs() != null) {
@@ -298,7 +339,23 @@ public class VirtualInstanceManager extends BaseManager {
             memory = virtualInstance.getTotalMemory().longValue();
         }
         updateGuestVirtualInstance(virtualInstance, name, state, host, guest, vCpu,
-                memory);
+                memory, isPAYG);
+	}
+
+    /**
+     * Update mapping of given guest VirtualInstance to given (host) Server.
+     * This method removes the old VirtualInstance and creates a new one.
+     * Either host or guest must not be null.
+     *
+     * @param virtualInstance - the virtual instance
+     * @param name - guest name
+     * @param state - instance state
+     * @param host - the host or null
+     * @param guest - the guest or null
+     */
+    public static void updateGuestVirtualInstance(VirtualInstance virtualInstance,
+            String name, VirtualInstanceState state, Server host, Server guest) {
+        updateGuestVirtualInstance(virtualInstance, name, state, host, guest, false);
     }
 
     /**
@@ -317,6 +374,27 @@ public class VirtualInstanceManager extends BaseManager {
     public static void updateGuestVirtualInstance(VirtualInstance virtualInstance,
             String name, VirtualInstanceState state, Server host, Server guest,
             int vCpus, long memory) {
+        updateGuestVirtualInstance(virtualInstance, name, state, host, guest, vCpus,
+                memory, false);
+	}
+
+    /**
+     * Update mapping of given guest VirtualInstance to given (host) Server.
+     * This method removes the old VirtualInstance and creates a new one.
+     * Either host or guest must not be null.
+     *
+     * @param virtualInstance - the virtual instance
+     * @param name - guest name
+     * @param state - instance state
+     * @param host - the host or null
+     * @param guest - the guest or null
+     * @param vCpus - number of CPUs
+     * @param memory - total memory
+     * @param isPAYG - is a PAYG instance (Pay-As-You-Go)
+     */
+    public static void updateGuestVirtualInstance(VirtualInstance virtualInstance,
+            String name, VirtualInstanceState state, Server host, Server guest,
+            int vCpus, long memory, boolean isPAYG) {
         Server oldHost = virtualInstance.getHostSystem();
         Server oldGuest = virtualInstance.getGuestSystem();
         if (oldHost == null || oldGuest == null ||
@@ -327,7 +405,7 @@ public class VirtualInstanceManager extends BaseManager {
                 !virtualInstance.getTotalMemory().equals(memory)) {
             VirtualInstanceFactory.getInstance().deleteVirtualInstanceOnly(virtualInstance);
             addGuestVirtualInstance(virtualInstance.getUuid(), name,
-                    virtualInstance.getType(), state, host, guest, vCpus, memory);
+                    virtualInstance.getType(), state, host, guest, vCpus, memory, isPAYG);
         }
     }
 
