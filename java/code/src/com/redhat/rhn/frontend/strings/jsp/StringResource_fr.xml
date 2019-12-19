@@ -13900,8 +13900,8 @@ Le script post non-chroot sera ensuite exécuté et le script post sera enfin ex
           <target>Programmer l'installation des paquetages rhncfg</target>
         </trans-unit>
         <trans-unit id="targetsystems.jsp.installcfgactions">
-          <source>Schedule rhncfg-actions package install</source>
-          <target>Programmer l'installation des paquetages rhncfg-actions</target>
+          <source>Schedule mgr-cfg-actions package install</source>
+          <target>Programmer l'installation des paquetages mgr-cfg-actions</target>
         </trans-unit>
         <trans-unit id="targetsystems.jsp.installcfgclient">
           <source>Schedule rhncfg-client package install</source>
@@ -17876,8 +17876,8 @@ pour ces versions seront également supprimées, ainsi que tous les historiques 
           <target>Aucun système dans cet ensemble n'est disponible pour exécuter des commandes à distance.</target>
         </trans-unit>
         <trans-unit id="ssm.operations.provisioning.remotecommand.no_script_run">
-          <source>You must enable Remote Command execution on the target system by installing the &lt;code&gt;rhncfg-actions&lt;/code&gt; RPM.</source>
-          <target>Vous devez activer l'exécution de commandes à distance sur le système cible en installant le RPM &lt;code&gt;rhncfg-actions&lt;/code&gt;.</target>
+          <source>You must enable Remote Command execution on the target system by installing the &lt;code&gt;mgr-cfg-actions&lt;/code&gt; RPM.</source>
+          <target>Vous devez activer l'exécution de commandes à distance sur le système cible en installant le RPM &lt;code&gt;mgr-cfg-actions&lt;/code&gt;.</target>
         </trans-unit>
         <trans-unit id="stringutil.scriptcheck.error.noshelldefined">
           <source>Script does not contain shell definition.</source>

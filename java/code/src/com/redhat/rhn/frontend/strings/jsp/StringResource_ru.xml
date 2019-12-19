@@ -13885,8 +13885,8 @@ the &lt;strong&gt;Red Hat Enterprise Linux System Administration Guide.&lt;/stro
           <target>Назначить установку пакета rhncfg</target>
         </trans-unit>
         <trans-unit id="targetsystems.jsp.installcfgactions">
-          <source>Schedule rhncfg-actions package install</source>
-          <target>Назначить установку пакета rhncfg-actions</target>
+          <source>Schedule mgr-cfg-actions package install</source>
+          <target>Назначить установку пакета mgr-cfg-actions</target>
         </trans-unit>
         <trans-unit id="targetsystems.jsp.installcfgclient">
           <source>Schedule rhncfg-client package install</source>
@@ -17861,8 +17861,8 @@ any of these revisions.  Are you sure you want to do this?</source>
           <target>Нет систем, где можно выполнять удаленные команды.</target>
         </trans-unit>
         <trans-unit id="ssm.operations.provisioning.remotecommand.no_script_run">
-          <source>You must enable Remote Command execution on the target system by installing the &lt;code&gt;rhncfg-actions&lt;/code&gt; RPM.</source>
-          <target>Чтобы разрешить выполнение удаленных команд, установите &lt;code&gt;rhncfg-actions&lt;/code&gt;.</target>
+          <source>You must enable Remote Command execution on the target system by installing the &lt;code&gt;mgr-cfg-actions&lt;/code&gt; RPM.</source>
+          <target>Чтобы разрешить выполнение удаленных команд, установите &lt;code&gt;mgr-cfg-actions&lt;/code&gt;.</target>
         </trans-unit>
         <trans-unit id="stringutil.scriptcheck.error.noshelldefined">
           <source>Script does not contain shell definition.</source>

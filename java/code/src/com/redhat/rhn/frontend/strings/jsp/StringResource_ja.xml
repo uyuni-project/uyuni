@@ -13902,8 +13902,8 @@ the &lt;strong&gt;Red Hat Enterprise Linux System Administration Guide.&lt;/stro
           <target>rhncfg パッケージインストールのスケジュール</target>
         </trans-unit>
         <trans-unit id="targetsystems.jsp.installcfgactions">
-          <source>Schedule rhncfg-actions package install</source>
-          <target>rhncfg-actions パッケージインストールのスケジュール</target>
+          <source>Schedule mgr-cfg-actions package install</source>
+          <target>mgr-cfg-actions パッケージインストールのスケジュール</target>
         </trans-unit>
         <trans-unit id="targetsystems.jsp.installcfgclient">
           <source>Schedule rhncfg-client package install</source>
@@ -17878,8 +17878,8 @@ any of these revisions.  Are you sure you want to do this?</source>
           <target>このセット内のシステムにリモートコマンドを実行できるシステムはありません。</target>
         </trans-unit>
         <trans-unit id="ssm.operations.provisioning.remotecommand.no_script_run">
-          <source>You must enable Remote Command execution on the target system by installing the &lt;code&gt;rhncfg-actions&lt;/code&gt; RPM.</source>
-          <target>&lt;code&gt;rhncfg-actions&lt;/code&gt; RPM をインストールして対象システムでリモートコマンドを実行できるようにする必要があります。</target>
+          <source>You must enable Remote Command execution on the target system by installing the &lt;code&gt;mgr-cfg-actions&lt;/code&gt; RPM.</source>
+          <target>&lt;code&gt;mgr-cfg-actions&lt;/code&gt; RPM をインストールして対象システムでリモートコマンドを実行できるようにする必要があります。</target>
         </trans-unit>
         <trans-unit id="stringutil.scriptcheck.error.noshelldefined">
           <source>Script does not contain shell definition.</source>
