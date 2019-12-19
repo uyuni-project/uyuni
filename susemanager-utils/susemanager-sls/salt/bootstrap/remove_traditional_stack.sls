@@ -31,7 +31,6 @@ remove_traditional_stack_all:
       - rhnmd
 {%- if grains['os_family'] == 'Suse' %}
       - zypp-plugin-spacewalk
-      - suseRegisterInfo
 {%- elif grains['os_family'] == 'RedHat' %}
       - yum-rhn-plugin
       - rhnsd
@@ -52,6 +51,9 @@ remove_traditional_stack:
       - spacewalk-client-tools
       - rhncfg
       - mgr-cfg
+{%- if grains['os_family'] == 'Suse' %}
+      - suseRegisterInfo
+{%- endif %}
 {%- if repos_disabled.count > 0 %}
     - require:
       - module: disable_repo*
