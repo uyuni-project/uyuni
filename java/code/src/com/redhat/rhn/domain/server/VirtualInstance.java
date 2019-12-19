@@ -39,6 +39,7 @@ public class VirtualInstance extends BaseDomainHelper {
     private Server host;
     private String uuid;
     private Long confirmed;
+    private Boolean payg;
     private VirtualInstanceInfo info;
 
     /**
@@ -98,6 +99,22 @@ public class VirtualInstance extends BaseDomainHelper {
      */
     public void setConfirmed(Long isConfirmed) {
         confirmed = isConfirmed;
+    }
+
+    /**
+     *
+     * @return payg
+     */
+    public Boolean getPayg() {
+	    return payg;
+    }
+
+    /**
+     *
+     * @param isPAYG boolean
+     */
+    public void setPayg(Boolean isPAYG) {
+        payg = isPAYG;
     }
 
     /**
