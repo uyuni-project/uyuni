@@ -15,6 +15,7 @@ const { VirtualizationGuestActionApi } = require('../virtualization-guest-action
 const { VirtualizationGuestsListRefreshApi } = require('../virtualization-guests-list-refresh-api');
 const { Utils: GuestsListUtils } = require('./guests-list.utils');
 const { ActionConfirm } = require('components/dialog/ActionConfirm');
+const { ActionStatus } = require('components/action/ActionStatus');
 
 const { Utils } = Functions;
 
@@ -224,23 +225,6 @@ class GuestsList extends React.Component<Props, State> {
     );
   }
 
-  renderActionStatus(action_id: string, status: string): React.Node {
-    const icons = {
-      Queued: 'fa-clock-o text-info',
-      Failed: 'fa-times-circle-o text-danger',
-      Completed: 'fa-check-circle text-success',
-      'Picked Up': 'fa-exchange text-info',
-    };
-    return (
-      <a href={`/rhn/systems/details/history/Event.do?sid=${this.props.serverId}&aid=${action_id}`}>
-        <i
-          className={`fa ${icons[status]} fa-1-5x`}
-          title={status}
-        />
-      </a>
-    );
-  }
-
   getCreationActionMessages(): React.Node {
     const { actionsResults } = this.state;
     return Object.keys(actionsResults)
@@ -248,7 +232,7 @@ class GuestsList extends React.Component<Props, State> {
       .flatMap(key => {
         const action = actionsResults[key];
         return MessagesUtils.info(
-          <p>{this.renderActionStatus(action.id, action.status)}{action.name}</p>
+          <p><ActionStatus serverId={this.props.serverId} actionId={action.id} status={action.status}/>{action.name}</p>
         );
       });
   }
@@ -411,7 +395,13 @@ class GuestsList extends React.Component<Props, State> {
                           cell={(row) => {
                             const actionResult = this.state.actionsResults[row.uuid];
                             if (actionResult !== undefined) {
-                              return this.renderActionStatus(actionResult.id, actionResult.status)
+                              return (
+                                <ActionStatus
+                                  serverId={this.props.serverId}
+                                  actionId={actionResult.id}
+                                  status={actionResult.status}
+                                />
+                              );
                             }
                             return '-';
                           }}
