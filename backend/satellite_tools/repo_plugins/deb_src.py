@@ -122,7 +122,7 @@ class DebRepo(object):
         for extension in FORMAT_PRIORITY:
             (scheme, netloc, path, query, fragid) = urlparse.urlsplit(self.url)
             url = urlparse.urlunsplit((scheme, netloc,
-                                       path + '/Packages' + extension, query, fragid))
+                                       path + ('/' if not path.endswith('/') else '') + 'Packages' + extension, query, fragid))
             filename = self._download(url)
             if filename:
                 if query:
