@@ -12,6 +12,7 @@ import { ModalButton } from 'components/dialog/ModalButton';
 import * as Systems from 'components/systems';
 import { VirtualizationGuestActionApi } from '../virtualization-guest-action-api';
 import { VirtualizationGuestsListRefreshApi } from '../virtualization-guests-list-refresh-api';
+import { useVirtNotification } from '../../useVirtNotification.js';
 import { Utils as GuestsListUtils } from './guests-list.utils';
 import { ActionConfirm } from 'components/dialog/ActionConfirm';
 import { ActionStatus } from 'components/action/ActionStatus';
@@ -29,82 +30,10 @@ type Props = {
 export function GuestsList(props: Props) {
   const [selectedItems, setSelectedItems] = React.useState([]);
   const [selected, setSelected] = React.useState(undefined);
-  const [actionsResults, setActionsResults] = React.useState({});
   const [errors, setErrors] = React.useState([]);
-  const [webSocketErr, setWebSocketErr] = React.useState(false);
-  const [pageUnloading, setPageUnloading] = React.useState(false);
 
-  let websocket = { };
-
-  const onBeforeUnload = () => {
-    setPageUnloading(true);
-  }
-
-  React.useEffect(() => {
-    if (props.saltEntitled) {
-      const { port } = window.location;
-      const url = `wss://${window.location.hostname}${port ? `:${port}` : ''}/rhn/websocket/minion/virt-notifications`;
-      const ws = new WebSocket(url);
-
-      ws.onopen = () => {
-        // Tell the websocket that we want to hear from all action results on this virtual host.
-        ws.send(props.serverId);
-      };
-
-      ws.onclose = () => {
-        setErrors((errors || []).concat(
-            !pageUnloading && !webSocketErr
-              ? t('Websocket connection closed. Refresh the page to try again.')
-              : []
-        ));
-      };
-
-      ws.onerror = () => {
-        setErrors([t('Error connecting to server. Refresh the page to try again.')]);
-        setWebSocketErr(true);
-      };
-
-      ws.onmessage = (e) => {
-        if (typeof e.data === 'string') {
-          const newActions = JSON.parse(e.data);
-          /*
-           * The received items are split in two maps:
-           *   - one with the actions that we don't already know about
-           *   - one with existing actions.
-           * Since for creation the key in the newActions map will not fit
-           * the one we already got before, update the existing actions by matching
-           * their IDs.
-           */
-          const aidMap = Object.keys(actionsResults)
-            .reduce((res, key) => Object.assign({}, res, {[actionsResults[key].id]: key}), {});
-          const updatedActions = Object.keys(newActions)
-            .filter(key => Object.keys(aidMap).includes(String(newActions[key].id)))
-            .reduce((res, key) => {
-              const newAction = newActions[key];
-              const action = actionsResults[newAction.id];
-              return Object.assign({},
-                res,
-                {[aidMap[newAction.id]]: Object.assign({}, action, {'status': newAction.status})});
-            }, {});
-          const addedActions = Object.keys(newActions)
-            .filter(key => !Object.keys(aidMap).includes(String(newActions[key].id)))
-            .reduce((res, key) => Object.assign({}, res, {[key]: newActions[key]}), {});
-          setActionsResults(Object.assign({}, actionsResults, updatedActions, addedActions));
-        }
-      };
-
-      window.addEventListener('beforeunload', onBeforeUnload);
-
-      websocket = ws;
-    }
-
-    return () => {
-      window.removeEventListener('beforeunload', onBeforeUnload);
-      if (websocket !== null) {
-        websocket.close();
-      }
-    }
-  }, [props.serverId]);
+  const [actionsResults, setActionsResults] = useVirtNotification(errors, setErrors,
+                                                                  props.serverId, props.saltEntitled);
 
   const searchData = (datum: Object, criteria?: string): boolean => {
     if (criteria) {
@@ -192,7 +121,10 @@ export function GuestsList(props: Props) {
       .filter(key => key.startsWith("new-") && actionsResults[key].type === "virt.create")
       .flatMap(key => {
         const action = actionsResults[key];
-        return MessagesUtils.info(
+        const messagesMapper = {
+          Failed: MessagesUtils.error,
+        };
+        return (messagesMapper[action.status] || MessagesUtils.info)(
           <p><ActionStatus serverId={props.serverId} actionId={action.id} status={action.status}/>{action.name}</p>
         );
       });
