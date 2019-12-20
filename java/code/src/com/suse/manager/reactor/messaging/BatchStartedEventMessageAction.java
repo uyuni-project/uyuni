@@ -46,17 +46,17 @@ public class BatchStartedEventMessageAction implements MessageAction {
         if (!downMinions.isEmpty()) {
             Optional<Long> actionId = eventData.getMetadata(ScheduleMetadata.class).map(
                     ScheduleMetadata::getSumaActionId);
-            actionId.filter(id -> id > 0).ifPresent(id -> handleBatchStartedAction(id, downMinions));
+            actionId.filter(id -> id > 0).ifPresent(id -> failServerActionForDownMinions(id, downMinions));
         }
     }
 
     /**
-     * Update the action properly based on the event results from Salt.
+     * Set the action as failed for down minions based on the event results from Salt.
      *
      * @param actionId the ID of the Action to handle
-     * @param minionId the ID of the Minion who performed the action
+     * @param minionIds the ID of the unavailable minions.
      */
-    private static void handleBatchStartedAction(long actionId, List<String> minionIds) {
+    private static void failServerActionForDownMinions(long actionId, List<String> minionIds) {
         Optional<Action> action = Optional.ofNullable(ActionFactory.lookupById(actionId));
         if (action.isPresent()) {
             if (LOG.isDebugEnabled()) {
@@ -71,7 +71,7 @@ public class BatchStartedEventMessageAction implements MessageAction {
                         .filter(sa -> sa.getServerId().equals(entry.getValue()))
                         .findFirst();
 
-                serverAction.ifPresent(sa -> handleServerAction(sa, entry.getKey()));
+                serverAction.ifPresent(sa -> failServerAction(sa, entry.getKey()));
             });
         }
         else {
@@ -80,12 +80,12 @@ public class BatchStartedEventMessageAction implements MessageAction {
     }
 
     /**
-     * Update a given server action properly for a given minion.
+     * Set a given server action as failed for a given down minion
      *
      * @param serverAction the server action
-     * @param minionServer the minion who performed the server action
+     * @param minionId the unavailable minion
      */
-    private static void handleServerAction(ServerAction sa, String minionId) {
+    private static void failServerAction(ServerAction sa, String minionId) {
         if (LOG.isDebugEnabled()) {
             LOG.debug("Marking server action as failed for server: " + minionId);
         }
