@@ -3,13 +3,13 @@ Do Not Translate or Localize
 
 
 --------------------------------------------------------------------------------
-@babel/polyfill v7.2.5 - Sebastian McKenzie <sebmck@gmail.com>
+@babel/polyfill v7.7.0 - Sebastian McKenzie <sebmck@gmail.com>
 https://github.com/babel/babel/tree/master/packages/babel-polyfill
 --------------------------------------------------------------------------------
 
 MIT License
 
-Copyright (c) 2014-2018 Sebastian McKenzie and other contributors
+Copyright (c) 2014-present Sebastian McKenzie and other contributors
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the
@@ -32,8 +32,8 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 
 --------------------------------------------------------------------------------
-@babel/runtime v7.5.5 - Sebastian McKenzie <sebmck@gmail.com>
-https://github.com/babel/babel/tree/master/packages/babel-runtime
+@babel/runtime v7.7.7 - Sebastian McKenzie <sebmck@gmail.com>
+https://github.com/babel/babel.git
 --------------------------------------------------------------------------------
 
 MIT License
@@ -173,11 +173,12 @@ SOFTWARE.
 
 
 --------------------------------------------------------------------------------
-@novnc/novnc v1.0.0 - Joel Martin <github@martintribe.org> (https://github.com/kanaka)
+@novnc/novnc v1.1.0 - Joel Martin <github@martintribe.org> (https://github.com/kanaka)
 git+https://github.com/novnc/noVNC.git
 --------------------------------------------------------------------------------
 
-noVNC is Copyright (C) 2011 Joel Martin <github@martintribe.org>
+noVNC is Copyright (C) 2018 The noVNC Authors
+(./AUTHORS)
 
 The noVNC core library files are licensed under the MPL 2.0 (Mozilla
 Public License 2.0). The noVNC core library is composed of the
@@ -254,7 +255,7 @@ https://gitlab.freedesktop.org/spice/spice-html5.git
 LGPL-3.0-or-later
 
 --------------------------------------------------------------------------------
-core-js v2.6.5
+core-js v2.6.11
 https://github.com/zloirock/core-js.git
 --------------------------------------------------------------------------------
 
@@ -336,7 +337,7 @@ SOFTWARE.
 
 
 --------------------------------------------------------------------------------
-css-loader v2.1.0 - Tobias Koppers @sokra
+css-loader v2.1.1 - Tobias Koppers @sokra
 webpack-contrib/css-loader
 --------------------------------------------------------------------------------
 
@@ -445,7 +446,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 
 --------------------------------------------------------------------------------
-immer v3.1.1 - Michel Weststrate
+immer v3.3.0 - Michel Weststrate
 https://github.com/immerjs/immer.git
 --------------------------------------------------------------------------------
 
@@ -553,7 +554,7 @@ terms above.
 
 
 --------------------------------------------------------------------------------
-memoize-one v5.0.5 - Alex Reardon <alexreardon@gmail.com>
+memoize-one v5.1.1 - Alex Reardon <alexreardon@gmail.com>
 https://github.com/alexreardon/memoize-one.git
 --------------------------------------------------------------------------------
 
@@ -1118,7 +1119,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 
 --------------------------------------------------------------------------------
-react v16.8.6
+react v16.12.0
 https://github.com/facebook/react.git
 --------------------------------------------------------------------------------
 
@@ -1146,7 +1147,7 @@ SOFTWARE.
 
 
 --------------------------------------------------------------------------------
-react-dom v16.8.6
+react-dom v16.12.0
 https://github.com/facebook/react.git
 --------------------------------------------------------------------------------
 
@@ -1174,7 +1175,7 @@ SOFTWARE.
 
 
 --------------------------------------------------------------------------------
-react-hot-loader v4.12.9 - Dan Abramov
+react-hot-loader v4.12.18 - Dan Abramov
 https://github.com/gaearon/react-hot-loader/
 --------------------------------------------------------------------------------
 
@@ -1202,7 +1203,7 @@ SOFTWARE.
 
 
 --------------------------------------------------------------------------------
-react-input-autosize v2.2.1 - Jed Watson
+react-input-autosize v2.2.2 - Jed Watson
 https://github.com/JedWatson/react-input-autosize.git
 --------------------------------------------------------------------------------
 
@@ -1330,7 +1331,7 @@ https://github.com/facebook/regenerator/tree/master/packages/regenerator-runtime
 MIT
 
 --------------------------------------------------------------------------------
-scheduler v0.13.6
+scheduler v0.18.0
 https://github.com/facebook/react.git
 --------------------------------------------------------------------------------
 
@@ -1358,7 +1359,7 @@ SOFTWARE.
 
 
 --------------------------------------------------------------------------------
-senna v2.7.8
+senna v2.7.9
 liferay/senna.js
 --------------------------------------------------------------------------------
 
@@ -1463,7 +1464,7 @@ https://github.com/thysultan/stylis.js
 MIT
 
 --------------------------------------------------------------------------------
-timers-browserify v2.0.10 - J. Ryan Stinnett <jryans@gmail.com> (http://convolv.es/)
+timers-browserify v2.0.11 - J. Ryan Stinnett <jryans@gmail.com> (http://convolv.es/)
 git://github.com/jryans/timers-browserify.git
 --------------------------------------------------------------------------------
 
@@ -1524,7 +1525,7 @@ git://github.com/CodeSeven/toastr.git
 MIT
 
 --------------------------------------------------------------------------------
-use-immer v0.3.0 - Michel Weststrate
+use-immer v0.3.5 - Michel Weststrate
 git+https://github.com/mweststrate/use-immer.git
 --------------------------------------------------------------------------------
 
@@ -1552,7 +1553,7 @@ SOFTWARE.
 
 
 --------------------------------------------------------------------------------
-webpack v4.29.5 - Tobias Koppers @sokra
+webpack v4.41.4 - Tobias Koppers @sokra
 https://github.com/webpack/webpack.git
 --------------------------------------------------------------------------------
 
