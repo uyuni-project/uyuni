@@ -42,7 +42,7 @@ Feature: Be able to bootstrap a Salt minion via the GUI
      And I click on "Bootstrap"
      And I wait until I see "ssh: connect to host" text
      Then I should not see a "GenericSaltError" text
-     And I should see a "port 11: Connection refused" text
+     And I should see a "port 11: Connection refused" text or "port 11: Invalid argument"
 
   Scenario: Bootstrap a SLES minion
      Given I am authorized
