@@ -38,7 +38,8 @@
 - features/secondary/allcli_system_group.feature
 - features/secondary/allcli_config_channel.feature
 - features/secondary/allcli_software_channels.feature
-- features/secondary/allcli_software_channels_dependencies.feature
+# tests to be rewritten using the "dummy" packages instead of real synced packages
+# - features/secondary/allcli_software_channels_dependencies.feature
 
 - features/secondary/minssh_centos_salt_install_package_and_patch.feature
 - features/secondary/minssh_salt_install_package.feature
