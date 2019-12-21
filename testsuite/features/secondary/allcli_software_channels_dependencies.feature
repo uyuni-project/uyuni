@@ -1,9 +1,8 @@
-# Copyright (c) 2019 SUSE LLC
+# Copyright (c) 2019-2020 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 Feature: Chanel subscription with recommended/required dependencies
 
-@sle15_minion
 @scc_credentials
   Scenario: Play with recommended and required child channels selection for a single system
     Given I am on the Systems overview page of this "sle_minion"
@@ -24,7 +23,6 @@ Feature: Chanel subscription with recommended/required dependencies
     When I click on the "disabled" toggler
     Then I should see the child channel "SLE-Module-Server-Applications15-Pool for x86_64" "selected"
 
-@sle15_minion
 @scc_credentials
   Scenario: Play with recommended and required child channels selection in SSM
     Given I am authorized as "admin" with password "admin"
@@ -46,6 +44,7 @@ Feature: Chanel subscription with recommended/required dependencies
     Then I should see "Subscribe" "selected" for the "SLE-Module-Basesystem15-Pool for x86_64" channel
     And I should see "No change" "unselected" for the "SLE-Module-Basesystem15-Pool for x86_64" channel
 
+@scc_credentials
   Scenario: Cleanup: remove remaining systems from SSM after software channel tests
     When I am authorized as "admin" with password "admin"
     And I follow "Clear"

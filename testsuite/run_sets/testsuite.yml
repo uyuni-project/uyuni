@@ -119,7 +119,8 @@
 - features/secondary/srv_patches_page.feature
 - features/secondary/srv_spacewalk_channel.feature
 - features/secondary/allcli_software_channels.feature
-- features/secondary/allcli_software_channels_dependencies.feature
+# tests to be rewritten using the "dummy" packages instead of real synced packages
+# - features/secondary/allcli_software_channels_dependencies.feature
 - features/secondary/srv_change_task_schedule.feature
 - features/secondary/srv_notifications.feature
 - features/secondary/min_empty_system_profiles.feature

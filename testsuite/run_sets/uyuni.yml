@@ -123,7 +123,8 @@
 - features/secondary/srv_spacewalk_channel.feature
 - features/secondary/srv_content_lifecycle.feature
 - features/secondary/allcli_software_channels.feature
-- features/secondary/allcli_software_channels_dependencies.feature
+# tests to be rewritten using the "dummy" packages instead of real synced packages
+# - features/secondary/allcli_software_channels_dependencies.feature
 - features/secondary/srv_change_task_schedule.feature
 - features/secondary/srv_notifications.feature
 - features/secondary/minkvm_guests.feature
