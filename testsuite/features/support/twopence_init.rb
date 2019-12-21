@@ -173,7 +173,6 @@ end
 
 # Other global variables
 $product = product
-$sle15_minion = sle15family?($minion)
 $pxeboot_mac = ENV['PXEBOOT_MAC']
 $private_net = ENV['PRIVATENET'] if ENV['PRIVATENET']
 $mirror = ENV['MIRROR']

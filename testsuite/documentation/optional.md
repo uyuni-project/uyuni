@@ -140,17 +140,6 @@ Inside of the testsuite, the scenarios that are tagged with
 are executed only if the Ubuntu minion is available.
 
 
-### Testing with a SLE 15 system
-
-The test suite will determine automatically whether your minion
-is a SLE15 system or not.
-
-Inside of the testsuite, the scenarios that are tagged with
-```
-@sle15_minion
-```
-are executed only if the minion is a SLE 15 system.
-
 ### Testing Uyuni
 
 The test suite will determine automatically whether your server
