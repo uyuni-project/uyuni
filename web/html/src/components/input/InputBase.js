@@ -63,10 +63,7 @@ export class InputBase extends React.Component<Props, State> {
         || value !== model[this.props.name];
 
       if (valueChanged) {
-        model[this.props.name] = value;
-        if (this.context.setModelValue != null) {
-          this.context.setModelValue(this.props.name, value);
-        }
+        this.setValue(this.props.name, value);
       }
     }
   }
@@ -84,18 +81,21 @@ export class InputBase extends React.Component<Props, State> {
     });
   }
 
-  validate(model: Object): boolean {
-    const { name } = this.props;
+  isValid() {
+    return this.state.isValid;
+  }
+
+  validate (value: string): void {
     const results = [];
     let isValid = true;
 
-    if (!this.props.disabled && (model[name] || this.props.required)) {
-      if (this.props.required && !model[name]) {
+    if (!this.props.disabled && (value || this.props.required)) {
+      if (this.props.required && !value) {
         isValid = false;
       } else if (this.props.validators) {
         const validators = Array.isArray(this.props.validators) ? this.props.validators : [this.props.validators];
         validators.forEach((v) => {
-          results.push(Promise.resolve(v(`${model[name] || ''}`)));
+          results.push(Promise.resolve(v(`${value || ''}`)));
         });
       }
     }
@@ -104,22 +104,19 @@ export class InputBase extends React.Component<Props, State> {
       result.forEach((r) => {
         isValid = isValid && r;
       });
-      this.setState({isValid});
-      if (this.context.onFieldValidation != null) {
-        this.context.onFieldValidation(name, isValid);
-      }
+      this.setState({isValid}, () => {
+        if (this.context.validateForm != null) {
+          this.context.validateForm();
+        }
+      });
     });
-
-    this.setState({
-      isValid,
-    });
-    return isValid;
   }
 
   setValue(name: string, value: string) {
     if (this.context.setModelValue != null) {
       this.context.setModelValue(name, value);
     }
+    this.validate(value);
 
     if (this.props.onChange) this.props.onChange(name, value);
   }

@@ -15,21 +15,17 @@ type Props = {
   onValidate?: Function,
 };
 
-type State = {
-  inputsValidationStatus: Object,
-};
-
 type FormContextType = {
   model: Object,
   setModelValue: Function,
-  onFieldValidation: (string, boolean) => void,
   registerInput: Function,
   unregisterInput: Function,
+  validateForm: () => void,
 };
 
 export const FormContext = React.createContext<FormContextType>({});
 
-export class Form extends React.Component<Props, State> {
+export class Form extends React.Component<Props> {
   static defaultProps = {
     onSubmit: undefined,
     onSubmitInvalid: undefined,
@@ -41,58 +37,26 @@ export class Form extends React.Component<Props, State> {
 
   inputs = {};
 
-  constructor(props: Props) {
-    super(props);
-    this.state = {
-      inputsValidationStatus: {}
-    };
-  }
-
   setModelValue(name: string, value: any) {
     const { model } = this.props;
     if (value == null && model[name] != null) {
       delete model[name];
-      this.validateForm(model);
       this.props.onChange(model);
     } else if (value != null) {
       model[name] = value;
-      this.validateForm(model);
       this.props.onChange(model);
     }
   }
 
   allValid(): boolean {
-    return Object.values(this.state.inputsValidationStatus).every(status => status);
+    return Object.keys(this.inputs).every(name => this.inputs[name].isValid());
   }
 
-  validateForm(model: Object) {
-    const inputsValidationStatus = Object.keys(this.inputs).reduce((ret, name) => {
-      ret[name] = this.inputs[name].validate(model);
-      return ret;
-    }, {});
-
-    this.setState({
-      inputsValidationStatus,
-    }, () => {
-      const validForm = this.allValid();
-      if (this.props.onValidate != null) {
-        this.props.onValidate(validForm);
-      }
-    });
-  }
-
-  onFieldValidation(name: string, isValid: boolean) {
-    this.setState(state => {
-      let { inputsValidationStatus } = state;
-      inputsValidationStatus[name] = isValid;
-      return { inputsValidationStatus };
-    },
-    () => {
-      const validForm = this.allValid();
-      if (this.props.onValidate) {
-        this.props.onValidate(validForm);
-      }
-    });
+  validateForm(): void {
+    const valid = this.allValid();
+    if (this.props.onValidate) {
+      this.props.onValidate(valid);
+    }
   }
 
   unregisterInput(component: React.ElementRef<any>) {
@@ -120,7 +84,7 @@ export class Form extends React.Component<Props, State> {
 
   componentDidUpdate(prevProps: Object) {
     if (prevProps.model !== this.props.model) {
-      this.validateForm(this.props.model);
+      Object.keys(this.inputs).forEach(name => this.inputs[name].validate(this.props.model[name]));
     }
   }
 
@@ -132,7 +96,7 @@ export class Form extends React.Component<Props, State> {
           setModelValue: this.setModelValue.bind(this),
           registerInput: this.registerInput.bind(this),
           unregisterInput: this.unregisterInput.bind(this),
-          onFieldValidation: this.onFieldValidation.bind(this),
+          validateForm: this.validateForm.bind(this),
         }
       }>
         <form ref={this.props.formRef} onSubmit={this.submit.bind(this)} className={this.props.className}>
