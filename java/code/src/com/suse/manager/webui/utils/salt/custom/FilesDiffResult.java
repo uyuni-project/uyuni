@@ -30,14 +30,15 @@ import java.util.Optional;
  */
 public class FilesDiffResult extends StateApplyResult<JsonElement> {
 
-    protected JsonElement pchanges;
+    protected Optional<JsonElement> pchanges = Optional.empty();
 
     /**
      * Return the pchanges
      * @return a map with all the changes
      */
     public Map getPChanges() {
-        return JsonParser.GSON.fromJson(this.pchanges, Map.class);
+
+        return JsonParser.GSON.fromJson(pchanges.orElse(getChanges()), Map.class);
     }
 
     /**
@@ -47,7 +48,7 @@ public class FilesDiffResult extends StateApplyResult<JsonElement> {
      * @return Object dataType's class
      */
     public <R> R getPChanges(Class<R> dataType) {
-        return JsonParser.GSON.fromJson(this.pchanges, dataType);
+        return JsonParser.GSON.fromJson(pchanges.orElse(getChanges()), dataType);
     }
 
     /**
@@ -57,7 +58,7 @@ public class FilesDiffResult extends StateApplyResult<JsonElement> {
      * @return Object of dataType.getType
      */
     public <R> R getPChanges(TypeToken<R> dataType) {
-        return JsonParser.GSON.fromJson(this.pchanges, dataType.getType());
+        return JsonParser.GSON.fromJson(pchanges.orElse(getChanges()), dataType.getType());
     }
 
     /**
