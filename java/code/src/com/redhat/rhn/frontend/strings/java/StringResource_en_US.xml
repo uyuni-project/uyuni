@@ -7052,6 +7052,12 @@ Follow this url to see the full list of inactive systems:
           <context context-type="sourcefile">com.redhat.rhn.domain.action.ActionFormatter.getActionType</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="virt.update">
+        <source>Updates a virtual domain</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">com.redhat.rhn.manager.system.VirtualizationActionCommand</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="virt.setMemory">
         <source>Set Memory ({0} MB)</source>
         <context-group name="ctx">

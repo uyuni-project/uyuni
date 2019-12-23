@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.manager.system;
 
+import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.validator.ValidatorError;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionChain;
@@ -99,6 +100,13 @@ public class VirtualizationActionCommand {
         BaseVirtualizationAction virtAction =
             (BaseVirtualizationAction) ActionFactory.createAction(this.getActionType());
         String actionName = this.getActionType().getName().replaceAll("\\.$", "");
+
+        // Handle VM Update name change.
+        if (getActionType().equals(ActionFactory.TYPE_VIRTUALIZATION_CREATE) &&
+                getUuid() != null) {
+            actionName = LocalizationService.getInstance().getMessage("virt.update");
+        }
+
         virtAction.setName(actionName + ": " + this.getName());
         virtAction.setOrg(this.getUser().getOrg());
         virtAction.setSchedulerUser(this.getUser());
