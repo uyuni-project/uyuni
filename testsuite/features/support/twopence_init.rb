@@ -178,7 +178,7 @@ $private_net = ENV['PRIVATENET'] if ENV['PRIVATENET']
 $mirror = ENV['MIRROR']
 $git_profiles = ENV['GITPROFILES']
 $server_http_proxy = ENV['SERVER_HTTP_PROXY'] if ENV['SERVER_HTTP_PROXY']
-$scc_credentials = ENV['scc_credentials'] if ENV['scc_credentials']
+$scc_credentials = ENV['SCC_CREDENTIALS'] if ENV['SCC_CREDENTIALS']
 $node_by_host = { 'server'                => $server,
                   'proxy'                 => $proxy,
                   'ceos_minion'           => $ceos_minion,

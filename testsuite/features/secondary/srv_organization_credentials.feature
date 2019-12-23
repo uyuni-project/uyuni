@@ -8,6 +8,7 @@ Feature: Organization credentials in the Setup Wizard
     Given I am on the Admin page
     When I follow "Organization Credentials" in the content area
     And I enter the SCC credentials
+    And I click on "Save"
 
 @no_mirror
   Scenario: Create some organization credentials

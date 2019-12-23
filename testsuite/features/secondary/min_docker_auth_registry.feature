@@ -9,7 +9,7 @@ Feature: Build image with authenticated registry
     And I follow "Create"
     And I enter "portus" as "label"
     And I check "useCredentials"
-    And I enter uri, username and password for portus
+    And I enter URI, username and password for portus
     And I click on "create-btn"
 
   Scenario: Create a profile for the authenticated image store as Docker admin

@@ -982,14 +982,13 @@ Then(/^I should see a list item with text "([^"]*)" and bullet with style "([^"]
 end
 
 When(/^I enter the SCC credentials$/) do
-  user = ENV['scc_credentials'].split('|')[0]
-  password = ENV['scc_credentials'].split('|')[1]
+  scc_username = ENV['SCC_CREDENTIALS'].split('|')[0]
+  scc_password = ENV['SCC_CREDENTIALS'].split('|')[1]
   unless has_content?(user)
     steps %(
-      And I want to add a new credential
-      And I enter "#{user}" as "edit-user"
-      And I enter "#{password}" as "edit-password"
-      And I click on "Save"
+      When I want to add a new credential
+      And I enter "#{scc_username}" as "edit-user"
+      And I enter "#{scc_password}" as "edit-password"
     )
   end
 end
