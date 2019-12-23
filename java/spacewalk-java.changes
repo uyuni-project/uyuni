@@ -1,3 +1,4 @@
+- Use 'changes' field if 'pchanges' field doesn't exist (bsc#1159202)
 - skip migration targets when they do not have the same amount of
   products as the installed set (bsc#1168227)
 
