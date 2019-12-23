@@ -817,3 +817,14 @@ end
 When(/^I enter "([^"]*)" relative to profiles as "([^"]*)"$/) do |path, field|
   step %(I enter "#{$git_profiles}/#{path}" as "#{field}")
 end
+
+When(/^I enter URI, username and password for portus$/) do
+  portus_uri = ENV['PORTUS_URI']
+  portus_username = ENV['PORTUS_CREDENTIALS'].split('|')[0]
+  portus_password = ENV['PORTUS_CREDENTIALS'].split('|')[1]
+  steps %(
+    When I enter "#{portus_uri}" as "uri"
+    And I enter "#{portus_username}" as "username"
+    And I enter "#{portus_password}" as "password"
+  )
+end

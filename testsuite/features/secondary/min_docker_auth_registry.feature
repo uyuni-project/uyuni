@@ -8,10 +8,8 @@ Feature: Build image with authenticated registry
     When I follow the left menu "Images > Stores"
     And I follow "Create"
     And I enter "portus" as "label"
-    And I enter "portus.mgr.suse.de:5000/cucutest" as "uri"
     And I check "useCredentials"
-    And I enter "cucutest" as "username"
-    And I enter "cucusecret" as "password"
+    And I enter URI, username and password for portus
     And I click on "create-btn"
 
   Scenario: Create a profile for the authenticated image store as Docker admin
