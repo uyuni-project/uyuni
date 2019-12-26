@@ -4,8 +4,8 @@ import { Text } from './Text';
 import { SubmitButton } from 'components/buttons';
 
 export default {
-  component: Form,
-  title: 'Forms/Form'
+  component: Text,
+  title: 'Forms/Text'
 };
 
 let model = {
