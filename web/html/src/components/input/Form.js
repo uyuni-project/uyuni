@@ -3,16 +3,32 @@
 import * as React from 'react';
 
 type Props = {
+  /** Object storing the data of the form.
+   *  Each field name in the form needs to map to a property of this
+   *  object. The value is the one displayed in the form */
   model: Object,
+  /** Function to trigger when the Submit button is clicked */
   onSubmit?: Function,
+  /** Function to trigger when the Submit button is clicked while the model is invalid */
   onSubmitInvalid?: Function,
+  /** A reference to pass to the <form> element */
   formRef?: string,
+  /** CSS class of the form */
   className?: string,
+  /** CSS class of the div right within the form */
   divClass?: string,
+  /** CSS class name for the form direction style */
   formDirection?: string,
+  /** Children elements of the form. Usually includes fields and a submit button */
   children: React.Node,
-  onChange: Function,
-  onValidate?: Function,
+  /** Function called when the model has been changed.
+   * Takes a new model as single parameter.
+   */
+  onChange: (model: Object) => void,
+  /** Function called after having validated the form.
+   * Takes a single parameter indicating whether the form is valid or not.
+   */
+  onValidate?: (valid: boolean) => void,
 };
 
 type FormContextType = {

@@ -1,34 +1,34 @@
 import * as React from 'react';
 import { Form } from './Form';
-import { Text } from './Text';
+import { Password } from './Password';
 import { SubmitButton } from 'components/buttons';
 
 export default {
-  component: Form,
-  title: 'Forms/Form'
+  component: Password,
+  title: 'Forms/Password'
 };
 
 let model = {
-  firstname: 'John',
+  password: 'secret',
 };
 
 export const Example = () => (
   <Form
     model={model}
-    onChange={newModel => {model['firstname'] = newModel['firstname']}}
-    onSubmit={() => alert(`Hello ${model['firstname']}`)}
+    onChange={newModel => {model['password'] = newModel['password']}}
+    onSubmit={() => alert(`Secret revealed: ${model['password']}`)}
     onSubmitInvalid={(data, evt) => alert("Submit clicked, but form invalid")}
     divClass="col-md-12"
     formDirection="form-horizontal"
   >
-    <Text
-      name="firstname"
-      label={t('First Name')}
+    <Password
+      name="password"
+      label={t('Password')}
       required
-      invalidHint={t('Minimum 2 characters')}
+      invalidHint={t('Minimum 4 characters')}
       labelClass="col-md-3"
       divClass="col-md-6"
-      validators={[(value => (value.length > 2))]}
+      validators={[(value => (value.length > 4))]}
     />
     <SubmitButton
       id="submit-btn"

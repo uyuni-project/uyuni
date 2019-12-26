@@ -5,21 +5,38 @@ import { FormGroup } from './FormGroup';
 import { FormContext } from './Form';
 
 export type Props = {
+  /** name of the field to map in the form model */
   name: string,
-  // eslint-disable-next-line
+  /** Default value if none is set */
   defaultValue?: string,
+  /** Label to display for the field */
   label?: string,
+  /** Hint string to display */
   hint?: string,
+  /** CSS class to use for the label */
   labelClass?: string,
+  /** CSS class to use for the <div> element wrapping the field input part */
   divClass?: string,
-  value: string,
+  /** Function rendering the children in the value <div>.
+   * Takes two parameters:
+   *
+   * - *setValue*: a function to call when the value needs to be set in the model.
+   *   This function takes a name and a value parameter.
+   * - *onBlur*: a function to call when loosing the focus on the component.
+   */
   children: ({
     setValue: (name: string, value: string) => void,
     onBlur: () => void,
   }) => React.Node,
+  /** Indicates whether the field is required in the form */
   required?: boolean,
+  /** Indicates whether the field is disabled */
   disabled?: boolean,
+  /** Hint to display on a validation error */
   invalidHint?: string,
+  /** Function to call when the data model needs to be changed.
+   *  Takes a name and a value parameter.
+   */
   onChange?: (name: string, value: string) => void,
 };
 
