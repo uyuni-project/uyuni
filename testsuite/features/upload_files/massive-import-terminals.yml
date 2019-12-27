@@ -70,7 +70,7 @@ hwtypes:
           disklabel: msdos
           partitions:
             p1:
-              image: POS_Image-JeOS6
+              image: POS_Image-JeOS6_head
               mountpoint: /
               size_MiB: 14000
             p2:
