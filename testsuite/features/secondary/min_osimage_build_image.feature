@@ -25,7 +25,7 @@ Feature: Build OS images
     When I wait at most 3300 seconds until event "Image Build suse_os_image scheduled by kiwikiwi" is completed
     And I wait at most 300 seconds until event "Image Inspect 1//suse_os_image:latest scheduled by kiwikiwi" is completed
     And I navigate to "os-images/1/" page
-    Then I should see a "POS_Image_JeOS6" text
+    Then I should see a "POS_Image_JeOS6_32" text
 
 @proxy
 @private_net
@@ -33,7 +33,7 @@ Feature: Build OS images
     When I manually install the "image-sync" formula on the server
     And I synchronize all Salt dynamic modules on "proxy"
     And I apply state "image-sync" to "proxy"
-    Then the image "POS_Image_JeOS6" should exist on "proxy"
+    Then the image "POS_Image_JeOS6_32" should exist on "proxy"
 
   Scenario: Cleanup: remove the image from SUSE Manager server
     Given I am authorized as "admin" with password "admin"
