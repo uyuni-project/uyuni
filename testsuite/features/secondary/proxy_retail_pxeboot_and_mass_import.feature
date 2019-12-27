@@ -214,7 +214,7 @@ Feature: PXE boot a Retail terminal
     And I press "Add Item" in partitions section
     And I enter "p2" in second partition id field
     And I enter "/" in second mount point field
-    And I enter "POS_Image_JeOS6" in second OS image field
+    And I enter "POS_Image_JeOS6_40" in second OS image field
     And I press "Add Item" in partitions section
     And I enter "p3" in third partition id field
     And I enter "/data" in third mount point field
