@@ -1,30 +1,10 @@
-# Copyright (c) 2015-2018 SUSE LLC
+# Copyright (c) 2015-2020 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 Feature: openSCAP audit of traditional client
   In order to audit a traditional client
   As an authorized user
   I want to run an openSCAP scan on it
-
-  Scenario: Schedule an audit job
-    Given I am on the Systems overview page of this "sle_client"
-    When I follow "Audit" in the content area
-    And I follow "Schedule" in the content area
-    And I enter "--profile RHEL6-Default" as "params"
-    And I enter "/usr/share/openscap/scap-rhel6-xccdf.xml" as "path"
-    And I click on "Schedule"
-    And I run "rhn_check -vvv" on "sle_client"
-    Then I should see a "XCCDF scan has been scheduled" text
-
-  Scenario: Check results of the audit job
-    Given I am on the Systems overview page of this "sle_client"
-    When I follow "Audit" in the content area
-    And I follow first "xccdf_org.open-scap_testresult_RHEL6-Default"
-    Then I should see a "Details of XCCDF Scan" text
-    And I should see a "RHEL6-Default" text
-    And I should see a "XCCDF Rule Results" text
-    And I should see a "CCE-" text
-    And I should see a "rule-" link
 
   Scenario: Schedule an audit job using the SUSE profile
     Given I am on the Systems overview page of this "sle_client"
