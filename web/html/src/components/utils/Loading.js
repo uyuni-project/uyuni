@@ -1,13 +1,13 @@
-
-
-const React = require('react');
+import React from 'react';
 
 type LoadingProps = {
-  text: string,
-  withBorders: bool
+  /** Text to be displayed with the loading spinner */
+  text?: string,
+  /** whether to show borders around the component */
+  withBorders?: bool
 }
 
-function Loading({ withBorders, text } : LoadingProps) {
+export function Loading({ withBorders, text } : LoadingProps) {
   return (
     <div className="panel-body text-center">
       {
@@ -26,6 +26,7 @@ function Loading({ withBorders, text } : LoadingProps) {
   );
 }
 
-module.exports = {
-  Loading,
-};
+Loading.defaultProps = {
+  text: undefined,
+  withBorders: false,
+}

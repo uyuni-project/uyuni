@@ -4,7 +4,7 @@ import {ModalLink} from "../../../components/dialog/ModalLink";
 import {closeDialog, Dialog} from "../../../components/dialog/Dialog";
 import {Button} from "../../../components/buttons";
 import useLifecycleActionsApi from "../shared/api/use-lifecycle-actions-api";
-import {Loading} from "components/loading/loading";
+import {Loading} from "components/utils/Loading";
 import {showErrorToastr, showSuccessToastr} from "components/toastr/toastr";
 import FilterForm from "./filter-form";
 import {showDialog} from "components/dialog/util";

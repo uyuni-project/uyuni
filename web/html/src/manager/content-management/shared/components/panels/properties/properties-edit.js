@@ -2,7 +2,7 @@
 import React from 'react';
 import CreatorPanel from "../../../../../../components/panels/CreatorPanel";
 import PropertiesForm from "./properties-form";
-import {Loading} from "components/loading/loading";
+import {Loading} from "components/utils/Loading";
 import {showErrorToastr, showSuccessToastr} from "components/toastr/toastr";
 import PropertiesView from "./properties-view";
 import produce from "immer";

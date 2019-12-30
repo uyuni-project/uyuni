@@ -7,7 +7,7 @@ import {ModalButton} from "../../../../../../components/dialog/ModalButton";
 
 import {Form} from "../../../../../../components/input/Form";
 import {Text} from "../../../../../../components/input/Text";
-import {Loading} from "../../../../../../components/loading/loading";
+import {Loading} from "../../../../../../components/utils/Loading";
 import DownArrow from '../../down-arrow/down-arrow';
 import statesEnum from "../../../../shared/business/states.enum";
 

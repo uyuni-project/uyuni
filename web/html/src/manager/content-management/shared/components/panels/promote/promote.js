@@ -7,7 +7,7 @@ import {Button} from "components/buttons";
 import type {ProjectEnvironmentType, ProjectHistoryEntry} from "../../../type/project.type";
 import {getVersionMessageByNumber} from "../properties/properties.utils";
 import {showErrorToastr, showSuccessToastr} from "components/toastr/toastr";
-import {Loading} from "components/loading/loading";
+import {Loading} from "components/utils/Loading";
 import useRoles from "core/auth/use-roles";
 import {isOrgAdmin} from "core/auth/auth.utils";
 import useLifecycleActionsApi from "../../../api/use-lifecycle-actions-api";

@@ -3,7 +3,7 @@
 'use strict';
 
 import React from 'react';
-import {Loading} from 'components/loading/loading';
+import {Loading} from 'components/utils/Loading';
 import {Toggler} from "components/toggler";
 import {ChannelAnchorLink} from "components/links";
 

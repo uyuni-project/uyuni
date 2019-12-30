@@ -3,7 +3,7 @@ import React from 'react';
 import CreatorPanel from "../../../../../../components/panels/CreatorPanel";
 import EnvironmentView from "./environment-view";
 import EnvironmentForm from "./environment-form";
-import {Loading} from "components/loading/loading";
+import {Loading} from "components/utils/Loading";
 import Promote from "../promote/promote";
 import {showErrorToastr, showSuccessToastr} from "components/toastr/toastr";
 import {mapAddEnvironmentRequest, mapUpdateEnvironmentRequest} from './environment.utils';
