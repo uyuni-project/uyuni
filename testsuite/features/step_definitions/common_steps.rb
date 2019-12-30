@@ -41,12 +41,12 @@ Then(/^I can see all system information for "([^"]*)"$/) do |host|
 end
 
 Then(/^I should see the terminals imported from the configuration file/) do
-  terminals = get_terminals_from_yaml(@retail_config)
+  terminals = read_terminals_from_yaml
   terminals.each { |terminal| step %(I should see a "#{terminal}" text) }
 end
 
 Then(/^I should not see any terminals imported from the configuration file/) do
-  terminals = get_terminals_from_yaml(@retail_config)
+  terminals = read_terminals_from_yaml
   terminals.each do |terminal|
     next if (terminal.include? 'minion') || (terminal.include? 'client')
     step %(I should not see a "#{terminal}" text)
@@ -54,7 +54,7 @@ Then(/^I should not see any terminals imported from the configuration file/) do
 end
 
 When(/^I enter the hostname of "([^"]*)" terminal as "([^"]*)"$/) do |host, hostname|
-  domain = get_branch_prefix_from_yaml(@retail_config)
+  domain = read_branch_prefix_from_yaml
   puts "The hostname of #{host} terminal is #{host}.#{domain}"
   step %(I enter "#{host}.#{domain}" as "#{hostname}")
 end

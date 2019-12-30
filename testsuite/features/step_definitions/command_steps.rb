@@ -1129,12 +1129,12 @@ When(/^I wait until package "([^"]*)" is removed from "([^"]*)" via spacecmd$/) 
   end
 end
 
-When(/^I copy the retail configuration file "([^"]*)" on server$/) do |file|
-  # Reuse the value during scenario (it will be automatically cleaned after it)
-  @retail_config = File.dirname(__FILE__) + '/../upload_files/' + file
-  dest = "/tmp/" + file
-  return_code = file_inject($server, @retail_config, dest)
+When(/^I prepare the retail configuration file on server$/) do
+  source = File.dirname(__FILE__) + '/../upload_files/massive-import-terminals.yml'
+  dest = '/tmp/massive-import-terminals.yml'
+  return_code = file_inject($server, source, dest)
   raise "File #{file} couldn't be copied to server" unless return_code.zero?
+
   sed_values = "s/<PROXY_HOSTNAME>/#{$proxy.full_hostname}/; "
   sed_values << "s/<NET_PREFIX>/#{net_prefix}/; "
   sed_values << "s/<PROXY>/#{ADDRESSES['proxy']}/; "
@@ -1145,22 +1145,17 @@ When(/^I copy the retail configuration file "([^"]*)" on server$/) do |file|
   sed_values << "s/<MINION>/#{ADDRESSES['minion']}/; "
   sed_values << "s/<MINION_MAC>/#{get_mac_address('sle_minion')}/; "
   sed_values << "s/<CLIENT>/#{ADDRESSES['client']}/; "
-  sed_values << "s/<CLIENT_MAC>/#{get_mac_address('sle_client')}/; "
-  # Retail DNS fix for client and minion
+  sed_values << "s/<CLIENT_MAC>/#{get_mac_address('sle_client')}/"
   $server.run("sed -i '#{sed_values}' #{dest}")
 end
 
-Given(/^the retail configuration file name is "([^"]*)"$/) do |file|
-  @retail_config = File.dirname(__FILE__) + '/../upload_files/' + file
-end
-
 When(/^I import the retail configuration using retail_yaml command/) do
-  filepath = "/tmp/" + File.basename(@retail_config)
+  filepath = '/tmp/massive-import-terminals.yml'
   $server.run("retail_yaml --api-user admin --api-pass admin --from-yaml #{filepath}")
 end
 
-When(/^I delete all the terminals imported$/) do
-  terminals = get_terminals_from_yaml(@retail_config)
+When(/^I delete all the imported terminals$/) do
+  terminals = read_terminals_from_yaml
   terminals.each do |terminal|
     next if (terminal.include? 'minion') || (terminal.include? 'client')
     puts "Deleting terminal with name: #{terminal}"
@@ -1175,14 +1170,14 @@ When(/^I delete all the terminals imported$/) do
 end
 
 When(/^I remove all the DHCP hosts created by retail_yaml$/) do
-  terminals = get_terminals_from_yaml(@retail_config)
+  terminals = read_terminals_from_yaml
   terminals.each do |terminal|
     raise unless find(:xpath, "//*[@value='#{terminal}']/../../../..//*[@title='Remove item']").click
   end
 end
 
 When(/^I remove the bind zones created by retail_yaml$/) do
-  domain = get_branch_prefix_from_yaml(@retail_config)
+  domain = read_branch_prefix_from_yaml
   raise unless find(:xpath, "//*[text()='Configured Zones']/../..//*[@value='#{domain}']/../../../..//*[@title='Remove item']").click
   raise unless find(:xpath, "//*[text()='Available Zones']/../..//*[@value='#{domain}' and @name='Name']/../../../..//i[@title='Remove item']").click
 end

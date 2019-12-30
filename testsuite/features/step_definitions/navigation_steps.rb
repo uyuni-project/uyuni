@@ -194,7 +194,7 @@ end
 # Click on the terminal
 #
 When(/^I follow "([^"]*)" terminal$/) do |host|
-  domain = get_branch_prefix_from_yaml(@retail_config)
+  domain = read_branch_prefix_from_yaml
   if !host.include? 'pxeboot'
     step %(I follow "#{domain}.#{host}")
   else
