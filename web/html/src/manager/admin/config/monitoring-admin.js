@@ -2,6 +2,7 @@
 import { hot } from 'react-hot-loader';
 import React, {useEffect} from 'react';
 import {Panel} from 'components/panels/Panel';
+import {HelpLink} from 'components/utils/HelpLink';
 import {Button, AsyncButton} from 'components/buttons';
 import Network from 'utils/network';
 import {Messages, Utils as MessagesUtils} from 'components/messages';
@@ -215,9 +216,7 @@ const MonitoringAdmin = (props) => {
         <h1>
           <i className="fa fa-info-circle"></i>
           {t("SUSE Manager Configuration - Monitoring")}
-          <a href="/docs/reference/admin/general.html" target="_blank">
-            <i className="fa fa-question-circle spacewalk-help-link"></i>
-          </a>
+          <HelpLink url="/docs/reference/admin/general.html"/>
         </h1>
       </div>
       <div className="page-summary">
