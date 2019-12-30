@@ -4,7 +4,7 @@ import React, {useEffect, useState} from 'react';
 import {LinkButton} from "components/buttons";
 import useLifecycleActionsApi from "../../../api/use-lifecycle-actions-api";
 import type {ProjectFilterServerType} from "../../../type/project.type";
-import {Loading} from "components/loading/loading";
+import {Loading} from "components/utils/Loading";
 import _xor from "lodash/xor";
 import {getClmFilterDescription} from "../../../business/filters.enum";
 

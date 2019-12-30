@@ -2,7 +2,7 @@
 
 import { hot } from 'react-hot-loader';
 import React from 'react';
-import { Loading } from 'components/loading/loading';
+import { Loading } from 'components/utils/Loading';
 import { PopUp } from 'components/popup';
 import { Button } from 'components/buttons';
 import { Form } from 'components/input/Form';

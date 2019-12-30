@@ -1,6 +1,6 @@
 // @flow
 import React, {useEffect} from 'react';
-import {Loading} from "components/loading/loading";
+import {Loading} from "components/utils/Loading";
 import type {ChannelsTreeType} from "core/channels/api/use-channels-tree-api";
 import useChannelsTreeApi from "core/channels/api/use-channels-tree-api";
 import styles from "./channels-selection.css";
