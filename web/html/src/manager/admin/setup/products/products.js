@@ -20,6 +20,7 @@ const PopUp = require("components/popup").PopUp;
 const ProgressBar = require("components/progressbar").ProgressBar;
 const CustomDiv = require("components/custom-objects").CustomDiv;
 const {Toggler} = require("components/toggler");
+const {HelpLink} = require('components/utils/HelpLink');
 const SpaRenderer  = require("core/spa/spa-renderer").default;
 
 const _DATA_ROOT_ID = 'baseProducts';
@@ -217,9 +218,7 @@ class ProductsPageWrapper extends React.Component {
           &nbsp;
           {t('Setup Wizard')}
           &nbsp;
-          <a href='/docs/reference/admin/setup-wizard.html'
-              target='_blank'><i className='fa fa-question-circle spacewalk-help-link'></i>
-          </a>
+          <HelpLink url='/docs/reference/admin/setup-wizard.html'/>
         </h1>
       </div>
     ;

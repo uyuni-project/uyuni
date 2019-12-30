@@ -1,5 +1,6 @@
 // @flow
-const React = require('react');
+import * as React from 'react';
+import { HelpLink } from 'components/utils/HelpLink';
 
 type Props = {
   helpUrl?: string,
@@ -9,14 +10,8 @@ type Props = {
   children: React.Node,
 };
 
-function TopPanel(props: Props) {
-  const help = props.helpUrl
-    ? (
-      <a href={props.helpUrl} target="_blank" rel="noopener noreferrer">
-        <i className="fa fa-question-circle spacewalk-help-link" />
-      </a>
-    )
-    : null;
+export function TopPanel(props: Props) {
+  const help = props.helpUrl ? <HelpLink url={props.helpUrl}/> : null;
 
   return (
     <div>
@@ -38,8 +33,4 @@ TopPanel.defaultProps = {
   helpUrl: undefined,
   button: undefined,
   icon: undefined,
-};
-
-module.exports = {
-  TopPanel,
 };
