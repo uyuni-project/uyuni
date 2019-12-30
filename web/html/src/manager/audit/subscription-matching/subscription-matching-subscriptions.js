@@ -3,7 +3,7 @@
 
 const React = require("react");
 const createReactClass = require('create-react-class');
-const StatePersistedMixin = require("components/util").StatePersistedMixin;
+const {StatePersistedMixin} = require("components/utils/StatePersistedMixin");
 const UtilComponent = require("./subscription-matching-util");
 const ToolTip = UtilComponent.ToolTip;
 const CsvLink = UtilComponent.CsvLink;

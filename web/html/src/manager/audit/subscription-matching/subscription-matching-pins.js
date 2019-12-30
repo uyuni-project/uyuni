@@ -4,7 +4,7 @@
 const React = require("react");
 const createReactClass = require('create-react-class');
 const {Table, Column, SearchField, Highlight} = require("components/table");
-const StatePersistedMixin = require("components/util").StatePersistedMixin;
+const {StatePersistedMixin} = require("components/utils/StatePersistedMixin");
 const PopUp = require("components/popup").PopUp;
 const ModalButton = require("components/dialog/ModalButton").ModalButton;
 const UtilComponent =  require("./subscription-matching-util");
