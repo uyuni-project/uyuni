@@ -4,7 +4,7 @@
 const PropTypes = require('prop-types');
 const React = require("react");
 const createReactClass = require('create-react-class');
-const StatePersistedMixin = require("./util").StatePersistedMixin;
+const {StatePersistedMixin} = require("./utils/StatePersistedMixin");
 const {PaginationBlock, ItemsPerPageSelector} = require('./pagination');
 
 const SearchPanel = (props) =>
