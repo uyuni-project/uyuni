@@ -35,6 +35,7 @@ import com.suse.manager.webui.utils.gson.VirtualStorageVolumeInfoJson;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 import spark.ModelAndView;
@@ -70,31 +71,7 @@ public class VirtualPoolsController {
      * @return the ModelAndView object to render the page
      */
     public static ModelAndView show(Request request, Response response, User user) {
-        Map<String, Object> data = new HashMap<>();
-        Long serverId;
-        Server server;
-
-        try {
-            serverId = Long.parseLong(request.params("sid"));
-        }
-        catch (NumberFormatException e) {
-            throw new NotFoundException();
-        }
-
-        try {
-            server = SystemManager.lookupByIdAndUser(serverId, user);
-        }
-        catch (LookupException e) {
-            throw new NotFoundException();
-        }
-
-        /* For system-common.jade */
-        data.put("server", server);
-        data.put("inSSM", RhnSetDecl.SYSTEMS.get(user).contains(serverId));
-
-        /* For the rest of the template */
-
-        return new ModelAndView(data, "templates/virtualization/pools/show.jade");
+        return renderPage(request, response, user, "show", null);
     }
 
 
@@ -133,5 +110,49 @@ public class VirtualPoolsController {
         }).collect(Collectors.toList());
 
         return json(response, pools);
+    }
+
+    /**
+     * Displays a page server-related virtual page
+     *
+     * @param request the request
+     * @param response the response
+     * @param user the user
+     * @param template the name to the Jade template of the page
+     * @param modelExtender provides additional properties to pass to the Jade template
+     * @return the ModelAndView object to render the page
+     */
+    private static ModelAndView renderPage(Request request, Response response, User user,
+                                          String template,
+                                          Supplier<Map<String, Object>> modelExtender) {
+        Map<String, Object> data = new HashMap<>();
+        Long serverId;
+        Server server;
+
+        try {
+            serverId = Long.parseLong(request.params("sid"));
+        }
+        catch (NumberFormatException e) {
+            throw new NotFoundException();
+        }
+
+        try {
+            server = SystemManager.lookupByIdAndUser(serverId, user);
+        }
+        catch (LookupException e) {
+            throw new NotFoundException();
+        }
+
+        /* For system-common.jade */
+        data.put("server", server);
+        data.put("inSSM", RhnSetDecl.SYSTEMS.get(user).contains(serverId));
+
+        if (modelExtender != null) {
+            data.putAll(modelExtender.get());
+        }
+
+        /* For the rest of the template */
+
+        return new ModelAndView(data, String.format("templates/virtualization/pools/%s.jade", template));
     }
 }
