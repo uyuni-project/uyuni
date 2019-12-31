@@ -1,4 +1,4 @@
-# Copyright (c) 2014-2019 SUSE LLC.
+# Copyright (c) 2014-2020 SUSE LLC.
 # Licensed under the terms of the MIT license.
 
 require 'xmlrpc/client'
@@ -985,7 +985,8 @@ When(/^I prepare the retail configuration file on server$/) do
   sed_values << "s/<MINION>/#{ADDRESSES['minion']}/; "
   sed_values << "s/<MINION_MAC>/#{get_mac_address('sle_minion')}/; "
   sed_values << "s/<CLIENT>/#{ADDRESSES['client']}/; "
-  sed_values << "s/<CLIENT_MAC>/#{get_mac_address('sle_client')}/"
+  sed_values << "s/<CLIENT_MAC>/#{get_mac_address('sle_client')}/; "
+  sed_values << "s/<IMAGE>/#{compute_image_name}/"
   $server.run("sed -i '#{sed_values}' #{dest}")
 end
 

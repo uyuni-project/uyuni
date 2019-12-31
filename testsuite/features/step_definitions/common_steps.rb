@@ -1,4 +1,4 @@
-# Copyright (c) 2010-2019 SUSE LLC.
+# Copyright (c) 2010-2020 SUSE LLC.
 # Licensed under the terms of the MIT license.
 
 require 'jwt'
@@ -38,6 +38,10 @@ Then(/^I can see all system information for "([^"]*)"$/) do |host|
   # skip this test for centos and ubuntu systems
   puts 'i should see os version: ' + os_pretty if os_pretty.include? 'SUSE Linux'
   step %(I should see a "#{os_pretty}" text) if os_pretty.include? 'SUSE Linux'
+end
+
+Then(/^I should see the name of the image$/) do
+  step %(I should see a "#{compute_image_name}" text)
 end
 
 Then(/^I should see the terminals imported from the configuration file/) do
@@ -569,10 +573,10 @@ Then(/^I remove server hostname from hosts file on "([^"]*)"$/) do |host|
   node.run("sed -i \'s/#{$server.full_hostname}//\' /etc/hosts")
 end
 
-Then(/^the image "([^"]*)" should exist on "([^"]*)"$/) do |image, host|
+Then(/^the image should exist on "([^"]*)"$/) do |host|
   node = get_target(host)
   images, _code = node.run("ls /srv/saltboot/image/")
-  raise "Image #{image} does not exist on #{host}" unless images.include? image
+  raise "Image #{image} does not exist on #{host}" unless images.include? compute_image_name
 end
 
 # Repository steps

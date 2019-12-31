@@ -1,4 +1,4 @@
-# Copyright (c) 2018-2019 SUSE LLC
+# Copyright (c) 2018-2020 SUSE LLC
 # Licensed under the terms of the MIT license.
 #
 # This feature depends on a JeOS image present on the proxy
@@ -215,7 +215,7 @@ Feature: PXE boot a Retail terminal
     And I press "Add Item" in partitions section
     And I enter "p2" in second partition id field
     And I enter "/" in second mount point field
-    And I enter "POS_Image_JeOS6_32" in second OS image field
+    And I enter the image name in second OS image field
     And I press "Add Item" in partitions section
     And I enter "p3" in third partition id field
     And I enter "/data" in third mount point field

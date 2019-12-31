@@ -1,4 +1,4 @@
-# Copyright (c) 2013-2019 SUSE LLC.
+# Copyright (c) 2013-2020 SUSE LLC.
 # Licensed under the terms of the MIT license.
 
 require 'tempfile'
@@ -34,6 +34,29 @@ def read_server_domain_from_yaml
   name = File.dirname(__FILE__) + '/../upload_files/massive-import-terminals.yml'
   tree = YAML.load_file(name)
   tree['branches'].values[0]['server_domain']
+end
+
+# determine image for PXE boot tests
+def compute_image_filename
+  case ENV['PXEBOOT_IMAGE']
+  when nil
+    'Kiwi/POS_Image-JeOS6_32'
+  when 'sles15sp1'
+    'Kiwi/POS_Image-JeOS7_32'
+  else
+    'Kiwi/POS_Image-JeOS6_32'
+  end
+end
+
+def compute_image_name
+  case ENV['PXEBOOT_IMAGE']
+  when nil
+    'POS_Image_JeOS6_32'
+  when 'sles15sp1'
+    'POS_Image_JeOS7_32'
+  else
+    'POS_Image_JeOS6_32'
+  end
 end
 
 # get registration URL

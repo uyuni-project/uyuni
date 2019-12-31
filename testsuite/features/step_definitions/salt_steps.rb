@@ -1,4 +1,4 @@
-# Copyright 2015-2019 SUSE LLC
+# Copyright 2015-2020 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 require 'timeout'
@@ -468,6 +468,11 @@ end
 
 When(/^I enter the local network in (.*) field$/) do |field|
   fill_in FIELD_IDS[field], with: $private_net
+end
+
+When(/^I enter the image name in (.*) field$/) do |field|
+  name = compute_image_name
+  fill_in FIELD_IDS[field], with: name
 end
 
 When(/^I press "Add Item" in (.*) section$/) do |section|
