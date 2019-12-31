@@ -637,7 +637,6 @@ Here we describe only the specificities of this testsuite. For a description
 of the underlying libraries, have a look at
 [Capybara documentation](http://www.rubydoc.info/github/jnicklas/capybara).
 
-
 #### Running remote commands
 
 When implementing a step, to run a command on a target, use:
@@ -657,13 +656,12 @@ Arguments taken by method ```run``` are:
 3. timeout : **default** is 200. You can increase/decrease the timeout. You may want to use a smaller timeout, but retry several times until ```DEFAULT_TIMEOUT```.
 4. user : **default** is root. It's the user that executes the command.
 
-
 #### Getting the FQDN of a host
 
 When implementing a step, to get the FQDN of the host, use:
 
 ```ruby
-  STDOUT puts $client.full_hostname
+  STDOUT.puts $client.full_hostname
 ```
 
 #### Converting between host name and target
