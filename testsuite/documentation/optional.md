@@ -281,13 +281,16 @@ via the private network. The proxy reboots this minion
 through SSH and then triggers a complete reinstallation
 with the help of PXE.
 
-If you do not want a PXE boot minion, do not define `PXEBOOTMAC`
-environment variable before you run the testsuite. That's all.
+If you do not want a PXE boot minion, do not define `PXEBOOT_MAC` nor
+`PXEBOOT_IMAGE` environment variables before you run the testsuite.
+That's all.
 
-If you want a PXE boot minion, make this variable contain
-the MAC address of the PXE boot minion:
+If you want a PXE boot minion, make these variables contain
+the MAC address of the PXE boot minion and the name of
+the desired image you want it reformatted with:
 ```bash
-export PXEBOOTMAC=52:54:00:01:02:03
+export PXEBOOT_MAC=52:54:00:01:02:03
+export PXEBOOT_IMAGE=sles12sp4
 ```
 and then run the testsuite.
 

@@ -1,4 +1,4 @@
-# Copyright (c) 2010-2019 SUSE LLC.
+# Copyright (c) 2010-2020 SUSE LLC.
 # Licensed under the terms of the MIT license.
 
 #
@@ -816,6 +816,11 @@ end
 
 # Image-specific steps
 When(/^I enter "([^"]*)" relative to profiles as "([^"]*)"$/) do |path, field|
+  step %(I enter "#{$git_profiles}/#{path}" as "#{field}")
+end
+
+When(/^I enter the image filename relative to profiles as "([^"]*)"$/) do |field|
+  path = compute_image_filename
   step %(I enter "#{$git_profiles}/#{path}" as "#{field}")
 end
 
