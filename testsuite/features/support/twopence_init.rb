@@ -1,4 +1,4 @@
-# Copyright (c) 2016-2019 SUSE LLC.
+# Copyright (c) 2016-2020 SUSE LLC.
 # Licensed under the terms of the MIT license.
 
 require 'twopence'
@@ -10,7 +10,7 @@ warn 'Client IP address or domain name variable empty' if ENV['CLIENT'].nil?
 warn 'Minion IP address or domain name variable empty' if ENV['MINION'].nil?
 warn 'CentOS minion IP address or domain name variable empty' if ENV['CENTOSMINION'].nil?
 warn 'SSH minion IP address or domain name variable empty' if ENV['SSHMINION'].nil?
-warn 'PXE boot MAC address variable empty' if ENV['PXEBOOTMAC'].nil?
+warn 'PXE boot MAC address variable empty' if ENV['PXEBOOT_MAC'].nil?
 warn 'KVM server minion IP address or domain name variable empty' if ENV['VIRTHOST_KVM_URL'].nil?
 warn 'XEN server minion IP address or domain name variable empty' if ENV['VIRTHOST_XEN_URL'].nil?
 
@@ -132,7 +132,7 @@ end
 # Get MAC address of system
 def get_mac_address(host)
   if host == 'pxeboot_minion'
-    mac = ENV['PXEBOOTMAC']
+    mac = ENV['PXEBOOT_MAC']
   else
     node = get_target(host)
     output, _code = node.run('ip link show dev eth1')
@@ -174,7 +174,7 @@ end
 # Other global variables
 $product = product
 $sle15_minion = sle15family?($minion)
-$pxeboot_mac = ENV['PXEBOOTMAC']
+$pxeboot_mac = ENV['PXEBOOT_MAC']
 $private_net = ENV['PRIVATENET'] if ENV['PRIVATENET']
 $mirror = ENV['MIRROR']
 $git_profiles = ENV['GITPROFILES']
