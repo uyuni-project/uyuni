@@ -1,3 +1,5 @@
+- add SLE 15 LTSS and ESPOS channel families (bsc#1160043)
+- add missing channel families for older products
 - add RHEL 8 Base product
 - changed RHEL 5, 6 and 7 products to released
 
