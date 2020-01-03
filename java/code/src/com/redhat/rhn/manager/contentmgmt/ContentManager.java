@@ -645,6 +645,11 @@ public class ContentManager {
                 .sorted((t1, t2) -> Boolean.compare(t1.getChannel().isBaseChannel(), t2.getChannel().isBaseChannel()))
                 .forEach(toRemove -> ContentProjectFactory.purgeTarget(toRemove));
 
+        // Strip modules metadata from the modular repositories if any modular filter is present
+        if (filters.stream().anyMatch(f -> f.asModuleFilter().isPresent())) {
+            newSrcTgtPairs.stream().map(p -> p.getRight().getChannel()).forEach(ContentManager::stripModuleMetadata);
+        }
+
         // Resolve filters for dependencies
         try {
             DependencyResolver resolver = new DependencyResolver(env.getContentProject());
@@ -666,6 +671,10 @@ public class ContentManager {
                 alignEnvironmentTarget(srcTgt.getLeft(), srcTgt.getRight(), filters, async, user));
     }
 
+    private static void stripModuleMetadata(Channel channel) {
+        if (channel != null && channel.getModules() != null) {
+            HibernateFactory.getSession().delete(channel.getModules());
+            channel.setModules(null);
         }
     }
 
