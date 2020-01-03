@@ -8,24 +8,12 @@
     "name" : "SUSE Linux Enterprise Real Time"
   },
   {
-    "label" : "18962",
-    "name" : "Novell ZENworks Configuration Management"
-  },
-  {
-    "label" : "20082",
-    "name" : "Novell Open Workgroup Suite - Small Business Edition"
-  },
-  {
     "label" : "7260",
     "name" : "SUSE Linux Enterprise Desktop"
   },
   {
     "label" : "7261",
     "name" : "SUSE Linux Enterprise Server"
-  },
-  {
-    "label" : "ATI",
-    "name" : "ATI"
   },
   {
     "label" : "AiO",
@@ -40,14 +28,6 @@
     "name" : "SUSE Container as a Service Platform x86_64"
   },
   {
-    "label" : "DSMP",
-    "name" : "Data Synchronizer Mobility Pack"
-  },
-  {
-    "label" : "HP-HWREF",
-    "name" : "SUSE Linux Enterprise Desktop HW Refresh 2011A"
-  },
-  {
     "label" : "HPC-ARM64",
     "name" : "SUSE Linux Enterprise High Performance Computing (ARM64)"
   },
@@ -56,32 +36,8 @@
     "name" : "SUSE Linux Enterprise High Performance Computing (x86)"
   },
   {
-    "label" : "JBEAP",
-    "name" : "Novell Support for JBoss"
-  },
-  {
-    "label" : "MEEGO-1",
-    "name" : "MEEGO"
-  },
-  {
     "label" : "MODULE",
     "name" : "SUSE Linux Enterprise Modules"
-  },
-  {
-    "label" : "MONO",
-    "name" : "SUSE Linux Enterprise Mono Extension"
-  },
-  {
-    "label" : "Moblin-2-Samsung",
-    "name" : "Moblin for Samsung"
-  },
-  {
-    "label" : "Moblin-2.1-MSI",
-    "name" : "Moblin for MSI"
-  },
-  {
-    "label" : "NAM-AGA",
-    "name" : "Novell Access Manager"
   },
   {
     "label" : "OES2",
@@ -128,10 +84,6 @@
     "name" : "SUSE Linux Enterprise High Availability Extension (Z-Series)"
   },
   {
-    "label" : "SLE-HAS",
-    "name" : "SUSE Linux Enterprise HA Server"
-  },
-  {
     "label" : "SLE-LP",
     "name" : "SUSE Linux Enterprise Live Patching"
   },
@@ -152,20 +104,12 @@
     "name" : "SUSE Linux Enterprise Software Development Kit"
   },
   {
-    "label" : "SLE-TC",
-    "name" : "SUSE Linux Enterprise Thin Client"
-  },
-  {
     "label" : "SLE-WE",
     "name" : "SUSE Linux Enterprise Workstation Extension"
   },
   {
     "label" : "SLES-ARM64",
     "name" : "SUSE Linux Enterprise Server (ARM64)"
-  },
-  {
-    "label" : "SLES-EC2",
-    "name" : "SUSE Linux Enterprise Server for Amazon EC2"
   },
   {
     "label" : "SLES-IA",
@@ -228,10 +172,6 @@
     "name" : "SUSE Linux Enterprise Subscription Management Tool"
   },
   {
-    "label" : "SLM",
-    "name" : "Novell Sentinel Log Manager"
-  },
-  {
     "label" : "SLMS",
     "name" : "SUSE Lifecycle Management Server"
   },
@@ -260,43 +200,11 @@
     "name" : "SUSE Studio Onsite"
   },
   {
-    "label" : "STUDIOONSITERUNNER",
-    "name" : "SUSE Studio OnSite Runner"
-  },
-  {
-    "label" : "SUSE",
-    "name" : "openSUSE"
-  },
-  {
     "label" : "SUSE_CLOUD",
     "name" : "SUSE Cloud"
   },
   {
-    "label" : "VMDP",
-    "name" : "SUSE Linux Enterprise Virtual Machine Driver Pack"
-  },
-  {
     "label" : "WEBYAST",
     "name" : "WebYaST for SUSE Linux Enterprise"
-  },
-  {
-    "label" : "WebYast-SLMS",
-    "name" : "WebYaST for SUSE Appliance Toolkit"
-  },
-  {
-    "label" : "ZLM7",
-    "name" : "ZENworks Linux Management"
-  },
-  {
-    "label" : "ZOS",
-    "name" : "ZENworks Orchestrator"
-  },
-  {
-    "label" : "jeos",
-    "name" : "Just enough OS"
-  },
-  {
-    "label" : "nVidia",
-    "name" : "nVidia"
   }
 ]
