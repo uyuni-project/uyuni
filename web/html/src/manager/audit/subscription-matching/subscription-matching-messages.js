@@ -19,19 +19,19 @@ const Messages = createReactClass({
       var message;
       var additionalInformation;
       switch(rawMessage["type"]) {
-        case "unknownPartNumber" :
+        case "unknown_part_number" :
           message = t("Unsupported part number detected");
-          additionalInformation = data["partNumber"];
+          additionalInformation = data["part_number"];
           break;
-        case "physicalGuest" :
+        case "physical_guest" :
           message = t("Physical system is reported as virtual guest, please check hardware data");
           additionalInformation = systems[data["id"]].name;
           break;
-        case "guestWithUnknownHost" :
+        case "guest_with_unknown_host" :
           message = t("Virtual guest has unknown host, assuming it is a physical system");
           additionalInformation = systems[data["id"]].name;
           break;
-        case "unknownCpuCount" :
+        case "unknown_cpu_count" :
           message = t("System has an unknown number of sockets, assuming 16");
           additionalInformation = systems[data["id"]].name;
           break;
