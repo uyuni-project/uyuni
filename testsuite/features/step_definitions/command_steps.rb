@@ -148,6 +148,7 @@ When(/^I execute mgr\-sync refresh$/) do
 end
 
 When(/^I make sure no spacewalk\-repo\-sync is executing, excepted the ones needed to bootstrap$/) do
+  do_not_kill = compute_list_to_leave_running
   reposync_not_running_streak = 0
   reposync_left_running_streak = 0
   while reposync_not_running_streak <= 30 && reposync_left_running_streak <= 7200
@@ -159,18 +160,18 @@ When(/^I make sure no spacewalk\-repo\-sync is executing, excepted the ones need
       next
     end
     reposync_not_running_streak = 0
+
     process = command_output.split("\n")[0]
-    pid = process.split(' ')[0]
     channel = process.split(' ')[5]
-    # The following assumes the clients are SLE 12 SP4
-    if ['sles12-sp4-pool-x86_64', 'sle-manager-tools12-pool-x86_64-sp4', 'sle-module-containers12-pool-x86_64-sp4',
-        'sles12-sp4-updates-x86_64', 'sle-manager-tools12-updates-x86_64-sp4', 'sle-module-containers12-updates-x86_64-sp4'].include? channel
+    if do_not_kill.include? channel
       STDOUT.puts "Reposync of channel #{channel} left running" if (reposync_left_running_streak % 60).zero?
       reposync_left_running_streak += 1
       sleep 1
       next
     end
     reposync_left_running_streak = 0
+
+    pid = process.split(' ')[0]
     $server.run("kill #{pid}", false)
     STDOUT.puts "Reposync of channel #{channel} killed"
   end
