@@ -43,6 +43,12 @@ const Messages = createReactClass({
           message = t("Two subscriptions with the same part number (and other properties) have been merged together - start/end dates might be indicative");
           additionalInformation = data["part_number"];
           break;
+        case "adjust_pinned_match" :
+          message = t("Pinned match adjusted due to merged subscriptions");
+          additionalInformation = t("Subscription IDs") + ": " +
+              data["new_subscription_id"] + ", " + data["old_subscription_id"] + ", " +
+              t("System") + ": " + systems[data["system_id"]].name;
+          break;
         default:
           message = rawMessage["type"];
           // we do not know the shape of the data, it could even be a complex nested object (bsc#1125600)
