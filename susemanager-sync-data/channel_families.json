@@ -36,6 +36,14 @@
     "name" : "SUSE Linux Enterprise High Performance Computing (x86)"
   },
   {
+    "label" : "HPC15-LTSS-ARM64",
+    "name" : "SUSE Linux Enterprise High Performance Computing LTSS 15 ARM64"
+  },
+  {
+    "label" : "HPC15-LTSS-X86",
+    "name" : "SUSE Linux Enterprise High Performance Computing LTSS 15 x86_64"
+  },
+  {
     "label" : "HPE-HELION-OPENSTACK-X86",
     "name" : "HPE Helion Openstack (x86)"
   },
@@ -66,6 +74,14 @@
   {
     "label" : "SES-ARM64",
     "name" : "SUSE Enterprise Storage ARM64"
+  },
+  {
+    "label" : "SLE-ESPOS-ARM64",
+    "name" : "SUSE Linux Enterprise Extended Service Pack Overlap Support (ARM64)"
+  },
+  {
+    "label" : "SLE-ESPOS-X86",
+    "name" : "SUSE Linux Enterprise Extended Service Pack Overlap Support (x86)"
   },
   {
     "label" : "SLE-HAE-ARM64",
@@ -178,6 +194,22 @@
   {
     "label" : "SLES12-SP3-LTSS-Z",
     "name" : "SUSE Linux Enterprise Server LTSS 12 SP3 Z-Series"
+  },
+  {
+    "label" : "SLES15-LTSS-ARM64",
+    "name" : "SUSE Linux Enterprise Server LTSS 15 ARM64"
+  },
+  {
+    "label" : "SLES15-LTSS-PPC",
+    "name" : "SUSE Linux Enterprise Server LTSS 15 PPC"
+  },
+  {
+    "label" : "SLES15-LTSS-X86",
+    "name" : "SUSE Linux Enterprise Server LTSS 15 x86_64"
+  },
+  {
+    "label" : "SLES15-LTSS-Z",
+    "name" : "SUSE Linux Enterprise Server LTSS 15 Z-Series"
   },
   {
     "label" : "SLESMT",
