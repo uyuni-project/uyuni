@@ -173,7 +173,6 @@ def file_inject(node, local_file, remote_file)
 end
 
 # Other global variables
-$sle15_minion = sle15family?($minion)
 $pxeboot_mac = ENV['PXEBOOT_MAC']
 $private_net = ENV['PRIVATENET'] if ENV['PRIVATENET']
 $mirror = ENV['MIRROR']
