@@ -1,4 +1,4 @@
-# Copyright (c) 2019 SUSE LLC
+# Copyright (c) 2019-2020 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 Feature: Managing channels
@@ -8,7 +8,7 @@ Feature: Managing channels
 
   Scenario: Fail when trying to add a duplicate channel
     Given I am authorized as "admin" with password "admin"
-    When I follow the left menu "Software > Manage > Channels"
+    When I follow the left menu "Software > Manage Software Channels > Overview"
     And I follow "Create Channel"
     And I enter "Test Base Channel" as "Channel Name"
     And I enter "test_base_channel" as "Channel Label"
@@ -21,7 +21,7 @@ Feature: Managing channels
 
   Scenario: Fail when trying to use invalid characters in the channel label
     Given I am authorized as "admin" with password "admin"
-    When I follow the left menu "Software > Manage > Channels"
+    When I follow the left menu "Software > Manage Software Channels > Overview"
     And I follow "Create Channel"
     And I enter "test123" as "Channel Name"
     And I enter "tesT123" as "Channel Label"
@@ -31,7 +31,7 @@ Feature: Managing channels
 
   Scenario: Fail when trying to use invalid characters in the channel name
     Given I am authorized as "admin" with password "admin"
-    When I follow the left menu "Software > Manage > Channels"
+    When I follow the left menu "Software > Manage Software Channels > Overview"
     And I follow "Create Channel"
     And I enter "!test123" as "Channel Name"
     And I enter "test123" as "Channel Label"
@@ -41,7 +41,7 @@ Feature: Managing channels
 
   Scenario: Fail when trying to use reserved names for channels
     Given I am authorized as "admin" with password "admin"
-    When I follow the left menu "Software > Manage > Channels"
+    When I follow the left menu "Software > Manage Software Channels > Overview"
     And I follow "Create Channel"
     And I enter "SLE-12-Cloud-Compute5-Pool for x86_64" as "Channel Name"
     And I enter "test123" as "Channel Label"
@@ -51,7 +51,7 @@ Feature: Managing channels
 
   Scenario: Fail when trying to use reserved labels for channels
     Given I am authorized as "admin" with password "admin"
-    When I follow the left menu "Software > Manage > Channels"
+    When I follow the left menu "Software > Manage Software Channels > Overview"
     And I follow "Create Channel"
     And I enter "test123" as "Channel Name"
     And I enter "sle-we12-pool-x86_64-sap" as "Channel Label"
@@ -61,7 +61,7 @@ Feature: Managing channels
 
   Scenario: Create a channel that will be changed
     Given I am authorized as "admin" with password "admin"
-    When I follow the left menu "Software > Manage > Channels"
+    When I follow the left menu "Software > Manage Software Channels > Overview"
     And I follow "Create Channel"
     And I enter "aaaSLE-12-Cloud-Compute5-Pool for x86_64" as "Channel Name"
     And I enter "sle-we12aaa-pool-x86_64-sap" as "Channel Label"
@@ -71,7 +71,7 @@ Feature: Managing channels
 
   Scenario: Fail when trying to change the channel name to a reserved name
     Given I am authorized as "admin" with password "admin"
-    When I follow the left menu "Software > Manage > Channels"
+    When I follow the left menu "Software > Manage Software Channels > Overview"
     And I follow "aaaSLE-12-Cloud-Compute5-Pool for x86_64"
     And I enter "SLE-12-Cloud-Compute5-Pool for x86_64" as "Channel Name"
     And I click on "Update Channel"
