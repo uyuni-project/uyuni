@@ -28,6 +28,7 @@ import com.redhat.rhn.manager.system.SystemManager;
 
 import com.google.gson.JsonObject;
 import com.suse.manager.virtualization.PoolCapabilitiesJson;
+import com.suse.manager.virtualization.PoolDefinition;
 import com.suse.manager.virtualization.VirtManager;
 import com.suse.manager.webui.errors.NotFoundException;
 import com.suse.manager.webui.utils.gson.VirtualStoragePoolInfoJson;
@@ -66,6 +67,8 @@ public class VirtualPoolsController {
                 withUser(VirtualPoolsController::data));
         get("/manager/api/systems/details/virtualization/pools/:sid/capabilities",
                 withUser(VirtualPoolsController::getCapabilities));
+        get("/manager/api/systems/details/virtualization/pools/:sid/pool/:name",
+                withUser(VirtualPoolsController::getPool));
     }
 
     /**
@@ -144,6 +147,34 @@ public class VirtualPoolsController {
                 "Failed to get virtual host storage pool capabilities"));
 
         return json(response, caps);
+    }
+
+/**
+     * Executes the GET query to extract the pool definition
+     *
+     * @param request the request
+     * @param response the response
+     * @param user the user
+     * @return JSON-formatted capabilities
+     */
+    public static String getPool(Request request, Response response, User user) {
+        Long serverId;
+        try {
+            serverId = Long.parseLong(request.params("sid"));
+        }
+        catch (NumberFormatException e) {
+            throw new NotFoundException();
+        }
+
+        Server host = SystemManager.lookupByIdAndUser(serverId, user);
+        String minionId = host.asMinionServer().orElseThrow(() ->
+            Spark.halt(HttpStatus.SC_BAD_REQUEST, "Can only get pool definition of Salt system")).getMinionId();
+
+        String poolName = request.params("name");
+        PoolDefinition definition = VirtManager.getPoolDefinition(minionId, poolName)
+                .orElseThrow(() -> new NotFoundException());
+
+        return json(response, definition);
     }
 
     /**
