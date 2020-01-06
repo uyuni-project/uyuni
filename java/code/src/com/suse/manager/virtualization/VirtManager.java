@@ -81,6 +81,31 @@ public class VirtManager {
     }
 
     /**
+     * Query virtual storage pool definition
+     *
+     * @param minionId the host minion ID
+     * @param poolName the domain name to look for
+     * @return the XML definition or an empty Optional
+     */
+    public static Optional<PoolDefinition> getPoolDefinition(String minionId, String poolName) {
+        Map<String, JsonObject> infos = getPools(minionId);
+
+        Map<String, Object> args = new LinkedHashMap<>();
+        args.put("name", poolName);
+        LocalCall<String> call =
+                new LocalCall<>("virt.pool_get_xml", Optional.empty(), Optional.of(args), new TypeToken<String>() { });
+
+        Optional<String> result = saltService.callSync(call, minionId);
+        return result.filter(s -> !s.startsWith("ERROR")).map(xml -> {
+            PoolDefinition pool = PoolDefinition.parse(xml);
+            if (pool != null) {
+                pool.setAutostart(infos.get(poolName).get("autostart").getAsInt() == 1);
+            }
+            return pool;
+        });
+    }
+
+    /**
      * Query the list of virtual networks defined on a salt minion.
      *
      * @param minionId the minion to ask about

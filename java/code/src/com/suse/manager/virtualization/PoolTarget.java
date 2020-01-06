@@ -14,6 +14,8 @@
  */
 package com.suse.manager.virtualization;
 
+import org.jdom.Element;
+
 /**
  * Describes the target properties of a virtual storage pool
  */
@@ -92,5 +94,28 @@ public class PoolTarget {
      */
     public void setSeclabel(String seclabelIn) {
         seclabel = seclabelIn;
+    }
+
+    /**
+     * Extract the data from the libvirt pool XML target element.
+     *
+     * @param node the target XML element
+     * @return the created target
+     */
+    public static PoolTarget parse(Element node) {
+        PoolTarget result = null;
+        if (node != null) {
+            result = new PoolTarget();
+
+            result.setPath(node.getChildText("path"));
+            Element permissions = node.getChild("permissions");
+            if (permissions != null) {
+                result.setOwner(permissions.getChildText("owner"));
+                result.setGroup(permissions.getChildText("group"));
+                result.setMode(permissions.getChildText("mode"));
+                result.setSeclabel(permissions.getChildText("label"));
+            }
+        }
+        return result;
     }
 }

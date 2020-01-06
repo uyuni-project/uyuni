@@ -14,6 +14,8 @@
  */
 package com.suse.manager.virtualization;
 
+import org.jdom.Element;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -205,6 +207,47 @@ public class PoolSourceAdapter {
         result.put("bus", matcher.group(2));
         result.put("slot", matcher.group(3));
         result.put("function", matcher.group(4));
+        return result;
+    }
+
+    /**
+     * Extract the data from the libvirt pool XML source adapter element.
+     *
+     * @param node the source adapter XML element
+     * @return the created source adapter
+     * @throws IllegalArgumentException if the node is missing required attributes or children
+     */
+    public static PoolSourceAdapter parse(Element node) throws IllegalArgumentException {
+        PoolSourceAdapter result = null;
+        if (node != null) {
+            result = new PoolSourceAdapter();
+            result.setType(node.getAttributeValue("type"));
+            result.setName(node.getAttributeValue("name"));
+            Element parentAddr = node.getChild("parentaddr");
+            if (parentAddr != null) {
+                result.setParentAddressUid(parentAddr.getAttributeValue("unique_id"));
+                Element addr = parentAddr.getChild("address");
+                if (addr == null) {
+                    throw new IllegalArgumentException("Missing source adapter parent address PCI address");
+                }
+                result.setParentAddress(String.format("%s:%s:%s.%s",
+                        addr.getAttributeValue("domain"),
+                        addr.getAttributeValue("bus"),
+                        addr.getAttributeValue("slot"),
+                        addr.getAttributeValue("function")).replaceAll("0x", ""));
+            }
+            result.setParent(node.getAttributeValue("parent"));
+            result.setManaged("yes".equals(node.getAttributeValue("managed")));
+            result.setParentWwnn(node.getAttributeValue("parent_wwnn"));
+            result.setParentWwpn(node.getAttributeValue("parent_wwpn"));
+            result.setParentFabricWwn(node.getAttributeValue("parent_fabric_wwn"));
+            result.setWwnn(node.getAttributeValue("wwnn"));
+            result.setWwpn(node.getAttributeValue("wwpn"));
+
+            if ("fc_host".equals(result.getType()) && (result.getWwnn() == null || result.getWwpn() == null)) {
+                throw new IllegalArgumentException("Missing mandatory wwnn or wwpn in source adapter");
+            }
+        }
         return result;
     }
 }

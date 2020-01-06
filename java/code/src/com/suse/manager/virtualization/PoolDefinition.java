@@ -15,6 +15,11 @@
 package com.suse.manager.virtualization;
 
 import org.apache.log4j.Logger;
+import org.jdom.Document;
+import org.jdom.Element;
+import org.jdom.input.SAXBuilder;
+
+import java.io.StringReader;
 
 /**
  * Class representing the Virtual Storage Pool XML Definition.
@@ -114,5 +119,36 @@ public class PoolDefinition {
      */
     public void setSource(PoolSource sourceIn) {
         source = sourceIn;
+    }
+
+    /**
+     * Create a new storage pool definition from a libvirt XML description.
+     *
+     * @param xmlDef libvirt XML storage pool definition
+     * @return parsed definition or {@code null}
+     */
+    public static PoolDefinition parse(String xmlDef) {
+        PoolDefinition def = null;
+        SAXBuilder builder = new SAXBuilder();
+        builder.setValidation(false);
+
+        try {
+            Document doc = builder.build(new StringReader(xmlDef));
+            def = new PoolDefinition();
+
+            Element poolElement = doc.getRootElement();
+            def.type = poolElement.getAttributeValue("type");
+            def.setName(poolElement.getChildText("name"));
+            def.uuid = poolElement.getChildText("uuid");
+
+            def.setTarget(PoolTarget.parse(poolElement.getChild("target")));
+            def.setSource(PoolSource.parse(poolElement.getChild("source")));
+        }
+        catch (Exception e) {
+            LOG.error("failed to parse libvirt pool XML definition: " + e.getMessage());
+            def = null;
+        }
+
+        return def;
     }
 }
