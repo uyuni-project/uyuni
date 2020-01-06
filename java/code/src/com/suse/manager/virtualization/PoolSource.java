@@ -14,7 +14,10 @@
  */
 package com.suse.manager.virtualization;
 
+import org.jdom.Element;
+
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Represents a virtual pool storage source definition
@@ -141,4 +144,51 @@ public class PoolSource {
     public void setInitiator(String initiatorIn) {
         initiator = initiatorIn;
     }
+
+    /**
+     * Extract the data from the libvirt pool XML source element.
+     *
+     * @param node the source XML element
+     * @return the created source
+     */
+    @SuppressWarnings("unchecked")
+    public static PoolSource parse(Element node) {
+        PoolSource result = null;
+        if (node != null) {
+            result = new PoolSource();
+            Element dir = node.getChild("dir");
+            if (dir != null) {
+                result.setDir(dir.getAttributeValue("path"));
+            }
+            result.setName(node.getChildText("name"));
+            if (dir != null) {
+                result.setDir(dir.getAttributeValue("path"));
+            }
+            Element format = node.getChild("format");
+            if (format != null) {
+                result.setFormat(format.getAttributeValue("type"));
+            }
+            Element initiator = node.getChild("initiator");
+            if (initiator != null) {
+                Element iqn = initiator.getChild("iqn");
+                if (iqn != null) {
+                    result.setInitiator(iqn.getAttributeValue("name"));
+                }
+            }
+            result.setAdapter(PoolSourceAdapter.parse(node.getChild("adapter")));
+            result.setAuth(PoolSourceAuthentication.parse(node.getChild("auth")));
+            result.setDevices(((List<Element>)node.getChildren("device")).stream()
+                .map(device -> PoolSourceDevice.parse(device))
+                .collect(Collectors.toList()));
+            result.setHosts(((List<Element>)node.getChildren("host")).stream()
+                .map(host -> {
+                    String name = host.getAttributeValue("name");
+                    String port = host.getAttributeValue("port");
+                    return String.format("%s%s", name, port != null ? ":" + port : "");
+                })
+                .collect(Collectors.toList()));
+        }
+        return result;
+    }
+
 }

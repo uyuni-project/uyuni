@@ -14,6 +14,8 @@
  */
 package com.suse.manager.virtualization;
 
+import org.jdom.Element;
+
 import java.util.Optional;
 
 /**
@@ -70,5 +72,30 @@ public class PoolSourceDevice {
      */
     public void setSeparator(Optional<Boolean> separatorIn) {
         separator = separatorIn;
+    }
+
+    /**
+     * Extract the data from a libvirt pool XML source device element.
+     *
+     * @param node the source device XML element
+     * @return the created device
+     * @throws IllegalArgumentException if the node is missing required attributes or children
+     */
+    public static PoolSourceDevice parse(Element node) throws IllegalArgumentException {
+        PoolSourceDevice result = null;
+        if (node != null) {
+            String path = node.getAttributeValue("path");
+            String separatorStr = node.getAttributeValue("part_separator");
+            if (path == null) {
+                throw new IllegalArgumentException("Missing mandatory path attribute in device");
+            }
+            Optional<Boolean> separator = Optional.empty();
+            if (separatorStr != null) {
+                separator = Optional.of("yes".equals(separatorStr));
+            }
+
+            result = new PoolSourceDevice(path, separator);
+        }
+        return result;
     }
 }

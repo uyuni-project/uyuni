@@ -14,6 +14,8 @@
  */
 package com.suse.manager.virtualization;
 
+import org.jdom.Element;
+
 /**
  * Class representing the virtual storage source authentication parameters.
  */
@@ -109,5 +111,38 @@ public class PoolSourceAuthentication {
      */
     public void setSecretValue(String secretValueIn) {
         secretValue = secretValueIn;
+    }
+
+    /**
+     * Extract the data from the libvirt pool XML source authentication element.
+     *
+     * @param node the source authentication XML element
+     * @return the created source authentication
+     * @throws IllegalArgumentException if the node is missing required attributes or children
+     */
+    public static PoolSourceAuthentication parse(Element node) throws IllegalArgumentException {
+        PoolSourceAuthentication result = null;
+        if (node != null) {
+            String username = node.getAttributeValue("username");
+            if (username == null) {
+                throw new IllegalArgumentException("Missing required username in pool source authentication");
+            }
+            result = new PoolSourceAuthentication(username, null);
+            result.setType(node.getAttributeValue("type"));
+            Element secret = node.getChild("secret");
+            if (secret != null) {
+                String uuid = secret.getAttributeValue("uuid");
+                String usage = secret.getAttributeValue("usage");
+                if (uuid != null) {
+                    result.setSecretType("uuid");
+                    result.setSecretValue(uuid);
+                }
+                else if (usage != null) {
+                    result.setSecretType("usage");
+                    result.setSecretValue(usage);
+                }
+            }
+        }
+        return result;
     }
 }
