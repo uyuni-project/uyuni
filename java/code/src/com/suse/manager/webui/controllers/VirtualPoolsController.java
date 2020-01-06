@@ -26,7 +26,7 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.system.SystemManager;
 
-import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import com.suse.manager.virtualization.VirtManager;
 import com.suse.manager.webui.errors.NotFoundException;
 import com.suse.manager.webui.utils.gson.VirtualStoragePoolInfoJson;
@@ -95,16 +95,16 @@ public class VirtualPoolsController {
         Server host = SystemManager.lookupByIdAndUser(serverId, user);
         String minionId = host.asMinionServer().orElseThrow(() -> new NotFoundException()).getMinionId();
 
-        Map<String, JsonElement> infos = VirtManager.getPools(minionId);
-        Map<String, Map<String, JsonElement>> volInfos = VirtManager.getVolumes(minionId);
+        Map<String, JsonObject> infos = VirtManager.getPools(minionId);
+        Map<String, Map<String, JsonObject>> volInfos = VirtManager.getVolumes(minionId);
         List<VirtualStoragePoolInfoJson> pools = infos.entrySet().stream().map(entry -> {
-            Map<String, JsonElement> poolVols = volInfos.getOrDefault(entry.getKey(), new HashMap<>());
+            Map<String, JsonObject> poolVols = volInfos.getOrDefault(entry.getKey(), new HashMap<>());
             List<VirtualStorageVolumeInfoJson> volumes = poolVols.entrySet().stream().map(volEntry -> {
-                return new VirtualStorageVolumeInfoJson(volEntry.getKey(), volEntry.getValue().getAsJsonObject());
+                return new VirtualStorageVolumeInfoJson(volEntry.getKey(), volEntry.getValue());
             }).collect(Collectors.toList());
 
             VirtualStoragePoolInfoJson pool = new VirtualStoragePoolInfoJson(entry.getKey(),
-                    entry.getValue().getAsJsonObject(), volumes);
+                    entry.getValue(), volumes);
 
             return pool;
         }).collect(Collectors.toList());

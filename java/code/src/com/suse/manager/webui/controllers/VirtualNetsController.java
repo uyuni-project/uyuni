@@ -22,7 +22,7 @@ import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.system.SystemManager;
 
-import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import com.suse.manager.virtualization.VirtManager;
 import com.suse.manager.webui.errors.NotFoundException;
 import com.suse.manager.webui.utils.gson.VirtualNetworkInfoJson;
@@ -72,10 +72,10 @@ public class VirtualNetsController {
         Server host = SystemManager.lookupByIdAndUser(serverId, user);
         String minionId = host.asMinionServer().orElseThrow(() -> new NotFoundException()).getMinionId();
 
-        Map<String, JsonElement> infos = VirtManager.getNetworks(minionId);
+        Map<String, JsonObject> infos = VirtManager.getNetworks(minionId);
         List<VirtualNetworkInfoJson> networks = infos.entrySet().stream().map(entry -> {
             VirtualNetworkInfoJson net = new VirtualNetworkInfoJson(entry.getKey(),
-                    entry.getValue().getAsJsonObject());
+                    entry.getValue());
 
             return net;
         }).collect(Collectors.toList());
