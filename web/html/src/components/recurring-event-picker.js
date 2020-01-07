@@ -8,15 +8,18 @@ const ReactDOM = require("react-dom");
 const {DateTimePicker} = require("./datetimepicker");
 const {Combobox} = require("./combobox");
 import type {ComboboxItem} from "./combobox";
+const {Toggler} = require("components/toggler");
 const Functions = require("../utils/functions");
 
 type RecurringEventPickerProps = {
     timezone: string,
     scheduleName: string,
+    active: boolean,
     type: string,
     cronTimes: Hash<string, string>,
     customCron: string,
     onScheduleNameChanged: (scheduleName: string) => void,
+    onToggleActive: (active: boolean) => void,
     onTypeChanged: (type: string) => void,
     onCronTimesChanged: (cronTimes: Hash<string, string>) => void,
     onCustomCronChanged: (customCron: string) => void
@@ -24,7 +27,7 @@ type RecurringEventPickerProps = {
 
 type RecurringEventPickerState = {
     scheduleName: string,
-    type: "disabled" | "hourly" | "daily" | "weekly" | "monthly" | "cron",
+    type: "hourly" | "daily" | "weekly" | "monthly" | "cron",
     time: Date,
     minutes: ComboboxItem,
     weekDay: ComboboxItem,
@@ -51,7 +54,8 @@ class RecurringEventPicker extends React.Component<RecurringEventPickerProps, Re
         this.state = {
             time: Functions.Utils.dateWithTimezone(localTime),
             scheduleName: props.scheduleName || "",
-            type: props.type || "disabled",
+            active: props.active || true,
+            type: props.type || "weekly",
             cronTimes: props.cronTimes || {minute: "", hour: "", dayOfMonth: "", dayOfWeek: ""},
             customCron: props.customCron || "",
             minutes: this.minutes[0],
@@ -80,6 +84,7 @@ class RecurringEventPicker extends React.Component<RecurringEventPickerProps, Re
             this.state, {
                 time: time,
                 cron: this.state.customCron,
+                active: this.props.active,
                 minutes: this.minutes[(Number(this.state.cronTimes.minute) || 0)],
                 weekDay: this.weekDays[(Number(this.state.cronTimes.dayOfWeek) || 1) - 1],
                 monthDay: this.monthDays[(Number(this.state.cronTimes.dayOfMonth) || 1) - 1],
@@ -112,9 +117,9 @@ class RecurringEventPicker extends React.Component<RecurringEventPickerProps, Re
         this.setCustomCron("");
     };
 
-    onSelectDisabled = () => {
-        this.props.onCronTimesChanged({minute: "", hour: "", dayOfMonth: "", dayOfWeek: ""});
-        this.selectType("disabled");
+    toggleActive = () => {
+        this.setState({active: !this.state.active});
+        this.props.onToggleActive(!this.state.active);
     };
 
     onSelectHourly = () => {
@@ -321,10 +326,18 @@ class RecurringEventPicker extends React.Component<RecurringEventPickerProps, Re
                     <h3>{t("Select a Schedule")}</h3>
                 </div>
                 <div className="form-horizontal">
+                    {this.props.active !== undefined ?
+                        <div className="form-group">
+                            <div className="col-sm-6 control-label">
+                                <b>{this.state.active ? t("Active") : t("Disabled")}</b>
+                            </div>
+                            <div className="col-sm-3">
+                                <Toggler value={this.state.active} className="btn" handler={this.toggleActive.bind(this)} />
+                            </div>
+                        </div> : null
+                    }
                     <div className="form-group">
                         <div className="col-sm-3 control-label">
-                            <input type="radio" name="date_disabled" value="true" checked={this.state.type === "disabled"} id="schedule-disabled" onChange={this.onSelectDisabled}/>
-                            <label htmlFor="schedule-disabled">{t("Disable Schedule")}</label>
                             <input type="radio" name="minutes" value="false" checked={this.state.type === "hourly"} id="schedule-hourly" onChange={this.onSelectHourly}/>
                             <label htmlFor="schedule-hourly">{t("Hourly:")}</label>
                         </div>

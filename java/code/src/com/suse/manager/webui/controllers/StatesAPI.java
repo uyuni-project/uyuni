@@ -166,7 +166,7 @@ public class StatesAPI {
      * @return the result JSON object
      */
     public static String schedules(Request request, Response response, User user) {
-        List<Map<String, String>> schedules = getRecurringStateApplySchedules(user);
+        List<Map<String, String>> schedules = getRecurringStateApplySchedules(user, true);
         return json(response,
                 ResultJson.success(schedules));
     }
@@ -534,6 +534,7 @@ public class StatesAPI {
         Map<String, String> params = new HashMap<>();
         params.put("user_id", user.getId().toString());
         params.put("minionIds", json.getMinionIds().toString());
+        params.put("isActive", json.isActive() ? "true" : "false");
         params.put("minionNames", json.getMinionNames().toString());
         params.put("targetType", json.getTargetType());
         if (groupName != null) params.put("groupName", groupName);

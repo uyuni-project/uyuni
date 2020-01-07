@@ -83,7 +83,7 @@ class RecurringStatesDetails extends React.Component {
                         { data.isTest === "true" &&
                             <tr>
                                 <td>{t("Test")}:</td>
-                                <td>{t("Is test schedule")}</td>
+                                <td>{t("True")}</td>
                             </tr>
                         }
                         <tr>

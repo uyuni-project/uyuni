@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2015 SUSE LLC
+ * Copyright (c) 2020 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -7,10 +7,6 @@
  * FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
- *
- * Red Hat trademarks are not licensed under GPLv2. No permission is
- * granted to use or replicate Red Hat trademarks that are incorporated
- * in this software or its documentation.
  */
 package com.suse.manager.webui.utils.gson;
 
@@ -31,6 +27,9 @@ public class RecurringStateScheduleJson {
     /** Name of the schedule */
     private String scheduleName;
 
+    /** Schedule is active */
+    private boolean active;
+
     /** The schedule type */
     private String type;
 
@@ -49,7 +48,7 @@ public class RecurringStateScheduleJson {
     private String cron;
 
     /** Is test run */
-    private boolean test = false;
+    private boolean test;
 
     /**
      * @return the minion ids
@@ -65,6 +64,11 @@ public class RecurringStateScheduleJson {
      * @return the name of the schedule
      */
     public String getScheduleName() {return scheduleName;}
+
+    /**
+     * @return whether the schedule is active
+     */
+    public boolean isActive() {return active;}
 
     /**
      * @return the type of the schedule

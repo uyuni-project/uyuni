@@ -93,7 +93,7 @@ class RecurringStatesList extends React.Component {
                 />
             </div>
         ];
-        const scope = this.props.disableCreate ? <th className="text-center">{t("Scope")}</th> : null;
+        const scope = this.props.disableCreate ? <th className="text-center">{t("Target Type")}</th> : null;
 
         return (
             <div>

@@ -48,6 +48,7 @@ class RecurringStatesEdit extends React.Component {
                     minions[i] = {id: minion, name: schedule.minionNames[i]};
                     return minions;}, []),
                 type: schedule.type,
+                active: schedule.isActive === "true",
                 targetType: schedule.targetType,
                 groupName: schedule.groupName,
                 cronTimes: {
@@ -91,6 +92,7 @@ class RecurringStatesEdit extends React.Component {
                 minionIds: this.state.minions.map(minion => minion.id),
                 minionNames: this.state.minions.map(minion => minion.name),
                 scheduleName: this.state.scheduleName,
+                active: true,
                 type: this.state.type,
                 targetType: this.state.targetType,
                 groupName: this.state.groupName,
@@ -127,6 +129,7 @@ class RecurringStatesEdit extends React.Component {
                 minionIds: this.state.minions.map(minion => minion.id),
                 minionNames: this.state.minions.map(minion => minion.name),
                 scheduleName: this.state.scheduleName,
+                active: this.state.active,
                 type: this.state.type,
                 targetType: this.state.targetType,
                 groupName: this.state.groupName,
@@ -164,6 +167,10 @@ class RecurringStatesEdit extends React.Component {
     onScheduleNameChanged = (scheduleName) => {
         this.setState({scheduleName: scheduleName});
     };
+
+    onToggleActive = (active) => {
+        this.setState({active: active});
+    }
 
     onTypeChanged = (type) => {
         this.setState({type: type})
@@ -204,10 +211,12 @@ class RecurringStatesEdit extends React.Component {
                 <InnerPanel title={t("Schedule Recurring Highstate")} icon="spacewalk-icon-salt" buttonsLeft={buttonsLeft} buttons={buttons} >
                     <RecurringEventPicker timezone={timezone}
                                           scheduleName={this.state.scheduleName}
+                                          active={this.state.active}
                                           type={this.state.type}
                                           cronTimes={this.state.cronTimes}
                                           customCron={this.state.customCron}
                                           onScheduleNameChanged={this.onScheduleNameChanged}
+                                          onToggleActive={this.onToggleActive}
                                           onTypeChanged={this.onTypeChanged}
                                           onCronTimesChanged={this.onCronTimesChanged}
                                           onCustomCronChanged={this.onCustomCronChanged} />

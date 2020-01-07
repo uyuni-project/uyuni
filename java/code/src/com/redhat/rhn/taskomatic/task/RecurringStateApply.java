@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2009--2015 Red Hat, Inc.
+ * Copyright (c) 2020 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -7,10 +7,6 @@
  * FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
- *
- * Red Hat trademarks are not licensed under GPLv2. No permission is
- * granted to use or replicate Red Hat trademarks that are incorporated
- * in this software or its documentation.
  */
 package com.redhat.rhn.taskomatic.task;
 
@@ -45,30 +41,29 @@ public class RecurringStateApply extends RhnJavaJob {
         /* TODO: Adapt to execute general states not just highstates*/
 
         JobDataMap data = context.getJobDetail().getJobDataMap();
+        if(Boolean.parseBoolean(data.get("isActive").toString())) {
+            try {
+                User user = Optional.ofNullable(data.get("user_id"))
+                        .map(id -> Long.parseLong(id.toString()))
+                        .map(userId -> UserFactory.lookupById(userId))
+                        .orElse(null);
+                List<Long> minionIds = Arrays.stream(data.get("minionIds").toString()
+                        .replaceAll("([\\[\\] ])", "")
+                        .split(",")).map(Long::parseLong).collect(Collectors.toList());
+                List<Long> sids = MinionServerFactory.lookupByIds(minionIds).map(server -> {
+                    if (!SystemManager.isAvailableToUser(user, server.getId())) {
+                        Spark.halt(HttpStatus.SC_FORBIDDEN);
+                    }
+                    return server.getId();
+                }).collect(Collectors.toList());
+                boolean test = Boolean.parseBoolean((String) data.get("isTest"));
+                Date timeNow = context.getFireTime();
 
-        try {
-            User user = Optional.ofNullable(data.get("user_id"))
-                    .map(id -> Long.parseLong(id.toString()))
-                    .map(userId -> UserFactory.lookupById(userId))
-                    .orElse(null);
+                ActionChainManager.scheduleApplyStates(user, sids, Optional.of(test), timeNow, null);
 
-            List<Long> minionIds = Arrays.stream(data.get("minionIds").toString()
-                    .replaceAll("([\\[\\] ])", "")
-                    .split(",")).map(Long::parseLong).collect(Collectors.toList());
-
-            List<Long> sids = MinionServerFactory.lookupByIds(minionIds).map(server -> {
-                        if (!SystemManager.isAvailableToUser(user, server.getId())) {
-                            Spark.halt(HttpStatus.SC_FORBIDDEN);
-                        }
-                        return server.getId();
-                    }).collect(Collectors.toList());
-            boolean test = Boolean.parseBoolean((String) data.get("isTest"));
-            Date timeNow = context.getFireTime();
-
-            ActionChainManager.scheduleApplyStates(user, sids, Optional.of(test), timeNow, null);
-
-        } catch(Exception e) {
-            throw new JobExecutionException(e.getMessage());
+            } catch (Exception e) {
+                throw new JobExecutionException(e.getMessage());
+            }
         }
     }
 }
