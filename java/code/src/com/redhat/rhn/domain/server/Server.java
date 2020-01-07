@@ -818,19 +818,30 @@ public class Server extends BaseDomainHelper implements Identifiable {
     }
 
     /**
-     * The set of ServerGroup(s) that this Server is a member of
+     * The set of group types of the entitled server groups that this Server is a member of
      * @return Returns the serverGroups.
      */
-    public List<EntitlementServerGroup> getEntitledGroups() {
-        return ServerGroupFactory.listEntitlementGroups(this);
+    public List<ServerGroupType> getEntitledGroupTypes() {
+        return this.groups.stream().filter(g ->g.getGroupType() != null)
+                .map(ServerGroup::getGroupType).collect(Collectors.toList());
     }
 
     /**
-     * The set of ServerGroup(s) that this Server is a member of
+     * The set of entitled ServerGroup(s) that this Server is a member of
+     * @return Returns the serverGroups.
+     */
+    public List<EntitlementServerGroup> getEntitledGroups() {
+        return this.groups.stream().filter(g ->g.getGroupType() != null)
+                .map(s -> (EntitlementServerGroup) s).collect(Collectors.toList());
+    }
+
+    /**
+     * The set of managed ServerGroup(s) that this Server is a member of
      * @return Returns the serverGroups.
      */
     public List<ManagedServerGroup> getManagedGroups() {
-        return ServerGroupFactory.listManagedGroups(this);
+        return this.groups.stream().filter(g -> g.getGroupType() == null)
+                .map(s -> (ManagedServerGroup) s).collect(Collectors.toList());
     }
 
     /**
@@ -1355,16 +1366,13 @@ public class Server extends BaseDomainHelper implements Identifiable {
      * @return true if the server has the given Entitlement.
      */
     public boolean hasEntitlement(Entitlement entitlement) {
-        List<?> grps = getEntitledGroups();
-        for (Iterator<?> itr = grps.iterator(); itr.hasNext();) {
-            ServerGroup g = (ServerGroup) itr.next();
-
+       List<ServerGroupType> grps = getEntitledGroupTypes();
+       for (ServerGroupType serverGroupType : grps) {
             // The server's group type can be null if the user has created some
             // custom server groups.  If so, we won't check it against the
             // given entitlement.
 
-            ServerGroupType groupType = g.getGroupType();
-            if (groupType.getLabel().equals(entitlement.getLabel())) {
+            if (serverGroupType.getLabel().equals(entitlement.getLabel())) {
                 return true;
             }
         }
@@ -1381,11 +1389,11 @@ public class Server extends BaseDomainHelper implements Identifiable {
     public Set<Entitlement> getEntitlements() {
         Set<Entitlement> entitlements = new HashSet<Entitlement>();
 
-        Iterator<EntitlementServerGroup> i = getEntitledGroups().iterator();
-        while (i.hasNext()) {
-            ServerGroup grp = i.next();
+        List<ServerGroupType> serverGroupTypes = getEntitledGroupTypes();
+
+        for (ServerGroupType serverGroupType : serverGroupTypes) {
             entitlements.add(EntitlementManager.getByName(
-                    grp.getGroupType().getLabel()));
+                    serverGroupType.getLabel()));
         }
         return entitlements;
     }
@@ -1395,18 +1403,10 @@ public class Server extends BaseDomainHelper implements Identifiable {
      * @return Entitlement that is the base entitlement for the server
      */
     public Entitlement getBaseEntitlement() {
-        Entitlement baseEntitlement = null;
-        Iterator<EntitlementServerGroup> i = getEntitledGroups().iterator();
+        List<ServerGroupType> serverGroupTypes = getEntitledGroupTypes();
 
-        while (i.hasNext() && baseEntitlement == null) {
-            ServerGroupType sgt = (i.next()).getGroupType();
-
-            if (sgt.isBase()) {
-                baseEntitlement = EntitlementManager.getByName(sgt.getLabel());
-            }
-        }
-
-        return baseEntitlement;
+       return serverGroupTypes.stream().filter(ServerGroupType::isBase).findFirst()
+                .map(sgt -> EntitlementManager.getByName(sgt.getLabel())).orElse(null);
     }
 
     /**
@@ -1440,16 +1440,13 @@ public class Server extends BaseDomainHelper implements Identifiable {
     public Set<Entitlement> getAddOnEntitlements() {
         Set<Entitlement> s = new HashSet<Entitlement>();
 
-        Iterator<?> i = getEntitledGroups().iterator();
+        List<ServerGroupType> groupTypes = getEntitledGroupTypes();
 
-        while (i.hasNext()) {
-            ServerGroupType sgt = ((ServerGroup) i.next()).getGroupType();
-
-            if (!sgt.isBase()) {
-                s.add(EntitlementManager.getByName(sgt.getLabel()));
+        for (ServerGroupType serverGroupType : groupTypes) {
+            if (!serverGroupType.isBase()) {
+                s.add(EntitlementManager.getByName(serverGroupType.getLabel()));
             }
         }
-
         return s;
     }
 
