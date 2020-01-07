@@ -24,13 +24,16 @@ type RecurringEventPickerProps = {
 
 type RecurringEventPickerState = {
     scheduleName: string,
-    type: "disabled" | "daily" | "weekly" | "monthly" | "cron",
+    type: "disabled" | "hourly" | "daily" | "weekly" | "monthly" | "cron",
     time: Date,
+    minutes: ComboboxItem,
     weekDay: ComboboxItem,
     monthDay: ComboboxItem,
 };
 
 class RecurringEventPicker extends React.Component<RecurringEventPickerProps, RecurringEventPickerState> {
+
+    minutes = Array.from(Array(60).keys()).map(id => ({id: Number(id), text: (id).toString()}));
 
     weekDays = [{id: Number(1), text: 'Sunday'},
         {id: Number(2), text: 'Monday'},
@@ -51,8 +54,9 @@ class RecurringEventPicker extends React.Component<RecurringEventPickerProps, Re
             type: props.type || "disabled",
             cronTimes: props.cronTimes || {minute: "", hour: "", dayOfMonth: "", dayOfWeek: ""},
             customCron: props.customCron || "",
+            minutes: this.minutes[0],
             weekDay: this.weekDays[0],
-            monthDay: this.monthDays[0],
+            monthDay: this.monthDays[0]
         };
 
         if (this.props.cronTimes) {
@@ -75,6 +79,8 @@ class RecurringEventPicker extends React.Component<RecurringEventPickerProps, Re
         Object.assign(
             this.state, {
                 time: time,
+                cron: this.state.customCron,
+                minutes: this.minutes[(Number(this.state.cronTimes.minute) || 0)],
                 weekDay: this.weekDays[(Number(this.state.cronTimes.dayOfWeek) || 1) - 1],
                 monthDay: this.monthDays[(Number(this.state.cronTimes.dayOfMonth) || 1) - 1],
                 readOnly: "readonly"
@@ -109,6 +115,47 @@ class RecurringEventPicker extends React.Component<RecurringEventPickerProps, Re
     onSelectDisabled = () => {
         this.props.onCronTimesChanged({minute: "", hour: "", dayOfMonth: "", dayOfWeek: ""});
         this.selectType("disabled");
+    };
+
+    onSelectHourly = () => {
+        this.props.onCronTimesChanged({
+            minute: this.state.minutes.text,
+            hour: "",
+            dayOfMonth: "",
+            dayOfWeek: ""
+        });
+        this.selectType("hourly");
+    };
+
+    onSelectMinutes = (selectedItem: ComboboxItem) => {
+        this.onMinutesChanged({
+            id: selectedItem.id,
+            text: selectedItem.text
+        });
+    };
+
+    onFocusMinutes = () => {
+        this.onMinutesChanged(this.state.minutes);
+    };
+
+    onMinutesChanged = (selectedItem: ComboboxItem) => {
+        let newMinutes: ComboboxItem;
+
+        newMinutes = {
+            id: selectedItem.id,
+            text: selectedItem.text
+        };
+
+        this.setState({
+            minutes: newMinutes
+        });
+        this.props.onCronTimesChanged({
+            minute: selectedItem.id,
+            hour: "",
+            dayOfMonth: "",
+            dayOfWeek: "",
+        });
+        this.selectType("hourly");
     };
 
     onSelectDaily = () => {
@@ -278,6 +325,15 @@ class RecurringEventPicker extends React.Component<RecurringEventPickerProps, Re
                         <div className="col-sm-3 control-label">
                             <input type="radio" name="date_disabled" value="true" checked={this.state.type === "disabled"} id="schedule-disabled" onChange={this.onSelectDisabled}/>
                             <label htmlFor="schedule-disabled">{t("Disable Schedule")}</label>
+                            <input type="radio" name="minutes" value="false" checked={this.state.type === "hourly"} id="schedule-hourly" onChange={this.onSelectHourly}/>
+                            <label htmlFor="schedule-hourly">{t("Hourly:")}</label>
+                        </div>
+                        <div className="col-sm-6">
+                            <Combobox id="minute-picker" name="minutes" selectedId={this.state.minutes.id}
+                                      data={this.minutes}
+                                      onSelect={this.onSelectMinutes}
+                                      onFocus={this.onFocusMinutes}
+                            />
                         </div>
                     </div>
                     <div className="form-group">

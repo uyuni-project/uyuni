@@ -202,6 +202,14 @@ public class StatesAPI {
         return taskoSchedules.stream().map(taskoSchedule -> {
             String date = taskoSchedule.getActiveFrom().toString();
             Map<String, String> schedule = (Map<String, String>) taskoSchedule.getDataMap();
+            if (schedule.get("minute").isEmpty()) {
+                RecurringEventPicker picker = RecurringEventPicker.prepopulatePicker("date", null, null, taskoSchedule.getCronExpr());
+                schedule.put("minute", picker.getMinute());
+                schedule.put("hour", picker.getHour());
+                schedule.put("dayOfMonth", picker.getDayOfMonth());
+                schedule.put("dayOfWeek", picker.getDayOfWeek());
+                schedule.put("type", picker.getStatus());
+            }
             schedule.put("scheduleId", taskoSchedule.getId().toString());
             schedule.put("scheduleName", taskoSchedule.getJobLabel());
             schedule.put("createdAt", date.substring(0, date.indexOf(".")));
@@ -532,7 +540,7 @@ public class StatesAPI {
         if (errors.isEmpty()) {
             try {
                 if (cron.isEmpty()) {
-                    RecurringEventPicker picker = RecurringEventPicker.prepopulatePicker("date", type, cronTimes);
+                    RecurringEventPicker picker = RecurringEventPicker.prepopulatePicker("date", type, cronTimes, null);
                     cron = picker.getCronEntry();
                 }
                 TaskomaticApi tapi = new TaskomaticApi();
