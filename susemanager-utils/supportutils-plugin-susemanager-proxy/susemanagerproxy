@@ -68,7 +68,7 @@ perl-NOCpulse-Utils
 release-notes-susemanager-proxy
 rhn-custom-info
 rhncfg
-rhncfg-actions
+mgr-cfg-actions
 rhncfg-client
 rhncfg-management
 rhnmd
