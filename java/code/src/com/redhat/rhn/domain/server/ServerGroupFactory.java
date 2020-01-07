@@ -40,6 +40,7 @@ public class ServerGroupFactory extends HibernateFactory {
     private static final ServerGroupFactory SINGLETON = new ServerGroupFactory();
     private static Logger log = Logger.getLogger(ServerGroupFactory.class);
 
+    @Override
     protected Logger getLogger() {
         return log;
     }
@@ -245,27 +246,6 @@ public class ServerGroupFactory extends HibernateFactory {
            return 0L;
         }
         return members.longValue();
-    }
-
-    /**
-     * Returns the list of Entitlement ServerGroups  associated to a server.
-     * @param s the server to find the server groups of
-     * @return list of EntitlementServerGroup objects that are associated to
-     *                      the server.
-     */
-    public static List<EntitlementServerGroup> listEntitlementGroups(Server s) {
-        return listServerGroups(s, "ServerGroup.lookupEntitlementGroupsByServer");
-    }
-
-    /**
-     * Returns the list of Managed ServerGroups  associated to a server.
-     * @param s the server to find the server groups of
-     * @return list of ManagedServerGroup objects that are associated to
-     *                      the server.
-     */
-    public static List<ManagedServerGroup> listManagedGroups(Server s) {
-        return listServerGroups(s,
-                "ServerGroup.lookupManagedGroupsByServer");
     }
 
     private static List listServerGroups(Server s, String queryName) {
