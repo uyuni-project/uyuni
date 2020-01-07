@@ -132,21 +132,6 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
                    ]]>
     </sql-query>
 
-
-        <query name="ServerGroup.lookupEntitlementGroupsByServer">
-        <![CDATA[select sg
-                                from com.redhat.rhn.domain.server.Server as s
-                                        inner join s.groups as sg
-                                where s.id = :id  and (sg.groupType is not null)]]>
-    </query>
-
-        <query name="ServerGroup.lookupManagedGroupsByServer">
-        <![CDATA[select sg
-                                from com.redhat.rhn.domain.server.Server as s
-                                        inner join s.groups as sg
-                                where s.id = :id  and (sg.groupType is null)]]>
-    </query>
-
     <query name="ServerGroup.lookupEntitlementGroupsByOrg">
         <![CDATA[from com.redhat.rhn.domain.server.EntitlementServerGroup as s where
                                  s.org = :org and (s.groupType is not null)]]>

@@ -131,8 +131,8 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
 
     public void testServerGroupMembers() throws Exception {
         Server s = createTestServer(user);
-        assertNotNull(s.getEntitledGroups());
-        assertTrue(s.getEntitledGroups().size() > 0);
+        assertNotNull(s.getEntitledGroupTypes());
+        assertTrue(s.getEntitledGroupTypes().size() > 0);
     }
 
     public void aTestChannels() throws Exception {
@@ -252,7 +252,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         manager.addServers(sg1, servers, user);
 
         server = reload(server);
-        assertTrue(server.getEntitledGroups().size() == 1);
+        assertTrue(server.getEntitledGroupTypes().size() == 1);
         assertTrue(server.getManagedGroups().size() == 1);
 
 
@@ -585,7 +585,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         HibernateFactory.getSession().flush();
         HibernateFactory.getSession().evict(newS);
         newS = ServerFactory.lookupByIdAndOrg(id, owner.getOrg());
-        assertNotNull(newS.getEntitledGroups());
+        assertNotNull(newS.getEntitledGroupTypes());
         assertNotNull(newS.getManagedGroups());
         assertNotNull(newS.getServerInfo());
         assertNotNull(newS.getServerInfo().getCheckinCounter());

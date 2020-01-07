@@ -15,7 +15,6 @@
 package com.redhat.rhn.domain.token;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -36,7 +35,7 @@ import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerConstants;
 import com.redhat.rhn.domain.server.ServerFactory;
-import com.redhat.rhn.domain.server.ServerGroup;
+import com.redhat.rhn.domain.server.ServerGroupType;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.struts.Scrubber;
 
@@ -151,11 +150,8 @@ public class ActivationKeyFactory extends HibernateFactory {
         // Set the entitlements equal to what the server has by default
         // If the server has the bootstrap entitlement use enterprise entitlement
         if (server != null && !server.isBootstrap()) {
-            List serverEntitlements = server.getEntitledGroups();
-            for (Iterator itr = serverEntitlements.iterator(); itr.hasNext();) {
-                ServerGroup group = (ServerGroup) itr.next();
-                newKey.addEntitlement(group.getGroupType());
-            }
+            List<ServerGroupType> serverEntitlements = server.getEntitledGroupTypes();
+            serverEntitlements.stream().forEach(gt -> newKey.addEntitlement(gt));
         }
         else {
             newKey.addEntitlement(
