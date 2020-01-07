@@ -160,26 +160,37 @@ public class SystemManager extends BaseManager {
     }
 
     /**
+     * Takes a snapshot for servers given its server Ids by calling the snapshot_server stored proc.
+     * @param serverIds The server Ids of the servers to snapshot
+     * @param reason The reason for the snapshotting.
+     */
+    public static void snapshotServers(List<Long> serverIds, String reason) {
+        if (!Config.get().getBoolean(ConfigDefaults.TAKE_SNAPSHOTS)) {
+            return;
+        }
+        List<Long> snapshotteableServerIds = serversWithFeature(serverIds, "ftr_snapshotting");
+
+        // If the server is null or doesn't have the snapshotting feature, don't bother.
+        if (!snapshotteableServerIds.isEmpty()) {
+            for (Long serverId : snapshotteableServerIds) {
+                CallableMode m = ModeFactory.getCallableMode("System_queries", "snapshot_server");
+                Map<String, Object> in = new HashMap<String, Object>();
+                in.put("server_id", serverId);
+                in.put("reason", reason);
+                m.execute(in, new HashMap<String, Integer>());
+            }
+        }
+    }
+
+    /**
      * Takes a snapshot for a server by calling the snapshot_server stored proc.
      * @param server The server to snapshot
      * @param reason The reason for the snapshotting.
      */
     public static void snapshotServer(Server server, String reason) {
-
-        if (!Config.get().getBoolean(ConfigDefaults.TAKE_SNAPSHOTS)) {
-            return;
+        if (server != null) {
+            snapshotServers(Arrays.asList(server.getId()), reason);
         }
-
-        // If the server is null or doesn't have the snapshotting feature, don't bother.
-        if (server == null || !serverHasFeature(server.getId(), "ftr_snapshotting")) {
-            return;
-        }
-
-        CallableMode m = ModeFactory.getCallableMode("System_queries", "snapshot_server");
-        Map<String, Object> in = new HashMap<String, Object>();
-        in.put("server_id", server.getId());
-        in.put("reason", reason);
-        m.execute(in, new HashMap<String, Integer>());
     }
 
     /**
@@ -671,16 +682,30 @@ public class SystemManager extends BaseManager {
     }
 
     /**
+     * Adds servers to a server group
+     * @param servers The servers to add
+     * @param serverGroup The group to add the server to
+     */
+    public static void addServersToServerGroup(Collection<Server> servers, ServerGroup serverGroup) {
+        List<Long> serverIds = servers.stream().map(Server::getId).collect(Collectors.toList());
+
+        ServerFactory.addServersToGroup(serverIds, serverGroup);
+        snapshotServers(serverIds, "Group membership alteration");
+
+        if (FormulaFactory.hasMonitoringDataEnabled(serverGroup)) {
+            for (Server server : servers) {
+                FormulaFactory.grantMonitoringEntitlement(server);
+            }
+        }
+    }
+
+    /**
      * Adds a server to a server group
      * @param server The server to add
      * @param serverGroup The group to add the server to
      */
     public static void addServerToServerGroup(Server server, ServerGroup serverGroup) {
-        ServerFactory.addServerToGroup(server, serverGroup);
-        snapshotServer(server, "Group membership alteration");
-        if (FormulaFactory.hasMonitoringDataEnabled(serverGroup)) {
-            FormulaFactory.grantMonitoringEntitlement(server);
-        }
+        addServersToServerGroup(Arrays.asList(server), serverGroup);
     }
 
     /**
@@ -1548,6 +1573,24 @@ public class SystemManager extends BaseManager {
     }
 
     /**
+     * Used to test if a list of servers have a specific feature.
+     * @param sids list of Server ids
+     * @param feat Feature to look for
+     * @return the list of server ids which have the specified feature
+     */
+    @SuppressWarnings("unchecked")
+    public static List<Long> serversWithFeature(List<Long> sids, String feat) {
+        SelectMode m = ModeFactory.getMode("General_queries", "systems_with_feature");
+
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("feature", feat);
+
+        DataResult<Map<String, Long>> result = m.execute(params, sids);
+        return result.stream().map(Map::values).flatMap(Collection::stream).collect(Collectors.toList());
+    }
+
+
+    /**
      * Used to test if the server has a specific feature.
      * We should almost always check for features with serverHasFeature instead.
      * @param sid Server id
@@ -1555,14 +1598,7 @@ public class SystemManager extends BaseManager {
      * @return true if the server has the specified feature
      */
     public static boolean serverHasFeature(Long sid, String feat) {
-        SelectMode m = ModeFactory.getMode("General_queries", "system_has_feature");
-
-        Map<String, Object> params = new HashMap<String, Object>();
-        params.put("sid", sid);
-        params.put("feature", feat);
-
-        DataResult dr = makeDataResult(params, null, null, m);
-        return !dr.isEmpty();
+        return !serversWithFeature(Arrays.asList(sid), feat).isEmpty();
     }
 
     /**

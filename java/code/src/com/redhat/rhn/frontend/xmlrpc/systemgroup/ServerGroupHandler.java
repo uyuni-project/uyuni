@@ -23,6 +23,7 @@ import com.redhat.rhn.common.db.WrappedSQLException;
 import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.ManagedServerGroup;
+import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ServerGroup;
 import com.redhat.rhn.domain.server.ServerGroupFactory;
 import com.redhat.rhn.domain.user.User;
@@ -40,9 +41,8 @@ import com.redhat.rhn.manager.system.SystemManager;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * ServerGroupHandler
@@ -191,16 +191,13 @@ public class ServerGroupHandler extends BaseHandler {
      * @xmlrpc.returntype #return_int_success()
      */
     public int addOrRemoveSystems(User loggedInUser, String systemGroupName,
-            List serverIds, Boolean add) {
+            List<Integer> serverIds, Boolean add) {
+
         ServerGroupManager manager = ServerGroupManager.getInstance();
         ManagedServerGroup group = manager.lookup(systemGroupName, loggedInUser);
 
-        List servers = new LinkedList();
-        XmlRpcSystemHelper helper = XmlRpcSystemHelper.getInstance();
-        for (Iterator itr = serverIds.iterator(); itr.hasNext();) {
-            Number sid = (Number) itr.next();
-            servers.add(helper.lookupServer(loggedInUser, sid));
-        }
+        List servers = ServerFactory.lookupByIds(
+                serverIds.stream().map(Integer::longValue).collect(Collectors.toList()));
         if (add.booleanValue()) {
             manager.addServers(group, servers, loggedInUser);
         }
