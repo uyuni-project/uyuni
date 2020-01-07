@@ -21,10 +21,18 @@ import static com.suse.manager.webui.utils.SparkApplicationHelper.withUserPrefer
 import static spark.Spark.get;
 
 import com.redhat.rhn.domain.org.OrgFactory;
-import com.redhat.rhn.domain.server.*;
+import com.redhat.rhn.domain.server.MinionServer;
+import com.redhat.rhn.domain.server.MinionServerFactory;
+import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.domain.server.ServerFactory;
+import com.redhat.rhn.domain.server.ServerGroup;
+import com.redhat.rhn.domain.server.ServerGroupFactory;
+import com.redhat.rhn.domain.server.ServerPath;
 import com.redhat.rhn.domain.token.ActivationKey;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.dto.SystemOverview;
 import com.redhat.rhn.frontend.struts.ActionChainHelper;
+import com.redhat.rhn.frontend.xmlrpc.system.SystemHandler;
 import com.redhat.rhn.manager.ssm.SsmManager;
 import com.redhat.rhn.manager.token.ActivationKeyManager;
 
@@ -33,10 +41,12 @@ import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.utils.gson.SimpleMinionJson;
 import com.suse.utils.Json;
 
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import spark.ModelAndView;
@@ -180,6 +190,30 @@ public class MinionController {
     }
 
     /**
+     * Handler for the org recurring-states page.
+     *
+     * @param request the request object
+     * @param response the response object
+     * @param user the current user
+     * @return the ModelAndView object to render the page
+     */
+    public static ModelAndView orgRecurringStates(Request request, Response response, User user) {
+        Set<Long> systems = Arrays.stream(new SystemHandler().listSystems(user))
+                .map(system -> ((SystemOverview) system).getId()).
+                        collect(Collectors.toSet());
+        List<Server> servers = ServerFactory.lookupByIdsAndOrg(systems, user.getOrg());
+        List<SimpleMinionJson> minions = MinionServerUtils.filterSaltMinions(servers)
+                .map(SimpleMinionJson::fromMinionServer)
+                .collect(Collectors.toList());
+
+        Map<String, Object> data = new HashMap<>();
+        data.put("minions", Json.GSON.toJson(minions));
+        data.put("orgId", user.getOrg().getId());
+        data.put("orgName", user.getOrg().getName());
+        return new ModelAndView(data, "templates/org/recurring-states.jade");
+    }
+
+    /**
      * Handler for the org states page.
      *
      * @param request the request object
@@ -192,6 +226,31 @@ public class MinionController {
         data.put("orgId", orgId);
         data.put("orgName", OrgFactory.lookupById(Long.valueOf(orgId)).getName());
         return new ModelAndView(data, "templates/org/custom.jade");
+    }
+
+    /**
+     * Handler for the org recurring-states page.
+     *
+     * @param request the request object
+     * @param response the response object
+     * @param user the current user
+     * @return the ModelAndView object to render the page
+     */
+    public static ModelAndView yourOrgRecurringStates(Request request, Response response,
+                                                     User user) {
+        Set<Long> systems = Arrays.stream(new SystemHandler().listSystems(user))
+                .map(system -> ((SystemOverview) system).getId()).
+                collect(Collectors.toSet());
+        List<Server> servers = ServerFactory.lookupByIdsAndOrg(systems, user.getOrg());
+        List<SimpleMinionJson> minions = MinionServerUtils.filterSaltMinions(servers)
+                .map(SimpleMinionJson::fromMinionServer)
+                .collect(Collectors.toList());
+
+        Map<String, Object> data = new HashMap<>();
+        data.put("minions", Json.GSON.toJson(minions));
+        data.put("orgId", user.getOrg().getId());
+        data.put("orgName", user.getOrg().getName());
+        return new ModelAndView(data, "templates/yourorg/recurring-states.jade");
     }
 
     /**

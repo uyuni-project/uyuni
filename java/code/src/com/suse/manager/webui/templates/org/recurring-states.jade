@@ -1,0 +1,23 @@
+.spacewalk-toolbar-h1
+  .spacewalk-toolbar
+    a(href="/rhn/admin/multiorg/DeleteOrg.do?oid=#{orgId}")
+        i.fa.fa-trash-o(title='Delete System')
+        | #{l.t("delete organization")}
+  h1
+    i.fa.fa-group
+    | #{" " + orgName + " "}
+
+!{h.renderNavigationMenu(request, "/WEB-INF/nav/org_tabs.xml")}
+#recurring-states
+
+script(type='text/javascript').
+    window.csrfToken = "#{csrf_token}";
+    window.orgId = "#{orgId}";
+    window.orgName = "#{orgName}";
+    window.minions = !{minions};
+    window.timezone = "#{h.renderTimezone()}";
+    window.localTime = "#{h.renderLocalTime()}";
+
+script(type='text/javascript').
+    spaImportReactPage('state/recurring-states')
+        .then(function(module) { module.renderer('recurring-states') });
