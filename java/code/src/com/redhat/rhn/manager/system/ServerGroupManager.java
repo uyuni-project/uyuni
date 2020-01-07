@@ -31,6 +31,9 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.user.UserFactory;
 import com.suse.manager.webui.services.SaltStateGeneratorService;
 
+import org.apache.log4j.Logger;
+
+import java.io.IOException;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -47,6 +50,9 @@ import java.util.stream.Collectors;
 public class ServerGroupManager {
 
     private static final ServerGroupManager MANAGER = new ServerGroupManager();
+
+    /** Logger */
+    private static final Logger LOG = Logger.getLogger(ServerGroupManager.class);
 
     /**
      * Singleton Instance to get manager object
@@ -334,12 +340,22 @@ public class ServerGroupManager {
     public void addServers(ServerGroup sg, Collection<Server> servers, User loggedInUser) {
         validateAccessCredentials(loggedInUser, sg, sg.getName());
         validateAdminCredentials(loggedInUser);
-        for (Server s : servers) {
-            SystemManager.addServerToServerGroup(s, sg);
-            s.asMinionServer().ifPresent(
-                    SaltStateGeneratorService.INSTANCE::generatePillar);
-        }
 
+        SystemManager.addServersToServerGroup(servers, sg);
+        updatePillarAfterGroupUpdateForServers(servers);
+    }
+
+    private void updatePillarAfterGroupUpdateForServers(Collection<Server> servers) {
+        try {
+            SaltStateGeneratorService.INSTANCE.createPillarDirectory();
+            for (Server s : servers) {
+                s.asMinionServer().ifPresent(
+                        SaltStateGeneratorService.INSTANCE::updatePillarAfterGroupChange);
+            }
+        }
+        catch (IOException e) {
+            LOG.error(e.getMessage(), e);
+        }
     }
 
     /**
