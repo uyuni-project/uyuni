@@ -1,3 +1,4 @@
+- handle not found re-activation key (bsc#1159012)
 - write a list of formulas sorted by execution order (bsc#1083326)
 - change product_tree tag to reflect new product 4.1 and Beta phase
 - Use 'changes' field if 'pchanges' field doesn't exist (bsc#1159202)
