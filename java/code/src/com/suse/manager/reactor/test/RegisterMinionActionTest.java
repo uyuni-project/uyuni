@@ -1594,7 +1594,49 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                     // State assignment file check
                     Path slsPath = tmpSaltRoot.resolve("custom").resolve("custom_" + minion.getMachineId() + ".sls");
                     assertTrue(slsPath.toFile().exists());
-                }, DEFAULT_CONTACT_METHOD);
+                },
+                cleanup -> {},
+                DEFAULT_CONTACT_METHOD);
+    }
+
+    public void testMinionWithUsedReActivationKey() throws Exception {
+        Channel assignedChannel = ChannelFactoryTest.createBaseChannel(user, "channel-x86_64");
+        Channel assignedChildChannel = ChannelFactoryTest.createTestChannel(user, "channel-x86_64");
+        assignedChildChannel.setParentChannel(assignedChannel);
+
+        ServerFactory.findByMachineId(MACHINE_ID).ifPresent(ServerFactory::delete);
+        MinionServer oldMinion = MinionServerFactoryTest.createTestMinionServer(user);
+        oldMinion.setMachineId(MACHINE_ID);
+        oldMinion.setMinionId(MINION_ID);
+        oldMinion.setHostname(MINION_ID);
+        oldMinion.setName(MINION_ID);
+        oldMinion.getChannels().clear();
+        oldMinion.addChannel(assignedChannel);
+        oldMinion.addChannel(assignedChildChannel);
+        ServerFactory.save(oldMinion);
+
+        executeTest(
+                (saltServiceMock, key) -> new Expectations() {{
+                    allowing(saltServiceMock).getMasterHostname(MINION_ID);
+                    will(returnValue(Optional.of(MINION_ID)));
+                    allowing(saltServiceMock).getMachineId(MINION_ID);
+                    will(returnValue(Optional.of(MACHINE_ID)));
+                    allowing(saltServiceMock).syncGrains(with(any(MinionList.class)));
+                    allowing(saltServiceMock).syncModules(with(any(MinionList.class)));
+                    allowing(saltServiceMock).getGrains(MINION_ID);
+                    will(returnValue(getGrains(MINION_ID, null, null, key)));
+                }},
+                (contactMethod) -> {
+                    return "1-re-already-used";
+                },
+                (optMinion, machineId, key) -> {
+                    assertTrue(optMinion.isPresent());
+                    MinionServer minion = optMinion.get();
+                    assertEquals(MINION_ID, minion.getName());
+                    assertNotNull(minion.getBaseChannel());
+                },
+                cleanup -> {},
+                DEFAULT_CONTACT_METHOD);
     }
 
     private Channel setupBaseAndRequiredChannels(ChannelFamily channelFamily,
