@@ -196,19 +196,27 @@ public class StatesAPI {
      * @param user the authorized user
      * @return the list of Recurring State Apply Schedules
      */
-    private static List<Map<String, String>> getRecurringStateApplySchedules(User user) {
+    private static List<Map<String, String>> getRecurringStateApplySchedules(User user, boolean isSimple) {
         List<TaskoSchedule> taskoSchedules = new TaskomaticApi().findActiveSchedulesByBunch(user,
                 "recurring-state-apply-bunch");
         return taskoSchedules.stream().map(taskoSchedule -> {
             String date = taskoSchedule.getActiveFrom().toString();
-            Map<String, String> schedule = (Map<String, String>) taskoSchedule.getDataMap();
-            if (schedule.get("minute").isEmpty()) {
-                RecurringEventPicker picker = RecurringEventPicker.prepopulatePicker("date", null, null, taskoSchedule.getCronExpr());
-                schedule.put("minute", picker.getMinute());
-                schedule.put("hour", picker.getHour());
-                schedule.put("dayOfMonth", picker.getDayOfMonth());
-                schedule.put("dayOfWeek", picker.getDayOfWeek());
-                schedule.put("type", picker.getStatus());
+            Map<String, String> schedule = new HashMap<>();
+            if (!isSimple) {
+                schedule = (Map<String, String>) taskoSchedule.getDataMap();
+                if (schedule.get("minute").isEmpty()) {
+                    RecurringEventPicker picker = RecurringEventPicker.prepopulatePicker("date", null, null, taskoSchedule.getCronExpr());
+                    schedule.put("minute", picker.getMinute());
+                    schedule.put("hour", picker.getHour());
+                    schedule.put("dayOfMonth", picker.getDayOfMonth());
+                    schedule.put("dayOfWeek", picker.getDayOfWeek());
+                    schedule.put("type", picker.getStatus());
+                }
+            }
+            else {
+                Map<String, String> data = (Map<String, String>) taskoSchedule.getDataMap();
+                schedule.put("targetType", data.get("targetType"));
+                schedule.put("minionIds", data.get("minionIds"));
             }
             schedule.put("scheduleId", taskoSchedule.getId().toString());
             schedule.put("scheduleName", taskoSchedule.getJobLabel());
@@ -226,7 +234,7 @@ public class StatesAPI {
      * @return the result schedule object
      */
     private static Map<String, String> getSingleSchedule(String scheduleId, User user) {
-        List<Map<String, String>> schedules = getRecurringStateApplySchedules(user);
+        List<Map<String, String>> schedules = getRecurringStateApplySchedules(user, false);
         for (Map<String, String> schedule : schedules) {
             if (schedule.get("scheduleId").equals(scheduleId)) {
                 return schedule;
