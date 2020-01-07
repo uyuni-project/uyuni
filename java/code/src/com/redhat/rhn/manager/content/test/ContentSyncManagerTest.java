@@ -1282,6 +1282,41 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
     }
 
     /**
+     * Tests {@link ContentSyncManager#isRefreshNeeded} when fromdir is configured
+     * @throws Exception if anything goes wrong
+     */
+    public void testIsRefreshNeededFromDir() throws Exception {
+        SUSEProductTestUtils.createVendorSUSEProductEnvironment(user, "/com/redhat/rhn/manager/content/test/smallBase", true, true);
+        HibernateFactory.getSession().flush();
+        HibernateFactory.getSession().clear();
+
+        // SLES12 GA
+        SUSEProductTestUtils.addChannelsForProduct(SUSEProductFactory.lookupByProductId(1117));
+        HibernateFactory.getSession().flush();
+        HibernateFactory.getSession().clear();
+
+        ContentSyncManager csm = new ContentSyncManager() {
+            @Override
+            protected boolean accessibleUrl(String url) {
+                return true;
+            }
+
+            @Override
+            protected boolean accessibleUrl(String url, String user, String password) {
+                return true;
+            }
+        };
+
+        assertFalse(csm.isRefreshNeeded(null));
+
+        // different mirror has no effect as you cannot overwrite fromdir option
+        assertFalse(csm.isRefreshNeeded("https://mirror.example.com/"));
+
+        ManagerInfoFactory.setLastMgrSyncRefresh(System.currentTimeMillis() - (48 * 60 * 60 * 1000));
+        assertTrue(csm.isRefreshNeeded(null));
+    }
+
+    /**
      * Test for {@link ContentSyncManager#addChannel}.
      * @throws Exception if anything goes wrong
      */
