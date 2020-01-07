@@ -14,6 +14,12 @@
  */
 package com.suse.manager.webui.utils;
 
+import org.yaml.snakeyaml.Yaml;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -39,5 +45,33 @@ public class SaltPillar implements SaltState {
      */
     public void add(String name, Object value) {
         data.put(name, value);
+    }
+
+    /**
+     * Adds all entries from the map passed as argument to the pillar
+     * @param map mappings to be stored in the pillar
+     */
+    public void addAll(Map<String, Object> map) {
+        data.putAll(map);
+    }
+
+    /**
+     * Loads the pillar entries from a file in the disk
+     * @param file the file containing the pillar entries
+     * @throws FileNotFoundException if the file does not exist
+     */
+    @SuppressWarnings("unchecked")
+    public void load(File file) throws FileNotFoundException {
+        InputStream reader =  new FileInputStream(file);
+        Yaml yaml = new Yaml();
+        Map<String, Object> pillarData = yaml.loadAs(reader,  Map.class);
+
+        if (pillarData != null && !pillarData.isEmpty()) {
+            this.addAll(pillarData);
+        }
+    }
+
+    public boolean isEmpty() {
+        return this.data == null || this.data.isEmpty();
     }
 }

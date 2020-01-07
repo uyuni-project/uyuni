@@ -17,8 +17,10 @@ package com.redhat.rhn.domain.server;
 import com.redhat.rhn.common.client.ClientCertificate;
 import com.redhat.rhn.common.client.InvalidCertificateException;
 import com.redhat.rhn.common.db.datasource.CallableMode;
+import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.SelectMode;
+import com.redhat.rhn.common.db.datasource.WriteMode;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.validator.ValidatorError;
 import com.redhat.rhn.domain.channel.ChannelArch;
@@ -43,8 +45,8 @@ import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.criterion.Subqueries;
 
-import java.sql.Types;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
@@ -280,6 +282,36 @@ public class ServerFactory extends HibernateFactory {
         return paths;
     }
 
+    /**
+     * Adds Servers to a group given its server Ids.
+     * @param serverIds The server Ids of the servers to add
+     * @param serverGroupIn The group to add the servers to
+     */
+    public static void addServersToGroup(List<Long> serverIds, ServerGroup serverGroupIn) {
+        boolean needsToUpdateServerPerms = insertServersToGroup(serverIds, serverGroupIn.getId());
+
+        if (needsToUpdateServerPerms && serverGroupIn.getGroupType() == null) {
+            updatePermissionsForServerGroup(serverGroupIn.getId());
+        }
+    }
+
+    private static boolean insertServersToGroup(List<Long> serverIds, Long sgid) {
+        WriteMode m = ModeFactory.getWriteMode("System_queries", "add_servers_to_server_group");
+
+        Map params = new HashMap();
+        params.put("sgid", sgid);
+
+        return m.executeUpdate(params, serverIds) > 0;
+    }
+
+    private static void updatePermissionsForServerGroup(Long sgid) {
+        CallableMode m = ModeFactory.getCallableMode("System_queries",
+                "update_permissions_for_server_group");
+        Map params = new HashMap();
+        params.put("sgid", sgid);
+
+        m.execute(params, new HashMap());
+    }
 
     /**
      * Adds a Server to a group.
@@ -288,20 +320,7 @@ public class ServerFactory extends HibernateFactory {
      */
     public static void addServerToGroup(Server serverIn,
             ServerGroup serverGroupIn) {
-        Long sid = serverIn.getId();
-        Long sgid = serverGroupIn.getId();
-
-        CallableMode m = ModeFactory.getCallableMode("System_queries",
-                "insert_into_servergroup_maybe");
-        Map inParams = new HashMap();
-        Map outParams = new HashMap();
-
-        inParams.put("server_id", sid);
-        inParams.put("server_group_id", sgid);
-        // Outparam
-        outParams.put("retval", Types.NUMERIC);
-
-        m.execute(inParams, outParams);
+        addServersToGroup(Arrays.asList(serverIn.getId()), serverGroupIn);
     }
 
     /**
