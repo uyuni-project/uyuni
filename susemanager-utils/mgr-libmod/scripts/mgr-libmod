@@ -1,4 +1,8 @@
 #!/usr/bin/env python
+"""
+Main CLI app.
+"""
+import mgrlibmod.mlapp
 
-import mgrlibmod
-
+if __name__ == "__main__":
+    mgrlibmod.mlapp.main()
