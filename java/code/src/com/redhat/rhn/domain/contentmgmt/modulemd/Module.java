@@ -15,6 +15,8 @@
 
 package com.redhat.rhn.domain.contentmgmt.modulemd;
 
+import java.util.Objects;
+
 /**
  * Represents a module in a modular repository
  */
@@ -39,5 +41,22 @@ public class Module {
 
     public String getStream() {
         return stream;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Module module = (Module) o;
+        return name.equals(module.name) && Objects.equals(stream, module.stream);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, stream);
     }
 }

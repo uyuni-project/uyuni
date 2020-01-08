@@ -948,4 +948,18 @@ public class ContentManager {
             throw new PermissionException(ORG_ADMIN);
         }
     }
+
+    /**
+     * @return the libmodulemd API instance
+     */
+    public ModulemdApi getModulemdApi() {
+        return modulemdApi;
+    }
+
+    /**
+     * @param modulemdApiIn the libmodulemd API instance
+     */
+    public void setModulemdApi(ModulemdApi modulemdApiIn) {
+        this.modulemdApi = modulemdApiIn;
+    }
 }

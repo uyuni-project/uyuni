@@ -46,8 +46,8 @@ import com.redhat.rhn.frontend.xmlrpc.InvalidChannelLabelException;
 import com.redhat.rhn.manager.EntityExistsException;
 import com.redhat.rhn.manager.EntityNotExistsException;
 import com.redhat.rhn.manager.contentmgmt.ContentManager;
-import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.ChannelTestUtils;
+import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
@@ -61,8 +61,8 @@ import static com.redhat.rhn.domain.contentmgmt.ProjectSource.State.BUILT;
 import static com.redhat.rhn.domain.contentmgmt.ProjectSource.State.DETACHED;
 import static com.redhat.rhn.domain.contentmgmt.ProjectSource.Type.SW_CHANNEL;
 import static com.redhat.rhn.domain.role.RoleFactory.ORG_ADMIN;
+import static com.redhat.rhn.testing.RhnBaseTestCase.assertContains;
 import static java.util.Arrays.asList;
-import static java.util.Arrays.spliterator;
 import static java.util.Collections.singletonList;
 import static java.util.Optional.empty;
 import static java.util.Optional.of;
@@ -71,7 +71,7 @@ import static java.util.stream.Collectors.toSet;
 /**
  * Tests for ContentManager
  */
-public class ContentManagerTest extends BaseTestCaseWithUser {
+public class ContentManagerTest extends JMockBaseTestCaseWithUser {
 
     private ContentManager contentManager;
 
@@ -79,6 +79,7 @@ public class ContentManagerTest extends BaseTestCaseWithUser {
     public void setUp() throws Exception {
         super.setUp();
         contentManager = new ContentManager();
+        contentManager.setModulemdApi(new MockModulemdApi());
         user.addPermanentRole(ORG_ADMIN);
     }
 
@@ -900,6 +901,28 @@ public class ContentManagerTest extends BaseTestCaseWithUser {
     }
 
     /**
+     * Test building project having modular sources
+     */
+    public void testBuildProjectModularSources() throws Exception {
+        Channel channel = MockModulemdApi.createModularTestChannel(user);
+
+        ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());
+        ContentProjectFactory.save(cp);
+        ContentEnvironment env = contentManager.createEnvironment(cp.getLabel(), empty(), "fst", "first env", "desc", false, user);
+        assertEquals(Long.valueOf(0), env.getVersion());
+
+        contentManager.attachSource("cplabel", SW_CHANNEL, channel.getLabel(), empty(), user);
+        assertEquals(channel, cp.lookupSwSourceLeader().get().getChannel());
+        contentManager.buildProject("cplabel", empty(), false, user);
+
+        // When no module filter is applied, modular channels must be cloned as-is.
+        // Assert that the target channel is also modular
+        Channel targetChannel = env.getTargets().get(0).asSoftwareTarget().get().getChannel();
+        assertTrue(targetChannel.isModular());
+        assertEquals(channel.getPackageCount(), targetChannel.getPackageCount());
+    }
+
+    /**
      * Test promoting a project, complex happy-path scenario
      *
      * @throws Exception if anything goes wrong
@@ -1083,6 +1106,63 @@ public class ContentManagerTest extends BaseTestCaseWithUser {
         contentManager.attachFilter("cplabel", filter.getId(), user);
         contentManager.buildProject("cplabel", empty(), false, user);
         assertEquals(0, env.getTargets().get(0).asSoftwareTarget().get().getChannel().getPackageCount());
+    }
+
+    /**
+     * Test building a project with AppStream filters
+     */
+    public void testBuildProjectWithModuleFilters() throws Exception {
+        Channel channel = MockModulemdApi.createModularTestChannel(user);
+
+        ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());
+        ContentProjectFactory.save(cp);
+        ContentEnvironment env = contentManager.createEnvironment(cp.getLabel(), empty(), "fst", "first env", "desc", false, user);
+        contentManager.attachSource("cplabel", SW_CHANNEL, channel.getLabel(), empty(), user);
+
+        // build with unmatching filters
+        FilterCriteria criteria = new FilterCriteria(Matcher.EQUALS, "module_stream", "postgresql:notexists");
+        ContentFilter filter = contentManager.createFilter("my-filter-1", ContentFilter.Rule.DENY, EntityType.MODULE, criteria, user);
+        contentManager.attachFilter("cplabel", filter.getId(), user);
+        contentManager.buildProject("cplabel", empty(), false, user);
+        Channel targetChannel = env.getTargets().get(0).asSoftwareTarget().get().getChannel();
+
+        // All the modular packages should be filtered out
+        assertEquals(0, targetChannel.getPackageCount());
+        assertFalse(targetChannel.isModular());
+
+        contentManager.detachFilter("cplabel", filter.getId(), user);
+
+        // build with matching filters
+        criteria = new FilterCriteria(Matcher.EQUALS, "module_stream", "postgresql:10");
+        filter = contentManager.createFilter("my-filter-2", ContentFilter.Rule.DENY, EntityType.MODULE, criteria, user);
+        contentManager.attachFilter("cplabel", filter.getId(), user);
+        contentManager.buildProject("cplabel", empty(), false, user);
+        targetChannel = env.getTargets().get(0).asSoftwareTarget().get().getChannel();
+
+        // Only the packages from postgresql:10 should be in the target
+        assertEquals(MockModulemdApi.getPackageCount("postgresql", "10"), targetChannel.getPackageCount());
+        assertFalse(targetChannel.isModular());
+    }
+
+    /**
+     * Test building with AppStream filters without any modular sources
+     */
+    public void testBuildProjectRegularSourcesModuleFilters() throws Exception {
+        ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());
+        ContentProjectFactory.save(cp);
+        ContentEnvironment env = contentManager.createEnvironment(cp.getLabel(), empty(), "fst", "first env", "desc", false, user);
+        Channel channel = createPopulatedChannel();
+        contentManager.attachSource("cplabel", SW_CHANNEL, channel.getLabel(), empty(), user);
+
+        FilterCriteria criteria = new FilterCriteria(Matcher.EQUALS, "module_stream", "postgresql:10");
+        ContentFilter filter = contentManager.createFilter("my-filter-1", ContentFilter.Rule.DENY, EntityType.MODULE, criteria, user);
+        contentManager.attachFilter("cplabel", filter.getId(), user);
+        contentManager.buildProject("cplabel", empty(), false, user);
+        Channel targetChannel = env.getTargets().get(0).asSoftwareTarget().get().getChannel();
+
+        // Nothing should be filtered
+        assertEquals(1, targetChannel.getPackageCount());
+        assertFalse(targetChannel.isModular());
     }
 
     /**
