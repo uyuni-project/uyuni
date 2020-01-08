@@ -46,6 +46,8 @@ public class ControllerApiUtils {
             .serializeNulls()
             .create();
 
+    public static final ContentManager CONTENT_MGR = new ContentManager();
+
 
     private ControllerApiUtils() { }
 

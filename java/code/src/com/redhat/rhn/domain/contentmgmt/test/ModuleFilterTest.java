@@ -28,16 +28,19 @@ import static com.redhat.rhn.domain.role.RoleFactory.ORG_ADMIN;
 
 public class ModuleFilterTest extends BaseTestCaseWithUser {
 
+    private ContentManager contentManager;
+
     @Override
     public void setUp() throws Exception {
         super.setUp();
+        contentManager = new ContentManager();
         UserTestUtils.addUserRole(user, ORG_ADMIN);
     }
 
     public void testGetModule() {
         FilterCriteria criteria = new FilterCriteria(FilterCriteria.Matcher.EQUALS, "module_stream", "mymodule");
         ModuleFilter filter =
-                (ModuleFilter) ContentManager.createFilter("mymodule-filter-1", DENY, MODULE, criteria, user)
+                (ModuleFilter) contentManager.createFilter("mymodule-filter-1", DENY, MODULE, criteria, user)
                         .asModuleFilter().get();
 
         Module module = filter.getModule();
@@ -45,7 +48,7 @@ public class ModuleFilterTest extends BaseTestCaseWithUser {
         assertNull(module.getStream());
 
         criteria = new FilterCriteria(FilterCriteria.Matcher.EQUALS, "module_stream", "mymodule:mystream:foo");
-        filter = (ModuleFilter) ContentManager.createFilter("mymodule-filter-2", DENY, MODULE, criteria, user)
+        filter = (ModuleFilter) contentManager.createFilter("mymodule-filter-2", DENY, MODULE, criteria, user)
                 .asModuleFilter().get();
 
         // The field value is interpreted as module_name : stream_name

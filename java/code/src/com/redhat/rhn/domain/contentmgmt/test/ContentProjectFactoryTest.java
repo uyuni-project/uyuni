@@ -54,6 +54,14 @@ import static java.util.Optional.of;
  */
 public class ContentProjectFactoryTest extends BaseTestCaseWithUser {
 
+    private ContentManager contentManager;
+
+    @Override
+    public void setUp() throws Exception {
+        super.setUp();
+        contentManager = new ContentManager();
+    }
+
     public void testCreateEnvironments() {
         ContentProject cp = new ContentProject("project1", "Project 1", "This is project 1", user.getOrg());
         ContentProjectFactory.save(cp);
@@ -558,7 +566,7 @@ public class ContentProjectFactoryTest extends BaseTestCaseWithUser {
     public void testListFilterProjects() throws Exception {
         user.addPermanentRole(ORG_ADMIN);
         FilterCriteria criteria = new FilterCriteria(FilterCriteria.Matcher.CONTAINS, "name", "aaa");
-        ContentFilter filter = ContentManager.createFilter("my-filter", ContentFilter.Rule.DENY, ContentFilter.EntityType.PACKAGE, criteria, user);
+        ContentFilter filter = contentManager.createFilter("my-filter", ContentFilter.Rule.DENY, ContentFilter.EntityType.PACKAGE, criteria, user);
         ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());
         ContentProjectFactory.save(cp);
 

@@ -51,6 +51,8 @@ import static java.util.Optional.ofNullable;
  */
 public class ContentManagementHandler extends BaseHandler {
 
+    private final ContentManager contentManager = new ContentManager();
+
     /**
      * List Content Projects visible to user
      *
@@ -106,7 +108,7 @@ public class ContentManagementHandler extends BaseHandler {
     public ContentProject createProject(User loggedInUser, String label, String name, String description) {
         ensureOrgAdmin(loggedInUser);
         try {
-            return ContentManager.createProject(label, name, description, loggedInUser);
+            return contentManager.createProject(label, name, description, loggedInUser);
         }
         catch (EntityExistsException e) {
             throw new EntityExistsFaultException(e);
@@ -135,7 +137,7 @@ public class ContentManagementHandler extends BaseHandler {
     public ContentProject updateProject(User loggedInUser, String label, Map<String, Object> props) {
         ensureOrgAdmin(loggedInUser);
         try {
-            return ContentManager.updateProject(label,
+            return contentManager.updateProject(label,
                     ofNullable((String) props.get("name")),
                     ofNullable((String) props.get("description")),
                     loggedInUser);
@@ -161,7 +163,7 @@ public class ContentManagementHandler extends BaseHandler {
     public int removeProject(User loggedInUser, String label) {
         ensureOrgAdmin(loggedInUser);
         try {
-            return ContentManager.removeProject(label, loggedInUser);
+            return contentManager.removeProject(label, loggedInUser);
         }
         catch (EntityNotExistsException e) {
             throw new EntityNotExistsFaultException(e);
@@ -244,7 +246,7 @@ public class ContentManagementHandler extends BaseHandler {
             String label, String name, String description) {
         ensureOrgAdmin(loggedInUser);
         try {
-            return ContentManager.createEnvironment(projectLabel, ofNullable(nullIfEmpty(predecessorLabel)), label,
+            return contentManager.createEnvironment(projectLabel, ofNullable(nullIfEmpty(predecessorLabel)), label,
                     name, description, true, loggedInUser);
         }
         catch (EntityNotExistsException e) {
@@ -280,7 +282,7 @@ public class ContentManagementHandler extends BaseHandler {
             Map<String, Object> props) {
         ensureOrgAdmin(loggedInUser);
         try {
-            return ContentManager.updateEnvironment(envLabel,
+            return contentManager.updateEnvironment(envLabel,
                     projectLabel,
                     ofNullable((String) props.get("name")),
                     ofNullable((String) props.get("description")),
@@ -309,7 +311,7 @@ public class ContentManagementHandler extends BaseHandler {
     public int removeEnvironment(User loggedInUser, String projectLabel, String envLabel) {
         ensureOrgAdmin(loggedInUser);
         try {
-            return ContentManager.removeEnvironment(envLabel, projectLabel, loggedInUser);
+            return contentManager.removeEnvironment(envLabel, projectLabel, loggedInUser);
         }
         catch (EntityNotExistsException e) {
             throw new EntityNotExistsFaultException(e);
@@ -420,7 +422,7 @@ public class ContentManagementHandler extends BaseHandler {
         ensureOrgAdmin(loggedInUser);
         Type type = Type.lookupByLabel(sourceType);
         try {
-            return ContentManager.attachSource(projectLabel, type, sourceLabel, sourcePosition, loggedInUser);
+            return contentManager.attachSource(projectLabel, type, sourceLabel, sourcePosition, loggedInUser);
         }
         catch (EntityNotExistsException e) {
             throw new EntityNotExistsFaultException(e);
@@ -451,7 +453,7 @@ public class ContentManagementHandler extends BaseHandler {
         ensureOrgAdmin(loggedInUser);
         Type type = Type.lookupByLabel(sourceType);
         try {
-            ContentManager.detachSource(projectLabel, type, sourceLabel, loggedInUser);
+            contentManager.detachSource(projectLabel, type, sourceLabel, loggedInUser);
             return 1;
         }
         catch (EntityNotExistsException e) {
@@ -576,7 +578,7 @@ public class ContentManagementHandler extends BaseHandler {
                 () -> new InvalidArgsException("criteria must be specified")
         );
 
-        return ContentManager.createFilter(name, ruleObj, entityTypeObj, criteriaObj, loggedInUser);
+        return contentManager.createFilter(name, ruleObj, entityTypeObj, criteriaObj, loggedInUser);
     }
 
     /**
@@ -620,7 +622,7 @@ public class ContentManagementHandler extends BaseHandler {
         Optional<FilterCriteria> criteriaObj = createCriteria(criteria);
 
         try {
-            return ContentManager.updateFilter(
+            return contentManager.updateFilter(
                     filterId.longValue(),
                     ofNullable(name),
                     ruleObj,
@@ -662,7 +664,7 @@ public class ContentManagementHandler extends BaseHandler {
     public int removeFilter(User loggedInUser, Integer filterId) {
         ensureOrgAdmin(loggedInUser);
         try {
-            ContentManager.removeFilter(filterId.longValue(), loggedInUser);
+            contentManager.removeFilter(filterId.longValue(), loggedInUser);
             return 1;
         }
         catch (EntityNotExistsException e) {
@@ -713,7 +715,7 @@ public class ContentManagementHandler extends BaseHandler {
     public ContentFilter attachFilter(User loggedInUser, String projectLabel, Integer filterId) {
         ensureOrgAdmin(loggedInUser);
         try {
-            return ContentManager.attachFilter(projectLabel, filterId.longValue(), loggedInUser);
+            return contentManager.attachFilter(projectLabel, filterId.longValue(), loggedInUser);
         }
         catch (EntityNotExistsException e) {
             throw new EntityExistsFaultException(e);
@@ -739,7 +741,7 @@ public class ContentManagementHandler extends BaseHandler {
     public int detachFilter(User loggedInUser, String projectLabel, Integer filterId) {
         ensureOrgAdmin(loggedInUser);
         try {
-            ContentManager.detachFilter(projectLabel, filterId.longValue(), loggedInUser);
+            contentManager.detachFilter(projectLabel, filterId.longValue(), loggedInUser);
         }
         catch (EntityNotExistsException e) {
             throw new EntityExistsFaultException(e);
@@ -764,7 +766,7 @@ public class ContentManagementHandler extends BaseHandler {
     public int buildProject(User loggedInUser, String projectLabel) {
         ensureOrgAdmin(loggedInUser);
         try {
-            ContentManager.buildProject(projectLabel, empty(), true, loggedInUser);
+            contentManager.buildProject(projectLabel, empty(), true, loggedInUser);
         }
         catch (EntityNotExistsException e) {
             throw new EntityExistsFaultException(e);
@@ -794,7 +796,7 @@ public class ContentManagementHandler extends BaseHandler {
     public int buildProject(User loggedInUser, String projectLabel, String message) {
         ensureOrgAdmin(loggedInUser);
         try {
-            ContentManager.buildProject(projectLabel, of(message), true, loggedInUser);
+            contentManager.buildProject(projectLabel, of(message), true, loggedInUser);
         }
         catch (EntityNotExistsException e) {
             throw new EntityExistsFaultException(e);
@@ -824,7 +826,7 @@ public class ContentManagementHandler extends BaseHandler {
     public int promoteProject(User loggedInUser, String projectLabel, String envLabel) {
         ensureOrgAdmin(loggedInUser);
         try {
-            ContentManager.promoteProject(projectLabel, envLabel, true, loggedInUser);
+            contentManager.promoteProject(projectLabel, envLabel, true, loggedInUser);
         }
         catch (EntityNotExistsException e) {
             throw new EntityExistsFaultException(e);

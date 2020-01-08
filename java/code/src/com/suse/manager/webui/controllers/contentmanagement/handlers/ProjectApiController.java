@@ -49,6 +49,7 @@ import spark.Response;
 public class ProjectApiController {
 
     private static final Gson GSON = ControllerApiUtils.GSON;
+    private static final ContentManager CONTENT_MGR = ControllerApiUtils.CONTENT_MGR;
 
     private ProjectApiController() {
     }
@@ -84,7 +85,7 @@ public class ProjectApiController {
 
         ContentProject createdProject;
         try {
-            createdProject = ContentManager.createProject(
+            createdProject = CONTENT_MGR.createProject(
                     projectPropertiesRequest.getLabel(),
                     projectPropertiesRequest.getName(),
                     projectPropertiesRequest.getDescription(),
@@ -116,7 +117,7 @@ public class ProjectApiController {
     public static String removeContentProject(Request req, Response res, User user) {
         String projectLabel = req.params("projectId");
 
-        int removingResult = ContentManager.removeProject(projectLabel, user);
+        int removingResult = CONTENT_MGR.removeProject(projectLabel, user);
 
         if (removingResult == 1) {
             String successMessage = String.format("Project %s deleted successfully.", projectLabel);
@@ -149,7 +150,7 @@ public class ProjectApiController {
 
         ContentProject updatedProject;
         try {
-            updatedProject = ContentManager.updateProject(
+            updatedProject = CONTENT_MGR.updateProject(
                     updateProjectPropertiesRequest.getLabel(),
                     Optional.ofNullable(updateProjectPropertiesRequest.getName()),
                     Optional.ofNullable(updateProjectPropertiesRequest.getDescription()),

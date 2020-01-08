@@ -43,6 +43,7 @@ import spark.Response;
 public class EnvironmentApiController {
 
     private static final Gson GSON = ControllerApiUtils.GSON;
+    private static final ContentManager CONTENT_MGR = ControllerApiUtils.CONTENT_MGR;
 
     private EnvironmentApiController() {
     }
@@ -74,7 +75,7 @@ public class EnvironmentApiController {
             return json(GSON, res, HttpStatus.SC_BAD_REQUEST, ResultJson.error(Arrays.asList(""), requestErrors));
         }
 
-        ContentManager.createEnvironment(
+        CONTENT_MGR.createEnvironment(
                 createEnvironmentRequest.getProjectLabel(),
                 Optional.ofNullable(createEnvironmentRequest.getPredecessorLabel()),
                 createEnvironmentRequest.getLabel(),
@@ -102,7 +103,7 @@ public class EnvironmentApiController {
             return json(GSON, res, HttpStatus.SC_BAD_REQUEST, ResultJson.error(Arrays.asList(""), requestErrors));
         }
 
-        ContentManager.updateEnvironment(
+        CONTENT_MGR.updateEnvironment(
                 updateEnvironmentRequest.getLabel(),
                 updateEnvironmentRequest.getProjectLabel(),
                 Optional.ofNullable(updateEnvironmentRequest.getName()),
@@ -129,7 +130,7 @@ public class EnvironmentApiController {
             return json(GSON, res, HttpStatus.SC_BAD_REQUEST, ResultJson.error(Arrays.asList(""), requestErrors));
         }
 
-        ContentManager.removeEnvironment(
+        CONTENT_MGR.removeEnvironment(
                 removeEnvironmentRequest.getLabel(),
                 removeEnvironmentRequest.getProjectLabel(),
                 user

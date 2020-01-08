@@ -43,6 +43,7 @@ import spark.Response;
 public class ProjectActionsApiController {
 
     private static final Gson GSON = ControllerApiUtils.GSON;
+    private static final ContentManager CONTENT_MGR = ControllerApiUtils.CONTENT_MGR;
 
     private ProjectActionsApiController() {
     }
@@ -84,7 +85,7 @@ public class ProjectActionsApiController {
         }
 
         String projectLabel = projectLabelRequest.getProjectLabel();
-        ContentManager.buildProject(projectLabel, Optional.ofNullable(projectLabelRequest.getMessage()), true, user);
+        CONTENT_MGR.buildProject(projectLabel, Optional.ofNullable(projectLabelRequest.getMessage()), true, user);
 
         return ControllerApiUtils.fullProjectJsonResponse(res, projectLabel, user);
     }
@@ -104,7 +105,7 @@ public class ProjectActionsApiController {
         }
 
         String projectLabel = projectPromoteReq.getProjectLabel();
-        ContentManager.promoteProject(projectLabel, projectPromoteReq.getEnvironmentPromoteLabel(), true, user);
+        CONTENT_MGR.promoteProject(projectLabel, projectPromoteReq.getEnvironmentPromoteLabel(), true, user);
 
         return ControllerApiUtils.fullProjectJsonResponse(res, projectLabel, user);
     }

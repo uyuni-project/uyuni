@@ -38,6 +38,8 @@ import spark.Response;
  */
 public class ProjectSourcesApiController {
 
+    private static final ContentManager CONTENT_MGR = ControllerApiUtils.CONTENT_MGR;
+
     private ProjectSourcesApiController() {
     }
 
@@ -66,7 +68,7 @@ public class ProjectSourcesApiController {
                 .flatMap(source -> stream(source.asSoftwareSource()))
                 .map(softwareSource -> softwareSource.getChannel().getLabel())
                 .collect(Collectors.toList());
-        sourceLabelsToDetach.forEach(sourceLabel -> ContentManager.detachSource(
+        sourceLabelsToDetach.forEach(sourceLabel -> CONTENT_MGR.detachSource(
                 projectLabel,
                 ProjectSource.Type.SW_CHANNEL,
                 sourceLabel,
@@ -78,7 +80,7 @@ public class ProjectSourcesApiController {
                 .map(source -> source.getLabel())
                 .collect(Collectors.toList());
         Collections.reverse(sourceLabelsToAttach);
-        sourceLabelsToAttach.forEach(sourceLabel -> ContentManager.attachSource(
+        sourceLabelsToAttach.forEach(sourceLabel -> CONTENT_MGR.attachSource(
                 projectLabel,
                 ProjectSource.Type.SW_CHANNEL,
                 sourceLabel,

@@ -54,6 +54,7 @@ import spark.Response;
 public class FilterApiController {
 
     private static final Gson GSON = ControllerApiUtils.GSON;
+    private static final ContentManager CONTENT_MGR = ControllerApiUtils.CONTENT_MGR;
 
     private FilterApiController() {
     }
@@ -99,7 +100,7 @@ public class FilterApiController {
                 .map(filter -> filter.getFilter().getId())
                 .filter(filterId -> !filtersIdToUpdate.contains(filterId))
                 .collect(Collectors.toList());
-        filterIdsToDetach.forEach(filterId -> ContentManager.detachFilter(
+        filterIdsToDetach.forEach(filterId -> CONTENT_MGR.detachFilter(
                 projectLabel,
                 filterId,
                 user
@@ -117,7 +118,7 @@ public class FilterApiController {
                 .collect(Collectors.toList());
         filterIdsToAttach
                 .forEach(filterId ->
-                        ContentManager.attachFilter(
+                        CONTENT_MGR.attachFilter(
                                 projectLabel,
                                 filterId,
                                 user
@@ -160,7 +161,7 @@ public class FilterApiController {
 
         ContentFilter createdFilter;
         try {
-            createdFilter = ContentManager.createFilter(
+            createdFilter = CONTENT_MGR.createFilter(
                     createFilterRequest.getName(),
                     ContentFilter.Rule.lookupByLabel(createFilterRequest.getRule()),
                     ContentFilter.EntityType.lookupByLabel(createFilterRequest.getEntityType()),
@@ -173,7 +174,7 @@ public class FilterApiController {
         }
 
         if (!StringUtils.isEmpty(createFilterRequest.getProjectLabel())) {
-            ContentManager.attachFilter(
+            CONTENT_MGR.attachFilter(
                     createFilterRequest.getProjectLabel(),
                     createdFilter.getId(),
                     user
@@ -203,7 +204,7 @@ public class FilterApiController {
                 FilterCriteria.Matcher.lookupByLabel(updateFilterRequest.getMatcher()),
                 updateFilterRequest.getCriteriaKey(),
                 updateFilterRequest.getCriteriaValue());
-        ContentManager.updateFilter(
+        CONTENT_MGR.updateFilter(
                 Long.parseLong(req.params("filterId")),
                 Optional.ofNullable(updateFilterRequest.getName()),
                 Optional.ofNullable(updateFilterRequest.getRule()).map(ContentFilter.Rule::lookupByLabel),
@@ -229,7 +230,7 @@ public class FilterApiController {
      */
     public static String removeContentFilter(Request req, Response res, User user) {
         try {
-            ContentManager.removeFilter(Long.parseLong(req.params("filterId")), user);
+            CONTENT_MGR.removeFilter(Long.parseLong(req.params("filterId")), user);
         }
         catch (ContentManagementException error) {
             return json(GSON, res, HttpStatus.SC_BAD_REQUEST, ResultJson.error(error.getMessage()));
