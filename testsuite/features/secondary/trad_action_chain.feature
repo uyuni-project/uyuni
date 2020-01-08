@@ -172,7 +172,9 @@ Feature: Action chain on traditional clients
     When I follow the left menu "Schedule > Action Chains"
     And I follow "new action chain"
     And I should see a "1. Run a remote command on 1 system" text
-
+    Then I click on "Save and Schedule"
+    And I should see a "Action Chain new action chain has been scheduled for execution." text
+    When I run "rhn_check -vvv" on "sle_client"
 
   Scenario: Create an action chain via XML-RPC
     Given I am logged in via XML-RPC actionchain as user "admin" and password "admin"
@@ -217,13 +219,17 @@ Feature: Action chain on traditional clients
 
   Scenario: Run an action chain via XML-RPC on traditional client
     Given I am logged in via XML-RPC actionchain as user "admin" and password "admin"
-
+    And I want to operate on this "sle_client"
+    And I run "rhn-actions-control --enable-all" on "sle_client"
+    When I call XML-RPC createChain with chainLabel "multiple_scripts"
     And I call actionchain.add_script_run() with the script "echo -n 1 >> /tmp/action_chain.log"
     And I call actionchain.add_script_run() with the script "echo -n 2 >> /tmp/action_chain.log"
     And I call actionchain.add_script_run() with the script "echo -n 3 >> /tmp/action_chain.log"
     Then I should be able to see all these actions in the action chain
     When I schedule the action chain
-
+    Then I wait until there are no more action chains
+    When I run "rhn_check -vvv" on "sle_client"
+    Then file "/tmp/action_chain.log" should contain "123" on "sle_client"
     And I wait until there are no more scheduled actions
 
   Scenario: Cleanup: remove traditional client from configuration channel
