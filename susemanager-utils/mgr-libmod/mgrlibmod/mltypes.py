@@ -43,10 +43,11 @@ class MLPackageType(MLAnyType):
     """
     Package type input.
     """
-    def __init__(self):
+    def __init__(self, data: str):
         """
         Constructor
         """
+        MLAnyType.__init__(self, data)
         self.rpms: Dict[str, None] = {}
 
     def add_package(self, package: str) -> None:
@@ -72,7 +73,7 @@ class MLPackageType(MLAnyType):
         }
 
 
-class MLInputType:
+class MLInputType(MLAnyType):
     """
     Input type.
     """
