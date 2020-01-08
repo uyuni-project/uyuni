@@ -1,0 +1,16 @@
+{
+    "paths": [
+        "my/path/1.yaml",
+        "my/path/2.yaml"
+    ],
+    "streams": [
+        [
+            "postgresql",
+            "9.6"
+        ],
+        [
+            "idm",
+            "client"
+        ]
+    ]
+}
