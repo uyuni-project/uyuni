@@ -415,7 +415,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                              with(any(String.class)));
                     will(returnValue(Optional.of(pil)));
                 }},
-                (DEFAULT_CONTACT_METHOD) -> {
+                (contactMethod) -> {
                     return null;
                 },
                 (optMinion, machineId, key) -> {
@@ -458,7 +458,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                              with(any(String.class)));
                     will(returnValue(Optional.of(pil)));
                 }},
-                (DEFAULT_CONTACT_METHOD) -> {
+                (contactMethod) -> {
                     return null;
                 },
                 (optMinion, machineId, key) -> {
@@ -506,7 +506,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                              with(any(String.class)));
                     will(returnValue(Optional.of(pil)));
                 }},
-                (DEFAULT_CONTACT_METHOD) -> {
+                (contactMethod) -> {
                     ActivationKey key = ActivationKeyTest.createTestActivationKey(user);
                     key.setOrg(user.getOrg());
                     ActivationKeyFactory.save(key);
@@ -557,7 +557,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                              with(any(String.class)));
                     will(returnValue(Optional.of(pil)));
                 }},
-                (DEFAULT_CONTACT_METHOD) -> {
+                (contactMethod) -> {
                     ActivationKey key = ActivationKeyTest.createTestActivationKey(user);
                     key.setBaseChannel(baseChannelX8664);
                     key.setOrg(user.getOrg());
@@ -603,7 +603,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                     allowing(saltServiceMock).getGrains(MINION_ID);
                     will(returnValue(getGrains(MINION_ID, null, key)));
                 }},
-                (DEFAULT_CONTACT_METHOD) -> {
+                (contactMethod) -> {
                     ActivationKey key = ActivationKeyTest.createTestActivationKey(user);
                     key.setBaseChannel(baseChannelX8664);
                     baseChannelX8664.getAccessibleChildrenFor(user)
@@ -678,7 +678,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                         with(any(String.class)));
                 will(returnValue(Optional.of(pil)));
             }
-        }, (DEFAULT_CONTACT_METHOD) -> {
+        }, (contactMethod) -> {
             ActivationKey key = ActivationKeyTest.createTestActivationKey(user);
             key.setBaseChannel(null);
             // Channels unrelated to the product added as child channels in the
@@ -771,7 +771,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                             readFile("dummy_packages_redhatprodinfo_rhel.json")))));
 
                 }},
-                (DEFAULT_CONTACT_METHOD) -> {
+                (contactMethod) -> {
                     ActivationKey key = ActivationKeyTest.createTestActivationKey(user);
                     key.setBaseChannel(resChannel);
                     key.setOrg(user.getOrg());
@@ -821,7 +821,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                             readFile("dummy_packages_redhatprodinfo_rhel.json")))));
 
                 }},
-                (DEFAULT_CONTACT_METHOD) -> {
+                (contactMethod) -> {
                     ActivationKey key = ActivationKeyTest.createTestActivationKey(user);
                     key.setBaseChannel(resChannel_x86_64);
                     key.setOrg(user.getOrg());
@@ -1424,7 +1424,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                 allowing(saltServiceMock).getGrains(MINION_ID);
                 will(returnValue(getGrains(MINION_ID, null, key)));
             }
-        }, (DEFAULT_CONTACT_METHOD) -> {
+        }, (contactMethod) -> {
             ActivationKey key = ActivationKeyTest.createTestActivationKey(user);
             key.setBaseChannel(akBaseChannel);
             key.addChannel(akChildChannel);
@@ -1481,7 +1481,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                 allowing(saltServiceMock).getGrains(MINION_ID);
                 will(returnValue(getGrains(MINION_ID, null, key)));
             }
-        }, (DEFAULT_CONTACT_METHOD) -> {
+        }, (contactMethod) -> {
             ActivationKey key = ActivationKeyTest.createTestActivationKey(user);
             key.setBaseChannel(akBaseChannel);
             key.addChannel(akChildChannel);
@@ -1534,7 +1534,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                 allowing(saltServiceMock).getGrains(MINION_ID);
                 will(returnValue(getGrains(MINION_ID, null, key)));
             }
-        }, (DEFAULT_CONTACT_METHOD) -> null,
+        }, (contactMethod) -> null,
         (optMinion, machineId, key) -> {
             assertTrue(optMinion.isPresent());
             MinionServer minion = optMinion.get();
@@ -1575,7 +1575,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                     allowing(saltServiceMock).getGrains(MINION_ID);
                     will(returnValue(getGrains(MINION_ID, null, null, key)));
                 }},
-                (DEFAULT_CONTACT_METHOD) -> {
+                (contactMethod) -> {
                     ActivationKey key = ActivationKeyTest.createTestActivationKey(user);
                     // setting a server makes it a re-activation key
                     key.setServer(oldMinion);
@@ -1594,7 +1594,49 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                     // State assignment file check
                     Path slsPath = tmpSaltRoot.resolve("custom").resolve("custom_" + minion.getMachineId() + ".sls");
                     assertTrue(slsPath.toFile().exists());
-                }, DEFAULT_CONTACT_METHOD);
+                },
+                cleanup -> {},
+                DEFAULT_CONTACT_METHOD);
+    }
+
+    public void testMinionWithUsedReActivationKey() throws Exception {
+        Channel assignedChannel = ChannelFactoryTest.createBaseChannel(user, "channel-x86_64");
+        Channel assignedChildChannel = ChannelFactoryTest.createTestChannel(user, "channel-x86_64");
+        assignedChildChannel.setParentChannel(assignedChannel);
+
+        ServerFactory.findByMachineId(MACHINE_ID).ifPresent(ServerFactory::delete);
+        MinionServer oldMinion = MinionServerFactoryTest.createTestMinionServer(user);
+        oldMinion.setMachineId(MACHINE_ID);
+        oldMinion.setMinionId(MINION_ID);
+        oldMinion.setHostname(MINION_ID);
+        oldMinion.setName(MINION_ID);
+        oldMinion.getChannels().clear();
+        oldMinion.addChannel(assignedChannel);
+        oldMinion.addChannel(assignedChildChannel);
+        ServerFactory.save(oldMinion);
+
+        executeTest(
+                (saltServiceMock, key) -> new Expectations() {{
+                    allowing(saltServiceMock).getMasterHostname(MINION_ID);
+                    will(returnValue(Optional.of(MINION_ID)));
+                    allowing(saltServiceMock).getMachineId(MINION_ID);
+                    will(returnValue(Optional.of(MACHINE_ID)));
+                    allowing(saltServiceMock).syncGrains(with(any(MinionList.class)));
+                    allowing(saltServiceMock).syncModules(with(any(MinionList.class)));
+                    allowing(saltServiceMock).getGrains(MINION_ID);
+                    will(returnValue(getGrains(MINION_ID, null, null, key)));
+                }},
+                (contactMethod) -> {
+                    return "1-re-already-used";
+                },
+                (optMinion, machineId, key) -> {
+                    assertTrue(optMinion.isPresent());
+                    MinionServer minion = optMinion.get();
+                    assertEquals(MINION_ID, minion.getName());
+                    assertNotNull(minion.getBaseChannel());
+                },
+                cleanup -> {},
+                DEFAULT_CONTACT_METHOD);
     }
 
     private Channel setupBaseAndRequiredChannels(ChannelFamily channelFamily,
