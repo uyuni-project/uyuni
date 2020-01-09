@@ -79,6 +79,18 @@ class MLInputType(MLAnyType):
     def to_obj(self) -> Dict:
         return cast(Dict, self._obj)
 
+    def get_function(self) -> str:
+        """
+        get_function -- return function name.
+
+        :return: function name to process.
+        :rtype: str
+        """
+        obj = self.to_obj()
+        assert "function" in obj, "Unknown API function. Please define one."
+
+        return obj["function"]
+
     def get_paths(self) -> List[str]:
         """
         get_paths get paths section from the YAML
