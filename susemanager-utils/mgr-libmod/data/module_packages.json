@@ -1,4 +1,5 @@
 {
+    "function": "module_packages",
     "paths": [
         "my/path/1.yaml",
         "my/path/2.yaml"
