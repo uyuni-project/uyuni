@@ -106,7 +106,7 @@ class MLInputType(MLAnyType):
 
         return paths
 
-    def get_streams(self) -> List[Tuple[str, ...]]:
+    def get_streams(self) -> Tuple[Dict[str, str], ...]:
         """
         get_streams [summary]
 
@@ -118,7 +118,4 @@ class MLInputType(MLAnyType):
 
         assert obj["streams"] is not None, "Streams should not be null!"
 
-        for stream in obj["streams"]:
-            out.append(tuple(stream))
-
-        return out
+        return tuple(obj["streams"])
