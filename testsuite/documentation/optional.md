@@ -300,9 +300,12 @@ the MAC address of the PXE boot minion and the name of
 the desired image you want it reformatted with:
 ```bash
 export PXEBOOT_MAC=52:54:00:01:02:03
-export PXEBOOT_IMAGE=sles12sp4
+export PXEBOOT_IMAGE=sles12sp3
 ```
 and then run the testsuite.
+
+`52:54:00:` is the prefix assigned to qemu.
+Currently supported images are `sles12sp3` and `sles15sp1`.
 
 Inside of the testsuite, the scenarios that are tagged with
 ```
