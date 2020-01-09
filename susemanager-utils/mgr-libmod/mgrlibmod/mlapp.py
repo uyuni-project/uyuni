@@ -5,7 +5,7 @@ from mgrlibmod import mllib
 from typing import List
 import argparse
 import os
-import fileinput
+import sys
 
 
 def get_opts() -> argparse.Namespace:
@@ -13,9 +13,10 @@ def get_opts() -> argparse.Namespace:
     get_args parses the CLI arguments.
     """
     ap: argparse.ArgumentParser = argparse.ArgumentParser(
-        description="mgr-libmod -- Utility to resolve module dependencies")
-    ap.add_argument("-e", "--example", action="store_true",
-                    help="Show usage example")
+        description="mgr-libmod -- Utility to resolve module dependencies"
+    )
+    ap.add_argument("-e", "--example", action="store_true", help="Show usage example")
+    ap.add_argument("-v", "--verbose", action="store_true", help="Verbose output (debug mode)")
     return ap.parse_args()
 
 
@@ -27,7 +28,7 @@ def get_stdin_data() -> str:
     :rtype: str
     """
     out: List[str] = []
-    for line in fileinput.input():
+    for line in sys.stdin.readlines():
         out.append(line.strip())
 
     return os.linesep.join(out)
@@ -37,7 +38,8 @@ def main():
     """
     main function for the CLI app.
     """
-    if get_opts().example:
+    opts: argparse.Namespace = get_opts()
+    if opts.example:
         example: str = """
 Usage example:
 
@@ -52,5 +54,9 @@ Usage example:
         """
         print(example.strip() + "\n")
     else:
-        api = mllib.MLLibmodAPI().set_repodata(get_stdin_data())
-        print(api.get_all_packages())
+        try:
+            print(mllib.MLLibmodAPI(opts).set_repodata(get_stdin_data()).run().to_json())
+        except Exception as exc:
+            print("ERROR:", exc)
+            if opts.verbose:
+                raise exc
