@@ -65,17 +65,83 @@ class MLLibmodAPI:
     Libmod API operations.
     """
 
-    def set_repodata(self, repodata: str) -> MLLibmodAPI:
+    def __init__(self, opts: argparse.Namespace):
         """
-        set_repodata sets the repository data from the input JSON.
+        __init__
+
+        :param opts: Parsed opts namespace.
+        :type opts: argparse.Namespace
+        """
+        self._opts = opts
+        self.repodata: mltypes.MLInputType
+        self._result: Dict[str, Dict[str, Dict]] = {
+            "module_packages": {},
+            "list_packages": {},
+            "list_modules": {},
+        }
+        self._proc: MLLibmodProc
+
+    def set_repodata(self, repodata: str) -> "MLLibmodAPI":
+        """
+        set_repodata -- set the repository data from the input JSON.
 
         :param repodata: JSON string of the input object.
         :type repodata: str
         """
+        self.repodata = mltypes.MLInputType(repodata)
+        for modulepath in self.repodata.get_paths():
+            assert os.path.exists(modulepath), "File {} not found".format(modulepath)
+        self._proc = MLLibmodProc(self.repodata.get_paths())
+
         return self
 
-    def get_all_modules(self):
+    # Functions
+    def _get_all_modules(self):
         pass
 
-    def get_all_packages(self):
+    def _get_all_packages(self):
         pass
+
+    def _get_module_packages(self):
+        """
+        _get_module_packages -- get all RPMs from selected streams as a map of package names to package strings.
+        """
+        self._proc.index_modules()
+        for s_obj in self.repodata.get_streams():
+            try:
+                print(s_obj)
+            except Exception as exc:
+                print("Skipping stream", s_obj)
+
+        # index = createModuleIndex(metadataPaths)
+        # for (name, stream) in selectedStreams:
+        #    try:
+        #        if stream:
+        #            pickStream(name, stream)
+        #        else:
+        #            pickDefaultStream(name)
+        #    except Exception as e:
+        #        print(e)
+        #        print("Skipping {}:{}".format(name, stream))
+        # return getApiProvides()
+
+    # API
+    def to_json(self) -> str:
+        """
+        to_json -- render the last set processed result by 'run' method into the JSON string.
+
+        :return: JSON string
+        :rtype: str
+        """
+        return ""
+
+    def run(self) -> "MLLibmodAPI":
+        """
+        run -- process the logic, based on the input.
+
+        :return: MLLibmodAPI
+        """
+        f = self.repodata.get_function()
+        self._result[f] = getattr(self, "_get_{}".format(f))()
+
+        return self
