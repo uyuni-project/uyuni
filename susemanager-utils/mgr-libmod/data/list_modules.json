@@ -1,7 +1,7 @@
 {
     "function": "list_modules",
     "paths": [
-        "my/path/1.yaml",
-        "my/path/2.yaml"
+        "data/sample-modules.yaml.gz",
+        "data/sample-modules-2.yaml.gz"
     ]
 }
