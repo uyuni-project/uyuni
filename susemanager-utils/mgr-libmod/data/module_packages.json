@@ -1,17 +1,17 @@
 {
     "function": "module_packages",
     "paths": [
-        "my/path/1.yaml",
-        "my/path/2.yaml"
+        "data/sample-modules.yaml.gz",
+        "data/sample-modules-2.yaml.gz"
     ],
     "streams": [
-        [
-            "postgresql",
-            "9.6"
-        ],
-        [
-            "idm",
-            "client"
-        ]
+        {
+            "name": "virt",
+            "stream": "rhel"
+        },
+        {
+            "name": "idm",
+            "stream": "client"
+        }
     ]
 }
