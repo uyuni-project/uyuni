@@ -32,6 +32,7 @@ MANAGER_FORMULAS_METADATA_MANAGER_PATH = '/usr/share/susemanager/formulas/metada
 MANAGER_FORMULAS_METADATA_STANDALONE_PATH = '/usr/share/salt-formulas/metadata'
 CUSTOM_FORMULAS_METADATA_PATH = '/srv/formula_metadata'
 FORMULAS_DATA_PATH = '/srv/susemanager/formula_data'
+FORMULA_ORDER_FILE = FORMULAS_DATA_PATH + '/formula_order.json'
 
 # OS images path:
 IMAGES_DATA_PATH = os.path.join(MANAGER_PILLAR_DATA_PATH, 'images')
@@ -154,7 +155,14 @@ def formula_pillars(minion_id, group_ids):
                  load_formula_pillar(minion_id, None, formula),
                  strategy='recurse')
 
-    pillar["formulas"] = out_formulas
+    # Loading the formula order
+    if os.path.exists(FORMULA_ORDER_FILE):
+        with open(FORMULA_ORDER_FILE) as ofile:
+            order = json.load(ofile)
+            pillar["formulas"] = list(filter(lambda i: i in out_formulas, order))
+    else:
+        pillar["formulas"] = out_formulas
+
     return pillar
 
 

@@ -1,0 +1,153 @@
+partitioning:
+    $name: Disk Partitioning
+    $type: edit-group
+    $itemName: Disk ${i}
+    $minItems: 1
+    $prototype:
+        $type: group
+        $key:
+            $type: text
+            $name: Disk Symbolic ID
+            $placeholder: Enter disk symbolic ID (e.g. disk1, disk2, md0 for RAID devices)
+            $help: Disk Symbolic ID is used together with Partition Symbolic ID for RAID completion.
+        type:
+            $type: select
+            $name: Device Type
+            $values:
+              - RAID
+              - DISK
+            $default: DISK
+        device:
+            $type: text
+            $visibleIf: .type == DISK
+            $name: Disk Device
+            $placeholder: Enter target disk device name (e.g. /dev/sda)
+            $optional: true
+        level:
+            $visibleIf: .type == RAID
+            $type: select
+            $name: RAID Level
+            $values:
+              -
+              - 0
+              - 1
+              - 4
+              - 5
+              - 6
+              - 10
+              - linear
+              - multipath
+            $default:
+            $optional: true
+        devices:
+            $visibleIf: .type == RAID
+            $type: edit-group
+            $name: Symbolic IDs of devices to used for RAID device type
+            $minItems: 0
+            $prototype:
+                $type: text
+                $help: E.g. disk1p1, disk2p1, ... Combination of Disk symbolic ID and Partition symbolic ID to describe devices/partitions used to build RAID device.
+                $placeholder: Enter combination of Disk and Partition symbolic ID (e.g. disk1part1, disk2part1, ...)
+            $optional: True
+        disklabel:
+            $type: select
+            $name: Partition table type
+            $values:
+              - gpt
+              - msdos
+              - none
+        partitions:
+            $type: edit-group
+            $itemName: Partition ${i}
+            $minItems: 1
+            $optional: True
+            $visibleIf: .disklabel != "none"
+            $prototype:
+                $type: group
+                $key:
+                    $type: text
+                    $name: Partition Symbolic ID
+                    $help: E.g. p1, p2, ... Together with Disk symbolic ID is used for RAID completion.
+                    $placeholder: Enter partition symbolic ID (e.g. part1, part2, ...)
+                size_MiB:
+                    $type: number
+                    $name: Partition Size (MiB)
+                    $help: Leave blank to acquire remaining empty space on the disk.
+                    $optional: True
+                mountpoint:
+                    $type: text
+                    $name: Device Mount Point
+                    $help: What should the partition be mount as - /, swap, /var, ...
+                    $optional: True
+                format:
+                    $type: select
+                    $name: Filesystem Format
+                    $values:
+                      -
+                      - btrfs
+                      - ext4
+                      - xfs
+                      - vfat
+                      - swap
+                    $optional: True
+                image:
+                    $type: text
+                    $name: OS Image to Deploy
+                    $help: Name of the OS Image. Leave blank if no image should be deployed on this partition.
+                    $optional: True
+                image_version:
+                    $visibleIf: .image != ''
+                    $type: text
+                    $help: Version of OS Image. Leave blank for most recent.
+                    $optional: True
+                luks_pass:
+                    $optional: True
+                    $type: text
+                    $name: Partition Encryption Password
+                    $help: Password for encrypted partition. Leave blank for unencrypted. Image itself still can be encrypted.
+                flags:
+                    $type: select
+                    $name: Partition Flags
+                    $values:
+                      -
+                      - swap
+                      - raid
+                      - bios_grub
+                      - esp
+                      - boot
+                    $default:
+        mountpoint:
+            $type: text
+            $name: Device Mount Point
+            $help: What should the partition be mount as - /, swap, /var, ...
+            $optional: True
+            $visibleIf: .disklabel == "none"
+        format:
+            $type: select
+            $name: Filesystem Format
+            $visibleIf: .disklabel == "none"
+            $values:
+              -
+              - btrfs
+              - ext4
+              - xfs
+              - vfat
+              - swap
+            $optional: True
+        image:
+            $visibleIf: .disklabel == "none"
+            $type: text
+            $name: OS Image to Deploy
+            $help: Name of the OS Image. Leave blank if no image should be deployed on this partition.
+            $optional: True
+        image_version:
+            $visibleIf: .image != ''
+            $type: text
+            $help: Version of OS Image. Leave blank for most recent.
+            $optional: True
+        luks_pass:
+            $visibleIf: .disklabel == "none"
+            $optional: True
+            $type: text
+            $name: Partition Encryption Password
+            $help: Password for encrypted partition. Leave blank for unencrypted. Image itself still can be encrypted.
