@@ -286,7 +286,7 @@ Feature: Management of configuration of all types of clients in a single channel
 @sle_minion
   Scenario: Cleanup: remove remaining Salt Minion from configuration channel
     Given I am authorized as "admin" with password "admin"
-    When I follow the left menu "Configuration > Channels"
+    When I follow the left menu "Configuration > Configuration Channels"
     And I follow "Mixed Channel"
     And I follow "Systems" in the content area
     And I check the "sle_minion" client
