@@ -1,3 +1,4 @@
+- Improve performance when adding servers to serverGroups (bsc#1158754)
 - Migrate pillar and formula data on minion id change (bsc#1161755)
 - change doc links pointing to new documentation server
 - call saltutil.sync_all before calling highstate (bsc#1152673)
