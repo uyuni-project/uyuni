@@ -11,6 +11,7 @@ class MLAnyType(ABC):
     """
     Base MLType mix-in.
     """
+
     def __init__(self, data: str):
         """
         Constructor
@@ -43,6 +44,7 @@ class MLPackageType(MLAnyType):
     """
     Package type input.
     """
+
     def __init__(self):
         """
         Constructor
@@ -67,15 +69,14 @@ class MLPackageType(MLAnyType):
         :return: object as a dictionary.
         :rtype: Dict
         """
-        return {
-            "rpms": list(self.rpms)
-        }
+        return {"rpms": list(self.rpms)}
 
 
 class MLInputType(MLAnyType):
     """
     Input type.
     """
+
     def to_obj(self) -> Dict:
         return cast(Dict, self._obj)
 
