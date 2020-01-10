@@ -334,15 +334,27 @@ public class TaskomaticApi {
         return schedules;
     }
 
-    public List<TaskoSchedule> findActiveSchedulesByBunch(User user, String bunchName) {
-        try {
-            return TaskoFactory.listActiveSchedulesByOrgAndBunch(null,
-                    bunchName);
-        }
-        catch (NoSuchBunchTaskException e) {
-            // no such schedules available
-            return new ArrayList<>();
-        }
+    /**
+     * Return list of active schedules by bunch
+     * @param user shall be sat admin
+     * @param scheduleId ID of the schedule
+     * @return schedule with matching ID
+     */
+    public Map findScheduleById(User user, long scheduleId) throws TaskomaticApiException {
+        Map schedule = (Map) invoke("tasko.lookupScheduleById", scheduleId);
+        return schedule;
+    }
+
+    /**
+     * Return list of active schedules by bunch
+     * @param user shall be sat admin
+     * @param bunchName name of the bunch
+     * @return list of schedules
+     */
+    public List<Map> findActiveSchedulesByBunch(User user, String bunchName)
+            throws TaskomaticApiException {
+        List<Map> schedules = (List<Map>) invoke("tasko.listActiveSatSchedulesByBunch",bunchName);
+        return schedules;
     }
 
     /**

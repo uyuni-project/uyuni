@@ -73,6 +73,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.sql.Timestamp;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -166,7 +167,7 @@ public class StatesAPI {
      * @return the result JSON object
      */
     public static String schedules(Request request, Response response, User user) {
-        List<Map<String, String>> schedules = getRecurringStateApplySchedules(user, true);
+        List<Map<String, String>> schedules = getSchedules(user);
         return json(response,
                 ResultJson.success(schedules));
     }
@@ -182,7 +183,7 @@ public class StatesAPI {
     public static String singleSchedule(Request request, Response response, User user) {
         String scheduleId = request.params("scheduleId");
         Map<String, String> schedule = getSingleSchedule(scheduleId, user);
-        if (schedule == null) {
+        if (schedule.isEmpty()) {
             return json(response,
                     ResultJson.error("Schedule not found"));
         }
@@ -196,34 +197,27 @@ public class StatesAPI {
      * @param user the authorized user
      * @return the list of Recurring State Apply Schedules
      */
-    private static List<Map<String, String>> getRecurringStateApplySchedules(User user, boolean isSimple) {
-        List<TaskoSchedule> taskoSchedules = new TaskomaticApi().findActiveSchedulesByBunch(user,
-                "recurring-state-apply-bunch");
-        return taskoSchedules.stream().map(taskoSchedule -> {
-            String date = taskoSchedule.getActiveFrom().toString();
-            Map<String, String> schedule = new HashMap<>();
-            if (!isSimple) {
-                schedule = (Map<String, String>) taskoSchedule.getDataMap();
-                if (schedule.get("minute").isEmpty()) {
-                    RecurringEventPicker picker = RecurringEventPicker.prepopulatePicker("date", null, null, taskoSchedule.getCronExpr());
-                    schedule.put("minute", picker.getMinute());
-                    schedule.put("hour", picker.getHour());
-                    schedule.put("dayOfMonth", picker.getDayOfMonth());
-                    schedule.put("dayOfWeek", picker.getDayOfWeek());
-                    schedule.put("type", picker.getStatus());
-                }
-            }
-            else {
-                Map<String, String> data = (Map<String, String>) taskoSchedule.getDataMap();
+    private static List<Map<String, String>> getSchedules(User user) {
+        /* TODO: Check user accessability */
+        try {
+            List<Map> taskoSchedules = new TaskomaticApi().findActiveSchedulesByBunch(user,
+                    "recurring-state-apply-bunch");
+            return taskoSchedules.stream().map(taskoSchedule -> {
+                Map<String, String> schedule = new HashMap<>();
+                Map<String, String> data = (Map<String, String>) taskoSchedule.get("data_map");
                 schedule.put("targetType", data.get("targetType"));
                 schedule.put("minionIds", data.get("minionIds"));
-            }
-            schedule.put("scheduleId", taskoSchedule.getId().toString());
-            schedule.put("scheduleName", taskoSchedule.getJobLabel());
-            schedule.put("createdAt", date.substring(0, date.indexOf(".")));
-            schedule.put("frequency", taskoSchedule.getCronExpr());
-            return schedule;
-        }).collect(Collectors.toList());
+                schedule.put("scheduleId", taskoSchedule.get("id").toString());
+                schedule.put("scheduleName", taskoSchedule.get("job_label").toString());
+                String date = new Timestamp(((Date) taskoSchedule.get("active_from")).getTime()).toString();
+                schedule.put("createdAt", date.substring(0, date.indexOf(".")));
+                schedule.put("frequency", taskoSchedule.get("cron_expr").toString());
+                return schedule;
+            }).collect(Collectors.toList());
+        }
+        catch (TaskomaticApiException e) {
+            return new ArrayList<>();
+        }
     }
 
     /**
@@ -234,13 +228,31 @@ public class StatesAPI {
      * @return the result schedule object
      */
     private static Map<String, String> getSingleSchedule(String scheduleId, User user) {
-        List<Map<String, String>> schedules = getRecurringStateApplySchedules(user, false);
-        for (Map<String, String> schedule : schedules) {
-            if (schedule.get("scheduleId").equals(scheduleId)) {
-                return schedule;
+        try {
+            Map<String, String> schedule = new HashMap<>();
+            Map taskoSchedule = new TaskomaticApi().findScheduleById(user, Long.parseLong(scheduleId));
+            if (taskoSchedule.get("id") != null) {
+                String cronExpr = taskoSchedule.get("cron_expr").toString();
+                schedule = (Map<String, String>) taskoSchedule.get("data_map");
+                if (schedule.get("minute").isEmpty()) {
+                    RecurringEventPicker picker = RecurringEventPicker.prepopulatePicker("date", null, null, cronExpr);
+                    schedule.put("minute", picker.getMinute());
+                    schedule.put("hour", picker.getHour());
+                    schedule.put("dayOfMonth", picker.getDayOfMonth());
+                    schedule.put("dayOfWeek", picker.getDayOfWeek());
+                    schedule.put("type", picker.getStatus());
+                }
+                String date = new Timestamp(((Date) taskoSchedule.get("active_from")).getTime()).toString();
+                schedule.put("scheduleId", taskoSchedule.get("id").toString());
+                schedule.put("scheduleName", taskoSchedule.get("job_label").toString());
+                schedule.put("createdAt", date.substring(0, date.indexOf(".")));
+                schedule.put("frequency", cronExpr);
             }
+            return schedule;
         }
-        return null;
+        catch(TaskomaticApiException e) {
+            return new HashMap<>();
+        }
     }
 
     /**
@@ -582,7 +594,7 @@ public class StatesAPI {
     public static String deleteSchedule(Request request, Response response, User user) {
         String scheduleId = request.params("scheduleId");
         Map<String, String> schedule = getSingleSchedule(scheduleId, user);
-        if (schedule == null) {
+        if (schedule.isEmpty()) {
             return json(response, ResultJson.error("Schedule not found."));
         }
         String scheduleName = schedule.get("scheduleName");
