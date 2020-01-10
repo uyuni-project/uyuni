@@ -123,7 +123,7 @@ class MLInputType(MLAnyType):
 
     def get_paths(self) -> List[str]:
         """
-        get_paths get paths section from the YAML
+        get_paths get paths section from the YAML.
 
         :return: array of paths
         :rtype: List[str]
