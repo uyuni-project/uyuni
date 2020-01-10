@@ -82,10 +82,12 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -613,8 +615,21 @@ public class ContentSyncManager {
             ContentSource cs = a.getContentSource();
             String overwriteUrl = contentSourceUrlOverwrite(a.getRepository(), a.getUrl(), mirrorUrl);
             if (!cs.getSourceUrl().equals(overwriteUrl)) {
+                log.debug("Source and overwrite urls differ: " + cs.getSourceUrl() + " != " + overwriteUrl);
                 return true;
             }
+        }
+        if (Config.get().getString(ContentSyncManager.RESOURCE_PATH, null) != null) {
+            log.debug("Syncing from dir");
+            Date modifiedCache = ManagerInfoFactory.getLastMgrSyncRefresh();
+            long hours24 = 24 * 60 * 60 * 1000;
+            Timestamp t = new Timestamp(System.currentTimeMillis() - hours24);
+            if (t.after(modifiedCache)) {
+                log.debug("Last sync more than 24 hours ago: " + modifiedCache.toString() +
+                        " (" + t.toString() + ")");
+                return true;
+            }
+            return false;
         }
         return SCCCachingFactory.refreshNeeded();
     }
