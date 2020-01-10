@@ -158,6 +158,7 @@ public class MatcherJsonIO {
      */
     public List<SystemJson> getJsonSystems(boolean includeSelf, String arch, boolean selfMonitoringEnabled) {
         Stream<SystemJson> systems = ServerFactory.list(true, true).stream()
+            .filter(system -> ((system.getVirtualInstance() != null) && (!system.getVirtualInstance().getPayg())))
             .map(system -> {
                 Long cpus = system.getCpu() == null ? null : system.getCpu().getNrsocket();
                 Set<String> entitlements = system.getEntitlementLabels();
@@ -181,6 +182,7 @@ public class MatcherJsonIO {
     private static Set<Long> getVirtualGuests(Server system) {
         return system.getGuests().stream()
             .filter(vi -> vi.getGuestSystem() != null)
+            .filter(vi -> !vi.getPayg())
             .map(vi -> vi.getGuestSystem().getId())
             .collect(toSet());
     }
