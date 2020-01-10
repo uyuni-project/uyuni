@@ -106,7 +106,11 @@ public class VirtualInstance extends BaseDomainHelper {
      * @return payg
      */
     public Boolean getPayg() {
-	    return payg;
+        if (payg == null) {
+            return false;
+        }
+
+        return payg;
     }
 
     /**
