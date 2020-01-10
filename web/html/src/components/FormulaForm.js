@@ -17,6 +17,8 @@ const defaultMessageTexts = {
     "pillar_only_formula_saved": <p>{t("Formula saved. Applying the highstate is not needed for this formula.")}</p>
 }
 
+const productName = Utils.getProductName();
+
 //props:
 //dataUrl = url to get the server data
 //saveUrl = url to save the data, data is sent as post request
@@ -400,7 +402,7 @@ class FormulaForm extends React.Component {
                             </div>
                             <div className="panel-body">
                                 <div className="formula-content">
-                                <p>{this.state.formulaMetadata.description}</p>
+                                <p>{text(this.state.formulaMetadata.description)}</p>
                                 <hr/>
                                 {this.renderForm()}
                                 </div>
@@ -461,9 +463,9 @@ function adjustElementBasicAttrs([elementName, element], scope) {
     }
 
     element.$id = elementName;
-    element.$name = get(element.$name, capitalize(elementName));
-    element.$help = get(element.$help, element.$name);
-    element.$placeholder = get(element.$placeholder, "");
+    element.$name = text(get(element.$name, capitalize(elementName)));
+    element.$help = text(get(element.$help, element.$name));
+    element.$placeholder = text(get(element.$placeholder, ""));
 
     if (isPrimitiveElement(element)) {
         element.$default = defaultValueForElement(element);
@@ -491,6 +493,12 @@ function isPrimitiveElement(element) {
     return element.$type !== "group" &&
         element.$type !== "namespace" &&
         element.$type !== "edit-group";
+}
+
+function text(txt) {
+    // replace variables
+    txt = txt.replace(/\${productName}/g, productName);
+    return txt;
 }
 
 /*

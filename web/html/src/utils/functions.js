@@ -1,4 +1,5 @@
 /* eslint-disable */
+// @flow
 export type Cancelable = {
   promise: Promise<any>,
   cancel: (any) => void
@@ -195,6 +196,9 @@ function deepCopy(e) {
     return e;
 }
 
+function getProductName() : string {
+    return window._IS_UYUNI ? "Uyuni" : "SUSE Manager"
+}
 
 module.exports = {
     Utils: {
@@ -208,7 +212,8 @@ module.exports = {
         urlBounce: urlBounce,
         capitalize: capitalize,
         generatePassword: generatePassword,
-        deepCopy: deepCopy
+        deepCopy: deepCopy,
+        getProductName: getProductName
     },
     Formats: {
         LocalDateTime: LocalDateTime
