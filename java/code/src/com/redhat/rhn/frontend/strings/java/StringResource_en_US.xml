@@ -8287,18 +8287,18 @@ tree will not be usable for kickstarting.
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-     <trans-unit id="formula.accessdenied">
+      </trans-unit>
+      <trans-unit id="formula.accessdenied">
         <source>You do not have access.</source>
       </trans-unit>
-     </trans-unit>
       <trans-unit id="Home">
         <source>Home</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-       <trans-unit id="help.credentials.nologins">
-        <source>There are no registered accounts with that email address.</source>
       </trans-unit>
+      <trans-unit id="help.credentials.nologins">
+        <source>There are no registered accounts with that email address.</source>
       </trans-unit>
     </body>
   </file>
