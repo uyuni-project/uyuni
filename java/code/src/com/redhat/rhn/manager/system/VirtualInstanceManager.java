@@ -172,7 +172,7 @@ public class VirtualInstanceManager extends BaseManager {
                     else {
                         virtualInstances.stream().forEach(virtualInstance ->
                             updateGuestVirtualInstance(virtualInstance, name, st, server,
-                                    virtualInstance.getGuestSystem()));
+                                    virtualInstance.getGuestSystem(), virtualInstance.getPayg()));
                     }
                 });
 
