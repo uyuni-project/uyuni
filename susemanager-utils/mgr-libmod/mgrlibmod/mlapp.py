@@ -55,7 +55,7 @@ Usage example:
         print(example.strip() + "\n")
     else:
         try:
-            print(mllib.MLLibmodAPI(opts).set_repodata(get_stdin_data()).run().to_json())
+            print(mllib.MLLibmodAPI(opts).set_repodata(get_stdin_data()).run().to_json(pretty=True))
         except Exception as exc:
             print("ERROR:", exc)
             if opts.verbose:
