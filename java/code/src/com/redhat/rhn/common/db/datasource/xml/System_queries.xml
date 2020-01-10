@@ -1554,13 +1554,6 @@ SELECT id,
     </query>
 </callable-mode>
 
-<callable-mode name="can_entitle_server">
-  <query params="sid, entitlement">
-    {:retval = call rhn_entitlements.can_entitle_server(:sid, :entitlement)}
-  </query>
-</callable-mode>
-
-
 <callable-mode name="delete_action_for_system">
   <query params="action_id, server_id">
       {call rhn_server.remove_action(:server_id, :action_id)}
@@ -1711,6 +1704,24 @@ SELECT 1
 {call rhn_entitlements.entitle_server(:sid, :entitlement)}
   </query>
 </callable-mode>
+
+<write-mode name="entitle_server">
+  <query params="sid, entitlement_label">
+    INSERT INTO rhnServerHistory (id, server_id, summary, details )
+    VALUES (nextval('rhn_event_id_seq'), :sid,
+            'added system entitlement ',
+            CASE :entitlement_label
+              WHEN 'enterprise_entitled' then 'Management'
+              WHEN 'bootstrap_entitled' then 'Bootstrap'
+              WHEN 'salt_entitled' then 'Salt'
+              WHEN 'foreign_entitled' then 'Foreign'
+              WHEN 'virtualization_host' then 'Virtualization'
+              WHEN 'container_build_host' then 'Container'
+              WHEN 'osimage_build_host' then 'OS Image'
+              WHEN 'monitoring_entitled' then 'Monitoring'
+            END)
+  </query>
+</write-mode>
 
 <callable-mode name="unentitle_server">
   <query params="sid">

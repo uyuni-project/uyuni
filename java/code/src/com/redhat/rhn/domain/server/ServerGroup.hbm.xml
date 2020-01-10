@@ -149,4 +149,37 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
                                         SGM.server_group_id = :sgid
         ]]>
     </sql-query>
+    
+    <sql-query name="ServerGroup.findCompatibleServerGroupForBaseEntitlement">
+        <![CDATA[SELECT {sg.*}
+                 FROM rhnServerGroupType SGT
+                   JOIN rhnServerGroup SG ON (SG.group_type = SGT.id)
+                   JOIN rhnServer S ON (S.org_id = SG.org_id)
+                   JOIN rhnServerServerGroupArchCompat SSGAC ON (SSGAC.server_arch_id = S.server_arch_id AND SSGAC.server_group_type = SGT.id)
+                 WHERE S.id = :sid
+                   AND SGT.label = :entitlement_label
+                   AND NOT EXISTS (SELECT 1
+                                   FROM rhnServerGroupMembers SGM
+                                   WHERE SGM.server_group_id = SG.id
+                                     AND SGM.server_id = S.id)]]>
+                <return alias="sg" class="com.redhat.rhn.domain.server.ServerGroup"/>
+    </sql-query>
+
+    <sql-query name="ServerGroup.findCompatibleServerGroupForAddOnEntitlement">
+        <![CDATA[SELECT {sg.*}
+                 FROM rhnServerGroupType SGT
+                   JOIN rhnServerGroup SG ON (SG.group_type = SGT.id)
+                   JOIN rhnSGTypeBaseAddonCompat SGTBAC ON (SGTBAC.addon_id = SGT.id)
+                   JOIN rhnServer S ON (S.org_id = SG.org_id)
+                   JOIN rhnServerServerGroupArchCompat SSGAC ON (SSGAC.server_arch_id = S.server_arch_id AND SSGAC.server_group_type = SGT.id)
+                 WHERE S.id = :sid
+                   AND SGT.label = :entitlement_label
+                   AND SGTBAC.base_id = :base_ent_id
+                   AND NOT EXISTS (SELECT 1
+                                   FROM rhnServerGroupMembers SGM
+                                   WHERE SGM.server_group_id = SG.id
+                                     AND SGM.server_id = S.id)]]>
+                <return alias="sg" class="com.redhat.rhn.domain.server.ServerGroup"/>
+    </sql-query>
+    
 </hibernate-mapping>

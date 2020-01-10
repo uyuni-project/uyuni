@@ -345,7 +345,7 @@ public class ServerGroupManager {
         updatePillarAfterGroupUpdateForServers(servers);
     }
 
-    private void updatePillarAfterGroupUpdateForServers(Collection<Server> servers) {
+    public void updatePillarAfterGroupUpdateForServers(Collection<Server> servers) {
         try {
             SaltStateGeneratorService.INSTANCE.createPillarDirectory();
             for (Server s : servers) {

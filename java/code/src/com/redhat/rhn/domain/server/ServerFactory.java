@@ -337,8 +337,7 @@ public class ServerFactory extends HibernateFactory {
      * @param serverIn The server to add
      * @param serverGroupIn The group to add the server to
      */
-    public static void addServerToGroup(Server serverIn,
-            ServerGroup serverGroupIn) {
+    public static void addServerToGroup(Server serverIn, ServerGroup serverGroupIn) {
         addServersToGroup(Arrays.asList(serverIn.getId()), serverGroupIn);
     }
 
