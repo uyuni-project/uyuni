@@ -1,3 +1,4 @@
+- Add new 'payg' attribute to rhnVirtualInstance table
 - enable re-activation keys for salt managed systems (bsc#1159012)
 - generate metadata with empty vendor (bsc#1158480)
 - Fix rhnActionVirtDelete when migrating from 3.2 to 4.0 (bsc#1158178)
