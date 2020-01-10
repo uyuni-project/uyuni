@@ -247,12 +247,12 @@ public class VirtualInstanceManager extends BaseManager {
      * @param guest - guest to be set as the guest system for the new VirtualInstance
      * @param vCpus - number of CPUs
      * @param memory - total Memory
-	 */
+     */
     public static void addGuestVirtualInstance(String vmGuid, String name,
             VirtualInstanceType type, VirtualInstanceState state,
             Server host, Server guest, int vCpus, long memory) {
         addGuestVirtualInstance(vmGuid, name, type, state, host, guest, vCpus, memory, false);
-	}
+    }
 
     /**
      * Creates a new (guest) VirtualInstance for given VM GUID.
@@ -329,7 +329,7 @@ public class VirtualInstanceManager extends BaseManager {
      */
     public static void updateGuestVirtualInstance(VirtualInstance virtualInstance,
             String name, VirtualInstanceState state, Server host, Server guest,
-			boolean isPAYG) {
+            boolean isPAYG) {
         int vCpu = 0;
         long memory = 0;
         if (virtualInstance.getNumberOfCPUs() != null) {
@@ -340,7 +340,7 @@ public class VirtualInstanceManager extends BaseManager {
         }
         updateGuestVirtualInstance(virtualInstance, name, state, host, guest, vCpu,
                 memory, isPAYG);
-	}
+    }
 
     /**
      * Update mapping of given guest VirtualInstance to given (host) Server.
@@ -376,7 +376,7 @@ public class VirtualInstanceManager extends BaseManager {
             int vCpus, long memory) {
         updateGuestVirtualInstance(virtualInstance, name, state, host, guest, vCpus,
                 memory, false);
-	}
+    }
 
     /**
      * Update mapping of given guest VirtualInstance to given (host) Server.
