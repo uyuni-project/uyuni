@@ -19,19 +19,19 @@ const Messages = createReactClass({
       var message;
       var additionalInformation;
       switch(rawMessage["type"]) {
-        case "unknownPartNumber" :
+        case "unknown_part_number" :
           message = t("Unsupported part number detected");
-          additionalInformation = data["partNumber"];
+          additionalInformation = data["part_number"];
           break;
-        case "physicalGuest" :
+        case "physical_guest" :
           message = t("Physical system is reported as virtual guest, please check hardware data");
           additionalInformation = systems[data["id"]].name;
           break;
-        case "guestWithUnknownHost" :
+        case "guest_with_unknown_host" :
           message = t("Virtual guest has unknown host, assuming it is a physical system");
           additionalInformation = systems[data["id"]].name;
           break;
-        case "unknownCpuCount" :
+        case "unknown_cpu_count" :
           message = t("System has an unknown number of sockets, assuming 16");
           additionalInformation = systems[data["id"]].name;
           break;
@@ -42,6 +42,12 @@ const Messages = createReactClass({
         case "merge_subscriptions" :
           message = t("Two subscriptions with the same part number (and other properties) have been merged together - start/end dates might be indicative");
           additionalInformation = data["part_number"];
+          break;
+        case "adjust_pinned_match" :
+          message = t("Pinned match adjusted due to merged subscriptions");
+          additionalInformation = t("Subscription IDs") + ": " +
+              data["new_subscription_id"] + ", " + data["old_subscription_id"] + ", " +
+              t("System") + ": " + systems[data["system_id"]].name;
           break;
         default:
           message = rawMessage["type"];
