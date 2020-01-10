@@ -72,6 +72,35 @@ class MLPackageType(MLAnyType):
         return {"rpms": list(self.rpms)}
 
 
+class MLStreamType:
+    """
+    Stream type
+    """
+    def __init__(self, name: str, streamname: str):
+        self.__name: str = name
+        self.__stream: str = streamname
+        self.__exc = Exception("This is a read-only property")
+
+    def __repr__(self) -> str:
+        return "<{} ({}/{}) at {}>".format(self.__class__.__name__, self.__name, self.__stream, hex(id(self)))
+
+    @property
+    def name(self) -> str:
+        return self.__name
+
+    @name.setter
+    def name(self, v: str) -> None:
+        raise self.__exc
+
+    @property
+    def stream(self) -> str:
+        return self.__stream
+
+    @stream.setter
+    def stream(self, v: str) -> None:
+        raise self.__exc
+
+
 class MLInputType(MLAnyType):
     """
     Input type.
@@ -107,7 +136,7 @@ class MLInputType(MLAnyType):
 
         return paths
 
-    def get_streams(self) -> Tuple[Dict[str, str], ...]:
+    def get_streams(self) -> List[MLStreamType]:
         """
         get_streams [summary]
 
@@ -115,8 +144,12 @@ class MLInputType(MLAnyType):
         :rtype: List[Tuple[str]]
         """
         obj: Dict = self.to_obj()
-        out: List[Tuple[str, ...]] = []
+        out: List[MLStreamType] = []
 
         assert obj["streams"] is not None, "Streams should not be null!"
+        for str_kw in obj["streams"]:
+            assert "name" in str_kw, "No 'name' attribute in the stream parameter {}".format(str_kw)
+            assert "stream" in str_kw, "No 'stream' attribute in the stream parameter {}".format(str_kw)
+            out.append(MLStreamType(name=str_kw["name"], streamname=str_kw["stream"]))
 
-        return tuple(obj["streams"])
+        return out
