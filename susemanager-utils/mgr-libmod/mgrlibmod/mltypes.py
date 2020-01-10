@@ -7,6 +7,20 @@ import json
 from abc import ABC, abstractmethod
 
 
+class MLSet(list):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+    def __append(self, obj: Any) -> None:
+        super().append(obj)
+
+    def append(self, obj: Any) -> None:
+        self.add(obj)
+
+    def add(self, obj: Any) -> None:
+        if obj not in self:
+            self.__append(obj)
+
 class MLAnyType(ABC):
     """
     Base MLType mix-in.
