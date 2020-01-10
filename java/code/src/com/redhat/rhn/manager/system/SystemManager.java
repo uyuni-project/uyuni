@@ -51,6 +51,7 @@ import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerConstants;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ServerGroup;
+import com.redhat.rhn.domain.server.ServerGroupFactory;
 import com.redhat.rhn.domain.server.ServerHistoryEvent;
 import com.redhat.rhn.domain.server.ServerLock;
 import com.redhat.rhn.domain.server.VirtualInstance;
@@ -2021,68 +2022,44 @@ public class SystemManager extends BaseManager {
      */
     public static ValidatorResult entitleServer(Server server, Entitlement ent) {
         log.debug("Entitling: " + ent.getLabel());
-
-        return entitleServer(server.getOrg(), server.getId(), ent);
-    }
-
-    /**
-     * Entitles the given server to the given Entitlement.
-     * @param orgIn Org who wants to entitle the server.
-     * @param sid server id to be entitled.
-     * @param ent Level of Entitlement.
-     * @return ValidatorResult of errors and warnings.
-     */
-    public static ValidatorResult entitleServer(Org orgIn, Long sid,
-            Entitlement ent) {
-        Server server = ServerFactory.lookupByIdAndOrg(sid, orgIn);
         ValidatorResult result = new ValidatorResult();
 
-        if (hasEntitlement(sid, ent)) {
+        if (server.hasEntitlement(ent)) {
             log.debug("server already entitled.");
             result.addError(new ValidatorError("system.entitle.alreadyentitled",
                     ent.getHumanReadableLabel()));
             return result;
         }
 
-        boolean wasVirtEntitled = hasEntitlement(sid, EntitlementManager.VIRTUALIZATION);
+        boolean wasVirtEntitled = server.hasEntitlement(EntitlementManager.VIRTUALIZATION);
         if (EntitlementManager.VIRTUALIZATION.equals(ent)) {
             if (server.isVirtualGuest()) {
                 result.addError(new ValidatorError("system.entitle.guestcantvirt"));
                 return result;
             }
 
-            if (!wasVirtEntitled) {
-                log.debug("setting up system for virt.");
-                ValidatorResult virtSetupResults = setupSystemForVirtualization(orgIn, sid);
-                result.append(virtSetupResults);
-                if (virtSetupResults.getErrors().size() > 0) {
-                    log.debug("error trying to setup virt ent: " +
-                            virtSetupResults.getMessage());
-                    return result;
-                }
+            log.debug("setting up system for virt.");
+            ValidatorResult virtSetupResults = setupSystemForVirtualization(server.getOrg(), server.getId());
+            result.append(virtSetupResults);
+            if (virtSetupResults.getErrors().size() > 0) {
+                log.debug("error trying to setup virt ent: " + virtSetupResults.getMessage());
+                return result;
             }
         }
         else if (EntitlementManager.OSIMAGE_BUILD_HOST.equals(ent)) {
             saltServiceInstance.generateSSHKey(SaltSSHService.SSH_KEY_PATH);
         }
 
-        Map<String, Object> in = new HashMap<String, Object>();
-        in.put("sid", sid);
-        in.put("entitlement", ent.getLabel());
-
-        CallableMode m = ModeFactory.getCallableMode(
-                "System_queries", "entitle_server");
-
-        m.execute(in, new HashMap<String, Integer>());
-        log.debug("entitle_server mode query executed.");
+        addEntitleToServer(server, ent);
 
         server.asMinionServer().ifPresent(minion -> {
-            SystemManager.refreshPillarDataForMinion(minion);
+            ServerGroupManager.getInstance().updatePillarAfterGroupUpdateForServers(Arrays.asList(minion));
 
             if (wasVirtEntitled && !EntitlementManager.VIRTUALIZATION.equals(ent) ||
                     !wasVirtEntitled && EntitlementManager.VIRTUALIZATION.equals(ent)) {
                 SystemManager.updateLibvirtEngine(minion);
             }
+
             if (EntitlementManager.MONITORING.equals(ent)) {
                 try {
                     // Assign the monitoring formula to the system
@@ -2104,6 +2081,25 @@ public class SystemManager extends BaseManager {
 
         log.debug("done.  returning null");
         return result;
+    }
+
+    private static void addEntitleToServer(Server server, Entitlement ent) {
+        Optional<ServerGroup> serverGroup = getServerGroupForEntitleServer(server, ent);
+
+        if (serverGroup.isPresent()) {
+            Map<String, Object> in = new HashMap<String, Object>();
+            in.put("sid", server.getId());
+            in.put("entitlement_label", ent.getLabel());
+
+            log.debug("entitle_server mode query executed.");
+
+            WriteMode m = ModeFactory.getWriteMode("System_queries", "entitle_server");
+            m.executeUpdate(in);
+
+            ServerFactory.addServerToGroup(server, serverGroup.get());
+        } else {
+            log.info("invalid_entitlement.");
+        }
     }
 
     /**
@@ -2339,35 +2335,43 @@ public class SystemManager extends BaseManager {
      * entitled to the passed in entitlement.
      */
     public static boolean canEntitleServer(Server server, Entitlement ent) {
-        return canEntitleServer(server.getId(), ent);
+        return getServerGroupForEntitleServer(server, ent).isPresent();
     }
 
-    /**
-     * Tests whether or not a given server can be entitled with a specific entitlement
-     * @param serverId The Id of the server in question
-     * @param ent The entitlement to test
-     * @return Returns true or false depending on whether or not the server can be
-     * entitled to the passed in entitlement.
-     */
-    public static boolean canEntitleServer(Long serverId, Entitlement ent) {
-        if (log.isDebugEnabled()) {
-            log.debug("canEntitleServer.serverId: " + serverId + " ent: " +
-                    ent.getHumanReadableLabel());
+    private static Optional<ServerGroup> getServerGroupForEntitleServer(Server server, Entitlement ent) {
+        Set<Entitlement> entitlements = server.getEntitlements();
+
+        if (entitlements.isEmpty()) {
+            if (ent.isBase()) {
+                Optional<ServerGroup> serverGroup = ServerGroupFactory
+                        .findCompatibleServerGroupForBaseEntitlement(server.getId(), ent);
+                if (!serverGroup.isPresent()) {
+                    log.info("invalid_base_entitlement - no compatible server group");
+                }
+                return serverGroup;
+            }
+            return Optional.empty();
         }
-        Map<String, Object> in = new HashMap<String, Object>();
-        in.put("sid", serverId);
-        in.put("entitlement", ent.getLabel());
 
-        Map<String, Integer> out = new HashMap<String, Integer>();
-        out.put("retval", Types.NUMERIC);
+        if (ent.isBase()) {
+            log.warn("invalid_addon_entitlement - found another base");
+            return Optional.empty();
+        }
 
-        CallableMode m = ModeFactory.getCallableMode("System_queries",
-                "can_entitle_server");
-        Map<String, Object> result = m.execute(in, out);
-        boolean retval = BooleanUtils.
-                toBoolean(((Long) result.get("retval")).intValue());
-        log.debug("canEntitleServer.returning: " + retval);
-        return retval;
+        Optional<Long> baseEntitlementId = server.getBaseEntitlementId();
+
+        if (baseEntitlementId.isEmpty()) {
+            log.warn("invalid_base_entitlement - never found a base");
+            return Optional.empty();
+        }
+
+        Optional<ServerGroup> serverGroup =
+                ServerGroupFactory.findCompatibleServerGroupForAddonEntitlement(
+                        server.getId(), ent,  baseEntitlementId.get());
+        if (!serverGroup.isPresent()) {
+            log.warn("invalid_base_entitlement - no compatible server group");
+        }
+        return serverGroup;
     }
 
     /**

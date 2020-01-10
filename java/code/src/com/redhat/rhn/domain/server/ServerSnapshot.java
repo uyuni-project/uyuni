@@ -247,6 +247,7 @@ public class ServerSnapshot extends BaseDomainHelper {
      *
      * {@inheritDoc}
      */
+    @Override
     public int hashCode() {
         return new HashCodeBuilder().append(reason.hashCode())
                                     .append(channels.hashCode())
@@ -261,6 +262,7 @@ public class ServerSnapshot extends BaseDomainHelper {
      *
      * {@inheritDoc}
      */
+    @Override
     public boolean equals(Object obj) {
         ServerSnapshot other = (ServerSnapshot) obj;
         return new EqualsBuilder().append(reason.hashCode(), other.reason.hashCode())
