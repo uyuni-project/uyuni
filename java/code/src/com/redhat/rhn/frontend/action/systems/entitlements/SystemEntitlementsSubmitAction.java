@@ -19,6 +19,8 @@ import com.redhat.rhn.common.validator.ValidatorResult;
 import com.redhat.rhn.domain.entitlement.Entitlement;
 import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.domain.rhnset.RhnSetElement;
+import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.common.BaseSetOperateOnSelectedItemsAction;
 import com.redhat.rhn.frontend.dto.SystemOverview;
@@ -168,16 +170,16 @@ public class SystemEntitlementsSubmitAction extends
         //Go through the set of systems to which we should add the entitlement
         for (RhnSetElement element : set.getElements()) {
             Long sid = element.getElement();
-
+            Server server = ServerFactory.lookupByIdAndOrg(sid, user.getOrg());
             //We are adding the add on entitlement
             if (add) {
                 //if the system already has the entitlement, do nothing
                 //  if so, neither success nor failure count will be updated.
-                if (!SystemManager.hasEntitlement(sid, ent)) {
-                    if (SystemManager.canEntitleServer(sid, ent)) {
+                if (!server.hasEntitlement(ent)) {
+                    if (SystemManager.canEntitleServer(server, ent)) {
                             log.debug("we can entitle.  Lets entitle to : " + ent);
                             ValidatorResult vr =
-                                SystemManager.entitleServer(user.getOrg(), sid, ent);
+                                SystemManager.entitleServer(server, ent);
                             log.debug("entitleServer.VE: " + vr.getMessage());
                             if (vr.getErrors().size() > 0) {
                                 failureCount++;

@@ -116,7 +116,7 @@ public class Server extends BaseDomainHelper implements Identifiable {
     private Set<ServerHistoryEvent> history = new HashSet<ServerHistoryEvent>();
     private Set<InstalledPackage> packages = new HashSet<>();
     private ProxyInfo proxyInfo;
-    private Set<ServerGroup> groups;
+    private Set<ServerGroup> groups = new HashSet<>();
     private Set<ClientCapability> capabilities = new HashSet<>();
     private CrashCount crashCount;
     private Set<Crash> crashes;
@@ -1407,6 +1407,17 @@ public class Server extends BaseDomainHelper implements Identifiable {
 
        return serverGroupTypes.stream().filter(ServerGroupType::isBase).findFirst()
                 .map(sgt -> EntitlementManager.getByName(sgt.getLabel())).orElse(null);
+    }
+
+    /**
+     * Retrieves the Id of the base entitlement for the Server.
+     * @return Entitlement Id of the base entitlement for the server
+     */
+    public Optional<Long> getBaseEntitlementId() {
+        List<ServerGroupType> serverGroupTypes = getEntitledGroupTypes();
+
+       return serverGroupTypes.stream().filter(ServerGroupType::isBase).findFirst()
+                .map(ServerGroupType::getId);
     }
 
     /**
