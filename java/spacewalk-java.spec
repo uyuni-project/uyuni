@@ -626,7 +626,7 @@ chown tomcat:%{apache_group} /var/log/rhn/gatherer.log
 %{jardir}/antlr.jar
 %{jardir}/bcel.jar
 %{jardir}/c3p0*.jar
-%if 0%{?fedora} >= 25
+%if 0%{?fedora} >= 25 || 0%{?sle_version} >= 150200
 %{jardir}/cglib_cglib.jar
 %else
 %{jardir}/cglib.jar

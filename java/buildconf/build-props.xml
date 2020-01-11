@@ -91,10 +91,13 @@
     <available file="${java.lib.dir}/jmock/jmock.jar" />
   </condition>
 
+  <available file="${java.lib.dir}/cglib/cglib.jar" type="file" property="cglib-jar" value="cglib/cglib" />
+  <available file="${java.lib.dir}/cglib.jar" type="file" property="cglib-jar" value="cglib" />
+
   <property name="boot.jar.dependencies" value="ivy" />
 
   <property name="common.jar.dependencies"
-      value="bcel cglib commons-beanutils commons-cli commons-codec
+      value="bcel ${cglib-jar} commons-beanutils commons-cli commons-codec
              commons-collections commons-digester commons-discovery
              commons-el commons-fileupload commons-io ${commons-lang} commons-logging ${commons-validator} ${hibernate}
              javamail smtp jdom ${jmock-jars}
@@ -126,7 +129,7 @@
        concurrent xalan-j2" />
 
   <property name="run.jar.dependencies"
-      value="antlr objectweb-asm/asm cglib c3p0 commons-discovery dom4j jaf ${jta11-jars} ojdbc14 sitemesh
+      value="antlr objectweb-asm/asm ${cglib-jar} c3p0 commons-discovery dom4j jaf ${jta11-jars} ojdbc14 sitemesh
              taglibs-standard-impl taglibs-standard-jstlel taglibs-standard-spec
              xalan-j2 xalan-j2-serializer xerces-j2 ${common.jar.dependencies}" />
 
@@ -148,12 +151,12 @@
       ${install.common.jar.dependencies} xalan-j2" />
 
   <property name="install.run.jar.dependencies"
-      value="antlr objectweb-asm/asm cglib c3p0 commons-discovery dom4j dwr jaf ${jta11-jars} sitemesh
+      value="antlr objectweb-asm/asm ${cglib-jar} c3p0 commons-discovery dom4j dwr jaf ${jta11-jars} sitemesh
              taglibs-standard-impl taglibs-standard-jstlel taglibs-standard-spec
              xalan-j2 xalan-j2-serializer xerces-j2 ${install.common.jar.dependencies}" />
 
   <property name="install.common.jar.dependencies"
-      value="bcel cglib commons-beanutils commons-cli commons-codec
+      value="bcel ${cglib-jar} commons-beanutils commons-cli commons-codec
              commons-collections commons-digester commons-discovery
              commons-el commons-fileupload commons-io ${commons-lang} commons-logging ${commons-validator} ${hibernate}
              ${tomcat-jars} javamail jdom jsch dwr google-gson
@@ -164,7 +167,7 @@
              concurrent simple-core snakeyaml simple-xml" />
 
   <property name="dist.jar.dependencies"
-      value="antlr objectweb-asm/asm bcel c3p0 cglib
+      value="antlr objectweb-asm/asm bcel c3p0 ${cglib-jar}
              commons-collections commons-beanutils commons-cli commons-codec
              commons-digester commons-discovery commons-el commons-fileupload commons-io
              ${commons-lang} commons-logging
