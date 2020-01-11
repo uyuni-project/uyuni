@@ -68,6 +68,10 @@
     <available file="${java.lib.dir}/log4j-1.jar" />
   </condition>
 
+  <condition property="jta11-jars" value="geronimo-jta-1.1-api" else="jta">
+    <available file="${java.lib.dir}/geronimo-jta-1.1-api.jar" />
+  </condition>
+
   <available file="${java.lib.dir}/ehcache.jar" type="file" property="ehcache" value="ehcache" />
   <available file="${java.lib.dir}/ehcache-core.jar" type="file" property="ehcache" value="ehcache-core" />
 
@@ -107,7 +111,7 @@
              regexp ${jmock-jars} postgresql-jdbc" />
 
   <property name="test.jar.dependencies"
-      value="antlr checkstyle dom4j emma emma_ant jdom jta junit
+      value="antlr checkstyle dom4j emma emma_ant jdom ${jta11-jars} junit
              ${log4j-jars}
              regexp ${jmock-jars}
              postgresql-jdbc" />
@@ -122,13 +126,13 @@
        concurrent xalan-j2" />
 
   <property name="run.jar.dependencies"
-      value="antlr objectweb-asm/asm cglib c3p0 commons-discovery dom4j jaf jta ojdbc14 sitemesh
+      value="antlr objectweb-asm/asm cglib c3p0 commons-discovery dom4j jaf ${jta11-jars} ojdbc14 sitemesh
              taglibs-standard-impl taglibs-standard-jstlel taglibs-standard-spec
              xalan-j2 xalan-j2-serializer xerces-j2 ${common.jar.dependencies}" />
 
   <!-- =================== RPM build, use jpackage syntax ======================= -->
   <!-- property name="install.test.jar.dependencies"
-      value="antlr checkstyle dom4j emma emma_ant jdom jta junit
+      value="antlr checkstyle dom4j emma emma_ant jdom ${jta11-jars} junit
              ${log4j-jars} mockobjects mockobjects-core mockobjects-jdk1.4-j2ee1.3
              regexp ${jmock-jars} strutstest" / -->
 
@@ -144,7 +148,7 @@
       ${install.common.jar.dependencies} xalan-j2" />
 
   <property name="install.run.jar.dependencies"
-      value="antlr objectweb-asm/asm cglib c3p0 commons-discovery dom4j dwr jaf jta sitemesh
+      value="antlr objectweb-asm/asm cglib c3p0 commons-discovery dom4j dwr jaf ${jta11-jars} sitemesh
              taglibs-standard-impl taglibs-standard-jstlel taglibs-standard-spec
              xalan-j2 xalan-j2-serializer xerces-j2 ${install.common.jar.dependencies}" />
 
@@ -164,7 +168,7 @@
              commons-collections commons-beanutils commons-cli commons-codec
              commons-digester commons-discovery commons-el commons-fileupload commons-io
              ${commons-lang} commons-logging
-             ${commons-validator} concurrent dom4j google-gson ${hibernate} jta
+             ${commons-validator} concurrent dom4j google-gson ${hibernate} ${jta11-jars}
              jaf ${jasper-jars} javamail jcommon jdom ${other-jars}
              ${tomcat-jars} log4j redstone-xmlrpc-client redstone-xmlrpc
              oro quartz stringtree-json sitemesh ${struts-jars}
