@@ -9,6 +9,7 @@
 # IDEMPOTENT
 
 - features/secondary/srv_menu.feature
+- features/secondary/srv_organization_credentials.feature
 - features/secondary/srv_change_password.feature
 - features/secondary/srv_clone_channel_npn.feature
 - features/secondary/srv_cve_audit.feature
