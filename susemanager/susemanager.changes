@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Mon Jan 13 15:13:11 CET 2020 - jgonzalez@suse.com
+
+- version 3.2.22-1
 - Show help message when missing sub-command in  mgr-sync call (bsc#1134708)
 - fix product id of SLES12 SP5 x86_64 and remove never released
   SLED product (bsc#1158963)
