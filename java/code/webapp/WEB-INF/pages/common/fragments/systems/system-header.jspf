@@ -50,7 +50,7 @@
     </c:if>
 </rhn:toolbar>
 
-<rhn:require acl="formula_value_equals(system-lock, minion_blackout, true)">
+<rhn:require acl="formula_value_equals(system-lock, minion_blackout, true);not has_ssh_push_contact_method()">
 <div class="alert alert-warning">
 <p>System is locked. Some operations are not allowed.</p>
 </div>
