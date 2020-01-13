@@ -41,6 +41,7 @@ import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.CPU;
+import com.redhat.rhn.domain.server.EntitlementServerGroup;
 import com.redhat.rhn.domain.server.InstalledPackage;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
@@ -652,7 +653,7 @@ public class SystemManager extends BaseManager {
             toRemove.add(server.getVirtualInstance());
         }
         else {
-            removeAllServerEntitlements(server.getId());
+            removeAllServerEntitlements(server);
             toRemove.addAll(server.getGuests());
         }
         toRemove.stream().forEach(vi ->
@@ -688,7 +689,8 @@ public class SystemManager extends BaseManager {
      * @param servers The servers to add
      * @param serverGroup The group to add the server to
      */
-    public static void addServersToServerGroup(Collection<Server> servers, ServerGroup serverGroup) {
+    public static void addServersToServerGroup(Collection<Server> servers,
+            ServerGroup serverGroup) {
         ServerFactory.addServersToGroup(servers, serverGroup);
         snapshotServers(servers, "Group membership alteration");
 
@@ -709,16 +711,18 @@ public class SystemManager extends BaseManager {
     }
 
     /**
-     * Removes a server from a group
-     * @param server The server to remove
-     * @param serverGroup The group to remove the server from
+     * Removes a set of servers from a group
+     * @param servers The servers to remove
+     * @param serverGroup The group to remove the servers from
      */
-    public static void removeServerFromServerGroup(Server server, ServerGroup serverGroup) {
-        ServerFactory.removeServerFromGroup(server.getId(), serverGroup.getId());
-        snapshotServer(server, "Group membership alteration");
+    public static void removeServersFromServerGroup(Collection<Server> servers, ServerGroup serverGroup) {
+        ServerFactory.removeServersFromGroup(servers, serverGroup);
+        snapshotServers(servers, "Group membership alteration");
         if (FormulaFactory.hasMonitoringDataEnabled(serverGroup)) {
-            if (SystemManager.hasEntitlement(server.getId(), EntitlementManager.MONITORING)) {
-                SystemManager.removeServerEntitlement(server.getId(), EntitlementManager.MONITORING);
+            for (Server server : servers) {
+                if (server.hasEntitlement(EntitlementManager.MONITORING)) {
+                    SystemManager.removeServerEntitlement(server, EntitlementManager.MONITORING);
+                }
             }
         }
     }
@@ -1589,7 +1593,6 @@ public class SystemManager extends BaseManager {
         return result.stream().map(Map::values).flatMap(Collection::stream).collect(Collectors.toList());
     }
 
-
     /**
      * Used to test if the server has a specific feature.
      * We should almost always check for features with serverHasFeature instead.
@@ -2089,14 +2092,16 @@ public class SystemManager extends BaseManager {
             Map<String, Object> in = new HashMap<String, Object>();
             in.put("sid", server.getId());
             in.put("entitlement_label", ent.getLabel());
+            in.put("summary", "added system entitlement ");
 
             log.debug("entitle_server mode query executed.");
 
-            WriteMode m = ModeFactory.getWriteMode("System_queries", "entitle_server");
+            WriteMode m = ModeFactory.getWriteMode("System_queries", "update_server_history_for_entitlement_event");
             m.executeUpdate(in);
 
             ServerFactory.addServerToGroup(server, serverGroup.get());
-        } else {
+        }
+        else {
             log.info("invalid_entitlement.");
         }
     }
@@ -2267,49 +2272,45 @@ public class SystemManager extends BaseManager {
     }
 
     /**
-     * Removes all the entitlements related to a server..
-     * @param sid server id to be unentitled.
+     * Removes all the entitlements related to a server.
+     * @param server server to be unentitled.
      */
-    public static void removeAllServerEntitlements(Long sid) {
-        Map<String, Object> in = new HashMap<String, Object>();
-        in.put("sid", sid);
-        CallableMode m = ModeFactory.getCallableMode(
-                "System_queries", "unentitle_server");
-        m.execute(in, new HashMap<String, Integer>());
+    public static void removeAllServerEntitlements(Server server) {
+        Set<Entitlement> entitlements = server.getEntitlements();
+        entitlements.stream().forEach(e -> unentitleServer(server, e));
     }
 
-
     /**
-     * Removes a specific level of entitlement from the given Server.
-     * @param sid server id to be unentitled.
-     * @param ent Level of Entitlement.
+     * Removes an entitlement from the given Server. If the given entitlement is the base entitlement,
+     * removes all the entitlement from the server.
+     * @param server the server
+     * @param ent the entitlement.
      */
-    public static void removeServerEntitlement(Long sid,
-            Entitlement ent) {
+    public static void removeServerEntitlement(Server server, Entitlement ent) {
 
-        if (!hasEntitlement(sid, ent)) {
+        if (!server.hasEntitlement(ent)) {
             if (log.isDebugEnabled()) {
                 log.debug("server doesnt have entitlement: " + ent);
             }
             return;
         }
 
-        Map<String, Object> in = new HashMap<String, Object>();
-        in.put("sid", sid);
-        in.put("entitlement", ent.getLabel());
-        CallableMode m = ModeFactory.getCallableMode(
-                "System_queries", "remove_server_entitlement");
-        m.execute(in, new HashMap<String, Integer>());
+        if (ent.isBase()) {
+            removeAllServerEntitlements(server);
+        }
+        else {
+            unentitleServer(server, ent);
+        }
 
-        ServerFactory.lookupById(sid).asMinionServer().ifPresent(s -> {
-            SystemManager.refreshPillarDataForMinion(s);
+        server.asMinionServer().ifPresent(s -> {
+            ServerGroupManager.getInstance().updatePillarAfterGroupUpdateForServers(Arrays.asList(s));
 
-            // Configure the monitoring formula for cleanup if still assigned (disable exporters)
+         // Configure the monitoring formula for cleanup if still assigned (disable exporters)
             if (EntitlementManager.MONITORING.equals(ent)) {
                 FormulaManager formulas = FormulaManager.getInstance();
-                if (formulas.hasSystemFormulaAssigned(PROMETHEUS_EXPORTERS, sid.intValue())) {
+                if (formulas.hasSystemFormulaAssigned(PROMETHEUS_EXPORTERS, s.getId().intValue())) {
                     try {
-                        // Get the current data and set all exporters to disabled
+                     // Get the current data and set all exporters to disabled
                         String minionId = s.getMinionId();
                         Map<String, Object> data = FormulaFactory
                                 .getFormulaValuesByNameAndMinionId(PROMETHEUS_EXPORTERS, minionId)
@@ -2325,6 +2326,27 @@ public class SystemManager extends BaseManager {
         });
     }
 
+    private static void unentitleServer(Server server, Entitlement ent) {
+        Optional<EntitlementServerGroup> entitlementServerGroup = server.getServerGroupByEntitlement(ent);
+
+        if (entitlementServerGroup.isPresent()) {
+            Map<String, Object> in = new HashMap<String, Object>();
+            in.put("sid", server.getId());
+            in.put("entitlement_label", ent.getLabel());
+            in.put("summary", "removed system entitlement ");
+
+            log.debug("update_server_history_for_entitlement_event mode query executed.");
+
+            WriteMode m = ModeFactory.getWriteMode("System_queries",
+                    "update_server_history_for_entitlement_event");
+            m.executeUpdate(in);
+
+            ServerFactory.removeServerFromGroup(server, entitlementServerGroup.get());
+        }
+        else {
+            log.info("invalid_entitlement.");
+        }
+    }
 
     /**
      * Tests whether or not a given server can be entitled with a specific entitlement

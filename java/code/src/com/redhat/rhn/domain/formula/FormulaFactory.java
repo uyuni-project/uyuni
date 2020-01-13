@@ -259,7 +259,7 @@ public class FormulaFactory {
             minions.forEach(minion -> {
                 if (!hasMonitoringDataEnabled(formData)) {
                     if (!serverHasMonitoringFormulaEnabled(minion)) {
-                        SystemManager.removeServerEntitlement(minion.getId(), EntitlementManager.MONITORING);
+                        SystemManager.removeServerEntitlement(minion, EntitlementManager.MONITORING);
                     }
                 }
                 else {
@@ -305,8 +305,7 @@ public class FormulaFactory {
                                 " Not removing monitoring entitlement.", minionId));
                     }
                     else {
-                        SystemManager.removeServerEntitlement(s.getId(),
-                                EntitlementManager.MONITORING);
+                        SystemManager.removeServerEntitlement(s, EntitlementManager.MONITORING);
                     }
                 }
                 else if (!SystemManager.hasEntitlement(s.getId(), EntitlementManager.MONITORING) &&
@@ -560,7 +559,7 @@ public class FormulaFactory {
             minions.forEach(minion -> {
                 // remove entitlement only if formula not enabled at server level
                 if (!serverHasMonitoringFormulaEnabled(minion)) {
-                    SystemManager.removeServerEntitlement(minion.getId(), EntitlementManager.MONITORING);
+                    SystemManager.removeServerEntitlement(minion, EntitlementManager.MONITORING);
                 }
             });
         }
@@ -643,9 +642,8 @@ public class FormulaFactory {
         if (deletedFormulas.contains(PROMETHEUS_EXPORTERS)) {
             MinionServerFactory.findByMinionId(minionId).ifPresent(s -> {
                 if (!isMemberOfGroupHavingMonitoring(s)) {
-                    SystemManager.removeServerEntitlement(s.getId(), EntitlementManager.MONITORING);
+                    SystemManager.removeServerEntitlement(s, EntitlementManager.MONITORING);
                 }
-
             });
         }
     }

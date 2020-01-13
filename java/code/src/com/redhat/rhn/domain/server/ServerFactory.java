@@ -31,6 +31,7 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.dto.HistoryEvent;
 import com.redhat.rhn.frontend.dto.SoftwareCrashDto;
 import com.redhat.rhn.frontend.xmlrpc.ChannelSubscriptionException;
+import com.redhat.rhn.frontend.xmlrpc.ServerNotInGroupException;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.system.UpdateBaseChannelCommand;
@@ -329,22 +330,43 @@ public class ServerFactory extends HibernateFactory {
     }
 
     /**
-     * Removes a Server from a group
-     * @param sid The server id to remove
-     * @param sgid The group id to remove the server from
+     * Removes Servers from a server group.
+     * @param servers The servers to remove
+     * @param serverGroup The group to remove the servers from
      */
-    public static void removeServerFromGroup(Long sid, Long sgid) {
-        CallableMode m = ModeFactory.getCallableMode("System_queries",
-                "delete_from_servergroup");
-        Map inParams = new HashMap();
-        Map outParams = new HashMap();
+    public static void removeServersFromGroup(Collection<Server> servers, ServerGroup serverGroup) {
+        List<Long> serverIdsToAdd = servers.stream().filter(s -> s.getOrgId().equals(serverGroup.getOrgId()))
+                .map(Server::getId).collect(Collectors.toList());
 
-        inParams.put("server_id", sid);
-        inParams.put("server_group_id", sgid);
-        // Outparam
-        // outParams.put("retval", Integer.valueOf(Types.NUMERIC));
+        boolean serversUpdated = removeServersFromGroup(serverIdsToAdd, serverGroup.getId());
 
-        m.execute(inParams, outParams);
+        if (serversUpdated) {
+            servers.stream().forEach(s -> s.removeGroup(serverGroup));
+            if (serverGroup.isManaged()) {
+                updatePermissionsForServerGroup(serverGroup.getId());
+            }
+        }
+        else {
+            throw new ServerNotInGroupException();
+        }
+    }
+
+    private static boolean removeServersFromGroup(List<Long> serverIds, Long sgid) {
+        WriteMode m = ModeFactory.getWriteMode("System_queries", "delete_from_servergroup");
+
+        Map params = new HashMap();
+        params.put("sgid", sgid);
+
+        return m.executeUpdate(params, serverIds) > 0;
+    }
+
+    /**
+     * Removes a Server from a group.
+     * @param serverIn The server to remove
+     * @param serverGroupIn The group to remove the server from
+     */
+    public static void removeServerFromGroup(Server serverIn, ServerGroup serverGroupIn) {
+        removeServersFromGroup(Arrays.asList(serverIn), serverGroupIn);
     }
 
     /**

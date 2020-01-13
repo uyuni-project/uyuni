@@ -59,7 +59,7 @@ public class ServerTest extends BaseTestCaseWithUser {
 
     public void testSetBaseEntitlement() throws Exception {
         Server s = ServerTestUtils.createTestSystem(user);
-        SystemManager.removeAllServerEntitlements(s.getId());
+        SystemManager.removeAllServerEntitlements(s);
         UserTestUtils.addManagement(s.getCreator().getOrg());
         HibernateFactory.getSession().clear();
         s = ServerFactory.lookupById(s.getId());

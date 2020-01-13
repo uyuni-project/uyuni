@@ -202,12 +202,7 @@ public class ServerGroupHandler extends BaseHandler {
             manager.addServers(group, servers, loggedInUser);
         }
         else {
-            try {
-                manager.removeServers(group, servers, loggedInUser);
-            }
-            catch (WrappedSQLException e) {
-                throw new ServerNotInGroupException();
-            }
+            manager.removeServers(group, servers, loggedInUser);
         }
         return 1;
     }

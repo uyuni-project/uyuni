@@ -547,7 +547,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         assertTrue(server.hasEntitlement(EntitlementManager.VIRTUALIZATION));
 
         // Removal
-        SystemManager.removeServerEntitlement(server.getId(),
+        SystemManager.removeServerEntitlement(server,
                 EntitlementManager.VIRTUALIZATION);
         server = reload(server);
         assertFalse(server.hasEntitlement(EntitlementManager.VIRTUALIZATION));
@@ -562,7 +562,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         assertTrue(minion.hasEntitlement(EntitlementManager.CONTAINER_BUILD_HOST));
 
         // Removal
-        SystemManager.removeServerEntitlement(minion.getId(),
+        SystemManager.removeServerEntitlement(minion,
                 EntitlementManager.CONTAINER_BUILD_HOST);
         minion = reload(minion);
         assertFalse(minion.hasEntitlement(EntitlementManager.CONTAINER_BUILD_HOST));
@@ -582,7 +582,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         assertTrue(minion.hasEntitlement(EntitlementManager.OSIMAGE_BUILD_HOST));
 
         // Removal
-        SystemManager.removeServerEntitlement(minion.getId(),
+        SystemManager.removeServerEntitlement(minion,
                 EntitlementManager.OSIMAGE_BUILD_HOST);
         minion = reload(minion);
         assertFalse(minion.hasEntitlement(EntitlementManager.OSIMAGE_BUILD_HOST));
@@ -643,7 +643,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
 
 
         // Test removal
-        SystemManager.removeServerEntitlement(server.getId(),
+        SystemManager.removeServerEntitlement(server,
                 EntitlementManager.VIRTUALIZATION);
 
         server = reload(server);

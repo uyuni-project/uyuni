@@ -1582,11 +1582,17 @@ SELECT id,
   </query>
 </write-mode>
 
-<callable-mode name="delete_from_servergroup">
-  <query params="server_id, server_group_id">
-      {call rhn_server.delete_from_servergroup(:server_id, :server_group_id)}
+<write-mode name="delete_from_servergroup">
+  <query params="sgid">
+    DELETE FROM rhnServerGroupMembers
+    WHERE server_group_id = :sgid
+	  AND server_id IN (%s)
+	  AND EXISTS (SELECT 1
+                  FROM rhnServerGroupMembers SGM
+                  WHERE SGM.server_id = server_id
+                    AND SGM.server_group_id = :sgid)
   </query>
-</callable-mode>
+</write-mode>
 
 <callable-mode name="update_needed_cache">
   <query params="server_id">
@@ -1705,11 +1711,11 @@ SELECT 1
   </query>
 </callable-mode>
 
-<write-mode name="entitle_server">
-  <query params="sid, entitlement_label">
+<write-mode name="update_server_history_for_entitlement_event">
+  <query params="sid, entitlement_label, summary">
     INSERT INTO rhnServerHistory (id, server_id, summary, details )
     VALUES (nextval('rhn_event_id_seq'), :sid,
-            'added system entitlement ',
+            :summary,
             CASE :entitlement_label
               WHEN 'enterprise_entitled' then 'Management'
               WHEN 'bootstrap_entitled' then 'Bootstrap'
@@ -1722,18 +1728,6 @@ SELECT 1
             END)
   </query>
 </write-mode>
-
-<callable-mode name="unentitle_server">
-  <query params="sid">
-{call rhn_entitlements.unentitle_server(:sid)}
-  </query>
-</callable-mode>
-
-<callable-mode name="remove_server_entitlement">
-  <query params="sid, entitlement">
-{call rhn_entitlements.remove_server_entitlement(:sid, :entitlement)}
-  </query>
-</callable-mode>
 
 <mode name="systems_in_set_with_channel">
   <query params="user_id, channel_id">

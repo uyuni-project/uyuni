@@ -4651,7 +4651,7 @@ public class SystemHandler extends BaseHandler {
                 server.setBaseEntitlement(base);
             }
             else if (selectedEnt.equals("unentitle")) {
-                SystemManager.removeAllServerEntitlements(server.getId());
+                SystemManager.removeAllServerEntitlements(server);
             }
         }
 
@@ -4910,14 +4910,14 @@ public class SystemHandler extends BaseHandler {
                 baseEnts.add(ent);
                 continue;
             }
-            SystemManager.removeServerEntitlement(server.getId(), ent);
+            SystemManager.removeServerEntitlement(server, ent);
             needsSnapshot = true;
         }
 
         // process base entitlements at the end
         if (!baseEnts.isEmpty()) {
             // means unentile the whole system
-            SystemManager.removeAllServerEntitlements(server.getId());
+            SystemManager.removeAllServerEntitlements(server);
             needsSnapshot = true;
         }
 
@@ -4944,7 +4944,7 @@ public class SystemHandler extends BaseHandler {
             // a permanent entitlement is not changeable by API
             throw new InvalidEntitlementException();
         }
-        SystemManager.removeAllServerEntitlements(server.getId());
+        SystemManager.removeAllServerEntitlements(server);
         SystemManager.snapshotServer(server, LocalizationService
                 .getInstance().getMessage("snapshots.entitlements"));
         return 1;

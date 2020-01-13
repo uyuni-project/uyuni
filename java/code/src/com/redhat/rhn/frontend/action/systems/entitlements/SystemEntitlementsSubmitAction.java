@@ -197,9 +197,9 @@ public class SystemEntitlementsSubmitAction extends
             } //if add
             //We are removing the add on entitlement
             else {
-                if (SystemManager.hasEntitlement(sid, ent)) {
+                if (server.hasEntitlement( ent)) {
                     log.debug("removing entitlement");
-                    SystemManager.removeServerEntitlement(sid, ent);
+                    SystemManager.removeServerEntitlement(server, ent);
                     successCount++;
                 }
             } //else
