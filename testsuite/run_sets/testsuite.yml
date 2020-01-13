@@ -42,6 +42,7 @@
 
 # IDEMPOTENT
 
+- features/secondary/srv_users.feature
 - features/secondary/srv_menu.feature
 - features/secondary/allcli_reboot.feature
 - features/secondary/trad_config_channel.feature
@@ -60,6 +61,7 @@
 - features/secondary/trad_need_reboot.feature
 - features/secondary/trad_ssh_push.feature
 - features/secondary/srv_organization_credentials.feature
+- features/secondary/srv_check_sync_source_packages.feature
 - features/secondary/srv_change_password.feature
 - features/secondary/min_salt_software_states.feature
 - features/secondary/min_docker_xmlrpc.feature
@@ -84,6 +86,7 @@
 - features/secondary/min_action_chain.feature
 - features/secondary/minssh_action_chain.feature
 - features/secondary/min_salt_formulas.feature
+- features/secondary/min_salt_formulas_advanced.feature
 - features/secondary/min_docker_auth_registry.feature
 - features/secondary/srv_docker_advanced_content_management.feature
 - features/secondary/srv_docker_cve_audit.feature
@@ -118,11 +121,14 @@
 - features/secondary/min_salt_pkgset_beacon.feature
 - features/secondary/srv_patches_page.feature
 - features/secondary/srv_spacewalk_channel.feature
+- features/secondary/srv_content_lifecycle.feature
 - features/secondary/allcli_software_channels.feature
 # tests to be rewritten using the "dummy" packages instead of real synced packages
 # - features/secondary/allcli_software_channels_dependencies.feature
 - features/secondary/srv_change_task_schedule.feature
 - features/secondary/srv_notifications.feature
+- features/secondary/minkvm_guests.feature
+- features/secondary/minxen_guests.feature
 - features/secondary/min_empty_system_profiles.feature
 - features/secondary/min_custom_pkg_download_endpoint.feature
 - features/secondary/srv_monitoring.feature
