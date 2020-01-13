@@ -302,15 +302,21 @@ public class ServerFactory extends HibernateFactory {
     }
 
     /**
-     * Adds Servers to a group given its server Ids.
-     * @param serverIds The server Ids of the servers to add
-     * @param serverGroupIn The group to add the servers to
+     * Adds Servers to a server group.
+     * @param servers the servers to add
+     * @param serverGroup The group to add the servers to
      */
-    public static void addServersToGroup(List<Long> serverIds, ServerGroup serverGroupIn) {
-        boolean needsToUpdateServerPerms = insertServersToGroup(serverIds, serverGroupIn.getId());
+    public static void addServersToGroup(Collection<Server> servers, ServerGroup serverGroup) {
+        List<Long> serverIdsToAdd = servers.stream().filter(s -> s.getOrgId().equals(serverGroup.getOrgId()))
+                .map(Server::getId).collect(Collectors.toList());
 
-        if (needsToUpdateServerPerms && serverGroupIn.getGroupType() == null) {
-            updatePermissionsForServerGroup(serverGroupIn.getId());
+        boolean serversUpdated = insertServersToGroup(serverIdsToAdd, serverGroup.getId());
+
+        if (serversUpdated) {
+            servers.stream().forEach(s -> s.addGroup(serverGroup));
+            if (serverGroup.isManaged()) {
+                updatePermissionsForServerGroup(serverGroup.getId());
+            }
         }
     }
 
@@ -338,7 +344,7 @@ public class ServerFactory extends HibernateFactory {
      * @param serverGroupIn The group to add the server to
      */
     public static void addServerToGroup(Server serverIn, ServerGroup serverGroupIn) {
-        addServersToGroup(Arrays.asList(serverIn.getId()), serverGroupIn);
+        addServersToGroup(Arrays.asList(serverIn), serverGroupIn);
     }
 
     /**
