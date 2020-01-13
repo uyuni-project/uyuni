@@ -148,7 +148,7 @@ public class ServerGroupHandler extends BaseHandler {
     public List listSystems(User loggedInUser, String systemGroupName) {
         ServerGroupManager manager = ServerGroupManager.getInstance();
         ManagedServerGroup group = manager.lookup(systemGroupName, loggedInUser);
-        return group.getServers();
+        return new ArrayList(group.getServers());
     }
 
     /**
