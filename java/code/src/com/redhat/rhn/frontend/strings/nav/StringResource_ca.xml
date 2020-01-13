@@ -226,7 +226,6 @@
         <context-group name="ctx">
           <context context-type="sourcefile">System Set Manager Navigation Menu</context>
         </context-group>
-
       </trans-unit>
       <trans-unit id="ssm.nav.status.inprogress">
         <source>In Progress</source>

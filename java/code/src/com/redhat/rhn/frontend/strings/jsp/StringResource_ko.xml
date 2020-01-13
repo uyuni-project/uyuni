@@ -574,7 +574,7 @@
         </context-group>
         <note>NO TRANSLATION NECSSARY</note>
         <target> </target>
-</trans-unit>
+      </trans-unit>
       <group>
         <context-group name="ctx">
           <context context-type="sourcefile">Permission error page</context>
@@ -772,7 +772,6 @@
               link may be incorrect or outdated.
           </context>
         </context-group>
-        
       </trans-unit>
       <trans-unit id="404.jsp.reason3">
         <source>If you used a bookmark, the page may have moved to a different location since the bookmark was created. Use the top (or left) navigation bars to find the page you are looking for, and if you find the document be sure to update your bookmark.</source>
@@ -783,7 +782,6 @@
               page may have moved
           </context>
         </context-group>
-        
       </trans-unit>
       <trans-unit id="404.jsp.reason4">
         <source>If you feel you've reached this page in error, please contact us with details of how you received this message.</source>
@@ -821,10 +819,10 @@
         <target>이 메세지를 받은 상태 정보를 저희에게 알려주셔서 문제 해결에 도움을 주십시오.</target>
       </trans-unit>
       <trans-unit id="common.jsp.noscript">
-          <source>Some features require JavaScript in order to work properly. Make sure you enable JavaScript in your browser.</source>
-          <context-group name="ctx">
-              <context context-type="sourcefile">All pages</context>
-          </context-group>
+        <source>Some features require JavaScript in order to work properly. Make sure you enable JavaScript in your browser.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">All pages</context>
+        </context-group>
       </trans-unit>
       <trans-unit id="orgadmin.displayname">
         <source>Org Admin?*</source>
@@ -1376,7 +1374,6 @@
         <context-group name="ctx">
           <context context-type="sourcefile">./includes/footer.jsp</context>
         </context-group>
-
       </trans-unit>
       <trans-unit id="footer.jsp.legalStatement">
         <source>Legal statement</source>
@@ -1772,7 +1769,6 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/CreateUser</context>
         </context-group>
-        
       </trans-unit>
       <trans-unit id="usercreate.requiredField">
         <source>Required Field</source>
@@ -1815,7 +1811,6 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/CreateUser.do</context>
         </context-group>
-        
       </trans-unit>
       <trans-unit id="usercreate.jsp.api.readOnly">
         <source>Read-only API user:</source>
@@ -3153,7 +3148,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <target>다음은 시스템에 설치된 패키지로 해당 채널에 나타나지 않습니다.</target>
       </trans-unit>
       <trans-unit id="packagelist.jsp.modulespresent">
-          <source>At least one of the channels this system is subscribed to contains modules. If you have activated modules on this system, please refrain from using @@PRODUCT_NAME@@ for package operations. Instead, perform all package actions from the client using dnf.</source>
+        <source>At least one of the channels this system is subscribed to contains modules. If you have activated modules on this system, please refrain from using @@PRODUCT_NAME@@ for package operations. Instead, perform all package actions from the client using dnf.</source>
       </trans-unit>
       <!-- upgradable.jsp -->
       <trans-unit id="upgradable.jsp.header">
@@ -4122,7 +4117,6 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/OrgConfigDetails.do</context>
         </context-group>
-
       </trans-unit>
       <trans-unit id="orgconfig.jsp.description.noteditable">
         <source>Below is your organization configuration listed. See, how staging content, errata e-mail notifications, software crash reporting and SCAP settings are configured.</source>
@@ -4308,7 +4302,6 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/UserList</context>
         </context-group>
-
       </trans-unit>
       <trans-unit id="orglist.jsp.noOrgs">
         <source>No Organizations.</source>
@@ -4366,7 +4359,6 @@ organization. You may grant or remove the organization administrator role in the
       </trans-unit>
       <trans-unit id="organizations.tip">
         <source>&lt;strong&gt;Tip:&lt;/strong&gt; This organization is your @@PRODUCT_NAME@@'s default organization.</source>
-
       </trans-unit>
       <trans-unit id="softwareEntitlements.unlimited">
         <source>unlimited</source>
@@ -4679,7 +4671,6 @@ organization. You may grant or remove the organization administrator role in the
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Create.do</context>
         </context-group>
-        
       </trans-unit>
       <trans-unit id="errata.create.jsp.synopsis">
         <source>Synopsis&lt;span class="required-form-field"&gt;*&lt;/span&gt;:</source>
@@ -5003,7 +4994,6 @@ organization. You may grant or remove the organization administrator role in the
         </trans-unit>
         <trans-unit id="ssm.overview.errata.schedule">
           <source>&lt;a href="/rhn/systems/ssm/ListErrata.do"&gt;Schedule errata updates&lt;/a&gt; relevant to selected systems</source>
-          
         </trans-unit>
         <trans-unit id="ssm.overview.packages">
           <source>Packages</source>
@@ -5047,7 +5037,6 @@ organization. You may grant or remove the organization administrator role in the
         </trans-unit>
         <trans-unit id="ssm.overview.provisioning.rollback">
           <source>&lt;a href="/rhn/systems/ssm/provisioning/TagSystems.do"&gt;Tag&lt;/a&gt; systems for &lt;a href="/rhn/systems/ssm/provisioning/Rollback.do"&gt;snapshot rollback&lt;/a&gt;</source>
-          
         </trans-unit>
         <trans-unit id="ssm.overview.provisioning.remotecommands">
           <source>Run &lt;a href="/rhn/systems/ssm/provisioning/RemoteCommand.do"&gt;remote commands&lt;/a&gt;</source>
@@ -5119,7 +5108,6 @@ organization. You may grant or remove the organization administrator role in the
         </trans-unit>
         <trans-unit id="ssm.overview.misc.customvalues">
           <source>&lt;a href="/rhn/systems/ssm/misc/CustomValue.do"&gt;Set and remove&lt;/a&gt; custom values for selected systems</source>
-          
         </trans-unit>
         <trans-unit id="ssm.overview.misc.entitlements">
           <source>&lt;a href="/rhn/systems/ssm/misc/Index.do#entitle"&gt;Add or Remove&lt;/a&gt; Add-On Entitlements</source>
@@ -5448,10 +5436,10 @@ organization. You may grant or remove the organization administrator role in the
           <source>{0} systems have been &lt;a href="/rhn/schedule/PendingActions.do"&gt;scheduled&lt;/a&gt; to reboot at {1}.</source>
         </trans-unit>
         <trans-unit id="ssm.misc.reboot.message.queued.singular">
-            <source>{0} system reboot has been added to the Action Chain &lt;a href="/rhn/schedule/ActionChain.do?id={1}"&gt;{2}&lt;/a&gt;.</source>
+          <source>{0} system reboot has been added to the Action Chain &lt;a href="/rhn/schedule/ActionChain.do?id={1}"&gt;{2}&lt;/a&gt;.</source>
         </trans-unit>
         <trans-unit id="ssm.misc.reboot.message.queued.plural">
-            <source>{0} system reboots have been added to the Action Chain &lt;a href="/rhn/schedule/ActionChain.do?id={1}"&gt;{2}&lt;/a&gt;.</source>
+          <source>{0} system reboots have been added to the Action Chain &lt;a href="/rhn/schedule/ActionChain.do?id={1}"&gt;{2}&lt;/a&gt;.</source>
         </trans-unit>
         <trans-unit id="ssm.misc.reboot.message.error.noselect">
           <source>Please select at least one system for reboot.</source>
@@ -5863,7 +5851,6 @@ organization. You may grant or remove the organization administrator role in the
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/SystemCurrency.do</context>
         </context-group>
-        
       </trans-unit>
       <trans-unit id="systemcurrency.jsp.enhancement">
         <source>Enhancements</source>
@@ -6012,11 +5999,9 @@ organization. You may grant or remove the organization administrator role in the
         </context-group>
         <trans-unit id="duplicates.jsp.header">
           <source>Duplicate Systems</source>
-
         </trans-unit>
         <trans-unit id="duplicate.jsp.message">
           <source>Inactive systems are listed below.</source>
-
         </trans-unit>
         <trans-unit id="Delete Selected">
           <source>Delete Selected</source>
@@ -6372,7 +6357,6 @@ organization. You may grant or remove the organization administrator role in the
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/SystemEntitlements</context>
         </context-group>
-
       </trans-unit>
       <trans-unit id="systementitlements.jsp.para2">
         <source>A list of your profiled systems follows, with their base and add-on entitlements shown in the appropriate columns. To change entitlement levels, select the systems you wish to modify, and choose the appropriate action below.</source>
@@ -6468,7 +6452,6 @@ organization. You may grant or remove the organization administrator role in the
         <trans-unit id="system_entitlements.setToManagementEntitled.failure">
           <source>&lt;strong&gt;{0}&lt;/strong&gt; system(s) were successfully set to &lt;strong&gt;Management&lt;/strong&gt; entitled, but you do not have  enough &lt;strong&gt;Management&lt;/strong&gt; entitlements for the remaining &lt;strong&gt;{1}&lt;/strong&gt; system(s). You may purchase additional management entitlements at &lt;a href="https://www.redhat.com/apps/commerce/rhn/"&gt;&lt;strong&gt;@@PRODUCT_NAME@@ store&lt;/strong&gt;&lt;/a&gt;. After you have additional &lt;strong&gt;Management&lt;/strong&gt; entitlements, you will be able to upgrade these systems.
     </source>
-
         </trans-unit>
         <trans-unit id="system_entitlements.unentitle.success">
           <source>&lt;strong&gt;{0}&lt;/strong&gt; system(s)  &lt;strong&gt;Unentitled&lt;/strong&gt;.</source>
@@ -6554,14 +6537,12 @@ organization. You may grant or remove the organization administrator role in the
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/Search</context>
         </context-group>
-
       </trans-unit>
       <trans-unit id="systemsearch.jsp.summary">
         <source>Advanced Search will return results from all systems to which you have administrative access.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/Search</context>
         </context-group>
-
       </trans-unit>
       <trans-unit id="systemsearch.jsp.fieldtosearch">
         <source>Field to Search:</source>
@@ -7551,7 +7532,6 @@ organization management tools if you choose to remove this role from your login.
         <context-group name="ctx">
           <context context-type="sourcefile">NOTFILLEDOUT</context>
         </context-group>
-        
       </trans-unit>
       <trans-unit id="schedulesync.jsp.profilesync">
         <source>Profile Synchronization</source>
@@ -8169,7 +8149,6 @@ organization management tools if you choose to remove this role from your login.
         <!-- method-form.jsp.header2 -->
         <trans-unit id="method-create.jsp.header2">
           <source>Create Notification Method</source>
-          
         </trans-unit>
         <trans-unit id="method-create.jsp.summary">
           <source>Fill out this form to create a new Notification Method.  Changes to Probes that use this new Method will require a Scout Config Push.</source>
@@ -8289,7 +8268,6 @@ organization management tools if you choose to remove this role from your login.
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/config/GeneralConfig.do</context>
         </context-group>
-
       </trans-unit>
       <trans-unit id="general.jsp.org.header">
         <source>@@PRODUCT_NAME@@ Organizations</source>
@@ -8405,7 +8383,6 @@ administrator privileges.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/config/Orgs.do</context>
         </context-group>
-
       </trans-unit>
       <trans-unit id="general.jsp.admin_email">
         <source>Administrator Email Address</source>
@@ -8728,18 +8705,15 @@ Please note that some manual configuration of these scripts may still be require
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channel/manage/repo/RepoList.do</context>
         </context-group>
-        
       </trans-unit>
       <trans-unit id="toolbar.delete.repos">
         <source>Delete Repository</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channel/manage/repo/RepoDetails.do</context>
         </context-group>
-        
       </trans-unit>
       <trans-unit id="repos.jsp.toolbar">
         <source>Create Repository</source>
-        
       </trans-unit>
       <trans-unit id="repos.jsp.header">
         <source>Repositories</source>
@@ -8902,7 +8876,6 @@ Please note that some manual configuration of these scripts may still be require
       </trans-unit>
       <trans-unit id="distchannelmap.jsp.create">
         <source>Create Distribution Channel Map</source>
-        
       </trans-unit>
       <trans-unit id="distchannelmap.jsp.update">
         <source>Update Distribution Channel Map</source>
@@ -8914,7 +8887,6 @@ Please note that some manual configuration of these scripts may still be require
       </trans-unit>
       <trans-unit id="distchannelmap.jsp.create.submit">
         <source>Create Mapping</source>
-        
       </trans-unit>
       <trans-unit id="distchannelmap.jsp.update.submit">
         <source>Update Mapping</source>
@@ -8965,14 +8937,12 @@ Please note that some manual configuration of these scripts may still be require
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channel/manage/repo/RepoList.do</context>
         </context-group>
-        
       </trans-unit>
       <trans-unit id="toolbar.delete.distchannelmap">
         <source>Delete Distribution Channel Mapping</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channel/manage/repo/RepoList.do</context>
         </context-group>
-        
       </trans-unit>
       <trans-unit id="distchannelmap.jsp.empty">
         <source>No distribution channel mappings currently exist.</source>
@@ -9694,7 +9664,6 @@ Please note that some manual configuration of these scripts may still be require
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartIpRangeEdit</context>
         </context-group>
-
       </trans-unit>
       <trans-unit id="kickstartips.jsp.tip">
         <source>&lt;span class="small-text"&gt;&lt;strong&gt;Tip:&lt;/strong&gt; A full listing of the IP ranges associated with your organization's kickstart profiles is available &lt;/span&gt;</source>
@@ -9963,7 +9932,6 @@ Please note that some manual configuration of these scripts may still be require
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/ActivationKeysEdit.do</context>
         </context-group>
-
       </trans-unit>
       <trans-unit id="kickstart.activationkeys.jsp.warning">
         <source>&lt;strong&gt;Warning:&lt;/strong&gt; Any child channel subscriptions associated with this profile will be overridden if any activation keys are selected above. If you wish to associate activation keys with this profile, please use an activation key to specify child channel subscriptions.</source>
@@ -10093,28 +10061,24 @@ Please note that some manual configuration of these scripts may still be require
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartSystemDetailsEdit</context>
         </context-group>
-        
       </trans-unit>
       <trans-unit id="kickstart.postnetconn.bondinterfaces.jsp.label">
         <source>Bond interfaces:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartSystemDetailsEdit</context>
         </context-group>
-        
       </trans-unit>
       <trans-unit id="kickstart.postnetconn.bondoptions.jsp.label">
         <source>Bond interface options</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartSystemDetailsEdit</context>
         </context-group>
-        
       </trans-unit>
       <trans-unit id="kickstart.postnetconn.bondoptionstip.jsp.label">
         <source>You can input a space-separated list of any valid "bonding" kernel module options. Common options include mode=[0,1,2] (0 is round-robin, 1 is active-backup, 2 is balance-xor) and miimon=100</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartSystemDetailsEdit</context>
         </context-group>
-        
       </trans-unit>
       <trans-unit id="kickstart.postnetconn.bondstatic.jsp.label">
         <source>Use static networking</source>
@@ -10128,21 +10092,18 @@ Please note that some manual configuration of these scripts may still be require
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartSystemDetailsEdit</context>
         </context-group>
-        
       </trans-unit>
       <trans-unit id="kickstart.postnetconn.bondnetmask.jsp.label">
         <source>Netmask</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartSystemDetailsEdit</context>
         </context-group>
-        
       </trans-unit>
       <trans-unit id="kickstart.postnetconn.bondgateway.jsp.label">
         <source>Gateway</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartSystemDetailsEdit</context>
         </context-group>
-        
       </trans-unit>
       <trans-unit id="kickstart.postnetconn.bonddhcp.jsp.label">
         <source>Use DHCP</source>
@@ -10156,7 +10117,6 @@ Please note that some manual configuration of these scripts may still be require
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartSystemDetailsEdit</context>
         </context-group>
-        
       </trans-unit>
       <trans-unit id="kickstart.selinux.jsp.label">
         <source>SELinux</source>
@@ -10219,7 +10179,6 @@ Please note that some manual configuration of these scripts may still be require
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartSystemDetailsEdit</context>
         </context-group>
-        
       </trans-unit>
       <trans-unit id="kickstart.config.mgmt.tip.jsp.label">
         <source>&lt;strong&gt;Tip:&lt;/strong&gt; Enabling this will allow you to deploy configuration files from @@PRODUCT_NAME@@ to any system that uses this kickstart profile. If you do not use @@PRODUCT_NAME@@ configuration management, it is a good security practice to leave this box unchecked. You can always enable it on individual systems later.</source>
@@ -10233,7 +10192,6 @@ Please note that some manual configuration of these scripts may still be require
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartSystemDetailsEdit</context>
         </context-group>
-        
       </trans-unit>
       <trans-unit id="kickstart.remote.cmd.tip.jsp.label">
         <source>&lt;strong&gt;Tip:&lt;/strong&gt; Enabling this will allow you to execute commands remotely from @@PRODUCT_NAME@@ on any system that uses this profile. It is a good security practice to leave this box unchecked unless you are sure you will use the remote command feature. You can always enable it on individual systems later.</source>
@@ -10247,14 +10205,12 @@ Please note that some manual configuration of these scripts may still be require
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartSystemDetailsEdit</context>
         </context-group>
-        
       </trans-unit>
       <trans-unit id="kickstart.root.password.verify.jsp.label">
         <source>Verify New Root Password</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartSystemDetailsEdit</context>
         </context-group>
-        
       </trans-unit>
       <trans-unit id="kickstart.systemdetails.edit.submit.jsp.label">
         <source>Update System Details</source>
@@ -10347,7 +10303,6 @@ For more information, see the &lt;a href="/rhn/help/dispatcher/getting_started_g
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/keys/CryptoKeysList.do</context>
         </context-group>
-
       </trans-unit>
       <trans-unit id="keys.jsp.toolbar">
         <source>GPG Public Keys and SSL Certificates</source>
@@ -10375,7 +10330,6 @@ For more information, see the &lt;a href="/rhn/help/dispatcher/getting_started_g
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/keys/CryptoKeysList.do</context>
         </context-group>
-        
       </trans-unit>
       <trans-unit id="keyedit.jsp.toolbar">
         <source>Edit GPG/SSL Key</source>
@@ -10504,7 +10458,6 @@ For more information, see the &lt;a href="/rhn/help/dispatcher/getting_started_g
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/provisioning/preservation/PreservationList.do</context>
         </context-group>
-
       </trans-unit>
       <trans-unit id="preservationlistdeleteconfirm.jsp.summary">
         <source>Are you sure you want to delete the selected File List(s)?  &lt;strong&gt;WARNING: Deleting the selected File List(s) will delete all its associated files.&lt;/strong&gt;</source>
@@ -10532,7 +10485,6 @@ For more information, see the &lt;a href="/rhn/help/dispatcher/getting_started_g
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/provisioning/preservation/PreservationList.do</context>
         </context-group>
-        
       </trans-unit>
       <trans-unit id="preservation_list_delete.jsp.noneselected">
         <source>There were no files selected for deletion</source>
@@ -10546,7 +10498,6 @@ For more information, see the &lt;a href="/rhn/help/dispatcher/getting_started_g
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/provisioning/preservation/PreservationList.do</context>
         </context-group>
-        
       </trans-unit>
       <trans-unit id="toolbar.create.kickstartscript">
         <source>add new kickstart script</source>
@@ -10642,7 +10593,6 @@ For more information, see the &lt;a href="/rhn/help/dispatcher/getting_started_g
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/provisioning/preservation/PreservationListEdit.do</context>
         </context-group>
-
       </trans-unit>
       <trans-unit id="softwareedit.jsp.summary1">
         <source>You can modify the software this kickstart profile will deploy below.</source>
@@ -10983,7 +10933,6 @@ the &lt;strong&gt;Red Hat Enterprise Linux System Administration Guide.&lt;/stro
         </trans-unit>
         <trans-unit id="toolbar.create.snippets">
           <source>Create Snippet</source>
-          
         </trans-unit>
         <trans-unit id="cobbler.snippet.name">
           <source>Snippet Name</source>
@@ -11044,7 +10993,6 @@ the &lt;strong&gt;Red Hat Enterprise Linux System Administration Guide.&lt;/stro
         </trans-unit>
         <trans-unit id="snippetcreate.jsp.toolbar">
           <source>Create Snippet</source>
-          
         </trans-unit>
         <trans-unit id="snippetcreate.jsp.header2">
           <source>Create Snippet</source>
@@ -11153,7 +11101,6 @@ the &lt;strong&gt;Red Hat Enterprise Linux System Administration Guide.&lt;/stro
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/YourRhn.do</context>
         </context-group>
-        
       </trans-unit>
       <trans-unit id="yourrhn.jsp.criticalsystems.enhancementerrata">
         <source>Enhancement Errata</source>
@@ -11244,7 +11191,6 @@ the &lt;strong&gt;Red Hat Enterprise Linux System Administration Guide.&lt;/stro
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/YourRhn.do</context>
         </context-group>
-        
       </trans-unit>
       <trans-unit id="yourrhn.jsp.scheduledactions">
         <source>Recently Scheduled Actions</source>
@@ -11356,7 +11302,6 @@ the &lt;strong&gt;Red Hat Enterprise Linux System Administration Guide.&lt;/stro
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/YourRhn.do</context>
         </context-group>
-
       </trans-unit>
       <trans-unit id="yourrhn.jsp.recentlyregistered.none">
         <source>&lt;strong&gt;No recently registered systems.&lt;/strong&gt;&lt;p&gt;You have no systems that were registered within the past 30 days. You may view a list of all registered systems at &lt;a href="/rhn/systems/Registered.do"&gt;&lt;strong&gt;Systems &gt; Recently Registered&lt;/strong&gt;&lt;/a&gt;.&lt;/p&gt;</source>
@@ -11495,7 +11440,6 @@ the &lt;strong&gt;Red Hat Enterprise Linux System Administration Guide.&lt;/stro
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/YourRhn.do</context>
         </context-group>
-        
       </trans-unit>
       <trans-unit id="yourrhn.jsp.tasks.config_sat">
         <source>&lt;strong&gt;Configure&lt;/strong&gt; @@PRODUCT_NAME@@</source>
@@ -11675,7 +11619,6 @@ the &lt;strong&gt;Red Hat Enterprise Linux System Administration Guide.&lt;/stro
       </trans-unit>
       <trans-unit id="channels.retired.jsp.header1">
         <source>The software channels listed below are &lt;strong&gt;retired channels&lt;/strong&gt; that your organization is entitled to but are no longer supported by Red Hat because they have reached their 'end-of-life' date.</source>
-
       </trans-unit>
       <trans-unit id="channels.manage.jsp.toolbar">
         <source>Software Channel Management</source>
@@ -11691,11 +11634,9 @@ the &lt;strong&gt;Red Hat Enterprise Linux System Administration Guide.&lt;/stro
       </trans-unit>
       <trans-unit id="toolbar.create.channel">
         <source>Create Channel</source>
-        
       </trans-unit>
       <trans-unit id="toolbar.clone.channel">
         <source>Clone Channel</source>
-        
       </trans-unit>
       <trans-unit id="kickstart.troubleshooting.jsp.header1">
         <source>Troubleshooting</source>
@@ -11950,14 +11891,12 @@ the &lt;strong&gt;Red Hat Enterprise Linux System Administration Guide.&lt;/stro
         </trans-unit>
         <trans-unit id="toolbar.create.activationkeys">
           <source>Create Key</source>
-          
         </trans-unit>
         <trans-unit id="toolbar.clone.activationkeys">
           <source>Clone Key</source>
         </trans-unit>
         <trans-unit id="toolbar.delete.activationkeys">
           <source>Delete Key</source>
-          
         </trans-unit>
         <trans-unit id="activation-keys.common.alt">
           <source>Activation Key icon</source>
@@ -13587,14 +13526,12 @@ the &lt;strong&gt;Red Hat Enterprise Linux System Administration Guide.&lt;/stro
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/GlobalConfigChannelList.do</context>
         </context-group>
-        
       </trans-unit>
       <trans-unit id="toolbar.create.org">
         <source>Create Organization</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/Organizations.do</context>
         </context-group>
-        
       </trans-unit>
       <trans-unit id="globalconfiglist.jsp.noChannels">
         <source>No configuration channels</source>
@@ -13899,7 +13836,6 @@ the &lt;strong&gt;Red Hat Enterprise Linux System Administration Guide.&lt;/stro
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/ChannelOverview.do</context>
         </context-group>
-        
       </trans-unit>
       <trans-unit id="channelOverview.jsp.tasks.modifyUpload">
         <source>Upload configuration files</source>
@@ -14304,7 +14240,6 @@ but are not subscribed to _@@PRODUCT_NAME@@Config_.</context>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/ChannelAddFiles.do</context>
         </context-group>
-        
       </trans-unit>
       <trans-unit id="addfiles.jsp.create.jspf.submit">
         <source>Create Configuration File</source>
@@ -14826,7 +14761,6 @@ centrally-managed configuration channel, {2}; below is a list of systems you may
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/file/GlobalRevisionDeployConfirm.do</context>
         </context-group>
-        
       </trans-unit>
       <trans-unit id="deployconfirm.jsp.success.chain">
         <source>Action is being added to Action Chain {0}.</source>
@@ -14840,7 +14774,6 @@ centrally-managed configuration channel, {2}; below is a list of systems you may
           <context context-type="sourcefile">/rhn/configuration/file/GlobalRevisionDeployConfirm.do</context>
           <context context-type="paramnotes">File-deploy successfully scheduled for 5 systems</context>
         </context-group>
-        
       </trans-unit>
       <trans-unit id="deployconfirm.jsp.successes.chain">
         <source>{0} actions are being added to Action Chain {1}, it may take several minutes for this to complete.</source>
@@ -15297,7 +15230,6 @@ You can't edit this file here because it is too large (files must be less than &
 You can, however, download this file, edit it locally on your computer, and upload your changes here.
           </context>
         </context-group>
-        
       </trans-unit>
       <trans-unit id="filedetails.contents.jspf.toolarge-display">
         <source>
@@ -15532,7 +15464,6 @@ any of these revisions.  Are you sure you want to do this?</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/system/ManagedSystems.do</context>
         </context-group>
-
       </trans-unit>
       <trans-unit id="managedsystems.jsp.summary">
         <source>The systems listed below currently have &lt;strong&gt;@@PRODUCT_NAME@@ managed configuration files&lt;/strong&gt;. This means that each system may have configuration files &lt;strong&gt;locally managed&lt;/strong&gt; via its @@PRODUCT_NAME@@ system profile, may have configuration files &lt;strong&gt;centrally-managed&lt;/strong&gt; via central configuration channel(s), or both. The number of locally-managed files that override centrally-managed files is visible in the 'Locally-Managed Files' column below.</source>
@@ -15805,7 +15736,6 @@ any of these revisions.  Are you sure you want to do this?</source>
         </trans-unit>
         <trans-unit id="toolbar.create.revision">
           <source>Create Revision</source>
-          
         </trans-unit>
         <trans-unit id="manage.jsp.success">
           <source>&lt;a href="{0}"&gt;Revision {1}&lt;/a&gt; successfully uploaded.</source>
@@ -16863,15 +16793,12 @@ any of these revisions.  Are you sure you want to do this?</source>
         </trans-unit>
         <trans-unit id="sdc.config.file_list.copy_to_sandbox">
           <source>Copy Latest to Local Sandbox</source>
-
         </trans-unit>
         <trans-unit id="sdc.config.file_list.copy_to_local">
           <source>Copy Latest to Locally-Managed Files</source>
-
         </trans-unit>
         <trans-unit id="sdc.config.file_list.copy_to_global">
           <source>Copy Latest to Centrally-Managed Files</source>
-
         </trans-unit>
         <trans-unit id="sdc.config.file_list.sandbox.success">
           <source>{0} file(s) successfully copied to Sandbox</source>
@@ -16937,7 +16864,6 @@ any of these revisions.  Are you sure you want to do this?</source>
         </trans-unit>
         <trans-unit id="config_channels_to_unsubscribe.unsubscribe.success">
           <source>{0} configuration channel(s) were unsubscribed.</source>
-          
         </trans-unit>
         <trans-unit id="config_channels_to_unsubscribe.unsubscribe.failure">
           <source>Failed to unsubscribe {0} configuration channel(s).</source>
@@ -17224,7 +17150,6 @@ any of these revisions.  Are you sure you want to do this?</source>
         </context-group>
         <trans-unit id="ssm.operations.viewlog.header">
           <source>Task Log</source>
-
         </trans-unit>
         <trans-unit id="ssm.operations.viewlog.description">
           <source>Description</source>
@@ -18110,7 +18035,6 @@ the &lt;a href="/rhn/kickstart/ActivationKeysList.do?ksid={0}"&gt;Activation Key
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/Kickstarts.do</context>
         </context-group>
-
       </trans-unit>
       <trans-unit id="kickstart.distro.sw_managed.jsp">
         <source>@@PRODUCT_NAME@@ Managed?*</source>
@@ -18137,11 +18061,9 @@ the &lt;a href="/rhn/kickstart/ActivationKeysList.do?ksid={0}"&gt;Activation Key
         </trans-unit>
         <trans-unit id="kickstart.schedule.kernel.options.distro">
           <source>As specified by Kickstart Distribution</source>
-          
         </trans-unit>
         <trans-unit id="kickstart.schedule.kernel.options.profile">
           <source>As specified by Kickstart Profile</source>
-          
         </trans-unit>
         <trans-unit id="kickstart.schedule.kernel.options.custom.tip">
           <source>If you would not like any kernel options, select '{0}' and leave the form field blank.</source>
@@ -18149,7 +18071,6 @@ the &lt;a href="/rhn/kickstart/ActivationKeysList.do?ksid={0}"&gt;Activation Key
         </trans-unit>
         <trans-unit id="kickstart.schedule.sync.pkg.profile.jsp">
           <source>Sync Package Profile</source>
-          
         </trans-unit>
         <trans-unit id="kickstart.schedule.sync.pkg.profile.option1.jsp">
           <source>With system's existing package profile</source>
@@ -18403,7 +18324,6 @@ the &lt;a href="/rhn/kickstart/ActivationKeysList.do?ksid={0}"&gt;Activation Key
         </trans-unit>
         <trans-unit id="kickstart.kickstartable_distro_create_new.jsp">
           <source>Create Distribution</source>
-          
         </trans-unit>
         <trans-unit id="kickstart.kickstartable_distributions.jsp">
           <source>Kickstartable Distributions</source>
@@ -19032,7 +18952,6 @@ The Tree Path, Kickstart RPM, Base Channel, and Installer Generation should alwa
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/virtualization/ProvisionVirtualizationWizard.do</context>
         </context-group>
-
       </trans-unit>
       <trans-unit id="virtualization.provision.first.jsp.header2">
         <source>Define the Virtual System</source>
@@ -19067,7 +18986,6 @@ The Tree Path, Kickstart RPM, Base Channel, and Installer Generation should alwa
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/virtualization/ProvisionVirtualizationWizard.do</context>
         </context-group>
-        
       </trans-unit>
       <trans-unit id="virtualization.provision.first.jsp.guest_name.message1">
         <source>What name shall be used to identify the guest on this host?</source>
@@ -19088,7 +19006,6 @@ The Tree Path, Kickstart RPM, Base Channel, and Installer Generation should alwa
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/virtualization/ProvisionVirtualizationWizard.do</context>
         </context-group>
-        
       </trans-unit>
       <trans-unit id="virtualization.provision.first.jsp.memory_allocation.message">
         <source>Size in megabytes out of {0} total megabytes available on {1}</source>
@@ -19101,7 +19018,6 @@ The Tree Path, Kickstart RPM, Base Channel, and Installer Generation should alwa
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/virtualization/ProvisionVirtualizationWizard.do</context>
         </context-group>
-        
       </trans-unit>
       <trans-unit id="virtualization.provision.first.jsp.virtual_cpus.message">
         <source>Number of virtual CPUs, up to {0}.</source>
@@ -19114,7 +19030,6 @@ The Tree Path, Kickstart RPM, Base Channel, and Installer Generation should alwa
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/virtualization/ProvisionVirtualizationWizard.do</context>
         </context-group>
-        
       </trans-unit>
       <trans-unit id="virtualization.provision.override.jsp.message">
         <source>The following fields may be left blank (in which case default values as defined in the selected kickstart profile will be used).  Each field may be set individually to override the profile's default value.</source>
@@ -19221,7 +19136,6 @@ The Tree Path, Kickstart RPM, Base Channel, and Installer Generation should alwa
         </trans-unit>
         <trans-unit id="exportcolumn.bug">
           <source>Bug Fixes</source>
-          
         </trans-unit>
         <trans-unit id="exportcolumn.enhancement">
           <source>Enhancements</source>
@@ -20118,7 +20032,6 @@ The Tree Path, Kickstart RPM, Base Channel, and Installer Generation should alwa
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/SoftwareCrashDetail.do</context>
         </context-group>
-        
       </trans-unit>
       <trans-unit id="details.crashnotes.nonotes">
         <source>No Crash Notes were entered for this Software Crash.</source>
@@ -20726,14 +20639,12 @@ The Tree Path, Kickstart RPM, Base Channel, and Installer Generation should alwa
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Note.do</context>
         </context-group>
-        
       </trans-unit>
       <trans-unit id="toolbar.delete.note">
         <source>Delete Note</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Note.do</context>
         </context-group>
-        
       </trans-unit>
       <trans-unit id="edit_note.jsp.update">
         <source>Update</source>
@@ -20837,12 +20748,7 @@ The Tree Path, Kickstart RPM, Base Channel, and Installer Generation should alwa
         <target>현재 {0}로 로그인되어 있습니다  </target>
       </trans-unit>
       <!-- outage-policy.jsp -->
-      <group>
-
-
-
-
-      </group>
+      <group></group>
       <!-- download-ISOs pages -->
       <group>
         <!-- common -->
@@ -21112,7 +21018,6 @@ The Tree Path, Kickstart RPM, Base Channel, and Installer Generation should alwa
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/OrgCreate.do</context>
         </context-group>
-        
       </trans-unit>
       <trans-unit id="orgcreate.jsp.adminheader">
         <source>Create Initial Organization Administrator</source>
@@ -21483,7 +21388,6 @@ As a Channel Administrator, you may change the base channels your systems are su
             <context context-type="sourcefile">/rhn/channel/ssm/BaseChannelSubscribe.do</context>
             <context context-type="paramnotes">27 systems successfully subscribed to channel 'Red Hat Enterprise Linux AS (v. 2.1 for i386)'</context>
           </context-group>
-          
         </trans-unit>
         <trans-unit id="basesub.jsp.success-default">
           <source>{0} systems queued to subscribe to the appropriate default base channel</source>
@@ -21491,7 +21395,6 @@ As a Channel Administrator, you may change the base channels your systems are su
             <context context-type="sourcefile">/rhn/channel/ssm/BaseChannelSubscribe.do</context>
             <context context-type="paramnotes">27 systems successfully subscribed to the appropriate default base channel</context>
           </context-group>
-          
         </trans-unit>
         <trans-unit id="basesub.jsp.skip">
           <source>{0} systems skipped while attempting to subscribe to channel '{1}'</source>
@@ -21722,11 +21625,9 @@ As a Channel Administrator, you may change the base channels your systems are su
       </trans-unit>
       <trans-unit id="toolbar.ssm.add">
         <source>Add to SSM</source>
-        
       </trans-unit>
       <trans-unit id="toolbar.ssm.remove">
         <source>Remove from SSM</source>
-        
       </trans-unit>
       <trans-unit id="Clone">
         <source>Clone</source>
@@ -21861,7 +21762,6 @@ given channel.</source>
           <context context-type="sourcefile">/rhn/help/about</context>
         </context-group>
       </trans-unit>
-
       <trans-unit id="help.jsp.about.overview">
         <source>Overview</source>
         <context-group name="ctx">
@@ -21898,7 +21798,6 @@ given channel.</source>
           <context context-type="sourcefile">/rhn/help/about</context>
         </context-group>
       </trans-unit>
-
       <trans-unit id="help.jsp.helpdesk">
         <source>Welcome to the Help Desk</source>
         <target>Help Desk에 오신 것을 환영합니다 </target>
@@ -22065,7 +21964,6 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="channel.jsp.package.addemptylist">
         <source>No packages found for this criteria.</source>
-
       </trans-unit>
       <trans-unit id="channel.jsp.package.addmessage">
         <source>Below is the list of packages you can add to this channel. The "Channel" select box allows you to restrict the set of available packages. To add a package to this channel, select it here, and click 'Add Packages' below.
@@ -22237,7 +22135,6 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="system.jsp.customkey.createlink">
         <source>Create Key</source>
-        
       </trans-unit>
       <trans-unit id="toolbar.create.customkey">
         <source>Create Key</source>
@@ -23503,7 +23400,6 @@ given channel.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Edit.do</context>
         </context-group>
-        
       </trans-unit>
       <trans-unit id="button.denyaccess.confirm">
         <source>Deny Access and Confirm</source>
@@ -23531,7 +23427,6 @@ given channel.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/errata//Add.do</context>
         </context-group>
-        
       </trans-unit>
       <trans-unit id="header.jsp.errata.add">
         <source>Add Errata</source>
@@ -23830,7 +23725,6 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="duplicate-ip.jsp.inactive.header">
         <source>A system is inactive if its system has not checked in for:</source>
-
       </trans-unit>
       <trans-unit id="schedule.header">
         <source>Select a schedule:</source>
@@ -23885,7 +23779,6 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="debuginfo.unavailable">
         <source>If available, an appropriate debuginfo package can be synced from the respective debug channel or repository. Note: Not all packages have published debuginfo packages.</source>
-
       </trans-unit>
       <trans-unit id="debugsource.unavailable">
         <source>If available, an appropriate debugsource package can be synced from the respective debug channel or repository. Note: Not all packages have published debugsource packages.</source>
@@ -24299,7 +24192,6 @@ given channel.</source>
         <trans-unit id="iss.error.master.exists">
           <source>Master with domain name {0} already defined</source>
         </trans-unit>
-
       </group>
       <group>
         <context-group name="ctx">

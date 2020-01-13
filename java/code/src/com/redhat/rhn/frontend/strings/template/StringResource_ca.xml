@@ -38,7 +38,6 @@ Thank you for using @@PRODUCT_NAME@@.
               --the @@PRODUCT_NAME@@ Team
           </context>
         </context-group>
-
       </trans-unit>
       <trans-unit id="email.newaccount.body">
         <source>Hello,
@@ -67,7 +66,6 @@ Thank you for using @@PRODUCT_NAME@@.
               --the @@PRODUCT_NAME@@ Team
           </context>
         </context-group>
-
       </trans-unit>
       <trans-unit id="email.newaccount.pam.body">
         <source>Hello,
@@ -314,8 +312,8 @@ please contact your @@PRODUCT_NAME@@ administrator for further assistance.
 Thank you for using @@PRODUCT_NAME@@.
         </source>
         <context-group name="ctx">
-            <context context-type="sourcefile">ForgotCredentials</context>
-            <context context-type="paramnotes">
+          <context context-type="sourcefile">ForgotCredentials</context>
+          <context context-type="paramnotes">
             {0} - Email address
             {1} - Password-reset link
             {2} - Username

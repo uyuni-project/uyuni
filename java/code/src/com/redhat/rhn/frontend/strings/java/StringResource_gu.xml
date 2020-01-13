@@ -1459,7 +1459,6 @@
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/CreateUser</context>
         </context-group>
-
       </trans-unit>
       <trans-unit id="error.password_mismatch">
         <source>Passwords do not match.</source>
@@ -1573,7 +1572,6 @@
           <context context-type="sourcefile">/rhn/systems/details/Edit</context>
           <context context-type="sourcefile">/rhn/systems/Search</context>
         </context-group>
-
       </trans-unit>
       <trans-unit id="city">
         <source>City</source>
@@ -2476,7 +2474,6 @@ and try again.
           <context context-type="sourcefile">/rhn/systems/details/ErrataConfirm.do</context>
           <context context-type="paramnotes">1 errata update has been scheduled for workstation.</context>
         </context-group>
-
       </trans-unit>
       <trans-unit id="errata.schedule.plural">
         <source>&lt;strong&gt;{0}&lt;/strong&gt; errata updates have been &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;scheduled&lt;/a&gt; for &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{1}&lt;/a&gt;.</source>
@@ -2484,7 +2481,6 @@ and try again.
           <context context-type="sourcefile">/rhn/systems/details/ErrataConfirm.do</context>
           <context context-type="paramnotes">43 errata updates have been scheduled for workstation.</context>
         </context-group>
-
       </trans-unit>
       <trans-unit id="errataconfirm.schedule">
         <source>Errata &lt;a href="/rhn/errata/details/Details.do?eid={2}"&gt;{0}&lt;/a&gt; has been &lt;a href="/rhn/schedule/ActionDetails.do?aid={3}"&gt;scheduled&lt;/a&gt; for &lt;strong&gt;{1}&lt;/strong&gt; system</source>
@@ -2492,7 +2488,6 @@ and try again.
           <context context-type="sourcefile">/rhn/errata/details/ErrataConfirm.do</context>
           <context context-type="paramnotes">Errata RHSA-2004:597-06 has been scheduled for 1 system</context>
         </context-group>
-
       </trans-unit>
       <trans-unit id="errataconfirm.schedule.plural">
         <source>Errata &lt;a href="/rhn/errata/details/Details.do?eid={2}"&gt;{0}&lt;/a&gt; has been &lt;a href="/rhn/schedule/ActionDetails.do?aid={3}"&gt;scheduled&lt;/a&gt; for &lt;strong&gt;{1}&lt;/strong&gt; systems</source>
@@ -2500,7 +2495,6 @@ and try again.
           <context context-type="sourcefile">/rhn/errata/details/ErrataConfirm.do</context>
           <context context-type="paramnotes">Errata RHSA-2004:597-06 has been scheduled for 3 systems</context>
         </context-group>
-
       </trans-unit>
       <trans-unit id="errataconfirm.nosystems">
         <source>You must select at least one system.</source>
@@ -2667,49 +2661,42 @@ and try again.
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserList</context>
         </context-group>
-        
       </trans-unit>
       <trans-unit id="toolbar.upload.kickstart">
         <source>Upload Kickstart File</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserList</context>
         </context-group>
-        
       </trans-unit>
       <trans-unit id="toolbar.create.kickstart">
         <source>Create Kickstart Profile</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserList</context>
         </context-group>
-        
       </trans-unit>
       <trans-unit id="toolbar.create.kickstartdata">
         <source>Create Kickstart</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserList</context>
         </context-group>
-        
       </trans-unit>
       <trans-unit id="toolbar.clone.kickstart">
         <source>Clone Kickstart</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserList</context>
         </context-group>
-        
       </trans-unit>
       <trans-unit id="toolbar.delete.CryptoKeyDelete">
         <source>Delete Key</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/keys/CryptoKeyEdit</context>
         </context-group>
-        
       </trans-unit>
       <trans-unit id="toolbar.create.user">
         <source>Create User</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserList</context>
         </context-group>
-        
       </trans-unit>
       <trans-unit id="toolbar.create.erratum">
         <source>Create Erratum</source>
@@ -2717,14 +2704,12 @@ and try again.
           <context context-type="sourcefile">/rhn/errata/UnpublishedErrata</context>
           <context context-type="sourcefile">/rhn/errata/PublishedErrata</context>
         </context-group>
-        
       </trans-unit>
       <trans-unit id="toolbar.create.group">
         <source>Create Group</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/SystemGroupList</context>
         </context-group>
-        
       </trans-unit>
       <trans-unit id="toolbar.create.extgroup">
         <source>Create External Group</source>
@@ -2743,63 +2728,54 @@ and try again.
         <context-group name="ctx">
           <context context-type="sourcefile">User details pages</context>
         </context-group>
-        
       </trans-unit>
       <trans-unit id="toolbar.delete.erratum">
         <source>Delete Erratum</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Errata details pages</context>
         </context-group>
-        
       </trans-unit>
       <trans-unit id="toolbar.delete.system">
         <source>Delete System</source>
         <context-group name="ctx">
           <context context-type="sourcefile">System Details Package list pages</context>
         </context-group>
-        
       </trans-unit>
       <trans-unit id="toolbar.delete.systemgroup">
         <source>Delete Group</source>
         <context-group name="ctx">
           <context context-type="sourcefile">System Group pages</context>
         </context-group>
-        
       </trans-unit>
       <trans-unit id="toolbar.work.with.group">
         <source>Work With Group</source>
         <context-group name="ctx">
           <context context-type="sourcefile">System Group pages</context>
         </context-group>
-        
       </trans-unit>
       <trans-unit id="toolbar.delete.errata">
         <source>Delete Errata</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Errata edit page</context>
         </context-group>
-        
       </trans-unit>
       <trans-unit id="toolbar.delete.kickstart">
         <source>Delete Kickstart</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart profile pages</context>
         </context-group>
-        
       </trans-unit>
       <trans-unit id="toolbar.delete.deleteTree">
         <source>Delete Distribution</source>
         <context-group name="ctx">
           <context context-type="sourcefile">rhn/Kickstart/TreeEdit.do</context>
         </context-group>
-        
       </trans-unit>
       <trans-unit id="toolbar.delete.profile">
         <source>Delete Profile</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/profiles/CompareProfiles.do</context>
         </context-group>
-        
       </trans-unit>
       <trans-unit id="toolbar.delete.crash">
         <source>Delete Software Crash</source>
@@ -6761,7 +6737,6 @@ Follow this url to see the full list of inactive systems:
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/config/Diff.do</context>
         </context-group>
-        
       </trans-unit>
       <trans-unit id="schedulediff.ssm.successes">
         <source>Configuration Comparison Actions are being scheduled for &lt;strong&gt;{0} systems&lt;/strong&gt;, it may take several minutes for this to complete.</source>
@@ -6769,7 +6744,6 @@ Follow this url to see the full list of inactive systems:
           <context context-type="sourcefile">/rhn/systems/ssm/config/Diff.do</context>
           <context context-type="paramnotes">Configuration Comparison Action scheduled successfully for {0} systems.</context>
         </context-group>
-        
       </trans-unit>
       <trans-unit id="schedulediff.ssm.failure">
         <source>Failed to schedule Configuration Comparison Action</source>
@@ -6921,20 +6895,18 @@ Follow this url to see the full list of inactive systems:
         <target>અયોગ્ય મેક્રો - ખાતરી કરો કે ફાઈલ બાઈનરી ફાઈલ નથી! '{0}'</target>
       </trans-unit>
       <trans-unit id="configdiff.schedule.success">
-          <source>&lt;a href="{0}"&gt;Configuration file compare actions&lt;/a&gt; are being scheduled for {1} systems, it may take several minutes for this to complete.</source>
+        <source>&lt;a href="{0}"&gt;Configuration file compare actions&lt;/a&gt; are being scheduled for {1} systems, it may take several minutes for this to complete.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/file/CompareDeployed.do</context>
           <context context-type="paramnotes">Configuration file compare action scheduled successfully for 8 systems.</context>
         </context-group>
-          
       </trans-unit>
       <trans-unit id="configdiff.schedule.success.singular">
-          <source>&lt;a href="{0}"&gt;Configuration file compare action&lt;/a&gt; is being scheduled successfully for 1 system.</source>
+        <source>&lt;a href="{0}"&gt;Configuration file compare action&lt;/a&gt; is being scheduled successfully for 1 system.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/file/CompareDeployed.do</context>
           <context context-type="paramnotes">Configuration file compare action scheduled successfully for 1 system.</context>
         </context-group>
-          
       </trans-unit>
       <trans-unit id="configdiff.schedule.error">
         <source>Failed to schedule configuration file compare action</source>
@@ -7637,7 +7609,6 @@ Follow this url to see the full list of inactive systems:
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/Registered.do</context>
         </context-group>
-
       </trans-unit>
       <trans-unit id="allregisteredsystems">
         <source>All Systems</source>

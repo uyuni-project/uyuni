@@ -1242,7 +1242,7 @@
         </context-group>
       </trans-unit>
       <trans-unit id="error.unsupported_db">
-         <source>Running postgresql {0} is not supported. Minimal required version is {1}.</source>
+        <source>Running postgresql {0} is not supported. Minimal required version is {1}.</source>
       </trans-unit>
       <trans-unit id="error.unsupported_db_on_os">
         <source>Running postgresql {0} on {1} is not supported. Please migrate to postgresql {2}.</source>
@@ -6151,14 +6151,14 @@ Follow this url to see the full list of inactive systems:
         </context-group>
       </trans-unit>
       <trans-unit id="configdiff.schedule.success">
-          <source>&lt;a href="{0}"&gt;Configuration file compare actions&lt;/a&gt; are being scheduled for {1} systems, it may take several minutes for this to complete.</source>
+        <source>&lt;a href="{0}"&gt;Configuration file compare actions&lt;/a&gt; are being scheduled for {1} systems, it may take several minutes for this to complete.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/file/CompareDeployed.do</context>
           <context context-type="paramnotes">Configuration file compare action scheduled successfully for 8 systems.</context>
         </context-group>
       </trans-unit>
       <trans-unit id="configdiff.schedule.success.singular">
-          <source>&lt;a href="{0}"&gt;Configuration file compare action&lt;/a&gt; is being scheduled successfully for 1 system.</source>
+        <source>&lt;a href="{0}"&gt;Configuration file compare action&lt;/a&gt; is being scheduled successfully for 1 system.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/file/CompareDeployed.do</context>
           <context context-type="paramnotes">Configuration file compare action scheduled successfully for 1 system.</context>

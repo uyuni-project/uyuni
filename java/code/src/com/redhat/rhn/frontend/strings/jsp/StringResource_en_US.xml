@@ -191,7 +191,7 @@
       </trans-unit>
       <!--# Struts Validator Error Messages-->
       <trans-unit id="errors.invalid.value">
-          <source>Only valid values for {0} are ({1})</source>
+        <source>Only valid values for {0} are ({1})</source>
       </trans-unit>
       <trans-unit id="errors.suffix">
         <source>&lt;/li&gt;</source>
@@ -702,10 +702,10 @@
         </context-group>
       </trans-unit>
       <trans-unit id="common.jsp.noscript">
-          <source>Some features require JavaScript in order to work properly. Make sure you enable JavaScript in your browser.</source>
-          <context-group name="ctx">
-              <context context-type="sourcefile">All pages</context>
-          </context-group>
+        <source>Some features require JavaScript in order to work properly. Make sure you enable JavaScript in your browser.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">All pages</context>
+        </context-group>
       </trans-unit>
       <trans-unit id="orgadmin.displayname">
         <source>Org Admin?*</source>
@@ -2540,7 +2540,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         </context-group>
       </trans-unit>
       <trans-unit id="actionchain.jsp.labeltoolong">
-	      <source>Could not save the Action Chain, chain label is too long (>= 256 chars).</source>
+        <source>Could not save the Action Chain, chain label is too long (>= 256 chars).</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionChain</context>
         </context-group>
@@ -2819,7 +2819,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         </context-group>
       </trans-unit>
       <trans-unit id="packagelist.jsp.modulespresent">
-          <source>At least one of the channels this system is subscribed to contains modules. If you have activated modules on this system, please refrain from using @@PRODUCT_NAME@@ for package operations. Instead, perform all package actions from the client using dnf.</source>
+        <source>At least one of the channels this system is subscribed to contains modules. If you have activated modules on this system, please refrain from using @@PRODUCT_NAME@@ for package operations. Instead, perform all package actions from the client using dnf.</source>
       </trans-unit>
       <!-- upgradable.jsp -->
       <trans-unit id="upgradable.jsp.header">
@@ -4815,10 +4815,10 @@ organization. You may grant or remove the organization administrator role in the
           <source>{0} systems have been &lt;a href="/rhn/schedule/PendingActions.do"&gt;scheduled&lt;/a&gt; to reboot at {1}.</source>
         </trans-unit>
         <trans-unit id="ssm.misc.reboot.message.queued.singular">
-            <source>{0} system reboot has been added to the Action Chain &lt;a href="/rhn/schedule/ActionChain.do?id={1}"&gt;{2}&lt;/a&gt;.</source>
+          <source>{0} system reboot has been added to the Action Chain &lt;a href="/rhn/schedule/ActionChain.do?id={1}"&gt;{2}&lt;/a&gt;.</source>
         </trans-unit>
         <trans-unit id="ssm.misc.reboot.message.queued.plural">
-            <source>{0} system reboots have been added to the Action Chain &lt;a href="/rhn/schedule/ActionChain.do?id={1}"&gt;{2}&lt;/a&gt;.</source>
+          <source>{0} system reboots have been added to the Action Chain &lt;a href="/rhn/schedule/ActionChain.do?id={1}"&gt;{2}&lt;/a&gt;.</source>
         </trans-unit>
         <trans-unit id="ssm.misc.reboot.message.error.noselect">
           <source>Please select at least one system for reboot.</source>
@@ -6265,7 +6265,6 @@ organization. You may grant or remove the organization administrator role in the
           <context context-type="sourcefile">/rhn/systems/details/packages/VerifyConfirm.do</context>
         </context-group>
       </trans-unit>
-
       <!-- Package locking -->
       <trans-unit id="pkg.lock.header">
         <source>Package Locking or Unlocking</source>
@@ -6303,14 +6302,12 @@ organization. You may grant or remove the organization administrator role in the
           <context context-type="sourcefile">/rhn/systems/details/packages/LockPackages.do</context>
         </context-group>
       </trans-unit>
-
       <trans-unit id="pkg.lock.menu">
         <source>Lock</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/LockPackages.do</context>
         </context-group>
       </trans-unit>
-      
       <trans-unit id="pkg.lock.requestlock">
         <source>Lock</source>
         <context-group name="ctx">
@@ -6341,7 +6338,6 @@ organization. You may grant or remove the organization administrator role in the
           <context context-type="sourcefile">/rhn/systems/details/packages/LockPackages.do</context>
         </context-group>
       </trans-unit>
-
       <!-- Package Profile strings -->
       <trans-unit id="compare.jsp.compareto">
         <source>Compare to {0}</source>
@@ -11996,10 +11992,10 @@ the &lt;strong&gt;Red Hat Enterprise Linux System Administration Guide.&lt;/stro
         </context-group>
       </trans-unit>
       <trans-unit id="toolbar.create.state.configchannel">
-            <source>Create State Channel</source>
-            <context-group name="ctx">
-                <context context-type="sourcefile">/rhn/configuration/GlobalConfigChannelList.do</context>
-            </context-group>
+        <source>Create State Channel</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/configuration/GlobalConfigChannelList.do</context>
+        </context-group>
       </trans-unit>
       <trans-unit id="toolbar.create.org">
         <source>Create Organization</source>
@@ -12160,11 +12156,11 @@ the &lt;strong&gt;Red Hat Enterprise Linux System Administration Guide.&lt;/stro
         </context-group>
       </trans-unit>
       <trans-unit id="channelOverview.jsp.state.channel.numfiles">
-          <source>{0} sls, {1} files</source>
-          <context-group name="ctx">
-             <context context-type="sourcefile">/rhn/configuration/ChannelOverview.do</context>
-             <context context-type="paramnotes">"36 files, 2 directories, 0 symlinks"</context>
-          </context-group>
+        <source>{0} sls, {1} files</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/configuration/ChannelOverview.do</context>
+          <context context-type="paramnotes">"36 files, 2 directories, 0 symlinks"</context>
+        </context-group>
       </trans-unit>
       <trans-unit id="channelOverview.jsp.numfiles-total">
         <source>{0} total</source>
@@ -13375,7 +13371,7 @@ centrally-managed configuration channel, {2}; below is a list of systems you may
       <trans-unit id="filedetails.details.jspf.sls">
         <source>SLS</source>
         <context-group name="ctx">
-           <context context-type="sourcefile">/rhn/configuration/file/FileDetails.do</context>
+          <context context-type="sourcefile">/rhn/configuration/file/FileDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="filedetails.details.jspf.symlink">
@@ -18220,12 +18216,7 @@ The Tree Path, Kickstart RPM, Base Channel, and Installer Generation should alwa
         </context-group>
       </trans-unit>
       <!-- outage-policy.jsp -->
-      <group>
-
-
-
-
-      </group>
+      <group></group>
       <!-- download-ISOs pages -->
       <group>
         <!-- common -->
@@ -19094,7 +19085,6 @@ given channel.</source>
           <context context-type="sourcefile">/rhn/help/about</context>
         </context-group>
       </trans-unit>
-
       <trans-unit id="help.jsp.about.overview">
         <source>Overview</source>
         <context-group name="ctx">
@@ -19131,7 +19121,6 @@ given channel.</source>
           <context context-type="sourcefile">/rhn/help/about</context>
         </context-group>
       </trans-unit>
-
       <trans-unit id="help.jsp.helpdesk">
         <source>Welcome to the Help Desk</source>
       </trans-unit>
@@ -20202,12 +20191,12 @@ given channel.</source>
           <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
         </context-group>
       </trans-unit>
-        <trans-unit id="bunch.jsp.nullstarttime">
-            <source>Task never started</source>
-            <context-group name="ctx">
-                <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
-            </context-group>
-        </trans-unit>
+      <trans-unit id="bunch.jsp.nullstarttime">
+        <source>Task never started</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="bunch.jsp.description.daily-status-bunch">
         <source>Sends daily report</source>
         <context-group name="ctx">
@@ -20532,12 +20521,12 @@ given channel.</source>
           <context context-type="sourcefile">/rhn/channels/manage/errata//Add.do</context>
         </context-group>
       </trans-unit>
-        <trans-unit id="toolbar.misc.manage_channel">
-            <source>Manage Channel</source>
-            <context-group name="ctx">
-                <context context-type="sourcefile">/rhn/channels/Managers.do</context>
-            </context-group>
-        </trans-unit>
+      <trans-unit id="toolbar.misc.manage_channel">
+        <source>Manage Channel</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/channels/Managers.do</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="header.jsp.errata.add">
         <source>Add Errata</source>
         <context-group name="ctx">
@@ -21162,7 +21151,6 @@ given channel.</source>
         <trans-unit id="iss.error.master.exists">
           <source>Master with domain name {0} already defined</source>
         </trans-unit>
-
       </group>
       <group>
         <context-group name="ctx">

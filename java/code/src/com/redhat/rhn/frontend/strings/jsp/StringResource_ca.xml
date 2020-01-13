@@ -750,10 +750,10 @@
         </context-group>
       </trans-unit>
       <trans-unit id="common.jsp.noscript">
-          <source>Some features require JavaScript in order to work properly. Make sure you enable JavaScript in your browser.</source>
-          <context-group name="ctx">
-              <context context-type="sourcefile">All pages</context>
-          </context-group>
+        <source>Some features require JavaScript in order to work properly. Make sure you enable JavaScript in your browser.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">All pages</context>
+        </context-group>
       </trans-unit>
       <trans-unit id="orgadmin.displayname">
         <source>Org Admin?*</source>
@@ -2838,7 +2838,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         </context-group>
       </trans-unit>
       <trans-unit id="packagelist.jsp.modulespresent">
-          <source>At least one of the channels this system is subscribed to contains modules. If you have activated modules on this system, please refrain from using @@PRODUCT_NAME@@ for package operations. Instead, perform all package actions from the client using dnf.</source>
+        <source>At least one of the channels this system is subscribed to contains modules. If you have activated modules on this system, please refrain from using @@PRODUCT_NAME@@ for package operations. Instead, perform all package actions from the client using dnf.</source>
       </trans-unit>
       <!-- upgradable.jsp -->
       <trans-unit id="upgradable.jsp.header">
@@ -4816,10 +4816,10 @@ organization. You may grant or remove the organization administrator role in the
           <source>{0} systems have been &lt;a href="/rhn/schedule/PendingActions.do"&gt;scheduled&lt;/a&gt; to reboot at {1}.</source>
         </trans-unit>
         <trans-unit id="ssm.misc.reboot.message.queued.singular">
-            <source>{0} system reboot has been added to the Action Chain &lt;a href="/rhn/schedule/ActionChain.do?id={1}"&gt;{2}&lt;/a&gt;.</source>
+          <source>{0} system reboot has been added to the Action Chain &lt;a href="/rhn/schedule/ActionChain.do?id={1}"&gt;{2}&lt;/a&gt;.</source>
         </trans-unit>
         <trans-unit id="ssm.misc.reboot.message.queued.plural">
-            <source>{0} system reboots have been added to the Action Chain &lt;a href="/rhn/schedule/ActionChain.do?id={1}"&gt;{2}&lt;/a&gt;.</source>
+          <source>{0} system reboots have been added to the Action Chain &lt;a href="/rhn/schedule/ActionChain.do?id={1}"&gt;{2}&lt;/a&gt;.</source>
         </trans-unit>
         <trans-unit id="ssm.misc.reboot.message.error.noselect">
           <source>Please select at least one system for reboot.</source>
@@ -18046,12 +18046,7 @@ The Tree Path, Kickstart RPM, Base Channel, and Installer Generation should alwa
         </context-group>
       </trans-unit>
       <!-- outage-policy.jsp -->
-      <group>
-
-
-
-
-      </group>
+      <group></group>
       <!-- download-ISOs pages -->
       <group>
         <!-- common -->
@@ -18896,7 +18891,6 @@ given channel.</source>
           <context context-type="sourcefile">/rhn/help/about</context>
         </context-group>
       </trans-unit>
-
       <trans-unit id="help.jsp.about.overview">
         <source>Overview</source>
         <context-group name="ctx">
@@ -18933,7 +18927,6 @@ given channel.</source>
           <context context-type="sourcefile">/rhn/help/about</context>
         </context-group>
       </trans-unit>
-
       <trans-unit id="help.jsp.helpdesk">
         <source>Welcome to the Help Desk</source>
       </trans-unit>
@@ -20934,7 +20927,6 @@ given channel.</source>
         <trans-unit id="iss.error.master.exists">
           <source>Master with domain name {0} already defined</source>
         </trans-unit>
-
       </group>
       <group>
         <context-group name="ctx">
