@@ -178,7 +178,7 @@
         </context-group>
       </trans-unit>
       <trans-unit id="schedule-options.action-chain">
-        <source>Add to Action Chain:</source>
+        <source>Add to:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">schedule-options.jspf</context>
         </context-group>
@@ -339,7 +339,7 @@
           <source>We're sorry, but the action could not be found.</source>
         </trans-unit>
         <trans-unit id="lookup.jsp.title.errata">
-          <source>We're sorry, but the erratum could not be found.</source>
+          <source>We're sorry, but the patch could not be found.</source>
         </trans-unit>
         <trans-unit id="lookup.jsp.title.system">
           <source>We're sorry, but the system could not be found.</source>
@@ -402,7 +402,7 @@
           <source>The channel requested does not exist.  This is most likely if you arrived at this page through bookmarks or some other non-hyperlink.</source>
         </trans-unit>
         <trans-unit id="lookup.jsp.reason1.errata">
-          <source>The erratum requested does not exist.  This is most likely if you arrived at this page through bookmarks or some other non-hyperlink.</source>
+          <source>The patch requested does not exist.  This is most likely if you arrived at this page through bookmarks or some other non-hyperlink.</source>
         </trans-unit>
         <trans-unit id="lookup.jsp.reason1.action">
           <source>The action requested does not exist.  This is most likely if you arrived at this page through bookmarks or some other non-hyperlink.</source>
@@ -441,7 +441,7 @@
           <source>You do not have permission to view this channel.</source>
         </trans-unit>
         <trans-unit id="lookup.jsp.reason2.errata">
-          <source>You do not have permission to view this erratum.</source>
+          <source>You do not have permission to view this patch.</source>
         </trans-unit>
         <trans-unit id="lookup.jsp.reason2.action">
           <source>You do not have permission to view this action.</source>
@@ -549,7 +549,7 @@
           </context-group>
         </trans-unit>
         <trans-unit id="permission.jsp.summary.deleteuser">
-          <source>You must be an organization administrator for a satellite to delete a user.</source>
+          <source>You must be an organization administrator for a @@PRODUCT_NAME@@ to delete a user.</source>
         </trans-unit>
         <trans-unit id="permission.jsp.summary.disableuser">
           <source>You must be an organization administrator to deactivate a user.</source>
@@ -591,7 +591,7 @@
           <source>Can not display Organization Details</source>
         </trans-unit>
         <trans-unit id="permission.jsp.summary.general">
-          <source>You must be an satellite administrator to view this page. Contact your satellite administrator to get information on the organizations in this system.</source>
+          <source>You must be an @@PRODUCT_NAME@@ administrator to view this page. Contact your @@PRODUCT_NAME@@ administrator to get information on the organizations in this system.</source>
         </trans-unit>
       </group>
       <trans-unit id="badparam.jsp.title">
@@ -898,7 +898,7 @@
         </context-group>
       </trans-unit>
       <trans-unit id="preferences.jsp.leadin">
-        <source>@@PRODUCT_NAME@@ offers email notifications for when errata relevant to your systems are released, as well as daily emails summarizing the events for your systems.</source>
+        <source>@@PRODUCT_NAME@@ offers email notifications for when patches relevant to your systems are released, as well as daily emails summarizing the events for your systems.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserPreferences</context>
         </context-group>
@@ -1163,7 +1163,7 @@
         </context-group>
       </trans-unit>
       <trans-unit id="header.jsp.errata">
-        <source>Errata</source>
+        <source>Patches</source>
         <context-group name="ctx">
           <context context-type="sourcefile">./includes/header.jsp</context>
         </context-group>
@@ -1185,7 +1185,7 @@
       </trans-unit>
       <!-- footer.jsp -->
       <trans-unit id="footer.jsp.copyright">
-        <source>Copyright &amp;#169; 2002&amp;#x2012;17 Red Hat, Inc. All rights reserved.</source>
+        <source>&lt;a href="/rhn/help/Copyright.do">Copyright Notice&lt;/a&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">./includes/footer.jsp</context>
         </context-group>
@@ -1213,7 +1213,7 @@
       </trans-unit>
       <!-- legends -->
       <trans-unit id="errata-legend.jsp.title">
-        <source>Errata Legend</source>
+        <source>Patches Legend</source>
         <context-group name="ctx">
           <context context-type="sourcefile">./includes/legends/errata-legend.jsp</context>
         </context-group>
@@ -1271,7 +1271,7 @@
         </context-group>
       </trans-unit>
       <trans-unit id="system-legend.jsp.kickstarting">
-        <source>Kickstarting</source>
+        <source>Autoinstalling</source>
         <context-group name="ctx">
           <context context-type="sourcefile">./includes/legends/system-legend.jsp</context>
         </context-group>
@@ -1289,7 +1289,7 @@
         </context-group>
       </trans-unit>
       <trans-unit id="system-legend.jsp.unentitled">
-        <source>Unentitled</source>
+        <source>No System Types</source>
         <context-group name="ctx">
           <context context-type="sourcefile">./includes/legends/system-legend.jsp</context>
         </context-group>
@@ -1604,7 +1604,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         </context-group>
       </trans-unit>
       <trans-unit id="usercreate.jsp.pam.reference">
-        <source>To set up @@PRODUCT_NAME@@ to authenticate against LDAP, Kerberos, or other network-based authentication systems, visit the &lt;a href="/docs/administration/auth-methods.html"&gt;Installation guide&lt;/a&gt; for instructions on how to set up PAM.</source>
+        <source>If you would like to set up your @@PRODUCT_NAME@@ to authenticate against LDAP, kerberos, and other network-based authentication systems, please see the &lt;a href="/docs/administration/auth-methods.html"&gt;documentation&lt;/a&gt; for instructions on how to set up PAM.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/CreateUser.do</context>
         </context-group>
@@ -2462,7 +2462,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         </context-group>
       </trans-unit>
       <trans-unit id="actionchain.jsp.errata.update">
-        <source>Apply errata {0} on</source>
+        <source>Apply patch(es) {0} on</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionChain</context>
         </context-group>
@@ -2807,7 +2807,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         </context-group>
       </trans-unit>
       <trans-unit id="packagelist.jsp.extrapackages">
-        <source>Extra Packages</source>
+        <source>Non Compliant</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/PackageList</context>
         </context-group>
@@ -2847,7 +2847,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         </context-group>
       </trans-unit>
       <trans-unit id="upgradable.jsp.errata">
-        <source>Related Errata</source>
+        <source>Related Patches</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/UpgradableList</context>
         </context-group>
@@ -2935,7 +2935,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         </context-group>
       </trans-unit>
       <trans-unit id="erratalist.jsp.allerrata">
-        <source>All Errata</source>
+        <source>All Types</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/AllErrata</context>
         </context-group>
@@ -2967,7 +2967,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
       </trans-unit>
       <!-- == ERRATA == -->
       <trans-unit id="erratalist.jsp.noerrata">
-        <source>No Errata</source>
+        <source>No Patches</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/AllErrata</context>
           <context context-type="sourcefile">/rhn/YourRhn</context>
@@ -2989,13 +2989,13 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         </context-group>
       </trans-unit>
       <trans-unit id="erratalist.jsp.relevanterrata">
-        <source>Errata Relevant to Your Systems</source>
+        <source>Patches Relevant to Your Systems</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/RelevantErrata</context>
         </context-group>
       </trans-unit>
       <trans-unit id="erratalist.jsp.norelevanterrata">
-        <source>No Errata Relevant to Your Systems</source>
+        <source>No Patches Relevant to Your Systems</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/RelevantErrata</context>
         </context-group>
@@ -3050,13 +3050,13 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         </context-group>
       </trans-unit>
       <trans-unit id="errata.jsp.header">
-        <source>Relevant Errata</source>
+        <source>Relevant Patches</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/ErrataList</context>
         </context-group>
       </trans-unit>
       <trans-unit id="errata.jsp.summary">
-        <source>The following errata may currently be applied to this system.</source>
+        <source>The following patches may currently be applied to this system.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/ErrataList</context>
         </context-group>
@@ -3068,7 +3068,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         </context-group>
       </trans-unit>
       <trans-unit id="errata.jsp.apply">
-        <source>Apply Errata</source>
+        <source>Apply Patches</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/ErrataList</context>
         </context-group>
@@ -3086,7 +3086,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         </context-group>
       </trans-unit>
       <trans-unit id="errataconfirm.jsp.header">
-        <source>Confirm Errata Updates</source>
+        <source>Confirm Patch Updates</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/ErrataConfirm</context>
         </context-group>
@@ -3098,32 +3098,32 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         </context-group>
       </trans-unit>
       <trans-unit id="errata.created">
-        <source>Errata {0}-{1} created.</source>
+        <source>Patch {0}-{1} created.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Create.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="errata.edit.toolbar">
-        <source>Errata: </source>
+        <source>Patch: </source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Edit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="errata.edit.editerrata">
-        <source>Edit Errata</source>
+        <source>Edit Patch</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Edit.do</context>
           <context context-type="sourcefile">/rhn/errata/manage/Channels.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="errata.edit.instructions">
-        <source>Edit erratum here.  Required items are marked with a (&lt;span class="required-form-field"&gt;*&lt;/span&gt;).</source>
+        <source>Edit patch here.  Required items are marked with a (&lt;span class="required-form-field"&gt;*&lt;/span&gt;).</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Edit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="errata.edit.updateerrata">
-        <source>Update Erratum</source>
+        <source>Update Patch</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Edit.do</context>
         </context-group>
@@ -3141,13 +3141,13 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         </context-group>
       </trans-unit>
       <trans-unit id="errata.edit.youmaypublish">
-        <source>You may now publish this erratum.</source>
+        <source>You may now publish this patch.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Edit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="errata.edit.publisherrata">
-        <source>Publish Errata</source>
+        <source>Publish Patch</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Edit.do</context>
         </context-group>
@@ -3160,19 +3160,19 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         </context-group>
       </trans-unit>
       <trans-unit id="errata.edit.youmaynotify">
-        <source>You can send an email notification of this erratum.</source>
+        <source>You can send an email notification of this patch.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Edit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="errata.edit.senderratamail">
-        <source>Send Errata Mail</source>
+        <source>Send Patch Mail</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Edit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="errata.edit.updated">
-        <source>Errata updated.</source>
+        <source>Patches updated.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Edit.do</context>
         </context-group>
@@ -3184,7 +3184,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         </context-group>
       </trans-unit>
       <trans-unit id="errata.edit.bugdeleted">
-        <source>Bug &lt;strong&gt;{0}&lt;/strong&gt; removed from errata &lt;strong&gt;{1}&lt;/strong&gt;.</source>
+        <source>Bug &lt;strong&gt;{0}&lt;/strong&gt; removed from patches &lt;strong&gt;{1}&lt;/strong&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Edit.do</context>
         </context-group>
@@ -3196,13 +3196,13 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         </context-group>
       </trans-unit>
       <trans-unit id="errata.edit.error.uniqueAdvisoryName">
-        <source>An Erratum with this advisory name already exists.</source>
+        <source>A patch with this advisory name already exists.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Edit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="errata.edit.error.rhAdvisoryName">
-        <source>An Errata Advisory cannot begin with the letters 'RH'</source>
+        <source>A Patch Advisory cannot begin with the letters 'RH'</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Edit.do</context>
         </context-group>
@@ -3250,13 +3250,13 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         </context-group>
       </trans-unit>
       <trans-unit id="errata.edit.channels.instructions">
-        <source>Choose the Channels which should be associated with this erratum below. The number of packages referred to by this erratum is displayed after the channel name. If you do not want this erratum to apply to a specific channel, unselect it below.</source>
+        <source>Choose the Channels which should be associated with this patch below. The number of packages referred to by this patch is displayed after the channel name. If you do not want this patch to apply to a specific channel, unselect it below.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Channels.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="errata.channels.updated.singular">
-        <source>Erratum &lt;strong&gt;{0}&lt;/strong&gt; has been successfully assigned to &lt;strong&gt;{1}&lt;/strong&gt; channel.</source>
+        <source>Patch &lt;strong&gt;{0}&lt;/strong&gt; has been successfully assigned to &lt;strong&gt;{1}&lt;/strong&gt; channel.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Channels.do</context>
           <context context-type="paramnotes">Errata foobar has been
@@ -3264,7 +3264,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         </context-group>
       </trans-unit>
       <trans-unit id="errata.channels.updated.plural">
-        <source>Erratum &lt;strong&gt;{0}&lt;/strong&gt; has been successfully assigned to &lt;strong&gt;{1}&lt;/strong&gt; channels.</source>
+        <source>Patch &lt;strong&gt;{0}&lt;/strong&gt; has been successfully assigned to &lt;strong&gt;{1}&lt;/strong&gt; channels.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Channels.do</context>
           <context context-type="paramnotes">Errata foobar has been
@@ -3280,7 +3280,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         </context-group>
       </trans-unit>
       <trans-unit id="errata.edit.packages.confirm.instructions">
-        <source>Below is the list of packages which you have selected to add to this erratum.</source>
+        <source>Below is the list of packages which you have selected to add to this patch.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">
                 /rhn/errata/manage/AddPackagesConfirm.do
@@ -3296,7 +3296,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         </context-group>
       </trans-unit>
       <trans-unit id="errata.edit.packages.confirm.remove.instructions">
-        <source>Below is the list of packages which you have selected to remove from this erratum.  Click 'Confirm' to remove them.</source>
+        <source>Below is the list of packages which you have selected to remove from this patch.  Click 'Confirm' to remove them.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">
                 /rhn/errata/manage/RemovePackages.do
@@ -3312,7 +3312,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         </context-group>
       </trans-unit>
       <trans-unit id="errata.edit.packages.list.erratapackages">
-        <source>Errata Packages</source>
+        <source>Patches Packages</source>
         <context-group name="ctx">
           <context context-type="sourcefile">
                 /rhn/errata/manage/ListPackages.do
@@ -3328,7 +3328,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         </context-group>
       </trans-unit>
       <trans-unit id="errata.edit.packages.list.instructions">
-        <source>The following packages are associated with this errata. To remove packages from this errata, select them, and click 'Remove Packages' below. To add packages to this errata, click 'add' above.</source>
+        <source>The following packages are associated with this patch. To remove packages from this patch, select them, and click 'Remove Packages' below. To add packages to this patch, click 'add' above.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">
                 /rhn/errata/manage/ListPackages.do
@@ -3336,7 +3336,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         </context-group>
       </trans-unit>
       <trans-unit id="errata.publish.toolbar">
-        <source>Publish Errata: </source>
+        <source>Publish Patch: </source>
         <context-group name="ctx">
           <context context-type="sourcefile">
                 /rhn/errata/manage/SelectChannels.do
@@ -3344,7 +3344,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         </context-group>
       </trans-unit>
       <trans-unit id="errata.publish.instructions">
-        <source>Please confirm that you wish to publish this errata. Publishing this errata will make it available to all of the Channels selected below.</source>
+        <source>Please confirm that you wish to publish this patch. Publishing this patch will make it available to all of the Channels selected below.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">
                 /rhn/errata/manage/SelectChannels.do
@@ -3368,7 +3368,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         </context-group>
       </trans-unit>
       <trans-unit id="errata.publish.publisherrata">
-        <source>Publish Errata</source>
+        <source>Publish Patches</source>
         <context-group name="ctx">
           <context context-type="sourcefile">
                 /rhn/errata/manage/SelectChannels.do
@@ -3384,7 +3384,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         </context-group>
       </trans-unit>
       <trans-unit id="errata.publish.nochannelsselected">
-        <source>A published errata must belong to at least one channel.</source>
+        <source>A published patch must belong to at least one channel.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">
                 /rhn/errata/manage/SelectChannels.do
@@ -3392,7 +3392,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         </context-group>
       </trans-unit>
       <trans-unit id="errata.notify.senderratanotification">
-        <source>Send Errata Notification</source>
+        <source>Send Patch Notification</source>
         <context-group name="ctx">
           <context context-type="sourcefile">
                 /rhn/errata/manage/Notify.do
@@ -3400,7 +3400,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         </context-group>
       </trans-unit>
       <trans-unit id="errata.notify.instructions">
-        <source>You can send email to the administrators of systems to which this errata applies.</source>
+        <source>You can send email to the administrators of systems to which this patch applies.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">
                 /rhn/errata/manage/Notify.do
@@ -3408,7 +3408,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         </context-group>
       </trans-unit>
       <trans-unit id="errata.notify.success">
-        <source>An errata mail update has been scheduled for &lt;a href="/rhn/errata/manage/Edit.do?eid={0}"&gt;{1}&lt;/a&gt;.</source>
+        <source>A patch mail update has been scheduled for &lt;a href="/rhn/errata/manage/Edit.do?eid={0}"&gt;{1}&lt;/a&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">
                 /rhn/errata/manage/Notify.do
@@ -3416,7 +3416,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         </context-group>
       </trans-unit>
       <trans-unit id="errata.edit.packages.erratapackages">
-        <source>Errata Packages</source>
+        <source>Patches Packages</source>
         <context-group name="ctx">
           <context context-type="sourcefile">
                 /rhn/errata/Packages.do
@@ -3432,7 +3432,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         </context-group>
       </trans-unit>
       <trans-unit id="errata.edit.packages.add.instructions">
-        <source>Below is the list of packages you can add to this errata. The "view" select box allows you to restrict the set of available packages. To add packages to this errata, select them, and click 'Add Packages' below.</source>
+        <source>This is the list of available packages. To add packages to this patch, select them and click 'Add Packages'.&lt;br/&gt;The drop-down list below allows you to restrict the set of available packages by channel.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">
                 /rhn/errata/PackagesAdd.do
@@ -3488,7 +3488,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         </context-group>
       </trans-unit>
       <trans-unit id="errata.edit.packages.add.success.plural">
-        <source>&lt;strong&gt;{0}&lt;/strong&gt; packages added to errata &lt;strong&gt;{1}&lt;/strong&gt;</source>
+        <source>&lt;strong&gt;{0}&lt;/strong&gt; packages added to patch &lt;strong&gt;{1}&lt;/strong&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">
                 /rhn/errata/manage/AddPackagesConfirm.do
@@ -3496,7 +3496,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         </context-group>
       </trans-unit>
       <trans-unit id="errata.edit.packages.add.success.singular">
-        <source>&lt;strong&gt;{0}&lt;/strong&gt; package added to errata &lt;strong&gt;{1}&lt;/strong&gt;</source>
+        <source>&lt;strong&gt;{0}&lt;/strong&gt; package added to patch &lt;strong&gt;{1}&lt;/strong&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">
                 /rhn/errata/manage/AddPackagesConfirm.do
@@ -3504,7 +3504,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         </context-group>
       </trans-unit>
       <trans-unit id="errata.edit.packages.remove.success.plural">
-        <source>&lt;strong&gt;{0}&lt;/strong&gt; packages removed from errata &lt;strong&gt;{1}&lt;/strong&gt;</source>
+        <source>&lt;strong&gt;{0}&lt;/strong&gt; packages removed from patch &lt;strong&gt;{1}&lt;/strong&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">
                 /rhn/errata/manage/RemovePackages.do
@@ -3512,7 +3512,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         </context-group>
       </trans-unit>
       <trans-unit id="errata.edit.packages.remove.success.singular">
-        <source>&lt;strong&gt;{0}&lt;/strong&gt; package removed from errata &lt;strong&gt;{1}&lt;/strong&gt;</source>
+        <source>&lt;strong&gt;{0}&lt;/strong&gt; package removed from patch &lt;strong&gt;{1}&lt;/strong&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">
                 /rhn/errata/manage/RemovePackages.do
@@ -3520,25 +3520,25 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         </context-group>
       </trans-unit>
       <trans-unit id="errata.overview.jsp.summary">
-        <source>The following errata apply to at least one system to which you have administrative access.</source>
+        <source>The following patches apply to at least one system to which you have administrative access.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/Overview.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="errata.all.jsp.summary">
-        <source>The following errata list represents all errata accessible by your organization.</source>
+        <source>The following patch list represents all patches accessible by your organization.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/Overview.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="affectedsystems.jsp.summary">
-        <source>Below is a list of systems affected by this erratum.</source>
+        <source>Below is a list of systems affected by this patch.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/details/SystemsAffected</context>
         </context-group>
       </trans-unit>
       <trans-unit id="affectedsystems.jsp.summarywithacl">
-        <source>You can select one or more systems and apply this erratum to them.  Only Management Service entitled systems can be selected.</source>
+        <source>You can select one or more systems and apply this patch to them.  Only systems with Management system type can be selected.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/details/SystemsAffected</context>
         </context-group>
@@ -3550,7 +3550,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         </context-group>
       </trans-unit>
       <trans-unit id="affectedsystems.jsp.apply">
-        <source>Apply Errata</source>
+        <source>Apply Patches</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/details/SystemsAffected</context>
         </context-group>
@@ -3562,7 +3562,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         </context-group>
       </trans-unit>
       <trans-unit id="affectedsystems.jsp.entitle">
-        <source>Entitlement</source>
+        <source>System Types</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/details/SystemsAffected</context>
         </context-group>
@@ -3586,7 +3586,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         </context-group>
       </trans-unit>
       <trans-unit id="confirm.jsp.header">
-        <source>Confirm Errata Update:</source>
+        <source>Confirm Patch Update:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/details/ErrataConfirm</context>
         </context-group>
@@ -3611,7 +3611,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         </context-group>
       </trans-unit>
       <trans-unit id="org.allusers.summary">
-        <source>The following list of all users on this @@PRODUCT_NAME@@, across organizations. Note that you will only have access to modify the details of users that are members of this organization you are currently logged into ({0}), and only if you have organization administrator privledges for this organization.</source>
+        <source>The following is a list of all users on this @@PRODUCT_NAME@@ (across organizations). Note that you will only have access to modify the details of users that are members of this organization you are currently logged into ({0}), and only if you have organization administrator privileges for this organization.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/Users.do</context>
         </context-group>
@@ -3779,7 +3779,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         </context-group>
       </trans-unit>
       <trans-unit id="org.kickstart.profiles.jsp">
-        <source>Kickstart Profiles</source>
+        <source>Autoinstallation Profiles</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/OrgDetails.do</context>
         </context-group>
@@ -3906,19 +3906,19 @@ organization. You may grant or remove the organization administrator role in the
         </context-group>
       </trans-unit>
       <trans-unit id="erratasearch.jsp.search.tip">
-        <source>'kernel', 'RHBA-2007:0113'</source>
+        <source>'kernel', 'slessp1-glibc'</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/Search.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="erratasearch.jsp.toolbar">
-        <source>Erratum Search</source>
+        <source>Advanced Search</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/Search.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="erratasearch.jsp.summary">
-        <source>Erratum Search will return results from the complete set of errata released by @@PRODUCT_NAME@@.</source>
+        <source>Advanced Search will return results from the complete set of patches released by @@PRODUCT_NAME@@.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/Search</context>
         </context-group>
@@ -3942,7 +3942,7 @@ organization. You may grant or remove the organization administrator role in the
         </context-group>
       </trans-unit>
       <trans-unit id="erratasearch.jsp.errata_advisory">
-        <source>Errata Advisory</source>
+        <source>Patch Advisory</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/Search</context>
         </context-group>
@@ -3954,7 +3954,7 @@ organization. You may grant or remove the organization administrator role in the
         </context-group>
       </trans-unit>
       <trans-unit id="errata_search_by_advisory">
-        <source>Erratum Advisory (ex: RHBA-2007:0113)</source>
+        <source>Patch Advisory (ex: slessp1-glibc)</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/Search</context>
         </context-group>
@@ -3996,7 +3996,7 @@ organization. You may grant or remove the organization administrator role in the
         </context-group>
       </trans-unit>
       <trans-unit id="erratasearch.jsp.noerrata">
-        <source>No errata.</source>
+        <source>No patches.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/Search</context>
         </context-group>
@@ -4008,7 +4008,7 @@ organization. You may grant or remove the organization administrator role in the
         </context-group>
       </trans-unit>
       <trans-unit id="erratasearch.jsp.types_to_search">
-        <source>Types of Errata to Search:.</source>
+        <source>Types of Patches to Search:.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/Search</context>
         </context-group>
@@ -4020,34 +4020,34 @@ organization. You may grant or remove the organization administrator role in the
         </context-group>
       </trans-unit>
       <trans-unit id="erratalist.jsp.ownederratapagesummary">
-        <source> &lt;p&gt; The following errata list represents errata owned by your organization.&lt;/p&gt; &lt;p&gt; Click on an erratum's Advisory to edit the erratum details or the list of packages to which the erratum applies. &lt;/p&gt;</source>
+        <source> &lt;p&gt; The following patch list represents patches owned by your organization.&lt;/p&gt; &lt;p&gt; Click on a patch's advisory to edit the patch details or the list of packages to which the patch applies. &lt;/p&gt;</source>
       </trans-unit>
       <trans-unit id="erratalist.jsp.unpublishederrata">
-        <source>Unpublished Errata</source>
+        <source>Unpublished Patches</source>
       </trans-unit>
       <trans-unit id="erratalist.jsp.erratamgmt">
-        <source>Errata Management</source>
+        <source>Patches Management</source>
       </trans-unit>
       <trans-unit id="erratalist.jsp.nounpublishederrata">
-        <source>No Unpublished Errata</source>
+        <source>No Unpublished Patches</source>
       </trans-unit>
       <trans-unit id="erratalist.jsp.nopublishederrata">
-        <source>No Published Errata</source>
+        <source>No Published Patches</source>
       </trans-unit>
       <trans-unit id="erratalist.jsp.publishederrata">
-        <source>Published Errata</source>
+        <source>Published Patches</source>
       </trans-unit>
       <trans-unit id="erratalist.jsp.deleteerrata">
-        <source>Delete Errata</source>
+        <source>Delete Patches</source>
       </trans-unit>
       <trans-unit id="erratalist.jsp.cloneerrata">
-        <source>Clone Errata</source>
+        <source>Clone Patches</source>
       </trans-unit>
       <trans-unit id="deleteconfirm.jsp.confirm">
         <source>Confirm</source>
       </trans-unit>
       <trans-unit id="deleteconfirm.jsp.pagesummary">
-        <source>Are you sure you wish to delete these errata?</source>
+        <source>Are you sure you wish to delete these patches?</source>
       </trans-unit>
       <trans-unit id="details.jsp.topic">
         <source>Topic</source>
@@ -4129,13 +4129,13 @@ organization. You may grant or remove the organization administrator role in the
         </context-group>
       </trans-unit>
       <trans-unit id="errata.create.jsp.createerrata">
-        <source>Create Errata</source>
+        <source>Create Patch</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Create.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="errata.create.jsp.instructions">
-        <source>Create errata here.  Required items are marked with a (&lt;span class="required-form-field"&gt;*&lt;/span&gt;).</source>
+        <source>Create new patch here.  Required items are marked with a (&lt;span class="required-form-field"&gt;*&lt;/span&gt;).</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Create.do</context>
         </context-group>
@@ -4415,10 +4415,10 @@ organization. You may grant or remove the organization administrator role in the
           <source>&lt;a href="/rhn/systems/ssm/ListSystems.do"&gt;List the systems&lt;/a&gt; you have selected to work with</source>
         </trans-unit>
         <trans-unit id="ssm.overview.errata">
-          <source>Errata</source>
+          <source>Patches</source>
         </trans-unit>
         <trans-unit id="ssm.overview.errata.schedule">
-          <source>&lt;a href="/rhn/systems/ssm/ListErrata.do"&gt;Schedule errata updates&lt;/a&gt; relevant to selected systems</source>
+          <source>&lt;a href="/rhn/systems/ssm/ListErrata.do"&gt;Schedule patch updates&lt;/a&gt; relevant to selected systems</source>
         </trans-unit>
         <trans-unit id="ssm.overview.packages">
           <source>Packages</source>
@@ -4457,7 +4457,7 @@ organization. You may grant or remove the organization administrator role in the
           <source>Provisioning</source>
         </trans-unit>
         <trans-unit id="ssm.overview.provisioning.kickstart">
-          <source>&lt;a href="/rhn/systems/ssm/kickstart/KickstartableSystems.do"&gt;Kickstart&lt;/a&gt; systems</source>
+          <source>&lt;a href="/rhn/systems/ssm/kickstart/KickstartableSystems.do"&gt;Autoinstall&lt;/a&gt; systems</source>
         </trans-unit>
         <trans-unit id="ssm.overview.provisioning.rollback">
           <source>&lt;a href="/rhn/systems/ssm/provisioning/TagSystems.do"&gt;Tag&lt;/a&gt; systems for &lt;a href="/rhn/systems/ssm/provisioning/Rollback.do"&gt;snapshot rollback&lt;/a&gt;</source>
@@ -4552,10 +4552,10 @@ organization. You may grant or remove the organization administrator role in the
           <source>&lt;a href="/rhn/systems/ssm/audit/ScheduleXccdf.do"&gt;Audit&lt;/a&gt; systems with OpenSCAP</source>
         </trans-unit>
         <trans-unit id="ssm.errata.message.scheduled">
-          <source>Errata updates &lt;a href="/rhn/schedule/PendingActions.do"&gt;scheduled&lt;/a&gt; at {0}.</source>
+          <source>Patch updates &lt;a href="/rhn/schedule/PendingActions.do"&gt;scheduled&lt;/a&gt; at {0}.</source>
         </trans-unit>
         <trans-unit id="ssm.errata.message.queued">
-          <source>Errata updates have been added to the Action Chain &lt;a href="/rhn/schedule/ActionChain.do?id={0}"&gt;{1}&lt;/a&gt;.</source>
+          <source>Patch updates have been added to the Action Chain &lt;a href="/rhn/schedule/ActionChain.do?id={0}"&gt;{1}&lt;/a&gt;.</source>
         </trans-unit>
       </group>
       <!-- SSM System List -->
@@ -4725,13 +4725,13 @@ organization. You may grant or remove the organization administrator role in the
           <source>Reboot Systems</source>
         </trans-unit>
         <trans-unit id="ssm.misc.index.reboot.summary">
-          <source>With Red Hat Enterprise Linux 3 or newer releases, @@PRODUCT_NAME@@ allows you to remotely reboot your systems.</source>
+          <source>@@PRODUCT_NAME@@ allows you to remotely reboot your systems.</source>
         </trans-unit>
         <trans-unit id="ssm.misc.index.lock.header">
           <source>Lock Systems</source>
         </trans-unit>
         <trans-unit id="ssm.misc.index.lock.summary">
-          <source>Systems may be locked or unlocked. Locking prevents changes from the @@PRODUCT_NAME@@ website.</source>
+          <source>Systems may be locked or unlocked.  Locking prevents changes from the @@PRODUCT_NAME@@ website.</source>
         </trans-unit>
         <trans-unit id="ssm.misc.index.lock.lock">
           <source>Lock System Profiles</source>
@@ -4749,10 +4749,10 @@ organization. You may grant or remove the organization administrator role in the
           <source>Delete System Profiles</source>
         </trans-unit>
         <trans-unit id="ssm.misc.index.entitle.header">
-          <source>Add Or Remove Add-On Entitlements</source>
+          <source>Add Or Remove Add-On System Types</source>
         </trans-unit>
         <trans-unit id="ssm.misc.index.entitle.summary">
-          <source>Please use the &lt;a href="/rhn/systems/SystemEntitlements.do"&gt;System Entitlements Page&lt;/a&gt; to manage your system's entitlement levels.</source>
+          <source>Please use the &lt;a href="/rhn/systems/SystemEntitlements.do"&gt;System Types Page&lt;/a&gt; to manage your system types.</source>
         </trans-unit>
         <trans-unit id="ssm.misc.index.syspref.header">
           <source>System Preferences</source>
@@ -4761,13 +4761,13 @@ organization. You may grant or remove the organization administrator role in the
           <source>You may edit the preferences for all your selected systems here.</source>
         </trans-unit>
         <trans-unit id="ssm.misc.index.syspref.notify">
-          <source>Receive Notifications of Updates/Errata</source>
+          <source>Receive Notifications of Updates/Patches</source>
         </trans-unit>
         <trans-unit id="ssm.misc.index.syspref.dailysummary">
           <source>Include system in Daily Summary</source>
         </trans-unit>
         <trans-unit id="ssm.misc.index.syspref.update">
-          <source>Automatic application of relevant errata</source>
+          <source>Automatic application of relevant patches</source>
         </trans-unit>
         <trans-unit id="ssm.misc.index.syspref.changepreferences">
           <source>Change Preferences</source>
@@ -4791,7 +4791,7 @@ organization. You may grant or remove the organization administrator role in the
           <source>Enter the value you wish to be applied or remove any set values for this key on selected systems.</source>
         </trans-unit>
         <trans-unit id="ssm.misc.setcustom.provisioning">
-          <source>Caution: this will overwrite or remove all values for this key on selected systems with a Provisioning Entitlement.</source>
+          <source>Caution: this will overwrite or remove all values for this key on selected systems with a Provisioning System Type.</source>
         </trans-unit>
         <trans-unit id="ssm.misc.setcustom.setvalues">
           <source>Set Values</source>
@@ -4924,7 +4924,7 @@ organization. You may grant or remove the organization administrator role in the
         </context-group>
       </trans-unit>
       <trans-unit id="systemlist.jsp.errata">
-        <source>Errata</source>
+        <source>Patches</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/SystemList</context>
         </context-group>
@@ -4962,7 +4962,7 @@ organization. You may grant or remove the organization administrator role in the
         </context-group>
       </trans-unit>
       <trans-unit id="systemlist.jsp.entitlement">
-        <source>Entitlement</source>
+        <source>System Type</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/SystemList</context>
         </context-group>
@@ -4981,7 +4981,7 @@ organization. You may grant or remove the organization administrator role in the
         </context-group>
       </trans-unit>
       <trans-unit id="systemlist.jsp.unentitled">
-        <source>System not entitled</source>
+        <source>System without System Type</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/SystemList</context>
           <context context-type="sourcefile">/systems/SystemEntitlements</context>
@@ -5002,14 +5002,14 @@ organization. You may grant or remove the organization administrator role in the
         </context-group>
       </trans-unit>
       <trans-unit id="systemlist.jsp.kickstart">
-        <source>Kickstart in progress</source>
+        <source>Autoinstallation in progress</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/SystemList</context>
           <context context-type="sourcefile">/systems/SystemEntitlements</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemlist.jsp.bootstrap">
-        <source>Bare Metal System</source>
+        <source>Unprovisioned System</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/Overview</context>
           <context context-type="sourcefile">/rhn/systems/SystemList</context>
@@ -5098,7 +5098,7 @@ organization. You may grant or remove the organization administrator role in the
         </context-group>
       </trans-unit>
       <trans-unit id="unentitledlist.jsp.header">
-        <source>Unentitled Systems</source>
+        <source>Systems without System Type</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/Unentitled</context>
         </context-group>
@@ -5117,7 +5117,7 @@ organization. You may grant or remove the organization administrator role in the
         </context-group>
       </trans-unit>
       <trans-unit id="extrapackagessystemslist.jsp.header">
-        <source>Systems with Extra Packages</source>
+        <source>Non Compliant Systems</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ExtraPackagesSystems.do</context>
           <context context-type="sourcefile">/rhn/systems/YourRhn.do</context>
@@ -5279,13 +5279,13 @@ organization. You may grant or remove the organization administrator role in the
         </context-group>
       </trans-unit>
       <trans-unit id="grouplist.jsp.updates">
-        <source>Errata Updates Available</source>
+        <source>Patch Updates Available</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/SystemGroupList</context>
         </context-group>
       </trans-unit>
       <trans-unit id="grouplist.jsp.noerrata">
-        <source>No Applicable Errata</source>
+        <source>No Applicable Patches</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/SystemGroupList</context>
           <context context-type="sourcefile">/rhn/frontend/dto/SystemGroupOverview</context>
@@ -5497,16 +5497,16 @@ organization. You may grant or remove the organization administrator role in the
           <source>Admin list for system group &lt;strong&gt;{0}&lt;/strong&gt; updated.</source>
         </trans-unit>
         <trans-unit id="systemgroup.erratalist.title">
-          <source>Relevant Errata </source>
+          <source>Relevant Patches </source>
         </trans-unit>
         <trans-unit id="systemgroup.erratalist.summary">
-          <source>The following errata apply to one or more of the systems in this group.</source>
+          <source>The following patches apply to one or more of the systems in this group.</source>
         </trans-unit>
         <trans-unit id="systemgroup.errata-systems-affected.title">
           <source>Systems Affected By {0} - {1}</source>
         </trans-unit>
         <trans-unit id="systemgroup.errata-systems-affected.summary">
-          <source>Below is a list of the systems in the {0} group which are affected by this erratum.</source>
+          <source>Below is a list of the systems in the {0} group which are affected by this patch.</source>
         </trans-unit>
         <trans-unit id="systemgroup.target-systems.summary">
           <source>The following are systems that may be added to this group.</source>
@@ -5539,7 +5539,7 @@ organization. You may grant or remove the organization administrator role in the
           <source>Software Updates Available</source>
         </trans-unit>
         <trans-unit id="systemgroup.details.noupdates">
-          <source>No applicable errata</source>
+          <source>No applicable patches</source>
         </trans-unit>
         <trans-unit id="systemgroup.details.updates.critical">
           <source>&lt;strong&gt;&lt;a href="{0}"&gt;Critical: &lt;/a&gt;&lt;/strong&gt; {1}</source>
@@ -5636,19 +5636,19 @@ organization. You may grant or remove the organization administrator role in the
       </group>
       <!--System Entitlements Page - entitlements.jsp -->
       <trans-unit id="systementitlements.jsp.header">
-        <source>System Entitlements</source>
+        <source>System Types</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/SystemEntitlements</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systementitlements.jsp.para1">
-        <source>Entitlements define the set of functionalities available for each system in @@PRODUCT_NAME@@ such as the ability of installing software or creating guest virtual machines.</source>
+        <source>System Types define the set of functionalities available for each system in @@PRODUCT_NAME@@ such as the ability of installing software or creating guest virtual machines.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/SystemEntitlements</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systementitlements.jsp.para2">
-        <source>A list of your profiled systems follows, with their base and add-on entitlements shown in the appropriate columns. To change entitlement levels, select the systems you wish to modify, and choose the appropriate action below.</source>
+        <source>A list of your profiled systems follows, with their base and add-on system types shown in the appropriate columns. To change system types, select the systems you wish to modify, and choose the appropriate action below.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/SystemEntitlements</context>
         </context-group>
@@ -5660,43 +5660,43 @@ organization. You may grant or remove the organization administrator role in the
         </context-group>
       </trans-unit>
       <trans-unit id="systementitlements.jsp.baseentitlement">
-        <source>Base Entitlement</source>
+        <source>Base System Type</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/SystemEntitlements</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systementitlements.jsp.addonentitlement">
-        <source>Add-On Entitlement</source>
+        <source>Add-On System Type</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/SystemEntitlements</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systementitlements.jsp.set_to_manage_entitled">
-        <source>Set to Management Entitled</source>
+        <source>Set to Management Type</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/SystemEntitlements</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systementitlements.jsp.set_to_unentitled">
-        <source>Unentitle</source>
+        <source>none</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/SystemEntitlements</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systementitlements.jsp.add_entitlement">
-        <source>Add Entitlement</source>
+        <source>Add System Type</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/SystemEntitlements</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systementitlements.jsp.remove_entitlement">
-        <source>Remove Entitlement</source>
+        <source>Remove System Type</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/SystemEntitlements</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systementitlements.jsp.entitlement_counts">
-        <source>Entitlement Counts</source>
+        <source>System Type Counts</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/SystemEntitlements</context>
         </context-group>
@@ -5706,11 +5706,11 @@ organization. You may grant or remove the organization administrator role in the
           <context context-type="sourcefile">/rhn/systems/SystemEntitlements.do</context>
         </context-group>
         <trans-unit id="systementitlements.jsp.entitlement_counts_message">
-          <source>{0} entitled system(s).</source>
+          <source>{0} system(s).</source>
         </trans-unit>
       </group>
       <trans-unit id="systementitlements.jsp.base_entitlements">
-        <source>Base Entitlements</source>
+        <source>Base System Types</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/SystemEntitlements</context>
         </context-group>
@@ -5846,7 +5846,7 @@ organization. You may grant or remove the organization administrator role in the
         </context-group>
       </trans-unit>
       <trans-unit id="systemsearch.jsp.entitlement">
-        <source>Entitlement</source>
+        <source>System Type</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/Search</context>
         </context-group>
@@ -6067,7 +6067,7 @@ organization. You may grant or remove the organization administrator role in the
         </context-group>
       </trans-unit>
       <trans-unit id="message.entitlement.missing">
-        <source>One or more of the selected systems lack the {0} entitlement.</source>
+        <source>One or more of the selected systems lack the {0} system type.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/audit/ScheduleXccdf.do</context>
         </context-group>
@@ -6140,7 +6140,7 @@ organization. You may grant or remove the organization administrator role in the
         </context-group>
       </trans-unit>
       <trans-unit id="schedule.jsp.at">
-        <source>Schedule no sooner than:</source>
+        <source>Earliest:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/ScheduleRemoteCommand.do</context>
         </context-group>
@@ -6575,7 +6575,7 @@ organization management tools if you choose to remove this role from your login.
         </context-group>
       </trans-unit>
       <trans-unit id="deleteconfirm.jsp.satadmin_revoke">
-        <source>Confirm removing the satellite administration role from &lt;strong&gt;{0}&lt;/strong&gt; by clicking the button below.</source>
+        <source>Confirm removing the @@PRODUCT_NAME@@ administration role from &lt;strong&gt;{0}&lt;/strong&gt; by clicking the button below.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">NOTFILLEDOUT</context>
         </context-group>
@@ -7033,7 +7033,7 @@ organization management tools if you choose to remove this role from your login.
         </context-group>
       </trans-unit>
       <trans-unit id="filter-form.jsp.ksoverviewprofiles">
-        <source> Kickstart Profiles</source>
+        <source> Autoinstallation Profiles</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartOverview.do</context>
         </context-group>
@@ -7063,25 +7063,25 @@ organization management tools if you choose to remove this role from your login.
         </context-group>
       </trans-unit>
       <trans-unit id="delete.jsp.delete">
-        <source>Delete Erratum</source>
+        <source>Delete Patch</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Delete.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="delete.jsp.header">
-        <source>Delete Erratum</source>
+        <source>Delete Patch</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Delete.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="delete.jsp.summary">
-        <source>Are you sure you wish to delete this erratum?</source>
+        <source>Are you sure you wish to delete this patch?</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Delete.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="delete.jsp.erratum">
-        <source>Erratum:</source>
+        <source>Patch:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Delete.do</context>
         </context-group>
@@ -7093,31 +7093,31 @@ organization management tools if you choose to remove this role from your login.
         </context-group>
       </trans-unit>
       <trans-unit id="cloneerrata.jsp.erratamanagement">
-        <source>Errata Management</source>
+        <source>Patches Management</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/CloneErrata.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="cloneerrata.jsp.cloneerrata">
-        <source>Clone Errata</source>
+        <source>Clone Patches</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/CloneErrata.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="cloneerrata.jsp.pagesummary">
-        <source>The following errata list represents errata which may be cloned by your organization. &lt;p&gt; Only errata which are potentially applicable to one of your channels can be cloned. An erratum is potentially applicable to a channel if that channel was cloned from a channel to which the erratum applies. &lt;/p&gt;&lt;p&gt; Select the errata you wish to clone, and click 'Clone Errata' to continue. &lt;/p&gt;</source>
+        <source>The following patch list represents patches which may be cloned by your organization. &lt;p&gt; Only patches which are potentially applicable to one of your channels can be cloned. A patch is potentially applicable to a channel if that channel was cloned from a channel to which the patch applies. &lt;/p&gt;&lt;p&gt; Select the patches you wish to clone, and click 'Clone Patches' to continue. &lt;/p&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/CloneErrata.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="cloneerrata.jsp.viewapplicableerrata">
-        <source>View errata potentially applicable to</source>
+        <source>View patches potentially applicable to</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/CloneErrata.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="cloneerrata.jsp.showclonederrata">
-        <source>Show errata which have already been cloned</source>
+        <source>Show patches which have already been cloned</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/CloneErrata.do</context>
         </context-group>
@@ -7173,19 +7173,19 @@ organization management tools if you choose to remove this role from your login.
         </context-group>
       </trans-unit>
       <trans-unit id="cloneerrata.jsp.noerrata">
-        <source>No Errata</source>
+        <source>No Patches</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/CloneErrata.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="cloneconfirm.jsp.pagesummary">
-        <source>The errata listed below will be cloned. Once they are cloned, they will appear in your &lt;a href="{0}"&gt;unpublished errata list&lt;/a&gt;. From there you can verify the text and associated packages for each erratum. Once you are ready, you can publish the errata so they are available to users in your organization.</source>
+        <source>The patches listed below will be cloned. Once they are cloned, they will appear in your &lt;a href=&quot;{0}&quot;&gt;unpublished patches list&lt;/a&gt;. From there you can verify the text and associated packages for each patch. Once you are ready, you can publish the patches so they are available to users in your organization.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/CloneConfirm.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="applyerrata.disclaimer">
-        <source>If you are &lt;strong&gt;certain&lt;/strong&gt; you wish to do this, you may schedule to apply the errata below.</source>
+        <source>If you are &lt;strong&gt;certain&lt;/strong&gt; you wish to do this, you may apply the patches as soon as possible, or no earlier than a specified time:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/details/ErrataConfirm.do</context>
         </context-group>
@@ -7401,7 +7401,7 @@ the following tabs in the left navigation menu:</source>
         </context-group>
       </trans-unit>
       <trans-unit id="general.jsp.org.tbl.description1">
-        <source>Create and manage organizations on your @@PRODUCT_NAME@@. On a per-organization basis, you can also allocate software subscription and system entitlements here.</source>
+        <source>Create and manage organizations on your @@PRODUCT_NAME@@.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/config/Orgs.do</context>
         </context-group>
@@ -7435,7 +7435,7 @@ administrator privileges.</source>
         </context-group>
       </trans-unit>
       <trans-unit id="general.jsp.org.tbl.link4">
-        <source>Getting Started Guide</source>
+        <source>@@PRODUCT_NAME@@ Reference Guide</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/config/Orgs.do</context>
         </context-group>
@@ -7672,7 +7672,7 @@ Please note that some manual configuration of these scripts may still be require
           <source>Setup your @@PRODUCT_NAME@@ Cobbler settings below.</source>
         </trans-unit>
         <trans-unit id="cobbler.jsp.summary2">
-          <source>Cobbler sync is used to repair or rebuild the contents /tftpboot or /var/www/cobbler when manual modification of cobbler has occurred.</source>
+          <source>Cobbler sync is used to repair or rebuild the contents /srv/tftpboot or /srv/www/cobbler when manual modification of cobbler has occurred.</source>
         </trans-unit>
         <trans-unit id="cobbler.jsp.summary3">
           <source>For more information refer to the 'cobbler' man page.</source>
@@ -7720,7 +7720,7 @@ Please note that some manual configuration of these scripts may still be require
           <source>Bootstrap initrd file not found, please check that {0} exists and is accessible.</source>
         </trans-unit>
         <trans-unit id="bootstrapsystemlist.jsp.header">
-          <source>Bare Metal Systems</source>
+          <source>Unprovisioned Systems</source>
           <context-group name="ctx">
             <context context-type="sourcefile">/rhn/systems/BootstrapSystemList.do</context>
           </context-group>
@@ -7815,7 +7815,7 @@ Please note that some manual configuration of these scripts may still be require
         <source>Schedule of Repo Sync failed. Check logs for more information.</source>
       </trans-unit>
       <trans-unit id="repos.jsp.message.taskomaticdown">
-        <source>The scheduling service appears down.  Please contact your Satellite administrator.</source>
+        <source>The scheduling service appears down. Please contact your @@PRODUCT_NAME@@ administrator.</source>
       </trans-unit>
       <trans-unit id="toolbar.create.repos">
         <source>Create Repository</source>
@@ -8034,28 +8034,28 @@ Please note that some manual configuration of these scripts may still be require
           <context context-type="sourcefile">/rhn/systems/ssm/kickstart/KickstartableSystems.do</context>
         </context-group>
         <trans-unit id="ssm.kickstartable-systems.jsp.title">
-          <source>Kickstartable Systems</source>
+          <source>Autoinstallable Systems</source>
         </trans-unit>
         <trans-unit id="ssm.kickstartable-systems.jsp.summary">
-          <source>Below are the systems in you selected systems list that are kickstartable using @@PRODUCT_NAME@@.</source>
+          <source>Below are the systems in your selected systems list that are autoinstallable using @@PRODUCT_NAME@@.</source>
         </trans-unit>
         <trans-unit id="ssm.kickstartable-systems.jsp.systems">
-          <source>Kickstart Selected Systems</source>
+          <source>Autoinstall Selected Systems</source>
         </trans-unit>
         <trans-unit id="ssm.kickstartable-systems.jsp.systems.summary">
-          <source>You may kickstart the selected systems.</source>
+          <source>You may autoinstall the selected systems.</source>
         </trans-unit>
         <trans-unit id="ssm.kickstartable-systems.jsp.type">
-          <source>Kickstartable Type</source>
+          <source>Autoinstallable Type</source>
         </trans-unit>
         <trans-unit id="ssm.kickstartable-systems.jsp.manual-summary">
-          <source>Select kickstart profile.</source>
+          <source>Select autoinstallation profile.</source>
         </trans-unit>
         <trans-unit id="ssm.kickstartable-systems.jsp.ip-summary">
-          <source>Kickstart by IP Address.</source>
+          <source>Autoinstall by IP Address.</source>
         </trans-unit>
         <trans-unit id="ssm.kickstartable-systems.jsp.ip-tooltip">
-          <source>If there is no organization default profile specified for this organization, a kickstart will not get scheduled for systems that do not fall under an ip range.</source>
+          <source>If there is no organization default profile specified for this organization, an autoinstallation will not get scheduled for systems that do not fall under an ip range.</source>
         </trans-unit>
       </group>
       <group>
@@ -8064,22 +8064,22 @@ Please note that some manual configuration of these scripts may still be require
           <context context-type="sourcefile">/rhn/systems/ssm/kickstart/ScheduleByIp.do</context>
         </context-group>
         <trans-unit id="ssm.kickstart.schedule.heading1.text.jsp">
-          <source> Schedule kickstart actions for the the selected systems. These actions will re-install the selected systems using the kickstart options specified.</source>
+          <source> Schedule autoinstall actions for the the selected systems. These actions will re-install the selected systems using the autoinstallation options specified.</source>
         </trans-unit>
         <trans-unit id="ssm.kickstart.schedule.heading2.text.jsp">
-          <source>Please select the kickstart profile you'd like to use to kickstart the selected systems.</source>
+          <source>Please select the autoinstallation profile you'd like to use to autoinstall the selected systems.</source>
         </trans-unit>
         <trans-unit id="ssm.kickstart.schedule.ip.heading2.text.jsp">
-          <source>The kickstart profile will be automatically selected for each system based upon its network configuration.  If no match is found, the organizational default profile will be used if set.</source>
+          <source>The autoinstallation profile will be automatically selected for each system based upon its network configuration.  If no match is found, the organizational default profile will be used if set.</source>
         </trans-unit>
         <trans-unit id="ssm.kickstart.schedule.proxy.jsp.summary">
-          <source>You may choose to use an @@PRODUCT_NAME@@ Proxy to access the files necessary for kickstart. The selected systems will be registered to the @@PRODUCT_NAME@@ Proxy selected below after its kickstart has completed..</source>
+          <source>You may choose to use a @@PRODUCT_NAME@@ Proxy to access the files necessary for autoinstallation. The selected systems will be registered to the @@PRODUCT_NAME@@ Proxy selected below after its autoinstallation has completed..</source>
         </trans-unit>
         <trans-unit id="ssm.kickstart.schedule.create.records.button.jsp">
-          <source>Create Cobbler System Records</source>
+          <source>Create PXE installation configuration</source>
         </trans-unit>
         <trans-unit id="ssm.kickstart.distro.cobbler-only.tooltip">
-          <source> Profiles that are not @@PRODUCT_NAME@@-managed are not guaranteed to register systems to @@PRODUCT_NAME@@ after kickstart. You may wish to review these kickstarts (click on the profile name to do so) to confirm whether or not the selected systems will reappear in the @@PRODUCT_NAME@@ system list after kickstart.</source>
+          <source> Profiles that are not @@PRODUCT_NAME@@-managed are not guaranteed to register systems to @@PRODUCT_NAME@@ after autoinstallation. You may wish to review these autoinstallations (click on the profile name to do so) to confirm whether or not the selected systems will reappear in the @@PRODUCT_NAME@@ system list after autoinstallation.</source>
         </trans-unit>
       </group>
       <!-- SSM Rollback -->
@@ -8091,7 +8091,7 @@ Please note that some manual configuration of these scripts may still be require
           <source>Rollback to Snapshot Tag</source>
         </trans-unit>
         <trans-unit id="ssm.provisioning.rollback.summary1">
-          <source>You may rollback provisioning-entitled, rollback-capable selected systems to a previous system snapshot marked with a tag.</source>
+          <source>You may rollback rollback-capable selected systems to a previous system snapshot marked with a tag.</source>
         </trans-unit>
         <trans-unit id="ssm.provisioning.rollback.summary2">
           <source>To rollback the systems, please click on the desired tag name below.</source>
@@ -8149,55 +8149,55 @@ Please note that some manual configuration of these scripts may still be require
         </context-group>
       </trans-unit>
       <trans-unit id="kickstarts.alt.img">
-        <source>Kickstart Profile Icon</source>
+        <source>Autoinstallation Profile Icon</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstarts.jsp.toolbar">
-        <source>Kickstart Profiles</source>
+        <source>Autoinstallation Profiles</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstartdownload.jsp.header">
-        <source>Kickstart File</source>
+        <source>Autoinstallation File</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartFileDownload</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstartdownload.jsp.header.error">
-        <source>Kickstart File Error</source>
+        <source>Autoinstallation File Error</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartFileDownload</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstartdownload.jsp.summary">
-        <source>The kickstart file generated by this kickstart profile is viewable below:</source>
+        <source>The autoinstallation file generated by this autoinstallation profile is viewable below:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartFileDownload</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstartdownload.jsp.invalidchannel">
-        <source>Due to packages missing from this kickstart profile's base channel, the kickstart file could not be generated.</source>
+        <source>Due to packages missing from this autoinstallation profile's base channel, the autoinstallation file could not be generated.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartFileDownload</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstartdownload.jsp.download">
-        <source>Download Kickstart File</source>
+        <source>Download Autoinstallation File</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartFileDownload</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.jsp.overview">
-        <source>Kickstart Overview</source>
+        <source>Autoinstallation Overview</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.variable.jsp.header">
-        <source>Kickstart Variables</source>
+        <source>Autoinstallation Variables</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart</context>
         </context-group>
@@ -8288,13 +8288,13 @@ Please note that some manual configuration of these scripts may still be require
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.jsp.error.template_generation">
-        <source>There are errors in your kickstart template. Please check the '{0}' tab to determine the problem with the template.</source>
+        <source>There are errors in your kickstart/autoyast template. Please check the '{0}' tab to determine the problem with the template.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart Details</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.jsp.error.template_message">
-        <source>There are errors in your kickstart template. Please check the error message below.</source>
+        <source>There are errors in your kickstart/autoyast template. Please check the error message below.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart Details</context>
         </context-group>
@@ -8318,13 +8318,13 @@ Please note that some manual configuration of these scripts may still be require
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.jsp.current">
-        <source>Systems Currently Kickstarting</source>
+        <source>Systems Currently Autoinstalling</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.jsp.scheduled">
-        <source>Systems Scheduled to be Kickstarted</source>
+        <source>Systems Scheduled to be Autoinstalled</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart</context>
         </context-group>
@@ -8342,25 +8342,25 @@ Please note that some manual configuration of these scripts may still be require
         </context-group>
       </trans-unit>
       <trans-unit id="kickstartoverview.jsp.kickstartsummary">
-        <source>Kickstart Summary</source>
+        <source>Autoinstallation Summary</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.jsp.system">
-        <source>Kickstarting Systems</source>
+        <source>Autoinstalling Systems</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstartoverview.jsp.actions">
-        <source>Kickstart Actions</source>
+        <source>Autoinstallation Actions</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartOverview</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstartoverview.jsp.viewprofiles">
-        <source>View a List of Kickstart Profiles</source>
+        <source>View a List of Autoinstallation Profiles</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartOverview</context>
         </context-group>
@@ -8372,13 +8372,13 @@ Please note that some manual configuration of these scripts may still be require
         </context-group>
       </trans-unit>
       <trans-unit id="kickstartoverview.jsp.uploadksfile">
-        <source>Upload a New Kickstart File</source>
+        <source>Upload a New Kickstart/AutoYaST File</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartOverview</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.jsp.summary">
-        <source>The following kickstart profiles have been created for use by your organization:</source>
+        <source>The following autoinstallation profiles have been created for use by your organization:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart</context>
         </context-group>
@@ -8402,19 +8402,19 @@ Please note that some manual configuration of these scripts may still be require
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.jsp.nokickstarts">
-        <source>No kickstart profiles available</source>
+        <source>No autoinstallation profiles available</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstartoverview.jsp.nocurrentlyks">
-        <source>There are no systems currently kickstarting</source>
+        <source>There are no systems currently autoinstalling.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartOverview</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstartoverview.jsp.noscheduledtobeks">
-        <source>To schedule a kickstart, go the Systems tab above and select the system you would like the kickstart. From there, go to the system's Provisioning tab and click on the Schedule subtab.</source>
+        <source>To schedule an autoinstallation, go to the Systems tab above and select the system you would like to autoinstall. From there, go to the system's Provisioning tab and click on the Schedule subtab.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartOverview</context>
         </context-group>
@@ -8426,7 +8426,7 @@ Please note that some manual configuration of these scripts may still be require
         </context-group>
       </trans-unit>
       <trans-unit id="kickstartranges.jsp.profile">
-        <source>Kickstart Profile</source>
+        <source>Autoinstallation Profile</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartIpRanges</context>
         </context-group>
@@ -8474,13 +8474,13 @@ Please note that some manual configuration of these scripts may still be require
         </context-group>
       </trans-unit>
       <trans-unit id="kickstartdetails.jsp.header1">
-        <source>Kickstart: {0}</source>
+        <source>Autoinstallation: {0}</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartDetailsEdit</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstartdelete.jsp.header1">
-        <source>Delete Kickstart: {0}</source>
+        <source>Delete Autoinstallation: {0}</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartDeleteSetup</context>
         </context-group>
@@ -8492,13 +8492,13 @@ Please note that some manual configuration of these scripts may still be require
         </context-group>
       </trans-unit>
       <trans-unit id="kickstartdetails.jsp.header2">
-        <source>Kickstart Details</source>
+        <source>Autoinstallation Details</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartDetailsEdit</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstartdelete.jsp.header2">
-        <source>Confirm Kickstart Deletion</source>
+        <source>Confirm Autoinstallation Deletion</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartDeleteSetup</context>
         </context-group>
@@ -8522,25 +8522,25 @@ Please note that some manual configuration of these scripts may still be require
         </context-group>
       </trans-unit>
       <trans-unit id="kickstartdetails.jsp.summary1">
-        <source>This kickstart profile may be edited using the form provided below. Entries marked with an asterisk (*) are required.</source>
+        <source>This autoinstallation profile may be edited using the form provided below. Entries marked with an asterisk (*) are required.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartDetailsEdit</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstartdelete.jsp.summary1">
-        <source>Are you sure you want to delete this Kickstart?&lt;strong&gt;&lt;p&gt;WARNING: deleting this kickstart will remove its corresponding options and scripts.&lt;/p&gt;&lt;/strong&gt;&lt;p&gt;&lt;strong&gt;Please click the button only once; it will take a few moments for the deletion process to complete.&lt;/strong&gt;&lt;/p&gt;</source>
+        <source>Are you sure you want to delete this Autoinstallation?&lt;strong&gt;&lt;p&gt;WARNING: deleting this autoinstallation will remove its corresponding options and scripts.&lt;/p&gt;&lt;/strong&gt;&lt;p&gt;&lt;strong&gt;Please click the button only once; it will take a few moments for the deletion process to complete.&lt;/strong&gt;&lt;/p&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartDeleteSetup</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstartdetails.jsp.summary2">
-        <source>&lt;span class="small-text"&gt; The Organization Default Profile setting can be used with manually-created or bare-metal kickstart files.  Select this option to indicate which profile in your Organization is used when the URL from &lt;a href="{0}" target="_blank" &gt; &lt;strong&gt; this link &lt;/strong&gt; &lt;/a&gt; is specified in the &lt;code&gt;ks=&amp;lt;URL&amp;gt;&lt;/code&gt; section of your kickstart file.  The link will not work unless an Organization Default is specified.&lt;/span&gt;</source>
+        <source>&lt;span class="small-text"&gt; The Organization Default Profile setting can be used with manually-created or bare-metal autoinstallation files.  Select this option to indicate which profile in your Organization is used when the URL from &lt;a href="{0}" target="_new" &gt; &lt;strong&gt; this link &lt;/strong&gt; &lt;/a&gt; is specified in the &lt;code&gt;ks=&amp;lt;URL&amp;gt;&lt;/code&gt; section of your autoinstallation file.  The link will not work unless an Organization Default is specified.&lt;/span&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartDetailsEdit</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstartdetails.jsp.activeDescription">
-        <source>You cannot kickstart a system registered to @@PRODUCT_NAME@@ using an inactive kickstart profile. However, the kickstart files for inactive kickstart profiles are still available for manual download and may be used for bare metal kickstarts.</source>
+        <source>You cannot autoinstall a system registered to @@PRODUCT_NAME@@ using an inactive autoinstallation profile. However, the autoinstallation files for inactive autoinstallation profiles are still available for manual download and may be used for unprovisioned autoinstallations.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartDetailsEdit</context>
         </context-group>
@@ -8594,7 +8594,7 @@ Please note that some manual configuration of these scripts may still be require
         </context-group>
       </trans-unit>
       <trans-unit id="kickstartscript.jsp.noscripts">
-        <source>No scripts are associated with this kickstart profile</source>
+        <source>No scripts are associated with this autoinstallation profile</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/Scripts</context>
         </context-group>
@@ -8630,55 +8630,55 @@ Please note that some manual configuration of these scripts may still be require
         </context-group>
       </trans-unit>
       <trans-unit id="kickstartips.jsp.baremetal_summary">
-        <source>&lt;p&gt; In order to kickstart "bare metal systems", you will need to provide them with a boot image that is compatible with the version of the operating system you are kickstarting to via boot CD. &lt;/p&gt; &lt;p&gt; Once these systems have booted using the appropriate image, you will need to provide a kickstart file. You may use the following URL in your Boot CD or in your PXE configuration to provide these systems with the kickstart file associated with this kickstart profile:&lt;/p&gt;</source>
+        <source>&lt;p&gt; In order to autoinstall "unprovisioned systems", you will need to provide them with a boot image that is compatible with the version of the operating system you are autoinstalling to via boot CD. &lt;/p&gt; &lt;p&gt; Once these systems have booted using the appropriate image, you will need to provide an autoinstallation file. You may use the following URL in your Boot CD or in your PXE configuration to provide these systems with the autoinstallation file associated with this autoinstallation profile:&lt;/p&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartIpRangeEdit</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstartips.jsp.baremetal">
-        <source>Bare Metal Kickstart</source>
+        <source>Unprovisioned Autoinstallation</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartIpRangeEdit</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstartips.jsp.resource">
-        <source>&lt;span class="small-text"&gt;&lt;strong&gt;Resource:&lt;/strong&gt; The Getting Started Guide Kickstart section&lt;/span&gt;</source>
+        <source>&lt;span class="small-text"&gt;&lt;strong&gt;Resource:&lt;/strong&gt; The Reference Guide Kickstart section&lt;/span&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartIpRangeEdit</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstartips.jsp.tip">
-        <source>&lt;span class="small-text"&gt;&lt;strong&gt;Tip:&lt;/strong&gt; A full listing of the IP ranges associated with your organization's kickstart profiles is available &lt;/span&gt;</source>
+        <source>&lt;span class="small-text"&gt;&lt;strong&gt;Tip:&lt;/strong&gt; A full listing of the IP ranges associated with your organization's autoinstallation profiles is available &lt;/span&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartIpRangeEdit</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstartips.jsp.baremetal_summary2">
-        <source>Alternatively, you may associate each of your kickstart profiles with particular ip ranges. Then, you can provide bare metal systems with a single URL that will provide each system the kickstart file associated with its IP Address. Below you will find this URL:</source>
+        <source>Alternatively, you may associate each of your autoinstallation profiles with particular ip ranges. Then, you can provide unprovisioned systems with a single URL that will provide each system the autoinstallation file associated with its IP Address. Below you will find this URL:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartIpRangeEdit</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstartips.jsp.baremetal2">
-        <source>IP Address-Based Bare Metal Kickstart URL</source>
+        <source>IP Address-Based Unprovisioned Autoinstallation URL</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartIpRangeEdit</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstartips.jsp.ranges">
-        <source>Associated IP Ranges with Kickstart Profile</source>
+        <source>Associated IP Ranges with Autoinstallation Profile</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartIpRangeEdit</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstartips.jsp.ranges_summary">
-        <source>You may add or delete IP ranges associated with this kickstart profile below:</source>
+        <source>You may add or delete IP ranges associated with the autoinstallation profile below:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartIpRangeEdit</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstartranges.jsp.summary">
-        <source>The following IP Address ranges are associated with kickstart profiles.</source>
+        <source>The following IP Address ranges are associated with autoinstallation profiles.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartIpRanges</context>
         </context-group>
@@ -8696,13 +8696,13 @@ Please note that some manual configuration of these scripts may still be require
         </context-group>
       </trans-unit>
       <trans-unit id="kickstartoptions.jsp.summary">
-        <source>You may wish to modify the following options for special-case kickstart scenarios. We recommend consulting the Red Hat Enterprise Linux System Administration Guide for detailed documentation of all of these options.</source>
+        <source>You may wish to modify the following options for special-case kickstart scenarios. We recommend consulting the @@ENTERPRISE_LINUX_NAME@@ System Administration Guide for detailed documentation of all of these options.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartDetailsEdit</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstartdetails.jsp.label">
-        <source>Kickstart Label</source>
+        <source>Autoinstall Label</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartDetailsEdit</context>
         </context-group>
@@ -8793,10 +8793,10 @@ Please note that some manual configuration of these scripts may still be require
           <context context-type="sourcefile">/rhn/kickstart/AdvancedMode* pages</context>
         </context-group>
         <trans-unit id="kickstart.advanced.jsp.create">
-          <source>Create Kickstart Profile</source>
+          <source>Create Autoinstallation Profile</source>
         </trans-unit>
         <trans-unit id="kickstart.advanced.jsp.para1">
-          <source>Each kickstart file you upload to satellite will need a label so that you can refer to it later - please choose a label for this kickstart and enter it below. Entries marked with an asterisk (*) are required.</source>
+          <source>Each autoinstallation file you upload to @@PRODUCT_NAME@@ will need a label so that you can refer to it later - please choose a label for this autoinstallation and enter it below. Entries marked with an asterisk (*) are required.</source>
         </trans-unit>
         <trans-unit id="kickstart.advanced.jsp.uploadtab">
           <source>File to Upload</source>
@@ -8805,17 +8805,17 @@ Please note that some manual configuration of these scripts may still be require
           <source> Alternatively, you can upload a new version in the '{0}' section below and select '{1}'.</source>
         </trans-unit>
         <trans-unit id="kickstart.advanced.filedetails.jsp.tip.copypaste">
-          <source> If you wish to re-use an existing Kickstart Profile we recommend you copy-paste the template from /var/lib/rhn/kickstarts instead of from your browser.  This will ensure that the template variables will be preserved and the registration process will work properly after the kickstart.</source>
+          <source> If you wish to re-use an existing Autoinstallation Profile we recommend you to copy-paste the template from /var/lib/rhn/kickstarts instead of from your browser.  This will ensure that the template variables will be preserved and the registration process will work properly after the autoinstallation.</source>
         </trans-unit>
       </group>
       <trans-unit id="kickstartdatadelete.jsp.confirmdelete">
-        <source>Delete Kickstart</source>
+        <source>Delete Autoinstallation</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartDeleteSetup</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.activationkeys.jsp.summary">
-        <source>You can associate one or more activation keys with this kickstart profile.  Activation keys will allow systems kickstarted with this profile to automatically register to @@PRODUCT_NAME@@, gain @@PRODUCT_NAME@@ service level entitlements, subscribe to specified software and configuration channels, and subscribe to specified system groups.  Activation keys can also specify packages to be installed on a system.  Please consider how this may affect your package selection in this profile's &lt;a href="/rhn/kickstart/KickstartPackagesEdit.do?ksid={0}"&gt;Software&lt;/a&gt; tab.</source>
+        <source>You can associate one or more activation keys with this kickstart profile.  Activation keys will allow systems kickstarted with this profile to automatically register to @@PRODUCT_NAME@@, gain @@PRODUCT_NAME@@ system types, subscribe to specified software and configuration channels, and subscribe to specified system groups.  Activation keys can also specify packages to be installed on a system.  Please consider how this may affect your package selection in this profile's &lt;a href="/rhn/kickstart/KickstartPackagesEdit.do?ksid={0}"&gt;Software&lt;/a&gt; tab.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartDetailsEdit</context>
         </context-group>
@@ -8870,7 +8870,7 @@ Please note that some manual configuration of these scripts may still be require
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.activationkeys.jsp.note">
-        <source>&lt;strong&gt;Note: The selection of incompatible activation keys can prevent a system from registering properly after it is kickstarted.&lt;/strong&gt;  You'll want to review the Getting Started Guide section on using multiple activation keys before making use of this feature.</source>
+        <source>&lt;strong&gt;Note: The selection of incompatible activation keys can prevent a system from registering properly after it is kickstarted.&lt;/strong&gt;  You'll want to review the Reference Guide section on using multiple activation keys before making use of this feature.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/ActivationKeysEdit.do</context>
         </context-group>
@@ -8912,7 +8912,7 @@ Please note that some manual configuration of these scripts may still be require
         </context-group>
       </trans-unit>
       <trans-unit id="kickstartranges.jsp.toolbar">
-        <source>Bare Metal Kickstart By IP</source>
+        <source>Unprovisioned Autoinstallation By IP</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartIpRanges</context>
         </context-group>
@@ -9455,7 +9455,7 @@ For more information, see the &lt;a href="/docs/installation/install-intro.html"
         </context-group>
       </trans-unit>
       <trans-unit id="preservation_edit.jsp.summary">
-        <source>Any files or directories listed here will be preserved following the kickstart. List files or directories one per line.&lt;br/&gt;Each list is limited to a total size of &lt;strong&gt;1 MB&lt;/strong&gt;.  For more information see the &lt;a href="/docs/installation/install-intro.html" target="_blank" &gt;Getting Started Guide&lt;/a&gt;.</source>
+        <source>Any files or directories listed here will be preserved following the kickstart. List files or directories one per line.&lt;br/&gt;Each list is limited to a total size of &lt;strong&gt;1 MB&lt;/strong&gt;.  For more information see the &lt;a href="/docs/reference/systems/autoinst-file-preservation.html" target="_blank" &gt;Reference Guide&lt;/a&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/provisioning/preservation/PreservationListEdit.do</context>
         </context-group>
@@ -9737,10 +9737,10 @@ the &lt;strong&gt;Red Hat Enterprise Linux System Administration Guide.&lt;/stro
           <source>All Snippets</source>
         </trans-unit>
         <trans-unit id="snippets.jsp.toolbar">
-          <source>Kickstart Snippets</source>
+          <source>Autoinstallation Snippets</source>
         </trans-unit>
         <trans-unit id="snippets.jsp.summary">
-          <source>Use kickstart snippets to store common blocks of code that can be shared across multiple kickstart profiles in @@PRODUCT_NAME@@. When you create a kickstart snippet, all kickstart profiles including that snippet will be updated accordingly.</source>
+          <source>Use autoinstallation snippets to store common blocks of code that can be shared across multiple autoinstallation profiles in @@PRODUCT_NAME@@. When you create an autoinstallation snippet, all autoinstallation profiles including that snippet will be updated accordingly.</source>
         </trans-unit>
         <trans-unit id="snippets.jsp.note.default">
           <source>Default kickstart snippets are not editable.</source>
@@ -9755,10 +9755,10 @@ the &lt;strong&gt;Red Hat Enterprise Linux System Administration Guide.&lt;/stro
           <source>Snippet Macro</source>
         </trans-unit>
         <trans-unit id="cobbler.snippet.jsp.nosnippets">
-          <source>No kickstart snippets found.</source>
+          <source>No autoinstallation snippets found.</source>
         </trans-unit>
         <trans-unit id="cobbler.snippet.copy-paste-snippet-tip">
-          <source>Copy and paste the snippet macro into your kickstart profiles to make the full snippet appear in that kickstart profile.</source>
+          <source>Copy and paste the snippet macro into your profiles to make the full snippet appear in that profile.</source>
         </trans-unit>
       </group>
       <!--Cobbler Create/Edit/View/Delete pages -->
@@ -9876,19 +9876,19 @@ the &lt;strong&gt;Red Hat Enterprise Linux System Administration Guide.&lt;/stro
         </context-group>
       </trans-unit>
       <trans-unit id="yourrhn.jsp.criticalsystems.securityerrata">
-        <source>Security Errata</source>
+        <source>Security Patches</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/YourRhn.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="yourrhn.jsp.criticalsystems.bugfixerrata">
-        <source>Bug Fix Errata</source>
+        <source>Bugfix Patches</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/YourRhn.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="yourrhn.jsp.criticalsystems.enhancementerrata">
-        <source>Enhancement Errata</source>
+        <source>Enhancement Patches</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/YourRhn.do</context>
         </context-group>
@@ -10092,7 +10092,7 @@ the &lt;strong&gt;Red Hat Enterprise Linux System Administration Guide.&lt;/stro
         </context-group>
       </trans-unit>
       <trans-unit id="yourrhn.jsp.securityerrata">
-        <source>Relevant Security Errata</source>
+        <source>Relevant Security Patches</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/YourRhn.do</context>
         </context-group>
@@ -10128,25 +10128,25 @@ the &lt;strong&gt;Red Hat Enterprise Linux System Administration Guide.&lt;/stro
         </context-group>
       </trans-unit>
       <trans-unit id="yourrhn.jsp.allerrata">
-        <source>View All Errata</source>
+        <source>View All Patches</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/YourRhn.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="yourrhn.jsp.allrelevanterrata">
-        <source>View All Relevant Errata</source>
+        <source>View All Relevant Patches</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/YourRhn.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="yourrhn.jsp.relevanterrata.description">
-        <source>relevant errata </source>
+        <source>relevant patches </source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/YourRhn.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="yourrhn.jsp.noerrata">
-        <source>&lt;strong&gt;No relevant security errata.&lt;/strong&gt;&lt;p&gt;There are no security errata that apply to your systems. You can view a list of &lt;strong&gt;all&lt;/strong&gt; errata for the software your organization has entitlements to at &lt;strong&gt;&lt;a href="/rhn/errata/AllErrata.do"&gt;Errata &gt; All&lt;/a&gt;&lt;/strong&gt;.&lt;/p&gt;</source>
+        <source>&lt;strong&gt;No relevant security patches.&lt;/strong&gt;&lt;p&gt;There are no security patches that apply to your systems. You can view a list of &lt;strong&gt;all&lt;/strong&gt; patches for the software your organization has entitlements to at &lt;strong&gt;&lt;a href="/rhn/errata/AllErrata.do"&gt;Patches &gt; All&lt;/a&gt;&lt;/strong&gt;.&lt;/p&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/YourRhn.do</context>
         </context-group>
@@ -10164,13 +10164,13 @@ the &lt;strong&gt;Red Hat Enterprise Linux System Administration Guide.&lt;/stro
         </context-group>
       </trans-unit>
       <trans-unit id="yourrhn.jsp.tasks.subscriptions">
-        <source>Manage &lt;strong&gt;Entitlements&lt;/strong&gt; &amp;amp; &lt;strong&gt;Subscriptions&lt;/strong&gt;</source>
+        <source>Manage &lt;strong&gt;System Types&lt;/strong&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/YourRhn.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="yourrhn.jsp.task.manage_subscriptions">
-        <source>&lt;strong&gt;Manage Entitlements and Subscriptions&lt;/strong&gt;:</source>
+        <source>&lt;strong&gt;Manage System Types&lt;/strong&gt;:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/YourRhn.do</context>
         </context-group>
@@ -10200,7 +10200,7 @@ the &lt;strong&gt;Red Hat Enterprise Linux System Administration Guide.&lt;/stro
         </context-group>
       </trans-unit>
       <trans-unit id="yourrhn.jsp.tasks.kickstart">
-        <source>Manage &lt;strong&gt;Kickstarts&lt;/strong&gt;</source>
+        <source>Manage &lt;strong&gt;Autoinstallations&lt;/strong&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/YourRhn.do</context>
         </context-group>
@@ -10255,7 +10255,7 @@ the &lt;strong&gt;Red Hat Enterprise Linux System Administration Guide.&lt;/stro
         </context-group>
       </trans-unit>
       <trans-unit id="channels.overview.erratas">
-        <source>Errata</source>
+        <source>Patches</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/RelevantChannels.do</context>
         </context-group>
@@ -10309,7 +10309,7 @@ the &lt;strong&gt;Red Hat Enterprise Linux System Administration Guide.&lt;/stro
         <source>The software channels listed below are &lt;strong&gt;all of the channels&lt;/strong&gt; that your organization has access to.</source>
       </trans-unit>
       <trans-unit id="channels.vendor.jsp.header1">
-        <source>The software channels listed below are Red Hat channels or child channels of Red Hat Channels.</source>
+        <source>The software channels listed below are @@VENDOR_NAME@@ channels or child channels of @@VENDOR_NAME@@ Channels.</source>
       </trans-unit>
       <trans-unit id="channels.shared.jsp.header1">
         <source>The software channels listed below may be shared by your organization.</source>
@@ -10336,7 +10336,7 @@ the &lt;strong&gt;Red Hat Enterprise Linux System Administration Guide.&lt;/stro
         <source>Retired Software Channel List</source>
       </trans-unit>
       <trans-unit id="channels.retired.jsp.header1">
-        <source>The software channels listed below are &lt;strong&gt;retired channels&lt;/strong&gt; that your organization is entitled to but are no longer supported by Red Hat because they have reached their 'end-of-life' date.</source>
+        <source>The software channels listed below are &lt;strong&gt;retired channels&lt;/strong&gt; that your organization is entitled to but are no longer supported by @@VENDOR_NAME@@ because they have reached their 'end-of-life' date.</source>
       </trans-unit>
       <trans-unit id="channels.manage.jsp.toolbar">
         <source>Software Channel Management</source>
@@ -10390,7 +10390,7 @@ the &lt;strong&gt;Red Hat Enterprise Linux System Administration Guide.&lt;/stro
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.troubleshooting.jsp.verboseup2date">
-        <source>Enable debugging in up2date/yum</source>
+        <source>Enable debugging in up2date/yum or yast</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/Troubleshooting.do</context>
         </context-group>
@@ -10474,7 +10474,7 @@ the &lt;strong&gt;Red Hat Enterprise Linux System Administration Guide.&lt;/stro
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.jsp.create.wizard.kstree.label">
-        <source>Kickstartable Tree</source>
+        <source>Autoinstall Tree</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/CreateProfileWizard.do</context>
         </context-group>
@@ -10625,10 +10625,10 @@ the &lt;strong&gt;Red Hat Enterprise Linux System Administration Guide.&lt;/stro
           <source>This key is your organization's universal default activation key.</source>
         </trans-unit>
         <trans-unit id="activation-key.jsp.base-channels">
-          <source>Base Channels</source>
+          <source>Base Channel</source>
         </trans-unit>
         <trans-unit id="activation-key.jsp.addon-entitlements">
-          <source>Add-On Entitlements</source>
+          <source>Add-On System Types</source>
         </trans-unit>
         <trans-unit id="activation-key.jsp.universal-default">
           <source>Universal Default</source>
@@ -10646,7 +10646,7 @@ the &lt;strong&gt;Red Hat Enterprise Linux System Administration Guide.&lt;/stro
           <source>Activation key can contains only numbers [0-9], letters [a-z A-Z], '-', '_' and '.'</source>
         </trans-unit>
         <trans-unit id="activation-key.jsp.edit-basechannel-tooltip">
-          <source>Choose "&lt;strong&gt;{0}&lt;/strong&gt;" to allow systems to register to the default SUSE provided channel that corresponds to their installed version of SUSE Linux. You may also choose particular SUSE provided channels or custom base channels here, but please note if a system using this key is not compatible with the selected channel, it will fall back to its SUSE default channel.</source>
+          <source>Choose "&lt;strong&gt;{0}&lt;/strong&gt;" to allow systems to register to the default SUSE Manager provided channel that corresponds to the installed SUSE Linux version. Instead of the default, you may choose a particular SUSE provided channel or a custom base channel, but if a system using this key is not compatible with the selected channel, it will fall back to its SUSE Manager Default channel.</source>
         </trans-unit>
         <trans-unit id="activation-key.jsp.edit.universal-default-tooltip">
           <source>Only one universal default activation key may be set for this organization. By setting this key as universal default, you will remove universal default status from the current universal default key if it exists. If this key is set as universal default, then newly-registered systems to your organization will inherit the properties of this key.</source>
@@ -10697,7 +10697,7 @@ the &lt;strong&gt;Red Hat Enterprise Linux System Administration Guide.&lt;/stro
           <source>Configuration File Deployment</source>
         </trans-unit>
         <trans-unit id="activation-key.jsp.config-auto-deploy-tooltip">
-          <source> Deploy configuration files to systems when they are registered with this activation key.</source>
+          <source> Deploy configuration files to systems on registration</source>
         </trans-unit>
       </group>
       <group>
@@ -10943,7 +10943,7 @@ the &lt;strong&gt;Red Hat Enterprise Linux System Administration Guide.&lt;/stro
           <source>Certain versions of OpenSCAP may require the --profile command-line argument. --profile specifies a particular profile from the XCCDF document.</source>
         </trans-unit>
         <trans-unit id="system.audit.schedulexccdf.jsp.nosoonerthan">
-          <source>Schedule no sooner than</source>
+          <source>Earliest</source>
         </trans-unit>
       </group>
       <group>
@@ -11465,7 +11465,7 @@ the &lt;strong&gt;Red Hat Enterprise Linux System Administration Guide.&lt;/stro
           <source>Filtered Output: </source>
         </trans-unit>
         <trans-unit id="system.event.affectedErrata">
-          <source>Errata Affected:</source>
+          <source>Patches Affected:</source>
         </trans-unit>
         <trans-unit id="system.event.scapPath">
           <source>&lt;strong&gt;Path to XCCDF document: &lt;/strong&gt; </source>
@@ -11873,7 +11873,7 @@ the &lt;strong&gt;Red Hat Enterprise Linux System Administration Guide.&lt;/stro
           <source>Target Systems</source>
         </trans-unit>
         <trans-unit id="targetsystems.jsp.summary">
-          <source>The systems listed below do not have files managed via @@PRODUCT_NAME@@ configuration management.  For systems to be capable of being managed by @@PRODUCT_NAME@@ configuration management, they will need a provisioning entitlement in addition to having particular rhncfg-* packages installed. You can enable configuration management on selected systems by using the 'Enable @@PRODUCT_NAME@@ Configuration Management' button below.</source>
+          <source>The systems listed below do not have files managed via @@PRODUCT_NAME@@ configuration management.  For systems to be capable of being managed by @@PRODUCT_NAME@@ configuration management, they need to have particular rhncfg-* packages installed. You can enable configuration management on selected systems by using the 'Enable @@PRODUCT_NAME@@ Configuration Management' button below.</source>
         </trans-unit>
         <trans-unit id="targetsystems.jsp.noSystems">
           <source>No non-managed systems.</source>
@@ -11894,7 +11894,7 @@ the &lt;strong&gt;Red Hat Enterprise Linux System Administration Guide.&lt;/stro
           <source>Actions needed for configuration capabilities.</source>
         </trans-unit>
         <trans-unit id="targetsystems.jsp.subscribetools">
-          <source>Subscribe to RHN Tools channel</source>
+          <source>Subscribe to @@PRODUCT_NAME@@ Tools channel</source>
         </trans-unit>
         <trans-unit id="targetsystems.jsp.subscribeappstream">
           <source>Subscribe to AppStream channel</source>
@@ -12872,7 +12872,7 @@ Tip: If you would like to deploy this file to a system not in this list, request
         </context-group>
       </trans-unit>
       <trans-unit id="deployglobal.jspf.tip.configadmin">
-        <source>&lt;strong&gt;Tip:&lt;/strong&gt; If you would like to deploy this file to a system not in this list, you'll need to first subscribe that system to the {0} configuration channel using the &lt;a href="{1}"&gt;'Target Systems' tab&lt;/a&gt; for that channel, then return to this screen.  Also, note that the target system must have provisioning entitlements.</source>
+        <source>&lt;strong&gt;Tip:&lt;/strong&gt; If you would like to deploy this file to a system not in this list, you'll need to first subscribe that system to the {0} configuration channel using the &lt;a href="{1}"&gt;'Target Systems' tab&lt;/a&gt; for that channel, then return to this screen.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/RevisionDeploy.do</context>
           <context context-type="paramnotes">
@@ -12887,7 +12887,7 @@ Tip: If you would like to deploy this file to a system not in this list, you'll 
         </context-group>
       </trans-unit>
       <trans-unit id="deployglobal.jspf.tip.orgadmin">
-        <source>You may grant provisioning entitlements &lt;a href="{0}"&gt;here&lt;/a&gt;.</source>
+        <source> </source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/RevisionDeploy.do</context>
           <context context-type="paramnotes">
@@ -14631,7 +14631,7 @@ any of these revisions.  Are you sure you want to do this?</source>
           <source>Enable Configuration Management</source>
         </trans-unit>
         <trans-unit id="ssmenable.jsp.summary">
-          <source>The systems listed below do not have files managed via @@PRODUCT_NAME@@ configuration management. For systems to be capable of being managed by @@PRODUCT_NAME@@ configuration management, they will need a provisioning entitlement in addition to having particular rhncfg-* packages installed. You can enable configuration management on the systems listed below. &lt;strong&gt;Note:&lt;/strong&gt; nothing will happen to already enabled systems.</source>
+          <source>The systems listed below do not have files managed via @@PRODUCT_NAME@@ configuration management. For systems to be capable of being managed by @@PRODUCT_NAME@@ configuration management, they will need to have particular rhncfg-* packages installed. You can enable configuration management on the systems listed below. &lt;strong&gt;Note:&lt;/strong&gt; nothing will happen to already enabled systems.</source>
         </trans-unit>
       </group>
       <!-- configuration/ssm/channelsystems.jsp  -->
@@ -15261,22 +15261,22 @@ any of these revisions.  Are you sure you want to do this?</source>
         </trans-unit>
         <!-- Errata -->
         <trans-unit id="ssm.patches.list.header">
-          <source>Relevant Errata List</source>
+          <source>Relevant Patches List</source>
         </trans-unit>
         <trans-unit id="ssm.patches.list.summary">
-          <source>The errata below apply to one or more of your selected systems.</source>
+          <source>The patches below apply to one or more of your selected systems.</source>
         </trans-unit>
         <trans-unit id="ssm.errata-relevant-systems.title">
           <source>Systems in System Set Manager Affected By {0} - {1}</source>
         </trans-unit>
         <trans-unit id="ssm.errata-relevant-systems.summary">
-          <source>Below is a list of the systems in the system set manager which are affected by this erratum.</source>
+          <source>Below is a list of the systems in the system set manager which are affected by this patch.</source>
         </trans-unit>
         <trans-unit id="ssm.errata-apply-confirm.title">
-          <source>Relevant Errata Confirm</source>
+          <source>Relevant Patches Confirm</source>
         </trans-unit>
         <trans-unit id="ssm.errata-apply-confirm.summary">
-          <source>The errata below will be applied to listed systems.</source>
+          <source>The patches below will be applied to listed systems.</source>
         </trans-unit>
       </group>
       <trans-unit id="ssm.operations.actionchaindetails.schedulesuccess">
@@ -15563,7 +15563,7 @@ the &lt;a href="/rhn/kickstart/ActivationKeysList.do?ksid={0}"&gt;Activation Key
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.schedule.msg.proxy.jsp">
-        <source>You may choose to use an @@PRODUCT_NAME@@ Proxy to access the files necessary for kickstart. This system will be registered to the @@PRODUCT_NAME@@ Proxy selected below after its kickstart has completed.</source>
+        <source>You may choose to use an @@PRODUCT_NAME@@ Proxy to access the files necessary for autoinstallation. This system will be registered to the @@PRODUCT_NAME@@ Proxy selected below after its autoinstallation has completed.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/ScheduleWizard.do</context>
         </context-group>
@@ -15587,61 +15587,61 @@ the &lt;a href="/rhn/kickstart/ActivationKeysList.do?ksid={0}"&gt;Activation Key
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.schedule.heading1.jsp">
-        <source>Schedule Kickstart</source>
+        <source>Schedule Autoinstallation</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/ScheduleWizard.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.configure.heading1.jsp">
-        <source>Configure Kickstart</source>
+        <source>Configure Autoinstallation</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/ScheduleWizard.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.schedule.heading1.text.jsp">
-        <source>You can schedule this system for a kickstart action. This will re-install this system using the selected kickstart options.</source>
+        <source>You can schedule this system for an autoinstallation action. This will re-install this system using the selected autoinstallation options.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/ScheduleWizard.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.configure.heading1.text.jsp">
-        <source>You can configure kickstart on this system. This will install this system using the selected kickstart options as soon as it boots up.</source>
+        <source>You can configure the autoinstallation of this system. This will install this system using the selected autoinstallation options as soon as it boots up.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/ScheduleWizard.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.schedule.heading2.jsp">
-        <source>Select Kickstart Profile</source>
+        <source>Select Autoinstallation Profile</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/ScheduleWizard.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.schedule.heading2.text.jsp">
-        <source>Please select the kickstart profile you'd like to use to kickstart this system:</source>
+        <source>Please select the autoinstallation profile you'd like to use to autoinstall this system:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/ScheduleWizard.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.schedule.heading3.jsp">
-        <source>Schedule Kickstart</source>
+        <source>Schedule Autoinstallation</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/ScheduleWizard.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.schedule.heading3.option2.jsp">
-        <source>Schedule kickstart no sooner than:</source>
+        <source>Schedule autoinstallation no sooner than:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/ScheduleWizard.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.schedule.no.profiles.jsp">
-        <source>No profiles currently available for kickstart. Please &lt;a href="/rhn/kickstart/CreateProfileWizard.do"&gt;create a new kickstart profile.&lt;/a&gt;</source>
+        <source>No profiles currently available for autoinstallation. Please &lt;a href=&quot;/rhn/kickstart/CreateProfileWizard.do&quot;&gt;create a new kickstart profile.&lt;/a&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/ScheduleWizard.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.schedule.button0.jsp">
-        <source>Create Cobbler System Record</source>
+        <source>Create PXE installation configuration</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/ScheduleWizard.do</context>
         </context-group>
@@ -15653,7 +15653,7 @@ the &lt;a href="/rhn/kickstart/ActivationKeysList.do?ksid={0}"&gt;Activation Key
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.schedule.button2.jsp">
-        <source>Schedule Kickstart and Finish</source>
+        <source>Schedule Autoinstallation and Finish</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/ScheduleWizard.do</context>
         </context-group>
@@ -15863,13 +15863,13 @@ the &lt;a href="/rhn/kickstart/ActivationKeysList.do?ksid={0}"&gt;Activation Key
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.distro.cobbler-only.tooltip">
-        <source> Profiles that are not @@PRODUCT_NAME@@-managed are not guaranteed to register systems to @@PRODUCT_NAME@@ after kickstart. You may wish to review these kickstarts (click on the profile name to do so) to confirm whether or not your system will reappear in the @@PRODUCT_NAME@@ system list after kickstart.</source>
+        <source> Profiles that are not @@PRODUCT_NAME@@-managed are not guaranteed to register systems to @@PRODUCT_NAME@@ after autoinstallation. You may wish to review these autoinstallations (click on the profile name to do so) to confirm whether or not your system will reappear in the @@PRODUCT_NAME@@ system list after autoinstallation.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/ScheduleWizard.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstarts.distro.cobbler-only.tooltip">
-        <source>Kickstart profiles that are not managed by @@PRODUCT_NAME@@ can not be edited in the @@PRODUCT_NAME@@ UI. To modify these profiles, please log onto the @@PRODUCT_NAME@@ server and run the 'cobbler profile edit' command.</source>
+        <source>Autoinstallation profiles that are not managed by @@PRODUCT_NAME@@ can not be edited in the @@PRODUCT_NAME@@ UI. To modify these profiles, please log onto the @@PRODUCT_NAME@@ server and run the 'cobbler profile edit' command. For more information, consult the @@PRODUCT_NAME@@ Reference Guide.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/Kickstarts.do</context>
         </context-group>
@@ -15944,43 +15944,43 @@ the &lt;a href="/rhn/kickstart/ActivationKeysList.do?ksid={0}"&gt;Activation Key
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.clone.jsp.clone">
-        <source>Clone Kickstart</source>
+        <source>Clone Autoinstallation</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartClean</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.clone.jsp.header2">
-        <source>Clone Kickstart Profile</source>
+        <source>Clone Autoinstallation Profile</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartClean</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.clone.jsp.summary">
-        <source>Please specify a new label for this Kickstart Profile.  All options, settings and scripts from the source Kickstart Profile will be copied to a new Profile except the IP Range Settings.</source>
+        <source>Please specify a new label for this Autoinstallation Profile.  All options, settings and scripts from the source Autoinstallation Profile will be copied to a new Profile except the IP Range Settings.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartClean</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.clone.jsp.header1">
-        <source>Create a Clone of Kickstart: {0}</source>
+        <source>Create a Clone of Autoinstallation: {0}</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartDetailsEdit</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.session_status.jsp.summary2">
-        <source>This is current status of this system's Kickstart progress.  &lt;strong&gt;NOTE:&lt;/strong&gt;  This page refreshes every 15 seconds</source>
+        <source>This is current status of this system's Autoinstallation progress.  &lt;strong&gt;NOTE:&lt;/strong&gt;  This page refreshes every 15 seconds</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/SessionStatus.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.session_status.jsp.progress">
-        <source>Kickstart Progress</source>
+        <source>Autoinstallation Progress</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/SessionStatus.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.session_status.jsp.header2">
-        <source>Kickstart Status</source>
+        <source>Autoinstallation Status</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/SessionStatus.do</context>
         </context-group>
@@ -16034,7 +16034,7 @@ the &lt;a href="/rhn/kickstart/ActivationKeysList.do?ksid={0}"&gt;Activation Key
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.session_status.jsp.status_initiate">
-        <source>Initiate Kickstart</source>
+        <source>Initiate Autoinstallation</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/SessionStatus.do</context>
         </context-group>
@@ -16064,13 +16064,13 @@ the &lt;a href="/rhn/kickstart/ActivationKeysList.do?ksid={0}"&gt;Activation Key
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.session_status.jsp.status_failed">
-        <source>Kickstart failed</source>
+        <source>Autoinstallation failed</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/SessionStatus.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.session_status.jsp.status_complete">
-        <source>Kickstart complete</source>
+        <source>Autoinstallation complete</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/SessionStatus.do</context>
         </context-group>
@@ -16082,13 +16082,13 @@ the &lt;a href="/rhn/kickstart/ActivationKeysList.do?ksid={0}"&gt;Activation Key
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.session_status.jsp.cancel_cancel">
-        <source>Cancel Kickstart?</source>
+        <source>Cancel Autoinstallation?</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/SessionStatus.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.session_cancel.jsp.header2">
-        <source>Kickstart Session</source>
+        <source>Autoinstall Session</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/SessionCancel.do</context>
         </context-group>
@@ -16100,13 +16100,13 @@ the &lt;a href="/rhn/kickstart/ActivationKeysList.do?ksid={0}"&gt;Activation Key
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.session_cancel.jsp.summary">
-        <source>Click 'Cancel Kickstart' below to cancel this kickstart.</source>
+        <source>Click 'Cancel Autoinstallation' below to cancel this kickstart.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/SessionCancel.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.session_cancel.jsp.cancel">
-        <source>Cancel Kickstart</source>
+        <source>Cancel Autoinstallation</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/SessionCancel.do</context>
         </context-group>
@@ -16117,19 +16117,19 @@ the &lt;a href="/rhn/kickstart/ActivationKeysList.do?ksid={0}"&gt;Activation Key
           <context context-type="sourcefile">/rhn/kickstart/ViewTrees.do</context>
         </context-group>
         <trans-unit id="kickstart.distributions.jsp.nolists">
-          <source>No kickstartable distributions available.</source>
+          <source>No autoinstallable distributions available.</source>
         </trans-unit>
         <trans-unit id="kickstart.kickstartable_distro_create_new.jsp">
           <source>Create Distribution</source>
         </trans-unit>
         <trans-unit id="kickstart.kickstartable_distributions.jsp">
-          <source>Kickstartable Distributions</source>
+          <source>Autoinstallable Distributions</source>
         </trans-unit>
         <trans-unit id="kickstart.kickstartable_distributions_text.jsp">
-          <source>The following kickstart distributions are available.</source>
+          <source>The following autoinstallable distributions are available.</source>
         </trans-unit>
         <trans-unit id="kickstarts.distro.is-valid.tooltip">
-          <source>Kickstart distributions may be invalid due wrong or non existent base path to the kernel or initrd image. To make your custom distribution valid please select the distribution and modify its base path appropriately.</source>
+          <source>Autoinstallable distributions may be invalid due to a wrong or non existent base path to the kernel or initrd image. To make your custom distribution valid please select the distribution and modify its base path appropriately.</source>
         </trans-unit>
         <trans-unit id="kickstart.distro.is-valid.jsp">
           <source>Valid</source>
@@ -16274,13 +16274,13 @@ the &lt;a href="/rhn/kickstart/ActivationKeysList.do?ksid={0}"&gt;Activation Key
         </context-group>
       </trans-unit>
       <trans-unit id="treeedit.jsp.header2">
-        <source>Edit Kickstart Distribution</source>
+        <source>Edit Autoinstallable Distribution</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/TreeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="treeedit.jsp.toolbar">
-        <source>Edit Kickstart Distribution</source>
+        <source>Edit Autoinstallable Distribution</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/TreeEdit.do</context>
         </context-group>
@@ -16299,25 +16299,25 @@ The Tree Path, Kickstart RPM, Base Channel, and Installer Generation should alwa
         </context-group>
       </trans-unit>
       <trans-unit id="treecreate.jsp.header2">
-        <source>Create Kickstart Distribution</source>
+        <source>Create Autoinstallable Distribution</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/TreeCreate.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="treecreate.jsp.toolbar">
-        <source>Create Kickstart Distribution</source>
+        <source>Create Autoinstallable Distribution</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/TreeCreate.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="edittree.jsp.submit">
-        <source>Update Kickstart Distribution</source>
+        <source>Update Autoinstallable Distribution</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/TreeCreate.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="createtree.jsp.submit">
-        <source>Create Kickstart Distribution</source>
+        <source>Create Autoinstallable Distribution</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/TreeCreate.do</context>
         </context-group>
@@ -16341,7 +16341,7 @@ The Tree Path, Kickstart RPM, Base Channel, and Installer Generation should alwa
         </context-group>
       </trans-unit>
       <trans-unit id="tree-form.jspf.nochannels">
-        <source>No Kickstartable Channels found.</source>
+        <source>No Autoinstallable Channels found.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/TreeCreate.do</context>
         </context-group>
@@ -16632,7 +16632,7 @@ The Tree Path, Kickstart RPM, Base Channel, and Installer Generation should alwa
         </context-group>
       </trans-unit>
       <trans-unit id="distro-delete.jsp.profilesusing">
-        <source>&lt;strong&gt;NOTE:&lt;/strong&gt; The Kickstart Distribution you have chosen to delete is in use by the following Kickstart Profiles.  You must change the Distribution used in the profiles below before deleting this Distribution.  Click the label in the link to edit the profile's Distribution.</source>
+        <source>&lt;strong&gt;NOTE:&lt;/strong&gt; The Autoinstallable Distribution you have chosen to delete is in use by the following Autoinstallation Profiles.  You must change the Distribution used in the profiles below before deleting this Distribution.  Click the label in the link to edit the profile's Distribution.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/TreeDelete.do</context>
         </context-group>
@@ -16644,7 +16644,7 @@ The Tree Path, Kickstart RPM, Base Channel, and Installer Generation should alwa
         </context-group>
       </trans-unit>
       <trans-unit id="virtualization.provision.first.jsp.header1">
-        <source>Select a Kickstart Profile</source>
+        <source>Select an Autoinstallation Profile</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/virtualization/ProvisionVirtualizationWizard.do</context>
         </context-group>
@@ -16668,7 +16668,7 @@ The Tree Path, Kickstart RPM, Base Channel, and Installer Generation should alwa
         </context-group>
       </trans-unit>
       <trans-unit id="virtualization.provision.override.jsp.goto.advanced.options">
-        <source>By default virtual guest settings like memory, cpu and storage allocations will be inherited from your kickstart profile. If you want to override these settings click on &lt;strong&gt;{0}&lt;/strong&gt; button below.</source>
+        <source>By default virtual guest settings like memory, cpu and storage allocations will be inherited from your autoinstallation profile. If you want to override these settings click on &lt;strong&gt;{0}&lt;/strong&gt; button below.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/virtualization/ProvisionVirtualizationWizard.do</context>
         </context-group>
@@ -16728,7 +16728,7 @@ The Tree Path, Kickstart RPM, Base Channel, and Installer Generation should alwa
         </context-group>
       </trans-unit>
       <trans-unit id="virtualization.provision.override.jsp.message">
-        <source>The following fields may be left blank (in which case default values as defined in the selected kickstart profile will be used).  Each field may be set individually to override the profile's default value.</source>
+        <source>The following fields may be left blank (in which case default values as defined in the selected autoinstallation profile will be used).  Each field may be set individually to override the profile's default value.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/virtualization/ProvisionVirtualizationWizard.do</context>
         </context-group>
@@ -16740,7 +16740,7 @@ The Tree Path, Kickstart RPM, Base Channel, and Installer Generation should alwa
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.systemdetails.update.confirm">
-        <source>Kickstart profile options updated successfully.</source>
+        <source>Autoinstallation profile options updated successfully.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/SystemDetailsEdit.do</context>
         </context-group>
@@ -16860,7 +16860,7 @@ The Tree Path, Kickstart RPM, Base Channel, and Installer Generation should alwa
         </trans-unit>
       </group>
       <trans-unit id="virtualization.provision.first.jsp.no.profiles">
-        <source>No profiles currently available for kickstarting guests. Please &lt;a href="/rhn/kickstart/CreateProfileWizard.do"&gt;create a new kickstart profile with a Virtualization Type other than none.&lt;/a&gt;</source>
+        <source>No profiles currently available for autoinstalling guests. Please &lt;a href=&quot;/rhn/kickstart/CreateProfileWizard.do&quot;&gt;create a new autoinstallation profile with a Virtualization Type other than none.&lt;/a&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/virtualization/ProvisionVirtualizationWizard.do</context>
         </context-group>
@@ -17197,7 +17197,7 @@ The Tree Path, Kickstart RPM, Base Channel, and Installer Generation should alwa
         </context-group>
       </trans-unit>
       <trans-unit id="sdc.details.overview.entitlement">
-        <source>Entitlements:</source>
+        <source>System Types:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Overview.do</context>
         </context-group>
@@ -17209,7 +17209,7 @@ The Tree Path, Kickstart RPM, Base Channel, and Installer Generation should alwa
         </context-group>
       </trans-unit>
       <trans-unit id="sdc.details.overview.errataupdate">
-        <source>Auto Errata Update:</source>
+        <source>Auto Patch Update:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Overview.do</context>
         </context-group>
@@ -17245,7 +17245,7 @@ The Tree Path, Kickstart RPM, Base Channel, and Installer Generation should alwa
         </context-group>
       </trans-unit>
       <trans-unit id="receive_notifications">
-        <source>Errata Email</source>
+        <source>Updates/Patches Email</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Overview.do</context>
         </context-group>
@@ -17317,7 +17317,7 @@ The Tree Path, Kickstart RPM, Base Channel, and Installer Generation should alwa
         </context-group>
       </trans-unit>
       <trans-unit id="sdc.details.overview.unentitled">
-        <source>&lt;strong&gt;System not entitled&lt;/strong&gt; (&lt;a href="{0}"&gt;entitle it here&lt;/a&gt;)</source>
+        <source>&lt;strong&gt;System not assigned to a system type&lt;/strong&gt; (&lt;a href="{0}"&gt;add it here&lt;/a&gt;)</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Overview.do</context>
         </context-group>
@@ -17667,13 +17667,13 @@ The Tree Path, Kickstart RPM, Base Channel, and Installer Generation should alwa
         </context-group>
       </trans-unit>
       <trans-unit id="sdc.details.edit.baseentitlement">
-        <source>Base Entitlement:</source>
+        <source>Base System Type:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Edit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="sdc.details.edit.addonentitlements">
-        <source>Add-On Entitlements:</source>
+        <source>Add-On System Types:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Edit.do</context>
         </context-group>
@@ -17685,7 +17685,7 @@ The Tree Path, Kickstart RPM, Base Channel, and Installer Generation should alwa
         </context-group>
       </trans-unit>
       <trans-unit id="sdc.details.edit.autoerrataupdate">
-        <source>Auto Errata Update:</source>
+        <source>Auto Patch Update:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Edit.do</context>
         </context-group>
@@ -17739,13 +17739,13 @@ The Tree Path, Kickstart RPM, Base Channel, and Installer Generation should alwa
         </context-group>
       </trans-unit>
       <trans-unit id="sdc.details.edit.nobase">
-        <source>A system must have a base entitlement to have add-on entitlements.</source>
+        <source>A system must have a base system type to have add-on types.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Edit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="sdc.details.edit.updates">
-        <source>Receive Notifications of Updates/Errata.</source>
+        <source>Receive Notifications of Updates/Patches.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Edit.do</context>
         </context-group>
@@ -17757,19 +17757,19 @@ The Tree Path, Kickstart RPM, Base Channel, and Installer Generation should alwa
         </context-group>
       </trans-unit>
       <trans-unit id="sdc.details.edit.notifications.unentitled">
-        <source>Notifications not available for unentitled systems.</source>
+        <source>Notifications not available for systems without system types.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Edit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="sdc.details.edit.autoupdate">
-        <source>Automatic application of relevant errata</source>
+        <source>Automatic application of relevant patches</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Edit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="sdc.details.edit.autoupdate.unentitled">
-        <source>Auto Errata Update not available for this system.</source>
+        <source>Auto Patch Update not available for this system.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Edit.do</context>
         </context-group>
@@ -18204,7 +18204,7 @@ The Tree Path, Kickstart RPM, Base Channel, and Installer Generation should alwa
         </context-group>
       </trans-unit>
       <trans-unit id="login.jsp.error.message">
-        <source>This error may have been caused by an interrupted logout or by logging in from another browser tab. Please contact your satellite administrator if the problem persists.</source>
+        <source>This error may have been caused by an interrupted logout or by logging in from another browser tab. Please contact your SUSE Manager administrator if the problem persists.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">loginerror.jsp</context>
         </context-group>
@@ -18314,13 +18314,13 @@ The Tree Path, Kickstart RPM, Base Channel, and Installer Generation should alwa
         </context-group>
       </trans-unit>
       <trans-unit id="sdc.channels.edit.virtsubwarning">
-        <source>&lt;strong&gt;NOTE:&lt;/strong&gt; These channels are not part of the Red Hat Enterprise Linux subscription for this guest's host, &lt;a href="/rhn/systems/details/Overview.do?sid={0}"&gt;{1}&lt;/a&gt;. Subscribing to them will consume additional software entitlements. &lt;a href="/rhn/systems/details/SystemChannels.do?sid={0}"&gt;Applying a different virtual system entitlement to the host system&lt;/a&gt; will affect which channels have this mark.</source>
+        <source>&lt;strong&gt;NOTE:&lt;/strong&gt; These channels are not part of the @@ENTERPRISE_LINUX_NAME@@ subscription for this guest's host, &lt;a href=&quot;/rhn/systems/details/Overview.do?sid={0}&quot;&gt;{1}&lt;/a&gt;. Subscribing to them will consume additional software entitlements. &lt;a href=&quot;/rhn/systems/details/SystemChannels.do?sid={0}&quot;&gt;Applying a different virtual system entitlement to the host system&lt;/a&gt; will affect which channels have this mark.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/SystemChannels.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="sdc.channels.edit.virtsubwarning_nohost">
-        <source>&lt;strong&gt;NOTE:&lt;/strong&gt; These channels are not part of the Red Hat Enterprise Linux subscription for this guest's host. Subscribing to them will consume additional software entitlements. Applying a different virtual system entitlement to the host system will affect which channels have this mark.</source>
+        <source>&lt;strong&gt;NOTE:&lt;/strong&gt; These channels are not part of the @@ENTERPRISE_LINUX_NAME@@ subscription for this guest's host. Subscribing to them will consume additional software entitlements. Applying a different virtual system entitlement to the host system will affect which channels have this mark.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/SystemChannels.do</context>
         </context-group>
@@ -18694,7 +18694,7 @@ As a Channel Administrator, you may change the base channels your systems are su
           </context-group>
         </trans-unit>
         <trans-unit id="basesub.jsp.rhn-channels">
-          <source>Red Hat Channels</source>
+          <source>@@VENDOR_NAME@@ Channels</source>
           <context-group name="ctx">
             <context context-type="sourcefile">/rhn/channel/ssm/BaseChannelSubscribe.do</context>
           </context-group>
@@ -18924,7 +18924,7 @@ As a Channel Administrator, you may change the base channels your systems are su
         <source>Custom  options:</source>
       </trans-unit>
       <trans-unit id="kickstartoptions.jsp.customoptionsnote">
-        <source>&lt;strong&gt;NOTE:&lt;/strong&gt; Invalid custom options can cause kickstarts to fail.</source>
+        <source>&lt;strong&gt;NOTE:&lt;/strong&gt; Invalid custom options can cause autoinstallations to fail.</source>
       </trans-unit>
       <trans-unit id="kickstartoptions.jsp.customoptionstip">
         <source>&lt;strong&gt;Tip:&lt;/strong&gt; The max size of each line is 2048 characters.</source>
@@ -18933,37 +18933,37 @@ As a Channel Administrator, you may change the base channels your systems are su
         <source>Update Date</source>
       </trans-unit>
       <trans-unit id="channel.manage.errata.addredhaterrata">
-        <source>Add Red Hat Errata</source>
+        <source>Add @@VENDOR_NAME@@ Patches</source>
       </trans-unit>
       <trans-unit id="channel.manage.errata.addredhaterratamsg">
-        <source>Choose this option if you want to import errata that exist in Red Hat base channels, or child channels of Red Hat provided channels.</source>
+        <source>Choose this option if you want to import patches that exist in @@VENDOR_NAME@@ base channels, or child channels of @@VENDOR_NAME@@ provided channels.</source>
       </trans-unit>
       <trans-unit id="channel.manage.errata.noerrata">
-        <source>No errata found applicable to this channel.</source>
+        <source>No patches found applicable to this channel.</source>
       </trans-unit>
       <trans-unit id="channel.manage.errata.addcustomerrata">
-        <source>Add Custom Errata</source>
+        <source>Add Custom Patches</source>
       </trans-unit>
       <trans-unit id="channel.manage.errata.addcustomerratamsg">
-        <source>Choose this option if you want to import custom errata or errata from custom channels.</source>
+        <source>Choose this option if you want to import custom patches or patches from custom channels.</source>
       </trans-unit>
       <trans-unit id="channel.manage.errata.createerrata">
-        <source>Create Custom Errata</source>
+        <source>Create Custom Patch</source>
       </trans-unit>
       <trans-unit id="channel.manage.errata.createerratamsg">
-        <source>Choose this option to create an errata from scratch.  You may import a new errata into this channel at publication time.</source>
+        <source>Choose this option to create a patch from scratch.  You may import a new patch into this channel at publication time.</source>
       </trans-unit>
       <trans-unit id="channel.manage.errata.confirmmsg">
-        <source>Below is a summary of the errata you have selected to clone.  Contained in each CSV download is a list of errata and packages respectively that will be pushed to the channel.</source>
+        <source>Below is a summary of the patches you have selected to clone.  Contained in each CSV download is a list of patches and packages respectively that will be pushed to the channel.</source>
       </trans-unit>
       <trans-unit id="channel.manage.errata.custommsg">
-        <source>Below is a list of errata that can pushed to the current channel.  Use the channel selection drop down filter to narrow down errata to choose from.</source>
+        <source>Below is a list of patches that can pushed to the current channel.  Use the channel selection drop down filter to narrow down patches to choose from.</source>
       </trans-unit>
       <trans-unit id="channel.manage.errata.redhatmsg">
-        <source>Below is a list of errata that can pushed to the current channel.  Use the drop down filters to narrow down which errata you may choose from.</source>
+        <source>Below is a list of patches that can pushed to the current channel.  Use the drop down filters to narrow down which patches you may choose from.</source>
       </trans-unit>
       <trans-unit id="channel.manage.errata.packageassocmsg">
-        <source>(Recommended) With this selected only errata that contain packages that apply to this channel are shown.  Also, package architecture will match what is currently in the channel.</source>
+        <source>&lt;em&gt;(Recommended)&lt;/em&gt; With this selected only patches that contain packages that apply to this channel are shown.  Also, package architecture will match what is currently in the channel.</source>
       </trans-unit>
       <trans-unit id="toolbar.ssm.add">
         <source>Add to SSM</source>
@@ -19064,7 +19064,7 @@ given channel.</source>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.list.jsp.orgdefault">
-        <source>This is your organizations default kickstart profile.</source>
+        <source>This is your organizations default autoinstallation profile.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/help/Search</context>
         </context-group>
@@ -19336,22 +19336,22 @@ given channel.</source>
         <source>{0} change(s) have been made to {1} channel.</source>
       </trans-unit>
       <trans-unit id="channel.jsp.errata.listtitle">
-        <source>This channel contains the following errata:</source>
+        <source>This channel contains the following patches:</source>
       </trans-unit>
       <trans-unit id="channel.jsp.errata.emptylist">
-        <source>This channel contains no errata.</source>
+        <source>This channel contains no patches.</source>
       </trans-unit>
       <trans-unit id="channel.jsp.errata.clone.title">
-        <source>Clone Errata</source>
+        <source>Clone Patches</source>
       </trans-unit>
       <trans-unit id="channel.jsp.errata.clone.summary">
-        <source>Below is the list of the errata which apply to the original channel, but have not yet been cloned into your channel.</source>
+        <source>Below is the list of the patches which apply to the original channel, but have not yet been cloned into your channel.</source>
       </trans-unit>
       <trans-unit id="channel.jsp.errata.clone.empty">
-        <source>No uncloned errata.</source>
+        <source>No uncloned patches.</source>
       </trans-unit>
       <trans-unit id="channel.jsp.errata.clone.owned">
-        <source>Owned Errata</source>
+        <source>Owned Patches</source>
       </trans-unit>
       <trans-unit id="channel.jsp.errata.clone.action">
         <source>Action</source>
@@ -19366,7 +19366,7 @@ given channel.</source>
         <source>Do Nothing</source>
       </trans-unit>
       <trans-unit id="channel.jsp.errata.clone.button">
-        <source>Clone Errata</source>
+        <source>Clone Patches</source>
       </trans-unit>
       <trans-unit id="channel.jsp.package.list">
         <source>Channel Packages</source>
@@ -19575,10 +19575,10 @@ given channel.</source>
         <source>File Unavailable</source>
       </trans-unit>
       <trans-unit id="package.jsp.errata">
-        <source>Errata</source>
+        <source>Patch</source>
       </trans-unit>
       <trans-unit id="package.jsp.errataunavailable">
-        <source>This package is not linked to any erratum</source>
+        <source>This package is not linked to any patch</source>
       </trans-unit>
       <trans-unit id="package.jsp.sunosrelease">
         <source>SunOs Release</source>
@@ -19638,10 +19638,10 @@ given channel.</source>
         <source>@@PRODUCT_NAME@@ project</source>
       </trans-unit>
       <trans-unit id="layout.jsp.vendor.title">
-        <source>Visit http://www.spacewalkproject.org/ for more information</source>
+        <source>Visit suse.com for more information on @@VENDOR_NAME@@ products and services</source>
       </trans-unit>
       <trans-unit id="layout.jsp.vendor.website">
-        <source>http://www.spacewalkproject.org/</source>
+        <source>/</source>
       </trans-unit>
       <trans-unit id="filelist.jsp.title">
         <source>File List</source>
@@ -19749,7 +19749,7 @@ given channel.</source>
         </context-group>
       </trans-unit>
       <trans-unit id="channel.edit.jsp.checksum">
-        <source>Yum Repository Checksum Type</source>
+        <source>Repository Checksum Type</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Edit.do</context>
         </context-group>
@@ -19890,37 +19890,37 @@ given channel.</source>
         </context-group>
       </trans-unit>
       <trans-unit id="channel.clone.current">
-        <source>Current state of the channel (all errata)</source>
+        <source>Current state of the channel (all patches)</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Clone.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="channel.clone.current.summary">
-        <source>The new channel will include all of the latest packages from the target channel, and all errata related to the channel will be cloned into your organization. If your organization already owns a clone of an erratum, the new channel will be associated with that erratum instead of creating another clone of the erratum.</source>
+        <source>The new channel will include all of the latest packages from the target channel, and all patches related to the channel will be cloned into your organization. If your organization already owns a clone of a patch, the new channel will be associated with that patch instead of creating another clone of the patch.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Clone.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="channel.clone.original">
-        <source>Original state of the channel (no errata)</source>
+        <source>Original state of the channel (no patches)</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Clone.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="channel.clone.original.summary">
-        <source>The new channel will be a clone of the original state of the target channel. This is done by cloning all of the packages from the target channel which do not have an erratum associated with them. No errata will be cloned into your organization.</source>
+        <source>The new channel will be a clone of the original state of the target channel. This is done by cloning all of the packages from the target channel which do not have a patch associated with them. No patch will be cloned into your organization.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Clone.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="channel.clone.select">
-        <source>Select errata</source>
+        <source>Select patches</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Clone.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="channel.clone.select.summary">
-        <source>The original state of the target channel will be cloned into the new channel. You will then have the option to select the errata you wish to import into the new channel. Importing an erratum will bring the packages from the target channel referred to by the erratum into the new channel. Selecting all of the errata from the list of potential errata is the same as cloning the current state of the channel. Selecting none of the errata is the same as cloning the original state of the channel.</source>
+        <source>The original state of the target channel will be cloned into the new channel. You will then have the option to select the patches you wish to import into the new channel. Importing a patch will bring the packages from the target channel referred to by the patch into the new channel. Selecting all of the patches from the list of potential patches is the same as cloning the current state of the channel. Selecting none of the patches is the same as cloning the original state of the channel.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Clone.do</context>
         </context-group>
@@ -20324,7 +20324,7 @@ given channel.</source>
         </context-group>
       </trans-unit>
       <trans-unit id="schedule.delete.jsp.introparagraph">
-        <source>Are you sure you want to delete the schedule? Associated bunch won't get scheduled any more. This can have a huge impact on satellite functionality. Proceed only if you know what you're doing.</source>
+        <source>Are you sure you want to delete the schedule? Associated bunch won't get scheduled any more. This can have a huge impact on SUSE Manager functionality. Proceed only if you know what you're doing.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/DeleteSchedule.do</context>
         </context-group>
@@ -20528,31 +20528,31 @@ given channel.</source>
         </context-group>
       </trans-unit>
       <trans-unit id="header.jsp.errata.add">
-        <source>Add Errata</source>
+        <source>Add Patches</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/errata//Add.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="list.jsp.errata.listremove">
-        <source>List/Remove Errata</source>
+        <source>List/Remove Patches</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/errata/Errata.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="list.jsp.errata.add">
-        <source>Add Errata</source>
+        <source>Add Patches</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/errata/Errata.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="list.jsp.errata.clone">
-        <source>Clone Errata</source>
+        <source>Clone Patches</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/errata/Errata.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="channel.jsp.errata.listempty">
-        <source>There are no errata associated with this channel.</source>
+        <source>There are no patches associated with this channel.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/errata/ErrataList.do</context>
         </context-group>
@@ -20564,25 +20564,25 @@ given channel.</source>
         </context-group>
       </trans-unit>
       <trans-unit id="channel.jsp.errata.remove">
-        <source>Remove Errata</source>
+        <source>Remove Patches</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/errata/ErrataList.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="channel.jsp.errata.remove.message">
-        <source>Below is the list of errata associated with this channel. To remove an erratum from this channel, select it here, and click 'Remove' below.</source>
+        <source>Below is the list of patches associated with this channel. To remove a patch from this channel, select it here, and click 'Remove' below.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/errata/ErrataList.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="channel.jsp.errata.remove.confirmmessage">
-        <source>Click 'Confirm' below to remove these errata from your channel. Related packages will also be removed from the channel.</source>
+        <source>Click 'Confirm' below to remove these patches from your channel. Related packages will also be removed from the channel.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/errata/ErrataList.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="channel.jsp.errata.remove.finalmessage">
-        <source>Successfully removed {0} errata from this channel.</source>
+        <source>Successfully removed {0} patch(es) from this channel.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/errata/ErrataList.do</context>
         </context-group>
@@ -20612,7 +20612,7 @@ given channel.</source>
         </context-group>
       </trans-unit>
       <trans-unit id="unknown.package.msg">
-        <source>Unfortunately, you have requested information about a package we do not have in our database. Most likely, this is a custom package you have installed by hand, or is from a distribution not supported by @@PRODUCT_NAME@@.</source>
+        <source>Unfortunately, you have requested information about a package we do not have in our database. Most likely, this is a custom package you have installed by hand, or is from a distribution not supported by @@VENDOR_SERVICE_NAME@@.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/errata/ErrataList.do</context>
         </context-group>
@@ -20624,7 +20624,7 @@ given channel.</source>
         </context-group>
       </trans-unit>
       <trans-unit id="unknown.kickstart">
-        <source>Kickstart Not Found</source>
+        <source>Autoinstallation Not Found</source>
       </trans-unit>
       <trans-unit id="unknown.kickstart.message">
         <source>The requested kickstart file could not be found.
@@ -20694,7 +20694,7 @@ given channel.</source>
         <source>Failed reboots cleanup</source>
       </trans-unit>
       <trans-unit id="task.status.auto-errata">
-        <source>Auto Errata Updates</source>
+        <source>Auto Patch Updates</source>
       </trans-unit>
       <trans-unit id="task.status.uuid-cleanup">
         <source>UUID cleanup</source>
@@ -20709,7 +20709,7 @@ given channel.</source>
         <source>Picked Up</source>
       </trans-unit>
       <trans-unit id="header.jsp.errata.sync">
-        <source>Sync Errata</source>
+        <source>Sync Patches</source>
       </trans-unit>
       <trans-unit id="channel.jsp.errata.sync.message">
         <source>The following errata were cloned from errata that have since been updated.
@@ -20719,16 +20719,16 @@ given channel.</source>
         <source>Packages that were omitted as part of the original cloning process will be included here.</source>
       </trans-unit>
       <trans-unit id="channel.jsp.errata.sync.listempty">
-        <source>No out of date errata were found.</source>
+        <source>No out of date patches were found.</source>
       </trans-unit>
       <trans-unit id="header.jsp.errata.sync.packagepush">
         <source>Packages to Push</source>
       </trans-unit>
       <trans-unit id="channel.jsp.errata.sync.packages.message">
-        <source>The following packages will be pushed to this channel as part of the errata sync process.  Please review this list and unselect any unwanted packages.</source>
+        <source>The following packages will be pushed to this channel as part of the patches sync process.  Please review this list and unselect any unwanted packages.</source>
       </trans-unit>
       <trans-unit id="channel.jsp.errata.sync.complete">
-        <source>Successfully synchronized {0} errata and pushed {1} packages to channel {2}.</source>
+        <source>Successfully synchronized {0} patches and pushed {1} packages to channel {2}.</source>
       </trans-unit>
       <trans-unit id="channel.jsp.repodata">
         <source>Repo Cache Status</source>
@@ -20812,7 +20812,7 @@ given channel.</source>
         <source>Note:  A local debuginfo rpm could not be found.  The above links to an external FTP server and may not be valid.</source>
       </trans-unit>
       <trans-unit id="debuginfo.unavailable">
-        <source>If available, an appropriate debuginfo package can be synced from the respective debug channel or repository. Note: Not all packages have published debuginfo packages.</source>
+        <source>If available, an appropriate debuginfo package can be downloaded from the SUSE Customer Center from the respective debuginfo child channel. Note: Not all packages have published debuginfo packages.</source>
       </trans-unit>
       <trans-unit id="debugsource.unavailable">
         <source>If available, an appropriate debugsource package can be synced from the respective debug channel or repository. Note: Not all packages have published debugsource packages.</source>
