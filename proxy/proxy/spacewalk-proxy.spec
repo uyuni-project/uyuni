@@ -4,7 +4,7 @@
 
 Name: spacewalk-proxy
 Summary: Spacewalk Proxy Server
-Version: 2.8.5.6
+Version: 2.8.5.7
 Release: 1%{?dist}
 Group:   Applications/Internet
 License: GPLv2
