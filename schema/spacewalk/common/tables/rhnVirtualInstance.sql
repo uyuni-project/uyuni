@@ -28,7 +28,7 @@ CREATE TABLE rhnVirtualInstance
     uuid               VARCHAR2(128),
     confirmed          NUMBER(1)
                            DEFAULT (1) NOT NULL,
-    payg               BOOLEAN,
+    payg               CHAR(1) DEFAULT ('N'),
     created            timestamp with local time zone
                            DEFAULT (current_timestamp) NOT NULL,
     modified           timestamp with local time zone
