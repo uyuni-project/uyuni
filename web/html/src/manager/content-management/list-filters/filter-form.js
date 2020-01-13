@@ -292,19 +292,23 @@ const FilterForm = (props: Props) => {
               labelClass="col-md-3"
               divClass="col-md-6"
             />
+            <input type="hidden" name="rule" value="deny"/>
           </>
         }
 
-        <Radio
-          inline
-          name="rule"
-          items={[
-            {"label": t("Deny"), "value": "deny"},
-            {"label": t("Allow"), "value": "allow"}
-          ]}
-          label={t("Rule")}
-          labelClass="col-md-3"
-          divClass="col-md-6" />
+        {
+          clmFilterOptions.STREAM.key !== props.filter.type &&
+          <Radio
+            inline
+            name="rule"
+            items={[
+              {"label": t("Deny"), "value": "deny"},
+              {"label": t("Allow"), "value": "allow"}
+            ]}
+            label={t("Rule")}
+            labelClass="col-md-3"
+            divClass="col-md-6" />
+        }
 
 
       </React.Fragment>

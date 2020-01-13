@@ -165,5 +165,8 @@ function findFilterMatcherByKey(key: ?string): FilterMatcherType {
 
 export function getClmFilterDescription (filter: Object): string {
   const filterMatcher = findFilterMatcherByKey(filter.matcher);
+  if (filter.entityType === 'module') {
+    return `${filter.name}: ${t('enable module')} ${filter.criteriaValue}`;
+  }
   return `${filter.name}: ${filter.rule} ${filter.entityType} ${filterMatcher.longDescription || ''} ${filter.criteriaValue} (${filter.criteriaKey})`;
 }
