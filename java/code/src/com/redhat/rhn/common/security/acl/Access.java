@@ -34,6 +34,7 @@ import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.manager.user.UserManager;
 
+import com.suse.manager.webui.controllers.utils.ContactMethodUtil;
 import com.suse.manager.webui.utils.ViewHelper;
 import org.apache.log4j.Logger;
 
@@ -513,5 +514,13 @@ public class Access extends BaseHandler {
         String valueToCheck = params[2];
         Server server = SystemManager.lookupByIdAndUser(sid, user);
         return ViewHelper.getInstance().formulaValueEquals(server, formulaName, valueName, valueToCheck);
+    }
+
+    public boolean aclHasSshPushContactMethod(Object ctx, String[] params) {
+        Map map = (Map) ctx;
+        Long sid = getAsLong(map.get("sid"));
+        User user = (User) map.get("user");
+        Server lookedUp = SystemManager.lookupByIdAndUser(sid, user);
+        return ContactMethodUtil.isSSHPushContactMethod(lookedUp.getContactMethod());
     }
 }

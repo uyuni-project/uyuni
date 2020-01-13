@@ -21,6 +21,7 @@ import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.frontend.context.Context;
 import com.redhat.rhn.frontend.taglibs.helpers.RenderUtils;
 
+import com.suse.manager.webui.controllers.utils.ContactMethodUtil;
 import org.apache.commons.lang3.text.WordUtils;
 
 import java.text.DateFormat;
@@ -138,6 +139,14 @@ public enum ViewHelper {
         return isoFormat.format(date);
     }
 
+    /**
+     * Checks if a value of a formula is equal to the given argument.
+     * @param server the server to check
+     * @param formulaName the name of the formula to check
+     * @param valueName the name of the value to check for equality
+     * @param valueToCheck the value to check
+     * @return true if the value is equal to the given argument
+     */
     public boolean formulaValueEquals(Server server, String formulaName, String valueName, String valueToCheck)  {
         if (server == null) {
             return false;
@@ -157,5 +166,13 @@ public enum ViewHelper {
                 .getGroupFormulaValuesByNameAndServerId(formulaName, server.getId())
                 .orElseGet(Collections::emptyMap);
         return Objects.toString(systemData.get(valueName), "").equalsIgnoreCase(valueToCheck); // TODO complex value names
+    }
+
+    /**
+     * @param server the server to check
+     * @return true if the server has either ssh-push or ssh-push-tunnel contact methods
+     */
+    public boolean hasSshPushContactMethod(Server server) {
+        return ContactMethodUtil.isSSHPushContactMethod(server.getContactMethod());
     }
 }
