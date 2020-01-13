@@ -19,4 +19,12 @@ package com.redhat.rhn.domain.server;
  * A ServerGroup that corresponds to an entitlement.
  */
 public class EntitlementServerGroup extends ServerGroup {
+
+    /**
+     * Retrieves the group type label of this entitlement server group
+     * @return the group type label
+     */
+    public String getGroupTypeLabel() {
+        return this.getGroupType().getLabel();
+    }
 }

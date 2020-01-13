@@ -146,7 +146,7 @@ public class SystemDetailsEditAction extends RhnAction {
             s.setBaseEntitlement(base);
         }
         else if (selectedEnt.equals(UNENTITLE)) {
-            SystemManager.removeAllServerEntitlements(s.getId());
+            SystemManager.removeAllServerEntitlements(s);
         }
 
         // setup location information
@@ -286,7 +286,7 @@ public class SystemDetailsEditAction extends RhnAction {
                      daForm.get(e.getLabel()).equals(Boolean.FALSE)) &&
                      s.hasEntitlement(e)) {
                 log.debug("removing entitlement: " + e);
-                SystemManager.removeServerEntitlement(s.getId(), e);
+                SystemManager.removeServerEntitlement(s, e);
 
                 needsSnapshot = true;
             }

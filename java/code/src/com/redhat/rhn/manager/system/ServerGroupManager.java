@@ -379,10 +379,9 @@ public class ServerGroupManager {
      * @param servers a collection of servers to dissociate
      */
     public void removeServers(ServerGroup sg, Collection<Server> servers) {
-        for (Server s : servers) {
-            SystemManager.removeServerFromServerGroup(s, sg);
-            s.asMinionServer().ifPresent(
-                    SaltStateGeneratorService.INSTANCE::generatePillar);
+        if (!servers.isEmpty()) {
+            SystemManager.removeServersFromServerGroup(servers, sg);
+            updatePillarAfterGroupUpdateForServers(servers);
         }
     }
 

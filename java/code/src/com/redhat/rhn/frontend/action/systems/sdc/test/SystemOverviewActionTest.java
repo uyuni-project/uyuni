@@ -47,6 +47,7 @@ public class SystemOverviewActionTest extends RhnMockStrutsTestCase {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setUp() throws Exception {
         super.setUp();
         setRequestPathInfo("/systems/details/Overview");
@@ -99,7 +100,7 @@ public class SystemOverviewActionTest extends RhnMockStrutsTestCase {
     }
 
     public void testSystemUnentitled() throws Exception {
-       SystemManager.removeAllServerEntitlements(s.getId());
+       SystemManager.removeAllServerEntitlements(s);
        actionPerform();
        assertEquals(request.getAttribute("unentitled"), Boolean.TRUE);
     }
