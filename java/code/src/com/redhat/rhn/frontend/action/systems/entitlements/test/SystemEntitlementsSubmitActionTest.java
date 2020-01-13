@@ -46,6 +46,7 @@ public class SystemEntitlementsSubmitActionTest extends RhnPostMockStrutsTestCas
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setUp() throws Exception {
         super.setUp();
         setRequestPathInfo("/systems/SystemEntitlementsSubmit");
@@ -83,7 +84,7 @@ public class SystemEntitlementsSubmitActionTest extends RhnPostMockStrutsTestCas
         ServerFactory.save(server);
         OrgFactory.save(user.getOrg());
         UserFactory.save(user);
-        SystemManager.removeAllServerEntitlements(server.getId());
+        SystemManager.removeAllServerEntitlements(server);
         assertFalse(SystemManager.hasEntitlement(server.getId(), ent));
 
         /*
@@ -151,7 +152,7 @@ public class SystemEntitlementsSubmitActionTest extends RhnPostMockStrutsTestCas
 
         Server server = ServerTestUtils.createVirtHostWithGuests(user, 1);
 
-        SystemManager.removeServerEntitlement(server.getId(),
+        SystemManager.removeServerEntitlement(server,
                 EntitlementManager.VIRTUALIZATION);
         ServerGroupTest.createTestServerGroup(user.getOrg(),
                 groupType);

@@ -1724,7 +1724,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
     public void testSetDetails() throws Exception {
         Server server = ServerFactoryTest.createTestServer(admin, true,
                 ServerConstants.getServerGroupTypeEnterpriseEntitled());
-        SystemManager.removeAllServerEntitlements(server.getId());
+        SystemManager.removeAllServerEntitlements(server);
 
         Map details = new HashMap();
         String profileName = "blah";
@@ -1775,7 +1775,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
     public void testSetDetailsContactMethodInvalid() throws Exception {
         Server server = ServerFactoryTest.createTestServer(admin, true,
                 ServerConstants.getServerGroupTypeEnterpriseEntitled());
-        SystemManager.removeAllServerEntitlements(server.getId());
+        SystemManager.removeAllServerEntitlements(server);
 
         Map details = new HashMap();
         details.put("contact_method", "foobar");
@@ -1828,7 +1828,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
 
     public void testSetDetailsUnentitleServer() throws Exception {
         Server server = ServerFactoryTest.createTestServer(admin, true);
-        SystemManager.removeAllServerEntitlements(server.getId());
+        SystemManager.removeAllServerEntitlements(server);
         Map details = new HashMap();
         details.put("base_entitlement", "unentitle");
 
@@ -1841,7 +1841,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
 
     public void testSetDetailsBaseEntitlementAsNonOrgAdmin() throws Exception {
         Server server = ServerFactoryTest.createTestServer(regular, true);
-        SystemManager.removeAllServerEntitlements(server.getId());
+        SystemManager.removeAllServerEntitlements(server);
         Map details = new HashMap();
         details.put("base_entitlement", "unentitle");
 

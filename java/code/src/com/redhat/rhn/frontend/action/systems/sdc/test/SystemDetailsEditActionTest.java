@@ -130,7 +130,7 @@ public class SystemDetailsEditActionTest extends RhnPostMockStrutsTestCase {
     }
 
     public void testBaseEntitlementListForUnetitledSystem() throws Exception {
-        SystemManager.removeAllServerEntitlements(s.getId());
+        SystemManager.removeAllServerEntitlements(s);
         TestUtils.saveAndFlush(s);
         actionPerform();
         verifyForward(RhnHelper.DEFAULT_FORWARD);
@@ -174,7 +174,7 @@ public class SystemDetailsEditActionTest extends RhnPostMockStrutsTestCase {
         Long id = s.getId();
         String name = s.getName();
         HibernateFactory.getSession().clear();
-        SystemManager.removeAllServerEntitlements(id);
+        SystemManager.removeAllServerEntitlements(s);
         s = ServerFactory.lookupById(id);
         assertTrue(s.getBaseEntitlement() == null);
 

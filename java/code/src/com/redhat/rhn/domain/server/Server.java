@@ -1438,7 +1438,7 @@ public class Server extends BaseDomainHelper implements Identifiable {
         }
         if (baseEntitlement != null) {
             this.getEntitlements().remove(baseEntitlement);
-            SystemManager.removeServerEntitlement(this.getId(), baseEntitlement);
+            SystemManager.removeServerEntitlement(this, baseEntitlement);
         }
 
         SystemManager.entitleServer(this, baseIn);
@@ -2173,5 +2173,23 @@ public class Server extends BaseDomainHelper implements Identifiable {
      */
     public boolean addGroup(ServerGroup serverGroup) {
         return this.groups.add(serverGroup);
+    }
+
+    /**
+     * Removes a server group from this server
+     * @param serverGroup the serverGroup
+     * @return true if the server groups of this server changed as a result of the call
+     */
+    public boolean removeGroup(ServerGroup serverGroup) {
+        return this.groups.remove(serverGroup);
+    }
+
+    /**
+     * Retrieves the server group that matches the passed entitlement, if this server is a member of.
+     * @param ent the entitlement
+     * @return the server group
+     */
+    public Optional<EntitlementServerGroup> getServerGroupByEntitlement(Entitlement ent) {
+        return this.getEntitledGroups().stream().filter(g -> g.getGroupTypeLabel().equals(ent.getLabel())).findFirst();
     }
 }
