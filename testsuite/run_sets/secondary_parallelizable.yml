@@ -9,6 +9,8 @@
 # IDEMPOTENT
 
 - features/secondary/srv_menu.feature
+- features/secondary/srv_organization_credentials.feature
+- features/secondary/srv_check_sync_source_packages.feature
 - features/secondary/srv_change_password.feature
 - features/secondary/srv_clone_channel_npn.feature
 - features/secondary/srv_cve_audit.feature
@@ -29,6 +31,7 @@
 - features/secondary/srv_xmlrpc_channel.feature
 - features/secondary/srv_patches_page.feature
 - features/secondary/srv_spacewalk_channel.feature
+- features/secondary/srv_content_lifecycle.feature
 - features/secondary/srv_change_task_schedule.feature
 - features/secondary/srv_notifications.feature
 - features/secondary/srv_monitoring.feature
@@ -48,6 +51,7 @@
 - features/secondary/min_salt_software_states.feature
 - features/secondary/min_salt_install_with_staging.feature
 - features/secondary/min_salt_formulas.feature
+- features/secondary/min_salt_formulas_advanced.feature
 - features/secondary/min_salt_install_package.feature
 - features/secondary/min_salt_openscap_audit.feature
 - features/secondary/min_salt_user_states.feature
