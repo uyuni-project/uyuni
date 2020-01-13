@@ -35,7 +35,7 @@ function run_del() {
 function run_format() {
     find "$RESOURCES_BASE" -name '*.xml' -print0 \
     | xargs -0 --no-run-if-empty -n 1 \
-        bash -c 'tmp=$( mktemp ); xmllint --format "$1" > $tmp; mv $tmp "$1"' --
+        bash -c 'tmp=$( mktemp ); java/scripts/xmlformat.pl --config-file java/scripts/xmlformat.conf "$1" > $tmp; mv $tmp "$1"' --
 }
 
 function main() {
