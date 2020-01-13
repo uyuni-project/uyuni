@@ -1,3 +1,3 @@
 ALTER TABLE rhnVirtualInstance
-    ADD COLUMN IF NOT EXISTS payg BOOLEAN
-       DEFAULT NULL;
+    ADD COLUMN IF NOT EXISTS payg CHAR(1)
+       DEFAULT ('N');
