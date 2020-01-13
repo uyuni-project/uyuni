@@ -2157,4 +2157,21 @@ public class Server extends BaseDomainHelper implements Identifiable {
     public void setPayg(boolean paygIn) {
         payg = paygIn;
     }
+
+    /**
+     *
+     * @return Returns the org Id.
+     */
+    public Long getOrgId() {
+        return org.getId();
+    }
+
+    /**
+     * Adds a server group to this server
+     * @param serverGroup the server group
+     * @return true if the server groups of this server changed as a result of the call
+     */
+    public boolean addGroup(ServerGroup serverGroup) {
+        return this.groups.add(serverGroup);
+    }
 }

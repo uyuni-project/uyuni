@@ -15,9 +15,11 @@
 
 package com.redhat.rhn.frontend.action.groups;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import com.redhat.rhn.domain.server.ManagedServerGroup;
+import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnAction;
@@ -49,7 +51,7 @@ public class GroupDetailAction extends RhnAction {
         ManagedServerGroup sg = rctx.lookupAndBindServerGroup();
         HashMap errataCounts =
                 (HashMap) ServerGroupManager.getInstance().errataCounts(user, sg);
-        long minionCount = MinionServerUtils.filterSaltMinions(sg.getServers()).count();
+        long minionCount = MinionServerUtils.filterSaltMinions(new ArrayList<Server>(sg.getServers())).count();
 
         request.setAttribute("id", sg.getId());
         request.setAttribute("errata_counts", errataCounts);

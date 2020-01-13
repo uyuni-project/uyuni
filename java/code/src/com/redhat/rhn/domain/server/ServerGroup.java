@@ -28,6 +28,11 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 /**
  * Server - Class representation of the table rhnServer.
@@ -43,10 +48,12 @@ public class ServerGroup extends BaseDomainHelper implements Identifiable, SaltC
     private String description;
     private ServerGroupType groupType;
     private Org org;
+
     /**
      * Getter for id
      * @return Long to get
-    */
+     */
+    @Override
     public Long getId() {
         return this.id;
     }
@@ -54,7 +61,7 @@ public class ServerGroup extends BaseDomainHelper implements Identifiable, SaltC
     /**
      * Setter for id
      * @param idIn to set
-    */
+     */
     public void setId(Long idIn) {
         this.id = idIn;
     }
@@ -62,7 +69,7 @@ public class ServerGroup extends BaseDomainHelper implements Identifiable, SaltC
     /**
      * Getter for name
      * @return String to get
-    */
+     */
     public String getName() {
         return this.name;
     }
@@ -70,7 +77,7 @@ public class ServerGroup extends BaseDomainHelper implements Identifiable, SaltC
     /**
      * Setter for name
      * @param nameIn to set
-    */
+     */
     public void setName(String nameIn) {
         this.name = nameIn;
     }
@@ -78,7 +85,7 @@ public class ServerGroup extends BaseDomainHelper implements Identifiable, SaltC
     /**
      * Getter for description
      * @return String to get
-    */
+     */
     public String getDescription() {
         return this.description;
     }
@@ -86,11 +93,10 @@ public class ServerGroup extends BaseDomainHelper implements Identifiable, SaltC
     /**
      * Setter for description
      * @param descriptionIn to set
-    */
+     */
     public void setDescription(String descriptionIn) {
         this.description = descriptionIn;
     }
-
 
     /**
      * @return Returns the org.
@@ -98,6 +104,7 @@ public class ServerGroup extends BaseDomainHelper implements Identifiable, SaltC
     public Org getOrg() {
         return org;
     }
+
     /**
      * @param orgIn The org to set.
      */
@@ -140,11 +147,10 @@ public class ServerGroup extends BaseDomainHelper implements Identifiable, SaltC
         return getGroupType() == null;
     }
 
-
     /**
      * the number of current servers
      * @return Long number for current servers
-    */
+     */
     public Long getCurrentMembers() {
         return ServerGroupFactory.getCurrentMembers(this);
     }
@@ -174,8 +180,16 @@ public class ServerGroup extends BaseDomainHelper implements Identifiable, SaltC
     }
 
     /**
+     * @return Returns the org Id.
+     */
+    public Long getOrgId() {
+        return org.getId();
+    }
+
+    /**
      * {@inheritDoc}
      */
+    @Override
     public int hashCode() {
         return new HashCodeBuilder().append(getId())
                                     .append(getName())
@@ -188,6 +202,7 @@ public class ServerGroup extends BaseDomainHelper implements Identifiable, SaltC
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean equals(Object other) {
         if (!(other instanceof ServerGroup)) {
             return false;
@@ -205,6 +220,7 @@ public class ServerGroup extends BaseDomainHelper implements Identifiable, SaltC
     /**
      * {@inheritDoc}
      */
+    @Override
     public String toString() {
         return new ToStringBuilder(this).append("id", getId()).
                                           append("name", getName()).

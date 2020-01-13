@@ -162,13 +162,14 @@ public class SystemManager extends BaseManager {
 
     /**
      * Takes a snapshot for servers given its server Ids by calling the snapshot_server stored proc.
-     * @param serverIds The server Ids of the servers to snapshot
+     * @param servers The servers to snapshot
      * @param reason The reason for the snapshotting.
      */
-    public static void snapshotServers(List<Long> serverIds, String reason) {
+    public static void snapshotServers(Collection<Server> servers, String reason) {
         if (!Config.get().getBoolean(ConfigDefaults.TAKE_SNAPSHOTS)) {
             return;
         }
+        List<Long> serverIds = servers.stream().map(Server::getId).collect(Collectors.toList());
         List<Long> snapshotteableServerIds = serversWithFeature(serverIds, "ftr_snapshotting");
 
         // If the server is null or doesn't have the snapshotting feature, don't bother.
@@ -190,7 +191,7 @@ public class SystemManager extends BaseManager {
      */
     public static void snapshotServer(Server server, String reason) {
         if (server != null) {
-            snapshotServers(Arrays.asList(server.getId()), reason);
+            snapshotServers(Arrays.asList(server), reason);
         }
     }
 
@@ -688,10 +689,8 @@ public class SystemManager extends BaseManager {
      * @param serverGroup The group to add the server to
      */
     public static void addServersToServerGroup(Collection<Server> servers, ServerGroup serverGroup) {
-        List<Long> serverIds = servers.stream().map(Server::getId).collect(Collectors.toList());
-
-        ServerFactory.addServersToGroup(serverIds, serverGroup);
-        snapshotServers(serverIds, "Group membership alteration");
+        ServerFactory.addServersToGroup(servers, serverGroup);
+        snapshotServers(servers, "Group membership alteration");
 
         if (FormulaFactory.hasMonitoringDataEnabled(serverGroup)) {
             for (Server server : servers) {
