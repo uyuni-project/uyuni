@@ -274,8 +274,28 @@ class MLLibmodAPI:
         return self
 
     # Functions
-    def _get_all_modules(self):
-        pass
+    def _get_list_modules(self) -> Dict[str, Dict]:
+        """
+        _get_all_modules -- lists all available modules.
+
+        :return: list of strings
+        :rtype: List[str]
+        """
+        modules: Dict = {
+            "modules": []
+        }
+        self._proc.index_modules()
+        for m_name in self._proc._mod_index.get_module_names():
+            mobj: Dict = {}
+            mod = self._proc._mod_index.get_module(m_name)
+            d_mod = mod.get_defaults()
+            if d_mod is not None:
+                mobj[m_name] = {
+                    "default": d_mod.get_default_stream(),
+                    "streams": d_mod.get_streams_with_default_profiles(),
+                }
+                modules["modules"].append(mobj)
+        return modules
 
     def _get_all_packages(self):
         self._proc.index_modules()
