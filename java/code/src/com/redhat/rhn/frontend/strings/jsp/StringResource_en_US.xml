@@ -6437,7 +6437,7 @@ organization. You may grant or remove the organization administrator role in the
       </trans-unit>
       <trans-unit id="deleteconfirm.jsp.satadmin.description">
         <source>Are you sure you would like to remove the "@@PRODUCT_NAME@@ Administrator" role from
-your own login? You will need to contact another satellite administrator to
+your own login? You will need to contact another @@PRODUCT_NAME@@ administrator to
 regain this role if you choose to remove it now.  You will no longer have access to the @@PRODUCT_NAME@@ configuration tools and
 organization management tools if you choose to remove this role from your login.
 </source>
@@ -7363,7 +7363,7 @@ on a @@PRODUCT_NAME@@.</source>
       </trans-unit>
       <trans-unit id="general.jsp.org.summary2">
         <source>Organizations are a way to place boundaries between sets of systems, system
-groups, software channels, subscriptions and entitlements, kickstart profiles,
+groups, software channels, autoinstallation profiles,
 activation keys, configuration channels and files, users - everything
 you manage using @@PRODUCT_NAME@@. Each organization is managed by at least one
 organization administrator, and the entire @@PRODUCT_NAME@@ is managed by a @@PRODUCT_NAME@@
@@ -7422,7 +7422,7 @@ the following tabs in the left navigation menu:</source>
         <source>Create and manage organizations on your @@PRODUCT_NAME@@. You can not view all of the
 users on the @@PRODUCT_NAME@@ here, but you can look up the users with organization
 administrator privileges in all of the organizations on your @@PRODUCT_NAME@@ and you
-may also assign or take away an organization administrator's satellite
+may also assign or take away an organization administrator's @@PRODUCT_NAME@@
 administrator privileges.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/config/Orgs.do</context>
@@ -7544,7 +7544,7 @@ administrator privileges.</source>
       </trans-unit>
       <trans-unit id="bootstrap.jsp.summary">
         <source> The following information will be used to generate bootstrap scripts. These bootstrap scripts can be used to configure a client to use this @@PRODUCT_NAME@@ to receive updates. Once the bootstrap scripts have been generated, they will be available from  &lt;a href="/pub/bootstrap"&gt;this server&lt;/a&gt;.&lt;br/&gt;&lt;br/&gt;
-Please note that some manual configuration of these scripts may still be required.  The bootstrap script can be found on the @@PRODUCT_NAME@@ Server's filesystem here: &lt;strong&gt;/var/www/html/pub/bootstrap&lt;/strong&gt;</source>
+Please note that some manual configuration of these scripts may still be required.  The bootstrap script can be found on the @@PRODUCT_NAME@@ Server's filesystem here: &lt;strong&gt;/srv/www/htdocs/pub/bootstrap&lt;/strong&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/config/BootstrapConfig.do</context>
         </context-group>
@@ -8209,7 +8209,7 @@ Please note that some manual configuration of these scripts may still be require
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.variable.jsp.summary">
-        <source>Kickstart variables can be used to substitute values into kickstart profiles.  To define a variable simply add 'name=value' to the box below.
+        <source>Autoinstallation variables can be used to substitute values into autoinstallation profiles.  To define a variable simply add 'name=value' to the box below.
                     You would then use $name within the profile to substitute in the value.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart</context>
@@ -8715,7 +8715,7 @@ Please note that some manual configuration of these scripts may still be require
       </trans-unit>
       <trans-unit id="kickstartdetails.jsp.virtTypeChangeWarning">
         <source>&lt;strong&gt;NOTE:&lt;/strong&gt; Changing the Virtualization Type may require changes to the
-            kickstart profile's bootloader and partition options, potentially overwriting user customizations.
+            autoinstallation profile's bootloader and partition options, potentially overwriting user customizations.
             Please visit the &lt;a href="/rhn/kickstart/KickstartPartitionEdit.do?ksid={0}"&gt;Partitioning&lt;/a&gt;
             tab to verify the new settings.</source>
         <context-group name="ctx">
@@ -9199,7 +9199,7 @@ Please note that some manual configuration of these scripts may still be require
         <source>
 You can refer to these keys and/or certificates in your kickstart profiles in order to install those keys/certificates on systems during a kickstart.
 A system will need the correct keys to install signed packages, and correct certificate to be kickstarted by an @@PRODUCT_NAME@@ Proxy Server or @@PRODUCT_NAME@@ Server.
-For more information, see the &lt;a href="/docs/installation/install-intro.html" target="_blank" &gt;Getting Started Guide&lt;/a&gt;</source>
+For more information, see the &lt;a href="/docs/reference/systems/autoinst-gpg-and-ssl-keys.html" target="_blank" &gt;Reference Guide&lt;/a&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/keys/CryptoKeysList.do</context>
         </context-group>
@@ -9334,7 +9334,7 @@ For more information, see the &lt;a href="/docs/installation/install-intro.html"
         <source>
         File preservation lists are lists of files that will be restored to a system during a particular kickstart.
         You can reference a file preservation list in a kickstart profile.
-        For more information refer to the &lt;a href="/docs/installation/install-intro.html" target="_blank" &gt;Getting Started Guide&lt;/a&gt;.
+        For more information refer to the &lt;a href="/docs/reference/systems/autoinst-file-preservation.html" target="_blank" &gt;Reference Guide&lt;/a&gt;.
         The following file preservation lists have been created for use by your organization:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/provisioning/preservation/PreservationList.do</context>
@@ -9607,11 +9607,11 @@ For more information, see the &lt;a href="/docs/installation/install-intro.html"
       <trans-unit id="kickstart.script.summary">
         <source>You can edit the pre and post scripts for this kickstart below.  Kickstart pre-scripts are run immediately after a kickstart file has been parsed on a system.
 You can access the network in this section, but you must use IP addresses (name service has not been configured at this point).  For more details on
-kickstart pre scripts, please refer to the &lt;strong&gt;Red Hat Enterprise Linux System Administration Guide.&lt;/strong&gt;
+kickstart pre scripts, please refer to the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/strong&gt;
 &lt;br/&gt;&lt;br/&gt;
 You can also edit the post script for this kickstart below.  First, commands related to @@PRODUCT_NAME@@ will automatically be performed (for example, system registration to @@PRODUCT_NAME@@).
 Next, the non-chroot post script will be executed, and finally the post script will be executed.  For more details on kickstart post scripts, please refer to
-the &lt;strong&gt;Red Hat Enterprise Linux System Administration Guide.&lt;/strong&gt;</source>
+the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/strong&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartScriptEdit.do</context>
         </context-group>
@@ -12569,7 +12569,7 @@ a file or files, or copy the latest version into a set of local overrides or int
       </trans-unit>
       <trans-unit id="targetsystems.jsp.descr">
         <source>The systems listed below are capable of being managed by @@PRODUCT_NAME@@ configuration management
-(meaning they have the required client software installed and have provisioning entitlements)
+(meaning they have the required client software installed)
 but are not subscribed to {0}.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/TargetSystems.do</context>
@@ -16286,13 +16286,13 @@ the &lt;a href="/rhn/kickstart/ActivationKeysList.do?ksid={0}"&gt;Activation Key
         </context-group>
       </trans-unit>
       <trans-unit id="treecreate.jsp.header1">
-        <source>The following details are needed to define a kickstartable distribution. The tree path field should be a valid path to an installation tree located on this @@PRODUCT_NAME@@  server. The Kickstart RPM should be the name of the rpm containing the kickstart deploy scripts. These RPMs are provided by @@PRODUCT_NAME@@ and located in the @@PRODUCT_NAME@@ Tools child channels.&lt;br/&gt;&lt;br/&gt;
+        <source>The following details are needed to define an autoinstallable distribution. The tree path field should be a valid path to an installation tree located on this @@PRODUCT_NAME@@ server.&lt;br/&gt;&lt;br/&gt;
 
 The Distribution Label field should contain only letters, numbers, hyphens, periods, and underscores. It must also be at least 4 characters long.&lt;br/&gt;&lt;br/&gt;
 
-The Tree Path, Kickstart RPM, Base Channel, and Installer Generation should always match. This generally means that the versions for each field should be from the same version of Red Hat Enterprise Linux.&lt;br/&gt;&lt;br/&gt;
+The Tree Path, Base Channel, and Installer Generation should always match. This generally means that the versions for each field should be from the same version of @@ENTERPRISE_LINUX_NAME@@.&lt;br/&gt;&lt;br/&gt;
 
-&lt;p&gt;The Tree Path must be a local disk path on your @@PRODUCT_NAME@@ server containing the entire kickstart tree for a distribution include kernel, initrd, and repo information, but excluding any rpms. This directory should be readable by the apache and tomcat users.  From within the specified tree path, a kernel should be available at "./images/pxeboot/vmlinuz" and an initrd image should be available at "./images/pxeboot/initrd.img". For instance, if you have media located on the @@PRODUCT_NAME@@ server at: &lt;i&gt;/var/distro-trees/rhel-5-server/&lt;/i&gt; you would specify that path as your Tree Path value which would check for a kernel and initrd here: &lt;i&gt;/var/distro-trees/rhel-5-server/images/pxeboot/&lt;/i&gt; &lt;/p&gt;
+&lt;p&gt;The Tree Path must be a local disk path on your @@PRODUCT_NAME@@ server containing the entire autoinstallable tree for a distribution including kernel, initrd, and repo information, but excluding any rpms. This directory should be readable by the apache and tomcat users.  If you have media located on the @@PRODUCT_NAME@@ server at: &lt;i&gt;/var/distro-trees/sles-11-server/&lt;/i&gt; you would specify that path as your Tree Path value. &lt;/p&gt;
 </source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/TreeCreate.do</context>
@@ -18679,9 +18679,9 @@ Below is a list of channels in your organization.
         </trans-unit>
         <trans-unit id="basesub.jsp.summary">
           <source>
-As a Channel Administrator, you may change the base channels your systems are subscribed to. Valid channels are either channels created by your organization, or the default Red Hat base channel for your operating system version and processor type. Systems will be unsubscribed from all channels, and subscribed to their new base channels.
+As a Channel Administrator, you may change the base channels your systems are subscribed to. Valid channels are either channels created by your organization, or the default @@VENDOR_NAME@@ base channel for your operating system version and processor type. Systems will be unsubscribed from all channels, and subscribed to their new base channels.
 &lt;p/&gt;
-&lt;strong&gt;This operation can have a dramatic effect on the packages and errata available to the systems, and should be used with caution.&lt;/strong&gt;
+&lt;strong&gt;This operation can have a dramatic effect on the packages and patches available to the systems, and should be used with caution.&lt;/strong&gt;
           </source>
           <context-group name="ctx">
             <context context-type="sourcefile">/rhn/channel/ssm/BaseChannelSubscribe.do</context>
@@ -19076,11 +19076,7 @@ given channel.</source>
         </context-group>
       </trans-unit>
       <trans-unit id="help.jsp.about.summary">
-        <source>
-        @@PRODUCT_NAME@@ allows administrators to efficiently manage the systems on their network.
-        Through a simple user interface, administrators can perform patch management, updates, and maintenance.
-        @@PRODUCT_NAME@@ provides advanced capabilities and the ability to get updates directly from Red Hat with even greater levels of security and reduced network bandwidth.
-        </source>
+        <source>@@PRODUCT_NAME@@ allows administrators to efficiently manage the systems on their network. Through a simple user interface, administrators can perform patch management, updates and maintenance. And because @@PRODUCT_NAME@@ is Web-based, it can be accessed from anywhere. @@PRODUCT_NAME@@ or Proxy server options provide advanced capabilities and the ability to get updates directly from SUSE with even greater levels of security and reduced network bandwidth.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/help/about</context>
         </context-group>
@@ -19200,7 +19196,7 @@ given channel.</source>
         <source>Unknown</source>
       </trans-unit>
       <trans-unit id="channel.jsp.package.remove">
-        <source>Below is the list of packages which you have selected to remove from this channel. Removing a package from this channel does not affect the systems which are subscribed to it, or the errata which are applicable to it.
+        <source>Below is the list of packages which you have selected to remove from this channel. Removing a package from this channel does not affect the systems which are subscribed to it, or the patches which are applicable to it.
         </source>
       </trans-unit>
       <trans-unit id="channel.jsp.details.title">
@@ -19266,7 +19262,7 @@ given channel.</source>
         <source>Confirm Package Addition</source>
       </trans-unit>
       <trans-unit id="channel.jsp.package.add.confirm.msg">
-        <source>Below is the list of packages which you have selected to add to this channel. Adding a package to this channel does not automatically affect the systems which are subscribed to it, or the errata which are applicable to it.
+        <source>Below is the list of packages which you have selected to add to this channel. Adding a package to this channel does not automatically affect the systems which are subscribed to it, or the patches which are applicable to it.
         </source>
       </trans-unit>
       <trans-unit id="channel.jsp.package.addtitle">
@@ -19756,8 +19752,8 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="channel.edit.jsp.checksumtip">
         <source>&lt;strong&gt; Tip:&lt;/strong&gt;
-          sha1 offers the widest compatibility with clients. sha-256 offers higher security,
-          but is compatible only with newer clients: Fedora 11 and newer, or Enterprise Linux 6 and newer.
+          sha1 offers the widest compatibility with clients. sha256 offers higher security,
+          but is compatible only with newer clients: Fedora 11 and newer, Red Hat Enterprise Linux 6 and newer or SLES11-SP1 and newer.
          </source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Edit.do</context>
@@ -19964,11 +19960,11 @@ given channel.</source>
       <trans-unit id="channel.delete.jsp.introparagraph">
         <source>Are you sure you wish to delete this channel? Packages in the channel will
            be removed from the channel, but will remain on the server. You will be
-           given the option to delete them after the channel has been deleted. Errata
+           given the option to delete them after the channel has been deleted. Patches
            related to the channel will no longer be related to the channel, and may be
            orphaned. If the channel has child channels, it cannot be deleted; the child
-           channels must be deleted first. If the channel has kickstart distributions
-           associated to it, it cannot be deleted; the kickstart distributions must be
+           channels must be deleted first. If the channel has autoinstallable distributions
+           associated to it, it cannot be deleted; the distributions must be
            dissociated from the channel or deleted first.
          </source>
         <context-group name="ctx">
@@ -20627,8 +20623,8 @@ given channel.</source>
         <source>Autoinstallation Not Found</source>
       </trans-unit>
       <trans-unit id="unknown.kickstart.message">
-        <source>The requested kickstart file could not be found.
-         If you are requesting an organizational default kickstart, ensure that a kickstart has been selected as the "Organization Default".</source>
+        <source>The requested autoinstallation file could not be found.
+         If you are requesting an organizational default autoinstallation, ensure that an autoinstallation has been selected as the "Organization Default".</source>
       </trans-unit>
       <trans-unit id="task.status.last.execution">
         <source>Last Execution Times</source>
@@ -20712,8 +20708,8 @@ given channel.</source>
         <source>Sync Patches</source>
       </trans-unit>
       <trans-unit id="channel.jsp.errata.sync.message">
-        <source>The following errata were cloned from errata that have since been updated.
-           This page will allow you to synchronize your cloned errata to that of its original.</source>
+        <source>The following patches were cloned from patches that have since been updated.
+		   This page will allow you to synchronize your cloned patches to that of its original.</source>
       </trans-unit>
       <trans-unit id="channel.jsp.errata.sync.note">
         <source>Packages that were omitted as part of the original cloning process will be included here.</source>
