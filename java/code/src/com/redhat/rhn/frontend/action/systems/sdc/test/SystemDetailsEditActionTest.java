@@ -46,6 +46,7 @@ public class SystemDetailsEditActionTest extends RhnPostMockStrutsTestCase {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setUp() throws Exception {
         super.setUp();
         setRequestPathInfo("/systems/details/Edit");
@@ -165,7 +166,7 @@ public class SystemDetailsEditActionTest extends RhnPostMockStrutsTestCase {
 
         addSubmitted();
         actionPerform();
-        s = (Server) TestUtils.reload(s);
+        s = TestUtils.reload(s);
         assertTrue(s.getAddOnEntitlements().contains(EntitlementManager.VIRTUALIZATION));
     }
 
@@ -173,7 +174,6 @@ public class SystemDetailsEditActionTest extends RhnPostMockStrutsTestCase {
         UserTestUtils.addManagement(user.getOrg());
         Long id = s.getId();
         String name = s.getName();
-        HibernateFactory.getSession().clear();
         SystemManager.removeAllServerEntitlements(s);
         s = ServerFactory.lookupById(id);
         assertTrue(s.getBaseEntitlement() == null);
@@ -194,7 +194,7 @@ public class SystemDetailsEditActionTest extends RhnPostMockStrutsTestCase {
                 "unentitle");
         addSubmitted();
         actionPerform();
-        s = (Server) TestUtils.reload(s);
+        s = TestUtils.reload(s);
 
         assertTrue("we shouldnt have a base entitlement", s.getBaseEntitlement() == null);
     }
