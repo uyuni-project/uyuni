@@ -297,13 +297,19 @@ class MLLibmodAPI:
                 modules["modules"].append(mobj)
         return modules
 
-    def _get_all_packages(self):
+    def _get_list_packages(self) -> Dict[str, List[str]]:
+        """
+        _get_list_packages -- lists all available packages for the module.
+
+        :return: list of packages within 'packages' element
+        :rtype: List[str]
+        """
         self._proc.index_modules()
-        rpms: List[Any] = []
+        rpms: Dict[str, List[str]] = {"packages": []}
         for name in self._proc._mod_index.get_module_names():
             module = self._proc._mod_index.get_module(name)
             for stream in module.get_all_streams():
-                rpms.extend(stream.get_rpm_artifacts())
+                rpms["packages"].extend(stream.get_rpm_artifacts())
         return rpms
 
     def _get_module_packages(self):
