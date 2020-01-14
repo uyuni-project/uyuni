@@ -52,7 +52,7 @@ Typical workflow for patches test:
 
 Examples:
 
-Take a look at this feature: ``features/trad_check_patches_install.feature``
+Take a look at this feature: ``features/secondary/trad_check_patches_install.feature``
 
 
 ## Build host
