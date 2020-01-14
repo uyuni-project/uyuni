@@ -190,27 +190,27 @@ Feature: Be able to manage XEN virtual machines via the GUI
     Then I should see a "Hosted Virtual Systems" text
     When I wait until I see "test-vm3" text
     And I wait until table row for "test-vm3" contains button "Stop"
-    And "test-vm3" virtual machine on "xen-server" should have 1024MB memory and 1 vcpus
-    And "test-vm3" virtual machine on "xen-server" should have 1 NIC using "test-net0" network
-    And "test-vm3" virtual machine on "xen-server" should have a "test-vm3_system.qcow2" xen disk
+    And "test-vm3" virtual machine on "xen_server" should have 1024MB memory and 1 vcpus
+    And "test-vm3" virtual machine on "xen_server" should have 1 NIC using "test-net0" network
+    And "test-vm3" virtual machine on "xen_server" should have a "test-vm3_system.qcow2" xen disk
 
 @virthost_xen
   Scenario: Show the virtual storage pools and volumes for Xen
-    Given I am on the "Virtualization" page of this "xen-server"
+    Given I am on the "Virtualization" page of this "xen_server"
     When I follow "Storage"
     And I open the sub-list of the product "default"
     Then I wait until I see "test-vm2_system.qcow2" text
 
 @virthost_xen
   Scenario: delete a running Xen virtual machine
-    Given I am on the "Virtualization" page of this "xen-server"
+    Given I am on the "Virtualization" page of this "xen_server"
     When I click on "Delete" in row "test-vm3"
     And I click on "Delete" in "Delete Guest" modal
-    Then I should not see a "test-vm3" virtual machine on "xen-server"
+    Then I should not see a "test-vm3" virtual machine on "xen_server"
 
 @virthost_xen
   Scenario: Cleanup: Unregister the Xen virtualization host
-    Given I am on the Systems overview page of this "xen-server"
+    Given I am on the Systems overview page of this "xen_server"
     When I follow "Delete System"
     And I should see a "Confirm System Profile Deletion" text
     And I click on "Delete Profile"
@@ -218,21 +218,21 @@ Feature: Be able to manage XEN virtual machines via the GUI
 
 @virthost_xen
   Scenario: Cleanup: Cleanup Xen virtualization host
-    When I run "zypper -n mr -e --all" on "xen-server" without error control
-    And I run "zypper -n rr SUSE-Manager-Bootstrap" on "xen-server" without error control
-    And I run "systemctl stop salt-minion" on "xen-server" without error control
-    And I run "rm /etc/salt/minion.d/susemanager*" on "xen-server" without error control
-    And I run "rm /etc/salt/minion.d/libvirt-events.conf" on "xen-server" without error control
-    And I run "rm /etc/salt/pki/minion/minion_master.pub" on "xen-server" without error control
+    When I run "zypper -n mr -e --all" on "xen_server" without error control
+    And I run "zypper -n rr SUSE-Manager-Bootstrap" on "xen_server" without error control
+    And I run "systemctl stop salt-minion" on "xen_server" without error control
+    And I run "rm /etc/salt/minion.d/susemanager*" on "xen_server" without error control
+    And I run "rm /etc/salt/minion.d/libvirt-events.conf" on "xen_server" without error control
+    And I run "rm /etc/salt/pki/minion/minion_master.pub" on "xen_server" without error control
     # In case the delete VM test failed we need to clean up ourselves.
-    And I run "virsh undefine --remove-all-storage test-vm" on "xen-server" without error control
-    And I run "virsh destroy test-vm2" on "xen-server" without error control
-    And I run "virsh undefine --remove-all-storage test-vm2" on "xen-server" without error control
-    And I run "virsh destroy test-vm3" on "xen-server" without error control
-    And I run "virsh undefine --remove-all-storage test-vm3" on "xen-server" without error control
-    And I delete test-net0 virtual network on "xen-server" without error control
-    And I delete test-net1 virtual network on "xen-server" without error control
-    And I delete test-pool0 virtual storage pool on "xen-server" without error control
-    And I delete all "test-vm.*" volumes from "default" pool on "xen-server" without error control
+    And I run "virsh undefine --remove-all-storage test-vm" on "xen_server" without error control
+    And I run "virsh destroy test-vm2" on "xen_server" without error control
+    And I run "virsh undefine --remove-all-storage test-vm2" on "xen_server" without error control
+    And I run "virsh destroy test-vm3" on "xen_server" without error control
+    And I run "virsh undefine --remove-all-storage test-vm3" on "xen_server" without error control
+    And I delete test-net0 virtual network on "xen_server" without error control
+    And I delete test-net1 virtual network on "xen_server" without error control
+    And I delete test-pool0 virtual storage pool on "xen_server" without error control
+    And I delete all "test-vm.*" volumes from "default" pool on "xen_server" without error control
     # Remove the virtpoller cache to avoid problems
-    And I run "rm /var/cache/virt_state.cache" on "xen-server" without error control
+    And I run "rm /var/cache/virt_state.cache" on "xen_server" without error control
