@@ -1,4 +1,4 @@
-# Copyright 2017-2019 SUSE LLC
+# Copyright 2017-2020 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 Feature: Organization credentials in the Setup Wizard
@@ -8,7 +8,6 @@ Feature: Organization credentials in the Setup Wizard
     Given I am on the Admin page
     When I follow "Organization Credentials" in the content area
     And I enter the SCC credentials
-    And I click on "Save"
 
 @no_mirror
   Scenario: Create some organization credentials

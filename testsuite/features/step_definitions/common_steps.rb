@@ -993,6 +993,7 @@ When(/^I enter the SCC credentials$/) do
       When I want to add a new credential
       And I enter "#{scc_username}" as "edit-user"
       And I enter "#{scc_password}" as "edit-password"
+      And I click on "Save"
     )
   end
 end
