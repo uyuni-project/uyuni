@@ -8,7 +8,7 @@ SAVE = False
 
 skip = ["emptyspace.jsp"]
 idpattern = re.compile('id="([^"]+)"')
-sourcepattern = re.compile(r"<source>.*</source>")
+sourcepattern = re.compile(r"<source>.*</source>", re.S)
 
 def getid(line):
     try:
@@ -45,6 +45,8 @@ def align(orig, translation):
         for tline in t:
             if not currentid and "trans-unit" in tline:
                 currentid = getid(tline)
+            elif currentid and "<source>" in tline and "</source>" in tline:
+                source += tline
             elif currentid and "<source>" in tline:
                 source += tline
                 insource = True
@@ -64,6 +66,8 @@ def align(orig, translation):
                 currentid = None
             elif currentid:
                 node += tline
+                if insource:
+                    source += tline
             elif "target-language" in tline:
                 for n, item in enumerate(newfile):
                     if isinstance(item, str) and "source-language" in item:

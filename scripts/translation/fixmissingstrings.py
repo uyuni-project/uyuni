@@ -8,7 +8,7 @@ SAVE = False
 
 skip = ["emptyspace.jsp"]
 idpattern = re.compile('id="([^"]+)"')
-sourcepattern = re.compile(r"<source>.*</source>")
+sourcepattern = re.compile(r"<source>.*</source>", re.S)
 
 def getid(line):
     try:
@@ -32,6 +32,9 @@ def align(orig, translation):
                 currentid = getid(oline)
                 print("id: {0}".format(currentid))
                 node += oline
+            elif currentid and "<source>" in oline and "</source>" in oline:
+                source += oline
+                node += oline
             elif currentid and "<source>" in oline:
                 source += oline
                 node += oline
@@ -48,6 +51,8 @@ def align(orig, translation):
                 source = ""
             elif currentid:
                 node += oline
+                if insource:
+                    source += oline
             else:
                 newfile.append(oline)
     with open(translation) as t:
