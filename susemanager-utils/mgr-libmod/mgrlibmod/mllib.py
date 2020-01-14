@@ -146,7 +146,7 @@ class MLLibmodProc:
 
     def get_actual_stream(self, name: str):
         if name == "platform":
-            return "e18"
+            return "el8"
         if name not in self._enabled_stream_modules:
             return self.get_default_stream(name)
         return self._enabled_stream_modules[name].get_stream_name()
