@@ -464,6 +464,12 @@
         </context-group>
         <target>தடங்கள்</target>
       </trans-unit>
+      <trans-unit id="Channel List">
+        <source>Channel List</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Navigation Menu</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="Client Configuration">
         <source>Client Configuration</source>
         <context-group name="ctx">
@@ -484,7 +490,7 @@
         </context-group>
       </trans-unit>
       <trans-unit id="Clone Errata">
-        <source>Clone Errata</source>
+        <source>Clone Patches</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
@@ -532,6 +538,18 @@
         </context-group>
         <target>விவரங்கள்</target>
       </trans-unit>
+      <trans-unit id="Guests">
+        <source>Guests</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Navigation Menu</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="Storage">
+        <source>Storage</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Navigation Menu</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="digits">
         <source>0 1 2 3 4 5 6 7 8 9</source>
         <context-group name="ctx">
@@ -556,7 +574,7 @@
         <target>இந்த முகவரியை திருத்தவும்</target>
       </trans-unit>
       <trans-unit id="Errata">
-        <source>Errata</source>
+        <source>Patches</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
@@ -618,6 +636,12 @@
         </context-group>
         <target>உதவி</target>
       </trans-unit>
+      <trans-unit id="Documentation_version">
+        <source>Documentation {0}</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Navigation Menu</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="Inactive">
         <source>Inactive</source>
         <context-group name="ctx">
@@ -639,7 +663,7 @@
         <target>IP வரைமுறைகள்</target>
       </trans-unit>
       <trans-unit id="Kickstart">
-        <source>Kickstart</source>
+        <source>Autoinstallation</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
@@ -659,7 +683,7 @@
         <target>புகுபதிவு/கடவுச்சொல்லை பார்க்கவும்</target>
       </trans-unit>
       <trans-unit id="Manage Errata">
-        <source>Manage Errata</source>
+        <source>Manage Patches</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
@@ -672,19 +696,11 @@
         </context-group>
         <target>மேலாண்மை</target>
       </trans-unit>
-      <trans-unit id="Manage Software Channels">
-        <source>Manage Software Channels</source>
+      <trans-unit id="Manage">
+        <source>Manage</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>மென்பொருள் தடங்களை மேலாண்மை செய்யவும்</target>
-      </trans-unit>
-      <trans-unit id="Manage Software Packages">
-        <source>Manage Software Packages</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">Navigation Menu</context>
-        </context-group>
-        <target>மென்பொருள் தொகுப்புகளை மேலாண்மை செய்யவும்</target>
       </trans-unit>
       <trans-unit id="Manage Repositories">
         <source>Manage Repositories</source>
@@ -813,7 +829,7 @@
         <target>விவரக்குறிப்புகள்</target>
       </trans-unit>
       <trans-unit id="Proxy Guide">
-        <source>Proxy Guide</source>
+        <source>Proxy Quick Start</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
@@ -826,12 +842,17 @@
         </context-group>
         <target>பதிலாள்</target>
       </trans-unit>
-      <trans-unit id="Proxy Release Notes">
-        <source>Proxy Release Notes</source>
+      <trans-unit id="product_proxy">
+        <source>@@PRODUCT_NAME@@ Proxy</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>பதிலாள் வெளியீட்டு அறிக்கை</target>
+      </trans-unit>
+      <trans-unit id="product_server">
+        <source>@@PRODUCT_NAME@@ Server</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Navigation Menu</context>
+        </context-group>
       </trans-unit>
       <trans-unit id="Published">
         <source>Published</source>
@@ -853,12 +874,6 @@
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
         <target>நிறுவன நிர்வாகிகள்</target>
-      </trans-unit>
-      <trans-unit id="Custom States">
-        <source>Custom States</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">Navigation Menu</context>
-        </context-group>
       </trans-unit>
       <trans-unit id="Quota">
         <source>Quota</source>
@@ -977,7 +992,7 @@
         <target>சந்தா</target>
       </trans-unit>
       <trans-unit id="System Entitlements">
-        <source>System Entitlements</source>
+        <source>System Types</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
@@ -1004,6 +1019,12 @@
         </context-group>
         <target>கணினிகள்</target>
       </trans-unit>
+      <trans-unit id="System List">
+        <source>System List</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Navigation Menu</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="Task Schedules">
         <source>Task Schedules</source>
         <context-group name="ctx">
@@ -1016,6 +1037,18 @@
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
         <target>பணி இயந்திர நிலை</target>
+      </trans-unit>
+      <trans-unit id="Last Execution Times">
+        <source>Last Execution Times</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Navigation Menu</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="Runtime Status">
+        <source>Runtime Status</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Navigation Menu</context>
+        </context-group>
       </trans-unit>
       <trans-unit id="Show Tomcat Logs">
         <source>Show Tomcat Logs</source>
@@ -1072,7 +1105,7 @@
         <target>வெளியிடப்படாதது</target>
       </trans-unit>
       <trans-unit id="Unentitled">
-        <source>Unentitled</source>
+        <source>Without System Type</source>
         <context-group name="ctx">
           <context context-type="sourcefile">rhn/systems/SystemList</context>
           <context context-type="sourcefile">
@@ -1189,14 +1222,14 @@
         <target>நீங்கள் உங்களை அழிக்க முடியாது.</target>
       </trans-unit>
       <trans-unit id="user.satadmin.remove">
-        <source>Removed Satellite Administrator role from {0}</source>
+        <source>Removed SUSE Manager Administrator role from {0}</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/Users</context>
         </context-group>
         <target>சேட்டிலைட் நிர்வாகி</target>
       </trans-unit>
       <trans-unit id="user.satadmin.add">
-        <source>Added Satellite Administrator role to {0}</source>
+        <source>Added SUSE Manager Administrator role to {0}</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/Users</context>
         </context-group>
@@ -1210,7 +1243,7 @@
         <target>நீங்கள் வேறு நிறுவன நிர்வாகியை அழிக்க முடியாது. அவர்களுடைய கணக்கினை அழிக்கும் முன்,  இந்தப் பயனருடைய நிறுவன நிர்வாகி பதவியை நீக்கவும்.</target>
       </trans-unit>
       <trans-unit id="user.cannot.delete.last.sat.admin">
-        <source>Cannot delete the last remaining satellite administrator.</source>
+        <source>Cannot delete the last remaining SUSE Manager administrator.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/DeleteUser</context>
         </context-group>
@@ -1252,27 +1285,37 @@
         <target>WEB TRACEBACK from </target>
       </trans-unit>
       <trans-unit id="taskomatic notif subject">
-        <source>RHN TASKOMATIC NOTIFICATION</source>
+        <source>SUSE MANAGER TASKOMATIC NOTIFICATION</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Traceback Email Notifications</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="Your Account">
-        <source>Your Account</source>
+      <trans-unit id="Notification Messages">
+        <source>Notification Messages</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>உங்கள் கணக்கு</target>
       </trans-unit>
-      <trans-unit id="Your Preferences">
-        <source>Your Preferences</source>
+      <trans-unit id="User Account">
+        <source>User Account</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>உங்கள் முன்னுரிமைகள்</target>
       </trans-unit>
-      <trans-unit id="Your Organization">
-        <source>Your Organization</source>
+      <trans-unit id="My Account">
+        <source>My Account</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Navigation Menu</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="My Preferences">
+        <source>My Preferences</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Navigation Menu</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="My Organization">
+        <source>My Organization</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
@@ -1360,6 +1403,12 @@
           <context context-type="sourcefile">/rhn/users/CreateUser</context>
         </context-group>
         <target>கடவுச்சொல்லை உறுதிப்படுத்தல்</target>
+      </trans-unit>
+      <trans-unit id="error.unsupported_db">
+        <source>Running postgresql {0} is not supported. Minimal required version is {1}.</source>
+      </trans-unit>
+      <trans-unit id="error.unsupported_db_on_os">
+        <source>Running postgresql {0} on {1} is not supported. Please migrate to postgresql {2}.</source>
       </trans-unit>
       <trans-unit id="error.invalid_login">
         <source>Either the password or username is incorrect.</source>
@@ -1706,7 +1755,7 @@
         <target>அனுமதிகள் மேம்படுத்தப்பட்டன</target>
       </trans-unit>
       <trans-unit id="message.refeshScheduled">
-        <source>You have successfully scheduled a hardware profile refresh for {0}.</source>
+        <source>You have successfully &lt;a href="/rhn/systems/details/history/Pending.do?sid={1}"&gt;scheduled&lt;/a&gt; a hardware profile refresh for &lt;strong&gt;{0}&lt;/strong&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/AssignedSystemGroups</context>
         </context-group>
@@ -1960,7 +2009,7 @@
         <target>தொகுப்பு நீக்குதல்</target>
       </trans-unit>
       <trans-unit id="errata.update">
-        <source>Errata Update</source>
+        <source>Patch Update</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
         </context-group>
@@ -2055,6 +2104,9 @@
         </context-group>
         <target>கட்டமைப்பு கோப்புகளை கணினியிலிருந்து வரிசைப்படுத்தவும்</target>
       </trans-unit>
+      <trans-unit id="configfiles.deployed">
+        <source>Files successfully deployed</source>
+      </trans-unit>
       <trans-unit id="configfiles.verify">
         <source>Verify deployed config files</source>
         <context-group name="ctx">
@@ -2068,6 +2120,9 @@
           <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
         </context-group>
         <target>விவரக்குறிப்பு கட்டமை கோப்புகளுக்கும் வரிசைப்படுத்தப்பட்ட கட்டமை கோப்புகளுக்கும் இடையேயுள்ள வேறுபாட்டினை காட்டவும்</target>
+      </trans-unit>
+      <trans-unit id="configfiles.diffed">
+        <source>Files successfully compared</source>
       </trans-unit>
       <trans-unit id="config.actionnote">
         <source>&lt;a href="{0}"&gt;Revision {1}&lt;/a&gt; of {2} from &lt;a href="{3}"&gt;{4}&lt;/a&gt;</source>
@@ -2160,41 +2215,41 @@ and try again.
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.initiate">
-        <source>Initiate a kickstart</source>
+        <source>Initiate an autoinstallation</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
         </context-group>
         <target>கிக்ஸ்டார்டை ஆரம்பிக்கவும்</target>
       </trans-unit>
       <trans-unit id="kickstart_guest.initiate">
-        <source>Initiate a kickstart of a guest system</source>
+        <source>Initiate an autoinstallation of a guest system</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
         </context-group>
         <target>ஒரு விருந்தினர் கணினியின் கிக்ஸ்டார்டை ஆரம்பிக்கவும்</target>
       </trans-unit>
       <trans-unit id="kickstart.schedule_sync">
-        <source>Schedule a package sync for kickstarts</source>
+        <source>Schedule a package sync for autoinstallations</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
         </context-group>
         <target>கிக்ஸ்டார்ட்க்கு தொகுப்பு ஒருங்கிணைப்பினை திட்டமிடவும்</target>
       </trans-unit>
       <trans-unit id="kickstart.error.invalidlabel">
-        <source>Your selected kickstart label is invalid, it must be at least {0} characters and only contain the following characters : A-Z, a-z, 0-9, _, - </source>
+        <source>Your selected autoinstallation label is invalid, it must be at least {0} characters and only contain the following characters : A-Z, a-z, 0-9, _, - </source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartDetailsEdit</context>
         </context-group>
         <target>நீங்கள் தேர்ந்தெடுத்த கிக்ஸ்டார்ட் லேபிள் தவறானது, அது {0} எழுத்துக்களை கொண்டிருக்க வேண்டும் மற்றும் பின்வரும் எழுத்துக்களை கொண்டிருக்க வேண்டும் : A-Z, a-z, 0-9, _, - </target>
       </trans-unit>
       <trans-unit id="kickstart.error.labelexists">
-        <source>Kickstart label already exists: '{0}'. Please choose a unique kickstart label.</source>
+        <source>Autoinstallation label already exists: '{0}'. Please choose a unique kickstart label.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartDetailsEdit</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.details.success">
-        <source>Kickstart details successfully updated.</source>
+        <source>Autoinstallation details successfully updated.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartDetailsEdit</context>
         </context-group>
@@ -2207,14 +2262,14 @@ and try again.
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.details.nolabel">
-        <source>Kickstart profile label is required.</source>
+        <source>Autoinstallation profile label is required.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartDetailsEdit</context>
         </context-group>
         <target>கிக்ஸ்டார்ட் விவரக்குறிப்பு அடையாளம் தேவைப்படுகிறது.</target>
       </trans-unit>
       <trans-unit id="kickstart.delete.success">
-        <source>Kickstart was deleted successfully.</source>
+        <source>Autoinstallation was deleted successfully.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartDeleteSubmit</context>
         </context-group>
@@ -2241,7 +2296,7 @@ and try again.
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.iprange_add.success">
-        <source>Successfully added IP Range to Kickstart Profile {0}</source>
+        <source>Successfully added IP Range to Autoinstallation Profile {0}</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartIpRangeEdit</context>
         </context-group>
@@ -2262,35 +2317,35 @@ and try again.
         <target>பிழை ஐபி வரையறை மதிப்பு 0 க்கும் 255 க்கும் இடையே இருக்க வேண்டும். நீங்கள் உள்ளீட்ட ஐபி வரையறையை பார்த்து மீண்டும் உள்ளிடவும்.</target>
       </trans-unit>
       <trans-unit id="kickstart.iprange_delete.success">
-        <source>Successfully deleted IP Range from Kickstart Profile {0}</source>
+        <source>Successfully deleted IP Range from Autoinstallation Profile {0}</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartIpRangeEdit</context>
         </context-group>
         <target>கிக் ஸ்டார்ட் விவரக்குறிப்பிலிருந்து {0} ஐபி வரையறை வெற்றிகரமாக அழிக்கப்பட்டது</target>
       </trans-unit>
       <trans-unit id="kickstart.iprange_delete.failure">
-        <source>There was an error deleting the IP Range from Kickstart Profile {0}. Please try again.</source>
+        <source>There was an error deleting the IP Range from Autoinstallation Profile {0}. Please try again.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartIpRangeEdit</context>
         </context-group>
         <target>கிக்ஸ்டார்ட் விவரக்குறிப்பு {0} வில் ஐபி வரையறையை அழிப்பதில் பிழை ஏற்பட்டுள்ளது. மீண்டும் முயற்சி செய்யவும்.</target>
       </trans-unit>
       <trans-unit id="cobblersnippet.update.success">
-        <source>Kickstart snippet &lt;strong&gt;{0}&lt;/strong&gt; updated successfully.</source>
+        <source>Autoinstallation snippet &lt;strong&gt;{0}&lt;/strong&gt; updated successfully.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/cobbler/CobblerSnippetCreate</context>
         </context-group>
         <target>கிக்ஸ்டார்ட் ஸ்னிப்பெட் &lt;strong&gt;{0}&lt;/strong&gt; வெற்றிகரமாக மேம்படுத்தப்பட்டது.</target>
       </trans-unit>
       <trans-unit id="cobblersnippet.create.success">
-        <source>Kickstart snippet &lt;strong&gt;{0}&lt;/strong&gt; created successfully.</source>
+        <source>Autoinstallation snippet &lt;strong&gt;{0}&lt;/strong&gt; created successfully.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/keys/CryptoKeyDelete</context>
         </context-group>
         <target>கிக்ஸ்டார்ட் ஸ்னிப்பெட் &lt;strong&gt;{0}&lt;/strong&gt; வெற்றிகரமாக உருவாக்கப்பட்டது.</target>
       </trans-unit>
       <trans-unit id="cobblersnippet.delete.success">
-        <source>Kickstart snippet &lt;strong&gt;{0}&lt;/strong&gt; deleted successfully.</source>
+        <source>Autoinstallation snippet &lt;strong&gt;{0}&lt;/strong&gt; deleted successfully.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/keys/CryptoKeyDelete</context>
         </context-group>
@@ -2311,14 +2366,14 @@ and try again.
         <target>&lt;strong&gt;{0}&lt;/strong&gt; ஆனது &lt;strong&gt;{1}&lt;/strong&gt; ஆக மறுபெயரிட்ட போது பிழை ஏற்பட்டது.ு கொள்ளவும்.</target>
       </trans-unit>
       <trans-unit id="cobbler.snippet.filenameexists.message">
-        <source>Kickstart snippet with the name &lt;strong&gt;{0}&lt;/strong&gt; already exists.</source>
+        <source>Snippet with the name &lt;strong&gt;{0}&lt;/strong&gt; already exists.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart Profile Details pages.</context>
         </context-group>
         <target>கிக்ஸ்டார்ட் ஸ்னெப்பெடின் &lt;strong&gt;{0}&lt;/strong&gt; அந்த பெயர் ஏற்கனவே உள்ளது.</target>
       </trans-unit>
       <trans-unit id="cobbler.snippet.invalidfilename.message">
-        <source>The requested kickstart snippet filename is not valid. The kickstart snippet file name cannot contain slash (/), quote ("), ampersand (&amp;), or begin with a period(.)</source>
+        <source>The requested snippet filename is not valid. The kickstart snippet file name cannot contain slash (/) or  begin with a period(.)</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart Profile Details pages.</context>
         </context-group>
@@ -2337,7 +2392,7 @@ and try again.
         <target>சினெப்பட்டை அழிக்கவும்</target>
       </trans-unit>
       <trans-unit id="kickstart.iprange.url">
-        <source>New systems can be kickstarted based upon their ip address by appending &lt;code&gt;{0}&lt;/code&gt; to the kernel parameters for a kickstart install.</source>
+        <source>New systems can be autoinstalled based upon their ip address by appending &lt;code&gt;{0}&lt;/code&gt; to the kernel parameters for an autoinstallation.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartIpRangeEdit</context>
         </context-group>
@@ -2454,7 +2509,7 @@ and try again.
         <target>&lt;a href=&quot;/rhn/schedule/CompletedSystems.do?aid={0}&quot;&gt;&lt;strong&gt;{1} கணினிகள்&lt;/a&gt;&lt;/strong&gt; வெற்றிகரமாக இந்த செயலை முடித்தன.&lt;br/&gt;&lt;br/&gt;</target>
       </trans-unit>
       <trans-unit id="action.name">
-        <source>Errata Update: {0} - {1}</source>
+        <source>Patch Update: {0} - {1}</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/details/ErrataConfirm.do</context>
           <context context-type="paramnotes">Errata Update: RHSA-2004:577 - Security Advisory</context>
@@ -2462,35 +2517,35 @@ and try again.
         <target>பிழைத்திருத்த மேம்பாடு: {0} - {1}</target>
       </trans-unit>
       <trans-unit id="errata.swstack">
-        <source>Errata Update: Combined update for the software update stack ({0} errata)</source>
+        <source>Patch Update: Combined update for the software update stack ({0} patches)</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/details/ErrataConfirm.do</context>
           <context context-type="paramnotes">Errata Update: combined software stack update (4 errata)</context>
         </context-group>
       </trans-unit>
       <trans-unit id="errata.schedule">
-        <source>&lt;strong&gt;{0}&lt;/strong&gt; errata update has been &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;scheduled&lt;/a&gt; for &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{1}&lt;/a&gt;.</source>
+        <source>&lt;strong&gt;{0}&lt;/strong&gt; patch update has been &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;scheduled&lt;/a&gt; for &lt;a href="/rhn/systems/details/Overview.do?sid={2}&quot;&gt;{1}&lt;/a&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/ErrataConfirm.do</context>
           <context context-type="paramnotes">1 errata update has been scheduled for workstation.</context>
         </context-group>
       </trans-unit>
       <trans-unit id="errata.schedule.plural">
-        <source>&lt;strong&gt;{0}&lt;/strong&gt; errata updates have been &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;scheduled&lt;/a&gt; for &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{1}&lt;/a&gt;.</source>
+        <source>&lt;strong&gt;{0}&lt;/strong&gt; patch updates have been &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;scheduled&lt;/a&gt; for &lt;a href="/rhn/systems/details/Overview.do?sid={2}&quot;&gt;{1}&lt;/a&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/ErrataConfirm.do</context>
           <context context-type="paramnotes">43 errata updates have been scheduled for workstation.</context>
         </context-group>
       </trans-unit>
       <trans-unit id="errataconfirm.schedule">
-        <source>Errata &lt;a href="/rhn/errata/details/Details.do?eid={2}"&gt;{0}&lt;/a&gt; has been &lt;a href="/rhn/schedule/ActionDetails.do?aid={3}"&gt;scheduled&lt;/a&gt; for &lt;strong&gt;{1}&lt;/strong&gt; system</source>
+        <source>Patch &lt;a href="/rhn/errata/details/Details.do?eid={2}&quot;&gt;{0}&lt;/a&gt; has been &lt;a href="/rhn/schedule/ActionDetails.do?aid={3}"&gt;scheduled&lt;/a&gt; for &lt;strong&gt;{1}&lt;/strong&gt; system</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/details/ErrataConfirm.do</context>
           <context context-type="paramnotes">Errata RHSA-2004:597-06 has been scheduled for 1 system</context>
         </context-group>
       </trans-unit>
       <trans-unit id="errataconfirm.schedule.plural">
-        <source>Errata &lt;a href="/rhn/errata/details/Details.do?eid={2}"&gt;{0}&lt;/a&gt; has been &lt;a href="/rhn/schedule/ActionDetails.do?aid={3}"&gt;scheduled&lt;/a&gt; for &lt;strong&gt;{1}&lt;/strong&gt; systems</source>
+        <source>Patch &lt;a href="/rhn/errata/details/Details.do?eid={2}&quot;&gt;{0}&lt;/a&gt; has been &lt;a href="/rhn/schedule/ActionDetails.do?aid={3}"&gt;scheduled&lt;/a&gt; for &lt;strong&gt;{1}&lt;/strong&gt; systems</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/details/ErrataConfirm.do</context>
           <context context-type="paramnotes">Errata RHSA-2004:597-06 has been scheduled for 3 systems</context>
@@ -2663,7 +2718,7 @@ and try again.
         </context-group>
       </trans-unit>
       <trans-unit id="toolbar.upload.kickstart">
-        <source>Upload Kickstart File</source>
+        <source>Upload Kickstart/Autoyast File</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserList</context>
         </context-group>
@@ -2675,13 +2730,13 @@ and try again.
         </context-group>
       </trans-unit>
       <trans-unit id="toolbar.create.kickstartdata">
-        <source>Create Kickstart</source>
+        <source>Create Autoinstallation</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserList</context>
         </context-group>
       </trans-unit>
       <trans-unit id="toolbar.clone.kickstart">
-        <source>Clone Kickstart</source>
+        <source>Clone Autoinstallation</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserList</context>
         </context-group>
@@ -2699,7 +2754,7 @@ and try again.
         </context-group>
       </trans-unit>
       <trans-unit id="toolbar.create.erratum">
-        <source>Create Erratum</source>
+        <source>Create Patch</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/UnpublishedErrata</context>
           <context context-type="sourcefile">/rhn/errata/PublishedErrata</context>
@@ -2730,7 +2785,7 @@ and try again.
         </context-group>
       </trans-unit>
       <trans-unit id="toolbar.delete.erratum">
-        <source>Delete Erratum</source>
+        <source>Delete Patch</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Errata details pages</context>
         </context-group>
@@ -2754,13 +2809,13 @@ and try again.
         </context-group>
       </trans-unit>
       <trans-unit id="toolbar.delete.errata">
-        <source>Delete Errata</source>
+        <source>Delete Patch</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Errata edit page</context>
         </context-group>
       </trans-unit>
       <trans-unit id="toolbar.delete.kickstart">
-        <source>Delete Kickstart</source>
+        <source>Delete Autoinstallation</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart profile pages</context>
         </context-group>
@@ -3198,8 +3253,8 @@ and try again.
         </context-group>
         <target>இடம்</target>
       </trans-unit>
-      <trans-unit id="systemsearch_location_country">
-        <source>Country</source>
+      <trans-unit id="systemsearch_location_country_code">
+        <source>Country Code</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/Search</context>
         </context-group>
@@ -3355,7 +3410,7 @@ user before attempting to deactivate their account.</source>
         <target>{0} பயனர்கள் வெற்றிகரமாக மீண்டும் செயல்படுத்தப்பட்டனர்</target>
       </trans-unit>
       <trans-unit id="errata.applynone">
-        <source>No errata selected.</source>
+        <source>No patches selected.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/ErrataList</context>
         </context-group>
@@ -3571,15 +3626,8 @@ user before attempting to deactivate their account.</source>
         </context-group>
         <target>நடப்பு @@PRODUCT_NAME@@ நேரம்:</target>
       </trans-unit>
-      <trans-unit id="timetag.expected">
-        <source>Expected check-in time:</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/details/ErrataConfirm</context>
-        </context-group>
-        <target>எதிர்பார்க்கப்பட்ட உட்புகும் நேரம்</target>
-      </trans-unit>
       <trans-unit id="timetag.awol">
-        <source>&lt;strong&gt;NOTE:&lt;/strong&gt; This system has not checked into the @@PRODUCT_NAME@@ recently.  Since a system cannot be updated if it does not check in to @@PRODUCT_NAME@@, it is unlikely that this action will succeed.&lt;br/&gt;&lt;br/&gt; Please check the system and ensure rhnsd is running.</source>
+        <source>&lt;strong&gt;NOTE:&lt;/strong&gt; This system has not checked into the @@PRODUCT_NAME@@ recently. Since a system cannot be updated if it does not check in to @@PRODUCT_NAME@@, it is unlikely that this action will succeed.&lt;br/&gt;&lt;br/&gt; Please check the system logs.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/ErrataConfirm</context>
         </context-group>
@@ -3726,7 +3774,7 @@ user before attempting to deactivate their account.</source>
         <target>{0} {1}</target>
       </trans-unit>
       <trans-unit id="message.packagerefresh">
-        <source>You have successfully scheduled a &lt;a href="/rhn/schedule/ActionDetails.do?aid={0}"&gt;package profile refresh&lt;/a&gt; for &lt;a href="/rhn/systems/details/Overview.do?sid={1}"&gt;{2}&lt;/a&gt;.</source>
+        <source>You have successfully scheduled a &lt;a href="/rhn/systems/details/history/Pending.do?sid={1}"&gt;package profile refresh&lt;/a&gt; for &lt;a href="/rhn/systems/details/Overview.do?sid={1}"&gt;{2}&lt;/a&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/details/UpgradeConfirm.do</context>
           <context context-type="paramnotes">You have successfully scheduled a package profile refresh
@@ -3812,7 +3860,7 @@ user before attempting to deactivate their account.</source>
         <target>ஒரு தொகுப்பு விவரக்குறிப்பினை உருவாக்கும் முன் கணினி ஒரு அடிப்படை தடத்துடன் சந்தாவாக்கப்பட வேண்டும்.</target>
       </trans-unit>
       <trans-unit id="erratum.delete">
-        <source>Deleted errata &lt;strong&gt;{0}&lt;/strong&gt;.</source>
+        <source>Deleted patches &lt;strong&gt;{0}&lt;/strong&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/Delete</context>
         </context-group>
@@ -5797,7 +5845,7 @@ user before attempting to deactivate their account.</source>
         <target>மறுதுவக்கம்</target>
       </trans-unit>
       <trans-unit id="message.firstusercreated">
-        <source>You have created your first user for the @@PRODUCT_NAME@@ Service.  Additional configuration should be finalized by &lt;a href="/rhn/admin/config/GeneralConfig.do"&gt;&lt;strong&gt;clicking here&lt;/strong&gt;&lt;/a&gt;</source>
+        <source>You have just created your first @@PRODUCT_NAME@@ user. To finalize your installation please use the &lt;a href="/rhn/admin/setup/ProxySettings.do"&gt;Setup Wizard&lt;/a&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
@@ -5888,14 +5936,14 @@ user before attempting to deactivate their account.</source>
         <target>பூட்ஸ்க்ராப் உரை வெற்றிகரமாக உருவாக்கப்பட்டது.  நீங்கள் &lt;a href=&quot;{0}/pub/bootstrap/&quot;&gt;{0}/pub/bootstrap/&lt;/a&gt;ல் அணுகலாம்</target>
       </trans-unit>
       <trans-unit id="restart.config.error">
-        <source>There was an error restarting the satellite.  It can be manually restarted from the console by issuing the command: /usr/sbin/service rhn-satellite restart.  Please contact support for more information.</source>
+        <source>There was an error restarting the @@PRODUCT_NAME@@.  It can be manually restarted from the console by issuing the command: &lt;strong&gt;/usr/sbin/spacewalk-service restart&lt;/strong&gt;.  Please contact support for more information.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/config/Restart.do</context>
         </context-group>
         <target>சேட்டிலைட்டை மீண்டும் தொடங்குவதில் பிழை. அது பின்வரும் கட்டளையை கொடுப்பதன் மூலம் கைமுறையாக மீண்டும் தொடங்கப்படும்: /usr/sbin/service rhn-satellite restart.  கூடுதல் விவரங்களுக்கு உதவி மையத்தை தொடர்பு கொள்ளவும்.</target>
       </trans-unit>
       <trans-unit id="config.storeconfig.error">
-        <source>An error occurred and your satellite configuration changes could not be stored. Please contact support for more information</source>
+        <source>An error occurred and your @@PRODUCT_NAME@@ configuration changes could not be stored. Please contact support for more information</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/config/GeneralConfig.do</context>
         </context-group>
@@ -5951,7 +5999,7 @@ user before attempting to deactivate their account.</source>
         <target>SSL</target>
       </trans-unit>
       <trans-unit id="crypto.key.nokey">
-        <source>No GPL/SSL key content was provided.</source>
+        <source>No file contents found. Please select a proper key file from your local machine to upload.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/keys/CryptoKeysCreate.do</context>
         </context-group>
@@ -6102,11 +6150,17 @@ url பின்பற்றி செயலிழக்கப்பட்ட �
         <target>கடைசி உட்புகுதல்</target>
       </trans-unit>
       <trans-unit id="taskomatic.daily.errata">
-        <source>Errata Synopses:</source>
+        <source>Patch Synopses:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Daily Summary Email</context>
         </context-group>
         <target>பிழைத்திருத்தம் சுருக்கங்கள்:</target>
+      </trans-unit>
+      <trans-unit id="taskomatic.notavailable">
+        <source>Taskomatic is not available.</source>
+      </trans-unit>
+      <trans-unit id="taskscheduler.down">
+        <source>There was an error while scheduling a task. Please make sure that the task scheduler is running.</source>
       </trans-unit>
       <trans-unit id="kickstart.software.success">
         <source>Kickstart Operating System selection successfully updated.</source>
@@ -6209,21 +6263,21 @@ url பின்பற்றி செயலிழக்கப்பட்ட �
         <target>அனைத்தையும் பார்க்கவும்</target>
       </trans-unit>
       <trans-unit id="kickstart.troubleshooting.success">
-        <source>Kickstart options updated.</source>
+        <source>Autoinstallation options updated.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/Troubleshooting.do</context>
         </context-group>
         <target>கிக்ஸ்டார் விருப்பங்கள் மேம்படுத்தப்பட்டன.</target>
       </trans-unit>
       <trans-unit id="tree.delete.success">
-        <source>Kickstart Distribution deleted successfully.</source>
+        <source>Autoinstallable Distribution deleted successfully.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/Troubleshooting.do</context>
         </context-group>
         <target>கிக்ஸ்டார்ட் பகிர்வு வெற்றிகரமாக அழிக்கப்பட்டது.</target>
       </trans-unit>
       <trans-unit id="tree.edit.invalid_tree">
-        <source>Kickstart distributions is invalid due wrong or non existent base path to the kernel or initrd image. To make your custom distribution valid please select the distribution and modify its base path appropriately.</source>
+        <source>Autoinstallable distribution is invalid due to a wrong or non existent base path to the kernel or initrd image. To make your custom distribution valid please select the distribution and modify its base path appropriately.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/TreeEdit.do</context>
         </context-group>
@@ -6257,63 +6311,69 @@ url பின்பற்றி செயலிழக்கப்பட்ட �
         <target>கிக்ஸ்டார்ட் உரை அழிக்கப்பட்டது.</target>
       </trans-unit>
       <trans-unit id="kickstart.clone.success">
-        <source>Kickstart cloned successfully.  You are now editing the cloned Kickstart.</source>
+        <source>Autoinstallation cloned successfully.  You are now editing the cloned Autoinstallation.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartClone.do</context>
         </context-group>
         <target>கிக்ஸ்டார்ட் வெற்றிகரமாக க்ளோன் செய்யப்பட்டது.  நீங்கள் இப்போது க்ளோன் செய்யப்பட்ட கிக்ஸ்டார்ட்டை திருத்துகிறீர்கள்.</target>
       </trans-unit>
       <trans-unit id="kickstart.session_cancel.success">
-        <source>Kickstart canceled.</source>
+        <source>Autoinstallation canceled.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartClone.do</context>
         </context-group>
         <target>கிக்ஸ்டார்ட் ரத்து செய்யப்பட்டது.</target>
       </trans-unit>
       <trans-unit id="kickstart.session.user_canceled">
-        <source>Kickstart canceled by user: {0}</source>
+        <source>Autoinstallation canceled by user: {0}</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartSessionCancel.do</context>
         </context-group>
         <target>கிக்ஸ்டார்ட் பயனரால் ரத்து செய்யப்பட்டது: {0}</target>
       </trans-unit>
       <trans-unit id="kickstart.schedule.success">
-        <source>System Kickstart scheduled for {0}</source>
+        <source>System autoinstallation scheduled for {0}</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/ScheduleKickstart.do</context>
         </context-group>
         <target>{0}க்கு கணினி கிக்ஸ்டார்ட் திட்டமிடப்பட்டது</target>
       </trans-unit>
       <trans-unit id="kickstart.schedule.cobblercreate">
-        <source>System record created for {0} in Cobbler.  This will allow you to kickstart this system using the {1} profile from {0}'s terminal with the usage of the 'koan' command.</source>
+        <source>System record created for {0} in Cobbler.  This will allow you to autoinstall this system using the {1} profile from {0}'s terminal with the usage of the 'koan' command.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/ScheduleKickstart.do</context>
         </context-group>
         <target>காப்லரில் கணினி {0} காக உருவாக்குகிறது.  இது உங்கள் கணினியை கிக்ஸ்டார்டை பயன்படுத்தி {1} விவரக்குறிப்பை {0}'கள் முணைய'koan' கட்டளையை பயன்பாட்டோடு பயன்படுகிறது.</target>
       </trans-unit>
+      <trans-unit id="kickstart.schedule.cobblercreate.bootstrap">
+        <source>System record created for {0} in Cobbler. This will start installation as soon as the system is booted.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/kickstart/ScheduleKickstart.do</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="kickstart.cobbler.schedule.success">
-        <source>System Kickstart scheduled for {0}. Please check the system console for status information.</source>
+        <source>System Autoinstallation scheduled for {0}. Please check the system console for status information.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/ScheduleKickstart.do</context>
         </context-group>
         <target>கணினி கிக்ஸ்டார்ட் {0}காக திட்டமிடப்படுகிறது.கணினியின் நிலை தகவலை சரிபார்க்கவும்.</target>
       </trans-unit>
       <trans-unit id="kickstart.schedule.noprofiles">
-        <source>No profiles found that are compatible with this System.  Either you haven't created any Kickstart Profiles or this system does not have a Base Channel.</source>
+        <source>No profiles found that are compatible with this System.  Either you haven't created any Autoinstallation Profiles or this system does not have a Base Channel.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/ScheduleKickstart.do</context>
         </context-group>
         <target>இந்த கணினிக்கு உகந்த விவரக்குறிப்புகள் எதுவும் இல்லை. நீங்கள் எந்த கிக்ஸ்டார்ட் விவரக்குறிப்புகளையும் உருவாக்கியிருக்க மாட்டீர்கள் அல்லது இந்த கணினி அடிப்படை தடத்தை கொண்டிருக்கவில்லை.</target>
       </trans-unit>
       <trans-unit id="kickstart.schedule.nobasechannel">
-        <source>System {0} cannot be kickstarted because it does not have a base channel.</source>
+        <source>System {0} cannot be autoinstalled because it does not have a base channel.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/ScheduleKickstart.do</context>
         </context-group>
         <target>கணினி {0}கிக்ஸ்டார்ட் செய்ய முடியாது, ஏனெனில் அது அடிப்படை தடத்தைக் கொண்டிருக்கவில்லை.</target>
       </trans-unit>
       <trans-unit id="kickstart.schedule.nosuchdevice">
-        <source>System {0} cannot be kickstarted because it does not have a {1} network device.</source>
+        <source>System {0} cannot be autoinstalled because it does not have a &lt;strong&gt; {1} &lt;/strong&gt; network device.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/ScheduleKickstart.do</context>
         </context-group>
@@ -6326,35 +6386,35 @@ url பின்பற்றி செயலிழக்கப்பட்ட �
         <target>இந்த கணினியின் நடப்பு அடிப்படை தட மற்றும் விருப்பமான இலக்கு தடம் {0} ஐ வழங்கியுள்ள  தேவையான @@PRODUCT_NAME@@ வாய்ப்பளிக்கும் தொகுப்புகளை காண முடியவில்லை.</target>
       </trans-unit>
       <trans-unit id="kickstart.schedule.cantsubscribe">
-        <source>You have no remaining subscriptions to the @@PRODUCT_NAME@@ provisioning channel for this system's current base channel.</source>
+        <source>You have no remaining subscriptions to the @@PRODUCT_NAME@@ provisioning channel for &lt;strong&gt;{0}&lt;/strong&gt;'s current base channel.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/ScheduleKickstart.do</context>
         </context-group>
         <target>இந்த கணினியின் நடப்பு அடிப்படை தடத்திற்கு @@PRODUCT_NAME@@ வாய்ப்பளித்தல் தடத்தில் சந்தாக்கள் மீதம் எதுவும் இல்லை.</target>
       </trans-unit>
       <trans-unit id="kickstart.schedule.cantsubscribe.channel">
-        <source>You have no remaining subscriptions to the channel {0} for this system's current base channel.</source>
+        <source>You have no remaining subscriptions to the channel {0} for &lt;strong&gt;{1}&lt;/strong&gt;'s current base channel.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/ScheduleKickstart.do</context>
         </context-group>
         <target>இந்த கணினியின் நடப்பு அடிப்படை தடத்திற்கு {0} தடத்தில் சந்தாக்கள் மீதம் எதுவும் இல்லை.</target>
       </trans-unit>
       <trans-unit id="kickstart.schedule.noup2date">
-        <source>A kickstart was not scheduled for {1} ({0}) because the package profile did not contain the 'up2date' package. An update of that system's package profile may be required.</source>
+        <source>An autoinstallation was not scheduled for &lt;strong&gt;&lt;a href=&quot;/rhn/systems/details/Overview.do?sid={0}&quot;&gt;{1}&lt;/a&gt;&lt;/strong&gt; because the package profile did not contain the 'up2date' package. An update of that system's package profile may be required.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/ScheduleKickstart.do</context>
         </context-group>
         <target>{1} ({0})க்கு கிக்ஸ்டார்ட் திட்டமிடப்படவில்லை, ஏனெனில் தொகுப்பு விவரக்குறிப்பு 'up2date' தொகுப்பினை கொண்டிருக்கவில்லை. கணினியுடைய தொகுப்பு விவரக்குறிப்பின் மேம்பாடு தேவைப்படுகிறது.</target>
       </trans-unit>
       <trans-unit id="kickstart.session.newsession">
-        <source>A new kickstart session was initiated for this system.</source>
+        <source>A new autoinstall session was initiated for this system.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/ScheduleKickstart.do</context>
         </context-group>
         <target>ஒரு புதிய கிக்ஸ்டார்ட் அமர்வு இந்த கணினிக்கு ஆரம்பிக்கப்பட்டது.</target>
       </trans-unit>
       <trans-unit id="kickstart.session.newtokennote">
-        <source>Kickstart re-activation key for {0}.</source>
+        <source>Autoinstallation re-activation key for {0}.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/ScheduleKickstart.do</context>
         </context-group>
@@ -6373,14 +6433,14 @@ url பின்பற்றி செயலிழக்கப்பட்ட �
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.session.newprofile">
-        <source>Profile for kickstart session {0}.</source>
+        <source>Profile for autoinstall session {0}.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/ScheduleKickstart.do</context>
         </context-group>
         <target>கிக்ஸ்டார்ட் அமர்வு {0}க்கு விவரக்குறிப்பு.</target>
       </trans-unit>
       <trans-unit id="kickstart.schedule.noup2dateinchannel">
-        <source>We require version {0} or greater of up2date in order to kickstart a system.  This system has {1} installed but we could not find a version of up2date in this system's channels to upgrade it to the required version or above.</source>
+        <source>We require version {0} or greater of up2date in order to kickstart a system. &lt;strong&gt;{2}&lt;/strong&gt; has {1} installed but we could not find a version of up2date in this system's channels to upgrade it to the required version or above.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/ScheduleKickstart.do</context>
         </context-group>
@@ -6393,18 +6453,24 @@ url பின்பற்றி செயலிழக்கப்பட்ட �
         <target>விருந்தினர் கணினி @@PRODUCT_NAME@@உடன் கடந்த {0} நிமடங்கள் வரை தொடர்பில் இல்லை. வன்பொருளால் நிறுவல் பணி மெதுவாக இருக்கும் அல்லது முடிக்கப்பட்டிருக்கும். &lt;p/&gt;நீங்கள் இதனை &lt;em&gt;virsh console &lt;strong&gt;guestname&lt;/strong&gt;&lt;/em&gt; ஐ புரவலன் கணினியில் இயக்குவது மூலம் பழுது நீக்கம் செய்யலாம். இந்த கட்டளை உங்கள் விருந்தினர் உரை பணியகத்தில் இணைக்கும், அது உங்கள் விருந்திறர் கணினி நிறுவல் நிலை பற்றிய கூடுதல் தகவலை கொடுக்கும்.</target>
       </trans-unit>
       <trans-unit id="tree.edit.success">
-        <source>Kickstart Distribution Updated</source>
+        <source>Autoinstallable Distribution Updated</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/TreeEdit.do</context>
         </context-group>
         <target>கிக்ஸ்டார்ட் பகிர்ந்தளிப்பு மேம்படுத்தப்பட்டது.</target>
       </trans-unit>
       <trans-unit id="tree.create.success">
-        <source>Kickstart Distribution Created</source>
+        <source>Autoinstallable Distribution Created</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/TreeEdit.do</context>
         </context-group>
         <target>கிக்ஸ்டார்ட் பகிர்ந்தளிப்பு உருவாக்கப்பட்டது</target>
+      </trans-unit>
+      <trans-unit id="tree.edit.missingcobblerentry">
+        <source>The Cobbler entry for this distribution is missing. It will be automatically recreated shortly.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/kickstart/TreeEdit.do</context>
+        </context-group>
       </trans-unit>
       <trans-unit id="kickstart.tree.invalidlabel">
         <source>The label is not formatted properly.  The label should contain only letters, numbers, hyphens, periods, and underscores.  It must also be at least 4 characters long</source>
@@ -6428,7 +6494,7 @@ url பின்பற்றி செயலிழக்கப்பட்ட �
         <target>குறிப்பிட்ட இடத்தில் initrd காணப்படவில்லை: {0}</target>
       </trans-unit>
       <trans-unit id="kickstart.tree.inuse">
-        <source>The Kickstart Distribution you have chosen to delete is in use.  Please delete or change the Distribution for Kickstart Profiles using this Distribution.</source>
+        <source>The Autoinstallable Distribution you have chosen to delete is in use.  Please delete or change the Distribution for Autoinstallation Profiles using this Distribution.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/TreeDelete.do</context>
         </context-group>
@@ -6456,11 +6522,23 @@ url பின்பற்றி செயலிழக்கப்பட்ட �
         <target>தேர்ந்தெடுக்கப்பட்ட கிக்ஸ்டார்ட் கிளையில் கோப்புகள் எதுவும் இல்லை</target>
       </trans-unit>
       <trans-unit id="kickstart.schedule.already.scheduled.jsp">
-        <source>System {0} has a pending kickstart scheduled.</source>
+        <source>System &lt;strong&gt;{0}&lt;/strong&gt; has a pending autoinstallation scheduled.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/ScheduleWizard.do</context>
         </context-group>
         <target>கணினி {0} ஒரு கிக்ஸ்டார்ட் திட்டத்தை கொண்டுள்ளது.</target>
+      </trans-unit>
+      <trans-unit id="kickstart.schedule.no.schedule.on.bootstrap.jsp">
+        <source>System &lt;strong&gt;{0}&lt;/strong&gt; is bare-metal, no scheduling is possible.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/ssm/kickstart/KickstartableSystems.do</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="kickstart.schedule.no.profile.jsp">
+        <source>Could not find a matching profile for system &lt;strong&gt;{0}&lt;/strong&gt;.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/kickstart/ScheduleWizard.do</context>
+        </context-group>
       </trans-unit>
       <trans-unit id="kickstart.bond.not.defined.jsp">
         <source>If you want to create a bonded network after installation you must specefy a bond name and at least one slave interface.</source>
@@ -6514,8 +6592,11 @@ url பின்பற்றி செயலிழக்கப்பட்ட �
           <target>செயல்படுத்தல் விசை &lt;strong&gt;{0}&lt;/strong&gt; மாற்றப்பட்டது.</target>
         </trans-unit>
         <trans-unit id="activation-key.java.org_prefixed">
-          <source>Please note that &lt;strong&gt;{0}&lt;/strong&gt; has been modified to &lt;strong&gt;{1}&lt;/strong&gt;.</source>
+          <source>The name of the key &lt;strong&gt;{0}&lt;/strong&gt; has been modified to &lt;strong&gt;{1}&lt;/strong&gt;.</source>
           <target>&lt;strong&gt;{0}&lt;/strong&gt; ஆனது &lt;strong&gt;{1}&lt;/strong&gt; ஆக மாற்றப்பட்டது என்பதை குறித்து கொள்ளவும்.</target>
+        </trans-unit>
+        <trans-unit id="activation-key.java.allowed-values">
+          <source>The activation key cannot be saved: the key can contains only numbers [0-9], letters [a-z A-Z], '-', '_' and '.'</source>
         </trans-unit>
         <trans-unit id="system.sdc.missing.config_deploy1">
           <source>This system does not yet have configuration deployment capability. Configuration deployment requires that particular software is installed and enabled on your system.</source>
@@ -6602,6 +6683,13 @@ url பின்பற்றி செயலிழக்கப்பட்ட �
           <context context-type="paramnotes">7 revision deletions failed.</context>
         </context-group>
         <target>{0} மறுபார்வையை அழிக்க முடியவில்லை.</target>
+      </trans-unit>
+      <trans-unit id="config_revisions.failure.singular">
+        <source>{0} revision deletion failed.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/configuration/file/ManageConfigRevision.do</context>
+          <context context-type="paramnotes">1 revision deletion failed.</context>
+        </context-group>
       </trans-unit>
       <trans-unit id="config_revisions.success">
         <source>{0} revisions were deleted successfully.</source>
@@ -6700,11 +6788,17 @@ url பின்பற்றி செயலிழக்கப்பட்ட �
         <target>உள்ளமைவாக-மேலாண்மை செய்யப்பட்டது</target>
       </trans-unit>
       <trans-unit id="config_channel.normal">
-        <source>Centrally-Managed</source>
+        <source>Normal</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/file/CompareCopy.do</context>
         </context-group>
         <target>பொதுவாக-மேலாண்மை செய்யப்பட்டது</target>
+      </trans-unit>
+      <trans-unit id="config_channel.state">
+        <source>State</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/configuration/file/CompareCopy.do</context>
+        </context-group>
       </trans-unit>
       <trans-unit id="config_channel.server_import">
         <source>Sandbox</source>
@@ -6753,14 +6847,14 @@ url பின்பற்றி செயலிழக்கப்பட்ட �
         <target>கட்டமைப்பு ஒப்பீடு செயலைத் திட்டமிட முடியவில்லை</target>
       </trans-unit>
       <trans-unit id="unsubscribe.ssm.success">
-        <source>&lt;strong&gt;1 system&lt;/strong&gt; successfully unsubscribed from configuration channels.</source>
+        <source>System successfully unsubscribed from configuration channels.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/config/Unsubscribe.do</context>
         </context-group>
         <target>&lt;strong&gt;1 கணினி&lt;/strong&gt; கட்டமைப்பு தடங்களிலிருந்து வெற்றிகரமாக சந்தா நீக்கப்பட்டது.</target>
       </trans-unit>
       <trans-unit id="unsubscribe.ssm.successes">
-        <source>&lt;strong&gt;{0} systems&lt;/strong&gt; successfully unsubscribed from configuration channels.</source>
+        <source>Systems successfully unsubscribed from configuration channels.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/config/Unsubscribe.do</context>
           <context context-type="paramnotes">3 systems successfully unsubscribed from configuration channels.</context>
@@ -7005,7 +7099,7 @@ url பின்பற்றி செயலிழக்கப்பட்ட �
         <target>எதுவுமில்லை</target>
       </trans-unit>
       <trans-unit id="sdc.details.edit.unentitle">
-        <source>Unentitle System</source>
+        <source>Remove System Types</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Edit.do</context>
         </context-group>
@@ -7020,7 +7114,7 @@ url பின்பற்றி செயலிழக்கப்பட்ட �
         <target>&lt;strong&gt;{0}&lt;/strong&gt;க்கு கணினி பண்புகள் மாற்றப்பட்டன.</target>
       </trans-unit>
       <trans-unit id="sdc.details.edit.propertieschangedupdate">
-        <source>System properties changed for &lt;strong&gt;{0}&lt;/strong&gt;. &lt;br/&gt; &lt;strong&gt;{0}&lt;/strong&gt; will be &lt;strong&gt;fully updated&lt;/strong&gt; in accordance with Auto Errata Update preference.</source>
+        <source>&lt;strong&gt;{0}&lt;/strong&gt; will be &lt;strong&gt;fully updated&lt;/strong&gt; in accordance with Auto Patch Update preference.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Edit.do</context>
           <context context-type="paramnotes">{0} - name of a system ex: highwind</context>
@@ -7163,89 +7257,104 @@ url பின்பற்றி செயலிழக்கப்பட்ட �
         <context-group name="config_counts">
           <context context-type="sourcefile">Every Caller of ConfigActionHelper.makeFileCountsMessage</context>
         </context-group>
-        <trans-unit id="config.files_0_dirs_0_symlinks_0_url">
+        <trans-unit id="config.sls_0_files_0_dirs_0_symlinks_0_url">
           <source>No files, directories or symlinks. &lt;a href="{0}"&gt; Add&lt;/a&gt;</source>
         </trans-unit>
-        <trans-unit id="config.files_0_dirs_0_symlinks_0">
+        <trans-unit id="config.sls_0_files_0_dirs_0_symlinks_0">
           <source>No files, directories or symlinks.</source>
         </trans-unit>
-        <trans-unit id="config.files_0_dirs_0_symlinks_1">
-          <source>{2} symlink</source>
+        <trans-unit id="config.sls_0_files_0_dirs_0_symlinks_1">
+          <source>{3} symlink</source>
         </trans-unit>
-        <trans-unit id="config.files_0_dirs_0_symlinks_2">
-          <source>{2} symlinks</source>
+        <trans-unit id="config.sls_0_files_0_dirs_0_symlinks_2">
+          <source>{3} symlinks</source>
         </trans-unit>
-        <trans-unit id="config.files_0_dirs_1_symlinks_0">
-          <source>{1} directory</source>
+        <trans-unit id="config.sls_0_files_0_dirs_1_symlinks_0">
+          <source>{2} directory</source>
         </trans-unit>
-        <trans-unit id="config.files_0_dirs_1_symlinks_1">
-          <source>{1} directory and {2} symlink</source>
+        <trans-unit id="config.sls_0_files_0_dirs_1_symlinks_1">
+          <source>{2} directory and {3} symlink</source>
         </trans-unit>
-        <trans-unit id="config.files_0_dirs_1_symlinks_2">
-          <source>{1} directory and {2} symlinks</source>
+        <trans-unit id="config.sls_0_files_0_dirs_1_symlinks_2">
+          <source>{2} directory and {3} symlinks</source>
         </trans-unit>
-        <trans-unit id="config.files_0_dirs_2_symlinks_0">
-          <source>{1} directories</source>
+        <trans-unit id="config.sls_0_files_0_dirs_2_symlinks_0">
+          <source>{2} directories</source>
         </trans-unit>
-        <trans-unit id="config.files_0_dirs_2_symlinks_1">
-          <source>{1} directories and {2} symlink</source>
+        <trans-unit id="config.sls_0_files_0_dirs_2_symlinks_1">
+          <source>{2} directories and {3} symlink</source>
         </trans-unit>
-        <trans-unit id="config.files_0_dirs_2_symlinks_2">
-          <source>{1} directories and {2} symlinks</source>
+        <trans-unit id="config.sls_0_files_0_dirs_2_symlinks_2">
+          <source>{2} directories and {3} symlinks</source>
         </trans-unit>
-        <trans-unit id="config.files_1_dirs_0_symlinks_0">
-          <source>{0} file</source>
+        <trans-unit id="config.sls_0_files_1_dirs_0_symlinks_0">
+          <source>{1} file</source>
         </trans-unit>
-        <trans-unit id="config.files_1_dirs_0_symlinks_1">
-          <source>{0} file and {2} symlink</source>
+        <trans-unit id="config.sls_0_files_1_dirs_0_symlinks_1">
+          <source>{1} file and {3} symlink</source>
         </trans-unit>
-        <trans-unit id="config.files_1_dirs_0_symlinks_2">
-          <source>{0} file and {2} symlinks</source>
+        <trans-unit id="config.sls_0_files_1_dirs_0_symlinks_2">
+          <source>{1} file and {3} symlinks</source>
         </trans-unit>
-        <trans-unit id="config.files_1_dirs_1_symlinks_0">
-          <source>{0} file and {1} directory</source>
+        <trans-unit id="config.sls_0_files_1_dirs_1_symlinks_0">
+          <source>{1} file and {2} directory</source>
         </trans-unit>
-        <trans-unit id="config.files_1_dirs_1_symlinks_1">
-          <source>{0} file and {1} directory and {2} symlink</source>
+        <trans-unit id="config.sls_0_files_1_dirs_1_symlinks_1">
+          <source>{1} file, {2} directory and {3} symlink</source>
         </trans-unit>
-        <trans-unit id="config.files_1_dirs_1_symlinks_2">
-          <source>{0} file and {1} directory and {2} symlinks</source>
+        <trans-unit id="config.sls_0_files_1_dirs_1_symlinks_2">
+          <source>{1} file, {2} directory and {3} symlinks</source>
         </trans-unit>
-        <trans-unit id="config.files_1_dirs_2_symlinks_0">
-          <source>{0} file and {1} directories</source>
+        <trans-unit id="config.sls_0_files_1_dirs_2_symlinks_0">
+          <source>{1} file and {2} directories</source>
         </trans-unit>
-        <trans-unit id="config.files_1_dirs_2_symlinks_1">
-          <source>{0} file and {1} directories and {2} symlink</source>
+        <trans-unit id="config.sls_0_files_1_dirs_2_symlinks_1">
+          <source>{1} file, {2} directories and {3} symlink</source>
         </trans-unit>
-        <trans-unit id="config.files_1_dirs_2_symlinks_2">
-          <source>{0} file and {1} directories and {2} symlinks</source>
+        <trans-unit id="config.sls_0_files_1_dirs_2_symlinks_2">
+          <source>{1} file, {2} directories and {3} symlinks</source>
         </trans-unit>
-        <trans-unit id="config.files_2_dirs_0_symlinks_0">
-          <source>{0} files</source>
+        <trans-unit id="config.sls_0_files_2_dirs_0_symlinks_0">
+          <source>{1} files</source>
         </trans-unit>
-        <trans-unit id="config.files_2_dirs_0_symlinks_1">
-          <source>{0} files and {2} symlink</source>
+        <trans-unit id="config.sls_0_files_2_dirs_0_symlinks_1">
+          <source>{1} files and {3} symlink</source>
         </trans-unit>
-        <trans-unit id="config.files_2_dirs_0_symlinks_2">
-          <source>{0} files and {2} symlinks</source>
+        <trans-unit id="config.sls_0_files_2_dirs_0_symlinks_2">
+          <source>{1} files and {3} symlinks</source>
         </trans-unit>
-        <trans-unit id="config.files_2_dirs_1_symlinks_0">
-          <source>{0} files and {1} directory</source>
+        <trans-unit id="config.sls_0_files_2_dirs_1_symlinks_0">
+          <source>{1} files and {2} directory</source>
         </trans-unit>
-        <trans-unit id="config.files_2_dirs_1_symlinks_1">
-          <source>{0} files and {1} directory and {2} symlink</source>
+        <trans-unit id="config.sls_0_files_2_dirs_1_symlinks_1">
+          <source>{1} files, {2} directory and {3} symlink</source>
         </trans-unit>
-        <trans-unit id="config.files_2_dirs_1_symlinks_2">
-          <source>{0} files and {1} directory and {2} symlinks</source>
+        <trans-unit id="config.sls_0_files_2_dirs_1_symlinks_2">
+          <source>{1} files, {2} directory and {3} symlinks</source>
         </trans-unit>
-        <trans-unit id="config.files_2_dirs_2_symlinks_0">
-          <source>{0} files and {1} directories</source>
+        <trans-unit id="config.sls_0_files_2_dirs_2_symlinks_0">
+          <source>{1} files and {2} directories</source>
         </trans-unit>
-        <trans-unit id="config.files_2_dirs_2_symlinks_1">
-          <source>{0} files and {1} directories and {2} symlink</source>
+        <trans-unit id="config.sls_0_files_2_dirs_2_symlinks_1">
+          <source>{1} files, {2} directories and {3} symlink</source>
         </trans-unit>
-        <trans-unit id="config.files_2_dirs_2_symlinks_2">
-          <source>{0} files and {1} directories and {2} symlinks</source>
+        <trans-unit id="config.sls_0_files_2_dirs_2_symlinks_2">
+          <source>{1} files, {2} directories and {3} symlinks</source>
+        </trans-unit>
+        <trans-unit id="config.sls_2_files_1_dirs_2_symlinks_2">
+          <source>{0} states, {1} file, {2} directories and {3} symlinks</source>
+        </trans-unit>
+        <trans-unit id="config.sls_2_files_2_dirs_2_symlinks_2">
+          <source>{0} states, {1} files, {2} directories and {3} symlinks</source>
+        </trans-unit>
+        <trans-unit id="config.sls_1_files_0_dirs_0_symlinks_0">
+          <source>{0} state</source>
+        </trans-unit>
+        <trans-unit id="config.sls_1_files_1_dirs_0_symlinks_0">
+          <source>{0} state and {1} file</source>
+        </trans-unit>
+        <trans-unit id="config.sls_1_files_2_dirs_0_symlinks_0">
+          <source>{0} state and {1} files</source>
         </trans-unit>
       </group>
       <group>
@@ -7758,14 +7867,14 @@ url பின்பற்றி செயலிழக்கப்பட்ட �
         <target>எந்த செயலும் திட்டமிடப்படவில்லை.</target>
       </trans-unit>
       <trans-unit id="systems.details.virt.one.actions.scheduled">
-        <source>Scheduled one action.</source>
+        <source>Scheduled one action, see &lt;a href="/rhn/schedule/PendingActions.do"&gt;&lt;strong&gt;pending actions&lt;/strong&gt;&lt;/a&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/system/details/virtualization/VirtualGuestsConfirm.do</context>
         </context-group>
         <target>ஒரு செயல் திட்டமிடப்பட்டது.</target>
       </trans-unit>
       <trans-unit id="systems.details.virt.actions.scheduled">
-        <source>Scheduled {0} actions.</source>
+        <source>Scheduled {0} actions, see &lt;a href="/rhn/schedule/PendingActions.do"&gt;&lt;strong&gt;pending actions&lt;/strong&gt;&lt;/a&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/system/details/virtualization/VirtualGuestsConfirm.do</context>
         </context-group>
@@ -7791,6 +7900,66 @@ url பின்பற்றி செயலிழக்கப்பட்ட �
           <context context-type="sourcefile">/rhn/system/details/virtualization/VirtualGuestsConfirm.do</context>
         </context-group>
         <target>{0} மெய்நிகர் கணினிகள் அழிக்கப்பட்டது.</target>
+      </trans-unit>
+      <trans-unit id="virt.shutdown">
+        <source>Shutdown</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">com.redhat.rhn.domain.action.ActionFormatter.getActionType</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="virt.start">
+        <source>Start</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">com.redhat.rhn.domain.action.ActionFormatter.getActionType</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="virt.suspend">
+        <source>Suspend</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">com.redhat.rhn.domain.action.ActionFormatter.getActionType</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="virt.resume">
+        <source>Resume</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">com.redhat.rhn.domain.action.ActionFormatter.getActionType</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="virt.reboot">
+        <source>Restart</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">com.redhat.rhn.domain.action.ActionFormatter.getActionType</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="virt.destroy">
+        <source>Destroy</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">com.redhat.rhn.domain.action.ActionFormatter.getActionType</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="virt.delete">
+        <source>Delete</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">com.redhat.rhn.domain.action.ActionFormatter.getActionType</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="virt.create">
+        <source>Create</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">com.redhat.rhn.domain.action.ActionFormatter.getActionType</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="virt.setMemory">
+        <source>Set Memory ({0} MB)</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">com.redhat.rhn.domain.action.ActionFormatter.getActionType</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="virt.setVCPUs">
+        <source>Set Virtual CPUs ({0})</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">com.redhat.rhn.domain.action.ActionFormatter.getActionType</context>
+        </context-group>
       </trans-unit>
       <trans-unit id="channels.subscribers.updated">
         <source>{0} channel subscriber(s) successfully updated.</source>
@@ -7943,7 +8112,7 @@ url பின்பற்றி செயலிழக்கப்பட்ட �
         <target>{0} தொகுப்பை சேனலுடன் காணப்படவில்லை. இந்த தொகுப்புகள் மெய்நிகர் விருந்தினரை @@PRODUCT_NAME@@ மேலாண்மை படுத்த தேவைப்படுகிறது.</target>
       </trans-unit>
       <trans-unit id="system.entitle.alreadyentitled">
-        <source>The system already has the {0} entitlement.</source>
+        <source>The system already has the {0} system type.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
@@ -7993,14 +8162,14 @@ url பின்பற்றி செயலிழக்கப்பட்ட �
         </context-group>
       </trans-unit>
       <trans-unit id="system.entitle.invalid_addon_entitlement">
-        <source>Invalid add-on entitlement [{0}] provided. No such entitlement exists.</source>
+        <source>Invalid add-on system type [{0}] provided. No such system type exists.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
         <target>தவறான கூடுதல் உரிமம் [{0}] கொடுக்கப்பட்டுள்ளது. வேறு உரிமம் இல்லை.</target>
       </trans-unit>
       <trans-unit id="system.entitle.guestcantvirt">
-        <source>The system cannot have a Virtualization entitlement because it is a virtual guest.</source>
+        <source>The system cannot have a Virtualization Host system type because it is a virtual guest.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
@@ -8052,7 +8221,7 @@ url பின்பற்றி செயலிழக்கப்பட்ட �
         <target>சேட்டிலைட் நிர்வாக செயல்பாட்டில் இதை நடத்த முடியவில்லை. (Org ID 1)</target>
       </trans-unit>
       <trans-unit id="api.errata.invaliderrata">
-        <source>Invalid errata: {0}</source>
+        <source>Invalid patch: {0}</source>
         <target>தவறான பிழைத்திருத்தம்: {0}</target>
       </trans-unit>
       <trans-unit id="api.externalgroup.invalidrole">
@@ -8072,7 +8241,7 @@ url பின்பற்றி செயலிழக்கப்பட்ட �
         <target>தவறான தொகுப்பு: {0}</target>
       </trans-unit>
       <trans-unit id="api.errata.duplicateerrata">
-        <source>Errata already exists with advisory {0}</source>
+        <source>Patch already exists with advisory {0}</source>
         <target>பிழைத்திருத்தம் ஏற்கனவே அறிவிப்பி {0}இல் உள்ளது</target>
       </trans-unit>
       <trans-unit id="api.system.invalidsnapshot">
@@ -8107,7 +8276,7 @@ url பின்பற்றி செயலிழக்கப்பட்ட �
         <source>No such network interface: {0}.</source>
       </trans-unit>
       <trans-unit id="api.errata.invalidadvisorytype">
-        <source>Invalid errata type, "{0}". Please use one of the following: "Security Advisory", "Product Enhancement Advisory", or "Bug Fix Advisory".</source>
+        <source>Invalid patch type, "{0}". Please use one of the following: "Security Advisory", "Product Enhancement Advisory", or "Bug Fix Advisory".</source>
         <target>தவறான பிழைத்திருத்த வகை, &quot;{0}&quot;. பின்வருவதை பயன்படுத்தவும்: &quot;பாதுகாப்பு அறிவிப்பி&quot;, &quot;மென்பொருள் மேம்படுத்தல் அறிவிப்பி&quot;, அல்லது &quot;பிழைத்திருத்த அறிவிப்பி&quot;.</target>
       </trans-unit>
       <trans-unit id="api.errata.invalidadvisoryrelease">
@@ -8115,7 +8284,7 @@ url பின்பற்றி செயலிழக்கப்பட்ட �
         <target>தவறான அறிவிப்பு வெளியீடு , &quot;{0}&quot;. அதிகபட்ச மதிப்பு {1}.</target>
       </trans-unit>
       <trans-unit id="api.errata.nochannelsselected">
-        <source>You are trying to publish an errata but have not selected any channels to publish to.  Errata must be published to at least one channel.</source>
+        <source>You are trying to publish a patch but have not selected any channels to publish to. Patches must be published to at least one channel.</source>
         <target>நீங்கள் ஒரு பிழைத்திருத்தத்தை வெளியிட முயற்சிக்கிறீர்கள் ஆனால் நீங்கள் எந்த தடங்களை அதற்கு தேர்ந்தெடுக்கவில்லை. குறைந்தது ஒரு தடமாவது பிழைத்திருத்தத்தை வெளியிட தேவை.</target>
       </trans-unit>
       <trans-unit id="api.package.download.toolarge">
@@ -8152,6 +8321,9 @@ url பின்பற்றி செயலிழக்கப்பட்ட �
       <trans-unit id="api.channel.duplicatechannellabel">
         <source>The channel label specified ({0}) already exists.</source>
         <target>தட லேபிள் குறிக்கப்பட்டது &quot;{0}&quot; ஏற்கனவே உள்ளது</target>
+      </trans-unit>
+      <trans-unit id="api.channel.duplicatechannelname">
+        <source>The channel name specified ({0}) already exists.</source>
       </trans-unit>
       <trans-unit id="api.channel.invalidchannelaccess">
         <source>The channel access ({0}) is not allowed for this operation.</source>
@@ -8207,11 +8379,11 @@ url பின்பற்றி செயலிழக்கப்பட்ட �
         <target>நிறுவன பெயர்</target>
       </trans-unit>
       <trans-unit id="api.kickstart.nosuchkickstarttreelabel">
-        <source>Unable to locate kickstart tree for your organization: {0}</source>
+        <source>Unable to locate autoinstallable tree for your organization: {0}</source>
         <target>உங்கள் நிறுவனத்தில் கிக்ஸ்டார்ட் கிளையை வைக்க முடியவில்லை: {0}</target>
       </trans-unit>
       <trans-unit id="api.kickstart.invalidkickstartlabel">
-        <source>Invalid kickstart label: {0}</source>
+        <source>Invalid autoinstallation label: {0}</source>
         <target>முறையற்ற கிக்ஸ்டார்ட் லேபிள்: {0}</target>
       </trans-unit>
       <trans-unit id="api.kickstart.invalidUpdateType">
@@ -8228,7 +8400,7 @@ url பின்பற்றி செயலிழக்கப்பட்ட �
         <target>தொகுப்பு ஆர்ச் குறிக்கப்பட்டது ({0}) தவறானதாகும்.</target>
       </trans-unit>
       <trans-unit id="api.errata.missingerrataaction">
-        <source>A required errata attribute ({0}) was missing.</source>
+        <source>A required patch attribute ({0}) was missing.</source>
         <target>தேவையான பிழைத்திருத்த அளவுரு ({0}) விடுபட்டுள்ளது.</target>
       </trans-unit>
       <trans-unit id="api.iss.duplicatemaster">
@@ -8238,15 +8410,15 @@ url பின்பற்றி செயலிழக்கப்பட்ட �
         <source>A record for Slave satellite {0} already exists</source>
       </trans-unit>
       <trans-unit id="securityErrata">
-        <source>Security Errata</source>
+        <source>Security Patches</source>
         <target>பாதுகாப்பு பிழைத்திருத்தம்</target>
       </trans-unit>
       <trans-unit id="bugErrata">
-        <source>Bug Errata</source>
+        <source>Bug Patches</source>
         <target>பிழையான பிழைத்திருத்தம்</target>
       </trans-unit>
       <trans-unit id="enhancementErrata">
-        <source>Enhancement Errata</source>
+        <source>Enhancement Patches</source>
         <target>விரிவாக்கப்பட்ட பிழைத்திருத்தம்</target>
       </trans-unit>
       <trans-unit id="outdatedPackages">
@@ -8258,7 +8430,7 @@ url பின்பற்றி செயலிழக்கப்பட்ட �
         <target>கடைசி உட்புகுதல்</target>
       </trans-unit>
       <trans-unit id="entitlement">
-        <source>Entitlements</source>
+        <source>System Types</source>
         <target>உரிமங்கள்</target>
       </trans-unit>
       <trans-unit id="groupAdmins">
@@ -8310,7 +8482,7 @@ url பின்பற்றி செயலிழக்கப்பட்ட �
         <target>தட லேபிள்கள்</target>
       </trans-unit>
       <trans-unit id="entitlementLevel">
-        <source>Entitlement Level</source>
+        <source>System Type Level</source>
         <target>உரிம நிலை</target>
       </trans-unit>
       <trans-unit id="serverName">
@@ -8514,7 +8686,7 @@ url பின்பற்றி செயலிழக்கப்பட்ட �
         <source>MAC Addresses must be unique. This MAC Address has already been recorded. Please choose a different MAC Address.</source>
       </trans-unit>
       <trans-unit id="frontend.actions.systems.virt.duplicateipaddressvalue">
-        <source>IP Addresses must be unique. This IP Address has already been recorded. Please choose a different IP Address.</source>
+        <source>IP Addresses must be unique, and IP Address for &lt;strong&gt;{0}&lt;/strong&gt; has already been recorded. Please choose a different IP Address.</source>
       </trans-unit>
       <trans-unit id="frontend.actions.systems.virt.invalidregexp">
         <source>Guest name can only contain alphanumeric characters, hyphens ('-'), periods ('.') and underscores ('_')</source>
@@ -8524,7 +8696,7 @@ url பின்பற்றி செயலிழக்கப்பட்ட �
         <target>தொடர்படைய தடங்களை பார்வையிடவும்</target>
       </trans-unit>
       <trans-unit id="frontend.actions.channels.manager.add.viewErrata">
-        <source>View Associated Errata</source>
+        <source>View Associated Patches</source>
         <target>தொடர்படைய பிழைத்திருத்தத்தை பார்வையிடவும்</target>
       </trans-unit>
       <trans-unit id="frontend.actions.channels.manager.add.submit">
@@ -8532,7 +8704,7 @@ url பின்பற்றி செயலிழக்கப்பட்ட �
         <target>உறுதிப்படுத்தவும்</target>
       </trans-unit>
       <trans-unit id="frontend.actions.channels.manager.add.success">
-        <source>Successfully added {1} package(s) and {0} errata to channel {2}.</source>
+        <source>Successfully added {1} package(s) and {0} patches to channel {2}.</source>
       </trans-unit>
       <trans-unit id="frontend.actions.channels.manager.add.permsfailure">
         <source>You do not have sufficient permissions to perform this action.</source>
@@ -8721,7 +8893,7 @@ url பின்பற்றி செயலிழக்கப்பட்ட �
         <target>{0} தொகுப்புகள் வெற்றிகரமாக அழிக்கப்பட்டது.</target>
       </trans-unit>
       <trans-unit id="api.kickstart.invalidkickstartinstalltype">
-        <source>Invalid kickstart install type: {0}.</source>
+        <source>Invalid autoinstall type: {0}.</source>
         <target>தவறான கிக்ஸ்டார்ட் வகையினை நிறுவு: {0}</target>
       </trans-unit>
       <trans-unit id="edit.channel.invalidgpgfp">
@@ -8770,7 +8942,7 @@ url பின்பற்றி செயலிழக்கப்பட்ட �
         <source>Channel name must be at least 6 characters long, begin with a letter and may contain only lowercase letters, hyphens ('-'), periods ('.'), underscores ('_'), numerals, spaces, parentheses and forward slashes ('/').</source>
       </trans-unit>
       <trans-unit id="edit.channel.invalidchannelname.redhat">
-        <source>Channels names must not start with '{0}'</source>
+        <source>@@VENDOR_NAME@@ channels require admin privileges</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/channels/manage/Edit</context>
         </context-group>
@@ -8794,6 +8966,12 @@ url பின்பற்றி செயலிழக்கப்பட்ட �
           <context context-type="sourcefile">/channels/manage/Edit</context>
         </context-group>
         <target>சேனல் பெயர் '{0}' ஏற்கனவே பயனில் உள்ளது. வேறு விவரக்குறிப்பு பெயரை உள்ளிடவும்.</target>
+      </trans-unit>
+      <trans-unit id="edit.channel.invalidchannelname.namereserved">
+        <source>The channel name '{0}' is reserved, please enter a different name</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/channels/manage/Edit</context>
+        </context-group>
       </trans-unit>
       <trans-unit id="edit.channel.invalidchannellabel">
         <source>Invalid Channel Label</source>
@@ -8820,7 +8998,7 @@ url பின்பற்றி செயலிழக்கப்பட்ட �
         <source>Channel label must be at least 6 characters long, begin with a letter or digit and may contain only lowercase letters, hyphens ('-'), periods ('.'), underscores ('_'), and numerals.</source>
       </trans-unit>
       <trans-unit id="edit.channel.invalidchannellabel.redhat">
-        <source>Channel labels must not start with '{0}'</source>
+        <source>@@VENDOR_NAME@@ channels require admin privileges</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/channels/manage/Edit</context>
         </context-group>
@@ -8839,6 +9017,12 @@ url பின்பற்றி செயலிழக்கப்பட்ட �
         </context-group>
         <target>சேனல் லேபல் '{0}' ஏற்கனவே பயனில் உள்ளது. வேறு விவரக்குறிப்பு பெயரை உள்ளிடவும்.</target>
       </trans-unit>
+      <trans-unit id="edit.channel.invalidchannellabel.labelreserved">
+        <source>The channel label '{0}' is reserved, please enter a different name</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/channels/manage/Edit</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="edit.channel.invalidchannelsummary">
         <source>Invalid Channel Summary</source>
         <context-group name="ctx">
@@ -8846,20 +9030,26 @@ url பின்பற்றி செயலிழக்கப்பட்ட �
         </context-group>
         <target>தவறான சேனல் சுருக்கம்</target>
       </trans-unit>
+      <trans-unit id="message.configuration.channel.deleted">
+        <source>Channel &lt;strong&gt;'{0}'&lt;/strong&gt; has been deleted.</source>
+      </trans-unit>
       <trans-unit id="distribution.tree.exists">
         <source>A distribution already exists with the name '{0}'.  Please select another name.</source>
         <target>வழங்குதல் ஏற்கனவே இந்த பெயரில் து '{ உள்ளது0}'வேறொரு பெயரை தேர்ந்தெடுக்கவும்ame.</target>
       </trans-unit>
       <trans-unit id="api.channel.delete.redhat">
-        <source>Red Hat Channels cannot be deleted, only custom channels can.</source>
+        <source>@@VENDOR_NAME@@ Channels cannot be deleted, only custom channels can.</source>
         <target>Red Hat சேனல்களை அழிக்க முடியாது, தனிபயன் சேனல்களை மட்டுமே முடியும்.</target>
       </trans-unit>
       <trans-unit id="api.channel.delete.haschild">
         <source>This channel has child channels associated with it.  You must delete those channels first before deleting the parent.</source>
         <target>இந்த சேனல் சேய் சேனலைக் கொண்டுள்ளது.  பெற்றோர் சேனலை அழிப்பதற்கு முன் அவற்றை நீங்கள் அழிக்க வேண்டும்.</target>
       </trans-unit>
+      <trans-unit id="api.channel.delete.hasclones">
+        <source>Unable to delete channel. The channel you have tried to delete has been cloned. You must delete the clones before you can delete this channel. Cloned channels include ({0}{1}).</source>
+      </trans-unit>
       <trans-unit id="api.kickstart.tree.notfound">
-        <source>The kickstart tree could not be found.  You may not have access to requested tree.</source>
+        <source>The autoinstallable tree could not be found.  You may not have access to the requested tree.</source>
         <target>கிக்ஸ்டார்ட் டிரீ காணப்படவில்லை.  ட்ரீயை செயல்படுத்த முடியவில்லை.</target>
       </trans-unit>
       <trans-unit id="message.channelcreated">
@@ -8870,7 +9060,7 @@ url பின்பற்றி செயலிழக்கப்பட்ட �
         <source>Channel &lt;strong&gt;{0}&lt;/strong&gt; cloned from channel &lt;strong&gt;{1}&lt;/strong&gt;.</source>
       </trans-unit>
       <trans-unit id="message.cloneselect">
-        <source>You may now wish to clone the errata associated with &lt;strong&gt;{0}&lt;/strong&gt;.</source>
+        <source>You may now wish to clone the patches associated with &lt;strong&gt;{0}&lt;/strong&gt;.</source>
       </trans-unit>
       <trans-unit id="message.channeldeleted">
         <source>Channel &lt;strong&gt;{0}&lt;/strong&gt; has been deleted.</source>
@@ -8880,7 +9070,10 @@ url பின்பற்றி செயலிழக்கப்பட்ட �
         <source>There are currently systems subscribed to this channel. Please confirm system channel removal by selecting the unsubscribe checkbox.</source>
       </trans-unit>
       <trans-unit id="message.channel.cannot-be-deleted.has-distros">
-        <source>There are currently kickstart distributions associated to this channel. Please disassociate or delete the kickstart distributions before proceeding to delete the channel.</source>
+        <source>There are currently autoinstallable distributions associated to this channel. Please disassociate or delete the autoinstallable distributions before proceeding to delete the channel.</source>
+      </trans-unit>
+      <trans-unit id="message.channel.cannot-be-deleted.no-taskomatic">
+        <source>The scheduling service appears down, channel cannot be deleted at the moment. Please contact your administrator.</source>
       </trans-unit>
       <trans-unit id="message.channelupdated">
         <source>Channel &lt;strong&gt;{0}&lt;/strong&gt; updated.</source>
@@ -8936,14 +9129,14 @@ url பின்பற்றி செயலிழக்கப்பட்ட �
         <source>SUSE Linux Enterprise Server guests require at least 512 MB of memory.</source>
       </trans-unit>
       <trans-unit id="kickstart.cobbler.profile.invalidvirt">
-        <source>Para-Virtualization is unsupported with the selected kickstart tree or distribution.</source>
+        <source>Para-Virtualization is unsupported with the selected autoinstallable tree or distribution.</source>
         <target>பகுதி மெய்நிகராக்கம் தேர்ந்தெடுக்கப்பட்ட கிக்ஸ்டார்ட் கிளையுடன் அல்லது விநியோகத்துடன் துணைபுரியவில்லை.</target>
       </trans-unit>
       <trans-unit id="kickstart.cobbler.profile.nodistribution">
         <source>Selected kickstartable tree isn't available at the moment. Please check cobbler functionality.</source>
       </trans-unit>
       <trans-unit id="kickstart.cobbler.profile.invalidtreeforvirt">
-        <source>You have selected a distribution or kickstart tree that is incompatible with the currently selected virtualization type.  Please either select a different distribution, or change the selected Virtualization Type of this profile before trying to set the distribution.</source>
+        <source>You have selected a distribution or autoinstallable tree that is incompatible with the currently selected virtualization type.  Please either select a different distribution, or change the selected Virtualization Type of this profile before trying to set the distribution.</source>
         <target>நீங்கள் ஒரு தேர்ந்தெடுக்கப்பட்ட விநியோகம் அல்லது நடப்பிலுள்ள தேர்ந்தெடுக்கப்பட்ட மெய்நிகர் வகை கிக்ஸ்டார்டுடன் பொருத்தமில்லாமலிருக்கிறது.  பல்வேறான விநியோகம் ஒன்றைதேர்ந்தெடுக்கவும், அல்லது விநியோகத்திற்கு முன்னே தேர்ந்தெடுக்கப்பட்ட மெய்நிகர் வகையின் விவரக்குறிப்பை அமைக்கவும்.</target>
       </trans-unit>
       <trans-unit id="snapshots.childchannel">
@@ -8955,7 +9148,7 @@ url பின்பற்றி செயலிழக்கப்பட்ட �
         <target>அடிப்படை சேனல் மேம்படுத்தப்பட்டது.</target>
       </trans-unit>
       <trans-unit id="snapshots.entitlements">
-        <source>Entitlements Updated</source>
+        <source>System Types Updated</source>
         <target>உரிமங்கள் மேம்படுத்தப்பட்டன</target>
       </trans-unit>
       <trans-unit id="errata.updates.noncritical">
@@ -8981,11 +9174,20 @@ url பின்பற்றி செயலிழக்கப்பட்ட �
       <trans-unit id="edit.channel.repo.repourlinuse">
         <source>There's already a defined repository with given url, please reuse it.</source>
       </trans-unit>
+      <trans-unit id="edit.channel.repo.repourlinvalid">
+        <source>The given url is invalid. Please enter an url with valid syntax (e.g. specify the protocol).</source>
+      </trans-unit>
       <trans-unit id="edit.channel.repo.clientcertmissing">
         <source>Please set SSL Client Certificate, if you've set SSL Client Key.</source>
       </trans-unit>
+      <trans-unit id="ssm.provision.errors">
+        <source>Skipped {0} system(s):</source>
+      </trans-unit>
+      <trans-unit id="ssm.provision.records.created">
+        <source>Successfully created records for {0} system(s).{1}</source>
+      </trans-unit>
       <trans-unit id="ssm.provision.scheduled">
-        <source>Successfully scheduled {0} system(s) for provisioning.</source>
+        <source>Successfully scheduled {0} system(s) for provisioning.{1}</source>
       </trans-unit>
       <trans-unit id="ssm.package.install.operationname">
         <source>Schedule Package Installations</source>
@@ -9064,7 +9266,7 @@ tree will not be usable for kickstarting.
         </source>
       </trans-unit>
       <trans-unit id="errata.delete.msg">
-        <source>Successfully deleted {0} errata.</source>
+        <source>Successfully deleted {0} patches.</source>
         <target>{0} பிழை வெற்றிகரமாக அழிக்கப்பட்டது. </target>
       </trans-unit>
       <trans-unit id="message.syncschedule.disabled">
@@ -9115,6 +9317,24 @@ tree will not be usable for kickstarting.
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/system/TargetSystemsSubmit.do</context>
         </context-group>
+      </trans-unit>
+      <trans-unit id="External Links">
+        <source>External Links</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Navigation Menu</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="formula.accessdenied">
+        <source>You do not have access.</source>
+      </trans-unit>
+      <trans-unit id="Home">
+        <source>Home</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Navigation Menu</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="help.credentials.nologins">
+        <source>There are no registered accounts with that email address.</source>
       </trans-unit>
     </body>
   </file>

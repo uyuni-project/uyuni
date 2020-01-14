@@ -93,6 +93,12 @@
         </context-group>
         <target>Sistemas Virtualizados</target>
       </trans-unit>
+      <trans-unit id="Bare Metal Systems">
+        <source>Unprovisioned Systems</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Systems Navigation Menu</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="Physical Systems">
         <source>Physical Systems</source>
         <context-group name="ctx">
@@ -115,7 +121,7 @@
         <target>Requerendo Reinicialização</target>
       </trans-unit>
       <trans-unit id="Extra Packages">
-        <source>Extra Packages</source>
+        <source>Non Compliant</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Systems Navigation Menu</context>
         </context-group>
@@ -261,28 +267,28 @@
         <target>Todos</target>
       </trans-unit>
       <trans-unit id="channel.nav.all">
-        <source>All Channels</source>
+        <source>All</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Channel Navigation Menu</context>
         </context-group>
         <target>Todos os Canais</target>
       </trans-unit>
       <trans-unit id="channel.nav.shared">
-        <source>Shared Channels</source>
+        <source>Shared</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Channel Navigation Menu</context>
         </context-group>
         <target>Canais Compartilhados</target>
       </trans-unit>
       <trans-unit id="channel.nav.vendor">
-        <source>Red Hat Channels</source>
+        <source>@@VENDOR_NAME@@</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Channel Navigation Menu</context>
         </context-group>
         <target>Red Hat Channels</target>
       </trans-unit>
       <trans-unit id="channel.nav.popular">
-        <source>Popular Channels</source>
+        <source>Popular</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Channel Navigation Menu</context>
         </context-group>
@@ -296,21 +302,21 @@
         <target>Meus Canais</target>
       </trans-unit>
       <trans-unit id="channel.nav.retired">
-        <source>Retired Channels</source>
+        <source>Retired</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Channel Navigation Menu</context>
         </context-group>
         <target>Canais Isolados</target>
       </trans-unit>
       <trans-unit id="config.nav.managed">
-        <source>Managed Systems</source>
+        <source>Managed</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Configuration Navigation Menu</context>
         </context-group>
         <target>Sistemas Gerenciados</target>
       </trans-unit>
       <trans-unit id="config.nav.target">
-        <source>Target Systems</source>
+        <source>Target</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Configuration Navigation Menu</context>
         </context-group>
@@ -324,28 +330,28 @@
         <target>Configuração</target>
       </trans-unit>
       <trans-unit id="config.nav.channels">
-        <source>Configuration Channels</source>
+        <source>Channels</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Configuration Navigation Menu</context>
         </context-group>
         <target>Canais de Configuração </target>
       </trans-unit>
       <trans-unit id="config.nav.files">
-        <source>Configuration Files</source>
+        <source>Files</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Configuration Navigation Menu</context>
         </context-group>
         <target>Arquivos de Configuração</target>
       </trans-unit>
       <trans-unit id="config.nav.globalfiles">
-        <source>Centrally Managed Files</source>
+        <source>Centrally Managed</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Configuration Navigation Menu</context>
         </context-group>
         <target>Gerenciamento Centralizado de Arquivos</target>
       </trans-unit>
       <trans-unit id="config.nav.localfiles">
-        <source>Locally Managed Files</source>
+        <source>Locally Managed</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Configuration Navigation Menu</context>
         </context-group>
@@ -534,6 +540,9 @@
           <source>View/Modify Files</source>
           <target>Visualizar/Modificar Arquivos</target>
         </trans-unit>
+        <trans-unit id="nav.sdc.config.view_files">
+          <source>View Files</source>
+        </trans-unit>
         <trans-unit id="nav.sdc.config.compare_files">
           <source>Compare Files</source>
           <target>Comparar Arquivos</target>
@@ -659,7 +668,7 @@
         <target>@@PRODUCT_NAME@@</target>
       </trans-unit>
       <trans-unit id="Spacewalk Configuration">
-        <source>@@PRODUCT_NAME@@ Configuration</source>
+        <source>Manager Configuration</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
@@ -762,6 +771,12 @@
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
         <target>Patches</target>
+      </trans-unit>
+      <trans-unit id="Patch List">
+        <source>Patch List</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Navigation Menu</context>
+        </context-group>
       </trans-unit>
       <trans-unit id="Patch Clusters">
         <source>Patch Clusters</source>
@@ -904,7 +919,7 @@
         <target>Help Desk</target>
       </trans-unit>
       <trans-unit id="Kickstart Details">
-        <source>Kickstart Details</source>
+        <source>Autoinstallation Details</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart Details Menu</context>
         </context-group>
@@ -939,7 +954,7 @@
         <target>Scripts</target>
       </trans-unit>
       <trans-unit id="Kickstart File">
-        <source>Kickstart File</source>
+        <source>Autoinstallation File</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart Details Menu</context>
         </context-group>
@@ -953,14 +968,14 @@
         <target>Sistema Operacional</target>
       </trans-unit>
       <trans-unit id="Bare Metal Kickstart">
-        <source>Bare Metal Kickstart</source>
+        <source>Unprovisioned Autoinstallation</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart Details Menu</context>
         </context-group>
         <target>Kickstart por IP</target>
       </trans-unit>
       <trans-unit id="Bare Metal">
-        <source>Bare Metal</source>
+        <source>Unprovisioned</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart Menu</context>
         </context-group>
@@ -1184,6 +1199,9 @@
       </group>
       <trans-unit id="Deployment">
         <source>Deployment</source>
+      </trans-unit>
+      <trans-unit id="Image List">
+        <source>Image List</source>
       </trans-unit>
     </body>
   </file>
