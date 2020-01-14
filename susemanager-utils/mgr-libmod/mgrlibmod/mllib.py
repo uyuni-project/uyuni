@@ -330,7 +330,7 @@ class MLLibmodAPI:
         return self._proc.get_api_provides()
 
     # API
-    def to_json(self, pretty:bool =False) -> str:
+    def to_json(self, pretty:bool = False) -> str:
         """
         to_json -- render the last set processed result by 'run' method into the JSON string.
 
