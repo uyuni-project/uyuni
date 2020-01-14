@@ -992,7 +992,7 @@ end
 When(/^I enter the SCC credentials$/) do
   scc_username = ENV['SCC_CREDENTIALS'].split('|')[0]
   scc_password = ENV['SCC_CREDENTIALS'].split('|')[1]
-  unless has_content?(user)
+  unless has_content?(scc_username)
     steps %(
       When I want to add a new credential
       And I enter "#{scc_username}" as "edit-user"
