@@ -13,7 +13,7 @@ const MessagesUtils = require("components/messages").Utils;
 const SpaRenderer  = require("core/spa/spa-renderer").default;
 const Utils = require("utils/functions").Utils;
 
-
+const messagesCounterLimit = 1;
 const hashUrlRegex = /^#\/([^\/]*)(?:\/(.+))?$/;
 
 function getHashId() {
@@ -26,43 +26,17 @@ function getHashAction() {
     return match ? match[1] : undefined;
 }
 
-export type Schedule = {
-    scheduleId: string,
-    scheduleName: string,
-    type: string,
-    targetType: string,
-    minionIds: Array,
-    minionNames: Array,
-    minute: string,
-    hour: string,
-    dayOfMonth: string,
-    dayOfWeek: string,
-    frequency: string,
-    isTest: string,
-    createdAt: string
-};
+class RecurringStates extends React.Component {
 
-type RecurringStatesStates = {
-    minionIds: Array
-}
-
-type RecurringStatesProps = {
-    schedules: Array<Schedule>,
-    selected: Schedule
-}
-
-class RecurringStates extends React.Component<RecurringStatesStates, RecurringStatesProps> {
-
-    constructor(props: RecurringStatesProps) {
+    constructor(props) {
         super(props);
 
-        ["deleteSchedule", "handleForwardAction", "handleDetailsAction", "handleEditAction", "handleResponseError"]
+        ["deleteSchedule", "handleForwardAction", "handleDetailsAction", "handleEditAction", "handleResponseError",
+        "onMessageChanged", "updateSchedule", "createSchedule", "toggleActive"]
             .forEach(method => this[method] = this[method].bind(this));
         this.state = {
             messages: [],
             minionIds: minions[0].id ? minions.map(minion => minion.id) : undefined,
-            selected: props.selected,
-            schedules: props.schedules
         };
     }
 
@@ -109,6 +83,7 @@ class RecurringStates extends React.Component<RecurringStatesStates, RecurringSt
         return Network.get("/rhn/manager/api/states/schedules", "application/json").promise
             .then(schedules => {
                 schedules.data.map(schedule => schedule.minionIds = this.toArray(schedule.minionIds));
+                schedules.data.map(schedule => schedule.minionNames = this.toArray(schedule.minionNames));
                 this.setState({
                     action: undefined,
                     selected: undefined,
@@ -122,6 +97,10 @@ class RecurringStates extends React.Component<RecurringStatesStates, RecurringSt
             .then(schedule => {
                 schedule.data.minionIds = this.toArray(schedule.data.minionIds);
                 schedule.data.minionNames = this.toArray(schedule.data.minionNames);
+                schedule.data.minions = schedule.data.minionIds.reduce((minions, minion, i) => {
+                    minions[i] = {id: minion, name: schedule.data.minionNames[i]};
+                    return minions;
+                }, []);
                 this.setState({selected: schedule.data, action: action});
             }).catch(this.handleResponseError);
     }
@@ -136,6 +115,74 @@ class RecurringStates extends React.Component<RecurringStatesStates, RecurringSt
         this.getScheduleDetails(row.scheduleId, "edit").then(() => {
             history.pushState(null, null, "#/edit/" + row.scheduleId);
         });
+    }
+
+    toggleActive(schedule) {
+        Object.assign(schedule, {
+            cronTimes: {
+                minute: schedule.minute,
+                hour: schedule.hour,
+                dayOfMonth: schedule.dayOfMonth,
+                dayOfWeek: schedule.dayOfWeek
+            },
+            active: !(schedule.active === "true")
+        });
+        schedule.minions = schedule.minionIds.reduce((minions, minion, i) => {
+            minions[i] = {id: minion, name: schedule.minionNames[i]};
+            return minions;
+        }, []);
+        this.updateSchedule(schedule);
+        console.log(schedule);
+    }
+
+    skipNext(item) {
+        this.handleForwardAction();
+    }
+
+    createSchedule(schedule) {
+        return Network.post(
+            "/rhn/manager/api/states/schedules/save",
+            JSON.stringify(schedule),
+            "application/json"
+        ).promise.then(() => {
+            const msg = MessagesUtils.info(
+                <span>{t("Schedule successfully created.")}</span>);
+
+            const msgs = this.state.messages.concat(msg);
+
+            while (msgs.length > messagesCounterLimit) {
+                msgs.shift();
+            }
+
+            this.onMessageChanged(msgs);
+            this.setState({
+                messages: msgs
+            });
+            this.handleForwardAction();
+        }).catch(this.handleResponseError);
+    }
+
+    updateSchedule(schedule) {
+        return Network.post(
+            "/rhn/manager/api/states/schedules/" + schedule.scheduleId + "/update",
+            JSON.stringify(schedule),
+            "application/json"
+        ).promise.then(() => {
+            const msg = MessagesUtils.info(
+                <span>{t("Schedule '") + schedule.scheduleName + t("' successfully updated.")}</span>);
+
+            const msgs = this.state.messages.concat(msg);
+
+            while (msgs.length > messagesCounterLimit) {
+                msgs.shift();
+            }
+
+            this.onMessageChanged(msgs);
+            this.setState({
+                messages: msgs
+            });
+            this.handleForwardAction();
+        }).catch(this.handleResponseError);
     }
 
     deleteSchedule(item) {
@@ -166,7 +213,7 @@ class RecurringStates extends React.Component<RecurringStatesStates, RecurringSt
 
     clearMessages() {
         this.setState({
-            messages: undefined
+            messages: []
         });
     }
 
@@ -194,20 +241,21 @@ class RecurringStates extends React.Component<RecurringStatesStates, RecurringSt
                     />
                     :
                     (this.state.action === 'create' && this.isFiltered()) ?
-                        <RecurringStatesEdit onMessageChanged={this.onMessageChanged}
+                        <RecurringStatesEdit onCreate={this.createSchedule}
                                              onActionChanged={this.handleForwardAction}
                         />
                         :
                         (this.state.action === 'edit' && this.state.selected) ?
                             <RecurringStatesEdit schedule={this.state.selected}
-                                                 onMessageChanged={this.onMessageChanged}
+                                                 onEdit={this.updateSchedule}
                                                  onActionChanged={this.handleForwardAction}
-
                             />
                             :
                             <RecurringStatesList data={this.state.schedules}
                                                  disableCreate={!this.isFiltered()}
                                                  onActionChanged={this.handleForwardAction}
+                                                 onToggleActive={this.toggleActive}
+                                                 onSkip={this.skipNext}
                                                  onSelect={this.handleDetailsAction}
                                                  onEdit={this.handleEditAction}
                                                  onDelete={this.deleteSchedule}

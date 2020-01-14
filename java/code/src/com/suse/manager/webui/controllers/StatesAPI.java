@@ -203,15 +203,7 @@ public class StatesAPI {
             List<Map> taskoSchedules = new TaskomaticApi().findActiveSchedulesByBunch(user,
                     "recurring-state-apply-bunch");
             return taskoSchedules.stream().map(taskoSchedule -> {
-                Map<String, String> schedule = new HashMap<>();
-                Map<String, String> data = (Map<String, String>) taskoSchedule.get("data_map");
-                schedule.put("targetType", data.get("targetType"));
-                schedule.put("minionIds", data.get("minionIds"));
-                schedule.put("scheduleId", taskoSchedule.get("id").toString());
-                schedule.put("scheduleName", taskoSchedule.get("job_label").toString());
-                String date = new Timestamp(((Date) taskoSchedule.get("active_from")).getTime()).toString();
-                schedule.put("createdAt", date.substring(0, date.indexOf(".")));
-                schedule.put("frequency", taskoSchedule.get("cron_expr").toString());
+                Map<String, String> schedule = getScheduleDetails(taskoSchedule);
                 return schedule;
             }).collect(Collectors.toList());
         }
@@ -232,9 +224,9 @@ public class StatesAPI {
             Map<String, String> schedule = new HashMap<>();
             Map taskoSchedule = new TaskomaticApi().findScheduleById(user, Long.parseLong(scheduleId));
             if (taskoSchedule.get("id") != null) {
-                String cronExpr = taskoSchedule.get("cron_expr").toString();
-                schedule = (Map<String, String>) taskoSchedule.get("data_map");
+                schedule = getScheduleDetails(taskoSchedule);
                 if (schedule.get("minute").isEmpty()) {
+                    String cronExpr = schedule.get("cron_expr");
                     RecurringEventPicker picker = RecurringEventPicker.prepopulatePicker("date", null, null, cronExpr);
                     schedule.put("minute", picker.getMinute());
                     schedule.put("hour", picker.getHour());
@@ -242,17 +234,28 @@ public class StatesAPI {
                     schedule.put("dayOfWeek", picker.getDayOfWeek());
                     schedule.put("type", picker.getStatus());
                 }
-                String date = new Timestamp(((Date) taskoSchedule.get("active_from")).getTime()).toString();
-                schedule.put("scheduleId", taskoSchedule.get("id").toString());
-                schedule.put("scheduleName", taskoSchedule.get("job_label").toString());
-                schedule.put("createdAt", date.substring(0, date.indexOf(".")));
-                schedule.put("frequency", cronExpr);
             }
             return schedule;
         }
         catch(TaskomaticApiException e) {
             return new HashMap<>();
         }
+    }
+
+    /**
+     * Returns a single schedule Object
+     *
+     * @param taskoSchedule the schedule Object of taskomatic
+     * @return the result schedule object
+     */
+    private static Map<String, String> getScheduleDetails(Map taskoSchedule) {
+        Map<String, String> schedule = (Map<String, String>) taskoSchedule.get("data_map");
+        String date = new Timestamp(((Date) taskoSchedule.get("active_from")).getTime()).toString();
+        schedule.put("cron", taskoSchedule.get("cron_expr").toString());
+        schedule.put("scheduleId", taskoSchedule.get("id").toString());
+        schedule.put("scheduleName", taskoSchedule.get("job_label").toString());
+        schedule.put("createdAt", date.substring(0, date.indexOf(".")));
+        return schedule;
     }
 
     /**
@@ -546,11 +549,11 @@ public class StatesAPI {
         Map<String, String> params = new HashMap<>();
         params.put("user_id", user.getId().toString());
         params.put("minionIds", json.getMinionIds().toString());
-        params.put("isActive", json.isActive() ? "true" : "false");
+        params.put("active", json.isActive() ? "true" : "false");
         params.put("minionNames", json.getMinionNames().toString());
         params.put("targetType", json.getTargetType());
         if (groupName != null) params.put("groupName", groupName);
-        params.put("isTest", json.isTest() ? "true" : "false");
+        params.put("test", json.isTest() ? "true" : "false");
         params.put("type", type);
         params.putAll(cronTimes);
 

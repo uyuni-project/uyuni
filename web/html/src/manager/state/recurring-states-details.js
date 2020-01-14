@@ -19,11 +19,8 @@ class RecurringStatesDetails extends React.Component {
 
         this.state = {
             messages: [],
-            minions: this.props.data.minionIds.reduce((minions, minion, i) => {
-                minions[i] = {id: minion, name: this.props.data.minionNames[i]};
-                return minions;}, []),
+            minions: props.minions
         };
-
     }
 
     getExecutionText(data) {
@@ -31,32 +28,30 @@ class RecurringStatesDetails extends React.Component {
             return (
                 <tr>
                     <td>{t("Execution time")}:</td>
-                    {data.type === "disabled" ?
-                        <td>{"disabled"}</td>
-                        : data.type === "daily" ?
+                    {data.type === "daily" ?
+                        <td>
+                            {"Every day at "}
+                            <b>{data.hour + ":" + data.minute}</b>
+                        </td>
+                        : data.type === "weekly" ?
                             <td>
-                                {"Every day at "}
+                                {"Every "}
+                                <b>{this.weekDays[data.dayOfWeek - 1]}</b>
+                                {" at "}
+                                <b>{data.hour + ":" + data.minute}</b>
+                            </td> :
+                            <td>
+                                {"Every "}
+                                <b>
+                                    {data.dayOfMonth + (
+                                        data.dayOfMonth === "1" ? "st "
+                                            : data.dayOfMonth === "2" ? "nd "
+                                            : data.dayOfMonth === "3" ? "rd "
+                                                : "th ")}
+                                </b>
+                                {"of the month at "}
                                 <b>{data.hour + ":" + data.minute}</b>
                             </td>
-                            : data.type === "weekly" ?
-                                <td>
-                                    {"Every "}
-                                    <b>{this.weekDays[data.dayOfWeek - 1]}</b>
-                                    {" at "}
-                                    <b>{data.hour + ":" + data.minute}</b>
-                                </td> :
-                                <td>
-                                    {"Every "}
-                                    <b>
-                                        {data.dayOfMonth + (
-                                            data.dayOfMonth === "1" ? "st "
-                                                : data.dayOfMonth === "2" ? "nd "
-                                                : data.dayOfMonth === "3" ? "rd "
-                                                    : "th ")}
-                                    </b>
-                                    {"of the month at "}
-                                    <b>{data.hour + ":" + data.minute}</b>
-                                </td>
                     }
                 </tr>
             );
@@ -80,11 +75,15 @@ class RecurringStatesDetails extends React.Component {
                 <div className="table-responsive">
                     <table className="table">
                         <tbody>
-                        { data.isTest === "true" &&
-                            <tr>
-                                <td>{t("Test")}:</td>
-                                <td>{t("True")}</td>
-                            </tr>
+                        <tr>
+                            <td>{t("State:")}</td>
+                            <td>{data.active === "true" ? t("active") : <b>{t("disabled")}</b>}</td>
+                        </tr>
+                        { data.test === "true" &&
+                        <tr>
+                            <td>{t("Test")}:</td>
+                            <td>{t("True")}</td>
+                        </tr>
                         }
                         <tr>
                             <td>{t("Target type")}:</td>
@@ -96,10 +95,12 @@ class RecurringStatesDetails extends React.Component {
                             <td>{data.groupName}</td>
                         </tr>
                         }
+                        { data.minionNames.length < 20 &&
                         <tr>
                             <td>{"System name" + (data.minionNames.length > 1 ? "s" : "")}:</td>
                             <td>{data.minionNames.join(", ")}</td>
                         </tr>
+                        }
                         <tr>
                             <td>{t("Created at")}:</td>
                             <td>{data.createdAt + " " + timezone}</td>
@@ -107,7 +108,7 @@ class RecurringStatesDetails extends React.Component {
                         {this.getExecutionText(data)}
                         <tr>
                             <td>{t("Quartz format string")}:</td>
-                            <td>{data.frequency}</td>
+                            <td>{data.cron}</td>
                         </tr>
                         </tbody>
                     </table>

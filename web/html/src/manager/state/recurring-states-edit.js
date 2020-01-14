@@ -14,7 +14,6 @@ const Network = require("utils/network");
 const { InnerPanel } = require("components/panels/InnerPanel");
 const Functions = require("utils/functions");
 
-const messagesCounterLimit = 3;
 
 function msg(severityIn, textIn) {
     return {severity: severityIn, text: textIn};
@@ -24,12 +23,8 @@ class RecurringStatesEdit extends React.Component {
     constructor(props) {
         super(props);
 
-        ["onCreate", "onUpdate"]
-            .forEach(method => this[method] = this[method].bind(this));
-
         this.state = {
-            minions : minions,
-            messages: []
+            minions: minions
         };
 
         if(this.isEdit()) {
@@ -43,12 +38,11 @@ class RecurringStatesEdit extends React.Component {
         Object.assign(
             this.state,
             {
+                scheduleId: schedule.scheduleId,
                 scheduleName: schedule.scheduleName,
-                minions: schedule.minionIds.reduce((minions, minion, i) => {
-                    minions[i] = {id: minion, name: schedule.minionNames[i]};
-                    return minions;}, []),
+                minions: schedule.minions,
                 type: schedule.type,
-                active: schedule.isActive === "true",
+                active: schedule.active === "true",
                 targetType: schedule.targetType,
                 groupName: schedule.groupName,
                 cronTimes: {
@@ -57,9 +51,10 @@ class RecurringStatesEdit extends React.Component {
                     dayOfWeek: schedule.dayOfWeek,
                     dayOfMonth: schedule.dayOfMonth
                 },
-                customCron: schedule.frequency,
-                test: schedule.isTest === "true"
-            });
+                cron: schedule.cron,
+                test: schedule.test === "true"
+            }
+        );
     };
 
     getTargetType = () => {
@@ -86,81 +81,36 @@ class RecurringStatesEdit extends React.Component {
         if (this.isEdit()) {
             return false;
         }
-        return Network.post(
-            "/rhn/manager/api/states/schedules/save",
-            JSON.stringify({
-                minionIds: this.state.minions.map(minion => minion.id),
-                minionNames: this.state.minions.map(minion => minion.name),
-                scheduleName: this.state.scheduleName,
-                active: true,
-                type: this.state.type,
-                targetType: this.state.targetType,
-                groupName: this.state.groupName,
-                cronTimes: this.state.cronTimes,
-                cron: this.state.customCron,
-                test: this.state.test
-            }),
-            "application/json"
-        ).promise.then(() => {
-            const msg = MessagesUtils.info(
-                <span>{t("Schedule successfully created.")}</span>);
-
-            const msgs = this.state.messages.concat(msg);
-
-            while (msgs.length > messagesCounterLimit) {
-                msgs.shift();
-            }
-
-            this.props.onMessageChanged(msgs);
-            this.setState({
-                messages: msgs
-            });
-            this.props.onActionChanged();
-        }).catch(this.handleResponseError);
+        this.props.onCreate({
+            minionIds: this.state.minions.map(minion => minion.id),
+            minionNames: this.state.minions.map(minion => minion.name),
+            scheduleName: this.state.scheduleName,
+            active: true,
+            type: this.state.type,
+            targetType: this.state.targetType,
+            groupName: this.state.groupName,
+            cronTimes: this.state.cronTimes,
+            cron: this.state.cron,
+            test: this.state.test
+        });
     };
 
-    onUpdate = () => {
+    onEdit = () => {
         if (!this.isEdit()) {
             return false;
         }
-        return Network.post(
-            "/rhn/manager/api/states/schedules/" + this.props.schedule.scheduleId + "/update",
-            JSON.stringify({
-                minionIds: this.state.minions.map(minion => minion.id),
-                minionNames: this.state.minions.map(minion => minion.name),
-                scheduleName: this.state.scheduleName,
-                active: this.state.active,
-                type: this.state.type,
-                targetType: this.state.targetType,
-                groupName: this.state.groupName,
-                cronTimes: this.state.cronTimes,
-                cron: this.state.customCron,
-                test: this.state.test
-            }),
-            "application/json"
-        ).promise.then(() => {
-            const msg = MessagesUtils.info(
-                <span>{t("Schedule successfully updated.")}</span>);
-
-            const msgs = this.state.messages.concat(msg);
-
-            while (msgs.length > messagesCounterLimit) {
-                msgs.shift();
-            }
-
-            this.props.onMessageChanged(msgs);
-            this.setState({
-                messages: msgs
-            });
-            this.props.onActionChanged();
-        }).catch(this.handleResponseError);
-    };
-
-    handleResponseError = (jqXHR) => {
-        let message = Network.responseErrorMessage(jqXHR);
-        this.props.onMessageChanged(message);
-        this.setState({
-            messages: message
+        this.props.onEdit({
+            minionIds: this.state.minions.map(minion => minion.id),
+            minionNames: this.state.minions.map(minion => minion.name),
+            scheduleId: this.state.scheduleId,
+            scheduleName: this.state.scheduleName,
+            active: this.state.active,
+            type: this.state.type,
+            targetType: this.state.targetType,
+            groupName: this.state.groupName,
+            cronTimes: this.state.cronTimes,
+            cron: this.state.cron,
+            test: this.state.test
         });
     };
 
@@ -170,22 +120,22 @@ class RecurringStatesEdit extends React.Component {
 
     onToggleActive = (active) => {
         this.setState({active: active});
-    }
+    };
 
     onTypeChanged = (type) => {
-        this.setState({type: type})
+        this.setState({type: type});
     };
 
     onCronTimesChanged = (cronTimes) => {
-        this.setState({cronTimes: cronTimes})
+        this.setState({cronTimes: cronTimes});
     };
 
-    onCustomCronChanged = (customCron) => {
-        this.setState({customCron: customCron})
+    onCustomCronChanged = (cron) => {
+        this.setState({cron: cron});
     };
 
     toggleTestState = () => {
-        this.setState({test: !this.state.test})
+        this.setState({test: !this.state.test});
     };
 
     resetFields = () => {
@@ -196,7 +146,7 @@ class RecurringStatesEdit extends React.Component {
         const buttons = [
                 <div className="btn-group pull-right">
                     <Toggler text={t('Test mode')} value={this.state.test} className="btn" handler={this.toggleTestState.bind(this)} />
-                    <AsyncButton action={this.isEdit() ? this.onUpdate : this.onCreate} defaultType="btn-success" text={(this.isEdit() ? t("Update ") : t("Create ")) + t("Schedule")} disabled={minions.length === 0} />
+                    <AsyncButton action={this.isEdit() ? this.onEdit : this.onCreate} defaultType="btn-success" text={(this.isEdit() ? t("Update ") : t("Create ")) + t("Schedule")} disabled={minions.length === 0} />
                 </div>
                 ];
         const buttonsLeft = [
@@ -213,13 +163,13 @@ class RecurringStatesEdit extends React.Component {
                                           scheduleName={this.state.scheduleName}
                                           active={this.state.active}
                                           type={this.state.type}
+                                          cron={this.state.cron}
                                           cronTimes={this.state.cronTimes}
-                                          customCron={this.state.customCron}
                                           onScheduleNameChanged={this.onScheduleNameChanged}
                                           onToggleActive={this.onToggleActive}
                                           onTypeChanged={this.onTypeChanged}
                                           onCronTimesChanged={this.onCronTimesChanged}
-                                          onCustomCronChanged={this.onCustomCronChanged} />
+                                          onCronChanged={this.onCustomCronChanged} />
                     <DisplayHighstate minions={this.state.minions}/>
                 </InnerPanel>
             </div>
