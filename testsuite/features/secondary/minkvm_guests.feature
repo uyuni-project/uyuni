@@ -168,35 +168,35 @@ Feature: Be able to manage KVM virtual machines via the GUI
     Then I should see a "Hosted Virtual Systems" text
     When I wait until I see "test-vm2" text
     And I wait until table row for "test-vm2" contains button "Stop"
-    And "test-vm2" virtual machine on "kvm-server" should have 1024MB memory and 1 vcpus
-    And "test-vm2" virtual machine on "kvm-server" should have 1 NIC using "test-net0" network
-    And "test-vm2" virtual machine on "kvm-server" should have a "test-vm2_system.qcow2" virtio disk
+    And "test-vm2" virtual machine on "kvm_server" should have 1024MB memory and 1 vcpus
+    And "test-vm2" virtual machine on "kvm_server" should have 1 NIC using "test-net0" network
+    And "test-vm2" virtual machine on "kvm_server" should have a "test-vm2_system.qcow2" virtio disk
 
 @virthost_kvm
   Scenario: Show the Spice graphical console for KVM
-    Given I am on the "Virtualization" page of this "kvm-server"
+    Given I am on the "Virtualization" page of this "kvm_server"
     When I click on "Graphical Console" in row "test-vm2"
     Then I wait until I see the spice graphical console
     And I close the window
 
 @virthost_kvm
   Scenario: Show the virtual storage pools and volumes for KVM
-    Given I am on the "Virtualization" page of this "kvm-server"
-    When I refresh the "test-pool0" storage pool of this "kvm-server"
+    Given I am on the "Virtualization" page of this "kvm_server"
+    When I refresh the "test-pool0" storage pool of this "kvm_server"
     When I follow "Storage"
     And I open the sub-list of the product "test-pool0"
     Then I wait until I see "test-vm2_system.qcow2" text
 
 @virthost_kvm
   Scenario: delete a running KVM virtual machine
-    Given I am on the "Virtualization" page of this "kvm-server"
+    Given I am on the "Virtualization" page of this "kvm_server"
     When I click on "Delete" in row "test-vm2"
     And I click on "Delete" in "Delete Guest" modal
-    Then I should not see a "test-vm2" virtual machine on "kvm-server"
+    Then I should not see a "test-vm2" virtual machine on "kvm_server"
 
 @virthost_kvm
   Scenario: Cleanup: Unregister the KVM virtualization host
-    Given I am on the Systems overview page of this "kvm-server"
+    Given I am on the Systems overview page of this "kvm_server"
     When I follow "Delete System"
     And I should see a "Confirm System Profile Deletion" text
     And I click on "Delete Profile"
@@ -204,19 +204,19 @@ Feature: Be able to manage KVM virtual machines via the GUI
 
 @virthost_kvm
   Scenario: Cleanup: Cleanup KVM virtualization host
-    When I run "zypper -n mr -e --all" on "kvm-server" without error control
-    And I run "zypper -n rr SUSE-Manager-Bootstrap" on "kvm-server" without error control
-    And I run "systemctl stop salt-minion" on "kvm-server" without error control
-    And I run "rm /etc/salt/minion.d/susemanager*" on "kvm-server" without error control
-    And I run "rm /etc/salt/minion.d/libvirt-events.conf" on "kvm-server" without error control
-    And I run "rm /etc/salt/pki/minion/minion_master.pub" on "kvm-server" without error control
+    When I run "zypper -n mr -e --all" on "kvm_server" without error control
+    And I run "zypper -n rr SUSE-Manager-Bootstrap" on "kvm_server" without error control
+    And I run "systemctl stop salt-minion" on "kvm_server" without error control
+    And I run "rm /etc/salt/minion.d/susemanager*" on "kvm_server" without error control
+    And I run "rm /etc/salt/minion.d/libvirt-events.conf" on "kvm_server" without error control
+    And I run "rm /etc/salt/pki/minion/minion_master.pub" on "kvm_server" without error control
     # In case the delete VM test failed we need to clean up ourselves.
-    And I run "virsh undefine --remove-all-storage test-vm" on "kvm-server" without error control
-    And I run "virsh destroy test-vm2" on "kvm-server" without error control
-    And I run "virsh undefine --remove-all-storage test-vm2" on "kvm-server" without error control
-    And I delete test-net0 virtual network on "kvm-server" without error control
-    And I delete test-net1 virtual network on "kvm-server" without error control
-    And I delete test-pool0 virtual storage pool on "kvm-server" without error control
-    And I delete all "test-vm.*" volumes from "test-pool0" pool on "kvm-server" without error control
+    And I run "virsh undefine --remove-all-storage test-vm" on "kvm_server" without error control
+    And I run "virsh destroy test-vm2" on "kvm_server" without error control
+    And I run "virsh undefine --remove-all-storage test-vm2" on "kvm_server" without error control
+    And I delete test-net0 virtual network on "kvm_server" without error control
+    And I delete test-net1 virtual network on "kvm_server" without error control
+    And I delete test-pool0 virtual storage pool on "kvm_server" without error control
+    And I delete all "test-vm.*" volumes from "test-pool0" pool on "kvm_server" without error control
     # Remove the virtpoller cache to avoid problems
-    And I run "rm /var/cache/virt_state.cache" on "kvm-server" without error control
+    And I run "rm /var/cache/virt_state.cache" on "kvm_server" without error control
