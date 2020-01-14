@@ -1,3 +1,4 @@
+- merge java translations from branding back to this package
 - fix mgr-sync add channel when fromdir is configured (bsc#1160184)
 - handle not found re-activation key (bsc#1159012)
 - write a list of formulas sorted by execution order (bsc#1083326)
