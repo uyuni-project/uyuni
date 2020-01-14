@@ -1,4 +1,4 @@
-# Copyright (c) 2019 SUSE LLC
+# Copyright (c) 2019-2020 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 Feature: Migrate a traditional client into a Salt SSH minion
@@ -8,7 +8,7 @@ Feature: Migrate a traditional client into a Salt SSH minion
 
   Scenario: Install a package before migration to Salt SSH minion
     Given I am on the Systems overview page of this "sle_client"
-    And I follow "Software" in the content area
+    When I follow "Software" in the content area
     And I follow "Install"
     And I check "orion-dummy-1.1-1.1" in the list
     And I click on "Install Selected Packages"
@@ -103,7 +103,7 @@ Feature: Migrate a traditional client into a Salt SSH minion
     When I wait until file "/tmp/remote-command-on-migrated-test" exists on "sle_migrated_minion"
     And I remove "/tmp/remote-command-on-migrated-test" from "sle_migrated_minion"
 
-  Scenario: Cleanup: remove package from the migrated SSH minion
+  Scenario: Cleanup: remove packages from the migrated SSH minion
     When I remove package "perseus-dummy-1.1-1.1" from this "sle_migrated_minion"
     And I remove package "orion-dummy-1.1-1.1" from this "sle_migrated_minion"
 
