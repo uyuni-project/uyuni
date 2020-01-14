@@ -37,18 +37,18 @@ Feature: Content lifecycle
     When I follow the left menu "Content Lifecycle > Projects"
     And I follow "clp_name"
     And I follow "Attach/Detach Sources"
-    And I select "SLES12-SP4-Pool for x86_64" from "selectedBaseChannel"
+    And I select "SLES12-SP5-Pool for x86_64" from "selectedBaseChannel"
     And I click on "Save"
-    Then I wait until I see "SLES12-SP4-Pool for x86_64" text
+    Then I wait until I see "SLES12-SP5-Pool for x86_64" text
     And I should see a "Version 1: (draft - not built) - Check the changes below" text
 
   Scenario: Verify added sources
     Given I am authorized as "admin" with password "admin"
     When I follow the left menu "Content Lifecycle > Projects"
     And I follow "clp_name"
-    And I should see a "SLE-Manager-Tools12-Updates for x86_64 SP4" text
-    And I should see a "SLES12-SP4-Updates for x86_64" text
-    And I should see a "SLE-Manager-Tools12-Pool for x86_64 SP4" text
+    And I should see a "SLE-Manager-Tools12-Updates for x86_64 SP5" text
+    And I should see a "SLES12-SP5-Updates for x86_64" text
+    And I should see a "SLE-Manager-Tools12-Pool for x86_64 SP5" text
     And I should see a "Build (4)" text
 
 @scc_credentials
