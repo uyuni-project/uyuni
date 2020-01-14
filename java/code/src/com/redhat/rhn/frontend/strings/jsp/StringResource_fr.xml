@@ -25289,6 +25289,337 @@ canal  {0}. Les systèmes abonnés vont perdre leur accès aux paquetages spéci
           <target>Total des paquets</target>
         </trans-unit>
       </group>
+      <trans-unit id="sdc.details.overview.installedproducts">
+        <source>Installed Products:</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/systems/details/Overview.do</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="repos.jsp.create.metadataSigned">
+        <source>Has Signed Metadata?</source>
+      </trans-unit>
+      <trans-unit id="errata-legend.jsp.reboot">
+        <source>Reboot Required</source>
+      </trans-unit>
+      <trans-unit id="errata-legend.jsp.restart">
+        <source>Affects Package Management</source>
+      </trans-unit>
+      <trans-unit id="systemgroup.details.states">
+        <source>States:</source>
+      </trans-unit>
+      <trans-unit id="systemgroup.details.states.apply">
+        <source>&lt;a href="{1}"&gt;Apply system states&lt;/a&gt; for {0} system(s)</source>
+      </trans-unit>
+      <trans-unit id="errata.jsp.restart-tooltip">
+        <source>Affects package management stack</source>
+      </trans-unit>
+      <trans-unit id="ssm.overview.states">
+        <source>States</source>
+      </trans-unit>
+      <trans-unit id="ssm.overview.states.apply">
+        <source>&lt;a href="/rhn/manager/systems/ssm/highstate"&gt;Apply&lt;/a&gt; system states</source>
+      </trans-unit>
+      <trans-unit id="sdc.channels.edit.ssm.deploy.warning">
+        <source>Changes to channel assignments on salt managed systems will take effect at next highstate application</source>
+      </trans-unit>
+      <trans-unit id="sdc.channels.info.change">
+        <source>When subscribing to a channel that contains a product, the product package will automatically be installed on traditionally registered systems or added to the package states on Salt managed systems.</source>
+      </trans-unit>
+      <trans-unit id="channelOverview.jsp.tasks.modifyCreate.state">
+        <source>Create configuration file</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/configuration/ChannelOverview.do</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="channelOverview.jsp.tasks.initsls">
+        <source>State File</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/configuration/ChannelOverview.do</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="channelOverview.jsp.tasks.viewinitsls">
+        <source>View/Edit 'init.sls' File</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/configuration/ChannelOverview.do</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="sdc.details.overview.kernel_live">
+        <source>&lt;strong&gt;Live patch:&lt;/strong&gt; {0}</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/systems/details/Overview.do</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="spmigration.jsp.target.title">
+        <source>Service Pack Migration - Target</source>
+      </trans-unit>
+      <trans-unit id="spmigration.jsp.target.submit">
+        <source>Select Channels</source>
+      </trans-unit>
+      <trans-unit id="spmigration.jsp.error.targetProductSelectedEmpty">
+        <source>Please select one target product to migrate</source>
+      </trans-unit>
+      <trans-unit id="spmigration.jsp.target.notSyncedChannels">
+        <source>Target not available, the following channels are not synced: </source>
+      </trans-unit>
+      <trans-unit id="spmigration.jsp.setup.title">
+        <source>Service Pack Migration - Channels</source>
+      </trans-unit>
+      <trans-unit id="spmigration.jsp.setup.installed-products">
+        <source>Installed Products:</source>
+      </trans-unit>
+      <trans-unit id="spmigration.jsp.setup.target-products">
+        <source>Target Products:</source>
+      </trans-unit>
+      <trans-unit id="spmigration.jsp.setup.base-channel">
+        <source>Target Base Channel:</source>
+      </trans-unit>
+      <trans-unit id="spmigration.jsp.setup.mandatory-channels">
+        <source>Mandatory Child Channels:</source>
+      </trans-unit>
+      <trans-unit id="spmigration.jsp.setup.optional-channels">
+        <source>Optional Child Channels:</source>
+      </trans-unit>
+      <trans-unit id="spmigration.jsp.setup.none">
+        <source>None</source>
+      </trans-unit>
+      <trans-unit id="spmigration.jsp.setup.submit">
+        <source>Schedule Migration</source>
+      </trans-unit>
+      <trans-unit id="spmigration.jsp.error.unsupported">
+        <source>Service Pack Migrations are supported for &lt;strong&gt;SUSE&lt;/strong&gt; systems only.</source>
+      </trans-unit>
+      <trans-unit id="spmigration.jsp.error.update-zypp-plugin">
+        <source>Service Pack Migrations are currently not supported for this system, please install the latest version of &lt;strong&gt;zypp-plugin-spacewalk&lt;/strong&gt;.</source>
+      </trans-unit>
+      <trans-unit id="spmigration.jsp.error.scheduled">
+        <source>A Service Pack Migration is already &lt;a href="/rhn/systems/details/history/Event.do?sid={0}&amp;aid={1}"&gt;scheduled&lt;/a&gt; for this system.</source>
+      </trans-unit>
+      <trans-unit id="spmigration.jsp.error.up-to-date">
+        <source>There is currently no migration available for this system. Either the latest Service Pack is already installed or possible target products are not available. Please use the &lt;a href="/rhn/manager/admin/setup/products"&gt;&lt;strong&gt;Setup Wizard&lt;/strong&gt;&lt;/a&gt; to identify and add missing products.</source>
+      </trans-unit>
+      <trans-unit id="spmigration.jsp.error.missing-channels">
+        <source>Some software channels are missing for this migration, please make sure to sync all mandatory channels by adding the below target product(s) using the &lt;a href="/rhn/manager/admin/setup/products"&gt;&lt;strong&gt;Setup Wizard&lt;/strong&gt;&lt;/a&gt;.</source>
+      </trans-unit>
+      <trans-unit id="spmigration.jsp.error.updatestack-update-needed">
+        <source>There are outstanding Package Management Stack updates available for this system. Please update all Software Update Stack related packages before you start a Service Pack migration.</source>
+      </trans-unit>
+      <trans-unit id="spmigration.jsp.error.update-salt-package-needed">
+        <source>The installed &lt;strong&gt;Salt&lt;/strong&gt; package version on this system is out of date. Please update the package to the latest version before you start a Service Pack migration.</source>
+      </trans-unit>
+      <trans-unit id="spmigration.jsp.confirm.title">
+        <source>Service Pack Migration - Confirm</source>
+      </trans-unit>
+      <trans-unit id="spmigration.jsp.confirm.description">
+        <source>Please confirm below to schedule the migration of this system to the following products:</source>
+      </trans-unit>
+      <trans-unit id="spmigration.jsp.confirm.channels-after-migration">
+        <source>Channel subscriptions after the migration:</source>
+      </trans-unit>
+      <trans-unit id="spmigration.jsp.confirm.note">
+        <source>In order to detect any possible problems it is recommended to always do a &lt;strong&gt;Dry Run&lt;/strong&gt; before scheduling the actual Service Pack Migration.</source>
+      </trans-unit>
+      <trans-unit id="spmigration.jsp.confirm.back">
+        <source>Go Back</source>
+      </trans-unit>
+      <trans-unit id="spmigration.jsp.confirm.submit.dry-run">
+        <source>Dry Run</source>
+      </trans-unit>
+      <trans-unit id="server.contact-method.label">
+        <source>Contact Method:</source>
+      </trans-unit>
+      <trans-unit id="sdc.details.edit.contact-method.unentitled">
+        <source>Contact method not available for this system.</source>
+      </trans-unit>
+      <trans-unit id="kickstart.schedule.invalid.contact.method">
+        <source>Provisioning is currently not supported for systems managed with push via SSH tunnel.</source>
+      </trans-unit>
+      <trans-unit id="filedetails.jsp.tip.macros">
+        <source>&lt;strong&gt;Tip:&lt;/strong&gt; A full listing of the available macros is listed in the &lt;a href="{0}"&gt;User Guide&lt;/a&gt;.</source>
+      </trans-unit>
+      <trans-unit id="setup-wizard.prev">
+        <source>Prev</source>
+      </trans-unit>
+      <trans-unit id="mirror-credentials.jsp.username">
+        <source>Username</source>
+      </trans-unit>
+      <trans-unit id="mirror-credentials.jsp.password">
+        <source>Password</source>
+      </trans-unit>
+      <trans-unit id="mirror-credentials.jsp.primary">
+        <source>this is the primary credentials</source>
+      </trans-unit>
+      <trans-unit id="mirror-credentials.jsp.make-primary">
+        <source>make primary credentials</source>
+      </trans-unit>
+      <trans-unit id="mirror-credentials.jsp.subscriptions">
+        <source>list subscriptions</source>
+      </trans-unit>
+      <trans-unit id="mirror-credentials.jsp.edit">
+        <source>edit credentials</source>
+      </trans-unit>
+      <trans-unit id="mirror-credentials.jsp.delete">
+        <source>delete credentials</source>
+      </trans-unit>
+      <trans-unit id="mirror-credentials.jsp.success">
+        <source>credentials verified (click to refresh)</source>
+      </trans-unit>
+      <trans-unit id="mirror-credentials.jsp.failed">
+        <source>verification failed (click to refresh)</source>
+      </trans-unit>
+      <trans-unit id="mirror-credentials.jsp.modal-edit.title">
+        <source>Edit credentials</source>
+      </trans-unit>
+      <trans-unit id="mirror-credentials.jsp.modal-delete.title">
+        <source>Are you sure you want to delete these credentials?</source>
+      </trans-unit>
+      <trans-unit id="mirror-credentials.jsp.modal-subscriptions.title">
+        <source>Subscriptions related to these credentials</source>
+      </trans-unit>
+      <trans-unit id="mirror-credentials.jsp.iss-slave">
+        <source>This server is configured as an Inter-Server Synchronisation (ISS) slave. Credentials can only be managed on the ISS master.</source>
+      </trans-unit>
+      <trans-unit id="mirror-credentials.jsp.bt.cancel">
+        <source>Cancel</source>
+      </trans-unit>
+      <trans-unit id="mirror-credentials.jsp.bt.save">
+        <source>Save</source>
+      </trans-unit>
+      <trans-unit id="mirror-credentials.jsp.bt.delete">
+        <source>Delete</source>
+      </trans-unit>
+      <trans-unit id="mirror-credentials.jsp.bt.close">
+        <source>Close</source>
+      </trans-unit>
+      <trans-unit id="mirror-credentials.jsp.header">
+        <source>Setup Wizard</source>
+      </trans-unit>
+      <trans-unit id="mirror-credentials.jsp.info.h1">
+        <source>What are Organization Credentials?</source>
+      </trans-unit>
+      <trans-unit id="mirror-credentials.jsp.info.p1">
+        <source>Organization credentials (Mirror credentials) are your access to product downloads.</source>
+      </trans-unit>
+      <trans-unit id="mirror-credentials.jsp.info.h2">
+        <source>Where do I find my Organization Credentials?</source>
+      </trans-unit>
+      <trans-unit id="mirror-credentials.jsp.info.p2">
+        <source>You can find them in the &lt;a href="https://scc.suse.com/organization" target="_blank"&gt;Customer Center&lt;/a&gt;.</source>
+      </trans-unit>
+      <trans-unit id="mirror-credentials.jsp.error.duplicate">
+        <source>Credentials with this username already exist</source>
+      </trans-unit>
+      <trans-unit id="copyright.jsp.title">
+        <source>Copyright (c) 2011 - 2019 SUSE LLC.</source>
+      </trans-unit>
+      <trans-unit id="copyright.jsp.urlagreement">
+        <source>&lt;a href=&quot;/rhn/help/Eula.do&quot;&gt;SUSE MANAGER LICENSE AGREEMENT&lt;/a&gt;</source>
+      </trans-unit>
+      <trans-unit id="copyright.jsp.body.uyuni">
+        <source>
+&lt;p&gt;
+    @@PRODUCT_NAME@@ is an open source (GPLv2) Linux systems management solution.
+&lt;/p&gt;
+&lt;p&gt;
+    For details on @@PRODUCT_NAME@@, please visit our web-site at &lt;a href="http://www.uyuni-project.org/" target="_blank"&gt; http://www.uyuni-project.org/&lt;/a&gt;.
+&lt;/p&gt;
+        </source>
+      </trans-unit>
+      <trans-unit id="compare.jsp.noprovisioning">
+        <source>Syncing the packages to the list above is not available for this system.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">NOTFILLEDOUT</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="activation-key.jsp.config-auto-deploy-highstate-tooltip">
+        <source>If the system is registered via Salt, the highstate will be executed on registration if this checkbox is selected.</source>
+      </trans-unit>
+      <trans-unit id="help.jsp.about.learnmore">
+        <source>&lt;a href="http://www.suse.com/products/suse-manager" target="_blank"&gt;Click here&lt;/a&gt; to learn more about @@PRODUCT_NAME@@</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/help/about</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="help.jsp.about.learnmore.uyuni">
+        <source>&lt;a href="http://www.uyuni-project.org/" target="_blank"&gt;Click here&lt;/a&gt; to learn more about @@PRODUCT_NAME@@</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/help/about</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="yourrhn.jsp.tasks.minions">
+        <source>Manage &lt;strong&gt;Pending Minions&lt;/strong&gt; ({0})</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/YourRhn.do</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="packagesindex.jsp.states">
+        <source>Manage Package States</source>
+      </trans-unit>
+      <trans-unit id="container_build_host">
+        <source>Container Build Host</source>
+      </trans-unit>
+      <trans-unit id="osimage_build_host">
+        <source>OS Image Build Host</source>
+      </trans-unit>
+      <trans-unit id="monitoring_entitled">
+        <source>Monitoring</source>
+      </trans-unit>
+      <trans-unit id="Formulas">
+        <source>Formulas</source>
+      </trans-unit>
+      <trans-unit id="sdc.config.subscriptions.jsp.label">
+        <source>Channel Label</source>
+      </trans-unit>
+      <trans-unit id="ssm.config.subscriptions.jsp.label">
+        <source>Channel Label</source>
+      </trans-unit>
+      <trans-unit id="delete_confirm.jsp.summary.sshpush">
+        <source>For Salt minions SUSE Manager will also cleanup any specific configuration installed on the minion.
+              This might take a few extra seconds.</source>
+      </trans-unit>
+      <trans-unit id="ssm.delete.systems.salt.cleanup">
+        <source>The selected profiles include Salt systems. SUSE Manager can try to remove the specific configuration from the Salt systems.
+            In order for this to work the systems must be up and running and reachable. If a system is not reachable it will result in an error.</source>
+      </trans-unit>
+      <trans-unit id="ssm.delete.systems.salt.cleanup.type">
+        <source>Please chose how to handle Salt minions cleanup and delete:</source>
+      </trans-unit>
+      <trans-unit id="ssm.delete.systems.salt.cleanup.no_cleanup">
+        <source>Delete systems without cleanup</source>
+      </trans-unit>
+      <trans-unit id="ssm.delete.systems.salt.cleanup.force_delete">
+        <source>Clean up and delete systems even in case of errors</source>
+      </trans-unit>
+      <trans-unit id="ssm.delete.systems.salt.cleanup.skip_on_err">
+        <source>Only delete systems if cleanup is successful</source>
+      </trans-unit>
+      <trans-unit id="ssm.delete.systems.cancel">
+        <source>Cancel</source>
+      </trans-unit>
+      <trans-unit id="filedetails.properties.jspf.saltpath">
+        <source>Salt Filesystem Path</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/configuration/file/FileDetails.do</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="filedetails.jsp.tip.saltpath">
+        <source>&lt;strong&gt;Tip:&lt;/strong&gt; To reference any file in the channel, you can use the base &lt;strong&gt;"{0}"&lt;/strong&gt; followed by the actual file path.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/configuration/file/FileDetails.do</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="channel.delete.jsp.state.scheduled.info">
+        <source>
+           Application of the channel state will be scheduled immediately after confirming on any minions
+           that currently have this channel assigned. This will update repository files on those minions to
+           remove the deleted channel.
+        </source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/channels/manage/Delete.do</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="filedetails.jsp.note.macrosalt">
+        <source>&lt;strong&gt;Note:&lt;/strong&gt; Macro delimiters will be ignored when deploying to systems managed via Salt.</source>
+      </trans-unit>
     </body>
   </file>
 </xliff>

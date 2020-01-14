@@ -9675,6 +9675,411 @@ tree will not be usable for kickstarting.
       <trans-unit id="help.credentials.nologins">
         <source>There are no registered accounts with that email address.</source>
       </trans-unit>
+      <trans-unit id="email.satellitecert.spwbodyend">
+        <source>
+
+
+Thank you for using @@PRODUCT_NAME@@.
+--the @@PRODUCT_NAME@@ Team
+</source>
+      </trans-unit>
+      <trans-unit id="email.satellitecert.satbodyend">
+        <source>
+Please contact your regional @@VENDOR_NAME@@ Customer Service Representative for information
+on how to renew your @@PRODUCT_NAME@@ Certificate.
+
+
+Thank you for using @@PRODUCT_NAME@@.
+--the @@PRODUCT_NAME@@ Team
+</source>
+      </trans-unit>
+      <trans-unit id="alphabar.label">
+        <source>Select first character</source>
+      </trans-unit>
+      <trans-unit id="login.jsp.satbody2">
+        <source>For details on @@PRODUCT_NAME@@, please visit our website &lt;a href=&quot;http://www.suse.com/products/suse-manager/&quot; target=&quot;_new&quot;&gt;&lt;i class=&quot;fa fa-globe&quot;&gt;&lt;/i&gt;&lt;/a&gt;. </source>
+      </trans-unit>
+      <trans-unit id="login.jsp.satbody3">
+        <source> </source>
+      </trans-unit>
+      <trans-unit id="lookup.customkey.title">
+        <source>We're sorry, but the custom key could not be found.</source>
+      </trans-unit>
+      <trans-unit id="errata.multi">
+        <source>Combined Patch Update: {0} - {1} (and {2} more patches)</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/errata/details/ErrataConfirm.do</context>
+          <context context-type="paramnotes">Combined Patch Update: RHSA-2004:577 - Security Advisory (and 4 more patches)</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="kickstart.schedule.invalid.contact.method.jsp">
+        <source>System &lt;strong&gt;{0}&lt;/strong&gt; has an incompatible contact method.</source>
+      </trans-unit>
+      <trans-unit id="kickstart.schedule.heading3.option1.jsp">
+        <source>Begin autoinstallation at the next system check in.</source>
+      </trans-unit>
+      <trans-unit id="isodownload.rest.description">
+        <source>
+Below please find complete sets of ISO images for the &lt;strong&gt;older releases&lt;/strong&gt; of {0}.
+Note that only one set of ISO images is necessary to install any particular release of {0}.
+</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/systems/details/ListCustomData.do</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="isodownload.viewprevious">
+        <source>View ISO Images for Older Releases</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/systems/details/ListCustomData.do</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="isodownload.missing-file">
+        <source>&lt;strong&gt;Missing file:&lt;/strong&gt; {0}</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/systems/details/Edit.do</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="isodownload.channel-dump-descr1">
+        <source>
+Below are all the channel content ISOs available for use with channel {0}.  If any channel content ISOs appear to be missing below, please ensure that your @@PRODUCT_NAME@@ Entitlement Certificate has been uploaded to @@PRODUCT_NAME@@ and correctly identifies the target channels.
+</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/systems/details/Edit.do</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="isodownload.channel-dump-descr2">
+        <source>
+There are two types of channel content ISOs: Base Channel Content ISOs and Incremental Channel Content ISOs.
+You will want to download &lt;strong&gt;Base Channel Content ISOs&lt;/strong&gt; if you need to initially populate a new @@PRODUCT_NAME@@ with channel content.
+Alternatively, you will want to download &lt;strong&gt;Incremental Channel Content ISOs&lt;/strong&gt; if you want to update channels that you have already imported into your @@PRODUCT_NAME@@.
+</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/systems/details/Edit.do</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="isodownload.channel-dump-note">
+        <source>
+&lt;strong&gt;Note:&lt;/strong&gt; Additional documentation on using @@PRODUCT_NAME@@ Channel Content ISOs is available in the &lt;em&gt;@@PRODUCT_NAME@@ Installation Guide&lt;/em&gt;, section 6.2.2.
+</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/systems/details/Edit.do</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="isodownload.channel-dumps.view-base">
+        <source>View Base Channel Content ISOs for @@PRODUCT_NAME@@</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/systems/details/Edit.do</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="isodownload.channel-dumps.view-incr">
+        <source>View Incremental Channel Content ISOs for @@PRODUCT_NAME@@</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/systems/details/Edit.do</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="sdc.channels.edit.deploy.warning">
+        <source>Changes to channel assignments will take effect at next highstate application</source>
+      </trans-unit>
+      <trans-unit id="orgsystemsubs.jsp.provis_tip">
+        <source>Allows various advanced functionality such as autoinstallation and configuration file provisioning.</source>
+      </trans-unit>
+      <trans-unit id="sys_entitlements.description">
+        <source>The following is a list of all system entitlements on this @@PRODUCT_NAME@@, across organizations, and their usage. Click on the entitlement's name for more details about it.</source>
+      </trans-unit>
+      <trans-unit id="help.jsp.refguide.title">
+        <source>@@PRODUCT_NAME@@ Reference Guide</source>
+      </trans-unit>
+      <trans-unit id="help.jsp.detailed">
+        <source>Detailed instructions for using @@PRODUCT_NAME@@.</source>
+      </trans-unit>
+      <trans-unit id="help.jsp.gettingstarted.title">
+        <source>@@PRODUCT_NAME@@ Getting Started Guide</source>
+      </trans-unit>
+      <trans-unit id="help.jsp.bestpractices.title">
+        <source>@@PRODUCT_NAME@@ Best Practices Guide</source>
+      </trans-unit>
+      <trans-unit id="help.jsp.advancedtopics.title">
+        <source>@@PRODUCT_NAME@@ Advanced Topics Guide</source>
+      </trans-unit>
+      <trans-unit id="system_entitlement_details.access_grant_desc.enterprise_entitled">
+        <source>A single base type is required for all systems registered to SUSE Manager</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/admin/multiorg/SystemEntitlementDetails</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="bunch.jsp.description.satcert-check-bunch">
+        <source>Checks whether SUSE Manager certificate has not expired</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="image_admin">
+        <source>Image Administrator</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/account/UserDetails</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="satellite.expired">
+        <source>Your @@PRODUCT_NAME@@ certificate has expired.  Please contact @@VENDOR_NAME@@ for a new certificate.</source>
+      </trans-unit>
+      <trans-unit id="satellite.expired.restricted">
+        <source>Your @@PRODUCT_NAME@@ Certificate has expired. Your @@PRODUCT_NAME@@ is on day {0} of {1} day restricted period and will soon stop functioning. Please contact SUSE for a new certificate.</source>
+      </trans-unit>
+      <trans-unit id="satellite.graceperiod">
+        <source>Your @@PRODUCT_NAME@@ certificate has expired.  Please contact @@VENDOR_NAME@@ for a new certificate.  Your SUSE Manager will become inactive in {0} day(s).</source>
+      </trans-unit>
+      <trans-unit id="restricted.forbidden">
+        <source>You are not allowed to perform this action until your @@PRODUCT_NAME@@ Certificate is renewed. Your @@PRODUCT_NAME@@ is on day {0} of the {1} restricted period and will soon stop functioning. Please contact SUSE for a new certificate.</source>
+      </trans-unit>
+      <trans-unit id="org.entitlements.system.defaultorg">
+        <source>You are not allowed to update entitlements in the Default Org.  These entitlements are determined by your @@PRODUCT_NAME@@ certificate file.</source>
+      </trans-unit>
+      <trans-unit id="distupgrade.upgrade">
+        <source>Service Pack Migration</source>
+      </trans-unit>
+      <trans-unit id="spmigration.message.scheduled">
+        <source>This system is &lt;a href="/rhn/systems/details/history/Event.do?sid={0}&amp;aid={1}"&gt;scheduled&lt;/a&gt; to be migrated to &lt;strong&gt;{2}&lt;/strong&gt;.</source>
+      </trans-unit>
+      <trans-unit id="spmigration.message.scheduled.dry-run">
+        <source>This system is &lt;a href="/rhn/systems/details/history/Event.do?sid={0}&amp;aid={1}"&gt;scheduled&lt;/a&gt; for a dry run of the migration to &lt;strong&gt;{2}&lt;/strong&gt;.</source>
+      </trans-unit>
+      <trans-unit id="task.status.mgr-register">
+        <source>Run mgr-register</source>
+      </trans-unit>
+      <trans-unit id="task.status.repo-sync">
+        <source>Repository Sync</source>
+      </trans-unit>
+      <trans-unit id="task.status.ssh-push">
+        <source>SSH Server Push</source>
+      </trans-unit>
+      <trans-unit id="task.status.cve-server-channels">
+        <source>CVE Server Channels</source>
+      </trans-unit>
+      <trans-unit id="task.status.mgr-sync-refresh">
+        <source>Refresh mgr-sync data</source>
+      </trans-unit>
+      <trans-unit id="task.status.minion-action-chain-cleanup">
+        <source>Cleanup action-chains on minions</source>
+      </trans-unit>
+      <trans-unit id="task.status.minion-action-executor">
+        <source>Execute actions on minions</source>
+      </trans-unit>
+      <trans-unit id="task.status.notifications-cleanup">
+        <source>Cleanup notifications</source>
+      </trans-unit>
+      <trans-unit id="task.status.minion-checkin">
+        <source>Execute check-in for minions</source>
+      </trans-unit>
+      <trans-unit id="task.status.token-cleanup">
+        <source>Cleanup channel tokens</source>
+      </trans-unit>
+      <trans-unit id="bunch.jsp.description.mgr-register-bunch">
+        <source>Registers SUSE Manager clients</source>
+      </trans-unit>
+      <trans-unit id="bunch.jsp.description.repo-sync-bunch">
+        <source>Synchronizes SUSE Manager repositories</source>
+      </trans-unit>
+      <trans-unit id="bunch.jsp.description.ssh-push-bunch">
+        <source>Manages clients via SSH Server Push</source>
+      </trans-unit>
+      <trans-unit id="bunch.jsp.description.cve-server-channels-bunch">
+        <source>Generates data required for performing CVE audit queries</source>
+      </trans-unit>
+      <trans-unit id="bunch.jsp.description.mgr-sync-refresh-bunch">
+        <source>Refreshes data about channels, products and subscriptions</source>
+      </trans-unit>
+      <trans-unit id="bunch.jsp.description.gatherer-matcher-bunch">
+        <source>Runs Virtual Host Gatherer on Virtual Host Managers and processes its results. After this Subscription Matcher job is run.</source>
+      </trans-unit>
+      <trans-unit id="bunch.jsp.description.minion-action-cleanup-bunch">
+        <source>Cleanup actions for Minions</source>
+      </trans-unit>
+      <trans-unit id="bunch.jsp.description.notifications-cleanup-bunch">
+        <source>Cleanup expired notification messages</source>
+      </trans-unit>
+      <trans-unit id="bunch.jsp.description.minion-checkin-bunch">
+        <source>Perform a regular check-in on minions</source>
+      </trans-unit>
+      <trans-unit id="server.contact-method.default">
+        <source>Default</source>
+      </trans-unit>
+      <trans-unit id="server.contact-method.ssh-push">
+        <source>Push via SSH</source>
+      </trans-unit>
+      <trans-unit id="server.contact-method.ssh-push-tunnel">
+        <source>Push via SSH tunnel</source>
+      </trans-unit>
+      <trans-unit id="contentmanagement.nav.title">
+        <source>Content Lifecycle</source>
+      </trans-unit>
+      <trans-unit id="contentmanagement.nav.projects">
+        <source>Projects</source>
+      </trans-unit>
+      <trans-unit id="contentmanagement.nav.filters">
+        <source>Filters</source>
+      </trans-unit>
+      <trans-unit id="cveaudit.nav.title">
+        <source>CVE Audit</source>
+      </trans-unit>
+      <trans-unit id="cobbler.powermanagement.ipmitool">
+        <source>IPMI</source>
+      </trans-unit>
+      <trans-unit id="setup-wizard.next">
+        <source>Next</source>
+      </trans-unit>
+      <trans-unit id="mirror-credentials.jsp.empty">
+        <source>No credentials</source>
+      </trans-unit>
+      <trans-unit id="mirror-credentials.jsp.actions">
+        <source>Actions</source>
+      </trans-unit>
+      <trans-unit id="mirror-credentials.jsp.verify">
+        <source>verify credentials</source>
+      </trans-unit>
+      <trans-unit id="subscriptionmatching.nav.title">
+        <source>Subscription Matching</source>
+      </trans-unit>
+      <trans-unit id="foreign_entitled">
+        <source>Foreign</source>
+      </trans-unit>
+      <trans-unit id="visualization.nav.title">
+        <source>Visualization</source>
+      </trans-unit>
+      <trans-unit id="ssm.overview.misc.entitlements">
+        <source>&lt;a href="/rhn/systems/ssm/misc/Index.do#entitle"&gt;Add or Remove&lt;/a&gt; Add-On System Types</source>
+      </trans-unit>
+      <trans-unit id="system_entitlements.invalid">
+        <source>Invalid system type selected.</source>
+      </trans-unit>
+      <trans-unit id="system_entitlements.addon.error">
+        <source>&lt;strong&gt;{0}&lt;/strong&gt; system(s) failed to set to &lt;strong&gt;{1}&lt;/strong&gt;.</source>
+      </trans-unit>
+      <trans-unit id="system_entitlements.addon.success">
+        <source>&lt;strong&gt;{0}&lt;/strong&gt; system(s) set to &lt;strong&gt;{1}&lt;/strong&gt;.</source>
+      </trans-unit>
+      <trans-unit id="system_entitlements.addon.removed.success">
+        <source>Removed &lt;strong&gt;{1}&lt;/strong&gt; from &lt;strong&gt;{0}&lt;/strong&gt; system(s).</source>
+      </trans-unit>
+      <trans-unit id="system.entitle.added.container_build_host">
+        <source>&lt;strong&gt;Container Build Host&lt;/strong&gt; type has been applied.&lt;br/&gt;&lt;strong&gt;Note:&lt;/strong&gt; This action will &lt;em&gt;not&lt;/em&gt; result in state application. To apply the state, either use the &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;states page&lt;/a&gt; or run &lt;code class=&quot;text-info&quot;&gt;state.highstate&lt;/code&gt; from the command line.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="system.entitle.added.container_build_host.nodoc">
+        <source>&lt;strong&gt;Container Build Host&lt;/strong&gt; type has been applied.&lt;br/&gt;&lt;strong&gt;Note:&lt;/strong&gt; This action will &lt;em&gt;not&lt;/em&gt; result in state application. To apply the state, either use the &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;states page&lt;/a&gt; or run &lt;code class=&quot;text-info&quot;&gt;state.highstate&lt;/code&gt; from the command line.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="system.entitle.added.osimage_build_host">
+        <source>&lt;strong&gt;OS Image Build Host&lt;/strong&gt; type has been applied.&lt;br/&gt;&lt;strong&gt;Note:&lt;/strong&gt; This action will &lt;em&gt;not&lt;/em&gt; result in state application. To apply the state, either use the &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;states page&lt;/a&gt; or run &lt;code class=&quot;text-info&quot;&gt;state.highstate&lt;/code&gt; from the command line.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="system.entitle.added.osimage_build_host.nodoc">
+        <source>&lt;strong&gt;OS Image Build Host&lt;/strong&gt; type has been applied.&lt;br/&gt;&lt;strong&gt;Note:&lt;/strong&gt; This action will &lt;em&gt;not&lt;/em&gt; result in state application. To apply the state, either use the &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;states page&lt;/a&gt; or run &lt;code class=&quot;text-info&quot;&gt;state.highstate&lt;/code&gt; from the command line.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="system.entitle.added.virtualization_host">
+        <source>Since you added a Virtualization system type to the system we also performed some extra steps to ensure your system will be able to manage virtual guests better. See &lt;a href="/docs/administration/virtualization.html"&gt;here&lt;/a&gt; for more info.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="system.entitle.added.virtualization_host.nodoc">
+        <source>Since you added a Virtualization system type to the system we also performed some extra steps to ensure your system will be able to manage virtual guests better.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="system.entitle.added.monitoring_entitled">
+        <source>Since you added the Monitoring system type we automatically assigned the Prometheus Exporters formula to the system. Please apply the &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;Highstate&lt;/a&gt; in order to install and enable the Prometheus metrics exporters.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="system.entitle.added.monitoring_entitled.nodoc">
+        <source>Since you added the Monitoring system type we automatically assigned the Prometheus Exporters formula to the system. Please apply the &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;Highstate&lt;/a&gt; in order to install and enable the Prometheus metrics exporters.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="system.entitle.formula_error">
+        <source>There was a problem assigning the Prometheus Exporters formula.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="Bootstrapping">
+        <source>Bootstrapping</source>
+      </trans-unit>
+      <trans-unit id="salt_entitled">
+        <source>Salt</source>
+      </trans-unit>
+      <trans-unit id="task.status.matcher">
+        <source>Subscription Matcher Run</source>
+      </trans-unit>
+      <trans-unit id="task.status.gatherer">
+        <source>Virtual Host Manager Data Refresh</source>
+      </trans-unit>
+      <trans-unit id="task.status.minion-action-cleanup">
+        <source>Minion Action Cleanup</source>
+      </trans-unit>
+      <trans-unit id="toolbar.create.systems">
+        <source>Add Systems</source>
+      </trans-unit>
+      <trans-unit id="system.event.pending.canceled.taskscheduler.down">
+        <source>Could not cancel event(s). Please make sure that the task scheduler is running.</source>
+      </trans-unit>
+      <trans-unit id="message.actionCancelServerFailure.taskscheduler.down">
+        <source>Could not cancel action. Please make sure that the task scheduler is running.</source>
+      </trans-unit>
+      <trans-unit id="message.actionsCancelledWithErrors">
+        <source>{0} action(s) could not be canceled or canceled only partially. {1} action(s) canceled completely.</source>
+      </trans-unit>
+      <trans-unit id="formula.folders.unreachable">
+        <source>System folder(s) from salt-formula are unreachable. Check if folders(s) exists and have the correct permissions (755): {0}</source>
+      </trans-unit>
+      <trans-unit id="Stores">
+        <source>Stores</source>
+      </trans-unit>
+      <trans-unit id="message.channel.deleted.state.scheduled">
+        <source>An automatic application of the channel state has been &lt;a href="/rhn/schedule/ActionDetails.do?aid={0}"&gt;scheduled successfully&lt;/a&gt;</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/channels/manage/Delete.do</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="message.channel.disable.delete.contentlifecycle.environment.in.use">
+        <source>This channel cannot be deleted. It is currently used in the Content Lifecycle Project '{0}' in the Environment '{1}'</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/channels/manage/Delete.do</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="channels.subscribe.target.systems.channel.scheduled">
+        <source>Subscribing {0} system(s) to channel {1} has been scheduled.</source>
+      </trans-unit>
+      <trans-unit id="channels.not.supported.for.minions">
+        <source>Local/Sandbox channels are not supported for minions.</source>
+      </trans-unit>
+      <trans-unit id="state.channels.not.supported.for.traditional">
+        <source>A state channel cannot be assigned to traditional system.</source>
+      </trans-unit>
+      <trans-unit id="directories.symlink.not.supported.for.minions">
+        <source>Directories/Symlinks are not supported in state channel.</source>
+      </trans-unit>
+      <trans-unit id="update.init.sls.with.updateinitsls.method">
+        <source>Please use 'updateInitSls' method for updating init.sls file.</source>
+      </trans-unit>
+      <trans-unit id="editable.init.sls.only.for.state.channels">
+        <source>init.sls file can only be edited for state channels.</source>
+      </trans-unit>
+      <trans-unit id="state.channel.through.apply.config.channel.method">
+        <source>State channels can be applied through system.config.scheduleApplyConfigChannel method or from UI.</source>
+      </trans-unit>
     </body>
   </file>
 </xliff>
