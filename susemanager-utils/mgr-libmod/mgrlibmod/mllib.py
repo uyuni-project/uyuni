@@ -312,9 +312,12 @@ class MLLibmodAPI:
                 rpms["packages"].extend(stream.get_rpm_artifacts())
         return rpms
 
-    def _get_module_packages(self):
+    def _get_module_packages(self) -> Dict[str, List[str]]:
         """
         _get_module_packages -- get all RPMs from selected streams as a map of package names to package strings.
+
+        :return: structure for module packages
+        :rtype: Dict[str, List[str]]
         """
         self._proc.index_modules()
 
