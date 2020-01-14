@@ -1,0 +1,12 @@
+{
+    "function": "module_packages",
+    "paths": [
+        "data/upd_modules.yaml"
+    ],
+    "streams": [
+        {
+            "name": "postgresql",
+            "stream": "10"
+        }
+    ]
+}
