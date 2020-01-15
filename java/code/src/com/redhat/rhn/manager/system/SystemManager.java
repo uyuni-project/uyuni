@@ -2362,17 +2362,24 @@ public class SystemManager extends BaseManager {
         Set<Entitlement> entitlements = server.getEntitlements();
 
         if (entitlements.isEmpty()) {
-            if (ent.isBase()) {
-                Optional<ServerGroup> serverGroup = ServerGroupFactory
-                        .findCompatibleServerGroupForBaseEntitlement(server.getId(), ent);
-                if (!serverGroup.isPresent()) {
-                    log.info("invalid_base_entitlement - no compatible server group");
-                }
-                return serverGroup;
-            }
-            return Optional.empty();
+            return getServerGroupForEntitleAnUnentitledServer(server.getId(), ent);
         }
+        return getServerGroupForEntitleAnEntitledServer(server, ent);
+    }
 
+    private static Optional<ServerGroup> getServerGroupForEntitleAnUnentitledServer(Long serverId, Entitlement ent) {
+        if (ent.isBase()) {
+            Optional<ServerGroup> serverGroup = ServerGroupFactory
+                    .findCompatibleServerGroupForBaseEntitlement(serverId, ent);
+            if (!serverGroup.isPresent()) {
+                log.info("invalid_base_entitlement - no compatible server group");
+            }
+            return serverGroup;
+        }
+        return Optional.empty();
+    }
+
+    private static Optional<ServerGroup> getServerGroupForEntitleAnEntitledServer(Server server, Entitlement ent) {
         if (ent.isBase()) {
             log.warn("invalid_addon_entitlement - found another base");
             return Optional.empty();
