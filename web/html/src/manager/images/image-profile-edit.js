@@ -240,7 +240,7 @@ class CreateImageProfile extends React.Component {
         let storeUri = undefined;
         if(type === "os_image") {
           // Preselect store for the static OS Image store
-          model = Object.assign(this.state.model, {imageStore: data[0] && data[0].label});
+          model = Object.assign({}, this.state.model, {imageStore: data[0] && data[0].label});
           storeUri = data[0] && data[0].uri;
         }
 
