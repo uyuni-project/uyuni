@@ -1,3 +1,6 @@
+# Copyright (c) 2017-2018 SUSE LLC.
+# Licensed under the terms of the MIT license.
+
 require_relative 'xmlrpctest'
 
 # This class enables to use image namespace operations via XML-RPC calls

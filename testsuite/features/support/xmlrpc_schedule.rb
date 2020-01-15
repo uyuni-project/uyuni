@@ -1,3 +1,6 @@
+# Copyright (c) 2014-2019 SUSE LLC.
+# Licensed under the terms of the MIT license.
+
 require_relative 'xmlrpctest'
 
 # schedule class
