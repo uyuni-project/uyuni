@@ -138,6 +138,7 @@ public class SystemEntitlementsSetupActionTest extends RhnMockStrutsTestCase {
         Server server = MinionServerFactoryTest.createTestMinionServer(user);
         // OS Image building is x86_64 only
         server.setServerArch(ServerFactory.lookupServerArchByLabel("x86_64-redhat-linux"));
+        ServerFactory.save(server);
 
         assertTrue(EntitlementManager.OSIMAGE_BUILD_HOST.isAllowedOnServer(server));
 
