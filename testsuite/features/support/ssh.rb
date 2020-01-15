@@ -1,3 +1,6 @@
+# Copyright (c) 2016-2019 SUSE LLC.
+# Licensed under the terms of the MIT license.
+
 require 'net/ssh'
 require 'stringio'
 
