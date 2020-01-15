@@ -19,10 +19,19 @@ import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.rhnpackage.Package;
+import com.redhat.rhn.domain.rhnpackage.PackageBreaks;
 import com.redhat.rhn.domain.rhnpackage.PackageCapability;
+import com.redhat.rhn.domain.rhnpackage.PackageConflicts;
+import com.redhat.rhn.domain.rhnpackage.PackageEnhances;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
+import com.redhat.rhn.domain.rhnpackage.PackageObsoletes;
+import com.redhat.rhn.domain.rhnpackage.PackagePreDepends;
 import com.redhat.rhn.domain.rhnpackage.PackageProvides;
+import com.redhat.rhn.domain.rhnpackage.PackageRecommends;
+import com.redhat.rhn.domain.rhnpackage.PackageRequires;
 import com.redhat.rhn.domain.rhnpackage.PackageSource;
+import com.redhat.rhn.domain.rhnpackage.PackageSuggests;
+import com.redhat.rhn.domain.rhnpackage.PackageSupplements;
 import com.redhat.rhn.domain.server.InstalledPackage;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
@@ -313,6 +322,106 @@ public class PackageFactoryTest extends BaseTestCaseWithUser {
 
        assertEquals(1, missing.size());
        assertEquals(testPackage2.getNameEvra() ,missing.get(0).getNameEvra());
+   }
+
+   public void testCapabilities() throws Exception {
+       Package pkg = PackageTest.createTestPackage(user.getOrg());
+
+       {
+           PackageCapability cap = PackageCapabilityTest.createTestCapability("depProvides");
+           PackageProvides dependency = new PackageProvides();
+           dependency.setCapability(cap);
+           dependency.setPack(pkg);
+           dependency.setSense(0L);
+           TestUtils.saveAndFlush(dependency);
+       }
+       {
+           PackageCapability cap = PackageCapabilityTest.createTestCapability("depRequires");
+           PackageRequires dependency = new PackageRequires();
+           dependency.setCapability(cap);
+           dependency.setPack(pkg);
+           dependency.setSense(0L);
+           TestUtils.saveAndFlush(dependency);
+       }
+       {
+           PackageCapability cap = PackageCapabilityTest.createTestCapability("depObsoletes");
+           PackageObsoletes dependency = new PackageObsoletes();
+           dependency.setCapability(cap);
+           dependency.setPack(pkg);
+           dependency.setSense(0L);
+           TestUtils.saveAndFlush(dependency);
+       }
+       {
+           PackageCapability cap = PackageCapabilityTest.createTestCapability("depConflicts");
+           PackageConflicts dependency = new PackageConflicts();
+           dependency.setCapability(cap);
+           dependency.setPack(pkg);
+           dependency.setSense(0L);
+           TestUtils.saveAndFlush(dependency);
+       }
+       {
+           PackageCapability cap = PackageCapabilityTest.createTestCapability("depRecommends");
+           PackageRecommends dependency = new PackageRecommends();
+           dependency.setCapability(cap);
+           dependency.setPack(pkg);
+           dependency.setSense(0L);
+           TestUtils.saveAndFlush(dependency);
+       }
+       {
+           PackageCapability cap = PackageCapabilityTest.createTestCapability("depSuggests");
+           PackageSuggests dependency = new PackageSuggests();
+           dependency.setCapability(cap);
+           dependency.setPack(pkg);
+           dependency.setSense(0L);
+           TestUtils.saveAndFlush(dependency);
+       }
+       {
+           PackageCapability cap = PackageCapabilityTest.createTestCapability("depSupplements");
+           PackageSupplements dependency = new PackageSupplements();
+           dependency.setCapability(cap);
+           dependency.setPack(pkg);
+           dependency.setSense(0L);
+           TestUtils.saveAndFlush(dependency);
+       }
+       {
+           PackageCapability cap = PackageCapabilityTest.createTestCapability("depEnhances");
+           PackageEnhances dependency = new PackageEnhances();
+           dependency.setCapability(cap);
+           dependency.setPack(pkg);
+           dependency.setSense(0L);
+           TestUtils.saveAndFlush(dependency);
+       }
+       {
+           PackageCapability cap = PackageCapabilityTest.createTestCapability("depPreDepends");
+           PackagePreDepends dependency = new PackagePreDepends();
+           dependency.setCapability(cap);
+           dependency.setPack(pkg);
+           dependency.setSense(0L);
+           TestUtils.saveAndFlush(dependency);
+       }
+       {
+           PackageCapability cap = PackageCapabilityTest.createTestCapability("depBreaks");
+           PackageBreaks dependency = new PackageBreaks();
+           dependency.setCapability(cap);
+           dependency.setPack(pkg);
+           dependency.setSense(0L);
+           TestUtils.saveAndFlush(dependency);
+       }
+       HibernateFactory.getSession().flush();
+       HibernateFactory.getSession().clear();
+       pkg = PackageFactory.lookupByIdAndUser(pkg.getId(), user);
+
+       assertEquals(1, pkg.getProvides().size());
+       assertEquals(1, pkg.getRequires().size());
+       assertEquals(1, pkg.getObsoletes().size());
+       assertEquals(1, pkg.getConflicts().size());
+       assertEquals(1, pkg.getRecommends().size());
+       assertEquals(1, pkg.getSuggests().size());
+       assertEquals(1, pkg.getSupplements().size());
+       assertEquals(1, pkg.getEnhances().size());
+       assertEquals(1, pkg.getPreDepends().size());
+       assertEquals(1, pkg.getBreaks().size());
+
    }
 }
 
