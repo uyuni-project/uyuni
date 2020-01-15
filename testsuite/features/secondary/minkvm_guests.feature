@@ -1,4 +1,4 @@
-# Copyright (c) 2018-2019 SUSE LLC
+# Copyright (c) 2018-2020 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 Feature: Be able to manage KVM virtual machines via the GUI

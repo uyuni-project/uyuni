@@ -1,3 +1,6 @@
+# Copyright (c) 2019 SUSE LLC.
+# Licensed under the terms of the MIT license.
+
 When(/^I click the environment build button$/) do
   find(:xpath, '//*[@id="cm-build-modal-save-button"]').click
 end
