@@ -573,29 +573,6 @@ And(/I check status "([^"]*)" with spacecmd on "([^"]*)"$/) do |status, host|
   raise "#{out} should contain #{status}" unless out.include? status
 end
 
-And(/I create dockerized minions$/) do
-  master, _code = $minion.run('cat /etc/salt/minion.d/susemanager.conf')
-  # build everything
-  distros = %w[rhel6 rhel7 sles11sp4 sles12 sles12sp1]
-  docker_timeout = 2000
-  distros.each do |os|
-    $minion.run("docker build https://gitlab.suse.de/galaxy/suse-manager-containers.git#master:minion-fabric/#{os}/ -t #{os}", true, docker_timeout)
-    spawn_minion = '/etc/salt/minion; dbus-uuidgen > /etc/machine-id; salt-minion -l trace'
-    $minion.run("docker run -h #{os} -d --entrypoint '/bin/sh' #{os} -c \"echo \'#{master}\' > #{spawn_minion}\"")
-    puts "minion #{os} created and running"
-  end
-  # accept all the key on master, wait dinimically for last key
-  repeat_until_timeout(message: "something wrong with creation of minion docker") do
-    out, _code = $server.run('salt-key -l unaccepted')
-    # if we see the last os, we can break
-    if out.include? distros.last
-      $server.run('salt-key -A -y')
-      break
-    end
-    sleep 5
-  end
-end
-
 When(/^I register this client for SSH push via tunnel$/) do
   # create backups of /etc/hosts and up2date config
   $server.run('cp /etc/hosts /etc/hosts.BACKUP')
