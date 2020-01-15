@@ -1459,6 +1459,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         MinionServer server = MinionServerFactoryTest.createTestMinionServer(user);
         server.setMinionId("minion.local");
         server.setServerArch(ServerFactory.lookupServerArchByLabel("x86_64-redhat-linux"));
+        ServerFactory.save(server);
 
         MgrUtilRunner.ExecResult mockResult = new MgrUtilRunner.ExecResult();
         context().checking(new Expectations() {{
@@ -1489,6 +1490,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         MinionServer server = MinionServerFactoryTest.createTestMinionServer(user);
         server.setMinionId("minion.local");
         server.setServerArch(ServerFactory.lookupServerArchByLabel("x86_64-redhat-linux"));
+        ServerFactory.save(server);
 
         MgrUtilRunner.ExecResult mockResult = new MgrUtilRunner.ExecResult();
         context().checking(new Expectations() {{
@@ -1875,7 +1877,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         Map<String, String> placeholders = new HashMap<>();
         placeholders.put("${minion-id}", minion.getMinionId());
         placeholders.put("${action1-id}", applyHighstate.getId() + "");
-        
+
         Optional<JobReturnEvent> event = JobReturnEvent.parse(getJobReturnEvent("action.chain.refresh.needed.json", applyHighstate.getId(),
                         placeholders));
         JobReturnEventMessage message = new JobReturnEventMessage(event.get());
