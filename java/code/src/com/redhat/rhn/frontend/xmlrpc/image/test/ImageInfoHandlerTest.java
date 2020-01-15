@@ -163,6 +163,7 @@ public class ImageInfoHandlerTest extends BaseHandlerTestCase {
 
         MinionServer server = MinionServerFactoryTest.createTestMinionServer(admin);
         server.setServerArch(ServerFactory.lookupServerArchByLabel("x86_64-redhat-linux"));
+        ServerFactory.save(server);
         SystemManager.entitleServer(server, EntitlementManager.OSIMAGE_BUILD_HOST);
         ActivationKey ak = createActivationKey(admin);
         ImageProfile prof = createKiwiImageProfile("myprofile", ak, admin);
