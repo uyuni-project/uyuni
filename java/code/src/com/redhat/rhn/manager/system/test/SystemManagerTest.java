@@ -574,6 +574,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         }});
 
         minion.setServerArch(ServerFactory.lookupServerArchByLabel("x86_64-redhat-linux"));
+        ServerFactory.save(minion);
         assertTrue(SystemManager.canEntitleServer(minion,
                 EntitlementManager.OSIMAGE_BUILD_HOST));
         hasErrors = SystemManager.entitleServer(minion,
