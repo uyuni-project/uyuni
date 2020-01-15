@@ -474,7 +474,9 @@ class ContentSource:
         returnlist = []
         content = []
         try:
-            urlgrabber.urlgrab(url, mirrorlist_path)
+            urlgrabber_opts = {}
+            self.set_download_parameters(urlgrabber_opts, url, mirrorlist_path)
+            urlgrabber.urlgrab(url, mirrorlist_path, **urlgrabber_opts)
         except Exception as exc:
             # no mirror list found continue without
             return returnlist
