@@ -195,8 +195,10 @@ class MLLibmodProc:
                 return artifact
         return None
 
-    def get_api_provides(self):
-        apiProvides: Dict[str, mltypes.MLSet] = {"_other_": mltypes.MLSet()}
+    def _get_api_provides(self):
+        apiProvides: Dict[str, mltypes.MLSet] = {
+            "_other_": mltypes.MLSet(),
+        }
         for stream in self._enabled_stream_modules.values():
             if not stream:
                 continue
@@ -214,6 +216,35 @@ class MLLibmodProc:
             for artifact in streamArtifacts:
                 apiProvides["_other_"].add(artifact)
         return apiProvides
+
+    def _select_artifact(self, rpm, stream) -> Dict:
+        s_obj: Dict = {
+            "name": rpm,
+            "stream": stream.get_stream_name(),
+            "version": stream.get_version(),
+            "context": stream.get_context(),
+            "arch": stream.get_arch(),
+        }
+        return s_obj
+
+    def get_api_provides(self):
+        api_provides: Dict[str, mltypes.MLSet] = {
+            "apis": mltypes.MLSet(),
+            "packages": mltypes.MLSet(),
+            "selected": mltypes.MLSet(),
+        }
+        for stream in self._enabled_stream_modules.values():
+            if not stream:
+                continue
+            streamArtifacts = stream.get_rpm_artifacts()
+            for rpm in stream.get_rpm_api():
+                artifact = self.get_artifact_with_name(streamArtifacts, rpm)
+                if artifact:
+                    api_provides["apis"].add(rpm)
+                    api_provides["packages"].add(artifact)
+                    api_provides["selected"].add(self._select_artifact(rpm, stream))
+
+        return api_provides
 
     def pick_stream(self, s_type: mltypes.MLStreamType):
         if self._is_stream_enabled(s_type=s_type):
