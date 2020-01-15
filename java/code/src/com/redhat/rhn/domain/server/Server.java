@@ -1425,9 +1425,7 @@ public class Server extends BaseDomainHelper implements Identifiable {
      * @param baseIn to update to
      */
     public void setBaseEntitlement(Entitlement baseIn) {
-        ServerGroupType verify = ServerFactory.
-                lookupServerGroupTypeByLabel(baseIn.getLabel());
-        if (!verify.isBase()) {
+        if (!baseIn.isBase()) {
             throw new IllegalArgumentException("baseIn is not a base entitlement");
         }
 
@@ -1437,10 +1435,8 @@ public class Server extends BaseDomainHelper implements Identifiable {
             return;
         }
         if (baseEntitlement != null) {
-            this.getEntitlements().remove(baseEntitlement);
             SystemManager.removeServerEntitlement(this, baseEntitlement);
         }
-
         SystemManager.entitleServer(this, baseIn);
     }
 
