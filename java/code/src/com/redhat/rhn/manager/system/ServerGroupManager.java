@@ -345,6 +345,11 @@ public class ServerGroupManager {
         updatePillarAfterGroupUpdateForServers(servers);
     }
 
+    /**
+     * Updates the pillar regarding the server groups those servers belong to, for only the minion servers of the
+     * passed servers collection.
+     * @param servers a collection of servers to add.
+     */
     public void updatePillarAfterGroupUpdateForServers(Collection<Server> servers) {
         try {
             SaltStateGeneratorService.INSTANCE.createPillarDirectory();

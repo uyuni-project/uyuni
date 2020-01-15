@@ -100,7 +100,6 @@ import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.utils.Opt;
 import com.suse.manager.webui.utils.salt.State;
 
-import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.log4j.Logger;
 import org.hibernate.Session;
