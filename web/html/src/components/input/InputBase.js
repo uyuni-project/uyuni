@@ -85,6 +85,15 @@ export class InputBase extends React.Component<Props, State> {
     }
   }
 
+  componentDidUpdate(prevProps) {
+    // Support validation when changing the following props on-the-fly
+    if (this.props.required !== prevProps.required ||
+        this.props.disabled !== prevProps.disabled ||
+        this.props.validators !== prevProps.validators) {
+      this.validate(this.context.model[this.props.name]);
+    }
+  }
+
   componentWillUnmount() {
     if (Object.keys(this.context).length > 0) {
       this.context.unregisterInput(this);
