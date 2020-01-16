@@ -49,7 +49,8 @@ When(/^I wait until I see "([^"]*)" text or "([^"]*)" text$/) do |text1, text2|
 end
 
 When(/^I wait until I see "([^"]*)" text, refreshing the page$/) do |text|
-  text.gsub! '$PRODUCT', $product # TODO: Rid of this substitution, using another step
+  text.gsub! '$PRODUCT', $product
+  # TODO: get rid of this substitution, using another step
   repeat_until_timeout(message: "Couldn't find text '#{text}'") do
     break if has_content?(text)
     evaluate_script 'window.location.reload()'
