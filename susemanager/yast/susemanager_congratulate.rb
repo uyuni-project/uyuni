@@ -17,7 +17,7 @@ module Yast
       @migration_file = Ops.add(Directory.tmpdir, "/susemanager_migration")
       @migration = FileUtils.Exists(@migration_file)
       @product_name = SCR.Read(path(".usr_share_rhn_config_defaults_rhn.product_name")) || "SUSE Manager"
-      @product_doc_url = "https://www.suse.com/documentation/suse-manager/"
+      @product_doc_url = "https://documentation.suse.com/suma"
       if @product_name == "Uyuni"
           @product_doc_url = "https://www.uyuni-project.org/"
       end
@@ -34,7 +34,7 @@ module Yast
               _(
                 "<p>#{@product_name} Setup is now complete.</p><br>\n" +
                   "<p>Visit <b>https://%1</b> to create the #{@product_name} administrator account.</p>\n" +
-                  "<p>For more information, refer to the #{@product_name} Installation and Troubleshooting guide or see <b>#{@product_doc_url}</b>.</p>"
+                  "<p>For more information, refer to the #{@product_name} Installation Guide or see <b>#{@product_doc_url}</b>.</p>"
               ),
               Hostname.CurrentFQ
             )
