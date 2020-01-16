@@ -30,8 +30,8 @@ Feature: Organization credentials in the Setup Wizard
     Given I am authorized for the "Admin" section
     When I follow the left menu "Admin > Setup Wizard > Organization Credentials"
     And I view the primary subscription list for SCC user
-    Then I should see a "No subscriptions available" text
-    When I click on "Close"
+    And I wait until I see "No subscriptions available" text
+    And I click on "Close"
 
 # Missing: edit the credentials
 
