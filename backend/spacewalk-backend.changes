@@ -1,3 +1,4 @@
+- When downloading repo metadata, don't add "/" to the repo url if it already ends with one (bsc#1158899)
 - Use HTTP proxy settings when fetching the mirrorlist on spacewalk-repo-sync (bsc#1159076)
 - enhance suseProducts via ISS to fix SP migration on slave server (bsc#1159184)
 - generate metadata with empty vendor (bsc#1158480)
