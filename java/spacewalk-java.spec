@@ -36,9 +36,15 @@
 %define ehcache         ehcache >= 2.10.1
 %define apache_commons_discovery   jakarta-commons-discovery
 %define apache_commons_el          jakarta-commons-el
-%define apache_commons_fileupload  jakarta-commons-fileupload
 %define apache_commons_validator   jakarta-commons-validator
 %define java_version    11
+%if 0%{?sle_version} > 150100
+%define apache_commons_fileupload  apache-commons-fileupload
+%define log4j                      log4j12
+%else
+%define apache_commons_fileupload  jakarta-commons-fileupload
+%define log4j                      log4j
+%endif
 %else
 %define appdir          %{_localstatedir}/lib/tomcat/webapps
 %define jardir          %{_localstatedir}/lib/tomcat/webapps/rhn/WEB-INF/lib
@@ -114,7 +120,7 @@ BuildRequires:  jsch
 BuildRequires:  jta
 BuildRequires:  libxml2
 BuildRequires:  libxml2-tools
-BuildRequires:  log4j
+BuildRequires:  %{log4j}
 BuildRequires:  netty
 BuildRequires:  objectweb-asm
 BuildRequires:  perl
@@ -167,7 +173,7 @@ Requires:       hibernate-commons-annotations
 Requires:       hibernate5
 Requires:       httpcomponents-client
 Requires:       jade4j
-Requires:       jakarta-commons-digester
+Requires:       apache-commons-digester
 Requires:       java >= %{java_version}
 Requires:       java-saml
 Requires:       javapackages-tools
@@ -195,7 +201,7 @@ Requires:       %{apache_commons_fileupload}
 Requires:       jcommon
 Requires:       jdom
 Requires:       jta
-Requires:       log4j
+Requires:       %{log4j}
 Requires:       redstone-xmlrpc
 Requires:       simple-core
 Requires:       simple-xml
@@ -337,7 +343,7 @@ Requires:       jboss-logging
 Requires:       jcommon
 Requires:       jpa-api
 Requires:       jsch
-Requires:       log4j
+Requires:       %{log4j}
 Requires:       quartz
 Requires:       simple-core
 Requires:       spacewalk-java-config
@@ -620,7 +626,7 @@ chown tomcat:%{apache_group} /var/log/rhn/gatherer.log
 %{jardir}/antlr.jar
 %{jardir}/bcel.jar
 %{jardir}/c3p0*.jar
-%if 0%{?fedora} >= 25
+%if 0%{?fedora} >= 25 || 0%{?sle_version} >= 150200
 %{jardir}/cglib_cglib.jar
 %else
 %{jardir}/cglib.jar
@@ -684,7 +690,11 @@ chown tomcat:%{apache_group} /var/log/rhn/gatherer.log
 %{jardir}/javamail.jar
 %{jardir}/jcommon*.jar
 %{jardir}/jdom.jar
+%if 0%{?sle_version} >= 150200
+%{jardir}/geronimo-jta-1.1-api.jar
+%else
 %{jardir}/jta.jar
+%endif
 %{jardir}/log4j*.jar
 %{jardir}/oro.jar
 %{jardir}/quartz.jar
