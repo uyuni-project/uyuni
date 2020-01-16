@@ -217,9 +217,9 @@ class MLLibmodProc:
                 apiProvides["_other_"].add(artifact)
         return apiProvides
 
-    def _select_artifact(self, rpm, stream) -> Dict:
+    def _select_stream(self, m_name, stream) -> Dict:
         s_obj: Dict = {
-            "name": rpm,
+            "name": m_name,
             "stream": stream.get_stream_name(),
             "version": stream.get_version(),
             "context": stream.get_context(),
@@ -242,7 +242,7 @@ class MLLibmodProc:
                 if artifact:
                     api_provides["apis"].add(rpm)
                     api_provides["packages"].add(artifact)
-                    api_provides["selected"].add(self._select_artifact(rpm, stream))
+                    api_provides["selected"].add(self._select_stream(stream.get_module_name(), stream))
 
         return api_provides
 
