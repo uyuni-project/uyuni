@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 
 gem 'cucumber', '2.0.0'
-gem 'rack', '2.0.7'
+gem 'rack', '>= 2.0.8'
 gem 'rack-test', '1.1.0'
 gem 'capybara', '2.16.0'
 gem 'jwt', '2.2.1'
@@ -18,6 +18,3 @@ gem 'websocket', '1.2.8'
 gem 'websocket-driver', '0.7.1'
 gem 'syntax', '1.2.2'
 gem 'parallel_tests' , '2.29.1'
-
-
-

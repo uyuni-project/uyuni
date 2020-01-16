@@ -126,7 +126,7 @@ Feature: Bootstrap a Salt minion via the GUI with an activation key
   Scenario: Cleanup: turn the SLES minion into a container build host after activation key tests
     Given I am on the Systems overview page of this "sle_minion"
     When I follow "Details" in the content area
-    When I follow "Properties" in the content area
+    And I follow "Properties" in the content area
     And I check "container_build_host"
     And I click on "Update Properties"
 

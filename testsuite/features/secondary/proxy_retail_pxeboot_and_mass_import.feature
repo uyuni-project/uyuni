@@ -425,7 +425,6 @@ Feature: PXE boot a Retail terminal
     Then I navigate to "rhn/systems/Overview.do" page
     And I wait until I see the name of "pxeboot_minion", refreshing the page
 
-
 @proxy
 @private_net
 @pxeboot_minion

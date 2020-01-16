@@ -40,10 +40,6 @@ When(/^I wait until I do not see "([^"]*)" text$/) do |text|
   raise "Text #{text} found" unless has_no_text?(text, wait: DEFAULT_TIMEOUT)
 end
 
-When(/^I wait at most (\d+) seconds until I see "([^"]*)" text$/) do |seconds, text|
-  raise "Text #{text} not found" unless has_content?(text, wait: seconds.to_i)
-end
-
 When(/^I wait until I see "([^"]*)" text or "([^"]*)" text$/) do |text1, text2|
   raise "Text #{text1} or #{text2} not found" unless has_content?(text1, wait: DEFAULT_TIMEOUT) || has_content?(text2, wait: DEFAULT_TIMEOUT)
 end

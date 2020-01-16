@@ -1,5 +1,9 @@
 # Copyright (c) 2018-2020 SUSE LLC
 # Licensed under the terms of the MIT license.
+#
+# TODO
+# This feature test is currently disabled
+# It has to be rewritten using fake packages (orion-dummy etc) instead of real synched packages
 
 Feature: Chanel subscription with recommended/required dependencies
 

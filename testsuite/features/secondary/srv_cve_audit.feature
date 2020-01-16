@@ -69,7 +69,7 @@ Feature: CVE Audit
     And I should see a "Affected, at least one patch available in an assigned channel" text
     When I check the row with the "sle_client" hostname
     Then I should see a "system selected" text
-    And I am on the System Manager System Overview page
+    When I am on the System Manager System Overview page
     Then I should see "sle_client" as link
     And I follow "Clear"
 

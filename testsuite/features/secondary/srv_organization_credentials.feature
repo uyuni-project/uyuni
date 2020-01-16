@@ -1,4 +1,4 @@
-# Copyright 2017-2019 SUSE LLC
+# Copyright 2017-2020 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 Feature: Organization credentials in the Setup Wizard
