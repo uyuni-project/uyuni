@@ -1,3 +1,4 @@
+- fix documentation URL in installer (bsc#1154590)
 - update requirements to match documented values (bsc#1154599)
 
 -------------------------------------------------------------------
