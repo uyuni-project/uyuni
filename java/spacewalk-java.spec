@@ -425,13 +425,13 @@ xargs checkstyle -c buildconf/checkstyle.xml
 
 # catch macro name errors
 find . -type f -name '*.xml' | xargs perl -CSAD -lne '
-          for (grep { $_ ne "PRODUCT_NAME" } /\@\@(\w+)\@\@/g) {
+          for (grep { $_ ne "PRODUCT_NAME" && $_ ne "VENDOR_NAME" && $_ ne "ENTERPRISE_LINUX_NAME" && $_ ne "VENDOR_SERVICE_NAME" } /\@\@(\w+)\@\@/g) {
               print;
               $exit = 1;
           }
-          @r = /((..)?PRODUCT_NAME(..)?)/g ;
+          @r = /((..)?(PRODUCT_NAME|VENDOR_NAME|ENTERPRISE_LINUX_NAME|VENDOR_SERVICE_NAME)(..)?)/g ;
           while (@r) {
-              $s = shift(@r); $f = shift(@r); $l = shift(@r);
+              $s = shift(@r); $f = shift(@r); $skip = shift(@r); $l = shift(@r);
               if ($f ne "@@" or $l ne "@@") {
                   print $s;
                   $exit = 1;
