@@ -69,6 +69,52 @@ public class ProductTreeEntry {
     private List<String> tags = Collections.emptyList();
 
     /**
+     * Here only for gson
+     */
+    public ProductTreeEntry() {
+    }
+
+    /**
+     *
+     * @param channelLabelIn channel label
+     * @param parentChannelLabelIn parent channel label
+     * @param channelNameIn channel name
+     * @param productIdIn product id
+     * @param repositoryIdIn repository id
+     * @param parentProductIdIn parent product id
+     * @param rootProductIdIn root product id
+     * @param updateTagIn update tag
+     * @param signedIn signed flag
+     * @param mandatoryIn mandatory flag
+     * @param recommendedIn recommended flag
+     * @param urlIn repo url
+     * @param releaseStageIn release stage
+     * @param productTypeIn product type
+     * @param tagsIn tags
+     */
+    public ProductTreeEntry(String channelLabelIn, Optional<String> parentChannelLabelIn, String channelNameIn,
+                            long productIdIn, long repositoryIdIn, Optional<Long> parentProductIdIn,
+                            long rootProductIdIn, Optional<String> updateTagIn, boolean signedIn, boolean mandatoryIn,
+                            boolean recommendedIn, String urlIn, ReleaseStage releaseStageIn,
+                            Optional<ProductType> productTypeIn, List<String> tagsIn) {
+        this.channelLabel = channelLabelIn;
+        this.parentChannelLabel = parentChannelLabelIn;
+        this.channelName = channelNameIn;
+        this.productId = productIdIn;
+        this.repositoryId = repositoryIdIn;
+        this.parentProductId = parentProductIdIn;
+        this.rootProductId = rootProductIdIn;
+        this.updateTag = updateTagIn;
+        this.signed = signedIn;
+        this.mandatory = mandatoryIn;
+        this.recommended = recommendedIn;
+        this.url = urlIn;
+        this.releaseStage = releaseStageIn;
+        this.productType = productTypeIn;
+        this.tags = tagsIn;
+    }
+
+    /**
      * @return the tags
      */
     public List<String> getTags() {
