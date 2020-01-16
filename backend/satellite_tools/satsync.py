@@ -109,7 +109,7 @@ class Runner:
         'arches': [''],  # 5/26/05 wregglej 156079 Added arches to precedence list.
         'orgs': [''],
         'supportinfo': ['channels', 'packages'],
-        'suse-products': ['arches'],
+        'suse-products': ['arches', 'channel-families'],
         'scc-repositories': [''],
         'suse-product-channels': ['suse-products', 'channels'],
         'suse-upgrade-paths': ['suse-products'],
