@@ -1,3 +1,5 @@
+- use channel name from product tree instead of constructing it (bsc#1157317)
+
 -------------------------------------------------------------------
 Mon Jan 13 15:10:25 CET 2020 - jgonzalez@suse.com
 
