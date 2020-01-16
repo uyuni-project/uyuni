@@ -1,3 +1,4 @@
+- fix documentation URL in installer (bsc#1154590)
 - fix product id of SLES12 SP5 x86_64 and remove never released
   SLED product (bsc#1158963)
 - Allow creating bootstrap repositories for CentoS8 (bsc#1159206)
