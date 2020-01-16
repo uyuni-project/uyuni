@@ -1074,8 +1074,8 @@ Then(/^I wait until refresh package list on "(.*?)" is finished$/) do |client|
   long_wait_delay = 600
   current_time = Time.now.strftime('%Y%m%d%H%M')
   timeout_time = (Time.now + long_wait_delay + round_minute).strftime('%Y%m%d%H%M')
-  node = get_system_name(client)
   $server.run("spacecmd -u admin -p admin clear_caches")
+  node = get_system_name(client)
   cmd = "spacecmd -u admin -p admin schedule_listcompleted #{current_time} #{timeout_time} #{node} | grep 'Package List Refresh scheduled by admin' | head -1"
   repeat_until_timeout(timeout: long_wait_delay, message: "'refresh package list' did not finish") do
     result, code = $server.run(cmd, false)

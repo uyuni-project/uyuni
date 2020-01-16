@@ -959,27 +959,6 @@ And(/^I check for failed events on history event page$/) do
   raise "\nFailures in event history found:\n\n#{failings}" if count_failures.nonzero?
 end
 
-When(/^I wait until all events in history are completed$/) do
-  steps %(
-    When I follow "Events" in the content area
-    And I follow "History" in the content area
-    Then I should see a "System History" text
-  )
-  events_icons = "//div[@class='table-responsive']/table/tbody/tr/td[2]/i"
-  repeat_until_timeout(message: 'Not all events in history were completed') do
-    pickedup = false
-    events = all(:xpath, events_icons)
-    events.each do |ev|
-      if ev[:class].include?('fa-exchange')
-        pickedup = true
-        break
-      end
-    end
-    break unless pickedup
-    sleep 1
-  end
-end
-
 Then(/^I should see a list item with text "([^"]*)" and bullet with style "([^"]*)"$/) do |text, class_name|
   item_xpath = "//ul/li[text()='#{text}']/i[contains(@class, '#{class_name}')]"
   find(:xpath, item_xpath)

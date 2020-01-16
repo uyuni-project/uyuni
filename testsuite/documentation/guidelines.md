@@ -6,7 +6,6 @@
 * `testsuite/features/step_definition`: definition of real code executed, in Ruby
 * `testsuite/features/support`: general support functions
 * `testsuite/features/upload_files`: various data files uploaded into test machines by the testsuite
-* `testsuite/features/profiles`: Docker and Kiwi profiles picked up from this git repository directly by SUSE Manager
 
 
 ### Grouping steps
@@ -86,10 +85,10 @@ Avoid reinventing function names and variables. Cucumber is all about human-read
  * Scenario names are sentences based on verbs in imperative form
  * Don't use duplicate scenarios names (checked at commit time)
  * Scenario names describe the test
- * A scenario to prepare before the actual tests should be named: ```Scenario: pre-requisite: ...```
- * A scenario that cleans up should be named: ```Scenario: cleanup: ...```
+ * A scenario to prepare before the actual tests should be named: ```Scenario: Pre-requisite: do something...```
+ * A scenario that cleans up should be named: ```Scenario: Cleanup: do something...```
  * Do not detail specifics (user name, package name, etc.) in the scenario names
- * Avoid parentheses in scenario names (painful from command line), use comments (#) instead
+ * Avoid parentheses in scenario names (painful from command line), use comments (```#```) instead
 
 
 ### Rules for steps

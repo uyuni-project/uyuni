@@ -94,7 +94,7 @@ Feature: Action chains on Salt minions
 
   Scenario: Subscribe system to configuration channel for testing action chain on Salt minion
     Given I am on the Systems overview page of this "sle_minion"
-    And I follow "Configuration" in the content area
+    When I follow "Configuration" in the content area
     And I follow "Manage Configuration Channels" in the content area
     And I follow first "Subscribe to Channels" in the content area
     And I check "Action Chain Channel" in the list
@@ -163,8 +163,8 @@ Feature: Action chains on Salt minions
     When I follow "Schedule"
     And I follow "Action Chains"
     And I follow "new action chain"
-    Then I click on "Save and Schedule"
-    And I should see a "Action Chain new action chain has been scheduled for execution." text
+    And I click on "Save and Schedule"
+    Then I should see a "Action Chain new action chain has been scheduled for execution." text
     When I wait for "virgo-dummy" to be installed on this "sle_minion"
     And I wait at most 300 seconds until file "/tmp/action_chain_one_system_done" exists on "sle_minion"
 
@@ -186,7 +186,7 @@ Feature: Action chains on Salt minions
     And I follow "Action Chains"
     And I follow "new action chain"
     And I follow "delete action chain" in the content area
-    Then I click on "Delete"
+    And I click on "Delete"
 
   Scenario: Add an action chain using system set manager for traditional client and Salt minion
     Given I am authorized as "admin" with password "admin"
@@ -221,14 +221,14 @@ Feature: Action chains on Salt minions
 
   Scenario: Verify action chain for two systems
     Given I am on the Systems overview page of this "sle_minion"
-    And I run "rhn-actions-control --enable-all" on "sle_client"
-    When I follow "Schedule"
+    When I run "rhn-actions-control --enable-all" on "sle_client"
+    And I follow "Schedule"
     And I follow "Action Chains"
     And I follow "new action chain"
     And I should see a "1. Install or update andromeda-dummy on 2 systems" text
     And I should see a "2. Run a remote command on 2 systems" text
-    Then I click on "Save and Schedule"
-    And I should see a "Action Chain new action chain has been scheduled for execution." text
+    And I click on "Save and Schedule"
+    Then I should see a "Action Chain new action chain has been scheduled for execution." text
 
   Scenario: Verify that the action chain from the system set manager was executed successfully
     Given I am authorized as "admin" with password "admin"
@@ -283,8 +283,8 @@ Feature: Action chains on Salt minions
     And I call actionchain.add_script_run() with the script "touch /tmp/action_chain_done"
     Then I should be able to see all these actions in the action chain
     When I schedule the action chain
-    Then I wait until there are no more action chains
-    When I wait until file "/tmp/action_chain_done" exists on "sle_minion"
+    And I wait until there are no more action chains
+    And I wait until file "/tmp/action_chain_done" exists on "sle_minion"
     Then file "/tmp/action_chain.log" should contain "123" on "sle_minion"
     And I wait until there are no more scheduled actions
 
