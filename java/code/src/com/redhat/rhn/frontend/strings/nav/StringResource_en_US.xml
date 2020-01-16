@@ -81,7 +81,7 @@
         </context-group>
       </trans-unit>
       <trans-unit id="Bare Metal Systems">
-        <source>Bare Metal Systems</source>
+        <source>Unprovisioned Systems</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Systems Navigation Menu</context>
         </context-group>
@@ -105,7 +105,7 @@
         </context-group>
       </trans-unit>
       <trans-unit id="Extra Packages">
-        <source>Extra Packages</source>
+        <source>Non Compliant</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Systems Navigation Menu</context>
         </context-group>
@@ -243,7 +243,7 @@
         </context-group>
       </trans-unit>
       <trans-unit id="channel.nav.vendor">
-        <source>Red Hat</source>
+        <source>@@VENDOR_NAME@@</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Channel Navigation Menu</context>
         </context-group>
@@ -572,7 +572,7 @@
         </context-group>
       </trans-unit>
       <trans-unit id="Spacewalk Configuration">
-        <source>@@PRODUCT_NAME@@ Configuration</source>
+        <source>Manager Configuration</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
@@ -788,7 +788,7 @@
         </context-group>
       </trans-unit>
       <trans-unit id="Kickstart Details">
-        <source>Kickstart Details</source>
+        <source>Autoinstallation Details</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart Details Menu</context>
         </context-group>
@@ -818,7 +818,7 @@
         </context-group>
       </trans-unit>
       <trans-unit id="Kickstart File">
-        <source>Kickstart File</source>
+        <source>Autoinstallation File</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart Details Menu</context>
         </context-group>
@@ -830,13 +830,13 @@
         </context-group>
       </trans-unit>
       <trans-unit id="Bare Metal Kickstart">
-        <source>Bare Metal Kickstart</source>
+        <source>Unprovisioned Autoinstallation</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart Details Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Bare Metal">
-        <source>Bare Metal</source>
+        <source>Unprovisioned</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart Menu</context>
         </context-group>
