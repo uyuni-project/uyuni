@@ -4,7 +4,7 @@
     <filesystem name="suse" m2compatible="true" local="true">
       <artifact pattern="${ivy.conf.dir}/repository/[organization]/[artifact]/[revision]/[artifact]-[revision].[ext]" />
     </filesystem>
-    <ibiblio name="central" m2compatible="true"/>
+    <ibiblio name="central" m2compatible="true" root="https://repo1.maven.org/maven2/"/>
   </resolvers>
   <modules>
     <module organisation="suse" name="*" resolver="suse"/>
