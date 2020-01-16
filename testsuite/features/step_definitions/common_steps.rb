@@ -452,9 +452,9 @@ end
 
 Then(/^the SLE12 products should be added$/) do
   output = sshcmd('echo -e "admin\nadmin\n" | mgr-sync list channels', ignore_err: true)
-  sle_module = '[I] SLE-Module-Legacy12-Updates for x86_64 Legacy Module 12 x86_64 [sle-module-legacy12-updates-x86_64-sp2]'
   raise unless output[:stdout].include? '[I] SLES12-SP2-Pool for x86_64 SUSE Linux Enterprise Server 12 SP2 x86_64 [sles12-sp2-pool-x86_64]'
-  raise unless output[:stdout].include? sle_module
+  raise unless output[:stdout].include? '[I] SLE-Manager-Tools12-Pool for x86_64 SP2 SUSE Linux Enterprise Server 12 SP2 x86_64 [sle-manager-tools12-pool-x86_64-sp2]'
+  raise unless output[:stdout].include? '[I] SLE-Module-Legacy12-Updates for x86_64 Legacy Module 12 x86_64 [sle-module-legacy12-updates-x86_64-sp2]'
 end
 
 Then(/^the SLE15 products should be added$/) do
@@ -961,27 +961,6 @@ And(/^I check for failed events on history event page$/) do
   end
   count_failures = failings.length
   raise "\nFailures in event history found:\n\n#{failings}" if count_failures.nonzero?
-end
-
-When(/^I wait until all events in history are completed$/) do
-  steps %(
-    When I follow "Events" in the content area
-    And I follow "History" in the content area
-    Then I should see a "System History" text
-  )
-  events_icons = "//div[@class='table-responsive']/table/tbody/tr/td[2]/i"
-  repeat_until_timeout(message: 'Not all events in history were completed') do
-    pickedup = false
-    events = all(:xpath, events_icons)
-    events.each do |ev|
-      if ev[:class].include?('fa-exchange')
-        pickedup = true
-        break
-      end
-    end
-    break unless pickedup
-    sleep 1
-  end
 end
 
 Then(/^I should see a list item with text "([^"]*)" and bullet with style "([^"]*)"$/) do |text, class_name|
