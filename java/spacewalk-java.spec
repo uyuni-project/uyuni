@@ -40,9 +40,11 @@
 %define java_version    11
 %if 0%{?sle_version} > 150100
 %define apache_commons_fileupload  apache-commons-fileupload
+%define apache_commons_digester    apache-commons-digester
 %define log4j                      log4j12
 %else
 %define apache_commons_fileupload  jakarta-commons-fileupload
+%define apache_commons_digester    jakarta-commons-digester
 %define log4j                      log4j
 %endif
 %else
@@ -173,7 +175,7 @@ Requires:       hibernate-commons-annotations
 Requires:       hibernate5
 Requires:       httpcomponents-client
 Requires:       jade4j
-Requires:       apache-commons-digester
+Requires:       %{apache_commons_digester}
 Requires:       java >= %{java_version}
 Requires:       java-saml
 Requires:       javapackages-tools
