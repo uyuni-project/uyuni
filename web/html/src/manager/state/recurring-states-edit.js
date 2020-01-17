@@ -3,21 +3,12 @@
 
 const React = require("react");
 const ReactDOM = require("react-dom");
-const Messages = require("components/messages").Messages;
-const MessagesUtils = require("components/messages").Utils;
 const {RecurringEventPicker} = require("components/recurring-event-picker");
 const {DisplayHighstate} = require("./display-highstate");
 const Button = require("components/buttons").Button;
 const AsyncButton = require("components/buttons").AsyncButton;
 const {Toggler} = require("components/toggler");
-const Network = require("utils/network");
 const { InnerPanel } = require("components/panels/InnerPanel");
-const Functions = require("utils/functions");
-
-
-function msg(severityIn, textIn) {
-    return {severity: severityIn, text: textIn};
-}
 
 class RecurringStatesEdit extends React.Component {
     constructor(props) {
@@ -40,9 +31,10 @@ class RecurringStatesEdit extends React.Component {
             {
                 scheduleId: schedule.scheduleId,
                 scheduleName: schedule.scheduleName,
-                minions: schedule.minions,
                 type: schedule.type,
+                minions: schedule.minions,
                 active: schedule.active === "true",
+                targetId: schedule.targetId,
                 targetType: schedule.targetType,
                 groupName: schedule.groupName,
                 cronTimes: {
@@ -60,16 +52,22 @@ class RecurringStatesEdit extends React.Component {
     getTargetType = () => {
         const search = window.location.search;
         if (search.match("\\?sid")) {
-            Object.assign(this.state, {targetType: "Minion"});
+            Object.assign(this.state, {
+                targetType: "Minion",
+                targetId: minions[0].id
+            });
         } else if (search.match("\\?sgid")) {
             Object.assign(this.state, {
                 targetType: "Group",
-                groupName: groupName
+                targetId: groupId
             });
         } else if (window.location.pathname.match("/ssm") && !search) {
             Object.assign(this.state, {targetType: "System Set Manager"});
         } else {
-            Object.assign(this.state, {targetType: "Organization"});
+            Object.assign(this.state, {
+                targetType: "Organization",
+                targetId: orgId
+            });
         }
     };
 
@@ -82,13 +80,12 @@ class RecurringStatesEdit extends React.Component {
             return false;
         }
         this.props.onCreate({
-            minionIds: this.state.minions.map(minion => minion.id),
+            targetId: this.state.targetId,
             minionNames: this.state.minions.map(minion => minion.name),
             scheduleName: this.state.scheduleName,
             active: true,
             type: this.state.type,
             targetType: this.state.targetType,
-            groupName: this.state.groupName,
             cronTimes: this.state.cronTimes,
             cron: this.state.cron,
             test: this.state.test
@@ -100,14 +97,13 @@ class RecurringStatesEdit extends React.Component {
             return false;
         }
         this.props.onEdit({
-            minionIds: this.state.minions.map(minion => minion.id),
+            targetId: this.state.targetId,
             minionNames: this.state.minions.map(minion => minion.name),
             scheduleId: this.state.scheduleId,
             scheduleName: this.state.scheduleName,
             active: this.state.active,
             type: this.state.type,
             targetType: this.state.targetType,
-            groupName: this.state.groupName,
             cronTimes: this.state.cronTimes,
             cron: this.state.cron,
             test: this.state.test

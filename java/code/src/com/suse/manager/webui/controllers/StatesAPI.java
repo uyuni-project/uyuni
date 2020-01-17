@@ -32,10 +32,22 @@ import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.rhnpackage.PackageArch;
 import com.redhat.rhn.domain.rhnpackage.PackageEvr;
-import com.redhat.rhn.domain.server.*;
-import com.redhat.rhn.domain.state.*;
+import com.redhat.rhn.domain.server.MinionServer;
+import com.redhat.rhn.domain.server.MinionServerFactory;
+import com.redhat.rhn.domain.server.MinionSummary;
+import com.redhat.rhn.domain.server.ServerFactory;
+import com.redhat.rhn.domain.server.ServerGroup;
+import com.redhat.rhn.domain.server.ServerGroupFactory;
+import com.redhat.rhn.domain.state.PackageState;
+import com.redhat.rhn.domain.state.PackageStates;
+import com.redhat.rhn.domain.state.ServerStateRevision;
+import com.redhat.rhn.domain.state.StateFactory;
+import com.redhat.rhn.domain.state.StateRevision;
+import com.redhat.rhn.domain.state.VersionConstraints;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.context.Context;
+import com.redhat.rhn.frontend.dto.SystemOverview;
+import com.redhat.rhn.frontend.xmlrpc.system.SystemHandler;
 import com.redhat.rhn.manager.action.ActionChainManager;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.configuration.ConfigurationManager;
@@ -59,8 +71,22 @@ import com.suse.manager.webui.services.SaltConstants;
 import com.suse.manager.webui.services.SaltStateGeneratorService;
 import com.suse.manager.webui.services.StateRevisionService;
 import com.suse.manager.webui.services.impl.SaltService;
-import com.suse.manager.webui.utils.*;
-import com.suse.manager.webui.utils.gson.*;
+import com.suse.manager.webui.utils.SaltInclude;
+import com.suse.manager.webui.utils.SaltPkgInstalled;
+import com.suse.manager.webui.utils.SaltPkgLatest;
+import com.suse.manager.webui.utils.SaltPkgRemoved;
+import com.suse.manager.webui.utils.SaltStateGenerator;
+import com.suse.manager.webui.utils.YamlHelper;
+import com.suse.manager.webui.utils.gson.ConfigChannelJson;
+import com.suse.manager.webui.utils.gson.PackageStateJson;
+import com.suse.manager.webui.utils.gson.RecurringStateScheduleJson;
+import com.suse.manager.webui.utils.gson.ResultJson;
+import com.suse.manager.webui.utils.gson.ServerApplyHighstateJson;
+import com.suse.manager.webui.utils.gson.ServerApplyStatesJson;
+import com.suse.manager.webui.utils.gson.ServerConfigChannelsJson;
+import com.suse.manager.webui.utils.gson.ServerPackageStatesJson;
+import com.suse.manager.webui.utils.gson.SimpleMinionJson;
+import com.suse.manager.webui.utils.gson.StateTargetType;
 import com.suse.salt.netapi.calls.modules.State;
 import com.suse.salt.netapi.datatypes.target.MinionList;
 import com.suse.salt.netapi.exception.SaltException;
@@ -77,7 +103,16 @@ import java.sql.Timestamp;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -167,9 +202,13 @@ public class StatesAPI {
      * @return the result JSON object
      */
     public static String schedules(Request request, Response response, User user) {
-        List<Map<String, String>> schedules = getSchedules(user);
-        return json(response,
-                ResultJson.success(schedules));
+        try {
+            List<Map<String, String>> schedules = getSchedules(user);
+            return json(response,
+                    ResultJson.success(schedules));
+        } catch (TaskomaticApiException e) {
+            return json(response, ResultJson.error(e.getMessage()));
+        }
     }
 
     /**
@@ -182,13 +221,16 @@ public class StatesAPI {
      */
     public static String singleSchedule(Request request, Response response, User user) {
         String scheduleId = request.params("scheduleId");
-        Map<String, String> schedule = getSingleSchedule(scheduleId, user);
-        if (schedule.isEmpty()) {
+        try {
+            Optional<Map<String, String>> schedule = getSingleSchedule(scheduleId, user);
+            if(schedule.isEmpty()) {
+                return json(response, ResultJson.error("Schedule not found"));
+            }
+            return json(response, ResultJson.success(schedule.get()));
+        } catch(TaskomaticApiException e) {
             return json(response,
-                    ResultJson.error("Schedule not found"));
+                    ResultJson.error(e.getMessage()));
         }
-        return json(response,
-                ResultJson.success(schedule));
     }
 
     /**
@@ -197,19 +239,14 @@ public class StatesAPI {
      * @param user the authorized user
      * @return the list of Recurring State Apply Schedules
      */
-    private static List<Map<String, String>> getSchedules(User user) {
+    private static List<Map<String, String>> getSchedules(User user) throws TaskomaticApiException {
         /* TODO: Check user accessability */
-        try {
-            List<Map> taskoSchedules = new TaskomaticApi().findActiveSchedulesByBunch(user,
-                    "recurring-state-apply-bunch");
-            return taskoSchedules.stream().map(taskoSchedule -> {
-                Map<String, String> schedule = getScheduleDetails(taskoSchedule);
-                return schedule;
-            }).collect(Collectors.toList());
-        }
-        catch (TaskomaticApiException e) {
-            return new ArrayList<>();
-        }
+        List<Map> taskoSchedules = TASKOMATIC_API.findActiveSchedulesByBunch(user,
+                "recurring-state-apply-bunch");
+        return taskoSchedules.stream().map(taskoSchedule -> {
+            Map<String, String> schedule = getScheduleDetails(taskoSchedule, user);
+            return schedule;
+        }).collect(Collectors.toList());
     }
 
     /**
@@ -219,27 +256,15 @@ public class StatesAPI {
      * @param user the authorized user
      * @return the result schedule object
      */
-    private static Map<String, String> getSingleSchedule(String scheduleId, User user) {
-        try {
-            Map<String, String> schedule = new HashMap<>();
-            Map taskoSchedule = new TaskomaticApi().findScheduleById(user, Long.parseLong(scheduleId));
-            if (taskoSchedule.get("id") != null) {
-                schedule = getScheduleDetails(taskoSchedule);
-                if (schedule.get("minute").isEmpty()) {
-                    String cronExpr = schedule.get("cron_expr");
-                    RecurringEventPicker picker = RecurringEventPicker.prepopulatePicker("date", null, null, cronExpr);
-                    schedule.put("minute", picker.getMinute());
-                    schedule.put("hour", picker.getHour());
-                    schedule.put("dayOfMonth", picker.getDayOfMonth());
-                    schedule.put("dayOfWeek", picker.getDayOfWeek());
-                    schedule.put("type", picker.getStatus());
-                }
-            }
-            return schedule;
+    private static Optional<Map<String, String>> getSingleSchedule(String scheduleId, User user)
+            throws TaskomaticApiException {
+        /* TODO: Create own JSON class for schedule type */
+        Map<String, String> schedule = null;
+        Map taskoSchedule = TASKOMATIC_API.lookupScheduleById(user, Long.parseLong(scheduleId));
+        if (taskoSchedule.get("id") != null) {
+           schedule = getScheduleDetails(taskoSchedule, user);
         }
-        catch(TaskomaticApiException e) {
-            return new HashMap<>();
-        }
+        return Optional.ofNullable(schedule);
     }
 
     /**
@@ -248,14 +273,71 @@ public class StatesAPI {
      * @param taskoSchedule the schedule Object of taskomatic
      * @return the result schedule object
      */
-    private static Map<String, String> getScheduleDetails(Map taskoSchedule) {
+    private static Map<String, String> getScheduleDetails(Map taskoSchedule, User user) {
         Map<String, String> schedule = (Map<String, String>) taskoSchedule.get("data_map");
         String date = new Timestamp(((Date) taskoSchedule.get("active_from")).getTime()).toString();
-        schedule.put("cron", taskoSchedule.get("cron_expr").toString());
+        String cronExpr = taskoSchedule.get("cron_expr").toString();
+        getMinionNamesAndIds(schedule.get("targetType"), Long.parseLong(schedule.get("targetId")) , user).ifPresent(schedule::putAll);
+        schedule.put("cron", cronExpr);
         schedule.put("scheduleId", taskoSchedule.get("id").toString());
         schedule.put("scheduleName", taskoSchedule.get("job_label").toString());
         schedule.put("createdAt", date.substring(0, date.indexOf(".")));
+        RecurringEventPicker picker = RecurringEventPicker.prepopulatePicker("date", null, null, cronExpr);
+        schedule.put("minute", picker.getMinute());
+        schedule.put("hour", picker.getHour());
+        schedule.put("dayOfMonth", picker.getDayOfMonth());
+        schedule.put("dayOfWeek", picker.getDayOfWeek());
+        schedule.put("type", picker.getStatus());
         return schedule;
+    }
+
+    /**
+     * Returns Map containing minion Ids and Names
+     *
+     * @param targetType type of the target
+     * @param targetId Id of the target
+     * @param user the authorized user
+     * @return the resulting map
+     */
+    public static Optional<Map<String, String>> getMinionNamesAndIds(String targetType, Long targetId, User user) {
+        /* TODO: Simplify acquiring minion Ids and names */
+        Map<String, String> minions = new HashMap<>();
+        if (targetType.matches("Minion")) {
+            List<String> minionName = Collections.singletonList(ServerFactory.lookupById(targetId).getName());
+            minions.put("minionIds", Collections.singletonList(targetId).toString());
+            minions.put("minionNames", minionName.toString());
+        }
+        else if (targetType.matches("Group")) {
+            ServerGroup group = ServerGroupFactory.lookupByIdAndOrg(targetId, user.getOrg());
+            minions.put("groupName", group.getName());
+            List<SimpleMinionJson> servers = MinionServerUtils.filterSaltMinions(group.getServers()).map(
+                    SimpleMinionJson::fromMinionServer).collect(Collectors.toList()
+            );
+            minions.put("minionIds", servers.stream().map(
+                    SimpleMinionJson::getId).collect(Collectors.toList()).toString()
+            );
+            minions.put("minionNames", servers.stream().map(
+                    SimpleMinionJson::getName).collect(Collectors.toList()).toString()
+            );
+        }
+        else if (targetType.matches("Organization")) {
+            Set<Long> systems = Arrays.stream(new SystemHandler().listSystems(user)).map(
+                    system -> ((SystemOverview) system).getId()).collect(Collectors.toSet()
+            );
+            List<SimpleMinionJson> servers = MinionServerUtils.filterSaltMinions(ServerFactory.lookupByIdsAndOrg(
+                    systems, user.getOrg())).map(SimpleMinionJson::fromMinionServer).collect(Collectors.toList()
+            );
+            minions.put("minionIds", servers.stream().map(
+                    SimpleMinionJson::getId).collect(Collectors.toList()).toString()
+            );
+            minions.put("minionNames", servers.stream().map(
+                    SimpleMinionJson::getName).collect(Collectors.toList()).toString()
+            );
+        }
+        else {
+            minions = null;
+        }
+        return Optional.ofNullable(minions);
     }
 
     /**
@@ -488,7 +570,7 @@ public class StatesAPI {
                 RecurringStateScheduleJson.class);
         try {
             String scheduleName = json.getScheduleName();
-            if (scheduleName != null && new TaskomaticApi().satScheduleActive(scheduleName, user)) {
+            if (scheduleName != null && TASKOMATIC_API.satScheduleActive(scheduleName, user)) {
                 errors.add("Schedule Label already in use.");
             } else {
                 errors.addAll(saveSchedule(json, user));
@@ -517,12 +599,16 @@ public class StatesAPI {
         List<String> errors = new LinkedList<>();
 
         String scheduleId = request.params("scheduleId");
-        if (getSingleSchedule(scheduleId, user) == null) {
-            errors.add("Schedule not found.");
-        } else {
-            RecurringStateScheduleJson json = GSON.fromJson(request.body(),
-                    RecurringStateScheduleJson.class);
-            errors.addAll(saveSchedule(json, user));
+        try {
+            if (getSingleSchedule(scheduleId, user).isEmpty()) {
+                errors.add("Schedule not found.");
+            } else {
+                RecurringStateScheduleJson json = GSON.fromJson(request.body(),
+                        RecurringStateScheduleJson.class);
+                errors.addAll(saveSchedule(json, user));
+            }
+        } catch (TaskomaticApiException e) {
+            errors.add(e.getMessage());
         }
 
         if (errors.isEmpty()) {
@@ -544,18 +630,13 @@ public class StatesAPI {
         String type = json.getType();
         Map<String, String> cronTimes = json.getCronTimes();
         String cron = json.getCron();
-        String groupName = json.getGroupName();
 
         Map<String, String> params = new HashMap<>();
         params.put("user_id", user.getId().toString());
-        params.put("minionIds", json.getMinionIds().toString());
         params.put("active", json.isActive() ? "true" : "false");
-        params.put("minionNames", json.getMinionNames().toString());
         params.put("targetType", json.getTargetType());
-        if (groupName != null) params.put("groupName", groupName);
+        params.put("targetId", json.getTargetId().toString());
         params.put("test", json.isTest() ? "true" : "false");
-        params.put("type", type);
-        params.putAll(cronTimes);
 
         if (StringUtils.isEmpty(scheduleName)) {
             errors.add("Schedule Name must be specified.");
@@ -567,8 +648,7 @@ public class StatesAPI {
                     RecurringEventPicker picker = RecurringEventPicker.prepopulatePicker("date", type, cronTimes, null);
                     cron = picker.getCronEntry();
                 }
-                TaskomaticApi tapi = new TaskomaticApi();
-                tapi.scheduleSatBunch(user, scheduleName, "recurring-state-apply-bunch", cron, params);
+                TASKOMATIC_API.scheduleSatBunch(user, scheduleName, "recurring-state-apply-bunch", cron, params);
             } catch (TaskomaticApiException e) {
                 if (e.getMessage().contains("InvalidParamException")) {
                     if (e.getMessage().contains("Cron trigger")) {
@@ -596,13 +676,13 @@ public class StatesAPI {
      */
     public static String deleteSchedule(Request request, Response response, User user) {
         String scheduleId = request.params("scheduleId");
-        Map<String, String> schedule = getSingleSchedule(scheduleId, user);
-        if (schedule.isEmpty()) {
-            return json(response, ResultJson.error("Schedule not found."));
-        }
-        String scheduleName = schedule.get("scheduleName");
         try {
-            new TaskomaticApi().unscheduleSatTask(scheduleName, user);
+            Optional<Map<String, String>> schedule = getSingleSchedule(scheduleId, user);
+            if (schedule.isEmpty()) {
+                return json(response, ResultJson.error("Schedule not found."));
+            }
+            String scheduleName = schedule.get().get("scheduleName");
+            TASKOMATIC_API.unscheduleSatTask(scheduleName, user);
         } catch(TaskomaticApiException e) {
             return json(response, ResultJson.error(e.getMessage()));
         }

@@ -56,7 +56,7 @@ class RecurringStatesDetails extends React.Component {
                 </tr>
             );
         } else {
-            /* TODO: Convert custom Quartz string back into cronTimes */
+            /* TODO: Get execution text from custom cron string */
             return (
                 <tr>
                     <td>{"Type"}:</td>

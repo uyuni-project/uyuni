@@ -40,7 +40,13 @@ import org.apache.log4j.Logger;
 
 import java.net.MalformedURLException;
 import java.time.ZonedDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -261,12 +267,12 @@ public class TaskomaticApi {
     public Date scheduleSatBunch(User user, String jobLabel, String bunchName, String cron, Map<String, String> params)
             throws TaskomaticApiException {
         ensureSatAdminRole(user);
+        if (params == null) {
+            params = new HashMap<>();
+        }
         Map task = findSatScheduleByBunchAndLabel(bunchName, jobLabel, user);
         if (task != null) {
             unscheduleSatTask(jobLabel, user);
-        }
-        if (params == null) {
-            params = new HashMap();
         }
         return (Date) invoke("tasko.scheduleSatBunch", bunchName, jobLabel , cron, params);
     }
@@ -281,14 +287,8 @@ public class TaskomaticApi {
      * @throws TaskomaticApiException if there was an error
      */
     public Date scheduleSatBunch(User user, String jobLabel, String bunchName, String cron)
-    throws TaskomaticApiException {
-        ensureSatAdminRole(user);
-        Map task = findSatScheduleByBunchAndLabel(bunchName, jobLabel, user);
-        if (task != null) {
-            unscheduleSatTask(jobLabel, user);
-        }
-        return (Date) invoke("tasko.scheduleSatBunch", bunchName, jobLabel , cron,
-                new HashMap());
+            throws TaskomaticApiException {
+        return scheduleSatBunch(user, jobLabel, bunchName, cron, null);
     }
 
     /**
@@ -332,17 +332,6 @@ public class TaskomaticApi {
     public List findActiveSchedules(User user) throws TaskomaticApiException {
         List<Map> schedules = (List<Map>) invoke("tasko.listActiveSatSchedules");
         return schedules;
-    }
-
-    /**
-     * Return list of active schedules by bunch
-     * @param user shall be sat admin
-     * @param scheduleId ID of the schedule
-     * @return schedule with matching ID
-     */
-    public Map findScheduleById(User user, long scheduleId) throws TaskomaticApiException {
-        Map schedule = (Map) invoke("tasko.lookupScheduleById", scheduleId);
-        return schedule;
     }
 
     /**

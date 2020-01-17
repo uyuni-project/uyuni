@@ -136,6 +136,7 @@ class RecurringStates extends React.Component {
     }
 
     skipNext(item) {
+        /* Write implementation to skip next run */
         this.handleForwardAction();
     }
 

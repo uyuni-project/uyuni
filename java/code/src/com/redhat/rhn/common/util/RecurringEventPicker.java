@@ -46,7 +46,6 @@ import javax.servlet.http.HttpServletRequest;
  * </pre>
  *
  * @version $Rev$
- * #TODO
  */
 public class RecurringEventPicker {
 

@@ -111,6 +111,6 @@ INSERT INTO rhnTaskoTask (id, name, class)
    VALUES (sequence_nextval('rhn_tasko_task_id_seq'), 'minion-checkin', 'com.redhat.rhn.taskomatic.task.MinionCheckin');
 
 INSERT INTO rhnTaskoTask (id, name, class)
-   VALUES (sequence_nextval('rhn_tasko_task_id_seq'), 'recurring-state-apply', 'com.redhat.rhn.taskomatic.task.RecurringStateApply');
+   VALUES (sequence_nextval('rhn_tasko_task_id_seq'), 'recurring-state-apply', 'com.redhat.rhn.taskomatic.task.RecurringStateApplyJob');
 
 commit;

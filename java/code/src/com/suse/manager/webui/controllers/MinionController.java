@@ -422,7 +422,9 @@ public class MinionController {
         String serverId = request.queryParams("sid");
         Map<String, Object> data = new HashMap<>();
         Server server = ServerFactory.lookupById(Long.valueOf(serverId));
-        data.put("server", server);
+        if(MinionServerUtils.isMinionServer(server)) {
+            data.put("server", server);
+        }
         return new ModelAndView(data, "templates/minion/recurring-states.jade");
     }
 

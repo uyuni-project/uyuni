@@ -27,7 +27,11 @@ import com.redhat.rhn.frontend.struts.RequestContext;
 
 import com.google.gson.GsonBuilder;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.jsp.PageContext;
