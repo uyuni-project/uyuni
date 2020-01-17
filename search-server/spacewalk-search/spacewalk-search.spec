@@ -88,7 +88,7 @@ Obsoletes:      rhn-search < 5.3.0
 %if 0%{?fedora} || 0%{?rhel} >=7
 Requires:       mchange-commons
 %endif
-%if 0%{?fedora} >= 21
+%if 0%{?fedora} >= 21 || %{?sle_version} > 150100
 Requires:       log4j12
 BuildRequires:  log4j12
 %else
