@@ -1,4 +1,4 @@
-# Copyright (c) 2016-2019 SUSE LLC
+# Copyright (c) 2016-2020 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 Feature: Be able to bootstrap a Salt minion via the GUI
@@ -6,43 +6,6 @@ Feature: Be able to bootstrap a Salt minion via the GUI
   Scenario: Create the bootstrap repository for a Salt client
      Given I am authorized
      And I create the "x86_64" bootstrap repository for "sle_minion" on the server
-
-  Scenario: Bootstrap a SLES minion with wrong hostname
-     Given I am authorized
-     And I go to the bootstrapping page
-     Then I should see a "Bootstrap Minions" text
-     When I enter "not-existing-name" as "hostname"
-     And I enter "22" as "port"
-     And I enter "root" as "user"
-     And I enter "linux" as "password"
-     And I click on "Bootstrap"
-     And I wait until I see " Could not resolve hostname not-existing-name: Name or service not known" text
-     Then I should not see a "GenericSaltError" text
-
-  Scenario: Bootstrap a SLES minion with wrong SSH credentials
-     Given I am authorized
-     And I go to the bootstrapping page
-     Then I should see a "Bootstrap Minions" text
-     When I enter the hostname of "sle_minion" as "hostname"
-     And I enter "22" as "port"
-     And I enter "FRANZ" as "user"
-     And I enter "KAFKA" as "password"
-     And I click on "Bootstrap"
-     And I wait until I see "Permission denied (publickey,keyboard-interactive)." text or "Password authentication failed" text
-     Then I should not see a "GenericSaltError" text
-
-  Scenario: Bootstrap a SLES minion with wrong SSH port number
-     Given I am authorized
-     And I go to the bootstrapping page
-     Then I should see a "Bootstrap Minions" text
-     When I enter the hostname of "sle_minion" as "hostname"
-     And I enter "11" as "port"
-     And I enter "root" as "user"
-     And I enter "linux" as "password"
-     And I click on "Bootstrap"
-     And I wait until I see "ssh: connect to host" text
-     Then I should not see a "GenericSaltError" text
-     And I should see a "port 11: Connection refused" text or "port 11: Invalid argument" text
 
   Scenario: Bootstrap a SLES minion
      Given I am authorized
@@ -98,36 +61,6 @@ Feature: Be able to bootstrap a Salt minion via the GUI
 
   Scenario: Detect latest Salt changes on the SLES minion
     When I query latest Salt changes on "sle_minion"
-
-  Scenario: Run a remote command on normal SLES minion
-    Given I am authorized as "testing" with password "testing"
-    When I follow the left menu "Salt > Remote Commands"
-    Then I should see a "Remote Commands" text in the content area
-    When I enter command "file /tmp"
-    And I click on preview
-    Then I should see "sle_minion" hostname
-    And I wait until I do not see "pending" text
-    When I click on run
-    And I wait until I do not see "pending" text
-    And I expand the results for "sle_minion"
-    Then I should see "/tmp: sticky, directory" in the command output for "sle_minion"
-
-  Scenario: Check spacecmd system ID of bootstrapped minion
-    Given I am on the Systems overview page of this "sle_minion"
-    Then I run spacecmd listevents for "sle_minion"
-
-  Scenario: Bootstrap should fail when minion already exists
-     Given I am authorized
-     And I go to the bootstrapping page
-     Then I should see a "Bootstrap Minions" text
-     When I enter the hostname of "sle_minion" as "hostname"
-     And I enter "22" as "port"
-     And I enter "root" as "user"
-     And I enter "linux" as "password"
-     And I click on "Bootstrap"
-     And I wait until I see "A salt key for this host" text
-     Then I should not see a "GenericSaltError" text
-     And I should see a "seems to already exist, please check!" text
 
   Scenario: Turn the SLES minion into a container build host
     Given I am on the Systems overview page of this "sle_minion"
