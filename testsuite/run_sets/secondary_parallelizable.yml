@@ -48,7 +48,8 @@
 - features/secondary/minssh_salt_install_package.feature
 - features/secondary/min_ubuntu_salt_install_package.feature
 - features/secondary/min_bootstrap_xmlrpc.feature
-- features/secondary/min_bootstrap_negative.feature
+# temporarily disabled, just the time to fix these tests
+# - features/secondary/min_bootstrap_negative.feature
 - features/secondary/min_salt_software_states.feature
 - features/secondary/min_salt_install_with_staging.feature
 - features/secondary/min_salt_formulas.feature
