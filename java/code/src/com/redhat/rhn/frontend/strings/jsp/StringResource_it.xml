@@ -25566,6 +25566,12 @@ caratteri.</target>
       <trans-unit id="filedetails.jsp.note.macrosalt">
         <source>&lt;strong&gt;Note:&lt;/strong&gt; Macro delimiters will be ignored when deploying to systems managed via Salt.</source>
       </trans-unit>
+      <trans-unit id="SP Migration">
+        <source>SP Migration</source>
+      </trans-unit>
+      <trans-unit id="Mirror Credentials">
+        <source>Organization Credentials</source>
+      </trans-unit>
     </body>
   </file>
 </xliff>

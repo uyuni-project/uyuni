@@ -8702,6 +8702,36 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       <trans-unit id="state.channel.through.apply.config.channel.method">
         <source>State channels can be applied through system.config.scheduleApplyConfigChannel method or from UI.</source>
       </trans-unit>
+      <trans-unit id="SUSE Manager Administrators">
+        <source>@@PRODUCT_NAME@@ Administrators</source>
+      </trans-unit>
+      <trans-unit id="Sync Schedule">
+        <source>Sync Schedule</source>
+      </trans-unit>
+      <trans-unit id="Virtualization Hierarchy">
+        <source>Virtualization Hierarchy</source>
+      </trans-unit>
+      <trans-unit id="Proxy Hierarchy">
+        <source>Proxy Hierarchy</source>
+      </trans-unit>
+      <trans-unit id="Systems Grouping">
+        <source>Systems Grouping</source>
+      </trans-unit>
+      <trans-unit id="Salt Entitled Servers">
+        <source>Salt</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/SystemList</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="Foreign Entitled Servers">
+        <source>Foreign</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/SystemList</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="Formula Catalog">
+        <source>Formula Catalog</source>
+      </trans-unit>
     </body>
   </file>
 </xliff>
