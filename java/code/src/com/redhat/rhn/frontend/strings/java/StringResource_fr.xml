@@ -10112,6 +10112,42 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       <trans-unit id="Formula Catalog">
         <source>Formula Catalog</source>
       </trans-unit>
+      <trans-unit id="Non Compliant">
+        <source>Non Compliant</source>
+      </trans-unit>
+      <trans-unit id="help.jsp.gettingstarted">
+        <source>Get started with setting up a @@PRODUCT_NAME@@ server</source>
+      </trans-unit>
+      <trans-unit id="help.jsp.bestpractices">
+        <source>This document describes SUSE recommended best practices for @@PRODUCT_NAME@@</source>
+      </trans-unit>
+      <trans-unit id="help.jsp.advancedtopics">
+        <source>Advanced Topics on @@PRODUCT_NAME@@</source>
+      </trans-unit>
+      <trans-unit id="Best Practices Guide">
+        <source>Best Practices Guide</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Navigation Menu</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="Advanced Topics Guide">
+        <source>Advanced Topics Guide</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Navigation Menu</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="Virtual Host Managers">
+        <source>Virtual Host Managers</source>
+      </trans-unit>
+      <trans-unit id="Remote Commands">
+        <source>Remote Commands</source>
+      </trans-unit>
+      <trans-unit id="Images">
+        <source>Images</source>
+      </trans-unit>
+      <trans-unit id="Build">
+        <source>Build</source>
+      </trans-unit>
     </body>
   </file>
 </xliff>

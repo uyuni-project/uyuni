@@ -24185,6 +24185,67 @@ given channel.</source>
       <trans-unit id="Mirror Credentials">
         <source>Organization Credentials</source>
       </trans-unit>
+      <trans-unit id="channels.subscribe">
+        <source>Subscribe Software Channels</source>
+      </trans-unit>
+      <trans-unit id="spmigration.jsp.confirm.submit">
+        <source>Confirm</source>
+      </trans-unit>
+      <trans-unit id="Setup Wizard">
+        <source>Setup Wizard</source>
+      </trans-unit>
+      <trans-unit id="HTTP Proxy">
+        <source>HTTP Proxy</source>
+      </trans-unit>
+      <trans-unit id="Products">
+        <source>Products</source>
+      </trans-unit>
+      <trans-unit id="Bootstrap">
+        <source>Bootstrap</source>
+      </trans-unit>
+      <trans-unit id="copyright.jsp.body">
+        <source>
+&lt;p&gt;
+    This software is a modular operating system comprised of numerous components
+    that may be accompanied by separate license terms. The software is a
+    collective work of SUSE; although SUSE does not own the copyright to every
+    component of the software, SUSE owns the collective work copyright for the
+    software.
+&lt;/p&gt;
+&lt;p&gt;
+    This SUSE product includes materials licensed to SUSE under the GNU
+    General Public License (GPL). The GPL requires that SUSE makes available
+    certain source code that corresponds to the GPL-licensed material. The source
+    code is available for download at
+    &lt;a href=&quot;https://www.suse.com/download-linux/source-code.html&quot;&gt;https://www.suse.com/download-linux/source-code.html&lt;/a&gt;.
+    Also, for up to three years from SUSE&#39;s distribution of the SUSE product, upon
+    request SUSE will mail a copy of the source code. Requests should be sent by
+    e-mail to
+    &lt;a href=&quot;mailto:sle_source_request@suse.com&quot;&gt;sle_source_request@suse.com&lt;/a&gt;
+    or as otherwise instructed at
+    &lt;a href=&quot;https://www.suse.com/download-linux/source-code.html/&quot;&gt;https://www.suse.com/download-linux/source-code.html&lt;/a&gt;.
+    SUSE may charge a fee to recover its reasonable costs of distribution
+&lt;/p&gt;
+        </source>
+      </trans-unit>
+      <trans-unit id="Salt">
+        <source>Salt</source>
+      </trans-unit>
+      <trans-unit id="Keys">
+        <source>Keys</source>
+      </trans-unit>
+      <trans-unit id="States">
+        <source>States</source>
+      </trans-unit>
+      <trans-unit id="Highstate">
+        <source>Highstate</source>
+      </trans-unit>
+      <trans-unit id="Configuration Channels">
+        <source>Configuration Channels</source>
+      </trans-unit>
+      <trans-unit id="Formula">
+        <source>Formula</source>
+      </trans-unit>
     </body>
   </file>
 </xliff>
