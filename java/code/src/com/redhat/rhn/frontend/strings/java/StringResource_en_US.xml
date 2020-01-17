@@ -8702,6 +8702,72 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       <trans-unit id="state.channel.through.apply.config.channel.method">
         <source>State channels can be applied through system.config.scheduleApplyConfigChannel method or from UI.</source>
       </trans-unit>
+      <trans-unit id="SUSE Manager Administrators">
+        <source>@@PRODUCT_NAME@@ Administrators</source>
+      </trans-unit>
+      <trans-unit id="Sync Schedule">
+        <source>Sync Schedule</source>
+      </trans-unit>
+      <trans-unit id="Virtualization Hierarchy">
+        <source>Virtualization Hierarchy</source>
+      </trans-unit>
+      <trans-unit id="Proxy Hierarchy">
+        <source>Proxy Hierarchy</source>
+      </trans-unit>
+      <trans-unit id="Systems Grouping">
+        <source>Systems Grouping</source>
+      </trans-unit>
+      <trans-unit id="Salt Entitled Servers">
+        <source>Salt</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/SystemList</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="Foreign Entitled Servers">
+        <source>Foreign</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/SystemList</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="Formula Catalog">
+        <source>Formula Catalog</source>
+      </trans-unit>
+      <trans-unit id="Non Compliant">
+        <source>Non Compliant</source>
+      </trans-unit>
+      <trans-unit id="help.jsp.gettingstarted">
+        <source>Get started with setting up a @@PRODUCT_NAME@@ server</source>
+      </trans-unit>
+      <trans-unit id="help.jsp.bestpractices">
+        <source>This document describes SUSE recommended best practices for @@PRODUCT_NAME@@</source>
+      </trans-unit>
+      <trans-unit id="help.jsp.advancedtopics">
+        <source>Advanced Topics on @@PRODUCT_NAME@@</source>
+      </trans-unit>
+      <trans-unit id="Best Practices Guide">
+        <source>Best Practices Guide</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Navigation Menu</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="Advanced Topics Guide">
+        <source>Advanced Topics Guide</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Navigation Menu</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="Virtual Host Managers">
+        <source>Virtual Host Managers</source>
+      </trans-unit>
+      <trans-unit id="Remote Commands">
+        <source>Remote Commands</source>
+      </trans-unit>
+      <trans-unit id="Images">
+        <source>Images</source>
+      </trans-unit>
+      <trans-unit id="Build">
+        <source>Build</source>
+      </trans-unit>
     </body>
   </file>
 </xliff>
