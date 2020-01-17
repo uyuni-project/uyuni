@@ -82,6 +82,23 @@ Feature: Register a Salt minion via Bootstrap-script
    When I wait until event "Package Install/Upgrade scheduled by admin" is completed
    Then "orion-dummy-1.1-1.1" should be installed on "sle_minion"
 
+  Scenario: Run a remote command on normal SLES minion
+    Given I am authorized as "testing" with password "testing"
+    When I follow the left menu "Salt > Remote Commands"
+    Then I should see a "Remote Commands" text in the content area
+    When I enter command "file /tmp"
+    And I click on preview
+    Then I should see "sle_minion" hostname
+    And I wait until I do not see "pending" text
+    When I click on run
+    And I wait until I do not see "pending" text
+    And I expand the results for "sle_minion"
+    Then I should see "/tmp: sticky, directory" in the command output for "sle_minion"
+
+  Scenario: Check spacecmd system ID of bootstrapped minion
+    Given I am on the Systems overview page of this "sle_minion"
+    Then I run spacecmd listevents for "sle_minion"
+
   Scenario: Cleanup: remove package from script-bootstrapped SLES minion
    When I remove package "orion-dummy-1.1-1.1" from this "sle_minion"
    Then "orion-dummy-1.1-1.1" should not be installed on "sle_minion"
