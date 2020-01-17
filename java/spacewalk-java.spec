@@ -690,11 +690,7 @@ chown tomcat:%{apache_group} /var/log/rhn/gatherer.log
 %{jardir}/javamail.jar
 %{jardir}/jcommon*.jar
 %{jardir}/jdom.jar
-%if 0%{?sle_version} >= 150200
 %{jardir}/geronimo-jta-1.1-api.jar
-%else
-%{jardir}/jta.jar
-%endif
 %{jardir}/log4j*.jar
 %{jardir}/oro.jar
 %{jardir}/quartz.jar
