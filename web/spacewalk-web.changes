@@ -1,4 +1,4 @@
-- Add react-html-parser to fix umlaut in the menu and breadcrumb
+- Add html-react-parser to fix umlaut in the menu and breadcrumb
 - Add placeholder for product name to formula forms
 - Fix ordering by date (bsc#1158818)
 - Add debug packages containing Javascript source map files
