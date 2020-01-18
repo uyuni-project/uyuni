@@ -5,11 +5,6 @@
 # Texts and links
 #
 
-When(/^I follow "(.*?)" link$/) do |host|
-  system_name = get_system_name(host)
-  step %(I follow "#{system_name}")
-end
-
 Then(/^I should see a "(.*)" text in the content area$/) do |txt|
   within('#spacewalk-content') do
     raise "Text #{txt} not found" unless has_content?(txt)
@@ -239,15 +234,6 @@ When(/^I follow first "([^"]*)" in the (.+)$/) do |arg1, arg2|
   end
 end
 
-#
-# Click on a link which appears inside of <div> with
-# the given "class"
-When(/^I follow "([^"]*)" in class "([^"]*)"$/) do |arg1, arg2|
-  within(:xpath, "//div[@class=\"#{arg2}\"]") do
-    step "I follow \"#{arg1}\""
-  end
-end
-
 When(/^I follow "([^"]*)" on "(.*?)" row$/) do |text, host|
   system_name = get_system_name(host)
   xpath_query = "//tr[td[contains(.,'#{system_name}')]]//a[contains(., '#{text}')]"
@@ -389,7 +375,7 @@ Given(/^I am on the active Users page$/) do
     )
 end
 
-Then(/^Table row for "([^"]*)" should contain "([^"]*)"$/) do |arg1, arg2|
+Then(/^table row for "([^"]*)" should contain "([^"]*)"$/) do |arg1, arg2|
   xpath_query = "//div[@class=\"table-responsive\"]/table/tbody/tr[.//a[contains(.,'#{arg1}')]]"
   within(:xpath, xpath_query) do
     raise "xpath: #{xpath_query} has no content #{arg2}" unless has_content?(arg2)
@@ -492,10 +478,6 @@ When(/^I am on the System Overview page$/) do
   visit("https://#{$server.full_hostname}/rhn/systems/Overview.do")
 end
 
-Then(/^I reload the page$/) do
-  visit current_url
-end
-
 Then(/^I should see something$/) do
   steps %(
     Given I should see a "Sign In" text
@@ -565,22 +547,6 @@ end
 Then(/^I should see a "(.*?)" link in the text$/) do |linktext, text|
   within(:xpath, "//p/strong[contains(normalize-space(string(.)), '#{text}')]") do
     assert all(:xpath, "//a[text() = '#{linktext}']").any?
-  end
-end
-
-#
-# Test for a visible link inside of a <div> with the attribute
-# "class" or "id" of the given name
-#
-Then(/^I should see a "([^"]*)" link in element "([^"]*)"$/) do |link, element|
-  within(:xpath, "//div[@id=\"#{element}\" or @class=\"#{element}\"]") do
-    raise "Link #{link} not visible" unless find_link(link).visible?
-  end
-end
-
-Then(/^I should not see a "([^"]*)" link in element "([^"]*)"$/) do |link, element|
-  within(:xpath, "//div[@id=\"#{element}\" or @class=\"#{element}\"]") do
-    raise "Link #{link} is present" unless has_no_link?(link)
   end
 end
 
@@ -675,12 +641,6 @@ Then(/^I should see a "([^"]*)" link in row ([0-9]+) of the content menu$/) do |
     within(:xpath, "//div[@class=\"spacewalk-content-nav\"]/ul[#{arg2}]") do
       step %(I should see a "#{arg1}" link)
     end
-  end
-end
-
-Then(/^I should see a "([^"]*)" link in list "([^"]*)"$/) do |arg1, arg2|
-  within(:xpath, "//ul[@id=\"#{arg2}\" or @class=\"#{arg2}\"]") do
-    raise "Link #{arg1} not visible" unless find_link(arg1).visible?
   end
 end
 
