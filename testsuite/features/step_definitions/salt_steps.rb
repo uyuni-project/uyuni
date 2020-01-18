@@ -26,14 +26,6 @@ When(/^I get the contents of the remote file "(.*?)"$/) do |filename|
   $output, _code = $server.run("cat #{filename}")
 end
 
-When(/^I stop salt-master$/) do
-  $server.run('systemctl stop salt-master', false)
-end
-
-When(/^I start salt-master$/) do
-  $server.run('systemctl start salt-master', false)
-end
-
 When(/^I stop salt-minion on "(.*?)"$/) do |minion|
   node = get_target(minion)
   node.run('rcsalt-minion stop', false) if minion == 'sle_minion'

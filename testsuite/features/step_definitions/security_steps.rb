@@ -2,21 +2,6 @@ require 'open-uri'
 require 'uri'
 require 'openssl'
 
-Given(/^I navigate to any non-static page$/) do
-  where = ['I am on the Systems page'].sample
-  step(where)
-  @headers = {}
-  begin
-    Capybara.current_session
-            .response_headers.each do |header, value|
-      @headers[header.downcase] = value
-    end
-    @url = Capybara.current_session.current_url
-  rescue Capybara::NotSupportedByDriverError
-    pending('Current driver does not support checking response headers')
-  end
-end
-
 Given(/^I retrieve any static resource$/) do
   resource = ['/img/action-add.gif', '/css/spacewalk.css', '/fonts/DroidSans.ttf',
               '/javascript/actionchain.js'].sample
