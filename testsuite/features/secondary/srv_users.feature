@@ -85,11 +85,11 @@ Feature: Manage users
 
   Scenario: Verify user list
     Given I am on the active Users page
-    Then Table row for "user1" should contain "Organization Administrator"
-    And Table row for "user1" should contain "Channel Administrator"
-    And Table row for "user1" should contain "Configuration Administrator"
-    And Table row for "user1" should contain "System Group Administrator"
-    And Table row for "user1" should contain "Activation Key Administrator"
+    Then table row for "user1" should contain "Organization Administrator"
+    And table row for "user1" should contain "Channel Administrator"
+    And table row for "user1" should contain "Configuration Administrator"
+    And table row for "user1" should contain "System Group Administrator"
+    And table row for "user1" should contain "Activation Key Administrator"
 
   Scenario: Fail to deactivate organization administrator
     Given I am on the active Users page

@@ -202,12 +202,6 @@ To check for the initial log in, prefer ```Then I am logged in```.
   When I am on the System Manager System Overview page
 ```
 
-* Reload current page
-
-```cucumber
-  When I reload the page
-```
-
 * Close current page
 
 ```cucumber
@@ -560,8 +554,6 @@ The check box can be identified by name, id or label text.
 * Control Salt service
 
 ```cucumber
-  When I stop salt-master
-  When I start salt-master
   When I stop salt-minion on "ceos_minion"
   When I start salt-minion on "ceos_minion"
   When I restart salt-minion on "ceos_minion"
