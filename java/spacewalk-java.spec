@@ -91,7 +91,7 @@ BuildRequires:  c3p0 >= 0.9.1
 BuildRequires:  cglib
 %if 0%{?suse_version}
 BuildRequires:  classmate
-BuildRequires:  classpathx-mail
+BuildRequires:  javamail
 %endif
 BuildRequires:  concurrent
 BuildRequires:  dom4j
@@ -163,7 +163,7 @@ Requires:       c3p0 >= 0.9.1
 Requires:       cglib
 %if 0%{?suse_version}
 Requires:       classmate
-Requires:       classpathx-mail
+Requires:       javamail
 %endif
 Requires:       cobbler >= 3.0.0
 Requires:       concurrent
@@ -689,7 +689,11 @@ chown tomcat:%{apache_group} /var/log/rhn/gatherer.log
 %{jardir}/statistics.jar
 
 %{jardir}/jaf.jar
+%if 0%{?sle_version} >= 150200
+%{jardir}/javax.mail.jar
+%else
 %{jardir}/javamail.jar
+%endif
 %{jardir}/jcommon*.jar
 %{jardir}/jdom.jar
 %{jardir}/geronimo-jta-1.1-api.jar
