@@ -119,7 +119,7 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
         Errata e = ErrataFactoryTest.createTestUnpublishedErrata(user.getOrg().getId());
         assertFalse(e.isPublished()); //should be unpublished
       //publish errata and store back into self
-        e = ErrataManager.publish(e, new HashSet(), user);
+        e = ErrataManager.publish(e, new HashSet(), true, user);
         assertTrue(e.isPublished());  //should be published
     }
 

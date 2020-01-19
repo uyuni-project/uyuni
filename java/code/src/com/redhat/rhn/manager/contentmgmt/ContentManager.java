@@ -848,26 +848,29 @@ public class ContentManager {
      */
     public void alignEnvironmentTargetSync(Collection<ContentFilter> filters, Channel src, Channel tgt,
             User user) {
-        // align packages and the cache (rhnServerNeededCache)
-        List<PackageFilter> packageFilters = filters.stream()
-                .flatMap(f -> stream((Optional<PackageFilter>) f.asPackageFilter()))
-                .collect(toList());
-        List<ErrataFilter> errataFilters = filters.stream()
-                .flatMap(f -> stream((Optional<ErrataFilter>) f.asErrataFilter()))
-                .collect(toList());
+        HibernateFactory.doWithoutAutoFlushing( () -> {
+            // align packages and the cache (rhnServerNeededCache)
+            List<PackageFilter> packageFilters = filters.stream()
+                    .flatMap(f -> stream((Optional<PackageFilter>) f.asPackageFilter()))
+                    .collect(toList());
+            List<ErrataFilter> errataFilters = filters.stream()
+                    .flatMap(f -> stream((Optional<ErrataFilter>) f.asErrataFilter()))
+                    .collect(toList());
 
-        alignPackages(src, tgt, packageFilters);
+            alignPackages(src, tgt, packageFilters);
 
-        // align errata and the cache (rhnServerNeededCache)
-        alignErrata(src, tgt, errataFilters, user);
+            // align errata and the cache (rhnServerNeededCache)
+            alignErrata(src, tgt, errataFilters, user);
 
-        // update the channel newest packages cache
-        ChannelFactory.refreshNewestPackageCache(tgt, "java::alignPackages");
+            // update the channel newest packages cache
+            ChannelFactory.refreshNewestPackageCache(tgt, "java::alignPackages");
 
-        // now request repo regen
-        tgt.setLastModified(new Date());
-        HibernateFactory.getSession().saveOrUpdate(tgt);
-        ChannelManager.queueChannelChange(tgt.getLabel(), "java::alignChannel", "Channel aligned");
+            // now request repo regen
+            tgt.setLastModified(new Date());
+            HibernateFactory.getSession().saveOrUpdate(tgt);
+            ChannelManager.queueChannelChange(tgt.getLabel(), "java::alignChannel", "Channel aligned");
+        });
+        HibernateFactory.getSession().flush();
     }
 
     private void alignPackages(Channel srcChannel, Channel tgtChannel, Collection<PackageFilter> filters) {
@@ -904,7 +907,7 @@ public class ContentManager {
      * @param errataFilters the {@link ErrataFilter}s
      * @param user the {@link User}
      */
-    private void alignErrata(Channel src, Channel tgt, Collection<ErrataFilter> errataFilters, User user) {
+    private void alignErrata(Channel src, Channel tgt, Collection<ErrataFilter> errataFilters, User user) { // 447 s
         Pair<Set<Errata>, Set<Errata>> partitionedErrata = filterEntities(src.getErratas(), errataFilters);
         Set<Errata> includedErrata = partitionedErrata.getLeft();
         Set<Errata> excludedErrata = partitionedErrata.getRight();
@@ -912,9 +915,9 @@ public class ContentManager {
         // Truncate extra errata in target channel
         ErrataManager.truncateErrata(includedErrata, tgt, user);
         // Remove packages from excluded errata
-        excludedErrata.forEach(e -> ErrataManager.removeErratumAndPackagesFromChannel(e, tgt, user));
+        excludedErrata.forEach(e -> ErrataManager.removeErratumAndPackagesFromChannel(e, tgt, user)); // 68 s
         // Merge the included errata
-        ErrataManager.mergeErrataToChannel(user, includedErrata, tgt, src, false, false);
+        ErrataManager.mergeErrataToChannel(user, includedErrata, tgt, src, false, false); // 379 s
     }
 
     /**

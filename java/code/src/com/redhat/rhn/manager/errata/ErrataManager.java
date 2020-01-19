@@ -180,10 +180,12 @@ public class ErrataManager extends BaseManager {
      *
      * @param unpublished The errata to publish
      * @param channelIds The Long channelIds we want to publish this Errata to.
+     * @param updateSearchIndex update search index after publishing
      * @param user who is publishing errata
      * @return Returns a published errata.
      */
-    public static Errata publish(Errata unpublished, Collection channelIds, User user) {
+    // todo maybe introduce another method instead of 1 more param
+    public static Errata publish(Errata unpublished, Collection channelIds, boolean updateSearchIndex, User user) {
         //pass on to the factory
         Errata retval = ErrataFactory.publish(unpublished);
         log.debug("publish - errata published");
@@ -192,7 +194,9 @@ public class ErrataManager extends BaseManager {
         log.debug("publish - updateErrataCacheForChannelsAsync called");
 
         // update the search server
-        updateSearchIndex();
+        if (updateSearchIndex) {
+            updateSearchIndex();
+        }
         return retval;
     }
 
@@ -230,7 +234,7 @@ public class ErrataManager extends BaseManager {
             Channel channel = ChannelManager.lookupByIdAndUser(channelId, user);
             if (channel != null) {
                 errata.addChannel(channel);
-                errata.addChannelNotification(channel, new Date());
+                errata.addChannelNotification(channel, new Date()); // 46 s
             }
         }
 
@@ -296,7 +300,7 @@ public class ErrataManager extends BaseManager {
             MessageQueue.publish(eve);
         }
         else {
-            cloneErrata(toChannel.getId(), errataIds, repoRegen, user);
+            cloneErrata(toChannel.getId(), errataIds, repoRegen, false, user);
         }
 
         // no need to regenerate errata cache, because we didn't touch any packages
@@ -1520,8 +1524,8 @@ public class ErrataManager extends BaseManager {
         List<Long> eList = new ArrayList<Long>();
         eList.add(errata.getId());
         //First delete the cache entries
-        ErrataCacheManager.deleteCacheEntriesForChannelErrata(chan.getId(), eList);
-        ErrataCacheManager.deleteCacheEntriesForChannelPackages(
+        ErrataCacheManager.deleteCacheEntriesForChannelErrata(chan.getId(), eList); // 35 s
+        ErrataCacheManager.deleteCacheEntriesForChannelPackages( // 31 s
                 chan.getId(),
                 errata.getPackages().stream().map(p -> p.getId()).collect(toList()));
 
@@ -1761,7 +1765,7 @@ public class ErrataManager extends BaseManager {
      * update the errata search index.
      * @return true if index was updated, false otherwise.
      */
-    private static boolean updateSearchIndex() {
+    private static boolean updateSearchIndex() { // todo delayed update after CLM errata clone
         boolean flag = false;
 
         try {
@@ -2257,10 +2261,11 @@ public class ErrataManager extends BaseManager {
      * @param channelId the channel id
      * @param errataToClone the errata ids to clone
      * @param requestRepodataRegen if channel repodata should be regenerated after the cloning
+     * @param updateSearchIndex update search index
      * @param user the user
      */
     public static void cloneErrata(Long channelId, Collection<Long> errataToClone, boolean requestRepodataRegen,
-            User user) {
+            boolean updateSearchIndex, User user) {
         Channel channel = ChannelFactory.lookupById(channelId);
         if (channel == null) {
             log.error("Failed to clone errata " + errataToClone + " Didn't find channel with id: " +
@@ -2286,7 +2291,7 @@ public class ErrataManager extends BaseManager {
                 channelSet.add(channel);
 
                 List<Errata> clones = lookupPublishedByOriginal(user, errata);
-                if (clones.size() == 0) {
+                if (clones.size() == 0) { // todo this path should be also optimized i guess
                     log.debug("Cloning errata");
                     Errata published = PublishErrataHelper.cloneErrataFast(errata, user.getOrg());
                     published.setChannels(channelSet);
@@ -2294,8 +2299,8 @@ public class ErrataManager extends BaseManager {
                     published.addChannelNotification(channel, new Date());
                 }
                 else {
-                    log.debug("Re-publishing clone");
-                    publish(clones.get(0), cids, user);
+                    log.debug("Re-publishing clone"); // todo this is the one i'm optimizing now
+                    publish(clones.get(0), cids, updateSearchIndex, user);
                 }
             }
         }

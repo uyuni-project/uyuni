@@ -928,7 +928,7 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
         list.add(cchan.getId());
 
          Errata ce = ErrataManager.createClone(user, oe);
-         ce = ErrataManager.publish(ce, list, user);
+         ce = ErrataManager.publish(ce, list, true, user);
 
          Package testPackage = PackageTest.createTestPackage(user.getOrg());
          oe.addPackage(testPackage);
@@ -954,7 +954,7 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
         list.add(cchan.getId());
 
          Errata ce = ErrataManager.createClone(user, oe);
-         ce = ErrataManager.publish(ce, list, user);
+         ce = ErrataManager.publish(ce, list, true, user);
 
          Package testPackage = PackageTest.createTestPackage(user.getOrg());
          oe.addPackage(testPackage);

@@ -28,7 +28,9 @@ public class CloneErrataAction implements MessageAction {
      */
     public void execute(EventMessage msgIn) {
         CloneErrataEvent msg = (CloneErrataEvent) msgIn;
-        ErrataManager.cloneErrata(msg.getChannelId(), msg.getErrata(), msg.isRequestRepodataRegen(), msg.getUser());
+        ErrataManager.cloneErrata(msg.getChannelId(), msg.getErrata(), msg.isRequestRepodataRegen(),
+                false, msg.getUser());
+        //
     }
 
 }
