@@ -72,6 +72,10 @@
     <available file="${java.lib.dir}/geronimo-jta-1.1-api.jar" />
   </condition>
 
+  <condition property="javamail" value="javax.mail" else="javamail">
+    <available file="${java.lib.dir}/javax.mail.jar" />
+  </condition>
+
   <available file="${java.lib.dir}/ehcache.jar" type="file" property="ehcache" value="ehcache" />
   <available file="${java.lib.dir}/ehcache-core.jar" type="file" property="ehcache" value="ehcache-core" />
 
@@ -100,7 +104,7 @@
       value="bcel ${cglib-jar} commons-beanutils commons-cli commons-codec
              commons-collections commons-digester commons-discovery
              commons-el commons-fileupload commons-io ${commons-lang} commons-logging ${commons-validator} ${hibernate}
-             javamail smtp jdom ${jmock-jars}
+             ${javamail} smtp jdom ${jmock-jars}
              ${log4j-jars} oro redstone-xmlrpc-client redstone-xmlrpc ${struts-jars} ${tomcat-jars}
              bcprov bcpg jcommon stringtree-json postgresql-jdbc
              taglibs-standard-impl taglibs-standard-jstlel taglibs-standard-spec
@@ -159,7 +163,7 @@
       value="bcel ${cglib-jar} commons-beanutils commons-cli commons-codec
              commons-collections commons-digester commons-discovery
              commons-el commons-fileupload commons-io ${commons-lang} commons-logging ${commons-validator} ${hibernate}
-             ${tomcat-jars} javamail jdom jsch dwr google-gson
+             ${tomcat-jars} ${javamail} jdom jsch dwr google-gson
              ${log4j-jars} oro redstone-xmlrpc-client redstone-xmlrpc ${struts-jars}
              jcommon stringtree-json postgresql-jdbc
              taglibs-standard-impl taglibs-standard-jstlel taglibs-standard-spec quartz
@@ -172,7 +176,7 @@
              commons-digester commons-discovery commons-el commons-fileupload commons-io
              ${commons-lang} commons-logging
              ${commons-validator} concurrent dom4j google-gson ${hibernate} ${jta11-jars}
-             jaf ${jasper-jars} javamail jcommon jdom ${other-jars}
+             jaf ${jasper-jars} ${javamail} jcommon jdom ${other-jars}
              ${tomcat-jars} ${log4j-jars} redstone-xmlrpc-client redstone-xmlrpc
              oro quartz stringtree-json sitemesh ${struts-jars}
              taglibs-standard-impl taglibs-standard-jstlel taglibs-standard-spec
