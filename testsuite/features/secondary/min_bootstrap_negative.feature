@@ -1,6 +1,7 @@
 # Copyright (c) 2020 SUSE LLC
 # Licensed under the terms of the MIT license.
 
+@sle_minion
 Feature: Negative tests for bootstrap normal minions
   In order to register only valid minions 
   As an authorized user
@@ -76,6 +77,21 @@ Feature: Negative tests for bootstrap normal minions
      And I select the hostname of "proxy" from "proxies"
      And I click on "Bootstrap"
      And I wait until I see "Successfully bootstrapped host!" text
+     And I navigate to "rhn/systems/Overview.do" page
+     And I wait until I see the name of "sle_minion", refreshing the page
+
+  Scenario: Cleanup: subscribe again to base channel after negative tests
+    Given I am on the Systems overview page of this "sle_minion"
+    When I follow "Software" in the content area
+    And I follow "Software Channels" in the content area
+    And I wait until I do not see "Loading..." text
+    And I check radio button "Test-Channel-x86_64"
+    And I wait until I do not see "Loading..." text
+    And I click on "Next"
+    Then I should see a "Confirm Software Channel Change" text
+    When I click on "Confirm"
+    Then I should see a "Changing the channels has been scheduled." text
+    And I wait until event "Subscribe channels scheduled by admin" is completed
 
   Scenario: Cleanup: turn the SLES minion into a container build host
     Given I am on the Systems overview page of this "sle_minion"
