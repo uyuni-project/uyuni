@@ -1,3 +1,4 @@
+- When downloading repo metadata, don't add "/" to the repo url if it already ends with one (bsc#1158899)
 - enhance suseProducts via ISS to fix SP migration on slave server (bsc#1159184)
 
 -------------------------------------------------------------------
