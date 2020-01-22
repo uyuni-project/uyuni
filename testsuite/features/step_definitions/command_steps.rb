@@ -589,29 +589,25 @@ end
 # Repositories and packages management
 When(/^I enable repository "([^"]*)" on this "([^"]*)"((?: without error control)?)$/) do |repo, host, error_control|
   node = get_target(host)
-  if file_exists?(node, '/usr/bin/zypper')
-    cmd = "zypper mr --enable #{repo}"
-  elsif file_exists?(node, '/usr/bin/yum')
-    cmd = "sed -i 's/enabled=.*/enabled=1/g' /etc/yum.repos.d/#{repo}.repo"
-  elsif file_exists?(node, '/usr/bin/apt-get')
-    cmd = "sed -i '/^#\\s*deb.*/ s/^#\\s*deb /deb /' /etc/apt/sources.list.d/#{repo}.list"
-  else
-    raise 'Not found: zypper, yum or apt-get'
-  end
+  cmd = if host.include? 'ceos'
+    "sed -i 's/enabled=.*/enabled=1/g' /etc/yum.repos.d/#{repo}.repo"
+        elsif host.include? 'ubuntu'
+    "sed -i '/^#\\s*deb.*/ s/^#\\s*deb /deb /' /etc/apt/sources.list.d/#{repo}.list"
+        else
+    "zypper mr --enable #{repo}"
+        end
   node.run(cmd, error_control.empty?)
 end
 
 When(/^I disable repository "([^"]*)" on this "([^"]*)"((?: without error control)?)$/) do |repo, host, error_control|
   node = get_target(host)
-  if file_exists?(node, '/usr/bin/zypper')
-    cmd = "zypper mr --disable #{repo}"
-  elsif file_exists?(node, '/usr/bin/yum')
-    cmd = "test -f /etc/yum.repos.d/#{repo}.repo && sed -i 's/enabled=.*/enabled=0/g' /etc/yum.repos.d/#{repo}.repo"
-  elsif file_exists?(node, '/usr/bin/apt-get')
-    cmd = "sed -i '/^deb.*/ s/^deb /#deb /' /etc/apt/sources.list.d/#{repo}.list"
-  else
-    raise 'Not found: zypper, yum or apt-get'
-  end
+  cmd = if host.include? 'ceos'
+    "test -f /etc/yum.repos.d/#{repo}.repo && sed -i 's/enabled=.*/enabled=0/g' /etc/yum.repos.d/#{repo}.repo"
+        elsif host.include? 'ubuntu'
+    "sed -i '/^deb.*/ s/^deb /#deb /' /etc/apt/sources.list.d/#{repo}.list"
+        else
+    "zypper mr --disable #{repo}"
+        end
   node.run(cmd, error_control.empty?)
 end
 
@@ -629,32 +625,40 @@ When(/^I remove pattern "([^"]*)" from this "([^"]*)"$/) do |pattern, host|
   node.run(cmd, true)
 end
 
-When(/^I install package "([^"]*)" on this "([^"]*)"$/) do |package, host|
+When(/^I install package "([^"]*)" on this "([^"]*)"((?: without error control)?)$/) do |package, host, error_control|
   node = get_target(host)
-  if file_exists?(node, '/usr/bin/zypper')
-    cmd = "zypper --non-interactive install -y #{package}"
-  elsif file_exists?(node, '/usr/bin/yum')
-    cmd = "yum -y install #{package}"
-  elsif file_exists?(node, '/usr/bin/apt-get')
-    cmd = "apt-get --assume-yes install #{package} --allow-downgrades"
-  else
-    raise 'Not found: zypper, yum or apt-get'
-  end
-  node.run(cmd, true)
+  cmd = if host.include? 'ceos'
+    "yum -y install #{package}"
+        elsif host.include? 'ubuntu'
+    "apt-get --assume-yes install #{package}"
+        else
+    "zypper --non-interactive install -y #{package}"
+        end
+  node.run(cmd, error_control.empty?)
 end
 
-When(/^I remove package "([^"]*)" from this "([^"]*)"$/) do |package, host|
+When(/^I install old package "([^"]*)" on this "([^"]*)"((?: without error control)?)$/) do |package, host, error_control|
   node = get_target(host)
-  if file_exists?(node, '/usr/bin/zypper')
-    cmd = "zypper --non-interactive remove -y #{package}"
-  elsif file_exists?(node, '/usr/bin/yum')
-    cmd = "yum -y remove #{package}"
-  elsif file_exists?(node, '/usr/bin/dpkg')
-    cmd = "dpkg --remove #{package}"
-  else
-    raise 'Not found: zypper, yum or dpkg'
-  end
-  node.run(cmd, true)
+  cmd = if host.include? 'ceos'
+    "yum -y downgrade #{package}"
+        elsif host.include? 'ubuntu'
+    "apt-get --assume-yes install #{package} --allow-downgrades"
+        else
+    "zypper --non-interactive install --oldpackage -y #{package}"
+        end
+  node.run(cmd, error_control.empty?)
+end
+
+When(/^I remove package "([^"]*)" from this "([^"]*)"((?: without error control)?)$/) do |package, host, error_control|
+  node = get_target(host)
+  cmd = if host.include? 'ceos'
+    "yum -y remove #{package}"
+        elsif host.include? 'ubuntu'
+    "dpkg --remove #{package}"
+        else
+    "zypper --non-interactive remove -y #{package}"
+        end
+  node.run(cmd, error_control.empty?)
 end
 
 When(/^I wait until the package "(.*?)" has been cached on this "(.*?)"$/) do |pkg_name, host|

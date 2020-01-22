@@ -9,10 +9,10 @@ Feature: Action chains on several systems at once
     Given I am authorized as "admin" with password "admin"
     When I enable repository "test_repo_rpm_pool" on this "sle_minion"
     And I enable repository "test_repo_rpm_pool" on this "sle_client"
-    And I run "zypper -n rm andromeda-dummy" on "sle_client" without error control
-    And I run "zypper -n rm andromeda-dummy" on "sle_minion" without error control
-    And I run "zypper -n in --oldpackage andromeda-dummy-1.0" on "sle_minion"
-    And I run "zypper -n in --oldpackage andromeda-dummy-1.0" on "sle_client"
+    And I remove package "andromeda-dummy" from this "sle_client" without error control
+    And I remove package "andromeda-dummy" from this "sle_minion" without error control
+    And I install old package "andromeda-dummy-1.0" on this "sle_minion"
+    And I install old package "andromeda-dummy-1.0" on this "sle_client"
     And I run "zypper -n ref" on "sle_minion"
     And I run "zypper -n ref" on "sle_client"
     And I run "rhn_check -vvv" on "sle_client"
@@ -99,8 +99,8 @@ Feature: Action chains on several systems at once
     And "andromeda-dummy" should be installed on "sle_minion"
 
   Scenario: Cleanup: remove package and repository used in action chain for several systems
-    When I run "zypper -n rm andromeda-dummy" on "sle_minion" without error control
-    And I run "zypper -n rm andromeda-dummy" on "sle_client" without error control
+    When I remove package "andromeda-dummy" from this "sle_minion" without error control
+    And I remove package "andromeda-dummy" from this "sle_client" without error control
     And I disable repository "test_repo_rpm_pool" on this "sle_minion" without error control
     And I disable repository "test_repo_rpm_pool" on this "sle_client" without error control
 
