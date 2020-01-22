@@ -14,6 +14,12 @@
  */
 package com.suse.manager.webui.controllers;
 
+import static com.suse.manager.webui.utils.SparkApplicationHelper.withCsrfToken;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.withOrgAdmin;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.withUser;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.withUserPreferences;
+import static spark.Spark.get;
+
 import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
@@ -42,6 +48,7 @@ import com.suse.manager.webui.services.impl.SystemQuery;
 import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
+import spark.template.jade.JadeTemplateEngine;
 
 /**
  * Controller class providing backend code for the minions page.
@@ -52,6 +59,59 @@ public class MinionController {
     private static final SystemQuery SALT_SERVICE = SaltService.INSTANCE;
 
     private MinionController() { }
+
+    /**
+     * Invoked from Router. Initializes routes.
+     *
+     * @param jade jade engine to use to render pages
+     */
+    public static void initRoutes(JadeTemplateEngine jade) {
+        initSystemRoutes(jade);
+        initStatesRoutes(jade);
+        initSSMRoutes(jade);
+    }
+
+    private static void initSystemRoutes(JadeTemplateEngine jade) {
+        get("/manager/systems/keys",
+                withUserPreferences(withCsrfToken(withUser(MinionController::list))),
+                jade);
+        get("/manager/systems/bootstrap",
+                withCsrfToken(withOrgAdmin(MinionController::bootstrap)),
+                jade);
+        get("/manager/systems/cmd",
+                withCsrfToken(MinionController::cmd),
+                jade);
+        get("/manager/systems/:id",
+                MinionController::show);
+    }
+
+    private static void initStatesRoutes(JadeTemplateEngine jade) {
+        get("/manager/systems/details/packages",
+                withCsrfToken(MinionController::packageStates),
+                jade);
+        get("/manager/systems/details/custom",
+                withCsrfToken(MinionController::minionCustomStates),
+                jade);
+        get("/manager/systems/details/highstate",
+                withCsrfToken(withUser(MinionController::highstate)),
+                jade);
+        get("/manager/multiorg/details/custom",
+                withCsrfToken(MinionController::orgCustomStates),
+                jade);
+        get("/manager/yourorg/custom",
+                withCsrfToken(withUser(MinionController::yourOrgConfigChannels)),
+                jade);
+        get("/manager/groups/details/custom",
+                withCsrfToken(withUser(MinionController::serverGroupConfigChannels)),
+                jade);
+        get("/manager/groups/details/highstate",
+                withCsrfToken(withUser(MinionController::serverGroupHighstate)), jade);
+    }
+
+    private static void initSSMRoutes(JadeTemplateEngine jade) {
+        get("/manager/systems/ssm/highstate",
+                withCsrfToken(withUser(MinionController::ssmHighstate)), jade);
+    }
 
     /**
      * Displays a list of minions.

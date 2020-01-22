@@ -14,6 +14,12 @@
  */
 package com.suse.manager.webui.controllers;
 
+import static com.suse.manager.webui.utils.SparkApplicationHelper.withCsrfToken;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.withUser;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.withUserPreferences;
+import static spark.Spark.get;
+import static spark.Spark.post;
+
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.notification.UserNotification;
@@ -43,6 +49,7 @@ import java.util.stream.Collectors;
 import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
+import spark.template.jade.JadeTemplateEngine;
 
 /**
  * Controller class providing backend code for the messages page.
@@ -55,6 +62,26 @@ public class NotificationMessageController {
             .create();
 
     private NotificationMessageController() { }
+
+    /**
+     * Invoked from Router. Initialize routes for Systems Views.
+     *
+     * @param jade the Jade engine to use to render the pages
+     */
+    public static void initRoutes(JadeTemplateEngine jade) {
+        get("/manager/notification-messages",
+                withUserPreferences(withCsrfToken(withUser(NotificationMessageController::getList))), jade);
+        get("/manager/notification-messages/data-unread", withUser(NotificationMessageController::dataUnread));
+        get("/manager/notification-messages/data-all", withUser(NotificationMessageController::dataAll));
+        post("/manager/notification-messages/update-messages-status",
+                withUser(NotificationMessageController::updateMessagesStatus));
+        post("/manager/notification-messages/delete",
+                withUser(NotificationMessageController::delete));
+        post("/manager/notification-messages/retry-onboarding/:minionId",
+                withUser(NotificationMessageController::retryOnboarding));
+        post("/manager/notification-messages/retry-reposync/:channelId",
+                withUser(NotificationMessageController::retryReposync));
+    }
 
     /**
      * Displays a list of messages.

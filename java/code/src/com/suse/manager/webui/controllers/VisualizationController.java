@@ -20,11 +20,15 @@ import com.redhat.rhn.manager.visualization.VisualizationManager;
 import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
+import spark.template.jade.JadeTemplateEngine;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.withCsrfToken;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.withOrgAdmin;
+import static spark.Spark.get;
 
 /**
  * Controller class providing backend code for visualization pages.
@@ -32,6 +36,26 @@ import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
 public class VisualizationController {
 
     private VisualizationController() { }
+
+    /**
+     * Invoked from Router. Initialize routes for Systems Views.
+     *
+     * @param jade the Jade engine to use to render the pages
+     */
+    public static void initRoutes(JadeTemplateEngine jade) {
+        get("/manager/visualization/virtualization-hierarchy",
+                withCsrfToken(withOrgAdmin(VisualizationController::showVirtualizationHierarchy)), jade);
+        get("/manager/api/visualization/virtualization-hierarchy/data",
+                withOrgAdmin(VisualizationController::virtHierarchyData));
+        get("/manager/visualization/proxy-hierarchy",
+                withCsrfToken(withOrgAdmin(VisualizationController::showProxyHierarchy)), jade);
+        get("/manager/api/visualization/proxy-hierarchy/data",
+                withOrgAdmin(VisualizationController::proxyHierarchyData));
+        get("/manager/visualization/systems-with-managed-groups",
+                withCsrfToken(withOrgAdmin(VisualizationController::systemsWithManagedGroups)), jade);
+        get("/manager/api/visualization/systems-with-managed-groups/data",
+                withOrgAdmin(VisualizationController::systemsWithManagedGroupsData));
+    }
 
     /**
      * Display the Virtualization Hierarchy visualization page

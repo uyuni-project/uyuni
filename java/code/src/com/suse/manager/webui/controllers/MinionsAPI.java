@@ -46,6 +46,10 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.withOrgAdmin;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.withUser;
+import static spark.Spark.get;
+import static spark.Spark.post;
 
 /**
  * Controller class providing backend code for the minions page.
@@ -64,6 +68,18 @@ public class MinionsAPI {
     private static final Logger LOG = Logger.getLogger(MinionsAPI.class);
 
     private MinionsAPI() { }
+
+    /**
+     * Invoked from Router. Initializes routes.
+     */
+    public static void initRoutes() {
+        post("/manager/api/systems/bootstrap", withOrgAdmin(MinionsAPI::bootstrap));
+        post("/manager/api/systems/bootstrap-ssh", withOrgAdmin(MinionsAPI::bootstrapSSH));
+        get("/manager/api/systems/keys", withUser(MinionsAPI::listKeys));
+        post("/manager/api/systems/keys/:target/accept", withOrgAdmin(MinionsAPI::accept));
+        post("/manager/api/systems/keys/:target/reject", withOrgAdmin(MinionsAPI::reject));
+        post("/manager/api/systems/keys/:target/delete", withOrgAdmin(MinionsAPI::delete));
+    }
 
     /**
      * API endpoint to get all minions matching a target glob

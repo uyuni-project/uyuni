@@ -58,6 +58,9 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.withUser;
+import static spark.Spark.get;
+import static spark.Spark.post;
 
 /**
  * Controller class providing backend code for the SSM pages.
@@ -74,6 +77,18 @@ public class SsmController {
             .create();
 
     private SsmController() { }
+
+    /**
+     * Invoked from Router. Initialize routes for Systems Views.
+     */
+    public static void initRoutes() {
+        get("/manager/systems/ssm/channels/bases",
+                withUser(SsmController::getBaseChannels));
+        post("/manager/systems/ssm/channels/allowed-changes",
+                withUser(SsmController::computeAllowedChannelChanges));
+        post("/manager/systems/ssm/channels",
+                withUser(SsmController::changeChannels));
+    }
 
     /**
      * Get the list of base-channels available to the System Set.

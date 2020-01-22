@@ -15,6 +15,11 @@
 
 package com.suse.manager.webui.controllers;
 
+import static com.suse.manager.webui.utils.SparkApplicationHelper.withCsrfToken;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.withOrgAdmin;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.withUserPreferences;
+import static spark.Spark.get;
+
 import com.redhat.rhn.domain.user.User;
 
 import com.google.gson.Gson;
@@ -27,6 +32,7 @@ import java.util.HashMap;
 import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
+import spark.template.jade.JadeTemplateEngine;
 
 /**
  * Controller class providing backend code for "Runtime Execution"
@@ -40,6 +46,18 @@ public class TaskoTop {
             .create();
 
     private TaskoTop() { }
+
+    /**
+     * Invoked from Router. Initialize routes for Systems Views.
+     *
+     * @param jade the jade engine to use to render the pages.
+     */
+    public static void initRoutes(JadeTemplateEngine jade) {
+        get("/manager/admin/runtime-status",
+                withUserPreferences(withCsrfToken(withOrgAdmin(TaskoTop::show))), jade);
+        get("/manager/api/admin/runtime-status/data",
+                withOrgAdmin(TaskoTop::data));
+    }
 
     /**
      * Displays the taskotop report page
