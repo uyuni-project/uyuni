@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Wed Jan 22 12:12:18 CET 2020 - jgonzalez@suse.com
+
+- version 4.1.2-1
 - merge java translations from branding back to this package
 - fix mgr-sync add channel when fromdir is configured (bsc#1160184)
 - handle not found re-activation key (bsc#1159012)
