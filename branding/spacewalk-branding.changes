@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Wed Jan 22 12:11:15 CET 2020 - jgonzalez@suse.com
+
+- version 4.1.2-1
 - merge java translations back to java main package
 - Prevent ISE and warn disable deletion of a Content Lifecycle channel in use (bsc#1158012)
 
