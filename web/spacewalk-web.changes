@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Wed Jan 22 12:16:08 CET 2020 - jgonzalez@suse.com
+
+- version 4.1.2-1
 - Add html-react-parser to fix umlaut in the menu and breadcrumb
 - Add placeholder for product name to formula forms
 - Fix ordering by date (bsc#1158818)
