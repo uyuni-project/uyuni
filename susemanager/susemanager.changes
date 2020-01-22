@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Wed Jan 22 12:22:05 CET 2020 - jgonzalez@suse.com
+
+- version 4.1.2-1
 - fix documentation URL in installer (bsc#1154590)
 - fix product id of SLES12 SP5 x86_64 and remove never released
   SLED product (bsc#1158963)
