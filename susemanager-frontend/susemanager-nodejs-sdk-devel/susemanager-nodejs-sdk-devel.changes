@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Wed Jan 22 12:23:07 CET 2020 - jgonzalez@suse.com
+
+- version 4.1.2-1
 - add html-react-parser
 - upgrade serialize-javascript - CVE-2019-16769
 
