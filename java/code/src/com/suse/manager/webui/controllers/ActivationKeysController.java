@@ -17,6 +17,8 @@ package com.suse.manager.webui.controllers;
 import static com.suse.manager.webui.controllers.channels.ChannelsUtils.generateChannelJson;
 import static com.suse.manager.webui.controllers.channels.ChannelsUtils.getPossibleBaseChannels;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.withUser;
+import static spark.Spark.get;
 
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
@@ -55,6 +57,17 @@ public class ActivationKeysController {
             .registerTypeAdapterFactory(new OptionalTypeAdapterFactory())
             .serializeNulls()
             .create();
+
+    /**
+     * Invoked from Router. Init routes for Activation keys views.
+     */
+    public static void initRoutes() {
+        get("/manager/api/activation-keys/:tid/channels", withUser(ActivationKeysController::getChannels));
+        get("/manager/api/activation-keys/base-channels",
+                withUser(ActivationKeysController::getAccessibleBaseChannels));
+        get("/manager/api/activation-keys/base-channels/:cid/child-channels",
+                withUser(ActivationKeysController::getChildChannelsByBaseId));
+    }
 
     private static String withActivationKey(Request request, Response response,
                                             User user, Function<ActivationKey, String> handler) {

@@ -15,6 +15,9 @@
 package com.suse.manager.webui.controllers;
 
 import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.withUser;
+import static spark.Spark.get;
+import static spark.Spark.post;
 
 import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.security.PermissionException;
@@ -128,6 +131,21 @@ public class StatesAPI {
             = "/etc/yum.repos.d/susemanager:channels.repo";
 
     private StatesAPI() { }
+
+    /**
+     * Invoked from Router. Initialize routes for Systems Views.
+     */
+    public static void initRoutes() {
+        post("/manager/api/states/apply", withUser(StatesAPI::apply));
+        post("/manager/api/states/applyall", withUser(StatesAPI::applyHighstate));
+        get("/manager/api/states/match", withUser(StatesAPI::matchStates));
+        post("/manager/api/states/save", withUser(StatesAPI::saveConfigChannels));
+        get("/manager/api/states/packages", StatesAPI::packages);
+        post("/manager/api/states/packages/save", withUser(StatesAPI::savePackages));
+        get("/manager/api/states/packages/match", StatesAPI::matchPackages);
+        get("/manager/api/states/highstate", StatesAPI::showHighstate);
+        get("/manager/api/states/:channelId/content", withUser(StatesAPI::stateContent));
+    }
 
     /**
      * Query the current list of package states for a given server.

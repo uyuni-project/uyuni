@@ -31,6 +31,7 @@ import org.apache.log4j.Logger;
 import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
+import spark.template.jade.JadeTemplateEngine;
 
 import java.util.Collections;
 import java.util.EnumSet;
@@ -42,6 +43,11 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.withCsrfToken;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.withUser;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.withUserPreferences;
+import static spark.Spark.get;
+import static spark.Spark.post;
 
 /**
  * Spark controller class the CVE Audit page.
@@ -53,6 +59,19 @@ public class CVEAuditController {
     private static Logger log = Logger.getLogger(CVEAuditController.class);
 
     private CVEAuditController() { }
+
+    /**
+     * Invoked from Router. Initialize routes for Systems Views.
+     *
+     * @param jade the Jade engine to use to render the pages
+     */
+    public static void initRoutes(JadeTemplateEngine jade) {
+        get("/manager/audit/cve",
+                withUserPreferences(withCsrfToken(withUser(CVEAuditController::cveAuditView))), jade);
+
+        post("/manager/api/audit/cve", withUser(CVEAuditController::cveAudit));
+        get("/manager/api/audit/cve.csv", withUser(CVEAuditController::cveAuditCSV));
+    }
 
     /**
      * Returns the cve audit page

@@ -41,6 +41,7 @@ import org.apache.log4j.Logger;
 import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
+import spark.template.jade.JadeTemplateEngine;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -51,6 +52,13 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.withCsrfToken;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.withOrgAdmin;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.withProductAdmin;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.withUser;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.withUserPreferences;
+import static spark.Spark.get;
+import static spark.Spark.post;
 
 /**
  * Controller class providing backend code for the Products
@@ -65,6 +73,28 @@ public class ProductsController {
     private static Logger log = Logger.getLogger(ProductsController.class);
 
     private ProductsController() { }
+
+    /**
+     * Invoked from Router. Initialize routes for Systems Views.
+     *
+     * @param jade the Jade engine to use to render the pages
+     */
+    public static void initRoutes(JadeTemplateEngine jade) {
+        get("/manager/admin/setup/products",
+                withUserPreferences(withCsrfToken(withOrgAdmin(ProductsController::show))), jade);
+        get("/manager/api/admin/products", withUser(ProductsController::data));
+        post("/manager/api/admin/mandatoryChannels", withUser(ProductsController::getMandatoryChannels));
+        post("/manager/admin/setup/products",
+                withProductAdmin(ProductsController::addProduct));
+        post("/manager/admin/setup/sync/products",
+                withProductAdmin(ProductsController::synchronizeProducts));
+        post("/manager/admin/setup/sync/channelfamilies",
+                withProductAdmin(ProductsController::synchronizeChannelFamilies));
+        post("/manager/admin/setup/sync/subscriptions",
+                withProductAdmin(ProductsController::synchronizeSubscriptions));
+        post("/manager/admin/setup/sync/repositories",
+                withProductAdmin(ProductsController::synchronizeRepositories));
+    }
 
     /**
      * Displays the Products page

@@ -14,6 +14,11 @@
  */
 package com.suse.manager.webui.controllers;
 
+import static com.suse.manager.webui.utils.SparkApplicationHelper.withCsrfToken;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.withUser;
+import static spark.Spark.get;
+import static spark.Spark.post;
+
 import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.domain.formula.FormulaFactory;
@@ -55,6 +60,7 @@ import java.util.stream.Collectors;
 import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
+import spark.template.jade.JadeTemplateEngine;
 
 /**
  * Controller class providing backend code for formulas pages and APIs.
@@ -79,6 +85,36 @@ public class FormulaController {
             .create();
 
     private FormulaController() { }
+
+    /**
+     * Invoked from Router. Initialize routes for Systems Views.
+     *
+     * @param jade the Jade engine to use to render the pages
+     */
+    public static void initRoutes(JadeTemplateEngine jade) {
+        get("/manager/groups/details/formulas",
+                withCsrfToken(withUser(FormulaController::serverGroupFormulas)),
+                jade);
+        get("/manager/systems/details/formulas",
+                withCsrfToken(withUser(FormulaController::minionFormulas)),
+                jade);
+        get("/manager/groups/details/formula/:formula_id",
+                withCsrfToken(withUser(FormulaController::serverGroupFormula)),
+                jade);
+        get("/manager/systems/details/formula/:formula_id",
+                withCsrfToken(FormulaController::minionFormula),
+                jade);
+
+        // Formula API
+        get("/manager/api/formulas/list/:targetType/:id",
+                withUser(FormulaController::listSelectedFormulas));
+        get("/manager/api/formulas/form/:targetType/:id/:formula_id",
+                withUser(FormulaController::formulaData));
+        post("/manager/api/formulas/select",
+                withUser(FormulaController::saveSelectedFormulas));
+        post("/manager/api/formulas/save",
+                withUser(FormulaController::saveFormula));
+    }
 
     /**
      * Handler for the server group formula page.

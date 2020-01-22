@@ -69,6 +69,9 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.withUser;
+import static spark.Spark.get;
+import static spark.Spark.post;
 
 /**
  * Controller class providing backend code for the systems page.
@@ -85,6 +88,19 @@ public class SystemsController {
             .registerTypeAdapterFactory(new OptionalTypeAdapterFactory())
             .serializeNulls()
             .create();
+
+    /**
+     * Invoked from Router. Initialize routes for Systems Views.
+     */
+    public static void initRoutes() {
+        post("/manager/api/systems/:sid/delete", withUser(SystemsController::delete));
+        get("/manager/api/systems/:sid/channels", withUser(SystemsController::getChannels));
+        get("/manager/api/systems/:sid/channels-available-base",
+                withUser(SystemsController::getAvailableBaseChannels));
+        post("/manager/api/systems/:sid/channels", withUser(SystemsController::subscribeChannels));
+        get("/manager/api/systems/:sid/channels/:channelId/accessible-children",
+                withUser(SystemsController::getAccessibleChannelChildren));
+    }
 
     /**
      * Deletes a system.

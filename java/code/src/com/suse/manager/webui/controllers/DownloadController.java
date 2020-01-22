@@ -51,7 +51,9 @@ import java.util.Optional;
 import java.util.Set;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
+import static spark.Spark.get;
 import static spark.Spark.halt;
+import static spark.Spark.head;
 
 
 /**
@@ -76,6 +78,24 @@ public class DownloadController {
      * this flag to false disables the checks.
      */
     private static boolean checkTokens = Config.get().getBoolean(ConfigDefaults.SALT_CHECK_DOWNLOAD_TOKENS);
+
+    /**
+     * Invoked from Router. Initialize routes for Systems Views.
+     */
+    public static void initRoutes() {
+        get("/manager/download/:channel/getPackage/:file",
+                DownloadController::downloadPackage);
+        get("/manager/download/:channel/getPackage/:org/:checksum/:file",
+                DownloadController::downloadPackage);
+        get("/manager/download/:channel/repodata/:file",
+                DownloadController::downloadMetadata);
+        head("/manager/download/:channel/getPackage/:file",
+                DownloadController::downloadPackage);
+        head("/manager/download/:channel/getPackage/:org/:checksum/:file",
+                DownloadController::downloadPackage);
+        head("/manager/download/:channel/repodata/:file",
+                DownloadController::downloadMetadata);
+    }
 
     /**
      * Encapsulates package info.

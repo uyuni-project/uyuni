@@ -15,6 +15,12 @@
 
 package com.suse.manager.webui.controllers;
 
+import static com.suse.manager.webui.utils.SparkApplicationHelper.withCsrfToken;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.withProductAdmin;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.withUserPreferences;
+import static spark.Spark.get;
+import static spark.Spark.post;
+
 import com.redhat.rhn.domain.matcher.MatcherRunData;
 import com.redhat.rhn.domain.matcher.MatcherRunDataFactory;
 import com.redhat.rhn.domain.server.PinnedSubscription;
@@ -34,6 +40,7 @@ import java.util.HashMap;
 import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
+import spark.template.jade.JadeTemplateEngine;
 
 /**
  * Controller class providing backend code for subscription-matcher pages.
@@ -46,6 +53,29 @@ public class SubscriptionMatchingController {
         .create();
 
     private SubscriptionMatchingController() { }
+
+    /**
+     * Invoked from Router. Initialize routes for Systems Views.
+     *
+     * @param jade the jade template to use to render the pages
+     */
+    public static void initRoutes(JadeTemplateEngine jade) {
+        get("/manager/subscription-matching",
+                withUserPreferences(withCsrfToken(withProductAdmin(SubscriptionMatchingController::show))),
+                jade);
+        get("/manager/subscription-matching/:filename",
+                withProductAdmin(SubscriptionMatchingController::csv));
+
+        // Subscription Matching API
+        get("/manager/api/subscription-matching/data",
+                withProductAdmin(SubscriptionMatchingController::data));
+        post("/manager/api/subscription-matching/schedule-matcher-run",
+                withProductAdmin(SubscriptionMatchingController::scheduleMatcherRun));
+        post("/manager/api/subscription-matching/pins",
+                withProductAdmin(SubscriptionMatchingController::createPin));
+        post("/manager/api/subscription-matching/pins/:id/delete",
+                withProductAdmin(SubscriptionMatchingController::deletePin));
+    }
 
     /**
      * Displays the subscription-matcher report page
