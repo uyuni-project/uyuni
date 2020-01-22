@@ -14,6 +14,11 @@
  */
 package com.suse.manager.webui.controllers;
 
+import static com.suse.manager.webui.utils.SparkApplicationHelper.withCsrfToken;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.withOrgAdmin;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.withUserPreferences;
+import static spark.Spark.get;
+
 import com.redhat.rhn.domain.formula.FormulaFactory;
 import com.redhat.rhn.domain.user.User;
 
@@ -30,6 +35,7 @@ import java.util.Map;
 import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
+import spark.template.jade.JadeTemplateEngine;
 
 /**
  * Controller class for the formula catalog page.
@@ -42,6 +48,24 @@ public class FormulaCatalogController {
             .create();
 
     private FormulaCatalogController() { }
+
+    /**
+     * Invoked from Router. Initialize routes for Systems Views.
+     *
+     * @param jade the Jade engine to use to render the pages
+     */
+    public static void initRoutes(JadeTemplateEngine jade) {
+        get("/manager/formula-catalog",
+                withUserPreferences(withOrgAdmin(FormulaCatalogController::list)), jade);
+        get("/manager/formula-catalog/formula/:name",
+                withCsrfToken(withOrgAdmin(FormulaCatalogController::details)), jade);
+
+        // Formula catalog API
+        get("/manager/api/formula-catalog/data",
+                withOrgAdmin(FormulaCatalogController::data));
+        get("/manager/api/formula-catalog/formula/:name/data",
+                withOrgAdmin(FormulaCatalogController::detailsData));
+    }
 
     /**
      * Show the list of formulas.

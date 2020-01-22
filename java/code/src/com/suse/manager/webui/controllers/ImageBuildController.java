@@ -16,7 +16,12 @@
 package com.suse.manager.webui.controllers;
 
 import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.withCsrfToken;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.withImageAdmin;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.withUser;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.withUserPreferences;
 import static com.suse.utils.Json.GSON;
+import static spark.Spark.post;
 
 import com.redhat.rhn.domain.action.ActionChain;
 import com.redhat.rhn.domain.action.ActionChainFactory;
@@ -82,6 +87,7 @@ import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
 import spark.Spark;
+import spark.template.jade.JadeTemplateEngine;
 
 /**
  * Spark controller class for image building and listing.
@@ -97,6 +103,45 @@ public class ImageBuildController {
 
     private ImageBuildController() {
         K8S_MANAGER.setSaltService(SaltService.INSTANCE);
+    }
+
+    /**
+     * Invoked from Router. Initialize routes for Systems Views.
+     *
+     * @param jade the Jade engine to use to render the pages
+     */
+    public static void initRoutes(JadeTemplateEngine jade) {
+        Spark.get("/manager/cm/build", withCsrfToken(withUser(ImageBuildController::buildView)),
+                jade);
+        Spark.get("/manager/cm/import", withCsrfToken(withUser(ImageBuildController::importView)),
+                jade);
+        Spark.get("/manager/cm/rebuild/:id",
+                withCsrfToken(withUser(ImageBuildController::rebuild)), jade);
+
+        Spark.get("/manager/api/cm/build/hosts/:type", withUser(ImageBuildController::getBuildHosts));
+        post("/manager/api/cm/build/:id", withImageAdmin(ImageBuildController::build));
+
+        Spark.get("/manager/cm/images", withUserPreferences(withCsrfToken(withUser(ImageBuildController::listView))),
+                jade);
+
+        Spark.get("/manager/api/cm/images", withUser(ImageBuildController::list));
+        Spark.get("/manager/api/cm/images/:id", withUser(ImageBuildController::get));
+        Spark.get("/manager/api/cm/clusters", withUser(ImageBuildController::getClusterList));
+        Spark.get("/manager/api/cm/runtime/:clusterId",
+                withUser(ImageBuildController::getRuntimeSummaryAll));
+        Spark.get("/manager/api/cm/runtime/:clusterId/:id",
+                withUser(ImageBuildController::getRuntimeSummary));
+        Spark.get("/manager/api/cm/runtime/details/:clusterId/:id",
+                withUser(ImageBuildController::getRuntimeDetails));
+        Spark.get("/manager/api/cm/images/patches/:id",
+                withUser(ImageBuildController::getPatches));
+        Spark.get("/manager/api/cm/images/packages/:id",
+                withUser(ImageBuildController::getPackages));
+        post("/manager/api/cm/images/inspect/:id",
+                withImageAdmin(ImageBuildController::inspect));
+        post("/manager/api/cm/images/delete", withImageAdmin(ImageBuildController::delete));
+        post("/manager/api/cm/images/import",
+                withImageAdmin(ImageBuildController::importImage));
     }
 
     /**
