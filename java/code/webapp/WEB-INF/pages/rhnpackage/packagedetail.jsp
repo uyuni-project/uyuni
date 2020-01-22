@@ -188,10 +188,10 @@
                     <c:forEach var="item" items="${extraTags}">
                         <div class="form-group">
                             <label class="col-lg-3 control-label">
-                                <c:out value="${item.key}"/>:
+                                <c:out value="${item.a}"/>:
                             </label>
                             <div class="col-lg-6">
-                                <c:out value="${item.value}"/>
+                                <c:out value="${item.b}"/>
                             </div>
                         </div>
                     </c:forEach>

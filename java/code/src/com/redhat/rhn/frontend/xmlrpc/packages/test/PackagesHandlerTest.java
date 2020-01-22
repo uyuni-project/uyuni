@@ -245,7 +245,7 @@ public class PackagesHandlerTest extends BaseHandlerTestCase {
         return Arrays.asList(result).stream()
                 .filter(e -> type.equals(((Map)e).get("dependency_type")))
                 .map(e -> (Map)e)
-                .findFirst().orElseThrow();
+                .findFirst().orElseThrow(() -> new RuntimeException("No dep found"));
     }
 
     public void testRemovePackage() throws Exception {
