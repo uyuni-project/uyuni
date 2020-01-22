@@ -47,13 +47,13 @@
         <rl:column headerkey="erratalist.jsp.advisory"
                    sortable="true"
                    sortattr="advisoryName"
+                   filterattr="advisoryName"
                    defaultsort="asc">
             <a href="/rhn/errata/details/Details.do?eid=${current.id}">${current.advisoryName}</a>
         </rl:column>
         <rl:column headerkey="erratalist.jsp.synopsis"
                    sortable="true"
-                   sortattr="advisorySynopsis"
-                   filterattr="advisorySynopsis">
+                   sortattr="advisorySynopsis">
             ${current.advisorySynopsis}
         </rl:column>
         <rl:column headerkey="erratalist.jsp.systems"
