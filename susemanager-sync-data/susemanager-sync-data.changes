@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Wed Jan 22 12:25:37 CET 2020 - jgonzalez@suse.com
+
+- version 4.1.2-1
 - add SLE 15 LTSS and ESPOS channel families (bsc#1160043)
 - add missing channel families for older products
 
