@@ -20,6 +20,15 @@ Feature: Negative tests for bootstrap normal minions
      Then I should not see a "GenericSaltError" text
      And I should see a "seems to already exist, please check!" text
 
+  Scenario: Delete SLES minion system profile before bootstrap negative tests
+    Given I am on the Systems overview page of this "sle_minion"
+    When I follow "Delete System"
+    Then I should see a "Confirm System Profile Deletion" text
+    When I click on "Delete Profile"
+    And I wait until I see "has been deleted" text
+    And I cleanup minion "sle_minion"
+    Then "sle_minion" should not be registered
+
   Scenario: Bootstrap a SLES minion with wrong hostname
      Given I am authorized
      And I go to the bootstrapping page
@@ -90,6 +99,10 @@ Feature: Negative tests for bootstrap normal minions
     And I follow "Properties" in the content area
     And I check "container_build_host"
     And I click on "Update Properties"
+    Then I should see a "Container Build Host type has been applied." text
+    And I should see a "Note: This action will not result in state application" text
+    And I should see a "To apply the state, either use the states page or run state.highstate from the command line." text
+    And I should see a "System properties changed" text
 
   Scenario: Cleanup: turn the SLES minion into a OS image build host
     Given I am on the Systems overview page of this "sle_minion"
