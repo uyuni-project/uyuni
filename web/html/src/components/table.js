@@ -174,7 +174,17 @@ Header.defaultProps = {
   sortDirection: 0,
 };
 
-const Highlight = (props) => {
+type HighlightProps = {
+  /** text to display */
+  text: string,
+  /** substring to search in the text and highlight */
+  highlight: string,
+  /** flag enabling highlighting */
+  enabled?: boolean,
+};
+
+/** Search and highlight part of a text */
+function Highlight(props: HighlightProps) {
   let text = props.text;
   let high = props.highlight;
 
@@ -196,6 +206,9 @@ const Highlight = (props) => {
   chunk3 = chunk3 ? <span key="m3">{chunk3}</span> : null;
 
   return <span key="hl">{chunk1}{chunk2}{chunk3}</span>;
+}
+Highlight.defaultProps = {
+  enabled: false,
 }
 
 const Table = createReactClass({
