@@ -5,28 +5,7 @@ const PropTypes = require('prop-types');
 const React = require("react");
 const createReactClass = require('create-react-class');
 const {PaginationBlock, ItemsPerPageSelector} = require('./pagination');
-
-const SearchPanel = (props) =>
-  <div className="spacewalk-list-filter table-search-wrapper">
-    {
-      React.Children.map(props.children,
-        (child) => React.cloneElement(child, { criteria: props.criteria, onSearch: props.onSearch }))
-    }
-    <div className="d-inline-block">
-      <span>{t("Items {0} - {1} of {2}", props.fromItem, props.toItem, props.itemCount)}&nbsp;&nbsp;</span>
-      { props.selectable && props.selectedCount > 0 &&
-          <span>
-              {t("({0} selected)", props.selectedCount)}&nbsp;
-              <a href="#" onClick={props.onClear}>{t("Clear")}</a>
-              &nbsp;/&nbsp;
-          </span>
-      }
-      { props.selectable &&
-          <a href="#" onClick={props.onSelectAll}>{t("Select All")}</a>
-      }
-    </div>
-  </div>
-;
+const {SearchPanel} = require('components/table/SearchPanel');
 
 const DataHandler = createReactClass({
   displayName: 'DataHandler',
