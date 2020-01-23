@@ -106,7 +106,7 @@ Feature: Content lifecycle
     When I follow the left menu "Content Lifecycle > Projects"
     Then I should see a "clp_name" text
     And I should see a "clp_desc" text
-    And I should see a "dev_name - qa_name - prod_name" text
+    And I should see a "dev_name > qa_name > prod_name" text
     When I follow "clp_name"
     Then I should see a "qa_desc" text in the environment "qa_name"
     And I should see a "not built" text in the environment "qa_name"
