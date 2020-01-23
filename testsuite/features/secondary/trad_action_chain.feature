@@ -1,6 +1,7 @@
-# Copyright (c) 2018-2019 SUSE LLC
+# Copyright (c) 2018-2020 SUSE LLC
 # Licensed under the terms of the MIT license.
 
+@sle_client
 Feature: Action chain on traditional clients
 
   Scenario: Pre-requisite: downgrade repositories to lower version on traditional client
@@ -256,7 +257,3 @@ Feature: Action chain on traditional clients
 
   Scenario: Cleanup: remove temporary files for testing action chains on traditional client
     When I run "rm -f /tmp/action_chain.log" on "sle_client" without error control
-
-  Scenario: Cleanup: remove remaining systems from SSM after action chain tests on traditional client
-    When I am authorized as "admin" with password "admin"
-    And I follow "Clear"

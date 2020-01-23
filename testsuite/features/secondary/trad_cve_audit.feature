@@ -1,10 +1,11 @@
-# Copyright (c) 2015-2018 SUSE LLC
+# Copyright (c) 2015-2020 SUSE LLC
 # Licensed under the terms of the MIT license.
 
-Feature: CVE Audit
+@sle_client
+Feature: CVE Audit on traditional clients
   In order to check if systems are patched against certain vulnerabilities
   As an authorized user
-  I want to see the systems that need to be patched
+  I want to see the traditional clients that need to be patched
 
   Scenario: Pre-requisite: downgrade milkyway-dummy to lower version
     Given I am authorized as "admin" with password "admin"

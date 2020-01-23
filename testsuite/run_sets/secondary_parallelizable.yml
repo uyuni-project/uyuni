@@ -12,7 +12,6 @@
 - features/secondary/srv_organization_credentials.feature
 - features/secondary/srv_change_password.feature
 - features/secondary/srv_clone_channel_npn.feature
-- features/secondary/srv_cve_audit.feature
 - features/secondary/srv_xmlrpc_activationkey.feature
 - features/secondary/srv_distro_cobbler.feature
 - features/secondary/srv_mainpage.feature
@@ -59,6 +58,7 @@
 - features/secondary/min_custom_pkg_download_endpoint.feature
 
 - features/secondary/trad_metadata_check.feature
+- features/secondary/trad_cve_audit.feature
 - features/secondary/trad_cve_id_new_syntax.feature
 - features/secondary/trad_weak_deps.feature
 - features/secondary/trad_openscap_audit.feature
