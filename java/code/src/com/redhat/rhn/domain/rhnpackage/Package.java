@@ -79,6 +79,12 @@ public class Package extends BaseDomainHelper {
     private Set<PackageRequires> requires = new HashSet();
     private Set<PackageObsoletes> obsoletes = new HashSet();
     private Set<PackageConflicts> conflicts = new HashSet();
+    private Set<PackageRecommends> recommends = new HashSet();
+    private Set<PackageSuggests> suggests = new HashSet();
+    private Set<PackageSupplements> supplements = new HashSet();
+    private Set<PackageEnhances> enhances = new HashSet();
+    private Set<PackagePreDepends> preDepends = new HashSet();
+    private Set<PackageBreaks> breaks = new HashSet();
 
     private Map<PackageExtraTagsKeys, String> extraTags = new HashMap<>();
 
@@ -656,6 +662,90 @@ public class Package extends BaseDomainHelper {
      */
     public void setConflicts(Set<PackageConflicts> conflictsIn) {
         this.conflicts = conflictsIn;
+    }
+
+    /**
+     * @return Returns the recommends.
+     */
+    public Set<PackageRecommends> getRecommends() {
+        return recommends;
+    }
+
+    /**
+     * @param recommendsIn The recommends to set.
+     */
+    public void setRecommends(Set<PackageRecommends> recommendsIn) {
+        this.recommends = recommendsIn;
+    }
+
+    /**
+     * @return Returns the suggests.
+     */
+    public Set<PackageSuggests> getSuggests() {
+        return suggests;
+    }
+
+    /**
+     * @param suggestsIn The recommends to set.
+     */
+    public void setSuggests(Set<PackageSuggests> suggestsIn) {
+        this.suggests = suggestsIn;
+    }
+
+    /**
+     * @return supplements to get
+     */
+    public Set<PackageSupplements> getSupplements() {
+        return supplements;
+    }
+
+    /**
+     * @param supplementsIn The supplements to set.
+     */
+    public void setSupplements(Set<PackageSupplements> supplementsIn) {
+        this.supplements = supplementsIn;
+    }
+
+    /**
+     * @return enhances to get
+     */
+    public Set<PackageEnhances> getEnhances() {
+        return enhances;
+    }
+
+    /**
+     * @param enhancesIn The enhances to set.
+     */
+    public void setEnhances(Set<PackageEnhances> enhancesIn) {
+        this.enhances = enhancesIn;
+    }
+
+    /**
+     * @return preDepends to get
+     */
+    public Set<PackagePreDepends> getPreDepends() {
+        return preDepends;
+    }
+
+    /**
+     * @param preDependsIn preDepends to set.
+     */
+    public void setPreDepends(Set<PackagePreDepends> preDependsIn) {
+        this.preDepends = preDependsIn;
+    }
+
+    /**
+     * @return breaks to get
+     */
+    public Set<PackageBreaks> getBreaks() {
+        return breaks;
+    }
+
+    /**
+     * @param breaksIn The breaks to set.
+     */
+    public void setBreaks(Set<PackageBreaks> breaksIn) {
+        this.breaks = breaksIn;
     }
 
     /**

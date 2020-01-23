@@ -17,6 +17,7 @@ package com.redhat.rhn.frontend.action.rhnpackage;
 import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
+import com.redhat.rhn.domain.product.Tuple2;
 import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.domain.rhnpackage.PackageSource;
@@ -40,6 +41,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -141,6 +143,10 @@ public class PackageDetailsAction extends RhnAction {
 
             request.setAttribute("erratumEmpty", pkg.getPublishedErrata().isEmpty());
             request.setAttribute("erratum", pkg.getPublishedErrata());
+
+            request.setAttribute("extraTags", pkg.getExtraTags()
+                    .entrySet().stream().map(e -> new Tuple2(e.getKey().getName(), e.getValue()))
+                    .collect(Collectors.toList()));
 
             return mapping.findForward(RhnHelper.DEFAULT_FORWARD);
         }

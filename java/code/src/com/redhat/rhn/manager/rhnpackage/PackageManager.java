@@ -84,7 +84,7 @@ public class PackageManager extends BaseManager {
     // Valid dependency types
     public static final String[]
         DEPENDENCY_TYPES = {"requires", "conflicts", "obsoletes", "provides",
-            "recommends", "suggests", "supplements", "enhances"};
+            "recommends", "suggests", "supplements", "enhances", "predepends", "breaks"};
 
 
     private static final String[]
@@ -199,6 +199,34 @@ public class PackageManager extends BaseManager {
     public static DataResult packageEnhances(Long pid) {
         SelectMode m = ModeFactory.getMode("Package_queries", "package_enhances",
                                            Map.class);
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("pid", pid);
+        return m.execute(params);
+    }
+
+    /**
+     * Runs Package_queries.package_predepends query, which returns dependencies of the
+     * pre-depends type.
+     * @param pid The package in question
+     * @return Returns dependencies of type pre-depends.
+     */
+    public static DataResult packagePreDepends(Long pid) {
+        SelectMode m = ModeFactory.getMode("Package_queries", "package_predepends",
+                Map.class);
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("pid", pid);
+        return m.execute(params);
+    }
+
+    /**
+     * Runs Package_queries.package_breaks query, which returns dependencies of the
+     * breaks type.
+     * @param pid The package in question
+     * @return Returns dependencies of type breaks.
+     */
+    public static DataResult packageBreaks(Long pid) {
+        SelectMode m = ModeFactory.getMode("Package_queries", "package_breaks",
+                Map.class);
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("pid", pid);
         return m.execute(params);
