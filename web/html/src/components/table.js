@@ -59,14 +59,28 @@ SearchPanel.defaultProps = {
   selectedCount: 0,
 }
 
-const SearchField = (props) =>
-  <input className="form-control table-input-search"
-    value={props.criteria}
-    placeholder={props.placeholder}
-    type="text"
-    onChange={(e) => props.onSearch(e.target.value)}
-  />
-;
+type SearchFieldProps = {
+  /** Search criteria value */
+  criteria?: string,
+  /** Place holder value to display when nothing has been input */
+  placeholder: string,
+  /** function called when a search is performed.
+   * This is usually passed by the search panel parent component.
+   */
+  onSearch: (string) => void,
+}
+
+/** Text input search field */
+function SearchField(props: SearchFieldProps) {
+  return (
+    <input className="form-control table-input-search"
+      value={props.criteria}
+      placeholder={props.placeholder}
+      type="text"
+      onChange={(e) => props.onSearch(e.target.value)}
+    />
+  );
+};
 
 const Column = (props) => {
   let content = null;
