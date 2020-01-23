@@ -17,7 +17,7 @@ type SearchFieldProps = {
 /** Text input search field */
 export function SearchField(props: SearchFieldProps) {
   return (
-    <input className="form-control table-input-search"
+    <input className="form-control table-input-search with-bottom-margin"
       value={props.criteria}
       placeholder={props.placeholder}
       type="text"

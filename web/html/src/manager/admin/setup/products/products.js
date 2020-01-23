@@ -9,7 +9,8 @@ const ReactDOM = require('react-dom');
 const Network = require('utils/network');
 const Messages = require('components/messages').Messages;
 const MessagesUtils = require("components/messages").Utils;
-const {DataHandler, DataItem, SearchField} = require('components/data-handler');
+const {DataHandler, DataItem} = require('components/data-handler');
+const {SearchField} = require('components/table/SearchField');
 const {Highlight} = require('components/table/Highlight');
 const Functions = require('utils/functions');
 const Utils = Functions.Utils;
@@ -463,7 +464,6 @@ class Products extends React.Component {
               <SearchField filter={searchCriteriaInExtension}
                   criteria={''}
                   placeholder={t('Filter by product Description')}
-                  name='product-description-filter'
               />
           }>
           <CheckList data={d => d}

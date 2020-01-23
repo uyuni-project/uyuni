@@ -5,7 +5,7 @@ import type { TreeItem, TreeData } from 'components/tree/tree';
 import { CustomDiv } from 'components/custom-objects';
 import { ProgressBar } from 'components/progressbar';
 import { DataHandler } from 'components/data-handler';
-import { SearchField } from 'components/data-handler';
+import { SearchField } from 'components/table/SearchField';
 import { VirtualizationPoolsListRefreshApi } from '../virtualization-pools-list-refresh-api';
 
 type Props = {
@@ -194,7 +194,6 @@ export function PoolsList(props: Props) {
                   <SearchField filter={searchData}
                       criteria={''}
                       placeholder={t('Filter by pool or volume name')}
-                      name='pool-name-filter'
                   />
               }
             >
