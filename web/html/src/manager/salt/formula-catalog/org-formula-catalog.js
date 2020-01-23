@@ -1,7 +1,9 @@
 /* eslint-disable */
 
 import React from "react";
-import {Table, Column, SearchField} from "components/table";
+import {Table} from "components/table/Table";
+import {Column} from "components/table/Column";
+import {SearchField} from "components/table/SearchField";
 import { TopPanel } from "components/panels/TopPanel";
 import { Messages } from "components/messages";
 import Network from "utils/network";

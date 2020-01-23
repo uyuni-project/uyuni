@@ -1,7 +1,9 @@
 // @flow
 import React, {useEffect, useState} from 'react';
 import {TopPanel} from 'components/panels/TopPanel';
-import {Column, SearchField, Table} from 'components/table';
+import {Column} from 'components/table/Column';
+import {SearchField} from 'components/table/SearchField';
+import {Table} from 'components/table/Table';
 import Functions from 'utils/functions';
 import {showSuccessToastr} from 'components/toastr/toastr';
 import withPageWrapper from 'components/general/with-page-wrapper';

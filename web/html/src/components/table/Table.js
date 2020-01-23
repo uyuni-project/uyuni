@@ -1,213 +1,12 @@
 // @flow
-
-const React = require("react");
-const { StatePersistedContext } = require('./utils/StatePersistedContext');
-const {PaginationBlock, ItemsPerPageSelector} = require('./pagination');
-
-type SearchPanelProps = {
-  /** number representing the number of the first displayed item */
-  fromItem: number,
-  /** number representing the number of the last displayed item */
-  toItem: number,
-  /** total number of filtered items */
-  itemCount: number,
-  /** number of selected items */
-  selectedCount: number,
-  /** flag indicating whether to show the number of selected items */
-  selectable?: boolean,
-  /** function called when a search is performed. Takes the criteria as single parameter */
-  onSearch: (string) => void,
-  /** function called when the clear button is clicked. This should reset the selection. */
-  onClear: () => void,
-  /** function called when the Select All button is clicked. Should set the selection */
-  onSelectAll: () => void,
-  /** Search criteria value */
-  criteria?: string,
-  /** Search field components */
-  children?: React.Node,
-}
-
-/** Panel containing the search fields for a table */
-function SearchPanel(props: SearchPanelProps) {
-  return (
-    <div className="spacewalk-list-filter table-search-wrapper">
-      {
-        React.Children.map(props.children,
-          (child) => React.cloneElement(child, { criteria: props.criteria, onSearch: props.onSearch }))
-      }
-      <div className="d-inline-block">
-        <span>{t("Items {0} - {1} of {2}", props.fromItem, props.toItem, props.itemCount)}&nbsp;&nbsp;</span>
-        { props.selectable && props.selectedCount > 0 &&
-            <span>
-                {t("({0} selected)", props.selectedCount)}&nbsp;
-                <a href="#"onClick={props.onClear}>{t("Clear")}</a>
-                &nbsp;/&nbsp;
-            </span>
-        }
-        { props.selectable &&
-            <a href="#" onClick={props.onSelectAll}>{t("Select All")}</a>
-        }
-      </div>
-    </div>
-  );
-};
-
-SearchPanel.defaultProps = {
-  selectable: false,
-  selectedCount: 0,
-}
-
-type SearchFieldProps = {
-  /** Search criteria value */
-  criteria?: string,
-  /** Place holder value to display when nothing has been input */
-  placeholder: string,
-  /** function called when a search is performed.
-   * This is usually passed by the search panel parent component.
-   */
-  onSearch: (string) => void,
-}
-
-/** Text input search field */
-function SearchField(props: SearchFieldProps) {
-  return (
-    <input className="form-control table-input-search"
-      value={props.criteria}
-      placeholder={props.placeholder}
-      type="text"
-      onChange={(e) => props.onSearch(e.target.value)}
-    />
-  );
-};
-
-type ColumnProps = {
-  /** key differenciating a column from its sibblings */
-  key?: string,
-  /** Content of the cell or function to compute it from the row data */
-  cell: React.Node | (data: any, criteria?: string) => React.Node,
-  /** Title of the row */
-  header?: React.Node,
-  /** CSS value for the column width */
-  width?: string,
-  /** key used to identify the column */
-  columnKey?: string,
-  /** Row comparison function. See sortBy functions in utils/functions.js */
-  comparator?: (a: Object, b: Object, columnKey?: string, sortDirection?: number) => number,
-  /** class name to use for the header cell */
-  headerClass?: string,
-  /** class name to use for the cell */
-  columnClass?: string,
-  /** the data associated with the row */
-  data?: any,
-  /** search criteria value */
-  criteria?: string,
-};
-
-/** Represents a column in the table.
- * This component is also used internally to reprent each cell
- */
-function Column(props: ColumnProps) {
-  let content = null;
-  if (typeof props.cell === "function") {
-    content = props.cell(props.data, props.criteria);
-  } else {
-    content = props.cell;
-  }
-  return <td className={props.columnClass}>{content}</td>;
-}
-Column.defaultProps = {
-  header: undefined,
-  comparator: undefined,
-  columnClass: undefined,
-  data: undefined,
-  criteria: undefined,
-};
-
-type HeaderProps = {
-  /** key differenciating a header from its sibblings */
-  key?: string | number,
-  /** CSS value for the column width */
-  width?: string,
-  /** class name to use for the cell */
-  className?: string,
-  /** Row comparison function. See sortBy functions in utils/functions.js */
-  comparator?: (Object, Object, string, number) => number,
-  /** negative number for descending, positive for ascending, 0 for no direction */
-  sortDirection: number,
-  /** Function called when the sort direction is changed. */
-  onSortChange?: (columnKey?: string, sortDirection: number) => void,
-  /** children nodes */
-  children?: React.Node,
-  /** identifier for the column */
-  columnKey?: string,
-};
-
-/** Represents a header cell in the table.
- *  This component should only be used internally by Table.
- */
-function Header(props: HeaderProps) {
-  const thStyle = props.width ? { width: props.width } : null;
-
-  let thClass = props.className || '';
-
-  if (props.comparator) {
-    thClass += (thClass ? " " : "") + (props.sortDirection === 0 ? "" : (props.sortDirection > 0 ? "ascSort" : "descSort"));
-    const newDirection = props.sortDirection === 0 ? 1 : props.sortDirection * -1;
-
-    return (
-      <th style={ thStyle } className={ thClass }>
-        <a href="#" className="orderBy"
-            onClick={() => props.onSortChange && props.onSortChange(props.columnKey, newDirection)}>
-          {props.children}
-        </a>
-      </th>
-    );
-  }
-  return <th style={ thStyle } className={ thClass }>{props.children}</th>;
-}
-Header.defaultProps = {
-  width: undefined,
-  columnClass: undefined,
-  comparator: undefined,
-  sortDirection: 0,
-};
-
-type HighlightProps = {
-  /** text to display */
-  text: string,
-  /** substring to search in the text and highlight */
-  highlight: string,
-  /** flag enabling highlighting */
-  enabled?: boolean,
-};
-
-/** Search and highlight part of a text */
-function Highlight(props: HighlightProps) {
-  let text = props.text;
-  let high = props.highlight;
-
-  if (!props.enabled) {
-    return <span key="hl">{text}</span>
-  }
-
-  let pos = text.toLocaleLowerCase().indexOf(high.toLocaleLowerCase());
-  if (pos < 0) {
-    return <span key="hl">{text}</span>
-  }
-
-  let chunk1 = text.substring(0, pos);
-  let chunk2 = text.substring(pos, pos + high.length);
-  let chunk3 = text.substring(pos + high.length, text.length);
-
-  chunk1 = chunk1 ? <span key="m1">{chunk1}</span> : null;
-  chunk2 = chunk2 ? <span key="m2" style={{borderRadius: "2px"}}><mark>{ chunk2 }</mark></span> : null;
-  chunk3 = chunk3 ? <span key="m3">{chunk3}</span> : null;
-
-  return <span key="hl">{chunk1}{chunk2}{chunk3}</span>;
-}
-Highlight.defaultProps = {
-  enabled: false,
-}
+import * as React from 'react';
+import { StatePersistedContext } from '../util/StatePersistedContext';
+import { ItemsPerPageSelector } from '../pagination';
+import { PaginationBlock } from '../pagination';
+import { SearchPanel } from './SearchPanel';
+import { SearchField } from './SearchField';
+import { Column } from './Column';
+import { Header } from './Header';
 
 type TableProps = {
   /** any type of data in an array, where each element is a row data */
@@ -221,7 +20,7 @@ type TableProps = {
   /** a function that return a css class for each row */
   cssClassFunction?: Function,
   /** the React Object that contains the filter search field */
-  searchField?: SearchField.type,
+  searchField?: React.Element<typeof SearchField>,
   /** the initial number of how many row-per-page to show */
   initialItemsPerPage?: number,
   /** enables item selection */
@@ -251,7 +50,7 @@ type TableState = {
   loading: boolean,
 };
 
-class Table extends React.Component<TableProps, TableState> {
+export class Table extends React.Component<TableProps, TableState> {
   static defaultProps = {
     selectable: false,
   };
@@ -523,10 +322,3 @@ class Table extends React.Component<TableProps, TableState> {
     );
   }
 };
-
-module.exports = {
-    Table : Table,
-    Column : Column,
-    SearchField: SearchField,
-    Highlight: Highlight
-}

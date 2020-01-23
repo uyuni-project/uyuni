@@ -3,7 +3,9 @@
 
 const React = require("react");
 const Utils = require("utils/functions").Utils;
-const {Table, Column, SearchField} = require("components/table");
+const {Table} = require("components/table/Table");
+const {Column} = require("components/table/Column");
+const {SearchField} = require("components/table/SearchField");
 const Button = require("components/buttons").Button;
 const ModalButton = require("components/dialog/ModalButton").ModalButton;
 const DeleteDialog = require("components/dialog/DeleteDialog").DeleteDialog;

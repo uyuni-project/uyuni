@@ -3,7 +3,10 @@
 
 const React = require("react");
 const createReactClass = require('create-react-class');
-const {Table, Column, SearchField, Highlight} = require("components/table");
+const {Table} = require("components/table/Table");
+const {Column} = require("components/table/Column");
+const {SearchField} = require("components/table/SearchField");
+const {Highlight} = require("components/table/Highlight");
 const CsvLink = require("./subscription-matching-util").CsvLink;
 const Functions = require("utils/functions");
 const Utils = Functions.Utils;

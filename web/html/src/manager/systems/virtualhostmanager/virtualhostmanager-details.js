@@ -10,7 +10,9 @@ const {Utils} = require("utils/functions");
 const Network = require("utils/network");
 const {Messages} = require("components/messages");
 const MessagesUtils = require("components/messages").Utils;
-const {Table, Column, SearchField} = require("components/table");
+const {Table} = require("components/table/Table");
+const {Column} = require("components/table/Column");
+const {SearchField} = require("components/table/SearchField");
 
 class VirtualHostManagerDetails extends React.Component {
 
