@@ -4,7 +4,6 @@
 const React = require("react");
 const createReactClass = require('create-react-class');
 const {Table, Column, SearchField, Highlight} = require("components/table");
-const {StatePersistedMixin} = require("components/utils/StatePersistedMixin");
 const PopUp = require("components/popup").PopUp;
 const ModalButton = require("components/dialog/ModalButton").ModalButton;
 const UtilComponent =  require("./subscription-matching-util");
@@ -19,7 +18,6 @@ const Utils = Functions.Utils;
 
 const Pins = createReactClass({
   displayName: 'Pins',
-  mixins: [StatePersistedMixin],
 
   getInitialState: function() {
     return {
@@ -92,8 +90,6 @@ const Pins = createReactClass({
           <Table key="table"
             data={this.buildRows(this.props)}
             identifier={(row) => row.id}
-            loadState={this.props.loadState}
-            saveState={this.props.saveState}
             initialItemsPerPage={userPrefPageSize}
             initialSortColumnKey="systemName"
             >
@@ -227,8 +223,6 @@ class AddPinPopUp extends React.Component {
           <Table key="table"
             data={this.buildRows()}
             identifier={(row) => row.id}
-            loadState={this.props.loadState}
-            saveState={this.props.saveState}
             initialSortColumnKey="name"
             initialItemsPerPage={userPrefPageSize}
             searchField={

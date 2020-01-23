@@ -4,14 +4,12 @@
 const React = require("react");
 const createReactClass = require('create-react-class');
 const {Table, Column, SearchField, Highlight} = require("components/table");
-const {StatePersistedMixin} = require("components/utils/StatePersistedMixin");
 const CsvLink = require("./subscription-matching-util").CsvLink;
 const Functions = require("utils/functions");
 const Utils = Functions.Utils;
 
 const Messages = createReactClass({
   displayName: 'Messages',
-  mixins: [StatePersistedMixin],
 
   buildRows: function(rawMessages, systems, subscriptions) {
     return rawMessages.map(function(rawMessage, index) {
@@ -71,8 +69,6 @@ const Messages = createReactClass({
           <Table
             data={this.buildRows(this.props.messages, this.props.systems, this.props.subscriptions)}
             identifier={(row) => row.id}
-            loadState={this.props.loadState}
-            saveState={this.props.saveState}
             initialSortColumnKey="message"
             initialItemsPerPage={userPrefPageSize}
           >

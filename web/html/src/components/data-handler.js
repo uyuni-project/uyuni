@@ -4,7 +4,6 @@
 const PropTypes = require('prop-types');
 const React = require("react");
 const createReactClass = require('create-react-class');
-const {StatePersistedMixin} = require("./utils/StatePersistedMixin");
 const {PaginationBlock, ItemsPerPageSelector} = require('./pagination');
 
 const SearchPanel = (props) =>
@@ -65,7 +64,6 @@ const Highlight = (props) => {
 
 const DataHandler = createReactClass({
   displayName: 'DataHandler',
-  mixins: [StatePersistedMixin],
 
   propTypes: {
     data: PropTypes.arrayOf(PropTypes.any).isRequired, // any type of data in and array, where each element is an item data

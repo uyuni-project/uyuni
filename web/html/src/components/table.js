@@ -1,9 +1,7 @@
 // @flow
 
-const PropTypes = require('prop-types');
 const React = require("react");
-const createReactClass = require('create-react-class');
-const {StatePersistedMixin} = require("./utils/StatePersistedMixin");
+const { StatePersistedContext } = require('./utils/StatePersistedContext');
 const {PaginationBlock, ItemsPerPageSelector} = require('./pagination');
 
 type SearchPanelProps = {
@@ -211,59 +209,100 @@ Highlight.defaultProps = {
   enabled: false,
 }
 
-const Table = createReactClass({
-  displayName: 'Table',
-  mixins: [StatePersistedMixin],
+type TableProps = {
+  /** any type of data in an array, where each element is a row data */
+  data: Array<any>,
+  /** Function extracting the unique key of the row from the data object */
+  identifier: Function,
+  /** the column key name of the initial sorted column */
+  initialSortColumnKey?: string,
+  /** 1 for ascending, -1 for descending */
+  initialSortDirection?: number,
+  /** a function that return a css class for each row */
+  cssClassFunction?: Function,
+  /** the React Object that contains the filter search field */
+  searchField?: SearchField.type,
+  /** the initial number of how many row-per-page to show */
+  initialItemsPerPage?: number,
+  /** enables item selection */
+  selectable: boolean,
+  /** the handler to call when the table selection is updated. If not provided, the select boxes won't be rendered */
+  onSelect?: (items: Array<any>) => void,
+  /** the identifiers for selected items */
+  selectedItems?: Array<any>,
+  /** The message which is shown when there are no rows to display */
+  emptyText?: string,
+  /** if data is loading */
+  loading?: boolean,
+  /** The message which is shown when the data is loading */
+  loadingText?: string,
+  /** Children node in the table */
+  children: React.Node,
+};
 
-  propTypes: {
-    data: PropTypes.arrayOf(PropTypes.any).isRequired, // any type of data in and array, where each element is a row data
-    identifier: PropTypes.func.isRequired, // the unique key of the row
-    initialSortColumnKey: PropTypes.string, // the column key name of the initial sorted column
-    initialSortDirection: PropTypes.number, // 1 for ascending, -1 for descending
-    cssClassFunction: PropTypes.func, // a function that return a css class for each row
-    searchField: PropTypes.node, // the React Object that contains the filter search field
-    initialItemsPerPage: PropTypes.number, // the initial number of how many row-per-page to show
-    selectable: PropTypes.bool, // enables item selection
-    onSelect: PropTypes.func, // the handler to call when the table selection is updated. if this function is not provided, the select boxes won't be rendered
-    selectedItems: PropTypes.array, // the identifiers for selected items
-    emptyText: PropTypes.string, // The message which is shown when there are no rows to display
-    loading: PropTypes.bool, // if data is loading
-    loadingText: PropTypes.string, // The message which is shown when the data is loading
-  },
+type TableState = {
+  currentPage: number,
+  itemsPerPage: number,
+  criteria?: string,
+  sortColumnKey: string | null,
+  sortDirection: number,
+  selectedItems: Array<any>,
+  selectable: boolean,
+  loading: boolean,
+};
 
-  defaultEmptyText: t('There are no entries to show.'),
-  defaultLoadingText: t('Loading..'),
+class Table extends React.Component<TableProps, TableState> {
+  static defaultProps = {
+    selectable: false,
+  };
 
-  getInitialState: function() {
-    return {
+  static contextType = StatePersistedContext;
+
+  constructor(props: TableProps) {
+    super(props);
+    this.state = {
       currentPage: 1,
       itemsPerPage: this.props.initialItemsPerPage || 15,
-      criteria: null,
+      criteria: undefined,
       sortColumnKey: this.props.initialSortColumnKey || null,
       sortDirection: this.props.initialSortDirection || 1,
       selectedItems: this.props.selectedItems || [],
       selectable: this.props.selectable,
       loading: this.props.loading || false,
     };
-  },
+  };
 
-  UNSAFE_componentWillReceiveProps: function(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps: TableProps) {
     this.onPageCountChange(nextProps.data, this.state.criteria, this.state.itemsPerPage);
     this.setState({
         selectedItems: nextProps.selectedItems || [],
         selectable: Boolean(nextProps.selectable),
         loading: Boolean(nextProps.loading) || false,
     });
-  },
+  };
 
-  getLastPage: function(data, criteria, itemsPerPage) {
+  componentWillUnmount() {
+    if (this.context && this.context.saveState) {
+      this.context.saveState(this.state);
+    }
+  };
+
+  UNSAFE_componentWillMount() {
+    if (this.context && this.context.loadState) {
+      if (this.context.loadState()) {
+        this.setState(this.context.loadState());
+      }
+    }
+  };
+
+  getLastPage = (data: any, criteria?: string, itemsPerPage: number) : number => {
     const rowCount = data.filter(this.getFilter(criteria)).length;
 
     const lastPage = Math.ceil(rowCount / itemsPerPage);
     return lastPage > 0 ? lastPage : 1;
-  },
+  };
 
-  getFilter: function(criteria) {
+  getFilter = (criteria?: string): (datum: any) => boolean => {
     const searchField = this.props.searchField;
     if (searchField) {
       const filter = searchField.props.filter;
@@ -272,62 +311,62 @@ const Table = createReactClass({
       }
     }
     return (datum) => true;
-  },
+  };
 
-  getProcessedData: function() {
+  getProcessedData = (): Array<any> => {
     const comparators = React.Children.toArray(this.props.children)
-      .filter((child) => child.type === <Column />.type)
-      .filter((column) => column.props.columnKey == this.state.sortColumnKey)
+      .filter((child) => child.type.displayName === Column.name)
+      .filter((column) => column.props.columnKey === this.state.sortColumnKey)
       .map((column) => column.props.comparator);
 
     const comparator = comparators.length > 0 ?
-      comparators[0] : ((a, b) => 0);
+      comparators[0] : ((a, b, columnKey, sortDirection) => 0);
 
     return this.props.data
         .filter(this.getFilter(this.state.criteria))
         .sort((a, b) => comparator(a, b, this.state.sortColumnKey, this.state.sortDirection));
-  },
+  };
 
-  onSearch: function(criteria) {
+  onSearch = (criteria?: string): void => {
     this.setState({criteria: criteria});
     this.onPageCountChange(this.props.data, criteria, this.state.itemsPerPage);
-  },
+  };
 
-  onItemsPerPageChange: function(itemsPerPage) {
+  onItemsPerPageChange = (itemsPerPage: number): void => {
     this.setState({itemsPerPage: itemsPerPage});
     this.onPageCountChange(this.props.data, this.state.criteria, itemsPerPage);
-  },
+  };
 
-  onPageCountChange: function(data, criteria, itemsPerPage) {
+  onPageCountChange = (data: Array<any>, criteria?: string, itemsPerPage: number): void => {
     const lastPage = this.getLastPage(data, criteria, itemsPerPage);
     if (this.state.currentPage > lastPage) {
       this.setState({currentPage: lastPage});
     }
-  },
+  };
 
-  onPageChange: function(page) {
+  onPageChange = (page: number): void => {
     this.setState({currentPage: page});
-  },
+  };
 
-  onSortChange: function(sortColumnKey, sortDirection) {
+  onSortChange = (sortColumnKey?: string, sortDirection: number): void => {
     this.setState({
       sortColumnKey: sortColumnKey,
       sortDirection: sortDirection
     });
-  },
+  };
 
-  setSelection: function(selection) {
-    if(this.props.onSelect) {
+  setSelection = (selection: any): void => {
+    if (this.props.onSelect) {
       this.props.onSelect(selection);
     }
-  },
+  };
 
-  render: function() {
+  render() {
     const headers = React.Children.toArray(this.props.children)
-        .filter((child) => child.type === <Column />.type)
+        .filter((child) => child.type.displayName === Column.name)
         .map((column, index) => {
             if (column.props.header) {
-                const sortDirection = column.props.columnKey == this.state.sortColumnKey ?
+                const sortDirection = column.props.columnKey === this.state.sortColumnKey ?
                   this.state.sortDirection :
                   0;
                 return <Header
@@ -360,7 +399,7 @@ const Table = createReactClass({
 
     const handleSelectAll = (sel) => {
         let arr = this.state.selectedItems;
-        if(sel) {
+        if (sel) {
             arr = arr.concat(currIds.filter(id => !arr.includes(id)));
         } else {
             arr = arr.filter(id => !currIds.includes(id));
@@ -368,7 +407,7 @@ const Table = createReactClass({
         this.setSelection(arr);
     };
 
-    if(this.state.selectable) {
+    if (this.state.selectable) {
         const allSelected = currIds.length > 0 && currIds.every(id => this.state.selectedItems.includes(id));
         const checkbox = <Header key="check"><input type="checkbox" checked={allSelected} onChange={(e) => handleSelectAll(e.target.checked)}/></Header>;
         headers.unshift(checkbox);
@@ -376,7 +415,7 @@ const Table = createReactClass({
 
     const handleSelect = (id, sel) => {
         let arr = this.state.selectedItems;
-        if(sel) {
+        if (sel) {
             arr = arr.concat([id]);
         } else {
             arr = arr.filter(i => i !== id);
@@ -386,11 +425,11 @@ const Table = createReactClass({
 
     const rows = currItems.map((datum, index) => {
         const cells = React.Children.toArray(this.props.children)
-          .filter((child) => child.type === <Column />.type)
+          .filter((child) => child.type.displayName === Column.name)
           .map((column) => React.cloneElement(column, {data: datum, criteria: this.state.criteria})
         );
 
-        if(this.state.selectable) {
+        if (this.state.selectable) {
           const checkbox = <Column key="check" cell={
             <input type="checkbox"
                 checked={this.state.selectedItems.includes(this.props.identifier(datum))}
@@ -416,8 +455,8 @@ const Table = createReactClass({
                 .filter(id => !selected.includes(id))));
     }
 
-    const emptyText = this.props.emptyText || this.defaultEmptyText;
-    const loadingText= this.props.loadingText || this.defaultLoadingText;
+    const emptyText = this.props.emptyText || t('There are no entries to show.');
+    const loadingText = this.props.loadingText || t('Loading...');
 
     return (
       <div className="spacewalk-list">
@@ -482,8 +521,8 @@ const Table = createReactClass({
         </div>
       </div>
     );
-  },
-});
+  }
+};
 
 module.exports = {
     Table : Table,
