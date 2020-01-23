@@ -8,7 +8,9 @@ const CsvLink = UtilComponent.CsvLink;
 const SystemLabel = UtilComponent.SystemLabel;
 const PopUp = require("components/popup").PopUp;
 const ModalButton = require("components/dialog/ModalButton").ModalButton;
-const {Table, Column, SearchField} = require("components/table");
+const {Table} = require("components/table/Table");
+const {Column} = require("components/table/Column");
+const {SearchField} = require("components/table/SearchField");
 const Functions = require("utils/functions");
 const Utils = Functions.Utils;
 

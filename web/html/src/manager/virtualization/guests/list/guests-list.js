@@ -4,9 +4,9 @@ const { hot } = require('react-hot-loader');
 const React = require('react');
 const MessageContainer = require('components/messages').Messages;
 const MessagesUtils = require('components/messages').Utils;
-const { Table } = require('components/table');
-const { Column } = require('components/table');
-const { SearchField } = require('components/table');
+const { Table } = require('components/table/Table');
+const { Column } = require('components/table/Column');
+const { SearchField } = require('components/table/SearchField');
 const Functions = require('utils/functions');
 const { LinkButton, AsyncButton } = require('components/buttons');
 const { ModalButton } = require('components/dialog/ModalButton');
@@ -38,7 +38,7 @@ type State = {
 };
 
 class GuestsList extends React.Component<Props, State> {
-  static searchData(datum: Object, criteria: string) {
+  static searchData(datum: Object, criteria?: string) {
     if (criteria) {
       return datum.name.toLowerCase().includes(criteria.toLowerCase());
     }

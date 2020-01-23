@@ -2,7 +2,9 @@
 'use strict';
 
 const React = require("react");
-const {Table, Column, SearchField} = require("components/table");
+const {Table} = require("components/table/Table");
+const {Column} = require("components/table/Column");
+const {SearchField} = require("components/table/SearchField");
 const Utils = require("utils/functions").Utils;
 const DateTime = require("components/datetime").DateTime;
 

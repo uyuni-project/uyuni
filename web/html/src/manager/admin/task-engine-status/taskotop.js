@@ -4,7 +4,10 @@
 const React = require("react");
 const ReactDOM = require("react-dom");
 const MessageContainer = require("components/messages").Messages;
-const {Table, Column, SearchField, Highlight} = require("components/table");
+const {Table} = require("components/table/Table");
+const {Column} = require("components/table/Column");
+const {SearchField} = require("components/table/SearchField");
+const {Highlight} = require("components/table/Highlight");
 const {HelpLink} = require('components/utils/HelpLink');
 const Network = require("utils/network");
 const Functions = require("utils/functions");

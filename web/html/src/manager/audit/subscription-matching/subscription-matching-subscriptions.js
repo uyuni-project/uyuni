@@ -8,7 +8,10 @@ const ToolTip = UtilComponent.ToolTip;
 const CsvLink = UtilComponent.CsvLink;
 const humanReadablePolicy = UtilComponent.humanReadablePolicy;
 const WarningIcon =  require("./subscription-matching-util").WarningIcon;
-const {Table, Column, SearchField, Highlight} = require("components/table");
+const {Table} = require("components/table/Table");
+const {Column} = require("components/table/Column");
+const {SearchField} = require("components/table/SearchField");
+const {Highlight} = require("components/table/Highlight");
 const Functions = require("utils/functions");
 const Utils = Functions.Utils;
 

@@ -8,7 +8,10 @@ const { TopPanel } = require('components/panels/TopPanel');
 const Network = require("utils/network");
 const Functions = require("utils/functions");
 const Utils = Functions.Utils;
-const {Table, Column, SearchField, Highlight} = require("components/table");
+const {Table} = require("components/table/Table");
+const {Column} = require("components/table/Column");
+const {SearchField} = require("components/table/SearchField");
+const {Highlight} = require("components/table/Highlight");
 const Messages = require("components/messages").Messages;
 const SpaRenderer  = require("core/spa/spa-renderer").default;
 
