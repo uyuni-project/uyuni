@@ -28,16 +28,6 @@ const SearchPanel = (props) =>
   </div>
 ;
 
-const SearchField = (props) =>
-  <input className="form-control table-input-search with-bottom-margin"
-    value={props.criteria}
-    placeholder={props.placeholder}
-    type="text"
-    onChange={(e) => props.onSearch(e.target.value)}
-    name={props.name}
-  />
-;
-
 const DataHandler = createReactClass({
   displayName: 'DataHandler',
 
@@ -230,5 +220,4 @@ const DataHandler = createReactClass({
 
 module.exports = {
     DataHandler : DataHandler,
-    SearchField: SearchField,
 }
