@@ -450,7 +450,8 @@ def _to_timestamp(t):
     # The cache expects YYYYMMDDHH24MISS as format; so just drop the
     # spaces, dashes and columns
     # python 2.4 can't handle t.translate(None, ' -:')
-    last_modified = t.translate(' -:')
+    table = t.maketrans('', '', ' -:')
+    last_modified = t.translate(table)
     return last_modified
 
 # Generic container handler
