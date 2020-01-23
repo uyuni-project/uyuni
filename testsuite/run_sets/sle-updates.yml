@@ -33,7 +33,7 @@
 - features/secondary/min_docker_xmlrpc.feature
 - features/secondary/min_docker_build_image.feature
 - features/secondary/trad_metadata_check.feature
-- features/secondary/srv_cve_audit.feature
+- features/secondary/trad_cve_audit.feature
 - features/secondary/srv_distro_cobbler.feature
 - features/secondary/srv_mainpage.feature
 - features/secondary/srv_xmlrpc_user.feature

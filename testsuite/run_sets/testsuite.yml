@@ -72,9 +72,9 @@
 - features/secondary/srv_clone_channel_npn.feature
 - features/secondary/srv_delete_channel_from_ui.feature
 - features/secondary/srv_delete_channel_with_tool.feature
+- features/secondary/trad_cve_audit.feature
 - features/secondary/trad_cve_id_new_syntax.feature
 - features/secondary/trad_weak_deps.feature
-- features/secondary/srv_cve_audit.feature
 - features/secondary/min_salt_install_with_staging.feature
 - features/secondary/srv_xmlrpc_activationkey.feature
 - features/secondary/allcli_overview_systems_details.feature
@@ -87,6 +87,7 @@
 - features/secondary/trad_action_chain.feature
 - features/secondary/min_action_chain.feature
 - features/secondary/minssh_action_chain.feature
+- features/secondary/allcli_action_chain.feature
 - features/secondary/min_salt_formulas.feature
 - features/secondary/min_salt_formulas_advanced.feature
 - features/secondary/min_docker_auth_registry.feature
