@@ -1,7 +1,7 @@
 // @flow
 import type {Node} from 'react';
 import React from 'react';
-import {Highlight} from "components/data-handler";
+import {Highlight} from "components/table/Highlight";
 import {ChannelAnchorLink} from "components/links";
 import type {ChannelsTreeType} from "core/channels/api/use-channels-tree-api";
 import type {ChannelType} from "core/channels/type/channels.type";
@@ -47,7 +47,7 @@ const ChildChannels = (props: PropsType): Node => {
             title={toolTip}
             htmlFor={"child_" + c.id}>
             <Highlight
-              enabled={props.search}
+              enabled={(props.search || '').length > 0}
               text={c.name}
               highlight={props.search}
             >

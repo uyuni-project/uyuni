@@ -1,7 +1,7 @@
 // @flow
 import React from 'react';
 import {Toggler} from "components/toggler";
-import {Highlight} from "components/data-handler";
+import {Highlight} from "components/table/Highlight";
 import ChildChannels from "./child-channels";
 import type {ChannelsTreeType} from "core/channels/api/use-channels-tree-api";
 import type {RequiredChannelsResultType} from "core/channels/api/use-mandatory-channels-api";
@@ -64,7 +64,7 @@ const GroupChannels = (props: PropsType) => {
           <i className={'fa ' + (props.isOpen ? 'fa-angle-down': 'fa-angle-right')} />
           &nbsp;
           <Highlight
-            enabled={props.search}
+            enabled={(props.search || '').length > 0}
             text={props.base.name}
             highlight={props.search}
           >
