@@ -21,11 +21,15 @@ Feature: Action chains on several systems at once
     When I refresh packages list via spacecmd on "sle_minion"
     And I wait until refresh package list on "sle_minion" is finished
     Then spacecmd should show packages "andromeda-dummy-1.0" installed on "sle_minion"
-    When I refresh packages list via spacecmd on "sle_client"
-    And I wait until refresh package list on "sle_client" is finished
-    Then spacecmd should show packages "andromeda-dummy-1.0" installed on "sle_client"
 
-  Scenario: Ensure the errata cache is computed before action chain test on several systems
+  Scenario: Pre-requisite: wait until downgrade is finished before action chain test on several systems
+    Given I am on the Systems overview page of this "sle_minion"
+    When I follow "Software" in the content area
+    And I follow "List / Remove" in the content area
+    And I enter "andromeda-dummy" as the filtered package name
+    And I click on the filter button until page does contain "andromeda-dummy-1.0" text
+
+  Scenario: Pre-requisite: ensure the errata cache is computed before action chain test on several systems
     Given I am on the Systems overview page of this "sle_minion"
     When I follow the left menu "Admin > Task Schedules"
     And I follow "errata-cache-default"
@@ -33,13 +37,18 @@ Feature: Action chains on several systems at once
     And I click on "Single Run Schedule"
     Then I should see a "bunch was scheduled" text
     And I wait until the table contains "FINISHED" or "SKIPPED" followed by "FINISHED" in its first rows
-    When I am on the Systems overview page of this "sle_client"
+    Given I am on the Systems overview page of this "sle_client"
     When I follow the left menu "Admin > Task Schedules"
     And I follow "errata-cache-default"
     And I follow "errata-cache-bunch"
     And I click on "Single Run Schedule"
     Then I should see a "bunch was scheduled" text
     And I wait until the table contains "FINISHED" or "SKIPPED" followed by "FINISHED" in its first rows
+
+  Scenario: Pre-requisite: remove all action chains before testing on Salt minion
+    Given I am logged in via XML-RPC actionchain as user "admin" and password "admin"
+    When I delete all action chains
+    And I cancel all scheduled actions
 
   Scenario: Add an action chain using system set manager for traditional client and Salt minion
     Given I am authorized as "admin" with password "admin"
