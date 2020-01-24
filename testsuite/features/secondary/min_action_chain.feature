@@ -7,10 +7,10 @@ Feature: Action chains on Salt minions
   Scenario: Pre-requisite: downgrade repositories to lower version on Salt minion
     Given I am authorized as "admin" with password "admin"
     When I enable repository "test_repo_rpm_pool" on this "sle_minion"
-    And I run "zypper -n rm andromeda-dummy" on "sle_minion" without error control
-    And I run "zypper -n rm virgo-dummy" on "sle_minion" without error control
-    And I run "zypper -n in milkyway-dummy" on "sle_minion" without error control
-    And I run "zypper -n in --oldpackage andromeda-dummy-1.0" on "sle_minion"
+    And I remove package "andromeda-dummy" from this "sle_minion" without error control
+    And I remove package "virgo-dummy" from this "sle_minion" without error control
+    And I install package "milkyway-dummy" on this "sle_minion" without error control
+    And I install old package "andromeda-dummy-1.0" on this "sle_minion"
     And I run "zypper -n ref" on "sle_minion"
 
   Scenario: Pre-requisite: refresh package list and check installed packages after downgrade on SLE minion
@@ -189,10 +189,10 @@ Feature: Action chains on Salt minions
     And I click on "Delete"
 
   Scenario: Downgrade again repositories to lower version on Salt minion
-    When I run "zypper -n rm andromeda-dummy" on "sle_minion" without error control
-    And I run "zypper -n rm virgo-dummy" on "sle_minion" without error control
-    And I run "zypper -n in milkyway-dummy" on "sle_minion" without error control
-    And I run "zypper -n in --oldpackage andromeda-dummy-1.0" on "sle_minion"
+    When I remove package "andromeda-dummy" from this "sle_minion" without error control
+    And I remove package "virgo-dummy" from this "sle_minion" without error control
+    And I install package "milkyway-dummy" on this "sle_minion" without error control
+    And I install old package "andromeda-dummy-1.0" on this "sle_minion"
 
   Scenario: Refresh package list and check installed packages after second downgrade on SLE minion
     When I refresh packages list via spacecmd on "sle_minion"
@@ -254,9 +254,9 @@ Feature: Action chains on Salt minions
     And I click on "Delete Config Channel"
 
   Scenario: Cleanup: remove packages and repository used in action chain for Salt minion
-    When I run "zypper -n rm andromeda-dummy" on "sle_minion" without error control
-    And I run "zypper -n rm virgo-dummy" on "sle_minion" without error control
-    And I run "zypper -n rm milkyway-dummy" on "sle_minion" without error control
+    When I remove package "andromeda-dummy" from this "sle_minion" without error control
+    And I remove package "virgo-dummy" from this "sle_minion" without error control
+    And I remove package "milkyway-dummy" from this "sle_minion" without error control
     And I disable repository "test_repo_rpm_pool" on this "sle_minion" without error control
 
   Scenario: Cleanup: remove temporary files for testing action chains on Salt minion

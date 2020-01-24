@@ -10,7 +10,7 @@ Feature: CVE Audit on traditional clients
   Scenario: Pre-requisite: downgrade milkyway-dummy to lower version
     Given I am authorized as "admin" with password "admin"
     When I enable repository "test_repo_rpm_pool" on this "sle_client"
-    And I run "zypper -n in --oldpackage milkyway-dummy-1.0" on "sle_client"
+    And I install old package "milkyway-dummy-1.0" on this "sle_client"
     And I run "zypper -n ref" on "sle_client"
     And I run "rhn_check -vvv" on "sle_client"
     And I follow the left menu "Admin > Task Schedules"
@@ -110,7 +110,7 @@ Feature: CVE Audit on traditional clients
 
   Scenario: Cleanup: remove installed packages
     When I disable repository "test_repo_rpm_pool" on this "sle_client" without error control
-    And I run "zypper -n rm milkyway-dummy" on "sle_client" without error control
+    And I remove package "milkyway-dummy" from this "sle_client" without error control
     And I run "rhn_check -vvv" on "sle_client" without error control
 
   Scenario: Cleanup: remove remaining systems from SSM after CVE audit tests

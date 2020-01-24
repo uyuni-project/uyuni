@@ -1,14 +1,14 @@
-# Copyright (c) 2015-2019 SUSE LLC
+# Copyright (c) 2015-2020 SUSE LLC
 # Licensed under the terms of the MIT license.
 
-Feature: Patches display
+Feature: Display patches
 
   Scenario: Pre-require: enable old packages to fake a possible installation
     Given I am authorized as "admin" with password "admin"
     When I enable repository "test_repo_rpm_pool" on this "sle_client"
     And I run "zypper -n ref" on "sle_client"
-    And I run "zypper -n in --oldpackage andromeda-dummy-1.0" on "sle_client"
-    And I run "zypper -n in --oldpackage virgo-dummy-1.0" on "sle_client"
+    And I install old package "andromeda-dummy-1.0" on this "sle_client"
+    And I install old package "virgo-dummy-1.0" on this "sle_client"
     And I run "rhn_check -vvv" on "sle_client"
     When I follow the left menu "Admin > Task Schedules"
     And I follow "errata-cache-default"
@@ -23,7 +23,7 @@ Feature: Patches display
     Then I should see an update in the list
     And I should see a "virgo-dummy-3456" link
 
-  Scenario: check SLES release 6789 patches
+  Scenario: Check SLES release 6789 patches
     Given I am on the patches page
     And I follow "andromeda-dummy-6789"
     Then I should see a "andromeda-dummy-6789 - Bug Fix Advisory" text
@@ -54,6 +54,6 @@ Feature: Patches display
   Scenario: Cleanup: remove old packages
     When I disable repository "test_repo_rpm_pool" on this "sle_client" without error control
     And I run "zypper -n ref" on "sle_client" without error control
-    And I run "zypper -n rm --oldpackage andromeda-dummy-1.0" on "sle_client" without error control
-    And I run "zypper -n rm --oldpackage virgo-dummy-1.0" on "sle_client" without error control
+    And I remove package "andromeda-dummy" from this "sle_client" without error control
+    And I remove package "virgo-dummy" from this "sle_client" without error control
     And I run "rhn_check -vvv" on "sle_client" without error control
