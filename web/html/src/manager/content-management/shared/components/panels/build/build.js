@@ -49,7 +49,9 @@ const Build = ({projectId, onBuild, currentHistoryEntry = {}, changesToBuild, di
         <ModalButton
           id={`build-contentmngt-modal-link`}
           className={ disabled ? `btn-secondary` : `btn-success` }
-          text={changesToBuild.length > 0 ? t('Build ({0})', changesToBuild.length) : t('Build')}
+          text={changesToBuild.length > 0 ?
+            t('Build ({0})', changesToBuild.filter(s => !s.includes('Software Channels:') && !s.includes('Software Filter:')).length)
+            : t('Build')}
           disabled={disabled}
           target={modalNameId}
           onClick={() => {
