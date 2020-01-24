@@ -1,4 +1,4 @@
-# Copyright (c) 2016-2019 SUSE LLC
+# Copyright (c) 2016-2020 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 Feature: Salt package states
@@ -8,9 +8,9 @@ Feature: Salt package states
     Then I apply highstate on "sle_minion"
     And I enable repository "test_repo_rpm_pool" on this "sle_minion"
     And I run "zypper -n ref" on "sle_minion"
-    And I run "zypper -n in --oldpackage milkyway-dummy-1.0" on "sle_minion" without error control
-    And I run "zypper -n in --oldpackage virgo-dummy-1.0" on "sle_minion" without error control
-    And I run "zypper -n in --oldpackage andromeda-dummy-1.0" on "sle_minion" without error control
+    And I install old package "milkyway-dummy-1.0" on this "sle_minion" without error control
+    And I install old package "virgo-dummy-1.0" on this "sle_minion" without error control
+    And I install old package "andromeda-dummy-1.0" on this "sle_minion" without error control
 
   Scenario: Pre-requisite: refresh package list and check installed packages on SLE minion
     When I refresh packages list via spacecmd on "sle_minion"
@@ -122,7 +122,7 @@ Feature: Salt package states
 
   Scenario: Cleanup: remove old packages from SLES minion
     When I disable repository "test_repo_rpm_pool" on this "sle_minion"
-    And I run "zypper -n rm milkyway-dummy" on "sle_minion" without error control
-    And I run "zypper -n rm virgo-dummy" on "sle_minion" without error control
-    And I run "zypper -n rm andromeda-dummy" on "sle_minion" without error control
+    And I remove package "milkyway-dummy" from this "sle_minion" without error control
+    And I remove package "virgo-dummy" from this "sle_minion" without error control
+    And I remove package "andromeda-dummy" from this "sle_minion" without error control
     And I run "zypper -n ref" on "sle_minion"

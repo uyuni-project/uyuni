@@ -1,4 +1,4 @@
-# Copyright (c) 2017-2019 SUSE LLC
+# Copyright (c) 2017-2020 SUSE LLC
 # Licensed under the terms of the MIT license.
 #
 # This feature relies on having properly configured
@@ -17,7 +17,7 @@ Feature: Install a package on the Ubuntu minion with staging enabled
     When I enable repository "test_repo_deb_pool" on this "ubuntu_minion"
     And I run "apt update" on "ubuntu_minion"
     And I remove package "orion-dummy" from this "ubuntu_minion"
-    And I install package "virgo-dummy=1.0" on this "ubuntu_minion"
+    And I install old package "virgo-dummy=1.0" on this "ubuntu_minion"
 
 @ubuntu_minion
   Scenario: Pre-requisite: refresh package list on Ubuntu minion

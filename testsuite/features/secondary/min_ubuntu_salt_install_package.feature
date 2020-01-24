@@ -1,14 +1,14 @@
-# Copyright (c) 2019 SUSE LLC
+# Copyright (c) 2019-2020 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 Feature: Install and upgrade package on the Ubuntu minion via Salt through the UI
 
 @ubuntu_minion
-  Scenario: Pre-requisite: install virgo-dummy-1.0 packages on Ubuntu minion
+  Scenario: Pre-requisite: install virgo-dummy-1.0 package on Ubuntu minion
     When I enable repository "test_repo_deb_pool" on this "ubuntu_ssh_minion"
     And I run "apt update" on "ubuntu_ssh_minion" with logging
     And I remove package "andromeda-dummy" from this "ubuntu_ssh_minion"
-    And I install package "virgo-dummy=1.0" on this "ubuntu_ssh_minion"
+    And I install old package "virgo-dummy=1.0" on this "ubuntu_ssh_minion"
     And I am on the Systems overview page of this "ubuntu_ssh_minion"
     And I follow "Software" in the content area
     And I click on "Update Package List"
@@ -45,8 +45,6 @@ Feature: Install and upgrade package on the Ubuntu minion via Salt through the U
   Scenario: Cleanup: remove virgo-dummy and andromeda-dummy packages from Ubuntu minion
     Given I am authorized as "admin" with password "admin"
     And I remove package "andromeda-dummy" from this "ubuntu_ssh_minion"
-    And I install package "andromeda-dummy=1.0" on this "ubuntu_ssh_minion"
     And I remove package "virgo-dummy" from this "ubuntu_ssh_minion"
     And I disable repository "test_repo_deb_pool" on this "ubuntu_ssh_minion"
     And I run "apt update" on "ubuntu_ssh_minion" with logging
-

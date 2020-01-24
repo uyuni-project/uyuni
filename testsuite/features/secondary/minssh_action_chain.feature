@@ -7,10 +7,10 @@ Feature: Salt SSH action chain
   Scenario: Pre-requisite: downgrade repositories to lower version on SSH minion
     Given I am authorized as "admin" with password "admin"
     When I enable repository "test_repo_rpm_pool" on this "ssh_minion"
-    And I run "zypper -n rm andromeda-dummy" on "ssh_minion" without error control
-    And I run "zypper -n rm virgo-dummy" on "ssh_minion" without error control
-    And I run "zypper -n in milkyway-dummy" on "ssh_minion" without error control
-    And I run "zypper -n in --oldpackage andromeda-dummy-1.0" on "ssh_minion"
+    And I remove package "andromeda-dummy" from this "ssh_minion" without error control
+    And I remove package "virgo-dummy" from this "ssh_minion" without error control
+    And I install package "milkyway-dummy" on this "ssh_minion" without error control
+    And I install old package "andromeda-dummy-1.0" on this "ssh_minion"
     And I run "zypper -n ref" on "ssh_minion"
 
   Scenario: Pre-requisite: refresh package list and check newly installed packages on SSH minion
@@ -189,10 +189,10 @@ Feature: Salt SSH action chain
   Scenario: Cleanup: roll back action chain effects on SSH minion
     Given I am on the Systems overview page of this "ssh_minion"
     When I run "rm /tmp/action_chain_done" on "ssh_minion" without error control
-    And I run "zypper -n rm andromeda-dummy" on "ssh_minion" without error control
-    And I run "zypper -n rm virgo-dummy" on "ssh_minion" without error control
-    And I run "zypper -n in milkyway-dummy" on "ssh_minion" without error control
-    And I run "zypper -n in --oldpackage andromeda-dummy-1.0" on "ssh_minion"
+    And I remove package "andromeda-dummy" from this "ssh_minion" without error control
+    And I remove package "virgo-dummy" from this "ssh_minion" without error control
+    And I install package "milkyway-dummy" on this "ssh_minion" without error control
+    And I install old package "andromeda-dummy-1.0" on this "ssh_minion"
     And I follow "Software" in the content area
     And I click on "Update Package List"
     And I follow "Events" in the content area
@@ -254,9 +254,9 @@ Feature: Salt SSH action chain
     And I click on "Delete Config Channel"
 
   Scenario: Cleanup: remove packages and repository used in action chain for SSH minion
-    When I run "zypper -n rm andromeda-dummy" on "ssh_minion" without error control
-    And I run "zypper -n rm virgo-dummy" on "ssh_minion" without error control
-    And I run "zypper -n rm milkyway-dummy" on "ssh_minion" without error control
+    When I remove package "andromeda-dummy" from this "ssh_minion" without error control
+    And I remove package "virgo-dummy" from this "ssh_minion" without error control
+    And I remove package "milkyway-dummy" from this "ssh_minion" without error control
     And I disable repository "test_repo_rpm_pool" on this "ssh_minion" without error control
 
   Scenario: Cleanup: remove temporary files for testing action chains on SSH minion

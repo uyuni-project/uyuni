@@ -1,4 +1,4 @@
-# Copyright (c) 2015-17 SUSE LLC
+# Copyright (c) 2015-2020 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 Feature: Weak dependencies in the package page and in the metadata on the client
@@ -8,9 +8,9 @@ Feature: Weak dependencies in the package page and in the metadata on the client
     When I follow the left menu "Software > Channel List > All"
 
   Scenario: Pre-requisite: remove packages before weak-dependancies test
-   When I run "zypper -n in virgo-dummy" on "sle_client" without error control
-   And I run "zypper -n in milkyway-dummy" on "sle_client" without error control
-   And I run "zypper -n in orion-dummy" on "sle_client" without error control
+   When I install package "virgo-dummy" on this "sle_client" without error control
+   And I install package "milkyway-dummy" on this "sle_client" without error control
+   And I install package "orion-dummy" on this "sle_client" without error control
 
   Scenario: Show Supplements information
     When I follow "Test-Channel-x86_64"
@@ -59,6 +59,6 @@ Feature: Weak dependencies in the package page and in the metadata on the client
     And I should have 'rpm:enhances.*foobar.*rpm:enhances' in the metadata for "sle_client"
 
   Scenario: Cleanup: remove packages after weak dependancies tests
-   And I run "zypper -n rm virgo-dummy" on "sle_client"
-   And I run "zypper -n rm milkyway-dummy" on "sle_client"
-   And I run "zypper -n rm orion-dummy" on "sle_client"
+   And I remove package "virgo-dummy" from this "sle_client"
+   And I remove package "milkyway-dummy" from this "sle_client"
+   And I remove package "orion-dummy" from this "sle_client"
