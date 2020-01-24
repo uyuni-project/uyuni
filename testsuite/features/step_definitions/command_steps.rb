@@ -668,7 +668,16 @@ When(/^I install package "([^"]*)" on this "([^"]*)"((?: without error control)?
     cmd = "zypper --non-interactive install -y #{package}"
     successcodes = [0, 100, 101, 102, 103, 106]
   end
-  node.run(cmd, error_control.empty?, DEFAULT_TIMEOUT, 'root', successcodes)
+  # node.run(cmd, error_control.empty?, DEFAULT_TIMEOUT, 'root', successcodes)
+  # TEMPORARY DEBUG CODE
+  _output, code = node.run(cmd)
+  if successcodes.include?(code)
+    puts "success installing #{package} on #{host} (code #{code})"
+  else
+    puts "error installing #{package} on #{host} (code #{code})"
+    output, _code = node.run('zypper lr; echo; ps aux | grep zypper; echo')
+    puts output
+  end
 end
 
 When(/^I install old package "([^"]*)" on this "([^"]*)"((?: without error control)?)$/) do |package, host, error_control|
