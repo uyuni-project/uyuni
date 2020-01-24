@@ -1,4 +1,4 @@
-# Copyright (c) 2015-2019 SUSE LLC
+# Copyright (c) 2015-2020 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 Feature: Lock packages on traditional client
@@ -6,10 +6,10 @@ Feature: Lock packages on traditional client
   Background:
     Given I am on the Systems overview page of this "sle_client"
 
-  Scenario: Pre-requisite: install package needed for test
-    When I run "zypper -n in orion-dummy" on "sle_client"
-    And I run "zypper -n in milkyway-dummy" on "sle_client"
-    And I run "zypper -n rm hoag-dummy" on "sle_client" without error control
+  Scenario: Pre-requisite: install packages needed for locking test
+    When I install package "orion-dummy" on this "sle_client"
+    And I install package "milkyway-dummy" on this "sle_client"
+    And I remove package "hoag-dummy" from this "sle_client" without error control
 
   Scenario: Lock a package on the client
     When I follow "Software" in the content area

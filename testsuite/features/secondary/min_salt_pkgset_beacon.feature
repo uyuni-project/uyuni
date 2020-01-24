@@ -1,13 +1,13 @@
-# Copyright (c) 2016-2019 SUSE LLC
+# Copyright (c) 2016-2020 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 Feature: System package list is updated if packages are manually installed or removed
 
-  Scenario: Pre-requisite: install milkyway-dummy-1.0 packages
+  Scenario: Pre-requisite: install milkyway-dummy-1.0 package
     Given I am authorized as "admin" with password "admin"
     When I enable repository "test_repo_rpm_pool" on this "sle_minion"
     And I run "zypper -n ref" on "sle_minion"
-    And I run "zypper -n in --oldpackage milkyway-dummy-1.0" on "sle_minion" without error control
+    And I install old package "milkyway-dummy-1.0" on this "sle_minion" without error control
 
   Scenario: Pre-requisite: refresh package list and check installed packages on SLE minion client
     When I refresh packages list via spacecmd on "sle_minion"
@@ -49,5 +49,5 @@ Feature: System package list is updated if packages are manually installed or re
 
   Scenario: Cleanup: remove milkyway-dummy packages from SLES minion
     When I disable repository "test_repo_rpm_pool" on this "sle_minion"
-    And I run "zypper -n rm milkyway-dummy" on "sle_minion" without error control
+    And I remove package "milkyway-dummy" from this "sle_minion" without error control
     And I run "zypper -n ref" on "sle_minion"

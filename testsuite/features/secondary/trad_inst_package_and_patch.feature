@@ -1,15 +1,16 @@
-# Copyright (c) 2017-2018 SUSE LLC
+# Copyright (c) 2017-2020 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 Feature: Install a package to the traditional client
 
+  Scenario: Pre-requisite: remove packages before traditional client package test
+    When I remove package "andromeda-dummy" from this "sle_client" without error control
+    And I remove package "virgo-dummy" from this "sle_client" without error control
+
   Scenario: Install a package to the traditional client
     Given I am on the Systems overview page of this "sle_client"
-    # we don't know if the pkgs are installed before, just remove or don't fail
-    When I run "zypper -n rm andromeda-dummy" on "sle_client" without error control
-    And I run "zypper -n rm virgo-dummy" on "sle_client" without error control
     And metadata generation finished for "test-channel-x86_64"
-    And I follow "Software" in the content area
+    When I follow "Software" in the content area
     And I follow "Install"
     And I check "virgo-dummy" in the list
     And I click on "Install Selected Packages"
@@ -21,7 +22,7 @@ Feature: Install a package to the traditional client
 
   Scenario: Enable old packages for testing a patch install
     When I enable repository "test_repo_rpm_pool" on this "sle_client"
-    And I run "zypper -n in --oldpackage andromeda-dummy-1.0" on "sle_client"
+    And I install old package "andromeda-dummy-1.0" on this "sle_client"
     And I run "rhn_check -vvv" on "sle_client"
 
   Scenario: Schedule errata refresh after reverting to old package
@@ -47,7 +48,7 @@ Feature: Install a package to the traditional client
     And The metadata buildtime from package "andromeda-dummy" match the one in the rpm on "sle_client"
 
   Scenario: Cleanup: remove packages and restore non-update repo
-    When I run "zypper -n rm andromeda-dummy" on "sle_client"
-    And I run "zypper -n rm virgo-dummy" on "sle_client"
+    When I remove package "andromeda-dummy" from this "sle_client"
+    And I remove package "virgo-dummy" from this "sle_client"
     And I disable repository "test_repo_rpm_pool" on this "sle_client"
     And I run "rhn_check -vvv" on "sle_client"
