@@ -1,3 +1,5 @@
+- Fix count of changes to build (bsc#1160940)
+
 -------------------------------------------------------------------
 Wed Jan 22 12:16:08 CET 2020 - jgonzalez@suse.com
 
