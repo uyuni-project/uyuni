@@ -9,6 +9,7 @@ import {Form} from "../../../../../../components/input/Form";
 import {Text} from "../../../../../../components/input/Text";
 import {Loading} from "../../../../../../components/loading/loading";
 import DownArrow from '../../down-arrow/down-arrow';
+import statesEnum from "../../../../shared/business/states.enum";
 
 import type {ProjectHistoryEntry} from '../../../type/project.type.js';
 import {showErrorToastr, showSuccessToastr} from "../../../../../../components/toastr/toastr";
@@ -50,7 +51,9 @@ const Build = ({projectId, onBuild, currentHistoryEntry = {}, changesToBuild, di
           id={`build-contentmngt-modal-link`}
           className={ disabled ? `btn-secondary` : `btn-success` }
           text={changesToBuild.length > 0 ?
-            t('Build ({0})', changesToBuild.filter(s => !s.includes('Software Channels:') && !s.includes('Software Filter:')).length)
+            t('Build ({0})', changesToBuild.filter(s =>
+                    s.includes(` ${statesEnum.findByKey(statesEnum.enum.ATTACHED.key).sign} `) ||
+                    s.includes(` ${statesEnum.findByKey(statesEnum.enum.DETACHED.key).sign} `)).length)
             : t('Build')}
           disabled={disabled}
           target={modalNameId}
