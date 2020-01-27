@@ -285,7 +285,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
         }
 
         RegisterMinionEventMessageAction action = new RegisterMinionEventMessageAction(saltServiceMock);
-        action.execute(new RegisterMinionEventMessage(MINION_ID));
+        action.execute(new RegisterMinionEventMessage(MINION_ID, Optional.empty()));
 
         // Verify the resulting system entry
         String machineId = saltServiceMock.getMachineId(MINION_ID).get();
@@ -1697,7 +1697,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
 
         RegisterMinionEventMessageAction action =
                 new RegisterMinionEventMessageAction(saltService);
-        action.execute(new RegisterMinionEventMessage(MINION_ID));
+        action.execute(new RegisterMinionEventMessage(MINION_ID, Optional.empty()));
         return saltService;
     }
 

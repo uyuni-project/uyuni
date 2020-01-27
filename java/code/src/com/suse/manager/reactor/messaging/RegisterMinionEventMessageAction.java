@@ -115,8 +115,10 @@ public class RegisterMinionEventMessageAction implements MessageAction {
      */
     @Override
     public void execute(EventMessage msg) {
-        registerMinion(((RegisterMinionEventMessage) msg).getMinionId(), false,
-                empty(), empty());
+        RegisterMinionEventMessage registerMinionEventMessage = ((RegisterMinionEventMessage) msg);
+        getMachineId(registerMinionEventMessage.getMinionId(), registerMinionEventMessage.getMinionStartupGrains())
+                .ifPresent(machineId -> registerMinion(registerMinionEventMessage.getMinionId(), false, empty(),
+                        empty(), machineId));
     }
 
     /**
@@ -127,69 +129,67 @@ public class RegisterMinionEventMessageAction implements MessageAction {
      *                              If left empty, activation key from grains will be used.
      * @param proxyId the proxy to which the minion connects, if any
      */
-    public void registerSSHMinion(String minionId, Optional<Long> proxyId,
-                                  Optional<String> activationKeyOverride) {
-        registerMinion(minionId, true, proxyId, activationKeyOverride);
+    public void registerSSHMinion(String minionId, Optional<Long> proxyId, Optional<String> activationKeyOverride) {
+        getMachineId(minionId, empty())
+                .ifPresent(machineId-> registerMinion(minionId, true, proxyId, activationKeyOverride, machineId));
     }
 
+     /**
+     * Return the machine Id, it looks up start_event_grains & if it doesn't exist then fall back to the salt call
+     * @param minionId minion id
+     * @param startupGrains start up grains start_event_grains
+     * @return Machine Id
+     */
+    private Optional<String> getMachineId(String minionId, Optional<MinionStartupGrains> startupGrains) {
+        Optional<String> machineId =
+                Opt.or(startupGrains.flatMap(msg -> msg.getMachineId()), ()-> SALT_SERVICE.getMachineId(minionId));
+        if (!machineId.isPresent()) {
+            LOG.info("Cannot find machine id for minion: " + minionId);
+        }
+        return machineId;
+    }
 
     /**
      * Performs minion registration.
-     *
      * @param minionId minion id
      * @param isSaltSSH true if a salt-ssh system is bootstrapped
      * @param actKeyOverride label of activation key to be applied to the system.
-     *                              If left empty, activation key from grains will be used.
+     *                       If left empty, activation key from grains will be used.
+     * @param machineId Machine Id of the minion
      */
-    private void registerMinion(String minionId, boolean isSaltSSH,
-                                Optional<Long> saltSSHProxyId,
-                                Optional<String> actKeyOverride) {
-
-        // Match minions via their machine id
-        Opt.fold(SALT_SERVICE.getMachineId(minionId),
-            () -> {
-                LOG.info("Cannot find machine id for minion: " + minionId);
-                return false;
-            },
-            machineId -> {
-                boolean isReactivation = false;
-                ActivationKey ak = null;
-                ValueMap grains = new ValueMap(SALT_SERVICE.getGrains(minionId).orElseGet(HashMap::new));
-                Optional<String> managmentKeyLabel = getManagementKeyLabelFromGrains(grains);
-                if (managmentKeyLabel.isPresent()) {
-                    ak = ActivationKeyFactory.lookupByKey(managmentKeyLabel.get());
-                    if (ak != null && ak.getKickstartSession() != null) {
-                        ak.getKickstartSession().markComplete("Installation completed.");
-                    }
-                    if (ak == null) {
-                        LOG.info("Outdated Management Key defined for " + minionId + ": " + managmentKeyLabel.get());
-                    }
-                    else if (ak.getServer() == null) {
-                        LOG.error("Management Key is not a reactivation key: " + managmentKeyLabel.get());
-                    }
-                    else {
-                        isReactivation = true;
-                    }
+    private void registerMinion(String minionId, boolean isSaltSSH, Optional<Long> saltSSHProxyId,
+                                Optional<String> actKeyOverride, String machineId) {
+        if (!duplicateMinionNamePresent(minionId)) {
+            boolean isReactivation = false;
+            ActivationKey ak = null;
+            ValueMap grains = new ValueMap(SALT_SERVICE.getGrains(minionId).orElseGet(HashMap::new));
+            Optional<String> managmentKeyLabel = getManagementKeyLabelFromGrains(grains);
+            if (managmentKeyLabel.isPresent()) {
+                ak = ActivationKeyFactory.lookupByKey(managmentKeyLabel.get());
+                if (ak != null && ak.getKickstartSession() != null) {
+                    ak.getKickstartSession().markComplete("Installation completed.");
                 }
-
-                Optional<User> creator = MinionPendingRegistrationService.getCreator(minionId);
-                if (!isReactivation &&
-                        checkIfMinionAlreadyRegistered(minionId, machineId, creator, isSaltSSH, grains)) {
-                    return true;
+                if (ak == null) {
+                    LOG.info("Outdated Management Key defined for " + minionId + ": " + managmentKeyLabel.get());
                 }
-                // Check if this minion id already exists
-                if (!isReactivation && duplicateMinionNamePresent(minionId)) {
-                    return false;
+                else if (ak.getServer() == null) {
+                    LOG.error("Management Key is not a reactivation key: " + managmentKeyLabel.get());
                 }
-                if (isReactivation) {
-                    reactivateSystem(minionId, machineId, creator, grains, Optional.ofNullable(ak));
+                else {
+                    isReactivation = true;
                 }
-                finalizeMinionRegistration(minionId, machineId, creator, saltSSHProxyId,
-                        actKeyOverride.isPresent() ? actKeyOverride : Optional.empty(),
-                        isSaltSSH, grains);
-                return true;
             }
-        );
+            Optional<User> creator = MinionPendingRegistrationService.getCreator(minionId);
+            if (!isReactivation &&
+                    checkIfMinionAlreadyRegistered(minionId, machineId, creator, isSaltSSH, grains)) {
+                return;
+            }
+            if (isReactivation) {
+                reactivateSystem(minionId, machineId, creator, grains, Optional.ofNullable(ak));
+            }
+            finalizeMinionRegistration(minionId, machineId, creator, saltSSHProxyId, actKeyOverride, isSaltSSH,
+                    grains);
+        }
     }
 
     private void reactivateSystem(String minionId, String machineId, Optional<User> creator,
