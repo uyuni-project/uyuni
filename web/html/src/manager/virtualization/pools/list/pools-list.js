@@ -4,7 +4,7 @@ import { Tree } from 'components/tree/tree';
 import type { TreeItem, TreeData } from 'components/tree/tree';
 import { CustomDiv } from 'components/custom-objects';
 import { ProgressBar } from 'components/progressbar';
-import { DataHandler } from 'components/data-handler';
+import { CustomDataHandler } from 'components/table/CustomDataHandler';
 import { SearchField } from 'components/table/SearchField';
 import { VirtualizationPoolsListRefreshApi } from '../virtualization-pools-list-refresh-api';
 
@@ -184,7 +184,7 @@ export function PoolsList(props: Props) {
           ];
 
           return (
-            <DataHandler
+            <CustomDataHandler
               data={getPoolsAndVolumes(tree)}
               identifier={(raw) => raw.id}
               initialItemsPerPage={Number(props.pageSize)}
@@ -206,7 +206,7 @@ export function PoolsList(props: Props) {
                 />
               </FilteredTree>
             }
-            </DataHandler>
+            </CustomDataHandler>
           );
         }
       }
