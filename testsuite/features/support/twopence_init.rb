@@ -176,9 +176,11 @@ $product = product
 $pxeboot_mac = ENV['PXEBOOT_MAC']
 $private_net = ENV['PRIVATENET'] if ENV['PRIVATENET']
 $mirror = ENV['MIRROR']
-$git_profiles = ENV['GITPROFILES']
 $server_http_proxy = ENV['SERVER_HTTP_PROXY'] if ENV['SERVER_HTTP_PROXY']
-$scc_credentials = ENV['SCC_CREDENTIALS'] if ENV['SCC_CREDENTIALS']
+if ENV['SCC_CREDENTIALS']
+  scc_username, scc_password = ENV['SCC_CREDENTIALS'].split('|')
+  $scc_credentials = !scc_username.to_s.empty? && !scc_password.to_s.empty?
+end
 $node_by_host = { 'server'                => $server,
                   'proxy'                 => $proxy,
                   'ceos_minion'           => $ceos_minion,
