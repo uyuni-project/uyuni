@@ -60,6 +60,9 @@
           <context context-type="sourcefile">/rhn/systems/SystemEntitlements.do</context>
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
+        <trans-unit id="bootstrap_entitled">
+          <source>Bootstrap</source>
+        </trans-unit>
         <trans-unit id="enterprise_entitled">
           <source>Management</source>
           <target>Administración</target>
@@ -77,7 +80,7 @@
           <target>Complementos</target>
         </trans-unit>
         <trans-unit id="virtualization_host">
-          <source>Virtualization</source>
+          <source>Virtualization Host</source>
           <target>Virtualización</target>
         </trans-unit>
       </group>
@@ -263,6 +266,12 @@
         </context-group>
         <target>(GMT+0930) Australia (Central/Darwin)</target>
       </trans-unit>
+      <trans-unit id="Australia/Adelaide">
+        <source>Australia Adelaide</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/account/UserDetails</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="Asia/Jakarta">
         <source>(GMT+0700) Thailand</source>
         <context-group name="ctx">
@@ -390,7 +399,7 @@
         <target>Intercambiador de correo local</target>
       </trans-unit>
       <trans-unit id="MDOM">
-        <source>Mail domain (e.g. 'redhat.com' for myemail@redhat.com)</source>
+        <source>Mail domain (e.g. 'suse.com' for myemail@suse.com)</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/monitoring/config/GeneralConfig.do</context>
         </context-group>
@@ -3201,27 +3210,27 @@
           <context context-type="sourcefile">/rhn/systems/details/kickstart/SessionStatus.do</context>
         </context-group>
         <trans-unit id="kickstart.state.created">
-          <source>Kickstart session created but has not yet been used.</source>
+          <source>Autoinstallation session created but has not yet been used.</source>
           <target>La sesión kickstart ha sido creada pero aún no ha sido utilizada.</target>
         </trans-unit>
         <trans-unit id="kickstart.state.deployed">
-          <source>Files required for kickstart action have been installed.</source>
+          <source>Files required for autoinstallation action have been installed.</source>
           <target>Los archivos requeridos para la acción kickstart han sido instalados.</target>
         </trans-unit>
         <trans-unit id="kickstart.state.injected">
-          <source>The system configuration has been modified to begin kickstart upon next boot.</source>
+          <source>The system configuration has been modified to begin the autoinstallation upon next boot.</source>
           <target>La configuración del sistema ha sido modificada para iniciar la instalación kickstart después del siguiente reinicio.</target>
         </trans-unit>
         <trans-unit id="kickstart.state.restarted">
-          <source>The system has been restarted in order to begin the kickstart process.</source>
+          <source>The system has been restarted in order to begin the autoinstallation process.</source>
           <target>El sistema ha sido reiniciado para iniciar el proceso kickstart.</target>
         </trans-unit>
         <trans-unit id="kickstart.state.configuration_accessed">
-          <source>The system has downloaded the kickstart configuration file from @@PRODUCT_NAME@@.</source>
+          <source>The system has downloaded the autoinstallation configuration file from @@PRODUCT_NAME@@.</source>
           <target>El sistema ha descargado el archivo de configuración kickstart desde @@PRODUCT_NAME@@.</target>
         </trans-unit>
         <trans-unit id="kickstart.state.started">
-          <source>The initial files required for anaconda have been downloaded.</source>
+          <source>The initial files required for autoinstallation have been downloaded.</source>
           <target>Los archivos iniciales requeridos por anaconda han sido descargados.</target>
         </trans-unit>
         <trans-unit id="kickstart.state.in_progress">
@@ -3229,7 +3238,7 @@
           <target>El sistema está descargando los RPM requeridos para la instalación.</target>
         </trans-unit>
         <trans-unit id="kickstart.state.registered">
-          <source>The system has successfully registered with @@PRODUCT_NAME@@ after kickstarting.</source>
+          <source>The system has successfully registered with @@PRODUCT_NAME@@ after autoinstalling.</source>
           <target>El sistema ha sido registrado satisfactoriamente con @@PRODUCT_NAME@@ después de la instalación kickstart.</target>
         </trans-unit>
         <trans-unit id="kickstart.state.package_synch">
@@ -3245,11 +3254,11 @@
           <target>Los archivos de configuración están siendo implementados.</target>
         </trans-unit>
         <trans-unit id="kickstart.state.complete">
-          <source>Kickstart complete.</source>
+          <source>Autoinstallation complete.</source>
           <target>Kickstart completo.</target>
         </trans-unit>
         <trans-unit id="kickstart.state.failed">
-          <source>Kickstart failed.</source>
+          <source>Autoinstallation failed.</source>
           <target>Falló la instalación kickstart.</target>
         </trans-unit>
       </group>

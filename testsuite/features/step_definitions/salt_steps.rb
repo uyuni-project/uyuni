@@ -1,4 +1,4 @@
-# Copyright 2015-2019 SUSE LLC
+# Copyright 2015-2020 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 require 'timeout'
@@ -24,14 +24,6 @@ end
 
 When(/^I get the contents of the remote file "(.*?)"$/) do |filename|
   $output, _code = $server.run("cat #{filename}")
-end
-
-When(/^I stop salt-master$/) do
-  $server.run('systemctl stop salt-master', false)
-end
-
-When(/^I start salt-master$/) do
-  $server.run('systemctl start salt-master', false)
 end
 
 When(/^I stop salt-minion on "(.*?)"$/) do |minion|
@@ -279,7 +271,7 @@ When(/^I ([^ ]*) the "([^"]*)" formula$/) do |action, formula|
   # Complicated code because the checkbox is not a <input type=checkbox> but an <i>
   xpath_query = "//a[@id = '#{formula}']/i[@class = 'fa fa-lg fa-square-o']" if action == 'check'
   xpath_query = "//a[@id = '#{formula}']/i[@class = 'fa fa-lg fa-check-square-o']" if action == 'uncheck'
-  if all(:xpath, xpath_query).any?
+  if all(:xpath, xpath_query, wait: DEFAULT_TIMEOUT).any?
     raise "xpath: #{xpath_query} not found" unless find(:xpath, xpath_query, wait: DEFAULT_TIMEOUT).click
   else
     xpath_query = "//a[@id = '#{formula}']/i[@class = 'fa fa-lg fa-check-square-o']" if action == 'check'
@@ -469,6 +461,11 @@ end
 
 When(/^I enter the local network in (.*) field$/) do |field|
   fill_in FIELD_IDS[field], with: $private_net
+end
+
+When(/^I enter the image name in (.*) field$/) do |field|
+  name = compute_image_name
+  fill_in FIELD_IDS[field], with: name
 end
 
 When(/^I press "Add Item" in (.*) section$/) do |section|

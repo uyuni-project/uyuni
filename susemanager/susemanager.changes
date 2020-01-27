@@ -1,3 +1,12 @@
+-------------------------------------------------------------------
+Wed Jan 22 12:22:05 CET 2020 - jgonzalez@suse.com
+
+- version 4.1.2-1
+- fix documentation URL in installer (bsc#1154590)
+- fix product id of SLES12 SP5 x86_64 and remove never released
+  SLED product (bsc#1158963)
+- Allow creating bootstrap repositories for CentoS8 (bsc#1159206)
+- add bootstrap-repo data for SLE12 SP5 Family (bsc#1158963)
 - explicitly enable jabberd during setup
 - separate osa-dispatcher and jabberd so it can be disabled independently
 

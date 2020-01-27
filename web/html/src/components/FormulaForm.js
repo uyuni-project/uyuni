@@ -5,13 +5,19 @@ import {Utils, Formulas} from 'utils/functions';
 import {default as Jexl} from 'jexl';
 import {Button} from "../components/buttons";
 import {Messages} from "../components/messages";
-import {generateFormulaComponent} from "./formulas/FormulaComponentGenerator";
+import {generateFormulaComponent, checkVisibilityCondition, evalExpression} from "./formulas/FormulaComponentGenerator";
 import {SectionToolbar} from "components/section-toolbar/section-toolbar";
 
 const getEditGroupSubtype = Formulas.getEditGroupSubtype;
 const EditGroupSubtype = Formulas.EditGroupSubtype;
 const deepCopy = Utils.deepCopy;
 const capitalize = Utils.capitalize;
+
+const defaultMessageTexts = {
+    "pillar_only_formula_saved": <p>{t("Formula saved. Applying the highstate is not needed for this formula.")}</p>
+}
+
+const productName = Utils.getProductName();
 
 //props:
 //dataUrl = url to get the server data
@@ -81,19 +87,20 @@ class FormulaForm extends React.Component {
         });
     }
 
-    walkValueTree(value, formulaValues, validationFunc) {
+    walkValueTree(value, formulaForm, formulaValues, validationFunc) {
         if (value instanceof Object) {
             for (let key in value) {
                 if (!key.startsWith("$meta$")) {
                     if (("$meta$" + key) in value) {
                         const meta = value["$meta$" + key];
-                        validationFunc(value[key], meta, formulaValues);
+                        const keepWalking = validationFunc(value, key, meta, formulaForm, formulaValues);
+                        console.log("walkValueTree keepWalking: " + keepWalking);
+                        if (keepWalking) {
+                            this.walkValueTree(value[key], formulaForm, formulaValues, validationFunc);
+                        }
+                    } else {
+                        this.walkValueTree(value[key], formulaForm, formulaValues, validationFunc);
                     }
-                }
-            }
-            for (let key in value) {
-                if (!key.startsWith("$meta$")) {
-                    this.walkValueTree(value[key], formulaValues, validationFunc);
                 }
             }
         }
@@ -101,10 +108,22 @@ class FormulaForm extends React.Component {
 
     getEmptyValues() {
         let requiredErrors = []
-        this.walkValueTree(this.state.formulaValues, this.state.formulaValues, 
-            (val, meta, formulaValues) => {
+        this.walkValueTree(this.state.formulaValues, this, this.state.formulaValues, 
+            (parentVal, key, meta, formulaForm, formulaValues) => {
+                const val = parentVal[key];
+                if (meta["visibleIf"]) {
+                    const visibleIf = checkVisibilityCondition(meta["id"], meta["visibleIf"], formulaForm);
+                    if (!visibleIf) {
+                        return false;
+                    }
+                } else if (meta["visible"]) {
+                    const visible = evalExpression(meta["id"], meta["visible"], formulaForm);
+                    if (!visible) {
+                        return false;
+                    }
+                }
                 if(meta["required"]) {
-                    const required = Jexl.evalSync(meta["required"] + "", formulaValues); // TODO use evalExpression()
+                    const required = evalExpression(meta["id"], meta["required"] + "", formulaForm);
                     if (required) {
                         if (Array.isArray(val) && val.some(v => !v)) {
                             requiredErrors.push(meta["name"]);
@@ -113,14 +132,16 @@ class FormulaForm extends React.Component {
                         }
                     }
                 }
+                return true;
             });
         return requiredErrors;
     }
 
     checkFieldsFormat() {
         const errors = [];
-        this.walkValueTree(this.state.formulaValues, this.state.formulaValues, 
-            (value, meta, formulaValues) => {
+        this.walkValueTree(this.state.formulaValues, this, this.state.formulaValues, 
+            (parentVal, key, meta, formulaForm, formulaValues) => {
+                const value = parentVal[key];
                 if(meta["match"]) {
                     try {
                         const re = new RegExp(meta["match"]);
@@ -138,6 +159,7 @@ class FormulaForm extends React.Component {
                         console.log("Error matching regex: '" + meta["match"] + "':" + err);
                     }
                 }
+                return true;
             });
         return errors;
     }
@@ -317,6 +339,9 @@ class FormulaForm extends React.Component {
     }
 
     getMessageText(msg) {
+      if (!this.props.messageTexts[msg] && defaultMessageTexts[msg]) {
+          return t(defaultMessageTexts[msg]);
+      }
       return this.props.messageTexts[msg] ? t(this.props.messageTexts[msg]) : msg;
     }
 
@@ -377,7 +402,7 @@ class FormulaForm extends React.Component {
                             </div>
                             <div className="panel-body">
                                 <div className="formula-content">
-                                <p>{this.state.formulaMetadata.description}</p>
+                                <p>{text(this.state.formulaMetadata.description)}</p>
                                 <hr/>
                                 {this.renderForm()}
                                 </div>
@@ -438,9 +463,9 @@ function adjustElementBasicAttrs([elementName, element], scope) {
     }
 
     element.$id = elementName;
-    element.$name = get(element.$name, capitalize(elementName));
-    element.$help = get(element.$help, element.$name);
-    element.$placeholder = get(element.$placeholder, "");
+    element.$name = text(get(element.$name, capitalize(elementName)));
+    element.$help = text(get(element.$help, element.$name));
+    element.$placeholder = text(get(element.$placeholder, ""));
 
     if (isPrimitiveElement(element)) {
         element.$default = defaultValueForElement(element);
@@ -470,6 +495,12 @@ function isPrimitiveElement(element) {
         element.$type !== "edit-group";
 }
 
+function text(txt) {
+    // replace variables
+    txt = txt.replace(/\${productName}/g, productName);
+    return txt;
+}
+
 /*
  * Adjust edit group default and 'new item' value of edit-group
  * Some subtypes of edit-group need special handling (e.g. nested dictionary
@@ -494,7 +525,7 @@ function adjustEditGroup(element) {
     if (editGroupSubType === EditGroupSubtype.DICTIONARY_OF_DICTIONARIES
             || editGroupSubType === EditGroupSubtype.LIST_OF_DICTIONARIES)
     {
-        element.$newItemValue = generateValues(element.$prototype, {}, {});
+        element.$newItemValue = generateValues(element.$prototype, {}, {}, element);
     }
     else if (editGroupSubType === EditGroupSubtype.PRIMITIVE_DICTIONARY) {
         element.$newItemValue = [
@@ -647,13 +678,19 @@ function preprocessCleanValues(values, layout) {
  * based on the system data, group data and layout default.
  */
 function generateValues(layout, group_data, system_data) {
-    const generateValuesInternal = (layout, group_data, system_data) => {
+    const generateValuesInternal = (layout, group_data, system_data, prototypeParentId, elementIndex) => {
         let result = {};
         for (let key in layout) {
             if (key.startsWith("$") && key !== "$key") continue;
 
             let value = null;
             let element = layout[key];
+            let elementId;
+            if (prototypeParentId && (elementIndex != undefined && elementIndex != null)) {
+                elementId = prototypeParentId+ "#" + elementIndex + "#" + element.$id;
+            } else {
+                elementId = (layout.$id ? layout.$id + "#" : "") + element.$id;
+            }
 
             if (element.$type === "group" || element.$type === "namespace") {
                 value = generateValuesInternal(element, get(group_data[key], {}), get(system_data[key], {}));
@@ -677,7 +714,7 @@ function generateValues(layout, group_data, system_data) {
                     // do not do merging of edit-group values,
                     // take either system or group value based on the logic above
                     // and process it recursively (hack: pass it always as "system" scope)
-                    value = value.map(entry => generateValuesInternal(element.$prototype, entry, {}));
+                    value = value.map((entry, index) => generateValuesInternal(element.$prototype, entry, {}, elementId, index));
                 }
             }
 
@@ -686,25 +723,28 @@ function generateValues(layout, group_data, system_data) {
             }
 
             result[key] = value
-            if(key === '$key') {
-              result['$key_name'] = element.$name;
-            }
 
             if ((element.$type === "edit-group") && 
                 !(getEditGroupSubtype(element) === EditGroupSubtype.LIST_OF_DICTIONARIES ||
                     getEditGroupSubtype(element) === EditGroupSubtype.DICTIONARY_OF_DICTIONARIES)) {
                 result["$meta$"+ key] = {
+                    id: elementId,
                     required: key == "$key" ? true : element.$prototype["$required"],
                     disabled: element.$prototype["$disabled"],
                     name: element["$name"],
-                    match: element.$prototype["$match"]
+                    match: element.$prototype["$match"],
+                    visibleIf: element["$visibleIf"],
+                    visible: element["$visible"]                    
                 };
             } else {
                 result["$meta$"+ key] = {
+                    id: elementId,
                     required: key == "$key" ? true : element["$required"],
                     disabled: element["$disabled"],
                     name: element["$name"],
-                    match: element["$match"]
+                    match: element["$match"],
+                    visibleIf: element["$visibleIf"],
+                    visible: element["$visible"]
                 };
             }
         }

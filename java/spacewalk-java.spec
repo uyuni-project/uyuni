@@ -36,9 +36,17 @@
 %define ehcache         ehcache >= 2.10.1
 %define apache_commons_discovery   jakarta-commons-discovery
 %define apache_commons_el          jakarta-commons-el
-%define apache_commons_fileupload  jakarta-commons-fileupload
 %define apache_commons_validator   jakarta-commons-validator
 %define java_version    11
+%if 0%{?sle_version} > 150100
+%define apache_commons_fileupload  apache-commons-fileupload
+%define apache_commons_digester    apache-commons-digester
+%define log4j                      log4j12
+%else
+%define apache_commons_fileupload  jakarta-commons-fileupload
+%define apache_commons_digester    jakarta-commons-digester
+%define log4j                      log4j
+%endif
 %else
 %define appdir          %{_localstatedir}/lib/tomcat/webapps
 %define jardir          %{_localstatedir}/lib/tomcat/webapps/rhn/WEB-INF/lib
@@ -56,7 +64,7 @@ Name:           spacewalk-java
 Summary:        Java web application files for Spacewalk
 License:        GPL-2.0-only
 Group:          Applications/Internet
-Version:        4.1.1
+Version:        4.1.2
 Release:        1%{?dist}
 Url:            https://github.com/uyuni-project/uyuni
 Source0:        https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
@@ -83,7 +91,7 @@ BuildRequires:  c3p0 >= 0.9.1
 BuildRequires:  cglib
 %if 0%{?suse_version}
 BuildRequires:  classmate
-BuildRequires:  classpathx-mail
+BuildRequires:  javamail
 %endif
 BuildRequires:  concurrent
 BuildRequires:  dom4j
@@ -114,7 +122,7 @@ BuildRequires:  jsch
 BuildRequires:  jta
 BuildRequires:  libxml2
 BuildRequires:  libxml2-tools
-BuildRequires:  log4j
+BuildRequires:  %{log4j}
 BuildRequires:  netty
 BuildRequires:  objectweb-asm
 BuildRequires:  perl
@@ -155,7 +163,7 @@ Requires:       c3p0 >= 0.9.1
 Requires:       cglib
 %if 0%{?suse_version}
 Requires:       classmate
-Requires:       classpathx-mail
+Requires:       javamail
 %endif
 Requires:       cobbler >= 3.0.0
 Requires:       concurrent
@@ -167,7 +175,7 @@ Requires:       hibernate-commons-annotations
 Requires:       hibernate5
 Requires:       httpcomponents-client
 Requires:       jade4j
-Requires:       jakarta-commons-digester
+Requires:       %{apache_commons_digester}
 Requires:       java >= %{java_version}
 Requires:       java-saml
 Requires:       javapackages-tools
@@ -195,7 +203,7 @@ Requires:       %{apache_commons_fileupload}
 Requires:       jcommon
 Requires:       jdom
 Requires:       jta
-Requires:       log4j
+Requires:       %{log4j}
 Requires:       redstone-xmlrpc
 Requires:       simple-core
 Requires:       simple-xml
@@ -337,7 +345,7 @@ Requires:       jboss-logging
 Requires:       jcommon
 Requires:       jpa-api
 Requires:       jsch
-Requires:       log4j
+Requires:       %{log4j}
 Requires:       quartz
 Requires:       simple-core
 Requires:       spacewalk-java-config
@@ -419,13 +427,13 @@ xargs checkstyle -c buildconf/checkstyle.xml
 
 # catch macro name errors
 find . -type f -name '*.xml' | xargs perl -CSAD -lne '
-          for (grep { $_ ne "PRODUCT_NAME" } /\@\@(\w+)\@\@/g) {
+          for (grep { $_ ne "PRODUCT_NAME" && $_ ne "VENDOR_NAME" && $_ ne "ENTERPRISE_LINUX_NAME" && $_ ne "VENDOR_SERVICE_NAME" } /\@\@(\w+)\@\@/g) {
               print;
               $exit = 1;
           }
-          @r = /((..)?PRODUCT_NAME(..)?)/g ;
+          @r = /((..)?(PRODUCT_NAME|VENDOR_NAME|ENTERPRISE_LINUX_NAME|VENDOR_SERVICE_NAME)(..)?)/g ;
           while (@r) {
-              $s = shift(@r); $f = shift(@r); $l = shift(@r);
+              $s = shift(@r); $f = shift(@r); $skip = shift(@r); $l = shift(@r);
               if ($f ne "@@" or $l ne "@@") {
                   print $s;
                   $exit = 1;
@@ -491,7 +499,7 @@ install -m 644 conf/rhn_java_sso.conf $RPM_BUILD_ROOT%{_prefix}/share/rhn/config
 
 # Adjust product tree tag
 %if 0%{?sle_version} && !0%{?is_opensuse}
-sed -i -e 's/^java.product_tree.tag =.*$/java.product_tree.tag = SUMA4.0/' $RPM_BUILD_ROOT%{_prefix}/share/rhn/config-defaults/rhn_java.conf
+sed -i -e 's/^java.product_tree.tag =.*$/java.product_tree.tag = Beta/' $RPM_BUILD_ROOT%{_prefix}/share/rhn/config-defaults/rhn_java.conf
 %else
 sed -i -e 's/^java.product_tree.tag =.*$/java.product_tree.tag = Uyuni/' $RPM_BUILD_ROOT%{_prefix}/share/rhn/config-defaults/rhn_java.conf
 %endif
@@ -620,7 +628,7 @@ chown tomcat:%{apache_group} /var/log/rhn/gatherer.log
 %{jardir}/antlr.jar
 %{jardir}/bcel.jar
 %{jardir}/c3p0*.jar
-%if 0%{?fedora} >= 25
+%if 0%{?fedora} >= 25 || 0%{?sle_version} >= 150200
 %{jardir}/cglib_cglib.jar
 %else
 %{jardir}/cglib.jar
@@ -681,10 +689,14 @@ chown tomcat:%{apache_group} /var/log/rhn/gatherer.log
 %{jardir}/statistics.jar
 
 %{jardir}/jaf.jar
+%if 0%{?sle_version} >= 150200
+%{jardir}/javax.mail.jar
+%else
 %{jardir}/javamail.jar
+%endif
 %{jardir}/jcommon*.jar
 %{jardir}/jdom.jar
-%{jardir}/jta.jar
+%{jardir}/geronimo-jta-1.1-api.jar
 %{jardir}/log4j*.jar
 %{jardir}/oro.jar
 %{jardir}/quartz.jar

@@ -27,7 +27,7 @@
 ### Basic notions
 
 We use "targets" in the Ruby code to encapsulate the notion of testing hosts.
-The corresponding notion in cucumber steps is "step host names".
+The corresponding notion in Cucumber steps is "step host names".
 
 Possible values are currently:
 
@@ -38,9 +38,9 @@ Possible values are currently:
 | SLES traditional client | ```$client``` | ```$CLIENT``` | ```"sle_client"``` | ```"client"``` |
 | SLES Salt minion | ```$minion``` | ```$MINION``` | ```"sle_minion"``` or ```"sle_migrated_minion"``` | ```"minion"``` |
 | SLES Salt SSH minion | ```$ssh_minion``` | ```$SSHMINION``` | ```"ssh_minion"``` | ```"minion"``` |
-| Cent OS Salt minion or traditional client | ```$ceos_minion``` | ```$CENTOSMINION``` | ```"ceos_minion"```, ```"ceos_traditional_client"```, or ``"ceos_ssh_minion"``` | ```"minion"``` |
+| CentOS Salt minion or traditional client | ```$ceos_minion``` | ```$CENTOSMINION``` | ```"ceos_minion"```, ```"ceos_traditional_client"```, or ``"ceos_ssh_minion"``` | ```"minion"``` |
 | Ubuntu minion | ```$ubuntu_minion``` | ```$UBUNTUMINION``` | ```"ubuntu_minion"``` or ```"ubuntu_ssh_minion"``` | ```"minion"``` |
-| PXE-Boot minion |  None | ```$PXEBOOTMAC``` | ```"pxeboot_minion"``` | ```"pxeboot"``` |
+| PXE-Boot minion |  None | ```$PXEBOOT_MAC``` | ```"pxeboot_minion"``` | ```"pxeboot"``` |
 
 These names are such for historical reasons and might be made better in the future.
 
@@ -200,12 +200,6 @@ To check for the initial log in, prefer ```Then I am logged in```.
 
 ```cucumber
   When I am on the System Manager System Overview page
-```
-
-* Reload current page
-
-```cucumber
-  When I reload the page
 ```
 
 * Close current page
@@ -550,7 +544,6 @@ The check box can be identified by name, id or label text.
 ```cucumber
   When I wait until onboarding is completed for "ceos_minion"
   When I wait until event "Package Install/Upgrade scheduled by admin" is completed
-  When I wait until all events in history are completed
 ```
 
 
@@ -561,8 +554,6 @@ The check box can be identified by name, id or label text.
 * Control Salt service
 
 ```cucumber
-  When I stop salt-master
-  When I start salt-master
   When I stop salt-minion on "ceos_minion"
   When I start salt-minion on "ceos_minion"
   When I restart salt-minion on "ceos_minion"
@@ -720,7 +711,6 @@ Here we describe only the specificities of this testsuite. For a description
 of the underlying libraries, have a look at
 [Capybara documentation](http://www.rubydoc.info/github/jnicklas/capybara).
 
-
 #### Running remote commands
 
 When implementing a step, to run a command on a target, use:
@@ -740,13 +730,12 @@ Arguments taken by method ```run``` are:
 3. timeout : **default** is 200. You can increase/decrease the timeout. You may want to use a smaller timeout, but retry several times until ```DEFAULT_TIMEOUT```.
 4. user : **default** is root. It's the user that executes the command.
 
-
 #### Getting the FQDN of a host
 
 When implementing a step, to get the FQDN of the host, use:
 
 ```ruby
-  STDOUT puts $client.full_hostname
+  STDOUT.puts $client.full_hostname
 ```
 
 #### Converting between host name and target
@@ -787,6 +776,3 @@ Following code is expected to be a part of function used as step definition for 
 
 NOTE: This solution was tested and worked properly, but there was no time gain in comparison with old solution using capybara steps.
 
-Useful links:
-
-- [Selenium docs](https://www.seleniumhq.org/docs/03_webdriver.jsp)

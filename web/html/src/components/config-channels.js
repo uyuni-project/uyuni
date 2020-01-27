@@ -5,7 +5,6 @@ const React = require("react");
 const AceEditor = require("../components/ace-editor").AceEditor;
 const Buttons = require("../components/buttons");
 const { InnerPanel } = require('components/panels/InnerPanel');
-const { PanelRow } = require('components/panels/PanelRow');
 const Fields = require("../components/fields");
 const PopUp = require("../components/popup").PopUp;
 const Messages = require("../components/messages").Messages;

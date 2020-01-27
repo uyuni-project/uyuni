@@ -32,7 +32,7 @@ Name:           spacewalk-web
 Summary:        Spacewalk Web site - Perl modules
 License:        GPL-2.0-only
 Group:          Applications/Internet
-Version:        4.1.1
+Version:        4.1.2
 Release:        1%{?dist}
 Url:            https://github.com/uyuni-project/uyuni
 Source0:        https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
@@ -56,7 +56,7 @@ but it does generate a number of sub-packages.
 
 %package -n susemanager-web-libs
 Summary:        Vendor bundles for spacewalk-web
-License:		0BSD and BSD-3-Clause and LGPL-3.0-or-later and MIT and MPL-2.0
+License:        0BSD and BSD-3-Clause and LGPL-3.0-or-later and MIT and MPL-2.0
 Group:          Applications/Internet
 
 BuildArch:      noarch
@@ -67,6 +67,18 @@ BuildRequires:  nodejs
 
 %description -n susemanager-web-libs
 This package contains Vendor bundles needed for spacewalk-web
+
+%package -n susemanager-web-libs-debug
+Summary:        Vendor bundles for spacewalk-web debug files
+License:        0BSD and BSD-3-Clause and LGPL-3.0-or-later and MIT and MPL-2.0
+Group:          Applications/Internet
+
+BuildArch:      noarch
+BuildRoot:      %{_tmppath}/%{name}-%{version}-build
+Requires:       susemanager-web-libs
+
+%description -n susemanager-web-libs-debug
+This package contains debug files for spacewalk-web-libs
 
 %package -n spacewalk-html
 Summary:        HTML document files for Spacewalk
@@ -86,6 +98,14 @@ Provides:       rhn-html = 5.3.0
 %description -n spacewalk-html
 This package contains the HTML files for the Spacewalk web site.
 
+%package -n spacewalk-html-debug
+Summary:        HTML document debug files for Spacewalk
+License:        GPL-2.0-only AND MIT
+Group:          Applications/Internet
+Requires:       spacewalk-html
+
+%description -n spacewalk-html-debug
+This package contains the debug files for spacewalk-html.
 
 %package -n spacewalk-base
 Summary:        Programs which need to be installed for the Spacewalk Web base classes
@@ -198,12 +218,19 @@ cp -r html/src/dist/javascript/manager %{buildroot}/srv/www/htdocs/javascript
 
 %{__mkdir_p} %{buildroot}/srv/www/htdocs/vendors
 cp html/src/dist/vendors/vendors.bundle.js %{buildroot}/srv/www/htdocs/vendors/vendors.bundle.js
+cp html/src/dist/vendors/vendors.bundle.js.map %{buildroot}/srv/www/htdocs/vendors/vendors.bundle.js.map
 cp html/src/dist/vendors/vendors.bundle.js.LICENSE %{buildroot}/srv/www/htdocs/vendors/vendors.bundle.js.LICENSE
 
 %files -n susemanager-web-libs
 %defattr(644,root,root,755)
 %dir %{www_path}/www/htdocs/vendors
-%{www_path}/www/htdocs/vendors/*
+%{www_path}/www/htdocs/vendors/*.js
+%{www_path}/www/htdocs/vendors/*.js.LICENSE
+
+%files -n susemanager-web-libs-debug
+%defattr(644,root,root,755)
+%dir %{www_path}/www/htdocs/vendors
+%{www_path}/www/htdocs/vendors/*.map
 
 %files -n spacewalk-base
 %defattr(644,root,root,755)
@@ -241,9 +268,17 @@ cp html/src/dist/vendors/vendors.bundle.js.LICENSE %{buildroot}/srv/www/htdocs/v
 %defattr(644,root,root,755)
 %dir %{www_path}/www/htdocs/pub
 %dir %{www_path}/www/htdocs/javascript
+%dir %{www_path}/www/htdocs/javascript/manager
 %{www_path}/www/htdocs/robots.txt
 %{www_path}/www/htdocs/pub
-%{www_path}/www/htdocs/javascript/*
+%{www_path}/www/htdocs/javascript/manager/*.js
+%{www_path}/www/htdocs/javascript/*.js
 %doc LICENSE
+
+%files -n spacewalk-html-debug
+%defattr(644,root,root,755)
+%dir %{www_path}/www/htdocs/javascript
+%dir %{www_path}/www/htdocs/javascript/manager
+%{www_path}/www/htdocs/javascript/manager/*.map
 
 %changelog

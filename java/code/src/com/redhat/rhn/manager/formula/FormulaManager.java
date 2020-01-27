@@ -18,12 +18,8 @@ import com.redhat.rhn.domain.formula.FormulaFactory;
 import com.redhat.rhn.domain.server.ManagedServerGroup;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
-import com.redhat.rhn.domain.server.Server;
-import com.redhat.rhn.domain.server.ServerGroup;
 import com.redhat.rhn.domain.server.ServerGroupFactory;
 import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.manager.system.ServerGroupManager;
-import com.redhat.rhn.manager.system.SystemManager;
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.salt.netapi.datatypes.target.MinionList;
 import com.suse.utils.Opt;
@@ -82,7 +78,7 @@ public class FormulaManager {
             throws IOException {
         MinionServer minion = MinionServerFactory.lookupById(systemId)
                 .orElseThrow(() -> new IllegalArgumentException("Minion " + systemId + " not found."));
-        checkUserHasPermissionsOnServer(user, minion);
+        FormulaUtil.ensureUserHasPermissionsOnServer(user, minion);
         FormulaFactory.saveServerFormulaData(content, minion.getMinionId(), formulaName);
         saltService.refreshPillar(new MinionList(minion.getMinionId()));
     }
@@ -99,11 +95,11 @@ public class FormulaManager {
             throws IOException {
 
         ManagedServerGroup group = ServerGroupFactory.lookupByIdAndOrg(groupId, user.getOrg());
-        checkUserHasPermissionsOnServerGroup(user, group);
+        FormulaUtil.ensureUserHasPermissionsOnServerGroup(user, group);
         FormulaFactory.saveGroupFormulaData(content, groupId, user.getOrg(), formulaName);
         List<String> minionIds = group.getServers().stream()
-                .flatMap(s -> Opt.stream(s.asMinionServer()))
-                .map(MinionServer::getMinionId).collect(Collectors.toList());
+            .flatMap(s -> Opt.stream(s.asMinionServer()))
+            .map(MinionServer::getMinionId).collect(Collectors.toList());
         saltService.refreshPillar(new MinionList(minionIds));
     }
 
@@ -117,7 +113,7 @@ public class FormulaManager {
     public Map<String, Object> getSystemFormulaData(User user, String formulaName, Long serverId) {
         MinionServer minion = MinionServerFactory.lookupById(serverId)
                 .orElseThrow(() -> new IllegalArgumentException("Minion " + serverId + " not found."));
-        checkUserHasPermissionsOnServer(user, minion);
+        FormulaUtil.ensureUserHasPermissionsOnServer(user, minion);
         Optional<Map<String, Object>> data = FormulaFactory
                 .getFormulaValuesByNameAndMinionId(formulaName, minion.getMinionId());
         return data.orElse(Collections.emptyMap());
@@ -132,8 +128,9 @@ public class FormulaManager {
      */
     public Map<String, Object> getGroupFormulaData(User user, String formulaName, Long groupId) {
         ManagedServerGroup group = ServerGroupFactory.lookupByIdAndOrg(groupId, user.getOrg());
-        checkUserHasPermissionsOnServerGroup(user, group);
-        Optional<Map<String, Object>> data = FormulaFactory.getGroupFormulaValuesByNameAndGroupId(formulaName, groupId);
+        FormulaUtil.ensureUserHasPermissionsOnServerGroup(user, group);
+        Optional<Map<String, Object>> data =
+                FormulaFactory.getGroupFormulaValuesByNameAndGroupId(formulaName, groupId);
         return data.orElse(Collections.emptyMap());
     }
 
@@ -318,24 +315,5 @@ public class FormulaManager {
      */
     private Map<String, Object> getFormulaLayout(String formulaName) {
         return FormulaFactory.getFormulaLayoutByName(formulaName).orElseGet(Collections::emptyMap);
-    }
-
-    /**
-     * Check if user has permission on group
-     * @param user user
-     * @param group group
-     */
-    private void checkUserHasPermissionsOnServerGroup(User user, ServerGroup group) {
-        ServerGroupManager.getInstance().validateAccessCredentials(user, group, group.getName());
-        ServerGroupManager.getInstance().validateAdminCredentials(user);
-    }
-
-    /**
-     * Check if user has permission on the server.
-     * @param user user
-     * @param server server
-     */
-    private void checkUserHasPermissionsOnServer(User user, Server server) {
-        SystemManager.ensureAvailableToUser(user, server.getId());
     }
 }

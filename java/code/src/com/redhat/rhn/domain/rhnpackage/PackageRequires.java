@@ -14,12 +14,16 @@
  */
 package com.redhat.rhn.domain.rhnpackage;
 
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import java.io.Serializable;
 
 /**
  * PackageRequires
  * @version $Rev$
  */
+@Entity
+@Table(name = "rhnPackageRequires")
 public class PackageRequires extends PackageProperty implements Serializable {
 
     /**

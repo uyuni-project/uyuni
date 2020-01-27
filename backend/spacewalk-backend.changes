@@ -1,3 +1,12 @@
+- Prevent timestamp format exception on mgr-inter-sync while processing comps (bsc#1157346)
+
+-------------------------------------------------------------------
+Wed Jan 22 12:10:51 CET 2020 - jgonzalez@suse.com
+
+- version 4.1.2-1
+- When downloading repo metadata, don't add "/" to the repo url if it already ends with one (bsc#1158899)
+- Use HTTP proxy settings when fetching the mirrorlist on spacewalk-repo-sync (bsc#1159076)
+- enhance suseProducts via ISS to fix SP migration on slave server (bsc#1159184)
 - generate metadata with empty vendor (bsc#1158480)
 - prevent a traceback when reposyncing openSUSE 15.1 (bsc#1158672)
 - close config files after reading them (bsc#1158283)

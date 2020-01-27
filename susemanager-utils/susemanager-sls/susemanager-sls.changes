@@ -1,3 +1,11 @@
+-------------------------------------------------------------------
+Wed Jan 22 12:25:10 CET 2020 - jgonzalez@suse.com
+
+- version 4.1.2-1
+- Only install python2-salt on buildhosts if it is available
+- sort formulas by execution order (bsc#1083326)
+- split remove_traditional_stack into two parts. One for all systems and
+  another for clients not being a Uyuni Server or Proxy (bsc#1121640)
 - Change the order to check the version correctly for RES (bsc#1152795)
 - Remove the virt-poller cache when applying Virtualization entitlement
 - Force HTTP request timeout on public cloud grain (bsc#1157975)

@@ -1,7 +1,10 @@
+-------------------------------------------------------------------
+Wed Jan 22 12:09:22 CET 2020 - jgonzalez@suse.com
+
+- version 4.1.2-1
 - take care that osad is not disabled nor deactivated during update
   (bsc#1157700, bsc#1158697)
 - separate osa-dispatcher and jabberd so it can be disabled independently
-
 
 -------------------------------------------------------------------
 Wed Nov 27 16:55:56 CET 2019 - jgonzalez@suse.com

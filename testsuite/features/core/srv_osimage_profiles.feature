@@ -1,4 +1,4 @@
-# Copyright (c) 2018 SUSE LLC
+# Copyright (c) 2018-2020 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 Feature: Prepare server for using Kiwi
@@ -39,5 +39,5 @@ Feature: Prepare server for using Kiwi
     And I enter "suse_os_image" as "label"
     And I select "Kiwi" from "imageType"
     And I select "1-KIWI-TEST" from "activationKey"
-    And I enter "Kiwi/POS_Image-JeOS6" relative to profiles as "path"
+    And I enter the image filename relative to profiles as "path"
     And I click on "create-btn"

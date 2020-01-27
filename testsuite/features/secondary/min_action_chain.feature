@@ -1,15 +1,16 @@
-# Copyright (c) 2018-2019 SUSE LLC
+# Copyright (c) 2018-2020 SUSE LLC
 # Licensed under the terms of the MIT license.
 
+@sle_minion
 Feature: Action chains on Salt minions
 
   Scenario: Pre-requisite: downgrade repositories to lower version on Salt minion
     Given I am authorized as "admin" with password "admin"
     When I enable repository "test_repo_rpm_pool" on this "sle_minion"
-    And I run "zypper -n rm andromeda-dummy" on "sle_minion" without error control
-    And I run "zypper -n rm virgo-dummy" on "sle_minion" without error control
-    And I run "zypper -n in milkyway-dummy" on "sle_minion" without error control
-    And I run "zypper -n in --oldpackage andromeda-dummy-1.0" on "sle_minion"
+    And I remove package "andromeda-dummy" from this "sle_minion" without error control
+    And I remove package "virgo-dummy" from this "sle_minion" without error control
+    And I install package "milkyway-dummy" on this "sle_minion" without error control
+    And I install old package "andromeda-dummy-1.0" on this "sle_minion"
     And I run "zypper -n ref" on "sle_minion"
 
   Scenario: Pre-requisite: refresh package list and check installed packages after downgrade on SLE minion
@@ -93,7 +94,7 @@ Feature: Action chains on Salt minions
 
   Scenario: Subscribe system to configuration channel for testing action chain on Salt minion
     Given I am on the Systems overview page of this "sle_minion"
-    And I follow "Configuration" in the content area
+    When I follow "Configuration" in the content area
     And I follow "Manage Configuration Channels" in the content area
     And I follow first "Subscribe to Channels" in the content area
     And I check "Action Chain Channel" in the list
@@ -162,8 +163,8 @@ Feature: Action chains on Salt minions
     When I follow "Schedule"
     And I follow "Action Chains"
     And I follow "new action chain"
-    Then I click on "Save and Schedule"
-    And I should see a "Action Chain new action chain has been scheduled for execution." text
+    And I click on "Save and Schedule"
+    Then I should see a "Action Chain new action chain has been scheduled for execution." text
     When I wait for "virgo-dummy" to be installed on this "sle_minion"
     And I wait at most 300 seconds until file "/tmp/action_chain_one_system_done" exists on "sle_minion"
 
@@ -185,64 +186,13 @@ Feature: Action chains on Salt minions
     And I follow "Action Chains"
     And I follow "new action chain"
     And I follow "delete action chain" in the content area
-    Then I click on "Delete"
-
-  Scenario: Add an action chain using system set manager for traditional client and Salt minion
-    Given I am authorized as "admin" with password "admin"
-    When I run "zypper -n rm andromeda-dummy" on "sle_client" without error control
-    And I run "zypper -n rm andromeda-dummy" on "sle_minion" without error control
-    When I am on the System Overview page
-    And I check the "sle_minion" client
-    And I check the "sle_client" client
-    And I am on System Set Manager Overview
-    And I follow "Install" in the content area
-    And I follow "Test-Channel-x86_64" in the content area
-    And I enter "andromeda-dummy" as the filtered package name
-    And I click on the filter button
-    And I check "andromeda-dummy" in the list
-    And I click on "Install Selected Packages"
-    Then I should see "sle_minion" hostname
-    And I should see "sle_client" hostname
-    When I check radio button "schedule-by-action-chain"
-    And I click on "Confirm"
-    Then I should see a "Package installations are being scheduled" text
-    When I am on System Set Manager Overview
-    And I follow "remote commands" in the content area
-    And I enter as remote command this script in
-      """
-      #!/bin/bash
-      touch /tmp/action_chain_done
-      """
-    And I check radio button "schedule-by-action-chain"
-    And I click on "Schedule"
-    Then I should see "sle_minion" hostname
-    And I should see "sle_client" hostname
-
-  Scenario: Verify action chain for two systems
-    Given I am on the Systems overview page of this "sle_minion"
-    And I run "rhn-actions-control --enable-all" on "sle_client"
-    When I follow "Schedule"
-    And I follow "Action Chains"
-    And I follow "new action chain"
-    And I should see a "1. Install or update andromeda-dummy on 2 systems" text
-    And I should see a "2. Run a remote command on 2 systems" text
-    Then I click on "Save and Schedule"
-    And I should see a "Action Chain new action chain has been scheduled for execution." text
-
-  Scenario: Verify that the action chain from the system set manager was executed successfully
-    Given I am authorized as "admin" with password "admin"
-    When I run "rhn_check -vvv" on "sle_client"
-    And I wait until file "/tmp/action_chain_done" exists on "sle_client"
-    And I wait until file "/tmp/action_chain_done" exists on "sle_minion"
-    Then "andromeda-dummy" should be installed on "sle_client"
-    And "andromeda-dummy" should be installed on "sle_minion"
+    And I click on "Delete"
 
   Scenario: Downgrade again repositories to lower version on Salt minion
-    When I run "rm /tmp/action_chain_done" on "sle_minion" without error control
-    And I run "zypper -n rm andromeda-dummy" on "sle_minion" without error control
-    And I run "zypper -n rm virgo-dummy" on "sle_minion" without error control
-    And I run "zypper -n in milkyway-dummy" on "sle_minion" without error control
-    And I run "zypper -n in --oldpackage andromeda-dummy-1.0" on "sle_minion"
+    When I remove package "andromeda-dummy" from this "sle_minion" without error control
+    And I remove package "virgo-dummy" from this "sle_minion" without error control
+    And I install package "milkyway-dummy" on this "sle_minion" without error control
+    And I install old package "andromeda-dummy-1.0" on this "sle_minion"
 
   Scenario: Refresh package list and check installed packages after second downgrade on SLE minion
     When I refresh packages list via spacecmd on "sle_minion"
@@ -282,8 +232,8 @@ Feature: Action chains on Salt minions
     And I call actionchain.add_script_run() with the script "touch /tmp/action_chain_done"
     Then I should be able to see all these actions in the action chain
     When I schedule the action chain
-    Then I wait until there are no more action chains
-    When I wait until file "/tmp/action_chain_done" exists on "sle_minion"
+    And I wait until there are no more action chains
+    And I wait until file "/tmp/action_chain_done" exists on "sle_minion"
     Then file "/tmp/action_chain.log" should contain "123" on "sle_minion"
     And I wait until there are no more scheduled actions
 
@@ -304,9 +254,9 @@ Feature: Action chains on Salt minions
     And I click on "Delete Config Channel"
 
   Scenario: Cleanup: remove packages and repository used in action chain for Salt minion
-    When I run "zypper -n rm andromeda-dummy" on "sle_minion" without error control
-    And I run "zypper -n rm virgo-dummy" on "sle_minion" without error control
-    And I run "zypper -n rm milkyway-dummy" on "sle_minion" without error control
+    When I remove package "andromeda-dummy" from this "sle_minion" without error control
+    And I remove package "virgo-dummy" from this "sle_minion" without error control
+    And I remove package "milkyway-dummy" from this "sle_minion" without error control
     And I disable repository "test_repo_rpm_pool" on this "sle_minion" without error control
 
   Scenario: Cleanup: remove temporary files for testing action chains on Salt minion
@@ -314,7 +264,3 @@ Feature: Action chains on Salt minions
     And I run "rm -f /tmp/action_chain_done" on "sle_minion" without error control
     And I run "rm -f /etc/action-chain.cnf" on "sle_minion" without error control
     And I run "rm -f /tmp/action_chain_one_system_done" on "sle_minion" without error control
-
-  Scenario: Cleanup: remove remaining systems from SSM after action chain tests on normal minion
-    When I am authorized as "admin" with password "admin"
-    And I follow "Clear"

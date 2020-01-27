@@ -1,4 +1,4 @@
-# Copyright (c) 2014-2019 SUSE LLC.
+# Copyright (c) 2014-2020 SUSE LLC.
 # Licensed under the terms of the MIT license.
 
 require 'xmlrpc/client'
@@ -149,6 +149,7 @@ When(/^I execute mgr\-sync refresh$/) do
 end
 
 When(/^I make sure no spacewalk\-repo\-sync is executing, excepted the ones needed to bootstrap$/) do
+  do_not_kill = compute_list_to_leave_running
   reposync_not_running_streak = 0
   reposync_left_running_streak = 0
   while reposync_not_running_streak <= 30 && reposync_left_running_streak <= 7200
@@ -160,18 +161,18 @@ When(/^I make sure no spacewalk\-repo\-sync is executing, excepted the ones need
       next
     end
     reposync_not_running_streak = 0
+
     process = command_output.split("\n")[0]
-    pid = process.split(' ')[0]
     channel = process.split(' ')[5]
-    # The following assumes the clients are SLE 12 SP4
-    if ['sles12-sp4-pool-x86_64', 'sle-manager-tools12-pool-x86_64-sp4', 'sle-module-containers12-pool-x86_64-sp4',
-        'sles12-sp4-updates-x86_64', 'sle-manager-tools12-updates-x86_64-sp4', 'sle-module-containers12-updates-x86_64-sp4'].include? channel
+    if do_not_kill.include? channel
       STDOUT.puts "Reposync of channel #{channel} left running" if (reposync_left_running_streak % 60).zero?
       reposync_left_running_streak += 1
       sleep 1
       next
     end
     reposync_left_running_streak = 0
+
+    pid = process.split(' ')[0]
     $server.run("kill #{pid}", false)
     STDOUT.puts "Reposync of channel #{channel} killed"
   end
@@ -572,29 +573,6 @@ And(/I check status "([^"]*)" with spacecmd on "([^"]*)"$/) do |status, host|
   raise "#{out} should contain #{status}" unless out.include? status
 end
 
-And(/I create dockerized minions$/) do
-  master, _code = $minion.run('cat /etc/salt/minion.d/susemanager.conf')
-  # build everything
-  distros = %w[rhel6 rhel7 sles11sp4 sles12 sles12sp1]
-  docker_timeout = 2000
-  distros.each do |os|
-    $minion.run("docker build https://gitlab.suse.de/galaxy/suse-manager-containers.git#master:minion-fabric/#{os}/ -t #{os}", true, docker_timeout)
-    spawn_minion = '/etc/salt/minion; dbus-uuidgen > /etc/machine-id; salt-minion -l trace'
-    $minion.run("docker run -h #{os} -d --entrypoint '/bin/sh' #{os} -c \"echo \'#{master}\' > #{spawn_minion}\"")
-    puts "minion #{os} created and running"
-  end
-  # accept all the key on master, wait dinimically for last key
-  repeat_until_timeout(message: "something wrong with creation of minion docker") do
-    out, _code = $server.run('salt-key -l unaccepted')
-    # if we see the last os, we can break
-    if out.include? distros.last
-      $server.run('salt-key -A -y')
-      break
-    end
-    sleep 5
-  end
-end
-
 When(/^I register this client for SSH push via tunnel$/) do
   # create backups of /etc/hosts and up2date config
   $server.run('cp /etc/hosts /etc/hosts.BACKUP')
@@ -624,29 +602,25 @@ end
 # Repositories and packages management
 When(/^I enable repository "([^"]*)" on this "([^"]*)"((?: without error control)?)$/) do |repo, host, error_control|
   node = get_target(host)
-  if file_exists?(node, '/usr/bin/zypper')
-    cmd = "zypper mr --enable #{repo}"
-  elsif file_exists?(node, '/usr/bin/yum')
-    cmd = "sed -i 's/enabled=.*/enabled=1/g' /etc/yum.repos.d/#{repo}.repo"
-  elsif file_exists?(node, '/usr/bin/apt-get')
-    cmd = "sed -i '/^#\\s*deb.*/ s/^#\\s*deb /deb /' /etc/apt/sources.list.d/#{repo}.list"
-  else
-    raise 'Not found: zypper, yum or apt-get'
-  end
+  cmd = if host.include? 'ceos'
+    "sed -i 's/enabled=.*/enabled=1/g' /etc/yum.repos.d/#{repo}.repo"
+        elsif host.include? 'ubuntu'
+    "sed -i '/^#\\s*deb.*/ s/^#\\s*deb /deb /' /etc/apt/sources.list.d/#{repo}.list"
+        else
+    "zypper mr --enable #{repo}"
+        end
   node.run(cmd, error_control.empty?)
 end
 
 When(/^I disable repository "([^"]*)" on this "([^"]*)"((?: without error control)?)$/) do |repo, host, error_control|
   node = get_target(host)
-  if file_exists?(node, '/usr/bin/zypper')
-    cmd = "zypper mr --disable #{repo}"
-  elsif file_exists?(node, '/usr/bin/yum')
-    cmd = "test -f /etc/yum.repos.d/#{repo}.repo && sed -i 's/enabled=.*/enabled=0/g' /etc/yum.repos.d/#{repo}.repo"
-  elsif file_exists?(node, '/usr/bin/apt-get')
-    cmd = "sed -i '/^deb.*/ s/^deb /#deb /' /etc/apt/sources.list.d/#{repo}.list"
-  else
-    raise 'Not found: zypper, yum or apt-get'
-  end
+  cmd = if host.include? 'ceos'
+    "test -f /etc/yum.repos.d/#{repo}.repo && sed -i 's/enabled=.*/enabled=0/g' /etc/yum.repos.d/#{repo}.repo"
+        elsif host.include? 'ubuntu'
+    "sed -i '/^deb.*/ s/^deb /#deb /' /etc/apt/sources.list.d/#{repo}.list"
+        else
+    "zypper mr --disable #{repo}"
+        end
   node.run(cmd, error_control.empty?)
 end
 
@@ -682,36 +656,58 @@ When(/^I remove pattern "([^"]*)" from this "([^"]*)"$/) do |pattern, host|
   node.run(cmd, true, DEFAULT_TIMEOUT, 'root', [0, 100, 101, 102, 103, 104, 106])
 end
 
-When(/^I install package "([^"]*)" on this "([^"]*)"$/) do |package, host|
+When(/^I install package "([^"]*)" on this "([^"]*)"((?: without error control)?)$/) do |package, host, error_control|
   node = get_target(host)
-  successcodes = [0]
-  if file_exists?(node, '/usr/bin/zypper')
+  if host.include? 'ceos'
+    cmd = "yum -y install #{package}"
+    successcodes = [0]
+  elsif host.include? 'ubuntu'
+    cmd = "apt-get --assume-yes install #{package}"
+    successcodes = [0]
+  else
     cmd = "zypper --non-interactive install -y #{package}"
     successcodes = [0, 100, 101, 102, 103, 106]
-  elsif file_exists?(node, '/usr/bin/yum')
-    cmd = "yum -y install #{package}"
-  elsif file_exists?(node, '/usr/bin/apt-get')
-    cmd = "apt-get --assume-yes install #{package} --allow-downgrades"
-  else
-    raise 'Not found: zypper, yum or apt-get'
   end
-  node.run(cmd, true, DEFAULT_TIMEOUT, 'root', successcodes)
+  # node.run(cmd, error_control.empty?, DEFAULT_TIMEOUT, 'root', successcodes)
+  # TEMPORARY DEBUG CODE
+  _output, code = node.run(cmd)
+  if successcodes.include?(code)
+    puts "success installing #{package} on #{host} (code #{code})"
+  else
+    puts "error installing #{package} on #{host} (code #{code})"
+    output, _code = node.run('zypper lr; echo; ps aux | grep zypper; echo')
+    puts output
+  end
 end
 
-When(/^I remove package "([^"]*)" from this "([^"]*)"$/) do |package, host|
+When(/^I install old package "([^"]*)" on this "([^"]*)"((?: without error control)?)$/) do |package, host, error_control|
   node = get_target(host)
-  successcodes = [0]
-  if file_exists?(node, '/usr/bin/zypper')
+  if host.include? 'ceos'
+    cmd = "yum -y downgrade #{package}"
+    successcodes = [0]
+  elsif host.include? 'ubuntu'
+    cmd = "apt-get --assume-yes install #{package} --allow-downgrades"
+    successcodes = [0]
+  else
+    cmd = "zypper --non-interactive install --oldpackage -y #{package}"
+    successcodes = [0, 100, 101, 102, 103, 106]
+  end
+  node.run(cmd, error_control.empty?, DEFAULT_TIMEOUT, 'root', successcodes)
+end
+
+When(/^I remove package "([^"]*)" from this "([^"]*)"((?: without error control)?)$/) do |package, host, error_control|
+  node = get_target(host)
+  if host.include? 'ceos'
+    cmd = "yum -y remove #{package}"
+    successcodes = [0]
+  elsif host.include? 'ubuntu'
+    cmd = "dpkg --remove #{package}"
+    successcodes = [0]
+  else
     cmd = "zypper --non-interactive remove -y #{package}"
     successcodes = [0, 100, 101, 102, 103, 104, 106]
-  elsif file_exists?(node, '/usr/bin/yum')
-    cmd = "yum -y remove #{package}"
-  elsif file_exists?(node, '/usr/bin/dpkg')
-    cmd = "dpkg --remove #{package}"
-  else
-    raise 'Not found: zypper, yum or dpkg'
   end
-  node.run(cmd, true, DEFAULT_TIMEOUT, 'root', successcodes)
+  node.run(cmd, error_control.empty?, DEFAULT_TIMEOUT, 'root', successcodes)
 end
 
 When(/^I wait until the package "(.*?)" has been cached on this "(.*?)"$/) do |pkg_name, host|
@@ -887,8 +883,8 @@ When(/^I create "([^"]*)" virtual machine on "([^"]*)"$/) do |vm_name, host|
   disk_path = "/tmp/#{vm_name}_disk.qcow2"
 
   # Create the throwable overlay image
-  raise 'not found: qemu-img or /var/testsuite-data/disk-image-template.qcow2' unless file_exists?(node, '/usr/bin/qemu-img') and file_exists?(node, '/var/testsuite-data/disk-image-template.qcow2')
-  node.run("qemu-img create -f qcow2 -b /var/testsuite-data/disk-image-template.qcow2 #{disk_path}")
+  raise '/var/testsuite-data/disk-image-template.qcow2 not found' unless file_exists?(node, '/var/testsuite-data/disk-image-template.qcow2')
+  node.run("cp /var/testsuite-data/disk-image-template.qcow2 #{disk_path}")
 
   # Actually define the VM, but don't start it
   raise 'not found: virt-install' unless file_exists?(node, '/usr/bin/virt-install')
@@ -1088,6 +1084,13 @@ When(/^I reduce virtpoller run interval on "([^"]*)"$/) do |host|
   node.run("systemctl restart salt-minion")
 end
 
+# WORKAROUND
+# Work around issue https://github.com/SUSE/spacewalk/issues/10360
+# Remove as soon as the issue is fixed
+When(/^I let Kiwi build from external repositories$/) do
+  $server.run("sed -i 's/--ignore-repos-used-for-build//' /usr/share/susemanager/salt/images/kiwi-image-build.sls")
+end
+
 When(/^I refresh packages list via spacecmd on "([^"]*)"$/) do |client|
   node = get_system_name(client)
   $server.run("spacecmd -u admin -p admin clear_caches")
@@ -1144,12 +1147,12 @@ When(/^I wait until package "([^"]*)" is removed from "([^"]*)" via spacecmd$/) 
   end
 end
 
-When(/^I copy the retail configuration file "([^"]*)" on server$/) do |file|
-  # Reuse the value during scenario (it will be automatically cleaned after it)
-  @retail_config = File.dirname(__FILE__) + '/../upload_files/' + file
-  dest = "/tmp/" + file
-  return_code = file_inject($server, @retail_config, dest)
+When(/^I prepare the retail configuration file on server$/) do
+  source = File.dirname(__FILE__) + '/../upload_files/massive-import-terminals.yml'
+  dest = '/tmp/massive-import-terminals.yml'
+  return_code = file_inject($server, source, dest)
   raise "File #{file} couldn't be copied to server" unless return_code.zero?
+
   sed_values = "s/<PROXY_HOSTNAME>/#{$proxy.full_hostname}/; "
   sed_values << "s/<NET_PREFIX>/#{net_prefix}/; "
   sed_values << "s/<PROXY>/#{ADDRESSES['proxy']}/; "
@@ -1161,21 +1164,17 @@ When(/^I copy the retail configuration file "([^"]*)" on server$/) do |file|
   sed_values << "s/<MINION_MAC>/#{get_mac_address('sle_minion')}/; "
   sed_values << "s/<CLIENT>/#{ADDRESSES['client']}/; "
   sed_values << "s/<CLIENT_MAC>/#{get_mac_address('sle_client')}/; "
-  # Retail DNS fix for client and minion
+  sed_values << "s/<IMAGE>/#{compute_image_name}/"
   $server.run("sed -i '#{sed_values}' #{dest}")
 end
 
-Given(/^the retail configuration file name is "([^"]*)"$/) do |file|
-  @retail_config = File.dirname(__FILE__) + '/../upload_files/' + file
-end
-
 When(/^I import the retail configuration using retail_yaml command/) do
-  filepath = "/tmp/" + File.basename(@retail_config)
+  filepath = '/tmp/massive-import-terminals.yml'
   $server.run("retail_yaml --api-user admin --api-pass admin --from-yaml #{filepath}")
 end
 
-When(/^I delete all the terminals imported$/) do
-  terminals = get_terminals_from_yaml(@retail_config)
+When(/^I delete all the imported terminals$/) do
+  terminals = read_terminals_from_yaml
   terminals.each do |terminal|
     next if (terminal.include? 'minion') || (terminal.include? 'client')
     puts "Deleting terminal with name: #{terminal}"
@@ -1190,14 +1189,14 @@ When(/^I delete all the terminals imported$/) do
 end
 
 When(/^I remove all the DHCP hosts created by retail_yaml$/) do
-  terminals = get_terminals_from_yaml(@retail_config)
+  terminals = read_terminals_from_yaml
   terminals.each do |terminal|
     raise unless find(:xpath, "//*[@value='#{terminal}']/../../../..//*[@title='Remove item']").click
   end
 end
 
 When(/^I remove the bind zones created by retail_yaml$/) do
-  domain = get_branch_prefix_from_yaml(@retail_config)
+  domain = read_branch_prefix_from_yaml
   raise unless find(:xpath, "//*[text()='Configured Zones']/../..//*[@value='#{domain}']/../../../..//*[@title='Remove item']").click
   raise unless find(:xpath, "//*[text()='Available Zones']/../..//*[@value='#{domain}' and @name='Name']/../../../..//i[@title='Remove item']").click
 end

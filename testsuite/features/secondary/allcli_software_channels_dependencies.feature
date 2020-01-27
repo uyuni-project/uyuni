@@ -1,10 +1,12 @@
-# Copyright (c) 2019 SUSE LLC
+# Copyright (c) 2018-2020 SUSE LLC
 # Licensed under the terms of the MIT license.
+#
+# TODO
+# This feature test is currently disabled
+# It has to be rewritten using fake packages (orion-dummy etc) instead of real synched packages
 
 Feature: Chanel subscription with recommended/required dependencies
 
-@sle15_minion
-@scc_credentials
   Scenario: Play with recommended and required child channels selection for a single system
     Given I am on the Systems overview page of this "sle_minion"
     When I follow "Software" in the content area
@@ -24,8 +26,6 @@ Feature: Chanel subscription with recommended/required dependencies
     When I click on the "disabled" toggler
     Then I should see the child channel "SLE-Module-Server-Applications15-Pool for x86_64" "selected"
 
-@sle15_minion
-@scc_credentials
   Scenario: Play with recommended and required child channels selection in SSM
     Given I am authorized as "admin" with password "admin"
     When I am on the System Overview page

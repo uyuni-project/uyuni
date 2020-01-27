@@ -1,3 +1,6 @@
+# Copyright (c) 2011-2017 SUSE LLC.
+# Licensed under the terms of the MIT license.
+
 require 'xmlrpc/client'
 
 def retrieve_server_id(server)

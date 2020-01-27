@@ -64,7 +64,7 @@
                         <c:out value="${pack.vendor}" />
                     </c:if>
                     <c:if test="${pack.vendor == null}">
-                        <bean:message key="package.jsp.vendor.unkown"/>
+                        <bean:message key="package.jsp.vendor.unknown"/>
                     </c:if>
                     </div>
                 </div>
@@ -181,6 +181,26 @@
                             <c:out value="${pack.rpmVersion}" />
                         </div>
                     </div>
+                </div>
+            </div>
+        </rhn:require>
+        <!-- DEB stuff -->
+        <rhn:require acl="package_type_capable(deb)"
+                     mixins="com.redhat.rhn.common.security.acl.PackageAclHandler">
+            <div class="panel panel-default">
+                <div class="panel-heading"><h3>DEB package</h3></div>
+                <div class="panel-body">
+                    <c:forEach var="item" items="${extraTags}">
+                        <div class="form-group">
+                            <label class="col-lg-3 control-label">
+                                <c:out value="${item.key}"/>:
+                            </label>
+                            <div class="col-lg-6">
+                                <c:out value="${item.value}"/>
+                            </div>
+                        </div>
+                    </c:forEach>
+
                 </div>
             </div>
         </rhn:require>

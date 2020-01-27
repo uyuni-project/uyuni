@@ -1,4 +1,21 @@
 - overload the system.scheduleChangeChannels API method to accept multiple system IDs
+
+-------------------------------------------------------------------
+Wed Jan 22 12:12:18 CET 2020 - jgonzalez@suse.com
+
+- version 4.1.2-1
+- merge java translations from branding back to this package
+- fix mgr-sync add channel when fromdir is configured (bsc#1160184)
+- handle not found re-activation key (bsc#1159012)
+- write a list of formulas sorted by execution order (bsc#1083326)
+- change product_tree tag to reflect new product 4.1 and Beta phase
+- Use 'changes' field if 'pchanges' field doesn't exist (bsc#1159202)
+- rename rhncfg-actions to mgr-cfg-actions in UI advice (bsc#1137248)
+- Show additional headers and dependencies for deb packages
+- Show adequate message on saving formulas that change only pillar data
+- Fix container image import (bsc#1154246)
+- Add missing permission checks on formula api (bsc#1123274)
+- use channel name from product tree instead of constructing it (bsc#1157317)
 - Add the system.getMinionIdMap XMLRPC method
 - generate metadata with empty vendor (bsc#1158480)
 - Read the subscriptions from the output instead of input (bsc#1140332)

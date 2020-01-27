@@ -1,3 +1,8 @@
+-------------------------------------------------------------------
+Wed Jan 22 12:24:20 CET 2020 - jgonzalez@suse.com
+
+- version 4.1.2-1
+- enable re-activation keys for salt managed systems (bsc#1159012)
 - generate metadata with empty vendor (bsc#1158480)
 - Prevent SELECT INSTR error in Postgres logs every minute (bsc#1157034)
 - Fix rhnActionVirtDelete when migrating from 3.2 to 4.0 (bsc#1158178)

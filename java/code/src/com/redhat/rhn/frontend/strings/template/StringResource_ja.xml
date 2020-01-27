@@ -9,19 +9,26 @@
           <context context-type="sourcefile">/rhn/account/ChangeEmail.do</context>
           <context context-type="sourcefile">/users/ChangeEmail.do</context>
         </context-group>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/account/ChangeEmail.do</context>
+          <context context-type="sourcefile">/users/ChangeEmail.do</context>
+        </context-group>
         <target>@@PRODUCT_NAME@@ アカウントの準備が整いました。</target>
       </trans-unit>
       <trans-unit id="email.newaccountbycreator.body">
         <source>Hello,
 
-A Red Hat login has been created for you by {0} {1}. Your
-Red Hat login, in combination with an active Red Hat subscription,
+A @@PRODUCT_NAME@@ login has been created for you by {0} {1}. Your
+@@PRODUCT_NAME@@ login, in combination with an active @@VENDOR_NAME@@ subscription,
 provides you with access to manage systems on @@PRODUCT_NAME@@.
 
-  Red Hat login: {2}
+  @@PRODUCT_NAME@@ login: {2}
+       Password: {3}
          e-mail: {4}
 
-Please proceed to {3} to set your password and enable your account.
+  {5}
+
+Important: Please change your password upon logging in.
 
 Thank you for using @@PRODUCT_NAME@@.
 {6}</source>
@@ -38,19 +45,21 @@ Thank you for using @@PRODUCT_NAME@@.
               --the @@PRODUCT_NAME@@ Team
           </context>
         </context-group>
-
       </trans-unit>
       <trans-unit id="email.newaccount.body">
         <source>Hello,
 
-A Red Hat login has been created for you. Your
-Red Hat login, in combination with an active Red Hat subscription,
+A @@PRODUCT_NAME@@ login has been created for you. Your
+@@PRODUCT_NAME@@ login, in combination with an active @@VENDOR_NAME@@ subscription,
 provides you with access to manage systems on @@PRODUCT_NAME@@.
 
-  Red Hat login: {0}
+  @@PRODUCT_NAME@@ login: {0}
+       Password: {1}
          e-mail: {2}
 
-Please proceed to {1} to set your password and enable your account.
+  {3}
+
+Important: Please change your password upon logging in.
 
 Thank you for using @@PRODUCT_NAME@@.
 {4}</source>
@@ -67,16 +76,15 @@ Thank you for using @@PRODUCT_NAME@@.
               --the @@PRODUCT_NAME@@ Team
           </context>
         </context-group>
-
       </trans-unit>
       <trans-unit id="email.newaccount.pam.body">
         <source>Hello,
 
-A Red Hat login has been created for you by {0} {1}.  Your
-Red Hat login, in combination with an active Red Hat subscription,
+A @@PRODUCT_NAME@@ login has been created for you by {0} {1}.  Your
+@@PRODUCT_NAME@@ login, in combination with an active @@VENDOR_NAME@@ subscription,
 provides you with access to manage systems on @@PRODUCT_NAME@@.
 
-  Red Hat login: {2}
+  @@PRODUCT_NAME@@ login: {2}
          e-mail: {4}
 
   {5}
@@ -118,6 +126,11 @@ Red Hat ログインをアクティブな Red Hat サブスクリプションと
           <context context-type="sourcefile">/users/ChangeEmail.do</context>
           <context context-type="paramnotes">@@PRODUCT_NAME@@ User Created: dugb (Bordon, Duglas &lt;dugb@meko.com&gt;)</context>
         </context-group>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/account/ChangeEmail.do</context>
+          <context context-type="sourcefile">/users/ChangeEmail.do</context>
+          <context context-type="paramnotes">@@PRODUCT_NAME@@ User Created: dugb (Bordon, Duglas &lt;dugb@meko.com&gt;)</context>
+        </context-group>
         <target>@@PRODUCT_NAME@@ ユーザーが作成されました: {0} ({1}, {2} &lt;{3}&gt;)</target>
       </trans-unit>
       <trans-unit id="email.newuser.body">
@@ -127,7 +140,7 @@ A new user has been added to your account.
 
 {0}
 
-To see all the active users and Red Hat logins associated with your account,
+To see all the active users and @@PRODUCT_NAME@@ logins associated with your account,
 please visit:
 
   {1}
@@ -169,7 +182,7 @@ Thank you for using @@PRODUCT_NAME@@.
 @@PRODUCT_NAME@@ has determined that the following advisory is applicable to
 one or more of the systems you have registered:
 
-Complete information about this errata can be found at the following location:
+Complete information about this patch can be found at the following location:
      {0}
 
 {1} - {2}
@@ -215,10 +228,11 @@ Summary:
 ---------------------
 Affected Systems List
 ---------------------
-This Errata Advisory may apply to the systems listed below. If you know that
-this errata does not apply to a system listed, it might be possible that the
+This Patch Advisory may apply to the systems listed below. If you know that
+this patch does not apply to a system listed, it might be possible that the
 package profile for that server is out of date. In that case you should run
-'up2date -p' (RHEL 4 and below) or 'rhn-profile-sync' (RHEL 5 and above) as root on the system in question to refresh your software profile.
+'up2date -p' (RHEL 4 and below) or 'rhn-profile-sync' (SLES, RHEL 5 and above)
+as root on the system in question to refresh your software profile.
     </source>
           <target>
 ---------------------
@@ -233,7 +247,7 @@ package profile for that server is out of date. In that case you should run
         <trans-unit id="email.errata.notification.body.onesystem">
           <source>
 There is 1 affected system registered in 'Overview' (only systems for
-which you have explicitly enabled Errata Alerts are shown).
+which you have explicitly enabled Patch Alerts are shown).
     </source>
           <target>
 [概要] で登録された 1 つのシステムが影響を受けています (明示的にエラータアラートを
@@ -243,7 +257,7 @@ which you have explicitly enabled Errata Alerts are shown).
         <trans-unit id="email.errata.notification.body.numsystems">
           <source>
 There are {0} affected systems registered in 'Overview' (only systems for
-which you have explicitly enabled Errata Alerts are shown).
+which you have explicitly enabled Patch Alerts are shown).
     </source>
           <context-group name="ctx">
             <context context-type="paramnotes">
@@ -264,8 +278,8 @@ Release    Arch       Profile Name
 You may address the issues outlined in this advisory in two ways:
 
      - select your server name by clicking on its name from the list
-       available at the following location, and then schedule an
-       errata update for it:
+       available at the following location, and then schedule a
+       patch update for it:
            {1}
 
      - run the Update Agent on each affected server.
@@ -295,8 +309,8 @@ You may address the issues outlined in this advisory in two ways:
           <source>
 Changing Notification Preferences
 ---------------------------------
-To enable/disable your Errata Alert preferences globally please log in to @@PRODUCT_NAME@@
-and navigate from "Overview" / "Your Account" to the "Preferences" tab.
+To enable/disable your Patch Alert preferences globally please log in to @@PRODUCT_NAME@@
+and navigate from "Overview" / "My Account" to the "Preferences" tab.
 
         URL: {0}
 
@@ -333,6 +347,10 @@ click the "Details" tab.
       </group>
       <trans-unit id="dailysummary.email.subject">
         <source>@@PRODUCT_NAME@@ Daily Status Report for {0}</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Taskomatic task: DailySummary.java</context>
+          <context context-type="paramnotes">{0} - current time in short format</context>
+        </context-group>
         <context-group name="ctx">
           <context context-type="sourcefile">Taskomatic task: DailySummary.java</context>
           <context context-type="paramnotes">{0} - current time in short format</context>
@@ -411,14 +429,13 @@ please contact your @@PRODUCT_NAME@@ administrator for further assistance.
 Thank you for using @@PRODUCT_NAME@@.
         </source>
         <context-group name="ctx">
-            <context context-type="sourcefile">ForgotCredentials</context>
-            <context context-type="paramnotes">
+          <context context-type="sourcefile">ForgotCredentials</context>
+          <context context-type="paramnotes">
             {0} - Email address
             {1} - Password-reset link
             {2} - Username
             </context>
         </context-group>
-
       </trans-unit>
       <trans-unit id="email.forgotten.logins">
         <source>

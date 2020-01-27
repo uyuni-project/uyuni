@@ -140,7 +140,7 @@ public class SubscriptionMatchProcessor {
     private List<MessageJson> messages(InputJson input, OutputJson output) {
         return output.getMessages().stream()
                 .filter(m -> !m.getType().equals("unsatisfied_pinned_match"))
-                .map(m -> translateMessage(m, input)) .collect(toList());
+                .map(m -> new MessageJson(m.getType(), m.getData())) .collect(toList());
     }
 
     private Map<String, Subscription> subscriptions(OutputJson output) {
@@ -178,26 +178,6 @@ public class SubscriptionMatchProcessor {
                 -> matchedQuantity.put(sid, (cents + 100 - 1) / 100));
 
         return matchedQuantity;
-    }
-
-    private static MessageJson translateMessage(MessageJson message, InputJson input) {
-        if (message.getType().equals("unknown_part_number")) {
-            return new MessageJson("unknownPartNumber", new HashMap<String, String>() { {
-                put("partNumber", message.getData().get("part_number"));
-            } });
-        }
-        if (message.getType().equals("physical_guest")) {
-            return new MessageJson("physicalGuest", message.getData());
-        }
-        if (message.getType().equals("guest_with_unknown_host")) {
-            return new MessageJson("guestWithUnknownHost", message.getData());
-        }
-        if (message.getType().equals("unknown_cpu_count")) {
-            return new MessageJson("unknownCpuCount", message.getData());
-        }
-
-        // pass it through
-        return new MessageJson(message.getType(), message.getData());
     }
 
     private Map<String, Product> products(InputJson input, OutputJson output) {

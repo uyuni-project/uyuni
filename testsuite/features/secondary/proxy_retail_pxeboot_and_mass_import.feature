@@ -1,4 +1,4 @@
-# Copyright (c) 2018-2019 SUSE LLC
+# Copyright (c) 2018-2020 SUSE LLC
 # Licensed under the terms of the MIT license.
 #
 # This feature depends on a JeOS image present on the proxy
@@ -214,7 +214,7 @@ Feature: PXE boot a Retail terminal
     And I press "Add Item" in partitions section
     And I enter "p2" in second partition id field
     And I enter "/" in second mount point field
-    And I enter "POS_Image_JeOS6" in second OS image field
+    And I enter the image name in second OS image field
     And I press "Add Item" in partitions section
     And I enter "p3" in third partition id field
     And I enter "/data" in third mount point field
@@ -366,8 +366,7 @@ Feature: PXE boot a Retail terminal
 @proxy
 @private_net
   Scenario: Mass import of terminals
-    Given the retail configuration file name is "massive-import-terminals.yml"
-    When I copy the retail configuration file "massive-import-terminals.yml" on server
+    When I prepare the retail configuration file on server
     And I import the retail configuration using retail_yaml command
     And I am on the Systems page
     Then I should see the terminals imported from the configuration file
@@ -380,10 +379,12 @@ Feature: PXE boot a Retail terminal
     Given I am on the Systems overview page of this "proxy"
     When I follow "Formulas" in the content area
     And I follow first "Bind" in the content area
-    # Temporary fix as "empty-zones-enable" option is rewritten by retail_yaml command
+    # WORKAROUND to be removed when bsc#1150657 is fixed
+    # "empty-zones-enable" option is rewritten by retail_yaml command
     And I press "Add Item" in config options section
     And I enter "empty-zones-enable" in first option field
     And I enter "no" in first value field
+    # end of WORKAROUND
     And I press "Add Item" in configured zones section
     And I enter "tf.local" in third configured zone name field
     And I press "Add Item" in available zones section
@@ -414,9 +415,8 @@ Feature: PXE boot a Retail terminal
 @private_net
 @pxeboot_minion
   Scenario: Bootstrap the PXE boot minion
-    Given the retail configuration file name is "massive-import-terminals.yml"
-    And I am authorized
-    And I stop and disable avahi on the PXE boot minion
+    Given I am authorized
+    When I stop and disable avahi on the PXE boot minion
     And I create bootstrap script and set the activation key "1-SUSE-DEV-x86_64" in the bootstrap script on the proxy
     And I bootstrap pxeboot minion via bootstrap script on the proxy
     And I wait at most 180 seconds until Salt master sees "pxeboot_minion" as "unaccepted"
@@ -428,10 +428,9 @@ Feature: PXE boot a Retail terminal
 @private_net
 @pxeboot_minion
   Scenario: Check connection from bootstrapped terminal to proxy
-    Given the retail configuration file name is "massive-import-terminals.yml"
-    When I am on the Systems page
-    And I follow "pxeboot" terminal
-    When I follow "Details" in the content area
+    Given I am on the Systems page
+    When I follow "pxeboot" terminal
+    And I follow "Details" in the content area
     And I follow "Connection" in the content area
     Then I should see "proxy" short hostname
 
@@ -439,9 +438,8 @@ Feature: PXE boot a Retail terminal
 @private_net
 @pxeboot_minion
   Scenario: Install a package on the bootstrapped terminal
-    Given the retail configuration file name is "massive-import-terminals.yml"
-    When I am on the Systems page
-    And I follow "pxeboot" terminal
+    Given I am on the Systems page
+    When I follow "pxeboot" terminal
     And I follow "Software" in the content area
     And I follow "Install"
     And I check "virgo-dummy-2.0-1.1" in the list
@@ -454,9 +452,8 @@ Feature: PXE boot a Retail terminal
 @private_net
 @pxeboot_minion
   Scenario: Cleanup: remove a package on the bootstrapped terminal
-    Given the retail configuration file name is "massive-import-terminals.yml"
-    When I am on the Systems page
-    And I follow "pxeboot" terminal
+    Given I am on the Systems page
+    When I follow "pxeboot" terminal
     And I follow "Software" in the content area
     And I follow "List / Remove"
     And I enter "virgo" as the filtered package name
@@ -470,9 +467,8 @@ Feature: PXE boot a Retail terminal
 @proxy
 @private_net
   Scenario: Cleanup: delete all imported Retail terminals
-    Given the retail configuration file name is "massive-import-terminals.yml"
-    When I am on the Systems page
-    And I delete all the terminals imported
+    Given I am on the Systems page
+    When I delete all the imported terminals
     Then I should not see any terminals imported from the configuration file
 
 @proxy
@@ -527,5 +523,5 @@ Feature: PXE boot a Retail terminal
 @proxy
 @private_net
   Scenario: Cleanup: remove remaining systems from SSM after PXE boot tests
-  When I am authorized as "admin" with password "admin"
-  And I follow "Clear"
+    Given I am authorized as "admin" with password "admin"
+    When I follow "Clear"

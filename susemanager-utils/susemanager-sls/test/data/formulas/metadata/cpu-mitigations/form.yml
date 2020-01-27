@@ -1,0 +1,11 @@
+mitigations:
+  $type: group
+
+  name:
+    $type: select
+    $values: ["Auto",
+              "Auto + No SMT",
+              "Off",
+              "Manual"
+             ]
+    $default: Auto

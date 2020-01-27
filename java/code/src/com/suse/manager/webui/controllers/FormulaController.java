@@ -20,13 +20,11 @@ import com.redhat.rhn.domain.formula.FormulaFactory;
 import com.redhat.rhn.domain.server.ManagedServerGroup;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
-import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
-import com.redhat.rhn.domain.server.ServerGroup;
 import com.redhat.rhn.domain.server.ServerGroupFactory;
 import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.manager.system.ServerGroupManager;
-import com.redhat.rhn.manager.system.SystemManager;
+import com.redhat.rhn.manager.formula.FormulaUtil;
+
 
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.utils.gson.StateTargetType;
@@ -118,16 +116,20 @@ public class FormulaController {
         List<String> formulas;
         switch (type) {
             case SERVER:
-                if (!checkUserHasPermissionsOnServer(user,
-                        ServerFactory.lookupById(id))) {
+                try {
+                    FormulaUtil.ensureUserHasPermissionsOnServer(user, ServerFactory.lookupById(id));
+                }
+                catch (PermissionException e) {
                     return deniedResponse(response);
                 }
-                formulas = new LinkedList<>(
-                        FormulaFactory.getCombinedFormulasByServerId(id));
+                formulas = new LinkedList<>(FormulaFactory.getCombinedFormulasByServerId(id));
                 break;
             case GROUP:
-                if (!checkUserHasPermissionsOnServerGroup(user,
-                            ServerGroupFactory.lookupByIdAndOrg(id, user.getOrg()))) {
+                try {
+                    FormulaUtil.ensureUserHasPermissionsOnServerGroup(user,
+                            ServerGroupFactory.lookupByIdAndOrg(id, user.getOrg()));
+                }
+                catch (PermissionException | LookupException e) {
                     return deniedResponse(response);
                 }
                 formulas = FormulaFactory.getFormulasByGroupId(id);
@@ -195,7 +197,10 @@ public class FormulaController {
             switch (type) {
                 case SERVER:
                     Optional<MinionServer> minion = MinionServerFactory.lookupById(id);
-                    if (!checkUserHasPermissionsOnServer(user, minion.get())) {
+                    try {
+                        FormulaUtil.ensureUserHasPermissionsOnServer(user, minion.get());
+                    }
+                    catch (PermissionException e) {
                         return deniedResponse(response);
                     }
                     FormulaFactory.saveServerFormulaData(formData, MinionServerFactory.getMinionId(id), formulaName);
@@ -203,7 +208,10 @@ public class FormulaController {
                     break;
                 case GROUP:
                     ManagedServerGroup group = ServerGroupFactory.lookupByIdAndOrg(id, user.getOrg());
-                    if (!checkUserHasPermissionsOnServerGroup(user, group)) {
+                    try {
+                        FormulaUtil.ensureUserHasPermissionsOnServerGroup(user, group);
+                    }
+                    catch (PermissionException | LookupException e) {
                         return deniedResponse(response);
                     }
                     FormulaFactory.saveGroupFormulaData(formData, id, user.getOrg(), formulaName);
@@ -220,6 +228,10 @@ public class FormulaController {
             return errorResponse(response,
                     Arrays.asList("Error while saving formula data: " +
                             e.getMessage()));
+        }
+        Map<String, Object> metadata = FormulaFactory.getMetadata(formulaName);
+        if (Boolean.TRUE.equals(metadata.get("pillar_only"))) {
+            return GSON.toJson(Arrays.asList("pillar_only_formula_saved"));
         }
         return GSON.toJson(Arrays.asList("formula_saved")); // Formula saved!
     }
@@ -260,17 +272,23 @@ public class FormulaController {
         Map<String, Object> data = new HashMap<>();
         switch (type) {
             case SERVER:
-                if (!checkUserHasPermissionsOnServer(user, ServerFactory.lookupById(id))) {
+                try {
+                    FormulaUtil.ensureUserHasPermissionsOnServer(user, ServerFactory.lookupById(id));
+                }
+                catch (PermissionException e) {
                     return deniedResponse(response);
                 }
                 data.put("selected", FormulaFactory.getFormulasByMinionId(MinionServerFactory.getMinionId(id)));
                 data.put("active", FormulaFactory.getCombinedFormulasByServerId(id));
                 break;
             case GROUP:
-                if (!checkUserHasPermissionsOnServerGroup(user,
-                        ServerGroupFactory.lookupByIdAndOrg(id, user.getOrg()))) {
-                    return deniedResponse(response);
+                try {
+                    FormulaUtil.ensureUserHasPermissionsOnServerGroup(user,
+                            ServerGroupFactory.lookupByIdAndOrg(id, user.getOrg()));
                 }
+               catch (PermissionException | LookupException e) {
+                    return deniedResponse(response);
+               }
                 data.put("selected", FormulaFactory.getFormulasByGroupId(id));
                 break;
             default:
@@ -300,15 +318,21 @@ public class FormulaController {
         try {
             switch (type) {
                 case SERVER:
-                    if (!checkUserHasPermissionsOnServer(user,
-                            ServerFactory.lookupById(id))) {
+                    try {
+                        FormulaUtil.ensureUserHasPermissionsOnServer(user,
+                                ServerFactory.lookupById(id));
+                    }
+                    catch (PermissionException e) {
                         return deniedResponse(response);
                     }
                     FormulaFactory.saveServerFormulas(MinionServerFactory.getMinionId(id), selectedFormulas);
                     break;
                 case GROUP:
-                    if (!checkUserHasPermissionsOnServerGroup(user,
-                            ServerGroupFactory.lookupByIdAndOrg(id, user.getOrg()))) {
+                    try {
+                        FormulaUtil.ensureUserHasPermissionsOnServerGroup(user,
+                                ServerGroupFactory.lookupByIdAndOrg(id, user.getOrg()));
+                    }
+                    catch (PermissionException | LookupException e) {
                         return deniedResponse(response);
                     }
                     FormulaFactory.saveGroupFormulas(id, selectedFormulas, user.getOrg());
@@ -364,22 +388,5 @@ public class FormulaController {
         response.type("application/json");
         response.status(HttpStatus.SC_FORBIDDEN);
         return GSON.toJson("['Permission denied!']");
-    }
-
-    private static boolean checkUserHasPermissionsOnServerGroup(User user,
-            ServerGroup group) {
-        try {
-            ServerGroupManager.getInstance().validateAccessCredentials(user, group,
-                    group.getName());
-            ServerGroupManager.getInstance().validateAdminCredentials(user);
-            return true;
-        }
-        catch (NullPointerException | PermissionException | LookupException e) {
-            return false;
-        }
-    }
-
-    private static boolean checkUserHasPermissionsOnServer(User user, Server server) {
-        return SystemManager.isAvailableToUser(user, server.getId());
     }
 }

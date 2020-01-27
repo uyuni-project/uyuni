@@ -1,4 +1,4 @@
-# Copyright (c) 2010-2019 SUSE LLC.
+# Copyright (c) 2010-2020 SUSE LLC.
 # Licensed under the terms of the MIT license.
 
 require 'jwt'
@@ -40,13 +40,17 @@ Then(/^I can see all system information for "([^"]*)"$/) do |host|
   step %(I should see a "#{os_pretty}" text) if os_pretty.include? 'SUSE Linux'
 end
 
+Then(/^I should see the name of the image$/) do
+  step %(I should see a "#{compute_image_name}" text)
+end
+
 Then(/^I should see the terminals imported from the configuration file/) do
-  terminals = get_terminals_from_yaml(@retail_config)
+  terminals = read_terminals_from_yaml
   terminals.each { |terminal| step %(I should see a "#{terminal}" text) }
 end
 
 Then(/^I should not see any terminals imported from the configuration file/) do
-  terminals = get_terminals_from_yaml(@retail_config)
+  terminals = read_terminals_from_yaml
   terminals.each do |terminal|
     next if (terminal.include? 'minion') || (terminal.include? 'client')
     step %(I should not see a "#{terminal}" text)
@@ -54,7 +58,7 @@ Then(/^I should not see any terminals imported from the configuration file/) do
 end
 
 When(/^I enter the hostname of "([^"]*)" terminal as "([^"]*)"$/) do |host, hostname|
-  domain = get_branch_prefix_from_yaml(@retail_config)
+  domain = read_branch_prefix_from_yaml
   puts "The hostname of #{host} terminal is #{host}.#{domain}"
   step %(I enter "#{host}.#{domain}" as "#{hostname}")
 end
@@ -448,9 +452,9 @@ end
 
 Then(/^the SLE12 products should be added$/) do
   output = sshcmd('echo -e "admin\nadmin\n" | mgr-sync list channels', ignore_err: true)
-  sle_module = '[I] SLE-Module-Legacy12-Updates for x86_64 Legacy Module 12 x86_64 [sle-module-legacy12-updates-x86_64-sp2]'
   raise unless output[:stdout].include? '[I] SLES12-SP2-Pool for x86_64 SUSE Linux Enterprise Server 12 SP2 x86_64 [sles12-sp2-pool-x86_64]'
-  raise unless output[:stdout].include? sle_module
+  raise unless output[:stdout].include? '[I] SLE-Manager-Tools12-Pool for x86_64 SP2 SUSE Linux Enterprise Server 12 SP2 x86_64 [sle-manager-tools12-pool-x86_64-sp2]'
+  raise unless output[:stdout].include? '[I] SLE-Module-Legacy12-Updates for x86_64 Legacy Module 12 x86_64 [sle-module-legacy12-updates-x86_64-sp2]'
 end
 
 Then(/^the SLE15 products should be added$/) do
@@ -567,10 +571,10 @@ Then(/^I remove server hostname from hosts file on "([^"]*)"$/) do |host|
   node.run("sed -i \'s/#{$server.full_hostname}//\' /etc/hosts")
 end
 
-Then(/^the image "([^"]*)" should exist on "([^"]*)"$/) do |image, host|
+Then(/^the image should exist on "([^"]*)"$/) do |host|
   node = get_target(host)
   images, _code = node.run("ls /srv/saltboot/image/")
-  raise "Image #{image} does not exist on #{host}" unless images.include? image
+  raise "Image #{image} does not exist on #{host}" unless images.include? compute_image_name
 end
 
 # Repository steps
@@ -959,40 +963,19 @@ And(/^I check for failed events on history event page$/) do
   raise "\nFailures in event history found:\n\n#{failings}" if count_failures.nonzero?
 end
 
-When(/^I wait until all events in history are completed$/) do
-  steps %(
-    When I follow "Events" in the content area
-    And I follow "History" in the content area
-    Then I should see a "System History" text
-  )
-  events_icons = "//div[@class='table-responsive']/table/tbody/tr/td[2]/i"
-  repeat_until_timeout(message: 'Not all events in history were completed') do
-    pickedup = false
-    events = all(:xpath, events_icons)
-    events.each do |ev|
-      if ev[:class].include?('fa-exchange')
-        pickedup = true
-        break
-      end
-    end
-    break unless pickedup
-    sleep 1
-  end
-end
-
 Then(/^I should see a list item with text "([^"]*)" and bullet with style "([^"]*)"$/) do |text, class_name|
   item_xpath = "//ul/li[text()='#{text}']/i[contains(@class, '#{class_name}')]"
   find(:xpath, item_xpath)
 end
 
 When(/^I enter the SCC credentials$/) do
-  user = ENV['scc_credentials'].split('|')[0]
-  password = ENV['scc_credentials'].split('|')[1]
-  unless has_content?(user)
+  scc_username = ENV['SCC_CREDENTIALS'].split('|')[0]
+  scc_password = ENV['SCC_CREDENTIALS'].split('|')[1]
+  unless has_content?(scc_username)
     steps %(
-      And I want to add a new credential
-      And I enter "#{user}" as "edit-user"
-      And I enter "#{password}" as "edit-password"
+      When I want to add a new credential
+      And I enter "#{scc_username}" as "edit-user"
+      And I enter "#{scc_password}" as "edit-password"
       And I click on "Save"
     )
   end

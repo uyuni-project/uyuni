@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Wed Jan 22 12:17:58 CET 2020 - jgonzalez@suse.com
+
+- version 4.1.2-1
+- rename rhncfg-actions to mgr-cfg-actions
+
+-------------------------------------------------------------------
 Wed Nov 27 16:51:37 CET 2019 - jgonzalez@suse.com
 
 - version 4.1.1-1

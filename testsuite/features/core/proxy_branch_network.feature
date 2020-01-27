@@ -4,6 +4,8 @@
 # The scenarios in this feature are skipped if there is no proxy
 # ($proxy is nil) or if there is no private network ($private_net is nil)
 
+@sle_minion
+@sle_client
 Feature: Setup SUSE Manager for Retail branch network
   In order to deploy SUSE Manager for Retail solution
   As the system administrator

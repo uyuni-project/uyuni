@@ -9,9 +9,10 @@
 # IDEMPOTENT
 
 - features/secondary/srv_menu.feature
+- features/secondary/srv_organization_credentials.feature
+- features/secondary/srv_check_sync_source_packages.feature
 - features/secondary/srv_change_password.feature
 - features/secondary/srv_clone_channel_npn.feature
-- features/secondary/srv_cve_audit.feature
 - features/secondary/srv_xmlrpc_activationkey.feature
 - features/secondary/srv_distro_cobbler.feature
 - features/secondary/srv_mainpage.feature
@@ -25,9 +26,11 @@
 - features/secondary/srv_security.feature
 - features/secondary/srv_salt.feature
 - features/secondary/srv_check_channels_page.feature
+- features/secondary/srv_manage_channels_page.feature
 - features/secondary/srv_xmlrpc_channel.feature
 - features/secondary/srv_patches_page.feature
 - features/secondary/srv_spacewalk_channel.feature
+- features/secondary/srv_content_lifecycle.feature
 - features/secondary/srv_change_task_schedule.feature
 - features/secondary/srv_notifications.feature
 - features/secondary/srv_monitoring.feature
@@ -37,15 +40,18 @@
 - features/secondary/allcli_system_group.feature
 - features/secondary/allcli_config_channel.feature
 - features/secondary/allcli_software_channels.feature
-- features/secondary/allcli_software_channels_dependencies.feature
+# tests to be rewritten using the "dummy" packages instead of real synced packages
+# - features/secondary/allcli_software_channels_dependencies.feature
 
 - features/secondary/minssh_centos_salt_install_package_and_patch.feature
 - features/secondary/minssh_salt_install_package.feature
 - features/secondary/min_ubuntu_salt_install_package.feature
 - features/secondary/min_bootstrap_xmlrpc.feature
+- features/secondary/min_bootstrap_negative.feature
 - features/secondary/min_salt_software_states.feature
 - features/secondary/min_salt_install_with_staging.feature
 - features/secondary/min_salt_formulas.feature
+- features/secondary/min_salt_formulas_advanced.feature
 - features/secondary/min_salt_install_package.feature
 - features/secondary/min_salt_openscap_audit.feature
 - features/secondary/min_salt_user_states.feature
@@ -56,6 +62,7 @@
 - features/secondary/min_custom_pkg_download_endpoint.feature
 
 - features/secondary/trad_metadata_check.feature
+- features/secondary/trad_cve_audit.feature
 - features/secondary/trad_cve_id_new_syntax.feature
 - features/secondary/trad_weak_deps.feature
 - features/secondary/trad_openscap_audit.feature

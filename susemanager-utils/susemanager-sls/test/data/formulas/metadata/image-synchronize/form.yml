@@ -1,0 +1,19 @@
+image-synchronize:
+    $type: hidden-group
+    in_highstate:
+        $name: Include Image Synchronization in Highstate
+        $type: boolean
+        $default: false
+
+    whitelist:
+        $type: edit-group
+        $name: Synchronize only the listed images
+        $minItems: 0
+        $prototype:
+            $type: text
+            $help: Image name (without version)
+
+    default_boot_image:
+        $type: text
+        $name: Default boot image
+        $help: Default boot image used for first boot of a terminal

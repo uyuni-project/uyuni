@@ -760,16 +760,22 @@ class _SuseProductDumper(BaseRowDumper):
             'friendly-name' : self._row['friendly_name'],
             'arch'          : self._row['arch'],
             'release'       : self._row['release'],
-            'product-id'    : self._row['product_id']
-            }
+            'product-id'    : self._row['product_id'],
+            'free'          : self._row['free'],
+            'base'          : self._row['base'],
+            'release-stage' : self._row['release_stage'],
+            'channel-family-label': self._row['channel_family_label']
+        }
 
 class SuseProductDumper(BaseQueryDumper):
     tag_name = 'suse-products'
     iterator_query = """
     SELECT p.name, p.version, p.friendly_name,
-           pa.label AS arch, p.release, p.product_id
+           pa.label AS arch, p.release, p.product_id,
+           p.free, p.base, p.release_stage, cf.label AS channel_family_label
       FROM suseProducts p
  LEFT JOIN rhnPackageArch pa ON p.arch_type_id = pa.id
+ LEFT JOIN rhnChannelFamily cf ON p.channel_family_id = cf.id
     """
 
     def __init__(self, writer, data_iterator=None):

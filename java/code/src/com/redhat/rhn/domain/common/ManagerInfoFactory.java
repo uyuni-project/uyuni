@@ -62,8 +62,16 @@ public class ManagerInfoFactory extends HibernateFactory {
      * set last mgr-sync refresh to now
      */
     public static void setLastMgrSyncRefresh() {
+        setLastMgrSyncRefresh(System.currentTimeMillis());
+    }
+
+    /**
+     * set last mgr-sync refresh to the specified time
+     * @param milliseconds the time in milliseconds
+     */
+    public static void setLastMgrSyncRefresh(long milliseconds) {
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("lastrefresh", new Timestamp(System.currentTimeMillis()));
+        params.put("lastrefresh", new Timestamp(milliseconds));
 
         WriteMode m = ModeFactory.getWriteMode("util_queries",
                 getLastMgrSyncRefresh() == null ? "set_last_mgr_sync_refresh" : "update_last_mgr_sync_refresh");

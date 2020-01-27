@@ -22,6 +22,7 @@ import com.redhat.rhn.domain.channel.ChannelFamily;
 import com.redhat.rhn.domain.channel.ChannelFamilyFactory;
 import com.redhat.rhn.domain.channel.ContentSource;
 import com.redhat.rhn.domain.channel.test.ChannelFamilyFactoryTest;
+import com.redhat.rhn.domain.common.ManagerInfoFactory;
 import com.redhat.rhn.domain.credentials.Credentials;
 import com.redhat.rhn.domain.credentials.CredentialsFactory;
 import com.redhat.rhn.domain.product.MgrSyncChannelDto;
@@ -71,6 +72,7 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -305,6 +307,202 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
         upRepo = upRepoOpt.get();
         assertTrue("Best Auth is not token auth", upRepo.getBestAuth().get() instanceof SCCRepositoryTokenAuth);
     }
+
+    public void dupIdSzenario(boolean rhel6sync, boolean rhel7sync, boolean rhel6first) throws Exception {
+        Gson gson = new GsonBuilder()
+                .setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSX")
+                .create();
+        String testDataPath = "/com/redhat/rhn/manager/content/test/dupidfix/";
+        InputStreamReader inputStreamReader = new InputStreamReader(ContentSyncManager.class.getResourceAsStream(
+                testDataPath + (rhel6first ? "products_6_first.json" : "products_7_first.json")
+        ));
+        List<SCCProductJson> products = gson.fromJson(inputStreamReader, new TypeToken<List<SCCProductJson>>() {}.getType());
+        InputStreamReader inputStreamReader3 = new InputStreamReader(ContentSyncManager.class.getResourceAsStream(
+                "/com/redhat/rhn/manager/content/test/smallBase/channel_families.json"
+        ));
+        List<ChannelFamilyJson> channelFamilies = gson.fromJson(inputStreamReader3, new TypeToken<List<ChannelFamilyJson>>() {}.getType());
+        InputStreamReader inputStreamReader4 = new InputStreamReader(ContentSyncManager.class.getResourceAsStream(
+                testDataPath + "product_tree.json"
+        ));
+        List<ProductTreeEntry> staticTree = JsonParser.GSON.fromJson(inputStreamReader4, new TypeToken<List<ProductTreeEntry>>() {}.getType());
+
+        List<SCCRepositoryJson> additionalRepos = ContentSyncManager.collectRepos(products);
+
+        Credentials credentials = CredentialsFactory.createSCCCredentials();
+        credentials.setPassword("dummy");
+        credentials.setUrl("dummy");
+        credentials.setUsername("dummy");
+        credentials.setUser(user);
+        CredentialsFactory.storeCredentials(credentials);
+
+        ContentSyncManager csm = new ContentSyncManager() {
+            @Override
+            protected boolean accessibleUrl(String url) {
+                return true;
+            }
+        };
+        csm.updateChannelFamilies(channelFamilies);
+        csm.updateSUSEProducts(products, Collections.emptyList(), staticTree, additionalRepos);
+        csm.refreshRepositoriesAuthentication(additionalRepos, credentials, null, false);
+
+        ManagerInfoFactory.setLastMgrSyncRefresh();
+        HibernateFactory.getSession().flush();
+        HibernateFactory.getSession().clear();
+        if (rhel6sync) {
+            SUSEProductTestUtils.addChannelsForProduct(SUSEProductFactory.lookupByProductId(-6));
+        }
+        if (rhel7sync) {
+            SUSEProductTestUtils.addChannelsForProduct(SUSEProductFactory.lookupByProductId(-7));
+        }
+        HibernateFactory.getSession().flush();
+        HibernateFactory.getSession().clear();
+
+        List<SCCProductJson> fixedAdditionalProducts = ContentSyncManager.fixAdditionalProducts(products);
+        List<SCCRepositoryJson> fixedAdditionalRepos = ContentSyncManager.collectRepos(fixedAdditionalProducts);
+
+        csm.updateChannelFamilies(channelFamilies);
+        csm.updateSUSEProducts(fixedAdditionalProducts, Collections.emptyList(),
+                csm.productTreeFix(staticTree), fixedAdditionalRepos);
+        csm.refreshRepositoriesAuthentication(fixedAdditionalRepos, credentials, null);
+
+        ManagerInfoFactory.setLastMgrSyncRefresh();
+        HibernateFactory.getSession().flush();
+        HibernateFactory.getSession().clear();
+
+
+        SUSEProductSCCRepository rhel7 = SUSEProductFactory.lookupPSRByChannelLabel("rhel7-pool-x86_64").get(0);
+        //check if rhel7-pool-x86_64 has fixed id -83
+        assertEquals(-83L, rhel7.getRepository().getSccId().longValue());
+
+
+        SUSEProductSCCRepository rhel6 = SUSEProductFactory.lookupPSRByChannelLabel("rhel6-pool-i386").get(0);
+        //check if rhel6-pool-i386 still has id -81 and fixed dist target
+        assertEquals(-81, rhel6.getRepository().getSccId().longValue());
+        assertEquals("i386", rhel6.getRepository().getDistroTarget());
+
+        //check if both repos are unsigned
+        assertFalse(rhel6.getRepository().isSigned());
+        assertFalse(rhel7.getRepository().isSigned());
+
+        //check repoauth from repo with scc_id -83 has same content source as from scc_id -81
+        List<ContentSource> rhel7csIds = rhel7.getRepository().getRepositoryAuth()
+                .stream().map(s -> s.getContentSource()).collect(Collectors.toList());
+        List<ContentSource> rhel6csIds = rhel6.getRepository().getRepositoryAuth()
+                .stream().map(s -> s.getContentSource()).collect(Collectors.toList());
+        assertNotEmpty(rhel7.getRepository().getRepositoryAuth());
+        assertNotEmpty(rhel6.getRepository().getRepositoryAuth());
+        if (rhel6sync == rhel7sync) {
+            assertEquals(rhel6csIds, rhel7csIds);
+        }
+        else {
+            if (rhel6sync) {
+               assertTrue(rhel6csIds.stream().allMatch(Objects::nonNull));
+               assertTrue(rhel7csIds.stream().allMatch(Objects::isNull));
+            }
+            else {
+                assertTrue(rhel7csIds.stream().allMatch(Objects::nonNull));
+                assertTrue(rhel6csIds.stream().allMatch(Objects::isNull));
+            }
+        }
+    }
+
+    public void testDupIdSzenario9() throws Exception {
+        Gson gson = new GsonBuilder()
+                .setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSX")
+                .create();
+        String testDataPath = "/com/redhat/rhn/manager/content/test/dupidfix/";
+        InputStreamReader inputStreamReader = new InputStreamReader(ContentSyncManager.class.getResourceAsStream(
+                testDataPath + "products_7_first.json"));
+        List<SCCProductJson> products = gson.fromJson(inputStreamReader, new TypeToken<List<SCCProductJson>>() {}.getType());
+        InputStreamReader inputStreamReader3 = new InputStreamReader(ContentSyncManager.class.getResourceAsStream(
+                "/com/redhat/rhn/manager/content/test/smallBase/channel_families.json"
+        ));
+        List<ChannelFamilyJson> channelFamilies = gson.fromJson(inputStreamReader3, new TypeToken<List<ChannelFamilyJson>>() {}.getType());
+        InputStreamReader inputStreamReader4 = new InputStreamReader(ContentSyncManager.class.getResourceAsStream(
+                testDataPath + "product_tree.json"
+        ));
+        List<ProductTreeEntry> staticTree = JsonParser.GSON.fromJson(inputStreamReader4, new TypeToken<List<ProductTreeEntry>>() {}.getType());
+
+        List<SCCProductJson> fixedAdditionalProducts = ContentSyncManager.fixAdditionalProducts(products);
+        List<SCCRepositoryJson> fixedAdditionalRepos = ContentSyncManager.collectRepos(fixedAdditionalProducts);
+
+        Credentials credentials = CredentialsFactory.createSCCCredentials();
+        credentials.setPassword("dummy");
+        credentials.setUrl("dummy");
+        credentials.setUsername("dummy");
+        credentials.setUser(user);
+        CredentialsFactory.storeCredentials(credentials);
+
+        ContentSyncManager csm = new ContentSyncManager() {
+            @Override
+            protected boolean accessibleUrl(String url) {
+                return true;
+            }
+        };
+        csm.updateChannelFamilies(channelFamilies);
+        csm.updateSUSEProducts(fixedAdditionalProducts, Collections.emptyList(), csm.productTreeFix(staticTree), fixedAdditionalRepos);
+        csm.refreshRepositoriesAuthentication(fixedAdditionalRepos, credentials, null);
+
+        ManagerInfoFactory.setLastMgrSyncRefresh();
+        HibernateFactory.getSession().flush();
+        HibernateFactory.getSession().clear();
+
+
+        SUSEProductSCCRepository rhel7 = SUSEProductFactory.lookupPSRByChannelLabel("rhel7-pool-x86_64").get(0);
+        //check if rhel7-pool-x86_64 has fixed id -83
+        assertEquals(-83L, rhel7.getRepository().getSccId().longValue());
+
+
+        SUSEProductSCCRepository rhel6 = SUSEProductFactory.lookupPSRByChannelLabel("rhel6-pool-i386").get(0);
+        //check if rhel6-pool-i386 still has id -81 and fixed dist target
+        assertEquals(-81, rhel6.getRepository().getSccId().longValue());
+        assertEquals("i386", rhel6.getRepository().getDistroTarget());
+
+        //check if both repos are unsigned
+        assertFalse(rhel6.getRepository().isSigned());
+        assertFalse(rhel7.getRepository().isSigned());
+
+        //check repoauth from repo with scc_id -83 has same content source as from scc_id -81
+        List<ContentSource> rhel7csIds = rhel7.getRepository().getRepositoryAuth()
+                .stream().map(s -> s.getContentSource()).collect(Collectors.toList());
+        List<ContentSource> rhel6csIds = rhel6.getRepository().getRepositoryAuth()
+                .stream().map(s -> s.getContentSource()).collect(Collectors.toList());
+        assertEquals(rhel6csIds, rhel7csIds);
+    }
+
+    public void testDupIdSzenario1() throws Exception {
+        dupIdSzenario(false, true, false);
+    }
+
+    public void testDupIdSzenario2() throws Exception {
+        dupIdSzenario(false, false, false);
+    }
+
+    public void testDupIdSzenario3() throws Exception {
+        dupIdSzenario(true, true, false);
+    }
+
+    public void testDupIdSzenario4() throws Exception {
+        dupIdSzenario(true, false, false);
+    }
+
+    public void testDupIdSzenario5() throws Exception {
+        dupIdSzenario(false, true, true);
+    }
+
+    public void testDupIdSzenario6() throws Exception {
+        dupIdSzenario(false, false, true);
+    }
+
+    public void testDupIdSzenario7() throws Exception {
+        dupIdSzenario(true, true, true);
+    }
+
+    public void testDupIdSzenario8() throws Exception {
+        dupIdSzenario(true, false, true);
+    }
+
+
     /**
      * Test if changes in SCC data result in updates of the channel data in the DB
      * @throws Exception if anything goes wrong
@@ -1081,6 +1279,41 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
 
         assertFalse(csm.isRefreshNeeded(null));
         assertTrue(csm.isRefreshNeeded("https://mirror.example.com/"));
+    }
+
+    /**
+     * Tests {@link ContentSyncManager#isRefreshNeeded} when fromdir is configured
+     * @throws Exception if anything goes wrong
+     */
+    public void testIsRefreshNeededFromDir() throws Exception {
+        SUSEProductTestUtils.createVendorSUSEProductEnvironment(user, "/com/redhat/rhn/manager/content/test/smallBase", true, true);
+        HibernateFactory.getSession().flush();
+        HibernateFactory.getSession().clear();
+
+        // SLES12 GA
+        SUSEProductTestUtils.addChannelsForProduct(SUSEProductFactory.lookupByProductId(1117));
+        HibernateFactory.getSession().flush();
+        HibernateFactory.getSession().clear();
+
+        ContentSyncManager csm = new ContentSyncManager() {
+            @Override
+            protected boolean accessibleUrl(String url) {
+                return true;
+            }
+
+            @Override
+            protected boolean accessibleUrl(String url, String user, String password) {
+                return true;
+            }
+        };
+
+        assertFalse(csm.isRefreshNeeded(null));
+
+        // different mirror has no effect as you cannot overwrite fromdir option
+        assertFalse(csm.isRefreshNeeded("https://mirror.example.com/"));
+
+        ManagerInfoFactory.setLastMgrSyncRefresh(System.currentTimeMillis() - (48 * 60 * 60 * 1000));
+        assertTrue(csm.isRefreshNeeded(null));
     }
 
     /**

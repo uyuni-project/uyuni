@@ -26,7 +26,7 @@ Name:           spacewalk-search
 Summary:        Spacewalk Full Text Search Server
 License:        GPL-2.0-only AND Apache-2.0
 Group:          Applications/Internet
-Version:        4.1.1
+Version:        4.1.2
 Release:        1%{?dist}
 # This src.rpm is cannonical upstream
 # You can obtain it using this set of commands
@@ -88,7 +88,7 @@ Obsoletes:      rhn-search < 5.3.0
 %if 0%{?fedora} || 0%{?rhel} >=7
 Requires:       mchange-commons
 %endif
-%if 0%{?fedora} >= 21
+%if 0%{?fedora} >= 21 || 0%{?sle_version} >= 150200
 Requires:       log4j12
 BuildRequires:  log4j12
 %else

@@ -1,4 +1,14 @@
 -------------------------------------------------------------------
+Wed Jan 22 12:14:49 CET 2020 - jgonzalez@suse.com
+
+- version 4.1.2-1
+- Add universe updates to Ubuntu common channels
+- Rename ubuntu-XXXX-amd64-main-universe to ubuntu-XXXX-amd64-universe and
+  ubuntu-XXXX-amd64-main-universe-uyuni to ubuntu-XXXX-amd64-universe-uyuni
+  in common channels
+- Enable CentOS8 at spacewalk-common-channels (bsc#1159206)
+
+-------------------------------------------------------------------
 Wed Nov 27 17:04:04 CET 2019 - jgonzalez@suse.com
 
 - version 4.1.1-1

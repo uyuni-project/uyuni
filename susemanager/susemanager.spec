@@ -23,7 +23,7 @@
 %define pythonX %{?build_py3:python3}%{!?build_py3:python2}
 
 Name:           susemanager
-Version:        4.1.1
+Version:        4.1.2
 Release:        1%{?dist}
 Summary:        SUSE Manager specific scripts
 License:        GPL-2.0-only
@@ -169,9 +169,9 @@ install -m 0644 yast/*.rb %{buildroot}%{_datadir}/YaST2/clients
 install -m 0644 yast/firstboot-susemanager.xml %{buildroot}/etc/YaST2
 install -m 0644 yast/*.scr %{buildroot}%{_datadir}/YaST2/scrconf
 %if 0%{?is_opensuse}
-install -m 0644 yast/susemanager_setup_uyuni.desktop %{buildroot}%{_datadir}/applications/YaST2/susemanager_setup.desktop
+install -m 0644 yast/org.uyuni-project.yast2.Uyuni.desktop %{buildroot}%{_datadir}/applications/YaST2/org.uyuni-project.yast2.Uyuni.desktop
 %else
-install -m 0644 yast/susemanager_setup.desktop %{buildroot}%{_datadir}/applications/YaST2/susemanager_setup.desktop
+install -m 0644 yast/com.suse.yast2.SUSEManager.desktop %{buildroot}%{_datadir}/applications/YaST2/com.suse.yast2.SUSEManager.desktop
 %endif
 
 %if 0%{?suse_version} > 1320
@@ -266,7 +266,11 @@ fi
 %config /etc/YaST2/firstboot-susemanager.xml
 %config %{_sysconfdir}/slp.reg.d/susemanager.reg
 %{_sysconfdir}/init.d/susemanager
-%{_datadir}/applications/YaST2/susemanager_setup.desktop
+%if 0%{?is_opensuse}
+%{_datadir}/applications/YaST2/org.uyuni-project.yast2.Uyuni.desktop
+%else
+%{_datadir}/applications/YaST2/com.suse.yast2.SUSEManager.desktop
+%endif
 %attr(775,salt,susemanager) %dir /srv/www/os-images/
 %if 0%{?suse_version} > 1320
 %{_prefix}/lib/firewalld/services/suse-manager-server.xml

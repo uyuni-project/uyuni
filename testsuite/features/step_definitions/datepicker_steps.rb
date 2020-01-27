@@ -1,15 +1,10 @@
-# Copyright (c) 2017-2019 SUSE LLC.
+# Copyright (c) 2017-2020 SUSE LLC.
 # Licensed under the terms of the MIT license.
 
 require 'date'
 
 # Based on https://github.com/akarzim/capybara-bootstrap-datepicker
 # (MIT license)
-
-def gap(th)
-  gap = decade_start / 10 - value.year / 10
-  gap.times { picker_years.find(th).click }
-end
 
 def days_find(picker_days, day)
   day_xpath = <<-eos
@@ -27,8 +22,8 @@ def get_future_time(minutes_to_add)
   future_time.strftime('%l:%M %P').to_s.strip
 end
 
-Given(/^I pick "([^"]*)" as date$/) do |arg1|
-  value = Date.parse(arg1)
+Given(/^I pick "([^"]*)" as date$/) do |desired_date|
+  value = Date.parse(desired_date)
   date_input = find('input[data-provide="date-picker"]')
   date_input.click
   picker = find(:xpath, '//body').find('.datepicker')
@@ -41,10 +36,12 @@ Given(/^I pick "([^"]*)" as date$/) do |arg1|
   picker_current_month.click if picker_days.visible?
   picker_current_year.click if picker_months.visible?
   decade_start, decade_end = picker_current_decade.text.split('-').map(&:to_i)
-  if value.year < decade_start.to_i
-    gap('th.prev')
+  if value.year < decade_start
+    gap = decade_start / 10 - value.year / 10
+    gap.times { picker_years.find('th.prev').click }
   elsif value.year > decade_end
-    gap('th.next')
+    gap = value.year / 10 - decade_end / 10
+    gap.times { picker_years.find('th.next').click }
   end
   picker_years.find('.year', text: value.year).click
   picker_months.find('.month', text: value.strftime('%b')).click

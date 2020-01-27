@@ -107,7 +107,7 @@ public class SubscriptionMatchProcessorTest extends BaseTestCaseWithUser {
         List<MessageJson> jsonMessages = ((MatcherUiData)
                 processor.getData(of(input), of(output))).getMessages();
         List<MessageJson> outputList = jsonMessages.stream()
-                .filter(m -> m.getType().equals("unknownCpuCount"))
+                .filter(m -> m.getType().equals("unknown_cpu_count"))
                 .collect(toList());
         assertEquals(1, outputList.size());
         assertEquals("1", outputList.get(0).getData().get("id"));

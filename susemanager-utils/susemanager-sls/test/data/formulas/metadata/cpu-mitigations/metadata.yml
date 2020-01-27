@@ -1,0 +1,3 @@
+description:
+  Settings for kernel options for performance/security.
+group: security_configuration

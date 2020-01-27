@@ -1338,6 +1338,32 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         });
     }
 
+    /* Test container image import feature: imports an image and checks if image info has been populated.
+     * @throws Exception
+     */
+    public void testContainerImageImport()  throws Exception {
+        ImageInfoFactory.setTaskomaticApi(getTaskomaticApi());
+        MinionServer server = MinionServerFactoryTest.createTestMinionServer(user);
+        server.setMinionId("minionsles12-suma3pg.vagrant.local");
+        SystemManager.entitleServer(server, EntitlementManager.CONTAINER_BUILD_HOST);
+
+        String imageName = "mbologna-apache-python" + TestUtils.randomString(5);
+        String imageVersion = "latest";
+
+        ImageStore store = ImageTestUtils.createImageStore("test-docker-registry:5000", user);
+
+        doTestContainerImageImport(server, imageName, imageVersion, store,
+                (imgInfo) -> {
+                    // reload imgInfo to get the build history
+                    imgInfo = TestUtils.reload(imgInfo);
+                    assertNotNull(imgInfo);
+                    // test that history for the second build is present
+                    assertEquals(imageName, imgInfo.getName());
+                    assertNull(imgInfo.getBuildAction());
+                    assertNotNull(imgInfo.getInspectAction());
+                });
+    }
+
     private void doTestContainerImageInspect(MinionServer server, String imageName, String imageVersion, ImageProfile profile, ImageInfo imgInfo,
                                              String digest,
                                              Consumer<ImageInfo> assertions) throws Exception {
@@ -1397,6 +1423,35 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         assertions.accept(imgInfoBuild.get());
 
         return imgInfoBuild.get();
+    }
+
+    private ImageInfo doTestContainerImageImport(MinionServer server, String imageName, String imageVersion, ImageStore store, Consumer<ImageInfo> assertions) throws Exception {
+        Long actionId = ImageInfoFactory.scheduleImport(server.getId(), imageName, imageVersion, store, Optional.empty(), new Date(), user);
+        Action action = ActionFactory.lookupById(actionId);
+        TestUtils.reload(action);
+
+        // Process the image inspect return event
+        Map<String, String> placeholders = new HashMap<>();
+        placeholders.put("$IMAGE$", imageName);
+        placeholders.put("$DIGEST$", "ffff");
+
+        Optional<JobReturnEvent> event = JobReturnEvent.parse(
+                getJobReturnEvent("image.profileupdate.json",
+                        actionId,
+                        placeholders
+                ));
+        JobReturnEventMessage message = new JobReturnEventMessage(event.get());
+        JobReturnEventMessageAction messageAction = new JobReturnEventMessageAction();
+        messageAction.execute(message);
+
+        assertTrue(ImageInfoFactory.lookupByName(imageName, imageVersion, store.getId()).isPresent());
+        ImageInfo imgInfo = ImageInfoFactory.lookupByName(imageName, imageVersion, store.getId()).get();
+        assertNotNull(imgInfo);
+
+        // other assertions after inspection
+        assertions.accept(imgInfo);
+
+        return imgInfo;
     }
 
     public void testKiwiImageBuild() throws Exception {

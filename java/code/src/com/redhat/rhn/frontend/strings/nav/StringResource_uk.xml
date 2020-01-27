@@ -93,6 +93,12 @@
         </context-group>
         <target>Віртуальні системи</target>
       </trans-unit>
+      <trans-unit id="Bare Metal Systems">
+        <source>Unprovisioned Systems</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Systems Navigation Menu</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="Physical Systems">
         <source>Physical Systems</source>
         <context-group name="ctx">
@@ -115,7 +121,7 @@
         <target>Потребує перезавантаження</target>
       </trans-unit>
       <trans-unit id="Extra Packages">
-        <source>Extra Packages</source>
+        <source>Non Compliant</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Systems Navigation Menu</context>
         </context-group>
@@ -262,28 +268,28 @@
         <target>Усі</target>
       </trans-unit>
       <trans-unit id="channel.nav.all">
-        <source>All Channels</source>
+        <source>All</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Channel Navigation Menu</context>
         </context-group>
         <target>Усі канали</target>
       </trans-unit>
       <trans-unit id="channel.nav.shared">
-        <source>Shared Channels</source>
+        <source>Shared</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Channel Navigation Menu</context>
         </context-group>
         <target>Спільні канали</target>
       </trans-unit>
       <trans-unit id="channel.nav.vendor">
-        <source>Red Hat Channels</source>
+        <source>@@VENDOR_NAME@@</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Channel Navigation Menu</context>
         </context-group>
         <target>Канали Red Hat</target>
       </trans-unit>
       <trans-unit id="channel.nav.popular">
-        <source>Popular Channels</source>
+        <source>Popular</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Channel Navigation Menu</context>
         </context-group>
@@ -297,21 +303,21 @@
         <target>Ваші канали</target>
       </trans-unit>
       <trans-unit id="channel.nav.retired">
-        <source>Retired Channels</source>
+        <source>Retired</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Channel Navigation Menu</context>
         </context-group>
         <target>Застарілі канали</target>
       </trans-unit>
       <trans-unit id="config.nav.managed">
-        <source>Managed Systems</source>
+        <source>Managed</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Configuration Navigation Menu</context>
         </context-group>
         <target>Керовані системи</target>
       </trans-unit>
       <trans-unit id="config.nav.target">
-        <source>Target Systems</source>
+        <source>Target</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Configuration Navigation Menu</context>
         </context-group>
@@ -325,28 +331,28 @@
         <target>Налаштування</target>
       </trans-unit>
       <trans-unit id="config.nav.channels">
-        <source>Configuration Channels</source>
+        <source>Channels</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Configuration Navigation Menu</context>
         </context-group>
         <target>Канали налаштовування</target>
       </trans-unit>
       <trans-unit id="config.nav.files">
-        <source>Configuration Files</source>
+        <source>Files</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Configuration Navigation Menu</context>
         </context-group>
         <target>Файли налаштувань</target>
       </trans-unit>
       <trans-unit id="config.nav.globalfiles">
-        <source>Centrally Managed Files</source>
+        <source>Centrally Managed</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Configuration Navigation Menu</context>
         </context-group>
         <target>Централізовано керовані файли</target>
       </trans-unit>
       <trans-unit id="config.nav.localfiles">
-        <source>Locally Managed Files</source>
+        <source>Locally Managed</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Configuration Navigation Menu</context>
         </context-group>
@@ -535,6 +541,9 @@
           <source>View/Modify Files</source>
           <target>Перегляд/Змінити файли</target>
         </trans-unit>
+        <trans-unit id="nav.sdc.config.view_files">
+          <source>View Files</source>
+        </trans-unit>
         <trans-unit id="nav.sdc.config.compare_files">
           <source>Compare Files</source>
           <target>Порівняти файли</target>
@@ -660,7 +669,7 @@
         <target>@@PRODUCT_NAME@@</target>
       </trans-unit>
       <trans-unit id="Spacewalk Configuration">
-        <source>@@PRODUCT_NAME@@ Configuration</source>
+        <source>Manager Configuration</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
@@ -763,6 +772,12 @@
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
         <target>Латки</target>
+      </trans-unit>
+      <trans-unit id="Patch List">
+        <source>Patch List</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Navigation Menu</context>
+        </context-group>
       </trans-unit>
       <trans-unit id="Patch Clusters">
         <source>Patch Clusters</source>
@@ -905,7 +920,7 @@
         <target>Служба допомоги</target>
       </trans-unit>
       <trans-unit id="Kickstart Details">
-        <source>Kickstart Details</source>
+        <source>Autoinstallation Details</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart Details Menu</context>
         </context-group>
@@ -940,7 +955,7 @@
         <target>Скрипти</target>
       </trans-unit>
       <trans-unit id="Kickstart File">
-        <source>Kickstart File</source>
+        <source>Autoinstallation File</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart Details Menu</context>
         </context-group>
@@ -954,14 +969,14 @@
         <target>Операційна система</target>
       </trans-unit>
       <trans-unit id="Bare Metal Kickstart">
-        <source>Bare Metal Kickstart</source>
+        <source>Unprovisioned Autoinstallation</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart Details Menu</context>
         </context-group>
         <target>Kickstart для нульової системи</target>
       </trans-unit>
       <trans-unit id="Bare Metal">
-        <source>Bare Metal</source>
+        <source>Unprovisioned</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart Menu</context>
         </context-group>
@@ -1185,6 +1200,9 @@
       </group>
       <trans-unit id="Deployment">
         <source>Deployment</source>
+      </trans-unit>
+      <trans-unit id="Image List">
+        <source>Image List</source>
       </trans-unit>
     </body>
   </file>

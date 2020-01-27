@@ -41,7 +41,7 @@ spacewalksd
 rhnlib
 osad
 rhncfg
-rhncfg-actions
+mgr-cfg-actions
 rhncfg-client
 rhncfg-management
 rhn-custom-info

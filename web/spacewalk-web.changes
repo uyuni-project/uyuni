@@ -1,3 +1,15 @@
+- Fix count of changes to build (bsc#1160940)
+
+-------------------------------------------------------------------
+Wed Jan 22 12:16:08 CET 2020 - jgonzalez@suse.com
+
+- version 4.1.2-1
+- Add html-react-parser to fix umlaut in the menu and breadcrumb
+- Add placeholder for product name to formula forms
+- Fix ordering by date (bsc#1158818)
+- Add debug packages containing Javascript source map files
+- Don't validate mandatory fields that are not visible (bsc#1158943)
+- Show adequate message on saving formulas that change only pillar data
 - Report merge_subscriptions message in a readable way (bsc#1140332)
 - Use ReactJS Context in Form components
 

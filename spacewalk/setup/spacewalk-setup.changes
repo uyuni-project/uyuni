@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Wed Jan 22 12:13:54 CET 2020 - jgonzalez@suse.com
+
+- version 4.1.2-1
+- Fix spacewalk-setup-httpd for future FIPS support at SLE and
+  openSUSE
+
+-------------------------------------------------------------------
 Wed Nov 27 17:03:14 CET 2019 - jgonzalez@suse.com
 
 - version 4.1.1-1

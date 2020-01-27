@@ -1,4 +1,4 @@
-# Copyright (c) 2018-2019 SUSE LLC
+# Copyright (c) 2018-2020 SUSE LLC
 # Licensed under the terms of the MIT license.
 #
 # This feature relies on having properly configured
@@ -9,7 +9,13 @@
 #   java.kiwi_os_image_building_enabled = true
 # which means "Enable Kiwi OS Image building"
 
+@sle_minion
 Feature: Build OS images
+
+  # WORKAROUND
+  # Remove as soon as the issue is fixed
+  Scenario: Work around issue https://github.com/SUSE/spacewalk/issues/10360
+    When I let Kiwi build from external repositories
 
   Scenario: Login as Kiwi image administrator and build an image
     Given I am authorized as "kiwikiwi" with password "kiwikiwi"
@@ -17,13 +23,14 @@ Feature: Build OS images
     And I select "suse_os_image" from "profileId"
     And I select the hostname of "sle_minion" from "buildHostId"
     And I click on "submit-btn"
-    # Check the OS image built as Kiwi image administrator
+
+  Scenario: Check the OS image built as Kiwi image administrator
     Given I am on the Systems overview page of this "sle_minion"
-    When I should see a "[OS Image Build Host]" text
-    And I wait at most 3300 seconds until event "Image Build suse_os_image scheduled by kiwikiwi" is completed
+    Then I should see a "[OS Image Build Host]" text
+    When I wait at most 3300 seconds until event "Image Build suse_os_image scheduled by kiwikiwi" is completed
     And I wait at most 300 seconds until event "Image Inspect 1//suse_os_image:latest scheduled by kiwikiwi" is completed
     And I navigate to "os-images/1/" page
-    Then I should see a "POS_Image_JeOS6" text
+    Then I should see the name of the image
 
 @proxy
 @private_net
@@ -32,7 +39,7 @@ Feature: Build OS images
     And I enable repositories before installing branch server
     And I synchronize all Salt dynamic modules on "proxy"
     And I apply state "image-sync" to "proxy"
-    Then the image "POS_Image_JeOS6" should exist on "proxy"
+    Then the image should exist on "proxy"
 
   Scenario: Cleanup: remove the image from SUSE Manager server
     Given I am authorized as "admin" with password "admin"

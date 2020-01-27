@@ -21,7 +21,7 @@
 %endif
 
 Name:           susemanager-sls
-Version:        4.1.1
+Version:        4.1.2
 Release:        1
 Summary:        Static Salt state files for SUSE Manager
 License:        GPL-2.0-only
@@ -32,9 +32,11 @@ Requires:       susemanager-build-keys-web >= 12.0.1
 %if 0%{?build_py3}
 BuildRequires:  python3-pytest
 BuildRequires:  python3-mock
+BuildRequires:  python3-salt
 %else
 BuildRequires:  python-pytest
 BuildRequires:  python-mock
+BuildRequires:  python-salt
 %endif
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildArch:      noarch
@@ -86,7 +88,9 @@ cp src/modules/kiwi_info.py %{buildroot}/usr/share/susemanager/salt/_modules
 cp src/modules/kiwi_source.py %{buildroot}/usr/share/susemanager/salt/_modules
 
 %check
-cd src/tests
+cd test
+py.test test_pillar_suma_minion.py
+cd ../src/tests
 py.test
 
 %post

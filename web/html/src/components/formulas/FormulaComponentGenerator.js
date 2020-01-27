@@ -121,7 +121,7 @@ export function generateFormulaComponentForId(element, value, formulaForm, id, w
     }
 }
 
-function evalExpression(id, condition, formulaForm) {
+export function evalExpression(id, condition, formulaForm) {
     const context = {
         "this": buildValuePath(id, formulaForm.getFormulaValues()),
         formValues: formulaForm.getFormulaValues()
@@ -170,7 +170,14 @@ function getConditionId(element_id, path) {
     return path;
 }
 
-function checkVisibilityCondition(id, condition, formulaForm) {
+/**
+ * This function is deprecated.
+ * @param {*} id 
+ * @param {*} condition 
+ * @param {*} formulaForm
+ * @deprecated 
+ */
+export function checkVisibilityCondition(id, condition, formulaForm) {
     if (condition.includes("!=")) {
         condition = condition.split("!=");
         return String(formulaForm.getValueById(getConditionId(id, condition[0]))) !== getConditionValue(condition[1]);

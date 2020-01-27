@@ -8,11 +8,11 @@
         "release_type" : null,
         "arch" : "x86_64",
         "friendly_name" : "RHEL8 Base x86_64",
-        "product_class" : "SLE-M-T-BETA",
+        "product_class" : "SLE-M-T",
         "cpe" : null,
         "free" : false,
         "description" : null,
-        "release_stage" : "beta",
+        "release_stage" : "released",
         "eula_url" : "",
         "product_type" : "base",
         "offline_predecessor_ids" : [

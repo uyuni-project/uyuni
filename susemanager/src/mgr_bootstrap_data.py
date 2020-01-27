@@ -750,6 +750,38 @@ DATA = {
         'PDID' : 1758, 'PKGLIST' : PKGLIST12 + ONLYSLE12 + ENHANCE12SP1 + PKGLIST12_X86_ARM,
         'DEST' : '/srv/www/htdocs/pub/repositories/sle/12/4/bootstrap/'
     },
+    'SLE-12-SP5-aarch64' : {
+        'PDID' : 1875, 'PKGLIST' : PKGLIST12 + ONLYSLE12 + ENHANCE12SP1 + PKGLIST12_X86_ARM,
+        'DEST' : '/srv/www/htdocs/pub/repositories/sle/12/5/bootstrap/'
+    },
+    'SLE-12-SP5-ppc64le' : {
+        'PDID' : 1876, 'PKGLIST' : PKGLIST12 + ONLYSLE12 + ENHANCE12SP1,
+        'DEST' : '/srv/www/htdocs/pub/repositories/sle/12/5/bootstrap/'
+    },
+    'SLE-12-SP5-s390x' : {
+        'PDID' : 1877, 'PKGLIST' : PKGLIST12 + ONLYSLE12 + ENHANCE12SP1,
+        'DEST' : '/srv/www/htdocs/pub/repositories/sle/12/5/bootstrap/'
+    },
+    'SLE-12-SP5-x86_64' : {
+        'PDID' : 1878, 'PKGLIST' : PKGLIST12 + ONLYSLE12 + ENHANCE12SP1 + PKGLIST12_X86_ARM,
+        'DEST' : '/srv/www/htdocs/pub/repositories/sle/12/5/bootstrap/'
+    },
+    'SLES4SAP-12-SP5-x86_64' : {
+        'PDID' : 1880, 'PKGLIST' : PKGLIST12 + ONLYSLE12 + ENHANCE12SP1 + PKGLIST12_X86_ARM,
+        'DEST' : '/srv/www/htdocs/pub/repositories/sle/12/5/bootstrap/'
+    },
+    'SLES4SAP-12-SP5-ppc64le' : {
+        'PDID' : 1879, 'PKGLIST' : PKGLIST12 + ONLYSLE12 + ENHANCE12SP1,
+        'DEST' : '/srv/www/htdocs/pub/repositories/sle/12/5/bootstrap/'
+    },
+    'SLE4HPC-12-SP5-x86_64' : {
+        'PDID' : 1873, 'PKGLIST' : PKGLIST12 + ONLYSLE12 + ENHANCE12SP1 + PKGLIST12_X86_ARM,
+        'DEST' : '/srv/www/htdocs/pub/repositories/sle/12/5/bootstrap/'
+    },
+    'SLE4HPC-12-SP5-aarch64' : {
+        'PDID' : 1872, 'PKGLIST' : PKGLIST12 + ONLYSLE12 + ENHANCE12SP1 + PKGLIST12_X86_ARM,
+        'DEST' : '/srv/www/htdocs/pub/repositories/sle/12/5/bootstrap/'
+    },
     'OES2018-x86_64' : {
         'PDID' : 45, 'PKGLIST' : PKGLIST12 + ONLYSLE12 + ENHANCE12SP1 + PKGLIST12_X86_ARM,
         'DEST' : '/srv/www/htdocs/pub/repositories/sle/12/2/bootstrap/'
@@ -817,6 +849,10 @@ DATA = {
     'centos-7-x86_64' : {
         'BASECHANNEL' : 'centos7-x86_64', 'PKGLIST' : RES7,
         'DEST' : '/srv/www/htdocs/pub/repositories/centos/7/bootstrap/'
+    },
+    'centos-8-x86_64' : {
+        'BASECHANNEL' : 'centos8-x86_64', 'PKGLIST' : RES8,
+        'DEST' : '/srv/www/htdocs/pub/repositories/centos/8/bootstrap/'
     },
     'RHEL6-x86_64' : {
         'PDID' : [-5, 1682], 'PKGLIST' : RES6,

@@ -1,6 +1,7 @@
 /* eslint-disable */
 "use strict";
 import SpaRenderer from "../../../core/spa/spa-renderer";
+import escapeHtml from 'html-react-parser';
 
 const React = require("react");
 const ReactDOM = require("react-dom");
@@ -28,7 +29,7 @@ class Node extends React.Component {
           <i className={'fa ' + this.props.icon}></i>
           : null
         }
-        <Link url={this.props.url} target={this.props.target} label={this.props.label} onClick={(event) => this.handleClick(event)} />
+        <Link url={this.props.url} target={this.props.target} label={escapeHtml(this.props.label)} onClick={(event) => this.handleClick(event)} />
         { this.props.isLeaf ?
             null
             :
@@ -222,7 +223,7 @@ class Breadcrumb extends React.Component {
           breadcrumbArray.map((a, i) => {
             return (
               <span key={a.label + '_' + i}>
-                <Link url={a.submenu ? a.submenu[0].primaryUrl : a.primaryUrl} label={a.label} target={a.target} />
+                <Link url={a.submenu ? a.submenu[0].primaryUrl : a.primaryUrl} label={escapeHtml(a.label)} target={a.target} />
                 { i == breadcrumbArray.length -1 ? null : '>'}
               </span>
             );

@@ -5,21 +5,38 @@ import { FormGroup } from './FormGroup';
 import { FormContext } from './Form';
 
 export type Props = {
+  /** name of the field to map in the form model */
   name: string,
-  // eslint-disable-next-line
+  /** Default value if none is set */
   defaultValue?: string,
+  /** Label to display for the field */
   label?: string,
+  /** Hint string to display */
   hint?: string,
+  /** CSS class to use for the label */
   labelClass?: string,
+  /** CSS class to use for the <div> element wrapping the field input part */
   divClass?: string,
-  value: string,
+  /** Function rendering the children in the value <div>.
+   * Takes two parameters:
+   *
+   * - *setValue*: a function to call when the value needs to be set in the model.
+   *   This function takes a name and a value parameter.
+   * - *onBlur*: a function to call when loosing the focus on the component.
+   */
   children: ({
     setValue: (name: string, value: string) => void,
     onBlur: () => void,
   }) => React.Node,
+  /** Indicates whether the field is required in the form */
   required?: boolean,
+  /** Indicates whether the field is disabled */
   disabled?: boolean,
+  /** Hint to display on a validation error */
   invalidHint?: string,
+  /** Function to call when the data model needs to be changed.
+   *  Takes a name and a value parameter.
+   */
   onChange?: (name: string, value: string) => void,
 };
 
@@ -63,11 +80,16 @@ export class InputBase extends React.Component<Props, State> {
         || value !== model[this.props.name];
 
       if (valueChanged) {
-        model[this.props.name] = value;
-        if (this.context.setModelValue != null) {
-          this.context.setModelValue(this.props.name, value);
-        }
+        this.setValue(this.props.name, value);
       }
+    }
+  }
+
+  componentDidUpdate(prevProps) {
+    // Support validation when changing the following props on-the-fly
+    if (this.props.required !== prevProps.required ||
+        this.props.disabled !== prevProps.disabled) {
+      this.validate(this.context.model[this.props.name]);
     }
   }
 
@@ -84,18 +106,21 @@ export class InputBase extends React.Component<Props, State> {
     });
   }
 
-  validate(model: Object): boolean {
-    const { name } = this.props;
+  isValid() {
+    return this.state.isValid;
+  }
+
+  validate (value: string): void {
     const results = [];
     let isValid = true;
 
-    if (!this.props.disabled && (model[name] || this.props.required)) {
-      if (this.props.required && !model[name]) {
+    if (!this.props.disabled && (value || this.props.required)) {
+      if (this.props.required && !value) {
         isValid = false;
       } else if (this.props.validators) {
         const validators = Array.isArray(this.props.validators) ? this.props.validators : [this.props.validators];
         validators.forEach((v) => {
-          results.push(Promise.resolve(v(`${model[name] || ''}`)));
+          results.push(Promise.resolve(v(`${value || ''}`)));
         });
       }
     }
@@ -104,22 +129,19 @@ export class InputBase extends React.Component<Props, State> {
       result.forEach((r) => {
         isValid = isValid && r;
       });
-      this.setState({isValid});
-      if (this.context.onFieldValidation != null) {
-        this.context.onFieldValidation(name, isValid);
-      }
+      this.setState({isValid}, () => {
+        if (this.context.validateForm != null) {
+          this.context.validateForm();
+        }
+      });
     });
-
-    this.setState({
-      isValid,
-    });
-    return isValid;
   }
 
   setValue(name: string, value: string) {
     if (this.context.setModelValue != null) {
       this.context.setModelValue(name, value);
     }
+    this.validate(value);
 
     if (this.props.onChange) this.props.onChange(name, value);
   }

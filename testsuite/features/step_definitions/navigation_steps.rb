@@ -1,14 +1,9 @@
-# Copyright (c) 2010-2019 SUSE LLC.
+# Copyright (c) 2010-2020 SUSE LLC.
 # Licensed under the terms of the MIT license.
 
 #
 # Texts and links
 #
-
-When(/^I follow "(.*?)" link$/) do |host|
-  system_name = get_system_name(host)
-  step %(I follow "#{system_name}")
-end
 
 Then(/^I should see a "(.*)" text in the content area$/) do |txt|
   within('#spacewalk-content') do
@@ -49,7 +44,8 @@ When(/^I wait until I see "([^"]*)" text or "([^"]*)" text$/) do |text1, text2|
 end
 
 When(/^I wait until I see "([^"]*)" text, refreshing the page$/) do |text|
-  text.gsub! '$PRODUCT', $product # TODO: Rid of this substitution, using another step
+  text.gsub! '$PRODUCT', $product
+  # TODO: get rid of this substitution, using another step
   repeat_until_timeout(message: "Couldn't find text '#{text}'") do
     break if has_content?(text)
     evaluate_script 'window.location.reload()'
@@ -195,7 +191,7 @@ end
 # Click on the terminal
 #
 When(/^I follow "([^"]*)" terminal$/) do |host|
-  domain = get_branch_prefix_from_yaml(@retail_config)
+  domain = read_branch_prefix_from_yaml
   if !host.include? 'pxeboot'
     step %(I follow "#{domain}.#{host}")
   else
@@ -235,15 +231,6 @@ When(/^I follow first "([^"]*)" in the (.+)$/) do |arg1, arg2|
         end
   within(:xpath, "//#{tag}") do
     step "I follow first \"#{arg1}\""
-  end
-end
-
-#
-# Click on a link which appears inside of <div> with
-# the given "class"
-When(/^I follow "([^"]*)" in class "([^"]*)"$/) do |arg1, arg2|
-  within(:xpath, "//div[@class=\"#{arg2}\"]") do
-    step "I follow \"#{arg1}\""
   end
 end
 
@@ -388,7 +375,7 @@ Given(/^I am on the active Users page$/) do
     )
 end
 
-Then(/^Table row for "([^"]*)" should contain "([^"]*)"$/) do |arg1, arg2|
+Then(/^table row for "([^"]*)" should contain "([^"]*)"$/) do |arg1, arg2|
   xpath_query = "//div[@class=\"table-responsive\"]/table/tbody/tr[.//a[contains(.,'#{arg1}')]]"
   within(:xpath, xpath_query) do
     raise "xpath: #{xpath_query} has no content #{arg2}" unless has_content?(arg2)
@@ -491,10 +478,6 @@ When(/^I am on the System Overview page$/) do
   visit("https://#{$server.full_hostname}/rhn/systems/Overview.do")
 end
 
-Then(/^I reload the page$/) do
-  visit current_url
-end
-
 Then(/^I should see something$/) do
   steps %(
     Given I should see a "Sign In" text
@@ -564,22 +547,6 @@ end
 Then(/^I should see a "(.*?)" link in the text$/) do |linktext, text|
   within(:xpath, "//p/strong[contains(normalize-space(string(.)), '#{text}')]") do
     assert all(:xpath, "//a[text() = '#{linktext}']").any?
-  end
-end
-
-#
-# Test for a visible link inside of a <div> with the attribute
-# "class" or "id" of the given name
-#
-Then(/^I should see a "([^"]*)" link in element "([^"]*)"$/) do |link, element|
-  within(:xpath, "//div[@id=\"#{element}\" or @class=\"#{element}\"]") do
-    raise "Link #{link} not visible" unless find_link(link).visible?
-  end
-end
-
-Then(/^I should not see a "([^"]*)" link in element "([^"]*)"$/) do |link, element|
-  within(:xpath, "//div[@id=\"#{element}\" or @class=\"#{element}\"]") do
-    raise "Link #{link} is present" unless has_no_link?(link)
   end
 end
 
@@ -674,12 +641,6 @@ Then(/^I should see a "([^"]*)" link in row ([0-9]+) of the content menu$/) do |
     within(:xpath, "//div[@class=\"spacewalk-content-nav\"]/ul[#{arg2}]") do
       step %(I should see a "#{arg1}" link)
     end
-  end
-end
-
-Then(/^I should see a "([^"]*)" link in list "([^"]*)"$/) do |arg1, arg2|
-  within(:xpath, "//ul[@id=\"#{arg2}\" or @class=\"#{arg2}\"]") do
-    raise "Link #{arg1} not visible" unless find_link(arg1).visible?
   end
 end
 
@@ -823,10 +784,20 @@ When(/^I enter "([^"]*)" relative to profiles as "([^"]*)"$/) do |path, field|
   step %(I enter "#{$git_profiles}/#{path}" as "#{field}")
 end
 
-When(/^I enter uri, username and password for portus$/) do
-  step %(I enter "#{ENV['PORTUS_URI']}" as "uri")
-  step %(I enter "#{ENV['PORTUS_USER']}" as "username")
-  step %(I enter "#{ENV['PORTUS_PASS']}" as "password")
+When(/^I enter the image filename relative to profiles as "([^"]*)"$/) do |field|
+  path = compute_image_filename
+  step %(I enter "#{$git_profiles}/#{path}" as "#{field}")
+end
+
+When(/^I enter URI, username and password for portus$/) do
+  portus_uri = ENV['PORTUS_URI']
+  portus_username = ENV['PORTUS_CREDENTIALS'].split('|')[0]
+  portus_password = ENV['PORTUS_CREDENTIALS'].split('|')[1]
+  steps %(
+    When I enter "#{portus_uri}" as "uri"
+    And I enter "#{portus_username}" as "username"
+    And I enter "#{portus_password}" as "password"
+  )
 end
 
 When(/^I scroll to the top of the page$/) do

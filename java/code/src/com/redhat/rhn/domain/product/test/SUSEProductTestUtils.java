@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.domain.product.test;
 
+import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelArch;
@@ -271,10 +272,25 @@ public class SUSEProductTestUtils extends HibernateFactory {
      *
      * SLES12 SP1 x86_64
      * SLE-HA12 SP1 x86_64
-     * @param admin
+     * @param admin the user
+     * @param testDataPath the path to test data
+     * @param withRepos set true if repos should be added
      * @throws Exception
      */
     public static void createVendorSUSEProductEnvironment(User admin, String testDataPath, boolean withRepos) throws Exception {
+        createVendorSUSEProductEnvironment(admin, testDataPath, withRepos, false);
+    }
+
+    /**
+     * Create some SUSE Vendor products with channels
+     *
+     * @param admin the user
+     * @param testDataPath the path to test data
+     * @param withRepos set true if repos should be added
+     * @param fromdir set true if fromdir option should be simulated
+     * @throws Exception
+     */
+    public static void createVendorSUSEProductEnvironment(User admin, String testDataPath, boolean withRepos, boolean fromdir) throws Exception {
         Gson gson = new GsonBuilder()
                 .setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSX")
                 .create();
@@ -298,14 +314,31 @@ public class SUSEProductTestUtils extends HibernateFactory {
         InputStreamReader inputStreamReader6 = new InputStreamReader(ContentSyncManager.class.getResourceAsStream(testDataPath + "additional_repositories.json"));
         List<SCCRepositoryJson> add_repos = gson.fromJson(inputStreamReader6, new TypeToken<List<SCCRepositoryJson>>() {}.getType());
 
-        Credentials credentials = CredentialsFactory.createSCCCredentials();
-        credentials.setPassword("dummy");
-        credentials.setUrl("dummy");
-        credentials.setUsername("dummy");
-        credentials.setUser(admin);
-        CredentialsFactory.storeCredentials(credentials);
-
         ContentSyncManager csm = new ContentSyncManager();
+        Credentials credentials = null;
+        if (fromdir) {
+            Config.get().setString(ContentSyncManager.RESOURCE_PATH, "sumatest");
+            csm = new ContentSyncManager() {
+                @Override
+                protected boolean accessibleUrl(String url) {
+                    return true;
+                }
+
+                @Override
+                protected boolean accessibleUrl(String url, String user, String password) {
+                    return true;
+                }
+            };
+        }
+        else {
+            credentials = CredentialsFactory.createSCCCredentials();
+            credentials.setPassword("dummy");
+            credentials.setUrl("dummy");
+            credentials.setUsername("dummy");
+            credentials.setUser(admin);
+            CredentialsFactory.storeCredentials(credentials);
+        }
+
         csm.updateChannelFamilies(channelFamilies);
         csm.updateSUSEProducts(products, upgradePaths, staticTree, add_repos);
         if (withRepos) {

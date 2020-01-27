@@ -1,11 +1,9 @@
 /* eslint-disable */
 // @flow
-'use strict';
 
-const React = require("react");
-const ReactDOM = require("react-dom");
+import * as React from "react";
 
-const {Creatable} = require("react-select");
+import Creatable from 'react-select/creatable';
 
 declare function $(param: any): any;
 
@@ -33,7 +31,7 @@ type ComboboxState = {
   focused: boolean
 };
 
-class Combobox extends React.Component<ComboboxProps, ComboboxState> {
+export class Combobox extends React.Component<ComboboxProps, ComboboxState> {
 
   onChange = (selectedOption: ReactSelectItem) => {
     if(selectedOption.id && selectedOption.value) {
@@ -82,8 +80,4 @@ class Combobox extends React.Component<ComboboxProps, ComboboxState> {
       styles={colourStyles}
     />;
   }
-}
-
-module.exports = {
-  Combobox : Combobox
 }

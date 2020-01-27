@@ -38,6 +38,11 @@ def systemExit(code, msgs=None):
 import os
 import socket
 
+if hasattr(socket, 'sslerror'):
+    socket_error = socket.sslerror
+else:
+    from ssl import socket_error
+
 
 # quick check to see if you are a super-user.
 if os.getuid() != 0:
@@ -143,7 +148,7 @@ def main():
     except socket.error as e:
         msg = "\nERROR: a general socket exception occurred:"
         systemExit_exception(3, msg, e)
-    except socket.sslerror as e:
+    except socket_error as e:
         msg = ("""
 ERROR: an SSL error occurred. Recheck your SSL settings. Those settings may
        include URL's, SSL Certificate settings, firewall rules, etc..

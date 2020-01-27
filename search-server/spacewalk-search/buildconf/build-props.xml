@@ -1,14 +1,14 @@
 <project name="build-props">
 
-  <condition property="log4j" value="log4j-1" else="log4j">
-    <available file="/usr/share/java/log4j-1.jar" />
-  </condition>
+  <available file="/usr/share/java/log4j-1.jar" type="file" property="log4j-jars" value="log4j-1" />
+  <available file="/usr/share/java/log4j12/log4j-12.jar" type="file" property="log4j-jars" value="log4j12/log4j-12" />
+  <available file="/usr/share/java/log4j.jar" type="file" property="log4j-jars" value="log4j" />
 
   <property name="ivy.settings.file" value="buildconf/ivyconf.xml" />
 
   <property name="jpackage.jars"
       value="c3p0 cglib commons-cli commons-codec commons-httpclient commons-lang3
-             commons-logging ${log4j} objectweb-asm/asm oro
+             commons-logging ${log4j-jars} objectweb-asm/asm oro
              quartz redstone-xmlrpc redstone-xmlrpc-client simple-core
              slf4j/api slf4j/simple junit nutch-core hadoop picocontainer
              lucene lucene-analyzers lucene-misc mybatis" />

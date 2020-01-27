@@ -4,7 +4,7 @@
 
 This is the automated testsuite for [SUSE Manager](https://www.suse.com/products/suse-manager/).
 
-Before you start, make sure you know about the [**basic concepts**](https://cucumber.io/docs/reference) of Cucumber that we are using in this testsuite: features, scenarios and steps.
+Before you start, make sure you know about the [**basic concepts**](https://cucumber.io/docs/gherkin/reference) of Cucumber that we are using in this testsuite: features, scenarios and steps.
 
 Apart from Cucumber, the testsuite relies on a number of [software components](documentation/software-components.md).
 

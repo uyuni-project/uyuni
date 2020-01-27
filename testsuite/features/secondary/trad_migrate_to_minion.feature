@@ -1,4 +1,4 @@
-# Copyright (c) 2017-2019 SUSE LLC
+# Copyright (c) 2017-2020 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 Feature: Migrate a traditional client into a Salt minion
@@ -80,6 +80,9 @@ Feature: Migrate a traditional client into a Salt minion
     Then I should see a "Remote Command has been scheduled successfully" text
     When I wait until file "/tmp/remote-command-on-migrated-test" exists on "sle_migrated_minion"
     And I remove "/tmp/remote-command-on-migrated-test" from "sle_migrated_minion"
+
+  Scenario: Cleanup: remove package from the migrated minion
+    When I remove package "perseus-dummy-1.1-1.1" from this "sle_migrated_minion"
 
   Scenario: Cleanup: unregister migrated minion
     Given I am on the Systems overview page of this "sle_migrated_minion"

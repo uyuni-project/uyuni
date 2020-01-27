@@ -1,0 +1,80 @@
+vsftpd_config:
+  $type: hidden-group
+
+  anon_root:
+     $name: 'FTP server directory'
+     $type: text
+     $default: '/srv/ftp'
+
+     
+  listen_address:
+     $name: 'Internal Network Address'
+     $type: text
+     $optional: True
+
+  ssl_enable:
+     $name:  'Enable ssl'
+     $type: boolean
+     $default: false
+     
+  secure_chroot_dir: 
+     $name:  'Chroot dir'
+     $type: text
+     $default: '/usr/share/empty'
+
+  anonymous_enable:
+     $name:  'Allow anonymous FTP'
+     $type: boolean
+     $default: true
+
+  allow_anon_ssl:
+     $name:  'Allow SSL for anonymous'
+     $type: boolean
+     $default: true
+
+  listen:
+     $name:  'Run standalone'
+     $type: boolean
+     $default: true
+
+  local_enable:
+     $name:  'Allow local users'
+     $type: boolean
+     $default: true
+
+  dirmessage_enable:
+     $name:  'Activate directory messages'
+     $type: boolean
+     $default: true
+
+  use_localtime: 
+     $name:  'Use localtime'
+     $type: boolean
+     $default: true
+
+  xferlog_enable: 
+     $name:  'Activate logging of transfers'
+     $type: boolean
+     $default: true
+
+  connect_from_port_20: 
+     $name:  'Connect from port 20'
+     $type: boolean
+     $default: true
+
+  pam_service_name: 
+     $name:  'PAM service name'
+     $type: text
+     $default: 'vsftpd'
+
+  rsa_cert_file:
+     $name:  'RSA certificate file'
+     $type: text
+     $default: '/etc/ssl/certs/[ssl-cert-file].pem'
+
+  rsa_private_key_file:
+     $name:  'RSA private key file'
+     $type: text
+     $default: '/etc/ssl/private/[ssl-cert-file].key'
+
+      

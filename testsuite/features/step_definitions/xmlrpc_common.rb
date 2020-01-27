@@ -59,12 +59,17 @@ When(/^I schedule a highstate for "([^"]*)" via XML\-RPC$/) do |host|
   systest.schedule_apply_highstate(node_id, date_high, false)
 end
 
-When(/^I unsubscribe "([^"]*)" and "([^"]*)" from configuration channel "([^"]*)"$/) do |host1, host2, channel|
+When(/^I unsubscribe "([^"]*)" from configuration channel "([^"]*)"$/) do |host1, channel|
   system_name1 = get_system_name(host1)
   node_id1 = retrieve_server_id(system_name1)
-  system_name2 = get_system_name(host2)
-  node_id2 = retrieve_server_id(system_name2)
-  systest.remove_channels([ node_id1, node_id2 ], [ channel ])
+  systest.remove_channels([ node_id1 ], [ channel ])
+end
+
+When(/^I unsubscribe "([^"]*)" and "([^"]*)" from configuration channel "([^"]*)"$/) do |host1, host2, channel|
+  steps %(
+      When I unsubscribe "#{host1}" from configuration channel "#{channel}"
+      And I unsubscribe "#{host2}" from configuration channel "#{channel}"
+        )
 end
 
 When(/^I create a System Record$/) do

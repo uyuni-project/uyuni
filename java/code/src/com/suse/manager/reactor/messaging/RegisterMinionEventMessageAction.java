@@ -158,10 +158,13 @@ public class RegisterMinionEventMessageAction implements MessageAction {
                 Optional<String> managmentKeyLabel = getManagementKeyLabelFromGrains(grains);
                 if (managmentKeyLabel.isPresent()) {
                     ak = ActivationKeyFactory.lookupByKey(managmentKeyLabel.get());
-                    if (ak.getKickstartSession() != null) {
+                    if (ak != null && ak.getKickstartSession() != null) {
                         ak.getKickstartSession().markComplete("Installation completed.");
                     }
-                    if (ak.getServer() == null) {
+                    if (ak == null) {
+                        LOG.info("Outdated Management Key defined for " + minionId + ": " + managmentKeyLabel.get());
+                    }
+                    else if (ak.getServer() == null) {
                         LOG.error("Management Key is not a reactivation key: " + managmentKeyLabel.get());
                     }
                     else {

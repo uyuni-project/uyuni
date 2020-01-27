@@ -1,4 +1,4 @@
-# Copyright (c) 2010-2019 SUSE LLC.
+# Copyright (c) 2010-2020 SUSE LLC.
 # Licensed under the terms of the MIT license.
 
 require 'nokogiri'
@@ -84,10 +84,4 @@ end
 def sle11family?(node)
   _out, code = node.run('pidof systemd', false)
   code.nonzero?
-end
-
-def sle15family?(node)
-  os_version, os_family = get_os_version(node)
-  return false if os_version.nil? || os_family.nil?
-  (os_version =~ /^15/) && (os_family =~ /^sles/)
 end

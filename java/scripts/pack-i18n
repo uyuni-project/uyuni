@@ -1,0 +1,10 @@
+#!/bin/bash
+
+GIT_ROOT="$( git -c alias.a='!pwd' a )"
+
+pushd $GIT_ROOT/java/code/src/com/redhat/rhn/frontend/
+
+tar --exclude *.java -c -v -j -f $GIT_ROOT/java/uyuni-java-xliff.tar.bz2 strings/
+
+popd
+echo "TAR available at $GIT_ROOT/java/uyuni-java-xliff.tar.bz2"

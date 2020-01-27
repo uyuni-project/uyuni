@@ -1,13 +1,12 @@
 // @flow
 
 const React = require('react');
-const { Panel } = require('components/panels/Panel');
 const { Text } = require('components/input/Text');
 const { Select } = require('components/input/Select');
+const { FormMultiInput } = require('components/input/FormMultiInput');
+const { getOrderedItemsFromModel } = require('components/input/FormMultiInput');
 const { Messages } = require('components/messages');
 const { Utils: MessagesUtils } = require('components/messages');
-const { Button } = require('components/buttons');
-const GuestPropertiesUtils = require('./guest-properties-utils');
 
 function getFileSourceFields(model: Object, index: number, pools: Array<Object>, onlyHandledDisks: boolean) {
   if (Object.keys(model).includes(`disk${index}_editable`)) {
@@ -79,11 +78,9 @@ function handleDiskTypeChange(model: Object, index: number, value: string, chang
   }
 }
 
-function addDisk(model: Object, changeModel: Function, domainCaps: Object, pools: Array<Object>) {
+function addDisk(index: number, model: Object, changeModel: Function, domainCaps: Object, pools: Array<Object>) {
   const busTypes = domainCaps ? domainCaps.devices.disk.bus : [];
 
-  const allDisks = GuestPropertiesUtils.getOrderedDevicesFromModel(model, 'disk');
-  const index = Number.parseInt(allDisks[allDisks.length - 1].substring('disk'.length), 10) + 1;
   const preferredBusses = ['virtio', 'xen'].filter(type => busTypes.includes(type));
   const first_pool = pools.length > 0 ? pools[0].name : '';
 
@@ -106,46 +103,14 @@ function guestDiskFields(model: Object, index: number,
   const sourceType = model[`disk${index}_type`];
   const sourceHandler = sourceHandlers[sourceType];
   const device = model[`disk${index}_device`] || 'disk';
-  const icons = {
-    disk: 'fa-hdd-o',
-    lun: 'fa-hdd-o',
-    cdrom: 'spacewalk-icon-autoinstallations',
-    floppy: 'fa-floppy-o',
-  };
   const busTypes = domainCaps
     ? domainCaps.devices.disk.bus
       .filter(bus => (device === 'floppy' && bus === 'fdc') || (device !== 'floppy' && bus !== 'fdc'))
     : [];
   const preferredBusses = ['virtio', 'xen'].filter(type => busTypes.includes(type));
 
-  const removeDisk = (): void => {
-    changeModel(Object.entries(model).reduce((res, entry) => {
-      const property = !entry[0].startsWith(`disk${index}_`) ? { [entry[0]]: entry[1] } : undefined;
-      return Object.assign(res, property);
-    }, {}));
-  };
-
-  const similarDisks = [...Array(index).keys()]
-    .filter(i => model[`disk${i}_bus`] === model[`disk${index}_bus`]
-                 && model[`disk${i}_device`] === model[`disk${index}_device`]);
-
   return (
-    <Panel
-      icon={icons[device]}
-      key={`disk${index}`}
-      title={`${model[`disk${index}_bus`]} ${device} ${similarDisks.length + 1}`}
-      headingLevel="h3"
-      buttons={(
-        <Button
-          icon="fa-minus"
-          title={t('Remove')}
-          id={`remove_disk${index}`}
-          className="btn-default btn-sm"
-          handler={removeDisk}
-          disabled={!onlyHandledDisks}
-        />
-      )}
-    >
+    <>
       { Object.keys(model).includes(`disk${index}_editable`)
         && [
           <Select
@@ -195,67 +160,86 @@ function guestDiskFields(model: Object, index: number,
       >
         { busTypes.map(bus => <option key={bus} name={bus}>{bus}</option>) }
       </Select>
-    </Panel>
+    </>
   );
 }
 
 function guestDisksPanel(model: Object, changeModel: Function, pools: Array<Object>, caps: Object): React.Node {
-  const onlyHandledDisks = GuestPropertiesUtils.getOrderedDevicesFromModel(model, 'disk')
-    .every(disk => model[`${disk}_type`] === 'file');
+
+  const getDiskPanelIcon = (index: number): string => {
+    const device = model[`disk${index}_device`] || 'disk';
+    const icons = {
+      disk: 'fa-hdd-o',
+      lun: 'fa-hdd-o',
+      cdrom: 'spacewalk-icon-autoinstallations',
+      floppy: 'fa-floppy-o',
+    };
+    return icons[device];
+  };
+
+  const getDiskPanelTitle = (index: number): string => {
+    const device = model[`disk${index}_device`] || 'disk';
+    const similarDisks = [...Array(index).keys()]
+      .filter(i => model[`disk${i}_bus`] === model[`disk${index}_bus`]
+                   && model[`disk${i}_device`] === model[`disk${index}_device`]);
+    return `${model[`disk${index}_bus`]} ${device} ${similarDisks.length + 1}`;
+  };
+
+  const removeDisk = (index: number): void => {
+    changeModel(Object.entries(model).reduce((res, entry) => {
+      const property = !entry[0].startsWith(`disk${index}_`) ? { [entry[0]]: entry[1] } : undefined;
+      return Object.assign(res, property);
+    }, {}));
+  };
+
+  const allDisks = getOrderedItemsFromModel(model, 'disk')
+  const onlyHandledDisks = allDisks.every(index => model[`disk${index}_type`] === 'file');
   return (
-    <Panel
-      key="disks"
-      title={t('Disks')}
-      headingLevel="h2"
-      buttons={(
-        <Button
-          icon="fa-plus"
-          title={t('Add')}
-          id="add_disk"
-          className="btn-default btn-sm"
-          handler={() => addDisk(model, changeModel, caps, pools)}
-          disabled={!onlyHandledDisks}
-        />
-      )}
-    >
+    <>
       {
         !onlyHandledDisks
         && <Messages items={MessagesUtils.warning('At least one unsupported disk: disabling editing.')} />
       }
-      {
-        GuestPropertiesUtils.getOrderedDevicesFromModel(model, 'disk')
-          .map(property => guestDiskFields(model,
-            Number.parseInt(property.substring('disk'.length), 10), caps,
-            pools,
-            changeModel,
-            onlyHandledDisks))
-      }
-    </Panel>
+      <FormMultiInput
+        id="disks"
+        title={t('Disks')}
+        prefix="disk"
+        onAdd={newIndex => addDisk(newIndex, model, changeModel, caps, pools)}
+        onRemove={removeDisk}
+        disabled={!onlyHandledDisks}
+        panelIcon={getDiskPanelIcon}
+        panelTitle={getDiskPanelTitle}
+      >
+        {
+          (index: number) => guestDiskFields(model, index, caps, pools, changeModel, onlyHandledDisks)
+        }
+      </FormMultiInput>
+    </>
   );
 }
 
-function getRequestParams(model: Object, disk: string): Object {
+function getRequestParams(model: Object, index: number): Object {
   const sourceMappers = {
     file: (): Object => {
-      if (model[`${disk}_source_file`] !== undefined) {
-        const sourceFile = model[`${disk}_source_file`] !== '' ? model[`${disk}_source_file`] : null;
+      if (model[`disk${index}_source_file`] !== undefined) {
+        const sourceFile = model[`disk${index}_source_file`] !== '' ? model[`disk${index}_source_file`] : null;
         return { source_file: sourceFile };
       }
       return Object.assign(
         {},
-        { pool: model[`${disk}_source_pool`] },
-        model[`${disk}_source_size`] !== '' ? { size: model[`${disk}_source_size`] } : {},
-        model[`${disk}_source_template`] !== '' ? { template: model[`${disk}_source_template`] } : {},
+        { pool: model[`disk${index}_source_pool`] },
+        model[`disk${index}_source_size`] !== '' ? { size: model[`disk${index}_source_size`] } : {},
+        model[`disk${index}_source_template`] !== '' ? { template: model[`disk${index}_source_template`] } : {},
       );
     },
   };
-  const sourceMapper = sourceMappers[model[`${disk}_type`]];
+  const sourceMapper = sourceMappers[model[`disk${index}_type`]];
   const source = sourceMapper !== undefined ? sourceMapper() : {};
 
   return Object.assign({
-    device: model[`${disk}_device`],
-    type: model[`${disk}_type`],
-    bus: model[`${disk}_bus`],
+    device: model[`disk${index}_device`],
+    type: model[`disk${index}_type`],
+    bus: model[`disk${index}_bus`],
   },
   source);
 }

@@ -1,4 +1,4 @@
-# Copyright (c) 2013-2019 SUSE LLC.
+# Copyright (c) 2013-2020 SUSE LLC.
 # Licensed under the terms of the MIT license.
 
 require 'tempfile'
@@ -17,20 +17,64 @@ def generate_temp_file(name, content)
   end
 end
 
-# extract terminals from a retail yaml configuration
-def get_terminals_from_yaml(name)
+# extract various data from Retail yaml configuration
+def read_terminals_from_yaml
+  name = File.dirname(__FILE__) + '/../upload_files/massive-import-terminals.yml'
   tree = YAML.load_file(name)
   tree['branches'].values[0]['terminals'].keys
 end
 
-def get_branch_prefix_from_yaml(name)
+def read_branch_prefix_from_yaml
+  name = File.dirname(__FILE__) + '/../upload_files/massive-import-terminals.yml'
   tree = YAML.load_file(name)
   tree['branches'].values[0]['branch_prefix']
 end
 
-def get_server_domain_from_yaml(name)
+def read_server_domain_from_yaml
+  name = File.dirname(__FILE__) + '/../upload_files/massive-import-terminals.yml'
   tree = YAML.load_file(name)
   tree['branches'].values[0]['server_domain']
+end
+
+# determine image for PXE boot tests
+def compute_image_filename
+  case ENV['PXEBOOT_IMAGE']
+  when nil
+    'Kiwi/POS_Image-JeOS6_head'
+  when 'sles15sp1'
+    'Kiwi/POS_Image-JeOS7_head'
+  else
+    'Kiwi/POS_Image-JeOS6_head'
+  end
+end
+
+def compute_image_name
+  case ENV['PXEBOOT_IMAGE']
+  when nil
+    'POS_Image_JeOS6_head'
+  when 'sles15sp1'
+    'POS_Image_JeOS7_head'
+  else
+    'POS_Image_JeOS6_head'
+  end
+end
+
+# compute list of reposyncs to avoid killing because they might be involved in bootstrapping
+# this is a safety net only, the best thing to do is to not start the reposync at all
+def compute_list_to_leave_running
+  do_not_kill = []
+  [$minion, $sshminion].each do |node|
+    next if node.nil?
+    os_version, os_family = get_os_version(node)
+    if os_family == 'sles' && os_version == '12SP4'
+      do_not_kill += ['sles12-sp4-pool-x86_64', 'sle-manager-tools12-pool-x86_64-sp4', 'sle-module-containers12-pool-x86_64-sp4',
+                      'sles12-sp4-updates-x86_64', 'sle-manager-tools12-updates-x86_64-sp4', 'sle-module-containers12-updates-x86_64-sp4']
+    elsif os_family == 'sles' && os_version == '15SP1'
+      do_not_kill += ['sle-product-sles15-sp1-pool-x86_64', 'sle-manager-tools15-pool-x86_64-sp1', 'sle-module-containers15-sp1-pool-x86_64',
+                      'sle-product-sles15-sp1-updates-x86_64', 'sle-manager-tools15-updates-x86_64-sp1', 'sle-module-containers15-sp1-updates-x86_64']
+    end
+  end
+  do_not_kill
 end
 
 # get registration URL
@@ -58,7 +102,7 @@ def product
   raise 'Could not determine product'
 end
 
-# This function creates salt pillar file in the default pillar_roots location
+# create salt pillar file in the default pillar_roots location
 def inject_salt_pillar_file(source, file)
   dest = '/srv/pillar/' + file
   return_code = file_inject($server, source, dest)

@@ -358,12 +358,22 @@ if [ "$INSTALLER" == yum ]; then
     function getY_CLIENT_CODE_BASE() {{
         local BASE=""
         local VERSION=""
-        if [ -f /etc/redhat-release ]; then
-            grep -v '^#' /etc/redhat-release | grep -q '\(Red Hat\)' && BASE="res"
-            VERSION=`grep -v '^#' /etc/redhat-release | grep -Po '(?<=release )\d+'`
+        # SLES ES6 is a special case; it will install a symlink named
+        # centos-release pointing to redhat-release which will make the
+        # original test fail; reverting the checks does not help as this
+        # will break genuine CentOS systems. So use the poor man's approach
+        # to detect this special case. SLES ES7 does not have this issue
+        # https://bugzilla.suse.com/show_bug.cgi?id=1132576
+        # https://bugzilla.suse.com/show_bug.cgi?id=1152795
+        if [ -L /usr/share/doc/sles_es-release ]; then
+            BASE="res"
+            VERSION=6
         elif [ -f /etc/centos-release ]; then
             grep -v '^#' /etc/centos-release | grep -q '\(CentOS\)' && BASE="centos"
             VERSION=`grep -v '^#' /etc/centos-release | grep -Po '(?<=release )\d+'`
+        elif [ -f /etc/redhat-release ]; then
+            grep -v '^#' /etc/redhat-release | grep -q '\(Red Hat\)' && BASE="res"
+            VERSION=`grep -v '^#' /etc/redhat-release | grep -Po '(?<=release )\d+'`
         fi
         Y_CLIENT_CODE_BASE="${{BASE:-unknown}}"
         Y_CLIENT_CODE_VERSION="${{VERSION:-unknown}}"
@@ -980,6 +990,9 @@ if [ $REGISTER_THIS_BOX -eq 1 ] ; then
 
     echo "$MYNAME" > "$MINION_ID_FILE"
     echo "master: $HOSTNAME" > "$SUSEMANAGER_MASTER_FILE"
+    echo "server_id_use_crc: adler32" >> "$SUSEMANAGER_MASTER_FILE"
+    echo "enable_legacy_startup_events: False" >> "$SUSEMANAGER_MASTER_FILE"
+    echo "enable_fqdns_grains: False" >> "$SUSEMANAGER_MASTER_FILE"
 
     if [ -n "$ACTIVATION_KEYS" ] ; then
         cat <<EOF >>"$SUSEMANAGER_MASTER_FILE"
