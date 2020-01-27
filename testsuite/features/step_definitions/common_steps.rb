@@ -371,22 +371,54 @@ end
 
 # setup wizard
 
-When(/^I make the credentials primary$/) do
-  raise 'xpath: i.fa-star-o not found' unless find('i.fa-star-o').click
+Then(/^HTTP proxy verification should have succeeded$/) do
+  raise 'Success icon not found' unless find('i.text-success', wait: DEFAULT_TIMEOUT)
 end
 
-When(/^I delete the primary credentials$/) do
-  raise 'xpath: i.fa-trash-o not found' unless find('i.fa-trash-o', match: :first).click
-  step 'I click on "Delete"'
+When(/^I enter the address of the HTTP proxy as "([^"]*)"/) do |hostname|
+  step %(I enter "#{$server_http_proxy}" as "#{hostname}")
 end
 
-When(/^I view the primary subscription list$/) do
-  raise 'xpath: i.fa-th-list not found' unless find('i.fa-th-list', match: :first).click
+When(/^I ask to add new credentials$/) do
+  raise 'xpath: i.fa-plus-circle not found' unless find('i.fa-plus-circle').click
 end
 
-When(/^I view the primary subscription list for SCC user$/) do
-  within(:xpath, "//h3[contains(text(), 'SCC user')]/../..") do
-    raise 'xpath: i.fa-th-list not found' unless find('i.fa-th-list', match: :first).click
+Then(/^the credentials for "([^"]*)" should be invalid$/) do |user|
+  within(:xpath, "//h3[contains(text(), '#{user}')]/../..") do
+    raise 'Failure icon not found' unless find('i.text-danger', wait: DEFAULT_TIMEOUT)
+  end
+end
+
+When(/^I make the credentials for "([^"]*)" primary$/) do |user|
+  within(:xpath, "//h3[contains(text(), '#{user}')]/../..") do
+    raise 'Click on star icon failed' unless find('i.fa-star-o').click
+  end
+end
+
+Then(/^the credentials for "([^"]*)" should be primary$/) do |user|
+  within(:xpath, "//h3[contains(text(), '#{user}')]/../..") do
+    raise 'Star icon not selected' unless find('i.fa-star')
+  end
+end
+
+When(/^I wait for the trash icon to appear for "([^"]*)"$/) do |user|
+  within(:xpath, "//h3[contains(text(), '#{user}')]/../..") do
+    repeat_until_timeout(message: 'Trash icon is still greyed out') do
+      break unless find('i.fa-trash-o')[:style].include? "not-allowed"
+      sleep 1
+    end
+  end
+end
+
+When(/^I ask to delete the credentials for "([^"]*)"$/) do |user|
+  within(:xpath, "//h3[contains(text(), '#{user}')]/../..") do
+    raise 'Click on trash icon failed' unless find('i.fa-trash-o').click
+  end
+end
+
+When(/^I view the subscription list for "([^"]*)"$/) do |user|
+  within(:xpath, "//h3[contains(text(), '#{user}')]/../..") do
+    raise 'Click on list icon failed' unless find('i.fa-th-list').click
   end
 end
 
@@ -468,14 +500,6 @@ end
 When(/^I click the channel list of product "(.*?)"$/) do |product|
   xpath = "//span[contains(text(), '#{product}')]/ancestor::div[contains(@class, 'product-details-wrapper')]/div/a[contains(@class, 'showChannels')]"
   raise "xpath: #{xpath} not found" unless find(:xpath, xpath).click
-end
-
-Then(/^I see verification succeeded/) do
-  raise "xpath: i.text-success not found" unless find('i.text-success', wait: 100)
-end
-
-When(/^I enter the address of the HTTP proxy as "([^"]*)"/) do |hostname|
-  step %(I enter "#{$server_http_proxy}" as "#{hostname}")
 end
 
 # configuration management steps
