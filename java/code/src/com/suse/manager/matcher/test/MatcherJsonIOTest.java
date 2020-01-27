@@ -149,8 +149,12 @@ public class MatcherJsonIOTest extends JMockBaseTestCaseWithUser {
         assertTrue(resultG2.getProductIds().contains(MGMT_SINGLE_PROD_ID));
         assertTrue(resultG2.getProductIds().contains(1324L));
 
-        // PAYG instances must be excluded by MatcherJsonIO
-        assertFalse(result.stream().anyMatch(s -> s.getId().equals(g3.getId())));
+        // PAYG instances must only have entitlements
+        SystemJson resultG3 = findSystem(g3.getId(), result);
+        assertNotNull(resultG3);
+        assertEquals("guest3.example.com", resultG3.getName());
+        assertEquals(1, resultG3.getProductIds().size());
+        assertTrue(resultG3.getProductIds().contains(MGMT_SINGLE_PROD_ID));
 
         // ISS Master should add itself
         SystemJson sumaItself = findSystem(MatcherJsonIO.SELF_SYSTEM_ID, result);
