@@ -1,3 +1,4 @@
+- Migrate pillar and formula data on minion id change (bsc#1161755)
 - Remove auditlog-keeper
 - Exclude base products from PAYG (Pay-As-You-Go) instances when doing subscription matching
 - call saltutil.sync_all before calling highstate (bsc#1152673)
