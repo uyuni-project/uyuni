@@ -9,7 +9,7 @@ const ReactDOM = require('react-dom');
 const Network = require('utils/network');
 const Messages = require('components/messages').Messages;
 const MessagesUtils = require("components/messages").Utils;
-const {DataHandler, DataItem} = require('components/data-handler');
+const {CustomDataHandler} = require('components/table/CustomDataHandler');
 const {SearchField} = require('components/table/SearchField');
 const {Highlight} = require('components/table/Highlight');
 const Functions = require('utils/functions');
@@ -454,7 +454,7 @@ class Products extends React.Component {
       </div>;
     return (
       <div>
-        <DataHandler
+        <CustomDataHandler
           data={this.buildRows(this.filterDataByArch(this.props.data))}
           identifier={(raw) => raw.identifier}
           initialItemsPerPage={userPrefPageSize}
@@ -488,7 +488,7 @@ class Products extends React.Component {
               treeLevel={1}
               childrenDisabled={false}
           />
-        </DataHandler>
+        </CustomDataHandler>
         <ChannelsPopUp item={this.state.popupItem} />
       </div>
     )
