@@ -26,6 +26,7 @@ import org.apache.log4j.Logger;
 
 import java.util.Optional;
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 import javax.persistence.PersistenceException;
 
 /**
@@ -34,6 +35,38 @@ import javax.persistence.PersistenceException;
 public abstract class TransactionHelper {
 
     private static Logger log = Logger.getLogger(TransactionHelper.class);
+
+    /**
+     * Runs the supplier and handles the closing of the transaction and Hibernate session upon completion,
+     * rolling back in case of unexpected Exceptions.
+     *
+     * @param supplier code to wrap
+     * @param errorHandler called in case of unexpected Exceptions
+     * @param <T> supplier return type
+     * @return the result of executing the supplier
+     */
+    public static <T> Optional<T> handlingTransaction(Supplier<T> supplier, Consumer<Exception> errorHandler) {
+        Optional<Exception> applicationException = Optional.empty();
+        Optional<T> res = Optional.empty();
+        try {
+            res = Optional.of(supplier.get());
+        }
+        catch (Exception e) {
+            applicationException = Optional.of(e);
+        }
+
+        Optional<Exception> transactionException = handleTransactions(!applicationException.isPresent());
+
+        res = !transactionException.isEmpty() ? Optional.empty() : res;
+
+        concat(stream(applicationException), stream(transactionException)).findFirst().ifPresent(e -> {
+            handlingTransaction(
+                    () -> errorHandler.accept(e),
+                    f -> log.error("Additional Exception during Exception handling", f)
+            );
+        });
+        return res;
+    }
 
     /**
      * Runs the runnable and handles the closing of the transaction and Hibernate session upon completion,

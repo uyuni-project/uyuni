@@ -23,6 +23,8 @@ import EDU.oswego.cs.dl.util.concurrent.Channel;
 import EDU.oswego.cs.dl.util.concurrent.LinkedQueue;
 import EDU.oswego.cs.dl.util.concurrent.PooledExecutor;
 
+import static com.suse.manager.utils.ThreadUtils.threadName;
+
 /**
  * Generic threaded queue suitable for use wherever Taskomatic
  * tasks need to process a number of work items in parallel.
@@ -177,7 +179,10 @@ public class TaskQueue {
         int maxPoolSize = queueDriver.getMaxWorkers();
         executor = new PooledExecutor(workers);
         executor.waitWhenBlocked();
-        executor.setThreadFactory(new TaskThreadFactory());
+        executor.setThreadFactory(runnable ->
+                new Thread(runnable,
+                        threadName("TaskQueueWorker-" +
+                                queueDriver.getClass().getSimpleName() + "-")));
         executor.setKeepAliveTime(5000);
         executor.setMinimumPoolSize(1);
         executor.setMaximumPoolSize(maxPoolSize);

@@ -99,6 +99,7 @@ import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionException;
 import java.util.concurrent.CompletionStage;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -856,6 +857,31 @@ public class SaltService {
             }
             else {
                 throw new SaltException(cause);
+            }
+        }
+    }
+
+    /**
+     * This is a helper for keeping the old exception behaviour until
+     * all code makes proper use of the async api.
+     * @param fn function to execute and adapt.
+     * @param timeout time to wait (in seconds)
+     * @param <T> result of fn
+     * @return the result of fn
+     * @throws SaltException if an exception gets thrown
+     */
+    public static <T> T adaptException(CompletionStage<T> fn, int timeout) throws SaltException {
+        try {
+            return fn.toCompletableFuture().get(timeout, TimeUnit.SECONDS);
+        }
+        catch (InterruptedException | ExecutionException | TimeoutException e) {
+            LOG.error("Salt call exception", e);
+            Throwable cause = e.getCause();
+            if (cause instanceof SaltException) {
+                throw (SaltException) cause;
+            }
+            else {
+                throw new SaltException(e);
             }
         }
     }

@@ -15,7 +15,6 @@
 package com.redhat.rhn.taskomatic.task.sshpush.test;
 
 import com.google.gson.JsonElement;
-import com.google.gson.reflect.TypeToken;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.ActionStatus;
@@ -29,17 +28,14 @@ import com.redhat.rhn.taskomatic.task.sshpush.SSHPushWorkerSalt;
 import com.redhat.rhn.taskomatic.task.threaded.TaskQueue;
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
 import com.redhat.rhn.testing.TestUtils;
-import com.suse.manager.reactor.messaging.test.JobReturnEventMessageActionTest;
 import com.suse.manager.utils.SaltUtils;
 import com.suse.manager.webui.controllers.utils.test.SSHMinionBootstrapperTest;
 import com.suse.manager.webui.services.SaltServerActionService;
 import com.suse.manager.webui.services.impl.SaltSSHService;
 import com.suse.manager.webui.services.impl.SaltService;
-import com.suse.manager.webui.utils.salt.custom.FilesDiffResult;
 import com.suse.manager.webui.utils.salt.custom.SystemInfo;
 import com.suse.salt.netapi.calls.LocalCall;
 import com.suse.salt.netapi.datatypes.target.MinionList;
-import com.suse.salt.netapi.event.JobReturnEvent;
 import com.suse.salt.netapi.results.Result;
 import com.suse.salt.netapi.utils.Xor;
 import com.suse.utils.Json;
@@ -48,13 +44,11 @@ import org.jmock.Expectations;
 import org.jmock.lib.legacy.ClassImposteriser;
 
 import java.io.File;
-import java.nio.file.Path;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -110,38 +104,51 @@ public class SSHPushWorkerSaltTest extends JMockBaseTestCaseWithUser {
         minion.setLastBoot(1L); // last boot is long time in the past
         Action action = createRebootAction(
                 Date.from(Instant.now().minus(5, ChronoUnit.MINUTES)));
-        ServerAction serverAction = createChildServerAction(action,
+        createChildServerAction(action,
                 ActionFactory.STATUS_PICKED_UP, 5L);
         ActionFactory.save(action);
 
         worker = successWorker();
-        mockSyncCallResult();
-       
+
         context().checking(new Expectations() {{
-           
             oneOf(sshPushSystemMock).getId();
             will(returnValue(minion.getId()));
 
             oneOf(sshPushSystemMock).isRebooting();
             will(returnValue(false));
 
+            oneOf(sshPushSystemMock).getMinionId();
+            will(returnValue(minion.getMinionId()));
+
+            Map<String, Result<Boolean>> pingMap = new HashMap<>();
+            pingMap.put(minion.getMinionId(),  new Result<>(Xor.right(Boolean.TRUE)));
+            oneOf(saltSSHServiceMock).callSyncSSH(with(any(LocalCall.class)),
+                    with(any(MinionList.class)), with(60));
+            will(returnValue(pingMap));
+
+            SystemInfo sysInfoMock = mock(SystemInfo.class);
+            allowing(sysInfoMock).getKerneRelese();
+            will(returnValue(Optional.of("4.3.2.1")));
+            allowing(sysInfoMock).getUptimeSeconds();
+            will(returnValue(Optional.of(0)));
+
             Map<String, Result<SystemInfo>> systemInfoMap = new HashMap<>();
-            systemInfoMap.put(minion.getMinionId(),  new Result<>(Xor.right(sampleSystemInfo)));
-            allowing(saltSSHServiceMock).callSyncSSH(with(any(LocalCall.class)),
-                    with(any(MinionList.class)));
+            systemInfoMap.put(minion.getMinionId(),  new Result<>(Xor.right(sysInfoMock)));
+            oneOf(saltSSHServiceMock).callSyncSSH(with(any(LocalCall.class)),
+                    with(any(MinionList.class)), with(60));
             will(returnValue(systemInfoMap));
-            
-            
         }});
 
         worker.setParentQueue(mockQueue());
         worker.run();
 
+        HibernateFactory.getSession().clear();
+        ServerAction serverAction = ActionFactory.getServerActionForServerAndAction(minion, action);
         assertEquals(STATUS_COMPLETED, serverAction.getStatus());
         assertEquals(Long.valueOf(5L), serverAction.getRemainingTries());
         assertEquals(Long.valueOf(0L), serverAction.getResultCode());
         assertEquals("Reboot completed.", serverAction.getResultMsg());
-        assertTrue(minion.getLastBoot() > 1L);
+        assertTrue(minion.getLastBoot() >= 1L);
     }
 
     /**
@@ -161,7 +168,7 @@ public class SSHPushWorkerSaltTest extends JMockBaseTestCaseWithUser {
         minion.setLastBoot(1L); // last boot is long time in the past
         // very old reboot action
         Action oldAction = createRebootAction(new Date(1L));
-        ServerAction oldServerAction = createChildServerAction(oldAction,
+        createChildServerAction(oldAction,
                 ActionFactory.STATUS_PICKED_UP, 5L);
         ActionFactory.save(oldAction);
 
@@ -180,7 +187,6 @@ public class SSHPushWorkerSaltTest extends JMockBaseTestCaseWithUser {
         ActionFactory.save(upcomingAction);
 
         worker = successWorker();
-        mockSyncCallResult();
 
         context().checking(new Expectations() {{
 
@@ -190,23 +196,41 @@ public class SSHPushWorkerSaltTest extends JMockBaseTestCaseWithUser {
             oneOf(sshPushSystemMock).isRebooting();
             will(returnValue(false));
 
+            oneOf(sshPushSystemMock).getMinionId();
+            will(returnValue(minion.getMinionId()));
+
+            Map<String, Result<Boolean>> pingMap = new HashMap<>();
+            pingMap.put(minion.getMinionId(),  new Result<>(Xor.right(Boolean.TRUE)));
+            oneOf(saltSSHServiceMock).callSyncSSH(with(any(LocalCall.class)),
+                    with(any(MinionList.class)), with(60));
+            will(returnValue(pingMap));
+
+            SystemInfo sysInfoMock = mock(SystemInfo.class);
+            allowing(sysInfoMock).getKerneRelese();
+            will(returnValue(Optional.of("4.3.2.1")));
+            allowing(sysInfoMock).getUptimeSeconds();
+            will(returnValue(Optional.of(0)));
+
             Map<String, Result<SystemInfo>> systemInfoMap = new HashMap<>();
-            systemInfoMap.put(minion.getMinionId(),  new Result<>(Xor.right(sampleSystemInfo)));
-            allowing(saltSSHServiceMock).callSyncSSH(with(any(LocalCall.class)),
-                    with(any(MinionList.class)));
+            systemInfoMap.put(minion.getMinionId(),  new Result<>(Xor.right(sysInfoMock)));
+            oneOf(saltSSHServiceMock).callSyncSSH(with(any(LocalCall.class)),
+                    with(any(MinionList.class)), with(60));
             will(returnValue(systemInfoMap));
         }});
 
         worker.setParentQueue(mockQueue());
         worker.run();
 
+        HibernateFactory.getSession().clear();
+        ServerAction oldServerAction = ActionFactory.getServerActionForServerAndAction(minion, oldAction);
+        upcomingServerAction = ActionFactory.getServerActionForServerAndAction(minion, upcomingAction);
         // assertions
         assertRebootCompleted(upcomingServerAction);
         assertRebootCompleted(oldServerAction);
         assertEquals(STATUS_QUEUED, futureServerAction.getStatus());
         assertEquals(Long.valueOf(5L), futureServerAction.getRemainingTries());
         assertNull(futureServerAction.getResultCode());
-        assertTrue(minion.getLastBoot() > 1L);
+        assertTrue(minion.getLastBoot() >= 1L);
 
         // explicitly remove any row created by the worker, as it commits
         OrgFactory.deleteOrg(user.getOrg().getId(), user);
@@ -218,7 +242,7 @@ public class SSHPushWorkerSaltTest extends JMockBaseTestCaseWithUser {
         // action to be picked up
         Action upcomingAction = createRebootAction(
                 Date.from(Instant.now().minus(5, ChronoUnit.MINUTES)));
-        ServerAction upcomingServerAction = createChildServerAction(upcomingAction,
+        createChildServerAction(upcomingAction,
                 ActionFactory.STATUS_PICKED_UP, 5L);
         ActionFactory.save(upcomingAction);
 
@@ -237,11 +261,6 @@ public class SSHPushWorkerSaltTest extends JMockBaseTestCaseWithUser {
             result.put(minion.getMinionId(), Result.success(values));
             will(returnValue(result));
 
-            oneOf(saltServiceMock).callSync(
-                    with(any(LocalCall.class)),
-                    with(any(String.class)));
-            will(returnValue(Optional.of(true)));
-
             oneOf(saltSSHServiceMock).cleanPendingActionChainAsync(with(any(MinionServer.class)));
 
             oneOf(sshPushSystemMock).getId();
@@ -250,10 +269,25 @@ public class SSHPushWorkerSaltTest extends JMockBaseTestCaseWithUser {
             oneOf(sshPushSystemMock).isRebooting();
             will(returnValue(true));
 
+            oneOf(sshPushSystemMock).getMinionId();
+            will(returnValue(minion.getMinionId()));
+
+            Map<String, Result<Boolean>> pingMap = new HashMap<>();
+            pingMap.put(minion.getMinionId(),  new Result<>(Xor.right(Boolean.TRUE)));
+            oneOf(saltSSHServiceMock).callSyncSSH(with(any(LocalCall.class)),
+                    with(any(MinionList.class)), with(60));
+            will(returnValue(pingMap));
+
+            SystemInfo sysInfoMock = mock(SystemInfo.class);
+            allowing(sysInfoMock).getKerneRelese();
+            will(returnValue(Optional.of("4.3.2.1")));
+            allowing(sysInfoMock).getUptimeSeconds();
+            will(returnValue(Optional.of(0)));
+
             Map<String, Result<SystemInfo>> systemInfoMap = new HashMap<>();
-            systemInfoMap.put(minion.getMinionId(),  new Result<>(Xor.right(sampleSystemInfo)));
-            allowing(saltSSHServiceMock).callSyncSSH(with(any(LocalCall.class)),
-                    with(any(MinionList.class)));
+            systemInfoMap.put(minion.getMinionId(),  new Result<>(Xor.right(sysInfoMock)));
+            oneOf(saltSSHServiceMock).callSyncSSH(with(any(LocalCall.class)),
+                    with(any(MinionList.class)), with(60));
             will(returnValue(systemInfoMap));
             
         }});
@@ -261,6 +295,8 @@ public class SSHPushWorkerSaltTest extends JMockBaseTestCaseWithUser {
         worker.setParentQueue(mockQueue());
         worker.run();
 
+        HibernateFactory.getSession().clear();
+        ServerAction upcomingServerAction = ActionFactory.getServerActionForServerAndAction(minion, upcomingAction);
         assertRebootCompleted(upcomingServerAction);
     }
 
@@ -292,14 +328,14 @@ public class SSHPushWorkerSaltTest extends JMockBaseTestCaseWithUser {
         return serverAction;
     }
 
-    private void mockSyncCallResult() {
-        context().checking(new Expectations() {{
-            oneOf(saltServiceMock).callSync(
-                    with(any(LocalCall.class)),
-                    with(any(String.class)));
-            will(returnValue(Optional.of(Boolean.TRUE)));
-        }});
-    }
+//    private void mockSyncCallResult() {
+//        context().checking(new Expectations() {{
+//            oneOf(saltServiceMock).callSync(
+//                    with(any(LocalCall.class)),
+//                    with(any(String.class)));
+//            will(returnValue(Optional.of(Boolean.TRUE)));
+//        }});
+//    }
 
     private TaskQueue mockQueue() {
         TaskQueue mockQueue = mock(TaskQueue.class);

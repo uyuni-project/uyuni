@@ -227,6 +227,8 @@ public class ConfigDefaults {
 
     public static final String SALT_SSH_CONNECT_TIMEOUT = "java.salt_ssh_connect_timeout";
 
+    private static final String SALT_SSH_API_RATE_LIMIT = "java.salt_ssh_api_rate_limit";
+
     /**
      * Duration in hours of the time window for Salt minions to stage
      * packages in advance of scheduled installations or upgrades
@@ -317,6 +319,11 @@ public class ConfigDefaults {
      * Single Sign-On associated config option name in rhn.conf
      */
     public static final String SINGLE_SIGN_ON_ENABLED = "java.sso";
+
+    /**
+     * Timeout of salt-ssh calls
+     */
+    public static final String SALT_SSH_TIMEOUT = "java.salt_ssh_timeout";
 
     private ConfigDefaults() {
     }
@@ -1002,4 +1009,11 @@ public class ConfigDefaults {
         return Config.get().getBoolean(SINGLE_SIGN_ON_ENABLED);
     }
 
+    public int getSaltSSHAPIRateLimit() {
+        return Config.get().getInt(SALT_SSH_API_RATE_LIMIT, 10);
+    }
+
+    public int getSaltSSHTimeout() {
+        return Config.get().getInt(SALT_SSH_TIMEOUT, 0);
+    }
 }

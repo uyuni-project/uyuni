@@ -24,6 +24,7 @@ import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ServerPath;
 import com.redhat.rhn.domain.token.ActivationKeyFactory;
+import com.suse.manager.utils.ExecutorsFactory;
 import com.suse.manager.utils.SaltUtils;
 import com.suse.manager.webui.controllers.StatesAPI;
 import com.suse.manager.webui.controllers.utils.ContactMethodUtil;
@@ -80,7 +81,6 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionStage;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
 import java.util.Set;
 import java.util.concurrent.TimeoutException;
 import java.util.function.Function;
@@ -154,9 +154,10 @@ public class SaltSSHService {
      */
     public SaltSSHService(SaltClient saltClientIn, SaltActionChainGeneratorService saltActionChainGeneratorServiceIn) {
         this.saltClient = saltClientIn;
-        // use a small fixed pool so we don't overwhelm the salt-api
-        // with salt-ssh executions
-        this.asyncSaltSSHExecutor = Executors.newFixedThreadPool(3);
+        // rate limit the ssh calls so we don't overwhelm the salt-api with salt-ssh executions
+        this.asyncSaltSSHExecutor =
+                ExecutorsFactory.rateLimitingExecutor(
+                        ConfigDefaults.get().getSaltSSHAPIRateLimit(), "SaltSSHServiceExecutorThread-");
         this.saltActionChainGeneratorService = saltActionChainGeneratorServiceIn;
     }
 
@@ -184,6 +185,28 @@ public class SaltSSHService {
      * during manipulation the salt-ssh roster
      */
     public <R> Map<String, Result<R>> callSyncSSH(LocalCall<R> call, MinionList target, Optional<String> extraFileRefs)
+            throws SaltException  {
+        return callSyncSSH(call, target, extraFileRefs, Optional.empty());
+    }
+
+    /**
+     * Synchronously executes a salt function on given minion list using salt-ssh. Optionally it can
+     * use the given timeout.
+     *
+     * Before the execution, this method creates an one-time roster corresponding to targets
+     * in given minion list.
+     *
+     * @param call the salt call
+     * @param target the minion list target
+     * @param extraFileRefs --extra-fileresfs salt-ssh param
+     * @param timeout optional timeout
+     * @param <R> result type of the salt function
+     * @return the result of the call
+     * @throws SaltException if something goes wrong during command execution or
+     * during manipulation the salt-ssh roster
+     */
+    public <R> Map<String, Result<R>> callSyncSSH(LocalCall<R> call, MinionList target, Optional<String> extraFileRefs,
+                                                  Optional<Integer> timeout)
             throws SaltException {
         // Using custom LocalCall timeout if included in the payload
         Optional<Integer> sshTimeout = call.getPayload().containsKey("timeout") ?
@@ -191,11 +214,13 @@ public class SaltSSHService {
                     getSshPushTimeout();
         SaltRoster roster = prepareSaltRoster(target, sshTimeout);
         return unwrapSSHReturn(
-                callSyncSSHInternal(call, target, roster, false, isSudoUser(getSSHUser()), extraFileRefs));
+                callSyncSSHInternal(call, target, roster, false, isSudoUser(getSSHUser()), extraFileRefs,
+                        timeout));
     }
 
     /**
-     * Synchronously executes a salt function on given minion list using salt-ssh.
+     * Synchronously executes a salt function on given minion list using salt-ssh. Optionally it can
+     * use the given timeout.
      *
      * Before the execution, this method creates an one-time roster corresponding to targets
      * in given minion list.
@@ -208,7 +233,26 @@ public class SaltSSHService {
      * during manipulation the salt-ssh roster
      */
     public <R> Map<String, Result<R>> callSyncSSH(LocalCall<R> call, MinionList target) throws SaltException {
-        return callSyncSSH(call, target, Optional.empty());
+        return callSyncSSH(call, target, Optional.empty(), Optional.empty());
+    }
+
+    /**
+     * Synchronously executes a salt function on given minion list using salt-ssh.
+     *
+     * Before the execution, this method creates an one-time roster corresponding to targets
+     * in given minion list.
+     *
+     * @param call the salt call
+     * @param target the minion list target
+     * @param timeout optional timeout
+     * @param <R> result type of the salt function
+     * @return the result of the call
+     * @throws SaltException if something goes wrong during command execution or
+     * during manipulation the salt-ssh roster
+     */
+    public <R> Map<String, Result<R>> callSyncSSH(LocalCall<R> call, MinionList target, int timeout)
+            throws SaltException {
+        return callSyncSSH(call, target, Optional.empty(), Optional.of(timeout));
     }
 
     private SaltRoster prepareSaltRoster(MinionList target, Optional<Integer> sshTimeout) {
@@ -291,21 +335,14 @@ public class SaltSSHService {
         target.getTarget().forEach(minionId ->
                 futures.put(minionId, new CompletableFuture<>())
         );
-        CompletableFuture<Map<String, Result<R>>> asyncCallFuture =
-                CompletableFuture.supplyAsync(() -> {
-                    try {
-                        return unwrapSSHReturn(
-                                callSyncSSHInternal(call, target, roster,
-                                        false, isSudoUser(getSSHUser()),
-                                        extraFilerefs));
-                    }
-                    catch (SaltException e) {
-                        LOG.error("Error calling async salt-ssh minions", e);
-                        throw new RuntimeException(e);
-                    }
-                }, asyncSaltSSHExecutor);
 
-        asyncCallFuture.whenComplete((executionResult, err) ->
+        try {
+            CompletableFuture<Map<String, Result<SSHResult<R>>>> asyncCallFuture =
+                    callAsyncSSHInternal(call, target, roster, false, isSudoUser(getSSHUser()), extraFilerefs);
+
+            asyncCallFuture.whenCompleteAsync((rawResult, err) -> {
+                var executionResult = unwrapSSHReturn(rawResult);
+
                 futures.forEach((minionId, future) -> {
                     if (err == null) {
                         future.complete(executionResult.get(minionId));
@@ -313,20 +350,27 @@ public class SaltSSHService {
                     else {
                         future.completeExceptionally(err);
                     }
-                })
-        );
-        cancel.whenComplete((v, e) -> {
-            if (v != null) {
-                Map<String, Result<R>> error = target.getTarget().stream()
-                        .collect(Collectors.toMap(
-                                Function.identity(),
-                                minionId -> Result.error(v)));
-                asyncCallFuture.complete(error);
-            }
-            else if (e != null) {
-                asyncCallFuture.completeExceptionally(e);
-            }
-        });
+                });
+            }, asyncSaltSSHExecutor);
+
+            cancel.whenComplete((v, e) -> {
+                if (v != null) {
+                    Map<String, Result<SSHResult<R>>> error = target.getTarget().stream()
+                            .collect(Collectors.toMap(
+                                    Function.identity(),
+                                    minionId -> Result.error(v)));
+                    asyncCallFuture.complete(error);
+                }
+                else if (e != null) {
+                    asyncCallFuture.completeExceptionally(e);
+                }
+            });
+
+        }
+        catch (SaltException e) {
+            LOG.error("Error making async ");
+            throw new RuntimeException(e);
+        }
         return futures.entrySet().stream().collect(Collectors.toMap(
                 Map.Entry::getKey,
                 e -> (CompletionStage<Result<R>>) e.getValue()
@@ -645,12 +689,31 @@ public class SaltSSHService {
     private <T> Map<String, Result<SSHResult<T>>> callSyncSSHInternal(LocalCall<T> call,
             SSHTarget target, SaltRoster roster, boolean ignoreHostKeys, boolean sudo)
             throws SaltException {
-        return callSyncSSHInternal(call, target, roster, ignoreHostKeys, sudo, Optional.empty());
+        return callSyncSSHInternal(call, target, roster, ignoreHostKeys, sudo, Optional.empty(), Optional.empty());
     }
 
 
-    private <T> Map<String, Result<SSHResult<T>>> callSyncSSHInternal(LocalCall<T> call,
-            SSHTarget target, SaltRoster roster, boolean ignoreHostKeys, boolean sudo, Optional<String> extraFilerefs)
+    private <T> Map<String, Result<SSHResult<T>>> callSyncSSHInternal(
+            LocalCall<T> call,
+            SSHTarget target, SaltRoster roster,
+            boolean ignoreHostKeys, boolean sudo,
+            Optional<String> extraFilerefs,
+            Optional<Integer> timeout)
+            throws SaltException {
+
+        CompletionStage<Map<String, Result<SSHResult<T>>>> stage =
+                callAsyncSSHInternal(call, target, roster, ignoreHostKeys, sudo, extraFilerefs);
+
+        return timeout.isPresent() ? SaltService.adaptException(stage, timeout.get()) :
+                SaltService.adaptException(stage);
+    }
+
+    private <T> CompletableFuture<Map<String, Result<SSHResult<T>>>> callAsyncSSHInternal(
+            LocalCall<T> call,
+            SSHTarget target, SaltRoster roster,
+            boolean ignoreHostKeys,
+            boolean sudo,
+            Optional<String> extraFilerefs)
             throws SaltException {
         if (!(target instanceof MinionList || target instanceof Glob)) {
             throw new UnsupportedOperationException("Only MinionList and Glob supported.");
@@ -667,16 +730,19 @@ public class SaltSSHService {
             extraFilerefs.ifPresent(filerefs -> sshConfigBuilder.extraFilerefs(filerefs));
             SaltSSHConfig sshConfig = sshConfigBuilder.build();
 
-            LOG.debug("Local callSyncSSH: " + SaltService.localCallToString(call));
-            return SaltService.adaptException(call.callSyncSSH(saltClient, target, sshConfig, PW_AUTH)
-                    .whenComplete((r, e) -> {
-                        try {
-                            Files.deleteIfExists(rosterPath);
-                        }
-                        catch (IOException ex) {
-                            LOG.error("Can't delete roster file: " + ex.getMessage());
-                        }
-                    }));
+            LOG.debug("salt-ssh call: " + SaltService.localCallToString(call));
+            CompletionStage<Map<String, Result<SSHResult<T>>>> stage =
+                    call.callSyncSSH(saltClient, target, sshConfig, PW_AUTH)
+                            .whenComplete((r, e) -> {
+                                try {
+                                    Files.deleteIfExists(rosterPath);
+                                }
+                                catch (IOException ex) {
+                                    LOG.error("Can't delete roster file", ex);
+                                }
+                            });
+
+            return stage.toCompletableFuture();
         }
         catch (IOException e) {
             LOG.error("Error operating on roster file: " + e.getMessage());

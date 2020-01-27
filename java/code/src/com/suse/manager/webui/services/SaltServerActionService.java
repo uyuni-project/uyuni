@@ -85,11 +85,13 @@ import com.redhat.rhn.domain.server.VirtualInstanceFactory;
 import com.redhat.rhn.domain.token.ActivationKey;
 import com.redhat.rhn.domain.token.ActivationKeyFactory;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.events.TransactionHelper;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerXMLRPCHelper;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
 import com.suse.manager.reactor.messaging.JobReturnEventMessageAction;
+import com.suse.manager.utils.ExecutorsFactory;
 import com.suse.manager.utils.SaltUtils;
 import com.suse.manager.webui.services.impl.SaltSSHService;
 import com.suse.manager.webui.services.impl.SaltService;
@@ -136,6 +138,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletionStage;
+import java.util.concurrent.Executor;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -203,6 +208,14 @@ public class SaltServerActionService {
     private SaltSSHService saltSSHService = SaltService.INSTANCE.getSaltSSHService();
     private SaltUtils saltUtils = SaltUtils.INSTANCE;
     private boolean skipCommandScriptPerms;
+    private Executor whenCompleteAsyncSSHExecutor;
+
+    /**
+     * Constructor.
+     */
+    public SaltServerActionService() {
+        whenCompleteAsyncSSHExecutor = ExecutorsFactory.newCachedThreadPool("WhenCompleteAsyncSSHThread-");
+    }
 
     private Action unproxy(Action entity) {
         Hibernate.initialize(entity);
@@ -1847,67 +1860,154 @@ public class SaltServerActionService {
             Map<LocalCall<?>, List<MinionSummary>> calls = callsForAction(action,
                     Arrays.asList(new MinionSummary(minion)));
 
+            CompletableFuture cancel =  ConfigDefaults.get().getSaltSSHTimeout() >  0 ?
+                            SaltService.INSTANCE.failAfter(ConfigDefaults.get().getSaltSSHTimeout()) :
+                    new CompletableFuture();
+
             for (LocalCall<?> call : calls.keySet()) {
-                Optional<JsonElement> result;
                 // try-catch as we'd like to log the warning in case of exception
+
+                Map<String, CompletionStage<Result<?>>> callFutures;
                 try {
-                    result = saltService.callSync(new ElementCallJson(call), minion.getMinionId());
+                    callFutures = saltSSHService
+                            .callAsyncSSH(new ElementCallJson(call), new MinionList(minion.getMinionId()), cancel);
                 }
                 catch (RuntimeException e) {
                     LOG.error("Error executing Salt call for action: " + action.getName() +
                             "on minion " + minion.getMinionId(), e);
-                    sa.setStatus(STATUS_FAILED);
-                    sa.setResultMsg("Error calling Salt: " + e.getMessage());
-                    sa.setCompletionTime(new Date());
+                    sa.fail("Error calling Salt: " + e.getMessage());
                     throw e;
                 }
 
-                if (!result.isPresent()) {
-                    LOG.error("Action '" + action.getName() + "' failed. Got not result from Salt," +
-                            " probablly minion is down or could not be contacted.");
-                    sa.setStatus(STATUS_FAILED);
-                    sa.setResultMsg("Minion is down or could not be contacted.");
-                    sa.setCompletionTime(new Date());
-                    return;
-                }
+                sa.setStatus(ActionFactory.STATUS_PICKED_UP);
+                sa.setPickupTime(new Date());
 
-                result.ifPresent(r -> {
-                    if (LOG.isTraceEnabled()) {
-                        LOG.trace("Salt call result: " + r);
-                    }
-                    String function = (String) call.getPayload().get("fun");
+                callFutures.forEach((minionId, future) ->
+                        future.whenCompleteAsync((callResult, err) -> {
+                            LOG.debug("Got response for action " + action.getId() + " from SSH minion: " + minionId);
+                            if (callResult != null) {
+                                callResult.fold(
+                                        error -> {
+                                            String errMsg = SaltUtils.decodeSaltErr(error);
+                                            LOG.error("Processing error response from SSH minion " +
+                                                    minionId + ": " + errMsg);
+                                            TransactionHelper.handlingTransaction(() -> {
+                                                ActionFactory.lookupById(action.getId()).getServerActions().stream()
+                                                        .filter(sact -> sact.getServerId().equals(minion.getId()))
+                                                        .findFirst().ifPresent(srvAction -> {
+                                                            srvAction.fail("Error calling SSH minion: " + errMsg);
+                                                        });
 
-                    // reboot needs special handling in case of ssh push
-                    if (action.getActionType().equals(ActionFactory.TYPE_REBOOT)) {
-                        sa.setStatus(ActionFactory.STATUS_PICKED_UP);
-                        sa.setPickupTime(new Date());
-                    }
-                    else {
-                        saltUtils.updateServerAction(sa, 0L, true, "n/a",
-                                r, function);
-                    }
+                                            },
+                                                    (Exception e) -> {
+                                                        LOG.error("Error handling error response for action " +
+                                                                action.getId() + " from SSH minion " + minionId, e);
+                                                    });
+                                            return Optional.empty();
+                                        },
+                                        res -> {
+                                            TransactionHelper.handlingTransaction(() -> {
+                                                LOG.info("Processing successful response for action " +
+                                                        action.getId() + " from SSH minion " + minionId);
+                                                Action act = ActionFactory.lookupById(action.getId());
+                                                MinionServer min = MinionServerFactory.lookupById(minion.getId()).get();
+                                                ServerAction srvAct = act.getServerActions().stream()
+                                                        .filter(sact -> sact.getServerId().equals(minion.getId()))
+                                                        .findFirst().orElseThrow();
+                                                processSaltSSHResponse(act, min, srvAct, call,
+                                                        Optional.of((JsonElement)res));
+                                                },
+                                                    e -> {
+                                                        LOG.error(
+                                                                "Error handling successful response from SSH minion " +
+                                                                        minionId, e);
+                                                        TransactionHelper.handlingTransaction(() -> {
+                                                            LOG.info("Setting action " + action.getId() +
+                                                                    " to FAILED for SSH minion " + minionId);
+                                                            Action act = ActionFactory.lookupById(action.getId());
+                                                            ServerAction srvAct = act.getServerActions().stream()
+                                                                    .filter(sact ->
+                                                                            sact.getServerId().equals(minion.getId()))
+                                                                    .findFirst().orElseThrow();
+                                                            srvAct.fail("Error handling response from SSH minion: " +
+                                                                    e.getMessage());
+                                                        }, ex ->
+                                                            LOG.error("Error setting action " + action.getId() +
+                                                                    " to failed for minion " + minionId, e)
+                                                        );
+                                                    });
 
-                    // Perform a "check-in" after every executed action
-                    minion.updateServerInfo();
+                                            return Optional.empty();
+                                        });
 
-                    // Perform a package profile update in the end if necessary
-                    if (saltUtils.shouldRefreshPackageList(function, result)) {
-                        LOG.info("Scheduling a package profile update");
-                        Action pkgList;
-                        try {
-                            pkgList = ActionManager.schedulePackageRefresh(minion.getOrg(), minion);
-                            executeSSHAction(pkgList, minion);
-                        }
-                        catch (TaskomaticApiException e) {
-                            LOG.error("Could not schedule package refresh for minion: " +
-                                    minion.getMinionId());
-                            LOG.error(e);
-                        }
-                    }
-                });
+                            }
+                            else if (err != null) {
+                                LOG.error("Got error response for action " + action.getId() +
+                                        " from SSH minion " + minionId + ": ", err);
+                                TransactionHelper.handlingTransaction(() -> {
+                                    ActionFactory.lookupById(action.getId()).getServerActions().stream()
+                                            .filter(sact -> sact.getServerId().equals(minion.getId()))
+                                            .findFirst().ifPresent(srvAction -> {
+                                                LOG.info("Setting action " + action.getId() +
+                                                        " to FAILED for SSH minion " + minionId);
+                                                srvAction.fail("Error calling Salt: " + err.getMessage());
+                                            });
+                                    },
+                                        (Exception e) ->
+                                            LOG.error("Error handling error response for SSH minion " +
+                                                    minionId, e)
+                                        );
+                            }
+                        }, whenCompleteAsyncSSHExecutor));
             }
         }
-        return;
+    }
+
+    private void processSaltSSHResponse(Action action, MinionServer minion, ServerAction sa,
+                                        LocalCall<?> call, Optional<JsonElement> result) {
+        if (!result.isPresent()) {
+            LOG.error("Action '" + action.getName() + "' failed. Got not result from Salt," +
+                    " probablly minion is down or could not be contacted.");
+            sa.setStatus(STATUS_FAILED);
+            sa.setResultMsg("Minion is down or could not be contacted.");
+            sa.setCompletionTime(new Date());
+            return;
+        }
+
+        result.ifPresent(r -> {
+            if (LOG.isTraceEnabled()) {
+                LOG.trace("Salt call result: " + r);
+            }
+            String function = (String) call.getPayload().get("fun");
+
+            // reboot needs special handling in case of ssh push
+            if (action.getActionType().equals(ActionFactory.TYPE_REBOOT)) {
+                sa.setStatus(ActionFactory.STATUS_PICKED_UP);
+                sa.setPickupTime(new Date());
+            }
+            else {
+                saltUtils.updateServerAction(sa, 0L, true, "n/a",
+                        r, function);
+            }
+
+            // Perform a "check-in" after every executed action
+            minion.updateServerInfo();
+
+            // Perform a package profile update in the end if necessary
+            if (saltUtils.shouldRefreshPackageList(function, result)) {
+                LOG.info("Scheduling a package profile update");
+                Action pkgList;
+                try {
+                    pkgList = ActionManager.schedulePackageRefresh(minion.getOrg(), minion);
+                    executeSSHAction(pkgList, minion);
+                }
+                catch (TaskomaticApiException e) {
+                    LOG.error("Could not schedule package refresh for minion: " +
+                            minion.getMinionId());
+                    LOG.error(e);
+                }
+            }
+        });
     }
 
     /**

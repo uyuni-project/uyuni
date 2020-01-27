@@ -14,7 +14,6 @@
  */
 package com.redhat.rhn.taskomatic.task.sshpush;
 
-import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
@@ -45,11 +44,24 @@ import java.time.format.DateTimeParseException;
 import java.util.Arrays;
 import java.util.Map;
 import java.util.Optional;
+import java.util.function.Function;
+
+import static com.redhat.rhn.frontend.events.TransactionHelper.handlingTransaction;
 
 /**
  * SSH push worker for checking in ssh-push systems and resuming action chains via Salt SSH.
  */
 public class SSHPushWorkerSalt implements QueueWorker {
+
+    private static final int SSH_TIMEOUT = 60;
+
+    private enum ResumeOutcome {
+        RESUMED,
+        CONNECTION_REFUSED,
+        ERROR,
+        REBOOT_PENDING,
+        NO_ACTION_CHAIN
+    }
 
     private Logger log;
     private SystemSummary system;
@@ -104,39 +116,47 @@ public class SSHPushWorkerSalt implements QueueWorker {
      */
     @Override
     public void run() {
+        parentQueue.workerStarting();
+
         try {
-            parentQueue.workerStarting();
+            Optional<MinionServer> minionOpt = handlingTransaction(
+                    () -> MinionServerFactory.lookupById(system.getId()),
+                    (err) -> log.error("Error looking up minion server id=" + system.getId()))
+                    .flatMap(Function.identity());
 
-            MinionServerFactory.lookupById(system.getId()).ifPresent(m -> {
-                log.info("Executing actions for minion: " + m.getMinionId());
+            if (minionOpt.isEmpty()) {
+                log.error("Minion not found id=" + system.getId());
+                return;
+            }
 
-                boolean checkinNeeded = true;
-                if (system.isRebooting()) {
-                    // System is rebooting, check if there's an action chain execution pending and resume it.
-                    // If the action chain resumes it also checks in the system.
-                    checkinNeeded = !resumeActionChainIfPending(m);
-                }
-
-                // Perform a check-in if there is no pending actions
-                if (checkinNeeded) {
+            MinionServer m = minionOpt.get();
+            log.info("Executing ssh-push job for minion: " + m.getMinionId());
+            if (system.isRebooting()) {
+                ResumeOutcome res = resumeActionChainIfPending(m);
+                if (!ResumeOutcome.CONNECTION_REFUSED.equals(res) &&
+                        !ResumeOutcome.RESUMED.equals(res) &&
+                        !ResumeOutcome.REBOOT_PENDING.equals(res)
+                ) {
+                    // no action chain was resumed and connection was successful so check in can be attempted
+                    // wait until it completes to avoid assigning checkInFuture
+                    // from this closure
                     performCheckin(m);
                 }
+            }
+            else {
+                performCheckin(m);
+            }
 
-                updateSystemInfo(new MinionList(m.getMinionId()));
-                log.debug("Nothing left to do for " + m.getMinionId() + ", exiting worker");
-            });
+            updateSystemInfo(m.getMinionId());
         }
         catch (Exception e) {
-            log.error(e.getMessage(), e);
-            HibernateFactory.rollbackTransaction();
+            log.debug("Error executing ssh-push job", e);
         }
         finally {
             parentQueue.workerDone();
-            HibernateFactory.closeSession();
-
-            // Finished talking to this system
-            SSHPushDriver.getCurrentSystems().remove(system);
         }
+
+        log.debug("Nothing left to do for " + system.getMinionId() + ", exiting worker");
     }
 
     /**
@@ -144,7 +164,8 @@ public class SSHPushWorkerSalt implements QueueWorker {
      * @param minion the ssh-push minion
      * @return true if there was an action chain execution pending and it was resumed successfully
      */
-    private boolean resumeActionChainIfPending(MinionServer minion) {
+    private ResumeOutcome resumeActionChainIfPending(MinionServer minion) {
+        log.debug("Checking if any chain execution needs to be resumed on minion: " + minion.getMinionId());
         Map<String, Result<Map<String, String>>> pendingResume;
         try {
             // first check if there's any pending action chain execution on the minion
@@ -153,32 +174,51 @@ public class SSHPushWorkerSalt implements QueueWorker {
                     new MinionList(minion.getMinionId()));
         }
         catch (SaltException e) {
-            log.error("Could not retrive pending action chain executions for minion", e);
+            log.error("Could not retrieve pending action chain executions for minion", e);
             // retry later and skip performing the check-in
-            return false;
+            throw new RuntimeException(e);
         }
 
         if (pendingResume.isEmpty()) {
             log.debug("Minion " + minion.getMinionId() + " is probably not up." +
                     " Checking later for pending action chain executions.");
-            return false;
+            return ResumeOutcome.CONNECTION_REFUSED;
         }
 
-        Optional<Map<String, String>> confValues = pendingResume.get(minion.getMinionId()).fold(err -> {
-                    log.error("mgractionchains.get_pending_resume failed: " + err.fold(
+        ResumeOutcome pendingResumeOutcome = pendingResume.get(minion.getMinionId()).fold(err -> {
+                    String errorStr = err.fold(
                             Object::toString,
                             Object::toString,
-                            Object::toString,
+                            jsonParsingError -> SaltUtils.decodeSaltErr(jsonParsingError),
                             Object::toString
-                    ));
-                    saltSSHService.cleanPendingActionChainAsync(minion);
-                    return Optional.empty();
+                    );
+                    if (errorStr.contains("Connection refused")) {
+                        log.info("Connection refused to minion " + minion.getMinionId() +
+                                ". Checking later for pending action chain executions.");
+                        return ResumeOutcome.CONNECTION_REFUSED;
+                    }
+                    else {
+                        log.error("mgractionchains.get_pending_resume failed: " + errorStr);
+                        return ResumeOutcome.ERROR;
+                    }
                 },
-                res -> Optional.of(res));
+                res -> ResumeOutcome.RESUMED);
+
+        if (ResumeOutcome.CONNECTION_REFUSED.equals(pendingResumeOutcome)) {
+            return pendingResumeOutcome;
+        }
+        else if (ResumeOutcome.ERROR.equals(pendingResumeOutcome)) {
+            // something else went wrong, try to remove the pending action chain from the minion
+            saltSSHService.cleanPendingActionChainAsync(minion);
+            return ResumeOutcome.ERROR;
+        }
+
+        Optional<Map<String, String>> confValues = pendingResume.get(minion.getMinionId())
+                .fold(err -> Optional.empty(), res -> Optional.of(res));
 
         if (!confValues.isPresent() || confValues.get().isEmpty()) {
             log.debug("No action chain execution pending on minion " + minion.getMinionId());
-            return false;
+            return ResumeOutcome.NO_ACTION_CHAIN;
         }
 
         Map<String, String> values = confValues.get();
@@ -188,63 +228,28 @@ public class SSHPushWorkerSalt implements QueueWorker {
         String currentBoot = values.get("current_boot_time");
         String persistBoot = values.get("persist_boot_time");
 
-        if (StringUtils.isBlank(currentBoot)) {
-            log.error("Could not resume pending action chain execution, no current_boot_time returned by " +
-                    "mgractionchains.get_pending_resume for ssh minion " + minion.getMinionId());
+        if (StringUtils.isBlank(currentBoot) || StringUtils.isBlank(persistBoot) ||
+                StringUtils.isBlank(nextActionIdStr) || StringUtils.isBlank(nextChunk) ||
+                StringUtils.isBlank(extraFileRefs)) {
+            // can't continue if any of the required fields is missing
+            log.error("Could not resume pending action chain execution, " +
+                    "mgractionchains.get_pending_resume for ssh minion " + minion.getMinionId() +
+                    "didn't return all required fields. Fields=" +
+                    StringUtils.join(confValues));
             saltSSHService.cleanPendingActionChainAsync(minion);
-            return false;
-        }
 
-        if (StringUtils.isBlank(persistBoot)) {
-            log.error("Could not resume pending action chain execution, no persist_boot_time returned by " +
-                    "mgractionchains.get_pending_resume for ssh minion " + minion.getMinionId());
-            saltSSHService.cleanPendingActionChainAsync(minion);
-            return false;
-        }
-
-        if (StringUtils.isBlank(nextActionIdStr)) {
-            log.error("Could not resume pending action chain execution, no next_action_id returned by " +
-                    "mgractionchains.get_pending_resume for ssh minion " + minion.getMinionId());
-            saltSSHService.cleanPendingActionChainAsync(minion);
-            return false;
-        }
-        Optional<Long> nextActionId;
-        try {
-            nextActionId = Optional.of(Long.parseLong(nextActionIdStr));
-        }
-        catch (NumberFormatException e) {
-            log.error("Action chain can't be resumed. next_action_id is not a valid number", e);
-            saltSSHService.cleanPendingActionChainAsync(minion);
-            return false;
-        }
-
-        if (StringUtils.isBlank(nextChunk)) {
-            log.error("Could not resume pending action chain execution, no next_chunk returned by " +
-                    "mgractionchains.get_pending_resume for ssh minion " + minion.getMinionId());
-            saltSSHService.cleanPendingActionChainAsync(minion);
-            SaltServerActionService.failActionChain(minion.getMinionId(), nextActionId,
-                    Optional.of("Could not resume pending action chain execution, no next_chunk returned by " +
-                            "mgractionchains.get_pending_resume"));
-            return false;
-        }
-
-        if (StringUtils.isBlank(extraFileRefs)) {
-            log.error("Could not resume pending action chain execution, no ssh_extra_filerefs returned by " +
-                    "mgractionchains.get_pending_resume for ssh minion " + minion.getMinionId());
-            saltSSHService.cleanPendingActionChainAsync(minion);
-            SaltServerActionService.failActionChain(minion.getMinionId(), nextActionId,
-                    Optional.of("Could not resume pending action chain execution, no ssh_extra_filerefs " +
-                            "returned by mgractionchains.get_pending_resume"));
-            return false;
+            // fail the entire action chain if possible
+            if (StringUtils.isNotBlank(nextActionIdStr)) {
+                parseLong(nextActionIdStr).ifPresent(id ->
+                        failActionChain(minion, Optional.of(id)));
+                return ResumeOutcome.ERROR;
+            }
         }
 
         Optional<LocalDateTime> currentBootTime = parseDateTime(minion, currentBoot);
-        if (!currentBootTime.isPresent()) {
-            return false;
-        }
         Optional<LocalDateTime> persistBootTime = parseDateTime(minion, persistBoot);
-        if (!currentBootTime.isPresent()) {
-            return false;
+        if (!currentBootTime.isPresent() || !currentBootTime.isPresent()) {
+            return ResumeOutcome.ERROR;
         }
 
         // status.uptime returns a few miliseconds of difference in the boot time between subsequent invocations
@@ -252,73 +257,95 @@ public class SSHPushWorkerSalt implements QueueWorker {
         long timeDelta = Math.abs(
                 currentBootTime.get().toLocalTime().toSecondOfDay() -
                         persistBootTime.get().toLocalTime().toSecondOfDay());
-
         if (timeDelta < 3) {
             // don't resume the action chain, the system hasn't rebooted yet
-            log.info("Not resuming action chain execution. Minion " + minion.getMinionId() + " hasn't rebooted yet");
-            return false;
+            log.info("Not resuming action chain execution. Minion " + minion.getMinionId() +
+                    " hasn't rebooted yet");
+            return ResumeOutcome.REBOOT_PENDING;
         }
 
-        boolean nextActionIsFailed = nextActionId
-                .map(ActionFactory::lookupById)
-                .flatMap(action -> action.getServerActions().stream()
-                        .filter(sa -> sa.getServer().equals(minion)).findFirst())
-                .filter(sa -> ActionFactory.STATUS_FAILED.equals(sa.getStatus()))
-                .isPresent();
-        if (nextActionIsFailed) {
+        Optional<Long> nextActionId = parseLong(nextActionIdStr);
+        if (nextActionId.isEmpty()) {
+            log.error("Action chain can't be resumed. next_action_id is not a valid number");
+            saltSSHService.cleanPendingActionChainAsync(minion);
+            throw new RuntimeException("next_action_id is not a valid number");
+        }
+
+        Optional<Boolean> isNextActionFailed = handlingTransaction(() ->
+                nextActionId
+                    .map(ActionFactory::lookupById)
+                    .flatMap(action -> action.getServerActions().stream()
+                            .filter(sa -> sa.getServer().equals(minion)).findFirst())
+                    .filter(sa -> ActionFactory.STATUS_FAILED.equals(sa.getStatus()))
+                    .isPresent(),
+                err ->
+                        log.error("Error checking if next action is failed nextActionId=" +
+                                nextActionIdStr +
+                                ", minion=" + minion.getMinionId() + ": ", err)
+        );
+        if (isNextActionFailed.orElse(false)) {
             // Next action is failed due to some previous error in the action chain.
             // This means action chain is already failed, remove pending action chain execution
             saltSSHService.cleanPendingActionChainAsync(minion);
-            return false;
+            return ResumeOutcome.NO_ACTION_CHAIN;
         }
 
         try {
+            log.info("Resuming action chain execution on minion: " + minion.getMinionId());
             Map<String, Result<Map<String, State.ApplyResult>>> res = saltSSHService.callSyncSSH(
                     State.apply("actionchains.resumessh"),
                     new MinionList(minion.getMinionId()),
-                    Optional.of(extraFileRefs));
+                    Optional.of(extraFileRefs),
+                    Optional.of(SSH_TIMEOUT));
 
             Result<Map<String, State.ApplyResult>> chunkResult = res.get(minion.getMinionId());
             if (chunkResult != null) {
                 if (chunkResult.result().isPresent()) {
-                    return saltServerActionService
-                            .handleActionChainSSHResult(nextActionId, minion.getMinionId(), chunkResult.result().get());
+                    Optional<Boolean> handledOk = handlingTransaction(() ->
+                            saltServerActionService
+                                .handleActionChainSSHResult(nextActionId, minion.getMinionId(),
+                                        chunkResult.result().get())
+                            , err ->
+                                    log.error("Error handling action chain resume result for minion " +
+                                            minion.getMinionId(), err)
+                    );
+                    return handledOk.orElse(false) ? ResumeOutcome.RESUMED : ResumeOutcome.ERROR;
                 }
                 else {
                     String errMsg = chunkResult.error().map(saltErr -> saltErr.fold(
-                            e ->  {
-                                log.error(e);
-                                return "Function " + e.getFunctionName() + " not available";
-                            },
-                            e ->  {
-                                log.error(e);
-                                return "Module " + e.getModuleName() + " not supported";
-                            },
-                            e ->  {
-                                log.error(e);
-                                return "Error parsing JSON: " + e.getJson();
-                            },
-                            e ->  {
-                                log.error(e);
-                                return "Salt error: " + e.getMessage();
-                            }
+                            Object::toString,
+                            Object::toString,
+                            e ->  "Error parsing JSON: " + e.getJson(),
+                            Object::toString
                     )).orElse("Unknown error");
-
-                    SaltServerActionService.failActionChain(minion.getMinionId(), nextActionId,
-                            Optional.of("Error handling action chain execution: " + errMsg));
+                    log.error("Error resuming action chain on minion " + minion.getMinionId() +
+                            ": " + errMsg);
+                    failActionChain(minion, nextActionId);
                 }
             }
             else {
                 log.error("No action chain result for minion " + minion.getMinionId());
-                return false;
+                return ResumeOutcome.ERROR;
             }
         }
         catch (SaltException e) {
             log.error("Error resuming action on minion " + minion.getMinionId(), e);
-            return false;
+            throw new RuntimeException(e);
         }
 
-        return true;
+        return ResumeOutcome.RESUMED;
+    }
+
+    private void failActionChain(MinionServer minion, Optional<Long> nextActionId) {
+        handlingTransaction(() ->
+                        SaltServerActionService.failActionChain(minion.getMinionId(), nextActionId,
+                                Optional.of("Could not resume pending action chain execution. " +
+                                        "mgractionchains.get_pending_resume didn't return all " +
+                                        "required fields"))
+                ,
+                (err) -> log.error("Error setting action chain to failed, nextActionId=" +
+                        nextActionId + " minion=" + minion.getMinionId(), err)
+        );
     }
 
     private Optional<LocalDateTime> parseDateTime(MinionServer minion, String dateTimeString) {
@@ -332,31 +359,70 @@ public class SSHPushWorkerSalt implements QueueWorker {
         }
     }
 
+    private Optional<Long> parseLong(String idStr) {
+        try {
+            return Optional.of(Long.parseLong(idStr));
+        }
+        catch (NumberFormatException e) {
+            log.error("Error parsing as long", e);
+            return Optional.empty();
+        }
+    }
+
     private void performCheckin(MinionServer minion) {
         // Ping minion and perform check-in on success
         log.info("Performing a check-in for: " + minion.getMinionId());
-        Optional<Boolean> result = saltService
-                .callSync(Test.ping(), minion.getMinionId());
-        result.ifPresent(res -> minion.updateServerInfo());
+        try {
+            Map<String, Result<Boolean>> res = saltSSHService.callSyncSSH(Test.ping(),
+                    new MinionList(minion.getMinionId()),
+                    SSH_TIMEOUT);
+            boolean ok = Optional.ofNullable(res.get(minion.getMinionId()))
+                    .flatMap(r -> r.result())
+                    .orElse(false);
+            if (ok) {
+                handlingTransaction(() ->
+                        MinionServerFactory.lookupById(minion.getId())
+                                .ifPresent(min -> min.updateServerInfo()),
+                        err ->
+                            log.info("Error checking in minion " + minion.getMinionId(), err)
+                        );
+            }
+        }
+        catch (SaltException e) {
+            log.info("Salt error checking in m minion " + minion.getMinionId(), e);
+            throw new RuntimeException(e);
+        }
     }
 
     /**
-     * Apply util.systeminfo state on the specified ssh-minion list in a synchronous away
-     * @param minionTarget minion list
+     * Apply util.systeminfo state on the specified ssh-minion in an asynchronous away
+     * @param minionId minion id
      */
-    private void updateSystemInfo(MinionList minionTarget) {
+    private void updateSystemInfo(String minionId) {
+        log.info("Updating system info for: " + minionId);
+        LocalCall<SystemInfo> applySystemInfo =
+                com.suse.manager.webui.utils.salt.State.apply(Arrays.asList(ApplyStatesEventMessage.SYSTEM_INFO),
+                        Optional.empty(), Optional.of(true), Optional.empty(), SystemInfo.class);
         try {
-            LocalCall<SystemInfo> systeminfo =
-                    com.suse.manager.webui.utils.salt.State.apply(Arrays.asList(ApplyStatesEventMessage.SYSTEM_INFO),
-                    Optional.empty(), Optional.of(true), Optional.empty(), SystemInfo.class);
-            Map<String, Result<SystemInfo>> systemInfoMap = saltSSHService.callSyncSSH(systeminfo, minionTarget);
-            systemInfoMap.entrySet().stream().forEach(entry-> entry.getValue().result().ifPresent(si-> {
-                Optional<MinionServer> minionServer = MinionServerFactory.findByMinionId(entry.getKey());
-                minionServer.ifPresent(minion -> SaltUtils.INSTANCE.updateSystemInfo(si, minion));
-            }));
+            Map<String, Result<SystemInfo>> res = saltSSHService.callSyncSSH(applySystemInfo,
+                    new MinionList(minionId),
+                    SSH_TIMEOUT);
+            Optional.ofNullable(res.get(minionId))
+                    .flatMap(r -> r.result())
+                    .ifPresent(r ->
+                        handlingTransaction(() ->
+                                        MinionServerFactory.findByMinionId(minionId)
+                                                .ifPresent(min ->
+                                                        SaltUtils.INSTANCE.updateSystemInfo(r, min)),
+                                err ->
+                                        log.info("Error updating the server info for minion " +
+                                                minionId, err)
+                        )
+                    );
         }
-        catch (SaltException ex) {
-            log.debug("Error while executing util.systeminfo state: " + ex.getMessage());
+        catch (SaltException e) {
+            log.info("Salt error updating the server info for minion " + minionId, e);
+            throw new RuntimeException(e);
         }
     }
 }
