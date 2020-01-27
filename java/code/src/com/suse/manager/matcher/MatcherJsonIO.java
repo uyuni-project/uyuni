@@ -158,7 +158,6 @@ public class MatcherJsonIO {
      */
     public List<SystemJson> getJsonSystems(boolean includeSelf, String arch, boolean selfMonitoringEnabled) {
         Stream<SystemJson> systems = ServerFactory.list(true, true).stream()
-            .filter(system -> ((system.getVirtualInstance() == null) || (!system.getVirtualInstance().getPayg())))
             .map(system -> {
                 Long cpus = system.getCpu() == null ? null : system.getCpu().getNrsocket();
                 Set<String> entitlements = system.getEntitlementLabels();
@@ -182,7 +181,6 @@ public class MatcherJsonIO {
     private static Set<Long> getVirtualGuests(Server system) {
         return system.getGuests().stream()
             .filter(vi -> vi.getGuestSystem() != null)
-            .filter(vi -> !vi.getPayg())
             .map(vi -> vi.getGuestSystem().getId())
             .collect(toSet());
     }
@@ -340,6 +338,7 @@ public class MatcherJsonIO {
      * require SUSE Manager entitlements for such systems).
      * Filters out the products with "SLE-M-T" product class as they are not considered in
      * subsription matching.
+     * Also filters out the products for PAYG (Pay-As-You-Go) instances.
      */
     private Stream<Long> productIdsForServer(Server server, Set<String> entitlements) {
         List<SUSEProduct> products = productFactory.map(server.getInstalledProducts())
@@ -352,7 +351,8 @@ public class MatcherJsonIO {
 
         // add SUSE Manager entitlements
         return concat(
-                products.stream().map(SUSEProduct::getProductId),
+                (server.getVirtualInstance() != null && server.getVirtualInstance().getPayg()) ?
+                        Stream.empty() : products.stream().map(SUSEProduct::getProductId),
                 entitlementIdsForServer(server, entitlements)
         );
     }
