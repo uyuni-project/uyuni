@@ -176,7 +176,6 @@ end
 $pxeboot_mac = ENV['PXEBOOT_MAC']
 $private_net = ENV['PRIVATENET'] if ENV['PRIVATENET']
 $mirror = ENV['MIRROR']
-$git_profiles = ENV['GITPROFILES']
 $server_http_proxy = ENV['SERVER_HTTP_PROXY'] if ENV['SERVER_HTTP_PROXY']
 $node_by_host = { 'server'                => $server,
                   'proxy'                 => $proxy,
