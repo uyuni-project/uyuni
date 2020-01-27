@@ -208,10 +208,6 @@ When(/^I follow "([^"]*)" in element "([^"]*)"$/) do |arg1, arg2|
   end
 end
 
-When(/^I want to add a new credential$/) do
-  raise 'xpath: i.fa-plus-circle not found' unless find('i.fa-plus-circle').click
-end
-
 When(/^I follow "([^"]*)" in the (.+)$/) do |arg1, arg2|
   tag = case arg2
         when /tab bar|tabs/ then 'header'
