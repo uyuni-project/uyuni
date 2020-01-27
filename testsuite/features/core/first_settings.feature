@@ -1,4 +1,4 @@
-# Copyright (c) 2017-2019 SUSE LLC
+# Copyright (c) 2017-2020 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 Feature: Very first settings
@@ -85,7 +85,7 @@ Feature: Very first settings
     And I enter "suma" as "HTTP Proxy Username"
     And I enter "P4$$word" as "HTTP Proxy Password"
     And I click on "Save and Verify"
-    Then I see verification succeeded
+    Then HTTP proxy verification should have succeeded
 
   Scenario: Detect latest Salt changes on the server
     When I query latest Salt changes on "server"
