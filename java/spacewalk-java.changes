@@ -1,3 +1,5 @@
+- overload the system.scheduleChangeChannels API method to accept multiple system IDs
+
 -------------------------------------------------------------------
 Wed Jan 22 12:12:18 CET 2020 - jgonzalez@suse.com
 

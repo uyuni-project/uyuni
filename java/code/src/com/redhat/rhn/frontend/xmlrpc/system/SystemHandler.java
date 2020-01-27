@@ -15,6 +15,8 @@
 package com.redhat.rhn.frontend.xmlrpc.system;
 
 import static java.util.stream.Collectors.toList;
+import static java.util.Collections.singletonList;
+import static java.util.stream.Collectors.toSet;
 
 import com.redhat.rhn.FaultException;
 import com.redhat.rhn.common.client.ClientCertificate;
@@ -530,17 +532,53 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "baseChannelLabel")
      * @xmlrpc.param #array_single("string", "channelLabel")
      * @xmlrpc.param  #param_desc($date, "date", "the time/date to schedule the action")
-     * @xmlrpc.returntype #array_single("int", "actionId")
+     * @xmlrpc.returntype int - ID of the action scheduled, otherwise exception thrown
+     * on error
      */
     public long scheduleChangeChannels(User loggedInUser, Integer serverId, String baseChannelLabel,
                                        List childLabels, Date earliestOccurrence) {
+        return scheduleChangeChannels(loggedInUser, singletonList(serverId), baseChannelLabel, childLabels,
+                earliestOccurrence).stream().findFirst().orElseThrow(() -> new NoActionInScheduleException());
+    }
+
+    /**
+     * Schedule an action to change the channels of a list of clients. Works for both traditional
+     * and Salt clients.
+     * To remove the base channel provide an empty string must be provided.
+     * @param loggedInUser The current user
+     * @param serverIds list of IDs of the servers
+     * @param baseChannelLabel The label of the base channel to subscribe to
+     * @param childLabels The list of child channel labels to subscribe to
+     * @param earliestOccurrence Earliest occurrence of the errata update
+     * be subscribed to.
+     * @return an action id, exception thrown otherwise
+     * @since 19.0
+     *
+     * @xmlrpc.doc Schedule an action to change the channels of the given system. Works for both traditional
+     * and Salt systems.
+     * This method accepts labels for the base and child channels.
+     * If the user provides an empty string for the channelLabel, the current base channel and
+     * all child channels will be removed from the system.
+     *
+     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #param("int", "serverId")
+     * @xmlrpc.param #param("string", "baseChannelLabel")
+     * @xmlrpc.param #array_single("string", "channelLabel")
+     * @xmlrpc.param  #param_desc($date, "date", "the time/date to schedule the action")
+     * @xmlrpc.returntype #array_single("long", "actionIds")
+     */
+    public List<Long> scheduleChangeChannels(User loggedInUser, List<Integer> serverIds, String baseChannelLabel,
+                                             List childLabels, Date earliestOccurrence) {
         //Get the logged in user and server
-        Server server = lookupServer(loggedInUser, serverId);
+        Set<Long> servers = serverIds.stream()
+                .map(sid -> lookupServer(loggedInUser, sid))
+                .map(Server::getId)
+                .collect(toSet());
         Optional<Channel> baseChannel = Optional.empty();
 
         // base channel
         if (StringUtils.isNotEmpty(baseChannelLabel)) {
-            List<Long> channelIds = ChannelFactory.getChannelIds(Collections.singletonList(baseChannelLabel));
+            List<Long> channelIds = ChannelFactory.getChannelIds(singletonList(baseChannelLabel));
             long baseChannelId = channelIds.stream().findFirst().orElseThrow(() -> new InvalidChannelLabelException());
             baseChannel = Optional.of(ChannelManager.lookupByIdAndUser(baseChannelId, loggedInUser));
         }
@@ -567,13 +605,11 @@ public class SystemHandler extends BaseHandler {
 
         try {
             Set<Action> action = ActionChainManager.scheduleSubscribeChannelsAction(loggedInUser,
-                    Collections.singleton(server.getId()),
+                    servers,
                     baseChannel,
                     childChannels,
                     earliestOccurrence, null);
-            return action.stream().findFirst().map(Action::getId).orElseThrow(() ->
-                    new NoActionInScheduleException()
-            );
+            return action.stream().map(Action::getId).collect(toList());
         }
         catch (com.redhat.rhn.taskomatic.TaskomaticApiException e) {
             throw new TaskomaticApiException(e.getMessage());

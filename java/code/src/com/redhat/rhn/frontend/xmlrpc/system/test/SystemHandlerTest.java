@@ -61,6 +61,7 @@ import com.redhat.rhn.domain.server.InstalledPackage;
 import com.redhat.rhn.domain.server.InstalledProduct;
 import com.redhat.rhn.domain.server.ManagedServerGroup;
 import com.redhat.rhn.domain.server.MinionServer;
+import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.NetworkInterface;
 import com.redhat.rhn.domain.server.NetworkInterfaceFactory;
 import com.redhat.rhn.domain.server.Note;
@@ -550,27 +551,36 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         SystemHandler handler = getMockedHandler();
         ActionChainManager.setTaskomaticApi(handler.getTaskomaticApi());
 
-        Server server = ServerFactoryTest.createTestServer(admin, true);
+        Server server1 = ServerFactoryTest.createTestServer(admin, true);
+        Server server2 = ServerFactoryTest.createTestServer(admin, true);
         Channel child1 = ChannelFactoryTest.createTestChannel(admin);
         Channel child2 = ChannelFactoryTest.createTestChannel(admin);
         Channel parent = ChannelFactoryTest.createTestChannel(admin);
         child1.setParentChannel(parent);
         child2.setParentChannel(parent);
 
-        server.addChannel(parent);
-        server.addChannel(child1);
-        server.addChannel(child2);
+        server1.addChannel(parent);
+        server1.addChannel(child1);
+        server1.addChannel(child2);
 
-        Integer sid = server.getId().intValue();
+        server2.addChannel(parent);
+        server2.addChannel(child1);
+        server2.addChannel(child2);
+
+        Integer sid1 = server1.getId().intValue();
+        Integer sid2 = server2.getId().intValue();
 
         Channel base1 = ChannelFactoryTest.createTestChannel(admin);
         base1.setParentChannel(null);
         Channel child3 = ChannelFactoryTest.createTestChannel(admin);
         child3.setParentChannel(base1);
         Date earliest = new Date();
-        long actionId = handler.scheduleChangeChannels(admin, sid, base1.getLabel(),
+        var sids = List.of(sid1, sid2);
+        List<Long> actionIds = handler.scheduleChangeChannels(admin, sids, base1.getLabel(),
                     Arrays.asList(child3.getLabel()), earliest);
 
+        assertEquals(1, actionIds.size());
+        var actionId = actionIds.get(0);
         Action action = ActionFactory.lookupById(actionId);
         assertEquals(earliest, action.getEarliestAction());
         assertTrue(action instanceof SubscribeChannelsAction);
@@ -579,6 +589,10 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         assertEquals(1, sca.getDetails().getChannels().size());
         assertTrue(sca.getDetails().getChannels()
                 .stream().filter(cc -> cc.getId().equals(child3.getId())).findFirst().isPresent());
+
+        var sas = MinionServerFactory.findTradClientServerActions(actionId);
+        assertEquals(2, sas.size());
+        sas.stream().allMatch(sa -> sids.contains(sa.getServerId()));
     }
 
     public void testScheduleChangeChannelsNoChildren() throws Exception {
