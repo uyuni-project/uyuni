@@ -1,3 +1,4 @@
+- Add mgr_start_event_grains.sls to update minion config
 -------------------------------------------------------------------
 Wed Jan 22 12:25:10 CET 2020 - jgonzalez@suse.com
 
