@@ -44,12 +44,6 @@
     <async-supported>true</async-supported>
   </filter>
 
-  <filter>
-    <filter-name>AuditLogFilterStruts</filter-name>
-    <filter-class>com.redhat.rhn.frontend.servlets.AuditLogFilter</filter-class>
-    <async-supported>true</async-supported>
-  </filter>
-
   <!-- DumpFilter dumps the entire request to the log file as log debug. -->
   <!--
   <filter>
@@ -159,11 +153,6 @@
     <url-pattern>/*</url-pattern>
   </filter-mapping>
   -->
-
-  <filter-mapping>
-    <filter-name>AuditLogFilterStruts</filter-name>
-    <url-pattern>*.do</url-pattern>
-  </filter-mapping>
 
   <!--
   If you need a filter to operate on more than one
