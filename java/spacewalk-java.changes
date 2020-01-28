@@ -1,4 +1,4 @@
-- Exclude PAYG (Pay-As-You-Go) instances when doing subscription matching
+- Exclude base products from PAYG (Pay-As-You-Go) instances when doing subscription matching
 - Show additional headers and dependencies for deb packages
 - Show adequate message on saving formulas that change only pillar data
 - fix mgr-sync add channel when fromdir is configured (bsc#1160184)
