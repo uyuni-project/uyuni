@@ -15,7 +15,6 @@
 package com.redhat.rhn.frontend.xmlrpc;
 
 import com.redhat.rhn.common.hibernate.LookupException;
-import com.redhat.rhn.common.logging.AuditLog;
 import com.redhat.rhn.common.translation.Translator;
 import com.redhat.rhn.domain.user.User;
 
@@ -104,10 +103,6 @@ public class LoggingInvocationProcessor implements XmlRpcInvocationInterceptor {
             buf.append(" seconds");
 
             log.info(buf.toString());
-
-            // Do audit logging
-            AuditLog.getInstance().logAPI(null, getCaller(), call.toString(),
-                    RhnXmlRpcServer.getCallerIp());
         }
         catch (RuntimeException e) {
             log.error("postProcess error CALL: " + invocation.getHandlerName() +
