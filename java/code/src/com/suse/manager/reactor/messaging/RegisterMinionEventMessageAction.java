@@ -181,7 +181,7 @@ public class RegisterMinionEventMessageAction implements MessageAction {
             }
             Optional<User> creator = MinionPendingRegistrationService.getCreator(minionId);
             if (!isReactivation &&
-                    checkIfMinionAlreadyRegistered(minionId, machineId, creator, isSaltSSH, grains)) {
+                    checkIfMinionAlreadyRegistered(minionId, machineId, grains)) {
                 return;
             }
             if (isReactivation) {
@@ -208,15 +208,10 @@ public class RegisterMinionEventMessageAction implements MessageAction {
      * Check if a minion is already registered and update it in case so
      * @param minionId the minion id
      * @param machineId the machine id that we are trying to register
-     * @param creator the optional User that created the minion
-     * @param isSaltSSH true if a salt-ssh system is bootstrapped
      * @param grains grains of the minion
      * @return true if minion already registered, false otherwise
      */
-    public boolean checkIfMinionAlreadyRegistered(String minionId,
-                                                  String machineId,
-                                                  Optional<User> creator,
-                                                  boolean isSaltSSH, ValueMap grains) {
+    public boolean checkIfMinionAlreadyRegistered(String minionId, String machineId, ValueMap grains) {
         Optional<MinionServer> optMinion = MinionServerFactory.findByMachineId(machineId);
         if (optMinion.isPresent()) {
             MinionServer registeredMinion = optMinion.get();
@@ -231,9 +226,7 @@ public class RegisterMinionEventMessageAction implements MessageAction {
                 SystemManager.addHistoryEvent(registeredMinion, "Duplicate Machine ID", "Minion '" +
                         oldMinionId + "' has been updated to '" + minionId + "'");
 
-                if (!minionId.equals(oldMinionId)) {
-                    SALT_SERVICE.deleteKey(oldMinionId);
-                }
+                SALT_SERVICE.deleteKey(oldMinionId);
             }
 
             // Saltboot treatment
