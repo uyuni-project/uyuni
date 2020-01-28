@@ -28,9 +28,10 @@ import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.common.security.PermissionException;
-import com.redhat.rhn.common.validator.ValidatorError;
+import com.redhat.rhn.common.validator.ValidatorException;
 import com.redhat.rhn.common.validator.ValidatorResult;
 import com.redhat.rhn.common.validator.ValidatorWarning;
+import com.redhat.rhn.common.validator.ValidatorError;
 import com.redhat.rhn.domain.channel.AccessTokenFactory;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFamily;
@@ -667,7 +668,7 @@ public class SystemManager extends BaseManager {
             try {
                 FormulaFactory.saveServerFormulas(minion.getMinionId(), emptyList());
             }
-            catch (IOException e) {
+            catch (ValidatorException | IOException e) {
                 log.warn("Couldn't clean up formula data and assignment for " + minion);
             }
         });
@@ -2027,6 +2028,7 @@ public class SystemManager extends BaseManager {
             }
         }
     }
+ 
     /**
      * Returns a DataResult containing the systems subscribed to a particular channel.
      *      but returns a DataResult of SystemOverview objects instead of maps

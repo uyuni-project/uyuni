@@ -21,6 +21,7 @@ import java.util.Map;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.security.PermissionException;
 
+import com.redhat.rhn.common.validator.ValidatorException;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.MinionServerFactory;
@@ -132,6 +133,9 @@ public class FormulaHandler extends BaseHandler {
             FormulaFactory.saveGroupFormulas(systemGroupId.longValue(), formulas,
                     loggedInUser.getOrg());
         }
+        catch (ValidatorException e) {
+            throw new ValidatorException(e.getMessage());
+        }
         catch (IOException e) {
             throw new IOFaultException(e);
         }
@@ -163,6 +167,9 @@ public class FormulaHandler extends BaseHandler {
         }
         catch (PermissionException e) {
             throw new PermissionException(LocalizationService.getInstance().getMessage("formula.accessdenied"));
+        }
+        catch (ValidatorException e) {
+            throw new ValidatorException(e.getMessage());
         }
         catch (IOException e) {
             throw new IOFaultException(e);
