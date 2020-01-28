@@ -539,7 +539,7 @@ public class HardwareMapper {
      */
     public void mapPaygInfo() {
         server.setPayg(grains.getOptionalAsBoolean("is_payg_instance").orElse(false));
-	}
+    }
 
     /**
      * Map virtualization information to the database.
