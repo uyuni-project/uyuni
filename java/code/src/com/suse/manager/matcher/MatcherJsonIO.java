@@ -351,8 +351,7 @@ public class MatcherJsonIO {
 
         // add SUSE Manager entitlements
         return concat(
-                (server.getVirtualInstance() != null && server.getVirtualInstance().getPayg()) ?
-                        Stream.empty() : products.stream().map(SUSEProduct::getProductId),
+                server.isPayg() ? Stream.empty() : products.stream().map(SUSEProduct::getProductId),
                 entitlementIdsForServer(server, entitlements)
         );
     }

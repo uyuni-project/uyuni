@@ -55,6 +55,7 @@ CREATE TABLE rhnServer
     cobbler_id          VARCHAR2(64),
     machine_id          VARCHAR2(256),
     hostname            VARCHAR2(128),
+    payg                CHAR(1) DEFAULT ('N') NOT NULL,
     created             timestamp with local time zone
                             DEFAULT (current_timestamp) NOT NULL,
     modified            timestamp with local time zone

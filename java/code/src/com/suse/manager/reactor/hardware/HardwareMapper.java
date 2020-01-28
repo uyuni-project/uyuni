@@ -534,6 +534,14 @@ public class HardwareMapper {
     }
 
     /**
+     * Map PAYG information for the server to the database.
+     *
+     */
+    public void mapPaygInfo() {
+        server.setPayg(grains.getOptionalAsBoolean("is_payg_instance").orElse(false));
+	}
+
+    /**
      * Map virtualization information to the database.
      *
      * @param smbiosRecordsSystem optional DMI information about the system
@@ -544,7 +552,6 @@ public class HardwareMapper {
         String virtSubtype = grains.getValueAsString("virtual_subtype");
         String instanceId = grains.getValueAsString("instance_id");
         String virtUuid = (StringUtils.isEmpty(instanceId)) ? grains.getValueAsString("uuid") : instanceId;
-        boolean isPAYG = grains.getOptionalAsBoolean("is_payg_instance").orElse(false);
 
         if (virtTypeLowerCase == null) {
             errors.add("Virtualization: Grain 'virtual' has no value");
@@ -633,7 +640,7 @@ public class HardwareMapper {
                     VirtualInstanceManager.addGuestVirtualInstance(
                             virtUuid, virtualInstance.getName(), virtualInstance.getType(),
                             virtualInstance.getState(), virtualInstance.getHostSystem(),
-                            virtualInstance.getGuestSystem(), isPAYG);
+                            virtualInstance.getGuestSystem());
                     }
                 // Now collecting virtual instances with the correct uuid
                 virtualInstances = VirtualInstanceFactory.getInstance()
@@ -648,7 +655,7 @@ public class HardwareMapper {
                     VirtualInstanceManager.addGuestVirtualInstance(
                             virtUuid, server.getName(), type,
                             VirtualInstanceFactory.getInstance().getRunningState(),
-                            null, server, isPAYG);
+                            null, server);
                 }
                 else {
                     String name = virtualInstance.getName();
@@ -659,7 +666,7 @@ public class HardwareMapper {
                     }
                     VirtualInstanceManager.updateGuestVirtualInstance(virtualInstance, name,
                             VirtualInstanceFactory.getInstance().getRunningState(),
-                            virtualInstance.getHostSystem(), server, isPAYG);
+                            virtualInstance.getHostSystem(), server);
                 }
             }
             else {
@@ -671,7 +678,7 @@ public class HardwareMapper {
                     }
                     VirtualInstanceManager.updateGuestVirtualInstance(virtualInstance, name,
                             VirtualInstanceFactory.getInstance().getRunningState(),
-                            virtualInstance.getHostSystem(), server, isPAYG);
+                            virtualInstance.getHostSystem(), server);
                 });
             }
         }
