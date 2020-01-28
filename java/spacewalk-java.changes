@@ -1,4 +1,4 @@
-- Exclude PAYG (Pay-As-You-Go) instances when doing subscription matching
+- Exclude base products from PAYG (Pay-As-You-Go) instances when doing subscription matching
 - call saltutil.sync_all before calling highstate (bsc#1152673)
 - change doc links pointing to new documentation server
 
