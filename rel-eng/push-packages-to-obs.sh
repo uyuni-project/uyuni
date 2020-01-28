@@ -47,7 +47,7 @@ function srpm_package_defs() {
   #
   test -n "$PACKAGE" || {
     PACKAGE=$(find "$SRPM_DIR" -mindepth 1 -maxdepth 1 -type d -printf "%P\n" \
-              | grep -v -x -e heirloom-pkgtools -e rhnclient -e smartpm -e jabberd-selinux -e oracle-rhnsat-selinux -e oracle-selinux -e oracle-xe-selinux -e spacewalk-monitoring-selinux -e spacewalk-proxy-selinux -e spacewalk-selinux -e cx_Oracle -e apt-spacewalk -e perl-DBD-Oracle)
+              | grep -v -x -e heirloom-pkgtools -e rhnclient -e smartpm -e jabberd-selinux -e oracle-rhnsat-selinux -e oracle-selinux -e oracle-xe-selinux -e spacewalk-monitoring-selinux -e spacewalk-proxy-selinux -e spacewalk-selinux -e cx_Oracle -e perl-DBD-Oracle)
   }
   for N in $PACKAGE; do
     test -d "$SRPM_DIR/$N" || {
