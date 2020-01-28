@@ -1,4 +1,4 @@
-- Add new 'payg' attribute to rhnVirtualInstance table
+- Add new 'payg' attribute to rhnServer table
 
 -------------------------------------------------------------------
 Wed Jan 22 12:24:20 CET 2020 - jgonzalez@suse.com
