@@ -42,16 +42,6 @@ if [ -e /lib/systemd/system/apache2.service -o -e /etc/init.d/apache2 ]; then
    HTTPD="apache2"
 fi
 
-if [ -x /etc/init.d/auditlog-keeper ]; then
-   SUSE_AL_DEFAULT=`get_rhnconf_value /etc/rhn/default/rhn_audit.conf enabled`;
-   SUSE_AL_MAIN=`get_rhnconf_value /etc/rhn/rhn.conf audit.enabled`;
-   if [[ "$SUSE_AL_MAIN" = "1" || "$SUSE_AL_DEFAULT" = "1" ]]; then
-     if [[ "$SUSE_AL_MAIN" = "1" || "$SUSE_AL_MAIN" = "" ]]; then
-       SUSE_AUDITLOG="auditlog-keeper";
-     fi
-   fi
-fi
-
 SERVICES="jabberd $SUSE_AUDITLOG $DB_SERVICE $TOMCAT $HTTPD osa-dispatcher rhn-search cobblerd taskomatic"
 if [ -f /etc/rhn/service-list ] ; then
    . /etc/rhn/service-list
