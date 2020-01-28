@@ -258,7 +258,6 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
     public void testFormulaDataCleanUp() throws Exception {
         MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
         String minionId = minion.getMinionId();
-        FormulaFactory.setMetadataDirOfficial(metadataDirOfficial.toString() + File.separator);
         String formulaName = "test-formula";
         File formulaValues = Paths.get(FormulaFactory.getPillarDir(), minionId + "_" + formulaName + ".json").toFile();
         FormulaFactory.saveServerFormulas(minionId, singletonList(formulaName));
