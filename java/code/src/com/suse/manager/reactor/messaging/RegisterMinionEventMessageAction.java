@@ -24,6 +24,7 @@ import com.redhat.rhn.common.messaging.EventMessage;
 import com.redhat.rhn.common.messaging.MessageAction;
 import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.common.util.RpmVersionComparator;
+import com.redhat.rhn.common.validator.ValidatorException;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelArch;
 import com.redhat.rhn.domain.channel.ChannelFactory;
@@ -435,7 +436,7 @@ public class RegisterMinionEventMessageAction implements MessageAction {
                     }
                     FormulaFactory.saveServerFormulas(oldId, Collections.emptyList());
                 }
-                catch (IOException e) {
+                catch (IOException | ValidatorException e) {
                     LOG.warn("Error when converting formulas from minionId " + oldId + "to minionId " + minionId);
                 }
             }

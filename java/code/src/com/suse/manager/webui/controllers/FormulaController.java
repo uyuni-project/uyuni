@@ -21,6 +21,7 @@ import static spark.Spark.post;
 
 import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.security.PermissionException;
+import com.redhat.rhn.common.validator.ValidatorException;
 import com.redhat.rhn.domain.formula.FormulaFactory;
 import com.redhat.rhn.domain.server.ManagedServerGroup;
 import com.redhat.rhn.domain.server.MinionServer;
@@ -384,9 +385,8 @@ public class FormulaController {
                     return errorResponse(response, Arrays.asList("error_invalid_target"));
             }
         }
-        catch (IOException | UnsupportedOperationException e) {
-            return errorResponse(response,
-                    Arrays.asList("Error while saving formula data: " + e.getMessage()));
+        catch (IOException | ValidatorException | UnsupportedOperationException e) {
+            return errorResponse(response, Arrays.asList("Error while saving formula data: " + e.getMessage()));
         }
         return GSON.toJson(Arrays.asList("formulas_saved"));
     }
