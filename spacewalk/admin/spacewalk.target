@@ -1,6 +1,5 @@
 [Unit]
 Description=Spacewalk
-Wants=auditlog-keeper.service
 Requires=jabberd.service
 Requires=tomcat.service
 Requires=spacewalk-wait-for-tomcat.service
