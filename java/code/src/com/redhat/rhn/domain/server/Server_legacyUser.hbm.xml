@@ -32,6 +32,7 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
         <property name="cobblerId" column="cobbler_id"  type="string" length="64" />
         <property name="machineId" column="machine_id"  type="string" length="256" />
         <property name="hostname" column="hostname" type="string" length="128" />
+        <property name="payg" column="PAYG" type="yes_no"/>
 
         <set name="notes" cascade="all-delete-orphan" lazy="true" inverse="true">
             <key column="server_id"/>

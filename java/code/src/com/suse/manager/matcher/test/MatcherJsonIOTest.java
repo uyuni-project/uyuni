@@ -117,11 +117,8 @@ public class MatcherJsonIOTest extends JMockBaseTestCaseWithUser {
         g3.setName("guest3.example.com");
         g3.setCpu(createCPU(g3, 4L));
         g3.setInstalledProducts(installedProducts);
+        g3.setPayg(true);
         String uuid3 = TestUtils.randomString();
-
-        VirtualInstance refGuest3 = createVirtualInstance(h1, g3, uuid3);
-        refGuest3.setPayg(true);
-        h1.addGuest(refGuest3);
 
         // tell MatcherJsonIO to include self system in the JSON output, which would happen
         // if the running SUMA is an ISS Master
@@ -149,7 +146,7 @@ public class MatcherJsonIOTest extends JMockBaseTestCaseWithUser {
         assertTrue(resultG2.getProductIds().contains(MGMT_SINGLE_PROD_ID));
         assertTrue(resultG2.getProductIds().contains(1324L));
 
-        // PAYG instances must only have entitlements
+        // PAYG systems must only have entitlements
         SystemJson resultG3 = findSystem(g3.getId(), result);
         assertNotNull(resultG3);
         assertEquals("guest3.example.com", resultG3.getName());

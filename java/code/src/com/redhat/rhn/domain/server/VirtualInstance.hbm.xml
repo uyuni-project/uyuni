@@ -16,7 +16,6 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 
         <property name="uuid" column="UUID" type="string" length="128"/>
         <property name="confirmed" column="CONFIRMED" type="long"/>
-        <property name="payg" column="PAYG" type="yes_no"/>
         <property name="created" column="CREATED" type="timestamp" insert="false" update="false"/>
         <property name="modified" column="MODIFIED" type="timestamp" insert="false" update="false"/>
 
