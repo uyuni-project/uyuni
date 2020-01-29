@@ -30,8 +30,10 @@ import com.redhat.rhn.domain.user.UserFactory;
 import com.redhat.rhn.frontend.dto.SystemOverview;
 import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
 import com.redhat.rhn.frontend.xmlrpc.LookupServerGroupException;
+import com.redhat.rhn.frontend.xmlrpc.NoSuchSystemException;
 import com.redhat.rhn.frontend.xmlrpc.ServerGroupAccessChangeException;
 import com.redhat.rhn.frontend.xmlrpc.TaskomaticApiException;
+import com.redhat.rhn.frontend.xmlrpc.system.XmlRpcSystemHelper;
 import com.redhat.rhn.manager.errata.ErrataManager;
 import com.redhat.rhn.manager.system.ServerGroupManager;
 import com.redhat.rhn.manager.system.SystemManager;
@@ -188,13 +190,13 @@ public class ServerGroupHandler extends BaseHandler {
      * @xmlrpc.returntype #return_int_success()
      */
     public int addOrRemoveSystems(User loggedInUser, String systemGroupName,
-            List<Integer> serverIds, Boolean add) {
+            List serverIds, Boolean add) {
 
         ServerGroupManager manager = ServerGroupManager.getInstance();
         ManagedServerGroup group = manager.lookup(systemGroupName, loggedInUser);
 
-        List servers = ServerFactory.lookupByIds(
-                serverIds.stream().map(Integer::longValue).collect(Collectors.toList()));
+        List servers = XmlRpcSystemHelper.getInstance().lookupServers(loggedInUser, serverIds);
+
         if (add.booleanValue()) {
             manager.addServers(group, servers, loggedInUser);
         }

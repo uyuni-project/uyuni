@@ -1457,6 +1457,22 @@ public class SystemManager extends BaseManager {
         return server;
     }
 
+    /**
+     * Looks up a set of servers by their ids
+     * @param serverIds The ids of the servers
+     * @param userId the id of the user who wants to lookup the servers
+     * @return a list of servers
+     */
+    public static List<Server> lookupByServerIdsAndUser(List<Long> serverIds, Long userId) {
+        List<Server> servers = ServerFactory.lookupByIds(serverIds);
+
+        if (servers.size() == serverIds.size()) {
+            if (areSystemsAvailableToUser(userId, serverIds)) {
+                return servers;
+            }
+        }
+        throw new LookupException("Could not find servers for user " + userId);
+    }
 
     /**
      * Returns a List of hydrated server objects from server ids.
@@ -2544,6 +2560,19 @@ public class SystemManager extends BaseManager {
                 reason);
 
         server.setLock(sl);
+    }
+
+    /**
+     * Checks if the user has permissions to see a set of Servers, given their server ids
+     * @param userId the user id of the user being checked
+     * @param serverIds the ids of the Servers being checked
+     * @return true if the user can see the servers, false otherwise
+     */
+    public static boolean areSystemsAvailableToUser(Long userId, List<Long> serverIds) {
+        SelectMode m = ModeFactory.getMode("System_queries", "filter_systems_available_to_user");
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("uid", userId);
+        return m.execute(params, serverIds).size() == serverIds.size();
     }
 
     /**
@@ -3839,4 +3868,5 @@ public class SystemManager extends BaseManager {
         saltServiceInstance.callSync(State.apply(Collections.singletonList("virt.engine-events"),
                                                  Optional.of(pillar)), minion.getMinionId());
     }
+
 }
