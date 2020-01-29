@@ -170,7 +170,7 @@ public class SystemManager extends BaseManager {
             return;
         }
         List<Long> serverIds = servers.stream().map(Server::getId).collect(Collectors.toList());
-        List<Long> snapshotteableServerIds = serversWithFeature(serverIds, "ftr_snapshotting");
+        List<Long> snapshotteableServerIds = filterServerIdsWithFeature(serverIds, "ftr_snapshotting");
 
         // If the server is null or doesn't have the snapshotting feature, don't bother.
         if (!snapshotteableServerIds.isEmpty()) {
@@ -1582,7 +1582,7 @@ public class SystemManager extends BaseManager {
      * @return the list of server ids which have the specified feature
      */
     @SuppressWarnings("unchecked")
-    public static List<Long> serversWithFeature(List<Long> sids, String feat) {
+    public static List<Long> filterServerIdsWithFeature(List<Long> sids, String feat) {
         SelectMode m = ModeFactory.getMode("General_queries", "systems_with_feature");
 
         Map<String, Object> params = new HashMap<String, Object>();
@@ -1600,7 +1600,7 @@ public class SystemManager extends BaseManager {
      * @return true if the server has the specified feature
      */
     public static boolean serverHasFeature(Long sid, String feat) {
-        return !serversWithFeature(Arrays.asList(sid), feat).isEmpty();
+        return !filterServerIdsWithFeature(Arrays.asList(sid), feat).isEmpty();
     }
 
     /**
