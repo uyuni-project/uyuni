@@ -183,7 +183,7 @@ public class SystemManager extends BaseManager {
     }
 
     /**
-     * Takes a snapshot for a server by calling the snapshot_server stored proc.
+     * Takes a snapshot for a server by calling the snapshot_server stored procedure.
      * @param server The server to snapshot
      * @param reason The reason for the snapshotting.
      */
