@@ -131,8 +131,8 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
 
     public void testServerGroupMembers() throws Exception {
         Server s = createTestServer(user);
-        assertNotNull(s.getEntitledGroupTypes());
-        assertTrue(s.getEntitledGroupTypes().size() > 0);
+        assertNotNull(s.getEntitledGroups());
+        assertTrue(s.getEntitledGroups().size() > 0);
     }
 
     public void aTestChannels() throws Exception {
