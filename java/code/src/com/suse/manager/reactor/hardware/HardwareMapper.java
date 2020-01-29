@@ -535,7 +535,6 @@ public class HardwareMapper {
 
     /**
      * Map PAYG information for the server to the database.
-     *
      */
     public void mapPaygInfo() {
         server.setPayg(grains.getOptionalAsBoolean("is_payg_instance").orElse(false));

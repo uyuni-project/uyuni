@@ -2146,7 +2146,7 @@ public class Server extends BaseDomainHelper implements Identifiable {
      *
      * @param isPAYG boolean
      */
-    public void setPayg(boolean isPAYG) {
-        payg = isPAYG;
+    public void setPayg(boolean paygIn) {
+        payg = paygIn;
     }
 }
