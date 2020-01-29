@@ -534,8 +534,6 @@ install -m 644 conf/cobbler/snippets/sles_no_signature_checks $RPM_BUILD_ROOT%{s
 install -m 644 conf/cobbler/snippets/wait_for_networkmanager_script $RPM_BUILD_ROOT%{spacewalksnippetsdir}/wait_for_networkmanager_script
 
 ln -s -f %{_javadir}/dwr.jar $RPM_BUILD_ROOT%{jardir}/dwr.jar
-install -d -m 755 $RPM_BUILD_ROOT%{_datadir}/spacewalk/audit
-install -m 644 conf/audit/auditlog-config.yaml $RPM_BUILD_ROOT%{_datadir}/spacewalk/audit/auditlog-config.yaml
 
 # special links for taskomatic
 TASKOMATIC_BUILD_DIR=%{_prefix}/share/spacewalk/taskomatic
@@ -764,8 +762,6 @@ chown tomcat:%{apache_group} /var/log/rhn/gatherer.log
 %config %{_sysconfdir}/logrotate.d/rhn_web_api
 %config %{_sysconfdir}/logrotate.d/gatherer
 %dir %{_datadir}/spacewalk
-%dir %{_datadir}/spacewalk/audit
-%config %{_datadir}/spacewalk/audit/auditlog-config.yaml
 
 %files lib
 %defattr(644,root,root,755)
