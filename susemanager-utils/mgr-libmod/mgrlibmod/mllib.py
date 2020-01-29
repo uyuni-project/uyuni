@@ -236,11 +236,17 @@ class MLLibmodProc:
         for stream in self._enabled_stream_modules.values():
             if not stream:
                 continue
-            streamArtifacts = stream.get_rpm_artifacts()
+            stream_artifacts = stream.get_rpm_artifacts()
+
+            for rpm in stream.get_rpm_artifacts():
+                if not rpm.endswith(".src"):
+                    api_provides["packages"].add(rpm)
+
             for rpm in stream.get_rpm_api():
-                artifact = self.get_artifact_with_name(streamArtifacts, rpm)
+                artifact = self.get_artifact_with_name(stream_artifacts, rpm)
                 if artifact:
                     api_provides["apis"].add(rpm)
+                    if not artifact.endswith(".src"):
                     api_provides["packages"].add(artifact)
                     api_provides["selected"].add(self._select_stream(stream.get_module_name(), stream))
 
