@@ -2320,7 +2320,7 @@ public class SystemManager extends BaseManager {
     }
 
     private static void unentitleServer(Server server, Entitlement ent) {
-        Optional<EntitlementServerGroup> entitlementServerGroup = server.getServerGroupByEntitlement(ent);
+        Optional<EntitlementServerGroup> entitlementServerGroup = server.findServerGroupByEntitlement(ent);
 
         if (entitlementServerGroup.isPresent()) {
             Map<String, Object> in = new HashMap<String, Object>();

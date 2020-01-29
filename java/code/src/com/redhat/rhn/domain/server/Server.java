@@ -2185,7 +2185,9 @@ public class Server extends BaseDomainHelper implements Identifiable {
      * @param ent the entitlement
      * @return the server group
      */
-    public Optional<EntitlementServerGroup> getServerGroupByEntitlement(Entitlement ent) {
-        return this.getEntitledGroups().stream().filter(g -> g.getGroupTypeLabel().equals(ent.getLabel())).findFirst();
+    public Optional<EntitlementServerGroup> findServerGroupByEntitlement(Entitlement ent) {
+        String entitlementLabel = ent.getLabel();
+        return this.getEntitledGroups().stream().filter(g -> g.getGroupTypeLabel().equals(entitlementLabel))
+                .findFirst();
     }
 }
