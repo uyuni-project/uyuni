@@ -196,27 +196,33 @@ class MLLibmodProc:
                 return artifact
         return None
 
-    def _get_api_provides(self):
-        apiProvides: Dict[str, mltypes.MLSet] = {
+    def _get_api_provides(self) -> Dict[str, mltypes.MLSet]:
+        """
+        _get_api_provides -- get provided apis.
+
+        :return: List of apis in the list in a fashion of a Set.
+        :rtype: Dict[str, mltypes.MLSet]
+        """
+        api_provides: Dict[str, mltypes.MLSet] = {
             "_other_": mltypes.MLSet(),
         }
         for stream in self._enabled_stream_modules.values():
             if not stream:
                 continue
-            streamArtifacts = stream.get_rpm_artifacts()
+            s_arts = stream.get_rpm_artifacts()
             for rpm in stream.get_rpm_api():
-                artifact = self.get_artifact_with_name(streamArtifacts, rpm)
+                artifact = self.get_artifact_with_name(s_arts, rpm)
                 if artifact:
-                    if rpm not in apiProvides:
-                        apiProvides[rpm] = mltypes.MLSet([artifact])
+                    if rpm not in api_provides:
+                        api_provides[rpm] = mltypes.MLSet([artifact])
                     else:
-                        apiProvides[rpm].add(artifact)
-                    streamArtifacts.remove(artifact)
+                        api_provides[rpm].add(artifact)
+                    s_arts.remove(artifact)
 
         # Add the remaining non-api artifacts
-            for artifact in streamArtifacts:
-                apiProvides["_other_"].add(artifact)
-        return apiProvides
+            for artifact in s_arts:
+                api_provides["_other_"].add(artifact)
+        return api_provides
 
     def _select_stream(self, m_name, stream) -> Dict:
         s_obj: Dict = {
@@ -248,7 +254,7 @@ class MLLibmodProc:
                 if artifact:
                     api_provides["apis"].add(rpm)
                     if not artifact.endswith(".src"):
-                    api_provides["packages"].add(artifact)
+                        api_provides["packages"].add(artifact)
                     api_provides["selected"].add(self._select_stream(stream.get_module_name(), stream))
 
         return api_provides
