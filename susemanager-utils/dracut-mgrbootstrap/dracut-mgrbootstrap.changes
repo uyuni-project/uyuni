@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Wed Jan 29 15:44:52 CET 2020 - mc@suse.de
+
+- version 0.2-1
+- provide dracut files to create bare-metal image for pre registration
+  of systems (bsc#1153269)
+
+-------------------------------------------------------------------
 Tue Jan 28 10:54:32 UTC 2020 - Michael Calmer <mc@suse.com>
 
 - new package
