@@ -72,6 +72,6 @@ public class SaltPillar implements SaltState {
     }
 
     public boolean isEmpty() {
-        return this.data == null || this.data.isEmpty();
+        return this.data.isEmpty();
     }
 }
