@@ -192,7 +192,7 @@ ORDER BY SEV.label
   </query>
 </mode>
 
-<mode name="systems_with_feature">
+<mode name="filter_system_ids_with_feature">
   <query params="feature">
   SELECT SFV.server_id
     FROM rhnServerFeaturesView SFV
