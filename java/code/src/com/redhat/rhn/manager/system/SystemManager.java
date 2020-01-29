@@ -2281,7 +2281,7 @@ public class SystemManager extends BaseManager {
      * Removes an entitlement from the given Server. If the given entitlement is the base entitlement,
      * removes all entitlements from the Server.
      * @param server the server
-     * @param ent the entitlement.
+     * @param ent the entitlement
      */
     public static void removeServerEntitlement(Server server, Entitlement ent) {
 
