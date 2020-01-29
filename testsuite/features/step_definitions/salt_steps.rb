@@ -271,11 +271,14 @@ When(/^I ([^ ]*) the "([^"]*)" formula$/) do |action, formula|
   # Complicated code because the checkbox is not a <input type=checkbox> but an <i>
   xpath_query = "//a[@id = '#{formula}']/i[@class = 'fa fa-lg fa-square-o']" if action == 'check'
   xpath_query = "//a[@id = '#{formula}']/i[@class = 'fa fa-lg fa-check-square-o']" if action == 'uncheck'
+  puts "Selected formulas [beginning]:\n#{find('#chooseFormulas')['innerHTML']}"
   if all(:xpath, xpath_query, wait: DEFAULT_TIMEOUT).any?
+    puts "Selected formulas [if]:\n#{find('#chooseFormulas')['innerHTML']}"
     raise "xpath: #{xpath_query} not found" unless find(:xpath, xpath_query, wait: DEFAULT_TIMEOUT).click
   else
     xpath_query = "//a[@id = '#{formula}']/i[@class = 'fa fa-lg fa-check-square-o']" if action == 'check'
     xpath_query = "//a[@id = '#{formula}']/i[@class = 'fa fa-lg fa-square-o']" if action == 'uncheck'
+    puts "Selected formulas [else]:\n#{find('#chooseFormulas')['innerHTML']}"
     raise "xpath: #{xpath_query} not found" unless all(:xpath, xpath_query, wait: DEFAULT_TIMEOUT).any?
   end
 end
