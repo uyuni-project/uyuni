@@ -547,8 +547,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         assertTrue(server.hasEntitlement(EntitlementManager.VIRTUALIZATION));
 
         // Removal
-        SystemManager.removeServerEntitlement(server,
-                EntitlementManager.VIRTUALIZATION);
+        SystemManager.removeServerEntitlement(server, EntitlementManager.VIRTUALIZATION);
         server = reload(server);
         assertFalse(server.hasEntitlement(EntitlementManager.VIRTUALIZATION));
 

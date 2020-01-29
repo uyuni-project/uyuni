@@ -152,8 +152,7 @@ public class SystemEntitlementsSubmitActionTest extends RhnPostMockStrutsTestCas
 
         Server server = ServerTestUtils.createVirtHostWithGuests(user, 1);
 
-        SystemManager.removeServerEntitlement(server,
-                EntitlementManager.VIRTUALIZATION);
+        SystemManager.removeServerEntitlement(server, EntitlementManager.VIRTUALIZATION);
         ServerGroupTest.createTestServerGroup(user.getOrg(),
                 groupType);
 
