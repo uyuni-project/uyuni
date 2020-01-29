@@ -2162,7 +2162,7 @@ public class Server extends BaseDomainHelper implements Identifiable {
      */
     public Optional<EntitlementServerGroup> findServerGroupByEntitlement(Entitlement ent) {
         String entitlementLabel = ent.getLabel();
-        return this.getEntitledGroups().stream().filter(g -> g.getGroupTypeLabel().equals(entitlementLabel))
+        return this.getEntitledGroups().stream().filter(g -> g.getGroupType().getLabel().equals(entitlementLabel))
                 .findFirst();
     }
 }
