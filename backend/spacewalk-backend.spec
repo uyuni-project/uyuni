@@ -475,7 +475,6 @@ fi
 %{python3rhnroot}/server/importlib/__pycache__/*
 %{python3rhnroot}/server/__pycache__/*
 %exclude %{python3rhnroot}/server/__pycache__/__init__.*
-%exclude %{python3rhnroot}/server/__pycache__/auditlog.*
 %exclude %{python3rhnroot}/server/__pycache__/configFilesHandler.*
 %{rhnroot}/server/handlers/__init__.py*
 
@@ -524,8 +523,6 @@ fi
 %{python3rhnroot}/server/action/*
 %dir %{python3rhnroot}/server/action_extra_data
 %{python3rhnroot}/server/action_extra_data/*
-%{python3rhnroot}/server/auditlog.py*
-%{python3rhnroot}/server/__pycache__/auditlog.*
 # config files
 %attr(644,root,%{apache_group}) %{rhnconfigdefaults}/rhn_server_xmlrpc.conf
 %config(noreplace) %{_sysconfdir}/logrotate.d/spacewalk-backend-xmlrpc

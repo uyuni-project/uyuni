@@ -18,7 +18,7 @@ SPACEWALK_FILES		= __init__ \
                   rhnHandler rhnImport rhnMapping rhnLib rhnPackage \
                   rhnPackageUpload basePackageUpload rhnRepository \
                   rhnSession rhnUser rhnVirtualization taskomatic \
-                  auditlog suseEula
+                  suseEula
 SUBDIRS		= rhnSQL rhnServer action \
 			  handlers importlib action_extra_data \
 			  config_common repomd
