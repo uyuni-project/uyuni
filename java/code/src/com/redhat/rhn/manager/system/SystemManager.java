@@ -170,17 +170,15 @@ public class SystemManager extends BaseManager {
             return;
         }
         List<Long> serverIds = servers.stream().map(Server::getId).collect(Collectors.toList());
-        List<Long> snapshotteableServerIds = filterServerIdsWithFeature(serverIds, "ftr_snapshotting");
+        List<Long> snapshottableServerIds = filterServerIdsWithFeature(serverIds, "ftr_snapshotting");
 
         // If the server is null or doesn't have the snapshotting feature, don't bother.
-        if (!snapshotteableServerIds.isEmpty()) {
-            for (Long serverId : snapshotteableServerIds) {
-                CallableMode m = ModeFactory.getCallableMode("System_queries", "snapshot_server");
-                Map<String, Object> in = new HashMap<String, Object>();
-                in.put("server_id", serverId);
-                in.put("reason", reason);
-                m.execute(in, new HashMap<String, Integer>());
-            }
+        for (Long serverId : snapshottableServerIds) {
+            CallableMode m = ModeFactory.getCallableMode("System_queries", "snapshot_server");
+            Map<String, Object> in = new HashMap<String, Object>();
+            in.put("server_id", serverId);
+            in.put("reason", reason);
+            m.execute(in, new HashMap<String, Integer>());
         }
     }
 
