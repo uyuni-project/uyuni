@@ -2087,15 +2087,15 @@ public class SystemManager extends BaseManager {
             in.put("entitlement_label", ent.getLabel());
             in.put("summary", "added system entitlement ");
 
-            log.debug("entitle_server mode query executed.");
-
             WriteMode m = ModeFactory.getWriteMode("System_queries", "update_server_history_for_entitlement_event");
             m.executeUpdate(in);
+
+            log.debug("update_server_history_for_entitlement_event mode query executed.");
 
             ServerFactory.addServerToGroup(server, serverGroup.get());
         }
         else {
-            log.info("invalid_entitlement.");
+            log.error("Cannot add entitlement: " + ent.getLabel() + " to system: " + server.getId());
         }
     }
 
@@ -2364,7 +2364,8 @@ public class SystemManager extends BaseManager {
             Optional<ServerGroup> serverGroup = ServerGroupFactory
                     .findCompatibleServerGroupForBaseEntitlement(serverId, ent);
             if (!serverGroup.isPresent()) {
-                log.info("invalid_base_entitlement - no compatible server group");
+                log.warn("Could not find a compatible ServerGroup for base entitlement: " + ent.getLabel() +
+                        ", and server: " + serverId);
             }
             return serverGroup;
         }
@@ -2373,22 +2374,24 @@ public class SystemManager extends BaseManager {
 
     private static Optional<ServerGroup> getServerGroupForEntitleAnEntitledServer(Server server, Entitlement ent) {
         if (ent.isBase()) {
-            log.warn("invalid_addon_entitlement - found another base");
+            log.warn("Cannot set a base entitlement: " + ent.getLabel() + " as an addon entitlement for server: " +
+                    server.getId());
             return Optional.empty();
         }
 
         Optional<Long> baseEntitlementId = server.getBaseEntitlementId();
 
         if (baseEntitlementId.isEmpty()) {
-            log.warn("invalid_base_entitlement - never found a base");
+            log.warn("Cannot set a entitlement: " + ent.getLabel() + " as an addon entitlement for server: " +
+                    server.getId() + ". The server has no base entitlement yet.");
             return Optional.empty();
         }
 
-        Optional<ServerGroup> serverGroup =
-                ServerGroupFactory.findCompatibleServerGroupForAddonEntitlement(
-                        server.getId(), ent,  baseEntitlementId.get());
+        Optional<ServerGroup> serverGroup = ServerGroupFactory
+                .findCompatibleServerGroupForAddonEntitlement(server.getId(), ent, baseEntitlementId.get());
         if (!serverGroup.isPresent()) {
-            log.warn("invalid_base_entitlement - no compatible server group");
+            log.warn("Cannot set a entitlement: " + ent.getLabel() + " as an addon entitlement for server: " +
+                    server.getId() + ". The server base entitlement is not compatible.");
         }
         return serverGroup;
     }
