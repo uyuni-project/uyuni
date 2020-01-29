@@ -1388,15 +1388,8 @@ public class Server extends BaseDomainHelper implements Identifiable {
      * @return a set of Entitlement objects
      */
     public Set<Entitlement> getEntitlements() {
-        Set<Entitlement> entitlements = new HashSet<Entitlement>();
-
-        List<ServerGroupType> serverGroupTypes = getEntitledGroupTypes();
-
-        for (ServerGroupType serverGroupType : serverGroupTypes) {
-            entitlements.add(EntitlementManager.getByName(
-                    serverGroupType.getLabel()));
-        }
-        return entitlements;
+        return this.getEntitledGroupTypes().stream().map(sgt -> EntitlementManager.getByName(sgt.getLabel()))
+                .collect(Collectors.toSet());
     }
 
     /**
