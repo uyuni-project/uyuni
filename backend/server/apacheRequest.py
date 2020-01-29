@@ -39,9 +39,6 @@ from spacewalk.common.rhnTranslate import _
 from uyuni.common.rhnLib import setHeaderValue
 from spacewalk.common.rhnTB import Traceback
 
-# server modules
-from spacewalk.server.auditlog import auditlog_xmlrpc, AuditLogException
-
 # local modules
 from . import rhnRepository
 from . import rhnImport
@@ -203,23 +200,8 @@ class apacheRequest:
         if force_rollback:
             rhnSQL.rollback()
 
-        # we only want to log successful actions at this time, that's
-        # why we do it here. Note: "func" might be None, in this case
-        # it will cause AuditLogException below.
-        try:
-            auditlog_xmlrpc(func, method, params, self.req)
-        except AuditLogException as e:
-            # if logging didn't succeed, cancel the whole action
-            rhnSQL.rollback()
-            Traceback(method, self.req,
-                      extra="AuditLogging error: %s" % e)
-            return apache.HTTP_INTERNAL_SERVER_ERROR
         # and now send everything back
         ret = self.response(response)
-
-        # we only want to log successful actions at this time, that's
-        # why we do it here
-        auditlog_xmlrpc(func, method, params, self.req)
 
         log_debug(4, "Leave with return value", ret)
         return ret
