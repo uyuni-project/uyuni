@@ -142,7 +142,7 @@ public enum SaltStateGeneratorService {
                return;
             }
 
-            pillar.addAll(generateGroupsPillarData(minion));
+            pillar.addAll(generateGroupsMemebershipPillarData(minion));
 
             com.suse.manager.webui.utils.SaltStateGenerator saltStateGenerator =
                     new com.suse.manager.webui.utils.SaltStateGenerator(filePath.toFile());
@@ -153,8 +153,12 @@ public enum SaltStateGeneratorService {
         }
     }
 
-    private Map<String, Object> generateGroupsPillarData(
-            MinionServer minion) {
+    /**
+     * Generate pillar data for the server groups the passed minion is member of.
+     * @param minion the minion server
+     * @return a map containing the pillar data
+     */
+    private Map<String, Object> generateGroupsMemebershipPillarData(MinionServer minion) {
         Map<String, Object> out = new HashMap<String, Object>();
 
         List<ManagedServerGroup> groups = minion.getManagedGroups();
@@ -188,7 +192,7 @@ public enum SaltStateGeneratorService {
         SaltPillar pillar = new SaltPillar();
         pillar.add("org_id", minion.getOrg().getId());
 
-        pillar.addAll(generateGroupsPillarData(minion));
+        pillar.addAll(generateGroupsMemebershipPillarData(minion));
         pillar.add("contact_method", minion.getContactMethod().getLabel());
         pillar.add("mgr_server", getChannelHost(minion));
         pillar.add("machine_password", MachinePasswordUtils.machinePassword(minion));
