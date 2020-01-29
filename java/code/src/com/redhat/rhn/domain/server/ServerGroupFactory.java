@@ -73,10 +73,7 @@ public class ServerGroupFactory extends HibernateFactory {
                 .setParameter("sid", serverId)
                 .setParameter("entitlement_label", baseEnt.getLabel()).uniqueResult();
 
-        if (serverGroup != null) {
-            return Optional.of(serverGroup);
-        }
-        return Optional.empty();
+        return Optional.ofNullable(serverGroup);
     }
 
     /**
