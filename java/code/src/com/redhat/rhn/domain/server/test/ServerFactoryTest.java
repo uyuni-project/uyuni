@@ -274,6 +274,54 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
 
     }
 
+    public void testAddServersToGroup() throws Exception {
+        User user1 = UserTestUtils.findNewUser("userForAddingServers1", "orgForAddingServers1" +
+                this.getClass().getSimpleName());
+
+        Server testServer1 = createTestServer(user1);
+        Server testServer2 = createTestServer(user1);
+
+        ManagedServerGroup serverGroup = ServerGroupTestUtils.createManaged(user1);
+        TestUtils.flushAndEvict(serverGroup);
+
+        ManagedServerGroup foundServerGroup = ServerGroupFactory.lookupByIdAndOrg(serverGroup.getId(), user1.getOrg());
+        assertEquals(foundServerGroup.getId(), serverGroup.getId());
+        assertTrue(serverGroup.getServers().isEmpty());
+
+        //add 2 servers in empty group
+        List<Server> serversToAdd = Arrays.asList(testServer1, testServer2);
+        ServerFactory.addServersToGroup(serversToAdd, serverGroup);
+
+        foundServerGroup = ServerGroupFactory.lookupByIdAndOrg(serverGroup.getId(), user1.getOrg());
+        assertTrue(serverGroup.getServers().stream().allMatch(s -> serversToAdd.contains(s)));
+        assertEquals(serverGroup.getServers().size(), 2);
+
+        //try to add one of the servers again, nothing should happen
+        ServerFactory.addServersToGroup(Arrays.asList(testServer1), serverGroup);
+
+        foundServerGroup = ServerGroupFactory.lookupByIdAndOrg(serverGroup.getId(), user1.getOrg());
+        assertTrue(serverGroup.getServers().stream().allMatch(s -> serversToAdd.contains(s)));
+        assertEquals(serverGroup.getServers().size(), 2);
+
+        //try to add a server from a different Org, should not be added
+        User user2 = UserTestUtils.findNewUser("userForAddingServers2", "orgForAddingServers2" +
+                this.getClass().getSimpleName());
+
+        Server testServerDifferentOrg = createTestServer(user2);
+        ServerFactory.addServersToGroup(Arrays.asList(testServerDifferentOrg), serverGroup);
+
+        foundServerGroup = ServerGroupFactory.lookupByIdAndOrg(serverGroup.getId(), user1.getOrg());
+        assertTrue(serverGroup.getServers().stream().allMatch(s -> serversToAdd.contains(s)));
+        assertEquals(serverGroup.getServers().size(), 2);
+
+        //try to add an empty server collection
+        ServerFactory.addServersToGroup(new ArrayList<>(), serverGroup);
+
+        foundServerGroup = ServerGroupFactory.lookupByIdAndOrg(serverGroup.getId(), user1.getOrg());
+        assertTrue(serverGroup.getServers().stream().allMatch(s -> serversToAdd.contains(s)));
+        assertEquals(serverGroup.getServers().size(), 2);
+    }
+
     public void testAddRemove() throws Exception {
 
         //Test adding/removing server from group
