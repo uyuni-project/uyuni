@@ -1367,18 +1367,7 @@ public class Server extends BaseDomainHelper implements Identifiable {
      * @return true if the server has the given Entitlement.
      */
     public boolean hasEntitlement(Entitlement entitlement) {
-       List<ServerGroupType> grps = getEntitledGroupTypes();
-       for (ServerGroupType serverGroupType : grps) {
-            // The server's group type can be null if the user has created some
-            // custom server groups.  If so, we won't check it against the
-            // given entitlement.
-
-            if (serverGroupType.getLabel().equals(entitlement.getLabel())) {
-                return true;
-            }
-        }
-
-        return false;
+        return this.getEntitledGroupTypes().stream().anyMatch(sgt -> sgt.getLabel().equals(entitlement.getLabel()));
     }
 
     /**
