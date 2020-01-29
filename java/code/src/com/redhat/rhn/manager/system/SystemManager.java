@@ -1583,7 +1583,7 @@ public class SystemManager extends BaseManager {
      */
     @SuppressWarnings("unchecked")
     public static List<Long> filterServerIdsWithFeature(List<Long> sids, String feat) {
-        SelectMode m = ModeFactory.getMode("General_queries", "systems_with_feature");
+        SelectMode m = ModeFactory.getMode("General_queries", "filter_system_ids_with_feature");
 
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("feature", feat);
