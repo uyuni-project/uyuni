@@ -113,6 +113,13 @@ public class MatcherJsonIOTest extends JMockBaseTestCaseWithUser {
         VirtualInstance refGuest2 = createVirtualInstance(h1, g2, uuid2);
         h1.addGuest(refGuest2);
 
+        Server g3 = ServerTestUtils.createTestSystem();
+        g3.setName("guest3.example.com");
+        g3.setCpu(createCPU(g3, 4L));
+        g3.setInstalledProducts(installedProducts);
+        g3.setPayg(true);
+        String uuid3 = TestUtils.randomString();
+
         // tell MatcherJsonIO to include self system in the JSON output, which would happen
         // if the running SUMA is an ISS Master
         List<SystemJson> result = new MatcherJsonIO().getJsonSystems(true, AMD64_ARCH, false);
@@ -138,6 +145,13 @@ public class MatcherJsonIOTest extends JMockBaseTestCaseWithUser {
         assertTrue(resultG2.getProductIds().contains(1322L));
         assertTrue(resultG2.getProductIds().contains(MGMT_SINGLE_PROD_ID));
         assertTrue(resultG2.getProductIds().contains(1324L));
+
+        // PAYG systems must only have entitlements
+        SystemJson resultG3 = findSystem(g3.getId(), result);
+        assertNotNull(resultG3);
+        assertEquals("guest3.example.com", resultG3.getName());
+        assertEquals(1, resultG3.getProductIds().size());
+        assertTrue(resultG3.getProductIds().contains(MGMT_SINGLE_PROD_ID));
 
         // ISS Master should add itself
         SystemJson sumaItself = findSystem(MatcherJsonIO.SELF_SYSTEM_ID, result);

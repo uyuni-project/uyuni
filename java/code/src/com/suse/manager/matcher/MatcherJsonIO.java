@@ -338,6 +338,7 @@ public class MatcherJsonIO {
      * require SUSE Manager entitlements for such systems).
      * Filters out the products with "SLE-M-T" product class as they are not considered in
      * subsription matching.
+     * Also filters out the products for PAYG (Pay-As-You-Go) instances.
      */
     private Stream<Long> productIdsForServer(Server server, Set<String> entitlements) {
         List<SUSEProduct> products = productFactory.map(server.getInstalledProducts())
@@ -350,7 +351,7 @@ public class MatcherJsonIO {
 
         // add SUSE Manager entitlements
         return concat(
-                products.stream().map(SUSEProduct::getProductId),
+                server.isPayg() ? Stream.empty() : products.stream().map(SUSEProduct::getProductId),
                 entitlementIdsForServer(server, entitlements)
         );
     }

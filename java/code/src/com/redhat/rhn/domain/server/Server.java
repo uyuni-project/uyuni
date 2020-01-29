@@ -123,6 +123,7 @@ public class Server extends BaseDomainHelper implements Identifiable {
     private Set<InstalledProduct> installedProducts = new HashSet<>();
     private String machineId;
     private String hostname;
+    private boolean payg;
 
     public static final String VALID_CNAMES = "valid_cnames_";
 
@@ -2131,5 +2132,21 @@ public class Server extends BaseDomainHelper implements Identifiable {
      */
     public boolean doesOsSupportsMonitoring() {
         return false;
+    }
+
+    /**
+     *
+     * @return payg
+     */
+    public boolean isPayg() {
+        return payg;
+    }
+
+    /**
+     *
+     * @param paygIn boolean
+     */
+    public void setPayg(boolean paygIn) {
+        payg = paygIn;
     }
 }
