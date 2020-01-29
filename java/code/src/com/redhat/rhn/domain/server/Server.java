@@ -49,6 +49,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import org.apache.commons.lang3.StringUtils;
@@ -1445,16 +1446,8 @@ public class Server extends BaseDomainHelper implements Identifiable {
      * @return Set of entitlements that are add-on entitlements for the server
      */
     public Set<Entitlement> getAddOnEntitlements() {
-        Set<Entitlement> s = new HashSet<Entitlement>();
-
-        List<ServerGroupType> groupTypes = getEntitledGroupTypes();
-
-        for (ServerGroupType serverGroupType : groupTypes) {
-            if (!serverGroupType.isBase()) {
-                s.add(EntitlementManager.getByName(serverGroupType.getLabel()));
-            }
-        }
-        return s;
+        return this.getEntitledGroupTypes().stream().filter(Predicate.not(ServerGroupType::isBase))
+                .map(sgt -> EntitlementManager.getByName(sgt.getLabel())).collect(Collectors.toSet());
     }
 
     /**
