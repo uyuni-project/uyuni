@@ -1705,6 +1705,15 @@ SELECT 1
   </query>
 </mode>
 
+<mode name="filter_systems_available_to_user">
+  <query params="uid">
+    SELECT USP.server_id
+    FROM rhnUserServerPerms USP
+    WHERE USP.user_id = :uid
+      AND USP.server_id IN (%s)
+  </query>
+</mode>
+
 <callable-mode name="entitle_server">
   <query params="sid, entitlement">
 {call rhn_entitlements.entitle_server(:sid, :entitlement)}

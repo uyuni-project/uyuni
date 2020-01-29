@@ -16,6 +16,7 @@ package com.redhat.rhn.frontend.xmlrpc.system;
 
 import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.xmlrpc.BootstrapException;
 import com.redhat.rhn.frontend.xmlrpc.NoSuchSystemException;
@@ -32,6 +33,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
@@ -93,13 +95,14 @@ public class XmlRpcSystemHelper {
      * @throws NoSuchSystemException A NoSuchSystemException is thrown if the server
      * corresponding to sid cannot be found.
      */
-    public List<Server> lookupServers(User user,
-            List<? extends Number> serverIds)  throws NoSuchSystemException {
-        List<Server> servers = new LinkedList<Server>();
-        for (Number sid : serverIds) {
-            servers.add(lookupServer(user, sid));
+    public List<Server> lookupServers(User user, List<? extends Number> serverIds) throws NoSuchSystemException {
+        try {
+            return SystemManager.lookupByServerIdsAndUser(
+                    serverIds.stream().map(s -> s.longValue()).collect(Collectors.toList()), user.getId());
         }
-        return servers;
+        catch (LookupException e) {
+            throw new NoSuchSystemException("No such systems found for user: " + user.getId());
+        }
     }
 
 
