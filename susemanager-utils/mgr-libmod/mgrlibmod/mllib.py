@@ -2,6 +2,7 @@
 libmod operations
 """
 import os
+import sys
 import gzip
 import json
 import argparse
@@ -365,7 +366,7 @@ class MLLibmodAPI:
                 else:
                     self._proc.pick_default_stream(s_type=s_type)
             except Exception as exc:
-                print("Skipping stream", s_type.name)
+                sys.stderr.write("Skipping stream {}\n".format(s_type.name))
 
         return self._proc.get_api_provides()
 
