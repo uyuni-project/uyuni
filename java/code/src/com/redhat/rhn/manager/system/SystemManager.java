@@ -190,9 +190,7 @@ public class SystemManager extends BaseManager {
      * @param reason The reason for the snapshotting.
      */
     public static void snapshotServer(Server server, String reason) {
-        if (server != null) {
-            snapshotServers(Arrays.asList(server), reason);
-        }
+        snapshotServers(Arrays.asList(server), reason);
     }
 
     /**
