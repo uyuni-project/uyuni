@@ -65,20 +65,6 @@ When(/^I wait until no Salt job is running on "([^"]*)"$/) do |minion|
   end
 end
 
-When(/^I wait until onboarding is completed for "([^"]*)"$/) do |host|
-  steps %(
-    When I follow the left menu "Systems > Overview"
-    And I wait until I see the name of "#{host}", refreshing the page
-    And I follow this "#{host}" link
-  )
-  get_target(host).run('rhn_check -vvv') if get_client_type(host) == 'traditional'
-  steps %(
-    And I wait until event "Hardware List Refresh" is completed
-    And I wait until event "Apply states" is completed
-    And I wait until event "Package List Refresh" is completed
-  )
-end
-
 When(/^I delete "([^"]*)" key in the Salt master$/) do |host|
   system_name = get_system_name(host)
   $output, _code = $server.run("salt-key -y -d #{system_name}", false)
