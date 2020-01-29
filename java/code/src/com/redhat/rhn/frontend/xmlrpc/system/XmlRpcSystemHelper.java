@@ -16,7 +16,6 @@ package com.redhat.rhn.frontend.xmlrpc.system;
 
 import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.domain.server.Server;
-import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.xmlrpc.BootstrapException;
 import com.redhat.rhn.frontend.xmlrpc.NoSuchSystemException;
@@ -30,7 +29,6 @@ import com.suse.manager.webui.utils.gson.BootstrapHostsJson;
 
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
