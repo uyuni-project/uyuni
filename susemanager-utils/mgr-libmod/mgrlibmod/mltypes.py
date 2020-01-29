@@ -163,7 +163,6 @@ class MLInputType(MLAnyType):
         assert obj["streams"] is not None, "Streams should not be null!"
         for str_kw in obj["streams"]:
             assert "name" in str_kw, "No 'name' attribute in the stream parameter {}".format(str_kw)
-            assert "stream" in str_kw, "No 'stream' attribute in the stream parameter {}".format(str_kw)
-            out.append(MLStreamType(name=str_kw["name"], streamname=str_kw["stream"]))
+            out.append(MLStreamType(name=str_kw["name"], streamname=str_kw.get("stream") or ""))
 
         return out
