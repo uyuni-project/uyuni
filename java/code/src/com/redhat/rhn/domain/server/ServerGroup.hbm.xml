@@ -173,7 +173,7 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
                    JOIN rhnServer S ON (S.org_id = SG.org_id)
                    JOIN rhnServerServerGroupArchCompat SSGAC ON (SSGAC.server_arch_id = S.server_arch_id AND SSGAC.server_group_type = SGT.id)
                  WHERE S.id = :sid
-                   AND SGT.label = :entitlement_label
+                   AND SGT.label = :addon_entitlement_label
                    AND SGTBAC.base_id = :base_ent_id
                    AND NOT EXISTS (SELECT 1
                                    FROM rhnServerGroupMembers SGM
