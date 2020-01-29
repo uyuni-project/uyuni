@@ -51,7 +51,7 @@ public class GroupDetailAction extends RhnAction {
         ManagedServerGroup sg = rctx.lookupAndBindServerGroup();
         HashMap errataCounts =
                 (HashMap) ServerGroupManager.getInstance().errataCounts(user, sg);
-        long minionCount = MinionServerUtils.filterSaltMinions(new ArrayList<Server>(sg.getServers())).count();
+        long minionCount = MinionServerUtils.filterSaltMinions(sg.getServers()).count();
 
         request.setAttribute("id", sg.getId());
         request.setAttribute("errata_counts", errataCounts);
