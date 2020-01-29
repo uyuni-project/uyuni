@@ -2327,16 +2327,15 @@ public class SystemManager extends BaseManager {
             in.put("entitlement_label", ent.getLabel());
             in.put("summary", "removed system entitlement ");
 
-            log.debug("update_server_history_for_entitlement_event mode query executed.");
-
-            WriteMode m = ModeFactory.getWriteMode("System_queries",
-                    "update_server_history_for_entitlement_event");
+            WriteMode m = ModeFactory.getWriteMode("System_queries", "update_server_history_for_entitlement_event");
             m.executeUpdate(in);
+
+            log.debug("update_server_history_for_entitlement_event mode query executed.");
 
             ServerFactory.removeServerFromGroup(server, entitlementServerGroup.get());
         }
         else {
-            log.info("invalid_entitlement.");
+            log.error("Cannot remove entitlement: " + ent.getLabel() + " from system: " + server.getId());
         }
     }
 
