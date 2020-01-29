@@ -169,10 +169,6 @@ public class ConfigDefaults {
 
     public static final String KS_PARTITION_DEFAULT = "kickstart.partition.default";
 
-    // Audit logging properties
-    public static final String AUDIT_ENABLED = "audit.enabled";
-    public static final String AUDIT_SERVER = "audit.server";
-
     public static final String CONFIG_KEY_SUDO_USER = "ssh_push_sudo_user";
 
     /** Prometheus metric export flag */

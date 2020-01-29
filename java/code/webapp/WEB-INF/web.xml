@@ -369,10 +369,4 @@
       <error-code>500</error-code>
       <location>/errors/500.jsp</location>
   </error-page>
-
-  <!-- Custom Exception Handling -->
-  <error-page>
-      <exception-type>com.redhat.rhn.common.logging.AuditLogException</exception-type>
-      <location>/WEB-INF/pages/common/errors/logkeeper.jsp</location>
-  </error-page>
 </web-app>
