@@ -8,24 +8,22 @@
 # For the scope of these tests, we configure it as follows:
 #   java.salt_content_staging_window = 0.033 (2 minutes)
 #   java.salt_content_staging_advance = 0.05 (3 minutes)
-# which means "beetwen 3 and 1 minutes before package installation or patching"
-
-Feature: Install a package on the Ubuntu minion with staging enabled
+# which means "between 3 and 1 minutes before package installation or patching"
 
 @ubuntu_minion
+Feature: Install a package on the Ubuntu minion with staging enabled
+
   Scenario: Pre-requisite: install virgo-dummy-1.0 package, make sure orion-dummy is not present on Ubuntu minion
     When I enable repository "test_repo_deb_pool" on this "ubuntu_minion"
     And I run "apt update" on "ubuntu_minion"
     And I remove package "orion-dummy" from this "ubuntu_minion"
     And I install old package "virgo-dummy=1.0" on this "ubuntu_minion"
 
-@ubuntu_minion
   Scenario: Pre-requisite: refresh package list on Ubuntu minion
     When I refresh packages list via spacecmd on "ubuntu_minion"
     And I wait until refresh package list on "ubuntu_minion" is finished
     Then spacecmd should show packages "virgo-dummy-1.0" installed on "ubuntu_minion"
 
-@ubuntu_minion
   Scenario: Pre-requisite: ensure the errata cache is computed for Ubuntu minion
     Given I am authorized as "admin" with password "admin"
     When I follow the left menu "Admin > Task Schedules"
@@ -35,7 +33,6 @@ Feature: Install a package on the Ubuntu minion with staging enabled
     And I should see a "bunch was scheduled" text
     Then I wait until the table contains "FINISHED" or "SKIPPED" followed by "FINISHED" in its first rows
 
-@ubuntu_minion
   Scenario: Enable content staging for Ubuntu minion
     Given I am authorized as "admin" with password "admin"
     When I follow the left menu "Admin > Organizations"
@@ -45,21 +42,19 @@ Feature: Install a package on the Ubuntu minion with staging enabled
     And I click on "Update Organization"
     Then I should see a "was successfully updated." text
 
-@ubuntu_minion
   Scenario: Install package in the future and check for staging on Ubuntu minion
     Given I am on the Systems overview page of this "ubuntu_minion"
     And I follow "Software" in the content area
     And I follow "Packages" in the content area
     And I follow "Install" in the content area
-    When I check "orion-dummy-1.1-1.1" in the list
+    When I check "orion-dummy-1.1-X" in the list
     And I click on "Install Selected Packages"
     And I pick 2 minutes from now as schedule time
     And I click on "Confirm"
     Then I should see a "1 package install has been scheduled for" text
-    And I wait until the package "orion-dummy-1.1-1.1" has been cached on this "ubuntu_minion"
-    And I wait for "orion-dummy-1.1-1.1" to be installed on this "ubuntu_minion"
+    And I wait until the package "orion-dummy_1.1" has been cached on this "ubuntu_minion"
+    And I wait for "orion-dummy-1.1" to be installed on this "ubuntu_minion"
 
-@ubuntu_minion
   Scenario: Install patch in the future and check for staging on Ubuntu minion
     Given I am on the Systems overview page of this "ubuntu_minion"
     And I follow "Software" in the content area
@@ -72,7 +67,6 @@ Feature: Install a package on the Ubuntu minion with staging enabled
     And I wait until the package "virgo-dummy-2.0-1.1_noarch" has been cached on this "ubuntu_minion"
     And I wait for "virgo-dummy-2.0-1.1" to be installed on this "ubuntu_minion"
 
-@ubuntu_minion
   Scenario: Cleanup: remove virgo-dummy and orion-dummy packages from Ubuntu minion
     Given I am authorized as "admin" with password "admin"
     And I remove package "orion-dummy" from this "ubuntu_minion"
