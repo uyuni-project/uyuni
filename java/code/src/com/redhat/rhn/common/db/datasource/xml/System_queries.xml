@@ -1563,7 +1563,7 @@ SELECT id,
 
 <callable-mode name="update_permissions_for_server_group">
   <query params="sgid">
-      {call rhn_cache.update_perms_for_server_group( :sgid)}
+      {call rhn_cache.update_perms_for_server_group(:sgid)}
   </query>
 </callable-mode>
 
