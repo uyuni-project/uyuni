@@ -129,7 +129,7 @@ class MLLibmodProc:
         module = self._mod_index.get_module(name)
         if not module:
             raise ValueError("Module {} not found".format(name))
-        defaults = module.get_detaults()
+        defaults = module.get_defaults()
         if defaults:
             return defaults.get_default_stream()
 
