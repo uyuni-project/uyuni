@@ -2079,7 +2079,7 @@ public class SystemManager extends BaseManager {
     }
 
     private static void addEntitlementToServer(Server server, Entitlement ent) {
-        Optional<ServerGroup> serverGroup = getServerGroupForEntitleServer(server, ent);
+        Optional<ServerGroup> serverGroup = findServerGroupToEntitleServer(server, ent);
 
         if (serverGroup.isPresent()) {
             Map<String, Object> in = new HashMap<String, Object>();
@@ -2347,19 +2347,19 @@ public class SystemManager extends BaseManager {
      * entitled to the passed in entitlement.
      */
     public static boolean canEntitleServer(Server server, Entitlement ent) {
-        return getServerGroupForEntitleServer(server, ent).isPresent();
+        return findServerGroupToEntitleServer(server, ent).isPresent();
     }
 
-    private static Optional<ServerGroup> getServerGroupForEntitleServer(Server server, Entitlement ent) {
+    private static Optional<ServerGroup> findServerGroupToEntitleServer(Server server, Entitlement ent) {
         Set<Entitlement> entitlements = server.getEntitlements();
 
         if (entitlements.isEmpty()) {
-            return getServerGroupForEntitleAnUnentitledServer(server.getId(), ent);
+            return findServerGroupToEntitleAnUnentitledServer(server.getId(), ent);
         }
-        return getServerGroupForEntitleAnEntitledServer(server, ent);
+        return findServerGroupToEntitleAnEntitledServer(server, ent);
     }
 
-    private static Optional<ServerGroup> getServerGroupForEntitleAnUnentitledServer(Long serverId, Entitlement ent) {
+    private static Optional<ServerGroup> findServerGroupToEntitleAnUnentitledServer(Long serverId, Entitlement ent) {
         if (ent.isBase()) {
             Optional<ServerGroup> serverGroup = ServerGroupFactory
                     .findCompatibleServerGroupForBaseEntitlement(serverId, ent);
@@ -2372,7 +2372,7 @@ public class SystemManager extends BaseManager {
         return Optional.empty();
     }
 
-    private static Optional<ServerGroup> getServerGroupForEntitleAnEntitledServer(Server server, Entitlement ent) {
+    private static Optional<ServerGroup> findServerGroupToEntitleAnEntitledServer(Server server, Entitlement ent) {
         if (ent.isBase()) {
             log.warn("Cannot set a base entitlement: " + ent.getLabel() + " as an addon entitlement for server: " +
                     server.getId());
