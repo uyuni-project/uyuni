@@ -15,11 +15,9 @@
 
 package com.redhat.rhn.frontend.action.groups;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 import com.redhat.rhn.domain.server.ManagedServerGroup;
-import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnAction;
