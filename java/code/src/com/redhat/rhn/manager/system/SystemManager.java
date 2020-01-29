@@ -2051,7 +2051,7 @@ public class SystemManager extends BaseManager {
             saltServiceInstance.generateSSHKey(SaltSSHService.SSH_KEY_PATH);
         }
 
-        addEntitleToServer(server, ent);
+        addEntitlementToServer(server, ent);
 
         server.asMinionServer().ifPresent(minion -> {
             ServerGroupManager.getInstance().updatePillarAfterGroupUpdateForServers(Arrays.asList(minion));
@@ -2084,7 +2084,7 @@ public class SystemManager extends BaseManager {
         return result;
     }
 
-    private static void addEntitleToServer(Server server, Entitlement ent) {
+    private static void addEntitlementToServer(Server server, Entitlement ent) {
         Optional<ServerGroup> serverGroup = getServerGroupForEntitleServer(server, ent);
 
         if (serverGroup.isPresent()) {
