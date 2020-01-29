@@ -90,7 +90,7 @@ public class ServerGroupFactory extends HibernateFactory {
         ServerGroup serverGroup = (ServerGroup) session
                 .getNamedQuery("ServerGroup.findCompatibleServerGroupForAddOnEntitlement")
                 .setParameter("sid", serverId)
-                .setParameter("entitlement_label", addOnEnt.getLabel())
+                .setParameter("addon_entitlement_label", addOnEnt.getLabel())
                 .setParameter("base_ent_id", baseEntId).uniqueResult();
 
         if (serverGroup != null) {
