@@ -715,9 +715,7 @@ public class SystemManager extends BaseManager {
         snapshotServers(servers, "Group membership alteration");
         if (FormulaFactory.hasMonitoringDataEnabled(serverGroup)) {
             for (Server server : servers) {
-                if (server.hasEntitlement(EntitlementManager.MONITORING)) {
-                    SystemManager.removeServerEntitlement(server, EntitlementManager.MONITORING);
-                }
+                SystemManager.removeServerEntitlement(server, EntitlementManager.MONITORING);
             }
         }
     }
