@@ -326,7 +326,23 @@ public class ServerFactory extends HibernateFactory {
         Map params = new HashMap();
         params.put("sgid", sgid);
 
-        return m.executeUpdate(params, serverIds) > 0;
+        int insertsCount = m.executeUpdate(params, serverIds);
+
+        if (insertsCount > 0) {
+            updateCurrentMembersOfServerGroup(sgid, insertsCount);
+            return true;
+        }
+        return false;
+    }
+
+    private static void updateCurrentMembersOfServerGroup(Long sgid, int membersCount) {
+        WriteMode mode = ModeFactory.getWriteMode("System_queries", "update_current_members_of_server_group");
+
+        Map params = new HashMap();
+        params.put("sgid", sgid);
+        params.put("members_count", membersCount);
+
+        mode.executeUpdate(params);
     }
 
     private static void updatePermissionsForServerGroup(Long sgid) {
@@ -375,7 +391,13 @@ public class ServerFactory extends HibernateFactory {
         Map params = new HashMap();
         params.put("sgid", sgid);
 
-        return m.executeUpdate(params, serverIds) > 0;
+        int removesCount = m.executeUpdate(params, serverIds);
+
+        if (removesCount > 0) {
+            updateCurrentMembersOfServerGroup(sgid, -removesCount);
+            return true;
+        }
+        return false;
     }
 
     /**
