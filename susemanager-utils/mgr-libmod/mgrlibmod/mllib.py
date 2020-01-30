@@ -138,12 +138,12 @@ class MLLibmodProc:
         return module.get_all_streams()[0].get_stream_name()
 
     def get_dep_streams(self, s_obj):
-        dep = s_obj.get_dependencies()[0]  # XXX: Why just always first?
+        dep = s_obj.get_dependencies()[0]
         all_deps = []  # type: ignore
         for m in dep.get_runtime_modules():
             deps = dep.get_runtime_streams(m)
             if deps:
-                all_deps.append((m, deps[0],))  # XXX: why just first?
+                all_deps.append((m, deps[0],))
         return all_deps
 
     def get_actual_stream(self, name: str):
