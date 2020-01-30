@@ -559,8 +559,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         assertTrue(minion.hasEntitlement(EntitlementManager.CONTAINER_BUILD_HOST));
 
         // Removal
-        SystemManager.removeServerEntitlement(minion,
-                EntitlementManager.CONTAINER_BUILD_HOST);
+        SystemManager.removeServerEntitlement(minion, EntitlementManager.CONTAINER_BUILD_HOST);
         minion = reload(minion);
         assertFalse(minion.hasEntitlement(EntitlementManager.CONTAINER_BUILD_HOST));
 
