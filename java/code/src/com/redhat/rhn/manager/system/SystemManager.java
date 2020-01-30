@@ -1586,7 +1586,7 @@ public class SystemManager extends BaseManager {
     }
 
     /**
-     * Used to test if a list of servers have a specific feature.
+     * Filter the servers ids of the servers that have the passed feature from the passed server ids
      * @param sids list of Server ids
      * @param feat Feature to look for
      * @return the list of server ids which have the specified feature
