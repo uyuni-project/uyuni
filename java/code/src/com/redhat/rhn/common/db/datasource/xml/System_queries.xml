@@ -1582,6 +1582,14 @@ SELECT id,
   </query>
 </write-mode>
 
+<write-mode name="update_current_members_of_server_group">
+  <query params="sgid, members_count">
+    UPDATE rhnServerGroup
+    SET current_members = current_members + (:members_count)
+    WHERE id = :sgid
+  </query>
+</write-mode>
+
 <write-mode name="delete_from_servergroup">
   <query params="sgid">
     DELETE FROM rhnServerGroupMembers
