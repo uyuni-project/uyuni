@@ -8,7 +8,7 @@ import json
 import argparse
 import binascii
 
-from typing import Any, Dict, List, Set
+from typing import Any, Dict, List, Set, Optional
 from mgrlibmod import mltypes
 
 import gi  # type: ignore
@@ -35,6 +35,7 @@ class MLLibmodProc:
         self._mod_index: Modulemd.ModuleIndex = None
         assert gi is not None and Modulemd is not None, "No libmodulemd found"
         self._enabled_stream_modules: Dict = {}
+        self._streams: List = []
 
     def _is_stream_enabled(self, s_type: mltypes.MLStreamType) -> bool:
         """
@@ -240,9 +241,23 @@ class MLLibmodProc:
             "packages": mltypes.MLSet(),
             "selected": mltypes.MLSet(),
         }
-        for stream in self._enabled_stream_modules.values():
+
+        anchor_version: int = 0
+        anchor_stream: Optional[Modulemd.ModuleStreamV2] = None
+        for stream in self._streams:
+            version: int = stream.get_version()
+            if anchor_version < version:
+                anchor_version = version
+                anchor_stream = stream
+
+        assert anchor_stream is not None, "Unable to find default stream"
+
+        for stream in self._streams:
             if not stream:
                 continue
+            if stream.get_context() != anchor_stream.get_context():
+                continue
+
             stream_artifacts = stream.get_rpm_artifacts()
 
             for rpm in stream.get_rpm_artifacts():
@@ -279,7 +294,7 @@ class MLLibmodProc:
                     self.pick_stream(s_type=mltypes.MLStreamType(name=dstream[0], streamname=dstream[1]))
 
                 self.enable_stream(ctx)
-                return
+                self._streams.append(ctx)
 
     def pick_default_stream(self, s_type: mltypes.MLStreamType):
         s_type = mltypes.MLStreamType(s_type.name, self.get_default_stream(s_type.name))
@@ -356,13 +371,14 @@ class MLLibmodAPI:
                 rpms["packages"].extend(stream.get_rpm_artifacts())
         return rpms
 
-    def _get_module_packages(self) -> Dict[str, List[str]]:
+    def _get_repodata_streams(self) -> List[Modulemd.ModuleStreamV2]:
         """
-        _get_module_packages -- get all RPMs from selected streams as a map of package names to package strings.
+        _get_repodata_streams -- collect all repodata streams and select current default.
 
-        :return: structure for module packages
-        :rtype: Dict[str, List[str]]
+        :return: List of stream objects
+        :rtype: List
         """
+        self._proc._streams.clear()
         self._proc.index_modules()
 
         for s_type in self.repodata.get_streams():
@@ -373,7 +389,16 @@ class MLLibmodAPI:
                     self._proc.pick_default_stream(s_type=s_type)
             except Exception as exc:
                 sys.stderr.write("Skipping stream {}\n".format(s_type.name))
+        return self._proc._streams
 
+    def _get_module_packages(self) -> Dict[str, List[str]]:
+        """
+        _get_module_packages -- get all RPMs from selected streams as a map of package names to package strings.
+
+        :return: structure for module packages
+        :rtype: Dict[str, List[str]]
+        """
+        self._get_repodata_streams()
         return self._proc.get_api_provides()
 
     # API
