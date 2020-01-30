@@ -58,10 +58,8 @@ install() {
                      mkfs.ext2 mkfs.ext3 mkfs.ext4 mkfs.fat mkfs.vfat mkfs.xfs sync cryptsetup busybox \
                      swapon rpm
     inst_multiple -o $(find /var/lib/rpm/ -type f)
-    #inst_multiple -o $(find /usr/share/locale/en -type f)
 
     inst "/etc/rc.status"
-    inst "$moddir/preregister" "/usr/sbin/preregister"
 
     inst_hook cmdline 91 "$moddir/mgrbootstrap-root.sh"
     inst_hook pre-mount 99 "$moddir/mgrbootstrap.sh"
