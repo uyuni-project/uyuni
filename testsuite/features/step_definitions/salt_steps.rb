@@ -666,7 +666,7 @@ Then(/^I wait for "([^"]*)" to be installed on this "([^"]*)"$/) do |package, ho
     pkg_version = package.split('-')[-1]
     pkg_name = package.delete_suffix("-#{pkg_version}")
     pkg_version_regexp = pkg_version.gsub('.', '\\.')
-    node.run_until_ok("dpkg -l | grep -E '^ii +#{pkg_name} +{pkg_version_regexp} +'")
+    node.run_until_ok("dpkg -l | grep -E '^ii +#{pkg_name} +#{pkg_version_regexp} +'")
   else
     node.run_until_ok("rpm -q #{package}")
   end
