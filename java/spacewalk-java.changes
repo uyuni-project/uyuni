@@ -1,3 +1,5 @@
+- fix error when adding systems to ssm with 'add to ssm' button (bsc#1160246)
+
 -------------------------------------------------------------------
 Wed Mar 11 10:54:21 CET 2020 - jgonzalez@suse.com
 
