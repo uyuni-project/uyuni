@@ -1,3 +1,4 @@
+- call saltutil.sync_all before calling highstate (bsc#1152673)
 - change doc links pointing to new documentation server
 
 -------------------------------------------------------------------
