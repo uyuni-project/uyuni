@@ -255,7 +255,7 @@ class MLLibmodProc:
                     api_provides["apis"].add(rpm)
                     if not artifact.endswith(".src"):
                         api_provides["packages"].add(artifact)
-                    api_provides["selected"].add(self._select_stream(stream.get_module_name(), stream))
+            api_provides["selected"].add(self._select_stream(stream.get_module_name(), stream))
 
         return api_provides
 
