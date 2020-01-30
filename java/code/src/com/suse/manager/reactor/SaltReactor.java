@@ -39,7 +39,7 @@ import com.suse.manager.reactor.messaging.LibvirtEngineDomainLifecycleMessageAct
 import com.suse.manager.reactor.messaging.MinionStartEventDatabaseMessage;
 import com.suse.manager.reactor.messaging.MinionStartEventMessage;
 import com.suse.manager.reactor.messaging.MinionStartEventMessageAction;
-import com.suse.manager.reactor.messaging.MinionStartupGrains;
+import com.suse.manager.webui.utils.salt.MinionStartupGrains;
 import com.suse.manager.reactor.messaging.RefreshGeneratedSaltFilesEventMessage;
 import com.suse.manager.reactor.messaging.RefreshGeneratedSaltFilesEventMessageAction;
 import com.suse.manager.reactor.messaging.RegisterMinionEventMessage;

@@ -15,6 +15,7 @@
 package com.suse.manager.reactor.messaging;
 
 import com.redhat.rhn.common.messaging.EventMessage;
+import com.suse.manager.webui.utils.salt.MinionStartupGrains;
 
 import java.util.Optional;
 /**
