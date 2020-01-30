@@ -721,6 +721,21 @@ public class SaltService {
     }
 
     /**
+     * Call 'saltutil.sync_all' to sync everything to the target minion(s).
+     * @param minionList minion list
+     */
+    public void syncAll(MinionList minionList) {
+        try {
+             LocalCall<Map<String, Object>> call = SaltUtil.syncAll(Optional.empty(),
+                    Optional.empty());
+            callSync(call, minionList);
+        }
+        catch (SaltException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
      * Execute a LocalCall synchronously on the default Salt client.
      * Note that salt-ssh systems are also called by this method.
      *
