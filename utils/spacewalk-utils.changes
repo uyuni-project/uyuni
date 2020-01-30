@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Thu Jan 30 14:49:16 CET 2020 - jgonzalez@suse.com
+
+- version 4.1.3-1
 - Add FQDN resolver for spacewalk-manage-channel-lifecycle (bsc#1153578)
 - Fix typo in CentOS 7 Software Collection
 
