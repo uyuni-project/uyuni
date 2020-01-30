@@ -1,3 +1,5 @@
+- use salt master as parent for minion based proxies (bsc#1162129)
+
 -------------------------------------------------------------------
 Wed Jan 22 12:12:44 CET 2020 - jgonzalez@suse.com
 
