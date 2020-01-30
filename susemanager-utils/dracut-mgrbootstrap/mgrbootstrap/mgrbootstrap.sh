@@ -42,6 +42,12 @@ if [ -n "$REALHOSTNAME" ]; then
 	echo "$REALHOSTNAME" > /etc/hostname
 fi
 
+rm -f /etc/machine-id
+mkdir -p /var/lib/dbus
+rm -f /var/lib/dbus/machine-id
+dbus-uuidgen --ensure
+systemd-machine-id-setup
+
 ACTIVATION_KEY=$(rc_cmdline spacewalk_activationkey)
 ACTIVATION_KEY=${ACTIVATION_KEY#spacewalk_activationkey=}
 SW_HOSTNAME=$(rc_cmdline spacewalk_hostname)
