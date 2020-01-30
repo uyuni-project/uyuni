@@ -14,17 +14,19 @@
  */
 package com.redhat.rhn.frontend.struts;
 
+import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
+import java.util.HashSet;
 import javax.servlet.http.HttpServletRequest;
 
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.util.MethodUtil;
 import com.redhat.rhn.domain.Identifiable;
 import com.redhat.rhn.domain.rhnset.RhnSet;
+import com.redhat.rhn.domain.rhnset.RhnSetImpl;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.context.Context;
 import com.redhat.rhn.frontend.taglibs.ListDisplayTag;
@@ -37,6 +39,7 @@ import com.redhat.rhn.frontend.taglibs.list.TagHelper;
 import com.redhat.rhn.manager.rhnset.RhnSetManager;
 import com.redhat.rhn.manager.ssm.SsmManager;
 
+import org.apache.log4j.Logger;
 /**
  *
  * AbstractSetHelper
@@ -48,6 +51,7 @@ public class BaseSetHelper {
     public static final String KEY = "key";
     public static final String SELECTABLE = "selectable";
     public static final String SELECTED = "selected";
+    private static final Logger LOG = Logger.getLogger(BaseSetHelper.class);
 
     /**
      * Default struts action one might want to execute
@@ -83,8 +87,13 @@ public class BaseSetHelper {
             // If this isn't done, the servers will be added to the SSM but the table
             // itself will have the selected servers cleared
             updateSet(set, listName);
-
-            String[] selected = (String[]) set.toArray(new String[set.size()]);
+            String[] selected = null;
+            try {
+                selected = getSystemIds(set);
+            }
+            catch (InvalidParameterException e) {
+                LOG.error(e.getMessage());
+            }
 
             RequestContext context = new RequestContext(request);
             User user = context.getCurrentUser();
@@ -94,6 +103,29 @@ public class BaseSetHelper {
                 SsmManager.addServersToSsm(user, selected);
             }
         }
+    }
+
+    /**
+     * @param set passed to extract system ids from
+     * @return String[] of system ids
+     * @throws IllegalArgumentException if set is not a valid set type
+     */
+    private String[] getSystemIds(Set set) throws IllegalArgumentException {
+        String[] tmp = null;
+        if (set instanceof HashSet) {
+            tmp = (String[]) set.stream()
+                    .toArray(String[]::new);
+        }
+        else if (set instanceof RhnSetImpl) {
+            tmp = ((RhnSetImpl) set).getElements()
+                    .stream()
+                    .map(x -> x.getElement().toString())
+                    .toArray(String[]::new);
+        }
+        else {
+            throw new IllegalArgumentException("Unknown implementation of Set provided");
+        }
+        return tmp;
     }
 
 
