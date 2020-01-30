@@ -225,10 +225,10 @@ public class ServerGroupHandlerTest extends BaseHandlerTestCase {
         handler.addOrRemoveSystems(regular, group.getName(),
                 Arrays.asList(server3.getId().intValue()), Boolean.TRUE);
 
-        List<Integer> systems = new ArrayList<Integer>();
-        systems.add(server1.getId().intValue());
-        systems.add(server2.getId().intValue());
-        systems.add(server3.getId().intValue());
+        List<Long> systems = new ArrayList<Long>();
+        systems.add(server1.getId());
+        systems.add(server2.getId());
+        systems.add(server3.getId());
         handler.addOrRemoveSystems(regular, group.getName(), systems, Boolean.TRUE);
 
 
@@ -244,9 +244,9 @@ public class ServerGroupHandlerTest extends BaseHandlerTestCase {
 
     public void testRemoveNonExistentServer() throws Exception {
         ServerGroup group = handler.create(admin, NAME, DESCRIPTION);
-        List<Integer> systems = new ArrayList<Integer>();
+        List<Long> systems = new ArrayList<Long>();
         Server server1 = ServerFactoryTest.createTestServer(admin, true);
-        systems.add(server1.getId().intValue());
+        systems.add(server1.getId());
         try {
             handler.addOrRemoveSystems(admin, group.getName(), systems,
                     Boolean.FALSE);
