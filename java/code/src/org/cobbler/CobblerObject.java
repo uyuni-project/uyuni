@@ -160,7 +160,7 @@ public abstract class CobblerObject {
 
     /**
      * removes the kickstart object from cobbler.
-     * @return true if sucessfull
+     * @return true if successful
      */
     public boolean remove() {
         return invokeRemove();

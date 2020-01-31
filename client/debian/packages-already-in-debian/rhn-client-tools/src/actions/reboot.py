@@ -44,7 +44,7 @@ def reboot(test=None, cache_only=None):
     log.log_me("Rebooting the system now")
     # no point in waiting around
 
-    return (0, "Reboot sucessfully started", data)
+    return (0, "Reboot successfully started", data)
 
 
 def main():

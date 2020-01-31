@@ -1746,7 +1746,7 @@ WHERE CCT.id = CC.confchan_type_id
 
         <!--
                 List all systems (NAME, ID) from the specified channel.  For each system, list the
-                most-recent succcessful deploy action of a file with the specified filename-id
+                most-recent successful deploy action of a file with the specified filename-id
                 (REV_ID).  For each system, show how many
                 global-overrides there are of the specified file-name (OUTRANKED_COUNT), and how
                 many local overrides there are of the specified filename (OVERRIDEN_COUNT)

@@ -280,8 +280,8 @@ class CheckCli(rhncli.RhnCli):
                     data['process_end'] = '1970-01-01 00:00:00'    # and especially about the end
                     with open(action_lock) as f:
                         data['output'] = base64.encodestring(f.read())
-                log.log_debug("Sending back response", (255, "Previous run of action didn't completed sucessfully, aborting.", data))
-                ret = self.submit_response(action['id'], 255, "Previous run of action didn't completed sucessfully, aborting.", data)
+                log.log_debug("Sending back response", (255, "Previous run of action didn't completed successfully, aborting.", data))
+                ret = self.submit_response(action['id'], 255, "Previous run of action didn't completed successfully, aborting.", data)
             os.remove(action_lock)
             return ret
 

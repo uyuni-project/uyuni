@@ -202,7 +202,7 @@ public class ServerGroupHandlerTest extends BaseHandlerTestCase {
             fail("Should throw a lookup exception");
         }
         catch (Exception e) {
-            //exception succesfully thrown.
+            //exception successfully thrown.
         }
     }
 

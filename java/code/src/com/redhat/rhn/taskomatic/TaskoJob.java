@@ -228,7 +228,7 @@ public class TaskoJob implements Job {
                             email += taskRun.getStdErrorPath() + ".";
                         }
                         else {
-                            email += " finished successfuly and is back to normal.";
+                            email += " finished successfully and is back to normal.";
                         }
                         log.info("Sending e-mail ... " + task.getName());
                         TaskHelper.sendTaskoEmail(taskRun.getOrgId(), email);

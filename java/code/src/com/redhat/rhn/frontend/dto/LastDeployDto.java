@@ -21,7 +21,7 @@ import com.redhat.rhn.domain.config.ConfigurationFactory;
 import java.util.Date;
 
 /**
- * LastDeployDto - information about the last sucessful deploy of a given filename to a
+ * LastDeployDto - information about the last successful deploy of a given filename to a
  * specific server.  See config_queries.successful_deploys_for
  * @version $Rev$
  */
@@ -82,7 +82,7 @@ public class LastDeployDto extends BaseDto {
     }
 
     /**
-     * Set the date of the last-sucessful deploy
+     * Set the date of the last successful deploy
      * @param inWhen date of deploy
      */
     public void setWhen(Date inWhen) {
