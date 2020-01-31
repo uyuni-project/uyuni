@@ -125,7 +125,7 @@ fields:
 The rest of the fields are action specific.
 
 A success example:
-        return (0, "Ate Cheese Succesfully", {})
+        return (0, "Ate Cheese Successfully", {})
 
         return (61, "Item that claimed to be cheese was not in fact cheese",
                 {'name':'cheese.eat.thats_not_cheese",

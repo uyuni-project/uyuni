@@ -584,4 +584,4 @@ fi
 /usr/sbin/spacewalk-service start >> $LOG 2>&1
 print_status 0  # just simulate end
 
-echo "[$(date)]: $(basename $0) finished sucessfully." >> $LOG
+echo "[$(date)]: $(basename $0) finished successfully." >> $LOG

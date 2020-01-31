@@ -768,7 +768,7 @@ sub _oracle_check_connect_info {
         } else {
                 # Bugzilla 466747: On s390x, stty: standard input: Bad file descriptor
                 # For some reason DBI mistakenly sets FD_CLOEXEC on a stdin file descriptor
-                # here. This made it impossible for us to succesfully call `stty -echo`
+                # here. This made it impossible for us to successfully call `stty -echo`
                 # later in the code. Following two lines work around the problem.
 
                 my $flags = fcntl(STDIN, F_GETFD, 0);
@@ -1696,7 +1696,7 @@ sub get_dbh {
 
                 # Bugzilla 466747: On s390x, stty: standard input: Bad file descriptor
                 # For some reason DBI mistakenly sets FD_CLOEXEC on a stdin file descriptor
-                # here. This made it impossible for us to succesfully call `stty -echo`
+                # here. This made it impossible for us to successfully call `stty -echo`
                 # later in the code. Following two lines work around the problem.
 
                 my $flags = fcntl(STDIN, F_GETFD, 0);
