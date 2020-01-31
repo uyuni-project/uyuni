@@ -124,7 +124,7 @@ foreach $line (@needed_packages) {
 
 }
 
-print("\n\nChannel $new_channel_label created succesfully!\n");
+print("\n\nChannel $new_channel_label created successfully!\n");
 exit(0);
 
 

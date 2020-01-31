@@ -122,7 +122,7 @@ const Build = ({projectId, onBuild, currentHistoryEntry = {}, changesToBuild, di
                           }, "action", projectId)
                             .then((projectWithUpdatedSources) => {
                               closeDialog(modalNameId);
-                              showSuccessToastr(t('Version {0} succesfully built into {1}', buildVersionForm.version, projectWithUpdatedSources.environments[0].name))
+                              showSuccessToastr(t('Version {0} successfully built into {1}', buildVersionForm.version, projectWithUpdatedSources.environments[0].name))
                               onBuild(projectWithUpdatedSources)
                             })
                             .catch((error) => {

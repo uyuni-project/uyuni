@@ -362,7 +362,7 @@ for my $service ( 'sssd', $tomcat_service, 'httpd' ) {
 system '/usr/sbin/spacewalk-startup-helper wait-for-tomcat';
 
 print <<"EOF";
-Authentication against [$ipa_server] sucessfully enabled.
+Authentication against [$ipa_server] successfully enabled.
 As admin, at Admin > Users > External Authentication, select
           Default organization to autopopulate new users into.
 EOF
