@@ -16,7 +16,7 @@
 #
 
 Name:           dracut-mgrbootstrap
-Version:        0.2
+Version:        4.1.0
 Release:        1
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 Source:         dracut-mgrbootstrap-%{version}.tar.bz2

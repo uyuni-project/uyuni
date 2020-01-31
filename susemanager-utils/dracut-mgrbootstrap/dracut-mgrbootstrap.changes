@@ -1,3 +1,5 @@
+- detect release package to install in the initrd
+
 -------------------------------------------------------------------
 Wed Jan 29 15:44:52 CET 2020 - mc@suse.de
 
