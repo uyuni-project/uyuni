@@ -50,7 +50,9 @@ get_python_pkg_deps_recursive() {
 
 # called by dracut
 install() {
-    inst_multiple -o $(rpm -ql $(get_python_pkg_deps_recursive spacewalk-client-setup spacewalk-client-tools python3-spacewalk-client-tools python3-spacewalk-client-setup python3-zypp-plugin-spacewalk wget rpm sles-release) | \
+    RELPKG=$(rpm -q --whatprovides --qf "%{name}\n" distribution-release)
+
+    inst_multiple -o $(rpm -ql $(get_python_pkg_deps_recursive spacewalk-client-setup spacewalk-client-tools python3-spacewalk-client-tools python3-spacewalk-client-setup python3-zypp-plugin-spacewalk wget rpm $RELPKG) | \
                   grep -v '\.pyc$\|/etc/salt/minion_id\|/usr/share/locale/\|/usr/share/doc/\|/usr/share/man' )
     inst_multiple -o /usr/lib64/libffi.so.7 # dracut dependency solver does not see this
     inst_multiple -o grep dig ldconfig date dbus-uuidgen systemd-machine-id-setup dmidecode seq parted \
