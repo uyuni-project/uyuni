@@ -538,6 +538,9 @@ except ConfigParserError:
     PRODUCT_NAME = "SUSE Manager"
 
 
+def isUyuni():
+    return (PRODUCT_NAME == "Uyuni")
+
 def runTest():
     print("Test script:")
     import pprint
