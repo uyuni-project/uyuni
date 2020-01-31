@@ -117,7 +117,7 @@ public class TaskoQuartzHelper {
         try {
             Date date =
                     SchedulerKernel.getScheduler().scheduleJob(jobDetail.build(), trigger);
-            log.info("Job " + schedule.getJobLabel() + " scheduled succesfully.");
+            log.info("Job " + schedule.getJobLabel() + " scheduled successfully.");
             return date;
         }
         catch (SchedulerException e) {
@@ -189,7 +189,7 @@ public class TaskoQuartzHelper {
         try {
             SchedulerKernel.getScheduler()
                     .unscheduleJob(triggerKey(jobLabel, getGroupName(orgId)));
-            log.info("Job " + jobLabel + " unscheduled succesfully.");
+            log.info("Job " + jobLabel + " unscheduled successfully.");
             return 1;
         }
         catch (SchedulerException e) {

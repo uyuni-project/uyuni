@@ -203,7 +203,7 @@ public class ForgotCredentialsAction extends RhnAction {
         if (prevRequest != null &&
                 ((now - prevRequest) < timeout * 1000) &&
                 (user.toUpperCase().equals(prevRequestUser))) {
-            log.debug("Unsuccesful try to request email for " + user);
+            log.debug("Unsuccessful try to request email for " + user);
             return false;
         }
 
