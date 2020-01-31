@@ -92,12 +92,12 @@ Feature: Content lifecycle
     When I follow the left menu "Content Lifecycle > Projects"
     And I follow "clp_name"
     Then I should see a "not built" text in the environment "qa_name"
-    When I click on "Build"
-    And I should see a "Version 1 history" text
+    When I click on "Build (4)"
+    Then I should see a "Version 1 history" text
     When I enter "test version message 1" as "message"
     And I click the environment build button
-    Then I wait until I see "Version 1 successfully built into dev_name" text
-    And I should see a "Version 1: test version message 1" text
+    And I wait until I see "Version 1 successfully built into dev_name" text
+    Then I should see a "Version 1: test version message 1" text
     And I wait at most 600 seconds until I see "Built" text
 
 @scc_credentials
@@ -110,10 +110,10 @@ Feature: Content lifecycle
     When I follow "clp_name"
     Then I should see a "qa_desc" text in the environment "qa_name"
     And I should see a "not built" text in the environment "qa_name"
-    When I click promote for Development to QA
+    When I click promote from Development to QA
     And I click on "Promote environment" in "Promote version 1 into qa_name" modal
     Then I wait until I see "Version 1: test version message 1" text in the environment "qa_name"
-    When I click promote for QA to Production
+    When I click promote from QA to Production
     And I click on "Promote environment" in "Promote version 1 into prod_name" modal
     Then I wait until I see "Version 1: test version message 1" text in the environment "prod_name"
 
@@ -134,10 +134,10 @@ Feature: Content lifecycle
     When I enter "test version message 2" as "message"
     And I click the environment build button
     Then I wait until I see "Version 2: test version message 2" text
-    When I click promote for Development to QA
+    When I click promote from Development to QA
     And I click on "Promote environment" in "Promote version 2 into qa_name" modal
     Then I wait until I see "Version 2: test version message 2" text in the environment "qa_name"
-    When I click promote for QA to Production
+    When I click promote from QA to Production
     And I click on "Promote environment" in "Promote version 2 into prod_name" modal
     Then I wait until I see "Version 2: test version message 2" text in the environment "prod_name"
 
