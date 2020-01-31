@@ -1009,10 +1009,16 @@ public class ConfigDefaults {
         return Config.get().getBoolean(SINGLE_SIGN_ON_ENABLED);
     }
 
+    /**
+     * @return the rate of calls to salt-api for salt-ssh calls
+     */
     public int getSaltSSHAPIRateLimit() {
         return Config.get().getInt(SALT_SSH_API_RATE_LIMIT, 10);
     }
 
+    /**
+     * @return timeout of salt-ssh actions
+     */
     public int getSaltSSHTimeout() {
         return Config.get().getInt(SALT_SSH_TIMEOUT, 0);
     }

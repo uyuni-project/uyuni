@@ -328,15 +328,6 @@ public class SSHPushWorkerSaltTest extends JMockBaseTestCaseWithUser {
         return serverAction;
     }
 
-//    private void mockSyncCallResult() {
-//        context().checking(new Expectations() {{
-//            oneOf(saltServiceMock).callSync(
-//                    with(any(LocalCall.class)),
-//                    with(any(String.class)));
-//            will(returnValue(Optional.of(Boolean.TRUE)));
-//        }});
-//    }
-
     private TaskQueue mockQueue() {
         TaskQueue mockQueue = mock(TaskQueue.class);
         context().checking(new Expectations() {{
