@@ -1006,3 +1006,34 @@ end
 When(/^I enter the MU repository for (salt|traditional) "([^"]*)" as URL$/) do |client_type, client|
   fill_in 'url', with: $mu_repositories[client][client_type]
 end
+
+# content lifecycle steps
+When(/^I click the environment build button$/) do
+  raise "Click on environment build failed" unless find(:xpath, '//*[@id="cm-build-modal-save-button"]').click
+end
+
+When(/^I click promote from Development to QA$/) do
+  raise "Click on promote from Development failed" unless find(:xpath, '//*[@id="dev_name-promote-modal-link"]').click
+end
+
+When(/^I click promote from QA to Production$/) do
+  raise "Click on promote from QA failed" unless find(:xpath, '//*[@id="qa_name-promote-modal-link"]').click
+end
+
+Then(/^I should see a "([^"]*)" text in the environment "([^"]*)"$/) do |text, env|
+  within(:xpath, "//h3[text()='#{env}']/../..") do
+    raise "Text \"#{text}\" not found" unless has_content?(text)
+  end
+end
+
+When(/^I wait until I see "([^"]*)" text in the environment "([^"]*)"$/) do |text, env|
+  within(:xpath, "//h3[text()='#{env}']/../..") do
+    raise "Text \"#{text}\" not found" unless has_text?(text, wait: DEFAULT_TIMEOUT)
+  end
+end
+
+When(/^I add the "([^"]*)" channel to sources$/) do |channel|
+  within(:xpath, "//span[text()='#{channel}']/../..") do
+    raise "Add channel failed" unless find(:xpath, './/input[@type="checkbox"]').set(true)
+  end
+end
