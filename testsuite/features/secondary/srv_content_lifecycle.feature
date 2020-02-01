@@ -1,9 +1,9 @@
 # Copyright (c) 2019-2020 SUSE LLC
 # Licensed under the terms of the MIT license.
 
+@scc_credentials
 Feature: Content lifecycle
 
-@scc_credentials
   Scenario: Create a content lifecycle project
     Given I am authorized as "admin" with password "admin"
     When I follow the left menu "Content Lifecycle > Projects"
@@ -18,7 +18,6 @@ Feature: Content lifecycle
     And I click on "Create"
     Then I wait until I see "Content Lifecycle Project - clp_name" text
 
-@scc_credentials
   Scenario: Verify the content lifecycle project page
     Given I am authorized as "admin" with password "admin"
     When I follow the left menu "Content Lifecycle > Projects"
@@ -31,7 +30,6 @@ Feature: Content lifecycle
     And I should see a "Filters" text
     And I should see a "Environment Lifecycle" text
 
-@scc_credentials
   Scenario: Add a source to the project
     Given I am authorized as "admin" with password "admin"
     When I follow the left menu "Content Lifecycle > Projects"
@@ -60,7 +58,6 @@ Feature: Content lifecycle
     And I should see a "SLE-Manager-Tools12-Pool for x86_64 SP5" text
     And I should see a "Build (4)" text
 
-@scc_credentials
   Scenario: Add environments to the project
     Given I am authorized as "admin" with password "admin"
     When I follow the left menu "Content Lifecycle > Projects"
@@ -86,8 +83,22 @@ Feature: Content lifecycle
     Then I wait until I see "qa_name" text
     And I should see a "qa_desc" text
 
-@scc_credentials
-  Scenario: Build the sources in the project
+@uyuni
+  Scenario: Build the sources in the project for Uyuni
+    Given I am authorized as "admin" with password "admin"
+    When I follow the left menu "Content Lifecycle > Projects"
+    And I follow "clp_name"
+    Then I should see a "not built" text in the environment "qa_name"
+    When I click on "Build (2)"
+    Then I should see a "Version 1 history" text
+    When I enter "test version message 1" as "message"
+    And I click the environment build button
+    And I wait until I see "Version 1 successfully built into dev_name" text
+    Then I should see a "Version 1: test version message 1" text
+    And I wait at most 600 seconds until I see "Built" text
+
+@susemanager
+  Scenario: Build the sources in the project for SUSE Manager
     Given I am authorized as "admin" with password "admin"
     When I follow the left menu "Content Lifecycle > Projects"
     And I follow "clp_name"
@@ -100,7 +111,6 @@ Feature: Content lifecycle
     Then I should see a "Version 1: test version message 1" text
     And I wait at most 600 seconds until I see "Built" text
 
-@scc_credentials
   Scenario: Promote promote the sources in the project
     Given I am authorized as "admin" with password "admin"
     When I follow the left menu "Content Lifecycle > Projects"
@@ -117,7 +127,6 @@ Feature: Content lifecycle
     And I click on "Promote environment" in "Promote version 1 into prod_name" modal
     Then I wait until I see "Version 1: test version message 1" text in the environment "prod_name"
 
-@scc_credentials
   Scenario: Add new sources and promote again
     Given I am authorized as "admin" with password "admin"
     When I follow the left menu "Content Lifecycle > Projects"
@@ -141,7 +150,6 @@ Feature: Content lifecycle
     And I click on "Promote environment" in "Promote version 2 into prod_name" modal
     Then I wait until I see "Version 2: test version message 2" text in the environment "prod_name"
 
-@scc_credentials
   Scenario: Clean up the Content Lifecycle Management feature
     Given I am authorized as "admin" with password "admin"
     When I follow the left menu "Content Lifecycle > Projects"
