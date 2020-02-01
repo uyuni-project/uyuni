@@ -1,3 +1,4 @@
+- call saltutil.sync_all before calling highstate (bsc#1152673)
 - Exclude base products from PAYG (Pay-As-You-Go) instances when doing subscription matching
 - Show additional headers and dependencies for deb packages
 - Show adequate message on saving formulas that change only pillar data
