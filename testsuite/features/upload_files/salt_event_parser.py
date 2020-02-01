@@ -5,7 +5,7 @@ import json
 
 # open salt event log and create correct json from it
 errors = []
-item = [] 
+item = []
 f = open('/var/log/rhn/salt-event.log', "r")
 for line in f.readlines():
     item.append(line)
@@ -13,15 +13,19 @@ for line in f.readlines():
         if '\"result\": false' in "".join(item):
             item[0] = "{"
             errors.append(item)
-        item = [] 
+        item = []
 f.close()
 
 # parse json and find results ending as failed
 failure_count = 0
 for error in errors:
-    j = json.loads("".join(error))
-    if not "return" in j:
-        break
+    try:
+        j = json.loads("".join(error))
+        if not "return" in j:
+            break
+    except ValueError as e:
+        print("JSON cannot be parsed due to {0}".format(e))
+        continue
     for k in j["return"]:
         if not j["return"][k]["result"]:
             failure_count += 1
