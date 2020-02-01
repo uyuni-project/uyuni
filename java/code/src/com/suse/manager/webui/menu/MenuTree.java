@@ -18,6 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.jsp.PageContext;
 
 import com.redhat.rhn.common.conf.Config;
+import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.security.acl.Access;
 import com.redhat.rhn.common.security.acl.Acl;
 import com.redhat.rhn.common.security.acl.AclFactory;
@@ -390,7 +391,9 @@ public class MenuTree {
                     .withPrimaryUrl("https://www.suse.com/support/kb/product.php?id=SUSE_Manager")
                     .withTarget("_blank"))
                 .addChild(new MenuItem("header.jsp.documentation")
-                    .withPrimaryUrl("https://www.suse.com/documentation/suse_manager/")
+                    .withPrimaryUrl(ConfigDefaults.get().isUyuni() ?
+                            "https://www.uyuni-project.org/uyuni-docs/uyuni/index.html"
+                            : "https://documentation.suse.com/suma/")
                     .withTarget("_blank"))
                 );
         }
@@ -430,7 +433,9 @@ public class MenuTree {
                     .withPrimaryUrl("https://www.suse.com/support/kb/product.php?id=SUSE_Manager")
                     .withTarget("_blank"))
                 .addChild(new MenuItem("header.jsp.documentation")
-                    .withPrimaryUrl("https://www.suse.com/documentation/suse_manager/")
+                    .withPrimaryUrl(ConfigDefaults.get().isUyuni() ?
+                            "https://www.uyuni-project.org/uyuni-docs/uyuni/index.html"
+                            : "https://documentation.suse.com/suma/")
                     .withTarget("_blank"))
                 );
         }

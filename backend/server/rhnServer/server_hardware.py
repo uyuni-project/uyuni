@@ -25,7 +25,7 @@ import uuid
 from rhn.UserDictCase import UserDictCase
 from spacewalk.common.usix import raise_with_tb
 from spacewalk.common.rhnLog import log_debug, log_error
-from spacewalk.common.rhnConfig import CFG
+from spacewalk.common.rhnConfig import CFG, isUyuni
 from spacewalk.common.rhnException import rhnFault
 from spacewalk.common.rhnTB import Traceback
 from spacewalk.common import rhnMail
@@ -1051,7 +1051,11 @@ class MachineInformation:
             "From"    : "{0} <{1}>".format(hostname, fr),
             "To"      : to,
         }
-        body = MACHINE_ID_EMAIL_TEMPLATE.format(machine_id, sysid, name)
+
+        docurl = "https://documentation.suse.com/external-tree/en-us/suma/4.0/suse-manager/administration/tshoot-registerclones.html"
+        if isUyuni():
+            docurl = "https://www.uyuni-project.org/uyuni-docs/uyuni/administration/tshoot-registerclones.html"
+        body = MACHINE_ID_EMAIL_TEMPLATE.format(machine_id, sysid, name, docurl)
         rhnMail.send(headers, body)
 
 
@@ -1231,5 +1235,5 @@ For SLES11 and RHEL5/RHEL6:
 
 
 For more information on generating a new machine_id for traditional systems refer to:
-https://www.suse.com/documentation/suse-manager-3/book_suma_best_practices_31/data/bp_chapt_suma3_troubleshooting_registering_cloned_traditional_systems.html
+{3}
 """
