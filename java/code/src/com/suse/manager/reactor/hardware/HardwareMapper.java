@@ -534,6 +534,13 @@ public class HardwareMapper {
     }
 
     /**
+     * Map PAYG information for the server to the database.
+     */
+    public void mapPaygInfo() {
+        server.setPayg(grains.getOptionalAsBoolean("is_payg_instance").orElse(false));
+    }
+
+    /**
      * Map virtualization information to the database.
      *
      * @param smbiosRecordsSystem optional DMI information about the system
