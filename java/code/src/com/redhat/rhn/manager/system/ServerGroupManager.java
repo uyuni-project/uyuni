@@ -24,12 +24,14 @@ import com.redhat.rhn.domain.entitlement.Entitlement;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.EntitlementServerGroup;
 import com.redhat.rhn.domain.server.ManagedServerGroup;
+import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerGroup;
 import com.redhat.rhn.domain.server.ServerGroupFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.user.UserFactory;
 import com.suse.manager.webui.services.SaltStateGeneratorService;
+import com.suse.utils.Opt;
 
 import org.apache.log4j.Logger;
 
@@ -351,16 +353,8 @@ public class ServerGroupManager {
      * @param servers a collection of servers to add.
      */
     public void updatePillarAfterGroupUpdateForServers(Collection<Server> servers) {
-        try {
-            SaltStateGeneratorService.INSTANCE.createPillarDirectory();
-            for (Server s : servers) {
-                s.asMinionServer().ifPresent(
-                        SaltStateGeneratorService.INSTANCE::updatePillarAfterGroupChange);
-            }
-        }
-        catch (IOException e) {
-            LOG.error(e.getMessage(), e);
-        }
+        servers.stream().map(server -> server.asMinionServer()).flatMap(Opt::stream)
+                .forEach(SaltStateGeneratorService.INSTANCE::generateGroupMemebershipsPillarData);
     }
 
     /**
