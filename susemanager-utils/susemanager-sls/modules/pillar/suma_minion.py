@@ -46,6 +46,9 @@ MANAGER_GLOBAL_PILLAR = [
     'mgr_conf'
 ]
 
+MINION_PILLAR_FILES_PREFIX = "pillar_{minion_id}"
+MINION_PILLAR_FILES_SUFFIXES = [".yml", "_group_memberships.yml"]
+
 CONFIG_FILE = '/etc/rhn/rhn.conf'
 
 # Fomula group subtypes
@@ -64,7 +67,6 @@ def __virtual__():
     Ensure the pillar module name.
     '''
     return True
-
 
 def ext_pillar(minion_id, *args):
     '''
@@ -91,12 +93,14 @@ def ext_pillar(minion_id, *args):
             log.error('Error accessing "{0}": {1}'.format(global_pillar_filename, exc))
 
     # Including generated pillar data for this minion
-    data_filename = os.path.join(MANAGER_PILLAR_DATA_PATH, 'pillar_{minion_id}.yml'.format(minion_id=minion_id))
-    if os.path.exists(data_filename):
-        try:
-            ret.update(yaml.load(open(data_filename).read()))
-        except Exception as error:
-            log.error('Error accessing "{pillar_file}": {message}'.format(pillar_file=data_filename, message=str(error)))
+    minion_pillar_filename_prefix = MINION_PILLAR_FILES_PREFIX.format(minion_id=minion_id)
+    for suffix in MINION_PILLAR_FILES_SUFFIXES:
+        data_filename = os.path.join(MANAGER_PILLAR_DATA_PATH, minion_pillar_filename_prefix + suffix)
+        if os.path.exists(data_filename):
+            try:
+                ret.update(yaml.load(open(data_filename).read()))
+            except Exception as error:
+                log.error('Error accessing "{pillar_file}": {message}'.format(pillar_file=data_filename, message=str(error)))
 
     # Including formulas into pillar data
     try:

@@ -60,6 +60,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -125,53 +126,30 @@ public enum SaltStateGeneratorService {
     }
 
     /**
-     * Generate server specific pillar if the given server is a minion.
+     * Generate pillar containing the information of the server groups the the passed minion is member of
      * @param minion the minion server
      */
-    public void updatePillarAfterGroupChange(MinionServer minion) {
+    public void generateGroupMemebershipsPillarData(MinionServer minion) {
+        LOG.debug("Generating group memberships pillar file for minion: " + minion.getMinionId());
+
+        SaltPillar pillar = new SaltPillar();
+
+        List<String> addonGroupTypes = minion.getEntitledGroupTypes().stream()
+                .map(ServerGroupType::getLabel).collect(Collectors.toList());
+
+        List<Long> groupIds = minion.getManagedGroups().stream().map(ServerGroup::getId).collect(Collectors.toList());
+
+        pillar.add("group_ids", groupIds.toArray(new Long[groupIds.size()]));
+        pillar.add("addon_group_types", addonGroupTypes.toArray(new String[addonGroupTypes.size()]));
+
         try {
-            Path filePath = pillarDataPath.resolve(
-                    getServerPillarFileName(minion)
-            );
-
-            SaltPillar pillar = new SaltPillar();
-            pillar.load(filePath.toFile());
-
-            if (pillar.isEmpty()) {
-               generatePillar(minion);
-               return;
-            }
-
-            pillar.addAll(generateGroupsMemebershipPillarData(minion));
-
-            com.suse.manager.webui.utils.SaltStateGenerator saltStateGenerator =
-                    new com.suse.manager.webui.utils.SaltStateGenerator(filePath.toFile());
-            saltStateGenerator.generate(pillar);
+            Files.createDirectories(pillarDataPath);
+            Path filePath = pillarDataPath.resolve(getServerGroupMembershipPillarFileName(minion.getMinionId()));
+            new SaltStateGenerator(filePath.toFile()).generate(pillar);
         }
         catch (IOException e) {
             LOG.error(e.getMessage(), e);
         }
-    }
-
-    /**
-     * Generate pillar data for the server groups the passed minion is member of.
-     * @param minion the minion server
-     * @return a map containing the pillar data
-     */
-    private Map<String, Object> generateGroupsMemebershipPillarData(MinionServer minion) {
-        Map<String, Object> out = new HashMap<String, Object>();
-
-        List<ManagedServerGroup> groups = minion.getManagedGroups();
-        List<String> addonGroupTypes = minion.getEntitledGroupTypes().stream()
-                .map(ServerGroupType::getLabel).collect(Collectors.toList());
-
-        List<Long> groupIds = groups.stream()
-                .map(ServerGroup::getId).collect(Collectors.toList());
-
-        out.put("group_ids", groupIds.toArray(new Long[groupIds.size()]));
-        out.put("addon_group_types",
-                addonGroupTypes.toArray(new String[addonGroupTypes.size()]));
-        return out;
     }
 
     /**
@@ -185,6 +163,8 @@ public enum SaltStateGeneratorService {
                                Collection<AccessToken> tokensToActivate) {
         LOG.debug("Generating pillar file for minion: " + minion.getMinionId());
 
+        generateGroupMemebershipsPillarData(minion);
+
         if (refreshAccessTokens) {
             AccessTokenFactory.refreshTokens(minion, tokensToActivate);
         }
@@ -192,7 +172,6 @@ public enum SaltStateGeneratorService {
         SaltPillar pillar = new SaltPillar();
         pillar.add("org_id", minion.getOrg().getId());
 
-        pillar.addAll(generateGroupsMemebershipPillarData(minion));
         pillar.add("contact_method", minion.getContactMethod().getLabel());
         pillar.add("mgr_server", getChannelHost(minion));
         pillar.add("machine_password", MachinePasswordUtils.machinePassword(minion));
@@ -411,6 +390,12 @@ public enum SaltStateGeneratorService {
         }
     }
 
+    private String getServerGroupMembershipPillarFileName(String minionId) {
+        return PILLAR_DATA_FILE_PREFIX + "_" +
+                minionId + "_" + "group_memberships" + "." +
+                PILLAR_DATA_FILE_EXT;
+    }
+
     private String getServerPillarFileName(String minionId) {
         return PILLAR_DATA_FILE_PREFIX + "_" +
             minionId + "." +
@@ -436,8 +421,15 @@ public enum SaltStateGeneratorService {
      */
     public void removePillar(String minionId) {
         LOG.debug("Removing pillar file for minion: " + minionId);
-        Path filePath = pillarDataPath.resolve(
-                getServerPillarFileName(minionId));
+        this.getMinionPillarFilenames(minionId).stream().forEach(filename -> removePillarFile(filename));
+    }
+
+    private List<String> getMinionPillarFilenames(String minionId) {
+        return Arrays.asList(getServerPillarFileName(minionId), getServerGroupMembershipPillarFileName(minionId));
+    }
+
+    private void removePillarFile(String filename) {
+        Path filePath = pillarDataPath.resolve(filename);
         try {
             Files.deleteIfExists(filePath);
         }
@@ -445,6 +437,7 @@ public enum SaltStateGeneratorService {
             LOG.error("Could not remove pillar file " + filePath);
         }
     }
+
 
     /**
      * Remove the config channel assignments for minion server.
