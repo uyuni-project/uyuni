@@ -20,6 +20,7 @@ import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.config.ConfigChannel;
 import com.redhat.rhn.domain.config.ConfigurationFactory;
+import com.redhat.rhn.domain.entitlement.Entitlement;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
@@ -59,10 +60,45 @@ import static com.suse.manager.webui.services.SaltConstants.SALT_SERVER_STATE_FI
  */
 public class SaltStateGeneratorServiceTest extends BaseTestCaseWithUser {
 
+    @Override
     public void setUp() throws Exception {
         super.setUp();
         Config.get().setString("server.secret_key",
                 DigestUtils.sha256Hex(TestUtils.randomString()));
+    }
+
+    public void testGenerateGroupMemebershipsPillarData() throws Exception {
+        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
+
+        ServerGroup group = ServerGroupTest.createTestServerGroup(user.getOrg(), null);
+        ServerFactory.addServerToGroup(minion, group);
+        ServerFactory.save(minion);
+        SaltStateGeneratorService.INSTANCE.generateGroupMemebershipsPillarData(minion);
+
+        Path filePath = tmpPillarRoot.resolve(PILLAR_DATA_FILE_PREFIX + "_" +
+        minion.getMinionId() + "_" + "group_memberships" + "." +
+            PILLAR_DATA_FILE_EXT);
+
+        assertTrue(Files.exists(filePath));
+
+        Map<String, Object> map;
+        try (FileInputStream fi = new FileInputStream(filePath.toFile())) {
+            map = new Yaml().loadAs(fi, Map.class);
+        }
+
+        assertTrue(map.containsKey("group_ids"));
+        List<Integer> groups = (List<Integer>) map.get("group_ids");
+        assertContains(groups.stream().map(id -> (long) id)
+                .collect(Collectors.toList()), group.getId());
+
+        assertTrue(map.containsKey("addon_group_types"));
+        List<String> addonGroupTypes = (List<String>) map.get("addon_group_types");
+
+        List<String> minionAddonEntitlements =
+                minion.getAddOnEntitlements().stream().map(Entitlement::getLabel).collect(Collectors.toList());
+
+        assertTrue(minionAddonEntitlements.stream().allMatch(g -> addonGroupTypes.contains(g)));
+        assertContains(addonGroupTypes, minion.getBaseEntitlement().getLabel());
     }
 
     public void testGeneratePillarForServer() throws Exception {
@@ -96,11 +132,6 @@ public class SaltStateGeneratorServiceTest extends BaseTestCaseWithUser {
 
         assertTrue(map.containsKey("org_id"));
         assertEquals(minion.getOrg().getId(), Long.valueOf((int) map.get("org_id")));
-
-        assertTrue(map.containsKey("group_ids"));
-        List<Integer> groups = (List<Integer>) map.get("group_ids");
-        assertContains(groups.stream().map(id -> (long) id)
-                .collect(Collectors.toList()), group.getId());
 
         assertTrue(map.containsKey("channels"));
         Map<String, Object> channels = (Map<String, Object>) map.get("channels");
