@@ -76,6 +76,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Consumer;
@@ -120,7 +121,7 @@ public class RegisterMinionEventMessageAction implements MessageAction {
         RegisterMinionEventMessage registerMinionEventMessage = ((RegisterMinionEventMessage) msg);
         Optional<MinionStartupGrains> startupGrainsOpt = Opt.or(registerMinionEventMessage.getMinionStartupGrains(),
                 () -> SALT_SERVICE.getGrains(registerMinionEventMessage.getMinionId(),
-                        new TypeToken<MinionStartupGrains>() { }, "machine_id", "saltboot_initrd"));
+                        new TypeToken<MinionStartupGrains>() { }, "machine_id", "saltboot_initrd", "susemanager"));
         registerMinion(registerMinionEventMessage.getMinionId(), false, empty(), empty(),  startupGrainsOpt);
     }
 
@@ -134,11 +135,11 @@ public class RegisterMinionEventMessageAction implements MessageAction {
      */
     public void registerSSHMinion(String minionId, Optional<Long> proxyId, Optional<String> activationKeyOverride) {
         Optional<MinionStartupGrains> startupGrainsOpt = SALT_SERVICE.getGrains(minionId,
-                new TypeToken<MinionStartupGrains>() { }, "machine_id", "saltboot_initrd");
+                new TypeToken<MinionStartupGrains>() { }, "machine_id", "saltboot_initrd", "susemanager");
         registerMinion(minionId, true, proxyId, activationKeyOverride, startupGrainsOpt);
     }
     /**
-     * Performs minion registration.
+     * Performs minion registration/reactivation..
      * @param minionId minion id
      * @param isSaltSSH true if a salt-ssh system is bootstrapped
      * @param activationKeyOverride label of activation key to be applied to the system.
@@ -151,17 +152,18 @@ public class RegisterMinionEventMessageAction implements MessageAction {
             ()-> LOG.error("Aborting: needed grains are not found for minion: " + minionId),
             grains-> {
                 boolean saltbootInitrd = grains.getSaltbootInitrd();
+                Optional<String> managementKey = grains.getSuseManagerGrain().flatMap(sm -> sm.getManagementKey());
                 Optional<String> machineIdOpt = grains.getMachineId();
                 Opt.consume(machineIdOpt,
                     ()-> LOG.error("Aborting: cannot find machine id for minion: " + minionId),
-                    machineId -> registerMinion(minionId, isSaltSSH, proxyId, activationKeyOverride, machineId,
-                            saltbootInitrd));
+                    machineId -> registerMinion(minionId, isSaltSSH, proxyId, activationKeyOverride, managementKey,
+                            machineId, saltbootInitrd));
             });
     }
 
 
     /**
-     * Performs minion registration.
+     * Performs minion registration/reactivation.
      * @param minionId minion id
      * @param isSaltSSH true if a salt-ssh system is bootstrapped
      * @param actKeyOverride label of activation key to be applied to the system.
@@ -170,23 +172,33 @@ public class RegisterMinionEventMessageAction implements MessageAction {
      * @param saltbootInitrd saltboot_initrd, to be used for retail minions
      */
     private void registerMinion(String minionId, boolean isSaltSSH, Optional<Long> saltSSHProxyId,
-                                Optional<String> actKeyOverride, String machineId, boolean saltbootInitrd) {
-        Optional<MinionServer> registeredMinionOpt = MinionServerFactory.findByMachineId(machineId);
-        Opt.consume(registeredMinionOpt,
+                                Optional<String> actKeyOverride, Optional<String> managementKey, String machineId,
+                                boolean saltbootInitrd) {
+        //Case-1 Reactivation
+        Optional<User> creator = MinionPendingRegistrationService.getCreator(minionId);
+        Opt.consume(managementKey,
+            //Case-1 Registration
             () -> {
-               if (!duplicateMinionNamePresent(minionId)) {
-                   ValueMap grains = new ValueMap(SALT_SERVICE.getGrains(minionId).orElseGet(HashMap::new));
-                   Optional<String> managmentKeyLabel = getManagementKeyLabelFromGrains(grains);
-                   Optional<User> creator = MinionPendingRegistrationService.getCreator(minionId);
-                   reactivateSystem(minionId, machineId, managmentKeyLabel);
-                   finalizeMinionRegistration(minionId, machineId, creator, saltSSHProxyId, actKeyOverride, isSaltSSH,
-                                grains);
-                     }
-               },
-            registeredMinion -> {
-                updateAlreadyRegisteredInfo(minionId, registeredMinion);
-                applySaltBootStates(minionId, registeredMinion, saltbootInitrd);
-             });
+                Optional<MinionServer> registeredMinionOpt = MinionServerFactory.findByMachineId(machineId);
+                Opt.consume(registeredMinionOpt,
+                    () -> {
+                        if (!duplicateMinionNamePresent(minionId)) {
+                            finalizeMinionRegistration(minionId, machineId, creator, saltSSHProxyId, actKeyOverride,
+                                    isSaltSSH);
+                        }
+                    },
+                    registeredMinion -> {
+                        updateAlreadyRegisteredInfo(minionId, registeredMinion);
+                        applySaltBootStates(minionId, registeredMinion, saltbootInitrd);
+
+                    });
+            },
+            //Case-2 : Reactivation
+            mk -> {
+                reactivateSystem(minionId, machineId, mk);
+                finalizeMinionRegistration(minionId, machineId, creator, saltSSHProxyId, actKeyOverride, isSaltSSH);
+            }
+        );
     }
 
     /**
@@ -208,34 +220,34 @@ public class RegisterMinionEventMessageAction implements MessageAction {
         }
     }
 
-    private Optional<MinionServer> getRegisteredMinion(String machineId) {
-        return  MinionServerFactory.findByMachineId(machineId);
-    }
-
     /**
      * Reactivate the system
      * @param minionId minion id of the minion
      * @param machineId machine_id of the minion
      * @param managmentKeyLabel managment_key grain
      */
-    private void reactivateSystem(String minionId, String machineId, Optional<String> managmentKeyLabel) {
-        if (managmentKeyLabel.isPresent()) {
-            ActivationKey ak = ActivationKeyFactory.lookupByKey(managmentKeyLabel.get());
-            if (ak.getKickstartSession() != null) {
-                ak.getKickstartSession().markComplete("Installation completed.");
-            }
-            if (ak.getServer() == null) {
-                LOG.error("Management Key is not a reactivation key: " + managmentKeyLabel.get());
-            }
-            else {
-                // The machine id may have changed, but we know from the reactivation key
-                // which system should become this one
-                ak.getServer().asMinionServer().ifPresent(minion-> {
-                    minion.setMachineId(machineId);
-                    minion.setMinionId(minionId);
-                });
-            }
-        }
+    private void reactivateSystem(String minionId, String machineId, String managmentKeyLabel) {
+        Optional<ActivationKey> akey = ofNullable(ActivationKeyFactory.lookupByKey(managmentKeyLabel));
+        Opt.consume(akey,
+                () -> LOG.info("Outdated Management Key defined for " + minionId + ": " + managmentKeyLabel),
+                ak -> {
+                    if (Objects.nonNull(ak.getKickstartSession())) {
+                        ak.getKickstartSession().markComplete("Installation completed.");
+                    }
+                    if (Objects.isNull(ak.getServer())) {
+                        LOG.error("Management Key is not a reactivation key: " + managmentKeyLabel);
+                    }
+                    else {
+                        // The machine id may have changed, but we know from the reactivation key
+                        // which system should become this one
+                        ak.getServer().asMinionServer().ifPresent(minion -> {
+                            minion.setMachineId(machineId);
+                            minion.setMinionId(minionId);
+                        });
+                    }
+                }
+        );
+
     }
 
     /**
@@ -245,7 +257,6 @@ public class RegisterMinionEventMessageAction implements MessageAction {
      */
     public void updateAlreadyRegisteredInfo(String minionId, MinionServer registeredMinion) {
         String oldMinionId = registeredMinion.getMinionId();
-
         if (!minionId.equals(oldMinionId)) {
             LOG.warn("Minion '" + oldMinionId + "' already registered, updating " +
                     "profile to '" + minionId + "' [" + registeredMinion.getMachineId() + "]");
@@ -267,15 +278,14 @@ public class RegisterMinionEventMessageAction implements MessageAction {
      * @param saltSSHProxyId optional proxy id for saltssh in case it is used
      * @param activationKeyOverride optional label of activation key to be applied to the system
      * @param isSaltSSH true if a salt-ssh system is bootstrapped
-     * @param grains grains from the minion
      */
     public void finalizeMinionRegistration(String minionId,
                                            String machineId,
                                            Optional<User> creator,
                                            Optional<Long> saltSSHProxyId,
                                            Optional<String> activationKeyOverride,
-                                           boolean isSaltSSH, ValueMap grains) {
-
+                                           boolean isSaltSSH) {
+        ValueMap grains = new ValueMap(SALT_SERVICE.getGrains(minionId).orElseGet(HashMap::new));
         MinionServer minion = migrateOrCreateSystem(minionId, isSaltSSH, activationKeyOverride, machineId, grains);
         Optional<String> originalMinionId = Optional.ofNullable(minion.getMinionId());
 

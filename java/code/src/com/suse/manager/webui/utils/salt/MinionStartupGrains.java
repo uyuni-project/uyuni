@@ -26,6 +26,8 @@ public class MinionStartupGrains {
     private Optional<String> machineId = Optional.empty();
     @SerializedName("saltboot_initrd")
     private boolean saltbootInitrd = false;
+    @SerializedName("susemanager")
+    private Optional<SuseManagerGrain> suseManagerGrain = Optional.empty();
 
     /**
      * no-arg constructor
@@ -50,5 +52,21 @@ public class MinionStartupGrains {
 
     public boolean getSaltbootInitrd() {
         return saltbootInitrd;
+    }
+
+    public Optional<SuseManagerGrain> getSuseManagerGrain() {
+        return suseManagerGrain;
+    }
+
+    /**
+     * Class to represent `susemanager grain
+     */
+    public static class SuseManagerGrain {
+        @SerializedName("management_key")
+        private Optional<String> managementKey = Optional.empty();
+
+        public Optional<String> getManagementKey() {
+            return managementKey;
+        }
     }
 }
