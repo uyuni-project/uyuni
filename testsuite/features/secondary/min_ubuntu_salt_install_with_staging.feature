@@ -55,17 +55,8 @@ Feature: Install a package on the Ubuntu minion with staging enabled
     And I wait until the package "orion-dummy_1.1" has been cached on this "ubuntu_minion"
     And I wait for "orion-dummy-1.1" to be installed on this "ubuntu_minion"
 
-  Scenario: Install patch in the future and check for staging on Ubuntu minion
-    Given I am on the Systems overview page of this "ubuntu_minion"
-    And I follow "Software" in the content area
-    And I follow "Patches" in the content area
-    When I check "virgo-dummy-3456" in the list
-    And I click on "Apply Patches"
-    And I pick 2 minutes from now as schedule time
-    And I click on "Confirm"
-    Then I should see a "1 patch update has been scheduled for" text
-    And I wait until the package "virgo-dummy-2.0-1.1_noarch" has been cached on this "ubuntu_minion"
-    And I wait for "virgo-dummy-2.0-1.1" to be installed on this "ubuntu_minion"
+  # Scenario: Install patch in the future and check for staging on Ubuntu minion
+  # Untested because we don't have patches for Ubuntu
 
   Scenario: Cleanup: remove virgo-dummy and orion-dummy packages from Ubuntu minion
     Given I am authorized as "admin" with password "admin"
