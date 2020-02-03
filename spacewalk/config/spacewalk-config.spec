@@ -27,8 +27,6 @@
 %define apache_group apache
 %endif
 
-%global rhnconfigdefaults %{_prefix}/share/rhn/config-defaults
-
 Name:           spacewalk-config
 Summary:        Spacewalk Configuration
 License:        GPL-2.0-only
@@ -113,7 +111,6 @@ ln -sf  %{apacheconfdir}/conf/ssl.crt/server.crt $RPM_BUILD_ROOT/etc/pki/tls/cer
 %dir %{_var}/lib/cobbler/
 %dir %{_var}/lib/cobbler/kickstarts/
 %dir %{_var}/lib/cobbler/snippets/
-%attr(0755,root,%{apache_group}) %dir %{rhnconfigdefaults}
 %config(noreplace) %{_var}/lib/cobbler/kickstarts/spacewalk-sample.ks
 %config(noreplace) %{_var}/lib/cobbler/snippets/spacewalk_file_preservation
 %attr(0640,root,%{apache_group}) %config(noreplace) %{_sysconfdir}/rhn/rhn.conf
