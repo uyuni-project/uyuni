@@ -1016,6 +1016,7 @@ end
 # content lifecycle steps
 When(/^I click the environment build button$/) do
   raise "Click on environment build failed" unless find(:xpath, '//*[@id="cm-build-modal-save-button"]').click
+  puts "Page body:\n#{find('#page-body')['innerHTML']}"
 end
 
 When(/^I click promote from Development to QA$/) do
