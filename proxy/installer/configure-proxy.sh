@@ -347,6 +347,9 @@ SYSTEMID_PATH=$(awk -F '=[[:space:]]*' '/^[[:space:]]*systemIdPath[[:space:]]*=/
 systemctl status salt-minion > /dev/null 2>&1
 if [ $? -eq 0 ]; then
     /usr/sbin/fetch-certificate $SYSTEMID_PATH
+    PROPOSED_PARENT=$(grep ^[[:blank:]]*master /etc/salt/minion.d/susemanager.conf | sed -e "s/.*:[[:blank:]]*//")
+else
+    PROPOSED_PARENT=$(awk -F= '/serverURL=/ {split($2, a, "/")} END { print a[3]}' $UP2DATE_FILE)
 fi
 
 if [ ! -r $SYSTEMID_PATH ]; then
@@ -359,7 +362,7 @@ SYSTEM_ID=$(/usr/bin/xsltproc /usr/share/rhn/get_system_id.xslt $SYSTEMID_PATH |
 DIR=/usr/share/doc/proxy/conf-template
 HOSTNAME=$(hostname -f)
 
-default_or_input "SUSE Manager Parent" RHN_PARENT $(awk -F= '/serverURL=/ {split($2, a, "/")} END { print a[3]}' $UP2DATE_FILE)
+default_or_input "SUSE Manager Parent" RHN_PARENT $PROPOSED_PARENT
 
 if [ "$RHN_PARENT" == "rhn.redhat.com" ]; then
    RHN_PARENT="xmlrpc.rhn.redhat.com"
