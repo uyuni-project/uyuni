@@ -66,6 +66,7 @@ import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.frontend.action.common.BadParameterException;
+import com.redhat.rhn.frontend.events.RefreshPillarEvent;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.audit.ScapManager;
 import com.redhat.rhn.manager.errata.ErrataManager;
@@ -1244,8 +1245,9 @@ public class SaltUtils {
             try {
                 FormulaManager.getInstance().enableFormula(server.getMinionId(), SYSTEM_LOCK_FORMULA);
                 FormulaFactory.saveServerFormulaData(data, server.getMinionId(), SYSTEM_LOCK_FORMULA);
-                SaltService.INSTANCE.refreshPillar(new MinionList(server.getMinionId()));
-            } catch (IOException e) {
+                MessageQueue.publish(new RefreshPillarEvent());
+            }
+            catch (IOException e) {
                 LOG.error("Could not enable blackout formula", e);
             }
         }
