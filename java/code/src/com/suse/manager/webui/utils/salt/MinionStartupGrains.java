@@ -32,18 +32,16 @@ public class MinionStartupGrains {
     /**
      * no-arg constructor
      */
-    public MinionStartupGrains() {
-
-    }
+    public MinionStartupGrains() { }
 
     /**
-     * Constructor which accepts machine_id andd salboot_intrd grain
-     * @param machineIdIn machineIdIn
-     * @param saltbootInitrdIn saltbootInitrdIn
+     * Constructor which accepts MinionStartupGrainsBuilder and use it to build object
+     * @param builder MinionStartupGrainsBuilder
      */
-    public MinionStartupGrains(Optional<String> machineIdIn, boolean saltbootInitrdIn) {
-        this.machineId = machineIdIn;
-        this.saltbootInitrd = saltbootInitrdIn;
+    private MinionStartupGrains(MinionStartupGrainsBuilder builder) {
+        this.machineId = Optional.ofNullable(builder.machineId);
+        this.saltbootInitrd = builder.saltbootInitrd;
+        this.suseManagerGrain = Optional.ofNullable(builder.suseManagerGrain);
     }
 
     public Optional<String> getMachineId() {
@@ -65,8 +63,68 @@ public class MinionStartupGrains {
         @SerializedName("management_key")
         private Optional<String> managementKey = Optional.empty();
 
+        /**
+         * no-arg constructor
+         */
+        public SuseManagerGrain() { }
+
+        /**
+         * Constructor which accepts needed grains and return the object
+         * @param managementKeyIn management_key grain
+         */
+        public SuseManagerGrain(Optional<String> managementKeyIn) {
+            this.managementKey = managementKeyIn;
+        }
+
         public Optional<String> getManagementKey() {
             return managementKey;
+        }
+    }
+
+    /**
+     * Builder class to build MinionstartupGrains.
+     */
+    public static class MinionStartupGrainsBuilder {
+        private String machineId;
+        private boolean saltbootInitrd;
+        private SuseManagerGrain suseManagerGrain;
+
+        /**
+         * setter for machineId grain
+         * @param machineIdIn machineId
+         * @return MinionStartupGrainsBuilder
+         */
+        public MinionStartupGrainsBuilder machineId(String machineIdIn) {
+            this.machineId = machineIdIn;
+            return this;
+        }
+
+        /**
+         * setter for saltboot_initrdIn grain
+         * @param saltbootInitrdIn saltbootInitrdIn
+         * @return MinionStartupGrainsBuilder
+         */
+        public MinionStartupGrainsBuilder saltbootInitrd(boolean saltbootInitrdIn) {
+            this.saltbootInitrd = saltbootInitrdIn;
+            return this;
+        }
+
+        /**
+         * setter for susemanager grain
+         * @param suseManagerGrainIn suseManagerGrainIn
+         * @return MinionStartupGrainsBuilder
+         */
+        public MinionStartupGrainsBuilder susemanagerGrain(SuseManagerGrain suseManagerGrainIn) {
+            this.suseManagerGrain = suseManagerGrainIn;
+            return this;
+        }
+
+        /**
+         * Method to actually create the {@link MinionStartupGrains} object
+         * @return MinionStartupGrains object
+         */
+        public MinionStartupGrains createMinionStartUpGrains() {
+            return new MinionStartupGrains(this);
         }
     }
 }
