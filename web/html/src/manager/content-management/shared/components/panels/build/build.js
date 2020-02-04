@@ -14,6 +14,7 @@ import statesEnum from "../../../../shared/business/states.enum";
 import type {ProjectHistoryEntry} from '../../../type/project.type.js';
 import {showErrorToastr, showSuccessToastr} from "../../../../../../components/toastr/toastr";
 import useLifecycleActionsApi from "../../../api/use-lifecycle-actions-api";
+import _last from "lodash/last";
 
 type Props = {
   projectId: string,
@@ -122,7 +123,12 @@ const Build = ({projectId, onBuild, currentHistoryEntry = {}, changesToBuild, di
                           }, "action", projectId)
                             .then((projectWithUpdatedSources) => {
                               closeDialog(modalNameId);
-                              showSuccessToastr(t('Version {0} successfully built into {1}', buildVersionForm.version, projectWithUpdatedSources.environments[0].name))
+                              showSuccessToastr(
+                                t('Version {0} successfully built into {1}',
+                                  _last(projectWithUpdatedSources.properties.historyEntries).version,
+                                  projectWithUpdatedSources.environments[0].name
+                                )
+                              );
                               onBuild(projectWithUpdatedSources)
                             })
                             .catch((error) => {
