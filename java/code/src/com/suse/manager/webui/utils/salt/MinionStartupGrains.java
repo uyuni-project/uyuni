@@ -17,6 +17,7 @@ package com.suse.manager.webui.utils.salt;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.Optional;
+import java.util.function.Consumer;
 
 /**
  * Class to represent grains defined against 'start_event_grains'
@@ -32,18 +33,16 @@ public class MinionStartupGrains {
     /**
      * no-arg constructor
      */
-    public MinionStartupGrains() {
-
-    }
+    public MinionStartupGrains() { }
 
     /**
-     * Constructor which accepts machine_id andd salboot_intrd grain
-     * @param machineIdIn machineIdIn
-     * @param saltbootInitrdIn saltbootInitrdIn
+     * Constructor which accepts MinionStartupGrainsBuilder and use it to build object
+     * @param builder MinionStartupGrainsBuilder
      */
-    public MinionStartupGrains(Optional<String> machineIdIn, boolean saltbootInitrdIn) {
-        this.machineId = machineIdIn;
-        this.saltbootInitrd = saltbootInitrdIn;
+    private MinionStartupGrains(MinionStartupGrainsBuilder builder) {
+        this.machineId = Optional.ofNullable(builder.machineId);
+        this.saltbootInitrd = builder.saltbootInitrd;
+        this.suseManagerGrain = Optional.ofNullable(builder.suseManagerGrain);
     }
 
     public Optional<String> getMachineId() {
@@ -65,8 +64,48 @@ public class MinionStartupGrains {
         @SerializedName("management_key")
         private Optional<String> managementKey = Optional.empty();
 
+        /**
+         * no-arg constructor
+         */
+        public SuseManagerGrain() { }
+
+        /**
+         * Constructor which accepts needed grains and return the object
+         * @param managementKeyIn management_key grain
+         */
+        public SuseManagerGrain(Optional<String> managementKeyIn) {
+            this.managementKey = managementKeyIn;
+        }
+
         public Optional<String> getManagementKey() {
             return managementKey;
+        }
+    }
+
+    /**
+     * Builder class to build MinionstartupGrains.
+     */
+    public static class MinionStartupGrainsBuilder {
+        public String machineId;
+        public boolean saltbootInitrd;
+        public SuseManagerGrain suseManagerGrain;
+
+        /**
+         * Method which accepts a consumer<{@link MinionStartupGrainsBuilder}> and build the object using it
+         * @param builderFunction Consumer<{@link MinionStartupGrainsBuilder}>
+         * @return MinionStartupGrainsBuilder object
+         */
+        public MinionStartupGrainsBuilder with(Consumer<MinionStartupGrainsBuilder> builderFunction) {
+            builderFunction.accept(this);
+            return this;
+        }
+
+        /**
+         * Method to actually create the {@link MinionStartupGrains} object
+         * @return MinionStartupGrains object
+         */
+        public MinionStartupGrains createMinionStartUpGrains() {
+            return new MinionStartupGrains(this);
         }
     }
 }
