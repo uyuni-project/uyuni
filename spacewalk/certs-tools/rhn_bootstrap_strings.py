@@ -988,6 +988,7 @@ if [ $REGISTER_THIS_BOX -eq 1 ] ; then
     echo "server_id_use_crc: adler32" >> "$SUSEMANAGER_MASTER_FILE"
     echo "enable_legacy_startup_events: False" >> "$SUSEMANAGER_MASTER_FILE"
     echo "enable_fqdns_grains: False" >> "$SUSEMANAGER_MASTER_FILE"
+    echo "start_event_grains: [machine_id, saltboot_initrd, susemanager]" >> "$SUSEMANAGER_MASTER_FILE"
 
     if [ -n "$ACTIVATION_KEYS" ] ; then
         cat <<EOF >>"$SUSEMANAGER_MASTER_FILE"

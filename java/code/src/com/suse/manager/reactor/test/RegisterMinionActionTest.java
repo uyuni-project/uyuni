@@ -300,12 +300,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
         }
 
         RegisterMinionEventMessageAction action = new RegisterMinionEventMessageAction(saltServiceMock);
-        if (startupGrains.isPresent()) {
-            action.execute(new RegisterMinionEventMessage(MINION_ID, startupGrains));
-        }
-        else {
-            action.execute(new RegisterMinionEventMessage(MINION_ID, Optional.empty()));
-        }
+        action.execute(new RegisterMinionEventMessage(MINION_ID, startupGrains));
 
         // Verify the resulting system entry
         String machineId = saltServiceMock.getMachineId(MINION_ID).get();
@@ -354,7 +349,6 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
         MinionServer server = MinionServerFactoryTest.createTestMinionServer(user);
         server.setMinionId(MINION_ID);
         server.setMachineId(MACHINE_ID);
-        //ServerFactory.save(server);
         MinionStartupGrains minionStartUpGrains =  new MinionStartupGrains.MinionStartupGrainsBuilder()
                 .machineId(MACHINE_ID).saltbootInitrd(false)
                 .createMinionStartUpGrains();
@@ -579,8 +573,9 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
     public void testRegisterMinionWithInvalidActivationKeyNoSyncProducts() throws Exception {
         ChannelFamily channelFamily = createTestChannelFamily();
         SUSEProduct product = SUSEProductTestUtils.createTestSUSEProduct(channelFamily);
+        MinionStartupGrains.SuseManagerGrain suseManagerGrain = new MinionStartupGrains.SuseManagerGrain(Optional.of("non-existent-key"));
         MinionStartupGrains minionStartUpGrains =  new MinionStartupGrains.MinionStartupGrainsBuilder()
-                .machineId(MACHINE_ID).saltbootInitrd(false)
+                .machineId(MACHINE_ID).saltbootInitrd(false).susemanagerGrain(suseManagerGrain)
                 .createMinionStartUpGrains();
         executeTest(
                 (saltServiceMock, key) -> new Expectations() {{
@@ -634,8 +629,9 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
         Channel baseChannelX8664 = setupBaseAndRequiredChannels(channelFamily, product);
         ConfigChannel cfgChannel = ConfigTestUtils.createConfigChannel(user.getOrg(),
                 "Config channel 1", "config-channel-1");
+        MinionStartupGrains.SuseManagerGrain suseManagerGrain = new MinionStartupGrains.SuseManagerGrain(Optional.of("non-existent-key"));
         MinionStartupGrains minionStartUpGrains =  new MinionStartupGrains.MinionStartupGrainsBuilder()
-                .machineId(MACHINE_ID).saltbootInitrd(false)
+                .machineId(MACHINE_ID).saltbootInitrd(false).susemanagerGrain(suseManagerGrain)
                 .createMinionStartUpGrains();
         executeTest(
                 (saltServiceMock, key) -> new Expectations() {{
@@ -697,15 +693,16 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
         ConfigChannel cfgChannel = ConfigTestUtils.createConfigChannel(user.getOrg(),
                 "Config channel 1", "config-channel-1");
         HibernateFactory.getSession().flush();
-        MinionStartupGrains minionStartUpGrains =  new MinionStartupGrains.MinionStartupGrainsBuilder()
-                .machineId(MACHINE_ID).saltbootInitrd(false)
-                .createMinionStartUpGrains();
         executeTest(
                 (saltServiceMock, key) -> new Expectations() {{
                     allowing(saltServiceMock).getMasterHostname(MINION_ID);
                     will(returnValue(Optional.of(MINION_ID)));
                     allowing(saltServiceMock).getMachineId(MINION_ID);
                     will(returnValue(Optional.of(MACHINE_ID)));
+                    MinionStartupGrains.SuseManagerGrain suseManagerGrain = new MinionStartupGrains.SuseManagerGrain(Optional.of(key));
+                    MinionStartupGrains minionStartUpGrains =  new MinionStartupGrains.MinionStartupGrainsBuilder()
+                            .machineId(MACHINE_ID).saltbootInitrd(false).susemanagerGrain(suseManagerGrain)
+                            .createMinionStartUpGrains();
                     allowing(saltServiceMock).getGrains(with(any(String.class)), with(any(TypeToken.class)),with(any(String[].class)));
                     will(returnValue(Optional.of(minionStartUpGrains)));
                     allowing(saltServiceMock).syncGrains(with(any(MinionList.class)));
