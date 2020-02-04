@@ -887,7 +887,10 @@ class ChannelList extends React.Component {
             this.props.items
               .map(c =>
                   <li key={c.label}>
-                    <div><strong>{c.summary}</strong>&nbsp;{this.decodeChannelStatus(c.status)}</div>
+                    <div>
+                      <strong>{c.name}</strong>
+                      &nbsp;{this.decodeChannelStatus(c.status)}
+                    </div>
                     <div>{c.label}</div>
                   </li>
               )
