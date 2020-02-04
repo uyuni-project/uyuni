@@ -1,4 +1,4 @@
-- Add mgr_start_event_grains.sls to update minion config
+- Add mgr_start_event_grains.sls to update minion config in order to get needed grains from start event
 -------------------------------------------------------------------
 Wed Jan 22 12:25:10 CET 2020 - jgonzalez@suse.com
 

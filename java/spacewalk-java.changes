@@ -1,4 +1,4 @@
-- Get the machineid grain from the minion startup event
+- Get the grains that we check on every startup from the start event to improve performance
 - overload the system.scheduleChangeChannels API method to accept multiple system IDs
 
 -------------------------------------------------------------------
