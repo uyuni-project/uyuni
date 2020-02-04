@@ -158,7 +158,7 @@ public class RegisterMinionEventMessageAction implements MessageAction {
                         mkey.flatMap(mk -> ofNullable(ActivationKeyFactory.lookupByKey(mk)));
                 Optional<String> validReactivationKey =
                         mkey.filter(mk -> isValidReactivationKey(activationKey, minionId));
-                updatekKickStartSession(activationKey);
+                updateKickStartSession(activationKey);
                 Optional<String> machineIdOpt = grains.getMachineId();
                 Opt.consume(machineIdOpt,
                     ()-> LOG.error("Aborting: cannot find machine id for minion: " + minionId),
@@ -283,7 +283,7 @@ public class RegisterMinionEventMessageAction implements MessageAction {
             migrateMinionFormula(minionId, Optional.of(oldMinionId));
 
             SALT_SERVICE.deleteKey(oldMinionId);
-            SystemManager.addHistoryEvent(registeredMinion, "Duplicate Machine ID", "Minion '" +
+            SystemManager.addHistoryEvent(registeredMinion, "Duplicate Minion ID", "Minion '" +
                     oldMinionId + "' has been updated to '" + minionId + "'");
         }
     }
@@ -292,7 +292,7 @@ public class RegisterMinionEventMessageAction implements MessageAction {
      * Mark the kickstart session of activation key as complete if activation key has kickstart session
      * @param activationKey activationKey key
      */
-    private void updatekKickStartSession(Optional<ActivationKey> activationKey) {
+    private void updateKickStartSession(Optional<ActivationKey> activationKey) {
         activationKey.ifPresent(ak -> {
             if (Objects.nonNull(ak.getKickstartSession())) {
                 ak.getKickstartSession().markComplete("Installation completed.");
