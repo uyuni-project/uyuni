@@ -336,6 +336,75 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
         }, null, DEFAULT_CONTACT_METHOD);
     }
 
+    public void testAlreadyRegisteredMinionWithSameMachineId() throws Exception {
+        MinionServer server = MinionServerFactoryTest.createTestMinionServer(user);
+        server.setMinionId(MINION_ID);
+        server.setMachineId(MACHINE_ID);
+        //ServerFactory.save(server);
+        MinionStartupGrains minionStartUpGrains =  new MinionStartupGrains.MinionStartupGrainsBuilder()
+                .machineId(MACHINE_ID).saltbootInitrd(false)
+                .createMinionStartUpGrains();
+        executeTest((saltServiceMock, key) -> new Expectations() {{
+            allowing(saltServiceMock).getMachineId(MINION_ID);
+            will(returnValue(Optional.of(MACHINE_ID)));
+
+        }}, null, (minion, machineId, key) -> {
+            assertTrue(MinionServerFactory.findByMinionId(MINION_ID).isPresent());
+        }, null, DEFAULT_CONTACT_METHOD, Optional.of(minionStartUpGrains));
+    }
+
+    public void testAlreadyRegisteredMinionWithNewMinionId() throws Exception {
+        MinionServer server = MinionServerFactoryTest.createTestMinionServer(user);
+        server.setMachineId(MACHINE_ID);
+        MinionStartupGrains minionStartUpGrains =  new MinionStartupGrains.MinionStartupGrainsBuilder()
+                .machineId(MACHINE_ID).saltbootInitrd(false)
+                .createMinionStartUpGrains();
+        executeTest((saltServiceMock, key) -> new Expectations() {{
+            allowing(saltServiceMock).getMasterHostname(MINION_ID);
+            will(returnValue(Optional.of(MINION_ID)));
+            allowing(saltServiceMock).getMachineId(MINION_ID);
+            will(returnValue(Optional.of(MACHINE_ID)));
+            allowing(saltServiceMock).getGrains(MINION_ID);
+            will(returnValue(getGrains(MINION_ID, null, key)));
+            allowing(saltServiceMock).syncGrains(with(any(MinionList.class)));
+            allowing(saltServiceMock).syncModules(with(any(MinionList.class)));
+            exactly(1).of(saltServiceMock).deleteKey(server.getMinionId());
+        }}, null, (minion, machineId, key) -> {
+            assertTrue(MinionServerFactory.findByMinionId(MINION_ID).isPresent());
+        }, null, DEFAULT_CONTACT_METHOD, Optional.of(minionStartUpGrains));
+    }
+
+    public void testWithMissingMachineIdStartUpGrains() throws Exception {
+        MinionServer server = MinionServerFactoryTest.createTestMinionServer(user);
+        server.setMinionId(MINION_ID);
+        executeTest((saltServiceMock, key) -> new Expectations() {{
+            allowing(saltServiceMock).getMachineId(MINION_ID);
+            will(returnValue(Optional.of(MACHINE_ID)));
+
+        }}, null, (minion, machineId, key) -> {
+            assertFalse(MinionServerFactory.findByMachineId(MACHINE_ID).isPresent());
+        }, null, DEFAULT_CONTACT_METHOD, Optional.of(new MinionStartupGrains()));
+    }
+
+    public void testAlreadyRegisteredRetailMinion() throws Exception {
+        ManagedServerGroup terminalsGroup = ServerGroupFactory.create("TERMINALS", "All terminals group", user.getOrg());
+        MinionServer server = MinionServerFactoryTest.createTestMinionServer(user);
+        server.getManagedGroups().add(terminalsGroup);
+        server.setMinionId(MINION_ID);
+        server.setMachineId(MACHINE_ID);
+        SystemManager.addServerToServerGroup(server, terminalsGroup);
+        MinionStartupGrains minionStartUpGrains =  new MinionStartupGrains.MinionStartupGrainsBuilder()
+                .machineId(MACHINE_ID).saltbootInitrd(true)
+                .createMinionStartUpGrains();
+        executeTest((saltServiceMock, key) -> new Expectations() {{
+            allowing(saltServiceMock).getMachineId(MINION_ID);
+            will(returnValue(Optional.of(MACHINE_ID)));
+
+        }}, null, (minion, machineId, key) -> {
+            assertTrue(MinionServerFactory.findByMinionId(MINION_ID).isPresent());
+        }, null, DEFAULT_CONTACT_METHOD, Optional.of(minionStartUpGrains));
+    }
+
     public void testChangeContactMethodRegisterMinion() throws Exception {
         ServerFactory.findByMachineId(MACHINE_ID).ifPresent(ServerFactory::delete);
         Server server = ServerTestUtils.createTestSystem(user);
