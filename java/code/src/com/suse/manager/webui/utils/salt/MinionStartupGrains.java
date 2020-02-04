@@ -17,7 +17,6 @@ package com.suse.manager.webui.utils.salt;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.Optional;
-import java.util.function.Consumer;
 
 /**
  * Class to represent grains defined against 'start_event_grains'
@@ -86,17 +85,37 @@ public class MinionStartupGrains {
      * Builder class to build MinionstartupGrains.
      */
     public static class MinionStartupGrainsBuilder {
-        public String machineId;
-        public boolean saltbootInitrd;
-        public SuseManagerGrain suseManagerGrain;
+        private String machineId;
+        private boolean saltbootInitrd;
+        private SuseManagerGrain suseManagerGrain;
 
         /**
-         * Method which accepts a consumer<{@link MinionStartupGrainsBuilder}> and build the object using it
-         * @param builderFunction Consumer<{@link MinionStartupGrainsBuilder}>
-         * @return MinionStartupGrainsBuilder object
+         * setter for machineId grain
+         * @param machineIdIn machineId
+         * @return MinionStartupGrainsBuilder
          */
-        public MinionStartupGrainsBuilder with(Consumer<MinionStartupGrainsBuilder> builderFunction) {
-            builderFunction.accept(this);
+        public MinionStartupGrainsBuilder machineId(String machineIdIn) {
+            this.machineId = machineIdIn;
+            return this;
+        }
+
+        /**
+         * setter for saltboot_initrdIn grain
+         * @param saltbootInitrdIn saltbootInitrdIn
+         * @return MinionStartupGrainsBuilder
+         */
+        public MinionStartupGrainsBuilder saltbootInitrd(boolean saltbootInitrdIn) {
+            this.saltbootInitrd = saltbootInitrdIn;
+            return this;
+        }
+
+        /**
+         * setter for susemanager grain
+         * @param suseManagerGrainIn suseManagerGrainIn
+         * @return MinionStartupGrainsBuilder
+         */
+        public MinionStartupGrainsBuilder susemanagerGrain(SuseManagerGrain suseManagerGrainIn) {
+            this.suseManagerGrain = suseManagerGrainIn;
             return this;
         }
 
