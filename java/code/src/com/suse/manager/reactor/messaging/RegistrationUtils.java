@@ -50,8 +50,8 @@ import com.redhat.rhn.taskomatic.TaskomaticApiException;
 import com.suse.manager.reactor.utils.RhelUtils;
 import com.suse.manager.reactor.utils.ValueMap;
 import com.suse.manager.webui.controllers.StatesAPI;
-import com.suse.manager.webui.services.SaltStateGeneratorService;
 import com.suse.manager.webui.services.impl.SaltService;
+import com.suse.manager.webui.services.pillar.MinionPillarManager;
 import com.suse.manager.webui.utils.salt.custom.PkgProfileUpdateSlsResult;
 import com.suse.salt.netapi.calls.modules.State;
 import com.suse.salt.netapi.calls.modules.Zypper;
@@ -110,7 +110,7 @@ public class RegistrationUtils {
 
         // Generate pillar data
         try {
-            SaltStateGeneratorService.INSTANCE.generatePillar(minion);
+            MinionPillarManager.INSTANCE.generatePillar(minion);
 
             // Subscribe to config channels assigned to the activation key or initialize empty channel profile
             minion.subscribeConfigChannels(

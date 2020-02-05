@@ -23,6 +23,10 @@ import java.util.TimeZone;
 import javax.servlet.http.Cookie;
 
 import com.suse.manager.webui.services.SaltStateGeneratorService;
+import com.suse.manager.webui.services.pillar.MinionGeneralPillarGenerator;
+import com.suse.manager.webui.services.pillar.MinionGroupMembershipPillarGenerator;
+import com.suse.manager.webui.services.pillar.MinionPillarFileManager;
+
 import org.apache.struts.action.DynaActionForm;
 import org.hibernate.HibernateException;
 
@@ -50,10 +54,15 @@ import com.redhat.rhn.frontend.struts.RhnAction;
 public class RhnMockStrutsTestCase extends MockStrutsTestCase {
 
     protected User user;
+    protected MinionPillarFileManager minionGroupMembershipPillarFileManager =
+            new MinionPillarFileManager(new MinionGroupMembershipPillarGenerator());
+    protected MinionPillarFileManager minionGeneralPillarFileManager =
+            new MinionPillarFileManager(new MinionGeneralPillarGenerator());
 
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setUp() throws Exception {
         super.setUp();
 
@@ -87,8 +96,8 @@ public class RhnMockStrutsTestCase extends MockStrutsTestCase {
         //Set temporary Salt directories for local runs
         Path tmpPillarRoot = Files.createTempDirectory("pillar");
         Path tmpSaltRoot = Files.createTempDirectory("salt");
-        SaltStateGeneratorService.INSTANCE.setPillarDataPath(tmpPillarRoot
-                .toAbsolutePath());
+        minionGroupMembershipPillarFileManager.setPillarDataPath(tmpPillarRoot.toAbsolutePath());
+        minionGeneralPillarFileManager.setPillarDataPath(tmpPillarRoot.toAbsolutePath());
         SaltStateGeneratorService.INSTANCE.setSuseManagerStatesFilesRoot(tmpSaltRoot
                 .toAbsolutePath());
     }
@@ -96,6 +105,7 @@ public class RhnMockStrutsTestCase extends MockStrutsTestCase {
     /**
      * Tears down the fixture, and closes the HibernateSession.
      */
+    @Override
     protected void tearDown() throws Exception {
         super.tearDown();
         TestCaseHelper.tearDownHelper();

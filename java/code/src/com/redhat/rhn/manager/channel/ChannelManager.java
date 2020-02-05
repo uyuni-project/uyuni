@@ -78,7 +78,8 @@ import com.redhat.rhn.manager.user.UserManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 import com.redhat.rhn.taskomatic.task.TaskConstants;
-import com.suse.manager.webui.services.SaltStateGeneratorService;
+
+import com.suse.manager.webui.services.pillar.MinionPillarManager;
 import com.suse.utils.Opt;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
@@ -639,7 +640,7 @@ public class ChannelManager extends BaseManager {
         Optional<Long> actionId = Optional.empty();
         if (minions.size() > 0) {
             for (MinionServer ms: minions) {
-                SaltStateGeneratorService.INSTANCE.generatePillar(ms, false, Collections.emptySet());
+                MinionPillarManager.INSTANCE.generatePillar(ms, false, Collections.emptySet());
             }
             actionId = Optional.of(ActionManager.scheduleChannelState(user, minions).getId());
         }
