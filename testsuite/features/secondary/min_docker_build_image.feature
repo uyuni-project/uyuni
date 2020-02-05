@@ -6,6 +6,44 @@
 
 Feature: Build container images
 
+  Scenario: Create a simple image profile without activation key
+    Given I am authorized as "admin" with password "admin"
+    When I follow the left menu "Images > Profiles"
+    And I follow "Create"
+    And I enter "suse_simple" as "label"
+    And I select "galaxy-registry" from "imageStore"
+    And I enter "Docker" relative to profiles as "path"
+    And I click on "create-btn"
+
+  Scenario: Create a simple real image profile without activation key
+    Given I am authorized as "admin" with password "admin"
+    When I follow the left menu "Images > Profiles"
+    And I follow "Create"
+    And I enter "suse_real_simple" as "label"
+    And I select "galaxy-registry" from "imageStore"
+    And I enter "Docker/serverhost" relative to profiles as "path"
+    And I click on "create-btn"
+
+  Scenario: Create an image profile with activation key
+    Given I am authorized as "admin" with password "admin"
+    When I follow the left menu "Images > Profiles"
+    And I follow "Create"
+    And I enter "suse_key" as "label"
+    And I select "galaxy-registry" from "imageStore"
+    And I select "1-DOCKER-TEST" from "activationKey"
+    And I enter "Docker" relative to profiles as "path"
+    And I click on "create-btn"
+
+  Scenario: Create a simple real image profile with activation key
+    Given I am authorized as "admin" with password "admin"
+    When I follow the left menu "Images > Profiles"
+    And I follow "Create"
+    And I enter "suse_real_key" as "label"
+    And I select "galaxy-registry" from "imageStore"
+    And I select "1-DOCKER-TEST" from "activationKey"
+    And I enter "Docker/serverhost" relative to profiles as "path"
+    And I click on "create-btn"
+
   Scenario: Build the images with and without activation key
     Given I am on the Systems overview page of this "sle_minion"
     When I schedule the build of image "suse_key" via XML-RPC calls
@@ -62,3 +100,15 @@ Feature: Build container images
 
   Scenario: Cleanup: kill stale image build jobs
     When I kill remaining Salt jobs on "sle_minion"
+
+  Scenario: Cleanup: delete all profiles
+    Given I am authorized as "admin" with password "admin"
+    When I follow the left menu "Images > Profiles"
+    And I check "suse_simple" in the list
+    And I check "suse_real_simple" in the list
+    And I check "suse_key" in the list
+    And I check "suse_real_key" in the list
+    And I click on "Delete"
+    And I should see a "Are you sure you want to delete selected profiles?" text
+    And I click on the red confirmation button
+    And I wait until I see "Image profiles have been deleted" text
