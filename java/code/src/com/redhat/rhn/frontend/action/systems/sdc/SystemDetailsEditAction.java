@@ -33,6 +33,7 @@ import com.redhat.rhn.frontend.struts.RhnValidationHelper;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.system.SystemManager;
+import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
 import com.redhat.rhn.manager.user.UserManager;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
@@ -80,6 +81,7 @@ public class SystemDetailsEditAction extends RhnAction {
     public static final String RACK = "rack";
     public static final String UNENTITLE = "unentitle";
 
+    private SystemEntitlementManager systemEntitlementManager = SystemEntitlementManager.INSTANCE;
 
     /** {@inheritDoc} */
     @Override
@@ -143,10 +145,10 @@ public class SystemDetailsEditAction extends RhnAction {
         Entitlement base = EntitlementManager.getByName(selectedEnt);
         log.debug("base: " + base);
         if (base != null) {
-            s.setBaseEntitlement(base);
+            SystemEntitlementManager.INSTANCE.setBaseEntitlement(s, base);
         }
         else if (selectedEnt.equals(UNENTITLE)) {
-            SystemManager.removeAllServerEntitlements(s);
+            systemEntitlementManager.removeAllServerEntitlements(s);
         }
 
         // setup location information
@@ -244,9 +246,9 @@ public class SystemDetailsEditAction extends RhnAction {
             log.debug("Entitlement: " + e.getLabel());
             log.debug("form.get: " + daForm.get(e.getLabel()));
             if (Boolean.TRUE.equals(daForm.get(e.getLabel())) &&
-                SystemManager.canEntitleServer(s, e)) {
+                    systemEntitlementManager.canEntitleServer(s, e)) {
                 log.debug("Entitling server with: " + e);
-                ValidatorResult vr = SystemManager.entitleServer(s, e);
+                ValidatorResult vr = systemEntitlementManager.addEntitlementToServer(s, e);
 
                 if (vr.getWarnings().size() > 0) {
                     getStrutsDelegate().saveMessages(request,
@@ -286,7 +288,7 @@ public class SystemDetailsEditAction extends RhnAction {
                      daForm.get(e.getLabel()).equals(Boolean.FALSE)) &&
                      s.hasEntitlement(e)) {
                 log.debug("removing entitlement: " + e);
-                SystemManager.removeServerEntitlement(s, e);
+                systemEntitlementManager.removeServerEntitlement(s, e);
 
                 needsSnapshot = true;
             }

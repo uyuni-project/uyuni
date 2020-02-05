@@ -117,6 +117,9 @@ import com.redhat.rhn.manager.rhnpackage.test.PackageManagerTest;
 import com.redhat.rhn.manager.ssm.SsmOperationManager;
 import com.redhat.rhn.manager.system.ServerGroupManager;
 import com.redhat.rhn.manager.system.SystemManager;
+import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
+import com.redhat.rhn.manager.system.entitling.SystemEntitler;
+import com.redhat.rhn.manager.system.entitling.SystemUnentitler;
 import com.redhat.rhn.manager.system.test.SystemManagerTest;
 import com.redhat.rhn.manager.user.UserManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
@@ -153,6 +156,7 @@ import java.util.stream.Collectors;
 public class SystemHandlerTest extends BaseHandlerTestCase {
 
     private SystemHandler handler = new SystemHandler();
+    private SystemEntitlementManager systemEntitlementManager = SystemEntitlementManager.INSTANCE;
 
     private final Mockery MOCK_CONTEXT = new JUnit3Mockery() {{
         setThreadingPolicy(new Synchroniser());
@@ -209,14 +213,14 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
                 ServerConstants.getServerGroupTypeEnterpriseEntitled());
         Entitlement ent = EntitlementManager.VIRTUALIZATION;
 
-        assertTrue(SystemManager.canEntitleServer(server, ent));
+        assertTrue(systemEntitlementManager.canEntitleServer(server, ent));
 
         int result = handler.upgradeEntitlement(admin,
                 server.getId().intValue(),
                 ent.getLabel());
 
         assertEquals(1, result);
-        assertFalse(SystemManager.canEntitleServer(server, ent));
+        assertFalse(systemEntitlementManager.canEntitleServer(server, ent));
 
         //Cause PermissionCheckFailureException
         try {
@@ -873,7 +877,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
 
     public void testScheduleVirtProvision() throws Exception {
         Server server = ServerTestUtils.createTestSystem(admin);
-        server.setBaseEntitlement(EntitlementManager.MANAGEMENT);
+        SystemEntitlementManager.INSTANCE.setBaseEntitlement(server, EntitlementManager.MANAGEMENT);
         TestUtils.saveAndFlush(server);
         server = reload(server);
         KickstartDataTest.setupTestConfiguration(admin);
@@ -1724,7 +1728,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
     public void testSetDetails() throws Exception {
         Server server = ServerFactoryTest.createTestServer(admin, true,
                 ServerConstants.getServerGroupTypeEnterpriseEntitled());
-        SystemManager.removeAllServerEntitlements(server);
+        systemEntitlementManager.removeAllServerEntitlements(server);
 
         Map details = new HashMap();
         String profileName = "blah";
@@ -1775,7 +1779,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
     public void testSetDetailsContactMethodInvalid() throws Exception {
         Server server = ServerFactoryTest.createTestServer(admin, true,
                 ServerConstants.getServerGroupTypeEnterpriseEntitled());
-        SystemManager.removeAllServerEntitlements(server);
+        systemEntitlementManager.removeAllServerEntitlements(server);
 
         Map details = new HashMap();
         details.put("contact_method", "foobar");
@@ -1828,7 +1832,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
 
     public void testSetDetailsUnentitleServer() throws Exception {
         Server server = ServerFactoryTest.createTestServer(admin, true);
-        SystemManager.removeAllServerEntitlements(server);
+        systemEntitlementManager.removeAllServerEntitlements(server);
         Map details = new HashMap();
         details.put("base_entitlement", "unentitle");
 
@@ -1841,7 +1845,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
 
     public void testSetDetailsBaseEntitlementAsNonOrgAdmin() throws Exception {
         Server server = ServerFactoryTest.createTestServer(regular, true);
-        SystemManager.removeAllServerEntitlements(server);
+        systemEntitlementManager.removeAllServerEntitlements(server);
         Map details = new HashMap();
         details.put("base_entitlement", "unentitle");
 
@@ -1901,7 +1905,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
     public void testRemoveEntitlements() throws Exception {
         Server server = ServerFactoryTest.createTestServer(admin, true,
                 ServerConstants.getServerGroupTypeEnterpriseEntitled());
-        SystemManager.entitleServer(server, EntitlementManager.VIRTUALIZATION);
+        systemEntitlementManager.addEntitlementToServer(server, EntitlementManager.VIRTUALIZATION);
         List entitlements = new LinkedList();
         entitlements.add(EntitlementManager.VIRTUALIZATION_ENTITLED);
 

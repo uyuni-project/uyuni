@@ -31,6 +31,9 @@ import com.redhat.rhn.domain.user.UserFactory;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.org.MigrationManager;
 import com.redhat.rhn.manager.system.SystemManager;
+import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
+import com.redhat.rhn.manager.system.entitling.SystemEntitler;
+import com.redhat.rhn.manager.system.entitling.SystemUnentitler;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.ConfigTestUtils;
 import com.redhat.rhn.testing.ServerTestUtils;
@@ -53,7 +56,9 @@ public class MigrationManagerTest extends BaseTestCaseWithUser {
     private Org destOrg;
     private Server server;  // virt host w/guests
     private Server server2; // server w/provisioning ent
+    private SystemEntitlementManager systemEntitlementManager = SystemEntitlementManager.INSTANCE;
 
+    @Override
     public void setUp() throws Exception {
         super.setUp();
 
@@ -205,7 +210,7 @@ public class MigrationManagerTest extends BaseTestCaseWithUser {
         User origOrgAdmin = origOrgAdmins.iterator().next();
         Server bootstrapServer = ServerFactoryTest.createUnentitledTestServer(origOrgAdmin,
             true, ServerFactoryTest.TYPE_SERVER_NORMAL, getNow());
-        SystemManager.entitleServer(bootstrapServer, EntitlementManager.BOOTSTRAP);
+        systemEntitlementManager.addEntitlementToServer(bootstrapServer, EntitlementManager.BOOTSTRAP);
 
         assertEquals(1, bootstrapServer.getEntitlements().size());
 

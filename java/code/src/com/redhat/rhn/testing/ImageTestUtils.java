@@ -37,7 +37,7 @@ import com.redhat.rhn.domain.token.ActivationKey;
 import com.redhat.rhn.domain.token.ActivationKeyFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
-import com.redhat.rhn.manager.system.SystemManager;
+import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -46,6 +46,8 @@ import java.util.Set;
  * Utility methods for testing of the image features.
  */
 public class ImageTestUtils {
+
+    private static SystemEntitlementManager systemEntitlementManager = SystemEntitlementManager.INSTANCE;
 
     private ImageTestUtils() { }
 
@@ -391,7 +393,7 @@ public class ImageTestUtils {
      */
     public static MinionServer createBuildHost(User user) throws Exception {
         MinionServer server = MinionServerFactoryTest.createTestMinionServer(user);
-        SystemManager.entitleServer(server, EntitlementManager.CONTAINER_BUILD_HOST);
+        systemEntitlementManager.addEntitlementToServer(server, EntitlementManager.CONTAINER_BUILD_HOST);
         return server;
     }
 
@@ -404,7 +406,7 @@ public class ImageTestUtils {
      */
     public static MinionServer createOSImageBuildHost(User user) throws Exception {
         MinionServer server = MinionServerFactoryTest.createTestMinionServer(user);
-        SystemManager.entitleServer(server, EntitlementManager.OSIMAGE_BUILD_HOST);
+        systemEntitlementManager.addEntitlementToServer(server, EntitlementManager.OSIMAGE_BUILD_HOST);
         return server;
     }
 }

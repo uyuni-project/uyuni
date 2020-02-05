@@ -38,11 +38,8 @@ import com.redhat.rhn.domain.entitlement.Entitlement;
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.formula.FormulaFactory;
 import com.redhat.rhn.domain.org.Org;
-import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.CPU;
-import com.redhat.rhn.domain.server.EntitlementServerGroup;
-import com.redhat.rhn.domain.server.InstalledPackage;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.NetworkInterface;
@@ -52,14 +49,12 @@ import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerConstants;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ServerGroup;
-import com.redhat.rhn.domain.server.ServerGroupFactory;
 import com.redhat.rhn.domain.server.ServerHistoryEvent;
 import com.redhat.rhn.domain.server.ServerLock;
 import com.redhat.rhn.domain.server.VirtualInstance;
 import com.redhat.rhn.domain.server.VirtualInstanceFactory;
 import com.redhat.rhn.domain.server.VirtualInstanceState;
 import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.domain.user.UserFactory;
 import com.redhat.rhn.frontend.dto.ActivationKeyDto;
 import com.redhat.rhn.frontend.dto.BootstrapSystemOverview;
 import com.redhat.rhn.frontend.dto.CustomDataKeyOverview;
@@ -83,22 +78,18 @@ import com.redhat.rhn.frontend.listview.PageControl;
 import com.redhat.rhn.frontend.xmlrpc.InvalidProxyVersionException;
 import com.redhat.rhn.frontend.xmlrpc.ProxySystemIsSatelliteException;
 import com.redhat.rhn.manager.BaseManager;
-import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.channel.ChannelManager;
-import com.redhat.rhn.manager.channel.MultipleChannelsWithPackageException;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.errata.ErrataManager;
-import com.redhat.rhn.manager.formula.FormulaManager;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerSystemRemoveCommand;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
+import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
 import com.redhat.rhn.manager.user.UserManager;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 import com.suse.manager.reactor.messaging.ChannelsChangedEventMessage;
 import com.suse.manager.webui.services.SaltStateGeneratorService;
-import com.suse.manager.webui.services.impl.SaltSSHService;
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.utils.Opt;
-import com.suse.manager.webui.utils.salt.State;
 
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.log4j.Logger;
@@ -124,7 +115,6 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static com.redhat.rhn.domain.formula.FormulaFactory.PROMETHEUS_EXPORTERS;
 import static java.util.Collections.emptyList;
 import static java.util.Collections.emptySet;
 import static java.util.Collections.singleton;
@@ -148,6 +138,8 @@ public class SystemManager extends BaseManager {
             "configfiles.base64_enc";
     public static final String CAP_SCRIPT_RUN = "script.run";
     public static final String CAP_SCAP = "scap.xccdf_eval";
+
+    private static SystemEntitlementManager systemEntitlementManager = SystemEntitlementManager.INSTANCE;
 
     private SystemManager() {
     }
@@ -463,7 +455,7 @@ public class SystemManager extends BaseManager {
         server.setServerArch(ServerFactory.lookupServerArchByLabel("x86_64-redhat-linux"));
         server.updateServerInfo();
         ServerFactory.save(server);
-        server.setBaseEntitlement(EntitlementManager.BOOTSTRAP);
+        systemEntitlementManager.setBaseEntitlement(server, EntitlementManager.BOOTSTRAP);
 
         hwAddress.ifPresent(addr -> {
             NetworkInterface netInterface = new NetworkInterface();
@@ -648,7 +640,7 @@ public class SystemManager extends BaseManager {
             toRemove.add(server.getVirtualInstance());
         }
         else {
-            removeAllServerEntitlements(server);
+            systemEntitlementManager.removeAllServerEntitlements(server);
             toRemove.addAll(server.getGuests());
         }
         toRemove.stream().forEach(vi ->
@@ -715,7 +707,7 @@ public class SystemManager extends BaseManager {
         snapshotServers(servers, "Group membership alteration");
         if (FormulaFactory.hasMonitoringDataEnabled(serverGroup)) {
             for (Server server : servers) {
-                SystemManager.removeServerEntitlement(server, EntitlementManager.MONITORING);
+                systemEntitlementManager.removeServerEntitlement(server, EntitlementManager.MONITORING);
             }
         }
     }
@@ -2023,393 +2015,6 @@ public class SystemManager extends BaseManager {
                 subscribeServerToChannel(null, server, proxyChannel);
             }
         }
-    }
-
-    /**
-     * Entitles the given server to the given Entitlement.
-     * @param server Server to be entitled.
-     * @param ent Level of Entitlement.
-     * @return ValidatorResult of errors and warnings.
-     */
-    public static ValidatorResult entitleServer(Server server, Entitlement ent) {
-        log.debug("Entitling: " + ent.getLabel());
-        ValidatorResult result = new ValidatorResult();
-
-        if (server.hasEntitlement(ent)) {
-            log.debug("server already entitled.");
-            result.addError(new ValidatorError("system.entitle.alreadyentitled",
-                    ent.getHumanReadableLabel()));
-            return result;
-        }
-
-        boolean wasVirtEntitled = server.hasEntitlement(EntitlementManager.VIRTUALIZATION);
-        if (EntitlementManager.VIRTUALIZATION.equals(ent)) {
-            if (server.isVirtualGuest()) {
-                result.addError(new ValidatorError("system.entitle.guestcantvirt"));
-                return result;
-            }
-
-            log.debug("setting up system for virt.");
-            ValidatorResult virtSetupResults = setupSystemForVirtualization(server.getOrg(), server.getId());
-            result.append(virtSetupResults);
-            if (virtSetupResults.getErrors().size() > 0) {
-                log.debug("error trying to setup virt ent: " + virtSetupResults.getMessage());
-                return result;
-            }
-        }
-        else if (EntitlementManager.OSIMAGE_BUILD_HOST.equals(ent)) {
-            saltServiceInstance.generateSSHKey(SaltSSHService.SSH_KEY_PATH);
-        }
-
-        addEntitlementToServer(server, ent);
-
-        server.asMinionServer().ifPresent(minion -> {
-            ServerGroupManager.getInstance().updatePillarAfterGroupUpdateForServers(Arrays.asList(minion));
-
-            if (wasVirtEntitled && !EntitlementManager.VIRTUALIZATION.equals(ent) ||
-                    !wasVirtEntitled && EntitlementManager.VIRTUALIZATION.equals(ent)) {
-                SystemManager.updateLibvirtEngine(minion);
-            }
-
-            if (EntitlementManager.MONITORING.equals(ent)) {
-                try {
-                    // Assign the monitoring formula to the system
-                    // unless the system belongs to a group having monitoring already enabled
-                    if (!FormulaFactory.isMemberOfGroupHavingMonitoring(server)) {
-                        List<String> formulas = FormulaFactory.getFormulasByMinionId(minion.getMinionId());
-                        if (!formulas.contains(FormulaFactory.PROMETHEUS_EXPORTERS)) {
-                            formulas.add(FormulaFactory.PROMETHEUS_EXPORTERS);
-                            FormulaFactory.saveServerFormulas(minion.getMinionId(), formulas);
-                        }
-                    }
-                }
-                catch (UnsupportedOperationException | IOException e) {
-                    log.error("Error assigning formula: " + e.getMessage(), e);
-                    result.addError(new ValidatorError("system.entitle.formula_error"));
-                }
-            }
-        });
-
-        log.debug("done.  returning null");
-        return result;
-    }
-
-    private static void addEntitlementToServer(Server server, Entitlement ent) {
-        Optional<ServerGroup> serverGroup = findServerGroupToEntitleServer(server, ent);
-
-        if (serverGroup.isPresent()) {
-            Map<String, Object> in = new HashMap<String, Object>();
-            in.put("sid", server.getId());
-            in.put("entitlement_label", ent.getLabel());
-            in.put("summary", "added system entitlement ");
-
-            WriteMode m = ModeFactory.getWriteMode("System_queries", "update_server_history_for_entitlement_event");
-            m.executeUpdate(in);
-
-            log.debug("update_server_history_for_entitlement_event mode query executed.");
-
-            ServerFactory.addServerToGroup(server, serverGroup.get());
-        }
-        else {
-            log.error("Cannot add entitlement: " + ent.getLabel() + " to system: " + server.getId());
-        }
-    }
-
-    /**
-     * Refresh pillar data for a minion.
-     * @param minion to refresh
-     */
-    private static void refreshPillarDataForMinion(MinionServer minion) {
-        SaltStateGeneratorService.INSTANCE.generatePillar(minion);
-        //SaltService.INSTANCE.refreshPillar(
-        //        new MinionList(minion.getMinionId()));
-        log.debug("Refreshed pillars for minion.");
-    }
-
-    // Need to do some extra logic here
-    // 1) Subscribe system to rhel-i386-server-vt-5 channel
-    // 2) Subscribe system to rhn-tools-rhel-i386-server-5
-    // 3) Schedule package install of rhn-virtualization-host
-    // Return a map with errors and warnings:
-    //      warnings -> list of ValidationWarnings
-    //      errors -> list of ValidationErrors
-    private static ValidatorResult setupSystemForVirtualization(Org orgIn, Long sid) {
-
-        Server server = ServerFactory.lookupById(sid);
-        User user = UserFactory.findRandomOrgAdmin(orgIn);
-        ValidatorResult result = new ValidatorResult();
-
-        // If this is a Satellite
-        if (!ConfigDefaults.get().isSpacewalk()) {
-            // just install libvirt for RHEL6 base channel
-            Channel base = server.getBaseChannel();
-
-            if (base != null && base.isCloned()) {
-                base = base.getOriginal();
-            }
-
-            if ((base != null) &&
-                    (!base.isRhelChannel() || base.isReleaseXChannel(5))) {
-                // Do not automatically subscribe to virt channels (bnc#768856)
-                // subscribeToVirtChannel(server, user, result);
-            }
-        }
-
-        if (server.hasEntitlement(EntitlementManager.MANAGEMENT)) {
-            // Before we start looking to subscribe to a 'tools' channel for
-            // rhn-virtualization-host, check if the server already has a package by this
-            // name installed and leave it be if so.
-            InstalledPackage rhnVirtHost = PackageFactory.lookupByNameAndServer(
-                    ChannelManager.RHN_VIRT_HOST_PACKAGE_NAME, server);
-            if (rhnVirtHost != null) {
-                // System already has the package, we can stop here.
-                log.debug("System already has " +
-                        ChannelManager.RHN_VIRT_HOST_PACKAGE_NAME + " installed.");
-                return result;
-            }
-            try {
-                scheduleVirtualizationHostPackageInstall(server, user, result);
-            }
-            catch (TaskomaticApiException e) {
-                result.addError(new ValidatorError("taskscheduler.down"));
-            }
-        }
-
-        return result;
-    }
-
-    /**
-     * Schedule installation of rhn-virtualization-host package.
-     *
-     * Implies that we locate a child channel with this package and automatically
-     * subscribe the system to it if possible. If multiple child channels have the package
-     * and the server is not already subscribed to one, we report the discrepancy and
-     * instruct the user to deal with this manually.
-     *
-     * @param server Server to schedule install for.
-     * @param user User performing the operation.
-     * @param result Validation result we'll be returning for the UI to render.
-     * @throws TaskomaticApiException if there was a Taskomatic error
-     * (typically: Taskomatic is down)
-     */
-    private static void scheduleVirtualizationHostPackageInstall(Server server,
-            User user, ValidatorResult result) throws TaskomaticApiException {
-        // Now subscribe to a child channel with rhn-virtualization-host (RHN Tools in the
-        // case of Satellite) and schedule it for installation, or warn if we cannot find
-        // a child with the package:
-        Channel toolsChannel = null;
-        try {
-            toolsChannel = ChannelManager.subscribeToChildChannelWithPackageName(
-                    user, server, ChannelManager.RHN_VIRT_HOST_PACKAGE_NAME);
-
-            // If this is a Satellite and no RHN Tools channel is available
-            // report the error
-            if (!ConfigDefaults.get().isSpacewalk() && toolsChannel == null) {
-                log.warn("no tools channel found");
-                result.addError(new ValidatorError("system.entitle.notoolschannel"));
-            }
-            // If Spacewalk and no channel has the rhn-virtualization-host package,
-            // warn but allow the operation to proceed.
-            else if (toolsChannel == null) {
-                result.addWarning(new ValidatorWarning("system.entitle.novirtpackage",
-                        ChannelManager.RHN_VIRT_HOST_PACKAGE_NAME));
-            }
-            else {
-                List<Map<String, Object>> packageResults =
-                        ChannelManager.listLatestPackagesEqual(
-                        toolsChannel.getId(), ChannelManager.RHN_VIRT_HOST_PACKAGE_NAME);
-                if (packageResults.size() > 0) {
-                    Map<String, Object> row = packageResults.get(0);
-                    Long nameId = (Long) row.get("name_id");
-                    Long evrId = (Long) row.get("evr_id");
-                    Long archId = (Long) row.get("package_arch_id");
-                    ActionManager.schedulePackageInstall(
-                            user, server, nameId, evrId, archId);
-                }
-                else {
-                    result.addError(new ValidatorError("system.entitle.novirtpackage",
-                            ChannelManager.RHN_VIRT_HOST_PACKAGE_NAME));
-                }
-            }
-        }
-        catch (MultipleChannelsWithPackageException e) {
-            log.warn("Found multiple child channels with package: " +
-                    ChannelManager.RHN_VIRT_HOST_PACKAGE_NAME);
-            result.addWarning(new ValidatorWarning(
-                    "system.entitle.multiplechannelswithpackagepleaseinstall",
-                    ChannelManager.RHN_VIRT_HOST_PACKAGE_NAME));
-        }
-    }
-
-    /**
-     * Subscribe the system to the Red Hat Virtualization channel if necessary.
-     *
-     * This method should only ever be called in Satellite.
-     *
-     * @param server Server to schedule install for.
-     * @param user User performing the operation.
-     * @param result Validation result we'll be returning for the UI to render.
-     */
-    private static void subscribeToVirtChannel(Server server, User user,
-            ValidatorResult result) {
-        Channel virtChannel = ChannelManager.subscribeToChildChannelByOSProduct(
-                user, server, ChannelManager.VT_OS_PRODUCT);
-        log.debug("virtChannel search by OS product found: " + virtChannel);
-        // Otherwise, try just searching by package name: (libvirt in this case)
-        if (virtChannel == null) {
-            log.debug("Couldnt find a virt channel by OS/Product mappings, " +
-                    "trying package");
-            try {
-                virtChannel = ChannelManager.subscribeToChildChannelWithPackageName(
-                        user, server, ChannelManager.VIRT_CHANNEL_PACKAGE_NAME);
-
-                // If we couldn't find a virt channel, warn the user but continue:
-                if (virtChannel == null) {
-                    log.warn("no virt channel");
-                    result.addError(new ValidatorError(
-                            "system.entitle.novirtchannel"));
-                }
-            }
-            catch (MultipleChannelsWithPackageException e) {
-                log.warn("Found multiple child channels with package: " +
-                        ChannelManager.VIRT_CHANNEL_PACKAGE_NAME);
-                result.addWarning(new ValidatorWarning(
-                        "system.entitle.multiplechannelswithpackage",
-                        ChannelManager.VIRT_CHANNEL_PACKAGE_NAME));
-            }
-        }
-    }
-
-    /**
-     * Removes all the entitlements related to a server.
-     * @param server server to be unentitled.
-     */
-    public static void removeAllServerEntitlements(Server server) {
-        Set<Entitlement> entitlements = server.getEntitlements();
-        entitlements.stream().forEach(e -> unentitleServer(server, e));
-    }
-
-    /**
-     * Removes an entitlement from the given Server. If the given entitlement is the base entitlement,
-     * removes all entitlements from the Server.
-     * @param server the server
-     * @param ent the entitlement
-     */
-    public static void removeServerEntitlement(Server server, Entitlement ent) {
-
-        if (!server.hasEntitlement(ent)) {
-            if (log.isDebugEnabled()) {
-                log.debug("server doesnt have entitlement: " + ent);
-            }
-            return;
-        }
-
-        if (ent.isBase()) {
-            removeAllServerEntitlements(server);
-        }
-        else {
-            unentitleServer(server, ent);
-        }
-
-        server.asMinionServer().ifPresent(s -> {
-            ServerGroupManager.getInstance().updatePillarAfterGroupUpdateForServers(Arrays.asList(s));
-
-            // Configure prometheus-exporters for cleanup (disable all exporters) if applicable
-            if (EntitlementManager.MONITORING.equals(ent)) {
-                if (FormulaManager.getInstance().isMonitoringCleanupNeeded(s)) {
-                    try {
-                     // Get the current data and set all exporters to disabled
-                        String minionId = s.getMinionId();
-                        Map<String, Object> data = FormulaFactory
-                                .getFormulaValuesByNameAndMinionId(PROMETHEUS_EXPORTERS, minionId)
-                                .orElse(FormulaFactory.getPillarExample(PROMETHEUS_EXPORTERS));
-                        FormulaFactory.saveServerFormulaData(
-                                FormulaFactory.disableMonitoring(data), minionId, PROMETHEUS_EXPORTERS);
-                    }
-                    catch (UnsupportedOperationException | IOException e) {
-                        log.warn("Exception on saving formula data: " + e.getMessage());
-                    }
-                }
-            }
-        });
-    }
-
-    private static void unentitleServer(Server server, Entitlement ent) {
-        Optional<EntitlementServerGroup> entitlementServerGroup = server.findServerGroupByEntitlement(ent);
-
-        if (entitlementServerGroup.isPresent()) {
-            Map<String, Object> in = new HashMap<String, Object>();
-            in.put("sid", server.getId());
-            in.put("entitlement_label", ent.getLabel());
-            in.put("summary", "removed system entitlement ");
-
-            WriteMode m = ModeFactory.getWriteMode("System_queries", "update_server_history_for_entitlement_event");
-            m.executeUpdate(in);
-
-            log.debug("update_server_history_for_entitlement_event mode query executed.");
-
-            ServerFactory.removeServerFromGroup(server, entitlementServerGroup.get());
-        }
-        else {
-            log.error("Cannot remove entitlement: " + ent.getLabel() + " from system: " + server.getId());
-        }
-    }
-
-    /**
-     * Tests whether or not a given server can be entitled with a specific entitlement
-     * @param server The server in question
-     * @param ent The entitlement to test
-     * @return Returns true or false depending on whether or not the server can be
-     * entitled to the passed in entitlement.
-     */
-    public static boolean canEntitleServer(Server server, Entitlement ent) {
-        return findServerGroupToEntitleServer(server, ent).isPresent();
-    }
-
-    private static Optional<ServerGroup> findServerGroupToEntitleServer(Server server, Entitlement ent) {
-        Set<Entitlement> entitlements = server.getEntitlements();
-
-        if (entitlements.isEmpty()) {
-            return findServerGroupToEntitleAnUnentitledServer(server.getId(), ent);
-        }
-        return findServerGroupToEntitleAnEntitledServer(server, ent);
-    }
-
-    private static Optional<ServerGroup> findServerGroupToEntitleAnUnentitledServer(Long serverId, Entitlement ent) {
-        if (ent.isBase()) {
-            Optional<ServerGroup> serverGroup = ServerGroupFactory
-                    .findCompatibleServerGroupForBaseEntitlement(serverId, ent);
-            if (!serverGroup.isPresent()) {
-                log.warn("Could not find a compatible ServerGroup for base entitlement: " + ent.getLabel() +
-                        ", and server: " + serverId);
-            }
-            return serverGroup;
-        }
-        return Optional.empty();
-    }
-
-    private static Optional<ServerGroup> findServerGroupToEntitleAnEntitledServer(Server server, Entitlement ent) {
-        if (ent.isBase()) {
-            log.warn("Cannot set a base entitlement: " + ent.getLabel() + " as an addon entitlement for server: " +
-                    server.getId());
-            return Optional.empty();
-        }
-
-        Optional<Long> baseEntitlementId = server.getBaseEntitlementId();
-
-        if (baseEntitlementId.isEmpty()) {
-            log.warn("Cannot set a entitlement: " + ent.getLabel() + " as an addon entitlement for server: " +
-                    server.getId() + ". The server has no base entitlement yet.");
-            return Optional.empty();
-        }
-
-        Optional<ServerGroup> serverGroup = ServerGroupFactory
-                .findCompatibleServerGroupForAddonEntitlement(server.getId(), ent, baseEntitlementId.get());
-        if (!serverGroup.isPresent()) {
-            log.warn("Cannot set a entitlement: " + ent.getLabel() + " as an addon entitlement for server: " +
-                    server.getId() + ". The server base entitlement is not compatible.");
-        }
-        return serverGroup;
     }
 
     /**
@@ -3859,13 +3464,6 @@ public class SystemManager extends BaseManager {
         MessageQueue.publish(new ChannelsChangedEventMessage(server.getId(), user.getId(),
                 accessTokenIds));
 
-    }
-
-    private static void updateLibvirtEngine(MinionServer minion) {
-        Map<String, Object> pillar = new HashMap<>();
-        pillar.put("virt_entitled", minion.hasVirtualizationEntitlement());
-        saltServiceInstance.callSync(State.apply(Collections.singletonList("virt.engine-events"),
-                                                 Optional.of(pillar)), minion.getMinionId());
     }
 
 }

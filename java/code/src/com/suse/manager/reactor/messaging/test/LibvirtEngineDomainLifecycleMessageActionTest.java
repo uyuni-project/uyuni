@@ -23,6 +23,7 @@ import com.redhat.rhn.domain.server.VirtualInstance;
 import com.redhat.rhn.domain.server.VirtualInstanceFactory;
 import com.redhat.rhn.frontend.dto.VirtualSystemOverview;
 import com.redhat.rhn.manager.system.SystemManager;
+import com.redhat.rhn.manager.system.entitling.SystemEntitler;
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
 import com.redhat.rhn.testing.ServerTestUtils;
 import com.redhat.rhn.testing.TestUtils;
@@ -75,7 +76,7 @@ public class LibvirtEngineDomainLifecycleMessageActionTest extends JMockBaseTest
                     with(any(LocalCall.class)),
                     with(containsString("serverfactorytest")));
         }});
-        SystemManager.mockSaltService(saltServiceMock);
+        SystemEntitler.INSTANCE.setSaltService(saltServiceMock);
         VirtManager.setSaltService(saltServiceMock);
 
         host = ServerTestUtils.createVirtHostWithGuests(user, 1, true);

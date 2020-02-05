@@ -18,7 +18,7 @@ import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManager;
 import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManagerFactory;
 import com.redhat.rhn.manager.content.ContentSyncManager;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
-import com.redhat.rhn.manager.system.SystemManager;
+import com.redhat.rhn.manager.system.entitling.SystemEntitler;
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
 import com.redhat.rhn.testing.ServerTestUtils;
 import com.redhat.rhn.testing.TestUtils;
@@ -77,7 +77,7 @@ public class MatcherJsonIOTest extends JMockBaseTestCaseWithUser {
                     with(any(LocalCall.class)),
                     with(any(String.class)));
         }});
-        SystemManager.mockSaltService(saltServiceMock);
+        SystemEntitler.INSTANCE.setSaltService(saltServiceMock);
     }
 
     public void testSystemsToJson() throws Exception {
