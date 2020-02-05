@@ -195,10 +195,44 @@ public class RegisterMinionEventMessageAction implements MessageAction {
             },
             //Case-2 : Reactivation
             mk -> {
-                reactivateSystem(minionId, machineId, mk);
-                finalizeMinionRegistration(minionId, machineId, creator, saltSSHProxyId, actKeyOverride, isSaltSSH);
+                if (isValidReactivationKey(mk, minionId)) {
+                    reactivateSystem(minionId, machineId, mk);
+                    finalizeMinionRegistration(minionId, machineId, saltSSHProxyId, actKeyOverride, isSaltSSH);
+                }
+                else {
+                    MinionServerFactory.findByMachineId(machineId).ifPresent(rm -> {
+                        updateAlreadyRegisteredInfo(minionId, rm);
+                        applySaltBootStates(minionId, rm, saltbootInitrd);
+                    });
+                }
             }
         );
+    }
+
+    /**
+     * Check if the specified management_key is valid reactivation key or not
+     * @param managmentKeyLabel management_key
+     * @param minionId minion Id
+     * @return
+     */
+    private boolean isValidReactivationKey(String managmentKeyLabel, String minionId) {
+        Optional<ActivationKey> akey = ofNullable(ActivationKeyFactory.lookupByKey(managmentKeyLabel));
+        Boolean isValid =
+            Opt.fold(akey,
+                () -> {
+                    LOG.info("Outdated Management Key defined for " + minionId + ": " + managmentKeyLabel);
+                    return false;
+                },
+                ak -> {
+                    if (Objects.isNull(ak.getServer())) {
+                        LOG.error("Management Key is not a reactivation key: " + managmentKeyLabel);
+                        return false;
+                    }
+                    //considered valid reactivation key only in this case
+                    return true;
+                }
+            );
+        return isValid;
     }
 
     /**
@@ -227,27 +261,19 @@ public class RegisterMinionEventMessageAction implements MessageAction {
      * @param managmentKeyLabel managment_key grain
      */
     private void reactivateSystem(String minionId, String machineId, String managmentKeyLabel) {
-        Optional<ActivationKey> akey = ofNullable(ActivationKeyFactory.lookupByKey(managmentKeyLabel));
-        Opt.consume(akey,
-                () -> LOG.info("Outdated Management Key defined for " + minionId + ": " + managmentKeyLabel),
-                ak -> {
-                    if (Objects.nonNull(ak.getKickstartSession())) {
-                        ak.getKickstartSession().markComplete("Installation completed.");
-                    }
-                    if (Objects.isNull(ak.getServer())) {
-                        LOG.error("Management Key is not a reactivation key: " + managmentKeyLabel);
-                    }
-                    else {
-                        // The machine id may have changed, but we know from the reactivation key
-                        // which system should become this one
-                        ak.getServer().asMinionServer().ifPresent(minion -> {
-                            minion.setMachineId(machineId);
-                            minion.setMinionId(minionId);
-                        });
-                    }
-                }
-        );
-
+        of(ActivationKeyFactory.lookupByKey(managmentKeyLabel)).ifPresent(ak -> {
+            if (Objects.nonNull(ak.getKickstartSession())) {
+                ak.getKickstartSession().markComplete("Installation completed.");
+            }
+            else {
+                // The machine id may have changed, but we know from the reactivation key
+                // which system should become this one
+                ak.getServer().asMinionServer().ifPresent(minion -> {
+                    minion.setMachineId(machineId);
+                    minion.setMinionId(minionId);
+                });
+            }
+        });
     }
 
     /**
