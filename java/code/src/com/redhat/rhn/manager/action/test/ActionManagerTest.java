@@ -79,6 +79,8 @@ import com.redhat.rhn.manager.profile.test.ProfileManagerTest;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.rhnset.RhnSetManager;
 import com.redhat.rhn.manager.system.SystemManager;
+import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
+import com.redhat.rhn.manager.system.entitling.SystemEntitler;
 import com.redhat.rhn.manager.system.test.SystemManagerTest;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
@@ -123,6 +125,8 @@ import java.util.stream.Collectors;
 public class ActionManagerTest extends JMockBaseTestCaseWithUser {
     private static Logger log = Logger.getLogger(ActionManagerTest.class);
     private static TaskomaticApi taskomaticApi;
+    private SystemEntitlementManager systemEntitlementManager = SystemEntitlementManager.INSTANCE;
+
     private final Mockery MOCK_CONTEXT = new JUnit3Mockery() {{
         setThreadingPolicy(new Synchroniser());
         setImposteriser(ClassImposteriser.INSTANCE);
@@ -947,7 +951,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
         ImageInfoFactory.setTaskomaticApi(taskomaticMock);
 
         MinionServer server = MinionServerFactoryTest.createTestMinionServer(user);
-        SystemManager.entitleServer(server, EntitlementManager.CONTAINER_BUILD_HOST);
+        systemEntitlementManager.addEntitlementToServer(server, EntitlementManager.CONTAINER_BUILD_HOST);
         ImageStore store = createImageStore("registry.reg", user);
         ActivationKey ak = createActivationKey(user);
         ImageProfile prof = createImageProfile("myprofile", store, ak, user);

@@ -45,6 +45,8 @@ import com.redhat.rhn.domain.token.ActivationKey;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.system.SystemManager;
+import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
+import com.redhat.rhn.manager.system.entitling.SystemEntitler;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
@@ -76,6 +78,7 @@ public class ImageInfoFactoryTest extends BaseTestCaseWithUser {
     }};
 
     private static TaskomaticApi taskomaticApi;
+    private SystemEntitlementManager systemEntitlementManager = SystemEntitlementManager.INSTANCE;
 
     @Override
     public void setUp() throws Exception {
@@ -290,7 +293,7 @@ public class ImageInfoFactoryTest extends BaseTestCaseWithUser {
 
         assertEquals(0, ImageInfoFactory.listImageInfos(user.getOrg()).size());
 
-        SystemManager.entitleServer(buildHost, EntitlementManager.CONTAINER_BUILD_HOST);
+        systemEntitlementManager.addEntitlementToServer(buildHost, EntitlementManager.CONTAINER_BUILD_HOST);
 
         // Schedule
         ImageInfoFactory.scheduleBuild(buildHost.getId(), "v1.0", profile, new Date(),
@@ -394,7 +397,7 @@ public class ImageInfoFactoryTest extends BaseTestCaseWithUser {
 
         assertNull(info.getInspectAction());
 
-        SystemManager.entitleServer(buildHost, EntitlementManager.CONTAINER_BUILD_HOST);
+        systemEntitlementManager.addEntitlementToServer(buildHost, EntitlementManager.CONTAINER_BUILD_HOST);
 
         // Schedule
         assertNotNull(ImageInfoFactory.scheduleInspect(info, new Date(), user));
@@ -428,7 +431,7 @@ public class ImageInfoFactoryTest extends BaseTestCaseWithUser {
         assertFalse(
                 ImageInfoFactory.lookupByName("myimage", "1.0", store.getId()).isPresent());
 
-        SystemManager.entitleServer(buildHost, EntitlementManager.CONTAINER_BUILD_HOST);
+        systemEntitlementManager.addEntitlementToServer(buildHost, EntitlementManager.CONTAINER_BUILD_HOST);
 
         // Schedule
         assertNotNull(ImageInfoFactory.scheduleImport(buildHost.getId(), "myimage", "1.0",

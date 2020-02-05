@@ -25,6 +25,7 @@ import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManagerFactory
 import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManagerNodeInfo;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.system.VirtualInstanceManager;
+import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
 
 import org.apache.commons.lang3.RandomStringUtils;
 import com.suse.manager.gatherer.HostJson;
@@ -48,6 +49,7 @@ public class VirtualHostManagerProcessor {
     private Set<Server> serversToDelete;
     private Set<VirtualHostManagerNodeInfo> nodesToDelete;
     private Logger log;
+    private SystemEntitlementManager systemEntitlementManager = SystemEntitlementManager.INSTANCE;
 
     /**
      * Instantiates a new virtual host manager processor, will update a virtual
@@ -209,7 +211,7 @@ public class VirtualHostManagerProcessor {
         updateServerNetwork(server, hostId);
 
         if (server.getBaseEntitlement() == null) {
-            server.setBaseEntitlement(EntitlementManager.FOREIGN);
+            systemEntitlementManager.setBaseEntitlement(server, EntitlementManager.FOREIGN);
         }
         return server;
     }

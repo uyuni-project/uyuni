@@ -14,6 +14,32 @@
  */
 package com.redhat.rhn.domain.formula;
 
+import com.redhat.rhn.common.validator.ValidatorError;
+import com.redhat.rhn.domain.org.Org;
+import com.redhat.rhn.domain.server.MinionServer;
+import com.redhat.rhn.domain.server.MinionServerFactory;
+import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.domain.server.ServerFactory;
+import com.redhat.rhn.domain.server.ServerGroup;
+import com.redhat.rhn.domain.server.ServerGroupFactory;
+import com.redhat.rhn.manager.entitlement.EntitlementManager;
+import com.redhat.rhn.manager.system.SystemManager;
+import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonPrimitive;
+import com.google.gson.JsonSerializationContext;
+import com.google.gson.JsonSerializer;
+import com.suse.manager.webui.controllers.ECMAScriptDateAdapter;
+import com.suse.utils.Opt;
+
+import org.apache.log4j.Logger;
+import org.yaml.snakeyaml.Yaml;
+import org.yaml.snakeyaml.constructor.SafeConstructor;
+import org.yaml.snakeyaml.error.YAMLException;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -35,32 +61,6 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
-
-import com.redhat.rhn.common.validator.ValidatorError;
-import com.redhat.rhn.domain.server.MinionServerFactory;
-import com.redhat.rhn.domain.server.Server;
-import com.suse.utils.Opt;
-import org.apache.log4j.Logger;
-import org.yaml.snakeyaml.Yaml;
-import org.yaml.snakeyaml.constructor.SafeConstructor;
-import org.yaml.snakeyaml.error.YAMLException;
-
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonPrimitive;
-import com.google.gson.JsonSerializationContext;
-import com.google.gson.JsonSerializer;
-
-import com.redhat.rhn.domain.org.Org;
-import com.redhat.rhn.domain.server.MinionServer;
-import com.redhat.rhn.domain.server.ServerFactory;
-import com.redhat.rhn.domain.server.ServerGroup;
-import com.redhat.rhn.domain.server.ServerGroupFactory;
-import com.redhat.rhn.manager.entitlement.EntitlementManager;
-import com.redhat.rhn.manager.system.SystemManager;
-
-import com.suse.manager.webui.controllers.ECMAScriptDateAdapter;
 
 /**
  * Factory class for working with formulas.
@@ -104,6 +104,8 @@ public class FormulaFactory {
             .serializeNulls()
             .create();
     private static final Yaml YAML = new Yaml(new SafeConstructor());
+
+    private static SystemEntitlementManager systemEntitlementManager = SystemEntitlementManager.INSTANCE;
 
     private FormulaFactory() { }
 
@@ -259,7 +261,7 @@ public class FormulaFactory {
             minions.forEach(minion -> {
                 if (!hasMonitoringDataEnabled(formData)) {
                     if (!serverHasMonitoringFormulaEnabled(minion)) {
-                        SystemManager.removeServerEntitlement(minion, EntitlementManager.MONITORING);
+                        systemEntitlementManager.removeServerEntitlement(minion, EntitlementManager.MONITORING);
                     }
                 }
                 else {
@@ -275,8 +277,8 @@ public class FormulaFactory {
      */
     public static void grantMonitoringEntitlement(Server server) {
         boolean hasEntitlement = SystemManager.hasEntitlement(server.getId(), EntitlementManager.MONITORING);
-        if (!hasEntitlement && SystemManager.canEntitleServer(server, EntitlementManager.MONITORING)) {
-            SystemManager.entitleServer(server, EntitlementManager.MONITORING);
+        if (!hasEntitlement && systemEntitlementManager.canEntitleServer(server, EntitlementManager.MONITORING)) {
+            systemEntitlementManager.addEntitlementToServer(server, EntitlementManager.MONITORING);
             return;
         }
         if (LOG.isDebugEnabled() && hasEntitlement) {
@@ -305,12 +307,12 @@ public class FormulaFactory {
                                 " Not removing monitoring entitlement.", minionId));
                     }
                     else {
-                        SystemManager.removeServerEntitlement(s, EntitlementManager.MONITORING);
+                        systemEntitlementManager.removeServerEntitlement(s, EntitlementManager.MONITORING);
                     }
                 }
                 else if (!SystemManager.hasEntitlement(s.getId(), EntitlementManager.MONITORING) &&
-                        SystemManager.canEntitleServer(s, EntitlementManager.MONITORING)) {
-                    SystemManager.entitleServer(s, EntitlementManager.MONITORING);
+                        systemEntitlementManager.canEntitleServer(s, EntitlementManager.MONITORING)) {
+                    systemEntitlementManager.addEntitlementToServer(s, EntitlementManager.MONITORING);
                 }
             });
         }
@@ -559,7 +561,7 @@ public class FormulaFactory {
             minions.forEach(minion -> {
                 // remove entitlement only if formula not enabled at server level
                 if (!serverHasMonitoringFormulaEnabled(minion)) {
-                    SystemManager.removeServerEntitlement(minion, EntitlementManager.MONITORING);
+                    systemEntitlementManager.removeServerEntitlement(minion, EntitlementManager.MONITORING);
                 }
             });
         }
@@ -642,7 +644,7 @@ public class FormulaFactory {
         if (deletedFormulas.contains(PROMETHEUS_EXPORTERS)) {
             MinionServerFactory.findByMinionId(minionId).ifPresent(s -> {
                 if (!isMemberOfGroupHavingMonitoring(s)) {
-                    SystemManager.removeServerEntitlement(s, EntitlementManager.MONITORING);
+                    systemEntitlementManager.removeServerEntitlement(s, EntitlementManager.MONITORING);
                 }
             });
         }

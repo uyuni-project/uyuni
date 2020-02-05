@@ -51,11 +51,17 @@ import com.redhat.rhn.manager.action.ActionChainManager;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.system.SystemManager;
+import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
+import com.redhat.rhn.manager.system.entitling.SystemEntitler;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 import com.redhat.rhn.testing.ImageTestUtils;
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
 import com.redhat.rhn.testing.TestUtils;
+
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.reflect.TypeToken;
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
 import com.suse.manager.reactor.messaging.JobReturnEventMessage;
 import com.suse.manager.reactor.messaging.JobReturnEventMessageAction;
@@ -77,9 +83,6 @@ import com.suse.salt.netapi.results.StateApplyResult;
 import com.suse.salt.netapi.utils.Xor;
 import com.suse.utils.Json;
 
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.reflect.TypeToken;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.jmock.Expectations;
@@ -119,6 +122,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
 
     private TaskomaticApi taskomaticApi;
     private SaltService saltServiceMock;
+    private SystemEntitlementManager systemEntitlementManager = SystemEntitlementManager.INSTANCE;
 
     @Override
     public void setUp() throws Exception {
@@ -127,7 +131,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         Config.get().setString("server.secret_key",
                 DigestUtils.sha256Hex(TestUtils.randomString()));
         saltServiceMock = context().mock(SaltService.class);
-        SystemManager.mockSaltService(saltServiceMock);
+        SystemEntitler.INSTANCE.setSaltService(saltServiceMock);
     }
 
     /**
@@ -1197,7 +1201,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         ImageInfoFactory.setTaskomaticApi(getTaskomaticApi());
         MinionServer server = MinionServerFactoryTest.createTestMinionServer(user);
         server.setMinionId("minionsles12-suma3pg.vagrant.local");
-        SystemManager.entitleServer(server, EntitlementManager.CONTAINER_BUILD_HOST);
+        systemEntitlementManager.addEntitlementToServer(server, EntitlementManager.CONTAINER_BUILD_HOST);
 
         String imageName = "matei-apache-python" + TestUtils.randomString(5);
         String imageVersion = "latest";
@@ -1276,7 +1280,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         ImageInfoFactory.setTaskomaticApi(getTaskomaticApi());
         MinionServer server = MinionServerFactoryTest.createTestMinionServer(user);
         server.setMinionId("minionsles12-suma3pg.vagrant.local");
-        SystemManager.entitleServer(server, EntitlementManager.CONTAINER_BUILD_HOST);
+        systemEntitlementManager.addEntitlementToServer(server, EntitlementManager.CONTAINER_BUILD_HOST);
 
         String imageName = "meaksh-apache-python" + TestUtils.randomString(5);
         String imageVersion1 = "latest";
@@ -1345,7 +1349,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         ImageInfoFactory.setTaskomaticApi(getTaskomaticApi());
         MinionServer server = MinionServerFactoryTest.createTestMinionServer(user);
         server.setMinionId("minionsles12-suma3pg.vagrant.local");
-        SystemManager.entitleServer(server, EntitlementManager.CONTAINER_BUILD_HOST);
+        systemEntitlementManager.addEntitlementToServer(server, EntitlementManager.CONTAINER_BUILD_HOST);
 
         String imageName = "mbologna-apache-python" + TestUtils.randomString(5);
         String imageVersion = "latest";
@@ -1471,7 +1475,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         }});
         SaltUtils.INSTANCE.setSaltService(saltServiceMock);
 
-        SystemManager.entitleServer(server, EntitlementManager.OSIMAGE_BUILD_HOST);
+        systemEntitlementManager.addEntitlementToServer(server, EntitlementManager.OSIMAGE_BUILD_HOST);
 
         ActivationKey key = ImageTestUtils.createActivationKey(user);
         ImageProfile profile = ImageTestUtils.createKiwiImageProfile("my-kiwi-image", key, user);
@@ -1502,7 +1506,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         }});
         SaltUtils.INSTANCE.setSaltService(saltServiceMock);
 
-        SystemManager.entitleServer(server, EntitlementManager.OSIMAGE_BUILD_HOST);
+        systemEntitlementManager.addEntitlementToServer(server, EntitlementManager.OSIMAGE_BUILD_HOST);
 
         new File("/srv/susemanager/pillar_data/images").mkdirs();
 

@@ -29,6 +29,7 @@ import com.redhat.rhn.frontend.dto.ScheduledAction;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.manager.system.VirtualizationActionCommand;
+import com.redhat.rhn.manager.system.entitling.SystemEntitler;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.testing.ServerTestUtils;
 
@@ -86,7 +87,7 @@ public class VirtualGuestsControllerTest extends BaseControllerTestCase {
                     with(containsString("serverfactorytest")));
         }});
         VirtManager.setSaltService(saltServiceMock);
-        SystemManager.mockSaltService(saltServiceMock);
+        SystemEntitler.INSTANCE.setSaltService(saltServiceMock);
 
         host = ServerTestUtils.createVirtHostWithGuests(user, 2, true);
         host.asMinionServer().get().setMinionId("testminion.local");

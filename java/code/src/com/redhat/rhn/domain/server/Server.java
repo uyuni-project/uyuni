@@ -35,6 +35,7 @@ import com.redhat.rhn.manager.configuration.ConfigurationManager;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerXMLRPCHelper;
 import com.redhat.rhn.manager.system.SystemManager;
+
 import com.suse.utils.Opt;
 import java.net.IDN;
 import java.sql.Timestamp;
@@ -1401,26 +1402,6 @@ public class Server extends BaseDomainHelper implements Identifiable {
 
        return serverGroupTypes.stream().filter(ServerGroupType::isBase).findFirst()
                 .map(ServerGroupType::getId);
-    }
-
-    /**
-     * Base entitlement for the Server.
-     * @param baseIn to update to
-     */
-    public void setBaseEntitlement(Entitlement baseIn) {
-        if (!baseIn.isBase()) {
-            throw new IllegalArgumentException("baseIn is not a base entitlement");
-        }
-
-        Entitlement baseEntitlement = this.getBaseEntitlement();
-        if (baseEntitlement != null && baseIn.equals(baseEntitlement)) {
-            // noop if there is no change
-            return;
-        }
-        if (baseEntitlement != null) {
-            SystemManager.removeServerEntitlement(this, baseEntitlement);
-        }
-        SystemManager.entitleServer(this, baseIn);
     }
 
     /**

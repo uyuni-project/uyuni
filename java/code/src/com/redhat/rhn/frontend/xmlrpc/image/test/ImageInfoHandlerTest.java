@@ -53,6 +53,8 @@ import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.errata.cache.ErrataCacheManager;
 import com.redhat.rhn.manager.system.SystemManager;
+import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
+import com.redhat.rhn.manager.system.entitling.SystemEntitler;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 import com.redhat.rhn.testing.ImageTestUtils;
@@ -84,6 +86,7 @@ public class ImageInfoHandlerTest extends BaseHandlerTestCase {
     }};
 
     private static TaskomaticApi taskomaticApi;
+    private static SystemEntitlementManager systemEntitlementManager = SystemEntitlementManager.INSTANCE;
 
     @Override
     public void setUp() throws Exception {
@@ -133,7 +136,7 @@ public class ImageInfoHandlerTest extends BaseHandlerTestCase {
         ImageInfoFactory.setTaskomaticApi(getTaskomaticApi());
 
         MinionServer server = MinionServerFactoryTest.createTestMinionServer(admin);
-        SystemManager.entitleServer(server, EntitlementManager.CONTAINER_BUILD_HOST);
+        systemEntitlementManager.addEntitlementToServer(server, EntitlementManager.CONTAINER_BUILD_HOST);
         ImageStore store = createImageStore("registry.reg", admin);
         ActivationKey ak = createActivationKey(admin);
         ImageProfile prof = createImageProfile("myprofile", store, ak, admin);
@@ -153,7 +156,7 @@ public class ImageInfoHandlerTest extends BaseHandlerTestCase {
     public final void testScheduleOSImageBuild() throws Exception {
         ImageInfoFactory.setTaskomaticApi(getTaskomaticApi());
         SaltService saltServiceMock = CONTEXT.mock(SaltService.class);
-        SystemManager.mockSaltService(saltServiceMock);
+        SystemEntitler.INSTANCE.setSaltService(saltServiceMock);
         MgrUtilRunner.ExecResult mockResult = new MgrUtilRunner.ExecResult();
         CONTEXT.checking(new Expectations() {{
                 allowing(saltServiceMock).generateSSHKey(with(equal(SaltSSHService.SSH_KEY_PATH)));
@@ -164,7 +167,7 @@ public class ImageInfoHandlerTest extends BaseHandlerTestCase {
         MinionServer server = MinionServerFactoryTest.createTestMinionServer(admin);
         server.setServerArch(ServerFactory.lookupServerArchByLabel("x86_64-redhat-linux"));
         ServerFactory.save(server);
-        SystemManager.entitleServer(server, EntitlementManager.OSIMAGE_BUILD_HOST);
+        systemEntitlementManager.addEntitlementToServer(server, EntitlementManager.OSIMAGE_BUILD_HOST);
         ActivationKey ak = createActivationKey(admin);
         ImageProfile prof = createKiwiImageProfile("myprofile", ak, admin);
 

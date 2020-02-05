@@ -33,6 +33,7 @@ import com.redhat.rhn.domain.server.VirtualInstanceState;
 import com.redhat.rhn.domain.server.VirtualInstanceType;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.system.VirtualInstanceManager;
+import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
 
 import com.suse.manager.reactor.utils.ValueMap;
 import com.suse.manager.utils.SaltUtils;
@@ -457,7 +458,7 @@ public class HardwareMapper {
 
                 ServerFactory.save(zhost);
 
-                zhost.setBaseEntitlement(EntitlementManager
+                SystemEntitlementManager.INSTANCE.setBaseEntitlement(zhost, EntitlementManager
                         .getByName(EntitlementManager.FOREIGN_ENTITLED));
                 LOG.debug("New host created: " + identifier);
             }

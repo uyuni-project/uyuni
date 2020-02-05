@@ -30,6 +30,7 @@ import com.redhat.rhn.frontend.struts.StrutsDelegate;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.system.SystemManager;
+import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
 
 import org.apache.log4j.Logger;
 import org.apache.struts.action.ActionForm;
@@ -56,6 +57,8 @@ public class SystemEntitlementsSubmitAction extends
         "systementitlements.jsp.add_entitlement";
     public static final String KEY_REMOVE_ENTITLED =
         "systementitlements.jsp.remove_entitlement";
+
+    private static SystemEntitlementManager systemEntitlementManager = SystemEntitlementManager.INSTANCE;
 
     /**
      * {@inheritDoc}
@@ -176,10 +179,9 @@ public class SystemEntitlementsSubmitAction extends
                 //if the system already has the entitlement, do nothing
                 //  if so, neither success nor failure count will be updated.
                 if (!server.hasEntitlement(ent)) {
-                    if (SystemManager.canEntitleServer(server, ent)) {
+                    if (systemEntitlementManager.canEntitleServer(server, ent)) {
                             log.debug("we can entitle.  Lets entitle to : " + ent);
-                            ValidatorResult vr =
-                                SystemManager.entitleServer(server, ent);
+                            ValidatorResult vr = systemEntitlementManager.addEntitlementToServer(server, ent);
                             log.debug("entitleServer.VE: " + vr.getMessage());
                             if (vr.getErrors().size() > 0) {
                                 failureCount++;
@@ -199,7 +201,7 @@ public class SystemEntitlementsSubmitAction extends
             else {
                 if (server.hasEntitlement(ent)) {
                     log.debug("removing entitlement");
-                    SystemManager.removeServerEntitlement(server, ent);
+                    systemEntitlementManager.removeServerEntitlement(server, ent);
                     successCount++;
                 }
             } //else

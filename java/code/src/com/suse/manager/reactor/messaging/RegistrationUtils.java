@@ -43,6 +43,8 @@ import com.redhat.rhn.domain.token.ActivationKeyFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.system.SystemManager;
+import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
+import com.redhat.rhn.manager.system.entitling.SystemEntitler;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
 import com.suse.manager.reactor.utils.RhelUtils;
@@ -82,6 +84,7 @@ public class RegistrationUtils {
 
     private static final Logger LOG = Logger.getLogger(RegistrationUtils.class);
 
+    private static SystemEntitlementManager systemEntitlementManager = SystemEntitlementManager.INSTANCE;
 
     /**
      * Prevent instantiation.
@@ -198,8 +201,8 @@ public class RegistrationUtils {
             Entitlement e = sg.getAssociatedEntitlement();
             if (validEntits.contains(e) &&
                     e.isAllowedOnServer(server, grains) &&
-                    SystemManager.canEntitleServer(server, e)) {
-                ValidatorResult vr = SystemManager.entitleServer(server, e);
+                    SystemEntitler.INSTANCE.canEntitleServer(server, e)) {
+                ValidatorResult vr = systemEntitlementManager.addEntitlementToServer(server, e);
                 if (vr.getWarnings().size() > 0) {
                     LOG.warn(vr.getWarnings().toString());
                 }

@@ -50,6 +50,7 @@ import com.redhat.rhn.frontend.dto.EssentialChannelDto;
 import com.redhat.rhn.manager.distupgrade.DistUpgradeManager;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.system.SystemManager;
+import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
 
 import com.suse.manager.reactor.utils.ValueMap;
 import com.suse.manager.webui.services.impl.MinionPendingRegistrationService;
@@ -358,7 +359,7 @@ public class RegisterMinionEventMessageAction implements MessageAction {
             giveCapabilities(minion);
 
             // Assign the Salt base entitlement by default
-            minion.setBaseEntitlement(EntitlementManager.SALT);
+            SystemEntitlementManager.INSTANCE.setBaseEntitlement(minion, EntitlementManager.SALT);
 
             // apply activation key properties that need to be set after saving the minion
             activationKey.ifPresent(ak -> RegistrationUtils.applyActivationKeyProperties(minion, ak, grains));
