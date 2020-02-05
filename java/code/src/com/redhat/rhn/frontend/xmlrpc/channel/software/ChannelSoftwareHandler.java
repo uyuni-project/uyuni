@@ -86,7 +86,8 @@ import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.task.TaskConstants;
 import com.redhat.rhn.taskomatic.task.errata.ErrataCacheWorker;
 
-import com.suse.manager.webui.services.SaltStateGeneratorService;
+import com.suse.manager.webui.services.pillar.MinionPillarManager;
+
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.StopWatch;
@@ -737,8 +738,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
 
         ucc.update(channelId.longValue());
         ServerFactory.listMinionsByChannel(channelId).stream().forEach(ms -> {
-            SaltStateGeneratorService.INSTANCE.generatePillar(ms, false,
-                    Collections.emptySet());
+            MinionPillarManager.INSTANCE.generatePillar(ms, false, Collections.emptySet());
         });
         return 1;
     }

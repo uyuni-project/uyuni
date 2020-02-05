@@ -46,7 +46,7 @@ import com.redhat.rhn.manager.download.DownloadManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.manager.user.UserManager;
 
-import com.suse.manager.webui.services.SaltStateGeneratorService;
+import com.suse.manager.webui.services.pillar.MinionPillarManager;
 
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -113,6 +113,7 @@ public class EditChannelAction extends RhnAction implements Listable<OrgTrust> {
     public static final boolean DEFAULT_GPG_CHECK = true;
 
     /** {@inheritDoc} */
+    @Override
     public ActionForward execute(ActionMapping mapping,
                                  ActionForm formIn,
                                  HttpServletRequest request,
@@ -416,7 +417,7 @@ public class EditChannelAction extends RhnAction implements Listable<OrgTrust> {
                     ("all".equals(sharing)), loggedInUser.getOrg());
             updated = (Channel) ChannelFactory.reload(updated);
             ServerFactory.listMinionsByChannel(updated.getId()).stream().forEach(ms -> {
-                SaltStateGeneratorService.INSTANCE.generatePillar(ms, false,
+                MinionPillarManager.INSTANCE.generatePillar(ms, false,
                         Collections.emptySet());
             });
 
@@ -833,6 +834,7 @@ public class EditChannelAction extends RhnAction implements Listable<OrgTrust> {
     }
 
     /** {@inheritDoc} */
+    @Override
     public List<OrgTrust> getResult(RequestContext ctx) {
         Org org = ctx.getCurrentUser().getOrg();
         Set<Org> trustedorgs = org.getTrustedOrgs();

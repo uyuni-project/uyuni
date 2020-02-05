@@ -29,7 +29,10 @@ import com.redhat.rhn.domain.server.ServerGroup;
 import com.redhat.rhn.domain.server.ServerGroupFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.user.UserFactory;
+
 import com.suse.manager.webui.services.SaltStateGeneratorService;
+import com.suse.manager.webui.services.pillar.MinionGroupMembershipPillarGenerator;
+import com.suse.manager.webui.services.pillar.MinionPillarFileManager;
 import com.suse.utils.Opt;
 
 import org.apache.log4j.Logger;
@@ -53,6 +56,9 @@ public class ServerGroupManager {
 
     /** Logger */
     private static final Logger LOG = Logger.getLogger(ServerGroupManager.class);
+
+    private MinionPillarFileManager minionGroupMembershipPillarFileManager =
+            new MinionPillarFileManager(new MinionGroupMembershipPillarGenerator());
 
     /**
      * Singleton Instance to get manager object
@@ -352,7 +358,7 @@ public class ServerGroupManager {
      */
     public void updatePillarAfterGroupUpdateForServers(Collection<Server> servers) {
         servers.stream().map(server -> server.asMinionServer()).flatMap(Opt::stream)
-                .forEach(SaltStateGeneratorService.INSTANCE::generateGroupMemebershipsPillarData);
+                .forEach(this.minionGroupMembershipPillarFileManager::generatePillarFile);
     }
 
     /**

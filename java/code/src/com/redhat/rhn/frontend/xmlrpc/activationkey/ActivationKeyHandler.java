@@ -53,7 +53,6 @@ import com.redhat.rhn.manager.token.ActivationKeyCloneCommand;
 import com.redhat.rhn.manager.token.ActivationKeyManager;
 
 import com.suse.manager.utils.MachinePasswordUtils;
-import com.suse.manager.webui.services.SaltStateGeneratorService;
 import com.suse.manager.webui.utils.DownloadTokenBuilder;
 
 import org.apache.commons.lang3.StringUtils;
@@ -275,8 +274,7 @@ public class ActivationKeyHandler extends BaseHandler {
                 .collect(Collectors.toSet()));
 
         try {
-            String url = "https://" + SaltStateGeneratorService.getChannelHost(minion) +
-                    "/rhn/manager/download/";
+            String url = "https://" + minion.getChannelHost() + "/rhn/manager/download/";
             String token = tokenBuilder.getToken();
             return key.getChannels().stream().map(
                 c -> new ChannelInfo(c.getLabel(), c.getName(), url + c.getLabel(), token)
