@@ -1,4 +1,4 @@
-# Copyright (c) 2015-2018 SUSE LLC
+# Copyright (c) 2015-2020 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 Feature: SMBDA database helper tool
@@ -12,34 +12,34 @@ Feature: SMBDA database helper tool
   Scenario: Check embedded database running
     Given a postgresql database is running
     When I start database with the command "smdba db-start"
-    And when I issue command "smdba db-status"
-    Then I want to see if "online" is in the output
+    And I issue command "smdba db-status"
+    Then "online" should be in the output
 
   Scenario: Check embedded database can be stopped, started and restarted
     Given a postgresql database is running
     When I start database with the command "smdba db-start"
-    And when I see that the database is "online" or "failed" as it might already running
-    And when I stop the database with the command "smdba db-stop"
-    And when I check the database status with the command "smdba db-status"
-    Then I want to see if the database is "offline"
+    And I see that the database is "online" or "failed" as it might already running
+    And I stop the database with the command "smdba db-stop"
+    And I check the database status with the command "smdba db-status"
+    Then the database should be "offline"
     When I start database with the command "smdba db-start"
-    And when I issue command "smdba db-status"
-    Then I want to see if the database is "online"
+    And I issue command "smdba db-status"
+    Then the database should be "online"
 
   Scenario: Check system check of the database sets optimal configuration
     Given a postgresql database is running
     When I stop the database with the command "smdba db-stop"
-    And when I configure "/var/lib/pgsql/data/postgresql.conf" parameter "wal_level" to "logical"
+    And I configure "/var/lib/pgsql/data/postgresql.conf" parameter "wal_level" to "logical"
     Then I start database with the command "smdba db-start"
-    And when I issue command "smdba db-status"
-    Then I want to see if the database is "online"
-    And when I check internally configuration for "wal_level" option
-    Then I expect to see the configuration is set to "logical"
-    And I issue command "smdba system-check"
-    And when I stop the database with the command "smdba db-stop"
+    When I issue command "smdba db-status"
+    Then the database should be "online"
+    When I check internally configuration for "wal_level" option
+    Then the configuration should be set to "logical"
+    When I issue command "smdba system-check"
+    And I stop the database with the command "smdba db-stop"
     And I start database with the command "smdba db-start"
-    And when I check internally configuration for "wal_level" option
-    Then I expect to see the configuration is not set to "logical"
+    And I check internally configuration for "wal_level" option
+    Then the configuration should not be set to "logical"
 
   Scenario: Check database utilities
     Given a postgresql database is running
@@ -57,11 +57,11 @@ Feature: SMBDA database helper tool
     Given a postgresql database is running
     And there is no such "/smdba-backup-test" directory
     When I create backup directory "/smdba-backup-test" with UID "root" and GID "root"
-    And when I issue command "smdba backup-hot --enable=on --backup-dir=/smdba-backup-test"
+    And I issue command "smdba backup-hot --enable=on --backup-dir=/smdba-backup-test"
     Then I should see error message that asks "/smdba-backup-test" belong to the same UID/GID as "/var/lib/pgsql/data" directory
     And I remove backup directory "/smdba-backup-test"
     When I create backup directory "/smdba-backup-test" with UID "postgres" and GID "postgres"
-    And when I issue command "smdba backup-hot --enable=on --backup-dir=/smdba-backup-test"
+    And I issue command "smdba backup-hot --enable=on --backup-dir=/smdba-backup-test"
     Then I should see error message that asks "/smdba-backup-test" has same permissions as "/var/lib/pgsql/data" directory
     And I remove backup directory "/smdba-backup-test"
 
@@ -69,8 +69,8 @@ Feature: SMBDA database helper tool
     Given a postgresql database is running
     And there is no such "/smdba-backup-test" directory
     When I create backup directory "/smdba-backup-test" with UID "postgres" and GID "postgres"
-    And when I change Access Control List on "/smdba-backup-test" directory to "0700"
-    And when I issue command "smdba backup-hot --enable=on --backup-dir=/smdba-backup-test"
+    And I change Access Control List on "/smdba-backup-test" directory to "0700"
+    And I issue command "smdba backup-hot --enable=on --backup-dir=/smdba-backup-test"
     Then base backup is taken
     And in "/smdba-backup-test" directory there is "base.tar.gz" file and at least one backup checkpoint file
     And parameter "archive_command" in the configuration file "/var/lib/pgsql/data/postgresql.conf" is "/usr/bin/smdba-pgarchive"
@@ -80,18 +80,20 @@ Feature: SMBDA database helper tool
     Given a postgresql database is running
     And database "susemanager" has no table "dummy"
     When I set a checkpoint
-    And when I issue command "smdba backup-hot"
-    And when in the database I create dummy table "dummy" with column "test" and value "bogus data"
+    And I issue command "smdba backup-hot"
+    And in the database I create dummy table "dummy" with column "test" and value "bogus data"
     And I destroy "/var/lib/pgsql/data/pg_xlog" directory on server
     And I destroy "/var/lib/pgsql/data/pg_wal" directory on server
-    And when I restore database from the backup
-    And when I issue command "smdba db-status"
+    And I restore database from the backup
+    And I issue command "smdba db-status"
+
+  Scenario: Cleanup: remove backup directory
     Given a postgresql database is running
     And database "susemanager" has no table "dummy"
     When I disable backup in the directory "/smdba-backup-test"
     And I remove backup directory "/smdba-backup-test"
 
-  Scenario: Start spacewalk services
+  Scenario: Cleanup: start spacewalk services
     When I stop the database with the command "smdba db-stop"
     And I start database with the command "smdba db-start"
-    Then I restart the spacewalk service
+    And I restart the spacewalk service
