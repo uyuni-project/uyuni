@@ -24,6 +24,9 @@ import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.frontend.struts.RhnHelper;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.system.SystemManager;
+import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
+import com.redhat.rhn.manager.system.entitling.SystemEntitler;
+import com.redhat.rhn.manager.system.entitling.SystemUnentitler;
 import com.redhat.rhn.testing.ChannelTestUtils;
 import com.redhat.rhn.testing.RhnPostMockStrutsTestCase;
 import com.redhat.rhn.testing.ServerTestUtils;
@@ -42,6 +45,7 @@ import java.util.Set;
 public class SystemDetailsEditActionTest extends RhnPostMockStrutsTestCase {
 
     protected Server s;
+    private SystemEntitlementManager systemEntitlementManager = SystemEntitlementManager.INSTANCE;
 
     /**
      * {@inheritDoc}
@@ -131,7 +135,7 @@ public class SystemDetailsEditActionTest extends RhnPostMockStrutsTestCase {
     }
 
     public void testBaseEntitlementListForUnetitledSystem() throws Exception {
-        SystemManager.removeAllServerEntitlements(s);
+        systemEntitlementManager.removeAllServerEntitlements(s);
         TestUtils.saveAndFlush(s);
         actionPerform();
         verifyForward(RhnHelper.DEFAULT_FORWARD);
@@ -174,7 +178,7 @@ public class SystemDetailsEditActionTest extends RhnPostMockStrutsTestCase {
         UserTestUtils.addManagement(user.getOrg());
         Long id = s.getId();
         String name = s.getName();
-        SystemManager.removeAllServerEntitlements(s);
+        systemEntitlementManager.removeAllServerEntitlements(s);
         s = ServerFactory.lookupById(id);
         assertTrue(s.getBaseEntitlement() == null);
 
@@ -242,7 +246,7 @@ public class SystemDetailsEditActionTest extends RhnPostMockStrutsTestCase {
 
         while (i.hasNext()) {
             Entitlement e = (Entitlement) i.next();
-            SystemManager.entitleServer(s, e);
+            systemEntitlementManager.addEntitlementToServer(s, e);
             TestUtils.flushAndEvict(s);
             s = ServerFactory.lookupById(s.getId());
             request.addParameter(e.getLabel(), Boolean.FALSE.toString());

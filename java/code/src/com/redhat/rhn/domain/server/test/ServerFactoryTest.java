@@ -73,6 +73,8 @@ import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.rhnset.RhnSetManager;
 import com.redhat.rhn.manager.system.ServerGroupManager;
 import com.redhat.rhn.manager.system.SystemManager;
+import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
+import com.redhat.rhn.manager.system.entitling.SystemEntitler;
 import com.redhat.rhn.manager.user.UserManager;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.ChannelTestUtils;
@@ -109,6 +111,8 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
     public static final int TYPE_SERVER_MINION = 4;
     public static final String RUNNING_KERNEL = "2.6.9-55.EL";
     public static final String HOSTNAME = "foo.bar.com";
+
+    private static SystemEntitlementManager systemEntitlementManager = SystemEntitlementManager.INSTANCE;
 
     @Override
     public void setUp() throws Exception {
@@ -527,7 +531,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
      */
     public void aTestServerHasSpecificEntitlement() throws Exception {
         Server s = createTestServer(user);
-        SystemManager.entitleServer(s, EntitlementManager.VIRTUALIZATION);
+        systemEntitlementManager.addEntitlementToServer(s, EntitlementManager.VIRTUALIZATION);
         assertTrue(s.hasEntitlement(EntitlementManager.VIRTUALIZATION));
     }
 
@@ -584,15 +588,14 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
             }
             assertNotNull(mgmt);
             assertNotNull(mgmt.getGroupType().getAssociatedEntitlement());
-            SystemManager.entitleServer(newS,
-                    mgmt.getGroupType().getAssociatedEntitlement());
+            systemEntitlementManager.addEntitlementToServer(newS, mgmt.getGroupType().getAssociatedEntitlement());
         }
 
 
         EntitlementServerGroup sg = ServerGroupTestUtils.createEntitled(owner.getOrg(),
                                                                         type);
 
-        SystemManager.entitleServer(newS, sg.getGroupType().getAssociatedEntitlement());
+        systemEntitlementManager.addEntitlementToServer(newS, sg.getGroupType().getAssociatedEntitlement());
         return TestUtils.saveAndReload(newS);
     }
 

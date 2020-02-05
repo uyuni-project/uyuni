@@ -154,6 +154,7 @@ import com.redhat.rhn.manager.system.SystemsExistException;
 import com.redhat.rhn.manager.system.UpdateBaseChannelCommand;
 import com.redhat.rhn.manager.system.UpdateChildChannelsCommand;
 import com.redhat.rhn.manager.system.VirtualizationActionCommand;
+import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
 import com.redhat.rhn.manager.token.ActivationKeyManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 
@@ -196,6 +197,8 @@ public class SystemHandler extends BaseHandler {
 
     private static Logger log = Logger.getLogger(SystemHandler.class);
     private final TaskomaticApi taskomaticApi;
+
+    private SystemEntitlementManager systemEntitlementManager = SystemEntitlementManager.INSTANCE;
 
     /**
      * Default constructor.
@@ -307,11 +310,11 @@ public class SystemHandler extends BaseHandler {
 
         // Make sure we got a valid entitlement and the server can be entitled to it
         validateEntitlements(new ArrayList<Entitlement>() { { add(entitlement); } });
-        if (!SystemManager.canEntitleServer(server, entitlement)) {
+        if (!this.systemEntitlementManager.canEntitleServer(server, entitlement)) {
             throw new PermissionCheckFailureException();
         }
 
-        SystemManager.entitleServer(server, entitlement);
+        this.systemEntitlementManager.addEntitlementToServer(server, entitlement);
         SystemManager.snapshotServer(server, LocalizationService.getInstance()
                 .getMessage("snapshots.entitlements"));
 
@@ -4686,10 +4689,10 @@ public class SystemHandler extends BaseHandler {
             String selectedEnt = (String)details.get("base_entitlement");
             Entitlement base = EntitlementManager.getByName(selectedEnt);
             if (base != null) {
-                server.setBaseEntitlement(base);
+                SystemEntitlementManager.INSTANCE.setBaseEntitlement(server, base);
             }
             else if (selectedEnt.equals("unentitle")) {
-                SystemManager.removeAllServerEntitlements(server);
+                systemEntitlementManager.removeAllServerEntitlements(server);
             }
         }
 
@@ -4864,7 +4867,7 @@ public class SystemHandler extends BaseHandler {
         for (Entitlement en : EntitlementManager.getBaseEntitlements()) {
             if (addOnEnts.contains(en.getLabel())) {
                 addOnEnts.remove(en.getLabel());
-                server.setBaseEntitlement(en);
+                SystemEntitlementManager.INSTANCE.setBaseEntitlement(server, en);
             }
         }
 
@@ -4884,8 +4887,8 @@ public class SystemHandler extends BaseHandler {
                 continue;
             }
 
-            if (SystemManager.canEntitleServer(server, ent)) {
-                ValidatorResult vr = SystemManager.entitleServer(server, ent);
+            if (this.systemEntitlementManager.canEntitleServer(server, ent)) {
+                ValidatorResult vr = this.systemEntitlementManager.addEntitlementToServer(server, ent);
                 needsSnapshot = true;
                 if (vr.getErrors().size() > 0) {
                     throw new InvalidEntitlementException();
@@ -4948,14 +4951,14 @@ public class SystemHandler extends BaseHandler {
                 baseEnts.add(ent);
                 continue;
             }
-            SystemManager.removeServerEntitlement(server, ent);
+            systemEntitlementManager.removeServerEntitlement(server, ent);
             needsSnapshot = true;
         }
 
         // process base entitlements at the end
         if (!baseEnts.isEmpty()) {
             // means unentile the whole system
-            SystemManager.removeAllServerEntitlements(server);
+            systemEntitlementManager.removeAllServerEntitlements(server);
             needsSnapshot = true;
         }
 
@@ -4982,7 +4985,7 @@ public class SystemHandler extends BaseHandler {
             // a permanent entitlement is not changeable by API
             throw new InvalidEntitlementException();
         }
-        SystemManager.removeAllServerEntitlements(server);
+        systemEntitlementManager.removeAllServerEntitlements(server);
         SystemManager.snapshotServer(server, LocalizationService
                 .getInstance().getMessage("snapshots.entitlements"));
         return 1;

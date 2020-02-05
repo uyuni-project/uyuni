@@ -30,6 +30,8 @@ import com.redhat.rhn.frontend.action.systems.entitlements.SystemEntitlementsSet
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.system.SystemManager;
+import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
+import com.redhat.rhn.manager.system.entitling.SystemEntitler;
 import com.redhat.rhn.testing.ChannelTestUtils;
 import com.redhat.rhn.testing.RhnMockStrutsTestCase;
 import com.redhat.rhn.testing.ServerTestUtils;
@@ -55,6 +57,7 @@ public class SystemEntitlementsSetupActionTest extends RhnMockStrutsTestCase {
 
     private Mockery context = new Mockery();
     private SaltService saltServiceMock;
+    private SystemEntitlementManager systemEntitlementManager = SystemEntitlementManager.INSTANCE;
 
     @Override
     public void setUp() throws Exception {
@@ -62,7 +65,7 @@ public class SystemEntitlementsSetupActionTest extends RhnMockStrutsTestCase {
         Config.get().setBoolean(ConfigDefaults.KIWI_OS_IMAGE_BUILDING_ENABLED, "true");
         context.setImposteriser(ClassImposteriser.INSTANCE);
         saltServiceMock = context.mock(SaltService.class);
-        SystemManager.mockSaltService(saltServiceMock);
+        SystemEntitler.INSTANCE.setSaltService(saltServiceMock);
         setRequestPathInfo("/systems/SystemEntitlements");
         UserTestUtils.addManagement(user.getOrg());
         UserTestUtils.addVirtualization(user.getOrg());
@@ -94,7 +97,8 @@ public class SystemEntitlementsSetupActionTest extends RhnMockStrutsTestCase {
         server.addChannel(ch[1]);
 
         assertTrue(EntitlementManager.VIRTUALIZATION.isAllowedOnServer(server));
-        boolean hasErrors = SystemManager.entitleServer(server, EntitlementManager.VIRTUALIZATION).hasErrors();
+        boolean hasErrors =
+                systemEntitlementManager.addEntitlementToServer(server, EntitlementManager.VIRTUALIZATION).hasErrors();
 
         assertFalse(hasErrors);
         assertTrue(SystemManager.hasEntitlement(server.getId(), EntitlementManager.VIRTUALIZATION));
@@ -114,7 +118,8 @@ public class SystemEntitlementsSetupActionTest extends RhnMockStrutsTestCase {
         Server server = MinionServerFactoryTest.createTestMinionServer(user);
 
         assertTrue(EntitlementManager.CONTAINER_BUILD_HOST.isAllowedOnServer(server));
-        boolean hasErrors = SystemManager.entitleServer(server, EntitlementManager.CONTAINER_BUILD_HOST).hasErrors();
+        boolean hasErrors = systemEntitlementManager
+                .addEntitlementToServer(server, EntitlementManager.CONTAINER_BUILD_HOST).hasErrors();
 
         assertFalse(hasErrors);
         assertTrue(SystemManager.hasEntitlement(server.getId(), EntitlementManager.CONTAINER_BUILD_HOST));
@@ -142,7 +147,8 @@ public class SystemEntitlementsSetupActionTest extends RhnMockStrutsTestCase {
 
         assertTrue(EntitlementManager.OSIMAGE_BUILD_HOST.isAllowedOnServer(server));
 
-        boolean hasErrors = SystemManager.entitleServer(server, EntitlementManager.OSIMAGE_BUILD_HOST).hasErrors();
+        boolean hasErrors = systemEntitlementManager
+                .addEntitlementToServer(server, EntitlementManager.OSIMAGE_BUILD_HOST).hasErrors();
 
         assertFalse(hasErrors);
         assertTrue(SystemManager.hasEntitlement(server.getId(), EntitlementManager.OSIMAGE_BUILD_HOST));

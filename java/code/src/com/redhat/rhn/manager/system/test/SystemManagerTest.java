@@ -95,6 +95,8 @@ import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.rhnset.RhnSetManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.manager.system.SystemsExistException;
+import com.redhat.rhn.manager.system.entitling.SystemEntitler;
+import com.redhat.rhn.manager.system.entitling.SystemUnentitler;
 import com.redhat.rhn.manager.user.UserManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.testing.ChannelTestUtils;
@@ -521,132 +523,6 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         assertTrue(SystemManager.hasUnscheduledErrata(user, server.getId()));
     }
 
-
-    /**
-     * Tests adding and removing entitlement on a server
-     * @throws Exception if something goes wrong
-     */
-    public void testEntitleServer() throws Exception {
-        User user = UserTestUtils.findNewUser("testUser",
-                "testOrg" + this.getClass().getSimpleName());
-        user.addPermanentRole(RoleFactory.ORG_ADMIN);
-        Server server = ServerTestUtils.createTestSystem(user);
-        ChannelTestUtils.setupBaseChannelForVirtualization(user,
-                server.getBaseChannel());
-        UserTestUtils.addVirtualization(user.getOrg());
-        TestUtils.saveAndFlush(user.getOrg());
-
-        //Test Virtualization Host
-        assertTrue(SystemManager.canEntitleServer(server,
-                EntitlementManager.VIRTUALIZATION));
-        boolean hasErrors = SystemManager.entitleServer(server,
-                EntitlementManager.VIRTUALIZATION).hasErrors();
-        assertFalse(hasErrors);
-        assertTrue(server.hasEntitlement(EntitlementManager.VIRTUALIZATION));
-
-        // Removal
-        SystemManager.removeServerEntitlement(server, EntitlementManager.VIRTUALIZATION);
-        server = reload(server);
-        assertFalse(server.hasEntitlement(EntitlementManager.VIRTUALIZATION));
-
-        //Test Container Build Host
-        Server minion = MinionServerFactoryTest.createTestMinionServer(user);
-        assertTrue(SystemManager.canEntitleServer(minion,
-                EntitlementManager.CONTAINER_BUILD_HOST));
-        hasErrors = SystemManager.entitleServer(minion,
-                EntitlementManager.CONTAINER_BUILD_HOST).hasErrors();
-        assertFalse(hasErrors);
-        assertTrue(minion.hasEntitlement(EntitlementManager.CONTAINER_BUILD_HOST));
-
-        // Removal
-        SystemManager.removeServerEntitlement(minion, EntitlementManager.CONTAINER_BUILD_HOST);
-        minion = reload(minion);
-        assertFalse(minion.hasEntitlement(EntitlementManager.CONTAINER_BUILD_HOST));
-
-        //Test OS Image Build Host
-
-        context().checking(new Expectations() {{
-            allowing(saltServiceMock).generateSSHKey(with(equal(SaltSSHService.SSH_KEY_PATH)));
-        }});
-
-        minion.setServerArch(ServerFactory.lookupServerArchByLabel("x86_64-redhat-linux"));
-        ServerFactory.save(minion);
-        assertTrue(SystemManager.canEntitleServer(minion,
-                EntitlementManager.OSIMAGE_BUILD_HOST));
-        hasErrors = SystemManager.entitleServer(minion,
-                EntitlementManager.OSIMAGE_BUILD_HOST).hasErrors();
-        assertFalse(hasErrors);
-        assertTrue(minion.hasEntitlement(EntitlementManager.OSIMAGE_BUILD_HOST));
-
-        // Removal
-        SystemManager.removeServerEntitlement(minion,
-                EntitlementManager.OSIMAGE_BUILD_HOST);
-        minion = reload(minion);
-        assertFalse(minion.hasEntitlement(EntitlementManager.OSIMAGE_BUILD_HOST));
-    }
-
-    public void testEntitleVirtForGuest() throws Exception {
-        Server host = ServerTestUtils.createVirtHostWithGuest();
-        User user = host.getCreator();
-        UserTestUtils.addVirtualization(user.getOrg());
-
-        Server guest =
-            (host.getGuests().iterator().next()).getGuestSystem();
-        guest.addChannel(ChannelTestUtils.createBaseChannel(user));
-        ServerTestUtils.addVirtualization(user, guest);
-
-        assertTrue(SystemManager.entitleServer(guest,
-                EntitlementManager.VIRTUALIZATION).hasErrors());
-        assertFalse(guest.hasEntitlement(EntitlementManager.VIRTUALIZATION));
-    }
-
-    public void testVirtualEntitleServer() throws Exception {
-        // User and server
-        User user = UserTestUtils.findNewUser("testUser",
-                "testOrg" + this.getClass().getSimpleName());
-        user.addPermanentRole(RoleFactory.ORG_ADMIN);
-        Server server = ServerTestUtils.createTestSystem(user);
-        Channel[] children = ChannelTestUtils.setupBaseChannelForVirtualization(user,
-                server.getBaseChannel());
-
-        Channel rhnTools = children[0];
-        Channel rhelVirt = children[1];
-
-        // Entitlements
-        UserTestUtils.addVirtualization(user.getOrg());
-        TestUtils.saveAndFlush(user.getOrg());
-
-        assertTrue(SystemManager.canEntitleServer(server,
-                EntitlementManager.VIRTUALIZATION));
-
-        ValidatorResult retval = SystemManager.entitleServer(server,
-                EntitlementManager.VIRTUALIZATION);
-
-        server = reload(server);
-
-        String key = null;
-        if (retval.getErrors().size() > 0) {
-            key = retval.getErrors().get(0).getKey();
-        }
-        assertFalse("Got back: " + key, retval.hasErrors());
-
-        // Test stuff!
-        assertTrue(server.hasEntitlement(EntitlementManager.VIRTUALIZATION));
-        assertTrue(server.getChannels().contains(rhnTools));
-        if (!ConfigDefaults.get().isSpacewalk()) {
-            // this is actually Satellite-specific
-            // assertTrue(server.getChannels().contains(rhelVirt));
-        }
-
-
-        // Test removal
-        SystemManager.removeServerEntitlement(server,
-                EntitlementManager.VIRTUALIZATION);
-
-        server = reload(server);
-        assertFalse(server.hasEntitlement(EntitlementManager.VIRTUALIZATION));
-
-    }
 
     public void testGetServerEntitlement() throws Exception {
         // create a new server

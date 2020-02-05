@@ -25,6 +25,7 @@ import com.redhat.rhn.common.db.datasource.WriteMode;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.validator.ValidatorError;
 import com.redhat.rhn.domain.channel.ChannelArch;
+import com.redhat.rhn.domain.entitlement.Entitlement;
 import com.redhat.rhn.domain.org.CustomDataKey;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.rhnpackage.PackageEvrFactory;
@@ -361,6 +362,24 @@ public class ServerFactory extends HibernateFactory {
      */
     public static void addServerToGroup(Server serverIn, ServerGroup serverGroupIn) {
         addServersToGroup(Arrays.asList(serverIn), serverGroupIn);
+    }
+
+    /**
+     * Adds a server history event after an entitlement event occurred
+     * @param server the server
+     * @param ent the entitlement
+     * @param summary the summary of the event
+     */
+    public static void addServerHistoryWithEntitlementEvent(Server server, Entitlement ent, String summary) {
+        Map<String, Object> in = new HashMap<String, Object>();
+        in.put("sid", server.getId());
+        in.put("entitlement_label", ent.getLabel());
+        in.put("summary", summary);
+
+        WriteMode m = ModeFactory.getWriteMode("System_queries", "update_server_history_for_entitlement_event");
+        m.executeUpdate(in);
+
+        log.debug("update_server_history_for_entitlement_event mode query executed.");
     }
 
     /**

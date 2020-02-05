@@ -43,7 +43,8 @@ import com.redhat.rhn.manager.errata.cache.ErrataCacheManager;
 import com.redhat.rhn.manager.rhnpackage.PackageManager;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.rhnset.RhnSetManager;
-import com.redhat.rhn.manager.system.SystemManager;
+import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
+
 import org.hibernate.Session;
 
 import java.util.Set;
@@ -57,6 +58,7 @@ public class ServerTestUtils {
 
     private static final String REDHAT_RELEASE = "redhat-release";
     private static final Long I386_PACKAGE_ARCH_ID = 101L;
+    private static SystemEntitlementManager systemEntitlementManager = SystemEntitlementManager.INSTANCE;
 
     private ServerTestUtils() {
     }
@@ -178,7 +180,7 @@ public class ServerTestUtils {
         // Lets give the org/server virt.
         UserTestUtils.addVirtualization(user.getOrg());
         ServerTestUtils.addVirtualization(user, s);
-        SystemManager.entitleServer(s, EntitlementManager.VIRTUALIZATION);
+        systemEntitlementManager.addEntitlementToServer(s, EntitlementManager.VIRTUALIZATION);
 
         for (int i = 0; i < numberOfGuests; i++) {
             VirtualInstance vi = new VirtualInstanceManufacturer(user).newRegisteredGuestWithoutHost(salt);
@@ -312,7 +314,8 @@ public class ServerTestUtils {
         Server existingHost = ServerTestUtils.createTestSystem(user);
         existingHost.setName(TestUtils.randomString());
         existingHost.setDigitalServerId(digitalServerId);
-        existingHost.setBaseEntitlement(EntitlementManager.getByName("foreign_entitled"));
+        SystemEntitlementManager.INSTANCE.setBaseEntitlement(existingHost,
+                EntitlementManager.getByName("foreign_entitled"));
         ServerFactory.save(existingHost);
         return existingHost;
     }
