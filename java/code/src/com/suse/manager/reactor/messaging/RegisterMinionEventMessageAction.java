@@ -139,7 +139,7 @@ public class RegisterMinionEventMessageAction implements MessageAction {
         registerMinion(minionId, true, proxyId, activationKeyOverride, startupGrainsOpt);
     }
     /**
-     * Performs minion registration/reactivation..
+     * Performs minion registration or reactivation..
      * @param minionId minion id
      * @param isSaltSSH true if a salt-ssh system is bootstrapped
      * @param activationKeyOverride label of activation key to be applied to the system.
@@ -163,7 +163,7 @@ public class RegisterMinionEventMessageAction implements MessageAction {
 
 
     /**
-     * Performs minion registration/reactivation.
+     * Performs minion registration or reactivation.
      * @param minionId minion id
      * @param isSaltSSH true if a salt-ssh system is bootstrapped
      * @param actKeyOverride label of activation key to be applied to the system.
@@ -174,8 +174,6 @@ public class RegisterMinionEventMessageAction implements MessageAction {
     private void registerMinion(String minionId, boolean isSaltSSH, Optional<Long> saltSSHProxyId,
                                 Optional<String> actKeyOverride, Optional<String> managementKey, String machineId,
                                 boolean saltbootInitrd) {
-        //Case-1 Reactivation
-        Optional<User> creator = MinionPendingRegistrationService.getCreator(minionId);
         Opt.consume(managementKey,
             //Case-1 Registration
             () -> {
@@ -183,14 +181,12 @@ public class RegisterMinionEventMessageAction implements MessageAction {
                 Opt.consume(registeredMinionOpt,
                     () -> {
                         if (!duplicateMinionNamePresent(minionId)) {
-                            finalizeMinionRegistration(minionId, machineId, creator, saltSSHProxyId, actKeyOverride,
-                                    isSaltSSH);
+                            finalizeMinionRegistration(minionId, machineId, saltSSHProxyId, actKeyOverride, isSaltSSH);
                         }
                     },
                     registeredMinion -> {
                         updateAlreadyRegisteredInfo(minionId, registeredMinion);
                         applySaltBootStates(minionId, registeredMinion, saltbootInitrd);
-
                     });
             },
             //Case-2 : Reactivation
@@ -300,17 +296,16 @@ public class RegisterMinionEventMessageAction implements MessageAction {
      * Complete the minion registration with information from grains
      * @param minionId the minion id
      * @param machineId the machine id that we are trying to register
-     * @param creator the optional User that created the minion
      * @param saltSSHProxyId optional proxy id for saltssh in case it is used
      * @param activationKeyOverride optional label of activation key to be applied to the system
      * @param isSaltSSH true if a salt-ssh system is bootstrapped
      */
     public void finalizeMinionRegistration(String minionId,
                                            String machineId,
-                                           Optional<User> creator,
                                            Optional<Long> saltSSHProxyId,
                                            Optional<String> activationKeyOverride,
                                            boolean isSaltSSH) {
+        Optional<User> creator = MinionPendingRegistrationService.getCreator(minionId);
         ValueMap grains = new ValueMap(SALT_SERVICE.getGrains(minionId).orElseGet(HashMap::new));
         MinionServer minion = migrateOrCreateSystem(minionId, isSaltSSH, activationKeyOverride, machineId, grains);
         Optional<String> originalMinionId = Optional.ofNullable(minion.getMinionId());
