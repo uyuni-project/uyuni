@@ -12,6 +12,16 @@
 @sle_minion
 Feature: Build OS images
 
+  Scenario: Create an OS image profile with activation key
+    Given I am authorized as "admin" with password "admin"
+    When I follow the left menu "Images > Profiles"
+    And I follow "Create"
+    And I enter "suse_os_image" as "label"
+    And I select "Kiwi" from "imageType"
+    And I select "1-KIWI-TEST" from "activationKey"
+    And I enter the image filename relative to profiles as "path"
+    And I click on "create-btn"
+
   # WORKAROUND
   # Remove as soon as the issue is fixed
   Scenario: Work around issue https://github.com/SUSE/spacewalk/issues/10360
@@ -56,3 +66,12 @@ Feature: Build OS images
   Scenario: Cleanup: remove remaining systems from SSM after OS image tests
     When I am authorized as "admin" with password "admin"
     And I follow "Clear"
+
+  Scenario: Cleanup: remove OS image profile
+    Given I am authorized as "admin" with password "admin"
+    When I follow the left menu "Images > Profiles"
+    And I check "suse_os_image" in the list
+    And I click on "Delete"
+    And I should see a "Are you sure you want to delete the selected profile?" text
+    And I click on the red confirmation button
+    And I wait until I see "Image profile has been deleted" text

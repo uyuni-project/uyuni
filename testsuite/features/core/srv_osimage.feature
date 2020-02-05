@@ -31,13 +31,3 @@ Feature: Prepare server for using Kiwi
     And I select "Test-Channel-x86_64" from "selectedBaseChannel"
     And I click on "Create Activation Key"
     Then I should see a "Activation key Kiwi testing has been created" text
-
-  Scenario: Create an OS image profile with activation key
-    Given I am authorized as "admin" with password "admin"
-    When I follow the left menu "Images > Profiles"
-    And I follow "Create"
-    And I enter "suse_os_image" as "label"
-    And I select "Kiwi" from "imageType"
-    And I select "1-KIWI-TEST" from "activationKey"
-    And I enter the image filename relative to profiles as "path"
-    And I click on "create-btn"
