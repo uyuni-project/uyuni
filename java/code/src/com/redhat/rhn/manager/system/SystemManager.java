@@ -2115,17 +2115,6 @@ public class SystemManager extends BaseManager {
         }
     }
 
-    /**
-     * Refresh pillar data for a minion.
-     * @param minion to refresh
-     */
-    private static void refreshPillarDataForMinion(MinionServer minion) {
-        SaltStateGeneratorService.INSTANCE.generatePillar(minion);
-        //SaltService.INSTANCE.refreshPillar(
-        //        new MinionList(minion.getMinionId()));
-        log.debug("Refreshed pillars for minion.");
-    }
-
     // Need to do some extra logic here
     // 1) Subscribe system to rhel-i386-server-vt-5 channel
     // 2) Subscribe system to rhn-tools-rhel-i386-server-5

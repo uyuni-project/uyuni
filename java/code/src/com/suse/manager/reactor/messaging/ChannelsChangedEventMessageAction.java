@@ -31,7 +31,8 @@ import com.redhat.rhn.manager.errata.ErrataManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
-import com.suse.manager.webui.services.SaltStateGeneratorService;
+import com.suse.manager.webui.services.pillar.MinionPillarManager;
+
 import org.apache.log4j.Logger;
 
 import java.util.Collections;
@@ -70,7 +71,7 @@ public class ChannelsChangedEventMessageAction implements MessageAction {
             ErrataManager.insertErrataCacheTask(minion);
 
             // Regenerate the pillar data
-            SaltStateGeneratorService.INSTANCE.generatePillar(minion,
+            MinionPillarManager.INSTANCE.generatePillar(minion,
                     true,
                     msg.getAccessTokenIds() != null ?
                             msg.getAccessTokenIds().stream()

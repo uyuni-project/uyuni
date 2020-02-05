@@ -93,6 +93,9 @@ import com.suse.manager.reactor.messaging.JobReturnEventMessageAction;
 import com.suse.manager.utils.SaltUtils;
 import com.suse.manager.webui.services.impl.SaltSSHService;
 import com.suse.manager.webui.services.impl.SaltService;
+import com.suse.manager.webui.services.pillar.MinionGeneralPillarGenerator;
+import com.suse.manager.webui.services.pillar.MinionPillarFileManager;
+import com.suse.manager.webui.services.pillar.MinionPillarManager;
 import com.suse.manager.webui.utils.DownloadTokenBuilder;
 import com.suse.manager.webui.utils.ElementCallJson;
 import com.suse.manager.webui.utils.SaltModuleRun;
@@ -1206,11 +1209,12 @@ public class SaltServerActionService {
                 actionDetails.getAccessTokens().add(newToken);
             });
 
+            MinionGeneralPillarGenerator minionGeneralPillarGenerator = new MinionGeneralPillarGenerator();
             Map<String, Object> chanPillar = new HashMap<>();
             newTokens.forEach(accessToken ->
                 accessToken.getChannels().forEach(chan -> {
                     Map<String, Object> chanProps =
-                            SaltStateGeneratorService.getChannelPillarData(minion, accessToken, chan);
+                            minionGeneralPillarGenerator.getChannelPillarData(minion, accessToken, chan);
                     chanPillar.put(chan.getLabel(), chanProps);
                 })
             );
@@ -1305,7 +1309,7 @@ public class SaltServerActionService {
                     final String token = t;
 
                     Map<String, Object> pillar = new HashMap<>();
-                    String host = SaltStateGeneratorService.getChannelHost(minion);
+                    String host = minion.getChannelHost();
 
                     profile.asDockerfileProfile().ifPresent(dockerfileProfile -> {
                         Map<String, Object> dockerRegistries = dockerRegPillar(imageStores);
@@ -1406,7 +1410,7 @@ public class SaltServerActionService {
             currentChannels.removeAll(unsubbed);
             currentChannels.addAll(subbed);
             ServerFactory.save(minion);
-            SaltStateGeneratorService.INSTANCE.generatePillar(minion);
+            MinionPillarManager.INSTANCE.generatePillar(minion);
         });
 
         Map<String, Object> pillar = new HashMap<>();

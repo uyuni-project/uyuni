@@ -16,7 +16,12 @@ package com.redhat.rhn.testing;
 
 import com.redhat.rhn.domain.kickstart.test.KickstartDataTest;
 import com.redhat.rhn.domain.user.User;
+
 import com.suse.manager.webui.services.SaltStateGeneratorService;
+import com.suse.manager.webui.services.pillar.MinionGeneralPillarGenerator;
+import com.suse.manager.webui.services.pillar.MinionGroupMembershipPillarGenerator;
+import com.suse.manager.webui.services.pillar.MinionPillarFileManager;
+
 import org.apache.commons.io.FileUtils;
 
 import java.nio.file.Files;
@@ -32,10 +37,15 @@ public abstract class JMockBaseTestCaseWithUser extends RhnJmockBaseTestCase {
     protected User user;
     protected Path tmpPillarRoot;
     protected Path tmpSaltRoot;
+    protected MinionPillarFileManager minionGroupMembershipPillarFileManager =
+            new MinionPillarFileManager(new MinionGroupMembershipPillarGenerator());
+    protected MinionPillarFileManager minionGeneralPillarFileManager =
+            new MinionPillarFileManager(new MinionGeneralPillarGenerator());
 
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setUp() throws Exception {
         super.setUp();
         user = UserTestUtils.findNewUser("testUser", "testOrg" +
@@ -43,8 +53,8 @@ public abstract class JMockBaseTestCaseWithUser extends RhnJmockBaseTestCase {
         KickstartDataTest.setupTestConfiguration(user);
         tmpPillarRoot = Files.createTempDirectory("pillar");
         tmpSaltRoot = Files.createTempDirectory("salt");
-        SaltStateGeneratorService.INSTANCE.setPillarDataPath(tmpPillarRoot
-                .toAbsolutePath());
+        minionGroupMembershipPillarFileManager.setPillarDataPath(tmpPillarRoot.toAbsolutePath());
+        minionGeneralPillarFileManager.setPillarDataPath(tmpPillarRoot.toAbsolutePath());
         SaltStateGeneratorService.INSTANCE.setSuseManagerStatesFilesRoot(tmpSaltRoot
                 .toAbsolutePath());
         Files.createDirectory(tmpSaltRoot.resolve(SALT_CONFIG_STATES_DIR));
@@ -53,6 +63,7 @@ public abstract class JMockBaseTestCaseWithUser extends RhnJmockBaseTestCase {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void tearDown() throws Exception {
         super.tearDown();
 

@@ -2165,4 +2165,17 @@ public class Server extends BaseDomainHelper implements Identifiable {
         return this.getEntitledGroups().stream().filter(g -> g.getGroupType().getLabel().equals(entitlementLabel))
                 .findFirst();
     }
+
+    /**
+     * Return the channel hostname for this server
+     *
+     * If case this server is directly connected to the SUMA Server, this method returns the
+     * this server's hostname. If, otherwise, the client is connected to the SUMA Server via a Proxy, this
+     * method returns the hostname of the first Proxy the client is connected to
+     * @return the channel hostname
+     */
+    public String getChannelHost() {
+        return this.getFirstServerPath().map(p -> p.getHostname())
+                .orElseGet(() -> ConfigDefaults.get().getCobblerHost());
+    }
 }

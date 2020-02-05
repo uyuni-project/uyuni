@@ -25,8 +25,10 @@ import com.redhat.rhn.frontend.struts.RhnHelper;
 import com.redhat.rhn.manager.channel.ChannelManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.manager.user.UserManager;
+
+import com.suse.manager.webui.services.pillar.MinionPillarManager;
+
 import com.redhat.rhn.domain.server.ServerFactory;
-import com.suse.manager.webui.services.SaltStateGeneratorService;
 
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.struts.action.ActionForm;
@@ -47,6 +49,7 @@ import javax.servlet.http.HttpServletResponse;
 public class ChannelDetailsAction extends RhnAction {
 
     /** {@inheritDoc} */
+    @Override
     public ActionForward execute(ActionMapping mapping,
             ActionForm formIn,
             HttpServletRequest request,
@@ -84,7 +87,7 @@ public class ChannelDetailsAction extends RhnAction {
             params.put("cid", cid);
             fwd = "success";
             ServerFactory.listMinionsByChannel(cid).stream().forEach(ms -> {
-                SaltStateGeneratorService.INSTANCE.generatePillar(ms, false,
+                MinionPillarManager.INSTANCE.generatePillar(ms, false,
                         Collections.emptySet());
             });
         }

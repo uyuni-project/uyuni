@@ -52,9 +52,9 @@ import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.system.SystemManager;
 
 import com.suse.manager.reactor.utils.ValueMap;
-import com.suse.manager.webui.services.SaltStateGeneratorService;
 import com.suse.manager.webui.services.impl.MinionPendingRegistrationService;
 import com.suse.manager.webui.services.impl.SaltService;
+import com.suse.manager.webui.services.pillar.MinionPillarManager;
 import com.suse.salt.netapi.datatypes.target.MinionList;
 import com.suse.salt.netapi.errors.SaltError;
 import com.suse.salt.netapi.exception.SaltException;
@@ -230,8 +230,8 @@ public class RegisterMinionEventMessageAction implements MessageAction {
                 registeredMinion.setMinionId(minionId);
                 ServerFactory.save(registeredMinion);
 
-                SaltStateGeneratorService.INSTANCE.generatePillar(registeredMinion);
-                SaltStateGeneratorService.INSTANCE.removePillar(oldMinionId);
+                MinionPillarManager.INSTANCE.generatePillar(registeredMinion);
+                MinionPillarManager.INSTANCE.removePillar(oldMinionId);
 
                 migrateMinionFormula(minionId, Optional.of(oldMinionId));
 
@@ -505,7 +505,7 @@ public class RegisterMinionEventMessageAction implements MessageAction {
             }
         }
 
-        minion.asMinionServer().ifPresent(SaltStateGeneratorService.INSTANCE::generatePillar);
+        minion.asMinionServer().ifPresent(MinionPillarManager.INSTANCE::generatePillar);
     }
 
     private void applySaltboot(MinionServer minion) {
