@@ -24,55 +24,47 @@ When(/^I start database with the command "(.*?)"$/) do |start_command|
   $output = sshcmd(start_command)
 end
 
-When(/^when I stop the database with the command "(.*?)"$/) do |stop_command|
-  $output = sshcmd(stop_command)
-end
-
-When(/^when I check the database status with the command "(.*?)"$/) do |check_command|
-  $output = sshcmd(check_command)
-end
-
 When(/^I stop the database with the command "(.*?)"$/) do |stop_command|
   $output = sshcmd(stop_command)
 end
 
-Then(/^when I issue command "(.*?)"$/) do |command|
-  $output = sshcmd(command, ignore_err: true)
+When(/^I check the database status with the command "(.*?)"$/) do |check_command|
+  $output = sshcmd(check_command)
 end
 
-When(/^when I see that the database is "(.*?)" or "(.*?)" as it might already running$/) do |scs_status, fl_status|
+When(/^I see that the database is "(.*?)" or "(.*?)" as it might already running$/) do |scs_status, fl_status|
   assert_match(/#{scs_status}|#{fl_status}/, $output[:stdout])
 end
 
-Then(/^I want to see if the database is "(.*?)"$/) do |status|
+Then(/^the database should be "(.*?)"$/) do |status|
   assert_includes($output[:stdout], status)
 end
 
-Then(/^I want to see if "(.*?)" is in the output$/) do |status|
+Then(/^"(.*?)" should be in the output$/) do |status|
   assert_includes($output[:stdout], status)
 end
 
-When(/^when I configure "(.*?)" parameter "(.*?)" to "(.*?)"$/) do |config_file, param, value|
+When(/^I configure "(.*?)" parameter "(.*?)" to "(.*?)"$/) do |config_file, param, value|
   sshcmd("sed -i '/wal_level/d' #{config_file}", ignore_err: true)
   sshcmd("echo \"#{param} = #{value}\" >> #{config_file}", ignore_err: true)
   local_output = sshcmd("cat #{config_file} | grep #{param}", ignore_err: true)
   assert_includes(local_output[:stdout], value)
 end
 
-Then(/^when I check internally configuration for "(.*?)" option$/) do |_config_key|
+Then(/^I check internally configuration for "(.*?)" option$/) do |_config_key|
   $current_checked_config_value = sshcmd("cd /;sudo -u postgres psql -c 'show wal_level;'")[:stdout]
 end
 
-Then(/^I expect to see the configuration is set to "(.*?)"$/) do |value|
+Then(/^the configuration should be set to "(.*?)"$/) do |value|
   assert_includes($current_checked_config_value, value)
 end
 
-Then(/^I expect to see the configuration is not set to "(.*?)"$/) do |value|
+Then(/^the configuration should not be set to "(.*?)"$/) do |value|
   refute_includes($current_checked_config_value, value)
 end
 
-Then(/^I issue command "(.*?)"$/) do |cmd|
-  $output = sshcmd(cmd, ignore_err: true)
+Then(/^I issue command "(.*?)"$/) do |command|
+  $output = sshcmd(command, ignore_err: true)
 end
 
 Then(/^tablespace "([^"]*)" should be listed$/) do |ts|
@@ -118,7 +110,7 @@ Then(/^I remove backup directory "(.*?)"$/) do |bkp_dir|
   sshcmd("test -d #{bkp_dir} && rm -rf #{bkp_dir}")
 end
 
-When(/^when I change Access Control List on "(.*?)" directory to "(.*?)"$/) do |bkp_dir, acl_octal|
+When(/^I change Access Control List on "(.*?)" directory to "(.*?)"$/) do |bkp_dir, acl_octal|
   bkp_dir.sub!('/', '')
   sshcmd("test -d /#{bkp_dir} && chmod #{acl_octal} /#{bkp_dir}")
   puts "Backup directory, ACL to \"#{acl_octal}\":"
@@ -154,7 +146,7 @@ When(/^I set a checkpoint$/) do
   sshcmd("sudo -u postgres psql -d #{$db} -c 'checkpoint' 2>/dev/null", ignore_err: true)
 end
 
-When(/^when in the database I create dummy table "(.*?)" with column "(.*?)" and value "(.*?)"$/) do |tbl, clm, val|
+When(/^in the database I create dummy table "(.*?)" with column "(.*?)" and value "(.*?)"$/) do |tbl, clm, val|
   fn = '/tmp/smdba-data-test.sql'
   sshcmd("echo \"create table #{tbl} (#{clm} varchar);insert into #{tbl} (#{clm}) values (\'#{val}\');\" > #{fn}", ignore_err: false)
   sshcmd("sudo -u postgres psql -d #{$db} -c 'drop table dummy' 2>/dev/null", ignore_err: true)
@@ -167,7 +159,7 @@ When(/^when in the database I create dummy table "(.*?)" with column "(.*?)" and
   puts "Table \"#{tbl}\" has been created with some dummy data inside"
 end
 
-When(/^when I restore database from the backup$/) do
+When(/^I restore database from the backup$/) do
   puts "\n*** Restoring database from the backup. This will may take a while. ***\n\n"
   sshcmd('smdba backup-restore')
 end
