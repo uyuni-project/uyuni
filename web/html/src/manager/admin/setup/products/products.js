@@ -187,30 +187,6 @@ class ProductsPageWrapper extends React.Component {
     .catch(currentObject.handleResponseError);
   };
 
-  resyncProduct = (id, name) => {
-    const currentObject = this;
-    var scheduledItemsNew = currentObject.state.scheduledItems.concat([id]);
-    var scheduleResyncItemsNew = currentObject.state.scheduleResyncItems.concat([id]);
-    currentObject.setState({ scheduleResyncItems: scheduleResyncItemsNew});
-    Network.post('/rhn/manager/admin/setup/products', JSON.stringify([id]), 'application/json').promise
-    .then(data => {
-      if(!data[id]) {
-        currentObject.setState({
-          errors: MessagesUtils.success('The product \'' + name + '\' sync has been scheduled successfully'),
-          scheduleResyncItems: scheduleResyncItemsNew.filter(i => i != id),
-          scheduledItems: currentObject.state.scheduledItems.concat([id])
-        });
-      }
-      else {
-        currentObject.setState({
-          errors: MessagesUtils.warning('The product \'' + name + '\' sync was not scheduled correctly. Please check server log files.'),
-          scheduleResyncItems: scheduleResyncItemsNew.filter(i => i != id)
-        });
-      }
-    })
-    .catch(currentObject.handleResponseError);
-  };
-
   handleResponseError = (jqXHR, arg = "") => {
     const msg = Network.responseErrorMessage(jqXHR,
       (status, msg) => msgMap[msg] ? t(msgMap[msg], arg) : null);
@@ -298,7 +274,6 @@ class ProductsPageWrapper extends React.Component {
                   handleSelectedItems={this.handleSelectedItems}
                   handleUnselectedItems={this.handleUnselectedItems}
                   selectedItems={this.state.selectedItems}
-                  resyncProduct={this.resyncProduct}
                   scheduledItems={this.state.scheduledItems}
                   scheduleResyncItems={this.state.scheduleResyncItems}
               />
@@ -481,7 +456,6 @@ class Products extends React.Component {
                   listStyleClass: 'product-list',
                   showChannelsfor: this.showChannelsfor,
                   cols: _COLS,
-                  resyncProduct: this.props.resyncProduct,
                   scheduledItems: this.props.scheduledItems,
                   scheduleResyncItems: this.props.scheduleResyncItems,
                   handleVisibleSublist: this.handleVisibleSublist,
@@ -658,16 +632,6 @@ class CheckListItem extends React.Component {
     }
   };
 
-  scheduleResyncInProgress = () => {
-    return this.props.bypassProps.scheduleResyncItems.includes(this.props.item.identifier);
-  };
-
-  resyncProduct = () => {
-    if (!this.scheduleResyncInProgress()){
-      this.props.bypassProps.resyncProduct(this.props.item.identifier, this.props.item.label);
-    }
-  };
-
   getNestedData = (item) => {
     if (item && this.props.bypassProps.nestedKey && item[this.props.bypassProps.nestedKey] != null) {
      return item[this.props.bypassProps.nestedKey];
@@ -723,9 +687,9 @@ class CheckListItem extends React.Component {
     /*****/
 
     /** generate recommended toggler if needed **/
-    // only for root products
+    // only for root and installed products
     let recommendedTogglerContent;
-    if (this.isRootLevel(this.props.treeLevel) && this.getNestedData(currentItem).some(i => i.recommended)) {
+    if (!this.isInstalled() && this.isRootLevel(this.props.treeLevel) && this.getNestedData(currentItem).some(i => i.recommended)) {
       recommendedTogglerContent =
         <Toggler
             handler={this.handleWithRecommended.bind(this)}
@@ -733,51 +697,6 @@ class CheckListItem extends React.Component {
             text={t('include recommended')}
         />;
     }
-    /*****/
-
-    /** generate channel sync progress bar **/
-    let channelSyncContent;
-    if (this.isInstalled()) {
-      const mandatoryChannelList = currentItem.channels.filter(c => !c.optional);
-
-      // if the product sync has just been scheduled
-      if (this.props.bypassProps.scheduledItems.includes(currentItem.identifier)) {
-        channelSyncContent = <span className="text-info">{t('Sync scheduled')}</span>;
-      }
-      // if any failed sync channel, show the error only
-      else if (mandatoryChannelList.filter(c => c.status == _CHANNEL_STATUS.failed).length > 0) {
-        channelSyncContent = <span className="text-danger">{t('Sync failed')}</span>;
-      }
-      else {
-        const syncedChannels = mandatoryChannelList.filter(c => c.status == _CHANNEL_STATUS.synced).length;
-        const toBeSyncedChannels = mandatoryChannelList.length;
-        const channelSyncProgress = Math.round(( syncedChannels / toBeSyncedChannels ) * 100);
-        channelSyncContent = <ProgressBar progress={channelSyncProgress} title={t('Product sync status')} width='60%'/>;
-      }
-    }
-    /*****/
-
-    /** generate product resync button **/
-    const resyncActionInProgress = this.scheduleResyncInProgress();
-    const conditionalResyncClass = this.props.bypassProps.readOnlyMode ? 'text-muted' : resyncActionInProgress ? 'fa-spin text-muted' : '';
-    const resyncDisabled = this.props.bypassProps.readOnlyMode || resyncActionInProgress;
-    const conditionalResyncTitle =
-        this.props.bypassProps.readOnlyMode ?
-          t('SCC product catalog refresh in progress')
-          : resyncActionInProgress ?
-              t('Scheduling a product resync')
-              : t('Schedule a product resync');
-    const conditionalResyncAction = !this.props.bypassProps.readOnlyMode ? () => this.resyncProduct() : null;
-    const resyncActionContent =
-      this.isInstalled() ?
-        <Button
-            className='btn btn-default btn-sm'
-            disabled={resyncDisabled ? 'disabled' : ''}
-            handler={conditionalResyncAction}
-            icon={'fa-refresh pointer ' + conditionalResyncClass}
-            title={conditionalResyncTitle}
-        />
-        : null;
     /*****/
 
     const evenOddClass = (this.props.index % 2) === 0 ? "list-row-even" : "list-row-odd";
@@ -807,16 +726,9 @@ class CheckListItem extends React.Component {
                 onClick={() => this.props.bypassProps.showChannelsfor(currentItem)}
             />
           </CustomDiv>
-          {
-            this.isInstalled() ?
-              <CustomDiv className='col text-right' width={this.props.bypassProps.cols.mix.width} um={this.props.bypassProps.cols.mix.um}>
-                {channelSyncContent}&nbsp;{resyncActionContent}
-              </CustomDiv>
-              :
-              <CustomDiv className='col text-right' width={this.props.bypassProps.cols.mix.width} um={this.props.bypassProps.cols.mix.um} title={t('With Recommended')}>
-                {recommendedTogglerContent}
-              </CustomDiv>
-          }
+          <CustomDiv className='col text-right' width={this.props.bypassProps.cols.mix.width} um={this.props.bypassProps.cols.mix.um}>
+            {recommendedTogglerContent}
+           </CustomDiv>
         </div>
         { this.isSublistVisible() ?
           <CheckList data={this.getNestedData(currentItem)}
@@ -861,45 +773,26 @@ const ChannelsPopUp = (props) => {
   );
 }
 
-class ChannelList extends React.Component {
-  decodeChannelStatus = (status) => {
-    let decoded = '';
-    switch(status) {
-      case _CHANNEL_STATUS.notSynced:
-        decoded = <span className='text-muted'>{t('not synced')}</span>; break;
-      case _CHANNEL_STATUS.syncing:
-        decoded = <span className='text-info'>{t('sync in progress')}</span>; break;
-      case _CHANNEL_STATUS.synced:
-        decoded = <span className='text-success'>{t('synced')}</span>; break;
-      case _CHANNEL_STATUS.failed:
-        decoded = <span className='text-danger'>{t('sync failed')}</span>; break;
-    }
-    return decoded;
-  };
-
-  render() {
-    return (
-      this.props.items.length > 0 ?
-      <div>
-        <h4>{this.props.title}</h4>
-        <ul className={this.props.className}>
-          {
-            this.props.items
-              .map(c =>
-                  <li key={c.label}>
-                    <div>
-                      <strong>{c.name}</strong>
-                      &nbsp;{this.decodeChannelStatus(c.status)}
-                    </div>
-                    <div>{c.label}</div>
-                  </li>
-              )
-          }
-        </ul>
-      </div>
-      : null
-    )
-  }
+const ChannelList = (props) => {
+  return (
+    props.items.length > 0 ?
+    <div>
+      <h4>{props.title}</h4>
+      <ul className={props.className}>
+        {
+          props.items
+            .map(c =>
+              <li key={c.label}>
+                <strong>{c.name}</strong>
+                <br/>
+                {c.label}
+              </li>
+            )
+        }
+      </ul>
+    </div>
+    : null
+  )
 }
 
 export const renderer = () => SpaRenderer.renderNavigationReact(
