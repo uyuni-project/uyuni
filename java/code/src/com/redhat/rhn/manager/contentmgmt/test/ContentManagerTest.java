@@ -855,7 +855,7 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
         ContentEnvironment env = contentManager.createEnvironment(cp.getLabel(), empty(), "fst", "first env", "desc", false, user);
 
         // ... build by another user
-        Channel channel = createPopulatedChannel(user);
+        Channel channel = createPopulatedChannel();
         contentManager.attachSource("cplabel", SW_CHANNEL, channel.getLabel(), empty(), user);
         contentManager.buildProject("cplabel", empty(), false, adminSameOrg);
         assertEquals(Long.valueOf(1), env.getVersion());
@@ -882,7 +882,7 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
         ContentProjectFactory.save(cp);
         ContentEnvironment env = contentManager.createEnvironment(cp.getLabel(), empty(), "fst", "first env", "desc", false, user);
 
-        Channel channel = createPopulatedChannel(user);
+        Channel channel = createPopulatedChannel();
         contentManager.attachSource("cplabel", SW_CHANNEL, channel.getLabel(), empty(), user);
         contentManager.buildProject("cplabel", empty(), false, user);
         assertEquals(Long.valueOf(1), env.getVersion());
@@ -1400,10 +1400,6 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
     }
 
     private Channel createPopulatedChannel() throws Exception {
-        return createPopulatedChannel(user);
-    }
-
-    private Channel createPopulatedChannel(User user) throws Exception {
         Channel channel = TestUtils.reload(ChannelFactoryTest.createTestChannel(user, false));
         channel.setChecksumType(ChannelFactory.findChecksumTypeByLabel("sha1"));
         Package pack = PackageTest.createTestPackage(user.getOrg());
