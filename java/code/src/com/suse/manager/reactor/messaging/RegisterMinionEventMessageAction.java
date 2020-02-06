@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2015--2019 SUSE LLC
+ * Copyright (c) 2015--2020 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -225,15 +225,20 @@ public class RegisterMinionEventMessageAction implements MessageAction {
             if (!minionId.equals(oldMinionId)) {
                 LOG.warn("Minion '" + oldMinionId + "' already registered, updating " +
                         "profile to '" + minionId + "' [" + machineId + "]");
+
                 registeredMinion.setName(minionId);
                 registeredMinion.setMinionId(minionId);
                 ServerFactory.save(registeredMinion);
-                SystemManager.addHistoryEvent(registeredMinion, "Duplicate Machine ID", "Minion '" +
-                        oldMinionId + "' has been updated to '" + minionId + "'");
 
-                if (!minionId.equals(oldMinionId)) {
-                    SALT_SERVICE.deleteKey(oldMinionId);
-                }
+                SaltStateGeneratorService.INSTANCE.generatePillar(registeredMinion);
+                SaltStateGeneratorService.INSTANCE.removePillar(oldMinionId);
+
+                migrateMinionFormula(minionId, Optional.of(oldMinionId));
+
+                SALT_SERVICE.deleteKey(oldMinionId);
+
+                SystemManager.addHistoryEvent(registeredMinion, "Duplicate Minion ID", "Minion '" +
+                        oldMinionId + "' has been updated to '" + minionId + "'");
             }
 
             // Saltboot treatment
