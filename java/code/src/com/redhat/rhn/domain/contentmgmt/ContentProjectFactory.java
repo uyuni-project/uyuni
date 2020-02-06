@@ -18,14 +18,20 @@ package com.redhat.rhn.domain.contentmgmt;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
+import com.redhat.rhn.domain.channel.ClonedChannel;
 import com.redhat.rhn.domain.contentmgmt.ProjectSource.Type;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.user.User;
+
 import org.apache.log4j.Logger;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
@@ -271,14 +277,28 @@ public class ContentProjectFactory extends HibernateFactory {
     }
 
     /**
-     * Purge the Environment Target - delete it and delete its underlying resource (e.g. {@link Channel}) too
+     * Purge the Environment Target - delete it and delete its underlying resource (e.g. {@link Channel}) too.
+     * Reconstructs the 'original-clone' relation in case it'd be broken by the channel deletion.
      *
      * @param target the Environment Target
      */
     public static void purgeTarget(EnvironmentTarget target) {
+        // firstly fix the original/clone relations of channels
+        target.asSoftwareTarget().ifPresent(swTgt -> {
+            Optional<Channel> prevChannel = swTgt.getChannel().asCloned().map(c -> c.getOriginal());
+            List<ClonedChannel> nextChannels = lookupClonesInProject(swTgt.getChannel(),
+                    swTgt.getContentEnvironment().getContentProject());
+            // if both next and previous channel exist -> fix the original-clone relation
+            prevChannel.ifPresent(prev -> nextChannels.forEach(next -> next.setOriginal(prev)));
+        });
+
+        // then remove the target and its channel
         target.getContentEnvironment().removeTarget(target);
         INSTANCE.removeObject(target);
-        target.asSoftwareTarget().ifPresent(swTgt -> ChannelFactory.remove(swTgt.getChannel()));
+        target.asSoftwareTarget().map(swTgt -> swTgt.getChannel()).ifPresent(channel -> {
+            HibernateFactory.getSession().evict(channel);
+            ChannelFactory.remove(channel);
+        });
     }
 
     /**
@@ -418,6 +438,28 @@ public class ContentProjectFactory extends HibernateFactory {
                         builder.equal(root.get("contentProject"), project),
                         sourcePredicate));
         return getSession().createQuery(query).uniqueResultOptional();
+    }
+
+    /**
+     * Look up {@link ClonedChannel}s of given {@link Channel} in given {@link ContentProject}
+     *
+     * HACK: Normally, this method should return an Optional of ClonedChannel instead of a List, as very channel in
+     * a Content Project should have at most 1 successor. However, the past versions of SUSE Manager did not keep
+     * the original-clone relation consistent and channels with more clones could appear inside a Content Project.
+     *
+     * @param channel the channel
+     * @param project the project
+     * @return the successors of the channel in the project
+     */
+    public static List<ClonedChannel> lookupClonesInProject(Channel channel, ContentProject project) {
+        Stream<Channel> clones = HibernateFactory.getSession()
+                .createQuery("SELECT tgt.channel FROM SoftwareEnvironmentTarget tgt " +
+                        "WHERE tgt.contentEnvironment.contentProject = :project " +
+                        "AND tgt.channel.original = :channel")
+                .setParameter("project", project)
+                .setParameter("channel", channel)
+                .stream();
+        return clones.flatMap(c -> c.asCloned().stream()).collect(Collectors.toList());
     }
 
     /**
