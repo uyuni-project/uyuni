@@ -21,7 +21,7 @@
 %endif
 
 Name:           susemanager-sls
-Version:        4.1.2
+Version:        4.1.3
 Release:        1
 Summary:        Static Salt state files for SUSE Manager
 License:        GPL-2.0-only
@@ -131,3 +131,6 @@ fi
 %ghost /usr/share/susemanager/salt/certs/RHN-ORG-TRUSTED-SSL-CERT
 
 %changelog
+* Thu Feb 06 2020 Abid Mehmood <amehmood@suse.de> 4.1.3-1
+- new package built with tito
+
