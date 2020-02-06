@@ -1,5 +1,5 @@
 <!DOCTYPE refentry PUBLIC "-//OASIS//DTD DocBook V3.1//EN" [
-<!ENTITY SATANDORPROX "SUSE Manager and/or Proxy Server">
+<!ENTITY SATANDORPROX "SUSE Manager Server and/or Proxy">
 <!ENTITY EXECUTABLE "mgr-bootstrap">
 
 ]>
