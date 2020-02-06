@@ -152,12 +152,14 @@ public class RegisterMinionEventMessageAction implements MessageAction {
             ()-> LOG.error("Aborting: needed grains are not found for minion: " + minionId),
             grains-> {
                 boolean saltbootInitrd = grains.getSaltbootInitrd();
-                Optional<String> managementKey = grains.getSuseManagerGrain().flatMap(sm -> sm.getManagementKey());
+                Optional<String> mkey = grains.getSuseManagerGrain().flatMap(sm -> sm.getManagementKey());
+                Optional<String> validReactivationKey =
+                        mkey.flatMap(mk -> isValidReactivationKey(mk, minionId) ? mkey : empty());
                 Optional<String> machineIdOpt = grains.getMachineId();
                 Opt.consume(machineIdOpt,
                     ()-> LOG.error("Aborting: cannot find machine id for minion: " + minionId),
-                    machineId -> registerMinion(minionId, isSaltSSH, proxyId, activationKeyOverride, managementKey,
-                            machineId, saltbootInitrd));
+                    machineId -> registerMinion(minionId, isSaltSSH, proxyId, activationKeyOverride,
+                            validReactivationKey, machineId, saltbootInitrd));
             });
     }
 
@@ -168,13 +170,14 @@ public class RegisterMinionEventMessageAction implements MessageAction {
      * @param isSaltSSH true if a salt-ssh system is bootstrapped
      * @param actKeyOverride label of activation key to be applied to the system.
      *                       If left empty, activation key from grains will be used.
+     * @param reActivationKey valid reactivation key
      * @param machineId Machine Id of the minion
      * @param saltbootInitrd saltboot_initrd, to be used for retail minions
      */
     private void registerMinion(String minionId, boolean isSaltSSH, Optional<Long> saltSSHProxyId,
-                                Optional<String> actKeyOverride, Optional<String> managementKey, String machineId,
+                                Optional<String> actKeyOverride, Optional<String> reActivationKey, String machineId,
                                 boolean saltbootInitrd) {
-        Opt.consume(managementKey,
+        Opt.consume(reActivationKey,
             //Case-1 Registration
             () -> {
                 Optional<MinionServer> registeredMinionOpt = MinionServerFactory.findByMachineId(machineId);
@@ -190,17 +193,9 @@ public class RegisterMinionEventMessageAction implements MessageAction {
                     });
             },
             //Case-2 : Reactivation
-            mk -> {
-                if (isValidReactivationKey(mk, minionId)) {
-                    reactivateSystem(minionId, machineId, mk);
-                    finalizeMinionRegistration(minionId, machineId, saltSSHProxyId, actKeyOverride, isSaltSSH);
-                }
-                else {
-                    MinionServerFactory.findByMachineId(machineId).ifPresent(rm -> {
-                        updateAlreadyRegisteredInfo(minionId, rm);
-                        applySaltBootStates(minionId, rm, saltbootInitrd);
-                    });
-                }
+            rk -> {
+                reactivateSystem(minionId, machineId, rk);
+                finalizeMinionRegistration(minionId, machineId, saltSSHProxyId, actKeyOverride, isSaltSSH);
             }
         );
     }
@@ -254,10 +249,10 @@ public class RegisterMinionEventMessageAction implements MessageAction {
      * Reactivate the system
      * @param minionId minion id of the minion
      * @param machineId machine_id of the minion
-     * @param managmentKeyLabel managment_key grain
+     * @param reActivationKey valid Reaction key
      */
-    private void reactivateSystem(String minionId, String machineId, String managmentKeyLabel) {
-        of(ActivationKeyFactory.lookupByKey(managmentKeyLabel)).ifPresent(ak -> {
+    private void reactivateSystem(String minionId, String machineId, String reActivationKey) {
+        of(ActivationKeyFactory.lookupByKey(reActivationKey)).ifPresent(ak -> {
             if (Objects.nonNull(ak.getKickstartSession())) {
                 ak.getKickstartSession().markComplete("Installation completed.");
             }
