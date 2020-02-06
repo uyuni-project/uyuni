@@ -1,20 +1,20 @@
 <!DOCTYPE refentry PUBLIC "-//OASIS//DTD DocBook V3.1//EN" [
-<!ENTITY SATANDORPROX "Spacewalk and/or Proxy Server">
-<!ENTITY EXECUTABLE "rhn-bootstrap">
+<!ENTITY SATANDORPROX "SUSE Manager and/or Proxy Server">
+<!ENTITY EXECUTABLE "mgr-bootstrap">
 
 ]>
 <refentry>
 
 <RefMeta>
 <RefEntryTitle>&EXECUTABLE;</RefEntryTitle><manvolnum>1</manvolnum>
-<RefMiscInfo>Version 4.0</RefMiscInfo>
+<RefMiscInfo>Version 4.1</RefMiscInfo>
 </RefMeta>
 
 <RefNameDiv>
 <RefName><command>&EXECUTABLE;</command></RefName>
 <RefPurpose>
     generate bootstrap scripts to aid in the deployment / configuration of
-    RHN client systems.</RefPurpose>
+    SUSE Manager client systems.</RefPurpose>
 </RefNameDiv>
 
 <RefSynopsisDiv>
@@ -29,9 +29,9 @@
 
 <para>
     <emphasis>&EXECUTABLE;</emphasis> generates bootstrap scripts to be used by
-    RHN client systems for the purpose of simplifying their initial
+    SUSE Manager client systems for the purpose of simplifying their initial
     configuration and bootstrapping them to a &SATANDORPROX;. This is a script
-    generator. You then use those scripts to configure & register RHN clients.
+    generator. You then use those scripts to configure & register SUSE Manager clients.
 </para>
 
 <para>
@@ -67,7 +67,7 @@
     <varlistentry>
         <term>--activation-keys=<replaceable>ACTIVATION_KEYS</replaceable></term>
         <listitem>
-            <para>activation key(s) as defined in the RHN web UI - format is XKEY,YKEY,...</para>
+            <para>activation key(s) as defined in the SUSE Manager web UI - format is XKEY,YKEY,...</para>
         </listitem>
     </varlistentry>
     <varlistentry>
@@ -190,7 +190,7 @@
 
 <RefSect1><Title>Files</Title>
 <simplelist>
-    <member>/usr/bin/rhn-bootstrap</member>
+    <member>/usr/bin/mgr-bootstrap</member>
     <member>/usr/bin/client_config_update.py</member>
     <member>/usr/bin/client-config-overrides.txt</member>
 </simplelist>
