@@ -1,3 +1,4 @@
+- fix RefMiscInfo
 - fix manpages for mgr-ssl-tool and mgr-bootstrap (bsc#1010746)
 
 -------------------------------------------------------------------
