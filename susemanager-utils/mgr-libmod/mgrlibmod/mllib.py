@@ -61,9 +61,21 @@ class MLLibmodProc:
             return binascii.hexlify(metafile.read(2)) == b"1f8b"  # Almost reliable :-)
 
     def enable_stream(self, s_obj) -> None:
+        """
+        enable_stream -- enables stream.
+
+        :param s_obj: module type
+        :type s_obj: Module object
+        """
         self._enabled_stream_modules[s_obj.get_module_name()] = s_obj
 
-    def disable(self, name: str) -> None:
+    def disable_stream(self, name: str) -> None:
+        """
+        disable_stream -- disabled stream.
+
+        :param name: stream name
+        :type name: str
+        """
         if name not in MLLibmodProc.RESERVED_STREAMS:
             self._enabled_stream_modules.pop(name, None)
 
