@@ -52,6 +52,7 @@ import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -234,7 +235,6 @@ public class ContentManagerTest extends BaseTestCaseWithUser {
 
     /**
      * Test that removing a Environment also removes its targets
-     * to the first environment of the project is updated
      *
      * @throws Exception if anything goes wrong
      */
@@ -254,8 +254,9 @@ public class ContentManagerTest extends BaseTestCaseWithUser {
                 .setParameter("channel", channel)
                 .uniqueResultOptional()
                 .isPresent());
-        // but the channel stays
-        assertNotNull(ChannelFactory.lookupById(channel.getId()));
+
+        // channel is also removed
+        assertNull(ChannelFactory.lookupById(channel.getId()));
     }
 
     /**
@@ -729,7 +730,7 @@ public class ContentManagerTest extends BaseTestCaseWithUser {
         ContentEnvironment env = ContentManager.createEnvironment(cp.getLabel(), empty(), "fst", "first env", "desc", false, user);
         assertEquals(Long.valueOf(0), env.getVersion());
 
-        // 1. build a project with a source
+        // 1. build the project with a source
         Channel channel = createPopulatedChannel();
         ContentManager.attachSource("cplabel", SW_CHANNEL, channel.getLabel(), empty(), user);
         assertEquals(channel, cp.lookupSwSourceLeader().get().getChannel());
@@ -747,7 +748,7 @@ public class ContentManagerTest extends BaseTestCaseWithUser {
         assertEquals(channel.getErratas(), tgtChannel.getErratas());
         assertEquals(Long.valueOf(1), env.getVersion());
 
-        // 2. change a project source and rebuild
+        // 2. change the project source and rebuild
         Channel newChannel = createPopulatedChannel();
         ContentManager.attachSource("cplabel", SW_CHANNEL, newChannel.getLabel(), empty(), user);
         assertEquals(channel, cp.lookupSwSourceLeader().get().getChannel()); // leader is the same
@@ -905,7 +906,7 @@ public class ContentManagerTest extends BaseTestCaseWithUser {
         ContentProjectFactory.save(cp);
         ContentEnvironment devEnv = ContentManager.createEnvironment(cp.getLabel(), empty(), "dev", "dev env", "desc", false, user);
 
-        // 1. build a project with a source
+        // 1. build the project with a source
         Channel channel1 = createPopulatedChannel();
         Channel channel2 = createPopulatedChannel();
         ContentManager.attachSource("cplabel", SW_CHANNEL, channel1.getLabel(), empty(), user);
@@ -1146,10 +1147,221 @@ public class ContentManagerTest extends BaseTestCaseWithUser {
         try {
             ContentManager.buildProject("cplabel", empty(), false, user);
             fail("An exception should have been thrown");
-        }
-        catch (ContentManagementException e) {
+        } catch (ContentManagementException e) {
             // should happen
         }
+    }
+
+    /**
+     * This scenario tests that the original-clone relation is maintained between CLM channels
+     * during {@link ContentProject} building/promoting
+     *
+     * @throws Exception if anything goes wrong
+     */
+    public void testClonedChannelLinks() throws Exception {
+        var project = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());
+        ContentProjectFactory.save(project);
+        var devEnv = ContentManager.createEnvironment(project.getLabel(), empty(), "dev", "dev env", "desc", false, user);
+        var testEnv = ContentManager.createEnvironment(project.getLabel(), of("dev"), "test", "test env", "desc", false, user);
+
+        // build the project with 2 channels
+        var channel1 = createPopulatedChannel();
+        var channel2 = createPopulatedChannel();
+        ContentManager.attachSource("cplabel", SW_CHANNEL, channel1.getLabel(), empty(), user);
+        ContentManager.attachSource("cplabel", SW_CHANNEL, channel2.getLabel(), empty(), user);
+        ContentManager.buildProject("cplabel", empty(), false, user);
+        HibernateFactory.getSession().flush();
+        HibernateFactory.getSession().clear();
+
+        // check that built channels have the originals set correctly
+        assertEquals(Set.of(channel1, channel2), getOriginalChannels(getEnvChannels(devEnv)));
+
+        // promote project
+        ContentManager.promoteProject("cplabel", "dev", false, user);
+        HibernateFactory.getSession().flush();
+        HibernateFactory.getSession().clear();
+
+        // check the originals of the test environment correspond to channels in the dev environment
+        devEnv = ContentManager.lookupEnvironment(devEnv.getLabel(), "cplabel", user).get();
+        testEnv = ContentManager.lookupEnvironment(testEnv.getLabel(), "cplabel", user).get();
+        assertEquals(getEnvChannels(devEnv), getOriginalChannels(getEnvChannels(testEnv)));
+
+        // delete a source && build the project
+        ContentManager.detachSource("cplabel", SW_CHANNEL, channel1.getLabel(), user);
+        ContentManager.buildProject("cplabel", empty(), false, user);
+        HibernateFactory.getSession().flush();
+        HibernateFactory.getSession().clear();
+
+        // check the originals of the "test" channels: one should point to a channel in the "dev" environment,
+        // the other should point to the "source" channel1
+        var expectedTestOriginals = getEnvChannels(devEnv);
+        expectedTestOriginals.add(channel1);
+        assertEquals(expectedTestOriginals, getOriginalChannels(getEnvChannels(testEnv)));
+
+        // add the channel again && build
+        ContentManager.attachSource("cplabel", SW_CHANNEL, channel1.getLabel(), empty(), user);
+        ContentManager.buildProject("cplabel", empty(), false, user);
+        HibernateFactory.getSession().flush();
+        HibernateFactory.getSession().clear();
+
+        // check the originals of the test environment correspond to channels in the dev environment again
+        devEnv = ContentManager.lookupEnvironment(devEnv.getLabel(), "cplabel", user).get();
+        testEnv = ContentManager.lookupEnvironment(testEnv.getLabel(), "cplabel", user).get();
+        assertEquals(Set.of(channel1, channel2), getOriginalChannels(getEnvChannels(devEnv)));
+        assertEquals(getEnvChannels(devEnv), getOriginalChannels(getEnvChannels(testEnv)));
+    }
+
+    /**
+     * This scenario tests that the original-clone relation is maintained between CLM channels even after inserting
+     * a new Environment in the middle and then removing it
+     *
+     * @throws Exception if anything goes wrong
+     */
+    public void testClonedChannelLinksInEnvPath() throws Exception {
+        var project = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());
+        ContentProjectFactory.save(project);
+        var devEnv = ContentManager.createEnvironment(project.getLabel(), empty(), "dev", "dev env", "desc", false, user);
+        var testEnv = ContentManager.createEnvironment(project.getLabel(), of("dev"), "test", "test env", "desc", false, user);
+
+        // build the project with 1 channel
+        var channel1 = createPopulatedChannel();
+        ContentManager.attachSource("cplabel", SW_CHANNEL, channel1.getLabel(), empty(), user);
+        ContentManager.buildProject("cplabel", empty(), false, user);
+        HibernateFactory.getSession().flush();
+        HibernateFactory.getSession().clear();
+
+        // promote project
+        ContentManager.promoteProject("cplabel", "dev", false, user);
+        HibernateFactory.getSession().flush();
+        HibernateFactory.getSession().clear();
+
+        // check the originals of the test environment correspond to channels in the dev environment
+        devEnv = ContentManager.lookupEnvironment(devEnv.getLabel(), "cplabel", user).get();
+        testEnv = ContentManager.lookupEnvironment(testEnv.getLabel(), "cplabel", user).get();
+        assertEquals(getEnvChannels(devEnv), getOriginalChannels(getEnvChannels(testEnv)));
+
+        // create a new environment "in the middle"
+        var middleEnv = ContentManager.createEnvironment(project.getLabel(), of("dev"), "mid", "mid env", "desc", false, user);
+        HibernateFactory.getSession().flush();
+        HibernateFactory.getSession().clear();
+        devEnv = ContentManager.lookupEnvironment(devEnv.getLabel(), "cplabel", user).get();
+        testEnv = ContentManager.lookupEnvironment(testEnv.getLabel(), "cplabel", user).get();
+
+        // check the originals of the mid environment correspond to channels in the dev environment
+        assertEquals(getEnvChannels(devEnv), getOriginalChannels(getEnvChannels(middleEnv)));
+        // check the originals of the test environment correspond to channels in the mid environment
+        assertEquals(getEnvChannels(middleEnv), getOriginalChannels(getEnvChannels(testEnv)));
+
+        // check that after removing the middle env, the originals of the test point to dev channels again
+        ContentManager.removeEnvironment("mid", "cplabel", user);
+        HibernateFactory.getSession().flush();
+        HibernateFactory.getSession().clear();
+        devEnv = ContentManager.lookupEnvironment(devEnv.getLabel(), "cplabel", user).get();
+        testEnv = ContentManager.lookupEnvironment(testEnv.getLabel(), "cplabel", user).get();
+        // check the originals of the mid environment correspond to channels in the dev environment
+        assertEquals(getEnvChannels(devEnv), getOriginalChannels(getEnvChannels(testEnv)));
+    }
+
+    /**
+     * Similar as testClonedChannelLinks, this scenario tests that the original-clone relation
+     * is maintained between CLM channels during {@link ContentProject} building/promoting.
+     *
+     * The difference is that the original state of the links between channel is broken (existing user data
+     * from previous versions).
+     * The original-clone relation should be fixed by building/promoting the project.
+     *
+     * @throws Exception if anything goes wrong
+     */
+    public void testFixingClonedChannelLinks() throws Exception {
+        var project = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());
+        ContentProjectFactory.save(project);
+        var devEnv = ContentManager.createEnvironment(project.getLabel(), empty(), "dev", "dev env", "desc", false, user);
+        var testEnv = ContentManager.createEnvironment(project.getLabel(), of("dev"), "test", "test env", "desc", false, user);
+
+        // build the project
+        var channel1 = createPopulatedChannel();
+        ContentManager.attachSource("cplabel", SW_CHANNEL, channel1.getLabel(), empty(), user);
+        ContentManager.buildProject("cplabel", empty(), false, user);
+
+        // check that built channel has the original set correctly
+        assertEquals(Set.of(channel1), getOriginalChannels(getEnvChannels(devEnv)));
+
+        // promote project
+        ContentManager.promoteProject("cplabel", "dev", false, user);
+
+        // now "break" the testEnv channel
+        getEnvChannels(testEnv).forEach(chan -> chan.asCloned().get().setOriginal(channel1));
+        assertEquals(Set.of(channel1), getOriginalChannels(getEnvChannels(testEnv)));
+
+        // promote project again and check that the original of testEnv channel was fixed
+        ContentManager.promoteProject("cplabel", "dev", false, user);
+
+        assertEquals(getEnvChannels(devEnv), getOriginalChannels(getEnvChannels(testEnv)));
+    }
+
+    /**
+     * Similar as testClonedChannelLinks, but in this case we setup the project targets
+     * with completely crafted (non-clone) channels.
+     *
+     * @throws Exception if anything goes wrong
+     */
+    public void testFixingClonedChannelLinks2() throws Exception {
+        var project = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());
+        ContentProjectFactory.save(project);
+        var srcChan = createPopulatedChannel();
+        ContentManager.attachSource("cplabel", SW_CHANNEL, srcChan.getLabel(), empty(), user);
+
+        // 2 environments, 1 channel in each
+        var devEnv = ContentManager.createEnvironment(project.getLabel(), empty(), "dev", "dev env", "desc", false, user);
+        var testEnv = ContentManager.createEnvironment(project.getLabel(), of("dev"), "test", "test env", "desc", false, user);
+
+        var devChan = createChannelInEnvironment(devEnv, of(srcChan.getLabel()));
+        var devTarget = new SoftwareEnvironmentTarget(devEnv, devChan);
+        ContentProjectFactory.save(devTarget);
+        devEnv.addTarget(devTarget);
+
+        var testChan = createChannelInEnvironment(testEnv, of(srcChan.getLabel()));
+        var testTarget = new SoftwareEnvironmentTarget(testEnv, testChan);
+        ContentProjectFactory.save(testTarget);
+        testEnv.addTarget(testTarget);
+
+        // let's just check the env. channels are not cloned
+        assertFalse(devChan.isCloned());
+        assertFalse(testChan.isCloned());
+
+        // let's build the project and check that the procedure fixed the channel in the dev environment
+        ContentManager.buildProject("cplabel", empty(), false, user);
+
+        HibernateFactory.getSession().flush();
+        HibernateFactory.getSession().clear();
+
+        devChan = ChannelFactory.lookupById(devChan.getId());
+        testChan = ChannelFactory.lookupById(testChan.getId());
+        assertEquals(srcChan, devChan.getOriginal());
+        assertFalse(testChan.isCloned());
+
+        // let's promote the project and check that the procedure fixed the channel in the test environment as well
+        ContentManager.promoteProject("cplabel", "dev", false, user);
+        HibernateFactory.getSession().flush();
+        HibernateFactory.getSession().clear();
+
+        devChan = ChannelFactory.lookupById(devChan.getId());
+        testChan = ChannelFactory.lookupById(testChan.getId());
+        assertEquals(srcChan, devChan.getOriginal());
+        assertEquals(devChan, testChan.getOriginal());
+    }
+
+    // extract original channels from given channels
+    private Set<Channel> getOriginalChannels(Collection<Channel> channels) {
+        return channels.stream().map(Channel::getOriginal).collect(toSet());
+    }
+
+    // get channels of given environment
+    private Set<Channel> getEnvChannels(ContentEnvironment testEnv) {
+        return testEnv.getTargets().stream()
+                .flatMap(tgt -> tgt.asSoftwareTarget().stream())
+                .map(tgt -> tgt.getChannel())
+                .collect(toSet());
     }
 
     /**
