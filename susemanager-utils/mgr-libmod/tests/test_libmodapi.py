@@ -49,3 +49,15 @@ class TestLibmodProc:
         self.libmodproc.enable_stream(s_obj=s_obj)
         stream = MLStreamType("a", None)
         assert self.libmodproc._is_stream_enabled(stream)
+
+    def test_disable_stream(self):
+        """
+        test_disable_stream -- disables selected stream.
+        """
+        s_obj = MagicMock()
+        s_obj.get_module_name = MagicMock(return_value="a")
+        self.libmodproc.enable_stream(s_obj=s_obj)
+        stream = MLStreamType("a", None)
+        assert self.libmodproc._is_stream_enabled(stream)
+        self.libmodproc.disable_stream("a")
+        assert not self.libmodproc._is_stream_enabled(stream)
