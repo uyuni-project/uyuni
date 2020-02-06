@@ -39,3 +39,13 @@ class TestLibmodProc:
         data = b'\x1f\x8b'
         with mock.patch("mgrlibmod.mllib.open", mock_open(read_data=data), create=True):
             assert self.libmodproc._is_meta_compressed("dummy.gz")
+
+    def test_enable_stream(self):
+        """
+        test_enable_stream -- enables selected stream.
+        """
+        s_obj = MagicMock()
+        s_obj.get_module_name = MagicMock(return_value="a")
+        self.libmodproc.enable_stream(s_obj=s_obj)
+        stream = MLStreamType("a", None)
+        assert self.libmodproc._is_stream_enabled(stream)
