@@ -4,6 +4,8 @@ Unit test for LibmodProc class.
 from mgrlibmod.mllib import MLLibmodProc
 from mgrlibmod.mltypes import MLStreamType
 import pytest
+from unittest import mock
+from unittest.mock import mock_open, MagicMock
 
 try:
     import gi
@@ -29,3 +31,11 @@ class TestLibmodProc:
         stream = MLStreamType("a", "b")
         self.libmodproc._enabled_stream_modules = {"a": "b"}
         assert self.libmodproc._is_stream_enabled(stream)
+
+    def test_meta_compressed(self):
+        """
+        test_meta_compressed -- test if a file is compressed by Gzip.
+        """
+        data = b'\x1f\x8b'
+        with mock.patch("mgrlibmod.mllib.open", mock_open(read_data=data), create=True):
+            assert self.libmodproc._is_meta_compressed("dummy.gz")
