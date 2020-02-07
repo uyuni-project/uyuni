@@ -83,7 +83,7 @@ public class PGEventStream extends AbstractEventStream implements PGNotification
         Config config = Config.get();
         dataSource.setHost(config.getString(ConfigDefaults.DB_HOST));
         dataSource.setPort(config.getInt(ConfigDefaults.DB_PORT));
-        dataSource.setDatabase(config.getString(ConfigDefaults.DB_NAME));
+        dataSource.setDatabaseName(config.getString(ConfigDefaults.DB_NAME));
         dataSource.setUser(config.getString(ConfigDefaults.DB_USER));
         dataSource.setPassword(config.getString(ConfigDefaults.DB_PASSWORD));
         dataSource.setSslMode("allow");
