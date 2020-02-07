@@ -43,15 +43,35 @@ def main():
         example: str = """
 Usage example:
 
-1. Create JSON file with the following type (values are just as an example):
+1. Create input JSON file with the following type (values are just as an example)
+   and save it e.g. as "input.json":
 
         {
-            "paths": ["my/path/1.yaml", "my/path/2.yaml"],
-            "streams": [["postgresql", "9.6"], ["idm", "client"]]
+            "function": "module_packages",
+            "paths": [
+                "data/some-modules.yaml.gz",
+                "data/some-other-modules.yaml.gz"
+            ],
+            "streams": [
+                {
+                    "name": "postgresql",
+                    "stream": "10"
+                },
+                {
+                    "name": "rhn-tools",
+                    "stream": "1.0"
+                }
+            ]
         }
 
-2. cat yourfile.json | mgr-libmod > output.json
-        """
+2. Run it to resolve the modules and packages:
+
+        mgr-libmod < input.json > output.json
+
+To get the full list of supported functions, call "-l" option:
+
+        mgr-libmod -l
+"""
         print(example.strip() + "\n")
     else:
         try:
