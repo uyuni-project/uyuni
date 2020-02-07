@@ -48,3 +48,4 @@ cp -R scripts/* %{buildroot}/usr/bin
 %defattr(-,root,root)
 %{python3_sitelib}/*
 /usr/bin/mgr-libmod
+%license LICENSE
