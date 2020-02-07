@@ -27,6 +27,11 @@ Feature: Setup SUSE Manager proxy
     When I accept "proxy" key
 
 @proxy
+  Scenario: Wait until the proxy appears
+    Given I am authorized
+    When I wait until onboarding is completed for "proxy"
+
+@proxy
   Scenario: Detect latest Salt changes on the proxy
     When I query latest Salt changes on "proxy"
 
