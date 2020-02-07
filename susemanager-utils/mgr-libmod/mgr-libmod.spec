@@ -41,25 +41,10 @@ mgr-libmod
 %{__python} setup.py install --skip-build --root $RPM_BUILD_ROOT
 
 %check
-cd src/tests
-py.test
 
 %post
 
 %files
 %defattr(-,root,root)
-%dir /usr/share/susemanager
-/usr/share/susemanager/salt
-/usr/share/susemanager/pillar_data
-/usr/share/susemanager/modules
-/usr/share/susemanager/modules/pillar
-/usr/share/susemanager/modules/tops
-/usr/share/susemanager/modules/runners
-/usr/share/susemanager/modules/engines
-/usr/share/susemanager/formulas
-/usr/share/susemanager/reactor
-/usr/share/susemanager/scap
-/srv/formula_metadata
-%ghost /usr/share/susemanager/salt/certs/RHN-ORG-TRUSTED-SSL-CERT
 
 %changelog
