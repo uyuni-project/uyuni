@@ -20,6 +20,10 @@ Feature: Be able to bootstrap a sle12sp4 Salt host managed via salt-ssh
     And I wait until I see the name of "sle12sp4_ssh_minion", refreshing the page
     And I wait until onboarding is completed for "sle12sp4_ssh_minion"
 
+# WORKAROUD for bsc#1124634
+# Package 'sle-manager-tools-release' is automatically installed during bootstrap and
+# stays installed after removal of channel containing it. So it is not possible to update it.
+# Package needs to be removed from highstate to avoid failure when updating it.
 @ssh_minion
   Scenario: Remove sle-manager-tools-release from state after sle12sp4 bootstrap
     Given I am on the Systems overview page of this "sle12sp4_ssh_minion"
