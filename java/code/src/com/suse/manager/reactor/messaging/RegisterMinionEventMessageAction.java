@@ -153,8 +153,11 @@ public class RegisterMinionEventMessageAction implements MessageAction {
             grains-> {
                 boolean saltbootInitrd = grains.getSaltbootInitrd();
                 Optional<String> mkey = grains.getSuseManagerGrain().flatMap(sm -> sm.getManagementKey());
+                Optional<ActivationKey> activationKey =
+                        mkey.flatMap(mk -> ofNullable(ActivationKeyFactory.lookupByKey(mk)));
                 Optional<String> validReactivationKey =
-                        mkey.flatMap(mk -> isValidReactivationKey(mk, minionId) ? mkey : empty());
+                        mkey.flatMap(mk -> isValidReactivationKey(activationKey, minionId) ? mkey : empty());
+                updatekKickStartSession(activationKey);
                 Optional<String> machineIdOpt = grains.getMachineId();
                 Opt.consume(machineIdOpt,
                     ()-> LOG.error("Aborting: cannot find machine id for minion: " + minionId),
@@ -202,28 +205,25 @@ public class RegisterMinionEventMessageAction implements MessageAction {
 
     /**
      * Check if the specified management_key is valid reactivation key or not
-     * @param managmentKeyLabel management_key
+     * @param activationKey activationKey
      * @param minionId minion Id
      * @return
      */
-    private boolean isValidReactivationKey(String managmentKeyLabel, String minionId) {
-        Optional<ActivationKey> akey = ofNullable(ActivationKeyFactory.lookupByKey(managmentKeyLabel));
-        Boolean isValid =
-            Opt.fold(akey,
-                () -> {
-                    LOG.info("Outdated Management Key defined for " + minionId + ": " + managmentKeyLabel);
+    private boolean isValidReactivationKey(Optional<ActivationKey> activationKey, String minionId) {
+        return Opt.fold(activationKey,
+            () -> {
+                LOG.info("Outdated Management Key defined for " + minionId + ": " + activationKey);
+                return false;
+            },
+            ak -> {
+                if (Objects.isNull(ak.getServer())) {
+                    LOG.error("Management Key is not a reactivation key: " + ak.getKey());
                     return false;
-                },
-                ak -> {
-                    if (Objects.isNull(ak.getServer())) {
-                        LOG.error("Management Key is not a reactivation key: " + managmentKeyLabel);
-                        return false;
-                    }
-                    //considered valid reactivation key only in this case
-                    return true;
                 }
-            );
-        return isValid;
+                //considered valid reactivation key only in this case
+                return true;
+            }
+        );
     }
 
     /**
@@ -252,18 +252,13 @@ public class RegisterMinionEventMessageAction implements MessageAction {
      * @param reActivationKey valid Reaction key
      */
     private void reactivateSystem(String minionId, String machineId, String reActivationKey) {
-        of(ActivationKeyFactory.lookupByKey(reActivationKey)).ifPresent(ak -> {
-            if (Objects.nonNull(ak.getKickstartSession())) {
-                ak.getKickstartSession().markComplete("Installation completed.");
-            }
-            else {
-                // The machine id may have changed, but we know from the reactivation key
-                // which system should become this one
-                ak.getServer().asMinionServer().ifPresent(minion -> {
+        // The machine id may have changed, but we know from the reactivation key
+        // which system should become this one
+        of(ActivationKeyFactory.lookupByKey(reActivationKey))
+                .flatMap(ak -> ak.getServer().asMinionServer())
+                .ifPresent(minion -> {
                     minion.setMachineId(machineId);
                     minion.setMinionId(minionId);
-                });
-            }
         });
     }
 
@@ -285,6 +280,18 @@ public class RegisterMinionEventMessageAction implements MessageAction {
 
             SALT_SERVICE.deleteKey(oldMinionId);
         }
+    }
+
+    /**
+     * Mark the kickstart session of activation key as complete if activation key has kickstart session
+     * @param activationKey activationKey key
+     */
+    private void updatekKickStartSession(Optional<ActivationKey> activationKey) {
+        activationKey.ifPresent(ak -> {
+            if (Objects.nonNull(ak.getKickstartSession())) {
+                ak.getKickstartSession().markComplete("Installation completed.");
+            }
+        });
     }
 
     /**
