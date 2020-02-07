@@ -1,7 +1,7 @@
 #
 # spec file for package mgr-libmod
 #
-# Copyright (c) 2020 SUSE LINUX GmbH, Nuernberg, Germany.
+# Copyright (c) 2020 SUSE LLC
 #
 # All modifications and additions to the file contributed by third parties
 # remain the property of their copyright owners, unless otherwise agreed
@@ -23,10 +23,12 @@ License:        MIT
 Group:          Applications/Internet
 Source:         %{name}-%{version}.tar.gz
 Requires(pre):  coreutils
+Requires:       python3-libmodulemd
 BuildRequires:  python3-pytest
 BuildRequires:  python3-mock
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildArch:      noarch
+URL:            https://github.com/uyuni-project/uyuni
 
 %description
 mgr-libmod
@@ -35,16 +37,14 @@ mgr-libmod
 %setup -q
 
 %build
-%{__python} setup.py build
+%{__python3} setup.py build
 
 %install
-%{__python} setup.py install --skip-build --root $RPM_BUILD_ROOT
-
-%check
-
-%post
+%{__python3} setup.py install --skip-build --root $RPM_BUILD_ROOT
+mkdir -p %{buildroot}/usr/bin
+cp -R scripts/* %{buildroot}/usr/bin
 
 %files
 %defattr(-,root,root)
-
-%changelog
+%{python3_sitelib}/*
+/usr/bin/mgr-libmod
