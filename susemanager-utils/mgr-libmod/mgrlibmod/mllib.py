@@ -344,76 +344,6 @@ class MLLibmodAPI:
 
         return self
 
-    # Functions
-    def _get_list_modules(self) -> Dict[str, Dict]:
-        """
-        _get_all_modules -- lists all available modules.
-
-        :return: list of strings
-        :rtype: List[str]
-        """
-        modules: Dict = {
-            "modules": []
-        }
-        self._proc.index_modules()
-        for m_name in self._proc._mod_index.get_module_names():
-            mobj: Dict = {}
-            mod = self._proc._mod_index.get_module(m_name)
-            d_mod = mod.get_defaults()
-            if d_mod is not None:
-                mobj[m_name] = {
-                    "default": d_mod.get_default_stream(),
-                    "streams": d_mod.get_streams_with_default_profiles(),
-                }
-                modules["modules"].append(mobj)
-        return modules
-
-    def _get_list_packages(self) -> Dict[str, List[str]]:
-        """
-        _get_list_packages -- lists all available packages for the module.
-
-        :return: list of packages within 'packages' element
-        :rtype: List[str]
-        """
-        self._proc.index_modules()
-        rpms: Dict[str, List[str]] = {"packages": []}
-        for name in self._proc._mod_index.get_module_names():
-            module = self._proc._mod_index.get_module(name)
-            for stream in module.get_all_streams():
-                rpms["packages"].extend(stream.get_rpm_artifacts())
-        return rpms
-
-    def _get_repodata_streams(self) -> List[Modulemd.ModuleStreamV2]:
-        """
-        _get_repodata_streams -- collect all repodata streams and select current default.
-
-        :return: List of stream objects
-        :rtype: List
-        """
-        self._proc._streams.clear()
-        self._proc.index_modules()
-
-        for s_type in self.repodata.get_streams():
-            try:
-                if s_type.stream:
-                    self._proc.pick_stream(s_type)
-                else:
-                    self._proc.pick_default_stream(s_type=s_type)
-            except Exception as exc:
-                sys.stderr.write("Skipping stream {}\n".format(s_type.name))
-        return self._proc._streams
-
-    def _get_module_packages(self) -> Dict[str, List[str]]:
-        """
-        _get_module_packages -- get all RPMs from selected streams as a map of package names to package strings.
-
-        :return: structure for module packages
-        :rtype: Dict[str, List[str]]
-        """
-        self._get_repodata_streams()
-        return self._proc.get_api_provides()
-
-    # API
     def to_json(self, pretty:bool = False) -> str:
         """
         to_json -- render the last set processed result by 'run' method into the JSON string.
@@ -435,6 +365,75 @@ class MLLibmodAPI:
         :return: MLLibmodAPI
         """
         fname = self.repodata.get_function()
-        self._result[fname] = getattr(self, "_get_{}".format(fname))()
+        self._result[fname] = getattr(self, "_function__{}".format(fname))()
 
         return self
+
+    def _get_repodata_streams(self) -> List[Modulemd.ModuleStreamV2]:
+        """
+        _get_repodata_streams -- collect all repodata streams and select current default.
+
+        :return: List of stream objects
+        :rtype: List
+        """
+        self._proc._streams.clear()
+        self._proc.index_modules()
+
+        for s_type in self.repodata.get_streams():
+            try:
+                if s_type.stream:
+                    self._proc.pick_stream(s_type)
+                else:
+                    self._proc.pick_default_stream(s_type=s_type)
+            except Exception as exc:
+                sys.stderr.write("Skipping stream {}\n".format(s_type.name))
+        return self._proc._streams
+
+    # Functions
+    def _function__list_modules(self) -> Dict[str, Dict]:
+        """
+        _function__all_modules -- lists all available modules.
+
+        :return: list of strings
+        :rtype: List[str]
+        """
+        modules: Dict = {
+            "modules": []
+        }
+        self._proc.index_modules()
+        for m_name in self._proc._mod_index.get_module_names():
+            mobj: Dict = {}
+            mod = self._proc._mod_index.get_module(m_name)
+            d_mod = mod.get_defaults()
+            if d_mod is not None:
+                mobj[m_name] = {
+                    "default": d_mod.get_default_stream(),
+                    "streams": d_mod.get_streams_with_default_profiles(),
+                }
+                modules["modules"].append(mobj)
+        return modules
+
+    def _function__list_packages(self) -> Dict[str, List[str]]:
+        """
+        _function__list_packages -- lists all available packages for the module.
+
+        :return: list of packages within 'packages' element
+        :rtype: List[str]
+        """
+        self._proc.index_modules()
+        rpms: Dict[str, List[str]] = {"packages": []}
+        for name in self._proc._mod_index.get_module_names():
+            module = self._proc._mod_index.get_module(name)
+            for stream in module.get_all_streams():
+                rpms["packages"].extend(stream.get_rpm_artifacts())
+        return rpms
+
+    def _function__module_packages(self) -> Dict[str, List[str]]:
+        """
+        _function__module_packages -- get all RPMs from selected streams as a map of package names to package strings.
+
+        :return: structure for module packages
+        :rtype: Dict[str, List[str]]
+        """
+        self._get_repodata_streams()
+        return self._proc.get_api_provides()

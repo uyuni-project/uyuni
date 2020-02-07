@@ -16,6 +16,7 @@ def get_opts() -> argparse.Namespace:
         description="mgr-libmod -- Utility to resolve module dependencies"
     )
     ap.add_argument("-e", "--example", action="store_true", help="Show usage example")
+    ap.add_argument("-l", "--list", action="store_true", help="Show list of supported functions")
     ap.add_argument("-v", "--verbose", action="store_true", help="Verbose output (debug mode)")
     return ap.parse_args()
 
@@ -39,7 +40,13 @@ def main():
     main function for the CLI app.
     """
     opts: argparse.Namespace = get_opts()
-    if opts.example:
+    if opts.list:
+        print("Supported functions:\n")
+        for m in dir(mllib.MLLibmodAPI):
+            if m.startswith("_function__"):
+                print("  -", m[11:])
+        print()
+    elif opts.example:
         example: str = """
 Usage example:
 
