@@ -51,6 +51,7 @@ Feature: Setup SUSE Manager for Retail branch network
     And I enter the local IP address of "proxy" in IP field
     # bsc#1132908 - Branch network formula closes IPv6 default route, potentially making further networking fail
     And I check enable SLAAC with routing box
+    And I enter "example" in branch id field
     And I click on "Save Formula"
     Then I should see a "Formula saved" text
 
