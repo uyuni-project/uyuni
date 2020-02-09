@@ -380,7 +380,6 @@ fi
 # Workaround for strict-whitespace-enforcement in httpd
 %attr(644,root,%{apache_group}) %config %{apacheconfd}/aa-spacewalk-server.conf
 # config files
-%attr(755,root,%{apache_group}) %dir %{rhnconfigdefaults}
 %attr(644,root,%{apache_group}) %{rhnconfigdefaults}/rhn.conf
 %attr(755,root,root) %{_bindir}/spacewalk-cfg-get
 %{_mandir}/man8/spacewalk-cfg-get.8.gz
