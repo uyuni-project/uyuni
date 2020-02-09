@@ -1,3 +1,4 @@
+- Show proxy icon in system list
 - Disable modularity failsafe mechanism for RHEL 8 channels (bsc#1164875)
 - Handle the non-existent requested grains gracefully
 - Get the machineid grain from the minion startup event
