@@ -28,11 +28,9 @@ import com.redhat.rhn.frontend.events.TransactionHelper;
 import com.impossibl.postgres.api.jdbc.PGConnection;
 import com.impossibl.postgres.api.jdbc.PGNotificationListener;
 import com.impossibl.postgres.jdbc.PGDataSource;
-import com.impossibl.postgres.system.SystemSettings;
 import com.suse.salt.netapi.event.AbstractEventStream;
 import com.suse.salt.netapi.exception.SaltException;
 import com.suse.salt.netapi.parser.JsonParser;
-
 import org.apache.commons.lang3.concurrent.BasicThreadFactory;
 import org.apache.log4j.Logger;
 
@@ -88,7 +86,7 @@ public class PGEventStream extends AbstractEventStream implements PGNotification
         dataSource.setUser(config.getString(ConfigDefaults.DB_USER));
         dataSource.setPassword(config.getString(ConfigDefaults.DB_PASSWORD));
         dataSource.setSslMode("allow");
-        dataSource.setProtocolIoMode(SystemSettings.ProtocolIOMode.NIO);
+        dataSource.setProtocolIoMode("nio");
 
         try {
             connection = (PGConnection) dataSource.getConnection();
