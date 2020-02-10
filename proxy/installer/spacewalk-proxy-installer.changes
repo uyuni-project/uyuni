@@ -1,3 +1,4 @@
+- remove support for SuSEfirewall2
 - use salt master as parent for minion based proxies (bsc#1162129)
 
 -------------------------------------------------------------------
