@@ -166,7 +166,6 @@ mkdir -p %{buildroot}%{_datadir}/YaST2/scrconf
 mkdir -p %{buildroot}%{_datadir}/applications/YaST2
 mkdir -p %{buildroot}/etc/YaST2
 install -m 0644 yast/*.rb %{buildroot}%{_datadir}/YaST2/clients
-install -m 0644 yast/firstboot-susemanager.xml %{buildroot}/etc/YaST2
 install -m 0644 yast/*.scr %{buildroot}%{_datadir}/YaST2/scrconf
 %if 0%{?is_opensuse}
 install -m 0644 yast/org.uyuni-project.yast2.Uyuni.desktop %{buildroot}%{_datadir}/applications/YaST2/org.uyuni-project.yast2.Uyuni.desktop
@@ -263,7 +262,6 @@ fi
 %{_prefix}/lib/susemanager/bin/*
 %{_datadir}/YaST2/clients/*.rb
 %{_datadir}/YaST2/scrconf/*.scr
-%config /etc/YaST2/firstboot-susemanager.xml
 %config %{_sysconfdir}/slp.reg.d/susemanager.reg
 %{_sysconfdir}/init.d/susemanager
 %if 0%{?is_opensuse}
