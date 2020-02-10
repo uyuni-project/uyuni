@@ -9,13 +9,12 @@
 # http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 #
 
-COMMON := ../../common
-FLAGS  := COMMON=../$(COMMON)
+COMMON := ../../common/tables
 
 common :
+	@rm -rf common
 	@mkdir -p common
-	@cp $(COMMON)/Makefile common
-	@$(MAKE) -C common $(FLAGS) $(MAKEOVERRIDES)
+	@cp -p $(COMMON)/* common
 
 clean :
 	@rm -rf common
