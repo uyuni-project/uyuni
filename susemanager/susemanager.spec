@@ -77,8 +77,6 @@ Requires(pre):  uyuni-base-server
 # yast module dependency
 %if 0%{?suse_version} > 1320
 Requires:       firewalld
-%else
-Requires:       SuSEfirewall2
 %endif
 Requires:       postfix
 Requires:       yast2-users
@@ -176,9 +174,6 @@ install -m 0644 yast/com.suse.yast2.SUSEManager.desktop %{buildroot}%{_datadir}/
 %if 0%{?suse_version} > 1320
 mkdir -p %{buildroot}/%{_prefix}/lib/firewalld/services
 install -m 0644 etc/firewalld/services/suse-manager-server.xml %{buildroot}/%{_prefix}/lib/firewalld/services
-%else
-mkdir -p %{buildroot}/%{_sysconfdir}/sysconfig/SuSEfirewall2.d/services
-install -m 0644 etc/sysconfig/SuSEfirewall2.d/services/suse-manager-server %{buildroot}/%{_sysconfdir}/sysconfig/SuSEfirewall2.d/services/
 %endif
 
 %check
@@ -272,8 +267,6 @@ fi
 %attr(775,salt,susemanager) %dir /srv/www/os-images/
 %if 0%{?suse_version} > 1320
 %{_prefix}/lib/firewalld/services/suse-manager-server.xml
-%else
-%config %{_sysconfdir}/sysconfig/SuSEfirewall2.d/services/suse-manager-server
 %endif
 
 %files tools
