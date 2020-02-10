@@ -1902,11 +1902,11 @@ class LiteServer:
 def guess_suse_channels_for_server(server, org_id=None, user_id=None, raise_exceptions=0):
     log_debug(3, server)
     suse_products = server.get_suse_products()
-    if suse_products == {}:
+    if len(suse_products) == 0:
         return None
 
     baseproduct = None
-    for product in suse_products['products']:
+    for product in suse_products:
         if product['baseproduct'] == 'Y':
             baseproduct = product
 
@@ -1924,15 +1924,15 @@ def guess_suse_channels_for_server(server, org_id=None, user_id=None, raise_exce
             exts_next = exts_next + suseLib.findAllExtensionProductsOf(ext.pop("id", None), rootProductId)
         exts = exts_next
 
-    basechannels = suseLib.channelForProduct(baseproduct, suse_products['ostarget'], user_id=user_id, org_id=org_id)
+    basechannels = suseLib.channelForProduct(baseproduct, user_id=user_id, org_id=org_id)
     if not basechannels or basechannels == []:
         return None
     bc = basechannels[0]
 
     # search childchannels of the base product which should be added too
     childchannels = {}
-    for product in suse_products['products'] + all_products:
-        ccs = suseLib.channelForProduct(product, suse_products['ostarget'], bc['id'], user_id=user_id, org_id=org_id)
+    for product in suse_products + all_products:
+        ccs = suseLib.channelForProduct(product, bc['id'], user_id=user_id, org_id=org_id)
         if ccs:
             for cc in ccs:
                 childchannels[cc['id']] = cc
