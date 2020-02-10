@@ -234,6 +234,9 @@ artifacts:
     repository: Uyuni_Other
   - artifact: spark-template-jade
     repository: Uyuni_Other
+  - artifact: spy
+    package: pgjdbc-ng
+    repository: Uyuni_Other
   - artifact: statistics
     repository: Uyuni_Other
   - artifact: stax-api
