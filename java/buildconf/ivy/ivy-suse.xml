@@ -77,6 +77,7 @@
         <dependency org="suse" name="snakeyaml" rev="1.10" />
         <dependency org="suse" name="spark-core" rev="2.7.2" />
         <dependency org="suse" name="spark-template-jade" rev="2.3" />
+        <dependency org="suse" name="spy" rev="0.8.3" />
         <dependency org="suse" name="statistics" rev="1.0.2" />
         <dependency org="suse" name="stax-api" rev="1.0.1" />
         <dependency org="suse" name="stax2-api" rev="3.1.4" />
