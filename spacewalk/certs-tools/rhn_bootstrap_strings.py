@@ -579,15 +579,21 @@ elif [ "$INSTALLER" == apt ]; then
     function getA_CLIENT_CODE_BASE() {{
         local BASE=""
         local VERSION=""
+        local VARIANT_ID=""
 
 	if [ -f /etc/os-release ]; then
-	    BASE=$(source /etc/os-release; echo $ID)
-	    VERSION=$(source /etc/os-release; echo $VERSION_ID)
+            BASE=$(source /etc/os-release; echo $ID)
+            VERSION=$(source /etc/os-release; echo $VERSION_ID)
+            VARIANT_ID=$(source /etc/os-release; echo $VARIANT_ID)
         fi
         A_CLIENT_CODE_BASE="${{BASE:-unknown}}"
 	local VERCOMPS=(${{VERSION/\./ }}) # split into an array 18.04 -> (18 04)
         A_CLIENT_CODE_MAJOR_VERSION=${{VERCOMPS[0]}}
-	A_CLIENT_CODE_MINOR_VERSION=$((${{VERCOMPS[1]}} + 0)) # convert "04" -> 4
+        # Ubuntu only
+        if [ "${{BASE}}" == "Ubuntu" ]; then
+            A_CLIENT_CODE_MINOR_VERSION=$((${{VERCOMPS[1]}} + 0)) # convert "04" -> 4
+        fi
+        A_CLIENT_VARIANT_ID="${{VARIANT_ID:-unknown}}"
     }}
 
     function getA_MISSING() {{
@@ -624,13 +630,19 @@ elif [ "$INSTALLER" == apt ]; then
 
     echo "* check for necessary packages being installed..."
     getA_CLIENT_CODE_BASE
-    echo "* client codebase is ${{A_CLIENT_CODE_BASE}}-${{A_CLIENT_CODE_MAJOR_VERSION}}.${{A_CLIENT_CODE_MINOR_VERSION}}"
+    if [ "${{A_CLIENT_CODE_BASE}}" == "astra" ]; then
+      echo "* client codebase is ${{A_CLIENT_CODE_BASE}}-${{A_CLIENT_VARIANT_ID}}"
+    else
+      echo "* client codebase is ${{A_CLIENT_CODE_BASE}}-${{A_CLIENT_CODE_MAJOR_VERSION}}.${{A_CLIENT_CODE_MINOR_VERSION}}"
+    fi
     getA_MISSING
 
     CLIENT_REPOS_ROOT="${{CLIENT_REPOS_ROOT:-${{HTTPS_PUB_DIRECTORY}}/repositories}}"
     # Debian does not need minor version in the bootstrap repo URL
     if [ "${{A_CLIENT_CODE_BASE}}" == "debian" ]; then
       CLIENT_REPO_URL="${{CLIENT_REPOS_ROOT}}/${{A_CLIENT_CODE_BASE}}/${{A_CLIENT_CODE_MAJOR_VERSION}}/bootstrap"
+    elif [ "${{A_CLIENT_CODE_BASE}}" == "astra" ]; then
+      CLIENT_REPO_URL="${{CLIENT_REPOS_ROOT}}/${{A_CLIENT_CODE_BASE}}/${{A_CLIENT_VARIANT_ID}}/bootstrap"
     else
       CLIENT_REPO_URL="${{CLIENT_REPOS_ROOT}}/${{A_CLIENT_CODE_BASE}}/${{A_CLIENT_CODE_MAJOR_VERSION}}/${{A_CLIENT_CODE_MINOR_VERSION}}/bootstrap"
     fi

@@ -1,3 +1,4 @@
+- Enable support for bootstrapping Astra Linux CE "Orel"
 - remove key grains only when file and grain exists (bsc#1167237)
 - Add virtual storage pool actions
 
