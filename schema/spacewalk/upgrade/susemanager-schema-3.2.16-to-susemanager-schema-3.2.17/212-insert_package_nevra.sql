@@ -1,5 +1,4 @@
 -- oracle equivalent source sha1 7221154e7bcec7277ef2ecfc3f6902be54af288c
--- This file is intentionally left empty.
 
 create or replace function
 insert_package_nevra(
