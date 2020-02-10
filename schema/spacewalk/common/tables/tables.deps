@@ -248,9 +248,7 @@ suseImageInfoChannel           :: suseImageInfo rhnChannel
 suseImageInfoInstalledProduct  :: suseInstalledProduct suseImageInfo
 suseImageProfile               :: rhnRegTokenChannels web_customer suseImageStore
 suseImageStore                 :: suseCredentials web_customer suseImageStoreType
-suseOSTarget                   :: rhnChannelArch
 suseMinionInfo                 :: rhnServer
-suseServer                     :: rhnServer suseOSTarget
 suseInstalledProduct           :: rhnPackageArch
 suseMdData                     :: rhnChannel rhnPackage suseMdKeyword
 susePackageEula                :: rhnPackage suseEula
