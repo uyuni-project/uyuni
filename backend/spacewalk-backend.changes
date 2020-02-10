@@ -1,3 +1,6 @@
+- remove code to handle tables used for forwarding registrations
+  to NCC.
+
 -------------------------------------------------------------------
 Mon Feb 17 12:47:56 CET 2020 - jgonzalez@suse.com
 
