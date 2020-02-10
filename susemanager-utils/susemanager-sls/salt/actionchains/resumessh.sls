@@ -1,7 +1,7 @@
 resumessh:
     module.run:
     -   name: mgractionchains.resume
-    -   require:
+    - require:
       - module: sync_modules
 
 include:
