@@ -663,6 +663,7 @@ chown tomcat:%{apache_group} /var/log/rhn/gatherer.log
 %{jardir}/slf4j_log4j12*.jar
 %{jardir}/spark-core.jar
 %{jardir}/spark-template-jade.jar
+%{jardir}/spy.jar
 %{jardir}/simpleclient*.jar
 %{jardir}/pgjdbc-ng.jar
 %{jardir}/java-saml-core.jar
