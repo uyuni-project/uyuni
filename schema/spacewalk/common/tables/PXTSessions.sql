@@ -16,33 +16,33 @@
 
 CREATE TABLE PXTSessions
 (
-    id           NUMBER,
-    web_user_id  NUMBER
+    id           NUMERIC,
+    web_user_id  NUMERIC
                      CONSTRAINT pxtsessions_user
                          REFERENCES web_contact (id)
                          ON DELETE CASCADE,
-    expires      NUMBER
+    expires      NUMERIC
                      DEFAULT (0) NOT NULL,
-    value        VARCHAR2(4000) NOT NULL
+    value        VARCHAR(4000) NOT NULL
 )
-ENABLE ROW MOVEMENT
-LOGGING
+
+
 ;
 
 CREATE INDEX PXTSessions_user
     ON PXTSessions (web_user_id)
-    TABLESPACE [[4m_tbs]]
-    NOLOGGING;
+    
+    ;
 
 CREATE INDEX PXTSessions_expires
     ON PXTSessions (expires)
-    TABLESPACE [[8m_tbs]]
-    NOLOGGING;
+    
+    ;
 
 CREATE SEQUENCE pxt_id_seq;
 
 ALTER TABLE PXTSessions
     ADD CONSTRAINT pxt_sessions_pk PRIMARY KEY (id)
-    USING INDEX TABLESPACE [[8m_tbs]]
-    NOLOGGING;
+    
+    ;
 

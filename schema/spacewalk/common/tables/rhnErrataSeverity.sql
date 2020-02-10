@@ -16,11 +16,11 @@
 
 CREATE TABLE rhnErrataSeverity
 (
-    id     NUMBER NOT NULL
+    id     NUMERIC NOT NULL
                CONSTRAINT rhn_errata_sev_id_pk PRIMARY KEY,
-    rank   NUMBER NOT NULL,
-    label  VARCHAR2(40) NOT NULL
+    rank   NUMERIC NOT NULL,
+    label  VARCHAR(40) NOT NULL
 )
-ENABLE ROW MOVEMENT
+
 ;
 

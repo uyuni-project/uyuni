@@ -13,27 +13,27 @@
 create table
 suseServerInstalledProduct
 (
-    rhn_server_id     number
+    rhn_server_id     NUMERIC
                       CONSTRAINT suseserver_ip_rhns_id_fk
                       REFERENCES rhnServer (id)
                       ON DELETE CASCADE
                       not null,
-    suse_installed_product_id   number
+    suse_installed_product_id   NUMERIC
                                 CONSTRAINT ssip_sip_id_fk
                                 REFERENCES suseInstalledProduct (id)
                                 not null,
-    created   timestamp with local time zone
+    created   TIMESTAMPTZ
                   DEFAULT (current_timestamp) NOT NULL,
-    modified  timestamp with local time zone
+    modified  TIMESTAMPTZ
                   DEFAULT (current_timestamp) NOT NULL
 );
 
 CREATE UNIQUE INDEX suse_srv_inprod_uq
     ON suseServerInstalledProduct (rhn_server_id, suse_installed_product_id)
-    TABLESPACE [[64k_tbs]];
+    ;
 
 CREATE INDEX suse_srv_inprod_pkg_idx
     ON suseServerInstalledProduct (rhn_server_id)
-    TABLESPACE [[64k_tbs]]
-    NOLOGGING;
+    
+    ;
 

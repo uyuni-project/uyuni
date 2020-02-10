@@ -16,14 +16,14 @@
 
 CREATE TABLE rhnTaskoTask
 (
-    id        NUMBER NOT NULL
+    id        NUMERIC NOT NULL
                   CONSTRAINT rhn_tasko_task_id_pk PRIMARY KEY,
-    name      VARCHAR2(80) NOT NULL
+    name      VARCHAR(80) NOT NULL
                   CONSTRAINT rhn_tasko_task_name_uq UNIQUE,
-    class     VARCHAR2(60) NOT NULL,
-    created   timestamp with local time zone
+    class     VARCHAR(60) NOT NULL,
+    created   TIMESTAMPTZ
                   DEFAULT (current_timestamp) NOT NULL,
-    modified  timestamp with local time zone
+    modified  TIMESTAMPTZ
                   DEFAULT (current_timestamp) NOT NULL
 )
 ;

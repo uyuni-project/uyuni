@@ -16,23 +16,23 @@
 
 CREATE TABLE rhnReleaseChannelMap
 (
-    product          VARCHAR2(64) NOT NULL,
-    version          VARCHAR2(64) NOT NULL,
-    release          VARCHAR2(64) NOT NULL,
-    channel_arch_id  NUMBER NOT NULL
+    product          VARCHAR(64) NOT NULL,
+    version          VARCHAR(64) NOT NULL,
+    release          VARCHAR(64) NOT NULL,
+    channel_arch_id  NUMERIC NOT NULL
                      CONSTRAINT rhn_rcm_caid_fk
                         REFERENCES rhnChannelArch (id),
-    channel_id       NUMBER NOT NULL
+    channel_id       NUMERIC NOT NULL
                      CONSTRAINT rhn_rcm_cid_fk
                         REFERENCES rhnChannel (id)
                         ON DELETE CASCADE
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE INDEX rhn_rcm_prod_ver_rel_caid_idx
     ON rhnReleaseChannelMap (product, version, release, channel_arch_id)
-    TABLESPACE [[64k_tbs]];
+    ;
 
 ALTER TABLE rhnReleaseChannelMap
     ADD CONSTRAINT rhn_rcm_pva_def_uniq

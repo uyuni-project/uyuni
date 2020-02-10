@@ -16,22 +16,22 @@
 
 CREATE TABLE rhnErrataBuglist
 (
-    errata_id  NUMBER NOT NULL
+    errata_id  NUMERIC NOT NULL
                    CONSTRAINT rhn_errata_buglist_errata_fk
                        REFERENCES rhnErrata (id)
                        ON DELETE CASCADE,
-    bug_id     NUMBER NOT NULL,
-    summary    VARCHAR2(4000),
-    href       VARCHAR2(255),
-    created    timestamp with local time zone
+    bug_id     NUMERIC NOT NULL,
+    summary    VARCHAR(4000),
+    href       VARCHAR(255),
+    created    TIMESTAMPTZ
                    DEFAULT (current_timestamp) NOT NULL,
-    modified   timestamp with local time zone
+    modified   TIMESTAMPTZ
                    DEFAULT (current_timestamp) NOT NULL
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE UNIQUE INDEX rhn_err_bug_list_uq
     ON rhnErrataBuglist (errata_Id, bug_Id)
-    TABLESPACE [[64k_tbs]];
+    ;
 

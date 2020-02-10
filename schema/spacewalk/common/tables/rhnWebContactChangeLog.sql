@@ -16,28 +16,28 @@
 
 CREATE TABLE rhnWebContactChangeLog
 (
-    id                   NUMBER
+    id                   NUMERIC
                              CONSTRAINT rhn_wcon_cl_id_pk PRIMARY KEY,
-    web_contact_id       NUMBER NOT NULL
+    web_contact_id       NUMERIC NOT NULL
                              CONSTRAINT rhn_wcon_cl_wcon_id_fk
                                  REFERENCES web_contact (id)
                                  ON DELETE CASCADE,
-    web_contact_from_id  NUMBER
+    web_contact_from_id  NUMERIC
                              CONSTRAINT rhn_wcon_cl_wcon_from_id_fk
                                  REFERENCES web_contact (id)
                                  ON DELETE SET NULL,
-    change_state_id      NUMBER NOT NULL
+    change_state_id      NUMERIC NOT NULL
                              CONSTRAINT rhn_wcon_cl_csid_fk
                                  REFERENCES rhnWebContactChangeState (id),
-    date_completed       timestamp with local time zone
+    date_completed       TIMESTAMPTZ
                              DEFAULT (current_timestamp) NOT NULL
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE INDEX rhn_wcon_disabled_wcon_id_idx
     ON rhnWebContactChangeLog (web_contact_id)
-    NOLOGGING;
+    ;
 
 CREATE SEQUENCE rhn_wcon_disabled_seq;
 

@@ -16,27 +16,27 @@
 
 CREATE TABLE rhnErrataPackageTmp
 (
-    errata_id   NUMBER NOT NULL
+    errata_id   NUMERIC NOT NULL
                     CONSTRAINT rhn_err_pkgtmp_eid_fk
                         REFERENCES rhnErrataTmp (id)
                         ON DELETE CASCADE,
-    package_id  NUMBER NOT NULL
+    package_id  NUMERIC NOT NULL
                     CONSTRAINT rhn_err_pkgtmp_pid_fk
                         REFERENCES rhnPackage (id),
-    created     timestamp with local time zone
+    created     TIMESTAMPTZ
                     DEFAULT (current_timestamp) NOT NULL,
-    modified    timestamp with local time zone
+    modified    TIMESTAMPTZ
                     DEFAULT (current_timestamp) NOT NULL
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE UNIQUE INDEX rhn_err_pkgtmp_eid_pid_uq
     ON rhnErrataPackageTmp (errata_id, package_id)
-    TABLESPACE [[64k_tbs]];
+    ;
 
 CREATE INDEX rhn_err_pkgtmp_pid_idx
     ON rhnErrataPackageTmp (package_id)
-    TABLESPACE [[64k_tbs]]
-    NOLOGGING;
+    
+    ;
 

@@ -16,19 +16,19 @@
 
 CREATE TABLE rhnTaskoTemplate
 (
-    id          NUMBER NOT NULL
+    id          NUMERIC NOT NULL
                     CONSTRAINT rhn_tasko_template_id_pk PRIMARY KEY,
-    bunch_id    NUMBER NOT NULL
+    bunch_id    NUMERIC NOT NULL
                     CONSTRAINT rhn_tasko_template_bunch_fk
                     REFERENCES rhnTaskoBunch (id),
-    task_id     NUMBER NOT NULL
+    task_id     NUMERIC NOT NULL
                     CONSTRAINT rhn_tasko_template_task_fk
                     REFERENCES rhnTaskoTask (id),
-    ordering    NUMBER NOT NULL,
-    start_if    VARCHAR2(10),
-    created     timestamp with local time zone
+    ordering    NUMERIC NOT NULL,
+    start_if    VARCHAR(10),
+    created     TIMESTAMPTZ
                     DEFAULT (current_timestamp) NOT NULL,
-    modified    timestamp with local time zone
+    modified    TIMESTAMPTZ
                     DEFAULT (current_timestamp) NOT NULL
 )
 ;

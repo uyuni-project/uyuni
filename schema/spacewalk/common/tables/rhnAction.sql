@@ -16,54 +16,54 @@
 
 CREATE TABLE rhnAction
 (
-    id               NUMBER NOT NULL
+    id               NUMERIC NOT NULL
                          CONSTRAINT rhn_action_pk PRIMARY KEY
-                         USING INDEX TABLESPACE [[4m_tbs]],
-    org_id           NUMBER NOT NULL
+                         ,
+    org_id           NUMERIC NOT NULL
                          CONSTRAINT rhn_action_oid_fk
                              REFERENCES web_customer (id)
                              ON DELETE CASCADE,
-    action_type      NUMBER NOT NULL
+    action_type      NUMERIC NOT NULL
                          CONSTRAINT rhn_action_at_fk
                              REFERENCES rhnActionType (id),
-    name             VARCHAR2(128),
-    scheduler        NUMBER
+    name             VARCHAR(128),
+    scheduler        NUMERIC
                          CONSTRAINT rhn_action_scheduler_fk
                              REFERENCES web_contact (id)
                              ON DELETE SET NULL,
-    earliest_action  timestamp with local time zone NOT NULL,
-    version          NUMBER
+    earliest_action  TIMESTAMPTZ NOT NULL,
+    version          NUMERIC
                          DEFAULT (0) NOT NULL,
-    archived         NUMBER
+    archived         NUMERIC
                          DEFAULT (0) NOT NULL
                          CONSTRAINT rhn_action_archived_ck
                              CHECK (archived in (0, 1)),
-    prerequisite     NUMBER
+    prerequisite     NUMERIC
                          CONSTRAINT rhn_action_prereq_fk
                              REFERENCES rhnAction (id)
                              ON DELETE CASCADE,
-    created          timestamp with local time zone
+    created          TIMESTAMPTZ
                          DEFAULT (current_timestamp) NOT NULL,
-    modified         timestamp with local time zone
+    modified         TIMESTAMPTZ
                          DEFAULT (current_timestamp) NOT NULL
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE INDEX rhn_action_oid_idx
     ON rhnAction (org_id)
-    TABLESPACE [[8m_tbs]]
-    NOLOGGING;
+    
+    ;
 
 CREATE INDEX rhn_action_scheduler_idx
     ON rhnAction (scheduler)
-    TABLESPACE [[8m_tbs]]
-    NOLOGGING;
+    
+    ;
 
 CREATE INDEX rhn_action_prereq_id_idx
     ON rhnAction (prerequisite, id)
-    TABLESPACE [[8m_tbs]]
-    NOLOGGING;
+    
+    ;
 
 CREATE SEQUENCE rhn_event_id_seq;
 

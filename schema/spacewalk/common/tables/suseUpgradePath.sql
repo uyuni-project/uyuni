@@ -14,21 +14,21 @@
 create table
 suseUpgradePath
 (
-    from_pdid     number not null
+    from_pdid     NUMERIC not null
                   CONSTRAINT suse_upgpath_fromid_fk
                   REFERENCES suseProducts (id)
                   ON DELETE CASCADE,
-    to_pdid       number not null
+    to_pdid       NUMERIC not null
                   CONSTRAINT suse_upgpath_toid_fk
                   REFERENCES suseProducts (id)
                   ON DELETE CASCADE,
-    created   timestamp with local time zone
+    created   TIMESTAMPTZ
                   DEFAULT (current_timestamp) NOT NULL,
-    modified  timestamp with local time zone
+    modified  TIMESTAMPTZ
                   DEFAULT (current_timestamp) NOT NULL
 );
 
 CREATE INDEX suseupgpath_fromid_idx
 ON suseUpgradePath (from_pdid)
-TABLESPACE [[64k_tbs]];
+;
 

@@ -16,29 +16,29 @@
 
 CREATE TABLE rhnChannelComps
 (
-    id                 NUMBER NOT NULL
+    id                 NUMERIC NOT NULL
                            CONSTRAINT rhn_channelcomps_id_pk PRIMARY KEY,
-    channel_id         NUMBER NOT NULL
+    channel_id         NUMERIC NOT NULL
                            CONSTRAINT rhn_channelcomps_cid_fk
                                REFERENCES rhnChannel (id)
                                ON DELETE CASCADE,
-    relative_filename  VARCHAR2(256) NOT NULL,
-    last_modified      timestamp with local time zone
+    relative_filename  VARCHAR(256) NOT NULL,
+    last_modified      TIMESTAMPTZ
                            DEFAULT (current_timestamp) NOT NULL,
-    created            timestamp with local time zone
+    created            TIMESTAMPTZ
                            DEFAULT (current_timestamp) NOT NULL,
-    modified           timestamp with local time zone
+    modified           TIMESTAMPTZ
                            DEFAULT (current_timestamp) NOT NULL,
-    comps_type_id      NUMBER NOT NULL
+    comps_type_id      NUMERIC NOT NULL
                           CONSTRAINT rhn_channelcomps_comps_type_fk
                                REFERENCES rhnCompsType(id)
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE UNIQUE INDEX rhn_channelcomps_cid_ctype_uq
     ON rhnChannelComps (channel_id, comps_type_id)
-    TABLESPACE [[2m_tbs]];
+    ;
 
 CREATE SEQUENCE rhn_channelcomps_id_seq START WITH 101;
 

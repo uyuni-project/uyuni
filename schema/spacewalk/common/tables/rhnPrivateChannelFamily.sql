@@ -16,27 +16,27 @@
 
 CREATE TABLE rhnPrivateChannelFamily
 (
-    channel_family_id  NUMBER NOT NULL
+    channel_family_id  NUMERIC NOT NULL
                            CONSTRAINT rhn_privcf_cfid_fk
                                REFERENCES rhnChannelFamily (id),
-    org_id             NUMBER NOT NULL
+    org_id             NUMERIC NOT NULL
                            CONSTRAINT rhn_privcf_oid_fk
                                REFERENCES web_customer (id)
                                ON DELETE CASCADE,
-    created            timestamp with local time zone
+    created            TIMESTAMPTZ
                            DEFAULT (current_timestamp) NOT NULL,
-    modified           timestamp with local time zone
+    modified           TIMESTAMPTZ
                            DEFAULT (current_timestamp) NOT NULL
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE UNIQUE INDEX rhn_privcf_oid_cfid_uq
     ON rhnPrivateChannelFamily (org_id, channel_family_id)
-    TABLESPACE [[2m_tbs]];
+    ;
 
 CREATE INDEX rhn_cfperm_cfid_idx
     ON rhnPrivateChannelFamily (channel_family_id)
-    TABLESPACE [[2m_tbs]]
-    NOLOGGING;
+    
+    ;
 

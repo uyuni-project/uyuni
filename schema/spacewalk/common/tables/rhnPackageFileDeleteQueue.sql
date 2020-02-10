@@ -16,11 +16,11 @@
 
 CREATE TABLE rhnPackageFileDeleteQueue
 (
-    path     VARCHAR2(1000),
-    created  timestamp with local time zone
+    path     VARCHAR(1000),
+    created  TIMESTAMPTZ
                  DEFAULT (current_timestamp) NOT NULL
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 ALTER TABLE rhnPackageFileDeleteQueue

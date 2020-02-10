@@ -16,24 +16,24 @@
 
 CREATE TABLE rhnActionConfigDate
 (
-    action_id        NUMBER NOT NULL
+    action_id        NUMERIC NOT NULL
                          CONSTRAINT rhn_actioncd_aid_fk
                              REFERENCES rhnAction (id)
                              ON DELETE CASCADE,
-    start_date       timestamp with local time zone NOT NULL,
-    end_date         timestamp with local time zone,
+    start_date       TIMESTAMPTZ NOT NULL,
+    end_date         TIMESTAMPTZ,
     import_contents  CHAR(1) NOT NULL
                          CONSTRAINT rhn_actioncd_file_ic_ck
                              CHECK (import_contents in ('Y','N')),
-    created          timestamp with local time zone
+    created          TIMESTAMPTZ
                          DEFAULT (current_timestamp) NOT NULL,
-    modified         timestamp with local time zone
+    modified         TIMESTAMPTZ
                          DEFAULT (current_timestamp) NOT NULL
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE UNIQUE INDEX rhn_actioncd_aid_uq
     ON rhnActionConfigDate (action_id)
-    TABLESPACE [[2m_tbs]];
+    ;
 

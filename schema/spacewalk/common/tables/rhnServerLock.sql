@@ -16,25 +16,25 @@
 
 CREATE TABLE rhnServerLock
 (
-    server_id  NUMBER NOT NULL
+    server_id  NUMERIC NOT NULL
                    CONSTRAINT rhn_server_lock_sid_fk
                        REFERENCES rhnServer (id),
-    locker_id  NUMBER
+    locker_id  NUMERIC
                    CONSTRAINT rhn_server_lock_lid_fk
                        REFERENCES web_contact (id)
                        ON DELETE SET NULL,
-    reason     VARCHAR2(4000),
-    created    timestamp with local time zone
+    reason     VARCHAR(4000),
+    created    TIMESTAMPTZ
                    DEFAULT (current_timestamp) NOT NULL
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE UNIQUE INDEX rhn_server_lock_sid_unq
     ON rhnServerLock (server_id)
-    TABLESPACE [[4m_tbs]];
+    ;
 
 CREATE INDEX rhn_server_lock_lid_unq
     ON rhnServerLock (locker_id)
-    TABLESPACE [[4m_tbs]];
+    ;
 

@@ -16,21 +16,21 @@
 
 CREATE TABLE rhnProvisionState
 (
-    id           NUMBER NOT NULL
+    id           NUMERIC NOT NULL
                      CONSTRAINT rhn_provstate_id_pk PRIMARY KEY,
-    label        VARCHAR2(32) NOT NULL,
-    description  VARCHAR2(256) NOT NULL,
-    created      timestamp with local time zone
+    label        VARCHAR(32) NOT NULL,
+    description  VARCHAR(256) NOT NULL,
+    created      TIMESTAMPTZ
                      DEFAULT (current_timestamp) NOT NULL,
-    modified     timestamp with local time zone
+    modified     TIMESTAMPTZ
                      DEFAULT (current_timestamp) NOT NULL
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE INDEX rhn_provstate_l_id_idx
     ON rhnProvisionState (label, id)
-    TABLESPACE [[64k_tbs]];
+    ;
 
 CREATE SEQUENCE rhn_provstate_id_seq;
 

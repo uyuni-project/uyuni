@@ -16,16 +16,16 @@
 
 CREATE TABLE rhnProductName
 (
-    id        NUMBER NOT NULL
+    id        NUMERIC NOT NULL
                   CONSTRAINT rhn_productname_id_pk PRIMARY KEY,
-    label     VARCHAR2(128) NOT NULL,
-    name      VARCHAR2(128) NOT NULL,
-    created   timestamp with local time zone
+    label     VARCHAR(128) NOT NULL,
+    name      VARCHAR(128) NOT NULL,
+    created   TIMESTAMPTZ
                   DEFAULT (current_timestamp) NOT NULL,
-    modified  timestamp with local time zone
+    modified  TIMESTAMPTZ
                   DEFAULT (current_timestamp) NOT NULL
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE UNIQUE INDEX rhn_productname_label_uq

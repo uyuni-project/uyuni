@@ -16,27 +16,27 @@
 
 CREATE TABLE rhnServerPath
 (
-    server_id        NUMBER NOT NULL
+    server_id        NUMERIC NOT NULL
                          CONSTRAINT rhn_serverpath_sid_fk
                              REFERENCES rhnServer (id),
-    proxy_server_id  NUMBER NOT NULL
+    proxy_server_id  NUMERIC NOT NULL
                          CONSTRAINT rhn_serverpath_psid_fk
                              REFERENCES rhnServer (id),
-    position         NUMBER NOT NULL,
-    hostname         VARCHAR2(256) NOT NULL,
-    created          timestamp with local time zone
+    position         NUMERIC NOT NULL,
+    hostname         VARCHAR(256) NOT NULL,
+    created          TIMESTAMPTZ
                          DEFAULT (current_timestamp) NOT NULL,
-    modified         timestamp with local time zone
+    modified         TIMESTAMPTZ
                          DEFAULT (current_timestamp) NOT NULL
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE UNIQUE INDEX rhn_serverpath_sid_pos_uq
     ON rhnServerPath (server_id, position)
-    TABLESPACE [[2m_tbs]];
+    ;
 
 CREATE UNIQUE INDEX rhn_serverpath_psid_sid_uq
     ON rhnServerPath (proxy_server_id, server_id)
-    TABLESPACE [[2m_tbs]];
+    ;
 

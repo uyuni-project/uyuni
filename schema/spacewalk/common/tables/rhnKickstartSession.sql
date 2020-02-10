@@ -16,84 +16,84 @@
 
 CREATE TABLE rhnKickstartSession
 (
-    id                   NUMBER NOT NULL
+    id                   NUMERIC NOT NULL
                              CONSTRAINT rhn_ks_session_id_pk PRIMARY KEY
-                             USING INDEX TABLESPACE [[8m_tbs]],
-    kickstart_id         NUMBER
+                             ,
+    kickstart_id         NUMERIC
                              CONSTRAINT rhn_ks_session_ksid_fk
                                  REFERENCES rhnKSData (id)
                                  ON DELETE CASCADE,
-    kickstart_mode       VARCHAR2(32),
-    kstree_id            NUMBER
+    kickstart_mode       VARCHAR(32),
+    kstree_id            NUMERIC
                              CONSTRAINT rhn_ks_session_kstid_fk
                                  REFERENCES rhnKickstartableTree (id)
                                  ON DELETE SET NULL,
-    org_id               NUMBER NOT NULL
+    org_id               NUMERIC NOT NULL
                              CONSTRAINT rhn_ks_session_oid_fk
                                  REFERENCES web_customer (id)
                                  ON DELETE CASCADE,
-    scheduler            NUMBER
+    scheduler            NUMERIC
                              CONSTRAINT rhn_ks_session_sched_fk
                                  REFERENCES web_contact (id)
                                  ON DELETE SET NULL,
-    old_server_id        NUMBER
+    old_server_id        NUMERIC
                              CONSTRAINT rhn_ks_session_osid_fk
                                  REFERENCES rhnServer (id),
-    new_server_id        NUMBER
+    new_server_id        NUMERIC
                              CONSTRAINT rhn_ks_session_nsid_fk
                                  REFERENCES rhnServer (id),
-    host_server_id       NUMBER
+    host_server_id       NUMERIC
                              CONSTRAINT rhn_ks_session_hsid_fk
                                  REFERENCES rhnServer (id)
                                  ON DELETE CASCADE,
-    action_id            NUMBER
+    action_id            NUMERIC
                              CONSTRAINT rhn_ks_session_aid_fk
                                  REFERENCES rhnAction (id)
                                  ON DELETE SET NULL,
-    state_id             NUMBER NOT NULL
+    state_id             NUMERIC NOT NULL
                              CONSTRAINT rhn_ks_session_ksssid_fk
                                  REFERENCES rhnKickstartSessionState (id),
-    server_profile_id    NUMBER
+    server_profile_id    NUMERIC
                              CONSTRAINT rhn_ks_session_spid_fk
                                  REFERENCES rhnServerProfile (id)
                                  ON DELETE SET NULL,
-    last_action          timestamp with local time zone
+    last_action          TIMESTAMPTZ
                              DEFAULT (current_timestamp) NOT NULL,
-    package_fetch_count  NUMBER
+    package_fetch_count  NUMERIC
                              DEFAULT (0) NOT NULL,
-    last_file_request    VARCHAR2(2048),
-    system_rhn_host      VARCHAR2(256),
-    kickstart_from_host  VARCHAR2(256),
+    last_file_request    VARCHAR(2048),
+    system_rhn_host      VARCHAR(256),
+    kickstart_from_host  VARCHAR(256),
     deploy_configs       CHAR(1)
                              DEFAULT ('N') NOT NULL,
-    virtualization_type  NUMBER NOT NULL
+    virtualization_type  NUMERIC NOT NULL
                              CONSTRAINT rhn_kss_kvt_fk
                                  REFERENCES rhnKickstartVirtualizationType (id)
                                  ON DELETE SET NULL,
-    client_ip            VARCHAR2(15),
-    created              timestamp with local time zone
+    client_ip            VARCHAR(15),
+    created              TIMESTAMPTZ
                              DEFAULT (current_timestamp) NOT NULL,
-    modified             timestamp with local time zone
+    modified             TIMESTAMPTZ
                              DEFAULT (current_timestamp) NOT NULL
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE INDEX rhn_ks_session_oid_idx
     ON rhnKickstartSession (org_id)
-    TABLESPACE [[8m_tbs]];
+    ;
 
 CREATE INDEX rhn_ks_session_osid_aid_idx
     ON rhnKickstartSession (old_server_id, action_id)
-    TABLESPACE [[4m_tbs]];
+    ;
 
 CREATE INDEX rhn_ks_session_nsid_idx
     ON rhnKickstartSession (new_server_id)
-    TABLESPACE [[4m_tbs]];
+    ;
 
 CREATE INDEX rhn_ks_session_hsid_idx
     ON rhnKickstartSession (host_server_id)
-    TABLESPACE [[4m_tbs]];
+    ;
 
 CREATE SEQUENCE rhn_ks_session_id_seq;
 

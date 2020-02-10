@@ -16,23 +16,23 @@
 
 CREATE TABLE rhnSnapshotChannel
 (
-    snapshot_id  NUMBER NOT NULL
+    snapshot_id  NUMERIC NOT NULL
                      CONSTRAINT rhn_snapchan_sid_fk
                          REFERENCES rhnSnapshot (id)
                          ON DELETE CASCADE,
-    channel_id   NUMBER NOT NULL
+    channel_id   NUMERIC NOT NULL
                      CONSTRAINT rhn_snapchan_cid_fk
                          REFERENCES rhnChannel (id)
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE UNIQUE INDEX rhn_snapchan_sid_cid_uq
     ON rhnSnapshotChannel (snapshot_id, channel_id)
-    TABLESPACE [[8m_tbs]];
+    ;
 
 CREATE INDEX rhn_snapshot_cid_idx
     ON rhnSnapshotChannel (channel_id)
-    TABLESPACE [[4m_tbs]]
-    NOLOGGING;
+    
+    ;
 

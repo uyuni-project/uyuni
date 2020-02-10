@@ -16,20 +16,20 @@
 
 CREATE TABLE rhnServerInfo
 (
-    server_id        NUMBER NOT NULL
+    server_id        NUMERIC NOT NULL
                          CONSTRAINT rhn_server_info_sid_fk
                              REFERENCES rhnServer (id),
-    checkin          timestamp with local time zone
+    checkin          TIMESTAMPTZ
                          DEFAULT (current_timestamp),
-    checkin_counter  NUMBER
+    checkin_counter  NUMERIC
                          DEFAULT (0)
 )
-ENABLE ROW MOVEMENT
-LOGGING
+
+
 ;
 
 CREATE UNIQUE INDEX rhn_server_info_sid_unq
     ON rhnServerInfo (server_id)
-    TABLESPACE [[4m_tbs]]
-    NOLOGGING;
+    
+    ;
 

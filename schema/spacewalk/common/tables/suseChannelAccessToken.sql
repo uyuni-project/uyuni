@@ -15,18 +15,18 @@
 
 CREATE TABLE suseChannelAccessToken
 (
-    id               NUMBER NOT NULL
+    id               NUMERIC NOT NULL
                          CONSTRAINT suse_chan_access_token_id_pk PRIMARY KEY,
-    minion_id        NUMBER
+    minion_id        NUMERIC
                          CONSTRAINT suse_chan_access_token_mid_fk
                              REFERENCES suseMinionInfo (server_id)
                              ON DELETE SET NULL,
-    token            varchar2(4000) NOT NULL,
-    created          timestamp with local time zone NOT NULL,
-    expiration       timestamp with local time zone NOT NULL,
+    token            VARCHAR(4000) NOT NULL,
+    created          TIMESTAMPTZ NOT NULL,
+    expiration       TIMESTAMPTZ NOT NULL,
     valid            CHAR(1) DEFAULT ('N') NOT NULL CHECK (valid in ('Y', 'N'))
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE SEQUENCE suse_chan_access_token_id_seq;

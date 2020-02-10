@@ -16,23 +16,23 @@
 
 CREATE TABLE rhnChannelPackageArchCompat
 (
-    channel_arch_id  NUMBER NOT NULL
+    channel_arch_id  NUMERIC NOT NULL
                          CONSTRAINT rhn_cp_ac_caid_fk
                              REFERENCES rhnChannelArch (id),
-    package_arch_id  NUMBER NOT NULL
+    package_arch_id  NUMERIC NOT NULL
                          CONSTRAINT rhn_cp_ac_paid_fk
                              REFERENCES rhnPackageArch (id),
-    created          timestamp with local time zone
+    created          TIMESTAMPTZ
                          DEFAULT (current_timestamp) NOT NULL,
-    modified         timestamp with local time zone
+    modified         TIMESTAMPTZ
                          DEFAULT (current_timestamp) NOT NULL
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE INDEX rhn_cp_ac_caid_paid
     ON rhnChannelPackageArchCompat (channel_arch_id, package_arch_id)
-    TABLESPACE [[64k_tbs]];
+    ;
 
 ALTER TABLE rhnChannelPackageArchCompat
     ADD CONSTRAINT rhn_cp_ac_caid_paid_uq UNIQUE (channel_arch_id, package_arch_id);

@@ -16,14 +16,14 @@
 
 CREATE TABLE rhnKickstartScript
 (
-    id            NUMBER NOT NULL,
-    script_name   VARCHAR2(40),
-    kickstart_id  NUMBER NOT NULL
+    id            NUMERIC NOT NULL,
+    script_name   VARCHAR(40),
+    kickstart_id  NUMERIC NOT NULL
                       CONSTRAINT rhn_ksscript_ksid_fk
                           REFERENCES rhnKSData (id)
                           ON DELETE CASCADE,
-    position      NUMBER NOT NULL,
-    script_type   VARCHAR2(4) NOT NULL
+    position      NUMERIC NOT NULL,
+    script_type   VARCHAR(4) NOT NULL
                       CONSTRAINT rhn_ksscript_st_ck
                           CHECK (script_type in ('pre','post')),
     chroot        CHAR(1)
@@ -38,23 +38,23 @@ CREATE TABLE rhnKickstartScript
                       DEFAULT ('Y') NOT NULL
                       CONSTRAINT rhn_ksscript_rawscript_ck
                           CHECK (raw_script in ('Y','N')),
-    interpreter   VARCHAR2(80),
-    data          BLOB,
-    created       timestamp with local time zone
+    interpreter   VARCHAR(80),
+    data          BYTEA,
+    created       TIMESTAMPTZ
                       DEFAULT (current_timestamp) NOT NULL,
-    modified      timestamp with local time zone
+    modified      TIMESTAMPTZ
                       DEFAULT (current_timestamp) NOT NULL
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE INDEX rhn_ksscript_id_idx
     ON rhnKickstartScript (id)
-    TABLESPACE [[2m_tbs]];
+    ;
 
 CREATE INDEX rhn_ksscript_ksid_pos_idx
     ON rhnKickstartScript (kickstart_id, position)
-    TABLESPACE [[8m_tbs]];
+    ;
 
 CREATE SEQUENCE rhn_ksscript_id_seq;
 

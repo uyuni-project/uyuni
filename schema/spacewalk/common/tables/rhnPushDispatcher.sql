@@ -16,25 +16,25 @@
 
 CREATE TABLE rhnPushDispatcher
 (
-    id            NUMBER NOT NULL
+    id            NUMERIC NOT NULL
                       CONSTRAINT rhn_pushdispatch_id_pk PRIMARY KEY
-                      USING INDEX TABLESPACE [[8m_tbs]],
-    jabber_id     VARCHAR2(128) NOT NULL,
+                      ,
+    jabber_id     VARCHAR(128) NOT NULL,
     password      VARCHAR(32),
-    last_checkin  timestamp with local time zone
+    last_checkin  TIMESTAMPTZ
                       DEFAULT (current_timestamp) NOT NULL,
-    hostname      VARCHAR2(256) NOT NULL,
-    created       timestamp with local time zone
+    hostname      VARCHAR(256) NOT NULL,
+    created       TIMESTAMPTZ
                       DEFAULT (current_timestamp) NOT NULL,
-    modified      timestamp with local time zone
+    modified      TIMESTAMPTZ
                       DEFAULT (current_timestamp) NOT NULL
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE INDEX rhn_pushdispatch_jid_id_idx
     ON rhnPushDispatcher (jabber_id, id)
-    TABLESPACE [[4m_tbs]];
+    ;
 
 CREATE SEQUENCE rhn_pushdispatch_id_seq;
 

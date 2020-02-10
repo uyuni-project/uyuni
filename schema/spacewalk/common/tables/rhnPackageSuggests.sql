@@ -13,29 +13,29 @@
 
 CREATE TABLE rhnPackageSuggests
 (
-    package_id     NUMBER NOT NULL
+    package_id     NUMERIC NOT NULL
                        CONSTRAINT rhn_pkg_sugg_package_fk
                            REFERENCES rhnPackage (id)
                            ON DELETE CASCADE,
-    capability_id  NUMBER NOT NULL
+    capability_id  NUMERIC NOT NULL
                        CONSTRAINT rhn_pkg_sugg_capability_fk
                            REFERENCES rhnPackageCapability (id),
-    sense          NUMBER
+    sense          NUMERIC
                        DEFAULT (0) NOT NULL,
-    created        timestamp with local time zone
+    created        TIMESTAMPTZ
                        DEFAULT (current_timestamp) NOT NULL,
-    modified       timestamp with local time zone
+    modified       TIMESTAMPTZ
                        DEFAULT (current_timestamp) NOT NULL
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE UNIQUE INDEX rhn_pkg_sugg_pid_cid_s_uq
     ON rhnPackageSuggests (package_id, capability_id, sense)
-    TABLESPACE [[4m_tbs]];
+    ;
 
 CREATE INDEX rhn_pkg_sugg_cid_idx
     ON rhnPackageSuggests (capability_id)
-    NOLOGGING
-    TABLESPACE [[4m_tbs]];
+    
+    ;
 

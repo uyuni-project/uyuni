@@ -16,26 +16,26 @@
 
 CREATE TABLE rhnServerActionPackageResult
 (
-    server_id          NUMBER NOT NULL
+    server_id          NUMERIC NOT NULL
                            CONSTRAINT rhn_sap_result_sid_fk
                                REFERENCES rhnServer (id),
-    action_package_id  NUMBER NOT NULL
+    action_package_id  NUMERIC NOT NULL
                            CONSTRAINT rhn_sap_result_apid_fk
                                REFERENCES rhnActionPackage (id)
                                ON DELETE CASCADE,
-    result_code        NUMBER NOT NULL,
-    stdout             BLOB,
-    stderr             BLOB,
-    created            timestamp with local time zone
+    result_code        NUMERIC NOT NULL,
+    stdout             BYTEA,
+    stderr             BYTEA,
+    created            TIMESTAMPTZ
                            DEFAULT (current_timestamp) NOT NULL,
-    modified           timestamp with local time zone
+    modified           TIMESTAMPTZ
                            DEFAULT (current_timestamp) NOT NULL
 )
-TABLESPACE [[blob]]
-ENABLE ROW MOVEMENT
+
+
 ;
 
 CREATE UNIQUE INDEX rhn_sap_result_sid_apid_uq
     ON rhnServerActionPackageResult (server_id, action_package_id)
-    TABLESPACE [[4m_tbs]];
+    ;
 

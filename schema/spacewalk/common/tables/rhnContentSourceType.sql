@@ -19,14 +19,14 @@
 create table
 rhnContentSourceType
 (
-	id		number NOT NULL
+	id		NUMERIC NOT NULL
                         constraint rhn_cst_id_pk primary key,
-	label		varchar2(32) NOT NULL
+	label		VARCHAR(32) NOT NULL
                         constraint rhn_cst_label_uq unique,
-	created		timestamp with local time zone default(current_timestamp) NOT NULL,
-	modified	timestamp with local time zone default(current_timestamp) NOT NULL
+	created		TIMESTAMPTZ default(current_timestamp) NOT NULL,
+	modified	TIMESTAMPTZ default(current_timestamp) NOT NULL
 ) 
-	enable row movement
+
   ;
 
 create sequence rhn_content_source_type_id_seq start with 500;

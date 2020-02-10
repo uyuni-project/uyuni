@@ -15,18 +15,18 @@
 
 CREATE TABLE suseImageBuildHistory
 (
-    id             NUMBER NOT NULL
+    id             NUMERIC NOT NULL
                      CONSTRAINT suse_bldhst_id_pk PRIMARY KEY,
-    image_info_id  NUMBER NOT NULL,
-    revision_num   NUMBER NOT NULL,
-    created        timestamp with local time zone
+    image_info_id  NUMERIC NOT NULL,
+    revision_num   NUMERIC NOT NULL,
+    created        TIMESTAMPTZ
                      DEFAULT (current_timestamp) NOT NULL,
-    modified       timestamp with local time zone
+    modified       TIMESTAMPTZ
                      DEFAULT (current_timestamp) NOT NULL,
     CONSTRAINT suse_bldhst_imginfo_fk FOREIGN KEY (image_info_id)
         REFERENCES suseImageInfo (id) ON DELETE CASCADE
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE SEQUENCE suse_img_buildhistory_id_seq;

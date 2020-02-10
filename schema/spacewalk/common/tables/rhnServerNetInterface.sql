@@ -16,31 +16,31 @@
 
 CREATE TABLE rhnServerNetInterface
 (
-    id         NUMBER NOT NULL
+    id         NUMERIC NOT NULL
                    CONSTRAINT rhn_srv_net_iface_id_pk PRIMARY KEY
-                       USING INDEX TABLESPACE [[4m_tbs]],
-    server_id  NUMBER NOT NULL
+                       ,
+    server_id  NUMERIC NOT NULL
                    CONSTRAINT rhn_srv_net_iface_sid_fk
                        REFERENCES rhnServer (id),
-    name       VARCHAR2(32) NOT NULL,
-    hw_addr    VARCHAR2(96),
-    module     VARCHAR2(128),
-    is_primary VARCHAR2(1),
-    created    timestamp with local time zone
+    name       VARCHAR(32) NOT NULL,
+    hw_addr    VARCHAR(96),
+    module     VARCHAR(128),
+    is_primary VARCHAR(1),
+    created    TIMESTAMPTZ
                    DEFAULT (current_timestamp) NOT NULL,
-    modified   timestamp with local time zone
+    modified   TIMESTAMPTZ
                    DEFAULT (current_timestamp) NOT NULL
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE INDEX rhn_srv_net_iface_sid_name_idx
     ON rhnServerNetInterface (server_id, name)
-    TABLESPACE [[8m_tbs]];
+    ;
 
 CREATE INDEX rhn_srv_net_iface_hw_addr_idx
     ON rhnServerNetInterface (hw_addr)
-    TABLESPACE [[8m_tbs]];
+    ;
 
 ALTER TABLE rhnServerNetInterface
     ADD CONSTRAINT rhn_srv_net_iface_sid_name_uq UNIQUE (server_id, name);

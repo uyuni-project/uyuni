@@ -15,25 +15,25 @@
 
 CREATE TABLE suseSCCOrderItem
 (
-    id             NUMBER NOT NULL
+    id             NUMERIC NOT NULL
                      CONSTRAINT suse_sccorder_id_pk
                      PRIMARY KEY,
-    scc_id         NUMBER NOT NULL,
-    credentials_id NUMBER
+    scc_id         NUMERIC NOT NULL,
+    credentials_id NUMERIC
                        CONSTRAINT suse_sccorder_credsid_fk
                        REFERENCES suseCredentials (id)
                        ON DELETE CASCADE,
-    sku            VARCHAR2(256),
-    start_date     timestamp with local time zone,
-    end_date       timestamp with local time zone,
-    quantity       NUMBER DEFAULT(0),
-    subscription_id NUMBER NOT NULL,
-    created        timestamp with local time zone
+    sku            VARCHAR(256),
+    start_date     TIMESTAMPTZ,
+    end_date       TIMESTAMPTZ,
+    quantity       NUMERIC DEFAULT(0),
+    subscription_id NUMERIC NOT NULL,
+    created        TIMESTAMPTZ
                        DEFAULT (current_timestamp) NOT NULL,
-    modified       timestamp with local time zone
+    modified       TIMESTAMPTZ
                        DEFAULT (current_timestamp) NOT NULL
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE UNIQUE INDEX suse_sccorder_sccid_uq

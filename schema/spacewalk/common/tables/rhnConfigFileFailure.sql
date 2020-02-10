@@ -16,21 +16,21 @@
 
 CREATE TABLE rhnConfigFileFailure
 (
-    id        NUMBER NOT NULL
+    id        NUMERIC NOT NULL
                   CONSTRAINT rhn_conffile_fail_id_pk PRIMARY KEY
-                  USING INDEX TABLESPACE [[64k_tbs]],
-    label     VARCHAR2(64) NOT NULL
+                  ,
+    label     VARCHAR(64) NOT NULL
                   CONSTRAINT rhn_conffile_fail_label_uq UNIQUE
-                  USING INDEX TABLESPACE [[64k_tbs]],
-    name      VARCHAR2(256) NOT NULL
+                  ,
+    name      VARCHAR(256) NOT NULL
                   CONSTRAINT rhn_conffile_fail_name_uq UNIQUE
-                  USING INDEX TABLESPACE [[64k_tbs]],
-    created   timestamp with local time zone
+                  ,
+    created   TIMESTAMPTZ
                   DEFAULT (current_timestamp) NOT NULL,
-    modified  timestamp with local time zone
+    modified  TIMESTAMPTZ
                   DEFAULT (current_timestamp) NOT NULL
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE SEQUENCE rhn_conffile_failure_id_seq;

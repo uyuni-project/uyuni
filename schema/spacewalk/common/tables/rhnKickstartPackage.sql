@@ -16,27 +16,27 @@
 
 CREATE TABLE rhnKickstartPackage
 (
-    kickstart_id     NUMBER NOT NULL
+    kickstart_id     NUMERIC NOT NULL
                          CONSTRAINT rhn_kspackage_ksid_fk
                              REFERENCES rhnKSData (id)
                              ON DELETE CASCADE,
-    package_name_id  NUMBER NOT NULL
+    package_name_id  NUMERIC NOT NULL
                          CONSTRAINT rhn_kspackage_pnid_fk
                              REFERENCES rhnPackageName (id),
-    position         NUMBER NOT NULL,
-    created          timestamp with local time zone
+    position         NUMERIC NOT NULL,
+    created          TIMESTAMPTZ
                          DEFAULT (current_timestamp) NOT NULL,
-    modified         timestamp with local time zone
+    modified         TIMESTAMPTZ
                          DEFAULT (current_timestamp) NOT NULL
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 ALTER TABLE rhnKickstartPackage
     ADD CONSTRAINT rhn_kspackage_pos_uq UNIQUE (kickstart_id, position)
-    USING INDEX TABLESPACE [[4m_tbs]];
+    ;
 
 ALTER TABLE rhnKickstartPackage
     ADD CONSTRAINT rhn_kspackage_name_uq UNIQUE (kickstart_id, package_name_id)
-    USING INDEX TABLESPACE [[4m_tbs]];
+    ;
 

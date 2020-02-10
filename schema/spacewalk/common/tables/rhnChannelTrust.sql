@@ -16,27 +16,27 @@
 
 CREATE TABLE rhnChannelTrust
 (
-    channel_id    NUMBER NOT NULL
+    channel_id    NUMERIC NOT NULL
                       CONSTRAINT rhn_channel_trust_cid_fk
                           REFERENCES rhnChannel (id)
                           ON DELETE CASCADE,
-    org_trust_id  NUMBER NOT NULL
+    org_trust_id  NUMERIC NOT NULL
                       CONSTRAINT rhn_channel_trust_otid_fk
                           REFERENCES web_customer (id)
                           ON DELETE CASCADE,
-    created       timestamp with local time zone
+    created       TIMESTAMPTZ
                       DEFAULT (current_timestamp) NOT NULL,
-    modified      timestamp with local time zone
+    modified      TIMESTAMPTZ
                       DEFAULT (current_timestamp) NOT NULL
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE UNIQUE INDEX rhn_channel_trust_cid_uq
     ON rhnChannelTrust (channel_id, org_trust_id)
-    TABLESPACE [[2m_tbs]];
+    ;
 
 CREATE INDEX rhn_channel_trust_org_trust
     ON rhnChannelTrust (org_trust_id)
-    TABLESPACE [[2m_tbs]];
+    ;
 

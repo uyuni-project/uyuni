@@ -16,21 +16,21 @@
 
 CREATE TABLE rhnTag
 (
-    id        NUMBER NOT NULL
+    id        NUMERIC NOT NULL
                   CONSTRAINT rhn_tag_id_pk PRIMARY KEY,
-    name_id   NUMBER NOT NULL
+    name_id   NUMERIC NOT NULL
                   CONSTRAINT rhn_tag_nid_fk
                       REFERENCES rhnTagName (id),
-    org_id    NUMBER NOT NULL
+    org_id    NUMERIC NOT NULL
                   CONSTRAINT rhn_tag_oid_fk
                       REFERENCES web_customer (id)
                       ON DELETE CASCADE,
-    created   timestamp with local time zone
+    created   TIMESTAMPTZ
                   DEFAULT (current_timestamp) NOT NULL,
-    modified  timestamp with local time zone
+    modified  TIMESTAMPTZ
                   DEFAULT (current_timestamp) NOT NULL
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE UNIQUE INDEX rhn_tag_oid_nid_uq

@@ -16,15 +16,15 @@
 
 CREATE TABLE rhnActionStatus
 (
-    id        NUMBER NOT NULL
+    id        NUMERIC NOT NULL
                   CONSTRAINT rhn_action_status_pk PRIMARY KEY
-                  USING INDEX TABLESPACE [[64k_tbs]],
-    name      VARCHAR2(16),
-    created   timestamp with local time zone
+                  ,
+    name      VARCHAR(16),
+    created   TIMESTAMPTZ
                   DEFAULT (current_timestamp) NOT NULL,
-    modified  timestamp with local time zone
+    modified  TIMESTAMPTZ
                   DEFAULT (current_timestamp) NOT NULL
 )
-ENABLE ROW MOVEMENT
+
 ;
 

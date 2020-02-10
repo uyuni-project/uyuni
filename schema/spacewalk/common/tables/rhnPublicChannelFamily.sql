@@ -16,18 +16,18 @@
 
 CREATE TABLE rhnPublicChannelFamily
 (
-    channel_family_id  NUMBER NOT NULL
+    channel_family_id  NUMERIC NOT NULL
                            CONSTRAINT rhn_pubcf_cfid_fk
                                REFERENCES rhnChannelFamily (id),
-    created            timestamp with local time zone
+    created            TIMESTAMPTZ
                            DEFAULT (current_timestamp) NOT NULL,
-    modified           timestamp with local time zone
+    modified           TIMESTAMPTZ
                            DEFAULT (current_timestamp) NOT NULL
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE UNIQUE INDEX rhn_pubcf_co_uq
     ON rhnPublicChannelFamily (channel_family_id)
-    TABLESPACE [[2m_tbs]];
+    ;
 

@@ -16,23 +16,23 @@
 
 CREATE TABLE rhnKickstartChildChannel
 (
-    channel_id  NUMBER NOT NULL
+    channel_id  NUMERIC NOT NULL
                     CONSTRAINT rhn_ks_cc_cid_fk
                         REFERENCES rhnChannel (id)
                         ON DELETE CASCADE,
-    ksdata_id   NUMBER NOT NULL
+    ksdata_id   NUMERIC NOT NULL
                     CONSTRAINT rhn_ks_cc_ksd_fk
                         REFERENCES rhnKSData (id)
                         ON DELETE CASCADE,
-    created     timestamp with local time zone
+    created     TIMESTAMPTZ
                     DEFAULT (current_timestamp) NOT NULL,
-    modified    timestamp with local time zone
+    modified    TIMESTAMPTZ
                     DEFAULT (current_timestamp) NOT NULL
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE UNIQUE INDEX rhn_ks_cc_uq
     ON rhnKickstartChildChannel (channel_id, ksdata_id)
-    TABLESPACE [[4m_tbs]];
+    ;
 

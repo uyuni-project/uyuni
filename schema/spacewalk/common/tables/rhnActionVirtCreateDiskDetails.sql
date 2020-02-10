@@ -15,27 +15,27 @@
 
 CREATE TABLE rhnActionVirtCreateDiskDetails
 (
-    id                   NUMBER NOT NULL
+    id                   NUMERIC NOT NULL
                              CONSTRAINT rhn_action_virt_create_disk_details_id_pk
                                  PRIMARY KEY,
-    type                 VARCHAR2(15),
-    device               VARCHAR2(10),
-    template             VARCHAR2(256),
-    size                 NUMBER,
-    bus                  VARCHAR2(10),
-    pool                 VARCHAR2(256),
-    source_file          VARCHAR2(1024),
-    idx                  NUMBER,
-    action_id            NUMBER NOT NULL
+    type                 VARCHAR(15),
+    device               VARCHAR(10),
+    template             VARCHAR(256),
+    size                 NUMERIC,
+    bus                  VARCHAR(10),
+    pool                 VARCHAR(256),
+    source_file          VARCHAR(1024),
+    idx                  NUMERIC,
+    action_id            NUMERIC NOT NULL
                              CONSTRAINT rhn_action_virt_create_disk_details_aid_fk
                                  REFERENCES rhnActionVirtCreate (action_id)
                                  ON DELETE CASCADE
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE INDEX rhn_action_virt_create_disk_details_id_idx
     ON rhnActionVirtCreateDiskDetails (id)
-    TABLESPACE [[4m_tbs]];
+    ;
 
 CREATE SEQUENCE rhn_action_virt_create_disk_details_id_seq;

@@ -16,27 +16,27 @@
 
 CREATE TABLE rhnKickstartPreserveFileList
 (
-    kickstart_id  NUMBER NOT NULL
+    kickstart_id  NUMERIC NOT NULL
                       CONSTRAINT rhn_kspreservefl_ksid_fk
                           REFERENCES rhnKSData (id)
                           ON DELETE CASCADE,
-    file_list_id  NUMBER NOT NULL
+    file_list_id  NUMERIC NOT NULL
                       CONSTRAINT rhn_kspreservefl_flid_fk
                           REFERENCES rhnFileList (id)
                           ON DELETE CASCADE,
-    created       timestamp with local time zone
+    created       TIMESTAMPTZ
                       DEFAULT (current_timestamp) NOT NULL,
-    modified      timestamp with local time zone
+    modified      TIMESTAMPTZ
                       DEFAULT (current_timestamp) NOT NULL
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE UNIQUE INDEX rhn_kspreservefl_ksid_flid_uq
     ON rhnKickstartPreserveFileList (kickstart_id, file_list_id)
-    TABLESPACE [[4m_tbs]];
+    ;
 
 CREATE INDEX rhn_kspreservefl_flid_idx
     ON rhnKickstartPreserveFileList (file_list_id)
-    TABLESPACE [[8m_tbs]];
+    ;
 

@@ -15,44 +15,44 @@
 
 create table rhnServerCrash
 (
-    id              number not null
+    id              NUMERIC not null
                     constraint rhn_server_crash_id_pk primary key,
-    server_id       number not null
+    server_id       NUMERIC not null
                     constraint rhn_server_crash_sid_fk
                         references rhnServer(id)
                         on delete cascade,
-    crash           varchar2(512) not null,
-    path            varchar2(1024) not null,
-    count           number not null,
-    uuid            varchar2(256),
-    analyzer        varchar2(128),
-    architecture    varchar2(16),
-    cmdline         varchar2(2048),
-    component       varchar2(256),
-    executable      varchar2(512),
-    kernel          varchar2(128),
-    reason          varchar2(512),
-    username        varchar2(256),
-    package_name_id number
+    crash           VARCHAR(512) not null,
+    path            VARCHAR(1024) not null,
+    count           NUMERIC not null,
+    uuid            VARCHAR(256),
+    analyzer        VARCHAR(128),
+    architecture    VARCHAR(16),
+    cmdline         VARCHAR(2048),
+    component       VARCHAR(256),
+    executable      VARCHAR(512),
+    kernel          VARCHAR(128),
+    reason          VARCHAR(512),
+    username        VARCHAR(256),
+    package_name_id NUMERIC
                     constraint rhn_server_crash_pname_id_fk
                         references rhnPackageName(id),
-    package_evr_id  number
+    package_evr_id  NUMERIC
                     constraint rhn_server_crash_evr_id_fk
                         references rhnPackageEVR(id),
-    package_arch_id number
+    package_arch_id NUMERIC
                     constraint rhn_server_crash_arch_id_fk
                         references rhnPackageArch(id),
     storage_path    varchar(1024),
-    created         timestamp with local time zone
+    created         TIMESTAMPTZ
                         default (current_timestamp) not null,
-    modified        timestamp with local time zone
+    modified        TIMESTAMPTZ
                         default (current_timestamp) not null
 )
-enable row movement
+
 ;
 
-create sequence rhn_server_crash_id_seq start with 1 order;
+create sequence rhn_server_crash_id_seq start with 1;
 
 create unique index rhn_scr_sid_crash
     on rhnServerCrash (server_id, crash)
-    tablespace [[8m_tbs]];
+    ;

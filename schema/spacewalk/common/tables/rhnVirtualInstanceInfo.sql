@@ -16,30 +16,30 @@
 
 CREATE TABLE rhnVirtualInstanceInfo
 (
-    name           VARCHAR2(128),
-    instance_id    NUMBER NOT NULL
+    name           VARCHAR(128),
+    instance_id    NUMERIC NOT NULL
                        CONSTRAINT rhn_vii_viid_fk
                            REFERENCES rhnVirtualInstance (id)
                            ON DELETE CASCADE,
-    instance_type  NUMBER NOT NULL
+    instance_type  NUMERIC NOT NULL
                        CONSTRAINT rhn_vii_it_fk
                            REFERENCES rhnVirtualInstanceType (id),
-    memory_size_k  NUMBER,
-    vcpus          NUMBER,
-    state          NUMBER NOT NULL
+    memory_size_k  NUMERIC,
+    vcpus          NUMERIC,
+    state          NUMERIC NOT NULL
                        CONSTRAINT rhn_vii_state_fk
                            REFERENCES rhnVirtualInstanceState (id),
-    created        timestamp with local time zone
+    created        TIMESTAMPTZ
                        DEFAULT (current_timestamp) NOT NULL,
-    modified       timestamp with local time zone
+    modified       TIMESTAMPTZ
                        DEFAULT (current_timestamp) NOT NULL
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE UNIQUE INDEX rhn_vii_viid_uq
     ON rhnVirtualInstanceInfo (instance_id)
-    TABLESPACE [[64k_tbs]];
+    ;
 
 CREATE SEQUENCE rhn_vii_id_seq;
 

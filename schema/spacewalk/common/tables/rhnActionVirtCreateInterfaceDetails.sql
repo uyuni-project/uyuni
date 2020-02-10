@@ -15,23 +15,23 @@
 
 CREATE TABLE rhnActionVirtCreateInterfaceDetails
 (
-    id                   NUMBER NOT NULL
+    id                   NUMERIC NOT NULL
                              CONSTRAINT rhn_action_virt_create_iface_details_id_pk
                                  PRIMARY KEY,
-    type                 VARCHAR2(20),
-    source               VARCHAR2(256),
-    mac                  VARCHAR2(20),
-    idx                  NUMBER,
-    action_id            NUMBER NOT NULL
+    type                 VARCHAR(20),
+    source               VARCHAR(256),
+    mac                  VARCHAR(20),
+    idx                  NUMERIC,
+    action_id            NUMERIC NOT NULL
                              CONSTRAINT rhn_action_virt_create_iface_details_aid_fk
                                  REFERENCES rhnActionVirtCreate (action_id)
                                  ON DELETE CASCADE
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE INDEX rhn_action_virt_create_iface_details_id_idx
     ON rhnActionVirtCreateInterfaceDetails (id)
-    TABLESPACE [[4m_tbs]];
+    ;
 
 CREATE SEQUENCE rhn_action_virt_create_iface_details_id_seq;

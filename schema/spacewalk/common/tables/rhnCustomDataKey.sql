@@ -16,33 +16,33 @@
 
 CREATE TABLE rhnCustomDataKey
 (
-    id                NUMBER NOT NULL
+    id                NUMERIC NOT NULL
                           CONSTRAINT rhn_cdatakey_pk PRIMARY KEY,
-    org_id            NUMBER NOT NULL
+    org_id            NUMERIC NOT NULL
                           CONSTRAINT rhn_cdatakey_oid_fk
                               REFERENCES web_customer (id)
                               ON DELETE CASCADE,
-    label             VARCHAR2(64) NOT NULL,
-    description       VARCHAR2(4000) NOT NULL,
-    created_by        NUMBER
+    label             VARCHAR(64) NOT NULL,
+    description       VARCHAR(4000) NOT NULL,
+    created_by        NUMERIC
                           CONSTRAINT rhn_cdatakey_cb_fk
                               REFERENCES web_contact (id)
                               ON DELETE SET NULL,
-    last_modified_by  NUMBER
+    last_modified_by  NUMERIC
                           CONSTRAINT rhn_cdatakey_lmb_fk
                               REFERENCES web_contact (id)
                               ON DELETE SET NULL,
-    created           timestamp with local time zone
+    created           TIMESTAMPTZ
                           DEFAULT (current_timestamp) NOT NULL,
-    modified          timestamp with local time zone
+    modified          TIMESTAMPTZ
                           DEFAULT (current_timestamp) NOT NULL
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE INDEX rhn_cdatakey_oid_label_id_idx
     ON rhnCustomDataKey (org_id, label, id)
-    TABLESPACE [[2m_tbs]];
+    ;
 
 CREATE SEQUENCE rhn_cdatakey_id_seq;
 

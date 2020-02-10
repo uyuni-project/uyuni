@@ -11,20 +11,20 @@
 --
 create table suseProductFile
 (
-  id              NUMBER NOT NULL PRIMARY KEY,
-  name            VARCHAR2(256) NOT NULL,
-  evr_id          NUMBER NOT NULL
+  id              NUMERIC NOT NULL PRIMARY KEY,
+  name            VARCHAR(256) NOT NULL,
+  evr_id          NUMERIC NOT NULL
                          CONSTRAINT suse_prod_file_eid_fk
                          REFERENCES rhnpackageevr (id),
-  package_arch_id NUMBER NOT NULL
+  package_arch_id NUMERIC NOT NULL
                          CONSTRAINT suse_prod_file_paid_fk
                          REFERENCES rhnpackagearch (id),
-  vendor          VARCHAR2(256),
-  summary         VARCHAR2(4000),
-  description     VARCHAR2(4000),
-  created   timestamp with local time zone
+  vendor          VARCHAR(256),
+  summary         VARCHAR(4000),
+  description     VARCHAR(4000),
+  created   TIMESTAMPTZ
                 DEFAULT (current_timestamp) NOT NULL,
-  modified  timestamp with local time zone
+  modified  TIMESTAMPTZ
                 DEFAULT (current_timestamp) NOT NULL
 );
 

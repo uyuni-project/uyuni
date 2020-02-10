@@ -16,24 +16,24 @@
 
 CREATE TABLE rhnActionDaemonConfig
 (
-    action_id  NUMBER NOT NULL
+    action_id  NUMERIC NOT NULL
                    CONSTRAINT rhn_actiondc_aid_fk
                        REFERENCES rhnAction (id)
                        ON DELETE CASCADE,
-    interval   NUMBER NOT NULL,
+    interval   NUMERIC NOT NULL,
     restart    CHAR(1)
                    DEFAULT ('Y') NOT NULL
                    CONSTRAINT rhn_actiondc_rest_ck
                        CHECK (restart in ('Y','N')),
-    created    timestamp with local time zone
+    created    TIMESTAMPTZ
                    DEFAULT (current_timestamp) NOT NULL,
-    modified   timestamp with local time zone
+    modified   TIMESTAMPTZ
                    DEFAULT (current_timestamp) NOT NULL
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE UNIQUE INDEX rhn_actiondc_aid_uq
     ON rhnActionDaemonConfig (action_id)
-    TABLESPACE [[8m_tbs]];
+    ;
 

@@ -16,27 +16,27 @@
 
 CREATE TABLE rhnKickstartDefaultRegToken
 (
-    kickstart_id  NUMBER NOT NULL
+    kickstart_id  NUMERIC NOT NULL
                       CONSTRAINT rhn_ksdrt_ksid_fk
                           REFERENCES rhnKSData (id)
                           ON DELETE CASCADE,
-    regtoken_id   NUMBER NOT NULL
+    regtoken_id   NUMERIC NOT NULL
                       CONSTRAINT rhn_ksdrt_rtid_fk
                           REFERENCES rhnRegToken (id)
                           ON DELETE CASCADE,
-    created       timestamp with local time zone
+    created       TIMESTAMPTZ
                       DEFAULT (current_timestamp) NOT NULL,
-    modified      timestamp with local time zone
+    modified      TIMESTAMPTZ
                       DEFAULT (current_timestamp) NOT NULL
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE INDEX rhn_ksdrt_ksid_rtid_idx
     ON rhnKickstartDefaultRegToken (kickstart_id, regtoken_id)
-    TABLESPACE [[8m_tbs]];
+    ;
 
 CREATE INDEX rhn_ksdrt_rtid_idx
     ON rhnKickstartDefaultRegToken (regtoken_id)
-    TABLESPACE [[2m_tbs]];
+    ;
 

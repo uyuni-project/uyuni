@@ -16,26 +16,26 @@
 
 CREATE TABLE rhnKSTreeFile
 (
-    kstree_id          NUMBER NOT NULL
+    kstree_id          NUMERIC NOT NULL
                            CONSTRAINT rhn_kstreefile_kid_fk
                                REFERENCES rhnKickstartableTree (id)
                                ON DELETE CASCADE,
-    relative_filename  VARCHAR2(256) NOT NULL,
-    checksum_id        NUMBER NOT NULL
+    relative_filename  VARCHAR(256) NOT NULL,
+    checksum_id        NUMERIC NOT NULL
                           CONSTRAINT rhn_kstreefile_chsum_fk
                            REFERENCES rhnChecksum (id),
-    file_size          NUMBER NOT NULL,
-    last_modified      timestamp with local time zone
+    file_size          NUMERIC NOT NULL,
+    last_modified      TIMESTAMPTZ
                            DEFAULT (current_timestamp) NOT NULL,
-    created            timestamp with local time zone
+    created            TIMESTAMPTZ
                            DEFAULT (current_timestamp) NOT NULL,
-    modified           timestamp with local time zone
+    modified           TIMESTAMPTZ
                            DEFAULT (current_timestamp) NOT NULL
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE UNIQUE INDEX rhn_kstreefile_kid_rfn_uq
     ON rhnKSTreeFile (kstree_id, relative_filename)
-    TABLESPACE [[8m_tbs]];
+    ;
 

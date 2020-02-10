@@ -16,24 +16,24 @@
 
 CREATE TABLE rhnServerEvent
 (
-    id         NUMBER NOT NULL
+    id         NUMERIC NOT NULL
                    CONSTRAINT rhn_se_id_pk PRIMARY KEY
-                   USING INDEX TABLESPACE [[64k_tbs]],
-    server_id  NUMBER NOT NULL
+                   ,
+    server_id  NUMERIC NOT NULL
                    CONSTRAINT rhn_se_server_id_fk
                        REFERENCES rhnServer (id),
-    details    VARCHAR2(4000) NOT NULL,
-    created    timestamp with local time zone
+    details    VARCHAR(4000) NOT NULL,
+    created    TIMESTAMPTZ
                    DEFAULT (current_timestamp) NOT NULL,
-    modified   timestamp with local time zone
+    modified   TIMESTAMPTZ
                    DEFAULT (current_timestamp) NOT NULL
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE INDEX rhn_se_idx
     ON rhnServerEvent (server_id)
-    TABLESPACE [[64k_tbs]];
+    ;
 
 CREATE SEQUENCE rhn_se_id_seq;
 

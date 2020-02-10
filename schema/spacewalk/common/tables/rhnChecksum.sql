@@ -18,18 +18,18 @@
 create table
 rhnChecksum
 (
-        id              number not null
+        id              NUMERIC not null
                         constraint rhnChecksum_pk primary key,
-        checksum_type_id        number not null
+        checksum_type_id        NUMERIC not null
                         constraint rhnChecksum_typeid_fk
                         references rhnChecksumType(id),
-        checksum        varchar2(128) not null
+        checksum        VARCHAR(128) not null
 )
-        enable row movement
+        
 ;
 
 alter table rhnChecksum add constraint rhnChecksum_chsum_uq
         unique (checksum, checksum_type_id)
-        using index tablespace [[32m_tbs]];
+        ;
 
 CREATE SEQUENCE rhnChecksum_seq;
