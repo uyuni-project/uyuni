@@ -1,4 +1,5 @@
 <c:out value="<a class='js-spa' href=\"/rhn/systems/details/Overview.do?sid=${current.id}\">"  escapeXml="false" />
+
 <c:choose>
   <c:when test="${current.bootstrap && empty nosystemicons}">
     <rhn:icon type="system-bare-metal" title="systemlist.jsp.bootstrap" />
@@ -13,6 +14,10 @@
     <rhn:icon type="system-physical" title="systemlist.jsp.nonvirt" />
   </c:otherwise>
 </c:choose>
+
+<c:if test="${current.rhnProxy}">
+  <rhn:icon type="header-proxy" title="is proxy" />
+</c:if>
 
 <c:choose>
   <c:when test="${empty current.name}">
