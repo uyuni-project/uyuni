@@ -1,3 +1,4 @@
+- Add Astra Linux CE "Orel" repositories
 - check for delimiter as well when detecting current phase (bsc#1164771)
 
 -------------------------------------------------------------------

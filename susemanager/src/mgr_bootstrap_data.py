@@ -597,7 +597,57 @@ PKGLISTDEBIAN10 = [
     "python-systemd",
     "python-tornado",
     "python-yaml",
+    "python-zmq"
+]
+
+PKGLISTASTRALINUXOREL = [
+    "dctrl-tools",
+    "dirmngr",
+    "iso-codes",
+    "libjs-jquery",
+    "libjs-sphinxdoc",
+    "libjs-underscore",
+    "libpgm-5.2-0",
+    "libpython-stdlib",
+    "libpython2.7-minimal",
+    "libpython2.7-stdlib",
+    "libsodium18",
+    "libyaml-0-2",
+    "libzmq5",
+    "python",
+    "python-apt",
+    "python-apt-common",
+    "python-backports-abc",
+    "python-cffi-backend",
+    "python-chardet",
+    "python-concurrent.futures",
+    "python-crypto",
+    "python-cryptography",
+    "python-dateutil",
+    "python-enum34",
+    "python-idna",
+    "python-ipaddress",
+    "python-jinja2",
+    "python-markupsafe",
+    "python-minimal",
+    "python-msgpack",
+    "python-openssl",
+    "python-pkg-resources",
+    "python-pyasn1",
+    "python-psutil",
+    "python-requests",
+    "python-setuptools",
+    "python-singledispatch",
+    "python-six",
+    "python-systemd",
+    "python-tornado",
+    "python-urllib3",
+    "python-yaml",
     "python-zmq",
+    "python2.7",
+    "python2.7-minimal",
+    "salt-common",
+    "salt-minion"
 ]
 
 DATA = {
@@ -1055,6 +1105,11 @@ DATA = {
      'debian10-amd64-uyuni' : {
          'BASECHANNEL' : 'debian-10-pool-amd64-uyuni', 'PKGLIST' : PKGLISTDEBIAN10,
          'DEST' : '/srv/www/htdocs/pub/repositories/debian/10/bootstrap/',
+         'TYPE' : 'deb'
+     },
+     'astralinux-orel-amd64': {
+         'BASECHANNEL' : 'astralinux-orel-pool-amd64', 'PKGLIST' : PKGLISTASTRALINUXOREL,
+         'DEST' : '/srv/www/htdocs/pub/repositories/astra/orel/bootstrap/',
          'TYPE' : 'deb'
      }
 }
