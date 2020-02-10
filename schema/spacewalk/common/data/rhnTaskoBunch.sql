@@ -67,9 +67,6 @@ INSERT INTO rhnTaskoBunch (id, name, description, org_bunch)
              VALUES (sequence_nextval('rhn_tasko_bunch_id_seq'), 'cleanup-data-bunch', 'Cleans up orphaned and outdated data', null);
 
 INSERT INTO rhnTaskoBunch (id, name, description, org_bunch)
-             VALUES (sequence_nextval('rhn_tasko_bunch_id_seq'), 'mgr-register-bunch', 'Runs mgr-register', null);
-
-INSERT INTO rhnTaskoBunch (id, name, description, org_bunch)
              VALUES (sequence_nextval('rhn_tasko_bunch_id_seq'), 'ssh-push-bunch', 'Push scheduled actions to clients via SSH', null);
 
 INSERT INTO rhnTaskoBunch (id, name, description, org_bunch)
