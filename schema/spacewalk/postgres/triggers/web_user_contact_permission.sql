@@ -1,4 +1,3 @@
--- oracle equivalent source sha1 3740ad536b3e5a26b43f37d7a82e6f069f6a58f5
 
 create or replace function web_user_cp_timestamp_fun() returns trigger as
 $$

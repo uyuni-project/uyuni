@@ -1,5 +1,3 @@
--- oracle equivalent source sha1 fc69313728322bbff58aa5e7b9ca861d346e0bcc
--- retrieved from ./1241057068/d2f16725f65bddae85cd4782cd82e0c84c0a776d/schema/spacewalk/oracle/procs/lookup_arch_type.sql
 --
 -- Copyright (c) 2008--2015 Red Hat, Inc.
 --

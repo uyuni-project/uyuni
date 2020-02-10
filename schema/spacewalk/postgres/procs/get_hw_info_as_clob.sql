@@ -1,4 +1,3 @@
--- oracle equivalent source sha1 66f568e1f6d397f23d2afd412ea60541db81150c
 
 create or replace function get_hw_info_as_clob(
 	sid in rhnserver.id%TYPE,

@@ -1,4 +1,3 @@
--- oracle equivalent source sha1 8cb4b4ce75b5de5afefb3ce0306453e7beb9ebd3
 --
 -- Take seconds since epoch (January 1, 1970 UTC) and convert it
 -- to time-zone'd timestamp. Mainly as compatibility with Oracle

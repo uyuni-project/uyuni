@@ -1,4 +1,3 @@
--- oracle equivalent source sha1 745701c8146c848eb2a3d1b18fd93d4332453103
 
 create or replace view all_primary_keys as
 select

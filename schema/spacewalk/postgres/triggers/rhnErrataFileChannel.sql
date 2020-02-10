@@ -1,4 +1,3 @@
--- oracle equivalent source sha1 d6304c6be387148e6bfe20471343ef3e78e58a91
 
 create or replace function rhn_efilec_mod_trig_fun() returns trigger as
 $$

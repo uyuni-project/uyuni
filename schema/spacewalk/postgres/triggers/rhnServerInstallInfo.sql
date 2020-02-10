@@ -1,4 +1,3 @@
--- oracle equivalent source sha1 046cd29db496466bf3c1d3ea3439ebc0e0a9eb1a
 
 
 create or replace function rhn_s_inst_info_mod_trig_fun() returns trigger as

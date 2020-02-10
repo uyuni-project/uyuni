@@ -1,4 +1,3 @@
--- oracle equivalent source sha1 395665b2000a1b4f872eed25748e1f7b70b78904
 
 
 create or replace function rhn_snapshotpkg_mod_trig_fun() returns trigger as

@@ -1,4 +1,3 @@
--- oracle equivalent source sha1 2e2f8340bb72267da853f29d845920412e36538a
 
 
 create or replace function rhn_pkg_obsoletes_mod_trig_fun() returns trigger as

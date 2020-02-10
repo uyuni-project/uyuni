@@ -1,4 +1,3 @@
--- oracle equivalent source sha1 3feeb5739f9bab28417f5a16f67f1b31e411741f
 
 create or replace function rhn_satellite_info_mod_trig_fun() returns trigger as
 $$
