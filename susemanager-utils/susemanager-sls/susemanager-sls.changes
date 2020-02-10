@@ -1,3 +1,4 @@
+- Add support for Amazon Linux 2
 - add allow vendor change option to pathing via salt 
 - Add SALT_RUNNING config in case it's not present on the minion (bsc#1183661)
 - Skip removed product classes with satellite-sync

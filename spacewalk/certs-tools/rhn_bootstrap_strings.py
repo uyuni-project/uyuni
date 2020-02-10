@@ -391,6 +391,9 @@ if [ "$INSTALLER" == yum ]; then
         elif [ -f /etc/redhat-release ]; then
             grep -v '^#' /etc/redhat-release | grep -q '\(Red Hat\)' && BASE="res"
             VERSION=`grep -v '^#' /etc/redhat-release | grep -Po '(?<=release )\d+'`
+        elif [ -f /etc/os-release ]; then
+            BASE=$(source /etc/os-release; echo $ID)
+            VERSION=$(source /etc/os-release; echo $VERSION_ID)
         fi
         Y_CLIENT_CODE_BASE="${{BASE:-unknown}}"
         Y_CLIENT_CODE_VERSION="${{VERSION:-unknown}}"

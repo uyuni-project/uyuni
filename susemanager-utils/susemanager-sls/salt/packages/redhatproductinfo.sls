@@ -11,6 +11,10 @@ oraclerelease:
   cmd.run:
     - name: cat /etc/oracle-release
     - onlyif: test -f /etc/oracle-release
+amazonrelease:
+  cmd.run:
+    - name: cat /etc/system-release
+    - onlyif: test -f /etc/system-release
 respkgquery:
   cmd.run:
     - name: rpm -q --whatprovides 'sles_es-release-server'
