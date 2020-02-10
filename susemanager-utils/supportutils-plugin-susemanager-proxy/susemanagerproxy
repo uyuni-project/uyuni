@@ -97,7 +97,6 @@ ssl_bridge
 status_log_acceptor
 suse-manager-proxy-release
 suse-manager-proxy-release-cd
-susemanager-proxy
 tsdb
 udns
 zypp-plugin-spacewalk
