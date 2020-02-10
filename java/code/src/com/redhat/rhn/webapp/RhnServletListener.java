@@ -19,6 +19,7 @@ import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.manager.satellite.UpgradeCommand;
 
 import com.suse.manager.reactor.SaltReactor;
+import com.suse.manager.tasks.ActorManager;
 
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
@@ -58,10 +59,12 @@ public class RhnServletListener implements ServletContextListener {
         // Events
         MessageQueue.startMessaging();
         MessageQueue.configureDefaultActions();
+        ActorManager.start();
     }
 
     private void stopMessaging() {
         MessageQueue.stopMessaging();
+        ActorManager.stop();
     }
 
     /**
