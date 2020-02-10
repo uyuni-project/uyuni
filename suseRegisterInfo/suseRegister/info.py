@@ -49,6 +49,10 @@ def getRedHatLikeProducts():
         ret = parseReleaseInfo(release='/etc/centos-release')
         if ret:
             ret['name'] = "CentOS"
+    elif os.path.exists('/etc/system-release'):
+        ret = parseReleaseInfo(release='/etc/system-release')
+        if ret:
+            ret['name'] = "AmazonLinux"
     else:
         ret = parseReleaseInfo()
         if ret:

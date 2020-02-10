@@ -318,7 +318,7 @@ RES7 = [
     "python-psutil",
     "python-pycrypto",
     "python-requests",
-    "python-setuptools",
+    "python-setuptools|python2-setuptools", # python-setuptools is the Amazon Linux name
     "python-singledispatch",
     "python-tornado",
     "python-zmq",
@@ -340,7 +340,7 @@ RES7 = [
     "openssl",
     "openssl-libs",
     "python-ipaddress",
-    "redhat-rpm-config",
+    "redhat-rpm-config|system-rpm-config", # system-rpm-config is the Amazon Linux name
     "rpm-python",
     "spacewalk-check",
     "python2-spacewalk-check",
@@ -387,6 +387,40 @@ RES8 = [
 
 RES8_X86 = [
     "dmidecode"
+]
+
+AMAZONLINUX2 = [
+    "dwz",
+    "groff-base",
+    "perl",
+    "perl-Carp",
+    "perl-Encode",
+    "perl-Exporter",
+    "perl-File-Path",
+    "perl-File-Temp",
+    "perl-Filter",
+    "perl-Getopt-Long",
+    "perl-HTTP-Tiny",
+    "perl-PathTools",
+    "perl-Pod-Escapes",
+    "perl-Pod-Perldoc",
+    "perl-Pod-Simple",
+    "perl-Pod-Usage",
+    "perl-Scalar-List-Utils",
+    "perl-Socket",
+    "perl-Storable",
+    "perl-Text-ParseWords",
+    "perl-Time-HiRes",
+    "perl-Time-Local",
+    "perl-constant",
+    "perl-libs",
+    "perl-macros",
+    "perl-parent",
+    "perl-podlators",
+    "perl-srpm-macros",
+    "perl-threads",
+    "perl-threads-shared",
+    "zip"
 ]
 
 PKGLIST15_SALT = [
@@ -1202,6 +1236,15 @@ DATA = {
     'oracle-8-x86_64-uyuni' : {
         'BASECHANNEL' : 'oraclelinux8-x86_64', 'PKGLIST' : RES8 + RES8_X86,
         'DEST' : '/srv/www/htdocs/pub/repositories/oracle/8/bootstrap/'
+    },
+    'amazonlinux-2-x86_64' : {
+        # We will need to update the IDs when we have the definitions for SUSE Manager
+        'PDID' : [-14, 1683], 'BETAPDID' : [2065], 'PKGLIST' : RES7 + RES7_X86 + AMAZONLINUX2,
+        'DEST' : '/srv/www/htdocs/pub/repositories/amzn/2/bootstrap/'
+    },
+    'amazonlinux-2-x86_64-uyuni' : {
+        'BASECHANNEL' : 'amazonlinux2-core-x86_64', 'PKGLIST' : RES7 + RES7_X86 + AMAZONLINUX2,
+        'DEST' : '/srv/www/htdocs/pub/repositories/amzn/2/bootstrap/'
     },
     'RHEL6-x86_64' : {
         'PDID' : [-5, 1682], 'BETAPDID' : [2064], 'PKGLIST' : RES6,
