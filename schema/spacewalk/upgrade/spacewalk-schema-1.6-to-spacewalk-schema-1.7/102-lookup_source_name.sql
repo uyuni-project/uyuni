@@ -1,4 +1,3 @@
--- oracle equivalent source sha1 6750c771494ff37bb3d153ccd8ef433020c075d8
 
 create or replace function
 lookup_source_name(name_in in varchar)

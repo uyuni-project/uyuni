@@ -1,4 +1,3 @@
--- oracle equivalent source sha1 ff61eb257641743139b48e5fbc5ebfd37c62ebc6
 
 create or replace function
 insert_client_capability(name_in in varchar)

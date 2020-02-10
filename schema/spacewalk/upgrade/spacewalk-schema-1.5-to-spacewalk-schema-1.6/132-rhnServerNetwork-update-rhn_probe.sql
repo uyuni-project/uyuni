@@ -1,4 +1,3 @@
--- oracle equivalent source sha1 c4740f0347166823c12b86d3fe2f9d73a50b43e0
 
 create or replace function rhn_servnet_ipaddr_mon_trig_fun() returns trigger as
 $$

@@ -1,4 +1,3 @@
--- oracle equivalent source sha1 33dd93cc61d34e106f19908f49ed767cab00481d
 -- Drop old stuff
 delete from rhnContentSourceSsl;
 drop table rhnContentSourceSsl;

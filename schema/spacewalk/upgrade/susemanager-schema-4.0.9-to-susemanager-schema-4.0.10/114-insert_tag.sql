@@ -1,4 +1,3 @@
--- oracle equivalent source sha1 1bc937c6a7a4323dc72c90dc79ec0ec0e6fdacb0
 
 create or replace function
 insert_tag(org_id_in in numeric, tag_name_id_in in numeric)

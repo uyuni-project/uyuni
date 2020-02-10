@@ -1,4 +1,3 @@
--- oracle equivalent source sha1 32fa76082aad7e0505467f86e5ed19f5586debe0
 
 create or replace function
 lookup_xccdf_ident(system_in in varchar, identifier_in in varchar)

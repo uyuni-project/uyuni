@@ -1,4 +1,3 @@
--- oracle equivalent source sha1 ab2bfbc450c57560c15016bacec926a7714d7bcc
 
  SELECT logging.clear_log_id();
 

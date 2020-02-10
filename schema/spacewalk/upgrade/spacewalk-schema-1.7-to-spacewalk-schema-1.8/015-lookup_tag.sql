@@ -1,4 +1,3 @@
--- oracle equivalent source sha1 b14267384bc104605623a41b755e68e0103b5aa8
 
 create or replace function
 lookup_tag(org_id_in in numeric, name_in in varchar)

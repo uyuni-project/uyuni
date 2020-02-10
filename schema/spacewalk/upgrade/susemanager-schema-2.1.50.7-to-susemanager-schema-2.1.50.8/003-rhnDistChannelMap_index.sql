@@ -1,4 +1,3 @@
--- oracle equivalent source sha1 8ab1028a753d0bbf3d70e9c3cfaac409d346eeae
 
 alter table rhnDistChannelMap drop constraint rhn_dcm_release_caid_oid_uq;
 

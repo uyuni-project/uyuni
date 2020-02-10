@@ -1,4 +1,3 @@
--- oracle equivalent source sha1 add856b7a87a02b324232caad9383c6103ed7abd
 
 -- NOTE: This is intentionally not thread safe! You must lock rhnChecksum
 -- if you are going to use this procedure!

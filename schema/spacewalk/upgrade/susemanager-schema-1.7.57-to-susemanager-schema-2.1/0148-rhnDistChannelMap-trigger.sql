@@ -1,4 +1,3 @@
--- oracle equivalent source sha1 52c0d465e922c0e887b6728e493e593c532e6398
 
 create or replace function rhn_dist_channel_map_mod_trig_fun() returns trigger as
 $$

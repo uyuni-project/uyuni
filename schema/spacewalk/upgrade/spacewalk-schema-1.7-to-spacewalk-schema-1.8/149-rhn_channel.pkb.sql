@@ -1,4 +1,3 @@
--- oracle equivalent source sha1 b0c8a29f5f1f28d2308ccaf6b52a4e54c3999e7c
 
 --update pg_setting
 update pg_settings set setting = 'rhn_channel,' || setting where name = 'search_path';

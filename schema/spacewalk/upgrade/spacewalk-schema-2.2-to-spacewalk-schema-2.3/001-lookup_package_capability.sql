@@ -1,4 +1,3 @@
--- oracle equivalent source sha1 b14267384bc104605623a41b755e68e0103b5aa8
 
 -- Note: intentionally not thread-safe! You must aquire a write lock on the
 -- rhnPackageCapability tabel if you are going to use this proc!

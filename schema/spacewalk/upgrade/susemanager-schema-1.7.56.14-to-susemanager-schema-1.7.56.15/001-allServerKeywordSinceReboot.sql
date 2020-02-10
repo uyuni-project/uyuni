@@ -1,4 +1,3 @@
--- oracle equivalent source sha1 39afdd1b896fabd1a7be60619144b2c40dd397ed
 
 create or replace view allServerKeywordSinceReboot as
 SELECT DISTINCT S.id, S.NAME,

@@ -1,4 +1,3 @@
--- oracle equivalent source sha1 8a76fafe9484a16cb18880636c1d1ab5e8ae6a22
 
 select logging.clear_log_id() from dual;
 

@@ -1,4 +1,3 @@
--- oracle equivalent source sha1 bb8847723477fe502d0a0c73b0224d6fd6de91cd
 
 CREATE OR REPLACE FUNCTION log_rename_constrains()
 RETURNS VOID

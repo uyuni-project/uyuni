@@ -1,4 +1,3 @@
--- oracle equivalent source sha1 3002b1726cc0b956c8fc55d73acfd200a9a0e365
 
 create or replace function
 insert_package_delta(n_in in varchar)

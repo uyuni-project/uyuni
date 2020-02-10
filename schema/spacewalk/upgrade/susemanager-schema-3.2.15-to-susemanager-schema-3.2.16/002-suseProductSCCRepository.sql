@@ -1,4 +1,3 @@
--- oracle equivalent source sha1 07bba32d848d39b080335f039dd0a42a065e2338
 
 CREATE TABLE if not exists
 suseProductSCCRepository

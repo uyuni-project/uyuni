@@ -1,4 +1,3 @@
--- oracle equivalent source sha1 4e3db8117396d3b89f2ead45b41c52fc97b61d3b
 
 delete from rhncpu X
 	where server_id in (select server_id from rhncpu group by server_id having count(server_id)>1)

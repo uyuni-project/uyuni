@@ -1,4 +1,3 @@
--- oracle equivalent source sha1 08bbc1262e0794cb1714eb2c55d674c4b0e613b0
 
 ALTER TABLE rhnXccdfRuleresult ADD id NUMERIC;
 

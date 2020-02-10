@@ -1,4 +1,3 @@
--- oracle equivalent source sha1 62e4583f9284dfd63f8fbb39a0c3ddbcd41dd57e
 
 -- create schema rhn_channel;
 

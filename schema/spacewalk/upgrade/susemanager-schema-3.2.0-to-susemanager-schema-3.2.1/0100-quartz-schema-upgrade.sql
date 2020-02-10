@@ -1,4 +1,3 @@
--- oracle equivalent source sha1 e7701a353f59220b540579ba8d6020fff2c0f64f
 --
 -- drop tables that are no longer used
 --

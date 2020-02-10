@@ -1,4 +1,3 @@
--- oracle equivalent source sha1 29d0aacc8dacb43c2d8954d66eaf50928710eb90
 create or replace function rhn_cmeth_val_trig_fun() returns trigger as
 $$
 begin

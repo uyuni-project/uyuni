@@ -1,4 +1,3 @@
--- oracle equivalent source sha1 0dbf599305120da113dc22a42f203ce1c06af935
 
 drop function rhn_install_org_satellites(numeric, numeric, character varying);
 drop function rhn_prepare_install(character varying, numeric);

@@ -1,4 +1,3 @@
--- oracle equivalent source sha1 b14267384bc104605623a41b755e68e0103b5aa8
 
 -- setup search_path so that these functions are created in appropriate schema.
 update pg_settings set setting = 'rhn_entitlements,' || setting where name = 'search_path';

@@ -1,4 +1,3 @@
--- oracle equivalent source sha1 d6d6cf9ab9b366582b15e59824fae47e64d539cf
 
 create or replace function
 insert_package_capability(name_in in varchar, version_in in varchar default null)

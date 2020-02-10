@@ -1,4 +1,3 @@
--- oracle equivalent source sha1 ff5fe7355519272628945233220c2bd5f2c57b56
 
 DROP SEQUENCE IF EXISTS rhn_server_net_id_seq;
 DROP TRIGGER IF EXISTS rhn_servernetwork_mod_trig ON rhnServerNetwork;
@@ -6,7 +5,6 @@ DROP FUNCTION IF EXISTS rhn_servernetwork_mod_trig_fun();
 
 -- delete_server.sql
 
--- oracle equivalent source sha1 31cf428b3a4c39081dad26785a678567a5a28ed7
 --
 -- Copyright (c) 2008--2012 Red Hat, Inc.
 --
@@ -215,7 +213,6 @@ end;
 $$
 language plpgsql;
 
--- oracle equivalent source sha1 87bc50785a1b2a5e639cdc7371aa5c1b435adaa2
 --
 -- Copyright (c) 2008--2014 Red Hat, Inc.
 --

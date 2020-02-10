@@ -1,4 +1,3 @@
--- oracle equivalent source sha1 1bc8d86b51641e0d6fd79422d30c5aca9640b3d4
 --
 -- Adding the missing columnt 'severity_id' to rhnErrataTmp
 -- table to be consistent with rhnErrata table

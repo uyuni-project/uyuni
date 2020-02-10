@@ -1,4 +1,3 @@
--- oracle equivalent source sha1 9f4295ea4f26d0a8754e29d7fa10f213ff8d477f
 
 create or replace function web_contact_ins_trig_fun() returns trigger
 as

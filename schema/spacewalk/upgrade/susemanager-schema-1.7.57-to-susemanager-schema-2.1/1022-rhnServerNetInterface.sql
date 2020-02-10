@@ -1,4 +1,3 @@
--- oracle equivalent source sha1 4e2847469a40fce977edb5b8e183c0a2f78a7db1
 
 ALTER TABLE rhnServerNetInterface ADD COLUMN is_primary VARCHAR(1);
 

@@ -1,4 +1,3 @@
--- oracle equivalent source sha1 1cd8e269330483eed05df913e27840bca2cac619
 
 -- provide info about possible duplicate minion ids
 select 'DUPLICATE MINION IDs FOUND:' || X.minion_id || ' Manual cleanup required!' message

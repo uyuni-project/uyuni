@@ -1,4 +1,3 @@
--- oracle equivalent source sha1 4f0e9a5a6bff289dca86b67b9a97926d6b18f87e
 
 create or replace function
 lookup_package_nevra(

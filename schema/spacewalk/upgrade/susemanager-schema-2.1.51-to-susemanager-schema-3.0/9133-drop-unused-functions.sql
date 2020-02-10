@@ -1,4 +1,3 @@
--- oracle equivalent source sha1 30424b91a2b8d62709f38d1d66db623418a24467
 
 drop function if exists rhn_channel.available_chan_subscriptions(channel_id_in IN NUMERIC, org_id_in IN NUMERIC);
 drop function if exists rhn_channel.available_family_subscriptions(channel_family_id_in IN NUMERIC, org_id_in IN NUMERIC);

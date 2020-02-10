@@ -1,4 +1,3 @@
--- oracle equivalent source sha1 3b6136cb195be227322b77e4097148ebbf95400a
 
 DO $$
 BEGIN

@@ -1,4 +1,3 @@
--- oracle equivalent source sha1 5382865750405facc547315329a739b8ee1fe238
 
 delete from rhnram X
 	where server_id in (select server_id from rhnram group by server_id having count(server_id)>1)

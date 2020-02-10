@@ -1,4 +1,3 @@
--- oracle equivalent source sha1 b14267384bc104605623a41b755e68e0103b5aa8
 
 ALTER TABLE rhnActionApplyStatesResult DROP CONSTRAINT rhn_apply_states_result_aasid_fk;
 ALTER TABLE rhnActionApplyStatesResult ADD CONSTRAINT rhn_apply_states_result_aid_fk FOREIGN KEY (action_apply_states_id) REFERENCES rhnActionApplyStates (id) ON DELETE CASCADE;

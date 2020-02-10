@@ -1,4 +1,3 @@
--- oracle equivalent source sha1 be9ef654294e2f657114e022aadfea74737ba54e
 
 
 ALTER TABLE rhnServerNeededCache ADD

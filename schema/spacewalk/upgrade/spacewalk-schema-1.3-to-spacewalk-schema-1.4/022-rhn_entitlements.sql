@@ -1,4 +1,3 @@
--- oracle equivalent source sha1 ea775a5274c4f6f712549df3099a9f2bfec81ce3
 
 -- Note: this file is not a full equivalent of the Oracle sources.
 -- Neither the flex stuff nor the update_family_countsYN was fully migrated.

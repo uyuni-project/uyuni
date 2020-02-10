@@ -1,4 +1,3 @@
--- oracle equivalent source sha1 ffb038f506c05729c4d0ba8f62e514a1133a2c99
 
 create or replace function rhn_confrevision_del_trig_fun() returns trigger 
 as

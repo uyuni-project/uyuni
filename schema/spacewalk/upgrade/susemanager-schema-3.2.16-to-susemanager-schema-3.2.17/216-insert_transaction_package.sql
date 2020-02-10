@@ -1,4 +1,3 @@
--- oracle equivalent source sha1 43bcf92c476a4eb52f539c63577d349109b65e38
 
 create or replace function
 insert_transaction_package(

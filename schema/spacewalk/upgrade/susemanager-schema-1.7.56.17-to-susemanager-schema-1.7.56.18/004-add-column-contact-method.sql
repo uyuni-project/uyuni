@@ -1,4 +1,3 @@
--- oracle equivalent source sha1 1ee8e8a21916cc86a7665502d714c9e377de2952
 --
 -- Copyright (c) 2013 Novell, Inc.
 --

@@ -1,4 +1,3 @@
--- oracle equivalent source sha1 06ad4b545e7af5b6b04329939b658b4cc4fc725b
 
 CREATE OR REPLACE FUNCTION
 lookup_xccdf_benchmark(identifier_in IN VARCHAR, version_in IN VARCHAR)

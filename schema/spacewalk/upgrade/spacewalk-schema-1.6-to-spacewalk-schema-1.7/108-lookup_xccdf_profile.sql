@@ -1,4 +1,3 @@
--- oracle equivalent source sha1 cbf75718e61e14bc1e042d56b023ed99ff74ff1c
 
 create or replace function
 lookup_xccdf_profile(identifier_in in varchar, title_in in varchar)

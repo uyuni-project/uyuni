@@ -1,4 +1,3 @@
--- oracle equivalent source sha1 9f3cf822ce526d1396838ceaf5fb952d37704611
 
 insert into rhnPackageEnhances (package_id, capability_id, sense)
   select s.package_id, s.capability_id, s.sense

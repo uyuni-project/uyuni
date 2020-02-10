@@ -1,4 +1,3 @@
--- oracle equivalent source sha1 4e778553460cc1f03a7dcbb98c8e27ff98320642
 
 
 --update pg_setting

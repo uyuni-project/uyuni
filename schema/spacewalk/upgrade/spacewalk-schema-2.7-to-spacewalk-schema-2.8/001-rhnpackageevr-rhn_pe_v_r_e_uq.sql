@@ -1,4 +1,3 @@
--- oracle equivalent source sha1 b14267384bc104605623a41b755e68e0103b5aa8
 
 create or replace function fix_rhn_pe_v_r_e_uq()
 returns void as

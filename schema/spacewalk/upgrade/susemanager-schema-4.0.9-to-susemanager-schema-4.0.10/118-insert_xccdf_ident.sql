@@ -1,4 +1,3 @@
--- oracle equivalent source sha1 5bb52739fa5867d1c5ce574d0796d99d255d567c
 
 create or replace function
 insert_xccdf_ident(ident_sys_id_in in numeric, identifier_in in varchar)

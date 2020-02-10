@@ -1,4 +1,3 @@
--- oracle equivalent source sha1 2a98887e4f024f0a92bc1b4fa310e67dcec2cf7c
 
 create or replace function
 insert_cve(name_in in varchar)

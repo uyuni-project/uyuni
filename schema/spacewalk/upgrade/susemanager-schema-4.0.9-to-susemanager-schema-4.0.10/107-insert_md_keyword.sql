@@ -1,4 +1,3 @@
--- oracle equivalent source sha1 9b4477d428c6b9b9b57d526609cf7a26b065c8b7
 
 create or replace function
 insert_md_keyword(label_in in varchar)

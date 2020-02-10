@@ -1,4 +1,3 @@
--- oracle equivalent source sha1 25e005f8a44df66109e92e51797d385c6b62129a
 
 DROP VIEW rhnVisServerGroupMembership;
 DROP VIEW rhnUsersInOrgOverview;

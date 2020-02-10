@@ -1,4 +1,3 @@
--- oracle equivalent source sha1 825f594d653b7badc4c8bf4d131f3a5443b084e2
 --
 -- Copyright (c) 2008--2012 Red Hat, Inc.
 --

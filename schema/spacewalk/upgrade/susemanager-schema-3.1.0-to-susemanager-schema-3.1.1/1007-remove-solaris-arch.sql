@@ -1,4 +1,3 @@
--- oracle equivalent source sha1 6dedab3f67b9add9308dfbb6471c74e06b4577da
 
 create or replace
 function delete_server_tmp (

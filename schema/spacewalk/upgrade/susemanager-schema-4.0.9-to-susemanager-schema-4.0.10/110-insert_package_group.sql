@@ -1,4 +1,3 @@
--- oracle equivalent source sha1 978a2f2728867b46e6ba6fd7bb9cf19f17b08b46
 
 create or replace function
 insert_package_group(name_in in varchar)

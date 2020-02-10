@@ -1,4 +1,3 @@
--- oracle equivalent source sha1 de850fee6f7d36c43367bd48d38f52926321709a
 
 create or replace function
 insert_xccdf_profile(identifier_in in varchar, title_in in varchar)

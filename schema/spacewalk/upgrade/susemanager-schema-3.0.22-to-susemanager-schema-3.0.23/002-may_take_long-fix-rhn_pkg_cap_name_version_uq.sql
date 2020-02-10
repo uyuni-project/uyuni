@@ -1,4 +1,3 @@
--- oracle equivalent source sha1 b14267384bc104605623a41b755e68e0103b5aa8
 
 drop index if exists rhn_pkg_cap_name_version_uq;
 drop index if exists rhn_pkg_cap_name_uq;

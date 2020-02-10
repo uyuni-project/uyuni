@@ -1,4 +1,3 @@
--- oracle equivalent source sha1 f8acc5efac7c45d25d6ed8be616002c2fbce762d
 
 create or replace
 function delete_server (

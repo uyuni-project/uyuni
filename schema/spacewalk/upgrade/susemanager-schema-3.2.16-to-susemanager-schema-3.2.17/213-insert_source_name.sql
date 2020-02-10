@@ -1,4 +1,3 @@
--- oracle equivalent source sha1 9dcda626b05182af31c7aa7adcbd4cfad975cdf7
 
 create or replace function
 insert_source_name(name_in in varchar)

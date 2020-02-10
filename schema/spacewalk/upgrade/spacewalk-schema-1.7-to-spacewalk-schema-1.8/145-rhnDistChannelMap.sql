@@ -1,4 +1,3 @@
--- oracle equivalent source sha1 5d4e5693ab56a45ba202db768693b4ee63450b76
 
 ALTER TABLE rhnDistChannelMap ADD org_id NUMERIC;
 ALTER TABLE rhnDistChannelMap ADD CONSTRAINT rhn_dcm_oid_fk FOREIGN KEY (org_id) REFERENCES web_customer (id) ON DELETE CASCADE;

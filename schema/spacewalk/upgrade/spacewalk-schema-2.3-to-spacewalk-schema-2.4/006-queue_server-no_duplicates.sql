@@ -1,4 +1,3 @@
--- oracle equivalent source sha1 89fecdfd2b9366cde29ad7ae70aecaad64b73ea5
 -- retrieved from ./1241128047/984a347f2afbd47756e90584364799dd670b62db/schema/spacewalk/oracle/procs/queue_server.sql
 --
 -- Copyright (c) 2008--2015 Red Hat, Inc.

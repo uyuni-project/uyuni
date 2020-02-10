@@ -1,4 +1,3 @@
--- oracle equivalent source sha1 5e6f0cd8fbea859c65198a5b71075c092cdf70de
 
 -- Dropping tables
 drop table if exists rhn_command_queue_sessions;

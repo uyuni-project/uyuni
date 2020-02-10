@@ -1,4 +1,3 @@
--- oracle equivalent source sha1 6c90b0d33249b99a6ba9855be7927cadaf2a15f0
 
 DELETE FROM suseProductChannel WHERE channel_id IS NULL;
 

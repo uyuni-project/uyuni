@@ -1,4 +1,3 @@
--- oracle equivalent source sha1 b14267384bc104605623a41b755e68e0103b5aa8
 
 create or replace function rhn_ks_session_history_trigger_fun() returns trigger
 as

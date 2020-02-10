@@ -1,4 +1,3 @@
--- oracle equivalent source sha1 ffcffb0f08037f894c026baae8071ad2902f38e9
 
 create or replace function
 insert_evr(e_in in varchar, v_in in varchar, r_in in varchar)

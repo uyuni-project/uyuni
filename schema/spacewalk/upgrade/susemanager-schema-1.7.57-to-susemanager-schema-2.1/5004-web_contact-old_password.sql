@@ -1,4 +1,3 @@
--- oracle equivalent source sha1 427329b9537baf0257349abbc1b296d6f3a3f914
 
 -- ## views
 

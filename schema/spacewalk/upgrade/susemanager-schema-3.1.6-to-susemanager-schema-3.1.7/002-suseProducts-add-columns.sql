@@ -1,4 +1,3 @@
--- oracle equivalent source sha1 b5a620822236df82f0b720d3924a7d9f0fdda204
 -- Adding the column 'channel_family_id' to suseProducts
 -- Adding the column 'base' to suseProducts
 

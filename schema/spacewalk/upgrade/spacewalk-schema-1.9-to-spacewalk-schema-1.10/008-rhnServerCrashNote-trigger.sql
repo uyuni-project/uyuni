@@ -1,4 +1,3 @@
--- oracle equivalent source sha1 179d3df6aed0424739cee44f486356ee9198b98b
 
 create or replace function rhn_server_crash_note_mod_trig_fun() returns trigger as
 $$

@@ -1,4 +1,3 @@
--- oracle equivalent source sha1 a33ba03f0c524385bfbfb25056d7aa750253e226
 
 create or replace function
 insert_checksum(checksum_type_in in varchar, checksum_in in varchar)

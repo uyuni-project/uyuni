@@ -1,4 +1,3 @@
--- oracle equivalent source sha1 f2794675b98155044a14dd41669af2aa258d2b70
 
 create or replace function
 insert_package_nevra(

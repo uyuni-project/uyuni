@@ -1,4 +1,3 @@
--- oracle equivalent source sha1 f1a3c0a7a3e8076009abc9f6a6ca121e9a9cecc0
 
 create or replace function
 insert_config_filename(name_in in varchar)

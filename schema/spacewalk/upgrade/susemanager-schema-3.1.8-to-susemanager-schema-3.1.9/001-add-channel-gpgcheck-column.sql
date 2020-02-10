@@ -1,4 +1,3 @@
--- oracle equivalent source sha1 bc879939bda9c5c64896b468a03671ff7cdd039c
 -- Adding the column 'gpg_check' to rhnChannel
 
 DO $$

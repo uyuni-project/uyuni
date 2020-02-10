@@ -1,4 +1,3 @@
--- oracle equivalent source sha1 201391ef62bd6dfd74d50e93a9753e85ffae8871
 
 CREATE OR REPLACE FUNCTION
 queue_server(server_id_in IN NUMERIC, immediate_in IN NUMERIC DEFAULT 1)

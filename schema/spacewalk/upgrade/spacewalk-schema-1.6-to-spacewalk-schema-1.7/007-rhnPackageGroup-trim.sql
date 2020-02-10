@@ -1,4 +1,3 @@
--- oracle equivalent source sha1 364257f39ba9bdce9cc90e9a31b10fd19c31babd
 
 -- relink reference to group with trailing \n to correct one
 update rhnpackage set package_group = (select n.id

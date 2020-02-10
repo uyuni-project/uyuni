@@ -1,4 +1,3 @@
--- oracle equivalent source sha1 30d6773a245f94375946955d301fadd5888e0a24
 
 drop view rhnentitledservers;
 

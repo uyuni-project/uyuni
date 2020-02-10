@@ -1,4 +1,3 @@
--- oracle equivalent source sha1 b5af1ebd3963dd38161b7421ceee8708a8db9243
 
 drop view rhn_host_monitoring;
 create view rhn_host_monitoring

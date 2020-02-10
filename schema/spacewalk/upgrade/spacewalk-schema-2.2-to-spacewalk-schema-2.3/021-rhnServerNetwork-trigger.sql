@@ -1,4 +1,3 @@
--- oracle equivalent source sha1 6f0468df11932042b296b191e373253e44cb8ebd
 
 drop trigger if exists rhn_servnet_ipaddr_mon_trig on rhnServerNetwork;
 

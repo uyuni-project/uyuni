@@ -1,4 +1,3 @@
--- oracle equivalent source sha1 b14267384bc104605623a41b755e68e0103b5aa8
 
 -- The drop is needed to avoid
 -- ERROR:  cannot alter type of a column used by a view or rule

@@ -1,4 +1,3 @@
--- oracle equivalent source sha1 c0296a9f14cc334cc0fd07b3296bced60ba7fb4f
 
 create or replace function
 insert_config_info(

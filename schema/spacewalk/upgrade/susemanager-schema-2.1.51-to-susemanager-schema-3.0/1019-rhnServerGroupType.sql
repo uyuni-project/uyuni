@@ -1,4 +1,3 @@
--- oracle equivalent source sha1 6d95d28b616ca7586fb6b5ee5dfc9de2b4a674bc
 
 delete from rhnServerGroupMembers where server_group_id in
        (select sg.id

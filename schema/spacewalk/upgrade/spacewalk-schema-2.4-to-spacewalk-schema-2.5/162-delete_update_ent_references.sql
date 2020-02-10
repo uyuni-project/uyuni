@@ -1,4 +1,3 @@
--- oracle equivalent source sha1 0c4d049fb97d9170d7a7f211702953065834c520
 
 -- rhnServerGroup and dependencies
 

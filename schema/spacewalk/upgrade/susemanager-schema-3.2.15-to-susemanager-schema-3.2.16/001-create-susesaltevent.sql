@@ -1,4 +1,3 @@
--- oracle equivalent source sha1 9798b2a30dc466d9ec024456bcaa572f7e56c939
 
 CREATE TABLE IF NOT EXISTS suseSaltEvent (
   id SERIAL PRIMARY KEY,

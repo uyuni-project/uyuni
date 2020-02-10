@@ -1,4 +1,3 @@
--- oracle equivalent source sha1 95bcebe5c82f6192aff713976e6b77cffbba54c3
 
 create or replace function
 lookup_transaction_package(

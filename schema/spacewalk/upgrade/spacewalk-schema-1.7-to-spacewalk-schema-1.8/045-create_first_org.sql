@@ -1,4 +1,3 @@
--- oracle equivalent source sha1 381e28a0593ced4bb7bb04840a783711f42347c9
 
 create or replace function
 create_first_org

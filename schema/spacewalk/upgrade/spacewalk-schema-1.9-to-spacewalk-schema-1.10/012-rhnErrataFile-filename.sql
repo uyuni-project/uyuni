@@ -1,3 +1,2 @@
--- oracle equivalent source sha1 4b31d381dbcc089831cca7c15723fec986b1971e
 
 ALTER TABLE rhnErrataFile ALTER filename TYPE VARCHAR(4000);

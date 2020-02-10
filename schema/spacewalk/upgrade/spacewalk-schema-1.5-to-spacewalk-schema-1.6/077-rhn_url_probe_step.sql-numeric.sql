@@ -1,4 +1,3 @@
--- oracle equivalent source sha1 b14267384bc104605623a41b755e68e0103b5aa8
 alter table rhn_url_probe_step alter column recid type numeric(12);
 alter table rhn_url_probe_step alter column url_probe_id type numeric(12);
 alter table rhn_url_probe_step alter column step_number type numeric(3);

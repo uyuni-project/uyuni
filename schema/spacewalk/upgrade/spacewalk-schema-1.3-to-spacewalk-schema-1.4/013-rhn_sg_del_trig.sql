@@ -1,4 +1,3 @@
--- oracle equivalent source sha1 77c918b95b546743a73f5971eedc38dbd0a768c5
 
 create or replace function rhn_sg_del_trig_fun() returns trigger
 as

@@ -1,4 +1,3 @@
--- oracle equivalent source sha1 c4463ae934e5bc0421e3ad8f883581b90fc08537
 
 CREATE SEQUENCE suse_product_channel_id_seq;
 

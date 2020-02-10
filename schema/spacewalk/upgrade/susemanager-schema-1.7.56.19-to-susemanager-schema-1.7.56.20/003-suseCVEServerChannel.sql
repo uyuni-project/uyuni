@@ -1,4 +1,3 @@
--- oracle equivalent source sha1 247f89eca1cf806d104edbc2b4f80ff540ff6fe5
 --
 -- Copyright (c) 2013 SUSE
 --

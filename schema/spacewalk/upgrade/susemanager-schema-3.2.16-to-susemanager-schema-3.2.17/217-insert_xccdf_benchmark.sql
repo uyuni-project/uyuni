@@ -1,4 +1,3 @@
--- oracle equivalent source sha1 7577dba0c92727a81399fda3e5bd412bcb202270
 
 create or replace function
 insert_xccdf_benchmark(identifier_in in varchar, version_in in varchar)

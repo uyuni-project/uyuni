@@ -1,4 +1,3 @@
--- oracle equivalent source sha1 18fc84b57c86a2f030171c1dbc959b0ebfb5e34b
 
 create or replace function
 insert_tag_name(name_in in varchar)

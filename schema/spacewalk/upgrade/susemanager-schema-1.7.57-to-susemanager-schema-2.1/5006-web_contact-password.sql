@@ -1,4 +1,3 @@
--- oracle equivalent source sha1 e847e2cbe4f45cf52706d5991cda0ad8b3a6c11d
 
 drop view rhnWebContactEnabled;
 drop view rhnUserReceiveNotifications;
