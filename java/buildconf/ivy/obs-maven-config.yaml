@@ -181,6 +181,7 @@ artifacts:
   - artifact: oro
     repository: Leap
   - artifact: pgjdbc-ng
+    jar: pgjdbc-ng
     repository: Uyuni_Other
   - artifact: postgresql-jdbc
     repository: Uyuni_Other
@@ -236,6 +237,7 @@ artifacts:
     repository: Uyuni_Other
   - artifact: spy
     package: pgjdbc-ng
+    jar: spy
     repository: Uyuni_Other
   - artifact: statistics
     repository: Uyuni_Other
