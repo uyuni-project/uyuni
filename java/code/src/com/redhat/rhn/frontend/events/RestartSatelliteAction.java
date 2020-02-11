@@ -38,7 +38,7 @@ public class RestartSatelliteAction implements MessageAction {
 
         RestartSatelliteEvent evt = (RestartSatelliteEvent) msgIn;
         User user = evt.getUser();
-        RestartCommand rc = getCommand(user);
+        RestartCommand rc = new RestartCommand(user);
         // This is a pretty intrusive action so we want to log it.
         log.warn("Restarting satellite.");
         ValidatorError[] errors = rc.storeConfiguration();
@@ -51,10 +51,6 @@ public class RestartSatelliteAction implements MessageAction {
             }
         }
 
-    }
-
-    protected RestartCommand getCommand(User currentUser) {
-        return new RestartCommand(currentUser);
     }
 
     /**
