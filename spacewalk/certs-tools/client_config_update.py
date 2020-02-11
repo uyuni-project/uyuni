@@ -25,17 +25,14 @@
 #
 
 """
-Client configuration mapping script that writes to an RHN Update Agent-type
+Client configuration mapping script that writes to an SUSE Manager Update Agent-type
 config file(s)
 
-I.e., maps a file with RHN Update Agent-like key=value pairs e.g.,
+I.e., maps a file with SUSE Manager Update Agent-like key=value pairs e.g.,
 serverURL=https://test-satellite.example.redhat.com/XMLRPC
 noSSLServerURL=http://test-satellite.example.redhat.com/XMLRPC
 enableProxy=0
 sslCACert=/usr/share/rhn/RHN-ORG-TRUSTED-SSL-CERT
-
- (NOTE - older Red Hat Satellite's and Proxy's used:
-  sslCACert=/usr/share/rhn/RHNS-CORP-CA-CERT)
 
 And maps that to the client's configuration files.
 
