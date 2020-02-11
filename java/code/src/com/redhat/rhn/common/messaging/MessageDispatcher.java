@@ -16,8 +16,7 @@ package com.redhat.rhn.common.messaging;
 
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
-import com.redhat.rhn.frontend.events.TraceBackAction;
-import com.redhat.rhn.frontend.events.TraceBackEvent;
+
 import com.suse.manager.metrics.PrometheusExporter;
 import org.apache.log4j.Logger;
 
@@ -97,21 +96,6 @@ public class MessageDispatcher implements Runnable {
                 // better log this puppy to let folks know we have a problem
                 // but keep the queue running.
                 log.error("Error occurred with an event in the MessageQueue", t);
-
-                try {
-                    // ok let's email the admins of what's going on.
-                    // WARNING! DO NOT PUBLISH THE EVENT TO THE QUEUE!
-                    TraceBackEvent evt = new TraceBackEvent();
-                    evt.setUser(null);
-                    evt.setRequest(null);
-                    evt.setException(t);
-
-                    TraceBackAction tba = new TraceBackAction();
-                    tba.execute(evt);
-                }
-                catch (Throwable t1) {
-                    log.error("Error sending traceback email, logging for posterity.", t1);
-                }
             }
 
         }

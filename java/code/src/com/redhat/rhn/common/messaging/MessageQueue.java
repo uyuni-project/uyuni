@@ -47,8 +47,6 @@ import com.redhat.rhn.frontend.events.SsmUpgradePackagesAction;
 import com.redhat.rhn.frontend.events.SsmUpgradePackagesEvent;
 import com.redhat.rhn.frontend.events.SsmVerifyPackagesAction;
 import com.redhat.rhn.frontend.events.SsmVerifyPackagesEvent;
-import com.redhat.rhn.frontend.events.TraceBackAction;
-import com.redhat.rhn.frontend.events.TraceBackEvent;
 import com.redhat.rhn.frontend.events.UpdateErrataCacheAction;
 import com.redhat.rhn.frontend.events.UpdateErrataCacheEvent;
 
@@ -272,7 +270,6 @@ public class MessageQueue {
         // If we develop a large set of MessageEvents we may want to
         // refactor this block out into a class or method that
         // reads in some configuration from an XML file somewhere
-        MessageQueue.registerAction(new TraceBackAction(), TraceBackEvent.class);
         MessageQueue.registerAction(new NewUserAction(), NewUserEvent.class);
 
         // this is to update the errata cache without blocking the login

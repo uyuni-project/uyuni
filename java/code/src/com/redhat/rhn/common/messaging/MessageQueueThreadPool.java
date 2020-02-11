@@ -14,9 +14,8 @@
  */
 package com.redhat.rhn.common.messaging;
 
-import com.redhat.rhn.frontend.events.TraceBackAction;
-import com.redhat.rhn.frontend.events.TraceBackEvent;
-
+import com.suse.manager.tasks.ActorManager;
+import com.suse.manager.tasks.actors.TraceBackActor;
 import org.apache.commons.lang3.concurrent.BasicThreadFactory;
 import org.apache.log4j.Logger;
 
@@ -84,13 +83,7 @@ public class MessageQueueThreadPool extends ThreadPoolExecutor {
 
             try {
                 // Email the admins about what is going on
-                TraceBackEvent evt = new TraceBackEvent();
-                evt.setUser(null);
-                evt.setRequest(null);
-                evt.setException(thrown);
-
-                TraceBackAction tba = new TraceBackAction();
-                tba.execute(evt);
+                ActorManager.tell(new TraceBackActor.Message(TraceBackActor.compose(null, null, thrown)));
             }
             catch (Throwable t) {
                 log.error("Error sending traceback email, logging for posterity.", t);

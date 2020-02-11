@@ -14,11 +14,11 @@
  */
 package com.redhat.rhn.common.errors;
 
-import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.frontend.events.TraceBackEvent;
 import com.redhat.rhn.frontend.struts.RequestContext;
 
+import com.suse.manager.tasks.ActorManager;
+import com.suse.manager.tasks.actors.TraceBackActor;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -46,14 +46,9 @@ public class NoSuchKickstartExceptionHandler extends ExceptionHandler {
         response.setStatus(HttpServletResponse.SC_NOT_FOUND);
         request.setAttribute("error", ex);
 
-
-        TraceBackEvent evt = new TraceBackEvent();
         RequestContext requestContext = new RequestContext(request);
         User usr = requestContext.getCurrentUser();
-        evt.setUser(usr);
-        evt.setRequest(request);
-        evt.setException(ex);
-        MessageQueue.publish(evt);
+        ActorManager.tell(new TraceBackActor.Message(TraceBackActor.compose(request, usr, ex)));
 
         return super.execute(ex, exConfig, mapping, form, request, response);
     }

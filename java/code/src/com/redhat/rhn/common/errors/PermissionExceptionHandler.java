@@ -14,11 +14,11 @@
  */
 package com.redhat.rhn.common.errors;
 
-import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.frontend.events.TraceBackEvent;
 import com.redhat.rhn.frontend.struts.RequestContext;
 
+import com.suse.manager.tasks.ActorManager;
+import com.suse.manager.tasks.actors.TraceBackActor;
 import org.apache.log4j.Logger;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
@@ -49,13 +49,10 @@ public class PermissionExceptionHandler extends ExceptionHandler {
         Logger log = Logger.getLogger(PermissionExceptionHandler.class);
         log.error("Permission Error", ex);
 
-        TraceBackEvent evt = new TraceBackEvent();
         RequestContext requestContext = new RequestContext(request);
         User usr = requestContext.getCurrentUser();
-        evt.setUser(usr);
-        evt.setRequest(request);
-        evt.setException(ex);
-        MessageQueue.publish(evt);
+
+        ActorManager.tell(new TraceBackActor.Message(TraceBackActor.compose(request, usr, ex)));
 
         return super.execute(ex, exConfig, mapping, form, request, response);
     }

@@ -1,54 +1,89 @@
-/**
- * Copyright (c) 2009--2012 Red Hat, Inc.
- *
- * This software is licensed to you under the GNU General Public License,
- * version 2 (GPLv2). There is NO WARRANTY for this software, express or
- * implied, including the implied warranties of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
- * along with this software; if not, see
- * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
- *
- * Red Hat trademarks are not licensed under GPLv2. No permission is
- * granted to use or replicate Red Hat trademarks that are incorporated
- * in this software or its documentation.
- */
+package com.suse.manager.tasks.actors;
 
-package com.redhat.rhn.frontend.events;
+import static akka.actor.typed.javadsl.Behaviors.receive;
+import static akka.actor.typed.javadsl.Behaviors.same;
+import static akka.actor.typed.javadsl.Behaviors.setup;
 
+import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.localization.LocalizationService;
-import com.redhat.rhn.common.messaging.EventMessage;
+import com.redhat.rhn.common.messaging.MessageExecuteException;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.events.MailFactory;
+
+import com.suse.manager.tasks.Command;
+import com.suse.manager.utils.MailHelper;
+import org.apache.log4j.Logger;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.net.InetAddress;
+import java.util.Date;
 import java.util.Enumeration;
-
 import javax.servlet.http.HttpServletRequest;
 
-/**
- * An event representing an error generated from the web frontend
- *
- * @version $Rev$
- */
-public class TraceBackEvent implements EventMessage {
+import akka.actor.typed.Behavior;
 
-    private Throwable throwable;
-    private static final String HASHES = "########";
-    private HttpServletRequest request;
-    private User user;
+public class TraceBackActor {
 
-    /**
-     * format this message as a string
-     *   TODO mmccune - fill out the email properly with the entire
-     *                  request values
-     * @return Text of email.
-     */
-    public String toString() {
+    private final static Logger LOG = Logger.getLogger(TraceBackActor.class);
+
+    public static class Message implements Command {
+        private final String text;
+
+        public Message(String text) { this.text = text; }
+    }
+
+    public Behavior<Command> create() {
+        return setup(context -> receive(Command.class)
+                .onMessage(Message.class, message -> onMessage(message))
+                .build());
+    }
+
+    private Behavior<Command> onMessage(Message message) {
+        MailHelper.withMailer(MailFactory.construct()).sendEmail(getRecipients(), getSubject(), message.text);
+        return same();
+    }
+
+    public String getSubject() {
+        // setup subject
+        StringBuilder subject = new StringBuilder();
+        subject.append(LocalizationService.getInstance().
+                getMessage("web traceback subject", LocalizationService.getUserLocale()));
+        // Not sure if getting the local hostname is the correct thing to do
+        // here.  But the traceback emails that I've received seem to do this
+        try {
+            subject.append(InetAddress.getLocalHost().getHostName());
+        }
+        catch (java.net.UnknownHostException uhe) {
+            String message = "TraceBackAction can't find localhost!";
+            LOG.warn(message);
+            throw new MessageExecuteException(message);
+        }
+        subject.append(" (");
+        subject.append(LocalizationService.getInstance().formatDate(new Date(),
+                LocalizationService.getUserLocale()));
+        subject.append(")");
+        return subject.toString();
+    }
+
+    public String[] getRecipients() {
+        Config c = Config.get();
+        String[] retval = null;
+        if (c.getString("web.traceback_mail").equals("")) {
+
+            retval = new String[1];
+            retval[0] = "root@localhost";
+        }
+        else {
+            retval = c.getStringArray("web.traceback_mail");
+        }
+        return retval;
+    }
+
+    public static String compose(HttpServletRequest request, User user, Throwable throwable) {
         StringWriter sw = new StringWriter();
         PrintWriter out = new PrintWriter(sw);
         LocalizationService ls = LocalizationService.getInstance();
-        HttpServletRequest request = getRequest();
-        User user = getUser();
 
         if (request != null) {
             out.println(ls.getMessage("traceback message header"));
@@ -84,7 +119,7 @@ public class TraceBackEvent implements EventMessage {
                     out.print(paramName);
                     out.print(": ");
                     if (paramName.equals("password")) {
-                        out.println(HASHES);
+                        out.println("########");
                     }
                     else {
                         out.println(request.getParameter(paramName));
@@ -126,52 +161,4 @@ public class TraceBackEvent implements EventMessage {
         out.close();
         return sw.toString();
     }
-
-    /**
-     *
-     * @return hashmark string
-     */
-    public String getHashMarks() {
-        return TraceBackEvent.HASHES;
-    }
-
-    /**
-     * Set the throwable for this event
-     * @param tIn Exception to be captured in Event.
-     */
-    public void setException(Throwable tIn) {
-        this.throwable = tIn;
-    }
-
-    /**
-     * Set the request for this event.
-     * @param reqIn Request where error has occurred.
-     */
-    public void setRequest(HttpServletRequest reqIn) {
-        this.request = reqIn;
-    }
-
-    /**
-     * Set the User for this event
-     * @param userIn User for this event
-     */
-    public void setUser(User userIn) {
-        this.user = userIn;
-    }
-
-    /**
-     * @return Returns the request.
-     */
-    public HttpServletRequest getRequest() {
-        return request;
-    }
-
-    /**
-     * @return Returns the user.
-     */
-    public User getUser() {
-        return user;
-    }
 }
-
-

@@ -14,12 +14,12 @@
  */
 package com.redhat.rhn.common.errors;
 
-import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.common.BadParameterException;
-import com.redhat.rhn.frontend.events.TraceBackEvent;
 import com.redhat.rhn.frontend.struts.RequestContext;
 
+import com.suse.manager.tasks.ActorManager;
+import com.suse.manager.tasks.actors.TraceBackActor;
 import org.apache.log4j.Logger;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
@@ -65,11 +65,8 @@ public class BadParameterExceptionHandler extends ExceptionHandler {
 
     protected void storeException(HttpServletRequest request, String property,
             ActionMessage msg, ActionForward forward, String scope) {
-        TraceBackEvent evt = new TraceBackEvent();
         User usr = new RequestContext(request).getCurrentUser();
-        evt.setUser(usr);
-        evt.setRequest(request);
-        evt.setException(exception);
-        MessageQueue.publish(evt);
+
+        ActorManager.tell(new TraceBackActor.Message(TraceBackActor.compose(request, usr, exception)));
     }
 }

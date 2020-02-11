@@ -15,21 +15,20 @@
 
 package com.redhat.rhn.frontend.struts;
 
-import java.io.IOException;
+import com.redhat.rhn.common.security.PermissionException;
+import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.manager.acl.AclManager;
 
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
+import com.suse.manager.tasks.ActorManager;
+import com.suse.manager.tasks.actors.TraceBackActor;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.RequestProcessor;
 
-import com.redhat.rhn.common.messaging.MessageQueue;
-import com.redhat.rhn.common.security.PermissionException;
-import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.frontend.events.TraceBackEvent;
-import com.redhat.rhn.manager.acl.AclManager;
+import java.io.IOException;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * RhnRequestProcessor a custom Struts RequestProcessor that
@@ -144,13 +143,8 @@ public class RhnRequestProcessor extends RequestProcessor {
 
     // Send an error email when an Action generates an Exception
     private void sendErrorEmail(HttpServletRequest request, Throwable e) {
-        TraceBackEvent evt = new TraceBackEvent();
         RequestContext requestContext = new RequestContext(request);
         User usr = requestContext.getCurrentUser();
-        evt.setUser(usr);
-        evt.setRequest(request);
-        evt.setException(e);
-        MessageQueue.publish(evt);
+        ActorManager.tell(new TraceBackActor.Message(TraceBackActor.compose(request, usr, e)));
     }
-
 }
