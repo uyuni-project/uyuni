@@ -1,16 +1,16 @@
 <!DOCTYPE refentry PUBLIC "-//OASIS//DTD DocBook V3.1//EN" [
-<!ENTITY RHNSSLTOOL "SUSE Manager SSL Maintenance Tool">
+<!ENTITY RHNSSLTOOL "Spacewalk SSL Maintenance Tool">
 
 ]>
 <refentry>
 
 <RefMeta>
-<RefEntryTitle>mgr-ssl-tool</RefEntryTitle><manvolnum>1</manvolnum>
-<RefMiscInfo>Version 1.0.1</RefMiscInfo>
+<RefEntryTitle>rhn-ssl-tool</RefEntryTitle><manvolnum>1</manvolnum>
+<RefMiscInfo>Version 1.0.0</RefMiscInfo>
 </RefMeta>
 
 <RefNameDiv>
-<RefName><command>mgr-ssl-tool</command></RefName>
+<RefName><command>rhn-ssl-tool</command></RefName>
 <RefPurpose>
 Generate and maintain SSL keys, certificates and deployment RPMs.
 </RefPurpose>
@@ -19,16 +19,16 @@ Generate and maintain SSL keys, certificates and deployment RPMs.
 <RefSynopsisDiv>
 <Synopsis>
     <cmdsynopsis>
-        <command>mgr-ssl-tool</command>
+        <command>rhn-ssl-tool</command>
         <arg>options <replaceable>...</replaceable></arg>
         <command>--help</command>
     </cmdsynopsis>
     <cmdsynopsis>
-        <command>mgr-ssl-tool --gen-ca -d<replaceable>BUILD_DIR</replaceable> -p<replaceable>CA_PASSWORD</replaceable></command>
+        <command>rhn-ssl-tool --gen-ca -d<replaceable>BUILD_DIR</replaceable> -p<replaceable>CA_PASSWORD</replaceable></command>
         <arg>options <replaceable>...</replaceable></arg>
     </cmdsynopsis>
     <cmdsynopsis>
-        <command>mgr-ssl-tool --gen-server -d<replaceable>BUILD_DIR</replaceable> -p<replaceable>CA_PASSWORD</replaceable></command>
+        <command>rhn-ssl-tool --gen-server -d<replaceable>BUILD_DIR</replaceable> -p<replaceable>CA_PASSWORD</replaceable></command>
         <arg>options <replaceable>...</replaceable></arg>
     </cmdsynopsis>
 </Synopsis>
@@ -36,37 +36,39 @@ Generate and maintain SSL keys, certificates and deployment RPMs.
 
 <RefSect1><Title>Help</Title>
 <simplelist>
-    <member><command>mgr-ssl-tool --help</command></member>
-    <member><command>mgr-ssl-tool --gen-ca --help</command></member>
-    <member><command>mgr-ssl-tool --gen-server --help</command></member>
+    <member><command>rhn-ssl-tool --help</command></member>
+    <member><command>rhn-ssl-tool --gen-ca --help</command></member>
+    <member><command>rhn-ssl-tool --gen-server --help</command></member>
     <member>- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -</member>
-    <member>(advanced) <command>mgr-ssl-tool --gen-ca --key-only --help</command></member>
-    <member>(advanced) <command>mgr-ssl-tool --gen-ca --cert-only --help</command></member>
-    <member>(advanced) <command>mgr-ssl-tool --gen-ca --rpm-only --help</command></member>
+    <member>(advanced) <command>rhn-ssl-tool --gen-ca --key-only --help</command></member>
+    <member>(advanced) <command>rhn-ssl-tool --gen-ca --cert-only --help</command></member>
+    <member>(advanced) <command>rhn-ssl-tool --gen-ca --rpm-only --help</command></member>
     <member>- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -</member>
-    <member>(advanced) <command>mgr-ssl-tool --gen-server --key-only --help</command></member>
-    <member>(advanced) <command>mgr-ssl-tool --gen-server --cert-req-only --help</command></member>
-    <member>(advanced) <command>mgr-ssl-tool --gen-server --cert-only --help</command></member>
-    <member>(advanced) <command>mgr-ssl-tool --gen-server --rpm-only --help</command></member>
+    <member>(advanced) <command>rhn-ssl-tool --gen-server --key-only --help</command></member>
+    <member>(advanced) <command>rhn-ssl-tool --gen-server --cert-req-only --help</command></member>
+    <member>(advanced) <command>rhn-ssl-tool --gen-server --cert-only --help</command></member>
+    <member>(advanced) <command>rhn-ssl-tool --gen-server --rpm-only --help</command></member>
 </simplelist>
 </RefSect1>
 
 <RefSect1><Title>Description</Title>
 
-    <para>The &RHNSSLTOOL; (<command>mgr-ssl-tool</command>) is used to
-    generate and maintain SUSE Manager SSL keys and certificates. It also will generate
+    <para>The &RHNSSLTOOL; (<command>rhn-ssl-tool</command>) is used to
+    generate and maintain RHN SSL keys and certificates. It also will generate
     RPMs for use in deploying these keys and certificates. The tool is geared
-    for use in an SUSE Manager context, but can be useful outside of SUSE Manager.</para>
+    for use in an RHN context, but can be useful outside of RHN.</para>
 
     <para>Working with <command>openssl</command> directly can be tedious and
     trying. This tool aims to make the process relatively simple. We limit the
-    scope of using <command>openssl</command> to how we use it in SUSE Manager: securing
+    scope of using <command>openssl</command> to how we use it in RHN: securing
     web applications.</para>
 
-    <para>The SUSE Manager context of this document is in support of SUSE Manager server, but
-    all holds true for SUSE Manager Proxy as well, so keep that in mind.
-    SUSE Manager Servers and Proxies use <emphasis>/root/ssl-build</emphasis> as
-    the default build directory.</para>
+    <para>The RHN context of this document is in support of Red Hat Satellite, but
+    all holds true for Red Hat Satellite Proxy as well, so keep that in mind. The most
+    current Red Hat Satellite Servers use <emphasis>/root/ssl-build</emphasis> as
+    the default build directory. Older Red Hat Satellites and Proxies used the
+    <emphasis>/etc/sysconfig/rhn/ssl</emphasis> directory, and *very* old
+    installations used <emphasis>/etc/sysconfig/rhn</emphasis>.</para>
 
     <para>The basic process of SSL key/certificate/RPM generation using this
     tool: (<emphasis>step 1</emphasis>) generate a CA SSL key pair(set) and
@@ -88,7 +90,7 @@ Generate and maintain SSL keys, certificates and deployment RPMs.
             <listitem>
 
             <para></para>
-            <para><command>mgr-ssl-tool --gen-ca --dir
+            <para><command>rhn-ssl-tool --gen-ca --dir
             <replaceable>BUILD_DIR</replaceable> [ options
             <replaceable>...</replaceable> ]</command></para>
 
@@ -96,15 +98,16 @@ Generate and maintain SSL keys, certificates and deployment RPMs.
             CA password is lost or forgotten (DON'T DO THAT!). The default
             validity window for the CA is from now until 2038. The CA public
             certificate is what get's distributed to clients of the web-app
-            (SUSE Manager Server/Proxy).</para>
+            (Red Hat Satellite/Proxy).</para>
 
-            <para>In the SUSE Manager Server/Proxy context, the organization acts as
+            <para>In the Red Hat Satellite/Proxy context, the organization acts as
             their own Certificate Authority, but these steps can be skipped if
-            intending to use of an outside authority.</para>
+            intending to use of an outside authority (This is not officially
+            supported by Red Hat).</para>
 
             <para>The CA private key remains private.</para>
 
-            <para>The CA certificate is used by client software (zypper for
+            <para>The CA certificate is used by client software (up2date for
             example), and is generally deployed via an RPM or the raw
             file.</para>
 
@@ -121,12 +124,12 @@ Generate and maintain SSL keys, certificates and deployment RPMs.
             <listitem>
 
             <para></para>
-            <para><command>mgr-ssl-tool --gen-server --dir
+            <para><command>rhn-ssl-tool --gen-server --dir
             <replaceable>BUILD_DIR</replaceable> [ options
             <replaceable>...</replaceable> ]</command></para>
 
             <para>This step is done more frequently (generally), especially if
-            more than one SUSE Manager server is being deployed (--set-hostname is
+            more than one RHN server is being deployed (--set-hostname is
             different for each server). The default validity window for the CA
             is from now until 2038. All clients using the CA SSL public
             certificate that signed the new web server SSL certificate will
@@ -134,7 +137,7 @@ Generate and maintain SSL keys, certificates and deployment RPMs.
             generated.</para>
 
             <para>The web server SSL key and certificate are used solely by the
-            web application server (apache on an SUSE Manager Proxy or Server
+            web application server (apache on an Red Hat Satellite Proxy or Satellite Server
             for example).</para>
 
             </listitem>
@@ -148,16 +151,16 @@ Generate and maintain SSL keys, certificates and deployment RPMs.
 
                 <para>The <command>--gen-ca</command> process generates an RPM
                 that contains the public CA certificate. It needs to be
-                deployed to any clients making SSL connections to an SUSE Manager server
-                (SUSE Manager Server or Proxy). This is generally done by making the
+                deployed to any clients making SSL connections to an RHN server
+                (Red Hat Satellite or Proxy). This is generally done by making the
                 RPM available in the <emphasis>/srv/www/htdocs/pub</emphasis>
                 directory. It is also a good idea to copy the CA certificate
                 itself in that directory: RHN-ORG-TRUSTED-CA-CERT.</para>
 
                 <para>The <command>--gen-server</command> process generates an
                 RPM that contains the <emphasis>server.key</emphasis> and
-                <emphasis>server.crt</emphasis> files needed to secure your SUSE Manager
-                Server or SUSE Manager Proxy. It needs to be installed
+                <emphasis>server.crt</emphasis> files needed to secure your RHN
+                server (Red Hat Satellite or Red Hat Satellite Proxy). It needs to be installed
                 on the appropriate server. That server then needs to have it's
                 <emphasis>httpd</emphasis> processes restarted
                 <command>/sbin/service httpd restart</command>.</para>
@@ -179,7 +182,7 @@ Generate and maintain SSL keys, certificates and deployment RPMs.
 
         <member><msgtext>
         <variablelist><varlistentry>
-            <term>Advanced options (rarely used discrete steps):</term>
+            <term>Advanced options (rarely used discete steps):</term>
             <listitem>
             <para></para>
 
@@ -191,7 +194,7 @@ Generate and maintain SSL keys, certificates and deployment RPMs.
             <para>generate a web server's SSL private key: <command>--gen-server --key-only <replaceable>...</replaceable></command></para>
             <para>generate a web server's SSL certificate request: <command>--gen-server --cert-req-only <replaceable>...</replaceable></command></para>
             <para>generate/sign a web server's SSL certificate: <command>--gen-server --cert-only <replaceable>...</replaceable></command></para>
-            <para>generate a web server's private RPM (and tar archive used for SUSE Manager Proxy installations): <command>--gen-server --rpm-only <replaceable>...</replaceable></command></para>
+            <para>generate a web server's private RPM (and tar archive used for Red Hat Satellite Proxy installations): <command>--gen-server --rpm-only <replaceable>...</replaceable></command></para>
             <para>generate a web server's private RPM using a custom SSL key and certificate: <command>--gen-server --rpm-only --from-server-key=<replaceable>FILE</replaceable> --from-server-cert=<replaceable>FILE</replaceable></command></para>
 
             </listitem>
@@ -201,9 +204,8 @@ Generate and maintain SSL keys, certificates and deployment RPMs.
         <member><msgtext>
         <variablelist><varlistentry>
 
-            <term>Using a 3rd party CA (rarely done in the SUSE Manager context):</term>
+            <term>Using a 3rd party CA (rarely done in the RHN context):</term>
 
-            <listitem>
             <para><emphasis>DEPRECATED:</emphasis> Use
             <command>--from-ca-cert</command>,
             <command>--from-server-key</command> and
@@ -220,7 +222,8 @@ Generate and maintain SSL keys, certificates and deployment RPMs.
             <emphasis>RHN-ORG-TRUSTED-SSL-CERT</emphasis>; and then run
             <command>--gen-ca --dir BUILD_DIR --rpm-only</command> to package
             that certificate in an expected manner ready for client deployment.
-            See further instructions in <emphasis>step 2</emphasis>.</para>
+            NOTE: this has not been tested by RHN personnell. See further
+            instructions in <emphasis>step 2</emphasis>.</para>
 
             <para><emphasis>Web server's SSL key pair(set):</emphasis> Usually,
             one creates the web server's SSL private key, certificate-request
@@ -306,19 +309,19 @@ Generate and maintain SSL keys, certificates and deployment RPMs.
                 <varlistentry>
                 <term>--set-country=<replaceable>COUNTRY_CODE</replaceable></term>
                 <listitem>
-                    <para>two letter country code (default: US). Use capital letters only!</para>
+                    <para>two letter country code (default: US).</para>
                 </listitem>
                 </varlistentry>
                 <varlistentry>
                 <term>--set-state=<replaceable>STATE_OR_PROVINCE</replaceable></term>
                 <listitem>
-                    <para>state or province, such as "Frankonia" (default: "")</para>
+                    <para>state or province, such as "North Carolina" (default: "")</para>
                 </listitem>
                 </varlistentry>
                 <varlistentry>
                 <term>--set-city=<replaceable>CITY_OR_LOCALITY</replaceable></term>
                 <listitem>
-                    <para>city or locality, such as "Nuremberg" (default: "").</para>
+                    <para>city or locality, such as "Raleigh" (default: "").</para>
                 </listitem>
                 </varlistentry>
                 <varlistentry>
@@ -381,7 +384,7 @@ Generate and maintain SSL keys, certificates and deployment RPMs.
                 <term>--rpm-packager</term>
                 <listitem>
                     <para>(rarely used) packager of the generated RPM, such as
-                    "SUSE Manager Admin &lt;rhn-admin@example.com&gt;".</para>
+                    "RHN Admin &lt;rhn-admin@example.com&gt;".</para>
                 </listitem>
                 </varlistentry>
                 <varlistentry>
@@ -475,13 +478,13 @@ Generate and maintain SSL keys, certificates and deployment RPMs.
                 <varlistentry>
                 <term>--set-country=<replaceable>COUNTRY_CODE</replaceable></term>
                 <listitem>
-                    <para>two letter country code (default: US). Use capital letters only!</para>
+                    <para>two letter country code (default: US).</para>
                 </listitem>
                 </varlistentry>
                 <varlistentry>
                 <term>--set-state=<replaceable>STATE_OR_PROVINCE</replaceable></term>
                 <listitem>
-                    <para>state or province (default: "Frankonia")</para>
+                    <para>state or province (default: "North Carolina")</para>
                 </listitem>
                 </varlistentry>
                 <varlistentry>
@@ -506,7 +509,7 @@ Generate and maintain SSL keys, certificates and deployment RPMs.
                 <term>--set-hostname=<replaceable>HOSTNAME</replaceable></term>
                 <listitem>
                     <para>set the hostname (FQDN: fully qualified domain name)
-                    of the SUSE Manager Server or SUSE Manager Proxy (default: build machine's
+                    of the Red Hat Satellite or Red Hat Satellite Proxy (default: build machine's
                     hostname).</para>
                 </listitem>
                 </varlistentry>
@@ -514,7 +517,7 @@ Generate and maintain SSL keys, certificates and deployment RPMs.
                 <term>--set-cname=<replaceable>HOSTNAME</replaceable></term>
                 <listitem>
                     <para>set the cname alias (FQDN: fully qualified domain name)
-                    of the SUSE Manager Server or SUSE Manager Proxy. This will generate certificate
+                    of the Red Hat Satellite or Red Hat Satellite Proxy. This will generate certificate
                     with multiple hostnames. Can be specified multiple times.
                     </para>
                 </listitem>
@@ -569,7 +572,7 @@ Generate and maintain SSL keys, certificates and deployment RPMs.
                 <listitem>
                     <para>(rarely changed) name of archive (tarball) of the web
                     server's SSL key set and CA SSL public certificate that is
-                    used solely by the hosted SUSE Manager installation
+                    used solely by the hosted Red Hat Satellite Proxy installation
                     routines (the base filename, not filename-version-release.tar).</para>
                 </listitem>
                 </varlistentry>
@@ -577,7 +580,7 @@ Generate and maintain SSL keys, certificates and deployment RPMs.
                 <term>--rpm-packager</term>
                 <listitem>
                     <para>(rarely used) packager of the generated RPM, such as
-                    "SUSE Manager Admin &lt;rhn-admin@example.com&gt;".</para>
+                    "RHN Admin &lt;rhn-admin@example.com&gt;".</para>
                 </listitem>
                 </varlistentry>
                 <varlistentry>
@@ -616,14 +619,14 @@ Generate and maintain SSL keys, certificates and deployment RPMs.
 
 <RefSect1><Title>Examples</Title>
 <simplelist>
-        <member><command>mgr-ssl-tool --help</command></member>
-        <member><command>mgr-ssl-tool --gen-ca --help</command></member>
-        <member><command>mgr-ssl-tool --gen-server --help</command></member>
-        <member><command>mgr-ssl-tool --gen-ca -pMY_CA_PASSWORD
-        --set-state="Frankonia" --set-city=Nuremberg --set-org="Example
+        <member><command>rhn-ssl-tool --help</command></member>
+        <member><command>rhn-ssl-tool --gen-ca --help</command></member>
+        <member><command>rhn-ssl-tool --gen-server --help</command></member>
+        <member><command>rhn-ssl-tool --gen-ca -pMY_CA_PASSWORD
+        --set-state="North Carolina" --set-city=Raleigh --set-org="Example
         Inc." --set-org-unit="SSL CA Unit" --dir=/etc/sysconfig/rhn/ssl</command></member>
-        <member><command>mgr-ssl-tool --gen-server -pMY_CA_PASSWORD
-        --set-state="Frankonia" --set-city=Nuremberg --set-org="Example
+        <member><command>rhn-ssl-tool --gen-server -pMY_CA_PASSWORD
+        --set-state="North Carolina" --set-city=Raleigh --set-org="Example
         Inc." --set-org-unit="IS/IT" --email="taw@example.com"
         --set-hostname="rhnbox1.example.com" --set-cname="rhnbox1.localnet"
         --dir=/etc/sysconfig/rhn/ssl</command></member>
