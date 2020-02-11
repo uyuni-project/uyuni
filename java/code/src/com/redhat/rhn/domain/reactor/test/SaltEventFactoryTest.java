@@ -15,7 +15,6 @@
 
 package com.redhat.rhn.domain.reactor.test;
 
-import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.reactor.SaltEvent;
 import com.redhat.rhn.domain.reactor.SaltEventFactory;
@@ -40,11 +39,6 @@ public class SaltEventFactoryTest extends RhnBaseTestCase {
             "INSERT INTO suseSaltEvent (id, minion_id, data, queue) VALUES (:id, :minionId, :data, :queue)";
 
     public void testCountSaltEvents() {
-        // skip test on Oracle
-        if (ConfigDefaults.get().isOracle()) {
-            return;
-        }
-
         // verify there are no salt events
         List<Long> saltEventsCount = SaltEventFactory.countSaltEvents(4);
         assertEquals(Arrays.asList(0L, 0L, 0L, 0L), saltEventsCount);
@@ -85,11 +79,6 @@ public class SaltEventFactoryTest extends RhnBaseTestCase {
     }
 
     public void testPopSaltEvents() throws NoSuchAlgorithmException {
-        // skip test on Oracle
-        if (ConfigDefaults.get().isOracle()) {
-            return;
-        }
-
         // verify there are no salt events
         List<Long> saltEventsCount = SaltEventFactory.countSaltEvents(4);
         assertEquals(Arrays.asList(0L, 0L, 0L, 0L), saltEventsCount);
@@ -138,11 +127,6 @@ public class SaltEventFactoryTest extends RhnBaseTestCase {
     }
 
     public void testDeleteSaltEvents() {
-        // skip test on Oracle
-        if (ConfigDefaults.get().isOracle()) {
-            return;
-        }
-
         // verify there are no salt events
         List<Long> saltEventsCount = SaltEventFactory.countSaltEvents(4);
         assertEquals(Arrays.asList(0L, 0L, 0L, 0L), saltEventsCount);

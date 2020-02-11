@@ -76,16 +76,7 @@ public class SchedulerKernel {
         props.setProperty(ds + ".password", dbPass);
         // props.setProperty(ds + ".maxConnections", 30);
 
-        if (ConfigDefaults.get().isOracle()) {
-            props.setProperty("org.quartz.jobStore.driverDelegateClass",
-                    "org.quartz.impl.jdbcjobstore.oracle.OracleDelegate");
-
-            String driver = Config.get().getString(ConfigDefaults.DB_CLASS,
-                    "oracle.jdbc.driver.OracleDriver");
-            props.setProperty(ds + ".driver", driver);
-            props.setProperty(ds + ".URL", ConfigDefaults.get().getJdbcConnectionString());
-        }
-        else if (ConfigDefaults.get().isPostgresql()) {
+        if (ConfigDefaults.get().isPostgresql()) {
             props.setProperty("org.quartz.jobStore.driverDelegateClass",
                     "org.quartz.impl.jdbcjobstore.PostgreSQLDelegate");
 
@@ -98,7 +89,7 @@ public class SchedulerKernel {
             // This code should never get called as Exception would get
             // thrown in getJdbcConnectionString.
             throw new InstantiationException(
-                    "Unknown db backend set, expecting oracle or postgresql");
+                    "Unknown db backend set, expecting postgresql");
         }
 
         try {

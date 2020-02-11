@@ -816,31 +816,6 @@ ORDER BY SA.completion_time DESC
         </query>
 </mode>
 
-<mode name="recent_config_deploy_actions_for_user_oracle" class="com.redhat.rhn.frontend.dto.ServerActionDto">
-  <query params="user_id, org_id, num, date">
-    SELECT * FROM
-        (SELECT   S.id AS server_id, S.name AS server_name,
-                  A.id AS id, RAS.name AS status,
-                  A.scheduler AS scheduled_by_id,
-                  A.earliest_action AS earliest, WC.login AS scheduled_by_name,
-                  (SELECT  count(ACR.config_revision_id)
-                     FROM  rhnActionConfigRevision ACR
-                    WHERE  ACR.action_id = A.id) file_count
-            FROM  rhnAction A inner join
-                  rhnServerAction SA on SA.action_id = A.id inner join
-                  rhnActionStatus RAS on SA.status = RAS.id inner join
-                  rhnServer S on SA.server_id = S.id inner join
-                  rhnUserServerPerms USP on S.id = USP.server_id  inner join
-                  web_contact WC on A.scheduler = WC.id
-           WHERE  A.Action_type = ( select id from rhnActionType where label = 'configfiles.deploy' )
-             AND  A.org_id = :org_id
-             AND  USP.user_id = :user_id
-             AND  A.earliest_action &gt; TO_TIMESTAMP(:date, 'YYYY-MM-DD HH24:MI:SS')
-             ORDER BY A.earliest_action desc ) TC
-             where rownum &lt;= :num
-  </query>
-</mode>
-
 <mode name="recent_config_deploy_actions_for_user_postgres" class="com.redhat.rhn.frontend.dto.ServerActionDto">
   <query params="user_id, org_id, num, date">
          SELECT   S.id AS server_id, S.name AS server_name,
@@ -862,26 +837,6 @@ ORDER BY SA.completion_time DESC
              AND  A.earliest_action &gt; TO_TIMESTAMP(:date, 'YYYY-MM-DD HH24:MI:SS')
              ORDER BY A.earliest_action desc
              LIMIT :num
-  </query>
-</mode>
-
-<mode name="recent_modified_config_files_for_user_oracle" class="com.redhat.rhn.frontend.dto.ConfigFileDto">
-  <query params="org_id, user_id, num">
-SELECT DISTINCT TC.*
-from  (select CF.id, CC.id AS config_channel_id, CFT.label AS type,
-              CFN.path, CCT.label AS config_channel_type, CF.modified,
-              CC.name AS config_channel_name
-         from rhnConfigFile CF, rhnConfigChannel CC, rhnConfigFileName CFN,
-              rhnConfigChannelType CCT, rhnConfigRevision CR, rhnConfigFileType CFT
-        where CF.config_channel_id = CC.id
-          and CC.org_id = :org_id
-          and CC.confchan_type_id = CCT.id
-          and CF.config_file_name_id = CFN.id
-          and CF.latest_config_revision_id = CR.id
-          and CR.config_file_type_id = CFT.id
-          and rhn_config_channel.get_user_file_access(CF.id, :user_id) = 1
-     order by CF.modified desc) TC
-where rownum &lt;= :num
   </query>
 </mode>
 
