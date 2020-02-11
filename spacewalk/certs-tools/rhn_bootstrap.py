@@ -52,7 +52,7 @@ from uyuni.common.checksum  import getFileChecksum
 try:
     from spacewalk.common.rhnConfig import PRODUCT_NAME
 except:
-    PRODUCT_NAME = 'RHN Satellite'
+    PRODUCT_NAME = 'SUSE Manager'
 
 ## GLOBALS
 if os.path.exists('/usr/share/rhn/proxy') \
@@ -281,7 +281,7 @@ def parseCommandline():
     _usage = """\
 %s [options]
 
-Note: for rhn-bootstrap to work, certain files are expected to be
+Note: for mgr-bootstrap to work, certain files are expected to be
       in %s/ (the default Apache public directory):
         - the CA SSL public certificate (probably RHN-ORG-TRUSTED-SSL-CERT)
         - the CA SSL public certificate RPM
