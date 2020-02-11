@@ -1,6 +1,6 @@
 package com.suse.manager.tasks;
 
-import com.suse.manager.tasks.actors.RestartSatelliteActor;
+import com.suse.manager.tasks.actors.GuardianActor;
 
 import akka.actor.typed.ActorSystem;
 public class ActorManager {
@@ -8,7 +8,7 @@ public class ActorManager {
 
   public static void start() {
     if (actorSystem == null) {
-      actorSystem = ActorSystem.create(RestartSatelliteActor.create(), "helloakka");
+      actorSystem = ActorSystem.create(new GuardianActor().create(), "guardian");
     }
   }
 
