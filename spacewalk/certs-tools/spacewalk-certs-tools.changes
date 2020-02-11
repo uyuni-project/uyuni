@@ -1,3 +1,5 @@
+- fix manpages for mgr-ssl-tool and mgr-bootstrap (bsc#1010746)
+
 -------------------------------------------------------------------
 Wed Jan 22 12:11:44 CET 2020 - jgonzalez@suse.com
 
