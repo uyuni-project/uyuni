@@ -146,6 +146,8 @@ ln -s rhn-ssl-tool $RPM_BUILD_ROOT/%{_bindir}/mgr-ssl-tool
 ln -s rhn-sudo-ssl-tool $RPM_BUILD_ROOT/%{_bindir}/mgr-sudo-ssl-tool
 ln -s spacewalk-push-register $RPM_BUILD_ROOT/%{_sbindir}/mgr-push-register
 ln -s spacewalk-ssh-push-init $RPM_BUILD_ROOT/%{_sbindir}/mgr-ssh-push-init
+ln -s mgr-ssl-tool.1.gz $RPM_BUILD_ROOT/%{_mandir}/man1/rhn-ssl-tool.1.gz
+ln -s mgr-bootstrap.1.gz $RPM_BUILD_ROOT/%{_mandir}/man1/rhn-bootstrap.1.gz
 
 %py_compile -O %{buildroot}/%{python_sitelib}
 %if 0%{?build_py3}
