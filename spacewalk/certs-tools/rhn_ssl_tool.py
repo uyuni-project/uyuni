@@ -776,17 +776,17 @@ Generating CA public certificate RPM:
     if verbosity >= 0:
         print("""
 Make the public CA certificate publically available:
-    (NOTE: the RHN Satellite or Proxy installers may do this step for you.)
+    (NOTE: the SUSE Manager Server or Proxy installers may do this step for you.)
     The "noarch" RPM and raw CA certificate can be made publically accessible
-    by copying it to the /srv/www/htdocs/pub directory of your RHN Satellite or
-    Proxy server.""")
+    by copying it to the /srv/www/htdocs/pub directory of your SUSE Manager Server or
+    Proxy.""")
 
 
     return '%s.noarch.rpm' % clientRpmName
 
 
 def genProxyServerTarball_dependencies(d):
-    """ dependency check for the step that generates the Spacewalk Proxy Server's
+    """ dependency check for the step that generates the SUSE Manager Proxy's
         tar archive containing its SSL key set + CA certificate.
     """
 
@@ -864,7 +864,7 @@ def genProxyServerTarball(d, version='1.0', release='1', verbosity=0):
 
     if verbosity >= 0:
         print("""
-The most current Spacewalk Proxy Server installation process against RHN hosted
+The most current SUSE Manager Proxy installation process against SUSE Manager hosted
 requires the upload of an SSL tar archive that contains the CA SSL public
 certificate and the web server's key set.
 
@@ -1324,7 +1324,7 @@ def main():
          32  country code length cannot exceed 2
          33  missing file created in previous step
 
-        100  general RHN SSL tool error
+        100  general SUSE Manager SSL tool error
     """
 
     def writeError(e):
