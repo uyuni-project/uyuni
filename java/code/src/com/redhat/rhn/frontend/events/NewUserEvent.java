@@ -188,14 +188,5 @@ public class NewUserEvent extends BaseEvent implements EventMessage  {
         bodyArgs[index + 3] = getUrl();
         bodyArgs[index + 4] = OrgFactory.EMAIL_FOOTER.getValue();
     }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Long getUserId() {
-        return accountCreator.getId();
-    }
-
 }
 

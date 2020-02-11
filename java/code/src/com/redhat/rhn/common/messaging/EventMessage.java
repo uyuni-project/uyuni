@@ -28,12 +28,6 @@ public interface EventMessage {
      * @return String representation of EventMessage.
      */
     String toText();
-
-    /**
-     * Get the user that scheduled the Event (needed to initialize logging)
-     * @return the user that scheduled the Event
-     */
-    Long getUserId();
 }
 
 

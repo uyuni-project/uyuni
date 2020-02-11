@@ -99,7 +99,6 @@ public class AlignSoftwareTargetMsg implements EventDatabaseMessage {
         return toString();
     }
 
-    @Override
     public Long getUserId() {
         return user.getId();
     }

@@ -49,13 +49,4 @@ public class BatchStartedEventMessage implements EventMessage {
     public BatchStartedEvent getBatchStartedEvent() {
         return batchStartedEvent;
     }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Long getUserId() {
-        return null;
-    }
-
 }

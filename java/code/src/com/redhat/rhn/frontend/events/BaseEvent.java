@@ -63,16 +63,5 @@ public abstract class BaseEvent {
         return user;
     }
 
-    /**
-     * Return the userId for the user that scheduled this event
-     * (used to initialize logging)
-     * @return The userId that scheduled this event
-     */
-    public Long getUserId() {
-        if (user != null) {
-            return user.getId();
-        }
-        return null;
-    }
 
 }

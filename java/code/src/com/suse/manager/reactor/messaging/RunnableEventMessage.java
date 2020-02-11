@@ -71,8 +71,4 @@ public class RunnableEventMessage implements EventMessage {
         return toString();
     }
 
-    @Override
-    public Long getUserId() {
-        return userId.orElse(null);
-    }
 }

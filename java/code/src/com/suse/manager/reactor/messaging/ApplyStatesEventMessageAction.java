@@ -57,8 +57,8 @@ public class ApplyStatesEventMessageAction implements MessageAction {
                     applyStatesEvent.getStateNames());
 
             // The scheduling user can be null
-            User scheduler = event.getUserId() != null ?
-                    UserFactory.lookupById(event.getUserId()) : null;
+            User scheduler = applyStatesEvent.getUserId() != null ?
+                    UserFactory.lookupById(applyStatesEvent.getUserId()) : null;
 
             try {
                 // Schedule a "state.apply" action to happen right now

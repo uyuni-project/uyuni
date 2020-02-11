@@ -60,7 +60,6 @@ public class ScheduleRepoSyncEvent implements EventDatabaseMessage {
     /**
      * {@inheritDoc}
      */
-    @Override
     public Long getUserId() {
         return userId;
     }

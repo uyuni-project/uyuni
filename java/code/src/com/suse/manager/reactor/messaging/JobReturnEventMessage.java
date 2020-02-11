@@ -47,14 +47,6 @@ public class JobReturnEventMessage implements EventMessage {
      * {@inheritDoc}
      */
     @Override
-    public Long getUserId() {
-        return null;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public String toText() {
         return toString();
     }

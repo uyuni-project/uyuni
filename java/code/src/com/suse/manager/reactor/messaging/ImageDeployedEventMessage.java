@@ -55,9 +55,4 @@ public class ImageDeployedEventMessage implements EventMessage {
                 .append("imageDeployedEvent", imageDeployedEvent)
                 .toString();
     }
-
-    @Override
-    public Long getUserId() {
-        return null;
-    }
 }

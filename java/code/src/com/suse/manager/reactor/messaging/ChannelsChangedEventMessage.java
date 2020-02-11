@@ -101,7 +101,6 @@ public class ChannelsChangedEventMessage implements EventDatabaseMessage {
     /**
      * {@inheritDoc}
      */
-    @Override
     public Long getUserId() {
         return this.userId;
     }

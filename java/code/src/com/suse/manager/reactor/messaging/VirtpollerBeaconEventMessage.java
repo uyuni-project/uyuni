@@ -64,14 +64,6 @@ public class VirtpollerBeaconEventMessage implements EventMessage {
      * {@inheritDoc}
      */
     @Override
-    public Long getUserId() {
-        return null;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public String toString() {
         return "VirtpollerBeaconEventMessage[minionId: " + minionId + "]";
     }

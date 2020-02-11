@@ -84,10 +84,10 @@ public class ChannelsChangedEventMessageAction implements MessageAction {
 
             // add product packages to package state
             StateFactory.addPackagesToNewStateRevision(minion,
-                    Optional.ofNullable(event.getUserId()), prodPkgs);
+                    Optional.ofNullable(msg.getUserId()), prodPkgs);
 
             if (msg.isScheduleApplyChannelsState()) {
-                User user = UserFactory.lookupById(event.getUserId());
+                User user = UserFactory.lookupById(msg.getUserId());
                 ApplyStatesAction action = ActionManager.scheduleApplyStates(user,
                         Collections.singletonList(minion.getId()),
                         Collections.singletonList(ApplyStatesEventMessage.CHANNELS),
@@ -105,8 +105,8 @@ public class ChannelsChangedEventMessageAction implements MessageAction {
         if (!optMinion.isPresent()) {
             try {
                 // This code acts only on traditional systems
-                if (event.getUserId() != null) {
-                    User user = UserFactory.lookupById(event.getUserId());
+                if (msg.getUserId() != null) {
+                    User user = UserFactory.lookupById(msg.getUserId());
                     ActionManager.schedulePackageInstall(user, prodPkgs, s, new Date());
                 }
                 else if (s.getCreator() != null) {

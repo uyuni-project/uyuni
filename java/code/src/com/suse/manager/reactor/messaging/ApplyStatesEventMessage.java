@@ -131,7 +131,6 @@ public class ApplyStatesEventMessage implements EventDatabaseMessage {
         return forcePackageListRefresh;
     }
 
-    @Override
     public Long getUserId() {
         return userId;
     }

@@ -82,11 +82,6 @@ public abstract class AbstractLibvirtEngineMessage implements EventMessage {
     }
 
     @Override
-    public Long getUserId() {
-        return null;
-    }
-
-    @Override
     public String toText() {
         return toString();
     }
