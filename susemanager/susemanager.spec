@@ -77,8 +77,6 @@ Requires(pre):  uyuni-base-server
 # yast module dependency
 %if 0%{?suse_version} > 1320
 Requires:       firewalld
-%else
-Requires:       SuSEfirewall2
 %endif
 Requires:       postfix
 Requires:       yast2-users
@@ -166,7 +164,6 @@ mkdir -p %{buildroot}%{_datadir}/YaST2/scrconf
 mkdir -p %{buildroot}%{_datadir}/applications/YaST2
 mkdir -p %{buildroot}/etc/YaST2
 install -m 0644 yast/*.rb %{buildroot}%{_datadir}/YaST2/clients
-install -m 0644 yast/firstboot-susemanager.xml %{buildroot}/etc/YaST2
 install -m 0644 yast/*.scr %{buildroot}%{_datadir}/YaST2/scrconf
 %if 0%{?is_opensuse}
 install -m 0644 yast/org.uyuni-project.yast2.Uyuni.desktop %{buildroot}%{_datadir}/applications/YaST2/org.uyuni-project.yast2.Uyuni.desktop
@@ -177,9 +174,6 @@ install -m 0644 yast/com.suse.yast2.SUSEManager.desktop %{buildroot}%{_datadir}/
 %if 0%{?suse_version} > 1320
 mkdir -p %{buildroot}/%{_prefix}/lib/firewalld/services
 install -m 0644 etc/firewalld/services/suse-manager-server.xml %{buildroot}/%{_prefix}/lib/firewalld/services
-%else
-mkdir -p %{buildroot}/%{_sysconfdir}/sysconfig/SuSEfirewall2.d/services
-install -m 0644 etc/sysconfig/SuSEfirewall2.d/services/suse-manager-server %{buildroot}/%{_sysconfdir}/sysconfig/SuSEfirewall2.d/services/
 %endif
 
 %check
@@ -263,7 +257,6 @@ fi
 %{_prefix}/lib/susemanager/bin/*
 %{_datadir}/YaST2/clients/*.rb
 %{_datadir}/YaST2/scrconf/*.scr
-%config /etc/YaST2/firstboot-susemanager.xml
 %config %{_sysconfdir}/slp.reg.d/susemanager.reg
 %{_sysconfdir}/init.d/susemanager
 %if 0%{?is_opensuse}
@@ -274,8 +267,6 @@ fi
 %attr(775,salt,susemanager) %dir /srv/www/os-images/
 %if 0%{?suse_version} > 1320
 %{_prefix}/lib/firewalld/services/suse-manager-server.xml
-%else
-%config %{_sysconfdir}/sysconfig/SuSEfirewall2.d/services/suse-manager-server
 %endif
 
 %files tools

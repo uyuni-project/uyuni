@@ -49,13 +49,9 @@ Requires:       mgr-cfg-management
 Requires:       aaa_base
 Requires:       apache2
 Requires:       glibc
-Requires(pre): spacewalk-proxy-common
+Requires(pre):  spacewalk-proxy-common
 Requires:       spacewalk-proxy-salt
-%if 0%{?suse_version} > 1320
 Requires:       firewalld
-%else
-Requires:       SuSEfirewall2
-%endif
 %else
 Requires:       glibc-common
 

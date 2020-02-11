@@ -96,18 +96,7 @@ if [ -x /usr/bin/firewall-cmd ]; then
     firewall-offline-cmd --zone=public --add-service=suse-manager-proxy
   fi
 else
-  sysconf_addword /etc/sysconfig/SuSEfirewall2 FW_SERVICES_EXT_TCP "http" > /dev/null 2>&1
-  sysconf_addword /etc/sysconfig/SuSEfirewall2 FW_SERVICES_EXT_TCP "https" > /dev/null 2>&1
-  sysconf_addword /etc/sysconfig/SuSEfirewall2 FW_SERVICES_EXT_TCP "xmpp-client" > /dev/null 2>&1
-  sysconf_addword /etc/sysconfig/SuSEfirewall2 FW_SERVICES_EXT_TCP "xmpp-server" > /dev/null 2>&1
-  sysconf_addword /etc/sysconfig/SuSEfirewall2 FW_SERVICES_EXT_TCP "tftp" > /dev/null 2>&1
-  sysconf_addword /etc/sysconfig/SuSEfirewall2 FW_SERVICES_EXT_UDP "tftp" > /dev/null 2>&1
-
-  # ports needed for Salt
-  sysconf_addword /etc/sysconfig/SuSEfirewall2 FW_SERVICES_EXT_TCP "4505" > /dev/null 2>&1
-  sysconf_addword /etc/sysconfig/SuSEfirewall2 FW_SERVICES_EXT_TCP "4506" > /dev/null 2>&1
-
-  systemctl try-restart SuSEfirewall2
+  echo "firewalld not installed" >&2
 fi
 }
 
@@ -720,8 +709,7 @@ if [ $ACTIVATE_SLP -ne 0 ]; then
         firewall-offline-cmd --zone=public --add-service=slp
       fi
     else
-        sysconf_addword /etc/sysconfig/SuSEfirewall2 FW_SERVICES_EXT_TCP "427" > /dev/null 2>&1
-        sysconf_addword /etc/sysconfig/SuSEfirewall2 FW_SERVICES_EXT_UDP "427" > /dev/null 2>&1
+      echo "firewalld not installed" >&2
     fi
     if [ -x /usr/bin/systemctl ] ; then
         /usr/bin/systemctl enable slpd

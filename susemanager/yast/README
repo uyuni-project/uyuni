@@ -9,12 +9,7 @@ Installation
 
 Possible ways to run:
 
-1. firstboot
-
-    Add the steps into your firstboot.xml file, see firstboot.xml.snippet.
-    Last step must be susemanager_write.
-
-2. standalone
+- standalone
 
     File susemanager_setup.ycp contains standalone workflow.
     Run 'yast2 susemanager_setup'

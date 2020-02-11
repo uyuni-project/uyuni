@@ -206,12 +206,10 @@ mkdir -p $RPM_BUILD_ROOT/%{_prefix}/share/rhn/config-defaults
 mkdir -p $RPM_BUILD_ROOT/%{_sysconfdir}/init.d
 mkdir -p $RPM_BUILD_ROOT/%{_sysconfdir}/httpd/conf
 mkdir -p $RPM_BUILD_ROOT/%{_sysconfdir}/cron.daily
-mkdir -p %{buildroot}/%{_sysconfdir}/sysconfig/SuSEfirewall2.d/services
 
 install -m 644 conf/rhn_web.conf $RPM_BUILD_ROOT%{_prefix}/share/rhn/config-defaults
 install -m 644 conf/rhn_dobby.conf $RPM_BUILD_ROOT%{_prefix}/share/rhn/config-defaults
 install -m 755 modules/dobby/scripts/check-database-space-usage.sh $RPM_BUILD_ROOT/%{_sysconfdir}/cron.daily/check-database-space-usage.sh
-install -m 0644 etc/sysconfig/SuSEfirewall2.d/services/susemanager-database %{buildroot}/%{_sysconfdir}/sysconfig/SuSEfirewall2.d/services/
 
 %{__mkdir_p} %{buildroot}/srv/www/htdocs/javascript/manager
 cp -r html/src/dist/javascript/manager %{buildroot}/srv/www/htdocs/javascript
@@ -260,7 +258,6 @@ cp html/src/dist/vendors/vendors.bundle.js.LICENSE %{buildroot}/srv/www/htdocs/v
 %{perl_vendorlib}/Dobby.pm
 %attr(644,root,root) %{_prefix}/share/rhn/config-defaults/rhn_dobby.conf
 %attr(0755,root,root) %{_sysconfdir}/cron.daily/check-database-space-usage.sh
-%config %{_sysconfdir}/sysconfig/SuSEfirewall2.d/services/susemanager-database
 %{perl_vendorlib}/Dobby/
 %dir %{_prefix}/share/rhn
 
