@@ -17,10 +17,12 @@ package com.redhat.rhn.frontend.events;
 
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.localization.LocalizationService;
+import com.redhat.rhn.common.messaging.EventMessage;
 import com.redhat.rhn.common.messaging.MessageAction;
 import com.redhat.rhn.common.messaging.MessageExecuteException;
 import com.redhat.rhn.domain.user.User;
 
+import com.suse.manager.utils.MailHelper;
 import org.apache.log4j.Logger;
 
 import java.net.InetAddress;
@@ -29,11 +31,16 @@ import java.util.Date;
 /**
  * Implement Action for TraceBackEvents
  */
-public class TraceBackAction extends BaseMailAction implements MessageAction {
+public class TraceBackAction implements MessageAction {
 
     private static Logger log = Logger.getLogger(TraceBackAction.class);
 
-    protected String getSubject(BaseEvent evtIn) {
+    public void execute(EventMessage msg) {
+        TraceBackEvent evt = (TraceBackEvent) msg;
+        MailHelper.withMailer(MailFactory.construct()).sendEmail(getRecipients(evt.getUser()), getSubject(evt), msg.toString());
+    }
+
+    protected String getSubject(TraceBackEvent evtIn) {
         // setup subject
         StringBuilder subject = new StringBuilder();
         subject.append(LocalizationService.getInstance().

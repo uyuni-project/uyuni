@@ -23,7 +23,8 @@ import com.redhat.rhn.domain.user.User;
  *
  * @version $Rev: 74533 $
  */
-public class RestartSatelliteEvent extends BaseEvent implements EventMessage {
+public class RestartSatelliteEvent implements EventMessage {
+    private User user;
 
     //private User user;
 
@@ -33,5 +34,20 @@ public class RestartSatelliteEvent extends BaseEvent implements EventMessage {
      */
     public RestartSatelliteEvent(User currentUser) {
         this.setUser(currentUser);
+    }
+
+    /**
+     * Set the User for this event
+     * @param userIn User for this event
+     */
+    public void setUser(User userIn) {
+        this.user = userIn;
+    }
+
+    /**
+     * @return Returns the user.
+     */
+    public User getUser() {
+        return user;
     }
 }

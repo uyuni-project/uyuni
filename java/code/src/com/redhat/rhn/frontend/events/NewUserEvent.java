@@ -29,7 +29,7 @@ import java.util.List;
  *
  * @version $Rev: 59372 $
  */
-public class NewUserEvent extends BaseEvent implements EventMessage  {
+public class NewUserEvent implements EventMessage  {
 
     private static final int NO_CREATOR_INDEX = 0;
     private static final int WITH_CREATOR_INDEX = 2;
@@ -37,6 +37,8 @@ public class NewUserEvent extends BaseEvent implements EventMessage  {
     private String link;
     private String domain;
     private List adminList;
+    private User user;
+
 
     /**
      * format this message as a string
@@ -187,6 +189,21 @@ public class NewUserEvent extends BaseEvent implements EventMessage  {
         bodyArgs[index + 2] = getUser().getEmail();
         bodyArgs[index + 3] = getUrl();
         bodyArgs[index + 4] = OrgFactory.EMAIL_FOOTER.getValue();
+    }
+
+    /**
+     * Set the User for this event
+     * @param userIn User for this event
+     */
+    public void setUser(User userIn) {
+        this.user = userIn;
+    }
+
+    /**
+     * @return Returns the user.
+     */
+    public User getUser() {
+        return user;
     }
 }
 

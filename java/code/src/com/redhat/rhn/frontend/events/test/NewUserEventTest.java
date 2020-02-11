@@ -15,21 +15,16 @@
 
 package com.redhat.rhn.frontend.events.test;
 
-import com.redhat.rhn.common.messaging.Mail;
 import com.redhat.rhn.common.messaging.test.MockMail;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.events.MailFactory;
 import com.redhat.rhn.frontend.events.NewUserAction;
 import com.redhat.rhn.frontend.events.NewUserEvent;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.UserTestUtils;
 
-import com.mockobjects.servlet.MockHttpServletRequest;
-import com.mockobjects.servlet.MockHttpSession;
-
 import java.util.ArrayList;
-import java.util.Enumeration;
 import java.util.List;
-import java.util.Vector;
 
 /**
  * Test for NewUserEvent
@@ -64,12 +59,8 @@ public class NewUserEventTest extends RhnBaseTestCase {
     public void testAction() {
         NewUserEvent evt = createTestEvent();
         mailer.setExpectedSendCount(2);
-        NewUserAction action = new NewUserAction() {
-            @Override
-            protected Mail getMail() {
-                return mailer;
-            }
-        };
+        MailFactory.setMail(mailer);
+        NewUserAction action = new NewUserAction();
         action.execute(evt);
         mailer.verify();
         assertContains(mailer.getSubject(), "SUSE Manager User Created: testUser");
@@ -86,24 +77,12 @@ public class NewUserEventTest extends RhnBaseTestCase {
 
     private NewUserEvent createTestEvent() {
         NewUserEvent evt = new NewUserEvent();
-        // In the implementation we use getHeaderNames so we override it with
-        // one that returns an empty implementation.
-        MockHttpServletRequest request = new MockHttpServletRequest() {
-            @Override
-            public Enumeration<String> getHeaderNames() {
-                return new Vector<String>().elements();
-            }
-        };
-        request.setSession(new MockHttpSession());
-        request.setupGetRequestURI("http://localhost:8080");
-        request.setupGetMethod("POST");
         User usr = UserTestUtils.findNewUser("testUser",
                 "testOrg" + this.getClass().getSimpleName());
 
         evt.setUser(usr);
         evt.setDomain("someserver.rhndev.redhat.com");
         evt.setAdmins(createAdmins());
-        evt.setRequest(request);
         return evt;
     }
 

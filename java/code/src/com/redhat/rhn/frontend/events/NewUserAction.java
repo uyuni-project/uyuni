@@ -33,12 +33,13 @@ import java.util.Map;
 /**
  * Implement Action for TraceBackEvents
  */
-public class NewUserAction extends BaseMailAction implements MessageAction {
+public class NewUserAction implements MessageAction {
 
     /**
      * Logger for this class
      */
     private static Logger logger = Logger.getLogger(NewUserAction.class);
+
 
     /**
      * Execute the Event.  This Action actually sends 2 mail messages
@@ -50,8 +51,8 @@ public class NewUserAction extends BaseMailAction implements MessageAction {
             logger.debug("execute(EventMessage msg=" + msg + ") - start");
         }
 
-        super.execute(msg);
         NewUserEvent evt = (NewUserEvent) msg;
+        MailHelper.withMailer(MailFactory.construct()).sendEmail(getRecipients(evt.getUser()), getSubject(evt), msg.toString());
 
         Map map = new HashMap();
         map.put("login", evt.getUser().getLogin());
@@ -80,7 +81,7 @@ public class NewUserAction extends BaseMailAction implements MessageAction {
                 getMessage("email.newuser.subject", LocalizationService.getUserLocale(), subjectArgs);
         String body = LocalizationService.getInstance().
                 getMessage("email.newuser.body", LocalizationService.getUserLocale(), bodyArgs);
-        MailHelper.withMailer(getMail()).sendEmail(getEmails(evt), subject, body);
+        MailHelper.withMailer(MailFactory.construct()).sendEmail(getEmails(evt), subject, body);
 
         if (logger.isDebugEnabled()) {
             logger.debug("execute(EventMessage) - end");
@@ -100,7 +101,7 @@ public class NewUserAction extends BaseMailAction implements MessageAction {
     }
 
 
-    protected String getSubject(BaseEvent evtIn) {
+    protected String getSubject(NewUserEvent evtIn) {
         if (logger.isDebugEnabled()) {
             logger.debug("getSubject(User userIn=" + evtIn.getUser() + ") - start");
         }

@@ -15,36 +15,31 @@
 package com.redhat.rhn.frontend.events;
 
 import com.redhat.rhn.common.conf.Config;
-import com.redhat.rhn.common.messaging.EventMessage;
 import com.redhat.rhn.common.messaging.Mail;
 import com.redhat.rhn.common.messaging.SmtpMail;
-import com.redhat.rhn.domain.user.User;
-import com.suse.manager.utils.MailHelper;
 
 /**
- * BaseMailAction - basic abstract class to encapsulate some common Action logic.
- * @version $Rev$
+ * MailFactory - constructs Mail objects
  */
-public abstract class BaseMailAction {
+public final class MailFactory {
 
-    protected abstract String getSubject(BaseEvent evt);
-
-    protected abstract String[] getRecipients(User user);
+    private static Mail mail;
 
     /**
-     * Execute the TraceBack
-     * @param msg EventMessage to executed.
+     * For test use only
      */
-    public void execute(EventMessage msg) {
-        BaseEvent aevt = (BaseEvent) msg;
-        MailHelper.withMailer(getMail()).sendEmail(getRecipients(aevt.getUser()), getSubject(aevt), msg.toString());
+    public static void setMail(Mail mailIn) {
+        mail = mailIn;
     }
 
     /**
      * Get the mailer associated with this class
      * @return the mailer associated with this class
      */
-    protected Mail getMail() {
+    public static Mail construct() {
+        if (mail != null) {
+            return mail;
+        }
         String clazz = Config.get().getString(
                 "web.mailer_class");
         if (clazz == null) {

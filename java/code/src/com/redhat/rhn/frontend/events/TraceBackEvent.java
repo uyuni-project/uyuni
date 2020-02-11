@@ -30,10 +30,12 @@ import javax.servlet.http.HttpServletRequest;
  *
  * @version $Rev$
  */
-public class TraceBackEvent extends BaseEvent implements EventMessage {
+public class TraceBackEvent implements EventMessage {
 
     private Throwable throwable;
     private static final String HASHES = "########";
+    private HttpServletRequest request;
+    private User user;
 
     /**
      * format this message as a string
@@ -139,6 +141,36 @@ public class TraceBackEvent extends BaseEvent implements EventMessage {
      */
     public void setException(Throwable tIn) {
         this.throwable = tIn;
+    }
+
+    /**
+     * Set the request for this event.
+     * @param reqIn Request where error has occurred.
+     */
+    public void setRequest(HttpServletRequest reqIn) {
+        this.request = reqIn;
+    }
+
+    /**
+     * Set the User for this event
+     * @param userIn User for this event
+     */
+    public void setUser(User userIn) {
+        this.user = userIn;
+    }
+
+    /**
+     * @return Returns the request.
+     */
+    public HttpServletRequest getRequest() {
+        return request;
+    }
+
+    /**
+     * @return Returns the user.
+     */
+    public User getUser() {
+        return user;
     }
 }
 
