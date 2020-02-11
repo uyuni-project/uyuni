@@ -94,10 +94,6 @@ public class AlignSoftwareTargetMsg implements EventDatabaseMessage {
         return txn;
     }
 
-    @Override
-    public String toText() {
-        return toString();
-    }
 
     public Long getUserId() {
         return user.getId();

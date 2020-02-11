@@ -65,10 +65,4 @@ public class RunnableEventMessage implements EventMessage {
     public String toString() {
         return "RunnableEventMessage[name:" + name + "]";
     }
-
-    @Override
-    public String toText() {
-        return toString();
-    }
-
 }

@@ -57,13 +57,6 @@ public class RegisterMinionEventMessage implements EventMessage {
     /**
      * {@inheritDoc}
      */
-    public String toText() {
-        return toString();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     public String toString() {
         return "RegisterMinionEvent[minionId: " + minionId + "]";
     }

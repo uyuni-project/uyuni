@@ -136,11 +136,6 @@ public class ApplyStatesEventMessage implements EventDatabaseMessage {
     }
 
     @Override
-    public String toText() {
-        return toString();
-    }
-
-    @Override
     public String toString() {
         return "ApplyStatesEventMessage[serverId: " + serverId + ", stateNames: " +
                 stateNames.stream().collect(Collectors.joining(", ")) + "]";

@@ -82,11 +82,6 @@ public abstract class AbstractLibvirtEngineMessage implements EventMessage {
     }
 
     @Override
-    public String toText() {
-        return toString();
-    }
-
-    @Override
     public String toString() {
         String origin = minionId.orElse("master");
         return this.getClass().getName() + "[" + origin + "]";

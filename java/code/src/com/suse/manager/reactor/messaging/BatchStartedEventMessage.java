@@ -36,14 +36,6 @@ public class BatchStartedEventMessage implements EventMessage {
     }
 
     /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String toText() {
-        return toString();
-    }
-
-    /**
      * @return the underlying BatchStartedEvent from salt
      */
     public BatchStartedEvent getBatchStartedEvent() {

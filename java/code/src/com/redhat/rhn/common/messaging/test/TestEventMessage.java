@@ -24,7 +24,7 @@ public class TestEventMessage implements EventMessage {
     /**
      * Perform the action on the EventMessage
      */
-    public String toText() {
+    public String toString() {
         return "This is a test";
     }
 

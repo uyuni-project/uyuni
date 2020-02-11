@@ -38,11 +38,6 @@ public class MinionStartEventMessage implements EventMessage {
     }
 
     @Override
-    public String toText() {
-        return toString();
-    }
-
-    @Override
     public String toString() {
         return "MinionStartEventMessage[minionId: " + minionId + "]";
     }

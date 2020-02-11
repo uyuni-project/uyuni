@@ -113,14 +113,6 @@ public class ChannelsChangedEventMessage implements EventDatabaseMessage {
     }
 
     /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String toText() {
-        return toString();
-    }
-
-    /**
      * @return scheduleApplyChannelsState to get
      */
     public boolean isScheduleApplyChannelsState() {

@@ -14,15 +14,16 @@
  */
 package com.redhat.rhn.frontend.events;
 
-import java.util.Collection;
-import java.util.Date;
-import java.util.Map;
-
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.messaging.EventDatabaseMessage;
 import com.redhat.rhn.domain.action.ActionChain;
 import com.redhat.rhn.domain.action.ActionType;
+
 import org.hibernate.Transaction;
+
+import java.util.Collection;
+import java.util.Date;
+import java.util.Map;
 
 /**
  * Event carrying information necessary to schedule config files actions
@@ -104,11 +105,6 @@ public class SsmConfigFilesEvent implements EventDatabaseMessage {
      */
     public Long getActionChainId() {
         return actionChainId;
-    }
-
-    /** {@inheritDoc} */
-    public String toText() {
-        return toString();
     }
 
     /** {@inheritDoc} */

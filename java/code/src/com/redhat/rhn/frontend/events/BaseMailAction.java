@@ -37,7 +37,7 @@ public abstract class BaseMailAction {
      */
     public void execute(EventMessage msg) {
         BaseEvent aevt = (BaseEvent) msg;
-        MailHelper.withMailer(getMail()).sendEmail(getRecipients(aevt.getUser()), getSubject(aevt), msg.toText());
+        MailHelper.withMailer(getMail()).sendEmail(getRecipients(aevt.getUser()), getSubject(aevt), msg.toString());
     }
 
     /**

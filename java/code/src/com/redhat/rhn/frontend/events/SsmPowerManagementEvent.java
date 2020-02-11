@@ -76,13 +76,6 @@ public class SsmPowerManagementEvent implements EventMessage {
     /**
      * {@inheritDoc}
      */
-    public String toText() {
-        return toString();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String toString() {
         return String

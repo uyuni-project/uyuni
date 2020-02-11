@@ -14,11 +14,11 @@
  */
 package com.redhat.rhn.frontend.events;
 
-import java.util.List;
-
 import com.redhat.rhn.common.messaging.EventMessage;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.system.SystemManager;
+
+import java.util.List;
 
 /**
  * Event fired to carry the information necessary to perform subscription changes
@@ -68,11 +68,6 @@ public class SsmDeleteServersEvent implements EventMessage {
      */
     public List<Long> getSids() {
         return sids;
-    }
-
-    /** {@inheritDoc} */
-    public String toText() {
-        return toString();
     }
 
     /**

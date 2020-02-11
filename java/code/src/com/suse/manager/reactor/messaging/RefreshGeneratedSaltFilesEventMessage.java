@@ -22,11 +22,6 @@ import com.redhat.rhn.common.messaging.EventMessage;
 public class RefreshGeneratedSaltFilesEventMessage implements EventMessage {
 
     @Override
-    public String toText() {
-        return toString();
-    }
-
-    @Override
     public String toString() {
         return "RefreshGeneratedSaltFilesEventMessage{}";
     }

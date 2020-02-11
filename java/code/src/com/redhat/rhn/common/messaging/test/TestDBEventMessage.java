@@ -33,7 +33,7 @@ public class TestDBEventMessage implements EventDatabaseMessage {
     /**
      * Perform the action on the EventMessage
      */
-    public String toText() {
+    public String toString() {
         return "This is a DB test";
     }
 

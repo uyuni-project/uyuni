@@ -45,11 +45,6 @@ public class ImageDeployedEventMessage implements EventMessage {
     }
 
     @Override
-    public String toText() {
-        return toString();
-    }
-
-    @Override
     public String toString() {
         return new ToStringBuilder(this)
                 .append("imageDeployedEvent", imageDeployedEvent)

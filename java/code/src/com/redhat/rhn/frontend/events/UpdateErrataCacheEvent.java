@@ -52,14 +52,6 @@ public class UpdateErrataCacheEvent implements EventDatabaseMessage {
     }
 
     /**
-     * {@inheritDoc}
-     */
-    public String toText() {
-        // really a noop
-        return "";
-    }
-
-    /**
      * returns the orgId associated with this event.
      * @return the orgId associated with this event.
      */

@@ -41,14 +41,6 @@ public class SystemIdGenerateEventMessage implements EventMessage {
      * {@inheritDoc}
      */
     @Override
-    public String toText() {
-        return toString();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public String toString() {
         return "SystemIdGenerateEventMessage[minionId: " + minionId + "]";
     }

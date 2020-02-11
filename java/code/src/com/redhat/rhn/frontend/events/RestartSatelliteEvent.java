@@ -34,13 +34,4 @@ public class RestartSatelliteEvent extends BaseEvent implements EventMessage {
     public RestartSatelliteEvent(User currentUser) {
         this.setUser(currentUser);
     }
-
-    /**
-     * {@inheritDoc}
-     */
-    public String toText() {
-        // really a noop
-        return "";
-    }
-
 }

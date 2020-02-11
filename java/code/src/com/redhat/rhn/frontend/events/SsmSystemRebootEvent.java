@@ -119,15 +119,6 @@ public class SsmSystemRebootEvent implements EventDatabaseMessage {
                              this.getServerIds().size());
     }
 
-
-    /**
-     * Represent the object in ASCII text.
-     * @return String representation
-     */
-    public String toText() {
-        return this.toString();
-    }
-
     /** {@inheritDoc} */
     public Transaction getTransaction() {
         return txn;

@@ -64,14 +64,6 @@ public class CloneErrataEvent implements EventDatabaseMessage {
     }
 
     /**
-     * {@inheritDoc}
-     */
-    public String toText() {
-        // really a noop
-        return "";
-    }
-
-    /**
      * Gets the requestRepodataRegen.
      *
      * @return requestRepodataRegen

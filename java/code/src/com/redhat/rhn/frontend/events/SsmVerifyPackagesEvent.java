@@ -14,13 +14,14 @@
  */
 package com.redhat.rhn.frontend.events;
 
-import java.util.Date;
-
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.messaging.EventDatabaseMessage;
 import com.redhat.rhn.domain.action.ActionChain;
+
 import org.hibernate.Transaction;
+
+import java.util.Date;
 
 /**
  * Event carrying information necessary to schedule package verifications on systems
@@ -85,11 +86,6 @@ public class SsmVerifyPackagesEvent implements EventDatabaseMessage {
     /** @return will not be <code>null</code> */
     public DataResult getResult() {
         return result;
-    }
-
-    /** {@inheritDoc} */
-    public String toText() {
-        return toString();
     }
 
     /** {@inheritDoc} */

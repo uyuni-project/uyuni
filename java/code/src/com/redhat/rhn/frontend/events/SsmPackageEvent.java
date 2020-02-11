@@ -87,11 +87,6 @@ public abstract class SsmPackageEvent implements EventDatabaseMessage {
     }
 
     /** {@inheritDoc} */
-    public String toText() {
-        return toString();
-    }
-
-    /** {@inheritDoc} */
     public Transaction getTransaction() {
         return txn;
     }

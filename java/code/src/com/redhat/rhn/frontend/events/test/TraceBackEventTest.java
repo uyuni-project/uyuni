@@ -50,7 +50,7 @@ public class TraceBackEventTest extends RhnBaseTestCase {
      */
     public void testToText() {
         TraceBackEvent evt = createTestEvent();
-        String eventText = evt.toText();
+        String eventText = evt.toString();
         assertNotNull(eventText);
         assertContains(eventText, MSG_INNER_EXC);
         assertContains(eventText, MSG_OUTER_EXC);
@@ -59,7 +59,7 @@ public class TraceBackEventTest extends RhnBaseTestCase {
         assertContains(eventText, "Exception");
         //with null exception
         evt.setException(null);
-        eventText = evt.toText();
+        eventText = evt.toString();
         assertContains(eventText, "Request");
         assertContains(eventText, "User");
         assertContains(eventText, "Exception");
@@ -99,7 +99,7 @@ public class TraceBackEventTest extends RhnBaseTestCase {
         evt.setRequest(null);
         evt.setUser(null);
         evt.setException(new RuntimeException(MSG_OUTER_EXC));
-        String eventText = evt.toText();
+        String eventText = evt.toString();
         assertContains(eventText, MSG_OUTER_EXC);
         assertContains(eventText, "No User logged in");
         assertContains(eventText, "No request information");

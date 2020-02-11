@@ -59,14 +59,6 @@ public class NewCloneErrataEvent implements EventDatabaseMessage {
     }
 
     /**
-     * {@inheritDoc}
-     */
-    public String toText() {
-        // really a noop
-        return "";
-    }
-
-    /**
      *
      * {@inheritDoc}
      */

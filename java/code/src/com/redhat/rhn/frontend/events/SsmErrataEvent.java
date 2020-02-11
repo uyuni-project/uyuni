@@ -129,11 +129,6 @@ public class SsmErrataEvent implements EventDatabaseMessage {
     }
 
     /** {@inheritDoc} */
-    public String toText() {
-        return this.toString();
-    }
-
-    /** {@inheritDoc} */
     public Transaction getTransaction() {
         return txn;
     }

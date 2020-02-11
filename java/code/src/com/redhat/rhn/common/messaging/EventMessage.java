@@ -23,11 +23,6 @@ package com.redhat.rhn.common.messaging;
  */
 public interface EventMessage {
 
-    /**
-     * Convert the internal representation to a text string
-     * @return String representation of EventMessage.
-     */
-    String toText();
 }
 
 

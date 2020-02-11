@@ -41,8 +41,7 @@ public class TraceBackEvent extends BaseEvent implements EventMessage {
      *                  request values
      * @return Text of email.
      */
-    @Override
-    public String toText() {
+    public String toString() {
         StringWriter sw = new StringWriter();
         PrintWriter out = new PrintWriter(sw);
         LocalizationService ls = LocalizationService.getInstance();

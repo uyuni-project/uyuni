@@ -15,13 +15,6 @@
 
 package com.redhat.rhn.frontend.events.test;
 
-import java.util.ArrayList;
-import java.util.Enumeration;
-import java.util.List;
-import java.util.Vector;
-
-import com.mockobjects.servlet.MockHttpServletRequest;
-import com.mockobjects.servlet.MockHttpSession;
 import com.redhat.rhn.common.messaging.Mail;
 import com.redhat.rhn.common.messaging.test.MockMail;
 import com.redhat.rhn.domain.user.User;
@@ -29,6 +22,14 @@ import com.redhat.rhn.frontend.events.NewUserAction;
 import com.redhat.rhn.frontend.events.NewUserEvent;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.UserTestUtils;
+
+import com.mockobjects.servlet.MockHttpServletRequest;
+import com.mockobjects.servlet.MockHttpSession;
+
+import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.List;
+import java.util.Vector;
 
 /**
  * Test for NewUserEvent
@@ -50,7 +51,7 @@ public class NewUserEventTest extends RhnBaseTestCase {
      */
     public void testToText() {
         NewUserEvent evt = createTestEvent();
-        String eventText = evt.toText();
+        String eventText = evt.toString();
         System.out.println(eventText);
         assertNotNull(eventText);
         assertContains(eventText, "A SUSE Manager login has been created for you");
