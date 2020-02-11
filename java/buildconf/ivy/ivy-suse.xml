@@ -95,6 +95,7 @@
         <!-- Akka -->
         <dependency org="com.typesafe.akka" name="akka-actor-typed_2.13" rev="2.6.3" />
         <dependency org="com.mchange" name="mchange-commons-java" rev="0.2.20" transitive="false" />
+        <dependency org="org.reflections" name="reflections" rev="0.9.12" transitive="false" />
 
         <!-- Tomcat jars -->
         <dependency org="suse" name="jasper" rev="9.0.14" />
