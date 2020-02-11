@@ -85,7 +85,7 @@ begin
 		'Activation Key Administrators for Org ' || name_in || ' (1)',
 		NULL, ug_type, 1
 	);
-	
+
 	select nextval('rhn_user_group_id_seq') into group_val from dual;
 
 	select	id
@@ -153,7 +153,7 @@ begin
                         sgt.id, 1
                 from rhnServerGroupType sgt
                 where sgt.label = 'enterprise_entitled';
-	
+
         insert into rhnServerGroup
                 ( id, name, description, group_type, org_id )
                 select nextval('rhn_server_group_id_seq'), sgt.name, sgt.name,

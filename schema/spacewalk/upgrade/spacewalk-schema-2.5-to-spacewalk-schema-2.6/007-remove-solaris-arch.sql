@@ -11,7 +11,7 @@ begin
   for rec in select server.id as id
       from rhnServer server
       where server_arch_id = LOOKUP_SERVER_ARCH(arch_in) loop
-    perform logging.clear_log_id();
+    perform .clear_log_id();
     perform delete_server(rec.id);
   end loop;
 end;

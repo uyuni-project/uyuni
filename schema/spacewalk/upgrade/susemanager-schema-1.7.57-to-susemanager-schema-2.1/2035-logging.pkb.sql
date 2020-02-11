@@ -13,9 +13,9 @@
 -- in this software or its documentation.
 --
 
--- create schema logging;
+-- create schema ;
 
-update pg_settings set setting = 'logging,' || setting where name = 'search_path';
+update pg_settings set setting = ',' || setting where name = 'search_path';
 
 create or replace function clear_log_id()
 returns void
@@ -105,7 +105,7 @@ begin
 end;
 $$ language plpgsql set search_path from current;
 
-create or replace function enable_logging(table_name_in in varchar)
+create or replace function enable_(table_name_in in varchar)
 returns void
 as
 $$
@@ -142,7 +142,7 @@ begin
     end loop;
 
     execute 'create table public.' || table_name_in || '_log
-        as select ' || pk_column || ', logging.get_log_id()::integer as log_id, ''A''::char as action' || ddl_columns
+        as select ' || pk_column || ', .get_log_id()::integer as log_id, ''A''::char as action' || ddl_columns
         || ' from ' || table_name_in;
     execute 'alter table public.' || table_name_in || '_log alter ' || pk_column || ' set not null';
     execute 'create index ' || table_name_in || '_log_idx on public.' || table_name_in || '_log(' || pk_column || ')';
@@ -157,7 +157,7 @@ begin
         declare
             log_id_v integer;
         begin
-            log_id_v := logging.get_log_id();
+            log_id_v := .get_log_id();
             if tg_op = ''''UPDATE'''' then
                 if old.' || pk_column || ' <> new.' || pk_column || ' then raise exception ''''Cannot update column ' || table_name_in || '.' || pk_column || '.''''; end if;
             end if;
@@ -180,4 +180,4 @@ end;
 $$
 language plpgsql;
 
-update pg_settings set setting = overlay( setting placing '' from 1 for (length('logging')+1) ) where name = 'search_path';
+update pg_settings set setting = overlay( setting placing '' from 1 for (length('')+1) ) where name = 'search_path';

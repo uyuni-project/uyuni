@@ -1,5 +1,5 @@
 
- SELECT logging.clear_log_id();
+ SELECT .clear_log_id();
 
  insert into rhnServerGroup ( id, name, description, group_type, org_id )
   select nextval('rhn_server_group_id_seq'), sgt.name, sgt.name, sgt.id, X.org_id

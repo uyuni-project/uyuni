@@ -167,7 +167,7 @@ as $$
                 -- A virtualization_host* ent must have been removed, so we'll
                 -- unsubscribe guests from the host first.
 
-                -- hm, i don't think max_members - current_members_calc yielding a negative number
+                -- hm, i don't think max_members - current_members_calc yielding a negative NUMERIC
                 -- will work w/ rownum, swaping 'em in the body of this if...
                 for virt_server in virt_servers_cfam(family.channel_family_id,
                                 current_members_calc - max_members_val) loop 

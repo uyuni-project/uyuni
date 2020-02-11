@@ -13,7 +13,7 @@
 -- in this software or its documentation.
 --
 
-select logging.clear_log_id();
-select logging.enable_logging('web_contact');
-select logging.enable_logging('rhnserver');
-select logging.enable_logging('rhnservergroup');
+select .clear_log_id();
+select .enable_logging('web_contact');
+select .enable_logging('rhnserver');
+select .enable_logging('rhnservergroup');

@@ -15,16 +15,16 @@
 
 CREATE TABLE rhnAbrtInfo
 (
-    id             NUMBER NOT NULL
+    id             NUMERIC NOT NULL
                         CONSTRAINT rhn_abrt_info_pk PRIMARY KEY,
-    server_id      NUMBER NOT NULL
+    server_id      NUMERIC NOT NULL
                        CONSTRAINT rhn_abrt_info_srvr_fk
                            REFERENCES rhnServer (id)
                            ON DELETE CASCADE,
-    num_crashes    NUMBER NOT NULL,
-    created        DATE NOT NULL
+    num_crashes    NUMERIC NOT NULL,
+    created        TIMESTAMPTZ NOT NULL
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE SEQUENCE rhn_abrt_info_id_seq;

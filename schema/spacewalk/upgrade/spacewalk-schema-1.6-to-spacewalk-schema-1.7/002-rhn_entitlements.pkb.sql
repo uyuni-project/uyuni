@@ -47,7 +47,7 @@ as $$
             into type_is_base
             from rhnServerGroupType sgt
             where sgt.id = sgrecord.group_type_id;
- 
+
             -- if we're removing a base ent, then be sure to
             -- remove the server's channel subscriptions.
             if ( type_is_base = 'Y' ) then
@@ -175,7 +175,7 @@ language plpgsql;
     --
     -- Raises not_enough_entitlements_in_base_org if all entitlements
     -- in the org are used so the free entitlements would not cover
-    -- the difference when descreasing the number of entitlements.
+    -- the difference when descreasing the NUMERIC of entitlements.
     -- *******************************************************************
     create or replace function activate_system_entitlement(
         org_id_in in numeric,

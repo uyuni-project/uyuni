@@ -15,43 +15,43 @@
 
 CREATE TABLE rhnActionImageBuild
 (
-    id               NUMBER NOT NULL
+    id               NUMERIC NOT NULL
                          CONSTRAINT rhn_act_image_build_id_pk PRIMARY KEY,
-    action_id        NUMBER NOT NULL
+    action_id        NUMERIC NOT NULL
                          CONSTRAINT rhn_act_image_build_act_fk
                              REFERENCES rhnAction (id)
                              ON DELETE CASCADE,
-    image_profile_id NUMBER NOT NULL
+    image_profile_id NUMERIC NOT NULL
                          CONSTRAINT rhn_act_image_build_ip_fk
                              REFERENCES suseImageProfile (profile_id)
                              ON DELETE CASCADE,
-    tag              VARCHAR2(30),
-    created          timestamp with local time zone
+    tag              VARCHAR(30),
+    created          TIMESTAMPTZ
                          DEFAULT (current_timestamp) NOT NULL,
-    modified         timestamp with local time zone
+    modified         TIMESTAMPTZ
                          DEFAULT (current_timestamp) NOT NULL
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE UNIQUE INDEX rhn_act_image_build_aid_idx
     ON rhnActionImageBuild (action_id)
-    NOLOGGING;
+    ;
 
 CREATE SEQUENCE rhn_act_image_build_id_seq;
 
 CREATE TABLE rhnActionImageBuildResult
 (
-    server_id              NUMBER NOT NULL
+    server_id              NUMERIC NOT NULL
                                CONSTRAINT rhn_image_build_result_sid_fk
                                    REFERENCES rhnServer (id)
                                    ON DELETE CASCADE,
-    action_image_build_id NUMBER NOT NULL
+    action_image_build_id NUMERIC NOT NULL
                                CONSTRAINT rhn_image_build_result_aid_fk
                                    REFERENCES rhnActionImageBuild (id)
                                    ON DELETE CASCADE
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE UNIQUE INDEX rhn_image_build_result_sa_uq
@@ -59,6 +59,6 @@ CREATE UNIQUE INDEX rhn_image_build_result_sa_uq
 
 CREATE INDEX rhn_image_build_result_ad_idx
     ON rhnActionImageBuildResult (action_image_build_id)
-    NOLOGGING;
+    ;
 
 insert into rhnActionType values (504, 'image.build', 'Build an Image Profile', 'N', 'N');

@@ -1,7 +1,7 @@
 
 -- rhnServerGroup and dependencies
 
-SELECT logging.clear_log_id();
+SELECT .clear_log_id();
 
 DELETE FROM rhnOrgExtGroupMapping
   WHERE server_group_id in (

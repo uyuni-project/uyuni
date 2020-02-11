@@ -53,7 +53,7 @@ update pg_settings set setting = 'rhn_server,' || setting where name = 'search_p
     begin
     	-- the idea: if we get past this query, the server is
 	-- neither sat nor proxy, so base channel is changeable
-	
+
 	select 1 into throwaway
 	  from rhnServer S
 	 where S.id = server_id_in
@@ -96,7 +96,7 @@ update pg_settings set setting = 'rhn_server,' || setting where name = 'search_p
 		 where server_id = server_id_in
 		   and key_id = key_id_val;		   
 	end;
-	
+
     end$$ language plpgsql;
     
     create or replace function bulk_set_custom_value(
@@ -695,7 +695,7 @@ update pg_settings set setting = 'rhn_server,' || setting where name = 'search_p
             update rhnServerGroup
             set current_members = current_members - 1
             where id = server_group_id_in;
- 
+
 		end if;
 	end$$ language plpgsql;
 

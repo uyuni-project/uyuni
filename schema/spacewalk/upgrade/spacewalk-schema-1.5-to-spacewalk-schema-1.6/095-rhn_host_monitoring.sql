@@ -19,6 +19,6 @@ select  s.id            as recid,
         4               as os_id,
         to_number(null,null) as asset_id,
         cast(null as char)   as last_update_user,
-        cast(null as date)   as last_update_date
+        cast(null as TIMESTAMPTZ)   as last_update_date
 from	rhnServer	s
 ;

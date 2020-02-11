@@ -15,32 +15,32 @@
 
 CREATE TABLE suseImageProfile
 (
-    profile_id     NUMBER NOT NULL
+    profile_id     NUMERIC NOT NULL
                      CONSTRAINT suse_imgprof_prid_pk PRIMARY KEY,
-    label          VARCHAR2(128) NOT NULL,
-    org_id         NUMBER NOT NULL
+    label          VARCHAR(128) NOT NULL,
+    org_id         NUMERIC NOT NULL
                      CONSTRAINT suse_imgprof_oid_fk
                        REFERENCES web_customer (id)
                        ON DELETE CASCADE,
-    token_id       NUMBER
+    token_id       NUMERIC
                      CONSTRAINT suse_imgprof_tk_fk
                        REFERENCES rhnRegToken (id)
                        ON DELETE SET NULL,
-    image_type     VARCHAR2(32) NOT NULL,
-    target_store_id NUMBER NOT NULL
+    image_type     VARCHAR(32) NOT NULL,
+    target_store_id NUMERIC NOT NULL
                       CONSTRAINT suse_imgprof_tsid_fk
                          REFERENCES suseImageStore (id)
                          ON DELETE CASCADE,
-    created        timestamp with local time zone
+    created        TIMESTAMPTZ
                      DEFAULT (current_timestamp) NOT NULL,
-    modified       timestamp with local time zone
+    modified       TIMESTAMPTZ
                      DEFAULT (current_timestamp) NOT NULL
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE UNIQUE INDEX suse_imgprof_label_uq
     ON suseImageProfile (label)
-        TABLESPACE [[2m_tbs]];
+        ;
 
 CREATE SEQUENCE suse_imgprof_prid_seq;

@@ -15,22 +15,22 @@
 
 CREATE TABLE suseCredentialsType
 (
-    id        NUMBER NOT NULL
+    id        NUMERIC NOT NULL
                   CONSTRAINT suse_credtype_id_pk PRIMARY KEY
-                  USING INDEX TABLESPACE [[64k_tbs]],
-    label     VARCHAR2(64) NOT NULL,
-    name      VARCHAR2(128) NOT NULL,
-    created   DATE
-                  DEFAULT (sysdate) NOT NULL,
-    modified  DATE
-                  DEFAULT (sysdate) NOT NULL
+                  ,
+    label     VARCHAR(64) NOT NULL,
+    name      VARCHAR(128) NOT NULL,
+    created   TIMESTAMPTZ
+                  DEFAULT (CURRENT_TIMESTAMP) NOT NULL,
+    modified  TIMESTAMPTZ
+                  DEFAULT (CURRENT_TIMESTAMP) NOT NULL
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE INDEX suse_credtype_label_id_idx
     ON suseCredentialsType (label, id)
-    TABLESPACE [[64k_tbs]];
+    ;
 
 CREATE SEQUENCE suse_credtype_id_seq;
 

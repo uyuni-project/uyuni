@@ -17,7 +17,7 @@ create or replace function create_new_org
 (
         name_in      in varchar,
         password_in  in varchar
-        --org_id_out   out number
+        --org_id_out   out NUMERIC
 ) returns numeric
 as
 $$

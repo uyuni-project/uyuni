@@ -13,17 +13,17 @@
 
 CREATE TABLE suseEula
 (
-    id          number NOT NULL
+    id          NUMERIC NOT NULL
                     CONSTRAINT suse_eula_id_pk PRIMARY KEY,
-    text        BLOB,
+    text        BYTEA,
     checksum    VARCHAR(64) NOT NULL
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE SEQUENCE suse_eula_id_seq;
 
 CREATE UNIQUE INDEX suse_eula_checksum
     on suseEula (checksum)
-    tablespace [[8m_tbs]];
+    ;
 

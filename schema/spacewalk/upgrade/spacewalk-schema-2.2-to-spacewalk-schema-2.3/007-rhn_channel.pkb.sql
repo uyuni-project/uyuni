@@ -1051,7 +1051,7 @@ update pg_settings set setting = 'rhn_channel,' || setting where name = 'search_
             if channel_name not like '%Beta%' then
                priority := priority + 50;
             end if;
- 
+
           priority := priority +
             case
               when channel_name like '%v. 4%' then 40

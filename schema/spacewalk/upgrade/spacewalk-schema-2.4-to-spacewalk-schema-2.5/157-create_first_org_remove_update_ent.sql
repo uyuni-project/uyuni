@@ -85,7 +85,7 @@ begin
 		'Activation Key Administrators for Org ' || name_in || ' (1)',
 		NULL, ug_type, 1
 	);
-	
+
 	select nextval('rhn_user_group_id_seq') into group_val from dual;
 
 	select	id

@@ -1,3 +1,3 @@
 
-drop function date_diff_in_days(date, date);
+drop function date_diff_in_days(TIMESTAMPTZ, date);
 

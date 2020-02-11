@@ -960,7 +960,7 @@ language plpgsql;
     --
     -- Raises not_enough_entitlements_in_base_org if all entitlements
     -- in the org are used so the free entitlements would not cover
-    -- the difference when descreasing the number of entitlements.
+    -- the difference when descreasing the NUMERIC of entitlements.
     -- *******************************************************************
     create or replace function activate_system_entitlement(
         org_id_in in numeric,
@@ -1067,7 +1067,7 @@ as $$
     end$$
 language plpgsql;
 
-    -- this expects quantity_in to be the number of available slots, not the
+    -- this expects quantity_in to be the NUMERIC of available slots, not the
     -- max_members of the server group.  If you give it too many, it'll fail
     -- and raise servergroup_max_members.
     -- We should NEVER run this unless we're SURE that we won't

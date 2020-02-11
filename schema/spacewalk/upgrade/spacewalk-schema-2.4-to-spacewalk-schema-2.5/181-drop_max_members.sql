@@ -5,7 +5,7 @@ DROP VIEW rhnVisibleServerGroup;
 
 ALTER TABLE rhnServerGroup DROP COLUMN max_members;
 ALTER TABLE rhnservergroup_log DROP COLUMN max_members;
-SELECT logging.recreate_trigger('rhnservergroup');
+SELECT .recreate_trigger('rhnservergroup');
 
 CREATE OR REPLACE VIEW
 rhnVisibleServerGroup

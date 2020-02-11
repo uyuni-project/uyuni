@@ -88,7 +88,7 @@ begin
 
 	-- config admin is special; it gets created in
 	-- rhn_entitlements.set_customer_provisioning instead.
-	
+
 	select nextval('rhn_user_group_id_seq') into group_val from dual;
 
 	select	id

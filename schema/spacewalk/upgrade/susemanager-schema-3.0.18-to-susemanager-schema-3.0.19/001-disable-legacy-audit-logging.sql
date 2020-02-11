@@ -13,9 +13,9 @@
 -- in this software or its documentation.
 --
 
--- create schema logging;
+-- create schema ;
 
-update pg_settings set setting = 'logging,' || setting where name = 'search_path';
+update pg_settings set setting = ',' || setting where name = 'search_path';
 
 create or replace function clear_log_id()
 returns void
@@ -185,7 +185,7 @@ end;
 $$
 language plpgsql set search_path from current;
 
-create or replace function enable_logging(table_name_in in varchar)
+create or replace function enable_(table_name_in in varchar)
 returns void
 as
 $$
@@ -197,7 +197,7 @@ begin
     ddl_columns := _get_ddl_columns(table_name_in, pk_column);
 
     execute 'create table public.' || table_name_in || '_log
-        as select ' || pk_column || ', logging.get_log_id()::numeric as log_id, ''A''::char as action' || ddl_columns
+        as select ' || pk_column || ', .get_log_id()::numeric as log_id, ''A''::char as action' || ddl_columns
         || ' from ' || table_name_in;
     execute 'alter table public.' || table_name_in || '_log alter ' || pk_column || ' set not null';
     execute 'create index ' || table_name_in || '_log_idx on public.' || table_name_in || '_log(' || pk_column || ')';
@@ -209,4 +209,4 @@ end;
 $$
 language plpgsql set search_path from current;
 
-update pg_settings set setting = overlay( setting placing '' from 1 for (length('logging')+1) ) where name = 'search_path';
+update pg_settings set setting = overlay( setting placing '' from 1 for (length('')+1) ) where name = 'search_path';

@@ -15,7 +15,7 @@
 
 create table rhnOrgConfiguration
 (
-    org_id                     number not null
+    org_id                     NUMERIC not null
                                    constraint rhn_org_conf_org_id_fk
                                    references web_customer(id)
                                    on delete cascade,
@@ -31,18 +31,18 @@ create table rhnOrgConfiguration
                                    default ('Y') not null
                                    constraint rhn_org_conf_crash_upload_chk
                                    check (crashfile_upload_enabled in ('Y', 'N')),
-    crash_file_sizelimit       number
+    crash_file_sizelimit       NUMERIC
                                    default(2048) not null
                                    constraint rhn_org_conf_sizelimit_chk
                                    check (crash_file_sizelimit >= 0),
-    created                    timestamp with local time zone
+    created                    TIMESTAMPTZ
                                    default (current_timestamp) not null,
-    modified                   timestamp with local time zone
+    modified                   TIMESTAMPTZ
                                    default (current_timestamp) not null
 )
-enable row movement
+
 ;
 
 create unique index rhn_org_conf_org_id
     on rhnOrgConfiguration (org_id)
-    tablespace [[8m_tbs]];
+    ;

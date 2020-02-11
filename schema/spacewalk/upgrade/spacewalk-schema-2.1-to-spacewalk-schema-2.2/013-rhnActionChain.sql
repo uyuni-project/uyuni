@@ -12,17 +12,17 @@
 
 CREATE TABLE rhnActionChain
 (
-    id          NUMBER        NOT NULL
+    id          NUMERIC        NOT NULL
                     CONSTRAINT rhn_action_chain_id_pk PRIMARY KEY,
-    label       VARCHAR2(256) NOT NULL,
-    user_id     NUMBER        NOT NULL
+    label       VARCHAR(256) NOT NULL,
+    user_id     NUMERIC        NOT NULL
                     CONSTRAINT rhn_actionchain_uid_fk
                         REFERENCES web_contact (id)
                         ON DELETE CASCADE,
-    created     DATE          DEFAULT(SYSDATE) NOT NULL,
-    modified    DATE          DEFAULT(SYSDATE) NOT NULL
+    created     TIMESTAMPTZ          DEFAULT(CURRENT_TIMESTAMP) NOT NULL,
+    modified    TIMESTAMPTZ          DEFAULT(CURRENT_TIMESTAMP) NOT NULL
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE SEQUENCE rhn_actionchain_id_seq;

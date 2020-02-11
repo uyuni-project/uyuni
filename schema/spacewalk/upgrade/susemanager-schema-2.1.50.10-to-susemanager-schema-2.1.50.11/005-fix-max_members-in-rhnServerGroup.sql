@@ -1,5 +1,5 @@
 
-select logging.clear_log_id();
+select .clear_log_id();
 
 UPDATE rhnServerGroup
    SET max_members = 0

@@ -9,7 +9,7 @@ drop function clear_subscriptions(server_id_in in numeric, deleting_server in nu
     create or replace function obtain_read_lock(channel_family_id_in in numeric, org_id_in in numeric)
     returns void as $$
     declare
-        read_lock date;
+        read_lock TIMESTAMPTZ;
     begin
         select created into read_lock
           from rhnPrivateChannelFamily

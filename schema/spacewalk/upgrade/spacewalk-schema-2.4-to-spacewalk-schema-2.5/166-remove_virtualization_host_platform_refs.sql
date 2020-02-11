@@ -1,5 +1,5 @@
 
-SELECT logging.clear_log_id();
+SELECT .clear_log_id();
 
 -- rhnServerGroup and dependencies
 

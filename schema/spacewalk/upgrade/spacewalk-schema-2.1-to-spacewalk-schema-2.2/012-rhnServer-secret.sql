@@ -32,4 +32,4 @@ and SG.org_id = S.org_id
 
 alter table rhnServer_log alter column secret type varchar(64);
 
-select logging.recreate_trigger('rhnserver');
+select .recreate_trigger('rhnserver');

@@ -1,1 +1,1 @@
-ALTER TABLE rhnCpu ADD nrsocket NUMBER;
+ALTER TABLE rhnCpu ADD nrsocket NUMERIC;

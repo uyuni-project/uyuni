@@ -13,4 +13,4 @@
 -- in this software or its documentation.
 --
 
-create schema logging;
+create schema ;

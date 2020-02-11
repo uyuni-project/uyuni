@@ -1,5 +1,5 @@
 
-select logging.clear_log_id() from dual;
+select .clear_log_id() from dual;
 
 insert into rhnServerGroup ( id, name, description, max_members, group_type, org_id )
   select nextval('rhn_server_group_id_seq'), sgt.name, sgt.name, 200000, sgt.id, X.org_id

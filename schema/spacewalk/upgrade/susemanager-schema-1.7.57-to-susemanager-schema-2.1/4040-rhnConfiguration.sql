@@ -15,15 +15,15 @@
 
 CREATE TABLE rhnConfiguration
 (
-    key                     VARCHAR2(64) NOT NULL
+    key                     VARCHAR(64) NOT NULL
                                 CONSTRAINT rhnConfig_key_pk PRIMARY KEY,
-    description             VARCHAR2(512) NOT NULL,
-    value                   VARCHAR2(512),
-    default_value           VARCHAR2(512),
-    created                 TIMESTAMP WITH LOCAL TIME ZONE
+    description             VARCHAR(512) NOT NULL,
+    value                   VARCHAR(512),
+    default_value           VARCHAR(512),
+    created                 TIMESTAMPTZ
                                 DEFAULT (current_timestamp) NOT NULL,
-    modified                TIMESTAMP WITH LOCAL TIME ZONE
+    modified                TIMESTAMPTZ
                                 DEFAULT (current_timestamp) NOT NULL
 )
-ENABLE ROW MOVEMENT
+
 ;
