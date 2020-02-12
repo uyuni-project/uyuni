@@ -3308,25 +3308,200 @@ public class ChannelSoftwareHandler extends BaseHandler {
         return 1;
     }
 
-   /**
-    * Clears the filters for a repo
-    * @param loggedInUser The current user
-    * @param label of the repo to use
-    * @return 1 on success
-    *
-    * @xmlrpc.doc Removes the filters for a repo
-    * @xmlrpc.param #session_key()
-    * @xmlrpc.param #param_desc("string", "label", "repository label")
-    * @xmlrpc.returntype #return_int_success()
-   **/
-    public int clearRepoFilters(User loggedInUser, String label) {
+    /**
+     * Clears the filters for a repo
+     * @param loggedInUser The current user
+     * @param label of the repo to use
+     * @return 1 on success
+     *
+     * @xmlrpc.doc Removes the filters for a repo
+     * @xmlrpc.param #session_key()
+     * @xmlrpc.param #param_desc("string", "label", "repository label")
+     * @xmlrpc.returntype #return_int_success()
+    **/
+     public int clearRepoFilters(User loggedInUser, String label) {
+         Role orgAdminRole = RoleFactory.lookupByLabel("org_admin");
+
+         if (!loggedInUser.hasRole(orgAdminRole)) {
+             throw new PermissionException("Only Org Admins can remove repo filters.");
+         }
+
+         ContentSource cs = lookupContentSourceByLabel(label, loggedInUser.getOrg());
+
+         ChannelFactory.clearContentSourceFilters(cs.getId());
+
+         return 1;
+     }
+
+     /**
+     * Lists the filters for a vendor repo
+     * @param loggedInUser The current user
+     * @param label of the repo to use
+     * @return list of filters
+     *
+    **/
+    public List<ContentSourceFilter> listVendorRepoFilters(User loggedInUser, String label) {
+        Role orgAdminRole = RoleFactory.lookupByLabel("org_admin");
+
+        if (!loggedInUser.hasRole(orgAdminRole)) {
+            throw new PermissionException("Only Org Admins can list vendor repo filters.");
+        }
+        log.warn("Unsupported XMLRPC call used: listVendorRepoFilters " + label);
+
+        ContentSource cs = lookupVendorContentSourceByLabel(label);
+
+        return ChannelFactory.lookupContentSourceFiltersById(cs.getId());
+     }
+
+    /**
+     * adds a filter for a given Vendor repo.
+     * This is unsupported
+     *
+     * @param loggedInUser The current user
+     * @param label of the repo to use
+     * @param filterIn list of filters
+     * @return sort order for the new filter
+     */
+    public int addVendorRepoFilter(User loggedInUser, String label, Map<String, String> filterIn) {
+        Role orgAdminRole = RoleFactory.lookupByLabel("org_admin");
+
+        if (!loggedInUser.hasRole(orgAdminRole)) {
+            throw new PermissionException("Only Org Admins can add repo filters.");
+        }
+        log.warn("Unsupported XMLRPC call used: addVendorRepoFilters " + label);
+
+        ContentSource cs = lookupVendorContentSourceByLabel(label);
+
+        String flag = filterIn.get("flag");
+        String filter = filterIn.get("filter");
+
+        if (!(flag.equals("+") || flag.equals("-"))) {
+            throw new InvalidParameterException("flag must be + or -");
+        }
+
+        // determine the highest sort order of existing filters
+        int sortOrder = 0;
+        for (ContentSourceFilter f : listVendorRepoFilters(loggedInUser, label)) {
+            sortOrder = Math.max(sortOrder, f.getSortOrder());
+        }
+
+        ContentSourceFilter newFilter = new ContentSourceFilter();
+        newFilter.setSourceId(cs.getId());
+        newFilter.setFlag(flag);
+        newFilter.setFilter(filter);
+        newFilter.setSortOrder(sortOrder + 1);
+
+        ChannelFactory.save(newFilter);
+
+        return sortOrder;
+    }
+
+    /**
+     * Removes a filter for a given repo.
+     * @param loggedInUser The current user
+     * @param label of the repo to use
+     * @param filterIn list of filters
+     * @return 1 on success
+     */
+    public int removeVendorRepoFilter(User loggedInUser, String label,
+            Map<String, String> filterIn) {
         Role orgAdminRole = RoleFactory.lookupByLabel("org_admin");
 
         if (!loggedInUser.hasRole(orgAdminRole)) {
             throw new PermissionException("Only Org Admins can remove repo filters.");
         }
+        log.warn("Unsupported XMLRPC call used: removeVendorRepoFilters " + label);
 
-        ContentSource cs = lookupContentSourceByLabel(label, loggedInUser.getOrg());
+        String flag = filterIn.get("flag");
+        String filter = filterIn.get("filter");
+
+        if (!(flag.equals("+") || flag.equals("-"))) {
+            throw new InvalidParameterException("flag must be + or -");
+        }
+
+        // find the existing filter
+        ContentSourceFilter oldFilter = null;
+        for (ContentSourceFilter f : listVendorRepoFilters(loggedInUser, label)) {
+            if (flag.equals(f.getFlag()) && filter.equals(f.getFilter())) {
+                oldFilter = f;
+                break;
+            }
+        }
+
+        if (oldFilter == null) {
+            throw new InvalidParameterException("filter does not exist");
+        }
+
+        ChannelFactory.remove(oldFilter);
+
+        return 1;
+    }
+
+    /**
+     * replaces the existing set of filters for a given repo.
+     * filters are ranked by their order in the array.
+     * @param loggedInUser The current user
+     * @param label of the repo to use
+     * @param filtersIn list of filters
+     * @return 1 on success
+     */
+    public int setVendorRepoFilters(User loggedInUser, String label,
+            List<Map<String, String>> filtersIn) {
+        Role orgAdminRole = RoleFactory.lookupByLabel("org_admin");
+
+        if (!loggedInUser.hasRole(orgAdminRole)) {
+            throw new PermissionException("Only Org Admins can set repo filters.");
+        }
+        log.warn("Unsupported XMLRPC call used: setVendorRepoFilters " + label);
+
+        ContentSource cs = lookupVendorContentSourceByLabel(label);
+
+        List<ContentSourceFilter> filters = new ArrayList<ContentSourceFilter>();
+
+        int i = 1;
+        for (Map<String, String> filterIn : filtersIn) {
+            String flag = filterIn.get("flag");
+            String filter = filterIn.get("filter");
+
+            if (!(flag.equals("+") || flag.equals("-"))) {
+                throw new InvalidParameterException("flag must be + or -");
+            }
+
+            ContentSourceFilter f = new ContentSourceFilter();
+            f.setSourceId(cs.getId());
+            f.setFlag(flag);
+            f.setFilter(filter);
+            f.setSortOrder(i);
+
+            filters.add(f);
+
+            i++;
+        }
+
+        ChannelFactory.clearContentSourceFilters(cs.getId());
+
+        for (ContentSourceFilter filter : filters) {
+            ChannelFactory.save(filter);
+        }
+
+        return 1;
+    }
+
+   /**
+    * Clears the filters for a repo
+    * @param loggedInUser The current user
+    * @param label of the repo to use
+    * @return 1 on success
+   **/
+    public int clearVendorRepoFilters(User loggedInUser, String label) {
+        Role orgAdminRole = RoleFactory.lookupByLabel("org_admin");
+
+        if (!loggedInUser.hasRole(orgAdminRole)) {
+            throw new PermissionException("Only Org Admins can remove repo filters.");
+        }
+        log.warn("Unsupported XMLRPC call used: clearVendorRepoFilters " + label);
+
+        ContentSource cs = lookupVendorContentSourceByLabel(label);
 
         ChannelFactory.clearContentSourceFilters(cs.getId());
 
@@ -3418,6 +3593,14 @@ public class ChannelSoftwareHandler extends BaseHandler {
 
     private ContentSource lookupContentSourceByLabel(String repoLabel, Org org) {
         ContentSource cs = ChannelFactory.lookupContentSourceByOrgAndLabel(org, repoLabel);
+        if (cs == null) {
+            throw new NoSuchContentSourceException(repoLabel);
+        }
+        return cs;
+    }
+
+    private ContentSource lookupVendorContentSourceByLabel(String repoLabel) {
+        ContentSource cs = ChannelFactory.lookupVendorContentSourceByLabel(repoLabel);
         if (cs == null) {
             throw new NoSuchContentSourceException(repoLabel);
         }
