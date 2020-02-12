@@ -15,9 +15,24 @@
 
 package com.redhat.rhn.manager.contentmgmt;
 
+import static com.redhat.rhn.domain.contentmgmt.ProjectSource.State.ATTACHED;
+import static com.redhat.rhn.domain.contentmgmt.ProjectSource.State.BUILT;
+import static com.redhat.rhn.domain.contentmgmt.ProjectSource.State.DETACHED;
+import static com.redhat.rhn.domain.contentmgmt.ProjectSource.Type.SW_CHANNEL;
+import static com.redhat.rhn.domain.role.RoleFactory.ORG_ADMIN;
+import static com.redhat.rhn.manager.channel.CloneChannelCommand.CloneBehavior.EMPTY;
+import static com.suse.utils.Opt.stream;
+import static java.util.Collections.emptyList;
+import static java.util.Optional.empty;
+import static java.util.Optional.of;
+import static java.util.Optional.ofNullable;
+import static java.util.stream.Collectors.groupingBy;
+import static java.util.stream.Collectors.partitioningBy;
+import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.toSet;
+
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.hibernate.LookupException;
-import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
@@ -39,14 +54,15 @@ import com.redhat.rhn.domain.contentmgmt.SoftwareProjectSource;
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.frontend.events.AlignSoftwareTargetAction;
-import com.redhat.rhn.frontend.events.AlignSoftwareTargetMsg;
 import com.redhat.rhn.manager.EntityExistsException;
 import com.redhat.rhn.manager.EntityNotExistsException;
 import com.redhat.rhn.manager.channel.ChannelManager;
 import com.redhat.rhn.manager.channel.CloneChannelCommand;
 import com.redhat.rhn.manager.errata.ErrataManager;
 import com.redhat.rhn.manager.errata.cache.ErrataCacheManager;
+
+import com.suse.manager.tasks.ActorManager;
+import com.suse.manager.tasks.actors.AlignSoftwareTargetActor;
 import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.Collection;
@@ -58,22 +74,6 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
-
-import static com.redhat.rhn.domain.contentmgmt.ProjectSource.State.ATTACHED;
-import static com.redhat.rhn.domain.contentmgmt.ProjectSource.State.BUILT;
-import static com.redhat.rhn.domain.contentmgmt.ProjectSource.State.DETACHED;
-import static com.redhat.rhn.domain.contentmgmt.ProjectSource.Type.SW_CHANNEL;
-import static com.redhat.rhn.domain.role.RoleFactory.ORG_ADMIN;
-import static com.redhat.rhn.manager.channel.CloneChannelCommand.CloneBehavior.EMPTY;
-import static com.suse.utils.Opt.stream;
-import static java.util.Collections.emptyList;
-import static java.util.Optional.empty;
-import static java.util.Optional.of;
-import static java.util.Optional.ofNullable;
-import static java.util.stream.Collectors.groupingBy;
-import static java.util.stream.Collectors.partitioningBy;
-import static java.util.stream.Collectors.toList;
-import static java.util.stream.Collectors.toSet;
 
 /**
  * Content Management functionality
@@ -761,12 +761,13 @@ public class ContentManager {
         tgt.setStatus(EnvironmentTarget.Status.BUILDING);
         ContentProjectFactory.save(tgt);
 
-        AlignSoftwareTargetMsg msg = new AlignSoftwareTargetMsg(src, tgt, filters, user);
+        var filterIds = filters.stream().map(ContentFilter::getId).collect(toList());
+        var msg = new AlignSoftwareTargetActor.Message(src.getId(), tgt.getId(), filterIds, user.getId());
         if (async) {
-            MessageQueue.publish(msg);
+            ActorManager.defer(msg);
         }
         else {
-            new AlignSoftwareTargetAction().execute(msg);
+            new AlignSoftwareTargetActor().execute(msg);
         }
     }
 

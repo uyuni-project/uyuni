@@ -15,8 +15,7 @@
 
 package com.redhat.rhn.common.messaging;
 
-import com.redhat.rhn.frontend.events.AlignSoftwareTargetAction;
-import com.redhat.rhn.frontend.events.AlignSoftwareTargetMsg;
+
 import com.redhat.rhn.frontend.events.NewCloneErrataAction;
 import com.redhat.rhn.frontend.events.NewCloneErrataEvent;
 import com.redhat.rhn.frontend.events.NewUserAction;
@@ -296,10 +295,6 @@ public class MessageQueue {
                                     NewCloneErrataEvent.class);
         MessageQueue.registerAction(new SsmErrataAction(),
                                     SsmErrataEvent.class);
-
-        // Copy SW source contents to an Environment target
-        MessageQueue.registerAction(new AlignSoftwareTargetAction(),
-                                    AlignSoftwareTargetMsg.class);
 
         // Asynchronously schedule immediate repo sync
         MessageQueue.registerAction(new ScheduleRepoSyncAction(),
