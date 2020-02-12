@@ -16,8 +16,6 @@
 package com.redhat.rhn.common.messaging;
 
 
-import com.redhat.rhn.frontend.events.SsmDeleteServersAction;
-import com.redhat.rhn.frontend.events.SsmDeleteServersEvent;
 import com.redhat.rhn.frontend.events.SsmPowerManagementAction;
 import com.redhat.rhn.frontend.events.SsmPowerManagementEvent;
 import com.redhat.rhn.frontend.events.SsmSystemRebootAction;
@@ -243,9 +241,6 @@ public class MessageQueue {
         // If we develop a large set of MessageEvents we may want to
         // refactor this block out into a class or method that
         // reads in some configuration from an XML file somewhere
-
-        MessageQueue.registerAction(new SsmDeleteServersAction(),
-                                    SsmDeleteServersEvent.class);
 
         // Used to allow SSM power management actions to be run asynchronously
         MessageQueue.registerAction(new SsmPowerManagementAction(),

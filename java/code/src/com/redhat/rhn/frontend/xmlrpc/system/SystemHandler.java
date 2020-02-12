@@ -14,8 +14,8 @@
  */
 package com.redhat.rhn.frontend.xmlrpc.system;
 
-import static java.util.stream.Collectors.toList;
 import static java.util.Collections.singletonList;
+import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toSet;
 
 import com.redhat.rhn.FaultException;
@@ -25,7 +25,6 @@ import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.localization.LocalizationService;
-import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.common.validator.ValidatorError;
 import com.redhat.rhn.common.validator.ValidatorResult;
 import com.redhat.rhn.domain.action.Action;
@@ -91,7 +90,6 @@ import com.redhat.rhn.frontend.dto.ServerPath;
 import com.redhat.rhn.frontend.dto.SystemCurrency;
 import com.redhat.rhn.frontend.dto.SystemOverview;
 import com.redhat.rhn.frontend.dto.VirtualSystemOverview;
-import com.redhat.rhn.frontend.events.SsmDeleteServersEvent;
 import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
 import com.redhat.rhn.frontend.xmlrpc.InvalidActionTypeException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidChannelException;
@@ -157,6 +155,8 @@ import com.redhat.rhn.manager.system.VirtualizationActionCommand;
 import com.redhat.rhn.manager.token.ActivationKeyManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 
+import com.suse.manager.tasks.ActorManager;
+import com.suse.manager.tasks.actors.SsmDeleteServersActor;
 import com.suse.manager.webui.utils.gson.BootstrapHostsJson;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
@@ -1632,11 +1632,9 @@ public class SystemHandler extends BaseHandler {
         }
 
         // Fire the request off asynchronously
-        SsmDeleteServersEvent event =
-                new SsmDeleteServersEvent(loggedInUser, deletion,
-                        SystemManager.ServerCleanupType.fromString(cleanupType).orElseThrow(() ->
-                        new IllegalArgumentException("Invalid server cleanup type value: " + cleanupType)));
-        MessageQueue.publish(event);
+        var cleanupTypeParam = SystemManager.ServerCleanupType.fromString(cleanupType).orElseThrow(() ->
+                new IllegalArgumentException("Invalid server cleanup type value: " + cleanupType));
+        ActorManager.defer(new SsmDeleteServersActor.Message(loggedInUser.getId(), deletion, cleanupTypeParam));
 
         // If we skipped any systems, create an error message and throw a FaultException
         if (skippedSids.size() > 0) {

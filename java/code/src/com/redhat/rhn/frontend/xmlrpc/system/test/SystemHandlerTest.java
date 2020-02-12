@@ -88,7 +88,6 @@ import com.redhat.rhn.frontend.dto.PackageMetadata;
 import com.redhat.rhn.frontend.dto.ScheduledAction;
 import com.redhat.rhn.frontend.dto.ServerPath;
 import com.redhat.rhn.frontend.dto.SystemOverview;
-import com.redhat.rhn.frontend.events.SsmDeleteServersAction;
 import com.redhat.rhn.frontend.xmlrpc.ChannelSubscriptionException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidActionTypeException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidChannelException;
@@ -126,6 +125,7 @@ import com.redhat.rhn.testing.ServerTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
+import com.suse.manager.tasks.actors.SsmDeleteServersActor;
 import org.apache.commons.lang3.StringUtils;
 import org.jmock.Expectations;
 import org.jmock.Mockery;
@@ -867,7 +867,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         List<OperationDetailsDto> ops = SsmOperationManager.allOperations(admin);
         for (OperationDetailsDto op : ops) {
             assertEquals(op.getDescription(), LocalizationService.getInstance().
-                    getMessage(SsmDeleteServersAction.OPERATION_NAME));
+                    getMessage(SsmDeleteServersActor.OPERATION_NAME));
         }
     }
 

@@ -14,9 +14,7 @@
  */
 package com.redhat.rhn.frontend.action.systems;
 
-import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.domain.rhnset.RhnSet;
-import com.redhat.rhn.frontend.events.SsmDeleteServersEvent;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.frontend.struts.RhnHelper;
@@ -26,13 +24,14 @@ import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.rhnset.RhnSetManager;
 import com.redhat.rhn.manager.system.SystemManager;
 
+import com.suse.manager.tasks.ActorManager;
+import com.suse.manager.tasks.actors.SsmDeleteServersActor;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -71,18 +70,13 @@ public class SSMDeleteSystemsConfirm extends RhnAction implements Listable {
 
         RhnSet set = RhnSetDecl.SYSTEMS.get(context.getCurrentUser());
         String saltCleanup = context.getRequiredParamAsString("saltCleanup");
+        var cleanupType = SystemManager.ServerCleanupType.fromString(saltCleanup).orElseThrow(() ->
+                new IllegalArgumentException("Invalid server cleanup type value: " + saltCleanup));
+        var sids = new ArrayList<Long>(set.getElementValues());
+
         // Fire the request off asynchronously
-        SsmDeleteServersEvent event =
-            new SsmDeleteServersEvent(context.getCurrentUser(),
-                            new ArrayList<Long>(set.getElementValues()),
-                    SystemManager.ServerCleanupType
-                            .fromString(saltCleanup)
-                            .orElseThrow(() ->
-                                    new IllegalArgumentException(
-                                            "Invalid server cleanup type value: " +
-                                                    saltCleanup))
-                    );
-        MessageQueue.publish(event);
+        ActorManager.defer(new SsmDeleteServersActor.Message(context.getCurrentUser().getId(), sids, cleanupType));
+
         set.clear();
         RhnSetManager.store(set);
 
