@@ -19,6 +19,7 @@ import com.redhat.rhn.manager.EntityNotExistsException;
 import com.redhat.rhn.manager.contentmgmt.ContentManager;
 import com.redhat.rhn.manager.user.UserManager;
 
+import com.suse.manager.tasks.Actor;
 import com.suse.manager.tasks.Command;
 import org.apache.log4j.Logger;
 
@@ -28,7 +29,7 @@ import java.util.List;
 
 import akka.actor.typed.Behavior;
 
-public class AlignSoftwareTargetActor {
+public class AlignSoftwareTargetActor implements Actor {
 
     private final static Logger LOG = Logger.getLogger(AlignSoftwareTargetActor.class);
 

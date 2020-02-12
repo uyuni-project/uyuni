@@ -10,6 +10,7 @@ import com.redhat.rhn.common.messaging.MessageExecuteException;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.events.MailFactory;
 
+import com.suse.manager.tasks.Actor;
 import com.suse.manager.tasks.Command;
 import com.suse.manager.utils.MailHelper;
 import org.apache.log4j.Logger;
@@ -23,7 +24,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import akka.actor.typed.Behavior;
 
-public class TraceBackActor {
+public class TraceBackActor implements Actor {
 
     private final static Logger LOG = Logger.getLogger(TraceBackActor.class);
 

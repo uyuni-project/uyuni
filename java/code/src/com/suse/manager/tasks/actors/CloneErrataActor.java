@@ -1,17 +1,22 @@
 package com.suse.manager.tasks.actors;
 
-import akka.actor.typed.Behavior;
+import static akka.actor.typed.javadsl.Behaviors.receive;
+import static akka.actor.typed.javadsl.Behaviors.same;
+import static akka.actor.typed.javadsl.Behaviors.setup;
+import static com.redhat.rhn.frontend.events.TransactionHelper.handlingTransaction;
+
 import com.redhat.rhn.domain.user.UserFactory;
 import com.redhat.rhn.manager.errata.ErrataManager;
+
+import com.suse.manager.tasks.Actor;
 import com.suse.manager.tasks.Command;
 import org.apache.log4j.Logger;
 
 import java.util.Collection;
 
-import static akka.actor.typed.javadsl.Behaviors.*;
-import static com.redhat.rhn.frontend.events.TransactionHelper.handlingTransaction;
+import akka.actor.typed.Behavior;
 
-public class CloneErrataActor {
+public class CloneErrataActor implements Actor {
 
     private final static Logger LOG = Logger.getLogger(CloneErrataActor.class);
 

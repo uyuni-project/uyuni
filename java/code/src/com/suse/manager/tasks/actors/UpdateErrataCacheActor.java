@@ -7,6 +7,7 @@ import static com.redhat.rhn.frontend.events.TransactionHelper.handlingTransacti
 
 import com.redhat.rhn.manager.errata.cache.UpdateErrataCacheCommand;
 
+import com.suse.manager.tasks.Actor;
 import com.suse.manager.tasks.Command;
 import org.apache.log4j.Logger;
 
@@ -14,7 +15,7 @@ import java.util.List;
 
 import akka.actor.typed.Behavior;
 
-public class UpdateErrataCacheActor {
+public class UpdateErrataCacheActor implements Actor {
 
     private final static Logger LOG = Logger.getLogger(UpdateErrataCacheActor.class);
     public static final int TYPE_ORG = 1;

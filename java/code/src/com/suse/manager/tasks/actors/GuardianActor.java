@@ -1,5 +1,6 @@
 package com.suse.manager.tasks.actors;
 
+import static akka.actor.typed.SupervisorStrategy.restart;
 import static akka.actor.typed.javadsl.Behaviors.receive;
 import static akka.actor.typed.javadsl.Behaviors.same;
 import static akka.actor.typed.javadsl.Behaviors.setup;
@@ -23,6 +24,9 @@ import akka.actor.typed.ActorRef;
 import akka.actor.typed.Behavior;
 import akka.actor.typed.javadsl.ActorContext;
 import akka.actor.typed.javadsl.BehaviorBuilder;
+import akka.actor.typed.javadsl.Behaviors;
+import akka.actor.typed.javadsl.PoolRouter;
+import akka.actor.typed.javadsl.Routers;
 
 public class GuardianActor {
 
@@ -78,7 +82,18 @@ public class GuardianActor {
             try {
                 var createMethod = clazz.getMethod("create");
                 var instance = clazz.getConstructor().newInstance();
-                var actor = context.spawn((Behavior<Command>) createMethod.invoke(instance), clazz.getSimpleName());
+                var behavior = (Behavior<Command>) createMethod.invoke(instance);
+
+                // create a PoolRouter, which is an actor that will spawn many concurrent actors
+                var getMaxParallelWorkersMethod = clazz.getMethod("getMaxParallelWorkers");
+                var maxParallelWorkers = (int) getMaxParallelWorkersMethod.invoke(instance);
+                PoolRouter<Command> pool =
+                        Routers.pool(
+                                maxParallelWorkers,
+                                // make sure the workers are restarted if they fail
+                                Behaviors.supervise(behavior).onFailure(restart()));
+
+                var actor = context.spawn(pool, clazz.getSimpleName() + "_pool");
                 return actor;
             }
             catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException | InstantiationException e) {

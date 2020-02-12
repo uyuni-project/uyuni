@@ -10,12 +10,13 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.user.UserFactory;
 import com.redhat.rhn.manager.satellite.RestartCommand;
 
+import com.suse.manager.tasks.Actor;
 import com.suse.manager.tasks.Command;
 import org.apache.log4j.Logger;
 
 import akka.actor.typed.Behavior;
 
-public class RestartSatelliteActor {
+public class RestartSatelliteActor implements Actor {
 
     private final static Logger LOG = Logger.getLogger(RestartSatelliteActor.class);
 
