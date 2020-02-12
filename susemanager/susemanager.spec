@@ -282,7 +282,6 @@ fi
 %dir /srv/www/htdocs/pub/repositories/empty-deb
 %config(noreplace) %{_sysconfdir}/logrotate.d/susemanager-tools
 %{_prefix}/share/rhn/config-defaults/rhn_*.conf
-%attr(0755,root,root) %{_sbindir}/mgr-register
 %attr(0755,root,root) %{_sbindir}/mgr-clean-old-patchnames
 %attr(0755,root,root) %{_sbindir}/mgr-create-bootstrap-repo
 %attr(0755,root,root) %{_sbindir}/mgr-delete-patch
