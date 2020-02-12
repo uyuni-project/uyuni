@@ -14,16 +14,16 @@
  */
 package com.redhat.rhn.frontend.action.configuration.channel;
 
+import static java.util.Optional.empty;
+
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.localization.LocalizationService;
-import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.config.ConfigChannel;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.configuration.ConfigActionHelper;
 import com.redhat.rhn.frontend.dto.ConfigFileDto;
 import com.redhat.rhn.frontend.dto.ConfigSystemDto;
-import com.redhat.rhn.frontend.events.SsmConfigFilesEvent;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.frontend.struts.RhnHelper;
@@ -32,6 +32,8 @@ import com.redhat.rhn.manager.configuration.ConfigurationManager;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.rhnset.RhnSetManager;
 
+import com.suse.manager.tasks.ActorManager;
+import com.suse.manager.tasks.actors.SsmConfigFilesActor;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionForm;
@@ -49,7 +51,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -186,10 +187,8 @@ public class ChannelOverviewTasks extends RhnAction {
         }
 
         //create the action and then create the message to send the user.
-        SsmConfigFilesEvent event =
-                new SsmConfigFilesEvent(usr.getId(), serverConfigMap, servers,
-                        ActionFactory.TYPE_CONFIGFILES_DIFF, new Date(), null);
-        MessageQueue.publish(event);
+        ActorManager.defer(new SsmConfigFilesActor.Message(servers, serverConfigMap, usr.getId(), ActionFactory.TYPE_CONFIGFILES_DEPLOY, new Date(), empty()));
+
         makeMessage(systems.size(), req);
     }
 

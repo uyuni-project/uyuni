@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.manager.configuration;
 
+import static java.util.Optional.ofNullable;
+
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.db.datasource.CallableMode;
 import com.redhat.rhn.common.db.datasource.DataList;
@@ -23,7 +25,6 @@ import com.redhat.rhn.common.db.datasource.SelectMode;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.localization.LocalizationService;
-import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.common.util.StringUtil;
 import com.redhat.rhn.domain.action.Action;
@@ -51,7 +52,6 @@ import com.redhat.rhn.frontend.dto.ConfigFileNameDto;
 import com.redhat.rhn.frontend.dto.ConfigGlobalDeployDto;
 import com.redhat.rhn.frontend.dto.ConfigRevisionDto;
 import com.redhat.rhn.frontend.dto.ConfigSystemDto;
-import com.redhat.rhn.frontend.events.SsmConfigFilesEvent;
 import com.redhat.rhn.frontend.listview.PageControl;
 import com.redhat.rhn.manager.BaseManager;
 import com.redhat.rhn.manager.action.ActionManager;
@@ -59,10 +59,11 @@ import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
+import com.suse.manager.tasks.ActorManager;
+import com.suse.manager.tasks.actors.SsmConfigFilesActor;
 import com.suse.manager.utils.MinionServerUtils;
 import com.suse.manager.webui.services.ConfigChannelSaltManager;
 import com.suse.manager.webui.services.SaltStateGeneratorService;
-
 import org.apache.log4j.Logger;
 
 import java.io.InputStream;
@@ -2372,10 +2373,8 @@ public class ConfigurationManager extends BaseManager {
             serverConfigMap.put(serverId, revs);
         }
 
-        SsmConfigFilesEvent event =
-                new SsmConfigFilesEvent(usr.getId(), serverConfigMap, servers,
-                        ActionFactory.TYPE_CONFIGFILES_DEPLOY, datePicked, actionChain);
-        MessageQueue.publish(event);
+        var actionChainId = ofNullable(actionChain).map(ActionChain::getId);
+        ActorManager.defer(new SsmConfigFilesActor.Message(servers, serverConfigMap, usr.getId(), ActionFactory.TYPE_CONFIGFILES_DEPLOY, datePicked, actionChainId));
 
         Map m = new HashMap();
 

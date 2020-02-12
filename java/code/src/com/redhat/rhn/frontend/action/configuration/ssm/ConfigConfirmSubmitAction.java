@@ -14,8 +14,9 @@
  */
 package com.redhat.rhn.frontend.action.configuration.ssm;
 
+import static java.util.Optional.ofNullable;
+
 import com.redhat.rhn.common.db.datasource.DataResult;
-import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.common.util.DatePicker;
 import com.redhat.rhn.domain.action.ActionChain;
 import com.redhat.rhn.domain.action.ActionFactory;
@@ -23,7 +24,6 @@ import com.redhat.rhn.domain.action.ActionType;
 import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.dto.ConfigSystemDto;
-import com.redhat.rhn.frontend.events.SsmConfigFilesEvent;
 import com.redhat.rhn.frontend.struts.ActionChainHelper;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnListDispatchAction;
@@ -32,6 +32,9 @@ import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.rhnset.RhnSetManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 
+import com.suse.manager.tasks.ActorManager;
+import com.suse.manager.tasks.actors.SsmConfigFilesActor;
+import org.apache.log4j.Logger;
 import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
@@ -48,11 +51,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import org.apache.log4j.Logger;
 
 /**
  * DiffConfirmSubmitAction
@@ -171,10 +171,8 @@ public class ConfigConfirmSubmitAction extends RhnListDispatchAction {
             return mapping.findForward("success");
         }
 
-        SsmConfigFilesEvent event =
-                new SsmConfigFilesEvent(user.getId(), serverConfigMap, servers,
-                        type, earliest, actionChain);
-        MessageQueue.publish(event);
+        var actionChainId = ofNullable(actionChain).map(ActionChain::getId);
+        ActorManager.defer(new SsmConfigFilesActor.Message(servers, serverConfigMap, user.getId(), type, earliest, actionChainId));
 
         //create the message
         if (successes > 0) {

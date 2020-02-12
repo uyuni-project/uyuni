@@ -16,8 +16,6 @@
 package com.redhat.rhn.common.messaging;
 
 
-import com.redhat.rhn.frontend.events.SsmConfigFilesAction;
-import com.redhat.rhn.frontend.events.SsmConfigFilesEvent;
 import com.redhat.rhn.frontend.events.SsmDeleteServersAction;
 import com.redhat.rhn.frontend.events.SsmDeleteServersEvent;
 import com.redhat.rhn.frontend.events.SsmInstallPackagesAction;
@@ -270,10 +268,6 @@ public class MessageQueue {
         // Misc
         MessageQueue.registerAction(new SsmSystemRebootAction(),
                                     SsmSystemRebootEvent.class);
-
-        // Deploy configuration files
-        MessageQueue.registerAction(new SsmConfigFilesAction(),
-                                    SsmConfigFilesEvent.class);
 
         // Handle changes of channel assignments on minions
         MessageQueue.registerAction(new ChannelsChangedEventMessageAction(),
