@@ -16,8 +16,6 @@
 package com.redhat.rhn.common.messaging;
 
 
-import com.redhat.rhn.frontend.events.SsmChangeBaseChannelSubscriptionsAction;
-import com.redhat.rhn.frontend.events.SsmChangeBaseChannelSubscriptionsEvent;
 import com.redhat.rhn.frontend.events.SsmChangeChannelSubscriptionsAction;
 import com.redhat.rhn.frontend.events.SsmChangeChannelSubscriptionsEvent;
 import com.redhat.rhn.frontend.events.SsmConfigFilesAction;
@@ -257,8 +255,6 @@ public class MessageQueue {
         // reads in some configuration from an XML file somewhere
 
         // Used to allow SSM channel changes to be run asynchronously
-        MessageQueue.registerAction(new SsmChangeBaseChannelSubscriptionsAction(),
-                SsmChangeBaseChannelSubscriptionsEvent.class);
         MessageQueue.registerAction(new SsmChangeChannelSubscriptionsAction(),
                                     SsmChangeChannelSubscriptionsEvent.class);
 

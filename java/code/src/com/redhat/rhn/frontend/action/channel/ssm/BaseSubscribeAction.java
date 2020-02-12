@@ -16,7 +16,6 @@ package com.redhat.rhn.frontend.action.channel.ssm;
 
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.localization.LocalizationService;
-import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.channel.DistChannelMap;
@@ -26,7 +25,6 @@ import com.redhat.rhn.frontend.dto.ChildChannelPreservationDto;
 import com.redhat.rhn.frontend.dto.EssentialChannelDto;
 import com.redhat.rhn.frontend.dto.EssentialServerDto;
 import com.redhat.rhn.frontend.dto.SystemsPerChannelDto;
-import com.redhat.rhn.frontend.events.SsmChangeBaseChannelSubscriptionsEvent;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnHelper;
 import com.redhat.rhn.frontend.struts.RhnLookupDispatchAction;
@@ -38,6 +36,8 @@ import com.redhat.rhn.manager.ssm.SsmOperationManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 
+import com.suse.manager.tasks.ActorManager;
+import com.suse.manager.tasks.actors.SsmChangeBaseChannelSubscriptionsActor;
 import org.apache.log4j.Logger;
 import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionForm;
@@ -55,7 +55,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -650,9 +649,7 @@ public class BaseSubscribeAction extends RhnLookupDispatchAction {
         SsmOperationManager.associateServersWithOperation(operationId, u.getId(), sids);
 
         // Fire the request off asynchronously
-        SsmChangeBaseChannelSubscriptionsEvent event = new
-                SsmChangeBaseChannelSubscriptionsEvent(u, actions, operationId);
-        MessageQueue.publish(event);
+        ActorManager.defer(new SsmChangeBaseChannelSubscriptionsActor.Message(u.getId(), actions, operationId));
     }
 
     protected void success(Long toId, Long srvId, Map<Long, List<Long>> successes) {
