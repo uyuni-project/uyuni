@@ -44,6 +44,7 @@ public class AlignSoftwareTargetAction implements MessageAction {
 
     @Override
     public void execute(EventMessage msgIn) {
+        ContentManager contentManager = new ContentManager();
         AlignSoftwareTargetMsg msg = (AlignSoftwareTargetMsg) msgIn;
         Channel sourceChannel = ChannelFactory.lookupById(msg.getSource().getId());
         Long targetId = msg.getTarget().getId();
@@ -61,7 +62,7 @@ public class AlignSoftwareTargetAction implements MessageAction {
 
             LOG.info("Asynchronously aligning: " + msg);
             Instant start = Instant.now();
-            ContentManager.alignEnvironmentTargetSync(filters, sourceChannel, targetChannel, msg.getUser());
+            contentManager.alignEnvironmentTargetSync(filters, sourceChannel, targetChannel, msg.getUser());
             target.setStatus(Status.GENERATING_REPODATA);
             LOG.info("Finished aligning " + msg + " in " + Duration.between(start, Instant.now()));
         }

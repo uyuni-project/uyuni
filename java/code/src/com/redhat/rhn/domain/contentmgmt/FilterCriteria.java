@@ -32,6 +32,7 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 
 import static com.redhat.rhn.domain.contentmgmt.ContentFilter.EntityType.ERRATUM;
+import static com.redhat.rhn.domain.contentmgmt.ContentFilter.EntityType.MODULE;
 import static com.redhat.rhn.domain.contentmgmt.ContentFilter.EntityType.PACKAGE;
 import static com.redhat.rhn.domain.contentmgmt.FilterCriteria.Matcher.CONTAINS;
 import static com.redhat.rhn.domain.contentmgmt.FilterCriteria.Matcher.EQUALS;
@@ -85,6 +86,7 @@ public class FilterCriteria {
         validCombinations.add(Triple.of(ERRATUM, CONTAINS_PKG_EQ_EVR, "package_nevr"));
         validCombinations.add(Triple.of(ERRATUM, CONTAINS_PKG_GE_EVR, "package_nevr"));
         validCombinations.add(Triple.of(ERRATUM, CONTAINS_PKG_GT_EVR, "package_nevr"));
+        validCombinations.add(Triple.of(MODULE, EQUALS, "module_stream"));
     }
 
     /**

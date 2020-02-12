@@ -29,6 +29,7 @@ import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.rhnpackage.PackageArch;
 import com.redhat.rhn.domain.rhnpackage.PackageCapability;
 import com.redhat.rhn.domain.rhnpackage.PackageEvr;
+import com.redhat.rhn.domain.rhnpackage.PackageEvrFactory;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.domain.rhnpackage.PackageFile;
 import com.redhat.rhn.domain.rhnpackage.PackageGroup;
@@ -37,6 +38,7 @@ import com.redhat.rhn.domain.rhnpackage.PackageSource;
 import com.redhat.rhn.domain.rpm.SourceRpm;
 import com.redhat.rhn.domain.rpm.test.SourceRpmTest;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
@@ -45,11 +47,9 @@ import com.redhat.rhn.testing.UserTestUtils;
  * PackageTest
  * @version $Rev$
  */
-public class PackageTest extends RhnBaseTestCase {
+public class PackageTest extends BaseTestCaseWithUser {
 
     public void testPackage() throws Exception {
-        User user = UserTestUtils.findNewUser("testUser",
-                "testOrg" + this.getClass().getSimpleName());
         Package pkg = createTestPackage(user.getOrg());
         assertNotNull(pkg);
         //make sure we got written to the db
@@ -233,6 +233,24 @@ public class PackageTest extends RhnBaseTestCase {
         params.put("packge_id", p.getId());
 
         cp.executeUpdate(params);
+    }
+
+    public void testGetNevraWithEpoch() throws Exception {
+        Package pkg = createTestPackage(user.getOrg());
+        PackageEvr evr = PackageEvrFactoryTest.createTestPackageEvr("1", "2", "3");
+        pkg.setPackageEvr(evr);
+
+        String expectedNevra = pkg.getPackageName().getName() + "-1:2-3." + pkg.getPackageArch().getLabel();
+        assertEquals(expectedNevra, pkg.getNevraWithEpoch());
+        // Following two methods must return the same result if an epoch exists
+        assertEquals(pkg.getNameEvra(), pkg.getNevraWithEpoch());
+
+        evr = PackageEvrFactoryTest.createTestPackageEvr(null, "2", "3");
+        pkg.setPackageEvr(evr);
+
+        expectedNevra = pkg.getPackageName().getName() + "-0:2-3." + pkg.getPackageArch().getLabel();
+        assertEquals(expectedNevra, pkg.getNevraWithEpoch());
+        assertFalse(pkg.getNameEvra().equals(pkg.getNevraWithEpoch()));
     }
 
     public void testIsInChannel() {

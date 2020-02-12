@@ -76,8 +76,9 @@ const FiltersProject = (props:  FiltersProps) => {
   const displayingFilters = [...props.selectedFilters];
   displayingFilters.sort((a, b) => a.name.toLowerCase().localeCompare(b.name.toLowerCase()));
 
-  const allowFilters = displayingFilters.filter(filter => filter.rule === "allow");
-  const denyFilters = displayingFilters.filter(filter => filter.rule === "deny");
+  const allowFilters = displayingFilters.filter(filter => filter.entityType !== "module" && filter.rule === "allow");
+  const denyFilters = displayingFilters.filter(filter => filter.entityType !== "module" && filter.rule === "deny");
+  const moduleFilters = displayingFilters.filter(filter => filter.entityType === "module");
 
   return (
 
@@ -148,6 +149,22 @@ const FiltersProject = (props:  FiltersProps) => {
                     {
                       allowFilters.map((filter, index) => renderFilterEntry(filter, props.projectId,
                         <i className="fa fa-plus-circle"/>, index === allowFilters.length - 1))
+                    }
+                  </ul>
+                </>
+            }
+          </div>
+
+          <div className="col-md-6">
+            {
+              moduleFilters.length > 0 &&
+                <>
+                  <h4>{t("AppStreams")} <small>{t("enabled module streams")}</small>
+                  </h4>
+                  <ul className="list-group">
+                    {
+                      moduleFilters.map((filter, index) => renderFilterEntry(filter, props.projectId,
+                        <i className="fa fa-plus-circle"/>, index === moduleFilters.length - 1))
                     }
                   </ul>
                 </>

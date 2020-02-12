@@ -158,5 +158,51 @@ describe('Testing filters form <> request mappers', () => {
     expect(mapFilterFormToRequest(filterForm).rule).toEqual("allow");
   });
 
+  test('test module stream filters', () => {
+    const filterForm = {
+      filter_name: "module stream filter",
+      matcher: "equals",
+      type: "module_stream",
+      moduleName: "mymodule",
+      moduleStream: "mystream"
+    }
+
+    // Filter value should be in 'module:stream' format
+    expect(mapFilterFormToRequest(filterForm).criteriaKey).toEqual("module_stream");
+    expect(mapFilterFormToRequest(filterForm).criteriaValue).toEqual("mymodule:mystream");
+    expect(mapResponseToFilterForm([mapFilterFormToRequest(filterForm)])[0])
+      .toEqual(expect.objectContaining(filterForm));
+
+    // Stream name can be empty
+    filterForm.moduleStream = "";
+
+    expect(mapFilterFormToRequest(filterForm).criteriaValue).toEqual("mymodule");
+    expect(mapResponseToFilterForm([mapFilterFormToRequest(filterForm)])[0])
+      .toEqual(expect.objectContaining({
+        moduleName: "mymodule",
+        moduleStream: undefined
+      }));
+
+    // Stream name can be undefined
+    filterForm.moduleStream = undefined;
+
+    expect(mapFilterFormToRequest(filterForm).criteriaValue).toEqual("mymodule");
+    expect(mapResponseToFilterForm([mapFilterFormToRequest(filterForm)])[0])
+      .toEqual(expect.objectContaining({
+        moduleName: "mymodule",
+        moduleStream: undefined
+      }));
+
+    // Module name must terminate after the first colon
+    filterForm.moduleName = "my:module";
+    filterForm.moduleStream = "my:stream";
+
+    expect(mapFilterFormToRequest(filterForm).criteriaValue).toEqual("my:module:my:stream");
+    expect(mapResponseToFilterForm([mapFilterFormToRequest(filterForm)])[0])
+      .toEqual(expect.objectContaining({
+        moduleName: "my",
+        moduleStream: "module:my:stream"
+      }));
+  });
 })
 

@@ -15,23 +15,12 @@
 
 package com.redhat.rhn.domain.contentmgmt;
 
-
-import static com.redhat.rhn.domain.contentmgmt.ProjectSource.State.DETACHED;
-import static com.suse.utils.Opt.consume;
-
 import com.redhat.rhn.domain.BaseDomainHelper;
 import com.redhat.rhn.domain.org.Org;
-
 import com.suse.utils.Opt;
-
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -48,6 +37,13 @@ import javax.persistence.OrderBy;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
+import static com.redhat.rhn.domain.contentmgmt.ProjectSource.State.DETACHED;
+import static com.suse.utils.Opt.consume;
 
 /**
  * A Content Project
@@ -219,6 +215,18 @@ public class ContentProject extends BaseDomainHelper {
     @OrderBy("position")
     public List<ProjectSource> getSources() {
         return sources;
+    }
+
+    /**
+     * Get the active (non-detached) project sources
+     *
+     * @return the active project sources
+     */
+    @Transient
+    public List<ProjectSource> getActiveSources() {
+        return sources.stream()
+                .filter(s -> !ProjectSource.State.DETACHED.equals(s.getState()))
+                .collect(Collectors.toList());
     }
 
     /**

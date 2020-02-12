@@ -31,6 +31,8 @@ import com.redhat.rhn.domain.contentmgmt.ContentProjectHistoryEntry;
 import com.redhat.rhn.domain.contentmgmt.EnvironmentTarget;
 import com.redhat.rhn.domain.contentmgmt.ErrataFilter;
 import com.redhat.rhn.domain.contentmgmt.FilterCriteria;
+import com.redhat.rhn.domain.contentmgmt.modulemd.ModuleNotFoundException;
+import com.redhat.rhn.domain.contentmgmt.modulemd.ModulemdApi;
 import com.redhat.rhn.domain.contentmgmt.PackageFilter;
 import com.redhat.rhn.domain.contentmgmt.ProjectSource;
 import com.redhat.rhn.domain.contentmgmt.ProjectSource.Type;
@@ -48,12 +50,14 @@ import com.redhat.rhn.manager.channel.CloneChannelCommand;
 import com.redhat.rhn.manager.errata.ErrataManager;
 import com.redhat.rhn.manager.errata.cache.ErrataCacheManager;
 import org.apache.commons.lang3.tuple.Pair;
+import org.apache.log4j.Logger;
 
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Predicate;
@@ -81,9 +85,23 @@ import static java.util.stream.Collectors.toSet;
 public class ContentManager {
 
     private static final String DELIMITER = "-";
+    private static final Logger LOG = Logger.getLogger(ContentManager.class);
+    private ModulemdApi modulemdApi;
 
-    // forbid instantiation
-    private ContentManager() { }
+    /**
+     * Initialize a new instance
+     */
+    public ContentManager() {
+        this(null);
+    }
+
+    /**
+     * Initialize a new instance specifying the libmodulemd API instance to use
+     * @param modulemdApiIn the libmodulemd API to use when resolving modular dependencies
+     */
+    public ContentManager(ModulemdApi modulemdApiIn) {
+        this.modulemdApi = Objects.requireNonNullElseGet(modulemdApiIn, ModulemdApi::new);
+    }
 
     /**
      * Create a Content Project
@@ -96,7 +114,7 @@ public class ContentManager {
      * @throws PermissionException if given user does not have required role
      * @return the created Content Project
      */
-    public static ContentProject createProject(String label, String name, String description, User user) {
+    public ContentProject createProject(String label, String name, String description, User user) {
         ensureOrgAdmin(user);
         lookupProject(label, user).ifPresent(cp -> {
             throw new EntityExistsException(cp);
@@ -149,7 +167,7 @@ public class ContentManager {
      * @throws PermissionException if given user does not have required role
      * @return the updated Content Project
      */
-    public static ContentProject updateProject(String label, Optional<String> newName, Optional<String> newDesc,
+    public ContentProject updateProject(String label, Optional<String> newName, Optional<String> newDesc,
             User user) {
         ensureOrgAdmin(user);
         return lookupProject(label, user)
@@ -170,7 +188,7 @@ public class ContentManager {
      * @throws EntityNotExistsException if Content Project with given label is not found
      * @return the number of objects affected
      */
-    public static int removeProject(String label, User user) {
+    public int removeProject(String label, User user) {
         ensureOrgAdmin(user);
         return lookupProject(label, user)
                 .map(cp -> ContentProjectFactory.remove(cp))
@@ -193,7 +211,7 @@ public class ContentManager {
      * @throws PermissionException if given user does not have required role
      * @return the created Content Environment
      */
-    public static ContentEnvironment createEnvironment(String projectLabel, Optional<String> predecessorLabel,
+    public ContentEnvironment createEnvironment(String projectLabel, Optional<String> predecessorLabel,
             String label, String name, String description, boolean async, User user) {
         ensureOrgAdmin(user);
         lookupEnvironment(label, projectLabel, user).ifPresent(e -> { throw new EntityExistsException(e); });
@@ -256,7 +274,7 @@ public class ContentManager {
      * @throws PermissionException if given user does not have required role
      * @return the updated Environment
      */
-    public static ContentEnvironment updateEnvironment(String envLabel, String projectLabel, Optional<String> newName,
+    public ContentEnvironment updateEnvironment(String envLabel, String projectLabel, Optional<String> newName,
             Optional<String> newDescription, User user) {
         ensureOrgAdmin(user);
         return lookupEnvironment(envLabel, projectLabel, user)
@@ -279,7 +297,7 @@ public class ContentManager {
      * @throws PermissionException if given user does not have required role
      * @return number of deleted objects
      */
-    public static int removeEnvironment(String envLabel, String projectLabel, User user) {
+    public int removeEnvironment(String envLabel, String projectLabel, User user) {
         ensureOrgAdmin(user);
         return lookupEnvironment(envLabel, projectLabel, user)
                 .map((env) -> {
@@ -302,7 +320,7 @@ public class ContentManager {
      * @throws java.lang.IllegalArgumentException if the sourceType is unsupported
      * @return the created or existing Source
      */
-    public static ProjectSource attachSource(String projectLabel, Type sourceType, String sourceLabel,
+    public ProjectSource attachSource(String projectLabel, Type sourceType, String sourceLabel,
             Optional<Integer> position, User user) {
         ensureOrgAdmin(user);
         ContentProject project = lookupProject(projectLabel, user)
@@ -353,7 +371,7 @@ public class ContentManager {
      * @param sourceLabel the Source label (e.g. SoftwareChannel label)
      * @param user the user
      */
-    public static void detachSource(String projectLabel, Type sourceType, String sourceLabel, User user) {
+    public void detachSource(String projectLabel, Type sourceType, String sourceLabel, User user) {
         ensureOrgAdmin(user);
         ProjectSource src = lookupProjectSource(projectLabel, sourceType, sourceLabel, user)
                 .orElseThrow(() -> (new EntityNotExistsException(sourceLabel)));
@@ -425,7 +443,7 @@ public class ContentManager {
      * @param user the user
      * @return the created filter
      */
-    public static ContentFilter createFilter(String name, ContentFilter.Rule rule, ContentFilter.EntityType entityType,
+    public ContentFilter createFilter(String name, ContentFilter.Rule rule, ContentFilter.EntityType entityType,
             FilterCriteria criteria, User user) {
         ensureOrgAdmin(user);
         lookupFilterByNameAndOrg(name, user).ifPresent(cp -> {
@@ -445,7 +463,7 @@ public class ContentManager {
      * @param user the user
      * @return the updated filter
      */
-    public static ContentFilter updateFilter(Long id, Optional<String> name, Optional<ContentFilter.Rule> rule,
+    public ContentFilter updateFilter(Long id, Optional<String> name, Optional<ContentFilter.Rule> rule,
             Optional<FilterCriteria> criteria, User user) {
         ensureOrgAdmin(user);
         ContentFilter filter = lookupFilterById(id, user)
@@ -460,7 +478,7 @@ public class ContentManager {
      * @param user the user
      * @return true if removed
      */
-    public static boolean removeFilter(Long id, User user) {
+    public boolean removeFilter(Long id, User user) {
         ensureOrgAdmin(user);
         ContentFilter filter = lookupFilterById(id, user)
                 .orElseThrow(() -> new EntityNotExistsException(id));
@@ -478,7 +496,7 @@ public class ContentManager {
      * @param user the user
      * @return attached filter
      */
-    public static ContentFilter attachFilter(String projectLabel, Long filterId, User user) {
+    public ContentFilter attachFilter(String projectLabel, Long filterId, User user) {
         ensureOrgAdmin(user);
         ContentProject project = lookupProject(projectLabel, user)
                 .orElseThrow(() -> new EntityNotExistsException(ContentProject.class, projectLabel));
@@ -496,7 +514,7 @@ public class ContentManager {
      * @param filterId the filter id
      * @param user the user
      */
-    public static void detachFilter(String projectLabel, Long filterId, User user) {
+    public void detachFilter(String projectLabel, Long filterId, User user) {
         ensureOrgAdmin(user);
         ContentProject project = lookupProject(projectLabel, user)
                 .orElseThrow(() -> new EntityNotExistsException(ContentProject.class, projectLabel));
@@ -516,7 +534,7 @@ public class ContentManager {
      * synchronously)
      * @param user the user
      */
-    public static void promoteProject(String projectLabel, String envLabel, boolean async, User user) {
+    public void promoteProject(String projectLabel, String envLabel, boolean async, User user) {
         ensureOrgAdmin(user);
         ContentEnvironment env = lookupEnvironment(envLabel, projectLabel, user)
                 .orElseThrow(() -> new EntityNotExistsException(envLabel));
@@ -551,7 +569,7 @@ public class ContentManager {
      * @throws EntityNotExistsException if Project does not exist
      * @throws ContentManagementException when there are no Environments in the Project
      */
-    public static void buildProject(String projectLabel, Optional<String> message, boolean async, User user) {
+    public void buildProject(String projectLabel, Optional<String> message, boolean async, User user) {
         ensureOrgAdmin(user);
         ContentProject project = lookupProject(projectLabel, user)
                 .orElseThrow(() -> new EntityNotExistsException(projectLabel));
@@ -571,7 +589,7 @@ public class ContentManager {
      * @param user the user
      * @throws ContentManagementException when there is no leader channel in the Project
      */
-    private static void buildSoftwareSources(ContentEnvironment firstEnv, boolean async, User user) {
+    private void buildSoftwareSources(ContentEnvironment firstEnv, boolean async, User user) {
         ContentProject project = firstEnv.getContentProject();
         Channel leader = project.lookupSwSourceLeader()
                 .map(l -> l.getChannel())
@@ -606,12 +624,12 @@ public class ContentManager {
 
     }
 
-    private static void removeSource(ProjectSource source) {
+    private void removeSource(ProjectSource source) {
         source.getContentProject().removeSource(source);
         ContentProjectFactory.remove(source);
     }
 
-    private static void removeFilter(ContentProjectFilter filter) {
+    private void removeFilter(ContentProjectFilter filter) {
         filter.getProject().getProjectFilters().remove(filter);
         ContentProjectFactory.remove(filter);
     }
@@ -626,7 +644,7 @@ public class ContentManager {
      * @param async run the time-expensive operations asynchronously?
      * @param user the user
      */
-    private static void alignEnvironment(ContentEnvironment env, Channel baseChannel, Stream<Channel> childChannels,
+    private void alignEnvironment(ContentEnvironment env, Channel baseChannel, Stream<Channel> childChannels,
             List<ContentFilter> filters, boolean async, User user) {
         // ensure targets for the sources exist
         List<Pair<Channel, SoftwareEnvironmentTarget>> newSrcTgtPairs =
@@ -642,9 +660,38 @@ public class ContentManager {
                 .sorted((t1, t2) -> Boolean.compare(t1.getChannel().isBaseChannel(), t2.getChannel().isBaseChannel()))
                 .forEach(toRemove -> ContentProjectFactory.purgeTarget(toRemove));
 
-        // align the contents
-        newSrcTgtPairs.forEach(srcTgt ->
-                alignEnvironmentTarget(srcTgt.getLeft(), srcTgt.getRight(), filters, async, user));
+        // Strip modules metadata from the modular repositories if any modular filter is present
+        if (filters.stream().anyMatch(f -> f.asModuleFilter().isPresent())) {
+            newSrcTgtPairs.stream().map(p -> p.getRight().getChannel()).forEach(this::stripModuleMetadata);
+        }
+
+        // Resolve filters for dependencies
+        try {
+            DependencyResolver resolver = new DependencyResolver(env.getContentProject(), this.modulemdApi);
+            List<ContentFilter> resolvedFilters = resolver.resolveFilters(filters);
+
+            // align the contents
+            newSrcTgtPairs.forEach(srcTgt ->
+                    alignEnvironmentTarget(srcTgt.getLeft(), srcTgt.getRight(), resolvedFilters, async, user));
+        }
+        catch (DependencyResolutionException e) {
+            if (e.getCause() instanceof ModuleNotFoundException) {
+                ModuleNotFoundException cause = (ModuleNotFoundException) e.getCause();
+                LOG.info(String.format("Module '%s:%s' not found.", cause.getModule().getName(),
+                        cause.getModule().getStream()));
+            }
+            else {
+                throw new RuntimeException(e);
+            }
+        }
+
+    }
+
+    private void stripModuleMetadata(Channel channel) {
+        if (channel != null && channel.getModules() != null) {
+            HibernateFactory.getSession().delete(channel.getModules());
+            channel.setModules(null);
+        }
     }
 
     /**
@@ -656,7 +703,7 @@ public class ContentManager {
      * @param user the user
      * @return the List of [original Channel, SoftwareEnvironmentTarget] Pairs
      */
-    private static List<Pair<Channel, SoftwareEnvironmentTarget>> cloneChannelsToEnv(ContentEnvironment env,
+    private List<Pair<Channel, SoftwareEnvironmentTarget>> cloneChannelsToEnv(ContentEnvironment env,
             Channel leader, Stream<Channel> channels, User user) {
         // first make sure the leader exists
         SoftwareEnvironmentTarget leaderTarget = lookupTarget(leader, env, user)
@@ -688,7 +735,7 @@ public class ContentManager {
                 .lookupEnvironmentTargetByChannelLabel(channelLabelInEnvironment(srcChannel.getLabel(), env), user);
     }
 
-    private static SoftwareEnvironmentTarget createSoftwareTarget(Channel sourceChannel, Optional<Channel> leader,
+    private SoftwareEnvironmentTarget createSoftwareTarget(Channel sourceChannel, Optional<Channel> leader,
             ContentEnvironment env, User user) {
         String targetLabel = channelLabelInEnvironment(sourceChannel.getLabel(), env);
 
@@ -736,7 +783,7 @@ public class ContentManager {
         return env.getContentProject().getLabel() + DELIMITER + env.getLabel() + DELIMITER;
     }
 
-    private static ContentProjectHistoryEntry addHistoryEntry(
+    private ContentProjectHistoryEntry addHistoryEntry(
             Optional<String> message, User user, ContentProject project
     ) {
         ContentProjectHistoryEntry entry = new ContentProjectHistoryEntry();
@@ -755,7 +802,7 @@ public class ContentManager {
      * @param async run this operation asynchronously?
      * @param user the user
      */
-    public static void alignEnvironmentTarget(Channel src, SoftwareEnvironmentTarget tgt, List<ContentFilter> filters,
+    public void alignEnvironmentTarget(Channel src, SoftwareEnvironmentTarget tgt, List<ContentFilter> filters,
             boolean async, User user) {
         // adjust the target status
         tgt.setStatus(EnvironmentTarget.Status.BUILDING);
@@ -779,7 +826,7 @@ public class ContentManager {
      * @param tgt the target {@link Channel}
      * @param user the user
      */
-    public static void alignEnvironmentTargetSync(Collection<ContentFilter> filters, Channel src, Channel tgt,
+    public void alignEnvironmentTargetSync(Collection<ContentFilter> filters, Channel src, Channel tgt,
             User user) {
         // align packages and the cache (rhnServerNeededCache)
         List<PackageFilter> packageFilters = filters.stream()
@@ -803,7 +850,7 @@ public class ContentManager {
         ChannelManager.queueChannelChange(tgt.getLabel(), "java::alignChannel", "Channel aligned");
     }
 
-    private static void alignPackages(Channel srcChannel, Channel tgtChannel, Collection<PackageFilter> filters) {
+    private void alignPackages(Channel srcChannel, Channel tgtChannel, Collection<PackageFilter> filters) {
         Set<Package> oldTgtPackages = new HashSet<>(tgtChannel.getPackages());
         Set<Package> onlyInSrc = new HashSet<>(srcChannel.getPackages());
         onlyInSrc.removeAll(tgtChannel.getPackages());
@@ -837,7 +884,7 @@ public class ContentManager {
      * @param errataFilters the {@link ErrataFilter}s
      * @param user the {@link User}
      */
-    private static void alignErrata(Channel src, Channel tgt, Collection<ErrataFilter> errataFilters, User user) {
+    private void alignErrata(Channel src, Channel tgt, Collection<ErrataFilter> errataFilters, User user) {
         Pair<Set<Errata>, Set<Errata>> partitionedErrata = filterEntities(src.getErratas(), errataFilters);
         Set<Errata> includedErrata = partitionedErrata.getLeft();
         Set<Errata> excludedErrata = partitionedErrata.getRight();
@@ -868,7 +915,7 @@ public class ContentManager {
      * @return Pair containing (left side) a set of entities not filtered-out
      * and (right side) a set of entities filtered out
      */
-    private static <T> Pair<Set<T>, Set<T>> filterEntities(Set<T> entities,
+    private <T> Pair<Set<T>, Set<T>> filterEntities(Set<T> entities,
             Collection<? extends ContentFilter<T>> filters) {
         Map<ContentFilter.Rule, List<ContentFilter<T>>> filtersByRule = filters.stream()
                 .collect(groupingBy(ContentFilter::getRule));
@@ -900,5 +947,19 @@ public class ContentManager {
         if (!user.hasRole(ORG_ADMIN)) {
             throw new PermissionException(ORG_ADMIN);
         }
+    }
+
+    /**
+     * @return the libmodulemd API instance
+     */
+    public ModulemdApi getModulemdApi() {
+        return modulemdApi;
+    }
+
+    /**
+     * @param modulemdApiIn the libmodulemd API instance
+     */
+    public void setModulemdApi(ModulemdApi modulemdApiIn) {
+        this.modulemdApi = modulemdApiIn;
     }
 }

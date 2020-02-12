@@ -21,6 +21,7 @@ import com.redhat.rhn.domain.contentmgmt.ContentProjectFilter;
 import com.redhat.rhn.domain.contentmgmt.ContentProjectHistoryEntry;
 import com.redhat.rhn.domain.contentmgmt.EnvironmentTarget;
 import com.redhat.rhn.domain.contentmgmt.ErrataFilter;
+import com.redhat.rhn.domain.contentmgmt.ModuleFilter;
 import com.redhat.rhn.domain.contentmgmt.PackageFilter;
 import com.redhat.rhn.domain.contentmgmt.ProjectSource;
 import com.redhat.rhn.domain.contentmgmt.SoftwareEnvironmentTarget;
@@ -110,6 +111,7 @@ public class AnnotationRegistry {
         ANNOTATION_CLASSES.add(ContentProjectFilter.class);
         ANNOTATION_CLASSES.add(PackageFilter.class);
         ANNOTATION_CLASSES.add(ErrataFilter.class);
+        ANNOTATION_CLASSES.add(ModuleFilter.class);
         ANNOTATION_CLASSES.add(EnvironmentTarget.class);
         ANNOTATION_CLASSES.add(SoftwareEnvironmentTarget.class);
         ANNOTATION_CLASSES.add(ContentProjectHistoryEntry.class);

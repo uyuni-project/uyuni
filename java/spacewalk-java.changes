@@ -1,3 +1,4 @@
+- Introduce CLM AppStream filters for RHEL 8 support
 - kickstart --nobase option was removed in version F22. Do not use it
   for RHEL8
 - Migrate pillar and formula data on minion id change (bsc#1161755)

@@ -512,6 +512,20 @@ public class Package extends BaseDomainHelper {
     }
 
     /**
+     * Util to output package name + evr.
+     * As opposed to {@link Package#getNameEvra()}, the output of this method always includes an epoch value, which is
+     * 0 by default.
+     * @return the package name and evra
+     */
+    public String getNevraWithEpoch() {
+        PackageEvr evr = new PackageEvr(this.getPackageEvr());
+        if (evr.getEpoch() == null || evr.getEpoch().isEmpty()) {
+            evr.setEpoch("0");
+        }
+        return this.getPackageName().getName() + "-" + evr.toString() + "." + this.getPackageArch().getLabel();
+    }
+
+    /**
      * Util to output package nvrea: vim-enhanced-7.0.109-7.2.el5:2.x86_64
      * @return nvrea string
      */

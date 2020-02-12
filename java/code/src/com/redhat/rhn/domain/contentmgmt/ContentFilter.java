@@ -62,7 +62,8 @@ public abstract class ContentFilter<T> extends BaseDomainHelper implements Predi
      */
     public enum EntityType {
         PACKAGE("package"),
-        ERRATUM("erratum");
+        ERRATUM("erratum"),
+        MODULE("module");
 
         private String label;
 
@@ -155,6 +156,13 @@ public abstract class ContentFilter<T> extends BaseDomainHelper implements Predi
      * @return Optional of {@link ErrataFilter}
      */
     public abstract Optional<ErrataFilter> asErrataFilter();
+
+    /**
+     * Returns the filter as {@link ModuleFilter} if it is one
+     *
+     * @return Optional of {@link ModuleFilter}
+     */
+    public abstract Optional<ModuleFilter> asModuleFilter();
 
     /**
      * Gets the id.

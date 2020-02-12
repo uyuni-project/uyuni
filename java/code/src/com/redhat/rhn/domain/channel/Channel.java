@@ -228,6 +228,10 @@ public class Channel extends BaseDomainHelper implements Comparable<Channel> {
         return modules;
     }
 
+    public boolean isModular() {
+        return modules != null;
+    }
+
     /**
      * @return Returns the description.
      */

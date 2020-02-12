@@ -17,12 +17,11 @@ package com.redhat.rhn.domain.contentmgmt;
 
 import com.redhat.rhn.domain.rhnpackage.Package;
 
-import java.util.Optional;
-import java.util.regex.Pattern;
-
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.Transient;
+import java.util.Optional;
+import java.util.regex.Pattern;
 
 /**
  * Package Filter
@@ -61,7 +60,9 @@ public class PackageFilter extends ContentFilter<Package> {
             case "nevr":
                 return type.cast(pack.getNameEvr());
             case "nevra":
-                return type.cast(pack.getNameEvra());
+                //Case for null epoch: Module metadata reports epoch as '0' even if there's none. We need to match it.
+                // pack.getNameEvra() omits the epoch if null so instead, pack.getNevraWithEpoch() is used here.
+                return type.cast(pack.getNevraWithEpoch());
             default:
                 throw new UnsupportedOperationException("Field " + field + " not supported");
         }
@@ -80,6 +81,11 @@ public class PackageFilter extends ContentFilter<Package> {
 
     @Override
     public Optional<ErrataFilter> asErrataFilter() {
+        return Optional.empty();
+    }
+
+    @Override
+    public Optional<ModuleFilter> asModuleFilter() {
         return Optional.empty();
     }
 }
