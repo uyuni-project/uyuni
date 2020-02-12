@@ -21,6 +21,7 @@ import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.finder.FinderFactory;
 
+import com.suse.manager.tasks.ActorManager;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
@@ -231,6 +232,7 @@ class ConnectionManager {
         Transaction txn = info.getTransaction();
         if (txn != null) {
             txn.commit();
+            ActorManager.tellDeferred(txn);
             info.setTransaction(null);
         }
     }
@@ -252,6 +254,7 @@ class ConnectionManager {
         Transaction txn = info.getTransaction();
         if (txn != null) {
             txn.rollback();
+            ActorManager.clearDeferred(txn);
             info.setTransaction(null);
         }
     }

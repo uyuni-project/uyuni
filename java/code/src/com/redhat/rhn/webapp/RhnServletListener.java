@@ -59,7 +59,6 @@ public class RhnServletListener implements ServletContextListener {
         // Events
         MessageQueue.startMessaging();
         MessageQueue.configureDefaultActions();
-        ActorManager.start();
     }
 
     private void stopMessaging() {
