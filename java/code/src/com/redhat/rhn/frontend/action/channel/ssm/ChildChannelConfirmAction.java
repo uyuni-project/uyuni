@@ -14,13 +14,11 @@
  */
 package com.redhat.rhn.frontend.action.channel.ssm;
 
-import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.domain.rhnset.RhnSetElement;
 import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.frontend.events.SsmChangeChannelSubscriptionsEvent;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.frontend.struts.RhnHelper;
@@ -31,11 +29,13 @@ import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.ssm.SsmOperationManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 
+import com.suse.manager.tasks.ActorManager;
+import com.suse.manager.tasks.actors.SsmChangeChannelSubscriptionsActor;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
-import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.DynaActionForm;
 
@@ -44,7 +44,6 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -113,10 +112,7 @@ public class ChildChannelConfirmAction extends RhnAction implements Listable {
                     new ArrayList<Long>(sysSubList.keySet()));
 
             // Fire the request off asynchronously
-            SsmChangeChannelSubscriptionsEvent event =
-                    new SsmChangeChannelSubscriptionsEvent(user, sysSubList.values(),
-                            operationId);
-            MessageQueue.publish(event);
+            ActorManager.defer(new SsmChangeChannelSubscriptionsActor.Message(user.getId(), sysSubList.values(), operationId));
 
             result = mapping.findForward("success");
         }

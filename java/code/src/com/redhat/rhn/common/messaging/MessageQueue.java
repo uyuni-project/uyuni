@@ -16,8 +16,6 @@
 package com.redhat.rhn.common.messaging;
 
 
-import com.redhat.rhn.frontend.events.SsmChangeChannelSubscriptionsAction;
-import com.redhat.rhn.frontend.events.SsmChangeChannelSubscriptionsEvent;
 import com.redhat.rhn.frontend.events.SsmConfigFilesAction;
 import com.redhat.rhn.frontend.events.SsmConfigFilesEvent;
 import com.redhat.rhn.frontend.events.SsmDeleteServersAction;
@@ -253,10 +251,6 @@ public class MessageQueue {
         // If we develop a large set of MessageEvents we may want to
         // refactor this block out into a class or method that
         // reads in some configuration from an XML file somewhere
-
-        // Used to allow SSM channel changes to be run asynchronously
-        MessageQueue.registerAction(new SsmChangeChannelSubscriptionsAction(),
-                                    SsmChangeChannelSubscriptionsEvent.class);
 
         MessageQueue.registerAction(new SsmDeleteServersAction(),
                                     SsmDeleteServersEvent.class);
