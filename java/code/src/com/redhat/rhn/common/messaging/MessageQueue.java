@@ -20,8 +20,6 @@ import com.redhat.rhn.frontend.events.SsmDeleteServersAction;
 import com.redhat.rhn.frontend.events.SsmDeleteServersEvent;
 import com.redhat.rhn.frontend.events.SsmPowerManagementAction;
 import com.redhat.rhn.frontend.events.SsmPowerManagementEvent;
-import com.redhat.rhn.frontend.events.SsmRemovePackagesAction;
-import com.redhat.rhn.frontend.events.SsmRemovePackagesEvent;
 import com.redhat.rhn.frontend.events.SsmSystemRebootAction;
 import com.redhat.rhn.frontend.events.SsmSystemRebootEvent;
 
@@ -248,10 +246,6 @@ public class MessageQueue {
 
         MessageQueue.registerAction(new SsmDeleteServersAction(),
                                     SsmDeleteServersEvent.class);
-
-        // Used to allow SSM package installs to be run asynchronously
-        MessageQueue.registerAction(new SsmRemovePackagesAction(),
-                                    SsmRemovePackagesEvent.class);
 
         // Used to allow SSM power management actions to be run asynchronously
         MessageQueue.registerAction(new SsmPowerManagementAction(),

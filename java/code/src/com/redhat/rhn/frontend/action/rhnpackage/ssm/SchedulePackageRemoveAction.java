@@ -14,15 +14,16 @@
  */
 package com.redhat.rhn.frontend.action.rhnpackage.ssm;
 
+import static java.util.Optional.ofNullable;
+import static java.util.stream.Collectors.toList;
+
 import com.redhat.rhn.common.db.datasource.DataResult;
-import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.common.util.DatePicker;
 import com.redhat.rhn.domain.action.ActionChain;
 import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.domain.rhnset.SetCleanup;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.dto.PackageListItem;
-import com.redhat.rhn.frontend.events.SsmRemovePackagesEvent;
 import com.redhat.rhn.frontend.struts.ActionChainHelper;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnHelper;
@@ -37,6 +38,8 @@ import com.redhat.rhn.manager.rhnset.RhnSetManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 
+import com.suse.manager.tasks.ActorManager;
+import com.suse.manager.tasks.actors.SsmRemovePackagesActor;
 import org.apache.log4j.Logger;
 import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionForm;
@@ -51,7 +54,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -186,11 +188,11 @@ public class SchedulePackageRemoveAction extends RhnListAction implements
         // Parse through all of the results
         DataResult<Map<String, Object>> result = getResult(context, true);
         result.elaborate();
+        var sids = result.stream().map(data -> (Long) data.get("id")).collect(toList());
 
         log.debug("Publishing schedule package remove event to message queue.");
-        SsmRemovePackagesEvent event = new SsmRemovePackagesEvent(user.getId(), earliest,
-            actionChain, result);
-        MessageQueue.publish(event);
+        var actionChainId = ofNullable(actionChain).map(ActionChain::getId);
+        ActorManager.defer(new SsmRemovePackagesActor.Message(user.getId(), earliest, actionChainId));
 
         log.debug("Clearing set.");
         // Remove the packages from session and the DB
