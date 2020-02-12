@@ -8,6 +8,7 @@ import static java.util.function.Function.identity;
 import static java.util.stream.Collectors.toMap;
 import static java.util.stream.Collectors.toSet;
 
+import com.suse.manager.tasks.Actor;
 import com.suse.manager.tasks.Command;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.log4j.Logger;
@@ -16,6 +17,7 @@ import org.reflections.Reflections;
 import org.reflections.scanners.SubTypesScanner;
 
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Modifier;
 import java.util.Arrays;
 import java.util.Map;
 import java.util.function.Function;
@@ -38,11 +40,12 @@ public class GuardianActor {
 
     private Behavior<Command> buildBehavior(ActorContext<Command> context) {
         var reflections = new Reflections(GuardianActor.class.getPackageName(), new SubTypesScanner(false));
-        var allClasses = reflections.getSubTypesOf(Object.class);
+        var allClasses = reflections.getSubTypesOf(Actor.class);
 
         var actorClasses = allClasses.stream()
                 .filter(c -> !c.equals(GuardianActor.class))
                 .filter(c -> !c.isMemberClass())
+                .filter(c -> !Modifier.isAbstract(c.getModifiers()))
                 .collect(toSet());
 
         var actorMap = actorClasses.stream().collect(toMap(
@@ -60,7 +63,7 @@ public class GuardianActor {
         return receiveBuilder.build();
     }
 
-    private BehaviorBuilder<Command> addHandlers(BehaviorBuilder<Command> behaviorBuilder, Map.Entry<Class<?>, ActorRef<Command>> entry) {
+    private BehaviorBuilder<Command> addHandlers(BehaviorBuilder<Command> behaviorBuilder, Map.Entry<Class<? extends Actor>, ActorRef<Command>> entry) {
         var actorClass = entry.getKey();
         var messageClasses = Arrays.stream(actorClass.getNestMembers())
                 .filter(nm -> Arrays.asList(nm.getInterfaces()).contains(Command.class))
@@ -77,7 +80,7 @@ public class GuardianActor {
         return augmentedBehaviorBuilder;
     }
 
-    private Function<Class<?>, ActorRef<Command>> classToActor(ActorContext<Command> context) {
+    private Function<Class<? extends Actor>, ActorRef<Command>> classToActor(ActorContext<Command> context) {
         return clazz -> {
             try {
                 var createMethod = clazz.getMethod("create");
