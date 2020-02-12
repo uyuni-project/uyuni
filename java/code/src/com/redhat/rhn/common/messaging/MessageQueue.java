@@ -17,8 +17,6 @@ package com.redhat.rhn.common.messaging;
 
 import com.redhat.rhn.frontend.events.AlignSoftwareTargetAction;
 import com.redhat.rhn.frontend.events.AlignSoftwareTargetMsg;
-import com.redhat.rhn.frontend.events.CloneErrataAction;
-import com.redhat.rhn.frontend.events.CloneErrataEvent;
 import com.redhat.rhn.frontend.events.NewCloneErrataAction;
 import com.redhat.rhn.frontend.events.NewCloneErrataEvent;
 import com.redhat.rhn.frontend.events.NewUserAction;
@@ -294,8 +292,6 @@ public class MessageQueue {
             SsmPowerManagementEvent.class);
 
         //Clone Errata into a channel
-        MessageQueue.registerAction(new CloneErrataAction(),
-                                    CloneErrataEvent.class);
         MessageQueue.registerAction(new NewCloneErrataAction(),
                                     NewCloneErrataEvent.class);
         MessageQueue.registerAction(new SsmErrataAction(),

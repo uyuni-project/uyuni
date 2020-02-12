@@ -56,7 +56,6 @@ import com.redhat.rhn.frontend.dto.OwnedErrata;
 import com.redhat.rhn.frontend.dto.PackageDto;
 import com.redhat.rhn.frontend.dto.PackageOverview;
 import com.redhat.rhn.frontend.dto.SystemOverview;
-import com.redhat.rhn.frontend.events.CloneErrataEvent;
 import com.redhat.rhn.frontend.events.NewCloneErrataEvent;
 import com.redhat.rhn.frontend.listview.PageControl;
 import com.redhat.rhn.frontend.xmlrpc.InvalidErrataException;
@@ -72,6 +71,8 @@ import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 import com.redhat.rhn.taskomatic.task.TaskConstants;
+import com.suse.manager.tasks.ActorManager;
+import com.suse.manager.tasks.actors.CloneErrataActor;
 import com.suse.manager.utils.MinionServerUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
@@ -292,8 +293,7 @@ public class ErrataManager extends BaseManager {
         log.debug("Publishing");
         Set<Long> errataIds = getErrataIds(errataToMerge);
         if (async) {
-            CloneErrataEvent eve = new CloneErrataEvent(toChannel, errataIds, repoRegen, user);
-            MessageQueue.publish(eve);
+            ActorManager.defer(new CloneErrataActor.Message(toChannel.getId(), errataIds, user.getId(), repoRegen));
         }
         else {
             cloneErrata(toChannel.getId(), errataIds, repoRegen, user);
