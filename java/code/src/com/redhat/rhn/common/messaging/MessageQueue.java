@@ -26,8 +26,6 @@ import com.redhat.rhn.frontend.events.SsmRemovePackagesAction;
 import com.redhat.rhn.frontend.events.SsmRemovePackagesEvent;
 import com.redhat.rhn.frontend.events.SsmSystemRebootAction;
 import com.redhat.rhn.frontend.events.SsmSystemRebootEvent;
-import com.redhat.rhn.frontend.events.SsmUpgradePackagesAction;
-import com.redhat.rhn.frontend.events.SsmUpgradePackagesEvent;
 
 import com.suse.manager.reactor.messaging.ChannelsChangedEventMessage;
 import com.suse.manager.reactor.messaging.ChannelsChangedEventMessageAction;
@@ -258,8 +256,6 @@ public class MessageQueue {
                                     SsmInstallPackagesEvent.class);
         MessageQueue.registerAction(new SsmRemovePackagesAction(),
                                     SsmRemovePackagesEvent.class);
-        MessageQueue.registerAction(new SsmUpgradePackagesAction(),
-                                    SsmUpgradePackagesEvent.class);
 
         // Used to allow SSM power management actions to be run asynchronously
         MessageQueue.registerAction(new SsmPowerManagementAction(),
