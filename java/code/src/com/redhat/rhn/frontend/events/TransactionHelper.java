@@ -57,6 +57,17 @@ public abstract class TransactionHelper {
         });
     }
 
+    /**
+     * Runs the runnable and handles the closing of the transaction and Hibernate session upon completion,
+     * rolling back in case of unexpected Exceptions.
+     *
+     * @param runnable code to wrap
+     * @param errorHandler called in case of unexpected Exceptions
+     */
+    public static void handlingTransaction(Runnable runnable) {
+        handlingTransaction(runnable, e -> {});
+    }
+
     private static Optional<Exception> run(Runnable r) {
         try {
             r.run();
