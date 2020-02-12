@@ -14,31 +14,16 @@
  */
 package com.redhat.rhn.frontend.action.rhnpackage.ssm;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Set;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.apache.struts.action.ActionErrors;
-import org.apache.struts.action.ActionForm;
-import org.apache.struts.action.ActionForward;
-import org.apache.struts.action.ActionMapping;
-import org.apache.struts.action.ActionMessage;
-import org.apache.struts.action.ActionMessages;
-import org.apache.struts.action.DynaActionForm;
+import static java.util.Optional.ofNullable;
 
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.localization.LocalizationService;
-import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.common.util.DatePicker;
 import com.redhat.rhn.domain.action.ActionChain;
 import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.domain.rhnset.SetCleanup;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.dto.PackageListItem;
-import com.redhat.rhn.frontend.events.SsmVerifyPackagesEvent;
 import com.redhat.rhn.frontend.struts.ActionChainHelper;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnAction;
@@ -50,10 +35,26 @@ import com.redhat.rhn.frontend.taglibs.list.helper.ListHelper;
 import com.redhat.rhn.frontend.taglibs.list.helper.Listable;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.rhnset.RhnSetManager;
+import com.redhat.rhn.manager.ssm.SsmOperationManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 
+import com.suse.manager.tasks.ActorManager;
+import com.suse.manager.tasks.actors.SsmVerifyPackagesActor;
 import org.apache.log4j.Logger;
+import org.apache.struts.action.ActionErrors;
+import org.apache.struts.action.ActionForm;
+import org.apache.struts.action.ActionForward;
+import org.apache.struts.action.ActionMapping;
+import org.apache.struts.action.ActionMessage;
+import org.apache.struts.action.ActionMessages;
+import org.apache.struts.action.DynaActionForm;
+
+import java.util.Date;
+import java.util.List;
+import java.util.Set;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * Handles the display and capturing of scheduling package verifications for systems in
@@ -114,9 +115,10 @@ public class SchedulePackageVerifyAction extends RhnAction implements Listable {
                 RhnSetManager.deleteByLabel(user.getId(),
                     RhnSetDecl.SSM_VERIFY_PACKAGES_LIST.getLabel());
 
-                SsmVerifyPackagesEvent event =
-                    new SsmVerifyPackagesEvent(user.getId(), earliest, actionChain, result);
-                MessageQueue.publish(event);
+                long operationId = SsmOperationManager.createOperation(user, "ssm.package.verify.operationname",
+                        RhnSetDecl.SYSTEMS.getLabel());
+                var actionChainId = ofNullable(actionChain).map(ActionChain::getId);
+                ActorManager.defer(new SsmVerifyPackagesActor.Message(user.getId(), earliest, actionChainId, operationId));
 
                 // Check to determine to display single or plural confirmation message
                 ActionMessages msgs = new ActionMessages();

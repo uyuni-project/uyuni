@@ -36,8 +36,6 @@ import com.redhat.rhn.frontend.events.SsmSystemRebootAction;
 import com.redhat.rhn.frontend.events.SsmSystemRebootEvent;
 import com.redhat.rhn.frontend.events.SsmUpgradePackagesAction;
 import com.redhat.rhn.frontend.events.SsmUpgradePackagesEvent;
-import com.redhat.rhn.frontend.events.SsmVerifyPackagesAction;
-import com.redhat.rhn.frontend.events.SsmVerifyPackagesEvent;
 
 import com.suse.manager.reactor.messaging.ChannelsChangedEventMessage;
 import com.suse.manager.reactor.messaging.ChannelsChangedEventMessageAction;
@@ -274,8 +272,6 @@ public class MessageQueue {
                                     SsmInstallPackagesEvent.class);
         MessageQueue.registerAction(new SsmRemovePackagesAction(),
                                     SsmRemovePackagesEvent.class);
-        MessageQueue.registerAction(new SsmVerifyPackagesAction(),
-                                    SsmVerifyPackagesEvent.class);
         MessageQueue.registerAction(new SsmUpgradePackagesAction(),
                                     SsmUpgradePackagesEvent.class);
 
