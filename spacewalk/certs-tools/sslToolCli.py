@@ -266,7 +266,7 @@ def setIntersection(*sets):
 
 
 ## custom usage text
-_progName = os.path.basename(sys.argv[0])
+_progName = "mgr-ssl-tool"
 BASE_USAGE = """\
 %s [options]
 
