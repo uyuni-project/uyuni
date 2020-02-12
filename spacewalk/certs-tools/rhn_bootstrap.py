@@ -277,7 +277,7 @@ def getOptionsTable():
 def parseCommandline():
     "parse the commandline/options, sanity checking, et c."
 
-    _progName = os.path.basename(sys.argv[0])
+    _progName = "mgr-bootstrap"
     _usage = """\
 %s [options]
 
