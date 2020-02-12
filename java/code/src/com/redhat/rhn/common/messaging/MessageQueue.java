@@ -16,8 +16,6 @@
 package com.redhat.rhn.common.messaging;
 
 
-import com.redhat.rhn.frontend.events.ScheduleRepoSyncAction;
-import com.redhat.rhn.frontend.events.ScheduleRepoSyncEvent;
 import com.redhat.rhn.frontend.events.SsmChangeBaseChannelSubscriptionsAction;
 import com.redhat.rhn.frontend.events.SsmChangeBaseChannelSubscriptionsEvent;
 import com.redhat.rhn.frontend.events.SsmChangeChannelSubscriptionsAction;
@@ -278,10 +276,6 @@ public class MessageQueue {
         // Used to allow SSM power management actions to be run asynchronously
         MessageQueue.registerAction(new SsmPowerManagementAction(),
             SsmPowerManagementEvent.class);
-
-        // Asynchronously schedule immediate repo sync
-        MessageQueue.registerAction(new ScheduleRepoSyncAction(),
-                ScheduleRepoSyncEvent.class);
 
         // Misc
         MessageQueue.registerAction(new SsmSystemRebootAction(),

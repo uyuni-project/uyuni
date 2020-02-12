@@ -16,13 +16,11 @@ package com.redhat.rhn.manager.setup;
 
 import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.SelectMode;
-import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.product.MgrSyncChannelDto;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.dto.SetupWizardProductDto;
 import com.redhat.rhn.frontend.dto.SetupWizardProductDto.SyncStatus;
-import com.redhat.rhn.frontend.events.ScheduleRepoSyncEvent;
 import com.redhat.rhn.manager.channel.ChannelManager;
 import com.redhat.rhn.manager.content.ContentSyncException;
 import com.redhat.rhn.manager.content.ContentSyncManager;
@@ -32,9 +30,12 @@ import com.redhat.rhn.taskomatic.domain.TaskoRun;
 import com.redhat.rhn.taskomatic.domain.TaskoSchedule;
 import com.redhat.rhn.taskomatic.task.RepoSyncTask;
 import com.redhat.rhn.taskomatic.task.TaskConstants;
+
 import com.suse.manager.model.products.Channel;
 import com.suse.manager.model.products.MandatoryChannels;
 import com.suse.manager.model.products.OptionalChannels;
+import com.suse.manager.tasks.ActorManager;
+import com.suse.manager.tasks.actors.ScheduleRepoSyncActor;
 import com.suse.mgrsync.MgrSyncStatus;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
@@ -138,9 +139,8 @@ public class ProductSyncManager {
                 for (Channel channel : product.getMandatoryChannels()) {
                     labels.add(channel.getLabel());
                 }
-                ScheduleRepoSyncEvent event =
-                        new ScheduleRepoSyncEvent(labels, user.getId());
-                MessageQueue.publish(event);
+
+                ActorManager.tell(new ScheduleRepoSyncActor.Message(labels, user.getId()));
             }
             catch (ContentSyncException ex) {
                 throw new ProductSyncException(ex.getMessage());
