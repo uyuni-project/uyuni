@@ -29,7 +29,7 @@ public class InputValidatorTest extends TestCase {
 
     private static final String HOST_ERROR_MESSAGE = "Invalid host name.";
     private static final String USER_ERROR_MESSAGE = "Non-valid user. Allowed characters" +
-            " are: letters, numbers, '.', '\\' and '/'";
+            " are: letters, numbers, '.', '\\', '-' and '_'";
     private static final String PORT_ERROR_MESSAGE = "Port must be a number within range" +
             " 1-65535.";
 
@@ -46,10 +46,50 @@ public class InputValidatorTest extends TestCase {
     }
 
     /**
+     * Test the check for user with letters and numbers.
+     */
+    public void testValidateBootstrapInputUserLettersNumbers() {
+        String json = "{user: 'Admin1', host: 'host.domain.com'}";
+        BootstrapHostsJson input = MinionsAPI.GSON.fromJson(json, BootstrapHostsJson.class);
+        List<String> validationErrors = InputValidator.INSTANCE.validateBootstrapInput(input);
+        assertTrue(validationErrors.isEmpty());
+    }
+
+    /**
+     * Test the check for user with dot.
+     */
+    public void testValidateBootstrapInputUserDot() {
+        String json = "{user: 'my.admin', host: 'host.domain.com'}";
+        BootstrapHostsJson input = MinionsAPI.GSON.fromJson(json, BootstrapHostsJson.class);
+        List<String> validationErrors = InputValidator.INSTANCE.validateBootstrapInput(input);
+        assertTrue(validationErrors.isEmpty());
+    }
+
+    /**
      * Test the check for user with backslash.
      */
     public void testValidateBootstrapInputUserBackslash() {
         String json = "{user: 'domain\\\\admin', host: 'host.domain.com'}";
+        BootstrapHostsJson input = MinionsAPI.GSON.fromJson(json, BootstrapHostsJson.class);
+        List<String> validationErrors = InputValidator.INSTANCE.validateBootstrapInput(input);
+        assertTrue(validationErrors.isEmpty());
+    }
+
+    /**
+     * Test the check for user with dash.
+     */
+    public void testValidateBootstrapInputUserDash() {
+        String json = "{user: 'my-admin', host: 'host.domain.com'}";
+        BootstrapHostsJson input = MinionsAPI.GSON.fromJson(json, BootstrapHostsJson.class);
+        List<String> validationErrors = InputValidator.INSTANCE.validateBootstrapInput(input);
+        assertTrue(validationErrors.isEmpty());
+    }
+
+    /**
+     * Test the check for user with underscore.
+     */
+    public void testValidateBootstrapInputUserUnderscore() {
+        String json = "{user: 'my_admin', host: 'host.domain.com'}";
         BootstrapHostsJson input = MinionsAPI.GSON.fromJson(json, BootstrapHostsJson.class);
         List<String> validationErrors = InputValidator.INSTANCE.validateBootstrapInput(input);
         assertTrue(validationErrors.isEmpty());
