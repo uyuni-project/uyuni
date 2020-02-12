@@ -33,6 +33,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
 /**
  * Singleton class, validates and save formulas' data.
  */
@@ -53,13 +54,13 @@ public class FormulaManager {
      *
      * @return instance
      */
-
     public static synchronized FormulaManager getInstance() {
         if (instance == null) {
             instance = new FormulaManager();
         }
         return instance;
     }
+
     /**
      * This method is only for testing purpose.
      * @param saltServiceIn to set
@@ -305,7 +306,6 @@ public class FormulaManager {
      */
     public boolean hasGroupFormulaAssigned(String formulaName, Long groupId) {
         return FormulaFactory.getFormulasByGroupId(groupId).contains(formulaName);
-
     }
 
     /**
