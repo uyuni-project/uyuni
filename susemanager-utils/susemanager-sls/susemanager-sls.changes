@@ -1,3 +1,5 @@
+- Do not workaround util.syncmodules for SSH minions (bsc#1162609)
+- Force to run util.synccustomall when triggering action chains on SSH minions (bsc#1162683).
 - Add custom 'is_payg_instance' grain when instance is PAYG and not BYOS.
 - Adapt sls file for pre-downloading in Ubuntu minions
 - sort formulas by execution order (bsc#1083326)
