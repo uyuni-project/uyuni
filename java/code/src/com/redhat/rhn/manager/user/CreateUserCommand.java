@@ -14,24 +14,10 @@
  */
 package com.redhat.rhn.manager.user;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.SortedSet;
-import java.util.regex.Pattern;
-
-import javax.mail.internet.AddressException;
-import javax.mail.internet.InternetAddress;
-
-import org.apache.commons.lang3.StringUtils;
-
 import com.redhat.rhn.common.conf.UserDefaults;
 import com.redhat.rhn.common.db.ResetPasswordFactory;
 import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.localization.LocalizationService;
-import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.common.validator.ParsedConstraint;
 import com.redhat.rhn.common.validator.ValidatorError;
 import com.redhat.rhn.domain.common.ResetPassword;
@@ -44,7 +30,21 @@ import com.redhat.rhn.domain.server.ServerGroupFactory;
 import com.redhat.rhn.domain.user.Address;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.user.UserFactory;
-import com.redhat.rhn.frontend.events.NewUserEvent;
+
+import com.suse.manager.tasks.ActorManager;
+import com.suse.manager.tasks.actors.NewUserActor;
+import org.apache.commons.lang3.StringUtils;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.SortedSet;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
+import javax.mail.internet.AddressException;
+import javax.mail.internet.InternetAddress;
 
 /**
  * A command to create or edit users
@@ -104,18 +104,13 @@ public class CreateUserCommand {
      * might be encrypted, thus useless for this method
      */
     public void publishNewUserEvent(User accountCreator,
-                                    List admins,
+                                    List<User> admins,
                                     String domain,
                                     String password) {
-        NewUserEvent userevt = new NewUserEvent();
-        userevt.setAccountCreator(accountCreator);
-        userevt.setAdmins(admins);
         ResetPassword rp = ResetPasswordFactory.createNewEntryFor(this.user);
         String link = ResetPasswordFactory.generateLink(rp);
-        userevt.setLink(link);
-        userevt.setDomain(domain);
-        userevt.setUser(this.user);
-        MessageQueue.publish(userevt);
+        List<String> emails = admins.stream().map(admin -> admin.getEmail()).collect(Collectors.toList());
+        ActorManager.tell(new NewUserActor.Message(accountCreator.getId(), link, domain, emails, user.getId()));
     }
 
     /**

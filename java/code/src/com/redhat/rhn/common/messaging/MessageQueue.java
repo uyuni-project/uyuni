@@ -16,8 +16,6 @@
 package com.redhat.rhn.common.messaging;
 
 
-import com.redhat.rhn.frontend.events.NewUserAction;
-import com.redhat.rhn.frontend.events.NewUserEvent;
 import com.redhat.rhn.frontend.events.ScheduleRepoSyncAction;
 import com.redhat.rhn.frontend.events.ScheduleRepoSyncEvent;
 import com.redhat.rhn.frontend.events.SsmChangeBaseChannelSubscriptionsAction;
@@ -261,7 +259,6 @@ public class MessageQueue {
         // If we develop a large set of MessageEvents we may want to
         // refactor this block out into a class or method that
         // reads in some configuration from an XML file somewhere
-        MessageQueue.registerAction(new NewUserAction(), NewUserEvent.class);
 
         // Used to allow SSM channel changes to be run asynchronously
         MessageQueue.registerAction(new SsmChangeBaseChannelSubscriptionsAction(),
