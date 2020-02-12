@@ -16,8 +16,6 @@
 package com.redhat.rhn.common.messaging;
 
 
-import com.redhat.rhn.frontend.events.NewCloneErrataAction;
-import com.redhat.rhn.frontend.events.NewCloneErrataEvent;
 import com.redhat.rhn.frontend.events.NewUserAction;
 import com.redhat.rhn.frontend.events.NewUserEvent;
 import com.redhat.rhn.frontend.events.ScheduleRepoSyncAction;
@@ -30,8 +28,6 @@ import com.redhat.rhn.frontend.events.SsmConfigFilesAction;
 import com.redhat.rhn.frontend.events.SsmConfigFilesEvent;
 import com.redhat.rhn.frontend.events.SsmDeleteServersAction;
 import com.redhat.rhn.frontend.events.SsmDeleteServersEvent;
-import com.redhat.rhn.frontend.events.SsmErrataAction;
-import com.redhat.rhn.frontend.events.SsmErrataEvent;
 import com.redhat.rhn.frontend.events.SsmInstallPackagesAction;
 import com.redhat.rhn.frontend.events.SsmInstallPackagesEvent;
 import com.redhat.rhn.frontend.events.SsmPowerManagementAction;
@@ -289,12 +285,6 @@ public class MessageQueue {
         // Used to allow SSM power management actions to be run asynchronously
         MessageQueue.registerAction(new SsmPowerManagementAction(),
             SsmPowerManagementEvent.class);
-
-        //Clone Errata into a channel
-        MessageQueue.registerAction(new NewCloneErrataAction(),
-                                    NewCloneErrataEvent.class);
-        MessageQueue.registerAction(new SsmErrataAction(),
-                                    SsmErrataEvent.class);
 
         // Asynchronously schedule immediate repo sync
         MessageQueue.registerAction(new ScheduleRepoSyncAction(),

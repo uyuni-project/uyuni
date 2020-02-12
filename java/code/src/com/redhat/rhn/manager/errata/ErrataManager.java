@@ -17,6 +17,13 @@
  */
 package com.redhat.rhn.manager.errata;
 
+import static java.util.Arrays.asList;
+import static java.util.stream.Collectors.toCollection;
+import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.toMap;
+import static java.util.stream.Collectors.toSet;
+import static java.util.stream.Stream.concat;
+
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.db.datasource.DataResult;
@@ -26,7 +33,6 @@ import com.redhat.rhn.common.db.datasource.WriteMode;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.localization.LocalizationService;
-import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionChain;
@@ -56,7 +62,6 @@ import com.redhat.rhn.frontend.dto.OwnedErrata;
 import com.redhat.rhn.frontend.dto.PackageDto;
 import com.redhat.rhn.frontend.dto.PackageOverview;
 import com.redhat.rhn.frontend.dto.SystemOverview;
-import com.redhat.rhn.frontend.events.NewCloneErrataEvent;
 import com.redhat.rhn.frontend.listview.PageControl;
 import com.redhat.rhn.frontend.xmlrpc.InvalidErrataException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidParameterException;
@@ -71,13 +76,13 @@ import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 import com.redhat.rhn.taskomatic.task.TaskConstants;
+
 import com.suse.manager.tasks.ActorManager;
 import com.suse.manager.tasks.actors.CloneErrataActor;
+import com.suse.manager.tasks.actors.NewCloneErrataActor;
 import com.suse.manager.utils.MinionServerUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
-import redstone.xmlrpc.XmlRpcClient;
-import redstone.xmlrpc.XmlRpcFault;
 
 import java.io.File;
 import java.sql.Timestamp;
@@ -98,12 +103,8 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static java.util.Arrays.asList;
-import static java.util.stream.Collectors.toCollection;
-import static java.util.stream.Collectors.toList;
-import static java.util.stream.Collectors.toMap;
-import static java.util.stream.Collectors.toSet;
-import static java.util.stream.Stream.concat;
+import redstone.xmlrpc.XmlRpcClient;
+import redstone.xmlrpc.XmlRpcFault;
 
 /**
  * ErrataManager is the singleton class used to provide business operations
@@ -1664,10 +1665,7 @@ public class ErrataManager extends BaseManager {
         Logger.getLogger(ErrataManager.class).debug("Cloning");
         ChannelFactory.lock(chan);
         for (long eid : errata) {
-            NewCloneErrataEvent neve = new NewCloneErrataEvent(chan, eid, user,
-                    inheritPackages);
-            neve.register();
-            MessageQueue.publish(neve);
+            ActorManager.tell(new NewCloneErrataActor.Message(chan.getId(), eid, user.getId(), inheritPackages));
         }
     }
 
