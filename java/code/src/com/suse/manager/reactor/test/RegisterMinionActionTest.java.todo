@@ -68,8 +68,6 @@ import com.redhat.rhn.testing.ServerTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
-import com.suse.manager.reactor.messaging.RegisterMinionEventMessage;
-import com.suse.manager.reactor.messaging.RegisterMinionEventMessageAction;
 import com.suse.manager.reactor.utils.test.RhelUtilsTest;
 import com.suse.manager.webui.controllers.utils.ContactMethodUtil;
 import com.suse.manager.webui.services.ConfigChannelSaltManager;
@@ -104,7 +102,7 @@ import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 /**
- * Tests for {@link RegisterMinionEventMessageAction}.
+ * Tests for {@link com.suse.manager.tasks.actors.RegisterMinionActor}.
  */
 public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
 

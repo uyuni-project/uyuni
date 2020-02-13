@@ -22,8 +22,8 @@ import com.redhat.rhn.domain.server.ContactMethod;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.user.User;
 
-import com.suse.manager.reactor.messaging.RegisterMinionEventMessageAction;
 import com.suse.manager.tasks.actors.ApplyStatesActor;
+import com.suse.manager.tasks.actors.RegisterMinionActor;
 import com.suse.manager.webui.services.impl.MinionPendingRegistrationService;
 import com.suse.manager.webui.services.impl.SaltSSHService;
 import com.suse.manager.webui.services.impl.SaltService;
@@ -111,7 +111,7 @@ public class SSHMinionBootstrapper extends AbstractMinionBootstrapper {
                 MinionPendingRegistrationService.addMinion(user, minionId,
                         result.getContactMethod().orElse(defaultContactMethod),
                         proxyPath);
-                getRegisterAction().registerSSHMinion(
+                RegisterMinionActor.registerSSHMinion(
                         minionId, params.getProxyId(),
                         params.getFirstActivationKey());
             }
@@ -120,11 +120,6 @@ public class SSHMinionBootstrapper extends AbstractMinionBootstrapper {
             MinionPendingRegistrationService.removeMinion(minionId);
         }
         return result;
-    }
-
-    // we want to override this in tests
-    protected RegisterMinionEventMessageAction getRegisterAction() {
-        return new RegisterMinionEventMessageAction();
     }
 
     /**

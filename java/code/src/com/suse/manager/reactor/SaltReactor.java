@@ -22,8 +22,6 @@ import com.redhat.rhn.common.messaging.EventMessage;
 import com.redhat.rhn.common.messaging.JavaMailException;
 import com.redhat.rhn.common.messaging.MessageQueue;
 
-import com.suse.manager.reactor.messaging.RegisterMinionEventMessage;
-import com.suse.manager.reactor.messaging.RegisterMinionEventMessageAction;
 import com.suse.manager.reactor.messaging.SystemIdGenerateEventMessage;
 import com.suse.manager.reactor.messaging.SystemIdGenerateEventMessageAction;
 import com.suse.manager.tasks.ActorManager;
@@ -36,6 +34,7 @@ import com.suse.manager.tasks.actors.MinionStartEventActor;
 import com.suse.manager.tasks.actors.PkgsetBeaconActor;
 import com.suse.manager.tasks.actors.RefreshGeneratedSaltFilesActor;
 import com.suse.manager.tasks.actors.VirtpollerBeaconActor;
+import com.suse.manager.tasks.actors.RegisterMinionActor;
 import com.suse.manager.utils.MailHelper;
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.utils.salt.ImageDeployedEvent;
@@ -81,8 +80,6 @@ public class SaltReactor {
      */
     public void start() {
         // Configure message queue to handle minion registrations
-        MessageQueue.registerAction(new RegisterMinionEventMessageAction(),
-                RegisterMinionEventMessage.class);
         MessageQueue.registerAction(new SystemIdGenerateEventMessageAction(),
                 SystemIdGenerateEventMessage.class);
 
@@ -178,10 +175,9 @@ public class SaltReactor {
 
     private Stream<EventMessage> eventToMessages(Event event) {
         // Setup handlers for different event types
-        return MinionStartEvent.parse(event).map(this::eventToMessages).orElseGet(() ->
-               SystemIdGenerateEvent.parse(event).map(this::eventToMessages).orElseGet(() ->
+        return SystemIdGenerateEvent.parse(event).map(this::eventToMessages).orElseGet(() ->
                empty()
-        ));
+        );
     }
 
     /**
@@ -223,29 +219,14 @@ public class SaltReactor {
      * @param minionStartEvent minion start event
      * @return event handler runnable
      */
-    private Stream<EventMessage> eventToMessages(MinionStartEvent minionStartEvent) {
-        String minionId = (String) minionStartEvent.getData().get("id");
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("Trigger start and registration for minion: " + minionId);
-        }
-        return of(
-            new RegisterMinionEventMessage(minionId)
-        );
-    }
-
-    /**
-     * Trigger registration on minion start events.
-     *
-     * @param minionStartEvent minion start event
-     * @return event handler runnable
-     */
     private Stream<Command> eventToCommands(MinionStartEvent minionStartEvent) {
         String minionId = (String) minionStartEvent.getData().get("id");
         if (LOG.isDebugEnabled()) {
             LOG.debug("Trigger start and registration for minion: " + minionId);
         }
         return of(
-            new MinionStartEventActor.Message(minionId)
+            new MinionStartEventActor.Message(minionId),
+            new RegisterMinionActor.Message(minionId)
         );
     }
 

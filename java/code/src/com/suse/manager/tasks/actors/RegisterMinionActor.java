@@ -1,26 +1,6 @@
-/**
- * Copyright (c) 2015--2020 SUSE LLC
- *
- * This software is licensed to you under the GNU General Public License,
- * version 2 (GPLv2). There is NO WARRANTY for this software, express or
- * implied, including the implied warranties of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
- * along with this software; if not, see
- * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
- *
- * Red Hat trademarks are not licensed under GPLv2. No permission is
- * granted to use or replicate Red Hat trademarks that are incorporated
- * in this software or its documentation.
- */
-package com.suse.manager.reactor.messaging;
+package com.suse.manager.tasks.actors;
 
-import static com.suse.manager.webui.controllers.utils.ContactMethodUtil.isSSHPushContactMethod;
-import static java.util.Optional.empty;
-import static java.util.Optional.of;
-import static java.util.Optional.ofNullable;
-
-import com.redhat.rhn.common.messaging.EventMessage;
-import com.redhat.rhn.common.messaging.MessageAction;
+import akka.actor.typed.Behavior;
 import com.redhat.rhn.common.util.RpmVersionComparator;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelArch;
@@ -33,15 +13,7 @@ import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.product.SUSEProduct;
 import com.redhat.rhn.domain.role.RoleFactory;
-import com.redhat.rhn.domain.server.ContactMethod;
-import com.redhat.rhn.domain.server.ManagedServerGroup;
-import com.redhat.rhn.domain.server.MinionServer;
-import com.redhat.rhn.domain.server.MinionServerFactory;
-import com.redhat.rhn.domain.server.Server;
-import com.redhat.rhn.domain.server.ServerFactory;
-import com.redhat.rhn.domain.server.ServerGroupFactory;
-import com.redhat.rhn.domain.server.ServerHistoryEvent;
-import com.redhat.rhn.domain.server.ServerPath;
+import com.redhat.rhn.domain.server.*;
 import com.redhat.rhn.domain.token.ActivationKey;
 import com.redhat.rhn.domain.token.ActivationKeyFactory;
 import com.redhat.rhn.domain.user.User;
@@ -49,10 +21,11 @@ import com.redhat.rhn.frontend.dto.EssentialChannelDto;
 import com.redhat.rhn.manager.distupgrade.DistUpgradeManager;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.system.SystemManager;
-
+import com.suse.manager.reactor.messaging.RegistrationUtils;
 import com.suse.manager.reactor.utils.ValueMap;
+import com.suse.manager.tasks.Actor;
 import com.suse.manager.tasks.ActorManager;
-import com.suse.manager.tasks.actors.ApplyStatesActor;
+import com.suse.manager.tasks.Command;
 import com.suse.manager.webui.services.SaltStateGeneratorService;
 import com.suse.manager.webui.services.impl.MinionPendingRegistrationService;
 import com.suse.manager.webui.services.impl.SaltService;
@@ -66,58 +39,59 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
-/**
- * Event handler to create system records for salt minions.
- */
-public class RegisterMinionEventMessageAction implements MessageAction {
+import static akka.actor.typed.javadsl.Behaviors.*;
+import static com.redhat.rhn.frontend.events.TransactionHelper.handlingTransaction;
+import static com.suse.manager.reactor.SaltReactor.THREAD_POOL_SIZE;
+import static com.suse.manager.webui.controllers.utils.ContactMethodUtil.isSSHPushContactMethod;
+import static java.util.Optional.empty;
+import static java.util.Optional.of;
+import static java.util.Optional.ofNullable;
 
-    // Logger for this class
-    private static final Logger LOG = Logger.getLogger(
-            RegisterMinionEventMessageAction.class);
+public class RegisterMinionActor implements Actor {
 
+    private final static Logger LOG = Logger.getLogger(RegisterMinionActor.class);
     // Reference to the SaltService instance
-    private final SaltService SALT_SERVICE;
-
+    private static final SaltService SALT_SERVICE = SaltService.INSTANCE;
     private static final String FQDN = "fqdn";
     private static final String TERMINALS_GROUP_NAME = "TERMINALS";
 
-    /**
-     * Default constructor.
-     */
-    public RegisterMinionEventMessageAction() {
-        this(SaltService.INSTANCE);
-    }
-
-    /**
-     * Constructor taking a {@link SaltService} instance.
-     *
-     * @param saltService the salt service to use
-     */
-    public RegisterMinionEventMessageAction(SaltService saltService) {
-        SALT_SERVICE = saltService;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public void execute(EventMessage msg) {
-        registerMinion(((RegisterMinionEventMessage) msg).getMinionId(), false,
-                empty(), empty());
+    public int getMaxParallelWorkers() {
+        return THREAD_POOL_SIZE;
     }
+
+    public static class Message implements Command {
+        private final String minionId;
+
+        public Message(String minionId) {
+            this.minionId = minionId;
+        }
+    }
+
+    public Behavior<Command> create() {
+        return setup(context -> receive(Command.class)
+                .onMessage(Message.class, message -> onMessage(message))
+                .build());
+    }
+
+    private Behavior<Command> onMessage(Message message) {
+        handlingTransaction(() -> execute(message), getExceptionHandler());
+        return same();
+    }
+
+    public void execute(Message msg) {
+        LOG.debug("processing RegisterMinionActor for minion" + msg.minionId);
+        registerMinion(msg.minionId);
+    }
+
+    public static void registerMinion(String minionId){
+        registerMinion(minionId, false, empty(), empty());
+    }
+
 
     /**
      * Temporary HACK: Run the registration for a minion with given id.
@@ -127,11 +101,10 @@ public class RegisterMinionEventMessageAction implements MessageAction {
      *                              If left empty, activation key from grains will be used.
      * @param proxyId the proxy to which the minion connects, if any
      */
-    public void registerSSHMinion(String minionId, Optional<Long> proxyId,
+    public static void registerSSHMinion(String minionId, Optional<Long> proxyId,
                                   Optional<String> activationKeyOverride) {
         registerMinion(minionId, true, proxyId, activationKeyOverride);
     }
-
 
     /**
      * Performs minion registration.
@@ -141,7 +114,7 @@ public class RegisterMinionEventMessageAction implements MessageAction {
      * @param actKeyOverride label of activation key to be applied to the system.
      *                              If left empty, activation key from grains will be used.
      */
-    private void registerMinion(String minionId, boolean isSaltSSH,
+    private static void registerMinion(String minionId, boolean isSaltSSH,
                                 Optional<Long> saltSSHProxyId,
                                 Optional<String> actKeyOverride) {
 
@@ -192,7 +165,7 @@ public class RegisterMinionEventMessageAction implements MessageAction {
         );
     }
 
-    private void reactivateSystem(String minionId, String machineId, Optional<User> creator,
+    private static void reactivateSystem(String minionId, String machineId, Optional<User> creator,
             ValueMap grains, Optional<ActivationKey> reactivationKey) {
         // The machine id may have changed, but we know from the reactivation key
         // which system should become this one
@@ -213,7 +186,7 @@ public class RegisterMinionEventMessageAction implements MessageAction {
      * @param grains grains of the minion
      * @return true if minion already registered, false otherwise
      */
-    public boolean checkIfMinionAlreadyRegistered(String minionId,
+    public static boolean checkIfMinionAlreadyRegistered(String minionId,
                                                   String machineId,
                                                   Optional<User> creator,
                                                   boolean isSaltSSH, ValueMap grains) {
@@ -266,7 +239,7 @@ public class RegisterMinionEventMessageAction implements MessageAction {
      * @param isSaltSSH true if a salt-ssh system is bootstrapped
      * @param grains grains from the minion
      */
-    public void finalizeMinionRegistration(String minionId,
+    public static void finalizeMinionRegistration(String minionId,
                                            String machineId,
                                            Optional<User> creator,
                                            Optional<Long> saltSSHProxyId,
@@ -386,7 +359,7 @@ public class RegisterMinionEventMessageAction implements MessageAction {
         }
     }
 
-    private void migrateMinionFormula(String minionId, Optional<String> originalMinionId) {
+    private static void migrateMinionFormula(String minionId, Optional<String> originalMinionId) {
         // after everything is done, if minionId has changed, we want to put the formula data
         // to the correct location on the FS
         originalMinionId.ifPresent(oldId -> {
@@ -417,7 +390,7 @@ public class RegisterMinionEventMessageAction implements MessageAction {
      * @param grains the grains
      * @return HW addresses
      */
-    private Set<String> extractHwAddresses(ValueMap grains) {
+    private static Set<String> extractHwAddresses(ValueMap grains) {
         Map<String, String> hwInterfaces = (Map<String, String>) grains
                 .get("hwaddr_interfaces").orElse(Collections.emptyMap());
         return hwInterfaces.values().stream()
@@ -432,7 +405,7 @@ public class RegisterMinionEventMessageAction implements MessageAction {
      * @param activationKeyOverride optional label of activation key to be applied to the system
      * @return
      */
-    private Optional<String> getActivationKeyLabelFromGrains(ValueMap grains, Optional<String> activationKeyOverride) {
+    private static Optional<String> getActivationKeyLabelFromGrains(ValueMap grains, Optional<String> activationKeyOverride) {
         //apply activation key properties that can be set before saving the server
         Optional<String> activationKeyFromGrains = grains
                 .getMap("susemanager")
@@ -446,14 +419,14 @@ public class RegisterMinionEventMessageAction implements MessageAction {
      * @param grains
      * @return
      */
-    private Optional<String> getManagementKeyLabelFromGrains(ValueMap grains) {
+    private static Optional<String> getManagementKeyLabelFromGrains(ValueMap grains) {
         //apply management key properties that can be set before saving the server
         return grains.getMap("susemanager")
                 .flatMap(suma -> suma.getOptionalAsString("management_key"));
     }
 
 
-    private boolean isRetailMinion(MinionServer registeredMinion) {
+    private static boolean isRetailMinion(MinionServer registeredMinion) {
         // for now, a retail minion is detected when it belongs to a compulsory "TERMINALS" group
         return registeredMinion.getManagedGroups().stream()
                 .anyMatch(group -> group.getName().equals(TERMINALS_GROUP_NAME));
@@ -468,7 +441,7 @@ public class RegisterMinionEventMessageAction implements MessageAction {
      * @param org - the organization in which minion is to be registered
      * @param grains - grains
      */
-    private void prepareRetailMinionForSaltboot(MinionServer minion, Org org, ValueMap grains) {
+    private static void prepareRetailMinionForSaltboot(MinionServer minion, Org org, ValueMap grains) {
         Optional<String> manufacturer = grains.getOptionalAsString("manufacturer");
         Optional<String> productName = grains.getOptionalAsString("productname");
         Optional<String> branchId = grains.getOptionalAsString("minion_id_prefix");
@@ -508,7 +481,7 @@ public class RegisterMinionEventMessageAction implements MessageAction {
         minion.asMinionServer().ifPresent(SaltStateGeneratorService.INSTANCE::generatePillar);
     }
 
-    private void applySaltboot(MinionServer minion) {
+    private static void applySaltboot(MinionServer minion) {
         List<String> states = new ArrayList<>();
         states.add(ApplyStatesActor.SYNC_STATES);
         states.add(ApplyStatesActor.SALTBOOT);
@@ -527,7 +500,7 @@ public class RegisterMinionEventMessageAction implements MessageAction {
      * @param grains the grains
      * @return a migrated or new MinionServer instance
      */
-    private MinionServer migrateOrCreateSystem(String minionId,
+    private static MinionServer migrateOrCreateSystem(String minionId,
             boolean isSaltSSH,
             Optional<String> activationKeyOverride,
             String machineId,
@@ -591,7 +564,7 @@ public class RegisterMinionEventMessageAction implements MessageAction {
             }).orElseGet(() -> findMatchingEmptyProfiles(fqdn, hwAddrs).orElseGet(MinionServer::new));
     }
 
-    private Optional<MinionServer> findMatchingEmptyProfiles(Optional<String> hostname, Set<String> hwAddrs) {
+    private static Optional<MinionServer> findMatchingEmptyProfiles(Optional<String> hostname, Set<String> hwAddrs) {
         List<MinionServer> matchingEmptyProfiles = SystemManager.findMatchingEmptyProfiles(hostname, hwAddrs);
         if (matchingEmptyProfiles.isEmpty()) {
             return empty();
@@ -610,7 +583,7 @@ public class RegisterMinionEventMessageAction implements MessageAction {
      * @param minionId the minion id to check
      * @return true if a MinionServer with the same id already exists
      */
-    private boolean duplicateMinionNamePresent(String minionId) {
+    private static boolean duplicateMinionNamePresent(String minionId) {
         return MinionServerFactory
                 .findByMinionId(minionId)
                 .map(duplicateMinion -> {
@@ -625,7 +598,7 @@ public class RegisterMinionEventMessageAction implements MessageAction {
                 .isPresent();
     }
 
-    private void setServerPaths(MinionServer server, String master,
+    private static void setServerPaths(MinionServer server, String master,
                                 boolean isSaltSSH, Optional<Long> saltSSHProxyId) {
         if (isSaltSSH) {
             saltSSHProxyId
@@ -645,7 +618,7 @@ public class RegisterMinionEventMessageAction implements MessageAction {
         }
     }
 
-    private void giveCapabilities(MinionServer server) {
+    private static void giveCapabilities(MinionServer server) {
         // Salt systems always have the script.run capability
         SystemManager.giveCapability(server.getId(), SystemManager.CAP_SCRIPT_RUN, 1L);
 
@@ -665,7 +638,7 @@ public class RegisterMinionEventMessageAction implements MessageAction {
                 SystemManager.CAP_CONFIGFILES_UPLOAD, 1L);
     }
 
-    private ContactMethod getContactMethod(Optional<ActivationKey> activationKey,
+    private static ContactMethod getContactMethod(Optional<ActivationKey> activationKey,
             boolean isSshPush,
             String minionId) {
         return Opt.fold(
@@ -702,23 +675,23 @@ public class RegisterMinionEventMessageAction implements MessageAction {
         return baseChannel;
     }
 
-    private Optional<String> rpmErrQueryRHELProvidesRelease(String minionId) {
+    private static Optional<String> rpmErrQueryRHELProvidesRelease(String minionId) {
         LOG.error("No package providing 'redhat-release' found on RHEL minion " + minionId);
         return empty();
     }
 
-    private Optional<String> rpmErrQueryRHELRelease(SaltError err, String minionId) {
+    private static Optional<String> rpmErrQueryRHELRelease(SaltError err, String minionId) {
         LOG.error("Error querying 'redhat-release' package on RHEL minion " +
                 minionId + ": " + err);
         return empty();
     }
 
-    private String unknownRHELVersion(String minionId) {
+    private static String unknownRHELVersion(String minionId) {
         LOG.error("Could not determine OS release version for RHEL minion " + minionId);
         return "unknown";
     }
 
-    private Map<String, List<String>> parseRHELReleseQuery(String result) {
+    private static Map<String, List<String>> parseRHELReleseQuery(String result) {
         // Split the result into 3-line chunks per installed package version
         String[] resultLines = result.split("\\r?\\n");
         List<List<String>> resultItems = new ArrayList<>();
@@ -742,7 +715,7 @@ public class RegisterMinionEventMessageAction implements MessageAction {
                 .get();
     }
 
-    private String getOsRelease(String minionId, ValueMap grains) {
+    private static String getOsRelease(String minionId, ValueMap grains) {
         // java port of up2dataUtils._getOSVersionAndRelease()
         String osRelease = grains.getValueAsString("osrelease");
 
@@ -807,7 +780,7 @@ public class RegisterMinionEventMessageAction implements MessageAction {
                                         "Multiple versions of release package '%s' is installed on minion: %s",
                                         pkg, minionId));
                             }
-                            return this.parseRHELReleseQuery(result);
+                            return parseRHELReleseQuery(result);
                         })
                         .map(pkgtags -> {
                             Optional<String> version = Optional
@@ -832,7 +805,7 @@ public class RegisterMinionEventMessageAction implements MessageAction {
         return osRelease;
     }
 
-    private void mapHardwareGrains(MinionServer server, ValueMap grains) {
+    private static void mapHardwareGrains(MinionServer server, ValueMap grains) {
         // for efficiency do this here
         server.setRam(grains.getValueAsLong("mem_total").orElse(0L));
     }
@@ -840,12 +813,7 @@ public class RegisterMinionEventMessageAction implements MessageAction {
     /**
      * {@inheritDoc}
      */
-    @Override
-    public boolean canRunConcurrently() {
-        return true;
-    }
 
-    @Override
     public Consumer<Exception> getExceptionHandler() {
         return e -> {
             if (e instanceof RegisterMinionException) {
@@ -868,7 +836,7 @@ public class RegisterMinionEventMessageAction implements MessageAction {
     /**
      * Represents an Exception during the registration process.
      */
-    public class RegisterMinionException extends RuntimeException {
+    public static class RegisterMinionException extends RuntimeException {
         private String minionId;
         private Org org;
         RegisterMinionException(String minionIdIn, Org orgIn) {

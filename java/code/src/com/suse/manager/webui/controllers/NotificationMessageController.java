@@ -28,8 +28,7 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
-import com.suse.manager.reactor.messaging.RegisterMinionEventMessage;
-import com.suse.manager.reactor.messaging.RegisterMinionEventMessageAction;
+import com.suse.manager.tasks.actors.RegisterMinionActor;
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.utils.gson.NotificationMessageJson;
 import com.suse.manager.webui.websocket.Notification;
@@ -210,8 +209,7 @@ public class NotificationMessageController {
         String severity = "success";
         String resultMessage = "Onboarding restarted of the minioniId '%s'";
 
-        RegisterMinionEventMessageAction action = new RegisterMinionEventMessageAction(SaltService.INSTANCE);
-        action.execute(new RegisterMinionEventMessage(minionId));
+        RegisterMinionActor.registerMinion(minionId);
 
         Map<String, String> data = new HashMap<>();
         data.put("severity", severity);
