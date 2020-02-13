@@ -438,17 +438,6 @@ public class JobReturnEventMessageAction implements MessageAction {
     }
 
     /**
-     * Find the action id corresponding to a given job return event in the job metadata.
-     *
-     * @param event the job return event
-     * @return the corresponding action id or empty optional
-     */
-    private Optional<Long> getActionId(JobReturnEvent event) {
-        return event.getData().getMetadata(ScheduleMetadata.class).map(
-            ScheduleMetadata::getSumaActionId);
-    }
-
-    /**
      * Lookup the metadata to check if minion was restarted
      * @return
      */
