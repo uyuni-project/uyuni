@@ -1,3 +1,6 @@
+- disable globbing for api subcommand to allow wildcards in filter
+  settings
+
 -------------------------------------------------------------------
 Thu Jan 30 14:47:39 CET 2020 - jgonzalez@suse.com
 
