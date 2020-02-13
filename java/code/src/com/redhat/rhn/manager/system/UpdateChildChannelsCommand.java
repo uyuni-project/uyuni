@@ -14,9 +14,10 @@
  */
 package com.redhat.rhn.manager.system;
 
+import static java.util.Collections.emptyList;
+
 import com.redhat.rhn.FaultException;
 import com.redhat.rhn.common.hibernate.LookupException;
-import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.common.validator.ValidatorError;
 import com.redhat.rhn.domain.channel.Channel;
@@ -28,13 +29,13 @@ import com.redhat.rhn.frontend.xmlrpc.InvalidChannelException;
 import com.redhat.rhn.frontend.xmlrpc.PermissionCheckFailureException;
 import com.redhat.rhn.manager.channel.ChannelManager;
 
-import com.suse.manager.reactor.messaging.ChannelsChangedEventMessage;
-
+import com.suse.manager.tasks.ActorManager;
+import com.suse.manager.tasks.actors.ChannelsChangedActor;
 import org.apache.log4j.Logger;
 
 import java.util.ArrayList;
-import java.util.Set;
 import java.util.List;
+import java.util.Set;
 
 
 /**
@@ -111,9 +112,7 @@ public class UpdateChildChannelsCommand extends BaseUpdateChannelCommand {
         unsubscribeFromOldChannels(user, remove, server);
 
         if (!isSkipChannelChangedEvent()) {
-            MessageQueue.publish(new ChannelsChangedEventMessage(
-                    server.getId(), user.getId(), null,
-                    isScheduleApplyChannelsState()));
+            ActorManager.defer(new ChannelsChangedActor.Message(server.getId(), user.getId(), emptyList(), isScheduleApplyChannelsState()));
         }
         super.store();
 

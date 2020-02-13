@@ -14,10 +14,11 @@
  */
 package com.redhat.rhn.manager.ssm;
 
+import static java.util.Collections.emptyList;
+
 import com.redhat.rhn.common.db.datasource.CallableMode;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
-import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionChain;
 import com.redhat.rhn.domain.channel.Channel;
@@ -36,9 +37,10 @@ import com.redhat.rhn.manager.channel.ChannelManager;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.rhnset.RhnSetManager;
 import com.redhat.rhn.manager.system.SystemManager;
-
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
-import com.suse.manager.reactor.messaging.ChannelsChangedEventMessage;
+
+import com.suse.manager.tasks.ActorManager;
+import com.suse.manager.tasks.actors.ChannelsChangedActor;
 import com.suse.manager.webui.utils.gson.SsmBaseChannelChangesDto;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -96,7 +98,7 @@ public class SsmManager {
             }
         }
         for (Long sid : serverChannelsChanged) {
-            MessageQueue.publish(new ChannelsChangedEventMessage(sid, user.getId()));
+            ActorManager.defer(new ChannelsChangedActor.Message(sid, user.getId(), emptyList(), false));
         }
     }
 

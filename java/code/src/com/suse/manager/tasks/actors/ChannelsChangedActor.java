@@ -1,21 +1,10 @@
-/**
- * Copyright (c) 2015 SUSE LLC
- *
- * This software is licensed to you under the GNU General Public License,
- * version 2 (GPLv2). There is NO WARRANTY for this software, express or
- * implied, including the implied warranties of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
- * along with this software; if not, see
- * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
- *
- * Red Hat trademarks are not licensed under GPLv2. No permission is
- * granted to use or replicate Red Hat trademarks that are incorporated
- * in this software or its documentation.
- */
-package com.suse.manager.reactor.messaging;
+package com.suse.manager.tasks.actors;
 
-import com.redhat.rhn.common.messaging.EventMessage;
-import com.redhat.rhn.common.messaging.MessageAction;
+import static akka.actor.typed.javadsl.Behaviors.receive;
+import static akka.actor.typed.javadsl.Behaviors.same;
+import static akka.actor.typed.javadsl.Behaviors.setup;
+import static com.redhat.rhn.frontend.events.TransactionHelper.handlingTransaction;
+
 import com.redhat.rhn.domain.action.salt.ApplyStatesAction;
 import com.redhat.rhn.domain.channel.AccessTokenFactory;
 import com.redhat.rhn.domain.rhnpackage.Package;
@@ -31,6 +20,9 @@ import com.redhat.rhn.manager.errata.ErrataManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
+import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
+import com.suse.manager.tasks.Actor;
+import com.suse.manager.tasks.Command;
 import com.suse.manager.webui.services.SaltStateGeneratorService;
 import org.apache.log4j.Logger;
 
@@ -40,24 +32,45 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-/**
- * Handle changes of channel assignments on minions: trigger a refresh of the errata cache,
- * regenerate pillar data and propagate the changes to the minion via state application.
- */
-public class ChannelsChangedEventMessageAction implements MessageAction {
+import akka.actor.typed.Behavior;
 
-    private static Logger log = Logger.getLogger(ChannelsChangedEventMessageAction.class);
+public class ChannelsChangedActor implements Actor {
+
+    private final static Logger LOG = Logger.getLogger(ChannelsChangedActor.class);
 
     private static final TaskomaticApi TASKOMATIC_API = new TaskomaticApi();
 
-    @Override
-    public void execute(EventMessage event) {
-        ChannelsChangedEventMessage msg = (ChannelsChangedEventMessage) event;
-        long serverId = msg.getServerId();
+    public static class Message implements Command {
+        private final long serverId;
+        private final Long userId;
+        private final List<Long> accessTokenIds;
+        private final boolean scheduleApplyChannelsState;
+
+        public Message(long serverId, Long userId, List<Long> accessTokenIds, boolean scheduleApplyChannelsState) {
+            this.serverId = serverId;
+            this.userId = userId;
+            this.accessTokenIds = accessTokenIds;
+            this.scheduleApplyChannelsState = scheduleApplyChannelsState;
+        }
+    }
+
+    public Behavior<Command> create() {
+        return setup(context -> receive(Command.class)
+                .onMessage(Message.class, message -> onMessage(message))
+                .build());
+    }
+
+    private Behavior<Command> onMessage(Message message) {
+        handlingTransaction(() -> execute(message));
+        return same();
+    }
+
+    public void execute(Message msg) {
+        long serverId = msg.serverId;
 
         Server s = ServerFactory.lookupById(serverId);
         if (s == null) {
-            log.error("Server with id " + serverId + " not found.");
+            LOG.error("Server with id " + serverId + " not found.");
             return;
         }
         List<Package> prodPkgs =
@@ -72,22 +85,20 @@ public class ChannelsChangedEventMessageAction implements MessageAction {
             // Regenerate the pillar data
             SaltStateGeneratorService.INSTANCE.generatePillar(minion,
                     true,
-                    msg.getAccessTokenIds() != null ?
-                            msg.getAccessTokenIds().stream()
-                                    .map(tokenId -> AccessTokenFactory.lookupById(tokenId)
-                                            .orElseThrow(() ->
-                                                    new RuntimeException(
-                                                            "AccessToken not found id=" + msg.getServerId())))
-                                    .collect(Collectors.toList()) :
-                            Collections.emptyList()
-                    );
+                    msg.accessTokenIds.stream()
+                        .map(tokenId -> AccessTokenFactory.lookupById(tokenId)
+                                .orElseThrow(() ->
+                                        new RuntimeException(
+                                                "AccessToken not found id=" + msg.serverId)))
+                        .collect(Collectors.toList())
+            );
 
             // add product packages to package state
             StateFactory.addPackagesToNewStateRevision(minion,
-                    Optional.ofNullable(msg.getUserId()), prodPkgs);
+                    Optional.ofNullable(msg.userId), prodPkgs);
 
-            if (msg.isScheduleApplyChannelsState()) {
-                User user = UserFactory.lookupById(msg.getUserId());
+            if (msg.scheduleApplyChannelsState) {
+                User user = UserFactory.lookupById(msg.userId);
                 ApplyStatesAction action = ActionManager.scheduleApplyStates(user,
                         Collections.singletonList(minion.getId()),
                         Collections.singletonList(ApplyStatesEventMessage.CHANNELS),
@@ -96,7 +107,7 @@ public class ChannelsChangedEventMessageAction implements MessageAction {
                     TASKOMATIC_API.scheduleActionExecution(action, false);
                 }
                 catch (TaskomaticApiException e) {
-                    log.error("Could not schedule channels state application for system: " +
+                    LOG.error("Could not schedule channels state application for system: " +
                             s.getId());
                 }
             }
@@ -105,8 +116,8 @@ public class ChannelsChangedEventMessageAction implements MessageAction {
         if (!optMinion.isPresent()) {
             try {
                 // This code acts only on traditional systems
-                if (msg.getUserId() != null) {
-                    User user = UserFactory.lookupById(msg.getUserId());
+                if (msg.userId != null) {
+                    User user = UserFactory.lookupById(msg.userId);
                     ActionManager.schedulePackageInstall(user, prodPkgs, s, new Date());
                 }
                 else if (s.getCreator() != null) {
@@ -115,7 +126,7 @@ public class ChannelsChangedEventMessageAction implements MessageAction {
                 }
             }
             catch (TaskomaticApiException e) {
-                log.error("Could not schedule state application for system: " + s.getId());
+                LOG.error("Could not schedule state application for system: " + s.getId());
                 throw new RuntimeException(e);
             }
         }

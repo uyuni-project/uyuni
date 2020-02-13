@@ -14,6 +14,12 @@
  */
 package com.redhat.rhn.manager.system;
 
+import static com.redhat.rhn.domain.formula.FormulaFactory.PROMETHEUS_EXPORTERS;
+import static java.util.Collections.emptyList;
+import static java.util.Collections.emptySet;
+import static java.util.Collections.singleton;
+import static java.util.Optional.ofNullable;
+
 import com.redhat.rhn.common.client.ClientCertificate;
 import com.redhat.rhn.common.client.InvalidCertificateException;
 import com.redhat.rhn.common.conf.Config;
@@ -26,7 +32,6 @@ import com.redhat.rhn.common.db.datasource.WriteMode;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.localization.LocalizationService;
-import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.common.validator.ValidatorError;
 import com.redhat.rhn.common.validator.ValidatorResult;
@@ -91,13 +96,14 @@ import com.redhat.rhn.manager.kickstart.cobbler.CobblerSystemRemoveCommand;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.user.UserManager;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
-import com.suse.manager.reactor.messaging.ChannelsChangedEventMessage;
+
+import com.suse.manager.tasks.ActorManager;
+import com.suse.manager.tasks.actors.ChannelsChangedActor;
 import com.suse.manager.webui.services.SaltStateGeneratorService;
 import com.suse.manager.webui.services.impl.SaltSSHService;
 import com.suse.manager.webui.services.impl.SaltService;
-import com.suse.utils.Opt;
 import com.suse.manager.webui.utils.salt.State;
-
+import com.suse.utils.Opt;
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.log4j.Logger;
@@ -122,12 +128,6 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
-
-import static com.redhat.rhn.domain.formula.FormulaFactory.PROMETHEUS_EXPORTERS;
-import static java.util.Collections.emptyList;
-import static java.util.Collections.emptySet;
-import static java.util.Collections.singleton;
-import static java.util.Optional.ofNullable;
 
 /**
  * SystemManager
@@ -3765,9 +3765,7 @@ public class SystemManager extends BaseManager {
         childChannelsCommand.skipChannelChangedEvent(true);
         childChannelsCommand.store();
 
-        MessageQueue.publish(new ChannelsChangedEventMessage(server.getId(), user.getId(),
-                accessTokenIds));
-
+        ActorManager.defer(new ChannelsChangedActor.Message(server.getId(), user.getId(), accessTokenIds, false));
     }
 
     private static void updateLibvirtEngine(MinionServer minion) {

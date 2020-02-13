@@ -16,8 +16,6 @@
 package com.redhat.rhn.common.messaging;
 
 
-import com.suse.manager.reactor.messaging.ChannelsChangedEventMessage;
-import com.suse.manager.reactor.messaging.ChannelsChangedEventMessageAction;
 import org.apache.log4j.Logger;
 
 import java.util.ArrayList;
@@ -236,10 +234,6 @@ public class MessageQueue {
         // If we develop a large set of MessageEvents we may want to
         // refactor this block out into a class or method that
         // reads in some configuration from an XML file somewhere
-
-        // Handle changes of channel assignments on minions
-        MessageQueue.registerAction(new ChannelsChangedEventMessageAction(),
-                ChannelsChangedEventMessage.class);
     }
 }
 
