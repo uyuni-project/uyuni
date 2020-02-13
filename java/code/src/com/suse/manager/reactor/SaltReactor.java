@@ -25,15 +25,12 @@ import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
-import com.suse.manager.reactor.messaging.AbstractLibvirtEngineMessage;
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessageAction;
 import com.suse.manager.reactor.messaging.BatchStartedEventMessage;
 import com.suse.manager.reactor.messaging.BatchStartedEventMessageAction;
 import com.suse.manager.reactor.messaging.ImageDeployedEventMessage;
 import com.suse.manager.reactor.messaging.ImageDeployedEventMessageAction;
-import com.suse.manager.reactor.messaging.LibvirtEngineDomainLifecycleMessage;
-import com.suse.manager.reactor.messaging.LibvirtEngineDomainLifecycleMessageAction;
 import com.suse.manager.reactor.messaging.MinionStartEventDatabaseMessage;
 import com.suse.manager.reactor.messaging.MinionStartEventMessage;
 import com.suse.manager.reactor.messaging.MinionStartEventMessageAction;
@@ -48,6 +45,7 @@ import com.suse.manager.reactor.messaging.SystemIdGenerateEventMessageAction;
 import com.suse.manager.reactor.messaging.VirtpollerBeaconEventMessage;
 import com.suse.manager.reactor.messaging.VirtpollerBeaconEventMessageAction;
 import com.suse.manager.tasks.Command;
+import com.suse.manager.tasks.actors.LibvirtEngineActor;
 import com.suse.manager.tasks.actors.JobReturnActor;
 import com.suse.manager.utils.MailHelper;
 import com.suse.manager.webui.services.impl.SaltService;
@@ -112,8 +110,6 @@ public class SaltReactor {
                 SystemIdGenerateEventMessage.class);
         MessageQueue.registerAction(new ImageDeployedEventMessageAction(),
                 ImageDeployedEventMessage.class);
-        MessageQueue.registerAction(new LibvirtEngineDomainLifecycleMessageAction(),
-                LibvirtEngineDomainLifecycleMessage.class);
         MessageQueue.registerAction(new BatchStartedEventMessageAction(),
                 BatchStartedEventMessage.class);
 
@@ -197,9 +193,10 @@ public class SaltReactor {
 
     private Stream<Command> eventToCommands(Event event) {
         // Setup handlers for different event types
-        return JobReturnEvent.parse(event).map(this::eventToCommands).orElse(
-                empty()
-        );
+        return JobReturnEvent.parse(event).map(this::eventToCommands).orElseGet(() ->
+               EngineEvent.parse(event).map(this::eventToCommands).orElseGet(() ->
+               empty()
+        ));
     }
 
     private Stream<EventMessage> eventToMessages(Event event) {
@@ -208,10 +205,9 @@ public class SaltReactor {
                BatchStartedEvent.parse(event).map(this::eventToMessages).orElseGet(() ->
                SystemIdGenerateEvent.parse(event).map(this::eventToMessages).orElseGet(() ->
                ImageDeployedEvent.parse(event).map(this::eventToMessages).orElseGet(() ->
-               EngineEvent.parse(event).map(this::eventToMessages).orElseGet(() ->
                BeaconEvent.parse(event).map(this::eventToMessages).orElse(
                empty()
-        ))))));
+        )))));
     }
 
     /**
@@ -270,16 +266,15 @@ public class SaltReactor {
      * @param engineEvent engine event
      * @return event handler runnable
      */
-    private Stream<EventMessage> eventToMessages(EngineEvent engineEvent) {
+    private Stream<Command> eventToCommands(EngineEvent engineEvent) {
         if ("libvirt_events".equals(engineEvent.getEngine())) {
             try {
-                AbstractLibvirtEngineMessage message = AbstractLibvirtEngineMessage.create(engineEvent);
+                LibvirtEngineActor.Message message = LibvirtEngineActor.create(engineEvent);
                 if (message != null) {
                     return of(message);
                 }
                 else {
-                    LOG.debug("Unhandled libvirt engine event:" +
-                              engineEvent.getAdditional());
+                    LOG.debug("Unhandled libvirt engine event:" + engineEvent.getAdditional());
                 }
             }
             catch (IllegalArgumentException e) {
