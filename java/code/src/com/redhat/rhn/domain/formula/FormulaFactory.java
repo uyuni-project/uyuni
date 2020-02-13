@@ -74,7 +74,7 @@ public class FormulaFactory {
     private static final Logger LOG = Logger.getLogger(FormulaFactory.class);
 
     private static String dataDir = "/srv/susemanager/formula_data/";
-    private static final String METADATA_DIR_MANAGER = "/usr/share/susemanager/formulas/metadata/";
+    private static String METADATA_DIR_MANAGER = "/usr/share/susemanager/formulas/metadata/";
     private static final String METADATA_DIR_STANDALONE_SALT = "/usr/share/salt-formulas/metadata/";
     private static final String METADATA_DIR_CUSTOM = "/srv/formula_metadata/";
     private static final String PILLAR_DIR = "pillar/";
@@ -86,7 +86,6 @@ public class FormulaFactory {
     private static final String METADATA_FILE = "metadata.yml";
     private static final String PILLAR_EXAMPLE_FILE = "pillar.example";
     private static final String PILLAR_FILE_EXTENSION = "json";
-    private static String metadataDirOfficial = METADATA_DIR_MANAGER;
     private static final Gson GSON = new GsonBuilder()
             .registerTypeAdapter(Date.class, new ECMAScriptDateAdapter())
             .registerTypeAdapter(Double.class,  new JsonSerializer<Double>() {
@@ -116,7 +115,7 @@ public class FormulaFactory {
     }
 
     public static void setMetadataDirOfficial(String metadataDirPath) {
-        FormulaFactory.metadataDirOfficial = metadataDirPath;
+        FormulaFactory.METADATA_DIR_MANAGER = metadataDirPath;
     }
 
     /**
