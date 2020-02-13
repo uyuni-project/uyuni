@@ -1,29 +1,20 @@
-/**
- * Copyright (c) 2016 SUSE LLC
- *
- * This software is licensed to you under the GNU General Public License,
- * version 2 (GPLv2). There is NO WARRANTY for this software, express or
- * implied, including the implied warranties of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
- * along with this software; if not, see
- * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
- *
- * Red Hat trademarks are not licensed under GPLv2. No permission is
- * granted to use or replicate Red Hat trademarks that are incorporated
- * in this software or its documentation.
- */
-package com.suse.manager.reactor.messaging;
+package com.suse.manager.tasks.actors;
 
-import com.redhat.rhn.common.messaging.EventMessage;
-import com.redhat.rhn.common.messaging.MessageAction;
+import static akka.actor.typed.javadsl.Behaviors.receive;
+import static akka.actor.typed.javadsl.Behaviors.same;
+import static akka.actor.typed.javadsl.Behaviors.setup;
+import static com.redhat.rhn.frontend.events.TransactionHelper.handlingTransaction;
+import static com.suse.manager.reactor.SaltReactor.THREAD_POOL_SIZE;
+
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.server.ServerFactory;
 
+import com.suse.manager.tasks.Actor;
+import com.suse.manager.tasks.Command;
 import com.suse.manager.webui.utils.salt.custom.ScheduleMetadata;
-import com.suse.salt.netapi.event.BatchStartedEvent.Data;
-
+import com.suse.salt.netapi.event.BatchStartedEvent;
 import org.apache.log4j.Logger;
 
 import java.util.List;
@@ -31,16 +22,38 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
-/**
- * Handler class for {@link BatchStartedEventMessage}.
- */
-public class BatchStartedEventMessageAction implements MessageAction {
+import akka.actor.typed.Behavior;
 
-    private static final Logger LOG = Logger.getLogger(BatchStartedEventMessageAction.class);
+public class BatchStartedActor implements Actor {
+
+    private final static Logger LOG = Logger.getLogger(BatchStartedActor.class);
 
     @Override
-    public void execute(EventMessage msg) {
-        Data eventData = ((BatchStartedEventMessage) msg).getBatchStartedEvent().getData();
+    public int getMaxParallelWorkers() {
+        return THREAD_POOL_SIZE;
+    }
+
+    public static class Message implements Command {
+        private BatchStartedEvent batchStartedEvent;
+
+        public Message(BatchStartedEvent batchStartedEvent) {
+            this.batchStartedEvent = batchStartedEvent;
+        }
+    }
+
+    public Behavior<Command> create() {
+        return setup(context -> receive(Command.class)
+                .onMessage(Message.class, message -> onMessage(message))
+                .build());
+    }
+
+    private Behavior<Command> onMessage(Message message) {
+        handlingTransaction(() -> execute(message));
+        return same();
+    }
+
+    public void execute(Message msg) {
+        BatchStartedEvent.Data eventData = msg.batchStartedEvent.getData();
         List<String> downMinions = eventData.getDownMinions();
 
         if (!downMinions.isEmpty()) {
@@ -91,13 +104,5 @@ public class BatchStartedEventMessageAction implements MessageAction {
         }
         sa.fail("Minion is down");
         ActionFactory.save(sa);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean canRunConcurrently() {
-        return true;
     }
 }
