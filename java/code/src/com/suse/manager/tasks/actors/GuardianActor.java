@@ -93,7 +93,9 @@ public class GuardianActor {
                                 // make sure the workers are restarted if they fail
                                 Behaviors.supervise(behavior).onFailure(restart()));
 
-                var router = context.spawn(pool, clazz.getSimpleName() + "_pool");
+                PoolRouter<Command> hashingPool = pool.withConsistentHashingRouting(10, c -> c.routingHashString());
+
+                var router = context.spawn(actor.useHashRouting() ? hashingPool : pool, clazz.getSimpleName() + "_pool");
                 return router;
             }
             catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException | InstantiationException e) {
