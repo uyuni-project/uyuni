@@ -25,8 +25,6 @@ import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
-import com.suse.manager.reactor.messaging.ImageDeployedEventMessage;
-import com.suse.manager.reactor.messaging.ImageDeployedEventMessageAction;
 import com.suse.manager.reactor.messaging.RefreshGeneratedSaltFilesEventMessage;
 import com.suse.manager.reactor.messaging.RefreshGeneratedSaltFilesEventMessageAction;
 import com.suse.manager.reactor.messaging.RegisterMinionEventMessage;
@@ -39,6 +37,7 @@ import com.suse.manager.reactor.messaging.VirtpollerBeaconEventMessage;
 import com.suse.manager.reactor.messaging.VirtpollerBeaconEventMessageAction;
 import com.suse.manager.tasks.Command;
 import com.suse.manager.tasks.actors.BatchStartedActor;
+import com.suse.manager.tasks.actors.ImageDeployedActor;
 import com.suse.manager.tasks.actors.JobReturnActor;
 import com.suse.manager.tasks.actors.LibvirtEngineActor;
 import com.suse.manager.tasks.actors.MinionStartEventActor;
@@ -97,8 +96,6 @@ public class SaltReactor {
                 VirtpollerBeaconEventMessage.class);
         MessageQueue.registerAction(new SystemIdGenerateEventMessageAction(),
                 SystemIdGenerateEventMessage.class);
-        MessageQueue.registerAction(new ImageDeployedEventMessageAction(),
-                ImageDeployedEventMessage.class);
 
         MessageQueue.publish(new RefreshGeneratedSaltFilesEventMessage());
 
@@ -184,18 +181,18 @@ public class SaltReactor {
                BatchStartedEvent.parse(event).map(this::eventToCommands).orElseGet(() ->
                MinionStartEvent.parse(event).map(this::eventToCommands).orElseGet(() ->
                EngineEvent.parse(event).map(this::eventToCommands).orElseGet(() ->
+               ImageDeployedEvent.parse(event).map(this::eventToCommands).orElseGet(() ->
                empty()
-        ))));
+        )))));
     }
 
     private Stream<EventMessage> eventToMessages(Event event) {
         // Setup handlers for different event types
         return MinionStartEvent.parse(event).map(this::eventToMessages).orElseGet(() ->
                SystemIdGenerateEvent.parse(event).map(this::eventToMessages).orElseGet(() ->
-               ImageDeployedEvent.parse(event).map(this::eventToMessages).orElseGet(() ->
                BeaconEvent.parse(event).map(this::eventToMessages).orElse(
                empty()
-        ))));
+        )));
     }
 
     /**
@@ -227,8 +224,8 @@ public class SaltReactor {
      * @param imageDeployedEvent image deployed event
      * @return event handler runnable
      */
-    private Stream<EventMessage> eventToMessages(ImageDeployedEvent imageDeployedEvent) {
-        return of(new ImageDeployedEventMessage(imageDeployedEvent));
+    private Stream<Command> eventToCommands(ImageDeployedEvent imageDeployedEvent) {
+        return of(new ImageDeployedActor.Message(imageDeployedEvent));
     }
 
     /**
