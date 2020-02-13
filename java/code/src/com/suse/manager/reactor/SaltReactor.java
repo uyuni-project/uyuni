@@ -17,6 +17,7 @@ package com.suse.manager.reactor;
 import static java.util.stream.Stream.empty;
 import static java.util.stream.Stream.of;
 
+import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.messaging.EventMessage;
 import com.redhat.rhn.common.messaging.JavaMailException;
 import com.redhat.rhn.common.messaging.MessageQueue;
@@ -76,6 +77,7 @@ public class SaltReactor {
 
     // Reference to the SaltService instance
     private static final SaltService SALT_SERVICE = SaltService.INSTANCE;
+    public static final int THREAD_POOL_SIZE = ConfigDefaults.get().getSaltEventThreadPoolSize();
 
     // The event stream object
     private EventStream eventStream;

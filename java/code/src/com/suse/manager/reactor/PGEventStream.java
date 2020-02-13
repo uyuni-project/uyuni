@@ -57,10 +57,9 @@ public class PGEventStream extends AbstractEventStream implements PGNotification
 
     private static final Logger LOG = Logger.getLogger(PGEventStream.class);
     private static final int MAX_EVENTS_PER_COMMIT = ConfigDefaults.get().getSaltEventsPerCommit();
-    private static final int THREAD_POOL_SIZE = ConfigDefaults.get().getSaltEventThreadPoolSize();
 
     private PGConnection connection;
-    private final List<ThreadPoolExecutor> executorServices = IntStream.range(0, THREAD_POOL_SIZE + 1).mapToObj(i ->
+    private final List<ThreadPoolExecutor> executorServices = IntStream.range(0, SaltReactor.THREAD_POOL_SIZE + 1).mapToObj(i ->
         new ThreadPoolExecutor(
             1,
             1,
@@ -99,7 +98,7 @@ public class PGEventStream extends AbstractEventStream implements PGNotification
             startConnectionWatchdog();
 
             LOG.debug("Listening succeeded, making sure there is no event left in queue...");
-            notification(SaltEventFactory.countSaltEvents(THREAD_POOL_SIZE + 1));
+            notification(SaltEventFactory.countSaltEvents(SaltReactor.THREAD_POOL_SIZE + 1));
         }
         catch (SQLException e) {
             throw new SaltException(e);
@@ -123,7 +122,7 @@ public class PGEventStream extends AbstractEventStream implements PGNotification
                         // if we have any rows in suseSaltEvent that do not yet have a process task queued or executing
                         // then schedule tasks for them
                         // this can only happen in case we lost notifications somehow
-                        List<Long> allJobs = SaltEventFactory.countSaltEvents(THREAD_POOL_SIZE + 1);
+                        List<Long> allJobs = SaltEventFactory.countSaltEvents(SaltReactor.THREAD_POOL_SIZE + 1);
 
                         List<Long> queuedJobs = executorServices.stream()
                                 .map(executor -> executor.getTaskCount() - executor.getCompletedTaskCount())
@@ -164,7 +163,7 @@ public class PGEventStream extends AbstractEventStream implements PGNotification
         LOG.trace("Got notification: " + counts);
         // compute the number of jobs we need to do - each job COMMITs individually
         // jobs = events / MAX_EVENTS_PER_COMMIT (rounded up)
-        IntStream.range(0, THREAD_POOL_SIZE + 1).forEach(queue -> {
+        IntStream.range(0, SaltReactor.THREAD_POOL_SIZE + 1).forEach(queue -> {
             long jobs = (counts.get(queue) + MAX_EVENTS_PER_COMMIT - 1) / MAX_EVENTS_PER_COMMIT;
 
             // queue one handlingTransaction(processEvents) call per job

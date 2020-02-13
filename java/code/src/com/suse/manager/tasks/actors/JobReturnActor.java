@@ -4,6 +4,7 @@ import static akka.actor.typed.javadsl.Behaviors.receive;
 import static akka.actor.typed.javadsl.Behaviors.same;
 import static akka.actor.typed.javadsl.Behaviors.setup;
 import static com.redhat.rhn.frontend.events.TransactionHelper.handlingTransaction;
+import static com.suse.manager.reactor.SaltReactor.THREAD_POOL_SIZE;
 
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
@@ -49,6 +50,11 @@ import akka.actor.typed.Behavior;
 public class JobReturnActor implements Actor {
 
     private final static Logger LOG = Logger.getLogger(JobReturnActor.class);
+
+    @Override
+    public int getMaxParallelWorkers() {
+        return THREAD_POOL_SIZE;
+    }
 
     public static class Message implements Command {
         /* The underlying job return event as we get it from salt */
