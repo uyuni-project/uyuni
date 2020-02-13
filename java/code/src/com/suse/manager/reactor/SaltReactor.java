@@ -25,8 +25,6 @@ import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
-import com.suse.manager.reactor.messaging.RefreshGeneratedSaltFilesEventMessage;
-import com.suse.manager.reactor.messaging.RefreshGeneratedSaltFilesEventMessageAction;
 import com.suse.manager.reactor.messaging.RegisterMinionEventMessage;
 import com.suse.manager.reactor.messaging.RegisterMinionEventMessageAction;
 import com.suse.manager.reactor.messaging.RunnableEventMessage;
@@ -35,12 +33,14 @@ import com.suse.manager.reactor.messaging.SystemIdGenerateEventMessage;
 import com.suse.manager.reactor.messaging.SystemIdGenerateEventMessageAction;
 import com.suse.manager.reactor.messaging.VirtpollerBeaconEventMessage;
 import com.suse.manager.reactor.messaging.VirtpollerBeaconEventMessageAction;
+import com.suse.manager.tasks.ActorManager;
 import com.suse.manager.tasks.Command;
 import com.suse.manager.tasks.actors.BatchStartedActor;
 import com.suse.manager.tasks.actors.ImageDeployedActor;
 import com.suse.manager.tasks.actors.JobReturnActor;
 import com.suse.manager.tasks.actors.LibvirtEngineActor;
 import com.suse.manager.tasks.actors.MinionStartEventActor;
+import com.suse.manager.tasks.actors.RefreshGeneratedSaltFilesActor;
 import com.suse.manager.utils.MailHelper;
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.utils.salt.ImageDeployedEvent;
@@ -88,8 +88,6 @@ public class SaltReactor {
         // Configure message queue to handle minion registrations
         MessageQueue.registerAction(new RegisterMinionEventMessageAction(),
                 RegisterMinionEventMessage.class);
-        MessageQueue.registerAction(new RefreshGeneratedSaltFilesEventMessageAction(),
-                RefreshGeneratedSaltFilesEventMessage.class);
         MessageQueue.registerAction(new RunnableEventMessageAction(),
                 RunnableEventMessage.class);
         MessageQueue.registerAction(new VirtpollerBeaconEventMessageAction(),
@@ -97,7 +95,7 @@ public class SaltReactor {
         MessageQueue.registerAction(new SystemIdGenerateEventMessageAction(),
                 SystemIdGenerateEventMessage.class);
 
-        MessageQueue.publish(new RefreshGeneratedSaltFilesEventMessage());
+        ActorManager.tell(new RefreshGeneratedSaltFilesActor.Message());
 
         connectToEventStream();
 
