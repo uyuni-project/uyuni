@@ -20,10 +20,7 @@ import static java.util.stream.Stream.of;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.messaging.EventMessage;
 import com.redhat.rhn.common.messaging.JavaMailException;
-import com.redhat.rhn.common.messaging.MessageQueue;
 
-import com.suse.manager.reactor.messaging.SystemIdGenerateEventMessage;
-import com.suse.manager.reactor.messaging.SystemIdGenerateEventMessageAction;
 import com.suse.manager.tasks.ActorManager;
 import com.suse.manager.tasks.Command;
 import com.suse.manager.tasks.actors.BatchStartedActor;
@@ -33,8 +30,9 @@ import com.suse.manager.tasks.actors.LibvirtEngineActor;
 import com.suse.manager.tasks.actors.MinionStartEventActor;
 import com.suse.manager.tasks.actors.PkgsetBeaconActor;
 import com.suse.manager.tasks.actors.RefreshGeneratedSaltFilesActor;
-import com.suse.manager.tasks.actors.VirtpollerBeaconActor;
 import com.suse.manager.tasks.actors.RegisterMinionActor;
+import com.suse.manager.tasks.actors.SystemIdGenerateActor;
+import com.suse.manager.tasks.actors.VirtpollerBeaconActor;
 import com.suse.manager.utils.MailHelper;
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.utils.salt.ImageDeployedEvent;
@@ -79,10 +77,6 @@ public class SaltReactor {
      * Start the salt reactor.
      */
     public void start() {
-        // Configure message queue to handle minion registrations
-        MessageQueue.registerAction(new SystemIdGenerateEventMessageAction(),
-                SystemIdGenerateEventMessage.class);
-
         ActorManager.tell(new RefreshGeneratedSaltFilesActor.Message());
 
         connectToEventStream();
@@ -167,17 +161,15 @@ public class SaltReactor {
                BatchStartedEvent.parse(event).map(this::eventToCommands).orElseGet(() ->
                MinionStartEvent.parse(event).map(this::eventToCommands).orElseGet(() ->
                BeaconEvent.parse(event).map(this::eventToCommands).orElseGet(() ->
+               SystemIdGenerateEvent.parse(event).map(this::eventToCommands).orElseGet(() ->
                EngineEvent.parse(event).map(this::eventToCommands).orElseGet(() ->
                ImageDeployedEvent.parse(event).map(this::eventToCommands).orElseGet(() ->
                empty()
-        ))))));
+        )))))));
     }
 
     private Stream<EventMessage> eventToMessages(Event event) {
-        // Setup handlers for different event types
-        return SystemIdGenerateEvent.parse(event).map(this::eventToMessages).orElseGet(() ->
-               empty()
-        );
+        return empty();
     }
 
     /**
@@ -196,11 +188,11 @@ public class SaltReactor {
      * @param systemIdGenerateEvent the suse/systemid/generate event as we get it from salt
      * @return event handler runnable
      */
-    private Stream<EventMessage> eventToMessages(SystemIdGenerateEvent systemIdGenerateEvent) {
+    private Stream<Command> eventToCommands(SystemIdGenerateEvent systemIdGenerateEvent) {
         if (LOG.isDebugEnabled()) {
             LOG.debug("Generate systemid file for minion: " + (String) systemIdGenerateEvent.getData().get("id"));
         }
-        return of(new SystemIdGenerateEventMessage((String) systemIdGenerateEvent.getData().get("id")));
+        return of(new SystemIdGenerateActor.Message((String) systemIdGenerateEvent.getData().get("id")));
     }
 
     /**
