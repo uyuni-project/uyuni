@@ -14,26 +14,14 @@
  */
 package com.redhat.rhn.frontend.action.ssm;
 
-import java.util.Date;
-import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.apache.struts.action.ActionForm;
-import org.apache.struts.action.ActionForward;
-import org.apache.struts.action.ActionErrors;
-import org.apache.struts.action.ActionMapping;
-import org.apache.struts.action.DynaActionForm;
+import static java.util.Optional.ofNullable;
 
 import com.redhat.rhn.common.localization.LocalizationService;
-import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.common.util.DatePicker;
 import com.redhat.rhn.domain.action.ActionChain;
 import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.dto.SystemOverview;
-import com.redhat.rhn.frontend.events.SsmSystemRebootEvent;
 import com.redhat.rhn.frontend.struts.ActionChainHelper;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnAction;
@@ -45,7 +33,19 @@ import com.redhat.rhn.manager.rhnset.RhnSetManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 
+import com.suse.manager.tasks.ActorManager;
+import com.suse.manager.tasks.actors.SsmSystemRebootActor;
 import org.apache.log4j.Logger;
+import org.apache.struts.action.ActionErrors;
+import org.apache.struts.action.ActionForm;
+import org.apache.struts.action.ActionForward;
+import org.apache.struts.action.ActionMapping;
+import org.apache.struts.action.DynaActionForm;
+
+import java.util.Date;
+import java.util.List;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * Confirm reboot of given systems
@@ -110,8 +110,8 @@ public class RebootSystemConfirmAction extends RhnAction
             return mapping.findForward(RhnHelper.CONFIRM_FORWARD);
         }
 
-        MessageQueue.publish(new SsmSystemRebootEvent(user.getId(), earliest, actionChain,
-            set.getElementValues()));
+        var actionChainId = ofNullable(actionChain).map(ActionChain::getId);
+        ActorManager.defer(new SsmSystemRebootActor.Message(user.getId(), earliest, actionChainId, set.getElementValues()));
 
         int n = set.size();
 

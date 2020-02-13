@@ -16,9 +16,6 @@
 package com.redhat.rhn.common.messaging;
 
 
-import com.redhat.rhn.frontend.events.SsmSystemRebootAction;
-import com.redhat.rhn.frontend.events.SsmSystemRebootEvent;
-
 import com.suse.manager.reactor.messaging.ChannelsChangedEventMessage;
 import com.suse.manager.reactor.messaging.ChannelsChangedEventMessageAction;
 import org.apache.log4j.Logger;
@@ -239,10 +236,6 @@ public class MessageQueue {
         // If we develop a large set of MessageEvents we may want to
         // refactor this block out into a class or method that
         // reads in some configuration from an XML file somewhere
-
-        // Misc
-        MessageQueue.registerAction(new SsmSystemRebootAction(),
-                                    SsmSystemRebootEvent.class);
 
         // Handle changes of channel assignments on minions
         MessageQueue.registerAction(new ChannelsChangedEventMessageAction(),
