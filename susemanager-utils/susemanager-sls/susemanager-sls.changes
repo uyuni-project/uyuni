@@ -1,3 +1,4 @@
+- cleanup key grains after usage
 - Use saltutil states if available on the minion (bsc#1167556)
 - Make 'product' state module only available for minions with zypper >= 1.8.13 (bsc#1166699)
 - Adapt 'mgractionchains' module to work with Salt 3000
