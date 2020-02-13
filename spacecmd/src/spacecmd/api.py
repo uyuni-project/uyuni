@@ -58,7 +58,8 @@ def do_api(self, args):
     arg_parser.add_argument('-F', '--format', default='')
     arg_parser.add_argument('-o', '--output', default='')
 
-    (args, options) = parse_command_arguments(args, arg_parser)
+    # set glob = False otherwise repo filters cannot set wildcard characters
+    args, options = parse_command_arguments(args, arg_parser, glob=False)
 
     if not args:
         self.help_api()

@@ -138,11 +138,15 @@ class MgrSync(object):  # pylint: disable=too-few-public-methods
             if 'channel' in options.add_target:
                 self._add_channels(channels=options.target,
                                    mirror=options.mirror,
-                                   no_optionals=options.no_optionals)
+                                   no_optionals=options.no_optionals,
+                                   no_sync=options.no_sync)
             elif 'credentials' in options.add_target:
                 self._add_credentials(options.primary, options.target)
             elif 'product' in options.add_target:
-                self._add_products(mirror="", no_recommends=options.no_recommends)
+                self._add_products(mirror="", no_recommends=options.no_recommends,
+                                   no_sync=options.no_sync)
+        elif 'sync_target' in vars(options):
+            self._sync_channels(channels=options.target, with_children=options.with_children)
         elif 'refresh' in vars(options):
             self.exit_with_error = not self._refresh(
                 enable_reposync=options.refresh_channels,
@@ -164,7 +168,7 @@ class MgrSync(object):  # pylint: disable=too-few-public-methods
     ###########################
 
     def _list_channels(self, expand, filter, no_optionals,  # pylint: disable=redefined-builtin
-                       compact=False, show_interactive_numbers=False):
+                       compact=False, show_interactive_numbers=False, only_installed=False):
         """
         List channels.
         """
@@ -188,6 +192,13 @@ class MgrSync(object):  # pylint: disable=too-few-public-methods
         print("  - [ ] - channel is not installed, but is available")
         print("  - [U] - channel is unavailable\n")
 
+        number_format = "{0:3}"
+        show_status = [Channel.Status.INSTALLED]
+        number_status = Channel.Status.INSTALLED
+        if not only_installed:
+            show_status.append(Channel.Status.AVAILABLE)
+            number_status = Channel.Status.AVAILABLE
+
         for bc_label in sorted(base_channels.keys()):
             base_channel = base_channels[bc_label]
 
@@ -195,38 +206,42 @@ class MgrSync(object):  # pylint: disable=too-few-public-methods
             parent_output = base_channel.to_ascii_row(compact)
             children_output = []
 
-            if base_channel.status in (Channel.Status.INSTALLED,
-                                       Channel.Status.AVAILABLE):
+            if base_channel.status in show_status:
                 for child in base_channel.children:
                     prefix = ""
                     if base_channel.status == Channel.Status.INSTALLED or expand:
                         output = child.to_ascii_row(compact)
                         if (not filter or filter in output.lower()) and \
-                           (not no_optionals or not child.optional):
-                            if child.status == Channel.Status.AVAILABLE:
-                                interactive_number += 1
+                           (not no_optionals or not child.optional) and \
+                           child.status in show_status:
+                            if child.status == number_status:
                                 if show_interactive_numbers:
-                                    prefix = "{0:02}) ".format(interactive_number)
-                                available_channels.append(child.label)
+                                    prefix = "{0}) ".format(number_format)
                             elif show_interactive_numbers:
-                                prefix = "    "
+                                prefix = "     "
 
-                            children_output.append("    " + prefix + output)
+                            children_output.append(("    " + prefix + output, child.label))
 
-            if not filter or filter in parent_output.lower() or children_output:
+            if (not filter or filter in parent_output.lower() or children_output) and \
+               base_channel.status in show_status:
                 prefix = ""
 
-                if base_channel.status == Channel.Status.AVAILABLE:
-                    interactive_number += 1
+                if base_channel.status == number_status:
                     if show_interactive_numbers:
-                        prefix = "{0:02}) ".format(interactive_number)
-                    available_channels.append(base_channel.label)
+                        prefix = "{0}) ".format(number_format)
                 elif show_interactive_numbers:
-                    prefix = "    "
-                print(prefix + parent_output)
+                    prefix = "     "
+                if number_format in prefix:
+                    interactive_number += 1
+                    available_channels.append(base_channel.label)
 
-                for child_output in children_output:
-                    print(child_output)
+                print(prefix.format(interactive_number) + parent_output)
+
+                for child_output, clabel in children_output:
+                    if number_format in child_output:
+                        interactive_number += 1
+                        available_channels.append(clabel)
+                    print(child_output.format(interactive_number))
         self.log.info(available_channels)
         return available_channels
 
@@ -236,7 +251,7 @@ class MgrSync(object):  # pylint: disable=too-few-public-methods
             self._execute_xmlrpc_method(self.conn.sync.content,
                                         "listChannels", self.auth.token()), self.log)
 
-    def _add_channels(self, channels, mirror="", no_optionals=False):
+    def _add_channels(self, channels, mirror="", no_optionals=False, no_sync=False):
         """ Add a list of channels.
 
         If the channel list is empty the interactive mode is started.
@@ -318,7 +333,8 @@ class MgrSync(object):  # pylint: disable=too-few-public-methods
             if channel not in channels_to_sync:
                 channels_to_sync.append(channel)
 
-        self._schedule_channel_reposync(channels_to_sync)
+        if not no_sync:
+            self._schedule_channel_reposync(channels_to_sync)
 
     def _schedule_channel_reposync(self, channels):
         """ Schedules a reposync for a set of channels.
@@ -342,14 +358,14 @@ class MgrSync(object):  # pylint: disable=too-few-public-methods
                 sys.stderr.write("Error, unable to schedule channel reposync: Taskomatic is not responding.\n")
                 sys.exit(1)
 
-    def _select_channel_interactive_mode(self, no_optionals=False):
+    def _select_channel_interactive_mode(self, no_optionals=False, only_installed=False):
         """Show not installed channels prefixing a number, then reads
         user input and returns the label of the chosen channel
 
         """
         channels = self._list_channels(
             expand=False, filter=None, compact=False,
-            no_optionals=no_optionals, show_interactive_numbers=True)
+            no_optionals=no_optionals, show_interactive_numbers=True, only_installed=only_installed)
 
         choice = cli_ask(
             msg=("Enter channel number (1-{0})".format(len(channels))),
@@ -410,7 +426,7 @@ class MgrSync(object):  # pylint: disable=too-few-public-methods
 
         return interactive_data
 
-    def _add_products(self, mirror="", no_recommends=False):
+    def _add_products(self, mirror="", no_recommends=False, no_sync=False):
         """ Add a list of products.
 
         If the products list is empty the interactive mode is started.
@@ -433,7 +449,7 @@ class MgrSync(object):  # pylint: disable=too-few-public-methods
             product.friendly_name))
         print("Adding channels required by '{0}' product".format(
             product.friendly_name))
-        self._add_channels(channels=mandatory_channels, mirror=mirror)
+        self._add_channels(channels=mandatory_channels, mirror=mirror, no_sync=no_sync)
         self.log.info("Product successfully added")
         print("Product successfully added")
 
@@ -600,6 +616,40 @@ class MgrSync(object):  # pylint: disable=too-few-public-methods
     # Other methods #
     #               #
     #################
+
+    def _sync_channels(self, channels, with_children=False):
+        """
+        Sync Channels
+        """
+        current_channels = list()
+
+        if not channels:
+            channels = [self._select_channel_interactive_mode(only_installed=True)]
+
+        current_channels = self._fetch_remote_channels()
+
+        channels_to_sync = []
+        for channel in channels:
+            sync_channel = True
+            match = find_channel_by_label(channel, current_channels, self.log)
+            if match:
+                if match.status == Channel.Status.INSTALLED:
+                    channels_to_sync.append(channel)
+                    if with_children:
+                        for cld in match.children:
+                            if cld.status == Channel.Status.INSTALLED and \
+                               cld.label not in channels_to_sync:
+                                channels_to_sync.append(cld.label)
+                else:
+                    sync_channel = False
+                    self.log.error("Channel '{0}' is not available, skipping".format(
+                        channel))
+                    print("Channel '{0}' is not available, skipping".format(
+                        channel))
+                    self.exit_with_error = True
+                    continue
+
+        self._schedule_channel_reposync(channels_to_sync)
 
     def _refresh(self, enable_reposync, mirror="", schedule=False):
         """

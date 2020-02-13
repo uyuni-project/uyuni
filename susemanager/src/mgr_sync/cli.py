@@ -52,8 +52,26 @@ def _create_parser():
     _create_add_subparser(subparsers)
     _create_refresh_subparser(subparsers)
     _create_delete_subparser(subparsers)
+    _create_sync_subparser(subparsers)
 
     return parser
+
+
+def _create_sync_subparser(subparsers):
+    """ Create the parser for the "sync" command. """
+
+    sync_parser = subparsers.add_parser('sync',
+                                       help='sync channels')
+    sync_parser.add_argument(
+        'sync_target',
+        choices=['channel', 'channels'])
+    sync_parser.add_argument(
+        'target',
+        nargs='*',
+        help='element to sync')
+    sync_parser.add_argument(
+        '--with-children', action='store_true', dest='with_children',
+        help='Sync all child channels as well')
 
 
 def _create_add_subparser(subparsers):
@@ -88,6 +106,13 @@ def _create_add_subparser(subparsers):
         dest='no_recommends',
         default=False,
         help='do not enable recommended products automatically')
+    add_parser.add_argument(
+        '--no-sync',
+        action='store_true',
+        dest='no_sync',
+        default=False,
+        help='do not syncronize product channels automatically after adding')
+
 
 
 def _create_list_subparser(subparsers):
