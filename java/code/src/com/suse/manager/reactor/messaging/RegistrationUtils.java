@@ -48,6 +48,7 @@ import com.redhat.rhn.taskomatic.TaskomaticApiException;
 import com.suse.manager.reactor.utils.RhelUtils;
 import com.suse.manager.reactor.utils.ValueMap;
 import com.suse.manager.tasks.ActorManager;
+import com.suse.manager.tasks.actors.MinionStartEventActor;
 import com.suse.manager.tasks.actors.ApplyStatesActor;
 import com.suse.manager.webui.controllers.StatesAPI;
 import com.suse.manager.webui.services.SaltStateGeneratorService;
@@ -105,7 +106,7 @@ public class RegistrationUtils {
         triggerHardwareRefresh(minion);
 
         // Asynchronously get the uptime of this minion
-        MessageQueue.publish(new MinionStartEventDatabaseMessage(minionId));
+        ActorManager.defer(new MinionStartEventActor.Message(minionId));
 
         // Generate pillar data
         try {

@@ -29,9 +29,6 @@ import com.suse.manager.reactor.messaging.BatchStartedEventMessage;
 import com.suse.manager.reactor.messaging.BatchStartedEventMessageAction;
 import com.suse.manager.reactor.messaging.ImageDeployedEventMessage;
 import com.suse.manager.reactor.messaging.ImageDeployedEventMessageAction;
-import com.suse.manager.reactor.messaging.MinionStartEventDatabaseMessage;
-import com.suse.manager.reactor.messaging.MinionStartEventMessage;
-import com.suse.manager.reactor.messaging.MinionStartEventMessageAction;
 import com.suse.manager.reactor.messaging.RefreshGeneratedSaltFilesEventMessage;
 import com.suse.manager.reactor.messaging.RefreshGeneratedSaltFilesEventMessageAction;
 import com.suse.manager.reactor.messaging.RegisterMinionEventMessage;
@@ -45,6 +42,7 @@ import com.suse.manager.reactor.messaging.VirtpollerBeaconEventMessageAction;
 import com.suse.manager.tasks.Command;
 import com.suse.manager.tasks.actors.JobReturnActor;
 import com.suse.manager.tasks.actors.LibvirtEngineActor;
+import com.suse.manager.tasks.actors.MinionStartEventActor;
 import com.suse.manager.utils.MailHelper;
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.utils.salt.ImageDeployedEvent;
@@ -92,10 +90,6 @@ public class SaltReactor {
         // Configure message queue to handle minion registrations
         MessageQueue.registerAction(new RegisterMinionEventMessageAction(),
                 RegisterMinionEventMessage.class);
-        MessageQueue.registerAction(new MinionStartEventMessageAction(),
-                MinionStartEventMessage.class);
-        MessageQueue.registerAction(new MinionStartEventMessageAction(),
-                MinionStartEventDatabaseMessage.class);
         MessageQueue.registerAction(new RefreshGeneratedSaltFilesEventMessageAction(),
                 RefreshGeneratedSaltFilesEventMessage.class);
         MessageQueue.registerAction(new RunnableEventMessageAction(),
@@ -191,8 +185,9 @@ public class SaltReactor {
         // Setup handlers for different event types
         return JobReturnEvent.parse(event).map(this::eventToCommands).orElseGet(() ->
                EngineEvent.parse(event).map(this::eventToCommands).orElseGet(() ->
+               MinionStartEvent.parse(event).map(this::eventToCommands).orElseGet(() ->
                empty()
-        ));
+        )));
     }
 
     private Stream<EventMessage> eventToMessages(Event event) {
@@ -251,8 +246,23 @@ public class SaltReactor {
             LOG.debug("Trigger start and registration for minion: " + minionId);
         }
         return of(
-            new MinionStartEventMessage(minionId),
             new RegisterMinionEventMessage(minionId)
+        );
+    }
+
+    /**
+     * Trigger registration on minion start events.
+     *
+     * @param minionStartEvent minion start event
+     * @return event handler runnable
+     */
+    private Stream<Command> eventToCommands(MinionStartEvent minionStartEvent) {
+        String minionId = (String) minionStartEvent.getData().get("id");
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("Trigger start and registration for minion: " + minionId);
+        }
+        return of(
+            new MinionStartEventActor.Message(minionId)
         );
     }
 
