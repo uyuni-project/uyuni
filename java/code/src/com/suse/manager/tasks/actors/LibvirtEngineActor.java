@@ -33,6 +33,11 @@ public class LibvirtEngineActor implements Actor {
 
     private static final int LIBVIRT_EVENTS_ADDITIONAL_PARTS_COUNT = 3;
 
+    @Override
+    public boolean useHashRouting() {
+        return true;
+    }
+
     public static class Message implements Command {
         private final String connection;
         private final Optional<String> minionId;
@@ -53,6 +58,11 @@ public class LibvirtEngineActor implements Actor {
             this.domainUUID = domainUUID;
             this.event = event;
             this.detail = detail;
+        }
+
+        @Override
+        public String routingHashString() {
+            return minionId.orElse("default");
         }
     }
 
