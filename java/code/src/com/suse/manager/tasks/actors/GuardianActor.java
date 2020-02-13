@@ -83,21 +83,18 @@ public class GuardianActor {
     private Function<Class<? extends Actor>, ActorRef<Command>> classToActor(ActorContext<Command> context) {
         return clazz -> {
             try {
-                var createMethod = clazz.getMethod("create");
-                var instance = clazz.getConstructor().newInstance();
-                var behavior = (Behavior<Command>) createMethod.invoke(instance);
+                var actor = clazz.getConstructor().newInstance();
+                var behavior = actor.create();
 
                 // create a PoolRouter, which is an actor that will spawn many concurrent actors
-                var getMaxParallelWorkersMethod = clazz.getMethod("getMaxParallelWorkers");
-                var maxParallelWorkers = (int) getMaxParallelWorkersMethod.invoke(instance);
                 PoolRouter<Command> pool =
                         Routers.pool(
-                                maxParallelWorkers,
+                                actor.getMaxParallelWorkers(),
                                 // make sure the workers are restarted if they fail
                                 Behaviors.supervise(behavior).onFailure(restart()));
 
-                var actor = context.spawn(pool, clazz.getSimpleName() + "_pool");
-                return actor;
+                var router = context.spawn(pool, clazz.getSimpleName() + "_pool");
+                return router;
             }
             catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException | InstantiationException e) {
                 LOG.error(e);
