@@ -14,10 +14,6 @@
  */
 package com.suse.manager.reactor;
 
-import com.redhat.rhn.common.messaging.EventMessage;
-import com.redhat.rhn.common.messaging.MessageAction;
-import com.redhat.rhn.common.messaging.MessageQueue;
-
 import com.suse.manager.tasks.ActorManager;
 import com.suse.manager.tasks.Command;
 import com.suse.salt.netapi.datatypes.Event;
@@ -43,11 +39,6 @@ public class PGEventListener implements EventListener {
     private final Runnable eventStreamClosed;
 
     /**
-     * Function that maps (JSON-based Salt) {@link Event}s to {@link MessageQueue}'s {@link EventMessage}s
-     */
-    private final Function<Event, Stream<EventMessage>> eventToMessages;
-
-    /**
      * Function that maps (JSON-based Salt) {@link Event}s to {@link com.suse.manager.tasks.ActorManager}'s {@link com.suse.manager.tasks.Command}s
      */
     private final Function<Event, Stream<Command>> eventToCommands;
@@ -55,12 +46,10 @@ public class PGEventListener implements EventListener {
     /**
      * Standard constructor.
      *  @param eventStreamClosedIn function to call when the event stream gets closed
-     * @param eventToMessagesIn function that maps {@link Event}s to {@link MessageQueue}'s {@link EventMessage}s
      * @param eventToCommandsIn
      */
-    public PGEventListener(Runnable eventStreamClosedIn, Function<Event, Stream<EventMessage>> eventToMessagesIn, Function<Event, Stream<Command>> eventToCommandsIn) {
+    public PGEventListener(Runnable eventStreamClosedIn, Function<Event, Stream<Command>> eventToCommandsIn) {
         this.eventStreamClosed = eventStreamClosedIn;
-        this.eventToMessages = eventToMessagesIn;
         eventToCommands = eventToCommandsIn;
     }
 
@@ -72,21 +61,6 @@ public class PGEventListener implements EventListener {
         if (LOG.isTraceEnabled()) {
             LOG.trace("Event: " + event.getTag() + " -> " + event.getData());
         }
-
-        Stream<EventMessage> messages = eventToMessages.apply(event);
-        messages.forEach(message -> {
-            Stream<MessageAction> actions = MessageQueue.getActionsFor(message);
-
-            actions.forEach(action -> {
-                try {
-                    action.execute(message);
-                }
-                catch (Exception e) {
-                    LOG.error("Unexpected exception while executing a MessageAction", e);
-                    throw new PGEventListenerException(() -> action.getExceptionHandler().accept(e));
-                }
-            });
-        });
 
         Stream<Command> commands = eventToCommands.apply(event);
         commands.forEach(c -> {

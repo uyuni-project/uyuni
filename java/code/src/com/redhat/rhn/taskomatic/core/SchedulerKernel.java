@@ -14,11 +14,12 @@
  */
 package com.redhat.rhn.taskomatic.core;
 
+import static java.util.stream.Collectors.toSet;
+
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.conf.ConfigException;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
-import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.taskomatic.TaskoFactory;
@@ -27,6 +28,7 @@ import com.redhat.rhn.taskomatic.TaskoXmlRpcServer;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.domain.TaskoRun;
 import com.redhat.rhn.taskomatic.domain.TaskoSchedule;
+
 import com.suse.manager.metrics.PrometheusExporter;
 import org.apache.log4j.Logger;
 import org.quartz.Scheduler;
@@ -40,8 +42,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Properties;
 import java.util.Set;
-
-import static java.util.stream.Collectors.toSet;
 
 /**
  * Taskomatic Kernel.
@@ -147,8 +147,6 @@ public class SchedulerKernel {
         if (!HibernateFactory.isInitialized()) {
             throw new TaskomaticException("HibernateFactory failed to initialize");
         }
-        MessageQueue.startMessaging();
-        MessageQueue.configureDefaultActions();
         try {
             SchedulerKernel.scheduler.start();
             initializeAllSatSchedules();
@@ -195,7 +193,6 @@ public class SchedulerKernel {
             e.printStackTrace();
         }
         finally {
-            MessageQueue.stopMessaging();
             HibernateFactory.closeSessionFactory();
             // Wake up thread waiting in startup() so it can exit
             synchronized (this.shutdownLock) {

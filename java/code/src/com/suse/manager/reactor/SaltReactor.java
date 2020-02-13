@@ -18,7 +18,6 @@ import static java.util.stream.Stream.empty;
 import static java.util.stream.Stream.of;
 
 import com.redhat.rhn.common.conf.ConfigDefaults;
-import com.redhat.rhn.common.messaging.EventMessage;
 import com.redhat.rhn.common.messaging.JavaMailException;
 
 import com.suse.manager.tasks.ActorManager;
@@ -122,7 +121,7 @@ public class SaltReactor {
             retries++;
             try {
                 eventStream = SALT_SERVICE.getEventStream();
-                eventStream.addEventListener(new PGEventListener(this::eventStreamClosed, this::eventToMessages, this::eventToCommands));
+                eventStream.addEventListener(new PGEventListener(this::eventStreamClosed, this::eventToCommands));
 
                 connected = true;
                 if (retries > 1) {
@@ -166,10 +165,6 @@ public class SaltReactor {
                ImageDeployedEvent.parse(event).map(this::eventToCommands).orElseGet(() ->
                empty()
         )))))));
-    }
-
-    private Stream<EventMessage> eventToMessages(Event event) {
-        return empty();
     }
 
     /**

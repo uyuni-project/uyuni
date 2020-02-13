@@ -14,7 +14,6 @@
  */
 package com.redhat.rhn.frontend.action.errata.test;
 
-import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
 import com.redhat.rhn.domain.errata.Errata;
@@ -46,8 +45,6 @@ import org.apache.struts.action.ActionMapping;
 public class ChannelActionTest extends RhnBaseTestCase {
 
     public void testPublish() throws Exception {
-        MessageQueue.configureDefaultActions();
-
         ChannelAction action = new ChannelAction();
 
         ActionMapping mapping = new ActionMapping();

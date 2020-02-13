@@ -14,7 +14,6 @@
  */
 package com.redhat.rhn.frontend.action.user.test;
 
-import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.frontend.action.user.UserActionHelper;
 import com.redhat.rhn.testing.RhnMockDynaActionForm;
 import com.redhat.rhn.testing.RhnPostMockStrutsTestCase;
@@ -29,23 +28,6 @@ import com.redhat.rhn.webapp.RhnServletListener;
 public class CreateUserActionTest extends RhnPostMockStrutsTestCase {
 
     private static RhnServletListener rl;
-
-    public void testMessageQueueRegistration() {
-        rl = new RhnServletListener();
-        rl.contextInitialized(null);
-        String[] names = MessageQueue.getRegisteredEventNames();
-        boolean found = false;
-        for (int i = 0; i < names.length; i++) {
-            if (names[i].equals("com.redhat.rhn.frontend.events.NewUserEvent")) {
-                found = true;
-            }
-        }
-        assertTrue(found);
-        //don't call contextDestroyed here since it stops hibernate and
-        //screws everything up ;)
-        //rl.contextDestroyed(null);
-        MessageQueue.stopMessaging();
-    }
 
     public void testNewUserIntoOrgSatellite() throws Exception {
 

@@ -15,7 +15,6 @@
 package com.redhat.rhn.webapp;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
-import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.manager.satellite.UpgradeCommand;
 
 import com.suse.manager.reactor.SaltReactor;
@@ -54,24 +53,8 @@ public class RhnServletListener implements ServletContextListener {
     // Salt event reactor instance
     private SaltReactor saltReactor = new SaltReactor();
 
-    private void startMessaging() {
-        // Start the MessageQueue thread listening for
-        // Events
-        MessageQueue.startMessaging();
-        MessageQueue.configureDefaultActions();
-    }
-
     private void stopMessaging() {
-        MessageQueue.stopMessaging();
         ActorManager.stop();
-    }
-
-    /**
-     * Check to see if Messaging is started
-     * @return boolean if or not messaging is running
-     */
-    public boolean messagingStarted() {
-        return MessageQueue.isMessaging();
     }
 
     private void logStart(String system) {
@@ -116,9 +99,6 @@ public class RhnServletListener implements ServletContextListener {
 
     /** {@inheritDoc} */
     public void contextInitialized(ServletContextEvent sce) {
-        startMessaging();
-        logStart("Messaging");
-
         startHibernate();
         logStart("Hibernate");
 
