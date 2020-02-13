@@ -21,18 +21,11 @@ import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.messaging.EventMessage;
 import com.redhat.rhn.common.messaging.JavaMailException;
 import com.redhat.rhn.common.messaging.MessageQueue;
-import com.redhat.rhn.domain.server.MinionServerFactory;
-import com.redhat.rhn.manager.action.ActionManager;
-import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
 import com.suse.manager.reactor.messaging.RegisterMinionEventMessage;
 import com.suse.manager.reactor.messaging.RegisterMinionEventMessageAction;
-import com.suse.manager.reactor.messaging.RunnableEventMessage;
-import com.suse.manager.reactor.messaging.RunnableEventMessageAction;
 import com.suse.manager.reactor.messaging.SystemIdGenerateEventMessage;
 import com.suse.manager.reactor.messaging.SystemIdGenerateEventMessageAction;
-import com.suse.manager.reactor.messaging.VirtpollerBeaconEventMessage;
-import com.suse.manager.reactor.messaging.VirtpollerBeaconEventMessageAction;
 import com.suse.manager.tasks.ActorManager;
 import com.suse.manager.tasks.Command;
 import com.suse.manager.tasks.actors.BatchStartedActor;
@@ -40,7 +33,9 @@ import com.suse.manager.tasks.actors.ImageDeployedActor;
 import com.suse.manager.tasks.actors.JobReturnActor;
 import com.suse.manager.tasks.actors.LibvirtEngineActor;
 import com.suse.manager.tasks.actors.MinionStartEventActor;
+import com.suse.manager.tasks.actors.PkgsetBeaconActor;
 import com.suse.manager.tasks.actors.RefreshGeneratedSaltFilesActor;
+import com.suse.manager.tasks.actors.VirtpollerBeaconActor;
 import com.suse.manager.utils.MailHelper;
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.utils.salt.ImageDeployedEvent;
@@ -88,10 +83,6 @@ public class SaltReactor {
         // Configure message queue to handle minion registrations
         MessageQueue.registerAction(new RegisterMinionEventMessageAction(),
                 RegisterMinionEventMessage.class);
-        MessageQueue.registerAction(new RunnableEventMessageAction(),
-                RunnableEventMessage.class);
-        MessageQueue.registerAction(new VirtpollerBeaconEventMessageAction(),
-                VirtpollerBeaconEventMessage.class);
         MessageQueue.registerAction(new SystemIdGenerateEventMessageAction(),
                 SystemIdGenerateEventMessage.class);
 
@@ -178,19 +169,19 @@ public class SaltReactor {
         return JobReturnEvent.parse(event).map(this::eventToCommands).orElseGet(() ->
                BatchStartedEvent.parse(event).map(this::eventToCommands).orElseGet(() ->
                MinionStartEvent.parse(event).map(this::eventToCommands).orElseGet(() ->
+               BeaconEvent.parse(event).map(this::eventToCommands).orElseGet(() ->
                EngineEvent.parse(event).map(this::eventToCommands).orElseGet(() ->
                ImageDeployedEvent.parse(event).map(this::eventToCommands).orElseGet(() ->
                empty()
-        )))));
+        ))))));
     }
 
     private Stream<EventMessage> eventToMessages(Event event) {
         // Setup handlers for different event types
         return MinionStartEvent.parse(event).map(this::eventToMessages).orElseGet(() ->
                SystemIdGenerateEvent.parse(event).map(this::eventToMessages).orElseGet(() ->
-               BeaconEvent.parse(event).map(this::eventToMessages).orElse(
                empty()
-        )));
+        ));
     }
 
     /**
@@ -298,25 +289,12 @@ public class SaltReactor {
      * @param beaconEvent beacon event
      * @return event handler runnable
      */
-    private Stream<EventMessage> eventToMessages(BeaconEvent beaconEvent) {
+    private Stream<Command> eventToCommands(BeaconEvent beaconEvent) {
         if (beaconEvent.getBeacon().equals("pkgset") && beaconEvent.getAdditional().equals("changed")) {
-            return of(
-                    new RunnableEventMessage("ZypperEvent.PackageSetChanged", () -> {
-                        MinionServerFactory.findByMinionId(beaconEvent.getMinionId()).ifPresent(minionServer -> {
-                            try {
-                                ActionManager.schedulePackageRefresh(minionServer.getOrg(), minionServer);
-                            }
-                            catch (TaskomaticApiException e) {
-                                LOG.error("Could not schedule package refresh for minion: " +
-                                        minionServer.getMinionId());
-                                LOG.error(e);
-                            }
-                        });
-                    })
-            );
+            return of(new PkgsetBeaconActor.Message(beaconEvent));
         }
         if (beaconEvent.getBeacon().equals("virtpoller")) {
-            return of(new VirtpollerBeaconEventMessage(
+            return of(new VirtpollerBeaconActor.Message(
                 beaconEvent.getMinionId(),
                 beaconEvent.getData(VirtpollerData.class)
             ));
