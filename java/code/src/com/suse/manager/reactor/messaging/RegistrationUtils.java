@@ -47,6 +47,8 @@ import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
 import com.suse.manager.reactor.utils.RhelUtils;
 import com.suse.manager.reactor.utils.ValueMap;
+import com.suse.manager.tasks.ActorManager;
+import com.suse.manager.tasks.actors.ApplyStatesActor;
 import com.suse.manager.webui.controllers.StatesAPI;
 import com.suse.manager.webui.services.SaltStateGeneratorService;
 import com.suse.manager.webui.services.impl.SaltService;
@@ -131,23 +133,26 @@ public class RegistrationUtils {
 
         // Apply initial states asynchronously
         List<String> statesToApply = new ArrayList<>();
-        statesToApply.add(ApplyStatesEventMessage.CERTIFICATE);
-        statesToApply.add(ApplyStatesEventMessage.CHANNELS);
-        statesToApply.add(ApplyStatesEventMessage.CHANNELS_DISABLE_LOCAL_REPOS);
-        statesToApply.add(ApplyStatesEventMessage.PACKAGES);
+        statesToApply.add(ApplyStatesActor.CERTIFICATE);
+        statesToApply.add(ApplyStatesActor.CHANNELS);
+        statesToApply.add(ApplyStatesActor.CHANNELS_DISABLE_LOCAL_REPOS);
+        statesToApply.add(ApplyStatesActor.PACKAGES);
         if (enableMinionService) {
-            statesToApply.add(ApplyStatesEventMessage.SALT_MINION_SERVICE);
+            statesToApply.add(ApplyStatesActor.SALT_MINION_SERVICE);
         }
-        MessageQueue.publish(new ApplyStatesEventMessage(
+
+        ActorManager.defer(new ApplyStatesActor.Message(
                 minion.getId(),
                 minion.getCreator() != null ? minion.getCreator().getId() : null,
                 !applyHighstate, // Refresh package list if we're not going to apply the highstate afterwards
-                statesToApply
-        ));
+                statesToApply));
 
         // Call final highstate to deploy config channels if required
         if (applyHighstate) {
-            MessageQueue.publish(new ApplyStatesEventMessage(minion.getId(), true, emptyList()));
+            ActorManager.defer(new ApplyStatesActor.Message(minion.getId(),
+                    null,
+                    true,
+                    emptyList()));
         }
     }
 

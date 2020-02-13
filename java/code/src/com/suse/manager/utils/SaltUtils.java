@@ -21,7 +21,6 @@ import static java.util.Collections.emptyList;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.localization.LocalizationService;
-import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.ActionStatus;
@@ -81,10 +80,10 @@ import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 import com.suse.manager.reactor.hardware.CpuArchUtil;
 import com.suse.manager.reactor.hardware.HardwareMapper;
-import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
 import com.suse.manager.reactor.utils.RhelUtils;
 import com.suse.manager.reactor.utils.ValueMap;
 import com.suse.manager.tasks.ActorManager;
+import com.suse.manager.tasks.actors.ApplyStatesActor;
 import com.suse.manager.tasks.actors.ChannelsChangedActor;
 import com.suse.manager.webui.services.SaltStateGeneratorService;
 import com.suse.manager.webui.services.impl.SaltService;
@@ -598,11 +597,10 @@ public class SaltUtils {
                 currentChannels.removeAll(subbed);
                 currentChannels.addAll(unsubbed);
                 ServerFactory.save(serverAction.getServer());
-                ActorManager.defer(new ChannelsChangedActor.Message(serverAction.getServerId(), null, emptyList(), false));
 
-                MessageQueue.publish(
-                        new ApplyStatesEventMessage(serverAction.getServerId(), false,
-                                ApplyStatesEventMessage.CHANNELS));
+                ActorManager.defer(new ChannelsChangedActor.Message(serverAction.getServerId(), null, emptyList(), false));
+                ActorManager.defer(new ApplyStatesActor.Message(serverAction.getServerId(), null, false, List.of(ApplyStatesActor.CHANNELS)));
+
                 String message = parseDryRunMessage(jsonResult);
                 serverAction.setResultMsg(message);
             }
@@ -676,7 +674,7 @@ public class SaltUtils {
 
     private void handleSubscribeChannels(ServerAction serverAction, JsonElement jsonResult, Action action) {
         if (serverAction.getStatus().equals(ActionFactory.STATUS_COMPLETED)) {
-            serverAction.setResultMsg("Successfully applied state: " + ApplyStatesEventMessage.CHANNELS);
+            serverAction.setResultMsg("Successfully applied state: " + ApplyStatesActor.CHANNELS);
             SubscribeChannelsAction sca = (SubscribeChannelsAction)action;
 
             // activate the new tokens
@@ -699,7 +697,7 @@ public class SaltUtils {
             Object returnObject = Json.GSON.fromJson(jsonResult, Object.class);
             Gson gson = new GsonBuilder().setPrettyPrinting().create();
             String json = gson.toJson(returnObject);
-            serverAction.setResultMsg("Failed to apply state: " + ApplyStatesEventMessage.CHANNELS);
+            serverAction.setResultMsg("Failed to apply state: " + ApplyStatesActor.CHANNELS);
         }
     }
 

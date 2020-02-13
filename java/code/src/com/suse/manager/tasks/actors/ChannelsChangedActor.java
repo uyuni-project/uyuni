@@ -20,7 +20,6 @@ import com.redhat.rhn.manager.errata.ErrataManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
-import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
 import com.suse.manager.tasks.Actor;
 import com.suse.manager.tasks.Command;
 import com.suse.manager.webui.services.SaltStateGeneratorService;
@@ -101,7 +100,7 @@ public class ChannelsChangedActor implements Actor {
                 User user = UserFactory.lookupById(msg.userId);
                 ApplyStatesAction action = ActionManager.scheduleApplyStates(user,
                         Collections.singletonList(minion.getId()),
-                        Collections.singletonList(ApplyStatesEventMessage.CHANNELS),
+                        Collections.singletonList(ApplyStatesActor.CHANNELS),
                         new Date());
                 try {
                     TASKOMATIC_API.scheduleActionExecution(action, false);

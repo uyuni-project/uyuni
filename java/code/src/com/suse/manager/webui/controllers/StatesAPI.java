@@ -52,9 +52,11 @@ import com.redhat.rhn.manager.system.ServerGroupManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 
-import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.suse.manager.reactor.utils.LocalDateTimeISOAdapter;
 import com.suse.manager.reactor.utils.OptionalTypeAdapterFactory;
+import com.suse.manager.tasks.actors.ApplyStatesActor;
 import com.suse.manager.utils.MinionServerUtils;
 import com.suse.manager.webui.errors.NotFoundException;
 import com.suse.manager.webui.services.ConfigChannelSaltManager;
@@ -79,10 +81,6 @@ import com.suse.salt.netapi.calls.modules.State;
 import com.suse.salt.netapi.datatypes.target.MinionList;
 import com.suse.salt.netapi.exception.SaltException;
 import com.suse.salt.netapi.results.Result;
-
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpStatus;
 import org.apache.log4j.Logger;
@@ -631,7 +629,7 @@ public class StatesAPI {
                     getPackagesSlsName(new MinionSummary(server)));
             SaltStateGenerator saltStateGenerator =
                     new SaltStateGenerator(filePath.toFile());
-            saltStateGenerator.generate(new SaltInclude(ApplyStatesEventMessage.CHANNELS),
+            saltStateGenerator.generate(new SaltInclude(ApplyStatesActor.CHANNELS),
                     pkgInstalled, pkgRemoved, pkgLatest);
         }
         catch (IOException e) {

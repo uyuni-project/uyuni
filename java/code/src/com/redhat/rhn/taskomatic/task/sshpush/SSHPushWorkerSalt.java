@@ -22,7 +22,7 @@ import com.redhat.rhn.taskomatic.task.checkin.SystemSummary;
 import com.redhat.rhn.taskomatic.task.threaded.QueueWorker;
 import com.redhat.rhn.taskomatic.task.threaded.TaskQueue;
 
-import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
+import com.suse.manager.tasks.actors.ApplyStatesActor;
 import com.suse.manager.utils.SaltUtils;
 import com.suse.manager.webui.services.SaltServerActionService;
 import com.suse.manager.webui.services.impl.SaltSSHService;
@@ -32,7 +32,6 @@ import com.suse.manager.webui.utils.salt.custom.SystemInfo;
 import com.suse.salt.netapi.calls.LocalCall;
 import com.suse.salt.netapi.calls.modules.State;
 import com.suse.salt.netapi.calls.modules.Test;
-
 import com.suse.salt.netapi.datatypes.target.MinionList;
 import com.suse.salt.netapi.exception.SaltException;
 import com.suse.salt.netapi.results.Result;
@@ -347,7 +346,7 @@ public class SSHPushWorkerSalt implements QueueWorker {
     private void updateSystemInfo(MinionList minionTarget) {
         try {
             LocalCall<SystemInfo> systeminfo =
-                    com.suse.manager.webui.utils.salt.State.apply(Arrays.asList(ApplyStatesEventMessage.SYSTEM_INFO),
+                    com.suse.manager.webui.utils.salt.State.apply(Arrays.asList(ApplyStatesActor.SYSTEM_INFO),
                     Optional.empty(), Optional.of(true), Optional.empty(), SystemInfo.class);
             Map<String, Result<SystemInfo>> systemInfoMap = saltSSHService.callSyncSSH(systeminfo, minionTarget);
             systemInfoMap.entrySet().stream().forEach(entry-> entry.getValue().result().ifPresent(si-> {

@@ -99,7 +99,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
-import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
+import com.suse.manager.tasks.actors.ApplyStatesActor;
 import com.suse.manager.tasks.actors.JobReturnActor;
 import com.suse.manager.utils.SaltUtils;
 import com.suse.manager.webui.services.impl.SaltSSHService;
@@ -1003,7 +1003,7 @@ public class SaltServerActionService {
     private Map<LocalCall<?>, List<MinionSummary>> packagesRefreshListAction(
             List<MinionSummary> minionSummaries) {
         Map<LocalCall<?>, List<MinionSummary>> ret = new HashMap<>();
-        ret.put(State.apply(Arrays.asList(ApplyStatesEventMessage.PACKAGES_PROFILE_UPDATE),
+        ret.put(State.apply(Arrays.asList(ApplyStatesActor.PACKAGES_PROFILE_UPDATE),
                 Optional.empty()), minionSummaries);
         return ret;
     }
@@ -1023,13 +1023,13 @@ public class SaltServerActionService {
 
         if (!sshPushMinions.isEmpty()) {
             ret.put(State.apply(Arrays.asList(
-                    ApplyStatesEventMessage.HARDWARE_PROFILE_UPDATE),
+                    ApplyStatesActor.HARDWARE_PROFILE_UPDATE),
                     Optional.empty()), minionSummaries);
         }
         if (!regularMinions.isEmpty()) {
             ret.put(State.apply(Arrays.asList(
-                    ApplyStatesEventMessage.SYNC_CUSTOM_ALL,
-                    ApplyStatesEventMessage.HARDWARE_PROFILE_UPDATE),
+                    ApplyStatesActor.SYNC_CUSTOM_ALL,
+                    ApplyStatesActor.HARDWARE_PROFILE_UPDATE),
                     Optional.empty()), minionSummaries);
         }
 
@@ -1221,7 +1221,7 @@ public class SaltServerActionService {
             pillar.put("_mgr_channels_items_name", "mgr_channels_new");
             pillar.put("mgr_channels_new", chanPillar);
 
-            ret.put(State.apply(Arrays.asList(ApplyStatesEventMessage.CHANNELS),
+            ret.put(State.apply(Arrays.asList(ApplyStatesActor.CHANNELS),
                     Optional.of(pillar)), Collections.singletonList(new MinionSummary(minion)));
 
         });
@@ -1423,7 +1423,7 @@ public class SaltServerActionService {
                 .collect(Collectors.toList()));
 
         LocalCall<Map<String, ApplyResult>> distUpgrade = State.apply(
-                Collections.singletonList(ApplyStatesEventMessage.DISTUPGRADE),
+                Collections.singletonList(ApplyStatesActor.DISTUPGRADE),
                 Optional.of(pillar)
                 );
         Map<LocalCall<?>, List<MinionSummary>> ret = new HashMap<>();

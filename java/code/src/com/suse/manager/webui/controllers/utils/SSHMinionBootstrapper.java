@@ -15,17 +15,21 @@
 
 package com.suse.manager.webui.controllers.utils;
 
+import static com.suse.manager.webui.services.impl.SaltSSHService.SSH_PUSH_PORT;
+import static com.suse.manager.webui.services.impl.SaltSSHService.getSSHUser;
+
 import com.redhat.rhn.domain.server.ContactMethod;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.user.User;
-import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
+
 import com.suse.manager.reactor.messaging.RegisterMinionEventMessageAction;
+import com.suse.manager.tasks.actors.ApplyStatesActor;
 import com.suse.manager.webui.services.impl.MinionPendingRegistrationService;
 import com.suse.manager.webui.services.impl.SaltSSHService;
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.utils.InputValidator;
-import com.suse.manager.webui.utils.gson.BootstrapParameters;
 import com.suse.manager.webui.utils.gson.BootstrapHostsJson;
+import com.suse.manager.webui.utils.gson.BootstrapParameters;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
@@ -34,9 +38,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Stream;
-
-import static com.suse.manager.webui.services.impl.SaltSSHService.SSH_PUSH_PORT;
-import static com.suse.manager.webui.services.impl.SaltSSHService.getSSHUser;
 
 /**
  * Code for bootstrapping salt-ssh systems using salt-ssh.
@@ -74,7 +75,7 @@ public class SSHMinionBootstrapper extends AbstractMinionBootstrapper {
     @Override
     protected List<String> getBootstrapMods() {
         return Arrays.asList(
-                ApplyStatesEventMessage.CERTIFICATE,
+                ApplyStatesActor.CERTIFICATE,
                 "ssh_bootstrap");
     }
 

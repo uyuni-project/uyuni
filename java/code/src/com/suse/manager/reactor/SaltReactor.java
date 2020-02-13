@@ -25,8 +25,6 @@ import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
-import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
-import com.suse.manager.reactor.messaging.ApplyStatesEventMessageAction;
 import com.suse.manager.reactor.messaging.BatchStartedEventMessage;
 import com.suse.manager.reactor.messaging.BatchStartedEventMessageAction;
 import com.suse.manager.reactor.messaging.ImageDeployedEventMessage;
@@ -45,8 +43,8 @@ import com.suse.manager.reactor.messaging.SystemIdGenerateEventMessageAction;
 import com.suse.manager.reactor.messaging.VirtpollerBeaconEventMessage;
 import com.suse.manager.reactor.messaging.VirtpollerBeaconEventMessageAction;
 import com.suse.manager.tasks.Command;
-import com.suse.manager.tasks.actors.LibvirtEngineActor;
 import com.suse.manager.tasks.actors.JobReturnActor;
+import com.suse.manager.tasks.actors.LibvirtEngineActor;
 import com.suse.manager.utils.MailHelper;
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.utils.salt.ImageDeployedEvent;
@@ -98,8 +96,6 @@ public class SaltReactor {
                 MinionStartEventMessage.class);
         MessageQueue.registerAction(new MinionStartEventMessageAction(),
                 MinionStartEventDatabaseMessage.class);
-        MessageQueue.registerAction(new ApplyStatesEventMessageAction(),
-                ApplyStatesEventMessage.class);
         MessageQueue.registerAction(new RefreshGeneratedSaltFilesEventMessageAction(),
                 RefreshGeneratedSaltFilesEventMessage.class);
         MessageQueue.registerAction(new RunnableEventMessageAction(),

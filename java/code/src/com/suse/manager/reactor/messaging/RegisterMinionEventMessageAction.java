@@ -21,7 +21,6 @@ import static java.util.Optional.ofNullable;
 
 import com.redhat.rhn.common.messaging.EventMessage;
 import com.redhat.rhn.common.messaging.MessageAction;
-import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.common.util.RpmVersionComparator;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelArch;
@@ -52,6 +51,8 @@ import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.system.SystemManager;
 
 import com.suse.manager.reactor.utils.ValueMap;
+import com.suse.manager.tasks.ActorManager;
+import com.suse.manager.tasks.actors.ApplyStatesActor;
 import com.suse.manager.webui.services.SaltStateGeneratorService;
 import com.suse.manager.webui.services.impl.MinionPendingRegistrationService;
 import com.suse.manager.webui.services.impl.SaltService;
@@ -60,7 +61,6 @@ import com.suse.salt.netapi.errors.SaltError;
 import com.suse.salt.netapi.exception.SaltException;
 import com.suse.salt.netapi.results.Result;
 import com.suse.utils.Opt;
-
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
@@ -510,10 +510,10 @@ public class RegisterMinionEventMessageAction implements MessageAction {
 
     private void applySaltboot(MinionServer minion) {
         List<String> states = new ArrayList<>();
-        states.add(ApplyStatesEventMessage.SYNC_STATES);
-        states.add(ApplyStatesEventMessage.SALTBOOT);
+        states.add(ApplyStatesActor.SYNC_STATES);
+        states.add(ApplyStatesActor.SALTBOOT);
 
-        MessageQueue.publish(new ApplyStatesEventMessage(minion.getId(), false, states));
+        ActorManager.defer(new ApplyStatesActor.Message(minion.getId(), null,false, states));
     }
 
     /**

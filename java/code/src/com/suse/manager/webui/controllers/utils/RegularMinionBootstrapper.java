@@ -18,13 +18,14 @@ package com.suse.manager.webui.controllers.utils;
 import com.redhat.rhn.domain.server.ContactMethod;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.user.User;
-import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
+
+import com.suse.manager.tasks.actors.ApplyStatesActor;
 import com.suse.manager.webui.services.impl.MinionPendingRegistrationService;
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.services.impl.SaltService.KeyStatus;
 import com.suse.manager.webui.utils.InputValidator;
-import com.suse.manager.webui.utils.gson.BootstrapParameters;
 import com.suse.manager.webui.utils.gson.BootstrapHostsJson;
+import com.suse.manager.webui.utils.gson.BootstrapParameters;
 import com.suse.salt.netapi.calls.wheel.Key;
 import org.apache.log4j.Logger;
 
@@ -69,7 +70,7 @@ public class RegularMinionBootstrapper extends AbstractMinionBootstrapper {
     @Override
     protected List<String> getBootstrapMods() {
         return Arrays.asList(
-                ApplyStatesEventMessage.CERTIFICATE,
+                ApplyStatesActor.CERTIFICATE,
                 "bootstrap");
     }
 

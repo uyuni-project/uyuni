@@ -22,7 +22,7 @@ import com.redhat.rhn.manager.audit.scap.file.ScapFileManager;
 
 import com.suse.manager.reactor.PGEventStream;
 import com.suse.manager.reactor.SaltReactor;
-import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
+import com.suse.manager.tasks.actors.ApplyStatesActor;
 import com.suse.manager.utils.MinionServerUtils;
 import com.suse.manager.webui.controllers.utils.ContactMethodUtil;
 import com.suse.manager.webui.services.SaltActionChainGeneratorService;
@@ -64,7 +64,6 @@ import com.suse.salt.netapi.exception.SaltException;
 import com.suse.salt.netapi.results.Result;
 import com.suse.salt.netapi.results.SSHResult;
 import com.suse.utils.Opt;
-
 import org.apache.http.client.config.CookieSpecs;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.impl.nio.client.CloseableHttpAsyncClient;
@@ -906,7 +905,7 @@ public class SaltService {
      */
     public void updateSystemInfo(MinionList minionTarget) {
         try {
-            callAsync(State.apply(Arrays.asList(ApplyStatesEventMessage.SYSTEM_INFO), Optional.empty()), minionTarget,
+            callAsync(State.apply(Arrays.asList(ApplyStatesActor.SYSTEM_INFO), Optional.empty()), minionTarget,
                     Optional.of(ScheduleMetadata.getDefaultMetadata().withMinionStartup()));
         }
         catch (SaltException ex) {
