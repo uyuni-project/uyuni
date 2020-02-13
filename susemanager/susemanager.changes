@@ -1,3 +1,4 @@
+- add bootstrap-repo data for SLE15 SP2 Family
 - mgr-sync: add option '--no-sync' to add commands and implement new
   'sync' sub command
 - remove support for SuSEfirewall2
