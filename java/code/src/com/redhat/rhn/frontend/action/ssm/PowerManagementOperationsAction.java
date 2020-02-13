@@ -14,12 +14,12 @@
  */
 package com.redhat.rhn.frontend.action.ssm;
 
+import static java.util.stream.Collectors.toList;
+
 import com.redhat.rhn.common.localization.LocalizationService;
-import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.kickstart.PowerManagementAction;
 import com.redhat.rhn.frontend.dto.SystemOverview;
-import com.redhat.rhn.frontend.events.SsmPowerManagementEvent;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.frontend.struts.RhnHelper;
@@ -32,6 +32,9 @@ import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 
+import com.suse.manager.tasks.ActorManager;
+import com.suse.manager.tasks.actors.SsmPowerManagementActor;
+import org.apache.log4j.Logger;
 import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
@@ -39,11 +42,8 @@ import org.apache.struts.action.ActionMapping;
 
 import java.util.LinkedList;
 import java.util.List;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import org.apache.log4j.Logger;
 
 /**
  * Powers on, off and reboots multiple systems.
@@ -100,8 +100,8 @@ public class PowerManagementOperationsAction extends RhnAction implements
             }
 
             if (operation != null) {
-                MessageQueue.publish(new SsmPowerManagementEvent(user.getId(),
-                    systemOverviews, operation));
+                var sids = systemOverviews.stream().map(SystemOverview::getId).collect(toList());
+                ActorManager.tell(new SsmPowerManagementActor.Message(user.getId(), sids, operation));
 
                 String[] messageParams = {
                     "" + systemOverviews.size(),

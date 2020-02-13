@@ -16,8 +16,6 @@
 package com.redhat.rhn.common.messaging;
 
 
-import com.redhat.rhn.frontend.events.SsmPowerManagementAction;
-import com.redhat.rhn.frontend.events.SsmPowerManagementEvent;
 import com.redhat.rhn.frontend.events.SsmSystemRebootAction;
 import com.redhat.rhn.frontend.events.SsmSystemRebootEvent;
 
@@ -241,10 +239,6 @@ public class MessageQueue {
         // If we develop a large set of MessageEvents we may want to
         // refactor this block out into a class or method that
         // reads in some configuration from an XML file somewhere
-
-        // Used to allow SSM power management actions to be run asynchronously
-        MessageQueue.registerAction(new SsmPowerManagementAction(),
-            SsmPowerManagementEvent.class);
 
         // Misc
         MessageQueue.registerAction(new SsmSystemRebootAction(),
