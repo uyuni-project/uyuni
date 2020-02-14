@@ -111,19 +111,14 @@ import com.suse.manager.webui.controllers.utils.ContactMethodUtil;
 import com.suse.manager.webui.services.impl.SaltSSHService;
 import com.suse.manager.webui.services.impl.SaltService;
 
-import org.apache.commons.io.IOUtils;
 import org.cobbler.test.MockConnection;
 import org.hibernate.Session;
 import org.hibernate.type.IntegerType;
 import org.jmock.Expectations;
 import org.jmock.lib.legacy.ClassImposteriser;
 
-import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.nio.channels.FileChannel;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -165,10 +160,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         ActionManager.setTaskomaticApi(taskomaticMock);
         saltServiceMock = mock(SaltService.class);
         tmpSaltRoot = Files.createTempDirectory("salt");
-        metadataDirOfficial = Files.createTempDirectory("meta");
-        createMetadataFiles();
         FormulaFactory.setDataDir(tmpSaltRoot.toString());
-        FormulaFactory.setMetadataDirOfficial(metadataDirOfficial.toString() + File.separator);
         SystemManager.mockSaltService(saltServiceMock);
         context().checking(new Expectations() {
             {
@@ -176,22 +168,6 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
                     .scheduleActionExecution(with(any(Action.class)));
             }
         });
-    }
-
-    private void createMetadataFiles() {
-        try {
-            Path prometheusDir = metadataDirOfficial.resolve("prometheus-exporters");
-            Files.createDirectories(prometheusDir);
-            try (InputStream src = this.getClass().getResourceAsStream("prometheus/pillar.example");
-                 OutputStream dst = new FileOutputStream(prometheusDir.resolve("pillar.example").toFile())
-            ) {
-                IOUtils.copy(src, dst);
-            }
-        }
-        catch (IOException e) {
-            e.printStackTrace();
-            fail(e.getMessage());
-        }
     }
 
     public void testSnapshotServer() throws Exception {
