@@ -1,5 +1,7 @@
 package com.suse.manager.tasks;
 
-public interface Command {
+import java.io.Serializable;
+
+public interface Command extends Serializable {
     default String routingHashString() { return this.hashCode() + ""; }
 }

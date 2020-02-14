@@ -13,5 +13,7 @@ public interface Actor {
      */
     default boolean useHashRouting() { return false; }
 
+    default boolean remote() { return false; }
+
     Behavior<Command> create();
 }

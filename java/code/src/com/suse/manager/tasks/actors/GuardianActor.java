@@ -12,7 +12,6 @@ import com.suse.manager.tasks.Actor;
 import com.suse.manager.tasks.Command;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.log4j.Logger;
-import org.jose4j.jwk.Use;
 import org.reflections.Reflections;
 import org.reflections.scanners.SubTypesScanner;
 
@@ -29,6 +28,9 @@ import akka.actor.typed.javadsl.BehaviorBuilder;
 import akka.actor.typed.javadsl.Behaviors;
 import akka.actor.typed.javadsl.PoolRouter;
 import akka.actor.typed.javadsl.Routers;
+import akka.actor.typed.receptionist.Receptionist;
+import akka.actor.typed.receptionist.ServiceKey;
+import akka.cluster.typed.Cluster;
 
 public class GuardianActor {
 
@@ -59,7 +61,6 @@ public class GuardianActor {
                 this::addHandlers,
                 (memo1, memo2) -> memo2
         );
-
         return receiveBuilder.build();
     }
 
@@ -84,19 +85,33 @@ public class GuardianActor {
         return clazz -> {
             try {
                 var actor = clazz.getConstructor().newInstance();
-                var behavior = actor.create();
+                var serviceKey = ServiceKey.create(Command.class, clazz.getSimpleName());
 
-                // create a PoolRouter, which is an actor that will spawn many concurrent actors
-                PoolRouter<Command> pool =
-                        Routers.pool(
-                                actor.getMaxParallelWorkers(),
-                                // make sure the workers are restarted if they fail
-                                Behaviors.supervise(behavior).onFailure(restart()));
+                var cluster = Cluster.get(context.getSystem());
+                if (
+                        (cluster.selfMember().hasRole("only_local_actors") && !actor.remote()) ||
+                        (cluster.selfMember().hasRole("only_remote_actors") && actor.remote())
+                ) {
+                    var behavior = actor.create();
 
-                PoolRouter<Command> hashingPool = pool.withConsistentHashingRouting(10, c -> c.routingHashString());
+                    // create a PoolRouter, which is an actor that will spawn many concurrent actors
+                    PoolRouter<Command> pool =
+                            Routers.pool(
+                                    actor.getMaxParallelWorkers(),
+                                    // make sure the workers are restarted if they fail
+                                    Behaviors.supervise(behavior).onFailure(restart()));
 
-                var router = context.spawn(actor.useHashRouting() ? hashingPool : pool, clazz.getSimpleName() + "_pool");
-                return router;
+                    PoolRouter<Command> hashingPool = pool.withConsistentHashingRouting(10, c -> c.routingHashString());
+
+                    var router = context.spawn(actor.useHashRouting() ? hashingPool : pool, clazz.getSimpleName() + "_pool");
+
+                    context.getSystem().receptionist().tell(Receptionist.register(serviceKey, router.narrow()));
+
+                    return router;
+                }
+                else {
+                    return context.spawn(Routers.group(serviceKey), clazz.getSimpleName() + "_router");
+                }
             }
             catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException | InstantiationException e) {
                 LOG.error(e);

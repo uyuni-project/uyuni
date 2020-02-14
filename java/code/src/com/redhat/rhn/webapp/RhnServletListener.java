@@ -102,6 +102,8 @@ public class RhnServletListener implements ServletContextListener {
         startHibernate();
         logStart("Hibernate");
 
+        ActorManager.start(25521, "only_local_actors");
+
         // the following is not safe to run in the testsuite
         // and will be excluded from test runs
         if (sce != null) {

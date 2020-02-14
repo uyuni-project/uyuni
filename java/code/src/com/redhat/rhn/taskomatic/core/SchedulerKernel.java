@@ -30,6 +30,7 @@ import com.redhat.rhn.taskomatic.domain.TaskoRun;
 import com.redhat.rhn.taskomatic.domain.TaskoSchedule;
 
 import com.suse.manager.metrics.PrometheusExporter;
+import com.suse.manager.tasks.ActorManager;
 import org.apache.log4j.Logger;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
@@ -147,6 +148,7 @@ public class SchedulerKernel {
         if (!HibernateFactory.isInitialized()) {
             throw new TaskomaticException("HibernateFactory failed to initialize");
         }
+        ActorManager.start(25522, "no_actors");
         try {
             SchedulerKernel.scheduler.start();
             initializeAllSatSchedules();
