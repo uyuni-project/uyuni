@@ -477,6 +477,68 @@ PKGLISTUBUNTU1804 = [
     "dmidecode",
 ]
 
+PKGLISTDEBIAN9 = [
+    "libsodium18",
+    "dctrl-tools",
+    "libzmq5",
+    "python-chardet",
+    "python-croniter",
+    "python-crypto",
+    "python-dateutil",
+    "python-enum34",
+    "python-ipaddress",
+    "python-jinja2",
+    "python-markupsafe",
+    "python-minimal",
+    "python-msgpack",
+    "python-openssl",
+    "python-pkg-resources",
+    "python-psutil",
+    "python-requests",
+    "python-six",
+    "python-systemd",
+    "python-tornado",
+    "python-tz",
+    "python-urllib3",
+    "python-yaml",
+    "python-zmq",
+    "python-pycurl",
+    "salt-common",
+    "salt-minion",
+    "dmidecode",
+]
+
+PKGLISTDEBIAN10 = [
+    "libsodium18",
+    "dctrl-tools",
+    "libzmq5",
+    "python-chardet",
+    "python-croniter",
+    "python-crypto",
+    "python-dateutil",
+    "python-enum34",
+    "python-ipaddress",
+    "python-jinja2",
+    "python-markupsafe",
+    "python-minimal",
+    "python-msgpack",
+    "python-openssl",
+    "python-pkg-resources",
+    "python-psutil",
+    "python-requests",
+    "python-six",
+    "python-systemd",
+    "python-tornado",
+    "python-tz",
+    "python-urllib3",
+    "python-yaml",
+    "python-zmq",
+    "python-pycurl",
+    "salt-common",
+    "salt-minion",
+    "dmidecode",
+]
+
 DATA = {
     'SLE-11-SP1-i586' : {
         'PDID' : 684, 'PKGLIST' : PKGLIST11 + PKGLIST11_X86_I586,
@@ -893,5 +955,15 @@ DATA = {
         'BASECHANNEL' : 'ubuntu-18.04-pool-amd64-uyuni', 'PKGLIST' : PKGLISTUBUNTU1804,
         'DEST' : '/srv/www/htdocs/pub/repositories/ubuntu/18/4/bootstrap/',
         'TYPE' : 'deb'
-    }
+    },
+         'debian9-amd64-uyuni' : {
+         'BASECHANNEL' : 'debian-9-pool-amd64', 'PKGLIST' : PKGLISTDEBIAN9,
+         'DEST' : '/srv/www/htdocs/pub/repositories/debian/9/bootstrap/',
+         'TYPE' : 'deb'
+     },
+     'debian10-amd64-uyuni' : {
+         'BASECHANNEL' : 'debian-10-pool-amd64', 'PKGLIST' : PKGLISTDEBIAN10,
+         'DEST' : '/srv/www/htdocs/pub/repositories/debian/10/bootstrap/',
+         'TYPE' : 'deb'
+     }
 }
