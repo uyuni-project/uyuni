@@ -956,7 +956,7 @@ DATA = {
         'DEST' : '/srv/www/htdocs/pub/repositories/ubuntu/18/4/bootstrap/',
         'TYPE' : 'deb'
     },
-         'debian9-amd64-uyuni' : {
+    'debian9-amd64-uyuni' : {
          'BASECHANNEL' : 'debian-9-pool-amd64', 'PKGLIST' : PKGLISTDEBIAN9,
          'DEST' : '/srv/www/htdocs/pub/repositories/debian/9/bootstrap/',
          'TYPE' : 'deb'
