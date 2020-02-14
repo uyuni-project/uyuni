@@ -18,6 +18,8 @@ import com.redhat.rhn.common.messaging.EventMessage;
 import com.redhat.rhn.common.messaging.MessageAction;
 import com.redhat.rhn.common.messaging.MessageQueue;
 
+import com.suse.manager.tasks.ActorManager;
+import com.suse.manager.tasks.Command;
 import com.suse.salt.netapi.datatypes.Event;
 import com.suse.salt.netapi.event.EventListener;
 import org.apache.log4j.Logger;
@@ -46,14 +48,20 @@ public class PGEventListener implements EventListener {
     private final Function<Event, Stream<EventMessage>> eventToMessages;
 
     /**
-     * Standard constructor.
-     *
-     * @param eventStreamClosedIn function to call when the event stream gets closed
-     * @param eventToMessagesIn function that maps {@link Event}s to {@link MessageQueue}'s {@link EventMessage}s
+     * Function that maps (JSON-based Salt) {@link Event}s to {@link com.suse.manager.tasks.ActorManager}'s {@link com.suse.manager.tasks.Command}s
      */
-    public PGEventListener(Runnable eventStreamClosedIn, Function<Event, Stream<EventMessage>> eventToMessagesIn) {
+    private final Function<Event, Stream<Command>> eventToCommands;
+
+    /**
+     * Standard constructor.
+     *  @param eventStreamClosedIn function to call when the event stream gets closed
+     * @param eventToMessagesIn function that maps {@link Event}s to {@link MessageQueue}'s {@link EventMessage}s
+     * @param eventToCommandsIn
+     */
+    public PGEventListener(Runnable eventStreamClosedIn, Function<Event, Stream<EventMessage>> eventToMessagesIn, Function<Event, Stream<Command>> eventToCommandsIn) {
         this.eventStreamClosed = eventStreamClosedIn;
         this.eventToMessages = eventToMessagesIn;
+        eventToCommands = eventToCommandsIn;
     }
 
     /**
@@ -78,6 +86,12 @@ public class PGEventListener implements EventListener {
                     throw new PGEventListenerException(() -> action.getExceptionHandler().accept(e));
                 }
             });
+        });
+
+        Stream<Command> commands = eventToCommands.apply(event);
+        commands.forEach(c -> {
+            LOG.debug("HANDLED VIA ACTORS: Event: " + event.getTag() + " -> " + event.getData());
+            ActorManager.tell(c);
         });
     }
 

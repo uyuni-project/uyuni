@@ -30,7 +30,7 @@ import com.redhat.rhn.frontend.context.Context;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
-import com.suse.manager.reactor.messaging.JobReturnEventMessageAction;
+import com.suse.manager.tasks.actors.JobReturnActor;
 import com.suse.manager.utils.SaltUtils;
 import com.suse.manager.webui.services.SaltActionChainGeneratorService;
 import com.suse.manager.webui.services.impl.SaltService;
@@ -43,7 +43,6 @@ import com.suse.salt.netapi.results.Result;
 import com.suse.salt.netapi.results.Ret;
 import com.suse.salt.netapi.results.StateApplyResult;
 import com.suse.utils.Json;
-
 import org.apache.log4j.Logger;
 
 import java.io.IOException;
@@ -302,7 +301,7 @@ public class MinionActionUtils {
                                         }
 
                                         StateApplyResult<Ret<JsonElement>> stateApplyResult = e.getValue();
-                                        JobReturnEventMessageAction.handleAction(retActionId,
+                                        JobReturnActor.handleAction(retActionId,
                                                 minionId,
                                                 stateApplyResult.isResult() ? 0 : -1,
                                                 stateApplyResult.isResult(),

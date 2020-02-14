@@ -1,21 +1,10 @@
-/**
- * Copyright (c) 2016 SUSE LLC
- *
- * This software is licensed to you under the GNU General Public License,
- * version 2 (GPLv2). There is NO WARRANTY for this software, express or
- * implied, including the implied warranties of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
- * along with this software; if not, see
- * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
- *
- * Red Hat trademarks are not licensed under GPLv2. No permission is
- * granted to use or replicate Red Hat trademarks that are incorporated
- * in this software or its documentation.
- */
-package com.suse.manager.reactor.messaging;
+package com.suse.manager.tasks.actors;
 
-import com.redhat.rhn.common.messaging.EventMessage;
-import com.redhat.rhn.common.messaging.MessageAction;
+import static akka.actor.typed.javadsl.Behaviors.receive;
+import static akka.actor.typed.javadsl.Behaviors.same;
+import static akka.actor.typed.javadsl.Behaviors.setup;
+import static com.redhat.rhn.frontend.events.TransactionHelper.handlingTransaction;
+
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.kickstart.KickstartAction;
@@ -31,9 +20,10 @@ import com.google.gson.JsonParseException;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 import com.suse.manager.reactor.hardware.CpuArchUtil;
+import com.suse.manager.tasks.Actor;
+import com.suse.manager.tasks.Command;
 import com.suse.manager.utils.SaltKeyUtils;
 import com.suse.manager.utils.SaltUtils;
-import com.suse.manager.utils.SaltUtils.PackageChangeOutcome;
 import com.suse.manager.webui.services.SaltActionChainGeneratorService;
 import com.suse.manager.webui.utils.salt.custom.ScheduleMetadata;
 import com.suse.manager.webui.utils.salt.custom.SystemInfo;
@@ -41,7 +31,6 @@ import com.suse.salt.netapi.event.JobReturnEvent;
 import com.suse.salt.netapi.results.Ret;
 import com.suse.salt.netapi.results.StateApplyResult;
 import com.suse.utils.Json;
-
 import org.apache.log4j.Logger;
 
 import java.util.ArrayList;
@@ -55,37 +44,34 @@ import java.util.Stack;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import akka.actor.typed.Behavior;
 
-/**
- * Handler class for {@link JobReturnEventMessage}.
- */
-public class JobReturnEventMessageAction implements MessageAction {
+public class JobReturnActor implements Actor {
 
-    /**
-     * Converts an event to json
-     *
-     * @param jobReturnEvent the return event
-     */
-    private static Optional<JsonElement> eventToJson(JobReturnEvent jobReturnEvent) {
-        Optional<JsonElement> jsonResult = Optional.empty();
-        try {
-            jsonResult = Optional.ofNullable(
-                jobReturnEvent.getData().getResult(JsonElement.class));
+    private final static Logger LOG = Logger.getLogger(JobReturnActor.class);
+
+    public static class Message implements Command {
+        /* The underlying job return event as we get it from salt */
+        private final JobReturnEvent jobReturnEvent;
+
+        public Message(JobReturnEvent jobReturnEvent) {
+            this.jobReturnEvent = jobReturnEvent;
         }
-        catch (JsonSyntaxException e) {
-            LOG.error("JSON syntax error while decoding into a StateApplyResult:");
-            LOG.error(jobReturnEvent.getData().getResult(JsonElement.class).toString());
-        }
-        return jsonResult;
     }
 
-    /* Logger for this class */
-    private static final Logger LOG = Logger.getLogger(JobReturnEventMessageAction.class);
+    public Behavior<Command> create() {
+        return setup(context -> receive(Command.class)
+                .onMessage(Message.class, message -> onMessage(message))
+                .build());
+    }
 
-    @Override
-    public void execute(EventMessage msg) {
-        JobReturnEventMessage jobReturnEventMessage = (JobReturnEventMessage) msg;
-        JobReturnEvent jobReturnEvent = jobReturnEventMessage.getJobReturnEvent();
+    private Behavior<Command> onMessage(Message message) {
+        handlingTransaction(() -> execute(message));
+        return same();
+    }
+
+    public void execute(Message msg) {
+        JobReturnEvent jobReturnEvent = msg.jobReturnEvent;
 
         // React according to the function the minion ran
         String function = jobReturnEvent.getData().getFun();
@@ -107,7 +93,7 @@ public class JobReturnEventMessageAction implements MessageAction {
         Optional<Long> actionId = jobReturnEvent.getData().getMetadata(ScheduleMetadata.class).map(
                 ScheduleMetadata::getSumaActionId);
         actionId.filter(id -> id > 0).ifPresent(id -> {
-                jobResult.ifPresent(result ->
+            jobResult.ifPresent(result ->
                     handleAction(id,
                             jobReturnEvent.getMinionId(),
                             jobReturnEvent.getData().getRetcode(),
@@ -179,7 +165,7 @@ public class JobReturnEventMessageAction implements MessageAction {
                                 SaltUtils.INSTANCE.updateSystemInfo(systemInfo, minion);
                             }));
         }
-      // For all jobs: update minion last checkin
+        // For all jobs: update minion last checkin
         Optional<MinionServer> minion = MinionServerFactory.findByMinionId(
                 jobReturnEvent.getMinionId());
         if (minion.isPresent()) {
@@ -187,7 +173,7 @@ public class JobReturnEventMessageAction implements MessageAction {
             m.updateServerInfo();
             // for s390 update the host as well
             if (m.getCpu() != null &&
-                CpuArchUtil.isS390(m.getCpu().getArch().getLabel())) {
+                    CpuArchUtil.isS390(m.getCpu().getArch().getLabel())) {
                 VirtualInstance virtInstance = m.getVirtualInstance();
                 if (virtInstance != null && virtInstance.getHostSystem() != null) {
                     virtInstance.getHostSystem().updateServerInfo();
@@ -267,7 +253,7 @@ public class JobReturnEventMessageAction implements MessageAction {
      */
     public static void failDependentServerActions(long actionId, String minionId, Optional<String> message) {
         Optional<MinionServer> minion = MinionServerFactory.findByMinionId(
-               minionId);
+                minionId);
         if (minion.isPresent()) {
             // set first action to failed if not already in that state
             Action action = ActionFactory.lookupById(actionId);
@@ -286,20 +272,20 @@ public class JobReturnEventMessageAction implements MessageAction {
             List<ServerAction> serverActions = ActionFactory
                     .listServerActionsForServer(minion.get(),
                             Arrays.asList(ActionFactory.STATUS_QUEUED, ActionFactory.STATUS_PICKED_UP,
-                            ActionFactory.STATUS_FAILED), action.getCreated());
+                                    ActionFactory.STATUS_FAILED), action.getCreated());
 
             while (!actionIdsDependencies.empty()) {
-               Long acId = actionIdsDependencies.pop();
+                Long acId = actionIdsDependencies.pop();
                 List<ServerAction> serverActionsWithPrereq = serverActions.stream()
-                   .filter(s -> s.getParentAction().getPrerequisite() != null)
-                   .filter(s -> s.getParentAction().getPrerequisite().getId().equals(acId))
-                   .collect(Collectors.toList());
-               for (ServerAction sa : serverActionsWithPrereq) {
-                   actionIdsDependencies.push(sa.getParentAction().getId());
-                   sa.fail("Prerequisite failed");
-               }
-           }
-       }
+                        .filter(s -> s.getParentAction().getPrerequisite() != null)
+                        .filter(s -> s.getParentAction().getPrerequisite().getId().equals(acId))
+                        .collect(Collectors.toList());
+                for (ServerAction sa : serverActionsWithPrereq) {
+                    actionIdsDependencies.push(sa.getParentAction().getId());
+                    sa.fail("Prerequisite failed");
+                }
+            }
+        }
     }
 
     /**
@@ -313,7 +299,7 @@ public class JobReturnEventMessageAction implements MessageAction {
      *         return true If information is not enough and a full package refresh is needed
      */
     private boolean handlePackageChanges(JobReturnEvent jobReturnEvent, String function,
-                                                Optional<JsonElement> jobResult) {
+                                         Optional<JsonElement> jobResult) {
 
         return MinionServerFactory.findByMinionId(jobReturnEvent.getMinionId()).flatMap(minionServer ->
                 jobResult.map(result -> {
@@ -321,11 +307,11 @@ public class JobReturnEventMessageAction implements MessageAction {
                     try {
                         if (forcePackageListRefresh(jobReturnEvent) ||
                                 SaltUtils.handlePackageChanges(function, result,
-                                        minionServer) ==  PackageChangeOutcome.NEEDS_REFRESHING) {
+                                        minionServer) ==  SaltUtils.PackageChangeOutcome.NEEDS_REFRESHING) {
                             fullPackageRefreshNeeded = true;
                         }
                     }
-                     catch (JsonParseException e) {
+                    catch (JsonParseException e) {
                         LOG.warn("Could not determine if packages changed " +
                                 "in call to " + function +
                                 " because of a parse error");
@@ -362,7 +348,7 @@ public class JobReturnEventMessageAction implements MessageAction {
      * @param function the Salt function executed.
      */
     public static void handleAction(long actionId, String minionId, int retcode, boolean success,
-                              String jobId, JsonElement jsonResult, String function) {
+                                    String jobId, JsonElement jsonResult, String function) {
         // Lookup the corresponding action
         Optional<Action> action = Optional.ofNullable(ActionFactory.lookupById(actionId));
         if (action.isPresent()) {
@@ -460,10 +446,20 @@ public class JobReturnEventMessageAction implements MessageAction {
     }
 
     /**
-     * {@inheritDoc}
+     * Converts an event to json
+     *
+     * @param jobReturnEvent the return event
      */
-    @Override
-    public boolean canRunConcurrently() {
-        return true;
+    public static Optional<JsonElement> eventToJson(JobReturnEvent jobReturnEvent) {
+        Optional<JsonElement> jsonResult = Optional.empty();
+        try {
+            jsonResult = Optional.ofNullable(
+                    jobReturnEvent.getData().getResult(JsonElement.class));
+        }
+        catch (JsonSyntaxException e) {
+            LOG.error("JSON syntax error while decoding into a StateApplyResult:");
+            LOG.error(jobReturnEvent.getData().getResult(JsonElement.class).toString());
+        }
+        return jsonResult;
     }
 }

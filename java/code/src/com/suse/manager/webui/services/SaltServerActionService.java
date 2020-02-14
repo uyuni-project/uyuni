@@ -14,10 +14,16 @@
  */
 package com.suse.manager.webui.services;
 
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonSyntaxException;
-import com.google.gson.reflect.TypeToken;
+import static com.redhat.rhn.domain.action.ActionFactory.STATUS_COMPLETED;
+import static com.redhat.rhn.domain.action.ActionFactory.STATUS_FAILED;
+import static com.suse.manager.webui.services.SaltConstants.SALT_FS_PREFIX;
+import static com.suse.manager.webui.services.SaltConstants.SCRIPTS_DIR;
+import static java.util.Collections.emptyMap;
+import static java.util.Collections.singletonList;
+import static java.util.Collections.singletonMap;
+import static java.util.Optional.ofNullable;
+import static java.util.stream.Collectors.toList;
+
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
@@ -88,8 +94,13 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerXMLRPCHelper;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
+
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonSyntaxException;
+import com.google.gson.reflect.TypeToken;
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
-import com.suse.manager.reactor.messaging.JobReturnEventMessageAction;
+import com.suse.manager.tasks.actors.JobReturnActor;
 import com.suse.manager.utils.SaltUtils;
 import com.suse.manager.webui.services.impl.SaltSSHService;
 import com.suse.manager.webui.services.impl.SaltService;
@@ -110,6 +121,20 @@ import com.suse.salt.netapi.results.Ret;
 import com.suse.salt.netapi.results.StateApplyResult;
 import com.suse.utils.Json;
 import com.suse.utils.Opt;
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.tuple.ImmutablePair;
+import org.apache.commons.lang3.tuple.Pair;
+import org.apache.log4j.Logger;
+import org.cobbler.CobblerConnection;
+import org.cobbler.Distro;
+import org.cobbler.Profile;
+import org.cobbler.SystemRecord;
+import org.hibernate.Hibernate;
+import org.hibernate.proxy.HibernateProxy;
+import org.jose4j.lang.JoseException;
+
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -140,29 +165,6 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.tuple.ImmutablePair;
-import org.apache.commons.lang3.tuple.Pair;
-import org.apache.log4j.Logger;
-import org.cobbler.CobblerConnection;
-import org.cobbler.Distro;
-import org.cobbler.Profile;
-import org.cobbler.SystemRecord;
-import org.hibernate.Hibernate;
-import org.hibernate.proxy.HibernateProxy;
-import org.jose4j.lang.JoseException;
-
-import static com.redhat.rhn.domain.action.ActionFactory.STATUS_COMPLETED;
-import static com.redhat.rhn.domain.action.ActionFactory.STATUS_FAILED;
-import static com.suse.manager.webui.services.SaltConstants.SALT_FS_PREFIX;
-import static com.suse.manager.webui.services.SaltConstants.SCRIPTS_DIR;
-import static java.util.Collections.emptyMap;
-import static java.util.Collections.singletonList;
-import static java.util.Collections.singletonMap;
-import static java.util.Optional.ofNullable;
-import static java.util.stream.Collectors.toList;
 
 /**
  * Takes {@link Action} objects to be executed via salt.
@@ -615,7 +617,7 @@ public class SaltServerActionService {
                     failActionChain(minionId, firstChunkActionId, Optional.of("Unexpected response: " + msg));
                     return false;
                 }
-                JobReturnEventMessageAction.handleActionChainResult(minionId, "", 0, true,
+                JobReturnActor.handleActionChainResult(minionId, "", 0, true,
                         actionChainResult,
                         // skip reboot, needs special handling
                         stateResult -> SYSTEM_REBOOT.equals(stateResult.getName()));
@@ -708,7 +710,7 @@ public class SaltServerActionService {
     private static void failActionChain(String minionId, Optional<Long> actionChainId, Optional<Long> failedActionId,
                                         Optional<String> message) {
         failedActionId.ifPresent(last ->
-                JobReturnEventMessageAction.failDependentServerActions(last, minionId, message));
+                JobReturnActor.failDependentServerActions(last, minionId, message));
         MinionServerFactory.findByMinionId(minionId).ifPresent(minion -> {
             SaltActionChainGeneratorService.INSTANCE.removeActionChainSLSFilesForMinion(minion, actionChainId);
         });

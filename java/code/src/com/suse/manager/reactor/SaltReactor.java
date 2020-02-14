@@ -31,8 +31,6 @@ import com.suse.manager.reactor.messaging.BatchStartedEventMessage;
 import com.suse.manager.reactor.messaging.BatchStartedEventMessageAction;
 import com.suse.manager.reactor.messaging.ImageDeployedEventMessage;
 import com.suse.manager.reactor.messaging.ImageDeployedEventMessageAction;
-import com.suse.manager.reactor.messaging.JobReturnEventMessage;
-import com.suse.manager.reactor.messaging.JobReturnEventMessageAction;
 import com.suse.manager.reactor.messaging.LibvirtEngineDomainLifecycleMessage;
 import com.suse.manager.reactor.messaging.LibvirtEngineDomainLifecycleMessageAction;
 import com.suse.manager.reactor.messaging.MinionStartEventDatabaseMessage;
@@ -48,6 +46,8 @@ import com.suse.manager.reactor.messaging.SystemIdGenerateEventMessage;
 import com.suse.manager.reactor.messaging.SystemIdGenerateEventMessageAction;
 import com.suse.manager.reactor.messaging.VirtpollerBeaconEventMessage;
 import com.suse.manager.reactor.messaging.VirtpollerBeaconEventMessageAction;
+import com.suse.manager.tasks.Command;
+import com.suse.manager.tasks.actors.JobReturnActor;
 import com.suse.manager.utils.MailHelper;
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.utils.salt.ImageDeployedEvent;
@@ -100,8 +100,6 @@ public class SaltReactor {
                 MinionStartEventDatabaseMessage.class);
         MessageQueue.registerAction(new ApplyStatesEventMessageAction(),
                 ApplyStatesEventMessage.class);
-        MessageQueue.registerAction(new JobReturnEventMessageAction(),
-                JobReturnEventMessage.class);
         MessageQueue.registerAction(new RefreshGeneratedSaltFilesEventMessageAction(),
                 RefreshGeneratedSaltFilesEventMessage.class);
         MessageQueue.registerAction(new RunnableEventMessageAction(),
@@ -162,7 +160,7 @@ public class SaltReactor {
             retries++;
             try {
                 eventStream = SALT_SERVICE.getEventStream();
-                eventStream.addEventListener(new PGEventListener(this::eventStreamClosed, this::eventToMessages));
+                eventStream.addEventListener(new PGEventListener(this::eventStreamClosed, this::eventToMessages, this::eventToCommands));
 
                 connected = true;
                 if (retries > 1) {
@@ -195,17 +193,23 @@ public class SaltReactor {
         }
     }
 
+    private Stream<Command> eventToCommands(Event event) {
+        // Setup handlers for different event types
+        return JobReturnEvent.parse(event).map(this::eventToCommands).orElse(
+                empty()
+        );
+    }
+
     private Stream<EventMessage> eventToMessages(Event event) {
         // Setup handlers for different event types
         return MinionStartEvent.parse(event).map(this::eventToMessages).orElseGet(() ->
-               JobReturnEvent.parse(event).map(this::eventToMessages).orElseGet(() ->
                BatchStartedEvent.parse(event).map(this::eventToMessages).orElseGet(() ->
                SystemIdGenerateEvent.parse(event).map(this::eventToMessages).orElseGet(() ->
                ImageDeployedEvent.parse(event).map(this::eventToMessages).orElseGet(() ->
                EngineEvent.parse(event).map(this::eventToMessages).orElseGet(() ->
                BeaconEvent.parse(event).map(this::eventToMessages).orElse(
                empty()
-        )))))));
+        ))))));
     }
 
     /**
@@ -289,8 +293,8 @@ public class SaltReactor {
      * @param jobReturnEvent the job return event as we get it from salt
      * @return event handler runnable
      */
-    private Stream<EventMessage> eventToMessages(JobReturnEvent jobReturnEvent) {
-        return of(new JobReturnEventMessage(jobReturnEvent));
+    private Stream<Command> eventToCommands(JobReturnEvent jobReturnEvent) {
+        return of(new JobReturnActor.Message(jobReturnEvent));
     }
 
     /**
