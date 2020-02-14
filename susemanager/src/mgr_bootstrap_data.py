@@ -807,6 +807,22 @@ DATA = {
         'PDID' : [1772, 1712], 'PKGLIST' : PKGLIST15 + PKGLIST15_X86_ARM,
         'DEST' : '/srv/www/htdocs/pub/repositories/sle/15/1/bootstrap/'
     },
+    'SLE-15-SP2-aarch64' : {
+        'PDID' : [1943, 1709], 'PKGLIST' : PKGLIST15 + PKGLIST15_X86_ARM,
+        'DEST' : '/srv/www/htdocs/pub/repositories/sle/15/2/bootstrap/'
+    },
+    'SLE-15-SP2-ppc64le' : {
+        'PDID' : [1944, 1710], 'PKGLIST' : PKGLIST15 + PKGLIST15_PPC,
+        'DEST' : '/srv/www/htdocs/pub/repositories/sle/15/2/bootstrap/'
+    },
+    'SLE-15-SP2-s390x' : {
+        'PDID' : [1945, 1711], 'PKGLIST' : PKGLIST15 + PKGLIST15_Z,
+        'DEST' : '/srv/www/htdocs/pub/repositories/sle/15/2/bootstrap/'
+    },
+    'SLE-15-SP2-x86_64' : {
+        'PDID' : [1946, 1712], 'PKGLIST' : PKGLIST15 + PKGLIST15_X86_ARM,
+        'DEST' : '/srv/www/htdocs/pub/repositories/sle/15/2/bootstrap/'
+    },
     'RHEL6-x86_64' : {
         'PDID' : [-5, 1682], 'PKGLIST' : RES6,
         'DEST' : '/srv/www/htdocs/pub/repositories/res/6/bootstrap/'
