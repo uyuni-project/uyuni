@@ -22,7 +22,6 @@ import com.redhat.rhn.common.db.datasource.SelectMode;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.localization.LocalizationService;
-import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.common.util.FileUtils;
 import com.redhat.rhn.domain.common.SatConfigFactory;
 import com.redhat.rhn.domain.org.Org;
@@ -34,13 +33,14 @@ import com.redhat.rhn.domain.role.Role;
 import com.redhat.rhn.domain.server.ServerGroup;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.user.UserFactory;
-import com.redhat.rhn.frontend.events.UpdateErrataCacheEvent;
 import com.redhat.rhn.frontend.servlets.PxtSessionDelegateFactory;
 import com.redhat.rhn.manager.satellite.SystemCommandExecutor;
 import com.redhat.rhn.manager.user.CreateUserCommand;
 import com.redhat.rhn.manager.user.UpdateUserCommand;
 import com.redhat.rhn.manager.user.UserManager;
 
+import com.suse.manager.tasks.ActorManager;
+import com.suse.manager.tasks.actors.UpdateErrataCacheActor;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.StopWatch;
 import org.apache.log4j.Logger;
@@ -306,10 +306,9 @@ public class LoginHelper {
             sw.start();
         }
 
-        UpdateErrataCacheEvent uece = new
-            UpdateErrataCacheEvent(UpdateErrataCacheEvent.TYPE_ORG);
-        uece.setOrgId(orgIn.getId());
-        MessageQueue.publish(uece);
+        ActorManager.defer(new UpdateErrataCacheActor.Message(
+                UpdateErrataCacheActor.TYPE_ORG,
+                orgIn.getId(), null, null, null));
 
         if (log.isDebugEnabled()) {
             sw.stop();

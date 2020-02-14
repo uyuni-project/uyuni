@@ -19,13 +19,13 @@ import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.WriteMode;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
-import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.errata.ErrataFactory;
 import com.redhat.rhn.domain.org.Org;
-import com.redhat.rhn.frontend.events.UpdateErrataCacheEvent;
 
+import com.suse.manager.tasks.ActorManager;
+import com.suse.manager.tasks.actors.UpdateErrataCacheActor;
 import org.apache.log4j.Logger;
 
 import java.util.HashMap;
@@ -212,10 +212,10 @@ public class ErrataCacheManager extends HibernateFactory {
      * caches updated
      */
     public static void updateCacheForChannelsAsync(List<Long> channelIdsToUpdate) {
-        UpdateErrataCacheEvent uece = new UpdateErrataCacheEvent(
-                UpdateErrataCacheEvent.TYPE_CHANNEL);
-        uece.setChannels(channelIdsToUpdate);
-        MessageQueue.publish(uece);
+        ActorManager.defer(new UpdateErrataCacheActor.Message(
+                UpdateErrataCacheActor.TYPE_CHANNEL,
+                null, channelIdsToUpdate, null, null));
+
     }
 
     /**
@@ -253,11 +253,10 @@ public class ErrataCacheManager extends HibernateFactory {
      */
     public static void insertCacheForChannelErrataAsync(List<Long> channelIdsToUpdate,
             Long errataId) {
-        UpdateErrataCacheEvent uece = new UpdateErrataCacheEvent(
-                UpdateErrataCacheEvent.TYPE_CHANNEL_ERRATA);
-        uece.setChannels(channelIdsToUpdate);
-        uece.setErrataId(errataId);
-        MessageQueue.publish(uece);
+
+        ActorManager.defer(new UpdateErrataCacheActor.Message(
+                UpdateErrataCacheActor.TYPE_CHANNEL_ERRATA,
+                null, channelIdsToUpdate, null, errataId));
     }
 
     /**
@@ -287,12 +286,10 @@ public class ErrataCacheManager extends HibernateFactory {
         if (packageIds.isEmpty()) {
             return;
         }
-        UpdateErrataCacheEvent uece = new UpdateErrataCacheEvent(
-                UpdateErrataCacheEvent.TYPE_CHANNEL_ERRATA);
-        uece.setChannels(channelIdsToUpdate);
-        uece.setErrataId(null);
-        uece.setPackageIds(packageIds);
-        MessageQueue.publish(uece);
+
+        ActorManager.defer(new UpdateErrataCacheActor.Message(
+                UpdateErrataCacheActor.TYPE_CHANNEL_ERRATA,
+                null, channelIdsToUpdate, packageIds, null));
     }
 
     /**

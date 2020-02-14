@@ -14,11 +14,11 @@
  */
 package com.redhat.rhn.manager.system;
 
-import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.common.validator.ValidatorError;
-import com.redhat.rhn.frontend.events.UpdateErrataCacheEvent;
 import com.redhat.rhn.manager.BasePersistOperation;
 
+import com.suse.manager.tasks.ActorManager;
+import com.suse.manager.tasks.actors.UpdateErrataCacheActor;
 import org.apache.commons.lang3.time.StopWatch;
 import org.apache.log4j.Logger;
 
@@ -58,10 +58,9 @@ public class BaseUpdateChannelCommand extends BasePersistOperation {
             sw.start();
         }
 
-        UpdateErrataCacheEvent uece =
-            new UpdateErrataCacheEvent(UpdateErrataCacheEvent.TYPE_ORG);
-        uece.setOrgId(user.getOrg().getId());
-        MessageQueue.publish(uece);
+        ActorManager.defer(new UpdateErrataCacheActor.Message(
+                UpdateErrataCacheActor.TYPE_ORG,
+                user.getOrg().getId(), null, null, null));
 
         if (log.isDebugEnabled()) {
             sw.stop();

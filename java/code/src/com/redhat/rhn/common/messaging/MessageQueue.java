@@ -47,8 +47,6 @@ import com.redhat.rhn.frontend.events.SsmUpgradePackagesAction;
 import com.redhat.rhn.frontend.events.SsmUpgradePackagesEvent;
 import com.redhat.rhn.frontend.events.SsmVerifyPackagesAction;
 import com.redhat.rhn.frontend.events.SsmVerifyPackagesEvent;
-import com.redhat.rhn.frontend.events.UpdateErrataCacheAction;
-import com.redhat.rhn.frontend.events.UpdateErrataCacheEvent;
 
 import com.suse.manager.reactor.messaging.ChannelsChangedEventMessage;
 import com.suse.manager.reactor.messaging.ChannelsChangedEventMessageAction;
@@ -271,11 +269,6 @@ public class MessageQueue {
         // refactor this block out into a class or method that
         // reads in some configuration from an XML file somewhere
         MessageQueue.registerAction(new NewUserAction(), NewUserEvent.class);
-
-        // this is to update the errata cache without blocking the login
-        // for 40 seconds.
-        MessageQueue.registerAction(new UpdateErrataCacheAction(),
-                                    UpdateErrataCacheEvent.class);
 
         // Used to allow SSM channel changes to be run asynchronously
         MessageQueue.registerAction(new SsmChangeBaseChannelSubscriptionsAction(),

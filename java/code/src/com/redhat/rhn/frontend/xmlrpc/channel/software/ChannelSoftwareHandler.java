@@ -14,6 +14,9 @@
  */
 package com.redhat.rhn.frontend.xmlrpc.channel.software;
 
+import static com.redhat.rhn.manager.channel.CloneChannelCommand.CloneBehavior.CURRENT_STATE;
+import static com.redhat.rhn.manager.channel.CloneChannelCommand.CloneBehavior.ORIGINAL_STATE;
+
 import com.redhat.rhn.FaultException;
 import com.redhat.rhn.common.client.InvalidCertificateException;
 import com.redhat.rhn.common.db.datasource.DataResult;
@@ -21,7 +24,6 @@ import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.SelectMode;
 import com.redhat.rhn.common.db.datasource.WriteMode;
 import com.redhat.rhn.common.hibernate.LookupException;
-import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.channel.Channel;
@@ -49,7 +51,6 @@ import com.redhat.rhn.frontend.context.Context;
 import com.redhat.rhn.frontend.dto.ErrataOverview;
 import com.redhat.rhn.frontend.dto.PackageDto;
 import com.redhat.rhn.frontend.dto.PackageOverview;
-import com.redhat.rhn.frontend.events.UpdateErrataCacheEvent;
 import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
 import com.redhat.rhn.frontend.xmlrpc.InvalidChannelException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidChannelLabelException;
@@ -86,6 +87,8 @@ import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.task.TaskConstants;
 import com.redhat.rhn.taskomatic.task.errata.ErrataCacheWorker;
 
+import com.suse.manager.tasks.ActorManager;
+import com.suse.manager.tasks.actors.UpdateErrataCacheActor;
 import com.suse.manager.webui.services.SaltStateGeneratorService;
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -105,9 +108,6 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
-
-import static com.redhat.rhn.manager.channel.CloneChannelCommand.CloneBehavior.CURRENT_STATE;
-import static com.redhat.rhn.manager.channel.CloneChannelCommand.CloneBehavior.ORIGINAL_STATE;
 
 /**
  * ChannelSoftwareHandler
@@ -1660,10 +1660,9 @@ public class ChannelSoftwareHandler extends BaseHandler {
             sw.start();
         }
 
-        UpdateErrataCacheEvent uece =
-            new UpdateErrataCacheEvent(UpdateErrataCacheEvent.TYPE_ORG);
-        uece.setOrgId(orgIn.getId());
-        MessageQueue.publish(uece);
+        ActorManager.defer(new UpdateErrataCacheActor.Message(
+                UpdateErrataCacheActor.TYPE_ORG,
+                orgIn.getId(), null, null, null));
 
         if (log.isDebugEnabled()) {
             sw.stop();
