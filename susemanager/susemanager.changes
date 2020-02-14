@@ -1,3 +1,4 @@
+- remove oracle backend support and tooling
 - remove mgr-register dummy
 
 -------------------------------------------------------------------

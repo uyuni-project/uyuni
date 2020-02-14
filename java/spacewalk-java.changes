@@ -1,3 +1,4 @@
+- remove oracle DB support
 - improve performance when adding systems to system groups (bsc#1158754)
 - remove NccRegister Task
 
