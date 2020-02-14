@@ -92,6 +92,10 @@
         <dependency org="suse" name="xerces-j2" rev="2.11.0" />
         <dependency org="suse" name="xmlsec" rev="2.0.7" />
 
+        <!-- Akka -->
+        <dependency org="com.typesafe.akka" name="akka-actor-typed_2.13" rev="2.6.3" />
+        <dependency org="com.mchange" name="mchange-commons-java" rev="0.2.20" transitive="false" />
+
         <!-- Tomcat jars -->
         <dependency org="suse" name="jasper" rev="9.0.14" />
         <dependency org="suse" name="jasper-el" rev="9.0.14" />
