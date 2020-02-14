@@ -47,7 +47,7 @@ public class RestartSatelliteAction implements MessageAction {
                 ValidatorError error = errors[i];
                 log.error("Error trying to restart the satellite: " +
                         LocalizationService.getInstance()
-                        .getMessage(error.getKey(), evt.getUserLocale()));
+                        .getMessage(error.getKey(), LocalizationService.getUserLocale()));
             }
         }
 

@@ -77,9 +77,9 @@ public class NewUserAction extends BaseMailAction implements MessageAction {
         //Get the admin details(email) from the event message
         //and set in recipients to send the mail
         String subject = LocalizationService.getInstance().
-                getMessage("email.newuser.subject", evt.getUserLocale(), subjectArgs);
+                getMessage("email.newuser.subject", LocalizationService.getUserLocale(), subjectArgs);
         String body = LocalizationService.getInstance().
-                getMessage("email.newuser.body", evt.getUserLocale(), bodyArgs);
+                getMessage("email.newuser.body", LocalizationService.getUserLocale(), bodyArgs);
         MailHelper.withMailer(getMail()).sendEmail(getEmails(evt), subject, body);
 
         if (logger.isDebugEnabled()) {
@@ -106,7 +106,7 @@ public class NewUserAction extends BaseMailAction implements MessageAction {
         }
 
         String returnString = LocalizationService.getInstance().getMessage(
-                "email.newaccount.subject", evtIn.getUserLocale());
+                "email.newaccount.subject", LocalizationService.getUserLocale());
         if (logger.isDebugEnabled()) {
             logger.debug("getSubject(User) - end - return value=" +
                     returnString);

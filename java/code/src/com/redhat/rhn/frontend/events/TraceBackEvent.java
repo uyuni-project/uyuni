@@ -54,10 +54,10 @@ public class TraceBackEvent extends BaseEvent implements EventMessage {
             out.print(request.getMethod());
             out.println(" " + request.getRequestURI());
             out.println();
-            out.print(ls.getMessage("date", getUserLocale()));
+            out.print(ls.getMessage("date", LocalizationService.getUserLocale()));
             out.print(":");
             out.println(ls.getBasicDate());
-            out.print(ls.getMessage("headers", getUserLocale()));
+            out.print(ls.getMessage("headers", LocalizationService.getUserLocale()));
             out.println(":");
             Enumeration e = request.getHeaderNames();
             while (e.hasMoreElements()) {
@@ -68,13 +68,13 @@ public class TraceBackEvent extends BaseEvent implements EventMessage {
                 out.println(request.getHeader(headerName));
             }
             out.println();
-            out.print(ls.getMessage("request", getUserLocale()));
+            out.print(ls.getMessage("request", LocalizationService.getUserLocale()));
             out.println(":");
             out.println(request.toString());
 
             if (request.getMethod() != null &&
                     request.getMethod().equals("POST")) {
-                out.print(ls.getMessage("form variables", getUserLocale()));
+                out.print(ls.getMessage("form variables", LocalizationService.getUserLocale()));
                 out.println(":");
                 Enumeration ne = request.getParameterNames();
                 while (ne.hasMoreElements()) {
@@ -93,11 +93,11 @@ public class TraceBackEvent extends BaseEvent implements EventMessage {
             }
         }
         else {
-            out.print(ls.getMessage("date", getUserLocale()));
+            out.print(ls.getMessage("date", LocalizationService.getUserLocale()));
             out.print(":");
             out.println(ls.getBasicDate());
             out.println();
-            out.print(ls.getMessage("request", getUserLocale()));
+            out.print(ls.getMessage("request", LocalizationService.getUserLocale()));
             out.println(":");
             out.println("No request information");
             out.println();
@@ -111,10 +111,10 @@ public class TraceBackEvent extends BaseEvent implements EventMessage {
             out.println(user.toString());
         }
         else {
-            out.println(ls.getMessage("no user loggedin", getUserLocale()));
+            out.println(ls.getMessage("no user loggedin", LocalizationService.getUserLocale()));
         }
         out.println();
-        out.print(ls.getMessage("exception", getUserLocale()));
+        out.print(ls.getMessage("exception", LocalizationService.getUserLocale()));
         out.println(":");
         if (throwable != null) {
             throwable.printStackTrace(out);

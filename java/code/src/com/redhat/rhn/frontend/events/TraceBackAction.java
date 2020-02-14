@@ -37,7 +37,7 @@ public class TraceBackAction extends BaseMailAction implements MessageAction {
         // setup subject
         StringBuilder subject = new StringBuilder();
         subject.append(LocalizationService.getInstance().
-                getMessage("web traceback subject", evtIn.getUserLocale()));
+                getMessage("web traceback subject", LocalizationService.getUserLocale()));
         // Not sure if getting the local hostname is the correct thing to do
         // here.  But the traceback emails that I've received seem to do this
         try {
@@ -50,7 +50,7 @@ public class TraceBackAction extends BaseMailAction implements MessageAction {
         }
         subject.append(" (");
         subject.append(LocalizationService.getInstance().formatDate(new Date(),
-                evtIn.getUserLocale()));
+                LocalizationService.getUserLocale()));
         subject.append(")");
         return subject.toString();
     }

@@ -57,16 +57,16 @@ public class NewUserEvent extends BaseEvent implements EventMessage  {
          */
         if (getUser().getUsePamAuthentication()) {
             retval = ls.getMessage("email.newaccount.pam.body",
-                    getUserLocale(), bodyArgs);
+                    LocalizationService.getUserLocale(), bodyArgs);
         }
         else {
             if (getAccountCreator() != null) {
                 retval = ls.getMessage("email.newaccountbycreator.body",
-                        getUserLocale(), bodyArgs);
+                        LocalizationService.getUserLocale(), bodyArgs);
             }
             else {
                 retval = ls.getMessage("email.newaccount.body",
-                        getUserLocale(), bodyArgs);
+                        LocalizationService.getUserLocale(), bodyArgs);
             }
         }
         return retval;
