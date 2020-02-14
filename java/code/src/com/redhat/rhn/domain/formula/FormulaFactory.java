@@ -74,7 +74,7 @@ public class FormulaFactory {
     private static final Logger LOG = Logger.getLogger(FormulaFactory.class);
 
     private static String dataDir = "/srv/susemanager/formula_data/";
-    private static String METADATA_DIR_MANAGER = "/usr/share/susemanager/formulas/metadata/";
+    private static String metadataDirManager = "/usr/share/susemanager/formulas/metadata/";
     private static final String METADATA_DIR_STANDALONE_SALT = "/usr/share/salt-formulas/metadata/";
     private static final String METADATA_DIR_CUSTOM = "/srv/formula_metadata/";
     private static final String PILLAR_DIR = "pillar/";
@@ -109,15 +109,19 @@ public class FormulaFactory {
     private FormulaFactory() { }
 
     /**
-     * Setter for data directory(will be needed for testing)
+     * Setter for data directory, used for testing.
      * @param dataDirPath base path to where store files
      */
     public static void setDataDir(String dataDirPath) {
         FormulaFactory.dataDir = dataDirPath;
     }
 
+    /**
+     * Setter for metadata directory, used for testing.
+     * @param metadataDirPath base path where to read metadata files from
+     */
     public static void setMetadataDirOfficial(String metadataDirPath) {
-        FormulaFactory.METADATA_DIR_MANAGER = metadataDirPath;
+        FormulaFactory.metadataDirManager = metadataDirPath;
     }
 
     /**
@@ -171,8 +175,8 @@ public class FormulaFactory {
             message += (error ? " and '" : " '") + METADATA_DIR_STANDALONE_SALT + "'";
             error = true;
         }
-        if (!new File(METADATA_DIR_MANAGER).canRead()) {
-            message += (error ? " and '" : " '") + METADATA_DIR_MANAGER + "'";
+        if (!new File(metadataDirManager).canRead()) {
+            message += (error ? " and '" : " '") + metadataDirManager + "'";
             error = true;
         }
         if (!new File(METADATA_DIR_CUSTOM).canRead()) {
@@ -188,7 +192,7 @@ public class FormulaFactory {
      */
     public static List<String> listFormulaNames() {
         File standaloneDir = new File(METADATA_DIR_STANDALONE_SALT);
-        File managerDir = new File(METADATA_DIR_MANAGER);
+        File managerDir = new File(metadataDirManager);
         File customDir = new File(METADATA_DIR_CUSTOM);
         List<File> files = new LinkedList<>();
         files.addAll(getFormulasFiles(standaloneDir));
@@ -417,7 +421,7 @@ public class FormulaFactory {
     public static Optional<Map<String, Object>> getFormulaLayoutByName(String name) {
         String layoutFilePath = name + File.separator + LAYOUT_FILE;
         File layoutFileStandalone = new File(METADATA_DIR_STANDALONE_SALT + layoutFilePath);
-        File layoutFileManager = new File(METADATA_DIR_MANAGER + layoutFilePath);
+        File layoutFileManager = new File(metadataDirManager + layoutFilePath);
         File layoutFileCustom = new File(METADATA_DIR_CUSTOM + layoutFilePath);
 
         try {
@@ -754,7 +758,7 @@ public class FormulaFactory {
     public static Map<String, Object> getMetadata(String name) {
         String metadataFilePath = name + File.separator + METADATA_FILE;
         File metadataFileStandalone = new File(METADATA_DIR_STANDALONE_SALT + metadataFilePath);
-        File metadataFileManager = new File(METADATA_DIR_MANAGER + metadataFilePath);
+        File metadataFileManager = new File(metadataDirManager + metadataFilePath);
         File metadataFileCustom = new File(METADATA_DIR_CUSTOM + metadataFilePath);
         try {
             if (metadataFileStandalone.isFile()) {
@@ -796,7 +800,7 @@ public class FormulaFactory {
     public static Map<String, Object> getPillarExample(String name) {
         String pillarExamplePath = name + File.separator + PILLAR_EXAMPLE_FILE;
         File pillarExampleFileStandalone = new File(METADATA_DIR_STANDALONE_SALT + pillarExamplePath);
-        File pillarExampleFileManager = new File(METADATA_DIR_MANAGER + pillarExamplePath);
+        File pillarExampleFileManager = new File(metadataDirManager + pillarExamplePath);
         File pillarExampleFileCustom = new File(METADATA_DIR_CUSTOM + pillarExamplePath);
 
         try {
