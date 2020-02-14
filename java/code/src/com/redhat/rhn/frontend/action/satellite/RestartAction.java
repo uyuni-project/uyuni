@@ -14,12 +14,12 @@
  */
 package com.redhat.rhn.frontend.action.satellite;
 
-import com.redhat.rhn.common.messaging.MessageQueue;
-import com.redhat.rhn.frontend.events.RestartSatelliteEvent;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.frontend.struts.RhnHelper;
 
+import com.suse.manager.tasks.ActorManager;
+import com.suse.manager.tasks.actors.RestartSatelliteActor;
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
@@ -51,9 +51,8 @@ public class RestartAction extends RhnAction {
         if (isSubmitted(form)) {
             Boolean restart = ((Boolean) form.get(RESTART));
             if (BooleanUtils.toBooleanDefaultIfNull(restart, false)) {
-                RestartSatelliteEvent event = new
-                    RestartSatelliteEvent(ctx.getCurrentUser());
-                MessageQueue.publish(event);
+                Long userId = ctx.getCurrentUser().getId();
+                ActorManager.tell(new RestartSatelliteActor.Message(userId));
                 createSuccessMessage(request, "restart.config.success",
                                     String.valueOf(RESTART_DELAY_IN_MINUTES));
                 request.setAttribute(RESTART, Boolean.TRUE);

@@ -16,14 +16,13 @@
 package com.redhat.rhn.common.messaging;
 
 import com.redhat.rhn.frontend.events.AlignSoftwareTargetAction;
+import com.redhat.rhn.frontend.events.AlignSoftwareTargetMsg;
 import com.redhat.rhn.frontend.events.CloneErrataAction;
 import com.redhat.rhn.frontend.events.CloneErrataEvent;
 import com.redhat.rhn.frontend.events.NewCloneErrataAction;
 import com.redhat.rhn.frontend.events.NewCloneErrataEvent;
 import com.redhat.rhn.frontend.events.NewUserAction;
 import com.redhat.rhn.frontend.events.NewUserEvent;
-import com.redhat.rhn.frontend.events.RestartSatelliteAction;
-import com.redhat.rhn.frontend.events.RestartSatelliteEvent;
 import com.redhat.rhn.frontend.events.ScheduleRepoSyncAction;
 import com.redhat.rhn.frontend.events.ScheduleRepoSyncEvent;
 import com.redhat.rhn.frontend.events.SsmChangeBaseChannelSubscriptionsAction;
@@ -53,7 +52,6 @@ import com.redhat.rhn.frontend.events.TraceBackEvent;
 import com.redhat.rhn.frontend.events.UpdateErrataCacheAction;
 import com.redhat.rhn.frontend.events.UpdateErrataCacheEvent;
 
-import com.redhat.rhn.frontend.events.AlignSoftwareTargetMsg;
 import com.suse.manager.reactor.messaging.ChannelsChangedEventMessage;
 import com.suse.manager.reactor.messaging.ChannelsChangedEventMessageAction;
 import org.apache.log4j.Logger;
@@ -281,10 +279,6 @@ public class MessageQueue {
         // for 40 seconds.
         MessageQueue.registerAction(new UpdateErrataCacheAction(),
                                     UpdateErrataCacheEvent.class);
-
-        // Used for asynchronusly restarting the satellite
-        MessageQueue.registerAction(new RestartSatelliteAction(),
-                                    RestartSatelliteEvent.class);
 
         // Used to allow SSM channel changes to be run asynchronously
         MessageQueue.registerAction(new SsmChangeBaseChannelSubscriptionsAction(),
