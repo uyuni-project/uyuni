@@ -36,8 +36,12 @@ mgr_server_localhost_alias_absent:
 {%- set osrelease = grains['osrelease'].split('.') %}
 {%- if grains['os'] == 'Ubuntu' %}
 {% set bootstrap_repo_url = 'https://' ~ salt['pillar.get']('mgr_server') ~ '/pub/repositories/ubuntu/' ~ osrelease[0] ~ '/' ~ osrelease[1].lstrip('0') ~ '/bootstrap/' %}
-{%- else %}
-{% set bootstrap_repo_url = 'https://' ~ salt['pillar.get']('mgr_server') ~ '/pub/repositories/debian/' ~ osrelease[0] ~ '/' ~ osrelease[1].lstrip('0') ~ '/bootstrap/' %}
+#{%- else %}
+{%- if grains['os'] == 'Debian' %}
+#{% set bootstrap_repo_url = 'https://' ~ salt['pillar.get']('mgr_server') ~ '/pub/repositories/debian/9/bootstrap/' %}
+{% set bootstrap_repo_url = 'https://' ~ salt['pillar.get']('mgr_server') ~ '/pub/repositories/debian/' ~ grains['osmajorrelease'] ~ '/bootstrap/' %}
+#{% set bootstrap_repo_url = 'https://' ~ salt['pillar.get']('mgr_server') ~ '/pub/repositories/debian/' ~ osrelease[0] ~ '/' ~ osrelease[1].lstrip('0') ~ '/bootstrap/' %}
+{%- endif %}
 {%- endif %}
 {%- endif %}
 
@@ -201,3 +205,4 @@ salt-minion:
       - file: /etc/salt/minion_id
       - file: /etc/salt/minion.d/susemanager.conf
 {% endif %}
+
