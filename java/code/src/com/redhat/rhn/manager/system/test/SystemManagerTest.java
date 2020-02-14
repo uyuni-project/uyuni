@@ -1536,32 +1536,32 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         return SystemManager.createSystemProfile(user, hostName.orElse("test system"), data);
     }
 
+    /**
+     * Test for handling the monitoring entitlement via addServerToGroup() and removeServerFromGroup().
+     * @throws Exception in case of an error
+     */
     public void testAddServerToServerGroupWithMonitoring() throws Exception {
+        // A new test server, no monitoring entitlement
         User user = UserTestUtils.findNewUser(TestStatics.TESTUSER, TestStatics.TESTORG);
-        user.addPermanentRole(RoleFactory.ORG_ADMIN);
-        Server server = MinionServerFactoryTest.createTestMinionServer(user);
+        MinionServer server = MinionServerFactoryTest.createTestMinionServer(user);
         server.setServerArch(ServerFactory.lookupServerArchByLabel("x86_64-redhat-linux"));
-        ServerGroup group = ServerGroupTest
-                .createTestServerGroup(user.getOrg(), null);
+        assertFalse(SystemManager.hasEntitlement(server.getId(), EntitlementManager.MONITORING));
 
+        // Create a group and enable monitoring
+        ServerGroup group = ServerGroupTest.createTestServerGroup(user.getOrg(), null);
         FormulaFactory.saveGroupFormulas(group.getId(), Arrays.asList(PROMETHEUS_EXPORTERS), user.getOrg());
         Map<String, Object> formulaData = new HashMap<>();
         formulaData.put("node_exporter", Collections.singletonMap("enabled", true));
+        formulaData.put("apache_exporter", Collections.singletonMap("enabled", false));
         formulaData.put("postgres_exporter", Collections.singletonMap("enabled", false));
-
         FormulaFactory.saveGroupFormulaData(formulaData, group.getId(), user.getOrg(), PROMETHEUS_EXPORTERS);
-        assertFalse(SystemManager.hasEntitlement(server.getId(), EntitlementManager.MONITORING));
 
+        // Server should have a monitoring entitlement after being added to the group
         SystemManager.addServerToServerGroup(server, group);
-        ServerFactory.save(server);
+        assertTrue(SystemManager.hasEntitlement(server.getId(), EntitlementManager.MONITORING));
 
-        List<String> formulas = FormulaFactory.getFormulasByMinionId(server.getMinionId());
-        assertFalse(formulas.contains(PROMETHEUS_EXPORTERS));
-        Optional<Map<String, Object>> data =
-                FormulaFactory.getFormulaValuesByNameAndMinionId(PROMETHEUS_EXPORTERS, server.getMinionId());
-        assertFalse(data.isPresent());
-//        assertFalse((boolean)((Map<String, Object>)data.get().get("node_exporter")).get("enabled"));
-//        assertFalse((boolean)((Map<String, Object>)data.get().get("postgres_exporter")).get("enabled"));
-        // TODO fix assertTrue(SystemManager.hasEntitlement(server.getId(), EntitlementManager.MONITORING));
+        // Remove server from group, entitlement should be removed
+        SystemManager.removeServerFromServerGroup(server, group);
+        assertFalse(SystemManager.hasEntitlement(server.getId(), EntitlementManager.MONITORING));
     }
 }
