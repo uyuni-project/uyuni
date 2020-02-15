@@ -27,6 +27,7 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.List;
 
+import akka.actor.typed.ActorRef;
 import akka.actor.typed.Behavior;
 
 public class AlignSoftwareTargetActor implements Actor {
@@ -47,7 +48,7 @@ public class AlignSoftwareTargetActor implements Actor {
         }
     }
 
-    public Behavior<Command> create() {
+    public Behavior<Command> create(ActorRef<Command> guardian) {
         return setup(context -> receive(Command.class)
                 .onMessage(Message.class, message -> onMessage(message))
                 .build());

@@ -28,6 +28,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
+import akka.actor.typed.ActorRef;
 import akka.actor.typed.Behavior;
 
 public class SsmInstallPackagesActor implements Actor {
@@ -50,7 +51,7 @@ public class SsmInstallPackagesActor implements Actor {
         }
     }
 
-    public Behavior<Command> create() {
+    public Behavior<Command> create(ActorRef<Command> guardian) {
         return setup(context -> receive(Command.class)
                 .onMessage(Message.class, message -> onMessage(message))
                 .build());

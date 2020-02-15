@@ -92,7 +92,7 @@ public class GuardianActor {
                         (cluster.selfMember().hasRole("only_local_actors") && !actor.remote()) ||
                         (cluster.selfMember().hasRole("only_remote_actors") && actor.remote())
                 ) {
-                    var behavior = actor.create();
+                    var behavior = actor.create(context.getSelf());
 
                     // create a PoolRouter, which is an actor that will spawn many concurrent actors
                     PoolRouter<Command> pool =

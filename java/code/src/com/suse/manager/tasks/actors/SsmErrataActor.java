@@ -21,6 +21,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
+import akka.actor.typed.ActorRef;
 import akka.actor.typed.Behavior;
 
 public class SsmErrataActor implements Actor {
@@ -43,7 +44,7 @@ public class SsmErrataActor implements Actor {
         }
     }
 
-    public Behavior<Command> create() {
+    public Behavior<Command> create(ActorRef<Command> guardian) {
         return setup(context -> receive(Command.class)
                 .onMessage(Message.class, message -> onMessage(message))
                 .build());

@@ -22,6 +22,7 @@ import java.util.Date;
 import java.util.Optional;
 import java.util.Set;
 
+import akka.actor.typed.ActorRef;
 import akka.actor.typed.Behavior;
 
 public class SsmSystemRebootActor implements Actor {
@@ -42,7 +43,7 @@ public class SsmSystemRebootActor implements Actor {
         }
     }
 
-    public Behavior<Command> create() {
+    public Behavior<Command> create(ActorRef<Command> guardian) {
         return setup(context -> receive(Command.class)
                 .onMessage(Message.class, message -> onMessage(message))
                 .build());

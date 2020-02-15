@@ -45,6 +45,7 @@ import java.util.Stack;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import akka.actor.typed.ActorRef;
 import akka.actor.typed.Behavior;
 
 public class JobReturnActor implements Actor {
@@ -65,7 +66,7 @@ public class JobReturnActor implements Actor {
         }
     }
 
-    public Behavior<Command> create() {
+    public Behavior<Command> create(ActorRef<Command> guardian) {
         return setup(context -> receive(Command.class)
                 .onMessage(Message.class, message -> onMessage(message))
                 .build());

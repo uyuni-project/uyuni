@@ -31,6 +31,7 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.List;
 
+import akka.actor.typed.ActorRef;
 import akka.actor.typed.Behavior;
 
 public class RefreshGeneratedSaltFilesActor implements Actor {
@@ -51,7 +52,7 @@ public class RefreshGeneratedSaltFilesActor implements Actor {
         this.saltGenerationTempDir = Paths.get(SALT_FILE_GENERATION_TEMP_PATH);
     }
 
-    public Behavior<Command> create() {
+    public Behavior<Command> create(ActorRef<Command> guardian) {
         return setup(context -> receive(Command.class)
                 .onMessage(Message.class, message -> onMessage(message))
                 .build());

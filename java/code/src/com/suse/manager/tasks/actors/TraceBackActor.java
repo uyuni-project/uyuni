@@ -22,6 +22,7 @@ import java.util.Date;
 import java.util.Enumeration;
 import javax.servlet.http.HttpServletRequest;
 
+import akka.actor.typed.ActorRef;
 import akka.actor.typed.Behavior;
 
 public class TraceBackActor implements Actor {
@@ -34,7 +35,7 @@ public class TraceBackActor implements Actor {
         public Message(String text) { this.text = text; }
     }
 
-    public Behavior<Command> create() {
+    public Behavior<Command> create(ActorRef<Command> guardian) {
         return setup(context -> receive(Command.class)
                 .onMessage(Message.class, message -> onMessage(message))
                 .build());

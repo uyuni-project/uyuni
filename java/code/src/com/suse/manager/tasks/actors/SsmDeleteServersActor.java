@@ -17,6 +17,7 @@ import org.apache.log4j.Logger;
 
 import java.util.List;
 
+import akka.actor.typed.ActorRef;
 import akka.actor.typed.Behavior;
 
 public class SsmDeleteServersActor implements Actor {
@@ -36,7 +37,7 @@ public class SsmDeleteServersActor implements Actor {
         }
     }
 
-    public Behavior<Command> create() {
+    public Behavior<Command> create(ActorRef<Command> guardian) {
         return setup(context -> receive(Command.class)
                 .onMessage(Message.class, message -> onMessage(message))
                 .build());

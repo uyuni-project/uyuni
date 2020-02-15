@@ -24,6 +24,7 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
+import akka.actor.typed.ActorRef;
 import akka.actor.typed.Behavior;
 
 public class ApplyStatesActor implements Actor {
@@ -59,7 +60,7 @@ public class ApplyStatesActor implements Actor {
         }
     }
 
-    public Behavior<Command> create() {
+    public Behavior<Command> create(ActorRef<Command> guardian) {
         return setup(context -> receive(Command.class)
                 .onMessage(Message.class, message -> onMessage(message))
                 .build());

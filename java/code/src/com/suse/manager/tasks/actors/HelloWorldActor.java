@@ -10,6 +10,7 @@ import org.apache.log4j.Logger;
 
 import java.io.Serializable;
 
+import akka.actor.typed.ActorRef;
 import akka.actor.typed.Behavior;
 
 public class HelloWorldActor implements Actor {
@@ -29,7 +30,7 @@ public class HelloWorldActor implements Actor {
         return true;
     }
 
-    public Behavior<Command> create() {
+    public Behavior<Command> create(ActorRef<Command> guardian) {
         return setup(context -> {
             System.err.println(context.getSelf());
             LOG.error(context.getSelf());

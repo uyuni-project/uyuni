@@ -52,7 +52,7 @@ public class ActorManager {
   }
 
   public static void tellDeferred(Transaction transaction) {
-    actorSystem.tell(new DeferringActor.TellDeferredMessage(transaction.hashCode(), actorSystem));
+    actorSystem.tell(new DeferringActor.TellDeferredMessage(transaction.hashCode()));
   }
 
   public static void defer(Command c) {

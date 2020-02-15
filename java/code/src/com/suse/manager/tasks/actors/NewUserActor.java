@@ -22,6 +22,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import akka.actor.typed.ActorRef;
 import akka.actor.typed.Behavior;
 
 public class NewUserActor implements Actor {
@@ -47,7 +48,7 @@ public class NewUserActor implements Actor {
         }
     }
 
-    public Behavior<Command> create() {
+    public Behavior<Command> create(ActorRef<Command> guardian) {
         return setup(context -> receive(Command.class)
                 .onMessage(Message.class, message -> onMessage(message))
                 .build());

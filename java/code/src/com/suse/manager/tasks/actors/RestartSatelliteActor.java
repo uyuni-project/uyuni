@@ -14,6 +14,7 @@ import com.suse.manager.tasks.Actor;
 import com.suse.manager.tasks.Command;
 import org.apache.log4j.Logger;
 
+import akka.actor.typed.ActorRef;
 import akka.actor.typed.Behavior;
 
 public class RestartSatelliteActor implements Actor {
@@ -28,7 +29,7 @@ public class RestartSatelliteActor implements Actor {
         }
     }
 
-    public Behavior<Command> create() {
+    public Behavior<Command> create(ActorRef<Command> guardian) {
         return setup(context -> receive(Command.class)
                 .onMessage(Message.class, message -> onMessage(message))
                 .build());

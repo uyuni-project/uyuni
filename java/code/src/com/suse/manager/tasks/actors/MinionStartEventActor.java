@@ -14,6 +14,7 @@ import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.salt.netapi.datatypes.target.MinionList;
 import org.apache.log4j.Logger;
 
+import akka.actor.typed.ActorRef;
 import akka.actor.typed.Behavior;
 
 public class MinionStartEventActor implements Actor {
@@ -41,7 +42,7 @@ public class MinionStartEventActor implements Actor {
         return true;
     }
 
-    public Behavior<Command> create() {
+    public Behavior<Command> create(ActorRef<Command> guardian) {
         return setup(context -> receive(Command.class)
                 .onMessage(Message.class, message -> onMessage(message))
                 .build());

@@ -1,5 +1,6 @@
 package com.suse.manager.tasks;
 
+import akka.actor.typed.ActorRef;
 import akka.actor.typed.Behavior;
 
 public interface Actor {
@@ -15,5 +16,5 @@ public interface Actor {
 
     default boolean remote() { return false; }
 
-    Behavior<Command> create();
+    Behavior<Command> create(ActorRef<Command> guardian);
 }

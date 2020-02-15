@@ -19,6 +19,7 @@ import org.apache.log4j.Logger;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import akka.actor.typed.ActorRef;
 import akka.actor.typed.Behavior;
 
 public class ScheduleRepoSyncActor implements Actor {
@@ -35,7 +36,7 @@ public class ScheduleRepoSyncActor implements Actor {
         }
     }
 
-    public Behavior<Command> create() {
+    public Behavior<Command> create(ActorRef<Command> guardian) {
         return setup(context -> receive(Command.class)
                 .onMessage(Message.class, message -> onMessage(message))
                 .build());
