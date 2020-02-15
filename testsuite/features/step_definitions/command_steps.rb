@@ -583,7 +583,7 @@ When(/^I register this client for SSH push via tunnel$/) do
            "while {1} {\n" \
            "  expect {\n" \
            "    eof                                                        {break}\n" \
-           "    \"Are you sure you want to continue connecting (yes/no)?\" {send \"yes\r\"}\n" \
+	   "    -re \"Are you sure you want to continue connecting.*\" {send \"yes\r\"}\n" \
            "    \"Password:\"                                              {send \"linux\r\"}\n" \
            "  }\n" \
            "}\n"
