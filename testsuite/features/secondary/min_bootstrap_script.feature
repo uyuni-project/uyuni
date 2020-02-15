@@ -75,7 +75,7 @@ Feature: Register a Salt minion via Bootstrap-script
    Given I am on the Systems overview page of this "sle_minion"
    When I follow "Software" in the content area
    And I follow "Install"
-   And I check "orion-dummy" in the list
+   And I check row with "orion-dummy" and "x86_64" in the list
    And I click on "Install Selected Packages"
    And I click on "Confirm"
    Then I should see a "1 package install has been scheduled for" text
