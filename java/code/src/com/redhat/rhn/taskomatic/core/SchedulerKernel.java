@@ -148,7 +148,7 @@ public class SchedulerKernel {
         if (!HibernateFactory.isInitialized()) {
             throw new TaskomaticException("HibernateFactory failed to initialize");
         }
-        ActorManager.start(25522, "no_actors");
+        ActorManager.start(0, "no_actors");
         try {
             SchedulerKernel.scheduler.start();
             initializeAllSatSchedules();
