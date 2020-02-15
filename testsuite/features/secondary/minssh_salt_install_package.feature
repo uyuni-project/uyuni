@@ -18,7 +18,7 @@ Feature: Install a package on the SSH minion via Salt through the UI
     Given I am on the Systems overview page of this "ssh_minion"
     And I follow "Software" in the content area
     And I follow "Install"
-    And I check "hoag-dummy-1.1-1.1" in the list
+    And I check row with "hoag-dummy-1.1-1.1" and "x86_64" in the list
     And I click on "Install Selected Packages"
     And I click on "Confirm"
     Then I should see a "1 package install has been scheduled" text
