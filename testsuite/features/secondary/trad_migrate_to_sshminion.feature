@@ -10,7 +10,7 @@ Feature: Migrate a traditional client into a Salt SSH minion
     Given I am on the Systems overview page of this "sle_client"
     When I follow "Software" in the content area
     And I follow "Install"
-    And I check "orion-dummy-1.1-1.1" in the list
+    And I check row with "orion-dummy-1.1-1.1" and "x86_64" in the list
     And I click on "Install Selected Packages"
     And I click on "Confirm"
     And I run "rhn_check -vvv" on "sle_client"
@@ -84,7 +84,7 @@ Feature: Migrate a traditional client into a Salt SSH minion
     Given I am on the Systems overview page of this "sle_migrated_minion"
     When I follow "Software" in the content area
     And I follow "Install"
-    And I check "perseus-dummy-1.1-1.1" in the list
+    And I check row with "perseus-dummy-1.1-1.1" and "x86_64" in the list
     And I click on "Install Selected Packages"
     And I click on "Confirm"
     Then I should see a "1 package install has been scheduled for" text
