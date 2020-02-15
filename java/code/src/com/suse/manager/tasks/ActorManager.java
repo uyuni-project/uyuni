@@ -2,7 +2,7 @@ package com.suse.manager.tasks;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 
-import com.suse.manager.tasks.actors.DeferredManagerActor;
+import com.suse.manager.tasks.actors.DeferringActor;
 import com.suse.manager.tasks.actors.GuardianActor;
 import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
@@ -52,16 +52,15 @@ public class ActorManager {
   }
 
   public static void tellDeferred(Transaction transaction) {
-    actorSystem.tell(new DeferredManagerActor.TellMessages(transaction.hashCode(), actorSystem));
-
+    actorSystem.tell(new DeferringActor.TellDeferredMessage(transaction.hashCode(), actorSystem));
   }
 
   public static void defer(Command c) {
     var transaction = HibernateFactory.getSession().getTransaction();
-    actorSystem.tell(new DeferredManagerActor.RegisterMessage(transaction.hashCode(),c));
+    actorSystem.tell(new DeferringActor.DeferCommandMessage(transaction.hashCode(),c));
   }
 
   public static void clearDeferred(Transaction transaction) {
-    actorSystem.tell(new DeferredManagerActor.ClearMessages(transaction.hashCode()));
+    actorSystem.tell(new DeferringActor.ClearDeferredMessage(transaction.hashCode()));
   }
 }

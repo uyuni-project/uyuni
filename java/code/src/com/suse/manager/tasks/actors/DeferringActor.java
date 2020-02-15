@@ -15,34 +15,35 @@ import java.util.Optional;
 import static akka.actor.typed.javadsl.Behaviors.receive;
 import static akka.actor.typed.javadsl.Behaviors.setup;
 
-public class DeferredManagerActor implements Actor {
+/** Defers sending a @{@link Command} after a transaction is finished. */
+public class DeferringActor implements Actor {
 
-    private final static Logger LOG = Logger.getLogger(DeferredManagerActor.class);
+    private final static Logger LOG = Logger.getLogger(DeferringActor.class);
 
 
-    public static class RegisterMessage implements Command {
+    public static class DeferCommandMessage implements Command {
         private final Integer accumulatorKey;
         private final Command command;
 
-        public RegisterMessage(Integer accumulatorKey, Command command) {
+        public DeferCommandMessage(Integer accumulatorKey, Command command) {
             this.accumulatorKey = accumulatorKey;
             this.command = command;
         }
     }
 
-    public static class ClearMessages implements Command {
+    public static class ClearDeferredMessage implements Command {
         private final Integer accumulatorKey;
 
-        public ClearMessages(Integer accumulatorKey) {
+        public ClearDeferredMessage(Integer accumulatorKey) {
             this.accumulatorKey = accumulatorKey;
         }
     }
 
-    public static class TellMessages implements Command {
+    public static class TellDeferredMessage implements Command {
         private final Integer accumulatorKey;
         private final ActorSystem<Command> actorSystem;
 
-        public TellMessages(Integer accumulatorKey, ActorSystem<Command> actorSystem) {
+        public TellDeferredMessage(Integer accumulatorKey, ActorSystem<Command> actorSystem) {
             this.accumulatorKey = accumulatorKey;
             this.actorSystem = actorSystem;
         }
@@ -55,13 +56,13 @@ public class DeferredManagerActor implements Actor {
     private Behavior<Command> build(ActorContext<Command> context, Map<Integer, HashSet<Command>> accumulator) {
         LOG.debug("Accumulator size: " + accumulator.size());
         return receive(Command.class)
-                .onMessage(RegisterMessage.class, message -> onRegisterMessage(context, message, accumulator))
-                .onMessage(ClearMessages.class, message -> onClearMessage(context, message, accumulator))
-                .onMessage(TellMessages.class, message -> onTellMessage(context, message, accumulator))
+                .onMessage(DeferCommandMessage.class, message -> onRegisterMessage(context, message, accumulator))
+                .onMessage(ClearDeferredMessage.class, message -> onClearMessage(context, message, accumulator))
+                .onMessage(TellDeferredMessage.class, message -> onTellMessage(context, message, accumulator))
                 .build();
     }
 
-    private Behavior<Command> onRegisterMessage(ActorContext<Command> context, RegisterMessage message, Map<Integer, HashSet<Command>> accumulator) {
+    private Behavior<Command> onRegisterMessage(ActorContext<Command> context, DeferCommandMessage message, Map<Integer, HashSet<Command>> accumulator) {
         var set = accumulator.getOrDefault(message.accumulatorKey, new HashSet<Command>());
         set.add(message.command);
         accumulator.put(message.accumulatorKey, set);
@@ -69,12 +70,12 @@ public class DeferredManagerActor implements Actor {
         return build(context, accumulator);
     }
 
-    private Behavior<Command> onClearMessage(ActorContext<Command> context, ClearMessages message, Map<Integer, HashSet<Command>> accumulator) {
+    private Behavior<Command> onClearMessage(ActorContext<Command> context, ClearDeferredMessage message, Map<Integer, HashSet<Command>> accumulator) {
         accumulator.remove(message.accumulatorKey);
      return build(context, accumulator);
     }
 
-    private Behavior<Command> onTellMessage(ActorContext<Command> context, TellMessages message, Map<Integer, HashSet<Command>> accumulator) {
+    private Behavior<Command> onTellMessage(ActorContext<Command> context, TellDeferredMessage message, Map<Integer, HashSet<Command>> accumulator) {
         Optional.ofNullable(accumulator.remove(message.accumulatorKey))
                 .ifPresent(commands -> commands.forEach(c -> message.actorSystem.tell(c)));
         return build(context, accumulator);
