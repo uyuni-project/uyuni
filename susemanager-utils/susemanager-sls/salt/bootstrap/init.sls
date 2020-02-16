@@ -33,15 +33,11 @@ mgr_server_localhost_alias_absent:
 {% set bootstrap_repo_url = 'https://' ~ salt['pillar.get']('mgr_server') ~ '/pub/repositories/' ~ os_base ~ '/' ~ grains['osmajorrelease'] ~ '/bootstrap/' %}
 {% endif %}
 {%- elif grains['os_family'] == 'Debian' %}
-{%- set osrelease = grains['osrelease'].split('.') %}
+#{%- set osrelease = grains['osrelease'].split('.') %}
 {%- if grains['os'] == 'Ubuntu' %}
 {% set bootstrap_repo_url = 'https://' ~ salt['pillar.get']('mgr_server') ~ '/pub/repositories/ubuntu/' ~ osrelease[0] ~ '/' ~ osrelease[1].lstrip('0') ~ '/bootstrap/' %}
-#{%- else %}
-{%- if grains['os'] == 'Debian' %}
-#{% set bootstrap_repo_url = 'https://' ~ salt['pillar.get']('mgr_server') ~ '/pub/repositories/debian/9/bootstrap/' %}
+{%- else %}
 {% set bootstrap_repo_url = 'https://' ~ salt['pillar.get']('mgr_server') ~ '/pub/repositories/debian/' ~ grains['osmajorrelease'] ~ '/bootstrap/' %}
-#{% set bootstrap_repo_url = 'https://' ~ salt['pillar.get']('mgr_server') ~ '/pub/repositories/debian/' ~ osrelease[0] ~ '/' ~ osrelease[1].lstrip('0') ~ '/bootstrap/' %}
-{%- endif %}
 {%- endif %}
 {%- endif %}
 
@@ -163,6 +159,10 @@ mgr_update_basic_pkgs:
       - zypper
 {%- elif grains['os_family'] == 'RedHat' %}
       - yum
+#debian systems may require these packages to bootstrap - however apt-transport-https would need to be installed over http before
+{%- elif grains['os'] == 'Debian' %}
+      - python3-apt
+      - apt-transport-https
 {%- endif %}
 
 # Manage minion key files in case they are provided in the pillar
@@ -205,4 +205,3 @@ salt-minion:
       - file: /etc/salt/minion_id
       - file: /etc/salt/minion.d/susemanager.conf
 {% endif %}
-
