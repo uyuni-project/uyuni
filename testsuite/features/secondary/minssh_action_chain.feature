@@ -55,7 +55,7 @@ Feature: Salt SSH action chain
     And I follow "List / Remove" in the content area
     And I enter "milkyway-dummy" as the filtered package name
     And I click on the filter button
-    And I check row with "milkyway-dummy" and "x86_64" in the list
+    And I check row with "milkyway-dummy" and arch of "ssh_minion"
     And I click on "Remove Packages"
     And I check radio button "schedule-by-action-chain"
     And I click on "Confirm"
