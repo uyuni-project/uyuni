@@ -92,7 +92,7 @@ Feature: Lock packages on traditional client
     And package "milkyway-dummy-2.0-1.1" is reported as locked
     And package "orion-dummy-1.1-1.1" is reported as pending to be locked
     When I check row with "milkyway-dummy-2.0-1.1" and "x86_64" in the list
-    And I uncheck "hoag-dummy-1.1-1.1" in the list
+    And I uncheck row with "hoag-dummy-1.1-1.1" and "x86_64" in the list
     And I click on "Unlock"
     Then I should see a "Packages has been requested for being unlocked." text
     When I follow "Lock"
