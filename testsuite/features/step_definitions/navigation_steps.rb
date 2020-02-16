@@ -649,6 +649,16 @@ Then(/^I check (a|the) "([^"]*)" package in the list$/) do |client|
   )
 end
 
+When(/^I check row with "([^"]*)" and arch of "([^"]*)"$/) do |text, client|
+  arch = PKGARCH_BY_CLIENT[client]
+  step %(I check row with "#{text}" and "#{arch}" in the list)
+end
+
+When(/^I uncheck row with "([^"]*)" and arch of "([^"]*)"$/) do |text, client|
+  arch = PKGARCH_BY_CLIENT[client]
+  step %(I uncheck row with "#{text}" and "#{arch}" in the list)
+end
+
 When(/^I check row with "([^"]*)" and "([^"]*)" in the list$/) do |text1, text2|
   top_level_xpath_query = "//div[@class=\"table-responsive\"]/table/tbody/tr[.//td[contains(.,'#{text1}')] and .//td[contains(.,'#{text2}')]]//input[@type='checkbox']"
   row = find(:xpath, top_level_xpath_query)
