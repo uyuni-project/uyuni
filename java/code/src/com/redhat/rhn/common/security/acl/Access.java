@@ -502,6 +502,12 @@ public class Access extends BaseHandler {
         return e != null && e.getOrg() != null;
     }
 
+    /**
+     * Checks a value from a formula for equality with the given argument.
+     * @param ctx acl context
+     * @param params parameters for acl
+     * @return whether the formula values is equal to the given arg
+     */
     public boolean aclFormulaValueEquals(Object ctx, String[] params) {
         Map map = (Map) ctx;
         Long sid = getAsLong(map.get("sid"));
@@ -516,6 +522,12 @@ public class Access extends BaseHandler {
         return ViewHelper.getInstance().formulaValueEquals(server, formulaName, valueName, valueToCheck);
     }
 
+    /**
+     * Checks if a server uses ssh-push or ssh-push-tunnel contact methods
+     * @param ctx acl context
+     * @param params parameters for acl
+     * @return true if the server uses ssh-push or ssh-push-tunnel
+     */
     public boolean aclHasSshPushContactMethod(Object ctx, String[] params) {
         Map map = (Map) ctx;
         Long sid = getAsLong(map.get("sid"));

@@ -147,14 +147,15 @@ public enum ViewHelper {
      * @param valueToCheck the value to check
      * @return true if the value is equal to the given argument
      */
-    public boolean formulaValueEquals(Server server, String formulaName, String valueName, String valueToCheck)  {
+    public boolean formulaValueEquals(Server server, String formulaName, String valueName, String valueToCheck) {
         if (server == null) {
             return false;
         }
         if (!server.asMinionServer().isPresent()) {
             return false;
         }
-        List<String> enabledFormulas = FormulaFactory.getFormulasByMinionId(MinionServerFactory.getMinionId(server.getId()));
+        List<String> enabledFormulas = FormulaFactory
+                .getFormulasByMinionId(MinionServerFactory.getMinionId(server.getId()));
         if (!enabledFormulas.contains(formulaName)) {
             return false;
         }
@@ -165,7 +166,8 @@ public enum ViewHelper {
         Map<String, Object> groupData = FormulaFactory
                 .getGroupFormulaValuesByNameAndServerId(formulaName, server.getId())
                 .orElseGet(Collections::emptyMap);
-        return Objects.toString(systemData.get(valueName), "").equalsIgnoreCase(valueToCheck); // TODO complex value names
+        return Objects.toString(systemData.get(valueName), "")
+                .equalsIgnoreCase(valueToCheck);
     }
 
     /**

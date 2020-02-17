@@ -328,6 +328,12 @@ public class FormulaManager {
         return FormulaFactory.getFormulaLayoutByName(formulaName).orElseGet(Collections::emptyMap);
     }
 
+    /**
+     * Enable formula on the given minion
+     * @param minionId minion id
+     * @param formulaName formula name
+     * @throws IOException if saving the formula encountered an error
+     */
     public void enableFormula(String minionId, String formulaName) throws IOException {
         List<String> enabledFormulas = new ArrayList<>(FormulaFactory.getFormulasByMinionId(minionId));
         if (!enabledFormulas.contains(formulaName)) {
