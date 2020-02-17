@@ -30,6 +30,7 @@ public class Handler implements Comparable<Handler> {
     private String desc;
     private String className;
     private List<ApiCall> calls;
+    private boolean ignored = false;
 
     /**
      * Constructor
@@ -108,6 +109,21 @@ public class Handler implements Comparable<Handler> {
      */
     public void setDesc(String descIn) {
         this.desc = descIn;
+    }
+
+    /**
+     * gets whether to ignore the handler
+     * @return true if ignored
+     */
+    public boolean isIgnored() {
+        return ignored;
+    }
+
+    /**
+     * flags the handler as ignored
+     */
+    public void setIgnored() {
+        this.ignored = true;
     }
 
     /**

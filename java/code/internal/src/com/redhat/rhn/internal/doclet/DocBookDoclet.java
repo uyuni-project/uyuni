@@ -15,24 +15,25 @@
 
 package com.redhat.rhn.internal.doclet;
 
-import com.sun.javadoc.RootDoc;
+import jdk.javadoc.doclet.DocletEnvironment;
 
 /**
  * DocBookDoclet
- * @version $Rev$
  */
-public class DocBookDoclet {
+public class DocBookDoclet extends ApiDoclet {
 
-    private DocBookDoclet() {
+    @Override
+    public boolean run(DocletEnvironment docEnv) {
+        return run(docEnv, "docbook");
     }
 
-    /**
-     * starts the {@link DocBookDoclet}
-     * @param root the doc root
-     * @return true if successful
-     * @throws Exception e
-     */
-    public static boolean start(RootDoc root) throws Exception {
-        return ApiDoclet.start(root, "docbook");
+    @Override
+    public String getName() {
+        return "DocBook Doclet";
+    }
+
+    @Override
+    public DocWriter getWriter(String outputFolder, String templateFolder) {
+        return new DocBookWriter(outputFolder, templateFolder);
     }
 }

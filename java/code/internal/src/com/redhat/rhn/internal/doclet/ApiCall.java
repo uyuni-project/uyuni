@@ -14,10 +14,10 @@
  */
 package com.redhat.rhn.internal.doclet;
 
-import com.sun.javadoc.MethodDoc;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.lang.model.element.ExecutableElement;
 
 /**
  *
@@ -34,13 +34,14 @@ public class ApiCall implements Comparable<ApiCall> {
     private String deprecatedVersion;
     private boolean sinceAvailable = false;
     private String sinceVersion;
-    private MethodDoc method;
+    private ExecutableElement method;
+    private boolean ignored = false;
 
     /**
      * constructor
      * @param meth the method to set
      */
-    public ApiCall(MethodDoc meth) {
+    public ApiCall(ExecutableElement meth) {
         method = meth;
     }
 
@@ -201,7 +202,7 @@ public class ApiCall implements Comparable<ApiCall> {
      * Get the method
      * @return the method
      */
-    public MethodDoc getMethod() {
+    public ExecutableElement getMethod() {
         return method;
     }
 
@@ -211,10 +212,22 @@ public class ApiCall implements Comparable<ApiCall> {
      * Set the method
      * @param methodIn the method to set
      */
-    public void setMethod(MethodDoc methodIn) {
+    public void setMethod(ExecutableElement methodIn) {
         this.method = methodIn;
     }
 
+    /**
+     * gets whether to ignore the handler
+     * @return true if ignored
+     */
+    public boolean isIgnored() {
+        return ignored;
+    }
 
-
+    /**
+     * flags the handler as ignored
+     */
+    public void setIgnored() {
+        this.ignored = true;
+    }
 }

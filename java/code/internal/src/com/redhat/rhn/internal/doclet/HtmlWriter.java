@@ -20,16 +20,22 @@ import java.util.Map;
 /**
  *
  * JSPWriter
- * @version $Rev$
  */
 public class HtmlWriter extends DocWriter {
 
-
-    private static final String JSP_OUTPUT = "./build/reports/apidocs/html/";
-    private static final String JSP_TEMPLATES = "./buildconf/apidoc/html/";
-
-
     private static final String[] OTHER_FILES = {"faqs", "scripts"};
+
+    private String output;
+    private String templates;
+
+    /**
+     * @param outputIn path to the output folder
+     * @param templatesIn path to the HTML templates folder
+     */
+    public HtmlWriter(String outputIn, String templatesIn) {
+        output = outputIn;
+        templates = templatesIn;
+    }
 
     /**
      *
@@ -41,19 +47,19 @@ public class HtmlWriter extends DocWriter {
 
 
         //First macro-tize the serializer's docs
-        renderSerializers(JSP_TEMPLATES, serializers);
+        renderSerializers(templates, serializers);
 
 
         //Lets do the index first
-        writeFile(JSP_OUTPUT + "index.html", generateIndex(handlers, JSP_TEMPLATES));
+        writeFile(output + "index.html", generateIndex(handlers, templates));
 
         for (Handler handler : handlers) {
-            writeFile(JSP_OUTPUT + "handlers/" + handler.getClassName() + ".html",
-                    generateHandler(handler, JSP_TEMPLATES));
+            writeFile(output + "handlers/" + handler.getClassName() + ".html",
+                    generateHandler(handler, templates));
         }
 
         for (String file : OTHER_FILES) {
-            writeFile(JSP_OUTPUT + file + ".html", readFile(JSP_TEMPLATES + file + ".txt"));
+            writeFile(output + file + ".html", readFile(templates + file + ".txt"));
         }
 
     }

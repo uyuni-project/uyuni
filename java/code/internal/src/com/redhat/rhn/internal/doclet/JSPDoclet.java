@@ -14,27 +14,26 @@
  */
 package com.redhat.rhn.internal.doclet;
 
-import com.sun.javadoc.RootDoc;
+import jdk.javadoc.doclet.DocletEnvironment;
 
 /**
  *
  * JSPDoclet
- * @version $Rev$
  */
-public class JSPDoclet {
+public class JSPDoclet extends ApiDoclet {
 
-    private JSPDoclet() {
+    @Override
+    public boolean run(DocletEnvironment docEnv) {
+        return run(docEnv, "jsp");
     }
 
-    /**
-     * starts the jspDoclet
-     * @param root the doc root
-     * @return true if successful
-     * @throws Exception e
-     */
-    public static boolean start(RootDoc root) throws Exception {
-
-        return ApiDoclet.start(root, "jsp");
+    @Override
+    public String getName() {
+        return "JSP Doclet";
     }
 
+    @Override
+    public DocWriter getWriter(String outputFolder, String templateFolder) {
+        return new JSPWriter(outputFolder, templateFolder);
+    }
 }
