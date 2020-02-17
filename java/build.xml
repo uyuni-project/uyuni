@@ -215,30 +215,35 @@
   <target name="apidoc-singlepage" description="Generate the api for jsps" depends="init">
     <property name="doclet.class" value="SinglePageDoclet" />
     <property name="template.dir" value="singlepage" />
+    <property name="apidoc.output" value="${report.dir}/apidocs/${template.dir}/" />
     <antcall target="apidoc" />
   </target>
 
   <target name="apidoc-jsp" description="Generate the api for jsps" depends="init">
     <property name="doclet.class" value="JSPDoclet" />
     <property name="template.dir" value="jsp" />
+    <property name="apidoc.output" value="${report.dir}/apidocs/${template.dir}/" />
     <antcall target="apidoc" />
   </target>
 
   <target name="apidoc-list" description="Generate the api for jsps" depends="init">
     <property name="doclet.class" value="ListDoclet" />
     <property name="template.dir" value="list" />
+    <property name="apidoc.output" value="${report.dir}/apidocs/" />
     <antcall target="apidoc" />
   </target>
 
   <target name="apidoc-html" description="Generate the api for jsps" depends="init">
     <property name="doclet.class" value="HtmlDoclet" />
     <property name="template.dir" value="html" />
+    <property name="apidoc.output" value="${report.dir}/apidocs/${template.dir}/" />
     <antcall target="apidoc" />
   </target>
 
   <target name="apidoc-docbook" description="Generate docbook xml from the API">
     <property name="doclet.class" value="DocBookDoclet" />
     <property name="template.dir" value="docbook" />
+    <property name="apidoc.output" value="${report.dir}/apidocs/${template.dir}/" />
     <antcall target="apidoc" />
   </target>
 
@@ -251,7 +256,8 @@
     <mkdir dir="${report.dir}/apidocs" />
     <mkdir dir="${report.dir}/apidocs/${template.dir}/" />
     <mkdir dir="${report.dir}/apidocs/${template.dir}/handlers/" />
-    <javadoc doclet="com.redhat.rhn.internal.doclet.${doclet.class}" docletpathref="javadocpath" classpathref="buildjars" sourcepath="code/src" additionalparam="-quiet">
+    <javadoc doclet="com.redhat.rhn.internal.doclet.${doclet.class}" docletpathref="javadocpath" classpathref="buildjars" sourcepath="code/src"
+        additionalparam="-d ${apidoc.output} -templates buildconf/apidoc/${template.dir}">
       <fileset dir="code" >
         <include name="**/src/com/redhat/rhn/frontend/xmlrpc/**/*Handler.java" />
         <include name="**/src/com/redhat/rhn/frontend/xmlrpc/serializer/*Serializer.java" />

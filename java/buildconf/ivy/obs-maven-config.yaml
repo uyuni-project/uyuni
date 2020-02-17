@@ -285,6 +285,8 @@ artifacts:
     repository: Leap
   - artifact: xmlsec
     repository: Uyuni_Other
+  - artifact: velocity
+    repository: Uyuni_Other
 
   - artifact: jasper
     package: tomcat

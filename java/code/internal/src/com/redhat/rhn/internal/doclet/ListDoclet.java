@@ -14,30 +14,30 @@
  */
 package com.redhat.rhn.internal.doclet;
 
-import com.sun.javadoc.RootDoc;
+import jdk.javadoc.doclet.DocletEnvironment;
 
 /**
  *
- * JSPDoclet
- * @version $Rev$
+ * ListDoclet
  */
-public class ListDoclet {
+public class ListDoclet extends ApiDoclet {
 
+    private DocletEnvironment docEnv;
 
-    /**
-     * private constructor
-     */
-    private ListDoclet() {
+    @Override
+    public boolean run(DocletEnvironment docEnvIn) {
+        docEnv = docEnvIn;
+        return run(docEnvIn, "list");
     }
 
-    /**
-     * starts the jspDoclet
-     * @param root the doc root
-     * @return true if successful
-     * @throws Exception e
-     */
-    public static boolean start(RootDoc root) throws Exception {
-        return ApiDoclet.start(root, "list");
+    @Override
+    public String getName() {
+        return "List Doclet";
+    }
+
+    @Override
+    public DocWriter getWriter(String outputFolder, String templateFolder) {
+        return new ListWriter(docEnv, outputFolder);
     }
 
 }

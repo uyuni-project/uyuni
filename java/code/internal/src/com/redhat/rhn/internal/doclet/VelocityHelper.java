@@ -14,25 +14,27 @@
  */
 package com.redhat.rhn.internal.doclet;
 
+import org.apache.velocity.Template;
+import org.apache.velocity.VelocityContext;
+import org.apache.velocity.app.VelocityEngine;
+import org.apache.velocity.runtime.RuntimeConstants;
+import org.apache.velocity.runtime.log.JdkLogChute;
+
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.Calendar;
 import java.util.Properties;
-
-import org.apache.velocity.Template;
-import org.apache.velocity.VelocityContext;
-import org.apache.velocity.app.Velocity;
-import org.apache.velocity.app.VelocityEngine;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
  * VelocityHelper
- * @version $Rev$
  */
 public class VelocityHelper {
 
-    private VelocityEngine ve = new VelocityEngine();
-    private VelocityContext context = new VelocityContext();
+    private static VelocityEngine ve = null;
+    private VelocityContext context = null;
 
     /**
      * Constructor to be used when using a template file
@@ -40,10 +42,18 @@ public class VelocityHelper {
      * @throws Exception e
      */
     public VelocityHelper(String templateDir) throws Exception {
-        Properties p = new Properties();
-        p.setProperty("file.resource.loader.path", templateDir);
-        ve.init(p);
+        if (ve == null) {
+            Properties p = new Properties();
+            if (templateDir != null) {
+                p.setProperty("file.resource.loader.path", templateDir);
+            }
+            p.setProperty(RuntimeConstants.VM_PERM_ALLOW_INLINE_REPLACE_GLOBAL, "true");
 
+            // We want to avoid logging the INFO since it costs time
+            Logger.getLogger(JdkLogChute.DEFAULT_LOG_NAME).setLevel(Level.WARNING);
+            ve = new VelocityEngine(p);
+        }
+        context = new VelocityContext();
     }
 
     /**
@@ -51,12 +61,11 @@ public class VelocityHelper {
      * @throws Exception e
      */
     public VelocityHelper() throws Exception {
+        this(null);
     }
 
-
-
     /**
-     * adds a template match to teh helper
+     * adds a template match to the helper
      * @param key what to find
      * @param value what to replace with
      */
@@ -84,9 +93,6 @@ public class VelocityHelper {
         return writer.toString();
     }
 
-
-
-
     /**
      * render the template according to what we've added to addMatch
      * @param template the template
@@ -97,9 +103,8 @@ public class VelocityHelper {
         StringWriter writer = new StringWriter();
         StringReader reader = new StringReader(template);
 
-        Velocity.evaluate(context, writer, "a", reader);
+        ve.evaluate(context, writer, "a", reader);
 
         return writer.toString();
     }
-
 }

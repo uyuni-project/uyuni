@@ -14,27 +14,27 @@
  */
 package com.redhat.rhn.internal.doclet;
 
-import com.sun.javadoc.RootDoc;
+import jdk.javadoc.doclet.DocletEnvironment;
 
 /**
  *
  * HtmlDoclet
- * @version $Rev$
  */
-public class HtmlDoclet {
+public class HtmlDoclet extends ApiDoclet {
 
-    private HtmlDoclet() {
+    @Override
+    public boolean run(DocletEnvironment docEnv) {
+        return run(docEnv, "html");
     }
 
-    /**
-     * Starts the wiki doclet
-     * @param root document root
-     * @return true if success
-     * @throws Exception e
-     */
-    public static boolean start(RootDoc root) throws Exception {
+    @Override
+    public String getName() {
+        return "HTML Doclet";
+    }
 
-        return ApiDoclet.start(root, "html");
+    @Override
+    public DocWriter getWriter(String outputFolder, String templateFolder) {
+        return new HtmlWriter(outputFolder, templateFolder);
     }
 
 }

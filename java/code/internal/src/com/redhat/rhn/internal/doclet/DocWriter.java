@@ -91,7 +91,6 @@ public abstract class DocWriter {
      */
     public String generateHandler(Handler handler, String templateDir)
             throws Exception {
-
         for (ApiCall call : handler.getCalls()) {
             call.setReturnDoc(renderMacro(templateDir, call.getReturnDoc(),
                     call.getName()));
@@ -126,7 +125,7 @@ public abstract class DocWriter {
      */
     public String renderMacro(String templateDir, String input, String description)
                     throws Exception {
-        VelocityHelper macros = new VelocityHelper();
+        VelocityHelper macros = new VelocityHelper(templateDir);
         String macro = readFile(templateDir + ApiDoclet.API_MACROS_FILE);
 
         try {
@@ -155,7 +154,7 @@ public abstract class DocWriter {
     public void renderSerializers(String templateDir, Map<String, String> serializers)
                     throws Exception {
 
-        serializerRenderer = new VelocityHelper();
+        serializerRenderer = new VelocityHelper(templateDir);
 
         //macrotize the serializers
         for (String name : serializers.keySet()) {
