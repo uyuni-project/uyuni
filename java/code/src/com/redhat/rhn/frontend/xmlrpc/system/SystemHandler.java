@@ -7055,6 +7055,7 @@ public class SystemHandler extends BaseHandler {
     /**
      * Only needed for unit tests.
      * @return the {@link TaskomaticApi} instance used by this class
+     * @xmlrpc.ignore
      */
     public TaskomaticApi getTaskomaticApi() {
         return taskomaticApi;
