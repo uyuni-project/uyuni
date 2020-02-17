@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Mon Feb 17 12:47:56 CET 2020 - jgonzalez@suse.com
+
+- version 4.1.4-1
 - Remove auditlog-keeper
 - update doc link to point to new documentation server
 
