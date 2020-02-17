@@ -4,7 +4,7 @@ import EditGroup from './EditGroup';
 import Group from './Group';
 import PasswordInput from './PasswordInput';
 import {default as Jexl} from 'jexl';
-import HelpIcon from 'components/HelpIcon';
+import HelpIcon from 'components/utils/HelpIcon';
 
 const BASIC_INPUT_TYPES = ["text", "email", "url", "date", "time"];
 

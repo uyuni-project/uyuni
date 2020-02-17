@@ -2,7 +2,7 @@
 import * as React from 'react';
 import {Utils, Formulas} from 'utils/functions';
 import {generateFormulaComponent, generateFormulaComponentForId} from './FormulaComponentGenerator';
-import HelpIcon from 'components/HelpIcon';
+import HelpIcon from 'components/utils/HelpIcon';
 import "./formula-form.css";
 import SectionToggle from './SectionToggle';
 
