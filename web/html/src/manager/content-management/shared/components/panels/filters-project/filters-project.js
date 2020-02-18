@@ -124,51 +124,55 @@ const FiltersProject = (props:  FiltersProps) => {
       }}
       renderContent={() =>
         <div className="min-height-panel">
-          <div className="col-md-6">
-            {
-              denyFilters.length > 0 &&
-              <>
-                <h4>{t("Deny")} <small>{t("filter out")}</small></h4>
-                <ul className="list-group">
-                  {
-                    denyFilters.map((filter, index) => renderFilterEntry(filter, props.projectId,
-                      <i class="fa fa-filter"/>, index === denyFilters.length - 1))
-                  }
-                </ul>
-              </>
-            }
+          <div className="row">
+            <div className="col-md-12">
+              {
+                moduleFilters.length > 0 &&
+                  <>
+                    <h4>{t("AppStreams")} <small>{t("enabled module streams")}</small>
+                    </h4>
+                    <ul className="list-group">
+                      {
+                        moduleFilters.map((filter, index) => renderFilterEntry(filter, props.projectId,
+                          <i className="fa fa-plus-circle"/>, index === moduleFilters.length - 1))
+                      }
+                    </ul>
+                  </>
+              }
+            </div>
           </div>
 
-          <div className="col-md-6">
-            {
-              allowFilters.length > 0 &&
+          <div className="row">
+            <div className="col-md-6">
+              {
+                denyFilters.length > 0 &&
                 <>
-                  <h4>{t("Allow")} <small>{t("select from the full source even if you have excluded them before with deny")}</small>
-                  </h4>
+                  <h4>{t("Deny")} <small>{t("filter out")}</small></h4>
                   <ul className="list-group">
                     {
-                      allowFilters.map((filter, index) => renderFilterEntry(filter, props.projectId,
-                        <i className="fa fa-plus-circle"/>, index === allowFilters.length - 1))
+                      denyFilters.map((filter, index) => renderFilterEntry(filter, props.projectId,
+                        <i class="fa fa-filter"/>, index === denyFilters.length - 1))
                     }
                   </ul>
                 </>
-            }
-          </div>
+              }
+            </div>
 
-          <div className="col-md-6">
-            {
-              moduleFilters.length > 0 &&
-                <>
-                  <h4>{t("AppStreams")} <small>{t("enabled module streams")}</small>
-                  </h4>
-                  <ul className="list-group">
-                    {
-                      moduleFilters.map((filter, index) => renderFilterEntry(filter, props.projectId,
-                        <i className="fa fa-plus-circle"/>, index === moduleFilters.length - 1))
-                    }
-                  </ul>
-                </>
-            }
+            <div className="col-md-6">
+              {
+                allowFilters.length > 0 &&
+                  <>
+                    <h4>{t("Allow")} <small>{t("select from the full source even if you have excluded them before with deny")}</small>
+                    </h4>
+                    <ul className="list-group">
+                      {
+                        allowFilters.map((filter, index) => renderFilterEntry(filter, props.projectId,
+                          <i className="fa fa-plus-circle"/>, index === allowFilters.length - 1))
+                      }
+                    </ul>
+                  </>
+              }
+            </div>
           </div>
         </div>
       }
