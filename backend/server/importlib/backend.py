@@ -1606,6 +1606,10 @@ class Backend:
         """Check if SCC Repository is already in DB.
            If yes, update it, if not add it.
         """
+        # suseSCCRepositoryAuth should be empty in ISS case
+        self.dbmodule.prepare("""
+            DELETE FROM suseSCCRepositoryAuth
+        """).execute()
         insert_repo = self.dbmodule.prepare("""
             INSERT INTO suseSCCRepository (id, scc_id, autorefresh, name, distro_target, description, url, signed)
             VALUES (:rid, :sccid, :autorefresh, :name, :target, :description, :url, :signed)
