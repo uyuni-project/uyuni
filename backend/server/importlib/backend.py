@@ -1349,6 +1349,8 @@ class Backend:
         todelete = [[]]
         toupdate = [[], [], [], [], [], [], [], [], [], []]
         for item in batch:
+            if not item['channel_family_id']:
+                continue
             ident = "%s" % (item['product_id'])
             if ident in existing_data:
                 existing_data.remove(ident)
