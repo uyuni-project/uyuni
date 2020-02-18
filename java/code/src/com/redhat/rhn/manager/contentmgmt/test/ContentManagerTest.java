@@ -1245,15 +1245,15 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
     public void testClonedChannelLinks() throws Exception {
         var project = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());
         ContentProjectFactory.save(project);
-        var devEnv = ContentManager.createEnvironment(project.getLabel(), empty(), "dev", "dev env", "desc", false, user);
-        var testEnv = ContentManager.createEnvironment(project.getLabel(), of("dev"), "test", "test env", "desc", false, user);
+        var devEnv = contentManager.createEnvironment(project.getLabel(), empty(), "dev", "dev env", "desc", false, user);
+        var testEnv = contentManager.createEnvironment(project.getLabel(), of("dev"), "test", "test env", "desc", false, user);
 
         // build the project with 2 channels
         var channel1 = createPopulatedChannel();
         var channel2 = createPopulatedChannel();
-        ContentManager.attachSource("cplabel", SW_CHANNEL, channel1.getLabel(), empty(), user);
-        ContentManager.attachSource("cplabel", SW_CHANNEL, channel2.getLabel(), empty(), user);
-        ContentManager.buildProject("cplabel", empty(), false, user);
+        contentManager.attachSource("cplabel", SW_CHANNEL, channel1.getLabel(), empty(), user);
+        contentManager.attachSource("cplabel", SW_CHANNEL, channel2.getLabel(), empty(), user);
+        contentManager.buildProject("cplabel", empty(), false, user);
         HibernateFactory.getSession().flush();
         HibernateFactory.getSession().clear();
 
@@ -1261,7 +1261,7 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
         assertEquals(Set.of(channel1, channel2), getOriginalChannels(getEnvChannels(devEnv)));
 
         // promote project
-        ContentManager.promoteProject("cplabel", "dev", false, user);
+        contentManager.promoteProject("cplabel", "dev", false, user);
         HibernateFactory.getSession().flush();
         HibernateFactory.getSession().clear();
 
@@ -1271,8 +1271,8 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
         assertEquals(getEnvChannels(devEnv), getOriginalChannels(getEnvChannels(testEnv)));
 
         // delete a source && build the project
-        ContentManager.detachSource("cplabel", SW_CHANNEL, channel1.getLabel(), user);
-        ContentManager.buildProject("cplabel", empty(), false, user);
+        contentManager.detachSource("cplabel", SW_CHANNEL, channel1.getLabel(), user);
+        contentManager.buildProject("cplabel", empty(), false, user);
         HibernateFactory.getSession().flush();
         HibernateFactory.getSession().clear();
 
@@ -1283,8 +1283,8 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
         assertEquals(expectedTestOriginals, getOriginalChannels(getEnvChannels(testEnv)));
 
         // add the channel again && build
-        ContentManager.attachSource("cplabel", SW_CHANNEL, channel1.getLabel(), empty(), user);
-        ContentManager.buildProject("cplabel", empty(), false, user);
+        contentManager.attachSource("cplabel", SW_CHANNEL, channel1.getLabel(), empty(), user);
+        contentManager.buildProject("cplabel", empty(), false, user);
         HibernateFactory.getSession().flush();
         HibernateFactory.getSession().clear();
 
@@ -1304,18 +1304,18 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
     public void testClonedChannelLinksInEnvPath() throws Exception {
         var project = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());
         ContentProjectFactory.save(project);
-        var devEnv = ContentManager.createEnvironment(project.getLabel(), empty(), "dev", "dev env", "desc", false, user);
-        var testEnv = ContentManager.createEnvironment(project.getLabel(), of("dev"), "test", "test env", "desc", false, user);
+        var devEnv = contentManager.createEnvironment(project.getLabel(), empty(), "dev", "dev env", "desc", false, user);
+        var testEnv = contentManager.createEnvironment(project.getLabel(), of("dev"), "test", "test env", "desc", false, user);
 
         // build the project with 1 channel
         var channel1 = createPopulatedChannel();
-        ContentManager.attachSource("cplabel", SW_CHANNEL, channel1.getLabel(), empty(), user);
-        ContentManager.buildProject("cplabel", empty(), false, user);
+        contentManager.attachSource("cplabel", SW_CHANNEL, channel1.getLabel(), empty(), user);
+        contentManager.buildProject("cplabel", empty(), false, user);
         HibernateFactory.getSession().flush();
         HibernateFactory.getSession().clear();
 
         // promote project
-        ContentManager.promoteProject("cplabel", "dev", false, user);
+        contentManager.promoteProject("cplabel", "dev", false, user);
         HibernateFactory.getSession().flush();
         HibernateFactory.getSession().clear();
 
@@ -1325,7 +1325,7 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
         assertEquals(getEnvChannels(devEnv), getOriginalChannels(getEnvChannels(testEnv)));
 
         // create a new environment "in the middle"
-        var middleEnv = ContentManager.createEnvironment(project.getLabel(), of("dev"), "mid", "mid env", "desc", false, user);
+        var middleEnv = contentManager.createEnvironment(project.getLabel(), of("dev"), "mid", "mid env", "desc", false, user);
         HibernateFactory.getSession().flush();
         HibernateFactory.getSession().clear();
         devEnv = ContentManager.lookupEnvironment(devEnv.getLabel(), "cplabel", user).get();
@@ -1337,7 +1337,7 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
         assertEquals(getEnvChannels(middleEnv), getOriginalChannels(getEnvChannels(testEnv)));
 
         // check that after removing the middle env, the originals of the test point to dev channels again
-        ContentManager.removeEnvironment("mid", "cplabel", user);
+        contentManager.removeEnvironment("mid", "cplabel", user);
         HibernateFactory.getSession().flush();
         HibernateFactory.getSession().clear();
         devEnv = ContentManager.lookupEnvironment(devEnv.getLabel(), "cplabel", user).get();
@@ -1359,26 +1359,26 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
     public void testFixingClonedChannelLinks() throws Exception {
         var project = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());
         ContentProjectFactory.save(project);
-        var devEnv = ContentManager.createEnvironment(project.getLabel(), empty(), "dev", "dev env", "desc", false, user);
-        var testEnv = ContentManager.createEnvironment(project.getLabel(), of("dev"), "test", "test env", "desc", false, user);
+        var devEnv = contentManager.createEnvironment(project.getLabel(), empty(), "dev", "dev env", "desc", false, user);
+        var testEnv = contentManager.createEnvironment(project.getLabel(), of("dev"), "test", "test env", "desc", false, user);
 
         // build the project
         var channel1 = createPopulatedChannel();
-        ContentManager.attachSource("cplabel", SW_CHANNEL, channel1.getLabel(), empty(), user);
-        ContentManager.buildProject("cplabel", empty(), false, user);
+        contentManager.attachSource("cplabel", SW_CHANNEL, channel1.getLabel(), empty(), user);
+        contentManager.buildProject("cplabel", empty(), false, user);
 
         // check that built channel has the original set correctly
         assertEquals(Set.of(channel1), getOriginalChannels(getEnvChannels(devEnv)));
 
         // promote project
-        ContentManager.promoteProject("cplabel", "dev", false, user);
+        contentManager.promoteProject("cplabel", "dev", false, user);
 
         // now "break" the testEnv channel
         getEnvChannels(testEnv).forEach(chan -> chan.asCloned().get().setOriginal(channel1));
         assertEquals(Set.of(channel1), getOriginalChannels(getEnvChannels(testEnv)));
 
         // promote project again and check that the original of testEnv channel was fixed
-        ContentManager.promoteProject("cplabel", "dev", false, user);
+        contentManager.promoteProject("cplabel", "dev", false, user);
 
         assertEquals(getEnvChannels(devEnv), getOriginalChannels(getEnvChannels(testEnv)));
     }
@@ -1393,11 +1393,11 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
         var project = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());
         ContentProjectFactory.save(project);
         var srcChan = createPopulatedChannel();
-        ContentManager.attachSource("cplabel", SW_CHANNEL, srcChan.getLabel(), empty(), user);
+        contentManager.attachSource("cplabel", SW_CHANNEL, srcChan.getLabel(), empty(), user);
 
         // 2 environments, 1 channel in each
-        var devEnv = ContentManager.createEnvironment(project.getLabel(), empty(), "dev", "dev env", "desc", false, user);
-        var testEnv = ContentManager.createEnvironment(project.getLabel(), of("dev"), "test", "test env", "desc", false, user);
+        var devEnv = contentManager.createEnvironment(project.getLabel(), empty(), "dev", "dev env", "desc", false, user);
+        var testEnv = contentManager.createEnvironment(project.getLabel(), of("dev"), "test", "test env", "desc", false, user);
 
         var devChan = createChannelInEnvironment(devEnv, of(srcChan.getLabel()));
         var devTarget = new SoftwareEnvironmentTarget(devEnv, devChan);
@@ -1414,7 +1414,7 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
         assertFalse(testChan.isCloned());
 
         // let's build the project and check that the procedure fixed the channel in the dev environment
-        ContentManager.buildProject("cplabel", empty(), false, user);
+        contentManager.buildProject("cplabel", empty(), false, user);
 
         HibernateFactory.getSession().flush();
         HibernateFactory.getSession().clear();
@@ -1425,7 +1425,7 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
         assertFalse(testChan.isCloned());
 
         // let's promote the project and check that the procedure fixed the channel in the test environment as well
-        ContentManager.promoteProject("cplabel", "dev", false, user);
+        contentManager.promoteProject("cplabel", "dev", false, user);
         HibernateFactory.getSession().flush();
         HibernateFactory.getSession().clear();
 
