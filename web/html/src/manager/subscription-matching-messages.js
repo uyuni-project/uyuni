@@ -37,6 +37,10 @@ const Messages = React.createClass({
           message = t("Two subscriptions with the same part number are in a bundle - merged into a single one");
           additionalInformation = subscriptions[data["new_subscription_id"]].partNumber;
           break;
+        case "merge_subscriptions" :
+          message = t("Two subscriptions with the same part number (and other properties) have been merged together - start/end dates might be indicative");
+          additionalInformation = data["part_number"];
+          break;
         default:
           message = rawMessage["type"];
           // we do not know the shape of the data, it could even be a complex nested object (bsc#1125600)
