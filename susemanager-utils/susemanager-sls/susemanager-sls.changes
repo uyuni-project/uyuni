@@ -1,4 +1,4 @@
-- Enable support for bootstrapping Debian 9 and 10 (debian 10 yet to be fully tested) (gnuninu) - nicola.dimarzo@suse.com
+- Enable support for bootstrapping Debian 9 and 10 - nicola.dimarzo@suse.com
 - Do not workaround util.syncmodules for SSH minions (bsc#1162609)
 - Force to run util.synccustomall when triggering action chains on SSH minions (bsc#1162683).
 - Adapt sls file for pre-downloading in Ubuntu minions

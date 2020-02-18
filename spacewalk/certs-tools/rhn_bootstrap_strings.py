@@ -622,13 +622,11 @@ elif [ "$INSTALLER" == apt ]; then
     getA_MISSING
 
     CLIENT_REPOS_ROOT="${{CLIENT_REPOS_ROOT:-${{HTTPS_PUB_DIRECTORY}}/repositories}}"
-    if [ "${{A_CLIENT_CODE_BASE}}" == "astra" ]; then
-        CLIENT_REPO_URL="${{CLIENT_REPOS_ROOT}}/${{A_CLIENT_CODE_BASE}}/${{A_CLIENT_VARIANT_ID}}/bootstrap"
-      # Debian does not need minor version in the bootstrap repo URL
-     elif [ "${{A_CLIENT_CODE_BASE}}" == "debian" ]; then
-        CLIENT_REPO_URL="${{CLIENT_REPOS_ROOT}}/${{A_CLIENT_CODE_BASE}}/${{A_CLIENT_CODE_MAJOR_VERSION}}/bootstrap"
-     else
-        CLIENT_REPO_URL="${{CLIENT_REPOS_ROOT}}/${{A_CLIENT_CODE_BASE}}/${{A_CLIENT_CODE_MAJOR_VERSION}}/${{A_CLIENT_CODE_MINOR_VERSION}}/bootstrap"
+    # Debian does not need minor version in the bootstrap repo URL
+    if [ "${{A_CLIENT_CODE_BASE}}" == "debian" ]; then
+      CLIENT_REPO_URL="${{CLIENT_REPOS_ROOT}}/${{A_CLIENT_CODE_BASE}}/${{A_CLIENT_CODE_MAJOR_VERSION}}/bootstrap"
+    else
+      CLIENT_REPO_URL="${{CLIENT_REPOS_ROOT}}/${{A_CLIENT_CODE_BASE}}/${{A_CLIENT_CODE_MAJOR_VERSION}}/${{A_CLIENT_CODE_MINOR_VERSION}}/bootstrap"
     fi
     CLIENT_REPO_NAME="susemanager_bootstrap"
     CLIENT_REPO_FILE="/etc/apt/sources.list.d/$CLIENT_REPO_NAME.list"
@@ -636,8 +634,8 @@ elif [ "$INSTALLER" == apt ]; then
     setup_deb_bootstrap_repo
 
     # Debian vanilla install requires apt-transport-https prior salt-minion installation otherwise will fail
-    APT_TRANSPORT_HTTPS_DEB=$(wget -O - http://$HOSTNAME/pub/repositories/${{A_CLIENT_CODE_BASE}}/${{A_CLIENT_CODE_MAJOR_VERSION}}/bootstrap/pool/main/a/apt/ /dev/null 2>&1 |grep apt-transport-https|cut -d '"' -f 6)
     if [ "${{A_CLIENT_CODE_BASE}}" == "debian" ]; then
+      APT_TRANSPORT_HTTPS_DEB=$(wget -O - http://$HOSTNAME/pub/repositories/${{A_CLIENT_CODE_BASE}}/${{A_CLIENT_CODE_MAJOR_VERSION}}/bootstrap/pool/main/a/apt/ /dev/null 2>&1 |grep apt-transport-https|cut -d '"' -f 6)
       wget -O /tmp/${{APT_TRANSPORT_HTTPS_DEB}} http://$HOSTNAME/pub/repositories/${{A_CLIENT_CODE_BASE}}/${{A_CLIENT_CODE_MAJOR_VERSION}}/bootstrap/pool/main/a/apt/${{APT_TRANSPORT_HTTPS_DEB}}
       dpkg -i /tmp/${{APT_TRANSPORT_HTTPS_DEB}}
     fi
