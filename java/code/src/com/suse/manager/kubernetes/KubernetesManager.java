@@ -49,14 +49,14 @@ public class KubernetesManager {
     private static final Logger LOG = Logger.getLogger(KubernetesManager.class);
     private static final String DOCKER_PULLABLE = "docker-pullable://";
 
-    private SystemQuery saltService;
+    private final SystemQuery saltService;
 
     /**
      * No arg constructor.
      * Configures this with the default {@link SaltService} instance.
      */
-    public KubernetesManager() {
-        this.saltService = SaltService.INSTANCE;
+    public KubernetesManager(SystemQuery systemQuery) {
+        this.saltService = systemQuery;
     }
 
     /**
@@ -194,10 +194,4 @@ public class KubernetesManager {
         return imgToUsage.values().stream().collect(Collectors.toSet());
     }
 
-    /**
-     * @param saltServiceIn to set
-     */
-    public void setSaltService(SystemQuery saltServiceIn) {
-        this.saltService = saltServiceIn;
-    }
 }
