@@ -166,9 +166,10 @@ class DpkgRepo:
         """
         resp = requests.get(self._get_parent_url(self._url, 2, "Release"))
         try:
-            self._flat = resp.status_code == http.HTTPStatus.NOT_FOUND
+            self._flat = resp.status_code in [http.HTTPStatus.NOT_FOUND, http.HTTPStatus.FORBIDDEN]
+            self._flat_checked = 1
             self._release = self._parse_release_index(resp.content.decode("utf-8"))
-            if resp.status_code not in [http.HTTPStatus.NOT_FOUND, http.HTTPStatus.OK]:
+            if resp.status_code not in [http.HTTPStatus.NOT_FOUND, http.HTTPStatus.OK, http.HTTPStatus.FORBIDDEN]:
                 raise GeneralRepoException("HTTP error {} occurred while connecting to the URL".format(resp.status_code))
 
             if not self._release and self.is_flat():
@@ -180,8 +181,6 @@ class DpkgRepo:
 
         if not self._release:
             raise GeneralRepoException("Repository seems either broken or has unsupported format")
-
-        self._flat_checked = 1
 
         return self._release
 
