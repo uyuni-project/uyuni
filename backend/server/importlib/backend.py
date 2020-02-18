@@ -1345,9 +1345,9 @@ class Backend:
             """)
         _query_product.execute()
         existing_data = map(lambda x: "%s" % (x['product_id']), _query_product.fetchall_dict() or [])
-        toinsert = [[], [], [], [], [], [], [], []]
+        toinsert = [[], [], [], [], [], [], [], [], [], [], []]
         todelete = [[]]
-        toupdate = [[], [], [], [], [], [], []]
+        toupdate = [[], [], [], [], [], [], [], [], [], []]
         for item in batch:
             ident = "%s" % (item['product_id'])
             if ident in existing_data:
