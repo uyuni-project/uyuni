@@ -43,6 +43,7 @@ from spacewalk.server import rhnPackage, rhnSQL, rhnChannel, suseEula
 from uyuni.common import fileutils
 from spacewalk.common import rhnLog, rhnCache, rhnMail, suseLib
 from spacewalk.common.rhnTB import fetchTraceback
+from spacewalk.common import repo
 from uyuni.common.rhnLib import isSUSE, utc
 from uyuni.common.checksum import getFileChecksum
 from spacewalk.common.rhnConfig import CFG, initCFG
