@@ -66,7 +66,7 @@ Feature: Action chain on traditional clients
     And I follow "List / Remove" in the content area
     And I enter "milkyway-dummy" as the filtered package name
     And I click on the filter button
-    And I check "milkyway-dummy" in the list
+    And I check row with "milkyway-dummy" and arch of "sle_client"
     And I click on "Remove Packages"
     And I check radio button "schedule-by-action-chain"
     And I click on "Confirm"

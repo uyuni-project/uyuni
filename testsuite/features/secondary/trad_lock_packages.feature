@@ -14,7 +14,7 @@ Feature: Lock packages on traditional client
   Scenario: Lock a package on the client
     When I follow "Software" in the content area
     And I follow "Lock"
-    And I check "hoag-dummy-1.1-1.1" in the list
+    And I check row with "hoag-dummy-1.1-1.1" and arch of "sle_client"
     And I click on "Lock"
     And I run "rhn_check -vvv" on "sle_client"
     Then I should see a "Packages has been requested for being locked." text
@@ -27,7 +27,7 @@ Feature: Lock packages on traditional client
     And I follow "Lock"
     And package "hoag-dummy-1.1-1.1" is reported as locked
     And I follow "Install"
-    And I check "hoag-dummy-1.1-1.1" in the list
+    And I check row with "hoag-dummy-1.1-1.1" and arch of "sle_client"
     And I click on "Install Selected Packages"
     And I click on "Confirm"
     And I run "rhn_check -vvv" on "sle_client"
@@ -43,7 +43,7 @@ Feature: Lock packages on traditional client
     When I follow "Software" in the content area
     And I follow "Lock"
     And package "hoag-dummy-1.1-1.1" is reported as locked
-    And I check "hoag-dummy-1.1-1.1" in the list
+    And I check row with "hoag-dummy-1.1-1.1" and arch of "sle_client"
     And I click on "Unlock"
     And I run "rhn_check -vvv" on "sle_client"
     Then I should see a "Packages has been requested for being unlocked." text
@@ -54,7 +54,7 @@ Feature: Lock packages on traditional client
   Scenario: Schedule a package lock
     When I follow "Software" in the content area
     And I follow "Lock"
-    And I check "hoag-dummy-1.1-1.1" in the list
+    And I check row with "hoag-dummy-1.1-1.1" and arch of "sle_client"
     And I click on "Lock"
     Then I should see a "Packages has been requested for being locked." text
     And package "hoag-dummy-1.1-1.1" is reported as pending to be locked
@@ -64,7 +64,7 @@ Feature: Lock packages on traditional client
     And I follow "Lock"
     And package "hoag-dummy-1.1-1.1" is reported as pending to be locked
     And package "hoag-dummy-1.1-1.1" cannot be selected
-    When I check "milkyway-dummy-2.0-1.1" in the list
+    When I check row with "milkyway-dummy-2.0-1.1" and arch of "sle_client"
     And I click on "Lock"
     Then I should see a "Packages has been requested for being locked." text
     When I follow "Lock"
@@ -84,15 +84,15 @@ Feature: Lock packages on traditional client
     And I follow "Lock"
     And package "hoag-dummy-1.1-1.1" is reported as locked
     And package "milkyway-dummy-2.0-1.1" is reported as locked
-    When I check "orion-dummy-1.1-1.1" in the list
+    When I check row with "orion-dummy-1.1-1.1" and arch of "sle_client"
     And I click on "Lock"
     Then I should see a "Packages has been requested for being locked." text
     When I follow "Lock"
     Then package "hoag-dummy-1.1-1.1" is reported as locked
     And package "milkyway-dummy-2.0-1.1" is reported as locked
     And package "orion-dummy-1.1-1.1" is reported as pending to be locked
-    When I check "milkyway-dummy-2.0-1.1" in the list
-    And I uncheck "hoag-dummy-1.1-1.1" in the list
+    When I check row with "milkyway-dummy-2.0-1.1" and arch of "sle_client"
+    And I uncheck row with "hoag-dummy-1.1-1.1" and arch of "sle_client"
     And I click on "Unlock"
     Then I should see a "Packages has been requested for being unlocked." text
     When I follow "Lock"

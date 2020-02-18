@@ -62,7 +62,7 @@ Feature: Migrate a traditional client into a Salt minion
     Given I am on the Systems overview page of this "sle_migrated_minion"
     When I follow "Software" in the content area
     And I follow "Install"
-    And I check "perseus-dummy-1.1-1.1" in the list
+    And I check row with "perseus-dummy-1.1-1.1" and arch of "sle_migrated_minion"
     And I click on "Install Selected Packages"
     And I click on "Confirm"
     Then I should see a "1 package install has been scheduled for" text
