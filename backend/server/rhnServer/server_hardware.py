@@ -1017,7 +1017,8 @@ class MachineInformation:
         if not name:
             name = "unknown"
         log_debug(4, "updating machine_id", sysid, name, machine_id)
-        if not self.__check_if_machine_id_exists(machine_id):
+        existing_srv_id = self.__check_if_machine_id_exists(machine_id)
+        if not existing_srv_id or existing_srv_id == sysid:
             s_update = rhnSQL.prepare("""
                         UPDATE rhnServer
                            SET machine_id = :machine_id
@@ -1025,38 +1026,22 @@ class MachineInformation:
                         """)
             s_update.execute(machine_id=machine_id, server_id=sysid)
         else:
-            # Send an alert email in case of machine_id collition.
-            log_error("Unable to update machine id: machine id is not unique")
-            self.__send_machine_id_alert_email(machine_id, sysid, name)
+            # this indicate a forced re-registration and we need to remove the old rhnServer
+            log_debug(0, "Found duplicate server. Re-registration expected. Deleting existing: ", existing_srv_id)
+            delete_server = rhnSQL.Procedure("delete_server")
+            try:
+                delete_server(existing_srv_id)
+            except rhnSQL.SQLError:
+                log_error("Error deleting server: %s" % existing_srv_id)
 
     def __check_if_machine_id_exists(self, machine_id):
         if machine_id:
             h = rhnSQL.prepare('SELECT id FROM rhnServer WHERE machine_id = :machine_id')
             h.execute(machine_id=machine_id)
-            return bool(h.fetchall_dict())
-        return False
-
-    def __send_machine_id_alert_email(self, machine_id, sysid, name):
-        log_debug(1, "Sending alert email about multiple machine_id")
-        hostname = socket.getfqdn()
-
-        to = CFG.TRACEBACK_MAIL
-        fr = to
-        if isinstance(to, type([])):
-            fr = to[0].strip()
-            to = ', '.join([s.strip() for s in to])
-
-        headers = {
-            "Subject" : "SUSE Manager multiple 'machine_id' detected",
-            "From"    : "{0} <{1}>".format(hostname, fr),
-            "To"      : to,
-        }
-
-        docurl = "https://documentation.suse.com/external-tree/en-us/suma/4.0/suse-manager/administration/tshoot-registerclones.html"
-        if isUyuni():
-            docurl = "https://www.uyuni-project.org/uyuni-docs/uyuni/administration/tshoot-registerclones.html"
-        body = MACHINE_ID_EMAIL_TEMPLATE.format(machine_id, sysid, name, docurl)
-        rhnMail.send(headers, body)
+            d = h.fetchone_dict()
+            if d:
+                return d['id']
+        return None
 
 
 class Hardware:

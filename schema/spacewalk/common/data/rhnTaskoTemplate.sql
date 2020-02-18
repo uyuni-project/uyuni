@@ -135,13 +135,6 @@ INSERT INTO rhnTaskoTemplate (id, bunch_id, task_id, ordering, start_if)
 
 INSERT INTO rhnTaskoTemplate (id, bunch_id, task_id, ordering, start_if)
              VALUES (sequence_nextval('rhn_tasko_template_id_seq'),
-                        (SELECT id FROM rhnTaskoBunch WHERE name='mgr-register-bunch'),
-                        (SELECT id FROM rhnTaskoTask WHERE name='mgr-register'),
-                        0,
-                        null);
-
-INSERT INTO rhnTaskoTemplate (id, bunch_id, task_id, ordering, start_if)
-             VALUES (sequence_nextval('rhn_tasko_template_id_seq'),
                         (SELECT id FROM rhnTaskoBunch WHERE name='reboot-action-cleanup-bunch'),
                         (SELECT id FROM rhnTaskoTask WHERE name='reboot-action-cleanup'),
                         0,

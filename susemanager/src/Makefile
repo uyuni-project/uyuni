@@ -21,7 +21,7 @@ SPACEWALK_FILES		= __init__ \
 			mgr_sync/product \
 			mgr_sync/version \
 			mgr_sync/logger
-SCRIPTS  = mgr-register mgr-clean-old-patchnames \
+SCRIPTS  = mgr-clean-old-patchnames \
 	   mgr-create-bootstrap-repo mgr-delete-patch mgr-sync
 
 SUMA_DATA_FILES = mgr_bootstrap_data

@@ -115,12 +115,6 @@ class ServerWrapper(Packages, Hardware, History, SuseData):
         rhnSQL.commit()
         return ret
 
-    def update_suse_products(self, guid, secret, target, products):
-        suse_products = {
-            "guid"     : guid,
-            "secret"    : secret,
-            "ostarget"    : target,
-            "products"    : products
-        }
-        self.add_suse_products(suse_products)
+    def update_suse_products(self, products):
+        self.add_suse_products(products)
         return self.save_suse_products()
