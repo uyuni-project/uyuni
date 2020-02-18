@@ -54,8 +54,7 @@ public class KubernetesManagerTest extends JMockBaseTestCaseWithUser {
         setImposteriser(ClassImposteriser.INSTANCE);
 
         saltServiceMock = mock(SaltService.class);
-        manager = new KubernetesManager();
-        manager.setSaltService(saltServiceMock);
+        manager = new KubernetesManager(saltServiceMock);
 
         for (VirtualHostManager virtHostMgr : VirtualHostManagerFactory.getInstance().listVirtualHostManagers()) {
             VirtualHostManagerFactory.getInstance().delete(virtHostMgr);

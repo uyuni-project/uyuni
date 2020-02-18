@@ -205,10 +205,7 @@ public class SystemEntitler {
     }
 
     private void updateLibvirtEngine(MinionServer minion) {
-        Map<String, Object> pillar = new HashMap<>();
-        pillar.put("virt_entitled", minion.hasVirtualizationEntitlement());
-        saltService.callSync(State.apply(Collections.singletonList("virt.engine-events"),
-                                                 Optional.of(pillar)), minion.getMinionId());
+        saltService.updateLibvirtEngine(minion);
     }
 
     // Need to do some extra logic here

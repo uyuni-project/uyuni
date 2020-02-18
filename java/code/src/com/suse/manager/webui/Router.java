@@ -21,6 +21,7 @@ import static spark.Spark.get;
 import static spark.Spark.notFound;
 import static spark.Spark.post;
 
+import com.suse.manager.kubernetes.KubernetesManager;
 import com.suse.manager.webui.controllers.ActivationKeysController;
 import com.suse.manager.webui.controllers.CVEAuditController;
 import com.suse.manager.webui.controllers.DownloadController;
@@ -52,7 +53,7 @@ import com.suse.manager.webui.controllers.channels.ChannelsApiController;
 import com.suse.manager.webui.controllers.contentmanagement.ContentManagementApiController;
 import com.suse.manager.webui.controllers.contentmanagement.ContentManagementViewsController;
 import com.suse.manager.webui.errors.NotFoundException;
-
+import com.suse.manager.webui.services.impl.SaltService;
 import org.apache.http.HttpStatus;
 
 import java.util.HashMap;
@@ -172,9 +173,11 @@ public class Router implements SparkApplication {
     }
 
     private void initContentManagementRoutes(JadeTemplateEngine jade) {
+        KubernetesManager kubernetesManager = new KubernetesManager(SaltService.INSTANCE);
+        ImageBuildController imageBuildController = new ImageBuildController(kubernetesManager);
         ImageStoreController.initRoutes(jade);
         ImageProfileController.initRoutes(jade);
-        ImageBuildController.initRoutes(jade);
+        ImageBuildController.initRoutes(jade, imageBuildController);
     }
 
 }
