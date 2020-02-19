@@ -1,3 +1,4 @@
+- Update schema and add migration script for 'Recurring Actions'
 - drop tables and data used for forwarding registrations to NCC
 
 -------------------------------------------------------------------

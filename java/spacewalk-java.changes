@@ -1,3 +1,4 @@
+- Implement recurring highstate scheduling
 - remove NccRegister Task
 
 -------------------------------------------------------------------
