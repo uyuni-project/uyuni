@@ -16,6 +16,7 @@ package com.redhat.rhn.webapp;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.messaging.MessageQueue;
+import com.redhat.rhn.manager.satellite.StartupTasksCommand;
 import com.redhat.rhn.manager.satellite.UpgradeCommand;
 
 import com.suse.manager.reactor.SaltReactor;
@@ -129,6 +130,9 @@ public class RhnServletListener implements ServletContextListener {
 
         log.debug("Starting upgrade check");
         executeUpgradeStep();
+
+        log.debug("Executing startup tasks");
+        executeStartupTasks();
     }
 
     private void executeUpgradeStep() {
@@ -136,7 +140,14 @@ public class RhnServletListener implements ServletContextListener {
         UpgradeCommand cmd = new UpgradeCommand();
         cmd.store();
         log.debug("UpgradeCommand done.");
+    }
 
+    /**
+     * Tasks that should be run on application startup.
+     */
+    private void executeStartupTasks() {
+        var startupTasksCommand = new StartupTasksCommand();
+        startupTasksCommand.run();
     }
 
     /** {@inheritDoc} */
