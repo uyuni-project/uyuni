@@ -96,14 +96,15 @@ public class SaltReactor {
      */
     public void start() {
 
-        VirtManager virtManager = new VirtManager(SaltService.INSTANCE);
+        SystemQuery systemQuery = SaltService.INSTANCE;
+        VirtManager virtManager = new VirtManager(systemQuery);
 
         // Configure message queue to handle minion registrations
-        MessageQueue.registerAction(new RegisterMinionEventMessageAction(),
+        MessageQueue.registerAction(new RegisterMinionEventMessageAction(systemQuery),
                 RegisterMinionEventMessage.class);
-        MessageQueue.registerAction(new MinionStartEventMessageAction(),
+        MessageQueue.registerAction(new MinionStartEventMessageAction(systemQuery),
                 MinionStartEventMessage.class);
-        MessageQueue.registerAction(new MinionStartEventMessageAction(),
+        MessageQueue.registerAction(new MinionStartEventMessageAction(systemQuery),
                 MinionStartEventDatabaseMessage.class);
         MessageQueue.registerAction(new ApplyStatesEventMessageAction(),
                 ApplyStatesEventMessage.class);
@@ -115,9 +116,9 @@ public class SaltReactor {
                 RunnableEventMessage.class);
         MessageQueue.registerAction(new VirtpollerBeaconEventMessageAction(),
                 VirtpollerBeaconEventMessage.class);
-        MessageQueue.registerAction(new SystemIdGenerateEventMessageAction(),
+        MessageQueue.registerAction(new SystemIdGenerateEventMessageAction(systemQuery),
                 SystemIdGenerateEventMessage.class);
-        MessageQueue.registerAction(new ImageDeployedEventMessageAction(),
+        MessageQueue.registerAction(new ImageDeployedEventMessageAction(systemQuery),
                 ImageDeployedEventMessage.class);
         MessageQueue.registerAction(new LibvirtEngineDomainLifecycleMessageAction(virtManager),
                 LibvirtEngineDomainLifecycleMessage.class);

@@ -33,14 +33,7 @@ public class MinionStartEventMessageAction implements MessageAction {
     private static final Logger LOG = Logger.getLogger(MinionStartEventMessageAction.class);
 
     // Reference to the SaltService instance
-    private final SystemQuery SALT_SERVICE;
-
-    /**
-     * Default constructor.
-     */
-    public MinionStartEventMessageAction() {
-        this(SaltService.INSTANCE);
-    }
+    private final SystemQuery systemQuery;
 
     /**
      * Constructor taking a {@link SaltService} instance.
@@ -48,7 +41,7 @@ public class MinionStartEventMessageAction implements MessageAction {
      * @param saltService the salt service to use
      */
     public MinionStartEventMessageAction(SystemQuery saltService) {
-        SALT_SERVICE = saltService;
+        systemQuery = saltService;
     }
 
     @Override
@@ -58,7 +51,7 @@ public class MinionStartEventMessageAction implements MessageAction {
                 .ifPresent(minion -> {
             // Sync grains, modules and beacons, also update uptime and required grains on every minion restart
             MinionList minionTarget = new MinionList(minionId);
-            SALT_SERVICE.updateSystemInfo(minionTarget);
+            systemQuery.updateSystemInfo(minionTarget);
         });
     }
 

@@ -23,7 +23,6 @@ import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.token.ActivationKey;
 import com.redhat.rhn.domain.token.ActivationKeyFactory;
 import com.suse.manager.reactor.utils.ValueMap;
-import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.services.impl.SystemQuery;
 import com.suse.manager.webui.utils.salt.ImageDeployedEvent;
 import org.apache.log4j.Logger;
@@ -35,16 +34,9 @@ import java.util.Optional;
  */
 public class ImageDeployedEventMessageAction implements MessageAction {
 
-    private final SystemQuery saltService;
+    private final SystemQuery systemQuery;
 
     private static final Logger LOG = Logger.getLogger(ImageDeployedEventMessageAction.class);
-
-    /**
-     * Standard constructor.
-     */
-    public ImageDeployedEventMessageAction() {
-        this(SaltService.INSTANCE);
-    }
 
     /**
      * Constructor allowing setting a salt service instance.
@@ -52,7 +44,7 @@ public class ImageDeployedEventMessageAction implements MessageAction {
      * @param saltServiceIn the salt service instance
      */
     public ImageDeployedEventMessageAction(SystemQuery saltServiceIn) {
-        this.saltService = saltServiceIn;
+        this.systemQuery = saltServiceIn;
     }
 
     @Override
@@ -89,7 +81,7 @@ public class ImageDeployedEventMessageAction implements MessageAction {
 
             // we want to clear assigned channels first
             m.getChannels().clear();
-            RegistrationUtils.subscribeMinionToChannels(saltService, m, grains, activationKey, activationKeyLabel);
+            RegistrationUtils.subscribeMinionToChannels(systemQuery, m, grains, activationKey, activationKeyLabel);
             activationKey.ifPresent(ak -> RegistrationUtils.applyActivationKeyProperties(m, ak, grains));
             RegistrationUtils.finishRegistration(m, activationKey, Optional.empty(), false);
         });
