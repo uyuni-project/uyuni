@@ -565,6 +565,22 @@ public class ContentProjectFactory extends HibernateFactory {
     }
 
     /**
+     * Set all BUILDING {@link EnvironmentTarget}s to FAILED state.
+     *
+     * @return the number of updated targets
+     */
+    public static int failStaleTargets() {
+        List<EnvironmentTarget> targets = HibernateFactory.getSession()
+                .createQuery("SELECT tgt FROM EnvironmentTarget tgt " +
+                        "WHERE tgt.status = :status")
+                .setParameter("status", EnvironmentTarget.Status.BUILDING)
+                .list();
+
+        targets.forEach(tgt -> tgt.setStatus(EnvironmentTarget.Status.FAILED));
+        return targets.size();
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
