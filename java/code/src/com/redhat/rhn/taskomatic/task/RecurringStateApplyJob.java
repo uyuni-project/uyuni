@@ -7,6 +7,10 @@
  * FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
+ *
+ * Red Hat trademarks are not licensed under GPLv2. No permission is
+ * granted to use or replicate Red Hat trademarks that are incorporated
+ * in this software or its documentation.
  */
 package com.redhat.rhn.taskomatic.task;
 
@@ -38,12 +42,12 @@ public class RecurringStateApplyJob extends RhnJavaJob {
      */
     public void execute(JobExecutionContext context) throws JobExecutionException {
         JobDataMap data = context.getJobDetail().getJobDataMap();
-        if(Boolean.parseBoolean(data.get("active").toString())) {
+        if (Boolean.parseBoolean(data.get("active").toString())) {
             User user = Optional.ofNullable(data.get("user_id"))
                     .map(id -> Long.parseLong(id.toString()))
                     .map(userId -> UserFactory.lookupById(userId))
                     .orElse(null);
-            if(user == null) {
+            if (user == null) {
                 throw new NullPointerException("User not found");
             }
             List<Long> minionIds = new ArrayList<>();
@@ -54,7 +58,7 @@ public class RecurringStateApplyJob extends RhnJavaJob {
                     m -> minionIds.addAll(Arrays.stream(m.get("minionIds")
                             .replaceAll("([\\[\\] ])", "")
                             .split(",")).map(Long::parseLong).collect(Collectors.toList())),
-                    () -> {throw new NullPointerException("No minion Ids provided");}
+                    () -> { throw new NullPointerException("No minion Ids provided"); }
             );
 
             List<Long> sids = MinionServerFactory.lookupByIds(minionIds).map(server -> {
@@ -68,7 +72,8 @@ public class RecurringStateApplyJob extends RhnJavaJob {
 
             try {
                 ActionChainManager.scheduleApplyStates(user, sids, Optional.of(test), timeNow, null);
-            } catch (Exception e) {
+            }
+            catch (Exception e) {
                 log.error(e.getMessage(), e);
                 throw new JobExecutionException(e);
             }

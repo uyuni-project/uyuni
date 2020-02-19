@@ -206,7 +206,8 @@ public class StatesAPI {
             List<Map<String, String>> schedules = getSchedules(user);
             return json(response,
                     ResultJson.success(schedules));
-        } catch (TaskomaticApiException e) {
+        }
+        catch (TaskomaticApiException e) {
             return json(response, ResultJson.error(e.getMessage()));
         }
     }
@@ -223,11 +224,12 @@ public class StatesAPI {
         String scheduleId = request.params("scheduleId");
         try {
             Optional<Map<String, String>> schedule = getSingleSchedule(scheduleId, user);
-            if(schedule.isEmpty()) {
+            if (schedule.isEmpty()) {
                 return json(response, ResultJson.error("Schedule not found"));
             }
             return json(response, ResultJson.success(schedule.get()));
-        } catch(TaskomaticApiException e) {
+        }
+        catch (TaskomaticApiException e) {
             return json(response,
                     ResultJson.error(e.getMessage()));
         }
@@ -277,7 +279,9 @@ public class StatesAPI {
         Map<String, String> schedule = (Map<String, String>) taskoSchedule.get("data_map");
         String date = new Timestamp(((Date) taskoSchedule.get("active_from")).getTime()).toString();
         String cronExpr = taskoSchedule.get("cron_expr").toString();
-        getMinionNamesAndIds(schedule.get("targetType"), Long.parseLong(schedule.get("targetId")) , user).ifPresent(schedule::putAll);
+        getMinionNamesAndIds(schedule.get("targetType"),
+                Long.parseLong(schedule.get("targetId")),
+                user).ifPresent(schedule::putAll);
         schedule.put("cron", cronExpr);
         schedule.put("scheduleId", taskoSchedule.get("id").toString());
         schedule.put("scheduleName", taskoSchedule.get("job_label").toString());
@@ -572,10 +576,12 @@ public class StatesAPI {
             String scheduleName = json.getScheduleName();
             if (scheduleName != null && TASKOMATIC_API.satScheduleActive(scheduleName, user)) {
                 errors.add("Schedule Label already in use.");
-            } else {
+            }
+            else {
                 errors.addAll(saveSchedule(json, user));
             }
-        } catch(TaskomaticApiException e) {
+        }
+        catch (TaskomaticApiException e) {
             errors.add(e.getMessage());
         }
 
@@ -602,12 +608,14 @@ public class StatesAPI {
         try {
             if (getSingleSchedule(scheduleId, user).isEmpty()) {
                 errors.add("Schedule not found.");
-            } else {
+            }
+            else {
                 RecurringStateScheduleJson json = GSON.fromJson(request.body(),
                         RecurringStateScheduleJson.class);
                 errors.addAll(saveSchedule(json, user));
             }
-        } catch (TaskomaticApiException e) {
+        }
+        catch (TaskomaticApiException e) {
             errors.add(e.getMessage());
         }
 
@@ -649,7 +657,8 @@ public class StatesAPI {
                     cron = picker.getCronEntry();
                 }
                 TASKOMATIC_API.scheduleSatBunch(user, scheduleName, "recurring-state-apply-bunch", cron, params);
-            } catch (TaskomaticApiException e) {
+            }
+            catch (TaskomaticApiException e) {
                 if (e.getMessage().contains("InvalidParamException")) {
                     if (e.getMessage().contains("Cron trigger")) {
                         errors.add("Invalid Cron expression.");
@@ -683,7 +692,8 @@ public class StatesAPI {
             }
             String scheduleName = schedule.get().get("scheduleName");
             TASKOMATIC_API.unscheduleSatTask(scheduleName, user);
-        } catch(TaskomaticApiException e) {
+        }
+        catch (TaskomaticApiException e) {
             return json(response, ResultJson.error(e.getMessage()));
         }
         return json(response, ResultJson.success());

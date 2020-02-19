@@ -404,8 +404,8 @@ public class MinionController {
      * @param user the current user
      * @return the ModelAndView object to render the page
      */
-    /* TODO: Create an own Schedule Controller */
     public static ModelAndView recurringActions(Request request, Response response, User user) {
+        /* TODO: Create an own Schedule Controller */
         Map<String, Object> data = new HashMap<>();
         return new ModelAndView(data, "templates/schedule/recurring-actions.jade");
     }
@@ -422,7 +422,7 @@ public class MinionController {
         String serverId = request.queryParams("sid");
         Map<String, Object> data = new HashMap<>();
         Server server = ServerFactory.lookupById(Long.valueOf(serverId));
-        if(MinionServerUtils.isMinionServer(server)) {
+        if (MinionServerUtils.isMinionServer(server)) {
             data.put("server", server);
         }
         return new ModelAndView(data, "templates/minion/recurring-states.jade");

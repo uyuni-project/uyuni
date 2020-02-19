@@ -168,7 +168,8 @@ public class RecurringEventPicker {
      * @param cronEntry if non-null, will set the picker to this.
      * @return The created picker
      */
-    public static RecurringEventPicker prepopulatePicker(String name, String type, Map<String, String> cronTimes, String cronEntry) {
+    public static RecurringEventPicker prepopulatePicker(
+            String name, String type, Map<String, String> cronTimes, String cronEntry) {
 
         RecurringEventPicker p = new RecurringEventPicker(name);
 

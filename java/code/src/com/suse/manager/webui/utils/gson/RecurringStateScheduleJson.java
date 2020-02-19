@@ -7,6 +7,10 @@
  * FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
+ *
+ * Red Hat trademarks are not licensed under GPLv2. No permission is
+ * granted to use or replicate Red Hat trademarks that are incorporated
+ * in this software or its documentation.
  */
 package com.suse.manager.webui.utils.gson;
 
@@ -46,40 +50,56 @@ public class RecurringStateScheduleJson {
     /**
      * @return the minion ids
      */
-    public Long getTargetId() {return targetId;}
+    public Long getTargetId() {
+        return targetId;
+    }
 
     /**
      * @return the name of the schedule
      */
-    public String getScheduleName() {return scheduleName;}
+    public String getScheduleName() {
+        return scheduleName;
+    }
 
     /**
      * @return whether the schedule is active
      */
-    public boolean isActive() {return active;}
+    public boolean isActive() {
+        return active;
+    }
 
     /**
      * @return the type of the schedule
      */
-    public String getType() {return type;}
+    public String getType() {
+        return type;
+    }
 
     /**
      * @return the target type of the schedule
      */
-    public String getTargetType() {return targetType;}
+    public String getTargetType() {
+        return targetType;
+    }
 
     /**
      * @return the Array containing Quartz information
      */
-    public Map<String, String> getCronTimes() {return cronTimes;}
+    public Map<String, String> getCronTimes() {
+        return cronTimes;
+    }
 
     /**
      * @return the Array containing Quartz information
      */
-    public String getCron() {return cron;}
+    public String getCron() {
+        return cron;
+    }
 
     /**
      * @return the Array containing Quartz information
      */
-    public boolean isTest() {return test;}
+    public boolean isTest() {
+        return test;
+    }
 }

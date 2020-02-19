@@ -339,10 +339,11 @@ public class TaskomaticApi {
      * @param user shall be sat admin
      * @param bunchName name of the bunch
      * @return list of schedules
+     * @throws TaskomaticApiException if there was an error
      */
     public List<Map> findActiveSchedulesByBunch(User user, String bunchName)
             throws TaskomaticApiException {
-        List<Map> schedules = (List<Map>) invoke("tasko.listActiveSatSchedulesByBunch",bunchName);
+        List<Map> schedules = (List<Map>) invoke("tasko.listActiveSatSchedulesByBunch", bunchName);
         return schedules;
     }
 
