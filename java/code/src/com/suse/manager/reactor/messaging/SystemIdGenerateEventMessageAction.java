@@ -14,6 +14,7 @@
  */
 package com.suse.manager.reactor.messaging;
 
+import com.suse.manager.webui.services.impl.SystemQuery;
 import org.apache.log4j.Logger;
 
 import com.redhat.rhn.common.messaging.EventMessage;
@@ -42,6 +43,12 @@ public class SystemIdGenerateEventMessageAction implements MessageAction {
 
     private static final String EVENT_TAG = "suse/systemid/generated";
 
+    public final SystemQuery systemQuery;
+
+    public SystemIdGenerateEventMessageAction(SystemQuery systemQuery) {
+        this.systemQuery = systemQuery;
+    }
+
     /**
      * {@inheritDoc}
      */
@@ -50,7 +57,7 @@ public class SystemIdGenerateEventMessageAction implements MessageAction {
         String minionId = ((SystemIdGenerateEventMessage) msg).getMinionId();
         MinionServerFactory.findByMinionId(minionId).ifPresent(minion -> {
             try {
-                SaltService.INSTANCE.notifySystemIdGenerated(minion);
+                systemQuery.notifySystemIdGenerated(minion);
             }
             catch (InstantiationException e) {
                 LOG.warn(String.format("Unable to generate certificate: : %s", minionId));
