@@ -1,3 +1,7 @@
+- Split spacewalk-utils into two packages:
+  * spacewalk-utils with tools supported on SUSE Manager
+  * spacewalk-utils-extras with tools unsupported on SUSE Manager
+ 
 -------------------------------------------------------------------
 Mon Feb 17 12:52:28 CET 2020 - jgonzalez@suse.com
 
