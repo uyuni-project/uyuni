@@ -633,13 +633,6 @@ elif [ "$INSTALLER" == apt ]; then
 
     setup_deb_bootstrap_repo
 
-    # Debian vanilla install requires apt-transport-https prior salt-minion installation otherwise will fail
-    if [ "${{A_CLIENT_CODE_BASE}}" == "debian" ]; then
-      APT_TRANSPORT_HTTPS_DEB=$(wget -O - http://$HOSTNAME/pub/repositories/${{A_CLIENT_CODE_BASE}}/${{A_CLIENT_CODE_MAJOR_VERSION}}/bootstrap/pool/main/a/apt/ /dev/null 2>&1 |grep apt-transport-https|cut -d '"' -f 6)
-      wget -O /tmp/${{APT_TRANSPORT_HTTPS_DEB}} http://$HOSTNAME/pub/repositories/${{A_CLIENT_CODE_BASE}}/${{A_CLIENT_CODE_MAJOR_VERSION}}/bootstrap/pool/main/a/apt/${{APT_TRANSPORT_HTTPS_DEB}}
-      dpkg -i /tmp/${{APT_TRANSPORT_HTTPS_DEB}}
-    fi
-
     apt-get --yes update
 
     if [ -z "$A_MISSING" ]; then

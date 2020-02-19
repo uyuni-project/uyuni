@@ -159,10 +159,6 @@ mgr_update_basic_pkgs:
       - zypper
 {%- elif grains['os_family'] == 'RedHat' %}
       - yum
-#debian systems may require these packages to bootstrap - however apt-transport-https would need to be installed over http before
-{%- elif grains['os'] == 'Debian' %}
-      - python3-apt
-      - apt-transport-https
 {%- endif %}
 
 # Manage minion key files in case they are provided in the pillar
