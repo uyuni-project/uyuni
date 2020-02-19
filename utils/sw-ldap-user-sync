@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 
 ## purpose: creates new spacewalk accounts for users in a specific LDAP
 ##          group, removes spacewalk accounts after deleting users from a

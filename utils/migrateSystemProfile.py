@@ -1,4 +1,3 @@
-#!/usr/bin/python
 """
 Multi-Org: Script to migrate server from one org to another
 

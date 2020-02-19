@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 #
 # wrapper for Script to migrate systems between Orgs.
 #
