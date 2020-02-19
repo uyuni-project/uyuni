@@ -6,9 +6,11 @@
 # It will run in a clean environment, not in a long-running server, so we don't need to take care of cleaning.
 
 
-## Channels and Product synchronization features BEGIN ###
+## Post run QAM features BEGIN ##
 
-- features/qam/reposync/srv_sync_qam_products.feature
+# IMMUTABLE ORDER
 
-## Channels and Product synchronization features END ###
+# this feature is needed for gathering log/debug infos
+- features/finishing/srv_susemanager_debug.feature
 
+## Post run features END ##
