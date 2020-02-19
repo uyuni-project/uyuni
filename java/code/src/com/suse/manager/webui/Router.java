@@ -84,6 +84,8 @@ public class Router implements SparkApplication {
         KubernetesManager kubernetesManager = new KubernetesManager(systemQuery);
         VirtManager virtManager = new VirtManager(systemQuery);
 
+        SystemsController systemsController = new SystemsController(systemQuery);
+
         post("/manager/frontend-log", withUser(FrontendLogController::log));
 
         //CVEAudit
@@ -116,7 +118,7 @@ public class Router implements SparkApplication {
 
 
         // Systems API
-        SystemsController.initRoutes();
+        SystemsController.initRoutes(systemsController);
 
         // Activation Keys API
         ActivationKeysController.initRoutes();

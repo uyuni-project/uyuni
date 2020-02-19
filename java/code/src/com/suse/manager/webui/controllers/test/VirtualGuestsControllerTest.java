@@ -88,7 +88,7 @@ public class VirtualGuestsControllerTest extends BaseControllerTestCase {
                     with(any(LocalCall.class)),
                     with(containsString("serverfactorytest")));
         }});
-        
+
         virtManager = new VirtManager(saltServiceMock);
         virtualGuestsController = new VirtualGuestsController(virtManager);
         SystemEntitler.INSTANCE.setSaltService(saltServiceMock);
