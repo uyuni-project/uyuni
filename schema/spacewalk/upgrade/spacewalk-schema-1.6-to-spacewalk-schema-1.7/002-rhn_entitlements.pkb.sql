@@ -175,7 +175,7 @@ language plpgsql;
     --
     -- Raises not_enough_entitlements_in_base_org if all entitlements
     -- in the org are used so the free entitlements would not cover
-    -- the difference when descreasing the NUMERIC of entitlements.
+    -- the difference when descreasing the number of entitlements.
     -- *******************************************************************
     create or replace function activate_system_entitlement(
         org_id_in in numeric,

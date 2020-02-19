@@ -671,7 +671,7 @@ as $$
                 -- A virtualization_host* ent must have been removed, so we'll
                 -- unsubscribe guests from the host first.
 
-                -- hm, i don't think max_members - current_members_calc yielding a negative NUMERIC
+                -- hm, i don't think max_members - current_members_calc yielding a negative number
                 -- will work w/ rownum, swaping 'em in the body of this if...
                 for virt_server in virt_servers_cfam(family.channel_family_id,
                                 current_members_calc - max_members_val) loop 
@@ -1283,7 +1283,7 @@ language plpgsql;
     --
     -- Raises not_enough_entitlements_in_base_org if all entitlements
     -- in the org are used so the free entitlements would not cover
-    -- the difference when descreasing the NUMERIC of entitlements.
+    -- the difference when descreasing the number of entitlements.
     -- *******************************************************************
     create or replace function activate_system_entitlement(
         org_id_in in numeric,
@@ -1351,7 +1351,7 @@ language plpgsql;
     --
     -- Raises not_enough_entitlements_in_base_org if there are not enough
     -- entitlements in the org to cover the difference when you are
-    -- descreasing the NUMERIC of entitlements.
+    -- descreasing the number of entitlements.
     --
     -- The backend code in Python is expected to do whatever arithmetics
     -- is needed.
@@ -1701,7 +1701,7 @@ as $$
     end$$
 language plpgsql;
 
-    -- this expects quantity_in to be the NUMERIC of available slots, not the
+    -- this expects quantity_in to be the number of available slots, not the
     -- max_members of the server group.  If you give it too many, it'll fail
     -- and raise servergroup_max_members.
     -- We should NEVER run this unless we're SURE that we won't
