@@ -204,10 +204,7 @@ if __name__ == '__main__':
 
                     # Column named "group" can be a little complicated...
                     if column.lower() == 'group':
-                        if CFG.DB_BACKEND == 'oracle':
-                            column = '"%s"' % column.upper()
-                        else:
-                            column = '"%s"' % column.lower()
+                       column = '"%s"' % column.lower()
 
                     if clause == 'where':
                         conjunct = '%s in ( %s )' % (column, ", ".join(l))
@@ -233,11 +230,8 @@ if __name__ == '__main__':
             if the_sql_where:
                 the_sql = the_sql.replace('-- where placeholder', 'where %s' % ' and '.join(the_sql_where))
 
-            if CFG.DB_BACKEND == 'oracle':
-                rhnSQL.execute('alter session set time_zone = \'%s\'' % options.timezone)
-            else:
-                tz = rhnSQL.prepare('set session timezone to :tz')
-                tz.execute(tz=options.timezone)
+            tz = rhnSQL.prepare('set session timezone to :tz')
+            tz.execute(tz=options.timezone)
 
             h = rhnSQL.prepare(the_sql)
             h.execute(**dict(tuple(report.params.items()) + tuple(the_dict_where.items())))

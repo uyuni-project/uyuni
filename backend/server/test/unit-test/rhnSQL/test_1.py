@@ -13,7 +13,7 @@ from spacewalk.server import rhnSQL
 
 import misc_functions
 
-DB_SETTINGS = misc_functions.db_settings("oracle")
+DB_SETTINGS = misc_functions.db_settings("postgresql")
 
 
 class Tests1(unittest.TestCase):
@@ -21,10 +21,11 @@ class Tests1(unittest.TestCase):
     def setUp(self):
         self.table_name = "misatest_%d" % os.getpid()
         rhnSQL.initDB(
-            backend="oracle",
+            backend="postgresql",
             username=DB_SETTINGS["user"],
             password=DB_SETTINGS["password"],
-            database=DB_SETTINGS["database"]
+            database=DB_SETTINGS["database"],
+            host=DBSETTINGS["host"]
         )
         self._cleanup()
 

@@ -1,1 +1,0 @@
-ALTER TABLE suseImageInfo MODIFY version VARCHAR2(128) NULL;

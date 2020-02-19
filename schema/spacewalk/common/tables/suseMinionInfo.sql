@@ -15,20 +15,20 @@
 
 CREATE TABLE suseMinionInfo
 (
-    server_id           NUMBER NOT NULL
+    server_id           NUMERIC NOT NULL
                             CONSTRAINT suse_minion_info_sid_fk
                                 REFERENCES rhnServer (id)
                                 ON DELETE CASCADE,
-    minion_id           VARCHAR2(256) NOT NULL,
-    os_family           VARCHAR2(32),
-    kernel_live_version VARCHAR2(255)
+    minion_id           VARCHAR(256) NOT NULL,
+    os_family           VARCHAR(32),
+    kernel_live_version VARCHAR(255)
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE INDEX suse_minion_info_sid_idx
     ON suseMinionInfo (server_id)
-    TABLESPACE [[2m_tbs]];
+    ;
 
 ALTER TABLE suseMinionInfo
     ADD CONSTRAINT rhn_minion_info_sid_uq UNIQUE (server_id);

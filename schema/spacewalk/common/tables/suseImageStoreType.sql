@@ -15,20 +15,20 @@
 
 CREATE TABLE suseImageStoreType
 (
-    id     NUMBER NOT NULL
+    id     NUMERIC NOT NULL
                  CONSTRAINT suse_imgstore_type_id_pk PRIMARY KEY,
-    label  VARCHAR2(128) NOT NULL,
-    name   VARCHAR2(128) NOT NULL
+    label  VARCHAR(128) NOT NULL,
+    name   VARCHAR(128) NOT NULL
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE UNIQUE INDEX suse_imgstore_type_label_uq
     ON suseImageStoreType (label)
-        TABLESPACE [[64k_tbs]];
+        ;
 
 CREATE UNIQUE INDEX suse_imgstore_type_name_uq
     ON suseImageStoreType (name)
-        TABLESPACE [[64k_tbs]];
+        ;
 
 CREATE SEQUENCE suse_imgstore_type_id_seq;

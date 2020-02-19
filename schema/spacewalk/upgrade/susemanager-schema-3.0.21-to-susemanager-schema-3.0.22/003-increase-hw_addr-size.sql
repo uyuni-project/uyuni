@@ -1,0 +1,1 @@
+ALTER TABLE rhnServerNetInterface ALTER COLUMN hw_addr TYPE VARCHAR(96);

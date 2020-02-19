@@ -1,4 +1,3 @@
--- oracle equivalent source sha1 a212e3c415c5c26ffeaa354438acbd287ef6dc96
 
 create or replace function rhn_snapchan_mod_trig_fun() returns trigger as
 $$

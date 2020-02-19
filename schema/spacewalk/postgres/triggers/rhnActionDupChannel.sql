@@ -1,4 +1,3 @@
--- oracle equivalent source sha1 efdd82b0f3549ca45c05350b8582ecf47cda2876
 create or replace function rhn_actiondupchan_mod_trig_fun() returns trigger as
 $$
 begin

@@ -45,7 +45,7 @@ def get_all_files_since(version, schema_path):
         if DV.LooseVersion(element_ver.group(1)) >= DV.LooseVersion(version):
             base_path = schema_path + '/' + element
             for sql_file in sorted(os.listdir(base_path)):
-                if re.search(r'^.*\.(sql|sql\.postgresql|sql\.oracle)$', sql_file):
+                if re.search(r'^.*\.(sql|sql\.postgresql)$', sql_file):
                     files.append(base_path + '/' + sql_file)
     return files
 
@@ -208,7 +208,7 @@ def diff_dumps(initial_dump, migrated_dump):
 def argparser():
     """ Parse arguments from the user """
     parser = argparse.ArgumentParser(
-        description="Test idempotency of SQL scripts. This script assumes a script schema_migration_test_oracle-*to*.sh ran before, and PostgreSQL is stopped")
+        description="Test idempotency of SQL scripts. This script assumes a script schema_migration_test_pgsql-*to*.sh ran before, and PostgreSQL is stopped")
     parser.add_argument("-s", "--schema-path", action="store", dest="schema_path",
                         help="Path where the directories with the schema upgrades are (default: /etc/sysconfig/rhn/schema-upgrade",
                         default="/etc/sysconfig/rhn/schema-upgrade")

@@ -12,28 +12,28 @@
 
 CREATE TABLE rhnActionChainEntry
 (
-    actionchain_id NUMBER NOT NULL
+    actionchain_id NUMERIC NOT NULL
         CONSTRAINT rhn_actchainent_acid_fk
             REFERENCES rhnActionChain (id)
             ON DELETE CASCADE,
-    action_id      NUMBER
+    action_id      NUMERIC
         CONSTRAINT rhn_actchainent_aid_fk
             REFERENCES rhnAction (id)
             ON DELETE CASCADE,
-    server_id      NUMBER NOT NULL
+    server_id      NUMERIC NOT NULL
         CONSTRAINT rhn_actchainent_sid_fk
             REFERENCES rhnServer(id)
             ON DELETE CASCADE,
-    sort_order     NUMBER NOT NULL,
-    created        DATE DEFAULT(SYSDATE) NOT NULL,
-    modified       DATE DEFAULT(SYSDATE) NOT NULL,
+    sort_order     NUMERIC NOT NULL,
+    created        TIMESTAMPTZ DEFAULT(CURRENT_TIMESTAMP) NOT NULL,
+    modified       TIMESTAMPTZ DEFAULT(CURRENT_TIMESTAMP) NOT NULL,
     CONSTRAINT rhn_actchainent_cid_sid_so_uq UNIQUE 
         (actionchain_id, server_id, sort_order)
     DEFERRABLE INITIALLY DEFERRED
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE UNIQUE INDEX rhn_actchainent_aid_uq
     ON rhnActionChainEntry(action_id)
-    TABLESPACE [[64k_tbs]];
+    ;

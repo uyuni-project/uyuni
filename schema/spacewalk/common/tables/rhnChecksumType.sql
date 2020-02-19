@@ -15,20 +15,20 @@
 
 CREATE TABLE rhnChecksumType
 (
-    id           NUMBER NOT NULL
+    id           NUMERIC NOT NULL
                      CONSTRAINT rhn_checksumtype_id_pk PRIMARY KEY
-                     USING INDEX TABLESPACE [[64k_tbs]],
-    label        VARCHAR2(32) NOT NULL,
-    description  VARCHAR2(64) NOT NULL,
-    created      timestamp with local time zone DEFAULT (current_timestamp) NOT NULL,
-    modified     timestamp with local time zone DEFAULT (current_timestamp) NOT NULL
+                     ,
+    label        VARCHAR(32) NOT NULL,
+    description  VARCHAR(64) NOT NULL,
+    created      TIMESTAMPTZ DEFAULT (current_timestamp) NOT NULL,
+    modified     TIMESTAMPTZ DEFAULT (current_timestamp) NOT NULL
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE INDEX rhn_checksumtype_label_id_idx
     ON rhnChecksumType( label, id )
-    TABLESPACE [[64k_tbs]];
+    ;
 
 ALTER TABLE rhnChecksumType
     ADD CONSTRAINT rhn_checksumtype_label_uq UNIQUE (label);

@@ -16,21 +16,21 @@
 
 CREATE TABLE rhnTransactionOperation
 (
-    id        NUMBER NOT NULL
+    id        NUMERIC NOT NULL
                   CONSTRAINT rhn_transop_id_pk PRIMARY KEY
-                  USING INDEX TABLESPACE [[8m_tbs]],
-    label     VARCHAR2(32) NOT NULL
+                  ,
+    label     VARCHAR(32) NOT NULL
                   CONSTRAINT rhn_transop_label_uq UNIQUE
-                  USING INDEX TABLESPACE [[8m_tbs]],
-    created   timestamp with local time zone
+                  ,
+    created   TIMESTAMPTZ
                   DEFAULT (current_timestamp) NOT NULL,
-    modified  timestamp with local time zone
+    modified  TIMESTAMPTZ
                   DEFAULT (current_timestamp) NOT NULL
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE INDEX rhn_transop_label_id_idx
     ON rhnTransactionOperation (label, id)
-    TABLESPACE [[64k_tbs]];
+    ;
 

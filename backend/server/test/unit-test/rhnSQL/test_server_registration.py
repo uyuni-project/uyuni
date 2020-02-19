@@ -26,7 +26,7 @@ from spacewalk.server import rhnSQL, rhnServer, rhnChannel, rhnUser
 from spacewalk.server.handlers.xmlrpc import registration
 
 import misc_functions
-DB_SETTINGS = misc_functions.db_settings("oracle")
+DB_SETTINGS = misc_functions.db_settings("postgresql")
 
 
 class Tests(unittest.TestCase):
@@ -39,10 +39,11 @@ class Tests(unittest.TestCase):
     def setUp(self):
         initCFG("server.xmlrpc")
         rhnSQL.initDB(
-            backend="oracle",
+            backend="postgresql",
             username=DB_SETTINGS["user"],
             password=DB_SETTINGS["password"],
-            database=DB_SETTINGS["database"]
+            database=DB_SETTINGS["database"],
+            host=DB_SETTINGS["host"]
         )
 
     def tearDown(self):

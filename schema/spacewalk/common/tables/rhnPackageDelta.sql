@@ -16,23 +16,23 @@
 
 CREATE TABLE rhnPackageDelta
 (
-    id        NUMBER NOT NULL,
-    label     VARCHAR2(32) NOT NULL,
-    created   timestamp with local time zone
+    id        NUMERIC NOT NULL,
+    label     VARCHAR(32) NOT NULL,
+    created   TIMESTAMPTZ
                   DEFAULT (current_timestamp) NOT NULL,
-    modified  timestamp with local time zone
+    modified  TIMESTAMPTZ
                   DEFAULT (current_timestamp) NOT NULL
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE INDEX rhn_packagedelta_label_id_idx
     ON rhnPackageDelta (label, id)
-    TABLESPACE [[8m_tbs]];
+    ;
 
 CREATE SEQUENCE rhn_packagedelta_id_seq;
 
 ALTER TABLE rhnPackageDelta
     ADD CONSTRAINT rhn_packagedelta_id_pk PRIMARY KEY (id)
-    USING INDEX TABLESPACE [[4m_tbs]];
+    ;
 

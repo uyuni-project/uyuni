@@ -1,3 +1,0 @@
--- oracle equivalent source sha1 3f619eba42b06a13299bbfcfbd421a5b197d7c4f
--- This file is intentionally left empty.
--- already applied in Manager-2.1

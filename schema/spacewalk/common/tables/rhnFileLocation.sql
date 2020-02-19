@@ -16,15 +16,15 @@
 
 CREATE TABLE rhnFileLocation
 (
-    file_id   NUMBER NOT NULL
+    file_id   NUMERIC NOT NULL
                   CONSTRAINT rhn_fileloc_fid_fk
                       REFERENCES rhnFile (id),
-    location  VARCHAR2(128) NOT NULL
+    location  VARCHAR(128) NOT NULL
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE UNIQUE INDEX rhn_fileloc_file_loc_uq
     ON rhnFileLocation (file_id, location)
-    TABLESPACE [[2m_tbs]];
+    ;
 

@@ -16,17 +16,17 @@
 
 CREATE TABLE rhnCVE
 (
-    id    NUMBER NOT NULL
+    id    NUMERIC NOT NULL
               CONSTRAINT rhn_cve_id_pk PRIMARY KEY
-              USING INDEX TABLESPACE [[2m_tbs]],
-    name  VARCHAR2(20) NOT NULL
+              ,
+    name  VARCHAR(20) NOT NULL
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE UNIQUE INDEX rhn_cve_name_uq
     ON rhnCVE (name)
-    TABLESPACE [[2m_tbs]];
+    ;
 
 CREATE SEQUENCE rhn_cve_id_seq;
 

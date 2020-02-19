@@ -16,25 +16,25 @@
 
 CREATE TABLE rhnServerChannelArchCompat
 (
-    server_arch_id   NUMBER NOT NULL
+    server_arch_id   NUMERIC NOT NULL
                          CONSTRAINT rhn_sc_ac_said_fk
                              REFERENCES rhnServerArch (id),
-    channel_arch_id  NUMBER NOT NULL
+    channel_arch_id  NUMERIC NOT NULL
                          CONSTRAINT rhn_sc_ac_caid_fk
                              REFERENCES rhnChannelArch (id),
-    created          timestamp with local time zone
+    created          TIMESTAMPTZ
                          DEFAULT (current_timestamp) NOT NULL,
-    modified         timestamp with local time zone
+    modified         TIMESTAMPTZ
                          DEFAULT (current_timestamp) NOT NULL
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE INDEX rhn_sc_ac_caid_paid
     ON rhnServerChannelArchCompat (server_arch_id, channel_arch_id)
-    TABLESPACE [[64k_tbs]];
+    ;
 
 CREATE INDEX rhn_sc_ac_caid
     ON rhnServerChannelArchCompat (channel_arch_id)
-    TABLESPACE [[64k_tbs]];
+    ;
 

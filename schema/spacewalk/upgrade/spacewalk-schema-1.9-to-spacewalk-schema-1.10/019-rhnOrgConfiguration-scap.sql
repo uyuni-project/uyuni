@@ -4,5 +4,5 @@ alter table rhnOrgConfiguration
       constraint rhn_org_conf_scap_upload_chk check (scapfile_upload_enabled in ('Y', 'N'));
 alter table rhnOrgConfiguration
   add scap_file_sizelimit
-      number default(2097152) not null
+      NUMERIC default(2097152) not null
       constraint rhn_org_conf_scap_szlmt_chk check (scap_file_sizelimit >= 0);

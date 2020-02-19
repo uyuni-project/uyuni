@@ -14,20 +14,20 @@
 --
 
 CREATE TABLE suseContentEnvironmentTarget(
-    id         NUMBER NOT NULL
+    id         NUMERIC NOT NULL
                    CONSTRAINT suse_ct_env_tgt_id_pk PRIMARY KEY,
-    env_id     NUMBER
+    env_id     NUMERIC
                    CONSTRAINT suse_ct_env_tgt_eid_fk
                        REFERENCES suseContentEnvironment(id)
                        ON DELETE CASCADE,
-    type       VARCHAR2(16) NOT NULL,
-    status     VARCHAR2(32) NOT NULL DEFAULT 'NEW',
-    channel_id NUMBER
+    type       VARCHAR(16) NOT NULL,
+    status     VARCHAR(32) NOT NULL DEFAULT 'NEW',
+    channel_id NUMERIC
                    CONSTRAINT suse_ct_env_tgt_chanid_fk
                        REFERENCES rhnChannel(id),
-    built_time TIMESTAMP WITH LOCAL TIME ZONE
+    built_time TIMESTAMPTZ
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE SEQUENCE suse_ct_env_tgt_seq;

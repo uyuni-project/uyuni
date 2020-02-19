@@ -16,30 +16,30 @@
 
 CREATE TABLE rhnChannelFamily
 (
-    id           NUMBER NOT NULL
+    id           NUMERIC NOT NULL
                      CONSTRAINT rhn_channel_family_id_pk PRIMARY KEY
-                     USING INDEX TABLESPACE [[64k_tbs]],
-    org_id       NUMBER
+                     ,
+    org_id       NUMERIC
                      CONSTRAINT rhn_channel_family_org_fk
                          REFERENCES web_customer (id)
                          ON DELETE CASCADE,
-    name         VARCHAR2(128) NOT NULL,
-    label        VARCHAR2(128) NOT NULL,
-    created      timestamp with local time zone
+    name         VARCHAR(128) NOT NULL,
+    label        VARCHAR(128) NOT NULL,
+    created      TIMESTAMPTZ
                      DEFAULT (current_timestamp) NOT NULL,
-    modified     timestamp with local time zone
+    modified     TIMESTAMPTZ
                      DEFAULT (current_timestamp) NOT NULL
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE UNIQUE INDEX rhn_channel_family_label_uq
     ON rhnChannelFamily (label)
-    TABLESPACE [[64k_tbs]];
+    ;
 
 CREATE UNIQUE INDEX rhn_channel_family_name_uq
     ON rhnChannelFamily (name)
-    TABLESPACE [[64k_tbs]];
+    ;
 
 CREATE SEQUENCE rhn_channel_family_id_seq START WITH 1000;
 

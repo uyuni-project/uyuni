@@ -1,4 +1,4 @@
 ALTER TABLE rhnSsmOperationServer
-  ADD note VARCHAR2(256)
+  ADD note VARCHAR(256)
     DEFAULT NULL
 ;

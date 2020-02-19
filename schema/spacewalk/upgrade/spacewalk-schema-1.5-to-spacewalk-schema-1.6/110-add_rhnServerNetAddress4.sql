@@ -16,24 +16,24 @@
 
 CREATE TABLE rhnServerNetAddress4
 (
-    interface_id  NUMBER NOT NULL
+    interface_id  NUMERIC NOT NULL
                    CONSTRAINT rhn_srv_net_iaddress4_iid_fk
                        REFERENCES rhnServerNetInterface (id)
                        ON DELETE CASCADE,
-    address    VARCHAR2(64),
-    netmask    VARCHAR2(64),
-    broadcast  VARCHAR2(64),
-    created    DATE
-                   DEFAULT (sysdate) NOT NULL,
-    modified   DATE
-                   DEFAULT (sysdate) NOT NULL
+    address    VARCHAR(64),
+    netmask    VARCHAR(64),
+    broadcast  VARCHAR(64),
+    created    TIMESTAMPTZ
+                   DEFAULT (CURRENT_TIMESTAMP) NOT NULL,
+    modified   TIMESTAMPTZ
+                   DEFAULT (CURRENT_TIMESTAMP) NOT NULL
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE INDEX rhn_srv_net_addr4_iid_addr_idx
     ON rhnServerNetAddress4 (interface_id, address)
-    TABLESPACE [[64k_tbs]];
+    ;
 
 ALTER TABLE rhnServerNetAddress4
     ADD CONSTRAINT rhn_srv_net_addr4_iid_addr_uq UNIQUE (interface_id, address);

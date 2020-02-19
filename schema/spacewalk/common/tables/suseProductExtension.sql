@@ -14,35 +14,35 @@
 create table
 suseProductExtension
 (
-    base_pdid   number not null
+    base_pdid   NUMERIC not null
                   CONSTRAINT suse_prdext_bpid_fk
                   REFERENCES suseProducts (id)
                   ON DELETE CASCADE,
-    ext_pdid    number not null
+    ext_pdid    NUMERIC not null
                   CONSTRAINT suse_prdext_epid_fk
                   REFERENCES suseProducts (id)
                   ON DELETE CASCADE,
-    root_pdid   number not null
+    root_pdid   NUMERIC not null
                   CONSTRAINT suse_prdext_rootid_fk
                   REFERENCES suseProducts (id)
                   ON DELETE CASCADE,
     recommended CHAR(1) DEFAULT ('N') NOT NULL
                   CONSTRAINT suse_prdext_rec_ck
                   CHECK (recommended in ('Y', 'N')),
-    created   timestamp with local time zone
+    created   TIMESTAMPTZ
                   DEFAULT (current_timestamp) NOT NULL,
-    modified  timestamp with local time zone
+    modified  TIMESTAMPTZ
                   DEFAULT (current_timestamp) NOT NULL
 );
 
 CREATE INDEX prdext_bpid_idx
 ON suseProductExtension (base_pdid)
-TABLESPACE [[64k_tbs]];
+;
 
 CREATE INDEX prdext_epid_idx
 ON suseProductExtension (ext_pdid)
-TABLESPACE [[64k_tbs]];
+;
 
 CREATE UNIQUE INDEX prdext_ber_id_uq
 ON suseProductExtension (base_pdid, ext_pdid, root_pdid)
-TABLESPACE [[64k_tbs]];
+;

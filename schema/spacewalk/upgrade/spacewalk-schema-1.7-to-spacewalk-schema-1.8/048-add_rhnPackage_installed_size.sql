@@ -1,1 +1,1 @@
-alter table rhnPackage add installed_size number;
+alter table rhnPackage add installed_size NUMERIC;

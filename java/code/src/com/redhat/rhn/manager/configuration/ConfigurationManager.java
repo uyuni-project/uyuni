@@ -1130,11 +1130,7 @@ public class ConfigurationManager extends BaseManager {
         params.put("org_id", user.getOrg().getId());
         params.put("num", results);
         SelectMode m;
-        if (ConfigDefaults.get().isOracle()) {
-            m = ModeFactory.getMode("config_queries",
-                    "recent_modified_config_files_for_user_oracle");
-        }
-        else if (ConfigDefaults.get().isPostgresql()) {
+        if (ConfigDefaults.get().isPostgresql()) {
             m = ModeFactory.getMode("config_queries",
                     "recent_modified_config_files_for_user_postgres");
         }
@@ -1167,11 +1163,7 @@ public class ConfigurationManager extends BaseManager {
         params.put("date", format.format(cal.getTime()));
 
         SelectMode m;
-        if (ConfigDefaults.get().isOracle()) {
-            m = ModeFactory.getMode("config_queries",
-                    "recent_config_deploy_actions_for_user_oracle");
-        }
-        else if (ConfigDefaults.get().isPostgresql()) {
+        if (ConfigDefaults.get().isPostgresql()) {
             m = ModeFactory.getMode("config_queries",
                     "recent_config_deploy_actions_for_user_postgres");
         }

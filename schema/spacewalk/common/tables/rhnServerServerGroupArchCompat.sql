@@ -16,26 +16,26 @@
 
 CREATE TABLE rhnServerServerGroupArchCompat
 (
-    server_arch_id     NUMBER NOT NULL
+    server_arch_id     NUMERIC NOT NULL
                            CONSTRAINT rhn_ssg_ac_said_fk
                                REFERENCES rhnServerArch (id),
-    server_group_type  NUMBER NOT NULL
+    server_group_type  NUMERIC NOT NULL
                            CONSTRAINT rhn_ssg_ac_sgt_fk
                                REFERENCES rhnServerGroupType (id),
-    created            timestamp with local time zone
+    created            TIMESTAMPTZ
                            DEFAULT (current_timestamp) NOT NULL,
-    modified           timestamp with local time zone
+    modified           TIMESTAMPTZ
                            DEFAULT (current_timestamp) NOT NULL
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE UNIQUE INDEX rhn_ssg_ac_said_sgt_uq
     ON rhnServerServerGroupArchCompat (server_arch_id, server_group_type)
-    TABLESPACE [[64k_tbs]];
+    ;
 
 CREATE INDEX rhn_ssg_ac_sgt_idx
     ON rhnServerServerGroupArchCompat (server_group_type)
-    TABLESPACE [[64k_tbs]]
-    NOLOGGING;
+    
+    ;
 

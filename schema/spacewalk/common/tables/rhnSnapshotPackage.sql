@@ -16,18 +16,18 @@
 
 CREATE TABLE rhnSnapshotPackage
 (
-    snapshot_id  NUMBER NOT NULL
+    snapshot_id  NUMERIC NOT NULL
                      CONSTRAINT rhn_snapshotpkg_sid_fk
                          REFERENCES rhnSnapshot (id)
                          ON DELETE CASCADE,
-    nevra_id     NUMBER NOT NULL
+    nevra_id     NUMERIC NOT NULL
                      CONSTRAINT rhn_snapshotpkg_nid_fk
                          REFERENCES rhnPackageNevra (id)
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE UNIQUE INDEX rhn_snapshotpkg_sid_nid_uq
     ON rhnSnapshotPackage (snapshot_id, nevra_id)
-    TABLESPACE [[32m_tbs]];
+    ;
 

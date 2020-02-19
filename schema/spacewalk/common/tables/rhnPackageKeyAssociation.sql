@@ -16,21 +16,21 @@
 
 CREATE TABLE rhnPackageKeyAssociation
 (
-    package_id  NUMBER NOT NULL
+    package_id  NUMERIC NOT NULL
                     CONSTRAINT rhn_pkeya_pid_fk
                         REFERENCES rhnPackage (id)
                         ON DELETE CASCADE,
-    key_id      NUMBER NOT NULL
+    key_id      NUMERIC NOT NULL
                     CONSTRAINT rhn_pkeya_kid_fk
                         REFERENCES rhnPackageKey (id),
-    created     timestamp with local time zone
+    created     TIMESTAMPTZ
                     DEFAULT (current_timestamp) NOT NULL,
-    modified    timestamp with local time zone
+    modified    TIMESTAMPTZ
                     DEFAULT (current_timestamp) NOT NULL
 )
 ;
 
 CREATE UNIQUE INDEX rhn_pkeya_pk_uq
     ON rhnPackageKeyAssociation (package_id, key_id)
-    TABLESPACE [[64k_tbs]];
+    ;
 

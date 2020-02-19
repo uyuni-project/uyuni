@@ -16,24 +16,24 @@
 
 CREATE TABLE web_contact
 (
-    id                 NUMBER
+    id                 NUMERIC
                            CONSTRAINT web_contact_pk PRIMARY KEY
-                           USING INDEX TABLESPACE [[web_index_tablespace_2]],
-    org_id             NUMBER NOT NULL
+                           ,
+    org_id             NUMERIC NOT NULL
                            CONSTRAINT web_contact_org_fk
                                REFERENCES web_customer (id),
-    login              VARCHAR2(64) NOT NULL,
-    login_uc           VARCHAR2(64) NOT NULL
+    login              VARCHAR(64) NOT NULL,
+    login_uc           VARCHAR(64) NOT NULL
                            CONSTRAINT web_contact_login_uc_unq UNIQUE
-                           USING INDEX TABLESPACE [[web_index_tablespace_2]],
-    password           VARCHAR2(110) NOT NULL,
-    created            timestamp with local time zone
+                           ,
+    password           VARCHAR(110) NOT NULL,
+    created            TIMESTAMPTZ
                            DEFAULT (current_timestamp) NOT NULL,
-    modified           timestamp with local time zone
+    modified           TIMESTAMPTZ
                            DEFAULT (current_timestamp) NOT NULL,
-    oracle_contact_id  NUMBER
+    oracle_contact_id  NUMERIC
                            CONSTRAINT web_contact_ocid_unq UNIQUE
-                           USING INDEX TABLESPACE [[web_index_tablespace_2]],
+                           ,
     ignore_flag        CHAR(1)
                            DEFAULT ('N') NOT NULL
                            CONSTRAINT web_contact_ignore_ck
@@ -43,13 +43,13 @@ CREATE TABLE web_contact
                            constraint web_contact_ro_ck
                                check (read_only in ('Y', 'N'))
 )
-TABLESPACE [[web_tablespace_2]]
-ENABLE ROW MOVEMENT
+
+
 ;
 
 CREATE INDEX web_contact_oid_id
     ON web_contact (org_id, id)
-    TABLESPACE [[web_index_tablespace_2]];
+    ;
 
 CREATE SEQUENCE web_contact_id_seq;
 

@@ -15,14 +15,14 @@
 
 CREATE TABLE rhnActionSubChannelsList (
     subscribe_channels_id
-                        NUMBER NOT NULL
+                        NUMERIC NOT NULL
                             CONSTRAINT rhn_actionsubscrchls_det_fk
                             REFERENCES rhnActionSubChannels (id)
                             ON DELETE CASCADE,
-    channel_id          NUMBER NOT NULL
+    channel_id          NUMERIC NOT NULL
                             CONSTRAINT rhn_actionsubscrchls_ch_fk
                             REFERENCES rhnChannel (id)
                             ON DELETE CASCADE
 )
-ENABLE ROW MOVEMENT
+
 ;

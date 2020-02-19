@@ -11,19 +11,19 @@
 
 CREATE TABLE suseServerContactMethod
 (
-    id        NUMBER NOT NULL
+    id        NUMERIC NOT NULL
                   CONSTRAINT suse_cont_meth_id_pk PRIMARY KEY
-                  USING INDEX TABLESPACE [[64k_tbs]],
-    label     VARCHAR2(64) NOT NULL,
-    name      VARCHAR2(128) NOT NULL,
-    rank      NUMBER NOT NULL
+                  ,
+    label     VARCHAR(64) NOT NULL,
+    name      VARCHAR(128) NOT NULL,
+    rank      NUMERIC NOT NULL
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE INDEX suse_cont_meth_label_id_idx
     ON suseServerContactMethod (label, id)
-    TABLESPACE [[64k_tbs]];
+    ;
 
 ALTER TABLE suseServerContactMethod
     ADD CONSTRAINT suse_cont_meth_label_uq UNIQUE (label);

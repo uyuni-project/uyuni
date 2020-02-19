@@ -1,4 +1,3 @@
--- oracle equivalent source sha1 2b3af6013d4f7761e87eb7024eb4218c3fff13f3
 
 
 create or replace function rhn_errata_buglisttmp_mod_trig_fun() returns trigger as

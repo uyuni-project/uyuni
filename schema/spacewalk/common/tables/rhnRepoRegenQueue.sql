@@ -16,18 +16,18 @@
 
 CREATE TABLE rhnRepoRegenQueue
 (
-    id              NUMBER
+    id              NUMERIC
                         CONSTRAINT rhn_reporegenq_id_pk PRIMARY KEY,
-    channel_label   VARCHAR2(128) NOT NULL,
-    client          VARCHAR2(128),
-    reason          VARCHAR2(128),
+    channel_label   VARCHAR(128) NOT NULL,
+    client          VARCHAR(128),
+    reason          VARCHAR(128),
     force           CHAR(1),
     bypass_filters  CHAR(1),
-    next_action     timestamp with local time zone
+    next_action     TIMESTAMPTZ
                         DEFAULT (current_timestamp),
-    created         timestamp with local time zone
+    created         TIMESTAMPTZ
                         DEFAULT (current_timestamp) NOT NULL,
-    modified        timestamp with local time zone
+    modified        TIMESTAMPTZ
                         DEFAULT (current_timestamp) NOT NULL
 )
 ;

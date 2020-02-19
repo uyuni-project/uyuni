@@ -10,7 +10,7 @@ from spacewalk.server import rhnSQL
 
 import misc_functions
 
-DB_SETTINGS = misc_functions.db_settings("oracle")
+DB_SETTINGS = misc_functions.db_settings("postgresql")
 
 
 class ExceptionsTest(unittest.TestCase):
@@ -27,7 +27,7 @@ class ExceptionsTest(unittest.TestCase):
         self.assertRaises(
             rhnSQL.SQLConnectError,
             rhnSQL.initDB,
-            "oracle",
+            "postgresql",
             host,
             port,
             database,
@@ -37,10 +37,11 @@ class ExceptionsTest(unittest.TestCase):
 
         try:
             rhnSQL.initDB(
-                backend="oracle",
+                backend="postgresql",
                 username=DB_SETTINGS["user"],
                 password=DB_SETTINGS["password"],
-                database=DB_SETTINGS["database"]
+                database=DB_SETTINGS["database"],
+                host=DB_SETTINGS["host"]
             )
         except:
             self.fail(

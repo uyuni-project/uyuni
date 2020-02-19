@@ -16,46 +16,46 @@
 
 CREATE TABLE rhnPackageSource
 (
-    id             NUMBER NOT NULL
+    id             NUMERIC NOT NULL
                        CONSTRAINT rhn_pkgsrc_id_pk PRIMARY KEY
-                       USING INDEX TABLESPACE [[64k_tbs]],
-    org_id         NUMBER
+                       ,
+    org_id         NUMERIC
                        CONSTRAINT rhn_pkgsrc_oid_fk
                            REFERENCES web_customer (id)
                            ON DELETE CASCADE,
-    source_rpm_id  NUMBER NOT NULL
+    source_rpm_id  NUMERIC NOT NULL
                        CONSTRAINT rhn_pkgsrc_srid_fk
                            REFERENCES rhnSourceRPM (id),
-    package_group  NUMBER NOT NULL
+    package_group  NUMERIC NOT NULL
                        CONSTRAINT rhn_pkgsrc_group_fk
                            REFERENCES rhnPackageGroup (id),
-    rpm_version    VARCHAR2(16) NOT NULL,
-    payload_size   NUMBER NOT NULL,
-    build_host     VARCHAR2(256) NOT NULL,
-    build_time     timestamp with local time zone NOT NULL,
-    sigchecksum_id NUMBER NOT NULL
+    rpm_version    VARCHAR(16) NOT NULL,
+    payload_size   NUMERIC NOT NULL,
+    build_host     VARCHAR(256) NOT NULL,
+    build_time     TIMESTAMPTZ NOT NULL,
+    sigchecksum_id NUMERIC NOT NULL
                       CONSTRAINT rhn_pkgsrc_sigchsum_fk
                           REFERENCES rhnChecksum (id),
-    vendor         VARCHAR2(64) NOT NULL,
-    cookie         VARCHAR2(128) NOT NULL,
-    path           VARCHAR2(1000),
-    checksum_id    NUMBER NOT NULL
+    vendor         VARCHAR(64) NOT NULL,
+    cookie         VARCHAR(128) NOT NULL,
+    path           VARCHAR(1000),
+    checksum_id    NUMERIC NOT NULL
                       CONSTRAINT rhn_pkgsrc_chsum_fk
                           REFERENCES rhnChecksum (id),
-    package_size   NUMBER NOT NULL,
-    last_modified  timestamp with local time zone
+    package_size   NUMERIC NOT NULL,
+    last_modified  TIMESTAMPTZ
                        DEFAULT (current_timestamp) NOT NULL,
-    created        timestamp with local time zone
+    created        TIMESTAMPTZ
                        DEFAULT (current_timestamp) NOT NULL,
-    modified       timestamp with local time zone
+    modified       TIMESTAMPTZ
                        DEFAULT (current_timestamp) NOT NULL
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE UNIQUE INDEX rhn_pkgsrc_srid_oid_uq
     ON rhnPackageSource (source_rpm_id, org_id)
-    TABLESPACE [[64k_tbs]];
+    ;
 
 CREATE SEQUENCE rhn_package_source_id_seq;
 

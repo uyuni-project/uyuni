@@ -16,22 +16,22 @@
 
 CREATE TABLE rhnSnapshotServerGroup
 (
-    snapshot_id      NUMBER NOT NULL
+    snapshot_id      NUMERIC NOT NULL
                          CONSTRAINT rhn_snapshotsg_sid_fk
                              REFERENCES rhnSnapshot (id)
                              ON DELETE CASCADE,
-    server_group_id  NUMBER NOT NULL
+    server_group_id  NUMERIC NOT NULL
                          CONSTRAINT rhn_snapshotsg_sgid_fk
                              REFERENCES rhnServerGroup (id)
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE UNIQUE INDEX rhn_snapshotsg_sid_sgid_uq
     ON rhnSnapshotServerGroup (snapshot_id, server_group_id)
-    TABLESPACE [[4m_tbs]];
+    ;
 
 CREATE INDEX rhn_snapshotsg_sgid_idx
     ON rhnSnapshotServerGroup (server_group_id)
-    TABLESPACE [[2m_tbs]];
+    ;
 

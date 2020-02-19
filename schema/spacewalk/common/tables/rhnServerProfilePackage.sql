@@ -16,25 +16,25 @@
 
 CREATE TABLE rhnServerProfilePackage
 (
-    server_profile_id  NUMBER NOT NULL
+    server_profile_id  NUMERIC NOT NULL
                            CONSTRAINT rhn_sprofile_spid_fk
                                REFERENCES rhnServerProfile (id)
                                ON DELETE CASCADE,
-    name_id            NUMBER NOT NULL
+    name_id            NUMERIC NOT NULL
                            CONSTRAINT rhn_sprofile_nid_fk
                                REFERENCES rhnPackageName (id),
-    evr_id             NUMBER NOT NULL
+    evr_id             NUMERIC NOT NULL
                            CONSTRAINT rhn_sprofile_evrid_fk
                                REFERENCES rhnPackageEvr (id),
-    package_arch_id    NUMBER
+    package_arch_id    NUMERIC
                            CONSTRAINT rhn_sprofile_package_fk
                                REFERENCES rhnPackageArch (id)
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE INDEX rhn_sprof_sp_sne_idx
     ON rhnServerProfilePackage (server_profile_id, name_id, evr_id)
-    TABLESPACE [[64k_tbs]]
-    NOLOGGING;
+    
+    ;
 

@@ -15,24 +15,24 @@
 
 CREATE TABLE suseSCCRepository
 (
-    id             NUMBER NOT NULL PRIMARY KEY,
-    scc_id         NUMBER NOT NULL,
+    id             NUMERIC NOT NULL PRIMARY KEY,
+    scc_id         NUMERIC NOT NULL,
     autorefresh    CHAR(1) NOT NULL
                        CONSTRAINT suse_sccrepo_ck
                        CHECK (autorefresh in ('Y', 'N')),
-    name           VARCHAR2(256) NOT NULL,
-    distro_target  VARCHAR2(256) NULL,
-    description    VARCHAR2(2048) NOT NULL,
-    url            VARCHAR2(2048) NOT NULL,
+    name           VARCHAR(256) NOT NULL,
+    distro_target  VARCHAR(256) NULL,
+    description    VARCHAR(2048) NOT NULL,
+    url            VARCHAR(2048) NOT NULL,
     signed         CHAR(1) DEFAULT ('N') NOT NULL
                            CONSTRAINT suse_sccrepo_sig_ck
                            CHECK (signed in ('Y', 'N')),
-    created        timestamp with local time zone
+    created        TIMESTAMPTZ
                        DEFAULT (current_timestamp) NOT NULL,
-    modified       timestamp with local time zone
+    modified       TIMESTAMPTZ
                        DEFAULT (current_timestamp) NOT NULL
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE SEQUENCE suse_sccrepository_id_seq;

@@ -16,13 +16,13 @@
 
 CREATE TABLE rhnSGTypeBaseAddonCompat
 (
-    base_id   NUMBER NOT NULL
+    base_id   NUMERIC NOT NULL
                   CONSTRAINT rhn_sgt_bac_bid_fk
                       REFERENCES rhnServerGroupType (id),
-    addon_id  NUMBER NOT NULL
+    addon_id  NUMERIC NOT NULL
                   CONSTRAINT rhn_sgt_bac_aid_fk
                       REFERENCES rhnServerGroupType (id)
 )
-ENABLE ROW MOVEMENT
+
 ;
 

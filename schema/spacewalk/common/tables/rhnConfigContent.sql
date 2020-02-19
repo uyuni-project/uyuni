@@ -16,27 +16,27 @@
 
 CREATE TABLE rhnConfigContent
 (
-    id         NUMBER NOT NULL
+    id         NUMERIC NOT NULL
                    CONSTRAINT rhn_confcontent_id_pk PRIMARY KEY
-                   USING INDEX TABLESPACE [[2m_tbs]],
-    contents   BLOB,
-    file_size  NUMBER,
-    checksum_id NUMBER NOT NULL
+                   ,
+    contents   BYTEA,
+    file_size  NUMERIC,
+    checksum_id NUMERIC NOT NULL
                   CONSTRAINT rhn_confcontent_chsum_fk
                   REFERENCES rhnChecksum (id),
     is_binary  CHAR(1)
                    DEFAULT ('N') NOT NULL
                    CONSTRAINT rhn_confcontent_isbin_ck
                        CHECK (is_binary in ('Y','N')),
-    delim_start          VARCHAR2(16) NOT NULL,
-    delim_end            VARCHAR2(16) NOT NULL,
-    created    timestamp with local time zone
+    delim_start          VARCHAR(16) NOT NULL,
+    delim_end            VARCHAR(16) NOT NULL,
+    created    TIMESTAMPTZ
                    DEFAULT (current_timestamp) NOT NULL,
-    modified   timestamp with local time zone
+    modified   TIMESTAMPTZ
                    DEFAULT (current_timestamp) NOT NULL
 )
-TABLESPACE [[blob]]
-ENABLE ROW MOVEMENT
+
+
 ;
 
 CREATE SEQUENCE rhn_confcontent_id_seq;

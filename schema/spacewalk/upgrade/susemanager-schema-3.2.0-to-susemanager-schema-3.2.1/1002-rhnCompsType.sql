@@ -15,7 +15,7 @@
 
 CREATE TABLE rhnCompsType
 (
-  id      NUMBER NOT NULL
+  id      NUMERIC NOT NULL
               CONSTRAINT rhn_comps_type_id_pk primary key,
   label   VARCHAR(32) NOT NULL
               CONSTRAINT rhn_comps_type_type_uq UNIQUE

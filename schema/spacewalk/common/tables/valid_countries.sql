@@ -16,11 +16,11 @@
 
 CREATE TABLE valid_countries
 (
-    code        VARCHAR2(2) NOT NULL
+    code        VARCHAR(2) NOT NULL
                     CONSTRAINT valid_countries_pk PRIMARY KEY,
-    short_name  VARCHAR2(80) NOT NULL,
-    name        VARCHAR2(240)
+    short_name  VARCHAR(80) NOT NULL,
+    name        VARCHAR(240)
 )
-ENABLE ROW MOVEMENT
+
 ;
 

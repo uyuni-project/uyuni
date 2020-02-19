@@ -1,5 +1,3 @@
--- oracle equivalent source sha1 5219cb378d3877a851c71395c5dec6b5e672809d
--- retrieved from ./1241057068/d2f16725f65bddae85cd4782cd82e0c84c0a776d/schema/spacewalk/oracle/procs/does_user_have_role.sql
 --
 -- Copyright (c) 2008--2015 Red Hat, Inc.
 --

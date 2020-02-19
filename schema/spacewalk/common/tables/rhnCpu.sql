@@ -16,43 +16,43 @@
 
 CREATE TABLE rhnCpu
 (
-    id           NUMBER NOT NULL
+    id           NUMERIC NOT NULL
                      CONSTRAINT rhn_cpu_id_pk PRIMARY KEY
-                     USING INDEX TABLESPACE [[4m_tbs]],
-    server_id    NUMBER NOT NULL
+                     ,
+    server_id    NUMERIC NOT NULL
                      CONSTRAINT rhn_cpu_server_fk
                          REFERENCES rhnServer (id),
-    cpu_arch_id  NUMBER NOT NULL
+    cpu_arch_id  NUMERIC NOT NULL
                      CONSTRAINT rhn_cpu_caid_fk
                          REFERENCES rhnCpuArch (id),
-    bogomips     VARCHAR2(16),
-    cache        VARCHAR2(16),
-    family       VARCHAR2(32),
-    MHz          VARCHAR2(16),
-    stepping     VARCHAR2(16),
-    flags        VARCHAR2(2048),
-    model        VARCHAR2(64),
-    version      VARCHAR2(32),
-    vendor       VARCHAR2(32),
-    nrcpu        NUMBER
+    bogomips     VARCHAR(16),
+    cache        VARCHAR(16),
+    family       VARCHAR(32),
+    MHz          VARCHAR(16),
+    stepping     VARCHAR(16),
+    flags        VARCHAR(2048),
+    model        VARCHAR(64),
+    version      VARCHAR(32),
+    vendor       VARCHAR(32),
+    nrcpu        NUMERIC
                      DEFAULT (1),
-    nrsocket     NUMBER,
-    acpiVersion  VARCHAR2(64),
-    apic         VARCHAR2(32),
-    apmVersion   VARCHAR2(32),
-    chipset      VARCHAR2(64),
-    created      timestamp with local time zone
+    nrsocket     NUMERIC,
+    acpiVersion  VARCHAR(64),
+    apic         VARCHAR(32),
+    apmVersion   VARCHAR(32),
+    chipset      VARCHAR(64),
+    created      TIMESTAMPTZ
                      DEFAULT (current_timestamp) NOT NULL,
-    modified     timestamp with local time zone
+    modified     TIMESTAMPTZ
                      DEFAULT (current_timestamp) NOT NULL
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE UNIQUE INDEX rhn_cpu_server_id_uq
     ON rhnCpu (server_id)
-    TABLESPACE [[4m_tbs]]
-    NOLOGGING;
+    
+    ;
 
 CREATE SEQUENCE rhn_cpu_id_seq;
 

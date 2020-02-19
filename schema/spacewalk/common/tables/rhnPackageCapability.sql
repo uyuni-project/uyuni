@@ -16,17 +16,17 @@
 
 CREATE TABLE rhnPackageCapability
 (
-    id        NUMBER NOT NULL
+    id        NUMERIC NOT NULL
                   CONSTRAINT rhn_pkg_capability_id_pk PRIMARY KEY
-                  USING INDEX TABLESPACE [[4m_tbs]],
-    name      VARCHAR2(4000) NOT NULL,
-    version   VARCHAR2(512),
-    created   timestamp with local time zone
+                  ,
+    name      VARCHAR(4000) NOT NULL,
+    version   VARCHAR(512),
+    created   TIMESTAMPTZ
                   DEFAULT (current_timestamp) NOT NULL,
-    modified  timestamp with local time zone
+    modified  TIMESTAMPTZ
                   DEFAULT (current_timestamp) NOT NULL
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 -- unique index definitions has been moved to

@@ -15,26 +15,26 @@
 
 CREATE TABLE rhnActionVirtCreate
 (
-    action_id            NUMBER NOT NULL
+    action_id            NUMERIC NOT NULL
                              CONSTRAINT rhn_action_virt_create_aid_fk
                                  REFERENCES rhnAction (id)
                                  ON DELETE CASCADE
                              CONSTRAINT rhn_action_virt_create_aid_pk
                                  PRIMARY KEY,
-    uuid                 VARCHAR2(128),
-    vm_type              VARCHAR2(10),
-    vm_name              VARCHAR2(256),
-    os_type              VARCHAR2(20),
-    memory               NUMBER,
-    vcpus                NUMBER,
-    arch                 VARCHAR2(20),
-    graphics_type        VARCHAR2(20),
+    uuid                 VARCHAR(128),
+    vm_type              VARCHAR(10),
+    vm_name              VARCHAR(256),
+    os_type              VARCHAR(20),
+    memory               NUMERIC,
+    vcpus                NUMERIC,
+    arch                 VARCHAR(20),
+    graphics_type        VARCHAR(20),
     remove_disks         CHAR(1),
     remove_interfaces    CHAR(1)
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE UNIQUE INDEX rhn_action_virt_create_aid_uq
     ON rhnActionVirtCreate (action_id)
-    TABLESPACE [[8m_tbs]];
+    ;

@@ -16,29 +16,29 @@
 
 CREATE TABLE rhnPackageConflicts
 (
-    package_id     NUMBER NOT NULL
+    package_id     NUMERIC NOT NULL
                        CONSTRAINT rhn_pkg_conflicts_package_fk
                            REFERENCES rhnPackage (id)
                            ON DELETE CASCADE,
-    capability_id  NUMBER NOT NULL
+    capability_id  NUMERIC NOT NULL
                        CONSTRAINT rhn_pkg_conflicts_cap_fk
                            REFERENCES rhnPackageCapability (id),
-    sense          NUMBER
+    sense          NUMERIC
                        DEFAULT (0) NOT NULL,
-    created        timestamp with local time zone
+    created        TIMESTAMPTZ
                        DEFAULT (current_timestamp) NOT NULL,
-    modified       timestamp with local time zone
+    modified       TIMESTAMPTZ
                        DEFAULT (current_timestamp) NOT NULL
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE UNIQUE INDEX rhn_pkg_confl_pid_cid_s_uq
     ON rhnPackageConflicts (package_id, capability_id, sense)
-    TABLESPACE [[64k_tbs]];
+    ;
 
 CREATE INDEX rhn_pkg_conflicts_cid_idx
     ON rhnPackageConflicts (capability_id)
-    TABLESPACE [[64k_tbs]]
-    NOLOGGING;
+    
+    ;
 

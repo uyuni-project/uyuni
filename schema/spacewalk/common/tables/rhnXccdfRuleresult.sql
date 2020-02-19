@@ -15,23 +15,23 @@
 
 CREATE TABLE rhnXccdfRuleresult
 (
-    id            NUMBER NOT NULL
+    id            NUMERIC NOT NULL
                       CONSTRAINT rhn_xccdf_rresult_id_pk PRIMARY KEY
-                      USING INDEX TABLESPACE [[8m_tbs]],
-    testresult_id NUMBER NOT NULL
+                      ,
+    testresult_id NUMERIC NOT NULL
                       CONSTRAINT rhn_xccdf_rresult_tresult_fk
                           REFERENCES rhnXccdfTestresult (id)
                           ON DELETE CASCADE,
-    result_id     NUMBER NOT NULL
+    result_id     NUMERIC NOT NULL
                       CONSTRAINT rhn_xccdf_rresult_result_fk
                           REFERENCES rhnXccdfRuleresultType (id)
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE INDEX rhn_xccdf_rresult_tresult_idx
     ON rhnXccdfRuleresult (testresult_id)
-    TABLESPACE [[4m_tbs]]
-    NOLOGGING;
+    
+    ;
 
 CREATE SEQUENCE rhn_xccdf_rresult_id_seq;

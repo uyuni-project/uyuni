@@ -11,15 +11,15 @@
 
 CREATE TABLE rhnPackageExtraTag
 (
-    package_id  NUMBER NOT NULL
+    package_id  NUMERIC NOT NULL
                     CONSTRAINT rhn_pkg_extratags_pid_fk
                        REFERENCES rhnPackage (id)
                        ON DELETE CASCADE,
-    key_id      NUMBER NOT NULL
+    key_id      NUMERIC NOT NULL
                        REFERENCES rhnPackageExtraTagKey (id)
                        ON DELETE CASCADE,
-    value       VARCHAR2(2048) NOT NULL,
-    created     timestamp with local time zone
+    value       VARCHAR(2048) NOT NULL,
+    created     TIMESTAMPTZ
                     DEFAULT (current_timestamp) NOT NULL,
     primary key (package_id, key_id)
 )

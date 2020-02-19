@@ -1,4 +1,3 @@
--- oracle equivalent source sha1 062d81e5ad491eba6915f6e69700386fb924768b
 
 create or replace function rhn_tag_mod_trig_fun() returns trigger as
 $$

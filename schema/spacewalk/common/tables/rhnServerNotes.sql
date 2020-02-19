@@ -16,35 +16,35 @@
 
 CREATE TABLE rhnServerNotes
 (
-    id         NUMBER NOT NULL
+    id         NUMERIC NOT NULL
                    CONSTRAINT rhn_servernotes_id_pk PRIMARY KEY
-                   USING INDEX TABLESPACE [[64k_tbs]],
-    creator    NUMBER
+                   ,
+    creator    NUMERIC
                    CONSTRAINT rhn_servernotes_creator_fk
                        REFERENCES web_contact (id)
                        ON DELETE SET NULL,
-    server_id  NUMBER NOT NULL
+    server_id  NUMERIC NOT NULL
                    CONSTRAINT rhn_servernotes_sid_fk
                        REFERENCES rhnServer (id),
-    subject    VARCHAR2(80) NOT NULL,
-    note       VARCHAR2(4000),
-    created    timestamp with local time zone
+    subject    VARCHAR(80) NOT NULL,
+    note       VARCHAR(4000),
+    created    TIMESTAMPTZ
                    DEFAULT (current_timestamp) NOT NULL,
-    modified   timestamp with local time zone
+    modified   TIMESTAMPTZ
                    DEFAULT (current_timestamp) NOT NULL
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE INDEX rhn_servernotes_sid_idx
     ON rhnServerNotes (server_id)
-    TABLESPACE [[64k_tbs]]
-    NOLOGGING;
+    
+    ;
 
 CREATE INDEX rhn_servernotes_creator_idx
     ON rhnServerNotes (creator)
-    TABLESPACE [[64k_tbs]]
-    NOLOGGING;
+    
+    ;
 
 CREATE SEQUENCE rhn_server_note_id_seq;
 

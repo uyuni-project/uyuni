@@ -16,20 +16,20 @@
 
 CREATE TABLE rhnOrgErrataCacheQueue
 (
-    org_id        NUMBER NOT NULL
+    org_id        NUMERIC NOT NULL
                       CONSTRAINT rhn_oecq_oid_fk
                           REFERENCES web_customer (id)
                           ON DELETE CASCADE,
-    server_count  NUMBER NOT NULL,
-    processed     NUMBER
+    server_count  NUMERIC NOT NULL,
+    processed     NUMERIC
                       DEFAULT (0) NOT NULL
 )
-ENABLE ROW MOVEMENT
-NOLOGGING
+
+
 ;
 
 CREATE UNIQUE INDEX rhn_oecq_oid_uq
     ON rhnOrgErrataCacheQueue (org_id)
-    NOLOGGING
-    TABLESPACE [[4m_tbs]];
+    
+    ;
 

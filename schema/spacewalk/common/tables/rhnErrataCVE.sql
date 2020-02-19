@@ -16,27 +16,27 @@
 
 CREATE TABLE rhnErrataCVE
 (
-    errata_id  NUMBER NOT NULL
+    errata_id  NUMERIC NOT NULL
                    CONSTRAINT rhn_err_cve_eid_fk
                        REFERENCES rhnErrata (id)
                        ON DELETE CASCADE,
-    cve_id     NUMBER NOT NULL
+    cve_id     NUMERIC NOT NULL
                    CONSTRAINT rhn_err_cve_cid_fk
                        REFERENCES rhnCVE (id),
-    created    timestamp with local time zone
+    created    TIMESTAMPTZ
                    DEFAULT (current_timestamp) NOT NULL,
-    modified   timestamp with local time zone
+    modified   TIMESTAMPTZ
                    DEFAULT (current_timestamp) NOT NULL
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE UNIQUE INDEX rhn_err_cve_eid_cid_uq
     ON rhnErrataCVE (errata_id, cve_id)
-    TABLESPACE [[64k_tbs]];
+    ;
 
 CREATE INDEX rhn_err_cve_cid_idx
     ON rhnErrataCVE (cve_id)
-    TABLESPACE [[64k_tbs]]
-    NOLOGGING;
+    
+    ;
 

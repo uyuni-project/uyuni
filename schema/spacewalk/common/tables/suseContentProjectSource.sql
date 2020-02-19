@@ -14,21 +14,21 @@
 --
 
 CREATE TABLE suseContentProjectSource(
-    id         NUMBER NOT NULL
+    id         NUMERIC NOT NULL
                    CONSTRAINT suse_ct_prj_src_id_pk PRIMARY KEY,
-    type       VARCHAR2(16) NOT NULL,
-    state      VARCHAR2(16) NOT NULL,
-    position   NUMBER,
-    project_id NUMBER NOT NULL
+    type       VARCHAR(16) NOT NULL,
+    state      VARCHAR(16) NOT NULL,
+    position   NUMERIC,
+    project_id NUMERIC NOT NULL
                    CONSTRAINT suse_ct_prj_src_prjid_fk
                        REFERENCES suseContentProject(id)
                        ON DELETE CASCADE,
-    channel_id NUMBER
+    channel_id NUMERIC
                    CONSTRAINT suse_ct_prj_src_chanid_fk
                        REFERENCES rhnChannel(id)
                        ON DELETE CASCADE
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE SEQUENCE suse_ct_prj_src_seq;

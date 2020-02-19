@@ -15,7 +15,6 @@
 
 package com.redhat.rhn.common.translation;
 
-import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.db.ConstraintViolationException;
 import com.redhat.rhn.common.db.WrappedSQLException;
 
@@ -38,9 +37,6 @@ public class SqlExceptionTranslator extends Translations {
      * @return the RuntimeExcetoion of the wrapped exception
      */
     public static RuntimeException sqlException(SQLException e) {
-        if (ConfigDefaults.get().isOracle()) {
-            return oracleSQLException(e);
-        }
         return postgreSqlException(e);
     }
 

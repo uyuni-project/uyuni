@@ -15,35 +15,35 @@
 
 CREATE TABLE rhnXccdfTestresult
 (
-    id             NUMBER NOT NULL
+    id             NUMERIC NOT NULL
                        CONSTRAINT rhn_xccdf_tresult_id_pk PRIMARY KEY
-                       USING INDEX TABLESPACE [[2m_tbs]],
-    server_id      NUMBER NOT NULL
+                       ,
+    server_id      NUMERIC NOT NULL
                        CONSTRAINT rhn_xccdf_tresult_srvr_fk
                            REFERENCES rhnServer (id)
                            ON DELETE CASCADE,
-    action_scap_id NUMBER NOT NULL
+    action_scap_id NUMERIC NOT NULL
                        CONSTRAINT rhn_xccdf_tresult_act_fk
                            REFERENCES rhnActionScap (id)
                            ON DELETE CASCADE,
-    benchmark_id   NUMBER NOT NULL
+    benchmark_id   NUMERIC NOT NULL
                        CONSTRAINT rhn_xccdf_tresult_bench_fk
                            REFERENCES rhnXccdfBenchmark (id),
-    profile_id     NUMBER NOT NULL
+    profile_id     NUMERIC NOT NULL
                        CONSTRAINT rhn_xccdf_tresult_profile_fk
                            REFERENCES rhnXccdfProfile (id),
-    identifier     VARCHAR2(120) NOT NULL,
-    start_time     timestamp with local time zone,
-    end_time       timestamp with local time zone NOT NULL,
-    errors         BLOB
+    identifier     VARCHAR(120) NOT NULL,
+    start_time     TIMESTAMPTZ,
+    end_time       TIMESTAMPTZ NOT NULL,
+    errors         BYTEA
 )
-TABLESPACE [[blob]]
-ENABLE ROW MOVEMENT
+
+
 ;
 
 CREATE UNIQUE INDEX rhn_xccdf_tresult_sa_uq
     ON rhnXccdfTestresult (server_id, action_scap_id)
-    TABLESPACE [[2m_tbs]]
-    NOLOGGING;
+    
+    ;
 
 CREATE SEQUENCE rhn_xccdf_tresult_id_seq;

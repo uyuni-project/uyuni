@@ -16,27 +16,27 @@
 
 CREATE TABLE rhnUserInfo
 (
-    user_id                 NUMBER NOT NULL
+    user_id                 NUMERIC NOT NULL
                                 CONSTRAINT rhn_user_info_user_fk
                                     REFERENCES web_contact (id)
                                     ON DELETE CASCADE,
-    no_clear_sets           NUMBER
+    no_clear_sets           NUMERIC
                                 DEFAULT (0) NOT NULL,
-    page_size               NUMBER
+    page_size               NUMERIC
                                 DEFAULT (20) NOT NULL,
-    email_notify            NUMBER
+    email_notify            NUMERIC
                                 DEFAULT (1) NOT NULL,
     tasko_notify            CHAR(1)
                                 DEFAULT ('Y') NOT NULL
                                 CONSTRAINT rhn_user_info_tasko_ck
                                     CHECK (tasko_notify in ('Y', 'N')),
-    bad_email               NUMBER
+    bad_email               NUMERIC
                                 DEFAULT (0) NOT NULL,
-    tz_offset               NUMBER
+    tz_offset               NUMERIC
                                 DEFAULT (-5) NOT NULL
                                 CONSTRAINT rhn_user_info_tzoffset_ck
                                     CHECK (tz_offset >= -11 and tz_offset <= 13),
-    timezone_id             NUMBER
+    timezone_id             NUMERIC
                                 CONSTRAINT rhn_user_info_tzid_fk
                                     REFERENCES rhnTimezone (id)
                                     ON DELETE CASCADE,
@@ -56,29 +56,29 @@ CREATE TABLE rhnUserInfo
                                 DEFAULT ('N') NOT NULL
                                 CONSTRAINT rhn_user_info_pam_ck
                                     CHECK (use_pam_authentication in ('Y','N')),
-    last_logged_in          timestamp with local time zone,
+    last_logged_in          TIMESTAMPTZ,
     agreed_to_ws_terms      CHAR(1)
                                 CONSTRAINT rhn_user_info_ws_ck
                                     CHECK (agreed_to_ws_terms is null or agreed_to_ws_terms in ('Y','N')),
     agreed_to_es_terms      CHAR(1)
                                 CONSTRAINT rhn_user_info_es_ck
                                     CHECK (agreed_to_es_terms is null or agreed_to_es_terms in ('Y','N')),
-    created                 timestamp with local time zone
+    created                 TIMESTAMPTZ
                                 DEFAULT (current_timestamp) NOT NULL,
-    modified                timestamp with local time zone
+    modified                TIMESTAMPTZ
                                 DEFAULT (current_timestamp) NOT NULL,
-    preferred_locale        VARCHAR2(8),
+    preferred_locale        VARCHAR(8),
     csv_separator           CHAR(1)
                                 DEFAULT (',') NOT NULL
                                 CONSTRAINT rhn_user_info_csv_ck
                                     CHECK (csv_separator in (',',';'))
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE INDEX rhn_user_info_uid_email_idx
     ON rhnUserInfo (user_id, email_notify)
-    TABLESPACE [[4m_tbs]];
+    ;
 
 ALTER TABLE rhnUserInfo
     ADD CONSTRAINT rhn_user_info_uid_uq UNIQUE (user_id);

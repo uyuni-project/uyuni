@@ -15,22 +15,22 @@
 
 CREATE TABLE rhnActionImageDeploy
 (
-    id            NUMBER NOT NULL
+    id            NUMERIC NOT NULL
                   CONSTRAINT rhn_aid_id_pk PRIMARY KEY
-                  USING INDEX TABLESPACE [[64k_tbs]],
-    action_id     NUMBER NOT NULL
+                  ,
+    action_id     NUMERIC NOT NULL
                       CONSTRAINT rhn_act_idp_act_fk
                       REFERENCES rhnAction (id)
                       ON DELETE CASCADE,
-    vcpus         NUMBER NOT NULL,
-    mem_kb        NUMBER NOT NULL,
-    bridge_device VARCHAR2(32),
-    download_url  VARCHAR2(256) NOT NULL,
-    proxy_server  VARCHAR2(64),
-    proxy_user    VARCHAR2(32),
-    proxy_pass    VARCHAR2(64)
+    vcpus         NUMERIC NOT NULL,
+    mem_kb        NUMERIC NOT NULL,
+    bridge_device VARCHAR(32),
+    download_url  VARCHAR(256) NOT NULL,
+    proxy_server  VARCHAR(64),
+    proxy_user    VARCHAR(32),
+    proxy_pass    VARCHAR(64)
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE SEQUENCE rhn_action_image_deploy_id_seq;

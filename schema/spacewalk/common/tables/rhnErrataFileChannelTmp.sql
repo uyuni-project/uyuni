@@ -16,29 +16,29 @@
 
 CREATE TABLE rhnErrataFileChannelTmp
 (
-    channel_id      NUMBER NOT NULL
+    channel_id      NUMERIC NOT NULL
                         CONSTRAINT rhn_efilectmp_cid_fk
                             REFERENCES rhnChannel (id)
                             ON DELETE CASCADE,
-    errata_file_id  NUMBER NOT NULL
+    errata_file_id  NUMERIC NOT NULL
                         CONSTRAINT rhn_efilectmp_eid_fk
                             REFERENCES rhnErrataFileTmp (id)
                             ON DELETE CASCADE,
-    created         timestamp with local time zone
+    created         TIMESTAMPTZ
                         DEFAULT (current_timestamp) NOT NULL,
-    modified        timestamp with local time zone
+    modified        TIMESTAMPTZ
                         DEFAULT (current_timestamp) NOT NULL
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE INDEX rhn_efilectmp_efid_cid_idx
     ON rhnErrataFileChannelTmp (errata_file_id, channel_id)
-    TABLESPACE [[64k_tbs]];
+    ;
 
 CREATE INDEX rhn_efilectmp_cid_idx
     ON rhnErrataFileChannelTmp (channel_id)
-    TABLESPACE [[64k_tbs]];
+    ;
 
 ALTER TABLE rhnErrataFileChannelTmp
     ADD CONSTRAINT rhn_efilectmp_efid_cid_uq UNIQUE (errata_file_id, channel_id);

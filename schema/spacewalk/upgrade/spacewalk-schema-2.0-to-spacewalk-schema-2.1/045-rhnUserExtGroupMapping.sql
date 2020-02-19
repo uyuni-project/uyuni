@@ -16,27 +16,27 @@
 
 CREATE TABLE rhnUserExtGroupMapping
 (
-    id        NUMBER NOT NULL
+    id        NUMERIC NOT NULL
                   CONSTRAINT rhn_userExtGroupMap_id_pk PRIMARY KEY
-                  USING INDEX TABLESPACE [[64k_tbs]],
-    ext_group_id        NUMBER NOT NULL
+                  ,
+    ext_group_id        NUMERIC NOT NULL
                   constraint rhn_userextgroupmap_e_fk
                   references rhnUserExtGroup(id)
                   on delete cascade,
-    int_group_type_id        NUMBER NOT NULL
+    int_group_type_id        NUMERIC NOT NULL
                   constraint rhn_userextgroupmap_i_fk
                   references rhnUserGroupType(id)
                   on delete cascade,
-    created   timestamp with local time zone
+    created   TIMESTAMPTZ
                   DEFAULT (current_timestamp) NOT NULL,
-    modified  timestamp with local time zone
+    modified  TIMESTAMPTZ
                   DEFAULT (current_timestamp) NOT NULL
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE UNIQUE INDEX rhn_userextgroupmap_ei_uq
     ON rhnUserExtGroupMapping (ext_group_id, int_group_type_id)
-    TABLESPACE [[64k_tbs]];
+    ;
 
 CREATE SEQUENCE rhn_userextgroupmap_seq;

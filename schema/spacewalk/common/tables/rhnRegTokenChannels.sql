@@ -16,19 +16,19 @@
 
 CREATE TABLE rhnRegTokenChannels
 (
-    token_id    NUMBER NOT NULL
+    token_id    NUMERIC NOT NULL
                     CONSTRAINT rhn_reg_tok_chn_id_fk
                         REFERENCES rhnRegToken (id)
                         ON DELETE CASCADE,
-    channel_id  NUMBER NOT NULL
+    channel_id  NUMERIC NOT NULL
                     CONSTRAINT rhn_reg_tok_chn_sgs_fk
                         REFERENCES rhnChannel (id)
                         ON DELETE CASCADE
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE UNIQUE INDEX rhn_reg_tok_chn_uq
     ON rhnRegTokenChannels (token_id, channel_id)
-    TABLESPACE [[4m_tbs]];
+    ;
 

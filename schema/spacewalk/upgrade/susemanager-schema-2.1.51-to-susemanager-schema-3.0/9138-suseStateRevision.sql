@@ -15,16 +15,16 @@
 
 CREATE TABLE suseStateRevision
 (
-    id               NUMBER NOT NULL
+    id               NUMERIC NOT NULL
                          CONSTRAINT suse_state_revision_id_pk PRIMARY KEY,
-    creator_id       NUMBER
+    creator_id       NUMERIC
                          CONSTRAINT suse_state_revision_cid_fk
                              REFERENCES web_contact (id)
                              ON DELETE SET NULL,
-    created          timestamp with local time zone
+    created          TIMESTAMPTZ
                          DEFAULT (current_timestamp) NOT NULL
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE SEQUENCE suse_state_revision_id_seq;

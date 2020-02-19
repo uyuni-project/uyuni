@@ -16,27 +16,27 @@
 
 CREATE TABLE rhnServerCustomDataValue
 (
-    server_id         NUMBER NOT NULL
+    server_id         NUMERIC NOT NULL
                           CONSTRAINT rhn_scdv_sid_fk
                               REFERENCES rhnServer (id),
-    key_id            NUMBER NOT NULL
+    key_id            NUMERIC NOT NULL
                           CONSTRAINT rhn_scdv_kid_fk
                               REFERENCES rhnCustomDataKey (id),
-    value             VARCHAR2(4000),
-    created_by        NUMBER
+    value             VARCHAR(4000),
+    created_by        NUMERIC
                           CONSTRAINT rhn_scdv_cb_fk
                               REFERENCES web_contact (id)
                               ON DELETE SET NULL,
-    last_modified_by  NUMBER
+    last_modified_by  NUMERIC
                           CONSTRAINT rhn_scdv_lmb_fk
                               REFERENCES web_contact (id)
                               ON DELETE SET NULL,
-    created           timestamp with local time zone
+    created           TIMESTAMPTZ
                           DEFAULT (current_timestamp) NOT NULL,
-    modified          timestamp with local time zone
+    modified          TIMESTAMPTZ
                           DEFAULT (current_timestamp) NOT NULL
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE UNIQUE INDEX rhn_scdv_sid_kid_uq

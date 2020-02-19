@@ -15,7 +15,7 @@
 
 CREATE TABLE rhnOrgAdminManagement
 (
-    org_id                  NUMBER NOT NULL
+    org_id                  NUMERIC NOT NULL
                                 CONSTRAINT rhn_orgadm_mngt_fk
                                     REFERENCES web_customer (id)
                                     ON DELETE CASCADE,
@@ -23,14 +23,14 @@ CREATE TABLE rhnOrgAdminManagement
                                 DEFAULT ('Y') NOT NULL
                                 CONSTRAINT rhn_orgadm_mngt_enabled_ck
                                     CHECK (enabled in ('Y', 'N')),
-    created                 timestamp with local time zone
+    created                 TIMESTAMPTZ
                                 DEFAULT (current_timestamp) NOT NULL,
-    modified                timestamp with local time zone
+    modified                TIMESTAMPTZ
                                 DEFAULT (current_timestamp) NOT NULL
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE UNIQUE INDEX rhn_orgadm_mngt_org_id
     on rhnOrgAdminManagement (org_id)
-        tablespace [[8m_tbs]];
+        ;

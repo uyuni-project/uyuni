@@ -1,1 +1,0 @@
-alter table rhnChannel MODIFY (update_tag varchar2(128));

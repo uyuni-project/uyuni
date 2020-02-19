@@ -12,27 +12,27 @@
 
 CREATE TABLE rhnActionDupProduct
 (
-    action_dup_id       NUMBER NOT NULL
+    action_dup_id       NUMERIC NOT NULL
                             CONSTRAINT rhn_actdupchanprof_dupid_fk
                             REFERENCES rhnActionDup (id)
                             ON DELETE CASCADE,
-    from_pdid           NUMBER NOT NULL
+    from_pdid           NUMERIC NOT NULL
                             CONSTRAINT rhn_actdupchanprod_fpdid_fk
                             REFERENCES suseProducts (id)
                             ON DELETE CASCADE,
-    to_pdid             NUMBER NOT NULL
+    to_pdid             NUMERIC NOT NULL
                             CONSTRAINT rhn_actdupchanprod_tpdid_fk
                             REFERENCES suseProducts (id)
                             ON DELETE CASCADE,
-    created   timestamp with local time zone
+    created   TIMESTAMPTZ
                   DEFAULT (current_timestamp) NOT NULL,
-    modified  timestamp with local time zone
+    modified  TIMESTAMPTZ
                   DEFAULT (current_timestamp) NOT NULL
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE UNIQUE INDEX rhn_actdupchan_aid_pdids_uq
     ON rhnActionDupProduct (action_dup_id, from_pdid, to_pdid)
-    TABLESPACE [[4m_tbs]];
+    ;
 

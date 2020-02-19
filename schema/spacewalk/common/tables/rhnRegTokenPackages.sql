@@ -16,27 +16,27 @@
 
 CREATE TABLE rhnRegTokenPackages
 (
-    id        NUMBER NOT NULL
+    id        NUMERIC NOT NULL
                   CONSTRAINT rhn_reg_tok_pkg_id_pk PRIMARY KEY,
-    token_id  NUMBER NOT NULL
+    token_id  NUMERIC NOT NULL
                   CONSTRAINT rhn_reg_tok_pkg_id_fk
                       REFERENCES rhnRegToken (id)
                       ON DELETE CASCADE,
-    name_id   NUMBER NOT NULL
+    name_id   NUMERIC NOT NULL
                   CONSTRAINT rhn_reg_tok_pkg_sgs_fk
                       REFERENCES rhnPackageName (id)
                       ON DELETE CASCADE,
-    arch_id   NUMBER
+    arch_id   NUMERIC
                   CONSTRAINT rhn_reg_tok_pkg_aid_fk
                       REFERENCES rhnPackageArch (id)
                       ON DELETE CASCADE
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE INDEX rhn_reg_tok_pkg_nid_idx
     ON rhnRegtokenPackages (name_id)
-    TABLESPACE [[2m_tbs]];
+    ;
 
 CREATE SEQUENCE rhn_reg_tok_pkg_id_seq;
 

@@ -16,24 +16,24 @@
 
 CREATE TABLE rhnRegTokenConfigChannels
 (
-    token_id           NUMBER NOT NULL
+    token_id           NUMERIC NOT NULL
                            CONSTRAINT rhn_regtok_confchan_tid_fk
                                REFERENCES rhnRegToken (id)
                                ON DELETE CASCADE,
-    config_channel_id  NUMBER NOT NULL
+    config_channel_id  NUMERIC NOT NULL
                            CONSTRAINT rhn_regtok_confchan_ccid_fk
                                REFERENCES rhnConfigChannel (id)
                                ON DELETE CASCADE,
-    position           NUMBER NOT NULL
+    position           NUMERIC NOT NULL
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE UNIQUE INDEX rhn_regtok_confchan_t_cc_uq
     ON rhnRegTokenConfigChannels (token_id, config_channel_id)
-    TABLESPACE [[4m_tbs]];
+    ;
 
 CREATE INDEX rhn_regtok_confchan_ccid_idx
     ON rhnRegTokenConfigChannels (config_channel_id)
-    TABLESPACE [[2m_tbs]];
+    ;
 

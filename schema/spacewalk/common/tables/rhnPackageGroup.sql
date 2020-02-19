@@ -16,21 +16,21 @@
 
 CREATE TABLE rhnPackageGroup
 (
-    id        NUMBER NOT NULL
+    id        NUMERIC NOT NULL
                   CONSTRAINT rhn_package_group_id_pk PRIMARY KEY
-                  USING INDEX TABLESPACE [[2m_tbs]],
-    name      VARCHAR2(100) NOT NULL,
-    created   timestamp with local time zone
+                  ,
+    name      VARCHAR(100) NOT NULL,
+    created   TIMESTAMPTZ
                   DEFAULT (current_timestamp) NOT NULL,
-    modified  timestamp with local time zone
+    modified  TIMESTAMPTZ
                   DEFAULT (current_timestamp) NOT NULL
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE UNIQUE INDEX rhn_package_group_name_uq
     ON rhnPackageGroup (name)
-    TABLESPACE [[64k_tbs]];
+    ;
 
 CREATE SEQUENCE rhn_package_group_id_seq;
 

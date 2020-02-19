@@ -16,40 +16,40 @@
 
 CREATE TABLE rhnActionKickstartGuest
 (
-    id                   NUMBER NOT NULL,
-    action_id            NUMBER NOT NULL
+    id                   NUMERIC NOT NULL,
+    action_id            NUMERIC NOT NULL
                              CONSTRAINT rhn_actionks_xenguest_aid_fk
                                  REFERENCES rhnAction (id)
                                  ON DELETE CASCADE,
-    append_string        VARCHAR2(1024),
-    ks_session_id        NUMBER
+    append_string        VARCHAR(1024),
+    ks_session_id        NUMERIC
                              CONSTRAINT rhn_actionks_xenguest_ksid_fk
                                  REFERENCES rhnKickstartSession (id)
                                  ON DELETE CASCADE,
-    guest_name           VARCHAR2(256),
-    mem_kb               NUMBER,
-    vcpus                NUMBER,
-    disk_gb              NUMBER,
-    cobbler_system_name  VARCHAR2(256),
-    disk_path            VARCHAR2(256),
-    virt_bridge          VARCHAR2(256),
-    kickstart_host       VARCHAR2(256),
-    created              timestamp with local time zone
+    guest_name           VARCHAR(256),
+    mem_kb               NUMERIC,
+    vcpus                NUMERIC,
+    disk_gb              NUMERIC,
+    cobbler_system_name  VARCHAR(256),
+    disk_path            VARCHAR(256),
+    virt_bridge          VARCHAR(256),
+    kickstart_host       VARCHAR(256),
+    created              TIMESTAMPTZ
                              DEFAULT (current_timestamp) NOT NULL,
-    modified             timestamp with local time zone
+    modified             TIMESTAMPTZ
                              DEFAULT (current_timestamp) NOT NULL,
-    mac_address          VARCHAR2(17)
+    mac_address          VARCHAR(17)
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE UNIQUE INDEX rhn_actionks_xenguest_aid_uq
     ON rhnActionKickstartGuest (action_id)
-    TABLESPACE [[8m_tbs]];
+    ;
 
 CREATE INDEX rhn_actionks_xenguest_id_idx
     ON rhnActionKickstartGuest (id)
-    TABLESPACE [[4m_tbs]];
+    ;
 
 CREATE SEQUENCE rhn_actionks_xenguest_id_seq;
 

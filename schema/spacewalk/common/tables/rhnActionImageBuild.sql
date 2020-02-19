@@ -15,28 +15,28 @@
 
 CREATE TABLE rhnActionImageBuild
 (
-    id               NUMBER NOT NULL
+    id               NUMERIC NOT NULL
                          CONSTRAINT rhn_act_image_build_id_pk PRIMARY KEY,
-    action_id        NUMBER NOT NULL
+    action_id        NUMERIC NOT NULL
                          CONSTRAINT rhn_act_image_build_act_fk
                              REFERENCES rhnAction (id)
                              ON DELETE CASCADE,
-    image_profile_id NUMBER NOT NULL
+    image_profile_id NUMERIC NOT NULL
                          CONSTRAINT rhn_act_image_build_ip_fk
                              REFERENCES suseImageProfile (profile_id)
                              ON DELETE CASCADE,
-    version          VARCHAR2(128),
-    created          timestamp with local time zone
+    version          VARCHAR(128),
+    created          TIMESTAMPTZ
                          DEFAULT (current_timestamp) NOT NULL,
-    modified         timestamp with local time zone
+    modified         TIMESTAMPTZ
                          DEFAULT (current_timestamp) NOT NULL
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE UNIQUE INDEX rhn_act_image_build_aid_idx
     ON rhnActionImageBuild (action_id)
-    NOLOGGING;
+    ;
 
 CREATE SEQUENCE rhn_act_image_build_id_seq;
 

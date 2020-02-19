@@ -16,27 +16,27 @@
 
 CREATE TABLE rhnChannelErrata
 (
-    channel_id  NUMBER NOT NULL
+    channel_id  NUMERIC NOT NULL
                     CONSTRAINT rhn_ce_cid_fk
                         REFERENCES rhnChannel (id)
                         ON DELETE CASCADE,
-    errata_id   NUMBER NOT NULL
+    errata_id   NUMERIC NOT NULL
                     CONSTRAINT rhn_ce_eid_fk
                         REFERENCES rhnErrata (id)
                         ON DELETE CASCADE,
-    created     timestamp with local time zone
+    created     TIMESTAMPTZ
                     DEFAULT (current_timestamp) NOT NULL,
-    modified    timestamp with local time zone
+    modified    TIMESTAMPTZ
                     DEFAULT (current_timestamp) NOT NULL
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE UNIQUE INDEX rhn_ce_ce_uq
     ON rhnChannelErrata (channel_id, errata_id)
-    TABLESPACE [[64k_tbs]];
+    ;
 
 CREATE INDEX rhn_ce_eid_idx
     ON rhnChannelErrata (errata_id)
-    TABLESPACE [[64k_tbs]];
+    ;
 

@@ -16,14 +16,14 @@
 
 CREATE TABLE rhnProxyInfo
 (
-    server_id     NUMBER NOT NULL
+    server_id     NUMERIC NOT NULL
                       CONSTRAINT rhn_proxy_info_sid_fk
                           REFERENCES rhnServer (id),
-    proxy_evr_id  NUMBER
+    proxy_evr_id  NUMERIC
                       CONSTRAINT rhn_proxy_info_peid_fk
                           REFERENCES rhnPackageEVR (id)
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE UNIQUE INDEX rhn_proxy_info_sid_unq

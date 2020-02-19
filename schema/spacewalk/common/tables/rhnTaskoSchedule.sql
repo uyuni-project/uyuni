@@ -16,20 +16,20 @@
 
 CREATE TABLE rhnTaskoSchedule
 (
-    id              NUMBER NOT NULL
+    id              NUMERIC NOT NULL
                         CONSTRAINT rhn_tasko_schedule_id_pk PRIMARY KEY,
-    job_label       VARCHAR2(50) NOT NULL,
-    bunch_id        NUMBER NOT NULL
+    job_label       VARCHAR(50) NOT NULL,
+    bunch_id        NUMERIC NOT NULL
                         CONSTRAINT rhn_tasko_schedule_bunch_fk
                         REFERENCES rhnTaskoBunch (id),
-    org_id          NUMBER,
-    active_from     timestamp with local time zone,
-    active_till     timestamp with local time zone,
-    cron_expr       VARCHAR2(120),
-    data            BLOB,
-    created         timestamp with local time zone
+    org_id          NUMERIC,
+    active_from     TIMESTAMPTZ,
+    active_till     TIMESTAMPTZ,
+    cron_expr       VARCHAR(120),
+    data            BYTEA,
+    created         TIMESTAMPTZ
                         DEFAULT (current_timestamp) NOT NULL,
-    modified        timestamp with local time zone
+    modified        TIMESTAMPTZ
                         DEFAULT (current_timestamp) NOT NULL
 )
 ;

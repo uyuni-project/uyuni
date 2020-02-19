@@ -16,35 +16,35 @@
 
 CREATE TABLE rhnActivationKey
 (
-    token          VARCHAR2(48) NOT NULL
+    token          VARCHAR(48) NOT NULL
                        CONSTRAINT rhn_act_key_token_uq UNIQUE,
-    reg_token_id   NUMBER NOT NULL
+    reg_token_id   NUMERIC NOT NULL
                        CONSTRAINT rhn_act_key_reg_tid_fk
                            REFERENCES rhnRegToken (id)
                            ON DELETE CASCADE,
-    ks_session_id  NUMBER
+    ks_session_id  NUMERIC
                        CONSTRAINT rhn_act_key_ks_sid_fk
                            REFERENCES rhnKickstartSession (id)
                            ON DELETE CASCADE,
-    created        timestamp with local time zone
+    created        TIMESTAMPTZ
                        DEFAULT (current_timestamp) NOT NULL,
-    modified       timestamp with local time zone
+    modified       TIMESTAMPTZ
                        DEFAULT (current_timestamp) NOT NULL,
     bootstrap      CHAR(1)
                        DEFAULT ('N') NOT NULL
                        CONSTRAINT rhn_act_key_bootstrap_ck
                            CHECK (bootstrap in ('Y', 'N'))
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE INDEX rhn_act_key_kssid_rtid_idx
     ON rhnActivationKey (ks_session_id, reg_token_id)
-    TABLESPACE [[64k_tbs]]
-    NOLOGGING;
+    
+    ;
 
 CREATE INDEX rhn_act_key_rtid_idx
     ON rhnActivationKey (reg_token_id)
-    TABLESPACE [[64k_tbs]]
-    NOLOGGING;
+    
+    ;
 

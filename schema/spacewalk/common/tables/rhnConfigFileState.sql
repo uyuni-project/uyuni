@@ -16,22 +16,22 @@
 
 CREATE TABLE rhnConfigFileState
 (
-    id        NUMBER NOT NULL
+    id        NUMERIC NOT NULL
                   CONSTRAINT rhn_cfstate_id_pk PRIMARY KEY
-                  USING INDEX TABLESPACE [[2m_tbs]],
-    label     VARCHAR2(32) NOT NULL,
-    name      VARCHAR2(256) NOT NULL,
-    created   timestamp with local time zone
+                  ,
+    label     VARCHAR(32) NOT NULL,
+    name      VARCHAR(256) NOT NULL,
+    created   TIMESTAMPTZ
                   DEFAULT (current_timestamp) NOT NULL,
-    modified  timestamp with local time zone
+    modified  TIMESTAMPTZ
                   DEFAULT (current_timestamp) NOT NULL
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE UNIQUE INDEX rhn_cfstate_label_id_uq
     ON rhnConfigFileState (label, id)
-    TABLESPACE [[4m_tbs]];
+    ;
 
 CREATE SEQUENCE rhn_cfstate_id_seq;
 

@@ -16,42 +16,42 @@
 
 CREATE TABLE rhnPackageFile
 (
-    package_id     NUMBER NOT NULL
+    package_id     NUMERIC NOT NULL
                        CONSTRAINT rhn_package_file_pid_fk
                            REFERENCES rhnPackage (id)
                            ON DELETE CASCADE,
-    capability_id  NUMBER NOT NULL
+    capability_id  NUMERIC NOT NULL
                        CONSTRAINT rhn_package_file_cid_fk
                            REFERENCES rhnPackageCapability (id),
-    device         NUMBER NOT NULL,
-    inode          NUMBER NOT NULL,
-    file_mode      NUMBER NOT NULL,
-    username       VARCHAR2(32) NOT NULL,
-    groupname      VARCHAR2(32) NOT NULL,
-    rdev           NUMBER NOT NULL,
-    file_size      NUMBER NOT NULL,
-    mtime          timestamp with local time zone NOT NULL,
-    checksum_id    NUMBER
+    device         NUMERIC NOT NULL,
+    inode          NUMERIC NOT NULL,
+    file_mode      NUMERIC NOT NULL,
+    username       VARCHAR(32) NOT NULL,
+    groupname      VARCHAR(32) NOT NULL,
+    rdev           NUMERIC NOT NULL,
+    file_size      NUMERIC NOT NULL,
+    mtime          TIMESTAMPTZ NOT NULL,
+    checksum_id    NUMERIC
                       CONSTRAINT rhn_package_file_chsum_fk
                           REFERENCES rhnChecksum (id),
-    linkto         VARCHAR2(256),
-    flags          NUMBER NOT NULL,
-    verifyflags    NUMBER NOT NULL,
-    lang           VARCHAR2(32),
-    created        timestamp with local time zone
+    linkto         VARCHAR(256),
+    flags          NUMERIC NOT NULL,
+    verifyflags    NUMERIC NOT NULL,
+    lang           VARCHAR(32),
+    created        TIMESTAMPTZ
                        DEFAULT (current_timestamp) NOT NULL,
-    modified       timestamp with local time zone
+    modified       TIMESTAMPTZ
                        DEFAULT (current_timestamp) NOT NULL
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE UNIQUE INDEX rhn_package_file_pid_cid_uq
     ON rhnPackageFile (package_id, capability_id)
-    TABLESPACE [[32m_tbs]];
+    ;
 
 CREATE INDEX rhn_package_file_cid_idx
     ON rhnPackageFile (capability_id)
-    TABLESPACE [[32m_tbs]]
-    NOLOGGING;
+    
+    ;
 

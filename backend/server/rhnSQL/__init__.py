@@ -31,7 +31,7 @@ from . import dbi
 from . import sql_types
 types = sql_types
 
-from .const import ORACLE, POSTGRESQL, SUPPORTED_BACKENDS
+from .const import POSTGRESQL, SUPPORTED_BACKENDS
 
 # expose exceptions
 from .sql_base import SQLError, SQLSchemaError, SQLConnectError, \

@@ -16,20 +16,20 @@
 
 CREATE TABLE rhnCpuArch
 (
-    id        NUMBER NOT NULL,
-    label     VARCHAR2(64) NOT NULL,
-    name      VARCHAR2(64) NOT NULL,
-    created   timestamp with local time zone
+    id        NUMERIC NOT NULL,
+    label     VARCHAR(64) NOT NULL,
+    name      VARCHAR(64) NOT NULL,
+    created   TIMESTAMPTZ
                   DEFAULT (current_timestamp) NOT NULL,
-    modified  timestamp with local time zone
+    modified  TIMESTAMPTZ
                   DEFAULT (current_timestamp) NOT NULL
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE INDEX rhn_cpuarch_id_l_n_idx
     ON rhnCpuArch (id, label, name)
-    TABLESPACE [[2m_tbs]];
+    ;
 
 CREATE SEQUENCE rhn_cpu_arch_id_seq START WITH 200;
 
@@ -38,5 +38,5 @@ ALTER TABLE rhnCpuArch
 
 ALTER TABLE rhnCpuArch
     ADD CONSTRAINT rhn_cpuarch_label_uq UNIQUE (label)
-    USING INDEX TABLESPACE [[2m_tbs]];
+    ;
 

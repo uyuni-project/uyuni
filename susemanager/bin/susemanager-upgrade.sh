@@ -100,42 +100,6 @@ db_exists() {
     fi
 }
 
-upgrade_oracle() {
-
-    if ! db_exists ; then
-        echo "Database does not exist or is not running"
-        exit 1
-    fi
-    if ! is_embedded_db ; then
-        return 1
-    fi
-
-    # oracle DB has: //localhost:1521/susemanager
-    if echo "$DBNAME" | grep '/' >/dev/null; then
-        DBSID=`echo "$DBNAME" | sed 's/.*\///'`
-    else
-        DBSID="$DBNAME"
-    fi
-
-    echo "
-grant connect to $DBUSER;
-grant create table to $DBUSER;
-grant create view to $DBUSER;
-grant create type to $DBUSER;
-grant create sequence to $DBUSER;
-grant create procedure to $DBUSER;
-grant create operator to $DBUSER;
-grant create synonym to $DBUSER;
-grant create trigger to $DBUSER;
-grant create role to $DBUSER;
-grant alter session to $DBUSER;
-quit
-" > /tmp/dbsetup.sql
-
-    su -s /bin/bash - oracle -c "ORACLE_SID=$DBSID sqlplus / as sysdba @/tmp/dbsetup.sql;"
-    rm -f /tmp/dbsetup.sql
-}
-
 upgrade_schema() {
     spacewalk-schema-upgrade -y || exit 1
 }
@@ -149,7 +113,7 @@ DBNAME=`read_value db_name`
 DBHOST=`read_value db_host`
 DBUSER=`read_value db_user`
 
-if [ "$DBBACKEND" != "postgresql" -a "$DBBACKEND" != "oracle" ]; then
+if [ "$DBBACKEND" != "postgresql" ]; then
     echo "Unknown database backend '$DBBACKEND'"
     exit 1
 fi
@@ -159,21 +123,9 @@ if [ "$DBBACKEND" = "postgresql" -a ! -e "/usr/bin/psql" ]; then
     exit 1
 fi
 
-if [ "$DBBACKEND" = "oracle" ]; then
-    SQLPLUS=`which sqlplus`
-    if [ -z "$SQLPLUS" ]; then
-        echo "sqlplus not found"
-        exit 1
-    fi
-fi
-
 rcapache2 status && spacewalk-service stop
 
-if [ "$DBBACKEND" = "postgresql" ]; then
-    upgrade_pg
-else
-    upgrade_oracle
-fi
+upgrade_pg
 
 upgrade_schema
 

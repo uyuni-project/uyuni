@@ -16,22 +16,22 @@
 
 CREATE TABLE rhnSnapshotTag
 (
-    snapshot_id  NUMBER NOT NULL
+    snapshot_id  NUMERIC NOT NULL
                      CONSTRAINT rhn_st_ssid_fk
                          REFERENCES rhnSnapshot (id)
                          ON DELETE CASCADE,
-    tag_id       NUMBER NOT NULL
+    tag_id       NUMERIC NOT NULL
                      CONSTRAINT rhn_st_tid_fk
                          REFERENCES rhnTag (id),
-    server_id    NUMBER
+    server_id    NUMERIC
                      CONSTRAINT rhn_st_sid_fk
                          REFERENCES rhnServer (id),
-    created      timestamp with local time zone
+    created      TIMESTAMPTZ
                      DEFAULT (current_timestamp) NOT NULL,
-    modified     timestamp with local time zone
+    modified     TIMESTAMPTZ
                      DEFAULT (current_timestamp) NOT NULL
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE UNIQUE INDEX rhn_ss_tag_ssid_tid_uq

@@ -16,23 +16,23 @@
 
 CREATE TABLE rhnChildChannelArchCompat
 (
-    parent_arch_id  NUMBER NOT NULL
+    parent_arch_id  NUMERIC NOT NULL
                          CONSTRAINT rhn_ccac_paid_fk
                              REFERENCES rhnChannelArch (id),
-    child_arch_id  NUMBER NOT NULL
+    child_arch_id  NUMERIC NOT NULL
                          CONSTRAINT rhn_ccac_caid_fk
                              REFERENCES rhnChannelArch (id),
-    created          timestamp with local time zone
+    created          TIMESTAMPTZ
                          DEFAULT (current_timestamp) NOT NULL,
-    modified         timestamp with local time zone
+    modified         TIMESTAMPTZ
                          DEFAULT (current_timestamp) NOT NULL
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE INDEX rhn_ccac_paid_caid
     ON rhnChildChannelArchCompat (parent_arch_id, child_arch_id)
-    TABLESPACE [[64k_tbs]];
+    ;
 
 ALTER TABLE rhnChildChannelArchCompat
     ADD CONSTRAINT rhn_ccac_paid_caid_uq UNIQUE (parent_arch_id, child_arch_id);

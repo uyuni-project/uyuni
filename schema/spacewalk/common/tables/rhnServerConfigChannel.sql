@@ -16,27 +16,27 @@
 
 CREATE TABLE rhnServerConfigChannel
 (
-    server_id          NUMBER NOT NULL
+    server_id          NUMERIC NOT NULL
                            CONSTRAINT rhn_servercc_sid_fk
                                REFERENCES rhnServer (id),
-    config_channel_id  NUMBER NOT NULL
+    config_channel_id  NUMERIC NOT NULL
                            CONSTRAINT rhn_servercc_ccid_fk
                                REFERENCES rhnConfigChannel (id)
                                ON DELETE CASCADE,
-    position           NUMBER,
-    created            timestamp with local time zone
+    position           NUMERIC,
+    created            TIMESTAMPTZ
                            DEFAULT (current_timestamp) NOT NULL,
-    modified           timestamp with local time zone
+    modified           TIMESTAMPTZ
                            DEFAULT (current_timestamp) NOT NULL
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE UNIQUE INDEX rhn_servercc_sid_ccid_uq
     ON rhnServerConfigChannel (server_id, config_channel_id)
-    TABLESPACE [[2m_tbs]];
+    ;
 
 CREATE INDEX rhn_servercc_ccid_idx
     ON rhnServerConfigChannel (config_channel_id)
-    TABLESPACE [[2m_tbs]];
+    ;
 

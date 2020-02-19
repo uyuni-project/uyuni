@@ -1,3 +1,4 @@
+- Remove oracle backend support and tests
 - remove code to handle tables used for forwarding registrations
   to NCC.
 

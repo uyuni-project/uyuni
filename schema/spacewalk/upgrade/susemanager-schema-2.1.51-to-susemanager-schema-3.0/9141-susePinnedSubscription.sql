@@ -15,19 +15,19 @@
 
 CREATE TABLE susePinnedSubscription
 (
-    id               NUMBER NOT NULL
+    id               NUMERIC NOT NULL
                        CONSTRAINT suse_pinsub_id_pk PRIMARY KEY
-                       USING INDEX TABLESPACE [[64k_tbs]],
-    server_id        NUMBER NOT NULL
+                       ,
+    server_id        NUMERIC NOT NULL
                        CONSTRAINT suse_pinsub_sid_fk
                          REFERENCES rhnServer (id),
-    orderitem_id     NUMBER NOT NULL
+    orderitem_id     NUMERIC NOT NULL
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE UNIQUE INDEX suse_pinsub_sid_oid_uq
     ON susePinnedSubscription (server_id, orderitem_id)
-    TABLESPACE [[8m_tbs]];
+    ;
 
 CREATE SEQUENCE suse_pinsub_id_seq;

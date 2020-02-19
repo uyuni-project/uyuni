@@ -16,24 +16,24 @@
 
 CREATE TABLE rhnTemplateCategory
 (
-    id           NUMBER NOT NULL,
-    label        VARCHAR2(64) NOT NULL,
-    description  VARCHAR2(512) NOT NULL,
-    created      timestamp with local time zone
+    id           NUMERIC NOT NULL,
+    label        VARCHAR(64) NOT NULL,
+    description  VARCHAR(512) NOT NULL,
+    created      TIMESTAMPTZ
                      DEFAULT (current_timestamp) NOT NULL,
-    modified     timestamp with local time zone
+    modified     TIMESTAMPTZ
                      DEFAULT (current_timestamp) NOT NULL
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE INDEX rhn_template_cat_id_idx
     ON rhnTemplateCategory (id)
-    TABLESPACE [[64k_tbs]];
+    ;
 
 CREATE INDEX rhn_template_cat_label_id_idx
     ON rhnTemplateCategory (label, id)
-    TABLESPACE [[64k_tbs]];
+    ;
 
 CREATE SEQUENCE rhn_template_cat_id_seq;
 

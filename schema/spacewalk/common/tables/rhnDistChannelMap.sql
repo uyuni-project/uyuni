@@ -16,23 +16,23 @@
 
 CREATE TABLE rhnDistChannelMap
 (
-    id               NUMBER NOT NULL
+    id               NUMERIC NOT NULL
                         CONSTRAINT rhn_dcm_id_pk PRIMARY KEY,
-    os               VARCHAR2(64) NOT NULL,
-    release          VARCHAR2(64) NOT NULL,
-    channel_arch_id  NUMBER NOT NULL
+    os               VARCHAR(64) NOT NULL,
+    release          VARCHAR(64) NOT NULL,
+    channel_arch_id  NUMERIC NOT NULL
                          CONSTRAINT rhn_dcm_caid_fk
                              REFERENCES rhnChannelArch (id),
-    channel_id       NUMBER NOT NULL
+    channel_id       NUMERIC NOT NULL
                          CONSTRAINT rhn_dcm_cid_fk
                              REFERENCES rhnChannel (id)
                              ON DELETE CASCADE,
-    org_id           NUMBER
+    org_id           NUMERIC
                         CONSTRAINT rhn_dcm_oid_fk
                             REFERENCES web_customer (id)
                             ON DELETE CASCADE
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE SEQUENCE rhn_dcm_id_seq;

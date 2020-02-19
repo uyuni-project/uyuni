@@ -16,25 +16,25 @@
 
 CREATE TABLE rhnErrataClonedTmp
 (
-    original_id  NUMBER NOT NULL
+    original_id  NUMERIC NOT NULL
                      CONSTRAINT rhn_eclonedtmp_feid_fk
                          REFERENCES rhnErrata (id)
                          ON DELETE CASCADE,
-    id           NUMBER NOT NULL
+    id           NUMERIC NOT NULL
                      CONSTRAINT rhn_eclonedtmp_teid_fk
                          REFERENCES rhnErrataTmp (id)
                          ON DELETE CASCADE,
-    created      timestamp with local time zone
+    created      TIMESTAMPTZ
                      DEFAULT (current_timestamp) NOT NULL,
-    modified     timestamp with local time zone
+    modified     TIMESTAMPTZ
                      DEFAULT (current_timestamp) NOT NULL
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE INDEX rhn_eclonedtmp_feid_teid_idx
     ON rhnErrataClonedTmp (original_id, id)
-    TABLESPACE [[2m_tbs]];
+    ;
 
 ALTER TABLE rhnErrataClonedTmp
     ADD CONSTRAINT rhn_eclonedtmp_feid_teid_uq UNIQUE (original_id, id);

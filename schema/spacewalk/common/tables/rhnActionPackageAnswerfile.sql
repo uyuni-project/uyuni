@@ -16,22 +16,22 @@
 
 CREATE TABLE rhnActionPackageAnswerfile
 (
-    action_package_id  NUMBER NOT NULL
+    action_package_id  NUMERIC NOT NULL
                            CONSTRAINT rhn_act_p_af_apid_fk
                                REFERENCES rhnActionPackage (id)
                                ON DELETE CASCADE,
-    answerfile         BLOB,
-    created            timestamp with local time zone
+    answerfile         BYTEA,
+    created            TIMESTAMPTZ
                            DEFAULT (current_timestamp) NOT NULL,
-    modified           timestamp with local time zone
+    modified           TIMESTAMPTZ
                            DEFAULT (current_timestamp) NOT NULL
 )
-TABLESPACE [[blob]]
-ENABLE ROW MOVEMENT
+
+
 ;
 
 CREATE INDEX rhn_act_p_af_aid_idx
     ON rhnActionPackageAnswerfile (action_package_id)
-    TABLESPACE [[2m_tbs]]
-    NOLOGGING;
+    
+    ;
 

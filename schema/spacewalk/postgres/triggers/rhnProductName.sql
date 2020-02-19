@@ -1,4 +1,3 @@
--- oracle equivalent source sha1 330361eef5d5c8b2d0f12337bc5d38d128c73281
 
 
 create or replace function product_name_mod_trig_fun() returns trigger as

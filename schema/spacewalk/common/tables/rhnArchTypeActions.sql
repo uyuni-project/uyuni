@@ -16,22 +16,22 @@
 
 CREATE TABLE rhnArchTypeActions
 (
-    arch_type_id    NUMBER NOT NULL
+    arch_type_id    NUMERIC NOT NULL
                         CONSTRAINT rhn_archtypeacts_atid_fk
                             REFERENCES rhnArchType (id),
-    action_style    VARCHAR2(64) NOT NULL,
-    action_type_id  NUMBER NOT NULL
+    action_style    VARCHAR(64) NOT NULL,
+    action_type_id  NUMERIC NOT NULL
                         CONSTRAINT rhn_archtypeacts_actid_fk
                             REFERENCES rhnActionType (id),
-    created         timestamp with local time zone
+    created         TIMESTAMPTZ
                         DEFAULT (current_timestamp) NOT NULL,
-    modified        timestamp with local time zone
+    modified        TIMESTAMPTZ
                         DEFAULT (current_timestamp) NOT NULL
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE UNIQUE INDEX rhn_archtypeacts_atid_as_uq
     ON rhnArchTypeActions (arch_type_id, action_style)
-    TABLESPACE [[64k_tbs]];
+    ;
 

@@ -16,11 +16,11 @@
 
 CREATE TABLE rhnKSData
 (
-    id              NUMBER NOT NULL
+    id              NUMERIC NOT NULL
                         CONSTRAINT rhn_ks_id_pk PRIMARY KEY
-                        USING INDEX TABLESPACE [[8m_tbs]],
-    ks_type         VARCHAR2(8) NOT NULL,
-    org_id          NUMBER NOT NULL
+                        ,
+    ks_type         VARCHAR(8) NOT NULL,
+    org_id          NUMERIC NOT NULL
                         CONSTRAINT rhn_ks_oid_fk
                             REFERENCES web_customer (id)
                             ON DELETE CASCADE,
@@ -28,8 +28,8 @@ CREATE TABLE rhnKSData
                         DEFAULT ('N') NOT NULL
                         CONSTRAINT rhn_ks_default_ck
                             CHECK (is_org_default in ('Y','N')),
-    label           VARCHAR2(64) NOT NULL,
-    comments        VARCHAR2(4000),
+    label           VARCHAR(64) NOT NULL,
+    comments        VARCHAR(4000),
     active          CHAR(1)
                         DEFAULT ('Y') NOT NULL
                         CONSTRAINT rhn_ks_active_ck
@@ -46,13 +46,13 @@ CREATE TABLE rhnKSData
                         DEFAULT ('N') NOT NULL
                         CONSTRAINT rhn_ks_cfg_save_ck
                             CHECK (kscfg in ('Y','N')),
-    cobbler_id      VARCHAR2(64),
-    pre             BLOB,
-    post            BLOB,
-    nochroot_post   BLOB,
-    partition_data   BLOB,
-    static_device   VARCHAR2(32),
-    kernel_params   VARCHAR2(128),
+    cobbler_id      VARCHAR(64),
+    pre             BYTEA,
+    post            BYTEA,
+    nochroot_post   BYTEA,
+    partition_data   BYTEA,
+    static_device   VARCHAR(32),
+    kernel_params   VARCHAR(128),
     verboseup2date  CHAR(1)
                         DEFAULT ('N') NOT NULL
                         CONSTRAINT rhn_ks_verbose_up2date_ck
@@ -69,22 +69,22 @@ CREATE TABLE rhnKSData
                         DEFAULT ('N') NOT NULL
                         CONSTRAINT rhn_ks_ignore_missing_ck
                             CHECK (ignore_missing in ( 'Y' , 'N' )),
-    created         timestamp with local time zone
+    created         TIMESTAMPTZ
                         DEFAULT (current_timestamp) NOT NULL,
-    modified        timestamp with local time zone
+    modified        TIMESTAMPTZ
                         DEFAULT (current_timestamp) NOT NULL,
-    update_type     VARCHAR2(7) DEFAULT ('none') NOT NULL
+    update_type     VARCHAR(7) DEFAULT ('none') NOT NULL
                         CONSTRAINT rhn_ks_update_type
 			    CHECK (update_type in ('all', 'red_hat', 'none')),
     CONSTRAINT rhn_ks_type_ck
         CHECK (ks_type in ('wizard','raw'))
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE INDEX rhn_ks_oid_label_id_idx
     ON rhnKSData (org_id, label, id)
-    TABLESPACE [[8m_tbs]];
+    ;
 
 CREATE SEQUENCE rhn_ks_id_seq;
 

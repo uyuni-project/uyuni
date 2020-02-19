@@ -16,50 +16,50 @@
 
 CREATE TABLE rhnRegToken
 (
-    id              NUMBER NOT NULL
+    id              NUMERIC NOT NULL
                         CONSTRAINT rhn_reg_token_pk PRIMARY KEY,
-    org_id          NUMBER NOT NULL
+    org_id          NUMERIC NOT NULL
                         CONSTRAINT rhn_reg_token_oid_fk
                             REFERENCES web_customer (id)
                             ON DELETE CASCADE,
-    user_id         NUMBER
+    user_id         NUMERIC
                         CONSTRAINT rhn_reg_token_uid_fk
                             REFERENCES web_contact (id)
                             ON DELETE SET NULL,
-    server_id       NUMBER
+    server_id       NUMERIC
                         CONSTRAINT rhn_reg_token_sid_fk
                             REFERENCES rhnServer (id),
-    note            VARCHAR2(2048) NOT NULL,
-    usage_limit     NUMBER
+    note            VARCHAR(2048) NOT NULL,
+    usage_limit     NUMERIC
                         DEFAULT (0),
-    disabled        NUMBER
+    disabled        NUMERIC
                         DEFAULT (0) NOT NULL,
     deploy_configs  CHAR(1)
                         DEFAULT ('Y') NOT NULL
                         CONSTRAINT rhn_reg_token_deployconfs_ck
                             CHECK (deploy_configs in ('Y','N')),
-    contact_method_id NUMBER
+    contact_method_id NUMERIC
                         DEFAULT (0) NOT NULL
                         CONSTRAINT rhn_reg_token_cmid_fk
                             REFERENCES suseServerContactMethod (id)
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE INDEX rhn_reg_token_org_id_idx
     ON rhnRegToken (org_id, id)
-    TABLESPACE [[64k_tbs]]
-    NOLOGGING;
+    
+    ;
 
 CREATE INDEX rhn_reg_token_uid_idx
     ON rhnRegToken (user_id)
-    TABLESPACE [[64k_tbs]]
-    NOLOGGING;
+    
+    ;
 
 CREATE INDEX rhn_reg_token_sid_idx
     ON rhnRegToken (server_id)
-    TABLESPACE [[8m_tbs]]
-    NOLOGGING;
+    
+    ;
 
 CREATE SEQUENCE rhn_reg_token_seq;
 

@@ -16,29 +16,29 @@
 
 CREATE TABLE rhnFile
 (
-    id         NUMBER NOT NULL
+    id         NUMERIC NOT NULL
                    CONSTRAINT rhn_file_id_pk PRIMARY KEY
-                   USING INDEX TABLESPACE [[64k_tbs]],
-    org_id     NUMBER
+                   ,
+    org_id     NUMERIC
                    CONSTRAINT rhn_file_oid_fk
                        REFERENCES web_customer (id)
                        ON DELETE CASCADE,
-    file_size  NUMBER NOT NULL,
-    checksum_id NUMBER NOT NULL
+    file_size  NUMERIC NOT NULL,
+    checksum_id NUMERIC NOT NULL
                    CONSTRAINT rhn_file_chsum_fk
                        REFERENCES rhnChecksum (id),
-    path       VARCHAR2(1000) NOT NULL,
-    created    timestamp with local time zone
+    path       VARCHAR(1000) NOT NULL,
+    created    TIMESTAMPTZ
                    DEFAULT (current_timestamp) NOT NULL,
-    modified   timestamp with local time zone
+    modified   TIMESTAMPTZ
                    DEFAULT (current_timestamp) NOT NULL
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE UNIQUE INDEX rhn_file_path_uq
     ON rhnFile (path)
-    TABLESPACE [[2m_tbs]];
+    ;
 
 CREATE SEQUENCE rhn_file_id_seq;
 

@@ -1,1 +1,1 @@
-alter table rhnPushDispatcher add password varchar2(32);
+alter table rhnPushDispatcher add password VARCHAR(32);

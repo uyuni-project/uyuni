@@ -16,28 +16,28 @@
 
 CREATE TABLE rhnTaskQueue
 (
-    org_id     NUMBER NOT NULL
+    org_id     NUMERIC NOT NULL
                    CONSTRAINT rhn_task_queue_org_id_fk
                        REFERENCES web_customer (id)
                        ON DELETE CASCADE,
-    task_name      VARCHAR2(64) NOT NULL,
-    task_data      NUMBER,
-    priority       NUMBER
+    task_name      VARCHAR(64) NOT NULL,
+    task_data      NUMERIC,
+    priority       NUMERIC
                    DEFAULT (0),
-    earliest       timestamp with local time zone
+    earliest       TIMESTAMPTZ
                    DEFAULT (current_timestamp) NOT NULL
 )
-ENABLE ROW MOVEMENT
-LOGGING
+
+
 ;
 
 CREATE INDEX rhn_task_queue_org_task_idx
     ON rhnTaskQueue (org_id, task_name)
-    TABLESPACE [[64k_tbs]]
-    NOLOGGING;
+    
+    ;
 
 CREATE INDEX rhn_task_queue_earliest
     ON rhnTaskQueue (earliest)
-    TABLESPACE [[64k_tbs]]
-    NOLOGGING;
+    
+    ;
 

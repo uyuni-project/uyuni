@@ -16,37 +16,37 @@
 
 CREATE TABLE rhnDevice
 (
-    id           NUMBER NOT NULL
+    id           NUMERIC NOT NULL
                      CONSTRAINT rhn_device_id_pk PRIMARY KEY
-                     USING INDEX TABLESPACE [[32m_tbs]],
-    server_id    NUMBER NOT NULL
+                     ,
+    server_id    NUMERIC NOT NULL
                      CONSTRAINT rhn_device_sid_fk
                          REFERENCES rhnServer (id)
                          ON DELETE CASCADE,
-    class        VARCHAR2(16),
-    bus          VARCHAR2(16),
-    detached     NUMBER,
-    device       VARCHAR2(256),
-    driver       VARCHAR2(256),
-    description  VARCHAR2(256),
-    pcitype      NUMBER
+    class        VARCHAR(16),
+    bus          VARCHAR(16),
+    detached     NUMERIC,
+    device       VARCHAR(256),
+    driver       VARCHAR(256),
+    description  VARCHAR(256),
+    pcitype      NUMERIC
                      DEFAULT (-1),
-    prop1        VARCHAR2(256),
-    prop2        VARCHAR2(256),
-    prop3        VARCHAR2(256),
-    prop4        VARCHAR2(256),
-    created      timestamp with local time zone
+    prop1        VARCHAR(256),
+    prop2        VARCHAR(256),
+    prop3        VARCHAR(256),
+    prop4        VARCHAR(256),
+    created      TIMESTAMPTZ
                      DEFAULT (current_timestamp) NOT NULL,
-    modified     timestamp with local time zone
+    modified     TIMESTAMPTZ
                      DEFAULT (current_timestamp) NOT NULL
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE INDEX rhn_device_server_id_idx
     ON rhnDevice (server_id)
-    TABLESPACE [[32m_tbs]]
-    NOLOGGING;
+    
+    ;
 
 CREATE SEQUENCE rhn_hw_dev_id_seq;
 

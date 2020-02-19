@@ -16,15 +16,15 @@
 
 CREATE TABLE rhnTaskoBunch
 (
-    id          NUMBER NOT NULL
+    id          NUMERIC NOT NULL
                     CONSTRAINT rhn_tasko_bunch_id_pk PRIMARY KEY,
-    name        VARCHAR2(80) NOT NULL
+    name        VARCHAR(80) NOT NULL
                     CONSTRAINT tasko_bunch_name_uq UNIQUE,
-    description VARCHAR2(200),
-    org_bunch   VARCHAR2(1),
-    created     timestamp with local time zone
+    description VARCHAR(200),
+    org_bunch   VARCHAR(1),
+    created     TIMESTAMPTZ
                     DEFAULT (current_timestamp) NOT NULL,
-    modified    timestamp with local time zone
+    modified    TIMESTAMPTZ
                     DEFAULT (current_timestamp) NOT NULL
 )
 ;

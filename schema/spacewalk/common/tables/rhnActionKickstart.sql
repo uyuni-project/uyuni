@@ -16,33 +16,33 @@
 
 CREATE TABLE rhnActionKickstart
 (
-    id                  NUMBER NOT NULL,
-    action_id           NUMBER NOT NULL
+    id                  NUMERIC NOT NULL,
+    action_id           NUMERIC NOT NULL
                             CONSTRAINT rhn_actionks_aid_fk
                                 REFERENCES rhnAction (id)
                                 ON DELETE CASCADE,
-    append_string       VARCHAR2(1024),
-    kickstart_host      VARCHAR2(256),
-    static_device       VARCHAR2(32),
-    cobbler_system_name VARCHAR2(256),
+    append_string       VARCHAR(1024),
+    kickstart_host      VARCHAR(256),
+    static_device       VARCHAR(32),
+    cobbler_system_name VARCHAR(256),
     upgrade             CHAR(1) DEFAULT ('N') NOT NULL
                             CONSTRAINT rhn_actionks_up_ck
                                 CHECK (upgrade in ('Y', 'N')),
-    created             timestamp with local time zone
+    created             TIMESTAMPTZ
                             DEFAULT (current_timestamp) NOT NULL,
-    modified            timestamp with local time zone
+    modified            TIMESTAMPTZ
                             DEFAULT (current_timestamp) NOT NULL
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE UNIQUE INDEX rhn_actionks_aid_uq
     ON rhnActionKickstart (action_id)
-    TABLESPACE [[8m_tbs]];
+    ;
 
 CREATE INDEX rhn_actionks_id_idx
     ON rhnActionKickstart (id)
-    TABLESPACE [[4m_tbs]];
+    ;
 
 CREATE SEQUENCE rhn_actionks_id_seq;
 

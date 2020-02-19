@@ -15,15 +15,15 @@
 
 CREATE TABLE suseSCCSubscriptionProduct
 (
-    subscription_id  NUMBER NOT NULL
+    subscription_id  NUMERIC NOT NULL
                      CONSTRAINT suse_sccsubprod_subid_fk
                      REFERENCES suseSCCSubscription (id)
                      ON DELETE CASCADE,
-    product_id       NUMBER NOT NULL
+    product_id       NUMERIC NOT NULL
                      CONSTRAINT suse_sccsubprod_prdid_fk
                      REFERENCES suseProducts (id)
                      ON DELETE CASCADE
 )
-ENABLE ROW MOVEMENT
+
 ;
 

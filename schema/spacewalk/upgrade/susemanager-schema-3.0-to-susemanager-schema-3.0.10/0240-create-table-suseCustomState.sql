@@ -15,22 +15,22 @@
 
 CREATE TABLE suseCustomState
 (
-    id               NUMBER NOT NULL
+    id               NUMERIC NOT NULL
                          CONSTRAINT suse_custom_state_id_pk PRIMARY KEY,
-    org_id           NUMBER NOT NULL
+    org_id           NUMERIC NOT NULL
                          CONSTRAINT suse_custom_state_org_id_fk
                             REFERENCES web_customer (id)
                             ON DELETE CASCADE,
-    state_name       VARCHAR2(256) NOT NULL,
+    state_name       VARCHAR(256) NOT NULL,
     state_deleted    char(1)
                            default ('N') not null
                            constraint suse_custom_state_deleted_chk
                            check (state_deleted in ('Y', 'N'))
 )
-ENABLE ROW MOVEMENT
+
 ;
 CREATE UNIQUE INDEX suse_custom_state_name_org_uq
 ON suseCustomState (org_id, state_name)
-TABLESPACE [[8m_tbs]];
+;
 
 CREATE SEQUENCE suse_custom_state_id_seq;

@@ -20,20 +20,20 @@ susePackageProductFile
     prodfile_id numeric        not null
                              CONSTRAINT sppf_pfid_fk
                              REFERENCES suseProductFile (id),
-    created   timestamp with local time zone
+    created   TIMESTAMPTZ
                   DEFAULT (current_timestamp) NOT NULL,
-    modified  timestamp with local time zone
+    modified  TIMESTAMPTZ
                   DEFAULT (current_timestamp) NOT NULL
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE UNIQUE INDEX sppf_pi_pi_uq
     ON susePackageProductFile (package_id, prodfile_id)
-    TABLESPACE [[64k_tbs]];
+    ;
 
 CREATE INDEX sppf_pid_idx
     ON susePackageProductFile (package_id)
-    TABLESPACE [[64k_tbs]]
-    NOLOGGING;
+    
+    ;
 

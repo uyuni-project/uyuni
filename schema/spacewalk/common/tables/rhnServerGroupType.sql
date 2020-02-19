@@ -16,14 +16,14 @@
 
 CREATE TABLE rhnServerGroupType
 (
-    id         NUMBER NOT NULL
+    id         NUMERIC NOT NULL
                    CONSTRAINT rhn_servergrouptype_id_pk PRIMARY KEY
-                   USING INDEX TABLESPACE [[64k_tbs]],
-    label      VARCHAR2(32) NOT NULL,
-    name       VARCHAR2(64) NOT NULL,
-    created    timestamp with local time zone
+                   ,
+    label      VARCHAR(32) NOT NULL,
+    name       VARCHAR(64) NOT NULL,
+    created    TIMESTAMPTZ
                    DEFAULT (current_timestamp) NOT NULL,
-    modified   timestamp with local time zone
+    modified   TIMESTAMPTZ
                    DEFAULT (current_timestamp) NOT NULL,
     permanent  CHAR
                    DEFAULT ('Y') NOT NULL
@@ -34,12 +34,12 @@ CREATE TABLE rhnServerGroupType
                    CONSTRAINT rhn_servergrouptype_isbase_ck
                        CHECK (is_base in ('Y','N'))
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE UNIQUE INDEX rhn_servergrouptype_label_uq
     ON rhnServerGroupType (label)
-    TABLESPACE [[64k_tbs]];
+    ;
 
 CREATE SEQUENCE rhn_servergroup_type_seq;
 

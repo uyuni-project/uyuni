@@ -16,27 +16,27 @@
 
 CREATE TABLE rhnOrgExtGroupMapping
 (
-    id        NUMBER NOT NULL
+    id        NUMERIC NOT NULL
                   CONSTRAINT rhn_orgextgroupmap_id_pk PRIMARY KEY
-                  USING INDEX TABLESPACE [[64k_tbs]],
-    ext_group_id       NUMBER NOT NULL
+                  ,
+    ext_group_id       NUMERIC NOT NULL
                   constraint rhn_orgextgroupmap_eg_fk
                   references rhnUserExtGroup(id)
                   on delete cascade,
-    server_group_id    NUMBER NOT NULL
+    server_group_id    NUMERIC NOT NULL
                   constraint rhn_orgextgroupmap_sg_fk
                   references rhnServerGroup(id)
                   on delete cascade,
-    created   timestamp with local time zone
+    created   TIMESTAMPTZ
                   DEFAULT (current_timestamp) NOT NULL,
-    modified  timestamp with local time zone
+    modified  TIMESTAMPTZ
                   DEFAULT (current_timestamp) NOT NULL
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE UNIQUE INDEX rhn_orgextgroupmap_es_uq
     ON rhnOrgExtGroupMapping (ext_group_id, server_group_id)
-    TABLESPACE [[64k_tbs]];
+    ;
 
 CREATE SEQUENCE rhn_orgextgroupmap_seq;

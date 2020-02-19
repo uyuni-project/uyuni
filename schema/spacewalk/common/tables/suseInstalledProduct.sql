@@ -13,17 +13,17 @@
 create table
 suseInstalledProduct
 (
-    id            number        not null PRIMARY KEY,
-    name          varchar2(256) not null,
-    version       varchar2(256),
-    arch_type_id  NUMBER
+    id            NUMERIC        not null PRIMARY KEY,
+    name          VARCHAR(256) not null,
+    version       VARCHAR(256),
+    arch_type_id  NUMERIC
                   CONSTRAINT suse_installed_product_aid_fk
                   REFERENCES rhnPackageArch (id),
-    release       varchar2(256),
+    release       VARCHAR(256),
     is_baseproduct CHAR(1) DEFAULT ('N') NOT NULL,
-    created   timestamp with local time zone
+    created   TIMESTAMPTZ
                   DEFAULT (current_timestamp) NOT NULL,
-    modified  timestamp with local time zone
+    modified  TIMESTAMPTZ
                   DEFAULT (current_timestamp) NOT NULL
 );
 

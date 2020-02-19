@@ -16,24 +16,24 @@
 
 CREATE TABLE rhnFileList
 (
-    id        NUMBER NOT NULL
+    id        NUMERIC NOT NULL
                   CONSTRAINT rhn_filelist_id_pk PRIMARY KEY
-                  USING INDEX TABLESPACE [[4m_tbs]],
-    label     VARCHAR2(128) NOT NULL,
-    org_id    NUMBER NOT NULL
+                  ,
+    label     VARCHAR(128) NOT NULL,
+    org_id    NUMERIC NOT NULL
                   CONSTRAINT rhn_filelist_oid_fk
                       REFERENCES web_customer (id),
-    created   timestamp with local time zone
+    created   TIMESTAMPTZ
                   DEFAULT (current_timestamp) NOT NULL,
-    modified  timestamp with local time zone
+    modified  TIMESTAMPTZ
                   DEFAULT (current_timestamp) NOT NULL
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE UNIQUE INDEX rhn_filelist_oid_l_uq
     ON rhnFileList (org_id, label)
-    TABLESPACE [[8m_tbs]];
+    ;
 
 CREATE SEQUENCE rhn_filelist_id_seq;
 

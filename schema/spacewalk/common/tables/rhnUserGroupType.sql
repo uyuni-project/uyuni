@@ -16,22 +16,22 @@
 
 CREATE TABLE rhnUserGroupType
 (
-    id        NUMBER NOT NULL
+    id        NUMERIC NOT NULL
                   CONSTRAINT rhn_userGroupType_id_pk PRIMARY KEY
-                  USING INDEX TABLESPACE [[64k_tbs]],
-    label     VARCHAR2(64) NOT NULL,
-    name      VARCHAR2(64) NOT NULL,
-    created   timestamp with local time zone
+                  ,
+    label     VARCHAR(64) NOT NULL,
+    name      VARCHAR(64) NOT NULL,
+    created   TIMESTAMPTZ
                   DEFAULT (current_timestamp) NOT NULL,
-    modified  timestamp with local time zone
+    modified  TIMESTAMPTZ
                   DEFAULT (current_timestamp) NOT NULL
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE INDEX rhn_usergrouptype_label_id_idx
     ON rhnUserGroupType (label, id)
-    TABLESPACE [[64k_tbs]];
+    ;
 
 CREATE SEQUENCE rhn_usergroup_type_seq;
 

@@ -15,31 +15,31 @@
 
 CREATE TABLE suseImageCustomDataValue
 (
-    id                NUMBER NOT NULL
+    id                NUMERIC NOT NULL
                           CONSTRAINT suse_icdv_id_pk PRIMARY KEY,
-    image_info_id     NUMBER NOT NULL
+    image_info_id     NUMERIC NOT NULL
                           CONSTRAINT suse_icdv_prid_fk
                               REFERENCES suseImageInfo (id)
                               ON DELETE CASCADE,
-    key_id            NUMBER NOT NULL
+    key_id            NUMERIC NOT NULL
                           CONSTRAINT suse_icdv_kid_fk
                               REFERENCES rhnCustomDataKey (id)
                               ON DELETE CASCADE,
-    value             VARCHAR2(4000),
-    created_by        NUMBER
+    value             VARCHAR(4000),
+    created_by        NUMERIC
                           CONSTRAINT suse_icdv_cb_fk
                               REFERENCES web_contact (id)
                               ON DELETE SET NULL,
-    last_modified_by  NUMBER
+    last_modified_by  NUMERIC
                           CONSTRAINT suse_icdv_lmb_fk
                               REFERENCES web_contact (id)
                               ON DELETE SET NULL,
-    created           timestamp with local time zone
+    created           TIMESTAMPTZ
                           DEFAULT (current_timestamp) NOT NULL,
-    modified          timestamp with local time zone
+    modified          TIMESTAMPTZ
                           DEFAULT (current_timestamp) NOT NULL
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE UNIQUE INDEX suse_icdv_imgid_kid_uq

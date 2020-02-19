@@ -1,4 +1,3 @@
--- oracle equivalent source sha1 237c45c0b272bcdf79ccf327277fcbcf94cee572
 
 create or replace function rhn_pkg_capability_mod_trig_fun() returns trigger as
 $$

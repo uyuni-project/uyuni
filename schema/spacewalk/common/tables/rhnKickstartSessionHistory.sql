@@ -16,34 +16,34 @@
 
 CREATE TABLE rhnKickstartSessionHistory
 (
-    id                    NUMBER NOT NULL
+    id                    NUMERIC NOT NULL
                               CONSTRAINT rhn_ks_sessionhist_id_pk PRIMARY KEY
-                              USING INDEX TABLESPACE [[8m_tbs]],
-    kickstart_session_id  NUMBER NOT NULL
+                              ,
+    kickstart_session_id  NUMERIC NOT NULL
                               CONSTRAINT rhn_ks_sessionhist_ksid_fk
                                   REFERENCES rhnKickstartSession (id)
                                   ON DELETE CASCADE,
-    action_id             NUMBER
+    action_id             NUMERIC
                               CONSTRAINT rhn_ks_sessionhist_aid_fk
                                   REFERENCES rhnAction (id)
                                   ON DELETE SET NULL,
-    state_id              NUMBER NOT NULL
+    state_id              NUMERIC NOT NULL
                               CONSTRAINT rhn_ks_sessionhist_stat_fk
                                   REFERENCES rhnKickstartSessionState (id),
-    time                  timestamp with local time zone
+    time                  TIMESTAMPTZ
                               DEFAULT (current_timestamp) NOT NULL,
-    message               VARCHAR2(4000),
-    created               timestamp with local time zone
+    message               VARCHAR(4000),
+    created               TIMESTAMPTZ
                               DEFAULT (current_timestamp) NOT NULL,
-    modified              timestamp with local time zone
+    modified              TIMESTAMPTZ
                               DEFAULT (current_timestamp) NOT NULL
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE INDEX rhn_ks_sessionhist_ksid_idx
     ON rhnKickstartSessionHistory (kickstart_session_id)
-    TABLESPACE [[8m_tbs]];
+    ;
 
 CREATE SEQUENCE rhn_ks_sessionhist_id_seq;
 

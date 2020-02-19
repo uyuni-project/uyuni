@@ -15,8 +15,7 @@
 #
 
 # Constants used to identify the supported database backends:
-ORACLE = "oracle"
 POSTGRESQL = "postgresql"
 
 # Backend constants:
-SUPPORTED_BACKENDS = set([ORACLE, POSTGRESQL])
+SUPPORTED_BACKENDS = set([POSTGRESQL])

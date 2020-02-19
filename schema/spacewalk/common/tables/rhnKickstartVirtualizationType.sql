@@ -16,18 +16,18 @@
 
 CREATE TABLE rhnKickstartVirtualizationType
 (
-    id        NUMBER NOT NULL
+    id        NUMERIC NOT NULL
                   CONSTRAINT rhn_kvt_id_pk PRIMARY KEY
-                  USING INDEX TABLESPACE [[8m_tbs]],
-    name      VARCHAR2(128) NOT NULL,
-    label     VARCHAR2(128) NOT NULL
+                  ,
+    name      VARCHAR(128) NOT NULL,
+    label     VARCHAR(128) NOT NULL
                   CONSTRAINT rhn_kvt_label_unq UNIQUE,
-    created   timestamp with local time zone
+    created   TIMESTAMPTZ
                   DEFAULT (current_timestamp) NOT NULL,
-    modified  timestamp with local time zone
+    modified  TIMESTAMPTZ
                   DEFAULT (current_timestamp) NOT NULL
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE SEQUENCE rhn_kvt_id_seq;

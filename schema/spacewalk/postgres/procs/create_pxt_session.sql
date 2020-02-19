@@ -1,5 +1,3 @@
--- oracle equivalent source sha1 44d21fc191c81ec1bcda62f24f553925f98a6924
--- retrieved from ./1241042199/53fa26df463811901487b608eecc3f77ca7783a1/schema/spacewalk/oracle/procs/create_pxt_session.sql
 --
 -- Copyright (c) 2008--2015 Red Hat, Inc.
 --

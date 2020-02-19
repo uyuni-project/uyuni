@@ -16,22 +16,22 @@
 
 CREATE TABLE rhnConfigInfo
 (
-    id           NUMBER NOT NULL
+    id           NUMERIC NOT NULL
                      CONSTRAINT rhn_confinfo_id_pk PRIMARY KEY
-                     USING INDEX TABLESPACE [[2m_tbs]],
-    username     VARCHAR2(32),
-    groupname    VARCHAR2(32),
-    filemode     NUMBER,
-    symlink_target_filename_id NUMBER
+                     ,
+    username     VARCHAR(32),
+    groupname    VARCHAR(32),
+    filemode     NUMERIC,
+    symlink_target_filename_id NUMERIC
                     CONSTRAINT rhn_confinfo_symlink_fk
                         REFERENCES rhnConfigFileName (id),
-    created      timestamp with local time zone
+    created      TIMESTAMPTZ
                      DEFAULT (current_timestamp) NOT NULL,
-    modified     timestamp with local time zone
+    modified     TIMESTAMPTZ
                      DEFAULT (current_timestamp) NOT NULL,
-    selinux_ctx  VARCHAR2(64)
+    selinux_ctx  VARCHAR(64)
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE SEQUENCE rhn_confinfo_id_seq;

@@ -16,27 +16,27 @@
 
 CREATE TABLE rhnActionKickstartFileList
 (
-    action_ks_id  NUMBER NOT NULL
+    action_ks_id  NUMERIC NOT NULL
                       CONSTRAINT rhn_actionksfl_askid_fk
                           REFERENCES rhnActionKickstart (id)
                           ON DELETE CASCADE,
-    file_list_id  NUMBER NOT NULL
+    file_list_id  NUMERIC NOT NULL
                       CONSTRAINT rhn_actionksfl_flid_fk
                           REFERENCES rhnFileList (id)
                           ON DELETE CASCADE,
-    created       timestamp with local time zone
+    created       TIMESTAMPTZ
                       DEFAULT (current_timestamp) NOT NULL,
-    modified      timestamp with local time zone
+    modified      TIMESTAMPTZ
                       DEFAULT (current_timestamp) NOT NULL
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE UNIQUE INDEX rhn_actionksfl_aksid_flid_uq
     ON rhnActionKickstartFileList (action_ks_id, file_list_id)
-    TABLESPACE [[8m_tbs]];
+    ;
 
 CREATE INDEX rhn_actionksfl_flid_idx
     ON rhnActionKickstartFileList (file_list_id)
-    TABLESPACE [[4m_tbs]];
+    ;
 

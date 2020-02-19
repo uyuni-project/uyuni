@@ -16,34 +16,34 @@
 
 CREATE TABLE rhnActionPackage
 (
-    id               NUMBER NOT NULL
+    id               NUMERIC NOT NULL
                          CONSTRAINT rhn_act_p_id_pk PRIMARY KEY
-                         USING INDEX TABLESPACE [[8m_tbs]],
-    action_id        NUMBER NOT NULL
+                         ,
+    action_id        NUMERIC NOT NULL
                          CONSTRAINT rhn_act_p_act_fk
                              REFERENCES rhnAction (id)
                              ON DELETE CASCADE,
-    parameter        VARCHAR2(128)
+    parameter        VARCHAR(128)
                          DEFAULT ('upgrade') NOT NULL
                          CONSTRAINT rhn_act_p_param_ck
                              CHECK (parameter IN ('upgrade', 'install', 'remove', 'downgrade', 'lock')),
-    name_id          NUMBER NOT NULL
+    name_id          NUMERIC NOT NULL
                          CONSTRAINT rhn_act_p_name_fk
                              REFERENCES rhnPackageName (id),
-    evr_id           NUMBER
+    evr_id           NUMERIC
                          CONSTRAINT rhn_act_p_evr_fk
                              REFERENCES rhnPackageEvr (id),
-    package_arch_id  NUMBER
+    package_arch_id  NUMERIC
                          CONSTRAINT rhn_act_p_paid_fk
                              REFERENCES rhnPackageArch (id)
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE INDEX rhn_act_p_aid_idx
     ON rhnActionPackage (action_id)
-    TABLESPACE [[4m_tbs]]
-    NOLOGGING;
+    
+    ;
 
 CREATE SEQUENCE rhn_act_p_id_seq;
 
