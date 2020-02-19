@@ -58,6 +58,7 @@ public class LibvirtEngineDomainLifecycleMessageActionTest extends JMockBaseTest
 
     private SaltService saltServiceMock;
     private Server host;
+    private VirtManager virtManager;
 
     // JsonParser for parsing events from files
     public static final JsonParser<Event> EVENTS =
@@ -76,8 +77,9 @@ public class LibvirtEngineDomainLifecycleMessageActionTest extends JMockBaseTest
                     with(any(LocalCall.class)),
                     with(containsString("serverfactorytest")));
         }});
+
         SystemEntitler.INSTANCE.setSaltService(saltServiceMock);
-        VirtManager.setSaltService(saltServiceMock);
+        virtManager = new VirtManager(saltServiceMock);
 
         host = ServerTestUtils.createVirtHostWithGuests(user, 1, true);
         host.asMinionServer().get().setMinionId("testminion.local");
@@ -95,7 +97,7 @@ public class LibvirtEngineDomainLifecycleMessageActionTest extends JMockBaseTest
         Optional<EngineEvent> event = EngineEvent.parse(getEngineEvent("virtevents.guest.started.json", null));
         AbstractLibvirtEngineMessage message = AbstractLibvirtEngineMessage.create(event.get());
 
-        new LibvirtEngineDomainLifecycleMessageAction().execute(message);
+        new LibvirtEngineDomainLifecycleMessageAction(virtManager).execute(message);
 
         DataResult<VirtualSystemOverview> guests = SystemManager.virtualGuestsForHostList(user, host.getId(), null);
         List<VirtualSystemOverview> newGuests = guests.stream().filter(vso -> vso.getName().equals("sles12sp2"))
@@ -125,7 +127,7 @@ public class LibvirtEngineDomainLifecycleMessageActionTest extends JMockBaseTest
         Optional<EngineEvent> event = EngineEvent.parse(getEngineEvent("virtevents.guest.shutdown.json", placeholders));
         AbstractLibvirtEngineMessage message = AbstractLibvirtEngineMessage.create(event.get());
 
-        new LibvirtEngineDomainLifecycleMessageAction().execute(message);
+        new LibvirtEngineDomainLifecycleMessageAction(virtManager).execute(message);
 
         DataResult<VirtualSystemOverview> guests = SystemManager.virtualGuestsForHostList(user, host.getId(), null);
         List<VirtualSystemOverview> matchingGuests = guests.stream().filter(vso -> vso.getUuid().equals(guid))
@@ -155,7 +157,7 @@ public class LibvirtEngineDomainLifecycleMessageActionTest extends JMockBaseTest
         Optional<EngineEvent> event = EngineEvent.parse(getEngineEvent("virtevents.guest.shutdown.json", placeholders));
         AbstractLibvirtEngineMessage message = AbstractLibvirtEngineMessage.create(event.get());
 
-        new LibvirtEngineDomainLifecycleMessageAction().execute(message);
+        new LibvirtEngineDomainLifecycleMessageAction(virtManager).execute(message);
 
         DataResult<VirtualSystemOverview> guests = SystemManager.virtualGuestsForHostList(user, host.getId(), null);
         List<VirtualSystemOverview> matchingGuests = guests.stream().filter(vso -> vso.getUuid().equals(guid))
@@ -184,7 +186,7 @@ public class LibvirtEngineDomainLifecycleMessageActionTest extends JMockBaseTest
         Optional<EngineEvent> event = EngineEvent.parse(getEngineEvent("virtevents.guest.updated.json", placeholders));
         AbstractLibvirtEngineMessage message = AbstractLibvirtEngineMessage.create(event.get());
 
-        new LibvirtEngineDomainLifecycleMessageAction().execute(message);
+        new LibvirtEngineDomainLifecycleMessageAction(virtManager).execute(message);
 
         DataResult<VirtualSystemOverview> guests = SystemManager.virtualGuestsForHostList(user, host.getId(), null);
         List<VirtualSystemOverview> matchingGuests = guests.stream().filter(vso -> vso.getUuid().equals(guid))

@@ -46,6 +46,7 @@ public class VirtualPoolsControllerTest extends BaseControllerTestCase {
     private SaltService saltServiceMock;
     private Server host;
     private static final Gson GSON = new GsonBuilder().create();
+    private VirtManager virtManager;
 
     /**
      * {@inheritDoc}
@@ -67,7 +68,8 @@ public class VirtualPoolsControllerTest extends BaseControllerTestCase {
                     with(SaltTestUtils.functionEquals("state", "apply")),
                     with(containsString("serverfactorytest")));
         }});
-        VirtManager.setSaltService(saltServiceMock);
+
+        virtManager = new VirtManager(saltServiceMock);
         SystemEntitler.INSTANCE.setSaltService(saltServiceMock);
 
         host = ServerTestUtils.createVirtHostWithGuests(user, 1, true);
@@ -85,7 +87,8 @@ public class VirtualPoolsControllerTest extends BaseControllerTestCase {
                     new TypeToken<Map<String, JsonElement>>() { }.getType())));
         }});
 
-        String json = VirtualPoolsController.data(getRequestWithCsrf(
+        VirtualPoolsController virtualPoolsController = new VirtualPoolsController(virtManager);
+        String json = virtualPoolsController.data(getRequestWithCsrf(
                 "/manager/api/systems/details/virtualization/pools/:sid/data", host.getId()), response, user);
 
         List<VirtualStoragePoolInfoJson> pools = GSON.fromJson(json, new TypeToken<List<VirtualStoragePoolInfoJson>>() {}.getType());

@@ -18,6 +18,7 @@ import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withUser;
 import static spark.Spark.get;
 
+import com.google.gson.JsonObject;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.system.SystemManager;
@@ -40,16 +41,20 @@ import spark.template.jade.JadeTemplateEngine;
  */
 public class VirtualPoolsController {
 
-    private VirtualPoolsController() { }
+    private final VirtManager virtManager;
+
+    public VirtualPoolsController(VirtManager virtManager) {
+        this.virtManager = virtManager;
+    }
 
     /**
      * Initialize request routes for the pages served by VirtualPoolsController
      *
      * @param jade jade engine
      */
-    public static void initRoutes(JadeTemplateEngine jade) {
+    public void initRoutes(JadeTemplateEngine jade) {
         get("/manager/api/systems/details/virtualization/pools/:sid/data",
-                withUser(VirtualPoolsController::data));
+                withUser(this::data));
     }
 
     /**
@@ -60,7 +65,7 @@ public class VirtualPoolsController {
      * @param user the user
      * @return JSON result of the API call
      */
-    public static String data(Request request, Response response, User user) {
+    public String data(Request request, Response response, User user) {
         Long serverId;
 
         try {
@@ -72,10 +77,10 @@ public class VirtualPoolsController {
         Server host = SystemManager.lookupByIdAndUser(serverId, user);
         String minionId = host.asMinionServer().orElseThrow(() -> new NotFoundException()).getMinionId();
 
-        Map<String, JsonElement> infos = VirtManager.getPools(minionId);
+        Map<String, JsonObject> infos = virtManager.getPools(minionId);
         List<VirtualStoragePoolInfoJson> pools = infos.entrySet().stream().map(entry -> {
             VirtualStoragePoolInfoJson pool = new VirtualStoragePoolInfoJson(entry.getKey(),
-                    entry.getValue().getAsJsonObject());
+                    entry.getValue());
 
             return pool;
         }).collect(Collectors.toList());
