@@ -97,30 +97,34 @@ public class VirtualGuestsController {
             .serializeNulls()
             .create();
 
-    private VirtualGuestsController() { }
+    private final VirtManager virtManager;
+
+    public VirtualGuestsController(VirtManager virtManager) {
+        this.virtManager = virtManager;
+    }
 
     /**
      * Initialize request routes for the pages served by VirtualGuestsController
      *
      * @param jade jade engine
      */
-    public static void initRoutes(JadeTemplateEngine jade) {
+    public void initRoutes(JadeTemplateEngine jade) {
         get("/manager/systems/details/virtualization/guests/:sid",
-                withUserPreferences(withCsrfToken(withUser(VirtualGuestsController::show))), jade);
+                withUserPreferences(withCsrfToken(withUser(this::show))), jade);
         get("/manager/systems/details/virtualization/guests/:sid/edit/:guestuuid",
-                withUserPreferences(withCsrfToken(withUser(VirtualGuestsController::edit))), jade);
+                withUserPreferences(withCsrfToken(withUser(this::edit))), jade);
         get("/manager/systems/details/virtualization/guests/:sid/new",
-                withUserPreferences(withCsrfToken(withUser(VirtualGuestsController::create))), jade);
+                withUserPreferences(withCsrfToken(withUser(this::create))), jade);
         get("/manager/systems/details/virtualization/guests/:sid/console/:guestuuid",
-                withUserPreferences(withCsrfToken(withUser(VirtualGuestsController::console))), jade);
+                withUserPreferences(withCsrfToken(withUser(this::console))), jade);
         get("/manager/api/systems/details/virtualization/guests/:sid/data",
-                withUser(VirtualGuestsController::data));
+                withUser(this::data));
         post("/manager/api/systems/details/virtualization/guests/:sid/:action",
-                withUser(VirtualGuestsController::action));
+                withUser(this::action));
         get("/manager/api/systems/details/virtualization/guests/:sid/guest/:uuid",
-                withUser(VirtualGuestsController::getGuest));
+                withUser(this::getGuest));
         get("/manager/api/systems/details/virtualization/guests/:sid/domains_capabilities",
-                withUser(VirtualGuestsController::getDomainsCapabilities));
+                withUser(this::getDomainsCapabilities));
     }
 
     /**
@@ -131,7 +135,7 @@ public class VirtualGuestsController {
      * @param user the user
      * @return the ModelAndView object to render the page
      */
-    public static ModelAndView show(Request request, Response response, User user) {
+    public ModelAndView show(Request request, Response response, User user) {
         Map<String, Object> data = new HashMap<>();
         Long serverId;
         Server server;
@@ -170,7 +174,7 @@ public class VirtualGuestsController {
      * @param user the user
      * @return JSON result of the API call
      */
-    public static String data(Request request, Response response, User user) {
+    public String data(Request request, Response response, User user) {
         Long serverId;
 
         try {
@@ -204,7 +208,7 @@ public class VirtualGuestsController {
      * @param user the user
      * @return the json response
      */
-    public static String getGuest(Request request, Response response, User user) {
+    public String getGuest(Request request, Response response, User user) {
         Long serverId;
         try {
             serverId = Long.parseLong(request.params("sid"));
@@ -219,7 +223,7 @@ public class VirtualGuestsController {
         VirtualSystemOverview guest = guests.stream().filter(vso -> vso.getUuid().equals(uuid))
                 .findFirst().orElseThrow(() -> new NotFoundException());
 
-        GuestDefinition definition = VirtManager.getGuestDefinition(host.asMinionServer().get().getMinionId(),
+        GuestDefinition definition = virtManager.getGuestDefinition(host.asMinionServer().get().getMinionId(),
                 guest.getName()).orElseThrow(() -> new NotFoundException());
 
         return json(response, definition);
@@ -233,7 +237,7 @@ public class VirtualGuestsController {
      * @param user the user
      * @return the json response
      */
-    public static String getDomainsCapabilities(Request request, Response response, User user) {
+    public String getDomainsCapabilities(Request request, Response response, User user) {
         Long serverId;
         try {
             serverId = Long.parseLong(request.params("sid"));
@@ -246,7 +250,7 @@ public class VirtualGuestsController {
         String minionId = host.asMinionServer().orElseThrow(() ->
             Spark.halt(HttpStatus.SC_BAD_REQUEST, "Can only get capabilities of Salt system")).getMinionId();
 
-        Map<String, JsonElement> capabilities = VirtManager.getCapabilities(minionId)
+        Map<String, JsonElement> capabilities = virtManager.getCapabilities(minionId)
                 .orElseThrow(() -> Spark.halt(HttpStatus.SC_BAD_REQUEST,
                         "Failed to get virtual host capabilities"));
 
@@ -271,7 +275,7 @@ public class VirtualGuestsController {
      * @param user the user
      * @return the json response
      */
-    public static String action(Request request, Response response, User user) {
+    public String action(Request request, Response response, User user) {
         HashMap<String, Class<? extends VirtualGuestsBaseActionJson>> actionsMap = new HashMap<>();
         actionsMap.put("start", VirtualGuestsBaseActionJson.class);
         actionsMap.put("suspend", VirtualGuestsBaseActionJson.class);
@@ -354,7 +358,7 @@ public class VirtualGuestsController {
      * @param user the user
      * @return the ModelAndView object to render the page
      */
-    public static ModelAndView edit(Request request, Response response, User user) {
+    public ModelAndView edit(Request request, Response response, User user) {
         Map<String, Object> data = new HashMap<>();
 
         Long hostId;
@@ -404,7 +408,7 @@ public class VirtualGuestsController {
      * @param user the user
      * @return the ModelAndView object to render the page
      */
-    public static ModelAndView create(Request request, Response response, User user) {
+    public ModelAndView create(Request request, Response response, User user) {
         Map<String, Object> data = new HashMap<>();
 
         Long hostId = Long.parseLong(request.params("sid"));
@@ -433,7 +437,7 @@ public class VirtualGuestsController {
      * @param user the user
      * @return the ModelAndView object to render the page
      */
-    public static ModelAndView console(Request request, Response response, User user) {
+    public ModelAndView console(Request request, Response response, User user) {
         Map<String, Object> data = new HashMap<>();
 
         Long hostId;
@@ -452,7 +456,7 @@ public class VirtualGuestsController {
         Server host = guest.getHostSystem();
 
         String minionId = host.asMinionServer().orElseThrow(() -> Spark.halt(HttpStatus.SC_BAD_REQUEST)).getMinionId();
-        GuestDefinition def = VirtManager.getGuestDefinition(minionId, guest.getName()).
+        GuestDefinition def = virtManager.getGuestDefinition(minionId, guest.getName()).
                 orElseThrow(() -> Spark.halt(HttpStatus.SC_BAD_REQUEST));
         String hostname = host.getName();
         Integer port = def.getGraphics().getPort();
@@ -484,7 +488,7 @@ public class VirtualGuestsController {
         return new ModelAndView(data, "templates/virtualization/guests/console.jade");
     }
 
-    private static String triggerGuestUpdateAction(Server host,
+    private String triggerGuestUpdateAction(Server host,
                                                    VirtualSystemOverview guest,
                                                    User user,
                                                    VirtualGuestsUpdateActionJson data) {
@@ -511,7 +515,7 @@ public class VirtualGuestsController {
         return GSON.toJson(results);
     }
 
-    private static String triggerGuestUpdateSaltAction(Server host,
+    private String triggerGuestUpdateSaltAction(Server host,
                                                        VirtualSystemOverview guest,
                                                        User user,
                                                        VirtualGuestsUpdateActionJson data) {
@@ -579,7 +583,7 @@ public class VirtualGuestsController {
         return status;
     }
 
-    private static String triggerGuestSetterAction(Server host,
+    private String triggerGuestSetterAction(Server host,
                                                    VirtualSystemOverview guest,
                                                    String actionName,
                                                    ActionType actionType,
@@ -594,7 +598,7 @@ public class VirtualGuestsController {
         return triggerGuestAction(host, guest, actionType, user, context);
     }
 
-    private static String triggerGuestAction(Server host,
+    private String triggerGuestAction(Server host,
                                              VirtualSystemOverview guest,
                                              ActionType actionType,
                                              User user,

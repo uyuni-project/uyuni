@@ -64,6 +64,8 @@ public class VirtualGuestsControllerTest extends BaseControllerTestCase {
     private SaltService saltServiceMock;
     private static final Gson GSON = new GsonBuilder().create();
     private Server host;
+    private VirtManager virtManager;
+    private VirtualGuestsController virtualGuestsController;
 
     /**
      * {@inheritDoc}
@@ -86,7 +88,9 @@ public class VirtualGuestsControllerTest extends BaseControllerTestCase {
                     with(any(LocalCall.class)),
                     with(containsString("serverfactorytest")));
         }});
-        VirtManager.setSaltService(saltServiceMock);
+        
+        virtManager = new VirtManager(saltServiceMock);
+        virtualGuestsController = new VirtualGuestsController(virtManager);
         SystemEntitler.INSTANCE.setSaltService(saltServiceMock);
 
         host = ServerTestUtils.createVirtHostWithGuests(user, 2, true);
@@ -110,7 +114,8 @@ public class VirtualGuestsControllerTest extends BaseControllerTestCase {
         VirtualInstance[] guests = host.getGuests().toArray(new VirtualInstance[size]);
         Long sid = host.getId();
 
-        String json = VirtualGuestsController.data(
+
+        String json = virtualGuestsController.data(
                 getRequestWithCsrf("/manager/api/systems/details/virtualization/guests/:sid/data", sid),
                 response, user);
         List<Map<String, Object>> model = GSON.fromJson(json, List.class);
@@ -138,7 +143,7 @@ public class VirtualGuestsControllerTest extends BaseControllerTestCase {
         VirtualInstance guest = host.getGuests().iterator().next();
         Long sid = host.getId();
 
-        String json = VirtualGuestsController.action(
+        String json = virtualGuestsController.action(
                 getPostRequestWithCsrfAndBody("/manager/api/systems/details/virtualization/guests/:sid/:action",
                                               "{uuids: [\"" + guest.getUuid() + "\"]}",
                                               sid, "shutdown"),
@@ -170,7 +175,7 @@ public class VirtualGuestsControllerTest extends BaseControllerTestCase {
         Long sid = host.getId();
 
         Integer vcpus = 3;
-        String json = VirtualGuestsController.action(
+        String json = virtualGuestsController.action(
                 getPostRequestWithCsrfAndBody("/manager/api/systems/details/virtualization/guests/:sid/:action",
                                               "{uuids: [\"" + guest.getUuid() + "\"], value: " + vcpus + "}",
                                               sid, "setVcpu"),
@@ -200,7 +205,7 @@ public class VirtualGuestsControllerTest extends BaseControllerTestCase {
         Long sid = host.getId();
 
         try {
-            VirtualGuestsController.action(
+            virtualGuestsController.action(
                     getPostRequestWithCsrfAndBody("/manager/api/systems/details/virtualization/guests/:sid/:action",
                                                   "{uuids: [\"" + guest.getUuid() + "\"]}",
                                                   sid, "setVcpu"),
@@ -226,7 +231,7 @@ public class VirtualGuestsControllerTest extends BaseControllerTestCase {
         Long sid = host.getId();
 
         Integer mem = 2048;
-        String json = VirtualGuestsController.action(
+        String json = virtualGuestsController.action(
                 getPostRequestWithCsrfAndBody("/manager/api/systems/details/virtualization/guests/:sid/:action",
                                               "{uuids: [\"" + guests[0].getUuid() + "\", " +
                                                        "\"" + guests[1].getUuid() + "\"], " +
@@ -280,7 +285,7 @@ public class VirtualGuestsControllerTest extends BaseControllerTestCase {
                     "/com/suse/manager/reactor/messaging/test/virt.guest.definition.xml", placeholders, null)));
         }});
 
-        String json = VirtualGuestsController.getGuest(
+        String json = virtualGuestsController.getGuest(
                 getRequestWithCsrf("/manager/api/systems/details/virtualization/guests/:sid/guest/:uuid",
                         host.getId(), guid),
                 response, user);
@@ -329,7 +334,7 @@ public class VirtualGuestsControllerTest extends BaseControllerTestCase {
                     new TypeToken<Map<String, JsonElement>>() { }.getType())));
         }});
 
-        String json = VirtualGuestsController.getDomainsCapabilities(
+        String json = virtualGuestsController.getDomainsCapabilities(
                 getRequestWithCsrf("/manager/api/systems/details/virtualization/guests/:sid/domains_capabilities",
                         host.getId()), response, user);
 

@@ -53,22 +53,26 @@ import spark.template.jade.JadeTemplateEngine;
  */
 public class VirtualPoolsController {
 
-    private VirtualPoolsController() { }
+    private final VirtManager virtManager;
+
+    public VirtualPoolsController(VirtManager virtManager) {
+        this.virtManager = virtManager;
+    }
 
     /**
      * Initialize request routes for the pages served by VirtualPoolsController
      *
      * @param jade jade engine
      */
-    public static void initRoutes(JadeTemplateEngine jade) {
+    public void initRoutes(JadeTemplateEngine jade) {
         get("/manager/systems/details/virtualization/storage/:sid",
-                withUserPreferences(withCsrfToken(withUser(VirtualPoolsController::show))), jade);
+                withUserPreferences(withCsrfToken(withUser(this::show))), jade);
         get("/manager/api/systems/details/virtualization/pools/:sid/data",
-                withUser(VirtualPoolsController::data));
+                withUser(this::data));
         get("/manager/api/systems/details/virtualization/pools/:sid/capabilities",
-                withUser(VirtualPoolsController::getCapabilities));
+                withUser(this::getCapabilities));
         get("/manager/api/systems/details/virtualization/pools/:sid/pool/:name",
-                withUser(VirtualPoolsController::getPool));
+                withUser(this::getPool));
     }
 
     /**
@@ -79,7 +83,7 @@ public class VirtualPoolsController {
      * @param user the user
      * @return the ModelAndView object to render the page
      */
-    public static ModelAndView show(Request request, Response response, User user) {
+    public ModelAndView show(Request request, Response response, User user) {
         return renderPage(request, response, user, "show", null);
     }
 
@@ -92,7 +96,7 @@ public class VirtualPoolsController {
      * @param user the user
      * @return JSON result of the API call
      */
-    public static String data(Request request, Response response, User user) {
+    public String data(Request request, Response response, User user) {
         Long serverId;
 
         try {
@@ -104,8 +108,8 @@ public class VirtualPoolsController {
         Server host = SystemManager.lookupByIdAndUser(serverId, user);
         String minionId = host.asMinionServer().orElseThrow(() -> new NotFoundException()).getMinionId();
 
-        Map<String, JsonObject> infos = VirtManager.getPools(minionId);
-        Map<String, Map<String, JsonObject>> volInfos = VirtManager.getVolumes(minionId);
+        Map<String, JsonObject> infos = virtManager.getPools(minionId);
+        Map<String, Map<String, JsonObject>> volInfos = virtManager.getVolumes(minionId);
         List<VirtualStoragePoolInfoJson> pools = infos.entrySet().stream().map(entry -> {
             Map<String, JsonObject> poolVols = volInfos.getOrDefault(entry.getKey(), new HashMap<>());
             List<VirtualStorageVolumeInfoJson> volumes = poolVols.entrySet().stream().map(volEntry -> {
@@ -129,7 +133,7 @@ public class VirtualPoolsController {
      * @param user the user
      * @return JSON-formatted capabilities
      */
-    public static String getCapabilities(Request request, Response response, User user) {
+    public String getCapabilities(Request request, Response response, User user) {
         Long serverId;
         try {
             serverId = Long.parseLong(request.params("sid"));
@@ -142,7 +146,7 @@ public class VirtualPoolsController {
         String minionId = host.asMinionServer().orElseThrow(() ->
             Spark.halt(HttpStatus.SC_BAD_REQUEST, "Can only get capabilities of Salt system")).getMinionId();
 
-        PoolCapabilitiesJson caps = VirtManager.getPoolCapabilities(minionId)
+        PoolCapabilitiesJson caps = virtManager.getPoolCapabilities(minionId)
             .orElseThrow(() -> Spark.halt(HttpStatus.SC_BAD_REQUEST,
                 "Failed to get virtual host storage pool capabilities"));
 
@@ -157,7 +161,7 @@ public class VirtualPoolsController {
      * @param user the user
      * @return JSON-formatted capabilities
      */
-    public static String getPool(Request request, Response response, User user) {
+    public String getPool(Request request, Response response, User user) {
         Long serverId;
         try {
             serverId = Long.parseLong(request.params("sid"));
@@ -171,7 +175,7 @@ public class VirtualPoolsController {
             Spark.halt(HttpStatus.SC_BAD_REQUEST, "Can only get pool definition of Salt system")).getMinionId();
 
         String poolName = request.params("name");
-        PoolDefinition definition = VirtManager.getPoolDefinition(minionId, poolName)
+        PoolDefinition definition = virtManager.getPoolDefinition(minionId, poolName)
                 .orElseThrow(() -> new NotFoundException());
 
         return json(response, definition);

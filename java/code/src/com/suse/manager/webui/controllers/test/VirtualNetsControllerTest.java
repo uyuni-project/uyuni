@@ -45,6 +45,7 @@ public class VirtualNetsControllerTest extends BaseControllerTestCase {
     private SaltService saltServiceMock;
     private Server host;
     private static final Gson GSON = new GsonBuilder().create();
+    private VirtManager virtManager;
 
     /**
      * {@inheritDoc}
@@ -66,8 +67,9 @@ public class VirtualNetsControllerTest extends BaseControllerTestCase {
                     with(SaltTestUtils.functionEquals("state", "apply")),
                     with(containsString("serverfactorytest")));
         }});
-        VirtManager.setSaltService(saltServiceMock);
+
         SystemEntitler.INSTANCE.setSaltService(saltServiceMock);
+        virtManager = new VirtManager(saltServiceMock);
 
         host = ServerTestUtils.createVirtHostWithGuests(user, 1, true);
         host.asMinionServer().get().setMinionId("testminion.local");
@@ -84,7 +86,8 @@ public class VirtualNetsControllerTest extends BaseControllerTestCase {
                     new TypeToken<Map<String, JsonElement>>() { }.getType())));
         }});
 
-        String json = VirtualNetsController.data(getRequestWithCsrf(
+        VirtualNetsController virtualNetsController = new VirtualNetsController(virtManager);
+        String json = virtualNetsController.data(getRequestWithCsrf(
                 "/manager/api/systems/details/virtualization/nets/:sid/data", host.getId()), response, user);
 
         List<VirtualNetworkInfoJson> nets = GSON.fromJson(json, new TypeToken<List<VirtualNetworkInfoJson>>() {}.getType());

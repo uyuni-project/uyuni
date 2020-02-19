@@ -50,6 +50,7 @@ import com.suse.manager.reactor.messaging.SystemIdGenerateEventMessageAction;
 import com.suse.manager.reactor.messaging.VirtpollerBeaconEventMessage;
 import com.suse.manager.reactor.messaging.VirtpollerBeaconEventMessageAction;
 import com.suse.manager.utils.MailHelper;
+import com.suse.manager.virtualization.VirtManager;
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.services.impl.SystemQuery;
 import com.suse.manager.webui.utils.salt.ImageDeployedEvent;
@@ -94,6 +95,9 @@ public class SaltReactor {
      * Start the salt reactor.
      */
     public void start() {
+
+        VirtManager virtManager = new VirtManager(SaltService.INSTANCE);
+
         // Configure message queue to handle minion registrations
         MessageQueue.registerAction(new RegisterMinionEventMessageAction(),
                 RegisterMinionEventMessage.class);
@@ -115,7 +119,7 @@ public class SaltReactor {
                 SystemIdGenerateEventMessage.class);
         MessageQueue.registerAction(new ImageDeployedEventMessageAction(),
                 ImageDeployedEventMessage.class);
-        MessageQueue.registerAction(new LibvirtEngineDomainLifecycleMessageAction(),
+        MessageQueue.registerAction(new LibvirtEngineDomainLifecycleMessageAction(virtManager),
                 LibvirtEngineDomainLifecycleMessage.class);
         MessageQueue.registerAction(new BatchStartedEventMessageAction(),
                 BatchStartedEventMessage.class);
