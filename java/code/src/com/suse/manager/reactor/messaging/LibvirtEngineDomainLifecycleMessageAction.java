@@ -40,6 +40,12 @@ public class LibvirtEngineDomainLifecycleMessageAction implements MessageAction 
 
     private static final Logger LOG = Logger.getLogger(LibvirtEngineDomainLifecycleMessageAction.class);
 
+    private final VirtManager virtManager;
+
+    public LibvirtEngineDomainLifecycleMessageAction(VirtManager virtManager) {
+        this.virtManager = virtManager;
+    }
+
     @Override
     public void execute(EventMessage msg) {
         LibvirtEngineDomainLifecycleMessage message = (LibvirtEngineDomainLifecycleMessage)msg;
@@ -60,7 +66,7 @@ public class LibvirtEngineDomainLifecycleMessageAction implements MessageAction 
                 if (vms.isEmpty()) {
                     // We got a machine created from outside SUMA,
                     // ask Salt for details on it to create it
-                    Optional<GuestDefinition> result = VirtManager.getGuestDefinition(
+                    Optional<GuestDefinition> result = virtManager.getGuestDefinition(
                             minionId, message.getDomainName());
 
                     result.ifPresent(def -> {
@@ -97,12 +103,12 @@ public class LibvirtEngineDomainLifecycleMessageAction implements MessageAction 
 
                     // We need to check if the VM is still defined and delete it if needed
                     if (Arrays.asList("undefined", "stopped", "shutdown", "crashed").contains(event) &&
-                        !VirtManager.getGuestDefinition(minionId, message.getDomainName()).isPresent()) {
+                        !virtManager.getGuestDefinition(minionId, message.getDomainName()).isPresent()) {
                         vms.forEach(vm -> VirtualInstanceManager.deleteGuestVirtualInstance(vm));
                     }
                     else {
                         final Optional<GuestDefinition> updatedDef = message.getDetail().equals("updated") ?
-                                VirtManager.getGuestDefinition(minionId, message.getDomainName()) :
+                                virtManager.getGuestDefinition(minionId, message.getDomainName()) :
                                 Optional.empty();
 
                         vms.forEach(vm -> {

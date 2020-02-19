@@ -34,7 +34,11 @@ import java.util.stream.Collectors;
  */
 public class VirtManager {
 
-    private static SystemQuery saltService = SaltService.INSTANCE;
+    private final SystemQuery saltService;
+
+    public VirtManager(SystemQuery systemQuery) {
+        this.saltService = systemQuery;
+    }
 
     /**
      * Query virtual machine definition
@@ -43,7 +47,7 @@ public class VirtManager {
      * @param domainName the domain name to look for
      * @return the XML definition or an empty Optional
      */
-    public static Optional<GuestDefinition> getGuestDefinition(String minionId, String domainName) {
+    public Optional<GuestDefinition> getGuestDefinition(String minionId, String domainName) {
         return saltService.getGuestDefinition(minionId, domainName);
     }
 
@@ -53,7 +57,7 @@ public class VirtManager {
      * @param minionId the salt minion virtual host to ask about
      * @return the output of the salt virt.all_capabilities call in JSON
      */
-    public static Optional<Map<String, JsonElement>> getCapabilities(String minionId) {
+    public Optional<Map<String, JsonElement>> getCapabilities(String minionId) {
         return saltService.getCapabilities(minionId);
     }
 
@@ -63,7 +67,7 @@ public class VirtManager {
      * @param minionId the salt minion virtual host to ask about
      * @return the output of the salt virt.pool_capabilities call
      */
-    public static Optional<PoolCapabilitiesJson> getPoolCapabilities(String minionId) {
+    public Optional<PoolCapabilitiesJson> getPoolCapabilities(String minionId) {
         return saltService.getPoolCapabilities(minionId);
     }
 
@@ -74,7 +78,7 @@ public class VirtManager {
      * @param poolName the domain name to look for
      * @return the XML definition or an empty Optional
      */
-    public static Optional<PoolDefinition> getPoolDefinition(String minionId, String poolName) {
+    public Optional<PoolDefinition> getPoolDefinition(String minionId, String poolName) {
         return saltService.getPoolDefinition(minionId, poolName);
     }
 
@@ -84,7 +88,7 @@ public class VirtManager {
      * @param minionId the minion to ask about
      * @return a list of the network names
      */
-    public static Map<String, JsonObject> getNetworks(String minionId) {
+    public Map<String, JsonObject> getNetworks(String minionId) {
         return saltService.getNetworks(minionId);
     }
 
@@ -94,7 +98,7 @@ public class VirtManager {
      * @param minionId the minion to ask about
      * @return a map associating pool names with their informations as Json elements
      */
-    public static Map<String, JsonObject> getPools(String minionId) {
+    public Map<String, JsonObject> getPools(String minionId) {
         return saltService.getPools(minionId);
     }
 
@@ -104,17 +108,8 @@ public class VirtManager {
      * @param minionId the minion to ask about
      * @return a map associating pool names with the list of volumes it contains mapped by their names
      */
-    public static Map<String, Map<String, JsonObject>> getVolumes(String minionId) {
+    public Map<String, Map<String, JsonObject>> getVolumes(String minionId) {
         return saltService.getVolumes(minionId);
     }
 
-    /**
-     * @param saltServiceIn to set for tests
-     */
-    public static void setSaltService(SaltService saltServiceIn) {
-        saltService = saltServiceIn;
-    }
-
-    private VirtManager() {
-    }
 }
