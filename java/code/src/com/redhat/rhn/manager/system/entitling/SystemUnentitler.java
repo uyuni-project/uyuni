@@ -76,10 +76,9 @@ public class SystemUnentitler {
         server.asMinionServer().ifPresent(s -> {
             ServerGroupManager.getInstance().updatePillarAfterGroupUpdateForServers(Arrays.asList(s));
 
-         // Configure the monitoring formula for cleanup if still assigned (disable exporters)
+            // Configure prometheus-exporters for cleanup (disable all exporters) if applicable
             if (EntitlementManager.MONITORING.equals(ent)) {
-                FormulaManager formulas = FormulaManager.getInstance();
-                if (formulas.hasSystemFormulaAssigned(PROMETHEUS_EXPORTERS, s.getId().intValue())) {
+                if (FormulaManager.getInstance().isMonitoringCleanupNeeded(s)) {
                     try {
                      // Get the current data and set all exporters to disabled
                         String minionId = s.getMinionId();
