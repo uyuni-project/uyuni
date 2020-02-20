@@ -329,13 +329,13 @@
     },
     {
         "id" : -8,
-        "name" : "RHEL8 Base",
+        "name" : "RHEL or SLES ES or CentOS 8 Base",
         "identifier" : "rhel-base",
         "former_identifier" : "",
         "version" : "8",
         "release_type" : null,
         "arch" : "x86_64",
-        "friendly_name" : "RHEL8 Base x86_64",
+        "friendly_name" : "RHEL or SLES ES or CentOS 8 Base",
         "product_class" : "SLE-M-T",
         "cpe" : null,
         "free" : false,
@@ -390,7 +390,7 @@
         ],
         "repositories" : [
             {
-                "id" : -81,
+                "id" : -83,
                 "url" : "http://localhost/pub/repositories/empty/",
                 "name" : "RHEL7-Pool",
                 "distro_target" : "x86_64",
