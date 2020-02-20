@@ -60,6 +60,8 @@ import com.redhat.rhn.domain.scc.SCCRepositoryNoAuth;
 import com.redhat.rhn.domain.scc.SCCRepositoryTokenAuth;
 import com.redhat.rhn.domain.scc.SCCSubscription;
 import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManagerNodeInfo;
+import com.redhat.rhn.domain.recurringactions.MinionRecurringAction;
+import com.redhat.rhn.domain.recurringactions.RecurringAction;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -126,6 +128,8 @@ public class AnnotationRegistry {
         ANNOTATION_CLASSES.add(PackageSuggests.class);
         ANNOTATION_CLASSES.add(PackagePreDepends.class);
         ANNOTATION_CLASSES.add(PackageEnhances.class);
+        ANNOTATION_CLASSES.add(RecurringAction.class);
+        ANNOTATION_CLASSES.add(MinionRecurringAction.class);
 
     }
 
