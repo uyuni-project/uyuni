@@ -2578,19 +2578,19 @@ public class SystemHandler extends BaseHandler {
     }
 
     /**
-     * Provision a system using the specified kickstart profile.
+     * Provision a system using the specified kickstart/autoinstallation profile.
      *
      * @param loggedInUser The current user
      * @param serverId of the system to be provisioned
-     * @param profileName of Kickstart Profile to be used.
+     * @param profileName of Profile to be used.
      * @return Returns 1 if successful, exception otherwise
      * @throws FaultException A FaultException is thrown if the server corresponding to
-     * id cannot be found or kickstart profile is not found.
+     * id cannot be found or profile is not found.
      *
-     * @xmlrpc.doc Provision a system using the specified kickstart profile.
+     * @xmlrpc.doc Provision a system using the specified kickstart/autoinstallation profile.
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #param_desc("int", "serverId", "ID of the system to be provisioned.")
-     * @xmlrpc.param #param_desc("string", "profileName", "Kickstart profile to use.")
+     * @xmlrpc.param #param_desc("string", "profileName", "Profile to use.")
      * @xmlrpc.returntype int - ID of the action scheduled, otherwise exception thrown
      * on error
      */
@@ -2600,9 +2600,9 @@ public class SystemHandler extends BaseHandler {
 
         // Lookup the server so we can validate it exists and throw error if not.
         Server server = lookupServer(loggedInUser, serverId);
-        if (!(server.hasEntitlement(EntitlementManager.MANAGEMENT))) {
+        if (server.hasEntitlement(EntitlementManager.FOREIGN)) {
             throw new FaultException(-2, "provisionError",
-                    "System does not have management entitlement");
+                    "System does not have required entitlement");
         }
 
         KickstartData ksdata = KickstartFactory.
@@ -2628,20 +2628,20 @@ public class SystemHandler extends BaseHandler {
     }
 
     /**
-     * Provision a system using the specified kickstart profile at specified time.
+     * Provision a system using the specified kickstart/autoinstallation profile at specified time.
      *
      * @param loggedInUser The current user
      * @param serverId of the system to be provisioned
-     * @param profileName of Kickstart Profile to be used.
-     * @param earliestDate when the kickstart needs to be scheduled
+     * @param profileName of Profile to be used.
+     * @param earliestDate when the autoinstallation needs to be scheduled
      * @return Returns 1 if successful, exception otherwise
      * @throws FaultException A FaultException is thrown if the server corresponding to
-     * id cannot be found or kickstart profile is not found.
+     * id cannot be found or profile is not found.
      *
-     * @xmlrpc.doc Provision a system using the specified kickstart profile.
+     * @xmlrpc.doc Provision a system using the specified kickstart/autoinstallation profile.
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #param_desc("int", "serverId", "ID of the system to be provisioned.")
-     * @xmlrpc.param #param_desc("string", "profileName", "Kickstart profile to use.")
+     * @xmlrpc.param #param_desc("string", "profileName", "Profile to use.")
      * @xmlrpc.param #param("dateTime.iso8601", "earliestDate")
      * @xmlrpc.returntype int - ID of the action scheduled, otherwise exception thrown
      * on error
@@ -2653,9 +2653,9 @@ public class SystemHandler extends BaseHandler {
 
         // Lookup the server so we can validate it exists and throw error if not.
         Server server = lookupServer(loggedInUser, serverId);
-        if (!(server.hasEntitlement(EntitlementManager.MANAGEMENT))) {
+        if (server.hasEntitlement(EntitlementManager.FOREIGN)) {
             throw new FaultException(-2, "provisionError",
-                    "System cannot be provisioned");
+                    "System does not have required entitlement");
         }
 
         KickstartData ksdata = KickstartFactory.
@@ -5903,9 +5903,9 @@ public class SystemHandler extends BaseHandler {
             throw new NoSuchSystemException();
         }
 
-        if (!(server.hasEntitlement(EntitlementManager.MANAGEMENT))) {
+        if (server.hasEntitlement(EntitlementManager.FOREIGN)) {
             throw new FaultException(-2, "provisionError",
-                    "System cannot be provisioned");
+                    "System does not have required entitlement");
         }
 
         KickstartData ksData = lookupKsData(ksLabel, loggedInUser.getOrg());
@@ -6066,9 +6066,9 @@ public class SystemHandler extends BaseHandler {
             throw new NoSuchSystemException();
         }
 
-        if (!(server.hasEntitlement(EntitlementManager.MANAGEMENT))) {
+        if (server.hasEntitlement(EntitlementManager.FOREIGN)) {
             throw new FaultException(-2, "provisionError",
-                    "System cannot be provisioned");
+                    "System does not have required entitlement");
         }
 
         SystemRecord rec = SystemRecord.lookupById(
@@ -6127,9 +6127,9 @@ public class SystemHandler extends BaseHandler {
             throw new NoSuchSystemException();
         }
 
-        if (!(server.hasEntitlement(EntitlementManager.MANAGEMENT))) {
+        if (server.hasEntitlement(EntitlementManager.FOREIGN)) {
             throw new FaultException(-2, "provisionError",
-                    "System cannot be provisioned");
+                    "System does not have required entitlement");
         }
 
         SystemRecord rec = SystemRecord.lookupById(
@@ -6331,7 +6331,7 @@ public class SystemHandler extends BaseHandler {
         Server server = lookupServer(loggedInUser, serverId);
         if (!(server.hasEntitlement(EntitlementManager.MANAGEMENT))) {
             throw new FaultException(-2, "provisionError",
-                    "System cannot be provisioned");
+                    "System does not support snapshots");
         }
         List<ServerSnapshot> snps = ServerFactory.listSnapshots(loggedInUser.getOrg(),
                 server, null, null);
