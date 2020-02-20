@@ -196,20 +196,20 @@
     "name" : "SUSE Linux Enterprise Server LTSS 12 SP3 Z-Series"
   },
   {
+    "label" : "SLES15-GA-LTSS-PPC",
+    "name" : "SUSE Linux Enterprise Server LTSS 15 GA PPC"
+  },
+  {
+    "label" : "SLES15-GA-LTSS-X86",
+    "name" : "SUSE Linux Enterprise Server LTSS 15 GA x86_64"
+  },
+  {
+    "label" : "SLES15-GA-LTSS-Z",
+    "name" : "SUSE Linux Enterprise Server LTSS 15 GA Z-Series"
+  },
+  {
     "label" : "SLES15-LTSS-ARM64",
     "name" : "SUSE Linux Enterprise Server LTSS 15 ARM64"
-  },
-  {
-    "label" : "SLES15-LTSS-PPC",
-    "name" : "SUSE Linux Enterprise Server LTSS 15 PPC"
-  },
-  {
-    "label" : "SLES15-LTSS-X86",
-    "name" : "SUSE Linux Enterprise Server LTSS 15 x86_64"
-  },
-  {
-    "label" : "SLES15-LTSS-Z",
-    "name" : "SUSE Linux Enterprise Server LTSS 15 Z-Series"
   },
   {
     "label" : "SLESMT",
