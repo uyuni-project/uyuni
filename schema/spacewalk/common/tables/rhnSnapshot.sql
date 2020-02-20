@@ -16,36 +16,36 @@
 
 CREATE TABLE rhnSnapshot
 (
-    id         NUMBER NOT NULL
+    id         NUMERIC NOT NULL
                    CONSTRAINT rhn_snapshot_id_pk PRIMARY KEY
-                   USING INDEX TABLESPACE [[8m_tbs]],
-    org_id     NUMBER NOT NULL
+                   ,
+    org_id     NUMERIC NOT NULL
                    CONSTRAINT rhn_snapshot_oid_fk
                        REFERENCES web_customer (id),
-    invalid    NUMBER
+    invalid    NUMERIC
                    CONSTRAINT rhn_snapshot_invalid_fk
                        REFERENCES rhnSnapshotInvalidReason (id),
-    reason     VARCHAR2(4000) NOT NULL,
-    server_id  NUMBER NOT NULL
+    reason     VARCHAR(4000) NOT NULL,
+    server_id  NUMERIC NOT NULL
                    CONSTRAINT rhn_snapshot_sid_fk
                        REFERENCES rhnServer (id),
-    created    timestamp with local time zone
+    created    TIMESTAMPTZ
                    DEFAULT (current_timestamp) NOT NULL,
-    modified   timestamp with local time zone
+    modified   TIMESTAMPTZ
                    DEFAULT (current_timestamp) NOT NULL
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE INDEX rhn_snapshot_sid_idx
     ON rhnSnapshot (server_id)
-    TABLESPACE [[2m_tbs]]
-    NOLOGGING;
+    
+    ;
 
 CREATE INDEX rhn_snapshot_oid_idx
     ON rhnSnapshot (org_id)
-    TABLESPACE [[2m_tbs]]
-    NOLOGGING;
+    
+    ;
 
 CREATE SEQUENCE rhn_snapshot_id_seq;
 

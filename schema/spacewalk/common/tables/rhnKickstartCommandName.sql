@@ -16,25 +16,25 @@
 
 CREATE TABLE rhnKickstartCommandName
 (
-    id              NUMBER NOT NULL
+    id              NUMERIC NOT NULL
                         CONSTRAINT rhn_kscommandname_id_pk PRIMARY KEY
-                        USING INDEX TABLESPACE [[2m_tbs]],
-    name            VARCHAR2(128) NOT NULL,
+                        ,
+    name            VARCHAR(128) NOT NULL,
     uses_arguments  CHAR(1) NOT NULL
                         CONSTRAINT rhn_kscommandname_uses_args_ck
                             CHECK (uses_arguments in ('Y','N')),
-    sort_order      NUMBER NOT NULL,
+    sort_order      NUMERIC NOT NULL,
     required        CHAR(1)
                         DEFAULT ('N') NOT NULL
                         CONSTRAINT rhn_kscommandname_reqrd_ck
                             CHECK ( required in ('Y', 'N') )
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE INDEX rhn_kscommandname_name_id_idx
     ON rhnKickstartCommandName (name, id)
-    TABLESPACE [[2m_tbs]];
+    ;
 
 CREATE SEQUENCE rhn_kscommandname_id_seq;
 

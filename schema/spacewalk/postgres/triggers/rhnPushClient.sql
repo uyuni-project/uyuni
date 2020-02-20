@@ -1,4 +1,3 @@
--- oracle equivalent source sha1 f6dcc1287bbb591f8a41880f5bb041d6c99e53b6
 
 create or replace function rhn_pclient_mod_trig_fun() returns trigger as
 $$

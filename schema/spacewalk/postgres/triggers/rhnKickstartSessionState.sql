@@ -1,4 +1,3 @@
--- oracle equivalent source sha1 f11c6422e345474cf6dc05aac041308a89d7c0c7
 
 create or replace function rhn_ks_session_state_mod_trig_fun() returns trigger as
 $$

@@ -1,4 +1,3 @@
--- oracle equivalent source sha1 fa27f750556add2a2ca99cf203e1f972017e2c26
 
 create or replace function rhn_avshutdown_mod_trig_fun() returns trigger as
 $$

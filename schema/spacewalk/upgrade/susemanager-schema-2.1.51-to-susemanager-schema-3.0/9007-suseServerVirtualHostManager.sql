@@ -11,19 +11,19 @@
 
 CREATE TABLE suseServerVirtualHostManager
 (
-    server_id     NUMBER NOT NULL
+    server_id     NUMERIC NOT NULL
                     CONSTRAINT suse_server_vhms_sid_fk
                     REFERENCES rhnServer (id)
                     ON DELETE CASCADE,
-    vhmserver_id  NUMBER NOT NULL
+    vhmserver_id  NUMERIC NOT NULL
                     CONSTRAINT suse_server_vhms_vhmsid_fk
                     REFERENCES suseVirtualHostManager (id)
                     ON DELETE CASCADE
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE UNIQUE INDEX suse_svhm_sid_vhmid_uq
 ON suseServerVirtualHostManager (server_id, vhmserver_id)
-TABLESPACE [[8m_tbs]];
+;
 

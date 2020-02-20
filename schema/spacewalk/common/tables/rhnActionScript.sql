@@ -16,29 +16,29 @@
 
 CREATE TABLE rhnActionScript
 (
-    id         NUMBER NOT NULL
+    id         NUMERIC NOT NULL
                    CONSTRAINT rhn_actscript_id_pk PRIMARY KEY
-                   USING INDEX TABLESPACE [[4m_tbs]],
-    action_id  NUMBER NOT NULL
+                   ,
+    action_id  NUMERIC NOT NULL
                    CONSTRAINT rhn_actscript_aid_fk
                        REFERENCES rhnAction (id)
                        ON DELETE CASCADE,
-    username   VARCHAR2(32) NOT NULL,
-    groupname  VARCHAR2(32) NOT NULL,
-    script     BLOB,
-    timeout    NUMBER,
-    created    timestamp with local time zone
+    username   VARCHAR(32) NOT NULL,
+    groupname  VARCHAR(32) NOT NULL,
+    script     BYTEA,
+    timeout    NUMERIC,
+    created    TIMESTAMPTZ
                    DEFAULT (current_timestamp) NOT NULL,
-    modified   timestamp with local time zone
+    modified   TIMESTAMPTZ
                    DEFAULT (current_timestamp) NOT NULL
 )
-TABLESPACE [[blob]]
-ENABLE ROW MOVEMENT
+
+
 ;
 
 CREATE UNIQUE INDEX rhn_actscript_aid_uq_idx
     ON rhnActionScript (action_id)
-    TABLESPACE [[4m_tbs]];
+    ;
 
 CREATE SEQUENCE rhn_actscript_id_seq;
 

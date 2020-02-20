@@ -16,28 +16,28 @@
 
 CREATE TABLE rhnSatelliteInfo
 (
-    server_id          NUMBER NOT NULL
+    server_id          NUMERIC NOT NULL
                            CONSTRAINT rhn_satellite_info_sid_fk
                                REFERENCES rhnServer (id),
-    evr_id             NUMBER
+    evr_id             NUMERIC
                            CONSTRAINT rhn_satellite_info_eid_fk
                                REFERENCES rhnPackageEVR (id),
-    cert               BLOB NOT NULL,
-    product            VARCHAR2(256) NOT NULL,
-    owner              VARCHAR2(256) NOT NULL,
-    issued_string      VARCHAR2(256),
-    expiration_string  VARCHAR2(256),
-    created            timestamp with local time zone
+    cert               BYTEA NOT NULL,
+    product            VARCHAR(256) NOT NULL,
+    owner              VARCHAR(256) NOT NULL,
+    issued_string      VARCHAR(256),
+    expiration_string  VARCHAR(256),
+    created            TIMESTAMPTZ
                            DEFAULT (current_timestamp) NOT NULL,
-    modified           timestamp with local time zone
+    modified           TIMESTAMPTZ
                            DEFAULT (current_timestamp) NOT NULL
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE INDEX rhn_satellite_info_sid_idx
     ON rhnSatelliteInfo (server_id)
-    TABLESPACE [[2m_tbs]];
+    ;
 
 ALTER TABLE rhnSatelliteInfo
     ADD CONSTRAINT rhn_satellite_info_sid_uq UNIQUE (server_id);

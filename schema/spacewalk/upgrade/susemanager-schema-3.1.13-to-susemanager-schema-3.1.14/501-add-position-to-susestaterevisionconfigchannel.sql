@@ -1,3 +1,3 @@
 ALTER TABLE suseStateRevisionConfigChannel
-ADD position NUMBER;
+ADD position NUMERIC;
 

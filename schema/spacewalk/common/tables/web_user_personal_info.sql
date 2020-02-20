@@ -16,37 +16,37 @@
 
 CREATE TABLE web_user_personal_info
 (
-    web_user_id        NUMBER NOT NULL
+    web_user_id        NUMERIC NOT NULL
                            CONSTRAINT personal_info_web_user_id_fk
                                REFERENCES web_contact (id)
                                ON DELETE CASCADE,
-    prefix             VARCHAR2(12)
+    prefix             VARCHAR(12)
                            DEFAULT (' ') NOT NULL
                            CONSTRAINT wupi_prefix_fk
                                REFERENCES web_user_prefix (text),
-    first_names        VARCHAR2(128) NOT NULL,
-    last_name          VARCHAR2(128) NOT NULL,
-    genqual            VARCHAR2(12),
-    parent_company     VARCHAR2(128),
-    company            VARCHAR2(128),
-    title              VARCHAR2(128),
-    phone              VARCHAR2(128),
-    fax                VARCHAR2(128),
-    email              VARCHAR2(128),
-    email_uc           VARCHAR2(128),
-    pin                NUMBER,
-    created            timestamp with local time zone
+    first_names        VARCHAR(128) NOT NULL,
+    last_name          VARCHAR(128) NOT NULL,
+    genqual            VARCHAR(12),
+    parent_company     VARCHAR(128),
+    company            VARCHAR(128),
+    title              VARCHAR(128),
+    phone              VARCHAR(128),
+    fax                VARCHAR(128),
+    email              VARCHAR(128),
+    email_uc           VARCHAR(128),
+    pin                NUMERIC,
+    created            TIMESTAMPTZ
                            DEFAULT (current_timestamp) NOT NULL,
-    modified           timestamp with local time zone
+    modified           TIMESTAMPTZ
                            DEFAULT (current_timestamp) NOT NULL,
-    first_names_ol     VARCHAR2(128),
-    last_name_ol       VARCHAR2(128),
-    genqual_ol         VARCHAR2(12),
-    parent_company_ol  VARCHAR2(128),
-    company_ol         VARCHAR2(128),
-    title_ol           VARCHAR2(128)
+    first_names_ol     VARCHAR(128),
+    last_name_ol       VARCHAR(128),
+    genqual_ol         VARCHAR(12),
+    parent_company_ol  VARCHAR(128),
+    company_ol         VARCHAR(128),
+    title_ol           VARCHAR(128)
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE INDEX wupi_email_uc_idx

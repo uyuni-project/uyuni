@@ -16,26 +16,26 @@
 
 CREATE TABLE rhnServerChannel
 (
-    server_id   NUMBER NOT NULL
+    server_id   NUMERIC NOT NULL
                     CONSTRAINT rhn_sc_sid_fk
                         REFERENCES rhnServer (id),
-    channel_id  NUMBER NOT NULL
+    channel_id  NUMERIC NOT NULL
                     CONSTRAINT rhn_sc_cid_fk
                         REFERENCES rhnChannel (id),
-    created     timestamp with local time zone
+    created     TIMESTAMPTZ
                     DEFAULT (current_timestamp) NOT NULL,
-    modified    timestamp with local time zone
+    modified    TIMESTAMPTZ
                     DEFAULT (current_timestamp) NOT NULL
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE UNIQUE INDEX rhn_sc_sid_cid_uq
     ON rhnServerChannel (server_id, channel_id)
-    TABLESPACE [[8m_tbs]];
+    ;
 
 CREATE INDEX rhn_sc_cid_idx
     ON rhnServerChannel (channel_id)
-    TABLESPACE [[8m_tbs]]
-    NOLOGGING;
+    
+    ;
 

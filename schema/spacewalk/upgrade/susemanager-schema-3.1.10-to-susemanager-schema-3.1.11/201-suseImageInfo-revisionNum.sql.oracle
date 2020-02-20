@@ -1,2 +1,0 @@
-ALTER TABLE suseImageInfo ADD curr_revision_num NUMBER DEFAULT 1 NOT NULL;
-ALTER TABLE suseImageInfo MODIFY curr_revision_num DEFAULT NULL;

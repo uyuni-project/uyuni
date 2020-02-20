@@ -16,22 +16,22 @@
 
 CREATE TABLE rhnClientCapability
 (
-    server_id           NUMBER NOT NULL
+    server_id           NUMERIC NOT NULL
                             CONSTRAINT rhn_clientcap_sid_fk
                                 REFERENCES rhnServer (id),
-    capability_name_id  NUMBER NOT NULL
+    capability_name_id  NUMERIC NOT NULL
                             CONSTRAINT rhn_clientcap_cap_nid_fk
                                 REFERENCES rhnClientCapabilityName (id),
-    version             VARCHAR2(32) NOT NULL,
-    created             timestamp with local time zone
+    version             VARCHAR(32) NOT NULL,
+    created             TIMESTAMPTZ
                             DEFAULT (current_timestamp) NOT NULL,
-    modified            timestamp with local time zone
+    modified            TIMESTAMPTZ
                             DEFAULT (current_timestamp) NOT NULL
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE UNIQUE INDEX rhn_clientcap_sid_cap_uq
     ON rhnClientCapability (server_id, capability_name_id)
-    TABLESPACE [[32m_tbs]];
+    ;
 

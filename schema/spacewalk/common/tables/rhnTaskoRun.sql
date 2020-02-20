@@ -16,24 +16,24 @@
 
 CREATE TABLE rhnTaskoRun
 (
-    id              NUMBER NOT NULL
+    id              NUMERIC NOT NULL
                         CONSTRAINT rhn_tasko_run_id_pk PRIMARY KEY,
-    template_id     NUMBER NOT NULL
+    template_id     NUMERIC NOT NULL
                         CONSTRAINT rhn_tasko_run_template_fk
                         REFERENCES rhnTaskoTemplate (id),
-    schedule_id     NUMBER NOT NULL
+    schedule_id     NUMERIC NOT NULL
                         CONSTRAINT rhn_tasko_run_schedule_fk
                         REFERENCES rhnTaskoSchedule (id)
                         ON DELETE CASCADE,
-    org_id          NUMBER,
-    start_time      timestamp with local time zone,
-    end_time        timestamp with local time zone,
-    std_output_path VARCHAR2(100),
-    std_error_path  VARCHAR2(100),
-    status          VARCHAR2(12),
-    created         timestamp with local time zone
+    org_id          NUMERIC,
+    start_time      TIMESTAMPTZ,
+    end_time        TIMESTAMPTZ,
+    std_output_path VARCHAR(100),
+    std_error_path  VARCHAR(100),
+    status          VARCHAR(12),
+    created         TIMESTAMPTZ
                         DEFAULT (current_timestamp) NOT NULL,
-    modified        timestamp with local time zone
+    modified        TIMESTAMPTZ
                         DEFAULT (current_timestamp) NOT NULL
 )
 ;

@@ -16,16 +16,16 @@
 
 CREATE TABLE rhnException
 (
-    id       NUMBER NOT NULL
+    id       NUMERIC NOT NULL
                  CONSTRAINT rhn_exc_id_pk PRIMARY KEY
-                 USING INDEX TABLESPACE [[64k_tbs]],
-    label    VARCHAR2(128) NOT NULL,
-    message  VARCHAR2(2000) NOT NULL
+                 ,
+    label    VARCHAR(128) NOT NULL,
+    message  VARCHAR(2000) NOT NULL
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE UNIQUE INDEX rhn_exc_label_uq
     ON rhnException (label)
-    TABLESPACE [[64k_tbs]];
+    ;
 

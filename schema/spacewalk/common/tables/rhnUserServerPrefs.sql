@@ -16,29 +16,29 @@
 
 CREATE TABLE rhnUserServerPrefs
 (
-    user_id    NUMBER NOT NULL
+    user_id    NUMERIC NOT NULL
                    CONSTRAINT rhn_userServerPrefs_uid_fk
                        REFERENCES web_contact (id)
                        ON DELETE CASCADE,
-    server_id  NUMBER NOT NULL
+    server_id  NUMERIC NOT NULL
                    CONSTRAINT rhn_userServerPrefs_sid_fk
                        REFERENCES rhnServer (id),
-    name       VARCHAR2(64) NOT NULL,
-    value      VARCHAR2(1) NOT NULL,
-    created    timestamp with local time zone
+    name       VARCHAR(64) NOT NULL,
+    value      VARCHAR(1) NOT NULL,
+    created    TIMESTAMPTZ
                    DEFAULT (current_timestamp) NOT NULL,
-    modified   timestamp with local time zone
+    modified   TIMESTAMPTZ
                    DEFAULT (current_timestamp) NOT NULL
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE UNIQUE INDEX rhn_usprefs_uid_sid_n_uq
     ON rhnUserServerPrefs (user_id, server_id, name)
-    TABLESPACE [[2m_tbs]];
+    ;
 
 CREATE INDEX rhn_usprefs_sid_idx
     ON rhnUserServerPrefs (server_id)
-    TABLESPACE [[2m_tbs]]
-    NOLOGGING;
+    
+    ;
 

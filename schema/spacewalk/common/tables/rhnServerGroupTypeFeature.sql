@@ -16,21 +16,21 @@
 
 CREATE TABLE rhnServerGroupTypeFeature
 (
-    server_group_type_id  NUMBER NOT NULL
+    server_group_type_id  NUMERIC NOT NULL
                               CONSTRAINT rhn_sgt_sgid_fk
                                   REFERENCES rhnServerGroupType (id),
-    feature_id            NUMBER NOT NULL
+    feature_id            NUMERIC NOT NULL
                               CONSTRAINT rhn_sgt_fid_fk
                                   REFERENCES rhnFeature (id),
-    created               timestamp with local time zone
+    created               TIMESTAMPTZ
                               DEFAULT (current_timestamp) NOT NULL,
-    modified              timestamp with local time zone
+    modified              TIMESTAMPTZ
                               DEFAULT (current_timestamp) NOT NULL
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE UNIQUE INDEX rhn_sgt_feat_sgtid_fid_uq_idx
     ON rhnServerGroupTypeFeature (server_group_type_id, feature_id)
-    TABLESPACE [[64k_tbs]];
+    ;
 

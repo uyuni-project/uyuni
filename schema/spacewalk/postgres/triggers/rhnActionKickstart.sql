@@ -1,4 +1,3 @@
--- oracle equivalent source sha1 785e5edad31166ff190d9cc2fd4d018624835eee
 
 create or replace function rhn_actionks_mod_trig_fun() returns trigger as
 $$

@@ -12,8 +12,3 @@ runtests-postgresql.py
 - PostgreSQL database tests.
 - Requires connectivity to a PostgreSQL database, read script for connection
   details.
-
-runtests-oracle.py
-- Oracle database tests.
-- Requires connectivity to an Oracle database, read script for connection
-  details.

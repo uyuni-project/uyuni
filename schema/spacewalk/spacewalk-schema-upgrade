@@ -36,55 +36,44 @@ if ($test ne '123') {
 }
 
 my $default_tablespace;
-if ($options{db_backend} eq 'oracle') {
-    $default_tablespace = run_query(<<EOF);
-    select default_tablespace
-    from user_users
-    where username = sys_context('userenv', 'session_user');
-EOF
-    if (not defined $default_tablespace) {
-        die "Failed to retrieve default_tablespace from database.\n";
+my $server_version = 0;
+my $pg_version = "";
+my $os_version = 0.0;
+my $os_name = "";
+my $isUyuni = 0;
+$server_version = run_query("show server_version_num;");
+$pg_version = run_query("show server_version;");
+
+open(my $fh, '<:encoding(UTF-8)', "/etc/os-release") or die "Could not open file '/etc/os-release' $!";
+while (my $row = <$fh>) {
+    chomp $row;
+    my ($k,$v) = split(/=/, $row, 2);
+    if ($k eq "VERSION_ID") {
+        if ($v =~ /(\d+\.\d+)/) {
+            $os_version = $1;
+        }
+    }
+    elsif ($k eq "PRETTY_NAME") {
+        $os_name = $v;
+    }
+    elsif ($k eq "ID" && $v =~ m/opensuse/) {
+        $isUyuni = 1;
     }
 }
-else {
-    my $server_version = 0;
-    my $pg_version = "";
-    my $os_version = 0.0;
-    my $os_name = "";
-    my $isUyuni = 0;
-    $server_version = run_query("show server_version_num;");
-    $pg_version = run_query("show server_version;");
-
-    open(my $fh, '<:encoding(UTF-8)', "/etc/os-release") or die "Could not open file '/etc/os-release' $!";
-    while (my $row = <$fh>) {
-        chomp $row;
-        my ($k,$v) = split(/=/, $row, 2);
-        if ($k eq "VERSION_ID") {
-            if ($v =~ /(\d+\.\d+)/) {
-                $os_version = $1;
-            }
-        }
-        elsif ($k eq "PRETTY_NAME") {
-            $os_name = $v;
-        }
-        elsif ($k eq "ID" && $v =~ m/opensuse/) {
-            $isUyuni = 1;
-        }
-    }
-    close $fh;
-    if ($server_version < $MIN_PG_DB_VERSION) {
-        print "\nRunning postgresql $pg_version is not supported. Minimal required version is $MIN_PG_DB_VERSION_STRING.\n\n";
-        exit 1;
-    }
-    elsif(!$isUyuni && $server_version < 100001 && $os_version >= 12.4) {
-        print "\nRunning postgresql $pg_version on $os_name is unsupported. Please migrate to postgresql 10.\n\n";
-        exit 1;
-    }
+close $fh;
+if ($server_version < $MIN_PG_DB_VERSION) {
+    print "\nRunning postgresql $pg_version is not supported. Minimal required version is $MIN_PG_DB_VERSION_STRING.\n\n";
+    exit 1;
+}
+elsif(!$isUyuni && $server_version < 100001 && $os_version >= 12.4) {
+    print "\nRunning postgresql $pg_version on $os_name is unsupported. Please migrate to postgresql 10.\n\n";
+    exit 1;
 }
 
-my $my_schema_version_out = `rpm -qf --qf '%{name} %{version} %{release}\n' /etc/sysconfig/rhn/oracle/schema-override 2> /dev/null`;
+
+my $my_schema_version_out = `rpm -qf --qf '%{name} %{version} %{release}\n' /etc/sysconfig/rhn/postgres/schema-override 2> /dev/null`;
 if ($?) { # the directory does not exists or is not owned by any rpm
-        $my_schema_version_out = `rpm -qf --qf '%{name} %{version} %{release}\n' /etc/sysconfig/rhn/oracle/main.sql`;
+        $my_schema_version_out = `rpm -qf --qf '%{name} %{version} %{release}\n' /etc/sysconfig/rhn/postgres/main.sql`;
 }
 my ($my_schema_name, $my_schema_version, $my_schema_release) = ($my_schema_version_out =~ /^(\S+)\s(\S+)\s(\S+)$/);
 if (not defined $my_schema_release) {

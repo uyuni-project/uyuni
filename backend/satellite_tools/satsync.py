@@ -244,9 +244,6 @@ class Runner:
             self._xml_file_dir_error_message = messages.file_dir_error % \
                 OPTIONS.mount_point
 
-        if CFG.DB_BACKEND == 'oracle':
-            import cx_Oracle #pylint: disable=F0401
-            exception = cx_Oracle.IntegrityError
         if CFG.DB_BACKEND == 'postgresql':
             import psycopg2 #pylint: disable=F0401
             exception = psycopg2.IntegrityError

@@ -16,18 +16,18 @@
 
 CREATE TABLE rhnChannelNewestPackageAudit
 (
-    refresh_time  timestamp with local time zone
+    refresh_time  TIMESTAMPTZ
                       DEFAULT (current_timestamp) NOT NULL,
-    channel_id    NUMBER NOT NULL
+    channel_id    NUMERIC NOT NULL
                       CONSTRAINT rhn_cnp_at_cid_fk
                           REFERENCES rhnChannel (id)
                           ON DELETE CASCADE,
-    caller        VARCHAR2(256) NOT NULL
+    caller        VARCHAR(256) NOT NULL
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE INDEX rhn_cnp_a_t_all_idx
     ON rhnChannelNewestPackageAudit (channel_id, refresh_time, caller)
-    TABLESPACE [[8m_tbs]];
+    ;
 

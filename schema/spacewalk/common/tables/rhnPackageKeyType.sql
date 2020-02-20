@@ -16,18 +16,18 @@
 
 CREATE TABLE rhnPackageKeyType
 (
-    id        NUMBER NOT NULL,
-    label     VARCHAR2(64) NOT NULL,
-    created   timestamp with local time zone
+    id        NUMERIC NOT NULL,
+    label     VARCHAR(64) NOT NULL,
+    created   TIMESTAMPTZ
                   DEFAULT (current_timestamp) NOT NULL,
-    modified  timestamp with local time zone
+    modified  TIMESTAMPTZ
                   DEFAULT (current_timestamp) NOT NULL
 )
 ;
 
 CREATE INDEX rhn_pkg_key_type_id_n_idx
     ON rhnPackageKeyType (id, label)
-    TABLESPACE [[2m_tbs]];
+    ;
 
 CREATE SEQUENCE rhn_package_key_type_id_seq START WITH 100;
 

@@ -1,1 +1,1 @@
-ALTER TABLE suseMinionInfo ADD kernel_live_version VARCHAR2(255);
+ALTER TABLE suseMinionInfo ADD kernel_live_version VARCHAR(255);

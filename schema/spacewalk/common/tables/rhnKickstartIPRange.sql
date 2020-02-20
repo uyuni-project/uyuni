@@ -16,31 +16,31 @@
 
 CREATE TABLE rhnKickstartIPRange
 (
-    kickstart_id  NUMBER NOT NULL
+    kickstart_id  NUMERIC NOT NULL
                       CONSTRAINT rhn_ksip_ksid_fk
                           REFERENCES rhnKSData (id)
                           ON DELETE CASCADE,
-    org_id        NUMBER NOT NULL
+    org_id        NUMERIC NOT NULL
                       CONSTRAINT rhn_ksip_oid_fk
                           REFERENCES web_customer (id)
                           ON DELETE CASCADE,
-    min           NUMBER NOT NULL,
-    max           NUMBER NOT NULL,
-    created       timestamp with local time zone
+    min           NUMERIC NOT NULL,
+    max           NUMERIC NOT NULL,
+    created       TIMESTAMPTZ
                       DEFAULT (current_timestamp) NOT NULL,
-    modified      timestamp with local time zone
+    modified      TIMESTAMPTZ
                       DEFAULT (current_timestamp) NOT NULL
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE INDEX rhn_ksip_kickstart_id_idx
     ON rhnKickstartIPRange (kickstart_id)
-    TABLESPACE [[4m_tbs]];
+    ;
 
 CREATE INDEX rhn_ksip_org_id_idx
     ON rhnKickstartIPRange (org_id)
-    TABLESPACE [[4m_tbs]];
+    ;
 
 ALTER TABLE rhnKickstartIPRange
     ADD CONSTRAINT rhn_ksip_oid_min_max_uq UNIQUE (org_id, min, max);

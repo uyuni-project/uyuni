@@ -16,45 +16,45 @@
 
 CREATE TABLE rhnServerNeededCache
 (
-    server_id   NUMBER NOT NULL
+    server_id   NUMERIC NOT NULL
                     CONSTRAINT rhn_sncp_sid_fk
                         REFERENCES rhnServer (id)
                         ON DELETE CASCADE,
-    errata_id   NUMBER
+    errata_id   NUMERIC
                     CONSTRAINT rhn_sncp_eid_fk
                         REFERENCES rhnErrata (id)
                         ON DELETE CASCADE,
-    package_id  NUMBER NOT NULL
+    package_id  NUMERIC NOT NULL
                     CONSTRAINT rhn_sncp_pid_fk
                         REFERENCES rhnPackage (id)
                         ON DELETE CASCADE,
-    channel_id   NUMBER
+    channel_id   NUMERIC
                     CONSTRAINT rhn_sncp_cid_fk
                         REFERENCES rhnChannel (id)
                         ON DELETE CASCADE
 )
-ENABLE ROW MOVEMENT
-LOGGING
+
+
 ;
 
 CREATE INDEX rhn_snc_pid_idx
     ON rhnServerNeededCache (package_id)
-    NOPARALLEL
-    TABLESPACE [[128m_tbs]]
-    NOLOGGING;
+    
+    
+    ;
 
 CREATE INDEX rhn_snc_eid_idx
     ON rhnServerNeededCache (errata_id)
-    TABLESPACE [[128m_tbs]]
-    NOLOGGING;
+    
+    ;
 
 CREATE INDEX rhn_snc_cid_idx
     ON rhnServerNeededCache (channel_id)
-    TABLESPACE [[128m_tbs]]
-    NOLOGGING;
+    
+    ;
 
 CREATE INDEX rhn_snc_speid_idx
     ON rhnServerNeededCache (server_id, package_id, errata_id)
-    NOPARALLEL
-    TABLESPACE [[128m_tbs]]
-    NOLOGGING;
+    
+    
+    ;

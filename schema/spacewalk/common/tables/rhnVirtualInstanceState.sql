@@ -16,17 +16,17 @@
 
 CREATE TABLE rhnVirtualInstanceState
 (
-    id        NUMBER NOT NULL
+    id        NUMERIC NOT NULL
                   CONSTRAINT rhn_vis_id_pk PRIMARY KEY
-                  USING INDEX TABLESPACE [[64k_tbs]],
-    name      VARCHAR2(128) NOT NULL,
-    label     VARCHAR2(128) NOT NULL,
-    created   timestamp with local time zone
+                  ,
+    name      VARCHAR(128) NOT NULL,
+    label     VARCHAR(128) NOT NULL,
+    created   TIMESTAMPTZ
                   DEFAULT (current_timestamp) NOT NULL,
-    modified  timestamp with local time zone
+    modified  TIMESTAMPTZ
                   DEFAULT (current_timestamp) NOT NULL
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE UNIQUE INDEX rhn_vis_lbl_id_idx

@@ -16,29 +16,29 @@
 
 CREATE TABLE rhnErrataFilePackage
 (
-    package_id      NUMBER NOT NULL
+    package_id      NUMERIC NOT NULL
                         CONSTRAINT rhn_efilep_pid_fk
                             REFERENCES rhnPackage (id)
                             ON DELETE CASCADE,
-    errata_file_id  NUMBER NOT NULL
+    errata_file_id  NUMERIC NOT NULL
                         CONSTRAINT rhn_efilep_fileid_fk
                             REFERENCES rhnErrataFile (id)
                             ON DELETE CASCADE,
-    created         timestamp with local time zone
+    created         TIMESTAMPTZ
                         DEFAULT (current_timestamp) NOT NULL,
-    modified        timestamp with local time zone
+    modified        TIMESTAMPTZ
                         DEFAULT (current_timestamp) NOT NULL
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE INDEX rhn_efilep_efid_pid_idx
     ON rhnErrataFilePackage (errata_file_id, package_id)
-    TABLESPACE [[2m_tbs]];
+    ;
 
 CREATE INDEX rhn_efilep_pid_idx
     ON rhnErrataFilePackage (package_id)
-    TABLESPACE [[2m_tbs]];
+    ;
 
 ALTER TABLE rhnErrataFilePackage
     ADD CONSTRAINT rhn_efilep_efid_uq UNIQUE (errata_file_id);

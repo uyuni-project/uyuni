@@ -16,23 +16,23 @@
 
 CREATE TABLE rhnServerHistory
 (
-    id         NUMBER NOT NULL
+    id         NUMERIC NOT NULL
                    CONSTRAINT rhn_serverhistory_id_pk PRIMARY KEY
-                   USING INDEX TABLESPACE [[2m_tbs]],
-    server_Id  NUMBER NOT NULL
+                   ,
+    server_Id  NUMERIC NOT NULL
                    CONSTRAINT rhn_serverhistory_sid_fk
                        REFERENCES rhnServer (id),
-    summary    VARCHAR2(256) NOT NULL,
-    details    VARCHAR2(4000),
-    created    timestamp with local time zone
+    summary    VARCHAR(256) NOT NULL,
+    details    VARCHAR(4000),
+    created    TIMESTAMPTZ
                    DEFAULT (current_timestamp) NOT NULL,
-    modified   timestamp with local time zone
+    modified   TIMESTAMPTZ
                    DEFAULT (current_timestamp) NOT NULL
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE INDEX rhn_server_hist_server_id_idx
     ON rhnServerHistory (server_id)
-    TABLESPACE [[4m_tbs]];
+    ;
 

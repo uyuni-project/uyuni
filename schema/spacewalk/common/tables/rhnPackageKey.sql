@@ -16,17 +16,17 @@
 
 CREATE TABLE rhnPackageKey
 (
-    id           NUMBER NOT NULL,
-    key_id       VARCHAR2(64) NOT NULL,
-    key_type_id  NUMBER NOT NULL
+    id           NUMERIC NOT NULL,
+    key_id       VARCHAR(64) NOT NULL,
+    key_type_id  NUMERIC NOT NULL
                      CONSTRAINT rhn_pkey_type_id_prid_fk
                          REFERENCES rhnPackageKeyType (id),
-    provider_id  NUMBER
+    provider_id  NUMERIC
                      CONSTRAINT rhn_pkey_prid_fk
                          REFERENCES rhnPackageProvider (id),
-    created      timestamp with local time zone
+    created      TIMESTAMPTZ
                      DEFAULT (current_timestamp) NOT NULL,
-    modified     timestamp with local time zone
+    modified     TIMESTAMPTZ
                      DEFAULT (current_timestamp) NOT NULL
 )
 ;

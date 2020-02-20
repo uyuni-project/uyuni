@@ -1,4 +1,3 @@
--- oracle equivalent source sha1 b1ee0841d4cb46725919c80367d2509e78584d98
 
 create or replace function rhn_eclonedtmp_mod_trig_fun() returns trigger as
 $$

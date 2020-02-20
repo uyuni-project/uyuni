@@ -16,20 +16,20 @@
 
 CREATE TABLE rhnActionConfigRevisionResult
 (
-    action_config_revision_id  NUMBER NOT NULL
+    action_config_revision_id  NUMERIC NOT NULL
                                    CONSTRAINT rhn_actioncfr_acrid_fk
                                        REFERENCES rhnActionConfigRevision (id)
                                        ON DELETE CASCADE,
-    result                     BLOB,
-    created                    timestamp with local time zone
+    result                     BYTEA,
+    created                    TIMESTAMPTZ
                                    DEFAULT (current_timestamp) NOT NULL,
-    modified                   timestamp with local time zone
+    modified                   TIMESTAMPTZ
                                    DEFAULT (current_timestamp) NOT NULL
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE UNIQUE INDEX rhn_actioncfr_acrid_uq
     ON rhnActionConfigRevisionResult (action_config_revision_id)
-    TABLESPACE [[2m_tbs]];
+    ;
 

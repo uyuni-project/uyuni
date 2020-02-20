@@ -16,46 +16,46 @@
 
 CREATE TABLE rhnKickstartableTree
 (
-    id              NUMBER NOT NULL,
-    org_id          NUMBER
+    id              NUMERIC NOT NULL,
+    org_id          NUMERIC
                         CONSTRAINT rhn_kstree_oid_fk
                             REFERENCES web_customer (id)
                             ON DELETE CASCADE,
-    label           VARCHAR2(64) NOT NULL,
-    base_path       VARCHAR2(256) NOT NULL,
-    channel_id      NUMBER NOT NULL
+    label           VARCHAR(64) NOT NULL,
+    base_path       VARCHAR(256) NOT NULL,
+    channel_id      NUMERIC NOT NULL
                         CONSTRAINT rhn_kstree_cid_fk
                             REFERENCES rhnChannel (id)
                             ON DELETE CASCADE,
-    cobbler_id      VARCHAR2(64),
-    cobbler_xen_id  VARCHAR2(64),
-    boot_image      VARCHAR2(128)
+    cobbler_id      VARCHAR(64),
+    cobbler_xen_id  VARCHAR(64),
+    boot_image      VARCHAR(128)
                         DEFAULT ('spacewalk-koan'),
-    kstree_type     NUMBER NOT NULL
+    kstree_type     NUMERIC NOT NULL
                         CONSTRAINT rhn_kstree_kstreetype_fk
                             REFERENCES rhnKSTreeType (id),
-    install_type    NUMBER NOT NULL
+    install_type    NUMERIC NOT NULL
                         CONSTRAINT rhn_kstree_it_fk
                             REFERENCES rhnKSInstallType (id),
-    kernel_options       VARCHAR2(256),
-    kernel_options_post  VARCHAR2(256),
-    last_modified   timestamp with local time zone
+    kernel_options       VARCHAR(256),
+    kernel_options_post  VARCHAR(256),
+    last_modified   TIMESTAMPTZ
                         DEFAULT (current_timestamp) NOT NULL,
-    created         timestamp with local time zone
+    created         TIMESTAMPTZ
                         DEFAULT (current_timestamp) NOT NULL,
-    modified        timestamp with local time zone
+    modified        TIMESTAMPTZ
                         DEFAULT (current_timestamp) NOT NULL
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE UNIQUE INDEX rhn_kstree_oid_label_uq
     ON rhnKickstartableTree (org_id, label)
-    TABLESPACE [[8m_tbs]];
+    ;
 
 CREATE SEQUENCE rhn_kstree_id_seq;
 
 ALTER TABLE rhnKickstartableTree
     ADD CONSTRAINT rhn_kstree_id_pk PRIMARY KEY (id)
-    USING INDEX TABLESPACE [[4m_tbs]];
+    ;
 

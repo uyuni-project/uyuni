@@ -16,26 +16,26 @@
 
 CREATE TABLE rhnActionVirtSchedulePoller
 (
-    action_id  NUMBER NOT NULL
+    action_id  NUMERIC NOT NULL
                    CONSTRAINT rhn_avsp_aid_fk
                        REFERENCES rhnAction (id)
                        ON DELETE CASCADE,
-    minute     NUMBER,
-    hour       NUMBER,
-    dom        NUMBER,
-    month      NUMBER,
-    dow        NUMBER,
-    created    timestamp with local time zone
+    minute     NUMERIC,
+    hour       NUMERIC,
+    dom        NUMERIC,
+    month      NUMERIC,
+    dow        NUMERIC,
+    created    TIMESTAMPTZ
                    DEFAULT (current_timestamp) NOT NULL,
-    modified   timestamp with local time zone
+    modified   TIMESTAMPTZ
                    DEFAULT (current_timestamp) NOT NULL
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE UNIQUE INDEX rhn_avsp_aid_uq
     ON rhnActionVirtSchedulePoller (action_id)
-    TABLESPACE [[8m_tbs]];
+    ;
 
 ALTER TABLE rhnActionVirtSchedulePoller
     ADD CONSTRAINT rhn_avsp_aid_pk PRIMARY KEY (action_id);

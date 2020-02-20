@@ -15,9 +15,9 @@
 
 CREATE TABLE suseVersionConstraintType
 (
-    id        NUMBER NOT NULL
+    id        NUMERIC NOT NULL
                   CONSTRAINT suse_verconstrtype_id_pk PRIMARY KEY,
-    label     VARCHAR2(32) NOT NULL
+    label     VARCHAR(32) NOT NULL
 )
-ENABLE ROW MOVEMENT
+
 ;

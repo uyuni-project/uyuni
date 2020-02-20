@@ -16,22 +16,22 @@
 
 CREATE TABLE rhnPackageChangeLogData
 (
-    id          NUMBER NOT NULL
+    id          NUMERIC NOT NULL
                     CONSTRAINT rhn_pkg_cld_id_pk PRIMARY KEY
-                    USING INDEX TABLESPACE [[64k_tbs]],
-    name        VARCHAR2(128) NOT NULL,
-    text        CLOB NOT NULL,
-    time        timestamp with local time zone NOT NULL,
-    created     timestamp with local time zone
+                    ,
+    name        VARCHAR(128) NOT NULL,
+    text        TEXT NOT NULL,
+    time        TIMESTAMPTZ NOT NULL,
+    created     TIMESTAMPTZ
                     DEFAULT (current_timestamp) NOT NULL
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE INDEX rhn_pkg_cld_nt_idx
     ON rhnPackageChangeLogData (name, time)
-    NOLOGGING
-    TABLESPACE [[32m_tbs]];
+    
+    ;
 
 CREATE SEQUENCE rhn_pkg_cld_id_seq;
 

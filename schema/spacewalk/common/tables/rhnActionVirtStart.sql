@@ -16,19 +16,19 @@
 
 CREATE TABLE rhnActionVirtStart
 (
-    action_id  NUMBER NOT NULL,
-    uuid       VARCHAR2(128) NOT NULL,
-    created    timestamp with local time zone
+    action_id  NUMERIC NOT NULL,
+    uuid       VARCHAR(128) NOT NULL,
+    created    TIMESTAMPTZ
                    DEFAULT (current_timestamp) NOT NULL,
-    modified   timestamp with local time zone
+    modified   TIMESTAMPTZ
                    DEFAULT (current_timestamp) NOT NULL
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE UNIQUE INDEX rhn_avstart_aid_uq
     ON rhnActionVirtStart (action_id)
-    TABLESPACE [[8m_tbs]];
+    ;
 
 ALTER TABLE rhnActionVirtStart
     ADD CONSTRAINT rhn_avstart_aid_pk PRIMARY KEY (action_id);

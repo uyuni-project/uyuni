@@ -16,19 +16,19 @@
 
 CREATE TABLE rhnServerUuid
 (
-    server_id  NUMBER NOT NULL
+    server_id  NUMERIC NOT NULL
                    CONSTRAINT rhn_server_uuid_sid_fk
                        REFERENCES rhnServer (id),
-    uuid       VARCHAR2(36) NOT NULL
+    uuid       VARCHAR(36) NOT NULL
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE UNIQUE INDEX rhn_server_uuid_sid_unq
     ON rhnServerUuid (server_id)
-    TABLESPACE [[4m_tbs]];
+    ;
 
 CREATE UNIQUE INDEX rhn_serveruuid_uuid_sid_unq
     ON rhnServerUUID (uuid, server_id)
-    TABLESPACE [[4m_tbs]];
+    ;
 

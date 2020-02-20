@@ -16,23 +16,23 @@
 
 CREATE TABLE rhnActionVirtSetMemory
 (
-    action_id  NUMBER NOT NULL
+    action_id  NUMERIC NOT NULL
                    CONSTRAINT rhn_avsm_aid_fk
                        REFERENCES rhnAction (id)
                        ON DELETE CASCADE,
-    uuid       VARCHAR2(128) NOT NULL,
-    memory     NUMBER NOT NULL,
-    created    timestamp with local time zone
+    uuid       VARCHAR(128) NOT NULL,
+    memory     NUMERIC NOT NULL,
+    created    TIMESTAMPTZ
                    DEFAULT (current_timestamp) NOT NULL,
-    modified   timestamp with local time zone
+    modified   TIMESTAMPTZ
                    DEFAULT (current_timestamp) NOT NULL
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE UNIQUE INDEX rhn_avsm_aid_uq
     ON rhnActionVirtSetMemory (action_id)
-    TABLESPACE [[8m_tbs]];
+    ;
 
 ALTER TABLE rhnActionVirtSetMemory
     ADD CONSTRAINT rhn_avsm_aid_pk PRIMARY KEY (action_id);

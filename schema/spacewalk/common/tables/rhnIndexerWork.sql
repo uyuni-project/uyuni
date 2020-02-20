@@ -16,11 +16,11 @@
 
 CREATE TABLE rhnIndexerWork
 (
-    object_type    VARCHAR2(40) NOT NULL,
-    last_id        NUMBER NOT NULL,
-    last_modified  timestamp with local time zone
+    object_type    VARCHAR(40) NOT NULL,
+    last_id        NUMERIC NOT NULL,
+    last_modified  TIMESTAMPTZ
                        DEFAULT (current_timestamp) NOT NULL
 )
-ENABLE ROW MOVEMENT
+
 ;
 

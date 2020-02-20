@@ -16,27 +16,27 @@
 
 CREATE TABLE rhnServerPackage
 (
-    server_id        NUMBER NOT NULL
+    server_id        NUMERIC NOT NULL
                          REFERENCES rhnServer (id)
                              ON DELETE CASCADE,
-    name_id          NUMBER NOT NULL
+    name_id          NUMERIC NOT NULL
                          REFERENCES rhnPackageName (id),
-    evr_id           NUMBER NOT NULL
+    evr_id           NUMERIC NOT NULL
                          REFERENCES rhnPackageEVR (id),
-    package_arch_id  NUMBER
+    package_arch_id  NUMERIC
                          REFERENCES rhnPackageArch (id),
-    created          timestamp with local time zone
+    created          TIMESTAMPTZ
                          DEFAULT (current_timestamp) NOT NULL,
-    installtime      timestamp with local time zone
+    installtime      TIMESTAMPTZ
 )
-TABLESPACE [[server_package_tablespace]]
-ENABLE ROW MOVEMENT
+
+
 ;
 
 CREATE UNIQUE INDEX rhn_sp_snep_uq
     ON rhnServerPackage (server_id, name_id, evr_id, package_arch_id)
-    TABLESPACE [[128m_tbs]]
-    NOLOGGING;
+    
+    ;
 
 CREATE SEQUENCE rhn_server_package_id_seq;
 

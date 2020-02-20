@@ -16,20 +16,20 @@
 
 CREATE TABLE rhnTinyURL
 (
-    token    VARCHAR2(64) NOT NULL,
-    url      VARCHAR2(512) NOT NULL,
-    enabled  VARCHAR2(1) NOT NULL
+    token    VARCHAR(64) NOT NULL,
+    url      VARCHAR(512) NOT NULL,
+    enabled  VARCHAR(1) NOT NULL
                  CONSTRAINT rhn_tu_enabled_ck
                      CHECK (enabled in ('Y','N')),
-    created  timestamp with local time zone
+    created  TIMESTAMPTZ
                  DEFAULT (current_timestamp) NOT NULL,
-    expires  timestamp with local time zone
+    expires  TIMESTAMPTZ
                  DEFAULT (current_timestamp) NOT NULL
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE UNIQUE INDEX rhn_tu_token_uq
     ON rhnTinyURL (token)
-    TABLESPACE [[2m_tbs]];
+    ;
 

@@ -15,47 +15,47 @@
 
 CREATE TABLE suseImageInfo
 (
-    id             NUMBER NOT NULL
+    id             NUMERIC NOT NULL
                      CONSTRAINT suse_imginfo_imgid_pk PRIMARY KEY,
-    name           VARCHAR2(128) NOT NULL,
-    version        VARCHAR2(128),
-    image_type     VARCHAR2(32) NOT NULL,
-    checksum_id    NUMBER
+    name           VARCHAR(128) NOT NULL,
+    version        VARCHAR(128),
+    image_type     VARCHAR(32) NOT NULL,
+    checksum_id    NUMERIC
                      CONSTRAINT suse_imginfo_chsum_fk
                        REFERENCES rhnChecksum (id),
-    image_arch_id  NUMBER NOT NULL
+    image_arch_id  NUMERIC NOT NULL
                        CONSTRAINT suse_imginfo_said_fk
                            REFERENCES rhnServerArch (id),
-    curr_revision_num   NUMBER,
-    org_id         NUMBER NOT NULL
+    curr_revision_num   NUMERIC,
+    org_id         NUMERIC NOT NULL
                      CONSTRAINT suse_imginfo_oid_fk
                        REFERENCES web_customer (id)
                        ON DELETE CASCADE,
-    build_action_id     NUMBER,
-    inspect_action_id   NUMBER,
-    profile_id     NUMBER
+    build_action_id     NUMERIC,
+    inspect_action_id   NUMERIC,
+    profile_id     NUMERIC
                      CONSTRAINT suse_imginfo_pid_fk
                        REFERENCES suseImageProfile (profile_id)
                        ON DELETE SET NULL,
-    store_id       NUMBER
+    store_id       NUMERIC
                       CONSTRAINT suse_imginfo_sid_fk
                          REFERENCES suseImageStore (id)
                          ON DELETE SET NULL,
-    build_server_id  NUMBER
+    build_server_id  NUMERIC
                       CONSTRAINT suse_imginfo_bsid_fk
                          REFERENCES suseMinionInfo (server_id)
                          ON DELETE SET NULL,
     external_image CHAR(1) DEFAULT ('N') NOT NULL,
-    created        timestamp with local time zone
+    created        TIMESTAMPTZ
                      DEFAULT (current_timestamp) NOT NULL,
-    modified       timestamp with local time zone
+    modified       TIMESTAMPTZ
                      DEFAULT (current_timestamp) NOT NULL,
     CONSTRAINT suse_imginfo_bldaid_fk FOREIGN KEY (build_action_id)
         REFERENCES rhnAction (id) ON DELETE SET NULL,
     CONSTRAINT suse_imginfo_insaid_fk FOREIGN KEY (inspect_action_id)
         REFERENCES rhnAction (id) ON DELETE SET NULL
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE SEQUENCE suse_imginfo_imgid_seq;

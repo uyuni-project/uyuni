@@ -16,18 +16,18 @@
 
 CREATE TABLE rhnPackageProvider
 (
-    id        NUMBER NOT NULL,
-    name      VARCHAR2(64) NOT NULL,
-    created   timestamp with local time zone
+    id        NUMERIC NOT NULL,
+    name      VARCHAR(64) NOT NULL,
+    created   TIMESTAMPTZ
                   DEFAULT (current_timestamp) NOT NULL,
-    modified  timestamp with local time zone
+    modified  TIMESTAMPTZ
                   DEFAULT (current_timestamp) NOT NULL
 )
 ;
 
 CREATE INDEX rhn_pkg_provider_id_n_idx
     ON rhnPackageProvider (id, name)
-    TABLESPACE [[2m_tbs]];
+    ;
 
 CREATE SEQUENCE rhn_package_provider_id_seq START WITH 100;
 

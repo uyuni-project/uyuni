@@ -16,22 +16,22 @@
 
 CREATE TABLE web_customer
 (
-    id                            NUMBER NOT NULL
+    id                            NUMERIC NOT NULL
                                       CONSTRAINT web_customer_id_pk PRIMARY KEY
-                                      USING INDEX TABLESPACE [[web_index_tablespace_2]],
-    name                          VARCHAR2(128) NOT NULL,
-    created                       timestamp with local time zone
+                                      ,
+    name                          VARCHAR(128) NOT NULL,
+    created                       TIMESTAMPTZ
                                       DEFAULT (current_timestamp) NOT NULL,
-    modified                      timestamp with local time zone
+    modified                      TIMESTAMPTZ
                                       DEFAULT (current_timestamp) NOT NULL
 )
-TABLESPACE [[web_tablespace_2]]
-ENABLE ROW MOVEMENT
+
+
 ;
 
 CREATE UNIQUE INDEX web_customer_name_uq_idx
     ON web_customer (name)
-    TABLESPACE [[web_tablespace_2]];
+    ;
 
 CREATE SEQUENCE web_customer_id_seq;
 

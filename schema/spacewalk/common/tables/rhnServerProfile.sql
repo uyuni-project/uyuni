@@ -16,40 +16,40 @@
 
 CREATE TABLE rhnServerProfile
 (
-    id               NUMBER NOT NULL,
-    org_id           NUMBER NOT NULL
+    id               NUMERIC NOT NULL,
+    org_id           NUMERIC NOT NULL
                          CONSTRAINT rhn_server_profile_oid_fk
                              REFERENCES web_customer (id)
                              ON DELETE CASCADE,
-    base_channel     NUMBER NOT NULL
+    base_channel     NUMERIC NOT NULL
                          CONSTRAINT rhn_server_profile_bcid_fk
                              REFERENCES rhnChannel (id),
-    name             VARCHAR2(128),
-    description      VARCHAR2(256),
-    info             VARCHAR2(128),
-    profile_type_id  NUMBER NOT NULL
+    name             VARCHAR(128),
+    description      VARCHAR(256),
+    info             VARCHAR(128),
+    profile_type_id  NUMERIC NOT NULL
                          CONSTRAINT rhn_server_profile_ptype_fk
                              REFERENCES rhnServerProfileType (id),
-    created          timestamp with local time zone
+    created          TIMESTAMPTZ
                          DEFAULT (current_timestamp) NOT NULL,
-    modified         timestamp with local time zone
+    modified         TIMESTAMPTZ
                          DEFAULT (current_timestamp) NOT NULL
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE UNIQUE INDEX rhn_server_profile_noid_uq
     ON rhnServerProfile (org_id, name)
-    TABLESPACE [[64k_tbs]];
+    ;
 
 CREATE INDEX rhn_sprofile_id_oid_bc_idx
     ON rhnServerProfile (id, org_id, base_channel)
-    TABLESPACE [[64k_tbs]];
+    ;
 
 CREATE INDEX rhn_server_profile_bc_idx
     ON rhnServerProfile (base_channel)
-    TABLESPACE [[64k_tbs]]
-    NOLOGGING;
+    
+    ;
 
 CREATE SEQUENCE rhn_server_profile_id_seq;
 

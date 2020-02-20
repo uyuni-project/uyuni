@@ -16,26 +16,26 @@
 
 CREATE TABLE rhnSnapshotConfigRevision
 (
-    snapshot_id         NUMBER NOT NULL
+    snapshot_id         NUMERIC NOT NULL
                             CONSTRAINT rhn_snapshotcr_sid_fk
                                 REFERENCES rhnSnapshot (id)
                                 ON DELETE CASCADE,
-    config_revision_id  NUMBER NOT NULL
+    config_revision_id  NUMERIC NOT NULL
                             CONSTRAINT rhn_snapshotcr_crid_fk
                                 REFERENCES rhnConfigRevision (id),
-    created             timestamp with local time zone
+    created             TIMESTAMPTZ
                             DEFAULT (current_timestamp) NOT NULL,
-    modified            timestamp with local time zone
+    modified            TIMESTAMPTZ
                             DEFAULT (current_timestamp) NOT NULL
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE UNIQUE INDEX rhn_snapshotcr_sid_crid_uq
     ON rhnSnapshotConfigRevision (snapshot_id, config_revision_id)
-    TABLESPACE [[2m_tbs]];
+    ;
 
 CREATE INDEX rhn_sscr_crid_idx
     ON rhnSnapshotConfigRevision (config_revision_id)
-    TABLESPACE [[2m_tbs]];
+    ;
 

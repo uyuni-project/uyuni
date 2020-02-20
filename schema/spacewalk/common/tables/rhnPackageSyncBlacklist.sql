@@ -16,27 +16,27 @@
 
 CREATE TABLE rhnPackageSyncBlacklist
 (
-    package_name_id  NUMBER NOT NULL
+    package_name_id  NUMERIC NOT NULL
                          CONSTRAINT rhn_packagesyncbl_pnid_fk
                              REFERENCES rhnPackageName (id),
-    org_id           NUMBER
+    org_id           NUMERIC
                          CONSTRAINT rhn_packagesyncbl_oid_fk
                              REFERENCES web_customer (id)
                              ON DELETE CASCADE,
-    created          timestamp with local time zone
+    created          TIMESTAMPTZ
                          DEFAULT (current_timestamp) NOT NULL,
-    modified         timestamp with local time zone
+    modified         TIMESTAMPTZ
                          DEFAULT (current_timestamp) NOT NULL
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE UNIQUE INDEX rhn_packagesyncbl_pnid_oid_uq
     ON rhnPackageSyncBlacklist (package_name_id, org_id)
-    TABLESPACE [[64k_tbs]];
+    ;
 
 CREATE INDEX rhn_packagesyncbl_oid_idx
     ON rhnPackageSyncBlacklist (org_id)
-    TABLESPACE [[64k_tbs]]
-    NOLOGGING;
+    
+    ;
 

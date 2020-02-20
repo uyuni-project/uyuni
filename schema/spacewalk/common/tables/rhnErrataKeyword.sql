@@ -16,24 +16,24 @@
 
 CREATE TABLE rhnErrataKeyword
 (
-    errata_id  NUMBER NOT NULL
+    errata_id  NUMERIC NOT NULL
                    CONSTRAINT rhn_err_keyword_eid_fk
                        REFERENCES rhnErrata (id)
                        ON DELETE CASCADE,
-    keyword    VARCHAR2(64),
-    created    timestamp with local time zone
+    keyword    VARCHAR(64),
+    created    TIMESTAMPTZ
                    DEFAULT (current_timestamp) NOT NULL,
-    modified   timestamp with local time zone
+    modified   TIMESTAMPTZ
                    DEFAULT (current_timestamp) NOT NULL
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE UNIQUE INDEX rhn_err_keyword_eid_uq
     ON rhnErrataKeyword (keyword, errata_id)
-    TABLESPACE [[64k_tbs]];
+    ;
 
 CREATE INDEX rhn_errkw_eid_idx
     ON rhnErrataKeyword (errata_id)
-    TABLESPACE [[64k_tbs]];
+    ;
 

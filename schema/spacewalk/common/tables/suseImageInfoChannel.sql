@@ -13,11 +13,11 @@
 -- in this software or its documentation.
 --
 CREATE TABlE suseImageInfoChannel (
-    channel_id      NUMBER NOT NULL
+    channel_id      NUMERIC NOT NULL
                         CONSTRAINT suse_imginfoc_cid_fk
                         REFERENCES rhnChannel (id)
                         ON DELETE CASCADE,
-    image_info_id   NUMBER NOT NULL
+    image_info_id   NUMERIC NOT NULL
                         CONSTRAINT suse_imginfoc_iiid_fk
                         REFERENCES suseImageInfo (id)
                         ON DELETE CASCADE

@@ -11,21 +11,21 @@
 
 CREATE TABLE suseVHMConfig
 (
-    id          number NOT NULL
+    id          NUMERIC NOT NULL
                 CONSTRAINT suse_vhm_config_id_pk PRIMARY KEY,
-    virtual_host_manager_id NUMBER NOT NULL
+    virtual_host_manager_id NUMERIC NOT NULL
                     CONSTRAINT suse_vhmc_vhms_fk
                     REFERENCES suseVirtualHostManager (id)
                     ON DELETE CASCADE,
-    parameter   VARCHAR2(1024) NOT NULL,
-    value       VARCHAR2(1024)
+    parameter   VARCHAR(1024) NOT NULL,
+    value       VARCHAR(1024)
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE UNIQUE INDEX suse_vhmc_id_para_uq
 ON suseVHMConfig (virtual_host_manager_id, parameter)
-TABLESPACE [[64k_tbs]];
+;
 
 CREATE SEQUENCE suse_vhm_config_id_seq;
 

@@ -22,22 +22,14 @@ endif
 SRCDIR    := $(shell find $(COMMON) -name $(NAME))
 SOURCES   := $(wildcard $(SRCDIR)/*)
 FILES     := $(notdir $(SOURCES))
-ORA2PG    := ../../../spacewalk-oracle2postgresql
 RMLINKS   := find . -type l -delete
 RMTRASH   := rm -f lextab* parsetab* parser.out
 
 
-all : links
+all :
 	$(MAKE) $(MAKEOVERRIDES) files
 
 files : $(FILES)
 	@$(RMTRASH)
 
-%.sql : %.cql
-	$(ORA2PG) $^ > $@
-
-links :
-	@$(RMLINKS)
-	@$(foreach f,$(SOURCES),ln -s $f $(notdir $(f:.sql=.cql));)
-
-.PHONY : links
+.PHONY :

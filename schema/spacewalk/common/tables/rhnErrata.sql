@@ -16,29 +16,29 @@
 
 CREATE TABLE rhnErrata
 (
-    id                NUMBER NOT NULL
+    id                NUMERIC NOT NULL
                           CONSTRAINT rhn_errata_id_pk PRIMARY KEY
-                          USING INDEX TABLESPACE [[64k_tbs]],
-    advisory          VARCHAR2(100) NOT NULL,
-    advisory_type     VARCHAR2(32) NOT NULL
+                          ,
+    advisory          VARCHAR(100) NOT NULL,
+    advisory_type     VARCHAR(32) NOT NULL
                           CONSTRAINT rhn_errata_adv_type_ck
                               CHECK (advisory_type in ('Bug Fix Advisory',
 				                            'Product Enhancement Advisory',
 							    'Security Advisory')),
-    advisory_name     VARCHAR2(100) NOT NULL,
-    advisory_rel      NUMBER NOT NULL,
-    product           VARCHAR2(64) NOT NULL,
-    description       VARCHAR2(4000),
-    synopsis          VARCHAR2(4000) NOT NULL,
-    topic             VARCHAR2(4000),
-    solution          VARCHAR2(4000) NOT NULL,
-    issue_date        timestamp with local time zone
+    advisory_name     VARCHAR(100) NOT NULL,
+    advisory_rel      NUMERIC NOT NULL,
+    product           VARCHAR(64) NOT NULL,
+    description       VARCHAR(4000),
+    synopsis          VARCHAR(4000) NOT NULL,
+    topic             VARCHAR(4000),
+    solution          VARCHAR(4000) NOT NULL,
+    issue_date        TIMESTAMPTZ
                           DEFAULT (current_timestamp) NOT NULL,
-    update_date       timestamp with local time zone
+    update_date       TIMESTAMPTZ
                           DEFAULT (current_timestamp) NOT NULL,
-    refers_to         VARCHAR2(4000),
-    notes             VARCHAR2(4000),
-    org_id            NUMBER
+    refers_to         VARCHAR(4000),
+    notes             VARCHAR(4000),
+    org_id            NUMERIC
                           CONSTRAINT rhn_errata_oid_fk
                               REFERENCES web_customer (id)
                               ON DELETE CASCADE,
@@ -46,17 +46,17 @@ CREATE TABLE rhnErrata
                           CONSTRAINT rhn_errata_lm_ck
                               CHECK (locally_modified in ('Y','N')),
     errata_from       VARCHAR(127),
-    created           timestamp with local time zone
+    created           TIMESTAMPTZ
                           DEFAULT (current_timestamp) NOT NULL,
-    modified          timestamp with local time zone
+    modified          TIMESTAMPTZ
                           DEFAULT (current_timestamp) NOT NULL,
-    last_modified     timestamp with local time zone
+    last_modified     TIMESTAMPTZ
                           DEFAULT (current_timestamp) NOT NULL,
-    severity_id       NUMBER
+    severity_id       NUMERIC
                           CONSTRAINT rhn_errata_sevid_fk
                               REFERENCES rhnErrataSeverity (id)
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 -- unique index definitions has been moved to
@@ -64,11 +64,11 @@ ENABLE ROW MOVEMENT
 
 CREATE INDEX rhn_errata_udate_index
     ON rhnErrata (update_date)
-    TABLESPACE [[64k_tbs]];
+    ;
 
 CREATE INDEX rhn_errata_syn_index
     ON rhnErrata ( synopsis )
-    TABLESPACE [[64k_tbs]];
+    ;
 
 CREATE SEQUENCE rhn_errata_id_seq;
 

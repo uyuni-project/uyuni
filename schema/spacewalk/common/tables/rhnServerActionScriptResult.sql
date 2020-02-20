@@ -16,32 +16,32 @@
 
 CREATE TABLE rhnServerActionScriptResult
 (
-    server_id         NUMBER NOT NULL
+    server_id         NUMERIC NOT NULL
                           CONSTRAINT rhn_serveras_result_sid_fk
                               REFERENCES rhnServer (id),
-    action_script_id  NUMBER NOT NULL
+    action_script_id  NUMERIC NOT NULL
                           CONSTRAINT rhn_serveras_result_asid_fk
                               REFERENCES rhnActionScript (id)
                               ON DELETE CASCADE,
-    output            BLOB,
-    start_date        timestamp with local time zone NOT NULL,
-    stop_date         timestamp with local time zone NOT NULL,
-    return_code       NUMBER NOT NULL,
-    created           timestamp with local time zone
+    output            BYTEA,
+    start_date        TIMESTAMPTZ NOT NULL,
+    stop_date         TIMESTAMPTZ NOT NULL,
+    return_code       NUMERIC NOT NULL,
+    created           TIMESTAMPTZ
                           DEFAULT (current_timestamp) NOT NULL,
-    modified          timestamp with local time zone
+    modified          TIMESTAMPTZ
                           DEFAULT (current_timestamp) NOT NULL
 )
-TABLESPACE [[blob]]
-ENABLE ROW MOVEMENT
+
+
 ;
 
 CREATE UNIQUE INDEX rhn_serveras_result_sas_uq
     ON rhnServerActionScriptResult (server_id, action_script_id)
-    TABLESPACE [[4m_tbs]];
+    ;
 
 CREATE INDEX rhn_serveras_result_asid_idx
     ON rhnServerActionScriptResult (action_script_id)
-    TABLESPACE [[4m_tbs]]
-    NOLOGGING;
+    
+    ;
 

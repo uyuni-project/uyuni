@@ -16,30 +16,30 @@
 
 CREATE TABLE rhnLockedPackages
 (
-    pkg_id           NUMBER NOT NULL
+    pkg_id           NUMERIC NOT NULL
                          REFERENCES rhnPackage (id)
                              ON DELETE CASCADE,
-    server_id        NUMBER NOT NULL
+    server_id        NUMERIC NOT NULL
                          REFERENCES rhnServer (id)
                              ON DELETE CASCADE,
-    name_id          NUMBER NOT NULL
+    name_id          NUMERIC NOT NULL
                          REFERENCES rhnPackageName (id),
-    evr_id           NUMBER NOT NULL
+    evr_id           NUMERIC NOT NULL
                          REFERENCES rhnPackageEVR (id),
-    arch_id          NUMBER
+    arch_id          NUMERIC
                          REFERENCES rhnPackageArch (id),
     pending          CHAR(1) DEFAULT ('L')
                          CONSTRAINT rhn_lockedpackages_pending_ck
                            CHECK (pending in ('L', 'U'))
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE UNIQUE INDEX rhn_lp_pkg_id_uq
     ON rhnLockedPackages (pkg_id)
-    TABLESPACE [[128m_tbs]]
-    NOLOGGING;
+    
+    ;
 CREATE UNIQUE INDEX rhn_lp_snep_uq
     ON rhnLockedPackages (server_id, name_id, evr_id, arch_id)
-    TABLESPACE [[128m_tbs]]
-    NOLOGGING;
+    
+    ;

@@ -15,7 +15,7 @@ create table tmp_oscap_upgrade as
 create table tmp_oscap_upgrade_ids as
         select rn, ident_id, sequence_nextval('rhn_xccdf_ident_id_seq') as new_id
           from (select distinct rn, ident_id from tmp_oscap_upgrade) X;
- 
+
 -- assign new ids to selected identifiers
 update tmp_oscap_upgrade u set new_ident_id = (select new_id from tmp_oscap_upgrade_ids i 
                                                 where i.rn = u.rn and i.ident_id = u.ident_id);

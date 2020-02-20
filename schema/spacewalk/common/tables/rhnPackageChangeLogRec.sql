@@ -16,33 +16,33 @@
 
 CREATE TABLE rhnPackageChangeLogRec
 (
-    id          NUMBER NOT NULL
+    id          NUMERIC NOT NULL
                     CONSTRAINT rhn_pkg_clr_id_pk PRIMARY KEY
-                    USING INDEX TABLESPACE [[64k_tbs]],
-    package_id  NUMBER NOT NULL
+                    ,
+    package_id  NUMERIC NOT NULL
                     CONSTRAINT rhn_pkg_clr_pid_fk
                         REFERENCES rhnPackage (id)
                         ON DELETE CASCADE,
-    changelog_data_id  NUMBER NOT NULL
+    changelog_data_id  NUMERIC NOT NULL
                     CONSTRAINT rhn_pkg_clr_cld_fk
                         REFERENCES rhnPackageChangeLogData (id),
-    created     timestamp with local time zone
+    created     TIMESTAMPTZ
                     DEFAULT (current_timestamp) NOT NULL,
-    modified    timestamp with local time zone
+    modified    TIMESTAMPTZ
                     DEFAULT (current_timestamp) NOT NULL
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE UNIQUE INDEX rhn_pkg_clr_pid_cld_uq
     ON rhnPackageChangeLogRec (package_id, changelog_data_id)
-    NOLOGGING
-    TABLESPACE [[32m_tbs]];
+    
+    ;
 
 CREATE INDEX rhn_pkg_clr_cld_uq
     ON rhnPackageChangeLogRec (changelog_data_id)
-    NOLOGGING
-    TABLESPACE [[32m_tbs]];
+    
+    ;
 
 CREATE SEQUENCE rhn_pkg_cl_id_seq;
 

@@ -16,26 +16,26 @@
 
 CREATE TABLE rhnChannelProduct
 (
-    id        NUMBER NOT NULL
+    id        NUMERIC NOT NULL
                   CONSTRAINT rhn_channelprod_id_pk PRIMARY KEY
-                  USING INDEX TABLESPACE [[64k_tbs]],
-    product   VARCHAR2(256) NOT NULL,
-    version   VARCHAR2(64) NOT NULL,
+                  ,
+    product   VARCHAR(256) NOT NULL,
+    version   VARCHAR(64) NOT NULL,
     beta      CHAR(1)
                   DEFAULT ('N') NOT NULL
                   CONSTRAINT rhn_channelprod_beta_ck
                       CHECK (beta in ('Y', 'N')),
-    created   timestamp with local time zone
+    created   TIMESTAMPTZ
                   DEFAULT (current_timestamp) NOT NULL,
-    modified  timestamp with local time zone
+    modified  TIMESTAMPTZ
                   DEFAULT (current_timestamp) NOT NULL
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE UNIQUE INDEX rhn_channelprod_p_v_b_uq
     ON rhnChannelProduct (product, version, beta)
-    TABLESPACE [[64k_tbs]];
+    ;
 
 CREATE SEQUENCE rhn_channelprod_id_seq;
 

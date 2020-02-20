@@ -16,31 +16,31 @@
 
 CREATE TABLE rhnFileDownload
 (
-    file_id       NUMBER NOT NULL
+    file_id       NUMERIC NOT NULL
                       CONSTRAINT rhn_filedl_fid_fk
                           REFERENCES rhnFile (id),
-    location      VARCHAR2(2000) NOT NULL,
-    token         VARCHAR2(48),
-    requestor_ip  VARCHAR2(15) NOT NULL,
-    start_time    timestamp with local time zone
+    location      VARCHAR(2000) NOT NULL,
+    token         VARCHAR(48),
+    requestor_ip  VARCHAR(15) NOT NULL,
+    start_time    TIMESTAMPTZ
                       DEFAULT (current_timestamp) NOT NULL,
-    user_id       NUMBER
+    user_id       NUMERIC
                       CONSTRAINT rhn_filedl_uid_fk
                           REFERENCES web_contact (id)
                           ON DELETE SET NULL
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE INDEX rhn_filedl_uid_fid_idx
     ON rhnFileDownload (user_id, file_id)
-    TABLESPACE [[4m_tbs]];
+    ;
 
 CREATE INDEX rhn_filedl_token_idx
     ON rhnFileDownload (token)
-    TABLESPACE [[8m_tbs]];
+    ;
 
 CREATE INDEX rhn_filedl_start_idx
     ON rhnFileDownload (start_time)
-    TABLESPACE [[8m_tbs]];
+    ;
 

@@ -16,18 +16,18 @@
 
 CREATE TABLE rhnPackageDeltaElement
 (
-    package_delta_id        NUMBER NOT NULL
+    package_delta_id        NUMERIC NOT NULL
                                 CONSTRAINT rhn_pdelement_pdid_fk
                                     REFERENCES rhnPackageDelta (id)
                                     ON DELETE CASCADE,
-    transaction_package_id  NUMBER NOT NULL
+    transaction_package_id  NUMERIC NOT NULL
                                 CONSTRAINT rhn_pdelement_tpid_fk
                                     REFERENCES rhnTransactionPackage (id)
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE UNIQUE INDEX rhn_pdelement_pdid_tpid_uq
     ON rhnPackageDeltaElement (package_delta_id, transaction_package_id)
-    TABLESPACE [[8m_tbs]];
+    ;
 

@@ -16,22 +16,22 @@
 
 CREATE TABLE rhnActionVirtResume
 (
-    action_id  NUMBER NOT NULL
+    action_id  NUMERIC NOT NULL
                    CONSTRAINT rhn_avresume_aid_fk
                        REFERENCES rhnAction (id)
                        ON DELETE CASCADE,
-    uuid       VARCHAR2(128) NOT NULL,
-    created    timestamp with local time zone
+    uuid       VARCHAR(128) NOT NULL,
+    created    TIMESTAMPTZ
                    DEFAULT (current_timestamp) NOT NULL,
-    modified   timestamp with local time zone
+    modified   TIMESTAMPTZ
                    DEFAULT (current_timestamp) NOT NULL
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE UNIQUE INDEX rhn_avresume_aid_uq
     ON rhnActionVirtResume (action_id)
-    TABLESPACE [[8m_tbs]];
+    ;
 
 ALTER TABLE rhnActionVirtResume
     ADD CONSTRAINT rhn_avresume_aid_pk PRIMARY KEY (action_id);

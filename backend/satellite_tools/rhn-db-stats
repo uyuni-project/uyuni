@@ -5,18 +5,7 @@ if [[ $@ =~ "-h" ]] || [[ $@ =~ "--help" ]] || [ $# -ne 1 -o $# -gt 1 ]; then
         exit
 fi
 
-if [ "$(spacewalk-cfg-get db_backend)" = "oracle" ]; then
-        sql="
-set serverout on;
-set pagesize 2000 linesize 145;
-column name_col_plus_show_param format a40 word wrap heading PARAMETER;
-column value_col_plus_show_param format a90 word wrap heading VALUE;
-
-select dbms_stats.get_param('METHOD_OPT') from dual;
-show parameter;
-"
-
-elif [ "$(spacewalk-cfg-get db_backend)" = "postgresql" ]; then
+if [ "$(spacewalk-cfg-get db_backend)" = "postgresql" ]; then
         sql="
 SHOW ALL;
 "

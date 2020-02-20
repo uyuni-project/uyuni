@@ -1,5 +1,3 @@
--- oracle equivalent source sha1 806c4365426778565beef7683cc6e88e61bd9abd
--- retrieved from ./1241057068/d2f16725f65bddae85cd4782cd82e0c84c0a776d/schema/spacewalk/oracle/procs/lookup_first_matching_cf.sql
 --
 -- Copyright (c) 2008--2015 Red Hat, Inc.
 --

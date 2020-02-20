@@ -15,29 +15,29 @@
 
 CREATE TABLE suseCVEServerChannel
 (
-    server_id    NUMBER NOT NULL
+    server_id    NUMERIC NOT NULL
                      CONSTRAINT suse_cvesc_sid_fk
                          REFERENCES rhnServer (id)
                          ON DELETE CASCADE,
-    channel_id   NUMBER NOT NULL
+    channel_id   NUMERIC NOT NULL
                      CONSTRAINT suse_cvesc_cid_fk
                          REFERENCES rhnChannel (id)
                          ON DELETE CASCADE,
-    channel_rank NUMBER NOT NULL,
-    created   timestamp with local time zone
+    channel_rank NUMERIC NOT NULL,
+    created   TIMESTAMPTZ
                   DEFAULT (current_timestamp) NOT NULL,
-    modified  timestamp with local time zone
+    modified  TIMESTAMPTZ
                   DEFAULT (current_timestamp) NOT NULL
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE UNIQUE INDEX suse_cvesc_sid_cid_uq
     ON suseCVEServerChannel (server_id, channel_id)
-    TABLESPACE [[8m_tbs]];
+    ;
 
 CREATE INDEX suse_cvesc_cid_idx
     ON suseCVEServerChannel (channel_id)
-    TABLESPACE [[8m_tbs]]
-    NOLOGGING;
+    
+    ;
 

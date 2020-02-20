@@ -15,23 +15,23 @@
 
 CREATE TABLE rhnXccdfRuleIdentMap
 (
-    rresult_id    NUMBER NOT NULL
+    rresult_id    NUMERIC NOT NULL
                       CONSTRAINT rhn_xccdf_rim_rresult_fk
                           REFERENCES rhnXccdfRuleresult (id)
                           ON DELETE CASCADE,
-    ident_id      NUMBER NOT NULL
+    ident_id      NUMERIC NOT NULL
                       CONSTRAINT rhn_xccdf_rim_ident_fk
                           REFERENCES rhnXccdfIdent (id)
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE UNIQUE INDEX rhn_xccdf_rim_ri_uq
     ON rhnXccdfRuleIdentMap (rresult_id, ident_id)
-    TABLESPACE [[8m_tbs]]
-    NOLOGGING;
+    
+    ;
 
 CREATE INDEX rhn_xccdf_rim_ident_idx
     ON rhnXccdfRuleIdentMap (ident_id)
-    TABLESPACE [[8m_tbs]]
-    NOLOGGING;
+    
+    ;

@@ -23,7 +23,7 @@ from .backend import Backend
 from .backendLib import DBint, DBstring, DBdateTime, Table, \
     TableCollection, DBblob
 from spacewalk.server import rhnSQL
-from spacewalk.server.rhnSQL.const import ORACLE, POSTGRESQL
+from spacewalk.server.rhnSQL.const import POSTGRESQL
 from spacewalk.common.rhnConfig import CFG
 from uyuni.common import timezone_utils
 
@@ -743,9 +743,7 @@ class PostgresqlBackend(OracleBackend):
 
 
 def SQLBackend():
-    if CFG.DB_BACKEND == ORACLE:
-        backend = OracleBackend()
-    elif CFG.DB_BACKEND == POSTGRESQL:
+    if CFG.DB_BACKEND == POSTGRESQL:
         backend = PostgresqlBackend()
     backend.init()
     return backend

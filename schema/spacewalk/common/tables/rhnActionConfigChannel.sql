@@ -16,36 +16,36 @@
 
 CREATE TABLE rhnActionConfigChannel
 (
-    action_id          NUMBER NOT NULL
+    action_id          NUMERIC NOT NULL
                            CONSTRAINT rhn_actioncc_aid_fk
                                REFERENCES rhnAction (id)
                                ON DELETE CASCADE,
-    server_id          NUMBER NOT NULL
+    server_id          NUMERIC NOT NULL
                            CONSTRAINT rhn_actioncc_sid_fk
                                REFERENCES rhnServer (id),
-    config_channel_id  NUMBER NOT NULL
+    config_channel_id  NUMERIC NOT NULL
                            CONSTRAINT rhn_actioncc_ccid_fk
                                REFERENCES rhnConfigChannel (id)
                                ON DELETE CASCADE,
-    created            timestamp with local time zone
+    created            TIMESTAMPTZ
                            DEFAULT (current_timestamp) NOT NULL,
-    modified           timestamp with local time zone
+    modified           TIMESTAMPTZ
                            DEFAULT (current_timestamp) NOT NULL
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE UNIQUE INDEX rhn_actioncc_aid_sid_uq
     ON rhnActionConfigChannel (action_id, server_id)
-    TABLESPACE [[4m_tbs]];
+    ;
 
 CREATE INDEX rhn_actioncc_sid_idx
     ON rhnActionConfigChannel (server_id)
-    TABLESPACE [[4m_tbs]];
+    ;
 
 CREATE INDEX rhn_act_cc_ccid_idx
     ON rhnActionConfigChannel (config_channel_id)
-    TABLESPACE [[4m_tbs]];
+    ;
 
 ALTER TABLE rhnActionConfigChannel
     ADD CONSTRAINT rhn_actioncc_sid_aid_fk FOREIGN KEY (server_id, action_id)

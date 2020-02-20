@@ -15,16 +15,16 @@
 
 CREATE TABLE suseStateRevisionConfigChannel
 (
-    state_revision_id NUMBER NOT NULL
+    state_revision_id NUMERIC NOT NULL
                           CONSTRAINT suse_cfgchn_state_rev_id_fk
                               REFERENCES suseStateRevision (id)
                               ON DELETE CASCADE,
-    config_channel_id NUMBER NOT NULL
+    config_channel_id NUMERIC NOT NULL
                           CONSTRAINT suse_state_rev_cfgchn_id_fk
                               REFERENCES rhnConfigChannel (id)
                               ON DELETE CASCADE,
-    position NUMBER,
+    position NUMERIC,
     CONSTRAINT suse_state_rev_id_cfgchn_id_uq UNIQUE (state_revision_id, config_channel_id)
 )
-ENABLE ROW MOVEMENT
+
 ;

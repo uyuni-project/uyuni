@@ -13,26 +13,26 @@
 CREATE TABLE
 susePackageEula
 (
-    package_id        number
+    package_id        NUMERIC
                       CONSTRAINT susepackageeula_pkg_id_fk
                       REFERENCES rhnPackage (id)
                       On DELETE CASCADE,
-    eula_id           number
+    eula_id           NUMERIC
                       CONSTRAINT susepackageeula_id_fk
                       REFERENCES suseEula (id),
-    created   timestamp with local time zone
+    created   TIMESTAMPTZ
                   DEFAULT (current_timestamp) NOT NULL,
-    modified  timestamp with local time zone
+    modified  TIMESTAMPTZ
                   DEFAULT (current_timestamp) NOT NULL
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE UNIQUE INDEX susepackageeula_pkg_eula_uq
 ON susePackageEula (package_id, eula_id)
-TABLESPACE [[64k_tbs]];
+;
 
 CREATE INDEX susepackageeula_pkg_idx
 ON susePackageEula (package_id)
-TABLESPACE [[64k_tbs]];
+;
 

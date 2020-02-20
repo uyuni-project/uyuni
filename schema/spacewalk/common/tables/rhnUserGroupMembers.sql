@@ -16,31 +16,31 @@
 
 CREATE TABLE rhnUserGroupMembers
 (
-    user_id        NUMBER NOT NULL
+    user_id        NUMERIC NOT NULL
                        CONSTRAINT rhn_ugmembers_uid_fk
                            REFERENCES web_contact (id)
                            ON DELETE CASCADE,
-    user_group_id  NUMBER NOT NULL
+    user_group_id  NUMERIC NOT NULL
                        CONSTRAINT rhn_ugmembers_ugid_fk
                            REFERENCES rhnUserGroup (id),
     temporary      CHAR(1)
                         DEFAULT ('N') NOT NULL
                         CONSTRAINT rhn_ugmembers_t_ck
                             CHECK (temporary in ('Y', 'N')),
-    created        timestamp with local time zone
+    created        TIMESTAMPTZ
                        DEFAULT (current_timestamp) NOT NULL,
-    modified       timestamp with local time zone
+    modified       TIMESTAMPTZ
                        DEFAULT (current_timestamp) NOT NULL
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE UNIQUE INDEX rhn_ugmembers_uid_ugid_temp_uq
     ON rhnUserGroupMembers (user_id, user_group_id, temporary)
-    TABLESPACE [[8m_tbs]];
+    ;
 
 CREATE INDEX rhn_ugmembers_ugid_idx
     ON rhnUserGroupMembers (user_group_id)
-    TABLESPACE [[8m_tbs]]
-    NOLOGGING;
+    
+    ;
 

@@ -16,23 +16,23 @@
 
 CREATE TABLE rhnActionConfigDateFile
 (
-    action_id  NUMBER NOT NULL
+    action_id  NUMERIC NOT NULL
                    CONSTRAINT rhn_actioncd_file_aid_fk
                        REFERENCES rhnAction (id)
                        ON DELETE CASCADE,
-    file_name  VARCHAR2(512) NOT NULL,
+    file_name  VARCHAR(512) NOT NULL,
     file_type  CHAR(1) NOT NULL
                    CONSTRAINT rhn_actioncd_file_ft_ck
                        CHECK (file_type in ('W','B')),
-    created    timestamp with local time zone
+    created    TIMESTAMPTZ
                    DEFAULT (current_timestamp) NOT NULL,
-    modified   timestamp with local time zone
+    modified   TIMESTAMPTZ
                    DEFAULT (current_timestamp) NOT NULL
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE INDEX rhn_actioncd_file_aid_fn_idx
     ON rhnActionConfigDateFile (action_id, file_name)
-    TABLESPACE [[4m_tbs]];
+    ;
 

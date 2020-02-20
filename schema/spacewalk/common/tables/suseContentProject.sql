@@ -14,23 +14,23 @@
 --
 
 CREATE TABLE suseContentProject(
-    id          NUMBER NOT NULL
+    id          NUMERIC NOT NULL
                     CONSTRAINT suse_ct_project_id_pk PRIMARY KEY,
-    name        VARCHAR2(128) NOT NULL,
-    org_id      NUMBER NOT NULL
+    name        VARCHAR(128) NOT NULL,
+    org_id      NUMERIC NOT NULL
                     CONSTRAINT suse_ct_project_oid_fk
                     REFERENCES web_customer(id)
                     ON DELETE CASCADE,
-    label       VARCHAR2(24) NOT NULL,
-    description CLOB,
-    first_env_id NUMBER,
-    created     TIMESTAMP WITH LOCAL TIME ZONE
+    label       VARCHAR(24) NOT NULL,
+    description TEXT,
+    first_env_id NUMERIC,
+    created     TIMESTAMPTZ
                     DEFAULT (current_timestamp) NOT NULL,
-    modified    TIMESTAMP WITH LOCAL TIME ZONE
+    modified    TIMESTAMPTZ
                     DEFAULT (current_timestamp) NOT NULL
 
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE SEQUENCE suse_ct_project_seq;

@@ -12,11 +12,11 @@
 
 CREATE TABLE rhnActionDupChannel
 (
-    action_dup_id       NUMBER NOT NULL
+    action_dup_id       NUMERIC NOT NULL
                             CONSTRAINT rhn_actdupchan_dupid_fk
                             REFERENCES rhnActionDup (id)
                             ON DELETE CASCADE,
-    channel_id          NUMBER NOT NULL
+    channel_id          NUMERIC NOT NULL
                             CONSTRAINT rhn_actdupchan_chanid_fk
                             REFERENCES rhnChannel (id)
                             ON DELETE CASCADE,
@@ -24,19 +24,19 @@ CREATE TABLE rhnActionDupChannel
                             DEFAULT ('S') NOT NULL
                             CONSTRAINT rhn_actdupchan_task_ck
                                 CHECK (task in ('S','U')),
-    created   timestamp with local time zone
+    created   TIMESTAMPTZ
                   DEFAULT (current_timestamp) NOT NULL,
-    modified  timestamp with local time zone
+    modified  TIMESTAMPTZ
                   DEFAULT (current_timestamp) NOT NULL
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE UNIQUE INDEX rhn_actdupchan_aid_cid_uq
     ON rhnActionDupChannel (action_dup_id, channel_id)
-    TABLESPACE [[4m_tbs]];
+    ;
 
 CREATE INDEX rhn_actdupchan_cid_idx
     ON rhnActionDupChannel (channel_id)
-    TABLESPACE [[4m_tbs]];
+    ;
 

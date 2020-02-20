@@ -16,21 +16,21 @@
 
 CREATE TABLE rhnActionVirtRefresh
 (
-    action_id  NUMBER NOT NULL
+    action_id  NUMERIC NOT NULL
                    CONSTRAINT rhn_avrefresh_aid_fk
                        REFERENCES rhnAction (id)
                        ON DELETE CASCADE,
-    created    timestamp with local time zone
+    created    TIMESTAMPTZ
                    DEFAULT (current_timestamp) NOT NULL,
-    modified   timestamp with local time zone
+    modified   TIMESTAMPTZ
                    DEFAULT (current_timestamp) NOT NULL
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE UNIQUE INDEX rhn_avrefresh_aid_uq
     ON rhnActionVirtRefresh (action_id)
-    TABLESPACE [[8m_tbs]];
+    ;
 
 ALTER TABLE rhnActionVirtRefresh
     ADD CONSTRAINT rhn_avrefresh_aid_pk PRIMARY KEY (action_id);

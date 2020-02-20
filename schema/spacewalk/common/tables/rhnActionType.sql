@@ -16,11 +16,11 @@
 
 CREATE TABLE rhnActionType
 (
-    id                NUMBER NOT NULL
+    id                NUMERIC NOT NULL
                           CONSTRAINT rhn_action_type_pk PRIMARY KEY
-                          USING INDEX TABLESPACE [[64k_tbs]],
-    label             VARCHAR2(48) NOT NULL,
-    name              VARCHAR2(100) NOT NULL,
+                          ,
+    label             VARCHAR(48) NOT NULL,
+    name              VARCHAR(100) NOT NULL,
     trigger_snapshot  CHAR(1)
                           DEFAULT ('N') NOT NULL
                           CONSTRAINT rhn_action_type_trigsnap_ck
@@ -30,14 +30,14 @@ CREATE TABLE rhnActionType
                           CONSTRAINT rhn_action_type_unlck_ck
                               CHECK (unlocked_only in ('Y','N'))
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE UNIQUE INDEX rhn_action_type_label_uq
     ON rhnActionType (label)
-    TABLESPACE [[64k_tbs]];
+    ;
 
 CREATE UNIQUE INDEX rhn_action_type_name_uq
     ON rhnActionType (name)
-    TABLESPACE [[64k_tbs]];
+    ;
 

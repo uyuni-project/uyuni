@@ -16,33 +16,33 @@
 
 CREATE TABLE rhnErrataFile
 (
-    id         NUMBER NOT NULL,
-    errata_id  NUMBER NOT NULL
+    id         NUMERIC NOT NULL,
+    errata_id  NUMERIC NOT NULL
                    CONSTRAINT rhn_erratafile_errata_fk
                        REFERENCES rhnErrata (id)
                        ON DELETE CASCADE,
-    type       NUMBER NOT NULL
+    type       NUMERIC NOT NULL
                    CONSTRAINT rhn_erratafile_type_fk
                        REFERENCES rhnErrataFileType (id),
-    checksum_id NUMBER NOT NULL
+    checksum_id NUMERIC NOT NULL
                    CONSTRAINT rhn_erratafile_chsum_fk
                        REFERENCES rhnChecksum (id),
-    filename   VARCHAR2(4000) NOT NULL,
-    created    timestamp with local time zone
+    filename   VARCHAR(4000) NOT NULL,
+    created    TIMESTAMPTZ
                    DEFAULT (current_timestamp) NOT NULL,
-    modified   timestamp with local time zone
+    modified   TIMESTAMPTZ
                    DEFAULT (current_timestamp) NOT NULL
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE INDEX rhn_erratafile_id_idx
     ON rhnErrataFile (id)
-    TABLESPACE [[64k_tbs]];
+    ;
 
 CREATE INDEX rhn_erratafile_eid_file_idx
     ON rhnErrataFile (errata_id, filename)
-    TABLESPACE [[64k_tbs]];
+    ;
 
 CREATE SEQUENCE rhn_erratafile_id_seq;
 

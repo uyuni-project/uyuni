@@ -15,16 +15,16 @@
 
 CREATE TABLE rhnActionImageBuildResult
 (
-    server_id              NUMBER NOT NULL
+    server_id              NUMERIC NOT NULL
                                CONSTRAINT rhn_image_build_result_sid_fk
                                    REFERENCES rhnServer (id)
                                    ON DELETE CASCADE,
-    action_image_build_id NUMBER NOT NULL
+    action_image_build_id NUMERIC NOT NULL
                                CONSTRAINT rhn_image_build_result_aid_fk
                                    REFERENCES rhnActionImageBuild (id)
                                    ON DELETE CASCADE
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE UNIQUE INDEX rhn_image_build_result_sa_uq
@@ -32,5 +32,5 @@ CREATE UNIQUE INDEX rhn_image_build_result_sa_uq
 
 CREATE INDEX rhn_image_build_result_ad_idx
     ON rhnActionImageBuildResult (action_image_build_id)
-    NOLOGGING;
+    ;
 

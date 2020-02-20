@@ -289,8 +289,6 @@ install -d $RPM_BUILD_ROOT/%{_prefix}/lib/susemanager/bin/
 
 make -f Makefile.backend install PREFIX=$RPM_BUILD_ROOT \
     MANDIR=%{_mandir} APACHECONFDIR=%{apacheconfd} PYTHON_BIN=python3
-# no support for oracle DB anymore
-rm -f $RPM_BUILD_ROOT%{python3rhnroot}/server/rhnSQL/driver_cx_Oracle.py*
 
 export PYTHON_MODULE_NAME=%{name}
 export PYTHON_MODULE_VERSION=%{version}

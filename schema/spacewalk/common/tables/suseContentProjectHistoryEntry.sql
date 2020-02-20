@@ -14,22 +14,22 @@
 --
 
 CREATE TABLE suseContentProjectHistoryEntry(
-    id         NUMBER NOT NULL
+    id         NUMERIC NOT NULL
                    CONSTRAINT suse_ct_prj_hist_id_pk PRIMARY KEY,
-    project_id NUMBER NOT NULL
+    project_id NUMERIC NOT NULL
                    CONSTRAINT suse_ct_prj_hist_prjid_fk
                        REFERENCES suseContentProject(id)
                        ON DELETE CASCADE,
-    message    CLOB,
-    version    NUMBER NOT NULL,
-    created    TIMESTAMP WITH LOCAL TIME ZONE
+    message    TEXT,
+    version    NUMERIC NOT NULL,
+    created    TIMESTAMPTZ
                    DEFAULT (current_timestamp) NOT NULL,
-    user_id    NUMBER
+    user_id    NUMERIC
                    CONSTRAINT suse_ct_prj_hist_uid_fk
                        REFERENCES web_contact (id)
                        ON DELETE SET NULL
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE SEQUENCE suse_ct_prj_hist_seq;

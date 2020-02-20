@@ -16,23 +16,23 @@
 
 CREATE TABLE rhnPackageArch
 (
-    id            NUMBER NOT NULL,
-    label         VARCHAR2(64) NOT NULL,
-    name          VARCHAR2(64) NOT NULL,
-    arch_type_id  NUMBER NOT NULL
+    id            NUMERIC NOT NULL,
+    label         VARCHAR(64) NOT NULL,
+    name          VARCHAR(64) NOT NULL,
+    arch_type_id  NUMERIC NOT NULL
                       CONSTRAINT rhn_parch_atid_fk
                           REFERENCES rhnArchType (id),
-    created       timestamp with local time zone
+    created       TIMESTAMPTZ
                       DEFAULT (current_timestamp) NOT NULL,
-    modified      timestamp with local time zone
+    modified      TIMESTAMPTZ
                       DEFAULT (current_timestamp) NOT NULL
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE INDEX rhn_parch_id_l_n_idx
     ON rhnPackageArch (id, label, name)
-    TABLESPACE [[2m_tbs]];
+    ;
 
 CREATE SEQUENCE rhn_package_arch_id_seq START WITH 100;
 

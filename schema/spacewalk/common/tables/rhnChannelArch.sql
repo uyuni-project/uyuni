@@ -16,18 +16,18 @@
 
 CREATE TABLE rhnChannelArch
 (
-    id            NUMBER NOT NULL,
-    label         VARCHAR2(64) NOT NULL,
-    arch_type_id  NUMBER NOT NULL
+    id            NUMERIC NOT NULL,
+    label         VARCHAR(64) NOT NULL,
+    arch_type_id  NUMERIC NOT NULL
                       CONSTRAINT rhn_carch_atid_fk
                           REFERENCES rhnArchType (id),
-    name          VARCHAR2(64) NOT NULL,
-    created       timestamp with local time zone
+    name          VARCHAR(64) NOT NULL,
+    created       TIMESTAMPTZ
                       DEFAULT (current_timestamp) NOT NULL,
-    modified      timestamp with local time zone
+    modified      TIMESTAMPTZ
                       DEFAULT (current_timestamp) NOT NULL
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE SEQUENCE rhn_channel_arch_id_seq START WITH 500;
@@ -37,8 +37,8 @@ ALTER TABLE rhnChannelArch
 
 ALTER TABLE rhnChannelArch
     ADD CONSTRAINT rhn_carch_label_uq UNIQUE (label)
-    USING INDEX TABLESPACE [[2m_tbs]];
+    ;
 
 ALTER TABLE rhnChannelArch
     ADD CONSTRAINT rhn_carch_name_uq UNIQUE (name)
-    USING INDEX TABLESPACE [[2m_tbs]];
+    ;

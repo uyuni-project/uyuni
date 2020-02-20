@@ -16,12 +16,12 @@
 
 CREATE TABLE rhnWebContactChangeState
 (
-    id     NUMBER
+    id     NUMERIC
                CONSTRAINT rhn_cont_change_state_id_pk PRIMARY KEY,
-    label  VARCHAR2(32) NOT NULL
+    label  VARCHAR(32) NOT NULL
 )
-TABLESPACE [[32m_tbs]]
-ENABLE ROW MOVEMENT
+
+
 ;
 
 CREATE SEQUENCE rhn_wcon_change_state_seq;

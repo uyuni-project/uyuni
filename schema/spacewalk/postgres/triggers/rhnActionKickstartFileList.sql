@@ -1,4 +1,3 @@
--- oracle equivalent source sha1 047e8b2a277255b12967934b8b72e0c1ca7cdcc0
 
 create or replace function rhn_actionksfl_mod_trig_fun() returns trigger as
 $$

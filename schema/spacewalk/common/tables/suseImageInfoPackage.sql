@@ -14,26 +14,26 @@
 --
 CREATE TABLE suseImageInfoPackage
 (
-    image_info_id    NUMBER NOT NULL
+    image_info_id    NUMERIC NOT NULL
                          REFERENCES suseImageInfo (id)
                              ON DELETE CASCADE,
-    name_id          NUMBER NOT NULL
+    name_id          NUMERIC NOT NULL
                          REFERENCES rhnPackageName (id),
-    evr_id           NUMBER NOT NULL
+    evr_id           NUMERIC NOT NULL
                          REFERENCES rhnPackageEVR (id),
-    package_arch_id  NUMBER
+    package_arch_id  NUMERIC
                          REFERENCES rhnPackageArch (id),
-    created          timestamp with local time zone
+    created          TIMESTAMPTZ
                          DEFAULT (current_timestamp) NOT NULL,
-    installtime      timestamp with local time zone
+    installtime      TIMESTAMPTZ
 )
-TABLESPACE [[server_package_tablespace]]
-ENABLE ROW MOVEMENT
+
+
 ;
 
 CREATE UNIQUE INDEX suse_ip_inep_uq
     ON suseImageInfoPackage (image_info_id, name_id, evr_id, package_arch_id)
-    TABLESPACE [[128m_tbs]]
-    NOLOGGING;
+    
+    ;
 
 CREATE SEQUENCE suse_image_package_id_seq;

@@ -1,6 +1,6 @@
 drop view suseimageoverview;
 
-alter table suseImageInfo add checksum_id NUMBER
+alter table suseImageInfo add checksum_id NUMERIC
         CONSTRAINT suse_imginfo_chsum_fk
         REFERENCES rhnChecksum (id);
 

@@ -13,30 +13,30 @@
 create table
 suseMdData
 (
-    channel_id        number
+    channel_id        NUMERIC
                       CONSTRAINT susemddata_chn_id_fk
                       REFERENCES rhnChannel (id)
                       ON DELETE CASCADE,
-    package_id        number
+    package_id        NUMERIC
                       CONSTRAINT susemddata_pkg_id_fk
                       REFERENCES rhnPackage (id)
                       On DELETE CASCADE,
-    keyword_id        number
+    keyword_id        NUMERIC
                       CONSTRAINT susemdkeyword_id_fk
                       REFERENCES suseMdKeyword (id),
-    created   timestamp with local time zone
+    created   TIMESTAMPTZ
                   DEFAULT (current_timestamp) NOT NULL,
-    modified  timestamp with local time zone
+    modified  TIMESTAMPTZ
                   DEFAULT (current_timestamp) NOT NULL
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE UNIQUE INDEX susemddata_chn_pkg_key_uq
 ON suseMdData (channel_id, package_id, keyword_id)
-TABLESPACE [[64k_tbs]];
+;
 
 CREATE INDEX susemddata_chn_pkg_idx
 ON suseMdData (channel_id, package_id)
-TABLESPACE [[64k_tbs]];
+;
 

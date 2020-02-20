@@ -16,9 +16,9 @@
 
 CREATE TABLE web_user_prefix
 (
-    text  VARCHAR2(12) NOT NULL
+    text  VARCHAR(12) NOT NULL
               CONSTRAINT wup_text_pk PRIMARY KEY
 )
-ENABLE ROW MOVEMENT
+
 ;
 

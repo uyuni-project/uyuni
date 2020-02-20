@@ -16,17 +16,17 @@
 
 CREATE TABLE rhnPackageName
 (
-    id    NUMBER NOT NULL
+    id    NUMERIC NOT NULL
               CONSTRAINT rhn_pn_id_pk PRIMARY KEY
-              USING INDEX TABLESPACE [[2m_tbs]],
-    name  VARCHAR2(256) NOT NULL
+              ,
+    name  VARCHAR(256) NOT NULL
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE UNIQUE INDEX rhn_pn_name_uq
     ON rhnPackageName (name)
-    TABLESPACE [[2m_tbs]];
+    ;
 
 CREATE SEQUENCE rhn_pkg_name_seq;
 

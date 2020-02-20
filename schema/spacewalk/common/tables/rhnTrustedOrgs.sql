@@ -16,23 +16,23 @@
 
 CREATE TABLE rhnTrustedOrgs
 (
-    org_id        NUMBER NOT NULL
+    org_id        NUMERIC NOT NULL
                       CONSTRAINT rhn_trusted_orgs_oid_fk
                           REFERENCES web_customer (id)
                           ON DELETE CASCADE,
-    org_trust_id  NUMBER NOT NULL
+    org_trust_id  NUMERIC NOT NULL
                       CONSTRAINT rhn_trusted_orgs_otid_fk
                           REFERENCES web_customer (id)
                           ON DELETE CASCADE,
-    created       timestamp with local time zone
+    created       TIMESTAMPTZ
                       DEFAULT (current_timestamp) NOT NULL,
-    modified      timestamp with local time zone
+    modified      TIMESTAMPTZ
                       DEFAULT (current_timestamp) NOT NULL
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE UNIQUE INDEX rhn_trusted_orgs_oid_uq
     ON rhnTrustedOrgs (org_id, org_trust_id)
-    TABLESPACE [[2m_tbs]];
+    ;
 

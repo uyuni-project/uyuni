@@ -16,28 +16,28 @@
 
 CREATE TABLE rhnUserServerGroupPerms
 (
-    user_id          NUMBER NOT NULL
+    user_id          NUMERIC NOT NULL
                          CONSTRAINT rhn_usgp_user_fk
                              REFERENCES web_contact (id)
                              ON DELETE CASCADE,
-    server_group_id  NUMBER NOT NULL
+    server_group_id  NUMERIC NOT NULL
                          CONSTRAINT rhn_usgp_server_fk
                              REFERENCES rhnServerGroup (id)
                              ON DELETE CASCADE,
-    created          timestamp with local time zone
+    created          TIMESTAMPTZ
                          DEFAULT (current_timestamp) NOT NULL,
-    modified         timestamp with local time zone
+    modified         TIMESTAMPTZ
                          DEFAULT (current_timestamp) NOT NULL
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE UNIQUE INDEX rhn_usgp_u_sg_p_uq
     ON rhnUserServerGroupPerms (user_id, server_group_id)
-    TABLESPACE [[4m_tbs]];
+    ;
 
 CREATE INDEX rhn_usgp_sg_idx
     ON rhnUserServerGroupPerms (server_group_id)
-    TABLESPACE [[4m_tbs]]
-    NOLOGGING;
+    
+    ;
 

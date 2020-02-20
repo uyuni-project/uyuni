@@ -16,24 +16,24 @@
 
 CREATE TABLE rhnServerTokenRegs
 (
-    token_id   NUMBER NOT NULL
+    token_id   NUMERIC NOT NULL
                    CONSTRAINT rhn_srv_reg_tok_tid_fk
                        REFERENCES rhnRegToken (id)
                        ON DELETE CASCADE,
-    server_id  NUMBER NOT NULL
+    server_id  NUMERIC NOT NULL
                    CONSTRAINT rhn_srv_reg_tok_sid_fk
                        REFERENCES rhnServer (id)
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE INDEX rhn_srv_reg_tok_ts_idx
     ON rhnServerTokenRegs (token_id, server_id)
-    TABLESPACE [[64k_tbs]]
-    NOLOGGING;
+    
+    ;
 
 CREATE INDEX RHN_SRVR_TKN_RGS_SID_IDX
     ON rhnServerTokenRegs (server_id)
-    TABLESPACE [[64k_tbs]]
-    NOLOGGING;
+    
+    ;
 

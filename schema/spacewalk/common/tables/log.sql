@@ -16,14 +16,14 @@
 
 CREATE TABLE log
 (
-    id NUMBER NOT NULL
+    id NUMERIC NOT NULL
         CONSTRAINT log_id_pk PRIMARY KEY,
-    stamp TIMESTAMP WITH LOCAL TIME ZONE,
-    user_id NUMBER
+    stamp TIMESTAMPTZ,
+    user_id NUMERIC
         CONSTRAINT log_user_id_fk
             REFERENCES web_contact_all(id)
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE SEQUENCE log_seq;

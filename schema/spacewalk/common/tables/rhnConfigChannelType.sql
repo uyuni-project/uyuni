@@ -16,24 +16,24 @@
 
 CREATE TABLE rhnConfigChannelType
 (
-    id        NUMBER NOT NULL
+    id        NUMERIC NOT NULL
                   CONSTRAINT rhn_confchantype_id_pk PRIMARY KEY
-                  USING INDEX TABLESPACE [[64k_tbs]],
-    label     VARCHAR2(64) NOT NULL,
-    name      VARCHAR2(64) NOT NULL,
-    priority  NUMBER
+                  ,
+    label     VARCHAR(64) NOT NULL,
+    name      VARCHAR(64) NOT NULL,
+    priority  NUMERIC
                   DEFAULT (0) NOT NULL,
-    created   timestamp with local time zone
+    created   TIMESTAMPTZ
                   DEFAULT (current_timestamp) NOT NULL,
-    modified  timestamp with local time zone
+    modified  TIMESTAMPTZ
                   DEFAULT (current_timestamp) NOT NULL
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE INDEX rhn_confchantype_label_id_idx
     ON rhnConfigChannelType (label, id)
-    TABLESPACE [[64k_tbs]];
+    ;
 
 CREATE SEQUENCE rhn_confchantype_id_seq;
 

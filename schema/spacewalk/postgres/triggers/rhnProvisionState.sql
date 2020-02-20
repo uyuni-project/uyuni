@@ -1,4 +1,3 @@
--- oracle equivalent source sha1 02d887ea206490642d23a1b1a0f469e1b458992e
 
 create or replace function rhn_provstate_mod_trig_fun() returns trigger as
 $$

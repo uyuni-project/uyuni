@@ -15,11 +15,11 @@
 
 CREATE TABLE suseKiwiProfile
 (
-    profile_id  NUMBER NOT NULL
+    profile_id  NUMERIC NOT NULL
                   CONSTRAINT suse_kiwi_prid_fk
                      REFERENCES suseImageProfile (profile_id)
                      ON DELETE CASCADE,
-    path        VARCHAR2(1024) NOT NULL
+    path        VARCHAR(1024) NOT NULL
 )
-ENABLE ROW MOVEMENT
+
 ;

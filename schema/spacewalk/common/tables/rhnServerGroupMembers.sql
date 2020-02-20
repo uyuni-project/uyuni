@@ -16,26 +16,26 @@
 
 CREATE TABLE rhnServerGroupMembers
 (
-    server_id        NUMBER NOT NULL
+    server_id        NUMERIC NOT NULL
                          CONSTRAINT rhn_sg_members_fk
                              REFERENCES rhnServer (id),
-    server_group_id  NUMBER NOT NULL
+    server_group_id  NUMERIC NOT NULL
                          CONSTRAINT rhn_sg_groups_fk
                              REFERENCES rhnServerGroup (id),
-    created          timestamp with local time zone
+    created          TIMESTAMPTZ
                          DEFAULT (current_timestamp) NOT NULL,
-    modified         timestamp with local time zone
+    modified         TIMESTAMPTZ
                          DEFAULT (current_timestamp) NOT NULL
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE UNIQUE INDEX rhn_sgmembers_sid_sgid_uq
     ON rhnServerGroupMembers (server_id, server_group_id)
-    TABLESPACE [[4m_tbs]];
+    ;
 
 CREATE INDEX rhn_sgmembers_sgid_idx
     ON rhnServerGroupMembers (server_group_id)
-    TABLESPACE [[4m_tbs]]
-    NOLOGGING;
+    
+    ;
 

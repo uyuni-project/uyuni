@@ -1,4 +1,3 @@
--- oracle equivalent source sha1 5fd0cf501d847ae816b59b44e441b4a12a72096f
 
 create or replace function rhn_avd_mod_trig_fun() returns trigger as
 $$

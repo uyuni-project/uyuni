@@ -16,34 +16,34 @@
 
 CREATE TABLE rhnServerActionVerifyMissing
 (
-    server_id              NUMBER NOT NULL
+    server_id              NUMERIC NOT NULL
                                CONSTRAINT rhn_sactionvm_sid_fk
                                    REFERENCES rhnServer (id),
-    action_id              NUMBER NOT NULL
+    action_id              NUMERIC NOT NULL
                                CONSTRAINT rhn_sactionvm_aid_fk
                                    REFERENCES rhnAction (id)
                                    ON DELETE CASCADE,
-    package_name_id        NUMBER NOT NULL
+    package_name_id        NUMERIC NOT NULL
                                CONSTRAINT rhn_sactionvm_pnid_fk
                                    REFERENCES rhnPackageName (id),
-    package_evr_id         NUMBER NOT NULL
+    package_evr_id         NUMERIC NOT NULL
                                CONSTRAINT rhn_sactionvm_peid_fk
                                    REFERENCES rhnPackageevr (id),
-    package_arch_id        NUMBER NOT NULL
+    package_arch_id        NUMERIC NOT NULL
                                CONSTRAINT rhn_sactionvm_paid_fk
                                    REFERENCES rhnPackageArch (id),
-    package_capability_id  NUMBER NOT NULL
+    package_capability_id  NUMERIC NOT NULL
                                CONSTRAINT rhn_sactionvm_pcid_fk
                                    REFERENCES rhnPackageCapability (id),
-    created                timestamp with local time zone
+    created                TIMESTAMPTZ
                                DEFAULT (current_timestamp) NOT NULL,
-    modified               timestamp with local time zone
+    modified               TIMESTAMPTZ
                                DEFAULT (current_timestamp) NOT NULL
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE UNIQUE INDEX rhn_sactionvm_sanec_uq
     ON rhnServerActionVerifyMissing (server_id, action_id, package_name_id, package_evr_id, package_arch_id, package_capability_id)
-    TABLESPACE [[4m_tbs]];
+    ;
 

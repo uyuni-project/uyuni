@@ -1,4 +1,3 @@
--- oracle equivalent source sha1 3524cbfc189420e5300d30b682c8fcfc5546465d
 
 create or replace function rhn_channel_family_mod_trig_fun() returns trigger as
 $$
