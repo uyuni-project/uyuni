@@ -940,7 +940,7 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
         contentManager.buildProject("cplabel", empty(), false, user);
 
         // 2. add new environments
-        ContentEnvironment testEnv = contentManager.createEnvironment(cp.getLabel(), of("dev"), "test", "test env", "desc", false, user );
+        ContentEnvironment testEnv = contentManager.createEnvironment(cp.getLabel(), of("dev"), "test", "test env", "desc", false, user);
         ContentEnvironment prodEnv = contentManager.createEnvironment(cp.getLabel(), of("test"), "prod", "prod env", "desc", false, user);
 
         // 3. promote
@@ -1209,6 +1209,94 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
         contentManager.attachFilter("cplabel", filter.getId(), user);
         contentManager.buildProject("cplabel", empty(), false, user);
         assertEquals(0, env.getTargets().get(0).asSoftwareTarget().get().getChannel().getErrataCount());
+    }
+
+    /**
+     * Tests building a project for which build is already in progress
+     *
+     * @throws Exception if anything goes wrong
+     */
+    public void testBuildAlreadyBuildingProject() throws Exception {
+        // todo var
+        ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());
+        ContentProjectFactory.save(cp);
+        ContentEnvironment env = contentManager.createEnvironment(cp.getLabel(), empty(), "fst", "first env", "desc", false, user);
+        Channel channel = createPopulatedChannel();
+        contentManager.attachSource("cplabel", SW_CHANNEL, channel.getLabel(), empty(), user);
+
+        contentManager.buildProject("cplabel", empty(), false, user);
+        env.getTargets().iterator().next().setStatus(Status.BUILDING);
+        HibernateFactory.getSession().flush();
+
+        try {
+            contentManager.buildProject("cplabel", empty(), false, user);
+            fail("An exception should have been thrown");
+        }
+        catch (ContentManagementException e) {
+            // should happen
+        }
+    }
+
+    /**
+     * Tests building a project for which build is already in progress
+     *
+     * @throws Exception if anything goes wrong
+     */
+    public void testPromotingBuildingProject() throws Exception {
+        var project = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());
+        ContentProjectFactory.save(project);
+        var fstEnv = contentManager.createEnvironment(project.getLabel(), empty(), "fst", "first env", "fst", false, user);
+        var sndEnv = contentManager.createEnvironment(project.getLabel(), of("fst"), "snd", "second env", "snd", false, user);
+        var channel = createPopulatedChannel();
+        contentManager.attachSource("cplabel", SW_CHANNEL, channel.getLabel(), empty(), user);
+
+        contentManager.buildProject("cplabel", empty(), false, user);
+
+        // 1st promote runs ok
+        contentManager.promoteProject("cplabel", "fst", false, user);
+
+        // now we change the target from the 1st environment to BUILDING
+        fstEnv.getTargets().iterator().next().setStatus(Status.BUILDING);
+
+        // now the promote must fail
+        try {
+            contentManager.promoteProject("cplabel", "fst", false, user);
+            fail("An exception should have been thrown");
+        }
+        catch (ContentManagementException e) {
+            // should happen
+        }
+    }
+
+    /**
+     * Tests building a project for which build is already in progress
+     *
+     * @throws Exception if anything goes wrong
+     */
+    public void testPromotingPromotingProject() throws Exception {
+        var project = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());
+        ContentProjectFactory.save(project);
+        var fstEnv = contentManager.createEnvironment(project.getLabel(), empty(), "fst", "first env", "fst", false, user);
+        var sndEnv = contentManager.createEnvironment(project.getLabel(), of("fst"), "snd", "second env", "snd", false, user);
+        var channel = createPopulatedChannel();
+        contentManager.attachSource("cplabel", SW_CHANNEL, channel.getLabel(), empty(), user);
+
+        contentManager.buildProject("cplabel", empty(), false, user);
+
+        // 1st promote runs ok
+        contentManager.promoteProject("cplabel", "fst", false, user);
+
+        // now we change the target from the 2nd environment to BUILDING
+        sndEnv.getTargets().iterator().next().setStatus(Status.BUILDING);
+
+        // now the promote must fail
+        try {
+            contentManager.promoteProject("cplabel", "fst", false, user);
+            fail("An exception should have been thrown");
+        }
+        catch (ContentManagementException e) {
+            // should happen
+        }
     }
 
     private Channel createPopulatedChannel() throws Exception {
