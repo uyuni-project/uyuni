@@ -124,7 +124,7 @@ public class SSHMinionBootstrapper extends AbstractMinionBootstrapper {
 
     // we want to override this in tests
     protected RegisterMinionEventMessageAction getRegisterAction() {
-        return new RegisterMinionEventMessageAction();
+        return new RegisterMinionEventMessageAction(saltService);
     }
 
     /**
