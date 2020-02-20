@@ -73,7 +73,11 @@ const Project = (props: Props) => {
   }
 
   const isProjectEdited = changesToBuild.length > 0;
-  const isBuildDisabled = !hasEditingPermissions || _isEmpty(project.environments) || _isEmpty(project.softwareSources);
+  const isBuildDisabled = !hasEditingPermissions
+        || _isEmpty(project.environments)
+        || _isEmpty(project.softwareSources)
+        || project.environments[0].status === "building"
+        || (project.environments[1] || {}).status === "building";
 
   return (
     <TopPanel
