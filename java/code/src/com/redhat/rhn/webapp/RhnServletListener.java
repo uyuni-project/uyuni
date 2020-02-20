@@ -18,6 +18,7 @@ import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.manager.satellite.UpgradeCommand;
 
+import com.suse.manager.extensions.Plugins;
 import com.suse.manager.reactor.SaltReactor;
 
 import org.apache.log4j.LogManager;
@@ -126,6 +127,9 @@ public class RhnServletListener implements ServletContextListener {
             saltReactor.start();
             logStart("Salt reactor");
         }
+
+        log.debug("Starting plugins");
+        Plugins.instance();
 
         log.debug("Starting upgrade check");
         executeUpgradeStep();

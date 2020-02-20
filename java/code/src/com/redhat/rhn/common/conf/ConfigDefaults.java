@@ -20,6 +20,7 @@ import com.redhat.rhn.domain.kickstart.KickstartData;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
+import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.List;
 
@@ -312,6 +313,8 @@ public class ConfigDefaults {
      * Single Sign-On associated config option name in rhn.conf
      */
     public static final String SINGLE_SIGN_ON_ENABLED = "java.sso";
+
+    public static final String PLUGIN_DIR = "java.plugin_dir";
 
     private ConfigDefaults() {
     }
@@ -977,4 +980,7 @@ public class ConfigDefaults {
         return Config.get().getBoolean(SINGLE_SIGN_ON_ENABLED);
     }
 
+    public String getPluginDir() {
+        return Config.get().getString(PLUGIN_DIR, "/usr/share/susemanager/plugins");
+    }
 }

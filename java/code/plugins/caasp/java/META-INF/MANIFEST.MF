@@ -1,0 +1,4 @@
+Plugin-Class: com.suse.manager.caasp.CaaspPlugin
+Plugin-Id: suse-caasp-plugin
+Plugin-Provider: SUSE
+Plugin-Version: 0.0.1

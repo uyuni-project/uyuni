@@ -20,6 +20,7 @@
   <property name="deploy.port" value="22" />
   <property name="deploy.dir" value="/srv/tomcat/webapps/rhn" />
   <property name="deploy.user" value="root" />
+  <property name="plugins.deploy.dir" value="/usr/share/susemanager/plugins" />
 
   <property name="tests.includes" value="buildconf/manager-test-includes" />
   <property name="tests.excludes" value="buildconf/manager-test-excludes" />
@@ -52,11 +53,15 @@
     <fileset dir="${lib.dir}" includes="**/*.jar" />
     <fileset file="${build.dir}/rhn.jar" />
   </path>
+  <path id="pluginclasspath">
+    <fileset dir="${lib.dir}" includes="**/*.jar" />
+    <file file="${build.dir}/classes" />
+  </path>
 
   <!-- Tasks -->
   <target name="clean" description="Cleans up all generated files">
-    <delete dir="${build.dir}" quiet="true">
-      <exclude name="classes/**/*" if="precompiled" />
+    <delete includeemptydirs="true" quiet="true">
+      <fileset dir="${build.dir}" includes="**/*"/>
     </delete>
     <delete dir="${test.results.dir}" />
   </target>
@@ -123,6 +128,43 @@
     </copy>
   </target>
 
+  <target name="compile-plugins"
+          depends="clean,compile"
+          unless="precompiled"
+          description="Compiles the plugins"
+  >
+    <!-- TODO compile all dirs under plugins  -->
+    <mkdir dir="${build.dir}/plugins/caasp/classes" />
+    <javac destdir="${build.dir}/plugins/caasp/classes"
+           optimize="off"
+           debug="on"
+           source="11"
+           target="11"
+           deprecation="${deprecation}"
+           nowarn="${nowarn}"
+           encoding="utf-8"
+           fork="yes"
+           memoryMaximumSize="256m"
+           includeAntRuntime="false"
+           classpathref="pluginclasspath"
+    >
+      <src>
+        <path location="${src.dir}/plugins/caasp/java" />
+      </src>
+    </javac>
+
+    <copy toDir="${build.dir}/plugins/caasp/classes/" includeEmptyDirs="false">
+      <fileset dir="${src.dir}/plugins/caasp/java">
+        <exclude name="**/*.java" />
+        <exclude name="**/package.html" />
+      </fileset>
+    </copy>
+
+    <manifest file="${build.dir}/plugins/caasp/classes/META-INF/MANIFEST.MF" mode="update">
+    </manifest>
+  </target>
+
+
   <target name="jar" depends="compile" description="Packs the main application jar">
     <jar destfile="${build.dir}/rhn.jar">
       <fileset dir="${build.dir}/classes">
@@ -143,6 +185,18 @@
         <include name="*.tld" />
       </metainf>
     </jar>
+  </target>
+
+  <target name="jar-plugins" depends="compile-plugins" description="Packs the plugins jars">
+    <!-- TODO zip plugins -->
+<!--    <jar destfile="${build.dir}/plugins/caasp-plugin.jar">
+      <fileset dir="${build.dir}/plugins/caasp/classes">
+        &lt;!&ndash; internal is not for publication; tlds go in META-INF;  html files go as javadoc &ndash;&gt;
+        <exclude name="**/internal/**" />
+        <exclude name="**/*.tld" />
+        <exclude name="**/*.html" />
+      </fileset>
+    </jar>-->
   </target>
 
   <target name="webapp" depends="jar" description="Creates the Web application directory">
@@ -182,7 +236,7 @@
   </target>
 
   <target name="deploy" depends="webapp, open-ssh-socket" description="Deploy a new copy of SUSE Manager">
-    <echo message="Copying files to remote host..." />
+    <echo message="Copying application files to remote host..." />
     <exec failonerror="true" executable="rsync">
       <arg line="-a --delete --rsh 'ssh ${ssh.socket.option}' ${build.dir}/webapp/ ${deploy.user}@${deploy.host}:${deploy.dir}/" />
     </exec>
@@ -208,6 +262,15 @@
     </exec>
 
   </target>
+
+  <target name="deploy-plugins" depends="jar-plugins, open-ssh-socket" description="Deploy plugins">
+    <echo message="Copying plugins files to remote host..." />
+    <exec failonerror="true" executable="rsync">
+      <arg line="-a --delete --rsh 'ssh ${ssh.socket.option}' ${build.dir}/plugins/ ${deploy.user}@${deploy.host}:${plugins.deploy.dir}/" />
+    </exec>
+  </target>
+
+  <target name="deploy-all" depends="deploy, deploy-plugins" description="Deploy app and plugins"/>
 
   <target name="is-yarn-installed">
     <property environment="env" />
