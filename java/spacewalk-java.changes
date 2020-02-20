@@ -1,3 +1,4 @@
+- enable provisioning API with salt and bootstrap entitled systems
 - Fix a problem with removing the monitoring entitlement from a system
 - improve performance when adding systems to system groups (bsc#1158754)
 - Migrate pillar and formula data on minion id change (bsc#1161755)
