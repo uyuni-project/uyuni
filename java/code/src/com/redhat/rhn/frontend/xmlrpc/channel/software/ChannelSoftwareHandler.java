@@ -140,6 +140,8 @@ public class ChannelSoftwareHandler extends BaseHandler {
     /**
      * Only needed for unit tests.
      * @return the {@link TaskomaticApi} instance used by this class
+     *
+     * @xmlrpc.ignore
      */
     public TaskomaticApi getTaskomaticApi() {
         return taskomaticApi;
@@ -3339,6 +3341,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
      * @param label of the repo to use
      * @return list of filters
      *
+     * @xmlrpc.ignore
     **/
     public List<ContentSourceFilter> listVendorRepoFilters(User loggedInUser, String label) {
         Role orgAdminRole = RoleFactory.lookupByLabel("org_admin");
@@ -3361,6 +3364,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
      * @param label of the repo to use
      * @param filterIn list of filters
      * @return sort order for the new filter
+     * @xmlrpc.ignore
      */
     public int addVendorRepoFilter(User loggedInUser, String label, Map<String, String> filterIn) {
         Role orgAdminRole = RoleFactory.lookupByLabel("org_admin");
@@ -3402,6 +3406,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
      * @param label of the repo to use
      * @param filterIn list of filters
      * @return 1 on success
+     * @xmlrpc.ignore
      */
     public int removeVendorRepoFilter(User loggedInUser, String label,
             Map<String, String> filterIn) {
@@ -3444,6 +3449,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
      * @param label of the repo to use
      * @param filtersIn list of filters
      * @return 1 on success
+     * @xmlrpc.ignore
      */
     public int setVendorRepoFilters(User loggedInUser, String label,
             List<Map<String, String>> filtersIn) {
@@ -3492,6 +3498,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
     * @param loggedInUser The current user
     * @param label of the repo to use
     * @return 1 on success
+    * @xmlrpc.ignore
    **/
     public int clearVendorRepoFilters(User loggedInUser, String label) {
         Role orgAdminRole = RoleFactory.lookupByLabel("org_admin");
