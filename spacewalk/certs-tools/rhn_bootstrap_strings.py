@@ -982,6 +982,11 @@ echo "------------"
 # change the string as needed.
 #
 
+if [[ $ACTIVATION_KEYS =~ , ]] ; then
+    echo "*** ERROR: Multiple activation keys are not supported with salt!"
+    exit 1
+fi
+
 MINION_ID_FILE="/etc/salt/minion_id"
 SUSEMANAGER_MASTER_FILE="/etc/salt/minion.d/susemanager.conf"
 
