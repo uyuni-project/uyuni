@@ -1,3 +1,4 @@
+- fix mgrcfg-client python3 breakage (bsc#1164309
 - Remove oracle backend support and tests
 - remove code to handle tables used for forwarding registrations
   to NCC.
