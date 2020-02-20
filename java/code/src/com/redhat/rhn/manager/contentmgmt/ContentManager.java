@@ -544,6 +544,13 @@ public class ContentManager {
                 .orElseThrow(() -> new ContentManagementException("Environment " + envLabel +
                         " does not have successor"));
 
+        // if current Environment or the next 2 Environments in the chain are building -> FORBID promote
+        // as it could affect the build in progress
+        if (isEnvironmentBuilding(of(env)) || isEnvironmentBuilding(of(nextEnv)) ||
+                isEnvironmentBuilding(nextEnv.getNextEnvironmentOpt())) {
+            throw new ContentManagementException("Build/Promote already in progress");
+        }
+
         Map<Boolean, List<Channel>> envChannels = env.getTargets().stream()
                 .flatMap(tgt -> stream(tgt.asSoftwareTarget()))
                 .map(tgt -> tgt.getChannel())
@@ -578,9 +585,20 @@ public class ContentManager {
         ContentEnvironment firstEnv = project.getFirstEnvironmentOpt()
                 .orElseThrow(() -> new ContentManagementException("Cannot publish  project: " + projectLabel +
                         " with no environments."));
+        // 1st or 2nd Environments is BUILDING -> FORBID another build as it could affect the build in progress
+        if (isEnvironmentBuilding(of(firstEnv)) || isEnvironmentBuilding(firstEnv.getNextEnvironmentOpt())) {
+            throw new ContentManagementException("Build/Promote already in progress");
+        }
+
         buildSoftwareSources(firstEnv, async, user);
         ContentProjectHistoryEntry entry = addHistoryEntry(message, user, project);
         firstEnv.setVersion(entry.getVersion());
+    }
+
+    // helper method to determine if given environment is BUILDING
+    private Boolean isEnvironmentBuilding(Optional<ContentEnvironment> env) {
+        return env.flatMap(e -> e.computeStatus().map(status -> status.equals(EnvironmentTarget.Status.BUILDING)))
+                .orElse(false);
     }
 
     /**
