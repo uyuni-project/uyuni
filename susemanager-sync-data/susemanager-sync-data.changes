@@ -1,3 +1,7 @@
+- add OES 2018 SP2 (bsc#1161862)
+- rename RHEL 8 Base product
+- change channel family name according to SCC data
+
 -------------------------------------------------------------------
 Wed Jan 08 11:39:28 CET 2020 - mc@suse.de
 
