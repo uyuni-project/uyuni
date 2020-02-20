@@ -42,7 +42,6 @@ const Promote = (props: Props) => {
   const disabled =
     !hasEditingPermissions
     || !props.environmentPromote.version
-    || props.environmentPromote.version <= props.environmentTarget.version
     || props.environmentPromote.status === "building"
     || props.environmentTarget.status === "building"
     || (props.environmentNextTarget || {}).status === "building";
