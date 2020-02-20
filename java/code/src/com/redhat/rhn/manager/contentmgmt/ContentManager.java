@@ -228,7 +228,7 @@ public class ContentManager {
                     // populating first environment will be implemented as soon as backward-promote is implemented
                     predecessor.ifPresent(p -> {
                         if (!p.getTargets().isEmpty()) {
-                            promoteProject(projectLabel, p.getLabel(), true, user);
+                            promoteProject(projectLabel, p.getLabel(), async, user);
                         }
                     });
                     return newEnv;
