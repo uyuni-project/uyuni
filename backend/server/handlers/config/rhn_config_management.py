@@ -155,7 +155,7 @@ class ConfigManagement(configFilesHandler.ConfigFilesHandler):
 
         result = list(result_hash.values())
         # Sort by path first since that's what the web site does
-        result.sort(lambda x, y: cmp(x[1], y[1]))
+        result.sort(key=lambda x:x[1])
         return result
 
     def client_get_file(self, systemid, filename):
