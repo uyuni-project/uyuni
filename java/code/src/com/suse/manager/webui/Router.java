@@ -86,6 +86,7 @@ public class Router implements SparkApplication {
 
         SystemsController systemsController = new SystemsController(systemQuery);
         SaltSSHController saltSSHController = new SaltSSHController(systemQuery);
+        NotificationMessageController notificationMessageController = new NotificationMessageController(systemQuery);
 
         post("/manager/frontend-log", withUser(FrontendLogController::log));
 
@@ -151,7 +152,7 @@ public class Router implements SparkApplication {
 
 
         // NotificationMessages
-        NotificationMessageController.initRoutes(jade);
+        NotificationMessageController.initRoutes(jade, notificationMessageController);
 
         // Products
         ProductsController.initRoutes(jade);
