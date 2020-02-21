@@ -51,7 +51,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -73,28 +72,6 @@ public enum SaltStateGeneratorService {
 
     SaltStateGeneratorService() {
         suseManagerStatesFilesRoot = Paths.get(SUMA_STATE_FILES_ROOT_PATH);
-    }
-
-    /**
-     * Write pillar data file.
-     * @param minion the minion
-     * @param pillar pillar data
-     * @param suffix file name suffix
-     */
-    public void generatePillar(MinionServer minion, SaltPillar pillar, String sufix) {
-        try {
-            Files.createDirectories(pillarDataPath);
-            String fileName = PILLAR_DATA_FILE_PREFIX + "_" +
-                    minion.getMinionId() + "_" + sufix + "." +
-                    PILLAR_DATA_FILE_EXT;
-            Path filePath = pillarDataPath.resolve(fileName);
-            com.suse.manager.webui.utils.SaltStateGenerator saltStateGenerator =
-                    new com.suse.manager.webui.utils.SaltStateGenerator(filePath.toFile());
-            saltStateGenerator.generate(pillar);
-        }
-        catch (IOException e) {
-            LOG.error(e.getMessage(), e);
-        }
     }
 
     /**
