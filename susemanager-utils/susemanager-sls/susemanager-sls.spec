@@ -54,6 +54,7 @@ provided for the integration between infrastructure components.
 mkdir -p %{buildroot}/usr/share/susemanager/salt/_grains
 mkdir -p %{buildroot}/usr/share/susemanager/salt/_beacons
 mkdir -p %{buildroot}/usr/share/susemanager/salt/_modules
+mkdir -p %{buildroot}/usr/share/susemanager/salt/_states
 mkdir -p %{buildroot}/usr/share/susemanager/modules/pillar
 mkdir -p %{buildroot}/usr/share/susemanager/modules/tops
 mkdir -p %{buildroot}/usr/share/susemanager/modules/runners
@@ -86,6 +87,7 @@ cp src/modules/udevdb.py %{buildroot}/usr/share/susemanager/salt/_modules
 cp src/modules/mgractionchains.py %{buildroot}/usr/share/susemanager/salt/_modules
 cp src/modules/kiwi_info.py %{buildroot}/usr/share/susemanager/salt/_modules
 cp src/modules/kiwi_source.py %{buildroot}/usr/share/susemanager/salt/_modules
+cp src/states/product.py %{buildroot}/usr/share/susemanager/salt/_states
 
 %check
 cd test
