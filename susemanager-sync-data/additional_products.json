@@ -128,7 +128,7 @@
             {
                 "id" : -94,
                 "url" : "https://nu.novell.com/repo/$RCE/OES2018-SP2-SLE-Manager-Tools12-Debuginfo-Pool/sle-12-x86_64/",
-                "name" : "OES2018-SP2-SLE-Manager-Tools12-Debuginfo-Pool ",
+                "name" : "OES2018-SP2-SLE-Manager-Tools12-Debuginfo-Pool",
                 "distro_target" : "sle-12-x86_64",
                 "description" : "SUSE Manager Tools provide packages required to connect to a SUSE Manager Server.",
                 "enabled" : false,
@@ -268,7 +268,7 @@
             {
                 "id" : -108,
                 "url" : "https://nu.novell.com/repo/$RCE/OES2018-SP2-SLE-Module-Web-Scripting12-Debuginfo-Pool/sle-12-x86_64/",
-                "name" : "OES2018-SP2-SLE-Module-Toolchain12-Debuginfo-Pool",
+                "name" : "OES2018-SP2-SLE-Module-Web-Scripting12-Debuginfo-Pool",
                 "distro_target" : "sle-12-x86_64",
                 "description" : "The SUSE Linux Enterprise Web and Scripting Module delivers a comprehensive suite of scripting languages, frameworks, and related tools helping developers and systems administrators accelerate the creation of stable, modern web applications, using dynamic languages, such as PHP, Ruby on Rails, and Python. \\n Access to the Web and Scripting Module is included in your SUSE Linux Enterprise Server subscription. The module has a different lifecycle than SUSE Linux Enterprise Server itself: Package versions in the this module are usually supported for at most three years. We are planning to release more recent versions on a schedule of approximately 18 month; the exact dates may differ per package.",
                 "enabled" : false,
