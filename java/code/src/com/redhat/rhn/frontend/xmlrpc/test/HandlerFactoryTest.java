@@ -27,26 +27,20 @@ public class HandlerFactoryTest extends RhnBaseTestCase {
 
     public void setUp() throws Exception {
         super.setUp();
-        factory = new HandlerFactory();
+        factory = HandlerFactory.defaultHandlers();
     }
 
     public void testHandlerFactoryNotFound() {
-        try {
-            factory.getHandler("NoHandler");
-            fail("Should have received an exception.");
-        }
-        catch (ManifestFactoryLookupException e) {
-            // Expected exception, NoHandler doesn't exist.
-        }
+        assertTrue("handler should not exist.", factory.getHandler("NoHandler").isEmpty());
     }
 
     public void testHandlerFactory() {
-        BaseHandler handler = factory.getHandler("channel");
+        BaseHandler handler = factory.getHandler("channel").get();
         assertEquals(ChannelHandler.class, handler.getClass());
     }
 
     public void testDescendingClass() {
-        BaseHandler handler = factory.getHandler("channel.software");
+        BaseHandler handler = factory.getHandler("channel.software").get();
         assertNotNull(handler);
         assertEquals(ChannelSoftwareHandler.class, handler.getClass());
     }

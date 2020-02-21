@@ -17,6 +17,7 @@ package com.redhat.rhn.frontend.xmlrpc.test;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.xmlrpc.HandlerFactory;
 import com.redhat.rhn.frontend.xmlrpc.XmlRpcServlet;
 import com.redhat.rhn.testing.UserTestUtils;
 
@@ -72,7 +73,7 @@ public class XmlRpcServletTest extends MockObjectTestCase {
         } });
 
         // ok run servlet
-        XmlRpcServlet xrs = new XmlRpcServlet(new MockHandlerFactory(), null);
+        XmlRpcServlet xrs = new XmlRpcServlet(HandlerFactory.mockHandlers(), null);
         xrs.init();
         xrs.doPost(mockreq, mockresp);
 

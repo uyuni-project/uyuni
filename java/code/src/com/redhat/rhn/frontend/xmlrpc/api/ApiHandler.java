@@ -26,7 +26,6 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -34,6 +33,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * ApiHandler
@@ -43,6 +43,12 @@ import java.util.Set;
  * @xmlrpc.doc Methods providing information about the API.
  */
 public class ApiHandler extends BaseHandler {
+
+    private final HandlerFactory handlers;
+
+    public ApiHandler(HandlerFactory handlers) {
+        this.handlers = handlers;
+    }
 
     /**
      * Returns the server version.
@@ -67,10 +73,6 @@ public class ApiHandler extends BaseHandler {
         return Config.get().getString("java.apiversion");
     }
 
-    private Collection getNamespaces() {
-        return new HandlerFactory().getKeys();
-    }
-
     /** Lists available API namespaces
      * @param loggedInUser The current user
      * @return map of API namespaces
@@ -83,17 +85,12 @@ public class ApiHandler extends BaseHandler {
      *        #prop_desc("string", "handler", "API Handler")
      *   #struct_end()
      */
-    public Map getApiNamespaces(User loggedInUser) {
-        Map namespacesHash = new HashMap();
-        HandlerFactory hf = new HandlerFactory();
-
-        Iterator i = getNamespaces().iterator();
-        while (i.hasNext()) {
-                String namespace = (String)i.next();
-                namespacesHash.put(namespace, StringUtil.getClassNameNoPackage(
-                                                hf.getHandler(namespace).getClass()));
-        }
-        return namespacesHash;
+    public Map<String, String> getApiNamespaces(User loggedInUser) {
+        return handlers.getKeys().stream().collect(Collectors.toMap(
+           namespace -> namespace,
+           namespace -> StringUtil.getClassNameNoPackage(
+                       handlers.getHandler(namespace).getClass())
+        ));
     }
 
     /**
@@ -111,20 +108,11 @@ public class ApiHandler extends BaseHandler {
      *       #prop_desc("string", "return", "method return type")
      *   #struct_end()
      */
-    public Map getApiCallList(User loggedInUser) {
-        Map callHash = new HashMap();
-
-        Iterator i = getNamespaces().iterator();
-        while (i.hasNext()) {
-                String namespace = (String)i.next();
-            try {
-                callHash.put(namespace, getApiNamespaceCallList(loggedInUser, namespace));
-            }
-            catch (ClassNotFoundException e) {
-                callHash.put(namespace, "notFound");
-            }
-        }
-        return callHash;
+    public Map<String, Object> getApiCallList(User loggedInUser) {
+        return handlers.getKeys().stream().collect(Collectors.toMap(
+            namespace -> namespace,
+            namespace -> getApiNamespaceCallList(loggedInUser, namespace)
+        ));
     }
 
     /**
@@ -132,7 +120,6 @@ public class ApiHandler extends BaseHandler {
      * @param loggedInUser The current user
      * @param namespace namespace of interest
      * @return a map containing list of api calls for every namespace
-     * @throws ClassNotFoundException if namespace isn't valid
      *
      * @xmlrpc.doc Lists all available api calls for the specified namespace
      * @xmlrpc.param #param("string", "sessionKey")
@@ -145,10 +132,9 @@ public class ApiHandler extends BaseHandler {
      *        #prop_desc("string", "return", "method return type")
      *   #struct_end()
      */
-    public Map getApiNamespaceCallList(User loggedInUser, String namespace)
-                                            throws ClassNotFoundException  {
+    public Map getApiNamespaceCallList(User loggedInUser, String namespace) {
         Class<? extends BaseHandler> handlerClass =
-                                new HandlerFactory().getHandler(namespace).getClass();
+                                handlers.getHandler(namespace).get().getClass();
         Map<String, Map<String, Object>> methods  =
                                 new HashMap<String, Map<String, Object>>();
 
