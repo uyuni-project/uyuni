@@ -436,6 +436,12 @@ class Eula(Information):
         'checksum'          : StringType,
     }
 
+class ExtraTag(Information):
+    attributeTypes = {
+        'name'           : StringType,
+        'value'          : StringType,
+    }
+
 class IncompletePackage(BaseInformation):
     attributeTypes = {
         'package_id': StringType,  # RH db id
@@ -527,6 +533,7 @@ class Package(IncompletePackage):
         'checksum_list'     : [Checksum],
         'product_files'     : [ProductFile],
         'eulas'             : [Eula],
+        'extra_tags'        : [ExtraTag],
     }
 
     def __init__(self):
@@ -535,7 +542,6 @@ class Package(IncompletePackage):
         # And initialize the specific ones
         for k in list(self.attributeTypes.keys()):
             self[k] = None
-        self['extra_tags'] = None
 
 
 class SourcePackage(IncompletePackage):

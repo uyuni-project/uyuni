@@ -1194,6 +1194,16 @@ class _PackageDumper(BaseRowDumper):
         h.execute(package_id=self._row['id'])
         arr.append(_SuseEulasDumper(self._writer, data_iterator=h))
 
+        # Debian Extra Tags
+        h = rhnSQL.prepare("""
+            SELECT k.name, e.value
+              FROM rhnPackageExtraTag e
+              JOIN rhnPackageExtraTagKey k ON e.key_id = k.id
+             WHERE e.package_id = :package_id
+        """)
+        h.execute(package_id=self._row['id'])
+        arr.append(_PkgExtraTagDumper(self._writer, data_iterator=h))
+
         return ArrayIterator(arr)
 
 
@@ -1336,6 +1346,25 @@ class _SuseEulasEntryDumper(BaseRowDumper):
 class _SuseEulasDumper(BaseSubelementDumper):
     tag_name = 'suse-eula'
     subelement_dumper_class = _SuseEulasEntryDumper
+
+##
+class _PkgExtraTagEntryDumper(BaseRowDumper):
+    tag_name = 'pkg-extratag-entry'
+
+    def set_iterator(self):
+        arr = []
+        mappings = [
+            ('pkg-extratag-entry-name', 'name'),
+            ('pkg-extratag-entry-value', 'value'),
+        ]
+        for k, v in mappings:
+            arr.append(SimpleDumper(self._writer, k, self._row.get(v)))
+        return ArrayIterator(arr)
+
+class _PkgExtraTagDumper(BaseSubelementDumper):
+    tag_name = 'pkg-extratag'
+    subelement_dumper_class = _PkgExtraTagEntryDumper
+
 
 ##
 class _DependencyDumper(BaseDumper):
