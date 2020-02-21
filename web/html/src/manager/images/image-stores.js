@@ -40,6 +40,9 @@ class ImageStores extends React.Component {
       imagestores: [],
       selectedItems: []
     };
+  }
+
+  componentDidMount() {
     this.reloadData();
   }
 
