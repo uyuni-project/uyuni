@@ -16,8 +16,13 @@
 package com.redhat.rhn.domain.recurringactions;
 
 import com.redhat.rhn.domain.server.MinionServer;
+import com.redhat.rhn.domain.server.ServerGroup;
+import com.redhat.rhn.domain.server.ServerGroupFactory;
+
+import com.suse.manager.utils.MinionServerUtils;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
@@ -25,19 +30,19 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 /**
- * Recurring Action minion implementation
+ * Recurring Action group implementation
  */
 
 @Entity
-@DiscriminatorValue("minion")
-public class MinionRecurringAction extends RecurringAction {
+@DiscriminatorValue("group")
+public class GroupRecurringAction extends RecurringAction {
 
-    private MinionServer minion;
+    private ServerGroup group;
 
     /**
      * Standard constructor
      */
-    public MinionRecurringAction() {
+    public GroupRecurringAction() {
     }
 
     /**
@@ -45,11 +50,11 @@ public class MinionRecurringAction extends RecurringAction {
      *
      * @param testMode if action is in test mode
      * @param active if action is active
-     * @param minionServer minion affiliated with the action
+     * @param serverGroup group affiliated with the action
      */
-    public MinionRecurringAction(boolean testMode, boolean active, MinionServer minionServer) {
+    public GroupRecurringAction(boolean testMode, boolean active, ServerGroup serverGroup) {
         super(testMode, active);
-        this.minion = minionServer;
+        this.group = serverGroup;
     }
 
     /**
@@ -59,7 +64,8 @@ public class MinionRecurringAction extends RecurringAction {
      */
     @Override
     public List<MinionServer> computeMinions() {
-        return List.of(minion);
+        return MinionServerUtils.filterSaltMinions(ServerGroupFactory.listServers(group))
+                .collect(Collectors.toList());
     }
 
     /**
@@ -70,26 +76,26 @@ public class MinionRecurringAction extends RecurringAction {
     @Override
     public String computeTaskoScheduleName() {
         // TODO: Refactor for minion/group/org
-        return "recurring-action-minion-" + minion.getId();
+        return "recurring-action-minion-" + group.getId();
     }
 
     /**
-     * Gets the minion
+     * Gets the server group
      *
-     * @return the minion server
+     * @return the server group
      */
     @ManyToOne
-    @JoinColumn(name = "minion_id")
-    public MinionServer getMinion() {
-        return minion;
+    @JoinColumn(name = "group_id")
+    public ServerGroup getGroup() {
+        return group;
     }
 
     /**
-     * Sets the minion
+     * Sets the group
      *
-     * @param minionServer the minion server
+     * @param serverGroup the server group
      */
-    public void setMinion(MinionServer minionServer) {
-        this.minion = minionServer;
+    public void setGroup(ServerGroup serverGroup) {
+        this.group = serverGroup;
     }
 }

@@ -41,6 +41,10 @@ import com.redhat.rhn.domain.image.ProfileCustomDataValue;
 import com.redhat.rhn.domain.notification.NotificationMessage;
 import com.redhat.rhn.domain.notification.UserNotification;
 import com.redhat.rhn.domain.product.SUSEProductSCCRepository;
+import com.redhat.rhn.domain.recurringactions.GroupRecurringAction;
+import com.redhat.rhn.domain.recurringactions.MinionRecurringAction;
+import com.redhat.rhn.domain.recurringactions.OrgRecurringAction;
+import com.redhat.rhn.domain.recurringactions.RecurringAction;
 import com.redhat.rhn.domain.rhnpackage.PackageBreaks;
 import com.redhat.rhn.domain.rhnpackage.PackageConflicts;
 import com.redhat.rhn.domain.rhnpackage.PackageEnhances;
@@ -60,8 +64,6 @@ import com.redhat.rhn.domain.scc.SCCRepositoryNoAuth;
 import com.redhat.rhn.domain.scc.SCCRepositoryTokenAuth;
 import com.redhat.rhn.domain.scc.SCCSubscription;
 import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManagerNodeInfo;
-import com.redhat.rhn.domain.recurringactions.MinionRecurringAction;
-import com.redhat.rhn.domain.recurringactions.RecurringAction;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -130,6 +132,8 @@ public class AnnotationRegistry {
         ANNOTATION_CLASSES.add(PackageEnhances.class);
         ANNOTATION_CLASSES.add(RecurringAction.class);
         ANNOTATION_CLASSES.add(MinionRecurringAction.class);
+        ANNOTATION_CLASSES.add(GroupRecurringAction.class);
+        ANNOTATION_CLASSES.add(OrgRecurringAction.class);
 
     }
 

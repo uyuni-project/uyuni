@@ -1258,4 +1258,16 @@ public class ServerFactory extends HibernateFactory {
         return results.stream().collect(toMap(row -> row[0].toString(), row -> (Long)row[1]));
     }
 
+    /**
+     * List all Systems with orgId.
+     *
+     * @param orgId The organization id
+     * @return List of servers
+     */
+    public static List<Server> listOrgSystems(long orgId) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("orgId", orgId);
+        return singleton.listObjectsByNamedQuery(
+                "Server.listOrgSystems", params);
+    }
 }

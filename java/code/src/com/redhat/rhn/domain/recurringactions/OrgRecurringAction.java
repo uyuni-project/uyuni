@@ -15,9 +15,14 @@
 
 package com.redhat.rhn.domain.recurringactions;
 
+import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.server.MinionServer;
+import com.redhat.rhn.domain.server.ServerFactory;
+
+import com.suse.manager.utils.MinionServerUtils;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
@@ -25,19 +30,19 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 /**
- * Recurring Action minion implementation
+ * Recurring Action org implementation
  */
 
 @Entity
-@DiscriminatorValue("minion")
-public class MinionRecurringAction extends RecurringAction {
+@DiscriminatorValue("organization")
+public class OrgRecurringAction extends RecurringAction {
 
-    private MinionServer minion;
+    private Org organization;
 
     /**
      * Standard constructor
      */
-    public MinionRecurringAction() {
+    public OrgRecurringAction() {
     }
 
     /**
@@ -45,11 +50,11 @@ public class MinionRecurringAction extends RecurringAction {
      *
      * @param testMode if action is in test mode
      * @param active if action is active
-     * @param minionServer minion affiliated with the action
+     * @param org organization affiliated with the action
      */
-    public MinionRecurringAction(boolean testMode, boolean active, MinionServer minionServer) {
+    public OrgRecurringAction(boolean testMode, boolean active, Org org) {
         super(testMode, active);
-        this.minion = minionServer;
+        this.organization = org;
     }
 
     /**
@@ -59,7 +64,8 @@ public class MinionRecurringAction extends RecurringAction {
      */
     @Override
     public List<MinionServer> computeMinions() {
-        return List.of(minion);
+        return MinionServerUtils.filterSaltMinions(ServerFactory.listOrgSystems(organization.getId()))
+                .collect(Collectors.toList());
     }
 
     /**
@@ -70,26 +76,26 @@ public class MinionRecurringAction extends RecurringAction {
     @Override
     public String computeTaskoScheduleName() {
         // TODO: Refactor for minion/group/org
-        return "recurring-action-minion-" + minion.getId();
+        return "recurring-action-minion-" + organization.getId();
     }
 
     /**
-     * Gets the minion
+     * Gets the organization
      *
-     * @return the minion server
+     * @return the organization
      */
     @ManyToOne
-    @JoinColumn(name = "minion_id")
-    public MinionServer getMinion() {
-        return minion;
+    @JoinColumn(name = "org_id")
+    public Org getOrg() {
+        return organization;
     }
 
     /**
-     * Sets the minion
+     * Sets the organization
      *
-     * @param minionServer the minion server
+     * @param org the organization
      */
-    public void setMinion(MinionServer minionServer) {
-        this.minion = minionServer;
+    public void setOrg(Org org) {
+        this.organization = org;
     }
 }
