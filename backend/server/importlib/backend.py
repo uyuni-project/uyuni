@@ -1345,10 +1345,12 @@ class Backend:
             """)
         _query_product.execute()
         existing_data = map(lambda x: "%s" % (x['product_id']), _query_product.fetchall_dict() or [])
-        toinsert = [[], [], [], [], [], [], [], []]
+        toinsert = [[], [], [], [], [], [], [], [], [], [], []]
         todelete = [[]]
-        toupdate = [[], [], [], [], [], [], []]
+        toupdate = [[], [], [], [], [], [], [], [], [], []]
         for item in batch:
+            if not item['channel_family_id']:
+                continue
             ident = "%s" % (item['product_id'])
             if ident in existing_data:
                 existing_data.remove(ident)
@@ -1604,6 +1606,10 @@ class Backend:
         """Check if SCC Repository is already in DB.
            If yes, update it, if not add it.
         """
+        # suseSCCRepositoryAuth should be empty in ISS case
+        self.dbmodule.prepare("""
+            DELETE FROM suseSCCRepositoryAuth
+        """).execute()
         insert_repo = self.dbmodule.prepare("""
             INSERT INTO suseSCCRepository (id, scc_id, autorefresh, name, distro_target, description, url, signed)
             VALUES (:rid, :sccid, :autorefresh, :name, :target, :description, :url, :signed)
