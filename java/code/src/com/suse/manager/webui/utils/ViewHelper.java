@@ -167,7 +167,9 @@ public enum ViewHelper {
                 .getGroupFormulaValuesByNameAndServerId(formulaName, server.getId())
                 .orElseGet(Collections::emptyMap);
         return Objects.toString(systemData.get(valueName), "")
-                .equalsIgnoreCase(valueToCheck);
+                .equals(valueToCheck) ||
+                Objects.toString(groupData.get(valueName), "")
+                        .equals(valueToCheck);
     }
 
     /**
