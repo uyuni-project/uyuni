@@ -16,13 +16,15 @@ package com.redhat.rhn.frontend.xmlrpc.api.test;
 
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
+import com.redhat.rhn.frontend.xmlrpc.HandlerFactory;
 import com.redhat.rhn.frontend.xmlrpc.api.ApiHandler;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 
 public class ApiHandlerTest extends RhnBaseTestCase {
 
     public void testSystemVersion() {
-        ApiHandler handler = new ApiHandler();
+        HandlerFactory factory = HandlerFactory.mockHandlers();
+        ApiHandler handler = new ApiHandler(factory);
         /*
          * No way to tell if we get the correct version or not, so just make sure we
          * get *something*.
@@ -33,7 +35,8 @@ public class ApiHandlerTest extends RhnBaseTestCase {
     }
 
     public void testGetVersion() {
-        ApiHandler handler = new ApiHandler();
+        HandlerFactory factory = HandlerFactory.mockHandlers();
+        ApiHandler handler = new ApiHandler(factory);
         String version = Config.get().getString("java.apiversion");
         assertEquals(version, handler.getVersion());
     }
