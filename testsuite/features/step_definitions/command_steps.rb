@@ -769,6 +769,7 @@ Then(/^name resolution should work on terminal "([^"]*)"$/) do |host|
   end
 end
 
+# rubocop:disable Metrics/BlockLength
 When(/^I configure the proxy$/) do
   # prepare the settings file
   settings = "RHN_PARENT=#{$server.ip}\n" \
@@ -807,6 +808,7 @@ When(/^I configure the proxy$/) do
     return_code
   end
 end
+# rubocop:enable Metrics/BlockLength
 
 Then(/^The metadata buildtime from package "(.*?)" match the one in the rpm on "(.*?)"$/) do |pkg, host|
   # for testing buildtime of generated metadata - See bsc#1078056
