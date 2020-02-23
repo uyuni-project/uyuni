@@ -47,7 +47,7 @@
             },
             {
                 "id" : -86,
-                "url" : "https://nu.novell.com/repo/$RCE/OES2018-SP1-SLES12-SP5-Debuginfo-Pool/sle-12-x86_64/",
+                "url" : "https://nu.novell.com/repo/$RCE/OES2018-SP2-SLES12-SP5-Debuginfo-Pool/sle-12-x86_64/",
                 "name" : "OES2018-SP2-SLES12-SP5-Debuginfo-Pool",
                 "distro_target" : "sle-12-x86_64",
                 "description" : "SUSE Linux Enterprise offers a comprehensive suite of products built on a single code base. The platform addresses business needs from the smallest thin-client devices to the world's most powerful high-performance computing and mainframe servers. SUSE Linux Enterprise offers common management tools and technology certifications across the platform, and each product is enterprise-class.",
@@ -87,7 +87,7 @@
             },
             {
                 "id" : -90,
-                "url" : "https://nu.novell.com/repo/$RCE/OES2018-SP2-SLE-Module-Containers12-Pool/sle-12-x86_64/media.1/",
+                "url" : "https://nu.novell.com/repo/$RCE/OES2018-SP2-SLE-Module-Containers12-Pool/sle-12-x86_64/",
                 "name" : "OES2018-SP2-SLE-Module-Containers12-Pool",
                 "distro_target" : "sle-12-x86_64",
                 "description" : "This Module contains several packages revolving around containers and related tools.",
