@@ -1175,3 +1175,9 @@ When(/^I remove the bind zones created by retail_yaml$/) do
   raise unless find(:xpath, "//*[text()='Configured Zones']/../..//*[@value='#{domain}']/../../../..//*[@title='Remove item']").click
   raise unless find(:xpath, "//*[text()='Available Zones']/../..//*[@value='#{domain}' and @name='Name']/../../../..//i[@title='Remove item']").click
 end
+
+Then(/^the "([^"]*)" on "([^"]*)" grains does not exist$/) do |key, client|
+  node = get_target(client)
+  _result, code = node.run("grep #{key} /etc/salt/minion.d/susemanager.conf", fatal = false)
+  raise if code.zero?
+end
