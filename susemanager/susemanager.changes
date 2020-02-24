@@ -1,3 +1,5 @@
+- Fix salt bootstrapping on SLE15 (require python3-pycrypto or
+  python3-M2Crypto to support all variants) (bsc#1164563)
 - add bootstrap-repo data for OES 2018 SP2 (bsc#1161862)
 - add bootstrap-repo data for SLE15 SP2 Family
 
